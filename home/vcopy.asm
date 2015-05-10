@@ -36,7 +36,7 @@ ClearBgMap:: ; 1cf0 (0:1cf0)
 ; When the player takes a step, a row or column of 2x2 tile blocks at the edge
 ; of the screen toward which they moved is exposed and has to be redrawn.
 ; This function does the redrawing.
-RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
+RedrawExposedScreenEdge:: ; 1ada (0:1ada)
 	ld a,[H_SCREENEDGEREDRAW]
 	and a
 	ret z
@@ -115,7 +115,7 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 ; on when talking to sprites, battling, using menus, etc. This is because
 ; the above function, RedrawExposedScreenEdge, is used when walking to
 ; improve efficiency.
-AutoBgMapTransfer:: ; 1b37 (0:1b30)
+AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	ld a,[H_AUTOBGTRANSFERENABLED]
 	and a
 	ret z
@@ -193,7 +193,7 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 
 ; Copies [H_VBCOPYBGNUMROWS] rows from H_VBCOPYBGSRC to H_VBCOPYBGDEST.
 ; If H_VBCOPYBGSRC is XX00, the transfer is disabled.
-VBlankCopyBgMap:: ; 1de1 (0:1de1)
+VBlankCopyBgMap:: ; 1bb5 (0:1bb5)
 	ld a,[H_VBCOPYBGSRC] ; doubles as enabling byte
 	and a
 	ret z
@@ -214,7 +214,7 @@ VBlankCopyBgMap:: ; 1de1 (0:1de1)
 	jr TransferBgRows
 
 
-VBlankCopyDouble::
+VBlankCopyDouble:: ; 1bd1 (0:1bd1)
 ; Copy [H_VBCOPYDOUBLESIZE] 1bpp tiles
 ; from H_VBCOPYDOUBLESRC to H_VBCOPYDOUBLEDEST.
 
@@ -282,7 +282,7 @@ VBlankCopyDouble::
 	ret
 
 
-VBlankCopy::
+VBlankCopy:: ; 1c21 (0:1c21)
 ; Copy [H_VBCOPYSIZE] 2bpp tiles
 ; from H_VBCOPYSRC to H_VBCOPYDEST.
 
@@ -342,7 +342,7 @@ VBlankCopy::
 	ret
 
 
-UpdateMovingBgTiles::
+UpdateMovingBgTiles:: ; 1c75 (0:1c75)
 ; Animate water and flower
 ; tiles in the overworld.
 
