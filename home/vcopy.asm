@@ -115,15 +115,11 @@ RedrawExposedScreenEdge:: ; 1d01 (0:1d01)
 ; on when talking to sprites, battling, using menus, etc. This is because
 ; the above function, RedrawExposedScreenEdge, is used when walking to
 ; improve efficiency.
-AutoBgMapTransfer:: ; 1d57 (0:1d57)
+AutoBgMapTransfer:: ; 1b37 (0:1b30)
 	ld a,[H_AUTOBGTRANSFERENABLED]
 	and a
 	ret z
-	ld hl,[sp + 0]
-	ld a,h
-	ld [H_SPTEMP],a
-	ld a,l
-	ld [H_SPTEMP + 1],a ; save stack pinter
+	ld [H_SPTEMP],sp ; save stack pinter
 	ld a,[H_AUTOBGTRANSFERPORTION]
 	and a
 	jr z,.transferTopThird
@@ -201,11 +197,7 @@ VBlankCopyBgMap:: ; 1de1 (0:1de1)
 	ld a,[H_VBCOPYBGSRC] ; doubles as enabling byte
 	and a
 	ret z
-	ld hl,[sp + 0]
-	ld a,h
-	ld [H_SPTEMP],a
-	ld a,l
-	ld [H_SPTEMP + 1],a ; save stack pointer
+	ld [H_SPTEMP],sp ; save stack pointer
 	ld a,[H_VBCOPYBGSRC]
 	ld l,a
 	ld a,[H_VBCOPYBGSRC + 1]
@@ -234,11 +226,7 @@ VBlankCopyDouble::
 	and a
 	ret z
 
-	ld hl, [sp + 0]
-	ld a, h
-	ld [H_SPTEMP], a
-	ld a, l
-	ld [H_SPTEMP + 1], a
+	ld [H_SPTEMP],sp ; save stack pointer
 
 	ld a, [H_VBCOPYDOUBLESRC]
 	ld l, a
@@ -281,16 +269,9 @@ VBlankCopyDouble::
 	dec b
 	jr nz, .loop
 
-	ld a, l
-	ld [H_VBCOPYDOUBLEDEST], a
-	ld a, h
-	ld [H_VBCOPYDOUBLEDEST + 1], a
-
-	ld hl, [sp + 0]
-	ld a, l
-	ld [H_VBCOPYDOUBLESRC], a
-	ld a, h
-	ld [H_VBCOPYDOUBLESRC + 1], a
+	ld [H_VBCOPYDOUBLESRC],sp
+	ld sp,hl ; load destination into sp to save time with ld [$xxxx],sp
+	ld [H_VBCOPYDOUBLEDEST], sp
 
 	ld a, [H_SPTEMP]
 	ld h, a
@@ -313,11 +294,7 @@ VBlankCopy::
 	and a
 	ret z
 
-	ld hl, [sp + 0]
-	ld a, h
-	ld [H_SPTEMP], a
-	ld a, l
-	ld [H_SPTEMP + 1], a
+	ld [H_SPTEMP],sp
 
 	ld a, [H_VBCOPYSRC]
 	ld l, a
@@ -352,17 +329,10 @@ VBlankCopy::
 	dec b
 	jr nz, .loop
 
-	ld a, l
-	ld [H_VBCOPYDEST], a
-	ld a, h
-	ld [H_VBCOPYDEST + 1], a
-
-	ld hl, [sp + 0]
-	ld a, l
-	ld [H_VBCOPYSRC], a
-	ld a, h
-	ld [H_VBCOPYSRC + 1], a
-
+	ld [H_VBCOPYSRC],sp
+	ld sp,hl
+	ld [H_VBCOPYDEST],sp
+	
 	ld a, [H_SPTEMP]
 	ld h, a
 	ld a, [H_SPTEMP + 1]
@@ -380,6 +350,10 @@ UpdateMovingBgTiles::
 	and a
 	ret z ; no animations if indoors (or if a menu set this to 0)
 
+	ld a,[rLY]
+	cp $90 ; check if not in vblank period??? (maybe if vblank is too long)
+	ret c
+	
 	ld a, [$ffd8]
 	inc a
 	ld [$ffd8], a
