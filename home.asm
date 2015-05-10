@@ -113,7 +113,10 @@ Start::
 	jp Init
 
 
-INCLUDE "home/joypad.asm"
+ReadJoypad:
+	ld a,[H_LOADEDROMBANK]
+	push af
+	call
 INCLUDE "data/map_header_pointers.asm"
 INCLUDE "home/overworld.asm"
 
@@ -2952,25 +2955,28 @@ HasEnoughCoins::
 	jp StringCmp
 
 
-BankswitchHome:: ; 35bc (0:35bc)
+BankswitchHome:: ; 35d9 (0:35d9)
 ; switches to bank # in a
 ; Only use this when in the home bank!
 	ld [wcf09],a
 	ld a,[H_LOADEDROMBANK]
 	ld [wcf08],a
 	ld a,[wcf09]
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
-BankswitchBack:: ; 35cd (0:35cd)
+BankswitchBack:: ; 35e8 (0:35e8)
 ; returns from BankswitchHome
 	ld a,[wcf08]
+	call BankswitchCommon
+	ret
+	
+BankswitchCommon:: ; 3e7e (0:3e7e)
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
 
-Bankswitch:: ; 35d6 (0:35d6)
+Bankswitch:: ; 3e84 (0:3e84)
 ; self-contained bankswitch, use this when not in the home bank
 ; switches to the bank in b
 	ld a,[H_LOADEDROMBANK]
@@ -2978,15 +2984,14 @@ Bankswitch:: ; 35d6 (0:35d6)
 	ld a,b
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
-	ld bc,.Return
-	push bc
-	jp [hl]
-.Return
+	call .jumptoaddress
 	pop bc
 	ld a,b
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
+.jumptoaddress
+	jp [hl]
 
 ; displays yes/no choice
 ; yes -> set carry
