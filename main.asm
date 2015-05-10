@@ -4772,7 +4772,6 @@ INCLUDE "engine/battle/moveEffects/recoil_effect.asm"
 INCLUDE "engine/battle/moveEffects/conversion_effect.asm"
 INCLUDE "engine/battle/moveEffects/haze_effect.asm"
 INCLUDE "engine/battle/get_trainer_name.asm"
-INCLUDE "engine/random.asm"
 
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
@@ -6679,3 +6678,7 @@ BeachHouse_GFX:
 BeachHouse_Block:
 	INCBIN "gfx/blocksets/beachhouse.bst"
 ENDC
+
+SECTION "bank3d",ROMX,BANK[$3D]
+
+INCLUDE "engine/random.asm"
