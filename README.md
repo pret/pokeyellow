@@ -1,3 +1,11 @@
+# Pokémon Yellow
+
+This is not a buildable disassembly of Pokémon Yellow. This is here so I can put all Yellow differences that I find, that can't be specified by "IF(DEF)"s.
+
+Expect this to be completed in 3000 years.
+
+Original readme below.
+
 # Pokémon Red and Blue
 
 This is a disassembly of Pokémon Red and Blue.
