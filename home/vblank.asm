@@ -5,6 +5,11 @@ VBlank::
 	push de
 	push hl
 
+	ld a, [rVBK] ; vram bank
+	push af
+	xor a
+	ld [rVBK], a ; reset vram bank to 0
+	
 	ld a, [H_LOADEDROMBANK]
 	ld [wd122], a
 
@@ -33,8 +38,10 @@ VBlank::
 	call PrepareOAMData
 
 	; VBlank-sensitive operations end.
-
+	call TrackPlayTime ; keep track of time played
+	
 	call Random
+	call ReadJoypad
 
 	ld a, [H_VBLANKOCCURRED]
 	and a
@@ -51,37 +58,24 @@ VBlank::
 .decced
 
 	call Func_28cb
-
-	ld a, [wc0ef] ; music ROM bank
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-
-	cp BANK(Music2_UpdateMusic)
-	jr nz, .notbank2
-.bank2
-	call Music2_UpdateMusic
-	jr .afterMusic
-.notbank2
-	cp BANK(Music8_UpdateMusic)
-	jr nz, .bank1F
-.bank8
+	
+	ld a, $8
+	call BankswitchCommon
 	call Music_DoLowHealthAlarm
-	call Music8_UpdateMusic
-	jr .afterMusic
-.bank1F
-	call Music1f_UpdateMusic
-.afterMusic
-
-	callba TrackPlayTime ; keep track of time played
-
-	ld a, [$fff9]
-	and a
-	call z, ReadJoypad
+	
+	ld a, $2
+	call BankswitchCommon
+	call Music2_UpdateMusic
+	
+	call SerialFunction ; add this
 
 	ld a, [wd122]
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 
+	pop af
+	ld [rVBK],a
+	
 	pop hl
 	pop de
 	pop bc
