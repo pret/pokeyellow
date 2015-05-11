@@ -59,7 +59,7 @@ FarCopyDataDouble::
 	ld [MBC1RomBank],a
 	ret
 
-CopyVideoData::
+CopyVideoDataLCDEnabled::
 ; Wait for the next VBlank, then copy c 2bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
