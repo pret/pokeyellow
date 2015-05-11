@@ -1,4 +1,4 @@
-FarCopyDataDouble::
+FarCopyDataDouble:: ; 15d4 (0:15d4)
 ; Expand bc bytes of 1bpp image data
 ; from a:de to 2bpp data at hl.
 	ld [wd122+1],a
@@ -14,11 +14,11 @@ FarCopyDataDouble::
 	ld e,a
 	ld a,b
 	and a
-	jr z,.lessthan$100bytes
+	jr z,.8bitcopyamount
 	ld a,c
 	and a ; multiple of $100
 	jr z, .expandloop ; if so, do not increment b because the first instance of dec c results in underflow
-.lessthan$100bytes
+.8bitcopyamount
 	inc b
 .expandloop
 	ld a,[de]
@@ -34,7 +34,7 @@ FarCopyDataDouble::
 	call BankswitchCommon
 	ret
 
-CopyVideoDataLCDEnabled::
+CopyVideoDataLCDEnabled:: ; 
 ; Wait for the next VBlank, then copy c 2bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -45,11 +45,10 @@ CopyVideoDataLCDEnabled::
 	ld [H_AUTOBGTRANSFERENABLED], a
 
 	ld a, [H_LOADEDROMBANK]
-	ld [$ff8b], a
+	push af
 
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	call BankswitchCommon
 
 	ld a, e
 	ld [H_VBCOPYSRC], a
@@ -69,9 +68,8 @@ CopyVideoDataLCDEnabled::
 .done
 	ld [H_VBCOPYSIZE], a
 	call DelayFrame
-	ld a, [$ff8b]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	pop af
+	call CommonBankswitch
 	pop af
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
@@ -94,11 +92,10 @@ CopyVideoDataDoubleLCDEnabled::
 	xor a ; disable auto-transfer while copying
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld a, [H_LOADEDROMBANK]
-	ld [$ff8b], a
+	push af
 
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	call BankswitchCommon
 
 	ld a, e
 	ld [H_VBCOPYDOUBLESRC], a
@@ -118,9 +115,8 @@ CopyVideoDataDoubleLCDEnabled::
 .done
 	ld [H_VBCOPYDOUBLESIZE], a
 	call DelayFrame
-	ld a, [$ff8b]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	pop af
+	call BankswitchCommon
 	pop af
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
@@ -134,7 +130,41 @@ CopyVideoDataDoubleLCDEnabled::
 	ld c, a
 	jr .loop
 
-ClearScreenArea::
+FillMemory:: ; 166e (0:166e)
+	push af
+	ld a,b
+	and a
+	jr z, .8bitcopyamount
+	ld a,c
+	and a
+	jr z, .mulitpleof$100
+.8bitcopyamount
+	inc b
+.multipleof$100
+	pop af
+.loop
+	ld [hli],a
+	dec c
+	jr nz, .loop
+	dec b
+	jr nz, .loop
+	ret
+	
+Func_1681:: ; 1681 (0:1681)
+	push bc
+	ld b,a
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a,b
+	call BankswitchCommon
+	ld b,[hl]
+	pop af
+	call BankswitchCommon
+	ld a,b
+	pop bc
+	ret
+
+ClearScreenArea:: ; 1692 (0:1692)
 ; Clear tilemap area cxb at hl.
 	ld a, $7f ; blank tile
 	ld de, 20 ; screen width
@@ -152,7 +182,7 @@ ClearScreenArea::
 	jr nz, .y
 	ret
 
-CopyScreenTileBufferToVRAM::
+CopyScreenTileBufferToVRAM:: ; 16a4
 ; Copy wTileMap to the BG Map starting at b * $100.
 ; This is done in thirds of 6 rows, so it takes 3 frames.
 
