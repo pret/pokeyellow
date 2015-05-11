@@ -71,4 +71,4 @@ CopyVideoDataDouble:: ; 00e3 (0:00e3)
 	ld c,l
 	pop af
 	pop hl
-	jp CopyVideoDataDoubleLCDDisabled
+	jp FarCopyDataDouble
