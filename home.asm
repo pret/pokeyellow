@@ -3153,21 +3153,6 @@ LoadHpBarAndStatusTilePatterns::
 	jp CopyVideoData ; if LCD is on, transfer during V-blank
 
 
-FillMemory::
-; Fill bc bytes at hl with a.
-	push de
-	ld d, a
-.loop
-	ld a, d
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
-	pop de
-	ret
-
-
 UncompressSpriteFromDE:: ; 36eb (0:36eb)
 ; Decompress pic at a:de.
 	ld hl, W_SPRITEINPUTPTR
