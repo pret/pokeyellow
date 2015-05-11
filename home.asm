@@ -87,7 +87,7 @@ INCLUDE "home/copy.asm"
 SECTION "Entry", ROM0 [$100]
 
 	nop
-	jp Start
+	jp Start ; 01ab
 
 
 SECTION "Header", ROM0 [$104]
@@ -101,15 +101,62 @@ SECTION "Header", ROM0 [$104]
 
 SECTION "Main", ROM0
 
+Func_150:: ; 0150 (0:0150)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	ld a,b
+	call BankswitchCommon
+	ld a,[hli]
+	ld c,a
+	ld a,[hli]
+	ld b,a
+.loop
+	ld a,[hli]
+	ld d,a
+	ld a,$3
+.unknownloop
+	dec a
+	jr nz,.unknownloop
+	
+	rept 7
+	call Func_199
+	call Func_1a5
+	endr
+	
+	call Func_199
+	dec bc
+	ld a,c
+	or b
+	jr nz,.loop
+	pop af
+	call BankswitchCommon
+	ret
+
+Func_199:: ; 0199 (0:0199)
+	ld a,d
+	and $80
+	srl a
+	srl a
+	ld [rNR32],a
+	sla d
+	ret
+	
+Func_1a5:: ; 01a5 (0:01a5)
+	ld a,$3
+.unknownloop2
+	dec a
+	jr nz,.unknownloop2
+	ret
+
 Start::
 	cp GBC
 	jr z, .gbc
 	xor a
 	jr .ok
 .gbc
-	ld a, 0
+	ld a, $1
 .ok
-	ld [wGBC], a
+	ld [hGBC], a
 	jp Init
 
 
