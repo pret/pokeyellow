@@ -37,26 +37,38 @@ FarCopyData3::
 
 FarCopyDataDouble::
 ; Expand bc bytes of 1bpp image data
-; from a:hl to 2bpp data at de.
-	ld [$ff8b],a
+; from a:de to 2bpp data at hl.
+	ld [wd122+1],a
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,[$ff8b]
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
-.loop
-	ld a,[hli]
-	ld [de],a
-	inc de
-	ld [de],a
-	inc de
-	dec bc
+	ld a,[wd122+1]
+	call BankswitchCommon
+	ld a,h ; swap hl and de
+	ld h,d
+	ld d,a
+	ld a,l
+	ld l,e
+	ld e,a
+	ld a,b
+	and a
+	jr z,.lessthan$100bytes
 	ld a,c
-	or b
-	jr nz,.loop
+	and a ; multiple of $100
+	jr z, .expandloop ; if so, do not increment b because the first instance of dec c results in underflow
+.lessthan$100bytes
+	inc b
+.expandloop
+	ld a,[de]
+	inc de
+	ld [hli],a
+	ld [hli],a
+	inc de
+	dec c
+	jr nz, .expandloop
+	dec b
+	jr nz, .expandloop
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	call BankswitchCommon
 	ret
 
 CopyVideoDataLCDEnabled::
