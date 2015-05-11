@@ -110,7 +110,7 @@ CopyVideoDataLCDEnabled::
 	ld c, a
 	jr .loop
 
-CopyVideoDataDouble::
+CopyVideoDataDoubleLCDEnabled::
 ; Wait for the next VBlank, then copy c 1bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
