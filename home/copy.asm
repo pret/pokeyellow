@@ -32,3 +32,23 @@ CopyData:: ; 00b1 (0:00b1)
 	dec c
 	jr nz, .copybytes
 	ret
+
+CopyVideoData:: ; note: fix other CopyVideoData function
+	ld a, [rLCDC]
+	bit 7,a ; LCD enabled?
+	jp nz, CopyVideoDataLCDEnabled ; if yes, then copy video data
+	push hl
+	ld h,d
+	ld l,e
+	pop de
+	ld a,b ; save bank
+	push af
+	swap c
+	ld a,$f
+	and c
+	ld b,a
+	ld a,$f0
+	and c
+	ld c,a
+	pop af
+	jp FarCopyData
