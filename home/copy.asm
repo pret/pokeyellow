@@ -52,3 +52,23 @@ CopyVideoData:: ; note: fix other CopyVideoData function
 	ld c,a
 	pop af
 	jp FarCopyData
+	
+CopyVideoDataDouble:: ; 00e3 (0:00e3)
+	ld a, [rLCDC]
+	bit 7,a ; LCD enabled?
+	jp nz, CopyVideoDataDoubleLCDEnabled ; if yes, then copy video data
+	push de
+	ld d,h
+	ld e,l
+	ld a,b
+	push af ; save bank to switch to
+	ld h,$0
+	ld l,c
+	add hl,hl ; get raw length of bytes to copy
+	add hl,hl
+	add hl,hl
+	ld b,h
+	ld c,l
+	pop af
+	pop hl
+	jp CopyVideoDataDoubleLCDDisabled
