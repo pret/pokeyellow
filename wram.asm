@@ -779,9 +779,6 @@ wNPCMovementScriptSpriteOffset:: ; cf17
 
 wcf18:: ds 2
 
-wGBC:: ; cf1a
-	ds 1
-
 wOnSGB:: ; cf1b
 ; if running on SGB, it's 1, else it's 0
 	ds 1
