@@ -25,7 +25,7 @@ const_value = const_value + 1
 ENDM
 
 
-homecall: MACRO
+homecall_jump: MACRO
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(\1)
