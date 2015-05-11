@@ -159,14 +159,11 @@ Start::
 	ld [hGBC], a
 	jp Init
 
+Joypad:: ; 01b9
+	homecall _Joypad
 
 ReadJoypad: ; 01c8 (0:01c8)
-	ld a,[H_LOADEDROMBANK]
-	push af
-	call BankswitchCommon
-	call ReadJoypad_
-	pop af
-	jp BankswitchCommon
+	homecall ReadJoypad_
 	
 INCLUDE "data/map_header_pointers.asm"
 INCLUDE "home/overworld.asm"
