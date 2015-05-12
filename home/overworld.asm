@@ -1,9 +1,9 @@
-HandleMidJump::
+; HandleMidJump::
 ; Handle the player jumping down
 ; a ledge in the overworld.
-	ld b, BANK(_HandleMidJump)
-	ld hl, _HandleMidJump
-	jp Bankswitch
+;	ld b, BANK(_HandleMidJump)
+;	ld hl, _HandleMidJump
+;	jp Bankswitch
 
 EnterMap::
 ; Load a new map.
@@ -26,11 +26,18 @@ EnterMap::
 	ld a, [hl]
 	and 1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jr z, .didNotEnterUsingFlyWarpOrDungeonWarp
-	res 3, [hl]
 	callba EnterMapAnim
 	call UpdateSprites
+	ld hl, wd732
+	res 3, [hl]
+	ld hl, wd72e
+	res 4, [hl]
+	call Func_342a
 .didNotEnterUsingFlyWarpOrDungeonWarp
 	callba CheckForceBikeOrSurf ; handle currents in SF islands and forced bike riding in cycling road
+	ld hl, wd732
+	bit 4, [hl]
+	res 4, [hl]
 	ld hl, wd72d
 	res 5, [hl]
 	call UpdateSprites
@@ -44,7 +51,8 @@ OverworldLoop::
 	call DelayFrame
 OverworldLoopLessDelay::
 	call DelayFrame
-	call LoadGBPal
+	call Func_342a
+	; continue documenting here
 	ld a,[wd736]
 	bit 6,a ; jumping down a ledge?
 	call nz, HandleMidJump
