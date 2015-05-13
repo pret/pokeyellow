@@ -1,10 +1,3 @@
-; HandleMidJump::
-; Handle the player jumping down
-; a ledge in the overworld.
-;	ld b, BANK(_HandleMidJump)
-;	ld hl, _HandleMidJump
-;	jp Bankswitch
-
 EnterMap::
 ; Load a new map.
 	ld a, $ff
@@ -47,15 +40,12 @@ EnterMap::
 	xor a
 	ld [wJoyIgnore], a
 
-OverworldLoop::
+OverworldLoop:: ; 0242 (0:0242)
 	call DelayFrame
-OverworldLoopLessDelay::
+OverworldLoopLessDelay:: ; 0245 (0:0245)
 	call DelayFrame
 	call Func_342a
-	; continue documenting here
-	ld a,[wd736]
-	bit 6,a ; jumping down a ledge?
-	call nz, HandleMidJump
+	call LoadGBPal
 	ld a,[wWalkCounter]
 	and a
 	jp nz,.moveAhead ; if the player sprite has not yet completed the walking animation
@@ -101,6 +91,9 @@ OverworldLoopLessDelay::
 	ld a,[$ffeb]
 	and a
 	jp z,OverworldLoop ; jump if a hidden object or bookshelf was found, but not if a card key door was found
+	; 02b5 (remove this comment)
+	xor a
+	; continue from here
 	call IsSpriteOrSignInFrontOfPlayer
 	ld a,[hSpriteIndexOrTextID]
 	and a
@@ -2410,3 +2403,13 @@ ForceBikeOrSurf:: ; 12ed (0:12ed)
 	ld hl, LoadPlayerSpriteGraphics
 	call Bankswitch
 	jp PlayDefaultMusic ; update map/player state?
+
+; Handle the player jumping down
+; a ledge in the overworld.	
+HandleMidJump:: ; 0fe1 (0:0fe1)
+	ld a,[wd736]
+	bit 7,a ; jumping down a ledge?
+	ret z
+	ld b, BANK(_HandleMidJump)
+	ld hl, _HandleMidJump
+	jp Bankswitch
