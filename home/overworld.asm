@@ -1,4 +1,4 @@
-EnterMap::
+EnterMap:: ; 01d7 (0:01d7)
 ; Load a new map.
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -91,10 +91,10 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld a,[$ffeb]
 	and a
 	jp z,OverworldLoop ; jump if a hidden object or bookshelf was found, but not if a card key door was found
-	; 02b5 (remove this comment)
 	xor a
-	; continue from here
+	ld [wd436],a ; new yellow address
 	call IsSpriteOrSignInFrontOfPlayer
+	call Func_0ffe
 	ld a,[hSpriteIndexOrTextID]
 	and a
 	jp z,OverworldLoop
@@ -112,38 +112,39 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld a,[wcc47]
 	and a
 	jr z,.checkForOpponent
-	dec a
-	ld a,$00
+	xor a
 	ld [wcc47],a
-	jr z,.changeMap
-	predef LoadSAV
-	ld a,[W_CURMAP]
-	ld [wDestinationMap],a
-	call SpecialWarpIn
-	ld a,[W_CURMAP]
-	call SwitchToMapRomBank ; switch to the ROM bank of the current map
-	ld hl,W_CURMAPTILESET
-	set 7,[hl]
-.changeMap
 	jp EnterMap
+;	predef LoadSAV
+;	ld a,[W_CURMAP]
+;	ld [wDestinationMap],a
+;	call SpecialWarpIn
+;	ld a,[W_CURMAP]
+;	call SwitchToMapRomBank ; switch to the ROM bank of the current map
+;	ld hl,W_CURMAPTILESET
+;	set 7,[hl]
 .checkForOpponent
 	ld a,[W_CUROPPONENT]
 	and a
 	jp nz,.newBattle
 	jp OverworldLoop
 .noDirectionButtonsPressed
+	call UpdateSprites ; 231c
 	ld hl,wFlags_0xcd60
 	res 2,[hl]
-	call UpdateSprites
+	xor a
+	ld [wd435], a
+	ld a, $1
 	ld a,$01
 	ld [wcc4b],a
 	ld a,[wd528] ; the direction that was pressed last time
 	and a
-	jp z,OverworldLoop
+	jr z, .overworldloop
 ; if a direction was pressed last time
 	ld [wd529],a ; save the last direction
 	xor a
 	ld [wd528],a ; zero the direction
+.overworldloop
 	jp OverworldLoop
 .checkIfDownButtonIsPressed
 	ld a,[hJoyHeld] ; current joypad state
@@ -185,38 +186,13 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld a,[wd529] ; old direction
 	cp b
 	jr z,.noDirectionChange
-; the code below is strange
-; it computes whether or not the player did a 180 degree turn, but then overwrites the result
-; also, it does a seemingly pointless loop afterwards
-	swap a ; put old direction in upper half
-	or b ; put new direction in lower half
-	cp a,$48 ; change dir from down to up
-	jr nz,.notDownToUp
-	ld a,$02
-	ld [wd528],a
-	jr .oddLoop
-.notDownToUp
-	cp a,$84 ; change dir from up to down
-	jr nz,.notUpToDown
-	ld a,$01
-	ld [wd528],a
-	jr .oddLoop
-.notUpToDown
-	cp a,$12 ; change dir from right to left
-	jr nz,.notRightToLeft
-	ld a,$04
-	ld [wd528],a
-	jr .oddLoop
-.notRightToLeft
-	cp a,$21 ; change dir from left to right
-	jr nz,.oddLoop
-	ld a,$08
-	ld [wd528],a
-.oddLoop
+	ld a,$8
+	ld [wd434],a
+; unlike in red/blue, yellow does not have the 180 degrees odd code
 	ld hl,wFlags_0xcd60
 	set 2,[hl]
-	ld hl,wcc4b
-	dec [hl]
+	xor a
+	ld [wcc4b],a
 	jr nz,.oddLoop
 	ld a,[wd52a]
 	ld [wd528],a
@@ -251,26 +227,18 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 .noCollision
 	ld a,$08
 	ld [wWalkCounter],a
+	callab Func_fcc08
 	jr .moveAhead2
 .moveAhead
-	ld a,[wd736]
-	bit 7,a
-	jr z,.noSpinning
-	callba LoadSpinnerArrowTiles ; spin while moving
-.noSpinning
+	call IsSpinning
 	call UpdateSprites ; move sprites
 .moveAhead2
 	ld hl,wFlags_0xcd60
 	res 2,[hl]
-	ld a,[wWalkBikeSurfState]
-	dec a ; riding a bike?
-	jr nz,.normalPlayerSpriteAdvancement
-	ld a,[wd736]
-	bit 6,a ; jumping a ledge?
-	jr nz,.normalPlayerSpriteAdvancement
-	call BikeSpeedup ; if riding a bike and not jumping a ledge
-.normalPlayerSpriteAdvancement
-	call AdvancePlayerSprite
+	xor a
+	ld [wd435],a
+	call Func_049d
+	; continue from here, remember to check possible AdvancePlayerSprite function
 	ld a,[wWalkCounter]
 	and a
 	jp nz,CheckMapConnections ; it seems like this check will never succeed (the other place where CheckMapConnections is run works)
@@ -363,19 +331,25 @@ NewBattle:: ; 0683 (0:0683)
 	and a
 	ret
 
-; function to make bikes twice as fast as walking
-BikeSpeedup:: ; 06a0 (0:06a0)
+Func_049d:: ; 049d (0:049d)
+	ld a,[wWalkBikeSurfState]
+	dec a ; riding a bike?
+	ret nz
+	ld a,[wd736]
+	bit 6,a
+	ret nz
 	ld a,[wNPCMovementScriptPointerTableNum]
 	and a
 	ret nz
 	ld a,[W_CURMAP]
-	cp a,ROUTE_17 ; Cycling Road
+	cp ROUTE_17 ; cycling road
 	jr nz,.goFaster
 	ld a,[hJoyHeld]
 	and a,D_UP | D_LEFT | D_RIGHT
 	ret nz
 .goFaster
-	jp AdvancePlayerSprite
+	call Func_0b7f
+	ret
 
 ; check if the player has stepped onto a warp after having not collided
 CheckWarpsNoCollision:: ; 06b4 (0:06b4)
@@ -1444,6 +1418,19 @@ LoadCurrentMapView:: ; 0caa (0:0caa)
 	ld [$2000],a ; restore previous ROM bank
 	ret
 
+Func_0b7f:: ; 0b7f (0:0b7f)
+; may be just AdvancePlayerSprite
+	ld a,[wUpdateSpritesEnabled]
+	push af
+	ld a,$FF
+	ld [wUpdateSpritesEnabled],a
+	ld hl,Func_f010c ; 3c:410c
+	ld b,BANK(Func_f010c)
+	call Bankswitch
+	pop af
+	ld [wUpdateSpritesEnabled],a
+	ret
+	
 AdvancePlayerSprite:: ; 0d27 (0:0d27)
 	ld a,[wSpriteStateData1 + 3] ; delta Y
 	ld b,a
@@ -2412,4 +2399,17 @@ HandleMidJump:: ; 0fe1 (0:0fe1)
 	ret z
 	ld b, BANK(_HandleMidJump)
 	ld hl, _HandleMidJump
+	jp Bankswitch
+
+IsSpinning:: ; 0ff0 (0:0ff0)
+	ld a,[wd736]
+	bit 7,a
+	ret z ; no spinning
+	ld b, BANK(LoadSpinnerArrowTiles); spin while moving
+	ld hl,LoadSpinnerArrowTiles ; 11:5077
+	jp Bankswitch
+	
+Func_0ffe:: ; 0ffe (0:0ffe)
+	ld hl, Func_fcf0c ; 3f:4f0c
+	ld b, BANK(Func_fcf0c)
 	jp Bankswitch
