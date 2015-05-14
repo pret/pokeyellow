@@ -193,7 +193,6 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	set 2,[hl]
 	xor a
 	ld [wcc4b],a
-	jr nz,.oddLoop
 	ld a,[wd52a]
 	ld [wd528],a
 	call NewBattle
@@ -243,23 +242,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	and a
 	jp nz,CheckMapConnections ; it seems like this check will never succeed (the other place where CheckMapConnections is run works)
 ; walking animation finished
-		
-	; continue from here
-	ld a,[wd730]
-	bit 7,a
-	jr nz,.doneStepCounting ; if button presses are being simulated, don't count steps
-; step counting
-	ld hl,wStepCounter
-	dec [hl]
-	ld a,[wd72c]
-	bit 0,a
-	jr z,.doneStepCounting
-	ld hl,wNumberOfNoRandomBattleStepsLeft
-	dec [hl]
-	jr nz,.doneStepCounting
-	ld hl,wd72c
-	res 0,[hl] ; indicate that the player has stepped thrice since the last battle
-.doneStepCounting
+	call StepCountCheck
 	ld a,[wd790]
 	bit 7,a ; in the safari zone?
 	jr z,.notSafariZone
@@ -309,15 +292,33 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld c,$0a
 	call DelayFrames
 	jp EnterMap
-.allPokemonFainted
-	ld a,$ff
-	ld [W_ISINBATTLE],a
-	call RunMapScript
-	jp HandleBlackOut
+;.allPokemonFainted
+;	ld a,$ff
+;	ld [W_ISINBATTLE],a
+;	call RunMapScript
+;	jp HandleBlackOut
+
+StepCountCheck:: ; 0457 (0:0457)
+	ld a,[wd730]
+	bit 7,a
+	jr nz,.doneStepCounting ; if button presses are being simulated, don't count steps
+; step counting
+	ld hl,wStepCounter
+	dec [hl]
+	ld a,[wd72c]
+	bit 0,a
+	jr z,.doneStepCounting
+	ld hl,wNumberOfNoRandomBattleStepsLeft
+	dec [hl]
+	jr nz,.doneStepCounting
+	ld hl,wd72c
+	res 0,[hl] ; indicate that the player has stepped thrice since the last battle
+.doneStepCounting
+	ret
 
 ; function to determine if there will be a battle and execute it (either a trainer battle or wild battle)
 ; sets carry if a battle occurred and unsets carry if not
-NewBattle:: ; 0683 (0:0683)
+NewBattle:: ; 0480 (0:0480)
 	ld a,[wd72d]
 	bit 4,a
 	jr nz,.noBattle
@@ -327,7 +328,7 @@ NewBattle:: ; 0683 (0:0683)
 	bit 4,a
 	jr nz,.noBattle
 	ld b, BANK(InitBattle)
-	ld hl, InitBattle
+	ld hl, InitBattle ; 3d:5ff2
 	jp Bankswitch
 .noBattle
 	and a
@@ -354,19 +355,19 @@ DoBikeSpeedup:: ; 049d (0:049d)
 	ret
 
 ; check if the player has stepped onto a warp after having not collided
-CheckWarpsNoCollision:: ; 06b4 (0:06b4)
+CheckWarpsNoCollision:: ; 04bd (0:04bd)
 	ld a,[wNumberOfWarps]
 	and a
 	jp z,CheckMapConnections
-	ld a,[wNumberOfWarps]
 	ld b,0
+	ld a,[wNumberOfWarps]
 	ld c,a
 	ld a,[W_YCOORD]
 	ld d,a
 	ld a,[W_XCOORD]
 	ld e,a
 	ld hl,wWarpEntries
-CheckWarpsNoCollisionLoop:: ; 06cc (0:06cc)
+CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
 	ld a,[hli] ; check if the warp's Y position matches
 	cp d
 	jr nz,CheckWarpsNoCollisionRetry1
@@ -401,7 +402,18 @@ CheckWarpsNoCollisionLoop:: ; 06cc (0:06cc)
 	and a,D_DOWN | D_UP | D_LEFT | D_RIGHT
 	jr z,CheckWarpsNoCollisionRetry2 ; if directional buttons aren't being pressed, do not pass through the warp
 	jr WarpFound1
-
+	
+CheckWarpsNoCollisionRetry1:: ; 050f (0:050f)
+	inc hl
+CheckWarpsNoCollisionRetry2:: ; 0510 (0:0510)
+	inc hl
+	inc hl
+ContinueCheckWarpsNoCollisionLoop:: ; 0512 (0:0512)
+	inc b ; increment warp number
+	dec c ; decrement number of warps
+	jp nz,CheckWarpsNoCollisionLoop
+	jp CheckMapConnections
+	
 ; check if the player has stepped onto a warp after having collided
 CheckWarpsCollision:: ; 0706 (0:0706)
 	ld a,[wNumberOfWarps]
@@ -432,13 +444,6 @@ CheckWarpsCollision:: ; 0706 (0:0706)
 	jr nz,.loop
 	jp OverworldLoop
 
-CheckWarpsNoCollisionRetry1:: ; 072f (0:072f)
-	inc hl
-CheckWarpsNoCollisionRetry2:: ; 0730 (0:0730)
-	inc hl
-	inc hl
-	jp ContinueCheckWarpsNoCollisionLoop
-
 WarpFound1:: ; 0735 (0:0735)
 	ld a,[hli]
 	ld [wDestinationWarpID],a
@@ -466,6 +471,7 @@ WarpFound2:: ; 073c (0:073c)
 	ld [wMapPalOffset],a
 	call GBFadeOutToBlack
 .notRockTunnel
+	callab Func_fc5fa ; 3f:45fa
 	call PlayMapChangeSound
 	jr .done
 ; for maps that can have the 0xFF destination map, which means to return to the outside map; not all these maps are necessarily indoors, though
@@ -480,9 +486,9 @@ WarpFound2:: ; 073c (0:073c)
 	dec a ; is the player on a warp pad?
 	jr nz,.notWarpPad
 ; if the player is on a warp pad
+	call LeaveMapAnim
 	ld hl,wd732
 	set 3,[hl]
-	call LeaveMapAnim
 	jr .skipMapChangeSound
 .notWarpPad
 	call PlayMapChangeSound
@@ -490,8 +496,11 @@ WarpFound2:: ; 073c (0:073c)
 	ld hl,wd736
 	res 0,[hl]
 	res 1,[hl]
+	callab Func_fc65b ; 3f:465b
 	jr .done
 .goBackOutside
+	callab Func_fc69a ; 3f:469a
+	; continue from here
 	ld a,[wLastMap]
 	ld [W_CURMAP],a
 	call PlayMapChangeSound
@@ -503,13 +512,8 @@ WarpFound2:: ; 073c (0:073c)
 	call IgnoreInputForHalfSecond
 	jp EnterMap
 
-ContinueCheckWarpsNoCollisionLoop:: ; 07b5 (0:07b5)
-	inc b ; increment warp number
-	dec c ; decrement number of warps
-	jp nz,CheckWarpsNoCollisionLoop
-
 ; if no matching warp was found
-CheckMapConnections:: ; 07ba (0:07ba)
+CheckMapConnections:: ; 05db (0:05db)
 .checkWestMap
 	ld a,[W_XCOORD]
 	cp a,$ff
@@ -741,7 +745,7 @@ StopMusic::
 	jr nz, .wait
 	jp StopAllSounds
 
-HandleFlyWarpOrDungeonWarp::
+HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	call UpdateSprites
 	call Delay3
 	xor a
@@ -759,7 +763,7 @@ HandleFlyWarpOrDungeonWarp::
 	call SpecialWarpIn
 	jp SpecialEnterMap
 
-LeaveMapAnim::
+LeaveMapAnim:: ; 07bc (0:07bc)
 	ld b, BANK(_LeaveMapAnim)
 	ld hl, _LeaveMapAnim
 	jp Bankswitch
