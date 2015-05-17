@@ -35,6 +35,37 @@ homecall_jump: MACRO
 	jp BankswitchCommon
 	ENDM
 
+homecall: MACRO
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, BANK(\1)
+	call BankswitchCommon
+	call \1
+	pop af
+	call BankswitchCommon
+	ENDM
+
+homecall_sf: MACRO ; homecall but save flags by popping into bc instead of af
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, BANK(\1)
+	call BankswitchCommon
+	call \1
+	pop bc
+	ld a,b
+	call BankswitchCommon
+	ENDM
+
+switchbank: MACRO
+	ld a, BANK(\1)
+	call BankswitchCommon
+	ENDM
+	
+callsb: MACRO
+	ld a, BANK(\1)
+	call BankswitchCommon
+	call \1
+	
 callba: MACRO
 	ld b, BANK(\1)
 	ld hl, \1

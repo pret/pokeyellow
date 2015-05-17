@@ -133,5 +133,4 @@ StopAllSounds::
 	ld [wMusicHeaderPointer], a
 	ld [wc0ee], a
 	ld [wcfca], a
-	dec a
-	jp PlaySound
+	jp StopAllMusic

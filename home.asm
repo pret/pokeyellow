@@ -160,10 +160,10 @@ Start::
 	jp Init
 
 Joypad:: ; 01b9
-	homecall _Joypad
+	homecall_jump _Joypad
 
-ReadJoypad: ; 01c8 (0:01c8)
-	homecall ReadJoypad_
+ReadJoypad:: ; 01c8 (0:01c8)
+	homecall_jump ReadJoypad_
 	
 INCLUDE "data/map_header_pointers.asm"
 INCLUDE "home/overworld.asm"
@@ -966,6 +966,12 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 
 
 INCLUDE "data/collision.asm"
+
+IsTilePassable:: ; 15c3 (0:15c3)
+; sets carry if tile is passable, resets carry otherwise
+	homecall_sf _IsTilePassable ; 1:4aaa
+	ret
+
 INCLUDE "home/copy2.asm"
 INCLUDE "home/text.asm"
 INCLUDE "home/vcopy.asm"
@@ -4514,6 +4520,10 @@ IsInRestOfArray::
 	scf
 	ret
 
+InitMapSprites::  ; 3dba (0:3dba)
+	ld hl, _InitMapSprites ; 1401b (5:401b)
+	ld b,BANK(_InitMapSprites)
+	jp Bankswitch
 
 RestoreScreenTilesAndReloadTilePatterns:: ; 3dbe (0:3dbe)
 	call ClearSprites

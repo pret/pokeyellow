@@ -1,5 +1,5 @@
-SECTION "bank3c",ROMX[$401c],BANK[$3c]
-_AdvancePlayerSprite:: ; f010c (3c:f010c)
+SECTION "bank3c",ROMX[$410c],BANK[$3c]
+_AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld a,[wSpriteStateData1 + 3] ; delta Y
 	ld b,a
 	ld a,[wSpriteStateData1 + 5] ; delta X
@@ -192,4 +192,52 @@ _AdvancePlayerSprite:: ; f010c (3c:f010c)
 	dec e
 	jr nz,.spriteShiftLoop
 .done
+	ret
+
+MoveTileBlockMapPointerEast:: ; 0e65 (0:0e65)
+	ld a,[de]
+	add a,$01
+	ld [de],a
+	ret nc
+	inc de
+	ld a,[de]
+	inc a
+	ld [de],a
+	ret
+
+MoveTileBlockMapPointerWest:: ; 0e6f (0:0e6f)
+	ld a,[de]
+	sub a,$01
+	ld [de],a
+	ret nc
+	inc de
+	ld a,[de]
+	dec a
+	ld [de],a
+	ret
+
+MoveTileBlockMapPointerSouth:: ; 0e79 (0:0e79)
+	add a,$06
+	ld b,a
+	ld a,[de]
+	add b
+	ld [de],a
+	ret nc
+	inc de
+	ld a,[de]
+	inc a
+	ld [de],a
+	ret
+
+MoveTileBlockMapPointerNorth:: ; 0e85 (0:0e85)
+	add a,$06
+	ld b,a
+	ld a,[de]
+	sub b
+	ld [de],a
+	ret nc
+	inc de
+	ld a,[de]
+	dec a
+	ld [de],a
 	ret

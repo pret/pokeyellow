@@ -415,7 +415,7 @@ ContinueCheckWarpsNoCollisionLoop:: ; 0512 (0:0512)
 	jp CheckMapConnections
 	
 ; check if the player has stepped onto a warp after having collided
-CheckWarpsCollision:: ; 0706 (0:0706)
+CheckWarpsCollision:: ; 051a (0:051a)
 	ld a,[wNumberOfWarps]
 	ld c,a
 	ld hl,wWarpEntries
@@ -444,13 +444,13 @@ CheckWarpsCollision:: ; 0706 (0:0706)
 	jr nz,.loop
 	jp OverworldLoop
 
-WarpFound1:: ; 0735 (0:0735)
+WarpFound1:: ; 0543 (0:0543)
 	ld a,[hli]
 	ld [wDestinationWarpID],a
 	ld a,[hli]
 	ld [$ff8b],a ; save target map
 
-WarpFound2:: ; 073c (0:073c)
+WarpFound2:: ; 054a (0:054a)
 	ld a,[wNumberOfWarps]
 	sub c
 	ld [wd73b],a ; save ID of used warp
@@ -500,7 +500,6 @@ WarpFound2:: ; 073c (0:073c)
 	jr .done
 .goBackOutside
 	callab Func_fc69a ; 3f:469a
-	; continue from here
 	ld a,[wLastMap]
 	ld [W_CURMAP],a
 	call PlayMapChangeSound
@@ -637,21 +636,33 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld [wCurrentTileBlockMapViewPointer],a ; pointer to upper left corner of current tile block map section
 	ld a,h
 	ld [wCurrentTileBlockMapViewPointer + 1],a
-.loadNewMap ; load the connected map that was entered
-	call LoadMapHeader
+.loadNewMap ; 06ce (0:06ce)
+; load the connected map that was entered
+	ld hl,[wd430]
+	set 4,[hl]
+	ld a,$2
+	ld [wd431],a
+	call LoadMapHeader ; 0dab (0:0dab)
 	call Func_2312 ; music
 	ld b,$09
 	call GoPAL_SET
 ; Since the sprite set shouldn't change, this will just update VRAM slots at
 ; $C2XE without loading any tile patterns.
-	callba InitMapSprites
+	call InitMapSprites
 	call LoadTileBlockMap
 	jp OverworldLoopLessDelay
 .didNotEnterConnectedMap
 	jp OverworldLoop
 
 ; function to play a sound when changing maps
-PlayMapChangeSound:: ; 08c9 (0:08c9)
+PlayMapChangeSound:: ; 06ef (0:06ef)
+	ld a,[W_CURMAPTILESET]
+	cp FACILITY
+	jr z,.didNotGoThroughDoor
+	cp CEMETERY
+	jr z,.didNotGoThroughDoor
+	cp UNDERGROUND
+	jr nz,.didNotGoThroughDoor
 	aCoord 8, 8 ; upper left tile of the 4x4 square the player's sprite is standing on
 	cp a,$0b ; door tile in tileset 0
 	jr nz,.didNotGoThroughDoor
@@ -666,7 +677,7 @@ PlayMapChangeSound:: ; 08c9 (0:08c9)
 	ret nz
 	jp GBFadeOutToBlack
 
-CheckIfInOutsideMap:: ; 08e1 (0:08e1)
+CheckIfInOutsideMap:: ; 0712 (0:0712)
 ; If the player is in an outside map (a town or route), set the z flag
 	ld a, [W_CURMAPTILESET]
 	and a ; most towns/routes have tileset 0 (OVERWORLD)
@@ -680,7 +691,7 @@ CheckIfInOutsideMap:: ; 08e1 (0:08e1)
 ; "function 1" passes when the player is at the edge of the map and is facing towards the outside of the map
 ; "function 2" passes when the the tile in front of the player is among a certain set
 ; sets carry if the check passes, otherwise clears carry
-ExtraWarpCheck:: ; 08e9 (0:08e9)
+ExtraWarpCheck:: ; 071a (0:071a)
 	ld a, [W_CURMAP]
 	cp SS_ANNE_3
 	jr z, .useFunction1
@@ -710,14 +721,14 @@ ExtraWarpCheck:: ; 08e9 (0:08e9)
 	ld b, BANK(IsWarpTileInFrontOfPlayer)
 	jp Bankswitch
 
-MapEntryAfterBattle:: ; 091f (0:091f)
+MapEntryAfterBattle:: ; 0750 (0:0750)
 	callba IsPlayerStandingOnWarp ; for enabling warp testing after collisions
 	ld a,[wMapPalOffset]
 	and a
 	jp z,GBFadeInFromWhite
 	jp LoadGBPal
 
-HandleBlackOut::
+HandleBlackOut:: ; 0762 (0:0762)
 ; For when all the player's pokemon faint.
 ; Does not print the "blacked out" message.
 
@@ -726,19 +737,15 @@ HandleBlackOut::
 	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
-	ld a, Bank(ResetStatusAndHalveMoneyOnBlackout) ; also Bank(SpecialWarpIn) and Bank(SpecialEnterMap)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	call ResetStatusAndHalveMoneyOnBlackout
+	callsb ResetStatusAndHalveMoneyOnBlackout ; also Bank(SpecialWarpIn) and Bank(SpecialEnterMap)
+	callab Func_f0274 ; 3c:4274
 	call SpecialWarpIn
 	call Func_2312
 	jp SpecialEnterMap
 
-StopMusic::
+StopMusic:: ; 0788 (0:0788)
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
-	ld [wc0ee], a
-	call PlaySound
+	call StopAllMusic
 .wait
 	ld a, [wMusicHeaderPointer]
 	and a
@@ -757,10 +764,8 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	set 2, [hl] ; fly warp or dungeon warp
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
-	ld a, Bank(SpecialWarpIn)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	call SpecialWarpIn
+	call LoadPlayerSpriteGraphics
+	callsb SpecialWarpIn
 	jp SpecialEnterMap
 
 LeaveMapAnim:: ; 07bc (0:07bc)
@@ -768,7 +773,19 @@ LeaveMapAnim:: ; 07bc (0:07bc)
 	ld hl, _LeaveMapAnim
 	jp Bankswitch
 
-LoadPlayerSpriteGraphics::
+Func_07c4:: ; 07c4 (0:07c4)	
+	ld a, [wWalkBikeSurfState]
+	and a
+	ret z
+	xor a
+	ld [wWalkBikeSurfState],a
+	ld hl,wd732
+	bit 4,[hl]
+	ret z
+	call PlayDefaultMusic
+	ret
+	
+LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 ; Load sprite graphics based on whether the player is standing, biking, or surfing.
 
 	; 0: standing
@@ -806,7 +823,7 @@ LoadPlayerSpriteGraphics::
 	jp z, LoadSurfingPlayerSpriteGraphics
 	jp LoadWalkingPlayerSpriteGraphics
 
-IsBikeRidingAllowed::
+IsBikeRidingAllowed:: ; 0805 (0:0805)
 ; The bike can be used on Route 23 and Indigo Plateau,
 ; or maps with tilesets in BikeRidingTilesets.
 ; Return carry if biking is allowed.
@@ -836,7 +853,7 @@ IsBikeRidingAllowed::
 INCLUDE "data/bike_riding_tilesets.asm"
 
 ; load the tile pattern data of the current tileset into VRAM
-LoadTilesetTilePatternData:: ; 09e8 (0:09e8)
+LoadTilesetTilePatternData:: ; 0828 (0:0828)
 	ld a,[W_TILESETGFXPTR]
 	ld l,a
 	ld a,[W_TILESETGFXPTR + 1]
@@ -848,19 +865,12 @@ LoadTilesetTilePatternData:: ; 09e8 (0:09e8)
 
 ; this loads the current maps complete tile map (which references blocks, not individual tiles) to C6E8
 ; it can also load partial tile maps of connected maps into a border of length 3 around the current map
-LoadTileBlockMap:: ; 09fc (0:09fc)
+LoadTileBlockMap:: ; 083c (0:083c)
 ; fill C6E8-CBFB with the background tile
 	ld hl,wOverworldMap
-	ld a,[wd3ad] ; background tile number
-	ld d,a
 	ld bc,$0514
-.backgroundTileLoop
-	ld a,d
-	ld [hli],a
-	dec bc
-	ld a,c
-	or b
-	jr nz,.backgroundTileLoop
+	ld a,[wd3ad] ; background tile number
+	call FillMemory
 ; load tile map of current map (made of tile block IDs)
 ; a 3-byte border at the edges of the map is kept so that there is space for map connections
 	ld hl,wOverworldMap
@@ -977,7 +987,7 @@ LoadTileBlockMap:: ; 09fc (0:09fc)
 .done
 	ret
 
-LoadNorthSouthConnectionsTileMap:: ; 0ade (0:0ade)
+LoadNorthSouthConnectionsTileMap:: ; 0919 (0:0919)
 	ld c,$03
 .loop
 	push de
@@ -1009,7 +1019,7 @@ LoadNorthSouthConnectionsTileMap:: ; 0ade (0:0ade)
 	jr nz,.loop
 	ret
 
-LoadEastWestConnectionsTileMap:: ; 0b02 (0:0b02)
+LoadEastWestConnectionsTileMap:: ; 093d (0:093d)
 	push hl
 	push de
 	ld c,$03
@@ -1039,9 +1049,8 @@ LoadEastWestConnectionsTileMap:: ; 0b02 (0:0b02)
 	ret
 
 ; function to check if there is a sign or sprite in front of the player
-; if so, it is stored in [hSpriteIndexOrTextID]
-; if not, [hSpriteIndexOrTextID] is set to 0
-IsSpriteOrSignInFrontOfPlayer:: ; 0b23 (0:0b23)
+; if so, carry is set. otherwise, carry is cleared
+IsSpriteOrSignInFrontOfPlayer:: ; 095e (0:095e)
 	xor a
 	ld [hSpriteIndexOrTextID],a
 	ld a,[wd4b0] ; number of signs in the map
@@ -1049,39 +1058,10 @@ IsSpriteOrSignInFrontOfPlayer:: ; 0b23 (0:0b23)
 	jr z,.extendRangeOverCounter
 ; if there are signs
 	predef GetTileAndCoordsInFrontOfPlayer ; get the coordinates in front of the player in de
-	ld hl,wd4b1 ; start of sign coordinates
-	ld a,[wd4b0] ; number of signs in the map
-	ld b,a
-	ld c,$00
-.signLoop
-	inc c
-	ld a,[hli] ; sign Y
-	cp d
-	jr z,.yCoordMatched
-	inc hl
-	jr .retry
-.yCoordMatched
-	ld a,[hli] ; sign X
-	cp e
-	jr nz,.retry
-.xCoordMatched
-; found sign
-	push hl
-	push bc
-	ld hl,wd4d1 ; start of sign text ID's
-	ld b,$00
-	dec c
-	add hl,bc
-	ld a,[hl]
-	ld [hSpriteIndexOrTextID],a ; store sign text ID
-	pop bc
-	pop hl
-	ret
-.retry
-	dec b
-	jr nz,.signLoop
-; check if the player is front of a counter in a pokemon center, pokemart, etc. and if so, extend the range at which he can talk to the NPC
+	call SignLoop
+	ret c
 .extendRangeOverCounter
+; check if the player is front of a counter in a pokemon center, pokemart, etc. and if so, extend the range at which he can talk to the NPC
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player in c
 	ld hl,W_TILESETTALKINGOVERTILES ; list of tiles that extend talking range (counter tiles)
 	ld b,$03
@@ -1093,11 +1073,10 @@ IsSpriteOrSignInFrontOfPlayer:: ; 0b23 (0:0b23)
 	dec b
 	jr nz,.counterTilesLoop
 
-; part of the above function, but sometimes its called on its own, when signs are irrelevant
-; the caller must zero [hSpriteIndexOrTextID]
-IsSpriteInFrontOfPlayer:: ; 0b6b (0:0b6b)
+; sets carry flag if a sprite is in front of the player, resets if not
+IsSpriteInFrontOfPlayer:: ; 0983 (0:0983)
 	ld d,$10 ; talking range in pixels (normal range)
-IsSpriteInFrontOfPlayer2:: ; 0b6d (0:0b6d)
+IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	ld bc,$3c40 ; Y and X position of player sprite
 	ld a,[wSpriteStateData1 + 9] ; direction the player is facing
 .checkIfPlayerFacingUp
@@ -1135,13 +1114,10 @@ IsSpriteInFrontOfPlayer2:: ; 0b6d (0:0b6d)
 	ld a,$02
 .doneCheckingDirection
 	ld [wd52a],a
-	ld a,[W_NUMSPRITES] ; number of sprites
-	and a
-	ret z
-; if there are sprites
 	ld hl,wSpriteStateData1 + $10
-	ld d,a
+; yellow does not have the "if sprites are existant" check
 	ld e,$01
+	ld d,$f
 .spriteLoop
 	push hl
 	ld a,[hli] ; image (0 if no sprite)
@@ -1167,6 +1143,7 @@ IsSpriteInFrontOfPlayer2:: ; 0b6d (0:0b6d)
 	inc e
 	dec d
 	jr nz,.spriteLoop
+	xor a
 	ret
 .foundSpriteInFrontOfPlayer
 	pop hl
@@ -1177,11 +1154,55 @@ IsSpriteInFrontOfPlayer2:: ; 0b6d (0:0b6d)
 	set 7,[hl]
 	ld a,e
 	ld [hSpriteIndexOrTextID],a
+	ld a,[hSpriteIndexOrTextID] ; possible useless read because a already has the value of the read address
+	cp a,$f
+	jr nz,.dontwritetowd436
+	ld a,$FF
+	ld [wd436],a
+.dontwritetowd436
+	scf
+	ret
+	
+SignLoop:: ; 09f2 (0:09f2)
+; search if a player is facing a sign
+	ld hl,wd4b1 ; start of sign coordinates
+	ld a,[wd4b0] ; number of signs in the map
+	ld b,a
+	ld c,$00
+.signLoop
+	inc c
+	ld a,[hli] ; sign Y
+	cp d
+	jr z,.yCoordMatched
+	inc hl
+	jr .retry
+.yCoordMatched
+	ld a,[hli] ; sign X
+	cp e
+	jr nz,.retry
+.xCoordMatched
+; found sign
+	push hl
+	push bc
+	ld hl,wd4d1 ; start of sign text ID's
+	ld b,$00
+	dec c
+	add hl,bc
+	ld a,[hl]
+	ld [hSpriteIndexOrTextID],a ; store sign text ID
+	pop bc
+	pop hl
+	scf
+	ret
+.retry
+	dec b
+	jr nz,.signLoop
+	xor a
 	ret
 
 ; function to check if the player will jump down a ledge and check if the tile ahead is passable (when not surfing)
 ; sets the carry flag if there is a collision, and unsets it if there isn't a collision
-CollisionCheckOnLand:: ; 0bd1 (0:0bd1)
+CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 	ld a,[wd736]
 	bit 6,a ; is the player jumping?
 	jr nz,.noCollision
@@ -1193,14 +1214,31 @@ CollisionCheckOnLand:: ; 0bd1 (0:0bd1)
 	ld d,a
 	ld a,[wSpriteStateData1 + 12] ; the player sprite's collision data (bit field) (set in the sprite movement code)
 	and d ; check if a sprite is in the direction the player is trying to go
+	nop ; ??? why is this in the code
 	jr nz,.collision
 	xor a
 	ld [hSpriteIndexOrTextID],a
 	call IsSpriteInFrontOfPlayer ; check for sprite collisions again? when does the above check fail to detect a sprite collision?
+	jr nc,.asm_0a5c
+	res 7,[hl]
 	ld a,[hSpriteIndexOrTextID]
 	and a ; was there a sprite collision?
-	jr nz,.collision
+	jr z,.asm_0a5c
 ; if no sprite collision
+	cp $f
+	jr nz,.collision
+	call CheckForJumpingAndTilePairCollisions
+	jr nz,.collision
+	ld a,[hJoyHeld]
+	and $2
+	jr nz,.asm_0a5c
+	ld hl,wd435
+	ld a,[hl]
+	and a
+	jr z,.asm_0a5c
+	dec [hl]
+	jr nz,.collision
+.asm_0a5c
 	ld hl,TilePairCollisionsLand
 	call CheckForJumpingAndTilePairCollisions
 	jr c,.collision
@@ -1221,30 +1259,18 @@ CollisionCheckOnLand:: ; 0bd1 (0:0bd1)
 
 ; function that checks if the tile in front of the player is passable
 ; clears carry if it is, sets carry if not
-CheckTilePassable:: ; 0c10 (0:0c10)
+CheckTilePassable:: ; 0a79 (0:0a79)
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player
 	ld a,[wTileInFrontOfPlayer] ; tile in front of player
 	ld c,a
-	ld hl,W_TILESETCOLLISIONPTR ; pointer to list of passable tiles
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a ; hl now points to passable tiles
-.loop
-	ld a,[hli]
-	cp a,$ff
-	jr z,.tileNotPassable
-	cp c
-	ret z
-	jr .loop
-.tileNotPassable
-	scf
+	call IsTilePassable
 	ret
 
 ; check if the player is going to jump down a small ledge
 ; and check for collisions that only occur between certain pairs of tiles
 ; Input: hl - address of directional collision data
 ; sets carry if there is a collision and unsets carry if not
-CheckForJumpingAndTilePairCollisions:: ; 0c2a (0:0c2a)
+CheckForJumpingAndTilePairCollisions:: ; 0a86 (0:0a86)
 	push hl
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player
 	push de
@@ -1259,11 +1285,11 @@ CheckForJumpingAndTilePairCollisions:: ; 0c2a (0:0c2a)
 	ret nz
 ; if not jumping
 
-CheckForTilePairCollisions2:: ; 0c44 (0:0c44)
+CheckForTilePairCollisions2:: ; 0aa0 (0:0aa0)
 	aCoord 8, 9 ; tile the player is on
 	ld [wcf0e],a
 
-CheckForTilePairCollisions:: ; 0c4a (0:0c4a)
+CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 	ld a,[wTileInFrontOfPlayer]
 	ld c,a
 .tilePairCollisionLoop
@@ -1313,7 +1339,7 @@ CheckForTilePairCollisions:: ; 0c4a (0:0c4a)
 ; these entries indicate that the player may not cross between tile 1 and tile 2
 ; it's mainly used to simulate differences in elevation
 
-TilePairCollisionsLand:: ; 0c7e (0:0c7e)
+TilePairCollisionsLand:: ; 0ada (0:0ada)
 	db CAVERN, $20, $05
 	db CAVERN, $41, $05
 	db FOREST, $30, $2E
@@ -1327,19 +1353,18 @@ TilePairCollisionsLand:: ; 0c7e (0:0c7e)
 	db FOREST, $5F, $2E
 	db $FF
 
-TilePairCollisionsWater:: ; 0ca0 (0:0ca0)
+TilePairCollisionsWater:: ; 0afc (0:0afc)
 	db FOREST, $14, $2E
 	db FOREST, $48, $2E
 	db CAVERN, $14, $05
 	db $FF
 
 ; this builds a tile map from the tile block map based on the current X/Y coordinates of the player's character
-LoadCurrentMapView:: ; 0caa (0:0caa)
+LoadCurrentMapView:: ; 0b06 (0:0b06)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,[W_TILESETBANK] ; tile data ROM bank
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a ; switch to ROM bank that contains tile data
+	call BankswitchCommon ; switch to ROM bank that contains tile data
 	ld a,[wCurrentTileBlockMapViewPointer] ; address of upper left corner of current map view
 	ld e,a
 	ld a,[wCurrentTileBlockMapViewPointer + 1]
@@ -1420,8 +1445,7 @@ LoadCurrentMapView:: ; 0caa (0:0caa)
 	dec b
 	jr nz,.rowLoop2
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a ; restore previous ROM bank
+	call BankswitchCommon ; restore previous ROM bank
 	ret
 
 AdvancePlayerSprite:: ; 0b7f (0:0b7f)
@@ -1436,61 +1460,10 @@ AdvancePlayerSprite:: ; 0b7f (0:0b7f)
 	ld [wUpdateSpritesEnabled],a
 	ret
 
-; the following four functions are used to move the pointer to the upper left
-; corner of the tile block map in the direction of motion
-
-MoveTileBlockMapPointerEast:: ; 0e65 (0:0e65)
-	ld a,[de]
-	add a,$01
-	ld [de],a
-	ret nc
-	inc de
-	ld a,[de]
-	inc a
-	ld [de],a
-	ret
-
-MoveTileBlockMapPointerWest:: ; 0e6f (0:0e6f)
-	ld a,[de]
-	sub a,$01
-	ld [de],a
-	ret nc
-	inc de
-	ld a,[de]
-	dec a
-	ld [de],a
-	ret
-
-MoveTileBlockMapPointerSouth:: ; 0e79 (0:0e79)
-	add a,$06
-	ld b,a
-	ld a,[de]
-	add b
-	ld [de],a
-	ret nc
-	inc de
-	ld a,[de]
-	inc a
-	ld [de],a
-	ret
-
-MoveTileBlockMapPointerNorth:: ; 0e85 (0:0e85)
-	add a,$06
-	ld b,a
-	ld a,[de]
-	sub b
-	ld [de],a
-	ret nc
-	inc de
-	ld a,[de]
-	dec a
-	ld [de],a
-	ret
-
 ; the following 6 functions are used to tell the V-blank handler to redraw
 ; the portion of the map that was newly exposed due to the player's movement
 
-ScheduleNorthRowRedraw:: ; 0e91 (0:0e91)
+ScheduleNorthRowRedraw:: ; 0b95 (0:0b95)
 	hlCoord 0, 0
 	call CopyToScreenEdgeTiles
 	ld a,[wMapViewVRAMPointer]
@@ -1501,7 +1474,7 @@ ScheduleNorthRowRedraw:: ; 0e91 (0:0e91)
 	ld [H_SCREENEDGEREDRAW],a
 	ret
 
-CopyToScreenEdgeTiles:: ; 0ea6 (0:0ea6)
+CopyToScreenEdgeTiles:: ; 0baa (0:0baa)
 	ld de,wScreenEdgeTiles
 	ld c,2 * 20
 .loop
@@ -1511,8 +1484,8 @@ CopyToScreenEdgeTiles:: ; 0ea6 (0:0ea6)
 	dec c
 	jr nz,.loop
 	ret
-
-ScheduleSouthRowRedraw:: ; 0eb2 (0:0eb2)
+	
+ScheduleSouthRowRedraw:: ; 0bb6 (0:0bb6)
 	hlCoord 0, 16
 	call CopyToScreenEdgeTiles
 	ld a,[wMapViewVRAMPointer]
@@ -1531,7 +1504,7 @@ ScheduleSouthRowRedraw:: ; 0eb2 (0:0eb2)
 	ld [H_SCREENEDGEREDRAW],a
 	ret
 
-ScheduleEastColumnRedraw:: ; 0ed3 (0:0ed3)
+ScheduleEastColumnRedraw:: ; 0bd6 (0:0bd7)
 	hlCoord 18, 0
 	call ScheduleColumnRedrawHelper
 	ld a,[wMapViewVRAMPointer]
@@ -1549,7 +1522,7 @@ ScheduleEastColumnRedraw:: ; 0ed3 (0:0ed3)
 	ld [H_SCREENEDGEREDRAW],a
 	ret
 
-ScheduleColumnRedrawHelper:: ; 0ef2 (0:0ef2)
+ScheduleColumnRedrawHelper:: ; 0bf6 (0:0bf6)
 	ld de,wScreenEdgeTiles
 	ld c,$12
 .loop
@@ -1569,7 +1542,7 @@ ScheduleColumnRedrawHelper:: ; 0ef2 (0:0ef2)
 	jr nz,.loop
 	ret
 
-ScheduleWestColumnRedraw:: ; 0f08 (0:0f08)
+ScheduleWestColumnRedraw:: ; 0c0c (0:0c0c)
 	hlCoord 0, 0
 	call ScheduleColumnRedrawHelper
 	ld a,[wMapViewVRAMPointer]
@@ -1582,7 +1555,7 @@ ScheduleWestColumnRedraw:: ; 0f08 (0:0f08)
 
 ; function to write the tiles that make up a tile block to memory
 ; Input: c = tile block ID, hl = destination address
-DrawTileBlock:: ; 0f1d (0:0f1d)
+DrawTileBlock:: ; 0c21 (0:0c21)
 	push hl
 	ld a,[W_TILESETBLOCKSPTR] ; pointer to tiles
 	ld l,a
@@ -1623,24 +1596,31 @@ DrawTileBlock:: ; 0f1d (0:0f1d)
 	ret
 
 ; function to update joypad state and simulate button presses
-JoypadOverworld:: ; 0f4d (0:0f4d)
+JoypadOverworld:: ; 0c51 (0:0c51)
 	xor a
 	ld [wSpriteStateData1 + 3],a
 	ld [wSpriteStateData1 + 5],a
 	call RunMapScript
 	call Joypad
+	call ForceBikeDown
+	call AreInputsSimulated
+	ret
+	
+ForceBikeDown:: ; 0c65 (0:0c65)
 	ld a,[W_FLAGS_D733]
 	bit 3,a ; check if a trainer wants a challenge
-	jr nz,.notForcedDownwards
+	ret nz
 	ld a,[W_CURMAP]
 	cp a,ROUTE_17 ; Cycling Road
-	jr nz,.notForcedDownwards
+	ret nz
 	ld a,[hJoyHeld]
 	and a,D_DOWN | D_UP | D_LEFT | D_RIGHT | B_BUTTON | A_BUTTON
 	jr nz,.notForcedDownwards
 	ld a,D_DOWN
 	ld [hJoyHeld],a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
-.notForcedDownwards
+	ret
+	
+AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld a,[wd730]
 	bit 7,a
 	ret z
@@ -1650,24 +1630,15 @@ JoypadOverworld:: ; 0f4d (0:0f4d)
 	ld a,[wOverrideSimulatedJoypadStatesMask] ; bit mask for button presses that override simulated ones
 	and b
 	ret nz ; return if the simulated button presses are overridden
-	ld hl,wSimulatedJoypadStatesIndex
-	dec [hl]
-	ld a,[hl]
-	cp a,$ff
-	jr z,.doneSimulating ; if the end of the simulated button presses has been reached
-	ld hl,wSimulatedJoypadStatesEnd
-	add l
-	ld l,a
-	jr nc,.noCarry
-	inc h
-.noCarry
-	ld a,[hl]
+	call GetSimulatedInput
+	jr nc,.doneSimulating
 	ld [hJoyHeld],a ; store simulated button press in joypad state
 	and a
 	ret nz
 	ld [hJoyPressed],a
 	ld [hJoyReleased],a
 	ret
+	
 ; if done simulating button presses
 .doneSimulating
 	xor a
@@ -1683,6 +1654,26 @@ JoypadOverworld:: ; 0f4d (0:0f4d)
 	ld hl,wd730
 	res 7,[hl]
 	ret
+	
+GetSimulatedInput:: ; 0cb3 (0:0cb3)
+	ld hl,wSimulatedJoypadStatesIndex
+	dec [hl]
+	ld a,[hl]
+	cp a,$ff
+	jr z,.endofsimulatedinputs ; if the end of the simulated button presses has been reached
+	push de
+	ld e,a
+	ld d,$0
+	ld hl,wSimulatedJoypadStatesEnd
+	add hl,de
+	ld a,[hl]
+	pop de
+	scf
+	ret
+.endofsimulatedinputs
+	and a
+	ret
+
 
 ; function to check the tile ahead to determine if the character should get on land or keep surfing
 ; sets carry if there is a collision and clears carry otherwise
@@ -1693,7 +1684,7 @@ JoypadOverworld:: ; 0f4d (0:0f4d)
 ; so the old value of c is used. 2429 is always called before this function,
 ; and 2429 always sets c to 0xF0. There is no 0xF0 background tile, so it
 ; is considered impassable and it is detected as a collision.
-CollisionCheckOnWater:: ; 0fb7 (0:0fb7)
+CollisionCheckOnWater:: ; 0cca (0:0cca)
 	ld a,[wd730]
 	bit 7,a
 	jp nz,.noCollision ; return and clear carry if button presses are being simulated
@@ -1706,26 +1697,12 @@ CollisionCheckOnWater:: ; 0fb7 (0:0fb7)
 	call CheckForJumpingAndTilePairCollisions
 	jr c,.collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
+	callab IsNextTileShoreOrWater ; 3:6808
+	jr c,.noCollsion
 	ld a,[wTileInFrontOfPlayer] ; tile in front of player
-	cp a,$14 ; water tile
-	jr z,.noCollision ; keep surfing if it's a water tile
-	cp a,$32 ; either the left tile of the S.S. Anne boarding platform or the tile on eastern coastlines (depending on the current tileset)
-	jr z,.checkIfVermilionDockTileset
-	cp a,$48 ; tile on right on coast lines in Safari Zone
-	jr z,.noCollision ; keep surfing
-; check if the [land] tile in front of the player is passable
-.checkIfNextTileIsPassable
-	ld hl,W_TILESETCOLLISIONPTR ; pointer to list of passable tiles
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-.loop
-	ld a,[hli]
-	cp a,$ff
-	jr z,.collision
-	cp c
-	jr z,.stopSurfing ; stop surfing if the tile is passable
-	jr .loop
+	ld c,a
+	call IsTilePassable
+	jr nc,.stopSurfing
 .collision
 	ld a,[wc02a]
 	cp a,(SFX_02_5b - SFX_Headers_02) / 3 ; check if collision sound is already playing
@@ -1735,24 +1712,28 @@ CollisionCheckOnWater:: ; 0fb7 (0:0fb7)
 .setCarry
 	scf
 	jr .done
-.noCollision
-	and a
-.done
-	ret
-.stopSurfing
-	xor a
-	ld [wWalkBikeSurfState],a
-	call LoadPlayerSpriteGraphics
-	call PlayDefaultMusic
-	jr .noCollision
 .checkIfVermilionDockTileset
 	ld a, [W_CURMAPTILESET] ; tileset
 	cp SHIP_PORT ; Vermilion Dock tileset
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
+.stopSurfing ; based game freak
+	ld a,$3
+	ld [wd431],a
+	ld hl,wd430
+	set 5,[hl]
+	xor a
+	ld [wWalkBikeSurfState],a
+	call LoadPlayerSpriteGraphics
+	call PlayDefaultMusic
+	jr .noCollision
+.noCollision ; ...and they do the same mistake twice
+	and a
+.done 
+	ret
 
 ; function to run the current map's script
-RunMapScript:: ; 101b (0:101b)
+RunMapScript:: ; 0d2c (0:0d2c)
 	push hl
 	push de
 	push bc
@@ -1778,24 +1759,43 @@ RunMapScript:: ; 101b (0:101b)
 .return
 	ret
 
-LoadWalkingPlayerSpriteGraphics:: ; 104d (0:104d)
+Func_0d5e:: ; 0d5e (0:0d5e)
+; new sprite copy stuff
+	xor a
+	ld [wd473],a
+	ld b,BANK(RedSprite)
 	ld de,RedSprite ; $4180
-	ld hl,vNPCSprites
 	jr LoadPlayerSpriteGraphicsCommon
-
-LoadSurfingPlayerSpriteGraphics:: ; 1055 (0:1055)
+	
+Func_0d69:: ; 0d69 (0:0d69)
+	ld a,[wd473]
+	and a
+	jr z,.asm_0d75
+	dec a
+	jr z,.asm_0d83
+	dec a
+	jr z,.asm_0d7c
+.asm_0d75
+	ld a,[wd472]
+	bit 6,a
+	jr z,LoadSurfingPlayerSpriteGraphics
+.asm_0d7c
+	ld b,BANK(Pointer_fedef)
+	ld de,Pointer_fedef ; 3f:6def
+	jr LoadPlayerSpriteGraphicsCommon
+	
+LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)
+	ld b,BANK(RedSprite) ; not sure, but probably same bank (5)
 	ld de,SeelSprite
-	ld hl,vNPCSprites
 	jr LoadPlayerSpriteGraphicsCommon
 
-LoadBikePlayerSpriteGraphics:: ; 105d (0:105d)
+LoadBikePlayerSpriteGraphics:: ; 0d8a (0:0d8a)
 	ld de,RedCyclingSprite
+LoadPlayerSpriteGraphicsCommon:: ; 0d8f (0:0d8f)
 	ld hl,vNPCSprites
-
-LoadPlayerSpriteGraphicsCommon:: ; 1063 (0:1063)
 	push de
 	push hl
-	ld bc,(BANK(RedSprite) << 8) + $0c
+	ld c, $c
 	call CopyVideoData
 	pop hl
 	pop de
@@ -1806,12 +1806,15 @@ LoadPlayerSpriteGraphicsCommon:: ; 1063 (0:1063)
 	inc d
 .noCarry
 	set 3,h
-	ld bc,$050c
+	ld c,$c
 	jp CopyVideoData
 
 ; function to load data from the map header
-LoadMapHeader:: ; 107c (0:107c)
+LoadMapHeader:: ; 0dab (0:0dab)
 	callba MarkTownVisitedAndLoadMissableObjects
+	jr .asm_0dbd
+	callba Func_f0a55 ; 3c:4a55
+.asm_0dbd
 	ld a,[W_CURMAPTILESET]
 	ld [wd119],a
 	ld a,[W_CURMAP]
@@ -1823,20 +1826,7 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld [$ff8b],a
 	bit 7,b
 	ret nz
-	ld hl,MapHeaderPointers
-	ld a,[W_CURMAP]
-	sla a
-	jr nc,.noCarry1
-	inc h
-.noCarry1
-	add l
-	ld l,a
-	jr nc,.noCarry2
-	inc h
-.noCarry2
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a ; hl = base of map header
+	call GetMapHeaderPointer
 ; copy the first 10 bytes (the fixed area) of the map data to D367-D370
 	ld de,W_CURMAPTILESET
 	ld c,$0a
@@ -1910,155 +1900,18 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld [wd4b0],a ; save the number of signs
 	and a ; are there any signs?
 	jr z,.loadSpriteData ; if not, skip this
-	ld c,a
-	ld de,wd4d1 ; base address of sign text IDs
-	ld a,d
-	ld [$ff95],a
-	ld a,e
-	ld [$ff96],a
-	ld de,wd4b1 ; base address of sign coordinates
-.signLoop
-	ld a,[hli]
-	ld [de],a
-	inc de
-	ld a,[hli]
-	ld [de],a
-	inc de
-	push de
-	ld a,[$ff95]
-	ld d,a
-	ld a,[$ff96]
-	ld e,a
-	ld a,[hli]
-	ld [de],a
-	inc de
-	ld a,d
-	ld [$ff95],a
-	ld a,e
-	ld [$ff96],a
-	pop de
-	dec c
-	jr nz,.signLoop
+	call CopySignData ; 0eb3 (0:0eb3)
 .loadSpriteData
 	ld a,[wd72e]
 	bit 5,a ; did a battle happen immediately before this?
 	jp nz,.finishUp ; if so, skip this because battles don't destroy this data
-	ld a,[hli]
-	ld [W_NUMSPRITES],a ; save the number of sprites
-	push hl
-; zero C110-C1FF and C210-C2FF
-	ld hl,wSpriteStateData1 + $10
-	ld de,wSpriteStateData2 + $10
-	xor a
-	ld b,$f0
-.zeroSpriteDataLoop
-	ld [hli],a
-	ld [de],a
-	inc e
-	dec b
-	jr nz,.zeroSpriteDataLoop
-; initialize all C100-C1FF sprite entries to disabled (other than player's)
-	ld hl,wSpriteStateData1 + $12
-	ld de,$0010
-	ld c,$0f
-.disableSpriteEntriesLoop
-	ld [hl],$ff
-	add hl,de
-	dec c
-	jr nz,.disableSpriteEntriesLoop
-	pop hl
-	ld de,wSpriteStateData1 + $10
-	ld a,[W_NUMSPRITES] ; number of sprites
-	and a ; are there any sprites?
-	jp z,.finishUp ; if there are no sprites, skip the rest
-	ld b,a
-	ld c,$00
-.loadSpriteLoop
-	ld a,[hli]
-	ld [de],a ; store picture ID at C1X0
-	inc d
-	ld a,$04
-	add e
-	ld e,a
-	ld a,[hli]
-	ld [de],a ; store Y position at C2X4
-	inc e
-	ld a,[hli]
-	ld [de],a ; store X position at C2X5
-	inc e
-	ld a,[hli]
-	ld [de],a ; store movement byte 1 at C2X6
-	ld a,[hli]
-	ld [$ff8d],a ; save movement byte 2
-	ld a,[hli]
-	ld [$ff8e],a ; save text ID and flags byte
-	push bc
-	push hl
-	ld b,$00
-	ld hl,W_MAPSPRITEDATA
-	add hl,bc
-	ld a,[$ff8d]
-	ld [hli],a ; store movement byte 2 in byte 0 of sprite entry
-	ld a,[$ff8e]
-	ld [hl],a ; this appears pointless, since the value is overwritten immediately after
-	ld a,[$ff8e]
-	ld [$ff8d],a
-	and a,$3f
-	ld [hl],a ; store text ID in byte 1 of sprite entry
-	pop hl
-	ld a,[$ff8d]
-	bit 6,a
-	jr nz,.trainerSprite
-	bit 7,a
-	jr nz,.itemBallSprite
-	jr .regularSprite
-.trainerSprite
-	ld a,[hli]
-	ld [$ff8d],a ; save trainer class
-	ld a,[hli]
-	ld [$ff8e],a ; save trainer number (within class)
-	push hl
-	ld hl,W_MAPSPRITEEXTRADATA
-	add hl,bc
-	ld a,[$ff8d]
-	ld [hli],a ; store trainer class in byte 0 of the entry
-	ld a,[$ff8e]
-	ld [hl],a ; store trainer number in byte 1 of the entry
-	pop hl
-	jr .nextSprite
-.itemBallSprite
-	ld a,[hli]
-	ld [$ff8d],a ; save item number
-	push hl
-	ld hl,W_MAPSPRITEEXTRADATA
-	add hl,bc
-	ld a,[$ff8d]
-	ld [hli],a ; store item number in byte 0 of the entry
-	xor a
-	ld [hl],a ; zero byte 1, since it is not used
-	pop hl
-	jr .nextSprite
-.regularSprite
-	push hl
-	ld hl,W_MAPSPRITEEXTRADATA
-	add hl,bc
-; zero both bytes, since regular sprites don't use this extra space
-	xor a
-	ld [hli],a
-	ld [hl],a
-	pop hl
-.nextSprite
-	pop bc
-	dec d
-	ld a,$0a
-	add e
-	ld e,a
-	inc c
-	inc c
-	dec b
-	jp nz,.loadSpriteLoop
+	call InitSprites
 .finishUp
 	predef LoadTilesetHeader
+	ld a,[wd72e]
+	bit 5,a ; did a battle happen immediately before this?
+	jr nz,.asm_0e73
+	callab Func_fc4fa ; 3f:44fa
 	callab LoadWildData
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a,[W_CURMAPHEIGHT] ; map height in 4x4 tile blocks
@@ -2072,10 +1925,8 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld b,$00
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a, BANK(MapSongBanks)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ld hl, MapSongBanks
+	switchbank MapSongBanks
+	ld hl, MapSongBanks ; 3f:4000
 	add hl,bc
 	add hl,bc
 	ld a,[hli]
@@ -2083,8 +1934,7 @@ LoadMapHeader:: ; 107c (0:107c)
 	ld a,[hl]
 	ld [wd35c],a ; music 2
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
 ; function to copy map connection data from ROM to WRAM
@@ -2099,47 +1949,37 @@ CopyMapConnectionHeader:: ; 1238 (0:1238)
 	jr nz,.loop
 	ret
 
+CopySignData:: ; 0eb3 (0:0eb3)
+	ld de,wd4b1 ; start of sign coords
+	ld bc,wd4d1 ; start of sign text ids
+	ld a,[wd4b0] ; number of signs
+.signcopyloop
+	push af
+	ld a,[hli]
+	ld [de],a ; copy y coord
+	inc de
+	ld a,[hli]
+	ld [de],a ; copy x coord
+	inc de
+	ld a,[hli]
+	ld [bc],a ; copy sign text id
+	inc bc
+	pop af
+	dec a
+	jr nz,.signcopyloop
+	ret
+	
 ; function to load map data
 LoadMapData:: ; 1241 (0:1241)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	call DisableLCD
-	ld a,$98
-	ld [wMapViewVRAMPointer + 1],a
-	xor a
-	ld [wMapViewVRAMPointer],a
-	ld [hSCY],a
-	ld [hSCX],a
-	ld [wWalkCounter],a
-	ld [wd119],a
-	ld [wWalkBikeSurfStateCopy],a
-	ld [W_SPRITESETID],a
+	call ResetMapVariables
 	call LoadTextBoxTilePatterns
 	call LoadMapHeader
-	callba InitMapSprites ; load tile pattern data for sprites
-	call LoadTileBlockMap
-	call LoadTilesetTilePatternData
-	call LoadCurrentMapView
-; copy current map view to VRAM
-	ld hl,wTileMap
-	ld de,vBGMap0
-	ld b,18
-.vramCopyLoop
-	ld c,20
-.vramCopyInnerLoop
-	ld a,[hli]
-	ld [de],a
-	inc e
-	dec c
-	jr nz,.vramCopyInnerLoop
-	ld a,32 - 20
-	add e
-	ld e,a
-	jr nc,.noCarry
-	inc d
-.noCarry
-	dec b
-	jr nz,.vramCopyLoop
+	call InitMapSprites ; load tile pattern data for sprites
+	call LoadScreenRelatedData
+	call CopyMapViewToVRAM
 	ld a,$01
 	ld [wUpdateSpritesEnabled],a
 	call EnableLCD
@@ -2160,28 +2000,116 @@ LoadMapData:: ; 1241 (0:1241)
 	ld [$2000],a
 	ret
 
+LoadScreenRelatedData:: ; 0f0c (0:0f0c)
+	call LoadTileBlockMap
+	call LoadTilesetTilePatternData
+	call LoadCurrentMapView
+	ret
+
+Func_0f16:: ; 0f16 (0:0f16)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	call DisableLCD
+	call ResetMapVariables
+	ld a,[W_CURMAP]
+	call SwitchToMapRomBank
+	call LoadScreenRelatedData
+	call CopyMapViewToVRAM
+	ld de,vBGMap1
+	call CopyMapViewToVRAM2
+	call EnableLCD
+	call ReloadMapSpriteTilePatterns
+	pop af
+	call BankswitchCommon
+	jr .asm_0f4d
+Func_0f3d:: ; 0f3d (0:0f3d)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	ld a,[W_CURMAP]
+	call SwitchToMapRomBank
+	call LoadTileBlockMap
+	pop af
+	call BankswitchCommon
+.asm_0f4d
+	ld hl, Func_f02da
+	ld b,BANK(Func_f02da) ; 3c:42da
+	jp Bankswitch
+	ret ; useless?
+	
+ResetMapVariables:: ; 0f56 (0:0f56)
+	ld a,$98
+	ld [wMapViewVRAMPointer + 1],a
+	xor a
+	ld [wMapViewVRAMPointer],a
+	ld [hSCY],a
+	ld [hSCX],a
+	ld [wWalkCounter],a
+	ld [wd119],a
+	ld [W_SPRITESETID],a
+	ld [wWalkBikeSurfStateCopy],a
+	ret
+
+CopyMapViewToVRAM:: ; 0f70 (0:0f70)
+; copy current map view to VRAM
+	ld de,vBGMap0
+CopyMapViewToVRAM2: ; 0f73 (0:0f73)
+	ld hl,wTileMap
+	ld b,18
+.vramCopyLoop
+	ld c,20
+.vramCopyInnerLoop
+	ld a,[hli]
+	ld [de],a
+	inc e
+	dec c
+	jr nz,.vramCopyInnerLoop
+	ld a,32 - 20 ; total vram map width in tiles - screen width in tiles
+	add e
+	ld e,a
+	jr nc,.noCarry
+	inc d
+.noCarry
+	dec b
+	jr nz,.vramCopyLoop
+	ret
+
 ; function to switch to the ROM bank that a map is stored in
 ; Input: a = map number
-SwitchToMapRomBank:: ; 12bc (0:12bc)
+SwitchToMapRomBank:: ; 0f8b (0:0f8b)
 	push hl
 	push bc
 	ld c,a
 	ld b,$00
-	ld a,Bank(MapHeaderBanks)
-	call BankswitchHome ; switch to ROM bank 3
+	ld a,BANK(MapHeaderBanks)
+	call BankswitchHome ; switch to ROM bank 3F
 	ld hl,MapHeaderBanks
 	add hl,bc
 	ld a,[hl]
 	ld [$ffe8],a ; save map ROM bank
-	call BankswitchBack
-	ld a,[$ffe8]
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a ; switch to map ROM bank
+	call BankswitchCommon
 	pop bc
 	pop hl
 	ret
 
-IgnoreInputForHalfSecond: ; 12da (0:12da)
+GetMapHeaderPointer:: ; 0fa7 (0:0fa7)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	switchbank Pointer_fc1f2 ; 3f:41f2
+	push de
+	ld a,[W_CURMAP]
+	ld e,a
+	ld d,$0
+	ld hl,Pointer_fc1f2
+	add hl,de
+	add hl,de
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a
+	pop de
+	pop af
+	jp BankswitchCommon
+
+IgnoreInputForHalfSecond: ; 0fc3 (0:0fc3)
 	ld a, 30
 	ld [wIgnoreInputCounter], a
 	ld hl, wd730
@@ -2190,17 +2118,17 @@ IgnoreInputForHalfSecond: ; 12da (0:12da)
 	ld [hl], a ; set ignore input bit
 	ret
 
-ResetUsingStrengthOutOfBattleBit: ; 12e7 (0:12e7)
+ResetUsingStrengthOutOfBattleBit: ; 0fd0 (0:0fd0)
 	ld hl, wd728
 	res 0, [hl]
 	ret
 
-ForceBikeOrSurf:: ; 12ed (0:12ed)
+ForceBikeOrSurf:: ; 0fd6 (0:0fd6)
 	ld b, BANK(RedSprite)
 	ld hl, LoadPlayerSpriteGraphics
 	call Bankswitch
 	jp PlayDefaultMusic ; update map/player state?
-
+	
 ; Handle the player jumping down
 ; a ledge in the overworld.	
 HandleMidJump:: ; 0fe1 (0:0fe1)
@@ -2223,3 +2151,143 @@ Func_0ffe:: ; 0ffe (0:0ffe)
 	ld hl, Func_fcf0c ; 3f:4f0c
 	ld b, BANK(Func_fcf0c)
 	jp Bankswitch
+
+InitSprites:: ; 1006 (0:1006)
+	ld a,[hli]
+	ld [W_NUMSPRITES],a ; save the number of sprites
+	push hl
+	push hl
+	push de
+	push bc
+	call ZeroSpriteStateData
+	call DisableRegularSprites
+	ld hl,W_MAPSPRITEDATA
+	ld bc,$20
+	xor a
+	call FillMemory
+	pop bc
+	pop de
+	pop hl
+	ld a,[W_NUMSPRITES]
+	and a ; are sprites existant?
+	ret z ; don't copy sprite data if not
+	ld b,a
+	ld c,$0
+	ld de,wSpriteStateData1 + $10
+; copy sprite stuff?
+.loadSpriteLoop
+	ld a,[hli]
+	ld [de],a ; store picture ID at C1X0
+	inc d
+	ld a,$04
+	add e
+	ld e,a
+	ld a,[hli]
+	ld [de],a ; store Y position at C2X4
+	inc e
+	ld a,[hli]
+	ld [de],a ; store X position at C2X5
+	inc e
+	ld a,[hli]
+	ld [de],a ; store movement byte 1 at C2X6
+	ld a,[hli]
+	ld [$ff8d],a ; save movement byte 2
+	ld a,[hli]
+	ld [$ff8e],a ; save text ID and flags byte
+	push bc
+	call LoadSprite
+	pop bc
+	dec d
+	ld a,e
+	add a,$a
+	ld e,a
+	inc c
+	inc c
+	dec b
+	jr nz,.loadSpriteLoop
+	ret
+
+ZeroSpriteStateData:: ; 1050 (0:1050)
+; zero C110-C1EF and C210-C2EF
+; C1F0-C1FF and C2F0-C2FF is probably used for Pikachu
+	ld hl,wSpriteStateData1 + $10
+	ld de,wSpriteStateData2 + $10
+	xor a
+	ld b,$e0
+.loop
+	ld [hli],a
+	ld [de],a
+	inc e
+	dec b
+	jr nz,.loop
+	ret
+	
+DisableRegularSprites:: ; 1060 (0:1060)
+; initialize all C100-C1FF sprite entries to disabled (other than player's and pikachu)
+	ld hl,wSpriteStateData1 + $12
+	ld de,$10
+	ld c,$e
+.loop
+	ld [hl],$ff
+	add hl,de
+	dec c
+	jr nz,.loop
+	ret
+	
+LoadSprite:: ; 106f (0:106f)
+	push hl
+	ld b,$0
+	ld hl,W_MAPSPRITEDATA
+	add hl,bc
+	ld a,[$ff8d]
+	ld [hli],a ; store movement byte 2 in byte 0 of sprite entry
+	ld a,[$ff8e]
+	ld [hl],a ; this appears pointless, since the value is overwritten immediately after
+	ld a,[$ff8e]
+	ld [$ff8d],a
+	and a,$3f
+	ld [hl],a ; store text ID in byte 1 of sprite entry
+	pop hl
+	ld a,[$ff8d]
+	bit 6,a
+	jr nz,.trainerSprite
+	bit 7,a
+	jr nz,.itemBallSprite
+; for regular sprites
+	push hl
+	ld hl,W_MAPSPRITEEXTRADATA
+	add hl,bc
+; zero both bytes, since regular sprites don't use this extra space
+	xor a
+	ld [hli],a
+	ld [hl],a
+	pop hl
+	ret
+	
+.trainerSprite
+	ld a,[hli]
+	ld [$ff8d],a ; save trainer class
+	ld a,[hli]
+	ld [$ff8e],a ; save trainer number (within class)
+	push hl
+	ld hl,W_MAPSPRITEEXTRADATA
+	add hl,bc
+	ld a,[$ff8d]
+	ld [hli],a ; store trainer class in byte 0 of the entry
+	ld a,[$ff8e]
+	ld [hl],a ; store trainer number in byte 1 of the entry
+	pop hl
+	ret
+	
+.itemBallSprite
+	ld a,[hli]
+	ld [$ff8d],a ; save item number
+	push hl
+	ld hl,W_MAPSPRITEEXTRADATA
+	add hl,bc
+	ld a,[$ff8d]
+	ld [hli],a ; store item number in byte 0 of the entry
+	xor a
+	ld [hl],a ; zero byte 1, since it is not used
+	pop hl
+	ret ; end of home/overworld.asm = 10b9 (0:10b9) 

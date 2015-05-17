@@ -1627,12 +1627,20 @@ wDestinationWarpID:: ; d42f
 ; if $ff, the player's coordinates are not updated when entering the map
 	ds 1
 
-	ds 4
+wd430:: ds 1 ; d430
+wd431:: ds 1 ; d431
+
+	ds 3
 
 wd435:: ds 1
 wd436:: ds 1
 
-	ds 122
+	ds 60
+	
+wd472:: ds 1
+wd473:: ds 1
+
+	ds 61
 
 wd4b0:: ds 1
 wd4b1:: ds 32

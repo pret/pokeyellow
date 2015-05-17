@@ -111,6 +111,9 @@ PlayMusic:: ; 23a1 (0:23a1)
 	ld [wc0f0], a
 	ld a, b
 
+StopAllMusic:: ; 2233 (0:2233)
+	ld a,$FF
+	ld [wc0ee],a
 ; plays music specified by a. If value is $ff, music is stopped
 PlaySound:: ; 23b1 (0:23b1)
 	push hl
