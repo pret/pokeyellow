@@ -176,3 +176,19 @@ Func_4bd1: ; 4bd1 (1:4bd1)
 	and $f0
 	ld [de], a  ; c1xb (x)
 	ret
+	
+_IsTilePassable:: ; 4aaa (1:4aaa)
+	ld hl,W_TILESETCOLLISIONPTR ; pointer to list of passable tiles
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a ; hl now points to passable tiles
+.loop
+	ld a,[hli]
+	cp a,$ff
+	jr z,.tileNotPassable
+	cp c
+	ret z
+	jr .loop
+.tileNotPassable
+	scf
+	ret
