@@ -2992,7 +2992,7 @@ GetTrainerName:: ; 359e (0:359e)
 	jp Bankswitch
 
 
-HasEnoughMoney::
+HasEnoughMoney:: ; 35c3 (0:35c3)
 ; Check if the player has at least as much
 ; money as the 3-byte BCD value at $ff9f.
 	ld de, wPlayerMoney
