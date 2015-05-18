@@ -737,8 +737,8 @@ HandleBlackOut:: ; 0762 (0:0762)
 	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
-	callsb ResetStatusAndHalveMoneyOnBlackout ; also Bank(SpecialWarpIn) and Bank(SpecialEnterMap)
-	callab Func_f0274 ; 3c:4274
+	switchbank SpecialWarpIn ; also Bank(SpecialEnterMap)
+	callab ResetStatusAndHalveMoneyOnBlackout ; 3c:4274
 	call SpecialWarpIn
 	call Func_2312
 	jp SpecialEnterMap
