@@ -1,4 +1,3 @@
-SECTION "bank3c",ROMX[$410c],BANK[$3c]
 _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld a,[wSpriteStateData1 + 3] ; delta Y
 	ld b,a
