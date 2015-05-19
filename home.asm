@@ -169,7 +169,7 @@ INCLUDE "data/map_header_pointers.asm"
 INCLUDE "home/overworld.asm"
 
 
-CheckForUserInterruption:: ; 12f8 (0:12f8)
+CheckForUserInterruption:: ; 10ba (0:10ba)
 ; Return carry if Up+Select+B, Start or A are pressed in c frames.
 ; Used only in the intro and title screen.
 	call DelayFrame
@@ -199,7 +199,7 @@ CheckForUserInterruption:: ; 12f8 (0:12f8)
 ; function to load position data for destination warp when switching maps
 ; INPUT:
 ; a = ID of destination warp within destination map
-LoadDestinationWarpPosition:: ; 1313 (0:1313)
+LoadDestinationWarpPosition:: ; 10d5 (0:10d5)
 	ld b,a
 	ld a,[H_LOADEDROMBANK]
 	push af
@@ -221,14 +221,14 @@ LoadDestinationWarpPosition:: ; 1313 (0:1313)
 	ret
 
 
-DrawHPBar:: ; 1336 (0:1336)
+DrawHPBar:: ; 10f8 (0:10f8)
 ; Draw an HP bar d tiles long, and fill it to e pixels.
 ; If c is nonzero, show at least a sliver regardless.
 ; The right end of the bar changes with [wHPBarType].
 
 	push hl
 	push de
-	push bc
+	;push bc
 
 	; Left
 	ld a, $71 ; "HP:"
@@ -284,7 +284,7 @@ DrawHPBar:: ; 1336 (0:1336)
 	add e
 	ld [hl], a
 .done
-	pop bc
+	;pop bc
 	pop de
 	pop hl
 	ret
@@ -303,13 +303,13 @@ DrawHPBar:: ; 1336 (0:1336)
 ; [wcf91] = pokemon ID
 ; wLoadedMon = base address of pokemon data
 ; W_MONHDEXNUM = base address of base stats
-LoadMonData:: ; 1372 (0:1372)
+LoadMonData:: ; 1132 (0:1132)
 	ld hl, LoadMonData_
-	ld b, BANK(LoadMonData_)
+	ld b, BANK(LoadMonData_) ; 1:442b
 	jp Bankswitch
 
 
-Func_137a:: ; 137a (0:137a)
+Func_137a:: ; 113a (0:113a)
 ; Write c to [wMoves + b]. Unused.
 	ld hl, wMoves
 	ld e, b
@@ -319,11 +319,11 @@ Func_137a:: ; 137a (0:137a)
 	ld [hl], a
 	ret
 
-LoadFlippedFrontSpriteByMonIndex:: ; 1384 (0:1384)
+LoadFlippedFrontSpriteByMonIndex:: ; 1144 (0:1144)
 	ld a, 1
 	ld [W_SPRITEFLIPPED], a
 
-LoadFrontSpriteByMonIndex:: ; 1389 (0:1389)
+LoadFrontSpriteByMonIndex:: ; 1149 (0:1149)
 	push hl
 	ld a, [wd11e]
 	push af
@@ -350,20 +350,56 @@ LoadFrontSpriteByMonIndex:: ; 1389 (0:1389)
 	pop hl
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, Bank(asm_3f0d0)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	ld a, BANK(Func_f6203)
+	call BankswitchCommon
 	xor a
 	ld [$ffe1], a
-	call asm_3f0d0
+	call Func_f6203
 	xor a
 	ld [W_SPRITEFLIPPED], a
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	jp BankswitchCommon
+
+Func_118b:: ; 118b (0:118b)
+	push bc
+	ld b,a
+	ld a,[wLowHealthAlarm]
+	push af
+	xor a
+	ld [wLowHealthAlarm],a
+	ld a,b
+	call Func_11a5
+	call PlaySound
+	call WaitForSoundToFinish
+	pop af
+	ld [wLowHealthAlarm],a
+	pop bc
 	ret
-
-
+	
+Func_11a5:: ; 11a5 (0:11a5)
+	dec a
+	ld c,a
+	ld b,$0
+	ld hl,Pointer_39462 ; e:5462
+	add hl,bc
+	add hl,bc
+	add hl,bc
+	ld a,BANK(Pointer_39462)
+	call BankswitchHome
+	ld a,[hli]
+	ld b,a
+	ld a,[hli]
+	ld [wc0f1],a
+	ld a,[hl]
+	ld [wc0f2],a
+	call BankswitchBack
+	ld a,b
+	ld c,$14
+	rlca
+	add b
+	add c
+	ret
+	
 PlayCry:: ; 13d0 (0:13d0)
 ; Play monster a's cry.
 	call GetCryData
