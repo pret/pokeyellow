@@ -2094,12 +2094,12 @@ SwitchToMapRomBank:: ; 0f8b (0:0f8b)
 GetMapHeaderPointer:: ; 0fa7 (0:0fa7)
 	ld a,[H_LOADEDROMBANK]
 	push af
-	switchbank Pointer_fc1f2 ; 3f:41f2
+	switchbank MapHeaderPointers ; 3f:41f2
 	push de
 	ld a,[W_CURMAP]
 	ld e,a
 	ld d,$0
-	ld hl,Pointer_fc1f2
+	ld hl,MapHeaderPointers
 	add hl,de
 	add hl,de
 	ld a,[hli]

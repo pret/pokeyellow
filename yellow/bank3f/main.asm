@@ -1,5 +1,7 @@
 ; asm to be added
 
+Func_fc4dd:: ; fc4dd (3f:44dd)
+
 Func_fc5fa:: ; fc5fa (3f:45fa)
 
 Func_fc65b:: ; fc65b (3f:465b)
