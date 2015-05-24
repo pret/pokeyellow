@@ -1453,7 +1453,7 @@ AdvancePlayerSprite:: ; 0b7f (0:0b7f)
 	push af
 	ld a,$FF
 	ld [wUpdateSpritesEnabled],a
-	ld hl, _AdvancePlayerSorite ; 3c:410c
+	ld hl, _AdvancePlayerSprite ; 3c:410c
 	ld b, BANK(_AdvancePlayerSprite)
 	call Bankswitch
 	pop af

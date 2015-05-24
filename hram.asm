@@ -159,6 +159,8 @@ hJoyInput EQU $FFF5
 
 ; bit 0: draw HP fraction to the right of bar instead of below (for party menu)
 ; bit 1: menu is double spaced
-hFlags_0xFFF6 EQU $FFF6
+hFlags_0xFFF6 EQU $FFFA
+
+hFlags_0xFFFA EQU $FFFA
 
 hGBC EQU $FFFE ; 0 if DMG, 1 if GBC

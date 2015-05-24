@@ -6669,16 +6669,6 @@ INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/items/tm_prices.asm"
 
-IF DEF(_OPTION_BEACH_HOUSE)
-SECTION "bank3C",ROMX[$4314],BANK[$3C]
-
-BeachHouse_GFX:
-	INCBIN "gfx/tilesets/beachhouse.2bpp"
-
-BeachHouse_Block:
-	INCBIN "gfx/blocksets/beachhouse.bst"
-ENDC
-
 SECTION "bank3d",ROMX,BANK[$3D]
 
 INCLUDE "engine/random.asm"
