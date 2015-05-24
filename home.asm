@@ -399,45 +399,8 @@ Func_11a5:: ; 11a5 (0:11a5)
 	add b
 	add c
 	ret
-	
-PlayCry:: ; 13d0 (0:13d0)
-; Play monster a's cry.
-	call GetCryData
-	call PlaySound
-	jp WaitForSoundToFinish
 
-GetCryData:: ; 13d9 (0:13d9)
-; Load cry data for monster a.
-	dec a
-	ld c, a
-	ld b, 0
-	ld hl, CryData
-	add hl, bc
-	add hl, bc
-	add hl, bc
-
-	ld a, Bank(CryData)
-	call BankswitchHome
-	ld a, [hli]
-	ld b, a ; cry id
-	ld a, [hli]
-	ld [wc0f1], a
-	ld a, [hl]
-	ld [wc0f2], a
-	call BankswitchBack
-
-	; Cry headers have 3 channels,
-	; and start from index $14,
-	; so add 3 times the cry id.
-	ld a, b
-	ld c, $14
-	rlca ; * 2
-	add b
-	add c
-	ret
-
-
-DisplayPartyMenu:: ; 13fc (0:13fc)
+DisplayPartyMenu:: ; 11c8 (0:11c8)
 	ld a,[hTilesetType]
 	push af
 	xor a
@@ -447,8 +410,8 @@ DisplayPartyMenu:: ; 13fc (0:13fc)
 	call PartyMenuInit
 	call DrawPartyMenu
 	jp HandlePartyMenuInput
-
-GoBackToPartyMenu:: ; 1411 (0:1411)
+	
+GoBackToPartyMenu:: ; 11dd (0:11dd)
 	ld a,[hTilesetType]
 	push af
 	xor a
@@ -457,7 +420,7 @@ GoBackToPartyMenu:: ; 1411 (0:1411)
 	call RedrawPartyMenu
 	jp HandlePartyMenuInput
 
-PartyMenuInit:: ; 1420 (0:1420)
+PartyMenuInit:: ; 11ec (0:11ec)
 	ld a, 1 ; hardcoded bank
 	call BankswitchHome
 	call LoadHpBarAndStatusTilePatterns
@@ -496,24 +459,35 @@ PartyMenuInit:: ; 1420 (0:1420)
 	ld [hl], a ; old menu item ID
 	ret
 
-HandlePartyMenuInput:: ; 145a (0:145a)
+HandlePartyMenuInput:: ; 1226 (0:1226)
 	ld a,1
 	ld [wMenuWrappingEnabled],a
 	ld a,$40
 	ld [wd09b],a
 	call HandleMenuInputPokemonSelection
-	call PlaceUnfilledArrowMenuCursor
-	ld b,a
-	xor a
+	push af ; save hJoy5 OR wMenuWrapping enabled, if no inputs were selected within a certain period of time
+	bit 1,a ; was B button pressed?
+	ld a,$0
 	ld [wd09b],a
 	ld a,[wCurrentMenuItem]
 	ld [wcc2b],a
+	jr nz,.asm_1258
+	ld a,[wCurrentMenuItem]
+	ld [wWhichPokemon],a
+	callab Func_fce18 ; 3f:4e18
+	jr nc,.asm_1258
+	call Func_154a
+	jr nz,.asm_128f
+.asm_1258
+	pop af
+	call PlaceUnfilledArrowMenuCursor
+	ld b,a	
 	ld hl,wd730
 	res 6,[hl] ; turn on letter printing delay
 	ld a,[wMenuItemToSwap]
 	and a
 	jp nz,.swappingPokemon
-	pop af
+	pop af ; double pop af?
 	ld [hTilesetType],a
 	bit 1,b
 	jr nz,.noPokemonChosen
@@ -532,6 +506,14 @@ HandlePartyMenuInput:: ; 145a (0:145a)
 	call BankswitchBack
 	and a
 	ret
+.asm_128f
+	pop af
+	ld hl,PartyMenuText_12cc
+	call PrintText
+	xor a
+	ld [wMenuItemToSwap],a
+	pop af
+	ld [hTilesetType],a
 .noPokemonChosen
 	call BankswitchBack
 	scf
@@ -540,28 +522,68 @@ HandlePartyMenuInput:: ; 145a (0:145a)
 	bit 1,b ; was the B button pressed?
 	jr z,.handleSwap ; if not, handle swapping the pokemon
 .cancelSwap ; if the B button was pressed
-	callba ErasePartyMenuCursors
+	callba ErasePartyMenuCursors ; 4:5e98
 	xor a
 	ld [wMenuItemToSwap],a
 	ld [wd07d],a
 	call RedrawPartyMenu
-	jr HandlePartyMenuInput
+	jp HandlePartyMenuInput
 .handleSwap
 	ld a,[wCurrentMenuItem]
 	ld [wWhichPokemon],a
-	callba SwitchPartyMon
-	jr HandlePartyMenuInput
+	callba SwitchPartyMon ; 4:61c5
+	jp HandlePartyMenuInput
 
+PartyMenuText_12cc:: ; 12cc (0:12cc)
+	TX_FAR _PartyMenuText_12cc ; 28:411b
+	db "@"
+	
 DrawPartyMenu:: ; 14d4 (0:14d4)
-	ld hl, DrawPartyMenu_
+	ld hl, DrawPartyMenu_ ; 4:5875
 	jr DrawPartyMenuCommon
 
 RedrawPartyMenu:: ; 14d9 (0:14d9)
-	ld hl, RedrawPartyMenu_
+	ld hl, RedrawPartyMenu_ ; 4:5886 
 
 DrawPartyMenuCommon:: ; 14dc (0:14dc)
 	ld b, BANK(RedrawPartyMenu_)
 	jp Bankswitch
+	
+PlayCry:: ; 13d0 (0:13d0)
+; Play monster a's cry.
+	call GetCryData
+	call PlaySound
+	jp WaitForSoundToFinish
+
+GetCryData:: ; 13d9 (0:13d9)
+; Load cry data for monster a.
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, CryData
+	add hl, bc
+	add hl, bc
+	add hl, bc
+
+	ld a, Bank(CryData)
+	call BankswitchHome
+	ld a, [hli]
+	ld b, a ; cry id
+	ld a, [hli]
+	ld [wc0f1], a
+	ld a, [hl]
+	ld [wc0f2], a
+	call BankswitchBack
+
+	; Cry headers have 3 channels,
+	; and start from index $14,
+	; so add 3 times the cry id.
+	ld a, b
+	ld c, $14
+	rlca ; * 2
+	add b
+	add c
+	ret
 
 ; prints a pokemon's status condition
 ; INPUT:
@@ -1000,6 +1022,67 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld b, a
 	jp CopyVideoData
 
+Func_1510:: ; 1510 (0:1510)
+	push hl
+	ld hl,wd430
+	set 7,[hl]
+	ld hl,wSpriteStateData1 + $f2 ; pikachu data?
+	ld [hl],$ff
+	pop hl
+	ret
+
+Func_151d:: ; 151d (0:151d)
+	push hl
+	ld hl,wd430
+	res 7,[hl]
+	pop hl
+	ret
+
+Func_1525:: ; 1525 (0:1525)
+	push hl
+	ld hl,wd430
+	res 3,[hl]
+	pop hl
+	ret
+	
+Func_152d:: ; 152d (0:152d)
+	push hl
+	ld hl,wd430
+	set 3,[hl]
+	ld hl,wSpriteStateData1 + $f2 ; pikachu data?
+	ld [hl],$ff
+	pop hl
+	ret
+	
+Func_153a:: ; 153a (0:153a)
+	push hl
+	ld hl,wd430
+	set 1,[hl]
+	pop hl
+	ret
+
+Func_1542:: ; 1542 (0:1542)
+	push hl
+	ld hl,wd430
+	res 1,[hl]
+	pop hl
+	ret
+	
+Func_154a:: ; 154a (0:154a)
+	push hl
+	ld hl,wd430
+	bit 1,[hl]
+	pop hl
+	ret
+	
+Func_1552:: ; 1552 (0:1552)
+	ld a,[hl]
+	dec a
+	swap a
+	ld [$ff93],a
+	homecall Func_fc6d5 ; 3f:46d5
+	ret
+	
 
 INCLUDE "data/collision.asm"
 
@@ -4040,6 +4123,8 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 	ld [wcc4b],a
 	ld a,[hJoy5]
 	ld b,a
+	bit 0,a ; pressed A key?
+	jr z,.checkOtherKeys
 	bit 6,a ; pressed Up key?
 	jr z,.checkIfDownPressed
 .upPressed
@@ -4106,7 +4191,7 @@ HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
 	jr z,.checkOtherKeys
 	jr .checkIfAButtonOrBButtonPressed
 
-PlaceMenuCursor:: ; 3b7c (0:3b7c)
+PlaceMenuCursor:: ; 3b6d (0:3b6d)
 	ld a,[wTopMenuItemY]
 	and a ; is the y coordinate 0?
 	jr z,.adjustForXCoord
@@ -4125,15 +4210,13 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	ld a,[wLastMenuItem]
 	and a ; was the previous menu id 0?
 	jr z,.checkForArrow1
+	ld bc,40
 	push af
-	ld a,[hFlags_0xFFF6]
+	ld a,[hFlags_0xFFFA]
 	bit 1,a ; is the menu double spaced?
 	jr z,.doubleSpaced1
 	ld bc,20
-	jr .getOldMenuItemScreenPosition
 .doubleSpaced1
-	ld bc,40
-.getOldMenuItemScreenPosition
 	pop af
 .oldMenuItemLoop
 	add hl,bc
@@ -4151,15 +4234,13 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 	ld a,[wCurrentMenuItem]
 	and a
 	jr z,.checkForArrow2
+	ld bc,40
 	push af
-	ld a,[hFlags_0xFFF6]
+	ld a,[hFlags_0xFFFA]
 	bit 1,a ; is the menu double spaced?
 	jr z,.doubleSpaced2
 	ld bc,20
-	jr .getCurrentMenuItemScreenPosition
 .doubleSpaced2
-	ld bc,40
-.getCurrentMenuItemScreenPosition
 	pop af
 .currentMenuItemLoop
 	add hl,bc
@@ -4185,7 +4266,7 @@ PlaceMenuCursor:: ; 3b7c (0:3b7c)
 ; manipulated. In the case of submenus, this is used to show the location of
 ; the menu cursor in the parent menu. In the case of swapping items in list,
 ; this is used to mark the item that was first chosen to be swapped.
-PlaceUnfilledArrowMenuCursor:: ; 3bec (0:3bec)
+PlaceUnfilledArrowMenuCursor:: ; 3bd9 (0:3bd9)
 	ld b,a
 	ld a,[wMenuCursorLocation]
 	ld l,a
@@ -4196,7 +4277,7 @@ PlaceUnfilledArrowMenuCursor:: ; 3bec (0:3bec)
 	ret
 
 ; Replaces the menu cursor with a blank space.
-EraseMenuCursor:: ; 3bf9 (0:3bf9)
+EraseMenuCursor:: ; 3be6 (0:3be6)
 	ld a,[wMenuCursorLocation]
 	ld l,a
 	ld a,[wMenuCursorLocation + 1]
