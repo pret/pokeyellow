@@ -74,8 +74,18 @@ Func_f02da:: ; f02da (3c:42da)
 Pointer_f02fa:: ; f02fa (3c:42fa)
 	db $cf,$d0,$d1,$d2,$d3,$d4
 	db $d5,$e9,$ea,$eb,$d6,$d7
-	; a lot more raw data here that I have no idea what it might mean
+	db $d8,$a5,$a6,$87,$c7,$ca
+	db $c6,$6c,$c2,$71,$f5,$f6
+	db $f7,$ff
 
+SECTION "bank3C",ROMX[$4314],BANK[$3C]
+
+BeachHouse_GFX:: ; f0314 (3c:4314)
+	INCBIN "gfx/tilesets/beachhouse.2bpp"
+
+BeachHouse_Block::
+	INCBIN "gfx/blocksets/beachhouse.bst"
+	
 SECTION "bank3c",ROMX[$4a55],BANK[$3c]
 Func_f0a55:: ; f0a55 (3c:4a55)
 	ld hl,Pointer_f0a76 ; 3c:4a76
