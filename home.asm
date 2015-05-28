@@ -360,7 +360,8 @@ LoadFrontSpriteByMonIndex:: ; 1149 (0:1149)
 	pop af
 	jp BankswitchCommon
 
-Func_118b:: ; 118b (0:118b)
+PlayCry:: ; 118b (0:118b)
+; Play monster a's cry.
 	push bc
 	ld b,a
 	ld a,[wLowHealthAlarm]
@@ -375,27 +376,33 @@ Func_118b:: ; 118b (0:118b)
 	ld [wLowHealthAlarm],a
 	pop bc
 	ret
-	
-Func_11a5:: ; 11a5 (0:11a5)
+
+GetCryData:: ; 11a5 (0:11a5)
+; Load cry data for monster a.
 	dec a
-	ld c,a
-	ld b,$0
-	ld hl,Pointer_39462 ; e:5462
-	add hl,bc
-	add hl,bc
-	add hl,bc
-	ld a,BANK(Pointer_39462)
+	ld c, a
+	ld b, 0
+	ld hl, CryData
+	add hl, bc
+	add hl, bc
+	add hl, bc
+
+	ld a, Bank(CryData)
 	call BankswitchHome
-	ld a,[hli]
-	ld b,a
-	ld a,[hli]
-	ld [wc0f1],a
-	ld a,[hl]
-	ld [wc0f2],a
+	ld a, [hli]
+	ld b, a ; cry id
+	ld a, [hli]
+	ld [wc0f1], a
+	ld a, [hl]
+	ld [wc0f2], a
 	call BankswitchBack
-	ld a,b
-	ld c,$14
-	rlca
+
+	; Cry headers have 3 channels,
+	; and start from index $14,
+	; so add 3 times the cry id.
+	ld a, b
+	ld c, $14
+	rlca ; * 2
 	add b
 	add c
 	ret
@@ -538,58 +545,22 @@ PartyMenuText_12cc:: ; 12cc (0:12cc)
 	TX_FAR _PartyMenuText_12cc ; 28:411b
 	db "@"
 	
-DrawPartyMenu:: ; 14d4 (0:14d4)
+DrawPartyMenu:: ; 12d1 (0:12d1)
 	ld hl, DrawPartyMenu_ ; 4:5875
 	jr DrawPartyMenuCommon
 
-RedrawPartyMenu:: ; 14d9 (0:14d9)
+RedrawPartyMenu:: ; 12d6 (0:12d6)
 	ld hl, RedrawPartyMenu_ ; 4:5886 
 
-DrawPartyMenuCommon:: ; 14dc (0:14dc)
+DrawPartyMenuCommon:: ; 12d9 (0:12d9)
 	ld b, BANK(RedrawPartyMenu_)
 	jp Bankswitch
-	
-PlayCry:: ; 13d0 (0:13d0)
-; Play monster a's cry.
-	call GetCryData
-	call PlaySound
-	jp WaitForSoundToFinish
-
-GetCryData:: ; 13d9 (0:13d9)
-; Load cry data for monster a.
-	dec a
-	ld c, a
-	ld b, 0
-	ld hl, CryData
-	add hl, bc
-	add hl, bc
-	add hl, bc
-
-	ld a, Bank(CryData)
-	call BankswitchHome
-	ld a, [hli]
-	ld b, a ; cry id
-	ld a, [hli]
-	ld [wc0f1], a
-	ld a, [hl]
-	ld [wc0f2], a
-	call BankswitchBack
-
-	; Cry headers have 3 channels,
-	; and start from index $14,
-	; so add 3 times the cry id.
-	ld a, b
-	ld c, $14
-	rlca ; * 2
-	add b
-	add c
-	ret
 
 ; prints a pokemon's status condition
 ; INPUT:
 ; de = address of status condition
 ; hl = destination address
-PrintStatusCondition:: ; 14e1 (0:14e1)
+PrintStatusCondition:: ; 12de (0:12de)
 	push de
 	dec de
 	dec de ; de = address of current HP
@@ -608,24 +579,14 @@ PrintStatusCondition:: ; 14e1 (0:14e1)
 	ld [hl],"T"
 	and a
 	ret
-PrintStatusConditionNotFainted ; 14f6
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,BANK(PrintStatusAilment)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call PrintStatusAilment ; print status condition
-	pop bc
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ret
+PrintStatusConditionNotFainted: ; 12f3 (0:12f3)
+	homecall_jump_sf PrintStatusAilment
 
 ; function to print pokemon level, leaving off the ":L" if the level is at least 100
 ; INPUT:
 ; hl = destination address
 ; [wLoadedMonLevel] = level
-PrintLevel:: ; 150b (0:150b)
+PrintLevel:: ; 1303 (0:1303)
 	ld a,$6e ; ":L" tile ID
 	ld [hli],a
 	ld c,2 ; number of digits
@@ -641,19 +602,19 @@ PrintLevel:: ; 150b (0:150b)
 ; INPUT:
 ; hl = destination address
 ; [wLoadedMonLevel] = level
-PrintLevelFull:: ; 151b (0:151b)
+PrintLevelFull:: ; 1313 (0:1313)
 	ld a,$6e ; ":L" tile ID
 	ld [hli],a
 	ld c,3 ; number of digits
 	ld a,[wLoadedMonLevel] ; level
 
-PrintLevelCommon:: ; 1523 (0:1523)
+PrintLevelCommon:: ; 131b (0:131b)
 	ld [wd11e],a
 	ld de,wd11e
 	ld b,$41 ; no leading zeroes, left-aligned, one byte
 	jp PrintNumber
 
-Func_152e:: ; 152e (0:152e)
+Func_1326:: ; 1326 (0:132)
 ; Unused.
 	ld hl,wMoves
 	ld c,a
@@ -665,12 +626,10 @@ Func_152e:: ; 152e (0:152e)
 ; copies the base stat data of a pokemon to W_MONHDEXNUM (W_MONHEADER)
 ; INPUT:
 ; [wd0b5] = pokemon ID
-GetMonHeader:: ; 1537 (0:1537)
+GetMonHeader:: ; 132f (0:132f)
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,BANK(BaseStats)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	switchbank BaseStats
 	push bc
 	push de
 	push hl
@@ -689,8 +648,8 @@ GetMonHeader:: ; 1537 (0:1537)
 	ld b,$77 ; size of Aerodactyl fossil sprite
 	cp a,FOSSIL_AERODACTYL ; Aerodactyl fossil
 	jr z,.specialID
-	cp a,MEW
-	jr z,.mew
+	;cp a,MEW 
+	;jr z,.mew
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a,[wd11e]
 	dec a
@@ -708,13 +667,6 @@ GetMonHeader:: ; 1537 (0:1537)
 	ld [hl],e ; write front sprite pointer
 	inc hl
 	ld [hl],d
-	jr .done
-.mew
-	ld hl,MewBaseStats
-	ld de,W_MONHEADER
-	ld bc,28
-	ld a,BANK(MewBaseStats)
-	call FarCopyData
 .done
 	ld a,[wd0b5]
 	ld [W_MONHDEXNUM],a
@@ -724,17 +676,16 @@ GetMonHeader:: ; 1537 (0:1537)
 	pop de
 	pop bc
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
 ; copy party pokemon's name to wcd6d
-GetPartyMonName2:: ; 15b4 (0:15b4)
+GetPartyMonName2:: ; 1394 (0:1394)
 	ld a,[wWhichPokemon] ; index within party
 	ld hl,wPartyMonNicks
 
 ; this is called more often
-GetPartyMonName:: ; 15ba (0:15ba)
+GetPartyMonName:: ; 139a (0:139a)
 	push hl
 	push bc
 	call SkipFixedLengthTextEntries ; add 11 to hl, a times
@@ -760,7 +711,7 @@ GetPartyMonName:: ; 15ba (0:15ba)
 ; bits 0-4: length of BCD number in bytes
 ; Note that bits 5 and 7 are modified during execution. The above reflects
 ; their meaning at the beginning of the functions's execution.
-PrintBCDNumber:: ; 15cd (0:15cd)
+PrintBCDNumber:: ; 13ad (0:13ad)
 	ld b,c ; save flags in b
 	res 7,c
 	res 6,c
@@ -798,7 +749,7 @@ PrintBCDNumber:: ; 15cd (0:15cd)
 .done
 	ret
 
-PrintBCDDigit:: ; 1604 (0:1604)
+PrintBCDDigit:: ; 13e4 (0:13e4)
 	and $f
 	and a
 	jr z,.zeroDigit
@@ -828,7 +779,7 @@ PrintBCDDigit:: ; 1604 (0:1604)
 ; uncompresses the front or back sprite of the specified mon
 ; assumes the corresponding mon header is already loaded
 ; hl contains offset to sprite pointer ($b for front or $d for back)
-UncompressMonSprite:: ; 1627 (0:1627)
+UncompressMonSprite:: ; 1407 (0:1407)
 	ld bc,W_MONHEADER
 	add hl,bc
 	ld a,[hli]
