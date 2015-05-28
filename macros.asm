@@ -35,6 +35,16 @@ homecall_jump: MACRO
 	jp BankswitchCommon
 	ENDM
 
+homecall_jump_sf: MACRO
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, BANK(\1)
+	call BankswitchCommon
+	call \1
+	pop bc
+	jp BankswitchCommon
+	ENDM
+	
 homecall: MACRO
 	ld a, [H_LOADEDROMBANK]
 	push af
