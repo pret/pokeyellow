@@ -6669,6 +6669,16 @@ INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/items/tm_prices.asm"
 
+SECTION "bank3c",ROMX,BANK[$3C]
+
+INCLUDE "yellow/bank3c/main.asm"
+
 SECTION "bank3d",ROMX,BANK[$3D]
 
-INCLUDE "engine/random.asm"
+INCLUDE "yellow/bank3d/random.asm"
+
+SECTION "bank3e",ROMX,BANK[$3E]
+
+SECTION "bank3f",ROMX,BANK[$3F]
+
+INCLUDE "yellow/bank3f/main.asm"
