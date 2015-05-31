@@ -78,15 +78,12 @@ Pointer_f02fa:: ; f02fa (3c:42fa)
 	db $c6,$6c,$c2,$71,$f5,$f6
 	db $f7,$ff
 
-SECTION "bank3C",ROMX[$4314],BANK[$3C]
-
 BeachHouse_GFX:: ; f0314 (3c:4314)
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
 
-BeachHouse_Block::
+BeachHouse_Block:: ; f0914 (3c:4914)
 	INCBIN "gfx/blocksets/beachhouse.bst"
-	
-SECTION "bank3c",ROMX[$4a55],BANK[$3c]
+
 Func_f0a55:: ; f0a55 (3c:4a55)
 	ld hl,Pointer_f0a76 ; 3c:4a76
 .loop
