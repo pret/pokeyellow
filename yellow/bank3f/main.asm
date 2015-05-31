@@ -1,5 +1,3 @@
-SECTION "bank3f",ROMX,BANK[$3f]
-
 INCLUDE "yellow/bank3f/data/map_songs.asm"
 INCLUDE "yellow/bank3f/data/map_header_pointers.asm"
 INCLUDE "yellow/bank3f/data/map_header_banks.asm"
@@ -136,12 +134,79 @@ Func_fc53f:: ; fc53f (3f:453f)
 	inc hl
 	ld [hl],d
 	inc hl
-	ld [hl],$ff
+Func_fc4b2:: ; fc4b2 (3f:44b2)
+	ld [hl],$fe
 	push hl
 	ld hl,wd472
 	set 5,[hl]
 	pop hl
 	ret
+	
+Func_fc5bc:: ; fc5bc (3f:45bc)
+	ld a,$49
+	ld [wSpriteStateData1 + $f0],a
+	ld a,$ff
+	ld [wSpriteStateData1 + $f2],a
+	ld a,[wd431]
+	and a
+	jr z,.asm_fc5e4
+	cp $1
+	jr z,.asm_fc5e4
+	cp $3
+	jr z,.asm_fc5eb
+	cp $4
+	jr z,.asm_fc5e4
+	cp $6
+	jr z,.asm_fc5e4
+	cp $7
+	jr z,.asm_fc5f1
+	call Func_fc4b2
+	ret
+	
+.asm_fc5e4
+	ld a,[wSpriteStateData1 + $9]
+	ld [wSpriteStateData1 + $f9],a
+	ret
+.asm_fc5eb
+	ld a,$0
+	ld [wSpriteStateData1 + $f9],a
+	ret
+.asm_fc5f1
+	ld a,[wSpriteStateData1 + $9]
+	xor $4
+	ld [wSpriteStateData1 + $f9],a
+	ret
+
+Func_fc5fa:: ; fc5fa (3f:45fa)
+	ld a,[W_CURMAP]
+	cp OAKS_LAB
+	jr z,.asm_fc63d
+	cp ROUTE_22_GATE
+	jr z,.asm_fc62d
+	cp MT_MOON_2
+	jr z,.asm_fc635
+	cp ROCK_TUNNEL_1
+	jr z,.asm_fc645
+	ld a,[W_CURMAP]
+	ld hl,Pointer_fc46b
+	call Func_1568 ; similar to IsInArray, but not the same
+	jr c,.asm_fc639
+	ld a,[W_CURMAP]
+	ld hl,Pointer_fc653
+	call Func_1568
+	jr nc,.asm_fc641
+	ld a,[wSpriteStateData1 + $9]
+	and a
+	jr nz,.asm_fc641
+	ld a,$3
+	jr .asm_fc647
+	
+.asm_fc62d
+	ld a,[wSpriteStateData1 + $9]
+	and a
+	jr z,.asm_fc645
+	jr .asm_fc641
+.asm_fc635
 	
 Func_fc65b:: ; fc65b (3f:465b)
 
