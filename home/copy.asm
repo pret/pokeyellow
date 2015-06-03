@@ -33,7 +33,7 @@ CopyData:: ; 00b1 (0:00b1)
 	jr nz, .copybytes
 	ret
 
-CopyVideoData:: ; note: fix other CopyVideoData function
+CopyVideoData:: ; 00c8 (0:00c8)
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?
 	jp nz, CopyVideoDataLCDEnabled ; if yes, then copy video data
