@@ -796,10 +796,10 @@ UncompressMonSprite:: ; 1407 (0:1407)
 ; $99 ≤ index,       bank $D
 	ld a,[wcf91] ; XXX name for this ram location
 	ld b,a
-	cp MEW
-	ld a,BANK(MewPicFront)
-	jr z,.GotBank
-	ld a,b
+	;cp MEW
+	;ld a,BANK(MewPicFront)
+	;jr z,.GotBank
+	;ld a,b
 	cp FOSSIL_KABUTOPS
 	ld a,BANK(FossilKabutopsPic)
 	jr z,.GotBank
@@ -821,10 +821,10 @@ UncompressMonSprite:: ; 1407 (0:1407)
 	jr c,.GotBank
 	ld a,BANK(VictreebelPicFront)
 .GotBank
-	jp UncompressSpriteData
+	jp UncompressSpriteData ; 23f8
 
 ; de: destination location
-LoadMonFrontSprite:: ; 1665 (0:1665)
+LoadMonFrontSprite:: ; 143e (0:143e)
 	push de
 	ld hl, W_MONHFRONTSPRITE - W_MONHEADER
 	call UncompressMonSprite
@@ -870,8 +870,8 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	add a
 	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
 	ld [H_SPRITEOFFSET], a
-	xor a
-	ld [$4000], a
+	ld a,$0
+	call SwitchSRAMBankAndLatchClockData
 	ld hl, S_SPRITEBUFFER0
 	call ZeroSpriteBuffer   ; zero buffer 0
 	ld de, S_SPRITEBUFFER1
@@ -882,12 +882,13 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	ld de, S_SPRITEBUFFER2
 	ld hl, S_SPRITEBUFFER1
 	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
+	call PrepareRTCDataAndDisableSRAM
 	pop de
-	jp InterlaceMergeSpriteBuffers
+	jp InterlaceMergeSpriteBuffers ; 14c7
 
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
-AlignSpriteDataCentered:: ; 16c2 (0:16c2)
+AlignSpriteDataCentered:: ; 149f (0:149f)
 	ld a, [H_SPRITEOFFSET]
 	ld b, $0
 	ld c, a
@@ -913,7 +914,7 @@ AlignSpriteDataCentered:: ; 16c2 (0:16c2)
 	ret
 
 ; fills the sprite buffer (pointed to in hl) with zeros
-ZeroSpriteBuffer:: ; 16df (0:16df)
+ZeroSpriteBuffer:: ; 14bc (0:14bc)
 	ld bc, SPRITEBUFFERSIZE
 .nextByteLoop
 	xor a
@@ -927,8 +928,8 @@ ZeroSpriteBuffer:: ; 16df (0:16df)
 ; combines the (7*7 tiles, 1bpp) sprite chunks in buffer 0 and 1 into a 2bpp sprite located in buffer 1 through 2
 ; in the resulting sprite, the rows of the two source sprites are interlaced
 ; de: output address
-InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
-	xor a
+InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
+	ld a,$0
 	ld [$4000], a
 	push de
 	ld hl, S_SPRITEBUFFER2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
@@ -971,7 +972,8 @@ InterlaceMergeSpriteBuffers:: ; 16ea (0:16ea)
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
-	jp CopyVideoData
+	call CopyVideoDataLCDEnabled
+	jp PrepareRTCDataAndDisableSRAM
 
 Func_1510:: ; 1510 (0:1510)
 	push hl
@@ -1033,8 +1035,51 @@ Func_1552:: ; 1552 (0:1552)
 	ld [$ff93],a
 	homecall Func_fc6d5 ; 3f:46d5
 	ret
-	
 
+Func_1568:: ; 1568 (0:1568)
+	ld b,$0
+	ld c,a
+.asm_156b
+	inc b
+	ld a,[hli]
+	cp $ff
+	jr z,.asm_1578
+	cp c
+	jr nz,.asm_156b
+	dec b
+	dec hl
+	scf
+	ret
+.asm_1578
+	dec b
+	dec hl
+	and a
+	ret
+	
+Func_157c:: ; 157c (0:157c)
+	push hl
+	push bc
+	ld a,[H_LOADEDROMBANK]
+	push af
+	ld a,[wd44a]
+	call BankswitchCommon
+	ld hl,wd44b
+	ld c,[hl]
+	inc hl
+	ld b,[hl]
+	ld a,[bc]
+	inc bc
+	ld [hl],b
+	dec hl
+	ld [hl],c
+	ld c,a
+	pop af
+	call BankswitchCommon
+	ld a,c
+	pop bc
+	pop hl
+	ret
+	
 INCLUDE "data/collision.asm"
 
 IsTilePassable:: ; 15c3 (0:15c3)
@@ -3117,6 +3162,24 @@ Bankswitch:: ; 3e84 (0:3e84)
 .jumptoaddress
 	jp [hl]
 
+SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
+	push af
+	ld a,$1
+	ld [$6000],a
+	ld a,SRAM_ENABLE
+	ld [$0],a
+	pop af
+	ld [$4000],a
+	ret
+	
+PrepareRTCDataAndDisableSRAM:: ; 3eac (0:3eac)
+	push af
+	ld a,$0
+	ld [$6000],a
+	ld [$0],a
+	pop af
+	ret
+	
 ; displays yes/no choice
 ; yes -> set carry
 YesNoChoice:: ; 35ec (0:35ec)
