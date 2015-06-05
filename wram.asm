@@ -1634,13 +1634,19 @@ wDestinationWarpID:: ; d42f
 wd430:: ds 1 ; d430
 wd431:: ds 1 ; d431
 
-	ds 3
+	ds 2
 
+wd434:: ds 1
 wd435:: ds 1
 wd436:: ds 1
 
-	ds 60
-	
+	ds 19
+
+wd44a:: ds 1
+wd44b:: ds 1
+
+	ds 39
+
 wd472:: ds 1
 wd473:: ds 1
 

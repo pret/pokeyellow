@@ -1,4 +1,4 @@
-SECTION "bank3d",ROMX[$67DC],BANK[$3D]
+SECTION "bank3d Random",ROMX[$67DC],BANK[$3D]
 
 Random_::
 ; Generate a random 16-bit value.

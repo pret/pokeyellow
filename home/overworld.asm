@@ -292,7 +292,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld c,$0a
 	call DelayFrames
 	jp EnterMap
-;.allPokemonFainted
+.allPokemonFainted
 ;	ld a,$ff
 ;	ld [W_ISINBATTLE],a
 ;	call RunMapScript
@@ -638,7 +638,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld [wCurrentTileBlockMapViewPointer + 1],a
 .loadNewMap ; 06ce (0:06ce)
 ; load the connected map that was entered
-	ld hl,[wd430]
+	ld hl,wd430
 	set 4,[hl]
 	ld a,$2
 	ld [wd431],a

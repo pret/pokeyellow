@@ -1,4 +1,4 @@
-INCLUDE "yellow/bank3c/overworld.asm"
+INCLUDE "engine/bank3c/overworld.asm"
 
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 ; Reset player status on blackout.

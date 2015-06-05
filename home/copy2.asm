@@ -14,11 +14,11 @@ FarCopyDataDouble:: ; 15d4 (0:15d4)
 	ld e,a
 	ld a,b
 	and a
-	jr z,.8bitcopyamount
+	jr z,.eightbitcopyamount
 	ld a,c
 	and a ; multiple of $100
 	jr z, .expandloop ; if so, do not increment b because the first instance of dec c results in underflow
-.8bitcopyamount
+.eightbitcopyamount
 	inc b
 .expandloop
 	ld a,[de]
@@ -134,13 +134,13 @@ FillMemory:: ; 166e (0:166e)
 	push af
 	ld a,b
 	and a
-	jr z, .8bitcopyamount
+	jr z, .eightbitcopyamount
 	ld a,c
 	and a
-	jr z, .mulitpleof$100
-.8bitcopyamount
+	jr z, .mulitpleof0x100
+.eightbitcopyamount
 	inc b
-.multipleof$100
+.mulitpleof0x100
 	pop af
 .loop
 	ld [hli],a

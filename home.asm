@@ -165,7 +165,7 @@ Joypad:: ; 01b9
 ReadJoypad:: ; 01c8 (0:01c8)
 	homecall_jump ReadJoypad_
 	
-INCLUDE "data/map_header_pointers.asm"
+;INCLUDE "data/map_header_pointers.asm"
 INCLUDE "home/overworld.asm"
 
 
