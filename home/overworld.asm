@@ -287,16 +287,11 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	callab AnyPartyAlive
 	ld a,d
 	and a
-	jr z,.allPokemonFainted
+	jr z,AllPokemonFainted
 .noFaintCheck
 	ld c,$0a
 	call DelayFrames
 	jp EnterMap
-;.allPokemonFainted
-;	ld a,$ff
-;	ld [W_ISINBATTLE],a
-;	call RunMapScript
-;	jp HandleBlackOut
 
 StepCountCheck:: ; 0457 (0:0457)
 	ld a,[wd730]
@@ -315,6 +310,12 @@ StepCountCheck:: ; 0457 (0:0457)
 	res 0,[hl] ; indicate that the player has stepped thrice since the last battle
 .doneStepCounting
 	ret
+
+AllPokemonFainted:: ; 0475 (0:0475)
+	ld a,$ff
+	ld [W_ISINBATTLE],a
+	call RunMapScript
+	jp HandleBlackOut
 
 ; function to determine if there will be a battle and execute it (either a trainer battle or wild battle)
 ; sets carry if a battle occurred and unsets carry if not
@@ -638,7 +639,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld [wCurrentTileBlockMapViewPointer + 1],a
 .loadNewMap ; 06ce (0:06ce)
 ; load the connected map that was entered
-	ld hl,[wd430]
+	ld hl,wd430
 	set 4,[hl]
 	ld a,$2
 	ld [wd431],a

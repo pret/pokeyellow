@@ -1,6 +1,6 @@
-INCLUDE "yellow/bank3f/data/map_songs.asm"
-INCLUDE "yellow/bank3f/data/map_header_pointers.asm"
-INCLUDE "yellow/bank3f/data/map_header_banks.asm"
+INCLUDE "engine/bank3f/data/map_songs.asm"
+INCLUDE "engine/bank3f/data/map_header_pointers.asm"
+INCLUDE "engine/bank3f/data/map_header_banks.asm"
 
 Func_fc4dd:: ; fc4dd (3f:44dd)
 ; possibly to test if pika should be out?
@@ -21,7 +21,7 @@ Func_fc4dd:: ; fc4dd (3f:44dd)
 	and a
 	ret
 	
-Func_fc5fa:: ; fc5fa (3f:44fa)
+Func_fc4fa:: ; fc4fa (3f:44fa)
 	ld hl,wd430
 	bit 4,[hl]
 	res 4,[hl]
@@ -188,7 +188,7 @@ Func_fc5fa:: ; fc5fa (3f:45fa)
 	cp ROCK_TUNNEL_1
 	jr z,.asm_fc645
 	ld a,[W_CURMAP]
-	ld hl,Pointer_fc64b
+	ld hl,Pointer_fc46b
 	call Func_1568 ; similar to IsInArray, but not the same
 	jr c,.asm_fc639
 	ld a,[W_CURMAP]
@@ -232,7 +232,7 @@ Pointer_fc653:: ; fc653 (3f:4653)
 
 Func_fc65b:: ; fc65b (3f:465b)
 	ld a,[W_CURMAP]
-
+	
 Func_fc69a:: ; fc69a (3f:469a)
 
 Func_fcc08:: ; fcc08 (3f:4c08)

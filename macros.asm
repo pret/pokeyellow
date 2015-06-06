@@ -75,6 +75,7 @@ callsb: MACRO
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
+	ENDM
 	
 callba: MACRO
 	ld b, BANK(\1)

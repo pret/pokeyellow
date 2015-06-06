@@ -13,4 +13,8 @@ GRASS    EQU $16
 ELECTRIC EQU $17
 PSYCHIC  EQU $18
 ICE      EQU $19
+<<<<<<< HEAD
 DRAGON   EQU $1A
+=======
+DRAGON   EQU $1A
+>>>>>>> d48ea223eaad84af95e4f29043c279b56aa4ae88

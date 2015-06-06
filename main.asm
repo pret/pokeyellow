@@ -19,57 +19,9 @@ SECTION "bank1",ROMX,BANK[$1]
 
 INCLUDE "data/facing.asm"
 
-ResetStatusAndHalveMoneyOnBlackout::
-; Reset player status on blackout.
-	xor a
-	ld [wBattleResult], a
-	ld [wWalkBikeSurfState], a
-	ld [W_ISINBATTLE], a
-	ld [wMapPalOffset], a
-	ld [wNPCMovementScriptFunctionNum], a
-	ld [hJoyHeld], a
-	ld [wNPCMovementScriptPointerTableNum], a
-	ld [wFlags_0xcd60], a
-
-	ld [$ff9f], a
-	ld [$ff9f + 1], a
-	ld [$ff9f + 2], a
-	call HasEnoughMoney
-	jr c, .lostmoney ; never happens
-
-	; Halve the player's money.
-	ld a, [wPlayerMoney]
-	ld [$ff9f], a
-	ld a, [wPlayerMoney + 1]
-	ld [$ff9f + 1], a
-	ld a, [wPlayerMoney + 2]
-	ld [$ff9f + 2], a
-	xor a
-	ld [$ffa2], a
-	ld [$ffa3], a
-	ld a, 2
-	ld [$ffa4], a
-	predef DivideBCDPredef3
-	ld a, [$ffa2]
-	ld [wPlayerMoney], a
-	ld a, [$ffa2 + 1]
-	ld [wPlayerMoney + 1], a
-	ld a, [$ffa2 + 2]
-	ld [wPlayerMoney + 2], a
-
-.lostmoney
-	ld hl, wd732
-	set 2, [hl]
-	res 3, [hl]
-	set 6, [hl]
-	ld a, %11111111
-	ld [wJoyIgnore], a
-	predef_jump HealParty
-
-
-MewPicFront:: INCBIN "pic/bmon/mew.pic"
-MewPicBack::  INCBIN "pic/monback/mewb.pic"
-INCLUDE "data/baseStats/mew.asm"
+;MewPicFront:: INCBIN "pic/bmon/mew.pic"
+;MewPicBack::  INCBIN "pic/monback/mewb.pic"
+;INCLUDE "data/baseStats/mew.asm"
 
 INCLUDE "engine/battle/safari_zone.asm"
 
@@ -2032,9 +1984,9 @@ SECTION "bank3",ROMX,BANK[$3]
 
 INCLUDE "engine/joypad.asm"
 
-INCLUDE "data/map_songs.asm"
+;INCLUDE "data/map_songs.asm"
 
-INCLUDE "data/map_header_banks.asm"
+;INCLUDE "data/map_header_banks.asm"
 
 ClearVariablesAfterLoadingMapData: ; c335 (3:4335)
 	ld a, $90
@@ -4858,8 +4810,6 @@ INCLUDE "data/mapHeaders/fuchsiacity.asm"
 INCLUDE "data/mapObjects/fuchsiacity.asm"
 FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-INCLUDE "engine/play_time.asm"
-
 INCLUDE "scripts/pallettown.asm"
 INCLUDE "scripts/viridiancity.asm"
 INCLUDE "scripts/pewtercity.asm"
@@ -6671,14 +6621,14 @@ INCLUDE "engine/items/tm_prices.asm"
 
 SECTION "bank3c",ROMX,BANK[$3C]
 
-INCLUDE "yellow/bank3c/main.asm"
+INCLUDE "engine/bank3c/main.asm"
 
 SECTION "bank3d",ROMX,BANK[$3D]
 
-INCLUDE "yellow/bank3d/random.asm"
+INCLUDE "engine/bank3d/random.asm"
 
 SECTION "bank3e",ROMX,BANK[$3E]
 
 SECTION "bank3f",ROMX,BANK[$3F]
 
-INCLUDE "yellow/bank3f/main.asm"
+INCLUDE "engine/bank3f/main.asm"
