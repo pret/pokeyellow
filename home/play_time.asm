@@ -1,7 +1,10 @@
-TrackPlayTime: ; 18dee (6:4dee)
+TrackPlayTime: ; 1ef5 (0:1ef5)
 	call CountDownIgnoreInputBitReset
-	ld a, [wd732]
-	bit 0, a
+	ld hl, wd47a
+	bit 0, [hl]
+	jr nz, .maxIGT
+	ld a,[wd732]
+	bit 0,a
 	ret z
 	ld a, [W_PLAYTIMEMINUTES]
 	and a
@@ -32,19 +35,26 @@ TrackPlayTime: ; 18dee (6:4dee)
 	ld [W_PLAYTIMEHOURS + 1], a
 	cp $ff
 	ret nz
+	ld hl, wd47a
+	set 0, [hl]
+.maxIGT
+	ld a, 59
+	ld [W_PLAYTIMEMINUTES + 1], a
+	ld [W_PLAYTIMESECONDS], a
 	ld a, $ff
+	ld [W_PLAYTIMEHOURS + 1], a
 	ld [W_PLAYTIMEMINUTES], a
 	ret
 
 CountDownIgnoreInputBitReset: ; 18e36 (6:4e36)
 	ld a, [wIgnoreInputCounter]
 	and a
-	jr nz, .asm_18e40
+	jr nz, .asm_1f5e
 	ld a, $ff
-	jr .asm_18e41
-.asm_18e40
+	jr .asm_1f5f
+.asm_1f5e
 	dec a
-.asm_18e41
+.asm_1f5f
 	ld [wIgnoreInputCounter], a
 	and a
 	ret nz
