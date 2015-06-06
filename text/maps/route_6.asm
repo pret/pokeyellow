@@ -1,4 +1,3 @@
-IF DEF(_YELLOW)
 _Route6BattleText1::
 	text "I'm doing this"
 	line "out of love."
@@ -32,34 +31,6 @@ _Route6AfterBattleText2::
 	cont "about calculated"
 	cont "numbers."
 	done
-ELSE
-_Route6BattleText1:: ; 8dc38 (23:5c38)
-	text "Who's there?"
-	line "Quit listening in"
-	cont "on us!"
-	done
-
-_Route6EndBattleText1:: ; 8dc5e (23:5c5e)
-	text "I"
-	line "just can't win!"
-	prompt
-
-_Route6AfterBattleText1:: ; 8dc70 (23:5c70)
-	text "Whisper..."
-	line "whisper..."
-	done
-
-_Route6BattleText2:: ; 8dc87 (23:5c87)
-	text "Excuse me! This"
-	line "is a private"
-	cont "conversation!"
-	done
-
-_Route6EndBattleText2:: ; 8dcb3 (23:5cb3)
-	text "Ugh!"
-	line "I hate losing!"
-	prompt
-ENDC
 
 _Route6BattleText3:: ; 8dcc8 (23:5cc8)
 	text "There aren't many"

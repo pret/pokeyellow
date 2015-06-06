@@ -1,9 +1,5 @@
 _PewterMartText_74cc6:: ; 985ac (26:45ac)
-IF DEF(_YELLOW)
 	text "A shady old man"
-ELSE
-	text "A shady, old man"
-ENDC
 	line "got me to buy"
 	cont "this really weird"
 	cont "fish #MON!"

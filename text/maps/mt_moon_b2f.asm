@@ -1,4 +1,3 @@
-IF DEF(_YELLOW)
 _MtMoonJessieJamesText1::
 	text "Stop right there!@@"
 
@@ -19,7 +18,6 @@ _MtMoonJessieJamesText4::
 	text "TEAM ROCKET, blast"
 	line "off at the speed"
 	cont "of light!@@"
-ENDC
 
 _MtMoon3Text_49f24:: ; 8095e (20:495e)
 	text "You want the"

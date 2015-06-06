@@ -41,7 +41,6 @@ _SilphCo10AfterBattleText2:: ; 84e66 (21:4e66)
 	cont "Then go on home!"
 	done
 
-IF DEF(_YELLOW)
 _SilphCoJessieJamesText1::
 	text "Hold it right"
 	line "there, brat!@@"
@@ -65,4 +64,3 @@ _SilphCoJessieJamesText4::
 	cont "of light!"
 
 	para "Again...@@"
-ENDC

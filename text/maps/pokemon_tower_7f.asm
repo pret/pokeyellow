@@ -1,4 +1,3 @@
-IF DEF(_YELLOW)
 _PokemonTowerJessieJamesText1::
 	text "Stop right there!@@"
 
@@ -22,7 +21,6 @@ _PokemonTowerJessieJamesText4::
 	text "Looks like TEAM"
 	line "ROCKET's blasting"
 	cont "off again!@@"
-ENDC
 
 _TowerRescueFujiText:: ; 99c1a (26:5c1a)
 	text "MR.FUJI: Heh? You"

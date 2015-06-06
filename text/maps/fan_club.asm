@@ -1,24 +1,15 @@
 PikachuFanText::
 	text "Won't you admire"
-IF DEF(_YELLOW)
 	line "my CLEFAIRY's"
-ELSE
-	line "my PIKACHU's"
-ENDC
 	cont "adorable tail?"
 	done
 
 PikachuFanBetterText::
-IF DEF(_YELLOW)
 	text "Humph! My CLEFAIRY"
-ELSE
-	text "Humph! My PIKACHU"
-ENDC
 	line "is twice as cute"
 	cont "as that one!"
 	done
 
-IF DEF(_YELLOW)
 PikachuFanPrintText::
 	text "Our CHAIRMAN's new"
 	line "hobby is taking"
@@ -28,7 +19,6 @@ PikachuFanPrintText::
 	line "PRINT of my cute"
 	cont "CLEFAIRY."
 	done
-ENDC
 
 SeelFanText::
 	text "I just love my"
@@ -45,22 +35,15 @@ SeelFanBetterText::
 	line "more attractive!"
 	done
 
-IF DEF(_YELLOW)
 SeelFanPrintText::
 	text "I'm going to hook"
 	line "up the cable to"
 	cont "get a photo PRINT"
 	cont "of my SEEL!"
 	done
-ENDC
 
 FanClubPikachuText::
-IF DEF(_YELLOW)
 	text "CLEFAIRY: Pippii!"
-ELSE
-	text "PIKACHU: Chu!"
-	line "Pikachu!"
-ENDC
 	done
 
 FanClubSeelText::
@@ -71,14 +54,9 @@ FanClubMeetChairText::
 	text "I chair the"
 	line "#MON Fan Club!"
 
-IF DEF(_YELLOW)
 	para "I have more than"
 	line "100 #MON. I"
 	cont "love them all!"
-ELSE
-	para "I have collected"
-	line "over 100 #MON!"
-ENDC
 
 	para "I'm very fussy"
 	line "when it comes to"
@@ -86,13 +64,8 @@ ENDC
 
 	para "So..."
 
-IF DEF(_YELLOW)
 	para "Did you come to"
 	line "hear me brag"
-ELSE
-	para "Did you come"
-	line "visit to hear"
-ENDC
 	cont "about my #MON?"
 	done
 
@@ -169,7 +142,6 @@ FanClubBagFullText::
 	line "this!"
 	done
 
-IF DEF(_YELLOW)
 FanClubChairPrintText1::
 	text "Hi there, ",$52,"!"
 	line "Have you seen my"
@@ -198,14 +170,9 @@ FanClubChairPrintText4::
 	text "Maybe we won't"
 	line "PRINT this now."
 	done
-ENDC
 
 _FanClubText6:: ; 9a948 (26:6948)
-IF DEF(_YELLOW)
 	text "Our CHAIRMAN is"
-ELSE
-	text "Our Chairman is"
-ENDC
 	line "very vocal about"
 	cont "#MON."
 	done

@@ -862,12 +862,4 @@ SLOTSMOUSE	EQU $1614
 INCLUDE "data/slot_machine_wheels.asm"
 
 SlotMachineTiles1: ; 37a51 (d:7a51)
-IF DEF(_RED)
-	INCBIN "gfx/red/slotmachine1.2bpp"
-ENDC
-IF DEF(_BLUE)
-	INCBIN "gfx/blue/slotmachine1.2bpp"
-ENDC
-IF DEF(_YELLOW)
-	INCBIN "gfx/yellow/slotmachine1.2bpp"
-ENDC
+	INCBIN "gfx/slotmachine1.2bpp"

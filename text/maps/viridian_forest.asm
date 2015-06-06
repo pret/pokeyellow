@@ -9,11 +9,7 @@ _ViridianForestText1:: ; 8031d (20:431d)
 _ViridianForestBattleText1:: ; 80359 (20:4359)
 	text "Hey! You have"
 	line "#MON! Come on!"
-IF DEF(_YELLOW)
 	cont "Let's battle 'em!"
-ELSE
-	cont "Let's battle'em!"
-ENDC
 	done
 
 _ViridianForestEndBattleText1:: ; 80387 (20:4387)
@@ -66,7 +62,6 @@ _ViridianFrstAfterBattleText3:: ; 80475 (20:4475)
 	cont "dropped!"
 	done
 
-if DEF(_YELLOW)
 _ViridianForestBattleTextPikaGirl::
 	text "Hi, do you have a"
 	line "PIKACHU?"
@@ -100,7 +95,6 @@ _ViridianForestAfterBattleTextSamurai::
 	cont "attack is its"
 	cont "defense!"
 	done
-ENDC
 
 _ViridianForestText8:: ; 804c7 (20:44c7)
 	text "I ran out of #"

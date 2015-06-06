@@ -1,4 +1,3 @@
-IF DEF(_YELLOW)
 _Route25DamianText1::
 	text "I'm not good at"
 	line "raising #MON."
@@ -26,7 +25,6 @@ _Route25DamianText4::
 	text "How's CHARMANDER"
 	line "doing?"
 	done
-ENDC
 
 _Route25BattleText1:: ; 9421e (25:421e)
 	text "Local trainers"
@@ -86,13 +84,8 @@ _Route25BattleText4:: ; 94369 (25:4369)
 	done
 
 _Route25EndBattleText4:: ; 94385 (25:4385)
-IF DEF(_YELLOW)
 	text "I'm in"
 	line "a slump!"
-ELSE
-	text "I was in"
-	line "bad condition!"
-ENDC
 	prompt
 
 _Route25AfterBattleText4:: ; 9439e (25:439e)

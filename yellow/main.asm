@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 INCLUDE "yellow.asm"
 INCLUDE "constants.asm"
 
@@ -1069,3 +1070,7 @@ INCLUDE "engine/bank3f/main.asm"
 ;	INCBIN "gfx/blocksets/beachhouse.bst"
 ;ENDC
 
+=======
+INCLUDE "charmap.asm"
+INCLUDE "main.asm"
+>>>>>>> e4bb6ce... Build only Yellow

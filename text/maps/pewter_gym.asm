@@ -2,9 +2,11 @@ _PewterGymText_5c49e::
 	text "I'm BROCK!"
 	line "I'm PEWTER's GYM"
 	cont "LEADER!"
+
 	para "I believe in rock"
 	line "hard defense and"
 	cont "determination!"
+
 	para "That's why my"
 	line "#MON are all"
 	cont "the rock-type!"
@@ -72,9 +74,11 @@ _TM34NoRoomText::
 	text "You don't have"
 	line "room for this!"
 	done
+
 _PewterGymText_5c4bc::
 	text "I took"
 	line "you for granted."
+
 	para "As proof of your"
 	line "victory, here's"
 	cont "the BOULDERBADGE!"
@@ -105,8 +109,10 @@ _PewterGymBattleText1::
 	line "years from facing"
 	cont "BROCK!"
 	done
+
 _PewterGymEndBattleText1::
 	text "Darn!"
+
 	para "Light years isn't"
 	line "time! It measures"
 	cont "distance!"
@@ -117,6 +123,7 @@ _PewterGymAfterBattleText1::
 	line "but not as hot"
 	cont "as BROCK!"
 	done
+
 _PewterGymText_5c515::
 	text "Hiya! I can tell"
 	line "you have what it"
@@ -126,9 +133,11 @@ _PewterGymText_5c515::
 	para "I'm no trainer,"
 	line "but I can tell"
 	cont "you how to win!"
+
 	para "Let me take you"
 	line "to the top!"
 	done
+
 _PewterGymText_5c51a::
 	text "All right! Let's"
 	line "get happening!"
@@ -161,9 +170,11 @@ _PewterGymText_5c529::
 _PewterGymGuyText::
 	text "All right! Let's"
 	line "get happening!"
+
 	para "It will be tough"
 	line "for your PIKACHU"
 	cont "at this GYM!"
+
 	para "Electric attacks"
 	line "are harmless to"
 	cont "BROCK's ground-"

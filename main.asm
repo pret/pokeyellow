@@ -4874,12 +4874,10 @@ INCLUDE "data/mapHeaders/billshouse.asm"
 INCLUDE "scripts/billshouse.asm"
 INCLUDE "data/mapObjects/billshouse.asm"
 BillsHouseBlocks: INCBIN "maps/billshouse.blk"
-IF DEF(_OPTION_BEACH_HOUSE)
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
 BeachHouseBlockdata: INCBIN "maps/beach_house.blk"
 INCLUDE "data/mapObjects/beach_house.asm"
-ENDC
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
@@ -5794,11 +5792,7 @@ Route17Blocks: INCBIN "maps/route17.blk"
 
 INCLUDE "data/mapHeaders/route19.asm"
 INCLUDE "data/mapObjects/route19.asm"
-IF DEF(_OPTION_BEACH_HOUSE)
 Route19Blocks: INCBIN "maps/route19-yellow.blk"
-ELSE
-Route19Blocks: INCBIN "maps/route19.blk"
-ENDC
 
 INCLUDE "data/mapHeaders/route21.asm"
 INCLUDE "data/mapObjects/route21.asm"
@@ -6148,7 +6142,6 @@ INCLUDE "scripts/pokemontower7.asm"
 INCLUDE "data/mapObjects/pokemontower7.asm"
 PokemonTower7Blocks: INCBIN "maps/pokemontower7.blk"
 
-<<<<<<< HEAD
 INCLUDE "data/mapHeaders/celadonmart1.asm"
 INCLUDE "scripts/celadonmart1.asm"
 INCLUDE "data/mapObjects/celadonmart1.asm"

@@ -65,12 +65,7 @@ CreditsTextPointers: ; 742c3 (1d:42c3)
 	dw CredPAAD
 
 CredVersion: ; 74343 (1d:4343) ; this 1 byte difference makes all bank addresses offset by 1 in the blue version
-IF DEF(_RED)
 	db -8, "RED VERSION STAFF@"
-ENDC
-IF DEF(_BLUE)
-	db -8, "BLUE VERSION STAFF@"
-ENDC
 CredTajiri: ; 74356 (1d:4356)
 	db -6, "SATOSHI TAJIRI@"
 CredTaOota: ; 74366 (1d:4366)

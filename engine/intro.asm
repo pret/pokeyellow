@@ -428,16 +428,7 @@ FightIntroBackMon: ; 41a99 (10:5a99)
 	INCBIN "gfx/intro_fight.2bpp"
 
 FightIntroFrontMon: ; 42099 (10:6099)
-
-IF DEF(_RED)
-	INCBIN "gfx/red/intro_nido_1.6x6.2bpp"
-	INCBIN "gfx/red/intro_nido_2.6x6.2bpp"
-	INCBIN "gfx/red/intro_nido_3.6x6.2bpp"
+	INCBIN "gfx/intro_nido_1.6x6.2bpp"
+	INCBIN "gfx/intro_nido_2.6x6.2bpp"
+	INCBIN "gfx/intro_nido_3.6x6.2bpp"
 	ds $10 ; blank tile
-ENDC
-IF DEF(_BLUE)
-	INCBIN "gfx/blue/intro_purin_1.6x6.2bpp"
-	INCBIN "gfx/blue/intro_purin_2.6x6.2bpp"
-	INCBIN "gfx/blue/intro_purin_3.6x6.2bpp"
-	ds $10 ; blank tile
-ENDC

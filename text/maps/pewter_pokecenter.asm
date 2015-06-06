@@ -8,7 +8,6 @@ _PewterPokecenterText1:: ; 98704 (26:4704)
 	para "Scram!"
 	done
 
-IF DEF(_YELLOW)
 _PewterPokecenterText2::
 	text "#MON CENTERS"
 	line "are wonderful!"
@@ -21,7 +20,6 @@ _PewterPokecenterText2::
 	cont "poison and others"
 	cont "are cured."
 	done
-ENDC
 
 _PewterPokecenterText5:: ; 98744 (26:4744)
 	text "JIGGLYPUFF: Puu"

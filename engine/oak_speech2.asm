@@ -181,39 +181,6 @@ DisplayIntroNameTextBox: ; 6a6c (1:6a6c)
 .namestring ; 6aa3 (1:6aa3)
 	db "NAME@"
 
-IF DEF(_RED)
-DefaultNamesPlayer: ; 6aa8 (1:6aa8)
-	db   "NEW NAME"
-	next "RED"
-	next "ASH"
-	next "JACK"
-	db   "@"
-
-DefaultNamesRival: ; 6abe (1:6abe)
-	db   "NEW NAME"
-	next "BLUE"
-	next "GARY"
-	next "JOHN"
-	db   "@"
-ENDC
-
-IF DEF(_BLUE)
-DefaultNamesPlayer: ; 6aa8 (1:6aa8)
-	db   "NEW NAME"
-	next "BLUE"
-	next "GARY"
-	next "JOHN"
-	db   "@"
-
-DefaultNamesRival: ; 6abe (1:6abe)
-	db   "NEW NAME"
-	next "RED"
-	next "ASH"
-	next "JACK"
-	db   "@"
-ENDC
-
-IF DEF(_YELLOW)
 DefaultNamesPlayer:
 	db   "NEW NAME"
 	next "YELLOW"
@@ -227,7 +194,6 @@ DefaultNamesRival:
 	next "GARY"
 	next "JOHN"
 	db   "@"
-ENDC
 
 Func_6ad6: ; 6ad6 (1:6ad6)
 	ld b, a
@@ -250,24 +216,10 @@ Func_6ad6: ; 6ad6 (1:6ad6)
 	ld de, wcd6d
 	ld bc, $14
 	jp CopyData
-IF DEF(_RED)
-DefaultNamesPlayerList: ; 6af2 (1:6af2)
-	db "NEW NAME@RED@ASH@JACK@"
-DefaultNamesRivalList: ; 6b08 (1:6b08)
-	db "NEW NAME@BLUE@GARY@JOHN@"
-ENDC
-IF DEF(_BLUE)
-DefaultNamesPlayerList: ; 6af2 (1:6af2)
-	db "NEW NAME@BLUE@GARY@JOHN@"
-DefaultNamesRivalList: ; 6b08 (1:6b08)
-	db "NEW NAME@RED@ASH@JACK@"
-ENDC
-IF DEF(_YELLOW)
 DefaultNamesPlayerList:
 	db "NEW NAME@YELLOW@ASH@JACK@"
 DefaultNamesRivalList:
 	db "NEW NAME@BLUE@GARY@JOHN@"
-ENDC
 
 TextTerminator_6b20: ; 6b20 (1:6b20)
 	db "@"

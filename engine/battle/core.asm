@@ -2972,11 +2972,7 @@ PrintMenuItem: ; 3d4b6 (f:54b6)
 	jp Delay3
 
 DisabledText: ; 3d555 (f:5555)
-IF DEF(_YELLOW)
 	db "Disabled!@"
-ELSE
-	db "disabled!@"
-ENDC
 
 TypeText: ; 3d55f (f:555f)
 	db "TYPE@"
