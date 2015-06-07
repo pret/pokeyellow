@@ -232,9 +232,64 @@ Pointer_fc653:: ; fc653 (3f:4653)
 
 Func_fc65b:: ; fc65b (3f:465b)
 	ld a,[W_CURMAP]
+	cp VIRIDIAN_FOREST_EXIT
+	jr z,.asm_fc673
+	cp VIRIDIAN_FOREST_ENTRANCE
+	jr z,.asm_fc67c
+	ld a,[W_CURMAP]
+	ld hl,Pointer_fc68e
+	call Func_1568
+	jr c,.asm_fc688
+	jr .asm_fc684
+.asm_fc673
+	ld a,[wSpriteStateData1 + $9]
+	cp SPRITE_FACING_UP
+	jr z,.asm_fc688
+	jr .asm_fc684
+.asm_fc67c
+	ld a,[wSpriteStateData1 + $9]
+	and a ; SPRITE_FACING_DOWN
+	jr z,.asm_fc684
+	jr asm_fc688
+.asm_fc684
+	ld a,$0
+	jr .asm_fc68a
+.asm_fc688
+	ld a,$1
+.asm_fc68a
+	ld [wd431],a
+	ret
+	
+Pointer_fc68e:: ; fc68e (3f:468e)
+	db $33,$dd,$df,$e0,$e1,$de,$ec,$7f,$a8,$a9,$aa,$ff
 	
 Func_fc69a:: ; fc69a (3f:469a)
-
+	ld a,[W_CURMAP]
+	cp ROUTE_22_GATE
+	jr z,.asm_fc6a7
+	cp ROUTE_2_GATE
+	jr z,.asm_fc6b0
+	jr .asm_fc6bd
+.asm_fc6a7
+	ld a,[wSpriteStateData1 + $9]
+	cp SPRITE_FACING_DOWN
+	jr z,.asm_fc6b9
+	jr .asm_fc6bd
+.asm_fc6b0
+	ld a,[wSpriteStateData1 + $9]
+	cp SPRITE_FACING_DOWN
+	jr z,.asm_fc6b9
+	jr .asm_fc6bd
+.asm_fc6b9
+	ld a,$1
+	jr .asm_fc6c1
+.asm_fc6bd
+	ld a,$3
+	jr .asm_fc6c1
+.asm_fc6c1
+	ld [wd431],a
+	ret
+	
 Func_fcc08:: ; fcc08 (3f:4c08)
 
 Func_fcf0c:: ; fcf0c (3f:4f0c)
