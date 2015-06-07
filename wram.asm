@@ -1631,8 +1631,8 @@ wDestinationWarpID:: ; d42f
 ; if $ff, the player's coordinates are not updated when entering the map
 	ds 1
 
-wd430:: ds 1 ; d430
-wd431:: ds 1 ; d431
+wd430:: ds 1 ; d42f
+wd431:: ds 1 ; d430
 
 	ds 2
 
@@ -1650,7 +1650,12 @@ wd44b:: ds 1
 wd472:: ds 1
 wd473:: ds 1
 
-	ds 61
+	ds 39
+	
+wUnknownSerialFlag_d49a:: ds 1 ; d499
+wUnknownSerialFlag_d49b:: ds 1 ; d49a
+
+	ds 21
 
 wd4b0:: ds 1 ; number of signs on the map
 wd4b1:: ds 32 ; starting address for sign coords

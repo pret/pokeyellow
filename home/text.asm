@@ -1,4 +1,4 @@
-TextBoxBorder::
+TextBoxBorder:: ; 16f0 (0:16f0)
 ; Draw a cxb text box at hl.
 
 	; top row
@@ -37,7 +37,7 @@ TextBoxBorder::
 	ld [hl], "┘"
 	ret
 
-NPlaceChar::
+NPlaceChar:: ; 171d (0:171d)
 ; Place char a c times.
 	ld d, c
 .loop
@@ -46,23 +46,23 @@ NPlaceChar::
 	jr nz, .loop
 	ret
 
-PlaceString:: ; 1955 (0:1955)
+PlaceString:: ; 1723 (0:1723)
 	push hl
-PlaceNextChar:: ; 1956 (0:1956)
+PlaceNextChar:: ; 1724 (0:1724)
 	ld a,[de]
 
 	cp "@"
-	jr nz,.PlaceText
+	jr nz,Char4ETest
 	ld b,h
 	ld c,l
 	pop hl
 	ret
 
-.PlaceText
+Char4ETest:: ; 172d (0:172d) 
 	cp $4E
 	jr nz,.next
 	ld bc,$0028
-	ld a,[hFlags_0xFFF6]
+	ld a,[hFlags_0xFFFA]
 	bit 2,a
 	jr z,.next2
 	ld bc,$14
@@ -70,7 +70,7 @@ PlaceNextChar:: ; 1956 (0:1956)
 	pop hl
 	add hl,bc
 	push hl
-	jp Next19E8
+	jp Next17B6 ; 17b6
 
 .next
 	cp $4F
@@ -78,7 +78,7 @@ PlaceNextChar:: ; 1956 (0:1956)
 	pop hl
 	hlCoord 1, 16
 	push hl
-	jp Next19E8
+	jp Next17B6
 
 .next3 ; Check against a dictionary
 	and a
@@ -123,11 +123,11 @@ PlaceNextChar:: ; 1956 (0:1956)
 	jp z,Char5A
 	ld [hli],a
 	call PrintLetterDelay
-Next19E8:: ; 19e8 (0:19e8)
+Next17B6:: ; 17b6 (0:17b6)
 	inc de
 	jp PlaceNextChar
 
-Char00:: ; 19ec (0:19ec)
+Char00:: ; 17ba (0:17ba)
 	ld b,h
 	ld c,l
 	pop hl
@@ -135,56 +135,56 @@ Char00:: ; 19ec (0:19ec)
 	dec de
 	ret
 
-Char00Text:: ; 0x19f4 “%d ERROR.”
-	TX_FAR _Char00Text
+Char00Text:: ; 17c2 (0:17c2) ; “%d ERROR.”
+	TX_FAR _Char00Text ; a0c66 (28:4c66)
 	db "@"
 
-Char52:: ; 0x19f9 player’s name
+Char52:: ; 17c7 (0:17c7) ; player’s name
 	push de
 	ld de,wPlayerName
 	jr FinishDTE
 
-Char53:: ; 19ff (0:19ff) ; rival’s name
+Char53:: ; 17cd (0:17cd) ; rival’s name
 	push de
 	ld de,W_RIVALNAME
 	jr FinishDTE
 
-Char5D:: ; 1a05 (0:1a05) ; TRAINER
+Char5D:: ; 17d3 (0:17d3) ; TRAINER
 	push de
 	ld de,Char5DText
 	jr FinishDTE
 
-Char5C:: ; 1a0b (0:1a0b) ; TM
+Char5C:: ; 17d9 (0:17d9) ; TM
 	push de
 	ld de,Char5CText
 	jr FinishDTE
 
-Char5B:: ; 1a11 (0:1a11) ; PC
+Char5B:: ; 17df (0:17df) ; PC
 	push de
 	ld de,Char5BText
 	jr FinishDTE
 
-Char5E:: ; 1a17 (0:1a17) ; ROCKET
+Char5E:: ; 17e5 (0:17e5) ; ROCKET
 	push de
 	ld de,Char5EText
 	jr FinishDTE
 
-Char54:: ; 1a1d (0:1a1d) ; POKé
+Char54:: ; 17eb (0:17eb) ; POKé
 	push de
 	ld de,Char54Text
 	jr FinishDTE
 
-Char56:: ; 1a23 (0:1a23) ; ……
+Char56:: ; 17f1 (0:17f1) ; ……
 	push de
 	ld de,Char56Text
 	jr FinishDTE
 
-Char4A:: ; 1a29 (0:1a29) ; PKMN
+Char4A:: ; 17f7 (0:17f7) ; PKMN
 	push de
 	ld de,Char4AText
 	jr FinishDTE
 
-Char59:: ; 1a2f (0:1a2f)
+Char59:: ; 17fb (0:17fb)
 ; depending on whose turn it is, print
 ; enemy active monster’s name, prefixed with “Enemy ”
 ; or
@@ -194,7 +194,7 @@ Char59:: ; 1a2f (0:1a2f)
 	xor 1
 	jr MonsterNameCharsCommon
 
-Char5A:: ; 1a35 (0:1a35)
+Char5A:: ; 1803 (0:1803)
 ; depending on whose turn it is, print
 ; player active monster’s name
 ; or
@@ -211,12 +211,11 @@ MonsterNameCharsCommon:: ; 1a37 (0:1a37)
 	; print “Enemy ”
 	ld de,Char5AText
 	call PlaceString
-
 	ld h,b
 	ld l,c
 	ld de,wEnemyMonNick ; enemy active monster name
 
-FinishDTE:: ; 1a4b (0:1a4b)
+FinishDTE:: ; 1819 (0:1819)
 	call PlaceString
 	ld h,b
 	ld l,c
@@ -224,56 +223,56 @@ FinishDTE:: ; 1a4b (0:1a4b)
 	inc de
 	jp PlaceNextChar
 
-Char5CText:: ; 1a55 (0:1a55)
+Char5CText:: ; 1823 (0:1823)
 	db "TM@"
-Char5DText:: ; 1a58 (0:1a58)
+Char5DText:: ; 1826 (0:1826)
 	db "TRAINER@"
-Char5BText:: ; 1a60 (0:1a60)
+Char5BText:: ; 182e (0:182e)
 	db "PC@"
-Char5EText:: ; 1a63 (0:1a63)
+Char5EText:: ; 1831 (0:1830)
 	db "ROCKET@"
-Char54Text:: ; 1a6a (0:1a6a)
+Char54Text:: ; 1838 (0:1838)
 	db "POKé@"
-Char56Text:: ; 1a6f (0:1a6f)
+Char56Text:: ; 183d (0:183d)
 	db "……@"
-Char5AText:: ; 1a72 (0:1a72)
+Char5AText:: ; 1840 (0:1840)
 	db "Enemy @"
-Char4AText:: ; 1a79 (0:1a79)
+Char4AText:: ; 1847 (0:1847)
 	db $E1,$E2,"@" ; PKMN
 
-Char55:: ; 1a7c (0:1a7c)
+Char55:: ; 184a (0:184a)
 	push de
 	ld b,h
 	ld c,l
 	ld hl,Char55Text
-	call TextCommandProcessor
+	call TextCommandProcessor ; 1919
 	ld h,b
 	ld l,c
 	pop de
 	inc de
 	jp PlaceNextChar
 
-Char55Text:: ; 1a8c (0:1a8c)
+Char55Text:: ; 185a (0:185a)
 ; equivalent to Char4B
-	TX_FAR _Char55Text
+	TX_FAR _Char55Text ; a0c73 (28:4c73)
 	db "@"
 
-Char5F:: ; 1a91 (0:1a91)
+Char5F:: ; 185f (0:185f)
 ; ends a Pokédex entry
 	ld [hl],"."
 	pop hl
 	ret
 
-Char58:: ; 1a95 (0:1a95)
+Char58:: ; 1863 (0:1863)
 	ld a,[wLinkState]
 	cp LINK_STATE_BATTLING
-	jp z,Next1AA2
+	jp z,Next1870
 	ld a,$EE
 	Coorda 18, 16
-Next1AA2:: ; 1aa2 (0:1aa2)
-	call ProtectedDelay3
-	call ManualTextScroll
-	ld a,$7F
+Next1870:: ; 1870 (0:1870)
+	call ProtectedDelay3 ; 1913
+	call ManualTextScroll ; 388e
+	ld a,$7F ; space
 	Coorda 18, 16
 Char57:: ; 1aad (0:1aad)
 	pop hl
@@ -281,10 +280,10 @@ Char57:: ; 1aad (0:1aad)
 	dec de
 	ret
 
-Char58Text:: ; 1ab3 (0:1ab3)
+Char58Text:: ; 1881 (0:1881)
 	db "@"
 
-Char51:: ; 1ab4 (0:1ab4)
+Char51:: ; 1882 (0:1882)
 	push de
 	ld a,$EE
 	Coorda 18, 16
@@ -297,9 +296,16 @@ Char51:: ; 1ab4 (0:1ab4)
 	call DelayFrames
 	pop de
 	hlCoord 1, 14
-	jp Next19E8
+	jp Next17B6
 
-Char49:: ; 1ad5 (0:1ad5)
+Char49:: ; 18a3 (0:18a3)
+	ld a,[hFlags_0xfffa]
+	bit 3,a
+	jr z,.Char49
+	ld a,$4e
+	jp Char4ETest
+	
+.Char49
 	push de
 	ld a,$EE
 	Coorda 18, 16
@@ -314,7 +320,7 @@ Char49:: ; 1ad5 (0:1ad5)
 	pop hl
 	hlCoord 1, 11
 	push hl
-	jp Next19E8
+	jp Next17B6
 
 Char4B:: ; 1af8 (0:1af8)
 	ld a,$EE
@@ -328,13 +334,13 @@ Char4B:: ; 1af8 (0:1af8)
 	;fall through
 Char4C:: ; 1b0a (0:1b0a)
 	push de
-	call Next1B18
-	call Next1B18
+	call Next18F1 ; 18f1
+	call Next18F1
 	hlCoord 1, 16
 	pop de
-	jp Next19E8
+	jp Next17B6
 
-Next1B18:: ; 1b18 (0:1b18)
+Next18F1:: ; 18f1 (0:18f1)
 	hlCoord 0, 14
 	deCoord 0, 13
 	ld b,$3C
@@ -361,7 +367,7 @@ Next1B18:: ; 1b18 (0:1b18)
 
 	ret
 
-ProtectedDelay3:: ; 1b3a (0:1b3a)
+ProtectedDelay3:: ; 1913 (0:1913)
 	push bc
 	call Delay3
 	pop bc
@@ -411,7 +417,7 @@ NextTextCommand:: ; 1b55 (0:1b55)
 ; AAAA = address of upper left corner
 ; BB = height
 ; CC = width
-TextCommand04:: ; 1b78 (0:1b78)
+TextCommand04:: ; 1951 (0:1951)
 	pop hl
 	ld a,[hli]
 	ld e,a
@@ -430,7 +436,7 @@ TextCommand04:: ; 1b78 (0:1b78)
 
 ; place string inline
 ; 00{string}
-TextCommand00:: ; 1b8a (0:1b8a)
+TextCommand00:: ; 1963 (0:1963)
 	pop hl
 	ld d,h
 	ld e,l
@@ -445,7 +451,7 @@ TextCommand00:: ; 1b8a (0:1b8a)
 ; place string from RAM
 ; 01AAAA
 ; AAAA = address of string
-TextCommand01:: ; 1b97 (0:1b97)
+TextCommand01:: ; 1970 (0:1970)
 	pop hl
 	ld a,[hli]
 	ld e,a
@@ -464,7 +470,7 @@ TextCommand01:: ; 1b97 (0:1b97)
 ; BB
 ; bits 0-4 = length in bytes
 ; bits 5-7 = unknown flags
-TextCommand02:: ; 1ba5 (0:1ba5)
+TextCommand02:: ; 197e (0:197e)
 	pop hl
 	ld a,[hli]
 	ld e,a
@@ -484,7 +490,7 @@ TextCommand02:: ; 1ba5 (0:1ba5)
 ; repoint destination address
 ; 03AAAA
 ; AAAA = new destination address
-TextCommand03:: ; 1bb7 (0:1bb7)
+TextCommand03:: ; 1990 (0:1990)
 	pop hl
 	ld a,[hli]
 	ld [wcc3a],a
@@ -497,7 +503,7 @@ TextCommand03:: ; 1bb7 (0:1bb7)
 ; repoint destination to second line of dialogue text box
 ; 05
 ; (no arguments)
-TextCommand05:: ; 1bc5 (0:1bc5)
+TextCommand05:: ; 199e (0:199e)
 	pop hl
 	bcCoord 1, 16 ; address of second line of dialogue text box
 	jp NextTextCommand
@@ -505,7 +511,7 @@ TextCommand05:: ; 1bc5 (0:1bc5)
 ; blink arrow and wait for A or B to be pressed
 ; 06
 ; (no arguments)
-TextCommand06:: ; 1bcc (0:1bcc)
+TextCommand06:: ; 19a5 (0:19a5)
 	ld a,[wLinkState]
 	cp a,LINK_STATE_BATTLING
 	jp z,TextCommand0D
@@ -522,18 +528,18 @@ TextCommand06:: ; 1bcc (0:1bcc)
 ; scroll text up one line
 ; 07
 ; (no arguments)
-TextCommand07:: ; 1be7 (0:1be7)
+TextCommand07:: ; 19c0 (0:19c0)
 	ld a," "
 	Coorda 18, 16 ; place blank space in lower right corner of dialogue text box
-	call Next1B18 ; scroll up text
-	call Next1B18
+	call Next18F1 ; scroll up text
+	call Next18F1
 	pop hl
 	bcCoord 1, 16 ; address of second line of dialogue text box
 	jp NextTextCommand
 
 ; execute asm inline
 ; 08{code}
-TextCommand08:: ; 1bf9 (0:1bf9)
+TextCommand08:: ; 19d2 (0:19d2)
 	pop hl
 	ld de,NextTextCommand
 	push de ; return address
@@ -545,7 +551,7 @@ TextCommand08:: ; 1bf9 (0:1bf9)
 ; BB
 ; bits 0-3 = how many digits to display
 ; bits 4-7 = how long the number is in bytes
-TextCommand09:: ; 1bff (0:1bff)
+TextCommand09:: ; 19d8 (0:19d8)
 	pop hl
 	ld a,[hli]
 	ld e,a
@@ -572,7 +578,7 @@ TextCommand09:: ; 1bff (0:1bff)
 ; wait half a second if the user doesn't hold A or B
 ; 0A
 ; (no arguments)
-TextCommand0A:: ; 1c1d (0:1c1d)
+TextCommand0A:: ; 19f6 (0:19f6)
 	push bc
 	call Joypad
 	ld a,[hJoyHeld]
@@ -588,7 +594,7 @@ TextCommand0A:: ; 1c1d (0:1c1d)
 ; plays sounds
 ; this actually handles various command ID's, not just 0B
 ; (no arguments)
-TextCommand0B:: ; 1c31 (0:1c31)
+TextCommand0B:: ; 1a0a (0:1a0a)
 	pop hl
 	push bc
 	dec hl
@@ -640,7 +646,7 @@ TextCommandSounds:: ; 1c64 (0:1c64)
 ; draw ellipses
 ; 0CAA
 ; AA = number of ellipses to draw
-TextCommand0C:: ; 1c78 (0:1c78)
+TextCommand0C:: ; 1a51 (0:1a51)
 	pop hl
 	ld a,[hli]
 	ld d,a
@@ -669,7 +675,7 @@ TextCommand0C:: ; 1c78 (0:1c78)
 ; wait for A or B to be pressed
 ; 0D
 ; (no arguments)
-TextCommand0D:: ; 1c9a (0:1c9a)
+TextCommand0D:: ; 1a73 (0:1a73)
 	push bc
 	call ManualTextScroll ; wait for A or B to be pressed
 	pop bc
@@ -680,7 +686,7 @@ TextCommand0D:: ; 1c9a (0:1c9a)
 ; 17AAAABB
 ; AAAA = address of text commands
 ; BB = bank
-TextCommand17:: ; 1ca3 (0:1ca3)
+TextCommand17:: ; 1a7c (0:1a7c)
 	pop hl
 	ld a,[H_LOADEDROMBANK]
 	push af
@@ -701,7 +707,7 @@ TextCommand17:: ; 1ca3 (0:1ca3)
 	ld [$2000],a
 	jp NextTextCommand
 
-TextCommandJumpTable:: ; 1cc1 (0:1cc1)
+TextCommandJumpTable:: ; 1a9a (0:1a9a)
 	dw TextCommand00
 	dw TextCommand01
 	dw TextCommand02

@@ -46,7 +46,7 @@ TrackPlayTime: ; 1ef5 (0:1ef5)
 	ld [W_PLAYTIMEMINUTES], a
 	ret
 
-CountDownIgnoreInputBitReset: ; 18e36 (6:4e36)
+CountDownIgnoreInputBitReset: ; 1f54 (0:1f54)
 	ld a, [wIgnoreInputCounter]
 	and a
 	jr nz, .asm_1f5e

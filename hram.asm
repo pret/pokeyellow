@@ -155,6 +155,8 @@ H_CURRENTSPRITEOFFSET EQU $FFDA ; multiple of $10
 
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
+hLCDCPointer EQU $FFF4
+
 hJoyInput EQU $FFF5
 
 ; bit 0: draw HP fraction to the right of bar instead of below (for party menu)

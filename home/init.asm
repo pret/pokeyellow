@@ -1,11 +1,11 @@
-SoftReset::
+SoftReset:: ; 1d08 (0:1d08)
 	call StopAllSounds
 	call GBPalWhiteOut
 	ld c, $20
 	call DelayFrames
 	; fallthrough
 
-Init::
+Init:: ; 1d10
 ;  Program init.
 
 rLCDC_DEFAULT EQU %11100011
@@ -51,7 +51,7 @@ rLCDC_DEFAULT EQU %11100011
 	or c
 	jr nz, .loop
 
-	call ClearVram
+	call ClearVram ; 1dc6
 
 	ld hl, $ff80
 	ld bc, $ffff - $ff80
@@ -70,6 +70,8 @@ rLCDC_DEFAULT EQU %11100011
 	ld [hSCX], a
 	ld [hSCY], a
 	ld [$ff0f], a
+	ld [wc0f3], a
+	ld [wc0f4], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
 	ld [rIE], a
 
@@ -118,7 +120,7 @@ rLCDC_DEFAULT EQU %11100011
 
 	jp SetDefaultNamesBeforeTitlescreen
 
-ClearVram:
+ClearVram: ; 1dc6 (0:1dc6)
 	ld hl, $8000
 	ld bc, $2000
 	xor a

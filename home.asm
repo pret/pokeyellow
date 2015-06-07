@@ -1078,8 +1078,19 @@ Func_157c:: ; 157c (0:157c)
 	pop bc
 	pop hl
 	ret
-	
-INCLUDE "data/collision.asm"
+
+Func_159b:: ; 159b (0:159b)
+	ld a,[H_LOADEDROMBANK]
+	ld b,a
+	push af
+	callsb Func_fd2a1
+	pop af
+	call BankswitchCommon
+	ret
+
+;INCLUDE "data/collision.asm"
+
+INCLUDE "home/lcdc.asm"
 
 IsTilePassable:: ; 15c3 (0:15c3)
 ; sets carry if tile is passable, resets carry otherwise

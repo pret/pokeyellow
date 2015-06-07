@@ -1,7 +1,7 @@
 ; These routines manage gradual fading
 ; (e.g., entering a doorway)
-LoadGBPal::
-	ld a, [wMapPalOffset] ;tells if cur.map is dark (requires HM5_FLASH?)
+LoadGBPal:: ; 1e6f (0:1e6f)
+	ld a, [wMapPalOffset] ; tells if W_CURMAP is dark (requires HM5_FLASH?)
 	ld b, a
 	ld hl, FadePal4
 	ld a, l
@@ -16,31 +16,37 @@ LoadGBPal::
 	ld [rOBP0], a
 	ld a, [hli]
 	ld [rOBP1], a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ret
 
-GBFadeInFromBlack::
+GBFadeInFromBlack:: ; 1e8f (0:1e8f)
 	ld hl, FadePal1
 	ld b, 4
 	jr GBFadeIncCommon
 
-GBFadeOutToWhite::
+GBFadeOutToWhite:: ; 1e96 (0:1e96)
 	ld hl, FadePal6
 	ld b, 3
 
-GBFadeIncCommon:
+GBFadeIncCommon: ; 1e9b (0:1e9b)
 	ld a, [hli]
 	ld [rBGP], a
 	ld a, [hli]
 	ld [rOBP0], a
 	ld a, [hli]
 	ld [rOBP1], a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ld c, 8
 	call DelayFrames
 	dec b
 	jr nz, GBFadeIncCommon
 	ret
 
-GBFadeOutToBlack::
+GBFadeOutToBlack:: ; 1eb6 (0:1eb6)
 	ld hl, FadePal4 + 2
 	ld b, 4
 	jr GBFadeDecCommon
@@ -56,6 +62,9 @@ GBFadeDecCommon:
 	ld [rOBP0], a
 	ld a, [hld]
 	ld [rBGP], a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ld c, 8
 	call DelayFrames
 	dec b

@@ -1,8 +1,11 @@
-Serial:: ; 2125 (0:2125)
+Serial:: ; 1f78 (0:1f78)
 	push af
 	push bc
 	push de
 	push hl
+	ld a, [wUnknownSerialFlag_d49a]
+	bit 0,a
+	jp nz,Func_2162
 	ld a, [hSerialConnectionStatus]
 	inc a
 	jr z, .connectionNotYetEstablished
@@ -86,84 +89,84 @@ Serial_ExchangeBytes:: ; 216f (0:216f)
 	jr nz, .loop
 	ret
 
-Serial_ExchangeByte:: ; 219a (0:219a)
+Serial_ExchangeByte:: ; 1ff6 (0:1ff6)
 	xor a
 	ld [hSerialReceivedNewData], a
 	ld a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
-	jr nz, .asm_21a7
+	jr nz, .asm_2003
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ld [rSC], a
-.asm_21a7
+.asm_2003
 	ld a, [hSerialReceivedNewData]
 	and a
-	jr nz, .asm_21f1
+	jr nz, .asm_204d
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
-	jr nz, .asm_21cc
+	jr nz, .asm_2028
 	call IsUnknownCounterZero
-	jr z, .asm_21cc
+	jr z, .asm_2028
 	call WaitLoop_15Iterations
 	push hl
 	ld hl, wUnknownSerialCounter + 1
 	inc [hl]
-	jr nz, .asm_21c3
+	jr nz, .asm_201f
 	dec hl
 	inc [hl]
-.asm_21c3
+.asm_201f
 	pop hl
 	call IsUnknownCounterZero
-	jr nz, .asm_21a7
+	jr nz, .asm_2003
 	jp SetUnknownCounterToFFFF
-.asm_21cc
+.asm_2028
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	cp (1 << SERIAL)
-	jr nz, .asm_21a7
+	jr nz, .asm_2003
 	ld a, [wUnknownSerialCounter2]
 	dec a
 	ld [wUnknownSerialCounter2], a
-	jr nz, .asm_21a7
+	jr nz, .asm_2003
 	ld a, [wUnknownSerialCounter2 + 1]
 	dec a
 	ld [wUnknownSerialCounter2 + 1], a
-	jr nz, .asm_21a7
+	jr nz, .asm_2003
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
-	jr z, .asm_21f1
+	jr z, .asm_204d
 	ld a, 255
 .waitLoop
 	dec a
 	jr nz, .waitLoop
-.asm_21f1
+.asm_204d
 	xor a
 	ld [hSerialReceivedNewData], a
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	sub (1 << SERIAL)
-	jr nz, .asm_2204
+	jr nz, .asm_2060
 	ld [wUnknownSerialCounter2], a
 	ld a, $50
 	ld [wUnknownSerialCounter2 + 1], a
-.asm_2204
+.asm_2060
 	ld a, [hSerialReceiveData]
 	cp SERIAL_NO_DATA_BYTE
 	ret nz
 	call IsUnknownCounterZero
-	jr z, .asm_221f
+	jr z, .asm_207b
 	push hl
 	ld hl, wUnknownSerialCounter + 1
 	ld a, [hl]
 	dec a
 	ld [hld], a
 	inc a
-	jr nz, .asm_2219
+	jr nz, .asm_2075
 	dec [hl]
-.asm_2219
+.asm_2075
 	pop hl
 	call IsUnknownCounterZero
 	jr z, SetUnknownCounterToFFFF
-.asm_221f
+.asm_207b
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	cp (1 << SERIAL)
@@ -174,14 +177,14 @@ Serial_ExchangeByte:: ; 219a (0:219a)
 	call DelayFrame
 	jp Serial_ExchangeByte
 
-WaitLoop_15Iterations:: ; 2231 (0:2231)
+WaitLoop_15Iterations:: ; 208d (0:208d)
 	ld a, 15
 .waitLoop
 	dec a
 	jr nz, .waitLoop
 	ret
 
-IsUnknownCounterZero:: ; 2237 (0:2237)
+IsUnknownCounterZero:: ; 2093 (0:2093)
 	push hl
 	ld hl, wUnknownSerialCounter
 	ld a, [hli]
@@ -190,7 +193,7 @@ IsUnknownCounterZero:: ; 2237 (0:2237)
 	ret
 
 ; a is always 0 when this is called
-SetUnknownCounterToFFFF:: ; 223f (0:223f)
+SetUnknownCounterToFFFF:: ; 209b (0:209b)
 	dec a
 	ld [wUnknownSerialCounter], a
 	ld [wUnknownSerialCounter + 1], a
@@ -223,9 +226,9 @@ Serial_ExchangeLinkMenuSelection:: ; 2247 (0:2247)
 	jr nz, .loop
 	ret
 
-Serial_PrintWaitingTextAndSyncAndExchangeNybble:: ; 226e (0:226e)
+Serial_PrintWaitingTextAndSyncAndExchangeNybble:: ; 20ca (0:20ca)
 	call SaveScreenTilesToBuffer1
-	callab PrintWaitingText
+	callab PrintWaitingText ; 1:4b89
 	call Serial_SyncAndExchangeNybble
 	jp LoadScreenTilesFromBuffer1
 
@@ -269,7 +272,7 @@ Serial_SyncAndExchangeNybble:: ; 227f (0:227f)
 	ld [wSerialSyncAndExchangeNybbleReceiveData], a
 	ret
 
-Serial_ExchangeNybble:: ; 22c3 (0:22c3)
+Serial_ExchangeNybble:: ; 211f (0:211f)
 	call .doExchange
 	ld a, [wSerialExchangeNybbleSendData]
 	add $60
@@ -292,7 +295,7 @@ Serial_ExchangeNybble:: ; 22c3 (0:22c3)
 	ld [wSerialExchangeNybbleReceiveData], a
 	ret
 
-Serial_SendZeroByte:: ; 22ed (0:22ed)
+Serial_SendZeroByte:: ; 2149 (0:2149)
 	xor a
 	ld [hSerialSendData], a
 	ld a, [hSerialConnectionStatus]
@@ -310,3 +313,11 @@ Serial_TryEstablishingExternallyClockedConnection:: ; 22fa (0:22fa)
 	ld a, START_TRANSFER_EXTERNAL_CLOCK
 	ld [rSC], a
 	ret
+
+Func_2162:: ; 2162 (0:2162)
+	call Func_2fa7
+	pop hl
+	pop de
+	pop bc
+	pop af
+	reti
