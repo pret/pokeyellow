@@ -1,4 +1,4 @@
-_TM39PreReceiveText:: ; 8c86b (23:486b)
+_TM39PreReceiveText::
 	text "My #MON's"
 	line "ashes are stored"
 	cont "in #MON TOWER."
@@ -8,11 +8,11 @@ _TM39PreReceiveText:: ; 8c86b (23:486b)
 	cont "it anymore..."
 	prompt
 
-_ReceivedTM39Text:: ; 8c8c6 (23:48c6)
+_ReceivedTM39Text::
 	text $52, " received"
 	line "TM39!@@"
 
-_TM39ExplanationText:: ; 8c8d9 (23:48d9)
+_TM39ExplanationText::
 	text "TM39 is a move"
 	line "called SWIFT."
 
@@ -22,19 +22,19 @@ _TM39ExplanationText:: ; 8c8d9 (23:48d9)
 	cont "afford to lose."
 	done
 
-_TM39NoRoomText:: ; 8c93c (23:493c)
+_TM39NoRoomText::
 	text "You don't have"
 	line "room for this."
 	done
 
-_Route12GateUpstairsText_495b8:: ; 8c95a (23:495a)
+_Route12GateUpstairsText_495b8::
 	text "Looked into the"
 	line "binoculars."
 
 	para "A man fishing!"
 	done
 
-_Route12GateUpstairsText_495c4:: ; 8c986 (23:4986)
+_Route12GateUpstairsText_495c4::
 	text "Looked into the"
 	line "binoculars."
 

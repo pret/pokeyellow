@@ -3,7 +3,7 @@ _BillsHouseDontLeaveText::
 	line "anywhere, wait!"
 	done
 
-_BillsHouseText_1e865:: ; 8d267 (23:5267)
+_BillsHouseText_1e865::
 	text "Hiya! I'm a"
 	line "#MON..."
 	cont "...No I'm not!"
@@ -24,7 +24,7 @@ _BillsHouseText_1e865:: ; 8d267 (23:5267)
 	line "Help me out here!"
 	done
 
-_BillsHouseText_1e86a:: ; 8d345 (23:5345)
+_BillsHouseText_1e86a::
 	text "When I'm in the"
 	line "TELEPORTER, go to"
 	cont "my PC and run the"
@@ -32,7 +32,7 @@ _BillsHouseText_1e86a:: ; 8d345 (23:5345)
 	cont "System!"
 	done
 
-_BillsHouseText_1e86f:: ; 8d391 (23:5391)
+_BillsHouseText_1e86f::
 	text "No!? Come on, you"
 	line "gotta help a guy"
 	cont "in deep trouble!"
@@ -42,7 +42,7 @@ _BillsHouseText_1e86f:: ; 8d391 (23:5391)
 	cont "OK? All right!"
 	prompt
 
-_BillThankYouText:: ; 8d3f5 (23:53f5)
+_BillThankYouText::
 	text "BILL: Yeehah!"
 	line "Thanks, bud! I"
 	cont "owe you one!"
@@ -58,18 +58,18 @@ _BillThankYouText:: ; 8d3f5 (23:53f5)
 	cont "maybe this'll do."
 	prompt
 
-_SSTicketReceivedText:: ; 8d499 (23:5499)
+_SSTicketReceivedText::
 	text $52, " received"
 	line "an @"
 	TX_RAM wcf4b
 	text "!@@"
 
-_SSTicketNoRoomText:: ; 8d4b0 (23:54b0)
+_SSTicketNoRoomText::
 	text "You've got too"
 	line "much stuff, bud!"
 	done
 
-_BillsHouseText_1e8cb:: ; 8d4d0 (23:54d0)
+_BillsHouseText_1e8cb::
 	text "That cruise ship,"
 	line "S.S.ANNE, is in"
 	cont "VERMILION CITY."
@@ -84,7 +84,7 @@ _BillsHouseText_1e8cb:: ; 8d4d0 (23:54d0)
 	cont "instead of me?"
 	done
 
-_BillsHouseText_1e8da:: ; 8d57f (23:557f)
+_BillsHouseText_1e8da::
 	text "BILL: Look, bud,"
 	line "just check out"
 	cont "some of my rare"

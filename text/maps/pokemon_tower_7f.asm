@@ -22,7 +22,7 @@ _PokemonTowerJessieJamesText4::
 	line "ROCKET's blasting"
 	cont "off again!@@"
 
-_TowerRescueFujiText:: ; 99c1a (26:5c1a)
+_TowerRescueFujiText::
 	text "MR.FUJI: Heh? You"
 	line "came to save me?"
 

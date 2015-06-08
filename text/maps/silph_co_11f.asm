@@ -1,4 +1,4 @@
-_SilphCoPresidentText:: ; 84e9b (21:4e9b)
+_SilphCoPresidentText::
 	text "PRESIDENT: Thank"
 	line "you for saving"
 	cont "SILPH!"
@@ -19,13 +19,13 @@ _SilphCoPresidentText:: ; 84e9b (21:4e9b)
 	line "will do!"
 	prompt
 
-_ReceivedSilphCoMasterBallText:: ; 84f63 (21:4f63)
+_ReceivedSilphCoMasterBallText::
 	text $52, " got a"
 	line "@"
 	TX_RAM wcf4b
 	text "!@@"
 
-_SilphCo10Text_6231c:: ; 84f74 (21:4f74)
+_SilphCo10Text_6231c::
 	text "PRESIDENT: You"
 	line "can't buy that"
 	cont "anywhere!"
@@ -43,12 +43,12 @@ _SilphCo10Text_6231c:: ; 84f74 (21:4f74)
 	cont "it, though."
 	done
 
-_SilphCoMasterBallNoRoomText:: ; 85013 (21:5013)
+_SilphCoMasterBallNoRoomText::
 	text "You have no"
 	line "room for this."
 	done
 
-_SilphCo11Text2:: ; 8502f (21:502f)
+_SilphCo11Text2::
 	text "SECRETARY: Thank"
 	line "you for rescuing"
 	cont "all of us!"
@@ -57,7 +57,7 @@ _SilphCo11Text2:: ; 8502f (21:502f)
 	line "courage."
 	done
 
-_SilphCo11Text3:: ; 85075 (21:5075)
+_SilphCo11Text3::
 	text "Ah, ", $52, "!"
 	line "So we meet again!"
 
@@ -74,12 +74,12 @@ _SilphCo11Text3:: ; 85075 (21:5075)
 	line "world of pain!"
 	done
 
-_SilphCo10Text_62330:: ; 85119 (21:5119)
+_SilphCo10Text_62330::
 	text "Arrgh!!"
 	line "I lost again!?"
 	prompt
 
-_SilphCo10Text_62335:: ; 85131 (21:5131)
+_SilphCo10Text_62335::
 	text "Blast it all!"
 	line "You ruined our"
 	cont "plans for SILPH!"
@@ -96,18 +96,18 @@ _SilphCo10Text_62335:: ; 85131 (21:5131)
 	line "shall return!"
 	done
 
-_SilphCo11BattleText2:: ; 85227 (21:5227)
+_SilphCo11BattleText2::
 	text "Halt! Do you have"
 	line "an appointment"
 	cont "with my BOSS?"
 	done
 
-_SilphCo11EndBattleText2:: ; 85257 (21:5257)
+_SilphCo11EndBattleText2::
 	text "Gaah!"
 	line "Demolished!"
 	prompt
 
-_SilphCo11AfterBattleText2:: ; 8526a (21:526a)
+_SilphCo11AfterBattleText2::
 	text "Watch your step,"
 	line "my BOSS likes his"
 	cont "#MON tough!"

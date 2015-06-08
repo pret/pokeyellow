@@ -171,7 +171,7 @@ FanClubChairPrintText4::
 	line "PRINT this now."
 	done
 
-_FanClubText6:: ; 9a948 (26:6948)
+_FanClubText6::
 	text "Our CHAIRMAN is"
 	line "very vocal about"
 	cont "#MON."

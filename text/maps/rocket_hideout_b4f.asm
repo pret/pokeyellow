@@ -21,18 +21,18 @@ _RocketHideoutJessieJamesText4::
 	line "ROCKET's blasting"
 	cont "off again!@@"
 
-_RocketHideout4Text_4557a:: ; 8223e (20:623e)
+_RocketHideout4Text_4557a::
 	text "So! I must say, I"
 	line "am impressed you"
 	cont "got here!"
 	done
 
-_RocketHideout4Text_4557f:: ; 8226c (20:626c)
+_RocketHideout4Text_4557f::
 	text "WHAT!"
 	line "This cannot be!"
 	prompt
 
-_RocketHideout4Text_45584:: ; 82283 (20:6283)
+_RocketHideout4Text_45584::
 	text "I see that you"
 	line "raise #MON"
 	cont "with utmost care."
@@ -49,17 +49,17 @@ _RocketHideout4Text_45584:: ; 82283 (20:6283)
 	line "again..."
 	done
 
-_RocketHideout4BattleText4:: ; 823e2 (20:63e2)
+_RocketHideout4BattleText4::
 	text "The elevator"
 	line "doesn't work? Who"
 	cont "has the LIFT KEY?"
 	done
 
-_RocketHideout4EndBattleText4:: ; 82413 (20:6413)
+_RocketHideout4EndBattleText4::
 	text "No!"
 	prompt
 
-_RocketHideout4Text_455ec:: ; 82418 (20:6418)
+_RocketHideout4Text_455ec::
 	text "Oh no! I dropped"
 	line "the LIFT KEY!"
 	done

@@ -1,4 +1,4 @@
-_CeruleanHouse2Text_74eaa:: ; 9932a (26:532a)
+_CeruleanHouse2Text_74eaa::
 	text "The DEFENSE of all"
 	line "#MON increases"
 	cont "a little bit."
@@ -8,7 +8,7 @@ _CeruleanHouse2Text_74eaa:: ; 9932a (26:532a)
 	cont "of battle."
 	prompt
 
-_CeruleanHouse2Text_74eaf:: ; 99388 (26:5388)
+_CeruleanHouse2Text_74eaf::
 	text "#MON up to L70"
 	line "will obey you."
 
@@ -16,13 +16,13 @@ _CeruleanHouse2Text_74eaf:: ; 99388 (26:5388)
 	line "become unruly!"
 	prompt
 
-_CeruleanHouse2Text_74eb4:: ; 993c7 (26:53c7)
+_CeruleanHouse2Text_74eb4::
 	text "Your #MON's"
 	line "SPECIAL abilities"
 	cont "increase a bit."
 	prompt
 
-_CeruleanHouse2Text_74eb9:: ; 993f5 (26:53f5)
+_CeruleanHouse2Text_74eb9::
 	text "All #MON will"
 	line "obey you!"
 	prompt
