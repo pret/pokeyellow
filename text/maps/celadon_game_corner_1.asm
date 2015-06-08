@@ -180,8 +180,3 @@ _CeladonGameCornerText_48f09:: ; 9ddb0 (27:5db0)
 	line "the poster!?"
 	cont "Let's push it!@@"
 
-_CeladonGameCornerText_48f19:: ; 9dde2 (27:5de2)
-	text "Oops! Forgot the"
-	line "COIN CASE!"
-	done
-

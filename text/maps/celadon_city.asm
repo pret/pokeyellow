@@ -92,22 +92,6 @@ _CeladonCityText9:: ; a5c63 (29:5c63)
 	line "ROCKET's way!"
 	done
 
-_CeladonCityText10:: ; a5c82 (29:5c82)
-	text "TRAINER TIPS"
-
-	para "X ACCURACY boosts"
-	line "the accuracy of"
-	cont "techniques!"
-
-	para "DIRE HIT jacks up"
-	line "the likelihood of"
-	cont "critical hits!"
-
-	para "Get your items at"
-	line "CELADON DEPT."
-	cont "STORE!"
-	done
-
 _CeladonCityText11:: ; a5d18 (29:5d18)
 	text "CELADON CITY"
 	line "The City of"
@@ -165,5 +149,21 @@ IF DEF(_YELLOW)
 ELSE
 	cont "for grown-ups!"
 ENDC
+	done
+
+_CeladonCityText10:: ; a5c82 (29:5c82)
+	text "TRAINER TIPS"
+
+	para "X ACCURACY boosts"
+	line "the accuracy of"
+	cont "techniques!"
+
+	para "DIRE HIT jacks up"
+	line "the likelihood of"
+	cont "critical hits!"
+
+	para "Get your items at"
+	line "CELADON DEPT."
+	cont "STORE!"
 	done
 

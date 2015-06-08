@@ -6148,6 +6148,7 @@ INCLUDE "scripts/pokemontower7.asm"
 INCLUDE "data/mapObjects/pokemontower7.asm"
 PokemonTower7Blocks: INCBIN "maps/pokemontower7.blk"
 
+<<<<<<< HEAD
 INCLUDE "data/mapHeaders/celadonmart1.asm"
 INCLUDE "scripts/celadonmart1.asm"
 INCLUDE "data/mapObjects/celadonmart1.asm"
@@ -6281,7 +6282,6 @@ Facility_Block:    INCBIN "gfx/blocksets/facility.bst"
 
 
 SECTION "bank1B",ROMX,BANK[$1B]
-
 Cemetery_GFX:      INCBIN "gfx/tilesets/cemetery.t4.2bpp"
 Cemetery_Block:    INCBIN "gfx/blocksets/cemetery.bst"
 Cavern_GFX:        INCBIN "gfx/tilesets/cavern.t14.2bpp"

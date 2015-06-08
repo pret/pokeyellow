@@ -24,32 +24,6 @@ _SSAnne9Text_61c10:: ; 81833 (20:5833)
 	line "down small bushes."
 	done
 
-_SSAnne9Text_61c1f:: ; 81854 (20:5854)
-	text "Have you gone to"
-	line "the SAFARI ZONE"
-	cont "in FUCHSIA CITY?"
-
-	para "It had many rare"
-	line "kinds of #MON!!"
-	done
-
-_SSAnne9Text_61c2e:: ; 818a8 (20:58a8)
-	text "Me and my Daddy"
-	line "think the SAFARI"
-	cont "ZONE is awesome!"
-	done
-
-_SSAnne9Text_61c3d:: ; 818db (20:58db)
-	text "The CAPTAIN looked"
-	line "really sick and"
-	cont "pale!"
-	done
-
-_SSAnne9Text_61c4c:: ; 81905 (20:5905)
-	text "I hear many people"
-	line "get seasick!"
-	done
-
 _SSAnne9BattleText1:: ; 81926 (20:5926)
 	text "Competing against"
 	line "the young keeps"
@@ -114,5 +88,31 @@ _SSAnne9EndBattleText4:: ; 81a7c (20:5a7c)
 _SSAnne9AfterBattleText4:: ; 81a8b (20:5a8b)
 	text "Oh, I adore your"
 	line "strong #MON!"
+	done
+
+_SSAnne9Text_61c1f:: ; 81854 (20:5854)
+	text "Have you gone to"
+	line "the SAFARI ZONE"
+	cont "in FUCHSIA CITY?"
+
+	para "It had many rare"
+	line "kinds of #MON!!"
+	done
+
+_SSAnne9Text_61c2e:: ; 818a8 (20:58a8)
+	text "Me and my Daddy"
+	line "think the SAFARI"
+	cont "ZONE is awesome!"
+	done
+
+_SSAnne9Text_61c3d:: ; 818db (20:58db)
+	text "The CAPTAIN looked"
+	line "really sick and"
+	cont "pale!"
+	done
+
+_SSAnne9Text_61c4c:: ; 81905 (20:5905)
+	text "I hear many people"
+	line "get seasick!"
 	done
 

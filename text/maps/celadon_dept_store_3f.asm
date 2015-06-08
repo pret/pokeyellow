@@ -1,30 +1,3 @@
-_TM18PreReceiveText:: ; 9c814 (27:4814)
-	text "Oh, hi! I finally"
-	line "finished #MON!"
-
-	para "Not done yet?"
-	line "This might be"
-	cont "useful!"
-	prompt
-
-_ReceivedTM18Text:: ; 9c85a (27:485a)
-	text $52, " received"
-	line "@"
-	TX_RAM wcf4b
-	text "!@@"
-
-_TM18ExplanationText:: ; 9c86e (27:486e)
-	text "TM18 is COUNTER!"
-	line "Not like the one"
-	cont "I'm leaning on,"
-	cont "mind you!"
-	done
-
-_TM18NoRoomText:: ; 9c8aa (27:48aa)
-	text "Your pack is full"
-	line "of items!"
-	done
-
 _CeladonMart3Text2:: ; 9c8c7 (27:48c7)
 	text "Captured #MON"
 	line "are registered"
@@ -95,5 +68,32 @@ _CeladonMart3Text14:: ; 9caa4 (27:4aa4)
 _CeladonMart3Text15:: ; 9cab6 (27:4ab6)
 	text "Red and Blue!"
 	line "Both are #MON!"
+	done
+
+_TM18PreReceiveText:: ; 9c814 (27:4814)
+	text "Oh, hi! I finally"
+	line "finished #MON!"
+
+	para "Not done yet?"
+	line "This might be"
+	cont "useful!"
+	prompt
+
+_ReceivedTM18Text:: ; 9c85a (27:485a)
+	text $52, " received"
+	line "@"
+	TX_RAM wcf4b
+	text "!@@"
+
+_TM18ExplanationText:: ; 9c86e (27:486e)
+	text "TM18 is COUNTER!"
+	line "Not like the one"
+	cont "I'm leaning on,"
+	cont "mind you!"
+	done
+
+_TM18NoRoomText:: ; 9c8aa (27:48aa)
+	text "Your pack is full"
+	line "of items!"
 	done
 

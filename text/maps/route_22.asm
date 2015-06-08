@@ -1,3 +1,36 @@
+_Route22RivalDefeatedText1:: ; 923f4 (24:63f4)
+	text "Awww!"
+	line "You just lucked"
+	cont "out!"
+	prompt
+
+_Route22Text_511bc:: ; 92410 (24:6410)
+	text $53, ": What?"
+	line "Why do I have 2"
+	cont "#MON?"
+
+	para "You should catch"
+	cont "some more too!"
+	prompt
+
+_Route22RivalDefeatedText2:: ; 92583 (24:6583)
+	text "What!?"
+
+	para "I was just"
+	line "careless!"
+	prompt
+
+_Route22Text_511d0:: ; 925a0 (24:65a0)
+	text $53, ": Hahaha!"
+	line $52, "! That's"
+	cont "your best? You're"
+	cont "nowhere near as"
+	cont "good as me, pal!"
+
+	para "Go train some"
+	line "more! You loser!"
+	prompt
+
 _Route22RivalBeforeBattleText1:: ; 922cd (24:62cd)
 	text $53, ": Hey!"
 	line $52, "!"
@@ -30,21 +63,6 @@ _Route22RivalAfterBattleText1:: ; 9236f (24:636f)
 	line "dawdling and get"
 	cont "a move on!"
 	done
-
-_Route22RivalDefeatedText1:: ; 923f4 (24:63f4)
-	text "Awww!"
-	line "You just lucked"
-	cont "out!"
-	prompt
-
-_Route22Text_511bc:: ; 92410 (24:6410)
-	text $53, ": What?"
-	line "Why do I have 2"
-	cont "#MON?"
-
-	para "You should catch"
-	cont "some more too!"
-	prompt
 
 _Route22RivalBeforeBattleText2:: ; 92450 (24:6450)
 	text $53, ": What?"
@@ -85,24 +103,6 @@ _Route22RivalAfterBattleText2:: ; 92506 (24:6506)
 	line "that! I'm out of"
 	cont "here. Smell ya!"
 	done
-
-_Route22RivalDefeatedText2:: ; 92583 (24:6583)
-	text "What!?"
-
-	para "I was just"
-	line "careless!"
-	prompt
-
-_Route22Text_511d0:: ; 925a0 (24:65a0)
-	text $53, ": Hahaha!"
-	line $52, "! That's"
-	cont "your best? You're"
-	cont "nowhere near as"
-	cont "good as me, pal!"
-
-	para "Go train some"
-	line "more! You loser!"
-	prompt
 
 _Route22FrontGateText:: ; 92606 (24:6606)
 	text "#MON LEAGUE"

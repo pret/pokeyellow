@@ -51,38 +51,6 @@ _RocketHideout4Text_45584:: ; 82283 (20:6283)
 	line "again..."
 	done
 
-_RocketHideout4BattleText2:: ; 82326 (20:6326)
-	text "I know you! You"
-	line "ruined our plans"
-	cont "at MT.MOON!"
-	done
-
-_RocketHideout4EndBattleText2:: ; 82354 (20:6354)
-	text "Burned"
-	line "again!"
-	prompt
-
-_RocketHide4AfterBattleText2:: ; 82363 (20:6363)
-	text "Do you have"
-	line "something against"
-	cont "TEAM ROCKET?"
-	done
-
-_RocketHideout4BattleText3:: ; 8238f (20:638f)
-	text "How can you not"
-	line "see the beauty of"
-	cont "our evil?"
-	done
-
-_RocketHideout4EndBattleText3:: ; 823bc (20:63bc)
-	text "Ayaya!"
-	prompt
-
-_RocketHide4AfterBattleText3:: ; 823c4 (20:63c4)
-	text "BOSS! I'm sorry I"
-	line "failed you!"
-	done
-
 _RocketHideout4BattleText4:: ; 823e2 (20:63e2)
 	text "The elevator"
 	line "doesn't work? Who"

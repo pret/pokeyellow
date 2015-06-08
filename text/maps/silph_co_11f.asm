@@ -104,21 +104,6 @@ _SilphCo10Text_62335:: ; 85131 (21:5131)
 	line "shall return!"
 	done
 
-_SilphCo11BattleText1:: ; 851d6 (21:51d6)
-	text "Stop right there!"
-	line "Don't you move!"
-	done
-
-_SilphCo11EndBattleText1:: ; 851f8 (21:51f8)
-	text "Don't..."
-	line "Please!"
-	prompt
-
-_SilphCo11AfterBattleText1:: ; 85209 (21:5209)
-	text "So, you want to"
-	line "see my BOSS?"
-	done
-
 _SilphCo11BattleText2:: ; 85227 (21:5227)
 	text "Halt! Do you have"
 	line "an appointment"
@@ -134,10 +119,5 @@ _SilphCo11AfterBattleText2:: ; 8526a (21:526a)
 	text "Watch your step,"
 	line "my BOSS likes his"
 	cont "#MON tough!"
-	done
-
-_SilphCo10Text_6237b:: ; 8529a (21:529a)
-	text "The monitor has"
-	line "#MON on it!"
 	done
 

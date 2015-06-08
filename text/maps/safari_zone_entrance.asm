@@ -3,6 +3,25 @@ _SafariZoneEntranceText1:: ; 9e6c7 (27:66c7)
 	line "SAFARI ZONE!"
 	done
 
+SafariZoneEntranceText_9e814:: ; 9e814 (27:6814)
+	text "Leaving early?@@"
+
+_SafariZoneEntranceText_753bb:: ; 9e825 (27:6825)
+	text "Please return any"
+	line "SAFARI BALLs you"
+	cont "have left."
+	done
+
+_SafariZoneEntranceText_753c0:: ; 9e854 (27:6854)
+	text "Good Luck!"
+	done
+
+_SafariZoneEntranceText_753c5:: ; 9e860 (27:6860)
+	text "Did you get a"
+	line "good haul?"
+	cont "Come again!"
+	done
+
 SafariZoneEntranceText_9e6e4:: ; 9e6e4 (27:66e4)
 	text "For just ¥500,"
 	line "you can catch all"
@@ -13,7 +32,9 @@ SafariZoneEntranceText_9e6e4:: ; 9e6e4 (27:66e4)
 	line "join the hunt?@@"
 
 SafariZoneEntranceText_9e747:: ; 9e747 (27:6747)
-	text "That'll be ¥500"
+	text "That'll be ¥@"
+	TX_BCD wSubtrahend, $c3
+	text ","
 	line "please!"
 
 	para "We only use a"
@@ -39,25 +60,6 @@ _SafariZoneEntranceText_75365:: ; 9e7e3 (27:67e3)
 _SafariZoneEntranceText_7536a:: ; 9e7fb (27:67fb)
 	text "Oops! Not enough"
 	line "money!"
-	done
-
-SafariZoneEntranceText_9e814:: ; 9e814 (27:6814)
-	text "Leaving early?@@"
-
-_SafariZoneEntranceText_753bb:: ; 9e825 (27:6825)
-	text "Please return any"
-	line "SAFARI BALLs you"
-	cont "have left."
-	done
-
-_SafariZoneEntranceText_753c0:: ; 9e854 (27:6854)
-	text "Good Luck!"
-	done
-
-_SafariZoneEntranceText_753c5:: ; 9e860 (27:6860)
-	text "Did you get a"
-	line "good haul?"
-	cont "Come again!"
 	done
 
 _SafariZoneEntranceText_753e6:: ; 9e886 (27:6886)

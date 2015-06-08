@@ -31,7 +31,7 @@ _BikeShopText_1d824:: ; 98eb2 (26:4eb2)
 
 _BikeShopText_1d82a:: ; 98ee0 (26:4ee0)
 	text "Come back again"
-	line "some time!"
+	line "sometime!"
 	done
 
 _BikeShopText_1d82f:: ; 98efc (26:4efc)

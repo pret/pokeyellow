@@ -208,3 +208,46 @@ _CinnabarGymText_75ac7:: ; a0dd9 (28:4dd9)
 	line "that fire brand!"
 	done
 
+_CinnabarGymText_1::
+	text "This GYM is also"
+	line "known as the QUIZ"
+	cont "GYM."
+
+	para "You have to take a"
+	line "quiz if you want"
+	cont "to see BLAINE."
+
+	para "You don't have to"
+	line "fight us if you"
+	cont "get it right."
+	done
+
+_CinnabarGymText_2::
+	text "Think you can do"
+	line "it?"
+	done
+
+_CinnabarGymText_3::
+	text "This one's tricky!"
+	done
+
+_CinnabarGymText_4::
+	text "#MON enjoy"
+	line "quizzes too!"
+	done
+
+_CinnabarGymText_5::
+	text "I like it here at"
+	line "QUIZ GYM."
+	done
+
+_CinnabarGymText_6::
+	text "This is the last"
+	line "question."
+	done
+
+_CinnabarGymText_7::
+	text "Come on, answer"
+	line "the question!"
+	done
+

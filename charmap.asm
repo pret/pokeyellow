@@ -151,6 +151,8 @@ charmap "<pkmn>", $4a ; PkMn
 charmap "@", $50
 charmap "#", $54
 ;charmap "POKé", $54
+charmap "′", $71
+charmap "″", $73
 charmap "…", $75
 
 charmap "┌", $79

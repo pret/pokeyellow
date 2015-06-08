@@ -1,2 +1,2 @@
-INCLUDE "yellow.asm"
+INCLUDE "charmap.asm"
 INCLUDE "text.asm"

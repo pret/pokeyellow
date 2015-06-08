@@ -1,3 +1,25 @@
+_VermilionGymText_5cb6d:: ; 9aaa5 (26:6aa5)
+	text "Ten-hut! Welcome"
+	line "to VERMILION GYM!"
+
+	para "Will you look at"
+	line "that, a pint-size"
+	cont "challenger!"
+
+	para "Hahaha! You've got"
+	line "big and brassy"
+	cont "nerves to take me"
+	cont "on with your puny"
+	cont "power!"
+
+	para "A #MON battle"
+	line "is war! I'll show"
+	cont "you, civilian!"
+
+	para "I'll shock you"
+	line "into surrender!"
+	done
+
 _VermilionGymText_5cb72:: ; 9c000 (27:4000)
 	text "A little word of"
 	line "advice, kid!"

@@ -16,6 +16,10 @@ _MtMoonPokecenterText3:: ; 8a929 (22:6929)
 	cont "news!"
 	done
 
+_MtMoonPokecenterText5:: ; 8aa5a (22:6a5a)
+	db $0
+	done
+
 _MtMoonPokecenterText_4935c:: ; 8a976 (22:6976)
 	text "MAN: Hello, there!"
 	line "Have I got a deal"
@@ -41,9 +45,5 @@ _MtMoonPokecenterText_49366:: ; 8aa17 (22:6a17)
 _MtMoonPokecenterText_4936b:: ; 8aa39 (22:6a39)
 	text "MAN: Well, I don't"
 	line "give refunds!"
-	done
-
-_MtMoonPokecenterText5:: ; 8aa5a (22:6a5a)
-	db $0
 	done
 

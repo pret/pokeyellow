@@ -6,7 +6,7 @@ _MtMoonJessieJamesText2::
 	text "That fossil is"
 	line "TEAM ROCKET's!"
 
-	para "Surrender now, or"
+	para "Surrender now, or "
 	line "prepare to fight!"
 	done
 
@@ -74,24 +74,6 @@ _MtMoon3Text_49f94:: ; 80a37 (20:4a37)
 _MtMoon3Text_49f99:: ; 80a93 (20:4a93)
 	text "All right. Then"
 	line "this is mine!@@"
-
-_MtMoon3BattleText2:: ; 80ab3 (20:4ab3)
-	text "TEAM ROCKET will"
-	line "find the fossils,"
-	cont "revive and sell"
-	cont "them for cash!"
-	done
-
-_MtMoon3EndBattleText2:: ; 80af6 (20:4af6)
-	text "Urgh!"
-	line "Now I'm mad!"
-	prompt
-
-_MtMoon3AfterBattleText2:: ; 80b09 (20:4b09)
-	text "You made me mad!"
-	line "TEAM ROCKET will"
-	cont "blacklist you!"
-	done
 
 _MtMoon3BattleText3:: ; 80b3b (20:4b3b)
 	text "We, TEAM ROCKET,"

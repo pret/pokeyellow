@@ -33,7 +33,6 @@ _Museum2FText5:: ; 96911 (25:6911)
 	line "soon, I promise!"
 	done
 
-IF DEF(_YELLOW)
 _Museum2FPikachuText1::
 	text "Your PIKACHU looks"
 	line "untamed."
@@ -46,7 +45,7 @@ _Museum2FPikachuText2::
 	line "that PIKACHU off"
 	cont "you, but it's too"
 	cont "attached to you."
-ENDC
+	done
 
 _Museum2FText6:: ; 96933 (25:6933)
 	text "SPACE SHUTTLE"

@@ -1,6 +1,6 @@
 _SilphCo10Text_5a1d3:: ; 84d8d (21:4d8d)
 	text "Waaaaa!"
-	cont "I'm scared!"
+	line "I'm scared!"
 	done
 
 _SilphCo10Text_5a1d8:: ; 84da1 (21:4da1)

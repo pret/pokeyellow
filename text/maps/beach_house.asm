@@ -27,7 +27,7 @@ _SurfinDudeText4::
 	done
 
 _BeachHousePikachuText::
-	text "PIKACHU: Pikaa."
+	text "PIKACHU: Pikaa"
 	done
 
 _BeachHouseSign1Text1::
@@ -80,7 +80,7 @@ _BeachHousePrinterText2::
 	line "PRINTER, it says.@@"
 
 _BeachHousePrinterText3::
-	text "The Hi.Score is"
+	text "The Hi-Score is"
 	line "shown."
 
 	para "PRINT it out?"
@@ -90,7 +90,7 @@ _BeachHousePrinterText4::
 	text "SUMMER BEACH HOUSE"
 	line "PRINTER, it says."
 
-	para "The Hi.Score is"
+	para "The Hi-Score is"
 	line "shown."
 
 	para "PRINT it out?"
