@@ -1,57 +1,77 @@
-PlayDefaultMusic:: ; 2307 (0:2307)
+PlayDefaultMusic:: ; 216b (0:216b)
 	call WaitForSoundToFinish
 	xor a
 	ld c, a
 	ld d, a
 	ld [wcfca], a
-	jr asm_2324
+	jr asm_2188
 
 Func_2312:: ; 2312 (0:2312)
 	ld c, $a
 	ld d, $0
 	ld a, [wd72e]
 	bit 5, a
-	jr z, asm_2324
+	jr z, asm_2118
 	xor a
 	ld [wcfca], a
 	ld c, $8
 	ld d, c
-asm_2324:: ; 2324 (0:2324)
+asm_2118:: ; 2118 (0:2118)
 	ld a, [wWalkBikeSurfState]
 	and a
-	jr z, .asm_2343
+	jr z, .asm_21ac
 	cp $2
-	jr z, .asm_2332
+	jr z, .asm_219b
+	call Func_21c8
+	jr c, .asm_21ac
 	ld a, MUSIC_BIKE_RIDING
-	jr .asm_2334
-.asm_2332
+	jr .asm_219d
+.asm_219b
 	ld a, MUSIC_SURFING
-.asm_2334
+.asm_219d
 	ld b, a
 	ld a, d
 	and a
 	ld a, BANK(Music_BikeRiding)
-	jr nz, .asm_233e
+	jr nz, .asm_21a7
 	ld [wc0ef], a
-.asm_233e
+.asm_21a7
 	ld [wc0f0], a
-	jr .asm_234c
-.asm_2343
+	jr .asm_21b5
+.asm_21ac
 	ld a, [wd35b]
 	ld b, a
-	call Func_2385
-	jr c, .asm_2351
-.asm_234c
+	call Func_21f5
+	jr c, .asm_21ba
+.asm_21b5
 	ld a, [wcfca]
 	cp b
 	ret z
-.asm_2351
+.asm_21ba
 	ld a, c
 	ld [wMusicHeaderPointer], a
 	ld a, b
 	ld [wcfca], a
 	ld [wc0ee], a
 	jp PlaySound
+
+Func_21c8:: ; 21c8 (0:21c8)
+	ld a,[W_CURMAP]
+	cp ROUTE_23
+	jr z,.asm_21e1
+	cp VICTORY_ROAD_1
+	jr z,.asm_21e1
+	cp VICTORY_ROAD_2
+	jr z,.asm_21e1
+	cp VICTORY_ROAD_3
+	jr z,.asm_21e1
+	cp INDIGO_PLATEAU
+	jr z,.asm_21e1
+	and a
+	ret
+.asm_21e1
+	scf
+	ret
 
 Func_235f:: ; 235f (0:235f)
 	ld a, [wc0ef]
@@ -81,7 +101,7 @@ Func_235f:: ; 235f (0:235f)
 	jr nz, .asm_237a
 	ret
 
-Func_2385:: ; 2385 (0:2385)
+Func_21f5:: ; 21f5 (0:21f5)
 	ld a, [wd35c]
 	ld e, a
 	ld a, [wc0ef]
