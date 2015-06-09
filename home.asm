@@ -21,7 +21,7 @@ SECTION "rst 38", ROM0 [$38]
 SECTION "vblank", ROM0 [$40]
 	jp VBlank
 SECTION "hblank", ROM0 [$48]
-	rst $38
+	jp HBlank
 SECTION "timer",  ROM0 [$50]
 	jp Timer
 SECTION "serial", ROM0 [$58]
