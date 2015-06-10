@@ -1,6 +1,6 @@
 # Pokémon Yellow
 
-This is not a buildable disassembly of Pokémon Yellow. This is here as an incomplete documentation of Yellow differences. For a buildable disassembly (with uses of incbins), refer to [here]. 
+This is not a buildable disassembly of Pokémon Yellow. This is here as a (currently incomplete) documentation of Yellow differences. For a buildable disassembly (with uses of incbins), refer to [here]. 
 
 Expect this to be completed in 3000 years.
 
