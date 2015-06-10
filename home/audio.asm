@@ -278,7 +278,7 @@ Func_22ec:: ; 22ec (0:22ec)
 	jr .done
 .checkForBank1F
 	cp BANK(Func_7d10d)
-	jr nz, .unknownBank
+	jr nz, .bank20
 	ld a, b
 	call Func_7d10d
 	jr .done
