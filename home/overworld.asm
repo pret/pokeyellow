@@ -644,7 +644,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a,$2
 	ld [wd431],a
 	call LoadMapHeader ; 0dab (0:0dab)
-	call Func_2312 ; music
+	call Func_2176 ; music
 	ld b,$09
 	call GoPAL_SET
 ; Since the sprite set shouldn't change, this will just update VRAM slots at
@@ -741,7 +741,7 @@ HandleBlackOut:: ; 0762 (0:0762)
 	switchbank SpecialWarpIn ; also Bank(SpecialEnterMap)
 	callab ResetStatusAndHalveMoneyOnBlackout ; 3c:4274
 	call SpecialWarpIn
-	call Func_2312
+	call Func_2176
 	jp SpecialEnterMap
 
 StopMusic:: ; 0788 (0:0788)
@@ -1993,8 +1993,8 @@ LoadMapData:: ; 1241 (0:1241)
 	ld a,[W_FLAGS_D733]
 	bit 1,a
 	jr nz,.restoreRomBank
-	call Func_235f ; music related
-	call Func_2312 ; music related
+	call Func_21e5 ; music related
+	call Func_2176 ; music related
 .restoreRomBank
 	pop af
 	ld [H_LOADEDROMBANK],a
