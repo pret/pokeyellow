@@ -257,7 +257,7 @@ Func_22d6:: ; 22d6 (0:22d6)
 	pop hl
 	ret
 	
-Func_22ec:: ; 22dc (0:22ec)
+Func_22ec:: ; 22ec (0:22ec)
 ; incomplete
 	ld a,[H_LOADEDROMBANK]
 	push af
@@ -268,32 +268,25 @@ Func_22ec:: ; 22dc (0:22ec)
 .bank02
 	ld a, b
 	call Func_984e
-	jr .asm_240b
+	jr .done
 .checkForBank08
 	cp BANK(Func_218bb)
-	jr nz, .bank1F
+	jr nz, .checkForBank1F
 .bank08
 	ld a, b
 	call Func_22035
-	jr .asm_240b
-.bank1F
+	jr .done
+.checkForBank1F
+	cp BANK(Func_7d10d)
+	jr nz, .unknownBank
 	ld a, b
-	call Func_7d8ea
-.asm_240b
-	ld a, [$ffb9]
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	jr .asm_2425
-.asm_2414
-	ld a, b
-	ld [wcfca], a
-	ld a, [wMusicHeaderPointer]
-	ld [wcfc8], a
-	ld [wcfc9], a
-	ld a, b
-	ld [wMusicHeaderPointer], a
-.asm_2425
-	pop bc
-	pop de
-	pop hl
+	call Func_7d10d
+	jr .done
+.bank20
+	ld a,b
+	call Func_82bd4
+.done
+	pop af
+	call BankswitchCommon
 	ret
+
