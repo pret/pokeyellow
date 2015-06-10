@@ -1,6 +1,6 @@
 # Pokémon Yellow
 
-This is not a buildable disassembly of Pokémon Yellow. This is here so I can put all Yellow differences that I find, that can't be specified by "IF(DEF)"s.
+This is not a buildable disassembly of Pokémon Yellow. This is here as an incomplete documentation of Yellow differences. For a buildable disassembly (with uses of incbins), refer to [here]. 
 
 Expect this to be completed in 3000 years.
 
@@ -25,3 +25,4 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 [pokecrystal]: https://github.com/kanzure/pokecrystal
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
+[here]: https://github.com/dannye/pokeyellow
