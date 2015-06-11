@@ -3,73 +3,73 @@
 ; first byte $FE, next byte # of items, last byte $FF
 
 ; Viridian
-ViridianMartText6:: ; 2442 (0:2442)
+ViridianMartText6:: ; 233b (0:233b)
 	db $FE,5,POKE_BALL,POTION,ANTIDOTE,PARLYZ_HEAL,BURN_HEAL,$FF
 
 ; Pewter
-PewterMartText1:: ; 2449 (0:2449)
+PewterMartText1:: ; 2343 (0:2343)
 	db $FE,7,POKE_BALL,POTION,ESCAPE_ROPE,ANTIDOTE,BURN_HEAL,AWAKENING
 	db PARLYZ_HEAL,$FF
 
 ; Cerulean
-CeruleanMartText1:: ; 2453 (0:2453)
+CeruleanMartText1:: ; 234d (0:234d)
 	db $FE,8,POKE_BALL,POTION,ESCAPE_ROPE,REPEL,ANTIDOTE,BURN_HEAL,AWAKENING
 	db PARLYZ_HEAL,$FF
 
-; Bike shop
+; Bike shop ; 2358 (0:2358)
 	db $FE,1,BICYCLE,$FF
 
 ; Vermilion
-VermilionMartText1:: ; 2461 (0:2461)
+VermilionMartText1:: ; 235c (0:235c)
 	db $FE,6,POKE_BALL,SUPER_POTION,ICE_HEAL,AWAKENING,PARLYZ_HEAL
 	db REPEL,$FF
 
 ; Lavender
-LavenderMartText1:: ; 246a (0:246a)
+LavenderMartText1:: ; 2365 (0:2365)
 	db $FE,9,GREAT_BALL,SUPER_POTION,REVIVE,ESCAPE_ROPE,SUPER_REPEL
 	db ANTIDOTE,BURN_HEAL,ICE_HEAL,PARLYZ_HEAL,$FF
 
 ; Celadon Dept. Store 2F (1)
-CeladonMart2Text1:: ; 2476 (0:2476)
+CeladonMart2Text1:: ; 2371 (0:2371)
 	db $FE,9,GREAT_BALL,SUPER_POTION,REVIVE,SUPER_REPEL,ANTIDOTE
 	db BURN_HEAL,ICE_HEAL,AWAKENING,PARLYZ_HEAL,$FF
 
 ; Celadon Dept. Store 2F (2)
-CeladonMart2Text2:: ; 2482 (0:2482)
+CeladonMart2Text2:: ; 237d (0:237d)
 	db $FE,9,TM_32,TM_33,TM_02,TM_07,TM_37,TM_01,TM_05,TM_09,TM_17,$FF
 
 ; Celadon Dept. Store 4F
-CeladonMart4Text1:: ; 248e (0:248e)
+CeladonMart4Text1:: ; 2389 (0:2389)
 	db $FE,5,POKE_DOLL,FIRE_STONE,THUNDER_STONE,WATER_STONE,LEAF_STONE,$FF
 
 ; Celadon Dept. Store 5F (1)
-CeladonMart5Text3:: ; 2496 (0:2496)
+CeladonMart5Text3:: ; 2391 (0:2391)
 	db $FE,7,X_ACCURACY,GUARD_SPEC_,DIRE_HIT,X_ATTACK,X_DEFEND,X_SPEED
 	db X_SPECIAL,$FF
 
 ; Celadon Dept. Store 5F (2)
-CeladonMart5Text4:: ; 24a0 (0:24a0)
+CeladonMart5Text4:: ; 239b (0:239b)
 	db $FE,5,HP_UP,PROTEIN,IRON,CARBOS,CALCIUM,$FF
 
 ; Fuchsia
-FuchsiaMartText1:: ; 24a8 (0:24a8)
+FuchsiaMartText1:: ; 23a3 (0:23a3)
 	db $FE,6,ULTRA_BALL,GREAT_BALL,HYPER_POTION,REVIVE,FULL_HEAL
 	db SUPER_REPEL,$FF
 
-; unused? 24b1
+; unused? 23ac (0:23ac)
 	db $FE,5,GREAT_BALL,HYPER_POTION,SUPER_POTION,FULL_HEAL,REVIVE,$FF
 
 ; Cinnabar
-CinnabarMartText1:: ; 24b9 (0:24b9)
+CinnabarMartText1:: ; 23b4 (0:23b4)
 	db $FE,7,ULTRA_BALL,GREAT_BALL,HYPER_POTION,MAX_REPEL,ESCAPE_ROPE
 	db FULL_HEAL,REVIVE,$FF
 
 ; Saffron
-SaffronMartText1:: ; 24c3 (0:24c3)
+SaffronMartText1:: ; 23be (0:23be)
 	db $FE,6,GREAT_BALL,HYPER_POTION,MAX_REPEL,ESCAPE_ROPE,FULL_HEAL
 	db REVIVE,$FF
 
 ; Indigo
-IndigoPlateauLobbyText4:: ; 24cc (0:24cc)
+IndigoPlateauLobbyText4:: ; 23c7 (0:23c7)
 	db $FE,7,ULTRA_BALL,GREAT_BALL,FULL_RESTORE,MAX_POTION,FULL_HEAL
 	db REVIVE,MAX_REPEL,$FF
