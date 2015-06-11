@@ -1109,42 +1109,43 @@ INCLUDE "home/timer.asm"
 INCLUDE "home/audio.asm"
 
 
-UpdateSprites:: ; 2429 (0:2429)
+UpdateSprites:: ; 231c (0:231c)
 	ld a, [wUpdateSpritesEnabled]
 	dec a
 	ret nz
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, Bank(_UpdateSprites)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	call _UpdateSprites
+	switchbank _UpdateSprites
+	ld a,$ff
+	ld [wUpdateSpritesEnabled],a
+	call _UpdateSprites ; 1:4bb7
+	ld a,$1
+	ld [wUpdateSpritesEnabled],a
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 	ret
 
 INCLUDE "data/mart_inventories.asm"
 
-TextScriptEndingChar:: ; 24d6 (0:24d6)
+TextScriptEndingChar:: ; 23d1 (0:23d1)
 	db "@"
-TextScriptEnd:: ; 24d7 (0:24d7)
+TextScriptEnd:: ; 23d2 (0:23d2)
 	ld hl,TextScriptEndingChar
 	ret
 
-ExclamationText:: ; 24db (0:24db)
+ExclamationText:: ; 23d6 (0:23d6)
 	TX_FAR _ExclamationText
 	db "@"
 
-GroundRoseText:: ; 24e0 (0:24e0)
+GroundRoseText:: ; 23db (0:23db)
 	TX_FAR _GroundRoseText
 	db "@"
 
-BoulderText:: ; 24e5 (0:24e5)
+BoulderText:: ; 23e0 (0:23e0)
 	TX_FAR _BoulderText
 	db "@"
 
-MartSignText:: ; 24ea (0:24ea)
+MartSignText:: ; 23e5 (0:23e5)
 	TX_FAR _MartSignText
 	db "@"
 
