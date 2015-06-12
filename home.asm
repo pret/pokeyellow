@@ -2363,7 +2363,22 @@ Func_3040:: ; 3040 (0:3040)
 	push bc
 	push de
 	push hl
-	ld a,
+	ld a,[rOBP0]
+	ld b,a
+	ld a,[wdef3]
+	cp b
+	jr z,.asm_305c
+	ld b,BANK(Func_7256c) ; 1c:656c
+	ld hl,Func_7256c
+	ld c,$1
+	call Bankswitch
+.asm_305c
+	pop hl
+	pop de
+	pop bc
+	pop af
+	ret
+	
 ; not zero if an NPC movement script is running, the player character is
 ; automatically stepping down from a door, or joypad states are being simulated
 IsPlayerCharacterBeingControlledByGame:: ; 30fd (0:30fd)
