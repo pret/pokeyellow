@@ -1149,11 +1149,11 @@ MartSignText:: ; 23e5 (0:23e5)
 	TX_FAR _MartSignText
 	db "@"
 
-PokeCenterSignText:: ; 24ef (0:24ef)
+PokeCenterSignText:: ; 23ea (0:23ea)
 	TX_FAR _PokeCenterSignText
 	db "@"
 
-Predef5CText:: ; 24f4 (0:24f4)
+Predef5CText:: ; 23ef (0:23ef)
 ; XXX better label (what does predef $5C do?)
 	db $08 ; asm
 	predef PickupItem
