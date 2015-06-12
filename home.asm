@@ -1163,7 +1163,7 @@ Predef5CText:: ; 23ef (0:23ef)
 INCLUDE "home/pic.asm"
 
 
-ResetPlayerSpriteData:: ; 28a6 (0:28a6)
+ResetPlayerSpriteData:: ; 279c (0:279c)
 	ld hl, wSpriteStateData1
 	call ResetPlayerSpriteData_ClearSpriteData
 	ld hl, wSpriteStateData2
@@ -1179,34 +1179,36 @@ ResetPlayerSpriteData:: ; 28a6 (0:28a6)
 	ret
 
 ; overwrites sprite data with zeroes
-ResetPlayerSpriteData_ClearSpriteData:: ; 28c4 (0:28c4)
+ResetPlayerSpriteData_ClearSpriteData:: ; 27ba (0:27ba)
 	ld bc, $10
 	xor a
-	jp FillMemory
+	call FillMemory ; XXX why replaced with call + ret?
+	ret 
+	;jp FillMemory
 
-Func_28cb:: ; 28cb (0:28cb)
+Func_27c2:: ; 27c2 (0:27c2)
 	ld a, [wMusicHeaderPointer]
 	and a
-	jr nz, .asm_28dc
+	jr nz, .asm_27d3
 	ld a, [wd72c]
 	bit 1, a
 	ret nz
 	ld a, $77
-	ld [$ff24], a
+	ld [rNR50], a
 	ret
-.asm_28dc
+.asm_27d3
 	ld a, [wcfc9]
 	and a
-	jr z, .asm_28e7
+	jr z, .asm_27de
 	dec a
 	ld [wcfc9], a
 	ret
-.asm_28e7
+.asm_27de
 	ld a, [wcfc8]
 	ld [wcfc9], a
-	ld a, [$ff24]
+	ld a, [rNR50]
 	and a
-	jr z, .asm_2903
+	jr z, .asm_27fa
 	ld b, a
 	and $f
 	dec a
@@ -1217,9 +1219,9 @@ Func_28cb:: ; 28cb (0:28cb)
 	dec a
 	swap a
 	or c
-	ld [$ff24], a
+	ld [rNR50], a
 	ret
-.asm_2903
+.asm_27fa
 	ld a, [wMusicHeaderPointer]
 	ld b, a
 	xor a
@@ -1233,9 +1235,13 @@ Func_28cb:: ; 28cb (0:28cb)
 	ld [wc0ee], a
 	jp PlaySound
 
+UnknownText_2812:: ; 2812 (0:2812)
+	TX_FAR _UnknownText_2812 ; 2c:749a
+	db "@"
+
 ; this function is used to display sign messages, sprite dialog, etc.
 ; INPUT: [$ff8c] = sprite ID or text ID
-DisplayTextID:: ; 2920 (0:2920)
+DisplayTextID:: ; 2817 (0:2817)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	callba DisplayTextIDInit ; initialization
@@ -1257,6 +1263,8 @@ DisplayTextID:: ; 2920 (0:2920)
 	ld [wSpriteIndex],a
 	and a
 	jp z,DisplayStartMenu
+	cp a,$d4 ; new yellow asm
+	jp z,DisplayUnknownText_29c6
 	cp a,$d3
 	jp z,DisplaySafariGameOverText
 	cp a,$d0
@@ -1274,20 +1282,18 @@ DisplayTextID:: ; 2920 (0:2920)
 .spriteHandling
 ; get the text ID of the sprite
 	push hl
-	push de
-	push bc
-	callba UpdateSpriteFacingOffsetAndDelayMovement ; update the graphics of the sprite the player is talking to (to face the right direction)
-	pop bc
-	pop de
+	;push de
+	;push bc
+	;callba UpdateSpriteFacingOffsetAndDelayMovement ; update the graphics of the sprite the player is talking to (to face the right direction)
+	;pop bc
+	;pop de
 	ld hl,W_MAPSPRITEDATA ; NPC text entries
 	ld a,[$ff8c]
 	dec a
 	add a
-	add l
-	ld l,a
-	jr nc,.noCarry
-	inc h
-.noCarry
+	ld e,a
+	ld d,$0
+	add hl,de
 	inc hl
 	ld a,[hl] ; a = text ID of the sprite
 	pop hl
@@ -1295,7 +1301,8 @@ DisplayTextID:: ; 2920 (0:2920)
 ; look up the address of the text in the map's text entries
 	dec a
 	ld e,a
-	sla e
+	ld d,$0
+	add hl,de
 	add hl,de
 	ld a,[hli]
 	ld h,[hl]
@@ -1324,25 +1331,25 @@ DisplayTextID:: ; 2920 (0:2920)
 	callab CableClubNPC
 	jr AfterDisplayingTextID
 .notSpecialCase
-	call Func_3c59 ; display the text
+	call Func_3c46 ; display the text (actually 3c46)
 	ld a,[wDoNotWaitForButtonPressAfterDisplayingText]
 	and a
 	jr nz,HoldTextDisplayOpen
 
-AfterDisplayingTextID:: ; 29d6 (0:29d6)
+AfterDisplayingTextID:: ; 28c6 (0:28c6)
 	ld a,[wcc47]
 	and a
 	jr nz,HoldTextDisplayOpen
 	call WaitForTextScrollButtonPress ; wait for a button press after displaying all the text
 
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
-HoldTextDisplayOpen:: ; 29df (0:29df)
+HoldTextDisplayOpen:: ; 28cf (0:28cf)
 	call Joypad
 	ld a,[hJoyHeld]
 	bit 0,a ; is the A button being pressed?
 	jr nz,HoldTextDisplayOpen
 
-CloseTextDisplay:: ; 29e8 (0:29e8)
+CloseTextDisplay:: ; 28d8 (0:28d8)
 	ld a,[W_CURMAP]
 	call SwitchToMapRomBank
 	ld a,$90
@@ -1363,9 +1370,6 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	add hl,de
 	dec c
 	jr nz,.restoreSpriteFacingDirectionLoop
-	ld a,BANK(InitMapSprites)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
 	call InitMapSprites ; reload sprite tile pattern data (since it was partially overwritten by text tile patterns)
 	ld hl,wFontLoaded
 	res 0,[hl]
@@ -1374,11 +1378,10 @@ CloseTextDisplay:: ; 29e8 (0:29e8)
 	call z,LoadPlayerSpriteGraphics
 	call LoadCurrentMapView
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	jp UpdateSprites
 
-DisplayPokemartDialogue:: ; 2a2e (0:2a2e)
+DisplayPokemartDialogue:: ; 2915 (0:2915)
 	push hl
 	ld hl,PokemartGreetingText
 	call PrintText
@@ -1387,22 +1390,14 @@ DisplayPokemartDialogue:: ; 2a2e (0:2a2e)
 	call LoadItemList
 	ld a,$02
 	ld [wListMenuID],a ; selects between subtypes of menus
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,Bank(DisplayPokemartDialogue_)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call DisplayPokemartDialogue_
-	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	homecall DisplayPokemartDialogue_
 	jp AfterDisplayingTextID
 
-PokemartGreetingText:: ; 2a55 (0:2a55)
+PokemartGreetingText:: ; 2938 (0:2938)
 	TX_FAR _PokemartGreetingText
 	db "@"
 
-LoadItemList:: ; 2a5a (0:2a5a)
+LoadItemList:: ; 293d (0:293d)
 	ld a,$01
 	ld [wUpdateSpritesEnabled],a
 	ld a,h
@@ -1418,33 +1413,25 @@ LoadItemList:: ; 2a5a (0:2a5a)
 	jr nz,.loop
 	ret
 
-DisplayPokemonCenterDialogue:: ; 2a72 (0:2a72)
+DisplayPokemonCenterDialogue:: ; 2955 (0:2955)
 	xor a
 	ld [$ff8b],a
 	ld [$ff8c],a
 	ld [$ff8d],a
 	inc hl
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,Bank(DisplayPokemonCenterDialogue_)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call DisplayPokemonCenterDialogue_
-	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	homecall DisplayPokemonCenterDialogue_
 	jp AfterDisplayingTextID
 
-DisplaySafariGameOverText:: ; 2a90 (0:2a90)
+DisplaySafariGameOverText:: ; 296f (0:296f)
 	callab PrintSafariGameOverText
 	jp AfterDisplayingTextID
 
-DisplayPokemonFaintedText:: ; 2a9b (0:2a9b)
+DisplayPokemonFaintedText:: ; 297a (0:297a)
 	ld hl,PokemonFaintedText
 	call PrintText
 	jp AfterDisplayingTextID
 
-PokemonFaintedText:: ; 2aa4 (0:2aa4)
+PokemonFaintedText:: ; 2983 (0:2983)
 	TX_FAR _PokemonFaintedText
 	db "@"
 
@@ -4386,7 +4373,7 @@ PrintText:: ; 3c49 (0:3c49)
 	call UpdateSprites
 	call Delay3
 	pop hl
-Func_3c59:: ; 3c59 (0:3c59)
+Func_3c46:: ; 3c46 (0:3c46)
 	bcCoord 1, 14
 	jp TextCommandProcessor
 
