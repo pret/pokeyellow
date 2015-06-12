@@ -2112,7 +2112,7 @@ GetItemName:: ; 2ec4 (0:2ec4)
 	pop hl
 	ret
 
-GetMachineName:: ; 2ff3 (0:2ff3)
+GetMachineName:: ; 2ee8 (0:2ee8)
 ; copies the name of the TM/HM in [wd11e] to wcd6d
 	push hl
 	push de
@@ -2157,7 +2157,6 @@ GetMachineName:: ; 2ff3 (0:2ff3)
 	inc de
 	ld a,"@"
 	ld [de],a
-
 	pop af
 	ld [wd11e],a
 	pop bc
@@ -2165,14 +2164,14 @@ GetMachineName:: ; 2ff3 (0:2ff3)
 	pop hl
 	ret
 
-TechnicalPrefix:: ; 303c (0:303c)
+TechnicalPrefix:: ; 2f31 (0:2f31)
 	db "TM"
-HiddenPrefix:: ; 303e (0:303e)
+HiddenPrefix:: ; 2f33 (0:2f33)
 	db "HM"
 
 ; sets carry if item is HM, clears carry if item is not HM
 ; Input: a = item ID
-IsItemHM:: ; 3040 (0:3040)
+IsItemHM:: ; 2f35 (0:2f35)
 	cp a,HM_01
 	jr c,.notHM
 	cp a,TM_01
@@ -2183,16 +2182,16 @@ IsItemHM:: ; 3040 (0:3040)
 
 ; sets carry if move is an HM, clears carry if move is not an HM
 ; Input: a = move ID
-IsMoveHM:: ; 3049 (0:3049)
+IsMoveHM:: ; 2f3e (0:2f3e)
 	ld hl,HMMoves
 	ld de,1
 	jp IsInArray
 
-HMMoves:: ; 3052 (0:3052)
+HMMoves:: ; 2f47 (0:2f47)
 	db CUT,FLY,SURF,STRENGTH,FLASH
 	db $ff ; terminator
 
-GetMoveName:: ; 3058 (0:3058)
+GetMoveName:: ; 2f4d (0:2f4d)
 	push hl
 	ld a,MOVE_NAME
 	ld [wNameListType],a
@@ -2206,7 +2205,7 @@ GetMoveName:: ; 3058 (0:3058)
 	ret
 
 ; reloads text box tile patterns, current map view, and tileset tile patterns
-ReloadMapData:: ; 3071 (0:3071)
+ReloadMapData:: ; 2f66 (0:2f66)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,[W_CURMAP]
@@ -2217,12 +2216,11 @@ ReloadMapData:: ; 3071 (0:3071)
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
 ; reloads tileset tile patterns
-ReloadTilesetTilePatterns:: ; 3090 (0:3090)
+ReloadTilesetTilePatterns:: ; 2f83 (0:2f83)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,[W_CURMAP]
@@ -2231,20 +2229,47 @@ ReloadTilesetTilePatterns:: ; 3090 (0:3090)
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
 ; shows the town map and lets the player choose a destination to fly to
-ChooseFlyDestination:: ; 30a9 (0:30a9)
+ChooseFlyDestination:: ; 2f9a (0:2f9a)
 	ld hl,wd72e
 	res 4,[hl]
 	ld b, BANK(LoadTownMap_Fly)
 	ld hl, LoadTownMap_Fly
 	jp Bankswitch
 
+Func_2fa7:: ; 2fa7 (0:2fa7)
+	homecall Func_e8a5e
+	ret
+	
+Func_2fb7:: ; 2fb7 (0:2fb7)
+	ld a,[wUnknownSerialFlag_d49a]
+	bit 0,a
+	ret z
+	ld a,[wUnknownSerialFlag_d49b]
+	and a
+	ret nz
+	ld hl,wOverworldMap+650
+	inc [hl]
+	ld a,[hl]
+	cp $6
+	ret c
+	xor a
+	ld [hl],a
+	ld a,$0c
+	ld [wUnknownSerialFlag_d49b],a
+	ld a,$88
+	ld [rSB],a
+	ld a,$1
+	ld [rSC],a
+	ld a,START_TRANSFER_INTERNAL_CLOCK
+	ld [rSC],a
+	ret
+	
 ; causes the text box to close without waiting for a button press after displaying text
-DisableWaitingAfterTextDisplay:: ; 30b6 (0:30b6)
+DisableWaitingAfterTextDisplay:: ; 2fde (0:2fde)
 	ld a,$01
 	ld [wDoNotWaitForButtonPressAfterDisplayingText],a
 	ret
@@ -2258,7 +2283,7 @@ DisableWaitingAfterTextDisplay:: ; 30b6 (0:30b6)
 ; 00: unsucessful
 ; 01: successful
 ; 02: not able to be used right now, no extra menu displayed (only certain items use this)
-UseItem:: ; 30bc (0:30bc)
+UseItem:: ; 2fe4 (0:2fe4)
 	ld b,BANK(UseItem_)
 	ld hl,UseItem_
 	jp Bankswitch
@@ -2271,7 +2296,7 @@ UseItem:: ; 30bc (0:30bc)
 ; [wcf96] = quantity to toss
 ; OUTPUT:
 ; clears carry flag if the item is tossed, sets carry flag if not
-TossItem:: ; 30c4 (0:30c4)
+TossItem:: ; 2fec (0:2fec)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,BANK(TossItem_)
@@ -2291,7 +2316,7 @@ TossItem:: ; 30c4 (0:30c4)
 ; [wd124] = result
 ; 00: item is not key item
 ; 01: item is key item
-IsKeyItem:: ; 30d9 (0:30d9)
+IsKeyItem:: ; 3000 (0:3000)
 	push hl
 	push de
 	push bc
@@ -2304,19 +2329,41 @@ IsKeyItem:: ; 30d9 (0:30d9)
 ; function to draw various text boxes
 ; INPUT:
 ; [wTextBoxID] = text box ID
-DisplayTextBoxID:: ; 30e8 (0:30e8)
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,BANK(DisplayTextBoxID_)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call DisplayTextBoxID_
-	pop bc
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+DisplayTextBoxID:: ; 3010 (0:3010)
+	homecall_sf DisplayTextBoxID_ 
 	ret
 
+Func_3021:: ; 3021 (0:3021)
+	push af
+	ld a,[hGBC]
+	and a
+	jr z,.notgbc
+	push bc
+	push de
+	push hl
+	ld a,[rBGP]
+	ld b,a
+	ld a,[wdef2]
+	cp b
+	jr z,.asm_303b
+	callba Func_72524 ; 1c:6524
+.asm_303b
+	pop hl
+	pop de
+	pop bc
+	pop af
+	ret
+	
+Func_3040:: ; 3040 (0:3040)
+;incomplete
+	push af
+	ld a,[hGBC]
+	and a
+	jr z,.notgbc
+	push bc
+	push de
+	push hl
+	ld a,
 ; not zero if an NPC movement script is running, the player character is
 ; automatically stepping down from a door, or joypad states are being simulated
 IsPlayerCharacterBeingControlledByGame:: ; 30fd (0:30fd)
