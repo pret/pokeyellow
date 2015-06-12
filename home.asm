@@ -1435,27 +1435,42 @@ PokemonFaintedText:: ; 2983 (0:2983)
 	TX_FAR _PokemonFaintedText
 	db "@"
 
-DisplayPlayerBlackedOutText:: ; 2aa9 (0:2aa9)
+DisplayPlayerBlackedOutText:: ; 2988 (0:2988)
 	ld hl,PlayerBlackedOutText
 	call PrintText
 	ld a,[wd732]
 	res 5,a ; reset forced to use bike bit
 	ld [wd732],a
+	ld a,[wd790]
+	bit 7,a
+	jr z,.didnotblackoutinsafari
+	xor a
+	ld [W_NUMSAFARIBALLS],a
+	ld [wSafariSteps],a
+	ld [wSafariSteps+1],a
+	ld [wd790],a
+	ld [wcf0d],a
+	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+.didnotblackoutinsafari
 	jp HoldTextDisplayOpen
 
-PlayerBlackedOutText:: ; 2aba (0:2aba)
+PlayerBlackedOutText:: ; 29b3 (0:29b3)
 	TX_FAR _PlayerBlackedOutText
 	db "@"
 
-DisplayRepelWoreOffText:: ; 2abf (0:2abf)
+DisplayRepelWoreOffText:: ; 29b8 (0:29b8)
 	ld hl,RepelWoreOffText
 	call PrintText
 	jp AfterDisplayingTextID
 
-RepelWoreOffText:: ; 2ac8 (0:2ac8)
+RepelWoreOffText:: ; 29c1 (0:29c1)
 	TX_FAR _RepelWoreOffText
 	db "@"
 
+DisplayUnknownText_29c6:: ; 29c6 (0:29c6)
+	callab Func_fd004 ; 3f:5004
+	jp AfterDisplayingTextID
+	
 INCLUDE "engine/menu/start_menu.asm"
 
 ; function to count how many bits are set in a string of bytes
@@ -1464,7 +1479,7 @@ INCLUDE "engine/menu/start_menu.asm"
 ; b = length of string of bytes
 ; OUTPUT:
 ; [wd11e] = number of set bits
-CountSetBits:: ; 2b7f (0:2b7f)
+CountSetBits:: ; 2a81 (0:2a81)
 	ld c,0
 .loop
 	ld a,[hli]
@@ -1485,13 +1500,13 @@ CountSetBits:: ; 2b7f (0:2b7f)
 
 ; subtracts the amount the player paid from their money
 ; sets carry flag if there is enough money and unsets carry flag if not
-SubtractAmountPaidFromMoney:: ; 2b96 (0:2b96)
+SubtractAmountPaidFromMoney:: ; 2a98 (0:2a98)
 	ld b,BANK(SubtractAmountPaidFromMoney_)
 	ld hl,SubtractAmountPaidFromMoney_
 	jp Bankswitch
 
 ; adds the amount the player sold to their money
-AddAmountSoldToMoney:: ; 2b9e (0:2b9e)
+AddAmountSoldToMoney:: ; 2aa0 (0:2aa0)
 	ld de,wPlayerMoney + 2
 	ld hl,$ffa1 ; total price of items
 	ld c,3 ; length of money in bytes
@@ -1508,16 +1523,8 @@ AddAmountSoldToMoney:: ; 2b9e (0:2b9e)
 ; HL = address of inventory (either wNumBagItems or wNumBoxItems)
 ; [wWhichPokemon] = index (within the inventory) of the item to remove
 ; [wcf96] = quantity to remove
-RemoveItemFromInventory:: ; 2bbb (0:2bbb)
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,BANK(RemoveItemFromInventory_)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call RemoveItemFromInventory_
-	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+RemoveItemFromInventory:: ; 2abd (0:2abd)
+	homecall RemoveItemFromInventory_
 	ret
 
 ; function to add an item (in varying quantities) to the player's bag or PC box
@@ -1526,25 +1533,16 @@ RemoveItemFromInventory:: ; 2bbb (0:2bbb)
 ; [wcf91] = item ID
 ; [wcf96] = item quantity
 ; sets carry flag if successful, unsets carry flag if unsuccessful
-AddItemToInventory:: ; 2bcf (0:2bcf)
+AddItemToInventory:: ; 2acd (0:2acd)
 	push bc
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,BANK(AddItemToInventory_)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call AddItemToInventory_
-	pop bc
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	homecall_sf AddItemToInventory_
 	pop bc
 	ret
 
 ; INPUT:
 ; [wListMenuID] = list menu ID
 ; [wList] = address of the list (2 bytes)
-DisplayListMenuID:: ; 2be6 (0:2be6)
+DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a ; disable auto-transfer
 	ld a,1
@@ -1598,7 +1596,7 @@ DisplayListMenuID:: ; 2be6 (0:2be6)
 	ld c,10
 	call DelayFrames
 
-DisplayListMenuIDLoop:: ; 2c53 (0:2c53)
+DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a ; disable transfer
 	call PrintListMenuEntries
@@ -1732,18 +1730,16 @@ DisplayListMenuIDLoop:: ; 2c53 (0:2c53)
 	dec [hl]
 	jp DisplayListMenuIDLoop
 
-DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
+DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 ; text box dimensions/coordinates for just quantity
 	hlCoord 15, 9
-	ld b,1 ; height
-	ld c,3 ; width
+	ld b,$103 ; height and width
 	ld a,[wListMenuID]
 	cp a,PRICEDITEMLISTMENU
 	jr nz,.drawTextBox
 ; text box dimensions/coordinates for quantity and price
 	hlCoord 7, 9
-	ld b,1  ; height
-	ld c,11 ; width
+	ld bc,$10b  ; height and width
 .drawTextBox
 	call TextBoxBorder
 	hlCoord 16, 10
@@ -1851,13 +1847,13 @@ DisplayChooseQuantityMenu:: ; 2d57 (0:2d57)
 	ld a,$ff
 	ret
 
-InitialQuantityText:: ; 2e30 (0:2e30)
+InitialQuantityText:: ; 2d28 (0:2d28)
 	db "×01@"
 
-SpacesBetweenQuantityAndPriceText:: ; 2e34 (0:2e34)
+SpacesBetweenQuantityAndPriceText:: ; 2d2c (0:2d2c)
 	db "      @"
 
-ExitListMenu:: ; 2e3b (0:2e3b)
+ExitListMenu:: ; 2d33 (0:2d33)
 	ld a,[wCurrentMenuItem]
 	ld [wd12d],a
 	ld a,$02
@@ -1873,7 +1869,7 @@ ExitListMenu:: ; 2e3b (0:2e3b)
 	scf
 	ret
 
-PrintListMenuEntries:: ; 2e5a (0:2e5a)
+PrintListMenuEntries:: ; 2d52 (0:2d52)
 	hlCoord 5, 3
 	ld b,$09
 	ld c,$0e
@@ -1891,7 +1887,7 @@ PrintListMenuEntries:: ; 2e5a (0:2e5a)
 	jr nz,.skipMultiplying
 ; if it's an item menu
 ; item entries are 2 bytes long, so multiply by 2
-	sla a
+	add a
 	sla c
 .skipMultiplying
 	add e
@@ -2040,7 +2036,7 @@ PrintListMenuEntries:: ; 2e5a (0:2e5a)
 	ld a,[wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
 	and a ; is an item being swapped?
 	jr z,.nextListEntry
-	sla a
+	add a
 	cp c ; is it this item?
 	jr nz,.nextListEntry
 	dec hl
@@ -2062,19 +2058,19 @@ PrintListMenuEntries:: ; 2e5a (0:2e5a)
 	ld de,ListMenuCancelText
 	jp PlaceString
 
-ListMenuCancelText:: ; 2f97 (0:2f97)
+ListMenuCancelText:: ; 2e8c (0:2e8c)
 	db "CANCEL@"
 
-GetMonName:: ; 2f9e (0:2f9e)
+GetMonName:: ; 2e93 (0:2e93)
 	push hl
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,BANK(MonsterNames) ; 07
+	ld a,BANK(MonsterNames) ; 3a
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ld a,[wd11e]
 	dec a
-	ld hl,MonsterNames ; 421E
+	ld hl,MonsterNames ; 4000
 	ld c,10
 	ld b,0
 	call AddNTimes
@@ -2091,7 +2087,7 @@ GetMonName:: ; 2f9e (0:2f9e)
 	pop hl
 	ret
 
-GetItemName:: ; 2fcf (0:2fcf)
+GetItemName:: ; 2ec4 (0:2ec4)
 ; given an item ID at [wd11e], store the name of the item into a string
 ;     starting at wcd6d
 	push hl
