@@ -1,13 +1,11 @@
-DisplayStartMenu:: ; 2acd (0:2acd)
-	ld a,$04 ; hardcoded Bank, not sure what's it refers to
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a ; ROM bank 4
+DisplayStartMenu:: ; 29d1 (0:29d1)
+	switchbank StartMenu_Pokedex ; also bank for other functions
 	ld a,[wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy],a
 	ld a, (SFX_02_3f - SFX_Headers_02) / 3 ; Start menu sound
 	call PlaySound
 
-RedisplayStartMenu:: ; 2adf (0:2adf)
+RedisplayStartMenu:: ; 29e1 (0:29e1)
 	callba DrawStartMenu
 	callba PrintSafariZoneSteps ; print Safari Zone info, if in Safari Zone
 	call UpdateSprites ; move sprites
@@ -79,7 +77,7 @@ RedisplayStartMenu:: ; 2adf (0:2adf)
 	jp z,StartMenu_Option
 
 ; EXIT falls through to here
-CloseStartMenu:: ; 2b70 (0:2b70)
+CloseStartMenu:: ; 2a72 (0:2a72)
 	call Joypad
 	ld a,[hJoyPressed]
 	bit 0,a ; was A button newly pressed?
