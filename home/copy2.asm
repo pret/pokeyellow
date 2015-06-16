@@ -34,7 +34,7 @@ FarCopyDataDouble:: ; 15d4 (0:15d4)
 	call BankswitchCommon
 	ret
 
-CopyVideoDataLCDEnabled:: ; 
+CopyVideoDataLCDEnabled:: ; 15fe (0:15fe)
 ; Wait for the next VBlank, then copy c 2bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -83,7 +83,7 @@ CopyVideoDataLCDEnabled:: ;
 	ld c, a
 	jr .loop
 
-CopyVideoDataDoubleLCDEnabled::
+CopyVideoDataDoubleLCDEnabled:: ; 1636 (0:1636)
 ; Wait for the next VBlank, then copy c 1bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -182,7 +182,7 @@ ClearScreenArea:: ; 1692 (0:1692)
 	jr nz, .y
 	ret
 
-CopyScreenTileBufferToVRAM:: ; 16a4
+CopyScreenTileBufferToVRAM:: ; 16a4 (0:16a4)
 ; Copy wTileMap to the BG Map starting at b * $100.
 ; This is done in thirds of 6 rows, so it takes 3 frames.
 
@@ -217,7 +217,7 @@ CopyScreenTileBufferToVRAM:: ; 16a4
 	ld [H_VBCOPYBGSRC], a
 	ret
 
-ClearScreen::
+ClearScreen:: ; 16dd (0:16dd)
 ; Clear wTileMap, then wait
 ; for the bg map to update.
 	ld bc, 20 * 18
