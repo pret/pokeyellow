@@ -2946,18 +2946,71 @@ IsItemInBag:: ; 3493 (0:3493)
 	and a
 	ret
 
-DisplayPokedex:: ; 349b (0:349b)
+IsSurfingPikachuInParty:: ; 342a (0:342a)
+; set bit 6 of wd472 if true
+; also calls Func_3467, which is a bankswitch to Func_fcdb8
+	ld a,[wd472]
+	and $3f
+	ld [wd472],a
+	ld hl,wPartyMon1
+	ld c,PARTY_LENGTH
+	ld b,SURF
+.loop
+	ld a,[hl]
+	cp PIKACHU
+	jr nz,.notPikachu
+	push hl
+	ld de,$8
+	add hl,de
+	ld a,[hli]
+	cp b ; does pikachu have surf as one of its moves
+	jr z,.hasSurf
+	ld a,[hli]
+	cp b
+	jr z,.hasSurf
+	ld a,[hli]
+	cp b
+	jr z,.hasSurf
+	ld a,[hli]
+	cp b
+	jr nz,.noSurf
+	ld a,[wd472]
+	set 6,a
+	ld [wd472],a
+.noSurf
+	pop hl
+.notPikachu
+	ld de,wPartyMon2 - wPartyMon1
+	add hl,de
+	dec c
+	jr nz,.loop
+	call Func_3467
+	ret
+	
+Func_3467:: ; 3467 (0:3467)
+	push hl
+	push bc
+	callab Func_fcdb8
+	pop bc
+	pop hl
+	ret nc
+	ld a,[wd472]
+	set 7,a
+	ld [wd472],a
+	ret
+	
+DisplayPokedex:: ; 347d (0:347d)
 	ld [wd11e], a
 	ld b, BANK(Func_7c18)
 	ld hl, Func_7c18
 	jp Bankswitch
 
-SetSpriteFacingDirectionAndDelay:: ; 34a6 (0:34a6)
+SetSpriteFacingDirectionAndDelay:: ; 3488 (0:3488)
 	call SetSpriteFacingDirection
 	ld c, $6
 	jp DelayFrames
 
-SetSpriteFacingDirection:: ; 34ae (0:34ae)
+SetSpriteFacingDirection:: ; 3490 (0:3490)
 	ld a, $9
 	ld [H_SPRITEDATAOFFSET], a
 	call GetPointerWithinSpriteStateData1
@@ -2965,26 +3018,46 @@ SetSpriteFacingDirection:: ; 34ae (0:34ae)
 	ld [hl], a
 	ret
 
-SetSpriteImageIndexAfterSettingFacingDirection:: ; 34b9 (0:34b9)
+SetSpriteImageIndexAfterSettingFacingDirection:: ; 349b (0:349b)
 	ld de, -7
 	add hl, de
 	ld [hl], a
 	ret
 
+SpriteFunc_34a1:: ; 34a1 (0:34a1)
+	ld a,[H_SPRITEINDEX]
+	swap a
+	add $e
+	ld l,a
+	ld h,$c2
+	ld c,[hl]
+	dec c
+	swap c
+	ld a,[$ff8d]
+	add c
+	ld c,a
+	ld a,[$ff8c]
+	swap a
+	add $2
+	ld l,a
+	dec h
+	ld [hl],c
+	ret
+	
 ; tests if the player's coordinates are in a specified array
 ; INPUT:
 ; hl = address of array
 ; OUTPUT:
 ; [wWhichTrade] = if there is match, the matching array index
 ; sets carry if the coordinates are in the array, clears carry if not
-ArePlayerCoordsInArray:: ; 34bf (0:34bf)
+ArePlayerCoordsInArray:: ; 34bc (0:34bc)
 	ld a,[W_YCOORD]
 	ld b,a
 	ld a,[W_XCOORD]
 	ld c,a
 	; fallthrough
 
-CheckCoords:: ; 34c7 (0:34c7)
+CheckCoords:: ; 34c4 (0:34c4)
 	xor a
 	ld [wWhichTrade],a
 .loop
@@ -3018,7 +3091,7 @@ CheckCoords:: ; 34c7 (0:34c7)
 ; OUTPUT:
 ; [wWhichTrade] = if there is match, the matching array index
 ; sets carry if the coordinates are in the array, clears carry if not
-CheckBoulderCoords:: ; 34e4 (0:34e4)
+CheckBoulderCoords:: ; 34e1 (0:34e1)
 	push hl
 	ld hl, wSpriteStateData2 + $04
 	ld a, [H_SPRITEINDEX]
@@ -3035,14 +3108,14 @@ CheckBoulderCoords:: ; 34e4 (0:34e4)
 	pop hl
 	jp CheckCoords
 
-GetPointerWithinSpriteStateData1:: ; 34fc (0:34fc)
+GetPointerWithinSpriteStateData1:: ; 34f9 (0:34f9)
 	ld h, $c1
 	jr _GetPointerWithinSpriteStateData
 
-GetPointerWithinSpriteStateData2:: ; 3500 (0:3500)
+GetPointerWithinSpriteStateData2:: ; 34fd (0:34fd)
 	ld h, $c2
 
-_GetPointerWithinSpriteStateData:
+_GetPointerWithinSpriteStateData: ; 34ff (0:34ff)
 	ld a, [H_SPRITEDATAOFFSET]
 	ld b, a
 	ld a, [H_SPRITEINDEX]
@@ -3056,7 +3129,7 @@ _GetPointerWithinSpriteStateData:
 ; the final $ff will be replicated in the output list and a contains the number of bytes written
 ; de: input list
 ; hl: output list
-DecodeRLEList:: ; 350c (0:350c)
+DecodeRLEList:: ; 3509 (0:3509)
 	xor a
 	ld [wRLEByteCount], a     ; count written bytes here
 .listLoop
@@ -3083,7 +3156,7 @@ DecodeRLEList:: ; 350c (0:350c)
 	ret
 
 ; sets movement byte 1 for sprite [$FF8C] to $FE and byte 2 to [$FF8D]
-SetSpriteMovementBytesToFE:: ; 3533 (0:3533)
+SetSpriteMovementBytesToFE:: ; 3530 (0:3530)
 	push hl
 	call GetSpriteMovementByte1Pointer
 	ld [hl], $fe
@@ -3094,7 +3167,7 @@ SetSpriteMovementBytesToFE:: ; 3533 (0:3533)
 	ret
 
 ; sets both movement bytes for sprite [$FF8C] to $FF
-SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
+SetSpriteMovementBytesToFF:: ; 353f (0:353f)
 	push hl
 	call GetSpriteMovementByte1Pointer
 	ld [hl],$FF
@@ -3104,7 +3177,7 @@ SetSpriteMovementBytesToFF:: ; 3541 (0:3541)
 	ret
 
 ; returns the sprite movement byte 1 pointer for sprite [$FF8C] in hl
-GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
+GetSpriteMovementByte1Pointer:: ; 354b (0:354b)
 	ld h,$C2
 	ld a,[H_SPRITEINDEX] ; the sprite to move
 	swap a
@@ -3113,19 +3186,19 @@ GetSpriteMovementByte1Pointer:: ; 354e (0:354e)
 	ret
 
 ; returns the sprite movement byte 2 pointer for sprite [$FF8C] in hl
-GetSpriteMovementByte2Pointer:: ; 3558 (0:3558)
+GetSpriteMovementByte2Pointer:: ; 3555 (0:3555)
 	push de
 	ld hl,W_MAPSPRITEDATA
 	ld a,[$FF8C] ; the sprite to move
 	dec a
 	add a
-	ld d,0
 	ld e,a
+	ld d,0
 	add hl,de
 	pop de
 	ret
 
-GetTrainerInformation:: ; 3566 (0:3566)
+GetTrainerInformation:: ; 3563 (0:3563)
 	call GetTrainerName
 	ld a, [wLinkState]
 	and a
@@ -3149,6 +3222,7 @@ GetTrainerInformation:: ; 3566 (0:3566)
 	inc de
 	ld a, [hli]
 	ld [de], a
+	call IsFightingJessieJames
 	jp BankswitchBack
 .linkBattle
 	ld hl, wTrainerPicPointer
@@ -3158,11 +3232,28 @@ GetTrainerInformation:: ; 3566 (0:3566)
 	ld [hl], d
 	ret
 
-GetTrainerName:: ; 359e (0:359e)
-	ld b, BANK(GetTrainerName_)
+IsFightingJessieJames:: ; 359e (0:359e)
+	ld a,[W_TRAINERCLASS]
+	cp ROCKET
+	ret nz
+	ld a,[W_TRAINERNO]
+	cp $2a
+	ret c
+	ld de,JessieJamesPic
+	cp $2d
+	jr c,.dummy
+	ld de,JessieJamesPic ; possibly meant to add another pic
+.dummy
+	ld hl,wTrainerPicPointer
+	ld a,e
+	ld [hli],a
+	ld [hl],d
+	ret
+	
+GetTrainerName:: ; 35bb (0:35bb)
+	ld b, BANK(GetTrainerName_) ; actually 3d:67a5
 	ld hl, GetTrainerName_
 	jp Bankswitch
-
 
 HasEnoughMoney:: ; 35c3 (0:35c3)
 ; Check if the player has at least as much
@@ -3172,7 +3263,7 @@ HasEnoughMoney:: ; 35c3 (0:35c3)
 	ld c, 3
 	jp StringCmp
 
-HasEnoughCoins::
+HasEnoughCoins:: ; 35ce (0:35ce)
 ; Check if the player has at least as many
 ; coins as the 2-byte BCD value at $ffa0.
 	ld de, wPlayerCoins
@@ -3197,67 +3288,27 @@ BankswitchBack:: ; 35e8 (0:35e8)
 	call BankswitchCommon
 	ret
 	
-BankswitchCommon:: ; 3e7e (0:3e7e)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ret
-
-Bankswitch:: ; 3e84 (0:3e84)
-; self-contained bankswitch, use this when not in the home bank
-; switches to the bank in b
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call .jumptoaddress
-	pop bc
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ret
-.jumptoaddress
-	jp [hl]
-
-SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
-	push af
-	ld a,$1
-	ld [$6000],a
-	ld a,SRAM_ENABLE
-	ld [$0],a
-	pop af
-	ld [$4000],a
-	ret
-	
-PrepareRTCDataAndDisableSRAM:: ; 3eac (0:3eac)
-	push af
-	ld a,$0
-	ld [$6000],a
-	ld [$0],a
-	pop af
-	ret
-	
 ; displays yes/no choice
 ; yes -> set carry
-YesNoChoice:: ; 35ec (0:35ec)
+YesNoChoice:: ; 35ef (0:35ef)
 	call SaveScreenTilesToBuffer1
 	call InitYesNoTextBoxParameters
 	jr DisplayYesNoChoice
 
-Func_35f4:: ; 35f4 (0:35f4)
+Func_35f7:: ; 35f7 (0:35f7)
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
 	call InitYesNoTextBoxParameters
 	jp DisplayTextBoxID
 
-InitYesNoTextBoxParameters:: ; 35ff (0:35ff)
+InitYesNoTextBoxParameters:: ; 3602 (0:3602)
 	xor a ; YES_NO_MENU
 	ld [wTwoOptionMenuID], a
 	hlCoord 14, 7
 	ld bc, $80f
 	ret
 
-YesNoChoicePokeCenter:: ; 360a (0:360a)
+YesNoChoicePokeCenter:: ; 360d (0:360d)
 	call SaveScreenTilesToBuffer1
 	ld a, HEAL_CANCEL_MENU
 	ld [wTwoOptionMenuID], a
@@ -3265,20 +3316,20 @@ YesNoChoicePokeCenter:: ; 360a (0:360a)
 	ld bc, $80c
 	jr DisplayYesNoChoice
 
-Func_361a:: ; 361a (0:361a)
+Func_361d:: ; 361d (0:361d)
 	call SaveScreenTilesToBuffer1
 	ld a, WIDE_YES_NO_MENU
 	ld [wTwoOptionMenuID], a
 	hlCoord 12, 7
 	ld bc, $080d
-DisplayYesNoChoice:: ; 3628 (0:3628)
+DisplayYesNoChoice:: ; 362b (0:362b)
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 	jp LoadScreenTilesFromBuffer1
 
 ; calculates the difference |a-b|, setting carry flag if a<b
-CalcDifference:: ; 3633 (0:3633)
+CalcDifference:: ; 3636 (0:3636)
 	sub b
 	ret nc
 	cpl
@@ -3286,11 +3337,11 @@ CalcDifference:: ; 3633 (0:3633)
 	scf
 	ret
 
-MoveSprite:: ; 363a (0:363a)
+MoveSprite:: ; 363d (0:363d)
 ; move the sprite [$FF8C] with the movement pointed to by de
 ; actually only copies the movement data to wcc5b for later
 	call SetSpriteMovementBytesToFF
-MoveSprite_:: ; 363d (0:363d)
+MoveSprite_:: ; 3640 (0:3640)
 	push hl
 	push bc
 	call GetSpriteMovementByte1Pointer
@@ -3320,10 +3371,10 @@ MoveSprite_:: ; 363d (0:363d)
 	dec a
 	ld [wJoyIgnore],a
 	ld [wWastedByteCD3A],a
-	ret
+	ret	
 
 ; divides [$ffe5] by [$ffe6] and stores the quotient in [$ffe7]
-DivideBytes:: ; 366b (0:366b)
+DivideBytes:: ; 366e (0:366e)
 	push hl
 	ld hl, $ffe7
 	xor a
@@ -3344,7 +3395,7 @@ DivideBytes:: ; 366b (0:366b)
 	ret
 
 
-LoadFontTilePatterns::
+LoadFontTilePatterns:: ; 3683 (0:3683)
 	ld a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
@@ -3358,9 +3409,9 @@ LoadFontTilePatterns::
 	ld de, FontGraphics
 	ld hl, vFont
 	ld bc, BANK(FontGraphics) << 8 | $80
-	jp CopyVideoDataDouble ; if LCD is on, transfer during V-blank
+	jp CopyVideoDataDoubleLCDEnabled ; if LCD is on, transfer during V-blank
 
-LoadTextBoxTilePatterns::
+LoadTextBoxTilePatterns:: ; 36a3 (0:36a3)
 	ld a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
@@ -3374,9 +3425,9 @@ LoadTextBoxTilePatterns::
 	ld de, TextBoxGraphics
 	ld hl, vChars2 + $600
 	ld bc, BANK(TextBoxGraphics) << 8 | $20
-	jp CopyVideoData ; if LCD is on, transfer during V-blank
+	jp CopyVideoDataLCDEnabled ; if LCD is on, transfer during V-blank
 
-LoadHpBarAndStatusTilePatterns::
+LoadHpBarAndStatusTilePatterns:: ; 36c3 (0:36c3)
 	ld a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on
@@ -3390,10 +3441,9 @@ LoadHpBarAndStatusTilePatterns::
 	ld de, HpBarAndStatusGraphics
 	ld hl, vChars2 + $620
 	ld bc, BANK(HpBarAndStatusGraphics) << 8 | $1e
-	jp CopyVideoData ; if LCD is on, transfer during V-blank
+	jp CopyVideoDataLCDEnabled ; if LCD is on, transfer during V-blank
 
-
-UncompressSpriteFromDE:: ; 36eb (0:36eb)
+UncompressSpriteFromDE:: ; 36e3 (0:36e3)
 ; Decompress pic at a:de.
 	ld hl, W_SPRITEINPUTPTR
 	ld [hl], e
@@ -3401,37 +3451,34 @@ UncompressSpriteFromDE:: ; 36eb (0:36eb)
 	ld [hl], d
 	jp UncompressSpriteData
 
-
-SaveScreenTilesToBuffer2:: ; 36f4 (0:36f4)
+SaveScreenTilesToBuffer2:: ; 36ec (0:36ec)
 	ld hl, wTileMap
 	ld de, wTileMapBackup2
 	ld bc, $168
-	call CopyData
-	ret
+	jp CopyData
 
-LoadScreenTilesFromBuffer2:: ; 3701 (0:3701)
+LoadScreenTilesFromBuffer2:: ; 36f8 (0:36f8)
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
 ; loads screen tiles stored in wTileMapBackup2 but leaves H_AUTOBGTRANSFERENABLED disabled
-LoadScreenTilesFromBuffer2DisableBGTransfer:: ; 3709 (0:3709)
+LoadScreenTilesFromBuffer2DisableBGTransfer:: ; 3700 (0:3700)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wTileMapBackup2
 	ld de, wTileMap
 	ld bc, $168
-	call CopyData
-	ret
+	jp CopyData
 
-SaveScreenTilesToBuffer1:: ; 3719 (0:3719)
+SaveScreenTilesToBuffer1:: ; 370f (0:370f)
 	ld hl, wTileMap
 	ld de, wTileMapBackup
 	ld bc, $168
 	jp CopyData
 
-LoadScreenTilesFromBuffer1:: ; 3725 (0:3725)
+LoadScreenTilesFromBuffer1:: ; 371c (0:371c)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wTileMapBackup
@@ -3442,21 +3489,21 @@ LoadScreenTilesFromBuffer1:: ; 3725 (0:3725)
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ret
 
-DelayFrames:: ; 3739 (0:3739)
+DelayFrames:: ; 372f (0:372f)
 ; wait n frames, where n is the value in c
 	call DelayFrame
 	dec c
 	jr nz,DelayFrames
 	ret
 
-PlaySoundWaitForCurrent:: ; 3740 (0:3740)
+PlaySoundWaitForCurrent:: ; 3736 (0:3736)
 	push af
 	call WaitForSoundToFinish
 	pop af
 	jp PlaySound
 
 ; Wait for sound to finish playing
-WaitForSoundToFinish:: ; 3748 (0:3748)
+WaitForSoundToFinish:: ; 373e (0:373d)
 	ld a, [wLowHealthAlarm]
 	and $80
 	ret nz
@@ -3474,7 +3521,7 @@ WaitForSoundToFinish:: ; 3748 (0:3748)
 	pop hl
 	ret
 
-NamePointers:: ; 375d (0:375d)
+NamePointers:: ; 3754 (0:3754)
 	dw MonsterNames
 	dw MoveNames
 	dw UnusedNames
@@ -3483,7 +3530,7 @@ NamePointers:: ; 375d (0:375d)
 	dw wEnemyMonOT ; enemy's OT names list
 	dw TrainerNames
 
-GetName:: ; 376b (0:376b)
+GetName:: ; 3762 (0:3762)
 ; arguments:
 ; [wd0b5] = which name
 ; [wNameListType] = which list
@@ -4824,7 +4871,7 @@ GivePokemon::
 	jp Bankswitch
 
 
-Random::
+Random:: ; 3e6d (0:3e6d)
 ; Return a random number in a.
 ; For battles, use BattleRandom.
 	push hl
@@ -4837,7 +4884,46 @@ Random::
 	pop hl
 	ret
 
+BankswitchCommon:: ; 3e7e (0:3e7e)
+	ld [H_LOADEDROMBANK],a
+	ld [$2000],a
+	ret
+	
+Bankswitch:: ; 3e84 (0:3e84)
+; self-contained bankswitch, use this when not in the home bank
+; switches to the bank in b
+	ld a,[H_LOADEDROMBANK]
+	push af
+	ld a,b
+	ld [H_LOADEDROMBANK],a
+	ld [$2000],a
+	call .jumptoaddress
+	pop bc
+	ld a,b
+	ld [H_LOADEDROMBANK],a
+	ld [$2000],a
+	ret
+.jumptoaddress
+	jp [hl]
 
+SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
+	push af
+	ld a,$1
+	ld [$6000],a
+	ld a,SRAM_ENABLE
+	ld [$0],a
+	pop af
+	ld [$4000],a
+	ret
+	
+PrepareRTCDataAndDisableSRAM:: ; 3eac (0:3eac)
+	push af
+	ld a,$0
+	ld [$6000],a
+	ld [$0],a
+	pop af
+	ret
+	
 INCLUDE "home/predef.asm"
 
 
