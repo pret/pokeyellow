@@ -5817,6 +5817,7 @@ LoreleiPic::       INCBIN "pic/trainer/lorelei.pic"
 ChannelerPic::     INCBIN "pic/trainer/channeler.pic"
 AgathaPic::        INCBIN "pic/trainer/agatha.pic"
 LancePic::         INCBIN "pic/trainer/lance.pic"
+JessieJamesPic::   INCBIN "pic/ytrainer/jessiejames.pic"
 
 INCLUDE "data/mapHeaders/battlecenterm.asm"
 INCLUDE "scripts/battlecenterm.asm"
