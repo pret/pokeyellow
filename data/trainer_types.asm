@@ -1,11 +1,11 @@
-FemaleTrainerList:: ; 3434 (0:3434)
+FemaleTrainerList:: ; 33c3 (0:33c3)
 	db $c8+LASS
 	db $c8+JR__TRAINER_F
 	db $c8+BEAUTY
 	db $c8+COOLTRAINER_F
 	db $FF
 
-EvilTrainerList:: ; 3439 (0:3439)
+EvilTrainerList:: ; 33c8 (0:33c8)
 	db $c8+JUGGLER_X
 	db $c8+GAMBLER
 	db $c8+ROCKER

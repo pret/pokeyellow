@@ -2351,11 +2351,11 @@ Func_3021:: ; 3021 (0:3021)
 	pop hl
 	pop de
 	pop bc
+.notgbc
 	pop af
 	ret
 	
 Func_3040:: ; 3040 (0:3040)
-;incomplete
 	push af
 	ld a,[hGBC]
 	and a
@@ -2376,12 +2376,48 @@ Func_3040:: ; 3040 (0:3040)
 	pop hl
 	pop de
 	pop bc
+.notgbc
 	pop af
 	ret
 	
+Func_3061:: ; 3061 (0:3061)
+	push af
+	ld a,[hGBC]
+	and a
+	jr z,.notgbc
+	push bc
+	push de
+	push hl
+	ld a,[rOBP1]
+	ld b,a
+	ld a,[wdef4]
+	cp b
+	jr z,.asm_307d
+	ld b,BANK(Func_7256c)
+	ld hl,Func_7256c
+	ld c,$2
+	call Bankswitch
+.asm_307d
+	pop hl
+	pop de
+	pop bc
+.notgbc
+	pop af
+	ret
+	
+Func_3082:: ; 3082 (0:3082)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	call Func_27c2
+	callsb Func_2131e
+	callsb Func_909d
+	pop af
+	call BankswitchCommon
+	ret
+
 ; not zero if an NPC movement script is running, the player character is
 ; automatically stepping down from a door, or joypad states are being simulated
-IsPlayerCharacterBeingControlledByGame:: ; 30fd (0:30fd)
+IsPlayerCharacterBeingControlledByGame:: ; 309d (0:309d)
 	ld a, [wNPCMovementScriptPointerTableNum]
 	and a
 	ret nz
@@ -2392,7 +2428,7 @@ IsPlayerCharacterBeingControlledByGame:: ; 30fd (0:30fd)
 	and $80
 	ret
 
-RunNPCMovementScript:: ; 310e (0:310e)
+RunNPCMovementScript:: ; 30ae (0:30ae)
 	ld hl, wd736
 	bit 0, [hl]
 	res 0, [hl]
@@ -2412,14 +2448,13 @@ RunNPCMovementScript:: ; 310e (0:310e)
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wNPCMovementScriptBank]
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 	ld a, [wNPCMovementScriptFunctionNum]
 	call CallFunctionInTable
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 	ret
+	
 .NPCMovementScriptPointerTables
 	dw ProfOakMovementScriptPointerTable
 	dw PewterMuseumGuyMovementScriptPointerTable
@@ -2434,11 +2469,11 @@ EndNPCMovementScript:: ; 314e (0:314e)
 	ld hl, _EndNPCMovementScript
 	jp Bankswitch
 
-EmptyFunc2:: ; 3156 (0:3156)
+EmptyFunc2:: ; 30f2 (0:30f2)
 	ret
 
 ; stores hl in [W_TRAINERHEADERPTR]
-StoreTrainerHeaderPointer:: ; 3157 (0:3157)
+StoreTrainerHeaderPointer:: ; 30f3 (0:30f3)
 	ld a, h
 	ld [W_TRAINERHEADERPTR], a
 	ld a, l
@@ -2447,7 +2482,7 @@ StoreTrainerHeaderPointer:: ; 3157 (0:3157)
 
 ; executes the current map script from the function pointer array provided in hl.
 ; a: map script index to execute (unless overridden by [wd733] bit 4)
-ExecuteCurMapScriptInTable:: ; 3160 (0:3160)
+ExecuteCurMapScriptInTable:: ; 30fc (0:30fc)
 	push af
 	push de
 	call StoreTrainerHeaderPointer
@@ -2466,7 +2501,7 @@ ExecuteCurMapScriptInTable:: ; 3160 (0:3160)
 	ld a, [W_CURMAPSCRIPT]
 	ret
 
-LoadGymLeaderAndCityName:: ; 317f (0:317f)
+LoadGymLeaderAndCityName:: ; 311b (0:311b)
 	push de
 	ld de, wGymCityName
 	ld bc, $11
@@ -2483,7 +2518,7 @@ LoadGymLeaderAndCityName:: ; 317f (0:317f)
 ;    4 -> before battle text (into hl)
 ;    6 -> after battle text (into hl)
 ;    8 -> end battle text (into hl)
-ReadTrainerHeaderInfo:: ; 3193 (0:3193)
+ReadTrainerHeaderInfo:: ; 312f (0:312f)
 	push de
 	push af
 	ld d, $0
@@ -2522,10 +2557,10 @@ ReadTrainerHeaderInfo:: ; 3193 (0:3193)
 	pop de
 	ret
 
-TrainerFlagAction::
+TrainerFlagAction:: ; 3163 (0:3163)
 	predef_jump FlagActionPredef
 
-TalkToTrainer:: ; 31cc (0:31cc)
+TalkToTrainer:: ; 3168 (0:3168)
 	call StoreTrainerHeaderPointer
 	xor a
 	call ReadTrainerHeaderInfo     ; read flag's bit
@@ -2564,7 +2599,7 @@ TalkToTrainer:: ; 31cc (0:31cc)
 	jp StartTrainerBattle
 
 ; checks if any trainers are seeing the player and wanting to fight
-CheckFightingMapTrainers:: ; 3219 (0:3219)
+CheckFightingMapTrainers:: ; 31b5 (0:31b5)
 	call CheckForEngagingTrainers
 	ld a, [wSpriteIndex]
 	cp $ff
@@ -2583,14 +2618,14 @@ CheckFightingMapTrainers:: ; 3219 (0:3219)
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	xor a
-	ldh [$b4], a
+	ld [hJoyHeld], a
 	call TrainerWalkUpToPlayer_Bank0
 	ld hl, W_CURMAPSCRIPT
 	inc [hl]      ; increment map script index (next script function is usually DisplayEnemyTrainerTextAndStartBattle)
 	ret
 
 ; display the before battle text after the enemy trainer has walked up to the player's sprite
-DisplayEnemyTrainerTextAndStartBattle:: ; 324c (0:324c)
+DisplayEnemyTrainerTextAndStartBattle:: ; 31e8 (0:31e8)
 	ld a, [wd730]
 	and $1
 	ret nz ; return if the enemy trainer hasn't finished walking to the player's sprite
@@ -2600,7 +2635,7 @@ DisplayEnemyTrainerTextAndStartBattle:: ; 324c (0:324c)
 	call DisplayTextID
 	; fall through
 
-StartTrainerBattle:: ; 325d (0:325d)
+StartTrainerBattle:: ; 31f9 (0:31f9)
 	xor a
 	ld [wJoyIgnore], a
 	call InitBattleEnemyParameters
@@ -2613,7 +2648,7 @@ StartTrainerBattle:: ; 325d (0:325d)
 	inc [hl]        ; increment map script index (next script function is usually EndTrainerBattle)
 	ret
 
-EndTrainerBattle:: ; 3275 (0:3275)
+EndTrainerBattle:: ; 3211 (0:3211)
 	ld hl, wd126
 	set 5, [hl]
 	set 6, [hl]
@@ -2647,7 +2682,7 @@ EndTrainerBattle:: ; 3275 (0:3275)
 	res 4, [hl]
 	ret nz
 
-ResetButtonPressedAndMapScript:: ; 32c1 (0:32c1)
+ResetButtonPressedAndMapScript:: ; 325d (0:325d)
 	xor a
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
@@ -2657,13 +2692,13 @@ ResetButtonPressedAndMapScript:: ; 32c1 (0:32c1)
 	ret
 
 ; calls TrainerWalkUpToPlayer
-TrainerWalkUpToPlayer_Bank0:: ; 32cf (0:32cf)
+TrainerWalkUpToPlayer_Bank0:: ; 326b (0:326b)
 	ld b, BANK(TrainerWalkUpToPlayer)
 	ld hl, TrainerWalkUpToPlayer
 	jp Bankswitch
 
 ; sets opponent type and mon set/lvl based on the engaging trainer data
-InitBattleEnemyParameters:: ; 32d7 (0:32d7)
+InitBattleEnemyParameters:: ; 3273 (0:3273)
 	ld a, [wEngagedTrainerClass]
 	ld [W_CUROPPONENT], a ; wd059
 	ld [W_ENEMYMONORTRAINERCLASS], a
@@ -2676,25 +2711,25 @@ InitBattleEnemyParameters:: ; 32d7 (0:32d7)
 	ld [W_CURENEMYLVL], a ; W_CURENEMYLVL
 	ret
 
-GetSpritePosition1:: ; 32ef (0:32ef)
+GetSpritePosition1:: ; 328b (0:328b)
 	ld hl, _GetSpritePosition1
-	jr asm_3301
+	jr asm_329d
 
-GetSpritePosition2:: ; 32f4 (0:32f4)
+GetSpritePosition2:: ; 3290 (0:3290)
 	ld hl, _GetSpritePosition2
-	jr asm_3301 ; 0x32f7 $8
+	jr asm_329d ; 0x32f7 $8
 
-SetSpritePosition1:: ; 32f9 (0:32f9)
+SetSpritePosition1:: ; 3295 (0:3295)
 	ld hl, _SetSpritePosition1
-	jr asm_3301
+	jr asm_329d
 
-SetSpritePosition2:: ; 32fe (0:32fe)
+SetSpritePosition2:: ; 329a (0:329a)
 	ld hl, _SetSpritePosition2
-asm_3301:: ; 3301 (0:3301)
+asm_329d:: ; 329d (0:329d)
 	ld b, BANK(_GetSpritePosition1) ; BANK(_GetSpritePosition2), BANK(_SetSpritePosition1), BANK(_SetSpritePosition2)
 	jp Bankswitch ; indirect jump to one of the four functions
 
-CheckForEngagingTrainers:: ; 3306 (0:3306)
+CheckForEngagingTrainers:: ; 32a2 (0:32a2)
 	xor a
 	call ReadTrainerHeaderInfo       ; read trainer flag's bit (unused)
 	ld d, h                          ; store trainer header address in de
@@ -2742,7 +2777,7 @@ CheckForEngagingTrainers:: ; 3306 (0:3306)
 
 ; hl = text if the player wins
 ; de = text if the player loses
-SaveEndBattleTextPointers:: ; 3354 (0:3354)
+SaveEndBattleTextPointers:: ; 32f0 (0:32f0)
 	ld a, [H_LOADEDROMBANK]
 	ld [wEndBattleTextRomBank], a
 	ld a, h
@@ -2757,7 +2792,7 @@ SaveEndBattleTextPointers:: ; 3354 (0:3354)
 
 ; loads data of some trainer on the current map and plays pre-battle music
 ; [wSpriteIndex]: sprite ID of trainer who is engaged
-EngageMapTrainer:: ; 336a (0:336a)
+EngageMapTrainer:: ; 3306 (0:3306)
 	ld hl, W_MAPSPRITEEXTRADATA
 	ld d, $0
 	ld a, [wSpriteIndex]
@@ -2771,7 +2806,7 @@ EngageMapTrainer:: ; 336a (0:336a)
 	ld [wEnemyMonAttackMod], a ; wcd2e
 	jp PlayTrainerMusic
 
-PrintEndBattleText:: ; 3381 (0:3381)
+PrintEndBattleText:: ; 331d (0:331d)
 	push hl
 	ld hl, wd72d
 	bit 7, [hl]
@@ -2794,7 +2829,7 @@ PrintEndBattleText:: ; 3381 (0:3381)
 	callba FreezeEnemyTrainerSprite
 	jp WaitForSoundToFinish
 
-GetSavedEndBattleTextPointer:: ; 33b7 (0:33b7)
+GetSavedEndBattleTextPointer:: ; 3353 (0:3353)
 	ld a, [wBattleResult]
 	and a
 ; won battle
@@ -2811,7 +2846,7 @@ GetSavedEndBattleTextPointer:: ; 33b7 (0:33b7)
 	ld l, a
 	ret
 
-TrainerEndBattleText:: ; 33cf (0:33cf)
+TrainerEndBattleText:: ; 336b (0:336b)
 	TX_FAR _TrainerNameText
 	db $08
 	call GetSavedEndBattleTextPointer
@@ -2819,15 +2854,15 @@ TrainerEndBattleText:: ; 33cf (0:33cf)
 	jp TextScriptEnd
 
 ; XXX unused?
-Func_33dd:: ; 33dd (0:33dd)
-	ld a, [wFlags_0xcd60]
-	bit 0, a
-	ret nz
-	call EngageMapTrainer
-	xor a
-	ret
+;Func_33dd:: ; 33dd (0:33dd)
+;	ld a, [wFlags_0xcd60]
+;	bit 0, a
+;	ret nz
+;	call EngageMapTrainer
+;	xor a
+;	ret
 
-PlayTrainerMusic:: ; 33e8 (0:33e8)
+PlayTrainerMusic:: ; 3379 (0:3379)
 	ld a, [wEngagedTrainerClass]
 	cp $c8 + SONY1
 	ret z
@@ -2840,8 +2875,7 @@ PlayTrainerMusic:: ; 33e8 (0:33e8)
 	ret nz
 	xor a
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
-	call PlaySound      ; stop music
+	call StopAllMusic ; stop music
 	ld a, BANK(Music_MeetEvilTrainer)
 	ld [wc0ef], a
 	ld [wc0f0], a
@@ -2902,33 +2936,33 @@ DecodeArrowMovementRLE:: ; 3442 (0:3442)
 	inc hl
 	jr DecodeArrowMovementRLE
 
-FuncTX_ItemStoragePC:: ; 3460 (0:3460)
+FuncTX_ItemStoragePC:: ; 33ef (0:33ef)
 	call SaveScreenTilesToBuffer2
 	ld b, BANK(PlayerPC)
 	ld hl, PlayerPC
 	jr bankswitchAndContinue
 
-FuncTX_BillsPC:: ; 346a (0:346a)
+FuncTX_BillsPC:: ; 33f9 (0:33f9)
 	call SaveScreenTilesToBuffer2
 	ld b, BANK(BillsPC_)
 	ld hl, BillsPC_
 	jr bankswitchAndContinue
 
-FuncTX_SlotMachine:: ; 3474 (0:3474)
+FuncTX_SlotMachine:: ; 3403 (0:3403)
 ; XXX find a better name for this function
 ; special_F7
 	ld b,BANK(CeladonPrizeMenu)
 	ld hl,CeladonPrizeMenu
-bankswitchAndContinue:: ; 3479 (0:3479)
+bankswitchAndContinue:: ; 3408 (0:3408)
 	call Bankswitch
 	jp HoldTextDisplayOpen        ; continue to main text-engine function
 
-FuncTX_PokemonCenterPC:: ; 347f (0:347f)
+FuncTX_PokemonCenterPC:: ; 340e (0:340e)
 	ld b, BANK(ActivatePC)
 	ld hl, ActivatePC
 	jr bankswitchAndContinue
 
-StartSimulatingJoypadStates:: ; 3486 (0:3486)
+StartSimulatingJoypadStates:: ; 3415 (0:3415)
 	xor a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	ld [wSpriteStateData2 + $06], a ; player's sprite movement byte 1
@@ -2936,7 +2970,7 @@ StartSimulatingJoypadStates:: ; 3486 (0:3486)
 	set 7, [hl]
 	ret
 
-IsItemInBag:: ; 3493 (0:3493)
+IsItemInBag:: ; 3422 (0:3422)
 ; given an item_id in b
 ; set zero flag if item isn't in player's bag
 ; else reset zero flag
@@ -2946,7 +2980,7 @@ IsItemInBag:: ; 3493 (0:3493)
 	and a
 	ret
 
-DisplayPokedex:: ; 349b (0:349b)
+DisplayPokedex:: ; 342a (0:342a)
 	ld [wd11e], a
 	ld b, BANK(Func_7c18)
 	ld hl, Func_7c18
