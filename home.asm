@@ -3512,7 +3512,7 @@ SaveScreenTilesToBuffer1:: ; 370f (0:370f)
 	ld bc, $168
 	jp CopyData
 
-LoadScreenTilesFromBuffer1:: ; 371c (0:371c)
+LoadScreenTilesFromBuffer1:: ; 371b (0:371b)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
 	ld hl, wTileMapBackup
@@ -3524,7 +3524,7 @@ LoadScreenTilesFromBuffer1:: ; 371c (0:371c)
 	ret
 
 DelayFrames:: ; 372f (0:372f)
-; wait n frames, where n is the value in c
+; wait c frames
 	call DelayFrame
 	dec c
 	jr nz,DelayFrames
@@ -3537,7 +3537,7 @@ PlaySoundWaitForCurrent:: ; 3736 (0:3736)
 	jp PlaySound
 
 ; Wait for sound to finish playing
-WaitForSoundToFinish:: ; 373e (0:373d)
+WaitForSoundToFinish:: ; 373e (0:373e)
 	ld a, [wLowHealthAlarm]
 	and $80
 	ret nz
@@ -3597,8 +3597,7 @@ GetName:: ; 3762 (0:3762)
 .otherEntries ; $378d
 	;2-7 = OTHER ENTRIES
 	ld a,[wPredefBank]
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ld a,[wNameListType]    ;VariousNames' entryID
 	dec a
 	add a
@@ -3645,11 +3644,10 @@ GetName:: ; 3762 (0:3762)
 	pop bc
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
-GetItemPrice:: ; 37df (0:37df)
+GetItemPrice:: ; 37d2 (0:37d2)
 ; Stores item's price as BCD at hItemPrice (3 bytes)
 ; Input: [wcf91] = item id
 	ld a, [H_LOADEDROMBANK]
@@ -3657,11 +3655,10 @@ GetItemPrice:: ; 37df (0:37df)
 	ld a, [wListMenuID]
 	cp MOVESLISTMENU
 	ld a, BANK(ItemPrices)
-	jr nz, .asm_37ed
+	jr nz, .asm_37e0
 	ld a, $f ; hardcoded Bank
-.asm_37ed
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+.asm_37e0
+	call BankswitchCommon
 	ld hl, wItemPrices
 	ld a, [hli]
 	ld h, [hl]
@@ -3670,10 +3667,10 @@ GetItemPrice:: ; 37df (0:37df)
 	cp HM_01
 	jr nc, .getTMPrice
 	ld bc, $3
-.asm_3802
+.asm_37f3
 	add hl, bc
 	dec a
-	jr nz, .asm_3802
+	jr nz, .asm_37f3
 	dec hl
 	ld a, [hld]
 	ld [hItemPrice + 2], a
@@ -3681,26 +3678,22 @@ GetItemPrice:: ; 37df (0:37df)
 	ld [hItemPrice + 1], a
 	ld a, [hl]
 	ld [hItemPrice], a
-	jr .asm_381c
+	jr .asm_380b
 .getTMPrice
-	ld a, Bank(GetMachinePrice)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	call GetMachinePrice
-.asm_381c
+	callsb GetMachinePrice
+.asm_380b
 	ld de, hItemPrice
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 	ret
 
 ; copies a string from [de] to [wcf4b]
-CopyStringToCF4B:: ; 3826 (0:3826)
+CopyStringToCF4B:: ; 3813 (0:3813)
 	ld hl, wcf4b
 	; fall through
 
 ; copies a string from [de] to [hl]
-CopyString:: ; 3829 (0:3829)
+CopyString:: ; 3816 (0:3816)
 	ld a, [de]
 	inc de
 	ld [hli], a
@@ -3723,7 +3716,7 @@ CopyString:: ; 3829 (0:3829)
 ;    report only one button press.
 ; 3. Same as 2, but report no buttons as pressed if A or B is held down.
 ;    ([hJoy7] == 1, [hJoy6] == 0)
-JoypadLowSensitivity:: ; 3831 (0:3831)
+JoypadLowSensitivity:: ; 381e (0:381e)
 	call Joypad
 	ld a,[hJoy7] ; flag
 	and a ; get all currently pressed buttons or only newly pressed buttons?
@@ -3776,7 +3769,7 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	ld a, [wTownMapSpriteBlinkingEnabled]
 	and a
 	jr z, .skipAnimation
-	call TownMapSpriteBlinkingAnimation
+	callab TownMapSpriteBlinkingAnimation ; 1c:5753
 .skipAnimation
 	hlCoord 18, 16
 	call HandleDownArrowBlinkTiming
@@ -3793,11 +3786,12 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	ret
 
 ; (unless in link battle) waits for A or B being pressed and outputs the scrolling sound effect
-ManualTextScroll:: ; 3898 (0:3898)
+ManualTextScroll:: ; 388e (0:388e)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .inLinkBattle
 	call WaitForTextScrollButtonPress
+	call WaitForSoundToFinish
 	ld a, (SFX_02_40 - SFX_Headers_02) / 3
 	jp PlaySound
 .inLinkBattle
@@ -3811,7 +3805,7 @@ ManualTextScroll:: ; 3898 (0:3898)
 ; FF99 = multiplier
 ; OUTPUT
 ; FF95-FF98 = product
-Multiply:: ; 38ac (0:38ac)
+Multiply:: ; 38a5 (0:38a5)
 	push hl
 	push bc
 	callab _Multiply
@@ -3828,19 +3822,11 @@ Multiply:: ; 38ac (0:38ac)
 ; OUTPUT
 ; FF95-FF98 = quotient
 ; FF99 = remainder
-Divide:: ; 38b9 (0:38b9)
+Divide:: ; 38b2 (0:38b2)
 	push hl
 	push de
 	push bc
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,Bank(_Divide)
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	call _Divide
-	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	homecall _Divide
 	pop bc
 	pop de
 	pop hl
@@ -3849,7 +3835,7 @@ Divide:: ; 38b9 (0:38b9)
 ; This function is used to wait a short period after printing a letter to the
 ; screen unless the player presses the A/B button or the delay is turned off
 ; through the [wd730] or [wd358] flags.
-PrintLetterDelay:: ; 38d3 (0:38d3)
+PrintLetterDelay:: ; 38c8 (0:38c8)
 	ld a,[wd730]
 	bit 6,a
 	ret nz
@@ -3895,7 +3881,7 @@ PrintLetterDelay:: ; 38d3 (0:38d3)
 ; Copies [hl, bc) to [de, bc - hl).
 ; In other words, the source data is from hl up to but not including bc,
 ; and the destination is de.
-CopyDataUntil:: ; 3913 (0:3913)
+CopyDataUntil:: ; 3908 (0:3908)
 	ld a,[hli]
 	ld [de],a
 	inc de
@@ -3911,12 +3897,12 @@ CopyDataUntil:: ; 3913 (0:3913)
 ; wWhichPokemon determines the pokemon.
 ; [wcf95] == 0 specifies the party.
 ; [wcf95] != 0 specifies the current box.
-RemovePokemon:: ; 391f (0:391f)
+RemovePokemon:: ; 3914 (0:3914)
 	ld hl, _RemovePokemon
 	ld b, BANK(_RemovePokemon)
 	jp Bankswitch
 
-AddPartyMon:: ; 3927 (0:3927)
+AddPartyMon:: ; 391c (0:391c)
 	push hl
 	push de
 	push bc
@@ -3927,7 +3913,7 @@ AddPartyMon:: ; 3927 (0:3927)
 	ret
 
 ; calculates all 5 stats of current mon and writes them to [de]
-CalcStats:: ; 3936 (0:3936)
+CalcStats:: ; 392b (0:392b)
 	ld c, $0
 .statsLoop
 	inc c
@@ -3947,7 +3933,7 @@ CalcStats:: ; 3936 (0:3936)
 ; c: stat to calc (HP=1,Atk=2,Def=3,Spd=4,Spc=5)
 ; b: consider stat exp?
 ; hl: base ptr to stat exp values ([hl + 2*c - 1] and [hl + 2*c])
-CalcStat:: ; 394a (0:394a)
+CalcStat:: ; 393f (0:393f)
 	push hl
 	push de
 	push bc
@@ -4126,35 +4112,17 @@ CalcStat:: ; 394a (0:394a)
 	pop hl
 	ret
 
-AddEnemyMonToPlayerParty:: ; 3a53 (0:3a53)
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, BANK(_AddEnemyMonToPlayerParty)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	call _AddEnemyMonToPlayerParty
-	pop bc
-	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+AddEnemyMonToPlayerParty:: ; 3a48 (0:3a48)
+	homecall_sf _AddEnemyMonToPlayerParty
 	ret
 
-Func_3a68:: ; 3a68 (0:3a68)
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, BANK(Func_f51e)
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
-	call Func_f51e
-	pop bc
-	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+Func_3a59:: ; 3a59 (0:3a59)
+	homecall_sf Func_f51e
 	ret
 
 ; skips a text entries, each of size $b (like trainer name, OT name, rival name, ...)
 ; hl: base pointer, will be incremented by $b * a
-SkipFixedLengthTextEntries:: ; 3a7d (0:3a7d)
+SkipFixedLengthTextEntries:: ; 3a6a (0:3a6a)
 	and a
 	ret z
 	ld bc, $b
@@ -4164,7 +4132,7 @@ SkipFixedLengthTextEntries:: ; 3a7d (0:3a7d)
 	jr nz, .skipLoop
 	ret
 
-AddNTimes:: ; 3a87 (0:3a87)
+AddNTimes:: ; 3a74 (0:3a74)
 ; add bc to hl a times
 	and a
 	ret z
@@ -4176,7 +4144,7 @@ AddNTimes:: ; 3a87 (0:3a87)
 
 ; Compare strings, c bytes in length, at de and hl.
 ; Often used to compare big endian numbers in battle calculations.
-StringCmp:: ; 3a8e (0:3a8e)
+StringCmp:: ; 3a7b (0:3a7b)
 	ld a,[de]
 	cp [hl]
 	ret nz
@@ -4191,7 +4159,7 @@ StringCmp:: ; 3a8e (0:3a8e)
 ; b = Y coordinate of upper left corner of sprite
 ; c = X coordinate of upper left corner of sprite
 ; de = base address of 4 tile number and attribute pairs
-WriteOAMBlock:: ; 3a97 (0:3a97)
+WriteOAMBlock:: ; 3a84 (0:3a84)
 	ld h,wOAMBuffer / $100
 	swap a ; multiply by 16
 	ld l,a
@@ -4210,7 +4178,7 @@ WriteOAMBlock:: ; 3a97 (0:3a97)
 	add c
 	ld c,a
 	                      ; lower right
-.writeOneEntry
+.writeOneEntry ; 3aa0 (0:3aa0)
 	ld [hl],b ; Y coordinate
 	inc hl
 	ld [hl],c ; X coordinate
@@ -4223,11 +4191,11 @@ WriteOAMBlock:: ; 3a97 (0:3a97)
 	ld [hli],a
 	ret
 
-HandleMenuInput:: ; 3abe (0:3abe)
+HandleMenuInput:: ; 3abc (0:3abc)
 	xor a
 	ld [wd09b],a
 
-HandleMenuInputPokemonSelection:: ; 3ac2 (0:3ac2)
+HandleMenuInputPokemonSelection:: ; 3ac0 (0:3ac0)
 	ld a,[H_DOWNARROWBLINKCNT1]
 	push af
 	ld a,[H_DOWNARROWBLINKCNT2]
@@ -4445,7 +4413,7 @@ EraseMenuCursor:: ; 3be6 (0:3be6)
 ; initliazed with a down arrow, this function does nothing.
 ; That allows this to be called without worrying about if a down arrow should
 ; be blinking.
-HandleDownArrowBlinkTiming:: ; 3c04 (0:3c04)
+HandleDownArrowBlinkTiming:: ; 3bf1 (0:3bf1)
 	ld a,[hl]
 	ld b,a
 	ld a,$ee ; down arrow
@@ -4460,7 +4428,7 @@ HandleDownArrowBlinkTiming:: ; 3c04 (0:3c04)
 	dec a
 	ld [H_DOWNARROWBLINKCNT2],a
 	ret nz
-	ld a," "
+	ld a," "	
 	ld [hl],a
 	ld a,$ff
 	ld [H_DOWNARROWBLINKCNT1],a
@@ -4490,20 +4458,20 @@ HandleDownArrowBlinkTiming:: ; 3c04 (0:3c04)
 ; text boxes by DisplayTextID. Both functions cause DisplayTextID to wait
 ; for a button press after displaying text (unless [wcc47] is set).
 
-EnableAutoTextBoxDrawing:: ; 3c3c (0:3c3c)
+EnableAutoTextBoxDrawing:: ; 3c29 (0:3c29)
 	xor a
 	jr AutoTextBoxDrawingCommon
 
-DisableAutoTextBoxDrawing:: ; 3c3f (0:3c3f)
+DisableAutoTextBoxDrawing:: ; 3c2c (0:3c2c)
 	ld a,$01
 
-AutoTextBoxDrawingCommon:: ; 3c41 (0:3c41)
+AutoTextBoxDrawingCommon:: ; 3c2e (0:3c2d)
 	ld [wAutoTextBoxDrawingControl],a
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText],a ; make DisplayTextID wait for button press
 	ret
 
-PrintText:: ; 3c49 (0:3c49)
+PrintText:: ; 3c36 (0:3c36)
 ; Print text hl at (1, 14).
 	push hl
 	ld a,MESSAGE_BOX
@@ -4516,8 +4484,18 @@ Func_3c46:: ; 3c46 (0:3c46)
 	bcCoord 1, 14
 	jp TextCommandProcessor
 
-
-PrintNumber:: ; 3c5f
+FarPrintText:: ; 3c4c (0:3c4c)
+; print text b:hl at (1, 14)
+	ld a,[H_LOADEDROMBANK]
+	push af
+	ld a,b
+	call BankswitchCommon
+	call PrintText
+	pop af
+	call BankswitchCommon
+	ret
+	
+PrintNumber:: ; 3c5b (0:3c5b)
 ; Print the c-digit, b-byte value at de.
 ; Allows 2 to 7 digits. For 1-digit numbers, add
 ; the value to char "0" instead of calling PrintNumber.
@@ -4642,7 +4620,7 @@ endm
 	pop bc
 	ret
 
-.PrintDigit:
+.PrintDigit: ; 3d21 (0:3d21)
 ; Divide by the current decimal place.
 ; Print the quotient, and keep the modulus.
 	ld c, 0
@@ -4717,13 +4695,13 @@ endm
 	ld [H_PASTLEADINGZEROES], a
 	ret
 
-.PrintLeadingZero:
+.PrintLeadingZero: ; 3d7f (0:3d7f)
 	bit LEADING_ZEROES, d
 	ret z
 	ld [hl], "0"
 	ret
 
-.NextDigit:
+.NextDigit: ; 3d85 (0:3d85)
 ; Increment unless the number is left-aligned,
 ; leading zeroes are not printed, and no digits
 ; have been printed yet.
@@ -4739,7 +4717,7 @@ endm
 	ret
 
 
-CallFunctionInTable::
+CallFunctionInTable:: ; 3d93 (0:3d93)
 JumpTable::
 ; Call function a in jumptable hl.
 ; de is not preserved.
@@ -4763,13 +4741,13 @@ JumpTable::
 	ret
 
 
-IsInArray::
+IsInArray:: ; 3da7 (0:3da7)
 ; Search an array at hl for the value in a.
 ; Entry size is de bytes.
 ; Return count b and carry if found.
 	ld b, 0
 
-IsInRestOfArray::
+IsInRestOfArray:: ; 3da9 (0:3da9)
 	ld c, a
 .loop
 	ld a, [hl]
@@ -4794,7 +4772,7 @@ InitMapSprites::  ; 3dba (0:3dba)
 	ld b,BANK(_InitMapSprites)
 	jp Bankswitch
 
-RestoreScreenTilesAndReloadTilePatterns:: ; 3dbe (0:3dbe)
+RestoreScreenTilesAndReloadTilePatterns:: ; 3dc2 (0:3dc2)
 	call ClearSprites
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a
@@ -4805,41 +4783,47 @@ RestoreScreenTilesAndReloadTilePatterns:: ; 3dbe (0:3dbe)
 	jr Delay3
 
 
-GBPalWhiteOutWithDelay3::
+GBPalWhiteOutWithDelay3:: ; 3dd8 (0:3dd8)
 	call GBPalWhiteOut
 
-Delay3::
+Delay3:: ; 3ddb (0:3ddb)
 ; The bg map is updated each frame in thirds.
 ; Wait three frames to let the bg map fully update.
 	ld c, 3
 	jp DelayFrames
 
-GBPalNormal::
+GBPalNormal:: ; 3de0 (0:3de0)
 ; Reset BGP and OBP0.
 	ld a, %11100100 ; 3210
 	ld [rBGP], a
 	ld a, %11010000 ; 3100
 	ld [rOBP0], a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ret
 
-GBPalWhiteOut::
+GBPalWhiteOut:: ; 3df2 (0:3df2)
 ; White out all palettes.
 	xor a
 	ld [rBGP],a
 	ld [rOBP0],a
 	ld [rOBP1],a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ret
 
 
-GoPAL_SET_CF1C:: ; 3ded (0:3ded)
+GoPAL_SET_CF1C:: ; 3e03 (0:3e03)
 	ld b,$ff
-GoPAL_SET:: ; 3def (0:3def)
+GoPAL_SET:: ; 3e08 (0:3e08)
 	ld a,[wOnSGB]
 	and a
 	ret z
 	predef_jump Func_71ddf
 
-GetHealthBarColor::
+GetHealthBarColor:: ; 3e0f (0:3e0f)
 ; Return at hl the palette of
 ; an HP bar e pixels long.
 	ld a, e
@@ -4856,7 +4840,7 @@ GetHealthBarColor::
 
 ; Copy the current map's sprites' tile patterns to VRAM again after they have
 ; been overwritten by other tile patterns.
-ReloadMapSpriteTilePatterns:: ; 3e08 (0:3e08)
+ReloadMapSpriteTilePatterns:: ; 3e1e (0:3e1e)
 	ld hl, wFontLoaded
 	ld a, [hl]
 	push af
@@ -4865,7 +4849,7 @@ ReloadMapSpriteTilePatterns:: ; 3e08 (0:3e08)
 	xor a
 	ld [W_SPRITESETID], a
 	call DisableLCD
-	callba InitMapSprites
+	call InitMapSprites
 	call EnableLCD
 	pop hl
 	pop af
@@ -4875,7 +4859,7 @@ ReloadMapSpriteTilePatterns:: ; 3e08 (0:3e08)
 	jp UpdateSprites
 
 
-GiveItem::
+GiveItem:: ; 3e3f (0:3e3f)
 ; Give player quantity c of item b,
 ; and copy the item's name to wcf4b.
 ; Return carry on success.
@@ -4892,7 +4876,7 @@ GiveItem::
 	scf
 	ret
 
-GivePokemon::
+GivePokemon:: ; 3e59 (0:3e59)
 ; Give the player monster b at level c.
 	ld a, b
 	ld [wcf91], a
@@ -4931,13 +4915,13 @@ Bankswitch:: ; 3e84 (0:3e84)
 	ld a,b
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
-	call .jumptoaddress
+	call JumpToAddress
 	pop bc
 	ld a,b
 	ld [H_LOADEDROMBANK],a
 	ld [$2000],a
 	ret
-.jumptoaddress
+JumpToAddress:: ; 3e98 (0:3e98)
 	jp [hl]
 
 SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
@@ -4964,7 +4948,9 @@ INCLUDE "home/predef.asm"
 Func_3ead:: ; 3ead (0:3ead)
 	ld b, BANK(CinnabarGymQuiz_1eb0a)
 	ld hl, CinnabarGymQuiz_1eb0a
-	jp Bankswitch
+	call Bankswitch
+	ret ; again?
+	;jp Bankswitch
 
 CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	ld a, [H_LOADEDROMBANK]
@@ -4973,23 +4959,19 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	bit 0, a ; A button
 	jr z, .nothingFound
 ; A button is pressed
-	ld a, Bank(CheckForHiddenObject)
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
-	call CheckForHiddenObject
+	callsb CheckForHiddenObject
 	ld a, [$ffee]
 	and a
 	jr nz, .hiddenObjectNotFound
-	ld a, [wHiddenObjectFunctionRomBank]
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
-	ld de, .returnAddress
-	push de
-	jp [hl]
-.returnAddress
 	xor a
+	ld [$ffeb],a
+	ld a, [wHiddenObjectFunctionRomBank]
+	call BankswitchCommon
+	call JumpToAddress
+	ld a,[$ffeb]
 	jr .done
 .hiddenObjectNotFound
+	predef GetTileAndCoordsInFrontOfPlayer
 	callba PrintBookshelfText
 	ld a, [$ffdb]
 	and a
@@ -4999,11 +4981,10 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 .done
 	ld [$ffeb], a
 	pop af
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	call BankswitchCommon
 	ret
 
-PrintPredefTextID:: ; 3ef5 (0:3ef5)
+PrintPredefTextID:: ; 3f3a (0:3f3a)
 	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
 	ld hl, TextPredefs
 	call SetMapTextPointer
@@ -5011,7 +4992,7 @@ PrintPredefTextID:: ; 3ef5 (0:3ef5)
 	set 0, [hl]
 	call DisplayTextID
 
-RestoreMapTextPointer:: ; 3f05 (0:3f05)
+RestoreMapTextPointer:: ; 3f4a (0:3f4a)
 	ld hl, W_MAPTEXTPTR
 	ld a, [$ffec]
 	ld [hli], a
@@ -5019,7 +5000,7 @@ RestoreMapTextPointer:: ; 3f05 (0:3f05)
 	ld [hl], a
 	ret
 
-SetMapTextPointer:: ; 3f0f (0:3f0f)
+SetMapTextPointer:: ; 3f54 (0:3f54)
 	ld a, [W_MAPTEXTPTR]
 	ld [$ffec], a
 	ld a, [W_MAPTEXTPTR + 1]
@@ -5030,7 +5011,7 @@ SetMapTextPointer:: ; 3f0f (0:3f0f)
 	ld [W_MAPTEXTPTR + 1], a
 	ret
 
-TextPredefs::
+TextPredefs:: ; 3f67 (0:3f67)
 	add_tx_pre CardKeySuccessText                   ; 01
 	add_tx_pre CardKeyFailText                      ; 02
 	add_tx_pre RedBedroomPC                         ; 03

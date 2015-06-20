@@ -1,4 +1,4 @@
-Predef::
+Predef:: ; 3eb4 (0:3eb4)
 ; Call predefined function a.
 ; To preserve other registers, have the
 ; destination call GetPredefRegisters.
@@ -19,8 +19,7 @@ Predef::
 	call GetPredefPointer
 
 	ld a, [wPredefBank]
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 
 	ld de, .done
 	push de
@@ -28,11 +27,10 @@ Predef::
 .done
 
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	call BankswitchCommon
 	ret
 
-GetPredefRegisters::
+GetPredefRegisters:: ; 3ed7 (0:3ed7)
 ; Restore the contents of register pairs
 ; when GetPredefPointer was called.
 	ld a, [wPredefRegisters + 0]
