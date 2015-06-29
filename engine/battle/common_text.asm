@@ -1,4 +1,4 @@
-PrintBeginningBattleText: ; 58d99 (16:4d99)
+PrintBeginningBattleText: ; f4000 (3d:4000)
 	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
 	dec a
 	jr nz, .trainerBattle
@@ -8,8 +8,20 @@ PrintBeginningBattleText: ; 58d99 (16:4d99)
 	cp LAVENDER_HOUSE_1
 	jr c, .pokemonTower
 .notPokemonTower
+	ld a,[W_BATTLETYPE]
+	cp $4 ; new battle type?
+	jr nz,.notnewbattletype
+	callab Func_fd0d0
+	ld e,$24
+	jr c,.asm_f4026
+	ld e,$a
+.asm_f4026
+	callab Func_f0000
+	jr .continue
+.notnewbattletype
 	ld a, [wEnemyMonSpecies2]
 	call PlayCry
+.continue
 	ld hl, WildMonAppearedText
 	ld a, [W_MOVEMISSED] ; W_MOVEMISSED
 	and a
@@ -70,31 +82,31 @@ PrintBeginningBattleText: ; 58d99 (16:4d99)
 .done
 	ret
 
-WildMonAppearedText: ; 58e3b (16:4e3b)
+WildMonAppearedText: ; f40c7 (3d:40c7)
 	TX_FAR _WildMonAppearedText
 	db "@"
 
-HookedMonAttackedText: ; 58e40 (16:4e40)
+HookedMonAttackedText: ; f40cc (3d:40cc)
 	TX_FAR _HookedMonAttackedText
 	db "@"
 
-EnemyAppearedText: ; 58e45 (16:4e45)
+EnemyAppearedText: ; f40d1 (3d:40d1)
 	TX_FAR _EnemyAppearedText
 	db "@"
 
-TrainerWantsToFightText: ; 58e4a (16:4e4a)
+TrainerWantsToFightText: ; f40d6 (3d:40d6)
 	TX_FAR _TrainerWantsToFightText
 	db "@"
 
-UnveiledGhostText: ; 58e4f (16:4e4f)
+UnveiledGhostText: ; f40db (3d:40db)
 	TX_FAR _UnveiledGhostText
 	db "@"
 
-GhostCantBeIDdText: ; 58e54 (16:4e54)
+GhostCantBeIDdText: ; f40e0 (3d:40e0)
 	TX_FAR _GhostCantBeIDdText
 	db "@"
 
-PrintSendOutMonMessage: ; 58e59 (16:4e59)
+PrintSendOutMonMessage: ; f40e0 (3d:40e5)
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	or [hl]
@@ -126,7 +138,7 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 	ld a, [H_QUOTIENT + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
 	ld hl, GoText ; 70% or greater
 	cp 70
-	jr nc, .printText
+	jr nc, .printText	
 	ld hl, DoItText ; 40% - 69%
 	cp 40
 	jr nc, .printText
@@ -137,38 +149,38 @@ PrintSendOutMonMessage: ; 58e59 (16:4e59)
 .printText
 	jp PrintText
 
-GoText: ; 58eae (16:4eae)
+GoText: ; f413a (3d:413a)
 	TX_FAR _GoText
 	db $08 ; asm
 	jr PrintPlayerMon1Text
 
-DoItText: ; 58eb5 (16:4eb5)
+DoItText: ; f4141 (3d:4141)
 	TX_FAR _DoItText
 	db $08 ; asm
 	jr PrintPlayerMon1Text
 
-GetmText: ; 58ebc (16:4ebc)
+GetmText: ; f4148 (3d:4148)
 	TX_FAR _GetmText
 	db $08 ; asm
 	jr PrintPlayerMon1Text
 
-EnemysWeakText: ; 58ec3 (16:4ec3)
+EnemysWeakText: ; f414f (3d:414f)
 	TX_FAR _EnemysWeakText
 	db $08 ; asm
 
-PrintPlayerMon1Text:
+PrintPlayerMon1Text: ; f4154 (3d:4154)
 	ld hl, PlayerMon1Text
 	ret
 
-PlayerMon1Text: ; 58ecc (16:4ecc)
+PlayerMon1Text: ; f4158 (3d:4158)
 	TX_FAR _PlayerMon1Text
 	db "@"
 
-RetreatMon: ; 58ed1 (16:4ed1)
+RetreatMon: ; f415d (3d:415d)
 	ld hl, PlayerMon2Text
 	jp PrintText
 
-PlayerMon2Text: ; 58ed7 (16:4ed7)
+PlayerMon2Text: ; f4163 (3d:4163)
 	TX_FAR _PlayerMon2Text
 	db $08 ; asm
 	push de
@@ -214,25 +226,25 @@ PlayerMon2Text: ; 58ed7 (16:4ed7)
 	ld hl, GoodText
 	ret
 
-EnoughText: ; 58f25 (16:4f25)
+EnoughText: ; f41b1 (3d:41b1)
 	TX_FAR _EnoughText
 	db $08 ; asm
 	jr PrintComeBackText
 
-OKExclamationText: ; 58f2c (16:4f2c)
+OKExclamationText: ; f41b8 (3d:41b8)
 	TX_FAR _OKExclamationText
 	db $08 ; asm
 	jr PrintComeBackText
 
-GoodText: ; 58f33 (16:4f33)
+GoodText: ; f41bf (3d:41bf)
 	TX_FAR _GoodText
 	db $08 ; asm
 	jr PrintComeBackText
 
-PrintComeBackText: ; 58f3a (16:4f3a)
+PrintComeBackText: ; f41c6 (3d:41c6)
 	ld hl, ComeBackText
 	ret
 
-ComeBackText: ; 58f3e (16:4f3e)
+ComeBackText: ; f41ca (3d:41ca)
 	TX_FAR _ComeBackText
 	db "@"
