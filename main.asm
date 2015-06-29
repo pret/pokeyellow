@@ -5400,7 +5400,7 @@ VictreebelPicBack::    INCBIN "pic/monback/victreebelb.pic"
 SECTION "Battle (bank D)", ROMX, BANK[$D]
 
 INCLUDE "engine/titlescreen2.asm"
-INCLUDE "engine/battle/link_battle_versus_text.asm"
+;INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/slot_machine.asm"
 INCLUDE "engine/overworld/pewter_guys.asm"
 INCLUDE "engine/multiply_divide.asm"
@@ -5412,8 +5412,8 @@ SECTION "bankE",ROMX,BANK[$E]
 INCLUDE "data/moves.asm"
 BaseStats: INCLUDE "data/base_stats.asm"
 INCLUDE "data/cries.asm"
-INCLUDE "engine/battle/unused_stats_functions.asm"
-INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
+;INCLUDE "engine/battle/unused_stats_functions.asm"
+;INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 INCLUDE "engine/battle/trainer_ai.asm"
 INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 
@@ -6044,7 +6044,7 @@ Route18Blocks: INCBIN "maps/route18.blk"
 
 	INCBIN "maps/unusedblocks58d7d.blk"
 
-INCLUDE "engine/battle/common_text.asm"
+;INCLUDE "engine/battle/common_text.asm"
 
 INCLUDE "engine/experience.asm"
 
@@ -6401,7 +6401,7 @@ Plateau_Block:     INCBIN "gfx/blocksets/plateau.bst"
 
 SECTION "bank1A",ROMX,BANK[$1A]
 
-INCLUDE "engine/battle/decrement_pp.asm"
+;INCLUDE "engine/battle/decrement_pp.asm"
 
 Version_GFX:
 IF DEF(_RED)
