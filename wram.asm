@@ -1645,8 +1645,10 @@ wd436:: ds 1
 wd44a:: ds 1
 wd44b:: ds 1
 
-	ds 39
+	ds 37
 
+wd470:: ds 1
+wd471:: ds 1
 wd472:: ds 1
 wd473:: ds 1
 
@@ -1654,8 +1656,9 @@ wd473:: ds 1
 	
 wUnknownSerialFlag_d49a:: ds 1 ; d499
 wUnknownSerialFlag_d49b:: ds 1 ; d49a
+wd49c:: ds 1 ; d49b
 
-	ds 21
+	ds 20
 
 wd4b0:: ds 1 ; number of signs on the map
 wd4b1:: ds 32 ; starting address for sign coords
