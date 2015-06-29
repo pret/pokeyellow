@@ -232,7 +232,7 @@ Serial_PrintWaitingTextAndSyncAndExchangeNybble:: ; 20ca (0:20ca)
 	call Serial_SyncAndExchangeNybble
 	jp LoadScreenTilesFromBuffer1
 
-Serial_SyncAndExchangeNybble:: ; 227f (0:227f)
+Serial_SyncAndExchangeNybble:: ; 20db (0:20db)
 	ld a, $ff
 	ld [wSerialExchangeNybbleReceiveData], a
 .loop1

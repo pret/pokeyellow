@@ -54,7 +54,7 @@ rLCDC_DEFAULT EQU %11100011
 	call ClearVram ; 1dc6
 
 	ld hl, $ff80
-	ld bc, $ffff - $ff80
+	ld bc, $fffe - $ff80
 	call FillMemory
 
 	call ClearSprites

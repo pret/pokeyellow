@@ -3808,7 +3808,7 @@ ManualTextScroll:: ; 388e (0:388e)
 Multiply:: ; 38a5 (0:38a5)
 	push hl
 	push bc
-	callab _Multiply
+	callab _Multiply ; 3d:660e
 	pop bc
 	pop hl
 	ret
@@ -4191,11 +4191,11 @@ WriteOAMBlock:: ; 3a84 (0:3a84)
 	ld [hli],a
 	ret
 
-HandleMenuInput:: ; 3abc (0:3abc)
+HandleMenuInput:: ; 3aab (0:3aab)
 	xor a
 	ld [wd09b],a
 
-HandleMenuInputPokemonSelection:: ; 3ac0 (0:3ac0)
+HandleMenuInputPokemonSelection:: ; 3aaf (0:3aaf)
 	ld a,[H_DOWNARROWBLINKCNT1]
 	push af
 	ld a,[H_DOWNARROWBLINKCNT2]
@@ -4817,7 +4817,7 @@ GBPalWhiteOut:: ; 3df2 (0:3df2)
 
 GoPAL_SET_CF1C:: ; 3e03 (0:3e03)
 	ld b,$ff
-GoPAL_SET:: ; 3e08 (0:3e08)
+GoPAL_SET:: ; 3e05 (0:3e05)
 	ld a,[wOnSGB]
 	and a
 	ret z
@@ -4884,7 +4884,7 @@ GivePokemon:: ; 3e59 (0:3e59)
 	ld [W_CURENEMYLVL], a
 	xor a
 	ld [wcc49], a
-	ld b, BANK(_GivePokemon)
+	ld b, BANK(_GivePokemon) ; 3d:66fa
 	ld hl, _GivePokemon
 	jp Bankswitch
 
