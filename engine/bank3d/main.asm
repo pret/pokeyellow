@@ -396,3 +396,275 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	ld a,[wCurrentMenuItem]
 	ld [wLastMenuItem],a
 	ret
+	
+Func_f5b06:: ; f5b06 (3d:5b06)
+	ld hl,wd728
+	set 0,[hl]
+	ld hl,Text_f5b17
+	call PrintText
+	ld hl,Text_f5b28
+	jp PrintText
+	
+Text_f5b17:: ; f5b17 (3d:5b17)
+	TX_FAR _Text_f5b17 ; 2d:417e
+	db $08 ; asm
+	ld a,[wcf91]
+	call PlayCry
+	call Delay3
+	jp TextScriptEnd
+	
+Text_f5b28:: ; f5b28 (3d:5b28)
+	TX_FAR _Text_f5b28 ; 2d:4193
+	db "@"
+	
+Func_f5b2d:: ; f5b2d (3d:5b2d)
+	ld hl,wd728
+	set 1,[hl]
+	ld a,[wd732]
+	bit 5,a
+	jr nz,.asm_f5b59
+	ld a,[W_CURMAP]
+	cp SEAFOAM_ISLANDS_5
+	ret nz
+	ld a,[wd881]
+	and $3
+	cp $3
+	ret z
+	ld hl,CoordsData_f5b64
+	call ArePlayerCoordsInArray
+	ret nc
+	ld hl,wd728
+	res 1,[hl]
+	ld hl,Text_f5b67
+	jp PrintText
+.asm_f5b59
+	ld hl,wd728
+	res 1,[hl]
+	ld hl,Text_f5b6c
+	jp PrintText
+	
+CoordsData_f5b64:: ; f5b64 (3d:5b64)
+	db 13,07
+	db $ff
+	
+Text_f5b67:: ; f5b67 (3d:5b67)
+	TX_FAR _Text_f5b67 ; 2d:41ab
+	db "@"
+	
+Text_f5b6c:: ; f5b6c (3d:5b6c)
+	TX_FAR _Text_f5b6c
+	db "@"
+	
+AddItemToInventory_:: ; f5b70 (3d:5b70)
+	ld a,[wcf96] ; a = item quantity
+	push af
+	push bc
+	push de
+	push hl
+	push hl
+	ld d,50 ; PC box can hold 50 items
+	ld a,wNumBagItems & $FF
+	cp l
+	jr nz,.checkIfInventoryFull
+	ld a,wNumBagItems >> 8
+	cp h
+	jr nz,.checkIfInventoryFull
+; if the destination is the bag
+	ld d,20 ; bag can hold 20 items
+.checkIfInventoryFull
+	ld a,[hl]
+	sub d
+	ld d,a
+	ld a,[hli]
+	and a
+	jr z,.addNewItem
+.loop
+	ld a,[hli]
+	ld b,a ; b = ID of current item in table
+	ld a,[wcf91] ; a = ID of item being added
+	cp b ; does the current item in the table match the item being added?
+	jp z,.increaseItemQuantity ; if so, increase the item's quantity
+	inc hl
+	ld a,[hl]
+	cp a,$ff ; is it the end of the table?
+	jr nz,.loop
+.addNewItem ; add an item not yet in the inventory
+	pop hl
+	ld a,d
+	and a ; is there room for a new item slot?
+	jr z,.done
+; if there is room
+	inc [hl] ; increment the number of items in the inventory
+	ld a,[hl] ; the number of items will be the index of the new item
+	add a
+	dec a
+	ld c,a
+	ld b,0
+	add hl,bc ; hl = address to store the item
+	ld a,[wcf91]
+	ld [hli],a ; store item ID
+	ld a,[wcf96]
+	ld [hli],a ; store item quantity
+	ld [hl],$ff ; store terminator
+	jp .success
+.increaseItemQuantity ; increase the quantity of an item already in the inventory
+	ld a,[wcf96]
+	ld b,a ; b = quantity to add
+	ld a,[hl] ; a = existing item quantity
+	add b ; a = new item quantity
+	cp a,100
+	jp c,.storeNewQuantity ; if the new quantity is less than 100, store it
+; if the new quantity is greater than or equal to 100,
+; try to max out the current slot and add the rest in a new slot
+	sub a,99
+	ld [wcf96],a ; a = amount left over (to put in the new slot)
+	ld a,d
+	and a ; is there room for a new item slot?
+	jr z,.increaseItemQuantityFailed
+; if so, store 99 in the current slot and store the rest in a new slot
+	ld a,99
+	ld [hli],a
+	jp .loop
+.increaseItemQuantityFailed
+	pop hl
+	and a
+	jr .done
+.storeNewQuantity
+	ld [hl],a
+	pop hl
+.success
+	scf
+.done
+	pop hl
+	pop de
+	pop bc
+	pop bc
+	ld a,b
+	ld [wcf96],a ; restore the initial value from when the function was called
+	ret
+
+; function to remove an item (in varying quantities) from the player's bag or PC box
+; INPUT:
+; hl = address of inventory (either wNumBagItems or wNumBoxItems)
+; [wWhichPokemon] = index (within the inventory) of the item to remove
+; [wcf96] = quantity to remove
+RemoveItemFromInventory_: ; f5be1 (3d:5be1)
+	push hl
+	inc hl
+	ld a,[wWhichPokemon] ; index (within the inventory) of the item being removed
+	add a
+	add l
+	ld l,a
+	jr nc,.noCarry
+	inc h
+.noCarry
+	inc hl
+	ld a,[wcf96] ; quantity being removed
+	ld e,a
+	ld a,[hl] ; a = current quantity
+	sub e
+	ld [hld],a ; store new quantity
+	ld [wcf97],a
+	and a
+	jr nz,.skipMovingUpSlots
+; if the remaining quantity is 0,
+; remove the emptied item slot and move up all the following item slots
+.moveSlotsUp
+	ld e,l
+	ld d,h
+	inc de
+	inc de ; de = address of the slot following the emptied one
+.loop ; loop to move up the following slots
+	ld a,[de]
+	inc de
+	ld [hli],a
+	cp a,$ff
+	jr nz,.loop
+; update menu info
+	xor a
+	ld [wListScrollOffset],a
+	ld [wCurrentMenuItem],a
+	ld [wcc2c],a
+	ld [wd07e],a
+	pop hl
+	ld a,[hl] ; a = number of items in inventory
+	dec a ; decrement the number of items
+	ld [hl],a ; store new number of items
+	ld [wd12a],a
+	cp a,2
+	jr c,.done
+	ld [wMaxMenuItem],a
+	jr .done
+.skipMovingUpSlots
+	pop hl
+.done
+	ret
+
+TrainerInfoTextBoxTileGraphics:  INCBIN "gfx/trainer_info.2bpp"
+BlankLeaderNames:                INCBIN "gfx/blank_leader_names.2bpp"
+CircleTile:                      INCBIN "gfx/circle_tile.2bpp"
+BadgeNumbersTileGraphics:        INCBIN "gfx/badge_numbers.2bpp"
+
+Func_f5ea4:: ; f5ea4 (3d:f5ea4)
+	ld a,[W_CURMAP]
+	ld c,a
+	ld hl,Pointer_f5eda
+.loop
+	ld a,[hli]
+	cp $ff
+	jr z,.notfound
+	cp c
+	jr z,.found
+	ld de,$8
+	add hl,de
+	jr .loop
+.found
+	call Func_f5ec1
+.notfound
+	ld de,$0
+	ret
+	
+Func_f5ec1:: ; f5ec1
+	call Random
+	cp $66
+	jr c,.asm_f5ed6
+	inc hl
+	inc hl
+	cp $b2
+	jr c,.asm_f5ed6
+	inc hl
+	inc hl
+	cp $e5
+	jr c,.asm_f5ed6
+	inc hl
+	inc hl
+.asm_f5ed6
+	ld e,[hl]
+	inc hl
+	ld d,[hl]
+	ret
+	
+Pointer_f5eda:: ; f5eda (3d:f5eda)
+	db PALLET_TOWN,$1b,$a,$18,$a,$1b,$5,$18,$14
+	db VIRIDIAN_CITY,$47,$5,$47,$a,$47,$f,$47,$a
+	db CERULEAN_CITY,$9d,$19,$9d,$1e,$9e,$1e,$9e,$28
+	; ... rest of data TBA
+	
+SECTION "temp_f5ff2" ROMX[$5ff2],BANK[$3c]
+INCLUDE "engine/bank3d/bank3d_battle.asm"
+
+InitBattle:: ; f5ff2 (3d:5ff2)
+	ld a,[W_CUROPPONENT]
+	and a
+	jr z,.asm_f6003
+	ld a,[W_CUROPPONENT]
+	ld [wcf91],a
+	ld [wEnemyMonSpecies2],a
+	jr .asm_f601d
+	ld a,[wd732]
+	bit 1,a ; debug mode?
+	jr z,.notdebugmode
+	ld a,[hJoyHeld]
+	bit 1,a ; holding b button?
+	ret nz
+	
