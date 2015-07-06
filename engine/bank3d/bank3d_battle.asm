@@ -167,3 +167,126 @@ _LoadTrainerPic: ; f615a (3d:615a)
 	ld a, $77
 	ld c, a
 	jp LoadUncompressedSpriteData
+	
+LoadMonBackPic: ; f6178 (3d:6178)
+; Assumes the monster's attributes have
+; been loaded with GetMonHeader.
+	ld a, [wBattleMonSpecies2]
+	ld [wcf91], a
+	hlCoord 1, 5
+	ld bc,$708
+	call ClearScreenArea
+	ld hl,  W_MONHBACKSPRITE - W_MONHEADER
+	call UncompressMonSprite
+	predef ScaleSpriteByTwo
+	ld de, vBackPic
+	call InterlaceMergeSpriteBuffers ; combine the two buffers to a single 2bpp sprite
+	ld hl, vSprites
+	ld de, vBackPic
+	ld c, (2*SPRITEBUFFERSIZE)/16 ; count of 16-byte chunks to be copied
+	ld a, [H_LOADEDROMBANK]
+	ld b, a
+	jp CopyVideoData
+	
+Func_f61a6: ; f61a6 (3d:f61a6)
+	ld a, [wPredefRegisters]
+	ld h, a
+	ld a, [wPredefRegisters + 1]
+	ld l, a
+	ld a, [$ffe1]
+	ld [H_DOWNARROWBLINKCNT1], a
+	ld b, $4c
+	ld a, [W_ISINBATTLE]
+	and a
+	jr z, .asm_f61ef
+	add b
+	ld [hl], a
+	call Delay3
+	ld bc, -41
+	add hl, bc
+	ld a, $1
+	ld [wcd6c], a
+	ld bc, $303
+	predef Func_79aba
+	ld c, $4
+	call DelayFrames
+	ld bc, -41
+	add hl, bc
+	xor a
+	ld [wcd6c], a
+	ld bc, $505
+	predef Func_79aba
+	ld c, $5
+	call DelayFrames
+	ld bc, -41
+	jr .asm_f61f2
+.asm_f61ef
+	ld bc, -123
+.asm_f61f2
+	add hl, bc
+	ld a, [H_DOWNARROWBLINKCNT1]
+	add $31
+	jr asm_f6203
+
+Func_f61f9: ; 3f0c6 (f:70c6)
+	ld a, [wPredefRegisters]
+	ld h, a
+	ld a, [wPredefRegisters + 1]
+	ld l, a
+	ld a, [$ffe1]
+asm_f6203: ; f6203 (3d:6203)
+	ld bc, $707
+	ld de, $14
+	push af
+	ld a, [W_SPRITEFLIPPED]
+	and a
+	jr nz, .asm_f6220
+	pop af
+.asm_f6211
+	push bc
+	push hl
+.asm_f6213
+	ld [hl], a
+	add hl, de
+	inc a
+	dec c
+	jr nz, .asm_f6213
+	pop hl
+	inc hl
+	pop bc
+	dec b
+	jr nz, .asm_f6211
+	ret
+	
+.asm_f6220
+	push bc
+	ld b, $0
+	dec c
+	add hl, bc
+	pop bc
+	pop af
+.asm_f6227
+	push bc
+	push hl
+.asm_f6229
+	ld [hl], a
+	add hl, de
+	inc a
+	dec c
+	jr nz, .asm_f6229
+	pop hl
+	dec hl
+	pop bc
+	dec b
+	jr nz, .asm_f6227
+	ret
+	
+INCLUDE "engine/battle/init_battle_variables.asm"
+INCLUDE "engine/battle/moveEffects/focus_energy_effect.asm"
+INCLUDE "engine/battle/moveEffects/heal_effect.asm"
+INCLUDE "engine/battle/moveEffects/transform_effect.asm"
+INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"
+INCLUDE "engine/battle/moveEffects/mist_effect.asm"
+INCLUDE "engine/battle/moveEffects/one_hit_ko_effect.asm"
+INCLUDE "engine/battle/moveEffects/pay_day_effect.asm"
+INCLUDE "engine/battle/moveEffects/paralyze_effect.asm"

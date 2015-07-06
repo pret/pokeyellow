@@ -65,6 +65,9 @@ SetPokedexOwnedFlag: ; 4fe11 (13:7e11)
 	ld hl, GotMonText
 	jp PrintText
 
+UnknownTerminator_f6794: ; f6794 (3d:6794)
+	db "@"
+	
 GotMonText: ; 4fe39 (13:7e39)
 	TX_FAR _GotMonText
 	db $0b

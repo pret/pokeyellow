@@ -1,6 +1,4 @@
-SECTION "bank3d Random",ROMX[$67DC],BANK[$3D]
-
-Random_::
+Random_:: ; f67dc (3d:67dc)
 ; Generate a random 16-bit value.
 	ld a, [rDIV]
 	ld b, a

@@ -1,4 +1,4 @@
-HealEffect_: ; 3b9ec (e:79ec)
+HealEffect_: ; f62ba (3d:62ba)
 	ld a, [H_WHOSETURN]
 	and a
 	ld de, wBattleMonHP
@@ -86,7 +86,7 @@ HealEffect_: ; 3b9ec (e:79ec)
 	ld [wHPBarNewHP], a
 .playAnim
 	ld hl, PlayCurrentMoveAnimation
-	call BankswitchEtoF
+	call Bankswitch3DtoF
 	ld a, [H_WHOSETURN]
 	and a
 	hlCoord 10, 9
@@ -98,23 +98,23 @@ HealEffect_: ; 3b9ec (e:79ec)
 	ld [wHPBarType], a
 	predef UpdateHPBar2
 	ld hl, DrawHUDsAndHPBars
-	call BankswitchEtoF
+	call Bankswitch3DtoF
 	ld hl, RegainedHealthText
 	jp PrintText
 .failed
 	ld c, 50
 	call DelayFrames
 	ld hl, PrintButItFailedText_
-	jp BankswitchEtoF
+	jp Bankswitch3DtoF
 
-StartedSleepingEffect: ; 3baa2 (e:7aa2)
+StartedSleepingEffect: ; f6370 (3d:6370)
 	TX_FAR _StartedSleepingEffect
 	db "@"
 
-FellAsleepBecameHealthyText: ; 3baa7 (e:7aa7)
+FellAsleepBecameHealthyText: ; f6375 (3d:6375)
 	TX_FAR _FellAsleepBecameHealthyText
 	db "@"
 
-RegainedHealthText: ; 3baac (e:7aac)
+RegainedHealthText: ; f637a (3d:637a)
 	TX_FAR _RegainedHealthText
 	db "@"

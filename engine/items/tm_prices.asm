@@ -1,4 +1,4 @@
-GetMachinePrice: ; 7bf86 (1e:7f86)
+GetMachinePrice: ; f65d4 (3d:65d4)
 ; Input:  [wcf91] = Item Id of a TM
 ; Output: Stores the 2-byte TM price in [H_DOWNARROWBLINKCNT1] and [H_DOWNARROWBLINKCNT2]
 ;         as a BCD

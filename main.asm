@@ -4955,7 +4955,7 @@ TangelaPicBack::      INCBIN "pic/monback/tangelab.pic"
 SECTION "Battle (bank 9)", ROMX, BANK[$9]
 INCLUDE "engine/battle/print_type.asm"
 INCLUDE "engine/battle/save_trainer_name.asm"
-INCLUDE "engine/battle/moveEffects/focus_energy_effect.asm"
+;INCLUDE "engine/battle/moveEffects/focus_energy_effect.asm"
 
 
 SECTION "Pics 2", ROMX, BANK[PICS_2]
@@ -5185,8 +5185,8 @@ OldManPic::            INCBIN "pic/trainer/oldman.pic"
 
 
 SECTION "Battle (bank C)", ROMX, BANK[$C]
-INCLUDE "engine/battle/moveEffects/mist_effect.asm"
-INCLUDE "engine/battle/moveEffects/one_hit_ko_effect.asm"
+;INCLUDE "engine/battle/moveEffects/mist_effect.asm"
+;INCLUDE "engine/battle/moveEffects/one_hit_ko_effect.asm"
 
 
 SECTION "Pics 5", ROMX, BANK[PICS_5]
@@ -5253,7 +5253,7 @@ INCLUDE "engine/titlescreen2.asm"
 ;INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/slot_machine.asm"
 INCLUDE "engine/overworld/pewter_guys.asm"
-INCLUDE "engine/multiply_divide.asm"
+;INCLUDE "engine/multiply_divide.asm"
 INCLUDE "engine/game_corner_slots.asm"
 
 
@@ -5276,9 +5276,9 @@ TradingAnimationGraphics2:
 	INCBIN "gfx/trade2.2bpp"
 
 INCLUDE "engine/evos_moves.asm"
-INCLUDE "engine/battle/moveEffects/heal_effect.asm"
-INCLUDE "engine/battle/moveEffects/transform_effect.asm"
-INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"
+;INCLUDE "engine/battle/moveEffects/heal_effect.asm"
+;INCLUDE "engine/battle/moveEffects/transform_effect.asm"
+;INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"
 
 
 SECTION "bankF",ROMX,BANK[$F]
@@ -5679,9 +5679,9 @@ INCLUDE "scripts/tradecenterm.asm"
 INCLUDE "data/mapObjects/tradecenterm.asm"
 TradeCenterMBlocks: INCBIN "maps/tradecenterm.blk"
 
-INCLUDE "engine/give_pokemon.asm"
+;INCLUDE "engine/give_pokemon.asm"
 
-INCLUDE "engine/predefs.asm"
+;INCLUDE "engine/predefs.asm"
 
 
 SECTION "bank14",ROMX,BANK[$14]
@@ -5752,8 +5752,8 @@ INCLUDE "scripts/mansion4.asm"
 INCLUDE "data/mapObjects/mansion4.asm"
 Mansion4Blocks: INCBIN "maps/mansion4.blk"
 
-INCLUDE "engine/battle/init_battle_variables.asm"
-INCLUDE "engine/battle/moveEffects/paralyze_effect.asm"
+;INCLUDE "engine/battle/init_battle_variables.asm"
+;INCLUDE "engine/battle/moveEffects/paralyze_effect.asm"
 
 INCLUDE "engine/overworld/card_key.asm"
 
@@ -6468,7 +6468,7 @@ INCLUDE "engine/evolution.asm"
 
 INCLUDE "engine/overworld/elevator.asm"
 
-INCLUDE "engine/items/tm_prices.asm"
+;INCLUDE "engine/items/tm_prices.asm"
 
 SECTION "bank3c",ROMX,BANK[$3C]
 

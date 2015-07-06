@@ -1,4 +1,4 @@
-TransformEffect_: ; 3bab1 (e:7ab1)
+TransformEffect_: ; f637f (3d:637f)
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies
 	ld bc, W_ENEMYBATTSTATUS3
@@ -141,8 +141,8 @@ TransformEffect_: ; 3bab1 (e:7ab1)
 
 .failed
 	ld hl, PrintButItFailedText_
-	jp BankswitchEtoF
+	jp Bankswitch3DtoF
 
-TransformedText: ; 3bb92 (e:7b92)
+TransformedText: ; f6458 (3d:6458)
 	TX_FAR _TransformedText
 	db "@"

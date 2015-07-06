@@ -624,7 +624,7 @@ Func_f5ea4:: ; f5ea4 (3d:f5ea4)
 	ld de,$0
 	ret
 	
-Func_f5ec1:: ; f5ec1
+Func_f5ec1:: ; f5ec1 (3d:5ec1)
 	call Random
 	cp $66
 	jr c,.asm_f5ed6
@@ -651,20 +651,11 @@ Pointer_f5eda:: ; f5eda (3d:f5eda)
 	; ... rest of data TBA
 	
 SECTION "temp_f5ff2" ROMX[$5ff2],BANK[$3c]
-INCLUDE "engine/bank3d/bank3d_battle.asm"
 
-InitBattle:: ; f5ff2 (3d:5ff2)
-	ld a,[W_CUROPPONENT]
-	and a
-	jr z,.asm_f6003
-	ld a,[W_CUROPPONENT]
-	ld [wcf91],a
-	ld [wEnemyMonSpecies2],a
-	jr .asm_f601d
-	ld a,[wd732]
-	bit 1,a ; debug mode?
-	jr z,.notdebugmode
-	ld a,[hJoyHeld]
-	bit 1,a ; holding b button?
-	ret nz
-	
+INCLUDE "engine/bank3d/bank3d_battle.asm"
+INCLUDE "engine/items/tm_prices.asm"
+INCLUDE "engine/multiply_divide.asm"
+INCLUDE "engine/give_pokemon.asm"
+INCLUDE "engine/battle/get_trainer_name.asm"
+INCLUDE "engine/bank3d/random.asm"
+INCLUDE "engine/predefs.asm"

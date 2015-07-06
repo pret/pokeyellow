@@ -1,4 +1,4 @@
-MistEffect_: ; 33f2b (c:7f2b)
+MistEffect_: ; f64ac (3d:64ac)
 	ld hl, W_PLAYERBATTSTATUS2
 	ld a, [H_WHOSETURN]
 	and a
@@ -16,6 +16,6 @@ MistEffect_: ; 33f2b (c:7f2b)
 	ld b, BANK(PrintButItFailedText_)
 	jp Bankswitch
 
-ShroudedInMistText: ; 33f52 (c:7f52)
+ShroudedInMistText: ; f64d3 (3d:64d3)
 	TX_FAR _ShroudedInMistText
 	db "@"

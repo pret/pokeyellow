@@ -1,4 +1,4 @@
-FocusEnergyEffect_: ; 27f86 (9:7f86)
+FocusEnergyEffect_: ; f628b (3d:628b)
 	ld hl, W_PLAYERBATTSTATUS2
 	ld a, [H_WHOSETURN]
 	and a
@@ -18,7 +18,7 @@ FocusEnergyEffect_: ; 27f86 (9:7f86)
 	ld b, BANK(PrintButItFailedText_)
 	jp Bankswitch
 
-GettingPumpedText: ; 27fb3 (9:7fb3)
+GettingPumpedText: ; f62b5 (3d:62b5)
 	db $0a
 	TX_FAR _GettingPumpedText
 	db "@"
