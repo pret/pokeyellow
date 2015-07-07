@@ -2814,7 +2814,7 @@ ReadSuperRodData: ; e8ea (3:68ea)
 	ld e, $1 ; $1 if there's a bite
 	ret
 
-INCLUDE "data/super_rod.asm"
+;INCLUDE "data/super_rod.asm"
 
 ; reloads map view and processes sprite data
 ; for items that cause the overworld to be displayed

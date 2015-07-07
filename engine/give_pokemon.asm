@@ -1,13 +1,13 @@
-_GivePokemon: ; 4fda5 (13:7da5)
+_GivePokemon: ; f66fa (3d:66fa)
 	call EnableAutoTextBoxDrawing
 	xor a
 	ld [wccd3], a
 	ld a, [wPartyCount] ; wPartyCount
 	cp PARTY_LENGTH
-	jr c, .asm_4fe01
+	jr c, .partyNotFull
 	ld a, [W_NUMINBOX] ; wda80
 	cp MONS_PER_BOX
-	jr nc, .asm_4fdf9
+	jr nc, .boxFull
 	xor a
 	ld [W_ENEMYBATTSTATUS3], a ; W_ENEMYBATTSTATUS3
 	ld a, [wcf91]
@@ -19,27 +19,27 @@ _GivePokemon: ; 4fda5 (13:7da5)
 	ld a, [wd5a0]
 	and $7f
 	cp 9
-	jr c, .asm_4fdec
+	jr c, .boxEightorLesser ; do not adjust box number to a 2 digit number
 	sub 9
 	ld [hl], "1"
 	inc hl
 	add "0"
-	jr .asm_4fdee
-.asm_4fdec
+	jr .continue
+.boxEightOrLesser
 	add "1"
-.asm_4fdee
+.continue
 	ld [hli], a
 	ld [hl], "@"
 	ld hl, SetToBoxText
 	call PrintText
 	scf
 	ret
-.asm_4fdf9
+.boxFull
 	ld hl, BoxIsFullText
 	call PrintText
 	and a
 	ret
-.asm_4fe01
+.partyNotFull
 	call SetPokedexOwnedFlag
 	call AddPartyMon
 	ld a, $1
@@ -48,7 +48,7 @@ _GivePokemon: ; 4fda5 (13:7da5)
 	scf
 	ret
 
-SetPokedexOwnedFlag: ; 4fe11 (13:7e11)
+SetPokedexOwnedFlag: ; f676c (3d:676c)
 	ld a, [wcf91]
 	push af
 	ld [wd11e], a
@@ -68,15 +68,15 @@ SetPokedexOwnedFlag: ; 4fe11 (13:7e11)
 UnknownTerminator_f6794: ; f6794 (3d:6794)
 	db "@"
 	
-GotMonText: ; 4fe39 (13:7e39)
+GotMonText: ; f6795 (3d:6795)
 	TX_FAR _GotMonText
 	db $0b
 	db "@"
 
-SetToBoxText: ; 4fe3f (13:7e3f)
+SetToBoxText: ; f679b (3d:679b)
 	TX_FAR _SetToBoxText
 	db "@"
 
-BoxIsFullText: ; 4fe44 (13:7e44)
+BoxIsFullText: ; f67a0 (3d:67a0)
 	TX_FAR _BoxIsFullText
 	db "@"

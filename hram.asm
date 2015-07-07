@@ -38,11 +38,16 @@ H_DIVISOR      EQU $FF99 ; 1 byte
 H_QUOTIENT     EQU $FF95 ; 4 bytes
 H_REMAINDER    EQU $FF99 ; 1 byte
 
+H_DIVIDEBUFFER EQU $FF9A
+
+H_MULTIPLYBUFFER EQU $FF9B
+
 ; PrintNumber (big endian).
 H_PASTLEADINGZEROES EQU $FF95 ; last char printed
 H_NUMTOPRINT        EQU $FF96 ; 3 bytes
 H_POWEROFTEN        EQU $FF99 ; 3 bytes
 H_SAVEDNUMTOPRINT   EQU $FF9C ; 3 bytes
+
 
 hSerialReceivedNewData EQU $FFA9
 

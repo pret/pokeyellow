@@ -1,16 +1,16 @@
-GetTrainerName_: ; 13a58 (4:7a58)
+GetTrainerName_: ; f67a5 (3d:67a5)
 	ld hl, W_GRASSRATE
 	ld a, [wLinkState]
 	and a
-	jr nz, .rival
+	jr nz, .foundName
 	ld hl, W_RIVALNAME
 	ld a, [W_TRAINERCLASS]
 	cp SONY1
-	jr z, .rival
+	jr z, .foundName
 	cp SONY2
-	jr z, .rival
+	jr z, .foundName
 	cp SONY3
-	jr z, .rival
+	jr z, .foundName
 	ld [wd0b5], a
 	ld a, TRAINER_NAME
 	ld [wNameListType], a

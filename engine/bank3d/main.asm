@@ -165,35 +165,35 @@ Func_f453f:: ; f453f (3d:453f)
 	ret
 	
 Func_f4578:: ; f4578 (3d:4578)
-	hlCoord 1,1
+	hlCoord 2,1
 	ld de,Pointer_f45f9
 	ld bc,7 << 8 | 16 ; 16x7 (xy)
 	call CopyScreenArea
 	ret
 	
 Func_f4585:: ; f4585 (3d:4585)
-	hlCoord 5,3
+	hlCoord 6,4
 	ld de,Pointer_f4673
 	ld bc,4 << 8 | 7 ; 7x4 (xy)
 	call CopyScreenArea
-	hlCoord 8,7
+	hlCoord 9,8
 	ld [hl],$64
 	inc hl
 	ld [hl],$65
 	ret
 	
 Func_f459a:: ; f459a (3d:459a)
-	hlCoord 3,7
+	hlCoord 4,8
 	ld de,Pointer_f468f
 	ld bc,9 << 8 | 12 ; 12x9 (xy)
 	call CopyScreenArea
-	hlCoord 15,9
+	hlCoord 16,10
 	ld [hl],$96
-	hlCoord 15,10
+	hlCoord 16,11
 	ld [hl],$9d
-	hlCoord 15,11
+	hlCoord 16,12
 	ld [hl],$a7
-	hlCoord 15,12
+	hlCoord 16,13
 	ld [hl],$b1
 	ld hl,Pointer_f45c7
 	ld de,wOAMBuffer
@@ -201,7 +201,7 @@ Func_f459a:: ; f459a (3d:459a)
 	call CopyData
 	ret
 	
-Pointer_f45c7:: ; f45c7 (3d:45c7)
+Pointer_f45c7: ; f45c7 (3d:45c7)
 	db $60,$40,$f1,$22
 	db $60,$48,$f0,$22
 	db $68,$40,$f3,$22
@@ -229,7 +229,7 @@ CopyScreenArea:: ; f45e7 (3d:45e7)
 	jr nz,CopyScreenArea
 	ret
 	
-Pointer_f45f9:: ; f45f9 (3d:45f9)
+Pointer_f45f9: ; f45f9 (3d:45f9)
 ; 16x7 (xy)
 	db $f4,$f4,$f4,$f4,$f4,$f4,$49,$f4,$72,$30,$f4,$f4,$f4,$f4,$f4,$f4
 	db $fd,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$f4,$0d,$0e,$0f
@@ -601,14 +601,14 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	ret
 
 TrainerInfoTextBoxTileGraphics:  INCBIN "gfx/trainer_info.2bpp"
-BlankLeaderNames:                INCBIN "gfx/blank_leader_names.2bpp"
-CircleTile:                      INCBIN "gfx/circle_tile.2bpp"
-BadgeNumbersTileGraphics:        INCBIN "gfx/badge_numbers.2bpp"
+BlankLeaderNames:		INCBIN "gfx/blank_leader_names.2bpp"
+CircleTile:		      INCBIN "gfx/circle_tile.2bpp"
+BadgeNumbersTileGraphics:	INCBIN "gfx/badge_numbers.2bpp"
 
-Func_f5ea4:: ; f5ea4 (3d:f5ea4)
+Func_f5ea4:: ; f5ea4 (3d:5ea4)
 	ld a,[W_CURMAP]
 	ld c,a
-	ld hl,Pointer_f5eda
+	ld hl,FishingSlots
 .loop
 	ld a,[hli]
 	cp $ff
@@ -619,12 +619,13 @@ Func_f5ea4:: ; f5ea4 (3d:f5ea4)
 	add hl,de
 	jr .loop
 .found
-	call Func_f5ec1
+	call GenerateRandomFishingEncounter
+	ret
 .notfound
 	ld de,$0
 	ret
 	
-Func_f5ec1:: ; f5ec1 (3d:5ec1)
+GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
 	call Random
 	cp $66
 	jr c,.asm_f5ed6
@@ -644,13 +645,7 @@ Func_f5ec1:: ; f5ec1 (3d:5ec1)
 	ld d,[hl]
 	ret
 	
-Pointer_f5eda:: ; f5eda (3d:f5eda)
-	db PALLET_TOWN,$1b,$a,$18,$a,$1b,$5,$18,$14
-	db VIRIDIAN_CITY,$47,$5,$47,$a,$47,$f,$47,$a
-	db CERULEAN_CITY,$9d,$19,$9d,$1e,$9e,$1e,$9e,$28
-	; ... rest of data TBA
-	
-SECTION "temp_f5ff2" ROMX[$5ff2],BANK[$3c]
+INCLUDE "data/super_rod.asm"
 
 INCLUDE "engine/bank3d/bank3d_battle.asm"
 INCLUDE "engine/items/tm_prices.asm"

@@ -1,4 +1,4 @@
-GetPredefPointer:
+GetPredefPointer: ; f67ed (3d:67ed)
 ; Store the contents of the register
 ; pairs (hl, de, bc) at wPredefRegisters.
 ; Then put the bank and address of predef
@@ -27,10 +27,10 @@ GetPredefPointer:
 	add a
 	add e
 	ld e,a
-	jr nc,.next
+	jr nc,.nocarry
 	inc d
 
-.next
+.nocarry
 	add hl,de
 	ld d,h
 	ld e,l
@@ -49,7 +49,7 @@ GetPredefPointer:
 
 	ret
 
-PredefPointers:: ; 4fe79 (13:7e79)
+PredefPointers:: ; f681d (3d:681d)
 ; these are pointers to ASM routines.
 ; they appear to be used in overworld map scripts.
 	add_predef DrawPlayerHUDAndHPBar
