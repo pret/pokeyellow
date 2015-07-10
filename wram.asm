@@ -2312,8 +2312,29 @@ wBoxMon2:: ds box_struct_length * (MONS_PER_BOX + -1) ; dab7
 
 wBoxMonOT::    ds 11 * MONS_PER_BOX ; dd2a
 wBoxMonNicks:: ds 11 * MONS_PER_BOX ; de06
-wBoxMonNicksEnd:: ; dee2
+wBoxMonNicksEnd:: ; dee1
 
+wdee2:: ds 1 ; dee1
+wdee3:: ds 1 ; dee2
+wdee4:: ds 1
+wdee5:: ds 1
+wdee6:: ds 1
+wdee7:: ds 1
+wdee8:: ds 1
+wdee9:: ds 1
+wdeea:: ds 1
+wdeeb:: ds 1
+wdeec:: ds 1
+wdeed:: ds 1
+wdeee:: ds 1
+wdeef:: ds 1
+wdef0:: ds 1
+wdef1:: ds 1
+wdef2:: ds 1
+wdef3:: ds 1
+wdef4:: ds 1
+wdef5:: ds 1
+wdef6:: ds 1
 
 SECTION "Stack", WRAMX[$dfff], BANK[1]
 wStack:: ; dfff

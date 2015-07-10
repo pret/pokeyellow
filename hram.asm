@@ -164,6 +164,9 @@ hLCDCPointer EQU $FFF4
 
 hJoyInput EQU $FFF5
 
+hReadJoypad EQU $FFF8 ; 0 to read joypad, anything else skips joypad check
+                      ; written to in palettes.asm
+
 ; bit 0: draw HP fraction to the right of bar instead of below (for party menu)
 ; bit 1: menu is double spaced
 hFlags_0xFFF6 EQU $FFFA

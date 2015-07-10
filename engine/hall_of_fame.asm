@@ -1,5 +1,5 @@
-AnimateHallOfFame: ; 701a0 (1c:41a0)
-	call Func_70423
+AnimateHallOfFame: ; 701c6 (1c:41c6)
+	call Func_7047b
 	call ClearScreen
 	ld c, 100
 	call DelayFrames
@@ -28,9 +28,9 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	ld hl, wd5a2
 	ld a, [hl]
 	inc a
-	jr z, .asm_701eb
+	jr z, .asm_70211
 	inc [hl]
-.asm_701eb
+.asm_70211
 	ld a, $90
 	ld [hWY], a
 	ld c, BANK(Music_HallOfFame)
@@ -38,10 +38,10 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call PlayMusic
 	ld hl, wPartySpecies
 	ld c, $ff
-.asm_701fb
+.asm_70221
 	ld a, [hli]
 	cp $ff
-	jr z, .asm_70241
+	jr z, .asm_70266
 	inc c
 	push hl
 	push bc
@@ -53,13 +53,12 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call AddNTimes
 	ld a, [hl]
 	ld [wTrainerFacingDirection], a
-	call Func_70278
-	call Func_702e1
+	call Func_702a2
+	call Func_7030e
 	ld c, $50
 	call DelayFrames
 	hlCoord 2, 13
-	ld b, $3
-	ld c, $e
+	ld b, $30e
 	call TextBoxBorder
 	hlCoord 4, 15
 	ld de, HallOfFameText
@@ -69,32 +68,32 @@ AnimateHallOfFame: ; 701a0 (1c:41a0)
 	call GBFadeOutToWhite
 	pop bc
 	pop hl
-	jr .asm_701fb
-.asm_70241
+	jr .asm_70221
+.asm_70266
 	ld a, c
 	inc a
 	ld hl, wHallOfFame
 	ld bc, HOF_MON
 	call AddNTimes
 	ld [hl], $ff
-	call SaveHallOfFameTeams
+	callab SaveHallOfFameTeams ; useless since in same bank
 	xor a
 	ld [wWhichTrade], a ; wWhichTrade
 	inc a
 	ld [wTrainerScreenY], a
-	call Func_70278
-	call Func_70377
-	call Func_70423
+	call Func_702a2
+	call Func_703d1
+	call Func_7047b
 	xor a
 	ld [hWY], a
 	ld hl, rLCDC ; $ff40
 	res 3, [hl]
 	ret
 
-HallOfFameText: ; 7026b (1c:426b)
+HallOfFameText: ; 70295 (1c:4295)
 	db "HALL OF FAME@"
 
-Func_70278: ; 70278 (1c:4278)
+Func_702a2: ; 702a2 (1c:42a2)
 	call ClearScreen
 	ld a, $d0
 	ld [hSCY], a
@@ -107,56 +106,72 @@ Func_70278: ; 70278 (1c:4278)
 	ld [wcf1d], a
 	ld a, [wTrainerScreenY]
 	and a
-	jr z, .asm_7029d
-	call Func_7033e
-	jr .asm_702ab
-.asm_7029d
+	jr z, .asm_702c7
+	call Func_70390
+	jr .asm_702d5
+.asm_702c7
 	hlCoord 12, 5
 	call GetMonHeader
 	call LoadFrontSpriteByMonIndex
 	predef LoadMonBackPic
-.asm_702ab
+.asm_702d5
 	ld b, $b
 	ld c, $0
 	call GoPAL_SET
 	ld a, $e4
 	ld [rBGP], a ; $ff47
+	call Func_3021
 	ld c, $31
-	call Func_7036d
+	call Func_703c7
 	ld d, $a0
 	ld e, $4
 	ld a, [wOnSGB]
 	and a
-	jr z, .asm_702c7
+	jr z, .asm_702f4
 	sla e
 .asm_702c7
-	call .asm_702d5
+	call .asm_70302
 	xor a
 	ld [hSCY], a
 	ld c, a
-	call Func_7036d
+	call Func_703c7
 	ld d, $0
 	ld e, $fc
-.asm_702d5
+.asm_70302
 	call DelayFrame
 	ld a, [hSCX]
 	add e
 	ld [hSCX], a
 	cp d
-	jr nz, .asm_702d5
+	jr nz, .asm_70302
 	ret
 
-Func_702e1: ; 702e1 (1c:42e1)
+Func_7030e: ; 7030e (1c:430e)
 	ld a, [wTrainerEngageDistance]
 	ld hl, wPartyMonNicks ; wPartyMonNicks
 	call GetPartyMonName
-	call Func_702f0
-	jp Func_70404
-
-Func_702f0: ; 702f0 (1c:42f0)
+	call Func_70348
+	ld a, [wTrainerEngageDistance]
+	ld [wcf91], a
+	callab Func_fce18 ; 3f:4e18
+	jr nc, .asm_70336
+	ld e,$22
+	callab Func_f0000
+	jr .asm_7033c
+.asm_70336
+	ld a,[wWhichTrade]
+	call PlayCry
+.asm_7033c
+	jp Func_7045c
+	
+Func_7033f: ; 7033f (1c:433f)
+	call Func_70348
+	ld a,[wWhichTrade]
+	jp PlayCry
+	
+Func_70348: ; 70348 (1c:4348)
 	hlCoord 0, 2
-	ld b, $9
-	ld c, $a
+	ld bc, $90a
 	call TextBoxBorder
 	hlCoord 2, 6
 	ld de, HoFMonInfoText
@@ -171,22 +186,26 @@ Func_702f0: ; 702f0 (1c:42f0)
 	ld [wd0b5], a
 	hlCoord 3, 9
 	predef PrintMonType
-	ld a, [wWhichTrade] ; wWhichTrade
-	jp PlayCry
+	ret
+	;ld a, [wWhichTrade] ; wWhichTrade
+	;jp PlayCry
 
-HoFMonInfoText: ; 70329 (1c:4329)
+HoFMonInfoText: ; 7037b (1c:437b)
 	db   "LEVEL/"
 	next "TYPE1/"
 	next "TYPE2/@"
 
-Func_7033e: ; 7033e (1c:433e)
+Func_70390: ; 70390 (1c:433e)
 	ld de, RedPicFront ; $6ede
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
+	ld a,$0
+	call SwitchSRAMBankAndLatchClockData
 	ld hl, S_SPRITEBUFFER1
 	ld de, $a000
 	ld bc, $310
 	call CopyData
+	call PrepareRTCDataAndDisableSRAM
 	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
 	ld de, RedPicBack ; $7e0a
@@ -197,22 +216,20 @@ Func_7033e: ; 7033e (1c:433e)
 	call InterlaceMergeSpriteBuffers
 	ld c, $1
 
-Func_7036d: ; 7036d (1c:436d)
+Func_703c7: ; 703c7 (1c:43c7)
 	ld b, $0
 	hlCoord 12, 5
 	predef_jump CopyTileIDsFromList
 
-Func_70377: ; 70377 (1c:4377)
+Func_703d1: ; 703d1 (1c:43d1)
 	ld hl, wd747
 	set 3, [hl]
 	predef DisplayDexRating
 	hlCoord 0, 4
-	ld b, $6
-	ld c, $a
+	ld bc, $60a
 	call TextBoxBorder
 	hlCoord 5, 0
-	ld b, $2
-	ld c, $9
+	ld b, $209
 	call TextBoxBorder
 	hlCoord 7, 2
 	ld de, wPlayerName ; wd158
@@ -242,26 +259,26 @@ Func_70377: ; 70377 (1c:4377)
 	call Func_703e2
 	ld hl, wcc5d
 
-Func_703e2: ; 703e2 (1c:43e2)
+Func_7043a: ; 7043a (1c:443a)
 	call PrintText
 	ld c, $78
 	jp DelayFrames
 
-HoFPlayTimeText: ; 703ea (1c:43ea)
+HoFPlayTimeText: ; 70442 (1c:4442)
 	db "PLAY TIME@"
 
-HoFMoneyText: ; 703f4 (1c:43f4)
+HoFMoneyText: ; 7044c (1c:444c)
 	db "MONEY@"
 
-DexSeenOwnedText: ; 703fa (1c:43fa)
+DexSeenOwnedText: ; 70452 (1c:4452)
 	TX_FAR _DexSeenOwnedText
 	db "@"
 
-DexRatingText: ; 703ff (1c:43ff)
+DexRatingText: ; 70457 (1c:4457)
 	TX_FAR _DexRatingText
 	db "@"
 
-Func_70404: ; 70404 (1c:4404)
+Func_7045c: ; 7045c (1c:445c)
 	ld hl, wHallOfFame
 	ld bc, HOF_MON
 	ld a, [wTrainerEngageDistance]
@@ -276,7 +293,7 @@ Func_70404: ; 70404 (1c:4404)
 	ld bc, $b
 	jp CopyData
 
-Func_70423: ; 70423 (1c:4423)
+Func_7047b: ; 7047b (1c:447b)
 	ld a, $a
 	ld [wcfc8], a
 	ld [wcfc9], a
