@@ -33,10 +33,10 @@ CopyData:: ; 00b1 (0:00b1)
 	jr nz, .copybytes
 	ret
 
-CopyVideoData:: ; 00c8 (0:00c8)
+CopyVideoDataAlternate:: ; 00c8 (0:00c8)
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?
-	jp nz, CopyVideoDataLCDEnabled ; if yes, then copy video data
+	jp nz, CopyVideoData ; if yes, then copy video data
 	push hl
 	ld h,d
 	ld l,e
@@ -53,10 +53,10 @@ CopyVideoData:: ; 00c8 (0:00c8)
 	pop af
 	jp FarCopyData
 	
-CopyVideoDataDouble:: ; 00e3 (0:00e3)
+CopyVideoDataDoubleAlternate:: ; 00e3 (0:00e3)
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?
-	jp nz, CopyVideoDataDoubleLCDEnabled ; if yes, then copy video data
+	jp nz, CopyVideoDataDouble ; if yes, then copy video data
 	push de
 	ld d,h
 	ld e,l

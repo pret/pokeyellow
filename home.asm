@@ -971,7 +971,7 @@ InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
-	call CopyVideoDataLCDEnabled
+	call CopyVideoData
 	jp PrepareRTCDataAndDisableSRAM
 
 Func_1510:: ; 1510 (0:1510)
@@ -3443,7 +3443,7 @@ LoadFontTilePatterns:: ; 3683 (0:3683)
 	ld de, FontGraphics
 	ld hl, vFont
 	ld bc, BANK(FontGraphics) << 8 | $80
-	jp CopyVideoDataDoubleLCDEnabled ; if LCD is on, transfer during V-blank
+	jp CopyVideoDataDouble ; if LCD is on, transfer during V-blank
 
 LoadTextBoxTilePatterns:: ; 36a3 (0:36a3)
 	ld a, [rLCDC]
@@ -3459,7 +3459,7 @@ LoadTextBoxTilePatterns:: ; 36a3 (0:36a3)
 	ld de, TextBoxGraphics
 	ld hl, vChars2 + $600
 	ld bc, BANK(TextBoxGraphics) << 8 | $20
-	jp CopyVideoDataLCDEnabled ; if LCD is on, transfer during V-blank
+	jp CopyVideoData ; if LCD is on, transfer during V-blank
 
 LoadHpBarAndStatusTilePatterns:: ; 36c3 (0:36c3)
 	ld a, [rLCDC]
@@ -3475,7 +3475,7 @@ LoadHpBarAndStatusTilePatterns:: ; 36c3 (0:36c3)
 	ld de, HpBarAndStatusGraphics
 	ld hl, vChars2 + $620
 	ld bc, BANK(HpBarAndStatusGraphics) << 8 | $1e
-	jp CopyVideoDataLCDEnabled ; if LCD is on, transfer during V-blank
+	jp CopyVideoData ; if LCD is on, transfer during V-blank
 
 UncompressSpriteFromDE:: ; 36e3 (0:36e3)
 ; Decompress pic at a:de.
@@ -4934,7 +4934,7 @@ SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
 	ld [$4000],a
 	ret
 	
-PrepareRTCDataAndDisableSRAM:: ; 3eac (0:3eac)
+PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 	push af
 	ld a,$0
 	ld [$6000],a

@@ -34,7 +34,7 @@ FarCopyDataDouble:: ; 15d4 (0:15d4)
 	call BankswitchCommon
 	ret
 
-CopyVideoDataLCDEnabled:: ; 15fe (0:15fe)
+CopyVideoData:: ; 15fe (0:15fe)
 ; Wait for the next VBlank, then copy c 2bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -83,7 +83,7 @@ CopyVideoDataLCDEnabled:: ; 15fe (0:15fe)
 	ld c, a
 	jr .loop
 
-CopyVideoDataDoubleLCDEnabled:: ; 1636 (0:1636)
+CopyVideoDataDouble:: ; 1636 (0:1636)
 ; Wait for the next VBlank, then copy c 1bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
