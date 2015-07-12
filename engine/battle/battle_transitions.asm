@@ -1,4 +1,4 @@
-BattleTransition: ; 7096d (1c:496d)
+BattleTransition: ; 709d7 (1c:49d7)
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
@@ -64,7 +64,7 @@ BattleTransition: ; 7096d (1c:496d)
 ; bit 0: set if trainer battle
 ; bit 1: set if enemy is at least 3 levels higher than player
 ; bit 2: set if dungeon map
-BattleTransitions: ; 709d2 (1c:49d2)
+BattleTransitions: ; 70a3c (1c:4a3c)
 	dw BattleTransition_DoubleCircle      ; %000
 	dw BattleTransition_Spiral            ; %001
 	dw BattleTransition_Circle            ; %010
@@ -74,7 +74,7 @@ BattleTransitions: ; 709d2 (1c:49d2)
 	dw BattleTransition_VerticalStripes   ; %110
 	dw BattleTransition_Split             ; %111
 
-GetBattleTransitionID_WildOrTrainer: ; 709e2 (1c:49e2)
+GetBattleTransitionID_WildOrTrainer: ; 70a4c (1c:4a4c)
 	ld a, [W_CUROPPONENT]
 	cp $c8
 	jr nc, .trainer
@@ -84,7 +84,7 @@ GetBattleTransitionID_WildOrTrainer: ; 709e2 (1c:49e2)
 	set 0, c
 	ret
 
-GetBattleTransitionID_CompareLevels: ; 709ef (1c:49ef)
+GetBattleTransitionID_CompareLevels: ; 70a59 (1c:4a59)
 	ld hl, wPartyMon1HP
 .faintedLoop
 	ld a, [hli]
@@ -115,7 +115,7 @@ GetBattleTransitionID_CompareLevels: ; 709ef (1c:49ef)
 ; fails to recognize VICTORY_ROAD_2, VICTORY_ROAD_3, all ROCKET_HIDEOUT maps,
 ; MANSION_1, SEAFOAM_ISLANDS_[2-5], POWER_PLANT, DIGLETTS_CAVE
 ; and SILPH_CO_[9-11]F as dungeon maps
-GetBattleTransitionID_IsDungeonMap: ; 70a19 (1c:4a19)
+GetBattleTransitionID_IsDungeonMap: ; 70a83 (1c:4a83)
 	ld a, [W_CURMAP]
 	ld e, a
 	ld hl, DungeonMaps1
@@ -147,7 +147,7 @@ GetBattleTransitionID_IsDungeonMap: ; 70a19 (1c:4a19)
 
 ; GetBattleTransitionID_IsDungeonMap checks if W_CURMAP
 ; is equal to one of these maps
-DungeonMaps1: ; 70a3f (1c:4a3f)
+DungeonMaps1: ; 70aa9 (1c:4aa9)
 	db VIRIDIAN_FOREST
 	db ROCK_TUNNEL_1
 	db SEAFOAM_ISLANDS_1
@@ -156,7 +156,7 @@ DungeonMaps1: ; 70a3f (1c:4a3f)
 
 ; GetBattleTransitionID_IsDungeonMap checks if W_CURMAP
 ; is in between or equal to each pair of maps
-DungeonMaps2: ; 70a44 (1c:4a44)
+DungeonMaps2: ; 70aac (1c:4aac)
 	; all MT_MOON maps
 	db MT_MOON_1
 	db MT_MOON_3
@@ -175,27 +175,30 @@ DungeonMaps2: ; 70a44 (1c:4a44)
 	db UNKNOWN_DUNGEON_1
 	db $FF
 
-LoadBattleTransitionTile: ; 70a4d (1c:4a4d)
+LoadBattleTransitionTile: ; 70ab7 (1c:4ab7)
 	ld hl, vChars1 + $7f0
 	ld de, BattleTransitionTile
 	ld bc, (BANK(BattleTransitionTile) << 8) + $01
 	jp CopyVideoData
 
-BattleTransitionTile: ; 70a59 (1c:4a59)
+BattleTransitionTile: ; 70ac3 (1c:4ac3)
 	INCBIN "gfx/battle_transition.2bpp"
 
-BattleTransition_BlackScreen: ; 70a69 (1c:4a69)
+BattleTransition_BlackScreen: ; 70ad3 (1c:4ad3)
 	ld a, $ff
 	ld [rBGP], a
 	ld [rOBP0], a
 	ld [rOBP1], a
+	call Func_3021
+	call Func_3040
+	call Func_3061
 	ret
 
 ; for non-dungeon trainer battles
 ; called regardless of mon levels, but does an
 ; outward spiral if enemy is at least 3 levels
 ; higher than player and does an inward spiral otherwise
-BattleTransition_Spiral: ; 70a72 (1c:4a72)
+BattleTransition_Spiral: ; 70ae5 (1c:4ae5)
 	ld a, [wcd47]
 	and a
 	jr z, .outwardSpiral
@@ -228,7 +231,7 @@ BattleTransition_Spiral: ; 70a72 (1c:4a72)
 	ld [wd09a], a
 	ret
 
-BattleTransition_InwardSpiral: ; 70aaa (1c:4aaa)
+BattleTransition_InwardSpiral: ; 70b1d (1c:4b1d)
 	ld a, $7
 	ld [wWhichTrade], a
 	ld hl, wTileMap
@@ -246,10 +249,10 @@ BattleTransition_InwardSpiral: ; 70aaa (1c:4aaa)
 	call BattleTransition_InwardSpiral_
 	dec c
 	dec c
-	ld de, $ffec
+	ld de, -$14
 	call BattleTransition_InwardSpiral_
 	inc c
-	ld de, rIE
+	ld de, -1
 	call BattleTransition_InwardSpiral_
 	dec c
 	dec c
@@ -258,7 +261,7 @@ BattleTransition_InwardSpiral: ; 70aaa (1c:4aaa)
 	jr nz, .loop
 	ret
 
-BattleTransition_InwardSpiral_: ; 70ae0 (1c:4ae0)
+BattleTransition_InwardSpiral_: ; 70b53 (1c:4b53)
 	push bc
 .loop
 	ld [hl], $ff
@@ -277,8 +280,8 @@ BattleTransition_InwardSpiral_: ; 70ae0 (1c:4ae0)
 	pop bc
 	ret
 
-BattleTransition_OutwardSpiral_: ; 70af9 (1c:4af9)
-	ld bc, $ffec
+BattleTransition_OutwardSpiral_: ; 70b6c (1c:4b6c)
+	ld bc, -$14
 	ld de, $14
 	ld a, [wd09b]
 	ld l, a
@@ -345,13 +348,14 @@ BattleTransition_OutwardSpiral_: ; 70af9 (1c:4af9)
 	jr .done2_
 
 FlashScreen:
-BattleTransition_FlashScreen_: ; 70b5d (1c:4b5d)
+BattleTransition_FlashScreen_: ; 70be8 (1c:4be8s)
 	ld hl, BattleTransition_FlashScreenPalettes
 .loop
 	ld a, [hli]
 	cp $1
 	jr z, .done
 	ld [rBGP], a
+	call Func_3021
 	ld c, $2
 	call DelayFrames
 	jr .loop
@@ -360,12 +364,12 @@ BattleTransition_FlashScreen_: ; 70b5d (1c:4b5d)
 	jr nz, BattleTransition_FlashScreen_
 	ret
 
-BattleTransition_FlashScreenPalettes: ; 70b72 (1c:4b72)
+BattleTransition_FlashScreenPalettes: ; 70be8 (1c:4be8)
 	db $F9,$FE,$FF,$FE,$F9,$E4,$90,$40,$00,$40,$90,$E4
 	db $01 ; terminator
 
 ; used for low level trainer dungeon battles
-BattleTransition_Shrink: ; 70b7f (1c:4b7f)
+BattleTransition_Shrink: ; 70bf4 (1c:4bf4)
 	ld c, $9
 .loop
 	push bc
@@ -373,7 +377,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	hlCoord 0, 7
 	deCoord 0, 8
-	ld bc, $ffd8
+	ld bc, -$28
 	call BattleTransition_CopyTiles1
 	hlCoord 0, 10
 	deCoord 0, 9
@@ -381,7 +385,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 	call BattleTransition_CopyTiles1
 	hlCoord 8, 0
 	deCoord 9, 0
-	ld bc, $fffe
+	ld bc, -$2
 	call BattleTransition_CopyTiles2
 	hlCoord 11, 0
 	deCoord 10, 0
@@ -399,7 +403,7 @@ BattleTransition_Shrink: ; 70b7f (1c:4b7f)
 	jp DelayFrames
 
 ; used for high level trainer dungeon battles
-BattleTransition_Split: ; 70bca (1c:4bca)
+BattleTransition_Split: ; 70c40 (1c:4c40)
 	ld c, $9
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -407,7 +411,7 @@ BattleTransition_Split: ; 70bca (1c:4bca)
 	push bc
 	hlCoord 0, 16
 	deCoord 0, 17
-	ld bc, $ffd8
+	ld bc, -$28
 	call BattleTransition_CopyTiles1
 	hlCoord 0, 1
 	ld de, wTileMap
@@ -415,7 +419,7 @@ BattleTransition_Split: ; 70bca (1c:4bca)
 	call BattleTransition_CopyTiles1
 	hlCoord 18, 0
 	deCoord 19, 0
-	ld bc, $fffe
+	ld bc, -$2
 	call BattleTransition_CopyTiles2
 	hlCoord 1, 0
 	ld de, wTileMap
@@ -430,7 +434,7 @@ BattleTransition_Split: ; 70bca (1c:4bca)
 	ld c, $a
 	jp DelayFrames
 
-BattleTransition_CopyTiles1: ; 70c12 (1c:4c12)
+BattleTransition_CopyTiles1: ; 70c88 (1c:4c88)
 	ld a, c
 	ld [wWhichTrade], a
 	ld a, b
@@ -462,7 +466,7 @@ BattleTransition_CopyTiles1: ; 70c12 (1c:4c12)
 	jr nz, .loop2
 	ret
 
-BattleTransition_CopyTiles2: ; 70c3f (1c:4c3f)
+BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
 	ld a, c
 	ld [wWhichTrade], a
 	ld a, b
@@ -512,7 +516,7 @@ BattleTransition_CopyTiles2: ; 70c3f (1c:4c3f)
 	ret
 
 ; used for high level wild dungeon battles
-BattleTransition_VerticalStripes: ; 70c7e (1c:4c7e)
+BattleTransition_VerticalStripes: ; 70cf4 (1c:4cf4)
 	ld c, $12
 	ld hl, wTileMap
 	deCoord 1, 17
@@ -540,7 +544,7 @@ BattleTransition_VerticalStripes: ; 70c7e (1c:4c7e)
 	jr nz, .loop
 	jp BattleTransition_BlackScreen
 
-BattleTransition_VerticalStripes_: ; 70caa (1c:4caa)
+BattleTransition_VerticalStripes_: ; 70d20 (1c:4d20)
 	ld c, $a
 .loop
 	ld [hl], $ff
@@ -551,7 +555,7 @@ BattleTransition_VerticalStripes_: ; 70caa (1c:4caa)
 	ret
 
 ; used for low level wild dungeon battles
-BattleTransition_HorizontalStripes: ; 70cb4 (1c:4cb4)
+BattleTransition_HorizontalStripes: ; 70d2a (1c:4d2a)
 	ld c, $14
 	ld hl, wTileMap
 	deCoord 19, 1
@@ -575,7 +579,7 @@ BattleTransition_HorizontalStripes: ; 70cb4 (1c:4cb4)
 	jr nz, .loop
 	jp BattleTransition_BlackScreen
 
-BattleTransition_HorizontalStripes_: ; 70cd8 (1c:4cd8)
+BattleTransition_HorizontalStripes_: ; 70d4e (1c:4d4e)
 	ld c, $9
 	ld de, $28
 .loop
@@ -588,7 +592,7 @@ BattleTransition_HorizontalStripes_: ; 70cd8 (1c:4cd8)
 ; used for high level wild non-dungeon battles
 ; makes one full circle around the screen
 ; by animating each half circle one at a time
-BattleTransition_Circle: ; 70ce4 (1c:4ce4)
+BattleTransition_Circle: ; 70d5a (1c:4d5a)
 	call BattleTransition_FlashScreen
 	ld bc, $000a
 	ld hl, BattleTransition_HalfCircle1
@@ -599,14 +603,14 @@ BattleTransition_Circle: ; 70ce4 (1c:4ce4)
 	call BattleTransition_Circle_Sub1
 	jp BattleTransition_BlackScreen
 
-BattleTransition_FlashScreen: ; 70cfd (1c:4cfd)
+BattleTransition_FlashScreen: ; 70d73 (1c:4d73)
 	ld b, $3
 	call BattleTransition_FlashScreen_
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
+BattleTransition_Circle_Sub1: ; 70d7c (1c:4d7c)
 	push bc
 	push hl
 	ld a, b
@@ -620,7 +624,7 @@ BattleTransition_Circle_Sub1: ; 70d06 (1c:4d06)
 	jr nz, BattleTransition_Circle_Sub1
 	ret
 
-BattleTransition_TransferDelay3: ; 70d19 (1c:4d19)
+BattleTransition_TransferDelay3: ; 70d8f (1c:4d8f)
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
@@ -631,7 +635,7 @@ BattleTransition_TransferDelay3: ; 70d19 (1c:4d19)
 ; used for low level wild non-dungeon battles
 ; makes two half circles around the screen
 ; by animating both half circles at the same time
-BattleTransition_DoubleCircle: ; 70d24 (1c:4d24)
+BattleTransition_DoubleCircle: ; 70d9a (1c:4d9a)
 	call BattleTransition_FlashScreen
 	ld c, $a
 	ld hl, BattleTransition_HalfCircle1
@@ -659,7 +663,7 @@ BattleTransition_DoubleCircle: ; 70d24 (1c:4d24)
 	jr nz, .loop
 	jp BattleTransition_BlackScreen
 
-BattleTransition_Circle_Sub2: ; 70d50 (1c:4d50)
+BattleTransition_Circle_Sub2: ; 70dc6 (1c:4dc6)
 	ld [wWhichTrade], a
 	ld a, [hli]
 	ld [wTrainerEngageDistance], a
@@ -672,7 +676,7 @@ BattleTransition_Circle_Sub2: ; 70d50 (1c:4d50)
 	ld l, a
 	jp BattleTransition_Circle_Sub3
 
-BattleTransition_HalfCircle1: ; 70d61 (1c:4d61)
+BattleTransition_HalfCircle1: ; 70dd7 (1c:4dd7)
 	db $01
 	dw BattleTransition_CircleData1
 	dwCoord 18, 6
@@ -713,7 +717,7 @@ BattleTransition_HalfCircle1: ; 70d61 (1c:4d61)
 	dw BattleTransition_CircleData1
 	dwCoord 1, 6
 
-BattleTransition_HalfCircle2: ; 70d93 (1c:4d93)
+BattleTransition_HalfCircle2: ; 70d93 (1c:4e09)
 	db $00
 	dw BattleTransition_CircleData1
 	dwCoord 1, 11
@@ -754,7 +758,7 @@ BattleTransition_HalfCircle2: ; 70d93 (1c:4d93)
 	dw BattleTransition_CircleData1
 	dwCoord 18, 11
 
-BattleTransition_Circle_Sub3: ; 70dc5 (1c:4dc5)
+BattleTransition_Circle_Sub3: ; 70e3b (1c:4e3b)
 	push hl
 	ld a, [de]
 	ld c, a
@@ -799,17 +803,17 @@ BattleTransition_Circle_Sub3: ; 70dc5 (1c:4dc5)
 	jr nz, .loop2
 	jr BattleTransition_Circle_Sub3
 
-BattleTransition_CircleData1: ; 70dfe (1c:4dfe)
+BattleTransition_CircleData1: ; 70e74 (1c:4e74)
 	db $02,$03,$05,$04,$09,$FF
 
-BattleTransition_CircleData2: ; 70e04 (1c:4e04)
+BattleTransition_CircleData2: ; 70e7a (1c:4e7a)
 	db $01,$01,$02,$02,$04,$02,$04,$02,$03,$FF
 
-BattleTransition_CircleData3: ; 70e0e (1c:4e0e)
+BattleTransition_CircleData3: ; 70e84 (1c:4e84)
 	db $02,$01,$03,$01,$04,$01,$04,$01,$04,$01,$03,$01,$02,$01,$01,$01,$01,$FF
 
-BattleTransition_CircleData4: ; 70e20 (1c:4e20)
+BattleTransition_CircleData4: ; 70e97 (1c:4e97)
 	db $04,$01,$04,$00,$03,$01,$03,$00,$02,$01,$02,$00,$01,$FF
 
-BattleTransition_CircleData5: ; 70e2e (1c:4e2e)
+BattleTransition_CircleData5: ; 70ea3 (1c:4ea3)
 	db $04,$00,$03,$00,$03,$00,$02,$00,$02,$00,$01,$00,$01,$00,$01,$FF

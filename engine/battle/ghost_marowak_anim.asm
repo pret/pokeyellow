@@ -1,7 +1,8 @@
-MarowakAnim: ; 708ca (1c:48ca)
+MarowakAnim: ; 7092b (1c:492b)
 ; animate the ghost being unveiled as a Marowak
 	ld a, $e4
 	ld [rOBP1], a
+	call Func_3061
 	call CopyMonPicFromBGToSpriteVRAM ; cover the BG ghost pic with a sprite ghost pic that looks the same
 ; now that the ghost pic is being displayed using sprites, clear the ghost pic from the BG tilemap
 	hlCoord 12, 0
@@ -15,7 +16,7 @@ MarowakAnim: ; 708ca (1c:48ca)
 	ld [wHPBarMaxHP], a
 	ld a, $1
 	ld [H_WHOSETURN], a
-	callab Func_79793
+	callab Func_798d4
  ; alternate between black and light grey 8 times.
  ; this makes the ghost's body appear to flash
 	ld d, $80
@@ -27,6 +28,7 @@ MarowakAnim: ; 708ca (1c:48ca)
 	sla a
 	sla a
 	ld [rOBP1], a
+	call Func_3061
 	jr nz, .fadeOutGhostLoop
 	call ClearSprites
 	call CopyMonPicFromBGToSpriteVRAM ; copy Marowak pic from BG to sprite VRAM
@@ -40,6 +42,7 @@ MarowakAnim: ; 708ca (1c:48ca)
 	srl b
 	rra
 	ld [rOBP1], a
+	call Func_3061
 	ld a, b
 	and a
 	jr nz, .fadeInMarowakLoop
@@ -49,7 +52,7 @@ MarowakAnim: ; 708ca (1c:48ca)
 	jp ClearSprites
 
 ; copies a mon pic's  from background VRAM to sprite VRAM and sets up OAM
-CopyMonPicFromBGToSpriteVRAM: ; 7092a (1c:492a)
+CopyMonPicFromBGToSpriteVRAM: ; 70994 (1c:4994)
 	ld de, vFrontPic
 	ld hl, vSprites
 	ld bc, 7 * 7
@@ -74,7 +77,7 @@ CopyMonPicFromBGToSpriteVRAM: ; 7092a (1c:492a)
 	ld [hli], a
 	ld a, d
 	ld [hli], a
-	ld a, $10 ; use OBP1
+	ld a, $14 ; use OBP1
 	ld [hli], a
 	inc d
 	dec c
