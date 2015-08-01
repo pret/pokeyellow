@@ -122,9 +122,9 @@ _Divide: ; f6672 (3d:6672)
 	jr nz, .asm_f66d7
 	dec b
 .asm_f66d7
-	ld a, [H_DIVIDEND+4] ; $ff99
+	ld a, [H_DIVISOR] ; $ff99
 	srl a
-	ld [H_REMAINDER], a ; $ff99
+	ld [H_DIVISOR], a ; $ff99
 	ld a, [H_DIVIDEBUFFER]
 	rr a
 	ld [H_DIVIDEBUFFER], a

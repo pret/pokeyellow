@@ -36,7 +36,7 @@ BuildBattlePalPacket: ; 71eda (1c:5eda)
 	and a
 	jr z, .asm_71ef9
 	ld hl, wPartyMon1
-	ld a, [wPlayerMonNumber
+	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 .asm_71ef9
@@ -1132,10 +1132,11 @@ Func_725be:: ; 725be (1c:65be)
 	callba Func_bf450 ; 2f:7250
 	ret
 	
-INCLUDE "data/sgb_packets.asm"
+INCBIN "baserom.gbc",$725e2,$734b9 - $725e2
+;INCLUDE "data/sgb_packets.asm"
 
-INCLUDE "data/mon_palettes.asm"
+;INCLUDE "data/mon_palettes.asm"
 
-INCLUDE "data/super_palettes.asm"
+;INCLUDE "data/super_palettes.asm"
 
-INCLUDE "data/sgb_border.asm"
+;INCLUDE "data/sgb_border.asm"

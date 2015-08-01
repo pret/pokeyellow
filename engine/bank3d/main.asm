@@ -600,10 +600,10 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 .done
 	ret
 
-TrainerInfoTextBoxTileGraphics:  INCBIN "gfx/trainer_info.2bpp"
-BlankLeaderNames:		INCBIN "gfx/blank_leader_names.2bpp"
-CircleTile:		      INCBIN "gfx/circle_tile.2bpp"
-BadgeNumbersTileGraphics:	INCBIN "gfx/badge_numbers.2bpp"
+TrainerInfoTextBoxTileGraphics:	INCBIN "gfx/trainer_info.2bpp"
+BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
+CircleTile:						INCBIN "gfx/circle_tile.2bpp"
+BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
 
 Func_f5ea4:: ; f5ea4 (3d:5ea4)
 	ld a,[W_CURMAP]

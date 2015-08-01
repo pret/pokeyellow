@@ -1,2 +1,2 @@
-INCLUDE "yellow.asm"
-INCLUDE "audio.asm"
+;INCLUDE "yellow.asm"
+;INCLUDE "audio.asm"

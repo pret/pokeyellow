@@ -766,7 +766,7 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
 	call LoadPlayerSpriteGraphics
-	callsb SpecialWarpIn
+	callbs SpecialWarpIn
 	jp SpecialEnterMap
 
 LeaveMapAnim:: ; 07bc (0:07bc)

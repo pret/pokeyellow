@@ -1,5 +1,5 @@
-DisplayTownMap: ; 70e3e (1c:4e3e)
-	call LoadTownMap
+DisplayTownMap: ; 70eb7 (1c:4eb7)
+	;call LoadTownMap
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
 	push af
@@ -10,7 +10,7 @@ DisplayTownMap: ; 70e3e (1c:4e3e)
 	ld a, [W_CURMAP] ; W_CURMAP
 	push af
 	ld b, $0
-	call Func_711c4
+	call Func_7124e
 	hlCoord 1, 0
 	ld de, wcd6d
 	call PlaceString
@@ -25,9 +25,9 @@ DisplayTownMap: ; 70e3e (1c:4e3e)
 	xor a
 	ld [wWhichTrade], a ; wWhichTrade
 	pop af
-	jr Func_70e92
+	jr Func_70f08
 
-Func_70e7e: ; 70e7e (1c:4e7e)
+Func_70ef4: ; 70ef4 (1c:4ef4)
 	ld hl, wTileMap
 	ld bc, $114
 	call ClearScreenArea
@@ -38,24 +38,24 @@ Func_70e7e: ; 70e7e (1c:4e7e)
 	add hl, bc
 	ld a, [hl]
 
-Func_70e92: ; 70e92 (1c:4e92)
+Func_70e92: ; 70f08 (1c:4f08)
 	ld de, wHPBarMaxHP
 	call Func_712f1
 	ld a, [de]
 	push hl
-	call Func_71258
+	call Func_712e1
 	ld a, $4
 	ld [wcd5b], a
 	ld hl, wOAMBuffer + $10
 	call Func_71279
 	pop hl
 	ld de, wcd6d
-.asm_70eac
+.loop
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp $50
-	jr nz, .asm_70eac
+	cp "@"
+	jr nz, .loop
 	hlCoord 1, 0
 	ld de, wcd6d
 	call PlaceString
@@ -63,60 +63,66 @@ Func_70e92: ; 70e92 (1c:4e92)
 	ld de, wTileMapBackup + 16
 	ld bc, $10
 	call CopyData
-.asm_70ec8
+.asm_70f3e
 	call TownMapSpriteBlinkingAnimation
 	call JoypadLowSensitivity
 	ld a, [hJoy5]
 	ld b, a
-	and $c3
-	jr z, .asm_70ec8
+	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
+	jr z, .asm_70f3e
 	ld a, (SFX_02_3c - SFX_Headers_02) / 3
 	call PlaySound
 	bit 6, b
-	jr nz, .asm_70ef2
+	jr nz, .asm_70f68
 	bit 7, b
-	jr nz, .asm_70f01
+	jr nz, .asm_70f77
 	xor a
 	ld [wTownMapSpriteBlinkingEnabled], a
 	ld [hJoy7], a
 	ld [wTownMapSpriteBlinkingCounter], a
-	call Func_711ab
+	call Func_71235
 	pop hl
 	pop af
 	ld [hl], a
 	ret
-.asm_70ef2
+.asm_70f68
 	ld a, [wWhichTrade] ; wWhichTrade
 	inc a
 	cp $2f
-	jr nz, .asm_70efb
+	jr nz, .asm_70f71
 	xor a
-.asm_70efb
+.asm_70f71
 	ld [wWhichTrade], a ; wWhichTrade
-	jp Func_70e7e
-.asm_70f01
+	jp Func_70ef4
+.asm_70f77
 	ld a, [wWhichTrade] ; wWhichTrade
 	dec a
 	cp $ff
-	jr nz, .asm_70f0b
+	jr nz, .asm_70f81
 	ld a, $2e
-.asm_70f0b
+.asm_70f81
 	ld [wWhichTrade], a ; wWhichTrade
-	jp Func_70e7e
-
+	jp Func_70ef4
+.asm_70f87
+	ld a,[hJoy5]
+	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
+	ret z
+	callab Func_f4000
+	ret
+	
 INCLUDE "data/town_map_order.asm"
 
-TownMapCursor: ; 70f40 (1c:4f40)
+TownMapCursor: ; 70fc4 (1c:4fc4)
 	INCBIN "gfx/town_map_cursor.1bpp"
 
-LoadTownMap_Nest: ; 70f60 (1c:4f60)
+LoadTownMap_Nest: ; 70fe4 (1c:4fe4)
 	call LoadTownMap
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
 	push af
 	ld [hl], $ff
 	push hl
-	call Func_711ef
+	call Func_71279
 	call GetMonName
 	hlCoord 1, 0
 	call PlaceString
@@ -125,29 +131,32 @@ LoadTownMap_Nest: ; 70f60 (1c:4f60)
 	ld de, MonsNestText
 	call PlaceString
 	call WaitForTextScrollButtonPress
-	call Func_711ab
+	call Func_71235
 	pop hl
 	pop af
 	ld [hl], a
 	ret
 
-MonsNestText: ; 70f89 (1c:4f89)
+MonsNestText: ; 7100d (1c:500d)
 	db "'s NEST@"
 
-LoadTownMap_Fly: ; 70f90 (1c:4f90)
+LoadTownMap_Fly: ; 71014 (1c:5014)
 	call ClearSprites
 	call LoadTownMap
+	ld a, $1
+	ld [hJoy7], a
 	call LoadPlayerSpriteGraphics
 	call LoadFontTilePatterns
 	ld de, BirdSprite ; $4d80
+	ld b, BANK(BirdSprite)
+	ld c, $c
 	ld hl, vSprites + $40
-	ld bc, (BANK(BirdSprite) << 8) + $0c
 	call CopyVideoData
 	ld de, TownMapUpArrow ; $5093
 	ld hl, vChars1 + $6d0
 	ld bc, (BANK(TownMapUpArrow) << 8) + $01
 	call CopyVideoDataDouble
-	call Func_71070
+	call Func_710fb
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
 	push af
@@ -158,7 +167,7 @@ LoadTownMap_Fly: ; 70f90 (1c:4f90)
 	call PlaceString
 	ld a, [W_CURMAP] ; W_CURMAP
 	ld b, $0
-	call Func_711c4
+	call Func_7124e
 	ld hl, wTrainerEngageDistance
 	deCoord 18, 0
 
@@ -173,36 +182,36 @@ LoadTownMap_Fly: ; 70f90 (1c:4f90)
 	pop hl
 	ld a, [hl]
 	ld b, $4
-	call Func_711c4
+	call Func_7124e
 	hlCoord 3, 0
 	ld de, wcd6d
 	call PlaceString
 	ld c, $f
 	call DelayFrames
 	hlCoord 18, 0
-	ld [hl], $ed
+	ld [hl], "▶"
 	hlCoord 19, 0
 	ld [hl], $ee
 	pop hl
-.asm_71004
+.asm_7108d
 	push hl
 	call DelayFrame
 	call JoypadLowSensitivity
 	ld a, [hJoy5]
 	ld b, a
 	pop hl
-	and $c3
-	jr z, .asm_71004
+	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
+	jr z, .asm_7108b
 	bit 0, b
-	jr nz, .asm_71026
+	jr nz, .asm_710af
 	ld a, (SFX_02_3c - SFX_Headers_02) / 3
 	call PlaySound
 	bit 6, b
-	jr nz, .asm_71042
+	jr nz, .asm_710cd
 	bit 7, b
-	jr nz, .asm_71058
-	jr .asm_71037
-.asm_71026
+	jr nz, .asm_710e3
+	jr .asm_710c0
+.asm_710af
 	ld a, (SFX_02_3e - SFX_Headers_02) / 3
 	call PlaySound
 	ld a, [hl]
@@ -211,43 +220,44 @@ LoadTownMap_Fly: ; 70f90 (1c:4f90)
 	set 3, [hl]
 	inc hl
 	set 7, [hl]
-.asm_71037
+.asm_710c0
 	xor a
 	ld [wTownMapSpriteBlinkingEnabled], a
+	ld [hJoy7], a
 	call GBPalWhiteOutWithDelay3
 	pop hl
 	pop af
 	ld [hl], a
 	ret
-.asm_71042
+.asm_710cd
 	deCoord 18, 0
 	inc hl
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_71052
+	jr z, .asm_710dd
 	cp $fe
-	jr z, .asm_71042
+	jr z, .asm_710cd
 	jp .townMapFlyLoop
-.asm_71052
+.asm_710dd
 	ld hl, wTrainerEngageDistance
 	jp .townMapFlyLoop
-.asm_71058
+.asm_710e3
 	deCoord 19, 0
 	dec hl
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_71068
+	jr z, .asm_710f3
 	cp $fe
-	jr z, .asm_71058
+	jr z, .asm_710e3
 	jp .townMapFlyLoop
-.asm_71068
+.asm_710f3
 	ld hl, wcd49
-	jr .asm_71058
+	jr .asm_710e3
 
-ToText: ; 7106d (1c:506d)
+ToText: ; 710f8 (1c:50f8)
 	db "To@"
 
-Func_71070: ; 71070 (1c:5070)
+Func_710fb: ; 710fb (1c:50fb)
 	ld hl, wWhichTrade ; wWhichTrade
 	ld [hl], $ff
 	inc hl
@@ -256,31 +266,30 @@ Func_71070: ; 71070 (1c:5070)
 	ld a, [W_TOWNVISITEDFLAG + 1]
 	ld d, a
 	ld bc, $b
-.asm_71081
+.asm_7110c
 	srl d
 	rr e
 	ld a, $fe
-	jr nc, .asm_7108a
+	jr nc, .asm_71115
 	ld a, b
-.asm_7108a
+.asm_71115
 	ld [hl], a
 	inc hl
 	inc b
 	dec c
-	jr nz, .asm_71081
+	jr nz, .asm_7110c
 	ld [hl], $ff
 	ret
 
-TownMapUpArrow: ; 71093 (1c:5093)
+TownMapUpArrow: ; 7111e (1c:511e)
 	INCBIN "gfx/up_arrow.1bpp"
 
-LoadTownMap: ; 7109b (1c:509b)
+LoadTownMap: ; 71126 (1c:5126)
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call UpdateSprites
 	ld hl, wTileMap
-	ld b, $12
-	ld c, $12
+	ld bc, $1212
 	call TextBoxBorder
 	call DisableLCD
 	ld hl, WorldMapTileGraphics ; $65a8
@@ -288,7 +297,7 @@ LoadTownMap: ; 7109b (1c:509b)
 	ld bc, $100
 	ld a, BANK(WorldMapTileGraphics)
 	call FarCopyData2
-	ld hl, MonNestIcon ; $56be
+	ld hl, MonNestIcon ; $574b
 	ld de, vSprites + $40
 	ld bc, $8
 	ld a, BANK(MonNestIcon)
@@ -298,7 +307,7 @@ LoadTownMap: ; 7109b (1c:509b)
 .asm_710d3
 	ld a, [de]
 	and a
-	jr z, .asm_710e9
+	jr z, .asm_71173
 	ld b, a
 	and $f
 	ld c, a
@@ -306,13 +315,13 @@ LoadTownMap: ; 7109b (1c:509b)
 	swap a
 	and $f
 	add $60
-.asm_710e2
+.loop
 	ld [hli], a
 	dec c
-	jr nz, .asm_710e2
+	jr nz, .loop
 	inc de
-	jr .asm_710d3
-.asm_710e9
+	jr .asm_7115d
+.asm_71073
 	call EnableLCD
 	ld b, $2
 	call GoPAL_SET
@@ -324,11 +333,11 @@ LoadTownMap: ; 7109b (1c:509b)
 	ld [wTownMapSpriteBlinkingEnabled], a
 	ret
 
-CompressedMap: ; 71100 (1c:5100)
+CompressedMap: ; 7118a (1c:518a)
 ; you can decompress this file with the redrle program in the extras/ dir
 	INCBIN "gfx/town_map.rle"
 
-Func_711ab: ; 711ab (1c:51ab)
+Func_71235: ; 71235 (1c:5235)
 	xor a
 	ld [wTownMapSpriteBlinkingEnabled], a
 	call GBPalWhiteOut
@@ -339,7 +348,7 @@ Func_711ab: ; 711ab (1c:51ab)
 	call UpdateSprites
 	jp GoPAL_SET_CF1C
 
-Func_711c4: ; 711c4 (1c:51c4)
+Func_711c4: ; 7124e (1c:524e)
 	push af
 	ld a, b
 	ld [wcd5b], a
@@ -348,72 +357,72 @@ Func_711c4: ; 711c4 (1c:51c4)
 	call Func_712f1
 	ld a, [de]
 	push hl
-	call Func_71258
-	call Func_7126d
+	call Func_712e1
+	call Func_712f6
 	pop hl
 	ld de, wcd6d
-.asm_711dc
+.asm_71266
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp $50
-	jr nz, .asm_711dc
+	cp "@"
+	jr nz, .asm_71266
 	ld hl, wOAMBuffer
 	ld de, wTileMapBackup
 	ld bc, $a0
 	jp CopyData
 
-Func_711ef: ; 711ef (1c:51ef)
+Func_71279: ; 711ef (1c:51ef)
 	callba FindWildLocationsOfMon
-	call Func_712d9
+	call Func_71362
 	ld hl, wOAMBuffer
 	ld de, wBuffer
-.asm_71200
+.asm_7128a
 	ld a, [de]
 	cp $ff
-	jr z, .asm_7121d
+	jr z, .asm_712a7
 	and a
-	jr z, .asm_7121a
+	jr z, .asm_712a4
 	push hl
-	call Func_712f1
+	call Func_7137a
 	pop hl
 	ld a, [de]
 	cp $19
-	jr z, .asm_7121a
-	call Func_71258
+	jr z, .asm_712a4
+	call Func_712e1
 	ld a, $4
 	ld [hli], a
 	xor a
 	ld [hli], a
-.asm_7121a
+.asm_712a4
 	inc de
-	jr .asm_71200
-.asm_7121d
+	jr .asm_7128a
+.asm_712a7
 	ld a, l
 	and a
-	jr nz, .asm_71236
+	; continue from here
+	jr nz, .asm_712bf
 	hlCoord 1, 7
-	ld b, $2
-	ld c, $f
+	ld bc, $20f
 	call TextBoxBorder
 	hlCoord 2, 9
 	ld de, AreaUnknownText
 	call PlaceString
-	jr .asm_7123e
+	jr .asm_712c7
 .asm_71236
 	ld a, [W_CURMAP] ; W_CURMAP
 	ld b, $0
-	call Func_711c4
-.asm_7123e
+	call Func_7124e
+.asm_712c7
 	ld hl, wOAMBuffer
 	ld de, wTileMapBackup
 	ld bc, $a0
 	jp CopyData
 
-AreaUnknownText: ; 7124a (1c:524a)
+AreaUnknownText: ; 712d3 (1c:52d3)
 	db " AREA UNKNOWN@"
 
-Func_71258: ; 71258 (1c:5258)
+Func_712e1: ; 712e1 (1c:52e1)
 	push af
 	and $f0
 	srl a
@@ -429,14 +438,14 @@ Func_71258: ; 71258 (1c:5258)
 	ld [hli], a
 	ret
 
-Func_7126d: ; 7126d (1c:526d)
+Func_712f6: ; 712f6 (1c:52f6)
 	ld a, [wcd5b]
 	and a
 	ld hl, wOAMBuffer + $90
-	jr z, Func_71279
+	jr z, Func_71302
 	ld hl, wOAMBuffer + $80
 
-Func_71279: ; 71279 (1c:5279)
+Func_71302: ; 71302 (1c:5302)
 	push hl
 	ld hl, $fcfc
 	add hl, bc
@@ -444,7 +453,7 @@ Func_71279: ; 71279 (1c:5279)
 	ld c, l
 	pop hl
 
-WriteAsymmetricMonPartySpriteOAM: ; 71281 (1c:5281)
+WriteAsymmetricMonPartySpriteOAM: ; 7130a (1c:530a)
 ; Writes 4 OAM blocks for a helix mon party sprite, since is does not have
 ; a vertical line of symmetry.
 	ld de, $202
@@ -477,7 +486,7 @@ WriteAsymmetricMonPartySpriteOAM: ; 71281 (1c:5281)
 	jr nz, .loop
 	ret
 
-WriteSymmetricMonPartySpriteOAM: ; 712a6 (1c:52a6)
+WriteSymmetricMonPartySpriteOAM: ; 7132f (1c:532f)
 ; Writes 4 OAM blocks for a mon party sprite other than a helix. All the
 ; sprites other than the helix one have a vertical line of symmetry which allows
 ; the X-flip OAM bit to be used so that only 2 rather than 4 tile patterns are
@@ -519,9 +528,9 @@ WriteSymmetricMonPartySpriteOAM: ; 712a6 (1c:52a6)
 	jr nz, .loop
 	ret
 
-Func_712d9: ; 712d9 (1c:52d9)
+Func_71362: ; 71362 (1c:5362)
 	ld de, wHPBarMaxHP
-.asm_712dc
+.asm_71365
 	ld a, [de]
 	inc de
 	cp $ff
@@ -529,32 +538,32 @@ Func_712d9: ; 712d9 (1c:52d9)
 	ld c, a
 	ld l, e
 	ld h, d
-.asm_712e4
+.asm_7136d
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_712dc
+	jr z, .asm_71365
 	cp c
-	jr nz, .asm_712ee
+	jr nz, .asm_71377
 	xor a
 	ld [hl], a
-.asm_712ee
+.asm_71277
 	inc hl
-	jr .asm_712e4
+	jr .asm_7126d
 
-Func_712f1: ; 712f1 (1c:52f1)
+Func_7137a: ; 7137a (1c:537a)
 	cp REDS_HOUSE_1F
-	jr c, .asm_71304
+	jr c, .asm_7138d
 	ld bc, $4
 	ld hl, InternalMapEntries ; $5382
-.asm_712fb
+.asm_71384
 	cp [hl]
-	jr c, .asm_71301
+	jr c, .asm_7138a
 	add hl, bc
-	jr .asm_712fb
-.asm_71301
+	jr .asm_71284
+.asm_7138a
 	inc hl
-	jr .asm_7130d
-.asm_71304
+	jr .asm_71384
+.asm_7138d
 	ld hl, ExternalMapEntries ; $5313
 	ld c, a
 	ld b, $0
@@ -569,14 +578,16 @@ Func_712f1: ; 712f1 (1c:52f1)
 	ld l, a
 	ret
 
-INCLUDE "data/town_map_entries.asm"
+INCBIN "baserom.gbc",$7139c,$71753 - $7139c
 
-INCLUDE "text/map_names.asm"
+;INCLUDE "data/town_map_entries.asm"
 
-MonNestIcon: ; 716be (1c:56be)
-	INCBIN "gfx/mon_nest_icon.1bpp"
+;INCLUDE "text/map_names.asm" ; TODO: relabel addresses
 
-TownMapSpriteBlinkingAnimation: ; 716c6 (1c:56c6)
+;MonNestIcon: ; 716be (1c:56be) ; relabel this too
+;	INCBIN "gfx/mon_nest_icon.1bpp"
+
+TownMapSpriteBlinkingAnimation: ; 71753 (1c:5753)
 	ld a, [wTownMapSpriteBlinkingCounter]
 	inc a
 	cp 25

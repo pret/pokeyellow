@@ -1083,7 +1083,7 @@ Func_159b:: ; 159b (0:159b)
 	ld a,[H_LOADEDROMBANK]
 	ld b,a
 	push af
-	callsb Func_fd2a1
+	callbs Func_fd2a1
 	pop af
 	call BankswitchCommon
 	ret
@@ -1572,7 +1572,7 @@ DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	call DisplayTextBoxID ; draw the menu text box
 	call UpdateSprites ; disable sprites behind the text box
 ; the code up to .skipMovingSprites appears to be useless
-	hlCoord 4, 2 ; coordinates of upper left corner of menu text box
+	coord hl, 4, 2 ; coordinates of upper left corner of menu text box
 	ld de,$090e ; height and width of menu text box
 	ld a,[wListMenuID]
 	and a ; is it a PC pokemon list?
@@ -1613,7 +1613,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	call DelayFrames
 	xor a
 	ld [wCurrentMenuItem],a
-	hlCoord 5, 4
+	coord hl, 5, 4
 	ld a,l
 	ld [wMenuCursorLocation],a
 	ld a,h
@@ -1732,21 +1732,21 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 
 DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 ; text box dimensions/coordinates for just quantity
-	hlCoord 15, 9
-	ld b,$103 ; height and width
+	coord hl, 15, 9
+	ld bc,$103 ; height and width
 	ld a,[wListMenuID]
 	cp a,PRICEDITEMLISTMENU
 	jr nz,.drawTextBox
 ; text box dimensions/coordinates for quantity and price
-	hlCoord 7, 9
+	coord hl, 7, 9
 	ld bc,$10b  ; height and width
 .drawTextBox
 	call TextBoxBorder
-	hlCoord 16, 10
+	coord hl, 16, 10
 	ld a,[wListMenuID]
 	cp a,PRICEDITEMLISTMENU
 	jr nz,.printInitialQuantity
-	hlCoord 8, 10
+	coord hl, 8, 10
 .printInitialQuantity
 	ld de,InitialQuantityText
 	call PlaceString
@@ -1786,7 +1786,7 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 	ld a,[wcf97] ; max quantity
 	ld [hl],a
 .handleNewQuantity
-	hlCoord 17, 10
+	coord hl, 17, 10
 	ld a,[wListMenuID]
 	cp a,PRICEDITEMLISTMENU
 	jr nz,.printQuantity
@@ -1825,13 +1825,13 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 	ld a,[$ffa4]
 	ld [$ffa1],a
 .skipHalvingPrice
-	hlCoord 12, 10
+	coord hl, 12, 10
 	ld de,SpacesBetweenQuantityAndPriceText
 	call PlaceString
 	ld de,$ff9f ; total price
 	ld c,$a3
 	call PrintBCDNumber
-	hlCoord 9, 10
+	coord hl, 9, 10
 .printQuantity
 	ld de,wcf96 ; current quantity
 	ld bc,$8102 ; print leading zeroes, 1 byte, 2 digits
@@ -1870,7 +1870,7 @@ ExitListMenu:: ; 2d33 (0:2d33)
 	ret
 
 PrintListMenuEntries:: ; 2d52 (0:2d52)
-	hlCoord 5, 3
+	coord hl, 5, 3
 	ld b,$09
 	ld c,$0e
 	call ClearScreenArea
@@ -1895,7 +1895,7 @@ PrintListMenuEntries:: ; 2d52 (0:2d52)
 	jr nc,.noCarry
 	inc d
 .noCarry
-	hlCoord 6, 4 ; coordinates of first list entry name
+	coord hl, 6, 4 ; coordinates of first list entry name
 	ld b,4 ; print 4 names
 .loop
 	ld a,b
@@ -2409,8 +2409,8 @@ Func_3082:: ; 3082 (0:3082)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	call Func_27c2
-	callsb Func_2131e
-	callsb Func_909d
+	callbs Func_2131e
+	callbs Func_909d
 	pop af
 	call BankswitchCommon
 	ret
@@ -3338,7 +3338,7 @@ Func_35f7:: ; 35f7 (0:35f7)
 InitYesNoTextBoxParameters:: ; 3602 (0:3602)
 	xor a ; YES_NO_MENU
 	ld [wTwoOptionMenuID], a
-	hlCoord 14, 7
+	coord hl, 14, 7
 	ld bc, $80f
 	ret
 
@@ -3346,7 +3346,7 @@ YesNoChoicePokeCenter:: ; 360d (0:360d)
 	call SaveScreenTilesToBuffer1
 	ld a, HEAL_CANCEL_MENU
 	ld [wTwoOptionMenuID], a
-	hlCoord 11, 6
+	coord hl, 11, 6
 	ld bc, $80c
 	jr DisplayYesNoChoice
 
@@ -3354,7 +3354,7 @@ Func_361d:: ; 361d (0:361d)
 	call SaveScreenTilesToBuffer1
 	ld a, WIDE_YES_NO_MENU
 	ld [wTwoOptionMenuID], a
-	hlCoord 12, 7
+	coord hl, 12, 7
 	ld bc, $080d
 DisplayYesNoChoice:: ; 362b (0:362b)
 	ld a, TWO_OPTION_MENU
@@ -3680,7 +3680,7 @@ GetItemPrice:: ; 37d2 (0:37d2)
 	ld [hItemPrice], a
 	jr .asm_380b
 .getTMPrice
-	callsb GetMachinePrice
+	callbs GetMachinePrice
 .asm_380b
 	ld de, hItemPrice
 	pop af
@@ -3771,7 +3771,7 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	jr z, .skipAnimation
 	callab TownMapSpriteBlinkingAnimation ; 1c:5753
 .skipAnimation
-	hlCoord 18, 16
+	coord hl, 18, 16
 	call HandleDownArrowBlinkTiming
 	pop hl
 	call JoypadLowSensitivity
@@ -4222,7 +4222,7 @@ HandleMenuInputPokemonSelection:: ; 3aaf (0:3aaf)
 	and a ; was a key pressed?
 	jr nz,.keyPressed
 	push hl
-	hlCoord 18, 11 ; coordinates of blinking down arrow in some menus
+	coord hl, 18, 11 ; coordinates of blinking down arrow in some menus
 	call HandleDownArrowBlinkTiming ; blink down arrow (if any)
 	pop hl
 	ld a,[wMenuJoypadPollCount]
@@ -4481,7 +4481,7 @@ PrintText:: ; 3c36 (0:3c36)
 	call Delay3
 	pop hl
 Func_3c46:: ; 3c46 (0:3c46)
-	bcCoord 1, 14
+	coord bc, 1, 14
 	jp TextCommandProcessor
 
 FarPrintText:: ; 3c4c (0:3c4c)
@@ -4959,7 +4959,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	bit 0, a ; A button
 	jr z, .nothingFound
 ; A button is pressed
-	callsb CheckForHiddenObject
+	callbs CheckForHiddenObject
 	ld a, [$ffee]
 	and a
 	jr nz, .hiddenObjectNotFound

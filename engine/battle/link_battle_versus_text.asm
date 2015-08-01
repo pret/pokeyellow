@@ -2,7 +2,7 @@
 DisplayLinkBattleVersusTextBox: ; f41cf (3d:41cf)
 	call LoadTextBoxTilePatterns
 	hlCoord 3, 4
-	ld b, $70c
+	ld bc, $70c
 	call TextBoxBorder
 	hlCoord 4, 5
 	ld de, wPlayerName

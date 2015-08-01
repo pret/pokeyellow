@@ -1,4 +1,6 @@
-INCLUDE "engine/bank3c/overworld.asm"
+;INCLUDE "engine/bank3c/overworld.asm"
+
+INCBIN "baserom.gbc",$f0000,$f0274 - $f0000 
 
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 ; Reset player status on blackout.
@@ -114,3 +116,4 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	db $27,$07,$7b,$4a,$ff
 	db $01,$ec,$02,$ed,$03,$ee,$ff
 
+INCBIN "baserom.gbc",$f0a82,$f4000 - $f0a82

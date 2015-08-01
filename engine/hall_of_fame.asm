@@ -58,7 +58,7 @@ AnimateHallOfFame: ; 701c6 (1c:41c6)
 	ld c, $50
 	call DelayFrames
 	hlCoord 2, 13
-	ld b, $30e
+	ld bc, $30e
 	call TextBoxBorder
 	hlCoord 4, 15
 	ld de, HallOfFameText
@@ -129,7 +129,7 @@ Func_702a2: ; 702a2 (1c:42a2)
 	and a
 	jr z, .asm_702f4
 	sla e
-.asm_702c7
+.asm_702f4
 	call .asm_70302
 	xor a
 	ld [hSCY], a
@@ -229,7 +229,7 @@ Func_703d1: ; 703d1 (1c:43d1)
 	ld bc, $60a
 	call TextBoxBorder
 	hlCoord 5, 0
-	ld b, $209
+	ld bc, $209
 	call TextBoxBorder
 	hlCoord 7, 2
 	ld de, wPlayerName ; wd158

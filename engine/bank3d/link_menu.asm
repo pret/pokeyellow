@@ -353,10 +353,10 @@ PetitCup:: ; f553a (3d:553a)
 	ld a,BANK(Pointer_4050b)
 	call FarCopyData
 	ld hl,wcd6d
-.loop
+.loop2
 	ld a,[hli]
 	cp "@"
-	jr nz,.loop
+	jr nz,.loop2
 	ld a,[hli]
 	cp $7
 	jp nc,asm_f5689
