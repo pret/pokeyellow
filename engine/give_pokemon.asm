@@ -19,7 +19,7 @@ _GivePokemon: ; f66fa (3d:66fa)
 	ld a, [wd5a0]
 	and $7f
 	cp 9
-	jr c, .boxEightorLesser ; do not adjust box number to a 2 digit number
+	jr c, .boxEightOrLesser ; do not adjust box number to a 2 digit number
 	sub 9
 	ld [hl], "1"
 	inc hl

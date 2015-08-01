@@ -1984,11 +1984,7 @@ SECTION "bank3",ROMX,BANK[$3]
 
 INCLUDE "engine/joypad.asm"
 
-;INCLUDE "data/map_songs.asm"
-
-;INCLUDE "data/map_header_banks.asm"
-
-ClearVariablesAfterLoadingMapData: ; c335 (3:4335)
+ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
 	ld a, $90
 	ld [hWY], a
 	ld [rWY], a
@@ -2010,7 +2006,7 @@ ClearVariablesAfterLoadingMapData: ; c335 (3:4335)
 	ret
 
 ; only used for setting bit 2 of wd736 upon entering a new map
-IsPlayerStandingOnWarp: ; c35f (3:435f)
+IsPlayerStandingOnWarp: ; c0a6 (3:40a6)
 	ld a, [wNumberOfWarps]
 	and a
 	ret z
@@ -2042,7 +2038,7 @@ IsPlayerStandingOnWarp: ; c35f (3:435f)
 	jr nz, .loop
 	ret
 
-CheckForceBikeOrSurf: ; c38b (3:438b)
+CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	ld hl, wd732
 	bit 5, [hl]
 	ret nz
@@ -2095,7 +2091,7 @@ CheckForceBikeOrSurf: ; c38b (3:438b)
 
 INCLUDE "data/force_bike_surf.asm"
 
-IsPlayerFacingEdgeOfMap: ; c3ff (3:43ff)
+IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
 	push hl
 	push de
 	push bc
@@ -2112,10 +2108,10 @@ IsPlayerFacingEdgeOfMap: ; c3ff (3:43ff)
 	ld b, a
 	ld a, [W_XCOORD]
 	ld c, a
-	ld de, .asm_c41e
+	ld de, .returnaddress
 	push de
 	jp [hl]
-.asm_c41e
+.returnaddress
 	pop bc
 	pop de
 	pop hl
@@ -2161,7 +2157,7 @@ IsPlayerFacingEdgeOfMap: ; c3ff (3:43ff)
 	scf
 	ret
 
-IsWarpTileInFrontOfPlayer: ; c44e (3:444e)
+IsWarpTileInFrontOfPlayer: ; c197 (3:4197)
 	push hl
 	push de
 	push bc
@@ -2187,7 +2183,7 @@ IsWarpTileInFrontOfPlayer: ; c44e (3:444e)
 	pop hl
 	ret
 
-.warpTileListPointers: ; c477 (3:4477)
+.warpTileListPointers: ; c1c0 (3:41c0)
 	dw .facingDownWarpTiles
 	dw .facingUpWarpTiles
 	dw .facingLeftWarpTiles
@@ -2215,11 +2211,11 @@ IsWarpTileInFrontOfPlayer: ; c44e (3:444e)
 	and a
 	jr .done
 
-IsPlayerStandingOnDoorTileOrWarpTile: ; c49d (3:449d)
+IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 	push hl
 	push de
 	push bc
-	callba IsPlayerStandingOnDoorTile
+	callba IsPlayerStandingOnDoorTile ; 6:6785
 	jr c, .done
 	ld a, [W_CURMAPTILESET]
 	add a

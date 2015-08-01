@@ -16,7 +16,7 @@ PICS_5 EQU $D
 SECTION "home",ROM0
 
 INCLUDE "home.asm"
-
+;INCBIN "baserom.gbc",$0000,$4000 - $0000
 SECTION "bank01",ROMX,BANK[$01]
 
 INCLUDE "data/facing.asm"
@@ -32,7 +32,269 @@ INCBIN "baserom.gbc",$8000,$c000 - $8000
 
 SECTION "bank03",ROMX,BANK[$03]
 
-INCBIN "baserom.gbc",$c000,$e91b - $c000
+INCLUDE "engine/joypad.asm"
+
+ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
+	ld a, $90
+	ld [hWY], a
+	ld [rWY], a
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld [wStepCounter], a
+	ld [W_LONEATTACKNO], a ; W_GYMLEADERNO
+	ld [hJoyPressed], a
+	ld [hJoyReleased], a
+	ld [hJoyHeld], a
+	ld [wcd6a], a
+	ld [wd5a3], a
+	ld hl, wCardKeyDoorY
+	ld [hli], a
+	ld [hl], a
+	ld hl, wWhichTrade
+	ld bc, $1e
+	call FillMemory
+	ret
+
+; only used for setting bit 2 of wd736 upon entering a new map
+IsPlayerStandingOnWarp: ; c0a6 (3:40a6)
+	ld a, [wNumberOfWarps]
+	and a
+	ret z
+	ld c, a
+	ld hl, wWarpEntries
+.loop
+	ld a, [W_YCOORD]
+	cp [hl]
+	jr nz, .nextWarp1
+	inc hl
+	ld a, [W_XCOORD]
+	cp [hl]
+	jr nz, .nextWarp2
+	inc hl
+	ld a, [hli] ; target warp
+	ld [wDestinationWarpID], a
+	ld a, [hl] ; target map
+	ld [$ff8b], a
+	ld hl, wd736
+	set 2, [hl] ; standing on warp flag
+	ret
+.nextWarp1
+	inc hl
+.nextWarp2
+	inc hl
+	inc hl
+	inc hl
+	dec c
+	jr nz, .loop
+	ret
+
+CheckForceBikeOrSurf: ; c0d2 (3:40d2)
+	ld hl, wd732
+	bit 5, [hl]
+	ret nz
+	ld hl, ForcedBikeOrSurfMaps
+	ld a, [W_YCOORD]
+	ld b, a
+	ld a, [W_XCOORD]
+	ld c, a
+	ld a, [W_CURMAP]
+	ld d, a
+.loop
+	ld a, [hli]
+	cp $ff
+	ret z ;if we reach FF then it's not part of the list
+	cp d ;compare to current map
+	jr nz, .incorrectMap
+	ld a, [hli]
+	cp b ;compare y-coord
+	jr nz, .incorrectY
+	ld a, [hli]
+	cp c ;compare x-coord
+	jr nz, .loop ; incorrect x-coord, check next item
+	ld a, [W_CURMAP]
+	cp SEAFOAM_ISLANDS_4
+	ld a, $2
+	ld [W_SEAFOAMISLANDS4CURSCRIPT], a
+	jr z, .forceSurfing
+	ld a, [W_CURMAP]
+	cp SEAFOAM_ISLANDS_5
+	ld a, $2
+	ld [W_SEAFOAMISLANDS5CURSCRIPT], a
+	jr z, .forceSurfing
+	;force bike riding
+	ld hl, wd732
+	set 5, [hl]
+	ld a, $1
+	ld [wWalkBikeSurfState], a
+	ld [wWalkBikeSurfStateCopy], a
+	jp ForceBikeOrSurf
+.incorrectMap
+	inc hl
+.incorrectY
+	inc hl
+	jr .loop
+.forceSurfing
+	ld a, $2
+	ld [wWalkBikeSurfState], a
+	ld [wWalkBikeSurfStateCopy], a
+	jp ForceBikeOrSurf
+
+INCLUDE "data/force_bike_surf.asm"
+
+IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
+	push hl
+	push de
+	push bc
+	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	srl a
+	ld c, a
+	ld b, $0
+	ld hl, .functionPointerTable
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [W_YCOORD]
+	ld b, a
+	ld a, [W_XCOORD]
+	ld c, a
+	ld de, .returnaddress
+	push de
+	jp [hl]
+.returnaddress
+	pop bc
+	pop de
+	pop hl
+	ret
+
+.functionPointerTable
+	dw .facingDown
+	dw .facingUp
+	dw .facingLeft
+	dw .facingRight
+
+.facingDown
+	ld a, [W_CURMAPHEIGHT]
+	add a
+	dec a
+	cp b
+	jr z, .setCarry
+	jr .resetCarry
+
+.facingUp
+	ld a, b
+	and a
+	jr z, .setCarry
+	jr .resetCarry
+
+.facingLeft
+	ld a, c
+	and a
+	jr z, .setCarry
+	jr .resetCarry
+
+.facingRight
+	ld a, [W_CURMAPWIDTH]
+	add a
+	dec a
+	cp c
+	jr z, .setCarry
+	jr .resetCarry
+.resetCarry
+	and a
+	ret
+.setCarry
+	scf
+	ret
+
+IsWarpTileInFrontOfPlayer: ; c197 (3:4197)
+	push hl
+	push de
+	push bc
+	call _GetTileAndCoordsInFrontOfPlayer
+	ld a, [W_CURMAP]
+	cp SS_ANNE_5
+	jr z, .ssAnne5
+	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	srl a
+	ld c, a
+	ld b, 0
+	ld hl, .warpTileListPointers
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wTileInFrontOfPlayer]
+	ld de, $1
+	call IsInArray
+.done
+	pop bc
+	pop de
+	pop hl
+	ret
+
+.warpTileListPointers: ; c1c0 (3:41c0)
+	dw .facingDownWarpTiles
+	dw .facingUpWarpTiles
+	dw .facingLeftWarpTiles
+	dw .facingRightWarpTiles
+
+.facingDownWarpTiles
+	db $01,$12,$17,$3D,$04,$18,$33,$FF
+
+.facingUpWarpTiles
+	db $01,$5C,$FF
+
+.facingLeftWarpTiles
+	db $1A,$4B,$FF
+
+.facingRightWarpTiles
+	db $0F,$4E,$FF
+
+.ssAnne5
+	ld a, [wTileInFrontOfPlayer]
+	cp $15
+	jr nz, .notSSAnne5Warp
+	scf
+	jr .done
+.notSSAnne5Warp
+	and a
+	jr .done
+
+IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
+	push hl
+	push de
+	push bc
+	callba IsPlayerStandingOnDoorTile ; 6:6785
+	jr c, .done
+	ld a, [W_CURMAPTILESET]
+	add a
+	ld c, a
+	ld b, $0
+	ld hl, WarpTileIDPointers
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, $1
+	aCoord 8, 9
+	call IsInArray
+	jr nc, .done
+	ld hl, wd736
+	res 2, [hl]
+.done
+	pop bc
+	pop de
+	pop hl
+	ret
+
+INCLUDE "data/warp_tile_ids.asm"
+
+INCBIN "baserom.gbc",$c27b,$cb62 - $c27b
+LoadWildData:: ; cb62 (3:4b62)
+INCBIN "baserom.gbc",$cb62,$e808 - $cb62
+IsNextTileShoreOrWater:: ; e808 (3:6808)
+INCBIN "baserom.gbc",$e808,$e91b - $e808
 
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
@@ -150,13 +412,19 @@ INCBIN "baserom.gbc",$17c31,$18000 - $17c31
 
 SECTION "bank06",ROMX,BANK[$06]
 
-INCBIN "baserom.gbc",$18000,$1c000 - $18000
-
+INCBIN "baserom.gbc",$18000,$1a785 - $18000
+IsPlayerStandingOnDoorTile:: ; 1a785 (6:6785)
+INCBIN "baserom.gbc",$1a785,$1a7f4 - $1a785
+HandleLedges:: ; 1a7f4 (6:67f4)
+INCBIN "baserom.gbc",$1a7f4,$1c000 - $1a7f4
 
 SECTION "bank07",ROMX,BANK[$07]
 
-INCBIN "baserom.gbc",$1c000,$20000 - $1c000
-
+INCBIN "baserom.gbc",$1c000,$1e321 - $1c000
+SafariZoneCheck:: ; 1e321 (7:6e21)
+INCBIN "baserom.gbc",$1e321,$1e330 - $1e321
+SafariZoneCheckSteps:: ; 1e330 (7:6330)
+INCBIN "baserom.gbc",$1e330,$20000 - $1e330
 
 SECTION "bank08",ROMX,BANK[$08]
 
@@ -514,8 +782,9 @@ INCBIN "baserom.gbc",$3adb8,$3c000 - $3adb8
 
 SECTION "bank0F",ROMX,BANK[$0F]
 
-INCBIN "baserom.gbc",$3c000,$40000 - $3c000
-
+INCBIN "baserom.gbc",$3c000,$3cae8 - $3c000
+AnyPartyAlive:: ; 3cae8 (f:4ae8)
+INCBIN "baserom.gbc",$3cae8,$40000 - $3cae8
 
 SECTION "bank10",ROMX,BANK[$10]
 

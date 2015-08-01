@@ -11,12 +11,12 @@ Func_2176:: ; 2176 (0:2176)
 	ld d, $0
 	ld a, [wd72e]
 	bit 5, a
-	jr z, asm_2118
+	jr z, asm_2188
 	xor a
 	ld [wcfca], a
 	ld c, $8
 	ld d, c
-asm_2118:: ; 2118 (0:2118)
+asm_2188: ; 2118 (0:2118)
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_21ac
@@ -258,7 +258,6 @@ Func_22d6:: ; 22d6 (0:22d6)
 	ret
 	
 Func_22ec:: ; 22ec (0:22ec)
-; incomplete
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,[wc0ef]
@@ -274,7 +273,7 @@ Func_22ec:: ; 22ec (0:22ec)
 	jr nz, .checkForBank1F
 .bank08
 	ld a, b
-	call Func_22035
+	call Func_218bb
 	jr .done
 .checkForBank1F
 	cp BANK(Func_7d10d)

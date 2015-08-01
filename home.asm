@@ -167,7 +167,6 @@ ReadJoypad:: ; 01c8 (0:01c8)
 	
 INCLUDE "home/overworld.asm"
 
-
 CheckForUserInterruption:: ; 10ba (0:10ba)
 ; Return carry if Up+Select+B, Start or A are pressed in c frames.
 ; Used only in the intro and title screen.
@@ -1553,7 +1552,7 @@ DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	ld a,$01 ; hardcoded bank
 	jr .bankswitch
 .specialBattleType ; Old Man battle
-	ld a, Bank(DisplayBattleMenu)
+	ld a, $1 ; BANK(DisplayBattleMenu)
 .bankswitch
 	call BankswitchHome
 	ld hl,wd730
@@ -3008,6 +3007,7 @@ IsSurfingPikachuInParty:: ; 342a (0:342a)
 	ld a,[hli]
 	cp b
 	jr nz,.noSurf
+.hasSurf
 	ld a,[wd472]
 	set 6,a
 	ld [wd472],a

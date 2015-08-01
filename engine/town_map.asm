@@ -38,7 +38,7 @@ Func_70ef4: ; 70ef4 (1c:4ef4)
 	add hl, bc
 	ld a, [hl]
 
-Func_70e92: ; 70f08 (1c:4f08)
+Func_70f08: ; 70f08 (1c:4f08)
 	ld de, wHPBarMaxHP
 	call Func_712f1
 	ld a, [de]
@@ -201,7 +201,7 @@ LoadTownMap_Fly: ; 71014 (1c:5014)
 	ld b, a
 	pop hl
 	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
-	jr z, .asm_7108b
+	jr z, .asm_7108d
 	bit 0, b
 	jr nz, .asm_710af
 	ld a, (SFX_02_3c - SFX_Headers_02) / 3
@@ -320,8 +320,8 @@ LoadTownMap: ; 71126 (1c:5126)
 	dec c
 	jr nz, .loop
 	inc de
-	jr .asm_7115d
-.asm_71073
+	jr .asm_710d3
+.asm_71173
 	call EnableLCD
 	ld b, $2
 	call GoPAL_SET
@@ -409,7 +409,7 @@ Func_71279: ; 711ef (1c:51ef)
 	ld de, AreaUnknownText
 	call PlaceString
 	jr .asm_712c7
-.asm_71236
+.asm_712bf
 	ld a, [W_CURMAP] ; W_CURMAP
 	ld b, $0
 	call Func_7124e
@@ -546,10 +546,9 @@ Func_71362: ; 71362 (1c:5362)
 	jr nz, .asm_71377
 	xor a
 	ld [hl], a
-.asm_71277
+.asm_71377
 	inc hl
-	jr .asm_7126d
-
+	jr .asm_7136d
 Func_7137a: ; 7137a (1c:537a)
 	cp REDS_HOUSE_1F
 	jr c, .asm_7138d
@@ -559,7 +558,7 @@ Func_7137a: ; 7137a (1c:537a)
 	cp [hl]
 	jr c, .asm_7138a
 	add hl, bc
-	jr .asm_71284
+	jr .asm_71384
 .asm_7138a
 	inc hl
 	jr .asm_71384

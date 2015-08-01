@@ -18,6 +18,7 @@ GetTrainerName_: ; f67a5 (3d:67a5)
 	ld [wPredefBank], a
 	call GetName
 	ld hl, wcd6d
+.foundName
 .rival
 	ld de, W_TRAINERNAME
 	ld bc, $d

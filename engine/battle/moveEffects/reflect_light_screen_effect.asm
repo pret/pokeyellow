@@ -41,5 +41,5 @@ ReflectGainedArmorText: ; f64a2 (3d:64a2)
 	db "@"
 
 Bankswitch3DtoF: ; f64a7 (3d:64a7)
-	ld b, BANK(BattleCore)
+	ld b, $f ; BANK(BattleCore)
 	jp Bankswitch

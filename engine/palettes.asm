@@ -310,14 +310,14 @@ DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
 Func_720ad:: ; 720ad (1c:60ad)
 	ld a,e
 	and a
-	jr nz,.asm_720bd
+	jr nz,Func_720bd
 	ld hl,Pointer_727e1
 	ld a,[hGBC]
 	and a
 	jp z,Func_721b4
 	jp Func_72346
 
-Func_720bd :: ; 720bd (1c:60bd)
+Func_720bd:: ; 720bd (1c:60bd)
 	ld hl,Func_72811
 	ld a,[hGBC]
 	and a
@@ -356,6 +356,7 @@ Func_720e3:: ; 720e3 (1c:60e3)
 	jr .asm_7210c
 .asm_72109
 	call Func_72346
+.asm_7210c
 	ld hl,UnknownPacket_72611
 	ld de,wcf2d
 	ld bc,$10
@@ -379,7 +380,7 @@ Func_720e3:: ; 720e3 (1c:60e3)
 	jr .asm_7213a
 .asm_72137
 	call Func_72346
-.asm_7231a
+.asm_7213a
 	ret
 
 Func_7213b:: ; 7213b (1c:613b)
@@ -1110,6 +1111,7 @@ Func_725be:: ; 725be (1c:65be)
 	ld hl,Pointer_725e2
 	ld a,[hli]
 	ld c,a
+.asm_725c5
 	ld a,e
 .loop
 	cp [hl]

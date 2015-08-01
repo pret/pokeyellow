@@ -3,7 +3,7 @@ EnterMap:: ; 01d7 (0:01d7)
 	ld a, $ff
 	ld [wJoyIgnore], a
 	call LoadMapData
-	callba ClearVariablesAfterLoadingMapData
+	callba ClearVariablesAfterLoadingMapData ; 3:407c
 	ld hl, wd72c
 	bit 0, [hl] ; has the player already made 3 steps since the last battle?
 	jr z, .skipGivingThreeStepsOfNoRandomBattles
@@ -50,7 +50,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	and a
 	jp nz,.moveAhead ; if the player sprite has not yet completed the walking animation
 	call JoypadOverworld ; get joypad state (which is possibly simulated)
-	callba SafariZoneCheck
+	callba SafariZoneCheck ; 7:6321
 	ld a,[wSafariZoneGameOver]
 	and a
 	jp nz,WarpFound2
@@ -1276,7 +1276,8 @@ CheckForJumpingAndTilePairCollisions:: ; 0a86 (0:0a86)
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player
 	push de
 	push bc
-	callba HandleLedges ; check if the player is trying to jump a ledge
+	callba HandleLedges	; 6:67f4
+						; check if the player is trying to jump a ledge
 	pop bc
 	pop de
 	pop hl
@@ -1616,7 +1617,7 @@ ForceBikeDown:: ; 0c65 (0:0c65)
 	ret nz
 	ld a,[hJoyHeld]
 	and a,D_DOWN | D_UP | D_LEFT | D_RIGHT | B_BUTTON | A_BUTTON
-	jr nz,.notForcedDownwards
+	ret nz
 	ld a,D_DOWN
 	ld [hJoyHeld],a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
@@ -1693,13 +1694,13 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	ld d,a
 	ld a,[wSpriteStateData1 + 12] ; the player sprite's collision data (bit field) (set in the sprite movement code)
 	and d ; check if a sprite is in the direction the player is trying to go
-	jr nz,.checkIfNextTileIsPassable ; bug?
+	jr nz,.collision ; bug?
 	ld hl,TilePairCollisionsWater
 	call CheckForJumpingAndTilePairCollisions
 	jr c,.collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
 	callab IsNextTileShoreOrWater ; 3:6808
-	jr c,.noCollsion
+	jr c,.noCollision
 	ld a,[wTileInFrontOfPlayer] ; tile in front of player
 	ld c,a
 	call IsTilePassable
@@ -1773,7 +1774,7 @@ Func_0d69:: ; 0d69 (0:0d69)
 	and a
 	jr z,.asm_0d75
 	dec a
-	jr z,.asm_0d83
+	jr z,LoadSurfingPlayerSpriteGraphics
 	dec a
 	jr z,.asm_0d7c
 .asm_0d75
@@ -1913,7 +1914,8 @@ LoadMapHeader:: ; 0dab (0:0dab)
 	bit 5,a ; did a battle happen immediately before this?
 	jr nz,.asm_0e73
 	callab Func_fc4fa ; 3f:44fa
-	callab LoadWildData
+.asm_0e73
+	callab LoadWildData ; 3:4b62
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a,[W_CURMAPHEIGHT] ; map height in 4x4 tile blocks
 	add a ; double it
@@ -1940,7 +1942,7 @@ LoadMapHeader:: ; 0dab (0:0dab)
 
 ; function to copy map connection data from ROM to WRAM
 ; Input: hl = source, de = destination
-CopyMapConnectionHeader:: ; 1238 (0:1238)
+CopyMapConnectionHeader:: ; 0eaa (0:0eaa)
 	ld c,$0b
 .loop
 	ld a,[hli]
@@ -2022,7 +2024,7 @@ Func_0f16:: ; 0f16 (0:0f16)
 	call ReloadMapSpriteTilePatterns
 	pop af
 	call BankswitchCommon
-	jr .asm_0f4d
+	jr asm_0f4d
 Func_0f3d:: ; 0f3d (0:0f3d)
 	ld a,[H_LOADEDROMBANK]
 	push af
@@ -2031,7 +2033,7 @@ Func_0f3d:: ; 0f3d (0:0f3d)
 	call LoadTileBlockMap
 	pop af
 	call BankswitchCommon
-.asm_0f4d
+asm_0f4d: ; 0f4d (0:0f4d)
 	ld hl, Func_f02da
 	ld b,BANK(Func_f02da) ; 3c:42da
 	jp Bankswitch

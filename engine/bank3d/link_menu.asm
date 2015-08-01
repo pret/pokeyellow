@@ -529,6 +529,7 @@ Func_f56bd:: ; f56bd (3d:56bd)
 	ld e,l
 	hlCoord 1,12
 	call PlaceString
+.asm_f56e6
 	call Delay3
 	ld a,$1
 	ld [H_AUTOBGTRANSFERENABLED],a
@@ -807,6 +808,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld d,$ec
 	ld e,$7f
 	call Func_f59ec
+.asm_f5974
 	xor a
 	ld [wBuffer], a
 	ld a,$ff
@@ -849,12 +851,12 @@ LinkMenu: ; f580c (3d:580c)
 	ld d,$7f
 	ld e,$ec
 	call Func_f59ec
-	jp .chooseCancel
+	jp .choseCancel
 	
 .asm_f59cd
 	ld hl,Text_f5a11
 	call PrintText
-	jp .chooseCancel
+	jp .choseCancel
 
 .asm_f59d6
 	ld b,$7f
@@ -863,7 +865,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld e,$7f
 	call Func_f59ec
 	call Func_f531b
-	jp c,.chooseCancel
+	jp c,.choseCancel
 	ld a,$f0
 	jp .next
 	

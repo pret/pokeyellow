@@ -388,7 +388,7 @@ IsPlayerStandingOnWarpPadOrHole: ; 707e7 (1c:47e7)
 	db INTERIOR, $55, 1 ; warp pad
 	db $FF
 
-Func_707b6: ; 70716 (1c:4716)
+Func_70816: ; 70816 (1c:4816)
 	ld c, $a
 	call DelayFrames
 	ld hl, wd736
@@ -414,7 +414,7 @@ Func_707b6: ; 70716 (1c:4716)
 	ld a, [wWhichTrade] ; wWhichTrade
 	and a
 	ld hl, NoNibbleText
-	jr z, .asm_708a8
+	jr z, .asm_70897
 	cp $2
 	ld hl, NothingHereText
 	jr z, .asm_70897
@@ -445,7 +445,7 @@ Func_707b6: ; 70716 (1c:4716)
 	ld [wOAMBuffer + $9c], a
 .asm_70894
 	ld hl, ItsABiteText
-.asm_70836
+.asm_70897
 	call PrintText
 	ld hl, wd736
 	res 6, [hl]

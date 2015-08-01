@@ -5,7 +5,7 @@ PrintSafariZoneBattleText: ; 4111 (1:4111)
 	jr z, .asm_411e
 	dec [hl]
 	ld hl, SafariZoneEatingText
-	jr .asm_429f
+	jr .asm_4138
 .asm_411e
 	dec hl
 	ld a, [hl]
@@ -13,7 +13,7 @@ PrintSafariZoneBattleText: ; 4111 (1:4111)
 	ret z
 	dec [hl]
 	ld hl, SafariZoneAngryText
-	jr nz, .asm_4139
+	jr nz, .asm_4138
 	push hl
 	ld a, [wEnemyMonSpecies]
 	ld [wd0b5], a

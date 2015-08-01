@@ -10,7 +10,8 @@ sHallOfFame:: ds HOF_TEAM * NUM_HOF_TEAMS ; a598
 
 SECTION "Save Data", SRAM, BANK[1]
 
-SECTION "Save Data Start", SRAM1[$a598]
+SECTION "Save Data", SRAM, BANK[1]
+	ds $598
 S_SAVEDPLAYERNAME:: ds 11 ; a598
 S_SAVEDMAINDATA:: ds W_NUMINBOX - wPokedexOwned ; a5a3
 S_SAVEDSPRITEDATA:: ds wOAMBuffer - wSpriteStateData1 ; ad2c

@@ -39,6 +39,7 @@ Func_f42c2:: ; f42c2 (3d:f42c2)
 	cp $31
 	jr nc,.asm_f42ce
 	ld a,$7f
+.asm_f42ce
 	ld [hl],a
 	ld bc,$14
 	add hl,bc
@@ -68,6 +69,7 @@ Func_f430a:: ; f430a (3d:430a)
 	callab Func_fcdb8
 	pop de
 	ret nc
+.asm_f432b
 	push de
 	ld e,$0
 	ld a,[wd470]
@@ -77,6 +79,7 @@ Func_f430a:: ; f430a (3d:430a)
 	cp $c8
 	jr c,.asm_f433b
 	inc e
+.asm_f433b
 	ld c,d
 	dec c
 	ld b,$0
@@ -124,6 +127,7 @@ Func_f430a:: ; f430a (3d:430a)
 .asm_f4380
 	ld a,b
 	ld [wd471],a
+.asm_f4384
 	ret
 	
 Pointer_f4385:: ; f4385 (3d:4385)
@@ -271,7 +275,7 @@ HandleMenuInputDouble:: ; f5a40 (3d:5a40)
 	xor a
 	ld [wd09b],a
 
-HandleMenuInputPokemonSelectionDouble:: ; 3aaf (0:3aaf)
+HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld a,[H_DOWNARROWBLINKCNT1]
 	push af
 	ld a,[H_DOWNARROWBLINKCNT2]
@@ -280,6 +284,7 @@ HandleMenuInputPokemonSelectionDouble:: ; 3aaf (0:3aaf)
 	ld [H_DOWNARROWBLINKCNT1],a ; blinking down arrow timing value 1
 	ld a,$06
 	ld [H_DOWNARROWBLINKCNT2],a ; blinking down arrow timing value 2
+.loop1
 	xor a
 	ld [wPartyMonAnimCounter],a ; counter for pokemon shaking animation
 	call Func_f5ab0
@@ -387,6 +392,7 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	cp "▶"
 	jr z,.asm_f5af4
 	ld [wTileBehindCursor],a
+.asm_f5af4
 	ld a,"▶"
 	ld [hl],a
 	ld a,l

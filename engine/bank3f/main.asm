@@ -250,7 +250,7 @@ Func_fc65b:: ; fc65b (3f:465b)
 	ld a,[wSpriteStateData1 + $9]
 	and a ; SPRITE_FACING_DOWN
 	jr z,.asm_fc684
-	jr asm_fc688
+	jr .asm_fc688
 .asm_fc684
 	ld a,$0
 	jr .asm_fc68a
@@ -290,7 +290,9 @@ Func_fc69a:: ; fc69a (3f:469a)
 	ld [wd431],a
 	ret
 
-INCBIN "baserom.gbc",$fc6c5,$fe66f - $fc6c5
+INCBIN "baserom.gbc",$fc6c5,$fcc08 - $fc6c5
+Func_fcc08:: ; fcc08 (3f:4c08)
+INCBIN "baserom.gbc",$fcc08,$fe66f - $fcc08
 
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"
