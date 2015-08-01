@@ -2089,11 +2089,7 @@ _ColosseumVersionText::
 	prompt
 
 _Char00Text::
-<<<<<<< HEAD
 	TX_NUM hSpriteIndexOrTextID,1,2
-=======
-	TX_NUM $FF8C,1,2
->>>>>>> 6bdf0c5... Remove (incorrect) address comments
 	text " error."
 	done
 
@@ -2493,19 +2489,11 @@ _DreamWasEatenText::
 	line "dream was eaten!"
 	prompt
 
-<<<<<<< HEAD
 _TradeCenterText1::
 	text "!"
 	done
 
 _ColosseumText1::
-=======
-_BattleCenterMText1::
-	text "!"
-	done
-
-_TradeCenterMText1::
->>>>>>> 6bdf0c5... Remove (incorrect) address comments
 	text "!"
 	done
 

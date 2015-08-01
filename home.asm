@@ -21,7 +21,7 @@ SECTION "rst 38", ROM0 [$38]
 SECTION "vblank", ROM0 [$40]
 	jp VBlank
 SECTION "hblank", ROM0 [$48]
-	jp HBlank
+	jp LCDC
 SECTION "timer",  ROM0 [$50]
 	jp Timer
 SECTION "serial", ROM0 [$58]
@@ -718,7 +718,7 @@ PrintBCDNumber:: ; 13ad (0:13ad)
 	jr z,.loop
 	bit 7,b
 	jr nz,.loop
-	ld [hl],"¥"
+	ld [hl], "¥"
 	inc hl
 .loop
 	ld a,[de]
@@ -738,7 +738,7 @@ PrintBCDNumber:: ; 13ad (0:13ad)
 .skipRightAlignmentAdjustment
 	bit 5,b
 	jr z,.skipCurrencySymbol
-	ld [hl],"¥"
+	ld [hl], "¥"
 	inc hl
 .skipCurrencySymbol
 	ld [hl],"0"
@@ -757,7 +757,7 @@ PrintBCDDigit:: ; 13e4 (0:13e4)
 ; if bit 7 is set, then no numbers have been printed yet
 	bit 5,b ; print the currency symbol?
 	jr z,.skipCurrencySymbol
-	ld [hl],"¥"
+	ld [hl], "¥"
 	inc hl
 	res 5,b
 .skipCurrencySymbol

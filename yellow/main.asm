@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-INCLUDE "yellow.asm"
+INCLUDE "charmap.asm"
 INCLUDE "constants.asm"
 
 NPC_SPRITES_1 EQU $4
@@ -1069,8 +1068,3 @@ INCLUDE "engine/bank3f/main.asm"
 ;BeachHouse_Block:
 ;	INCBIN "gfx/blocksets/beachhouse.bst"
 ;ENDC
-
-=======
-INCLUDE "charmap.asm"
-INCLUDE "main.asm"
->>>>>>> e4bb6ce... Build only Yellow
