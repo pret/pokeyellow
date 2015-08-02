@@ -16,19 +16,26 @@ PICS_5 EQU $D
 SECTION "home",ROM0
 
 INCLUDE "home.asm"
-;INCBIN "baserom.gbc",$0000,$4000 - $0000
 SECTION "bank01",ROMX,BANK[$01]
 
 INCLUDE "data/facing.asm"
 INCLUDE "engine/battle/safari_zone.asm"
 
-INCBIN "baserom.gbc",$414b,$8000 - $414b
-
+dr $414b,$45b7
+ItemNames:: ; 45b7 (1:45b7)
+dr $45b7,$491e
+UnusedNames:: ; 491e (1:491e)
+dr $491e,$778e
+PlayerPC:: ; 778e (1:778e)
+dr $778e,$7a0f
+_RemovePokemon:: ; 7a0f (1:7a0f)
+dr $7a0f,$7c18
+Func_7c18:: ; 7c18 (1:7c18)
+dr $7c18,$8000
 
 SECTION "bank02",ROMX,BANK[$02]
 
-INCBIN "baserom.gbc",$8000,$c000 - $8000
-
+dr $8000,$c000
 
 SECTION "bank03",ROMX,BANK[$03]
 
@@ -290,17 +297,26 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 
 INCLUDE "data/warp_tile_ids.asm"
 
-INCBIN "baserom.gbc",$c27b,$cb62 - $c27b
+dr $c27b,$cb62
 LoadWildData:: ; cb62 (3:4b62)
-INCBIN "baserom.gbc",$cb62,$e808 - $cb62
+dr $cb62,$e808
 IsNextTileShoreOrWater:: ; e808 (3:6808)
-INCBIN "baserom.gbc",$e808,$e91b - $e808
+dr $e808,$e91b
 
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
 
-INCBIN "baserom.gbc",$ed1b,$10000 - $ed1b
-
+dr $ed1b,$f161
+_AddPartyMon:: ; f161 (3:7161)
+dr $f161,$f323
+_AddEnemyMonToPlayerParty:: ; f323 (3:7323)
+dr $f323,$f3a4
+Func_f3a4:: ; f3a4 (3:73a4)
+dr $f3a4,$f9de
+PrintBookshelfText:: ; f9de (3:79de)
+dr $f9de,$fad3
+PokemonStuffText:: ; fad3 (3:7ad3)
+dr $fad3,$10000
 
 SECTION "Graphics", ROMX, BANK[GFX]
 
@@ -319,13 +335,13 @@ PokedexTileGraphics:            INCBIN "gfx/pokedex.2bpp"
 WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
 
-INCBIN "baserom.gbc",$11468,$11a97 - $11468
+dr $11468,$11a97
 
 RedPicFront:: INCBIN "pic/ytrainer/red.pic"
 ShrinkPic1::  INCBIN "pic/trainer/shrink1.pic"
 ShrinkPic2::  INCBIN "pic/trainer/shrink2.pic"
 
-INCBIN "baserom.gbc",$11c22,$12365 - $11c22
+dr $11c22,$12365
 
 
 SECTION "NPC Sprites 1", ROMX, BANK[NPC_SPRITES_1]
@@ -359,12 +375,14 @@ OldAmberSprite:        INCBIN "gfx/sprites/old_amber.2bpp"
 LyingOldManSprite:     INCBIN "gfx/sprites/lying_old_man.2bpp"
 QuestionMarkSprite:    INCBIN "gfx/sprites/question_mark.2bpp"
 
-INCBIN "baserom.gbc",$13765,$14000 - $13765
+dr $13765,$14000
 
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
 
-INCBIN "baserom.gbc",$14000,$143f1 - $14000
+dr $14000,$1401b
+_InitMapSprites:: ; 1401b (5:401b)
+dr $1401b,$143f1
 
 RedCyclingSprite:     INCBIN "gfx/sprites/cycling.2bpp"
 RedSprite:            INCBIN "gfx/sprites/red.2bpp"
@@ -407,29 +425,33 @@ BrunoSprite:          INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite:        INCBIN "gfx/sprites/lorelei.2bpp"
 SeelSprite:           INCBIN "gfx/sprites/seel.2bpp"
 
-INCBIN "baserom.gbc",$17c31,$18000 - $17c31
-
+dr $17c31,$17cb0
+ActivatePC:: ; 17cb0 (5:7cb0)
+dr $17cb0,$18000
 
 SECTION "bank06",ROMX,BANK[$06]
 
-INCBIN "baserom.gbc",$18000,$1a785 - $18000
+dr $18000,$1a785
 IsPlayerStandingOnDoorTile:: ; 1a785 (6:6785)
-INCBIN "baserom.gbc",$1a785,$1a7f4 - $1a785
+dr $1a785,$1a7f4
 HandleLedges:: ; 1a7f4 (6:67f4)
-INCBIN "baserom.gbc",$1a7f4,$1c000 - $1a7f4
+dr $1a7f4,$1c000
 
 SECTION "bank07",ROMX,BANK[$07]
 
-INCBIN "baserom.gbc",$1c000,$1e321 - $1c000
+dr $1c000,$1e321
 SafariZoneCheck:: ; 1e321 (7:6e21)
-INCBIN "baserom.gbc",$1e321,$1e330 - $1e321
+dr $1e321,$1e330
 SafariZoneCheckSteps:: ; 1e330 (7:6330)
-INCBIN "baserom.gbc",$1e330,$20000 - $1e330
+dr $1e330,$1e4bf
+CinnabarGymQuiz_1eb0a:: ; 1e4bf (7:64bf)
+dr $1e4bf,$20000
 
 SECTION "bank08",ROMX,BANK[$08]
 
-INCBIN "baserom.gbc",$20000,$24000 - $20000
-
+dr $20000,$2146f
+BillsPC_:: ; 2146f (8:546f)
+dr $2146f,$24000
 
 SECTION "Pics 1", ROMX, BANK[PICS_1]
 
@@ -494,8 +516,9 @@ PinsirPicBack::       INCBIN "pic/monback/pinsirb.pic"
 TangelaPicFront::     INCBIN "pic/ymon/tangela.pic"
 TangelaPicBack::      INCBIN "pic/monback/tangelab.pic"
 
-INCBIN "baserom.gbc",$27d20,$28000 - $27d20
-
+dr $27d20,$27dff
+SaveTrainerName:: ; 27dff (9:7dff)
+dr $27dff,$28000
 
 SECTION "Pics 2", ROMX, BANK[PICS_2]
 
@@ -564,7 +587,7 @@ JynxPicBack::         INCBIN "pic/monback/jynxb.pic"
 MoltresPicFront::     INCBIN "pic/ymon/moltres.pic"
 MoltresPicBack::      INCBIN "pic/monback/moltresb.pic"
 
-INCBIN "baserom.gbc",$2bd4c,$2c000 - $2bd4c
+dr $2bd4c,$2c000
 
 
 SECTION "Pics 3", ROMX, BANK[PICS_3]
@@ -640,7 +663,7 @@ BeedrillPicBack::     INCBIN "pic/monback/beedrillb.pic"
 
 FossilKabutopsPic::   INCBIN "pic/bmon/fossilkabutops.pic"
 
-INCBIN "baserom.gbc",$2fd25,$30000 - $2fd25
+dr $2fd25,$30000
 
 
 SECTION "Pics 4", ROMX, BANK[PICS_4]
@@ -762,12 +785,15 @@ WeepinbellPicBack::    INCBIN "pic/monback/weepinbellb.pic"
 VictreebelPicFront::   INCBIN "pic/ymon/victreebel.pic"
 VictreebelPicBack::    INCBIN "pic/monback/victreebelb.pic"
 
-INCBIN "baserom.gbc",$3749e,$38000 - $3749e
-
+dr $3749e,$38000
 
 SECTION "bank0E",ROMX,BANK[$0E]
 
-INCBIN "baserom.gbc",$38000,$3aa68 - $38000
+dr $38000,$39893
+TrainerPicAndMoneyPointers:: ; 39893 (e:5893)
+dr $39893,$3997e
+TrainerNames:: ; 3997e (e:597e)
+dr $3997e,$3aa68
 
 TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
@@ -777,28 +803,28 @@ TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
 
-INCBIN "baserom.gbc",$3adb8,$3c000 - $3adb8
+dr $3adb8,$3c000
 
 
 SECTION "bank0F",ROMX,BANK[$0F]
 
-INCBIN "baserom.gbc",$3c000,$3cae8 - $3c000
+dr $3c000,$3cae8
 AnyPartyAlive:: ; 3cae8 (f:4ae8)
-INCBIN "baserom.gbc",$3cae8,$40000 - $3cae8
+dr $3cae8,$40000
 
 SECTION "bank10",ROMX,BANK[$10]
 
-INCBIN "baserom.gbc",$40000,$44000 - $40000
+dr $40000,$44000
 
 
 SECTION "bank11",ROMX,BANK[$11]
 
-INCBIN "baserom.gbc",$44000,$48000 - $44000
+dr $44000,$48000
 
 
 SECTION "bank12",ROMX,BANK[$12]
 
-INCBIN "baserom.gbc",$48000,$4c000 - $48000
+dr $48000,$4c000
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -852,47 +878,53 @@ AgathaPic::        INCBIN "pic/trainer/agatha.pic"
 LancePic::         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic::   INCBIN "pic/ytrainer/jessiejames.pic"
 
-INCBIN "baserom.gbc",$4fe79,$50000 - $4fe79
+dr $4fe79,$50000
 
 
 SECTION "bank14",ROMX,BANK[$14]
 
-INCBIN "baserom.gbc",$50000,$54000 - $50000
-
+dr $50000,$5267d
+CeladonPrizeMenu:: ; 5267d (14:667d)
+dr $5267d,$54000
 
 SECTION "bank15",ROMX,BANK[$15]
 
-INCBIN "baserom.gbc",$54000,$58000 - $54000
+dr $54000,$57745
+_GetSpritePosition1:: ; 57745 (15:7745)
+dr $57745,$57765
+_GetSpritePosition2:: ; 57765 (15:7765)
+dr $57765,$57789
+_SetSpritePosition1:: ; 57789 (15:7789)
 
 
 SECTION "bank16",ROMX,BANK[$16]
 
-INCBIN "baserom.gbc",$58000,$5c000 - $58000
+dr $58000,$5c000
 
 
 SECTION "bank17",ROMX,BANK[$17]
 
-INCBIN "baserom.gbc",$5c000,$60000 - $5c000
+dr $5c000,$60000
 
 
 SECTION "bank18",ROMX,BANK[$18]
 
-INCBIN "baserom.gbc",$60000,$64000 - $60000
+dr $60000,$64000
 
 
 SECTION "bank19",ROMX,BANK[$19]
 
-INCBIN "baserom.gbc",$64000,$68000 - $64000
+dr $64000,$68000
 
 
 SECTION "bank1A",ROMX,BANK[$1A]
 
-INCBIN "baserom.gbc",$68000,$6c000 - $68000
+dr $68000,$6c000
 
 
 SECTION "bank1B",ROMX,BANK[$1B]
 
-INCBIN "baserom.gbc",$6c000,$70000 - $6c000
+dr $6c000,$70000
 
 
 SECTION "bank1C",ROMX,BANK[$1C]
@@ -904,138 +936,142 @@ INCLUDE "engine/overworld/player_animations.asm"
 INCLUDE "engine/battle/ghost_marowak_anim.asm"
 INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/town_map.asm"
-
-INCBIN "baserom.gbc",$71784,$71eb3 - $71784
+AnimatePartyMon_ForceSpeed1:: ; 71784 (1c:5784)
+dr $71784,$7178c
+AnimatePartyMon:: ; 7178c (1c:578c)
+dr $7178c,$71eb3
 
 INCLUDE "engine/palettes.asm"
 
 PokemonYellowGraphics:  INCBIN "gfx/pokemon_yellow.t6.2bpp"
 
-INCBIN "baserom.gbc",$73959,$74000 - $73959
+dr $73959,$74000
 
 
 SECTION "bank1D",ROMX,BANK[$1D]
 
-INCBIN "baserom.gbc",$74000,$78000 - $74000
+dr $74000,$78000
 
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
-INCBIN "baserom.gbc",$78000,$7a19a - $78000
+dr $78000,$7a19a
 
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
-INCBIN "baserom.gbc",$7a22a,$7c000 - $7a22a
+dr $7a22a,$7c000
 
 
 SECTION "bank1F",ROMX,BANK[$1F]
 
-INCBIN "baserom.gbc",$7c000,$80000 - $7c000
+dr $7c000,$80000
 
 
 SECTION "bank20",ROMX,BANK[$20]
 
-INCBIN "baserom.gbc",$80000,$80f14 - $80000
+dr $80000,$80f14
 
 SurfingPikachu1Graphics:  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
 
-INCBIN "baserom.gbc",$82bd4,$84000 - $82bd4
+dr $82bd4,$84000
 
 
 SECTION "bank21",ROMX,BANK[$21]
 
-INCBIN "baserom.gbc",$84000,$88000 - $84000
+dr $84000,$88000
 
 
 SECTION "bank22",ROMX,BANK[$22]
 
-INCBIN "baserom.gbc",$88000,$8c000 - $88000
+dr $88000,$8c000
 
 
 SECTION "bank23",ROMX,BANK[$23]
 
-INCBIN "baserom.gbc",$8c000,$90000 - $8c000
+dr $8c000,$90000
 
 
 SECTION "bank24",ROMX,BANK[$24]
 
-INCBIN "baserom.gbc",$90000,$94000 - $90000
+dr $90000,$94000
 
 
 SECTION "bank25",ROMX,BANK[$25]
 
-INCBIN "baserom.gbc",$94000,$98000 - $94000
+dr $94000,$98000
 
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
-INCBIN "baserom.gbc",$bd000,$c0000 - $bd000
+dr $bd000,$c0000
 
 
 SECTION "bank30",ROMX,BANK[$30]
 
-INCBIN "baserom.gbc",$c0000,$c4000 - $c0000
+dr $c0000,$c4000
 
 
 SECTION "bank31",ROMX,BANK[$31]
 
-INCBIN "baserom.gbc",$c4000,$c8000 - $c4000
+dr $c4000,$c8000
 
 
 SECTION "bank32",ROMX,BANK[$32]
 
-INCBIN "baserom.gbc",$c8000,$cc000 - $c8000
+dr $c8000,$cc000
 
 
 SECTION "bank33",ROMX,BANK[$33]
 
-INCBIN "baserom.gbc",$cc000,$d0000 - $cc000
+dr $cc000,$d0000
 
 
 SECTION "bank34",ROMX,BANK[$34]
 
-INCBIN "baserom.gbc",$d0000,$d4000 - $d0000
+dr $d0000,$d4000
 
 
 SECTION "bank35",ROMX,BANK[$35]
 
-INCBIN "baserom.gbc",$d4000,$d8000 - $d4000
+dr $d4000,$d8000
 
 
 SECTION "bank36",ROMX,BANK[$36]
 
-INCBIN "baserom.gbc",$d8000,$dc000 - $d8000
+dr $d8000,$dc000
 
 
 SECTION "bank37",ROMX,BANK[$37]
 
-INCBIN "baserom.gbc",$dc000,$e0000 - $dc000
+dr $dc000,$e0000
 
 
 SECTION "bank38",ROMX,BANK[$38]
 
-INCBIN "baserom.gbc",$e0000,$e4000 - $e0000
+dr $e0000,$e4000
 
 
 SECTION "bank39",ROMX,BANK[$39]
 
-INCBIN "baserom.gbc",$e4000,$e8000 - $e4000
+dr $e4000,$e8000
 
 
 SECTION "bank3A",ROMX,BANK[$3A]
-
-INCBIN "baserom.gbc",$e8000,$e928a - $e8000
+MonsterNames:: ; e8000 (3a:4000)
+dr $e8000,$e928a
 
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 
-INCBIN "baserom.gbc",$e988a,$e9bfa - $e988a
+dr $e988a,$e9bfa
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
 
-INCBIN "baserom.gbc",$ea3ea,$ec000 - $ea3ea
+dr $ea3ea,$eaa02
+FreezeEnemyTrainerSprite:: ; eaa02 (3a:6a02)
+dr $eaa02,$ec000
 
 SECTION "bank3C",ROMX,BANK[$3C]
 
@@ -1047,11 +1083,11 @@ INCLUDE "engine/bank3d/main.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
 
-INCBIN "baserom.gbc",$f8000,$fa35a - $f8000
+dr $f8000,$fa35a
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
-INCBIN "baserom.gbc",$fbb5a,$fc000 - $fbb5a
+dr $fbb5a,$fc000
 
 
 SECTION "bank3F",ROMX,BANK[$3F]

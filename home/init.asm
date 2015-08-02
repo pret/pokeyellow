@@ -5,7 +5,7 @@ SoftReset:: ; 1d08 (0:1d08)
 	call DelayFrames
 	; fallthrough
 
-Init:: ; 1d10
+Init:: ; 1d10 (0:1d10)
 ;  Program init.
 
 rLCDC_DEFAULT EQU %11100011
@@ -99,7 +99,7 @@ rLCDC_DEFAULT EQU %11100011
 
 	predef LoadSGB
 
-	ld a, BANK(SFX_1f_67)
+	ld a, $1f ; BANK(SFX_1f_67)
 	ld [wc0ef], a
 	ld [wc0f0], a
 	ld a, $9c

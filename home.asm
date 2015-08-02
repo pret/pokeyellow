@@ -1513,7 +1513,7 @@ AddAmountSoldToMoney:: ; 2aa0 (0:2aa0)
 	ld a,MONEY_BOX
 	ld [wTextBoxID],a
 	call DisplayTextBoxID ; redraw money text box
-	ld a, (SFX_02_5a - SFX_Headers_02) / 3
+	ld a, $b2 ;(SFX_02_5a - SFX_Headers_02) / 3
 	call PlaySoundWaitForCurrent ; play sound
 	jp WaitForSoundToFinish ; wait until sound is done playing
 
@@ -2875,7 +2875,7 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	xor a
 	ld [wMusicHeaderPointer], a
 	call StopAllMusic ; stop music
-	ld a, BANK(Music_MeetEvilTrainer)
+	ld a, $1f ; BANK(Music_MeetEvilTrainer)
 	ld [wc0ef], a
 	ld [wc0f0], a
 	ld a, [wEngagedTrainerClass]
@@ -2887,7 +2887,7 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	jr z, .noEvilTrainer
 	cp b
 	jr nz, .evilTrainerListLoop
-	ld a, MUSIC_MEET_EVIL_TRAINER
+	ld a, $f5 ; MUSIC_MEET_EVIL_TRAINER
 	jr .PlaySound
 .noEvilTrainer
 	ld hl, FemaleTrainerList
@@ -2897,10 +2897,10 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	jr z, .maleTrainer
 	cp b
 	jr nz, .femaleTrainerListLoop
-	ld a, MUSIC_MEET_FEMALE_TRAINER
+	ld a, $f8 ; MUSIC_MEET_FEMALE_TRAINER
 	jr .PlaySound
 .maleTrainer
-	ld a, MUSIC_MEET_MALE_TRAINER
+	ld a, $fb ; MUSIC_MEET_MALE_TRAINER
 .PlaySound
 	ld [wc0ee], a
 	jp PlaySound
@@ -3237,7 +3237,7 @@ GetTrainerInformation:: ; 3563 (0:3563)
 	ld a, [wLinkState]
 	and a
 	jr nz, .linkBattle
-	ld a, Bank(TrainerPicAndMoneyPointers)
+	ld a, BANK(TrainerPicAndMoneyPointers)
 	call BankswitchHome
 	ld a, [W_TRAINERCLASS] ; wd031
 	dec a
@@ -3454,7 +3454,7 @@ LoadTextBoxTilePatterns:: ; 36a3 (0:36a3)
 	ld de, vChars2 + $600
 	ld bc, $200
 	ld a, BANK(TextBoxGraphics)
-	jp FarCopyData2 ; if LCD is off, transfer all at once
+	jp FarCopyData ; if LCD is off, transfer all at once
 .on
 	ld de, TextBoxGraphics
 	ld hl, vChars2 + $600
@@ -3470,7 +3470,7 @@ LoadHpBarAndStatusTilePatterns:: ; 36c3 (0:36c3)
 	ld de, vChars2 + $620
 	ld bc, $1e0
 	ld a, BANK(HpBarAndStatusGraphics)
-	jp FarCopyData2 ; if LCD is off, transfer all at once
+	jp FarCopyData ; if LCD is off, transfer all at once
 .on
 	ld de, HpBarAndStatusGraphics
 	ld hl, vChars2 + $620
@@ -3654,7 +3654,7 @@ GetItemPrice:: ; 37d2 (0:37d2)
 	push af
 	ld a, [wListMenuID]
 	cp MOVESLISTMENU
-	ld a, BANK(ItemPrices)
+	ld a, $1 ; BANK(ItemPrices)
 	jr nz, .asm_37e0
 	ld a, $f ; hardcoded Bank
 .asm_37e0
@@ -3792,7 +3792,7 @@ ManualTextScroll:: ; 388e (0:388e)
 	jr z, .inLinkBattle
 	call WaitForTextScrollButtonPress
 	call WaitForSoundToFinish
-	ld a, (SFX_02_40 - SFX_Headers_02) / 3
+	ld a, $90 ; (SFX_02_40 - SFX_Headers_02) / 3
 	jp PlaySound
 .inLinkBattle
 	ld c, $41
@@ -4117,7 +4117,7 @@ AddEnemyMonToPlayerParty:: ; 3a48 (0:3a48)
 	ret
 
 Func_3a59:: ; 3a59 (0:3a59)
-	homecall_sf Func_f51e
+	homecall_sf Func_f3a4
 	ret
 
 ; skips a text entries, each of size $b (like trainer name, OT name, rival name, ...)
@@ -4214,7 +4214,7 @@ HandleMenuInputPokemonSelection:: ; 3aaf (0:3aaf)
 	ld a,[wd09b]
 	and a ; is it a pokemon selection menu?
 	jr z,.getJoypadState
-	callba AnimatePartyMon ; shake mini sprite of selected pokemon
+	callba AnimatePartyMon ; shake mini sprite of selected pokemon (1c:578c)
 .getJoypadState
 	pop hl
 	call JoypadLowSensitivity
@@ -4294,7 +4294,7 @@ HandleMenuInputPokemonSelection:: ; 3aaf (0:3aaf)
 	bit 5,[hl]
 	pop hl
 	jr nz,.skipPlayingSound
-	ld a,(SFX_02_40 - SFX_Headers_02) / 3
+	ld a, $90 ; (SFX_02_40 - SFX_Headers_02) / 3
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
@@ -4945,14 +4945,14 @@ PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 INCLUDE "home/predef.asm"
 
 
-Func_3ead:: ; 3ead (0:3ead)
+Func_3ef0:: ; 3ef0 (0:3ef0)
 	ld b, BANK(CinnabarGymQuiz_1eb0a)
 	ld hl, CinnabarGymQuiz_1eb0a
 	call Bankswitch
 	ret ; again?
 	;jp Bankswitch
 
-CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
+CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3ef9 (0:3ef9)
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [hJoyHeld]
@@ -5012,69 +5012,70 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-	add_tx_pre CardKeySuccessText                   ; 01
-	add_tx_pre CardKeyFailText                      ; 02
-	add_tx_pre RedBedroomPC                         ; 03
-	add_tx_pre RedBedroomSNESText                   ; 04
-	add_tx_pre PushStartText                        ; 05
-	add_tx_pre SaveOptionText                       ; 06
-	add_tx_pre StrengthsAndWeaknessesText           ; 07
-	add_tx_pre OakLabEmailText                      ; 08
-	add_tx_pre AerodactylFossilText                 ; 09
-	add_tx_pre Route15UpstairsBinocularsText        ; 0A
-	add_tx_pre KabutopsFossilText                   ; 0B
-	add_tx_pre GymStatueText1                       ; 0C
-	add_tx_pre GymStatueText2                       ; 0D
-	add_tx_pre BookcaseText                         ; 0E
-	add_tx_pre ViridianCityPokecenterBenchGuyText   ; 0F
-	add_tx_pre PewterCityPokecenterBenchGuyText     ; 10
-	add_tx_pre CeruleanCityPokecenterBenchGuyText   ; 11
-	add_tx_pre LavenderCityPokecenterBenchGuyText   ; 12
-	add_tx_pre VermilionCityPokecenterBenchGuyText  ; 13
-	add_tx_pre CeladonCityPokecenterBenchGuyText    ; 14
-	add_tx_pre CeladonCityHotelText                 ; 15
-	add_tx_pre FuchsiaCityPokecenterBenchGuyText    ; 16
-	add_tx_pre CinnabarIslandPokecenterBenchGuyText ; 17
-	add_tx_pre SaffronCityPokecenterBenchGuyText    ; 18
-	add_tx_pre MtMoonPokecenterBenchGuyText         ; 19
-	add_tx_pre RockTunnelPokecenterBenchGuyText     ; 1A
-	add_tx_pre UnusedBenchGuyText1                  ; 1B
-	add_tx_pre UnusedBenchGuyText2                  ; 1C
-	add_tx_pre UnusedBenchGuyText3                  ; 1D
-	add_tx_pre TerminatorText_62508                 ; 1E
-	add_tx_pre PredefText1f                         ; 1F
-	add_tx_pre ViridianSchoolNotebook               ; 20
-	add_tx_pre ViridianSchoolBlackboard             ; 21
-	add_tx_pre JustAMomentText                      ; 22
-	add_tx_pre PredefText23                         ; 23
-	add_tx_pre FoundHiddenItemText                  ; 24
-	add_tx_pre HiddenItemBagFullText                ; 25
-	add_tx_pre VermilionGymTrashText                ; 26
-	add_tx_pre IndigoPlateauHQText                  ; 27
-	add_tx_pre GameCornerOutOfOrderText             ; 28
-	add_tx_pre GameCornerOutToLunchText             ; 29
-	add_tx_pre GameCornerSomeonesKeysText           ; 2A
-	add_tx_pre FoundHiddenCoinsText                 ; 2B
-	add_tx_pre DroppedHiddenCoinsText               ; 2C
-	add_tx_pre BillsHouseMonitorText                ; 2D
-	add_tx_pre BillsHouseInitiatedText              ; 2E
-	add_tx_pre BillsHousePokemonList                ; 2F
-	add_tx_pre MagazinesText                        ; 30
-	add_tx_pre CinnabarGymQuiz                      ; 31
-	add_tx_pre GameCornerNoCoinsText                ; 32
-	add_tx_pre GameCornerCoinCaseText               ; 33
-	add_tx_pre LinkCableHelp                        ; 34
-	add_tx_pre TMNotebook                           ; 35
-	add_tx_pre FightingDojoText                     ; 36
-	add_tx_pre FightingDojoText_52a10               ; 37
-	add_tx_pre FightingDojoText_52a1d               ; 38
-	add_tx_pre NewBicycleText                       ; 39
-	add_tx_pre IndigoPlateauStatues                 ; 3A
-	add_tx_pre VermilionGymTrashSuccesText1         ; 3B
-	add_tx_pre VermilionGymTrashSuccesText2         ; 3C
-	add_tx_pre VermilionGymTrashSuccesText3         ; 3D
-	add_tx_pre VermilionGymTrashFailText            ; 3E
-	add_tx_pre TownMapText                          ; 3F
-	add_tx_pre BookOrSculptureText                  ; 40
-	add_tx_pre ElevatorText                         ; 41
-	add_tx_pre PokemonStuffText                     ; 42
+INCBIN "baserom.gbc",$3f67,$4000 - $3f67
+;	add_tx_pre CardKeySuccessText                   ; 01
+;	add_tx_pre CardKeyFailText                      ; 02
+;	add_tx_pre RedBedroomPC                         ; 03
+;	add_tx_pre RedBedroomSNESText                   ; 04
+;	add_tx_pre PushStartText                        ; 05
+;	add_tx_pre SaveOptionText                       ; 06
+;	add_tx_pre StrengthsAndWeaknessesText           ; 07
+;	add_tx_pre OakLabEmailText                      ; 08
+;	add_tx_pre AerodactylFossilText                 ; 09
+;	add_tx_pre Route15UpstairsBinocularsText        ; 0A
+;	add_tx_pre KabutopsFossilText                   ; 0B
+;	add_tx_pre GymStatueText1                       ; 0C
+;	add_tx_pre GymStatueText2                       ; 0D
+;	add_tx_pre BookcaseText                         ; 0E
+;	add_tx_pre ViridianCityPokecenterBenchGuyText   ; 0F
+;	add_tx_pre PewterCityPokecenterBenchGuyText     ; 10
+;	add_tx_pre CeruleanCityPokecenterBenchGuyText   ; 11
+;	add_tx_pre LavenderCityPokecenterBenchGuyText   ; 12
+;	add_tx_pre VermilionCityPokecenterBenchGuyText  ; 13
+;	add_tx_pre CeladonCityPokecenterBenchGuyText    ; 14
+;	add_tx_pre CeladonCityHotelText                 ; 15
+;	add_tx_pre FuchsiaCityPokecenterBenchGuyText    ; 16
+;	add_tx_pre CinnabarIslandPokecenterBenchGuyText ; 17
+;	add_tx_pre SaffronCityPokecenterBenchGuyText    ; 18
+;	add_tx_pre MtMoonPokecenterBenchGuyText         ; 19
+;	add_tx_pre RockTunnelPokecenterBenchGuyText     ; 1A
+;	add_tx_pre UnusedBenchGuyText1                  ; 1B
+;	add_tx_pre UnusedBenchGuyText2                  ; 1C
+;	add_tx_pre UnusedBenchGuyText3                  ; 1D
+;	add_tx_pre TerminatorText_62508                 ; 1E
+;	add_tx_pre PredefText1f                         ; 1F
+;	add_tx_pre ViridianSchoolNotebook               ; 20
+;	add_tx_pre ViridianSchoolBlackboard             ; 21
+;	add_tx_pre JustAMomentText                      ; 22
+;	add_tx_pre PredefText23                         ; 23
+;	add_tx_pre FoundHiddenItemText                  ; 24
+;	add_tx_pre HiddenItemBagFullText                ; 25
+;	add_tx_pre VermilionGymTrashText                ; 26
+;	add_tx_pre IndigoPlateauHQText                  ; 27
+;	add_tx_pre GameCornerOutOfOrderText             ; 28
+;	add_tx_pre GameCornerOutToLunchText             ; 29
+;	add_tx_pre GameCornerSomeonesKeysText           ; 2A
+;	add_tx_pre FoundHiddenCoinsText                 ; 2B
+;	add_tx_pre DroppedHiddenCoinsText               ; 2C
+;	add_tx_pre BillsHouseMonitorText                ; 2D
+;	add_tx_pre BillsHouseInitiatedText              ; 2E
+;	add_tx_pre BillsHousePokemonList                ; 2F
+;	add_tx_pre MagazinesText                        ; 30
+;	add_tx_pre CinnabarGymQuiz                      ; 31
+;	add_tx_pre GameCornerNoCoinsText                ; 32
+;	add_tx_pre GameCornerCoinCaseText               ; 33
+;	add_tx_pre LinkCableHelp                        ; 34
+;	add_tx_pre TMNotebook                           ; 35
+;	add_tx_pre FightingDojoText                     ; 36
+;	add_tx_pre FightingDojoText_52a10               ; 37
+;	add_tx_pre FightingDojoText_52a1d               ; 38
+;	add_tx_pre NewBicycleText                       ; 39
+;	add_tx_pre IndigoPlateauStatues                 ; 3A
+;	add_tx_pre VermilionGymTrashSuccesText1         ; 3B
+;	add_tx_pre VermilionGymTrashSuccesText2         ; 3C
+;	add_tx_pre VermilionGymTrashSuccesText3         ; 3D
+;	add_tx_pre VermilionGymTrashFailText            ; 3E
+;	add_tx_pre TownMapText                          ; 3F
+;	add_tx_pre BookOrSculptureText                  ; 40
+;	add_tx_pre ElevatorText                         ; 41
+;	add_tx_pre PokemonStuffText                     ; 42

@@ -667,10 +667,10 @@ PlayMapChangeSound:: ; 06ef (0:06ef)
 	aCoord 8, 8 ; upper left tile of the 4x4 square the player's sprite is standing on
 	cp a,$0b ; door tile in tileset 0
 	jr nz,.didNotGoThroughDoor
-	ld a,(SFX_02_57 - SFX_Headers_02) / 3
+	ld a, $ad ; (SFX_02_57 - SFX_Headers_02) / 3
 	jr .playSound
 .didNotGoThroughDoor
-	ld a,(SFX_02_5c - SFX_Headers_02) / 3
+	ld a, $b5 ; (SFX_02_5c - SFX_Headers_02) / 3
 .playSound
 	call PlaySound
 	ld a,[wMapPalOffset]
@@ -1247,9 +1247,9 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 	jr nc,.noCollision
 .collision
 	ld a,[wc02a]
-	cp a,(SFX_02_5b - SFX_Headers_02) / 3 ; check if collision sound is already playing
+	cp $b4 ; (SFX_02_5b - SFX_Headers_02) / 3 ; check if collision sound is already playing
 	jr z,.setCarry
-	ld a,(SFX_02_5b - SFX_Headers_02) / 3
+	ld a, $b4 ; (SFX_02_5b - SFX_Headers_02) / 3
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf
@@ -1707,9 +1707,9 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	jr nc,.stopSurfing
 .collision
 	ld a,[wc02a]
-	cp a,(SFX_02_5b - SFX_Headers_02) / 3 ; check if collision sound is already playing
+	cp $b4 ; (SFX_02_5b - SFX_Headers_02) / 3 ; check if collision sound is already playing
 	jr z,.setCarry
-	ld a,(SFX_02_5b - SFX_Headers_02) / 3
+	ld a, $b4 ; (SFX_02_5b - SFX_Headers_02) / 3
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf

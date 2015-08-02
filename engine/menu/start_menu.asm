@@ -2,7 +2,7 @@ DisplayStartMenu:: ; 29d1 (0:29d1)
 	switchbank StartMenu_Pokedex ; also bank for other functions
 	ld a,[wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy],a
-	ld a, (SFX_02_3f - SFX_Headers_02) / 3 ; Start menu sound
+	ld a, $8f ; (SFX_02_3f - SFX_Headers_02) / 3 ; Start menu sound
 	call PlaySound
 
 RedisplayStartMenu:: ; 29e1 (0:29e1)
