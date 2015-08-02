@@ -25,7 +25,7 @@ EnterMap:: ; 01d7 (0:01d7)
 	res 3, [hl]
 	ld hl, wd72e
 	res 4, [hl]
-	call Func_342a
+	call IsSurfingPikachuInParty
 .didNotEnterUsingFlyWarpOrDungeonWarp
 	callba CheckForceBikeOrSurf ; handle currents in SF islands and forced bike riding in cycling road
 	ld hl, wd732
@@ -44,7 +44,7 @@ OverworldLoop:: ; 0242 (0:0242)
 	call DelayFrame
 OverworldLoopLessDelay:: ; 0245 (0:0245)
 	call DelayFrame
-	call Func_342a
+	call IsSurfingPikachuInParty
 	call LoadGBPal
 	ld a,[wWalkCounter]
 	and a
@@ -821,7 +821,7 @@ LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 	dec a
 	jp z, LoadBikePlayerSpriteGraphics
 	dec a
-	jp z, LoadSurfingPlayerSpriteGraphics
+	jp z, LoadSurfingPlayerSpriteGraphics2
 	jp LoadWalkingPlayerSpriteGraphics
 
 IsBikeRidingAllowed:: ; 0805 (0:0805)
@@ -862,7 +862,7 @@ LoadTilesetTilePatternData:: ; 0828 (0:0828)
 	ld de,vTileset
 	ld bc,$600
 	ld a,[W_TILESETBANK]
-	jp FarCopyData2
+	jp FarCopyData
 
 ; this loads the current maps complete tile map (which references blocks, not individual tiles) to C6E8
 ; it can also load partial tile maps of connected maps into a border of length 3 around the current map
@@ -1761,7 +1761,7 @@ RunMapScript:: ; 0d2c (0:0d2c)
 .return
 	ret
 
-Func_0d5e:: ; 0d5e (0:0d5e)
+LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
 ; new sprite copy stuff
 	xor a
 	ld [wd473],a
@@ -1769,7 +1769,7 @@ Func_0d5e:: ; 0d5e (0:0d5e)
 	ld de,RedSprite ; $4180
 	jr LoadPlayerSpriteGraphicsCommon
 	
-Func_0d69:: ; 0d69 (0:0d69)
+LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld a,[wd473]
 	and a
 	jr z,.asm_0d75
@@ -1782,8 +1782,8 @@ Func_0d69:: ; 0d69 (0:0d69)
 	bit 6,a
 	jr z,LoadSurfingPlayerSpriteGraphics
 .asm_0d7c
-	ld b,BANK(Pointer_fedef)
-	ld de,Pointer_fedef ; 3f:6def
+	ld b,BANK(SurfingPikachuSprite)
+	ld de,SurfingPikachuSprite ; 3f:6def
 	jr LoadPlayerSpriteGraphicsCommon
 	
 LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)

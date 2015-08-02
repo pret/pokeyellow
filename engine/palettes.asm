@@ -1055,7 +1055,7 @@ Func_72524:: ; 72524 (1c:6524)
 	call PreparePalDataTransfer
 	ret
 	
-Func_7265c:: ; 7265c (1c:656c)
+Func_7256c:: ; 7256c (1c:656c)
 	ld a,[wdee2]
 	ld e,a
 	ld a,[wdee3]
@@ -1134,7 +1134,7 @@ Func_725be:: ; 725be (1c:65be)
 	callba Func_bf450 ; 2f:7250
 	ret
 	
-INCBIN "baserom.gbc",$725e2,$734b9 - $725e2
+	dr $725e2,$734b9
 ;INCLUDE "data/sgb_packets.asm"
 
 ;INCLUDE "data/mon_palettes.asm"

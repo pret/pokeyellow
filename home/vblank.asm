@@ -32,7 +32,7 @@ VBlank:: ; 1de5 (0:1de5)
 	call VBlankCopyDouble
 	call UpdateMovingBgTiles
 	call $ff80 ; hOAMDMA
-	ld a, Bank(PrepareOAMData)
+	ld a, BANK(PrepareOAMData)
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	call PrepareOAMData
@@ -57,7 +57,7 @@ VBlank:: ; 1de5 (0:1de5)
 	ld [H_FRAMECOUNTER], a
 .decced
 
-	call Func_28cb
+	call Func_27c2
 	
 	ld a, $8
 	call BankswitchCommon

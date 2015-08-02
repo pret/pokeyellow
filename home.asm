@@ -348,11 +348,11 @@ LoadFrontSpriteByMonIndex:: ; 1149 (0:1149)
 	pop hl
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, BANK(Func_f6203)
+	ld a, BANK(asm_f6203)
 	call BankswitchCommon
 	xor a
 	ld [$ffe1], a
-	call Func_f6203
+	call asm_f6203
 	xor a
 	ld [W_SPRITEFLIPPED], a
 	pop af
@@ -367,7 +367,7 @@ PlayCry:: ; 118b (0:118b)
 	xor a
 	ld [wLowHealthAlarm],a
 	ld a,b
-	call Func_11a5
+	call GetCryData
 	call PlaySound
 	call WaitForSoundToFinish
 	pop af
@@ -385,7 +385,7 @@ GetCryData:: ; 11a5 (0:11a5)
 	add hl, bc
 	add hl, bc
 
-	ld a, Bank(CryData)
+	ld a, BANK(CryData)
 	call BankswitchHome
 	ld a, [hli]
 	ld b, a ; cry id
@@ -540,7 +540,7 @@ HandlePartyMenuInput:: ; 1226 (0:1226)
 	jp HandlePartyMenuInput
 
 PartyMenuText_12cc:: ; 12cc (0:12cc)
-	TX_FAR _PartyMenuText_12cc ; 28:411b
+	TX_FAR _SleepingPikachuText1 ; 28:411b
 	db "@"
 	
 DrawPartyMenu:: ; 12d1 (0:12d1)
@@ -1235,7 +1235,7 @@ Func_27c2:: ; 27c2 (0:27c2)
 	jp PlaySound
 
 UnknownText_2812:: ; 2812 (0:2812)
-	TX_FAR _UnknownText_2812 ; 2c:749a
+	TX_FAR _PokemonText ; 2c:749a
 	db "@"
 
 ; this function is used to display sign messages, sprite dialog, etc.
@@ -2243,7 +2243,7 @@ Func_2fa7:: ; 2fa7 (0:2fa7)
 	homecall Func_e8a5e
 	ret
 	
-Func_2fb7:: ; 2fb7 (0:2fb7)
+SerialFunction:: ; 2fb7 (0:2fb7)
 	ld a,[wUnknownSerialFlag_d49a]
 	bit 0,a
 	ret z
@@ -2408,8 +2408,8 @@ Func_3082:: ; 3082 (0:3082)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	call Func_27c2
-	callbs Func_2131e
-	callbs Func_909d
+	callbs Music_DoLowHealthAlarm
+	callbs Music2_UpdateMusic
 	pop af
 	call BankswitchCommon
 	ret
@@ -2463,7 +2463,7 @@ RunNPCMovementScript:: ; 30ae (0:30ae)
 	ld hl, PlayerStepOutFromDoor
 	jp Bankswitch
 
-EndNPCMovementScript:: ; 314e (0:314e)
+EndNPCMovementScript:: ; 30ea (0:30ea)
 	ld b, BANK(_EndNPCMovementScript)
 	ld hl, _EndNPCMovementScript
 	jp Bankswitch
@@ -5012,7 +5012,7 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-INCBIN "baserom.gbc",$3f67,$4000 - $3f67
+	dr $3f67,$4000
 ;	add_tx_pre CardKeySuccessText                   ; 01
 ;	add_tx_pre CardKeyFailText                      ; 02
 ;	add_tx_pre RedBedroomPC                         ; 03

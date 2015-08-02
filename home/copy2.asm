@@ -69,7 +69,7 @@ CopyVideoData:: ; 15fe (0:15fe)
 	ld [H_VBCOPYSIZE], a
 	call DelayFrame
 	pop af
-	call CommonBankswitch
+	call BankswitchCommon
 	pop af
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret

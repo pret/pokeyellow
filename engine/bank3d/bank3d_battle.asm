@@ -1,4 +1,4 @@
-InitBattle: ; f5ff2 (3d:f5ff2)
+InitBattle: ; f5ff2 (3d:5ff2)
 	ld a, [W_CUROPPONENT]
 	and a
 	jr z, asm_f6003
@@ -21,7 +21,7 @@ asm_f6003: ; f6003 (3d:6003)
 	ret nz
 	callab TryDoWildEncounter
 	ret nz
-asm_f601d: ; 3ef3d (f:6f3d)
+asm_f601d: ; f601d (f:601d)
 	ld a, [wMapPalOffset]
 	push af
 	ld hl, wd358

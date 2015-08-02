@@ -290,9 +290,21 @@ Func_fc69a:: ; fc69a (3f:469a)
 	ld [wd431],a
 	ret
 
-INCBIN "baserom.gbc",$fc6c5,$fcc08 - $fc6c5
+	dr $fc6c5,$fc6d5
+Func_fc6d5:: ; fc6d5 (3f:46d5)
+	dr $fc6d5,$fcc08
 Func_fcc08:: ; fcc08 (3f:4c08)
-INCBIN "baserom.gbc",$fcc08,$fe66f - $fcc08
+	dr $fcc08,$fcdb8
+Func_fcdb8:: ; fcdb8 (3f:4db8)
+	dr $fcdb8,$fce18
+Func_fce18:: ; fce18 (3f:4e18)
+	dr $fce18,$fcf0c
+Func_fcf0c:: ; fcf0c (3f:4f0c)
+	dr $fcf0c,$fd004
+Func_fd004:: ; fd004 (3f:5004)
+	dr $fd004,$fd2a1
+Func_fd2a1:: ; fd2a1 (3f:52a1)
+	dr $fd2a1,$fe66f
 
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"

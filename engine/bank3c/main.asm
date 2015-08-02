@@ -1,6 +1,7 @@
 ;INCLUDE "engine/bank3c/overworld.asm"
-
-dr $f0000,$f0274
+	dr $f0000,$f010c
+_AdvancePlayerSprite:: ; f010c (3c:410c)
+	dr $f010c,$f0274
 
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 ; Reset player status on blackout.
@@ -116,6 +117,6 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	db $27,$07,$7b,$4a,$ff
 	db $01,$ec,$02,$ed,$03,$ee,$ff
 
-dr $f0a82,$f25f8
+	dr $f0a82,$f25f8
 CheckForHiddenObject:: ; f25f8 (3c:65f8)
-dr $f25f8,$f4000
+	dr $f25f8,$f4000

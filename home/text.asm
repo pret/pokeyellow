@@ -299,7 +299,7 @@ Char51:: ; 1882 (0:1882)
 	jp Next17B6
 
 Char49:: ; 18a3 (0:18a3)
-	ld a,[hFlags_0xfffa]
+	ld a,[hFlags_0xFFFA]
 	bit 3,a
 	jr z,.Char49
 	ld a,$4e

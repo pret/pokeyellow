@@ -120,7 +120,10 @@ wc0ee:: ds 1
 wc0ef:: ds 1
 wc0f0:: ds 1
 wc0f1:: ds 1
-wc0f2:: ds 14
+wc0f2:: ds 1
+wc0f3:: ds 1
+wc0f4:: ds 1
+wc0f5:: ds 11
 
 
 SECTION "Sprite State Data", WRAM0[$c100]
@@ -1651,8 +1654,12 @@ wd470:: ds 1
 wd471:: ds 1
 wd472:: ds 1
 wd473:: ds 1
+	
+	ds 6
 
-	ds 39
+wd47a:: ds 1
+
+	ds 32
 	
 wUnknownSerialFlag_d49a:: ds 1 ; d499
 wUnknownSerialFlag_d49b:: ds 1 ; d49a

@@ -24,15 +24,15 @@ asm_2188: ; 2118 (0:2118)
 	jr z, .asm_219b
 	call Func_21c8
 	jr c, .asm_21ac
-	ld a, MUSIC_BIKE_RIDING
+	ld a, $d2 ; MUSIC_BIKE_RIDING
 	jr .asm_219d
 .asm_219b
-	ld a, MUSIC_SURFING
+	ld a, $d6 ; MUSIC_SURFING
 .asm_219d
 	ld b, a
 	ld a, d
 	and a
-	ld a, BANK(Music_BikeRiding)
+	ld a, $1f ; BANK(Music_BikeRiding)
 	jr nz, .asm_21a7
 	ld [wc0ef], a
 .asm_21a7
@@ -77,7 +77,7 @@ Func_21c8:: ; 21c8 (0:21c8)
 Func_21e5:: ; 21e5 (0:21e5)
 	push bc
 	push hl
-	callba Func_909d ; 2:509d
+	callba Music2_UpdateMusic ; 2:509d
 	pop hl
 	pop bc
 	dec c
