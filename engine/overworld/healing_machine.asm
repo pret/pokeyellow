@@ -29,7 +29,7 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld b, a
 .asm_704c4
 	call Func_7055a
-	ld a, (SFX_02_4a - SFX_Headers_02) / 3
+	ld a, $9e ; (SFX_02_4a - SFX_Headers_02) / 3
 	call PlaySound
 	ld c, $1e
 	call DelayFrames
@@ -41,17 +41,17 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	jr nz, .asm_704e6
 	call StopAllMusic
 	call PlaySound
-	ld a, BANK(Music_PkmnHealed)
+	ld a, $2 ; BANK(Music_PkmnHealed)
 	ld [wc0ef], a
 .asm_704e6
-	ld a, MUSIC_PKMN_HEALED
+	ld a, $e8 ; MUSIC_PKMN_HEALED
 	ld [wc0ee], a
 	call PlaySound
 	ld d, $28
 	call FlashSprite8Times
 .asm_704f3
 	ld a, [wc026]
-	cp MUSIC_PKMN_HEALED
+	cp $e8 ; MUSIC_PKMN_HEALED
 	jr z, .asm_704f3
 	ld c, $20
 	call DelayFrames

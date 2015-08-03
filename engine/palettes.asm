@@ -220,7 +220,7 @@ BuildTrainerCardPalPacket: ; 72025 (1c:6025)
 	ld de, wcc5b
 	ld bc, $40
 	call CopyData
-	ld de, LoopCounts_71f8f
+	ld de, LoopCounts_7208b
 	ld hl, wcc5d
 	ld a, [W_OBTAINEDBADGES]
 	ld c, $8
@@ -255,7 +255,7 @@ BuildTrainerCardPalPacket: ; 72025 (1c:6025)
 
 SendUnknownPalPacket_7205d:: ; 7205d (1c:605d)
 	ld hl,UnknownPalPacket_72811
-	ld de,UnknownPacket_72611
+	ld de,BlkPacket_WholeScreen
 	ret
 	
 SendUnknownPalPacket_72064:: ; 72064 (1c:6064)
@@ -311,19 +311,19 @@ Func_720ad:: ; 720ad (1c:60ad)
 	ld a,e
 	and a
 	jr nz,Func_720bd
-	ld hl,Pointer_727e1
+	ld hl,PalPacket_Generic
 	ld a,[hGBC]
 	and a
 	jp z,Func_721b4
 	jp Func_72346
 
 Func_720bd:: ; 720bd (1c:60bd)
-	ld hl,Func_72811
+	ld hl,UnknownPalPacket_72811
 	ld a,[hGBC]
 	and a
 	jp z,Func_721b4
 	call Func_72346
-	ld hl,Pointer_727e1
+	ld hl,PalPacket_Generic
 	inc hl
 	ld a,[hli]
 	call Func_723fe
@@ -338,7 +338,7 @@ Func_720bd:: ; 720bd (1c:60bd)
 	ret
 	
 Func_720e3:: ; 720e3 (1c:60e3)
-	ld hl,Pointer_72761
+	ld hl,PalPacket_Empty
 	ld de,wcf2d
 	ld bc,$10
 	call CopyData
@@ -357,7 +357,7 @@ Func_720e3:: ; 720e3 (1c:60e3)
 .asm_72109
 	call Func_72346
 .asm_7210c
-	ld hl,UnknownPacket_72611
+	ld hl,BlkPacket_WholeScreen
 	ld de,wcf2d
 	ld bc,$10
 	call CopyData
@@ -433,7 +433,7 @@ SendBlkPacket_PartyMenu: ; 7217f (1c:617f)
 	ld bc, $30
 	jp CopyData
 
-Func_71fc2: ; 7218b (1c:618b)
+Func_7218b: ; 7218b (1c:618b)
 	ld hl, wcf1f
 	ld a, [wcf2d]
 	ld e, a
@@ -569,7 +569,7 @@ LoadSGB: ; 721f8 (1c:61f8)
 	jp SendSGBPacket
 
 Func_72247: ; 72247 (1c:6247)
-	ld hl, PointerTable_72089
+	ld hl, PointerTable_7225b
 	ld c, $9
 .loop
 	push bc
@@ -587,14 +587,14 @@ Func_72247: ; 72247 (1c:6247)
 
 PointerTable_7225b: ; 7225b (1c:625b)
 	dw MaskEnFreezePacket
-	dw DataSnd_72548
-	dw DataSnd_72558
-	dw DataSnd_72568
-	dw DataSnd_72578
-	dw DataSnd_72588
-	dw DataSnd_72598
-	dw DataSnd_725a8
-	dw DataSnd_725b8
+	dw DataSnd_728a1
+	dw DataSnd_728b1
+	dw DataSnd_728c1
+	dw DataSnd_728d1
+	dw DataSnd_728e1
+	dw DataSnd_728f1
+	dw DataSnd_72901
+	dw DataSnd_72911
 
 CheckSGB: ; 7226d (1c:626d)
 	ld hl, MltReq2Packet
@@ -725,7 +725,7 @@ Func_72346: ; 72346 (1c:6346)
 	ld a,[hl]
 	and $f8
 	cp $20
-	jp z,Func_7265e
+	jp z,Func_725be
 	inc hl
 	ld a,[hli]
 	inc hl
@@ -1133,12 +1133,37 @@ Func_725be:: ; 725be (1c:65be)
 .asm_725d9
 	callba Func_bf450 ; 2f:7250
 	ret
+
+Pointer_725e2:: ; 725e2 (1c:65e2)	
+	db $0c,$11,$66,$21,$66,$41,$66,$51,$61,$81,$1a,$66,$2d
+	db $cf,$5b,$cc,$31,$67,$2c,$cf,$51,$67
 	
-	dr $725e2,$734b9
-;INCLUDE "data/sgb_packets.asm"
+Func_725fb: ; 725fb (1c:65fb)
+	ld b, $80
+.loop
+	ld c, $10
+.asm_725ff
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .asm_725ff
+	ld c, $10
+	xor a
+.asm_72608
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .asm_72608
+	dec b
+	jr nz, .loop
+	ret
 
-;INCLUDE "data/mon_palettes.asm"
+	;dr $725e2,$734b9
+INCLUDE "data/sgb_packets.asm"
 
-;INCLUDE "data/super_palettes.asm"
+INCLUDE "data/mon_palettes.asm"
 
-;INCLUDE "data/sgb_border.asm"
+INCLUDE "data/super_palettes.asm"
+
+INCLUDE "data/sgb_border.asm"

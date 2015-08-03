@@ -33,8 +33,8 @@ AnimateHallOfFame: ; 701c6 (1c:41c6)
 .asm_70211
 	ld a, $90
 	ld [hWY], a
-	ld c, BANK(Music_HallOfFame)
-	ld a, MUSIC_HALL_OF_FAME
+	ld c, $1f ; BANK(Music_HallOfFame)
+	ld a, $ca ; MUSIC_HALL_OF_FAME
 	call PlayMusic
 	ld hl, wPartySpecies
 	ld c, $ff
@@ -254,9 +254,9 @@ Func_703d1: ; 703d1 (1c:43d1)
 	ld c, $a3
 	call PrintBCDNumber
 	ld hl, DexSeenOwnedText
-	call Func_703e2
+	call Func_7043a
 	ld hl, DexRatingText
-	call Func_703e2
+	call Func_7043a
 	ld hl, wcc5d
 
 Func_7043a: ; 7043a (1c:443a)

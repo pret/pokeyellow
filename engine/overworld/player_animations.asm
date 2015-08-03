@@ -9,7 +9,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	bit 7, [hl] ; used fly out of battle?
 	res 7, [hl]
 	jr nz, .flyAnimation
-	ld a, (SFX_02_4c - SFX_Headers_02) / 3
+	ld a, $a0 ; (SFX_02_4c - SFX_Headers_02) / 3
 	call PlaySound
 	ld hl, wd732
 	bit 4, [hl] ; used dungeon warp?
@@ -17,7 +17,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	;res 4, [hl]
 	jr nz, .dungeonWarpAnimation
 	call PlayerSpinWhileMovingDown
-	ld a, (SFX_02_4f - SFX_Headers_02) / 3
+	ld a, $a3 ; (SFX_02_4f - SFX_Headers_02) / 3
 	call PlaySound
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b
@@ -55,7 +55,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	;ld bc, (BANK(BirdSprite) << 8) + $0c
 	;call CopyVideoData
 	call LoadBirdSpriteGraphics
-	ld a, (SFX_02_50 - SFX_Headers_02) / 3
+	ld a, $a4 ; (SFX_02_50 - SFX_Headers_02) / 3
 	call PlaySound
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
@@ -107,7 +107,7 @@ _LeaveMapAnim: ; 70615 (1c:4615)
 	dec a
 	jp nz, LeaveMapThroughHoleAnim
 .spinWhileMovingUp
-	ld a, (SFX_02_4b - SFX_Headers_02) / 3
+	ld a, $9f ; (SFX_02_4b - SFX_Headers_02) / 3
 	call PlaySound
 	ld hl, wPlayerSpinWhileMovingUpOrDownAnimDeltaY
 	ld a, -$10
@@ -141,7 +141,7 @@ _LeaveMapAnim: ; 70615 (1c:4615)
 	ld [hli], a ; wPlayerSpinInPlaceAnimFrameDelayDelta
 	xor a
 	ld [hli], a ; wPlayerSpinInPlaceAnimFrameDelayEndValue
-	ld [hl], (SFX_02_4d - SFX_Headers_02) / 3 ; wPlayerSpinInPlaceAnimSoundID
+	ld [hl], $a1 ; (SFX_02_4d - SFX_Headers_02) / 3 ; wPlayerSpinInPlaceAnimSoundID
 	ld hl, wcd48
 	call PlayerSpinInPlace
 	jr .spinWhileMovingUp
@@ -154,7 +154,7 @@ _LeaveMapAnim: ; 70615 (1c:4615)
 	ld [hli], a ; wFlyAnimCounter
 	ld [hl], $c ; wFlyAnimBirdSpriteImageIndex
 	call DoFlyAnimation
-	ld a, (SFX_02_50 - SFX_Headers_02) / 3
+	ld a, $a4 ; (SFX_02_50 - SFX_Headers_02) / 3
 	call PlaySound
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
@@ -452,7 +452,7 @@ Func_70816: ; 70816 (1c:4816)
 	call LoadFontTilePatterns
 	ret
 
-Func_70842: ; 708a3 (1c:48a3)
+Func_708a3: ; 708a3 (1c:48a3)
 	ld a, [hl]
 	xor $1
 	ld [hl], a

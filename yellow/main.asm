@@ -347,7 +347,9 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 
 INCLUDE "data/warp_tile_ids.asm"
 PrintSafariZoneSteps:: ; c27b (3:427b)
-	dr $c27b,$cb62
+	dr $c27b,$c2d4
+_GetTileAndCoordsInFrontOfPlayer:: ; c2d4 (3:42d4)
+	dr $c2d4,$cb62
 LoadWildData:: ; cb62 (3:4b62)
 	dr $cb62,$d2ed
 UseItem_:: ; d2ed (3:52ed)
@@ -357,8 +359,10 @@ TossItem_:: ; e635 (3:6635)
 IsKeyItem_:: ; e6a8 (3:66a8)
 	dr $e6a8,$e808
 IsNextTileShoreOrWater:: ; e808 (3:6808)
-	dr $e808,$e91b
-
+	dr $e808,$e848
+FindWildLocationsOfMon:: ; e848 (3:6848)
+	dr $e848,$e91b
+	
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
 
@@ -888,7 +892,11 @@ CryData:: ; 39462 (e:5462)
 TrainerPicAndMoneyPointers:: ; 39893 (e:5893)
 	dr $39893,$3997e
 TrainerNames:: ; 3997e (e:597e)
-	dr $3997e,$3aa68
+	dr $3997e,$3a8df
+DrawAllPokeballs: ; 3a8df (e:68df)
+	dr $3a8df,$3a9e9
+SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
+	dr $3a9e9,$3aa68
 
 TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
@@ -905,7 +913,9 @@ SECTION "bank0F",ROMX,BANK[$0F]
 
 	dr $3c000,$3cae8
 AnyPartyAlive:: ; 3cae8 (f:4ae8)
-	dr $3cae8,$40000
+	dr $3cae8,$3ec87
+LoadEnemyMonData: ; 3ec87 (f:6c87)
+	dr $3ec87,$40000	
 
 SECTION "bank10",ROMX,BANK[$10]
 
@@ -1042,13 +1052,16 @@ INCLUDE "engine/town_map.asm"
 AnimatePartyMon_ForceSpeed1:: ; 71784 (1c:5784)
 	dr $71784,$7178c
 AnimatePartyMon:: ; 7178c (1c:578c)
-	dr $7178c,$71eb3
-
+	dr $7178c,$717fe
+LoadAnimSpriteGfx: ; 717fe (1c:57fe)
+	dr $717fe,$71eb3
 INCLUDE "engine/palettes.asm"
 
-PokemonYellowGraphics:  INCBIN "gfx/pokemon_yellow.t6.2bpp"
+;PokemonYellowGraphics:  INCBIN "gfx/pokemon_yellow.t6.2bpp"
 
-	dr $73959,$74000
+	dr $73959,$73e2e
+SaveHallOfFameTeams: ; 73e2e (1c:7e2e)
+	dr $73e2e,$74000
 
 
 SECTION "bank1D",ROMX,BANK[$1D]
@@ -1059,8 +1072,11 @@ VendingMachineMenu:: ; 74726 (1d:4726)
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
-	dr $78000,$7a19a
-
+	dr $78000,$78757
+AnimationTileset2: ; 78757 (1e:4857)
+	dr $78757,$798d4
+Func_798d4: ; 798d4 (1e:58d4)
+	dr $798d4,$7a19a
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
@@ -1111,9 +1127,10 @@ SECTION "bank25",ROMX,BANK[$25]
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
-	dr $bd000,$c0000
-
-
+	dr $bd000,$bf450
+Func_bf450:: ; bf450 (2f:7450)
+	dr $bf450,$c0000
+	
 SECTION "bank30",ROMX,BANK[$30]
 
 	dr $c0000,$c4000

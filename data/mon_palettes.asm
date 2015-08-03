@@ -1,4 +1,4 @@
-MonsterPalettes: ; 725c8 (1c:65c8)
+MonsterPalettes: ; 72921 (1c:6921)
 	db PAL_MEWMON    ; MISSINGNO
 	db PAL_GREENMON  ; BULBASAUR
 	db PAL_GREENMON  ; IVYSAUR
@@ -151,3 +151,4 @@ MonsterPalettes: ; 725c8 (1c:65c8)
 	db PAL_BROWNMON  ; DRAGONITE
 	db PAL_MEWMON    ; MEWTWO
 	db PAL_MEWMON    ; MEW
+; 1c:69b9

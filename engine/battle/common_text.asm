@@ -76,7 +76,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	ld [wc0f1], a
 	ld a, $80
 	ld [wc0f2], a
-	ld a, (SFX_08_77 - SFX_Headers_08) / 3
+	ld a, $e9 ; (SFX_08_77 - SFX_Headers_08) / 3
 	call PlaySound
 	jp WaitForSoundToFinish
 .done

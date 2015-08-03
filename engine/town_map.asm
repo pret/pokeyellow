@@ -40,7 +40,7 @@ Func_70ef4: ; 70ef4 (1c:4ef4)
 
 Func_70f08: ; 70f08 (1c:4f08)
 	ld de, wHPBarMaxHP
-	call Func_712f1
+	call Func_7137a
 	ld a, [de]
 	push hl
 	call Func_712e1
@@ -70,7 +70,7 @@ Func_70f08: ; 70f08 (1c:4f08)
 	ld b, a
 	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
 	jr z, .asm_70f3e
-	ld a, (SFX_02_3c - SFX_Headers_02) / 3
+	ld a, $8c ; (SFX_02_3c - SFX_Headers_02) / 3
 	call PlaySound
 	bit 6, b
 	jr nz, .asm_70f68
@@ -107,7 +107,7 @@ Func_70f08: ; 70f08 (1c:4f08)
 	ld a,[hJoy5]
 	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
 	ret z
-	callab Func_f4000
+	callab PrintBeginningBattleText
 	ret
 	
 INCLUDE "data/town_map_order.asm"
@@ -204,7 +204,7 @@ LoadTownMap_Fly: ; 71014 (1c:5014)
 	jr z, .asm_7108d
 	bit 0, b
 	jr nz, .asm_710af
-	ld a, (SFX_02_3c - SFX_Headers_02) / 3
+	ld a, $8c ; (SFX_02_3c - SFX_Headers_02) / 3
 	call PlaySound
 	bit 6, b
 	jr nz, .asm_710cd
@@ -212,7 +212,7 @@ LoadTownMap_Fly: ; 71014 (1c:5014)
 	jr nz, .asm_710e3
 	jr .asm_710c0
 .asm_710af
-	ld a, (SFX_02_3e - SFX_Headers_02) / 3
+	ld a, $8e ; (SFX_02_3e - SFX_Headers_02) / 3
 	call PlaySound
 	ld a, [hl]
 	ld [wDestinationMap], a
@@ -296,7 +296,7 @@ LoadTownMap: ; 71126 (1c:5126)
 	ld de, vChars2 + $600
 	ld bc, $100
 	ld a, BANK(WorldMapTileGraphics)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, MonNestIcon ; $574b
 	ld de, vSprites + $40
 	ld bc, $8
@@ -348,13 +348,13 @@ Func_71235: ; 71235 (1c:5235)
 	call UpdateSprites
 	jp GoPAL_SET_CF1C
 
-Func_711c4: ; 7124e (1c:524e)
+Func_7124e: ; 7124e (1c:524e)
 	push af
 	ld a, b
 	ld [wcd5b], a
 	pop af
 	ld de, wHPBarMaxHP
-	call Func_712f1
+	call Func_7137a
 	ld a, [de]
 	push hl
 	call Func_712e1
@@ -372,7 +372,7 @@ Func_711c4: ; 7124e (1c:524e)
 	ld bc, $a0
 	jp CopyData
 
-Func_71279: ; 711ef (1c:51ef)
+Func_71279: ; 71279 (1c:5279)
 	callba FindWildLocationsOfMon
 	call Func_71362
 	ld hl, wOAMBuffer
@@ -553,7 +553,7 @@ Func_7137a: ; 7137a (1c:537a)
 	cp REDS_HOUSE_1F
 	jr c, .asm_7138d
 	ld bc, $4
-	ld hl, InternalMapEntries ; $5382
+	ld hl, InternalMapEntries ; $540b
 .asm_71384
 	cp [hl]
 	jr c, .asm_7138a
@@ -563,7 +563,7 @@ Func_7137a: ; 7137a (1c:537a)
 	inc hl
 	jr .asm_71384
 .asm_7138d
-	ld hl, ExternalMapEntries ; $5313
+	ld hl, ExternalMapEntries ; $539c
 	ld c, a
 	ld b, $0
 	add hl, bc
@@ -576,15 +576,18 @@ Func_7137a: ; 7137a (1c:537a)
 	ld h, [hl]
 	ld l, a
 	ret
-
-INCBIN "baserom.gbc",$7139c,$71753 - $7139c
-
+	
+ExternalMapEntries: ; 7139c (1c:539c)
+	dr $7139c,$7140b
+InternalMapEntries: ; 7140b (1c:540b)
+	dr $7140b,$7174b
+	
 ;INCLUDE "data/town_map_entries.asm"
 
 ;INCLUDE "text/map_names.asm" ; TODO: relabel addresses
 
-;MonNestIcon: ; 716be (1c:56be) ; relabel this too
-;	INCBIN "gfx/mon_nest_icon.1bpp"
+MonNestIcon: ; 7174b (1c:574b) ; relabel this too
+	INCBIN "gfx/mon_nest_icon.1bpp"
 
 TownMapSpriteBlinkingAnimation: ; 71753 (1c:5753)
 	ld a, [wTownMapSpriteBlinkingCounter]

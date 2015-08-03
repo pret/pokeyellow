@@ -1,4 +1,5 @@
 ;INCLUDE "engine/bank3c/overworld.asm"
+Func_f0000:: ; f0000 (3c:4000)
 	dr $f0000,$f010c
 _AdvancePlayerSprite:: ; f010c (3c:410c)
 	dr $f010c,$f0274

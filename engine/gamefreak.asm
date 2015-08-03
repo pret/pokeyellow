@@ -5,7 +5,7 @@ LoadShootingStarGraphics: ; 70000 (1c:4000)
 	ld [rOBP1], a ; $ff49
 	call Func_3040
 	call Func_3061
-	ld de, AnimationTileset2 + $30 ; $471e ; star tile (top left quadrant)
+	ld de, AnimationTileset2 + $30 ; $4757 ; star tile (top left quadrant)
 	ld hl, vChars1 + $200
 	ld bc, (BANK(AnimationTileset2) << 8) + $01
 	call CopyVideoData
@@ -28,7 +28,7 @@ LoadShootingStarGraphics: ; 70000 (1c:4000)
 
 AnimateShootingStar: ; 7004a (1c:404a)
 	call LoadShootingStarGraphics
-	ld a, (SFX_1f_67 - SFX_Headers_1f) / 3
+	ld a, $c2 ; (SFX_1f_67 - SFX_Headers_1f) / 3
 	call PlaySound
 	ld hl, wOAMBuffer
 	ld bc, $a004

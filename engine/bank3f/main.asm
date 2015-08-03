@@ -302,7 +302,9 @@ Func_fce18:: ; fce18 (3f:4e18)
 Func_fcf0c:: ; fcf0c (3f:4f0c)
 	dr $fcf0c,$fd004
 Func_fd004:: ; fd004 (3f:5004)
-	dr $fd004,$fd2a1
+	dr $fd004,$fd0d0
+Func_fd0d0:: ; fd0d0 (3f:50d0)
+	dr $fd0d0,$fd2a1
 Func_fd2a1:: ; fd2a1 (3f:52a1)
 	dr $fd2a1,$fe66f
 
