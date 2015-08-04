@@ -48,6 +48,8 @@ H_NUMTOPRINT        EQU $FF96 ; 3 bytes
 H_POWEROFTEN        EQU $FF99 ; 3 bytes
 H_SAVEDNUMTOPRINT   EQU $FF9C ; 3 bytes
 
+hMoney EQU $FF9F ; 3-byte BCD number
+hCoins EQU $FFA0 ; 2-byte BCD number
 
 hSerialReceivedNewData EQU $FFA9
 

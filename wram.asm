@@ -594,6 +594,8 @@ wPlayerSpinInPlaceAnimFrameDelay:: ; cd3d
 
 wPlayerSpinWhileMovingUpOrDownAnimDeltaY:: ; cd3d
 
+wBoxNumString:: ; cd3d
+
 wHiddenObjectFunctionArgument:: ; cd3d
 
 wSubtrahend:: ; cd3d
@@ -1643,8 +1645,13 @@ wd434:: ds 1
 wd435:: ds 1
 wd436:: ds 1
 
-	ds 19
+	ds 17
 
+wExpressionNumber::
+	ds 1
+
+	ds 1
+	
 wd44a:: ds 1
 wd44b:: ds 1
 

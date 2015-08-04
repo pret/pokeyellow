@@ -253,7 +253,7 @@ add_predef: MACRO
 	ENDM
 
 predef_id: MACRO
-	ld a, (\1Predef - PredefPointers) / 3
+	ld a, (\1Predef) ; - PredefPointers) / 3
 	ENDM
 
 predef: MACRO
@@ -266,7 +266,10 @@ predef_jump: MACRO
 	jp Predef
 	ENDM
 
-
+predef_const: MACRO
+	const \1Predef
+	ENDM
+	
 add_tx_pre: MACRO
 \1_id:: dw \1
 ENDM

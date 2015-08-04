@@ -69,7 +69,9 @@ DisplayTextIDInit:: ; 6f0e (1:6f0e)
 DrawStartMenu:: ; 6f80 (1:6f80)
 	dr $6f80,$7035
 CableClubNPC:: ; 7035 (1:7035)
-	dr $7035,$71bf
+	dr $7035,$71ac
+CloseLinkConnection: ; 71ac (1:71ac)
+	dr $71ac,$71bf
 DisplayTextBoxID_:: ; 71bf (1:71bf)
 	dr $71bf,$778e
 PlayerPC:: ; 778e (1:778e)
@@ -81,7 +83,9 @@ Func_7c18:: ; 7c18 (1:7c18)
 
 SECTION "bank02",ROMX,BANK[$02]
 
-	dr $8000,$909d
+	dr $8000,$9064
+PlayBattleMusic: ; 9064 (2:5064)
+	dr $9064,$909d
 Music2_UpdateMusic:: ; 909d (2:509d)
 	dr $909d,$984e
 Func_984e:: ; 984e (2:584e)
@@ -357,7 +361,9 @@ UseItem_:: ; d2ed (3:52ed)
 TossItem_:: ; e635 (3:6635)
 	dr $e635,$e6a8
 IsKeyItem_:: ; e6a8 (3:66a8)
-	dr $e6a8,$e808
+	dr $e6a8,$e6e8
+SendNewMonToBox: ; e6e8 (3:66e8)
+	dr $e6e8,$e808
 IsNextTileShoreOrWater:: ; e808 (3:6808)
 	dr $e808,$e848
 FindWildLocationsOfMon:: ; e848 (3:6848)
@@ -449,7 +455,10 @@ OldAmberSprite:        INCBIN "gfx/sprites/old_amber.2bpp"
 LyingOldManSprite:     INCBIN "gfx/sprites/lying_old_man.2bpp"
 QuestionMarkSprite:    INCBIN "gfx/sprites/question_mark.2bpp"
 
-	dr $13765,$14000
+EndOfBattle: ; 13765 (4:7765)
+	dr $13765,$1383a
+TryDoWildEncounter: ; 1383a (4:783a)
+	dr $1383a,$14000
 
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
@@ -892,7 +901,9 @@ CryData:: ; 39462 (e:5462)
 TrainerPicAndMoneyPointers:: ; 39893 (e:5893)
 	dr $39893,$3997e
 TrainerNames:: ; 3997e (e:597e)
-	dr $3997e,$3a8df
+	dr $3997e,$39bb6
+ReadTrainer: ; 39bb6 (e:5bb6)
+	dr $39bb6,$3a8df
 DrawAllPokeballs: ; 3a8df (e:68df)
 	dr $3a8df,$3a9e9
 SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
@@ -906,20 +917,50 @@ TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
 
-	dr $3adb8,$3c000
+	dr $3adb8,$3b10f
+Func_3b10f: ; 3b01f (e:710f)
+	dr $3b10f,$3c000
 
 
 SECTION "bank0F",ROMX,BANK[$0F]
 
-	dr $3c000,$3cae8
+	dr $3c000,$3c04c
+SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
+	dr $3c04c,$3c127
+StartBattle: ; 3c127 (f:4127)
+	dr $3c127,$3cae8
 AnyPartyAlive:: ; 3cae8 (f:4ae8)
-	dr $3cae8,$3ec87
+	dr $3cae8,$3ce1f
+DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
+	dr $3ce1f,$3ceb1
+DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)
+	dr $3ceb1,$3d9ac
+IsGhostBattle: ; 3d9ac (f:59ac)
+	dr $3d9ac,$3ddc3
+PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
+	dr $3ddc3,$3e6f1
+MoveHitTest: ; 3e6f1 (f:66f1)
+	dr $3e6f1,$3ec87
 LoadEnemyMonData: ; 3ec87 (f:6c87)
-	dr $3ec87,$40000	
+	dr $3ec87,$3edb8
+DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
+	dr $3edb8,$3eeb3
+QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
+	dr $3eeb3,$3fb2e
+PrintButItFailedText_: ; 3fb2e (f:7b2e)
+	dr $3fb2e,$3fb39
+PrintDidntAffectText: ; 3fb39 (f:7b39)
+	dr $3fb39,$3fb49
+PrintMayNotAttackText: ; 3fb49 (f:7b49)
+	dr $3fb49,$3fb83
+PlayCurrentMoveAnimation: ; 3fb83 (f:7b83)
+	dr $3fb83,$40000
 
 SECTION "bank10",ROMX,BANK[$10]
 
-	dr $40000,$44000
+	dr $40000,$4050b
+Pointer_4050b: ; 4050b (10:450b)
+	dr $4050b,$44000
 
 
 SECTION "bank11",ROMX,BANK[$11]
@@ -1074,9 +1115,16 @@ SECTION "bank1E",ROMX,BANK[$1E]
 
 	dr $78000,$78757
 AnimationTileset2: ; 78757 (1e:4857)
-	dr $78757,$798d4
+	dr $78757,$79816
+Func_79816: ; 79816 (1e:5816)
+	dr $79816,$798b2
+Func_798b2: ; 798b2 (1e:58b2)
+	dr $798b2,$798c8
+AnimationTransformMon: ; 798c8 (1e:58c8)
+	dr $798c8,$798d4
 Func_798d4: ; 798d4 (1e:58d4)
 	dr $798d4,$7a19a
+	
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"

@@ -27,7 +27,7 @@ _Multiply: ; f660e (3d:660e)
 	ld c, a
 	ld a, [H_MULTIPLICAND] ; $ff96
 	adc c
-	ld [H_MULTIPLYDBUFFER+1], a ; $ff9c
+	ld [H_MULTIPLYBUFFER+1], a ; $ff9c
 	ld a, [H_MULTIPLYBUFFER]
 	ld c, a
 	ld a, [H_PRODUCT] ; $ff95

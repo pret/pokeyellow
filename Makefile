@@ -21,7 +21,7 @@ yellow_opt = $(cgb_opt) -t "POKEMON YELLOW"
 PYTHON := python
 
 # md5sum -c is used to compare rom hashes. The options may vary across platforms.
-MD5 := md5sum -c --quiet
+MD5 := md5sum -c #--quiet
 
 
 # The compare target is a shortcut to check that the build matches the original roms exactly.

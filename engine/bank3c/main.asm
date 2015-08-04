@@ -118,6 +118,9 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	db $27,$07,$7b,$4a,$ff
 	db $01,$ec,$02,$ed,$03,$ee,$ff
 
-	dr $f0a82,$f25f8
+	dr $f0a82,$f220e
+BeachHouse_h: ; f220e (3c:620e)
+;INCLUDE "data/mapHeaders/beach_house.asm"
+	dr $f220e,$f25f8
 CheckForHiddenObject:: ; f25f8 (3c:65f8)
 	dr $f25f8,$f4000

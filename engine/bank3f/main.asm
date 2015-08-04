@@ -188,7 +188,7 @@ Func_fc5fa:: ; fc5fa (3f:45fa)
 	cp ROCK_TUNNEL_1
 	jr z,.asm_fc645
 	ld a,[W_CURMAP]
-	ld hl,Pointer_fc46b
+	ld hl,Pointer_fc64b
 	call Func_1568 ; similar to IsInArray, but not the same
 	jr c,.asm_fc639
 	ld a,[W_CURMAP]
@@ -292,7 +292,9 @@ Func_fc69a:: ; fc69a (3f:469a)
 
 	dr $fc6c5,$fc6d5
 Func_fc6d5:: ; fc6d5 (3f:46d5)
-	dr $fc6d5,$fcc08
+	dr $fc6d5,$fcb84
+Func_fcb84: ; fcb84 (3f:45bc)
+	dr $fcb84,$fcc08
 Func_fcc08:: ; fcc08 (3f:4c08)
 	dr $fcc08,$fcdb8
 Func_fcdb8:: ; fcdb8 (3f:4db8)

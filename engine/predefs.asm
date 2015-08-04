@@ -52,7 +52,7 @@ GetPredefPointer: ; f67ed (3d:67ed)
 PredefPointers:: ; f681d (3d:681d)
 ; these are pointers to ASM routines.
 ; they appear to be used in overworld map scripts.
-	dr $f681d,$f68a1
+	dr $f681d,$f8000
 	;add_predef DrawPlayerHUDAndHPBar
 	;add_predef Func_3f0c6
 	;add_predef Func_3f073
@@ -98,8 +98,6 @@ PredefPointers:: ; f681d (3d:681d)
 	;add_predef EvolutionAfterBattle
 	;add_predef SaveSAVtoSRAM0
 	;add_predef InitOpponent
-CableClub_RunPredef::
-	dr $f68a1,$f68b9
 	;add_predef CableClub_Run
 	;add_predef DrawBadges
 	;add_predef ExternalClockTradeAnim
@@ -108,8 +106,7 @@ CableClub_RunPredef::
 	;add_predef PlayIntro
 	;add_predef Func_79869
 	;add_predef FlashScreen
-	add_predef GetTileAndCoordsInFrontOfPlayer
-	dr $f68bc,$f68e9
+	;add_predef GetTileAndCoordsInFrontOfPlayer
 	;add_predef StatusScreen
 	;add_predef StatusScreen2
 	;add_predef InternalClockTradeAnim
@@ -125,8 +122,7 @@ CableClub_RunPredef::
 	;add_predef SetPartyMonTypes
 	;add_predef CanLearnTM
 	;add_predef TMToMove
-	add_predef Func_71ddf
-	dr $f68e9,$f8000
+	;add_predef Func_71ddf
 	;add_predef StarterDex ; 46
 	;add_predef _AddPartyMon
 	;add_predef UpdateHPBar2

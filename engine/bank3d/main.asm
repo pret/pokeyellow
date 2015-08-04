@@ -335,7 +335,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	and A_BUTTON | B_BUTTON
 	jr z,.skipPlayingSound
 .AButtonOrBButtonPressed
-	ld a,(SFX_02_40 - SFX_Headers_02) / 3
+	ld a, $90 ; (SFX_02_40 - SFX_Headers_02) / 3
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
@@ -412,7 +412,7 @@ Func_f5b06:: ; f5b06 (3d:5b06)
 	jp PrintText
 	
 Text_f5b17:: ; f5b17 (3d:5b17)
-	TX_FAR _Text_f5b17 ; 2d:417e
+	TX_FAR _UsedStrengthText ; 2d:417e
 	db $08 ; asm
 	ld a,[wcf91]
 	call PlayCry
@@ -420,7 +420,7 @@ Text_f5b17:: ; f5b17 (3d:5b17)
 	jp TextScriptEnd
 	
 Text_f5b28:: ; f5b28 (3d:5b28)
-	TX_FAR _Text_f5b28 ; 2d:4193
+	TX_FAR _CanMoveBouldersText ; 2d:4193
 	db "@"
 	
 Func_f5b2d:: ; f5b2d (3d:5b2d)
@@ -454,11 +454,11 @@ CoordsData_f5b64:: ; f5b64 (3d:5b64)
 	db $ff
 	
 Text_f5b67:: ; f5b67 (3d:5b67)
-	TX_FAR _Text_f5b67 ; 2d:41ab
+	TX_FAR _CurrentTooFastText ; 2d:41ab
 	db "@"
 	
 Text_f5b6c:: ; f5b6c (3d:5b6c)
-	TX_FAR _Text_f5b6c
+	TX_FAR _NewBadgeRequiredText ; 2d:412d
 	db "@"
 	
 AddItemToInventory_:: ; f5b70 (3d:5b70)

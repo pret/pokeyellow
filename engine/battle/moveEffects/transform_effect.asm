@@ -26,8 +26,8 @@ TransformEffect_: ; f637f (3d:637f)
 ; animation(s) played are different if target has Substitute up
 	bit HasSubstituteUp, [hl] 
 	push af
-	ld hl, Func_79747
-	ld b, BANK(Func_79747)
+	ld hl, Func_79816
+	ld b, BANK(Func_79816)
 	call nz, Bankswitch
 	ld a, [W_OPTIONS]
 	add a
@@ -38,8 +38,8 @@ TransformEffect_: ; f637f (3d:637f)
 	ld b, BANK(AnimationTransformMon)
 .gotAnimToPlay
 	call Bankswitch
-	ld hl, Func_79771
-	ld b, BANK(Func_79771)
+	ld hl, Func_798b2
+	ld b, BANK(Func_798b2)
 	pop af
 	call nz, Bankswitch
 	pop bc
