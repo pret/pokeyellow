@@ -9,6 +9,7 @@ UncompressSpriteData:: ; 23f8 (0:23f8)
 	ld a,$0
 	call SwitchSRAMBankAndLatchClockData
 	call _UncompressSpriteData
+	call PrepareRTCDataAndDisableSRAM
 	pop af
 	call BankswitchCommon
 	ret

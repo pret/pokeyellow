@@ -1225,9 +1225,7 @@ Func_27c2:: ; 27c2 (0:27c2)
 	ld b, a
 	xor a
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
-	ld [wc0ee], a
-	call PlaySound
+	call StopAllMusic
 	ld a, [wc0f0]
 	ld [wc0ef], a
 	ld a, b
@@ -1468,7 +1466,7 @@ RepelWoreOffText:: ; 29c1 (0:29c1)
 
 DisplayUnknownText_29c6:: ; 29c6 (0:29c6)
 	callab Func_fd004 ; 3f:5004
-	jp AfterDisplayingTextID
+	jp CloseTextDisplay
 	
 INCLUDE "engine/menu/start_menu.asm"
 
@@ -1552,7 +1550,7 @@ DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	ld a,$01 ; hardcoded bank
 	jr .bankswitch
 .specialBattleType ; Old Man battle
-	ld a, $1 ; BANK(DisplayBattleMenu)
+	ld a, $f ; BANK(DisplayBattleMenu)
 .bankswitch
 	call BankswitchHome
 	ld hl,wd730
@@ -1608,7 +1606,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 .oldManBattle
 	ld a,"▶"
 	Coorda 5, 4 ; place menu cursor in front of first menu entry
-	ld c,80
+	ld c,20
 	call DelayFrames
 	xor a
 	ld [wCurrentMenuItem],a
@@ -1870,8 +1868,7 @@ ExitListMenu:: ; 2d33 (0:2d33)
 
 PrintListMenuEntries:: ; 2d52 (0:2d52)
 	coord hl, 5, 3
-	ld b,$09
-	ld c,$0e
+	ld bc,$090e
 	call ClearScreenArea
 	ld a,[wList]
 	ld e,a
@@ -2576,7 +2573,7 @@ TalkToTrainer:: ; 3168 (0:3168)
 	call ReadTrainerHeaderInfo     ; print after battle text
 	jp PrintText
 .trainerNotYetFought ; 0x31ed
-	ld a, $4
+	ld a, $1
 	call ReadTrainerHeaderInfo     ; print before battle text
 	call PrintText
 	ld a, $a
@@ -3274,7 +3271,7 @@ IsFightingJessieJames:: ; 359e (0:359e)
 	cp $2a
 	ret c
 	ld de,JessieJamesPic
-	cp $2d
+	cp $2e
 	jr c,.dummy
 	ld de,JessieJamesPic ; possibly meant to add another pic
 .dummy
@@ -3551,6 +3548,7 @@ WaitForSoundToFinish:: ; 373e (0:373e)
 	inc hl
 	inc hl
 	or [hl]
+	and a
 	jr nz, .asm_374f
 	pop hl
 	ret
@@ -3769,7 +3767,11 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	ld a, [wTownMapSpriteBlinkingEnabled]
 	and a
 	jr z, .skipAnimation
+	push de
+	push bc
 	callab TownMapSpriteBlinkingAnimation ; 1c:5753
+	pop de
+	pop bc 
 .skipAnimation
 	coord hl, 18, 16
 	call HandleDownArrowBlinkTiming
@@ -4244,7 +4246,7 @@ HandleMenuInputPokemonSelection:: ; 3aaf (0:3aaf)
 	ld a,[hJoy5]
 	ld b,a
 	bit 0,a ; pressed A key?
-	jr z,.checkOtherKeys
+	jr nz,.checkOtherKeys
 	bit 6,a ; pressed Up key?
 	jr z,.checkIfDownPressed
 .upPressed
@@ -5012,7 +5014,7 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-	dr $3f67,$4000
+	;dr $3f67,$4000
 ;	add_tx_pre CardKeySuccessText                   ; 01
 ;	add_tx_pre CardKeyFailText                      ; 02
 ;	add_tx_pre RedBedroomPC                         ; 03
