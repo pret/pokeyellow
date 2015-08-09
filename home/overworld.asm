@@ -25,8 +25,8 @@ EnterMap:: ; 01d7 (0:01d7)
 	res 3, [hl]
 	ld hl, wd72e
 	res 4, [hl]
-	call IsSurfingPikachuInParty
 .didNotEnterUsingFlyWarpOrDungeonWarp
+	call IsSurfingPikachuInParty
 	callba CheckForceBikeOrSurf ; handle currents in SF islands and forced bike riding in cycling road
 	ld hl, wd732
 	bit 4, [hl]
@@ -59,7 +59,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	bit 3,[hl]
 	res 3,[hl]
 	jp nz,WarpFound2
-	ld a,[wd730]
+	ld a,[wd732]
 	and a,1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jp nz,HandleFlyWarpOrDungeonWarp
 	ld a,[W_CUROPPONENT]
@@ -173,8 +173,8 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	jr z,.noDirectionButtonsPressed
 	ld a,$01
 	ld [wSpriteStateData1 + 5],a
-.handleDirectionButtonPress
 	ld a,$1
+.handleDirectionButtonPress
 	ld [wd52a],a ; new direction
 	ld a,[wd730]
 	bit 7,a ; are we simulating button presses?
@@ -763,7 +763,7 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	set 2, [hl] ; fly warp or dungeon warp
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
-	call LoadPlayerSpriteGraphics
+	call Func_07c4
 	callbs SpecialWarpIn
 	jp SpecialEnterMap
 
@@ -1226,7 +1226,7 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 ; if no sprite collision
 	cp $f
 	jr nz,.collision
-	call CheckForJumpingAndTilePairCollisions
+	call Func_154a
 	jr nz,.collision
 	ld a,[hJoyHeld]
 	and $2
@@ -2182,8 +2182,8 @@ InitSprites:: ; 1006 (0:1006)
 	ld a,[hli]
 	ld [de],a ; store picture ID at C1X0
 	inc d
-	ld a,$04
-	add e
+	ld a,e
+	add $4
 	ld e,a
 	ld a,[hli]
 	ld [de],a ; store Y position at C2X4

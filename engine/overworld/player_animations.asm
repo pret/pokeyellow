@@ -38,8 +38,8 @@ EnterMapAnim: ; 70567 (1c:4567)
 	ld [wd431], a
 .restoreDefaultMusic
 	call PlayDefaultMusic
-	call Func_151d
 .done
+	call Func_151d
 	jp RestoreFacingDirectionAndYScreenPos
 .dungeonWarpAnimation
 	ld c, 50
@@ -393,8 +393,8 @@ Func_70816: ; 70816 (1c:4816)
 	call DelayFrames
 	ld hl, wd736
 	set 6, [hl]
-	ld de, RedSprite ; $4180
 	ld hl, vNPCSprites
+	ld de, RedSprite ; $4180
 	ld b, BANK(RedSprite)
 	ld c, $c
 	call CopyVideoData

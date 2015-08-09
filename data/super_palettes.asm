@@ -1,6 +1,8 @@
 ; palettes for overworlds, title screen, monsters
 SuperPalettes: ; 729b9 (1c:69b9)
-	dr $729b9,$72c39
+	dr $729b9,$72af9
+Pointer_72af9: ; 72af9 (1c:6af9)
+	dr $72af9,$72c39
 	;RGB 31,29,31 ; PAL_ROUTE
 	;RGB 21,28,11
 	;RGB 20,26,31

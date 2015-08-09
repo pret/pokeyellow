@@ -18,9 +18,10 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	call Func_7055a
 	ld a, $4
 	ld [wMusicHeaderPointer], a
-	ld a, $ff
-	ld [wc0ee], a
-	call PlaySound
+	call StopAllMusic
+	;ld a, $ff
+	;ld [wc0ee], a
+	;call PlaySound
 .asm_704ba
 	ld a, [wMusicHeaderPointer]
 	and a
@@ -40,7 +41,6 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld [wc0f0], a
 	jr nz, .asm_704e6
 	call StopAllMusic
-	call PlaySound
 	ld a, $2 ; BANK(Music_PkmnHealed)
 	ld [wc0ef], a
 .asm_704e6

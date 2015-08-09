@@ -76,13 +76,14 @@ Func_21c8:: ; 21c8 (0:21c8)
 
 Func_21e3:: ; 21e5 (0:21e5)
 	ld c,$6
+.loop
 	push bc
 	push hl
 	callba Music2_UpdateMusic ; 2:509d
 	pop hl
 	pop bc
 	dec c
-	jr nz, Func_21e3
+	jr nz, .loop
 	ret
 	
 ;Func_235f:: ; 235f (0:235f)

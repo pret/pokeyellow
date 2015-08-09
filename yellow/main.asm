@@ -18,7 +18,8 @@ SECTION "home",ROM0
 INCLUDE "home.asm"
 SECTION "bank01",ROMX,BANK[$01]
 
-INCLUDE "data/facing.asm"
+;INCLUDE "data/facing.asm"
+	dr $4000,$4111
 INCLUDE "engine/battle/safari_zone.asm"
 SetDefaultNamesBeforeTitlescreen:: ; 414b (1:414b)
 	dr $414b,$442b
@@ -39,23 +40,9 @@ _IsTilePassable:: ; 4aaa (1:4aaa)
 PrintWaitingText:: ; 4b89 (1:4b89)
 	dr $4b89,$4bb7
 _UpdateSprites:: ; 4bb7 (1:4bb7)
-	dr $4bb7,$5c22
-StartMenu_Pokedex:: ; 5c22 (1:5c22)
-	dr $5c22,$5c36
-StartMenu_Pokemon:: ; 5c36 (1:5c36)
-	dr $5c36,$5ce4
-SpecialEnterMap:: ; 5ce4 (1:5ce4)
-	dr $5ce4,$5ead
-StartMenu_Item:: ; 5ead (1:5ead)
-	dr $5ead,$600a
-StartMenu_TrainerInfo:: ; 600a (1:600a)
-	dr $600a,$6042
+	dr $4bb7,$6042
 SpecialWarpIn:: ; 6042 (1:6042)
-	dr $6042,$6195
-StartMenu_SaveReset:: ; 6195 (1:6195)
-	dr $6195,$61a8
-StartMenu_Option:: ; 61a8 (1:61a8)
-	dr $61a8,$68a6
+	dr $6042,$68a6
 SubtractAmountPaidFromMoney_:: ; 68a6 (1:68a6)
 	dr $68a6,$68c9
 HandleItemListSwapping:: ; 68c9 (1:68c9)
@@ -412,14 +399,26 @@ DrawPartyMenu_:: ; 11875 (4:5875)
 	dr $11875,$11886
 RedrawPartyMenu_:: ; 11886 (4:5886)
 	dr $11886,$11a97
-	
 RedPicFront:: INCBIN "pic/ytrainer/red.pic"
 ShrinkPic1::  INCBIN "pic/trainer/shrink1.pic"
 ShrinkPic2::  INCBIN "pic/trainer/shrink2.pic"
 
-	dr $11c22,$11e98
+StartMenu_Pokedex:: ; 11c22 (4:5c22)
+	dr $11c22,$11c36
+StartMenu_Pokemon:: ; 11c36 (4:5c36)
+	dr $11c36,$11ce4
+SpecialEnterMap:: ; 11ce4 (4:5ce4)
+	dr $11ce4,$11e98
 ErasePartyMenuCursors:: ; 11e98 (4:5e98)
-	dr $11e98,$121c5
+	dr $11e98,$11ead
+StartMenu_Item:: ; 11ead (4:5ead)
+	dr $11ead,$1200a
+StartMenu_TrainerInfo:: ; 1200a (4:600a)
+	dr $1200a,$12195
+StartMenu_SaveReset:: ; 12195 (4:6195)
+	dr $12195,$121a8
+StartMenu_Option:: ; 121a8 (4:61a8)
+	dr $121a8,$121c5
 SwitchPartyMon:: ; 121c5 (4:61c5)
 	dr $121c5,$12365
 

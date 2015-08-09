@@ -546,6 +546,8 @@ LoadSGB: ; 721f8 (1c:61f8)
 .onDMG
 	ret
 .onSGB
+	ld a, $1
+	ld [wOnSGB], a
 	di
 	call Func_72247
 	ei
@@ -566,7 +568,7 @@ LoadSGB: ; 721f8 (1c:61f8)
 	call Func_722d7
 	call ClearVram
 	ld hl, MaskEnCancelPacket
-	jp SendSGBPacket
+	jp Func_721b4
 
 Func_72247: ; 72247 (1c:6247)
 	ld hl, PointerTable_7225b
@@ -577,7 +579,7 @@ Func_72247: ; 72247 (1c:6247)
 	push hl
 	ld h, [hl]
 	ld l, a
-	call SendSGBPacket
+	call Func_721b4
 	pop hl
 	inc hl
 	pop bc
@@ -645,7 +647,7 @@ CheckSGB: ; 7226d (1c:626d)
 
 Func_722ce: ; 722ce (1c:62ce)
 	ld hl, MltReq1Packet
-	call SendSGBPacket
+	call Func_721b4
 	jp Wait7000
 
 Func_722d7: ; 722d7 (1c:62d7)
@@ -682,7 +684,7 @@ Func_722d7: ; 722d7 (1c:62d7)
 	ld a, $e3
 	ld [rLCDC], a ; $ff40
 	pop hl
-	call SendSGBPacket
+	call Func_721b4
 	xor a
 	ld [rBGP], a ; $ff47
 	call Func_72520
@@ -717,9 +719,9 @@ Func_72328: ; 72328 (1c:6328)
 	ret
 .asm_7233e
 	push de
-	call SendSGBPacket
+	call Func_721b4
 	pop hl
-	jp SendSGBPacket
+	jp Func_721b4
 
 Func_72346: ; 72346 (1c:6346)
 	ld a,[hl]
@@ -770,7 +772,7 @@ Func_72346: ; 72346 (1c:6346)
 	ld a,$2
 	call Func_7240f
 	ld a,$5
-	call Func_7240f
+	call Func_724df
 	
 	pop hl
 	ld a,[hli]
@@ -827,7 +829,7 @@ Func_723fe:: ; 723fe (1c:63fe)
 	add hl,hl
 	add hl,hl
 	add hl,hl
-	ld de,SuperPalettes ; not exactly sure if actually super palettes
+	ld de,Pointer_72af9 ; not exactly sure if actually super palettes
 	add hl,de
 	ld a,l
 	ld e,a
@@ -934,7 +936,7 @@ Func_724a2:: ; 724a2 (1c:64a2)
 	ld h,a
 	ld de,wdef6
 	add hl,de
-	ld de,wdee9
+	ld de,wdeea
 	ld c,$8
 .loop
 	ld a,[de]
@@ -1036,9 +1038,9 @@ Func_72524:: ; 72524 (1c:6524)
 	call Func_7240f
 	ld a,$1
 	call Func_724a2
-	ld a,[wdee5]
-	ld e,a
 	ld a,[wdee6]
+	ld e,a
+	ld a,[wdee7]
 	ld d,a
 	xor a
 	call Func_7240f
@@ -1135,7 +1137,7 @@ Func_725be:: ; 725be (1c:65be)
 	ret
 
 Pointer_725e2:: ; 725e2 (1c:65e2)	
-	db $0c,$11,$66,$21,$66,$41,$66,$51,$61,$81,$1a,$66,$2d
+	db $0c,$11,$66,$21,$66,$41,$66,$51,$66,$61,$66,$81,$66,$a1,$66,$2d
 	db $cf,$5b,$cc,$31,$67,$2c,$cf,$51,$67
 	
 Func_725fb: ; 725fb (1c:65fb)

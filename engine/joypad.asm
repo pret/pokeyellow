@@ -43,7 +43,6 @@ _Joypad:: ; c02d (3:402d)
 	cp A_BUTTON + B_BUTTON + SELECT + START ; soft reset
 	jp z, TrySoftReset
 
-	ld b, a
 	ld a, [hJoyLast]
 	ld e, a
 	xor b

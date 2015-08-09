@@ -152,7 +152,7 @@ Func_7030e: ; 7030e (1c:430e)
 	call GetPartyMonName
 	call Func_70348
 	ld a, [wTrainerEngageDistance]
-	ld [wcf91], a
+	ld [wWhichPokemon], a
 	callab Func_fce18 ; 3f:4e18
 	jr nc, .asm_70336
 	ld e,$22

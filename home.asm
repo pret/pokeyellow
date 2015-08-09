@@ -2573,7 +2573,7 @@ TalkToTrainer:: ; 3168 (0:3168)
 	call ReadTrainerHeaderInfo     ; print after battle text
 	jp PrintText
 .trainerNotYetFought ; 0x31ed
-	ld a, $1
+	ld a, $4
 	call ReadTrainerHeaderInfo     ; print before battle text
 	call PrintText
 	ld a, $a
@@ -3770,8 +3770,8 @@ WaitForTextScrollButtonPress:: ; 3865 (0:3865)
 	push de
 	push bc
 	callab TownMapSpriteBlinkingAnimation ; 1c:5753
-	pop de
-	pop bc 
+	pop bc
+	pop de 
 .skipAnimation
 	coord hl, 18, 16
 	call HandleDownArrowBlinkTiming
@@ -5014,7 +5014,7 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-	;dr $3f67,$4000
+	dr $3f67,$4000
 ;	add_tx_pre CardKeySuccessText                   ; 01
 ;	add_tx_pre CardKeyFailText                      ; 02
 ;	add_tx_pre RedBedroomPC                         ; 03

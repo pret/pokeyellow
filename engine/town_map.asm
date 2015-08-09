@@ -1,5 +1,5 @@
 DisplayTownMap: ; 70eb7 (1c:4eb7)
-	;call LoadTownMap
+	call LoadTownMap
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
 	push af
@@ -47,7 +47,7 @@ Func_70f08: ; 70f08 (1c:4f08)
 	ld a, $4
 	ld [wcd5b], a
 	ld hl, wOAMBuffer + $10
-	call Func_71279
+	call Func_71302
 	pop hl
 	ld de, wcd6d
 .loop
@@ -105,9 +105,9 @@ Func_70f08: ; 70f08 (1c:4f08)
 	jp Func_70ef4
 .asm_70f87
 	ld a,[hJoy5]
-	and D_DOWN | D_UP | B_BUTTON | A_BUTTON
+	and D_DOWN | D_UP
 	ret z
-	callab PrintBeginningBattleText
+	callab Func_f0000
 	ret
 	
 INCLUDE "data/town_map_order.asm"
@@ -561,7 +561,7 @@ Func_7137a: ; 7137a (1c:537a)
 	jr .asm_71384
 .asm_7138a
 	inc hl
-	jr .asm_71384
+	jr .asm_71396
 .asm_7138d
 	ld hl, ExternalMapEntries ; $539c
 	ld c, a
@@ -569,7 +569,7 @@ Func_7137a: ; 7137a (1c:537a)
 	add hl, bc
 	add hl, bc
 	add hl, bc
-.asm_7130d
+.asm_71396
 	ld a, [hli]
 	ld [de], a
 	ld a, [hli]
