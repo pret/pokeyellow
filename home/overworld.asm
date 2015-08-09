@@ -46,6 +46,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	call DelayFrame
 	call IsSurfingPikachuInParty
 	call LoadGBPal
+	call HandleMidJump
 	ld a,[wWalkCounter]
 	and a
 	jp nz,.moveAhead ; if the player sprite has not yet completed the walking animation
@@ -58,7 +59,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	bit 3,[hl]
 	res 3,[hl]
 	jp nz,WarpFound2
-	ld a,[wd732]
+	ld a,[wd730]
 	and a,1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jp nz,HandleFlyWarpOrDungeonWarp
 	ld a,[W_CUROPPONENT]
@@ -135,7 +136,6 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	xor a
 	ld [wd435], a
 	ld a, $1
-	ld a,$01
 	ld [wcc4b],a
 	ld a,[wd528] ; the direction that was pressed last time
 	and a
@@ -174,6 +174,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld a,$01
 	ld [wSpriteStateData1 + 5],a
 .handleDirectionButtonPress
+	ld a,$1
 	ld [wd52a],a ; new direction
 	ld a,[wd730]
 	bit 7,a ; are we simulating button presses?
@@ -187,7 +188,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	cp b
 	jr z,.noDirectionChange
 	ld a,$8
-	ld [wd434],a
+	ld [wd435],a
 ; unlike in red/blue, yellow does not have the 180 degrees odd code
 	ld hl,wFlags_0xcd60
 	set 2,[hl]
@@ -662,10 +663,8 @@ PlayMapChangeSound:: ; 06ef (0:06ef)
 	jr z,.didNotGoThroughDoor
 	cp CEMETERY
 	jr z,.didNotGoThroughDoor
-	cp UNDERGROUND
-	jr nz,.didNotGoThroughDoor
 	aCoord 8, 8 ; upper left tile of the 4x4 square the player's sprite is standing on
-	cp a,$0b ; door tile in tileset 0
+	cp UNDERGROUND ; door tile in tileset 0
 	jr nz,.didNotGoThroughDoor
 	ld a, $ad ; (SFX_02_57 - SFX_Headers_02) / 3
 	jr .playSound
@@ -758,7 +757,6 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	call Delay3
 	xor a
 	ld [wBattleResult], a
-	ld [wWalkBikeSurfState], a
 	ld [W_ISINBATTLE], a
 	ld [wMapPalOffset], a
 	ld hl, wd732
@@ -1792,13 +1790,16 @@ LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadBikePlayerSpriteGraphics:: ; 0d8a (0:0d8a)
+	ld b,BANK(RedCyclingSprite)
 	ld de,RedCyclingSprite
 LoadPlayerSpriteGraphicsCommon:: ; 0d8f (0:0d8f)
 	ld hl,vNPCSprites
 	push de
 	push hl
+	push bc
 	ld c, $c
 	call CopyVideoData
+	pop bc
 	pop hl
 	pop de
 	ld a,$c0
@@ -1906,7 +1907,7 @@ LoadMapHeader:: ; 0dab (0:0dab)
 .loadSpriteData
 	ld a,[wd72e]
 	bit 5,a ; did a battle happen immediately before this?
-	jp nz,.finishUp ; if so, skip this because battles don't destroy this data
+	jr nz,.finishUp ; if so, skip this because battles don't destroy this data
 	call InitSprites
 .finishUp
 	predef LoadTilesetHeader
@@ -1995,12 +1996,11 @@ LoadMapData:: ; 1241 (0:1241)
 	ld a,[W_FLAGS_D733]
 	bit 1,a
 	jr nz,.restoreRomBank
-	call Func_21e5 ; music related
+	call Func_21e3 ; music related
 	call Func_2176 ; music related
 .restoreRomBank
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	call BankswitchCommon
 	ret
 
 LoadScreenRelatedData:: ; 0f0c (0:0f0c)
@@ -2089,6 +2089,8 @@ SwitchToMapRomBank:: ; 0f8b (0:0f8b)
 	add hl,bc
 	ld a,[hl]
 	ld [$ffe8],a ; save map ROM bank
+	call BankswitchBack
+	ld a,[$ffe8]
 	call BankswitchCommon
 	pop bc
 	pop hl
@@ -2136,11 +2138,10 @@ ForceBikeOrSurf:: ; 0fd6 (0:0fd6)
 ; a ledge in the overworld.	
 HandleMidJump:: ; 0fe1 (0:0fe1)
 	ld a,[wd736]
-	bit 7,a ; jumping down a ledge?
+	bit 6,a ; jumping down a ledge?
 	ret z
-	ld b, BANK(_HandleMidJump)
-	ld hl, _HandleMidJump
-	jp Bankswitch
+	callba _HandleMidJump
+	ret
 
 IsSpinning:: ; 0ff0 (0:0ff0)
 	ld a,[wd736]
@@ -2158,7 +2159,6 @@ Func_0ffe:: ; 0ffe (0:0ffe)
 InitSprites:: ; 1006 (0:1006)
 	ld a,[hli]
 	ld [W_NUMSPRITES],a ; save the number of sprites
-	push hl
 	push hl
 	push de
 	push bc

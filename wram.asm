@@ -938,9 +938,9 @@ wEnemyMonAttack::    dw
 wEnemyMonDefense::   dw
 wEnemyMonSpeed::     dw
 wEnemyMonSpecial::   dw
-wEnemyMonPP::        ds 2 ; NUM_MOVES - 2
+wEnemyMonPP::        ds 3 ; NUM_MOVES - 2
 SECTION "WRAM Bank 1", WRAMX, BANK[1]
-                     ds 2 ; NUM_MOVES - 2
+                     ds 1 ; NUM_MOVES - 2
 
 wEnemyMonBaseStats:: ds 5
 wEnemyMonCatchRate:: ds 1
@@ -1655,7 +1655,7 @@ wExpressionNumber::
 wd44a:: ds 1
 wd44b:: ds 1
 
-	ds 37
+	ds 36
 
 wd470:: ds 1
 wd471:: ds 1
@@ -1666,13 +1666,13 @@ wd473:: ds 1
 
 wd47a:: ds 1
 
-	ds 32
+	ds 31
 	
 wUnknownSerialFlag_d49a:: ds 1 ; d499
 wUnknownSerialFlag_d49b:: ds 1 ; d49a
 wd49c:: ds 1 ; d49b
 
-	ds 20
+	ds 19
 
 wd4b0:: ds 1 ; number of signs on the map
 wd4b1:: ds 32 ; starting address for sign coords

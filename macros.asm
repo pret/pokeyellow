@@ -45,6 +45,7 @@ homecall_jump_sf: MACRO
 	call BankswitchCommon
 	call \1
 	pop bc
+	ld a,b
 	jp BankswitchCommon
 	ENDM
 	

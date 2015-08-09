@@ -322,7 +322,7 @@ Char49:: ; 18a3 (0:18a3)
 	push hl
 	jp Next17B6
 
-Char4B:: ; 1af8 (0:1af8)
+Char4B:: ; 18d1 (0:18d1)
 	ld a,$EE
 	Coorda 18, 16
 	call ProtectedDelay3
@@ -332,7 +332,7 @@ Char4B:: ; 1af8 (0:1af8)
 	ld a,$7F
 	Coorda 18, 16
 	;fall through
-Char4C:: ; 1b0a (0:1b0a)
+Char4C:: ; 18e3 (0:18e3)
 	push de
 	call Next18F1 ; 18f1
 	call Next18F1
@@ -373,7 +373,7 @@ ProtectedDelay3:: ; 1913 (0:1913)
 	pop bc
 	ret
 
-TextCommandProcessor:: ; 1b40 (0:1b40)
+TextCommandProcessor:: ; 1919 (0:1919)
 	ld a,[wd358]
 	push af
 	set 1,a
@@ -386,7 +386,7 @@ TextCommandProcessor:: ; 1b40 (0:1b40)
 	ld a,b
 	ld [wcc3b],a
 
-NextTextCommand:: ; 1b55 (0:1b55)
+NextTextCommand:: ; 192e (0:192e)
 	ld a,[hli]
 	cp a, "@" ; terminator
 	jr nz,.doTextCommand
@@ -639,7 +639,7 @@ TextCommandSounds:: ; 1a3d (0:1a3d)
 	db $10,$89 ; (SFX_02_3b - SFX_Headers_02) / 3
 	db $11,$94 ; (SFX_02_42 - SFX_Headers_02) / 3
 	db $13,$98 ; (SFX_08_45 - SFX_Headers_08) / 3
-	db $14,NIDORINA ; used in OakSpeech
+	db $14,PIKACHU ; used in OakSpeech
 	db $15,PIDGEOT  ; used in SaffronCityText12
 	db $16,DEWGONG  ; unused?
 

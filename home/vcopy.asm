@@ -185,9 +185,9 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 	jr nz, TransferBgRows
 
 	ld a, [H_SPTEMP]
-	ld h, a
-	ld a, [H_SPTEMP + 1]
 	ld l, a
+	ld a, [H_SPTEMP + 1]
+	ld h, a
 	ld sp, hl
 	ret
 
@@ -274,9 +274,9 @@ VBlankCopyDouble:: ; 1bd1 (0:1bd1)
 	ld [H_VBCOPYDOUBLEDEST], sp
 
 	ld a, [H_SPTEMP]
-	ld h, a
-	ld a, [H_SPTEMP + 1]
 	ld l, a
+	ld a, [H_SPTEMP + 1]
+	ld h, a
 	ld sp, hl
 
 	ret
@@ -334,9 +334,9 @@ VBlankCopy:: ; 1c21 (0:1c21)
 	ld [H_VBCOPYDEST],sp
 	
 	ld a, [H_SPTEMP]
-	ld h, a
-	ld a, [H_SPTEMP + 1]
 	ld l, a
+	ld a, [H_SPTEMP + 1]
+	ld h, a
 	ld sp, hl
 
 	ret

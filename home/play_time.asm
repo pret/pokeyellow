@@ -39,8 +39,8 @@ TrackPlayTime: ; 1ef5 (0:1ef5)
 	set 0, [hl]
 .maxIGT
 	ld a, 59
-	ld [W_PLAYTIMEMINUTES + 1], a
 	ld [W_PLAYTIMESECONDS], a
+	ld [W_PLAYTIMEMINUTES + 1], a
 	ld a, $ff
 	ld [W_PLAYTIMEHOURS + 1], a
 	ld [W_PLAYTIMEMINUTES], a

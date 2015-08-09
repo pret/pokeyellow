@@ -25,7 +25,6 @@ FarCopyDataDouble:: ; 15d4 (0:15d4)
 	inc de
 	ld [hli],a
 	ld [hli],a
-	inc de
 	dec c
 	jr nz, .expandloop
 	dec b

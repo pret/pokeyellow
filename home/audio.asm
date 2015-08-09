@@ -74,14 +74,15 @@ Func_21c8:: ; 21c8 (0:21c8)
 	scf
 	ret
 
-Func_21e5:: ; 21e5 (0:21e5)
+Func_21e3:: ; 21e5 (0:21e5)
+	ld c,$6
 	push bc
 	push hl
 	callba Music2_UpdateMusic ; 2:509d
 	pop hl
 	pop bc
 	dec c
-	jr nz, Func_21e5
+	jr nz, Func_21e3
 	ret
 	
 ;Func_235f:: ; 235f (0:235f)
@@ -203,6 +204,7 @@ PlaySound:: ; 2238 (0:2238)
 	ret
 
 Func_2288:: ; 2288 (0:2288)
+	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a, [wc0ef]
 	call BankswitchCommon

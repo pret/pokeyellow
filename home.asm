@@ -928,7 +928,7 @@ ZeroSpriteBuffer:: ; 14bc (0:14bc)
 ; de: output address
 InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	ld a,$0
-	ld [$4000], a
+	call SwitchSRAMBankAndLatchClockData
 	push de
 	ld hl, S_SPRITEBUFFER2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
 	ld de, S_SPRITEBUFFER1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
