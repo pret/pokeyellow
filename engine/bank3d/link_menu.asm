@@ -9,7 +9,7 @@ Func_f531b:: ; f531b (3d:531b)
 	ld bc,$405
 	call TextBoxBorder
 	ld de,Text_f5791
-	hlCoord 0,1
+	hlCoord 1,2
 	call PlaceString
 	hlCoord 8,0
 	ld bc,$80a
@@ -177,7 +177,7 @@ Func_f531b:: ; f531b (3d:531b)
 	ret
 	
 Func_f5476:: ; f5476 (3d:5476)
-	ld hl,ColosseumEvolvedText
+	ld hl,ColosseumIneligibleText
 	call PrintText
 asm_f547c:: ; f547c (3d:574c)
 	jp Func_f531b
@@ -200,8 +200,8 @@ PokeCup:: ; f548e (3d:548e)
 	cp $3
 	jp nz,NotThreeMonsInParty
 	ld b,$3
-	ld a,[hli]
 .loop
+	ld a,[hli]
 	cp MEW
 	jp z,MewInParty
 	dec b
@@ -642,11 +642,11 @@ LinkMenu: ; f580c (3d:580c)
 	call SaveScreenTilesToBuffer1
 	ld hl, ColosseumWhereToText
 	call PrintText
-	hlCoord 5, 5
+	hlCoord 5, 3
 	ld bc, $80d
 	call TextBoxBorder
 	call UpdateSprites
-	hlCoord 7, 7
+	hlCoord 7, 5
 	ld de, TradeCenterText
 	call PlaceString
 	xor a
@@ -770,7 +770,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld a, BATTLE_CENTER
 .next
 	ld [wd72d], a
-	ld hl, _ColosseumCanceledText
+	ld hl, ColosseumPleaseWaitText
 	call PrintText
 	ld c, $32
 	call DelayFrames
@@ -795,7 +795,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld [wMenuJoypadPollCount], a
 	call Delay3
 	callab CloseLinkConnection
-	ld hl, ColosseumVersionText
+	ld hl, ColosseumCanceledText
 	call PrintText
 	ld hl, wd72e
 	res 6, [hl]

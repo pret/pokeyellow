@@ -41,6 +41,8 @@ _GivePokemon: ; f66fa (3d:66fa)
 	ret
 .partyNotFull
 	call SetPokedexOwnedFlag
+	ld hl, UnknownTerminator_f6794
+	call PrintText
 	call AddPartyMon
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

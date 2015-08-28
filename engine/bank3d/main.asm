@@ -151,18 +151,18 @@ Func_f453f:: ; f453f (3d:453f)
 	ld bc,$730
 	ld a,BANK(PokemonLogoGraphics) ; redundant because this function is in bank3d
 	call FarCopyData
-	ld hl,YellowLogoGraphics
-	ld de,vChars1+$fd0
+	ld hl,YellowLogoGraphics+$230
+	ld de,vChars0+$fd0
 	ld bc,$30
 	ld a,BANK(YellowLogoGraphics)
 	call FarCopyData
-	ld hl,YellowLogoGraphics+$30
+	ld hl,YellowLogoGraphics+$260
 	ld de,vChars1
 	ld bc,$400
 	ld a,BANK(YellowLogoGraphics)
 	call FarCopyData
-	ld hl,YellowLogoGraphics+$430
-	ld de,vChars1+$f00
+	ld hl,YellowLogoGraphics+$660
+	ld de,vChars0+$f00
 	ld bc,$c0
 	ld a,BANK(YellowLogoGraphics)
 	call FarCopyData
@@ -288,7 +288,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	xor a
 	ld [wPartyMonAnimCounter],a ; counter for pokemon shaking animation
 	call Func_f5ab0
-	call Delay3
+	call JoypadLowSensitivity
 	ld a,[hJoy5]
 	and a ; was a key pressed?
 	jr nz,.keyPressed
@@ -323,7 +323,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld c,a
 	ld a,[wMaxMenuItem]
 	cp c
-	jr nc,.checkOtherKeys
+	jr c,.checkOtherKeys
 	ld a,c
 	ld [wCurrentMenuItem],a
 .checkOtherKeys
@@ -342,8 +342,6 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld [H_DOWNARROWBLINKCNT2],a
 	pop af
 	ld [H_DOWNARROWBLINKCNT1],a ; restore previous values
-	xor a
-	ld [wMenuWrappingEnabled],a ; disable menu wrapping
 	ld a,[hJoy5]
 	ret
 	
@@ -450,7 +448,7 @@ Func_f5b2d:: ; f5b2d (3d:5b2d)
 	jp PrintText
 	
 CoordsData_f5b64:: ; f5b64 (3d:5b64)
-	db 13,07
+	db 11,07
 	db $ff
 	
 Text_f5b67:: ; f5b67 (3d:5b67)
@@ -458,7 +456,7 @@ Text_f5b67:: ; f5b67 (3d:5b67)
 	db "@"
 	
 Text_f5b6c:: ; f5b6c (3d:5b6c)
-	TX_FAR _NewBadgeRequiredText ; 2d:412d
+	TX_FAR _CyclingIsFunText ; 2d:41ca
 	db "@"
 	
 AddItemToInventory_:: ; f5b70 (3d:5b70)
@@ -484,16 +482,17 @@ AddItemToInventory_:: ; f5b70 (3d:5b70)
 	ld a,[hli]
 	and a
 	jr z,.addNewItem
-.loop
+.notAtEndOfInventory
 	ld a,[hli]
 	ld b,a ; b = ID of current item in table
 	ld a,[wcf91] ; a = ID of item being added
 	cp b ; does the current item in the table match the item being added?
 	jp z,.increaseItemQuantity ; if so, increase the item's quantity
 	inc hl
+.loop
 	ld a,[hl]
 	cp a,$ff ; is it the end of the table?
-	jr nz,.loop
+	jr nz, .notAtEndOfInventory
 .addNewItem ; add an item not yet in the inventory
 	pop hl
 	ld a,d

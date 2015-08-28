@@ -100,18 +100,11 @@ TransformEffect_: ; f637f (3d:637f)
 	and a
 	jr z, .lessThanFourMoves
 	ld a, $5
+.lessThanFourMoves
 	ld [de], a
 	inc de
 	dec b
 	jr nz, .copyPPLoop
-	jr .copyStats
-.lessThanFourMoves
-; 0 PP for blank moves
-	xor a
-	ld [de], a
-	inc de
-	dec b
-	jr nz, .lessThanFourMoves
 .copyStats
 ; original (unmodified) stats and stat mods
 	pop hl

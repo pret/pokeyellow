@@ -36,7 +36,7 @@ _Multiply: ; f660e (3d:660e)
 .smallMultiplier
 	dec b
 	jr z, .done
-	ld a, [H_MULTIPLICAND]
+	ld a, [H_MULTIPLICAND+2]
 	sla a
 	ld [H_MULTIPLICAND+2], a
 	ld a, [H_MULTIPLICAND+1]
@@ -56,6 +56,7 @@ _Multiply: ; f660e (3d:660e)
 	ld [H_PRODUCT+2], a
 	ld a, [H_MULTIPLYBUFFER+1] ; $ff9c
 	ld [H_PRODUCT+1], a ; $ff96
+	ld a, [H_MULTIPLYBUFFER]
 	ld [H_PRODUCT], a ; $ff95
 	ret
 
