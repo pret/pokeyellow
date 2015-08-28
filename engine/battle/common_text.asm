@@ -35,9 +35,13 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	call DelayFrames
 	ld hl, TrainerWantsToFightText
 .wildBattle
+	ld a, [W_BATTLETYPE]
+	and a
+	jr nz, .doNotDrawPokeballs
 	push hl
 	callab DrawAllPokeballs
 	pop hl
+.doNotDrawPokeballs
 	call PrintText
 	jr .done
 .pokemonTower

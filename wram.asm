@@ -1666,8 +1666,9 @@ wd473:: ds 1
 
 wd47a:: ds 1
 
-	ds 31
+	ds 30
 	
+wUnknownSerialFlag_d499:: ds 1 ; d498
 wUnknownSerialFlag_d49a:: ds 1 ; d499
 wUnknownSerialFlag_d49b:: ds 1 ; d49a
 wd49c:: ds 1 ; d49b

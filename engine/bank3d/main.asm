@@ -132,7 +132,7 @@ Func_f430a:: ; f430a (3d:430a)
 	
 Pointer_f4385:: ; f4385 (3d:4385)
 	db $05,$03,$02,$05,$03,$02,$01,$01,$00,$03,$02,$01,$01,$01,$00,$02,$01,$01
-	db $fd,$fb,$ff,$ff,$ff,$fb,$fb,$f6,$fb,$fb,$f6,$f6,$f6,$ec
+	db $fd,$fd,$fb,$ff,$ff,$ff,$fb,$fb,$f6,$fb,$fb,$f6,$f6,$f6,$ec
 
 Pointer_f43a6:: ; f43a6 (3d:43a6)
 	db $8a,$83,$80,$80,$94,$80,$62,$6c,$62,$6c
@@ -143,7 +143,7 @@ RedPicBack::	   INCBIN "pic/trainer/redb.pic"
 OldManPic::	    INCBIN "pic/trainer/oldman.pic"
 OakPicBack::	   INCBIN "pic/ytrainer/prof.oakb.pic"
  
-SECTION "bank3d Yellow Intro",ROMX[$453f],BANK[$3D]
+;SECTION "bank3d Yellow Intro",ROMX[$453f],BANK[$3D]
 
 Func_f453f:: ; f453f (3d:453f)
 	ld hl,PokemonLogoGraphics
@@ -652,7 +652,6 @@ GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
 	ret
 	
 INCLUDE "data/super_rod.asm"
-
 INCLUDE "engine/bank3d/bank3d_battle.asm"
 INCLUDE "engine/items/tm_prices.asm"
 INCLUDE "engine/multiply_divide.asm"

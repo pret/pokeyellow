@@ -4,12 +4,12 @@ Func_f531b:: ; f531b (3d:531b)
 	ld a,$1
 	ld [wBuffer],a
 	xor a
-	ld [wUnknownSerialFlag_d49a],a
+	ld [wUnknownSerialFlag_d499],a
 	hlCoord 0,0
 	ld bc,$405
 	call TextBoxBorder
 	ld de,Text_f5791
-	hlCoord 1,1
+	hlCoord 0,1
 	call PlaceString
 	hlCoord 8,0
 	ld bc,$80a
@@ -145,7 +145,7 @@ Func_f531b:: ; f531b (3d:531b)
 	cp $3
 	jr z,asm_f547f
 	inc a
-	ld [wUnknownSerialFlag_d49a],a
+	ld [wUnknownSerialFlag_d499],a
 	ld a,[wCurrentMenuItem]
 	ld hl,PointerTable_f5488
 	ld c,a
@@ -167,6 +167,9 @@ Func_f531b:: ; f531b (3d:531b)
 	ld a,[wLinkMenuSelectionSendBuffer]
 	and a
 	jr nz,asm_f547c
+	ld a, [wLinkMenuSelectionReceiveBuffer]
+	and a
+	jr nz, Func_f5476
 	xor a
 	ld [wUnknownSerialCounter],a
 	ld [wUnknownSerialCounter+1],a
@@ -637,7 +640,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld hl, TextTerminator_f5a16
 	call PrintText
 	call SaveScreenTilesToBuffer1
-	ld hl, ColosseumPleaseWaitText
+	ld hl, ColosseumWhereToText
 	call PrintText
 	hlCoord 5, 5
 	ld bc, $80d
@@ -738,7 +741,6 @@ LinkMenu: ; f580c (3d:580c)
 	ld a, [wCurrentMenuItem]
 	cp $2
 	jp z, .asm_f5963
-	jr z, .updateCursorPosition
 	ld b, e
 	ld e, c
 	ld a, [wCurrentMenuItem]
@@ -813,6 +815,8 @@ LinkMenu: ; f580c (3d:580c)
 	ld [wBuffer], a
 	ld a,$ff
 	ld [wSerialExchangeNybbleReceiveData],a
+	ld a, $b
+	ld [wLinkMenuSelectionSendBuffer], a
 	ld b,$78
 .loop
 	ld a,[hSerialConnectionStatus]
@@ -825,8 +829,8 @@ LinkMenu: ; f580c (3d:580c)
 	ld a,[wSerialExchangeNybbleReceiveData]
 	inc a
 	jr z,.loop
-.loop2
 	ld b,$f
+.loop2
 	call DelayFrame
 	call Serial_ExchangeNybble
 	dec b
@@ -871,20 +875,26 @@ LinkMenu: ; f580c (3d:580c)
 	
 Func_f59ec:: ; f59ec (3d:59ec)
 	ld a, b
-	Coorda 6, 7
+	Coorda 6, 5
 	ld a, c
-	Coorda 6, 9
+	Coorda 6, 7
 	ld a, d
+	Coorda 6, 9
+	ld a, e
 	Coorda 6, 11
 	ld c, 40
 	call DelayFrames
 	ret
 	
+ColosseumWhereToText: ; f5a02 (3d:5a02)
+	TX_FAR _ColosseumWhereToText
+	db "@"
+
 ColosseumPleaseWaitText: ; f5a07 (3d:5a07)
 	TX_FAR _ColosseumPleaseWaitText
 	db "@"
 
-_ColosseumCanceledText: ; f5a0c (3d:5a0c)
+ColosseumCanceledText: ; f5a0c (3d:5a0c)
 	TX_FAR _ColosseumCanceledText
 	db "@"
 

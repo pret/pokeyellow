@@ -88,6 +88,9 @@ BeachHouse_GFX:: ; f0314 (3c:4314)
 BeachHouse_Block:: ; f0914 (3c:4914)
 	INCBIN "gfx/blocksets/beachhouse.bst"
 
+Func_f0a54:: ; f0a54 (3c:4a54)
+	ret
+	
 Func_f0a55:: ; f0a55 (3c:4a55)
 	ld hl,Pointer_f0a76 ; 3c:4a76
 .loop
