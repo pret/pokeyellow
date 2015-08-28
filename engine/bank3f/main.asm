@@ -60,7 +60,7 @@ Func_fc534:: ; fc534 (3f:4534)
 	ret
 	
 Func_fc53f:: ; fc53f (3f:453f)
-	ld bc,wSpriteStateData1 + $10
+	ld bc,wSpriteStateData1 + $f0
 	ld a,[W_YCOORD]
 	add $4
 	ld e,a
@@ -160,7 +160,7 @@ Func_fc5bc:: ; fc5bc (3f:45bc)
 	jr z,.asm_fc5e4
 	cp $7
 	jr z,.asm_fc5f1
-	call Func_fc4b2
+	call Func_fccb2
 	ret
 	
 .asm_fc5e4
@@ -272,12 +272,12 @@ Func_fc69a:: ; fc69a (3f:469a)
 	jr .asm_fc6bd
 .asm_fc6a7
 	ld a,[wSpriteStateData1 + $9]
-	cp SPRITE_FACING_DOWN
+	cp SPRITE_FACING_UP
 	jr z,.asm_fc6b9
 	jr .asm_fc6bd
 .asm_fc6b0
 	ld a,[wSpriteStateData1 + $9]
-	cp SPRITE_FACING_DOWN
+	cp SPRITE_FACING_UP
 	jr z,.asm_fc6b9
 	jr .asm_fc6bd
 .asm_fc6b9
@@ -296,7 +296,9 @@ Func_fc6d5:: ; fc6d5 (3f:46d5)
 Func_fcb84: ; fcb84 (3f:45bc)
 	dr $fcb84,$fcc08
 Func_fcc08:: ; fcc08 (3f:4c08)
-	dr $fcc08,$fcdb8
+	dr $fcc08,$fccb2
+Func_fccb2:: ; fccb2 (3f:4cb2)
+	dr $fccb2,$fcdb8
 Func_fcdb8:: ; fcdb8 (3f:4db8)
 	dr $fcdb8,$fce18
 Func_fce18:: ; fce18 (3f:4e18)

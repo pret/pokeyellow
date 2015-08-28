@@ -3032,8 +3032,8 @@ Func_3467:: ; 3467 (0:3467)
 	
 DisplayPokedex:: ; 347d (0:347d)
 	ld [wd11e], a
-	ld b, BANK(Func_7c18)
-	ld hl, Func_7c18
+	ld b, BANK(Func_7abf)
+	ld hl, Func_7abf
 	jp Bankswitch
 
 SetSpriteFacingDirectionAndDelay:: ; 3488 (0:3488)

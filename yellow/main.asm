@@ -40,7 +40,9 @@ _IsTilePassable:: ; 4aaa (1:4aaa)
 PrintWaitingText:: ; 4b89 (1:4b89)
 	dr $4b89,$4bb7
 _UpdateSprites:: ; 4bb7 (1:4bb7)
-	dr $4bb7,$6042
+	dr $4bb7,$5ce4
+Func_5ce4:: ; 5ce4 (1:5ce4)
+	dr $5ce4,$6042
 SpecialWarpIn:: ; 6042 (1:6042)
 	dr $6042,$68a6
 SubtractAmountPaidFromMoney_:: ; 68a6 (1:68a6)
@@ -64,9 +66,9 @@ DisplayTextBoxID_:: ; 71bf (1:71bf)
 PlayerPC:: ; 778e (1:778e)
 	dr $778e,$7a0f
 _RemovePokemon:: ; 7a0f (1:7a0f)
-	dr $7a0f,$7c18
-Func_7c18:: ; 7c18 (1:7c18)
-	dr $7c18,$8000
+	dr $7a0f,$7abf
+Func_7abf:: ; 7c18 (1:7abf)
+	dr $7abf,$8000
 
 SECTION "bank02",ROMX,BANK[$02]
 
@@ -175,7 +177,8 @@ CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	ld a, $1
 	ld [wWalkBikeSurfState], a
 	ld [wWalkBikeSurfStateCopy], a
-	jp ForceBikeOrSurf
+	call ForceBikeOrSurf
+	ret
 .incorrectMap
 	inc hl
 .incorrectY
@@ -185,8 +188,9 @@ CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	ld a, $2
 	ld [wWalkBikeSurfState], a
 	ld [wWalkBikeSurfStateCopy], a
-	jp ForceBikeOrSurf
-
+	call ForceBikeOrSurf
+	ret
+	
 INCLUDE "data/force_bike_surf.asm"
 
 IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
@@ -1036,18 +1040,17 @@ CeladonPrizeMenu:: ; 5267d (14:667d)
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$567cd
+	dr $54000,$56745
+_GetSpritePosition1:: ; 56745 (15:6745)
+	dr $56745,$56765
+_GetSpritePosition2:: ; 56765 (15:6765)
+	dr $56765,$56789
+_SetSpritePosition1:: ; 56789 (15:6789)
+	dr $56789,$567a9
+_SetSpritePosition2:: ; 567a9 (15:67a9)
+	dr $567a9,$567cd
 TrainerWalkUpToPlayer:: ; 567cd (15:67cd)
-	dr $567cd,$57745
-_GetSpritePosition1:: ; 57745 (15:7745)
-	dr $57745,$57765
-_GetSpritePosition2:: ; 57765 (15:7765)
-	dr $57765,$57789
-_SetSpritePosition1:: ; 57789 (15:7789)
-	dr $57789,$577a9
-_SetSpritePosition2:: ; 577a9 (15:77a9)
-	dr $577a9,$58000
-
+	dr $567cd,$58000
 SECTION "bank16",ROMX,BANK[$16]
 
 	dr $58000,$58e8b
