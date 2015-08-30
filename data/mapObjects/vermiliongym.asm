@@ -7,12 +7,12 @@ VermilionGymObject: ; 0x5cbfe (size=58)
 
 	db $0 ; signs
 
-	db $5 ; people
-	db SPRITE_ROCKER, $1 + 4, $5 + 4, $ff, $d0, TRAINER | $1, LT__SURGE + $C8, $1
-	db SPRITE_GENTLEMAN, $6 + 4, $9 + 4, $ff, $d2, TRAINER | $2, GENTLEMAN + $C8, $3
-	db SPRITE_BLACK_HAIR_BOY_2, $8 + 4, $3 + 4, $ff, $d2, TRAINER | $3, ROCKER + $C8, $1
-	db SPRITE_SAILOR, $a + 4, $0 + 4, $ff, $d3, TRAINER | $4, SAILOR + $C8, $8
-	db SPRITE_GYM_HELPER, $e + 4, $4 + 4, $ff, $d0, $5 ; person
+	db $5 ; objects
+	object SPRITE_ROCKER, $5, $1, STAY, DOWN, $1, OPP_LT__SURGE, $1
+	object SPRITE_GENTLEMAN, $9, $6, STAY, LEFT, $2, OPP_GENTLEMAN, $3
+	object SPRITE_BLACK_HAIR_BOY_2, $3, $8, STAY, LEFT, $3, OPP_ROCKER, $1
+	object SPRITE_SAILOR, $0, $a, STAY, RIGHT, $4, OPP_SAILOR, $8
+	object SPRITE_GYM_HELPER, $4, $e, STAY, DOWN, $5 ; person
 
 	; warp-to
 	EVENT_DISP VERMILION_GYM_WIDTH, $11, $4

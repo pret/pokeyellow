@@ -19,9 +19,9 @@ EndOfBattle: ; 137aa (4:77aa)
 	jr z, .placeWinOrLoseString
 	ld de, DrawText
 .placeWinOrLoseString
-	hlCoord 6, 8
+	coord hl, 6, 8
 	call PlaceString
-	ld c, $c8
+	ld c, 200
 	call DelayFrames
 	jr .evolution
 .notLinkBattle
@@ -41,20 +41,20 @@ EndOfBattle: ; 137aa (4:77aa)
 	call PrintText
 .evolution
 	xor a
-	ld [wccd4], a
+	ld [wForceEvolution], a
 	predef EvolutionAfterBattle
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
-	ld [wc02a], a
+	ld [wChannelSoundIDs + CH4], a
 	ld [W_ISINBATTLE], a
 	ld [W_BATTLETYPE], a
 	ld [W_MOVEMISSED], a
 	ld [W_CUROPPONENT], a
-	ld [wd11f], a
+	ld [wForcePlayerToChooseMon], a
 	ld [wNumRunAttempts], a
 	ld [wEscapedFromBattle], a
-	ld hl, wcc2b
+	ld hl, wPartyAndBillsPCSavedMenuItem
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a

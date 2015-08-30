@@ -27,8 +27,8 @@ PrintCardKeyText: ; 52673 (14:6673)
 	jr z, .noCardKey
 	call GetCoordsInFrontOfPlayer
 	push de
-	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a
+	tx_pre_id CardKeySuccessText
+	ld [hSpriteIndexOrTextID], a
 	call PrintPredefTextID
 	pop de
 	srl d
@@ -47,15 +47,15 @@ PrintCardKeyText: ; 52673 (14:6673)
 .notSilphCo11F
 	ld a, $e
 .replaceCardKeyDoorTileBlock
-	ld [wd09f], a
+	ld [wNewTileBlockID], a
 	predef ReplaceTileBlock
 	ld hl, wd126
 	set 5, [hl]
-	ld a, (SFX_1f_57 - SFX_Headers_1f) / 3
+	ld a, SFX_GO_INSIDE
 	jp PlaySound
 .noCardKey
-	ld a, $2
-	ld [H_DOWNARROWBLINKCNT2], a
+	tx_pre_id CardKeyFailText
+	ld [hSpriteIndexOrTextID], a
 	jp PrintPredefTextID
 
 SilphCoMapList: ; 526e3 (14:66e3)

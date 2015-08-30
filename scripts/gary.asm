@@ -40,9 +40,9 @@ GaryScript1: ; 75f48 (1d:5f48)
 	ret
 
 RLEMovement75f63: ; 75f63 (1d:5f63)
-	db $40,1
-	db $10,1
-	db $40,3
+	db D_UP,1
+	db D_RIGHT,1
+	db D_UP,3
 	db $ff
 
 GaryScript2: ; 75f6a (1d:5f6a)
@@ -55,7 +55,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ld hl, W_OPTIONS
 	res 7, [hl]
 	ld a, $1
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
 	ld hl, wd72d
@@ -64,18 +64,18 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ld hl, GaryText_760f9
 	ld de, GaryText_760fe
 	call SaveEndBattleTextPointers
-	ld a, SONY3 + $c8
+	ld a, OPP_SONY3
 	ld [W_CUROPPONENT], a
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
 	cp STARTER2
-	jr nz, .NotSquirtle ; 0x75f9f $4
+	jr nz, .NotSquirtle
 	ld a, $1
 	jr .done
 .NotSquirtle
 	cp STARTER3
-	jr nz, .Charmander ; 0x75fa7 $4
+	jr nz, .Charmander
 	ld a, $2
 	jr .done
 .Charmander
@@ -93,16 +93,15 @@ GaryScript3: ; 75fbb (1d:5fbb)
 	ld a, [W_ISINBATTLE]
 	cp $ff
 	jp z, GaryScript_75f29
-	call UpdateSprites ; move sprites
-	ld hl, wd867
-	set 1, [hl]
+	call UpdateSprites
+	SetEvent EVENT_BEAT_CHAMPION_RIVAL
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $1
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $1
-	ld [$ff8c], a
+	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
 	ld a, $4
 	ld [W_GARYCURSCRIPT], a
@@ -111,43 +110,48 @@ GaryScript3: ; 75fbb (1d:5fbb)
 GaryScript4: ; 75fe4 (1d:5fe4)
 	callba Music_Cities1AlternateTempo
 	ld a, $2
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $2
-	ld [$ff8c], a
+	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_76014
 	ld a, $2
-	ld [$ff8c], a
+	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, HS_CHAMPIONS_ROOM_OAK
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef ShowObject
 	ld a, $5
 	ld [W_GARYCURSCRIPT], a
 	ret
 
 MovementData_76014: ; 76014 (1d:6014)
-	db $40,$40,$40,$40,$40,$FF
+	db NPC_MOVEMENT_UP
+	db NPC_MOVEMENT_UP
+	db NPC_MOVEMENT_UP
+	db NPC_MOVEMENT_UP
+	db NPC_MOVEMENT_UP
+	db $FF
 
 GaryScript5: ; 7601a (1d:601a)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	ld a, $2
-	ld [wd528], a
+	ld a, PLAYER_DIR_LEFT
+	ld [wPlayerMovingDirection], a
 	ld a, $1
-	ld [$ff8c], a
-	ld a, $8
-	ld [$ff8d], a
+	ld [H_SPRITEINDEX], a
+	ld a, SPRITE_FACING_LEFT
+	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $2
-	ld [$ff8c], a
-	xor a
-	ld [$ff8d], a
-	call SetSpriteFacingDirectionAndDelay ; face object
+	ld [H_SPRITEINDEX], a
+	xor a ; SPRITE_FACING_DOWN
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
 	ld a, $3
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $6
 	ld [W_GARYCURSCRIPT], a
@@ -155,12 +159,12 @@ GaryScript5: ; 7601a (1d:601a)
 
 GaryScript6: ; 76047 (1d:6047)
 	ld a, $2
-	ld [$ff8c], a
-	ld a, $c
-	ld [$ff8d], a
-	call SetSpriteFacingDirectionAndDelay ; face object
+	ld [H_SPRITEINDEX], a
+	ld a, SPRITE_FACING_RIGHT
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
 	ld a, $4
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld a, $7
 	ld [W_GARYCURSCRIPT], a
@@ -168,30 +172,32 @@ GaryScript6: ; 76047 (1d:6047)
 
 GaryScript7: ; 7605f (1d:605f)
 	ld a, $2
-	ld [$ff8c], a
-	xor a
-	ld [$ff8d], a
-	call SetSpriteFacingDirectionAndDelay ; face object
+	ld [H_SPRITEINDEX], a
+	xor a ; SPRITE_FACING_DOWN
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
 	ld a, $5
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call GaryScript_760c8
 	ld de, MovementData_76080
 	ld a, $2
-	ld [$ff8c], a
+	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, $8
 	ld [W_GARYCURSCRIPT], a
 	ret
 
 MovementData_76080: ; 76080 (1d:6080)
-	db $40,$40,$FF
+	db NPC_MOVEMENT_UP
+	db NPC_MOVEMENT_UP
+	db $FF
 
 GaryScript8: ; 76083 (1d:6083)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
 	ld a, HS_CHAMPIONS_ROOM_OAK
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef HideObject
 	ld a, $9
 	ld [W_GARYCURSCRIPT], a
@@ -210,9 +216,9 @@ GaryScript9: ; 76099 (1d:6099)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-RLEMovement760b4 ; 760b4 (1d:60b4)
-	db $40,4
-	db $20,1
+RLEMovement760b4: ; 760b4 (1d:60b4)
+	db D_UP,4
+	db D_LEFT,1
 	db $ff
 
 GaryScript10: ; 760b9 (1d:60b9)
@@ -225,7 +231,7 @@ GaryScript10: ; 760b9 (1d:60b9)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript_760c8 ; 760c8 (1d:60c8)
+GaryScript_760c8: ; 760c8 (1d:60c8)
 	ld a, $f0
 	ld [wJoyIgnore], a
 	call DisplayTextID
@@ -241,13 +247,12 @@ GaryTextPointers: ; 760d6 (1d:60d6)
 	dw GaryText5
 
 GaryText1: ; 760e0 (1d:60e0)
-	db $08 ; asm
-	ld a, [wd867]
-	bit 1, a
+	TX_ASM
+	CheckEvent EVENT_BEAT_CHAMPION_RIVAL
 	ld hl, GaryText_760f4
-	jr z, .asm_17e9f ; 0x760e9
+	jr z, .asm_17e9f
 	ld hl, GaryText_76103
-.asm_17e9f ; 0x760ee
+.asm_17e9f
 	call PrintText
 	jp TextScriptEnd
 
@@ -272,7 +277,7 @@ GaryText2: ; 76108 (1d:6108)
 	db "@"
 
 GaryText3: ; 7610d (1d:610d)
-	db $8
+	TX_ASM
 	ld a, [W_PLAYERSTARTER]
 	ld [wd11e], a
 	call GetMonName

@@ -27,7 +27,7 @@ ReflectLightScreenEffect_: ; f645d (3d:645d)
 	pop hl
 	jp PrintText
 .moveFailed
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, PrintButItFailedText_
 	jp Bankswitch3DtoF

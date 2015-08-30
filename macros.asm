@@ -13,6 +13,10 @@ dex    EQUS "db $5f, $50" ; End a Pokedex entry.
 
 percent EQUS "* $ff / 100"
 
+lb: MACRO ; r, hi, lo
+	ld \1, (\2) << 8 + ((\3) & $ff)
+	ENDM
+
 
 ; Constant enumeration is useful for monsters, items, moves, etc.
 const_def: MACRO
@@ -93,43 +97,37 @@ callab: MACRO
 	call Bankswitch
 	ENDM
 
+jpba: MACRO
+	ld b, BANK(\1)
+	ld hl, \1
+	jp Bankswitch
+	ENDM
+
+jpab: MACRO
+	ld hl, \1
+	ld b, BANK(\1)
+	jp Bankswitch
+	ENDM
+
+bcd2: MACRO
+	dn ((\1) / 1000) % 10, ((\1) / 100) % 10
+	dn ((\1) / 10) % 10, (\1) % 10
+	ENDM
+
+bcd3: MACRO
+	dn ((\1) / 100000) % 10, ((\1) / 10000) % 10
+	dn ((\1) / 1000) % 10, ((\1) / 100) % 10
+	dn ((\1) / 10) % 10, (\1) % 10
+	ENDM
+
+coins equs "bcd2"
+money equs "bcd3"
+
 ;\1 = r
 ;\2 = X
 ;\3 = Y
 coord: MACRO
 	ld \1, wTileMap + 20 * \3 + \2
-	ENDM
-	
-bcd2: MACRO
-    dn ((\1) / 1000) % 10, ((\1) / 100) % 10
-    dn ((\1) / 10) % 10, (\1) % 10
-    ENDM
-
-bcd3: MACRO
-    dn ((\1) / 100000) % 10, ((\1) / 10000) % 10
-    dn ((\1) / 1000) % 10, ((\1) / 100) % 10
-    dn ((\1) / 10) % 10, (\1) % 10
-    ENDM
-
-coins equs "bcd2"
-money equs "bcd3"
-
-;\1 = X
-;\2 = Y
-hlCoord: MACRO
-	ld hl, wTileMap + 20 * \2 + \1
-	ENDM
-
-;\1 = X
-;\2 = Y
-deCoord: MACRO
-	ld de, wTileMap + 20 * \2 + \1
-	ENDM
-
-;\1 = X
-;\2 = Y
-bcCoord: MACRO
-	ld bc, wTileMap + 20 * \2 + \1
 	ENDM
 
 ;\1 = X
@@ -148,6 +146,14 @@ Coorda: MACRO
 ;\2 = Y
 dwCoord: MACRO
 	dw wTileMap + 20 * \2 + \1
+	ENDM
+
+;\1 = r
+;\2 = X
+;\3 = Y
+;\4 = map width
+overworldMapCoord: MACRO
+	ld \1, wOverworldMap + ((\2) + 3) + (((\3) + 3) * ((\4) + (3 * 2)))
 	ENDM
 
 ;\1 = Map Width
@@ -181,7 +187,7 @@ IMAP: MACRO ; imap mapid_less_than,x-coordinate,y-coordinate,textpointer
 	; nybble: y-coordinate
 	; nybble: x-coordinate
 	; word  : pointer to map name
-	db \1
+	db \1 + 1
 	db \2 + \3 << 4
 	dw \4
 	ENDM
@@ -246,6 +252,10 @@ TX_BCD: MACRO
 	db \2
 	ENDM
 
+TX_ASM: MACRO
+	db $08
+	ENDM
+
 ; Predef macro.
 add_predef: MACRO
 \1Predef::
@@ -276,7 +286,7 @@ add_tx_pre: MACRO
 ENDM
 
 tx_pre_id: MACRO
-	ld a, (\1_id - TextPredefs) / 2
+	ld a, (\1_id - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre: MACRO
@@ -588,75 +598,103 @@ endchannel: MACRO
 ENDM
 
 
-;\1 (byte) = connected map id
-;\2 (byte) = connected map width
-;\3 (byte) = connected map height
-;\4 (byte) = x movement of connection strip
-;\5 (byte) = connection strip offset
-;\6 (byte) = width of connection strip
-;\7 (word) = connected map blocks pointer
+;\1 (byte) = current map id
+;\2 (byte) = connected map id
+;\3 (byte) = x movement of connection strip
+;\4 (byte) = connection strip offset
+;\5 (word) = connected map blocks pointer
 NORTH_MAP_CONNECTION: MACRO
-	db \1 ; map id
-	dw \7 + (\2 * (\3 - 3)) + \5; "Connection Strip" location
-	dw wOverworldMap + 3 + \4 ; current map position
-	db \6 ; width of connection strip
-	db \2 ; map width
-	db (\3 * 2) - 1 ; y alignment (y coordinate of player when entering map)
-	db (\4 - \5) * -2 ; x alignment (x coordinate of player when entering map)
-	dw wOverworldMap + 1 + (\3 * (\2 + 6)) ; window (position of the upper left block after entering the map)
+	db \2 ; map id
+	dw \5 + (\2_WIDTH * (\2_HEIGHT - 3)) + \4; "Connection Strip" location
+	dw wOverworldMap + 3 + \3 ; current map position
+	IF (\1_WIDTH < \2_WIDTH)
+		db \1_WIDTH - \3 + 3 ; width of connection strip
+	ELSE
+		db \2_WIDTH - \4 ; width of connection strip
+	ENDC
+	db \2_WIDTH ; map width
+	db (\2_HEIGHT * 2) - 1 ; y alignment (y coordinate of player when entering map)
+	db (\3 - \4) * -2 ; x alignment (x coordinate of player when entering map)
+	dw wOverworldMap + 1 + (\2_HEIGHT * (\2_WIDTH + 6)) ; window (position of the upper left block after entering the map)
 ENDM
 
-;\1 (byte)  = connected map id
-;\2 (byte)  = connected map width
-;\3 (byte)  = x movement of connection strip
-;\4 (byte)  = connection strip offset
-;\5 (byte)  = width of connection strip
-;\6 (word)  = connected map blocks pointer
-;\7 (byte)  = current map width
-;\8 (byte) = current map height
+;\1 (byte) = current map id
+;\2 (byte) = connected map id
+;\3 (byte) = x movement of connection strip
+;\4 (byte) = connection strip offset
+;\5 (word) = connected map blocks pointer
+;\6 (flag) = add 3 to width of connection strip (why?)
 SOUTH_MAP_CONNECTION: MACRO
-	db \1 ; map id
-	dw \6 + \4 ; "Conection Strip" location
-	dw wOverworldMap + 3 + (\8 + 3) * (\7 + 6) + \3 ; current map positoin
-	db \5 ; width of connection strip
-	db \2 ; map width
+	db \2 ; map id
+	dw \5 + \4 ; "Conection Strip" location
+	dw wOverworldMap + 3 + (\1_HEIGHT + 3) * (\1_WIDTH + 6) + \3 ; current map position
+	IF (\1_WIDTH < \2_WIDTH)
+		IF (_NARG > 5)
+			db \1_WIDTH - \3 + 3 ; width of connection strip
+		ELSE
+			db \1_WIDTH - \3 ; width of connection strip
+		ENDC
+	ELSE
+		db \2_WIDTH - \4 ; width of connection strip
+	ENDC
+	db \2_WIDTH ; map width
 	db 0  ; y alignment (y coordinate of player when entering map)
 	db (\3 - \4) * -2 ; x alignment (x coordinate of player when entering map)
-	dw wOverworldMap + 7 + \2 ; window (position of the upper left block after entering the map)
+	dw wOverworldMap + 7 + \2_WIDTH ; window (position of the upper left block after entering the map)
 ENDM
 
-;\1 (byte)  = connected map id
-;\2 (byte)  = connected map width
-;\3 (byte)  = y movement of connection strip
-;\4 (byte)  = connection strip offset
-;\5 (byte)  = height of connection strip
-;\6 (word)  = connected map blocks pointer
-;\7 (byte)  = current map width
+;\1 (byte) = current map id
+;\2 (byte) = connected map id
+;\3 (byte) = y movement of connection strip
+;\4 (byte) = connection strip offset
+;\5 (word) = connected map blocks pointer
+WEST_MAP_CONNECTION: MACRO
+	db \2 ; map id
+	dw \5 + (\2_WIDTH * \4) + \2_WIDTH - 3 ; "Connection Strip" location
+	dw wOverworldMap + (\1_WIDTH + 6) * (\3 + 3) ; current map position
+	IF (\1_HEIGHT < \2_HEIGHT)
+		db \1_HEIGHT - \3 + 3 ; height of connection strip
+	ELSE
+		db \2_HEIGHT - \4 ; height of connection strip
+	ENDC
+	db \2_WIDTH ; map width
+	db (\3 - \4) * -2 ; y alignment
+	db (\2_WIDTH * 2) - 1 ; x alignment
+	dw wOverworldMap + 6 + (2 * \2_WIDTH) ; window (position of the upper left block after entering the map)
+ENDM
+
+;\1 (byte) = current map id
+;\2 (byte) = connected map id
+;\3 (byte) = y movement of connection strip
+;\4 (byte) = connection strip offset
+;\5 (word) = connected map blocks pointer
+;\6 (flag) = add 3 to height of connection strip (why?)
 EAST_MAP_CONNECTION: MACRO
-	db \1 ; map id
-	dw \6 + (\2 * \4) ; "Connection Strip" location
-	dw wOverworldMap - 3 + (\7 + 6) * (\3 + 4) ; current map position
-	db \5 ; height of connection strip
-	db \2 ; map width
+	db \2 ; map id
+	dw \5 + (\2_WIDTH * \4) ; "Connection Strip" location
+	dw wOverworldMap - 3 + (\1_WIDTH + 6) * (\3 + 4) ; current map position
+	IF (\1_HEIGHT < \2_HEIGHT)
+		IF (_NARG > 5)
+			db \1_HEIGHT - \3 + 3 ; height of connection strip
+		ELSE
+			db \1_HEIGHT - \3 ; height of connection strip
+		ENDC
+	ELSE
+		db \2_HEIGHT - \4 ; height of connection strip
+	ENDC
+	db \2_WIDTH ; map width
 	db (\3 - \4) * -2 ; y alignment
 	db 0 ; x alignment
-	dw wOverworldMap + 7 + \2 ; window (position of the upper left block after entering the map)
+	dw wOverworldMap + 7 + \2_WIDTH ; window (position of the upper left block after entering the map)
 ENDM
 
-;\1 (byte)  = connected map id
-;\2 (byte)  = connected map width
-;\3 (byte)  = y movement of connection strip
-;\4 (byte)  = connection strip offset
-;\5 (byte)  = height of connection strip
-;\6 (word)  = connected map blocks pointer
-;\7 (byte)  = current map width
-WEST_MAP_CONNECTION: MACRO
-	db \1 ; map id
-	dw \6 + (\2 * \4) + \2 - 3 ; "Connection Strip" location
-	dw wOverworldMap + (\7 + 6) * (\3 + 3) ; current map position
-	db \5 ; height of connection strip
-	db \2 ; map width
-	db (\3 - \4) * -2 ; y alignment
-	db (\2 * 2) - 1 ; x alignment
-	dw wOverworldMap + 6 + (2 * \2) ; window (position of the upper left block after entring the map)
+tmlearn: MACRO
+x = 0
+	rept _NARG
+if \1 != 0
+x = x | (1 << ((\1 - 1) % 8))
+endc
+	shift
+	endr
+	db x
 ENDM

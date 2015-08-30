@@ -1,11 +1,11 @@
 ; try to evolve the mon in [wWhichPokemon]
 TryEvolvingMon: ; 3ad0e (e:6d0e)
-	ld hl, wccd3
+	ld hl, wCanEvolveFlags
 	xor a
 	ld [hl], a
 	ld a, [wWhichPokemon]
 	ld c, a
-	ld b, $1
+	ld b, FLAG_SET
 	call Evolution_FlagAction
 
 ; this is only called after battle
@@ -14,7 +14,7 @@ EvolutionAfterBattle: ; 3ad1c (e:6d1c)
 	ld a, [hTilesetType]
 	push af
 	xor a
-	ld [wd121], a
+	ld [wEvolutionOccurred], a
 	dec a
 	ld [wWhichPokemon], a
 	push hl
@@ -31,17 +31,17 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [hl]
 	cp $ff ; have we reached the end of the party?
 	jp z, .done
-	ld [wHPBarMaxHP], a
+	ld [wEvoOldSpecies], a
 	push hl
 	ld a, [wWhichPokemon]
 	ld c, a
-	ld hl, wccd3
-	ld b, $2
+	ld hl, wCanEvolveFlags
+	ld b, FLAG_TEST
 	call Evolution_FlagAction
 	ld a, c
 	and a ; is the mon's bit set?
 	jp z, Evolution_PartyMonLoop ; if not, go to the next mon
-	ld a, [wHPBarMaxHP]
+	ld a, [wEvoOldSpecies]
 	dec a
 	ld b, 0
 	ld hl, EvosMovesPointerTable
@@ -55,8 +55,8 @@ Evolution_PartyMonLoop: ; loop over party mons
 	push hl
 	ld a, [wcf91]
 	push af
-	xor a
-	ld [wcc49], a
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
 	call LoadMonData
 	pop af
 	ld [wcf91], a
@@ -76,7 +76,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, b
 	cp EV_ITEM
 	jr z, .checkItemEvo
-	ld a, [wccd4]
+	ld a, [wForceEvolution]
 	and a
 	jr nz, Evolution_PartyMonLoop
 	ld a, b
@@ -91,7 +91,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wLoadedMonLevel]
 	cp b ; is the mon's level greater than the evolution requirement?
 	jp c, Evolution_PartyMonLoop ; if so, go the next mon
-	jr .asm_3adb6
+	jr .doEvolution
 .checkItemEvo
 	ld a, [hli]
 	ld b, a ; evolution item
@@ -104,32 +104,32 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wLoadedMonLevel]
 	cp b ; is the mon's level greater than the evolution requirement?
 	jp c, .nextEvoEntry2 ; if so, go the next evolution entry
-.asm_3adb6
+.doEvolution
 	ld [W_CURENEMYLVL], a
-	ld a, $1
-	ld [wd121], a
+	ld a, 1
+	ld [wEvolutionOccurred], a
 	push hl
 	ld a, [hl]
-	ld [wHPBarMaxHP + 1], a
+	ld [wEvoNewSpecies], a
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	call CopyStringToCF4B
 	ld hl, IsEvolvingText
 	call PrintText
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	ld hl, wTileMap
-	ld bc, $c14
+	coord hl, 0, 0
+	lb bc, 12, 20
 	call ClearScreenArea
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	call ClearSprites
-	callab Func_7bde9
+	callab EvolveMon
 	jp c, CancelledEvolution
 	ld hl, EvolvedText
 	call PrintText
@@ -137,7 +137,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [hl]
 	ld [wd0b5], a
 	ld [wLoadedMonSpecies], a
-	ld [wHPBarMaxHP + 1], a
+	ld [wEvoNewSpecies], a
 	ld a, MONSTER_NAME
 	ld [wNameListType], a
 	ld a, BANK(TrainerNames) ; bank is not used for monster names
@@ -145,11 +145,11 @@ Evolution_PartyMonLoop: ; loop over party mons
 	call GetName
 	push hl
 	ld hl, IntoText
-	call Func_3c46
-	ld a, (SFX_02_3b - SFX_Headers_02) / 3
+	call PrintText_NoCreatingTextBox
+	ld a, SFX_GET_ITEM_2
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld c, $28
+	ld c, 40
 	call DelayFrames
 	call ClearScreen
 	call RenameEvolvedMon
@@ -161,12 +161,12 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wd11e]
 	dec a
 	ld hl, BaseStats
-	ld bc, $1c
+	ld bc, MonBaseStatsEnd - MonBaseStats
 	call AddNTimes
 	ld de, W_MONHEADER
 	call CopyData
 	ld a, [wd0b5]
-	ld [W_MONHDEXNUM], a
+	ld [W_MONHINDEX], a
 	pop af
 	ld [wd11e], a
 	ld hl, wLoadedMonHPExp - 1
@@ -206,7 +206,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wd0b5]
 	ld [wd11e], a
 	xor a
-	ld [wcc49], a
+	ld [wMonDataLocation], a
 	call LearnMoveFromLevelUp
 	pop hl
 	predef SetPartyMonTypes
@@ -217,7 +217,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wd11e]
 	dec a
 	ld c, a
-	ld b, $1
+	ld b, FLAG_SET
 	ld hl, wPokedexOwned
 	push bc
 	call Evolution_FlagAction
@@ -252,17 +252,17 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [W_ISINBATTLE]
 	and a
 	ret nz
-	ld a, [wd121]
+	ld a, [wEvolutionOccurred]
 	and a
 	call nz, PlayDefaultMusic
 	ret
 
-; checks if the evolved mon's name is different from the standard name (i.e. it has a nickname)
-; if so, rename it to is evolved form's standard name
 RenameEvolvedMon: ; 3aef7 (e:6ef7)
+; Renames the mon to its new, evolved form's standard name unless it had a
+; nickname, in which case the nickname is kept.
 	ld a, [wd0b5]
 	push af
-	ld a, [W_MONHDEXNUM]
+	ld a, [W_MONHINDEX]
 	ld [wd0b5], a
 	call GetName
 	pop af
@@ -275,10 +275,10 @@ RenameEvolvedMon: ; 3aef7 (e:6ef7)
 	cp [hl]
 	inc hl
 	ret nz
-	cp $50
+	cp "@"
 	jr nz, .compareNamesLoop
 	ld a, [wWhichPokemon]
-	ld bc, $b
+	ld bc, NAME_LENGTH
 	ld hl, wPartyMonNicks
 	call AddNTimes
 	push hl
@@ -345,18 +345,19 @@ LearnMoveFromLevelUp: ; 3af5b (e:6f5b)
 	ld a, [hli] ; move ID
 	jr nz, .learnSetLoop
 	ld d, a ; ID of move to learn
-	ld a, [wcc49]
+	ld a, [wMonDataLocation]
 	and a
 	jr nz, .next
-; if [wcc49] is 0, get the address of the mon's current moves
-; there is no reason to make this conditional because the code wouldn't work properly without doing this
-; every call to this function sets [wcc49] to 0
+; If [wMonDataLocation] is 0 (PLAYER_PARTY_DATA), get the address of the mon's
+; current moves in party data. Every call to this function sets
+; [wMonDataLocation] to 0 because other data locations are not supported.
+; If it is not 0, this function will not work properly.
 	ld hl, wPartyMon1Moves
 	ld a, [wWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 .next
-	ld b, $4
+	ld b, NUM_MOVES
 .checkCurrentMovesLoop ; check if the move to learn is already known
 	ld a, [hli]
 	cp d
@@ -376,14 +377,13 @@ LearnMoveFromLevelUp: ; 3af5b (e:6f5b)
 
 ; writes the moves a mon has at level [W_CURENEMYLVL] to [de]
 ; move slots are being filled up sequentially and shifted if all slots are full
-; [wHPBarMaxHP]: (?)
 WriteMonMoves: ; 3afb8 (e:6fb8)
 	call GetPredefRegisters
 	push hl
 	push de
 	push bc
 	ld hl, EvosMovesPointerTable
-	ld b, $0
+	ld b, 0
 	ld a, [wcf91]  ; cur mon ID
 	dec a
 	add a
@@ -407,28 +407,33 @@ WriteMonMoves: ; 3afb8 (e:6fb8)
 	and a
 	jp z, .done       ; end of list
 	ld b, a
-	ld a, [W_CURENEMYLVL] ; W_CURENEMYLVL
+	ld a, [W_CURENEMYLVL]
 	cp b
 	jp c, .done       ; mon level < move level (assumption: learnset is sorted by level)
-	ld a, [wHPBarMaxHP]
+	ld a, [wLearningMovesFromDayCare]
 	and a
 	jr z, .skipMinLevelCheck
-	ld a, [wWhichTrade] ; wWhichTrade (min move level)
+	ld a, [wDayCareStartLevel]
 	cp b
 	jr nc, .nextMove2 ; min level >= move level
+
 .skipMinLevelCheck
+
+; check if the move is already known
 	push de
-	ld c, $4
-.moveAlreadyLearnedCheckLoop
+	ld c, NUM_MOVES
+.alreadyKnowsCheckLoop
 	ld a, [de]
 	inc de
 	cp [hl]
 	jr z, .nextMove
 	dec c
-	jr nz, .moveAlreadyLearnedCheckLoop
+	jr nz, .alreadyKnowsCheckLoop
+
+; try to find an empty move slot
 	pop de
 	push de
-	ld c, $4
+	ld c, NUM_MOVES
 .findEmptySlotLoop
 	ld a, [de]
 	and a
@@ -436,47 +441,55 @@ WriteMonMoves: ; 3afb8 (e:6fb8)
 	inc de
 	dec c
 	jr nz, .findEmptySlotLoop
-	pop de                        ; no empty move slots found
+
+; no empty move slots found
+	pop de
 	push de
 	push hl
 	ld h, d
 	ld l, e
 	call WriteMonMoves_ShiftMoveData ; shift all moves one up (deleting move 1)
-	ld a, [wHPBarMaxHP]
+	ld a, [wLearningMovesFromDayCare]
 	and a
 	jr z, .writeMoveToSlot
+
+; shift PP as well if learning moves from day care
 	push de
-	ld bc, $12
+	ld bc, wPartyMon1PP - (wPartyMon1Moves + 3)
 	add hl, bc
 	ld d, h
 	ld e, l
 	call WriteMonMoves_ShiftMoveData ; shift all move PP data one up
 	pop de
+
 .writeMoveToSlot
 	pop hl
 .writeMoveToSlot2
 	ld a, [hl]
 	ld [de], a
-	ld a, [wHPBarMaxHP]
+	ld a, [wLearningMovesFromDayCare]
 	and a
 	jr z, .nextMove
-	push hl            ; write move PP value
+
+; write move PP value if learning moves from day care
+	push hl
 	ld a, [hl]
-	ld hl, $15
+	ld hl, wPartyMon1PP - wPartyMon1Moves
 	add hl, de
 	push hl
 	dec a
 	ld hl, Moves
-	ld bc, $6
+	ld bc, MoveEnd - Moves
 	call AddNTimes
-	ld de, wHPBarMaxHP
+	ld de, wBuffer
 	ld a, BANK(Moves)
 	call FarCopyData
-	ld a, [wHPBarNewHP + 1]
+	ld a, [wBuffer + 5]
 	pop hl
 	ld [hl], a
 	pop hl
 	jr .nextMove
+
 .done
 	pop bc
 	pop de
@@ -485,13 +498,13 @@ WriteMonMoves: ; 3afb8 (e:6fb8)
 
 ; shifts all move data one up (freeing 4th move slot)
 WriteMonMoves_ShiftMoveData: ; 3b04e (e:704e)
-	ld c, $3
-.asm_3b050
+	ld c, NUM_MOVES - 1
+.loop
 	inc de
 	ld a, [de]
 	ld [hli], a
 	dec c
-	jr nz, .asm_3b050
+	jr nz, .loop
 	ret
 
 Evolution_FlagAction: ; 3b057 (e:7057)

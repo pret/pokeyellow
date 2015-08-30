@@ -91,19 +91,19 @@ _OaksAideHiText::
 	cont "AIDE!"
 
 	para "If you caught @"
-	TX_NUM $ffdb, 1, 3
+	TX_NUM hOaksAideRequirement, 1, 3
 	db $0
 	line "kinds of #MON,"
 	cont "I'm supposed to"
 	cont "give you an"
 	cont "@"
-	TX_RAM wcc5b
+	TX_RAM wOaksAideRewardItemName
 	text "!"
 
 	para "So, ", $52, "! Have"
 	line "you caught at"
 	cont "least @"
-	TX_NUM $ffdb, 1, 3
+	TX_NUM hOaksAideRequirement, 1, 3
 	text " kinds of"
 	cont "#MON?"
 	done
@@ -112,16 +112,16 @@ _OaksAideUhOhText::
 	text "Let's see..."
 	line "Uh-oh! You have"
 	cont "caught only @"
-	TX_NUM $ffdd, 1, 3
+	TX_NUM hOaksAideNumMonsOwned, 1, 3
 	db $0
 	cont "kinds of #MON!"
 
 	para "You need @"
-	TX_NUM $ffdb, 1, 3
+	TX_NUM hOaksAideRequirement, 1, 3
 	text " kinds"
 	line "if you want the"
 	cont "@"
-	TX_RAM wcc5b
+	TX_RAM wOaksAideRewardItemName
 	text "."
 	done
 
@@ -129,18 +129,18 @@ _OaksAideComeBackText::
 	text "Oh. I see."
 
 	para "When you get @"
-	TX_NUM $ffdb, 1, 3
+	TX_NUM hOaksAideRequirement, 1, 3
 	db $0
 	line "kinds, come back"
 	cont "for @"
-	TX_RAM wcc5b
+	TX_RAM wOaksAideRewardItemName
 	text "."
 	done
 
 _OaksAideHereYouGoText::
 	text "Great! You have"
 	line "caught @"
-	TX_NUM $ffdd, 1, 3
+	TX_NUM hOaksAideNumMonsOwned, 1, 3
 	text " kinds "
 	cont "of #MON!"
 	cont "Congratulations!"
@@ -151,7 +151,7 @@ _OaksAideHereYouGoText::
 _OaksAideGotItemText::
 	text $52, " got the"
 	line "@"
-	TX_RAM wcc5b
+	TX_RAM wOaksAideRewardItemName
 	text "!@@"
 
 _OaksAideNoRoomText::
@@ -159,7 +159,7 @@ _OaksAideNoRoomText::
 	line "don't have any"
 	cont "room for the"
 	cont "@"
-	TX_RAM wcc5b
+	TX_RAM wOaksAideRewardItemName
 	text "."
 	done
 
@@ -361,10 +361,10 @@ _YeahText::
 
 _DexSeenOwnedText::
 	text "#DEX   Seen:@"
-	TX_NUM wcc5b, 1, 3
+	TX_NUM wDexRatingNumMonsSeen, 1, 3
 	db $0
 	line "         Owned:@"
-	TX_NUM wcc5c, 1, 3
+	TX_NUM wDexRatingNumMonsOwned, 1, 3
 	db "@"
 
 _DexRatingText::
@@ -1480,8 +1480,9 @@ _WithExpAllText::
 _BoostedText::
 	text "a boosted"
 	cont "@@"
+	
 _ExpPointsText::
-	TX_NUM wcf4b, 2, 4
+	TX_NUM wExpAmountGained, 2, 4
 	text " EXP. Points!"
 	prompt
 
@@ -2692,7 +2693,7 @@ _PokemartAnythingElseText::
 	done
 
 _LearnedMove1Text::
-	TX_RAM wd036
+	TX_RAM wLearnMoveMonName
 	text " learned"
 	line "@"
 	TX_RAM wcf4b
@@ -2711,7 +2712,7 @@ _AbandonLearningText::
 	done
 
 _DidNotLearnText::
-	TX_RAM wd036
+	TX_RAM wLearnMoveMonName
 	db $0
 	line "did not learn"
 	cont "@"
@@ -2720,7 +2721,7 @@ _DidNotLearnText::
 	prompt
 
 _TryingToLearnText::
-	TX_RAM wd036
+	TX_RAM wLearnMoveMonName
 	text " is"
 	line "trying to learn"
 	cont "@"
@@ -2728,7 +2729,7 @@ _TryingToLearnText::
 	text "!"
 
 	para "But, @"
-	TX_RAM wd036
+	TX_RAM wLearnMoveMonName
 	db $0
 	line "can't learn more"
 	cont "than 4 moves!"
@@ -2749,7 +2750,7 @@ _PoofText::
 _ForgotAndText::
 	db $0
 	para "@"
-	TX_RAM wd036
+	TX_RAM wLearnMoveMonName
 	text " forgot"
 	line "@"
 	TX_RAM wcd6d

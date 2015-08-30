@@ -3,56 +3,68 @@ PlayDefaultMusic:: ; 216b (0:216b)
 	xor a
 	ld c, a
 	ld d, a
-	ld [wcfca], a
-	jr asm_2188
+	ld [wLastMusicSoundID], a
+	jr PlayDefaultMusicCommon
 
-Func_2176:: ; 2176 (0:2176)
-	ld c, $a
-	ld d, $0
+PlayDefaultMusicFadeOutCurrent:: ; 2176 (0:2176)
+; Fade out the current music and then play the default music.
+	ld c, 10
+	ld d, 0
 	ld a, [wd72e]
-	bit 5, a
-	jr z, asm_2188
+	bit 5, a ; has a battle just ended?
+	jr z, PlayDefaultMusicCommon
 	xor a
-	ld [wcfca], a
-	ld c, $8
+	ld [wLastMusicSoundID], a
+	ld c, 8
 	ld d, c
-asm_2188: ; 2118 (0:2118)
+PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	ld a, [wWalkBikeSurfState]
 	and a
-	jr z, .asm_21ac
+	jr z, .walking
 	cp $2
-	jr z, .asm_219b
+	jr z, .surfing
 	call Func_21c8
 	jr c, .asm_21ac
 	ld a, $d2 ; MUSIC_BIKE_RIDING
-	jr .asm_219d
-.asm_219b
+	jr .next
+
+.surfing
 	ld a, $d6 ; MUSIC_SURFING
-.asm_219d
+
+.next
 	ld b, a
 	ld a, d
-	and a
+	and a ; should current music be faded out first?
 	ld a, $1f ; BANK(Music_BikeRiding)
-	jr nz, .asm_21a7
-	ld [wc0ef], a
-.asm_21a7
-	ld [wc0f0], a
-	jr .asm_21b5
-.asm_21ac
-	ld a, [wd35b]
+	jr nz, .next2
+
+; Only change the audio ROM bank if the current music isn't going to be faded
+; out before the default music begins.
+	ld [wAudioROMBank], a
+
+.next2
+; [wAudioSavedROMBank] will be copied to [wAudioROMBank] after fading out the
+; current music (if the current music is faded out).
+	ld [wAudioSavedROMBank], a
+	jr .next3
+
+.walking
+	ld a, [wMapMusicSoundID]
 	ld b, a
-	call Func_21f5
-	jr c, .asm_21ba
-.asm_21b5
-	ld a, [wcfca]
-	cp b
-	ret z
-.asm_21ba
+	call CompareMapMusicBankWithCurrentBank
+	jr c, .next4
+
+.next3
+	ld a, [wLastMusicSoundID]
+	cp b ; is the default music already playing?
+	ret z ; if so, do nothing
+
+.next4
 	ld a, c
-	ld [wMusicHeaderPointer], a
+	ld [wAudioFadeOutControl], a
 	ld a, b
-	ld [wcfca], a
-	ld [wc0ee], a
+	ld [wLastMusicSoundID], a
+	ld [wNewSoundID], a
 	jp PlaySound
 
 Func_21c8:: ; 21c8 (0:21c8)
@@ -87,7 +99,7 @@ Func_21e3:: ; 21e5 (0:21e5)
 	ret
 	
 ;Func_235f:: ; 235f (0:235f)
-;	ld a, [wc0ef]
+;	ld a, [wAudioROMBank]
 ;	ld b, a
 ;	cp BANK(Music2_UpdateMusic)
 ;	jr nz, .checkForBank08
@@ -114,34 +126,41 @@ Func_21e3:: ; 21e5 (0:21e5)
 ;	jr nz, .asm_237a
 ;	ret
 
-Func_21f5:: ; 21f5 (0:21f5)
-	ld a, [wd35c]
+CompareMapMusicBankWithCurrentBank:: ; 21f5 (0:21f5)
+; Compares the map music's audio ROM bank with the current audio ROM bank
+; and updates the audio ROM bank variables.
+; Returns whether the banks are different in carry.
+	ld a, [wMapMusicROMBank]
 	ld e, a
-	ld a, [wc0ef]
+	ld a, [wAudioROMBank]
 	cp e
-	jr nz, .asm_2204
-	ld [wc0f0], a
+	jr nz, .differentBanks
+	ld [wAudioSavedROMBank], a
 	and a
 	ret
-.asm_2204
-	ld a, c
+.differentBanks
+	ld a, c ; this is a fade-out counter value and it's always non-zero
 	and a
 	ld a, e
-	jr nz, .asm_220c
-	ld [wc0ef], a
-.asm_220c
-	ld [wc0f0], a
+	jr nz, .next
+; If the fade-counter is non-zero, we don't change the audio ROM bank because
+; it's needed to keep playing the music as it fades out. The FadeOutAudio
+; routine will take care of copying [wAudioSavedROMBank] to [wAudioROMBank]
+; when the music has faded out.
+	ld [wAudioROMBank], a
+.next
+	ld [wAudioSavedROMBank], a
 	scf
 	ret
 
 PlayMusic:: ; 2211 (0:2211)
 	ld b, a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	xor a
-	ld [wMusicHeaderPointer], a
+	ld [wAudioFadeOutControl], a
 	ld a, c
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, b
 	jr PlaySound
 	
@@ -163,42 +182,42 @@ PlaySound:: ; 2238 (0:2238)
 	push de
 	push bc
 	ld b, a
-	ld a, [wc0ee]
+	ld a, [wNewSoundID]
 	and a
-	jr z, .asm_224f
+	jr z, .next
 	xor a
 	ld [wc02a], a
 	ld [wc02b], a
 	ld [wc02c], a
 	ld [wc02d], a
-.asm_224f
-	ld a, [wMusicHeaderPointer]
+.next
+	ld a, [wAudioFadeOutControl]
 	and a
-	jr z, .asm_226a
-	ld a, [wc0ee]
+	jr z, .noFadeOut
+	ld a, [wNewSoundID]
 	and a
-	jr z, .asm_2284
+	jr z, .done
 	xor a
-	ld [wc0ee], a
-	ld a, [wcfca]
+	ld [wNewSoundID], a
+	ld a, [wLastMusicSoundID]
 	cp $ff
-	jr nz, .asm_2273
+	jr nz, .fadeOut
 	xor a
 	ld [wMusicHeaderPointer], a
-.asm_226a
+.noFadeOut
 	xor a
 	ld [wc0ee], a
 	call Func_22ec
-	jr .asm_2284
-.asm_2273
+	jr .done
+.fadeOut
 	ld a,b
-	ld [wcfca],a
-	ld a,[wMusicHeaderPointer]
-	ld [wcfc8],a
-	ld [wcfc9],a
+	ld [wLastMusicSoundID],a
+	ld a,[wAudioFadeOutControl]
+	ld [wAudioFadeOutCounterReloadValue],a
+	ld [wAudioFadeOutCounter],a
 	ld a,b
-	ld [wMusicHeaderPointer],a
-.asm_2284
+	ld [wAudioFadeOutControl],a
+.done
 	pop bc
 	pop de
 	pop hl
@@ -207,13 +226,13 @@ PlaySound:: ; 2238 (0:2238)
 Func_2288:: ; 2288 (0:2288)
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a, [wc0ef]
+	ld a, [wAudioROMBank]
 	call BankswitchCommon
 	ld d,$0
 	ld a,c
 	add a
 	ld e,a
-	ld hl,wc006
+	ld hl,wChannelCommandPointers
 	add hl,de
 	ld a,[hli]
 	ld e,a
@@ -263,7 +282,7 @@ Func_22d6:: ; 22d6 (0:22d6)
 Func_22ec:: ; 22ec (0:22ec)
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,[wc0ef]
+	ld a,[wAudioROMBank]
 	call BankswitchCommon
 	cp BANK(Func_984e)
 	jr nz, .checkForBank08

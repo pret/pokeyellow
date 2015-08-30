@@ -7,7 +7,7 @@ OneHitKOEffect_: ; f64db (3d:64db)
 	ld [wCriticalHitOrOHKO], a
 	ld hl, wBattleMonSpeed + 1
 	ld de, wEnemyMonSpeed + 1
-	ld a, [H_WHOSETURN] 
+	ld a, [H_WHOSETURN]
 	and a
 	jr z, .compareSpeed
 	ld hl, wEnemyMonSpeed + 1
@@ -24,7 +24,7 @@ OneHitKOEffect_: ; f64db (3d:64db)
 	ld a, [hl]
 	sbc b
 	jr c, .userIsSlower
-	ld hl, W_DAMAGE 
+	ld hl, W_DAMAGE
 	ld a, $ff
 	ld [hli], a
 	ld [hl], a
@@ -34,5 +34,5 @@ OneHitKOEffect_: ; f64db (3d:64db)
 .userIsSlower
 ; keep damage at 0 and set move missed flag if target's current speed is higher instead
 	ld a, $1
-	ld [W_MOVEMISSED], a 
+	ld [W_MOVEMISSED], a
 	ret

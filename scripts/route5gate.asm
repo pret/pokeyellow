@@ -9,7 +9,7 @@ Route5GateScriptPointers: ; 1df3f (7:5f3f)
 	dw Route5GateScript1
 
 Route5GateScript_1df43: ; 1df43 (7:5f43)
-	ld a, $40
+	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
@@ -22,16 +22,16 @@ Route5GateScript0: ; 1df50 (7:5f50)
 	ld hl, CoordsData_1df8f
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $2
-	ld [wd528], a
+	ld a, PLAYER_DIR_LEFT
+	ld [wPlayerMovingDirection], a
 	xor a
 	ld [hJoyHeld], a
 	callba RemoveGuardDrink
 	ld a, [$ffdb]
 	and a
-	jr nz, .asm_1df82 ; 0x1df70 $10
+	jr nz, .asm_1df82
 	ld a, $2
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Route5GateScript_1df43
 	ld a, $1
@@ -39,7 +39,7 @@ Route5GateScript0: ; 1df50 (7:5f50)
 	ret
 .asm_1df82
 	ld a, $3
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wd728
 	set 6, [hl]
@@ -69,27 +69,27 @@ Route8GateText1: ; 1dfaa (7:5faa)
 Route7GateText1: ; 1dfaa (7:5faa)
 Route6GateText1: ; 1dfaa (7:5faa)
 Route5GateText1: ; 1dfaa (7:5faa)
-	db $8
+	TX_ASM
 	ld a, [wd728]
 	bit 6, a
-	jr nz, .asm_88856 ; 0x1dfb0 $2c
+	jr nz, .asm_88856
 	callba RemoveGuardDrink
 	ld a, [$ffdb]
 	and a
-	jr nz, .asm_768a2 ; 0x1dfbd $11
+	jr nz, .asm_768a2
 	ld hl, Route5GateText2
 	call PrintText
 	call Route5GateScript_1df43
 	ld a, $1
 	ld [W_ROUTE5GATECURSCRIPT], a
 	jp TextScriptEnd
-.asm_768a2 ; 0x1dfd0
+.asm_768a2
 	ld hl, Route5GateText3
 	call PrintText
 	ld hl, wd728
 	set 6, [hl]
 	jp TextScriptEnd
-.asm_88856 ; 0x1dfde
+.asm_88856
 	ld hl, SaffronGateText_1dff6
 	call PrintText
 	jp TextScriptEnd
@@ -105,9 +105,9 @@ Route8GateText3: ; 1dfec (7:5fec)
 Route7GateText3: ; 1dfec (7:5fec)
 Route6GateText3: ; 1dfec (7:5fec)
 Route5GateText3: ; 1dfec (7:5fec)
-	TX_FAR _SaffronGateText_8aaa9 ; 0x8aaa9
+	TX_FAR _SaffronGateText_8aaa9
 	db $11
-	TX_FAR _SaffronGateText_1dff1 ; 0x8aaef
+	TX_FAR _SaffronGateText_1dff1
 	db "@"
 
 SaffronGateText_1dff6: ; 1dff6 (7:5ff6)

@@ -27,16 +27,16 @@ Route8GateScript0: ; 1e1ee (7:61ee)
 	ld hl, CoordsData_1e22c
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $2
-	ld [wd528], a
+	ld a, PLAYER_DIR_LEFT
+	ld [wPlayerMovingDirection], a
 	xor a
 	ld [hJoyHeld], a
 	callba RemoveGuardDrink
 	ld a, [$ffdb]
 	and a
-	jr nz, .asm_1e220 ; 0x1e20e $10
+	jr nz, .asm_1e220
 	ld a, $2
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Route8GateScript_1e1d7
 	ld a, $1
@@ -46,7 +46,7 @@ Route8GateScript0: ; 1e1ee (7:61ee)
 	ld hl, wd728
 	set 6, [hl]
 	ld a, $3
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 CoordsData_1e22c: ; 1e22c (7:622c)

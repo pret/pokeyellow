@@ -5,8 +5,8 @@ RedsHouse1FTextPointers: ; 4816b (12:416b)
 	dw RedsHouse1FText1
 	dw RedsHouse1FText2
 
-RedsHouse1FText1: ; 4816f (12:416f) ; 416F Mom
-	db 8
+RedsHouse1FText1: ; 4816f (12:416f) Mom
+	TX_ASM
 	ld a, [wd72e]
 	bit 3, a
 	jr nz, .heal ; if player has received a Pokémon from Oak, heal team
@@ -29,14 +29,14 @@ MomHealPokemon: ; 4818a (12:418a)
 	call ReloadMapData
 	predef HealParty
 	ld a, MUSIC_PKMN_HEALED
-	ld [wc0ee], a
-	call PlaySound ; play sound?
+	ld [wNewSoundID], a
+	call PlaySound
 .next
-	ld a, [wc026]
+	ld a, [wChannelSoundIDs]
 	cp MUSIC_PKMN_HEALED
 	jr z, .next
-	ld a, [wd35b]
-	ld [wc0ee], a
+	ld a, [wMapMusicSoundID]
+	ld [wNewSoundID], a
 	call PlaySound
 	call GBFadeInFromWhite
 	ld hl, MomHealText2
@@ -50,13 +50,13 @@ MomHealText2: ; 481c1 (12:41c1)
 	db "@"
 
 RedsHouse1FText2: ; 0x481c6 TV
-	db 8
+	TX_ASM
 	ld a,[wSpriteStateData1 + 9]
-	cp 4
+	cp SPRITE_FACING_UP
 	ld hl,TVWrongSideText
-	jr nz,.done ; if player is not facing up
+	jr nz,.notUp
 	ld hl,StandByMeText
-.done
+.notUp
 	call PrintText
 	jp TextScriptEnd
 

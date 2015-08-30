@@ -3,38 +3,38 @@ SeafoamIslands3Script: ; 46451 (11:6451)
 	ld hl, wFlags_0xcd60
 	bit 7, [hl]
 	res 7, [hl]
-	jr z, .asm_4649e ; 0x4645b $41
+	jr z, .asm_4649e
 	ld hl, Seafoam3HolesCoords
 	call CheckBoulderCoords
 	ret nc
-	ld hl, wd880
-	ld a, [wWhichTrade]
+	EventFlagAddress hl, EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE
+	ld a, [wCoordIndex]
 	cp $1
-	jr nz, .asm_4647c ; 0x4646c $e
-	set 0, [hl]
+	jr nz, .asm_4647c
+	SetEventReuseHL EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE
 	ld a, HS_SEAFOAM_ISLANDS_3_BOULDER_1
-	ld [wd079], a
+	ld [wObjectToHide], a
 	ld a, HS_SEAFOAM_ISLANDS_4_BOULDER_3
-	ld [wd07a], a
-	jr .asm_46488 ; 0x4647a $c
+	ld [wObjectToShow], a
+	jr .asm_46488
 .asm_4647c
-	set 1, [hl]
+	SetEventAfterBranchReuseHL EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE
 	ld a, HS_SEAFOAM_ISLANDS_3_BOULDER_2
-	ld [wd079], a
+	ld [wObjectToHide], a
 	ld a, HS_SEAFOAM_ISLANDS_4_BOULDER_4
-	ld [wd07a], a
+	ld [wObjectToShow], a
 .asm_46488
-	ld a, [wd079]
-	ld [wcc4d], a
+	ld a, [wObjectToHide]
+	ld [wMissableObjectIndex], a
 	predef HideObject
-	ld a, [wd07a]
-	ld [wcc4d], a
+	ld a, [wObjectToShow]
+	ld [wMissableObjectIndex], a
 	predef_jump ShowObject
 .asm_4649e
 	ld a, $a1
 	ld [wDungeonWarpDestinationMap], a
 	ld hl, Seafoam3HolesCoords
-	jp Func_46981
+	jp IsPlayerOnDungeonWarp
 
 Seafoam3HolesCoords: ; 464a9 (11:64a9)
 	db $06,$13

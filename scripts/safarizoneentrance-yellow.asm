@@ -1,7 +1,7 @@
 .xf1f77
 	ld hl,.ForJust500Text
 	call PrintText
-	ld a,$13
+	ld a,MONEY_BOX
 	ld [wTextBoxID],a
 	call DisplayTextBoxID
 	call YesNoChoice
@@ -21,11 +21,11 @@
 
 .xf1f9f
 	xor a
-	ld [$ff9f],a
+	ld [hMoney],a
 	ld a,$05
-	ld [$ffa0],a
+	ld [hMoney + 1],a
 	ld a,$00
-	ld [$ffa1],a
+	ld [hMoney + 2],a
 	call HasEnoughMoney
 	jr nc,.success
 	ld hl,.NotEnoughMoneyText
@@ -36,37 +36,36 @@
 
 .success
 	xor a
-	ld [wSubtrahend],a
+	ld [wPriceTemp],a
 	ld a,$05
-	ld [wSubtrahend+1],a
+	ld [wPriceTemp + 1],a
 	ld a,$00
-	ld [wSubtrahend+2],a
-	ld hl,wTrainerFacingDirection
+	ld [wPriceTemp + 2],a
+	ld hl,wPriceTemp + 2
 	ld de,wPlayerMoney + 2
 	ld c,3
 	predef SubBCDPredef
 	ld a,$b2
 	call $3736
 	call $373e
-	ld a,$13
+	ld a,MONEY_BOX
 	ld [wTextBoxID],a
 	call DisplayTextBoxID
 	ld hl,.MakePaymentText
 	call PrintText
 	ld a,30
-	ld hl,(502 / $100) << 8 | (502 % $100)
+	lb hl, (502 / $100),  (502 % $100)
 .xf1ff2
 	ld [W_NUMSAFARIBALLS],a
 	ld a,h
 	ld [wSafariSteps],a
 	ld a,l
 	ld [wSafariSteps + 1],a
-	ld a,$40
+	ld a,D_UP
 	ld c,3
 	call SafariZoneEntranceAutoWalk
-	ld hl,wd790
-	set 7,[hl]
-	res 6,[hl]
+	SetEvent EVENT_IN_SAFARI_ZONE
+	ResetEventReuseHL EVENT_SAFARI_GAME_OVER
 	ld a,3
 	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
 	jr .done
@@ -75,7 +74,7 @@
 	ld hl,.PleaseComeAgainText
 	call PrintText
 .CantPayWalkDown
-	ld a,$80
+	ld a,D_DOWN
 	ld c,1
 	call SafariZoneEntranceAutoWalk
 	ld a,4
@@ -155,8 +154,8 @@ SafariZoneEntranceAutoWalk:
 	ld bc,3
 	call FillMemory
 	ld hl,.OhAllRightText
-	call Func_3c59
-	ld a,$13
+	call PrintText_NoCreatingTextBox
+	ld a,MONEY_BOX
 	ld a,[$d124]
 	call DisplayTextBoxID
 	ld hl,.CantGive30BallsText

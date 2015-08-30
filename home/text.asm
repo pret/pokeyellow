@@ -65,20 +65,20 @@ Char4ETest:: ; 172d (0:172d)
 	ld a,[hFlags_0xFFFA]
 	bit 2,a
 	jr z,.next2
-	ld bc,$14
+	ld bc,SCREEN_WIDTH
 .next2
 	pop hl
 	add hl,bc
 	push hl
-	jp Next17B6 ; 17b6
+	jp PlaceNextChar_inc ; 17b6
 
 .next
 	cp $4F
 	jr nz,.next3
 	pop hl
-	hlCoord 1, 16
+	coord hl, 1, 16
 	push hl
-	jp Next17B6
+	jp PlaceNextChar_inc
 
 .next3 ; Check against a dictionary
 	and a
@@ -123,7 +123,7 @@ Char4ETest:: ; 172d (0:172d)
 	jp z,Char5A
 	ld [hli],a
 	call PrintLetterDelay
-Next17B6:: ; 17b6 (0:17b6)
+PlaceNextChar_inc:: ; 17b6 (0:17b6)
 	inc de
 	jp PlaceNextChar
 
@@ -207,7 +207,7 @@ MonsterNameCharsCommon:: ; 1a37 (0:1a37)
 	ld de,wBattleMonNick ; player active monster name
 	jr FinishDTE
 
-.Enemy ; 1A40
+.Enemy
 	; print “Enemy ”
 	ld de,Char5AText
 	call PlaceString
@@ -272,7 +272,7 @@ Char58:: ; 1863 (0:1863)
 Next1870:: ; 1870 (0:1870)
 	call ProtectedDelay3 ; 1913
 	call ManualTextScroll ; 388e
-	ld a,$7F ; space
+	ld a, " " ; space
 	Coorda 18, 16
 Char57:: ; 1aad (0:1aad)
 	pop hl
@@ -289,14 +289,14 @@ Char51:: ; 1882 (0:1882)
 	Coorda 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
-	hlCoord 1, 13
-	ld bc,$0412
+	coord hl, 1, 13
+	lb bc, 4, 18
 	call ClearScreenArea
-	ld c,$14
+	ld c,20
 	call DelayFrames
 	pop de
-	hlCoord 1, 14
-	jp Next17B6
+	coord hl, 1, 14
+	jp PlaceNextChar_inc
 
 Char49:: ; 18a3 (0:18a3)
 	ld a,[hFlags_0xFFFA]
@@ -311,16 +311,16 @@ Char49:: ; 18a3 (0:18a3)
 	Coorda 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
-	hlCoord 1, 10
-	ld bc,$0712
+	coord hl, 1, 10
+	lb bc, 7, 18
 	call ClearScreenArea
-	ld c,$14
+	ld c,20
 	call DelayFrames
 	pop de
 	pop hl
-	hlCoord 1, 11
+	coord hl, 1, 11
 	push hl
-	jp Next17B6
+	jp PlaceNextChar_inc
 
 Char4B:: ; 18d1 (0:18d1)
 	ld a,$EE
@@ -329,30 +329,30 @@ Char4B:: ; 18d1 (0:18d1)
 	push de
 	call ManualTextScroll
 	pop de
-	ld a,$7F
+	ld a, " "
 	Coorda 18, 16
 	;fall through
 Char4C:: ; 18e3 (0:18e3)
 	push de
 	call Next18F1 ; 18f1
 	call Next18F1
-	hlCoord 1, 16
+	coord hl, 1, 16
 	pop de
-	jp Next17B6
+	jp PlaceNextChar_inc
 
 Next18F1:: ; 18f1 (0:18f1)
-	hlCoord 0, 14
-	deCoord 0, 13
-	ld b,$3C
+	coord hl, 0, 14
+	coord de, 0, 13
+	ld b, 60
 .next
 	ld a,[hli]
 	ld [de],a
 	inc de
 	dec b
 	jr nz,.next
-	hlCoord 1, 16
-	ld a,$7F
-	ld b,$12
+	coord hl, 1, 16
+	ld a, " "
+	ld b,SCREEN_WIDTH - 2
 .next2
 	ld [hli],a
 	dec b
@@ -374,24 +374,24 @@ ProtectedDelay3:: ; 1913 (0:1913)
 	ret
 
 TextCommandProcessor:: ; 1919 (0:1919)
-	ld a,[wd358]
+	ld a,[wLetterPrintingDelayFlags]
 	push af
 	set 1,a
 	ld e,a
 	ld a,[$fff9]
 	xor e
-	ld [wd358],a
+	ld [wLetterPrintingDelayFlags],a
 	ld a,c
-	ld [wcc3a],a
+	ld [wUnusedCC3A],a
 	ld a,b
-	ld [wcc3b],a
+	ld [wUnusedCC3B],a
 
 NextTextCommand:: ; 192e (0:192e)
 	ld a,[hli]
 	cp a, "@" ; terminator
 	jr nz,.doTextCommand
 	pop af
-	ld [wd358],a
+	ld [wLetterPrintingDelayFlags],a
 	ret
 .doTextCommand
 	push hl
@@ -493,10 +493,10 @@ TextCommand02:: ; 197e (0:197e)
 TextCommand03:: ; 1990 (0:1990)
 	pop hl
 	ld a,[hli]
-	ld [wcc3a],a
+	ld [wUnusedCC3A],a
 	ld c,a
 	ld a,[hli]
-	ld [wcc3b],a
+	ld [wUnusedCC3B],a
 	ld b,a
 	jp NextTextCommand
 
@@ -505,7 +505,7 @@ TextCommand03:: ; 1990 (0:1990)
 ; (no arguments)
 TextCommand05:: ; 199e (0:199e)
 	pop hl
-	bcCoord 1, 16 ; address of second line of dialogue text box
+	coord bc, 1, 16 ; address of second line of dialogue text box
 	jp NextTextCommand
 
 ; blink arrow and wait for A or B to be pressed
@@ -534,7 +534,7 @@ TextCommand07:: ; 19c0 (0:19c0)
 	call Next18F1 ; scroll up text
 	call Next18F1
 	pop hl
-	bcCoord 1, 16 ; address of second line of dialogue text box
+	coord bc, 1, 16 ; address of second line of dialogue text box
 	jp NextTextCommand
 
 ; execute asm inline
@@ -567,7 +567,7 @@ TextCommand09:: ; 19d8 (0:19d8)
 	ld a,b
 	and a,$f0
 	swap a
-	set 6,a
+	set BIT_LEFT_ALIGN,a
 	ld b,a
 	call PrintNumber
 	ld b,h
@@ -582,7 +582,7 @@ TextCommand0A:: ; 19f6 (0:19f6)
 	push bc
 	call Joypad
 	ld a,[hJoyHeld]
-	and a,%00000011 ; A and B buttons
+	and a,A_BUTTON | B_BUTTON
 	jr nz,.skipDelay
 	ld c,30
 	call DelayFrames
@@ -660,7 +660,7 @@ TextCommand0C:: ; 1a51 (0:1a51)
 	call Joypad
 	pop de
 	ld a,[hJoyHeld] ; joypad state
-	and a,%00000011 ; is A or B button pressed?
+	and a,A_BUTTON | B_BUTTON
 	jr nz,.skipDelay ; if so, skip the delay
 	ld c,10
 	call DelayFrames
@@ -696,7 +696,7 @@ TextCommand17:: ; 1a7c (0:1a7c)
 	ld d,a
 	ld a,[hli]
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank],a
 	push hl
 	ld l,e
 	ld h,d
@@ -704,7 +704,7 @@ TextCommand17:: ; 1a7c (0:1a7c)
 	pop hl
 	pop af
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank],a
 	jp NextTextCommand
 
 TextCommandJumpTable:: ; 1a9a (0:1a9a)

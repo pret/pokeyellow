@@ -400,10 +400,10 @@ _OaksLabText_441cc::
 	line "letion is:"
 
 	para "@"
-	TX_NUM $ffdb, 1, 3
+	TX_NUM hDexRatingNumMonsSeen, 1, 3
 	text " #MON seen"
 	line "@"
-	TX_NUM $ffdc, 1, 3
+	TX_NUM hDexRatingNumMonsOwned, 1, 3
 	text " #MON owned"
 
 	para "PROF.OAK's"

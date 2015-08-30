@@ -7,10 +7,13 @@ BattleTransition: ; 709d7 (1c:49d7)
 	dec a
 	ld [wUpdateSpritesEnabled], a
 	call DelayFrame
+
+; Determine which OAM block is being used by the enemy trainer sprite (if there
+; is one).
 	ld hl, wSpriteStateData1 + 2
-	ld a, [H_DOWNARROWBLINKCNT2]
+	ld a, [hSpriteIndexOrTextID] ; enemy trainer sprite index (0 if wild battle)
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld de, $10
 .loop1
 	ld a, [hl]
@@ -21,13 +24,15 @@ BattleTransition: ; 709d7 (1c:49d7)
 	add hl, de
 	dec c
 	jr nz, .loop1
+
+; Clear OAM except for the blocks used by the player and enemy trainer sprites.
 	ld hl, wOAMBuffer + $10
-	ld c, $9
+	ld c, 9
 .loop2
 	ld a, b
 	swap a
 	cp l
-	jr z, .skip2
+	jr z, .skip2 ; skip clearing the block if the enemy trainer is using it
 	push hl
 	push bc
 	ld bc, $10
@@ -40,9 +45,10 @@ BattleTransition: ; 709d7 (1c:49d7)
 	add hl, de
 	dec c
 	jr nz, .loop2
+
 	call Delay3
 	call LoadBattleTransitionTile
-	ld bc, $0
+	ld bc, 0
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .linkBattle
@@ -76,7 +82,7 @@ BattleTransitions: ; 70a3c (1c:4a3c)
 
 GetBattleTransitionID_WildOrTrainer: ; 70a4c (1c:4a4c)
 	ld a, [W_CUROPPONENT]
-	cp $c8
+	cp 200
 	jr nc, .trainer
 	res 0, c
 	ret
@@ -103,13 +109,13 @@ GetBattleTransitionID_CompareLevels: ; 70a59 (1c:4a59)
 	sub e
 	jr nc, .highLevelEnemy
 	res 1, c
-	ld a, $1
-	ld [wcd47], a
+	ld a, 1
+	ld [wBattleTransitionSpiralDirection], a
 	ret
 .highLevelEnemy
 	set 1, c
 	xor a
-	ld [wcd47], a
+	ld [wBattleTransitionSpiralDirection], a
 	ret
 
 ; fails to recognize VICTORY_ROAD_2, VICTORY_ROAD_3, all ROCKET_HIDEOUT maps,
@@ -178,11 +184,12 @@ DungeonMaps2: ; 70aac (1c:4aac)
 LoadBattleTransitionTile: ; 70ab7 (1c:4ab7)
 	ld hl, vChars1 + $7f0
 	ld de, BattleTransitionTile
-	ld bc, (BANK(BattleTransitionTile) << 8) + $01
+	lb bc, BANK(BattleTransitionTile), (BattleTransitionTileEnd - BattleTransitionTile) / $10
 	jp CopyVideoData
 
 BattleTransitionTile: ; 70ac3 (1c:4ac3)
 	INCBIN "gfx/battle_transition.2bpp"
+BattleTransitionTileEnd:
 
 BattleTransition_BlackScreen: ; 70ad3 (1c:4ad3)
 	ld a, $ff
@@ -198,58 +205,76 @@ BattleTransition_BlackScreen: ; 70ad3 (1c:4ad3)
 ; called regardless of mon levels, but does an
 ; outward spiral if enemy is at least 3 levels
 ; higher than player and does an inward spiral otherwise
+<<<<<<< HEAD
 BattleTransition_Spiral: ; 70ae5 (1c:4ae5)
 	ld a, [wcd47]
+=======
+BattleTransition_Spiral: ; 70a72 (1c:4a72)
+	ld a, [wBattleTransitionSpiralDirection]
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	and a
 	jr z, .outwardSpiral
 	call BattleTransition_InwardSpiral
 	jr .done
 .outwardSpiral
-	hlCoord 10, 10
+	coord hl, 10, 10
 	ld a, $3
-	ld [wd09f], a
+	ld [wOutwardSpiralCurrentDirection], a
 	ld a, l
-	ld [wd09b], a
+	ld [wOutwardSpiralTileMapPointer + 1], a
 	ld a, h
-	ld [wd09a], a
-	ld b, $78
-.loop1
-	ld c, $3
-.loop2
+	ld [wOutwardSpiralTileMapPointer], a
+	ld b, 120
+.loop
+	ld c, 3
+.innerLoop
 	push bc
 	call BattleTransition_OutwardSpiral_
 	pop bc
 	dec c
-	jr nz, .loop2
+	jr nz, .innerLoop
 	call DelayFrame
 	dec b
-	jr nz, .loop1
+	jr nz, .loop
 .done
 	call BattleTransition_BlackScreen
 	xor a
-	ld [wd09b], a
-	ld [wd09a], a
+	ld [wOutwardSpiralTileMapPointer + 1], a
+	ld [wOutwardSpiralTileMapPointer], a
 	ret
 
+<<<<<<< HEAD
 BattleTransition_InwardSpiral: ; 70b1d (1c:4b1d)
 	ld a, $7
 	ld [wWhichTrade], a
 	ld hl, wTileMap
 	ld c, $11
 	ld de, $14
+=======
+BattleTransition_InwardSpiral: ; 70aaa (1c:4aaa)
+	ld a, 7
+	ld [wInwardSpiralUpdateScreenCounter], a
+	coord hl, 0, 0
+	ld c, SCREEN_HEIGHT - 1
+	ld de, SCREEN_WIDTH
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_InwardSpiral_
 	inc c
 	jr .skip
 .loop
-	ld de, $14
+	ld de, SCREEN_WIDTH
 	call BattleTransition_InwardSpiral_
 .skip
 	inc c
-	ld de, $1
+	ld de, 1
 	call BattleTransition_InwardSpiral_
 	dec c
 	dec c
+<<<<<<< HEAD
 	ld de, -$14
+=======
+	ld de, -SCREEN_WIDTH
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_InwardSpiral_
 	inc c
 	ld de, -1
@@ -267,85 +292,92 @@ BattleTransition_InwardSpiral_: ; 70b53 (1c:4b53)
 	ld [hl], $ff
 	add hl, de
 	push bc
-	ld a, [wWhichTrade]
+	ld a, [wInwardSpiralUpdateScreenCounter]
 	dec a
 	jr nz, .skip
 	call BattleTransition_TransferDelay3
-	ld a, $7
+	ld a, 7
 .skip
-	ld [wWhichTrade], a
+	ld [wInwardSpiralUpdateScreenCounter], a
 	pop bc
 	dec c
 	jr nz, .loop
 	pop bc
 	ret
 
+<<<<<<< HEAD
 BattleTransition_OutwardSpiral_: ; 70b6c (1c:4b6c)
 	ld bc, -$14
 	ld de, $14
 	ld a, [wd09b]
+=======
+BattleTransition_OutwardSpiral_: ; 70af9 (1c:4af9)
+	ld bc, -SCREEN_WIDTH
+	ld de, SCREEN_WIDTH
+	ld a, [wOutwardSpiralTileMapPointer + 1]
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	ld l, a
-	ld a, [wd09a]
+	ld a, [wOutwardSpiralTileMapPointer]
 	ld h, a
-	ld a, [wd09f]
+	ld a, [wOutwardSpiralCurrentDirection]
 	cp $0
-	jr z, .zero
+	jr z, .up
 	cp $1
-	jr z, .one
+	jr z, .left
 	cp $2
-	jr z, .two
+	jr z, .down
 	cp $3
-	jr z, .three
-.done1
+	jr z, .right
+.keepSameDirection
 	ld [hl], $ff
-.done2_
+.done
 	ld a, l
-	ld [wd09b], a
+	ld [wOutwardSpiralTileMapPointer + 1], a
 	ld a, h
-	ld [wd09a], a
+	ld [wOutwardSpiralTileMapPointer], a
 	ret
-.zero
+.up
 	dec hl
 	ld a, [hl]
 	cp $ff
-	jr nz, .done2
+	jr nz, .changeDirection
 	inc hl
 	add hl, bc
-	jr .done1
-.one
+	jr .keepSameDirection
+.left
 	add hl, de
 	ld a, [hl]
 	cp $ff
-	jr nz, .done2
+	jr nz, .changeDirection
 	add hl, bc
 	dec hl
-	jr .done1
-.two
+	jr .keepSameDirection
+.down
 	inc hl
 	ld a, [hl]
 	cp $ff
-	jr nz, .done2
+	jr nz, .changeDirection
 	dec hl
 	add hl, de
-	jr .done1
-.three
+	jr .keepSameDirection
+.right
 	add hl, bc
 	ld a, [hl]
 	cp $ff
-	jr nz, .done2
+	jr nz, .changeDirection
 	add hl, de
 	inc hl
-	jr .done1
-.done2
+	jr .keepSameDirection
+.changeDirection
 	ld [hl], $ff
-	ld a, [wd09f]
+	ld a, [wOutwardSpiralCurrentDirection]
 	inc a
 	cp $4
 	jr nz, .skip
 	xor a
 .skip
-	ld [wd09f], a
-	jr .done2_
+	ld [wOutwardSpiralCurrentDirection], a
+	jr .done
 
 FlashScreen:
 BattleTransition_FlashScreen_: ; 70be8 (1c:4be8s)
@@ -355,8 +387,12 @@ BattleTransition_FlashScreen_: ; 70be8 (1c:4be8s)
 	cp $1
 	jr z, .done
 	ld [rBGP], a
+<<<<<<< HEAD
 	call Func_3021
 	ld c, $2
+=======
+	ld c, 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call DelayFrames
 	jr .loop
 .done
@@ -369,61 +405,95 @@ BattleTransition_FlashScreenPalettes: ; 70be8 (1c:4be8)
 	db $01 ; terminator
 
 ; used for low level trainer dungeon battles
+<<<<<<< HEAD
 BattleTransition_Shrink: ; 70bf4 (1c:4bf4)
 	ld c, $9
+=======
+BattleTransition_Shrink: ; 70b7f (1c:4b7f)
+	ld c, SCREEN_HEIGHT / 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 .loop
 	push bc
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
+<<<<<<< HEAD
 	hlCoord 0, 7
 	deCoord 0, 8
 	ld bc, -$28
+=======
+	coord hl, 0, 7
+	coord de, 0, 8
+	ld bc, -SCREEN_WIDTH * 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_CopyTiles1
-	hlCoord 0, 10
-	deCoord 0, 9
-	ld bc, $28
+	coord hl, 0, 10
+	coord de, 0, 9
+	ld bc, SCREEN_WIDTH * 2
 	call BattleTransition_CopyTiles1
+<<<<<<< HEAD
 	hlCoord 8, 0
 	deCoord 9, 0
 	ld bc, -$2
+=======
+	coord hl, 8, 0
+	coord de, 9, 0
+	ld bc, -2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_CopyTiles2
-	hlCoord 11, 0
-	deCoord 10, 0
-	ld bc, $2
+	coord hl, 11, 0
+	coord de, 10, 0
+	ld bc, 2
 	call BattleTransition_CopyTiles2
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	ld c, $6
+	ld c, 6
 	call DelayFrames
 	pop bc
 	dec c
 	jr nz, .loop
 	call BattleTransition_BlackScreen
-	ld c, $a
+	ld c, 10
 	jp DelayFrames
 
 ; used for high level trainer dungeon battles
+<<<<<<< HEAD
 BattleTransition_Split: ; 70c40 (1c:4c40)
 	ld c, $9
+=======
+BattleTransition_Split: ; 70bca (1c:4bca)
+	ld c, SCREEN_HEIGHT / 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 .loop
 	push bc
+<<<<<<< HEAD
 	hlCoord 0, 16
 	deCoord 0, 17
 	ld bc, -$28
+=======
+	coord hl, 0, 16
+	coord de, 0, 17
+	ld bc, -SCREEN_WIDTH * 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_CopyTiles1
-	hlCoord 0, 1
-	ld de, wTileMap
-	ld bc, $28
+	coord hl, 0, 1
+	coord de, 0, 0
+	ld bc, SCREEN_WIDTH * 2
 	call BattleTransition_CopyTiles1
+<<<<<<< HEAD
 	hlCoord 18, 0
 	deCoord 19, 0
 	ld bc, -$2
+=======
+	coord hl, 18, 0
+	coord de, 19, 0
+	ld bc, -2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	call BattleTransition_CopyTiles2
-	hlCoord 1, 0
-	ld de, wTileMap
-	ld bc, $2
+	coord hl, 1, 0
+	coord de, 0, 0
+	ld bc, 2
 	call BattleTransition_CopyTiles2
 	call BattleTransition_TransferDelay3
 	call Delay3
@@ -431,26 +501,26 @@ BattleTransition_Split: ; 70c40 (1c:4c40)
 	dec c
 	jr nz, .loop
 	call BattleTransition_BlackScreen
-	ld c, $a
+	ld c, 10
 	jp DelayFrames
 
 BattleTransition_CopyTiles1: ; 70c88 (1c:4c88)
 	ld a, c
-	ld [wWhichTrade], a
+	ld [wBattleTransitionCopyTilesOffset], a
 	ld a, b
-	ld [wTrainerEngageDistance], a
-	ld c, $8
+	ld [wBattleTransitionCopyTilesOffset + 1], a
+	ld c, 8
 .loop1
 	push bc
 	push hl
 	push de
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	call CopyData
 	pop hl
 	pop de
-	ld a, [wWhichTrade]
+	ld a, [wBattleTransitionCopyTilesOffset]
 	ld c, a
-	ld a, [wTrainerEngageDistance]
+	ld a, [wBattleTransitionCopyTilesOffset + 1]
 	ld b, a
 	add hl, bc
 	pop bc
@@ -459,7 +529,7 @@ BattleTransition_CopyTiles1: ; 70c88 (1c:4c88)
 	ld l, e
 	ld h, d
 	ld a, $ff
-	ld c, $14
+	ld c, SCREEN_WIDTH
 .loop2
 	ld [hli], a
 	dec c
@@ -468,26 +538,26 @@ BattleTransition_CopyTiles1: ; 70c88 (1c:4c88)
 
 BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
 	ld a, c
-	ld [wWhichTrade], a
+	ld [wBattleTransitionCopyTilesOffset], a
 	ld a, b
-	ld [wTrainerEngageDistance], a
-	ld c, $9
+	ld [wBattleTransitionCopyTilesOffset + 1], a
+	ld c, SCREEN_HEIGHT / 2
 .loop1
 	push bc
 	push hl
 	push de
-	ld c, $12
+	ld c, SCREEN_HEIGHT
 .loop2
 	ld a, [hl]
 	ld [de], a
 	ld a, e
-	add $14
+	add SCREEN_WIDTH
 	jr nc, .noCarry1
 	inc d
 .noCarry1
 	ld e, a
 	ld a, l
-	add $14
+	add SCREEN_WIDTH
 	jr nc, .noCarry2
 	inc h
 .noCarry2
@@ -496,9 +566,9 @@ BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
 	jr nz, .loop2
 	pop hl
 	pop de
-	ld a, [wWhichTrade]
+	ld a, [wBattleTransitionCopyTilesOffset]
 	ld c, a
-	ld a, [wTrainerEngageDistance]
+	ld a, [wBattleTransitionCopyTilesOffset + 1]
 	ld b, a
 	add hl, bc
 	pop bc
@@ -506,8 +576,8 @@ BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
 	jr nz, .loop1
 	ld l, e
 	ld h, d
-	ld de, $14
-	ld c, $12
+	ld de, SCREEN_WIDTH
+	ld c, SCREEN_HEIGHT
 .loop3
 	ld [hl], $ff
 	add hl, de
@@ -516,10 +586,17 @@ BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
 	ret
 
 ; used for high level wild dungeon battles
+<<<<<<< HEAD
 BattleTransition_VerticalStripes: ; 70cf4 (1c:4cf4)
 	ld c, $12
 	ld hl, wTileMap
 	deCoord 1, 17
+=======
+BattleTransition_VerticalStripes: ; 70c7e (1c:4c7e)
+	ld c, SCREEN_HEIGHT
+	coord hl, 0, 0
+	coord de, 1, 17
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 .loop
@@ -532,20 +609,25 @@ BattleTransition_VerticalStripes: ; 70cf4 (1c:4cf4)
 	call BattleTransition_VerticalStripes_
 	call BattleTransition_TransferDelay3
 	pop hl
-	ld bc, $ffec
+	ld bc, -SCREEN_WIDTH
 	add hl, bc
 	ld e, l
 	ld d, h
 	pop hl
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec c
 	jr nz, .loop
 	jp BattleTransition_BlackScreen
 
+<<<<<<< HEAD
 BattleTransition_VerticalStripes_: ; 70d20 (1c:4d20)
 	ld c, $a
+=======
+BattleTransition_VerticalStripes_: ; 70caa (1c:4caa)
+	ld c, SCREEN_WIDTH / 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 .loop
 	ld [hl], $ff
 	inc hl
@@ -555,10 +637,17 @@ BattleTransition_VerticalStripes_: ; 70d20 (1c:4d20)
 	ret
 
 ; used for low level wild dungeon battles
+<<<<<<< HEAD
 BattleTransition_HorizontalStripes: ; 70d2a (1c:4d2a)
 	ld c, $14
 	ld hl, wTileMap
 	deCoord 19, 1
+=======
+BattleTransition_HorizontalStripes: ; 70cb4 (1c:4cb4)
+	ld c, SCREEN_WIDTH
+	coord hl, 0, 0
+	coord de, 19, 1
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 .loop
@@ -579,9 +668,15 @@ BattleTransition_HorizontalStripes: ; 70d2a (1c:4d2a)
 	jr nz, .loop
 	jp BattleTransition_BlackScreen
 
+<<<<<<< HEAD
 BattleTransition_HorizontalStripes_: ; 70d4e (1c:4d4e)
 	ld c, $9
 	ld de, $28
+=======
+BattleTransition_HorizontalStripes_: ; 70cd8 (1c:4cd8)
+	ld c, SCREEN_HEIGHT / 2
+	ld de, SCREEN_WIDTH * 2
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 .loop
 	ld [hl], $ff
 	add hl, de
@@ -594,11 +689,11 @@ BattleTransition_HorizontalStripes_: ; 70d4e (1c:4d4e)
 ; by animating each half circle one at a time
 BattleTransition_Circle: ; 70d5a (1c:4d5a)
 	call BattleTransition_FlashScreen
-	ld bc, $000a
+	lb bc, 0, SCREEN_WIDTH / 2
 	ld hl, BattleTransition_HalfCircle1
 	call BattleTransition_Circle_Sub1
-	ld c, $a
-	ld b, $1
+	ld c, SCREEN_WIDTH / 2
+	ld b, 1
 	ld hl, BattleTransition_HalfCircle2
 	call BattleTransition_Circle_Sub1
 	jp BattleTransition_BlackScreen
@@ -616,7 +711,7 @@ BattleTransition_Circle_Sub1: ; 70d7c (1c:4d7c)
 	ld a, b
 	call BattleTransition_Circle_Sub2
 	pop hl
-	ld bc, $0005
+	ld bc, 5
 	add hl, bc
 	call BattleTransition_TransferDelay3
 	pop bc
@@ -624,8 +719,13 @@ BattleTransition_Circle_Sub1: ; 70d7c (1c:4d7c)
 	jr nz, BattleTransition_Circle_Sub1
 	ret
 
+<<<<<<< HEAD
 BattleTransition_TransferDelay3: ; 70d8f (1c:4d8f)
 	ld a, $1
+=======
+BattleTransition_TransferDelay3: ; 70d19 (1c:4d19)
+	ld a, 1
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a
@@ -637,7 +737,7 @@ BattleTransition_TransferDelay3: ; 70d8f (1c:4d8f)
 ; by animating both half circles at the same time
 BattleTransition_DoubleCircle: ; 70d9a (1c:4d9a)
 	call BattleTransition_FlashScreen
-	ld c, $a
+	ld c, SCREEN_WIDTH / 2
 	ld hl, BattleTransition_HalfCircle1
 	ld de, BattleTransition_HalfCircle2
 .loop
@@ -651,7 +751,7 @@ BattleTransition_DoubleCircle: ; 70d9a (1c:4d9a)
 	ld a, $1
 	call BattleTransition_Circle_Sub2
 	pop hl
-	ld bc, $5
+	ld bc, 5
 	add hl, bc
 	ld e, l
 	ld d, h
@@ -664,9 +764,9 @@ BattleTransition_DoubleCircle: ; 70d9a (1c:4d9a)
 	jp BattleTransition_BlackScreen
 
 BattleTransition_Circle_Sub2: ; 70dc6 (1c:4dc6)
-	ld [wWhichTrade], a
+	ld [wBattleTransitionCircleScreenQuadrantY], a
 	ld a, [hli]
-	ld [wTrainerEngageDistance], a
+	ld [wBattleTransitionCircleScreenQuadrantX], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -765,7 +865,7 @@ BattleTransition_Circle_Sub3: ; 70e3b (1c:4e3b)
 	inc de
 .loop1
 	ld [hl], $ff
-	ld a, [wTrainerEngageDistance]
+	ld a, [wBattleTransitionCircleScreenQuadrantX]
 	and a
 	jr z, .skip1
 	inc hl
@@ -776,11 +876,11 @@ BattleTransition_Circle_Sub3: ; 70e3b (1c:4e3b)
 	dec c
 	jr nz, .loop1
 	pop hl
-	ld a, [wWhichTrade]
+	ld a, [wBattleTransitionCircleScreenQuadrantY]
 	and a
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	jr z, .skip3
-	ld bc, $ffec
+	ld bc, -SCREEN_WIDTH
 .skip3
 	add hl, bc
 	ld a, [de]
@@ -791,7 +891,7 @@ BattleTransition_Circle_Sub3: ; 70e3b (1c:4e3b)
 	jr z, BattleTransition_Circle_Sub3
 	ld c, a
 .loop2
-	ld a, [wTrainerEngageDistance]
+	ld a, [wBattleTransitionCircleScreenQuadrantX]
 	and a
 	jr z, .skip4
 	dec hl

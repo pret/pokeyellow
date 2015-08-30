@@ -3,8 +3,7 @@ FanClubScript: ; 59b70 (16:5b70)
 
 FanClubBikeInBag:
 ; check if any bike paraphernalia in bag
-	ld a, [wd771]
-	bit 1, a ; got bike voucher?
+	CheckEvent EVENT_GOT_BIKE_VOUCHER
 	ret nz
 	ld b, BICYCLE
 	call IsItemInBag
@@ -24,20 +23,17 @@ FanClubTextPointers: ; 59b84 (16:5b84)
 
 FanClubText1:
 ; pikachu fan
-	db $08 ; asm
-	ld a, [wd771]
-	bit 7, a
+	TX_ASM
+	CheckEvent EVENT_PIKACHU_FAN_BOAST
 	jr nz, .mineisbetter
 	ld hl, .normaltext
 	call PrintText
-	ld hl, wd771
-	set 6, [hl]
+	SetEvent EVENT_SEEL_FAN_BOAST
 	jr .done
 .mineisbetter
 	ld hl, .bettertext
 	call PrintText
-	ld hl, wd771
-	res 7, [hl]
+	ResetEvent EVENT_PIKACHU_FAN_BOAST
 .done
 	jp TextScriptEnd
 
@@ -51,20 +47,17 @@ FanClubText1:
 
 FanClubText2:
 ; seel fan
-	db $08 ; asm
-	ld a, [wd771]
-	bit 6, a
+	TX_ASM
+	CheckEvent EVENT_SEEL_FAN_BOAST
 	jr nz, .mineisbetter
 	ld hl, .normaltext
 	call PrintText
-	ld hl, wd771
-	set 7, [hl]
+	SetEvent EVENT_PIKACHU_FAN_BOAST
 	jr .done
 .mineisbetter
 	ld hl, .bettertext
 	call PrintText
-	ld hl, wd771
-	res 6, [hl]
+	ResetEvent EVENT_SEEL_FAN_BOAST
 .done
 	jp TextScriptEnd
 
@@ -78,7 +71,7 @@ FanClubText2:
 
 FanClubText3:
 ; pikachu
-	db $8
+	TX_ASM
 	ld hl, .text
 	call PrintText
 	ld a, PIKACHU
@@ -92,7 +85,7 @@ FanClubText3:
 
 FanClubText4:
 ; seel
-	db $08 ; asm
+	TX_ASM
 	ld hl, .text
 	call PrintText
 	ld a, SEEL
@@ -106,7 +99,7 @@ FanClubText4:
 
 FanClubText5:
 ; chair
-	db $08 ; asm
+	TX_ASM
 	call FanClubBikeInBag
 	jr nz, .nothingleft
 
@@ -120,13 +113,12 @@ FanClubText5:
 	; tell the story
 	ld hl, .storytext
 	call PrintText
-	ld bc, (BIKE_VOUCHER << 8) | 1
+	lb bc, BIKE_VOUCHER, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, .receivedvouchertext
 	call PrintText
-	ld hl, wd771
-	set 1, [hl]
+	SetEvent EVENT_GOT_BIKE_VOUCHER
 	jr .done
 .BagFull
 	ld hl, .bagfulltext

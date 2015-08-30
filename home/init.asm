@@ -1,7 +1,7 @@
 SoftReset:: ; 1d08 (0:1d08)
 	call StopAllSounds
 	call GBPalWhiteOut
-	ld c, $20
+	ld c, 32
 	call DelayFrames
 	; fallthrough
 
@@ -23,17 +23,17 @@ rLCDC_DEFAULT EQU %11100011
 	xor a
 	ld [rIF], a
 	ld [rIE], a
-	ld [$ff43], a
-	ld [$ff42], a
+	ld [rSCX], a
+	ld [rSCY], a
 	ld [rSB], a
 	ld [rSC], a
-	ld [$ff4b], a
-	ld [$ff4a], a
-	ld [$ff06], a
-	ld [$ff07], a
-	ld [$ff47], a
-	ld [$ff48], a
-	ld [$ff49], a
+	ld [rWX], a
+	ld [rWY], a
+	ld [rTMA], a
+	ld [rTAC], a
+	ld [rBGP], a
+	ld [rOBP0], a
+	ld [rOBP1], a
 
 	ld a, rLCDC_ENABLE_MASK
 	ld [rLCDC], a
@@ -66,10 +66,10 @@ rLCDC_DEFAULT EQU %11100011
 
 	xor a
 	ld [hTilesetType], a
-	ld [$ff41], a
+	ld [rSTAT], a
 	ld [hSCX], a
 	ld [hSCY], a
-	ld [$ff0f], a
+	ld [rIF], a
 	ld [wc0f3], a
 	ld [wc0f4], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
@@ -100,12 +100,12 @@ rLCDC_DEFAULT EQU %11100011
 	predef LoadSGB
 
 	ld a, $1f ; BANK(SFX_1f_67)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, $9c
-	ld [$ffbd], a
+	ld [H_AUTOBGTRANSFERDEST + 1], a
 	xor a
-	ld [$ffbc], a
+	ld [H_AUTOBGTRANSFERDEST], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
 
@@ -128,11 +128,11 @@ ClearVram: ; 1dc6 (0:1dc6)
 
 
 StopAllSounds::
-	ld a, BANK(Music2_UpdateMusic)
-	ld [wc0ef], a
-	ld [wc0f0], a
+	ld a, BANK(Audio1_UpdateMusic)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	xor a
-	ld [wMusicHeaderPointer], a
-	ld [wc0ee], a
-	ld [wcfca], a
+	ld [wAudioFadeOutControl], a
+	ld [wNewSoundID], a
+	ld [wLastMusicSoundID], a
 	jp StopAllMusic

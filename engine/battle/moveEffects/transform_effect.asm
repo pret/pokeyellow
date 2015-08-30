@@ -24,10 +24,10 @@ TransformEffect_: ; f637f (3d:637f)
 	ld hl, W_ENEMYBATTSTATUS2
 .transformEffect
 ; animation(s) played are different if target has Substitute up
-	bit HasSubstituteUp, [hl] 
+	bit HasSubstituteUp, [hl]
 	push af
-	ld hl, Func_79816
-	ld b, BANK(Func_79816)
+	ld hl, HideSubstituteShowMonAnim
+	ld b, BANK(HideSubstituteShowMonAnim)
 	call nz, Bankswitch
 	ld a, [W_OPTIONS]
 	add a
@@ -38,8 +38,8 @@ TransformEffect_: ; f637f (3d:637f)
 	ld b, BANK(AnimationTransformMon)
 .gotAnimToPlay
 	call Bankswitch
-	ld hl, Func_798b2
-	ld b, BANK(Func_798b2)
+	ld hl, ReshowSubstituteAnim
+	ld b, BANK(ReshowSubstituteAnim)
 	pop af
 	call nz, Bankswitch
 	pop bc
@@ -49,13 +49,13 @@ TransformEffect_: ; f637f (3d:637f)
 	pop de
 	pop hl
 	push hl
-; transform user into opposing Pokemon	
+; transform user into opposing Pokemon
 ; species
-	ld a, [hl] 
+	ld a, [hl]
 	ld [de], a
-; type 1, type 2, catch rate, and moves	
+; type 1, type 2, catch rate, and moves
 	ld bc, $5
-	add hl, bc 
+	add hl, bc
 	inc de
 	inc de
 	inc de
@@ -67,12 +67,12 @@ TransformEffect_: ; f637f (3d:637f)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .next
-; save enemy mon DVs in wcceb/wccec (enemy turn only)
+; save enemy mon DVs at wTransformedEnemyMonOriginalDVs
 	ld a, [de]
-	ld [wcceb], a
+	ld [wTransformedEnemyMonOriginalDVs], a
 	inc de
 	ld a, [de]
-	ld [wccec], a
+	ld [wTransformedEnemyMonOriginalDVs + 1], a
 	dec de
 .next
 ; DVs
@@ -82,7 +82,7 @@ TransformEffect_: ; f637f (3d:637f)
 	ld a, [hli]
 	ld [de], a
 	inc de
-; Attack, Defense, Speed, and Special stats	
+; Attack, Defense, Speed, and Special stats
 	inc hl
 	inc hl
 	inc hl
@@ -91,7 +91,7 @@ TransformEffect_: ; f637f (3d:637f)
 	inc de
 	ld bc, $8
 	call CopyData
-	ld bc, wBattleMonMoves - wBattleMonPP 
+	ld bc, wBattleMonMoves - wBattleMonPP
 	add hl, bc ; ld hl, wBattleMonMoves
 	ld b, NUM_MOVES
 .copyPPLoop

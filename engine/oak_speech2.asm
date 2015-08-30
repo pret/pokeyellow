@@ -1,29 +1,29 @@
-LoadDefaultNamesPlayer: ; 695d (1:695d)
-	call Func_6a12
-	ld de, DefaultNamesPlayer ; $6aa8
+ChoosePlayerName: ; 695d (1:695d)
+	call OakSpeechSlidePicRight
+	ld de, DefaultNamesPlayer
 	call DisplayIntroNameTextBox
-	ld a, [wCurrentMenuItem] ; wCurrentMenuItem
+	ld a, [wCurrentMenuItem]
 	and a
-	jr z, .asm_697a
-	ld hl, DefaultNamesPlayerList ; $6af2
-	call Func_6ad6
-	ld de, wPlayerName ; wd158
-	call Func_69ec
-	jr .asm_6999
-.asm_697a
-	ld hl, wPlayerName ; wd158
-	xor a
-	ld [wd07d], a
+	jr z, .customName
+	ld hl, DefaultNamesPlayerList
+	call GetDefaultName
+	ld de, wPlayerName
+	call OakSpeechSlidePicLeft
+	jr .done
+.customName
+	ld hl, wPlayerName
+	xor a ; NAME_PLAYER_SCREEN
+	ld [wNamingScreenType], a
 	call DisplayNamingScreen
 	ld a, [wcf4b]
-	cp $50
-	jr z, .asm_697a
+	cp "@"
+	jr z, .customName
 	call ClearScreen
 	call Delay3
-	ld de, RedPicFront ; $6ede
+	ld de, RedPicFront
 	ld b, BANK(RedPicFront)
-	call IntroPredef3B
-.asm_6999
+	call IntroDisplayPicCenteredOrUpperRight
+.done
 	ld hl, YourNameIsText
 	jp PrintText
 
@@ -31,32 +31,32 @@ YourNameIsText: ; 699f (1:699f)
 	TX_FAR _YourNameIsText
 	db "@"
 
-LoadDefaultNamesRival: ; 69a4 (1:69a4)
-	call Func_6a12 ; 0x69a4 call 0x6a12
+ChooseRivalName: ; 69a4 (1:69a4)
+	call OakSpeechSlidePicRight
 	ld de, DefaultNamesRival
 	call DisplayIntroNameTextBox
-	ld a, [wCurrentMenuItem] ; wCurrentMenuItem
+	ld a, [wCurrentMenuItem]
 	and a
-	jr z, .asm_69c1
+	jr z, .customName
 	ld hl, DefaultNamesRivalList
-	call Func_6ad6
-	ld de, W_RIVALNAME ; wd34a
-	call Func_69ec
-	jr .asm_69e1
-.asm_69c1
-	ld hl, W_RIVALNAME ; wd34a
-	ld a, $1
-	ld [wd07d], a
+	call GetDefaultName
+	ld de, W_RIVALNAME
+	call OakSpeechSlidePicLeft
+	jr .done
+.customName
+	ld hl, W_RIVALNAME
+	ld a, NAME_RIVAL_SCREEN
+	ld [wNamingScreenType], a
 	call DisplayNamingScreen
 	ld a, [wcf4b]
-	cp $50
-	jr z, .asm_69c1
+	cp "@"
+	jr z, .customName
 	call ClearScreen
 	call Delay3
-	ld de, Rival1Pic ; $6049
+	ld de, Rival1Pic
 	ld b, $13
-	call IntroPredef3B
-.asm_69e1
+	call IntroDisplayPicCenteredOrUpperRight
+.done
 	ld hl, HisNameIsText
 	jp PrintText
 
@@ -64,90 +64,96 @@ HisNameIsText: ; 69e7 (1:69e7)
 	TX_FAR _HisNameIsText
 	db "@"
 
-Func_69ec: ; 69ec (1:69ec)
+OakSpeechSlidePicLeft: ; 69ec (1:69ec)
 	push de
-	ld hl, wTileMap
-	ld bc, $c0b
-	call ClearScreenArea
-	ld c, $a
+	coord hl, 0, 0
+	lb bc, 12, 11
+	call ClearScreenArea ; clear the name list text box
+	ld c, 10
 	call DelayFrames
 	pop de
 	ld hl, wcd6d
-	ld bc, $b
+	ld bc, NAME_LENGTH
 	call CopyData
 	call Delay3
-	hlCoord 12, 4
-	ld de, $67d
+	coord hl, 12, 4
+	lb de, 6, 6 * SCREEN_WIDTH + 5
 	ld a, $ff
-	jr asm_6a19
+	jr OakSpeechSlidePicCommon
 
-Func_6a12: ; 6a12 (1:6a12)
-	hlCoord 5, 4
-	ld de, $67d
+OakSpeechSlidePicRight: ; 6a12 (1:6a12)
+	coord hl, 5, 4
+	lb de, 6, 6 * SCREEN_WIDTH + 5
 	xor a
-asm_6a19: ; 6a19 (1:6a19)
+
+OakSpeechSlidePicCommon: ; 6a19 (1:6a19)
 	push hl
 	push de
 	push bc
-	ld [$ff8d], a
+	ld [hSlideDirection], a
 	ld a, d
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
+	ld [hSlideAmount], a
 	ld a, e
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSlidingRegionSize], a
 	ld c, a
-	ld a, [$ff8d]
+	ld a, [hSlideDirection]
 	and a
-	jr nz, .asm_6a2d
-	ld d, $0
+	jr nz, .next
+; If sliding right, point hl to the end of the pic's tiles.
+	ld d, 0
 	add hl, de
-.asm_6a2d
+.next
 	ld d, h
 	ld e, l
-.asm_6a2f
+.loop
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
-	ld a, [$ff8d]
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, [hSlideDirection]
 	and a
-	jr nz, .asm_6a3c
+	jr nz, .slideLeft
+; sliding right
 	ld a, [hli]
 	ld [hld], a
 	dec hl
-	jr .asm_6a3f
-.asm_6a3c
+	jr .next2
+.slideLeft
 	ld a, [hld]
 	ld [hli], a
 	inc hl
-.asm_6a3f
+.next2
 	dec c
-	jr nz, .asm_6a2f
-	ld a, [$ff8d]
+	jr nz, .loop
+	ld a, [hSlideDirection]
 	and a
-	jr z, .asm_6a4a
+	jr z, .next3
+; If sliding left, we need to zero the last tile in the pic (there is no need
+; to take a corresponding action when sliding right because hl initially points
+; to a 0 tile in that case).
 	xor a
 	dec hl
 	ld [hl], a
-.asm_6a4a
-	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+.next3
+	ld a, 1
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ld a, [hSlidingRegionSize]
 	ld c, a
 	ld h, d
 	ld l, e
-	ld a, [$ff8d]
+	ld a, [hSlideDirection]
 	and a
-	jr nz, .asm_6a5e
+	jr nz, .slideLeft2
 	inc hl
-	jr .asm_6a5f
-.asm_6a5e
+	jr .next4
+.slideLeft2
 	dec hl
-.asm_6a5f
+.next4
 	ld d, h
 	ld e, l
-	ld a, [H_DOWNARROWBLINKCNT1] ; $ff8b
+	ld a, [hSlideAmount]
 	dec a
-	ld [H_DOWNARROWBLINKCNT1], a ; $ff8b
-	jr nz, .asm_6a2f
+	ld [hSlideAmount], a
+	jr nz, .loop
 	pop bc
 	pop de
 	pop hl
@@ -155,27 +161,27 @@ asm_6a19: ; 6a19 (1:6a19)
 
 DisplayIntroNameTextBox: ; 6a6c (1:6a6c)
 	push de
-	ld hl, wTileMap
+	coord hl, 0, 0
 	ld b, $a
 	ld c, $9
 	call TextBoxBorder
-	hlCoord 3, 0
-	ld de, .namestring ; $6aa3
+	coord hl, 3, 0
+	ld de, .namestring
 	call PlaceString
 	pop de
-	hlCoord 2, 2
+	coord hl, 2, 2
 	call PlaceString
 	call UpdateSprites
 	xor a
-	ld [wCurrentMenuItem], a ; wCurrentMenuItem
-	ld [wLastMenuItem], a ; wLastMenuItem
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
 	inc a
-	ld [wTopMenuItemX], a ; wTopMenuItemX
-	ld [wMenuWatchedKeys], a ; wMenuWatchedKeys
+	ld [wTopMenuItemX], a
+	ld [wMenuWatchedKeys], a ; A_BUTTON
 	inc a
-	ld [wTopMenuItemY], a ; wTopMenuItemY
+	ld [wTopMenuItemY], a
 	inc a
-	ld [wMaxMenuItem], a ; wMaxMenuItem
+	ld [wMaxMenuItem], a
 	jp HandleMenuInput
 
 .namestring ; 6aa3 (1:6aa3)
@@ -195,27 +201,30 @@ DefaultNamesRival:
 	next "JOHN"
 	db   "@"
 
-Func_6ad6: ; 6ad6 (1:6ad6)
+GetDefaultName: ; 6ad6 (1:6ad6)
+; a = name index
+; hl = name list
 	ld b, a
-	ld c, $0
-.asm_6ad9
+	ld c, 0
+.loop
 	ld d, h
 	ld e, l
-.asm_6adb
+.innerLoop
 	ld a, [hli]
-	cp $50
-	jr nz, .asm_6adb
+	cp "@"
+	jr nz, .innerLoop
 	ld a, b
 	cp c
-	jr z, .asm_6ae7
+	jr z, .foundName
 	inc c
-	jr .asm_6ad9
-.asm_6ae7
+	jr .loop
+.foundName
 	ld h, d
 	ld l, e
 	ld de, wcd6d
 	ld bc, $14
 	jp CopyData
+	
 DefaultNamesPlayerList:
 	db "NEW NAME@YELLOW@ASH@JACK@"
 DefaultNamesRivalList:

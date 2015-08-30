@@ -11,10 +11,10 @@ Route18Object: ; 0x58c5a (size=66)
 	db $7, $2b, $4 ; Route18Text4
 	db $5, $21, $5 ; Route18Text5
 
-	db $3 ; people
-	db SPRITE_BLACK_HAIR_BOY_1, $b + 4, $24 + 4, $ff, $d3, TRAINER | $1, BIRD_KEEPER + $C8, $8
-	db SPRITE_BLACK_HAIR_BOY_1, $f + 4, $28 + 4, $ff, $d2, TRAINER | $2, BIRD_KEEPER + $C8, $9
-	db SPRITE_BLACK_HAIR_BOY_1, $d + 4, $2a + 4, $ff, $d2, TRAINER | $3, BIRD_KEEPER + $C8, $a
+	db $3 ; objects
+	object SPRITE_BLACK_HAIR_BOY_1, $24, $b, STAY, RIGHT, $1, OPP_BIRD_KEEPER, $8
+	object SPRITE_BLACK_HAIR_BOY_1, $28, $f, STAY, LEFT, $2, OPP_BIRD_KEEPER, $9
+	object SPRITE_BLACK_HAIR_BOY_1, $2a, $d, STAY, LEFT, $3, OPP_BIRD_KEEPER, $a
 
 	; warp-to
 	EVENT_DISP ROUTE_18_WIDTH, $8, $21 ; ROUTE_18_GATE_1F

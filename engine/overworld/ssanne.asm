@@ -1,6 +1,6 @@
 AnimateBoulderDust: ; 79f54 (1e:5f54)
 	ld a, $1
-	ld [wcd50], a ; select the boulder dust offsets
+	ld [wWhichAnimationOffsets], a ; select the boulder dust offsets
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -8,14 +8,14 @@ AnimateBoulderDust: ; 79f54 (1e:5f54)
 	ld a, %11100100
 	ld [rOBP1], a
 	call LoadSmokeTileFourTimes
-	callba WriteCutTreeBoulderDustAnimationOAMBlock
+	callba WriteCutOrBoulderDustAnimationOAMBlock
 	ld c, 8 ; number of steps in animation
 .loop
 	push bc
 	call GetMoveBoulderDustFunctionPointer
 	ld bc, .returnAddress
 	push bc
-	ld c, $4
+	ld c, 4
 	jp [hl]
 .returnAddress
 	ld a, [rOBP1]
@@ -36,7 +36,7 @@ GetMoveBoulderDustFunctionPointer: ; 79f92 (1e:5f92)
 	ld b, $0
 	add hl, bc
 	ld a, [hli]
-	ld [wd08a], a
+	ld [wCoordAdjustmentAmount], a
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -84,9 +84,10 @@ LoadSmokeTileFourTimes: ; 79fc0 (1e:5fc0)
 	ret
 
 LoadSmokeTile: ; 79fd4 (1e:5fd4)
-	ld de, SSAnneSmokePuffTile ; $5fdd
-	ld bc, (BANK(SSAnneSmokePuffTile) << 8) + $01
+	ld de, SSAnneSmokePuffTile
+	lb bc, BANK(SSAnneSmokePuffTile), (SSAnneSmokePuffTileEnd - SSAnneSmokePuffTile) / $10
 	jp CopyVideoData
 
 SSAnneSmokePuffTile: ; 79fdd (1e:5fdd)
 	INCBIN "gfx/ss_anne_smoke_puff.2bpp"
+SSAnneSmokePuffTileEnd:

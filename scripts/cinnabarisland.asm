@@ -2,10 +2,8 @@ CinnabarIslandScript: ; 1ca19 (7:4a19)
 	call EnableAutoTextBoxDrawing
 	ld hl, wd126
 	set 5, [hl]
-	ld hl, wd796
-	res 0, [hl]
-	ld hl, wd7a3
-	res 1, [hl]
+	ResetEvent EVENT_MANSION_SWITCH_ON
+	ResetEvent EVENT_LAB_STILL_REVIVING_FOSSIL
 	ld hl, CinnabarIslandScriptPointers
 	ld a, [W_CINNABARISLANDCURSCRIPT]
 	jp CallFunctionInTable
@@ -24,10 +22,10 @@ CinnabarIslandScript0: ; 1ca38 (7:4a38)
 	ld a, [W_XCOORD]
 	cp $12
 	ret nz
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
 	ld a, $8
-	ld [wd528], a
-	ld a, $8
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [hJoyHeld], a

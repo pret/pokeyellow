@@ -226,15 +226,15 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	add hl, bc
 	ld a, [H_DOWNARROWBLINKCNT1]
 	add $31
-	jr asm_f6203
+	jr CopyUncompressedPicToHL
 
-Func_f61f9: ; 3f0c6 (f:70c6)
+Func_f61f9: ; f61f9 (3d:61f9)
 	ld a, [wPredefRegisters]
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
 	ld a, [$ffe1]
-asm_f6203: ; f6203 (3d:6203)
+CopyUncompressedPicToHL: ; f6203 (3d:6203)
 	ld bc, $707
 	ld de, $14
 	push af

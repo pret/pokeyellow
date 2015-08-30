@@ -12,11 +12,9 @@ FocusEnergyEffect_: ; f628b (3d:628b)
 	ld hl, GettingPumpedText
 	jp PrintText
 .alreadyUsing
-	ld c, $32
+	ld c, 50
 	call DelayFrames
-	ld hl, PrintButItFailedText_
-	ld b, BANK(PrintButItFailedText_)
-	jp Bankswitch
+	jpab PrintButItFailedText_
 
 GettingPumpedText: ; f62b5 (3d:62b5)
 	db $0a

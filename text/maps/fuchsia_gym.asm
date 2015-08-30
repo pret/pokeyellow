@@ -1,4 +1,4 @@
-_UnnamedText_75581::
+_KogaBeforeBattleText::
 	text "KOGA: Fwahahaha!"
 
 	para "A mere child like"
@@ -16,7 +16,7 @@ _UnnamedText_75581::
 	cont "techniques!"
 	done
 
-_UnnamedText_75586::
+_KogaAfterBattleText::
 	text "Humph!"
 	line "You have proven"
 	cont "your worth!"
@@ -25,7 +25,7 @@ _UnnamedText_75586::
 	line "SOULBADGE!"
 	prompt
 
-_UnnamedText_7558b::
+_KogaExplainToxicText::
 	text "When afflicted by"
 	line "TOXIC, #MON"
 	cont "suffer more and"
@@ -36,7 +36,7 @@ _UnnamedText_7558b::
 	line "terrorize foes!"
 	done
 
-_UnnamedText_75590::
+_FuchsiaGymText9::
 	text "Now that you have"
 	line "the SOULBADGE,"
 	cont "the DEFENSE of"
@@ -78,7 +78,6 @@ _FuchsiaGymBattleText1::
 	cont "#MON!"
 
 	para "It's strategy!"
-
 	para "I'll show you how"
 	line "strategy can beat"
 	cont "brute strength!"
@@ -105,14 +104,12 @@ _FuchsiaGymEndBattleText2::
 	text "I'm done"
 	line "for!"
 	prompt
-
 _FuchsiaGymAfterBattleText2::
 	text "I will keep on"
 	line "training under"
 	cont "KOGA, my ninja"
 	cont "master!"
 	done
-
 _FuchsiaGymBattleText3::
 	text "Let's see you"
 	line "beat my special"
@@ -143,7 +140,6 @@ _FuchsiaGymEndBattleText4::
 	text "Whoa!"
 	line "He's got it!"
 	prompt
-
 _FuchsiaGymAfterBattleText4::
 	text "You impressed me!"
 	line "Here's a hint!"
@@ -196,7 +192,7 @@ _FuchsiaGymAfterBattleText6::
 	cont "choose?"
 	done
 
-_UnnamedText_7564e::
+_FuchsiaGymText_7564e::
 	text "Yo! Champ in"
 	line "making!"
 
@@ -207,15 +203,12 @@ _UnnamedText_7564e::
 	para "KOGA might appear"
 	line "close, but he's"
 	cont "blocked off!"
-
 	para "You have to find"
 	line "gaps in the walls"
 	cont "to reach him!"
 	done
-
-_UnnamedText_75653::
+_FuchsiaGymText_75653::
 	text "It's amazing how"
 	line "ninja can terrify"
 	cont "even now!"
 	done
-

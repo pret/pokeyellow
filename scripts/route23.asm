@@ -10,17 +10,13 @@ Route23Script_511e9: ; 511e9 (14:51e9)
 	bit 6, [hl]
 	res 6, [hl]
 	ret z
-	ld hl, wd7ee
-	res 0, [hl]
-	res 7, [hl]
-	ld hl, wd813
-	res 0, [hl]
-	res 6, [hl]
+	ResetEvents EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH1, EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH2
+	ResetEvents EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1, EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH2
 	ld a, HS_VICTORY_ROAD_3_BOULDER
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef ShowObject
 	ld a, HS_VICTORY_ROAD_2_BOULDER
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef_jump HideObject
 
 Route23ScriptPointers: ; 51213 (14:5213)
@@ -29,11 +25,11 @@ Route23ScriptPointers: ; 51213 (14:5213)
 	dw Route23Script2
 
 Route23Script0: ; 51219 (14:5219)
-	ld hl, YCoordsData_51255 ; $5255
+	ld hl, YCoordsData_51255
 	ld a, [W_YCOORD]
 	ld b, a
 	ld e, $0
-	ld c, $7
+	EventFlagBit c, EVENT_PASSED_EARTHBADGE_CHECK + 1, EVENT_PASSED_CASCADEBADGE_CHECK
 .asm_51224
 	ld a, [hli]
 	cp $ff
@@ -41,19 +37,19 @@ Route23Script0: ; 51219 (14:5219)
 	inc e
 	dec c
 	cp b
-	jr nz, .asm_51224 ; 0x5122b $f7
+	jr nz, .asm_51224
 	cp $23
-	jr nz, .asm_51237 ; 0x5122f $6
+	jr nz, .asm_51237
 	ld a, [W_XCOORD]
 	cp $e
 	ret nc
 .asm_51237
 	ld a, e
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	ld a, c
-	ld [wWhichTrade], a
-	ld b, $2
-	ld hl, wd7ed
+	ld [wWhichBadge], a
+	ld b, FLAG_TEST
+	EventFlagAddress hl, EVENT_PASSED_CASCADEBADGE_CHECK
 	predef FlagActionPredef
 	ld a, c
 	and a
@@ -68,22 +64,22 @@ YCoordsData_51255: ; 51255 (14:5255)
 	db $23,$38,$55,$60,$69,$77,$88,$FF
 
 Route23Script_5125d: ; 5125d (14:525d)
-	ld hl, BadgeTextPointers ; $5276
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld hl, BadgeTextPointers
+	ld a, [wWhichBadge]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	ld de, wcd6d
-.asm_5126e
+.copyTextLoop
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp $50
-	jr nz, .asm_5126e
+	cp "@"
+	jr nz, .copyTextLoop
 	ret
 
 BadgeTextPointers: ; 51276 (14:5276)
@@ -119,7 +115,7 @@ CascadeBadgeText: ; 512cb (14:52cb)
 Route23Script_512d8: ; 512d8 (14:52d8)
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $80
+	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
 	ld [wSpriteStateData1 + 9], a
@@ -146,54 +142,54 @@ Route23TextPointers: ; 512f7 (14:52f7)
 	dw Route23Text8
 
 Route23Text1: ; 51307 (14:5307)
-	db $08 ; asm
-	ld a, $6
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_EARTHBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text2: ; 51310 (14:5310)
-	db $08 ; asm
-	ld a, $5
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_VOLCANOBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text3: ; 51319 (14:5319)
-	db $08 ; asm
-	ld a, $4
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_MARSHBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text4: ; 51322 (14:5322)
-	db $08 ; asm
-	ld a, $3
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_SOULBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text5: ; 5132b (14:532b)
-	db $08 ; asm
-	ld a, $2
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_RAINBOWBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text6: ; 51334 (14:5334)
-	db $08 ; asm
-	ld a, $1
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_THUNDERBADGE_CHECK, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Text7: ; 5133d (14:533d)
-	db $8
-	ld a, $0
+	TX_ASM
+	EventFlagBit a, EVENT_PASSED_CASCADEBADGE_CHECK
 	call Route23Script_51346
 	jp TextScriptEnd
 
 Route23Script_51346: ; 51346 (14:5346)
-	ld [wWhichTrade], a ; wWhichTrade
+	ld [wWhichBadge], a
 	call Route23Script_5125d
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wWhichBadge]
 	inc a
 	ld c, a
-	ld b, $2
+	ld b, FLAG_TEST
 	ld hl, W_OBTAINEDBADGES
 	predef FlagActionPredef
 	ld a, c
@@ -208,10 +204,10 @@ Route23Script_51346: ; 51346 (14:5346)
 .asm_5136e
 	ld hl, VictoryRoadGuardText2
 	call PrintText
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wWhichBadge]
 	ld c, a
-	ld b, $1
-	ld hl, wd7ed
+	ld b, FLAG_SET
+	EventFlagAddress hl, EVENT_PASSED_CASCADEBADGE_CHECK
 	predef FlagActionPredef
 	ld a, $2
 	ld [W_ROUTE23CURSCRIPT], a
@@ -223,8 +219,8 @@ Route23Script_51388: ; 51388 (14:5388)
 
 VictoryRoadGuardText1: ; 5138e (14:538e)
 	TX_FAR _VictoryRoadGuardText1
-	db $08 ; asm
-	ld a, (SFX_02_51 - SFX_Headers_02) / 3
+	TX_ASM
+	ld a, SFX_DENIED
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	jp TextScriptEnd

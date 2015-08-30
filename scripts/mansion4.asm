@@ -13,8 +13,7 @@ Mansion4Script_523cf: ; 523cf (14:63cf)
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld a, [wd796]
-	bit 0, a
+	CheckEvent EVENT_MANSION_SWITCH_ON
 	jr nz, .asm_523ff
 	ld a, $e
 	ld bc, $80d
@@ -46,12 +45,12 @@ Mansion4Script_523cf: ; 523cf (14:63cf)
 
 Mansion4Script_Switches: ; 52420 (14:6420)
 	ld a, [wSpriteStateData1 + 9]
-	cp $4
+	cp SPRITE_FACING_UP
 	ret nz
 	xor a
 	ld [hJoyHeld], a
 	ld a, $9
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 Mansion4ScriptPointers: ; 52430 (14:6430)
@@ -62,43 +61,43 @@ Mansion4ScriptPointers: ; 52430 (14:6430)
 Mansion4TextPointers: ; 52436 (14:6436)
 	dw Mansion4Text1
 	dw Mansion4Text2
-	dw Predef5CText
-	dw Predef5CText
-	dw Predef5CText
-	dw Predef5CText
+	dw PickUpItemText
+	dw PickUpItemText
+	dw PickUpItemText
+	dw PickUpItemText
 	dw Mansion4Text7
-	dw Predef5CText
+	dw PickUpItemText
 	dw Mansion3Text6
 
 Mansion4TrainerHeaders: ; 52448 (14:6448)
 Mansion4TrainerHeader0: ; 52448 (14:6448)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_MANSION_4_TRAINER_0
 	db ($0 << 4) ; trainer's view range
-	dw wd84b ; flag's byte
-	dw Mansion4BattleText1 ; 0x6475 TextBeforeBattle
-	dw Mansion4AfterBattleText1 ; 0x647f TextAfterBattle
-	dw Mansion4EndBattleText1 ; 0x647a TextEndBattle
-	dw Mansion4EndBattleText1 ; 0x647a TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_MANSION_4_TRAINER_0
+	dw Mansion4BattleText1 ; TextBeforeBattle
+	dw Mansion4AfterBattleText1 ; TextAfterBattle
+	dw Mansion4EndBattleText1 ; TextEndBattle
+	dw Mansion4EndBattleText1 ; TextEndBattle
 
 Mansion4TrainerHeader2: ; 52454 (14:6454)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_MANSION_4_TRAINER_2
 	db ($3 << 4) ; trainer's view range
-	dw wd84b ; flag's byte
-	dw Mansion4BattleText2 ; 0x6484 TextBeforeBattle
-	dw Mansion4AfterBattleText2 ; 0x648e TextAfterBattle
-	dw Mansion4EndBattleText2 ; 0x6489 TextEndBattle
-	dw Mansion4EndBattleText2 ; 0x6489 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_MANSION_4_TRAINER_2
+	dw Mansion4BattleText2 ; TextBeforeBattle
+	dw Mansion4AfterBattleText2 ; TextAfterBattle
+	dw Mansion4EndBattleText2 ; TextEndBattle
+	dw Mansion4EndBattleText2 ; TextEndBattle
 
 	db $ff
 
 Mansion4Text1: ; 52461 (14:6461)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Mansion4TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Mansion4Text2: ; 5246b (14:646b)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Mansion4TrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd

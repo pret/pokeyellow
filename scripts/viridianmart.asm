@@ -6,13 +6,12 @@ ViridianMartScript: ; 1d46e (7:546e)
 	jp CallFunctionInTable
 
 ViridianMartScript_1d47d: ; 1d47d (7:547d)
-	ld a, [wd74e]
-	bit 0, a
-	jr nz, .asm_1d489 ; 0x1d482 $5
-	ld hl, ViridianMartTextPointers ; $54e0
-	jr .asm_1d48c ; 0x1d487 $3
+	CheckEvent EVENT_OAK_GOT_PARCEL
+	jr nz, .asm_1d489
+	ld hl, ViridianMartTextPointers
+	jr .asm_1d48c
 .asm_1d489
-	ld hl, ViridianMartTextPointers + $a ; $54ea ; starts at ViridianMartText6
+	ld hl, ViridianMartTextPointers + $a ; starts at ViridianMartText6
 .asm_1d48c
 	ld a, l
 	ld [W_MAPTEXTPTR], a
@@ -28,7 +27,7 @@ ViridianMartScriptPointers: ; 1d495 (7:5495)
 ViridianMartScript0: ; 1d49b (7:549b)
 	call UpdateSprites
 	ld a, $4
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld hl, wSimulatedJoypadStatesEnd
 	ld de, RLEMovement1d4bb
@@ -41,8 +40,8 @@ ViridianMartScript0: ; 1d49b (7:549b)
 	ret
 
 RLEMovement1d4bb: ; 1d4bb (7:54bb)
-	db $20, $01
-	db $40, $02
+	db D_LEFT, $01
+	db D_UP, $02
 	db $ff
 
 ViridianMartScript1: ; 1d4c0 (7:54c0)
@@ -51,12 +50,11 @@ ViridianMartScript1: ; 1d4c0 (7:54c0)
 	ret nz
 	call Delay3
 	ld a, $5
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld bc, (OAKS_PARCEL << 8) + 1
+	lb bc, OAKS_PARCEL, 1
 	call GiveItem
-	ld hl, wd74e
-	set 1, [hl]
+	SetEvent EVENT_GOT_OAKS_PARCEL
 	ld a, $2
 	ld [W_VIRIDIANMARKETCURSCRIPT], a
 	; fallthrough

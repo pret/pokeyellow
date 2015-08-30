@@ -13,13 +13,13 @@ Route10Object: ; 0x582f6 (size=96)
 	db $37, $9, $9 ; Route10Text9
 	db $29, $5, $a ; Route10Text10
 
-	db $6 ; people
-	db SPRITE_BLACK_HAIR_BOY_2, $2c + 4, $a + 4, $ff, $d2, TRAINER | $1, POKEMANIAC + $C8, $1
-	db SPRITE_HIKER, $39 + 4, $3 + 4, $ff, $d1, TRAINER | $2, HIKER + $C8, $7
-	db SPRITE_BLACK_HAIR_BOY_2, $40 + 4, $e + 4, $ff, $d2, TRAINER | $3, POKEMANIAC + $C8, $2
-	db SPRITE_LASS, $19 + 4, $7 + 4, $ff, $d2, TRAINER | $4, JR__TRAINER_F + $C8, $7
-	db SPRITE_HIKER, $3d + 4, $3 + 4, $ff, $d0, TRAINER | $5, HIKER + $C8, $8
-	db SPRITE_LASS, $36 + 4, $7 + 4, $ff, $d0, TRAINER | $6, JR__TRAINER_F + $C8, $8
+	db $6 ; objects
+	object SPRITE_BLACK_HAIR_BOY_2, $a, $2c, STAY, LEFT, $1, OPP_POKEMANIAC, $1
+	object SPRITE_HIKER, $3, $39, STAY, UP, $2, OPP_HIKER, $7
+	object SPRITE_BLACK_HAIR_BOY_2, $e, $40, STAY, LEFT, $3, OPP_POKEMANIAC, $2
+	object SPRITE_LASS, $7, $19, STAY, LEFT, $4, OPP_JR__TRAINER_F, $7
+	object SPRITE_HIKER, $3, $3d, STAY, DOWN, $5, OPP_HIKER, $8
+	object SPRITE_LASS, $7, $36, STAY, DOWN, $6, OPP_JR__TRAINER_F, $8
 
 	; warp-to
 	EVENT_DISP ROUTE_10_WIDTH, $13, $b ; ROCK_TUNNEL_POKECENTER

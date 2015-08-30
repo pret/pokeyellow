@@ -1,30 +1,33 @@
 EmotionBubble: ; 17c47 (5:7c47)
-	ld a, [wcd50]
+	ld a, [wWhichEmotionBubble]
 	ld c, a
-	ld b, $0
-	ld hl, EmotionBubblesPointerTable ; $7caf
+	ld b, 0
+	ld hl, EmotionBubblesPointerTable
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
 	ld hl, vChars1 + $780
-	ld bc, (BANK(EmotionBubblesPointerTable) << 8) + $04
+	lb bc, BANK(EmotionBubbles), $04
 	call CopyVideoData
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	ld a, [wd736]
-	bit 6, a
+	bit 6, a ; are the last 4 OAM entries reserved for a shadow or fishing rod?
 	ld hl, wOAMBuffer + $8f
 	ld de, wOAMBuffer + $9f
-	jr z, .asm_17c7a
+	jr z, .next
 	ld hl, wOAMBuffer + $7f
 	ld de, wOAMBuffer + $8f
-.asm_17c7a
+
+; Copy OAM data 16 bytes forward to make room for emotion bubble OAM data at the
+; start of the OAM buffer.
+.next
 	ld bc, $90
-.asm_17c7d
+.loop
 	ld a, [hl]
 	ld [de], a
 	dec hl
@@ -32,12 +35,14 @@ EmotionBubble: ; 17c47 (5:7c47)
 	dec bc
 	ld a, c
 	or b
-	jr nz, .asm_17c7d
+	jr nz, .loop
+
+; get the screen coordinates of the sprite the bubble is to be displayed above
 	ld hl, wSpriteStateData1 + 4
-	ld a, [wcd4f]
+	ld a, [wEmotionBubbleSpriteIndex]
 	swap a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	ld a, [hli]
 	ld b, a
@@ -45,10 +50,11 @@ EmotionBubble: ; 17c47 (5:7c47)
 	ld a, [hl]
 	add $8
 	ld c, a
-	ld de, EmotionBubblesOAM ; $7cb5
+
+	ld de, EmotionBubblesOAM
 	xor a
 	call WriteOAMBlock
-	ld c, $3c
+	ld c, 60
 	call DelayFrames
 	pop af
 	ld [wUpdateSpritesEnabled], a

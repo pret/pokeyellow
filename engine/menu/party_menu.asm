@@ -1,4 +1,4 @@
-; [wd07d] = menu type / message ID
+; [wPartyMenuTypeOrMessageID] = menu type / message ID
 ; if less than $F0, it is a menu type
 ; menu types:
 ; 00: normal pokemon menu (e.g. Start menu)
@@ -21,21 +21,21 @@ DrawPartyMenu_: ; 12cd2 (4:6cd2)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
-	call UpdateSprites ; move sprites
+	call UpdateSprites
 	callba LoadMonPartySpriteGfxWithLCDDisabled ; load pokemon icon graphics
 
 RedrawPartyMenu_: ; 12ce3 (4:6ce3)
-	ld a,[wd07d]
-	cp a,$04
+	ld a,[wPartyMenuTypeOrMessageID]
+	cp a,SWAP_MONS_PARTY_MENU
 	jp z,.printMessage
 	call ErasePartyMenuCursors
-	callba SendBlkPacket_PartyMenu ; loads some data to wcf2e
-	hlCoord 3, 0
+	callba InitPartyMenuBlkPacket
+	coord hl, 3, 0
 	ld de,wPartySpecies
 	xor a
 	ld c,a
 	ld [hPartyMonIndex],a
-	ld [wcf2d],a
+	ld [wWhichPartyMenuHPBar],a
 .loop
 	ld a,[de]
 	cp a,$FF ; reached the terminator?
@@ -75,10 +75,10 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	inc hl
 	inc hl
 .skipUnfilledRightArrow
-	ld a,[wd07d] ; menu type
-	cp a,$03
+	ld a,[wPartyMenuTypeOrMessageID] ; menu type
+	cp a,TMHM_PARTY_MENU
 	jr z,.teachMoveMenu
-	cp a,$05
+	cp a,EVO_STONE_PARTY_MENU
 	jr z,.evolutionStoneMenu
 	push hl
 	ld bc,14 ; 14 columns to the right
@@ -96,7 +96,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	ld a,[hFlags_0xFFF6]
 	res 0,a
 	ld [hFlags_0xFFF6],a
-	call SetPartyMenuHealthBarColor ; color the HP bar (on SGB)
+	call SetPartyMenuHPBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel
 .teachMoveMenu
@@ -150,7 +150,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	ld l,a
 	ld de,wcd6d
 	ld a,BANK(EvosMovesPointerTable)
-	ld bc,13
+	ld bc,Mon133_EvosEnd - Mon133_EvosMoves
 	call FarCopyData
 	ld hl,wcd6d
 	ld de,.notAbleToEvolveText
@@ -167,7 +167,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	dec hl
 	dec hl
 	ld b,[hl]
-	ld a,[wd156] ; evolution stone item ID
+	ld a,[wEvoStoneItemID] ; the stone the player used
 	inc hl
 	inc hl
 	inc hl
@@ -188,15 +188,15 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 .notAbleToEvolveText
 	db "NOT ABLE@"
 .afterDrawingMonEntries
-	ld b,$0A
-	call GoPAL_SET
+	ld b, SET_PAL_PARTY_MENU
+	call RunPaletteCommand
 .printMessage
 	ld hl,wd730
 	ld a,[hl]
 	push af
 	push hl
 	set 6,[hl] ; turn off letter printing delay
-	ld a,[wd07d] ; message ID
+	ld a,[wPartyMenuTypeOrMessageID] ; message ID
 	cp a,$F0
 	jr nc,.printItemUseMessage
 	add a
@@ -227,7 +227,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	ld h,[hl]
 	ld l,a
 	push hl
-	ld a,[wcf06]
+	ld a,[wUsedItemOnWhichPokemon]
 	ld hl,wPartyMonNicks
 	call GetPartyMonName
 	pop hl
@@ -311,15 +311,15 @@ RareCandyText: ; 12ec0 (4:6ec0)
 	db $06
 	db "@"
 
-SetPartyMenuHealthBarColor: ; 12ec7 (4:6ec7)
-	ld hl, wcf1f
-	ld a, [wcf2d]
+SetPartyMenuHPBarColor: ; 12ec7 (4:6ec7)
+	ld hl, wPartyMenuHPBarColors
+	ld a, [wWhichPartyMenuHPBar]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	call GetHealthBarColor
-	ld b, $fc
-	call GoPAL_SET
-	ld hl, wcf2d
+	ld b, UPDATE_PARTY_MENU_BLK_PACKET
+	call RunPaletteCommand
+	ld hl, wWhichPartyMenuHPBar
 	inc [hl]
 	ret

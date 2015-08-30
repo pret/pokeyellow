@@ -13,12 +13,11 @@ VictoryRoad3Script_44996: ; 44996 (11:4996)
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld hl, wd813
-	bit 0, [hl]
+	CheckEventHL EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1
 	ret z
 	ld a, $1d
-	ld [wd09f], a
-	ld bc, $503
+	ld [wNewTileBlockID], a
+	lb bc, 5, 3
 	predef_jump ReplaceTileBlock
 
 VictoryRoad3ScriptPointers: ; 449b1 (11:49b1)
@@ -31,27 +30,24 @@ VictoryRoad3Script0: ; 449b7 (11:49b7)
 	bit 7, [hl]
 	res 7, [hl]
 	jp z, .asm_449fe
-	ld hl, .coordsData_449f9 ; $49f9
+	ld hl, .coordsData_449f9
 	call CheckBoulderCoords
 	jp nc, .asm_449fe
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wCoordIndex]
 	cp $1
 	jr nz, .asm_449dc
 	ld hl, wd126
 	set 5, [hl]
-	ld hl, wd813
-	set 0, [hl]
+	SetEvent EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1
 	ret
 .asm_449dc
-	ld hl, wd813
-	bit 6, [hl]
-	set 6, [hl]
+	CheckAndSetEvent EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH2
 	jr nz, .asm_449fe
 	ld a, HS_VICTORY_ROAD_3_BOULDER
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef HideObject
 	ld a, HS_VICTORY_ROAD_2_BOULDER
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef_jump ShowObject
 
 .coordsData_449f9: ; 449f9 (11:49f9)
@@ -60,11 +56,11 @@ VictoryRoad3Script0: ; 449b7 (11:49b7)
 	db $FF
 
 .asm_449fe
-	ld a, $c2
+	ld a, VICTORY_ROAD_2
 	ld [wDungeonWarpDestinationMap], a
-	ld hl, .coordsData_449f9 ; $49f9
-	call Func_46981
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld hl, .coordsData_449f9
+	call IsPlayerOnDungeonWarp
+	ld a, [wCoordIndex]
 	cp $1
 	jr nz, .asm_44a1b
 	ld hl, wd72d
@@ -83,8 +79,8 @@ VictoryRoad3TextPointers: ; 44a24 (11:4a24)
 	dw VictoryRoad3Text2
 	dw VictoryRoad3Text3
 	dw VictoryRoad3Text4
-	dw Predef5CText
-	dw Predef5CText
+	dw PickUpItemText
+	dw PickUpItemText
 	dw BoulderText
 	dw BoulderText
 	dw BoulderText
@@ -92,63 +88,63 @@ VictoryRoad3TextPointers: ; 44a24 (11:4a24)
 
 VictoryRoad3TrainerHeaders: ; 44a38 (11:4a38)
 VictoryRoad3TrainerHeader0: ; 44a38 (11:4a38)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_VICTORY_ROAD_3_TRAINER_0
 	db ($1 << 4) ; trainer's view range
-	dw wd813 ; flag's byte
-	dw VictoryRoad3BattleText2 ; 0x4a91 TextBeforeBattle
-	dw VictoryRoad3AfterBattleText2 ; 0x4a9b TextAfterBattle
-	dw VictoryRoad3EndBattleText2 ; 0x4a96 TextEndBattle
-	dw VictoryRoad3EndBattleText2 ; 0x4a96 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_VICTORY_ROAD_3_TRAINER_0
+	dw VictoryRoad3BattleText2 ; TextBeforeBattle
+	dw VictoryRoad3AfterBattleText2 ; TextAfterBattle
+	dw VictoryRoad3EndBattleText2 ; TextEndBattle
+	dw VictoryRoad3EndBattleText2 ; TextEndBattle
 
 VictoryRoad3TrainerHeader2: ; 44a44 (11:4a44)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_VICTORY_ROAD_3_TRAINER_2
 	db ($4 << 4) ; trainer's view range
-	dw wd813 ; flag's byte
-	dw VictoryRoad3BattleText3 ; 0x4aa0 TextBeforeBattle
-	dw VictoryRoad3AfterBattleText3 ; 0x4aaa TextAfterBattle
-	dw VictoryRoad3EndBattleText3 ; 0x4aa5 TextEndBattle
-	dw VictoryRoad3EndBattleText3 ; 0x4aa5 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_VICTORY_ROAD_3_TRAINER_2
+	dw VictoryRoad3BattleText3 ; TextBeforeBattle
+	dw VictoryRoad3AfterBattleText3 ; TextAfterBattle
+	dw VictoryRoad3EndBattleText3 ; TextEndBattle
+	dw VictoryRoad3EndBattleText3 ; TextEndBattle
 
 VictoryRoad3TrainerHeader3: ; 44a50 (11:4a50)
-	db $3 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_VICTORY_ROAD_3_TRAINER_3
 	db ($4 << 4) ; trainer's view range
-	dw wd813 ; flag's byte
-	dw VictoryRoad3BattleText4 ; 0x4aaf TextBeforeBattle
-	dw VictoryRoad3AfterBattleText4 ; 0x4ab9 TextAfterBattle
-	dw VictoryRoad3EndBattleText4 ; 0x4ab4 TextEndBattle
-	dw VictoryRoad3EndBattleText4 ; 0x4ab4 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_VICTORY_ROAD_3_TRAINER_3
+	dw VictoryRoad3BattleText4 ; TextBeforeBattle
+	dw VictoryRoad3AfterBattleText4 ; TextAfterBattle
+	dw VictoryRoad3EndBattleText4 ; TextEndBattle
+	dw VictoryRoad3EndBattleText4 ; TextEndBattle
 
 VictoryRoad3TrainerHeader4: ; 44a5c (11:4a5c)
-	db $4 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_VICTORY_ROAD_3_TRAINER_4
 	db ($4 << 4) ; trainer's view range
-	dw wd813 ; flag's byte
-	dw VictoryRoad3BattleText5 ; 0x4abe TextBeforeBattle
-	dw VictoryRoad3AfterBattleText5 ; 0x4ac8 TextAfterBattle
-	dw VictoryRoad3EndBattleText5 ; 0x4ac3 TextEndBattle
-	dw VictoryRoad3EndBattleText5 ; 0x4ac3 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_VICTORY_ROAD_3_TRAINER_4
+	dw VictoryRoad3BattleText5 ; TextBeforeBattle
+	dw VictoryRoad3AfterBattleText5 ; TextAfterBattle
+	dw VictoryRoad3EndBattleText5 ; TextEndBattle
+	dw VictoryRoad3EndBattleText5 ; TextEndBattle
 
 	db $ff
 
 VictoryRoad3Text1: ; 44a69 (11:4a69)
-	db $08 ; asm
+	TX_ASM
 	ld hl, VictoryRoad3TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VictoryRoad3Text2: ; 44a73 (11:4a73)
-	db $08 ; asm
+	TX_ASM
 	ld hl, VictoryRoad3TrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VictoryRoad3Text3: ; 44a7d (11:4a7d)
-	db $08 ; asm
+	TX_ASM
 	ld hl, VictoryRoad3TrainerHeader3
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VictoryRoad3Text4: ; 44a87 (11:4a87)
-	db $08 ; asm
+	TX_ASM
 	ld hl, VictoryRoad3TrainerHeader4
 	call TalkToTrainer
 	jp TextScriptEnd

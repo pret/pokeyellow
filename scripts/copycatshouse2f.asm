@@ -11,20 +11,19 @@ CopycatsHouse2FTextPointers: ; 5cc74 (17:4c74)
 	dw CopycatsHouse2FText7
 
 CopycatsHouse2FText1: ; 5cc82 (17:4c82)
-	db $08 ; asm
-	ld a, [wd7af]
-	bit 0, a
-	jr nz, .asm_7ccf3 ; 0x5cc88
+	TX_ASM
+	CheckEvent EVENT_GOT_TM31
+	jr nz, .asm_7ccf3
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, CopycatsHouse2FText_5ccd4
 	call PrintText
 	ld b, POKE_DOLL
 	call IsItemInBag
-	jr z, .asm_62ecd ; 0x5cc9a
+	jr z, .asm_62ecd
 	ld hl, TM31PreReceiveText
 	call PrintText
-	ld bc, (TM_31 << 8) | 1
+	lb bc, TM_31, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, ReceivedTM31Text
@@ -32,17 +31,16 @@ CopycatsHouse2FText1: ; 5cc82 (17:4c82)
 	ld a, POKE_DOLL
 	ld [$ffdb], a
 	callba RemoveItemByID
-	ld hl, wd7af
-	set 0, [hl]
-	jr .asm_62ecd ; 0x5ccc1
+	SetEvent EVENT_GOT_TM31
+	jr .asm_62ecd
 .BagFull
 	ld hl, TM31NoRoomText
 	call PrintText
-	jr .asm_62ecd ; 0x5ccc9
-.asm_7ccf3 ; 0x5cccb
+	jr .asm_62ecd
+.asm_7ccf3
 	ld hl, TM31ExplanationText2
 	call PrintText
-.asm_62ecd ; 0x5ccd1
+.asm_62ecd
 	jp TextScriptEnd
 
 CopycatsHouse2FText_5ccd4: ; 5ccd4 (17:4cd4)
@@ -83,13 +81,13 @@ CopycatsHouse2FText6: ; 5ccfe (17:4cfe)
 	db "@"
 
 CopycatsHouse2FText7: ; 5cd03 (17:4d03)
-	db $08 ; asm
+	TX_ASM
 	ld a, [wSpriteStateData1 + 9]
-	cp $4
+	cp SPRITE_FACING_UP
 	ld hl, CopycatsHouse2FText_5cd1c
-	jr nz, .asm_399a4 ; 0x5cd0c
+	jr nz, .notUp
 	ld hl, CopycatsHouse2FText_5cd17
-.asm_399a4 ; 0x5cd11
+.notUp
 	call PrintText
 	jp TextScriptEnd
 

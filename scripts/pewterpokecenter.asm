@@ -16,50 +16,56 @@ PewterPokecenterText2: ; 5c596 (17:4596)
 	db "@"
 
 PewterPokecenterText3: ; 5c59b (17:459b)
-	db $8
+	TX_ASM
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, PewterPokecenterText5
 	call PrintText
 	ld a, $ff
 	call PlaySound
-	ld c, $20
+	ld c, 32
 	call DelayFrames
-	ld hl, Unknown_5c608 ; $4608
-	ld de, wTrainerFacingDirection
-	ld bc, $0004
+	ld hl, JigglypuffFacingDirections
+	ld de, wJigglypuffFacingDirections
+	ld bc, JigglypuffFacingDirectionsEnd - JigglypuffFacingDirections
 	call CopyData
-	ld a, [wSpriteStateData1 + $32]
-	ld hl, wTrainerFacingDirection
-.asm_5c5c3
+
+	ld a, [wSpriteStateData1 + 3 * $10 + $2]
+	ld hl, wJigglypuffFacingDirections
+.findMatchingFacingDirectionLoop
 	cp [hl]
 	inc hl
-	jr nz, .asm_5c5c3 ; 0x5c5c5 $fc
+	jr nz, .findMatchingFacingDirectionLoop
 	dec hl
 	push hl
 	ld c, BANK(Music_JigglypuffSong)
 	ld a, MUSIC_JIGGLYPUFF_SONG
 	call PlayMusic
 	pop hl
-.asm_5c5d1
+.loop
 	ld a, [hl]
-	ld [wSpriteStateData1 + $32], a
+	ld [wSpriteStateData1 + 3 * $10 + $2], a
+
+; rotate the array
 	push hl
-	ld hl, wTrainerFacingDirection
-	ld de, wTrainerEngageDistance
-	ld bc, $0004
+	ld hl, wJigglypuffFacingDirections
+	ld de, wJigglypuffFacingDirections - 1
+	ld bc, JigglypuffFacingDirectionsEnd - JigglypuffFacingDirections
 	call CopyData
-	ld a, [wTrainerEngageDistance]
-	ld [wcd42], a
+	ld a, [wJigglypuffFacingDirections - 1]
+	ld [wJigglypuffFacingDirections + 3], a
 	pop hl
-	ld c, $18
+
+	ld c, 24
 	call DelayFrames
-	ld a, [wc026]
+
+	ld a, [wChannelSoundIDs]
 	ld b, a
-	ld a, [wc027]
+	ld a, [wChannelSoundIDs + CH1]
 	or b
-	jr nz, .asm_5c5d1 ; 0x5c5f6 $d9
-	ld c, $30
+	jr nz, .loop
+
+	ld c, 48
 	call DelayFrames
 	call PlayDefaultMusic
 	jp TextScriptEnd
@@ -68,8 +74,12 @@ PewterPokecenterText5: ; 5c603 (17:4603)
 	TX_FAR _PewterPokecenterText5
 	db "@"
 
-Unknown_5c608: ; 5c608 (17:4608)
-	db $30, $38, $34, $3c
+JigglypuffFacingDirections: ; 5c608 (17:4608)
+	db $30 | SPRITE_FACING_DOWN
+	db $30 | SPRITE_FACING_LEFT
+	db $30 | SPRITE_FACING_UP
+	db $30 | SPRITE_FACING_RIGHT
+JigglypuffFacingDirectionsEnd:
 
 PewterPokecenterText4: ; 5c60c (17:460c)
 	db $f6

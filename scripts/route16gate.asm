@@ -19,19 +19,19 @@ Route16GateScript0: ; 496d7 (12:56d7)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [hJoyHeld], a
-	ld a, [wWhichTrade]
+	ld a, [wCoordIndex]
 	cp $1
-	jr z, .asm_4970e ; 0x496f1 $1b
-	ld a, [wWhichTrade]
+	jr z, .asm_4970e
+	ld a, [wCoordIndex]
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld b, $0
 	ld c, a
-	ld a, $40
+	ld a, D_UP
 	ld hl, wSimulatedJoypadStatesEnd
 	call FillMemory
 	call StartSimulatingJoypadStates
@@ -59,11 +59,11 @@ Route16GateScript1: ; 4971d (12:571d)
 
 Route16GateScript2: ; 49727 (12:5727)
 	ld a, $1
-	ld [H_SPRITEHEIGHT], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $10
+	ld a, D_RIGHT
 	ld [wSimulatedJoypadStatesEnd], a
 	call StartSimulatingJoypadStates
 	ld a, $3
@@ -92,16 +92,16 @@ Route16GateTextPointers: ; 4975a (12:575a)
 	dw Route16GateText3
 
 Route16GateText1: ; 49760 (12:5760)
-	db $08 ; asm
+	TX_ASM
 	call Route16GateScript_49755
-	jr z, .asm_0bdf3 ; 0x49764
+	jr z, .asm_0bdf3
 	ld hl, Route16GateText_4977c
 	call PrintText
-	jr .asm_56c9d ; 0x4976c
-.asm_0bdf3 ; 0x4976e
+	jr .asm_56c9d
+.asm_0bdf3
 	ld hl, Route16GateText_49777
 	call PrintText
-.asm_56c9d ; 0x49774
+.asm_56c9d
 	jp TextScriptEnd
 
 Route16GateText_49777: ; 49777 (12:5777)

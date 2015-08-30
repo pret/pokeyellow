@@ -16,9 +16,9 @@ SilphCoElevatorScript: ; 457c0 (11:57c0)
 
 SilphCoElevatorScript_457dc: ; 457dc (11:57dc)
 	ld hl, wWarpEntries
-	ld a, [wd73b]
+	ld a, [wWarpedFromWhichWarp]
 	ld b, a
-	ld a, [wd73c]
+	ld a, [wWarpedFromWhichMap]
 	ld c, a
 	call SilphCoElevatorScript_457ea
 
@@ -32,17 +32,27 @@ SilphCoElevatorScript_457ea: ; 457ea (11:57ea)
 	ret
 
 SilphCoElevatorScript_457f1: ; 457f1 (11:57f1)
-	ld hl, SilphCoElavatorFloors ; $5804
+	ld hl, SilphCoElavatorFloors
 	call LoadItemList
-	ld hl, SilphCoElevatorWarpMaps ; $5811
-	ld de, wcc5b
-	ld bc, $16
+	ld hl, SilphCoElevatorWarpMaps
+	ld de, wElevatorWarpMaps
+	ld bc, SilphCoElevatorWarpMapsEnd - SilphCoElevatorWarpMaps
 	call CopyData
 	ret
 
 SilphCoElavatorFloors: ; 45804 (11:45804)
 	db $0B ; num elements in list
-	db $56, $57, $58, $59, $5A, $5B, $5C, $5D, $5E, $5F, $60 ; "1F", "2F", "3F", "4F", ... , "11F"
+	db FLOOR_1F
+	db FLOOR_2F
+	db FLOOR_3F
+	db FLOOR_4F
+	db FLOOR_5F
+	db FLOOR_6F
+	db FLOOR_7F
+	db FLOOR_8F
+	db FLOOR_9F
+	db FLOOR_10F
+	db FLOOR_11F
 	db $FF ; terminator
 
 SilphCoElevatorWarpMaps: ; 45811 (11:45811)
@@ -60,6 +70,7 @@ SilphCoElevatorWarpMaps: ; 45811 (11:45811)
 	db $02, SILPH_CO_9F
 	db $02, SILPH_CO_10F
 	db $01, SILPH_CO_11F
+SilphCoElevatorWarpMapsEnd:
 
 SilphCoElevatorScript_45827: ; 45827 (11:5827)
 	call Delay3
@@ -70,8 +81,8 @@ SilphCoElevatorTextPointers: ; 45833 (11:5833)
 	dw SilphCoElevatorText1
 
 SilphCoElevatorText1: ; 45835 (11:5835)
-	db $08 ; asm
+	TX_ASM
 	call SilphCoElevatorScript_457f1
-	ld hl, SilphCoElevatorWarpMaps ; $5811
-	predef Func_1c9c6
+	ld hl, SilphCoElevatorWarpMaps
+	predef DisplayElevatorFloorMenu
 	jp TextScriptEnd

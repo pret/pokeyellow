@@ -7,28 +7,26 @@ Route12GateUpstairsTextPointers: ; 49563 (12:5563)
 	dw Route12GateUpstairsText3
 
 Route12GateUpstairsText1: ; 49569 (12:5569)
-	db $08 ; asm
-	ld a, [wd7d7]
-	rrca
-	jr c, .asm_0ad3c ; 0x4956e
+	TX_ASM
+	CheckEvent EVENT_GOT_TM39, 1
+	jr c, .asm_0ad3c
 	ld hl, TM39PreReceiveText
 	call PrintText
-	ld bc, (TM_39 << 8) | 1
+	lb bc, TM_39, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, ReceivedTM39Text
 	call PrintText
-	ld hl, wd7d7
-	set 0, [hl]
-	jr .asm_4ba56 ; 0x49589
+	SetEvent EVENT_GOT_TM39
+	jr .asm_4ba56
 .BagFull
 	ld hl, TM39NoRoomText
 	call PrintText
-	jr .asm_4ba56 ; 0x49591
-.asm_0ad3c ; 0x49593
+	jr .asm_4ba56
+.asm_0ad3c
 	ld hl, TM39ExplanationText
 	call PrintText
-.asm_4ba56 ; 0x49599
+.asm_4ba56
 	jp TextScriptEnd
 
 TM39PreReceiveText: ; 4959c (12:559c)
@@ -48,32 +46,32 @@ TM39NoRoomText: ; 495ac (12:55ac)
 	db "@"
 
 Route12GateUpstairsText2: ; 495b1 (12:55b1)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route12GateUpstairsText_495b8
-	jp Route12GateUpstairsScript_495c9
+	jp GateUpstairsScript_PrintIfFacingUp
 
 Route12GateUpstairsText_495b8: ; 495b8 (12:55b8)
 	TX_FAR _Route12GateUpstairsText_495b8
 	db "@"
 
 Route12GateUpstairsText3: ; 495bd (12:55bd)
-	db $8
+	TX_ASM
 	ld hl, Route12GateUpstairsText_495c4
-	jp Route12GateUpstairsScript_495c9
+	jp GateUpstairsScript_PrintIfFacingUp
 
 Route12GateUpstairsText_495c4: ; 495c4 (12:55c4)
 	TX_FAR _Route12GateUpstairsText_495c4
 	db "@"
 
-Route12GateUpstairsScript_495c9: ; 495c9 (12:55c9)
+GateUpstairsScript_PrintIfFacingUp: ; 495c9 (12:55c9)
 	ld a, [wSpriteStateData1 + 9]
-	cp $4
-	jr z, .asm_495d4 ; 0x495ce $4
+	cp SPRITE_FACING_UP
+	jr z, .up
 	ld a, $1
-	jr .asm_495d8 ; 0x495d2 $4
-.asm_495d4
+	jr .done
+.up
 	call PrintText
 	xor a
-.asm_495d8
+.done
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	jp TextScriptEnd

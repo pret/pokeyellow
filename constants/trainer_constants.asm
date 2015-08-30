@@ -1,48 +1,55 @@
-; sometimes it's necessary to add $C8 to these values
-YOUNGSTER     EQU $01
-BUG_CATCHER   EQU $02
-LASS          EQU $03
-SAILOR        EQU $04
-JR__TRAINER_M EQU $05
-JR__TRAINER_F EQU $06
-POKEMANIAC    EQU $07
-SUPER_NERD    EQU $08
-HIKER         EQU $09
-BIKER         EQU $0A
-BURGLAR       EQU $0B
-ENGINEER      EQU $0C
-JUGGLER_X     EQU $0D
-FISHER        EQU $0E
-SWIMMER       EQU $0F
-CUE_BALL      EQU $10
-GAMBLER       EQU $11
-BEAUTY        EQU $12
-PSYCHIC_TR    EQU $13
-ROCKER        EQU $14
-JUGGLER       EQU $15
-TAMER         EQU $16
-BIRD_KEEPER   EQU $17
-BLACKBELT     EQU $18
-SONY1         EQU $19
-PROF_OAK      EQU $1A
-CHIEF         EQU $1B
-SCIENTIST     EQU $1C
-GIOVANNI      EQU $1D
-ROCKET        EQU $1E
-COOLTRAINER_M EQU $1F
-COOLTRAINER_F EQU $20
-BRUNO         EQU $21
-BROCK         EQU $22
-MISTY         EQU $23
-LT__SURGE     EQU $24
-ERIKA         EQU $25
-KOGA          EQU $26
-BLAINE        EQU $27
-SABRINA       EQU $28
-GENTLEMAN     EQU $29
-SONY2         EQU $2A
-SONY3         EQU $2B
-LORELEI       EQU $2C
-CHANNELER     EQU $2D
-AGATHA        EQU $2E
-LANCE         EQU $2F
+trainer_const: MACRO
+\1     EQU const_value
+OPP_\1 EQU const_value + 200
+const_value = const_value + 1
+ENDM
+
+const_value = 1
+
+	trainer_const YOUNGSTER     ; $01
+	trainer_const BUG_CATCHER   ; $02
+	trainer_const LASS          ; $03
+	trainer_const SAILOR        ; $04
+	trainer_const JR__TRAINER_M ; $05
+	trainer_const JR__TRAINER_F ; $06
+	trainer_const POKEMANIAC    ; $07
+	trainer_const SUPER_NERD    ; $08
+	trainer_const HIKER         ; $09
+	trainer_const BIKER         ; $0A
+	trainer_const BURGLAR       ; $0B
+	trainer_const ENGINEER      ; $0C
+	trainer_const JUGGLER_X     ; $0D
+	trainer_const FISHER        ; $0E
+	trainer_const SWIMMER       ; $0F
+	trainer_const CUE_BALL      ; $10
+	trainer_const GAMBLER       ; $11
+	trainer_const BEAUTY        ; $12
+	trainer_const PSYCHIC_TR    ; $13
+	trainer_const ROCKER        ; $14
+	trainer_const JUGGLER       ; $15
+	trainer_const TAMER         ; $16
+	trainer_const BIRD_KEEPER   ; $17
+	trainer_const BLACKBELT     ; $18
+	trainer_const SONY1         ; $19
+	trainer_const PROF_OAK      ; $1A
+	trainer_const CHIEF         ; $1B
+	trainer_const SCIENTIST     ; $1C
+	trainer_const GIOVANNI      ; $1D
+	trainer_const ROCKET        ; $1E
+	trainer_const COOLTRAINER_M ; $1F
+	trainer_const COOLTRAINER_F ; $20
+	trainer_const BRUNO         ; $21
+	trainer_const BROCK         ; $22
+	trainer_const MISTY         ; $23
+	trainer_const LT__SURGE     ; $24
+	trainer_const ERIKA         ; $25
+	trainer_const KOGA          ; $26
+	trainer_const BLAINE        ; $27
+	trainer_const SABRINA       ; $28
+	trainer_const GENTLEMAN     ; $29
+	trainer_const SONY2         ; $2A
+	trainer_const SONY3         ; $2B
+	trainer_const LORELEI       ; $2C
+	trainer_const CHANNELER     ; $2D
+	trainer_const AGATHA        ; $2E
+	trainer_const LANCE         ; $2F

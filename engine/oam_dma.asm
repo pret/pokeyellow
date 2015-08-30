@@ -15,11 +15,12 @@ WriteDMACodeToHRAM:
 DMARoutine:
 	; initiate DMA
 	ld a, wOAMBuffer / $100
-	ld [$ff46], a
+	ld [rDMA], a
 
 	; wait for DMA to finish
 	ld a, $28
-.wait	dec a
+.wait
+	dec a
 	jr nz, .wait
 	ret
 DMARoutineEnd:

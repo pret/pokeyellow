@@ -12,9 +12,7 @@ MistEffect_: ; f64ac (3d:64ac)
 	ld hl, ShroudedInMistText
 	jp PrintText
 .mistAlreadyInUse
-	ld hl, PrintButItFailedText_
-	ld b, BANK(PrintButItFailedText_)
-	jp Bankswitch
+	jpab PrintButItFailedText_
 
 ShroudedInMistText: ; f64d3 (3d:64d3)
 	TX_FAR _ShroudedInMistText

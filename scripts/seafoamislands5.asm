@@ -27,25 +27,23 @@ SeafoamIslands5Script4: ; 467b7 (11:67b7)
 	ret
 
 SeafoamIslands5Script0: ; 467c7 (11:67c7)
-	ld a, [wd880]
-	and $3
-	cp $3
+	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	ret z
 	ld hl, CoordsData_467fe
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, [wWhichTrade]
+	ld a, [wCoordIndex]
 	cp $3
 	jr nc, .asm_467e6
-	ld a, $40
-	ld [wccd4], a
-	ld a, $2
+	ld a, NPC_MOVEMENT_UP
+	ld [wSimulatedJoypadStatesEnd + 1], a
+	ld a, 2
 	jr .asm_467e8
 .asm_467e6
-	ld a, $1
+	ld a, 1
 .asm_467e8
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $40
+	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
 	call StartSimulatingJoypadStates
 	ld hl, W_FLAGS_D733
@@ -72,16 +70,14 @@ SeafoamIslands5Script1: ; 46807 (11:6807)
 	ret
 
 SeafoamIslands5Script2: ; 46816 (11:6816)
-	ld a, [wd881]
-	and $3
-	cp $3
+	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
 	ld a, $0
 	jr z, .asm_46849
 	ld hl, CoordsData_4684d
 	call ArePlayerCoordsInArray
 	ld a, $0
 	jr nc, .asm_46849
-	ld a, [wWhichTrade]
+	ld a, [wCoordIndex]
 	cp $1
 	jr nz, .asm_46837
 	ld de, RLEMovementData_46859
@@ -105,15 +101,15 @@ CoordsData_4684d: ; 4684d (11:684d)
 	db $FF
 
 RLEMovementData_46852: ; 46852 (11:6852)
-	db $40,$03
-	db $10,$02
-	db $40,$01
+	db D_UP,$03
+	db D_RIGHT,$02
+	db D_UP,$01
 	db $FF
 
 RLEMovementData_46859: ; 46859 (11:6859)
-	db $40,$03
-	db $10,$03
-	db $40,$01
+	db D_UP,$03
+	db D_RIGHT,$03
+	db D_UP,$01
 	db $FF
 
 SeafoamIslands5Script3: ; 46860 (11:6860)
@@ -143,18 +139,18 @@ SeafoamIslands5TextPointers: ; 4687c (11:687c)
 
 SeafoamIslands5TrainerHeaders: ; 46886 (11:6886)
 SeafoamIslands5TrainerHeader0: ; 46886 (11:6886)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SEAFOAM_ISLANDS_5_TRAINER_0
 	db ($0 << 4) ; trainer's view range
-	dw wd882 ; flag's byte
-	dw SeafoamIslands5BattleText2 ; 0x68a2 TextBeforeBattle
-	dw SeafoamIslands5BattleText2 ; 0x68a2 TextAfterBattle
-	dw SeafoamIslands5BattleText2 ; 0x68a2 TextEndBattle
-	dw SeafoamIslands5BattleText2 ; 0x68a2 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SEAFOAM_ISLANDS_5_TRAINER_0
+	dw SeafoamIslands5BattleText2 ; TextBeforeBattle
+	dw SeafoamIslands5BattleText2 ; TextAfterBattle
+	dw SeafoamIslands5BattleText2 ; TextEndBattle
+	dw SeafoamIslands5BattleText2 ; TextEndBattle
 
 	db $ff
 
 SeafoamIslands5Text3: ; 46893 (11:6893)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SeafoamIslands5TrainerHeader0
 	call TalkToTrainer
 	ld a, $4
@@ -163,7 +159,7 @@ SeafoamIslands5Text3: ; 46893 (11:6893)
 
 SeafoamIslands5BattleText2: ; 468a2 (11:68a2)
 	TX_FAR _SeafoamIslands5BattleText2
-	db $8
+	TX_ASM
 	ld a, ARTICUNO
 	call PlayCry
 	call WaitForSoundToFinish

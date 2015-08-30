@@ -1,7 +1,6 @@
 PrintRedsNESText: ; 5db79 (17:5b79)
 	call EnableAutoTextBoxDrawing
-	ld a, $4 ; RedBedroomSNESText
-	jp PrintPredefTextID
+	tx_pre_jump RedBedroomSNESText
 
 RedBedroomSNESText: ; 5db81 (17:5b81)
 	TX_FAR _RedBedroomSNESText
@@ -9,19 +8,17 @@ RedBedroomSNESText: ; 5db81 (17:5b81)
 
 OpenRedsPC: ; 5db86 (17:5b86)
 	call EnableAutoTextBoxDrawing
-	ld a, $3
-	jp PrintPredefTextID
+	tx_pre_jump RedBedroomPCText
 
-RedBedroomPC: ; 5db8e (17:5b8e)
+RedBedroomPCText: ; 5db8e (17:5b8e)
 	db $fc ; FuncTX_ItemStoragePC
 
 Route15GateLeftBinoculars: ; 5db8f (17:5b8f)
 	ld a, [wSpriteStateData1 + 9]
-	cp $4 ; i
+	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing
-	ld a, $a ; text id Route15UpstairsBinocularsText
-	call PrintPredefTextID
+	tx_pre Route15UpstairsBinocularsText
 	ld a, ARTICUNO
 	ld [wcf91], a
 	call PlayCry
@@ -36,8 +33,7 @@ AerodactylFossil: ; 5dbad (17:5bad)
 	ld [wcf91], a
 	call DisplayMonFrontSpriteInBox
 	call EnableAutoTextBoxDrawing
-	ld a, $9
-	call PrintPredefTextID
+	tx_pre AerodactylFossilText
 	ret
 
 AerodactylFossilText: ; 5dbbe (17:5bbe)
@@ -49,8 +45,7 @@ KabutopsFossil: ; 5bdc3 (17:5bc3)
 	ld [wcf91], a
 	call DisplayMonFrontSpriteInBox
 	call EnableAutoTextBoxDrawing
-	ld a, $b
-	call PrintPredefTextID
+	tx_pre KabutopsFossilText
 	ret
 
 KabutopsFossilText: ; 5dbd4 (17:5bd4)
@@ -60,8 +55,8 @@ KabutopsFossilText: ; 5dbd4 (17:5bd4)
 DisplayMonFrontSpriteInBox: ; 5dbd9 (17:5bd9)
 ; Displays a pokemon's front sprite in a pop-up window.
 ; [wcf91] = pokemon interal id number
-	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a ; $ffba
+	ld a, 1
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a
 	ld [hWY], a
@@ -76,9 +71,9 @@ DisplayMonFrontSpriteInBox: ; 5dbd9 (17:5bd9)
 	ld de, vChars1 + $310
 	call LoadMonFrontSprite
 	ld a, $80
-	ld [$ffe1], a
-	hlCoord 10, 11
-	predef Func_3f073
+	ld [hStartTileID], a
+	coord hl, 10, 11
+	predef AnimateSendingOutMon
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
 	call Delay3
@@ -90,12 +85,12 @@ PrintBlackboardLinkCableText: ; 5dc1a (17:5c1a)
 	call EnableAutoTextBoxDrawing
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld a, [wWhichTrade]
+	ld a, [wHiddenObjectFunctionArgument]
 	call PrintPredefTextID
 	ret
 
 LinkCableHelp: ; 5dc29 (17:5c29)
-	db $08 ; asm
+	TX_ASM
 	call SaveScreenTilesToBuffer1
 	ld hl, LinkCableHelpText1
 	call PrintText
@@ -103,7 +98,7 @@ LinkCableHelp: ; 5dc29 (17:5c29)
 	ld [W_ANIMATIONID], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
-	ld a, $3
+	ld a, A_BUTTON | B_BUTTON
 	ld [wMenuWatchedKeys], a
 	ld a, $3
 	ld [wMaxMenuItem], a
@@ -111,24 +106,24 @@ LinkCableHelp: ; 5dc29 (17:5c29)
 	ld [wTopMenuItemY], a
 	ld a, $1
 	ld [wTopMenuItemX], a
-.asm_5c51
+.linkHelpLoop
 	ld hl, wd730
 	set 6, [hl]
-	ld hl, wTileMap
+	coord hl, 0, 0
 	ld b, $8
 	ld c, $d
 	call TextBoxBorder
-	ld hl, wTileMap + $2a
+	coord hl, 2, 2
 	ld de, HowToLinkText
 	call PlaceString
 	ld hl, LinkCableHelpText2
 	call PrintText
 	call HandleMenuInput
-	bit 1, a
-	jr nz, .asm_5dc93 ; 0x5dc74 $1d
+	bit 1, a ; pressed b
+	jr nz, .exit
 	ld a, [wCurrentMenuItem]
-	cp $3
-	jr z, .asm_5dc93 ; 0x5dc7b $16
+	cp $3 ; pressed a on "STOP READING"
+	jr z, .exit
 	ld hl, wd730
 	res 6, [hl]
 	ld hl, LinkCableInfoTexts
@@ -140,8 +135,8 @@ LinkCableHelp: ; 5dc29 (17:5c29)
 	ld h, [hl]
 	ld l, a
 	call PrintText
-	jp .asm_5c51
-.asm_5dc93
+	jp .linkHelpLoop
+.exit
 	ld hl, wd730
 	res 6, [hl]
 	call LoadScreenTilesFromBuffer1
@@ -179,7 +174,7 @@ LinkCableInfoText3: ; 5dce8 (17:5ce8)
 	db "@"
 
 ViridianSchoolBlackboard: ; 5dced (17:5ced)
-	db $08 ; asm
+	TX_ASM
 	call SaveScreenTilesToBuffer1
 	ld hl, ViridianSchoolBlackboardText1
 	call PrintText
@@ -187,7 +182,7 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld [W_ANIMATIONID], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
-	ld a, $33
+	ld a, D_LEFT | D_RIGHT | A_BUTTON | B_BUTTON
 	ld [wMenuWatchedKeys], a
 	ld a, $2
 	ld [wMaxMenuItem], a
@@ -195,25 +190,26 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld [wTopMenuItemY], a
 	ld a, $1
 	ld [wTopMenuItemX], a
-.asm_5dd15
+.blackboardLoop
 	ld hl, wd730
 	set 6, [hl]
-	ld hl, wTileMap
-	ld bc, $060a
+	coord hl, 0, 0
+	lb bc, 6, 10
 	call TextBoxBorder
-	ld hl, wTileMap + $29
+	coord hl, 1, 2
 	ld de, StatusAilmentText1
 	call PlaceString
-	ld hl, wTileMap + $2e
+	coord hl, 6, 2
 	ld de, StatusAilmentText2
 	call PlaceString
 	ld hl, ViridianSchoolBlackboardText2
 	call PrintText
-	call HandleMenuInput
-	bit 1, a
+	call HandleMenuInput ; pressing up and down is handled in here
+	bit 1, a ; pressed b
 	jr nz, .exitBlackboard
-	bit 4, a
-	jr z, .asm_5dd5c
+	bit 4, a ; pressed right
+	jr z, .didNotPressRight
+	; move cursor to right column
 	ld a, $2
 	ld [wMaxMenuItem], a
 	ld a, $2
@@ -222,10 +218,11 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld [wTopMenuItemX], a
 	ld a, $3
 	ld [W_ANIMATIONID], a
-	jr .asm_5dd15
-.asm_5dd5c
-	bit 5, a
-	jr z, .asm_5dd75
+	jr .blackboardLoop
+.didNotPressRight
+	bit 5, a ; pressed left
+	jr z, .didNotPressLeftOrRight
+	; move cursor to left column
 	ld a, $2
 	ld [wMaxMenuItem], a
 	ld a, $2
@@ -234,14 +231,16 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld [wTopMenuItemX], a
 	xor a
 	ld [W_ANIMATIONID], a
-	jr .asm_5dd15
-.asm_5dd75
+	jr .blackboardLoop
+.didNotPressLeftOrRight
 	ld a, [wCurrentMenuItem]
 	ld b, a
 	ld a, [W_ANIMATIONID]
 	add b
-	cp $5
+	cp $5 ; cursor is pointing to "QUIT"
 	jr z, .exitBlackboard
+	; we must have pressed a on a status condition
+	; so print the text
 	ld hl, wd730
 	res 6, [hl]
 	ld hl, ViridianBlackboardStatusPointers
@@ -253,7 +252,7 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld h, [hl]
 	ld l, a
 	call PrintText
-	jp .asm_5dd15
+	jp .blackboardLoop
 .exitBlackboard
 	ld hl, wd730
 	res 6, [hl]
@@ -307,8 +306,7 @@ ViridianBlackboardFrozenText: ; 5ddea (17:5dea)
 
 PrintTrashText: ; 5ddef (17:5def)
 	call EnableAutoTextBoxDrawing
-	ld a, $26
-	jp PrintPredefTextID
+	tx_pre_jump VermilionGymTrashText
 
 VermilionGymTrashText: ; 5ddf7 (17:5df7)
 	TX_FAR _VermilionGymTrashText
@@ -316,37 +314,34 @@ VermilionGymTrashText: ; 5ddf7 (17:5df7)
 
 GymTrashScript: ; 5ddfc (17:5dfc)
 	call EnableAutoTextBoxDrawing
-	ld a, [wWhichTrade] ; wWhichTrade
-	ld [wcd5b], a
+	ld a, [wHiddenObjectFunctionArgument]
+	ld [wGymTrashCanIndex], a
 
 ; Don't do the trash can puzzle if it's already been done.
-	ld a, [wd773]
-	bit 0, a
+	CheckEvent EVENT_2ND_LOCK_OPENED
 	jr z, .ok
 
-	ld a, $26 ; DisplayTextID $26 = VermilionGymTrashText (nothing in the trash)
-	jp PrintPredefTextID
+	tx_pre_jump VermilionGymTrashText
 
 .ok
-	bit 1, a
+	CheckEventReuseA EVENT_1ST_LOCK_OPENED
 	jr nz, .trySecondLock
 
-	ld a, [wd743]
+	ld a, [wFirstLockTrashCanIndex]
 	ld b, a
-	ld a, [wcd5b]
+	ld a, [wGymTrashCanIndex]
 	cp b
 	jr z, .openFirstLock
 
-	ld a, $26 ; DisplayTextID $26 = VermilionGymTrashText (nothing in the trash)
+	tx_pre_id VermilionGymTrashText
 	jr .done
 
 .openFirstLock
 ; Next can is trying for the second switch.
-	ld hl, wd773
-	set 1, [hl]
+	SetEvent EVENT_1ST_LOCK_OPENED
 
-	ld hl, GymTrashCans ; $5e7d
-	ld a, [wcd5b]
+	ld hl, GymTrashCans
+	ld a, [wGymTrashCanIndex]
 	; * 5
 	ld b, a
 	add a
@@ -358,12 +353,21 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 	add hl, de
 	ld a, [hli]
 
-	ld [$ffdb], a
+; There is a bug in this code. It should calculate a value in the range [0, 3]
+; but if the mask and random number don't have any 1 bits in common, then
+; the result of the AND will be 0. When 1 is subtracted from that, the value
+; will become $ff. This will result in 255 being added to hl, which will cause
+; hl to point to one of the zero bytes that pad the end of the ROM bank.
+; Trash can 0 was intended to be able to have the second lock only when the
+; first lock was in trash can 1 or 3. However, due to this bug, trash can 0 can
+; have the second lock regardless of which trash can had the first lock.
+
+	ld [hGymTrashCanRandNumMask], a
 	push hl
 	call Random
 	swap a
 	ld b, a
-	ld a, [$ffdb]
+	ld a, [hGymTrashCanRandNumMask]
 	and b
 	dec a
 	pop hl
@@ -373,42 +377,46 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 	add hl, de
 	ld a, [hl]
 	and $f
-	ld [wd744], a
+	ld [wSecondLockTrashCanIndex], a
 
-	ld a, $3b ; DisplayTextID $3b = VermilionGymTrashSuccesText1 (first lock opened!)
+	tx_pre_id VermilionGymTrashSuccesText1
 	jr .done
 
 .trySecondLock
-	ld a, [wd744]
+	ld a, [wSecondLockTrashCanIndex]
 	ld b, a
-	ld a, [wcd5b]
+	ld a, [wGymTrashCanIndex]
 	cp b
 	jr z, .openSecondLock
 
 ; Reset the cans.
-	ld hl, wd773
-	res 1, [hl]
+	ResetEvent EVENT_1ST_LOCK_OPENED
 	call Random
 
 	and $e
-	ld [wd743], a
+	ld [wFirstLockTrashCanIndex], a
 
-	ld a, $3e ; DisplayTextID $3e = VermilionGymTrashFailText (locks reset!)
+	tx_pre_id VermilionGymTrashFailText
 	jr .done
 
 .openSecondLock
 ; Completed the trash can puzzle.
-	ld hl, wd773
-	set 0, [hl]
+	SetEvent EVENT_2ND_LOCK_OPENED
 	ld hl, wd126
 	set 6, [hl]
 
-	ld a, $3d ; DisplayTextID $3d = VermilionGymTrashSuccesText3 (2nd lock opened!)
+	tx_pre_id VermilionGymTrashSuccesText3
 
 .done
 	jp PrintPredefTextID
 
 GymTrashCans: ; 5de7d (17:5e7d)
+; byte 0: mask for random number
+; bytes 1-4: indices of the trash cans that can have the second lock
+;            (but see the comment above explaining a bug regarding this)
+; Note that the mask is simply the number of valid trash can indices that
+; follow. The remaining bytes are filled with 0 to pad the length of each entry
+; to 5 bytes.
 	db 2,  1,  3,  0,  0 ; 0
 	db 3,  0,  2,  4,  0 ; 1
 	db 2,  1,  5,  0,  0 ; 2
@@ -428,39 +436,41 @@ GymTrashCans: ; 5de7d (17:5e7d)
 
 VermilionGymTrashSuccesText1: ; 5dec8 (17:5ec8)
 	TX_FAR _VermilionGymTrashSuccesText1
-	db $08 ; asm
+	TX_ASM
 	call WaitForSoundToFinish
-	ld a, (SFX_02_49 - SFX_Headers_02) / 3
+	ld a, SFX_SWITCH
 	call PlaySound
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
+; unused
 VermilionGymTrashSuccesText2: ; 5dedb (17:5edb)
 	TX_FAR _VermilionGymTrashSuccesText2
 	db "@"
 
-UnnamedText_5dee0: ; 5dee0 (17:5ee0)
-	db $08 ; asm
+; unused
+VermilionGymTrashSuccesPlaySfx: ; 5dee0 (17:5ee0)
+	TX_ASM
 	call WaitForSoundToFinish
-	ld a, (SFX_02_49 - SFX_Headers_02) / 3
+	ld a, SFX_SWITCH
 	call PlaySound
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
 VermilionGymTrashSuccesText3: ; 5deef (17:5eef)
 	TX_FAR _VermilionGymTrashSuccesText3
-	db $08 ; asm
+	TX_ASM
 	call WaitForSoundToFinish
-	ld a, (SFX_02_57 - SFX_Headers_02) / 3
+	ld a, SFX_GO_INSIDE
 	call PlaySound
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
 VermilionGymTrashFailText: ; 5df02 (17:5f02)
 	TX_FAR _VermilionGymTrashFailText
-	db $08 ; asm
+	TX_ASM
 	call WaitForSoundToFinish
-	ld a, (SFX_02_51 - SFX_Headers_02) / 3
+	ld a, SFX_DENIED
 	call PlaySound
 	call WaitForSoundToFinish
 	jp TextScriptEnd

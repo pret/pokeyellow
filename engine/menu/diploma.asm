@@ -7,15 +7,15 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	ld hl, wd730
 	set 6, [hl]
 	call DisableLCD
-	ld hl, CircleTile ; $7d88
+	ld hl, CircleTile
 	ld de, vChars2 + $700
 	ld bc, $0010
 	ld a, BANK(CircleTile)
 	call FarCopyData2
-	ld hl, wTileMap
-	ld bc, $1012
+	coord hl, 0, 0
+	lb bc, 16, 18
 	predef Diploma_TextBoxBorder
-	ld hl, DiplomaTextPointersAndCoords ; $6784
+	ld hl, DiplomaTextPointersAndCoords
 	ld c, $5
 .asm_56715
 	push bc
@@ -32,31 +32,35 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	inc hl
 	pop bc
 	dec c
-	jr nz, .asm_56715 ; 0x56725 $ee
-	hlCoord 10, 4
+	jr nz, .asm_56715
+	coord hl, 10, 4
 	ld de, wPlayerName
 	call PlaceString
-	callba Func_44dd
+	callba DrawPlayerCharacter
+
+; Move the player 33 pixels right and set the priority bit so he appears
+; behind the background layer.
 	ld hl, wOAMBuffer + $01
-	ld bc, $8028
-.asm_5673e
-	ld a, [hl]
-	add $21
+	lb bc, $80, $28
+.adjustPlayerGfxLoop
+	ld a, [hl] ; X
+	add 33
 	ld [hli], a
 	inc hl
 	ld a, b
-	ld [hli], a
+	ld [hli], a ; attributes
 	inc hl
 	dec c
-	jr nz, .asm_5673e ; 0x56747 $f5
+	jr nz, .adjustPlayerGfxLoop
+
 	call EnableLCD
 	callba LoadTrainerInfoTextBoxTiles
-	ld b, $8
-	call GoPAL_SET
+	ld b, SET_PAL_GENERIC
+	call RunPaletteCommand
 	call Delay3
 	call GBPalNormal
 	ld a, $90
-	ld [$ff48], a
+	ld [rOBP0], a
 	call WaitForTextScrollButtonPress
 	ld hl, wd730
 	res 6, [hl]
@@ -65,27 +69,29 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	call Delay3
 	jp GBPalNormal
 
-Func_56777: ; 56777 (15:6777)
+UnusedPlayerNameLengthFunc: ; 56777 (15:6777)
+; Unused function that does a calculation involving the length of the player's
+; name.
 	ld hl, wPlayerName
 	ld bc, $ff00
-.asm_5677d
+.loop
 	ld a, [hli]
-	cp $50
+	cp "@"
 	ret z
 	dec c
-	jr .asm_5677d ; 0x56782 $f9
+	jr .loop
 
 DiplomaTextPointersAndCoords: ; 56784 (15:6784)
 	dw DiplomaText
-	dw wTileMap + $2d
+	dwCoord 5, 2
 	dw DiplomaPlayer
-	dw wTileMap + $53
+	dwCoord 3, 4
 	dw DiplomaEmptyText
-	dw wTileMap + $5f
+	dwCoord 15, 4
 	dw DiplomaCongrats
-	dw wTileMap + $7a
+	dwCoord 2, 6
 	dw DiplomaGameFreak
-	dw wTileMap + $149
+	dwCoord 9, 16
 
 DiplomaText:
 	db $70,"Diploma",$70,"@"

@@ -6,29 +6,40 @@ S_SPRITEBUFFER2:: ds SPRITEBUFFERSIZE ; a310
 
 	ds $100
 
-sHallOfFame:: ds HOF_TEAM * NUM_HOF_TEAMS ; a598
+sHallOfFame:: ds HOF_TEAM * HOF_TEAM_CAPACITY ; a598
 
-SECTION "Save Data", SRAM, BANK[1]
 
 SECTION "Save Data", SRAM, BANK[1]
 	ds $598
-S_SAVEDPLAYERNAME:: ds 11 ; a598
-S_SAVEDMAINDATA:: ds W_NUMINBOX - wPokedexOwned ; a5a3
-S_SAVEDSPRITEDATA:: ds wOAMBuffer - wSpriteStateData1 ; ad2c
-S_SAVEDPARTYDATA:: ds wPokedexOwned - wPartyCount ; af2c
-S_SAVEDCURBOXDATA:: ds wBoxMonNicksEnd - W_NUMINBOX ; b0c0
-S_SAVEDhTilesetType:: ds 1 ; b522
-S_SAVEDMAINDATACHECKSUM:: ds 1 ; b523
 
-SECTION "Saved Boxes", SRAM, BANK[2] ; pointers used for bank 3 too
+sPlayerName::  ds NAME_LENGTH ; a598
+sMainData::    ds wMainDataEnd   - wMainDataStart ; a5a3
+sSpriteData::  ds wSpriteDataEnd - wSpriteDataStart ; ad2c
+sPartyData::   ds wPartyDataEnd  - wPartyDataStart ; af2c
+sCurBoxData::  ds wBoxDataEnd    - wBoxDataStart ; b0c0
+sTilesetType:: ds 1 ; b522
+sMainDataCheckSum:: ds 1 ; b523
 
-S_BOXLENGTH EQU $462
 
-S_SAVEDBOX1:: ds S_BOXLENGTH ; a000
-S_SAVEDBOX2:: ds S_BOXLENGTH ; a462
-S_SAVEDBOX3:: ds S_BOXLENGTH ; a8c4
-S_SAVEDBOX4:: ds S_BOXLENGTH ; ad26
-S_SAVEDBOX5:: ds S_BOXLENGTH ; b188
-S_SAVEDBOX6:: ds S_BOXLENGTH ; b5ea
-S_SAVEDBOXESCHECKSUM:: ds 1 ; ba4c
-S_SAVEDBOXESCHECKSUM2:: ds 6 ; ba4d
+SECTION "Saved Boxes 1", SRAM, BANK[2]
+
+sBox1:: ds wBoxDataEnd - wBoxDataStart ; a000
+sBox2:: ds wBoxDataEnd - wBoxDataStart ; a462
+sBox3:: ds wBoxDataEnd - wBoxDataStart ; a8c4
+sBox4:: ds wBoxDataEnd - wBoxDataStart ; ad26
+sBox5:: ds wBoxDataEnd - wBoxDataStart ; b188
+sBox6:: ds wBoxDataEnd - wBoxDataStart ; b5ea
+sBank2AllBoxesChecksum:: ds 1 ; ba4c
+sBank2IndividualBoxChecksums:: ds 6 ; ba4d
+
+
+SECTION "Saved Boxes 2", SRAM, BANK[3]
+
+sBox7::  ds wBoxDataEnd - wBoxDataStart ; a000
+sBox8::  ds wBoxDataEnd - wBoxDataStart ; a462
+sBox9::  ds wBoxDataEnd - wBoxDataStart ; a8c4
+sBox10:: ds wBoxDataEnd - wBoxDataStart ; ad26
+sBox11:: ds wBoxDataEnd - wBoxDataStart ; b188
+sBox12:: ds wBoxDataEnd - wBoxDataStart ; b5ea
+sBank3AllBoxesChecksum:: ds 1 ; ba4c
+sBank3IndividualBoxChecksums:: ds 6 ; ba4d

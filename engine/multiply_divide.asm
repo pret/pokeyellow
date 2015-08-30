@@ -58,6 +58,10 @@ _Multiply: ; f660e (3d:660e)
 	ld [H_PRODUCT+1], a ; $ff96
 	ld a, [H_MULTIPLYBUFFER]
 	ld [H_PRODUCT], a ; $ff95
+	ld a, [H_MULTIPLYBUFFER+1]
+	ld [H_PRODUCT+1], a
+	ld a, [H_MULTIPLYBUFFER]
+	ld [H_PRODUCT], a
 	ret
 
 _Divide: ; f6672 (3d:6672)

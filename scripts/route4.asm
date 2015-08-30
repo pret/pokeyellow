@@ -15,20 +15,20 @@ Route4ScriptPointers: ; 5566b (15:566b)
 Route4TextPointers: ; 55671 (15:5671)
 	dw Route4Text1
 	dw Route4Text2
-	dw Predef5CText
+	dw PickUpItemText
 	dw PokeCenterSignText
 	dw Route4Text5
 	dw Route4Text6
 
 Route4TrainerHeaders: ; 5567d (15:567d)
 Route4TrainerHeader0: ; 5567d (15:567d)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_4_TRAINER_0
 	db ($3 << 4) ; trainer's view range
-	dw wd7c5 ; flag's byte
-	dw Route4BattleText1 ; 0x5699 TextBeforeBattle
-	dw Route4AfterBattleText1 ; 0x56a3 TextAfterBattle
-	dw Route4EndBattleText1 ; 0x569e TextEndBattle
-	dw Route4EndBattleText1 ; 0x569e TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_4_TRAINER_0
+	dw Route4BattleText1 ; TextBeforeBattle
+	dw Route4AfterBattleText1 ; TextAfterBattle
+	dw Route4EndBattleText1 ; TextEndBattle
+	dw Route4EndBattleText1 ; TextEndBattle
 
 	db $ff
 
@@ -37,7 +37,7 @@ Route4Text1: ; 5568a (15:568a)
 	db "@"
 
 Route4Text2: ; 5568f (15:568f)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route4TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd

@@ -21,25 +21,23 @@ CeladonMart3TextPointers: ; 48228 (12:4228)
 	dw CeladonMart3Text17
 
 CeladonMart3Text1: ; 4824a (12:424a)
-	db $08 ; asm
-	ld a, [wd778]
-	bit 7, a
-	jr nz, .asm_a5463 ; 0x48250
+	TX_ASM
+	CheckEvent EVENT_GOT_TM18
+	jr nz, .asm_a5463
 	ld hl, TM18PreReceiveText
 	call PrintText
-	ld bc, (TM_18 << 8) | 1
+	lb bc, TM_18, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld hl, wd778
-	set 7, [hl]
+	SetEvent EVENT_GOT_TM18
 	ld hl, ReceivedTM18Text
-	jr .asm_81359 ; 0x48268
+	jr .asm_81359
 .BagFull
 	ld hl, TM18NoRoomText
-	jr .asm_81359 ; 0x4826d
-.asm_a5463 ; 0x4826f
+	jr .asm_81359
+.asm_a5463
 	ld hl, TM18ExplanationText
-.asm_81359 ; 0x48272
+.asm_81359
 	call PrintText
 	jp TextScriptEnd
 

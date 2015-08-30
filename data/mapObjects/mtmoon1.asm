@@ -11,20 +11,20 @@ MtMoon1Object: ; 0x49b06 (size=145)
 	db $1 ; signs
 	db $17, $f, $e ; MtMoon1Text14
 
-	db $d ; people
-	db SPRITE_HIKER, $6 + 4, $5 + 4, $ff, $d0, TRAINER | $1, HIKER + $C8, $1
-	db SPRITE_BUG_CATCHER, $10 + 4, $c + 4, $ff, $d3, TRAINER | $2, YOUNGSTER + $C8, $3
-	db SPRITE_LASS, $4 + 4, $1e + 4, $ff, $d0, TRAINER | $3, LASS + $C8, $5
-	db SPRITE_BLACK_HAIR_BOY_2, $1f + 4, $18 + 4, $ff, $d1, TRAINER | $4, SUPER_NERD + $C8, $1
-	db SPRITE_LASS, $17 + 4, $10 + 4, $ff, $d0, TRAINER | $5, LASS + $C8, $6
-	db SPRITE_BUG_CATCHER, $16 + 4, $7 + 4, $ff, $d0, TRAINER | $6, BUG_CATCHER + $C8, $7
-	db SPRITE_BUG_CATCHER, $1b + 4, $1e + 4, $ff, $d3, TRAINER | $7, BUG_CATCHER + $C8, $8
-	db SPRITE_BALL, $14 + 4, $2 + 4, $ff, $ff, ITEM | $8, POTION
-	db SPRITE_BALL, $2 + 4, $2 + 4, $ff, $ff, ITEM | $9, MOON_STONE
-	db SPRITE_BALL, $1f + 4, $23 + 4, $ff, $ff, ITEM | $a, RARE_CANDY
-	db SPRITE_BALL, $17 + 4, $24 + 4, $ff, $ff, ITEM | $b, ESCAPE_ROPE
-	db SPRITE_BALL, $21 + 4, $14 + 4, $ff, $ff, ITEM | $c, POTION
-	db SPRITE_BALL, $20 + 4, $5 + 4, $ff, $ff, ITEM | $d, TM_12
+	db $d ; objects
+	object SPRITE_HIKER, $5, $6, STAY, DOWN, $1, OPP_HIKER, $1
+	object SPRITE_BUG_CATCHER, $c, $10, STAY, RIGHT, $2, OPP_YOUNGSTER, $3
+	object SPRITE_LASS, $1e, $4, STAY, DOWN, $3, OPP_LASS, $5
+	object SPRITE_BLACK_HAIR_BOY_2, $18, $1f, STAY, UP, $4, OPP_SUPER_NERD, $1
+	object SPRITE_LASS, $10, $17, STAY, DOWN, $5, OPP_LASS, $6
+	object SPRITE_BUG_CATCHER, $7, $16, STAY, DOWN, $6, OPP_BUG_CATCHER, $7
+	object SPRITE_BUG_CATCHER, $1e, $1b, STAY, RIGHT, $7, OPP_BUG_CATCHER, $8
+	object SPRITE_BALL, $2, $14, STAY, NONE, $8, POTION
+	object SPRITE_BALL, $2, $2, STAY, NONE, $9, MOON_STONE
+	object SPRITE_BALL, $23, $1f, STAY, NONE, $a, RARE_CANDY
+	object SPRITE_BALL, $24, $17, STAY, NONE, $b, ESCAPE_ROPE
+	object SPRITE_BALL, $14, $21, STAY, NONE, $c, POTION
+	object SPRITE_BALL, $5, $20, STAY, NONE, $d, TM_12
 
 	; warp-to
 	EVENT_DISP MT_MOON_1_WIDTH, $23, $e

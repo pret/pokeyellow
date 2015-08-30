@@ -11,17 +11,17 @@ Route11Object: ; 0x584e0 (size=127)
 	db $1 ; signs
 	db $5, $1, $b ; Route11Text11
 
-	db $a ; people
-	db SPRITE_GAMBLER, $e + 4, $a + 4, $ff, $d0, TRAINER | $1, GAMBLER + $C8, $1
-	db SPRITE_GAMBLER, $9 + 4, $1a + 4, $ff, $d0, TRAINER | $2, GAMBLER + $C8, $2
-	db SPRITE_BUG_CATCHER, $5 + 4, $d + 4, $ff, $d2, TRAINER | $3, YOUNGSTER + $C8, $9
-	db SPRITE_BLACK_HAIR_BOY_2, $b + 4, $24 + 4, $ff, $d0, TRAINER | $4, ENGINEER + $C8, $2
-	db SPRITE_BUG_CATCHER, $4 + 4, $16 + 4, $ff, $d1, TRAINER | $5, YOUNGSTER + $C8, $a
-	db SPRITE_GAMBLER, $7 + 4, $2d + 4, $ff, $d0, TRAINER | $6, GAMBLER + $C8, $3
-	db SPRITE_GAMBLER, $3 + 4, $21 + 4, $ff, $d1, TRAINER | $7, GAMBLER + $C8, $4
-	db SPRITE_BUG_CATCHER, $5 + 4, $2b + 4, $ff, $d3, TRAINER | $8, YOUNGSTER + $C8, $b
-	db SPRITE_BLACK_HAIR_BOY_2, $10 + 4, $2d + 4, $ff, $d2, TRAINER | $9, ENGINEER + $C8, $3
-	db SPRITE_BUG_CATCHER, $c + 4, $16 + 4, $ff, $d1, TRAINER | $a, YOUNGSTER + $C8, $c
+	db $a ; objects
+	object SPRITE_GAMBLER, $a, $e, STAY, DOWN, $1, OPP_GAMBLER, $1
+	object SPRITE_GAMBLER, $1a, $9, STAY, DOWN, $2, OPP_GAMBLER, $2
+	object SPRITE_BUG_CATCHER, $d, $5, STAY, LEFT, $3, OPP_YOUNGSTER, $9
+	object SPRITE_BLACK_HAIR_BOY_2, $24, $b, STAY, DOWN, $4, OPP_ENGINEER, $2
+	object SPRITE_BUG_CATCHER, $16, $4, STAY, UP, $5, OPP_YOUNGSTER, $a
+	object SPRITE_GAMBLER, $2d, $7, STAY, DOWN, $6, OPP_GAMBLER, $3
+	object SPRITE_GAMBLER, $21, $3, STAY, UP, $7, OPP_GAMBLER, $4
+	object SPRITE_BUG_CATCHER, $2b, $5, STAY, RIGHT, $8, OPP_YOUNGSTER, $b
+	object SPRITE_BLACK_HAIR_BOY_2, $2d, $10, STAY, LEFT, $9, OPP_ENGINEER, $3
+	object SPRITE_BUG_CATCHER, $16, $c, STAY, UP, $a, OPP_YOUNGSTER, $c
 
 	; warp-to
 	EVENT_DISP ROUTE_11_WIDTH, $8, $31 ; ROUTE_11_GATE_1F

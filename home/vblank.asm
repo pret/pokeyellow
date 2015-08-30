@@ -11,14 +11,14 @@ VBlank:: ; 1de5 (0:1de5)
 	ld [rVBK], a ; reset vram bank to 0
 	
 	ld a, [H_LOADEDROMBANK]
-	ld [wd122], a
+	ld [wVBlankSavedROMBank], a
 
 	ld a, [hSCX]
 	ld [rSCX], a
 	ld a, [hSCY]
 	ld [rSCY], a
 
-	ld a, [wd0a0]
+	ld a, [wDisableVBlankWYUpdate]
 	and a
 	jr nz, .ok
 	ld a, [hWY]
@@ -27,7 +27,7 @@ VBlank:: ; 1de5 (0:1de5)
 
 	call AutoBgMapTransfer
 	call VBlankCopyBgMap
-	call RedrawExposedScreenEdge
+	call RedrawRowOrColumn
 	call VBlankCopy
 	call VBlankCopyDouble
 	call UpdateMovingBgTiles
@@ -45,19 +45,18 @@ VBlank:: ; 1de5 (0:1de5)
 
 	ld a, [H_VBLANKOCCURRED]
 	and a
-	jr z, .vblanked
+	jr z, .skipZeroing
 	xor a
 	ld [H_VBLANKOCCURRED], a
-.vblanked
 
+.skipZeroing
 	ld a, [H_FRAMECOUNTER]
 	and a
-	jr z, .decced
+	jr z, .skipDec
 	dec a
 	ld [H_FRAMECOUNTER], a
-.decced
 
-	call Func_27c2
+	call FadeOutAudio
 	
 	ld a, $8
 	call BankswitchCommon
@@ -69,7 +68,7 @@ VBlank:: ; 1de5 (0:1de5)
 	
 	call SerialFunction ; add this
 
-	ld a, [wd122]
+	ld a, [wVBlankSavedROMBank]
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 

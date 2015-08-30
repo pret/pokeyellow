@@ -19,19 +19,19 @@ Route18GateScript0: ; 4988f (12:588f)
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $2
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [hJoyHeld], a
-	ld a, [wWhichTrade]
+	ld a, [wCoordIndex]
 	cp $1
-	jr z, .asm_498c6 ; 0x498a9 $1b
-	ld a, [wWhichTrade]
+	jr z, .asm_498c6
+	ld a, [wCoordIndex]
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
-	ld b, $0
+	ld b, 0
 	ld c, a
-	ld a, $40
+	ld a, D_UP
 	ld hl, wSimulatedJoypadStatesEnd
 	call FillMemory
 	call StartSimulatingJoypadStates
@@ -59,11 +59,11 @@ Route18GateScript1: ; 498d5 (12:58d5)
 
 Route18GateScript2: ; 498df (12:58df)
 	ld a, $1
-	ld [H_SPRITEHEIGHT], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $10
+	ld a, D_RIGHT
 	ld [wSimulatedJoypadStatesEnd], a
 	call StartSimulatingJoypadStates
 	ld a, $3
@@ -87,16 +87,16 @@ Route18GateTextPointers: ; 4990d (12:590d)
 	dw Route18GateText2
 
 Route18GateText1: ; 49911 (12:5911)
-	db $08 ; asm
+	TX_ASM
 	call Route16GateScript_49755
-	jr z, .asm_3c84d ; 0x49915
+	jr z, .asm_3c84d
 	ld hl, Route18GateText_4992d
 	call PrintText
-	jr .asm_a8410 ; 0x4991d
-.asm_3c84d ; 0x4991f
+	jr .asm_a8410
+.asm_3c84d
 	ld hl, Route18GateText_49928
 	call PrintText
-.asm_a8410 ; 0x49925
+.asm_a8410
 	jp TextScriptEnd
 
 Route18GateText_49928: ; 49928 (12:5928)

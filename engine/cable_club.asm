@@ -1,19 +1,19 @@
-; performs the appropriate action when the player uses the gameboy on the table in the Colosseum or Trade Centre
-; In the Colosseum, it starts a battle. In the Trade Centre, it displays the trade selection screen.
+; performs the appropriate action when the player uses the gameboy on the table in the Colosseum or Trade Center
+; In the Colosseum, it starts a battle. In the Trade Center, it displays the trade selection screen.
 ; Before doing either action, it swaps random numbers, trainer names and party data with the other gameboy.
 CableClub_DoBattleOrTrade: ; 5317 (1:5317)
-	ld c, $50
+	ld c, 80
 	call DelayFrames
 	call ClearScreen
 	call UpdateSprites
 	call LoadFontTilePatterns
 	call LoadHpBarAndStatusTilePatterns
 	call LoadTrainerInfoTextBoxTiles
-	hlCoord 3, 8
+	coord hl, 3, 8
 	ld b, 2
 	ld c, 12
 	call CableClub_TextBoxBorder
-	hlCoord 4, 10
+	coord hl, 4, 10
 	ld de, PleaseWaitString
 	call PlaceString
 	ld hl, wPlayerNumHits
@@ -96,7 +96,7 @@ CableClub_DoBattleOrTradeAgain: ; 5345
 	ld a, SERIAL_PATCH_LIST_PART_TERMINATOR
 	ld [de], a ; end of part 1
 	inc de
-	ld bc, $100
+	lb bc, 1, 0
 	jr .patchPartyMonsLoop
 .finishedPatchingPlayerData
 	ld a, SERIAL_PATCH_LIST_PART_TERMINATOR
@@ -176,7 +176,7 @@ CableClub_DoBattleOrTradeAgain: ; 5345
 	jr z, .findStartOfEnemyNameLoop
 	dec hl
 	ld de, wLinkEnemyTrainerName
-	ld c, 11
+	ld c, NAME_LENGTH
 .copyEnemyNameLoop
 	ld a, [hli]
 	cp SERIAL_NO_DATA_BYTE
@@ -256,9 +256,9 @@ CableClub_DoBattleOrTradeAgain: ; 5345
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
 	ld a, wEnemyMonOT % $100
-	ld [wcf8d], a
+	ld [wUnusedCF8D], a
 	ld a, wEnemyMonOT / $100
-	ld [wcf8e], a
+	ld [wUnusedCF8D + 1], a
 	xor a
 	ld [wTradeCenterPointerTableIndex], a
 	ld a, $ff
@@ -274,7 +274,7 @@ CableClub_DoBattleOrTradeAgain: ; 5345
 	jr nz, .asm_5506
 	ld a, LINK_STATE_BATTLING
 	ld [wLinkState], a
-	ld a, SONY1 + $c8
+	ld a, OPP_SONY1
 	ld [W_CUROPPONENT], a
 	call ClearScreen
 	call Delay3
@@ -297,7 +297,7 @@ CallCurrentTradeCenterFunction:
 	ld b, 0
 	ld a, [wTradeCenterPointerTableIndex]
 	cp $ff
-	jp z, LoadTitlescreenGraphics
+	jp z, DisplayTitleScreen
 	add a
 	ld c, a
 	add hl, bc
@@ -317,7 +317,7 @@ TradeCenter_SelectMon:
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld [wcc37], a
+	ld [wMenuWatchMovingOutOfBounds], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld [wMenuJoypadPollCount], a
@@ -326,7 +326,7 @@ TradeCenter_SelectMon:
 	jp .playerMonMenu
 .enemyMonMenu
 	xor a
-	ld [wcc37], a
+	ld [wMenuWatchMovingOutOfBounds], a
 	inc a
 	ld [wWhichTradeMonSelectionMenu], a
 	ld a, D_DOWN | D_LEFT | A_BUTTON
@@ -357,9 +357,9 @@ TradeCenter_SelectMon:
 	dec a
 	ld [wCurrentMenuItem], a
 .displayEnemyMonStats
-	ld a, $1
-	ld [wd11b], a
-	callab Func_39bd5
+	ld a, INIT_ENEMYOT_LIST
+	ld [wInitListType], a
+	callab InitList ; the list isn't used
 	ld hl, wEnemyMons
 	call TradeCenter_DisplayStats
 	jp .getNewInput
@@ -390,7 +390,7 @@ TradeCenter_SelectMon:
 .playerMonMenu
 	xor a ; player mon menu
 	ld [wWhichTradeMonSelectionMenu], a
-	ld [wcc37], a
+	ld [wMenuWatchMovingOutOfBounds], a
 	ld a, D_DOWN | D_RIGHT | A_BUTTON
 	ld [wMenuWatchedKeys], a
 	ld a, [wPartyCount]
@@ -399,8 +399,8 @@ TradeCenter_SelectMon:
 	ld [wTopMenuItemY], a
 	ld a, 1
 	ld [wTopMenuItemX], a
-	hlCoord 1, 1
-	ld bc, $0601
+	coord hl, 1, 1
+	lb bc, 6, 1
 	call ClearScreenArea
 .playerMonMenu_HandleInput
 	ld hl, hFlags_0xFFF6
@@ -416,9 +416,9 @@ TradeCenter_SelectMon:
 	jr z, .playerMonMenu_ANotPressed
 	jp .chosePlayerMon ; jump if A button pressed
 ; unreachable code
-	ld a, $4
-	ld [wd11b], a
-	callab Func_39bd5
+	ld a, INIT_PLAYEROT_LIST
+	ld [wInitListType], a
+	callab InitList ; the list isn't used
 	call TradeCenter_DisplayStats
 	jp .getNewInput
 .playerMonMenu_ANotPressed
@@ -464,11 +464,11 @@ TradeCenter_SelectMon:
 	dec a
 .displayStatsTradeMenu
 	push af
-	hlCoord 0, 14
+	coord hl, 0, 14
 	ld b, 2
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 2, 16
+	coord hl, 2, 16
 	ld de, .statsTrade
 	call PlaceString
 	xor a
@@ -511,9 +511,9 @@ TradeCenter_SelectMon:
 .displayPlayerMonStats
 	pop af
 	ld [wCurrentMenuItem], a
-	ld a, $4
-	ld [wd11b], a
-	callab Func_39bd5
+	ld a, INIT_PLAYEROT_LIST
+	ld [wInitListType], a
+	callab InitList ; the list isn't used
 	call TradeCenter_DisplayStats
 	call LoadScreenTilesFromBuffer1
 	jp .playerMonMenu
@@ -596,15 +596,15 @@ ReturnToCableClubRoom: ; 577d (1:577d)
 	ret
 
 TradeCenter_DrawCancelBox:
-	hlCoord 11, 15
+	coord hl, 11, 15
 	ld a, $7e
-	ld bc, 2 * 20 + 9
+	ld bc, 2 * SCREEN_WIDTH + 9
 	call FillMemory
-	hlCoord 0, 15
+	coord hl, 0, 15
 	ld b, 1
 	ld c, 9
 	call CableClub_TextBoxBorder
-	hlCoord 2, 16
+	coord hl, 2, 16
 	ld de, CancelTextString
 	jp PlaceString
 
@@ -613,8 +613,8 @@ CancelTextString:
 
 TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	ld a, [wSerialSyncAndExchangeNybbleReceiveData]
-	hlCoord 1, 9
-	ld bc, 20
+	coord hl, 1, 9
+	ld bc, SCREEN_WIDTH
 	call AddNTimes
 	ld [hl], $ec ; cursor
 	ret
@@ -630,24 +630,24 @@ TradeCenter_DisplayStats:
 	jp TradeCenter_DrawCancelBox
 
 TradeCenter_DrawPartyLists:
-	hlCoord 0, 0
+	coord hl, 0, 0
 	ld b, 6
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 0, 8
+	coord hl, 0, 8
 	ld b, 6
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 5, 0
+	coord hl, 5, 0
 	ld de, wPlayerName
 	call PlaceString
-	hlCoord 5, 8
+	coord hl, 5, 8
 	ld de, wLinkEnemyTrainerName
 	call PlaceString
-	hlCoord 2, 1
+	coord hl, 2, 1
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
-	hlCoord 2, 9
+	coord hl, 2, 9
 	ld de, wEnemyPartyMons
 	; fall through
 
@@ -682,9 +682,9 @@ TradeCenter_Trade:
 	xor a
 	ld [wSerialExchangeNybbleSendData + 1], a ; unnecessary
 	ld [wSerialExchangeNybbleReceiveData], a
-	ld [wcc37], a
+	ld [wMenuWatchMovingOutOfBounds], a
 	ld [wMenuJoypadPollCount], a
-	hlCoord 0, 12
+	coord hl, 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
@@ -698,7 +698,7 @@ TradeCenter_Trade:
 	call GetMonName
 	ld hl, wcd6d
 	ld de, wNameOfPlayerMonToBeTraded
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartyMons
@@ -709,11 +709,11 @@ TradeCenter_Trade:
 	ld [wd11e], a
 	call GetMonName
 	ld hl, WillBeTradedText
-	bcCoord 1, 14
+	coord bc, 1, 14
 	call TextCommandProcessor
 	call SaveScreenTilesToBuffer1
-	hlCoord 10, 7
-	ld bc, $080b
+	coord hl, 10, 7
+	lb bc, 8, 11
 	ld a, TRADE_CANCEL_MENU
 	ld [wTwoOptionMenuID], a
 	ld a, TWO_OPTION_MENU
@@ -726,11 +726,11 @@ TradeCenter_Trade:
 ; if trade cancelled
 	ld a, $1
 	ld [wSerialExchangeNybbleSendData], a
-	hlCoord 0, 12
+	coord hl, 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 1, 14
+	coord hl, 1, 14
 	ld de, TradeCanceled
 	call PlaceString
 	call Serial_PrintWaitingTextAndSyncAndExchangeNybble
@@ -743,11 +743,11 @@ TradeCenter_Trade:
 	dec a ; did the other person cancel?
 	jr nz, .doTrade
 ; if the other person cancelled
-	hlCoord 0, 12
+	coord hl, 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 1, 14
+	coord hl, 1, 14
 	ld de, TradeCanceled
 	call PlaceString
 	jp .tradeCancelled
@@ -756,7 +756,7 @@ TradeCenter_Trade:
 	ld hl, wPartyMonOT
 	call SkipFixedLengthTextEntries
 	ld de, wTradedPlayerMonOT
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, wPartyMon1Species
 	ld a, [wTradingWhichPlayerMon]
@@ -772,7 +772,7 @@ TradeCenter_Trade:
 	ld hl, wEnemyMonOT
 	call SkipFixedLengthTextEntries
 	ld de, wTradedEnemyMonOT
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, wEnemyMons
 	ld a, [wTradingWhichEnemyMon]
@@ -793,7 +793,7 @@ TradeCenter_Trade:
 	ld a, [hl]
 	ld [wTradedPlayerMonSpecies], a
 	xor a
-	ld [wcf95], a
+	ld [wRemoveMonFromBox], a
 	call RemovePokemon
 	ld a, [wTradingWhichEnemyMon]
 	ld c, a
@@ -816,7 +816,7 @@ TradeCenter_Trade:
 	dec a
 	ld [wWhichPokemon], a
 	ld a, $1
-	ld [wccd4], a
+	ld [wForceEvolution], a
 	ld a, [wTradingWhichEnemyMon]
 	ld hl, wEnemyPartyMons
 	ld b, 0
@@ -824,19 +824,19 @@ TradeCenter_Trade:
 	add hl, bc
 	ld a, [hl]
 	ld [wTradedEnemyMonSpecies], a
-	ld a, $a
-	ld [wMusicHeaderPointer], a
+	ld a, 10
+	ld [wAudioFadeOutControl], a
 	ld a, $2
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_SAFARI_ZONE
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 100
 	call DelayFrames
 	call ClearScreen
 	call LoadHpBarAndStatusTilePatterns
 	xor a
-	ld [wcc5b], a
+	ld [wUnusedCC5B], a
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	jr z, .usingExternalClock
@@ -851,11 +851,11 @@ TradeCenter_Trade:
 	call Serial_PrintWaitingTextAndSyncAndExchangeNybble
 	ld c, 40
 	call DelayFrames
-	hlCoord 0, 12
+	coord hl, 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
-	hlCoord 1, 14
+	coord hl, 1, 14
 	ld de, TradeCompleted
 	call PlaceString
 	predef SaveSAVtoSRAM2
@@ -915,12 +915,12 @@ CableClub_Run: ; 5a5f (1:5a5f)
 	inc a ; LINK_STATE_IN_CABLE_CLUB
 	ld [wLinkState], a
 	ld [$ffb5], a
-	ld a, $a
-	ld [wMusicHeaderPointer], a
+	ld a, 10
+	ld [wAudioFadeOutControl], a
 	ld a, BANK(Music_Celadon)
-	ld [wc0f0], a
+	ld [wAudioSavedROMBank], a
 	ld a, MUSIC_CELADON
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	jp PlaySound
 
 EmptyFunc3: ; 5aaf (1:5aaf)

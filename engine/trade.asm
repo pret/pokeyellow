@@ -13,7 +13,7 @@ ExternalClockTradeAnim: ; 410f3 (10:50f3)
 ; Externally clocked link cable trades use this.
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wLeftGBMonSpecies], a
-	ld a, [wTrainerSpriteOffset]
+	ld a, [wTradedPlayerMonSpecies]
 	ld [wRightGBMonSpecies], a
 	ld de, ExternalClockTradeFuncSequence
 
@@ -148,8 +148,8 @@ Trade_Delay80: ; 41191 (10:5191)
 	jp DelayFrames
 
 Trade_ClearTileMap: ; 41196 (10:5196)
-	ld hl, wTileMap
-	ld bc, 20 * 18
+	coord hl, 0, 0
+	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, " "
 	jp FillMemory
 
@@ -158,12 +158,12 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	call DisableLCD
 	ld hl, TradingAnimationGraphics
 	ld de, vChars2 + $310
-	ld bc, $310
+	ld bc, TradingAnimationGraphicsEnd - TradingAnimationGraphics
 	ld a, BANK(TradingAnimationGraphics)
 	call FarCopyData2
 	ld hl, TradingAnimationGraphics2
 	ld de, vSprites + $7c0
-	ld bc, $40
+	ld bc, TradingAnimationGraphics2End - TradingAnimationGraphics2
 	ld a, BANK(TradingAnimationGraphics2)
 	call FarCopyData2
 	ld hl, vBGMap0
@@ -190,7 +190,7 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	call GetMonName
 	ld hl, wcd6d
 	ld de, wcf4b
-	ld bc, $b
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wTradedEnemyMonSpecies]
 	ld [wd11e], a
@@ -199,22 +199,20 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 Trade_LoadMonPartySpriteGfx: ; 4120b (10:520b)
 	ld a, %11010000
 	ld [rOBP1], a
-	ld b, BANK(LoadMonPartySpriteGfx)
-	ld hl, LoadMonPartySpriteGfx
-	jp Bankswitch
+	jpba LoadMonPartySpriteGfx
 
 Trade_SwapNames: ; 41217 (10:5217)
 	ld hl, wPlayerName
 	ld de, wBuffer
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, wLinkEnemyTrainerName
 	ld de, wPlayerName
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, wBuffer
 	ld de, wLinkEnemyTrainerName
-	ld bc, 11
+	ld bc, NAME_LENGTH
 	jp CopyData
 
 Trade_Cleanup: ; 4123b (10:523b)
@@ -234,7 +232,7 @@ Trade_ShowPlayerMon: ; 41245 (10:5245)
 	ld [hSCX], a
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	hlCoord 4, 0
+	coord hl, 4, 0
 	ld b, 6
 	ld c, 10
 	call TextBoxBorder
@@ -259,7 +257,7 @@ Trade_ShowPlayerMon: ; 41245 (10:5245)
 	ld a, TRADE_BALL_POOF_ANIM
 	call Trade_ShowAnimation
 	ld a, TRADE_BALL_DROP_ANIM
-	call Trade_ShowAnimation
+	call Trade_ShowAnimation ; clears mon pic
 	ld a, [wTradedPlayerMonSpecies]
 	call PlayCry
 	xor a
@@ -270,20 +268,24 @@ Trade_DrawOpenEndOfLinkCable: ; 41298 (10:5298)
 	call Trade_ClearTileMap
 	ld b, vBGMap0 / $100
 	call CopyScreenTileBufferToVRAM
-	ld b, $8
-	call GoPAL_SET
+	ld b, SET_PAL_GENERIC
+	call RunPaletteCommand
+
+; This function call is pointless. It just copies blank tiles to VRAM that was
+; already filled with blank tiles.
 	ld hl, vBGMap1 + $8c
 	call Trade_CopyCableTilesOffScreen
+
 	ld a, $a0
 	ld [hSCX], a
 	call DelayFrame
 	ld a, %10001011
 	ld [rLCDC], a
-	hlCoord 6, 2
+	coord hl, 6, 2
 	ld b, $7 ; open end of link cable tile ID list index
 	call CopyTileIDsFromList_ZeroBaseTileID
 	call Trade_CopyTileMapToVRAM
-	ld a, (SFX_02_3d - SFX_Headers_02) / 3
+	ld a, SFX_HEAL_HP
 	call PlaySound
 	ld c, 20
 .loop
@@ -302,25 +304,25 @@ Trade_AnimateBallEnteringLinkCable: ; 412d2 (10:52d2)
 	ld a, %11100100
 	ld [rOBP0], a
 	xor a
-	ld [wd09f], a
+	ld [wLinkCableAnimBulgeToggle], a
 	ld bc, $2060
 .moveBallInsideLinkCableLoop
 	push bc
 	xor a
 	ld de, Trade_BallInsideLinkCableOAM
 	call WriteOAMBlock
-	ld a, [wd09f]
+	ld a, [wLinkCableAnimBulgeToggle]
 	xor $1
-	ld [wd09f], a
+	ld [wLinkCableAnimBulgeToggle], a
 	add $7e
 	ld hl, wOAMBuffer + $02
-	ld de, $4
+	ld de, 4
 	ld c, e
-.cycleSpriteFramesLoop
+.cycleLinkCableBulgeTile
 	ld [hl], a
 	add hl, de
 	dec c
-	jr nz, .cycleSpriteFramesLoop
+	jr nz, .cycleLinkCableBulgeTile
 	call Delay3
 	pop bc
 	ld a, c
@@ -328,7 +330,7 @@ Trade_AnimateBallEnteringLinkCable: ; 412d2 (10:52d2)
 	ld c, a
 	cp $a0
 	jr nc, .ballSpriteReachedEdgeOfScreen
-	ld a, (SFX_02_3c - SFX_Headers_02) / 3
+	ld a, SFX_TINK
 	call PlaySound
 	jr .moveBallInsideLinkCableLoop
 .ballSpriteReachedEdgeOfScreen
@@ -351,7 +353,7 @@ Trade_ShowEnemyMon: ; 41336 (10:5336)
 	ld a, TRADE_BALL_TILT_ANIM
 	call Trade_ShowAnimation
 	call Trade_ShowClearedWindow
-	hlCoord 4, 10
+	coord hl, 4, 10
 	ld b, 6
 	ld c, 10
 	call TextBoxBorder
@@ -368,8 +370,8 @@ Trade_ShowEnemyMon: ; 41336 (10:5336)
 	ld a, [wTradedEnemyMonSpecies]
 	call PlayCry
 	call Trade_Delay100
-	hlCoord 4, 10
-	ld bc, $80c
+	coord hl, 4, 10
+	lb bc, 8, 12
 	call ClearScreenArea
 	jp PrintTradeTakeCareText
 
@@ -460,7 +462,7 @@ Trade_DrawLeftGameboy: ; 4142d (10:542d)
 	call Trade_ClearTileMap
 
 ; draw link cable
-	hlCoord 11, 4
+	coord hl, 11, 4
 	ld a, $5d
 	ld [hli], a
 	ld a, $5e
@@ -471,16 +473,16 @@ Trade_DrawLeftGameboy: ; 4142d (10:542d)
 	jr nz, .loop
 
 ; draw gameboy pic
-	hlCoord 5, 3
+	coord hl, 5, 3
 	ld b, $6
 	call CopyTileIDsFromList_ZeroBaseTileID
 
 ; draw text box with player name below gameboy pic
-	hlCoord 4, 12
+	coord hl, 4, 12
 	ld b, 2
 	ld c, 7
 	call TextBoxBorder
-	hlCoord 5, 14
+	coord hl, 5, 14
 	ld de, wPlayerName
 	call PlaceString
 
@@ -490,7 +492,7 @@ Trade_DrawRightGameboy: ; 4145c (10:545c)
 	call Trade_ClearTileMap
 
 ; draw horizontal segment of link cable
-	hlCoord 0, 4
+	coord hl, 0, 4
 	ld a, $5e
 	ld c, $e
 .loop
@@ -518,16 +520,16 @@ Trade_DrawRightGameboy: ; 4145c (10:545c)
 	ld [hl], a
 
 ; draw gameboy pic
-	hlCoord 7, 8
+	coord hl, 7, 8
 	ld b, $6
 	call CopyTileIDsFromList_ZeroBaseTileID
 
 ; draw text box with enemy name above link cable
-	hlCoord 6, 0
+	coord hl, 6, 0
 	ld b, $2
 	ld c, $7
 	call TextBoxBorder
-	hlCoord 7, 2
+	coord hl, 7, 2
 	ld de, wLinkEnemyTrainerName
 	call PlaceString
 
@@ -536,7 +538,7 @@ Trade_DrawRightGameboy: ; 4145c (10:545c)
 Trade_DrawCableAcrossScreen: ; 4149f (10:549f)
 ; Draws the link cable across the screen.
 	call Trade_ClearTileMap
-	hlCoord 0, 4
+	coord hl, 0, 4
 	ld a, $5e
 	ld c, SCREEN_WIDTH
 .loop
@@ -549,15 +551,15 @@ Trade_CopyCableTilesOffScreen: ; 414ae (10:54ae)
 ; This is used to copy the link cable tiles off screen so that the cable
 ; continues when the screen is scrolled.
 	push hl
-	hlCoord 0, 4
-	call CopyToScreenEdgeTiles
+	coord hl, 0, 4
+	call CopyToRedrawRowOrColumnSrcTiles
 	pop hl
 	ld a, h
-	ld [H_SCREENEDGEREDRAWADDR + 1], a
+	ld [hRedrawRowOrColumnDest + 1], a
 	ld a, l
-	ld [H_SCREENEDGEREDRAWADDR], a
-	ld a, REDRAWROW
-	ld [H_SCREENEDGEREDRAW], a
+	ld [hRedrawRowOrColumnDest], a
+	ld a, REDRAW_ROW
+	ld [hRedrawRowOrColumnMode], a
 	ld c, 10
 	jp DelayFrames
 
@@ -645,14 +647,14 @@ Trade_AnimMonMoveVertical: ; 41525 (10:5525)
 	and a
 	jr z, .movingLeft
 ; moving right
-	ld bc, $400 ; move right
+	lb bc, 4, 0 ; move right
 	call .doAnim
-	ld bc, $a ; move down
+	lb bc, 0, 10 ; move down
 	jr .doAnim
 .movingLeft
-	ld bc, $f6 ; move up
+	lb bc, 0, -10 ; move up
 	call .doAnim
-	ld bc, $fc00 ; move left
+	lb bc, -4, 0 ; move left
 .doAnim
 	ld a, b
 	ld [W_BASECOORDX], a
@@ -662,7 +664,7 @@ Trade_AnimMonMoveVertical: ; 41525 (10:5525)
 .loop
 	call Trade_AddOffsetsToOAMCoords
 	call Trade_AnimCircledMon
-	ld c, $8
+	ld c, 8
 	call DelayFrames
 	dec d
 	jr nz, .loop
@@ -725,15 +727,15 @@ Trade_CircleOAM3: ; 4159c (10:559c)
 Trade_LoadMonSprite: ; 415a4 (10:55a4)
 	ld [wcf91], a
 	ld [wd0b5], a
-	ld [wcf1d], a
-	ld b, $b
-	ld c, $0
-	call GoPAL_SET
+	ld [wWholeScreenPaletteMonSpecies], a
+	ld b, SET_PAL_POKEMON_WHOLE_SCREEN
+	ld c, 0
+	call RunPaletteCommand
 	ld a, [H_AUTOBGTRANSFERENABLED]
 	xor $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call GetMonHeader
-	hlCoord 7, 2
+	coord hl, 7, 2
 	call LoadFlippedFrontSpriteByMonIndex
 	ld c, 10
 	jp DelayFrames
@@ -754,7 +756,10 @@ Trade_ShowClearedWindow: ; 415c8 (10:55c8)
 	ret
 
 Trade_SlideTextBoxOffScreen: ; 415df (10:55df)
-; Slides the window right until it's off screen.
+; Slides the window right until it's off screen. The window usually just has
+; a text box at the bottom when this is called. However, when this is called
+; after Trade_ShowEnemyMon in the external clock sequence, there is a mon pic
+; above the text box and it is also scrolled off the screen.
 	ld c, 50
 	call DelayFrames
 .loop
@@ -844,5 +849,5 @@ TradeforText: ; 41671 (10:5671)
 Trade_ShowAnimation: ; 41676 (10:5676)
 	ld [W_ANIMATIONID], a
 	xor a
-	ld [wcc5b], a
+	ld [wAnimationType], a
 	predef_jump MoveAnimation

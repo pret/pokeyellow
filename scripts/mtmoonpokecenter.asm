@@ -22,54 +22,52 @@ MtMoonPokecenterText3: ; 492e7 (12:52e7)
 	db "@"
 
 MtMoonPokecenterText4: ; 492ec (12:52ec)
-	db $08 ; asm
-	ld a, [wd7c6]
-	add a
-	jp c, .asm_49353
+	TX_ASM
+	CheckEvent EVENT_BOUGHT_MAGIKARP, 1
+	jp c, .alreadyBoughtMagikarp
 	ld hl, MtMoonPokecenterText_4935c
 	call PrintText
-	ld a, $13
+	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jp nz, .asm_4934e
-	ld [$ff9f], a
-	ld [$ffa1], a
+	jp nz, .choseNo
+	ld [hMoney], a
+	ld [hMoney + 2], a
 	ld a, $5
-	ld [$ffa0], a
+	ld [hMoney + 1], a
 	call HasEnoughMoney
-	jr nc, .asm_faa09 ; 0x49317
+	jr nc, .enoughMoney
 	ld hl, MtMoonPokecenterText_49366
-	jr .asm_49356 ; 0x4931c
-.asm_faa09 ; 0x4931e
-	ld bc,(MAGIKARP << 8) | 5
+	jr .printText
+.enoughMoney
+	lb bc, MAGIKARP, 5
 	call GivePokemon
-	jr nc, .asm_49359 ; 0x49324
+	jr nc, .done
 	xor a
-	ld [wWhichTrade], a
-	ld [wTrainerFacingDirection], a
+	ld [wPriceTemp], a
+	ld [wPriceTemp + 2], a
 	ld a, $5
-	ld [wTrainerEngageDistance], a
-	ld hl, wTrainerFacingDirection
+	ld [wPriceTemp + 1], a
+	ld hl, wPriceTemp + 2
 	ld de, wPlayerMoney + 2
 	ld c, $3
 	predef SubBCDPredef
-	ld a, $13
+	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld hl, wd7c6
-	set 7, [hl]
-	jr .asm_49359 ; 0x4934c
-.asm_4934e ; 0x4934e
+	SetEvent EVENT_BOUGHT_MAGIKARP
+	jr .done
+.choseNo
 	ld hl, MtMoonPokecenterText_49361
-	jr .asm_49356 ; 0x49351
-.asm_49353 ; 0x49353
+	jr .printText
+.alreadyBoughtMagikarp
 	ld hl, MtMoonPokecenterText_4936b
-.asm_49356 ; 0x49356
+.printText
 	call PrintText
-.asm_49359 ; 0x49359
+.done
 	jp TextScriptEnd
 
 MtMoonPokecenterText_4935c: ; 4935c (12:535c)

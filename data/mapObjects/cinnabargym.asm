@@ -7,16 +7,16 @@ CinnabarGymObject: ; 0x75acc (size=90)
 
 	db $0 ; signs
 
-	db $9 ; people
-	db SPRITE_FAT_BALD_GUY, $3 + 4, $3 + 4, $ff, $d0, TRAINER | $1, BLAINE + $C8, $1
-	db SPRITE_BLACK_HAIR_BOY_2, $2 + 4, $11 + 4, $ff, $d0, TRAINER | $2, SUPER_NERD + $C8, $9
-	db SPRITE_BLACK_HAIR_BOY_2, $8 + 4, $11 + 4, $ff, $d0, TRAINER | $3, BURGLAR + $C8, $4
-	db SPRITE_BLACK_HAIR_BOY_2, $4 + 4, $b + 4, $ff, $d0, TRAINER | $4, SUPER_NERD + $C8, $a
-	db SPRITE_BLACK_HAIR_BOY_2, $8 + 4, $b + 4, $ff, $d0, TRAINER | $5, BURGLAR + $C8, $5
-	db SPRITE_BLACK_HAIR_BOY_2, $e + 4, $b + 4, $ff, $d0, TRAINER | $6, SUPER_NERD + $C8, $b
-	db SPRITE_BLACK_HAIR_BOY_2, $e + 4, $3 + 4, $ff, $d0, TRAINER | $7, BURGLAR + $C8, $6
-	db SPRITE_BLACK_HAIR_BOY_2, $8 + 4, $3 + 4, $ff, $d0, TRAINER | $8, SUPER_NERD + $C8, $c
-	db SPRITE_GYM_HELPER, $d + 4, $10 + 4, $ff, $d0, $9 ; person
+	db $9 ; objects
+	object SPRITE_FAT_BALD_GUY, $3, $3, STAY, DOWN, $1, OPP_BLAINE, $1
+	object SPRITE_BLACK_HAIR_BOY_2, $11, $2, STAY, DOWN, $2, OPP_SUPER_NERD, $9
+	object SPRITE_BLACK_HAIR_BOY_2, $11, $8, STAY, DOWN, $3, OPP_BURGLAR, $4
+	object SPRITE_BLACK_HAIR_BOY_2, $b, $4, STAY, DOWN, $4, OPP_SUPER_NERD, $a
+	object SPRITE_BLACK_HAIR_BOY_2, $b, $8, STAY, DOWN, $5, OPP_BURGLAR, $5
+	object SPRITE_BLACK_HAIR_BOY_2, $b, $e, STAY, DOWN, $6, OPP_SUPER_NERD, $b
+	object SPRITE_BLACK_HAIR_BOY_2, $3, $e, STAY, DOWN, $7, OPP_BURGLAR, $6
+	object SPRITE_BLACK_HAIR_BOY_2, $3, $8, STAY, DOWN, $8, OPP_SUPER_NERD, $c
+	object SPRITE_GYM_HELPER, $10, $d, STAY, DOWN, $9 ; person
 
 	; warp-to
 	EVENT_DISP CINNABAR_GYM_WIDTH, $11, $10

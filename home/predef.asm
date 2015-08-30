@@ -14,7 +14,7 @@ Predef:: ; 3eb4 (0:3eb4)
 	push af
 	ld a, BANK(GetPredefPointer)
 	ld [H_LOADEDROMBANK], a
-	ld [$2000], a
+	ld [MBC1RomBank], a
 
 	call GetPredefPointer
 

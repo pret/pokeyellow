@@ -26,28 +26,26 @@ CeladonDinerText4: ; 4916e (12:516e)
 	db "@"
 
 CeladonDinerText5: ; 49173 (12:5173)
-	db $08 ; asm
-	ld a, [wd783]
-	bit 0, a
-	jr nz, .asm_eb14d ; 0x49179
+	TX_ASM
+	CheckEvent EVENT_GOT_COIN_CASE
+	jr nz, .asm_eb14d
 	ld hl, CeladonDinerText_491a7
 	call PrintText
-	ld bc, (COIN_CASE << 8) | 1
+	lb bc, COIN_CASE, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld hl, wd783
-	set 0, [hl]
+	SetEvent EVENT_GOT_COIN_CASE
 	ld hl, ReceivedCoinCaseText
 	call PrintText
-	jr .asm_68b61 ; 0x49194
+	jr .asm_68b61
 .BagFull
 	ld hl, CoinCaseNoRoomText
 	call PrintText
-	jr .asm_68b61 ; 0x4919c
-.asm_eb14d ; 0x4919e
+	jr .asm_68b61
+.asm_eb14d
 	ld hl, CeladonDinerText_491b7
 	call PrintText
-.asm_68b61 ; 0x491a4
+.asm_68b61
 	jp TextScriptEnd
 
 CeladonDinerText_491a7: ; 491a7 (12:51a7)

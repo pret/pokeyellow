@@ -34,33 +34,48 @@ PrintBookshelfText: ; fb50 (3:7b50)
 .noMatch
 	ld a, $ff
 	ld [$ffdb], a
-	ld b, BANK(PrintCardKeyText)
-	ld hl, PrintCardKeyText
-	jp Bankswitch
+	jpba PrintCardKeyText
 
 ; format: db tileset id, bookshelf tile id, text id
 BookshelfTileIDs: ; fb8b (3:7b8b)
-	db PLATEAU,      $30, $3A
-	db HOUSE,        $3D, $3F
-	db HOUSE,        $1E, $40
-	db MANSION,      $32, $40
-	db REDS_HOUSE_1, $32, $40
-	db LAB,          $28, $40
-	db LOBBY,        $16, $41
-	db GYM,          $1D, $40
-	db DOJO,         $1D, $40
-	db GATE,         $22, $40
-	db MART,         $54, $42
-	db MART,         $55, $42
-	db POKECENTER,   $54, $42
-	db POKECENTER,   $55, $42
-	db LOBBY,        $50, $42
-	db LOBBY,        $52, $42
-	db SHIP,         $36, $40
+	db PLATEAU,      $30
+	db (IndigoPlateauStatues_id   - TextPredefs) / 2 + 1
+	db HOUSE,        $3D
+	db (TownMapText_id   - TextPredefs) / 2 + 1
+	db HOUSE,        $1E
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db MANSION,      $32
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db REDS_HOUSE_1, $32
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db LAB,          $28
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db LOBBY,        $16
+	db (ElevatorText_id   - TextPredefs) / 2 + 1
+	db GYM,          $1D
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db DOJO,         $1D
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db GATE,         $22
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db MART,         $54
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db MART,         $55
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db POKECENTER,   $54
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db POKECENTER,   $55
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db LOBBY,        $50
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db LOBBY,        $52
+	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db SHIP,         $36
+	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
 	db $FF
 
 IndigoPlateauStatues: ; fbbf (3:7bbf)
-	db $08 ; asm
+	TX_ASM
 	ld hl, IndigoPlateauStatuesText1
 	call PrintText
 	ld a, [W_XCOORD]
@@ -85,12 +100,12 @@ IndigoPlateauStatuesText3: ; fbe3 (3:7be3)
 	db "@"
 
 BookOrSculptureText: ; fbe8 (3:7be8)
-	db $08 ; asm
+	TX_ASM
 	ld hl, PokemonBooksText
 	ld a, [W_CURMAPTILESET]
 	cp MANSION ; Celadon Mansion tileset
 	jr nz, .asm_fbfd
-	ld a, [wTileMap + $80]
+	aCoord 8, 6
 	cp $38
 	jr nz, .asm_fbfd
 	ld hl, DiglettSculptureText
@@ -113,7 +128,7 @@ ElevatorText: ; fc0d (3:7c0d)
 TownMapText: ; fc12 (3:7c12)
 	TX_FAR _TownMapText
 	db $06
-	db $08 ; asm
+	TX_ASM
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, wd730

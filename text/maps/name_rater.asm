@@ -35,7 +35,7 @@ _NameRaterText_1dac7::
 	text "OK! This #MON"
 	line "has been renamed"
 	cont "@"
-	TX_RAM wHPBarMaxHP
+	TX_RAM wBuffer
 	text "!"
 
 	para "That's a better"

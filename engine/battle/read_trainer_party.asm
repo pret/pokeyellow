@@ -55,8 +55,8 @@ ReadTrainer: ; 39c53 (e:5c53)
 	and a ; have we reached the end of the trainer data?
 	jr z,.FinishUp
 	ld [wcf91],a ; write species somewhere (XXX why?)
-	ld a,1
-	ld [wcc49],a
+	ld a,ENEMY_PARTY_DATA
+	ld [wMonDataLocation],a
 	push hl
 	call AddPartyMon
 	pop hl
@@ -72,8 +72,8 @@ ReadTrainer: ; 39c53 (e:5c53)
 	ld [W_CURENEMYLVL],a
 	ld a,[hli]
 	ld [wcf91],a
-	ld a,1
-	ld [wcc49],a
+	ld a,ENEMY_PARTY_DATA
+	ld [wMonDataLocation],a
 	push hl
 	call AddPartyMon
 	pop hl
@@ -101,7 +101,7 @@ ReadTrainer: ; 39c53 (e:5c53)
 
 ; get trainer class number
 	ld a,[W_CUROPPONENT]
-	sub $C8
+	sub 200
 	ld b,a
 	ld hl,TeamMoves
 
@@ -143,7 +143,7 @@ ReadTrainer: ; 39c53 (e:5c53)
 	ld [wEnemyMon6Moves + 2],a
 .FinishUp
 ; clear wAmountMoneyWon addresses
-	xor a       
+	xor a
 	ld de,wAmountMoneyWon
 	ld [de],a
 	inc de
@@ -154,7 +154,7 @@ ReadTrainer: ; 39c53 (e:5c53)
 	ld b,a
 .LastLoop
 ; update wAmountMoneyWon addresses (money to win) based on enemy's level
-	ld hl,wd047
+	ld hl,wTrainerBaseMoney + 1
 	ld c,2 ; wAmountMoneyWon is a 3-byte number
 	push bc
 	predef AddBCDPredef

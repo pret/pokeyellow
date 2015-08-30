@@ -13,18 +13,17 @@ LoreleiScript_76191: ; 76191 (1d:6191)
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld hl, wd734
+	ld hl, wBeatLorelei
 	set 1, [hl]
-	ld a, [wd863]
-	bit 1, a
+	CheckEvent EVENT_BEAT_LORELEIS_ROOM_TRAINER_0
 	jr z, .asm_761a9
 	ld a, $5
 	jr .asm_761ab
 .asm_761a9
 	ld a, $24
 .asm_761ab
-	ld [wd09f], a
-	ld bc, $2
+	ld [wNewTileBlockID], a
+	lb bc, 0, 2
 	predef_jump ReplaceTileBlock
 
 LoreleiScript_761b6: ; 761b6 (1d:61b6)
@@ -41,7 +40,8 @@ LoreleiScriptPointers: ; 761bb (1d:61bb)
 
 LoreleiScript4: ; 761c5 (1d:61c5)
 	ret
-asm_761c6: ; 761c6 (1d:61c6)
+
+LoreleiScript_761c6: ; 761c6 (1d:61c6)
 	ld hl, wSimulatedJoypadStatesEnd
 	ld a, D_UP
 	ld [hli], a
@@ -57,6 +57,7 @@ asm_761c6: ; 761c6 (1d:61c6)
 	ld [W_LORELEICURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a
 	ret
+
 LoreleiScript0: ; 761e2 (1d:61e2)
 	ld hl, CoordsData_76223
 	call ArePlayerCoordsInArray
@@ -66,16 +67,14 @@ LoreleiScript0: ; 761e2 (1d:61e2)
 	ld [hJoyHeld], a
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wCoordIndex]
 	cp $3
 	jr c, .asm_76206
-	ld hl, wd863
-	bit 6, [hl]
-	set 6, [hl]
-	jr z, asm_761c6
+	CheckAndSetEvent EVENT_AUTOWALKED_INTO_LORELEIS_ROOM
+	jr z, LoreleiScript_761c6
 .asm_76206
 	ld a, $2
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -106,31 +105,31 @@ LoreleiScript3: ; 7622c (1d:622c)
 	ret
 LoreleiScript2: ; 7623f (1d:623f)
 	call EndTrainerBattle
-	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
+	ld a, [W_ISINBATTLE]
 	cp $ff
 	jp z, LoreleiScript_761b6
 	ld a, $1
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 LoreleiTextPointers: ; 76251 (1d:6251)
 	dw LoreleiText1
-	dw LoreleiText2
+	dw LoreleiDontRunAwayText
 
 LoreleiTrainerHeaders: ; 76255 (1d:6255)
 LoreleiTrainerHeader0: ; 76255 (1d:6255)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_LORELEIS_ROOM_TRAINER_0
 	db ($0 << 4) ; trainer's view range
-	dw wd863 ; flag's byte
-	dw LoreleiBeforeBattleText ; 0x626c TextBeforeBattle
-	dw LoreleiAfterBattleText ; 0x6276 TextAfterBattle
-	dw LoreleiEndBattleText ; 0x6271 TextEndBattle
-	dw LoreleiEndBattleText ; 0x6271 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_LORELEIS_ROOM_TRAINER_0
+	dw LoreleiBeforeBattleText ; TextBeforeBattle
+	dw LoreleiAfterBattleText ; TextAfterBattle
+	dw LoreleiEndBattleText ; TextEndBattle
+	dw LoreleiEndBattleText ; TextEndBattle
 
 	db $ff
 
 LoreleiText1: ; 76262 (1d:6262)
-	db $08 ; asm
+	TX_ASM
 	ld hl, LoreleiTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
@@ -147,6 +146,6 @@ LoreleiAfterBattleText: ; 76276 (1d:6276)
 	TX_FAR _LoreleiAfterBattleText
 	db "@"
 
-LoreleiText2: ; 7627b (1d:627b)
-	TX_FAR _LoreleiText2
+LoreleiDontRunAwayText: ; 7627b (1d:627b)
+	TX_FAR _LoreleiDontRunAwayText
 	db "@"

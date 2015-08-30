@@ -6,10 +6,10 @@ PokemonTower7Object: ; 0x60ef6 (size=42)
 
 	db $0 ; signs
 
-	db 3 ; people
-	db SPRITE_JESSIE, 8 + 4, $a + 4, $ff, $d0, 1
-	db SPRITE_JAMES, 8 + 4, $b + 4, $ff, $d0, 2
-	db SPRITE_MR_FUJI, 3 + 4, $a + 4, $ff, $d0, 3
+	db 3 ; objects
+	object SPRITE_JESSIE, $a 8, 8, STAY, DOWN, 1
+	object SPRITE_JAMES, $b, 8, STAY, DOWN, 2
+	object SPRITE_MR_FUJI, $a, 3, STAY, DOWN, 3
 
 	; warp-to
 	EVENT_DISP POKEMONTOWER_7_WIDTH, $10, $9 ; POKEMONTOWER_6

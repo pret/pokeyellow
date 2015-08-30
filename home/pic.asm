@@ -28,7 +28,7 @@ _UncompressSpriteData:: ; 2410 (0:2410)
 	xor a
 	ld [W_SPRITECURPOSX], a
 	ld [W_SPRITECURPOSY], a
-	ld [W_SPRITELOADFLAGS], a ; wd0a8
+	ld [W_SPRITELOADFLAGS], a
 	call ReadNextInputByte    ; first byte of input determines sprite width (high nybble) and height (low nybble) in tiles (8x8 pixels)
 	ld b, a
 	and $f
@@ -54,13 +54,13 @@ _UncompressSpriteData:: ; 2410 (0:2410)
 ; note that this is an endless loop which is terminated during a call to MoveToNextBufferPosition by manipulating the stack
 UncompressSpriteDataLoop:: ; 244c (0:244c)
 	ld hl, S_SPRITEBUFFER1
-	ld a, [W_SPRITELOADFLAGS]  ; wd0a8
+	ld a, [W_SPRITELOADFLAGS]
 	bit 0, a
 	jr z, .useSpriteBuffer1    ; check which buffer to use
 	ld hl, S_SPRITEBUFFER2
 .useSpriteBuffer1
 	call StoreSpriteOutputPointer
-	ld a, [W_SPRITELOADFLAGS]  ; wd0a8
+	ld a, [W_SPRITELOADFLAGS]
 	bit 1, a
 	jr z, .startDecompression  ; check if last iteration
 	call ReadNextInputBit      ; if last chunk, read 1-2 bit unpacking mode
@@ -192,12 +192,12 @@ MoveToNextBufferPosition:: ; 24ce (0:24ce)
 	pop hl
 	xor a
 	ld [W_SPRITECURPOSX], a
-	ld a, [W_SPRITELOADFLAGS] ; wd0a8
+	ld a, [W_SPRITELOADFLAGS]
 	bit 1, a
 	jr nz, .done            ; test if there is one more sprite to go
 	xor $1
 	set 1, a
-	ld [W_SPRITELOADFLAGS], a ; wd0a8
+	ld [W_SPRITELOADFLAGS], a
 	jp UncompressSpriteDataLoop
 .done
 	jp UnpackSprite
@@ -535,8 +535,13 @@ ReverseNybble:: ; 272d (0:272d)
 	ret
 
 ; resets sprite buffer pointers to buffer 1 and 2, depending on W_SPRITELOADFLAGS
+<<<<<<< HEAD
 ResetSpriteBufferPointers:: ; 2737 (0:2737)
 	ld a, [W_SPRITELOADFLAGS] ; wd0a8
+=======
+ResetSpriteBufferPointers:: ; 2841 (0:2841)
+	ld a, [W_SPRITELOADFLAGS]
+>>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	bit 0, a
 	jr nz, .buffer2Selected
 	ld de, S_SPRITEBUFFER1

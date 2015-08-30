@@ -12,8 +12,8 @@ CeruleanGymScript: ; 5c6b3 (17:46b3)
 	ret
 
 CeruleanGymScript_5c6d0: ; 5c6d0 (17:46d0)
-	ld hl, Gym2CityName ; $46d9
-	ld de, Gym2LeaderName ; $46e7
+	ld hl, Gym2CityName
+	ld de, Gym2LeaderName
 	jp LoadGymLeaderAndCityName
 
 Gym2CityName: ; 5c6d9 (17:46d9)
@@ -36,7 +36,7 @@ CeruleanGymScriptPointers: ; 5c6f8 (17:46f8)
 	dw CeruleanGymScript3
 
 CeruleanGymScript3: ; 5c700 (17:4700)
-	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
+	ld a, [W_ISINBATTLE]
 	cp $ff
 	jp z, CeruleanGymScript_5c6ed
 	ld a, $f0
@@ -44,33 +44,29 @@ CeruleanGymScript3: ; 5c700 (17:4700)
 
 CeruleanGymScript_5c70d: ; 5c70d (17:470d)
 	ld a, $5
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld hl, wd75e
-	set 7, [hl]
-	ld bc, (TM_11 << 8) | 1
+	SetEvent EVENT_BEAT_MISTY
+	lb bc, TM_11, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld hl, wd75e
-	set 6, [hl]
+	SetEvent EVENT_GOT_TM11
 	jr .asm_5c736
 .BagFull
 	ld a, $7
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_5c736
 	ld hl, W_OBTAINEDBADGES
 	set 1, [hl]
-	ld hl, wd72a
+	ld hl, wBeatGymFlags
 	set 1, [hl]
 
 	; deactivate gym trainers
-	ld hl, wd75e
-	set 2, [hl]
-	set 3, [hl]
+	SetEvents EVENT_BEAT_CERULEAN_GYM_TRAINER_0, EVENT_BEAT_CERULEAN_GYM_TRAINER_1
 
 	jp CeruleanGymScript_5c6ed
 
@@ -85,40 +81,39 @@ CeruleanGymTextPointers: ; 5c74a (17:474a)
 
 CeruleanGymTrainerHeaders: ; 5c758 (17:4758)
 CeruleanGymTrainerHeader0: ; 5c758 (17:4758)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_CERULEAN_GYM_TRAINER_0
 	db ($3 << 4) ; trainer's view range
-	dw wd75e ; flag's byte
-	dw CeruleanGymBattleText1 ; 0x47e9 TextBeforeBattle
-	dw CeruleanGymAfterBattleText1 ; 0x47f3 TextAfterBattle
-	dw CeruleanGymEndBattleText1 ; 0x47ee TextEndBattle
-	dw CeruleanGymEndBattleText1 ; 0x47ee TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_CERULEAN_GYM_TRAINER_0
+	dw CeruleanGymBattleText1 ; TextBeforeBattle
+	dw CeruleanGymAfterBattleText1 ; TextAfterBattle
+	dw CeruleanGymEndBattleText1 ; TextEndBattle
+	dw CeruleanGymEndBattleText1 ; TextEndBattle
 
 CeruleanGymTrainerHeader1: ; 5c764 (17:4764)
-	db $3 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_CERULEAN_GYM_TRAINER_1
 	db ($3 << 4) ; trainer's view range
-	dw wd75e ; flag's byte
-	dw CeruleanGymBattleText2 ; 0x4802 TextBeforeBattle
-	dw CeruleanGymAfterBattleText2 ; 0x480c TextAfterBattle
-	dw CeruleanGymEndBattleText2 ; 0x4807 TextEndBattle
-	dw CeruleanGymEndBattleText2 ; 0x4807 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_CERULEAN_GYM_TRAINER_1
+	dw CeruleanGymBattleText2 ; TextBeforeBattle
+	dw CeruleanGymAfterBattleText2 ; TextAfterBattle
+	dw CeruleanGymEndBattleText2 ; TextEndBattle
+	dw CeruleanGymEndBattleText2 ; TextEndBattle
 
 	db $ff
 
 CeruleanGymText1: ; 5c771 (17:4771)
-	db $08 ; asm
-	ld a, [wd75e]
-	bit 7, a
-	jr z, .asm_10854 ; 0x5c777
-	bit 6, a
-	jr nz, .asm_37a1b ; 0x5c77b
+	TX_ASM
+	CheckEvent EVENT_BEAT_MISTY
+	jr z, .asm_5c78d
+	CheckEventReuseA EVENT_GOT_TM11
+	jr nz, .asm_5c785
 	call z, CeruleanGymScript_5c70d
 	call DisableWaitingAfterTextDisplay
-	jr .asm_95b04 ; 0x5c783
-.asm_37a1b ; 0x5c785
+	jr .asm_5c7bb
+.asm_5c785
 	ld hl, CeruleanGymText_5c7c3
 	call PrintText
-	jr .asm_95b04 ; 0x5c78b
-.asm_10854 ; 0x5c78d
+	jr .asm_5c7bb
+.asm_5c78d
 	ld hl, CeruleanGymText_5c7be
 	call PrintText
 	ld hl, wd72d
@@ -137,7 +132,7 @@ CeruleanGymText1: ; 5c771 (17:4771)
 	ld [hJoyHeld], a
 	ld a, $3
 	ld [W_CERULEANGYMCURSCRIPT], a
-.asm_95b04 ; 0x5c7bb
+.asm_5c7bb
 	jp TextScriptEnd
 
 CeruleanGymText_5c7be: ; 5c7be (17:47be)
@@ -166,7 +161,7 @@ CeruleanGymText_5c7d8: ; 5c7d8 (17:47d8)
 	db $11, $6, "@"
 
 CeruleanGymText2: ; 5c7df (17:47df)
-	db $08 ; asm
+	TX_ASM
 	ld hl, CeruleanGymTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
@@ -184,7 +179,7 @@ CeruleanGymAfterBattleText1: ; 5c7f3 (17:47f3)
 	db "@"
 
 CeruleanGymText3: ; 5c7f8 (17:47f8)
-	db $08 ; asm
+	TX_ASM
 	ld hl, CeruleanGymTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
@@ -202,17 +197,16 @@ CeruleanGymAfterBattleText2: ; 5c80c (17:480c)
 	db "@"
 
 CeruleanGymText4: ; 5c811 (17:4811)
-	db $08 ; asm
-	ld a, [wd75e]
-	bit 7, a
-	jr nz, .asm_f80ce ; 0x5c817
+	TX_ASM
+	CheckEvent EVENT_BEAT_MISTY
+	jr nz, .asm_5c821
 	ld hl, CeruleanGymText_5c82a
 	call PrintText
-	jr .asm_18a31 ; 0x5c81f
-.asm_f80ce ; 0x5c821
+	jr .asm_5c827
+.asm_5c821
 	ld hl, CeruleanGymText_5c82f
 	call PrintText
-.asm_18a31 ; 0x5c827
+.asm_5c827
 	jp TextScriptEnd
 
 CeruleanGymText_5c82a: ; 5c82a (17:482a)

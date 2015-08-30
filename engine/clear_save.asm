@@ -1,12 +1,12 @@
 DoClearSaveDialogue: ; 1c98a (7:498a)
 	call ClearScreen
-	call GoPAL_SET_CF1C
+	call RunDefaultPaletteCommand
 	call LoadFontTilePatterns
 	call LoadTextBoxTilePatterns
 	ld hl, ClearSaveDataText
 	call PrintText
-	hlCoord 14, 7
-	ld bc, $80f
+	coord hl, 14, 7
+	lb bc, 8, 15
 	ld a, NO_YES_MENU
 	ld [wTwoOptionMenuID], a
 	ld a, TWO_OPTION_MENU

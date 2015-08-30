@@ -33,32 +33,35 @@ ClearBgMap:: ; 1cf0 (0:1cf0)
 	jr nz,.loop
 	ret
 
-; When the player takes a step, a row or column of 2x2 tile blocks at the edge
-; of the screen toward which they moved is exposed and has to be redrawn.
-; This function does the redrawing.
-RedrawExposedScreenEdge:: ; 1ada (0:1ada)
-	ld a,[H_SCREENEDGEREDRAW]
+; This function redraws a BG row of height 2 or a BG column of width 2.
+; One of its main uses is redrawing the row or column that will be exposed upon
+; scrolling the BG when the player takes a step. Redrawing only the exposed
+; row or column is more efficient than redrawing the entire screen.
+; However, this function is also called repeatedly to redraw the whole screen
+; when necessary. It is also used in trade animation and elevator code.
+RedrawRowOrColumn:: ; 1ada (0:1ada)
+	ld a,[hRedrawRowOrColumnMode]
 	and a
 	ret z
 	ld b,a
 	xor a
-	ld [H_SCREENEDGEREDRAW],a
+	ld [hRedrawRowOrColumnMode],a
 	dec b
 	jr nz,.redrawRow
 .redrawColumn
-	ld hl,wScreenEdgeTiles
-	ld a,[H_SCREENEDGEREDRAWADDR]
+	ld hl,wRedrawRowOrColumnSrcTiles
+	ld a,[hRedrawRowOrColumnDest]
 	ld e,a
-	ld a,[H_SCREENEDGEREDRAWADDR + 1]
+	ld a,[hRedrawRowOrColumnDest + 1]
 	ld d,a
-	ld c,18 ; screen height
+	ld c,SCREEN_HEIGHT
 .loop1
 	ld a,[hli]
 	ld [de],a
 	inc de
 	ld a,[hli]
 	ld [de],a
-	ld a,31
+	ld a,BG_MAP_WIDTH - 1
 	add e
 	ld e,a
 	jr nc,.noCarry
@@ -72,23 +75,24 @@ RedrawExposedScreenEdge:: ; 1ada (0:1ada)
 	dec c
 	jr nz,.loop1
 	xor a
-	ld [H_SCREENEDGEREDRAW],a
+	ld [hRedrawRowOrColumnMode],a
 	ret
 .redrawRow
-	ld hl,wScreenEdgeTiles
-	ld a,[H_SCREENEDGEREDRAWADDR]
+	ld hl,wRedrawRowOrColumnSrcTiles
+	ld a,[hRedrawRowOrColumnDest]
 	ld e,a
-	ld a,[H_SCREENEDGEREDRAWADDR + 1]
+	ld a,[hRedrawRowOrColumnDest + 1]
 	ld d,a
 	push de
-	call .drawHalf ; draw upper half
+	call .DrawHalf ; draw upper half
 	pop de
-	ld a,32 ; width of VRAM background map
+	ld a,BG_MAP_WIDTH ; width of VRAM background map
 	add e
 	ld e,a
-			 ; draw lower half
-.drawHalf
-	ld c,10
+	; fall through and draw lower half
+
+.DrawHalf
+	ld c,SCREEN_WIDTH / 2
 .loop2
 	ld a,[hli]
 	ld [de],a
@@ -113,7 +117,7 @@ RedrawExposedScreenEdge:: ; 1ada (0:1ada)
 ; background per V-blank. It cycles through which third it draws.
 ; This transfer is turned off when walking around the map, but is turned
 ; on when talking to sprites, battling, using menus, etc. This is because
-; the above function, RedrawExposedScreenEdge, is used when walking to
+; the above function, RedrawRowOrColumn, is used when walking to
 ; improve efficiency.
 AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	ld a,[H_AUTOBGTRANSFERENABLED]
@@ -126,7 +130,7 @@ AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	dec a
 	jr z,.transferMiddleThird
 .transferBottomThird
-	hlCoord 0, 12
+	coord hl, 0, 12
 	ld sp,hl
 	ld a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
@@ -137,7 +141,7 @@ AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	xor a ; TRANSFERTOP
 	jr .doTransfer
 .transferTopThird
-	hlCoord 0, 0
+	coord hl, 0, 0
 	ld sp,hl
 	ld a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
@@ -146,7 +150,7 @@ AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	ld a,TRANSFERMIDDLE
 	jr .doTransfer
 .transferMiddleThird
-	hlCoord 0, 6
+	coord hl, 0, 6
 	ld sp,hl
 	ld a,[H_AUTOBGTRANSFERDEST + 1]
 	ld h,a
@@ -283,12 +287,11 @@ VBlankCopyDouble:: ; 1bd1 (0:1bd1)
 
 
 VBlankCopy:: ; 1c21 (0:1c21)
-; Copy [H_VBCOPYSIZE] 2bpp tiles
+; Copy [H_VBCOPYSIZE] 2bpp tiles (or 16 * [H_VBCOPYSIZE] tile map entries)
 ; from H_VBCOPYSRC to H_VBCOPYDEST.
 
-; Source and destination addresses
-; are updated, so transfer can
-; continue in subsequent calls.
+; Source and destination addresses are updated,
+; so transfer can continue in subsequent calls.
 
 	ld a, [H_VBCOPYSIZE]
 	and a
@@ -354,21 +357,23 @@ UpdateMovingBgTiles:: ; 1c75 (0:1c75)
 	cp $90 ; check if not in vblank period??? (maybe if vblank is too long)
 	ret c
 	
-	ld a, [$ffd8]
+	ld a, [hMovingBGTilesCounter1]
 	inc a
-	ld [$ffd8], a
-	cp $14
+	ld [hMovingBGTilesCounter1], a
+	cp 20
 	ret c
-	cp $15
+	cp 21
 	jr z, .flower
+
+; water
 
 	ld hl, vTileset + $14 * $10
 	ld c, $10
 
-	ld a, [wd085]
+	ld a, [wMovingBGTilesCounter2]
 	inc a
 	and 7
-	ld [wd085], a
+	ld [wMovingBGTilesCounter2], a
 
 	and 4
 	jr nz, .left
@@ -391,14 +396,14 @@ UpdateMovingBgTiles:: ; 1c75 (0:1c75)
 	ret nc
 ; if in a cave, no flower animations
 	xor a
-	ld [$ffd8], a
+	ld [hMovingBGTilesCounter1], a
 	ret
 
 .flower
 	xor a
-	ld [$ffd8], a
+	ld [hMovingBGTilesCounter1], a
 
-	ld a, [wd085]
+	ld a, [wMovingBGTilesCounter2]
 	and 3
 	cp 2
 	ld hl, FlowerTile1

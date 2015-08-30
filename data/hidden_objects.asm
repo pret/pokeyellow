@@ -28,8 +28,8 @@ HiddenObjectMaps: ; 46a40 (11:6a40)
 	db SAFFRON_GYM
 	db MT_MOON_POKECENTER
 	db ROCK_TUNNEL_POKECENTER
-	db BATTLE_CENTER
 	db TRADE_CENTER
+	db COLOSSEUM
 	db VIRIDIAN_FOREST
 	db MT_MOON_3
 	db INDIGO_PLATEAU
@@ -117,8 +117,8 @@ HiddenObjectPointers: ; 46a96 (11:6a96)
 	dw SaffronGymHiddenObjects
 	dw MtMoonPokecenterHiddenObjects
 	dw RockTunnelPokecenterHiddenObjects
-	dw BattleCenterHiddenObjects
 	dw TradeCenterHiddenObjects
+	dw ColosseumHiddenObjects
 	dw ViridianForestHiddenObjects
 	dw MtMoon3HiddenObjects
 	dw IndigoPlateauHiddenObjects
@@ -175,7 +175,7 @@ HiddenObjectPointers: ; 46a96 (11:6a96)
 	dw Route4HiddenObjects
 
 ; format: y-coord, x-coord, text id/item id, object routine
-BattleCenterHiddenObjects: ; 46b40 (11:6b40)
+TradeCenterHiddenObjects: ; 46b40 (11:6b40)
 	db $04,$05,$d0
 	db BANK(CableClubRightGameboy)
 	dw CableClubRightGameboy
@@ -183,7 +183,7 @@ BattleCenterHiddenObjects: ; 46b40 (11:6b40)
 	db BANK(CableClubLeftGameboy)
 	dw CableClubLeftGameboy
 	db $FF
-TradeCenterHiddenObjects: ; 46b4d (11:6b4d)
+ColosseumHiddenObjects: ; 46b4d (11:6b4d)
 	db $04,$05,$d0
 	db BANK(CableClubRightGameboy)
 	dw CableClubRightGameboy
@@ -233,10 +233,10 @@ ViridianPokecenterHiddenObjects: ; 46b93 (11:6b93)
 ViridianMartHiddenObjects: ; 46ba0 (11:6ba0)
 	db $FF
 ViridianSchoolHiddenObjects: ; 46ba1 (11:6ba1)
-	db $04,$03,$20 ; ViridianSchoolNotebook
+	db $04,$03,(ViridianSchoolNotebook_id - TextPredefs) / 2 + 1
 	db Bank(PrintNotebookText)
 	dw PrintNotebookText
-	db $00,$03,$21 ; ViridianSchoolBlackboard
+	db $00,$03,(ViridianSchoolBlackboard_id - TextPredefs) / 2 + 1
 	db BANK(PrintBlackboardLinkCableText)
 	dw PrintBlackboardLinkCableText
 	db $FF
@@ -743,13 +743,13 @@ LavenderHouse1HiddenObjects: ; 46fc2 (11:6fc2)
 	dw PrintMagazinesText
 	db $FF
 CeladonMansion5HiddenObjects: ; 46fd5 (11:6fd5)
-	db $00,$03,$34 ; LinkCableHelp
+	db $00,$03,(LinkCableHelp_id - TextPredefs) / 2 + 1
 	db BANK(PrintBlackboardLinkCableText)
 	dw PrintBlackboardLinkCableText
-	db $00,$04,$34 ; LinkCableHelp
+	db $00,$04,(LinkCableHelp_id - TextPredefs) / 2 + 1
 	db BANK(PrintBlackboardLinkCableText)
 	dw PrintBlackboardLinkCableText
-	db $04,$03,$35 ; TMNotebook
+	db $04,$03,(TMNotebook_id - TextPredefs) / 2 + 1
 	db Bank(PrintNotebookText)
 	dw PrintNotebookText
 	db $FF

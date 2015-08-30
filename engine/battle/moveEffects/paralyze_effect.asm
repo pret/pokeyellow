@@ -4,7 +4,7 @@ ParalyzeEffect_: ; f6562 (3d:6562)
 	ld a, [H_WHOSETURN]
 	and a
 	jp z, .next
-	ld hl, wBattleMonStatus 
+	ld hl, wBattleMonStatus
 	ld de, W_ENEMYMOVETYPE
 .next
 	ld a, [hl]
@@ -28,7 +28,7 @@ ParalyzeEffect_: ; f6562 (3d:6562)
 	push hl
 	callab MoveHitTest
 	pop hl
-	ld a, [W_MOVEMISSED] 
+	ld a, [W_MOVEMISSED]
 	and a
 	jr nz, .didntAffect
 	set PAR, [hl]
@@ -36,18 +36,12 @@ ParalyzeEffect_: ; f6562 (3d:6562)
 	ld c, 30
 	call DelayFrames
 	callab PlayCurrentMoveAnimation
-	ld hl, PrintMayNotAttackText
-	ld b, BANK(PrintMayNotAttackText)
-	jp Bankswitch
+	jpab PrintMayNotAttackText
 .didntAffect
 	ld c, 50
 	call DelayFrames
-	ld hl, PrintDidntAffectText
-	ld b, BANK(PrintDidntAffectText)
-	jp Bankswitch
+	jpab PrintDidntAffectText
 .doesntAffect
 	ld c, 50
 	call DelayFrames
-	ld hl, PrintDoesntAffectText
-	ld b, BANK(PrintDoesntAffectText)
-	jp Bankswitch
+	jpab PrintDoesntAffectText

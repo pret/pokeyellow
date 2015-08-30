@@ -2,18 +2,18 @@ DisplayDexRating: ; 44169 (11:4169)
 	ld hl, wPokedexSeen
 	ld b, wPokedexSeenEnd - wPokedexSeen
 	call CountSetBits
-	ld a, [wd11e] ; result of CountSetBits (seen count)
-	ld [$FFDB], a
+	ld a, [wNumSetBits]
+	ld [hDexRatingNumMonsSeen], a
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
-	ld a, [wd11e] ; result of CountSetBits (own count)
-	ld [$FFDC], a
+	ld a, [wNumSetBits]
+	ld [hDexRatingNumMonsOwned], a
 	ld hl, DexRatingsTable
 .findRating
 	ld a, [hli]
 	ld b, a
-	ld a, [$FFDC] ; number of pokemon owned
+	ld a, [hDexRatingNumMonsOwned]
 	cp b
 	jr c, .foundRating
 	inc hl
@@ -23,34 +23,31 @@ DisplayDexRating: ; 44169 (11:4169)
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a ; load text pointer into hl
-	ld a, [wd747]
-	bit 3, a
-	res 3, a
-	ld [wd747], a
-	jr nz, .label3
+	CheckAndResetEventA EVENT_HALL_OF_FAME_DEX_RATING
+	jr nz, .hallOfFame
 	push hl
 	ld hl, PokedexRatingText_441cc
 	call PrintText
 	pop hl
 	call PrintText
-	callba Func_7d13b
-	jp WaitForTextScrollButtonPress ; wait for button press
-.label3
-	ld de, wcc5b
-	ld a, [$FFDB]
+	callba PlayPokedexRatingSfx
+	jp WaitForTextScrollButtonPress
+.hallOfFame
+	ld de, wDexRatingNumMonsSeen
+	ld a, [hDexRatingNumMonsSeen]
 	ld [de], a
 	inc de
-	ld a, [$FFDC]
+	ld a, [hDexRatingNumMonsOwned]
 	ld [de], a
 	inc de
-.label4
+.copyRatingTextLoop
 	ld a, [hli]
-	cp a, $50
-	jr z, .label5
+	cp a, "@"
+	jr z, .doneCopying
 	ld [de], a
 	inc de
-	jr .label4
-.label5
+	jr .copyRatingTextLoop
+.doneCopying
 	ld [de], a
 	ret
 

@@ -25,7 +25,7 @@ RocketHideout2Script0: ; 44e42 (11:4e42)
 	ld hl, wd736
 	set 7, [hl]
 	call StartSimulatingJoypadStates
-	ld a, (SFX_02_52 - SFX_Headers_02) / 3
+	ld a, SFX_ARROW_TILES
 	call PlaySound
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -126,183 +126,179 @@ RocketHideout2ArrowTilePlayerMovement: ; 44e6d (11:4e6d)
 	db $FF
 
 ;format: direction, count
-;right:	$10
-;left:	$20
-;up:	$40
-;down:	$80
 ;each list is read starting from the $FF and working backwards
 RocketHideout2ArrowMovement1: ; 44f1a (11:4f1a)
-	db $20,$02
+	db D_LEFT,$02
 	db $FF
 
 RocketHideout2ArrowMovement2: ; 44f1d (11:4f1d)
-	db $10,$04
+	db D_RIGHT,$04
 	db $FF
 
 RocketHideout2ArrowMovement3: ; 44f20 (11:4f20)
-	db $40,$04
-	db $10,$04
+	db D_UP,$04
+	db D_RIGHT,$04
 	db $FF
 
 RocketHideout2ArrowMovement4: ; 44f25 (11:4f25)
-	db $40,$04
-	db $10,$04
-	db $40,$01
+	db D_UP,$04
+	db D_RIGHT,$04
+	db D_UP,$01
 	db $FF
 
 RocketHideout2ArrowMovement5: ; 44f2c (11:4f2c)
-	db $20,$02
-	db $40,$03
+	db D_LEFT,$02
+	db D_UP,$03
 	db $FF
 
 RocketHideout2ArrowMovement6: ; 44f31 (11:4f31)
-	db $80,$02
-	db $10,$04
+	db D_DOWN,$02
+	db D_RIGHT,$04
 	db $FF
 
 RocketHideout2ArrowMovement7: ; 44f36 (11:4f36)
-	db $40,$02
+	db D_UP,$02
 	db $FF
 
 RocketHideout2ArrowMovement8: ; 44f39 (11:4f39)
-	db $40,$04
+	db D_UP,$04
 	db $FF
 
 RocketHideout2ArrowMovement9: ; 44f3c (11:4f3c)
-	db $20,$06
+	db D_LEFT,$06
 	db $FF
 
 RocketHideout2ArrowMovement10: ; 44f3f (11:4f3f)
-	db $40,$01
+	db D_UP,$01
 	db $FF
 
 RocketHideout2ArrowMovement11: ; 44f42 (11:4f42)
-	db $20,$06
-	db $40,$04
+	db D_LEFT,$06
+	db D_UP,$04
 	db $FF
 
 RocketHideout2ArrowMovement12: ; 44f47 (11:4f47)
-	db $80,$02
+	db D_DOWN,$02
 	db $FF
 
 RocketHideout2ArrowMovement13: ; 44f4a (11:4f4a)
-	db $20,$08
+	db D_LEFT,$08
 	db $FF
 
 RocketHideout2ArrowMovement14: ; 44f4d (11:4f4d)
-	db $20,$08
-	db $40,$01
+	db D_LEFT,$08
+	db D_UP,$01
 	db $FF
 
 RocketHideout2ArrowMovement15: ; 44f52 (11:4f52)
-	db $20,$08
-	db $40,$06
+	db D_LEFT,$08
+	db D_UP,$06
 	db $FF
 
 RocketHideout2ArrowMovement16: ; 44f57 (11:4f57)
-	db $40,$02
-	db $10,$04
+	db D_UP,$02
+	db D_RIGHT,$04
 	db $FF
 
 RocketHideout2ArrowMovement17: ; 44f5c (11:4f5c)
-	db $40,$02
-	db $10,$04
-	db $40,$02
+	db D_UP,$02
+	db D_RIGHT,$04
+	db D_UP,$02
 	db $FF
 
 RocketHideout2ArrowMovement18: ; 44f63 (11:4f63)
-	db $80,$02
-	db $10,$04
-	db $80,$02
+	db D_DOWN,$02
+	db D_RIGHT,$04
+	db D_DOWN,$02
 	db $FF
 
 RocketHideout2ArrowMovement19: ; 44f6a (11:4f6a)
-	db $80,$02
-	db $10,$04
+	db D_DOWN,$02
+	db D_RIGHT,$04
 	db $FF
 
 RocketHideout2ArrowMovement20: ; 44f6f (11:4f6f)
-	db $20,$0A
+	db D_LEFT,$0A
 	db $FF
 
 RocketHideout2ArrowMovement21: ; 44f72 (11:4f72)
-	db $20,$0A
-	db $40,$02
+	db D_LEFT,$0A
+	db D_UP,$02
 	db $FF
 
 RocketHideout2ArrowMovement22: ; 44f77 (11:4f77)
-	db $20,$0A
-	db $40,$04
+	db D_LEFT,$0A
+	db D_UP,$04
 	db $FF
 
 RocketHideout2ArrowMovement23: ; 44f7c (11:4f7c)
-	db $40,$02
-	db $10,$02
+	db D_UP,$02
+	db D_RIGHT,$02
 	db $FF
 
 RocketHideout2ArrowMovement24: ; 44f81 (11:4f81)
-	db $10,$01
-	db $80,$02
+	db D_RIGHT,$01
+	db D_DOWN,$02
 	db $FF
 
 RocketHideout2ArrowMovement25: ; 44f86 (11:4f86)
-	db $10,$01
+	db D_RIGHT,$01
 	db $FF
 
 RocketHideout2ArrowMovement26: ; 44f89 (11:4f89)
-	db $80,$02
-	db $10,$02
+	db D_DOWN,$02
+	db D_RIGHT,$02
 	db $FF
 
 RocketHideout2ArrowMovement27: ; 44f8e (11:4f8e)
-	db $80,$02
-	db $20,$02
+	db D_DOWN,$02
+	db D_LEFT,$02
 	db $FF
 
 RocketHideout2ArrowMovement28: ; 44f93 (11:4f93)
-	db $40,$02
-	db $10,$04
-	db $40,$02
-	db $20,$03
+	db D_UP,$02
+	db D_RIGHT,$04
+	db D_UP,$02
+	db D_LEFT,$03
 	db $FF
 
 RocketHideout2ArrowMovement29: ; 44f9c (11:4f9c)
-	db $80,$02
-	db $20,$04
+	db D_DOWN,$02
+	db D_LEFT,$04
 	db $FF
 
 RocketHideout2ArrowMovement30: ; 44fa1 (11:4fa1)
-	db $20,$06
-	db $40,$04
-	db $20,$05
+	db D_LEFT,$06
+	db D_UP,$04
+	db D_LEFT,$05
 	db $FF
 
 RocketHideout2ArrowMovement31: ; 44fa8 (11:4fa8)
-	db $40,$02
+	db D_UP,$02
 	db $FF
 
 RocketHideout2ArrowMovement32: ; 44fab (11:4fab)
-	db $40,$01
+	db D_UP,$01
 	db $FF
 
 RocketHideout2ArrowMovement33: ; 44fae (11:4fae)
-	db $40,$03
+	db D_UP,$03
 	db $FF
 
 RocketHideout2ArrowMovement34: ; 44fb1 (11:4fb1)
-	db $40,$05
+	db D_UP,$05
 	db $FF
 
 RocketHideout2ArrowMovement35: ; 44fb4 (11:4fb4)
-	db $10,$01
-	db $80,$02
-	db $20,$04
+	db D_RIGHT,$01
+	db D_DOWN,$02
+	db D_LEFT,$04
 	db $FF
 
 RocketHideout2ArrowMovement36: ; 44fbb (11:4fbb)
-	db $20,$0A
-	db $40,$02
-	db $20,$05
+	db D_LEFT,$0A
+	db D_UP,$02
+	db D_LEFT,$05
 	db $FF
 
 RocketHideout2Script3: ; 44fc2 (11:4fc2)
@@ -321,17 +317,17 @@ LoadSpinnerArrowTiles: ; 44fd7 (11:4fd7)
 	ld a, [wSpriteStateData1 + 2]
 	srl a
 	srl a
-	ld hl, SpinnerPlayerFacingDirections ; $5083
+	ld hl, SpinnerPlayerFacingDirections
 	ld c, a
 	ld b, $0
 	add hl, bc
 	ld a, [hl]
 	ld [wSpriteStateData1 + 2], a
-	ld a, [W_CURMAPTILESET] ; W_CURMAPTILESET
+	ld a, [W_CURMAPTILESET]
 	cp FACILITY
-	ld hl, FacilitySpinnerArrows ; $5023
+	ld hl, FacilitySpinnerArrows
 	jr z, .asm_44ff6
-	ld hl, GymSpinnerArrows ; $5053
+	ld hl, GymSpinnerArrows
 .asm_44ff6
 	ld a, [wSimulatedJoypadStatesIndex]
 	bit 0, a
@@ -419,25 +415,25 @@ SpinnerArrowAnimTiles: ; 45087 (11:5087)
 
 RocketHideout2TextPointers: ; 450c7 (11:50c7)
 	dw RocketHideout2Text1
-	dw Predef5CText
-	dw Predef5CText
-	dw Predef5CText
-	dw Predef5CText
+	dw PickUpItemText
+	dw PickUpItemText
+	dw PickUpItemText
+	dw PickUpItemText
 
 RocketHideout2TrainerHeaders: ; 450d1 (11:50d1)
 RocketHideout2TrainerHeader0: ; 450d1 (11:50d1)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROCKET_HIDEOUT_2_TRAINER_0
 	db ($4 << 4) ; trainer's view range
-	dw wd817 ; flag's byte
-	dw RocketHideout2BattleText2 ; 0x50e8 TextBeforeBattle
-	dw RocketHideout2AfterBattleTxt2 ; 0x50f2 TextAfterBattle
-	dw RocketHideout2EndBattleText2 ; 0x50ed TextEndBattle
-	dw RocketHideout2EndBattleText2 ; 0x50ed TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROCKET_HIDEOUT_2_TRAINER_0
+	dw RocketHideout2BattleText2 ; TextBeforeBattle
+	dw RocketHideout2AfterBattleTxt2 ; TextAfterBattle
+	dw RocketHideout2EndBattleText2 ; TextEndBattle
+	dw RocketHideout2EndBattleText2 ; TextEndBattle
 
 	db $ff
 
 RocketHideout2Text1: ; 450de (11:50de)
-	db $08 ; asm
+	TX_ASM
 	ld hl, RocketHideout2TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd

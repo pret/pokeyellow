@@ -5,12 +5,11 @@ Lab4TextPointers: ; 75d34 (1d:5d34)
 	dw Lab4Text1
 	dw Lab4Text2
 
-Lab4Script_75d38: ; 75d38 (1d:5d38)
+Lab4Script_GetFossilsInBag: ; 75d38 (1d:5d38)
 ; construct a list of all fossils in the player's bag
-
 	xor a
-	ld [wcd37], a
-	ld de, wcc5b
+	ld [wFilteredBagItemsCount], a
+	ld de, wFilteredBagItems
 	ld hl, FossilsList
 .loop
 	ld a, [hli]
@@ -20,7 +19,7 @@ Lab4Script_75d38: ; 75d38 (1d:5d38)
 	push de
 	ld [wd11e], a
 	ld b, a
-	predef IsItemInBag_
+	predef GetQuantityOfItemInBag
 	pop de
 	pop hl
 	ld a, b
@@ -32,7 +31,7 @@ Lab4Script_75d38: ; 75d38 (1d:5d38)
 	ld [de], a
 	inc de
 	push hl
-	ld hl, wcd37
+	ld hl, wFilteredBagItemsCount
 	inc [hl]
 	pop hl
 	jr .loop
@@ -48,45 +47,40 @@ FossilsList: ; 75d68 (1d:5d68)
 	db $00
 
 Lab4Text1: ; 75d6c (1d:5d6c)
-	db $8
-	ld a, [wd7a3]
-	bit 0, a
-	jr nz, .asm_75d96 ; 0x75d72 $22
+	TX_ASM
+	CheckEvent EVENT_GAVE_FOSSIL_TO_LAB
+	jr nz, .asm_75d96
 	ld hl, Lab4Text_75dc6
 	call PrintText
-	call Lab4Script_75d38
-	ld a, [wcd37]
+	call Lab4Script_GetFossilsInBag
+	ld a, [wFilteredBagItemsCount]
 	and a
-	jr z, .asm_75d8d ; 0x75d81 $a
+	jr z, .asm_75d8d
 	callba GiveFossilToCinnabarLab
-	jr .asm_75d93 ; 0x75d8b $6
+	jr .asm_75d93
 .asm_75d8d
 	ld hl, Lab4Text_75dcb
 	call PrintText
 .asm_75d93
 	jp TextScriptEnd
 .asm_75d96
-	bit 1, a
-	jr z, .asm_75da2 ; 0x75d98 $8
+	CheckEventAfterBranchReuseA EVENT_LAB_STILL_REVIVING_FOSSIL, EVENT_GAVE_FOSSIL_TO_LAB
+	jr z, .asm_75da2
 	ld hl, Lab4Text_75dd0
 	call PrintText
-	jr .asm_75d93 ; 0x75da0 $f1
+	jr .asm_75d93
 .asm_75da2
 	call LoadFossilItemAndMonNameBank1D
 	ld hl, Lab4Text_75dd5
 	call PrintText
-	ld hl, wd7a3
-	set 2, [hl]
+	SetEvent EVENT_LAB_HANDING_OVER_FOSSIL_MON
 	ld a, [W_FOSSILMON]
 	ld b, a
 	ld c, 30
 	call GivePokemon
-	jr nc, .asm_75d93 ; 0x75db9 $d8
-	ld hl, wd7a3
-	res 0, [hl]
-	res 1, [hl]
-	res 2, [hl]
-	jr .asm_75d93 ; 0x75dc4 $cd
+	jr nc, .asm_75d93
+	ResetEvents EVENT_GAVE_FOSSIL_TO_LAB, EVENT_LAB_STILL_REVIVING_FOSSIL, EVENT_LAB_HANDING_OVER_FOSSIL_MON
+	jr .asm_75d93
 
 Lab4Text_75dc6: ; 75dc6 (1d:5dc6)
 	TX_FAR _Lab4Text_75dc6
@@ -105,13 +99,11 @@ Lab4Text_75dd5: ; 75dd5 (1d:5dd5)
 	db "@"
 
 Lab4Text2: ; 75dda (1d:5dda)
-	db $08 ; asm
+	TX_ASM
 	ld a, $3
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 	jp TextScriptEnd
 
 LoadFossilItemAndMonNameBank1D: ; 75de8 (1d:5de8)
-	ld b, BANK(LoadFossilItemAndMonName)
-	ld hl, LoadFossilItemAndMonName
-	jp Bankswitch
+	jpba LoadFossilItemAndMonName

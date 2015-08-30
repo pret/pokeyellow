@@ -1,14 +1,11 @@
 SilphCo1Script: ; 5d44e (17:544e)
 	call EnableAutoTextBoxDrawing
-	ld a, [wd838]
-	bit 7, a
+	CheckEvent EVENT_BEAT_SILPH_CO_GIOVANNI
 	ret z
-	ld hl, wd7b9
-	bit 7, [hl]
-	set 7, [hl]
+	CheckAndSetEvent EVENT_SILPH_CO_RECEPTIONIST_AT_DESK
 	ret nz
-	ld a, HS_SILPH_CO_1F_1
-	ld [wcc4d], a
+	ld a, HS_SILPH_CO_1F_RECEPTIONIST
+	ld [wMissableObjectIndex], a
 	predef_jump ShowObject
 
 SilphCo1TextPointers: ; 5d469 (17:5469)

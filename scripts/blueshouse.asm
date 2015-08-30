@@ -9,8 +9,7 @@ BluesHouseScriptPointers: ; 19b47 (6:5b47)
 	dw BluesHouseScript1
 
 BluesHouseScript0: ; 19b4b (6:5b4b)
-	ld hl,wd74a
-	set 1,[hl]
+	SetEvent EVENT_ENTERED_BLUES_HOUSE
 
 	; trigger the next script
 	ld a,1
@@ -26,12 +25,10 @@ BluesHouseTextPointers: ; 19b57 (6:5b57)
 	dw BluesHouseText3
 
 BluesHouseText1: ; 19b5d (6:5b5d)
-	db 8
-	ld a,[wd74a]
-	bit 0,a
+	TX_ASM
+	CheckEvent EVENT_GOT_TOWN_MAP
 	jr nz,.GotMap
-	ld a,[wd74b]
-	bit 5,a
+	CheckEvent EVENT_GOT_POKEDEX
 	jr nz,.GiveMap
 	ld hl,DaisyInitialText
 	call PrintText
@@ -39,16 +36,15 @@ BluesHouseText1: ; 19b5d (6:5b5d)
 .GiveMap
 	ld hl,DaisyOfferMapText
 	call PrintText
-	ld bc,(TOWN_MAP << 8) | 1
+	lb bc, TOWN_MAP, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a,HS_TOWN_MAP
-	ld [wcc4d],a
+	ld [wMissableObjectIndex],a
 	predef HideObject ; hide table map object
 	ld hl,GotMapText
 	call PrintText
-	ld hl,wd74a
-	set 0,[hl]
+	SetEvent EVENT_GOT_TOWN_MAP
 	jr .done
 .GotMap
 	ld hl,DaisyUseMapText

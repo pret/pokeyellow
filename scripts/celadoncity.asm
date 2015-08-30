@@ -1,10 +1,7 @@
 CeladonCityScript: ; 19956 (6:5956)
 	call EnableAutoTextBoxDrawing
-	ld hl, wd77e
-	res 0, [hl]
-	res 7, [hl]
-	ld hl, wd816
-	res 7, [hl]
+	ResetEvents EVENT_1B8, EVENT_1BF
+	ResetEvent EVENT_67F
 	ret
 
 CeladonCityTextPointers: ; 19966 (6:5966)
@@ -44,13 +41,12 @@ CeladonCityText4: ; 19999 (6:5999)
 	db "@"
 
 CeladonCityText5: ; 1999e (6:599e)
-	db $08 ; asm
-	ld a, [wd777]
-	bit 0, a
-	jr nz, .asm_7053f ; 0x199a4
+	TX_ASM
+	CheckEvent EVENT_GOT_TM41
+	jr nz, .asm_7053f
 	ld hl, TM41PreText
 	call PrintText
-	ld bc, (TM_41 << 8) | 1
+	lb bc, TM_41, 1
 	call GiveItem
 	jr c, .Success
 	ld hl, TM41NoRoomText
@@ -59,10 +55,9 @@ CeladonCityText5: ; 1999e (6:599e)
 .Success
 	ld hl, ReceivedTM41Text
 	call PrintText
-	ld hl, wd777
-	set 0, [hl]
+	SetEvent EVENT_GOT_TM41
 	jr .Done
-.asm_7053f ; 0x199c9
+.asm_7053f
 	ld hl, TM41ExplanationText
 	call PrintText
 .Done
@@ -90,7 +85,7 @@ CeladonCityText6: ; 199e7 (6:59e7)
 
 CeladonCityText7: ; 199ec (6:59ec)
 	TX_FAR _CeladonCityText7
-	db $08 ; asm
+	TX_ASM
 	ld a, POLIWRATH
 	call PlayCry
 	jp TextScriptEnd

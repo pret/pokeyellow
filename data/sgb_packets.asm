@@ -50,6 +50,7 @@ DATA_SND: MACRO
 	db \2 ; bank
 	db \3 ; length (1-11)
 ENDM
+
 BlkPacket_WholeScreen: ; 72611 (1c:6611)
 	db $21
 	db $1,$3,$0,$0,$0,$13,$11,$0
@@ -169,7 +170,6 @@ MaskEnFreezePacket: ; 72881 (1c:6881)
 	MASK_EN 1
 MaskEnCancelPacket: ; 72891 (1c:6891)
 	MASK_EN 0
-
 
 ; These are DATA_SND packets containing SNES code.
 ; This set of packets is found in several Japanese SGB-compatible titles.

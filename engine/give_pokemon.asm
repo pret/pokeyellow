@@ -1,33 +1,36 @@
 _GivePokemon: ; f66fa (3d:66fa)
+; returns success in carry
+; and whether the mon was added to the party in [wAddedToParty]
 	call EnableAutoTextBoxDrawing
 	xor a
-	ld [wccd3], a
-	ld a, [wPartyCount] ; wPartyCount
+	ld [wAddedToParty], a
+	ld a, [wPartyCount]
 	cp PARTY_LENGTH
-	jr c, .partyNotFull
-	ld a, [W_NUMINBOX] ; wda80
+	jr c, .addToParty
+	ld a, [W_NUMINBOX]
 	cp MONS_PER_BOX
 	jr nc, .boxFull
+; add to box
 	xor a
-	ld [W_ENEMYBATTSTATUS3], a ; W_ENEMYBATTSTATUS3
+	ld [W_ENEMYBATTSTATUS3], a
 	ld a, [wcf91]
 	ld [wEnemyMonSpecies2], a
 	callab LoadEnemyMonData
 	call SetPokedexOwnedFlag
 	callab SendNewMonToBox
 	ld hl, wcf4b
-	ld a, [wd5a0]
+	ld a, [wCurrentBoxNum]
 	and $7f
 	cp 9
-	jr c, .boxEightOrLesser ; do not adjust box number to a 2 digit number
+	jr c, .singleDigitBoxNum
 	sub 9
 	ld [hl], "1"
 	inc hl
 	add "0"
-	jr .continue
-.boxEightOrLesser
+	jr .next
+.singleDigitBoxNum
 	add "1"
-.continue
+.next
 	ld [hli], a
 	ld [hl], "@"
 	ld hl, SetToBoxText
@@ -39,14 +42,14 @@ _GivePokemon: ; f66fa (3d:66fa)
 	call PrintText
 	and a
 	ret
-.partyNotFull
+.addToParty
 	call SetPokedexOwnedFlag
 	ld hl, UnknownTerminator_f6794
 	call PrintText
 	call AddPartyMon
-	ld a, $1
+	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld [wccd3], a
+	ld [wAddedToParty], a
 	scf
 	ret
 
@@ -58,8 +61,8 @@ SetPokedexOwnedFlag: ; f676c (3d:676c)
 	ld a, [wd11e]
 	dec a
 	ld c, a
-	ld hl, wPokedexOwned ; wPokedexOwned
-	ld b, $1
+	ld hl, wPokedexOwned
+	ld b, FLAG_SET
 	predef FlagActionPredef
 	pop af
 	ld [wd11e], a

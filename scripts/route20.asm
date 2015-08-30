@@ -1,10 +1,8 @@
 Route20Script: ; 50ca9 (14:4ca9)
-	ld hl, wd7e7
-	bit 0, [hl]
-	res 0, [hl]
+	CheckAndResetEvent EVENT_IN_SEAFOAM_ISLANDS
 	call nz, Route20Script_50cc6
 	call EnableAutoTextBoxDrawing
-	ld hl, Route20TrainerHeader0 ; $4d3a
+	ld hl, Route20TrainerHeader0
 	ld de, Route20ScriptPointers
 	ld a, [W_ROUTE20CURSCRIPT]
 	call ExecuteCurMapScriptInTable
@@ -12,15 +10,13 @@ Route20Script: ; 50ca9 (14:4ca9)
 	ret
 
 Route20Script_50cc6: ; 50cc6 (14:4cc6)
-	ld a, [wd880]
-	and $3
-	cp $3
+	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	jr z, .asm_50cef
-	ld a, $d7
+	ld a, HS_SEAFOAM_ISLANDS_1_BOULDER_1
 	call Route20Script_50d0c
-	ld a, $d8
+	ld a, HS_SEAFOAM_ISLANDS_1_BOULDER_2
 	call Route20Script_50d0c
-	ld hl, .MissableObjectIDs ; $4ce8
+	ld hl, .MissableObjectIDs
 .asm_50cdc
 	ld a, [hli]
 	cp $ff
@@ -40,9 +36,7 @@ Route20Script_50cc6: ; 50cc6 (14:4cc6)
 	db $FF
 
 .asm_50cef
-	ld a, [wd881]
-	and $3
-	cp $3
+	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
 	ret z
 	ld a, HS_SEAFOAM_ISLANDS_4_BOULDER_1
 	call Route20Script_50d0c
@@ -55,11 +49,11 @@ Route20Script_50cc6: ; 50cc6 (14:4cc6)
 	ret
 
 Route20Script_50d0c: ; 50d0c (14:4d0c)
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef_jump ShowObject
 
 Route20Script_50d14: ; 50d14 (14:4d14)
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef_jump HideObject
 
 Route20ScriptPointers: ; 50d1c (14:4d1c)
@@ -83,153 +77,153 @@ Route20TextPointers: ; 50d22 (14:4d22)
 
 Route20TrainerHeaders: ; 50d3a (14:4d3a)
 Route20TrainerHeader0: ; 50d3a (14:4d3a)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_0
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText1 ; 0x4e17 TextBeforeBattle
-	dw Route20AfterBattleText1 ; 0x4e21 TextAfterBattle
-	dw Route20EndBattleText1 ; 0x4e1c TextEndBattle
-	dw Route20EndBattleText1 ; 0x4e1c TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_0
+	dw Route20BattleText1 ; TextBeforeBattle
+	dw Route20AfterBattleText1 ; TextAfterBattle
+	dw Route20EndBattleText1 ; TextEndBattle
+	dw Route20EndBattleText1 ; TextEndBattle
 
 Route20TrainerHeader2: ; 50d46 (14:4d46)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_2
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText2 ; 0x4e26 TextBeforeBattle
-	dw Route20AfterBattleText2 ; 0x4e30 TextAfterBattle
-	dw Route20EndBattleText2 ; 0x4e2b TextEndBattle
-	dw Route20EndBattleText2 ; 0x4e2b TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_2
+	dw Route20BattleText2 ; TextBeforeBattle
+	dw Route20AfterBattleText2 ; TextAfterBattle
+	dw Route20EndBattleText2 ; TextEndBattle
+	dw Route20EndBattleText2 ; TextEndBattle
 
 Route20TrainerHeader3: ; 50d52 (14:4d52)
-	db $3 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_3
 	db ($2 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText3 ; 0x4e35 TextBeforeBattle
-	dw Route20AfterBattleText3 ; 0x4e3f TextAfterBattle
-	dw Route20EndBattleText3 ; 0x4e3a TextEndBattle
-	dw Route20EndBattleText3 ; 0x4e3a TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_3
+	dw Route20BattleText3 ; TextBeforeBattle
+	dw Route20AfterBattleText3 ; TextAfterBattle
+	dw Route20EndBattleText3 ; TextEndBattle
+	dw Route20EndBattleText3 ; TextEndBattle
 
 Route20TrainerHeader4: ; 50d5e (14:4d5e)
-	db $4 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_4
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText4 ; 0x4e44 TextBeforeBattle
-	dw Route20AfterBattleText4 ; 0x4e4e TextAfterBattle
-	dw Route20EndBattleText4 ; 0x4e49 TextEndBattle
-	dw Route20EndBattleText4 ; 0x4e49 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_4
+	dw Route20BattleText4 ; TextBeforeBattle
+	dw Route20AfterBattleText4 ; TextAfterBattle
+	dw Route20EndBattleText4 ; TextEndBattle
+	dw Route20EndBattleText4 ; TextEndBattle
 
 Route20TrainerHeader5: ; 50d6a (14:4d6a)
-	db $5 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_5
 	db ($3 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText5 ; 0x4e53 TextBeforeBattle
-	dw Route20AfterBattleText5 ; 0x4e5d TextAfterBattle
-	dw Route20EndBattleText5 ; 0x4e58 TextEndBattle
-	dw Route20EndBattleText5 ; 0x4e58 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_5
+	dw Route20BattleText5 ; TextBeforeBattle
+	dw Route20AfterBattleText5 ; TextAfterBattle
+	dw Route20EndBattleText5 ; TextEndBattle
+	dw Route20EndBattleText5 ; TextEndBattle
 
 Route20TrainerHeader6: ; 50d76 (14:4d76)
-	db $6 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_6
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText6 ; 0x4e62 TextBeforeBattle
-	dw Route20AfterBattleText6 ; 0x4e6c TextAfterBattle
-	dw Route20EndBattleText6 ; 0x4e67 TextEndBattle
-	dw Route20EndBattleText6 ; 0x4e67 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_6
+	dw Route20BattleText6 ; TextBeforeBattle
+	dw Route20AfterBattleText6 ; TextAfterBattle
+	dw Route20EndBattleText6 ; TextEndBattle
+	dw Route20EndBattleText6 ; TextEndBattle
 
 Route20TrainerHeader7: ; 50d82 (14:4d82)
-	db $7 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_7
 	db ($2 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText7 ; 0x4e71 TextBeforeBattle
-	dw Route20AfterBattleText7 ; 0x4e7b TextAfterBattle
-	dw Route20EndBattleText7 ; 0x4e76 TextEndBattle
-	dw Route20EndBattleText7 ; 0x4e76 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_7
+	dw Route20BattleText7 ; TextBeforeBattle
+	dw Route20AfterBattleText7 ; TextAfterBattle
+	dw Route20EndBattleText7 ; TextEndBattle
+	dw Route20EndBattleText7 ; TextEndBattle
 
 Route20TrainerHeader8: ; 50d8e (14:4d8e)
-	db $8 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_8, 1
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText8 ; 0x4e80 TextBeforeBattle
-	dw Route20AfterBattleText8 ; 0x4e8a TextAfterBattle
-	dw Route20EndBattleText8 ; 0x4e85 TextEndBattle
-	dw Route20EndBattleText8 ; 0x4e85 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_8, 1
+	dw Route20BattleText8 ; TextBeforeBattle
+	dw Route20AfterBattleText8 ; TextAfterBattle
+	dw Route20EndBattleText8 ; TextEndBattle
+	dw Route20EndBattleText8 ; TextEndBattle
 
 Route20TrainerHeader9: ; 50d9a (14:4d9a)
-	db $9 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_9, 1
 	db ($3 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText9 ; 0x4e8f TextBeforeBattle
-	dw Route20AfterBattleText9 ; 0x4e99 TextAfterBattle
-	dw Route20EndBattleText9 ; 0x4e94 TextEndBattle
-	dw Route20EndBattleText9 ; 0x4e94 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_9, 1
+	dw Route20BattleText9 ; TextBeforeBattle
+	dw Route20AfterBattleText9 ; TextAfterBattle
+	dw Route20EndBattleText9 ; TextEndBattle
+	dw Route20EndBattleText9 ; TextEndBattle
 
 Route20TrainerHeader10: ; 50da6 (14:4da6)
-	db $a ; flag's bit
+	dbEventFlagBit EVENT_BEAT_ROUTE_20_TRAINER_10, 1
 	db ($4 << 4) ; trainer's view range
-	dw wd7e7 ; flag's byte
-	dw Route20BattleText10 ; 0x4e9e TextBeforeBattle
-	dw Route20AfterBattleText10 ; 0x4ea8 TextAfterBattle
-	dw Route20EndBattleText10 ; 0x4ea3 TextEndBattle
-	dw Route20EndBattleText10 ; 0x4ea3 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_ROUTE_20_TRAINER_10, 1
+	dw Route20BattleText10 ; TextBeforeBattle
+	dw Route20AfterBattleText10 ; TextAfterBattle
+	dw Route20EndBattleText10 ; TextEndBattle
+	dw Route20EndBattleText10 ; TextEndBattle
 
 	db $ff
 
 Route20Text1: ; 50db3 (14:4db3)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text2: ; 50dbd (14:4dbd)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text3: ; 50dc7 (14:4dc7)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader3
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text4: ; 50dd1 (14:4dd1)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader4
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text5: ; 50ddb (14:4ddb)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader5
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text6: ; 50de5 (14:4de5)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader6
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text7: ; 50def (14:4def)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader7
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text8: ; 50df9 (14:4df9)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader8
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text9: ; 50e03 (14:4e03)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader9
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Route20Text10: ; 50e0d (14:4e0d)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Route20TrainerHeader10
 	call TalkToTrainer
 	jp TextScriptEnd

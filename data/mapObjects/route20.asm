@@ -9,17 +9,17 @@ Route20Object: ; 0x50113 (size=106)
 	db $7, $33, $b ; Route20Text11
 	db $b, $39, $c ; Route20Text12
 
-	db $a ; people
-	db SPRITE_SWIMMER, $8 + 4, $57 + 4, $ff, $d1, TRAINER | $1, SWIMMER + $C8, $9
-	db SPRITE_SWIMMER, $b + 4, $44 + 4, $ff, $d1, TRAINER | $2, BEAUTY + $C8, $f
-	db SPRITE_SWIMMER, $a + 4, $2d + 4, $ff, $d0, TRAINER | $3, BEAUTY + $C8, $6
-	db SPRITE_SWIMMER, $e + 4, $37 + 4, $ff, $d3, TRAINER | $4, JR__TRAINER_F + $C8, $18
-	db SPRITE_SWIMMER, $d + 4, $26 + 4, $ff, $d0, TRAINER | $5, SWIMMER + $C8, $a
-	db SPRITE_SWIMMER, $d + 4, $57 + 4, $ff, $d1, TRAINER | $6, SWIMMER + $C8, $b
-	db SPRITE_BLACK_HAIR_BOY_1, $9 + 4, $22 + 4, $ff, $d1, TRAINER | $7, BIRD_KEEPER + $C8, $b
-	db SPRITE_SWIMMER, $7 + 4, $19 + 4, $ff, $d1, TRAINER | $8, BEAUTY + $C8, $7
-	db SPRITE_SWIMMER, $c + 4, $18 + 4, $ff, $d0, TRAINER | $9, JR__TRAINER_F + $C8, $10
-	db SPRITE_SWIMMER, $8 + 4, $f + 4, $ff, $d1, TRAINER | $a, BEAUTY + $C8, $8
+	db $a ; objects
+	object SPRITE_SWIMMER, $57, $8, STAY, UP, $1, OPP_SWIMMER, $9
+	object SPRITE_SWIMMER, $44, $b, STAY, UP, $2, OPP_BEAUTY, $f
+	object SPRITE_SWIMMER, $2d, $a, STAY, DOWN, $3, OPP_BEAUTY, $6
+	object SPRITE_SWIMMER, $37, $e, STAY, RIGHT, $4, OPP_JR__TRAINER_F, $18
+	object SPRITE_SWIMMER, $26, $d, STAY, DOWN, $5, OPP_SWIMMER, $a
+	object SPRITE_SWIMMER, $57, $d, STAY, UP, $6, OPP_SWIMMER, $b
+	object SPRITE_BLACK_HAIR_BOY_1, $22, $9, STAY, UP, $7, OPP_BIRD_KEEPER, $b
+	object SPRITE_SWIMMER, $19, $7, STAY, UP, $8, OPP_BEAUTY, $7
+	object SPRITE_SWIMMER, $18, $c, STAY, DOWN, $9, OPP_JR__TRAINER_F, $10
+	object SPRITE_SWIMMER, $f, $8, STAY, UP, $a, OPP_BEAUTY, $8
 
 	; warp-to
 	EVENT_DISP ROUTE_20_WIDTH, $5, $30 ; SEAFOAM_ISLANDS_1

@@ -5,18 +5,18 @@ MarowakAnim: ; 7092b (1c:492b)
 	call Func_3061
 	call CopyMonPicFromBGToSpriteVRAM ; cover the BG ghost pic with a sprite ghost pic that looks the same
 ; now that the ghost pic is being displayed using sprites, clear the ghost pic from the BG tilemap
-	hlCoord 12, 0
-	ld bc, $707
+	coord hl, 12, 0
+	lb bc, 7, 7
 	call ClearScreenArea
 	call Delay3
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a ; disable BG transfer so we don't see the Marowak too soon
 ; replace ghost pic with Marowak in BG
 	ld a, MAROWAK
-	ld [wHPBarMaxHP], a
+	ld [wChangeMonPicEnemyTurnSpecies], a
 	ld a, $1
 	ld [H_WHOSETURN], a
-	callab Func_798d4
+	callab ChangeMonPic
  ; alternate between black and light grey 8 times.
  ; this makes the ghost's body appear to flash
 	ld d, $80
@@ -62,7 +62,7 @@ CopyMonPicFromBGToSpriteVRAM: ; 70994 (1c:4994)
 	ld a, $70
 	ld [W_BASECOORDX], a
 	ld hl, wOAMBuffer
-	ld bc, $606
+	lb bc, 6, 6
 	ld d, $8
 .oamLoop
 	push bc

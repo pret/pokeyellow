@@ -3,10 +3,10 @@ _ScrollTrainerPicAfterBattle: ; f4259 (e:f4259)
 ; the screen from the right.
 	xor a
 	ld [wEnemyMonSpecies2], a
-	ld b, $1
-	call GoPAL_SET
+	ld b, SET_PAL_BATTLE
+	call RunPaletteCommand
 	callab _LoadTrainerPic
-	hlCoord 19, 0
+	coord hl, 19, 0
 	ld c, $0
 .scrollLoop
 	inc c

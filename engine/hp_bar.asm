@@ -143,7 +143,7 @@ UpdateHPBar_AnimateHPBar: ; fab1 (3:7ab1)
 	push de
 	ld d, $6
 	call DrawHPBar
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	pop de
 	ld a, [wHPBarDelta] ; +1 or -1
@@ -205,33 +205,34 @@ UpdateHPBar_PrintHPNumber: ; faf5 (3:7af5)
 	push de
 	ld a, [wHPBarType]
 	and a
-	jr z, .asm_fb2d
+	jr z, .done ; don't print number in enemy HUD
+; convert from little-endian to big-endian for PrintNumber
 	ld a, [wHPBarOldHP]
-	ld [wcef1], a
-	ld a, [wHPBarOldHP+1]
-	ld [wcef0], a
+	ld [wHPBarTempHP + 1], a
+	ld a, [wHPBarOldHP + 1]
+	ld [wHPBarTempHP], a
 	push hl
 	ld a, [hFlags_0xFFF6]
 	bit 0, a
 	jr z, .asm_fb15
 	ld de, $9
-	jr .asm_fb18
+	jr .next
 .asm_fb15
 	ld de, $15
-.asm_fb18
+.next
 	add hl, de
 	push hl
-	ld a, $7f
+	ld a, " "
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	pop hl
-	ld de, wcef0
-	ld bc, $203
+	ld de, wHPBarTempHP
+	lb bc, 2, 3
 	call PrintNumber
 	call DelayFrame
 	pop hl
-.asm_fb2d
+.done
 	pop de
 	pop af
 	ret

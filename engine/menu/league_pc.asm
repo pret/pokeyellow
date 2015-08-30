@@ -12,31 +12,33 @@ PKMNLeaguePC: ; 0x7657e
 	ld [hTilesetType], a
 	ld [W_SPRITEFLIPPED], a
 	ld [wUpdateSpritesEnabled], a
-	ld [wTrainerScreenX], a
-	ld [wcd42], a
-	ld a, [wd5a2]
+	ld [wHoFTeamIndex2], a
+	ld [wHoFTeamNo], a
+	ld a, [wNumHoFTeams]
 	ld b, a
-	cp NUM_HOF_TEAMS + 1
-	jr c, .first
-	ld b, NUM_HOF_TEAMS
+	cp HOF_TEAM_CAPACITY + 1
+	jr c, .loop
+; If the total number of hall of fame teams is greater than the storage
+; capacity, then calculate the number of the first team that is still recorded.
+	ld b, HOF_TEAM_CAPACITY
 	sub b
-	ld [wcd42], a
-.first
-	ld hl, wcd42
+	ld [wHoFTeamNo], a
+.loop
+	ld hl, wHoFTeamNo
 	inc [hl]
 	push bc
-	ld a, [wTrainerScreenX]
-	ld [wWhichTrade], a
+	ld a, [wHoFTeamIndex2]
+	ld [wHoFTeamIndex], a
 	callba LoadHallOfFameTeams
-	call Func_765e5
+	call LeaguePCShowTeam
 	pop bc
-	jr c, .second
-	ld hl, wTrainerScreenX
+	jr c, .doneShowingTeams
+	ld hl, wHoFTeamIndex2
 	inc [hl]
 	ld a, [hl]
 	cp b
-	jr nz, .first
-.second
+	jr nz, .loop
+.doneShowingTeams
 	pop af
 	ld [hTilesetType], a
 	pop af
@@ -45,14 +47,14 @@ PKMNLeaguePC: ; 0x7657e
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
-	call GoPAL_SET_CF1C
+	call RunDefaultPaletteCommand
 	jp GBPalNormal
 
-Func_765e5: ; 765e5 (1d:65e5)
+LeaguePCShowTeam: ; 765e5 (1d:65e5)
 	ld c, PARTY_LENGTH
 .loop
 	push bc
-	call Func_76610
+	call LeaguePCShowMon
 	call WaitForTextScrollButtonPress
 	ld a, [hJoyHeld]
 	bit 1, a
@@ -75,42 +77,40 @@ Func_765e5: ; 765e5 (1d:65e5)
 	scf
 	ret
 
-Func_76610: ; 76610 (1d:6610)
+LeaguePCShowMon: ; 76610 (1d:6610)
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld hl, wHallOfFame
 	ld a, [hli]
-	ld [wWhichTrade], a
+	ld [wHoFMonSpecies], a
 	ld [wcf91], a
 	ld [wd0b5], a
 	ld [wBattleMonSpecies2], a
-	ld [wcf1d], a
+	ld [wWholeScreenPaletteMonSpecies], a
 	ld a, [hli]
-	ld [wTrainerFacingDirection], a
+	ld [wHoFMonLevel], a
 	ld de, wcd6d
-	ld bc, $000B
+	ld bc, NAME_LENGTH
 	call CopyData
-	ld b, $0B
+	ld b, SET_PAL_POKEMON_WHOLE_SCREEN
 	ld c, 0
-	call GoPAL_SET
-	hlCoord 12, 5
+	call RunPaletteCommand
+	coord hl, 12, 5
 	call GetMonHeader
 	call LoadFrontSpriteByMonIndex
 	call GBPalNormal
-	hlCoord 0, 13
+	coord hl, 0, 13
 	ld b, 2
 	ld c, $12
 	call TextBoxBorder
-	hlCoord 1, 15
+	coord hl, 1, 15
 	ld de, HallOfFameNoText
 	call PlaceString
-	hlCoord 16, 15
-	ld de, wcd42
-	ld bc, $0103
+	coord hl, 16, 15
+	ld de, wHoFTeamNo
+	lb bc, 1, 3
 	call PrintNumber
-	ld b, BANK(Func_702f0)
-	ld hl, Func_702f0
-	jp Bankswitch
+	jpba HoFDisplayMonInfo
 
 HallOfFameNoText: ; 76670 (1d:6670)
 	db "HALL OF FAME No   @"

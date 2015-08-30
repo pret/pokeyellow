@@ -14,9 +14,8 @@ CinnabarGymScript_75759: ; 75759 (1d:5759)
 	pop hl
 	bit 5, [hl]
 	res 5, [hl]
-	call nz, Func_3ead
-	ld hl, wd79b
-	res 7, [hl]
+	call nz, UpdateCinnabarGymGateTileBlocks
+	ResetEvent EVENT_2A7
 	ret
 CinnabarGymScript_75772: ; 75772 (1d:5772)
 	ld hl, Gym7CityName
@@ -33,11 +32,11 @@ CinnabarGymScript_75792: ; 75792 (1d:5792)
 	ld [wJoyIgnore], a
 	ld [W_CINNABARGYMCURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a
-	ld [wda38], a
+	ld [wOpponentAfterWrongAnswer], a
 	ret
 
 CinnabarGymScript_757a0: ; 757a0 (1d:57a0)
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ld a, [hSpriteIndexOrTextID]
 	ld [wTrainerHeaderFlagBit], a
 	ret
 
@@ -48,20 +47,20 @@ CinnabarGymScriptPointers: ; 757a6 (1d:57a6)
 	dw CinnabarGymScript3
 
 CinnabarGymScript0: ; 757ae (1d:57ae)
-	ld a, [wda38]
+	ld a, [wOpponentAfterWrongAnswer]
 	and a
 	ret z
-	ld [$ff8c], a
+	ld [H_SPRITEINDEX], a
 	cp $4
-	jr nz, .asm_757c3 ; 0x757b7 $a
-	ld a, $4
-	ld [wd528], a
+	jr nz, .asm_757c3
+	ld a, PLAYER_DIR_DOWN
+	ld [wPlayerMovingDirection], a
 	ld de, MovementData_757d7
-	jr .asm_757cb ; 0x757c1 $8
+	jr .asm_757cb
 .asm_757c3
 	ld de, MovementData_757da
-	ld a, $1
-	ld [wd528], a
+	ld a, PLAYER_DIR_RIGHT
+	ld [wPlayerMovingDirection], a
 .asm_757cb
 	call MoveSprite
 	ld a, $1
@@ -70,10 +69,13 @@ CinnabarGymScript0: ; 757ae (1d:57ae)
 	ret
 
 MovementData_757d7: ; 757d7 (1d:57d7)
-	db $80,$40,$FF
+	db NPC_MOVEMENT_LEFT
+	db NPC_MOVEMENT_UP
+	db $FF
 
 MovementData_757da: ; 757da (1d:57da)
-	db $80,$FF
+	db NPC_MOVEMENT_LEFT
+	db $FF
 
 CinnabarGymScript1: ; 757dc (1d:57dc)
 	ld a, [wd730]
@@ -81,12 +83,12 @@ CinnabarGymScript1: ; 757dc (1d:57dc)
 	ret nz
 	xor a
 	ld [wJoyIgnore], a
-	ld a, [wda38]
+	ld a, [wOpponentAfterWrongAnswer]
 	ld [wTrainerHeaderFlagBit], a
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
-CinnabarGymScript_757f1: ; 757f1 (1d:57f1)
+CinnabarGymFlagAction: ; 757f1 (1d:57f1)
 	predef_jump FlagActionPredef
 
 CinnabarGymScript2: ; 757f6 (1d:57f6)
@@ -95,34 +97,37 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	jp z, CinnabarGymScript_75792
 	ld a, [wTrainerHeaderFlagBit]
 	ld [$ffdb], a
+	AdjustEventBit EVENT_BEAT_CINNABAR_GYM_TRAINER_0, 2
 	ld c, a
-	ld b, $2
-	ld hl, wd79a
-	call CinnabarGymScript_757f1
+	ld b, FLAG_TEST
+	EventFlagAddress hl, EVENT_BEAT_CINNABAR_GYM_TRAINER_0
+	call CinnabarGymFlagAction
 	ld a, c
 	and a
-	jr nz, .asm_7581b ; 0x7580e $b
+	jr nz, .asm_7581b
 	call WaitForSoundToFinish
-	ld a, (SFX_02_57 - SFX_Headers_02) / 3
+	ld a, SFX_GO_INSIDE
 	call PlaySound
 	call WaitForSoundToFinish
 .asm_7581b
 	ld a, [wTrainerHeaderFlagBit]
 	ld [$ffdb], a
+	AdjustEventBit EVENT_BEAT_CINNABAR_GYM_TRAINER_0, 2
 	ld c, a
-	ld b, $1
-	ld hl, wd79a
-	call CinnabarGymScript_757f1
+	ld b, FLAG_SET
+	EventFlagAddress hl, EVENT_BEAT_CINNABAR_GYM_TRAINER_0
+	call CinnabarGymFlagAction
 	ld a, [wTrainerHeaderFlagBit]
 	sub $2
+	AdjustEventBit EVENT_CINNABAR_GYM_GATE0_UNLOCKED, 0
 	ld c, a
-	ld b, $1
-	ld hl, wd79c
-	call CinnabarGymScript_757f1
-	call Func_3ead
+	ld b, FLAG_SET
+	EventFlagAddress hl, EVENT_CINNABAR_GYM_GATE0_UNLOCKED
+	call CinnabarGymFlagAction
+	call UpdateCinnabarGymGateTileBlocks
 	xor a
 	ld [wJoyIgnore], a
-	ld [wda38], a
+	ld [wOpponentAfterWrongAnswer], a
 	ld a, $0
 	ld [W_CINNABARGYMCURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a
@@ -136,35 +141,29 @@ CinnabarGymScript3: ; 7584a (1d:584a)
 	ld [wJoyIgnore], a
 CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	ld a, $a
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld hl, wd79a
-	set 1, [hl]
-	ld bc, (TM_38 << 8) | 1
+	SetEvent EVENT_BEAT_BLAINE
+	lb bc, TM_38, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $b
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld hl, wd79a
-	set 0, [hl]
-	jr .asm_75880 ; 0x75877 $7
+	SetEvent EVENT_GOT_TM38
+	jr .asm_75880
 .BagFull
 	ld a, $c
-	ld [$ff8c], a
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_75880
 	ld hl, W_OBTAINEDBADGES
 	set 6, [hl]
-	ld hl, wd72a
+	ld hl, wBeatGymFlags
 	set 6, [hl]
 
 	; deactivate gym trainers
-	ld a, [wd79a]
-	or %11111100
-	ld [wd79a], a
-	ld hl, wd79b
-	set 0, [hl]
+	SetEventRange EVENT_BEAT_CINNABAR_GYM_TRAINER_0, EVENT_BEAT_CINNABAR_GYM_TRAINER_6
 
 	ld hl, wd126
 	set 5, [hl]
@@ -186,7 +185,7 @@ CinnabarGymTextPointers: ; 7589f (1d:589f)
 	dw TM38NoRoomText
 
 CinnabarGymScript_758b7: ; 758b7 (1d:58b7)
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ld a, [hSpriteIndexOrTextID]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
@@ -206,20 +205,19 @@ CinnabarGymScript_758b7: ; 758b7 (1d:58b7)
 	jp TextScriptEnd
 
 CinnabarGymText1: ; 758df (1d:58df)
-	db $8
-	ld a, [wd79a]
-	bit 1, a
-	jr z, .asm_d9332 ; 0x758e5 $16
-	bit 0, a
-	jr nz, .asm_3012f ; 0x758e9 $9
+	TX_ASM
+	CheckEvent EVENT_BEAT_BLAINE
+	jr z, .asm_d9332
+	CheckEventReuseA EVENT_GOT_TM38
+	jr nz, .asm_3012f
 	call z, CinnabarGymScript3_75857
 	call DisableWaitingAfterTextDisplay
 	jp TextScriptEnd
-.asm_3012f ; 0x758f4
+.asm_3012f
 	ld hl, BlaineFireBlastText
 	call PrintText
 	jp TextScriptEnd
-.asm_d9332 ; 0x758fd
+.asm_d9332
 	ld hl, BlaineBattleText
 	call PrintText
 	ld hl, BlaineEndBattleText
@@ -258,18 +256,17 @@ TM38NoRoomText: ; 75934 (1d:5934)
 	db "@"
 
 CinnabarGymText2: ; 75939 (1d:5939)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 2, a
-	jr nz, .asm_46bb4 ; 0x75942
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_0
+	jr nz, .asm_46bb4
 	ld hl, CinnabarGymText_7595f
 	call PrintText
 	ld hl, CinnabarGymText_75964
-	ld de, CinnabarGymText_75964 ; $5964 XXX
+	ld de, CinnabarGymText_75964
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_46bb4 ; 0x75956
+.asm_46bb4
 	ld hl, CinnabarGymText_75969
 	call PrintText
 	jp TextScriptEnd
@@ -287,18 +284,17 @@ CinnabarGymText_75969: ; 75969 (1d:5969)
 	db "@"
 
 CinnabarGymText3: ; 7596e (1d:596e)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 3, a
-	jr nz, .asm_4b406 ; 0x75977
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_1
+	jr nz, .asm_4b406
 	ld hl, CinnabarGymText_75994
 	call PrintText
 	ld hl, CinnabarGymText_75999
-	ld de, CinnabarGymText_75999 ; $5999 XXX
+	ld de, CinnabarGymText_75999
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_4b406 ; 0x7598b
+.asm_4b406
 	ld hl, CinnabarGymText_7599e
 	call PrintText
 	jp TextScriptEnd
@@ -316,18 +312,17 @@ CinnabarGymText_7599e: ; 7599e (1d:599e)
 	db "@"
 
 CinnabarGymText4: ; 759a3 (1d:59a3)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 4, a
-	jr nz, .asm_c0673 ; 0x759ac
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_2
+	jr nz, .asm_c0673
 	ld hl, CinnabarGymText_759c9
 	call PrintText
 	ld hl, CinnabarGymText_759ce
-	ld de, CinnabarGymText_759ce ; $59ce XXX
+	ld de, CinnabarGymText_759ce
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_c0673 ; 0x759c0
+.asm_c0673
 	ld hl, CinnabarGymText_759d3
 	call PrintText
 	jp TextScriptEnd
@@ -345,18 +340,17 @@ CinnabarGymText_759d3: ; 759d3 (1d:59d3)
 	db "@"
 
 CinnabarGymText5: ; 759d8 (1d:59d8)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 5, a
-	jr nz, .asm_5cfd7 ; 0x759e1
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_3
+	jr nz, .asm_5cfd7
 	ld hl, CinnabarGymText_759fe
 	call PrintText
 	ld hl, CinnabarGymText_75a03
-	ld de, CinnabarGymText_75a03 ; $5a03 XXX
+	ld de, CinnabarGymText_75a03
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_5cfd7 ; 0x759f5
+.asm_5cfd7
 	ld hl, CinnabarGymText_75a08
 	call PrintText
 	jp TextScriptEnd
@@ -374,18 +368,17 @@ CinnabarGymText_75a08: ; 75a08 (1d:5a08)
 	db "@"
 
 CinnabarGymText6: ; 75a0d (1d:5a0d)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 6, a
-	jr nz, .asm_776b4 ; 0x75a16
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_4
+	jr nz, .asm_776b4
 	ld hl, CinnabarGymText_75a33
 	call PrintText
 	ld hl, CinnabarGymText_75a38
 	ld de, CinnabarGymText_75a38
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_776b4 ; 0x75a2a
+.asm_776b4
 	ld hl, CinnabarGymText_75a3d
 	call PrintText
 	jp TextScriptEnd
@@ -403,18 +396,17 @@ CinnabarGymText_75a3d: ; 75a3d (1d:5a3d)
 	db "@"
 
 CinnabarGymText7: ; 75a42 (1d:5a42)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79a]
-	bit 7, a
-	jr nz, .asm_2f755 ; 0x75a4b
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_5
+	jr nz, .asm_2f755
 	ld hl, CinnabarGymText_75a68
 	call PrintText
 	ld hl, CinnabarGymText_75a6d
 	ld de, CinnabarGymText_75a6d
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_2f755 ; 0x75a5f
+.asm_2f755
 	ld hl, CinnabarGymText_75a72
 	call PrintText
 	jp TextScriptEnd
@@ -432,18 +424,17 @@ CinnabarGymText_75a72: ; 75a72 (1d:5a72)
 	db "@"
 
 CinnabarGymText8: ; 75a77 (1d:5a77)
-	db $08 ; asm
+	TX_ASM
 	call CinnabarGymScript_757a0
-	ld a, [wd79b]
-	bit 0, a
-	jr nz, .asm_d87be ; 0x75a80
+	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_6
+	jr nz, .asm_d87be
 	ld hl, CinnabarGymText_75a9d
 	call PrintText
 	ld hl, CinnabarGymText_75aa2
-	ld de, CinnabarGymText_75aa2 ; $5aa2 XXX
+	ld de, CinnabarGymText_75aa2
 	call SaveEndBattleTextPointers
 	jp CinnabarGymScript_758b7
-.asm_d87be ; 0x75a94
+.asm_d87be
 	ld hl, CinnabarGymText_75aa7
 	call PrintText
 	jp TextScriptEnd
@@ -461,15 +452,14 @@ CinnabarGymText_75aa7: ; 75aa7 (1d:5aa7)
 	db "@"
 
 CinnabarGymText9: ; 75aac (1d:5aac)
-	db $08 ; asm
-	ld a, [wd79a]
-	bit 1, a
-	jr nz, .asm_627d9 ; 0x75ab2
+	TX_ASM
+	CheckEvent EVENT_BEAT_BLAINE
+	jr nz, .asm_627d9
 	ld hl, CinnabarGymText_75ac2
-	jr .asm_0b11d ; 0x75ab7
-.asm_627d9 ; 0x75ab9
+	jr .asm_0b11d
+.asm_627d9
 	ld hl, CinnabarGymText_75ac7
-.asm_0b11d ; 0x75abc
+.asm_0b11d
 	call PrintText
 	jp TextScriptEnd
 

@@ -13,8 +13,7 @@ Mansion3Script_52204: ; 52204 (14:6204)
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld a, [wd796]
-	bit 0, a
+	CheckEvent EVENT_MANSION_SWITCH_ON
 	jr nz, .asm_52224
 	ld a, $e
 	ld bc, $207
@@ -65,7 +64,7 @@ Mansion3Script_5225b: ; 5225b (14:625b)
 	ret nz
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wCoordIndex]
 	ld [wWhichDungeonWarp], a
 	ld hl, wd72d
 	set 4, [hl]
@@ -75,51 +74,51 @@ Mansion3Script_5225b: ; 5225b (14:625b)
 
 Mansion3Script_Switches: ; 5227a (14:627a)
 	ld a, [wSpriteStateData1 + 9]
-	cp $4
+	cp SPRITE_FACING_UP
 	ret nz
 	xor a
 	ld [hJoyHeld], a
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 Mansion3TextPointers: ; 5228a (14:628a)
 	dw Mansion3Text1
 	dw Mansion3Text2
-	dw Predef5CText
-	dw Predef5CText
+	dw PickUpItemText
+	dw PickUpItemText
 	dw Mansion3Text5
 	dw Mansion3Text6
 
 Mansion3TrainerHeaders: ; 52296 (14:6296)
 Mansion3TrainerHeader0: ; 52296 (14:6296)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_MANSION_3_TRAINER_0
 	db ($0 << 4) ; trainer's view range
-	dw wd849 ; flag's byte
-	dw Mansion3BattleText1 ; 0x62c3 TextBeforeBattle
-	dw Mansion3AfterBattleText1 ; 0x62cd TextAfterBattle
-	dw Mansion3EndBattleText1 ; 0x62c8 TextEndBattle
-	dw Mansion3EndBattleText1 ; 0x62c8 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_MANSION_3_TRAINER_0
+	dw Mansion3BattleText1 ; TextBeforeBattle
+	dw Mansion3AfterBattleText1 ; TextAfterBattle
+	dw Mansion3EndBattleText1 ; TextEndBattle
+	dw Mansion3EndBattleText1 ; TextEndBattle
 
 Mansion3TrainerHeader2: ; 522a2 (14:62a2)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_MANSION_3_TRAINER_2
 	db ($2 << 4) ; trainer's view range
-	dw wd849 ; flag's byte
-	dw Mansion3BattleText2 ; 0x62d2 TextBeforeBattle
-	dw Mansion3AfterBattleText2 ; 0x62dc TextAfterBattle
-	dw Mansion3EndBattleText2 ; 0x62d7 TextEndBattle
-	dw Mansion3EndBattleText2 ; 0x62d7 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_MANSION_3_TRAINER_2
+	dw Mansion3BattleText2 ; TextBeforeBattle
+	dw Mansion3AfterBattleText2 ; TextAfterBattle
+	dw Mansion3EndBattleText2 ; TextEndBattle
+	dw Mansion3EndBattleText2 ; TextEndBattle
 
 	db $ff
 
 Mansion3Text1: ; 522af (14:62af)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Mansion3TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 Mansion3Text2: ; 522b9 (14:62b9)
-	db $08 ; asm
+	TX_ASM
 	ld hl, Mansion3TrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd

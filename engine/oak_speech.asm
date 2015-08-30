@@ -1,11 +1,11 @@
 SetDefaultNames: ; 60ca (1:60ca)
-	ld a, [wd358]
+	ld a, [wLetterPrintingDelayFlags]
 	push af
-	ld a, [W_OPTIONS] ; W_OPTIONS
+	ld a, [W_OPTIONS]
 	push af
 	ld a, [wd732]
 	push af
-	ld hl, wPlayerName ; wd158
+	ld hl, wPlayerName
 	ld bc, $d8a
 	xor a
 	call FillMemory
@@ -16,28 +16,28 @@ SetDefaultNames: ; 60ca (1:60ca)
 	pop af
 	ld [wd732], a
 	pop af
-	ld [W_OPTIONS], a ; W_OPTIONS
+	ld [W_OPTIONS], a
 	pop af
-	ld [wd358], a
-	ld a, [wd08a]
+	ld [wLetterPrintingDelayFlags], a
+	ld a, [wOptionsInitialized]
 	and a
-	call z, Func_5bff
+	call z, InitOptions
 	ld hl, NintenText
-	ld de, wPlayerName ; wd158
-	ld bc, $b
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, SonyText
-	ld de, W_RIVALNAME ; wd34a
-	ld bc, $b
+	ld de, W_RIVALNAME
+	ld bc, NAME_LENGTH
 	jp CopyData
 
 OakSpeech: ; 6115 (1:6115)
 	ld a,$FF
 	call PlaySound ; stop music
-	ld a, BANK(Music_Routes2) ; bank of song
+	ld a, BANK(Music_Routes2)
 	ld c,a
-	ld a, MUSIC_ROUTES2 ; song #
-	call PlayMusic  ; plays music
+	ld a, MUSIC_ROUTES2
+	call PlayMusic
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
@@ -46,7 +46,7 @@ OakSpeech: ; 6115 (1:6115)
 	ld a,POTION
 	ld [wcf91],a
 	ld a,1
-	ld [wcf96],a
+	ld [wItemQuantity],a
 	call AddItemToInventory  ; give one potion
 	ld a,[W_ANIMATIONID]
 	ld [wDestinationMap],a
@@ -54,50 +54,49 @@ OakSpeech: ; 6115 (1:6115)
 	xor a
 	ld [hTilesetType],a
 	ld a,[wd732]
-	bit 1,a ; XXX when is bit 1 set?
-	jp nz,Func_61bc ; easter egg: skip the intro
+	bit 1,a ; possibly a debug mode bit
+	jp nz,.skipChoosingNames
 	ld de,ProfOakPic
-	ld bc, (Bank(ProfOakPic) << 8) | $00
-	call IntroPredef3B   ; displays Oak pic?
+	lb bc, Bank(ProfOakPic), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	call FadeInIntroPic
 	ld hl,OakSpeechText1
-	call PrintText      ; prints text box
+	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld a,NIDORINO
-	ld [wd0b5],a    ; pic displayed is stored at this location
+	ld [wd0b5],a
 	ld [wcf91],a
-	call GetMonHeader      ; this is also related to the pic
-	hlCoord 6, 4     ; position on tilemap the pic is displayed
-	call LoadFlippedFrontSpriteByMonIndex      ; displays pic?
+	call GetMonHeader
+	coord hl, 6, 4
+	call LoadFlippedFrontSpriteByMonIndex
 	call MovePicLeft
 	ld hl,OakSpeechText2
-	call PrintText      ; Prints text box
+	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de,RedPicFront
-	ld bc,(Bank(RedPicFront) << 8) | $00
-	call IntroPredef3B      ; displays player pic?
+	lb bc, Bank(RedPicFront), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	call MovePicLeft
 	ld hl,IntroducePlayerText
 	call PrintText
-	call LoadDefaultNamesPlayer ; brings up NewName/Red/etc menu
+	call ChoosePlayerName
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de,Rival1Pic
-	ld bc,(Bank(Rival1Pic) << 8) | $00
-	call IntroPredef3B ; displays rival pic
+	lb bc, Bank(Rival1Pic), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	call FadeInIntroPic
 	ld hl,IntroduceRivalText
 	call PrintText
-	call LoadDefaultNamesRival
-
-Func_61bc: ; 61bc (1:61bc)
+	call ChooseRivalName
+.skipChoosingNames
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de,RedPicFront
-	ld bc,(Bank(RedPicFront) << 8) | $00
-	call IntroPredef3B
+	lb bc, Bank(RedPicFront), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	call GBFadeInFromWhite
 	ld a,[wd72d]
 	and a
@@ -107,49 +106,49 @@ Func_61bc: ; 61bc (1:61bc)
 .next
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,(SFX_02_48 - SFX_Headers_02) / 3
+	ld a,SFX_SHRINK
 	call PlaySound
 	pop af
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank],a
 	ld c,4
 	call DelayFrames
-	ld de,RedSprite ; $4180
+	ld de,RedSprite
 	ld hl,vSprites
-	ld bc,(BANK(RedSprite) << 8) | $0C
+	lb bc, BANK(RedSprite), $0C
 	call CopyVideoData
 	ld de,ShrinkPic1
-	ld bc,(BANK(ShrinkPic1) << 8) | $00
-	call IntroPredef3B
+	lb bc, BANK(ShrinkPic1), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	ld c,4
 	call DelayFrames
 	ld de,ShrinkPic2
-	ld bc,(BANK(ShrinkPic2) << 8) | $00
-	call IntroPredef3B
+	lb bc, BANK(ShrinkPic2), $00
+	call IntroDisplayPicCenteredOrUpperRight
 	call ResetPlayerSpriteData
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a, BANK(Music_PalletTown)
-	ld [wc0ef],a
-	ld [wc0f0],a
-	ld a,$A
-	ld [wMusicHeaderPointer],a
+	ld [wAudioROMBank],a
+	ld [wAudioSavedROMBank],a
+	ld a, 10
+	ld [wAudioFadeOutControl],a
 	ld a,$FF
-	ld [wc0ee],a
+	ld [wNewSoundID],a
 	call PlaySound ; stop music
 	pop af
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
-	ld c,$14
+	ld [MBC1RomBank],a
+	ld c,20
 	call DelayFrames
-	hlCoord 6, 5
+	coord hl, 6, 5
 	ld b,7
 	ld c,7
 	call ClearScreenArea
 	call LoadTextBoxTilePatterns
 	ld a,1
 	ld [wUpdateSpritesEnabled],a
-	ld c,$32
+	ld c,50
 	call DelayFrames
 	call GBFadeOutToWhite
 	jp ClearScreen
@@ -193,24 +192,26 @@ IntroFadePalettes: ; 6282 (1:6282)
 
 MovePicLeft: ; 6288 (1:6288)
 	ld a,119
-	ld [$FF4B],a
+	ld [rWX],a
 	call DelayFrame
 
 	ld a,$E4
 	ld [rBGP],a
 .next
 	call DelayFrame
-	ld a,[$FF4B]
+	ld a,[rWX]
 	sub 8
 	cp $FF
 	ret z
-	ld [$FF4B],a
+	ld [rWX],a
 	jr .next
 
-Predef3B: ; 62a1 (1:62a1)
+DisplayPicCenteredOrUpperRight: ; 62a1 (1:62a1)
 	call GetPredefRegisters
-IntroPredef3B: ; 62a4 (1:62a4)
-; bank of sprite given in b
+IntroDisplayPicCenteredOrUpperRight: ; 62a4 (1:62a4)
+; b = bank
+; de = address of compressed pic
+; c: 0 = centred, non-zero = upper-right
 	push bc
 	ld a,b
 	call UncompressSpriteFromDE
@@ -223,10 +224,10 @@ IntroPredef3B: ; 62a4 (1:62a4)
 	pop bc
 	ld a,c
 	and a
-	hlCoord 15, 1
+	coord hl, 15, 1
 	jr nz,.next
-	hlCoord 6, 4
+	coord hl, 6, 4
 .next
 	xor a
-	ld [$FFE1],a
-	predef_jump Func_3f0c6
+	ld [hStartTileID],a
+	predef_jump CopyUncompressedPicToTilemap

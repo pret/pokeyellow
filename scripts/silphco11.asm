@@ -13,19 +13,19 @@ SilphCo11Script_62110: ; 62110 (18:6110)
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld hl, DataTable_62134 ; $6134
+	ld hl, SilphCo11GateCoords
 	call SilphCo11Script_62137
 	call SilphCo11Script_62163
-	ld a, [wd838]
-	bit 0, a
+	CheckEvent EVENT_SILPH_CO_11_UNLOCKED_DOOR
 	ret nz
 	ld a, $20
-	ld [wd09f], a
-	ld bc, $603
+	ld [wNewTileBlockID], a
+	lb bc, 6, 3
 	predef_jump ReplaceTileBlock
 
-DataTable_62134: ; 62134 (18:6134)
-	db $06,$03,$FF
+SilphCo11GateCoords: ; 62134 (18:6134)
+	db $06,$03
+	db $FF
 
 SilphCo11Script_62137: ; 62137 (18:6137)
 	push hl
@@ -67,29 +67,28 @@ SilphCo11Script_62163: ; 62163 (18:6163)
 	ld a, [$ffe0]
 	and a
 	ret z
-	ld hl, wd838
-	set 0, [hl]
+	SetEvent EVENT_SILPH_CO_11_UNLOCKED_DOOR
 	ret
 
 SilphCo11Script_6216d: ; 6216d (18:616d)
-	ld hl, MissableObjectIDs_6219b ; $619b
+	ld hl, MissableObjectIDs_6219b
 .asm_62170
 	ld a, [hli]
 	cp $ff
 	jr z, .asm_62181
 	push hl
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef HideObject
 	pop hl
 	jr .asm_62170
 .asm_62181
-	ld hl, MissableObjectIDs_62194 ; $6194
+	ld hl, MissableObjectIDs_62194
 .asm_62184
 	ld a, [hli]
 	cp $ff
 	ret z
 	push hl
-	ld [wcc4d], a
+	ld [wMissableObjectIndex], a
 	predef ShowObject
 	pop hl
 	jr .asm_62184
@@ -164,23 +163,22 @@ SilphCo11ScriptPointers: ; 621cf (18:61cf)
 	dw SilphCo11Script5
 
 SilphCo11Script0: ; 621db (18:61db)
-	ld a, [wd838]
-	bit 7, a
+	CheckEvent EVENT_BEAT_SILPH_CO_GIOVANNI
 	ret nz
-	ld hl, CoordsData_62211 ; $6211
+	ld hl, CoordsData_62211
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
-	ld a, [wWhichTrade] ; wWhichTrade
+	ld a, [wCoordIndex]
 	ld [wcf0d], a
 	xor a
 	ld [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $3
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $3
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_62216
 	call MoveSprite
@@ -193,43 +191,45 @@ CoordsData_62211: ; 62211 (18:6211)
 	db $FF
 
 MovementData_62216: ; 62216 (18:6216)
-	db $00,$00,$00,$FF
+	db NPC_MOVEMENT_DOWN
+	db NPC_MOVEMENT_DOWN
+	db NPC_MOVEMENT_DOWN
+	db $FF
 
 SilphCo11Script_6221a: ; 6221a (18:621a)
-	ld [wd528], a
+	ld [wPlayerMovingDirection], a
 	ld a, $3
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [H_SPRITEINDEX], a
 	ld a, b
-	ld [$ff8d], a
+	ld [hSpriteFacingDirection], a
 	jp SetSpriteFacingDirectionAndDelay
 
 SilphCo11Script5: ; 62227 (18:6227)
-	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
+	ld a, [W_ISINBATTLE]
 	cp $ff
 	jp z, SilphCo11Script_621c4
 	ld a, [wcf0d]
 	cp $1
 	jr z, .asm_6223c
-	ld a, $2
-	ld b, $c
+	ld a, PLAYER_DIR_LEFT
+	ld b, SPRITE_FACING_RIGHT
 	jr .asm_62240
 .asm_6223c
-	ld a, $8
-	ld b, $0
+	ld a, PLAYER_DIR_UP
+	ld b, SPRITE_FACING_DOWN
 .asm_62240
 	call SilphCo11Script_6221a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $6
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
 	call SilphCo11Script_6216d
 	call UpdateSprites
 	call Delay3
 	call GBFadeInFromBlack
-	ld hl, wd838
-	set 7, [hl]
+	SetEvent EVENT_BEAT_SILPH_CO_GIOVANNI
 	xor a
 	ld [wJoyIgnore], a
 	jp SilphCo11Script_621c8
@@ -239,17 +239,17 @@ SilphCo11Script3: ; 6226a (18:626a)
 	bit 0, a
 	ret nz
 	ld a, $3
-	ld [H_DOWNARROWBLINKCNT2], a ; $ff8c
+	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
 	ld a, [wcf0d]
 	cp $1
 	jr z, .asm_62284
-	ld a, $2
-	ld b, $c
+	ld a, PLAYER_DIR_LEFT
+	ld b, SPRITE_FACING_RIGHT
 	jr .asm_62288
 .asm_62284
-	ld a, $8
-	ld b, $0
+	ld a, PLAYER_DIR_UP
+	ld b, SPRITE_FACING_DOWN
 .asm_62288
 	call SilphCo11Script_6221a
 	call Delay3
@@ -260,10 +260,10 @@ SilphCo11Script4: ; 62293 (18:6293)
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, SilphCo10Text_62330 ; $6330
-	ld de, SilphCo10Text_62330 ; $6330
+	ld hl, SilphCo10Text_62330
+	ld de, SilphCo10Text_62330
 	call SaveEndBattleTextPointers
-	ld a, [H_DOWNARROWBLINKCNT2] ; $ff8c
+	ld a, [H_SPRITEINDEX]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
@@ -282,48 +282,46 @@ SilphCo11TextPointers: ; 622b7 (18:62b7)
 
 SilphCo11TrainerHeaders: ; 622c3 (18:62c3)
 SilphCo11TrainerHeader0: ; 622c3 (18:62c3)
-	db $4 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SILPH_CO_11F_TRAINER_0
 	db ($4 << 4) ; trainer's view range
-	dw wd837 ; flag's byte
-	dw SilphCo11BattleText1 ; 0x6344 TextBeforeBattle
-	dw SilphCo11AfterBattleText1 ; 0x634e TextAfterBattle
-	dw SilphCo11EndBattleText1 ; 0x6349 TextEndBattle
-	dw SilphCo11EndBattleText1 ; 0x6349 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SILPH_CO_11F_TRAINER_0
+	dw SilphCo11BattleText1 ; TextBeforeBattle
+	dw SilphCo11AfterBattleText1 ; TextAfterBattle
+	dw SilphCo11EndBattleText1 ; TextEndBattle
+	dw SilphCo11EndBattleText1 ; TextEndBattle
 
 SilphCo11TrainerHeader1: ; 622cf (18:62cf)
-	db $5 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SILPH_CO_11F_TRAINER_1
 	db ($3 << 4) ; trainer's view range
-	dw wd837 ; flag's byte
-	dw SilphCo11BattleText2 ; 0x635d TextBeforeBattle
-	dw SilphCo11AfterBattleText2 ; 0x6367 TextAfterBattle
-	dw SilphCo11EndBattleText2 ; 0x6362 TextEndBattle
-	dw SilphCo11EndBattleText2 ; 0x6362 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SILPH_CO_11F_TRAINER_1
+	dw SilphCo11BattleText2 ; TextBeforeBattle
+	dw SilphCo11AfterBattleText2 ; TextAfterBattle
+	dw SilphCo11EndBattleText2 ; TextEndBattle
+	dw SilphCo11EndBattleText2 ; TextEndBattle
 
 	db $ff
 
 SilphCo11Text1: ; 622dc (18:62dc)
-	db $08 ; asm
-	ld a, [wd838]
-	bit 5, a
+	TX_ASM
+	CheckEvent EVENT_GOT_MASTER_BALL
 	jp nz, .asm_62308
 	ld hl, SilphCoPresidentText
 	call PrintText
-	ld bc, (MASTER_BALL << 8) | 1
+	lb bc, MASTER_BALL, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, ReceivedSilphCoMasterBallText
 	call PrintText
-	ld hl, wd838
-	set 5, [hl]
-	jr .asm_fd405 ; 0x622fe
+	SetEvent EVENT_GOT_MASTER_BALL
+	jr .asm_6230e
 .BagFull
 	ld hl, SilphCoMasterBallNoRoomText
 	call PrintText
-	jr .asm_fd405 ; 0x62306
-.asm_62308 ; 0x62308
+	jr .asm_6230e
+.asm_62308
 	ld hl, SilphCo10Text_6231c
 	call PrintText
-.asm_fd405 ; 0x6230e
+.asm_6230e
 	jp TextScriptEnd
 
 SilphCoPresidentText: ; 62311 (18:6311)
@@ -359,7 +357,7 @@ SilphCo11Text6: ; 62335 (18:6335)
 	db "@"
 
 SilphCo11Text4: ; 6233a (18:633a)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SilphCo11TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
@@ -377,7 +375,7 @@ SilphCo11AfterBattleText1: ; 6234e (18:634e)
 	db "@"
 
 SilphCo11Text5: ; 62353 (18:6353)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SilphCo11TrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
@@ -395,7 +393,7 @@ SilphCo11AfterBattleText2: ; 62367 (18:6367)
 	db "@"
 
 SilphCo10Text_6236c: ; 6236c (18:636c)
-	db $8
+	TX_ASM
 	ld hl, SilphCo10Text_6237b
 	call PrintText
 	ld a, PORYGON

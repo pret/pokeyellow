@@ -21,106 +21,106 @@ SSAnne10TextPointers: ; 61d6e (18:5d6e)
 	dw SSAnne10Text6
 	dw SSAnne10Text7
 	dw SSAnne10Text8
-	dw Predef5CText
-	dw Predef5CText
-	dw Predef5CText
+	dw PickUpItemText
+	dw PickUpItemText
+	dw PickUpItemText
 
 SSAnne10TrainerHeaders: ; 61d84 (18:5d84)
 SSAnne10TrainerHeader0: ; 61d84 (18:5d84)
-	db $1 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_0
 	db ($2 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText1 ; 0x5e16 TextBeforeBattle
-	dw SSAnne10AfterBattleText1 ; 0x5e20 TextAfterBattle
-	dw SSAnne10EndBattleText1 ; 0x5e1b TextEndBattle
-	dw SSAnne10EndBattleText1 ; 0x5e1b TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_0
+	dw SSAnne10BattleText1 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText1 ; TextAfterBattle
+	dw SSAnne10EndBattleText1 ; TextEndBattle
+	dw SSAnne10EndBattleText1 ; TextEndBattle
 
 SSAnne10TrainerHeader1: ; 61d90 (18:5d90)
-	db $2 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_1
 	db ($3 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText2 ; 0x5e25 TextBeforeBattle
-	dw SSAnne10AfterBattleText2 ; 0x5e2f TextAfterBattle
-	dw SSAnne10EndBattleText2 ; 0x5e2a TextEndBattle
-	dw SSAnne10EndBattleText2 ; 0x5e2a TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_1
+	dw SSAnne10BattleText2 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText2 ; TextAfterBattle
+	dw SSAnne10EndBattleText2 ; TextEndBattle
+	dw SSAnne10EndBattleText2 ; TextEndBattle
 
 SSAnne10TrainerHeader2: ; 61d9c (18:5d9c)
-	db $3 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_2
 	db ($2 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText3 ; 0x5e34 TextBeforeBattle
-	dw SSAnne10AfterBattleText3 ; 0x5e3e TextAfterBattle
-	dw SSAnne10EndBattleText3 ; 0x5e39 TextEndBattle
-	dw SSAnne10EndBattleText3 ; 0x5e39 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_2
+	dw SSAnne10BattleText3 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText3 ; TextAfterBattle
+	dw SSAnne10EndBattleText3 ; TextEndBattle
+	dw SSAnne10EndBattleText3 ; TextEndBattle
 
 SSAnne10TrainerHeader3: ; 61da8 (18:5da8)
-	db $4 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_3
 	db ($2 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText4 ; 0x5e43 TextBeforeBattle
-	dw SSAnne10AfterBattleText4 ; 0x5e4d TextAfterBattle
-	dw SSAnne10EndBattleText4 ; 0x5e48 TextEndBattle
-	dw SSAnne10EndBattleText4 ; 0x5e48 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_3
+	dw SSAnne10BattleText4 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText4 ; TextAfterBattle
+	dw SSAnne10EndBattleText4 ; TextEndBattle
+	dw SSAnne10EndBattleText4 ; TextEndBattle
 
 SSAnne10TrainerHeader4: ; 61db4 (18:5db4)
-	db $5 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_4
 	db ($2 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText5 ; 0x5e52 TextBeforeBattle
-	dw SSAnne10AfterBattleText5 ; 0x5e5c TextAfterBattle
-	dw SSAnne10EndBattleText5 ; 0x5e57 TextEndBattle
-	dw SSAnne10EndBattleText5 ; 0x5e57 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_4
+	dw SSAnne10BattleText5 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText5 ; TextAfterBattle
+	dw SSAnne10EndBattleText5 ; TextEndBattle
+	dw SSAnne10EndBattleText5 ; TextEndBattle
 
 SSAnne10TrainerHeader5: ; 61dc0 (18:5dc0)
-	db $6 ; flag's bit
+	dbEventFlagBit EVENT_BEAT_SS_ANNE_10_TRAINER_5
 	db ($3 << 4) ; trainer's view range
-	dw wd809 ; flag's byte
-	dw SSAnne10BattleText6 ; 0x5e61 TextBeforeBattle
-	dw SSAnne10AfterBattleText6 ; 0x5e6b TextAfterBattle
-	dw SSAnne10EndBattleText6 ; 0x5e66 TextEndBattle
-	dw SSAnne10EndBattleText6 ; 0x5e66 TextEndBattle
+	dwEventFlagAddress EVENT_BEAT_SS_ANNE_10_TRAINER_5
+	dw SSAnne10BattleText6 ; TextBeforeBattle
+	dw SSAnne10AfterBattleText6 ; TextAfterBattle
+	dw SSAnne10EndBattleText6 ; TextEndBattle
+	dw SSAnne10EndBattleText6 ; TextEndBattle
 
 	db $ff
 
 SSAnne10Text1: ; 61dcd (18:5dcd)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text2: ; 61dd7 (18:5dd7)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text3: ; 61de1 (18:5de1)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text4: ; 61deb (18:5deb)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader3
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text5: ; 61df5 (18:5df5)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader4
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text6: ; 61dff (18:5dff)
-	db $08 ; asm
+	TX_ASM
 	ld hl, SSAnne10TrainerHeader5
 	call TalkToTrainer
 	jp TextScriptEnd
 
 SSAnne10Text8: ; 61e09 (18:5e09)
 	TX_FAR _SSAnne10Text8
-	db $8 ; 0x61e0d
+	TX_ASM
 	ld a, MACHOKE
 	call PlayCry
 	jp TextScriptEnd

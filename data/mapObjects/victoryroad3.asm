@@ -9,17 +9,17 @@ VictoryRoad3Object: ; 0x44acd (size=106)
 
 	db $0 ; signs
 
-	db $a ; people
-	db SPRITE_BLACK_HAIR_BOY_1, $5 + 4, $1c + 4, $ff, $d2, TRAINER | $1, COOLTRAINER_M + $C8, $2
-	db SPRITE_LASS, $d + 4, $7 + 4, $ff, $d3, TRAINER | $2, COOLTRAINER_F + $C8, $2
-	db SPRITE_BLACK_HAIR_BOY_1, $e + 4, $6 + 4, $ff, $d2, TRAINER | $3, COOLTRAINER_M + $C8, $3
-	db SPRITE_LASS, $3 + 4, $d + 4, $ff, $d3, TRAINER | $4, COOLTRAINER_F + $C8, $3
-	db SPRITE_BALL, $5 + 4, $1a + 4, $ff, $ff, ITEM | $5, MAX_REVIVE
-	db SPRITE_BALL, $7 + 4, $7 + 4, $ff, $ff, ITEM | $6, TM_47
-	db SPRITE_BOULDER, $3 + 4, $16 + 4, $ff, BOULDER_MOVEMENT_BYTE_2, $7 ; person
-	db SPRITE_BOULDER, $c + 4, $d + 4, $ff, BOULDER_MOVEMENT_BYTE_2, $8 ; person
-	db SPRITE_BOULDER, $a + 4, $18 + 4, $ff, BOULDER_MOVEMENT_BYTE_2, $9 ; person
-	db SPRITE_BOULDER, $f + 4, $16 + 4, $ff, BOULDER_MOVEMENT_BYTE_2, $a ; person
+	db $a ; objects
+	object SPRITE_BLACK_HAIR_BOY_1, $1c, $5, STAY, LEFT, $1, OPP_COOLTRAINER_M, $2
+	object SPRITE_LASS, $7, $d, STAY, RIGHT, $2, OPP_COOLTRAINER_F, $2
+	object SPRITE_BLACK_HAIR_BOY_1, $6, $e, STAY, LEFT, $3, OPP_COOLTRAINER_M, $3
+	object SPRITE_LASS, $d, $3, STAY, RIGHT, $4, OPP_COOLTRAINER_F, $3
+	object SPRITE_BALL, $1a, $5, STAY, NONE, $5, MAX_REVIVE
+	object SPRITE_BALL, $7, $7, STAY, NONE, $6, TM_47
+	object SPRITE_BOULDER, $16, $3, STAY, BOULDER_MOVEMENT_BYTE_2, $7 ; person
+	object SPRITE_BOULDER, $d, $c, STAY, BOULDER_MOVEMENT_BYTE_2, $8 ; person
+	object SPRITE_BOULDER, $18, $a, STAY, BOULDER_MOVEMENT_BYTE_2, $9 ; person
+	object SPRITE_BOULDER, $16, $f, STAY, BOULDER_MOVEMENT_BYTE_2, $a ; person
 
 	; warp-to
 	EVENT_DISP VICTORY_ROAD_3_WIDTH, $7, $17 ; VICTORY_ROAD_2

@@ -1118,13 +1118,13 @@ SECTION "bank1E",ROMX,BANK[$1E]
 	dr $78000,$78757
 AnimationTileset2: ; 78757 (1e:4857)
 	dr $78757,$79816
-Func_79816: ; 79816 (1e:5816)
+HideSubstituteShowMonAnim: ; 79816 (1e:5816)
 	dr $79816,$798b2
-Func_798b2: ; 798b2 (1e:58b2)
+ReshowSubstituteAnim: ; 798b2 (1e:58b2)
 	dr $798b2,$798c8
 AnimationTransformMon: ; 798c8 (1e:58c8)
 	dr $798c8,$798d4
-Func_798d4: ; 798d4 (1e:58d4)
+ChangeMonPic: ; 798d4 (1e:58d4)
 	dr $798d4,$7a19a
 	
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"

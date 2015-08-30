@@ -9,7 +9,7 @@ CeruleanHouse2TextPointers: ; 74e13 (1d:4e13)
 	dw CeruleanHouse2Text1
 
 CeruleanHouse2Text1: ; 74e15 (1d:4e15)
-	db $8
+	TX_ASM
 	ld hl, CeruleanHouse2Text_74e77
 	call PrintText
 	xor a
@@ -20,18 +20,18 @@ CeruleanHouse2Text1: ; 74e15 (1d:4e15)
 	call PrintText
 	ld hl, BadgeItemList
 	call LoadItemList
-	ld hl, wStringBuffer2 + 11
+	ld hl, wItemList
 	ld a, l
-	ld [wList], a
+	ld [wListPointer], a
 	ld a, h
-	ld [wList + 1], a
+	ld [wListPointer + 1], a
 	xor a
-	ld [wcf93], a
+	ld [wPrintItemPrices], a
 	ld [wMenuItemToSwap], a
 	ld a, SPECIALLISTMENU
 	ld [wListMenuID], a
 	call DisplayListMenuID
-	jr c, .asm_74e60 ; 0x74e49 $15
+	jr c, .asm_74e60
 	ld hl, TextPointers_74e86
 	ld a, [wcf91]
 	sub $15
@@ -43,7 +43,7 @@ CeruleanHouse2Text1: ; 74e15 (1d:4e15)
 	ld h, [hl]
 	ld l, a
 	call PrintText
-	jr .asm_74e23 ; 0x74e5e $c3
+	jr .asm_74e23
 .asm_74e60
 	xor a
 	ld [wListScrollOffset], a
