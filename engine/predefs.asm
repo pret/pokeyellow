@@ -52,7 +52,7 @@ GetPredefPointer: ; f67ed (3d:67ed)
 PredefPointers:: ; f681d (3d:681d)
 ; these are pointers to ASM routines.
 ; they appear to be used in overworld map scripts.
-	dr $f681d,$f8000
+	dr $f681d,$f7000
 	;add_predef DrawPlayerHUDAndHPBar
 	;add_predef Func_3f0c6
 	;add_predef Func_3f073

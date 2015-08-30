@@ -4,7 +4,7 @@ INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 
 Func_f429f:: ; f429f (3d:429f)
-	hlCoord 0,5
+	coord hl, 0,5
 	ld c,$0
 .asm_f42a4
 	inc c
@@ -169,35 +169,35 @@ Func_f453f:: ; f453f (3d:453f)
 	ret
 	
 Func_f4578:: ; f4578 (3d:4578)
-	hlCoord 2,1
+	coord hl, 2,1
 	ld de,Pointer_f45f9
 	ld bc,7 << 8 | 16 ; 16x7 (xy)
 	call CopyScreenArea
 	ret
 	
 Func_f4585:: ; f4585 (3d:4585)
-	hlCoord 6,4
+	coord hl, 6,4
 	ld de,Pointer_f4673
 	ld bc,4 << 8 | 7 ; 7x4 (xy)
 	call CopyScreenArea
-	hlCoord 9,8
+	coord hl, 9,8
 	ld [hl],$64
 	inc hl
 	ld [hl],$65
 	ret
 	
 Func_f459a:: ; f459a (3d:459a)
-	hlCoord 4,8
+	coord hl, 4,8
 	ld de,Pointer_f468f
 	ld bc,9 << 8 | 12 ; 12x9 (xy)
 	call CopyScreenArea
-	hlCoord 16,10
+	coord hl, 16,10
 	ld [hl],$96
-	hlCoord 16,11
+	coord hl, 16,11
 	ld [hl],$9d
-	hlCoord 16,12
+	coord hl, 16,12
 	ld [hl],$a7
-	hlCoord 16,13
+	coord hl, 16,13
 	ld [hl],$b1
 	ld hl,Pointer_f45c7
 	ld de,wOAMBuffer
@@ -349,7 +349,7 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	ld a,[wTopMenuItemY]
 	and a
 	jr z,.asm_f5ac0
-	hlCoord 0,0
+	coord hl, 0,0
 	ld bc,$14
 .loop
 	add hl,bc

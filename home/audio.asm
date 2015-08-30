@@ -24,7 +24,7 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	cp $2
 	jr z, .surfing
 	call Func_21c8
-	jr c, .asm_21ac
+	jr c, .walking
 	ld a, $d2 ; MUSIC_BIKE_RIDING
 	jr .next
 
@@ -206,7 +206,7 @@ PlaySound:: ; 2238 (0:2238)
 	ld [wMusicHeaderPointer], a
 .noFadeOut
 	xor a
-	ld [wc0ee], a
+	ld [wNewSoundID], a
 	call Func_22ec
 	jr .done
 .fadeOut

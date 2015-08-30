@@ -535,13 +535,8 @@ ReverseNybble:: ; 272d (0:272d)
 	ret
 
 ; resets sprite buffer pointers to buffer 1 and 2, depending on W_SPRITELOADFLAGS
-<<<<<<< HEAD
 ResetSpriteBufferPointers:: ; 2737 (0:2737)
 	ld a, [W_SPRITELOADFLAGS] ; wd0a8
-=======
-ResetSpriteBufferPointers:: ; 2841 (0:2841)
-	ld a, [W_SPRITELOADFLAGS]
->>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	bit 0, a
 	jr nz, .buffer2Selected
 	ld de, S_SPRITEBUFFER1

@@ -11,7 +11,6 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld a, [rOBP1]
 	push af
 	ld a, $e0
-<<<<<<< HEAD
 	ld [rOBP1], a ; $ff49
 	call Func_3061
 	ld hl, wOAMBuffer + $84
@@ -33,7 +32,6 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld c, 30
 	call DelayFrames
 	dec b
-<<<<<<< HEAD
 	jr nz, .partyLoop
 	ld a, [wAudioROMBank]
 	cp $1f

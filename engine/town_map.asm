@@ -377,7 +377,6 @@ DrawPlayerOrBirdSprite: ; 7124e (1c:524e)
 	ld bc, $a0
 	jp CopyData
 
-<<<<<<< HEAD
 DisplayWildLocations: ; 71279 (1c:5279)
 	callba FindWildLocationsOfMon
 	call ZeroOutDuplicatesInList
@@ -409,7 +408,7 @@ DisplayWildLocations: ; 71279 (1c:5279)
 	jr nz, .drawPlayerSprite
 ; if no OAM entries were written, print area unknown text
 	coord hl, 1, 7
-	lb bc, $20f
+	lb bc, 2, 15
 	call TextBoxBorder
 	coord hl, 2, 9
 	ld de, AreaUnknownText

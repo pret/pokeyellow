@@ -1510,9 +1510,6 @@ AddAmountSoldToMoney:: ; 2aa0 (0:2aa0)
 	ld a, $b2 ; SFX_PURCHASE
 	call PlaySoundWaitForCurrent ; play sound
 	jp WaitForSoundToFinish ; wait until sound is done playing
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	jp WaitForSoundToFinish
 
 ; function to remove an item (in varying quantities) from the player's bag or PC box
 ; INPUT:
@@ -1739,8 +1736,6 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 ; text box dimensions/coordinates for quantity and price
 	coord hl, 7, 9
 	lb bc, 1, 11  ; height and width
-	ld b,1  ; height
-	ld c,11 ; width
 .drawTextBox
 	call TextBoxBorder
 	coord hl, 16, 10
@@ -2404,7 +2399,7 @@ Func_3061:: ; 3061 (0:3061)
 Func_3082:: ; 3082 (0:3082)
 	ld a,[H_LOADEDROMBANK]
 	push af
-	call Func_27c2
+	call FadeOutAudio
 	callbs Music_DoLowHealthAlarm
 	callbs Music2_UpdateMusic
 	pop af
@@ -2452,7 +2447,7 @@ RunNPCMovementScript:: ; 30ae (0:30ae)
 	ret
 	
 .NPCMovementScriptPointerTables
-	dw PalletMovementScriptPointerTable
+	dw ProfOakMovementScriptPointerTable
 	dw PewterMuseumGuyMovementScriptPointerTable
 	dw PewterGymGuyMovementScriptPointerTable
 .playerStepOutFromDoor
@@ -3298,24 +3293,6 @@ BankswitchBack:: ; 35e8 (0:35e8)
 ; returns from BankswitchHome
 	ld a,[wBankswitchHomeSavedROMBank]
 	call BankswitchCommon
-	ret
-
-Bankswitch:: ; 35d6 (0:35d6)
-; self-contained bankswitch, use this when not in the home bank
-; switches to the bank in b
-	ld a,[H_LOADEDROMBANK]
-	push af
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
-	ld bc,.Return
-	push bc
-	jp [hl]
-.Return
-	pop bc
-	ld a,b
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
 	ret
 
 ; displays yes/no choice
@@ -5004,7 +4981,7 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-	dr $3f67,$4000
+	;dr $3f67,$4000
 ;	add_tx_pre CardKeySuccessText                   ; 01
 ;	add_tx_pre CardKeyFailText                      ; 02
 ;	add_tx_pre RedBedroomPC                         ; 03

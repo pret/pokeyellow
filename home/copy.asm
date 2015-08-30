@@ -1,9 +1,9 @@
 FarCopyData:: ; 009d (0:009d)
 ; Copy bc bytes from a:hl to de.
-	ld [wd122+1], a
+	ld [wFarCopyDataSavedROMBank], a
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, [wd122+1]
+	ld a, [wFarCopyDataSavedROMBank]
 	call BankswitchCommon
 	call CopyData
 	pop af

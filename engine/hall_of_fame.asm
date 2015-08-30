@@ -173,7 +173,7 @@ Func_7033f: ; 7033f (1c:433f)
 	jp PlayCry
 	
 HoFDisplayMonInfo: ; 70348 (1c:4348)
-	hlCoord 0, 2
+	coord hl, 0, 2
 	lb bc, 9, 10
 	call TextBoxBorder
 	coord hl, 2, 6
@@ -226,10 +226,10 @@ HoFDisplayPlayerStats: ; 703d1 (1c:43d1)
 	ld hl, wd747
 	set 3, [hl]
 	predef DisplayDexRating
-	hlCoord 0, 4
+	coord hl, 0, 4
 	lb bc, 6, 10
 	call TextBoxBorder
-	hlCoord 5, 0
+	coord hl, 5, 0
 	lb bc, 2, 9
 	call TextBoxBorder
 	coord hl, 7, 2

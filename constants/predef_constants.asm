@@ -28,7 +28,7 @@ const_value = 0
 	predef_const LoadTilesetHeader
 	predef_const LearnMoveFromLevelUp
 	predef_const LearnMove
-	predef_const IsItemInBag_
+	predef_const GetQuantityOfItemInBag
 	predef_const CheckForHiddenObjectOrBookshelfOrCardKeyDoor ; for these two, the bank number is actually 0
 	predef_const GiveItem
 	predef_const ChangeBGPalColor0_4Frames
@@ -69,7 +69,7 @@ const_value = 0
 	predef_const SetPartyMonTypes
 	predef_const CanLearnTM
 	predef_const TMToMove
-	predef_const Func_71ddf
+	predef_const _RunPaletteCommand
 	predef_const StarterDex ; 46
 	predef_const _AddPartyMon
 	predef_const UpdateHPBar2
@@ -92,7 +92,7 @@ const_value = 0
 	predef_const GetTileTwoStepsInFrontOfPlayer
 	predef_const CheckForCollisionWhenPushingBoulder
 	predef_const PrintStrengthTxt
-	predef_const PickupItem
+	predef_const PickUpItem
 	predef_const PrintMoveType
 	predef_const LoadMovePPs
 	predef_const DrawHP ; 5F

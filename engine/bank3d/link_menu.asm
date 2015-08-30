@@ -5,19 +5,19 @@ Func_f531b:: ; f531b (3d:531b)
 	ld [wBuffer],a
 	xor a
 	ld [wUnknownSerialFlag_d499],a
-	hlCoord 0,0
+	coord hl, 0,0
 	ld bc,$405
 	call TextBoxBorder
 	ld de,Text_f5791
-	hlCoord 1,2
+	coord hl, 1,2
 	call PlaceString
-	hlCoord 8,0
+	coord hl, 8,0
 	ld bc,$80a
 	call TextBoxBorder
-	hlCoord 10,2
+	coord hl, 10,2
 	ld de,Text_f579c
 	call PlaceString
-	hlCoord 0,10
+	coord hl, 0,10
 	ld bc,$612
 	call TextBoxBorder
 	call UpdateSprites
@@ -513,7 +513,7 @@ asm_f56ad:: ; f56ad (3d:56ad)
 Func_f56bd:: ; f56bd (3d:56bd)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
-	hlCoord 1,11
+	coord hl, 1,11
 	ld bc,$612
 	call ClearScreenArea
 	ld a,[wCurrentMenuItem]
@@ -530,7 +530,7 @@ Func_f56bd:: ; f56bd (3d:56bd)
 	ld l,a
 	ld d,h
 	ld e,l
-	hlCoord 1,12
+	coord hl, 1,12
 	call PlaceString
 .asm_f56e6
 	call Delay3
@@ -642,11 +642,11 @@ LinkMenu: ; f580c (3d:580c)
 	call SaveScreenTilesToBuffer1
 	ld hl, ColosseumWhereToText
 	call PrintText
-	hlCoord 5, 3
+	coord hl, 5, 3
 	ld bc, $80d
 	call TextBoxBorder
 	call UpdateSprites
-	hlCoord 7, 5
+	coord hl, 7, 5
 	ld de, TradeCenterText
 	call PlaceString
 	xor a

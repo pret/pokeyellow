@@ -255,7 +255,6 @@ SetPal_TrainerCard: ; 72025 (1c:6025)
 	ld de, wTrainerCardBlkPacket
 	ret
 
-<<<<<<< HEAD
 SendUnknownPalPacket_7205d:: ; 7205d (1c:605d)
 	ld hl,UnknownPalPacket_72811
 	ld de,BlkPacket_WholeScreen
@@ -314,7 +313,6 @@ DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
 	ld a, [hl]
 	ret
 
-<<<<<<< HEAD
 Func_720ad:: ; 720ad (1c:60ad)
 	ld a,e
 	and a
@@ -914,7 +912,6 @@ Func_72470:: ; 72470 (1c:6470)
 	push de
 	add a
 	add a
-<<<<<<< HEAD
 	add a
 	or $80
 	ld [rBGPI],a
@@ -1157,7 +1154,7 @@ CopySGBBorderTiles: ; 725fb (1c:65fb)
 ; This function converts 2BPP planar data into this format by mapping
 ; 2BPP colors 0-3 to 4BPP colors 0-3. 4BPP colors 4-15 are not used.
 	ld b, 128
-.loop
+.tileLoop
 ; Copy bit planes 1 and 2 of the tile data.
 	ld c, 16
 .copyLoop

@@ -847,8 +847,6 @@ wCoordIndex:: ; cd3d
 
 wOptionsTextSpeedCursorX:: ; cd3d
 
-wBoxNumString:: ; cd3d
-
 wTrainerInfoTextBoxWidthPlus1:: ; cd3d
 
 wSwappedMenuItem:: ; cd3d
@@ -1367,7 +1365,6 @@ wExpAmountGained:: ; cf4b
 wcf4b:: ds 2 ; storage buffer for various strings
 
 wGainBoostedExp:: ; cf4d
->>>>>>> 1a987d1e1ab96ca9553d4253c72858057332a03a
 	ds 1
 
 	ds 17
@@ -2103,6 +2100,7 @@ wEvolutionOccurred:: ; d121
 wVBlankSavedROMBank:: ; d122
 	ds 1
 
+wFarCopyDataSavedROMBank:: ; d123
 	ds 1
 
 wIsKeyItem:: ; d124

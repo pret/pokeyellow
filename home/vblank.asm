@@ -55,6 +55,7 @@ VBlank:: ; 1de5 (0:1de5)
 	jr z, .skipDec
 	dec a
 	ld [H_FRAMECOUNTER], a
+.skipDec
 
 	call FadeOutAudio
 	

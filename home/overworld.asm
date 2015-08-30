@@ -765,6 +765,9 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	callbs SpecialWarpIn
 	jp SpecialEnterMap
 
+LeaveMapAnim:: ; 07bc (0:07bc)
+	jpba _LeaveMapAnim
+	
 Func_07c4:: ; 07c4 (0:07c4)	
 	ld a, [wWalkBikeSurfState]
 	and a
@@ -1457,7 +1460,7 @@ AdvancePlayerSprite:: ; 0b7f (0:0b7f)
 ; the portion of the map that was newly exposed due to the player's movement
 
 ScheduleNorthRowRedraw:: ; 0b95 (0:0b95)
-	hlCoord 0, 0
+	coord hl, 0, 0
 	call CopyToRedrawRowOrColumnSrcTiles
 	ld a,[wMapViewVRAMPointer]
 	ld [H_SCREENEDGEREDRAWADDR],a

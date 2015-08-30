@@ -42,7 +42,7 @@ asm_f601d: ; f601d (f:601d)
 	ld [$ffe1], a
 	dec a
 	ld [wAICount], a
-	hlCoord 12, 0
+	coord hl, 12, 0
 	predef Func_3f0c6
 	ld a, $ff
 	ld [wEnemyMonPartyPos], a
@@ -103,7 +103,7 @@ InitWildBattle: ; f607c (3d:607c)
 	xor a
 	ld [W_TRAINERCLASS], a
 	ld [$ffe1], a
-	hlCoord 12, 0
+	coord hl, 12, 0
 	predef Func_3f0c6
 
 ; common code that executes after init battle code specific to trainer or wild battles
@@ -125,10 +125,10 @@ InitBattle_Common: ; f60eb (3d:60eb)
 	ld a, $9c
 	ld [$ffbd], a
 	call LoadScreenTilesFromBuffer1
-	hlCoord 9, 7
+	coord hl, 9, 7
 	ld bc, $50a
 	call ClearScreenArea
-	hlCoord 1, 0
+	coord hl, 1, 0
 	ld bc, $40a
 	call ClearScreenArea
 	call ClearSprites
@@ -173,7 +173,7 @@ LoadMonBackPic: ; f6178 (3d:6178)
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
 	ld [wcf91], a
-	hlCoord 1, 5
+	coord hl, 1, 5
 	ld bc,$708
 	call ClearScreenArea
 	ld hl,  W_MONHBACKSPRITE - W_MONHEADER

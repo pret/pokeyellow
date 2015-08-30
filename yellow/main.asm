@@ -67,7 +67,7 @@ PlayerPC:: ; 778e (1:778e)
 	dr $778e,$7a0f
 _RemovePokemon:: ; 7a0f (1:7a0f)
 	dr $7a0f,$7abf
-Func_7abf:: ; 7c18 (1:7abf)
+_DisplayPokedex:: ; 7c18 (1:7abf)
 	dr $7abf,$8000
 
 SECTION "bank02",ROMX,BANK[$02]
@@ -385,8 +385,10 @@ SECTION "Graphics", ROMX, BANK[GFX]
 
 PokemonLogoJapanGraphics:       INCBIN "gfx/pokemon_logo_japan.2bpp"
 FontGraphics:                   INCBIN "gfx/font.1bpp"
+FontGraphicsEnd:
 ABTiles:                        INCBIN "gfx/AB.2bpp"
 HpBarAndStatusGraphics:         INCBIN "gfx/hp_bar_and_status.2bpp"
+HpBarAndStatusGraphicsEnd:
 BattleHudTiles1:                INCBIN "gfx/battle_hud1.1bpp"
 BattleHudTiles2:                INCBIN "gfx/battle_hud2.1bpp"
 BattleHudTiles3:                INCBIN "gfx/battle_hud3.1bpp"
@@ -394,6 +396,7 @@ NintendoCopyrightLogoGraphics:  INCBIN "gfx/copyright.2bpp"
 GamefreakLogoGraphics:          INCBIN "gfx/gamefreak.2bpp"
 NineTile:                       INCBIN "gfx/9_tile.2bpp"
 TextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
+TextBoxGraphicsEnd:
 PokedexTileGraphics:            INCBIN "gfx/pokedex.2bpp"
 WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"

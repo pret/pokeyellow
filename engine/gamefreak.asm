@@ -39,7 +39,7 @@ AnimateShootingStar: ; 7004a (1c:404a)
 	push bc
 .bigStarInnerLoop
 	ld a, [hl] ; Y
-	add 4y
+	add 4 ; y
 	ld [hli], a
 	ld a, [hl] ; X
 	add -4
@@ -221,7 +221,7 @@ MoveDownSmallStars: ; 70142 (1c:4142)
 ; Toggle the palette so that the lower star in the small stars tile blinks in
 ; and out.
 	ld a, [rOBP1] ; $ff49
-	xor $10100000
+	xor %10100000
 	ld [rOBP1], a ; $ff49
 	call Func_3061
 	ld c, 3

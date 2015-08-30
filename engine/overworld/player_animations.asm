@@ -414,7 +414,6 @@ FishingAnim: ; 70816 (1c:4816)
 	ld a, [wRodResponse]
 	and a
 	ld hl, NoNibbleText
-<<<<<<< HEAD
 	jr z, .done
 	cp $2
 	ld hl, NothingHereText

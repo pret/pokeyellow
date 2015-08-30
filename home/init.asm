@@ -128,7 +128,7 @@ ClearVram: ; 1dc6 (0:1dc6)
 
 
 StopAllSounds::
-	ld a, BANK(Audio1_UpdateMusic)
+	ld a, $2
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	xor a
