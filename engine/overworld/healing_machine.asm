@@ -47,7 +47,7 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld d, $28
 	call FlashSprite8Times
 .waitLoop2
-	ld a, [wc026]
+	ld a, [wChannelSoundIDs]
 	cp $e8 ; MUSIC_PKMN_HEALED
 	jr z, .waitLoop2
 	ld c, 32

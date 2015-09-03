@@ -33,7 +33,7 @@ SafariZoneEntranceText_9e6e4::
 
 SafariZoneEntranceText_9e747::
 	text "That'll be ¥@"
-	TX_BCD wSubtrahend, $c3
+	TX_BCD wPriceTemp, $c3
 	text ","
 	line "please!"
 

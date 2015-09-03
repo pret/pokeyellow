@@ -22,7 +22,7 @@ Func_f531b:: ; f531b (3d:531b)
 	call TextBoxBorder
 	call UpdateSprites
 	xor a
-	ld [wcd37],a
+	ld [wUnusedCD37],a
 	ld [wd72d],a
 	ld [wd11e],a
 	ld hl,wTopMenuItemY
@@ -634,7 +634,7 @@ ColosseumIneligibleText:: ; f5807 (3d:5807)
 	
 LinkMenu: ; f580c (3d:580c)
 	xor a
-	ld [wd358], a
+	ld [wLetterPrintingDelayFlags], a
 	ld hl, wd72e
 	set 6, [hl]
 	ld hl, TextTerminator_f5a16
@@ -650,7 +650,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld de, TradeCenterText
 	call PlaceString
 	xor a
-	ld [wcd37], a
+	ld [wUnusedCD37], a
 	ld [wd72d], a
 	ld [wd11e], a
 	ld hl, wTopMenuItemY
@@ -765,9 +765,9 @@ LinkMenu: ; f580c (3d:580c)
 	ld [wWalkBikeSurfState], a ; start walking
 	ld a, [wCurrentMenuItem]
 	and a
-	ld a, TRADE_CENTER
+	ld a, COLOSSEUM
 	jr nz, .next
-	ld a, BATTLE_CENTER
+	ld a, TRADE_CENTER
 .next
 	ld [wd72d], a
 	ld hl, ColosseumPleaseWaitText
@@ -786,7 +786,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld [wSerialExchangeNybbleSendData], a
 	inc a ; LINK_STATE_IN_CABLE_CLUB
 	ld [wLinkState], a
-	ld [wcc47], a
+	ld [wEnteringCableClub], a
 	ld hl,Func_5ce4
 	ld b,BANK(Func_5ce4)
 	jp Bankswitch

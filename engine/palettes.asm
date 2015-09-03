@@ -163,9 +163,9 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	jr z, .Lorelei
 	cp BRUNOS_ROOM
 	jr z, .caveOrBruno
-	cp BATTLE_CENTER
-	jr z,.asm_71ffd
 	cp TRADE_CENTER
+	jr z,.asm_71ffd
+	cp COLOSSEUM
 	jr z,.asm_71ffd
 .normalDungeonOrBuilding
 	ld a, [wLastMap] ; town or route that current dungeon or building is located
@@ -321,14 +321,14 @@ Func_720ad:: ; 720ad (1c:60ad)
 	ld a,[hGBC]
 	and a
 	jp z,Func_721b4
-	jp Func_72346
+	jp InitGBCPalettes
 
 Func_720bd:: ; 720bd (1c:60bd)
 	ld hl,UnknownPalPacket_72811
 	ld a,[hGBC]
 	and a
 	jp z,Func_721b4
-	call Func_72346
+	call InitGBCPalettes
 	ld hl,PalPacket_Generic
 	inc hl
 	ld a,[hli]
@@ -345,29 +345,29 @@ Func_720bd:: ; 720bd (1c:60bd)
 	
 Func_720e3:: ; 720e3 (1c:60e3)
 	ld hl,PalPacket_Empty
-	ld de,wcf2d
+	ld de,wPalPacket
 	ld bc,$10
 	call CopyData
 	call Func_7213b
-	ld hl,wcf2e
+	ld hl,wPartyMenuBlkPacket
 	ld [hl],a
-	ld hl,wcf30
+	ld hl,wPartyMenuBlkPacket + 2
 	ld a,$26
 	ld [hl],a
-	ld hl,wcf2d
+	ld hl,wPalPacket
 	ld a,[hGBC]
 	and a
 	jr nz,.asm_72109
 	call Func_721b4
 	jr .asm_7210c
 .asm_72109
-	call Func_72346
+	call InitGBCPalettes
 .asm_7210c
 	ld hl,BlkPacket_WholeScreen
-	ld de,wcf2d
+	ld de,wPalPacket
 	ld bc,$10
 	call CopyData
-	ld hl,wcf30
+	ld hl,wPartyMenuBlkPacket + 2
 	ld a,$5
 	ld [hli],a
 	ld a,$7
@@ -378,14 +378,14 @@ Func_720e3:: ; 720e3 (1c:60e3)
 	ld [hli],a
 	ld a,$a
 	ld [hl],a
-	ld hl,wcf2d
+	ld hl,wPalPacket
 	ld a,[hGBC]
 	and a
 	jr nz,.asm_72137
 	call Func_721b4
 	jr .asm_7213a
 .asm_72137
-	call Func_72346
+	call InitGBCPalettes
 .asm_7213a
 	ret
 
@@ -407,9 +407,9 @@ Func_7213b:: ; 7213b (1c:613b)
 	jr z, .Lorelei
 	cp BRUNOS_ROOM
 	jr z, .caveOrBruno
-	cp BATTLE_CENTER
-	jr z,.battleOrTradeCenter
 	cp TRADE_CENTER
+	jr z,.battleOrTradeCenter
+	cp COLOSSEUM
 	jr z,.battleOrTradeCenter
 .normalDungeonOrBuilding
 	ld a, [wLastMap] ; town or route that current dungeon or building is located

@@ -355,7 +355,7 @@ BattleTransition_OutwardSpiral_: ; 70b6c (1c:4b6c)
 	jr .done
 
 FlashScreen:
-BattleTransition_FlashScreen_: ; 70be8 (1c:4be8s)
+BattleTransition_FlashScreen_: ; 70be8 (1c:4be8)
 	ld hl, BattleTransition_FlashScreenPalettes
 .loop
 	ld a, [hli]
@@ -377,6 +377,7 @@ BattleTransition_FlashScreenPalettes: ; 70be8 (1c:4be8)
 
 ; used for low level trainer dungeon battles
 BattleTransition_Shrink: ; 70bf4 (1c:4bf4)
+	ld c,9
 .loop
 	push bc
 	xor a
@@ -410,6 +411,7 @@ BattleTransition_Shrink: ; 70bf4 (1c:4bf4)
 
 ; used for high level trainer dungeon battles
 BattleTransition_Split: ; 70c40 (1c:4c40)
+	ld c,$9
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 .loop
@@ -471,7 +473,7 @@ BattleTransition_CopyTiles1: ; 70c88 (1c:4c88)
 	jr nz, .loop2
 	ret
 
-BattleTransition_CopyTiles2: ; 70cb5 (1c:4c3f)
+BattleTransition_CopyTiles2: ; 70cb5 (1c:4cb5)
 	ld a, c
 	ld [wBattleTransitionCopyTilesOffset], a
 	ld a, b

@@ -114,7 +114,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	and a
 	jr z,.checkForOpponent
 	xor a
-	ld [wcc47],a
+	ld [wLinkTimeoutCounter],a
 	jp EnterMap
 ;	predef LoadSAV
 ;	ld a,[W_CURMAP]
@@ -194,8 +194,8 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	set 2,[hl]
 	xor a
 	ld [wCheckFor180DegreeTurn],a
-	ld a,[wd52a]
-	ld [wd528],a
+	ld a,[wPlayerDirection]
+	ld [wPlayerMovingDirection],a
 	call NewBattle
 	jp c,.battleOccurred
 	jp OverworldLoop
@@ -742,7 +742,7 @@ HandleBlackOut:: ; 0762 (0:0762)
 	jp SpecialEnterMap
 
 StopMusic:: ; 0788 (0:0788)
-	ld [wMusicHeaderPointer], a
+	ld [wAudioFadeOutControl], a
 	call StopAllMusic
 .wait
 	ld a, [wAudioFadeOutControl]
@@ -864,7 +864,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 ; fill C6E8-CBFB with the background tile
 	ld hl,wOverworldMap
 	ld bc,$0514
-	ld a,[wd3ad] ; background tile number
+	ld a,[wMapBackgroundTile] ; background tile number
 	call FillMemory
 ; load tile map of current map (made of tile block IDs)
 ; a 3-byte border at the edges of the map is kept so that there is space for map connections
@@ -1160,8 +1160,8 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	
 SignLoop:: ; 09f2 (0:09f2)
 ; search if a player is facing a sign
-	ld hl,wd4b1 ; start of sign coordinates
-	ld a,[wd4b0] ; number of signs in the map
+	ld hl,wSignCoords ; start of sign coordinates
+	ld a,[wNumSigns] ; number of signs in the map
 	ld b,a
 	ld c,$00
 .signLoop
@@ -1179,7 +1179,7 @@ SignLoop:: ; 09f2 (0:09f2)
 ; found sign
 	push hl
 	push bc
-	ld hl,wd4d1 ; start of sign text ID's
+	ld hl,wSignTextIDs ; start of sign text ID's
 	ld b,$00
 	dec c
 	add hl,bc
@@ -1463,7 +1463,7 @@ ScheduleNorthRowRedraw:: ; 0b95 (0:0b95)
 	coord hl, 0, 0
 	call CopyToRedrawRowOrColumnSrcTiles
 	ld a,[wMapViewVRAMPointer]
-	ld [H_SCREENEDGEREDRAWADDR],a
+	ld [hRedrawRowOrColumnDest],a
 	ld a,[wMapViewVRAMPointer + 1]
 	ld [hRedrawRowOrColumnDest + 1],a
 	ld a,REDRAW_ROW
@@ -1761,6 +1761,7 @@ LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
 	ld [wd473],a
 	ld b,BANK(RedSprite)
 	ld de,RedSprite ; $4180
+	jr LoadPlayerSpriteGraphicsCommon
 	
 LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld a,[wd473]
@@ -1949,9 +1950,9 @@ CopyMapConnectionHeader:: ; 0eaa (0:0eaa)
 	ret
 
 CopySignData:: ; 0eb3 (0:0eb3)
-	ld de,wd4b1 ; start of sign coords
-	ld bc,wd4d1 ; start of sign text ids
-	ld a,[wd4b0] ; number of signs
+	ld de,wSignCoords ; start of sign coords
+	ld bc,wSignTextIDs ; start of sign text ids
+	ld a,[wNumSigns] ; number of signs
 .signcopyloop
 	push af
 	ld a,[hli]
@@ -1983,7 +1984,7 @@ LoadMapData:: ; 1241 (0:1241)
 	ld [wUpdateSpritesEnabled],a
 	call EnableLCD
 	ld b,$09
-	call GoPAL_SET
+	call RunPaletteCommand
 	call LoadPlayerSpriteGraphics
 	ld a,[wd732]
 	and a,1 << 4 | 1 << 3 ; fly warp or dungeon warp
@@ -1992,7 +1993,7 @@ LoadMapData:: ; 1241 (0:1241)
 	bit 1,a
 	jr nz,.restoreRomBank
 	call Func_21e3 ; music related
-	call Func_2176 ; music related
+	call PlayDefaultMusicFadeOutCurrent ; music related
 .restoreRomBank
 	pop af
 	call BankswitchCommon

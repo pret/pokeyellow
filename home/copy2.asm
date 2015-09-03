@@ -1,10 +1,10 @@
 FarCopyDataDouble:: ; 15d4 (0:15d4)
 ; Expand bc bytes of 1bpp image data
 ; from a:de to 2bpp data at hl.
-	ld [wd122+1],a
+	ld [wFarCopyDataSavedROMBank],a
 	ld a,[H_LOADEDROMBANK]
 	push af
-	ld a,[wd122+1]
+	ld a,[wFarCopyDataSavedROMBank]
 	call BankswitchCommon
 	ld a,h ; swap hl and de
 	ld h,d

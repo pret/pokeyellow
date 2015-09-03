@@ -273,7 +273,7 @@ INCLUDE "engine/bank3d/link_menu.asm"
 
 HandleMenuInputDouble:: ; f5a40 (3d:5a40)
 	xor a
-	ld [wd09b],a
+	ld [wPartyMenuAnimMonEnabled],a
 
 HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld a,[H_DOWNARROWBLINKCNT1]
@@ -286,7 +286,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld [H_DOWNARROWBLINKCNT2],a ; blinking down arrow timing value 2
 .loop1
 	xor a
-	ld [wPartyMonAnimCounter],a ; counter for pokemon shaking animation
+	ld [wAnimCounter],a ; counter for pokemon shaking animation
 	call Func_f5ab0
 	call JoypadLowSensitivity
 	ld a,[hJoy5]
@@ -301,7 +301,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ret
 .keyPressed
 	xor a
-	ld [wcc4b],a
+	ld [wCheckFor180DegreeTurn],a
 	ld a,[hJoy5]
 	ld b,a
 	bit 6,a ; pressed Up key?
@@ -460,7 +460,7 @@ Text_f5b6c:: ; f5b6c (3d:5b6c)
 	db "@"
 	
 AddItemToInventory_:: ; f5b70 (3d:5b70)
-	ld a,[wcf96] ; a = item quantity
+	ld a,[wItemQuantity] ; a = item quantity
 	push af
 	push bc
 	push de
@@ -508,12 +508,12 @@ AddItemToInventory_:: ; f5b70 (3d:5b70)
 	add hl,bc ; hl = address to store the item
 	ld a,[wcf91]
 	ld [hli],a ; store item ID
-	ld a,[wcf96]
+	ld a,[wItemQuantity]
 	ld [hli],a ; store item quantity
 	ld [hl],$ff ; store terminator
 	jp .success
 .increaseItemQuantity ; increase the quantity of an item already in the inventory
-	ld a,[wcf96]
+	ld a,[wItemQuantity]
 	ld b,a ; b = quantity to add
 	ld a,[hl] ; a = existing item quantity
 	add b ; a = new item quantity
@@ -522,7 +522,7 @@ AddItemToInventory_:: ; f5b70 (3d:5b70)
 ; if the new quantity is greater than or equal to 100,
 ; try to max out the current slot and add the rest in a new slot
 	sub a,99
-	ld [wcf96],a ; a = amount left over (to put in the new slot)
+	ld [wItemQuantity],a ; a = amount left over (to put in the new slot)
 	ld a,d
 	and a ; is there room for a new item slot?
 	jr z,.increaseItemQuantityFailed
@@ -545,14 +545,14 @@ AddItemToInventory_:: ; f5b70 (3d:5b70)
 	pop bc
 	pop bc
 	ld a,b
-	ld [wcf96],a ; restore the initial value from when the function was called
+	ld [wItemQuantity],a ; restore the initial value from when the function was called
 	ret
 
 ; function to remove an item (in varying quantities) from the player's bag or PC box
 ; INPUT:
 ; hl = address of inventory (either wNumBagItems or wNumBoxItems)
 ; [wWhichPokemon] = index (within the inventory) of the item to remove
-; [wcf96] = quantity to remove
+; [wItemQuantity] = quantity to remove
 RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	push hl
 	inc hl
@@ -564,12 +564,12 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	inc h
 .noCarry
 	inc hl
-	ld a,[wcf96] ; quantity being removed
+	ld a,[wItemQuantity] ; quantity being removed
 	ld e,a
 	ld a,[hl] ; a = current quantity
 	sub e
 	ld [hld],a ; store new quantity
-	ld [wcf97],a
+	ld [wMaxItemQuantity],a
 	and a
 	jr nz,.skipMovingUpSlots
 ; if the remaining quantity is 0,
@@ -589,13 +589,13 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	xor a
 	ld [wListScrollOffset],a
 	ld [wCurrentMenuItem],a
-	ld [wcc2c],a
-	ld [wd07e],a
+	ld [wBagSavedMenuItem],a
+	ld [wSavedListScrollOffset],a
 	pop hl
 	ld a,[hl] ; a = number of items in inventory
 	dec a ; decrement the number of items
 	ld [hl],a ; store new number of items
-	ld [wd12a],a
+	ld [wListCount],a
 	cp a,2
 	jr c,.done
 	ld [wMaxMenuItem],a

@@ -95,8 +95,8 @@ ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
 	ld [hJoyPressed], a
 	ld [hJoyReleased], a
 	ld [hJoyHeld], a
-	ld [wcd6a], a
-	ld [wd5a3], a
+	ld [wActionResultOrTookBattleTurn], a
+	ld [wUnusedD5A3], a
 	ld hl, wCardKeyDoorY
 	ld [hli], a
 	ld [hl], a
@@ -399,6 +399,7 @@ TextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
 TextBoxGraphicsEnd:
 PokedexTileGraphics:            INCBIN "gfx/pokedex.2bpp"
 WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
+WorldMapTileGraphicsEnd:
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
 
 	dr $11468,$11875

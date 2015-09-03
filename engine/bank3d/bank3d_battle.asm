@@ -24,7 +24,7 @@ asm_f6003: ; f6003 (3d:6003)
 asm_f601d: ; f601d (f:601d)
 	ld a, [wMapPalOffset]
 	push af
-	ld hl, wd358
+	ld hl, wLetterPrintingDelayFlags
 	ld a, [hl]
 	push af
 	res 1, [hl]
@@ -109,7 +109,7 @@ InitWildBattle: ; f607c (3d:607c)
 ; common code that executes after init battle code specific to trainer or wild battles
 InitBattle_Common: ; f60eb (3d:60eb)
 	ld b, $0
-	call GoPAL_SET
+	call RunPaletteCommand
 	callab SlidePlayerAndEnemySilhouettesOnScreen
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -140,10 +140,10 @@ InitBattle_Common: ; f60eb (3d:60eb)
 	callab StartBattle
 	callab EndOfBattle
 	pop af
-	ld [wd358], a
+	ld [wLetterPrintingDelayFlags], a
 	pop af
 	ld [wMapPalOffset], a
-	ld a, [wd0d4]
+	ld a, [wSavedTilesetType]
 	ld [hTilesetType], a
 	scf
 	ret
@@ -205,7 +205,7 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	ld bc, -41
 	add hl, bc
 	ld a, $1
-	ld [wcd6c], a
+	ld [wNumMovesMinusOne], a
 	ld bc, $303
 	predef Func_79aba
 	ld c, $4
@@ -213,7 +213,7 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	ld bc, -41
 	add hl, bc
 	xor a
-	ld [wcd6c], a
+	ld [wNumMovesMinusOne], a
 	ld bc, $505
 	predef Func_79aba
 	ld c, $5

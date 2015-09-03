@@ -86,7 +86,7 @@ Func_21c8:: ; 21c8 (0:21c8)
 	scf
 	ret
 
-Func_21e3:: ; 21e5 (0:21e5)
+Func_21e3:: ; 21e3 (0:21e3)
 	ld c,$6
 .loop
 	push bc
@@ -166,16 +166,16 @@ PlayMusic:: ; 2211 (0:2211)
 	
 Func_2223:: ; 2223 (0:2223)
 	xor a
-	ld [wc02a],a
-	ld [wc02b],a
-	ld [wc02c],a
-	ld [wc02d],a
+	ld [wChannelSoundIDs + CH4],a
+	ld [wChannelSoundIDs + CH5],a
+	ld [wChannelSoundIDs + CH6],a
+	ld [wChannelSoundIDs + CH7],a
 	ld [rNR10],a
 	ret
 	
 StopAllMusic:: ; 2233 (0:2233)
 	ld a,$FF
-	ld [wc0ee],a
+	ld [wNewSoundID],a
 ; plays music specified by a. If value is $ff, music is stopped
 PlaySound:: ; 2238 (0:2238)
 	push hl
@@ -186,10 +186,10 @@ PlaySound:: ; 2238 (0:2238)
 	and a
 	jr z, .next
 	xor a
-	ld [wc02a], a
-	ld [wc02b], a
-	ld [wc02c], a
-	ld [wc02d], a
+	ld [wChannelSoundIDs + CH4], a
+	ld [wChannelSoundIDs + CH5], a
+	ld [wChannelSoundIDs + CH6], a
+	ld [wChannelSoundIDs + CH7], a
 .next
 	ld a, [wAudioFadeOutControl]
 	and a
@@ -203,7 +203,7 @@ PlaySound:: ; 2238 (0:2238)
 	cp $ff
 	jr nz, .fadeOut
 	xor a
-	ld [wMusicHeaderPointer], a
+	ld [wAudioFadeOutControl], a
 .noFadeOut
 	xor a
 	ld [wNewSoundID], a

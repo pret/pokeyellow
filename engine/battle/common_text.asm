@@ -79,7 +79,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	xor a
 	ld [wFrequencyModifier], a
 	ld a, $80
-	ld [wc0f2], a
+	ld [wTempoModifier], a
 	ld a, $e9 ; (SFX_08_77 - SFX_Headers_08) / 3
 	call PlaySound
 	jp WaitForSoundToFinish

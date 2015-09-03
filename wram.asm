@@ -1323,7 +1323,8 @@ wScriptedNPCWalkCounter:: ; cf18
 
 wOnSGB:: ; cf1b
 ; if running on SGB, it's 1, else it's 0
-
+	ds 1
+	
 wDefaultPaletteCommand:: ; cf1c
 	ds 1
 

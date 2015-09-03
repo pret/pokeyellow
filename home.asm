@@ -648,11 +648,11 @@ GetMonHeader:: ; 132f (0:132f)
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a,[wd11e]
 	dec a
-	ld bc,MonBaseStatsEnd - MonBaseStats
+	ld bc,28
 	ld hl,BaseStats
 	call AddNTimes
 	ld de,W_MONHEADER
-	ld bc,MonBaseStatsEnd - MonBaseStats
+	ld bc,28
 	call CopyData
 	jr .done
 .specialID
@@ -4858,8 +4858,6 @@ GivePokemon:: ; 3e59 (0:3e59)
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	jpba _GivePokemon ; 3d:66fa
-	ld hl, _GivePokemon
-	jp Bankswitch
 
 Random:: ; 3e6d (0:3e6d)
 ; Return a random number in a.
@@ -4981,7 +4979,7 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-	;dr $3f67,$4000
+	dr $3f67,$4000
 ;	add_tx_pre CardKeySuccessText                   ; 01
 ;	add_tx_pre CardKeyFailText                      ; 02
 ;	add_tx_pre RedBedroomPC                         ; 03
