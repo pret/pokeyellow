@@ -753,7 +753,7 @@ wEnemyMonAccuracyMod:: ; cd32
 wEnemyMonEvasionMod:: ; cd33
 	ds 1
 
-wInGameTradeReceiveMonSpecies::
+wInGameTradeReceiveMonSpecies:: ; cd34
 	ds 1
 
 	ds 2

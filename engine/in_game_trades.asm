@@ -1,15 +1,10 @@
-DoInGameTradeDialogue: ; 71ad9 (1c:5ad9)
+DoInGameTradeDialogue: ; 71b86 (1c:5b86)
 ; trigger the trade offer/action specified by wWhichTrade
 	call SaveScreenTilesToBuffer2
 	ld hl,TradeMons
 	ld a,[wWhichTrade]
-	ld b,a
-	swap a
-	sub b
-	sub b
-	ld c,a
-	ld b,0
-	add hl,bc
+	ld bc,$e
+	call AddNTimes
 	ld a,[hli]
 	ld [wInGameTradeGiveMonSpecies],a
 	ld a,[hli]
@@ -21,7 +16,7 @@ DoInGameTradeDialogue: ; 71ad9 (1c:5ad9)
 	call CopyData
 	pop af
 	ld l,a
-	ld h,$0
+	ld h,0
 	ld de,InGameTradeTextPointers
 	add hl,hl
 	add hl,de
@@ -35,18 +30,15 @@ DoInGameTradeDialogue: ; 71ad9 (1c:5ad9)
 	ld a,[wInGameTradeReceiveMonSpecies]
 	ld de,wInGameTradeReceiveMonName
 	call InGameTrade_GetMonName
-	ld hl,wCompletedInGameTradeFlags
-	ld a,[wWhichTrade]
-	ld c,a
-	ld b,FLAG_TEST
-	predef FlagActionPredef
-	ld a,c
-	and a
 	ld a,$4
 	ld [wInGameTradeTextPointerTableIndex],a
+	ld b,FLAG_TEST
+	call InGameTrade_FlagActionPredef
+	ld a,c
+	and a
 	jr nz,.printText
 ; if the trade hasn't been done yet
-	xor a
+	ld a,$0
 	ld [wInGameTradeTextPointerTableIndex],a
 	call .printText
 	ld a,$1
@@ -75,7 +67,7 @@ DoInGameTradeDialogue: ; 71ad9 (1c:5ad9)
 	jp PrintText
 
 ; copies name of species a to hl
-InGameTrade_GetMonName: ; 71b6a (1c:5b6a)
+InGameTrade_GetMonName: ; 71c0c (1c:5c0c)
 	push de
 	ld [wd11e],a
 	call GetMonName
@@ -86,7 +78,7 @@ InGameTrade_GetMonName: ; 71b6a (1c:5b6a)
 
 INCLUDE "data/trades.asm"
 
-InGameTrade_DoTrade: ; 71c07 (1c:5c07)
+InGameTrade_DoTrade: ; 71ca9 (1c:5ca9)
 	xor a ; NORMAL_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID],a
 	dec a
@@ -109,11 +101,8 @@ InGameTrade_DoTrade: ; 71c07 (1c:5c07)
 	call AddNTimes
 	ld a,[hl]
 	ld [W_CURENEMYLVL],a
-	ld hl,wCompletedInGameTradeFlags
-	ld a,[wWhichTrade]
-	ld c,a
 	ld b,FLAG_SET
-	predef FlagActionPredef
+	call InGameTrade_FlagActionPredef
 	ld hl, ConnectCableText
 	call PrintText
 	ld a,[wWhichPokemon]
@@ -137,20 +126,20 @@ InGameTrade_DoTrade: ; 71c07 (1c:5c07)
 	ld [wMonDataLocation],a
 	call AddPartyMon
 	call InGameTrade_CopyDataToReceivedMon
-	callab EvolveTradeMon
+	call InGameTrade_CheckForTradeEvo
 	call ClearScreen
 	call InGameTrade_RestoreScreen
 	callba RedrawMapView
 	and a
 	ld a,$3
 	jr .tradeSucceeded
-.tradeFailed
+.tradeFailed ; never jumped to
 	scf
 .tradeSucceeded
 	ld [wInGameTradeTextPointerTableIndex],a
 	ret
 
-InGameTrade_RestoreScreen: ; 71ca2 (1c:5ca2)
+InGameTrade_RestoreScreen: ; 71d36 (1c:5d36)
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 	call ReloadTilesetTilePatterns
@@ -161,7 +150,7 @@ InGameTrade_RestoreScreen: ; 71ca2 (1c:5ca2)
 	call DelayFrames
 	jpba LoadWildData
 
-InGameTrade_PrepareTradeData: ; 71cc1 (1c:5cc1)
+InGameTrade_PrepareTradeData: ; 71d55 (1c:5d55)
 	ld hl, wTradedPlayerMonSpecies
 	ld a, [wInGameTradeGiveMonSpecies]
 	ld [hli], a ; wTradedPlayerMonSpecies
@@ -191,7 +180,7 @@ InGameTrade_PrepareTradeData: ; 71cc1 (1c:5cc1)
 	ld de, wTradedEnemyMonOTID
 	jp CopyData
 
-InGameTrade_CopyData: ; 71d11 (1c:5d11)
+InGameTrade_CopyData: ; 71da5 (1c:5da5)
 	push hl
 	push bc
 	call CopyData
@@ -199,7 +188,7 @@ InGameTrade_CopyData: ; 71d11 (1c:5d11)
 	pop hl
 	ret
 
-InGameTrade_CopyDataToReceivedMon: ; 71d19 (1c:5d19)
+InGameTrade_CopyDataToReceivedMon: ; 71dad (1c:5dad)
 	ld hl, wPartyMonNicks
 	ld bc, NAME_LENGTH
 	call InGameTrade_GetReceivedMonPointer
@@ -221,7 +210,7 @@ InGameTrade_CopyDataToReceivedMon: ; 71d19 (1c:5d19)
 
 ; the received mon's index is (partyCount - 1),
 ; so this adds bc to hl (partyCount - 1) times and moves the result to de
-InGameTrade_GetReceivedMonPointer: ; 71d4f (1c:5d4f)
+InGameTrade_GetReceivedMonPointer: ; 71de3 (1c:5de3)
 	ld a, [wPartyCount]
 	dec a
 	call AddNTimes
@@ -229,100 +218,131 @@ InGameTrade_GetReceivedMonPointer: ; 71d4f (1c:5d4f)
 	ld d, h
 	ret
 
-InGameTrade_TrainerString: ; 71d59 (1c:5d59)
+InGameTrade_FlagActionPredef: ; 71ded (1c:5ded)
+	ld hl,wCompletedInGameTradeFlags
+	ld a,[wWhichTrade]
+	ld c,a
+	predef_jump FlagActionPredef
+	
+InGameTrade_CheckForTradeEvo: ; 71df9 (1c:5df9)
+	ld a,[wInGameTradeReceiveMonSpecies]
+	cp KADABRA
+	jr z,.tradeEvo
+	cp GRAVELER
+	jr z,.tradeEvo
+	cp MACHOKE
+	jr z,.tradeEvo
+	cp HAUNTER
+	jr z,.tradeEvo
+	ret
+	
+.tradeEvo
+	ld a,[wPartyCount]
+	dec a
+	ld [wWhichPokemon],a
+	ld a,$1
+	ld [wForceEvolution],a
+	ld a,LINK_STATE_TRADING
+	ld [wLinkState],a
+	callab EvolveTradeMon
+	xor a ; LINK_STATE_NONE
+	ld [wLinkState],a
+	jp PlayDefaultMusic
+	
+InGameTrade_TrainerString: ; 71e2d (1c:5e2d)
 	; "TRAINER@@@@@@@@@@"
 	db $5d, "@@@@@@@@@@"
 
-InGameTradeTextPointers: ; 71d64 (1c:5d64)
+InGameTradeTextPointers: ; 71e38 (1c:5e38)
 	dw TradeTextPointers1
 	dw TradeTextPointers2
 	dw TradeTextPointers3
 
-TradeTextPointers1: ; 71d6a (1c:5d6a)
+TradeTextPointers1: ; 71e3e (1c:5e3e)
 	dw WannaTrade1Text
 	dw NoTrade1Text
 	dw WrongMon1Text
 	dw Thanks1Text
 	dw AfterTrade1Text
 
-TradeTextPointers2: ; 71d74 (1c:5d74)
+TradeTextPointers2: ; 71e48 (1c:5e48)
 	dw WannaTrade2Text
 	dw NoTrade2Text
 	dw WrongMon2Text
 	dw Thanks2Text
 	dw AfterTrade2Text
 
-TradeTextPointers3: ; 71d7e (1c:5d7e)
+TradeTextPointers3: ; 71e52 (1c:5e52)
 	dw WannaTrade3Text
 	dw NoTrade3Text
 	dw WrongMon3Text
 	dw Thanks3Text
 	dw AfterTrade3Text
 
-ConnectCableText: ; 71d88 (1c:5d88)
+ConnectCableText: ; 71e5c (1c:5e5c)
 	TX_FAR _ConnectCableText
 	db "@"
 
-TradedForText: ; 71d8d (1c:5d8d)
+TradedForText: ; 71e61 (1c:5e61)
 	TX_FAR _TradedForText
 	db $11, $a, "@"
 
-WannaTrade1Text: ; 71d94 (1c:5d94)
+WannaTrade1Text: ; 71e66 (1c:5e66)
 	TX_FAR _WannaTrade1Text
 	db "@"
 
-NoTrade1Text: ; 71d99 (1c:5d99)
+NoTrade1Text: ; 71e6b (1c:5e6b)
 	TX_FAR _NoTrade1Text
 	db "@"
 
-WrongMon1Text: ; 71d9e (1c:5d9e)
+WrongMon1Text: ; 71e70 (1c:5e70)
 	TX_FAR _WrongMon1Text
 	db "@"
 
-Thanks1Text: ; 71da3 (1c:5da3)
+Thanks1Text: ; 71e75 (1c:5e75)
 	TX_FAR _Thanks1Text
 	db "@"
 
-AfterTrade1Text: ; 71da8 (1c:5da8)
+AfterTrade1Text: ; 71e7a (1c:5e7a)
 	TX_FAR _AfterTrade1Text
 	db "@"
 
-WannaTrade2Text: ; 71dad (1c:5dad)
+WannaTrade2Text: ; 71e7f (1c:5e7f)
 	TX_FAR _WannaTrade2Text
 	db "@"
 
-NoTrade2Text: ; 71db2 (1c:5db2)
+NoTrade2Text: ; 71e84 (1c:5e84)
 	TX_FAR _NoTrade2Text
 	db "@"
 
-WrongMon2Text: ; 71db7 (1c:5db7)
+WrongMon2Text: ; 71e89 (1c:5e89)
 	TX_FAR _WrongMon2Text
 	db "@"
 
-Thanks2Text: ; 71dbc (1c:5dbc)
+Thanks2Text: ; 71e8e (1c:5e8e)
 	TX_FAR _Thanks2Text
 	db "@"
 
-AfterTrade2Text: ; 71dc1 (1c:5dc1)
+AfterTrade2Text: ; 71e93 (1c:5e93)
 	TX_FAR _AfterTrade2Text
 	db "@"
 
-WannaTrade3Text: ; 71dc6 (1c:5dc6)
+WannaTrade3Text: ; 71e98 (1c:5e98)
 	TX_FAR _WannaTrade3Text
 	db "@"
 
-NoTrade3Text: ; 71dcb (1c:5dcb)
+NoTrade3Text: ; 71e9d (1c:5d9d)
 	TX_FAR _NoTrade3Text
 	db "@"
 
-WrongMon3Text: ; 71dd0 (1c:5dd0)
+WrongMon3Text: ; 71ea2 (1c:5ea2)
 	TX_FAR _WrongMon3Text
 	db "@"
 
-Thanks3Text: ; 71dd5 (1c:5dd5)
+Thanks3Text: ; 71ea7 (1c:5ea7)
 	TX_FAR _Thanks3Text
 	db "@"
 
-AfterTrade3Text: ; 71dda (1c:5dda)
+AfterTrade3Text: ; 71eac (1c:5eac)
 	TX_FAR _AfterTrade3Text
 	db "@"
