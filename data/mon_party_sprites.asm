@@ -1,4 +1,15 @@
-MonPartyData: ; 7190d (1c:590d)
+MonPartyData: ; 719ba (1c:59ba)
+; MON = 0
+; BALL_M = 1
+; HELIX = 2
+; FAIRY = 3
+; BIRD_M = 4
+; WATER = 5
+; BUG = 6
+; GRASS = 7
+; SNAKE = 8
+; QUADRUPED = 9
+; PIKACHU = A
 	dn SPRITE_GRASS, SPRITE_GRASS			;Bulbasaur/Ivysaur
 	dn SPRITE_GRASS, SPRITE_MON				;Venusaur/Charmander
 	dn SPRITE_MON, SPRITE_MON				;Charmeleon/Charizard
@@ -11,7 +22,7 @@ MonPartyData: ; 7190d (1c:590d)
 	dn SPRITE_QUADRUPED, SPRITE_QUADRUPED	;Rattata/Raticate
 	dn SPRITE_BIRD_M, SPRITE_BIRD_M			;Spearow/Fearow
 	dn SPRITE_SNAKE, SPRITE_SNAKE			;Ekans/Arbok
-	dn SPRITE_FAIRY, SPRITE_FAIRY			;Pikachu/Raichu
+	dn SPRITE_PIKACHU, SPRITE_PIKACHU		;Pikachu/Raichu
 	dn SPRITE_MON, SPRITE_MON				;Sandshrew/Sandslash
 	dn SPRITE_MON, SPRITE_MON				;NidoranF/Nidorina
 	dn SPRITE_MON, SPRITE_MON				;Nidoqueen/NidoranM

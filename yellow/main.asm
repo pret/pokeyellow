@@ -1096,12 +1096,8 @@ INCLUDE "engine/overworld/player_animations.asm"
 INCLUDE "engine/battle/ghost_marowak_anim.asm"
 INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/town_map.asm"
-AnimatePartyMon_ForceSpeed1:: ; 71784 (1c:5784)
-	dr $71784,$7178c
-AnimatePartyMon:: ; 7178c (1c:578c)
-	dr $7178c,$717fe
-LoadAnimSpriteGfx: ; 717fe (1c:57fe)
-	dr $717fe,$71eb3
+INCLUDE "engine/mon_party_sprites.asm"
+	dr $71b86,$71eb3
 INCLUDE "engine/palettes.asm"
 
 ;PokemonYellowGraphics:  INCBIN "gfx/pokemon_yellow.t6.2bpp"

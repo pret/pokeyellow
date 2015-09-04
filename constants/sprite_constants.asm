@@ -11,7 +11,7 @@ const_value = 0
 	const SPRITE_GRASS     ; $7
 	const SPRITE_SNAKE     ; $8
 	const SPRITE_QUADRUPED ; $9
-
+	const SPRITE_PIKACHU   ; $A
 ; overworld sprites
 const_value = 1
 
