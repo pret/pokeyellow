@@ -8,7 +8,7 @@
 	sudo make install
 	cd ..
 
-	git clone --recursive git://github.com/dannye/pokeyellow.git
+	git clone --recursive git://github.com/luckytyphlosion/pokeyellow.git
 	cd pokeyellow
 
 To build **pokeyellow.gbc**:
@@ -27,7 +27,7 @@ In the shell, run:
 	sudo make install
 	cd ..
 
-	git clone --recursive git://github.com/dannye/pokeyellow.git
+	git clone --recursive git://github.com/luckytyphlosion/pokeyellow.git
 	cd pokeyellow
 
 Copy the ROM "Pokemon Yellow (U) [C][!].gbc" to the same directory as the disassembly under the name "baserom.gbc".
@@ -50,7 +50,7 @@ Put `rgbasm.exe`, `rgblink.exe` and `rgbfix.exe` in `C:\cygwin\usr\local\bin`.
 In the **Cygwin terminal**:
 
 	easy_install pypng
-	git clone --recursive git://github.com/dannye/pokeyellow.git
+	git clone --recursive git://github.com/luckytyphlosion/pokeyellow.git
 	cd pokeyellow
 
 Copy the ROM "Pokemon Yellow (U) [C][!].gbc" to the same directory as the disassembly under the name "baserom.gbc".
