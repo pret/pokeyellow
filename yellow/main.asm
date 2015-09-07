@@ -42,7 +42,9 @@ PrintWaitingText: ; 4b89 (1:4b89)
 _UpdateSprites: ; 4bb7 (1:4bb7)
 	dr $4bb7,$5ce4
 Func_5ce4: ; 5ce4 (1:5ce4)
-	dr $5ce4,$6042
+	dr $5ce4,$5d58
+PrintSaveScreenText: ; 5d58 (1:5d58)
+	dr $5d58,$6042
 SpecialWarpIn: ; 6042 (1:6042)
 	dr $6042,$68a6
 SubtractAmountPaidFromMoney_: ; 68a6 (1:68a6)
@@ -1102,12 +1104,7 @@ INCLUDE "engine/town_map.asm"
 INCLUDE "engine/mon_party_sprites.asm"
 INCLUDE "engine/in_game_trades.asm"
 INCLUDE "engine/palettes.asm"
-
-;PokemonYellowGraphics:  INCBIN "gfx/pokemon_yellow.t6.2bpp"
-
-	dr $73959,$73e2e
-SaveHallOfFameTeams: ; 73e2e (1c:7e2e)
-	dr $73e2e,$74000
+INCLUDE "engine/save.asm"
 
 
 SECTION "bank1D",ROMX,BANK[$1D]
