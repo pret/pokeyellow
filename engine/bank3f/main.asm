@@ -290,15 +290,813 @@ Func_fc69a:: ; fc69a (3f:469a)
 	ld [wd431],a
 	ret
 
-	dr $fc6c5,$fc6d5
+Func_fc6c5:: ; fc6c5 (3f:46c5)
+	push hl
+	ld hl,wd430
+	set 2,[hl]
+	pop hl
+	ret
+
+Func_fc6cd:: ; fc6cd (3f:46cd)
+	push hl
+	ld hl,wd430
+	res 2,[hl]
+	pop hl
+	ret
+
 Func_fc6d5:: ; fc6d5 (3f:46d5)
-	dr $fc6d5,$fcb84
-Func_fcb84: ; fcb84 (3f:45bc)
-	dr $fcb84,$fcc08
+	call Func_fc6cd
+	call Func_fc727
+	ret nc
+	push bc
+	call Func_fcd25
+	pop bc
+	ret c
+	ld bc,wSpriteStateData1 + $f0
+	ld hl,$1
+	add hl,bc
+	bit 7,[hl]
+	jp nz,asm_fc745
+	ld a,[wFontLoaded]
+	bit 0,a
+	jp nz,asm_fc76a
+	call Func_154a
+	jp nz,asm_fc76a
+	ld a,[hl]
+	and $7f
+	cp $a
+	jr c,.asm_fc704
+	xor a
+.asm_fc704
+	add a
+	ld e,a
+	ld d,0
+	ld hl,PointerTable_fc710
+	add hl,de
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a
+	jp hl
+	
+PointerTable_fc710: ; fc710 (3f:4710)
+	dw Func_fc793
+	dw Func_fc7aa
+	dw Func_fc803
+	dw asm_fc9c3
+	dw asm_fca1c
+	dw asm_fc9ee
+	dw asm_fc87f
+	dw asm_fc904
+	dw asm_fc937
+	dw asm_fc969
+	dw Func_fc726
+	
+Func_fc726: ; fc726 (3f:4726)
+	ret
+
+Func_fc727: ; fc727 (3f:4727)
+	call Func_fc4dd
+	jr nc,.asm_fc73b
+	ld a,[wSpriteStateData1 + $f1]
+	and a
+	jr nz,.asm_fc739
+	push bc
+	push hl
+	call Func_fc534
+	pop hl
+	pop bc
+.asm_fc739
+	scf
+	ret
+.asm_fc73b
+	ld hl,wSpriteStateData1 + $f2
+	ld [hl],$ff
+	dec hl
+	ld [hl],$0
+	xor a
+	ret
+asm_fc745: ; fc745 (3f:4745)
+	ld hl,$1
+	add hl,bc
+	res 7,[hl]
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],a
+	call Func_154a
+	jr nz,.asm_fc75f
+	ld a,[wSpriteStateData1 + $9]
+	xor $4
+	ld hl,$9
+	add hl,bc
+	ld [hl],a
+.asm_fc75f
+	xor a
+	ld hl,$7
+	add hl,bc
+	ld [hli],a
+	ld [hl],a
+	call Func_fca99
+	ret
+asm_fc76a: ; fc76a (3f:476a)
+	xor a
+	ld hl,$7
+	add hl,bc
+	ld [hli],a
+	ld [hl],a
+	call Func_fca99
+	call Func_fc82e
+	jr c,.asm_fc783
+	push bc
+	callab Func_5012
+	pop bc
+.asm_fc783
+	ld hl,$1
+	add hl,bc
+	ld [hl],$1
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$0
+	call Func_fcba1
+	ret
+
+Func_fc793: ; fc793 (3f:4793)
+	call Func_fcba1
+	push bc
+	callab Func_5012
+	pop bc
+	ld hl,$2
+	add hl,bc
+	ld [hl],$ff
+	dec hl
+	ld [hl],$1
+	ret
+
+Func_fc7aa: ; fc7aa (3f:47aa)
+	call Func_fcc92
+	jp c,Func_fc803
+	dec a
+	ld l,a
+	ld h,$0
+	add hl,hl
+	add hl,hl
+	ld de,Pointer_fc7e3
+	add hl,de
+	ld d,h
+	ld e,l
+	ld a,[de]
+	inc de
+	ld hl,$9
+	add hl,bc
+	ld [hl],a
+	ld a,[de]
+	inc de
+	ld hl,$5
+	add hl,bc
+	ld [hl],a
+	dec hl
+	dec hl
+	ld a,[de]
+	ld [hl],a
+	inc de
+	ld a,[de]
+	ld hl,$1
+	add hl,bc
+	ld [hl],a
+	cp $4
+	jp z,Func_fca0a
+	call Func_fcd17
+	jp c,Func_fc9df
+	jp Func_fc9b4
+
+Pointer_fc7e3: ; fc7e3 (3f:47e3)
+	db $0,$0
+	db $1,$3
+	db $4,$0
+	db $ff,$3
+	db $8,$ff
+	db $0,$3
+	db $c,$1
+	db $0,$3
+	db $0,$0
+	db $1,$4
+	db $4,$0
+	db $ff,$4
+	db $8,$ff
+	db $0,$4
+	db $c,$1
+	db $0,$4
+	
+Func_fc803: ; fc803 (3f:4803)
+	call Func_fcae2
+	ret c
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	jr nz,.asm_fc823
+	push hl
+	call Func_fccee
+	pop hl
+	cp $5
+	jr nc,Func_fc842
+	ld [hl],$20
+	call Random
+	and $c
+	ld hl,$9
+	add hl,bc
+	ld [hl],a
+.asm_fc823
+	xor a
+	ld hl,$7
+	add hl,bc
+	ld [hli],a
+	ld [hl],a
+	call Func_fca99
+	ret
+
+Func_fc82e: ; fc82e (3f:482e)
+	ld a,[wWalkCounter]
+	and a
+	ret z
+	scf
+	ret
+
+Func_fc835: ; fc835 (3f:4835)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$10
+	ld hl,$1
+	add hl,bc
+	ld [hl],$1
+	ret
+	
+Func_fc842: ; fc842 (3f:4842)
+	ld hl,$0
+	push af
+	call Random
+	ld a,[hRandomAdd]
+	and %11
+	ld e,a
+	ld d,$0
+	ld hl,PointerTable_fc85a
+	add hl,de
+	add hl,de
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a
+	pop af
+	jp hl
+	
+PointerTable_fc85a: ; fc85a (3f:485a)
+	dw Func_fc862
+	dw Func_fc8f8
+	dw Func_fc92b
+	dw Func_fc95d
+	
+Func_fc862: ; fc862 (3f:4862)
+	dec a
+	add a
+	add a
+	and $c
+	ld hl,$9
+	add hl,bc
+	ld [hl],a
+	ld hl,$1
+	add hl,bc
+	ld [hl],$6
+	xor a
+	ld [wd432],a
+	ld [wd433],a
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$11
+asm_fc87f: ; fc87f (3f:487f)
+	ld a,[wd432]
+	ld e,a
+	ld a,[wd433]
+	ld d,a
+	call Func_fc82e
+	jr c,Func_fc8c7
+	call Func_fc6c5
+	ld hl,$4
+	add hl,bc
+	ld a,[hl]
+	sub e
+	ld e,a
+	inc hl
+	inc hl
+	ld a,[hl]
+	sub d
+	ld d,a
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld a,[hl]
+	dec a
+	add a
+	add $d6
+	ld l,a
+	ld a,$48
+	adc $0
+	ld h,a
+	ld a,[hli]
+	ld [wd432],a
+	add e
+	ld e,a
+	ld a,[hl]
+	ld [wd433],a
+	add d
+	ld d,a
+	ld hl,$4
+	add hl,bc
+	ld [hl],e
+	inc hl
+	inc hl
+	ld [hl],d
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	jp Func_fc835
+	
+Func_fc8c7: ; fc8c7 (3f:48c7)
+	ld hl,$4
+	add hl,bc
+	ld a,[hl]
+	sub e
+	ld [hl],a
+	inc hl
+	inc hl
+	ld a,[hl]
+	sub d
+	ld [hl],a
+	jp Func_fc835
+
+Pointer_fc8d6: ; fc8d6 (3f:48d6)
+	db $0,$0,$fe,$1,$fc
+	db $2,$fe,$3,$0,$4
+	db $fe,$3,$fc,$2,$fe
+	db $1,$0,$0,$fe,$ff
+	db $fc,$fe,$fe,$fd,$0
+	db $fc,$fe,$fd,$fc,$fe
+	db $fe,$ff,$00,$00
+	
+Func_fc8f8: ; fc8f8 (3f:48f8)
+	ld hl,$1
+	add hl,bc
+	ld [hl],$7
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$30
+asm_fc904: ; fc904 (3f:4904)
+	call Func_fc82e
+	jp c,Func_fc835
+	call Func_fc6c5
+	ld hl,$7
+	add hl,bc
+	ld a,[hl]
+	inc a
+	cp $8
+	ld [hl],a
+	jr nz,.asm_fc91f
+	xor a
+	ld [hli],a
+	ld a,[hl]
+	inc a
+	and %11
+	ld [hl],a
+.asm_fc91f
+	call Func_fca99
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	jp Func_fc835
+	
+Func_fc92b: ; fc92b (3f:492b)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$20
+	ld hl,$1
+	add hl,bc
+	ld [hl],$8
+asm_fc937: ; fc937 (3f:4937)
+	call Func_fc82e
+	jp c,Func_fc835
+	call Func_fc6c5
+	ld hl,$7
+	add hl,bc
+	ld a,[hl]
+	inc a
+	cp $8
+	ld [hl],a
+	jr nz,.asm_fc951
+	xor a
+	ld [hli],a
+	ld a,[hl]
+	xor $1
+	ld [hl],a
+.asm_fc951
+	call Func_fca99
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	jp Func_fc835
+	
+Func_fc95d: ; fc95d (3f:495d)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$20
+	ld hl,$1
+	add hl,bc
+	ld [hl],$9
+asm_fc969: ; fc969 (3f:4969)
+	call Func_fc82e
+	jp c,Func_fc835
+	call Func_fc6c5
+	ld hl,$7
+	add hl,bc
+	ld a,[hl]
+	inc a
+	cp $8
+	ld [hl],a
+	jr nz,.asm_fc988
+	xor a
+	ld [hl],a
+	ld hl,$9
+	add hl,bc
+	ld a,[hl]
+	call Func_fc994
+	ld [hl],a
+.asm_fc988
+	call Func_fca99
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	jp Func_fc835
+	
+Func_fc994: ; fc994 (3f:4994)
+	push hl
+	ld hl,Pointer_fc9ac
+	ld d,a
+.loop
+	ld a,[hli]
+	cp d
+	jr nz,.loop
+	ld a,[hl]
+	pop hl
+	ret
+	
+Func_fc9a0: ; fc9a0 (3f:49a0)
+	push hl
+	ld hl,Pointer_fc9ac_End
+	ld d,a
+.loop
+	ld a,[hld]
+	cp d
+	jr nz,.loop
+	ld a,[hl]
+	pop hl
+	ret
+	
+Pointer_fc9ac: ; fc9ac (3f:49ac)
+	db SPRITE_FACING_DOWN,SPRITE_FACING_LEFT,SPRITE_FACING_UP,SPRITE_FACING_RIGHT
+	db SPRITE_FACING_DOWN,SPRITE_FACING_LEFT,SPRITE_FACING_UP,SPRITE_FACING_RIGHT
+Pointer_fc9ac_End:
+Func_fc9b4: ; fc9b4 (3f:49b4)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$8
+	ld hl,$1
+	add hl,bc
+	ld [hl],$3
+	call Func_fca38
+asm_fc9c3: ; fc9c3 (3f:49c3)
+	call Func_fca4b
+	call Func_fca7e
+	call Func_fca99
+	ld hl,$100
+	add hl,bc
+	dec [hl]
+	ret nz
+	call Func_fca75
+	call Func_fccb2
+	ld hl,$1
+	add hl,bc
+	ld [hl],$1
+	ret
+	
+Func_fc9df: ; fc9df (3f:49df)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$4
+	ld hl,$1
+	add hl,bc
+	ld [hl],$5
+	call Func_fca38
+asm_fc9ee: ; fc9ee (3f:49ee)
+	call asm_fca59
+	call Func_fca7e
+	call Func_fca99
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	call Func_fca75
+	call Func_fccb2
+	ld hl,$1
+	add hl,bc
+	ld [hl],$1
+	ret
+	
+Func_fca0a: ; fca0a (3f:4a0a)
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	ld [hl],$8
+	ld hl,$1
+	add hl,bc
+	ld [hl],$4
+	call Func_fca38
+	call Func_fca38
+asm_fca1c: ; fca1c (3f:4a1c)
+	call asm_fca59
+	call Func_fca7e
+	call Func_fca99
+	ld hl,wSpriteStateData2 - wSpriteStateData1
+	add hl,bc
+	dec [hl]
+	ret nz
+	call Func_fca75
+	call Func_fccb2
+	ld hl,$1
+	add hl,bc
+	ld [hl],$1
+	ret
+	
+Func_fca38: ; fca38 (3f:4a38)
+	ld hl,$3
+	add hl,bc
+	ld e,[hl]
+	inc hl
+	inc hl
+	ld d,[hl]
+	ld hl,$104
+	add hl,bc
+	ld a,[hl]
+	add e
+	ld [hli],a
+	ld a,[hl]
+	add d
+	ld [hl],a
+	ret
+	
+Func_fca4b: ; fca4b (3f:4a4b)
+	ld a,[wWalkBikeSurfState]
+	cp $1
+	jr nz,Func_fca68
+	ld a,[wd736]
+	bit 6,a
+	jr nz,Func_fca68
+asm_fca59: ; fca59 (3f:4a59)
+	ld hl,$3
+	add hl,bc
+	ld a,[hli]
+	add a
+	add a
+	add [hl]
+	ld [hli],a
+	ld a,[hli]
+	add a
+	add a
+	add [hl]
+	ld [hl],a
+	ret
+	
+Func_fca68: ; fca68 (3f:4a68)
+	ld hl,$3
+	add hl,bc
+	ld a,[hli]
+	add a
+	add [hl]
+	ld [hli],a
+	ld a,[hli]
+	add a
+	add [hl]
+	ld [hli],a
+	ret
+	
+Func_fca75: ; fca75 (3f:4a75)
+	ld hl,$3
+	add hl,bc
+	xor a
+	ld [hli],a
+	inc hl
+	ld [hl],a
+	ret
+	
+Func_fca7e: ; fca7e (3f:4a7e)
+	call Func_fcdad
+	ld d,$2
+	jr nc,.asm_fca87
+	ld d,$5
+.asm_fca87
+	ld hl,$7
+	add hl,bc
+	ld a,[hl]
+	inc a
+	cp d
+	jr nz,.asm_fca91
+	xor a
+.asm_fca91
+	ld [hli],a
+	ret nz
+	ld a,[hl]
+	inc a
+	and $3
+	ld [hl],a
+	ret
+	
+Func_fca99: ; fca99 (3f:4a99)
+	ld a,[wd430]
+	bit 3,a
+	jr nz,.asm_fcad1
+	ld hl,$10e
+	add hl,bc
+	ld a,[hl]
+	dec a
+	swap a
+	ld d,a
+	ld a,[wd736]
+	bit 7,a
+	jr nz,.asm_fcad8
+	ld hl,$9
+	add hl,bc
+	ld a,[hl]
+	or d
+	ld d,a
+	ld a,[wFontLoaded]
+	bit 0,a
+	jr z,.asm_fcac4
+	call Func_fcae2
+	ret c
+	jr .asm_fcacb
+.asm_fcac4
+	ld hl,$8
+	add hl,bc
+	ld a,d
+	or [hl]
+	ld d,a
+.asm_fcacb
+	ld hl,$2
+	add hl,bc
+	ld [hl],d
+	ret
+.asm_fcad1
+	ld hl,$2
+	add hl,bc
+	ld [hl],$ff
+	ret
+.asm_fcad8
+	ld a,[wSpriteStateData1 + $2]
+	and $f
+	or d
+	ld [wSpriteStateData1 + $f2],a
+	ret
+	
+Func_fcae2: ; fcae2 (3f:4ae2)
+	ld hl,$104
+	add hl,bc
+	ld a,[W_YCOORD]
+	add $4
+	cp [hl]
+	jr nz,.asm_fcaff
+	inc hl
+	ld a,[W_XCOORD]
+	add $4
+	cp [hl]
+	jr nz,.asm_fcaff
+	ld hl,$2
+	add hl,bc
+	ld [hl],$ff
+	scf
+	ret
+.asm_fcaff
+	and a
+	ret
+
+Func_fcb01: ; fcb01 (3f:4b01)
+	push bc
+	push de
+	push hl
+	ld bc,wSpriteStateData1 + $f0
+	ld a,[W_XCOORD]
+	add $4
+	ld d,a
+	ld a,[W_YCOORD]
+	add $4
+	ld e,a
+	ld hl,$104
+	add hl,bc
+	ld a,[hl]
+	sub e
+	and a
+	jr z,.asm_fcb30
+	cp $ff
+	jr z,.asm_fcb26
+	cp $1
+	jr z,.asm_fcb26
+	jr .asm_fcb48
+.asm_fcb26
+	ld hl,$105
+	add hl,bc
+	ld a,[hl]
+	sub d
+	jr z,.asm_fcb43
+	jr .asm_fcb48
+.asm_fcb30
+	ld hl,$105
+	add hl,bc
+	ld a,[hl]
+	sub d
+	cp $ff
+	jr z,.asm_fcb43
+	cp $1
+	jr z,.asm_fcb43
+	and a
+	jr z,.asm_fcb43
+	jr .asm_fcb48
+.asm_fcb43
+	pop hl
+	pop de
+	pop bc
+	scf
+	ret
+.asm_fcb48
+	pop hl
+	pop de
+	pop bc
+	xor a
+	ret
+
+Func_fcb4d: ; fcb4d (3f:4b4d)
+	call Func_fcb52
+	ld e,a
+	ret
+	
+Func_fcb52: ; fcb52 (3f:4b52)
+	ld bc,wSpriteStateData1 + $f0
+	ld a,[W_XCOORD]
+	add $4
+	ld d,a
+	ld a,[W_YCOORD]
+	add $4
+	ld e,a
+	ld hl,$104
+	add hl,bc
+	ld a,[hl]
+	cp e
+	jr z,Func_fcb71
+	jr nc,.asm_fcb6e
+	ld a,$4
+	ret
+.asm_fcb6e
+	ld a,$0
+	ret
+	
+Func_fcb71: ; fcb71 (3f:4b71)
+	ld hl,$105
+	add hl,bc
+	ld a,[hl]
+	cp d
+	jr z,.asm_fcb81
+	jr nc,.asm_fcb7e
+	ld a,$8
+	ret
+.asm_fcb7e
+	ld a,$c
+	ret
+.asm_fcb81
+	ld a,$ff
+	ret
+
+Func_fcb84: ; fcb84 (3f:4b84)
+	dr $fcb84,$fcba1
+Func_fcba1: ; fcba1 (3f:4ba1)
+	dr $fcba1,$fcc08
 Func_fcc08:: ; fcc08 (3f:4c08)
-	dr $fcc08,$fccb2
+	dr $fcc08,$fcc92
+Func_fcc92: ; fcc92 (3f:4c92)
+	dr $fcc92,$fccb2
 Func_fccb2:: ; fccb2 (3f:4cb2)
-	dr $fccb2,$fcdb8
+	dr $fccb2,$fccee
+Func_fccee: ; fccee (3f:4cee)
+	dr $fccee,$fcd17
+Func_fcd17: ; fcd17 (3f:4d17)
+	dr $fcd17,$fcd25
+Func_fcd25: ; fcd25 (3f:4d25)
+	dr $fcd25,$fcdad
+Func_fcdad: ; fcdad (3f:4dad)
+	dr $fcdad,$fcdb8
 Func_fcdb8:: ; fcdb8 (3f:4db8)
 	dr $fcdb8,$fce18
 Func_fce18:: ; fce18 (3f:4e18)

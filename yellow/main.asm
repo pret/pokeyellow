@@ -40,7 +40,9 @@ _IsTilePassable: ; 4aaa (1:4aaa)
 PrintWaitingText: ; 4b89 (1:4b89)
 	dr $4b89,$4bb7
 _UpdateSprites: ; 4bb7 (1:4bb7)
-	dr $4bb7,$5ce4
+	dr $4bb7,$5012
+Func_5012: ; 5012 (1:5012)
+	dr $5012,$5ce4
 Func_5ce4: ; 5ce4 (1:5ce4)
 	dr $5ce4,$5d58
 PrintSaveScreenText: ; 5d58 (1:5d58)
