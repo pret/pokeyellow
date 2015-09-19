@@ -50,8 +50,6 @@ INCLUDE "audio/sfx/muted_snare2_1.asm"
 INCLUDE "audio/sfx/muted_snare3_1.asm"
 INCLUDE "audio/sfx/muted_snare4_1.asm"
 
-Audio1_WavePointers: INCLUDE "audio/wave_instruments.asm"
-
 INCLUDE "audio/sfx/start_menu_1.asm"
 INCLUDE "audio/sfx/pokeflute.asm"
 INCLUDE "audio/sfx/cut_1.asm"
@@ -125,7 +123,7 @@ INCLUDE "audio/sfx/cry1f_1.asm"
 INCLUDE "audio/sfx/cry20_1.asm"
 INCLUDE "audio/sfx/cry21_1.asm"
 INCLUDE "audio/sfx/cry22_1.asm"
-
+Audio1_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
 SECTION "Sound Effects 2", ROMX, BANK[AUDIO_2]
 
@@ -148,8 +146,6 @@ INCLUDE "audio/sfx/triangle3_2.asm"
 INCLUDE "audio/sfx/muted_snare2_2.asm"
 INCLUDE "audio/sfx/muted_snare3_2.asm"
 INCLUDE "audio/sfx/muted_snare4_2.asm"
-
-Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
 INCLUDE "audio/sfx/press_ab_2.asm"
 INCLUDE "audio/sfx/start_menu_2.asm"
@@ -250,7 +246,7 @@ INCLUDE "audio/sfx/cry1f_2.asm"
 INCLUDE "audio/sfx/cry20_2.asm"
 INCLUDE "audio/sfx/cry21_2.asm"
 INCLUDE "audio/sfx/cry22_2.asm"
-
+Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
 SECTION "Sound Effects 3", ROMX, BANK[AUDIO_3]
 
@@ -273,8 +269,6 @@ INCLUDE "audio/sfx/triangle3_3.asm"
 INCLUDE "audio/sfx/muted_snare2_3.asm"
 INCLUDE "audio/sfx/muted_snare3_3.asm"
 INCLUDE "audio/sfx/muted_snare4_3.asm"
-
-Audio3_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
 INCLUDE "audio/sfx/start_menu_3.asm"
 INCLUDE "audio/sfx/cut_3.asm"
@@ -357,7 +351,7 @@ INCLUDE "audio/sfx/cry1f_3.asm"
 INCLUDE "audio/sfx/cry20_3.asm"
 INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
-
+Audio3_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
 
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]

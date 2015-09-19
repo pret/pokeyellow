@@ -2508,8 +2508,10 @@ wd433:: ds 1 ; d432
 wd434:: ds 1
 wd435:: ds 1
 wd436:: ds 1
+wd437:: ds 1
+wd438:: ds 1
 
-	ds 17
+	ds 15
 
 wExpressionNumber::
 	ds 1

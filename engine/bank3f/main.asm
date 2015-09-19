@@ -1080,11 +1080,194 @@ Func_fcb71: ; fcb71 (3f:4b71)
 	ret
 
 Func_fcb84: ; fcb84 (3f:4b84)
-	dr $fcb84,$fcba1
+	push bc
+	ld hl,wd437
+	ld [hl],$ff
+	inc hl
+	ld bc,$10
+	xor a
+	call FillMemory
+	pop bc
+	ret
+	
+Func_fcb94: ; fcb94 (3f:4b94)
+	ld hl,wd437
+	inc [hl]
+	ld e,[hl]
+	ld d,0
+	ld hl,wd438
+	add hl,de
+	ld [hl],a
+	ret
+	
 Func_fcba1: ; fcba1 (3f:4ba1)
-	dr $fcba1,$fcc08
+	call Func_fcb84
+	call Func_fcbac
+	ret c
+	call Func_fcb94
+	ret
+	
+Func_fcbac: ; fcbac (3f:4bac)
+	ld bc,wSpriteStateData1 + $f0
+	ld hl,$104
+	add hl,bc
+	ld a,[W_YCOORD]
+	add $4
+	sub [hl]
+	jr z,.asm_fcbd7
+	jr c,.asm_fcbca
+	call Func_fcc01
+	jr c,.asm_fcbc6
+	ld a,$5
+	and a
+	ret
+.asm_fcbc6
+	ld a,$1
+	and a
+	ret
+.asm_fcbca
+	call Func_fcc01
+	jr c,.asm_fcbd3
+	ld a,$6
+	and a
+	ret
+.asm_fcbd3
+	ld a,$2
+	and a
+	ret
+.asm_fcbd7
+	ld hl,$105
+	add hl,bc
+	ld a,[W_XCOORD]
+	add $4
+	sub [hl]
+	jr z,.asm_fcbff
+	jr c,.asm_fcbf2
+	call Func_fcc01
+	jr c,.asm_fcbee
+	ld a,$8
+	and a
+	ret
+.asm_fcbee
+	ld a,$4
+	and a
+	ret
+.asm_fcbf2
+	call Func_fcc01
+	jr c,.asm_fcbfb
+	ld a,$7
+	and a
+	ret
+.asm_fcbfb
+	ld a,$3
+	and a
+	ret
+.asm_fcbff
+	scf
+	ret
+	
+Func_fcc01: ; fcc01 (3f:4c01)
+	jr nc,.asm_fcc05
+	cpl
+	inc a
+.asm_fcc05
+	cp $2
+	ret
+	
 Func_fcc08:: ; fcc08 (3f:4c08)
-	dr $fcc08,$fcc92
+	call Func_fcc23
+	ret nc
+	ld a,[wd736]
+	bit 6,a
+	jr nz,.asm_fcc1b
+	call Func_fcc42
+	ret c
+	call Func_fcb94
+	ret
+.asm_fcc1b
+	call Func_fcc64
+	ret c
+	call Func_fcb94
+	ret
+	
+Func_fcc23: ; fcc23 (3f:4c28)
+	ld a,[wd430]
+	bit 5,a
+	jr nz,.asm_fcc40
+	ld a,[wd430]
+	bit 7,a
+	jr nz,.asm_fcc40
+	ld a,[wd472]
+	bit 7,a
+	jr z,.asm_fcc40
+	ld a,[wWalkBikeSurfState]
+	and a
+	jr nz,.asm_fcc40
+	scf
+	ret
+.asm_fcc40
+	and a
+	ret
+	
+Func_fcc42: ; fcc42 (3f:4c42)
+	xor a
+	ld a,[wPlayerDirection]
+	bit 3,a
+	jr nz,.asm_fcc58
+	bit 2,a
+	jr nz,.asm_fcc5b
+	bit 1,a
+	jr nz,.asm_fcc5e
+	bit 0,a
+	jr nz,.asm_fcc61
+	scf
+	ret
+.asm_fcc58
+	ld a,$2
+	ret
+.asm_fcc5b
+	ld a,$1
+	ret
+.asm_fcc5e
+	ld a,$3
+	ret
+.asm_fcc61
+	ld a,$4
+	ret
+	
+Func_fcc64: ; fcc64 (3f:4c64)
+	ld hl,wd430
+	bit 6,[hl]
+	jr z,.asm_fcc6e
+	res 6,[hl]
+	ret
+.asm_fcc6e
+	set 6,[hl]
+	xor a
+	ld a,[wPlayerDirection]
+	bit 3,a
+	jr nz,.asm_fcc86
+	bit 2,a
+	jr nz,.asm_fcc89
+	bit 1,a
+	jr nz,.asm_fcc8c
+	bit 0,a
+	jr nz,.asm_fcc8f
+	scf
+	ret
+.asm_fcc86
+	ld a,$6
+	ret
+.asm_fcc89
+	ld a,$5
+	ret
+.asm_fcc8c
+	ld a,$7
+	ret
+.asm_fcc8f
+	ld a,$8
+	ret
+
 Func_fcc92: ; fcc92 (3f:4c92)
 	dr $fcc92,$fccb2
 Func_fccb2:: ; fccb2 (3f:4cb2)

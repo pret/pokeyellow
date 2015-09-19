@@ -75,7 +75,6 @@ _DisplayPokedex: ; 7c18 (1:7abf)
 	dr $7abf,$8000
 
 SECTION "bank02",ROMX,BANK[$02]
-
 	dr $8000,$9064
 PlayBattleMusic: ; 9064 (2:5064)
 	dr $9064,$909d
