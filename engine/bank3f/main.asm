@@ -1269,21 +1269,460 @@ Func_fcc64: ; fcc64 (3f:4c64)
 	ret
 
 Func_fcc92: ; fcc92 (3f:4c92)
-	dr $fcc92,$fccb2
+	ld hl,wd437
+	ld a,[hl]
+	cp $ff
+	jr z,.asm_fccb0
+	and a
+	jr z,.asm_fccb0
+	dec [hl]
+	ld e,a
+	ld d,0
+	ld hl,wd438
+	add hl,de
+	inc e
+	ld a,$ff
+.asm_fcca8
+	ld d,[hl]
+	ldd [hl],a
+	ld a,d
+	dec e
+	jr nz,.asm_fcca8
+	and a
+	ret
+.asm_fccb0
+	scf
+	ret
+
 Func_fccb2:: ; fccb2 (3f:4cb2)
-	dr $fccb2,$fccee
+	call Func_fcd01
+	and a
+	jr z,.asm_fccbf
+	dec a
+	and $3
+	add a
+	add a
+	jr .asm_fccea
+.asm_fccbf
+	ld a,[W_YCOORD]
+	add $4
+	ld d,a
+	ld a,[W_XCOORD]
+	add $4
+	ld e,a
+	ld a,[wSpriteStateData2 + $f4]
+	cp d
+	jr z,.asm_fccd9
+	ld a,SPRITE_FACING_DOWN
+	jr c,.asm_fccea
+	ld a,SPRITE_FACING_UP
+	jr .asm_fccea
+.asm_fccd9
+	ld a,[wSpriteStateData2 + $f5]
+	cp e
+	jr z,.asm_fcce7
+	ld a,SPRITE_FACING_RIGHT
+	jr c,.asm_fccea
+	ld a,SPRITE_FACING_LEFT
+	jr .asm_fccea
+.asm_fcce7
+	ld a,[wSpriteStateData1 + $9]
+.asm_fccea
+	ld [wSpriteStateData1 + $f9],a
+	ret
+	
 Func_fccee: ; fccee (3f:4cee)
-	dr $fccee,$fcd17
+	ld hl,wd437
+	ld a,[hl]
+	cp $ff
+	jr z,.asm_fccff
+	ld e,a
+	ld d,0
+	ld hl,wd438
+	add hl,de
+	ld a,[hl]
+	ret
+.asm_fccff
+	xor a
+	ret
+	
+Func_fcd01: ; fcd01 (3f:4d01)
+	ld hl,wd437
+	ld a,[hl]
+	cp $ff
+	jr z,.asm_fcd15
+	and a
+	jr z,.asm_fcd15
+	ld e,a
+	ld d,0
+	ld hl,wd438
+	add hl,de
+	ld a,[hl]
+	ret
+.asm_fcd15
+	xor a
+	ret
+	
 Func_fcd17: ; fcd17 (3f:4d17)
-	dr $fcd17,$fcd25
+	ld a,[wd437]
+	cp $ff
+	ret z
+	cp $2
+	jr nc,.asm_fcd23
+	and a
+	ret
+.asm_fcd23
+	scf
+	ret
+	
 Func_fcd25: ; fcd25 (3f:4d25)
-	dr $fcd25,$fcdad
+	ld h,wSpriteStateData2 / $100
+	ld a,[H_CURRENTSPRITEOFFSET]
+	add $4
+	ld l,a
+	ld b,[hl]
+	ld a,[W_YCOORD]
+	cp b
+	jr z,.asm_fcd3a
+	jr nc,.asm_fcd63
+	add $8
+	cp b
+	jr c,.asm_fcd63
+.asm_fcd3a
+	inc l
+	ld b,[hl]
+	ld a,[W_XCOORD]
+	cp b
+	jr z,.asm_fcd49
+	jr nc,.asm_fcd63
+	add $9
+	cp b
+	jr c,.asm_fcd63
+.asm_fcd49
+	call Func_fcd83
+	ld d,$60
+	ld a,[hli]
+	ld e,a
+	cp d
+	jr nc,.asm_fcd63
+	ld a,[hld]
+	cp d
+	jr nc,.asm_fcd63
+	ld bc,-20
+	add hl,bc
+	ld a,[hli]
+	cp d
+	jr nc,.asm_fcd63
+	ld a,[hl]
+	cp d
+	jr c,.asm_fcd6f
+.asm_fcd63
+	ld h,wSpriteStateData1 / $100
+	ld a,[H_CURRENTSPRITEOFFSET]
+	add $2
+	ld l,a
+	ld [hl],$ff
+	scf
+	jr .asm_fcd82
+.asm_fcd6f
+	ld h,wSpriteStateData2 / $100
+	ld a,[H_CURRENTSPRITEOFFSET]
+	add $7
+	ld l,a
+	ld a,[W_GRASSTILE]
+	cp e
+	ld a,$0
+	jr nz,.asm_fcd80
+	ld a,$80
+.asm_fcd80
+	ld [hl],a
+	and a
+.asm_fcd82
+	ret
+	
+Func_fcd83: ; fcd83 (3f:4d83)
+	ld h,wSpriteStateData1 / $100
+	ld a,[H_CURRENTSPRITEOFFSET]
+	add $4
+	ld l,a
+	ld a,[hli]
+	add $4
+	and $f0
+	srl a
+	ld c,a
+	ld b,$0
+	inc l
+	ld a,[hl]
+	add $2
+	srl a
+	srl a
+	srl a
+	add SCREEN_WIDTH
+	ld d,0
+	ld e,a
+	ld hl,wTileMap
+	rept 5
+	add hl,bc
+	endr
+	add hl,de
+	ret
+	
 Func_fcdad: ; fcdad (3f:4dad)
-	dr $fcdad,$fcdb8
+	push bc
+	push af
+	ld a,[wd470]
+	cp $50
+	pop bc
+	ld a,b
+	pop bc
+	ret
+
 Func_fcdb8:: ; fcdb8 (3f:4db8)
-	dr $fcdb8,$fce18
+	ld hl,wPartySpecies
+	ld de,wPartyMon1OTID
+	ld bc,wPartyMonOT
+	push hl
+.loop
+	pop hl
+	ld a,[hli]
+	push hl
+	inc a
+	jr z,.noPlayerPikachu
+	cp PIKACHU + 1
+	jr nz,.curMonNotPlayerPikachu
+	ld h,d
+	ld l,e
+	ld a,[wPlayerID]
+	cp [hl]
+	jr nz,.curMonNotPlayerPikachu
+	inc hl
+	ld a,[wPlayerID+1]
+	cp [hl]
+	jr nz,.curMonNotPlayerPikachu
+	push de
+	push bc
+	ld hl,wPlayerName
+	ld d,$6 ; possible player length - 1
+.nameCompareLoop
+	dec d
+	jr z,.sameOT
+	ld a,[bc]
+	inc bc
+	cp [hl]
+	inc hl
+	jr z,.nameCompareLoop
+	pop bc
+	pop de
+.curMonNotPlayerPikachu
+	ld hl,wPartyMon2 - wPartyMon1
+	add hl,de
+	ld d,h
+	ld e,l
+	ld hl,NAME_LENGTH
+	add hl,bc
+	ld b,h
+	ld c,l
+	jr .loop
+.sameOT
+	pop bc
+	pop de
+	ld h,d
+	ld l,e
+	ld bc,-NAME_LENGTH
+	add hl,bc
+	ld a,[hli]
+	or [hl]
+	jr z,.noPlayerPikachu ; XXX how is this determined?
+	pop hl
+	scf
+	ret
+.noPlayerPikachu
+	pop hl
+	and a
+	ret
+
+Func_fce0d:: ; fce0d (3f:4e0d)
+	ld hl,wBoxMon1
+	ld bc,wBoxMon2 - wBoxMon1
+	ld de,wBoxMonOT
+	jr asm_fce21
+
 Func_fce18:: ; fce18 (3f:4e18)
-	dr $fce18,$fcf0c
+	ld hl,wPartyMon1
+	ld bc,wPartyMon2 - wPartyMon1
+	ld de,wPartyMonOT
+asm_fce21: ; fce21 (3f:4e21)
+	ld a,[wWhichPokemon]
+	call AddNTimes
+	ld a,[hl]
+	cp PIKACHU
+	jr nz,.notPlayerPikachu
+	ld bc,wPartyMon1OTID - wPartyMon1
+	add hl,bc
+	ld a,[wPlayerID]
+	cp [hl]
+	jr nz,.notPlayerPikachu
+	inc hl
+	ld a,[wPlayerID+1]
+	cp [hl]
+	jr nz,.notPlayerPikachu
+	ld h,d
+	ld l,e
+	ld a,[wWhichPokemon]
+	ld bc,NAME_LENGTH
+	call AddNTimes
+	ld de,wPlayerName
+	ld b,$6
+.loop
+	dec b
+	jr z,.isPlayerPikachu
+	ld a,[de]
+	inc de
+	cp [hl]
+	inc hl
+	jr z,.loop
+.notPlayerPikachu
+	and a
+	ret
+.isPlayerPikachu
+	scf
+	ret
+	
+Func_fce5a:: ; fce5a (3f:4e5a)
+	push de
+	call Func_fcdb8
+	pop de
+	ret nc
+	ld a,d
+	cp $80
+	ld a,[wd471]
+	jr c,.asm_fce6c
+	cp d
+	jr c,.asm_fce6e
+	ret
+.asm_fce6c
+	cp d
+	ret c
+.asm_fce6e
+	ld a,d
+	ld [wd471],a
+	ret
+
+Func_fce73:: ; fce73 (3f:4e73)
+; function to test if a pokemon is alive?
+	xor a
+	ld [wWhichPokemon],a
+	ld hl,wPartyCount
+.loop
+	inc hl
+	ld a,[hl]
+	cp $ff
+	jr z,.asm_fcea9
+	push hl
+	call Func_fce18
+	pop hl
+	jr nc,.asm_fce9e
+	ld a,[wWhichPokemon]
+	ld hl,wPartyMon1HP
+	ld bc,wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a,[hli]
+	or [hl]
+	ld d,a
+	inc hl
+	inc hl
+	ld a,[hl]
+	and a
+	jr nz,.asm_fcea7
+	jr .asm_fcea9
+.asm_fce9e
+	ld a,[wWhichPokemon]
+	inc a
+	ld [wWhichPokemon],a
+	jr .loop
+.asm_fcea7
+	scf
+	ret
+.asm_fcea9
+	and a
+	ret
+
+Func_fceab:: ; fceab (3f:4eab)
+	ld hl,wPartySpecies
+	ld de,wPartyMon1Moves
+	ld bc,wPartyMonOT
+	push hl
+.loop
+	pop hl
+	ld a,[hli]
+	push hl
+	inc a
+	jr z,.noSurfingPlayerPikachu
+	cp PIKACHU+1
+	jr nz,.curMonNotSurfingPlayerPikachu
+	ld h,d
+	ld l,e
+	push hl
+	push bc
+	ld b,NUM_MOVES
+.moveSearchLoop
+	ld a,[hli]
+	cp SURF
+	jr z,.foundSurfingPikachu
+	dec b
+	jr nz,.moveSearchLoop
+	pop bc
+	pop hl
+	jr .curMonNotSurfingPlayerPikachu
+.foundSurfingPikachu
+	pop bc
+	pop hl
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	ld a,[wPlayerID]
+	cp [hl]
+	jr nz,.curMonNotSurfingPlayerPikachu
+	inc hl
+	ld a,[wPlayerID+1]
+	cp [hl]
+	jr nz,.curMonNotSurfingPlayerPikachu
+	push de
+	push bc
+	ld hl,wPlayerName
+	ld d,$6
+.nameCompareLoop
+	dec d
+	jr z,.foundSurfingPlayerPikachu
+	ld a,[bc]
+	inc bc
+	cp [hl]
+	inc hl
+	jr z,.nameCompareLoop
+	pop bc
+	pop de
+.curMonNotSurfingPlayerPikachu
+	ld hl,wPartyMon2 - wPartyMon1
+	add hl,de
+	ld d,h
+	ld e,l
+	ld hl,NAME_LENGTH
+	add hl,bc
+	ld b,h
+	ld c,l
+	jr .loop
+.foundSurfingPlayerPikachu
+	pop bc
+	pop de
+	pop hl
+	scf
+	ret
+.noSurfingPlayerPikachu
+	pop hl
+	and a
+	ret
+
 Func_fcf0c:: ; fcf0c (3f:4f0c)
 	dr $fcf0c,$fd004
 Func_fd004:: ; fd004 (3f:5004)
