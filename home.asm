@@ -2401,7 +2401,7 @@ Func_3082:: ; 3082 (0:3082)
 	push af
 	call FadeOutAudio
 	callbs Music_DoLowHealthAlarm
-	callbs Music2_UpdateMusic
+	callbs Audio1_UpdateMusic
 	pop af
 	call BankswitchCommon
 	ret

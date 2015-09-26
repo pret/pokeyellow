@@ -1,6 +1,6 @@
 ; The first of three duplicated sound engines.
 
-Audio1_UpdateMusic:: ; 0x9103
+Audio1_UpdateMusic:: ; 909d (2:509d)
 	ld c, CH0
 .loop
 	ld b, 0
@@ -36,7 +36,7 @@ Audio1_UpdateMusic:: ; 0x9103
 
 ; this routine checks flags for music effects currently applied
 ; to the channel and calls certain functions based on flags.
-Audio1_ApplyMusicAffects: ; 0x9138
+Audio1_ApplyMusicAffects: ; 90d2 (2:50d2)
 	ld b, $0
 	ld hl, wChannelNoteDelayCounters ; delay until next note
 	add hl, bc
@@ -144,7 +144,7 @@ Audio1_ApplyMusicAffects: ; 0x9138
 ; this routine executes all music commands that take up no time,
 ; like tempo changes, duty changes etc. and doesn't return
 ; until the first note is reached
-Audio1_PlayNextNote: ; 0x91d0
+Audio1_PlayNextNote: ; 916a (2:516a)
 ; reload the vibrato delay counter
 	ld hl, wChannelVibratoDelayCounterReloadValues
 	add hl, bc
@@ -157,6 +157,15 @@ Audio1_PlayNextNote: ; 0x91d0
 	add hl, bc
 	res BIT_PITCH_BEND_ON, [hl]
 	res BIT_PITCH_BEND_DECREASING, [hl]
+	ld a, c
+	cp $4
+	jr nz, .asm_918c
+	ld a, [wLowHealthAlarm]
+	bit 7, a
+	jr z, .asm_918c
+	call Audio1_EnableChannelOutput
+	ret
+.asm_918c
 	call Audio1_endchannel
 	ret
 
@@ -515,7 +524,8 @@ Audio1_unknownmusic0xef: ; 0x9407
 	jr nz, Audio1_dutycycle ; no
 	call Audio1_GetNextMusicByte
 	push bc
-	call Audio1_PlaySound
+	ld b, a
+	call Func_22ec
 	pop bc
 	ld a, [wDisableChannelOutputWhenSfxEnds]
 	and a
@@ -670,8 +680,8 @@ asm_94fd
 	ld a, [wDisableChannelOutputWhenSfxEnds]
 	and a
 	jr nz, .asm_9508
-	ld a, d
-	call Audio1_PlaySound
+	ld b, d
+	call Func_22ec
 .asm_9508
 	pop bc
 	pop de
@@ -829,9 +839,9 @@ Audio1_notepitch: ; 0x9568
 	call Audio1_ApplyWavePatternAndFrequency
 	ret
 
-Audio1_EnableChannelOutput: ; 0x95f8
+Audio1_EnableChannelOutput: ; 95a3 (2:55a3)
 	ld b, 0
-	ld hl, Audio1_HWChannelEnableMasks
+	call Audio1_9972
 	add hl, bc
 	ld a, [rNR51]
 	or [hl] ; set this channel's bits
@@ -851,7 +861,7 @@ Audio1_EnableChannelOutput: ; 0x95f8
 ; If this is the SFX noise channel or a music channel whose corresponding
 ; SFX channel is off, apply stereo panning.
 	ld a, [wStereoPanning]
-	ld hl, Audio1_HWChannelEnableMasks
+	call Audio1_9972
 	add hl, bc
 	and [hl]
 	ld d, a
@@ -939,12 +949,31 @@ Audio1_ApplyWavePatternAndFrequency: ; 0x964b
 	ld [hl], e ; store frequency low byte
 	inc hl
 	ld [hl], d ; store frequency high byte
+	ld a, c
+	cp $4
+	jr c, .asm_9642
 	call Audio1_ApplyFrequencyModifier
+.asm_9642
 	ret
-
-Audio1_SetSfxTempo: ; 0x9693
+.asm_9643
+	ld a, c
+	cp $4
+	ret nz
+	ld a, [wLowHealthAlarm]
+	bit 7, a
+	ret z
+	xor a
+	ld [wFrequencyModifier], a
+	ld a, $80
+	ld [wTempoModifier], a
+	ret
+	
+Audio1_SetSfxTempo: ; 9657 (2:5657)
 	call Audio1_IsCry
+	jr c, .isCry
+	call Audio1_96c3
 	jr nc, .notCry
+.isCry
 	ld d, 0
 	ld a, [wTempoModifier]
 	add $80
@@ -954,18 +983,20 @@ Audio1_SetSfxTempo: ; 0x9693
 	ld [wSfxTempo + 1], a
 	ld a, d
 	ld [wSfxTempo], a
-	jr .done
+	ret
 .notCry
 	xor a
 	ld [wSfxTempo + 1], a
-	ld a, $1
+	inc a
 	ld [wSfxTempo], a
-.done
 	ret
 
-Audio1_ApplyFrequencyModifier: ; 0x96b5
+Audio1_ApplyFrequencyModifier: ; 967c (2:567c)
 	call Audio1_IsCry
-	jr nc, .done
+	jr c, .isCry
+	call Audio1_96c3
+	ret nc
+.isCry
 ; if playing a cry, add the cry's frequency modifier
 	ld a, [wFrequencyModifier]
 	add e
@@ -980,7 +1011,7 @@ Audio1_ApplyFrequencyModifier: ; 0x96b5
 .done
 	ret
 
-Audio1_GoBackOneCommandIfCry: ; 0x96c7
+Audio1_GoBackOneCommandIfCry: ; 9692 (2:5692)
 	call Audio1_IsCry
 	jr nc, .done
 	ld hl, wChannelCommandPointers
@@ -999,11 +1030,10 @@ Audio1_GoBackOneCommandIfCry: ; 0x96c7
 	scf
 	ret
 .done
-	scf
-	ccf
+	and a
 	ret
 
-Audio1_IsCry: ; 0x96e5
+Audio1_IsCry: ; 96af (2:56af)
 ; Returns whether the currently playing audio is a cry in carry.
 	ld a, [wChannelSoundIDs + CH4]
 	cp CRY_SFX_START
@@ -1021,6 +1051,26 @@ Audio1_IsCry: ; 0x96e5
 	scf
 	ret
 
+Audio1_96c3: ; 96c3 (2:56c3)
+	ld a, [wAudioROMBank]
+	cp AUDIO_2
+	jr nz, .asm_96dc
+	ld a, [wChannelSoundIDs + CH7]
+	ld b, a
+	ld a, [wChannelSoundIDs + CH4]
+	or b
+	cp $9d
+	jr c, .asm_96dc
+	cp $ea
+	jr z, .asm_96de
+	jr c, .asm_96de
+.asm_96dc
+	and a
+	ret
+.asm_96de
+	scf
+	ret
+	
 Audio1_ApplyPitchBend: ; 0x96f9
 	ld hl, wChannelFlags1
 	add hl, bc
@@ -1243,21 +1293,7 @@ Audio1_ApplyDutyCycle: ; 0x980d
 	ret
 
 Audio1_GetNextMusicByte: ; 0x9825
-	ld d, 0
-	ld a, c
-	add a
-	ld e, a
-	ld hl, wChannelCommandPointers
-	add hl, de
-	ld a, [hli]
-	ld e, a
-	ld a, [hld]
-	ld d, a
-	ld a, [de] ; get next music command
-	inc de
-	ld [hl], e ; store address of next command
-	inc hl
-	ld [hl], d
+	call Func_2288
 	ret
 
 Audio1_GetRegisterPointer: ; 0x9838
@@ -1317,8 +1353,9 @@ Audio1_CalculateFrequency: ; 0x9858
 	ld d, a
 	ret
 
-Audio1_PlaySound:: ; 0x9876
+Audio1_PlaySound:: ; 984e (2:584e)
 	ld [wSoundID], a
+	ld a, [wSoundID]
 	cp $ff
 	jp z, .stopAllAudio
 	cp MAX_SFX_ID
@@ -1329,76 +1366,7 @@ Audio1_PlaySound:: ; 0x9876
 	jp nc, .playSfx
 
 .playMusic
-	xor a
-	ld [wUnusedC000], a
-	ld [wDisableChannelOutputWhenSfxEnds], a
-	ld [wMusicTempo + 1], a
-	ld [wMusicWaveInstrument], a
-	ld [wSfxWaveInstrument], a
-	ld d, $8
-	ld hl, wChannelReturnAddresses
-	call .FillMem
-	ld hl, wChannelCommandPointers
-	call .FillMem
-	ld d, $4
-	ld hl, wChannelSoundIDs
-	call .FillMem
-	ld hl, wChannelFlags1
-	call .FillMem
-	ld hl, wChannelDuties
-	call .FillMem
-	ld hl, wChannelDutyCycles
-	call .FillMem
-	ld hl, wChannelVibratoDelayCounters
-	call .FillMem
-	ld hl, wChannelVibratoExtents
-	call .FillMem
-	ld hl, wChannelVibratoRates
-	call .FillMem
-	ld hl, wChannelFrequencyLowBytes
-	call .FillMem
-	ld hl, wChannelVibratoDelayCounterReloadValues
-	call .FillMem
-	ld hl, wChannelFlags2
-	call .FillMem
-	ld hl, wChannelPitchBendLengthModifiers
-	call .FillMem
-	ld hl, wChannelPitchBendFrequencySteps
-	call .FillMem
-	ld hl, wChannelPitchBendFrequencyStepsFractionalPart
-	call .FillMem
-	ld hl, wChannelPitchBendCurrentFrequencyFractionalPart
-	call .FillMem
-	ld hl, wChannelPitchBendCurrentFrequencyHighBytes
-	call .FillMem
-	ld hl, wChannelPitchBendCurrentFrequencyLowBytes
-	call .FillMem
-	ld hl, wChannelPitchBendTargetFrequencyHighBytes
-	call .FillMem
-	ld hl, wChannelPitchBendTargetFrequencyLowBytes
-	call .FillMem
-	ld a, $1
-	ld hl, wChannelLoopCounters
-	call .FillMem
-	ld hl, wChannelNoteDelayCounters
-	call .FillMem
-	ld hl, wChannelNoteSpeeds
-	call .FillMem
-	ld [wMusicTempo], a
-	ld a, $ff
-	ld [wStereoPanning], a
-	xor a
-	ld [rNR50], a
-	ld a, $8
-	ld [rNR10], a
-	ld a, 0
-	ld [rNR51], a
-	xor a
-	ld [rNR30], a
-	ld a, $80
-	ld [rNR30], a
-	ld a, $77
-	ld [rNR50], a
+	call Func_22aa
 	jp .playSoundCommon
 
 .playSfx
@@ -1460,91 +1428,7 @@ Audio1_PlaySound:: ; 0x9876
 	jr c, .asm_99a3
 	ret
 .asm_99a3
-	xor a
-	push de
-	ld h, d
-	ld l, e
-	add hl, hl
-	ld d, h
-	ld e, l
-	ld hl, wChannelReturnAddresses
-	add hl, de
-	ld [hli], a
-	ld [hl], a
-	ld hl, wChannelCommandPointers
-	add hl, de
-	ld [hli], a
-	ld [hl], a
-	pop de
-	ld hl, wChannelSoundIDs
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelFlags1
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelDuties
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelDutyCycles
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelVibratoDelayCounters
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelVibratoExtents
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelVibratoRates
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelFrequencyLowBytes
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelVibratoDelayCounterReloadValues
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendLengthModifiers
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendFrequencySteps
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendFrequencyStepsFractionalPart
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyFractionalPart
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyHighBytes
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyLowBytes
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendTargetFrequencyHighBytes
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelPitchBendTargetFrequencyLowBytes
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelFlags2
-	add hl, de
-	ld [hl], a
-	ld a, $1
-	ld hl, wChannelLoopCounters
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelNoteDelayCounters
-	add hl, de
-	ld [hl], a
-	ld hl, wChannelNoteSpeeds
-	add hl, de
-	ld [hl], a
-	ld a, e
-	cp CH4
-	jr nz, .asm_9a2b
-	ld a, $8
-	ld [rNR10], a ; sweep off
+	call Func_22c0
 .asm_9a2b
 	ld a, c
 	and a
@@ -1553,51 +1437,7 @@ Audio1_PlaySound:: ; 0x9876
 	jp .sfxChannelLoop
 
 .stopAllAudio
-	ld a, $80
-	ld [rNR52], a ; sound hardware on
-	ld [rNR30], a ; wave playback on
-	xor a
-	ld [rNR51], a ; no sound output
-	ld [rNR32], a ; mute channel 3 (wave channel)
-	ld a, $8
-	ld [rNR10], a ; sweep off
-	ld [rNR12], a ; mute channel 1 (pulse channel 1)
-	ld [rNR22], a ; mute channel 2 (pulse channel 2)
-	ld [rNR42], a ; mute channel 4 (noise channel)
-	ld a, $40
-	ld [rNR14], a ; counter mode
-	ld [rNR24], a
-	ld [rNR44], a
-	ld a, $77
-	ld [rNR50], a ; full volume
-	xor a
-	ld [wUnusedC000], a
-	ld [wDisableChannelOutputWhenSfxEnds], a
-	ld [wMuteAudioAndPauseMusic], a
-	ld [wMusicTempo + 1], a
-	ld [wSfxTempo + 1], a
-	ld [wMusicWaveInstrument], a
-	ld [wSfxWaveInstrument], a
-	ld d, $a0
-	ld hl, wChannelCommandPointers
-	call .FillMem
-	ld a, $1
-	ld d, $18
-	ld hl, wChannelNoteDelayCounters
-	call .FillMem
-	ld [wMusicTempo], a
-	ld [wSfxTempo], a
-	ld a, $ff
-	ld [wStereoPanning], a
-	ret
-
-; fills d bytes at hl with a
-.FillMem
-	ld b, d
-.loop
-	ld [hli], a
-	dec b
-	jr nz, .loop
+	call Func_22d6
 	ret
 
 .playSoundCommon
@@ -1633,16 +1473,11 @@ Audio1_PlaySound:: ; 0x9876
 	inc hl
 	jr .commandPointerLoop
 .next
+	push af
 	push hl
 	push bc
-	push af
 	ld b, 0
 	ld c, a
-	ld hl, wChannelSoundIDs
-	add hl, bc
-	ld a, [wSoundID]
-	ld [hl], a
-	pop af
 	cp CH3
 	jr c, .skipSettingFlag
 	ld hl, wChannelFlags1
@@ -1657,6 +1492,17 @@ Audio1_PlaySound:: ; 0x9876
 	ld a, [de]
 	ld [hli], a
 	inc de
+	pop af
+	push hl
+	push bc
+	ld b, 0
+	ld c, a
+	ld hl, wChannelSoundIDs
+	add hl, bc
+	ld a, [wSoundID]
+	ld [hl], a
+	pop bc
+	pop hl
 	inc c
 	dec b
 	ld a, b
@@ -1695,23 +1541,43 @@ Audio1_PlaySound:: ; 0x9876
 .done
 	ret
 
-Audio1_CryEndchannel: ; 0x9b16
+Audio1_CryEndchannel: ; 9961 (2:5961)
 	endchannel
 
-Audio1_HWChannelBaseAddresses: ; 0x9b17
+Audio1_HWChannelBaseAddresses: ; 9962 (2:5962)
 ; the low bytes of each HW channel's base address
 	db HW_CH1_BASE, HW_CH2_BASE, HW_CH3_BASE, HW_CH4_BASE ; channels 0-3
 	db HW_CH1_BASE, HW_CH2_BASE, HW_CH3_BASE, HW_CH4_BASE ; channels 4-7
 
-Audio1_HWChannelDisableMasks: ; 0x9b1f
+Audio1_HWChannelDisableMasks: ; 996a (2:596a)
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 0-3
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 4-7
 
-Audio1_HWChannelEnableMasks: ; 0x9b27
+Audio1_9972: ; 9972 (2:5972)
+	push af
+	push bc
+	ld a, [W_OPTIONS]
+	and %110000 ; channel options
+	srl a
+	ld c, a
+	ld b, 0
+	ld hl, Audio1_HWChannelEnableMasks
+	add hl, bc
+	pop bc
+	pop af
+	ret
+	
+Audio1_HWChannelEnableMasks: ; 9985 (2:5985)
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 0-3
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 4-7
+	db $01,$20,$44,$88
+	db $11,$22,$44,$88
+	db $01,$20,$04,$80
+	db $01,$20,$04,$80
+	db $01,$02,$40,$80
+	db $01,$02,$40,$80
 
-Audio1_Pitches: ; 0x9b2f
+Audio1_Pitches: ; 99a5 (2:59a5)
 	dw $F82C ; C_
 	dw $F89D ; C#
 	dw $F907 ; D_

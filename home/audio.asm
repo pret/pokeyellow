@@ -91,7 +91,7 @@ Func_21e3:: ; 21e3 (0:21e3)
 .loop
 	push bc
 	push hl
-	callba Music2_UpdateMusic ; 2:509d
+	callba Audio1_UpdateMusic ; 2:509d
 	pop hl
 	pop bc
 	dec c
@@ -284,11 +284,11 @@ Func_22ec:: ; 22ec (0:22ec)
 	push af
 	ld a,[wAudioROMBank]
 	call BankswitchCommon
-	cp BANK(Func_984e)
+	cp BANK(Audio1_PlaySound)
 	jr nz, .checkForBank08
 .bank02
 	ld a, b
-	call Func_984e
+	call Audio1_PlaySound
 	jr .done
 .checkForBank08
 	cp BANK(Func_218bb)

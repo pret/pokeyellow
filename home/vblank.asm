@@ -65,7 +65,7 @@ VBlank:: ; 1de5 (0:1de5)
 	
 	ld a, $2
 	call BankswitchCommon
-	call Music2_UpdateMusic
+	call Audio1_UpdateMusic
 	
 	call SerialFunction ; add this
 

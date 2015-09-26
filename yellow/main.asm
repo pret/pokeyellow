@@ -74,14 +74,14 @@ _RemovePokemon: ; 7a0f (1:7a0f)
 _DisplayPokedex: ; 7c18 (1:7abf)
 	dr $7abf,$8000
 
-SECTION "bank02",ROMX,BANK[$02]
-	dr $8000,$9064
-PlayBattleMusic: ; 9064 (2:5064)
-	dr $9064,$909d
-Music2_UpdateMusic: ; 909d (2:509d)
-	dr $909d,$984e
-Func_984e: ; 984e (2:584e)
-	dr $984e,$c000
+;SECTION "bank02",ROMX,BANK[$02]
+;	dr $8000,$9064
+;PlayBattleMusic: ; 9064 (2:5064)
+;	dr $9064,$909d
+;Music2_UpdateMusic: ; 909d (2:509d)
+;	dr $909d,$984e
+;Func_984e: ; 984e (2:584e)
+;	dr $984e,$c000
 	
 SECTION "bank03",ROMX,BANK[$03]
 
