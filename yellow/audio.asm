@@ -3,12 +3,19 @@ AUDIO_2 EQU $8
 AUDIO_3 EQU $1f
 
 INCLUDE "constants.asm"
+INCLUDE "charmap.asm"
 
 SECTION "Sound Effect Headers 1", ROMX, BANK[AUDIO_1]
 INCLUDE "audio/headers/sfxheaders1.asm"
 
+SECTION "Sound Effect Headers 2", ROMX, BANK[AUDIO_2]
+INCLUDE "audio/headers/sfxheaders2.asm"
+
 SECTION "Music Headers 1", ROMX, BANK[AUDIO_1]
 INCLUDE "audio/headers/musicheaders1.asm"
+
+SECTION "Music Headers 2", ROMX, BANK[AUDIO_2]
+INCLUDE "audio/headers/musicheaders2.asm"
 
 SECTION "Sound Effects 1", ROMX, BANK[AUDIO_1]
 
@@ -106,6 +113,130 @@ INCLUDE "audio/sfx/cry20_1.asm"
 INCLUDE "audio/sfx/cry21_1.asm"
 INCLUDE "audio/sfx/cry22_1.asm"
 
+SECTION "Sound Effects 2", ROMX, BANK[AUDIO_2]
+
+INCLUDE "audio/sfx/snare1_2.asm"
+INCLUDE "audio/sfx/snare2_2.asm"
+INCLUDE "audio/sfx/snare3_2.asm"
+INCLUDE "audio/sfx/snare4_2.asm"
+INCLUDE "audio/sfx/snare5_2.asm"
+INCLUDE "audio/sfx/triangle1_2.asm"
+INCLUDE "audio/sfx/triangle2_2.asm"
+INCLUDE "audio/sfx/snare6_2.asm"
+INCLUDE "audio/sfx/snare7_2.asm"
+INCLUDE "audio/sfx/snare8_2.asm"
+INCLUDE "audio/sfx/snare9_2.asm"
+INCLUDE "audio/sfx/cymbal1_2.asm"
+INCLUDE "audio/sfx/cymbal2_2.asm"
+INCLUDE "audio/sfx/cymbal3_2.asm"
+INCLUDE "audio/sfx/muted_snare1_2.asm"
+INCLUDE "audio/sfx/triangle3_2.asm"
+INCLUDE "audio/sfx/muted_snare2_2.asm"
+INCLUDE "audio/sfx/muted_snare3_2.asm"
+INCLUDE "audio/sfx/muted_snare4_2.asm"
+
+INCLUDE "audio/sfx/press_ab_2.asm"
+INCLUDE "audio/sfx/start_menu_2.asm"
+INCLUDE "audio/sfx/tink_2.asm"
+INCLUDE "audio/sfx/heal_hp_2.asm"
+INCLUDE "audio/sfx/heal_ailment_2.asm"
+INCLUDE "audio/sfx/silph_scope.asm"
+INCLUDE "audio/sfx/ball_toss.asm"
+INCLUDE "audio/sfx/ball_poof.asm"
+INCLUDE "audio/sfx/faint_thud.asm"
+INCLUDE "audio/sfx/run.asm"
+INCLUDE "audio/sfx/dex_page_added.asm"
+INCLUDE "audio/sfx/swap_2.asm" ; added in yellow
+INCLUDE "audio/sfx/pokeflute_ch3.asm"
+INCLUDE "audio/sfx/peck.asm"
+INCLUDE "audio/sfx/faint_fall.asm"
+INCLUDE "audio/sfx/battle_09.asm"
+INCLUDE "audio/sfx/pound.asm"
+INCLUDE "audio/sfx/battle_0b.asm"
+INCLUDE "audio/sfx/battle_0c.asm"
+INCLUDE "audio/sfx/battle_0d.asm"
+INCLUDE "audio/sfx/battle_0e.asm"
+INCLUDE "audio/sfx/battle_0f.asm"
+INCLUDE "audio/sfx/damage.asm"
+INCLUDE "audio/sfx/not_very_effective.asm"
+INCLUDE "audio/sfx/battle_12.asm"
+INCLUDE "audio/sfx/battle_13.asm"
+INCLUDE "audio/sfx/battle_14.asm"
+INCLUDE "audio/sfx/vine_whip.asm"
+INCLUDE "audio/sfx/battle_16.asm"
+INCLUDE "audio/sfx/battle_17.asm"
+INCLUDE "audio/sfx/battle_18.asm"
+INCLUDE "audio/sfx/battle_19.asm"
+INCLUDE "audio/sfx/super_effective.asm"
+INCLUDE "audio/sfx/battle_1b.asm"
+INCLUDE "audio/sfx/battle_1c.asm"
+INCLUDE "audio/sfx/doubleslap.asm"
+INCLUDE "audio/sfx/battle_1e.asm"
+INCLUDE "audio/sfx/horn_drill.asm"
+INCLUDE "audio/sfx/battle_20.asm"
+INCLUDE "audio/sfx/battle_21.asm"
+INCLUDE "audio/sfx/battle_22.asm"
+INCLUDE "audio/sfx/battle_23.asm"
+INCLUDE "audio/sfx/battle_24.asm"
+INCLUDE "audio/sfx/battle_25.asm"
+INCLUDE "audio/sfx/battle_26.asm"
+INCLUDE "audio/sfx/battle_27.asm"
+INCLUDE "audio/sfx/battle_28.asm"
+INCLUDE "audio/sfx/battle_29.asm"
+INCLUDE "audio/sfx/battle_2a.asm"
+INCLUDE "audio/sfx/battle_2b.asm"
+INCLUDE "audio/sfx/battle_2c.asm"
+INCLUDE "audio/sfx/psybeam.asm"
+INCLUDE "audio/sfx/battle_2e.asm"
+INCLUDE "audio/sfx/battle_2f.asm"
+INCLUDE "audio/sfx/psychic_m.asm"
+INCLUDE "audio/sfx/battle_31.asm"
+INCLUDE "audio/sfx/battle_32.asm"
+INCLUDE "audio/sfx/battle_33.asm"
+INCLUDE "audio/sfx/battle_34.asm"
+INCLUDE "audio/sfx/battle_35.asm"
+INCLUDE "audio/sfx/battle_36.asm"
+INCLUDE "audio/sfx/unused_2.asm"
+INCLUDE "audio/sfx/cry09_2.asm"
+INCLUDE "audio/sfx/cry23_2.asm"
+INCLUDE "audio/sfx/cry24_2.asm"
+INCLUDE "audio/sfx/cry11_2.asm"
+INCLUDE "audio/sfx/cry25_2.asm"
+INCLUDE "audio/sfx/cry03_2.asm"
+INCLUDE "audio/sfx/cry0f_2.asm"
+INCLUDE "audio/sfx/cry10_2.asm"
+INCLUDE "audio/sfx/cry00_2.asm"
+INCLUDE "audio/sfx/cry0e_2.asm"
+INCLUDE "audio/sfx/cry06_2.asm"
+INCLUDE "audio/sfx/cry07_2.asm"
+INCLUDE "audio/sfx/cry05_2.asm"
+INCLUDE "audio/sfx/cry0b_2.asm"
+INCLUDE "audio/sfx/cry0c_2.asm"
+INCLUDE "audio/sfx/cry02_2.asm"
+INCLUDE "audio/sfx/cry0d_2.asm"
+INCLUDE "audio/sfx/cry01_2.asm"
+INCLUDE "audio/sfx/cry0a_2.asm"
+INCLUDE "audio/sfx/cry08_2.asm"
+INCLUDE "audio/sfx/cry04_2.asm"
+INCLUDE "audio/sfx/cry19_2.asm"
+INCLUDE "audio/sfx/cry16_2.asm"
+INCLUDE "audio/sfx/cry1b_2.asm"
+INCLUDE "audio/sfx/cry12_2.asm"
+INCLUDE "audio/sfx/cry13_2.asm"
+INCLUDE "audio/sfx/cry14_2.asm"
+INCLUDE "audio/sfx/cry1e_2.asm"
+INCLUDE "audio/sfx/cry15_2.asm"
+INCLUDE "audio/sfx/cry17_2.asm"
+INCLUDE "audio/sfx/cry1c_2.asm"
+INCLUDE "audio/sfx/cry1a_2.asm"
+INCLUDE "audio/sfx/cry1d_2.asm"
+INCLUDE "audio/sfx/cry18_2.asm"
+INCLUDE "audio/sfx/cry1f_2.asm"
+INCLUDE "audio/sfx/cry20_2.asm"
+INCLUDE "audio/sfx/cry21_2.asm"
+INCLUDE "audio/sfx/cry22_2.asm"
+;Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
+
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]
 
 PlayBattleMusic:: ; 9064 (2:5064)
@@ -197,6 +328,88 @@ Music_Cities1AlternateTempo:: ; 99f4 (2:59f4)
 	ld de, Music_Cities1_branch_aa6f
 	jp Audio1_OverwriteChannelPointer
 
+SECTION "Audio Engine 2", ROMX, BANK[AUDIO_2]
+
+Music_DoLowHealthAlarm:: ; 2131e (8:531e)
+	ld a, [wLowHealthAlarm]
+	cp $ff
+	jr z, .disableAlarm
+
+	bit 7, a  ;alarm enabled?
+	ret z     ;nope
+
+	and $7f   ;low 7 bits are the timer.
+	jr nz, .asm_21383 ;if timer > 0, play low tone.
+
+	call .playToneHi
+	ld a, 30 ;keep this tone for 30 frames.
+	jr .asm_21395 ;reset the timer.
+
+.asm_21383
+	cp 20
+	jr nz, .asm_2138a ;if timer == 20,
+	call .playToneLo  ;actually set the sound registers.
+
+.asm_2138a
+	ld a, $86
+	ld [wChannelSoundIDs + CH4], a ;disable sound channel?
+	ld a, [wLowHealthAlarm]
+	and $7f ;decrement alarm timer.
+	dec a
+
+.asm_21395
+	; reset the timer and enable flag.
+	set 7, a
+	ld [wLowHealthAlarm], a
+	ret
+
+.disableAlarm
+	xor a
+	ld [wLowHealthAlarm], a  ;disable alarm
+	ld [wChannelSoundIDs + CH4], a  ;re-enable sound channel?
+	ld de, .toneDataSilence
+	jr .playTone
+
+;update the sound registers to change the frequency.
+;the tone set here stays until we change it.
+.playToneHi
+	ld de, .toneDataHi
+	jr .playTone
+
+.playToneLo
+	ld de, .toneDataLo
+
+;update sound channel 1 to play the alarm, overriding all other sounds.
+.playTone
+	ld hl, rNR10 ;channel 1 sound register
+	ld c, $5
+	xor a
+
+.copyLoop
+	ld [hli], a
+	ld a, [de]
+	inc de
+	dec c
+	jr nz, .copyLoop
+	ret
+
+;bytes to write to sound channel 1 registers for health alarm.
+;starting at FF11 (FF10 is always zeroed), so these bytes are:
+;length, envelope, freq lo, freq hi
+.toneDataHi
+	db $A0,$E2,$50,$87
+
+.toneDataLo
+	db $B0,$E2,$EE,$86
+
+;written to stop the alarm
+.toneDataSilence
+	db $00,$00,$00,$80
+
+INCLUDE "engine/menu/bills_pc.asm"
+
+INCLUDE "audio/engine_2.asm"
+	
 SECTION "Music 1", ROMX, BANK[AUDIO_1]
 
 Audio1_WavePointers: INCLUDE "audio/wave_instruments.asm"
@@ -227,3 +440,16 @@ INCLUDE "audio/music/safarizone.asm"
 INCLUDE "audio/music/gym.asm"
 INCLUDE "audio/music/pokecenter.asm"
 
+SECTION "Music 2", ROMX, BANK[AUDIO_2]
+
+INCLUDE "audio/sfx/unused2_2.asm"
+INCLUDE "audio/music/gymleaderbattle.asm"
+INCLUDE "audio/music/trainerbattle.asm"
+INCLUDE "audio/music/wildbattle.asm"
+INCLUDE "audio/music/finalbattle.asm"
+INCLUDE "audio/sfx/level_up.asm"
+INCLUDE "audio/sfx/get_item2_2.asm"
+INCLUDE "audio/sfx/caught_mon.asm"
+INCLUDE "audio/music/defeatedtrainer.asm"
+INCLUDE "audio/music/defeatedwildmon.asm"
+INCLUDE "audio/music/defeatedgymleader.asm"

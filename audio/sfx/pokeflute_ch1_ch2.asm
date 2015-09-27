@@ -1,8 +1,8 @@
-SFX_08_PokeFlute_Ch1: ; 22322 (8:6322)
+SFX_08_PokeFlute_Ch1: ; 219eb (8:59eb)
 	tempo 256
 
 
-SFX_08_PokeFlute_Ch2: ; 22325 (8:6325)
+SFX_08_PokeFlute_Ch2: ; 219ee (8:59ee)
 	executemusic
 	notetype 8, 0, 0
 	rest 5

@@ -1,34 +1,33 @@
-DisplayPCMainMenu:: ; 213c8 (8:53c8)
+DisplayPCMainMenu:: ; 213c8 (8:5378)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call SaveScreenTilesToBuffer2
 	ld a, [wNumHoFTeams]
 	and a
 	jr nz, .leaguePCAvailable
-	CheckEvent EVENT_GOT_POKEDEX
+	ld a, [wd74b]
+	bit 5, a
 	jr z, .noOaksPC
 	ld a, [wNumHoFTeams]
 	and a
 	jr nz, .leaguePCAvailable
 	coord hl, 0, 0
-	ld b, 8
-	ld c, 14
+	lb bc, 8, 14
 	jr .next
 .noOaksPC
 	coord hl, 0, 0
-	ld b, 6
-	ld c, 14
+	lb bc, 6, 14
 	jr .next
 .leaguePCAvailable
 	coord hl, 0, 0
-	ld b, 10
-	ld c, 14
+	lb bc, 10, 14
 .next
 	call TextBoxBorder
 	call UpdateSprites
 	ld a, 3
 	ld [wMaxMenuItem], a
-	CheckEvent EVENT_MET_BILL
+	ld a, [wd7f1]
+	bit 0, a
 	jr nz, .metBill
 	coord hl, 2, 2
 	ld de, SomeonesPCText
@@ -45,7 +44,8 @@ DisplayPCMainMenu:: ; 213c8 (8:53c8)
 	ld h, b
 	ld de, PlayersPCText
 	call PlaceString
-	CheckEvent EVENT_GOT_POKEDEX
+	ld a, [wd74b]
+	bit 5, a
 	jr z, .noOaksPC2
 	coord hl, 2, 6
 	ld de, OaksPCText
@@ -92,7 +92,7 @@ OaksPCText:       db "PROF.OAK's PC@"
 PKMNLeaguePCText: db $4a, "LEAGUE@"
 LogOffPCText:     db "LOG OFF@"
 
-BillsPC_:: ; 0x214c2
+BillsPC_:: ; 2146f (8:546f)
 	ld hl, wd730
 	set 6, [hl]
 	xor a
@@ -111,7 +111,7 @@ BillsPC_:: ; 0x214c2
 	ld hl, SwitchOnText
 	call PrintText
 
-BillsPCMenu: ; 214e8 (8:54e8)
+BillsPCMenu: ; 21495 (8:5495)
 	ld a, [wParentMenuItem]
 	ld [wCurrentMenuItem], a
 	ld hl, vChars2 + $780
@@ -119,10 +119,13 @@ BillsPCMenu: ; 214e8 (8:54e8)
 	lb bc, BANK(PokeballTileGraphics), $01
 	call CopyVideoData
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
-	coord hl, 0, 0
-	ld b, 10
-	ld c, 12
+	coord hl, 0, 12
+	lb bc, 4, 18
 	call TextBoxBorder
+	coord hl, 0, 0
+	lb bc, 12, 12
+	call TextBoxBorder
+	call UpdateSprites
 	coord hl, 2, 2
 	ld de, BillsPCMenuText
 	call PlaceString
@@ -133,7 +136,7 @@ BillsPCMenu: ; 214e8 (8:54e8)
 	ld [hli], a ; wTopMenuItemX
 	inc hl
 	inc hl
-	ld a, 4
+	ld a, 5
 	ld [hli], a ; wMaxMenuItem
 	ld a, A_BUTTON | B_BUTTON
 	ld [hli], a ; wMenuWatchedKeys
@@ -144,11 +147,8 @@ BillsPCMenu: ; 214e8 (8:54e8)
 	ld [hli], a ; wListScrollOffset
 	ld [hl], a ; wMenuWatchMovingOutOfBounds
 	ld [wPlayerMonNumber], a
-	ld hl, WhatText
-	call PrintText
 	coord hl, 9, 14
-	ld b, 2
-	ld c, 9
+	lb bc, 2, 9
 	call TextBoxBorder
 	ld a, [wCurrentBoxNum]
 	and $7f
@@ -184,8 +184,10 @@ BillsPCMenu: ; 214e8 (8:54e8)
 	jp z, BillsPCRelease ; release
 	cp $3
 	jp z, BillsPCChangeBox ; change box
-
-ExitBillsPC: ; 21588 (8:5588)
+	cp $4
+	jp z, BillsPCPrintBox
+	
+ExitBillsPC: ; 2153e (8:553e)
 	ld a, [wFlags_0xcd60]
 	bit 3, a ; accessing Bill's PC through another PC?
 	jr nz, .next
@@ -204,7 +206,11 @@ ExitBillsPC: ; 21588 (8:5588)
 	res 6, [hl]
 	ret
 
-BillsPCDeposit: ; 215ac (8:55ac)
+BillsPCPrintBox: ; 21562 (8:5562)
+	callab Func_e8d35
+	jp BillsPCMenu
+
+BillsPCDeposit: ; 2156d (8:556d)
 	ld a, [wPartyCount]
 	dec a
 	jr nz, .partyLargeEnough
@@ -222,11 +228,29 @@ BillsPCDeposit: ; 215ac (8:55ac)
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
+	callab Func_fce18
+	jr nc, .asm_215ad
+	call Func_154a
+	jr z, .asm_215ad
+	ld hl, SleepingPikachuText2
+	call PrintText
+	jp BillsPCMenu
+.asm_215ad
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
+	callab Func_fce18
+	jr nc, .asm_215c9
+	ld e, $1b
+	callab Func_f0000
+	jr .asm_215cf
+.asm_215c9
 	ld a, [wcf91]
-	call GetCryData
-	call PlaySoundWaitForCurrent
+	call PlayCry
+.asm_215cf
+	ld hl, Func_f430a
+	ld b, BANK(Func_f430a)
+	ld d, $7
+	call Bankswitch
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon
@@ -253,7 +277,11 @@ BillsPCDeposit: ; 215ac (8:55ac)
 	call PrintText
 	jp BillsPCMenu
 
-BillsPCWithdraw: ; 21618 (8:5618)
+SleepingPikachuText2: ; 2160e (8:560e)
+	TX_FAR _SleepingPikachuText2
+	db "@"
+
+BillsPCWithdraw: ; 21613 (8:5613)
 	ld a, [W_NUMINBOX]
 	and a
 	jr nz, .boxNotEmpty
@@ -276,9 +304,15 @@ BillsPCWithdraw: ; 21618 (8:5618)
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
+	callab Func_fce0d
+	jr nc, .asm_21660
+	ld e, $22
+	callab Func_f0000
+	jr .asm_21666
+.asm_21660
 	ld a, [wcf91]
-	call GetCryData
-	call PlaySoundWaitForCurrent
+	call PlayCry
+.asm_21666
 	xor a ; BOX_TO_PARTY
 	ld [wMoveMonType], a
 	call MoveMon
@@ -290,7 +324,7 @@ BillsPCWithdraw: ; 21618 (8:5618)
 	call PrintText
 	jp BillsPCMenu
 
-BillsPCRelease: ; 21673 (8:5673)
+BillsPCRelease: ; 21690 (8:5690)
 	ld a, [W_NUMINBOX]
 	and a
 	jr nz, .loop
@@ -301,6 +335,8 @@ BillsPCRelease: ; 21673 (8:5673)
 	ld hl, W_NUMINBOX
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
+	callab Func_fce0d
+	jr c, .asm_216cb
 	ld hl, OnceReleasedText
 	call PrintText
 	call YesNoChoice
@@ -317,11 +353,21 @@ BillsPCRelease: ; 21673 (8:5673)
 	call PrintText
 	jp BillsPCMenu
 
-BillsPCChangeBox: ; 216b3 (8:56b3)
+.asm_216cb
+	ld a, [wWhichPokemon]
+	ld hl, wBoxMonNicks
+	call GetPartyMonName
+	ld e, $27
+	callab Func_f0000
+	ld hl, PikachuUnhappyText
+	call PrintText
+	jp BillsPCMenu
+	
+BillsPCChangeBox: ; 216e7 (8:56e7)
 	callba ChangeBox
 	jp BillsPCMenu
 
-DisplayMonListMenu: ; 216be (8:56be)
+DisplayMonListMenu: ; 216f2 (8:56f2)
 	ld a, l
 	ld [wListPointer], a
 	ld a, h
@@ -338,7 +384,7 @@ DisplayMonListMenu: ; 216be (8:56be)
 	ld [wPartyAndBillsPCSavedMenuItem], a
 	ret
 
-BillsPCMenuText: ; 216e1 (8:56e1)
+BillsPCMenuText: ; 21715 (8:5715)
 	db   "WITHDRAW ", $4a
 	next "DEPOSIT ",  $4a
 	next "RELEASE ",  $4a
@@ -347,10 +393,10 @@ BillsPCMenuText: ; 216e1 (8:56e1)
 	next "SEE YA!"
 	db "@"
 
-BoxNoPCText: ; 21713 (8:5713)
+BoxNoPCText: ; 21751 (8:5751)
 	db "BOX No.@"
 
-KnowsHMMove:: ; 2171b (8:571b)
+KnowsHMMove:: ; 21759 (8:5759)
 ; returns whether mon with party index [wWhichPokemon] knows an HM move
 	ld hl, wPartyMon1Moves
 	ld bc, wPartyMon2 - wPartyMon1
@@ -377,18 +423,17 @@ KnowsHMMove:: ; 2171b (8:571b)
 	and a
 	ret
 
-HMMoveArray: ; 21745 (8:5745)
+HMMoveArray: ; 21783 (8:5783)
 	db CUT
 	db FLY
 	db SURF
 	db STRENGTH
 	db FLASH
-	db -1
+	db $ff
 
-DisplayDepositWithdrawMenu: ; 2174b (8:574b)
+DisplayDepositWithdrawMenu: ; 21789 (8:5789)
 	coord hl, 9, 10
-	ld b, 6
-	ld c, 9
+	lb bc, 6, 9
 	call TextBoxBorder
 	ld a, [wParentMenuItem]
 	and a ; was the Deposit or Withdraw item selected in the parent menu?
@@ -458,55 +503,59 @@ StatsCancelPCText:
 	db   "STATS"
 	next "CANCEL@"
 
-SwitchOnText: ; 0x217e9
+SwitchOnText: ; 21826 (8:5826)
 	TX_FAR _SwitchOnText
 	db "@"
 
-WhatText: ; 0x217ee
+WhatText: ; 2182b (8:582b)
 	TX_FAR _WhatText
 	db "@"
 
-DepositWhichMonText: ; 0x217f3
+DepositWhichMonText: ; 21830 (8:5830)
 	TX_FAR _DepositWhichMonText
 	db "@"
 
-MonWasStoredText: ; 0x217f8
+MonWasStoredText: ; 21835 (8:5835)
 	TX_FAR _MonWasStoredText
 	db "@"
 
-CantDepositLastMonText: ; 0x217fd
+CantDepositLastMonText: ; 2183a (8:583a)
 	TX_FAR _CantDepositLastMonText
 	db "@"
 
-BoxFullText: ; 0x21802
+BoxFullText: ; 2183f (8:583f)
 	TX_FAR _BoxFullText
 	db "@"
 
-MonIsTakenOutText: ; 0x21807
+MonIsTakenOutText: ; 21844 (8:5844)
 	TX_FAR _MonIsTakenOutText
 	db "@"
 
-NoMonText: ; 0x2180c
+NoMonText: ; 21849 (8:5849)
 	TX_FAR _NoMonText
 	db "@"
 
-CantTakeMonText: ; 0x21811
+CantTakeMonText: ; 2184e (8:584e)
 	TX_FAR _CantTakeMonText
 	db "@"
 
-ReleaseWhichMonText: ; 0x21816
-	TX_FAR _ReleaseWhichMonText
+PikachuUnhappyText: ; 21853 (8:5853)
+	TX_FAR _PikachuUnhappyText
 	db "@"
 
-OnceReleasedText: ; 0x2181b
+ReleaseWhichMonText: ; 21858 (8:5858)
+	TX_FAR _ReleaseWhichMonText
+	db "@"
+	
+OnceReleasedText: ; 2185d (8:585d)
 	TX_FAR _OnceReleasedText
 	db "@"
 
-MonWasReleasedText: ; 0x21820
+MonWasReleasedText: ; 21862 (8:5862)
 	TX_FAR _MonWasReleasedText
 	db "@"
 
-CableClubLeftGameboy:: ; 5824 (8:5825)
+CableClubLeftGameboy:: ; 21867 (8:5867)
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	ret z
@@ -523,7 +572,7 @@ CableClubLeftGameboy:: ; 5824 (8:5825)
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump JustAMomentText
 
-CableClubRightGameboy:: ; 5845 (8:5845)
+CableClubRightGameboy:: ; 21887 (8:5887)
 	ld a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	ret z
@@ -540,7 +589,7 @@ CableClubRightGameboy:: ; 5845 (8:5845)
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump JustAMomentText
 
-JustAMomentText:: ; 21865 (8:5865)
+JustAMomentText:: ; 218a7 (8:58a7)
 	TX_FAR _JustAMomentText
 	db "@"
 
@@ -550,6 +599,5 @@ JustAMomentText:: ; 21865 (8:5865)
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump OpenBillsPCText
 
-OpenBillsPCText:: ; 21878 (8:5878)
+OpenBillsPCText:: ; 218ba (8:58ba)
 	db $FD ; FuncTX_BillsPC
-

@@ -553,21 +553,20 @@ PrintSafariGameOverText: ; 1e385 (7:6385)
 CinnabarGymQuiz_1eb0a: ; 1e4bf (7:64bf)
 	dr $1e4bf,$20000
 
-SECTION "bank08",ROMX,BANK[$08]
+;SECTION "bank08",ROMX,BANK[$08]
 
-	dr $20000,$2131e
-Music_DoLowHealthAlarm: ; 2131e (8:531e)
-	dr $2131e,$2146f
-BillsPC_: ; 2146f (8:546f)
-	dr $2146f,$218bb
-Func_218bb: ; 218bb (8:58bb)
-	dr $218bb,$219f8
-Func_219f8: ; 219f8 (8:59f8)
-	dr $219f8,$21ab7
-Func_21ab7: ; 21ab7 (8:5ab7)
-	dr $21ab7,$21b3f
-Func_21b3f: ; 21b3f (8:5b3f)
-	dr $21b3f,$24000
+;	dr $20000,$218bb
+;Music_DoLowHealthAlarm: ; 2131e (8:531e)
+;	dr $2131e,$2146f
+;BillsPC_: ; 2146f (8:546f)
+;Func_218bb: ; 218bb (8:58bb)
+;	dr $218bb,$219f8
+;Func_219f8: ; 219f8 (8:59f8)
+;	dr $219f8,$21ab7
+;Func_21ab7: ; 21ab7 (8:5ab7)
+;	dr $21ab7,$21b3f
+;Func_21b3f: ; 21b3f (8:5b3f)
+;	dr $21b3f,$24000
 
 SECTION "Pics 1", ROMX, BANK[PICS_1]
 
@@ -919,7 +918,12 @@ ReadTrainer: ; 39bb6 (e:5bb6)
 DrawAllPokeballs: ; 3a8df (e:68df)
 	dr $3a8df,$3a9e9
 SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
-	dr $3a9e9,$3aa68
+	dr $3a9e9,$3aa28
+	
+PokeballTileGraphics:: ; 3aa28 (e:6a28)
+;	INCBIN "gfx/pokeball.2bpp"
+;PokeballTileGraphicsEnd:
+	dr $3aa28,$3aa68
 
 TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
@@ -1236,7 +1240,9 @@ SECTION "bank3A",ROMX,BANK[$3A]
 MonsterNames: ; e8000 (3a:4000)
 	dr $e8000,$e8a5e
 Func_e8a5e: ; e8a5e (3a:4a5e)
-	dr $e8a5e,$e928a
+	dr $e8a5e,$e8d35
+Func_e8d35:: ; e8d35 (3a:4d35)
+	dr $e8d35,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 	dr $e988a,$e9bfa
 

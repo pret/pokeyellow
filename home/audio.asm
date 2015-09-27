@@ -253,7 +253,7 @@ Func_22aa:: ; 22aa (0:22aa)
 	push hl
 	push de
 	push bc
-	homecall Func_219f8 ; 8:59f8
+	homecall Audio2_219f8 ; 8:59f8
 	pop bc
 	pop de
 	pop hl
@@ -263,7 +263,7 @@ Func_22c0:: ; 22c0 (0:22c0)
 	push hl
 	push de
 	push bc
-	homecall Func_21ab7 ; 8:5ab7
+	homecall Audio2_21ab7 ; 8:5ab7
 	pop bc
 	pop de
 	pop hl
@@ -273,7 +273,7 @@ Func_22d6:: ; 22d6 (0:22d6)
 	push hl
 	push de
 	push bc
-	homecall Func_21b3f
+	homecall Audio2_21b3f
 	pop bc
 	pop de
 	pop hl
@@ -291,11 +291,11 @@ Func_22ec:: ; 22ec (0:22ec)
 	call Audio1_PlaySound
 	jr .done
 .checkForBank08
-	cp BANK(Func_218bb)
+	cp BANK(Audio2_PlaySound)
 	jr nz, .checkForBank1F
 .bank08
 	ld a, b
-	call Func_218bb
+	call Audio2_PlaySound
 	jr .done
 .checkForBank1F
 	cp BANK(Func_7d10d)

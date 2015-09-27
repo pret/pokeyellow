@@ -281,12 +281,16 @@ predef_const: MACRO
 	const \1Predef
 	ENDM
 	
+tx_pre_const: MACRO
+	const \1_id
+	ENDM
+	
 add_tx_pre: MACRO
 \1_id:: dw \1
 ENDM
 
 tx_pre_id: MACRO
-	ld a, (\1_id - TextPredefs) / 2 + 1
+	ld a, \1_id ; - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre: MACRO
