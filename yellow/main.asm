@@ -1139,13 +1139,6 @@ RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
 	dr $7a22a,$7c000
 
-
-SECTION "bank1F",ROMX,BANK[$1F]
-
-	dr $7c000,$7d10d
-Func_7d10d: ; 7d10d (1f:510d)
-	dr $7d10d,$80000
-
 SECTION "bank20",ROMX,BANK[$20]
 
 	dr $80000,$80f14

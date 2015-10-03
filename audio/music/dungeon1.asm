@@ -6,10 +6,8 @@ Music_Dungeon1_Ch1:: ; 7ded1 (1f:5ed1)
 	vibrato 10, 1, 4
 	notetype 12, 4, 13
 	rest 8
-	stereopanning 237
 	octave 4
 	F# 8
-	stereopanning 255
 
 Music_Dungeon1_branch_7dee5::
 	notetype 12, 11, 2

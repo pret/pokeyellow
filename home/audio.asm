@@ -298,10 +298,10 @@ Func_22ec:: ; 22ec (0:22ec)
 	call Audio2_PlaySound
 	jr .done
 .checkForBank1F
-	cp BANK(Func_7d10d)
+	cp BANK(Audio3_PlaySound)
 	jr nz, .bank20
 	ld a, b
-	call Func_7d10d
+	call Audio3_PlaySound
 	jr .done
 .bank20
 	ld a,b
