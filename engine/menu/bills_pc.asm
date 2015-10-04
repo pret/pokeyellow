@@ -247,10 +247,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	ld a, [wcf91]
 	call PlayCry
 .asm_215cf
-	ld hl, Func_f430a
-	ld b, BANK(Func_f430a)
-	ld d, $7
-	call Bankswitch
+	callabd_Func_f430a $7
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon

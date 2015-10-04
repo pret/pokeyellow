@@ -97,6 +97,20 @@ callab: MACRO
 	call Bankswitch
 	ENDM
 
+calladb_Func_f430a: MACRO
+	ld hl, Func_f430a
+	ld d, \1
+	ld b, BANK(Func_f430a)
+	call Bankswitch
+	ENDM
+	
+callabd_Func_f430a: MACRO
+	ld hl, Func_f430a
+	ld b, BANK(Func_f430a)
+	ld d, \1
+	call Bankswitch
+	ENDM
+
 jpba: MACRO
 	ld b, BANK(\1)
 	ld hl, \1

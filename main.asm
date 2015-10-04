@@ -2262,8 +2262,7 @@ PrintSafariZoneSteps: ; c52f (3:452f)
 	cp UNKNOWN_DUNGEON_2
 	ret nc
 	coord hl, 0, 0
-	ld b, 3
-	ld c, 7
+	lb bc, 3, 7
 	call TextBoxBorder
 	coord hl, 1, 1
 	ld de, wSafariSteps
@@ -2277,26 +2276,26 @@ PrintSafariZoneSteps: ; c52f (3:452f)
 	call PlaceString
 	ld a, [W_NUMSAFARIBALLS]
 	cp 10
-	jr nc, .asm_c56d
+	jr nc, .numSafariBallsTwoDigits
 	coord hl, 5, 3
 	ld a, " "
 	ld [hl], a
-.asm_c56d
+.numSafariBallsTwoDigits
 	coord hl, 6, 3
 	ld de, W_NUMSAFARIBALLS
 	lb bc, 1, 2
 	jp PrintNumber
 
-SafariSteps: ; c579 (3:4579)
+SafariSteps: ; c2c4 (3:42c4)
 	db "/500@"
 
-SafariBallText: ; c57e (3:457e)
+SafariBallText: ; c5c9 (3:45c9)
 	db "BALL×× @"
 
-GetTileAndCoordsInFrontOfPlayer: ; c586 (3:4586)
+GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 	call GetPredefRegisters
 
-_GetTileAndCoordsInFrontOfPlayer: ; c589 (3:4589)
+_GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 	ld a, [W_YCOORD]
 	ld d, a
 	ld a, [W_XCOORD]
@@ -2333,7 +2332,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c589 (3:4589)
 	ld [wTileInFrontOfPlayer], a
 	ret
 
-GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
+GetTileTwoStepsInFrontOfPlayer: ; c309 (3:4309)
 	xor a
 	ld [$ffdb], a
 	ld hl, W_YCOORD
@@ -2381,18 +2380,10 @@ GetTileTwoStepsInFrontOfPlayer: ; c5be (3:45be)
 	ld [wTileInFrontOfPlayer], a
 	ret
 
-CheckForCollisionWhenPushingBoulder: ; c60b (3:460b)
+CheckForCollisionWhenPushingBoulder: ; c356 (3:4356)
 	call GetTileTwoStepsInFrontOfPlayer
-	ld hl, W_TILESETCOLLISIONPTR
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .done ; if the tile two steps ahead is not passable
-	cp c
-	jr nz, .loop
+	call IsTilePassable
+	jr c, .done
 	ld hl, TilePairCollisionsLand
 	call CheckForTilePairCollisions2
 	ld a, $ff
@@ -2407,7 +2398,7 @@ CheckForCollisionWhenPushingBoulder: ; c60b (3:460b)
 	ret
 
 ; sets a to $ff if there is a collision and $00 if there is no collision
-CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
+CheckForBoulderCollisionWithSprites: ; c378 (3:4378)
 	ld a, [wBoulderSpriteIndex]
 	dec a
 	swap a
@@ -2484,10 +2475,16 @@ CheckForBoulderCollisionWithSprites: ; c636 (3:4636)
 	xor a
 	ret
 
-ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
+ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld a, [wd730]
 	add a
 	jp c, .noBlackOut ; no black out if joypad states are being simulated
+	ld a, [wd493]
+	bit 7, a
+	jp nz, .noBlackOut
+	ld a, [wd72e]
+	bit 6, a
+	jp nz, .noBlackout
 	ld a, [wPartyCount]
 	and a
 	jp z, .noBlackOut
@@ -2540,6 +2537,12 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 	ld a, $d0
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
+	callab Func_fce18
+	jr nc, .curMonNotPlayerPikachu
+	ld e, $3
+	callab Func_f0000
+	callab_Func_f430a_ld_d $9
+.curMonNotPlayerPikachu
 	pop de
 	pop hl
 .nextMon
@@ -2597,30 +2600,47 @@ ApplyOutOfBattlePoisonDamage: ; c69c (3:469c)
 	ld [wOutOfBattleBlackout], a
 	ret
 
-LoadTilesetHeader: ; c754 (3:4754)
+Func_c4c7: ; c4c7 (3:44c7)
+	ld a, [wStepCounter]
+	and a
+	jr nz, .asm_c4de
+	call Random
+	and $1
+	jr z, .asm_c4de
+	callab_Func_f430a_ld_d $6
+.asm_c4de
+	ld hl, wd471
+	ld a, [hl]
+	cp $80
+	jr z, .asm_c4ef
+	jr c, .asm_c4ea
+	dec a
+	dec a
+.asm_c4ea
+	inc a
+	ld [hl], a
+	cp $80
+	ret nz
+.asm_c4ef
+	xor a
+	ld [wd49c], a
+	ret
+	
+LoadTilesetHeader: ; c4f4 (3:44f4)
 	call GetPredefRegisters
 	push hl
 	ld d, 0
 	ld a, [W_CURMAPTILESET]
 	add a
 	add a
-	ld b, a
-	add a
-	add b ; a = tileset * 12
-	jr nc, .noCarry
-	inc d
-.noCarry
 	ld e, a
 	ld hl, Tilesets
 	add hl, de
+	add hl, de
+	add hl, de
 	ld de, W_TILESETBANK
-	ld c, $b
-.copyTilesetHeaderLoop
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .copyTilesetHeaderLoop
+	ld bc, $b
+	call CopyData
 	ld a, [hl]
 	ld [hTilesetType], a
 	xor a
@@ -2634,13 +2654,13 @@ LoadTilesetHeader: ; c754 (3:4754)
 	call IsInArray
 	pop de
 	pop hl
-	jr c, .asm_c797
+	jr c, .notDungeonTileset
 	ld a, [W_CURMAPTILESET]
 	ld b, a
 	ld a, [hPreviousTileset]
 	cp b
 	jr z, .done
-.asm_c797
+.notDungeonTileset
 	ld a, [wDestinationWarpID]
 	cp $ff
 	jr z, .done
@@ -2658,7 +2678,7 @@ INCLUDE "data/dungeon_tilesets.asm"
 
 INCLUDE "data/tileset_headers.asm"
 
-IncrementDayCareMonExp: ; c8de (3:48de)
+IncrementDayCareMonExp: ; c684 (3:4684)
 	ld a, [W_DAYCARE_IN_USE]
 	and a
 	ret z

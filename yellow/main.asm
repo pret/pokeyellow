@@ -344,10 +344,452 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 	ret
 
 INCLUDE "data/warp_tile_ids.asm"
+
 PrintSafariZoneSteps: ; c27b (3:427b)
-	dr $c27b,$c2d4
+	ld a, [W_CURMAP]
+	cp SAFARI_ZONE_EAST
+	ret c
+	cp UNKNOWN_DUNGEON_2
+	ret nc
+	coord hl, 0, 0
+	lb bc, 3, 7
+	call TextBoxBorder
+	coord hl, 1, 1
+	ld de, wSafariSteps
+	lb bc, 2, 3
+	call PrintNumber
+	coord hl, 4, 1
+	ld de, SafariSteps
+	call PlaceString
+	coord hl, 1, 3
+	ld de, SafariBallText
+	call PlaceString
+	ld a, [W_NUMSAFARIBALLS]
+	cp 10
+	jr nc, .numSafariBallsTwoDigits
+	coord hl, 5, 3
+	ld a, " "
+	ld [hl], a
+.numSafariBallsTwoDigits
+	coord hl, 6, 3
+	ld de, W_NUMSAFARIBALLS
+	lb bc, 1, 2
+	jp PrintNumber
+
+SafariSteps: ; c2c4 (3:42c4)
+	db "/500@"
+
+SafariBallText: ; c5c9 (3:42c9)
+	db "BALL×× @"
+
+GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d1)
+	call GetPredefRegisters
+	
 _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
-	dr $c2d4,$cb62
+	ld a, [W_YCOORD]
+	ld d, a
+	ld a, [W_XCOORD]
+	ld e, a
+	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	and a ; cp SPRITE_FACING_DOWN
+	jr nz, .notFacingDown
+; facing down
+	aCoord 8, 11
+	inc d
+	jr .storeTile
+.notFacingDown
+	cp SPRITE_FACING_UP
+	jr nz, .notFacingUp
+; facing up
+	aCoord 8, 7
+	dec d
+	jr .storeTile
+.notFacingUp
+	cp SPRITE_FACING_LEFT
+	jr nz, .notFacingLeft
+; facing left
+	aCoord 6, 9
+	dec e
+	jr .storeTile
+.notFacingLeft
+	cp SPRITE_FACING_RIGHT
+	jr nz, .storeTile
+; facing right
+	aCoord 10, 9
+	inc e
+.storeTile
+	ld c, a
+	ld [wTileInFrontOfPlayer], a
+	ret
+	
+GetTileTwoStepsInFrontOfPlayer: ; c309 (3:4309)
+	xor a
+	ld [$ffdb], a
+	ld hl, W_YCOORD
+	ld a, [hli]
+	ld d, a
+	ld e, [hl]
+	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	and a ; cp SPRITE_FACING_DOWN
+	jr nz, .notFacingDown
+; facing down
+	ld hl, $ffdb
+	set 0, [hl]
+	aCoord 8, 13
+	inc d
+	jr .storeTile
+.notFacingDown
+	cp SPRITE_FACING_UP
+	jr nz, .notFacingUp
+; facing up
+	ld hl, $ffdb
+	set 1, [hl]
+	aCoord 8, 5
+	dec d
+	jr .storeTile
+.notFacingUp
+	cp SPRITE_FACING_LEFT
+	jr nz, .notFacingLeft
+; facing left
+	ld hl, $ffdb
+	set 2, [hl]
+	aCoord 4, 9
+	dec e
+	jr .storeTile
+.notFacingLeft
+	cp SPRITE_FACING_RIGHT
+	jr nz, .storeTile
+; facing right
+	ld hl, $ffdb
+	set 3, [hl]
+	aCoord 12, 9
+	inc e
+.storeTile
+	ld c, a
+	ld [wTileInFrontOfBoulderAndBoulderCollisionResult], a
+	ld [wTileInFrontOfPlayer], a
+	ret
+
+CheckForCollisionWhenPushingBoulder: ; c356 (3:4356)
+	call GetTileTwoStepsInFrontOfPlayer
+	call IsTilePassable
+	jr c, .done
+	ld hl, TilePairCollisionsLand
+	call CheckForTilePairCollisions2
+	ld a, $ff
+	jr c, .done ; if there is an elevation difference between the current tile and the one two steps ahead
+	ld a, [wTileInFrontOfBoulderAndBoulderCollisionResult]
+	cp $15 ; stairs tile
+	ld a, $ff
+	jr z, .done ; if the tile two steps ahead is stairs
+	call CheckForBoulderCollisionWithSprites
+.done
+	ld [wTileInFrontOfBoulderAndBoulderCollisionResult], a
+	ret
+
+; sets a to $ff if there is a collision and $00 if there is no collision
+CheckForBoulderCollisionWithSprites: ; c378 (3:4378)
+	ld a, [wBoulderSpriteIndex]
+	dec a
+	swap a
+	ld d, 0
+	ld e, a
+	ld hl, wSpriteStateData2 + $14
+	add hl, de
+	ld a, [hli] ; map Y position
+	ld [$ffdc], a
+	ld a, [hl] ; map X position
+	ld [$ffdd], a
+	ld a, [W_NUMSPRITES]
+	ld c, a
+	ld de, $f
+	ld hl, wSpriteStateData2 + $14
+	ld a, [$ffdb]
+	and $3 ; facing up or down?
+	jr z, .pushingHorizontallyLoop
+.pushingVerticallyLoop
+	inc hl
+	ld a, [$ffdd]
+	cp [hl]
+	jr nz, .nextSprite1 ; if X coordinates don't match
+	dec hl
+	ld a, [hli]
+	ld b, a
+	ld a, [$ffdb]
+	rrca
+	jr c, .pushingDown
+; pushing up
+	ld a, [$ffdc]
+	dec a
+	jr .compareYCoords
+.pushingDown
+	ld a, [$ffdc]
+	inc a
+.compareYCoords
+	cp b
+	jr z, .failure
+.nextSprite1
+	dec c
+	jr z, .success
+	add hl, de
+	jr .pushingVerticallyLoop
+.pushingHorizontallyLoop
+	ld a, [hli]
+	ld b, a
+	ld a, [$ffdc]
+	cp b
+	jr nz, .nextSprite2
+	ld b, [hl]
+	ld a, [$ffdb]
+	bit 2, a
+	jr nz, .pushingLeft
+; pushing right
+	ld a, [$ffdd]
+	inc a
+	jr .compareXCoords
+.pushingLeft
+	ld a, [$ffdd]
+	dec a
+.compareXCoords
+	cp b
+	jr z, .failure
+.nextSprite2
+	dec c
+	jr z, .success
+	add hl, de
+	jr .pushingHorizontallyLoop
+.failure
+	ld a, $ff
+	ret
+.success
+	xor a
+	ret
+
+ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
+	ld a, [wd730]
+	add a
+	jp c, .noBlackOut ; no black out if joypad states are being simulated
+	ld a, [wd493]
+	bit 7, a
+	jp nz, .noBlackOut
+	ld a, [wd72e]
+	bit 6, a
+	jp nz, .noBlackOut
+	ld a, [wPartyCount]
+	and a
+	jp z, .noBlackOut
+	call IncrementDayCareMonExp
+	call Func_c4c7
+	ld a, [wStepCounter]
+	and $3 ; is the counter a multiple of 4?
+	jp nz, .skipPoisonEffectAndSound ; only apply poison damage every fourth step
+	ld [wWhichPokemon], a
+	ld hl, wPartyMon1Status
+	ld de, wPartySpecies
+.applyDamageLoop
+	ld a, [hl]
+	and (1 << PSN)
+	jr z, .nextMon2 ; not poisoned
+	dec hl
+	dec hl
+	ld a, [hld]
+	ld b, a
+	ld a, [hli]
+	or b
+	jr z, .nextMon ; already fainted
+; subtract 1 from HP
+	ld a, [hl]
+	dec a
+	ld [hld], a
+	inc a
+	jr nz, .noBorrow
+; borrow 1 from upper byte of HP
+	dec [hl]
+	inc hl
+	jr .nextMon
+.noBorrow
+	ld a, [hli]
+	or [hl]
+	jr nz, .nextMon ; didn't faint from damage
+; the mon fainted from the damage
+	push hl
+	inc hl
+	inc hl
+	ld [hl], a
+	ld a, [de]
+	ld [wd11e], a
+	push de
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
+	call GetPartyMonName
+	xor a
+	ld [wJoyIgnore], a
+	call EnableAutoTextBoxDrawing
+	ld a, $d0
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	callab Func_fce18
+	jr nc, .curMonNotPlayerPikachu
+	ld e, $3
+	callab Func_f0000
+	calladb_Func_f430a $9
+.curMonNotPlayerPikachu
+	pop de
+	pop hl
+.nextMon
+	inc hl
+	inc hl
+.nextMon2
+	inc de
+	ld a, [de]
+	inc a
+	jr z, .applyDamageLoopDone
+	ld bc, wPartyMon2 - wPartyMon1
+	add hl, bc
+	push hl
+	ld hl, wWhichPokemon
+	inc [hl]
+	pop hl
+	jr .applyDamageLoop
+.applyDamageLoopDone
+	ld hl, wPartyMon1Status
+	ld a, [wPartyCount]
+	ld d, a
+	ld e, 0
+.countPoisonedLoop
+	ld a, [hl]
+	and (1 << PSN)
+	or e
+	ld e, a
+	ld bc, wPartyMon2 - wPartyMon1
+	add hl, bc
+	dec d
+	jr nz, .countPoisonedLoop
+	ld a, e
+	and a ; are any party members poisoned?
+	jr z, .skipPoisonEffectAndSound
+	ld b, $2
+	predef ChangeBGPalColor0_4Frames ; change BG white to dark grey for 4 frames
+	ld a, SFX_POISONED
+	call PlaySound
+.skipPoisonEffectAndSound
+	predef AnyPartyAlive
+	ld a, d
+	and a
+	jr nz, .noBlackOut
+	call EnableAutoTextBoxDrawing
+	ld a, $d1
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	ld hl, wd72e
+	set 5, [hl]
+	ld a, $ff
+	jr .done
+.noBlackOut
+	xor a
+.done
+	ld [wOutOfBattleBlackout], a
+	ret
+
+Func_c4c7: ; c4c7 (3:44c7)
+	ld a, [wStepCounter]
+	and a
+	jr nz, .asm_c4de
+	call Random
+	and $1
+	jr z, .asm_c4de
+	calladb_Func_f430a $6
+.asm_c4de
+	ld hl, wd471
+	ld a, [hl]
+	cp $80
+	jr z, .asm_c4ef
+	jr c, .asm_c4ea
+	dec a
+	dec a
+.asm_c4ea
+	inc a
+	ld [hl], a
+	cp $80
+	ret nz
+.asm_c4ef
+	xor a
+	ld [wd49c], a
+	ret
+	
+LoadTilesetHeader: ; c4f4 (3:44f4)
+	call GetPredefRegisters
+	push hl
+	ld d, 0
+	ld a, [W_CURMAPTILESET]
+	add a
+	add a
+	ld e, a
+	ld hl, Tilesets
+	add hl, de
+	add hl, de
+	add hl, de
+	ld de, W_TILESETBANK
+	ld bc, $b
+	call CopyData
+	ld a, [hl]
+	ld [hTilesetType], a
+	xor a
+	ld [$ffd8], a
+	pop hl
+	ld a, [W_CURMAPTILESET]
+	push hl
+	push de
+	ld hl, DungeonTilesets
+	ld de, $1
+	call IsInArray
+	pop de
+	pop hl
+	jr c, .notDungeonTileset
+	ld a, [W_CURMAPTILESET]
+	ld b, a
+	ld a, [hPreviousTileset]
+	cp b
+	jr z, .done
+.notDungeonTileset
+	ld a, [wDestinationWarpID]
+	cp $ff
+	jr z, .done
+	call LoadDestinationWarpPosition
+	ld a, [W_YCOORD]
+	and $1
+	ld [W_YBLOCKCOORD], a
+	ld a, [W_XCOORD]
+	and $1
+	ld [W_XBLOCKCOORD], a
+.done
+	ret
+
+INCLUDE "data/dungeon_tilesets.asm"
+
+INCLUDE "data/tileset_headers.asm"
+
+IncrementDayCareMonExp: ; c684 (3:4684)
+	ld a, [W_DAYCARE_IN_USE]
+	and a
+	ret z
+	ld hl, wDayCareMonExp + 2
+	inc [hl]
+	ret nz
+	dec hl
+	inc [hl]
+	ret nz
+	dec hl
+	inc [hl]
+	ld a, [hl]
+	cp $50
+	ret c
+	ld a, $50
+	ld [hl], a
+	ret
+
+INCLUDE "data/hide_show_data.asm"
+
 LoadWildData: ; cb62 (3:4b62)
 	dr $cb62,$d2ed
 UseItem_: ; d2ed (3:52ed)

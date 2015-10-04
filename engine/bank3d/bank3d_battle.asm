@@ -51,10 +51,7 @@ asm_f601d: ; f601d (f:601d)
 	ld a,[W_LONEATTACKNO]
 	and a
 	jp z,InitBattle_Common
-	ld hl,Func_f430a
-	ld b,BANK(Func_f430a)
-	ld d,$4
-	call Bankswitch ; useless since already in bank3d
+	callabd_Func_f430a $4 ; useless since already in bank3d
 	jp InitBattle_Common
 
 InitWildBattle: ; f607c (3d:607c)
