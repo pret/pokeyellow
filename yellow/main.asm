@@ -791,7 +791,39 @@ IncrementDayCareMonExp: ; c684 (3:4684)
 INCLUDE "data/hide_show_data.asm"
 
 LoadWildData: ; cb62 (3:4b62)
-	dr $cb62,$d2ed
+	ld hl,WildDataPointers
+	ld a,[W_CURMAP]
+
+	; get wild data for current map
+	ld c,a
+	ld b,0
+	add hl,bc
+	add hl,bc
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a       ; hl now points to wild data for current map
+	ld a,[hli]
+	ld [W_GRASSRATE],a
+	and a
+	jr z,.NoGrassData ; if no grass data, skip to surfing data
+	push hl
+	ld de,W_GRASSMONS ; otherwise, load grass data
+	ld bc,$0014
+	call CopyData
+	pop hl
+	ld bc,$0014
+	add hl,bc
+.NoGrassData
+	ld a,[hli]
+	ld [W_WATERRATE],a
+	and a
+	ret z        ; if no water data, we're done
+	ld de,W_WATERMONS  ; otherwise, load surfing data
+	ld bc,$0014
+	jp CopyData
+	
+INCLUDE "data/wild_mons.asm"
+
 UseItem_: ; d2ed (3:52ed)
 	dr $d2ed,$e635
 TossItem_: ; e635 (3:6635)
@@ -994,21 +1026,6 @@ PrintSafariGameOverText: ; 1e385 (7:6385)
 	dr $1e385,$1e4bf
 CinnabarGymQuiz_1eb0a: ; 1e4bf (7:64bf)
 	dr $1e4bf,$20000
-
-;SECTION "bank08",ROMX,BANK[$08]
-
-;	dr $20000,$218bb
-;Music_DoLowHealthAlarm: ; 2131e (8:531e)
-;	dr $2131e,$2146f
-;BillsPC_: ; 2146f (8:546f)
-;Func_218bb: ; 218bb (8:58bb)
-;	dr $218bb,$219f8
-;Func_219f8: ; 219f8 (8:59f8)
-;	dr $219f8,$21ab7
-;Func_21ab7: ; 21ab7 (8:5ab7)
-;	dr $21ab7,$21b3f
-;Func_21b3f: ; 21b3f (8:5b3f)
-;	dr $21b3f,$24000
 
 SECTION "Pics 1", ROMX, BANK[PICS_1]
 
@@ -1535,8 +1552,20 @@ SECTION "bank1A",ROMX,BANK[$1A]
 
 
 SECTION "bank1B",ROMX,BANK[$1B]
-
-	dr $6c000,$70000
+Cemetery_GFX:      INCBIN "gfx/tilesets/cemetery.t4.2bpp"
+Cemetery_Block:    INCBIN "gfx/blocksets/cemetery.bst"
+Cavern_GFX:        INCBIN "gfx/tilesets/cavern.t14.2bpp"
+Cavern_Block:      INCBIN "gfx/blocksets/cavern.bst"
+Lobby_GFX:         INCBIN "gfx/tilesets/lobby.t2.2bpp"
+Lobby_Block:       INCBIN "gfx/blocksets/lobby.bst"
+Ship_GFX:          INCBIN "gfx/tilesets/ship.t6.2bpp"
+Ship_Block:        INCBIN "gfx/blocksets/ship.bst"
+Lab_GFX:           INCBIN "gfx/tilesets/lab.t4.2bpp"
+Lab_Block:         INCBIN "gfx/blocksets/lab.bst"
+Club_GFX:          INCBIN "gfx/tilesets/club.t5.2bpp"
+Club_Block:        INCBIN "gfx/blocksets/club.bst"
+Underground_GFX:   INCBIN "gfx/tilesets/underground.t7.2bpp"
+Underground_Block: INCBIN "gfx/blocksets/underground.bst"
 
 
 SECTION "bank1C",ROMX,BANK[$1C]

@@ -1,4 +1,4 @@
-WildDataPointers: ; ceeb (3:4eeb)
+WildDataPointers: ; cb95 (3:4b95)
 	dw NoMons      ; PALLET_TOWN
 	dw NoMons      ; VIRIDIAN_CITY
 	dw NoMons      ; PEWTER_CITY
@@ -29,8 +29,8 @@ WildDataPointers: ; ceeb (3:4eeb)
 	dw Route16Mons ; ROUTE_16
 	dw Route17Mons ; ROUTE_17
 	dw Route18Mons ; ROUTE_18
-	dw WaterMons   ; ROUTE_19
-	dw WaterMons   ; ROUTE_20
+	dw Route19Mons ; ROUTE_19
+	dw Route20Mons ; ROUTE_20
 	dw Route21Mons ; ROUTE_21
 	dw Route22Mons ; ROUTE_22
 	dw Route23Mons ; ROUTE_23
@@ -300,7 +300,8 @@ INCLUDE "data/wildPokemon/safarizonecenter.asm"
 INCLUDE "data/wildPokemon/safarizone1.asm"
 INCLUDE "data/wildPokemon/safarizone2.asm"
 INCLUDE "data/wildPokemon/safarizone3.asm"
-INCLUDE "data/wildPokemon/waterpokemon.asm"
+INCLUDE "data/wildPokemon/route19.asm"
+INCLUDE "data/wildPokemon/route20.asm"
 INCLUDE "data/wildPokemon/seafoamisland1.asm"
 INCLUDE "data/wildPokemon/seafoamislandb1.asm"
 INCLUDE "data/wildPokemon/seafoamislandb2.asm"

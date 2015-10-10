@@ -1,5 +1,5 @@
 TowerMons7:
-	db $0F
+	db $14
 	db 24,GASTLY
 	db 25,GASTLY
 	db 26,GASTLY

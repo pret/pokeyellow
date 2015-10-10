@@ -3202,11 +3202,21 @@ W_GRASSRATE:: ; d887
 	ds 1
 
 W_GRASSMONS:: ; d888
-	ds 20
+;	ds 20
+
+	ds 11
+; Overload wGrassMons
+wSerialEnemyDataBlock:: ; d893
+	ds 9
 
 wEnemyPartyCount:: ds 1     ; d89c
 wEnemyPartyMons::  ds PARTY_LENGTH + 1 ; d89d
 
+W_WATERRATE:: db ; d8a4
+W_WATERMONS:: db ; d8a5
+
+	ds W_WATERRATE - @
+	
 wEnemyMons:: ; d8a4
 wEnemyMon1:: party_struct wEnemyMon1
 wEnemyMon2:: party_struct wEnemyMon2

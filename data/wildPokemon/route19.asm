@@ -1,4 +1,4 @@
-WaterMons:
+Route19Mons:
 	db $00
 
 	db $05
