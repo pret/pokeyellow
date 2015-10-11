@@ -475,7 +475,7 @@ HandlePartyMenuInput:: ; 1226 (0:1226)
 	jr nz,.asm_1258
 	ld a,[wCurrentMenuItem]
 	ld [wWhichPokemon],a
-	callab Func_fce18 ; 3f:4e18
+	callab IsThisPartymonOurPikachu ; 3f:4e18
 	jr nc,.asm_1258
 	call Func_154a
 	jr nz,.asm_128f
@@ -2958,7 +2958,7 @@ IsItemInBag:: ; 3422 (0:3422)
 	
 IsSurfingPikachuInParty:: ; 342a (0:342a)
 ; set bit 6 of wd472 if true
-; also calls Func_3467, which is a bankswitch to Func_fcdb8
+; also calls Func_3467, which is a bankswitch to IsPikachuInOurParty
 	ld a,[wd472]
 	and $3f
 	ld [wd472],a
@@ -3001,7 +3001,7 @@ IsSurfingPikachuInParty:: ; 342a (0:342a)
 Func_3467:: ; 3467 (0:3467)
 	push hl
 	push bc
-	callab Func_fcdb8
+	callab IsPikachuInOurParty
 	pop bc
 	pop hl
 	ret nc

@@ -48,10 +48,12 @@ asm_f601d: ; f601d (f:601d)
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
 	ld [W_ISINBATTLE], a
+
+	; Is this a major story battle?
 	ld a,[W_LONEATTACKNO]
 	and a
 	jp z,InitBattle_Common
-	callabd_Func_f430a $4 ; useless since already in bank3d
+	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
 	jp InitBattle_Common
 
 InitWildBattle: ; f607c (3d:607c)

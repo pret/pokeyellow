@@ -97,16 +97,16 @@ callab: MACRO
 	call Bankswitch
 	ENDM
 
-calladb_Func_f430a: MACRO
-	ld hl, Func_f430a
+calladb_ModifyPikachuHappiness: MACRO
+	ld hl, ModifyPikachuHappiness
 	ld d, \1
-	ld b, BANK(Func_f430a)
+	ld b, BANK(ModifyPikachuHappiness)
 	call Bankswitch
 	ENDM
 	
-callabd_Func_f430a: MACRO
-	ld hl, Func_f430a
-	ld b, BANK(Func_f430a)
+callabd_ModifyPikachuHappiness: MACRO
+	ld hl, ModifyPikachuHappiness
+	ld b, BANK(ModifyPikachuHappiness)
 	ld d, \1
 	call Bankswitch
 	ENDM

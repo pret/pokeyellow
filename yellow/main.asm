@@ -628,11 +628,11 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld a, $d0
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	callab Func_fce18
+	callab IsThisPartymonOurPikachu
 	jr nc, .curMonNotPlayerPikachu
 	ld e, $3
 	callab Func_f0000
-	calladb_Func_f430a $9
+	calladb_ModifyPikachuHappiness PIKAHAPPY_PSNFNT
 .curMonNotPlayerPikachu
 	pop de
 	pop hl
@@ -698,9 +698,9 @@ Func_c4c7: ; c4c7 (3:44c7)
 	call Random
 	and $1
 	jr z, .asm_c4de
-	calladb_Func_f430a $6
+	calladb_ModifyPikachuHappiness $6
 .asm_c4de
-	ld hl, wd471
+	ld hl, wPikachuMood
 	ld a, [hl]
 	cp $80
 	jr z, .asm_c4ef

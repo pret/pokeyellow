@@ -2523,8 +2523,8 @@ wd44b:: ds 1
 
 	ds 36
 
-wd470:: ds 1
-wd471:: ds 1
+wPikachuHappiness:: ds 1
+wPikachuMood:: ds 1
 wd472:: ds 1
 wd473:: ds 1
 	

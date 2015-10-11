@@ -10,7 +10,7 @@ Func_fc4dd:: ; fc4dd (3f:44dd)
 	ld a,[wd430]
 	bit 7,a
 	jr nz,.asm_fc4f8
-	call Func_fcdb8
+	call IsPikachuInOurParty
 	jr nc,.asm_fc4f8
 	ld a,[wWalkBikeSurfState]
 	and a
@@ -1470,14 +1470,14 @@ Func_fcd83: ; fcd83 (3f:4d83)
 Func_fcdad: ; fcdad (3f:4dad)
 	push bc
 	push af
-	ld a,[wd470]
+	ld a,[wPikachuHappiness]
 	cp $50
 	pop bc
 	ld a,b
 	pop bc
 	ret
 
-Func_fcdb8:: ; fcdb8 (3f:4db8)
+IsPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	ld hl,wPartySpecies
 	ld de,wPartyMon1OTID
 	ld bc,wPartyMonOT
@@ -1547,7 +1547,7 @@ Func_fce0d:: ; fce0d (3f:4e0d)
 	ld de,wBoxMonOT
 	jr asm_fce21
 
-Func_fce18:: ; fce18 (3f:4e18)
+IsThisPartymonOurPikachu:: ; fce18 (3f:4e18)
 	ld hl,wPartyMon1
 	ld bc,wPartyMon2 - wPartyMon1
 	ld de,wPartyMonOT
@@ -1590,12 +1590,12 @@ asm_fce21: ; fce21 (3f:4e21)
 	
 Func_fce5a:: ; fce5a (3f:4e5a)
 	push de
-	call Func_fcdb8
+	call IsPikachuInOurParty
 	pop de
 	ret nc
 	ld a,d
 	cp $80
-	ld a,[wd471]
+	ld a,[wPikachuMood]
 	jr c,.asm_fce6c
 	cp d
 	jr c,.asm_fce6e
@@ -1605,7 +1605,7 @@ Func_fce5a:: ; fce5a (3f:4e5a)
 	ret c
 .asm_fce6e
 	ld a,d
-	ld [wd471],a
+	ld [wPikachuMood],a
 	ret
 
 Func_fce73:: ; fce73 (3f:4e73)
@@ -1619,7 +1619,7 @@ Func_fce73:: ; fce73 (3f:4e73)
 	cp $ff
 	jr z,.asm_fcea9
 	push hl
-	call Func_fce18
+	call IsThisPartymonOurPikachu
 	pop hl
 	jr nc,.asm_fce9e
 	ld a,[wWhichPokemon]
