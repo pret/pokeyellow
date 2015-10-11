@@ -1252,7 +1252,7 @@ wAIItem:: ; cf05
 ; the item that the AI used
 	ds 1
 
-wUsedItemOnWhichPokemon:: ; cf05
+wUsedItemOnWhichPokemon:: ; cf06
 	ds 1
 
 wAnimSoundID:: ; cf07

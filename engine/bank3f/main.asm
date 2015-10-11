@@ -1724,7 +1724,9 @@ Func_fceab:: ; fceab (3f:4eab)
 	ret
 
 Func_fcf0c:: ; fcf0c (3f:4f0c)
-	dr $fcf0c,$fd004
+	dr $fcf0c,$fd001
+Func_fd001:: ; fd001 (3f:5001)
+	dr $fd001,$fd004
 Func_fd004:: ; fd004 (3f:5004)
 	dr $fd004,$fd0d0
 Func_fd0d0:: ; fd0d0 (3f:50d0)

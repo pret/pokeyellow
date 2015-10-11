@@ -610,7 +610,7 @@ BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
 CircleTile:						INCBIN "gfx/circle_tile.2bpp"
 BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
 
-Func_f5ea4:: ; f5ea4 (3d:5ea4)
+ReadSuperRodData:: ; f5ea4 (3d:5ea4)
 	ld a,[W_CURMAP]
 	ld c,a
 	ld hl,FishingSlots
