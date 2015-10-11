@@ -824,18 +824,10 @@ LoadWildData: ; cb62 (3:4b62)
 	
 INCLUDE "data/wild_mons.asm"
 
-UseItem_: ; d2ed (3:52ed)
-	dr $d2ed,$e635
-TossItem_: ; e635 (3:6635)
-	dr $e635,$e6a8
-IsKeyItem_: ; e6a8 (3:66a8)
-	dr $e6a8,$e6e8
-SendNewMonToBox: ; e6e8 (3:66e8)
-	dr $e6e8,$e808
-IsNextTileShoreOrWater: ; e808 (3:6808)
-	dr $e808,$e848
-FindWildLocationsOfMon: ; e848 (3:6848)
-	dr $e848,$e91b
+INCLUDE "engine/items/items.asm"
+
+DrawBadges: ; e880 (3:6880)
+	dr $e880,$e91b
 	
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
@@ -850,7 +842,9 @@ TryPushingBoulder: ; f0a1 (3:70a1)
 DoBoulderDustAnimation: ; f131 (3:7131)
 	dr $f131,$f161
 _AddPartyMon: ; f161 (3:7161)
-	dr $f161,$f323
+	dr $f161,$f1e5
+Pointer_f1e5: ; f1e5 (3:71e5)
+	dr $f1e5,$f323
 _AddEnemyMonToPlayerParty: ; f323 (3:7323)
 	dr $f323,$f3a4
 Func_f3a4: ; f3a4 (3:73a4)
@@ -881,7 +875,9 @@ WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
 WorldMapTileGraphicsEnd:
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
 
-	dr $11468,$11875
+	dr $11468,$1168a
+PrintStatsBox: ; 1168a (4:568a)
+	dr $1168a, $11875
 DrawPartyMenu_: ; 11875 (4:5875)
 	dr $11875,$11886
 RedrawPartyMenu_: ; 11886 (4:5886)
@@ -1237,7 +1233,11 @@ BeedrillPicBack:     INCBIN "pic/monback/beedrillb.pic"
 
 FossilKabutopsPic:   INCBIN "pic/bmon/fossilkabutops.pic"
 
-	dr $2fd25,$30000
+	dr $2fd25,$2fd42
+CheckIfMoveIsKnown: ; 2fd42 (b:7d42)
+	dr $2fd42,$2fd6a
+Func_2fd6a: ; 2fd6a (b:7d6a)
+	dr $2fd6a,$30000
 
 
 SECTION "Pics 4", ROMX, BANK[PICS_4]
@@ -1363,7 +1363,10 @@ VictreebelPicBack:    INCBIN "pic/monback/victreebelb.pic"
 
 SECTION "bank0E",ROMX,BANK[$0E]
 
-	dr $38000,$383de
+Moves: ; 38000 (e:4000)
+	dr $38000,$38006
+MoveEnd: ; 38006 (e:4006)
+	dr $38006,$383de
 BaseStats: ; 383de (e:43de)
 	dr $383de,$39462
 CryData: ; 39462 (e:5462)
@@ -1392,6 +1395,7 @@ TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
 
+TryEvolvingMon:
 EvolveTradeMon: ; 3adb8 (e:6db8)
 	dr $3adb8,$3b10f
 Func_3b10f: ; 3b01f (e:710f)
@@ -1410,7 +1414,9 @@ AnyPartyAlive: ; 3cae8 (f:4ae8)
 DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
 	dr $3ce1f,$3ceb1
 DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)
-	dr $3ceb1,$3d9ac
+	dr $3ceb1,$3d320
+MoveSelectionMenu: ; 3d320 (f:5320)
+	dr $3d320,$3d9ac
 IsGhostBattle: ; 3d9ac (f:59ac)
 	dr $3d9ac,$3ddc3
 PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
@@ -1422,7 +1428,9 @@ LoadEnemyMonData: ; 3ec87 (f:6c87)
 DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
 	dr $3edb8,$3eeb3
 QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3fb2e
+	dr $3eeb3,$3f3de
+StatModifierUpEffect: ; 3f3de (f:73de)
+	dr $3f3de,$3fb2e
 PrintButItFailedText_: ; 3fb2e (f:7b2e)
 	dr $3fb2e,$3fb39
 PrintDidntAffectText: ; 3fb39 (f:7b39)
@@ -1526,7 +1534,9 @@ TrainerWalkUpToPlayer: ; 567cd (15:67cd)
 	dr $567cd,$58000
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58e8b
+	dr $58000,$58dc0
+CalcExperience: ; 58dc0 (16:4dc0)
+	dr $58dc0,$58e8b
 PrintStatusAilment: ; 58e8b (16:4e8b)
 	dr $58e8b,$5c000
 
@@ -1585,7 +1595,9 @@ INCLUDE "engine/save.asm"
 
 SECTION "bank1D",ROMX,BANK[$1D]
 
-	dr $74000,$74726
+	dr $74000,$7405c
+HiddenItemNear: ; 7405c (1d:405c)
+	dr $7405c,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$78000
 
