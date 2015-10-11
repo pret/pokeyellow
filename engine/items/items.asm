@@ -673,7 +673,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	ld [wcf91],a
 	call Func_d85d
 	jr nc, .noEffect
-	callab Func_fce18
+	callab IsThisPartymonOurPikachu
 	jr nc, .notPlayerPikachu
 	ld e, $1b
 	callab Func_f0000
@@ -2372,8 +2372,8 @@ ItemUseTMHM: ; e374 (3:6374)
 	push af
 	ld a,d
 	ld [wWhichPokemon],a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USETMHM
-	callab Func_fce18
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
+	callab IsThisPartymonOurPikachu
 	jr nc,.notTeachingThunderboltOrThunderToPikachu
 	ld a,[wcf91]
 	cp a,TM_24 ; are we teaching thunderbolt to the player pikachu?

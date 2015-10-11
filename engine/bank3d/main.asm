@@ -57,7 +57,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	ld a, d
 	cp PIKAHAPPY_GYMLEADER
 	jr z, .checkanywhereinparty
-	cp PIKAHAPPY_6
+	cp PIKAHAPPY_WALKING
 	jr z, .checkanywhereinparty
 	push de
 	callab IsThisPartymonOurPikachu
