@@ -440,7 +440,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld a, $1
 	ld [wd49c], a
 	ld a, $85
-	ld [wd471], a
+	ld [wPikachuMood], a
 	ld a,[wPartyCount]
 	cp PARTY_LENGTH		;is party full?
 	jr z,.sendToBox
@@ -673,7 +673,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	ld [wcf91],a
 	call Func_d85d
 	jr nc, .noEffect
-	callab Func_fce18
+	callab IsThisPartymonOurPikachu
 	jr nc, .notPlayerPikachu
 	ld e, $1b
 	callab Func_f0000
@@ -685,7 +685,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	ld a, $4
 	ld [wd49c], a
 	ld a, $82
-	ld [wd471], a
+	ld [wPikachuMood], a
 	jr .canceledItemUse
 .notPlayerPikachu
 	ld a,SFX_HEAL_AILMENT
@@ -799,7 +799,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	jr nc, .asm_d906
 	push hl
 	push de
-	callabd_Func_f430a $2
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDITEM
 	pop de
 	pop hl
 .asm_d906
@@ -1383,7 +1383,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	
 	xor a
 	ld [wForceEvolution],a
-	callabd_Func_f430a $1
+	callabd_ModifyPikachuHappiness PIKAHAPPY_LEVELUP
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wUsedItemOnWhichPokemon]
@@ -1538,7 +1538,7 @@ ItemUseXAccuracy: ; de3e (3:5e3e)
 	jp z,ItemUseNotTime
 	ld hl,W_PLAYERBATTSTATUS2
 	set UsingXAccuracy,[hl] ; X Accuracy bit
-	callabd_Func_f430a $3
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	jp PrintItemUseTextAndRemoveItem
 
 ; This function is bugged and never works. It always jumps to ItemUseNotTime.
@@ -1651,7 +1651,7 @@ ItemUseGuardSpec: ; df11 (3:5f11)
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_Func_f430a $3
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 	
@@ -1676,7 +1676,7 @@ ItemUseDireHit: ; df42 (3:5f42)
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_Func_f430a $3
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 	
@@ -1715,7 +1715,7 @@ ItemUseXStat: ; df69 (3:df69)
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_Func_f430a $3
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 	
@@ -2012,7 +2012,7 @@ FishingInit: ; e182 (3:6182)
 	ld a, $2
 	ld [wd49c], a
 	ld a, $81
-	ld [wd471], a
+	ld [wPikachuMood], a
 	ld c,80
 	call DelayFrames
 	and a
@@ -2372,8 +2372,8 @@ ItemUseTMHM: ; e374 (3:6374)
 	push af
 	ld a,d
 	ld [wWhichPokemon],a
-	callabd_Func_f430a $5
-	callab Func_fce18
+	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
+	callab IsThisPartymonOurPikachu
 	jr nc,.notTeachingThunderboltOrThunderToPikachu
 	ld a,[wcf91]
 	cp a,TM_24 ; are we teaching thunderbolt to the player pikachu?
@@ -2384,7 +2384,7 @@ ItemUseTMHM: ; e374 (3:6374)
 	ld a, $5
 	ld [wd49c], a
 	ld a, $85
-	ld [wd471], a
+	ld [wPikachuMood], a
 .notTeachingThunderboltOrThunderToPikachu
 	pop af
 	ld [wWhichPokemon], a

@@ -228,7 +228,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callab Func_fce18
+	callab IsThisPartymonOurPikachu
 	jr nc, .asm_215ad
 	call Func_154a
 	jr z, .asm_215ad
@@ -238,7 +238,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 .asm_215ad
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
-	callab Func_fce18
+	callab IsThisPartymonOurPikachu
 	jr nc, .asm_215c9
 	ld e, $1b
 	callab Func_f0000
@@ -247,7 +247,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	ld a, [wcf91]
 	call PlayCry
 .asm_215cf
-	callabd_Func_f430a $7
+	callabd_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon
@@ -257,7 +257,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	call WaitForSoundToFinish
 	ld hl, wBoxNumString
 	ld a, [wCurrentBoxNum]
-	and $7f
+	and " "
 	cp 9
 	jr c, .singleDigitBoxNum
 	sub 9
@@ -269,7 +269,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	add "1"
 .next
 	ld [hli], a
-	ld [hl], $50
+	ld [hl], "@"
 	ld hl, MonWasStoredText
 	call PrintText
 	jp BillsPCMenu

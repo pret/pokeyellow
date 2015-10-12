@@ -196,3 +196,16 @@ LINK_STATE_START_BATTLE  EQU $03 ; pre-battle initialisation
 LINK_STATE_BATTLING      EQU $04 ; in a link battle
 LINK_STATE_RESET         EQU $05 ; reset game (unused)
 LINK_STATE_TRADING       EQU $32 ; in a link trade
+
+const_value set 1
+	const PIKAHAPPY_LEVELUP
+	const PIKAHAPPY_USEDITEM
+	const PIKAHAPPY_USEDXITEM
+	const PIKAHAPPY_GYMLEADER
+	const PIKAHAPPY_USEDTMHM
+	const PIKAHAPPY_WALKING
+	const PIKAHAPPY_DEPOSITED
+	const PIKAHAPPY_FAINTED
+	const PIKAHAPPY_PSNFNT
+	const PIKAHAPPY_10
+	const PIKAHAPPY_11

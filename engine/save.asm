@@ -248,7 +248,7 @@ SaveSAVtoSRAM2: ; 73b56 (1c:7b56)
 	ld de, sMainData
 	ld bc, wPokedexSeenEnd - wPokedexOwned
 	call CopyData
-	ld hl, wd470
+	ld hl, wPikachuHappiness
 	ld de, sMainData + $179
 	ld a, [hli]
 	ld [de], a
