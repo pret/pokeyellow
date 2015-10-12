@@ -146,7 +146,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	; Increase
 	db   5,   3,   2 ; Gained a level
 	db   5,   3,   2 ; HP restore
-	db   1,   1,   0 ; Unknown (d = 3)
+	db   1,   1,   0 ; Used X item
 	db   3,   2,   1 ; Challenged Gym Leader
 	db   1,   1,   0 ; Teach TM/HM
 	db   2,   1,   1 ; Walking around
