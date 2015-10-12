@@ -849,17 +849,17 @@ Func_7240f:: ; 7240f (1c:640f)
 	and a
 	jr nz,.asm_72419
 	ld a,[rBGP]
-	ld [wdef2],a
+	ld [wLastBGP],a
 	jr .asm_72428
 .asm_72419
 	dec a
 	jr nz,.asm_72423
 	ld a,[rOBP0]
-	ld [wdef3],a
+	ld [wLastOBP0],a
 	jr .asm_72428
 .asm_72423
 	ld a,[rOBP1]
-	ld [wdef4],a
+	ld [wLastOBP1],a
 .asm_72428
 	ld b,a
 	and $3

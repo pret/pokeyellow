@@ -16,9 +16,9 @@ LoadGBPal:: ; 1e6f (0:1e6f)
 	ld [rOBP0], a
 	ld a, [hli]
 	ld [rOBP1], a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ret
 
 GBFadeInFromBlack:: ; 1e8f (0:1e8f)
@@ -37,9 +37,9 @@ GBFadeIncCommon: ; 1e9b (0:1e9b)
 	ld [rOBP0], a
 	ld a, [hli]
 	ld [rOBP1], a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ld c, 8
 	call DelayFrames
 	dec b
@@ -62,9 +62,9 @@ GBFadeDecCommon:
 	ld [rOBP0], a
 	ld a, [hld]
 	ld [rBGP], a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ld c, 8
 	call DelayFrames
 	dec b

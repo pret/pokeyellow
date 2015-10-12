@@ -1,0 +1,1 @@
+sed -i 's/\<wdef4\>/wLastOBP1/' $(git grep -l wdef4)

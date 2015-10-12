@@ -196,9 +196,9 @@ BattleTransition_BlackScreen: ; 70ad3 (1c:4ad3)
 	ld [rBGP], a
 	ld [rOBP0], a
 	ld [rOBP1], a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ret
 
 ; for non-dungeon trainer battles
@@ -362,7 +362,7 @@ BattleTransition_FlashScreen_: ; 70be8 (1c:4be8)
 	cp $1
 	jr z, .done
 	ld [rBGP], a
-	call Func_3021
+	call UpdateGBCPal_BGP
 	ld c, $2
 	call DelayFrames
 	jr .loop

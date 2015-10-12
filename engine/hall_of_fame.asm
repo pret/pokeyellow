@@ -121,7 +121,7 @@ HoFShowMonOrPlayer: ; 702a2 (1c:42a2)
 	call RunPaletteCommand
 	ld a, %11100100
 	ld [rBGP], a
-	call Func_3021
+	call UpdateGBCPal_BGP
 	ld c, $31 ; back pic
 	call HoFLoadMonPlayerPicTileIDs
 	ld d, $a0

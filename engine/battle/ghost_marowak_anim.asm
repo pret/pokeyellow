@@ -2,7 +2,7 @@ MarowakAnim: ; 7092b (1c:492b)
 ; animate the ghost being unveiled as a Marowak
 	ld a, $e4
 	ld [rOBP1], a
-	call Func_3061
+	call UpdateGBCPal_OBP1
 	call CopyMonPicFromBGToSpriteVRAM ; cover the BG ghost pic with a sprite ghost pic that looks the same
 ; now that the ghost pic is being displayed using sprites, clear the ghost pic from the BG tilemap
 	coord hl, 12, 0
@@ -28,7 +28,7 @@ MarowakAnim: ; 7092b (1c:492b)
 	sla a
 	sla a
 	ld [rOBP1], a
-	call Func_3061
+	call UpdateGBCPal_OBP1
 	jr nz, .fadeOutGhostLoop
 	call ClearSprites
 	call CopyMonPicFromBGToSpriteVRAM ; copy Marowak pic from BG to sprite VRAM
@@ -42,7 +42,7 @@ MarowakAnim: ; 7092b (1c:492b)
 	srl b
 	rra
 	ld [rOBP1], a
-	call Func_3061
+	call UpdateGBCPal_OBP1
 	ld a, b
 	and a
 	jr nz, .fadeInMarowakLoop

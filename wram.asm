@@ -3307,9 +3307,9 @@ wdeee:: ds 1
 wdeef:: ds 1
 wdef0:: ds 1
 wdef1:: ds 1
-wdef2:: ds 1
-wdef3:: ds 1
-wdef4:: ds 1
+wLastBGP:: ds 1
+wLastOBP0:: ds 1
+wLastOBP1:: ds 1
 wdef5:: ds 1
 wdef6:: ds 1
 

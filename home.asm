@@ -2324,7 +2324,7 @@ DisplayTextBoxID:: ; 3010 (0:3010)
 	homecall_sf DisplayTextBoxID_ 
 	ret
 
-Func_3021:: ; 3021 (0:3021)
+UpdateGBCPal_BGP:: ; 3021 (0:3021)
 	push af
 	ld a,[hGBC]
 	and a
@@ -2334,7 +2334,7 @@ Func_3021:: ; 3021 (0:3021)
 	push hl
 	ld a,[rBGP]
 	ld b,a
-	ld a,[wdef2]
+	ld a,[wLastBGP]
 	cp b
 	jr z,.asm_303b
 	callba Func_72524 ; 1c:6524
@@ -2346,7 +2346,7 @@ Func_3021:: ; 3021 (0:3021)
 	pop af
 	ret
 	
-Func_3040:: ; 3040 (0:3040)
+UpdateGBCPal_OBP0:: ; 3040 (0:3040)
 	push af
 	ld a,[hGBC]
 	and a
@@ -2356,7 +2356,7 @@ Func_3040:: ; 3040 (0:3040)
 	push hl
 	ld a,[rOBP0]
 	ld b,a
-	ld a,[wdef3]
+	ld a,[wLastOBP0]
 	cp b
 	jr z,.asm_305c
 	ld b,BANK(Func_7256c) ; 1c:656c
@@ -2371,7 +2371,7 @@ Func_3040:: ; 3040 (0:3040)
 	pop af
 	ret
 	
-Func_3061:: ; 3061 (0:3061)
+UpdateGBCPal_OBP1:: ; 3061 (0:3061)
 	push af
 	ld a,[hGBC]
 	and a
@@ -2381,7 +2381,7 @@ Func_3061:: ; 3061 (0:3061)
 	push hl
 	ld a,[rOBP1]
 	ld b,a
-	ld a,[wdef4]
+	ld a,[wLastOBP1]
 	cp b
 	jr z,.asm_307d
 	ld b,BANK(Func_7256c)
@@ -4771,9 +4771,9 @@ GBPalNormal:: ; 3de0 (0:3de0)
 	ld [rBGP], a
 	ld a, %11010000 ; 3100
 	ld [rOBP0], a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ret
 
 GBPalWhiteOut:: ; 3df2 (0:3df2)
@@ -4782,9 +4782,9 @@ GBPalWhiteOut:: ; 3df2 (0:3df2)
 	ld [rBGP],a
 	ld [rOBP0],a
 	ld [rOBP1],a
-	call Func_3021
-	call Func_3040
-	call Func_3061
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ret
 
 
