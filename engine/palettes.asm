@@ -334,13 +334,13 @@ Func_720bd:: ; 720bd (1c:60bd)
 	ld a,[hli]
 	call Func_723fe
 	ld a,e
-	ld [wdee4],a
+	ld [wPalDataPointer2],a
 	ld a,d
-	ld [wdee5],a
+	ld [wPalDataPointer2+1],a
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$1
-	call Func_72470
+	call TransferCurBGPData
 	ret
 	
 Func_720e3:: ; 720e3 (1c:60e3)
@@ -663,7 +663,7 @@ CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
 	call DisableLCD
 	ld a, $e4
 	ld [rBGP], a ; $ff47
-	call Func_72520
+	call _UpdateGBCPal_BGP_CheckDMG
 	ld de, vChars1
 	ld a, [wCopyingSGBTileData]
 	and a
@@ -694,7 +694,7 @@ CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
 	call Func_721b4
 	xor a
 	ld [rBGP], a ; $ff47
-	call Func_72520
+	call _UpdateGBCPal_BGP_CheckDMG
 	ei
 	ret
 
@@ -741,22 +741,22 @@ InitGBCPalettes: ; 72346 (1c:6346)
 	push hl
 	call Func_723fe
 	ld a,e
-	ld [wdee2],a
+	ld [wPalDataPointer1],a
 	ld a,d
-	ld [wdee3],a
+	ld [wPalDataPointer1+1],a
 	
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$0
-	call Func_72470
+	call TransferCurBGPData
 	ld a,$1
-	call Func_7240f
+	call UpdatePalData
 	ld a,$0
-	call Func_724df
+	call TransferCurOBPData
 	ld a,$2
-	call Func_7240f
+	call UpdatePalData
 	ld a,$4
-	call Func_724df
+	call TransferCurOBPData
 	
 	pop hl
 	ld a,[hli]
@@ -764,22 +764,22 @@ InitGBCPalettes: ; 72346 (1c:6346)
 	push hl
 	call Func_723fe
 	ld a,e
-	ld [wdee4],a
+	ld [wPalDataPointer2],a
 	ld a,d
-	ld [wdee5],a
+	ld [wPalDataPointer2+1],a
 	
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$1
-	call Func_72470
+	call TransferCurBGPData
 	ld a,$1
-	call Func_7240f
+	call UpdatePalData
 	ld a,$1
-	call Func_724df
+	call TransferCurOBPData
 	ld a,$2
-	call Func_7240f
+	call UpdatePalData
 	ld a,$5
-	call Func_724df
+	call TransferCurOBPData
 	
 	pop hl
 	ld a,[hli]
@@ -787,44 +787,44 @@ InitGBCPalettes: ; 72346 (1c:6346)
 	push hl
 	call Func_723fe
 	ld a,e
-	ld [wdee6],a
+	ld [wPalDataPointer3],a
 	ld a,d
-	ld [wdee7],a
+	ld [wPalDataPointer3+1],a
 	
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$2
-	call Func_72470
+	call TransferCurBGPData
 	ld a,$1
-	call Func_7240f
+	call UpdatePalData
 	ld a,$2
-	call Func_724df
+	call TransferCurOBPData
 	ld a,$2
-	call Func_7240f
+	call UpdatePalData
 	ld a,$6
-	call Func_724df
+	call TransferCurOBPData
 	
 	pop hl
 	ld a,[hli]
 	inc hl
 	call Func_723fe
 	ld a,e
-	ld [wdee8],a
+	ld [wPalDataPointer4],a
 	ld a,d
-	ld [wdee9],a
+	ld [wPalDataPointer4+1],a
 	
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$3
-	call Func_72470
+	call TransferCurBGPData
 	ld a,$1
-	call Func_7240f
+	call UpdatePalData
 	ld a,$3
-	call Func_724df
+	call TransferCurOBPData
 	ld a,$2
-	call Func_7240f
+	call UpdatePalData
 	ld a,$7
-	call Func_724df
+	call TransferCurOBPData
 	
 	ret
 	
@@ -845,62 +845,62 @@ Func_723fe:: ; 723fe (1c:63fe)
 	pop hl
 	ret
 	
-Func_7240f:: ; 7240f (1c:640f)
+UpdatePalData:: ; 7240f (1c:640f)
 	and a
-	jr nz,.asm_72419
+	jr nz,.notBGP
 	ld a,[rBGP]
 	ld [wLastBGP],a
-	jr .asm_72428
-.asm_72419
+	jr .continue
+.notBGP
 	dec a
-	jr nz,.asm_72423
+	jr nz,.notOBP0
 	ld a,[rOBP0]
 	ld [wLastOBP0],a
-	jr .asm_72428
-.asm_72423
+	jr .continue
+.notOBP0
 	ld a,[rOBP1]
 	ld [wLastOBP1],a
-.asm_72428
+.continue
+	ld b,a ; save current GBP shade
+	and $3 ; get first shade
+	call GetPaletteShade
+	ld a,[hli] ; store in palette buffer
+	ld [wPalDataBuffer1],a
+	ld a,[hl]
+	ld [wPalDataBuffer1+1],a
+	ld a,b ; get second shade
+	rrca
+	rrca
 	ld b,a
 	and $3
-	call Func_7246a
-	ld a,[hli]
-	ld [wdeea],a
+	call GetPaletteShade
+	ld a,[hli] ; store in second buffer
+	ld [wPalDataBuffer2],a
 	ld a,[hl]
-	ld [wdeeb],a
+	ld [wPalDataBuffer2+1],a
 	ld a,b
 	rrca
 	rrca
 	ld b,a
 	and $3
-	call Func_7246a
+	call GetPaletteShade
 	ld a,[hli]
-	ld [wdeec],a
+	ld [wPalDataBuffer3],a
 	ld a,[hl]
-	ld [wdeed],a
+	ld [wPalDataBuffer3+1],a
 	ld a,b
 	rrca
 	rrca
 	ld b,a
 	and $3
-	call Func_7246a
+	call GetPaletteShade
 	ld a,[hli]
-	ld [wdeee],a
+	ld [wPalDataBuffer4],a
 	ld a,[hl]
-	ld [wdeef],a
-	ld a,b
-	rrca
-	rrca
-	ld b,a
-	and $3
-	call Func_7246a
-	ld a,[hli]
-	ld [wdef0],a
-	ld a,[hl]
-	ld [wdef1],a
+	ld [wPalDataBuffer4+1],a
 	ret
 	
-Func_7246a:: ; 7246a (1c:646a)
+GetPaletteShade:: ; 7246a (1c:646a)
 	add a
 	ld l,a
 	xor a
@@ -908,7 +908,7 @@ Func_7246a:: ; 7246a (1c:646a)
 	add hl,de
 	ret
 	
-Func_72470:: ; 72470 (1c:6470)
+TransferCurBGPData:: ; 72470 (1c:6470)
 	push de
 	add a
 	add a
@@ -916,37 +916,37 @@ Func_72470:: ; 72470 (1c:6470)
 	or $80
 	ld [rBGPI],a
 	ld de,rBGPD
-	ld hl,wdeea
-	ld b,$2
+	ld hl,wPalDataBuffer1
+	ld b,%10 ; searching oam STAT mode
 	ld a,[rLCDC]
 	and rLCDC_ENABLE_MASK
 	jr nz,.lcdenabled
 	rept 4
-	call Func_7251b
+	call TransferCurPalDataLCDDisabled
 	endr
 	jr .done
 .lcdenabled
 	rept 4
-	call Func_72511
+	call TransferCurPalDataLCDEnabled
 	endr
 .done
 	pop de
 	ret
 
-Func_724a2:: ; 724a2 (1c:64a2)
+WriteCurBGPDataToMainBuffer:: ; 724a2 (1c:64a2)
 	push de
 	add a
 	add a
-	add a
+	add a ; get the ath entry with size of 8 bytes (4 pal entries)
 	ld l,a
 	xor a
 	ld h,a
-	ld de,wdef6
+	ld de,wStoredBGPPalettes
 	add hl,de
-	ld de,wdeea
+	ld de,wPalDataBuffer1
 	ld c,$8
 .loop
-	ld a,[de]
+	ld a,[de] ; copy to main buffer
 	ld [hli],a
 	inc de
 	dec c
@@ -974,7 +974,7 @@ TransferPalData: ; 724cc (1c:64cc)
 	or $80
 	ld [rBGPI], a
 	ld de,rBGPD
-	ld hl,wdef6
+	ld hl,wStoredBGPPalettes
 	ld c,$20
 .loop
 	ld a,[hli]
@@ -983,7 +983,7 @@ TransferPalData: ; 724cc (1c:64cc)
 	jr nz,.loop
 	ret
 	
-Func_724df: ; 724df (1c:64df)
+TransferCurOBPData: ; 724df (1c:64df)
 	push de
 	add a
 	add a
@@ -991,127 +991,128 @@ Func_724df: ; 724df (1c:64df)
 	or $80
 	ld [rOBPI],a
 	ld de,rOBPD
-	ld hl,wdeea
-	ld b,$2 ; searching oam STAT mode
+	ld hl,wPalDataBuffer1
+	ld b,%10 ; searching oam STAT mode
 	ld a,[rLCDC]
 	and rLCDC_ENABLE_MASK
 	jr nz,.lcdenabled
 	rept 4
-	call Func_7251b
+	call TransferCurPalDataLCDDisabled
 	endr
 	jr .done
 .lcdenabled
 	rept 4
-	call Func_72511
+	call TransferCurPalDataLCDEnabled
 	endr
 .done
 	pop de
 	ret
 	
-Func_72511: ; 72511 (1c:6511)
+TransferCurPalDataLCDEnabled: ; 72511 (1c:6511)
 	ld a,[rSTAT]
 	and b
-	jr z,Func_72511 ; wait if either in hblank or vblank period
+	jr z,TransferCurPalDataLCDEnabled ; wait for non-vblank/hblank period
+									  ; this is a precaution in-case we're nearing the end of vblank/hblank
 .notinhblank
 	ld a,[rSTAT]
 	and b
 	jr nz,.notinhblank ; wait if transferring oam or data to lcd driver
-Func_7251b: ; 7251b (1c:651b)
+TransferCurPalDataLCDDisabled: ; 7251b (1c:651b)
 	ld a,[hli]
 	ld [de],a
 	ld a,[hli]
 	ld [de],a
 	ret
 
-Func_72520:: ; 72520 (1c:6520)
+_UpdateGBCPal_BGP_CheckDMG:: ; 72520 (1c:6520)
 	ld a,[hGBC]
 	and a
 	ret z
 ; fallthrough
-Func_72524:: ; 72524 (1c:6524)
-	ld a,[wdee2]
+_UpdateGBCPal_BGP:: ; 72524 (1c:6524)
+	ld a,[wPalDataPointer1]
 	ld e,a
-	ld a,[wdee3]
+	ld a,[wPalDataPointer1+1]
 	ld d,a
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$0
-	call Func_724a2
-	ld a,[wdee4]
+	call WriteCurBGPDataToMainBuffer
+	ld a,[wPalDataPointer2]
 	ld e,a
-	ld a,[wdee5]
+	ld a,[wPalDataPointer2+1]
 	ld d,a
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$1
-	call Func_724a2
-	ld a,[wdee6]
+	call WriteCurBGPDataToMainBuffer
+	ld a,[wPalDataPointer3]
 	ld e,a
-	ld a,[wdee7]
+	ld a,[wPalDataPointer3+1]
 	ld d,a
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$2
-	call Func_724a2
-	ld a,[wdee8]
+	call WriteCurBGPDataToMainBuffer
+	ld a,[wPalDataPointer4]
 	ld e,a
-	ld a,[wdee9]
+	ld a,[wPalDataPointer4+1]
 	ld d,a
 	xor a
-	call Func_7240f
+	call UpdatePalData
 	ld a,$3
-	call Func_724a2
+	call WriteCurBGPDataToMainBuffer
 	call PreparePalDataTransfer
 	ret
 	
-Func_7256c:: ; 7256c (1c:656c)
-	ld a,[wdee2]
+_UpdateGBCPal_OBP:: ; 7256c (1c:656c)
+	ld a,[wPalDataPointer1]
 	ld e,a
-	ld a,[wdee3]
+	ld a,[wPalDataPointer1+1]
 	ld d,a
 	ld a,c
-	call Func_7240f
+	call UpdatePalData
 	ld a,c
 	dec a
 	rlca
 	rlca
-	call Func_724df
-	ld a,[wdee4]
+	call TransferCurOBPData
+	ld a,[wPalDataPointer2]
 	ld e,a
-	ld a,[wdee5]
+	ld a,[wPalDataPointer2+1]
 	ld d,a
 	ld a,c
-	call Func_7240f
+	call UpdatePalData
 	ld a,c
 	dec a
 	rlca
 	rlca
 	inc a
-	call Func_724df
-	ld a,[wdee6]
+	call TransferCurOBPData
+	ld a,[wPalDataPointer3]
 	ld e,a
-	ld a,[wdee7]
+	ld a,[wPalDataPointer3+1]
 	ld d,a
 	ld a,c
-	call Func_7240f
+	call UpdatePalData
 	ld a,c
 	dec a
 	rlca
 	rlca
 	add $2
-	call Func_724df
-	ld a,[wdee8]
+	call TransferCurOBPData
+	ld a,[wPalDataPointer4]
 	ld e,a
-	ld a,[wdee9]
+	ld a,[wPalDataPointer4+1]
 	ld d,a
 	ld a,c
-	call Func_7240f
+	call UpdatePalData
 	ld a,c
 	dec a
 	rlca
 	rlca
 	add $3
-	call Func_724df
+	call TransferCurOBPData
 	ret
 	
 Func_725be:: ; 725be (1c:65be)

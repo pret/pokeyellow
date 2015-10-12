@@ -2337,7 +2337,7 @@ UpdateGBCPal_BGP:: ; 3021 (0:3021)
 	ld a,[wLastBGP]
 	cp b
 	jr z,.noChangeInBGP
-	callba Func_72524 ; 1c:6524
+	callba _UpdateGBCPal_BGP ; 1c:6524
 .noChangeInBGP
 	pop hl
 	pop de
@@ -2359,8 +2359,8 @@ UpdateGBCPal_OBP0:: ; 3040 (0:3040)
 	ld a,[wLastOBP0]
 	cp b
 	jr z,.noChangeInOBP0
-	ld b,BANK(Func_7256c) ; 1c:656c
-	ld hl,Func_7256c
+	ld b,BANK(_UpdateGBCPal_OBP) ; 1c:656c
+	ld hl,_UpdateGBCPal_OBP
 	ld c,$1
 	call Bankswitch
 .noChangeInOBP0
@@ -2384,8 +2384,8 @@ UpdateGBCPal_OBP1:: ; 3061 (0:3061)
 	ld a,[wLastOBP1]
 	cp b
 	jr z,.noChangeInOBP1
-	ld b,BANK(Func_7256c)
-	ld hl,Func_7256c
+	ld b,BANK(_UpdateGBCPal_OBP)
+	ld hl,_UpdateGBCPal_OBP
 	ld c,$2
 	call Bankswitch
 .noChangeInOBP1
