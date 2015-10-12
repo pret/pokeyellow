@@ -42,6 +42,9 @@
 *.sn9
 *.sn0
 
+# replace.sh
+replace.sh
+
 # leftover txt files from diff
 *.txt
 
