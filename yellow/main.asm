@@ -1632,28 +1632,48 @@ Func_82bd4: ; 82bd4 (20:6bd4)
 
 
 SECTION "bank21",ROMX,BANK[$21]
-
-	dr $84000,$88000
+PikachuCry1: ; 84000 (21:4000)
+	dr $84000,$8491a
+PikachuCry2: ; 8491a (21:491a)
+	dr $8491a,$84fdc
+PikachuCry3: ; 84fdc (21:4fdc)
+	dr $84fdc,$859ee
+PikachuCry4: ; 859ee (21:59ee)
+	dr $859ee,$88000
 
 
 SECTION "bank22",ROMX,BANK[$22]
-
-	dr $88000,$8c000
+PikachuCry5: ; 88000 (22:4000)
+	dr $88000,$89042
+PikachuCry6: ; 89042 (22:5042)
+	dr $89042,$8a254
+PikachuCry7: ; 8a254 (22:6254)
+	dr $8a254,$8c000
 
 
 SECTION "bank23",ROMX,BANK[$23]
-
-	dr $8c000,$90000
+PikachuCry8: ; 8c000 (23:4000)
+	dr $8c000,$8d0ca
+PikachuCry9: ; 8d0ca (23:50ca)
+	dr $8d0ca,$8de0c
+PikachuCry10: ; 8de0c (23:5e0c)
+	dr $8de0c,$90000
 
 
 SECTION "bank24",ROMX,BANK[$24]
-
-	dr $90000,$94000
+PikachuCry11: ; 90000 (24:4000)
+	dr $90000,$90722
+PikachuCry12: ; 90722 (24:4772)
+	dr $90722,$914a4
+PikachuCry13: ; 914a4 (24:54a4)
+	dr $914a4,$94000
 
 
 SECTION "bank25",ROMX,BANK[$25]
-
-	dr $94000,$98000
+PikachuCry14: ; 94000 (25:4000)
+	dr $94000,$9589a
+PikachuCry15: ; 9589a (25:589a)
+	dr $9589a,$98000
 
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
@@ -1668,43 +1688,80 @@ SECTION "bank30",ROMX,BANK[$30]
 
 
 SECTION "bank31",ROMX,BANK[$31]
-
-	dr $c4000,$c8000
+PikachuCry16: ; c4000 (31:4000)
+	dr $c4000,$c549a
+PikachuCry18: ; c549a (31:549a)
+	dr $c549a,$c63a4
+PikachuCry22: ; c63a4 (31:63a4)
+	dr $c63a4,$c8000
 
 
 SECTION "bank32",ROMX,BANK[$32]
-
-	dr $c8000,$cc000
+PikachuCry20: ; c8000 (32:4000)
+	dr $c8000,$ca002
+PikachuCry21: ; ca002 (32:6002)
+	dr $ca002,$cc000
 
 
 SECTION "bank33",ROMX,BANK[$33]
-
-	dr $cc000,$d0000
+PikachuCry19: ; cc000 (33:4000)
+	dr $cc000,$cd632
+PikachuCry24: ; cd632 (33:5632)
+	dr $cd632,$cf25c
+PikachuCry26: ; cf25c (33:725c)
+	dr $cf25c,$d0000
 
 
 SECTION "bank34",ROMX,BANK[$34]
-
-	dr $d0000,$d4000
+PikachuCry17: ; d0000 (34:4000)
+	dr $d0000,$d0862
+PikachuCry23: ; d0862 (34:4862)
+	dr $d0862,$d173c
+PikachuCry25: ; d173c (34:573c)
+	dr $d173c,$d4000
 
 
 SECTION "bank35",ROMX,BANK[$35]
-
-	dr $d4000,$d8000
+PikachuCry27: ; d4000 (35:4000)
+	dr $d4000,$d4b5a
+PikachuCry28: ; d4b5a (35:4b5a)
+	dr $d4b5a,$d5da4
+PikachuCry29: ; d5da4 (35:5da4)
+	dr $d5da4,$d69ce
+PikachuCry30: ; d69ce (35:69ce)
+	dr $d69ce,$d6e80
+PikachuCry31: ; d6e80 (35:6ea0)	
+	dr $d6e80,$d8000
 
 
 SECTION "bank36",ROMX,BANK[$36]
-
-	dr $d8000,$dc000
-
+PikachuCry32: ; d8000 (36:4000)
+	dr $d8000,$d858a
+PikachuCry33: ; d858a (36:458a)
+	dr $d858a,$d923c
+PikachuCry34: ; d923c (36:523c)
+	dr $d923c,$da746
+PikachuCry41: ; da746 (36:6746)
+	dr $da746,$dc000
 
 SECTION "bank37",ROMX,BANK[$37]
-
-	dr $dc000,$e0000
+PikachuCry35: ; dc000 (37:4000)
+	dr $dc000,$dd22a
+PikachuCry36: ; dd22a (37:5d2a)
+	dr $dd22a,$dee0c
+PikachuCry39: ; dee0c (37:6e0c)
+	dr $dee0c,$e0000
 
 
 SECTION "bank38",ROMX,BANK[$38]
-
-	dr $e0000,$e4000
+PikachuCry37: ; e0000 (38:4000)
+	dr $e0000,$e0dfa
+PikachuCry38: ; e0dfa (38:4dfa)
+	dr $e0dfa,$e1a64
+PikachuCry40: ; e1a64 (38:5a64)
+	dr $e1a64,$e2976
+PikachuCry42: ; e2976 (38:6976)
+	dr $e2976,$e4000
 
 
 SECTION "bank39",ROMX,BANK[$39]

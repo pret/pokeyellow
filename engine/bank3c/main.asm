@@ -1,7 +1,159 @@
-;INCLUDE "engine/bank3c/overworld.asm"
 Func_f0000:: ; f0000 (3c:4000)
-	dr $f0000,$f010c
+	ld a, e
+	ld e, a
+	ld d, $0
+	ld hl, PikachuCriesPointerTable
+	add hl, de
+	add hl, de
+	add hl, de
+	ld b, [hl] ; bank of pikachu cry data
+	inc hl
+	ld a, [hli] ; cry data pointer
+	ld h, [hl]
+	ld l, a
+	ld c, $4
+.loop
+	dec c
+	jr z, .asm_f0019
+	call DelayFrame
+	jr .loop
+.asm_f0019
+	di
+	push bc
+	push hl
+	ld a, $80
+	ld [rNR52], a
+	ld a, $77
+	ld [rNR50], a
+	xor a
+	ld [rNR30], a
+	ld hl, $ff30 ; wave data
+	ld de, wRedrawRowOrColumnSrcTiles
+.saveWaveDataLoop
+	ld a, [hl]
+	ld [de], a
+	inc de
+	ld a, $ff
+	ld [hli], a
+	ld a, l
+	cp $40 ; end of wave data
+	jr nz, .saveWaveDataLoop
+	ld a, $80
+	ld [rNR30], a
+	ld a, [rNR51]
+	or $44
+	ld [rNR51], a
+	ld a, $ff
+	ld [rNR31], a
+	ld a, $20
+	ld [rNR32], a
+	ld a, $ff
+	ld [rNR33], a
+	ld a, $87
+	ld [rNR34], a
+	pop hl
+	pop bc
+	call Func_150
+	xor a
+	ld [wc0f3], a
+	ld [wc0f4], a
+	ld a, $80
+	ld [rNR52], a
+	xor a
+	ld [rNR30], a
+	ld hl, $ff30
+	ld de, wRedrawRowOrColumnSrcTiles
+.reloadWaveDataLoop
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, l
+	cp $40 ; end of wave data
+	jr nz, .reloadWaveDataLoop
+	ld a, $80
+	ld [rNR30], a
+	ld a, [rNR51]
+	and $bb
+	ld [rNR51], a
+	xor a
+	ld [wChannelSoundIDs+CH4], a
+	ld [wChannelSoundIDs+CH5], a
+	ld [wChannelSoundIDs+CH6], a
+	ld [wChannelSoundIDs+CH7], a
+	ld a, [H_LOADEDROMBANK]
+	ei
+	ret
+
+PikachuCriesPointerTable: ; f008e (3c:408e)
+; format:
+; db bank
+; dw pointer to cry
+
+; bank 21
+	dbw BANK(PikachuCry1), PikachuCry1 ; 21:4000
+	dbw BANK(PikachuCry2), PikachuCry2 ; 21:491a
+	dbw BANK(PikachuCry3), PikachuCry3 ; 21:4fdc
+	dbw BANK(PikachuCry4), PikachuCry4 ; 21:59ee
+	
+; bank 22
+	dbw BANK(PikachuCry5), PikachuCry5 ; 22:4000
+	dbw BANK(PikachuCry6), PikachuCry6 ; 22:5042
+	dbw BANK(PikachuCry7), PikachuCry7 ; 22:6254
+	
+; bank 23
+	dbw BANK(PikachuCry8), PikachuCry8 ; 23:4000
+	dbw BANK(PikachuCry9), PikachuCry9 ; 23:50ca
+	dbw BANK(PikachuCry10), PikachuCry10 ; 23:5e0c
+
+; bank 24
+	dbw BANK(PikachuCry11), PikachuCry11 ; 24:4000
+	dbw BANK(PikachuCry12), PikachuCry12 ; 24:4722
+	dbw BANK(PikachuCry13), PikachuCry13 ; 24:54a4
+	
+; bank 25
+	dbw BANK(PikachuCry14), PikachuCry14 ; 25:4000
+	dbw BANK(PikachuCry15), PikachuCry15 ; 25:589a
+	
+; banks 31-34, in no particular order
+
+	dbw BANK(PikachuCry16), PikachuCry16 ; 31:4000
+	dbw BANK(PikachuCry17), PikachuCry17 ; 34:4000
+	dbw BANK(PikachuCry18), PikachuCry18 ; 31:549a
+	dbw BANK(PikachuCry19), PikachuCry19 ; 33:4000
+	dbw BANK(PikachuCry20), PikachuCry20 ; 32:4000
+	dbw BANK(PikachuCry21), PikachuCry21 ; 32:6002
+	dbw BANK(PikachuCry22), PikachuCry22 ; 31:63a4
+	dbw BANK(PikachuCry23), PikachuCry23 ; 34:4862
+	dbw BANK(PikachuCry24), PikachuCry24 ; 33:5632
+	dbw BANK(PikachuCry25), PikachuCry25 ; 34:573c
+	dbw BANK(PikachuCry26), PikachuCry26 ; 33:725c
+	
+; bank 35
+	dbw BANK(PikachuCry27), PikachuCry27 ; 35:4000
+	dbw BANK(PikachuCry28), PikachuCry28 ; 35:4b5a
+	dbw BANK(PikachuCry29), PikachuCry29 ; 35:5da4
+	dbw BANK(PikachuCry30), PikachuCry30 ; 35:69ce
+	dbw BANK(PikachuCry31), PikachuCry31 ; 35:6e80
+	
+; bank 36
+	dbw BANK(PikachuCry32), PikachuCry32 ; 36:4000
+	dbw BANK(PikachuCry33), PikachuCry33 ; 36:458a
+	dbw BANK(PikachuCry34), PikachuCry34 ; 36:523c
+	
+; bank 37
+	dbw BANK(PikachuCry35), PikachuCry35 ; 37:4000
+	dbw BANK(PikachuCry36), PikachuCry36 ; 37:522a
+
+; banks 36-38
+	dbw BANK(PikachuCry37), PikachuCry37 ; 38:4000
+	dbw BANK(PikachuCry38), PikachuCry38 ; 38:4dfa
+	dbw BANK(PikachuCry39), PikachuCry39 ; 37:6e0c
+	dbw BANK(PikachuCry40), PikachuCry40 ; 38:5a64
+	dbw BANK(PikachuCry41), PikachuCry41 ; 36:6746
+	dbw BANK(PikachuCry42), PikachuCry42 ; 38:6976
+
 _AdvancePlayerSprite:: ; f010c (3c:410c)
+;INCLUDE "engine/bank3c/overworld.asm"
 	dr $f010c,$f0274
 
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
