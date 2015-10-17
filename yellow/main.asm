@@ -73,15 +73,6 @@ _RemovePokemon: ; 7a0f (1:7a0f)
 	dr $7a0f,$7abf
 _DisplayPokedex: ; 7c18 (1:7abf)
 	dr $7abf,$8000
-
-;SECTION "bank02",ROMX,BANK[$02]
-;	dr $8000,$9064
-;PlayBattleMusic: ; 9064 (2:5064)
-;	dr $9064,$909d
-;Music2_UpdateMusic: ; 909d (2:509d)
-;	dr $909d,$984e
-;Func_984e: ; 984e (2:584e)
-;	dr $984e,$c000
 	
 SECTION "bank03",ROMX,BANK[$03]
 
@@ -827,28 +818,864 @@ INCLUDE "data/wild_mons.asm"
 INCLUDE "engine/items/items.asm"
 
 DrawBadges: ; e880 (3:6880)
-	dr $e880,$e91b
+; Draw 4x2 gym leader faces, with the faces replaced by
+; badges if they are owned. Used in the player status screen.
+
+; In Japanese versions, names are displayed above faces.
+; Instead of removing relevant code, the name graphics were erased.
+
+; Tile ids for face/badge graphics.
+	ld de, wBadgeOrFaceTiles
+	ld hl, .FaceBadgeTiles
+	ld bc, 8
+	call CopyData
+
+; Booleans for each badge.
+	ld hl, wTempObtainedBadgesBooleans
+	ld bc, 8
+	xor a
+	call FillMemory
+
+; Alter these based on owned badges.
+	ld de, wTempObtainedBadgesBooleans
+	ld hl, wBadgeOrFaceTiles
+	ld a, [W_OBTAINEDBADGES]
+	ld b, a
+	ld c, 8
+.CheckBadge
+	srl b
+	jr nc, .NextBadge
+	ld a, [hl]
+	add 4 ; Badge graphics are after each face
+	ld [hl], a
+	ld a, 1
+	ld [de], a
+.NextBadge
+	inc hl
+	inc de
+	dec c
+	jr nz, .CheckBadge
+
+; Draw two rows of badges.
+	ld hl, wBadgeNumberTile
+	ld a, $d8 ; [1]
+	ld [hli], a
+	ld [hl], $60 ; First name
+
+	coord hl, 2, 11
+	ld de, wTempObtainedBadgesBooleans
+	call .DrawBadgeRow
+
+	coord hl, 2, 14
+	ld de, wTempObtainedBadgesBooleans + 4
+;	call .DrawBadgeRow
+;	ret
+
+.DrawBadgeRow ; e8c9 (3:68c9)
+; Draw 4 badges.
+
+	ld c, 4
+.DrawBadge
+	push de
+	push hl
+
+; Badge no.
+	ld a, [wBadgeNumberTile]
+	ld [hli], a
+	inc a
+	ld [wBadgeNumberTile], a
+
+; Names aren't printed if the badge is owned.
+	ld a, [de]
+	and a
+	ld a, [wBadgeNameTile]
+	jr nz, .SkipName
+	call .PlaceTiles
+	jr .PlaceBadge
+
+.SkipName
+	inc a
+	inc a
+	inc hl
+
+.PlaceBadge
+	ld [wBadgeNameTile], a
+	ld de, SCREEN_WIDTH - 1
+	add hl, de
+	ld a, [wBadgeOrFaceTiles]
+	call .PlaceTiles
+	add hl, de
+	call .PlaceTiles
+
+; Shift badge array back one byte.
+	push bc
+	ld hl, wBadgeOrFaceTiles + 1
+	ld de, wBadgeOrFaceTiles
+	ld bc, 8
+	call CopyData
+	pop bc
+
+	pop hl
+	ld de, 4
+	add hl, de
+
+	pop de
+	inc de
+	dec c
+	jr nz, .DrawBadge
+	ret
+
+.PlaceTiles
+	ld [hli], a
+	inc a
+	ld [hl], a
+	inc a
+	ret
+
+.FaceBadgeTiles
+	db $20, $28, $30, $38, $40, $48, $50, $58
 	
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
 
-	dr $ed1b,$ed59
+; replaces a tile block with the one specified in [wNewTileBlockID]
+; and redraws the map view if necessary
+; b = Y
+; c = X
+ReplaceTileBlock: ; ed1b (3:6d1b)
+	call GetPredefRegisters
+	ld hl, wOverworldMap
+	ld a, [W_CURMAPWIDTH]
+	add $6
+	ld e, a
+	ld d, $0
+	add hl, de
+	add hl, de
+	add hl, de
+	ld e, $3
+	add hl, de
+	ld e, a
+	ld a, b
+	and a
+	jr z, .addX
+; add width * Y
+.addWidthYTimesLoop
+	add hl, de
+	dec b
+	jr nz, .addWidthYTimesLoop
+.addX
+	add hl, bc ; add X
+	ld a, [wNewTileBlockID]
+	ld [hl], a
+	ld a, [wCurrentTileBlockMapViewPointer]
+	ld c, a
+	ld a, [wCurrentTileBlockMapViewPointer + 1]
+	ld b, a
+	call CompareHLWithBC
+	ret c ; return if the replaced tile block is below the map view in memory
+	push hl
+	ld l, e
+	ld h, $0
+	ld e, $6
+	ld d, h
+	add hl, hl
+	add hl, hl
+	add hl, de
+	add hl, bc
+	pop bc
+	call CompareHLWithBC
+	ret c ; return if the replaced tile block is above the map view in memory
+
 RedrawMapView: ; ed59 (3:6d59)
-	dr $ed59,$ef93
+	ld a, [W_ISINBATTLE]
+	inc a
+	ret z
+	ld a, [H_AUTOBGTRANSFERENABLED]
+	push af
+	ld a, [hTilesetType]
+	push af
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld [hTilesetType], a ; no flower/water BG tile animations
+	call LoadCurrentMapView
+	call RunDefaultPaletteCommand
+	ld hl, wMapViewVRAMPointer
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, -2 * 32
+	add hl, de
+	ld a, h
+	and $3
+	or $98
+	ld a, l
+	ld [wBuffer], a
+	ld a, h
+	ld [wBuffer + 1], a ; this copy of the address is not used
+	ld a, 2
+	ld [$ffbe], a
+	ld c, 9 ; number of rows of 2x2 tiles (this covers the whole screen)
+.redrawRowLoop
+	push bc
+	push hl
+	push hl
+	ld hl, wTileMap - 2 * SCREEN_WIDTH
+	ld de, SCREEN_WIDTH
+	ld a, [$ffbe]
+.calcWRAMAddrLoop
+	add hl, de
+	dec a
+	jr nz, .calcWRAMAddrLoop
+	call CopyToRedrawRowOrColumnSrcTiles
+	pop hl
+	ld de, $20
+	ld a, [$ffbe]
+	ld c, a
+.calcVRAMAddrLoop
+	add hl, de
+	ld a, h
+	and $3
+	or $98
+	dec c
+	jr nz, .calcVRAMAddrLoop
+	ld [hRedrawRowOrColumnDest + 1], a
+	ld a, l
+	ld [hRedrawRowOrColumnDest], a
+	ld a, REDRAW_ROW
+	ld [hRedrawRowOrColumnMode], a
+	call DelayFrame
+	ld hl, $ffbe
+	inc [hl]
+	inc [hl]
+	pop hl
+	pop bc
+	dec c
+	jr nz, .redrawRowLoop
+	pop af
+	ld [hTilesetType], a
+	pop af
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ret
+
+CompareHLWithBC: ; edcb (3:6dcb)
+	ld a, h
+	sub b
+	ret nz
+	ld a, l
+	sub c
+	ret
+	
+INCLUDE "engine/overworld/cut.asm"
+	
 MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
-	dr $ef93,$f0a1
+	ld a, [W_CURMAP]
+	cp ROUTE_1
+	jr nc, .notInTown
+	ld c, a
+	ld b, FLAG_SET
+	ld hl, W_TOWNVISITEDFLAG   ; mark town as visited (for flying)
+	predef FlagActionPredef
+.notInTown
+	ld hl, MapHSPointers
+	ld a, [W_CURMAP]
+	ld b, $0
+	ld c, a
+	add hl, bc
+	add hl, bc
+	ld a, [hli]                ; load missable objects pointer in hl
+	ld h, [hl]
+	; fall through
+
+; LoadMissableObjects: ; efb2 (3:6fb2)
+; seems to not exist in yellow (predef replaced with something near TryPushingBoulder)
+	ld l, a
+	push hl
+	ld a, l
+	sub MapHS00 & $ff ; calculate difference between out pointer and the base pointer
+	ld l, a
+	ld a, h
+	sbc MapHS00 / $100
+	ld h, a
+	ld a, h
+	ld [H_DIVIDEND], a
+	ld a, l
+	ld [H_DIVIDEND+1], a
+	xor a
+	ld [H_DIVIDEND+2], a
+	ld [H_DIVIDEND+3], a
+	ld a, $3
+	ld [H_DIVISOR], a
+	ld b, $2
+	call Divide                ; divide difference by 3, resulting in the global offset (number of missable items before ours)
+	ld a, [W_CURMAP]
+	ld b, a
+	ld a, [H_DIVIDEND+3]
+	ld c, a                    ; store global offset in c
+	ld de, W_MISSABLEOBJECTLIST
+	pop hl
+.writeMissableObjectsListLoop
+	ld a, [hli]
+	cp $ff
+	jr z, .done     ; end of list
+	cp b
+	jr nz, .done    ; not for current map anymore
+	ld a, [hli]
+	inc hl
+	ld [de], a                 ; write (map-local) sprite ID
+	inc de
+	ld a, c
+	inc c
+	ld [de], a                 ; write (global) missable object index
+	inc de
+	jr .writeMissableObjectsListLoop
+.done
+	ld a, $ff
+	ld [de], a                 ; write sentinel
+	ret
+
+InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
+	ld hl, W_MISSABLEOBJECTFLAGS
+	ld bc, wMissableObjectFlagsEnd - W_MISSABLEOBJECTFLAGS
+	xor a
+	call FillMemory ; clear missable objects flags
+	ld hl, MapHS00
+	xor a
+	ld [wMissableObjectCounter], a
+.missableObjectsLoop
+	ld a, [hli]
+	cp $ff          ; end of list
+	ret z
+	push hl
+	inc hl
+	ld a, [hl]
+	cp Hide
+	jr nz, .skip
+	ld hl, W_MISSABLEOBJECTFLAGS
+	ld a, [wMissableObjectCounter]
+	ld c, a
+	ld b, FLAG_SET
+	call MissableObjectFlagAction ; set flag if Item is hidden
+.skip
+	ld hl, wMissableObjectCounter
+	inc [hl]
+	pop hl
+	inc hl
+	inc hl
+	jr .missableObjectsLoop
+
+; tests if current sprite is a missable object that is hidden/has been removed
+IsObjectHidden: ; f022 (3:7022)
+	ld a, [H_CURRENTSPRITEOFFSET]
+	swap a
+	ld b, a
+	ld hl, W_MISSABLEOBJECTLIST
+.loop
+	ld a, [hli]
+	cp $ff
+	jr z, .notHidden ; not missable -> not hidden
+	cp b
+	ld a, [hli]
+	jr nz, .loop
+	ld c, a
+	ld b, FLAG_TEST
+	ld hl, W_MISSABLEOBJECTFLAGS
+	call MissableObjectFlagAction
+	ld a, c
+	and a
+	jr nz, .hidden
+.notHidden
+	xor a
+.hidden
+	ld [$ffe5], a
+	ret
+
+; adds missable object (items, leg. pokemon, etc.) to the map
+; [wMissableObjectIndex]: index of the missable object to be added (global index)
+ShowObject: ; f044 (3:7044)
+ShowObject2:
+	ld hl, W_MISSABLEOBJECTFLAGS
+	ld a, [wMissableObjectIndex]
+	ld c, a
+	ld b, FLAG_RESET
+	call MissableObjectFlagAction   ; reset "removed" flag
+	jp UpdateSprites
+
+; removes missable object (items, leg. pokemon, etc.) from the map
+; [wMissableObjectIndex]: index of the missable object to be removed (global index)
+HideObject: ; f053 (3:7053)
+	ld hl, W_MISSABLEOBJECTFLAGS
+	ld a, [wMissableObjectIndex]
+	ld c, a
+	ld b, FLAG_SET
+	call MissableObjectFlagAction   ; set "removed" flag
+	jp UpdateSprites
+
+MissableObjectFlagAction: ; f062 (3:7062)
+; identical to FlagAction
+
+	push hl
+	push de
+	push bc
+
+	; bit
+	ld a, c
+	ld d, a
+	and 7
+	ld e, a
+
+	; byte
+	ld a, d
+	srl a
+	srl a
+	srl a
+	add l
+	ld l, a
+	jr nc, .ok
+	inc h
+.ok
+
+	; d = 1 << e (bitmask)
+	inc e
+	ld d, 1
+.shift
+	dec e
+	jr z, .shifted
+	sla d
+	jr .shift
+.shifted
+
+	ld a, b
+	and a
+	jr z, .reset
+	cp 2
+	jr z, .read
+
+.set
+	ld a, [hl]
+	ld b, a
+	ld a, d
+	or b
+	ld [hl], a
+	jr .done
+
+.reset
+	ld a, [hl]
+	ld b, a
+	ld a, d
+	xor $ff
+	and b
+	ld [hl], a
+	jr .done
+
+.read
+	ld a, [hl]
+	ld b, a
+	ld a, d
+	and b
+
+.done
+	pop bc
+	pop de
+	pop hl
+	ld c, a
+	ret
+
 TryPushingBoulder: ; f0a1 (3:70a1)
-	dr $f0a1,$f131
+	ld a, [wd728]
+	bit 0, a ; using Strength?
+	ret z
+; where LoadMissableObjects predef points to now
+	ld a, [wFlags_0xcd60]
+	bit 1, a ; has boulder dust animation from previous push played yet?
+	ret nz
+	xor a
+	ld [hSpriteIndexOrTextID], a
+	call IsSpriteInFrontOfPlayer
+	ld a, [hSpriteIndexOrTextID]
+	ld [wBoulderSpriteIndex], a
+	and a
+	jp z, ResetBoulderPushFlags
+	ld hl, wSpriteStateData1 + 1
+	ld d, $0
+	ld a, [hSpriteIndexOrTextID]
+	swap a
+	ld e, a
+	add hl, de
+	res 7, [hl]
+	call GetSpriteMovementByte2Pointer
+	ld a, [hl]
+	cp BOULDER_MOVEMENT_BYTE_2
+	jp nz, ResetBoulderPushFlags
+	ld hl, wFlags_0xcd60
+	bit 6, [hl]
+	set 6, [hl] ; indicate that the player has tried pushing
+	ret z ; the player must try pushing twice before the boulder will move
+	ld a, [hJoyHeld]
+	and D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ret z
+	predef CheckForCollisionWhenPushingBoulder
+	ld a, [wTileInFrontOfBoulderAndBoulderCollisionResult]
+	and a ; was there a collision?
+	jp nz, ResetBoulderPushFlags
+	ld a, [hJoyHeld]
+	ld b, a
+	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	cp SPRITE_FACING_UP
+	jr z, .pushBoulderUp
+	cp SPRITE_FACING_LEFT
+	jr z, .pushBoulderLeft
+	cp SPRITE_FACING_RIGHT
+	jr z, .pushBoulderRight
+.pushBoulderDown
+	bit 7, b
+	ret z
+	ld de, PushBoulderDownMovementData
+	jr .done
+.pushBoulderUp
+	bit 6, b
+	ret z
+	ld de, PushBoulderUpMovementData
+	jr .done
+.pushBoulderLeft
+	bit 5, b
+	ret z
+	ld de, PushBoulderLeftMovementData
+	jr .done
+.pushBoulderRight
+	bit 4, b
+	ret z
+	ld de, PushBoulderRightMovementData
+.done
+	call MoveSprite
+	ld a, SFX_PUSH_BOULDER
+	call PlaySound
+	ld hl, wFlags_0xcd60
+	set 1, [hl]
+	ret
+
+PushBoulderUpMovementData: ; f129 (3:7129)
+	db NPC_MOVEMENT_UP,$FF
+
+PushBoulderDownMovementData: ; f12b (3:712b)
+	db NPC_MOVEMENT_DOWN,$FF
+
+PushBoulderLeftMovementData: ; f12d (3:712d)
+	db NPC_MOVEMENT_LEFT,$FF
+
+PushBoulderRightMovementData: ; f12f (3:712f)
+	db NPC_MOVEMENT_RIGHT,$FF
+
 DoBoulderDustAnimation: ; f131 (3:7131)
-	dr $f131,$f161
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+	callab AnimateBoulderDust
+	call DiscardButtonPresses
+	ld [wJoyIgnore], a
+	call ResetBoulderPushFlags
+	set 7, [hl]
+	ld a, [wBoulderSpriteIndex]
+	ld [H_SPRITEINDEX], a
+	call GetSpriteMovementByte2Pointer
+	ld [hl], $10
+	ld a, SFX_CUT
+	jp PlaySound
+
+ResetBoulderPushFlags: ; f159 (3:7159)
+	ld hl, wFlags_0xcd60
+	res 1, [hl]
+	res 6, [hl]
+	ret
+
 _AddPartyMon: ; f161 (3:7161)
-	dr $f161,$f1e5
-Pointer_f1e5: ; f1e5 (3:71e5)
-	dr $f1e5,$f323
+; Adds a new mon to the player's or enemy's party.
+; [wMonDataLocation] is used in an unusual way in this function.
+; If the lower nybble is 0, the mon is added to the player's party, else the enemy's.
+; If the entire value is 0, then the player is allowed to name the mon.
+	ld de, wPartyCount
+	ld a, [wMonDataLocation]
+	and $f
+	jr z, .next
+	ld de, wEnemyPartyCount
+.next
+	ld a, [de]
+	inc a
+	cp PARTY_LENGTH + 1
+	ret nc ; return if the party is already full
+	ld [de], a
+	ld a, [de]
+	ld [hNewPartyLength], a
+	add e
+	ld e, a
+	jr nc, .noCarry
+	inc d
+.noCarry
+	ld a, [wcf91]
+	ld [de], a ; write species of new mon in party list
+	inc de
+	ld a, $ff ; terminator
+	ld [de], a
+	ld hl, wPartyMonOT
+	ld a, [wMonDataLocation]
+	and $f
+	jr z, .next2
+	ld hl, wEnemyMonOT
+.next2
+	ld a, [hNewPartyLength]
+	dec a
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	ld hl, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyData
+	ld a, [wMonDataLocation]
+	and a
+	jr nz, .skipNaming
+	ld hl, wPartyMonNicks
+	ld a, [hNewPartyLength]
+	dec a
+	call SkipFixedLengthTextEntries
+	ld a, NAME_MON_SCREEN
+	ld [wNamingScreenType], a
+	predef AskName
+.skipNaming
+	ld hl, wPartyMons
+	ld a, [wMonDataLocation]
+	and $f
+	jr z, .next3
+	ld hl, wEnemyMons
+.next3
+	ld a, [hNewPartyLength]
+	dec a
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld e, l
+	ld d, h
+	push hl
+	ld a, [wcf91]
+	ld [wd0b5], a
+	call GetMonHeader
+	ld hl, W_MONHEADER
+	ld a, [hli]
+	ld [de], a ; species
+	inc de
+	pop hl
+	push hl
+	ld a, [wMonDataLocation]
+	and $f
+	ld a, $98     ; set enemy trainer mon IVs to fixed average values
+	ld b, $88
+	jr nz, .next4
+
+; If the mon is being added to the player's party, update the pokedex.
+	ld a, [wcf91]
+	ld [wd11e], a
+	push de
+	predef IndexToPokedex
+	pop de
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, FLAG_TEST
+	ld hl, wPokedexOwned
+	call FlagAction
+	ld a, c ; whether the mon was already flagged as owned
+	ld [wUnusedD153], a ; not read
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, FLAG_SET
+	push bc
+	call FlagAction
+	pop bc
+	ld hl, wPokedexSeen
+	call FlagAction
+
+	pop hl
+	push hl
+
+	ld a, [W_ISINBATTLE]
+	and a ; is this a wild mon caught in battle?
+	jr nz, .copyEnemyMonData
+
+; Not wild.
+	call Random ; generate random IVs
+	ld b, a
+	call Random
+
+.next4
+	push bc
+	ld bc, wPartyMon1DVs - wPartyMon1
+	add hl, bc
+	pop bc
+	ld [hli], a
+	ld [hl], b         ; write IVs
+	ld bc, (wPartyMon1HPExp - 1) - (wPartyMon1DVs + 1)
+	add hl, bc
+	ld a, 1
+	ld c, a
+	xor a
+	ld b, a
+	call CalcStat      ; calc HP stat (set cur Hp to max HP)
+	ld a, [H_MULTIPLICAND+1]
+	ld [de], a
+	inc de
+	ld a, [H_MULTIPLICAND+2]
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a         ; box level
+	inc de
+	ld [de], a         ; status ailments
+	inc de
+	jr .copyMonTypesAndMoves
+.copyEnemyMonData
+	ld bc, wEnemyMon1DVs - wEnemyMon1
+	add hl, bc
+	ld a, [wEnemyMonDVs] ; copy IVs from cur enemy mon
+	ld [hli], a
+	ld a, [wEnemyMonDVs + 1]
+	ld [hl], a
+	ld a, [wEnemyMonHP]    ; copy HP from cur enemy mon
+	ld [de], a
+	inc de
+	ld a, [wEnemyMonHP+1]
+	ld [de], a
+	inc de
+	xor a
+	ld [de], a                ; box level
+	inc de
+	ld a, [wEnemyMonStatus]   ; copy status ailments from cur enemy mon
+	ld [de], a
+	inc de
+.copyMonTypesAndMoves
+	ld hl, W_MONHTYPES
+	ld a, [hli]       ; type 1
+	ld [de], a
+	inc de
+	ld a, [hli]       ; type 2
+	ld [de], a
+	inc de
+	ld a, [hli]       ; catch rate (held item in gen 2)
+	ld [de], a
+	ld a, [wcf91]
+	cp KADABRA
+	jr nz, .skipGivingTwistedSpoon
+	ld a, $60 ; twistedspoon in gen 2
+	ld [de], a
+.skipGivingTwistedSpoon
+	ld hl, W_MONHMOVES
+	ld a, [hli]
+	inc de
+	push de
+	ld [de], a
+	ld a, [hli]
+	inc de
+	ld [de], a
+	ld a, [hli]
+	inc de
+	ld [de], a
+	ld a, [hli]
+	inc de
+	ld [de], a
+	push de
+	dec de
+	dec de
+	dec de
+	xor a
+	ld [wLearningMovesFromDayCare], a
+	predef WriteMonMoves
+	pop de
+	ld a, [wPlayerID]  ; set trainer ID to player ID
+	inc de
+	ld [de], a
+	ld a, [wPlayerID + 1]
+	inc de
+	ld [de], a
+	push de
+	ld a, [W_CURENEMYLVL]
+	ld d, a
+	callab CalcExperience
+	pop de
+	inc de
+	ld a, [hExperience] ; write experience
+	ld [de], a
+	inc de
+	ld a, [hExperience + 1]
+	ld [de], a
+	inc de
+	ld a, [hExperience + 2]
+	ld [de], a
+	xor a
+	ld b, NUM_STATS * 2
+.writeEVsLoop              ; set all EVs to 0
+	inc de
+	ld [de], a
+	dec b
+	jr nz, .writeEVsLoop
+	inc de
+	inc de
+	pop hl
+	call AddPartyMon_WriteMovePP
+	inc de
+	ld a, [W_CURENEMYLVL]
+	ld [de], a
+	inc de
+	ld a, [W_ISINBATTLE]
+	dec a
+	jr nz, .calcFreshStats
+	ld hl, wEnemyMonMaxHP
+	ld bc, $a
+	call CopyData          ; copy stats of cur enemy mon
+	pop hl
+	jr .done
+.calcFreshStats
+	pop hl
+	ld bc, wPartyMon1HPExp - 1 - wPartyMon1
+	add hl, bc
+	ld b, $0
+	call CalcStats         ; calculate fresh set of stats
+.done
+	scf
+	ret
+
+LoadMovePPs: ; f2f9 (3:72f9)
+	call GetPredefRegisters
+	; fallthrough
+AddPartyMon_WriteMovePP: ; f2fc (3:72fc)
+	ld b, NUM_MOVES
+.pploop
+	ld a, [hli]     ; read move ID
+	and a
+	jr z, .empty
+	dec a
+	push hl
+	push de
+	push bc
+	ld hl, Moves
+	ld bc, MoveEnd - Moves
+	call AddNTimes
+	ld de, wcd6d
+	ld a, BANK(Moves)
+	call FarCopyData
+	pop bc
+	pop de
+	pop hl
+	ld a, [wcd6d + 5] ; PP is byte 5 of move data
+.empty
+	inc de
+	ld [de], a
+	dec b
+	jr nz, .pploop ; there are still moves to read
+	ret
+
 _AddEnemyMonToPlayerParty: ; f323 (3:7323)
 	dr $f323,$f3a4
 Func_f3a4: ; f3a4 (3:73a4)
-	dr $f3a4,$f9de
+	dr $f3a4,$f4ef
+FlagAction: ; f4ef (3:74ef)
+	dr $f4ef,$f9de
 PrintBookshelfText: ; f9de (3:79de)
 	dr $f9de,$fad3
 PokemonStuffText: ; fad3 (3:7ad3)
@@ -1399,7 +2226,9 @@ TryEvolvingMon:
 EvolveTradeMon: ; 3adb8 (e:6db8)
 	dr $3adb8,$3b10f
 Func_3b10f: ; 3b01f (e:710f)
-	dr $3b10f,$3c000
+	dr $3b10f,$3b1e5
+Pointer_3b1e5: ; 3b1e5 (e:71e5)
+	dr $3b1e5,$3c000
 
 
 SECTION "bank0F",ROMX,BANK[$0F]
@@ -1552,7 +2381,7 @@ SECTION "bank18",ROMX,BANK[$18]
 
 
 SECTION "bank19",ROMX,BANK[$19]
-
+Overworld_GFX:
 	dr $64000,$68000
 
 
@@ -1604,7 +2433,7 @@ VendingMachineMenu: ; 74726 (1d:4726)
 SECTION "bank1E",ROMX,BANK[$1E]
 
 	dr $78000,$78757
-AnimationTileset2: ; 78757 (1e:4857)
+AnimationTileset2: ; 78757 (1e:4757)
 	dr $78757,$79816
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)
 	dr $79816,$798b2
@@ -1613,7 +2442,11 @@ ReshowSubstituteAnim: ; 798b2 (1e:58b2)
 AnimationTransformMon: ; 798c8 (1e:58c8)
 	dr $798c8,$798d4
 ChangeMonPic: ; 798d4 (1e:58d4)
-	dr $798d4,$7a19a
+	dr $798d4,$7a037
+AnimCut: ; 7a037 (1e:6037)
+	dr $7a037,$7a0fb
+AnimateBoulderDust: ; 7a0fb (1e:60fb)
+	dr $7a0fb,$7a19a
 	
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
@@ -1804,14 +2637,3 @@ YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 SECTION "bank3F",ROMX,BANK[$3F]
 
 INCLUDE "engine/bank3f/main.asm"
-
-
-;IF DEF(_OPTION_BEACH_HOUSE)
-;SECTION "bank3C",ROMX[$4314],BANK[$3C]
-;
-;BeachHouse_GFX:
-;	INCBIN "gfx/tilesets/beachhouse.2bpp"
-;
-;BeachHouse_Block:
-;	INCBIN "gfx/blocksets/beachhouse.bst"
-;ENDC

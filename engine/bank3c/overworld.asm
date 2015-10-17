@@ -7,6 +7,8 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	dec [hl]
 	jr nz,.afterUpdateMapCoords
 ; if it's the end of the animation, update the player's map coordinates
+	ld hl, wd430
+	res 5, [hl]
 	ld a,[W_YCOORD]
 	add b
 	ld [W_YCOORD],a
@@ -24,11 +26,11 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 ; moving east
 	ld a,[wMapViewVRAMPointer]
 	ld e,a
-	and a,$e0
+	and $e0
 	ld d,a
 	ld a,e
-	add a,$02
-	and a,$1f
+	add $02
+	and $1f
 	or d
 	ld [wMapViewVRAMPointer],a
 	jr .adjustXCoordWithinBlock
@@ -41,8 +43,8 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	and a,$e0
 	ld d,a
 	ld a,e
-	sub a,$02
-	and a,$1f
+	sub $02
+	and $1f
 	or d
 	ld [wMapViewVRAMPointer],a
 	jr .adjustXCoordWithinBlock
@@ -52,13 +54,13 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	jr nz,.checkIfMovingNorth
 ; moving south
 	ld a,[wMapViewVRAMPointer]
-	add a,$40
+	add $40
 	ld [wMapViewVRAMPointer],a
 	jr nc,.adjustXCoordWithinBlock
 	ld a,[wMapViewVRAMPointer + 1]
 	inc a
-	and a,$03
-	or a,$98
+	and $03
+	or $98
 	ld [wMapViewVRAMPointer + 1],a
 	jr .adjustXCoordWithinBlock
 .checkIfMovingNorth
@@ -66,13 +68,13 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	jr nz,.adjustXCoordWithinBlock
 ; moving north
 	ld a,[wMapViewVRAMPointer]
-	sub a,$40
+	sub $40
 	ld [wMapViewVRAMPointer],a
 	jr nc,.adjustXCoordWithinBlock
 	ld a,[wMapViewVRAMPointer + 1]
 	dec a
-	and a,$03
-	or a,$98
+	and $03
+	or $98
 	ld [wMapViewVRAMPointer + 1],a
 .adjustXCoordWithinBlock
 	ld a,c
@@ -83,7 +85,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld a,[hl]
 	add c
 	ld [hl],a
-	cp a,$02
+	cp $02
 	jr nz,.checkForMoveToWestBlock
 ; moved into the tile block to the east
 	xor a
@@ -97,7 +99,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	cp a,$ff
 	jr nz,.adjustYCoordWithinBlock
 ; moved into the tile block to the west
-	ld a,$01
+	ld a,$1
 	ld [hl],a
 	ld hl,wXOffsetSinceLastSpecialWarp
 	dec [hl]
@@ -109,7 +111,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld a,[hl]
 	add b
 	ld [hl],a
-	cp a,$02
+	cp $2
 	jr nz,.checkForMoveToNorthBlock
 ; moved into the tile block to the south
 	xor a
@@ -124,7 +126,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	cp a,$ff
 	jr nz,.updateMapView
 ; moved into the tile block to the north
-	ld a,$01
+	ld a,$1
 	ld [hl],a
 	ld hl,wYOffsetSinceLastSpecialWarp
 	dec [hl]
@@ -134,49 +136,40 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 .updateMapView
 	call LoadCurrentMapView
 	ld a,[wSpriteStateData1 + 3] ; delta Y
-	cp a,$01
+	cp $1
 	jr nz,.checkIfMovingNorth2
 ; if moving south
 	call ScheduleSouthRowRedraw
 	jr .scrollBackgroundAndSprites
 .checkIfMovingNorth2
-	cp a,$ff
+	cp $ff
 	jr nz,.checkIfMovingEast2
 ; if moving north
 	call ScheduleNorthRowRedraw
 	jr .scrollBackgroundAndSprites
 .checkIfMovingEast2
 	ld a,[wSpriteStateData1 + 5] ; delta X
-	cp a,$01
+	cp $1
 	jr nz,.checkIfMovingWest2
 ; if moving east
 	call ScheduleEastColumnRedraw
 	jr .scrollBackgroundAndSprites
 .checkIfMovingWest2
-	cp a,$ff
+	cp $ff
 	jr nz,.scrollBackgroundAndSprites
 ; if moving west
 	call ScheduleWestColumnRedraw
 .scrollBackgroundAndSprites
 	ld a,[wSpriteStateData1 + 3] ; delta Y
+	add a
 	ld b,a
 	ld a,[wSpriteStateData1 + 5] ; delta X
+	add a
 	ld c,a
-	sla b
-	sla c
-	ld a,[hSCY]
-	add b
-	ld [hSCY],a ; update background scroll Y
-	ld a,[hSCX]
-	add c
-	ld [hSCX],a ; update background scroll X
 ; shift all the sprites in the direction opposite of the player's motion
 ; so that the player appears to move relative to them
 	ld hl,wSpriteStateData1 + $14
-	ld a,[W_NUMSPRITES] ; number of sprites
-	and a ; are there any sprites?
-	jr z,.done
-	ld e,a
+	ld e,15
 .spriteShiftLoop
 	ld a,[hl]
 	sub b
@@ -191,11 +184,17 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	dec e
 	jr nz,.spriteShiftLoop
 .done
+	ld a,[hSCY]
+	add b
+	ld [hSCY],a ; update background scroll Y
+	ld a,[hSCX]
+	add c
+	ld [hSCX],a ; update background scroll X
 	ret
 
-MoveTileBlockMapPointerEast:: ; 0e65 (0:0e65)
+MoveTileBlockMapPointerEast:: ; f0248 (3c:4248)
 	ld a,[de]
-	add a,$01
+	add $1
 	ld [de],a
 	ret nc
 	inc de
@@ -204,9 +203,9 @@ MoveTileBlockMapPointerEast:: ; 0e65 (0:0e65)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerWest:: ; 0e6f (0:0e6f)
+MoveTileBlockMapPointerWest:: ; f0252 (3c:4252)
 	ld a,[de]
-	sub a,$01
+	sub $1
 	ld [de],a
 	ret nc
 	inc de
@@ -215,8 +214,8 @@ MoveTileBlockMapPointerWest:: ; 0e6f (0:0e6f)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerSouth:: ; 0e79 (0:0e79)
-	add a,$06
+MoveTileBlockMapPointerSouth:: ; f025c (3c:425c)
+	add $6
 	ld b,a
 	ld a,[de]
 	add b
@@ -228,8 +227,8 @@ MoveTileBlockMapPointerSouth:: ; 0e79 (0:0e79)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerNorth:: ; 0e85 (0:0e85)
-	add a,$06
+MoveTileBlockMapPointerNorth:: ; f0268 (3c:4268)
+	add $6
 	ld b,a
 	ld a,[de]
 	sub b

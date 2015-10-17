@@ -2846,7 +2846,7 @@ DrawBadges: ; ea03 (3:6a03)
 ;	call .DrawBadgeRow
 ;	ret
 
-.DrawBadgeRow ; ea4c (3:6a4c)
+.DrawBadgeRow ; e8c9 (3:68c9)
 ; Draw 4 badges.
 
 	ld c, 4
@@ -2910,14 +2910,14 @@ DrawBadges: ; ea03 (3:6a03)
 .FaceBadgeTiles
 	db $20, $28, $30, $38, $40, $48, $50, $58
 
-GymLeaderFaceAndBadgeTileGraphics: ; ea9e (3:6a9e)
+GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"
 
 ; replaces a tile block with the one specified in [wNewTileBlockID]
 ; and redraws the map view if necessary
 ; b = Y
 ; c = X
-ReplaceTileBlock: ; ee9e (3:6e9e)
+ReplaceTileBlock: ; ed1b (3:6d1b)
 	call GetPredefRegisters
 	ld hl, wOverworldMap
 	ld a, [W_CURMAPWIDTH]
@@ -2961,7 +2961,7 @@ ReplaceTileBlock: ; ee9e (3:6e9e)
 	call CompareHLWithBC
 	ret c ; return if the replaced tile block is above the map view in memory
 
-RedrawMapView: ; eedc (3:6edc)
+RedrawMapView: ; ed59 (3:6d59)
 	ld a, [W_ISINBATTLE]
 	inc a
 	ret z
@@ -3032,7 +3032,7 @@ RedrawMapView: ; eedc (3:6edc)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-CompareHLWithBC: ; ef4e (3:6f4e)
+CompareHLWithBC: ; edcb (3:6dcb)
 	ld a, h
 	sub b
 	ret nz
@@ -3042,7 +3042,7 @@ CompareHLWithBC: ; ef4e (3:6f4e)
 
 INCLUDE "engine/overworld/cut.asm"
 
-MarkTownVisitedAndLoadMissableObjects: ; f113 (3:7113)
+MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ld a, [W_CURMAP]
 	cp ROUTE_1
 	jr nc, .notInTown
@@ -3061,18 +3061,15 @@ MarkTownVisitedAndLoadMissableObjects: ; f113 (3:7113)
 	ld h, [hl]
 	; fall through
 
-LoadMissableObjects: ; f132 (3:7132)
+; LoadMissableObjects: ; efb2 (3:6fb2)
+; seems to not exist in yellow (predef replaced with something near TryPushingBoulder)
 	ld l, a
 	push hl
-	ld de, MapHS00             ; calculate difference between out pointer and the base pointer
 	ld a, l
-	sub e
-	jr nc, .asm_f13c
-	dec h
-.asm_f13c
+	sub MapHS00 & $ff ; calculate difference between out pointer and the base pointer
 	ld l, a
 	ld a, h
-	sub d
+	sbc MapHS00 / $100
 	ld h, a
 	ld a, h
 	ld [H_DIVIDEND], a
@@ -3111,7 +3108,7 @@ LoadMissableObjects: ; f132 (3:7132)
 	ld [de], a                 ; write sentinel
 	ret
 
-InitializeMissableObjectsFlags: ; f175 (3:7175)
+InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
 	ld hl, W_MISSABLEOBJECTFLAGS
 	ld bc, wMissableObjectFlagsEnd - W_MISSABLEOBJECTFLAGS
 	xor a
@@ -3142,7 +3139,7 @@ InitializeMissableObjectsFlags: ; f175 (3:7175)
 	jr .missableObjectsLoop
 
 ; tests if current sprite is a missable object that is hidden/has been removed
-IsObjectHidden: ; f1a6 (3:71a6)
+IsObjectHidden: ; f022 (3:7022)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	swap a
 	ld b, a
@@ -3169,7 +3166,7 @@ IsObjectHidden: ; f1a6 (3:71a6)
 
 ; adds missable object (items, leg. pokemon, etc.) to the map
 ; [wMissableObjectIndex]: index of the missable object to be added (global index)
-ShowObject: ; f1c8 (3:71c8)
+ShowObject: ; f044 (3:7044)
 ShowObject2:
 	ld hl, W_MISSABLEOBJECTFLAGS
 	ld a, [wMissableObjectIndex]
@@ -3180,7 +3177,7 @@ ShowObject2:
 
 ; removes missable object (items, leg. pokemon, etc.) from the map
 ; [wMissableObjectIndex]: index of the missable object to be removed (global index)
-HideObject: ; f1d7 (3:71d7)
+HideObject: ; f053 (3:7053)
 	ld hl, W_MISSABLEOBJECTFLAGS
 	ld a, [wMissableObjectIndex]
 	ld c, a
@@ -3188,7 +3185,7 @@ HideObject: ; f1d7 (3:71d7)
 	call MissableObjectFlagAction   ; set "removed" flag
 	jp UpdateSprites
 
-MissableObjectFlagAction:
+MissableObjectFlagAction: ; f062 (3:7062)
 ; identical to FlagAction
 
 	push hl
@@ -3258,10 +3255,11 @@ MissableObjectFlagAction:
 	ld c, a
 	ret
 
-TryPushingBoulder: ; f225 (3:7225)
+TryPushingBoulder: ; f0a1 (3:70a1)
 	ld a, [wd728]
 	bit 0, a ; using Strength?
 	ret z
+; where LoadMissableObjects predef points to now
 	ld a, [wFlags_0xcd60]
 	bit 1, a ; has boulder dust animation from previous push played yet?
 	ret nz
@@ -3330,19 +3328,19 @@ TryPushingBoulder: ; f225 (3:7225)
 	set 1, [hl]
 	ret
 
-PushBoulderUpMovementData: ; f2ad (3:72ad)
+PushBoulderUpMovementData: ; f129 (3:7129)
 	db NPC_MOVEMENT_UP,$FF
 
-PushBoulderDownMovementData: ; f2af (3:72af)
+PushBoulderDownMovementData: ; f12b (3:712b)
 	db NPC_MOVEMENT_DOWN,$FF
 
-PushBoulderLeftMovementData: ; f2b1 (3:72b1)
+PushBoulderLeftMovementData: ; f12d (3:712d)
 	db NPC_MOVEMENT_LEFT,$FF
 
-PushBoulderRightMovementData: ; f2b3 (3:72b3)
+PushBoulderRightMovementData: ; f12f (3:712f)
 	db NPC_MOVEMENT_RIGHT,$FF
 
-DoBoulderDustAnimation: ; f2b5 (3:72b5)
+DoBoulderDustAnimation: ; f131 (3:7131)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -3358,13 +3356,13 @@ DoBoulderDustAnimation: ; f2b5 (3:72b5)
 	ld a, SFX_CUT
 	jp PlaySound
 
-ResetBoulderPushFlags: ; f2dd (3:72dd)
+ResetBoulderPushFlags: ; f159 (3:7159)
 	ld hl, wFlags_0xcd60
 	res 1, [hl]
 	res 6, [hl]
 	ret
 
-_AddPartyMon: ; f2e5 (3:72e5)
+_AddPartyMon: ; f161 (3:7161)
 ; Adds a new mon to the player's or enemy's party.
 ; [wMonDataLocation] is used in an unusual way in this function.
 ; If the lower nybble is 0, the mon is added to the player's party, else the enemy's.
@@ -3536,6 +3534,11 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	inc de
 	ld a, [hli]       ; catch rate (held item in gen 2)
 	ld [de], a
+	cp KADABRA
+	jr nz, .skipGivingTwistedSpoon
+	ld a, $60 ; twistedspoon in gen 2
+	ld [de], a
+.skipGivingTwistedSpoon
 	ld hl, W_MONHMOVES
 	ld a, [hli]
 	inc de
@@ -3611,10 +3614,10 @@ _AddPartyMon: ; f2e5 (3:72e5)
 	scf
 	ret
 
-LoadMovePPs: ; f473 (3:7473)
+LoadMovePPs: ; f2f9 (3:72f9)
 	call GetPredefRegisters
 	; fallthrough
-AddPartyMon_WriteMovePP: ; f476 (3:7476)
+AddPartyMon_WriteMovePP: ; f2fc (3:72fc)
 	ld b, NUM_MOVES
 .pploop
 	ld a, [hli]     ; read move ID
