@@ -60,7 +60,7 @@ PewterGymScript_5c3df: ; 5c3df (17:43df)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_5c408
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 0, [hl]
 	ld hl, wBeatGymFlags
 	set 0, [hl]

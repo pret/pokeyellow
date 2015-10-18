@@ -392,7 +392,7 @@ PrintSaveScreenText: ; 5def (1:5def)
 
 PrintNumBadges: ; 5e2f (1:5e2f)
 	push hl
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	ld b, $1
 	call CountSetBits
 	pop hl

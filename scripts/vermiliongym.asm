@@ -79,7 +79,7 @@ VermilionGymScript_5caaa: ; 5caaa (17:4aaa)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_5cad3
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 2, [hl]
 	ld hl, wBeatGymFlags
 	set 2, [hl]

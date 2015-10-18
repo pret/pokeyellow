@@ -2299,7 +2299,7 @@ W_OPTIONS:: ; d355
 ; 5: Slow
 	ds 1
 
-W_OBTAINEDBADGES:: ; d356
+wObtainedBadges:: ; d356
 	ds 1
 
 	ds 1
@@ -2352,7 +2352,7 @@ wLastMap:: ; d365
 wUnusedD366:: ; d366
 	ds 1
 
-W_CURMAPTILESET:: ; d367
+wCurMapTileset:: ; d367
 	ds 1
 
 W_CURMAPHEIGHT:: ; d368
@@ -2523,8 +2523,8 @@ wd44b:: ds 1
 
 	ds 36
 
-wPikachuHappiness:: ds 1
-wPikachuMood:: ds 1
+wPikachuHappiness:: ds 1 ; d46f
+wPikachuMood:: ds 1 ; d470
 wd472:: ds 1
 wd473:: ds 1
 	
@@ -2666,7 +2666,7 @@ W_MISSABLEOBJECTLIST:: ; d5ce
 ; terminated with $FF
 	ds 17 * 2
 
-W_GAMEPROGRESSFLAGS:: ; d5f0
+wGameProgressFlags:: ; d5f0
 ; $c8 bytes
 	ds 0
 
@@ -2970,7 +2970,7 @@ wd728::
 	ds 1
 
 wBeatGymFlags:: ; d72a
-; redundant because it matches W_OBTAINEDBADGES
+; redundant because it matches wObtainedBadges
 ; used to determine whether to show name on statue and in two NPC text scripts
 	ds 1
 
@@ -3279,7 +3279,7 @@ wMainDataEnd::
 
 wBoxDataStart::
 
-W_NUMINBOX::  ds 1 ; da80
+wNumInBox::  ds 1 ; da80
 wBoxSpecies:: ds MONS_PER_BOX + 1
 
 wBoxMons::

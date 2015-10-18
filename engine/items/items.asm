@@ -114,7 +114,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld a,[wPartyCount]	;is Party full?
 	cp a,PARTY_LENGTH
 	jr nz,.UseBall
-	ld a,[W_NUMINBOX]	;is Box full?
+	ld a,[wNumInBox]	;is Box full?
 	cp a,MONS_PER_BOX
 	jp z,BoxFullCannotThrowBall
 .UseBall
@@ -1483,7 +1483,7 @@ ItemUseEscapeRope: ; ddcf (3:5dcf)
 	jr z,.notUsable
 	cp a,POKEMON_FAN_CLUB
 	jr z,.notUsable
-	ld a,[W_CURMAPTILESET]
+	ld a,[wCurMapTileset]
 	ld b,a
 	ld hl,EscapeRopeTilesets
 .loop
@@ -2800,7 +2800,7 @@ IsKeyItem_: ; e6a8 (3:66a8)
 INCLUDE "data/key_items.asm"
 
 SendNewMonToBox: ; e6e8 (3:66e8)
-	ld de, W_NUMINBOX
+	ld de, wNumInBox
 	ld a, [de]
 	inc a
 	ld [de], a
@@ -2819,7 +2819,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	call GetMonHeader
 	ld hl, wBoxMonOT
 	ld bc, NAME_LENGTH
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	jr z, .asm_e732
 	dec a
@@ -2830,7 +2830,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	ld b, a
 .asm_e71f
@@ -2851,7 +2851,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	ld de, wBoxMonOT
 	ld bc, NAME_LENGTH
 	call CopyData
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	jr z, .asm_e76e
 	ld hl, wBoxMonNicks
@@ -2864,7 +2864,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	ld b, a
 .asm_e75b
@@ -2885,7 +2885,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	ld a, NAME_MON_SCREEN
 	ld [wNamingScreenType], a
 	predef AskName
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	jr z, .asm_e7ab
 	ld hl, wBoxMons
@@ -2898,7 +2898,7 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	dec a
 	ld b, a
 .asm_e798
@@ -2975,13 +2975,13 @@ SendNewMonToBox: ; e6e8 (3:66e8)
 ; used for surfing and fishing
 ; unsets carry if it is, sets carry if not
 IsNextTileShoreOrWater: ; e808 (3:6808)
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld hl, WaterTilesets
 	ld de,1
 	call IsInArray ; does the current map allow surfing?
 	ret nc ; if not, return
 	ld hl,WaterTile
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp SHIP_PORT ; Vermilion Dock tileset
 	jr z, .skipShoreTiles ; if it's the Vermilion Dock tileset
 	cp GYM ; eastern shore tile in Safari Zone

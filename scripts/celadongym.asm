@@ -60,7 +60,7 @@ CeladonGymText_48963: ; 48963 (12:4963)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_4898c
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 3, [hl]
 	ld hl, wBeatGymFlags
 	set 3, [hl]

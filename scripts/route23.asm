@@ -190,7 +190,7 @@ Route23Script_51346: ; 51346 (14:5346)
 	inc a
 	ld c, a
 	ld b, FLAG_TEST
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	predef FlagActionPredef
 	ld a, c
 	and a

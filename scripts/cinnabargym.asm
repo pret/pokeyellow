@@ -157,7 +157,7 @@ CinnabarGymScript3_75857: ; 75857 (1d:5857)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_75880
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 6, [hl]
 	ld hl, wBeatGymFlags
 	set 6, [hl]

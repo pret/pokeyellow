@@ -1,7 +1,7 @@
 UsedCut: ; edd1 (3:6dd1)
 	xor a
 	ld [wActionResultOrTookBattleTurn], a ; initialise to failure value
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	and a ; OVERWORLD
 	jr z, .overworld
 	cp GYM

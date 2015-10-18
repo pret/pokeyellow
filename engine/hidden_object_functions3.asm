@@ -1,10 +1,10 @@
 ; prints text for bookshelves in buildings without sign events
-PrintBookshelfText: ; fb50 (3:7b50)
+PrintBookshelfText: ; f9de (3:79de)
 	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	jr nz, .noMatch
 ; facing up
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld b, a
 	aCoord 8, 7
 	ld c, a
@@ -37,95 +37,95 @@ PrintBookshelfText: ; fb50 (3:7b50)
 	jpba PrintCardKeyText
 
 ; format: db tileset id, bookshelf tile id, text id
-BookshelfTileIDs: ; fb8b (3:7b8b)
+BookshelfTileIDs: ; fa19 (3:7a19)
 	db PLATEAU,      $30
-	db (IndigoPlateauStatues_id   - TextPredefs) / 2 + 1
+	db_tx_pre IndigoPlateauStatues
 	db HOUSE,        $3D
-	db (TownMapText_id   - TextPredefs) / 2 + 1
+	db_tx_pre TownMapText
 	db HOUSE,        $1E
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db MANSION,      $32
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db REDS_HOUSE_1, $32
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db LAB,          $28
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db LOBBY,        $16
-	db (ElevatorText_id   - TextPredefs) / 2 + 1
+	db_tx_pre ElevatorText
 	db GYM,          $1D
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db DOJO,         $1D
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db GATE,         $22
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db MART,         $54
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db MART,         $55
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db POKECENTER,   $54
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db POKECENTER,   $55
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db LOBBY,        $50
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db LOBBY,        $52
-	db (PokemonStuffText_id   - TextPredefs) / 2 + 1
+	db_tx_pre PokemonStuffText
 	db SHIP,         $36
-	db (BookOrSculptureText_id   - TextPredefs) / 2 + 1
+	db_tx_pre BookOrSculptureText
 	db $FF
 
-IndigoPlateauStatues: ; fbbf (3:7bbf)
+IndigoPlateauStatues: ; fa4d (3:7a4d)
 	TX_ASM
 	ld hl, IndigoPlateauStatuesText1
 	call PrintText
 	ld a, [W_XCOORD]
 	bit 0, a
 	ld hl, IndigoPlateauStatuesText2
-	jr nz, .asm_fbd3
+	jr nz, .asm_fa61
 	ld hl, IndigoPlateauStatuesText3
-.asm_fbd3
+.asm_fa61
 	call PrintText
 	jp TextScriptEnd
 
-IndigoPlateauStatuesText1: ; fbd9 (3:7bd9)
+IndigoPlateauStatuesText1: ; fa67 (3:7a67)
 	TX_FAR _IndigoPlateauStatuesText1
 	db "@"
 
-IndigoPlateauStatuesText2: ; fbde (3:7bde)
+IndigoPlateauStatuesText2: ; fa6c (3:7a6c)
 	TX_FAR _IndigoPlateauStatuesText2
 	db "@"
 
-IndigoPlateauStatuesText3: ; fbe3 (3:7be3)
+IndigoPlateauStatuesText3: ; fa71 (3:7a71)
 	TX_FAR _IndigoPlateauStatuesText3
 	db "@"
 
-BookOrSculptureText: ; fbe8 (3:7be8)
+BookOrSculptureText: ; fa76 (3:7a76)
 	TX_ASM
 	ld hl, PokemonBooksText
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp MANSION ; Celadon Mansion tileset
-	jr nz, .asm_fbfd
+	jr nz, .asm_fa8b
 	aCoord 8, 6
 	cp $38
-	jr nz, .asm_fbfd
+	jr nz, .asm_fa8b
 	ld hl, DiglettSculptureText
-.asm_fbfd
+.asm_fa8b
 	call PrintText
 	jp TextScriptEnd
 
-PokemonBooksText: ; fc03 (3:7c03)
+PokemonBooksText: ; fa91 (3:7a91)
 	TX_FAR _PokemonBooksText
 	db "@"
 
-DiglettSculptureText: ; fc08 (3:7c08)
+DiglettSculptureText: ; fa96 (3:7a96)
 	TX_FAR _DiglettSculptureText
 	db "@"
 
-ElevatorText: ; fc0d (3:7c0d)
+ElevatorText: ; fa9b (3:7a9b)
 	TX_FAR _ElevatorText
 	db "@"
 
-TownMapText: ; fc12 (3:7c12)
+TownMapText: ; faa0 (3:7aa0)
 	TX_FAR _TownMapText
 	db $06
 	TX_ASM
@@ -148,6 +148,6 @@ TownMapText: ; fc12 (3:7c12)
 	push af
 	jp CloseTextDisplay
 
-PokemonStuffText: ; fc45 (3:7c45)
+PokemonStuffText: ; fad3 (3:7ad3)
 	TX_FAR _PokemonStuffText
 	db "@"

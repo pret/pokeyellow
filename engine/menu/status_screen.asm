@@ -40,7 +40,7 @@ DrawHP_: ; 128fb (4:68fb)
 	push hl
 	call DrawHPBar
 	pop hl
-	ld a, [hFlags_0xFFF6]
+	ld a, [hFlags_0xFFFA]
 	bit 0, a
 	jr z, .printFractionBelowBar
 	ld bc, $9 ; right of bar

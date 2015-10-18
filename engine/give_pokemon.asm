@@ -7,7 +7,7 @@ _GivePokemon: ; f66fa (3d:66fa)
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jr c, .addToParty
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	cp MONS_PER_BOX
 	jr nc, .boxFull
 ; add to box

@@ -41,7 +41,7 @@ TryDoWildEncounter: ; 13870 (4:7870)
 	ld a, [W_CURMAP]
 	cp REDS_HOUSE_1F ; is this an indoor map?
 	jr c, .CantEncounter2
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp FOREST ; Viridian Forest/Safari Zone
 	jr z, .CantEncounter2
 	ld a, [W_GRASSRATE]

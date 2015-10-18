@@ -61,7 +61,7 @@ LoadSAV0: ; 73994 (1c:7994)
 	ld de, wMainDataStart
 	ld bc, wMainDataEnd - wMainDataStart
 	call CopyData
-	ld hl, W_CURMAPTILESET
+	ld hl, wCurMapTileset
 	set 7, [hl]
 	ld hl, sSpriteData
 	ld de, wSpriteDataStart
@@ -554,7 +554,7 @@ GetMonCountsForAllBoxes: ; 73a84 (1c:7a84)
 	ld c, a
 	ld b, 0
 	add hl, bc
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	ld [hl], a
 
 	ret

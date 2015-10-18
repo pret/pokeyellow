@@ -17,7 +17,7 @@ ViridianCityScript0: ; 19005 (6:5005)
 ViridianCityScript_1900b: ; 1900b (6:500b)
 	CheckEvent EVENT_VIRIDIAN_GYM_OPEN
 	ret nz
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	cp %01111111
 	jr nz, .asm_1901e
 	SetEvent EVENT_VIRIDIAN_GYM_OPEN
@@ -147,7 +147,7 @@ ViridianCityText1: ; 19102 (6:5102)
 
 ViridianCityText2: ; 19107 (6:5107)
 	TX_ASM
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	cp %01111111
 	ld hl, ViridianCityText_19127
 	jr z, .asm_ae9fe

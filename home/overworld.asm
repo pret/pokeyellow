@@ -122,7 +122,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 ;	call SpecialWarpIn
 ;	ld a,[W_CURMAP]
 ;	call SwitchToMapRomBank ; switch to the ROM bank of the current map
-;	ld hl,W_CURMAPTILESET
+;	ld hl,wCurMapTileset
 ;	set 7,[hl]
 .checkForOpponent
 	ld a,[W_CUROPPONENT]
@@ -656,7 +656,7 @@ CheckMapConnections:: ; 05db (0:05db)
 
 ; function to play a sound when changing maps
 PlayMapChangeSound:: ; 06ef (0:06ef)
-	ld a,[W_CURMAPTILESET]
+	ld a,[wCurMapTileset]
 	cp FACILITY
 	jr z,.didNotGoThroughDoor
 	cp CEMETERY
@@ -677,7 +677,7 @@ PlayMapChangeSound:: ; 06ef (0:06ef)
 
 CheckIfInOutsideMap:: ; 0712 (0:0712)
 ; If the player is in an outside map (a town or route), set the z flag
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	and a ; most towns/routes have tileset 0 (OVERWORLD)
 	ret z
 	cp PLATEAU ; Route 23 / Indigo Plateau
@@ -701,7 +701,7 @@ ExtraWarpCheck:: ; 071a (0:071a)
 	jr z, .useFunction2
 	cp ROCK_TUNNEL_1
 	jr z, .useFunction2
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	and a ; outside tileset (OVERWORLD)
 	jr z, .useFunction2
 	cp SHIP ; S.S. Anne tileset
@@ -829,7 +829,7 @@ IsBikeRidingAllowed:: ; 0805 (0:0805)
 	cp INDIGO_PLATEAU
 	jr z, .allowed
 
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld b, a
 	ld hl, BikeRidingTilesets
 .loop
@@ -1289,7 +1289,7 @@ CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 	ld a,[wTileInFrontOfPlayer]
 	ld c,a
 .tilePairCollisionLoop
-	ld a,[W_CURMAPTILESET] ; tileset number
+	ld a,[wCurMapTileset] ; tileset number
 	ld b,a
 	ld a,[hli]
 	cp a,$ff
@@ -1709,7 +1709,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	scf
 	jr .done
 .checkIfVermilionDockTileset
-	ld a, [W_CURMAPTILESET] ; tileset
+	ld a, [wCurMapTileset] ; tileset
 	cp SHIP_PORT ; Vermilion Dock tileset
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
@@ -1814,20 +1814,20 @@ LoadMapHeader:: ; 0dab (0:0dab)
 	jr .asm_0dbd
 	callba Func_f0a55 ; 3c:4a55
 .asm_0dbd
-	ld a,[W_CURMAPTILESET]
+	ld a,[wCurMapTileset]
 	ld [wUnusedD119],a
 	ld a,[W_CURMAP]
 	call SwitchToMapRomBank
-	ld a,[W_CURMAPTILESET]
+	ld a,[wCurMapTileset]
 	ld b,a
 	res 7,a
-	ld [W_CURMAPTILESET],a
+	ld [wCurMapTileset],a
 	ld [hPreviousTileset],a
 	bit 7,b
 	ret nz
 	call GetMapHeaderPointer
 ; copy the first 10 bytes (the fixed area) of the map data to D367-D370
-	ld de,W_CURMAPTILESET
+	ld de,wCurMapTileset
 	ld c,$0a
 .copyFixedHeaderLoop
 	ld a,[hli]

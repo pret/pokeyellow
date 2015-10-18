@@ -303,6 +303,10 @@ add_tx_pre: MACRO
 \1_id:: dw \1
 ENDM
 
+db_tx_pre: MACRO
+	db \1_id
+ENDM
+
 tx_pre_id: MACRO
 	ld a, \1_id ; - TextPredefs) / 2 + 1
 ENDM

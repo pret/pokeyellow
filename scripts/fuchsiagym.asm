@@ -60,7 +60,7 @@ FuchsiaGymScript3_75497: ; 75497 (1d:5497)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_754c0
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 4, [hl]
 	ld hl, wBeatGymFlags
 	set 4, [hl]

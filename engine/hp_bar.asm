@@ -1,9 +1,9 @@
-HPBarLength: ; f9dc (3:79dc)
+HPBarLength: ; f86c (3:786c)
 	call GetPredefRegisters
 
 ; calculates bc * 48 / de, the number of pixels the HP bar has
 ; the result is always at least 1
-GetHPBarLength: ; f9df (3:79df)
+GetHPBarLength: ; f86f (3:786f)
 	push hl
 	xor a
 	ld hl, H_MULTIPLICAND
@@ -45,7 +45,7 @@ GetHPBarLength: ; f9df (3:79df)
 	ret
 
 ; predef $48
-UpdateHPBar: ; fa1d (3:7a1d)
+UpdateHPBar: ; f8ad (3:78ad)
 UpdateHPBar2:
 	push hl
 	ld hl, wHPBarOldHP
@@ -95,7 +95,7 @@ UpdateHPBar2:
 	call UpdateHPBar_CalcOldNewHPBarPixels
 	ld a, e
 	sub d         ; calc pixel difference
-	jr .asm_fa7e
+	jr .asm_f90e
 .HPIncrease
 	inc bc        ; add 1 HP
 	ld a, c
@@ -105,7 +105,7 @@ UpdateHPBar2:
 	call UpdateHPBar_CalcOldNewHPBarPixels
 	ld a, d
 	sub e         ; calc pixel difference
-.asm_fa7e
+.asm_f90e
 	call UpdateHPBar_PrintHPNumber
 	and a
 	jr z, .noPixelDifference
@@ -136,7 +136,7 @@ UpdateHPBar2:
 ; animates the HP bar going up or down for (a) ticks (two waiting frames each)
 ; stops prematurely if bar is filled up
 ; e: current health (in pixels) to start with
-UpdateHPBar_AnimateHPBar: ; fab1 (3:7ab1)
+UpdateHPBar_AnimateHPBar: ; f941 (3:7941)
 	push hl
 .barAnimationLoop
 	push af
@@ -162,7 +162,7 @@ UpdateHPBar_AnimateHPBar: ; fab1 (3:7ab1)
 	ret
 
 ; compares old HP and new HP and sets c and z flags accordingly
-UpdateHPBar_CompareNewHPToOldHP: ; fad1 (3:7ad1)
+UpdateHPBar_CompareNewHPToOldHP: ; f961 (3:7961)
 	ld a, d
 	sub b
 	ret nz
@@ -171,7 +171,7 @@ UpdateHPBar_CompareNewHPToOldHP: ; fad1 (3:7ad1)
 	ret
 
 ; calcs HP difference between bc and de (into de)
-UpdateHPBar_CalcHPDifference: ; fad7 (3:7ad7)
+UpdateHPBar_CalcHPDifference: ; f967 (3:7967)
 	ld a, d
 	sub b
 	jr c, .oldHPGreater
@@ -200,7 +200,7 @@ UpdateHPBar_CalcHPDifference: ; fad7 (3:7ad7)
 	ld de, $0
 	ret
 
-UpdateHPBar_PrintHPNumber: ; faf5 (3:7af5)
+UpdateHPBar_PrintHPNumber: ; f985 (3:7985)
 	push af
 	push de
 	ld a, [wHPBarType]
@@ -212,13 +212,11 @@ UpdateHPBar_PrintHPNumber: ; faf5 (3:7af5)
 	ld a, [wHPBarOldHP + 1]
 	ld [wHPBarTempHP], a
 	push hl
-	ld a, [hFlags_0xFFF6]
-	bit 0, a
-	jr z, .asm_fb15
-	ld de, $9
-	jr .next
-.asm_fb15
 	ld de, $15
+	ld a, [hFlags_0xFFFA]
+	bit 0, a
+	jr z, .next
+	ld de, $9
 .next
 	add hl, de
 	push hl
@@ -240,7 +238,7 @@ UpdateHPBar_PrintHPNumber: ; faf5 (3:7af5)
 ; calcs number of HP bar pixels for old and new HP value
 ; d: new pixels
 ; e: old pixels
-UpdateHPBar_CalcOldNewHPBarPixels: ; fb30 (3:7b30)
+UpdateHPBar_CalcOldNewHPBarPixels: ; f9be (3:79be)
 	push hl
 	ld hl, wHPBarMaxHP
 	ld a, [hli]  ; max HP into de

@@ -2557,13 +2557,13 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 
 .writemoves
 	ld de, wMovesString
-	ld a, [hFlags_0xFFF6]
+	ld a, [hFlags_0xFFFA]
 	set 2, a
-	ld [hFlags_0xFFF6], a
+	ld [hFlags_0xFFFA], a
 	call PlaceString
-	ld a, [hFlags_0xFFF6]
+	ld a, [hFlags_0xFFFA]
 	res 2, a
-	ld [hFlags_0xFFF6], a
+	ld [hFlags_0xFFFA], a
 	ret
 
 .regularmenu
@@ -2682,10 +2682,10 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	call AddNTimes
 	ld [hl], $ec
 .select
-	ld hl, hFlags_0xFFF6
+	ld hl, hFlags_0xFFFA
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, hFlags_0xFFF6
+	ld hl, hFlags_0xFFFA
 	res 1, [hl]
 	bit 6, a
 	jp nz, CursorUp ; up
@@ -4053,7 +4053,7 @@ CheckForDisobedience: ; 3dc88 (f:5c88)
 ; it was traded
 .monIsTraded
 ; what level might disobey?
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	bit 7, [hl]
 	ld a, 101
 	jr nz, .next
@@ -6660,7 +6660,7 @@ ApplyBadgeStatBoosts: ; 3ee19 (f:6e19)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	ld b, a
 	ld hl, wBattleMonAttack
 	ld c, $4

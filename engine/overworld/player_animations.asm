@@ -357,7 +357,7 @@ GetPlayerTeleportAnimFrameDelay: ; 707df (1c:47df)
 IsPlayerStandingOnWarpPadOrHole: ; 707e7 (1c:47e7)
 	ld b, 0
 	ld hl, .warpPadAndHoleData
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld c, a
 .loop
 	ld a, [hli]

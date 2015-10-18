@@ -147,7 +147,7 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	ld de, wPalPacket
 	ld bc, $10
 	call CopyData
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp CEMETERY
 	jr z, .PokemonTowerOrAgatha
 	cp CAVERN
@@ -222,7 +222,7 @@ SetPal_TrainerCard: ; 72025 (1c:6025)
 	call CopyData
 	ld de, BadgeBlkDataLengths
 	ld hl, wTrainerCardBlkPacket + 2
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	ld c, 8
 .badgeLoop
 	srl a
@@ -391,7 +391,7 @@ Func_720e3:: ; 720e3 (1c:60e3)
 
 Func_7213b:: ; 7213b (1c:613b)
 ; similar to SetPal_Overworld
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp CEMETERY
 	jr z, .PokemonTowerOrAgatha
 	cp CAVERN

@@ -154,7 +154,7 @@ ViridianGymScript3_74995: ; 74995 (1d:4995)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_749be
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 7, [hl]
 	ld hl, wBeatGymFlags
 	set 7, [hl]

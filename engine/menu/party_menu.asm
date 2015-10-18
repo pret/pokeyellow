@@ -88,14 +88,14 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	pop hl
 	push hl
 	ld bc,20 + 1 ; down 1 row and right 1 column
-	ld a,[hFlags_0xFFF6]
+	ld a,[hFlags_0xFFFA]
 	set 0,a
-	ld [hFlags_0xFFF6],a
+	ld [hFlags_0xFFFA],a
 	add hl,bc
 	predef DrawHP2 ; draw HP bar and prints current / max HP
-	ld a,[hFlags_0xFFF6]
+	ld a,[hFlags_0xFFFA]
 	res 0,a
-	ld [hFlags_0xFFF6],a
+	ld [hFlags_0xFFFA],a
 	call SetPartyMenuHPBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel

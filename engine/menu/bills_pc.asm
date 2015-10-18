@@ -218,7 +218,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	call PrintText
 	jp BillsPCMenu
 .partyLargeEnough
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	cp MONS_PER_BOX
 	jr nz, .boxNotFull
 	ld hl, BoxFullText
@@ -279,7 +279,7 @@ SleepingPikachuText2: ; 2160e (8:560e)
 	db "@"
 
 BillsPCWithdraw: ; 21613 (8:5613)
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	and a
 	jr nz, .boxNotEmpty
 	ld hl, NoMonText
@@ -293,7 +293,7 @@ BillsPCWithdraw: ; 21613 (8:5613)
 	call PrintText
 	jp BillsPCMenu
 .partyNotFull
-	ld hl, W_NUMINBOX
+	ld hl, wNumInBox
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
 	call DisplayDepositWithdrawMenu
@@ -322,14 +322,14 @@ BillsPCWithdraw: ; 21613 (8:5613)
 	jp BillsPCMenu
 
 BillsPCRelease: ; 21690 (8:5690)
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 	and a
 	jr nz, .loop
 	ld hl, NoMonText
 	call PrintText
 	jp BillsPCMenu
 .loop
-	ld hl, W_NUMINBOX
+	ld hl, wNumInBox
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
 	callab Func_fce0d

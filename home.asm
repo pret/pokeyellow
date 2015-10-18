@@ -4093,7 +4093,7 @@ AddEnemyMonToPlayerParty:: ; 3a48 (0:3a48)
 	ret
 
 MoveMon:: ; 3a59 (0:3a59)
-	homecall_sf Func_f3a4
+	homecall_sf _MoveMon
 	ret
 
 ; skips a text entries, each of size NAME_LENGTH (like trainer name, OT name, rival name, ...)

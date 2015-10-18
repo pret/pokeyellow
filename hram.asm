@@ -155,6 +155,8 @@ hCoins EQU $FFA0 ; 2-byte BCD number
 
 hDivideBCDDivisor  EQU $FFA2 ; 3-byte BCD number
 hDivideBCDQuotient EQU $FFA2 ; 3-byte BCD number
+hDivideBCDBuffer EQU $FFA5 ; 3 bytes
+
 
 hSerialReceivedNewData EQU $FFA9
 
@@ -322,8 +324,6 @@ hReadJoypad EQU $FFF8 ; 0 to read joypad, anything else skips joypad check
 
 ; bit 0: draw HP fraction to the right of bar instead of below (for party menu)
 ; bit 1: menu is double spaced
-hFlags_0xFFF6 EQU $FFFA
-
 hFlags_0xFFFA EQU $FFFA
 
-hGBC EQU $FFFE ; 0 if DMG, 1 if GBC
+hGBC EQU $FFFE ; 0 if DMG, != 0 if GBC

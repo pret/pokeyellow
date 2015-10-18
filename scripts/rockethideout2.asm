@@ -323,7 +323,7 @@ LoadSpinnerArrowTiles: ; 44fd7 (11:4fd7)
 	add hl, bc
 	ld a, [hl]
 	ld [wSpriteStateData1 + 2], a
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	cp FACILITY
 	ld hl, FacilitySpinnerArrows
 	jr z, .asm_44ff6

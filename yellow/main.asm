@@ -313,7 +313,7 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 	push bc
 	callba IsPlayerStandingOnDoorTile ; 6:6785
 	jr c, .done
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	add a
 	ld c, a
 	ld b, $0
@@ -712,7 +712,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	call GetPredefRegisters
 	push hl
 	ld d, 0
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	add a
 	add a
 	ld e, a
@@ -728,7 +728,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	xor a
 	ld [$ffd8], a
 	pop hl
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	push hl
 	push de
 	ld hl, DungeonTilesets
@@ -737,7 +737,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	pop de
 	pop hl
 	jr c, .notDungeonTileset
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld b, a
 	ld a, [hPreviousTileset]
 	cp b
@@ -839,7 +839,7 @@ DrawBadges: ; e880 (3:6880)
 ; Alter these based on owned badges.
 	ld de, wTempObtainedBadgesBooleans
 	ld hl, wBadgeOrFaceTiles
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	ld b, a
 	ld c, 8
 .CheckBadge
@@ -1670,16 +1670,703 @@ AddPartyMon_WriteMovePP: ; f2fc (3:72fc)
 	jr nz, .pploop ; there are still moves to read
 	ret
 
+; adds enemy mon [wcf91] (at position [wWhichPokemon] in enemy list) to own party
+; used in the cable club trade center
 _AddEnemyMonToPlayerParty: ; f323 (3:7323)
-	dr $f323,$f3a4
-Func_f3a4: ; f3a4 (3:73a4)
-	dr $f3a4,$f4ef
+	ld hl, wPartyCount
+	ld a, [hl]
+	cp PARTY_LENGTH
+	scf
+	ret z            ; party full, return failure
+	inc a
+	ld [hl], a       ; add 1 to party members
+	ld c, a
+	ld b, $0
+	add hl, bc
+	ld a, [wcf91]
+	ld [hli], a      ; add mon as last list entry
+	ld [hl], $ff     ; write new sentinel
+	ld hl, wPartyMons
+	ld a, [wPartyCount]
+	dec a
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld e, l
+	ld d, h
+	ld hl, wLoadedMon
+	call CopyData    ; write new mon's data (from wLoadedMon)
+	ld hl, wPartyMonOT
+	ld a, [wPartyCount]
+	dec a
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	ld hl, wEnemyMonOT
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+	ld bc, NAME_LENGTH
+	call CopyData    ; write new mon's OT name (from an enemy mon)
+	ld hl, wPartyMonNicks
+	ld a, [wPartyCount]
+	dec a
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	ld hl, wEnemyMonNicks
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+	ld bc, NAME_LENGTH
+	call CopyData    ; write new mon's nickname (from an enemy mon)
+	ld a, [wcf91]
+	ld [wd11e], a
+	predef IndexToPokedex
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, FLAG_SET
+	ld hl, wPokedexOwned
+	push bc
+	call FlagAction ; add to owned pokemon
+	pop bc
+	ld hl, wPokedexSeen
+	call FlagAction ; add to seen pokemon
+	and a
+	ret                  ; return success
+
+_MoveMon: ; f3a4 (3:73a4)
+	ld a, [wMoveMonType]
+	and a
+	jr z, .checkPartyMonSlots
+	cp DAYCARE_TO_PARTY
+	jr z, .checkPartyMonSlots
+	cp PARTY_TO_DAYCARE
+	ld hl, wDayCareMon
+	jr z, .asm_f3fb
+	ld hl, wNumInBox
+	ld a, [hl]
+	cp MONS_PER_BOX
+	jr nz, .partyOrBoxNotFull
+	jr .boxFull
+.checkPartyMonSlots
+	ld hl, wPartyCount
+	ld a, [hl]
+	cp PARTY_LENGTH
+	jr nz, .partyOrBoxNotFull
+.boxFull
+	scf
+	ret
+.partyOrBoxNotFull
+	inc a
+	ld [hl], a           ; increment number of mons in party/box
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld a, [wMoveMonType]
+	cp DAYCARE_TO_PARTY
+	ld a, [wDayCareMon]
+	jr z, .asm_f3dc
+	ld a, [wcf91]
+.asm_f3dc
+	ld [hli], a          ; write new mon ID
+	ld [hl], $ff         ; write new sentinel
+	ld a, [wMoveMonType]
+	dec a
+	ld hl, wPartyMons
+	ld bc, wPartyMon2 - wPartyMon1 ; $2c
+	ld a, [wPartyCount]
+	jr nz, .skipToNewMonEntry
+	ld hl, wBoxMons
+	ld bc, wBoxMon2 - wBoxMon1 ; $21
+	ld a, [wNumInBox]
+.skipToNewMonEntry
+	dec a
+	call AddNTimes
+.asm_f3fb
+	push hl
+	ld e, l
+	ld d, h
+	ld a, [wMoveMonType]
+	and a
+	ld hl, wBoxMons
+	ld bc, wBoxMon2 - wBoxMon1 ; $21
+	jr z, .asm_f417
+	cp DAYCARE_TO_PARTY
+	ld hl, wDayCareMon
+	jr z, .asm_f41d
+	ld hl, wPartyMons
+	ld bc, wPartyMon2 - wPartyMon1 ; $2c
+.asm_f417
+	ld a, [wWhichPokemon]
+	call AddNTimes
+.asm_f41d
+	push hl
+	push de
+	ld bc, wBoxMon2 - wBoxMon1
+	call CopyData
+	pop de
+	pop hl
+	ld a, [wMoveMonType]
+	and a
+	jr z, .asm_f43a
+	cp DAYCARE_TO_PARTY
+	jr z, .asm_f43a
+	ld bc, wBoxMon2 - wBoxMon1
+	add hl, bc
+	ld a, [hl]
+	inc de
+	inc de
+	inc de
+	ld [de], a
+.asm_f43a
+	ld a, [wMoveMonType]
+	cp PARTY_TO_DAYCARE
+	ld de, W_DAYCAREMONOT
+	jr z, .asm_f459
+	dec a
+	ld hl, wPartyMonOT
+	ld a, [wPartyCount]
+	jr nz, .asm_f453
+	ld hl, wBoxMonOT
+	ld a, [wNumInBox]
+.asm_f453
+	dec a
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+.asm_f459
+	ld hl, wBoxMonOT
+	ld a, [wMoveMonType]
+	and a
+	jr z, .asm_f46c
+	ld hl, W_DAYCAREMONOT
+	cp DAYCARE_TO_PARTY
+	jr z, .asm_f472
+	ld hl, wPartyMonOT
+.asm_f46c
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+.asm_f472
+	ld bc, NAME_LENGTH
+	call CopyData
+	ld a, [wMoveMonType]
+	cp PARTY_TO_DAYCARE
+	ld de, W_DAYCAREMONNAME
+	jr z, .asm_f497
+	dec a
+	ld hl, wPartyMonNicks
+	ld a, [wPartyCount]
+	jr nz, .asm_f491
+	ld hl, wBoxMonNicks
+	ld a, [wNumInBox]
+.asm_f491
+	dec a
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+.asm_f497
+	ld hl, wBoxMonNicks
+	ld a, [wMoveMonType]
+	and a
+	jr z, .asm_f4aa
+	ld hl, W_DAYCAREMONNAME
+	cp DAYCARE_TO_PARTY
+	jr z, .asm_f4b0
+	ld hl, wPartyMonNicks
+.asm_f4aa
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+.asm_f4b0
+	ld bc, NAME_LENGTH
+	call CopyData
+	pop hl
+	ld a, [wMoveMonType]
+	cp PARTY_TO_BOX
+	jr z, .asm_f4ea
+	cp PARTY_TO_DAYCARE
+	jr z, .asm_f4ea
+	push hl
+	srl a
+	add $2
+	ld [wMonDataLocation], a
+	call LoadMonData
+	callba CalcLevelFromExperience
+	ld a, d
+	ld [W_CURENEMYLVL], a
+	pop hl
+	ld bc, wBoxMon2 - wBoxMon1
+	add hl, bc
+	ld [hli], a
+	ld d, h
+	ld e, l
+	ld bc, -18
+	add hl, bc
+	ld b, $1
+	call CalcStats
+.asm_f4ea
+	and a
+	ret
+
+
+FlagActionPredef: ; f4ec (3:74ec)
+	call GetPredefRegisters
+
 FlagAction: ; f4ef (3:74ef)
-	dr $f4ef,$f9de
-PrintBookshelfText: ; f9de (3:79de)
-	dr $f9de,$fad3
-PokemonStuffText: ; fad3 (3:7ad3)
-	dr $fad3,$10000
+; Perform action b on bit c
+; in the bitfield at hl.
+;  0: reset
+;  1: set
+;  2: read
+; Return the result in c.
+
+	push hl
+	push de
+	push bc
+
+	; bit
+	ld a, c
+	ld d, a
+	and 7
+	ld e, a
+
+	; byte
+	ld a, d
+	srl a
+	srl a
+	srl a
+	add l
+	ld l, a
+	jr nc, .ok
+	inc h
+.ok
+
+	; d = 1 << e (bitmask)
+	inc e
+	ld d, 1
+.shift
+	dec e
+	jr z, .shifted
+	sla d
+	jr .shift
+.shifted
+
+	ld a, b
+	and a
+	jr z, .reset
+	cp 2
+	jr z, .read
+
+.set
+	ld b, [hl]
+	ld a, d
+	or b
+	ld [hl], a
+	jr .done
+
+.reset
+	ld b, [hl]
+	ld a, d
+	xor $ff
+	and b
+	ld [hl], a
+	jr .done
+
+.read
+	ld b, [hl]
+	ld a, d
+	and b
+.done
+	pop bc
+	pop de
+	pop hl
+	ld c, a
+	ret
+
+HealParty: ; f52b (3:752b)
+; Restore HP and PP.
+
+	ld hl, wPartySpecies
+	ld de, wPartyMon1HP
+.healmon
+	ld a, [hli]
+	cp $ff
+	jr z, .done
+
+	push hl
+	push de
+
+	ld hl, wPartyMon1Status - wPartyMon1HP
+	add hl, de
+	xor a
+	ld [hl], a
+
+	push de
+	ld b, NUM_MOVES ; A Pokémon has 4 moves
+.pp
+	ld hl, wPartyMon1Moves - wPartyMon1HP
+	add hl, de
+
+	ld a, [hl]
+	and a
+	jr z, .nextmove
+
+	dec a
+	ld hl, wPartyMon1PP - wPartyMon1HP
+	add hl, de
+
+	push hl
+	push de
+	push bc
+
+	ld hl, Moves
+	ld bc, MoveEnd - Moves
+	call AddNTimes
+	ld de, wcd6d
+	ld a, BANK(Moves)
+	call FarCopyData
+	ld a, [wcd6d + 5] ; PP is byte 5 of move data
+
+	pop bc
+	pop de
+	pop hl
+
+	inc de
+	push bc
+	ld b, a
+	ld a, [hl]
+	and $c0
+	add b
+	ld [hl], a
+	pop bc
+
+.nextmove
+	dec b
+	jr nz, .pp
+	pop de
+
+	ld hl, wPartyMon1MaxHP - wPartyMon1HP
+	add hl, de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+
+	pop de
+	pop hl
+
+	push hl
+	ld bc, wPartyMon2 - wPartyMon1
+	ld h, d
+	ld l, e
+	add hl, bc
+	ld d, h
+	ld e, l
+	pop hl
+	jr .healmon
+
+.done
+	xor a
+	ld [wWhichPokemon], a
+	ld [wd11e], a
+
+	ld a, [wPartyCount]
+	ld b, a
+.ppup
+	push bc
+	call RestoreBonusPP
+	pop bc
+	ld hl, wWhichPokemon
+	inc [hl]
+	dec b
+	jr nz, .ppup
+	ret
+
+INCLUDE "engine/bcd.asm"
+
+InitPlayerData: ; f6d6 (3:76d6)
+InitPlayerData2:
+
+	call Random
+	ld a, [hRandomSub]
+	ld [wPlayerID], a
+
+	call Random
+	ld a, [hRandomAdd]
+	ld [wPlayerID + 1], a
+
+	ld a, $ff
+	ld [wUnusedD71B], a
+	
+	ld a, 90 ; initialize happiness to 90
+	ld [wPikachuHappiness], a
+	ld a, $80
+	ld [wPikachuMood], a ; initialize mood
+	
+	ld hl, wPartyCount
+	call InitializeEmptyList
+	ld hl, wNumInBox
+	call InitializeEmptyList
+	ld hl, wNumBagItems
+	call InitializeEmptyList
+	ld hl, wNumBoxItems
+	call InitializeEmptyList
+
+START_MONEY EQU $3000
+	ld hl, wPlayerMoney + 1
+	ld a, START_MONEY / $100
+	ld [hld], a
+	xor a
+	ld [hli], a
+	inc hl
+	ld [hl], a
+
+	ld [wMonDataLocation], a
+
+	ld hl, wObtainedBadges
+	ld [hli], a
+
+	ld [hl], a
+
+	ld hl, wPlayerCoins
+	ld [hli], a
+	ld [hl], a
+
+	ld hl, wGameProgressFlags
+	ld bc, wGameProgressFlagsEnd - wGameProgressFlags
+	call FillMemory ; clear all game progress flags
+
+	jp InitializeMissableObjectsFlags
+
+InitializeEmptyList: ; f730 (3:7730)
+	xor a ; count
+	ld [hli], a
+	dec a ; terminator
+	ld [hl], a
+	ret
+
+GetQuantityOfItemInBag: ; f735 (3:7735)
+; In: b = item ID
+; Out: b = how many of that item are in the bag
+	call GetPredefRegisters
+	ld hl, wNumBagItems
+.loop
+	inc hl
+	ld a, [hli]
+	cp $ff
+	jr z, .notInBag
+	cp b
+	jr nz, .loop
+	ld a, [hl]
+	ld b, a
+	ret
+.notInBag
+	ld b, 0
+	ret
+
+FindPathToPlayer: ; f74a (3:774a)
+	xor a
+	ld hl, hFindPathNumSteps
+	ld [hli], a ; hFindPathNumSteps
+	ld [hli], a ; hFindPathFlags
+	ld [hli], a ; hFindPathYProgress
+	ld [hl], a  ; hFindPathXProgress
+	ld hl, wNPCMovementDirections2
+	ld de, $0
+.loop
+	ld a, [hFindPathYProgress]
+	ld b, a
+	ld a, [hNPCPlayerYDistance] ; Y distance in steps
+	call CalcDifference
+	ld d, a
+	and a
+	jr nz, .asm_f76a
+	ld a, [hFindPathFlags]
+	set 0, a ; current end of path matches the player's Y coordinate
+	ld [hFindPathFlags], a
+.asm_f76a
+	ld a, [hFindPathXProgress]
+	ld b, a
+	ld a, [hNPCPlayerXDistance] ; X distance in steps
+	call CalcDifference
+	ld e, a
+	and a
+	jr nz, .asm_f77c
+	ld a, [hFindPathFlags]
+	set 1, a ; current end of path matches the player's X coordinate
+	ld [hFindPathFlags], a
+.asm_f77c
+	ld a, [hFindPathFlags]
+	cp $3 ; has the end of the path reached the player's position?
+	jr z, .done
+; Compare whether the X distance between the player and the current of the path
+; is greater or if the Y distance is. Then, try to reduce whichever is greater.
+	ld a, e
+	cp d
+	jr c, .yDistanceGreater
+; x distance is greater
+	ld a, [hNPCPlayerRelativePosFlags]
+	bit 1, a
+	jr nz, .playerIsLeftOfNPC
+	ld d, NPC_MOVEMENT_RIGHT
+	jr .next1
+.playerIsLeftOfNPC
+	ld d, NPC_MOVEMENT_LEFT
+.next1
+	ld a, [hFindPathXProgress]
+	add 1
+	ld [hFindPathXProgress], a
+	jr .storeDirection
+.yDistanceGreater
+	ld a, [hNPCPlayerRelativePosFlags]
+	bit 0, a
+	jr nz, .playerIsAboveNPC
+	ld d, NPC_MOVEMENT_DOWN
+	jr .next2
+.playerIsAboveNPC
+	ld d, NPC_MOVEMENT_UP
+.next2
+	ld a, [hFindPathYProgress]
+	add 1
+	ld [hFindPathYProgress], a
+.storeDirection
+	ld a, d
+	ld [hli], a
+	ld a, [hFindPathNumSteps]
+	inc a
+	ld [hFindPathNumSteps], a
+	jp .loop
+.done
+	ld [hl], $ff
+	ret
+
+CalcPositionOfPlayerRelativeToNPC: ; f7b9 (3:77b9)
+	xor a
+	ld [hNPCPlayerRelativePosFlags], a
+	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
+	ld d, a
+	ld a, [wSpriteStateData1 + 6] ; player's sprite screen X position in pixels
+	ld e, a
+	ld hl, wSpriteStateData1
+	ld a, [hNPCSpriteOffset]
+	add l
+	add $4
+	ld l, a
+	jr nc, .noCarry
+	inc h
+.noCarry
+	ld a, d
+	ld b, a
+	ld a, [hli] ; NPC sprite screen Y position in pixels
+	call CalcDifference
+	jr nc, .NPCSouthOfOrAlignedWithPlayer
+.NPCNorthOfPlayer
+	push hl
+	ld hl, hNPCPlayerRelativePosFlags
+	bit 0, [hl]
+	set 0, [hl]
+	pop hl
+	jr .divideYDistance
+.NPCSouthOfOrAlignedWithPlayer
+	push hl
+	ld hl, hNPCPlayerRelativePosFlags
+	bit 0, [hl]
+	res 0, [hl]
+	pop hl
+.divideYDistance
+	push hl
+	ld hl, hDividend2
+	ld [hli], a
+	ld a, 16
+	ld [hli], a
+	call DivideBytes ; divide Y absolute distance by 16
+	ld a, [hl] ; quotient
+	ld [hNPCPlayerYDistance], a
+	pop hl
+	inc hl
+	ld b, e
+	ld a, [hl] ; NPC sprite screen X position in pixels
+	call CalcDifference
+	jr nc, .NPCEastOfOrAlignedWithPlayer
+.NPCWestOfPlayer
+	push hl
+	ld hl, hNPCPlayerRelativePosFlags
+	bit 1, [hl]
+	set 1, [hl]
+	pop hl
+	jr .divideXDistance
+.NPCEastOfOrAlignedWithPlayer
+	push hl
+	ld hl, hNPCPlayerRelativePosFlags
+	bit 1, [hl]
+	res 1, [hl]
+	pop hl
+.divideXDistance
+	ld [hDividend2], a
+	ld a, 16
+	ld [hDivisor2], a
+	call DivideBytes ; divide X absolute distance by 16
+	ld a, [hQuotient2]
+	ld [hNPCPlayerXDistance], a
+	ld a, [hNPCPlayerRelativePosPerspective]
+	and a
+	ret z
+	ld a, [hNPCPlayerRelativePosFlags]
+	cpl
+	and $3
+	ld [hNPCPlayerRelativePosFlags], a
+	ret
+
+ConvertNPCMovementDirectionsToJoypadMasks: ; f830 (3:7830)
+	ld a, [hNPCMovementDirections2Index]
+	ld [wNPCMovementDirections2Index], a
+	dec a
+	ld de, wSimulatedJoypadStatesEnd
+	ld hl, wNPCMovementDirections2
+	add l
+	ld l, a
+	jr nc, .loop
+	inc h
+.loop
+	ld a, [hld]
+	call ConvertNPCMovementDirectionToJoypadMask
+	ld [de], a
+	inc de
+	ld a, [hNPCMovementDirections2Index]
+	dec a
+	ld [hNPCMovementDirections2Index], a
+	jr nz, .loop
+	ret
+
+ConvertNPCMovementDirectionToJoypadMask: ; f84f (3:784f)
+	push hl
+	ld b, a
+	ld hl, NPCMovementDirectionsToJoypadMasksTable
+.loop
+	ld a, [hli]
+	cp $ff
+	jr z, .done
+	cp b
+	jr z, .loadJoypadMask
+	inc hl
+	jr .loop
+.loadJoypadMask
+	ld a, [hl]
+.done
+	pop hl
+	ret
+
+NPCMovementDirectionsToJoypadMasksTable: ; f862 (3:7862)
+	db NPC_MOVEMENT_UP, D_UP
+	db NPC_MOVEMENT_DOWN, D_DOWN
+	db NPC_MOVEMENT_LEFT, D_LEFT
+	db NPC_MOVEMENT_RIGHT, D_RIGHT
+	db $ff
+
+; unreferenced
+	ret
+
+INCLUDE "engine/hp_bar.asm"
+INCLUDE "engine/hidden_object_functions3.asm"
 
 SECTION "Graphics", ROMX, BANK[GFX]
 
@@ -2344,7 +3031,9 @@ JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$5267d
+	dr $50000,$525d8
+PrintCardKeyText: ; 525d8 (14:65d8)
+	dr $525d8,$5267d
 CeladonPrizeMenu: ; 5267d (14:667d)
 	dr $5267d,$54000
 
@@ -2363,7 +3052,9 @@ TrainerWalkUpToPlayer: ; 567cd (15:67cd)
 	dr $567cd,$58000
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58dc0
+	dr $58000,$58d99
+CalcLevelFromExperience: ; 58d99 (16:4d99)
+	dr $58d99,$58dc0
 CalcExperience: ; 58dc0 (16:4dc0)
 	dr $58dc0,$58e8b
 PrintStatusAilment: ; 58e8b (16:4e8b)

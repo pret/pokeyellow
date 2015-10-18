@@ -497,7 +497,7 @@ TestBattle:
 	; Don't mess around
 	; with obedience.
 	ld a, %10000000 ; EARTHBADGE
-	ld [W_OBTAINEDBADGES], a
+	ld [wObtainedBadges], a
 
 	ld hl, W_FLAGS_D733
 	set 0, [hl]
@@ -616,7 +616,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	dec c
 	jr nz, .copyWarpDataLoop
 	ld a, [hli]
-	ld [W_CURMAPTILESET], a
+	ld [wCurMapTileset], a
 	xor a
 	jr .done
 .notFirstMap
@@ -689,7 +689,7 @@ LoadSpecialWarpData: ; 62ff (1:62ff)
 	dec c
 	jr nz, .copyWarpDataLoop2
 	xor a ; OVERWORLD
-	ld [W_CURMAPTILESET], a
+	ld [wCurMapTileset], a
 .done
 	ld [wYOffsetSinceLastSpecialWarp], a
 	ld [wXOffsetSinceLastSpecialWarp], a
@@ -1883,7 +1883,7 @@ _RemovePokemon: ; 7b68 (1:7b68)
 	ld a, [wRemoveMonFromBox]
 	and a
 	jr z, .asm_7b74
-	ld hl, W_NUMINBOX
+	ld hl, wNumInBox
 .asm_7b74
 	ld a, [hl]
 	dec a
@@ -2232,7 +2232,7 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 	push bc
 	callba IsPlayerStandingOnDoorTile ; 6:6785
 	jr c, .done
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	add a
 	ld c, a
 	ld b, $0
@@ -2630,7 +2630,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	call GetPredefRegisters
 	push hl
 	ld d, 0
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	add a
 	add a
 	ld e, a
@@ -2646,7 +2646,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	xor a
 	ld [$ffd8], a
 	pop hl
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	push hl
 	push de
 	ld hl, DungeonTilesets
@@ -2655,7 +2655,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	pop de
 	pop hl
 	jr c, .notDungeonTileset
-	ld a, [W_CURMAPTILESET]
+	ld a, [wCurMapTileset]
 	ld b, a
 	ld a, [hPreviousTileset]
 	cp b
@@ -2814,7 +2814,7 @@ DrawBadges: ; ea03 (3:6a03)
 ; Alter these based on owned badges.
 	ld de, wTempObtainedBadgesBooleans
 	ld hl, wBadgeOrFaceTiles
-	ld a, [W_OBTAINEDBADGES]
+	ld a, [wObtainedBadges]
 	ld b, a
 	ld c, 8
 .CheckBadge
@@ -3707,7 +3707,7 @@ _AddEnemyMonToPlayerParty: ; f49d (3:749d)
 	and a
 	ret                  ; return success
 
-_MoveMon: ; f51e (3:751e)
+_MoveMon: ; f3a4 (3:73a4)
 	ld a, [wMoveMonType]
 	and a
 	jr z, .checkPartyMonSlots
@@ -3716,7 +3716,7 @@ _MoveMon: ; f51e (3:751e)
 	cp PARTY_TO_DAYCARE
 	ld hl, wDayCareMon
 	jr z, .asm_f575
-	ld hl, W_NUMINBOX
+	ld hl, wNumInBox
 	ld a, [hl]
 	cp MONS_PER_BOX
 	jr nz, .partyOrBoxNotFull
@@ -3738,9 +3738,9 @@ _MoveMon: ; f51e (3:751e)
 	ld a, [wMoveMonType]
 	cp DAYCARE_TO_PARTY
 	ld a, [wDayCareMon]
-	jr z, .asm_f556
+	jr z, .asm_f3dc
 	ld a, [wcf91]
-.asm_f556
+.asm_f3dc
 	ld [hli], a          ; write new mon ID
 	ld [hl], $ff         ; write new sentinel
 	ld a, [wMoveMonType]
@@ -3751,11 +3751,11 @@ _MoveMon: ; f51e (3:751e)
 	jr nz, .skipToNewMonEntry
 	ld hl, wBoxMons
 	ld bc, wBoxMon2 - wBoxMon1 ; $21
-	ld a, [W_NUMINBOX]
+	ld a, [wNumInBox]
 .skipToNewMonEntry
 	dec a
 	call AddNTimes
-.asm_f575
+.asm_f3fb
 	push hl
 	ld e, l
 	ld d, h
@@ -3763,10 +3763,10 @@ _MoveMon: ; f51e (3:751e)
 	and a
 	ld hl, wBoxMons
 	ld bc, wBoxMon2 - wBoxMon1 ; $21
-	jr z, .asm_f591
+	jr z, .asm_f417
 	cp DAYCARE_TO_PARTY
 	ld hl, wDayCareMon
-	jr z, .asm_f597
+	jr z, .asm_f41d
 	ld hl, wPartyMons
 	ld bc, wPartyMon2 - wPartyMon1 ; $2c
 .asm_f591
@@ -3781,9 +3781,9 @@ _MoveMon: ; f51e (3:751e)
 	pop hl
 	ld a, [wMoveMonType]
 	and a
-	jr z, .asm_f5b4
+	jr z, .asm_f43a
 	cp DAYCARE_TO_PARTY
-	jr z, .asm_f5b4
+	jr z, .asm_f43a
 	ld bc, wBoxMon2 - wBoxMon1
 	add hl, bc
 	ld a, [hl]
@@ -3791,73 +3791,73 @@ _MoveMon: ; f51e (3:751e)
 	inc de
 	inc de
 	ld [de], a
-.asm_f5b4
+.asm_f439
 	ld a, [wMoveMonType]
 	cp PARTY_TO_DAYCARE
 	ld de, W_DAYCAREMONOT
-	jr z, .asm_f5d3
+	jr z, .asm_f459
 	dec a
 	ld hl, wPartyMonOT
 	ld a, [wPartyCount]
-	jr nz, .asm_f5cd
+	jr nz, .asm_f453
 	ld hl, wBoxMonOT
-	ld a, [W_NUMINBOX]
-.asm_f5cd
+	ld a, [wNumInBox]
+.asm_f453
 	dec a
 	call SkipFixedLengthTextEntries
 	ld d, h
 	ld e, l
-.asm_f5d3
+.asm_f459
 	ld hl, wBoxMonOT
 	ld a, [wMoveMonType]
 	and a
-	jr z, .asm_f5e6
+	jr z, .asm_f46c
 	ld hl, W_DAYCAREMONOT
 	cp DAYCARE_TO_PARTY
-	jr z, .asm_f5ec
+	jr z, .asm_f472
 	ld hl, wPartyMonOT
-.asm_f5e6
+.asm_f46c
 	ld a, [wWhichPokemon]
 	call SkipFixedLengthTextEntries
-.asm_f5ec
+.asm_f472
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wMoveMonType]
 	cp PARTY_TO_DAYCARE
 	ld de, W_DAYCAREMONNAME
-	jr z, .asm_f611
+	jr z, .asm_f497
 	dec a
 	ld hl, wPartyMonNicks
 	ld a, [wPartyCount]
-	jr nz, .asm_f60b
+	jr nz, .asm_f491
 	ld hl, wBoxMonNicks
-	ld a, [W_NUMINBOX]
-.asm_f60b
+	ld a, [wNumInBox]
+.asm_f491
 	dec a
 	call SkipFixedLengthTextEntries
 	ld d, h
 	ld e, l
-.asm_f611
+.asm_f497
 	ld hl, wBoxMonNicks
 	ld a, [wMoveMonType]
 	and a
-	jr z, .asm_f624
+	jr z, .asm_f4aa
 	ld hl, W_DAYCAREMONNAME
 	cp DAYCARE_TO_PARTY
-	jr z, .asm_f62a
+	jr z, .asm_f4b0
 	ld hl, wPartyMonNicks
-.asm_f624
+.asm_f4aa
 	ld a, [wWhichPokemon]
 	call SkipFixedLengthTextEntries
-.asm_f62a
+.asm_f4b0
 	ld bc, NAME_LENGTH
 	call CopyData
 	pop hl
 	ld a, [wMoveMonType]
 	cp PARTY_TO_BOX
-	jr z, .asm_f664
+	jr z, .asm_f4ea
 	cp PARTY_TO_DAYCARE
-	jr z, .asm_f664
+	jr z, .asm_f4ea
 	push hl
 	srl a
 	add $2
@@ -3876,15 +3876,15 @@ _MoveMon: ; f51e (3:751e)
 	add hl, bc
 	ld b, $1
 	call CalcStats
-.asm_f664
+.asm_f4ea
 	and a
 	ret
 
 
-FlagActionPredef:
+FlagActionPredef: ; f4ec (3:74ec)
 	call GetPredefRegisters
 
-FlagAction:
+FlagAction: ; f4ef (3:74ef)
 ; Perform action b on bit c
 ; in the bitfield at hl.
 ;  0: reset
@@ -3956,7 +3956,7 @@ FlagAction:
 	ret
 
 
-HealParty:
+HealParty: ; f52b (3:752b)
 ; Restore HP and PP.
 
 	ld hl, wPartySpecies
@@ -4056,170 +4056,172 @@ HealParty:
 	jr nz, .ppup
 	ret
 
-
-DivideBCDPredef::
+; divide hMoney by hDivideBCDDivisor
+; return output in hDivideBCDQuotient (same as hDivideBCDDivisor)
+; used only to halve player money upon losing a fight
+DivideBCDPredef:: ; f5a4 (3:75a4)
 DivideBCDPredef2::
-DivideBCDPredef3::
+DivideBCDPredef3:: ; only used function
 DivideBCDPredef4::
 	call GetPredefRegisters
 
-DivideBCD::
+DivideBCD:: ; f5a8 (3:75a8)
 	xor a
-	ld [$ffa5], a
-	ld [$ffa6], a
-	ld [$ffa7], a
+	ld [hDivideBCDBuffer], a
+	ld [hDivideBCDBuffer + 1], a
+	ld [hDivideBCDBuffer + 2], a
 	ld d, $1
-.asm_f72a
-	ld a, [$ffa2]
+.asm_f5b0
+	ld a, [hDivideBCDDivisor]
 	and $f0
-	jr nz, .asm_f75b
+	jr nz, .asm_f5e1
 	inc d
-	ld a, [$ffa2]
+	ld a, [hDivideBCDDivisor]
 	swap a
 	and $f0
 	ld b, a
-	ld a, [$ffa3]
+	ld a, [hDivideBCDDivisor + 1]
 	swap a
-	ld [$ffa3], a
+	ld [hDivideBCDDivisor + 1], a
 	and $f
 	or b
-	ld [$ffa2], a
-	ld a, [$ffa3]
+	ld [hDivideBCDDivisor], a
+	ld a, [hDivideBCDDivisor + 1]
 	and $f0
 	ld b, a
-	ld a, [$ffa4]
+	ld a, [hDivideBCDDivisor + 2]
 	swap a
-	ld [$ffa4], a
+	ld [hDivideBCDDivisor + 2], a
 	and $f
 	or b
-	ld [$ffa3], a
-	ld a, [$ffa4]
+	ld [hDivideBCDDivisor + 1], a
+	ld a, [hDivideBCDDivisor + 2]
 	and $f0
-	ld [$ffa4], a
-	jr .asm_f72a
-.asm_f75b
+	ld [hDivideBCDDivisor + 2], a
+	jr .asm_f5b0
+.asm_f5e1
 	push de
 	push de
-	call DivideBCD_f800
+	call DivideBCD_f686
 	pop de
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa5], a
+	ld [hDivideBCDBuffer], a
 	dec d
-	jr z, .asm_f7bc
+	jr z, .asm_f642
 	push de
-	call DivideBCD_f7d7
-	call DivideBCD_f800
+	call DivideBCD_f65d
+	call DivideBCD_f686
 	pop de
-	ld a, [$ffa5]
+	ld a, [hDivideBCDBuffer]
 	or b
-	ld [$ffa5], a
+	ld [hDivideBCDBuffer], a
 	dec d
-	jr z, .asm_f7bc
+	jr z, .asm_f642
 	push de
-	call DivideBCD_f7d7
-	call DivideBCD_f800
+	call DivideBCD_f65d
+	call DivideBCD_f686
 	pop de
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa6], a
+	ld [hDivideBCDBuffer + 1], a
 	dec d
-	jr z, .asm_f7bc
+	jr z, .asm_f642
 	push de
-	call DivideBCD_f7d7
-	call DivideBCD_f800
+	call DivideBCD_f65d
+	call DivideBCD_f686
 	pop de
-	ld a, [$ffa6]
+	ld a, [hDivideBCDBuffer + 1]
 	or b
-	ld [$ffa6], a
+	ld [hDivideBCDBuffer + 1], a
 	dec d
-	jr z, .asm_f7bc
+	jr z, .asm_f642
 	push de
-	call DivideBCD_f7d7
-	call DivideBCD_f800
+	call DivideBCD_f65d
+	call DivideBCD_f686
 	pop de
 	ld a, b
 	swap a
 	and $f0
-	ld [$ffa7], a
+	ld [hDivideBCDBuffer + 2], a
 	dec d
-	jr z, .asm_f7bc
+	jr z, .asm_f642
 	push de
-	call DivideBCD_f7d7
-	call DivideBCD_f800
+	call DivideBCD_f65d
+	call DivideBCD_f686
 	pop de
-	ld a, [$ffa7]
+	ld a, [hDivideBCDBuffer + 2]
 	or b
-	ld [$ffa7], a
-.asm_f7bc
-	ld a, [$ffa5]
-	ld [$ffa2], a
-	ld a, [$ffa6]
-	ld [$ffa3], a
-	ld a, [$ffa7]
-	ld [$ffa4], a
+	ld [hDivideBCDBuffer + 2], a
+.asm_f642
+	ld a, [hDivideBCDBuffer]
+	ld [hDivideBCDQuotient], a
+	ld a, [hDivideBCDBuffer + 1]
+	ld [hDivideBCDQuotient + 1], a
+	ld a, [hDivideBCDBuffer + 2]
+	ld [hDivideBCDQuotient + 2], a
 	pop de
 	ld a, $6
 	sub d
 	and a
 	ret z
-.asm_f7ce
+.asm_f654
 	push af
-	call DivideBCD_f7d7
+	call DivideBCD_f65d
 	pop af
 	dec a
-	jr nz, .asm_f7ce
+	jr nz, .asm_f654
 	ret
 
-DivideBCD_f7d7: ; f7d7 (3:77d7)
-	ld a, [$ffa4]
+DivideBCD_f65d: ; f65d (3:765d)
+	ld a, [hDivideBCDDivisor + 2]
 	swap a
 	and $f
 	ld b, a
-	ld a, [$ffa3]
+	ld a, [hDivideBCDDivisor + 1]
 	swap a
-	ld [$ffa3], a
+	ld [hDivideBCDDivisor + 1], a
 	and $f0
 	or b
-	ld [$ffa4], a
-	ld a, [$ffa3]
+	ld [hDivideBCDDivisor + 2], a
+	ld a, [hDivideBCDDivisor + 1]
 	and $f
 	ld b, a
-	ld a, [$ffa2]
+	ld a, [hDivideBCDDivisor]
 	swap a
-	ld [$ffa2], a
+	ld [hDivideBCDDivisor], a
 	and $f0
 	or b
-	ld [$ffa3], a
-	ld a, [$ffa2]
+	ld [hDivideBCDDivisor + 1], a
+	ld a, [hDivideBCDDivisor]
 	and $f
-	ld [$ffa2], a
+	ld [hDivideBCDDivisor], a
 	ret
 
-DivideBCD_f800: ; f800 (3:7800)
+DivideBCD_f686: ; f686 (3:7686)
 	ld bc, $3
-.asm_f803
-	ld de, $ff9f
-	ld hl, $ffa2
+.asm_f689
+	ld de, hMoney
+	ld hl, hDivideBCDDivisor
 	push bc
 	call StringCmp
 	pop bc
 	ret c
 	inc b
-	ld de, $ffa1
-	ld hl, $ffa4
+	ld de, hMoney + 2
+	ld hl, hDivideBCDDivisor + 2
 	push bc
 	call SubBCD
 	pop bc
-	jr .asm_f803
+	jr .asm_f689
 
 
-AddBCDPredef::
+AddBCDPredef:: ; f6a3 (3:76a3)
 	call GetPredefRegisters
 
-AddBCD::
+AddBCD:: ; f6a6 (3:76a6)
 	and a
 	ld b, c
 .add
@@ -4243,10 +4245,10 @@ AddBCD::
 	ret
 
 
-SubBCDPredef::
+SubBCDPredef:: ; f6bc (3:76bc)
 	call GetPredefRegisters
 
-SubBCD::
+SubBCD:: ; f6bf (3:76bf)
 	and a
 	ld b, c
 .sub
@@ -4271,7 +4273,7 @@ SubBCD::
 	ret
 
 
-InitPlayerData:
+InitPlayerData: ; f6d6 (3:76d6)
 InitPlayerData2:
 
 	call Random
@@ -4284,10 +4286,12 @@ InitPlayerData2:
 
 	ld a, $ff
 	ld [wUnusedD71B], a
-
+	
+	ld a, 90 ; initialize happiness to 90
+	ld [wPikachuHappiness], a
 	ld hl, wPartyCount
 	call InitializeEmptyList
-	ld hl, W_NUMINBOX
+	ld hl, wNumInBox
 	call InitializeEmptyList
 	ld hl, wNumBagItems
 	call InitializeEmptyList
@@ -4305,7 +4309,7 @@ START_MONEY EQU $3000
 
 	ld [wMonDataLocation], a
 
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	ld [hli], a
 
 	ld [hl], a
@@ -4314,13 +4318,13 @@ START_MONEY EQU $3000
 	ld [hli], a
 	ld [hl], a
 
-	ld hl, W_GAMEPROGRESSFLAGS
-	ld bc, wGameProgressFlagsEnd - W_GAMEPROGRESSFLAGS
+	ld hl, wGameProgressFlags
+	ld bc, wGameProgressFlagsEnd - wGameProgressFlags
 	call FillMemory ; clear all game progress flags
 
 	jp InitializeMissableObjectsFlags
 
-InitializeEmptyList:
+InitializeEmptyList: ; f730 (3:7730)
 	xor a ; count
 	ld [hli], a
 	dec a ; terminator
@@ -4328,7 +4332,7 @@ InitializeEmptyList:
 	ret
 
 
-GetQuantityOfItemInBag: ; f8a5 (3:78a5)
+GetQuantityOfItemInBag: ; f735 (3:7735)
 ; In: b = item ID
 ; Out: b = how many of that item are in the bag
 	call GetPredefRegisters
@@ -4347,7 +4351,7 @@ GetQuantityOfItemInBag: ; f8a5 (3:78a5)
 	ld b, 0
 	ret
 
-FindPathToPlayer: ; f8ba (3:78ba)
+FindPathToPlayer: ; f74a (3:774a)
 	xor a
 	ld hl, hFindPathNumSteps
 	ld [hli], a ; hFindPathNumSteps
@@ -4363,22 +4367,22 @@ FindPathToPlayer: ; f8ba (3:78ba)
 	call CalcDifference
 	ld d, a
 	and a
-	jr nz, .asm_f8da
+	jr nz, .asm_f76a
 	ld a, [hFindPathFlags]
 	set 0, a ; current end of path matches the player's Y coordinate
 	ld [hFindPathFlags], a
-.asm_f8da
+.asm_f76a
 	ld a, [hFindPathXProgress]
 	ld b, a
 	ld a, [hNPCPlayerXDistance] ; X distance in steps
 	call CalcDifference
 	ld e, a
 	and a
-	jr nz, .asm_f8ec
+	jr nz, .asm_f77c
 	ld a, [hFindPathFlags]
 	set 1, a ; current end of path matches the player's X coordinate
 	ld [hFindPathFlags], a
-.asm_f8ec
+.asm_f77c
 	ld a, [hFindPathFlags]
 	cp $3 ; has the end of the path reached the player's position?
 	jr z, .done
@@ -4423,7 +4427,7 @@ FindPathToPlayer: ; f8ba (3:78ba)
 	ld [hl], $ff
 	ret
 
-CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
+CalcPositionOfPlayerRelativeToNPC: ; f7b9 (3:77b9)
 	xor a
 	ld [hNPCPlayerRelativePosFlags], a
 	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
@@ -4500,7 +4504,7 @@ CalcPositionOfPlayerRelativeToNPC: ; f929 (3:7929)
 	ld [hNPCPlayerRelativePosFlags], a
 	ret
 
-ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
+ConvertNPCMovementDirectionsToJoypadMasks: ; f830 (3:7830)
 	ld a, [hNPCMovementDirections2Index]
 	ld [wNPCMovementDirections2Index], a
 	dec a
@@ -4521,7 +4525,7 @@ ConvertNPCMovementDirectionsToJoypadMasks: ; f9a0 (3:79a0)
 	jr nz, .loop
 	ret
 
-ConvertNPCMovementDirectionToJoypadMask: ; f9bf (3:79bf)
+ConvertNPCMovementDirectionToJoypadMask: ; f84f (3:784f)
 	push hl
 	ld b, a
 	ld hl, NPCMovementDirectionsToJoypadMasksTable
@@ -4539,7 +4543,7 @@ ConvertNPCMovementDirectionToJoypadMask: ; f9bf (3:79bf)
 	pop hl
 	ret
 
-NPCMovementDirectionsToJoypadMasksTable: ; f9d2 (3:79d2)
+NPCMovementDirectionsToJoypadMasksTable: ; f862 (3:7862)
 	db NPC_MOVEMENT_UP, D_UP
 	db NPC_MOVEMENT_DOWN, D_DOWN
 	db NPC_MOVEMENT_LEFT, D_LEFT

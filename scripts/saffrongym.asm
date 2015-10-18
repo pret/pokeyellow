@@ -60,7 +60,7 @@ SaffronGymText_5d068: ; 5d068 (17:5068)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_5d091
-	ld hl, W_OBTAINEDBADGES
+	ld hl, wObtainedBadges
 	set 5, [hl]
 	ld hl, wBeatGymFlags
 	set 5, [hl]
