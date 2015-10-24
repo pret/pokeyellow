@@ -18,31 +18,529 @@ SECTION "home",ROM0
 INCLUDE "home.asm"
 SECTION "bank01",ROMX,BANK[$01]
 
-;INCLUDE "data/facing.asm"
-	dr $4000,$4111
+INCLUDE "data/facing.asm"
 INCLUDE "engine/battle/safari_zone.asm"
-SetDefaultNamesBeforeTitlescreen: ; 414b (1:414b)
-	dr $414b,$442b
+INCLUDE "engine/titlescreen.asm"
+
 LoadMonData_: ; 442b (1:442b)
-	dr $442b,$4494
-ItemPrices: ; 4494 (1:4494)
-	dr $4494,$45b7
-ItemNames: ; 45b7 (1:45b7)
-	dr $45b7,$491e
+; Load monster [wWhichPokemon] from list [wMonDataLocation]:
+;  0: partymon
+;  1: enemymon
+;  2: boxmon
+;  3: daycaremon
+; Return monster id at wcf91 and its data at wLoadedMon.
+; Also load base stats at W_MONHEADER for convenience.
+
+	ld a, [wDayCareMonSpecies]
+	ld [wcf91], a
+	ld a, [wMonDataLocation]
+	cp DAYCARE_DATA
+	jr z, .GetMonHeader
+
+	ld a, [wWhichPokemon]
+	ld e, a
+	call GetMonSpecies
+	
+.GetMonHeader
+	ld a, [wcf91]
+	ld [wd0b5], a ; input for GetMonHeader
+	call GetMonHeader
+
+	ld hl, wPartyMons
+	ld bc, wPartyMon2 - wPartyMon1
+	ld a, [wMonDataLocation]
+	cp ENEMY_PARTY_DATA
+	jr c, .getMonEntry
+
+	ld hl, wEnemyMons
+	jr z, .getMonEntry
+
+	cp 2
+	ld hl, wBoxMons
+	ld bc, wBoxMon2 - wBoxMon1
+	jr z, .getMonEntry
+
+	ld hl, wDayCareMon
+	jr .copyMonData
+
+.getMonEntry
+	ld a, [wWhichPokemon]
+	call AddNTimes
+
+.copyMonData
+	ld de, wLoadedMon
+	ld bc, wPartyMon2 - wPartyMon1
+	jp CopyData
+	
+; get species of mon e in list [wMonDataLocation] for LoadMonData
+GetMonSpecies: ; 4478 (1:4478)
+	ld hl, wPartySpecies
+	ld a, [wMonDataLocation]
+	and a
+	jr z, .getSpecies
+	dec a
+	jr z, .enemyParty
+	ld hl, wBoxSpecies
+	jr .getSpecies
+.enemyParty
+	ld hl, wEnemyPartyMons
+.getSpecies
+	ld d, 0
+	add hl, de
+	ld a, [hl]
+	ld [wcf91], a
+	ret
+	
+INCLUDE "data/item_prices.asm"
+INCLUDE "text/item_names.asm"
+
 UnusedNames: ; 491e (1:491e)
-	dr $491e,$499b
-PrepareOAMData: ; 499b (1:499b)
-	dr $499b,$4a92
-WriteDMACodeToHRAM: ; 4a92 (1:4a92)
-	dr $4a92,$4aaa
-_IsTilePassable: ; 4aaa (1:4aaa)
-	dr $4aaa,$4b89
+	db "かみなりバッヂ@"
+	db "かいがらバッヂ@"
+	db "おじぞうバッヂ@"
+	db "はやぶさバッヂ@"
+	db "ひんやりバッヂ@"
+	db "なかよしバッヂ@"
+	db "バラバッヂ@"
+	db "ひのたまバッヂ@"
+	db "ゴールドバッヂ@"
+	db "たまご@"
+	db "ひよこ@"
+	db "ブロンズ@"
+	db "シルバー@"
+	db "ゴールド@"
+	db "プチキャプテン@"
+	db "キャプテン@"
+	db "プチマスター@"
+	db "マスター@"
+	db "エクセレント"
+
+INCLUDE "engine/overworld/oam.asm"
+
 PrintWaitingText: ; 4b89 (1:4b89)
-	dr $4b89,$4bb7
+	coord hl, 3, 10
+	lb bc, 1, 11
+	ld a, [W_ISINBATTLE]
+	and a
+	jr z, .asm_4b9a
+	call TextBoxBorder
+	jr .asm_4b9d
+.asm_4b9a
+	call CableClub_TextBoxBorder
+.asm_4b9d
+	coord hl, 4, 11
+	ld de, WaitingText
+	call PlaceString
+	ld c, 50
+	jp DelayFrames
+
+WaitingText: ; 4bab (1:4bab)
+	db "Waiting...!@"
+	
 _UpdateSprites: ; 4bb7 (1:4bb7)
-	dr $4bb7,$5012
+	ld h, wSpriteStateData1 / $100
+	inc h
+	ld a, $e    ; (wSpriteStateData2 + $0e) & $ff
+.spriteLoop
+	ld l, a
+	sub $e
+	ld c, a
+	ld [H_CURRENTSPRITEOFFSET], a
+	ld a, [hl]
+	and a
+	jr z, .skipSprite   ; tests $c2Xe
+	push hl
+	push de
+	push bc
+	call .updateCurrentSprite
+	pop bc
+	pop de
+	pop hl
+.skipSprite
+	ld a, l
+	add $10             ; move to next sprite
+	cp $e               ; test for overflow (back at $0e)
+	jr nz, .spriteLoop
+	ret
+.updateCurrentSprite ; 4bd7 (1:4bd7)
+	ld a, [H_CURRENTSPRITEOFFSET]
+	and a
+	jp z, UpdatePlayerSprite
+	cp $f0 ; pikachu
+	jp z, Func_1552
+	ld a, [hl]
+
+UpdateNonPlayerSprite: ; 4be3 (1:4be3)
+	dec a
+	swap a
+	ld [$ff93], a  ; $10 * sprite#
+	ld a, [wNPCMovementScriptSpriteOffset] ; some sprite offset?
+	ld b, a
+	ld a, [H_CURRENTSPRITEOFFSET]
+	cp b
+	jr nz, .unequal
+	jp DoScriptedNPCMovement
+.unequal
+	jp UpdateNPCSprite
+
+; This detects if the current sprite (whose offset is at H_CURRENTSPRITEOFFSET)
+; is going to collide with another sprite by looping over the other sprites.
+; The current sprite's offset will be labelled with i (e.g. $c1i0).
+; The loop sprite's offset will labelled with j (e.g. $c1j0).
+;
+; Note that the Y coordinate of the sprite (in [$c1k4]) is one of the following
+; 9 values when the sprite is aligned with the grid: $fc, $0c, $1c, $2c, ..., $7c.
+; The reason that 4 is added below to the coordinate is to make it align with a
+; multiple of $10 to make comparisons easier.
+DetectCollisionBetweenSprites: ; 4bf7 (1:4bf7)
+	; nop
+	
+	ld h, wSpriteStateData1 / $100
+	ld a, [H_CURRENTSPRITEOFFSET]
+	ld l, a
+
+	ld a, [hl] ; a = [$c1i0] (picture) (0 if slot is unused)
+	and a ; is this sprite slot slot used?
+	ret z ; return if not used
+
+	ld a, l
+	add 3
+	ld l, a
+
+	ld a, [hli] ; a = [$c1i3] (delta Y) (-1, 0, or 1)
+	call SetSpriteCollisionValues
+
+	ld a, [hli] ; a = [$C1i4] (Y screen coordinate)
+	add 4 ; align with multiple of $10
+
+; The effect of the following 3 lines is to
+; add 7 to a if moving south or
+; subtract 7 from a if moving north.
+	add b
+	and $f0
+	or c
+
+	ld [$ff90], a ; store Y coordinate adjusted for direction of movement
+
+	ld a, [hli] ; a = [$c1i5] (delta X) (-1, 0, or 1)
+	call SetSpriteCollisionValues
+	ld a, [hl] ; a = [$C1i6] (X screen coordinate)
+
+; The effect of the following 3 lines is to
+; add 7 to a if moving east or
+; subtract 7 from a if moving west.
+	add b
+	and $f0
+	or c
+
+	ld [$ff91], a ; store X coordinate adjusted for direction of movement
+
+	ld a, l
+	add 7
+	ld l, a
+
+	xor a
+	ld [hld], a ; zero [$c1id] XXX what's [$c1id] for?
+	ld [hld], a ; zero [$c1ic] (directions in which collisions occurred)
+
+	ld a, [$ff91]
+	ld [hld], a ; [$c1ib] = adjusted X coordinate
+	ld a, [$ff90]
+	ld [hl], a ; [$c1ia] = adjusted Y coordinate
+
+	xor a ; zero the loop counter
+
+.loop
+	ld [$ff8f], a ; store loop counter
+	swap a
+	ld e, a
+	ld a, [H_CURRENTSPRITEOFFSET]
+	cp e ; does the loop sprite match the current sprite?
+	jp z, .next ; go to the next sprite if they match
+
+	ld d, h
+	ld a, [de] ; a = [$c1j0] (picture) (0 if slot is unused)
+	and a ; is this sprite slot slot used?
+	jp z, .next ; go the next sprite if not used
+
+	inc e
+	inc e
+	ld a, [de] ; a = [$c1j2] ($ff means the sprite is offscreen)
+	inc a
+	jp z, .next ; go the next sprite if offscreen
+
+	ld a, [H_CURRENTSPRITEOFFSET]
+	add 10
+	ld l, a
+
+	inc e
+	ld a, [de] ; a = [$c1j3] (delta Y)
+	call SetSpriteCollisionValues
+
+	inc e
+	ld a, [de] ; a = [$C1j4] (Y screen coordinate)
+	add 4 ; align with multiple of $10
+
+; The effect of the following 3 lines is to
+; add 7 to a if moving south or
+; subtract 7 from a if moving north.
+	add b
+	and $f0
+	or c
+
+	sub [hl] ; subtract the adjusted Y coordinate of sprite i ([$c1ia]) from that of sprite j
+
+; calculate the absolute value of the difference to get the distance
+	jr nc, .noCarry1
+	cpl
+	inc a
+.noCarry1
+	ld [$ff90], a ; store the distance between the two sprites' adjusted Y values
+
+; Use the carry flag set by the above subtraction to determine which sprite's
+; Y coordinate is larger. This information is used later to set [$c1ic],
+; which stores which direction the collision occurred in.
+; The following 5 lines set the lowest 2 bits of c, which are later shifted left by 2.
+; If sprite i's Y is larger, set lowest 2 bits of c to 10.
+; If sprite j's Y is larger or both are equal, set lowest 2 bits of c to 01.
+	push af
+	rl c
+	pop af
+	ccf
+	rl c
+
+; If sprite i's delta Y is 0, then b = 7, else b = 9.
+	ld b, 7
+	ld a, [hl] ; a = [$c1ia] (adjusted Y coordinate)
+	and $f
+	jr z, .next1
+	ld b, 9
+
+.next1
+	ld a, [$ff90] ; a = distance between adjusted Y coordinates
+	sub b
+	ld [$ff92], a ; store distance adjusted using sprite i's direction
+	ld a, b
+	ld [$ff90], a ; store 7 or 9 depending on sprite i's delta Y
+	jr c, .checkXDistance
+
+; If sprite j's delta Y is 0, then b = 7, else b = 9.
+	ld b, 7
+	dec e
+	ld a, [de] ; a = [$c1j3] (delta Y)
+	inc e
+	and a
+	jr z, .next2
+	ld b, 9
+
+.next2
+	ld a, [$ff92] ; a = distance adjusted using sprite i's direction
+	sub b ; adjust distance using sprite j's direction
+	jr z, .checkXDistance
+	jr nc, .next ; go to next sprite if distance is still positive after both adjustments
+
+.checkXDistance
+	inc e
+	inc l
+	ld a, [de] ; a = [$c1j5] (delta X)
+
+	push bc
+
+	call SetSpriteCollisionValues
+	inc e
+	ld a, [de] ; a = [$c1j6] (X screen coordinate)
+
+; The effect of the following 3 lines is to
+; add 7 to a if moving east or
+; subtract 7 from a if moving west.
+	add b
+	and $f0
+	or c
+
+	pop bc
+
+	sub [hl] ; subtract the adjusted X coordinate of sprite i ([$c1ib]) from that of sprite j
+
+; calculate the absolute value of the difference to get the distance
+	jr nc, .noCarry2
+	cpl
+	inc a
+.noCarry2
+	ld [$ff91], a ; store the distance between the two sprites' adjusted X values
+
+; Use the carry flag set by the above subtraction to determine which sprite's
+; X coordinate is larger. This information is used later to set [$c1ic],
+; which stores which direction the collision occurred in.
+; The following 5 lines set the lowest 2 bits of c.
+; If sprite i's X is larger, set lowest 2 bits of c to 10.
+; If sprite j's X is larger or both are equal, set lowest 2 bits of c to 01.
+	push af
+	rl c
+	pop af
+	ccf
+	rl c
+
+; If sprite i's delta X is 0, then b = 7, else b = 9.
+	ld b, 7
+	ld a, [hl] ; a = [$c1ib] (adjusted X coordinate)
+	and $f
+	jr z, .next3
+	ld b, 9
+
+.next3
+	ld a, [$ff91] ; a = distance between adjusted X coordinates
+	sub b
+	ld [$ff92], a ; store distance adjusted using sprite i's direction
+	ld a, b
+	ld [$ff91], a ; store 7 or 9 depending on sprite i's delta X
+	jr c, .collision
+
+; If sprite j's delta X is 0, then b = 7, else b = 9.
+	ld b, 7
+	dec e
+	ld a, [de] ; a = [$c1j5] (delta X)
+	inc e
+	and a
+	jr z, .next4
+	ld b, 9
+
+.next4
+	ld a, [$ff92] ; a = distance adjusted using sprite i's direction
+	sub b ; adjust distance using sprite j's direction
+	jr z, .collision
+	jr nc, .next ; go to next sprite if distance is still positive after both adjustments
+
+.collision
+	ld a, l
+	and $f0 ; collision with pikachu?
+	jr nz, .asm_4cd9
+	xor a
+	ld [wd434], a
+	ld a, [$ff8f]
+	cp $f
+	jr nz, .asm_4cd9
+	call Func_4d0a
+	jr .asm_4cef
+.asm_4cd9
+	ld a, [$ff91] ; a = 7 or 9 depending on sprite i's delta X
+	ld b, a
+	ld a, [$ff90] ; a = 7 or 9 depending on sprite i's delta Y
+	inc l
+
+; If delta X isn't 0 and delta Y is 0, then b = %0011, else b = %1100.
+; (note that normally if delta X isn't 0, then delta Y must be 0 and vice versa)
+	cp b
+	jr c, .next5
+	ld b, %1100
+	jr .next6
+.next5
+	ld b, %0011
+
+.next6
+	ld a, c ; c has 2 bits set (one of bits 0-1 is set for the X axis and one of bits 2-3 for the Y axis)
+	and b ; we select either the bit in bits 0-1 or bits 2-3 based on the calculation immediately above
+	or [hl] ; or with existing collision direction bits in [$c1ic]
+	ld [hl], a ; store new value
+	ld a, c ; useless code because a is overwritten before being used again
+
+; set bit in [$c1ie] or [$c1if] to indicate which sprite the collision occurred with
+	inc l
+	inc l
+.asm_4cef
+	ld a, [$ff8f] ; a = loop counter
+	ld de, SpriteCollisionBitTable
+	add a
+	add e
+	ld e, a
+	jr nc, .noCarry3
+	inc d
+.noCarry3
+	ld a, [de]
+	or [hl]
+	ld [hli], a
+	inc de
+	ld a, [de]
+	or [hl]
+	ld [hl], a
+
+.next
+	ld a, [$ff8f] ; a = loop counter
+	inc a
+	cp $10
+	jp nz, .loop
+	ret
+
+; takes delta X or delta Y in a
+; b = delta X/Y
+; c = 0 if delta X/Y is 0
+; c = 7 if delta X/Y is 1
+; c = 9 if delta X/Y is -1
+Func_4d0a: ; 4d0a (1:4d0a)
+	ld a, [$ff91]
+	ld b, a
+	ld a, [$ff90]
+	inc l
+	cp b
+	jr c, .asm_4d17
+	ld b, %1100
+	jr .asm_4d19
+.asm_4d17
+	ld b, %11
+.asm_4d19
+	ld a, c
+	and b
+	ld [wd434], a
+	ld a, c
+	inc l
+	inc l
+	ret
+	
+SetSpriteCollisionValues: ; 4d22 (1:4d22)
+	and a
+	ld b, 0
+	ld c, 0
+	jr z, .done
+	ld c, 9
+	cp -1
+	jr z, .ok
+	ld c, 7
+	ld a, 0
+.ok
+	ld b, a
+.done
+	ret
+
+SpriteCollisionBitTable: ; 4d35 (1:4d35)
+	db %00000000,%00000001
+	db %00000000,%00000010
+	db %00000000,%00000100
+	db %00000000,%00001000
+	db %00000000,%00010000
+	db %00000000,%00100000
+	db %00000000,%01000000
+	db %00000000,%10000000
+	db %00000001,%00000000
+	db %00000010,%00000000
+	db %00000100,%00000000
+	db %00001000,%00000000
+	db %00010000,%00000000
+	db %00100000,%00000000
+	db %01000000,%00000000
+	db %10000000,%00000000
+	
+	dr $4d55,$4da5
+UpdatePlayerSprite: ; 4da5 (1:4da5)
+	dr $4da5,$4e3e
+UpdateNPCSprite: ; 4e3e (1:4e3e)
+	dr $4e3e,$5012
 Func_5012: ; 5012 (1:5012)
-	dr $5012,$5ce4
+	dr $5012,$5199
+DoScriptedNPCMovement: ; 5199 (1:5199)
+	dr $5199,$5b67
+CableClub_TextBoxBorder: ; 5b67 (1:5b67)
+	dr $5b67,$5ba6
+MainMenu: ; 5ba6 (1:5ba6)
+	dr $5ba6,$5ce4
 Func_5ce4: ; 5ce4 (1:5ce4)
 	dr $5ce4,$5d58
 PrintSaveScreenText: ; 5d58 (1:5d58)
@@ -622,7 +1120,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	callab IsThisPartymonOurPikachu
 	jr nc, .curMonNotPlayerPikachu
 	ld e, $3
-	callab Func_f0000
+	callab PlayPikachuSoundClip
 	calladb_ModifyPikachuHappiness PIKAHAPPY_PSNFNT
 .curMonNotPlayerPikachu
 	pop de
@@ -2381,6 +2879,7 @@ BattleHudTiles2:                INCBIN "gfx/battle_hud2.1bpp"
 BattleHudTiles3:                INCBIN "gfx/battle_hud3.1bpp"
 NintendoCopyrightLogoGraphics:  INCBIN "gfx/copyright.2bpp"
 GamefreakLogoGraphics:          INCBIN "gfx/gamefreak.2bpp"
+GamefreakLogoGraphicsEnd:
 NineTile:                       INCBIN "gfx/9_tile.2bpp"
 TextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
 TextBoxGraphicsEnd:
@@ -2527,7 +3026,9 @@ HandleLedges: ; 1a7f4 (6:67f4)
 
 SECTION "bank07",ROMX,BANK[$07]
 
-	dr $1c000,$1e321
+	dr $1c000,$1c21e
+DoClearSaveDialogue: ; 1c21e (7:421e)
+	dr $1c21e,$1e321
 SafariZoneCheck: ; 1e321 (7:6e21)
 	dr $1e321,$1e330
 SafariZoneCheckSteps: ; 1e330 (7:6330)
@@ -3299,7 +3800,9 @@ MonsterNames: ; e8000 (3a:4000)
 Func_e8a5e: ; e8a5e (3a:4a5e)
 	dr $e8a5e,$e8d35
 Func_e8d35:: ; e8d35 (3a:4d35)
-	dr $e8d35,$e928a
+	dr $e8d35,$e8e79
+Func_e8e79: ; e8e79 (3a:4e79)
+	dr $e8e79,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 	dr $e988a,$e9bfa
 

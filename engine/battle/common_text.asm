@@ -16,7 +16,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	jr c,.asm_f4026
 	ld e,$a
 .asm_f4026
-	callab Func_f0000
+	callab PlayPikachuSoundClip
 	jr .continue
 .notnewbattletype
 	ld a, [wEnemyMonSpecies2]

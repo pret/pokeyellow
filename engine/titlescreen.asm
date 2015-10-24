@@ -1,9 +1,4 @@
-; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
-CopyFixedLengthText: ; 42b1 (1:42b1)
-	ld bc, NAME_LENGTH
-	jp CopyData
-
-SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
+SetDefaultNamesBeforeTitlescreen: ; 414b (1:414b)
 	ld hl, NintenText
 	ld de, wPlayerName
 	call CopyFixedLengthText
@@ -21,7 +16,7 @@ SetDefaultNamesBeforeTitlescreen: ; 42b7 (1:42b7)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 
-DisplayTitleScreen: ; 42dd (1:42dd)
+DisplayTitleScreen: ; 4171 (1:4171)
 	call GBPalWhiteOut
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -35,93 +30,35 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	call ClearScreen
 	call DisableLCD
 	call LoadFontTilePatterns
-	ld hl, NintendoCopyrightLogoGraphics
-	ld de, vTitleLogo2 + $100
+; todo: fix hl pointers
+	ld hl, NintendoCopyrightLogoGraphics ; 4:4c48
+	ld de, vTitleLogo + $600
 	ld bc, $50
 	ld a, BANK(NintendoCopyrightLogoGraphics)
-	call FarCopyData2
-	ld hl, GamefreakLogoGraphics
-	ld de, vTitleLogo2 + $100 + $50
+	call FarCopyData
+	ld hl, NineTile ; 4:4e08
+	ld de, vTitleLogo + $6e0
+	ld bc, $10
+	ld a, BANK(NineTile)
+	call FarCopyData
+	ld hl, GamefreakLogoGraphics  ; 4:4d78
+	ld de, vTitleLogo + $650
 	ld bc, $90
 	ld a, BANK(GamefreakLogoGraphics)
-	call FarCopyData2
-	ld hl, PokemonLogoGraphics
-	ld de, vTitleLogo
-	ld bc, $600
-	ld a, BANK(PokemonLogoGraphics)
-	call FarCopyData2          ; first chunk
-	ld hl, PokemonLogoGraphics+$600
-	ld de, vTitleLogo2
-	ld bc, $100
-	ld a, BANK(PokemonLogoGraphics)
-	call FarCopyData2          ; second chunk
-	ld hl, Version_GFX ; $402f
-	ld de,vChars2 + $600
-	ld bc, Version_GFXEnd - Version_GFX
-	ld a, BANK(Version_GFX)
-	call FarCopyDataDouble
-	call ClearBothBGMaps
-
-; place tiles for pokemon logo (except for the last row)
-	coord hl, 2, 1
-	ld a, $80
-	ld de, SCREEN_WIDTH
-	ld c, 6
-.pokemonLogoTileLoop
-	ld b, $10
-	push hl
-.pokemonLogoTileRowLoop ; place tiles for one row
-	ld [hli], a
-	inc a
-	dec b
-	jr nz, .pokemonLogoTileRowLoop
-	pop hl
-	add hl, de
-	dec c
-	jr nz, .pokemonLogoTileLoop
-
-; place tiles for the last row of the pokemon logo
-	coord hl, 2, 7
-	ld a, $31
-	ld b, $10
-.pokemonLogoLastTileRowLoop
-	ld [hli], a
-	inc a
-	dec b
-	jr nz, .pokemonLogoLastTileRowLoop
-
-	call DrawPlayerCharacter
-
-; put a pokeball in the player's hand
-	ld hl, wOAMBuffer + $28
-	ld a, $74
-	ld [hl], a
-
-; place tiles for title screen copyright
-	coord hl, 2, 17
-	ld de, .tileScreenCopyrightTiles
-	ld b, $10
-.tileScreenCopyrightTilesLoop
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec b
-	jr nz, .tileScreenCopyrightTilesLoop
-
-	jr .next
-
-.tileScreenCopyrightTiles ; 437f (1:437f)
-	db $41,$42,$43,$42,$44,$42,$45,$46,$47,$48,$49,$4A,$4B,$4C,$4D,$4E ; ©'95.'96.'98 GAME FREAK inc.
-
-.next
+	call FarCopyData
+	callab Func_f453f
+	ld hl, vBGMap0
+	ld bc, (vBGMap1 + $400) - vBGMap0
+	ld a, " "
+	call FillMemory
+	callab Func_f4578
+	call Func_4418
+	call .WriteCopyrightTiles
 	call SaveScreenTilesToBuffer2
 	call LoadScreenTilesFromBuffer2
 	call EnableLCD
-	ld a,CHARMANDER ; which Pokemon to show first on the title screen
-
-	ld [wTitleMonSpecies], a
-	call LoadTitleMonSprite
-	ld a, (vBGMap0 + $300) / $100
+	callab Func_f459a
+	ld a, $9b
 	call TitleScreenCopyTileMapToVRAM
 	call SaveScreenTilesToBuffer1
 	ld a, $40
@@ -132,8 +69,9 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	ld b, SET_PAL_TITLE_SCREEN
 	call RunPaletteCommand
 	call GBPalNormal
-	ld a, %11100100
+	ld a, %11100000
 	ld [rOBP0], a
+	call UpdateGBCPal_OBP0
 
 ; make pokemon logo bounce up and down
 	ld bc, hSCY ; background scroll Y
@@ -153,7 +91,7 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	call .ScrollTitleScreenPokemonLogo
 	jr .bouncePokemonLogoLoop
 
-.TitleScreenPokemonLogoYScrolls: ; 43db (1:43db)
+.TitleScreenPokemonLogoYScrolls ; 4228 (1:4228)
 ; Controls the bouncing effect of the Pokemon logo on the title screen
 	db -4,16  ; y scroll amount, number of times to scroll
 	db 3,4
@@ -164,7 +102,7 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	db -1,2
 	db 0      ; terminate list with 0
 
-.ScrollTitleScreenPokemonLogo
+.ScrollTitleScreenPokemonLogo ; 4237 (1:4237)
 ; Scrolls the Pokemon logo on the title screen to create the bouncing effect
 ; Scrolls d pixels e times
 	call DelayFrame
@@ -175,7 +113,22 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	jr nz, .ScrollTitleScreenPokemonLogo
 	ret
 
-.finishedBouncingPokemonLogo
+; place tiles for title screen copyright
+.WriteCopyrightTiles ; 4241 (1:4241)
+	coord hl, 2, 17
+	ld de, .tileScreenCopyrightTiles
+.titleScreenCopyrightTilesLoop
+	ld a, [de]
+	inc de
+	cp $ff
+	ret z
+	ld [hli], a
+	jr .titleScreenCopyrightTilesLoop
+
+.tileScreenCopyrightTiles ; 424f (1:424f)
+	db $e0,$e1,$e2,$e3,$e1,$e2,$ee,$e5,$e6,$e7,$e8,$e9,$ea,$eb,$ec,$ed,$ff ; ©1995-1999 GAME FREAK inc.
+
+.finishedBouncingPokemonLogo ; 4260 (1:4260)
 	call LoadScreenTilesFromBuffer1
 	ld c, 36
 	call DelayFrames
@@ -183,52 +136,41 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	call PlaySound
 
 ; scroll game version in from the right
-	call PrintGameVersionOnTitleScreen
+	callab Func_f4585
 	ld a, SCREEN_HEIGHT_PIXELS
 	ld [hWY], a
-	ld d, 144
-.scrollTitleScreenGameVersionLoop
-	ld h, d
-	ld l, 64
-	call ScrollTitleScreenGameVersion
-	ld h, 0
-	ld l, 80
-	call ScrollTitleScreenGameVersion
-	ld a, d
-	add 4
-	ld d, a
-	and a
-	jr nz, .scrollTitleScreenGameVersionLoop
-
-	ld a, vBGMap1 / $100
-	call TitleScreenCopyTileMapToVRAM
-	call LoadScreenTilesFromBuffer2
-	call PrintGameVersionOnTitleScreen
 	call Delay3
+	ld e, 0
+	call TitleScreen_PlayPikachuPCM
 	call WaitForSoundToFinish
+	call StopAllMusic
 	ld a, MUSIC_TITLE_SCREEN
 	ld [wNewSoundID], a
 	call PlaySound
+.asm_428f
 	xor a
 	ld [wUnusedCC5B], a
-
-; Keep scrolling in new mons indefinitely until the user performs input.
-.awaitUserInterruptionLoop
-	ld c, 200
-	call CheckForUserInterruption
-	jr c, .finishedWaiting
-	call TitleScreenScrollInMon
-	ld c, 1
-	call CheckForUserInterruption
-	jr c, .finishedWaiting
-	callba TitleScreenAnimateBallIfStarterOut
-	call TitleScreenPickNewMon
-	jr .awaitUserInterruptionLoop
-
-.finishedWaiting
-	ld a, [wTitleMonSpecies]
-	call PlayCry
-	call WaitForSoundToFinish
+	ld [wTitleMonSpecies], a
+	ld [wTitleMonSpecies+1], a
+	ld [wTitleMonSpecies+2], a
+	ld [wTitleMonSpecies+3], a
+	ld a, $f
+	ld [wTitleMonSpecies+4], a
+.titleScreenLoop
+	call IncrementResetCounter
+	jp c, .doTitlescreenReset
+	call DelayFrame
+	call JoypadLowSensitivity
+	ld a, [hJoyHeld]
+	cp D_UP | SELECT | B_BUTTON
+	jr z, .asm_42bf
+	and A_BUTTON | START
+	jr nz, .asm_42bf
+	call Func_4390
+	jr .titleScreenLoop
+.asm_42bf
+	ld e, $a
+	call TitleScreen_PlayPikachuPCM
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	xor a
@@ -248,143 +190,172 @@ DisplayTitleScreen: ; 42dd (1:42dd)
 	cp D_UP | SELECT | B_BUTTON
 	jp z, .doClearSaveDialogue
 	jp MainMenu
+.asm_42f0 ; 42f0 (1:42f0)
+	callab Func_e8e79
+	jp .asm_428f
 
-.doClearSaveDialogue
+.asm_42fb ; 42fb (1:42fb)
+	ld a, [wTitleMonSpecies+4]
+	inc a
+	cp $2a
+	jr c, .asm_4305
+	ld a, $f
+.asm_4305
+	ld [wTitleMonSpecies+4], a
+	ld e, a
+	callab PlayPikachuSoundClip
+	xor a
+	ld [wTitleMonSpecies+2], a
+	ld [wTitleMonSpecies+3], a
+	jp .titleScreenLoop
+.doTitlescreenReset ; 431b (1:431b)
+	ld [wAudioFadeOutControl], a
+	call StopAllMusic
+.audioFadeLoop
+	ld a, [wAudioFadeOutControl]
+	and a
+	jr nz, .audioFadeLoop
+	jp Init
+	
+.doClearSaveDialogue ; 432a (1:432a)
 	jpba DoClearSaveDialogue
 
-TitleScreenPickNewMon: ; 4496 (1:4496)
-	ld a, vBGMap0 / $100
-	call TitleScreenCopyTileMapToVRAM
 
-.loop
-; Keep looping until a mon different from the current one is picked.
-	call Random
-	and $f
-	ld c, a
-	ld b, 0
-	ld hl, TitleMons
-	add hl, bc
-	ld a, [hl]
-	ld hl, wTitleMonSpecies
-
-; Can't be the same as before.
-	cp [hl]
-	jr z, .loop
-
-	ld [hl], a
-	call LoadTitleMonSprite
-
-	ld a, $90
-	ld [hWY], a
-	ld d, 1 ; scroll out
-	callba TitleScroll
-	ret
-
-TitleScreenScrollInMon: ; 44c1 (1:44c1)
-	ld d, 0 ; scroll in
-	callba TitleScroll
-	xor a
-	ld [hWY], a
-	ret
-
-ScrollTitleScreenGameVersion: ; 44cf (1:44cf)
-.wait
-	ld a, [rLY]
-	cp l
-	jr nz, .wait
-
-	ld a, h
-	ld [rSCX], a
-
-.wait2
-	ld a, [rLY]
-	cp h
-	jr z, .wait2
-	ret
-
-DrawPlayerCharacter: ; 44dd (1:44dd)
-	ld hl, PlayerCharacterTitleGraphics
-	ld de, vSprites
-	ld bc, PlayerCharacterTitleGraphicsEnd - PlayerCharacterTitleGraphics
-	ld a, BANK(PlayerCharacterTitleGraphics)
-	call FarCopyData2
-	call ClearSprites
-	xor a
-	ld [wPlayerCharacterOAMTile], a
-	ld hl, wOAMBuffer
-	ld de, $605a
-	ld b, 7
-.loop
-	push de
-	ld c, 5
-.innerLoop
-	ld a, d
-	ld [hli], a ; Y
-	ld a, e
-	ld [hli], a ; X
-	add 8
-	ld e, a
-	ld a, [wPlayerCharacterOAMTile]
-	ld [hli], a ; tile
-	inc a
-	ld [wPlayerCharacterOAMTile], a
-	inc hl
-	dec c
-	jr nz, .innerLoop
-	pop de
-	ld a, 8
-	add d
-	ld d, a
-	dec b
-	jr nz, .loop
-	ret
-
-ClearBothBGMaps: ; 4519 (1:4519)
-	ld hl, vBGMap0
-	ld bc, $400 * 2
-	ld a, " "
-	jp FillMemory
-
-LoadTitleMonSprite: ; 4524 (1:4524)
-	ld [wcf91], a
-	ld [wd0b5], a
-	coord hl, 5, 10
-	call GetMonHeader
-	jp LoadFrontSpriteByMonIndex
-
-TitleScreenCopyTileMapToVRAM: ; 4533 (1:4533)
+TitleScreenCopyTileMapToVRAM: ; 4332 (1:4332)
 	ld [H_AUTOBGTRANSFERDEST + 1], a
 	jp Delay3
 
-LoadCopyrightAndTextBoxTiles: ; 4538 (1:4538)
+LoadCopyrightAndTextBoxTiles: ; 4337 (1:4337)
 	xor a
 	ld [hWY], a
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 
-LoadCopyrightTiles: ; 4541 (1:4541)
+LoadCopyrightTiles: ; 4340 (1:4340)
 	ld de, NintendoCopyrightLogoGraphics
 	ld hl, vChars2 + $600
-	lb bc, BANK(NintendoCopyrightLogoGraphics), (GamefreakLogoGraphicsEnd - NintendoCopyrightLogoGraphics) / $10
+	lb bc, BANK(NintendoCopyrightLogoGraphics), (TextBoxGraphics + $10 - NintendoCopyrightLogoGraphics) / $10 ; bug: overflows into text box graphics and copies the "A" tile
 	call CopyVideoData
 	coord hl, 2, 7
 	ld de, CopyrightTextString
 	jp PlaceString
 
-CopyrightTextString: ; 4556 (1:4556)
-	db   $60,$61,$62,$61,$63,$61,$64,$7F,$65,$66,$67,$68,$69,$6A             ; ©'95.'96.'98 Nintendo
-	next $60,$61,$62,$61,$63,$61,$64,$7F,$6B,$6C,$6D,$6E,$6F,$70,$71,$72     ; ©'95.'96.'98 Creatures inc.
-	next $60,$61,$62,$61,$63,$61,$64,$7F,$73,$74,$75,$76,$77,$78,$79,$7A,$7B ; ©'95.'96.'98 GAME FREAK inc.
+CopyrightTextString: ; 4355 (1:4355)
+	db   $60,$61,$62,$63,$61,$62,$7c,$7f,$65,$66,$67,$68,$69,$6a			 ; ©1995-1999  Nintendo
+	next $60,$61,$62,$63,$61,$62,$7c,$7f,$6b,$6c,$6d,$6e,$6f,$70,$71,$72	 ; ©1995-1999  Creatures inc.
+	next $60,$61,$62,$63,$61,$62,$7c,$7f,$73,$74,$75,$76,$77,$78,$79,$7a,$7b ; ©1995-1999  GAME FREAK inc.
 	db   "@"
 
-INCLUDE "data/title_mons.asm"
+TitleScreen_PlayPikachuPCM: ; 4387 (1:4387)
+	callab PlayPikachuSoundClip
+	ret
+	
+Func_4390: ; 4390 (1:4390)
+	call Func_43de
+	ld a, [wTitleMonSpecies]
+	ld e, a
+	ld d, 0
+	ld hl, PointerTable_43a2
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp hl
+	
+PointerTable_43a2: ; 43a2 (1:43a2)
+	dw Func_43be
+	dw Func_43c3
+	dw Func_43d9
+	dw Func_43d9
+	dw Func_43c7
+	dw Func_43d9
+	dw Func_43d9
+	dw Func_43c3
+	dw Func_43d9
+	dw Func_43d9
+	dw Func_43bf
+	dw Func_43ba
+	
+Func_43ba: ; 43ba (1:43ba)
+	xor a
+	ld [wTitleMonSpecies], a
+Func_43be
+	ret
+	
+Func_43bf: ; 43bf (1:43bf)
+	ld e, 0
+	jr asm_43c9
+Func_43c3: ; 43c3 (1:43c3)
+	ld e, 4
+	jr asm_43c9
+Func_43c7: ; 43c7 (1:43c7)
+	ld e, 8
+asm_43c9: ; 43c9 (1:43c9)
+	ld hl, wOAMBuffer + 2
+	ld c, 8
+.loop
+	ld a, [hl]
+	and $f3
+	or e
+	ld [hli], a
+	inc hl
+	inc hl
+	inc hl
+	dec c
+	jr nz, .loop
+Func_43d9: ; 43d9 (1:43d9)
+	ld hl, wTitleMonSpecies
+	inc [hl]
+	ret
+	
+Func_43de: ; 43de (1:43de)
+	ld hl, wTitleMonSpecies + 1
+	ld a, [hl]
+	inc [hl]
+	and a
+	jr z, .asm_43ed
+	cp $80
+	jr z, .asm_43ed
+	cp $90
+	ret nz
+.asm_43ed
+	ld a, $1
+	ld [wTitleMonSpecies], a
+	ret
 
-; prints version text (red, blue)
-PrintGameVersionOnTitleScreen: ; 4598 (1:4598)
-	coord hl, 7, 8
-	ld de, VersionOnTitleScreenText
-	jp PlaceString
+; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
+CopyFixedLengthText: ; 43f3 (1:43f3)
+	ld bc, NAME_LENGTH
+	jp CopyData
+	
+NintenText: db "NINTEN@"
+SonyText:   db "SONY@"
 
-; these point to special tiles specifically loaded for that purpose and are not usual text
-VersionOnTitleScreenText: ; 45a1 (1:45a1)
-	db $60,$61,$7F,$65,$66,$67,$68,$69,"@" ; "Red Version"
+IncrementResetCounter: ; 4405 (1:4405)
+	ld hl, wTitleMonSpecies + 2
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	inc de
+	ld a, d
+	cp $c
+	jr z, .doReset
+	ld [hl], d
+	dec hl
+	ld [hl], e
+	and a
+	ret
+.doReset
+	scf
+	ret
+	
+Func_4418: ; 4418 (1:4418)
+	xor a
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, $a000
+	ld bc, $20
+	ld a, $aa
+	call FillMemory
+	call PrepareRTCDataAndDisableSRAM
+	ret
