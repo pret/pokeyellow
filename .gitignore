@@ -19,6 +19,9 @@
 *.1bpp
 *.pic
 
+# converted audio data
+*.pcm
+
 # swap files for vim
 .*.swp
 

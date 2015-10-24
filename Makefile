@@ -33,7 +33,7 @@ compare: yellow
 
 # Clear the default suffixes.
 .SUFFIXES:
-.SUFFIXES: .asm .o .gbc .png .2bpp .1bpp .pic
+.SUFFIXES: .asm .o .gbc .png .2bpp .1bpp .pic .wav .pcm
 
 # Secondary expansion is required for dependency variables in object rules.
 .SECONDEXPANSION:
@@ -44,6 +44,7 @@ compare: yellow
 # Filepath shortcuts to avoid overly long recipes.
 poketools := extras/pokemontools
 gfx       := $(PYTHON) $(poketools)/gfx.py
+pcm       := $(PYTHON) $(poketools)/pcm.py
 pic       := $(PYTHON) $(poketools)/pic.py
 includes  := $(PYTHON) $(poketools)/scan_includes.py
 
@@ -61,16 +62,19 @@ $(foreach obj, $(all_obj), \
 )
 
 
-# Image files are added to a queue to reduce build time. They're converted when building parent objects.
+# Image and audio files are added to a queue to reduce build time. They're converted when building parent objects.
 %.png:  ;
 %.2bpp: %.png  ; $(eval 2bppq += $<) @rm -f $@
 %.1bpp: %.png  ; $(eval 1bppq += $<) @rm -f $@
 %.pic:  %.2bpp ; $(eval picq  += $<) @rm -f $@
+%.wav:  ;
+%.pcm:  %.wav  ; $(eval pcmq  += $<) @rm -f $@
 
 # Assemble source files into objects.
 # Queue payloads are here. These are made silent since there may be hundreds of targets.
 # Use rgbasm -h to use halts without nops.
 $(all_obj): $$*.asm $$($$*_dep)
+	@$(pcm) pcm $(pcmq);      $(eval pcmq  :=)
 	@$(gfx) 2bpp $(2bppq);    $(eval 2bppq :=)
 	@$(gfx) 1bpp $(1bppq);    $(eval 1bppq :=)
 	@$(pic) compress $(picq); $(eval picq  :=)
@@ -89,4 +93,4 @@ poke%.gbc: $$(%_obj)
 
 clean:
 	rm -f $(roms) $(all_obj) poke*.sym
-	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -exec rm {} +
+	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' -o -iname '*.pcm' \) -exec rm {} +
