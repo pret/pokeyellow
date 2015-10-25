@@ -19,6 +19,9 @@
 *.1bpp
 *.pic
 
+# converted audio data
+*.pcm
+
 # swap files for vim
 .*.swp
 
@@ -53,7 +56,4 @@ replace.sh
 .lvimrc
 
 # extras is a submodule, don't include
-extras
-
-# contains hack job of some scripts modified for personal use
-extras1\
+extras/
