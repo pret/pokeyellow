@@ -32,7 +32,7 @@ SECTION "joypad", ROM0 [$60]
 
 SECTION "Home", ROM0
 
-DisableLCD:: ; 0061 (0:0061)
+DisableLCD::
 	xor a
 	ld [rIF], a
 	ld a, [rIE]
@@ -52,13 +52,13 @@ DisableLCD:: ; 0061 (0:0061)
 	ld [rIE], a
 	ret
 
-EnableLCD:: ; 007b (0:007b)
+EnableLCD::
 	ld a, [rLCDC]
 	set rLCDC_ENABLE, a
 	ld [rLCDC], a
 	ret
 
-ClearSprites:: ; 0082 (0:0082)
+ClearSprites::
 	xor a
 	ld hl, wOAMBuffer
 	ld b, 40 * 4
@@ -68,7 +68,7 @@ ClearSprites:: ; 0082 (0:0082)
 	jr nz, .loop
 	ret
 
-HideSprites:: ; 008d (0:008d)
+HideSprites::
 	ld a, 160
 	ld hl, wOAMBuffer
 	ld de, 4
@@ -101,7 +101,7 @@ SECTION "Header", ROM0 [$104]
 
 SECTION "Main", ROM0
 
-PlayPikachuPCM:: ; 0150 (0:0150)
+Func_150:: ; 0150 (0:0150)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,b
@@ -114,16 +114,16 @@ PlayPikachuPCM:: ; 0150 (0:0150)
 	ld a,[hli]
 	ld d,a
 	ld a,$3
-.playSingleSample
+.unknownloop
 	dec a
-	jr nz,.playSingleSample
+	jr nz,.unknownloop
 	
 	rept 7
-	call LoadNextSoundClipSample
-	call PlaySoundClipSample
+	call Func_199
+	call Func_1a5
 	endr
 	
-	call LoadNextSoundClipSample
+	call Func_199
 	dec bc
 	ld a,c
 	or b
@@ -132,7 +132,7 @@ PlayPikachuPCM:: ; 0150 (0:0150)
 	call BankswitchCommon
 	ret
 
-LoadNextSoundClipSample:: ; 0199 (0:0199)
+Func_199:: ; 0199 (0:0199)
 	ld a,d
 	and $80
 	srl a
@@ -141,14 +141,14 @@ LoadNextSoundClipSample:: ; 0199 (0:0199)
 	sla d
 	ret
 	
-PlaySoundClipSample:: ; 01a5 (0:01a5)
+Func_1a5:: ; 01a5 (0:01a5)
 	ld a,$3
-.loop
+.unknownloop2
 	dec a
-	jr nz,.loop
+	jr nz,.unknownloop2
 	ret
 
-Start:: ; 01ab (0:01ab)
+Start::
 	cp GBC
 	jr z, .gbc
 	xor a
@@ -159,7 +159,7 @@ Start:: ; 01ab (0:01ab)
 	ld [hGBC], a
 	jp Init
 
-Joypad:: ; 01b9 (0:01b9)
+Joypad:: ; 01b9
 	homecall_jump _Joypad
 
 ReadJoypad:: ; 01c8 (0:01c8)

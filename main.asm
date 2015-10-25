@@ -2540,7 +2540,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	callab IsThisPartymonOurPikachu
 	jr nc, .curMonNotPlayerPikachu
 	ld e, $3
-	callab PlayPikachuSoundClip
+	callab Func_f0000
 	callab_ModifyPikachuHappiness_ld_d PIKAHAPPY_PSNFNT
 .curMonNotPlayerPikachu
 	pop de

@@ -1,4 +1,4 @@
-PlayPikachuSoundClip:: ; f0000 (3c:4000)
+Func_f0000:: ; f0000 (3c:4000)
 	ld a, e
 	ld e, a
 	ld d, $0
@@ -53,7 +53,7 @@ PlayPikachuSoundClip:: ; f0000 (3c:4000)
 	ld [rNR34], a
 	pop hl
 	pop bc
-	call PlayPikachuPCM
+	call Func_150
 	xor a
 	ld [wc0f3], a
 	ld [wc0f4], a

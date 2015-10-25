@@ -676,7 +676,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	callab IsThisPartymonOurPikachu
 	jr nc, .notPlayerPikachu
 	ld e, $1b
-	callab PlayPikachuSoundClip
+	callab Func_f0000
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName

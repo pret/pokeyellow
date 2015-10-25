@@ -241,7 +241,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	callab IsThisPartymonOurPikachu
 	jr nc, .asm_215c9
 	ld e, $1b
-	callab PlayPikachuSoundClip
+	callab Func_f0000
 	jr .asm_215cf
 .asm_215c9
 	ld a, [wcf91]
@@ -304,7 +304,7 @@ BillsPCWithdraw: ; 21613 (8:5613)
 	callab Func_fce0d
 	jr nc, .asm_21660
 	ld e, $22
-	callab PlayPikachuSoundClip
+	callab Func_f0000
 	jr .asm_21666
 .asm_21660
 	ld a, [wcf91]
@@ -355,7 +355,7 @@ BillsPCRelease: ; 21690 (8:5690)
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
 	ld e, $27
-	callab PlayPikachuSoundClip
+	callab Func_f0000
 	ld hl, PikachuUnhappyText
 	call PrintText
 	jp BillsPCMenu
