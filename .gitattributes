@@ -13,3 +13,6 @@
 *.tilecoll binary
 *.bst binary
 *.map binary
+*.wav binary
+*.blk binary
+*.pic binary
