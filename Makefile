@@ -65,7 +65,7 @@ $(foreach obj, $(all_obj), \
 %.pic:  %.2bpp ; @$(pic) compress $<
 
 %.wav: ;
-%.pcm: %.wav pcm.py ; @$(pcm) pcm $<
+%.pcm: %.wav $(poketools)/pcm.py ; @$(pcm) pcm $<
 
 # Assemble source files into objects.
 $(all_obj): $$*.asm $$($$*_dep)
