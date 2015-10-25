@@ -54,3 +54,6 @@ replace.sh
 
 # extras is a submodule, don't include
 extras
+
+# contains hack job of some scripts modified for personal use
+extras1\
