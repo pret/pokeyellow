@@ -159,7 +159,7 @@ HoFDisplayAndRecordMonInfo: ; 7030e (1c:430e)
 	callab IsThisPartymonOurPikachu ; 3f:4e18
 	jr nc, .asm_70336
 	ld e, $22
-	callab Func_f0000
+	callab PlayPikachuSoundClip
 	jr .asm_7033c
 .asm_70336
 	ld a,[wHoFMonSpecies]

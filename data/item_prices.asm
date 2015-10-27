@@ -1,4 +1,4 @@
-ItemPrices: ; 4608 (1:4608)
+ItemPrices: ; 4494 (1:4494)
 	money 0     ; MASTER_BALL
 	money 1200  ; ULTRA_BALL
 	money 600   ; GREAT_BALL

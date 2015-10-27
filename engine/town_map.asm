@@ -108,7 +108,7 @@ DisplayTownMap: ; 70eb7 (1c:4eb7)
 	ld a,[hJoy5]
 	and D_DOWN | D_UP
 	ret z
-	callab Func_f0000
+	callab PlayPikachuSoundClip
 	ret
 
 INCLUDE "data/town_map_order.asm"
