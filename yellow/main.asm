@@ -3439,7 +3439,54 @@ MoveSelectionMenu: ; 3d320 (f:5320)
 IsGhostBattle: ; 3d9ac (f:59ac)
 	dr $3d9ac,$3ddc3
 PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
-	dr $3ddc3,$3e6f1
+	dr $3ddc3,$3e5bb
+
+AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
+	ld a,[W_ENEMYMOVETYPE]
+	ld d,a                 ; d = type of enemy move
+	ld hl,wBattleMonType
+	ld b,[hl]              ; b = type 1 of player's pokemon
+	inc hl
+	ld c,[hl]              ; c = type 2 of player's pokemon
+	ld a,$10
+	ld [wd11e],a           ; initialize [wd11e] to neutral effectiveness
+	ld hl,TypeEffects
+.loop
+	ld a,[hli]
+	cp a,$ff
+	ret z
+	cp d                   ; match the type of the move
+	jr nz,.nextTypePair1
+	ld a,[hli]
+	cp b                   ; match with type 1 of pokemon
+	jr z,.done
+	cp c                   ; or match with type 2 of pokemon
+	jr z,.done
+	jr .nextTypePair2
+.nextTypePair1
+	inc hl
+.nextTypePair2
+	inc hl
+	jr .loop
+
+.done
+	ld a, [W_TRAINERCLASS]
+	cp LORELEI
+	jr nz, .ok
+	ld a, [wEnemyMonSpecies]
+	cp DEWGONG
+	jr nz, .ok
+	call BattleRandom
+	cp $66 ; 40 percent
+	ret c
+.ok
+
+	ld a,[hl]
+	ld [wd11e],a           ; store damage multiplier
+	ret
+
+INCLUDE "data/type_effects.asm"
+
 MoveHitTest: ; 3e6f1 (f:66f1)
 	dr $3e6f1,$3ec87
 LoadEnemyMonData: ; 3ec87 (f:6c87)
@@ -3447,7 +3494,9 @@ LoadEnemyMonData: ; 3ec87 (f:6c87)
 DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
 	dr $3edb8,$3eeb3
 QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3f3de
+	dr $3eeb3,$3f027
+BattleRandom: ; 3f027 (f:7027)
+	dr $3f027,$3f3de
 StatModifierUpEffect: ; 3f3de (f:73de)
 	dr $3f3de,$3fb2e
 PrintButItFailedText_: ; 3fb2e (f:7b2e)

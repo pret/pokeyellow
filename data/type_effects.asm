@@ -1,4 +1,4 @@
-TypeEffects: ; 3e474 (f:6474)
+TypeEffects: ; 3e5fa (f:65fa)
 ; format: attacking type, defending type, damage multiplier
 ; the multiplier is a (decimal) fixed-point number:
 ;     20 is ×2.0
