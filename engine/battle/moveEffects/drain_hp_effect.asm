@@ -1,5 +1,5 @@
 DrainHPEffect_: ; 783f (1:783f)
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld a, [hl]
 	srl a ; divide damage by 2
 	ld [hli], a
@@ -36,12 +36,12 @@ DrainHPEffect_: ; 783f (1:783f)
 	dec bc
 	ld [bc], a
 ; add damage to attacker's HP and copy new HP to wHPBarNewHP
-	ld a, [W_DAMAGE + 1]
+	ld a, [wDamage + 1]
 	ld b, [hl]
 	add b
 	ld [hld], a
 	ld [wHPBarNewHP], a
-	ld a, [W_DAMAGE]
+	ld a, [wDamage]
 	ld b, [hl]
 	adc b
 	ld [hli], a

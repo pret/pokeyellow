@@ -1,8 +1,8 @@
 PrintBeginningBattleText: ; f4000 (3d:4000)
-	ld a, [W_ISINBATTLE] ; W_ISINBATTLE
+	ld a, [wIsInBattle] ; W_ISINBATTLE
 	dec a
 	jr nz, .trainerBattle
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp POKEMONTOWER_3
 	jr c, .notPokemonTower
 	cp LAVENDER_HOUSE_1

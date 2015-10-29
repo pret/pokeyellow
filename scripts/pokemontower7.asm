@@ -24,7 +24,7 @@ PokemonTower7ScriptPointers:
 PokemonTower7Script2: ; 60d23 (18:4d23)
 	ld hl, wFlags_0xcd60
 	res 0, [hl]
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, PokemonTower7Script_60d18
 	call EndTrainerBattle
@@ -43,7 +43,7 @@ PokemonTower7Script3: ; 60d56 (18:4d56)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	ld hl, W_MISSABLEOBJECTLIST
+	ld hl, wMissableObjectList
 	ld a, [wSpriteIndex]
 	ld b, a
 .missableObjectsListLoop
@@ -92,9 +92,9 @@ PokemonTower7Script_60db6: ; 60db6 (18:4db6)
 	ld d, $0
 	ld e, a
 	add hl, de
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
 .asm_60dcb
 	ld a, [hli]

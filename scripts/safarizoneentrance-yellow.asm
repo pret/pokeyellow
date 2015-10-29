@@ -56,7 +56,7 @@
 	ld a,30
 	lb hl, (502 / $100),  (502 % $100)
 .xf1ff2
-	ld [W_NUMSAFARIBALLS],a
+	ld [wNumSafariBalls],a
 	ld a,h
 	ld [wSafariSteps],a
 	ld a,l

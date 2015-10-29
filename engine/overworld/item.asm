@@ -1,9 +1,9 @@
-PickUpItem:
+PickUpItem: ; 4d55 (1:4d55)
 	call EnableAutoTextBoxDrawing
 
 	ld a, [hSpriteIndexOrTextID]
 	ld b, a
-	ld hl, W_MISSABLEOBJECTLIST
+	ld hl, wMissableObjectList
 .missableObjectsListLoop
 	ld a, [hli]
 	cp $ff
@@ -17,7 +17,7 @@ PickUpItem:
 	ld a, [hl]
 	ld [$ffdb], a
 
-	ld hl, W_MAPSPRITEEXTRADATA
+	ld hl, wMapSpriteExtraData
 	ld a, [hSpriteIndexOrTextID]
 	dec a
 	add a
@@ -44,11 +44,11 @@ PickUpItem:
 	call PrintText
 	ret
 
-FoundItemText:
+FoundItemText: ; 4d9a (1:4d9a)
 	TX_FAR _FoundItemText
 	db $0B
 	db "@"
 
-NoMoreRoomForItemText:
+NoMoreRoomForItemText: ; 4da0 (1:4da0)
 	TX_FAR _NoMoreRoomForItemText
 	db "@"

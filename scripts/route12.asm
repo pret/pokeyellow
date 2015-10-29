@@ -30,9 +30,9 @@ Route12Script0: ; 59619 (16:5619)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, SNORLAX
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld a, 30
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	ld a, HS_ROUTE_12_SNORLAX
 	ld [wMissableObjectIndex], a
 	predef HideObject
@@ -42,7 +42,7 @@ Route12Script0: ; 59619 (16:5619)
 	ret
 
 Route12Script3: ; 5964c (16:564c)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jr z, Route12Script_59606
 	call UpdateSprites

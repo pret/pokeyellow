@@ -36,7 +36,7 @@ CeladonGymScriptPointers: ; 4894e (12:494e)
 	dw CeladonGymScript3
 
 CeladonGymScript3: ; 48956 (12:4956)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CeladonGymText_48943
 	ld a, $f0
@@ -176,7 +176,7 @@ CeladonGymText1: ; 48a11 (12:4a11)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $4
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	ld a, $3
 	ld [W_CELADONGYMCURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a

@@ -29,7 +29,7 @@ LoadMonData_: ; 442b (1:442b)
 ;  2: boxmon
 ;  3: daycaremon
 ; Return monster id at wcf91 and its data at wLoadedMon.
-; Also load base stats at W_MONHEADER for convenience.
+; Also load base stats at wMonHeader for convenience.
 
 	ld a, [wDayCareMonSpecies]
 	ld [wcf91], a
@@ -120,7 +120,7 @@ INCLUDE "engine/overworld/oam.asm"
 PrintWaitingText: ; 4b89 (1:4b89)
 	coord hl, 3, 10
 	lb bc, 1, 11
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	and a
 	jr z, .asm_4b9a
 	call TextBoxBorder
@@ -528,17 +528,17 @@ SpriteCollisionBitTable: ; 4d35 (1:4d35)
 	db %01000000,%00000000
 	db %10000000,%00000000
 	
-	dr $4d55,$4da5
-UpdatePlayerSprite: ; 4da5 (1:4da5)
-	dr $4da5,$4e3e
-UpdateNPCSprite: ; 4e3e (1:4e3e)
-	dr $4e3e,$5012
-Func_5012: ; 5012 (1:5012)
-	dr $5012,$5199
-DoScriptedNPCMovement: ; 5199 (1:5199)
-	dr $5199,$5b67
-CableClub_TextBoxBorder: ; 5b67 (1:5b67)
-	dr $5b67,$5ba6
+INCLUDE "engine/overworld/item.asm"
+INCLUDE "engine/overworld/movement.asm"
+
+INCLUDE "engine/cable_club.asm"
+
+LoadTrainerInfoTextBoxTiles: ; 5b9a (1:5b9a)
+	ld de, TrainerInfoTextBoxTileGraphics
+	ld hl, vChars2 + $760
+	lb bc, BANK(TrainerInfoTextBoxTileGraphics), (TrainerInfoTextBoxTileGraphicsEnd - TrainerInfoTextBoxTileGraphics) / $10
+	jp CopyVideoData
+	
 MainMenu: ; 5ba6 (1:5ba6)
 	dr $5ba6,$5ce4
 Func_5ce4: ; 5ce4 (1:5ce4)
@@ -583,7 +583,7 @@ ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld [wStepCounter], a
-	ld [W_LONEATTACKNO], a ; W_GYMLEADERNO
+	ld [wLoneAttackNo], a ; wGymLeaderNo
 	ld [hJoyPressed], a
 	ld [hJoyReleased], a
 	ld [hJoyHeld], a
@@ -605,11 +605,11 @@ IsPlayerStandingOnWarp: ; c0a6 (3:40a6)
 	ld c, a
 	ld hl, wWarpEntries
 .loop
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp [hl]
 	jr nz, .nextWarp1
 	inc hl
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp [hl]
 	jr nz, .nextWarp2
 	inc hl
@@ -635,11 +635,11 @@ CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	bit 5, [hl]
 	ret nz
 	ld hl, ForcedBikeOrSurfMaps
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	ld d, a
 .loop
 	ld a, [hli]
@@ -653,15 +653,15 @@ CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	ld a, [hli]
 	cp c ;compare x-coord
 	jr nz, .loop ; incorrect x-coord, check next item
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp SEAFOAM_ISLANDS_4
 	ld a, $2
-	ld [W_SEAFOAMISLANDS4CURSCRIPT], a
+	ld [wSeafoamIslands4CurScript], a
 	jr z, .forceSurfing
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp SEAFOAM_ISLANDS_5
 	ld a, $2
-	ld [W_SEAFOAMISLANDS5CURSCRIPT], a
+	ld [wSeafoamIslands5CurScript], a
 	jr z, .forceSurfing
 	;force bike riding
 	ld hl, wd732
@@ -698,9 +698,9 @@ IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
 	ld de, .returnaddress
 	push de
@@ -718,7 +718,7 @@ IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
 	dw .facingRight
 
 .facingDown
-	ld a, [W_CURMAPHEIGHT]
+	ld a, [wCurMapHeight]
 	add a
 	dec a
 	cp b
@@ -738,7 +738,7 @@ IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
 	jr .resetCarry
 
 .facingRight
-	ld a, [W_CURMAPWIDTH]
+	ld a, [wCurMapWidth]
 	add a
 	dec a
 	cp c
@@ -756,7 +756,7 @@ IsWarpTileInFrontOfPlayer: ; c197 (3:4197)
 	push de
 	push bc
 	call _GetTileAndCoordsInFrontOfPlayer
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp SS_ANNE_5
 	jr z, .ssAnne5
 	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
@@ -835,7 +835,7 @@ IsPlayerStandingOnDoorTileOrWarpTile: ; c1e6 (3:41e6)
 INCLUDE "data/warp_tile_ids.asm"
 
 PrintSafariZoneSteps: ; c27b (3:427b)
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp SAFARI_ZONE_EAST
 	ret c
 	cp UNKNOWN_DUNGEON_2
@@ -853,7 +853,7 @@ PrintSafariZoneSteps: ; c27b (3:427b)
 	coord hl, 1, 3
 	ld de, SafariBallText
 	call PlaceString
-	ld a, [W_NUMSAFARIBALLS]
+	ld a, [wNumSafariBalls]
 	cp 10
 	jr nc, .numSafariBallsTwoDigits
 	coord hl, 5, 3
@@ -861,7 +861,7 @@ PrintSafariZoneSteps: ; c27b (3:427b)
 	ld [hl], a
 .numSafariBallsTwoDigits
 	coord hl, 6, 3
-	ld de, W_NUMSAFARIBALLS
+	ld de, wNumSafariBalls
 	lb bc, 1, 2
 	jp PrintNumber
 
@@ -875,9 +875,9 @@ GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d1)
 	call GetPredefRegisters
 	
 _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld d, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld e, a
 	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
 	and a ; cp SPRITE_FACING_DOWN
@@ -914,7 +914,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 GetTileTwoStepsInFrontOfPlayer: ; c309 (3:4309)
 	xor a
 	ld [$ffdb], a
-	ld hl, W_YCOORD
+	ld hl, wYCoord
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
@@ -989,7 +989,7 @@ CheckForBoulderCollisionWithSprites: ; c378 (3:4378)
 	ld [$ffdc], a
 	ld a, [hl] ; map X position
 	ld [$ffdd], a
-	ld a, [W_NUMSPRITES]
+	ld a, [wNumSprites]
 	ld c, a
 	ld de, $f
 	ld hl, wSpriteStateData2 + $14
@@ -1218,7 +1218,7 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	add hl, de
 	add hl, de
 	add hl, de
-	ld de, W_TILESETBANK
+	ld de, wTilesetBank
 	ld bc, $b
 	call CopyData
 	ld a, [hl]
@@ -1245,12 +1245,12 @@ LoadTilesetHeader: ; c4f4 (3:44f4)
 	cp $ff
 	jr z, .done
 	call LoadDestinationWarpPosition
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	and $1
-	ld [W_YBLOCKCOORD], a
-	ld a, [W_XCOORD]
+	ld [wYBlockCoord], a
+	ld a, [wXCoord]
 	and $1
-	ld [W_XBLOCKCOORD], a
+	ld [wXBlockCoord], a
 .done
 	ret
 
@@ -1259,7 +1259,7 @@ INCLUDE "data/dungeon_tilesets.asm"
 INCLUDE "data/tileset_headers.asm"
 
 IncrementDayCareMonExp: ; c684 (3:4684)
-	ld a, [W_DAYCARE_IN_USE]
+	ld a, [wDayCareInUse]
 	and a
 	ret z
 	ld hl, wDayCareMonExp + 2
@@ -1281,7 +1281,7 @@ INCLUDE "data/hide_show_data.asm"
 
 LoadWildData: ; cb62 (3:4b62)
 	ld hl,WildDataPointers
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 
 	; get wild data for current map
 	ld c,a
@@ -1292,11 +1292,11 @@ LoadWildData: ; cb62 (3:4b62)
 	ld h,[hl]
 	ld l,a       ; hl now points to wild data for current map
 	ld a,[hli]
-	ld [W_GRASSRATE],a
+	ld [wGrassRate],a
 	and a
 	jr z,.NoGrassData ; if no grass data, skip to surfing data
 	push hl
-	ld de,W_GRASSMONS ; otherwise, load grass data
+	ld de,wGrassMons ; otherwise, load grass data
 	ld bc,$0014
 	call CopyData
 	pop hl
@@ -1304,10 +1304,10 @@ LoadWildData: ; cb62 (3:4b62)
 	add hl,bc
 .NoGrassData
 	ld a,[hli]
-	ld [W_WATERRATE],a
+	ld [wWaterRate],a
 	and a
 	ret z        ; if no water data, we're done
-	ld de,W_WATERMONS  ; otherwise, load surfing data
+	ld de,wWaterMons  ; otherwise, load surfing data
 	ld bc,$0014
 	jp CopyData
 	
@@ -1443,7 +1443,7 @@ GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 ReplaceTileBlock: ; ed1b (3:6d1b)
 	call GetPredefRegisters
 	ld hl, wOverworldMap
-	ld a, [W_CURMAPWIDTH]
+	ld a, [wCurMapWidth]
 	add $6
 	ld e, a
 	ld d, $0
@@ -1485,7 +1485,7 @@ ReplaceTileBlock: ; ed1b (3:6d1b)
 	ret c ; return if the replaced tile block is above the map view in memory
 
 RedrawMapView: ; ed59 (3:6d59)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	inc a
 	ret z
 	ld a, [H_AUTOBGTRANSFERENABLED]
@@ -1566,16 +1566,16 @@ CompareHLWithBC: ; edcb (3:6dcb)
 INCLUDE "engine/overworld/cut.asm"
 	
 MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp ROUTE_1
 	jr nc, .notInTown
 	ld c, a
 	ld b, FLAG_SET
-	ld hl, W_TOWNVISITEDFLAG   ; mark town as visited (for flying)
+	ld hl, wTownVisitedFlag   ; mark town as visited (for flying)
 	predef FlagActionPredef
 .notInTown
 	ld hl, MapHSPointers
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	ld b, $0
 	ld c, a
 	add hl, bc
@@ -1605,11 +1605,11 @@ MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ld [H_DIVISOR], a
 	ld b, $2
 	call Divide                ; divide difference by 3, resulting in the global offset (number of missable items before ours)
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	ld b, a
 	ld a, [H_DIVIDEND+3]
 	ld c, a                    ; store global offset in c
-	ld de, W_MISSABLEOBJECTLIST
+	ld de, wMissableObjectList
 	pop hl
 .writeMissableObjectsListLoop
 	ld a, [hli]
@@ -1632,8 +1632,8 @@ MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ret
 
 InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
-	ld hl, W_MISSABLEOBJECTFLAGS
-	ld bc, wMissableObjectFlagsEnd - W_MISSABLEOBJECTFLAGS
+	ld hl, wMissableObjectFlags
+	ld bc, wMissableObjectFlagsEnd - wMissableObjectFlags
 	xor a
 	call FillMemory ; clear missable objects flags
 	ld hl, MapHS00
@@ -1648,7 +1648,7 @@ InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
 	ld a, [hl]
 	cp Hide
 	jr nz, .skip
-	ld hl, W_MISSABLEOBJECTFLAGS
+	ld hl, wMissableObjectFlags
 	ld a, [wMissableObjectCounter]
 	ld c, a
 	ld b, FLAG_SET
@@ -1666,7 +1666,7 @@ IsObjectHidden: ; f022 (3:7022)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	swap a
 	ld b, a
-	ld hl, W_MISSABLEOBJECTLIST
+	ld hl, wMissableObjectList
 .loop
 	ld a, [hli]
 	cp $ff
@@ -1676,7 +1676,7 @@ IsObjectHidden: ; f022 (3:7022)
 	jr nz, .loop
 	ld c, a
 	ld b, FLAG_TEST
-	ld hl, W_MISSABLEOBJECTFLAGS
+	ld hl, wMissableObjectFlags
 	call MissableObjectFlagAction
 	ld a, c
 	and a
@@ -1691,7 +1691,7 @@ IsObjectHidden: ; f022 (3:7022)
 ; [wMissableObjectIndex]: index of the missable object to be added (global index)
 ShowObject: ; f044 (3:7044)
 ShowObject2:
-	ld hl, W_MISSABLEOBJECTFLAGS
+	ld hl, wMissableObjectFlags
 	ld a, [wMissableObjectIndex]
 	ld c, a
 	ld b, FLAG_RESET
@@ -1701,7 +1701,7 @@ ShowObject2:
 ; removes missable object (items, leg. pokemon, etc.) from the map
 ; [wMissableObjectIndex]: index of the missable object to be removed (global index)
 HideObject: ; f053 (3:7053)
-	ld hl, W_MISSABLEOBJECTFLAGS
+	ld hl, wMissableObjectFlags
 	ld a, [wMissableObjectIndex]
 	ld c, a
 	ld b, FLAG_SET
@@ -1954,7 +1954,7 @@ _AddPartyMon: ; f161 (3:7161)
 	ld a, [wcf91]
 	ld [wd0b5], a
 	call GetMonHeader
-	ld hl, W_MONHEADER
+	ld hl, wMonHeader
 	ld a, [hli]
 	ld [de], a ; species
 	inc de
@@ -1993,7 +1993,7 @@ _AddPartyMon: ; f161 (3:7161)
 	pop hl
 	push hl
 
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	and a ; is this a wild mon caught in battle?
 	jr nz, .copyEnemyMonData
 
@@ -2048,7 +2048,7 @@ _AddPartyMon: ; f161 (3:7161)
 	ld [de], a
 	inc de
 .copyMonTypesAndMoves
-	ld hl, W_MONHTYPES
+	ld hl, wMonHTypes
 	ld a, [hli]       ; type 1
 	ld [de], a
 	inc de
@@ -2063,7 +2063,7 @@ _AddPartyMon: ; f161 (3:7161)
 	ld a, $60 ; twistedspoon in gen 2
 	ld [de], a
 .skipGivingTwistedSpoon
-	ld hl, W_MONHMOVES
+	ld hl, wMonHMoves
 	ld a, [hli]
 	inc de
 	push de
@@ -2092,7 +2092,7 @@ _AddPartyMon: ; f161 (3:7161)
 	inc de
 	ld [de], a
 	push de
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	ld d, a
 	callab CalcExperience
 	pop de
@@ -2117,10 +2117,10 @@ _AddPartyMon: ; f161 (3:7161)
 	pop hl
 	call AddPartyMon_WriteMovePP
 	inc de
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	ld [de], a
 	inc de
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr nz, .calcFreshStats
 	ld hl, wEnemyMonMaxHP
@@ -2318,7 +2318,7 @@ _MoveMon: ; f3a4 (3:73a4)
 .asm_f43a
 	ld a, [wMoveMonType]
 	cp PARTY_TO_DAYCARE
-	ld de, W_DAYCAREMONOT
+	ld de, wDayCareMonOT
 	jr z, .asm_f459
 	dec a
 	ld hl, wPartyMonOT
@@ -2336,7 +2336,7 @@ _MoveMon: ; f3a4 (3:73a4)
 	ld a, [wMoveMonType]
 	and a
 	jr z, .asm_f46c
-	ld hl, W_DAYCAREMONOT
+	ld hl, wDayCareMonOT
 	cp DAYCARE_TO_PARTY
 	jr z, .asm_f472
 	ld hl, wPartyMonOT
@@ -2348,7 +2348,7 @@ _MoveMon: ; f3a4 (3:73a4)
 	call CopyData
 	ld a, [wMoveMonType]
 	cp PARTY_TO_DAYCARE
-	ld de, W_DAYCAREMONNAME
+	ld de, wDayCareMonName
 	jr z, .asm_f497
 	dec a
 	ld hl, wPartyMonNicks
@@ -2366,7 +2366,7 @@ _MoveMon: ; f3a4 (3:73a4)
 	ld a, [wMoveMonType]
 	and a
 	jr z, .asm_f4aa
-	ld hl, W_DAYCAREMONNAME
+	ld hl, wDayCareMonName
 	cp DAYCARE_TO_PARTY
 	jr z, .asm_f4b0
 	ld hl, wPartyMonNicks
@@ -2389,7 +2389,7 @@ _MoveMon: ; f3a4 (3:73a4)
 	call LoadMonData
 	callba CalcLevelFromExperience
 	ld a, d
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	pop hl
 	ld bc, wBoxMon2 - wBoxMon1
 	add hl, bc
@@ -3389,7 +3389,9 @@ CryData: ; 39462 (e:5462)
 TrainerPicAndMoneyPointers: ; 39893 (e:5893)
 	dr $39893,$3997e
 TrainerNames: ; 3997e (e:597e)
-	dr $3997e,$39bb6
+	dr $3997e,$39b54
+InitList: ; 39b54 (e:5b54)
+	dr $39b54,$39bb6
 ReadTrainer: ; 39bb6 (e:5bb6)
 	dr $39bb6,$3a8df
 DrawAllPokeballs: ; 3a8df (e:68df)

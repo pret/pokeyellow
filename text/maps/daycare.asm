@@ -44,7 +44,7 @@ _DayCareOweMoneyText::
 _DayCareGotMonBackText::
 	text $52, " got"
 	line "@"
-	TX_RAM W_DAYCAREMONNAME
+	TX_RAM wDayCareMonName
 	text " back!"
 	done
 

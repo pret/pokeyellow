@@ -78,7 +78,7 @@ IndigoPlateauStatues: ; fa4d (3:7a4d)
 	TX_ASM
 	ld hl, IndigoPlateauStatuesText1
 	call PrintText
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	bit 0, a
 	ld hl, IndigoPlateauStatuesText2
 	jr nz, .asm_fa61

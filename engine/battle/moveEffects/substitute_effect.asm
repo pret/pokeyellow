@@ -44,7 +44,7 @@ SubstituteEffect_: ; 17dad (5:7dad)
 	ld h, b
 	ld l, c
 	set HasSubstituteUp, [hl]
-	ld a, [W_OPTIONS]
+	ld a, [wOptions]
 	bit 7, a ; battle animation is enabled?
 	ld hl, PlayCurrentMoveAnimation
 	ld b, BANK(PlayCurrentMoveAnimation)

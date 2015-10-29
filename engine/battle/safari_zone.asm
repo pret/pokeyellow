@@ -18,7 +18,7 @@ PrintSafariZoneBattleText: ; 4111 (1:4111)
 	ld a, [wEnemyMonSpecies]
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [W_MONHCATCHRATE]
+	ld a, [wMonHCatchRate]
 	ld [wEnemyMonCatchRate], a
 	pop hl
 .asm_4138

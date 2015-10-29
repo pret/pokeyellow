@@ -14,9 +14,9 @@ RocketHideout3ScriptPointers: ; 45238 (11:5238)
 	dw RocketHideout3Script3
 
 RocketHideout3Script0: ; 45240 (11:5240)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
 	ld hl, RocketHideout3ArrowTilePlayerMovement
 	call DecodeArrowMovementRLE

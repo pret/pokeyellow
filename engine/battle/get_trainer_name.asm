@@ -1,5 +1,5 @@
 GetTrainerName_: ; f67a5 (3d:67a5)
-	ld hl, W_GRASSRATE
+	ld hl, wGrassRate
 	ld a, [wLinkState]
 	and a
 	jr nz, .foundName

@@ -461,7 +461,7 @@ Func_f5b2d:: ; f5b2d (3d:5b2d)
 	ld a,[wd732]
 	bit 5,a
 	jr nz,.asm_f5b59
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp SEAFOAM_ISLANDS_5
 	ret nz
 	ld a,[wd881]
@@ -640,12 +640,13 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	ret
 
 TrainerInfoTextBoxTileGraphics:	INCBIN "gfx/trainer_info.2bpp"
+TrainerInfoTextBoxTileGraphicsEnd:
 BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
 CircleTile:						INCBIN "gfx/circle_tile.2bpp"
 BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
 
 ReadSuperRodData:: ; f5ea4 (3d:5ea4)
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	ld c,a
 	ld hl,FishingSlots
 .loop

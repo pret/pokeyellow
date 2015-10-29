@@ -300,7 +300,7 @@ GetPrizeMonLevel: ; 52977 (14:6977)
 	jr .loop
 .matchFound
 	ld a,[hl]
-	ld [W_CURENEMYLVL],a
+	ld [wCurEnemyLVL],a
 	ret
 
 INCLUDE "data/prize_mon_levels.asm"

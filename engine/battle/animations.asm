@@ -389,7 +389,7 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 
 .MoveAnimation
 	; check if battle animations are disabled in the options
-	ld a,[W_OPTIONS]
+	ld a,[wOptions]
 	bit 7,a
 	jr nz,.AnimationsDisabled
 	call ShareMoveAnimations
@@ -736,7 +736,7 @@ DoBallTossSpecialEffects: ; 78f3e (1e:4f3e)
 	ld a,SFX_BALL_TOSS
 	call PlaySound
 .skipPlayingSound
-	ld a,[W_ISINBATTLE]
+	ld a,[wIsInBattle]
 	cp a,02 ; is it a trainer battle?
 	jr z,.isTrainerBattle
 	ld a,[wd11e]
@@ -2945,7 +2945,7 @@ BattleAnimCopyTileMapToVRAM: ; 79e0d (1e:5e0d)
 	jp Delay3
 
 TossBallAnimation: ; 79e16 (1e:5e16)
-	ld a,[W_ISINBATTLE]
+	ld a,[wIsInBattle]
 	cp a,2
 	jr z,.BlockBall ; if in trainer battle, play different animation
 	ld a,[wPokeBallAnimData]

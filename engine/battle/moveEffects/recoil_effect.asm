@@ -8,9 +8,9 @@ RecoilEffect_: ; 1392c (4:792c)
 	ld hl, wEnemyMonMaxHP
 .recoilEffect
 	ld d, a
-	ld a, [W_DAMAGE]
+	ld a, [wDamage]
 	ld b, a
-	ld a, [W_DAMAGE + 1]
+	ld a, [wDamage + 1]
 	ld c, a
 	srl b
 	rr c

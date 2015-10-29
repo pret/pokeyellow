@@ -205,7 +205,7 @@ SilphCo11Script_6221a: ; 6221a (18:621a)
 	jp SetSpriteFacingDirectionAndDelay
 
 SilphCo11Script5: ; 62227 (18:6227)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SilphCo11Script_621c4
 	ld a, [wcf0d]

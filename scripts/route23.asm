@@ -26,7 +26,7 @@ Route23ScriptPointers: ; 51213 (14:5213)
 
 Route23Script0: ; 51219 (14:5219)
 	ld hl, YCoordsData_51255
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
 	ld e, $0
 	EventFlagBit c, EVENT_PASSED_EARTHBADGE_CHECK + 1, EVENT_PASSED_CASCADEBADGE_CHECK
@@ -40,7 +40,7 @@ Route23Script0: ; 51219 (14:5219)
 	jr nz, .asm_51224
 	cp $23
 	jr nz, .asm_51237
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $e
 	ret nc
 .asm_51237

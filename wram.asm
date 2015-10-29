@@ -1586,7 +1586,7 @@ W_TRAINERNAME:: ; d04a
 ; unused trailing letters
 	ds 13
 
-W_ISINBATTLE:: ; d057
+wIsInBattle:: ; d057
 ; lost battle, this is -1
 ; no battle, this is 0
 ; wild battle, this is 1
@@ -1597,7 +1597,7 @@ wPartyGainExpFlags:: ; d058
 ; flags that indicate which party members should be be given exp when GainExperience is called
 	flag_array 6
 
-W_CUROPPONENT:: ; d059
+wCurOpponent:: ; d059
 ; in a wild battle, this is the species of pokemon
 ; in a trainer battle, this is the trainer class + 200
 	ds 1
@@ -1617,9 +1617,9 @@ wDamageMultipliers:: ; d05b
 ; bit 7: STAB
 	ds 1
 
-W_LONEATTACKNO:: ; d05c
+wLoneAttackNo:: ; d05c
 ; which entry in LoneAttacks to use
-W_GYMLEADERNO:: ; d05c
+wGymLeaderNo:: ; d05c
 ; it's actually the same thing as ^
 	ds 1
 W_TRAINERNO:: ; d05d
@@ -1970,49 +1970,49 @@ wNameListType:: ; d0b6
 wPredefBank:: ; d0b7
 	ds 1
 
-W_MONHEADER:: ; d0b8
+wMonHeader:: ; d0b8
 
-W_MONHINDEX:: ; d0b8
+wMonHIndex:: ; d0b8
 ; In the ROM base stats data stucture, this is the dex number, but it is
 ; overwritten with the internal index number after the header is copied to WRAM.
 	ds 1
 
-W_MONHBASESTATS:: ; d0b9
+wMonHBaseStats:: ; d0b9
 W_MONHBASEHP:: ; d0b9
 	ds 1
-W_MONHBASEATTACK:: ; d0ba
+wMonHBaseAttack:: ; d0ba
 	ds 1
-W_MONHBASEDEFENSE:: ; d0bb
+wMonHBaseDefense:: ; d0bb
 	ds 1
-W_MONHBASESPEED:: ; d0bc
+wMonHBaseSpeed:: ; d0bc
 	ds 1
-W_MONHBASESPECIAL:: ; d0bd
-	ds 1
-
-W_MONHTYPES:: ; d0be
-W_MONHTYPE1:: ; d0be
-	ds 1
-W_MONHTYPE2:: ; d0bf
+wMonHBaseSpecial:: ; d0bd
 	ds 1
 
-W_MONHCATCHRATE:: ; d0c0
+wMonHTypes:: ; d0be
+wMonHType1:: ; d0be
 	ds 1
-W_MONHBASEXP:: ; d0c1
+wMonHType2:: ; d0bf
 	ds 1
-W_MONHSPRITEDIM:: ; d0c2
+
+wMonHCatchRate:: ; d0c0
 	ds 1
-W_MONHFRONTSPRITE:: ; d0c3
+wMonHBaseEXP:: ; d0c1
+	ds 1
+wMonHSpriteDim:: ; d0c2
+	ds 1
+wMonHFrontSprite:: ; d0c3
 	ds 2
-W_MONHBACKSPRITE:: ; d0c5
+wMonHBackSprite:: ; d0c5
 	ds 2
 
-W_MONHMOVES:: ; d0c7
+wMonHMoves:: ; d0c7
 	ds 4
 
-W_MONHGROWTHRATE:: ; d0cb
+wMonHGrowthRate:: ; d0cb
 	ds 1
 
-W_MONHLEARNSET:: ; d0cc
+wMonHLearnset:: ; d0cc
 ; bit field
 	flag_array 50 + 5
 	ds 1
@@ -2023,10 +2023,7 @@ wSavedTilesetType:: ; d0d4
 
 	ds 2
 
-W_MONHPADDING:: ; d0d7
-
-
-W_DAMAGE:: ; d0d7
+wDamage:: ; d0d7
 	ds 2
 
 	ds 2
@@ -2112,7 +2109,7 @@ wTextBoxID:: ; d125
 
 wd126:: ds 1 ; not exactly sure what this is used for, but it seems to be used as a multipurpose temp flag value
 
-W_CURENEMYLVL:: ; d127
+wCurEnemyLVL:: ; d127
 	ds 1
 
 wItemListPointer:: ; d128
@@ -2286,7 +2283,7 @@ wPlayerMoney:: ; d347
 W_RIVALNAME:: ; d34a
 	ds NAME_LENGTH
 
-W_OPTIONS:: ; d355
+wOptions:: ; d355
 ; bit 7 = battle animation
 ; 0: On
 ; 1: Off
@@ -2325,25 +2322,25 @@ wMapPalOffset:: ; d35d
 ; normally, it is 0. it is 6 when Flash is needed, causing FadePal2 to be used instead of FadePal4
 	ds 1
 
-W_CURMAP:: ; d35e
+wCurMap:: ; d35e
 	ds 1
 
 wCurrentTileBlockMapViewPointer:: ; d35f
 ; pointer to the upper left corner of the current view in the tile block map
 	ds 2
 
-W_YCOORD:: ; d361
+wYCoord:: ; d361
 ; player’s position on the current map
 	ds 1
 
-W_XCOORD:: ; d362
+wXCoord:: ; d362
 	ds 1
 
-W_YBLOCKCOORD:: ; d363
+wYBlockCoord:: ; d363
 ; player's y position (by block)
 	ds 1
 
-W_XBLOCKCOORD:: ; d364
+wXBlockCoord:: ; d364
 	ds 1
 
 wLastMap:: ; d365
@@ -2355,11 +2352,11 @@ wUnusedD366:: ; d366
 wCurMapTileset:: ; d367
 	ds 1
 
-W_CURMAPHEIGHT:: ; d368
+wCurMapHeight:: ; d368
 ; blocks
 	ds 1
 
-W_CURMAPWIDTH:: ; d369
+wCurMapWidth:: ; d369
 ; blocks
 	ds 1
 
@@ -2557,7 +2554,7 @@ wSignCoords:: ; d4b1
 wSignTextIDs:: ; d4d1
 	ds 16
 
-W_NUMSPRITES:: ; d4e1
+wNumSprites:: ; d4e1
 ; number of sprites on the current map
 	ds 1
 
@@ -2568,11 +2565,11 @@ wYOffsetSinceLastSpecialWarp:: ; d4e2
 wXOffsetSinceLastSpecialWarp:: ; d4e3
 	ds 1
 
-W_MAPSPRITEDATA:: ; d4e4
+wMapSpriteData:: ; d4e4
 ; two bytes per sprite (movement byte 2, text ID)
 	ds 32
 
-W_MAPSPRITEEXTRADATA:: ; d504
+wMapSpriteExtraData:: ; d504
 ; two bytes per sprite (trainer class/item ID, trainer set ID)
 	ds 32
 
@@ -2606,24 +2603,24 @@ wPlayerDirection:: ; d52a
 ; if the player is not moving, the last the direction in which the player moved
 	ds 1
 
-W_TILESETBANK:: ; d52b
+wTilesetBank:: ; d52b
 	ds 1
 
 W_TILESETBLOCKSPTR:: ; d52c
 ; maps blocks (4x4 tiles) to tiles
 	ds 2
 
-W_TILESETGFXPTR:: ; d52e
+wTilesetGFXPtr:: ; d52e
 	ds 2
 
-W_TILESETCOLLISIONPTR:: ; d530
+wTilesetCollisionPtr:: ; d530
 ; list of all walkable tiles
 	ds 2
 
 W_TILESETTALKINGOVERTILES:: ; d532
 	ds 3
 
-W_GRASSTILE:: ; d535
+wGrassTile:: ; d535
 	ds 1
 
 	ds 4
@@ -2650,7 +2647,7 @@ wUnusedD5A3:: ; d5a3
 wPlayerCoins:: ; d5a4
 	ds 2 ; BCD
 
-W_MISSABLEOBJECTFLAGS:: ; d5a6
+wMissableObjectFlags:: ; d5a6
 ; bit array of missable objects. set = removed
 	ds 32
 wMissableObjectFlagsEnd::
@@ -2659,10 +2656,10 @@ wMissableObjectFlagsEnd::
 
 wd5cd:: ds 1 ; temp copy of c1x2 (sprite facing/anim)
 
-W_MISSABLEOBJECTLIST:: ; d5ce
+wMissableObjectList:: ; d5ce
 ; each entry consists of 2 bytes
 ; * the sprite ID (depending on the current map)
-; * the missable object index (global, used for W_MISSABLEOBJECTFLAGS)
+; * the missable object index (global, used for wMissableObjectFlags)
 ; terminated with $FF
 	ds 17 * 2
 
@@ -2871,11 +2868,11 @@ W_ROUTE7GATECURSCRIPT:: ; d663
 	ds 1
 W_SSANNE2CURSCRIPT:: ; d665
 	ds 1
-W_SEAFOAMISLANDS4CURSCRIPT:: ; d666
+wSeafoamIslands4CurScript:: ; d666
 	ds 1
 W_ROUTE23CURSCRIPT:: ; d667
 	ds 1
-W_SEAFOAMISLANDS5CURSCRIPT:: ; d668
+wSeafoamIslands5CurScript:: ; d668
 	ds 1
 W_ROUTE18GATECURSCRIPT:: ; d669
 	ds 1
@@ -2899,7 +2896,7 @@ wWalkBikeSurfState:: ; d700
 
 	ds 10
 
-W_TOWNVISITEDFLAG:: ; d70b
+wTownVisitedFlag:: ; d70b
 	flag_array 13
 
 wSafariSteps:: ; d70d
@@ -3198,10 +3195,10 @@ wd882:: ds 5
 wLinkEnemyTrainerName:: ; d887
 ; linked game's trainer name
 
-W_GRASSRATE:: ; d887
+wGrassRate:: ; d887
 	ds 1
 
-W_GRASSMONS:: ; d888
+wGrassMons:: ; d888
 ;	ds 20
 
 	ds 11
@@ -3212,10 +3209,10 @@ wSerialEnemyDataBlock:: ; d893
 wEnemyPartyCount:: ds 1     ; d89c
 wEnemyPartyMons::  ds PARTY_LENGTH + 1 ; d89d
 
-W_WATERRATE:: db ; d8a4
-W_WATERMONS:: db ; d8a5
+wWaterRate:: db ; d8a4
+wWaterMons:: db ; d8a5
 
-	ds W_WATERRATE - @
+	ds wWaterRate - @
 	
 wEnemyMons:: ; d8a4
 wEnemyMon1:: party_struct wEnemyMon1
@@ -3229,7 +3226,7 @@ wEnemyMonOT::    ds NAME_LENGTH * PARTY_LENGTH ; d9ac
 wEnemyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH ; d9ee
 
 
-W_TRAINERHEADERPTR:: ; da30
+wTrainerHeaderPtr:: ; da30
 	ds 2
 
 	ds 6
@@ -3260,17 +3257,17 @@ W_PLAYTIMEFRAMES:: ; da45
 wSafariZoneGameOver:: ; da46
 	ds 1
 
-W_NUMSAFARIBALLS:: ; da47
+wNumSafariBalls:: ; da47
 	ds 1
 
 
-W_DAYCARE_IN_USE:: ; da48
+wDayCareInUse:: ; da48
 ; 0 if no pokemon is in the daycare
 ; 1 if pokemon is in the daycare
 	ds 1
 
-W_DAYCAREMONNAME:: ds NAME_LENGTH ; da49
-W_DAYCAREMONOT::   ds NAME_LENGTH ; da54
+wDayCareMonName:: ds NAME_LENGTH ; da49
+wDayCareMonOT::   ds NAME_LENGTH ; da54
 
 wDayCareMon:: box_struct wDayCareMon ; da5f
 

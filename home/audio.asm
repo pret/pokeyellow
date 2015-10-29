@@ -69,7 +69,7 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 
 Func_21c8:: ; 21c8 (0:21c8)
 ; probably used to not change music upon getting on bike
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp ROUTE_23
 	jr z,.asm_21e1
 	cp VICTORY_ROAD_1

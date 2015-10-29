@@ -12,13 +12,13 @@ Museum1FScriptPointers: ; 5c109 (17:4109)
 	dw Museum1FScript1
 
 Museum1FScript0: ; 5c10d (17:410d)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4
 	ret nz
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $9
 	jr z, .asm_5c120
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $a
 	ret nz
 .asm_5c120
@@ -40,17 +40,17 @@ Museum1FTextPointers: ; 5c12b (17:412b)
 
 Museum1FText1: ; 5c135 (17:4135)
 	TX_ASM
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4
 	jr nz, .asm_8774b
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $d
 	jp z, Museum1FScript_5c1f9
 	jr .asm_b8709
 .asm_8774b
 	cp $3
 	jr nz, .asm_d49e7
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $c
 	jp z, Museum1FScript_5c1f9
 .asm_d49e7

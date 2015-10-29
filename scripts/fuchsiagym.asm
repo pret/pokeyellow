@@ -37,7 +37,7 @@ FuchsiaGymScriptPointers: ; 75482 (1d:5482)
 	dw FuchsiaGymScript3
 
 FuchsiaGymScript3: ; 7548a (1d:548a)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, FuchsiaGymScript_75477
 	ld a, $f0
@@ -167,7 +167,7 @@ FuchsiaGymText1: ; 75534 (1d:5534)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $5
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3

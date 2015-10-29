@@ -81,7 +81,7 @@ BattleTransitions: ; 70a3c (1c:4a3c)
 	dw BattleTransition_Split             ; %111
 
 GetBattleTransitionID_WildOrTrainer: ; 70a4c (1c:4a4c)
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	cp 200
 	jr nc, .trainer
 	res 0, c
@@ -105,7 +105,7 @@ GetBattleTransitionID_CompareLevels: ; 70a59 (1c:4a59)
 	ld a, [hl]
 	add $3
 	ld e, a
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	sub e
 	jr nc, .highLevelEnemy
 	res 1, c
@@ -122,7 +122,7 @@ GetBattleTransitionID_CompareLevels: ; 70a59 (1c:4a59)
 ; MANSION_1, SEAFOAM_ISLANDS_[2-5], POWER_PLANT, DIGLETTS_CAVE
 ; and SILPH_CO_[9-11]F as dungeon maps
 GetBattleTransitionID_IsDungeonMap: ; 70a83 (1c:4a83)
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	ld e, a
 	ld hl, DungeonMaps1
 .loop1
@@ -151,7 +151,7 @@ GetBattleTransitionID_IsDungeonMap: ; 70a83 (1c:4a83)
 	res 2, c
 	ret
 
-; GetBattleTransitionID_IsDungeonMap checks if W_CURMAP
+; GetBattleTransitionID_IsDungeonMap checks if wCurMap
 ; is equal to one of these maps
 DungeonMaps1: ; 70aa9 (1c:4aa9)
 	db VIRIDIAN_FOREST
@@ -160,7 +160,7 @@ DungeonMaps1: ; 70aa9 (1c:4aa9)
 	db ROCK_TUNNEL_2
 	db $FF
 
-; GetBattleTransitionID_IsDungeonMap checks if W_CURMAP
+; GetBattleTransitionID_IsDungeonMap checks if wCurMap
 ; is in between or equal to each pair of maps
 DungeonMaps2: ; 70aac (1c:4aac)
 	; all MT_MOON maps

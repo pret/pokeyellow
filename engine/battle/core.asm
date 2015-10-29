@@ -239,7 +239,7 @@ StartBattle: ; 3c11e (f:411e)
 .foundFirstAliveEnemyMon
 	ld a, d
 	ld [wSerialExchangeNybbleReceiveData], a
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a ; is it a trainer battle?
 	call nz, EnemySendOutFirstMon ; if it is a trainer battle, send out enemy mon
 	ld c, 40
@@ -261,7 +261,7 @@ StartBattle: ; 3c11e (f:411e)
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; was the item used successfully?
 	jr z, .displaySafariZoneBattleMenu ; if not, display the menu again; XXX does this ever jump?
-	ld a, [W_NUMSAFARIBALLS]
+	ld a, [wNumSafariBalls]
 	and a
 	jr nz, .notOutOfSafariBalls
 	call LoadScreenTilesFromBuffer1
@@ -798,7 +798,7 @@ HandleEnemyMonFainted: ; 3c525 (f:4525)
 	ld a, [hli]
 	or [hl] ; is battle mon HP zero?
 	call nz, DrawPlayerHUDAndHPBar ; if battle mon HP is not zero, draw player HD and HP bar
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	ret z ; return if it's a wild battle
 	call AnyEnemyPokemonAliveCheck
@@ -821,7 +821,7 @@ HandleEnemyMonFainted: ; 3c525 (f:4525)
 
 FaintEnemyPokemon: ; 0x3c567
 	call ReadPlayerMonCurHPAndStatus
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr z, .wild
 	ld a, [wEnemyMonPartyPos]
@@ -863,7 +863,7 @@ FaintEnemyPokemon: ; 0x3c567
 	coord hl, 0, 0
 	lb bc, 4, 11
 	call ClearScreenArea
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr z, .wild_win
 	xor a
@@ -1003,7 +1003,7 @@ ReplaceFaintedEnemyMon: ; 3c664 (f:4664)
 TrainerBattleVictory: ; 3c696 (f:4696)
 	call EndLowHealthAlarm
 	ld b, MUSIC_DEFEATED_GYM_LEADER
-	ld a, [W_GYMLEADERNO]
+	ld a, [wGymLeaderNo]
 	and a
 	jr nz, .gymleader
 	ld b, MUSIC_DEFEATED_TRAINER
@@ -1068,7 +1068,7 @@ HandlePlayerMonFainted: ; 3c700 (f:4700)
 	jr nz, .doUseNextMonDialogue ; if not, jump
 ; the enemy mon has 0 HP
 	call FaintEnemyPokemon
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	ret z            ; if wild encounter, battle is over
 	call AnyEnemyPokemonAliveCheck
@@ -1140,7 +1140,7 @@ PlayerMonFaintedText: ; 3c796 (f:4796)
 DoUseNextMonDialogue: ; 3c79b (f:479b)
 	call PrintEmptyString
 	call SaveScreenTilesToBuffer1
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	and a
 	dec a
 	ret nz ; return if it's a trainer battle
@@ -1221,7 +1221,7 @@ HandlePlayerBlackOut: ; 3c837 (f:4837)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .notSony1Battle
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	cp OPP_SONY1
 	jr nz, .notSony1Battle
 	coord hl, 0, 0  ; sony 1 battle
@@ -1232,7 +1232,7 @@ HandlePlayerBlackOut: ; 3c837 (f:4837)
 	call DelayFrames
 	ld hl, Sony1WinText
 	call PrintText
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp OAKS_LAB
 	ret z            ; starter battle in oak's lab: don't black out
 .notSony1Battle
@@ -1432,7 +1432,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld bc,wEnemyMon2 - wEnemyMon1
 	call AddNTimes
 	ld a,[hl]
-	ld [W_CURENEMYLVL],a
+	ld [wCurEnemyLVL],a
 	ld a,[wWhichPokemon]
 	inc a
 	ld hl,wEnemyPartyCount
@@ -1459,7 +1459,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld a,[wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z,.next4
-	ld a,[W_OPTIONS]
+	ld a,[wOptions]
 	bit 6,a
 	jr nz,.next4
 	ld hl, TrainerAboutToUseText
@@ -1589,7 +1589,7 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .canEscape
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle ; jump if it's a trainer battle
 	ld a, [wNumRunAttempts]
@@ -1787,7 +1787,7 @@ LoadEnemyMonFromParty: ; 3cc13 (f:4c13)
 	ld bc, 1 + NUM_STATS * 2
 	call CopyData
 	call ApplyBurnAndParalysisPenaltiesToEnemy
-	ld hl, W_MONHBASESTATS
+	ld hl, wMonHBaseStats
 	ld de, wEnemyMonBaseStats
 	ld b, NUM_STATS
 .copyBaseStatsLoop
@@ -2106,7 +2106,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	jp nz, .handleBattleMenuInput ; handle menu input if it's not the old man tutorial
 ; the following happens for the old man tutorial
 	ld hl, wPlayerName
-	ld de, W_GRASSRATE
+	ld de, wGrassRate
 	ld bc, NAME_LENGTH
 	call CopyData  ; temporarily save the player name in unused space,
 	               ; which is supposed to get overwritten when entering a
@@ -2156,7 +2156,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	Coorda 13, 14
 	Coorda 13, 16
 	coord hl, 7, 14
-	ld de, W_NUMSAFARIBALLS
+	ld de, wNumSafariBalls
 	lb bc, 1, 2
 	call PrintNumber
 	ld b, $1 ; top menu item X
@@ -2189,7 +2189,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	Coorda 1, 14 ; clear upper cursor position in left column
 	Coorda 1, 16 ; clear lower cursor position in left column
 	coord hl, 7, 14
-	ld de, W_NUMSAFARIBALLS
+	ld de, wNumSafariBalls
 	lb bc, 1, 2
 	call PrintNumber
 	ld b, $d ; top menu item X
@@ -3039,7 +3039,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, STRUGGLE ; struggle if the only move is disabled
 	jr nz, .done
 .atLeastTwoMovesAvailable
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr z, .chooseRandomMove ; wild encounter
 	callab AIEnemyTrainerChooseMoves
@@ -3364,10 +3364,10 @@ GetOutText: ; 3d835 (f:5835)
 	db "@"
 
 IsGhostBattle: ; 3d83a (f:583a)
-	ld a,[W_ISINBATTLE]
+	ld a,[wIsInBattle]
 	dec a
 	ret nz
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp a,POKEMONTOWER_1
 	jr c,.next
 	cp a,LAVENDER_HOUSE_1
@@ -3541,7 +3541,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jr z,.ThrashingAboutCheck
 	xor a
 	ld [W_PLAYERMOVENUM],a
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
 	ld c,[hl]
@@ -3568,10 +3568,10 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld a,[hld]
 	add a
 	ld b,a
-	ld [W_DAMAGE + 1],a
+	ld [wDamage + 1],a
 	ld a,[hl]
 	rl a ; double the damage
-	ld [W_DAMAGE],a
+	ld [wDamage],a
 	or b
 	jr nz,.next
 	ld a,1
@@ -3943,7 +3943,7 @@ PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	ret nz
 
 	; if you get here, the mon used jump kick or hi jump kick and missed
-	ld hl, W_DAMAGE ; since the move missed, W_DAMAGE will always contain 0 at this point.
+	ld hl, wDamage ; since the move missed, W_DAMAGE will always contain 0 at this point.
 	                ; Thus, recoil damage will always be equal to 1
 	                ; even if it was intended to be potential damage/8.
 	ld a, [hli]
@@ -4230,7 +4230,7 @@ IgnoredOrdersText: ; 3ddca (f:5dca)
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the player mon
 GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 	xor a
-	ld hl, W_DAMAGE ; damage to eventually inflict, initialise to zero
+	ld hl, wDamage ; damage to eventually inflict, initialise to zero
 	ldi [hl], a
 	ld [hl], a
 	ld hl, W_PLAYERMOVEPOWER
@@ -4342,7 +4342,7 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the enemy mon
 GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
-	ld hl, W_DAMAGE ; damage to eventually inflict, initialise to zero
+	ld hl, wDamage ; damage to eventually inflict, initialise to zero
 	xor a
 	ld [hli], a
 	ld [hl], a
@@ -4479,7 +4479,7 @@ GetEnemyMonStat: ; 3df1c (f:5f1c)
 	ret
 .notLinkBattle
 	ld a, [wEnemyMonLevel]
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	ld a, [wEnemyMonSpecies]
 	ld [wd0b5], a
 	call GetMonHeader
@@ -4585,7 +4585,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 	ld b, 4
 	call Divide
 
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld b, [hl]
 	ld a, [H_QUOTIENT + 3]
 	add b
@@ -4688,7 +4688,7 @@ CriticalHitTest: ; 3e023 (f:6023)
 .asm_3e032
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [W_MONHBASESPEED]
+	ld a, [wMonHBaseSpeed]
 	ld b, a
 	srl b                        ; (effective (base speed/2))
 	ld a, [H_WHOSETURN]
@@ -4793,11 +4793,11 @@ HandleCounterMove: ; 3e093 (f:6093)
 	xor a
 	ret
 .counterableType
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	or [hl]
 	ret z ; If we made it here, Counter still misses if the last move used in battle did no damage to its target.
-	      ; W_DAMAGE is shared by both players, so Counter may strike back damage dealt by the Counter user itself
+	      ; wDamage is shared by both players, so Counter may strike back damage dealt by the Counter user itself
 	      ; if the conditions meet, even though 99% of the times damage will come from the target.
 ; if it did damage, double it
 	ld a,[hl]
@@ -4833,7 +4833,7 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
 .superFangEffect
 ; set the damage to half the target's HP
 	ld hl,wEnemyMonHP
-	ld de,W_DAMAGE
+	ld de,wDamage
 	ld a,[hli]
 	srl a
 	ld [de],a
@@ -4878,14 +4878,14 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
 	jr nc,.loop
 	ld b,a
 .storeDamage ; store damage value at b
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	xor a
 	ld [hli],a
 	ld a,b
 	ld [hl],a
 
 ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
 	ld a,[hl]
@@ -4909,7 +4909,7 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	sbc b
 	ld [wEnemyMonHP],a
 	jr nc,.animateHpBar
-; if more damage was done than the current HP, zero the HP and set the damage (W_DAMAGE)
+; if more damage was done than the current HP, zero the HP and set the damage (wDamage)
 ; equal to how much HP the pokemon had before the attack
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
@@ -4952,7 +4952,7 @@ ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 .superFangEffect
 ; set the damage to half the target's HP
 	ld hl,wBattleMonHP
-	ld de,W_DAMAGE
+	ld de,wDamage
 	ld a,[hli]
 	srl a
 	ld [de],a
@@ -4997,14 +4997,14 @@ ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	jr nc,.loop
 	ld b,a
 .storeDamage
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	xor a
 	ld [hli],a
 	ld a,b
 	ld [hl],a
 
 ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
 	ld a,[hl]
@@ -5029,7 +5029,7 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	ld [wBattleMonHP],a
 	ld [wHPBarNewHP+1],a
 	jr nc,.animateHpBar
-; if more damage was done than the current HP, zero the HP and set the damage (W_DAMAGE)
+; if more damage was done than the current HP, zero the HP and set the damage (wDamage)
 ; equal to how much HP the pokemon had before the attack
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
@@ -5075,7 +5075,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld de,wPlayerSubstituteHP
 	ld bc,W_PLAYERBATTSTATUS2
 .applyDamageToSubstitute
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	and a
 	jr nz,.substituteBroke ; damage > 0xFF always breaks substitutes
@@ -5085,7 +5085,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld [de],a
 	ret nc
 .substituteBroke
-; If the target's Substitute breaks, W_DAMAGE isn't updated with the amount of HP
+; If the target's Substitute breaks, wDamage isn't updated with the amount of HP
 ; the Substitute had before being attacked.
 	ld h,b
 	ld l,c
@@ -5315,7 +5315,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	jr .skipSameTypeAttackBonus
 .sameTypeAttackBonus
 ; if the move type matches one of the attacker's types
-	ld hl,W_DAMAGE + 1
+	ld hl,wDamage + 1
 	ld a,[hld]
 	ld h,[hl]
 	ld l,a    ; hl = damage
@@ -5326,9 +5326,9 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	add hl,bc ; hl = floor(1.5 * damage)
 ; store damage
 	ld a,h
-	ld [W_DAMAGE],a
+	ld [wDamage],a
 	ld a,l
-	ld [W_DAMAGE + 1],a
+	ld [wDamage + 1],a
 	ld hl,wDamageMultipliers
 	set 7,[hl]
 .skipSameTypeAttackBonus
@@ -5361,7 +5361,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	ld [wDamageMultipliers],a
 	xor a
 	ld [H_MULTIPLICAND],a
-	ld hl,W_DAMAGE
+	ld hl,wDamage
 	ld a,[hli]
 	ld [H_MULTIPLICAND + 1],a
 	ld a,[hld]
@@ -5536,7 +5536,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ret
 .moveMissed
 	xor a
-	ld hl,W_DAMAGE ; zero the damage
+	ld hl,wDamage ; zero the damage
 	ld [hli],a
 	ld [hl],a
 	inc a
@@ -5627,7 +5627,7 @@ CalcHitChance: ; 3e624 (f:6624)
 
 ; multiplies damage by a random percentage from ~85% to 100%
 RandomizeDamage: ; 3e687 (f:6687)
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld a, [hli]
 	and a
 	jr nz, .DamageGreaterThanOne
@@ -5656,7 +5656,7 @@ RandomizeDamage: ; 3e687 (f:6687)
 	call Divide ; divide the result by 255
 ; store the modified damage
 	ld a, [H_QUOTIENT + 2]
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld [hli], a
 	ld a, [H_QUOTIENT + 3]
 	ld [hl], a
@@ -6067,7 +6067,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	jr z, .checkIfThrashingAbout
 	xor a
 	ld [W_ENEMYMOVENUM], a
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld a, [hli]
 	ld b, a
 	ld c, [hl]
@@ -6094,10 +6094,10 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld a, [hld]
 	add a
 	ld b, a
-	ld [W_DAMAGE + 1], a
+	ld [wDamage + 1], a
 	ld a, [hl]
 	rl a ; double the damage
-	ld [W_DAMAGE], a
+	ld [wDamage], a
 	or b
 	jr nz, .next
 	ld a, $1
@@ -6209,7 +6209,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld a, [hli]
 	ld b, [hl]
 	jr nz, .storeDVs
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 ; fixed DVs for trainer mon
 	ld a, $98
@@ -6224,7 +6224,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld [hli], a
 	ld [hl], b
 	ld de, wEnemyMonLevel
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	ld [de], a
 	inc de
 	ld b, $0
@@ -6232,7 +6232,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	push hl
 	call CalcStats
 	pop hl
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 	jr z, .copyHPAndStatusFromPartyData
 	ld a, [W_ENEMYBATTSTATUS3]
@@ -6264,7 +6264,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld [wEnemyMonStatus], a
 	jr .copyTypes
 .copyTypes
-	ld hl, W_MONHTYPES
+	ld hl, wMonHTypes
 	ld de, wEnemyMonType
 	ld a, [hli]            ; copy type 1
 	ld [de], a
@@ -6275,7 +6275,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld a, [hli]            ; copy catch rate
 	ld [de], a
 	inc de
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 	jr nz, .copyStandardMoves
 ; if it's a trainer battle, copy moves from enemy party data
@@ -6288,7 +6288,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	jr .loadMovePPs
 .copyStandardMoves
 ; for a wild mon, first copy default moves from the mon header
-	ld hl, W_MONHMOVES
+	ld hl, wMonHMoves
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -6310,7 +6310,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld hl, wEnemyMonMoves
 	ld de, wEnemyMonPP - 1
 	predef LoadMovePPs
-	ld hl, W_MONHBASESTATS
+	ld hl, wMonHBaseStats
 	ld de, wEnemyMonBaseStats
 	ld b, NUM_STATS
 .copyBaseStatsLoop
@@ -6319,7 +6319,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	inc de
 	dec b
 	jr nz, .copyBaseStatsLoop
-	ld hl, W_MONHCATCHRATE
+	ld hl, wMonHCatchRate
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -7751,10 +7751,10 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	ld a, [H_WHOSETURN]
 	and a
 	jr nz, .asm_3f791
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr nz, .asm_3f77e
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	ld b, a
 	ld a, [wBattleMonLevel]
 	cp b
@@ -7793,12 +7793,12 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	jp nz, PrintText
 	jp PrintButItFailedText_
 .asm_3f791
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a
 	jr nz, .asm_3f7d1
 	ld a, [wBattleMonLevel]
 	ld b, a
-	ld a, [W_CURENEMYLVL]
+	ld a, [wCurEnemyLVL]
 	cp b
 	jr nc, .asm_3f7c1
 	add b

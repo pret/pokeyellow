@@ -105,7 +105,7 @@ BrunoScript3: ; 76383 (1d:6383)
 
 BrunoScript2: ; 76396 (1d:6396)
 	call EndTrainerBattle
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, BrunoScript_7630d
 	ld a, $1

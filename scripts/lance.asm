@@ -85,7 +85,7 @@ CoordsData_5a33e: ; 5a33e (16:633e)
 
 LanceScript2: ; 5a349 (16:6349)
 	call EndTrainerBattle
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, LanceScript_5a2f5
 	ld a, $1

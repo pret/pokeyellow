@@ -23,10 +23,10 @@ ViridianCityScript_1900b: ; 1900b (6:500b)
 	SetEvent EVENT_VIRIDIAN_GYM_OPEN
 	ret
 .asm_1901e
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $8
 	ret nz
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $20
 	ret nz
 	ld a, $e
@@ -42,10 +42,10 @@ ViridianCityScript_1900b: ; 1900b (6:500b)
 ViridianCityScript_1903d: ; 1903d (6:503d)
 	CheckEvent EVENT_GOT_POKEDEX
 	ret nz
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $9
 	ret nz
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $13
 	ret nz
 	ld a, $5
@@ -74,9 +74,9 @@ ViridianCityScript1: ; 19062 (6:5062)
 	ld a, $1
 	ld [W_BATTLETYPE], a
 	ld a, 5
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	ld a, WEEDLE
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld a, $2
 	ld [W_VIRIDIANCITYCURSCRIPT], a
 	ret

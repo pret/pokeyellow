@@ -55,10 +55,10 @@ MtMoon3ScriptPointers: ; 49d63 (12:5d63)
 MtMoon3Script0: ; 49d6f (12:5d6f)
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
 	jp nz, MtMoon3Script_49d91
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $8
 	jp nz, MtMoon3Script_49d91
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $d
 	jp nz, MtMoon3Script_49d91
 	xor a
@@ -73,7 +73,7 @@ MtMoon3Script_49d91: ; 49d91 (12:5d91)
 	ret
 
 MtMoon3Script3: ; 49d9a (12:5d9a)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, MtMoon3Script_49d58
 	call UpdateSprites

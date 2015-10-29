@@ -152,7 +152,7 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	jr z, .PokemonTowerOrAgatha
 	cp CAVERN
 	jr z, .caveOrBruno
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp REDS_HOUSE_1F
 	jr c, .townOrRoute
 	cp UNKNOWN_DUNGEON_2
@@ -396,7 +396,7 @@ Func_7213b:: ; 7213b (1c:613b)
 	jr z, .PokemonTowerOrAgatha
 	cp CAVERN
 	jr z, .caveOrBruno
-	ld a, [W_CURMAP]
+	ld a, [wCurMap]
 	cp REDS_HOUSE_1F
 	jr c, .townOrRoute
 	cp UNKNOWN_DUNGEON_2

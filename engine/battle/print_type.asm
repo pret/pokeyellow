@@ -6,11 +6,11 @@ PrintMonType: ; 27d6b (9:7d6b)
 	call GetMonHeader
 	pop hl
 	push hl
-	ld a, [W_MONHTYPE1]
+	ld a, [wMonHType1]
 	call PrintType
-	ld a, [W_MONHTYPE1]
+	ld a, [wMonHType1]
 	ld b, a
-	ld a, [W_MONHTYPE2]
+	ld a, [wMonHType2]
 	cp b
 	pop hl
 	jr z, EraseType2Text

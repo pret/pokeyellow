@@ -16,10 +16,10 @@ CinnabarIslandScript0: ; 1ca38 (7:4a38)
 	ld b, SECRET_KEY
 	call IsItemInBag
 	ret nz
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4
 	ret nz
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $12
 	ret nz
 	ld a, PLAYER_DIR_UP

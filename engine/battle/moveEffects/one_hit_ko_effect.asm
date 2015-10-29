@@ -1,5 +1,5 @@
 OneHitKOEffect_: ; f64db (3d:64db)
-	ld hl, W_DAMAGE 
+	ld hl, wDamage 
 	xor a
 	ld [hli], a
 	ld [hl], a ; set the damage output to zero
@@ -24,7 +24,7 @@ OneHitKOEffect_: ; f64db (3d:64db)
 	ld a, [hl]
 	sbc b
 	jr c, .userIsSlower
-	ld hl, W_DAMAGE
+	ld hl, wDamage
 	ld a, $ff
 	ld [hli], a
 	ld [hl], a

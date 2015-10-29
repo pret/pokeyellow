@@ -9,12 +9,12 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 ; if it's the end of the animation, update the player's map coordinates
 	ld hl, wd430
 	res 5, [hl]
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add b
-	ld [W_YCOORD],a
-	ld a,[W_XCOORD]
+	ld [wYCoord],a
+	ld a,[wXCoord]
 	add c
-	ld [W_XCOORD],a
+	ld [wXCoord],a
 .afterUpdateMapCoords
 	ld a,[wWalkCounter] ; walking animation counter
 	cp a,$07
@@ -81,7 +81,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	and a
 	jr z,.pointlessJump ; mistake?
 .pointlessJump
-	ld hl,W_XBLOCKCOORD
+	ld hl,wXBlockCoord
 	ld a,[hl]
 	add c
 	ld [hl],a
@@ -107,7 +107,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	call MoveTileBlockMapPointerWest
 	jr .updateMapView
 .adjustYCoordWithinBlock
-	ld hl,W_YBLOCKCOORD
+	ld hl,wYBlockCoord
 	ld a,[hl]
 	add b
 	ld [hl],a
@@ -119,7 +119,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld hl,wYOffsetSinceLastSpecialWarp
 	inc [hl]
 	ld de,wCurrentTileBlockMapViewPointer
-	ld a,[W_CURMAPWIDTH]
+	ld a,[wCurMapWidth]
 	call MoveTileBlockMapPointerSouth
 	jr .updateMapView
 .checkForMoveToNorthBlock
@@ -131,7 +131,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld hl,wYOffsetSinceLastSpecialWarp
 	dec [hl]
 	ld de,wCurrentTileBlockMapViewPointer
-	ld a,[W_CURMAPWIDTH]
+	ld a,[wCurMapWidth]
 	call MoveTileBlockMapPointerNorth
 .updateMapView
 	call LoadCurrentMapView

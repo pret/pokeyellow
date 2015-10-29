@@ -213,7 +213,7 @@ Func_4a7b: ; 4a7b (1:4a7b)
 INCLUDE "engine/oam_dma.asm"
 
 _IsTilePassable:: ; 4aaa (1:4aaa)
-	ld hl,W_TILESETCOLLISIONPTR ; pointer to list of passable tiles
+	ld hl,wTilesetCollisionPtr ; pointer to list of passable tiles
 	ld a,[hli]
 	ld h,[hl]
 	ld l,a ; hl now points to passable tiles

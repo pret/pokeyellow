@@ -30,9 +30,9 @@ ViridianGymScriptPointers: ; 748e1 (1d:48e1)
 	dw ViridianGymScript4
 
 ViridianGymScript0: ; 748eb (1d:48eb)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
 	ld hl, ViridianGymArrowTilePlayerMovement
 	call DecodeArrowMovementRLE
@@ -131,7 +131,7 @@ ViridianGymScript4: ; 7496b (1d:496b)
 	jpba LoadSpinnerArrowTiles
 
 ViridianGymScript3: ; 74988 (1d:4988)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, ViridianGymScript_748d6
 	ld a, $f0
@@ -295,7 +295,7 @@ ViridianGymText1: ; 74a69 (1d:4a69)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $8
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	ld a, $3
 	ld [W_VIRIDIANGYMCURSCRIPT], a
 .asm_6dff7

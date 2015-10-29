@@ -36,7 +36,7 @@ CeruleanGymScriptPointers: ; 5c6f8 (17:46f8)
 	dw CeruleanGymScript3
 
 CeruleanGymScript3: ; 5c700 (17:4700)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CeruleanGymScript_5c6ed
 	ld a, $f0
@@ -127,7 +127,7 @@ CeruleanGymText1: ; 5c771 (17:4771)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $2
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3

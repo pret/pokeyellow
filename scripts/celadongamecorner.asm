@@ -51,7 +51,7 @@ CeladonGameCornerScript0: ; 48c18 (12:4c18)
 	ret
 
 CeladonGameCornerScript1: ; 48c19 (12:4c19)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CeladonGameCornerScript_48c07
 	ld a, $f0
@@ -63,13 +63,13 @@ CeladonGameCornerScript1: ; 48c19 (12:4c19)
 	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
 	ld de, MovementData_48c5a
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $6
 	jr nz, .asm_48c43
 	ld de, MovementData_48c63
 	jr .asm_48c4d
 .asm_48c43
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $8
 	jr nz, .asm_48c4d
 	ld de, MovementData_48c63

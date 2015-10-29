@@ -32,10 +32,10 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	xor a
 	ld [hJoyHeld], a
 	ld [wcf0d], a
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $3
 	ret nz
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $4
 	ret nz
 	ld a, $1
@@ -53,7 +53,7 @@ FightingDojoScript1: ; 5cd83 (17:4d83)
 	ret
 
 FightingDojoScript3: ; 5cdc6 (17:4dc6)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, FightingDojoScript_5cd70
 	ld a, [wcf0d]

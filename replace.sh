@@ -1,3 +1,3 @@
-sed -i 's/\<foo\>/bar/' $(git grep -l foo)
-# foo: phrase to find
-# bar: phrase to replace foo
+sed -i 's/\<'$1'\>/'$2'/' $(git grep -l $1)
+# $1: phrase to find
+# $2: phrase to replace $1

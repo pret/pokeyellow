@@ -361,13 +361,13 @@ PlayBattleMusic:: ; 9064 (2:5064)
 	call StopAllMusic
 	call DelayFrame
 	ld c, $8 ; BANK(Music_GymLeaderBattle)
-	ld a, [W_GYMLEADERNO]
+	ld a, [wGymLeaderNo]
 	and a
 	jr z, .notGymLeaderBattle
 	ld a, $ea ; MUSIC_GYM_LEADER_BATTLE
 	jr .playSong
 .notGymLeaderBattle
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	cp 200
 	jr c, .wildBattle
 	cp OPP_SONY3

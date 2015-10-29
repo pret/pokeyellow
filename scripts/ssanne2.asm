@@ -71,7 +71,7 @@ CoordsData_61411: ; 61411 (18:5411)
 	db $FF
 
 SSAnne2Script_61416: ; 61416 (18:5416)
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $25
 	jr nz, .asm_61426
 	ld a, PLAYER_DIR_LEFT
@@ -98,7 +98,7 @@ SSAnne2Script1: ; 61430 (18:5430)
 	call DisplayTextID
 	call Delay3
 	ld a, OPP_SONY2
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
@@ -122,7 +122,7 @@ SSAnne2Script1: ; 61430 (18:5430)
 	ret
 
 SSAnne2Script2: ; 6146d (18:546d)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SSAnne2Script_613ab
 	call SSAnne2Script_61416
@@ -134,7 +134,7 @@ SSAnne2Script2: ; 6146d (18:546d)
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $25
 	jr nz, .asm_61497
 	ld de, MovementData_614b9

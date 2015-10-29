@@ -29,7 +29,7 @@ TransformEffect_: ; f637f (3d:637f)
 	ld hl, HideSubstituteShowMonAnim
 	ld b, BANK(HideSubstituteShowMonAnim)
 	call nz, Bankswitch
-	ld a, [W_OPTIONS]
+	ld a, [wOptions]
 	add a
 	ld hl, PlayCurrentMoveAnimation
 	ld b, BANK(PlayCurrentMoveAnimation)

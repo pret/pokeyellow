@@ -55,7 +55,7 @@ VermilionGymScriptPointers: ; 5ca95 (17:4a95)
 	dw VermilionGymScript3
 
 VermilionGymScript3: ; 5ca9d (17:4a9d)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, VermilionGymScript_5ca8a
 	ld a, $f0
@@ -156,7 +156,7 @@ VermilionGymText1: ; 5cb1d (17:4b1d)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $3
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3

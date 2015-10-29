@@ -312,7 +312,7 @@ PlayShootingStar: ; 4188a (10:588a)
 	call ClearScreen
 	call DisableLCD
 	xor a
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	call IntroDrawBlackBars
 	call LoadIntroGraphics
 	call EnableLCD

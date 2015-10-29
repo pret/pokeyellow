@@ -92,7 +92,7 @@ CinnabarGymFlagAction: ; 757f1 (1d:57f1)
 	predef_jump FlagActionPredef
 
 CinnabarGymScript2: ; 757f6 (1d:57f6)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CinnabarGymScript_75792
 	ld a, [wTrainerHeaderFlagBit]
@@ -134,7 +134,7 @@ CinnabarGymScript2: ; 757f6 (1d:57f6)
 	ret
 
 CinnabarGymScript3: ; 7584a (1d:584a)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CinnabarGymScript_75792
 	ld a, $f0
@@ -224,7 +224,7 @@ CinnabarGymText1: ; 758df (1d:58df)
 	ld de, BlaineEndBattleText
 	call SaveEndBattleTextPointers
 	ld a, $7
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	jp CinnabarGymScript_758b7
 
 BlaineBattleText: ; 75914 (1d:5914)

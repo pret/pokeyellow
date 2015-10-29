@@ -132,7 +132,7 @@ Route22Script1: ; 50f62 (14:4f62)
 	ld de, Route22Text_511bc
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY1
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld hl, StarterMons_50faf
 	call Route22Script_50ed6
 	ld a, $2
@@ -146,7 +146,7 @@ StarterMons_50faf: ; 50faf (14:4faf)
 	db STARTER1,$06
 
 Route22Script2: ; 50fb5 (14:4fb5)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
 	ld a, [wSpriteStateData1 + 9]
@@ -288,7 +288,7 @@ Route22Script4: ; 51087 (14:5087)
 	ld de, Route22Text_511d0
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld hl, StarterMons_510d9
 	call Route22Script_50ed6
 	ld a, $5
@@ -301,7 +301,7 @@ StarterMons_510d9: ; 510d9 (14:50d9)
 	db STARTER1,$0c
 
 Route22Script5: ; 510df (14:50df)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
 	ld a, $2

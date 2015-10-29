@@ -114,7 +114,7 @@ MainMenu: ; 5af2 (1:5af2)
 	ld a,[wNumHoFTeams]
 	and a
 	jp z,SpecialEnterMap
-	ld a,[W_CURMAP] ; map ID
+	ld a,[wCurMap] ; map ID
 	cp a,HALL_OF_FAME
 	jp nz,SpecialEnterMap
 	xor a
@@ -128,7 +128,7 @@ InitOptions: ; 5bff (1:5bff)
 	ld a,1 ; no delay
 	ld [wLetterPrintingDelayFlags],a
 	ld a,3 ; medium speed
-	ld [W_OPTIONS],a
+	ld [wOptions],a
 	ret
 
 LinkMenu: ; 5c0a (1:5c0a)
@@ -626,13 +626,13 @@ SetOptionsFromCursorPositions: ; 601f (1:601f)
 	res 6,d
 .storeOptions
 	ld a,d
-	ld [W_OPTIONS],a
+	ld [wOptions],a
 	ret
 
 ; reads the options variable and places menu cursors in the correct positions within the options menu
 SetCursorPositionsFromOptions: ; 604c (1:604c)
 	ld hl,TextSpeedOptionData + 1
-	ld a,[W_OPTIONS]
+	ld a,[wOptions]
 	ld c,a
 	and a,$3f
 	push bc

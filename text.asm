@@ -263,7 +263,7 @@ _TradeWentToText::
 	TX_RAM wcf4b
 	text " went"
 	line "to @"
-	TX_RAM W_GRASSRATE
+	TX_RAM wGrassRate
 	text "."
 	done
 
@@ -275,7 +275,7 @@ _TradeForText::
 	done
 
 _TradeSendsText::
-	TX_RAM W_GRASSRATE
+	TX_RAM wGrassRate
 	text " sends"
 	line "@"
 	TX_RAM wcd6d
@@ -283,7 +283,7 @@ _TradeSendsText::
 	done
 
 _TradeWavesFarewellText::
-	TX_RAM W_GRASSRATE
+	TX_RAM wGrassRate
 	text " waves"
 	line "farewell as"
 	done
@@ -302,7 +302,7 @@ _TradeTakeCareText::
 	done
 
 _TradeWillTradeText::
-	TX_RAM W_GRASSRATE
+	TX_RAM wGrassRate
 	text " will"
 	line "trade @"
 	TX_RAM wcd6d
@@ -1490,7 +1490,7 @@ _GrewLevelText::
 	TX_RAM wcd6d
 	text " grew"
 	line "to level @"
-	TX_NUM W_CURENEMYLVL, 1, 3
+	TX_NUM wCurEnemyLVL, 1, 3
 	text "!@@"
 
 _SuperEffectiveText::
@@ -1695,7 +1695,7 @@ _RareCandyText::
 	TX_RAM wcd6d
 	text " grew"
 	line "to level @"
-	TX_NUM W_CURENEMYLVL, $1,$3
+	TX_NUM wCurEnemyLVL, $1,$3
 	text "!@@"
 
 _TurnedOnPC1Text::

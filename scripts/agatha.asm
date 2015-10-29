@@ -105,7 +105,7 @@ AgathaScript3: ; 764da (1d:64da)
 
 AgathaScript2: ; 764ed (1d:64ed)
 	call EndTrainerBattle
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, AgathaScript_76464
 	ld a, $1

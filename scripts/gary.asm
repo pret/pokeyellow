@@ -52,7 +52,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	call Delay3
 	xor a
 	ld [wJoyIgnore], a
-	ld hl, W_OPTIONS
+	ld hl, wOptions
 	res 7, [hl]
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
@@ -65,7 +65,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ld de, GaryText_760fe
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY3
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
@@ -90,7 +90,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ret
 
 GaryScript3: ; 75fbb (1d:5fbb)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, GaryScript_75f29
 	call UpdateSprites

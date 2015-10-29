@@ -105,7 +105,7 @@ LoreleiScript3: ; 7622c (1d:622c)
 	ret
 LoreleiScript2: ; 7623f (1d:623f)
 	call EndTrainerBattle
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, LoreleiScript_761b6
 	ld a, $1

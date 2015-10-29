@@ -58,7 +58,7 @@ Route24Script4: ; 51411 (14:5411)
 	ret
 
 Route24Script3: ; 51422 (14:5422)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route24Script_513c0
 	call UpdateSprites

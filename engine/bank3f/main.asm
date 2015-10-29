@@ -61,10 +61,10 @@ Func_fc534:: ; fc534 (3f:4534)
 	
 Func_fc53f:: ; fc53f (3f:453f)
 	ld bc,wSpriteStateData1 + $f0
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	ld e,a
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	ld d,a
 	ld a,[wd431]
@@ -178,7 +178,7 @@ Func_fc5bc:: ; fc5bc (3f:45bc)
 	ret
 
 Func_fc5fa:: ; fc5fa (3f:45fa)
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp OAKS_LAB
 	jr z,.asm_fc63d
 	cp ROUTE_22_GATE
@@ -187,11 +187,11 @@ Func_fc5fa:: ; fc5fa (3f:45fa)
 	jr z,.asm_fc635
 	cp ROCK_TUNNEL_1
 	jr z,.asm_fc645
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	ld hl,Pointer_fc64b
 	call Func_1568 ; similar to IsInArray, but not the same
 	jr c,.asm_fc639
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	ld hl,Pointer_fc653
 	call Func_1568
 	jr nc,.asm_fc641
@@ -231,12 +231,12 @@ Pointer_fc653:: ; fc653 (3f:4653)
 	db $2f,$e6,$3e,$5e,$80,$31,$a4,$ff
 
 Func_fc65b:: ; fc65b (3f:465b)
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp VIRIDIAN_FOREST_EXIT
 	jr z,.asm_fc673
 	cp VIRIDIAN_FOREST_ENTRANCE
 	jr z,.asm_fc67c
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	ld hl,Pointer_fc68e
 	call Func_1568
 	jr c,.asm_fc688
@@ -264,7 +264,7 @@ Pointer_fc68e:: ; fc68e (3f:468e)
 	db $33,$dd,$df,$e0,$e1,$de,$ec,$7f,$a8,$a9,$aa,$ff
 	
 Func_fc69a:: ; fc69a (3f:469a)
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp ROUTE_22_GATE
 	jr z,.asm_fc6a7
 	cp ROUTE_2_GATE
@@ -407,7 +407,7 @@ asm_fc76a: ; fc76a (3f:476a)
 	call Func_fc82e
 	jr c,.asm_fc783
 	push bc
-	callab Func_5012
+	callab InitializeSpriteScreenPosition
 	pop bc
 .asm_fc783
 	ld hl,$1
@@ -422,7 +422,7 @@ asm_fc76a: ; fc76a (3f:476a)
 Func_fc793: ; fc793 (3f:4793)
 	call Func_fcba1
 	push bc
-	callab Func_5012
+	callab InitializeSpriteScreenPosition
 	pop bc
 	ld hl,$2
 	add hl,bc
@@ -966,12 +966,12 @@ Func_fca99: ; fca99 (3f:4a99)
 Func_fcae2: ; fcae2 (3f:4ae2)
 	ld hl,$104
 	add hl,bc
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	cp [hl]
 	jr nz,.asm_fcaff
 	inc hl
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	cp [hl]
 	jr nz,.asm_fcaff
@@ -989,10 +989,10 @@ Func_fcb01: ; fcb01 (3f:4b01)
 	push de
 	push hl
 	ld bc,wSpriteStateData1 + $f0
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	ld d,a
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	ld e,a
 	ld hl,$104
@@ -1045,10 +1045,10 @@ Func_fcb4d: ; fcb4d (3f:4b4d)
 	
 Func_fcb52: ; fcb52 (3f:4b52)
 	ld bc,wSpriteStateData1 + $f0
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	ld d,a
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	ld e,a
 	ld hl,$104
@@ -1111,7 +1111,7 @@ Func_fcbac: ; fcbac (3f:4bac)
 	ld bc,wSpriteStateData1 + $f0
 	ld hl,$104
 	add hl,bc
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	sub [hl]
 	jr z,.asm_fcbd7
@@ -1138,7 +1138,7 @@ Func_fcbac: ; fcbac (3f:4bac)
 .asm_fcbd7
 	ld hl,$105
 	add hl,bc
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	sub [hl]
 	jr z,.asm_fcbff
@@ -1304,10 +1304,10 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	add a
 	jr .asm_fccea
 .asm_fccbf
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	add $4
 	ld d,a
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	add $4
 	ld e,a
 	ld a,[wSpriteStateData2 + $f4]
@@ -1381,7 +1381,7 @@ Func_fcd25: ; fcd25 (3f:4d25)
 	add $4
 	ld l,a
 	ld b,[hl]
-	ld a,[W_YCOORD]
+	ld a,[wYCoord]
 	cp b
 	jr z,.asm_fcd3a
 	jr nc,.asm_fcd63
@@ -1391,7 +1391,7 @@ Func_fcd25: ; fcd25 (3f:4d25)
 .asm_fcd3a
 	inc l
 	ld b,[hl]
-	ld a,[W_XCOORD]
+	ld a,[wXCoord]
 	cp b
 	jr z,.asm_fcd49
 	jr nc,.asm_fcd63
@@ -1429,7 +1429,7 @@ Func_fcd25: ; fcd25 (3f:4d25)
 	ld a,[H_CURRENTSPRITEOFFSET]
 	add $7
 	ld l,a
-	ld a,[W_GRASSTILE]
+	ld a,[wGrassTile]
 	cp e
 	ld a,$0
 	jr nz,.asm_fcd80

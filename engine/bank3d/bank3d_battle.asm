@@ -1,10 +1,10 @@
 InitBattle: ; f5ff2 (3d:5ff2)
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	and a
 	jr z, asm_f6003
 
 InitOpponent: ; f5ff8 (3d:5ff8)
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	ld [wcf91], a
 	ld [wEnemyMonSpecies2], a
 	jr asm_f601d
@@ -47,10 +47,10 @@ asm_f601d: ; f601d (f:601d)
 	ld a, $ff
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
-	ld [W_ISINBATTLE], a
+	ld [wIsInBattle], a
 
 	; Is this a major story battle?
-	ld a,[W_LONEATTACKNO]
+	ld a,[wLoneAttackNo]
 	and a
 	jp z,InitBattle_Common
 	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
@@ -58,16 +58,16 @@ asm_f601d: ; f601d (f:601d)
 
 InitWildBattle: ; f607c (3d:607c)
 	ld a, $1
-	ld [W_ISINBATTLE], a
+	ld [wIsInBattle], a
 	callab LoadEnemyMonData
 	callab DoBattleTransitionAndInitBattleVariables
-	ld a, [W_CUROPPONENT]
+	ld a, [wCurOpponent]
 	cp MAROWAK
 	jr z, .isGhost
 	callab IsGhostBattle
 	jr nz, .isNoGhost
 .isGhost
-	ld hl, W_MONHSPRITEDIM
+	ld hl, wMonHSpriteDim
 	ld a, $66
 	ld [hli], a   ; write sprite dimensions
 	ld bc, GhostPic
@@ -131,7 +131,7 @@ InitBattle_Common: ; f60eb (3d:60eb)
 	ld bc, $40a
 	call ClearScreenArea
 	call ClearSprites
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	dec a ; is it a wild battle?
 	ld hl, DrawEnemyHUDAndHPBar
 	ld b,BANK(DrawEnemyHUDAndHPBar)
@@ -175,7 +175,7 @@ LoadMonBackPic: ; f6178 (3d:6178)
 	coord hl, 1, 5
 	ld bc,$708
 	call ClearScreenArea
-	ld hl,  W_MONHBACKSPRITE - W_MONHEADER
+	ld hl,  wMonHBackSprite - wMonHeader
 	call UncompressMonSprite
 	predef ScaleSpriteByTwo
 	ld de, vBackPic
@@ -195,7 +195,7 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	ld a, [$ffe1]
 	ld [H_DOWNARROWBLINKCNT1], a
 	ld b, $4c
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	and a
 	jr z, .asm_f61ef
 	add b

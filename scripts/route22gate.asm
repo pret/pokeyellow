@@ -3,7 +3,7 @@ Route22GateScript: ; 1e683 (7:6683)
 	ld hl, Route22GateScriptPointers
 	ld a, [W_ROUTE22GATECURSCRIPT]
 	call CallFunctionInTable
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4
 	ld a, ROUTE_23
 	jr c, .asm_1e69a

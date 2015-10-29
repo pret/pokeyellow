@@ -264,7 +264,7 @@ MapHSPointers: ; c69b (3:469b)
 ; a) Map_ID = $FF
 ; b) Map_ID ≠ currentMapID
 ;
-; This Data is loaded into RAM at wd5ce-$D5F?. (W_MISSABLEOBJECTLIST)
+; This Data is loaded into RAM at wd5ce-$D5F?. (wMissableObjectList)
 
 ; These constants come from the bytes for Predef functions:
 Hide	equ $11

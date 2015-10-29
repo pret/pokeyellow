@@ -36,7 +36,7 @@ SaffronGymScriptPointers: ; 5d053 (17:5053)
 	dw SaffronGymScript3
 
 SaffronGymScript3: ; 5d05b (17:505b)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SaffronGymText_5d048
 	ld a, $f0
@@ -177,7 +177,7 @@ SaffronGymText1: ; 5d118 (17:5118)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $6
-	ld [W_GYMLEADERNO], a
+	ld [wGymLeaderNo], a
 	ld a, $3
 	ld [W_SAFFRONGYMCURSCRIPT], a
 .asm_5d15f

@@ -1556,7 +1556,7 @@ Audio1_HWChannelDisableMasks: ; 996a (2:596a)
 Audio1_9972: ; 9972 (2:5972)
 	push af
 	push bc
-	ld a, [W_OPTIONS]
+	ld a, [wOptions]
 	and %110000 ; channel options
 	srl a
 	ld c, a

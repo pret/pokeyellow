@@ -161,7 +161,7 @@ ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 	xor a ; gamefreak copypasting functions (double xor a)
 	ld [wBattleResult], a
 	ld [wWalkBikeSurfState], a
-	ld [W_ISINBATTLE], a
+	ld [wIsInBattle], a
 	ld [wMapPalOffset], a
 	ld [wNPCMovementScriptFunctionNum], a
 	ld [hJoyHeld], a
@@ -204,7 +204,7 @@ ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 	predef_jump HealParty
 	
 Func_f02da:: ; f02da (3c:42da)
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
 	jr z,.asm_f02ee
 	ld c,a
@@ -248,7 +248,7 @@ Func_f0a55:: ; f0a55 (3c:4a55)
 	cp a,$ff
 	ret z
 	ld b,a
-	ld a,[W_CURMAP]
+	ld a,[wCurMap]
 	cp b
 	jr z,.asm_f0a68
 	inc hl
@@ -263,7 +263,7 @@ Func_f0a55:: ; f0a55 (3c:4a55)
 	ld a,[hli]
 	ld h,[hl]
 	ld l,a
-	ld de,W_MISSABLEOBJECTLIST
+	ld de,wMissableObjectList
 	call CopyData
 	ret
 

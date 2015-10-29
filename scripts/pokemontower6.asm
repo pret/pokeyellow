@@ -33,9 +33,9 @@ PokemonTower6Script0: ; 60b17 (18:4b17)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, MAROWAK
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld a, 30
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	ld a, $4
 	ld [W_POKEMONTOWER6CURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a
@@ -45,7 +45,7 @@ CoordsData_60b45: ; 60b45 (18:4b45)
 	db $10,$0A,$FF
 
 PokemonTower6Script4: ; 60b48 (18:4b48)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, PokemonTower6Script_60b02
 	ld a, $ff

@@ -208,4 +208,4 @@ const_value set 1
 	const PIKAHAPPY_FAINTED
 	const PIKAHAPPY_PSNFNT
 	const PIKAHAPPY_10
-	const PIKAHAPPY_11
+	const PIKAHAPPY_TRADE

@@ -59,7 +59,7 @@ CoordsData_6055e: ; 6055e (18:455e)
 	db $0F ; isn't this supposed to end in $ff?
 
 PokemonTower2Script1: ; 60563 (18:4563)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, PokemonTower2Script_604fe
 	ld a, $f0
@@ -143,7 +143,7 @@ PokemonTower2Text1: ; 605df (18:45df)
 	ld de, PokemonTower2Text_60637
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]

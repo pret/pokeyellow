@@ -14,9 +14,9 @@ RocketHideout2ScriptPointers: ; 44e3a (11:4e3a)
 	dw RocketHideout2Script3
 
 RocketHideout2Script0: ; 44e42 (11:4e42)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	ld b, a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	ld c, a
 	ld hl, RocketHideout2ArrowTilePlayerMovement
 	call DecodeArrowMovementRLE

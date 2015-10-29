@@ -151,7 +151,7 @@ OaksLabScript5: ; 1cbfd (7:4bfd)
 	ret
 
 OaksLabScript6: ; 1cc36 (7:4c36)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $6
 	ret nz
 	ld a, $5
@@ -199,7 +199,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 	jr .Bulbasaur
 .Charmander
 	ld de, .MiddleBallMovement1
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4 ; is the player standing below the table?
 	jr z, .asm_1ccf3
 	ld de, .MiddleBallMovement2
@@ -223,7 +223,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 
 .Squirtle
 	ld de, .RightBallMovement1
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $4 ; is the player standing below the table?
 	jr z, .asm_1ccf3
 	ld de, .RightBallMovement2
@@ -249,7 +249,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 
 .Bulbasaur
 	ld de, .LeftBallMovement1
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $9 ; is the player standing to the right of the table?
 	jr nz, .asm_1ccf3
 	push hl
@@ -340,7 +340,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ret
 
 OaksLabScript10: ; 1cd6d (7:4d6d)
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $6
 	ret nz
 	ld a, $1
@@ -382,7 +382,7 @@ OaksLabScript11: ; 1cdb9 (7:4db9)
 
 	; define which team rival uses, and fight it
 	ld a, OPP_SONY1
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 	ld a, [W_RIVALSTARTER]
 	cp STARTER2
 	jr nz, .NotSquirtle
@@ -446,7 +446,7 @@ OaksLabScript13: ; 1ce32 (7:4e32)
 	ld [H_SPRITEINDEX], a
 	ld de, .RivalExitMovement
 	call MoveSprite
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $4
 	; move left or right depending on where the player is standing
 	jr nz, .moveLeft
@@ -488,7 +488,7 @@ OaksLabScript14: ; 1ce6d (7:4e6d)
 	ld a, [wNPCNumScriptedSteps]
 	cp $5
 	jr nz, .asm_1cea8
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $4
 	jr nz, .asm_1cea1
 	ld a, SPRITE_FACING_RIGHT
@@ -675,7 +675,7 @@ OaksLabScript_1d02b: ; 1d02b (7:502b)
 	ld [$ffeb], a
 	ld a, $8
 	ld [$ffee], a
-	ld a, [W_YCOORD]
+	ld a, [wYCoord]
 	cp $3
 	jr nz, .asm_1d045
 	ld a, $4
@@ -695,7 +695,7 @@ OaksLabScript_1d02b: ; 1d02b (7:502b)
 	ld a, $3
 	ld [wNPCMovementDirections2Index], a
 	ld b, $a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $4
 	jr nz, .asm_1d066
 	ld a, $40
@@ -925,7 +925,7 @@ OaksLabMonChoiceMenu: ; 1d1b3 (7:51b3)
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	ld a, 5
-	ld [W_CURENEMYLVL], a
+	ld [wCurEnemyLVL], a
 	ld a, [wcf91]
 	ld [wd11e], a
 	call AddPartyMon

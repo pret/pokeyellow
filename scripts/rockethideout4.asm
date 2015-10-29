@@ -44,7 +44,7 @@ RocketHideout4ScriptPointers: ; 454ae (11:54ae)c
 	dw RocketHideout4Script3
 
 RocketHideout4Script3: ; 454b6 (11:54b6)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, RocketHideout4Script_454a3
 	call UpdateSprites

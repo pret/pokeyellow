@@ -20,7 +20,7 @@ CeruleanCityScriptPointers: ; 1949d (6:549d)
 	dw CeruleanCityScript4
 
 CeruleanCityScript4: ; 194a7 (6:54a7)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CeruleanCityScript_1948c
 	ld a, $f0
@@ -75,7 +75,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld [hJoyHeld], a
 	ld a, $f0
 	ld [wJoyIgnore], a
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $14
 	jr z, .asm_19535
 	ld a, $1
@@ -135,7 +135,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	ld de, CeruleanCityText_19672
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY1
-	ld [W_CUROPPONENT], a
+	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
@@ -161,7 +161,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	ret
 
 CeruleanCityScript2: ; 195b1 (6:55b1)
-	ld a, [W_ISINBATTLE]
+	ld a, [wIsInBattle]
 	cp $ff
 	jp z, CeruleanCityScript_1948c
 	call CeruleanCityScript_1955d
@@ -178,7 +178,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
-	ld a, [W_XCOORD]
+	ld a, [wXCoord]
 	cp $14
 	jr nz, .asm_195f0
 	ld de, CeruleanCityMovement4
