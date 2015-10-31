@@ -1,18 +1,26 @@
-SetDefaultNames: ; 60ca (1:60ca)
+SetDefaultNames: ; 5e27 (1:5e27)
 	ld a, [wLetterPrintingDelayFlags]
 	push af
 	ld a, [wOptions]
 	push af
 	ld a, [wd732]
 	push af
+	ld a, [wd498]
+	push af
 	ld hl, wPlayerName
-	ld bc, $d8a
+	ld bc, wBoxDataEnd - wPlayerName
 	xor a
 	call FillMemory
 	ld hl, wSpriteStateData1
 	ld bc, $200
 	xor a
 	call FillMemory
+	xor a
+	ld [wd495], a
+	ld [wd496], a
+	ld [wd497], a
+	pop af
+	ld [wd498], a
 	pop af
 	ld [wd732], a
 	pop af
@@ -29,11 +37,11 @@ SetDefaultNames: ; 60ca (1:60ca)
 	ld hl, SonyText
 	ld de, W_RIVALNAME
 	ld bc, NAME_LENGTH
-	jp CopyData
-
-OakSpeech: ; 6115 (1:6115)
-	ld a,$FF
-	call PlaySound ; stop music
+	call CopyData ; rip optimizations
+	ret
+	
+OakSpeech: ; 5e85 (1:5e85)
+	call StopAllMusic ; stop music
 	ld a, BANK(Music_Routes2)
 	ld c,a
 	ld a, MUSIC_ROUTES2
@@ -64,7 +72,7 @@ OakSpeech: ; 6115 (1:6115)
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld a,NIDORINO
+	ld a,PIKACHU
 	ld [wd0b5],a
 	ld [wcf91],a
 	call GetMonHeader
@@ -109,13 +117,13 @@ OakSpeech: ; 6115 (1:6115)
 	ld a,SFX_SHRINK
 	call PlaySound
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	call BankswitchCommon
 	ld c,4
 	call DelayFrames
-	ld de,RedSprite
 	ld hl,vSprites
-	lb bc, BANK(RedSprite), $0C
+	ld de,RedSprite
+	ld b, BANK(RedSprite)
+	ld c, $0C
 	call CopyVideoData
 	ld de,ShrinkPic1
 	lb bc, BANK(ShrinkPic1), $00
@@ -133,17 +141,13 @@ OakSpeech: ; 6115 (1:6115)
 	ld [wAudioSavedROMBank],a
 	ld a, 10
 	ld [wAudioFadeOutControl],a
-	ld a,$FF
-	ld [wNewSoundID],a
-	call PlaySound ; stop music
+	call StopAllMusic ; stop music
 	pop af
-	ld [H_LOADEDROMBANK],a
-	ld [MBC1RomBank],a
+	call BankswitchCommon
 	ld c,20
 	call DelayFrames
 	coord hl, 6, 5
-	ld b,7
-	ld c,7
+	lb bc, 7, 7
 	call ClearScreenArea
 	call LoadTextBoxTilePatterns
 	ld a,1
@@ -151,38 +155,41 @@ OakSpeech: ; 6115 (1:6115)
 	ld c,50
 	call DelayFrames
 	call GBFadeOutToWhite
-	jp ClearScreen
-OakSpeechText1: ; 6253 (1:6253)
+	call ClearScreen ; rip more tail-end optimizations
+	ret
+	
+OakSpeechText1: ; 5fb9 (1:5fb9)
 	TX_FAR _OakSpeechText1
 	db "@"
-OakSpeechText2: ; 6258 (1:6258)
+OakSpeechText2: ; 5fbe (1:5fbe)
 	TX_FAR _OakSpeechText2A
 	db $14 ; play NIDORINA cry from TextCommandSounds
 	TX_FAR _OakSpeechText2B
 	db "@"
-IntroducePlayerText: ; 6262 (1:6262)
+IntroducePlayerText: ; 5fc8 (1:5fc8)
 	TX_FAR _IntroducePlayerText
 	db "@"
-IntroduceRivalText: ; 6267 (1:6267)
+IntroduceRivalText: ; 5fcd (1:5fcd)
 	TX_FAR _IntroduceRivalText
 	db "@"
-OakSpeechText3: ; 626c (1:626c)
+OakSpeechText3: ; 5fd2 (1:5fd2)
 	TX_FAR _OakSpeechText3
 	db "@"
 
-FadeInIntroPic: ; 6271 (1:6271)
+FadeInIntroPic: ; 5fd7 (1:5fd7)
 	ld hl,IntroFadePalettes
 	ld b,6
 .next
 	ld a,[hli]
 	ld [rBGP],a
+	call UpdateGBCPal_BGP
 	ld c,10
 	call DelayFrames
 	dec b
 	jr nz,.next
 	ret
 
-IntroFadePalettes: ; 6282 (1:6282)
+IntroFadePalettes: ; 5feb (1:5feb)
 	db %01010100
 	db %10101000
 	db %11111100
@@ -190,13 +197,14 @@ IntroFadePalettes: ; 6282 (1:6282)
 	db %11110100
 	db %11100100
 
-MovePicLeft: ; 6288 (1:6288)
+MovePicLeft: ; 5ff1 (1:5ff1)
 	ld a,119
 	ld [rWX],a
 	call DelayFrame
 
-	ld a,$E4
+	ld a,%11100100
 	ld [rBGP],a
+	call UpdateGBCPal_BGP
 .next
 	call DelayFrame
 	ld a,[rWX]
@@ -206,19 +214,22 @@ MovePicLeft: ; 6288 (1:6288)
 	ld [rWX],a
 	jr .next
 
-DisplayPicCenteredOrUpperRight: ; 62a1 (1:62a1)
+DisplayPicCenteredOrUpperRight: ; 600d (1:600d)
 	call GetPredefRegisters
-IntroDisplayPicCenteredOrUpperRight: ; 62a4 (1:62a4)
+IntroDisplayPicCenteredOrUpperRight: ; 6010 (1:6010)
 ; b = bank
 ; de = address of compressed pic
 ; c: 0 = centred, non-zero = upper-right
 	push bc
 	ld a,b
 	call UncompressSpriteFromDE
+	ld a, $0
+	call SwitchSRAMBankAndLatchClockData
 	ld hl,S_SPRITEBUFFER1
 	ld de,S_SPRITEBUFFER0
 	ld bc,$310
 	call CopyData
+	call PrepareRTCDataAndDisableSRAM
 	ld de,vFrontPic
 	call InterlaceMergeSpriteBuffers
 	pop bc

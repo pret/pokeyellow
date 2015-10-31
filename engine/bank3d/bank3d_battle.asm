@@ -43,7 +43,7 @@ asm_f601d: ; f601d (f:601d)
 	dec a
 	ld [wAICount], a
 	coord hl, 12, 0
-	predef Func_3f0c6
+	predef CopyUncompressedPicToTilemap
 	ld a, $ff
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
@@ -103,7 +103,7 @@ InitWildBattle: ; f607c (3d:607c)
 	ld [W_TRAINERCLASS], a
 	ld [$ffe1], a
 	coord hl, 12, 0
-	predef Func_3f0c6
+	predef CopyUncompressedPicToTilemap
 
 ; common code that executes after init battle code specific to trainer or wild battles
 InitBattle_Common: ; f60eb (3d:60eb)

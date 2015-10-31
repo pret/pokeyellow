@@ -2533,7 +2533,12 @@ wd47a:: ds 1
 	
 wd493:: ds 1
 	
-	ds 5
+	ds 1
+	
+wd495:: ds 1
+wd496:: ds 1
+wd497:: ds 1
+wd498:: ds 1
 	
 wUnknownSerialFlag_d499:: ds 1 ; d498
 wUnknownSerialFlag_d49a:: ds 1 ; d499

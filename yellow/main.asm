@@ -539,14 +539,189 @@ LoadTrainerInfoTextBoxTiles: ; 5b9a (1:5b9a)
 	lb bc, BANK(TrainerInfoTextBoxTileGraphics), (TrainerInfoTextBoxTileGraphicsEnd - TrainerInfoTextBoxTileGraphics) / $10
 	jp CopyVideoData
 	
-MainMenu: ; 5ba6 (1:5ba6)
-	dr $5ba6,$5ce4
-Func_5ce4: ; 5ce4 (1:5ce4)
-	dr $5ce4,$5d58
-PrintSaveScreenText: ; 5d58 (1:5d58)
-	dr $5d58,$6042
+INCLUDE "engine/menu/main_menu.asm"
+
+INCLUDE "engine/oak_speech.asm"
+
 SpecialWarpIn: ; 6042 (1:6042)
-	dr $6042,$68a6
+	call LoadSpecialWarpData
+	predef LoadTilesetHeader
+	ld hl,wd732
+	bit 2,[hl] ; dungeon warp or fly warp?
+	res 2,[hl]
+	jr z,.next
+; if dungeon warp or fly warp
+	ld a,[wDestinationMap]
+	jr .next2
+.next
+	bit 1,[hl]
+	jr z,.next3
+	call EmptyFunc
+.next3
+	ld a,0
+.next2
+	ld b,a
+	ld a,[wd72d]
+	and a
+	jr nz,.next4
+	ld a,b
+.next4
+	ld hl,wd732
+	bit 4,[hl] ; dungeon warp?
+	ret nz
+; if not dungeon warp
+	ld [wLastMap],a
+	ret
+
+; gets the map ID, tile block map view pointer, tileset, and coordinates
+LoadSpecialWarpData: ; 6073 (1:6073)
+	ld a, [wd72d]
+	cp TRADE_CENTER
+	jr nz, .notTradeCenter
+	ld hl, TradeCenterSpec1
+	ld a, [hSerialConnectionStatus]
+	cp USING_INTERNAL_CLOCK ; which gameboy is clocking determines who is on the left and who is on the right
+	jr z, .copyWarpData
+	ld hl, TradeCenterSpec2
+	jr .copyWarpData
+.notTradeCenter
+	cp COLOSSEUM
+	jr nz, .notColosseum
+	ld hl, ColosseumSpec1
+	ld a, [hSerialConnectionStatus]
+	cp USING_INTERNAL_CLOCK
+	jr z, .copyWarpData
+	ld hl, ColosseumSpec2
+	jr .copyWarpData
+.notColosseum
+	ld a, [wd732]
+	bit 1, a
+	jr nz, .notFirstMap
+	bit 2, a
+	jr nz, .notFirstMap
+	ld hl, FirstMapSpec
+.copyWarpData
+	ld de, wCurMap
+	ld c, $7
+.copyWarpDataLoop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .copyWarpDataLoop
+	ld a, [hli]
+	ld [wCurMapTileset], a
+	xor a
+	jr .done
+.notFirstMap
+	ld a, [wLastMap]
+	ld hl, wd732
+	bit 4, [hl] ; used dungeon warp (jumped down hole/waterfall)?
+	jr nz, .usedDunegonWarp
+	bit 6, [hl] ; return to last pokemon center (or player's house)?
+	res 6, [hl]
+	jr z, .otherDestination
+; return to last pokemon center or player's house
+	ld a, [wLastBlackoutMap]
+	jr .usedFlyWarp
+.usedDunegonWarp
+	ld hl, wd72d
+	res 4, [hl]
+	ld a, [wDungeonWarpDestinationMap]
+	ld b, a
+	ld [wCurMap], a
+	ld a, [wWhichDungeonWarp]
+	ld c, a
+	ld hl, DungeonWarpList
+	ld de, 0
+	ld a, 6
+	ld [wDungeonWarpDataEntrySize], a
+.dungeonWarpListLoop
+	ld a, [hli]
+	cp b
+	jr z, .matchedDungeonWarpDestinationMap
+	inc hl
+	jr .nextDungeonWarp
+.matchedDungeonWarpDestinationMap
+	ld a, [hli]
+	cp c
+	jr z, .matchedDungeonWarpID
+.nextDungeonWarp
+	ld a, [wDungeonWarpDataEntrySize]
+	add e
+	ld e, a
+	jr .dungeonWarpListLoop
+.matchedDungeonWarpID
+	ld hl, DungeonWarpData
+	add hl, de
+	jr .copyWarpData2
+.otherDestination
+	ld a, [wDestinationMap]
+.usedFlyWarp
+	ld b, a
+	ld [wCurMap], a
+	ld hl, FlyWarpDataPtr
+.flyWarpDataPtrLoop
+	ld a, [hli]
+	inc hl
+	cp b
+	jr z, .foundFlyWarpMatch
+	inc hl
+	inc hl
+	jr .flyWarpDataPtrLoop
+.foundFlyWarpMatch
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.copyWarpData2
+	ld de, wCurrentTileBlockMapViewPointer
+	ld c, $6
+.copyWarpDataLoop2
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .copyWarpDataLoop2
+	xor a ; OVERWORLD
+	ld [wCurMapTileset], a
+.done
+	ld [wYOffsetSinceLastSpecialWarp], a
+	ld [wXOffsetSinceLastSpecialWarp], a
+	ld a, $ff ; the player's coordinates have already been updated using a special warp, so don't use any of the normal warps
+	ld [wDestinationWarpID], a
+	ret
+	
+INCLUDE "data/special_warps.asm"
+; not IshiharaTeam
+SetDebugTeam: ; 623e (1:623e)
+	ld de, DebugTeam
+.loop
+	ld a, [de]
+	cp $ff
+	ret z
+	ld [wcf91], a
+	inc de
+	ld a, [de]
+	ld [wCurEnemyLVL], a
+	inc de
+	call AddPartyMon
+	jr .loop
+
+DebugTeam: ; 6253 (1:6253)
+	db SNORLAX,80
+	db PERSIAN,80
+	db JIGGLYPUFF,15
+	db PIKACHU,5
+	db $FF
+
+EmptyFunc: ; 64ea (1:64ea)
+	ret
+
+	dr $625d,$66db
+ChoosePlayerName: ; 66db (1:66db)
+	dr $66db,$6722
+ChooseRivalName: ; 6722 (1:6722)
+	dr $6722,$68a6
 SubtractAmountPaidFromMoney_: ; 68a6 (1:68a6)
 	dr $68a6,$68c9
 HandleItemListSwapping: ; 68c9 (1:68c9)
@@ -2902,9 +3077,7 @@ ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
 StartMenu_Pokedex: ; 11c22 (4:5c22)
 	dr $11c22,$11c36
 StartMenu_Pokemon: ; 11c36 (4:5c36)
-	dr $11c36,$11ce4
-SpecialEnterMap: ; 11ce4 (4:5ce4)
-	dr $11ce4,$11e98
+	dr $11c36,$11e98
 ErasePartyMenuCursors: ; 11e98 (4:5e98)
 	dr $11e98,$11ead
 StartMenu_Item: ; 11ead (4:5ead)
@@ -3512,7 +3685,9 @@ SECTION "bank10",ROMX,BANK[$10]
 
 	dr $40000,$4050b
 Pointer_4050b: ; 4050b (10:450b)
-	dr $4050b,$44000
+	dr $4050b,$41c70
+DisplayOptionMenu_: ; 41c70 (10:57c0)
+	dr $41c70,$44000
 
 
 SECTION "bank11",ROMX,BANK[$11]

@@ -787,9 +787,7 @@ LinkMenu: ; f580c (3d:580c)
 	inc a ; LINK_STATE_IN_CABLE_CLUB
 	ld [wLinkState], a
 	ld [wEnteringCableClub], a
-	ld hl,Func_5ce4
-	ld b,BANK(Func_5ce4)
-	jp Bankswitch
+	jpab SpecialEnterMap
 .choseCancel
 	xor a
 	ld [wMenuJoypadPollCount], a
