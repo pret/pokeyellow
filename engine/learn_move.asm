@@ -1,4 +1,4 @@
-LearnMove: ; 6e43 (1:6e43)
+LearnMove: ; 6bc8 (1:6bc8)
 	call SaveScreenTilesToBuffer1
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
@@ -8,7 +8,7 @@ LearnMove: ; 6e43 (1:6e43)
 	ld bc, NAME_LENGTH
 	call CopyData
 
-DontAbandonLearning: ; 6e5b (1:6e5b)
+DontAbandonLearning: ; 6be0 (1:6be0)
 	ld hl, wPartyMon1Moves
 	ld bc, wPartyMon2Moves - wPartyMon1Moves
 	ld a, [wWhichPokemon]
@@ -73,7 +73,7 @@ DontAbandonLearning: ; 6e5b (1:6e5b)
 	call CopyData
 	jp PrintLearnedMove
 
-AbandonLearning: ; 6eda (1:6eda)
+AbandonLearning: ; 6c5f (1:6c5f)
 	ld hl, AbandonLearningText
 	call PrintText
 	coord hl, 14, 7
@@ -89,13 +89,13 @@ AbandonLearning: ; 6eda (1:6eda)
 	ld b, 0
 	ret
 
-PrintLearnedMove: ; 6efe (1:6efe)
+PrintLearnedMove: ; 6c83 (1:6c83)
 	ld hl, LearnedMove1Text
 	call PrintText
 	ld b, 1
 	ret
 
-TryingToLearn: ; 6f07 (1:6f07)
+TryingToLearn: ; 6c8c (1:6c8c)
 	push hl
 	ld hl, TryingToLearnText
 	call PrintText
@@ -121,8 +121,7 @@ TryingToLearn: ; 6f07 (1:6f07)
 	ld hl, WhichMoveToForgetText
 	call PrintText
 	coord hl, 4, 7
-	ld b, 4
-	ld c, 14
+	lb bc, 4, 14
 	call TextBoxBorder
 	coord hl, 6, 8
 	ld de, wMovesString
@@ -183,42 +182,67 @@ TryingToLearn: ; 6f07 (1:6f07)
 	scf
 	ret
 
-LearnedMove1Text: ; 6fb4 (1:6fb4)
+LearnedMove1Text: ; 6d31 (1:6d31)
 	TX_FAR _LearnedMove1Text
 	db $b,6,"@"
 
-WhichMoveToForgetText: ; 6fb4 (1:6fb4)
+WhichMoveToForgetText: ; 6d38 (1:6d38)
 	TX_FAR _WhichMoveToForgetText
 	db "@"
 
-AbandonLearningText: ; 6fb9 (1:6fb9)
+AbandonLearningText: ; 6d3d (1:6d3d)
 	TX_FAR _AbandonLearningText
 	db "@"
 
-DidNotLearnText: ; 6fbe (1:6fbe)
+DidNotLearnText: ; 6d42 (1:6d42)
 	TX_FAR _DidNotLearnText
 	db "@"
 
-TryingToLearnText: ; 6fc3 (1:6fc3)
+TryingToLearnText: ; 6d47 (1:6d47)
 	TX_FAR _TryingToLearnText
 	db "@"
 
-OneTwoAndText: ; 6fc8 (1:6fc8)
+OneTwoAndText: ; 6d4c (1:6d4c)
+; bugfix: In Red/Blue, the SFX_SWAP sound was played in the wrong bank, which played an incorrect sound
+; Yellow has fixed this by swapping to the correct bank
 	TX_FAR _OneTwoAndText
 	db $a
 	TX_ASM
+	push af
+	push bc
+	push de
+	push hl
+	ld a, $1
+	ld [wMuteAudioAndPauseMusic], a
+	call DelayFrame
+	ld a, [wAudioROMBank]
+	push af
+	ld a, BANK(SFX_Swap_1)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
+	call WaitForSoundToFinish
 	ld a, SFX_SWAP
-	call PlaySoundWaitForCurrent
+	call PlaySound
+	call WaitForSoundToFinish
+	pop af
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
+	xor a
+	ld [wMuteAudioAndPauseMusic], a
+	pop hl
+	pop de
+	pop bc
+	pop af
 	ld hl, PoofText
 	ret
 
-PoofText: ; 6fd7 (1:6fd7)
+PoofText: ; 6d88 (1:6d88)
 	TX_FAR _PoofText
 	db $a
-ForgotAndText: ; 6fdc (1:6fdc)
+ForgotAndText: ; 6d8d (1:6d8d)
 	TX_FAR _ForgotAndText
 	db "@"
 
-HMCantDeleteText: ; 6fe1 (1:6fe1)
+HMCantDeleteText: ; 6d92 (1:6d92)
 	TX_FAR _HMCantDeleteText
 	db "@"

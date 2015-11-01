@@ -889,8 +889,9 @@ HandleItemListSwapping: ; 68c9 (1:68c9)
 	pop hl
 	jp DisplayListMenuIDLoop
 
-DisplayPokemartDialogue_: ; 69a5 (1:69a5)
-	dr $69a5,$6d97
+INCLUDE "engine/overworld/pokemart.asm"
+
+INCLUDE "engine/learn_move.asm"
 DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	dr $6d97,$6f0e
 DisplayTextIDInit: ; 6f0e (1:6f0e)
@@ -3725,7 +3726,9 @@ CryData: ; 39462 (e:5462)
 TrainerPicAndMoneyPointers: ; 39893 (e:5893)
 	dr $39893,$3997e
 TrainerNames: ; 3997e (e:597e)
-	dr $3997e,$39b54
+	dr $3997e,$39b06
+FormatMovesString: ; 39b06 (e:5b06)
+	dr $39b06,$39b54
 InitList: ; 39b54 (e:5b54)
 	dr $39b54,$39bb6
 ReadTrainer: ; 39bb6 (e:5bb6)

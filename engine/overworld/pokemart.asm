@@ -1,4 +1,4 @@
-DisplayPokemartDialogue_: ; 6c20 (1:6c20)
+DisplayPokemartDialogue_: ; 69a5 (1:69a5)
 	ld a,[wListScrollOffset]
 	ld [wSavedListScrollOffset],a
 	call UpdateSprites
@@ -85,7 +85,7 @@ DisplayPokemartDialogue_: ; 6c20 (1:6c20)
 	lb bc, 14, 1 ; location that PrintText always prints to, this is useless
 	call PrintText
 	coord hl, 14, 7
-	lb bc, 08, 15
+	lb bc, 8, 15
 	ld a,TWO_OPTION_MENU
 	ld [wTextBoxID],a
 	call DisplayTextBoxID ; yes/no menu
@@ -227,46 +227,46 @@ DisplayPokemartDialogue_: ; 6c20 (1:6c20)
 	ld [wListScrollOffset],a
 	ret
 
-PokemartBuyingGreetingText: ; 6e0c (1:6e0c)
+PokemartBuyingGreetingText: ; 6b91 (1:6b91)
 	TX_FAR _PokemartBuyingGreetingText
 	db "@"
 
-PokemartTellBuyPriceText: ; 6e11 (1:6e11)
+PokemartTellBuyPriceText: ; 6b96 (1:6b96)
 	TX_FAR _PokemartTellBuyPriceText
 	db "@"
 
-PokemartBoughtItemText: ; 6e16 (1:6e16)
+PokemartBoughtItemText: ; 6b9b (1:6b9b)
 	TX_FAR _PokemartBoughtItemText
 	db "@"
 
-PokemartNotEnoughMoneyText: ; 6e1b (1:6e1b)
+PokemartNotEnoughMoneyText: ; 6ba0 (1:6ba0)
 	TX_FAR _PokemartNotEnoughMoneyText
 	db "@"
 
-PokemartItemBagFullText: ; 6e20 (1:6e20)
+PokemartItemBagFullText: ; 6ba5 (1:6ba5)
 	TX_FAR _PokemartItemBagFullText
 	db "@"
 
-PokemonSellingGreetingText: ; 6e25 (1:6e25)
+PokemonSellingGreetingText: ; 6baa (1:6baa)
 	TX_FAR _PokemonSellingGreetingText
 	db "@"
 
-PokemartTellSellPriceText: ; 6e2a (1:6e2a)
+PokemartTellSellPriceText: ; 6baf (1:6baf)
 	TX_FAR _PokemartTellSellPriceText
 	db "@"
 
-PokemartItemBagEmptyText: ; 6e2f (1:6e2f)
+PokemartItemBagEmptyText: ; 6bb4 (1:6bb4)
 	TX_FAR _PokemartItemBagEmptyText
 	db "@"
 
-PokemartUnsellableItemText: ; 6e34 (1:6e34)
+PokemartUnsellableItemText: ; 6bb9 (1:6bb9)
 	TX_FAR _PokemartUnsellableItemText
 	db "@"
 
-PokemartThankYouText: ; 6e39 (1:6e39)
+PokemartThankYouText: ; 6bbe (1:6bbe)
 	TX_FAR _PokemartThankYouText
 	db "@"
 
-PokemartAnythingElseText: ; 6e3e (1:6e3e)
+PokemartAnythingElseText: ; 6bc3 (1:6bc3)
 	TX_FAR _PokemartAnythingElseText
 	db "@"
