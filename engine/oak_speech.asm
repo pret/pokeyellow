@@ -35,7 +35,7 @@ SetDefaultNames: ; 5e27 (1:5e27)
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, SonyText
-	ld de, W_RIVALNAME
+	ld de, wRivalName
 	ld bc, NAME_LENGTH
 	call CopyData ; rip optimizations
 	ret

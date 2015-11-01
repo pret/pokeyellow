@@ -2280,7 +2280,7 @@ wBagItems:: ; d31e
 wPlayerMoney:: ; d347
 	ds 3 ; BCD
 
-W_RIVALNAME:: ; d34a
+wRivalName:: ; d34a
 	ds NAME_LENGTH
 
 wOptions:: ; d355

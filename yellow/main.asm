@@ -718,10 +718,9 @@ EmptyFunc: ; 64ea (1:64ea)
 	ret
 
 INCLUDE "engine/menu/naming_screen.asm"
-ChoosePlayerName: ; 66db (1:66db)
-	dr $66db,$6722
-ChooseRivalName: ; 6722 (1:6722)
-	dr $6722,$68a6
+
+INCLUDE "engine/oak_speech2.asm"
+
 SubtractAmountPaidFromMoney_: ; 68a6 (1:68a6)
 	dr $68a6,$68c9
 HandleItemListSwapping: ; 68c9 (1:68c9)

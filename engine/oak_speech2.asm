@@ -1,4 +1,4 @@
-ChoosePlayerName: ; 695d (1:695d)
+ChoosePlayerName: ; 66db (1:66db)
 	call OakSpeechSlidePicRight
 	ld de, DefaultNamesPlayer
 	call DisplayIntroNameTextBox
@@ -27,11 +27,11 @@ ChoosePlayerName: ; 695d (1:695d)
 	ld hl, YourNameIsText
 	jp PrintText
 
-YourNameIsText: ; 699f (1:699f)
+YourNameIsText: ; 671d (1:671d)
 	TX_FAR _YourNameIsText
 	db "@"
 
-ChooseRivalName: ; 69a4 (1:69a4)
+ChooseRivalName: ; 6722 (1:6722)
 	call OakSpeechSlidePicRight
 	ld de, DefaultNamesRival
 	call DisplayIntroNameTextBox
@@ -40,11 +40,11 @@ ChooseRivalName: ; 69a4 (1:69a4)
 	jr z, .customName
 	ld hl, DefaultNamesRivalList
 	call GetDefaultName
-	ld de, W_RIVALNAME
+	ld de, wRivalName
 	call OakSpeechSlidePicLeft
 	jr .done
 .customName
-	ld hl, W_RIVALNAME
+	ld hl, wRivalName
 	ld a, NAME_RIVAL_SCREEN
 	ld [wNamingScreenType], a
 	call DisplayNamingScreen
@@ -60,11 +60,11 @@ ChooseRivalName: ; 69a4 (1:69a4)
 	ld hl, HisNameIsText
 	jp PrintText
 
-HisNameIsText: ; 69e7 (1:69e7)
+HisNameIsText: ; 6765 (1:6765)
 	TX_FAR _HisNameIsText
 	db "@"
 
-OakSpeechSlidePicLeft: ; 69ec (1:69ec)
+OakSpeechSlidePicLeft: ; 676a (1:676a)
 	push de
 	coord hl, 0, 0
 	lb bc, 12, 11
@@ -81,12 +81,12 @@ OakSpeechSlidePicLeft: ; 69ec (1:69ec)
 	ld a, $ff
 	jr OakSpeechSlidePicCommon
 
-OakSpeechSlidePicRight: ; 6a12 (1:6a12)
+OakSpeechSlidePicRight: ; 6790 (1:6790)
 	coord hl, 5, 4
 	lb de, 6, 6 * SCREEN_WIDTH + 5
 	xor a
 
-OakSpeechSlidePicCommon: ; 6a19 (1:6a19)
+OakSpeechSlidePicCommon: ; 6797 (1:6797)
 	push hl
 	push de
 	push bc
@@ -108,6 +108,7 @@ OakSpeechSlidePicCommon: ; 6a19 (1:6a19)
 .loop
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
+	ld [H_AUTOBGTRANSFERPORTION], a
 	ld a, [hSlideDirection]
 	and a
 	jr nz, .slideLeft
@@ -129,8 +130,8 @@ OakSpeechSlidePicCommon: ; 6a19 (1:6a19)
 ; If sliding left, we need to zero the last tile in the pic (there is no need
 ; to take a corresponding action when sliding right because hl initially points
 ; to a 0 tile in that case).
-	xor a
 	dec hl
+	xor a
 	ld [hl], a
 .next3
 	ld a, 1
@@ -159,11 +160,10 @@ OakSpeechSlidePicCommon: ; 6a19 (1:6a19)
 	pop hl
 	ret
 
-DisplayIntroNameTextBox: ; 6a6c (1:6a6c)
+DisplayIntroNameTextBox: ; 67ec (1:67ec)
 	push de
 	coord hl, 0, 0
-	ld b, $a
-	ld c, $9
+	lb bc, 10, 9
 	call TextBoxBorder
 	coord hl, 3, 0
 	ld de, .namestring
@@ -184,24 +184,24 @@ DisplayIntroNameTextBox: ; 6a6c (1:6a6c)
 	ld [wMaxMenuItem], a
 	jp HandleMenuInput
 
-.namestring ; 6aa3 (1:6aa3)
+.namestring ; 6822 (1:6822)
 	db "NAME@"
 
-DefaultNamesPlayer:
+DefaultNamesPlayer: ; 6827 (1:6827)
 	db   "NEW NAME"
 	next "YELLOW"
 	next "ASH"
 	next "JACK"
 	db   "@"
 
-DefaultNamesRival:
+DefaultNamesRival: ; 6840 (1:6840)
 	db   "NEW NAME"
 	next "BLUE"
 	next "GARY"
 	next "JOHN"
 	db   "@"
 
-GetDefaultName: ; 6ad6 (1:6ad6)
+GetDefaultName: ; 6858 (1:6858)
 ; a = name index
 ; hl = name list
 	ld b, a
@@ -225,10 +225,10 @@ GetDefaultName: ; 6ad6 (1:6ad6)
 	ld bc, $14
 	jp CopyData
 	
-DefaultNamesPlayerList:
+DefaultNamesPlayerList: ; 687d (1:687d)
 	db "NEW NAME@YELLOW@ASH@JACK@"
-DefaultNamesRivalList:
+DefaultNamesRivalList: ; 688d (1:688d)
 	db "NEW NAME@BLUE@GARY@JOHN@"
 
-TextTerminator_6b20: ; 6b20 (1:6b20)
+TextTerminator_6b20: ; 68a5 (1:68a5)
 	db "@"

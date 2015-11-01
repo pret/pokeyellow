@@ -146,7 +146,7 @@ Char52:: ; 17c7 (0:17c7) ; player’s name
 
 Char53:: ; 17cd (0:17cd) ; rival’s name
 	push de
-	ld de,W_RIVALNAME
+	ld de,wRivalName
 	jr FinishDTE
 
 Char5D:: ; 17d3 (0:17d3) ; TRAINER

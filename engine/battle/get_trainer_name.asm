@@ -3,7 +3,7 @@ GetTrainerName_: ; f67a5 (3d:67a5)
 	ld a, [wLinkState]
 	and a
 	jr nz, .foundName
-	ld hl, W_RIVALNAME
+	ld hl, wRivalName
 	ld a, [W_TRAINERCLASS]
 	cp SONY1
 	jr z, .foundName
