@@ -1,13 +1,12 @@
-AskName: ; 64eb (1:64eb)
+AskName: ; 625d (1:625d)
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
 	ld a, [wIsInBattle]
 	dec a
 	coord hl, 0, 0
-	ld b, 4
-	ld c, 11
-	call z, ClearScreenArea ; only if in wild batle
+	lb bc, 4, 11
+	call z, ClearScreenArea ; only if in wild battle
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetMonName
@@ -40,7 +39,7 @@ AskName: ; 64eb (1:64eb)
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ld a, [wcf4b]
-	cp $50
+	cp "@"
 	ret nz
 .declinedNickname
 	ld d, h
@@ -49,11 +48,11 @@ AskName: ; 64eb (1:64eb)
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-DoYouWantToNicknameText: ; 0x6557
+DoYouWantToNicknameText: ; 62c8 (1:62c8)
 	TX_FAR _DoYouWantToNicknameText
 	db "@"
 
-DisplayNameRaterScreen: ; 655c (1:655c)
+DisplayNameRaterScreen: ; 62cd (1:62cd)
 	ld hl, wBuffer
 	xor a
 	ld [wUpdateSpritesEnabled], a
@@ -81,7 +80,7 @@ DisplayNameRaterScreen: ; 655c (1:655c)
 	scf
 	ret
 
-DisplayNamingScreen: ; 6596 (1:6596)
+DisplayNamingScreen: ; 6307 (1:6307)
 	push hl
 	ld hl, wd730
 	set 6, [hl]
@@ -94,8 +93,7 @@ DisplayNamingScreen: ; 6596 (1:6596)
 	call LoadEDTile
 	callba LoadMonPartySpriteGfx
 	coord hl, 0, 4
-	ld b, 9
-	ld c, 18
+	lb bc, 9, 18
 	call TextBoxBorder
 	call PrintNamingText
 	ld a, 3
@@ -108,7 +106,7 @@ DisplayNamingScreen: ; 6596 (1:6596)
 	ld [wMenuWatchedKeys], a
 	ld a, 7
 	ld [wMaxMenuItem], a
-	ld a, $50
+	ld a, "@"
 	ld [wcf4b], a
 	xor a
 	ld hl, wNamingScreenSubmitName
@@ -153,7 +151,7 @@ DisplayNamingScreen: ; 6596 (1:6596)
 	ld h, [hl]
 	ld l, a
 	push de
-	jp [hl]
+	jp hl
 
 .submitNickname
 	pop de
@@ -259,7 +257,7 @@ DisplayNamingScreen: ; 6596 (1:6596)
 .addLetter
 	ld a, [wNamingScreenLetter]
 	ld [hli], a
-	ld [hl], $50
+	ld [hl], "@"
 	ld a, SFX_PRESS_AB
 	call PlaySound
 	ret
@@ -324,14 +322,28 @@ DisplayNamingScreen: ; 6596 (1:6596)
 	jp EraseMenuCursor
 
 LoadEDTile: ; 675b (1:675b)
+; Because yellow uses the MBC5, loading $0 into $2000 - $2fff range will load bank0 instead of bank1
+; instead of defining the correct bank, GameFreak decided to simply copy the ED_Tile in the function during HBlank
 	ld de, ED_Tile
 	ld hl, vFont + $700
-	ld bc, (ED_TileEnd - ED_Tile) / $8
-	; to fix the graphical bug on poor emulators
-	;lb bc, BANK(ED_Tile), (ED_TileEnd - ED_Tile) / $8
-	jp CopyVideoDataDouble
+	ld c, $4 ; number of copies needed
+.waitForHBlankLoop
+	ld a, [rSTAT]
+	and %10 ; in HBlank?
+	jr nz, .waitForHBlankLoop
+	ld a, [de]
+	ld [hli], a
+	ld [hli], a
+	inc de
+	ld a, [de]
+	ld [hli], a
+	ld [hli], a
+	inc de
+	dec c
+	jr nz, .waitForHBlankLoop
+	ret
 
-ED_Tile: ; 6767 (1:6767)
+ED_Tile: ; 64e5 (1:64e5)
 	INCBIN "gfx/ED_tile.1bpp"
 ED_TileEnd:
 
@@ -365,13 +377,13 @@ PrintAlphabet: ; 676f (1:676f)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	jp Delay3
 
-LowerCaseAlphabet: ; 679e (1:679e)
+LowerCaseAlphabet: ; 651c (1:651c)
 	db "abcdefghijklmnopqrstuvwxyz ×():;[]",$e1,$e2,"-?!♂♀/",$f2,",¥UPPER CASE@"
 
-UpperCaseAlphabet: ; 67d6 (1:67d6)
+UpperCaseAlphabet: ; 6554 (1:6554)
 	db "ABCDEFGHIJKLMNOPQRSTUVWXYZ ×():;[]",$e1,$e2,"-?!♂♀/",$f2,",¥lower case@"
 
-PrintNicknameAndUnderscores: ; 680e (1:680e)
+PrintNicknameAndUnderscores: ; 658c (1:658c)
 	call CalcStringLength
 	ld a, c
 	ld [wNamingScreenNameLength], a
@@ -425,7 +437,7 @@ PrintNicknameAndUnderscores: ; 680e (1:680e)
 	ld [hl], $77 ; raised underscore tile id
 	ret
 
-DakutensAndHandakutens: ; 6871 (1:6871)
+DakutensAndHandakutens: ; 65ef (1:65ef)
 	push de
 	call CalcStringLength
 	dec hl
@@ -439,7 +451,7 @@ DakutensAndHandakutens: ; 6871 (1:6871)
 	ld [wNamingScreenLetter], a
 	ret
 
-Dakutens: ; 6885 (1:6885)
+Dakutens: ; 6603 (1:6603)
 	db "かが", "きぎ", "くぐ", "けげ", "こご"
 	db "さざ", "しじ", "すず", "せぜ", "そぞ"
 	db "ただ", "ちぢ", "つづ", "てで", "とど"
@@ -450,13 +462,13 @@ Dakutens: ; 6885 (1:6885)
 	db "ハバ", "ヒビ", "フブ", "へべ", "ホボ"
 	db $ff
 
-Handakutens: ; 68d6 (1:68d6)
+Handakutens: ; 6654 (1:6654)
 	db "はぱ", "ひぴ", "ふぷ", "へぺ", "ほぽ"
 	db "ハパ", "ヒピ", "フプ", "へぺ", "ホポ"
 	db $ff
 
 ; calculates the length of the string at wcf4b and stores it in c
-CalcStringLength: ; 68eb (1:68eb)
+CalcStringLength: ; 6669 (1:6669)
 	ld hl, wcf4b
 	ld c, $0
 .loop
@@ -467,7 +479,7 @@ CalcStringLength: ; 68eb (1:68eb)
 	inc c
 	jr .loop
 
-PrintNamingText: ; 68f8 (1:68f8)
+PrintNamingText: ; 6676 (1:6676)
 	coord hl, 0, 1
 	ld a, [wNamingScreenType]
 	ld de, YourTextString
@@ -499,14 +511,14 @@ PrintNamingText: ; 68f8 (1:68f8)
 .placeString
 	jp PlaceString
 
-YourTextString: ; 693f (1:693f)
+YourTextString: ; 66bd (1:66bd)
 	db "YOUR @"
 
-RivalsTextString: ; 6945 (1:6945)
+RivalsTextString: ; 66c3 (1:66c3)
 	db "RIVAL's @"
 
-NameTextString: ; 694d (1:694d)
+NameTextString: ; 66cb (1:66cb)
 	db "NAME?@"
 
-NicknameTextString: ; 6953 (1:6953)
+NicknameTextString: ; 66d1 (1:66d1)
 	db "NICKNAME?@"

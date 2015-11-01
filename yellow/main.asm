@@ -717,7 +717,7 @@ DebugTeam: ; 6253 (1:6253)
 EmptyFunc: ; 64ea (1:64ea)
 	ret
 
-	dr $625d,$66db
+INCLUDE "engine/menu/naming_screen.asm"
 ChoosePlayerName: ; 66db (1:66db)
 	dr $66db,$6722
 ChooseRivalName: ; 6722 (1:6722)
@@ -3667,7 +3667,9 @@ LoadEnemyMonData: ; 3ec87 (f:6c87)
 DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
 	dr $3edb8,$3eeb3
 QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3f027
+	dr $3eeb3,$3efe7
+LoadHudTilePatterns: ; 3efe7 (f:6fe7)
+	dr $3efe7,$3f027
 BattleRandom: ; 3f027 (f:7027)
 	dr $3f027,$3f3de
 StatModifierUpEffect: ; 3f3de (f:73de)
