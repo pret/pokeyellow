@@ -890,10 +890,39 @@ HandleItemListSwapping: ; 68c9 (1:68c9)
 	jp DisplayListMenuIDLoop
 
 INCLUDE "engine/overworld/pokemart.asm"
-
 INCLUDE "engine/learn_move.asm"
-DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
-	dr $6d97,$6f0e
+INCLUDE "engine/overworld/pokecenter.asm"
+
+SetLastBlackoutMap: ; 6ef0 (1:6ef0)
+; Set the map to return to when
+; blacking out or using Teleport or Dig.
+; Safari rest houses don't count.
+
+	push hl
+	ld hl, SafariZoneRestHouses
+	ld a, [wCurMap]
+	ld b, a
+.loop
+	ld a, [hli]
+	cp -1
+	jr z, .notresthouse
+	cp b
+	jr nz, .loop
+	jr .done
+
+.notresthouse
+	ld a, [wLastMap]
+	ld [wLastBlackoutMap], a
+.done
+	pop hl
+	ret
+
+SafariZoneRestHouses: ; 6f0a (1:6f0a)
+	db SAFARI_ZONE_REST_HOUSE_2
+	db SAFARI_ZONE_REST_HOUSE_3
+	db SAFARI_ZONE_REST_HOUSE_4
+	db -1
+
 DisplayTextIDInit: ; 6f0e (1:6f0e)
 	dr $6f0e,$6f80
 DrawStartMenu: ; 6f80 (1:6f80)
@@ -3297,7 +3326,9 @@ SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
 
 	dr $14000,$1401b
 _InitMapSprites: ; 1401b (5:401b)
-	dr $1401b,$143f1
+	dr $1401b,$140d2
+Func_140d2: ; 140d2 (5:40d2)
+	dr $140d2,$143f1
 
 RedCyclingSprite:     INCBIN "gfx/sprites/cycling.2bpp"
 RedSprite:            INCBIN "gfx/sprites/red.2bpp"

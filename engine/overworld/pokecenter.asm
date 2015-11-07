@@ -1,4 +1,13 @@
-DisplayPokemonCenterDialogue_: ; 6fe6 (1:6fe6)
+DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
+	ld a, [wCurMap]
+	cp PEWTER_POKECENTER
+	jr nz, .regularCenter
+	call Func_154a
+	jr z, .regularCenter
+	ld hl, LooksContentText ; if pikachu is sleeping, don't heal
+	call PrintText
+	ret
+.regularCenter
 	call SaveScreenTilesToBuffer1 ; save screen
 	ld hl, PokemonCenterWelcomeText
 	call PrintText
@@ -11,18 +20,36 @@ DisplayPokemonCenterDialogue_: ; 6fe6 (1:6fe6)
 	call PrintText
 .skipShallWeHealYourPokemon
 	call YesNoChoicePokeCenter ; yes/no menu
+	call UpdateSprites
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .declinedHealing ; if the player chose No
+	jp nz, .declinedHealing ; if the player chose No
 	call SetLastBlackoutMap
-	call LoadScreenTilesFromBuffer1 ; restore screen
+	callab IsPikachuInOurParty
+	jr nc, .notHealingPlayerPikachu
+	call Func_154a
+	jr nz, .notHealingPlayerPikachu
+	call LoadCurrentMapView
+	call Delay3
+	call UpdateSprites
+	callab Func_fd252 ; todo
+.notHealingPlayerPikachu
 	ld hl, NeedYourPokemonText
 	call PrintText
-	ld a, $18
-	ld [wSpriteStateData1 + $12], a ; make the nurse turn to face the machine
-	call Delay3
-	predef HealParty
+	ld c, 64
+	call DelayFrames
+	call Func_154a
+	jr nz, .playerPikachuNotOnScreen
+	call Func_152d
+	callab IsPikachuInOurParty
+	call c, Func_6eaa
+.playerPikachuNotOnScreen
+	lb bc, 1, 8
+	call Func_6ebb
+	ld c, 30
+	call DelayFrames
 	callba AnimateHealingMachine ; do the healing machine animation
+	predef HealParty
 	xor a
 	ld [wAudioFadeOutControl], a
 	ld a, [wAudioSavedROMBank]
@@ -31,38 +58,92 @@ DisplayPokemonCenterDialogue_: ; 6fe6 (1:6fe6)
 	ld [wLastMusicSoundID], a
 	ld [wNewSoundID], a
 	call PlaySound
+	call Func_154a
+	jr nz, .doNotReturnPikachu
+	callab IsPikachuInOurParty
+	call c, Func_6eaa
+	ld a, $5
+	ld [wd431], a
+	call Func_1525
+.doNotReturnPikachu
+	lb bc, 1, 0
+	call Func_6ebb
 	ld hl, PokemonFightingFitText
 	call PrintText
-	ld a, $14
-	ld [wSpriteStateData1 + $12], a ; make the nurse bow
-	ld c, a
+	callab IsPikachuInOurParty
+	jr nc, .notInParty
+	lb bc, 15, 0
+	call Func_6ebb
+.notInParty
+	call LoadCurrentMapView
+	call Delay3
+	call UpdateSprites
+	callab Func_140d2
+	ld a, $1
+	ld [H_SPRITEINDEX], a
+	ld a, $1
+	ld [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ld c, 40
 	call DelayFrames
+	call UpdateSprites
+	call LoadFontTilePatterns
 	jr .done
 .declinedHealing
 	call LoadScreenTilesFromBuffer1 ; restore screen
 .done
 	ld hl, PokemonCenterFarewellText
 	call PrintText
-	jp UpdateSprites
+	call UpdateSprites
+	ret
 
-PokemonCenterWelcomeText: ; 705d (1:705d)
+Func_6eaa: ; 6eaa (1:6eaa)
+	ld a, $1
+	ld [H_SPRITEINDEX], a
+	ld a, $4
+	ld [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ld c, 64
+	call DelayFrames
+	ret
+	
+Func_6ebb: ; 6ebb (1:6ebb)
+	ld a, b
+	ld [H_SPRITEINDEX], a
+	ld a, c
+	ld [hSpriteImageIndex], a
+	push bc
+	call SetSpriteFacingDirectionAndDelay
+	pop bc
+	ld a, b
+	ld [H_SPRITEINDEX], a
+	ld a, c
+	ld [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ret
+	
+PokemonCenterWelcomeText: ; 6de0 (1:6de0)
 	TX_FAR _PokemonCenterWelcomeText
 	db "@"
 
-ShallWeHealYourPokemonText: ; 7062 (1:7062)
+ShallWeHealYourPokemonText: ; 6de5 (1:6de5)
 	db $a
 	TX_FAR _ShallWeHealYourPokemonText
 	db "@"
 
-NeedYourPokemonText: ; 7068 (1:7068)
+NeedYourPokemonText: ; 6deb (1:6deb)
 	TX_FAR _NeedYourPokemonText
 	db "@"
 
-PokemonFightingFitText: ; 706d (1:706d)
+PokemonFightingFitText: ; 6ee0 (1:6ee0)
 	TX_FAR _PokemonFightingFitText
 	db "@"
 
-PokemonCenterFarewellText: ; 7072 (1:7072)
+PokemonCenterFarewellText: ; 6ee5 (1:6ee5)
 	db $a
 	TX_FAR _PokemonCenterFarewellText
+	db "@"
+	
+LooksContentText: ; 6eeb (1:6eeb)
+	TX_FAR _LooksContentText
 	db "@"
