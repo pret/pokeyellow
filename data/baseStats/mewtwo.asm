@@ -9,7 +9,7 @@ db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
 db 3 ; catch rate
 db 220 ; base exp yield
-INCBIN "pic/bmon/mewtwo.pic",0,1 ; 77, sprite dimensions
+INCBIN "pic/ymon/mewtwo.pic",0,1 ; 77, sprite dimensions
 dw MewtwoPicFront
 dw MewtwoPicBack
 ; attacks known at lvl 0
@@ -20,7 +20,7 @@ db PSYCHIC_M
 db 5 ; growth rate
 ; learnset
 	tmlearn 1,5,6,8
-	tmlearn 9,10,11,12,13,14,15,16
+	tmlearn 9,10,11,12,13,14,15
 	tmlearn 17,18,19,20,22,24
 	tmlearn 25,29,30,31,32
 	tmlearn 33,34,35,36,38,40

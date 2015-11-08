@@ -713,9 +713,9 @@ ENDM
 tmlearn: MACRO
 x = 0
 	rept _NARG
-if \1 != 0
+IF \1 != 0
 x = x | (1 << ((\1 - 1) % 8))
-endc
+ENDC
 	shift
 	endr
 	db x

@@ -3772,7 +3772,7 @@ KakunaPicBack:       INCBIN "pic/monback/kakunab.pic"
 BeedrillPicFront:    INCBIN "pic/ymon/beedrill.pic"
 BeedrillPicBack:     INCBIN "pic/monback/beedrillb.pic"
 
-FossilKabutopsPic:   INCBIN "pic/bmon/fossilkabutops.pic"
+FossilKabutopsPic:   INCBIN "pic/ymon/fossilkabutops.pic"
 
 	dr $2fd25,$2fd42
 CheckIfMoveIsKnown: ; 2fd42 (b:7d42)
@@ -3885,7 +3885,7 @@ WartortlePicFront:    INCBIN "pic/ymon/wartortle.pic"
 WartortlePicBack:     INCBIN "pic/monback/wartortleb.pic"
 CharizardPicFront:    INCBIN "pic/ymon/charizard.pic"
 CharizardPicBack:     INCBIN "pic/monback/charizardb.pic"
-FossilAerodactylPic:  INCBIN "pic/bmon/fossilaerodactyl.pic"
+FossilAerodactylPic:  INCBIN "pic/ymon/fossilaerodactyl.pic"
 GhostPic:             INCBIN "pic/other/ghost.pic"
 OddishPicFront:       INCBIN "pic/ymon/oddish.pic"
 OddishPicBack:        INCBIN "pic/monback/oddishb.pic"
@@ -3904,14 +3904,10 @@ VictreebelPicBack:    INCBIN "pic/monback/victreebelb.pic"
 
 SECTION "bank0E",ROMX,BANK[$0E]
 
-Moves: ; 38000 (e:4000)
-	dr $38000,$38006
-MoveEnd: ; 38006 (e:4006)
-	dr $38006,$383de
-BaseStats: ; 383de (e:43de)
-	dr $383de,$39462
-CryData: ; 39462 (e:5462)
-	dr $39462,$39893
+INCLUDE "data/moves.asm"
+BaseStats: INCLUDE "data/base_stats.asm"
+INCLUDE "data/cries.asm"	
+	dr $3969c,$39893
 TrainerPicAndMoneyPointers: ; 39893 (e:5893)
 	dr $39893,$3997e
 TrainerNames: ; 3997e (e:597e)

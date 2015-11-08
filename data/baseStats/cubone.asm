@@ -9,12 +9,12 @@ db GROUND ; species type 1
 db GROUND ; species type 2
 db 190 ; catch rate
 db 87 ; base exp yield
-INCBIN "pic/bmon/cubone.pic",0,1 ; 55, sprite dimensions
+INCBIN "pic/ymon/cubone.pic",0,1 ; 55, sprite dimensions
 dw CubonePicFront
 dw CubonePicBack
 ; attacks known at lvl 0
-db BONE_CLUB
 db GROWL
+db 0
 db 0
 db 0
 db 0 ; growth rate
