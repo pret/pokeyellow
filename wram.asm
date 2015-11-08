@@ -424,7 +424,7 @@ wUnknownSerialCounter:: ; cc47
 
 wEnteringCableClub:: ; cc47
 	ds 1
-
+wcc48:: ; cc48
 	ds 1
 
 wWhichTradeMonSelectionMenu:: ; cc49

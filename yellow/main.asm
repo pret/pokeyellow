@@ -1087,10 +1087,8 @@ PrintStartMenuItem: ; 702b (1:702b)
 	add hl,de
 	ret
 
-CableClubNPC: ; 7035 (1:7035)
-	dr $7035,$71ac
-CloseLinkConnection: ; 71ac (1:71ac)
-	dr $71ac,$71bf
+INCLUDE "engine/overworld/cable_club_npc.asm"
+
 DisplayTextBoxID_: ; 71bf (1:71bf)
 	dr $71bf,$778e
 PlayerPC: ; 778e (1:778e)

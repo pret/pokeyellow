@@ -1,9 +1,12 @@
-CableClubNPC: ; 71c5 (1:71c5)
+CableClubNPC: ; 7035 (1:7035)
 	ld hl, CableClubNPCWelcomeText
 	call PrintText
+	call Func_154a
+	jr nz, .asm_7048
 	CheckEvent EVENT_GOT_POKEDEX
 	jp nz, .receivedPokedex
 ; if the player hasn't received the pokedex
+.asm_7048
 	ld c, 60
 	call DelayFrames
 	ld hl, CableClubNPCMakingPreparationsText
@@ -107,37 +110,91 @@ CableClubNPC: ; 71c5 (1:71c5)
 	xor a
 	ld [hld], a
 	ld [hl], a
-	jpab LinkMenu
+	ld a, [wLetterPrintingDelayFlags]
+	push af
+	callab LinkMenu
+	pop af
+	ld [wLetterPrintingDelayFlags], a
+	ret
 
-CableClubNPCAreaReservedFor2FriendsLinkedByCableText: ; 72b3 (1:72b3)
+; seems to be similar of Serial_SyncAndExchangeNybble
+Serial_SyncAndExchangeNybbleDouble: ; 7131 (1:7131)
+	ld a, $ff
+	ld [wSerialExchangeNybbleReceiveData], a
+.loop
+	call Serial_ExchangeNybble
+	call DelayFrame
+	push hl
+	ld hl, wUnknownSerialCounter + 1
+	dec [hl]
+	jr nz, .next
+	dec hl
+	dec [hl]
+	jr nz, .next
+	pop hl
+	jr .setUnknownSerialCounterToFFFF
+.next
+	pop hl
+	ld a, [wSerialExchangeNybbleReceiveData]
+	inc a
+	jr z, .loop
+	call DelayFrame
+	ld a, $ff
+	ld [wSerialExchangeNybbleReceiveData], a
+	call Serial_ExchangeNybble
+	ld a, [wSerialExchangeNybbleReceiveData]
+	inc a
+	jr z, .loop
+	ld b, 10
+.syncLoop1
+	call DelayFrame
+	call Serial_ExchangeNybble
+	dec b
+	jr nz, .syncLoop1
+	ld b, 10
+.syncLoop2
+	call DelayFrame
+	call Serial_SendZeroByte
+	dec b
+	jr nz, .syncLoop2
+	ld a, [wSerialExchangeNybbleReceiveData]
+	ld [wSerialSyncAndExchangeNybbleReceiveData], a
+	ret
+.setUnknownSerialCounterToFFFF
+	ld a, $ff
+	ld [wUnknownSerialCounter], a
+	ld [wUnknownSerialCounter + 1], a
+	ret
+	
+CableClubNPCAreaReservedFor2FriendsLinkedByCableText: ; 7188 (1:7188)
 	TX_FAR _CableClubNPCAreaReservedFor2FriendsLinkedByCableText
 	db "@"
 
-CableClubNPCWelcomeText: ; 72b8 (1:72b8)
+CableClubNPCWelcomeText: ; 718d (1:718d)
 	TX_FAR _CableClubNPCWelcomeText
 	db "@"
 
-CableClubNPCPleaseApplyHereHaveToSaveText: ; 72bd (1:72bd)
+CableClubNPCPleaseApplyHereHaveToSaveText: ; 7192 (1:7192)
 	TX_FAR _CableClubNPCPleaseApplyHereHaveToSaveText
 	db "@"
 
-CableClubNPCPleaseWaitText: ; 72c2 (1:72c2)
+CableClubNPCPleaseWaitText: ; 7197 (1:7197)
 	TX_FAR _CableClubNPCPleaseWaitText
 	db $a, "@"
 
-CableClubNPCLinkClosedBecauseOfInactivityText: ; 72c8 (1:72c8)
+CableClubNPCLinkClosedBecauseOfInactivityText: ; 719d (1:719d)
 	TX_FAR _CableClubNPCLinkClosedBecauseOfInactivityText
 	db "@"
 
-CableClubNPCPleaseComeAgainText: ; 72cd (1:72cd)
+CableClubNPCPleaseComeAgainText: ; 71a2 (1:71a2)
 	TX_FAR _CableClubNPCPleaseComeAgainText
 	db "@"
 
-CableClubNPCMakingPreparationsText: ; 72d2 (1:72d2)
+CableClubNPCMakingPreparationsText: ; 71a7 (1:71a7)
 	TX_FAR _CableClubNPCMakingPreparationsText
 	db "@"
 
-CloseLinkConnection: ; 72d7 (1:72d7)
+CloseLinkConnection: ; 71ac (1:71ac)
 	call Delay3
 	ld a, CONNECTION_NOT_ESTABLISHED
 	ld [hSerialConnectionStatus], a
