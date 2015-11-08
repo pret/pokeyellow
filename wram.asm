@@ -3060,6 +3060,7 @@ wSecondLockTrashCanIndex:: ; d744
 
 	ds 2
 	
+wEventFlags::
 wd747:: ds 3 ; below here are mostly in game flags
 wd74a:: ds 1
 

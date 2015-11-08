@@ -942,7 +942,7 @@ SafariZoneRestHouses:
 	db -1
 
 ; function that performs initialization for DisplayTextID
-DisplayTextIDInit: ; 7096 (1:7096)
+DisplayTextIDInit: ; 6f0e (1:6f0e)
 	xor a
 	ld [wListMenuID],a
 	ld a,[wAutoTextBoxDrawingControl]
@@ -954,22 +954,19 @@ DisplayTextIDInit: ; 7096 (1:7096)
 ; if text ID is 0 (i.e. the start menu)
 ; Note that the start menu text border is also drawn in the function directly
 ; below this, so this seems unnecessary.
-	CheckEvent EVENT_GOT_POKEDEX
+	CheckEvent EVENT_GOT_POKEDEX ; ld a, [wd74b]
 ; start menu with pokedex
 	coord hl, 10, 0
-	ld b,$0e
-	ld c,$08
+	lb bc, 8, 14
 	jr nz,.drawTextBoxBorder
 ; start menu without pokedex
 	coord hl, 10, 0
-	ld b,$0c
-	ld c,$08
+	lb bc, 12, 8
 	jr .drawTextBoxBorder
 ; if text ID is not 0 (i.e. not the start menu) then do a standard dialogue text box
 .notStartMenu
 	coord hl, 0, 12
-	ld b,$04
-	ld c,$12
+	lb bc, 4, 18
 .drawTextBoxBorder
 	call TextBoxBorder
 .skipDrawingTextBoxBorder
@@ -1011,7 +1008,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	add hl,de
 	dec c
 	jr nz,.spriteStandStillLoop
-	ld b,$9c ; window background address
+	ld b,vBGMap1 / $100 ; window background address
 	call CopyScreenTileBufferToVRAM ; transfer background in WRAM to VRAM
 	xor a
 	ld [hWY],a ; put the window on the screen
@@ -1021,7 +1018,7 @@ DisplayTextIDInit: ; 7096 (1:7096)
 	ret
 
 ; function that displays the start menu
-DrawStartMenu: ; 710b (1:710b)
+DrawStartMenu: ; 6f80 (1:6f80)
 	CheckEvent EVENT_GOT_POKEDEX
 ; menu with pokedex
 	coord hl, 10, 0
