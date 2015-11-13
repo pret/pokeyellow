@@ -423,9 +423,7 @@ wUnknownSerialCounter:: ; cc47
 ; 2 bytes
 
 wEnteringCableClub:: ; cc47
-	ds 1
-wcc48:: ; cc48
-	ds 1
+	ds 2
 
 wWhichTradeMonSelectionMenu:: ; cc49
 ; $00 = player mons
@@ -2256,6 +2254,7 @@ wPartyMon6:: party_struct wPartyMon6 ; d247
 wPartyMonOT::    ds NAME_LENGTH * PARTY_LENGTH ; d273
 wPartyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH ; d2b5
 
+wPartyMonNicksEnd::
 wPartyDataEnd::
 
 
