@@ -42,7 +42,7 @@ compare: yellow
 
 # Filepath shortcuts to avoid overly long recipes.
 poketools := extras/pokemontools
-gfx       := $(PYTHON) $(poketools)/gfx.py
+gfx       := $(PYTHON) gfx.py
 pcm       := $(PYTHON) $(poketools)/pcm.py
 pic       := $(PYTHON) $(poketools)/pic.py
 includes  := $(PYTHON) $(poketools)/scan_includes.py

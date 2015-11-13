@@ -16,8 +16,6 @@ hWarpDestinationMap EQU $FF8B
 
 hOAMTile EQU $FF8B
 
-hROMBankTemp EQU $FF8B
-
 hPreviousTileset EQU $FF8B
 
 hEastWestConnectedMapWidth EQU $FF8B
@@ -317,13 +315,13 @@ hLCDCPointer EQU $FFF4
 
 hJoyInput EQU $FFF5
 
-hFieldMoveMonMenuTopMenuItemX EQU $FFF7
-
 hReadJoypad EQU $FFF8 ; 0 to read joypad, anything else skips joypad check
                       ; written to in palettes.asm
 
 ; bit 0: draw HP fraction to the right of bar instead of below (for party menu)
 ; bit 1: menu is double spaced
 hFlags_0xFFFA EQU $FFFA
+
+hFieldMoveMonMenuTopMenuItemX EQU $FFFB
 
 hGBC EQU $FFFE ; 0 if DMG, != 0 if GBC

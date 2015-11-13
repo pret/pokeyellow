@@ -1089,8 +1089,8 @@ PrintStartMenuItem: ; 702b (1:702b)
 
 INCLUDE "engine/overworld/cable_club_npc.asm"
 
-DisplayTextBoxID_: ; 71bf (1:71bf)
-	dr $71bf,$778e
+INCLUDE "engine/text_boxes.asm"
+	dr $76e7,$778e
 PlayerPC: ; 778e (1:778e)
 	dr $778e,$7a0f
 _RemovePokemon: ; 7a0f (1:7a0f)
