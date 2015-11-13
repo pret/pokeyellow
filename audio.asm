@@ -3,6 +3,20 @@ AUDIO_1 EQU $2
 AUDIO_2 EQU $8
 AUDIO_3 EQU $1f
 
+PCM_1  EQU $21
+PCM_2  EQU $22
+PCM_3  EQU $23
+PCM_4  EQU $24
+PCM_5  EQU $25
+PCM_6  EQU $31
+PCM_7  EQU $32
+PCM_8  EQU $33
+PCM_9  EQU $34
+PCM_10 EQU $35
+PCM_11 EQU $36
+PCM_12 EQU $37
+PCM_13 EQU $38
+
 INCLUDE "constants.asm"
 
 
@@ -638,3 +652,318 @@ INCLUDE "audio/music/jigglypuffsong.asm"
 INCLUDE "audio/music/halloffame.asm"
 INCLUDE "audio/music/credits.asm"
 INCLUDE "audio/music/yellowintro.asm"
+
+
+SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
+PikachuCry1:: ; 84000 (21:4000)
+	dw (PikachuCry1_End - PikachuCry1) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_1.pcm"
+PikachuCry1_End:
+
+	db $77  ; unused
+	; Game Freak might have made a slight error, because all of
+	; the pcm data has one trailing byte that is never processed.
+
+PikachuCry2:: ; 8491a (21:491a)
+	dw (PikachuCry2_End - PikachuCry2) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_2.pcm"
+PikachuCry2_End:
+
+	db $77  ; unused
+
+PikachuCry3:: ; 84fdc (21:4fdc)
+	dw (PikachuCry3_End - PikachuCry3) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_3.pcm"
+PikachuCry3_End:
+
+	db $03  ; unused
+
+PikachuCry4:: ; 859ee (21:59ee)
+	dw (PikachuCry4_End - PikachuCry4) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_4.pcm"
+PikachuCry4_End:
+
+	db $e0  ; unused
+
+
+SECTION "Pikachu Cries 2",ROMX,BANK[PCM_2]
+PikachuCry5:: ; 88000 (22:4000)
+	dw (PikachuCry5_End - PikachuCry5) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_5.pcm"
+PikachuCry5_End:
+
+	db $77  ; unused
+
+PikachuCry6:: ; 89042 (22:5042)
+	dw (PikachuCry6_End - PikachuCry6) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_6.pcm"
+PikachuCry6_End:
+
+	db $77  ; unused
+
+PikachuCry7:: ; 8a254 (22:6254)
+	dw (PikachuCry7_End - PikachuCry7) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_7.pcm"
+PikachuCry7_End:
+
+	db $ff  ; unused
+
+
+SECTION "Pikachu Cries 3",ROMX,BANK[PCM_3]
+PikachuCry8:: ; 8c000 (23:4000)
+	dw (PikachuCry8_End - PikachuCry8) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_8.pcm"
+PikachuCry8_End:
+
+	db $f7  ; unused
+
+PikachuCry9:: ; 8d0ca (23:50ca)
+	dw (PikachuCry9_End - PikachuCry9) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_9.pcm"
+PikachuCry9_End:
+
+	db $f3  ; unused
+
+PikachuCry10:: ; 8de0c (23:5e0c)
+	dw (PikachuCry10_End - PikachuCry10) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_10.pcm"
+PikachuCry10_End:
+
+	db $ff  ; unused
+
+
+SECTION "Pikachu Cries 4",ROMX,BANK[PCM_4]
+PikachuCry11:: ; 90000 (24:4000)
+	dw (PikachuCry11_End - PikachuCry11) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_11.pcm"
+PikachuCry11_End:
+
+	db $77  ; unused
+
+PikachuCry12:: ; 90722 (24:4772)
+	dw (PikachuCry12_End - PikachuCry12) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_12.pcm"
+PikachuCry12_End:
+
+	db $ff  ; unused
+
+PikachuCry13:: ; 914a4 (24:54a4)
+	dw (PikachuCry13_End - PikachuCry13) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_13.pcm"
+PikachuCry13_End:
+
+	db $f0  ; unused
+
+
+SECTION "Pikachu Cries 5",ROMX,BANK[PCM_5]
+PikachuCry14:: ; 94000 (25:4000)
+	dw (PikachuCry14_End - PikachuCry14) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_14.pcm"
+PikachuCry14_End:
+
+	db $fc  ; unused
+
+PikachuCry15:: ; 9589a (25:589a)
+	dw (PikachuCry15_End - PikachuCry15) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_15.pcm"
+PikachuCry15_End:
+
+	db $77  ; unused
+
+SECTION "Pikachu Cries 6",ROMX,BANK[PCM_6]
+PikachuCry16:: ; c4000 (31:4000)
+	dw (PikachuCry16_End - PikachuCry16) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_16.pcm"
+PikachuCry16_End:
+
+	db $e7  ; unused
+
+PikachuCry18:: ; c549a (31:549a)
+	dw (PikachuCry18_End - PikachuCry18) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_18.pcm"
+PikachuCry18_End:
+
+	db $00  ; unused
+
+PikachuCry22:: ; c63a4 (31:63a4)
+	dw (PikachuCry22_End - PikachuCry22) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_22.pcm"
+PikachuCry22_End:
+
+	db $7e  ; unused
+
+
+SECTION "Pikachu Cries 7",ROMX,BANK[PCM_7]
+PikachuCry20:: ; c8000 (32:4000)
+	dw (PikachuCry20_End - PikachuCry20) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_20.pcm"
+PikachuCry20_End:
+
+	db $07  ; unused
+
+PikachuCry21:: ; ca002 (32:6002)
+	dw (PikachuCry21_End - PikachuCry21) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_21.pcm"
+PikachuCry21_End:
+
+	db $ff  ; unused
+
+
+SECTION "Pikachu Cries 8",ROMX,BANK[PCM_8]
+PikachuCry19:: ; cc000 (33:4000)
+	dw (PikachuCry19_End - PikachuCry19) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_19.pcm"
+PikachuCry19_End:
+
+	db $06  ; unused
+
+PikachuCry24:: ; cd632 (33:5632)
+	dw (PikachuCry24_End - PikachuCry24) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_24.pcm"
+PikachuCry24_End:
+
+	db $e0  ; unused
+
+PikachuCry26:: ; cf25c (33:725c)
+	dw (PikachuCry26_End - PikachuCry26) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_26.pcm"
+PikachuCry26_End:
+
+
+SECTION "Pikachu Cries 9",ROMX,BANK[PCM_9]
+PikachuCry17:: ; d0000 (34:4000)
+	dw (PikachuCry17_End - PikachuCry17) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_17.pcm"
+PikachuCry17_End:
+
+	db $00  ; unused
+
+PikachuCry23:: ; d0862 (34:4862)
+	dw (PikachuCry23_End - PikachuCry23) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_23.pcm"
+PikachuCry23_End:
+
+	db $00  ; unused
+
+PikachuCry25:: ; d173c (34:573c)
+	dw (PikachuCry25_End - PikachuCry25) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_25.pcm"
+PikachuCry25_End:
+
+	db $03  ; unused
+
+
+SECTION "Pikachu Cries 10",ROMX,BANK[PCM_10]
+PikachuCry27:: ; d4000 (35:4000)
+	dw (PikachuCry27_End - PikachuCry27) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_27.pcm"
+PikachuCry27_End:
+
+	db $ff  ; unused
+
+PikachuCry28:: ; d4b5a (35:4b5a)
+	dw (PikachuCry28_End - PikachuCry28) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_28.pcm"
+PikachuCry28_End:
+
+	db $1b  ; unused
+
+PikachuCry29:: ; d5da4 (35:5da4)
+	dw (PikachuCry29_End - PikachuCry29) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_29.pcm"
+PikachuCry29_End:
+
+	db $87  ; unused
+
+PikachuCry30:: ; d69ce (35:69ce)
+	dw (PikachuCry30_End - PikachuCry30) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_30.pcm"
+PikachuCry30_End:
+
+	db $00  ; unused
+
+PikachuCry31:: ; d6e80 (35:6ea0)
+	dw (PikachuCry31_End - PikachuCry31) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_31.pcm"
+PikachuCry31_End:
+
+
+SECTION "Pikachu Cries 11",ROMX,BANK[PCM_11]
+PikachuCry32:: ; d8000 (36:4000)
+	dw (PikachuCry32_End - PikachuCry32) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_32.pcm"
+PikachuCry32_End:
+
+	db $ff  ; unused
+
+PikachuCry33:: ; d858a (36:458a)
+	dw (PikachuCry33_End - PikachuCry33) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_33.pcm"
+PikachuCry33_End:
+
+	db $1f  ; unused
+
+PikachuCry34:: ; d923c (36:523c)
+	dw (PikachuCry34_End - PikachuCry34) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_34.pcm"
+PikachuCry34_End:
+
+	db $01  ; unused
+
+PikachuCry41:: ; da746 (36:6746)
+	dw (PikachuCry41_End - PikachuCry41) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_41.pcm"
+PikachuCry41_End:
+
+	db $9b  ; unused
+
+
+SECTION "Pikachu Cries 12",ROMX,BANK[PCM_12]
+PikachuCry35:: ; dc000 (37:4000)
+	dw (PikachuCry35_End - PikachuCry35) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_35.pcm"
+PikachuCry35_End:
+
+	db $00  ; unused
+
+PikachuCry36:: ; dd22a (37:5d2a)
+	dw (PikachuCry36_End - PikachuCry36) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_36.pcm"
+PikachuCry36_End:
+
+	db $01  ; unused
+
+PikachuCry39:: ; dee0c (37:6e0c)
+	dw (PikachuCry39_End - PikachuCry39) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_39.pcm"
+PikachuCry39_End:
+
+	db $0f  ; unused
+
+
+SECTION "Pikachu Cries 13",ROMX,BANK[PCM_13]
+PikachuCry37:: ; e0000 (38:4000)
+	dw (PikachuCry37_End - PikachuCry37) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_37.pcm"
+PikachuCry37_End:
+
+	db $3f  ; unused
+
+PikachuCry38:: ; e0dfa (38:4dfa)
+	dw (PikachuCry38_End - PikachuCry38) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_38.pcm"
+PikachuCry38_End:
+
+	db $ff  ; unused
+
+PikachuCry40:: ; e1a64 (38:5a64)
+	dw (PikachuCry40_End - PikachuCry40) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_40.pcm"
+PikachuCry40_End:
+
+	db $ff  ; unused
+
+PikachuCry42:: ; e2976 (38:6976)
+	dw (PikachuCry42_End - PikachuCry42) - 2 ; length of pcm data
+	INCBIN "audio/pikachu_cries/pikachu_cry_42.pcm"
+PikachuCry42_End:
