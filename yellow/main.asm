@@ -1090,7 +1090,8 @@ PrintStartMenuItem: ; 702b (1:702b)
 INCLUDE "engine/overworld/cable_club_npc.asm"
 
 INCLUDE "engine/text_boxes.asm"
-	dr $76e7,$778e
+INCLUDE "engine/battle/moveEffects/drain_hp_effect.asm"
+
 PlayerPC: ; 778e (1:778e)
 	dr $778e,$7a0f
 _RemovePokemon: ; 7a0f (1:7a0f)
@@ -3953,7 +3954,9 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 StartBattle: ; 3c127 (f:4127)
 	dr $3c127,$3cae8
 AnyPartyAlive: ; 3cae8 (f:4ae8)
-	dr $3cae8,$3ce1f
+	dr $3cae8,$3ce08
+ReadPlayerMonCurHPAndStatus: ; 3ce08 (f:4e08)
+	dr $3ce08,$3ce1f
 DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
 	dr $3ce1f,$3ceb1
 DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)

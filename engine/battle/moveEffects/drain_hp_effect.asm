@@ -1,4 +1,4 @@
-DrainHPEffect_: ; 783f (1:783f)
+DrainHPEffect_: ; 76e7 (1:76e7)
 	ld hl, wDamage
 	ld a, [hl]
 	srl a ; divide damage by 2
@@ -95,10 +95,10 @@ DrainHPEffect_: ; 783f (1:783f)
 .printText
 	jp PrintText
 
-SuckedHealthText: ; 78dc (1:78dc)
+SuckedHealthText: ; 7784 (1:7784)
 	TX_FAR _SuckedHealthText
 	db "@"
 
-DreamWasEatenText: ; 78e1 (1:78e1)
+DreamWasEatenText: ; 7789 (1:7789)
 	TX_FAR _DreamWasEatenText
 	db "@"
