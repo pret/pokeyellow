@@ -1,6 +1,4 @@
-PlayerPC: ; 78e6 (1:78e6)
-	ld hl, wd730
-	set 6, [hl]
+PlayerPC: ; 778e (1:778e)
 	ld a, ITEM_NAME
 	ld [wNameListType], a
 	call SaveScreenTilesToBuffer1
@@ -15,16 +13,17 @@ PlayerPC: ; 78e6 (1:78e6)
 	call PlaySound
 	ld hl, TurnedOnPC2Text
 	call PrintText
-
+	
 PlayerPCMenu: ; 790c (1:790c)
+	ld hl, wd730
+	set 6, [hl]
 	ld a, [wParentMenuItem]
 	ld [wCurrentMenuItem], a
 	ld hl, wFlags_0xcd60
 	set 5, [hl]
 	call LoadScreenTilesFromBuffer2
 	coord hl, 0, 0
-	ld b, $8
-	ld c, $e
+	lb bc, 8, 14
 	call TextBoxBorder
 	call UpdateSprites
 	coord hl, 2, 2
@@ -62,7 +61,7 @@ PlayerPCMenu: ; 790c (1:790c)
 	dec a
 	jp z, PlayerPCToss
 
-ExitPlayerPC: ; 796d (1:796d)
+ExitPlayerPC: ; 7814 (1:7814)
 	ld a, [wFlags_0xcd60]
 	bit 3, a ; accessing player's PC through another PC?
 	jr nz, .next
@@ -83,7 +82,7 @@ ExitPlayerPC: ; 796d (1:796d)
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ret
 
-PlayerPCDeposit: ; 7995 (1:7995)
+PlayerPCDeposit: ; 783c (1:783c)
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
@@ -137,7 +136,7 @@ PlayerPCDeposit: ; 7995 (1:7995)
 	call PrintText
 	jp .loop
 
-PlayerPCWithdraw: ; 7a12 (1:7a12)
+PlayerPCWithdraw: ; 78b9 (1:78b9)
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
@@ -191,7 +190,7 @@ PlayerPCWithdraw: ; 7a12 (1:7a12)
 	call PrintText
 	jp .loop
 
-PlayerPCToss: ; 7a8f (1:7a8f)
+PlayerPCToss: ; 7936 (1:7936)
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
@@ -240,64 +239,64 @@ PlayerPCToss: ; 7a8f (1:7a8f)
 	call TossItem ; disallows tossing key items
 	jp .loop
 
-PlayersPCMenuEntries: ; 7af5 (1:7af5)
+PlayersPCMenuEntries: ; 799c (1:799c)
 	db   "WITHDRAW ITEM"
 	next "DEPOSIT ITEM"
 	next "TOSS ITEM"
 	next "LOG OFF@"
 
-TurnedOnPC2Text: ; 7b22 (1:7b22)
+TurnedOnPC2Text: ; 79c9 (1:79c9)
 	TX_FAR _TurnedOnPC2Text
 	db "@"
 
-WhatDoYouWantText: ; 7b27 (1:7b27)
+WhatDoYouWantText: ; 79ce (1:79ce)
 	TX_FAR _WhatDoYouWantText
 	db "@"
 
-WhatToDepositText: ; 7b2c (1:7b2c)
+WhatToDepositText: ; 79d3 (1:79d3)
 	TX_FAR _WhatToDepositText
 	db "@"
 
-DepositHowManyText: ; 7b31 (1:7b31)
+DepositHowManyText: ; 79d8 (1:79d8)
 	TX_FAR _DepositHowManyText
 	db "@"
 
-ItemWasStoredText: ; 7b36 (1:7b36)
+ItemWasStoredText: ; 79dd (1:79dd)
 	TX_FAR _ItemWasStoredText
 	db "@"
 
-NothingToDepositText: ; 7b3b (1:7b3b)
+NothingToDepositText: ; 79e2 (1:79e2)
 	TX_FAR _NothingToDepositText
 	db "@"
 
-NoRoomToStoreText: ; 7b40 (1:7b40)
+NoRoomToStoreText: ; 79e7 (1:79e7)
 	TX_FAR _NoRoomToStoreText
 	db "@"
 
-WhatToWithdrawText: ; 7b45 (1:7b45)
+WhatToWithdrawText: ; 79ec (1:79ec)
 	TX_FAR _WhatToWithdrawText
 	db "@"
 
-WithdrawHowManyText: ; 7b4a (1:7b4a)
+WithdrawHowManyText: ; 79f1 (1:79f1)
 	TX_FAR _WithdrawHowManyText
 	db "@"
 
-WithdrewItemText: ; 7b4f (1:7b4f)
+WithdrewItemText: ; 79f6 (1:79f6)
 	TX_FAR _WithdrewItemText
 	db "@"
 
-NothingStoredText: ; 7b54 (1:7b54)
+NothingStoredText: ; 79fb (1:79fb)
 	TX_FAR _NothingStoredText
 	db "@"
 
-CantCarryMoreText: ; 7b59 (1:7b59)
+CantCarryMoreText: ; 7a00 (1:7a00)
 	TX_FAR _CantCarryMoreText
 	db "@"
 
-WhatToTossText: ; 7b5e (1:7b5e)
+WhatToTossText: ; 7a05 (1:7a05)
 	TX_FAR _WhatToTossText
 	db "@"
 
-TossHowManyText: ; 7b63 (1:7b63)
+TossHowManyText: ; 7a0a (1:7a0a)
 	TX_FAR _TossHowManyText
 	db "@"

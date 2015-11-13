@@ -1092,8 +1092,8 @@ INCLUDE "engine/overworld/cable_club_npc.asm"
 INCLUDE "engine/text_boxes.asm"
 INCLUDE "engine/battle/moveEffects/drain_hp_effect.asm"
 
-PlayerPC: ; 778e (1:778e)
-	dr $778e,$7a0f
+INCLUDE "engine/menu/players_pc.asm"
+
 _RemovePokemon: ; 7a0f (1:7a0f)
 	dr $7a0f,$7abf
 _DisplayPokedex: ; 7c18 (1:7abf)
@@ -3562,7 +3562,7 @@ SafariZoneCheckSteps: ; 1e330 (7:6330)
 	dr $1e330,$1e385
 PrintSafariGameOverText: ; 1e385 (7:6385)
 	dr $1e385,$1e4bf
-CinnabarGymQuiz_1eb0a: ; 1e4bf (7:64bf)
+CinnabarGymQuiz_1e4bf: ; 1e4bf (7:64bf)
 	dr $1e4bf,$20000
 
 SECTION "Pics 1", ROMX, BANK[PICS_1]

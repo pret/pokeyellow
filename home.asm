@@ -4915,7 +4915,7 @@ PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 INCLUDE "home/predef.asm"
 
 UpdateCinnabarGymGateTileBlocks:: ; 3ef0 (0:3ef0)
-	callba CinnabarGymQuiz_1eb0a
+	callba CinnabarGymQuiz_1e4bf
 	ret ; again?
 	;jp Bankswitch
 
