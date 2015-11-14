@@ -2,6 +2,7 @@
 
 import os
 import sys
+sys.path.insert(0,(os.path.abspath(os.path.dirname(__file__) + 'extras/pokemontools'))) # correct module path to pokemontools
 import png
 from math import sqrt, floor, ceil
 import argparse

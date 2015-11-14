@@ -3526,9 +3526,8 @@ WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
 WorldMapTileGraphicsEnd:
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
 
-	dr $11468,$1168a
-PrintStatsBox: ; 1168a (4:568a)
-	dr $1168a, $11875
+INCLUDE "engine/menu/status_screen.asm"
+
 DrawPartyMenu_: ; 11875 (4:5875)
 	dr $11875,$11886
 RedrawPartyMenu_: ; 11886 (4:5886)

@@ -1,15 +1,15 @@
-DrawHP: ; 128ef (4:68ef)
+DrawHP: ; 11468 (4:5468)
 ; Draws the HP bar in the stats screen
 	call GetPredefRegisters
 	ld a, $1
 	jr DrawHP_
 
-DrawHP2: ; 128f6 (4:68f6)
+DrawHP2: ; 1146f (4:546f)
 ; Draws the HP bar in the party screen
 	call GetPredefRegisters
 	ld a, $2
 
-DrawHP_: ; 128fb (4:68fb)
+DrawHP_: ; 11474 (4:5474)
 	ld [wHPBarType], a
 	push hl
 	ld a, [wLoadedMonHP]
@@ -63,7 +63,7 @@ DrawHP_: ; 128fb (4:68fb)
 
 
 ; Predef 0x37
-StatusScreen: ; 12953 (4:6953)
+StatusScreen: ; 114cc (4:54cc)
 	call LoadMonData
 	ld a, [wMonDataLocation]
 	cp BOX_DATA
@@ -170,8 +170,25 @@ StatusScreen: ; 12953 (4:6953)
 	call GBPalNormal
 	coord hl, 1, 0
 	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
+	ld a, [wMonDataLocation]
+	cp ENEMY_PARTY_DATA
+	jr z, .playRegularCry
+	cp BOX_DATA
+	jr z, .checkBoxData
+	callab IsThisPartymonOurPikachu
+	jr nc, .playRegularCry
+	jr .playPikachuSoundClip
+.checkBoxData
+	callab Func_fce0d
+	jr nc, .playRegularCry
+.playPikachuSoundClip
+	ld e, 16
+	callab PlayPikachuSoundClip
+	jr .continue
+.playRegularCry
 	ld a, [wcf91]
 	call PlayCry ; play Pokémon cry
+.continue
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
 	ld [hTilesetType], a
@@ -192,38 +209,38 @@ StatusScreen: ; 12953 (4:6953)
 	ld a, [wWhichPokemon]
 	jp SkipFixedLengthTextEntries
 
-OTPointers: ; 12a95 (4:6a95)
+OTPointers: ; 1163b (4:563b)
 	dw wPartyMonOT
 	dw wEnemyMonOT
 	dw wBoxMonOT
 	dw wDayCareMonOT
 
-NamePointers2: ; 12a9d (4:6a9d)
+NamePointers2: ; 11643 (4:5643)
 	dw wPartyMonNicks
 	dw wEnemyMonNicks
 	dw wBoxMonNicks
 	dw wDayCareMonName
 
-Type1Text: ; 12aa5 (4:6aa5)
+Type1Text: ; 1164b (4:564b)
 	db "TYPE1/", $4e
 
-Type2Text: ; 12aac (4:6aac)
+Type2Text: ; 11652 (4:5652)
 	db "TYPE2/", $4e
 
-IDNoText: ; 12ab3 (4:6ab3)
+IDNoText: ; 11659 (4:5659)
 	db $73, "№", "/", $4e
 
-OTText: ; 12ab7 (4:6ab7)
+OTText: ; 1165d (4:565d)
 	db "OT/", $4e, "@"
 
-StatusText: ; 12abc (4:6abc)
+StatusText: ; 11662 (4:5662)
 	db "STATUS/@"
 
-OKText: ; 12ac4 (4:6ac4)
+OKText: ; 1166a (4:566a)
 	db "OK@"
 
 ; Draws a line starting from hl high b and wide c
-DrawLineBox: ; 0x12ac7
+DrawLineBox: ; 1166d (4:566d)
 	ld de, SCREEN_WIDTH ; New line
 .PrintVerticalLine
 	ld [hl], $78 ; │
@@ -240,25 +257,23 @@ DrawLineBox: ; 0x12ac7
 	ld [hl], $6f ; ← (halfarrow ending)
 	ret
 
-PTile: ; 12adc (4:6adc) ; This is a single 1bpp "P" tile
+PTile: ; 11682 (4:5682) ; This is a single 1bpp "P" tile
 	INCBIN "gfx/p_tile.1bpp"
 PTileEnd:
 
-PrintStatsBox: ; 12ae4 (4:6ae4)
+PrintStatsBox: ; 1168a (4:568a)
 	ld a, d
 	and a ; a is 0 from the status screen
 	jr nz, .DifferentBox
 	coord hl, 0, 8
-	ld b, $8
-	ld c, $8
+	lb bc, 8, 8
 	call TextBoxBorder ; Draws the box
 	coord hl, 1, 9 ; Start printing stats from here
 	ld bc, $0019 ; Number offset
 	jr .PrintStats
 .DifferentBox
 	coord hl, 9, 2
-	ld b, $8
-	ld c, $9
+	lb bc, 8, 9
 	call TextBoxBorder
 	coord hl, 11, 3
 	ld bc, $0018
@@ -279,7 +294,7 @@ PrintStatsBox: ; 12ae4 (4:6ae4)
 	call PrintStat
 	ld de, wLoadedMonSpecial
 	jp PrintNumber
-PrintStat
+PrintStat: ; 116d4 (4:56d4)
 	push hl
 	call PrintNumber
 	pop hl
@@ -287,13 +302,13 @@ PrintStat
 	add hl, de
 	ret
 
-StatsText: ; 12b3a (4:6b3a)
+StatsText: ; 116de (4:56de)
 	db   "ATTACK"
 	next "DEFENSE"
 	next "SPEED"
 	next "SPECIAL@"
 
-StatusScreen2: ; 12b57 (4:6b57)
+StatusScreen2: ; 116fb (4:56fb)
 	ld a, [hTilesetType]
 	push af
 	xor a
@@ -313,8 +328,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 	coord hl, 19, 3
 	ld [hl], $78
 	coord hl, 0, 8
-	ld b, 8
-	ld c, 18
+	lb bc, 8, 18
 	call TextBoxBorder ; Draw move container
 	coord hl, 2, 9
 	ld de, wMovesString
@@ -335,11 +349,11 @@ StatusScreen2: ; 12b57 (4:6b57)
 	ld c, a
 	ld a, "-"
 	call StatusScreen_PrintPP ; Fill the rest with --
-.InitPP ; 12bbb
+.InitPP ; 1175e
 	ld hl, wLoadedMonMoves
 	coord de, 14, 10
 	ld b, 0
-.PrintPP ; 12bc3
+.PrintPP ; 11766
 	ld a, [hli]
 	and a
 	jr z, .PPDone
@@ -435,7 +449,7 @@ StatusScreen2: ; 12b57 (4:6b57)
 	call GBPalWhiteOut
 	jp ClearScreen
 
-CalcExpToLevelUp: ; 12c86 (4:6c86)
+CalcExpToLevelUp: ; 11829 (4:5829)
 	ld a, [wLoadedMonLevel]
 	cp MAX_LEVEL
 	jr z, .atMaxLevel
@@ -461,16 +475,16 @@ CalcExpToLevelUp: ; 12c86 (4:6c86)
 	ld [hl], a
 	ret
 
-StatusScreenExpText: ; 12caf (4:6caf)
+StatusScreenExpText: ; 11852 (4:5852)
 	db   "EXP POINTS"
 	next "LEVEL UP@"
 
-StatusScreen_ClearName: ; 12cc3 (4:6cc3)
+StatusScreen_ClearName: ; 11866 (4:5866)
 	ld bc, 10
 	ld a, " "
 	jp FillMemory
 
-StatusScreen_PrintPP: ; 12ccb (4:6ccb)
+StatusScreen_PrintPP: ; 1186e (4:586e)
 ; print PP or -- c times, going down two rows each time
 	ld [hli], a
 	ld [hld], a
