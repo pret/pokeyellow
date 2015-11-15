@@ -3569,8 +3569,9 @@ QuestionMarkSprite:    INCBIN "gfx/sprites/question_mark.2bpp"
 
 INCLUDE "engine/battle/end_of_battle.asm"
 INCLUDE "engine/battle/wild_encounters.asm"
-
-	dr $138f6,$14000
+INCLUDE "engine/battle/moveEffects/recoil_effect.asm"
+INCLUDE "engine/battle/moveEffects/conversion_effect.asm"
+INCLUDE "engine/battle/moveEffects/haze_effect.asm"
 
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]

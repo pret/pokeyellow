@@ -1,4 +1,4 @@
-RecoilEffect_: ; 1392c (4:792c)
+RecoilEffect_: ; 138f6 (4:78f6)
 	ld a, [H_WHOSETURN]
 	and a
 	ld a, [W_PLAYERMOVENUM]
@@ -65,6 +65,6 @@ RecoilEffect_: ; 1392c (4:792c)
 	predef UpdateHPBar2
 	ld hl, HitWithRecoilText
 	jp PrintText
-HitWithRecoilText: ; 1399e (4:799e)
+HitWithRecoilText: ; 13968 (4:7968)
 	TX_FAR _HitWithRecoilText
 	db "@"
