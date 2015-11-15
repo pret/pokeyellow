@@ -54,3 +54,4 @@ TechnicalMachines: ; 13773 (4:7773)
 	db SURF
 	db STRENGTH
 	db FLASH
+	db $ff ; terminator

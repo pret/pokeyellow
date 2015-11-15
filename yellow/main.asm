@@ -3534,8 +3534,7 @@ ShrinkPic1:  INCBIN "pic/trainer/shrink1.pic"
 ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
 
 INCLUDE "engine/menu/start_sub_menus.asm"
-
-	dr $122f0,$12365
+INCLUDE "engine/items/tms.asm"
 
 
 SECTION "NPC Sprites 1", ROMX, BANK[NPC_SPRITES_1]
