@@ -160,12 +160,12 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	ld de, vChars2 + $310
 	ld bc, TradingAnimationGraphicsEnd - TradingAnimationGraphics
 	ld a, BANK(TradingAnimationGraphics)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, TradingAnimationGraphics2
 	ld de, vSprites + $7c0
 	ld bc, TradingAnimationGraphics2End - TradingAnimationGraphics2
 	ld a, BANK(TradingAnimationGraphics2)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, vBGMap0
 	ld bc, $800
 	ld a, " "

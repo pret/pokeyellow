@@ -7,6 +7,7 @@ DisplayStartMenu:: ; 29d1 (0:29d1)
 
 RedisplayStartMenu:: ; 29e1 (0:29e1)
 	callba DrawStartMenu
+RedisplayStartMenu_DoNotDrawStartMenu: ; 29e9 (0:29e9)
 	callba PrintSafariZoneSteps ; print Safari Zone info, if in Safari Zone
 	call UpdateSprites
 .loop

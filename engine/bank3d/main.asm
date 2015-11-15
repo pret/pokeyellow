@@ -455,7 +455,7 @@ Text_f5b28:: ; f5b28 (3d:5b28)
 	TX_FAR _CanMoveBouldersText ; 2d:4193
 	db "@"
 	
-Func_f5b2d:: ; f5b2d (3d:5b2d)
+CheckForForcedBikeSurf:: ; f5b2d (3d:5b2d)
 	ld hl,wd728
 	set 1,[hl]
 	ld a,[wd732]
@@ -464,32 +464,30 @@ Func_f5b2d:: ; f5b2d (3d:5b2d)
 	ld a,[wCurMap]
 	cp SEAFOAM_ISLANDS_5
 	ret nz
-	ld a,[wd881]
-	and $3
-	cp $3
+	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
 	ret z
 	ld hl,CoordsData_f5b64
 	call ArePlayerCoordsInArray
 	ret nc
 	ld hl,wd728
 	res 1,[hl]
-	ld hl,Text_f5b67
+	ld hl,CurrentTooFastText
 	jp PrintText
 .asm_f5b59
 	ld hl,wd728
 	res 1,[hl]
-	ld hl,Text_f5b6c
+	ld hl,CyclingIsFunText
 	jp PrintText
 	
 CoordsData_f5b64:: ; f5b64 (3d:5b64)
 	db 11,07
 	db $ff
 	
-Text_f5b67:: ; f5b67 (3d:5b67)
+CurrentTooFastText:: ; f5b67 (3d:5b67)
 	TX_FAR _CurrentTooFastText ; 2d:41ab
 	db "@"
 	
-Text_f5b6c:: ; f5b6c (3d:5b6c)
+CyclingIsFunText:: ; f5b6c (3d:5b6c)
 	TX_FAR _CyclingIsFunText ; 2d:41ca
 	db "@"
 	

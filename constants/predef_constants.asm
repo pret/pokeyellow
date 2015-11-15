@@ -59,7 +59,7 @@ const_value = 0
 	predef_const InternalClockTradeAnim
 	predef_const TrainerEngage
 	predef_const IndexToPokedex
-	predef_const Predef3B; 3B display pic?
+	predef_const DisplayPicCenteredOrUpperRight; 3B display pic?
 	predef_const UsedCut
 	predef_const ShowPokedexData
 	predef_const WriteMonMoves

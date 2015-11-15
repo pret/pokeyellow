@@ -851,17 +851,17 @@ LoadSlotMachineTiles: ; 378a8 (d:78a8)
 	ld de, vChars0
 	ld bc, $1c0
 	ld a, BANK(SlotMachineTiles2)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, SlotMachineTiles1
 	ld de, vChars2
 	ld bc, $250
 	ld a, BANK(SlotMachineTiles1)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, SlotMachineTiles2
 	ld de, vChars2 + $250
 	ld bc, $1c0
 	ld a, BANK(SlotMachineTiles2)
-	call FarCopyData2
+	call FarCopyData
 	ld hl, SlotMachineMap
 	coord de, 0, 0
 	ld bc, $00f0

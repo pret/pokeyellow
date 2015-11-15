@@ -3250,13 +3250,13 @@ W_CURMAPSCRIPT:: ; da39
 
 	ds 6
 
-W_PLAYTIMEHOURS:: ; da40
+wPlayTimeHours:: ; da40
 	ds 2
-W_PLAYTIMEMINUTES:: ; da42
+wPlayTimeMinutes:: ; da42
 	ds 2
-W_PLAYTIMESECONDS:: ; da44
+wPlayTimeSeconds:: ; da44
 	ds 1
-W_PLAYTIMEFRAMES:: ; da45
+wPlayTimeFrames:: ; da45
 	ds 1
 
 wSafariZoneGameOver:: ; da46

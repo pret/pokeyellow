@@ -3533,22 +3533,9 @@ RedPicFront: INCBIN "pic/ytrainer/red.pic"
 ShrinkPic1:  INCBIN "pic/trainer/shrink1.pic"
 ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
 
-StartMenu_Pokedex: ; 11c22 (4:5c22)
-	dr $11c22,$11c36
-StartMenu_Pokemon: ; 11c36 (4:5c36)
-	dr $11c36,$11e98
-ErasePartyMenuCursors: ; 11e98 (4:5e98)
-	dr $11e98,$11ead
-StartMenu_Item: ; 11ead (4:5ead)
-	dr $11ead,$1200a
-StartMenu_TrainerInfo: ; 1200a (4:600a)
-	dr $1200a,$12195
-StartMenu_SaveReset: ; 12195 (4:6195)
-	dr $12195,$121a8
-StartMenu_Option: ; 121a8 (4:61a8)
-	dr $121a8,$121c5
-SwitchPartyMon: ; 121c5 (4:61c5)
-	dr $121c5,$12365
+INCLUDE "engine/menu/start_sub_menus.asm"
+
+	dr $122f0,$12365
 
 
 SECTION "NPC Sprites 1", ROMX, BANK[NPC_SPRITES_1]

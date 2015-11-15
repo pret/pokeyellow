@@ -59,15 +59,10 @@ VBlank:: ; 1de5 (0:1de5)
 
 	call FadeOutAudio
 	
-	ld a, $8
-	call BankswitchCommon
-	call Music_DoLowHealthAlarm
+	callbs Music_DoLowHealthAlarm
+	callbs Audio1_UpdateMusic
 	
-	ld a, $2
-	call BankswitchCommon
-	call Audio1_UpdateMusic
-	
-	call SerialFunction ; add this
+	call SerialFunction
 
 	ld a, [wVBlankSavedROMBank]
 	ld [H_LOADEDROMBANK], a

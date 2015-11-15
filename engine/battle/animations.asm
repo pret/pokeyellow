@@ -2082,7 +2082,7 @@ AnimationSubstitute: ; 796e0 (1e:56e0)
 CopySlowbroSpriteData: ; 7973f (1e:573f)
 	ld bc, $0010
 	ld a, BANK(SlowbroSprite)
-	jp FarCopyData2
+	jp FarCopyData
 
 HideSubstituteShowMonAnim: ; 79747 (1e:5747)
 	ld a, [H_WHOSETURN]

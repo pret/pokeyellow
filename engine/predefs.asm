@@ -112,7 +112,7 @@ PredefPointers:: ; f681d (3d:681d)
 	;add_predef InternalClockTradeAnim
 	;add_predef TrainerEngage
 	;add_predef IndexToPokedex
-	;add_predef Predef3B; 3B display pic?
+	;add_predef DisplayPicCenteredOrUpperRight; 3B display pic?
 	;add_predef UsedCut
 	;add_predef ShowPokedexData
 	;add_predef WriteMonMoves

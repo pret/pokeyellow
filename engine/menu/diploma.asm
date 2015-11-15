@@ -11,7 +11,7 @@ DisplayDiploma: ; 566e2 (15:66e2)
 	ld de, vChars2 + $700
 	ld bc, $0010
 	ld a, BANK(CircleTile)
-	call FarCopyData2
+	call FarCopyData
 	coord hl, 0, 0
 	lb bc, 16, 18
 	predef Diploma_TextBoxBorder
