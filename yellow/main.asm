@@ -3527,11 +3527,8 @@ WorldMapTileGraphicsEnd:
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
 
 INCLUDE "engine/menu/status_screen.asm"
+INCLUDE "engine/menu/party_menu.asm"
 
-DrawPartyMenu_: ; 11875 (4:5875)
-	dr $11875,$11886
-RedrawPartyMenu_: ; 11886 (4:5886)
-	dr $11886,$11a97
 RedPicFront: INCBIN "pic/ytrainer/red.pic"
 ShrinkPic1:  INCBIN "pic/trainer/shrink1.pic"
 ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
@@ -4052,7 +4049,7 @@ EvolveTradeMon: ; 3adb8 (e:6db8)
 	dr $3adb8,$3b10f
 Func_3b10f: ; 3b01f (e:710f)
 	dr $3b10f,$3b1e5
-Pointer_3b1e5: ; 3b1e5 (e:71e5)
+EvosMovesPointerTable: ; 3b1e5 (e:71e5)
 	dr $3b1e5,$3c000
 
 

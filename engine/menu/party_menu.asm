@@ -17,14 +17,14 @@
 ; f6: health returned
 ; f7: revitalized
 ; f8: leveled up
-DrawPartyMenu_: ; 12cd2 (4:6cd2)
+DrawPartyMenu_: ; 11875 (4:5875)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
 	call UpdateSprites
 	callba LoadMonPartySpriteGfxWithLCDDisabled ; load pokemon icon graphics
 
-RedrawPartyMenu_: ; 12ce3 (4:6ce3)
+RedrawPartyMenu_: ; 11886 (4:5886)
 	ld a,[wPartyMenuTypeOrMessageID]
 	cp a,SWAP_MONS_PARTY_MENU
 	jp z,.printMessage
@@ -49,9 +49,17 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	call GetPartyMonName
 	pop hl
 	call PlaceString ; print the pokemon's name
-	callba WriteMonPartySpriteOAMByPartyIndex ; place the appropriate pokemon icon
 	ld a,[hPartyMonIndex]
 	ld [wWhichPokemon],a
+	callab IsThisPartymonOurPikachu
+	jr nc, .regularMon
+	call Func_154a
+	jr z, .regularMon
+	ld a, $ff
+	ld [hPartyMonIndex], a
+.regularMon
+	callba WriteMonPartySpriteOAMByPartyIndex ; place the appropriate pokemon icon
+	ld a, [wWhichPokemon]
 	inc a
 	ld [hPartyMonIndex],a
 	call LoadMonData
@@ -109,8 +117,8 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	jr nz,.placeMoveLearnabilityString
 	ld de,.notAbleToLearnMoveText
 .placeMoveLearnabilityString
-	ld bc,20 + 9 ; down 1 row and right 9 columns
 	push hl
+	ld bc,20 + 9 ; down 1 row and right 9 columns
 	add hl,bc
 	call PlaceString
 	pop hl
@@ -150,7 +158,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	ld l,a
 	ld de,wcd6d
 	ld a,BANK(EvosMovesPointerTable)
-	ld bc,Mon133_EvosEnd - Mon133_EvosMoves
+	ld bc, $0d ; Mon133_EvosEnd - Mon133_EvosMoves
 	call FarCopyData
 	ld hl,wcd6d
 	ld de,.notAbleToEvolveText
@@ -176,9 +184,9 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 ; if it does match
 	ld de,.ableToEvolveText
 .placeEvolutionStoneString
-	ld bc,20 + 9 ; down 1 row and right 9 columns
 	pop hl
 	push hl
+	ld bc,20 + 9 ; down 1 row and right 9 columns
 	add hl,bc
 	call PlaceString
 	pop hl
@@ -234,7 +242,7 @@ RedrawPartyMenu_: ; 12ce3 (4:6ce3)
 	call PrintText
 	jr .done
 
-PartyMenuItemUseMessagePointers: ; 12e61 (4:6e61)
+PartyMenuItemUseMessagePointers: ; 11a1a (4:5a1a)
 	dw AntidoteText
 	dw BurnHealText
 	dw IceHealText
@@ -245,7 +253,7 @@ PartyMenuItemUseMessagePointers: ; 12e61 (4:6e61)
 	dw ReviveText
 	dw RareCandyText
 
-PartyMenuMessagePointers: ; 12e73 (4:6e73)
+PartyMenuMessagePointers: ; 11a2c (4:5a2c)
 	dw PartyMenuNormalText
 	dw PartyMenuItemUseText
 	dw PartyMenuBattleText
@@ -253,65 +261,65 @@ PartyMenuMessagePointers: ; 12e73 (4:6e73)
 	dw PartyMenuSwapMonText
 	dw PartyMenuItemUseText
 
-PartyMenuNormalText: ; 12e7f (4:6e7f)
+PartyMenuNormalText: ; 11a38 (4:5a38)
 	TX_FAR _PartyMenuNormalText
 	db "@"
 
-PartyMenuItemUseText: ; 12e84 (4:6e84)
+PartyMenuItemUseText: ; 11a3d (4:5a3d)
 	TX_FAR _PartyMenuItemUseText
 	db "@"
 
-PartyMenuBattleText: ; 12e89 (4:6e89)
+PartyMenuBattleText: ; 11a42 (4:5a42)
 	TX_FAR _PartyMenuBattleText
 	db "@"
 
-PartyMenuUseTMText: ; 12e8e (4:6e8e)
+PartyMenuUseTMText: ; 11a47 (4:5a47)
 	TX_FAR _PartyMenuUseTMText
 	db "@"
 
-PartyMenuSwapMonText: ; 12e93 (4:6e93)
+PartyMenuSwapMonText: ; 11a4c (4:5a4c)
 	TX_FAR _PartyMenuSwapMonText
 	db "@"
 
-PotionText: ; 12e98 (4:6e98)
+PotionText: ; 11a51 (4:5a51)
 	TX_FAR _PotionText
 	db "@"
 
-AntidoteText: ; 12e9d (4:6e9d)
+AntidoteText: ; 11a56 (4:5a56)
 	TX_FAR _AntidoteText
 	db "@"
 
-ParlyzHealText: ; 12ea2 (4:6ea2)
+ParlyzHealText: ; 11a5b (4:5a5b)
 	TX_FAR _ParlyzHealText
 	db "@"
 
-BurnHealText: ; 12ea7 (4:6ea7)
+BurnHealText: ; 11a60 (4:5a60)
 	TX_FAR _BurnHealText
 	db "@"
 
-IceHealText: ; 12eac (4:6eac)
+IceHealText: ; 11a65 (4:5a65)
 	TX_FAR _IceHealText
 	db "@"
 
-AwakeningText: ; 12eb1 (4:6eb1)
+AwakeningText: ; 11a6a (4:5a6a)
 	TX_FAR _AwakeningText
 	db "@"
 
-FullHealText: ; 12eb6 (4:6eb6)
+FullHealText: ; 11a6f (4:5a6f)
 	TX_FAR _FullHealText
 	db "@"
 
-ReviveText: ; 12ebb (4:6ebb)
+ReviveText: ; 11a74 (4:5a74)
 	TX_FAR _ReviveText
 	db "@"
 
-RareCandyText: ; 12ec0 (4:6ec0)
+RareCandyText: ; 11a79 (4:5a79)
 	TX_FAR _RareCandyText
 	db $0B
 	db $06
 	db "@"
 
-SetPartyMenuHPBarColor: ; 12ec7 (4:6ec7)
+SetPartyMenuHPBarColor: ; 11a80 (4:5a80)
 	ld hl, wPartyMenuHPBarColors
 	ld a, [wWhichPartyMenuHPBar]
 	ld c, a

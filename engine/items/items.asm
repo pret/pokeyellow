@@ -709,7 +709,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	ret
 
 Func_d85d: ; d85d (3:585d)
-	ld hl, Pointer_3b1e5
+	ld hl, EvosMovesPointerTable
 	ld a, [wLoadedMon]
 	dec a
 	ld c, a
