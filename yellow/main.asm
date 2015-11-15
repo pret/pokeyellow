@@ -3536,7 +3536,6 @@ ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
 INCLUDE "engine/menu/start_sub_menus.asm"
 INCLUDE "engine/items/tms.asm"
 
-
 SECTION "NPC Sprites 1", ROMX, BANK[NPC_SPRITES_1]
 
 OakAideSprite:         INCBIN "gfx/sprites/oak_aide.2bpp"
@@ -3568,10 +3567,10 @@ OldAmberSprite:        INCBIN "gfx/sprites/old_amber.2bpp"
 LyingOldManSprite:     INCBIN "gfx/sprites/lying_old_man.2bpp"
 QuestionMarkSprite:    INCBIN "gfx/sprites/question_mark.2bpp"
 
-EndOfBattle: ; 13765 (4:7765)
-	dr $13765,$1383a
-TryDoWildEncounter: ; 1383a (4:783a)
-	dr $1383a,$14000
+INCLUDE "engine/battle/end_of_battle.asm"
+INCLUDE "engine/battle/wild_encounters.asm"
+
+	dr $138f6,$14000
 
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
@@ -4346,7 +4345,9 @@ SECTION "bank39",ROMX,BANK[$39]
 
 SECTION "bank3A",ROMX,BANK[$3A]
 MonsterNames: ; e8000 (3a:4000)
-	dr $e8000,$e8a5e
+	dr $e8000,$e876c
+IsPlayerJustOutsideMap: ; e876c (3a:476c)
+	dr $e876c,$e8a5e
 Func_e8a5e: ; e8a5e (3a:4a5e)
 	dr $e8a5e,$e8d35
 Func_e8d35:: ; e8d35 (3a:4d35)

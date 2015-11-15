@@ -1,4 +1,4 @@
-EndOfBattle: ; 137aa (4:77aa)
+EndOfBattle: ; 13765 (4:7765)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .notLinkBattle
@@ -10,6 +10,8 @@ EndOfBattle: ; 137aa (4:77aa)
 	ld a, [wEnemyMonStatus]
 	ld [hl], a
 	call ClearScreen
+	ld b, SET_PAL_OVERWORLD
+	call RunPaletteCommand
 	callab DisplayLinkBattleVersusTextBox
 	ld a, [wBattleResult]
 	cp $1
@@ -43,6 +45,8 @@ EndOfBattle: ; 137aa (4:77aa)
 	xor a
 	ld [wForceEvolution], a
 	predef EvolutionAfterBattle
+	ld d, $82
+	callab Func_fce5a
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
@@ -74,15 +78,15 @@ EndOfBattle: ; 137aa (4:77aa)
 	ld [wDestinationWarpID], a
 	ret
 
-YouWinText: ; 13853 (4:7853)
+YouWinText: ; 1381d (4:781d)
 	db "YOU WIN@"
 
-YouLoseText: ; 1385b (4:785b)
+YouLoseText: ; 13825 (4:7825)
 	db "YOU LOSE@"
 
-DrawText: ; 13864 (4:7864)
+DrawText: ; 1382e (4:782e)
 	db "  DRAW@"
 
-PickUpPayDayMoneyText: ; 1386b (4:786b)
+PickUpPayDayMoneyText: ; 13835 (4:7835)
 	TX_FAR _PickUpPayDayMoneyText
 	db "@"

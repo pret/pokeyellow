@@ -1,6 +1,6 @@
 ; try to initiate a wild pokemon encounter
 ; returns success in Z
-TryDoWildEncounter: ; 13870 (4:7870)
+TryDoWildEncounter: ; 1383a (4:783a)
 	ld a, [wNPCMovementScriptPointerTableNum]
 	and a
 	ret nz
@@ -24,8 +24,9 @@ TryDoWildEncounter: ; 13870 (4:7870)
 	ld [wRepelRemainingSteps], a
 .next
 ; determine if wild pokemon can appear in the half-block we're standing in
-; is the bottom right tile (9,9) of the half-block we're standing in a grass/water tile?
-	coord hl, 9, 9
+; is the bottom left tile (8,9) of the half-block we're standing in a grass/water tile?
+; note that by using the bottom left tile, this prevents the "left-shore" tiles from generating grass encounters
+	coord hl, 8, 9
 	ld c, [hl]
 	ld a, [wGrassTile]
 	cp c
@@ -68,8 +69,6 @@ TryDoWildEncounter: ; 13870 (4:7870)
 	cp $14 ; is the bottom left tile (8,9) of the half-block we're standing in a water tile?
 	jr nz, .gotWildEncounterType ; else, it's treated as a grass tile by default
 	ld hl, wWaterMons
-; since the bottom right tile of a "left shore" half-block is $14 but the bottom left tile is not,
-; "left shore" half-blocks (such as the one in the east coast of Cinnabar) load grass encounters.
 .gotWildEncounterType
 	ld b, 0
 	add hl, bc
@@ -101,7 +100,7 @@ TryDoWildEncounter: ; 13870 (4:7870)
 	xor a
 	ret
 
-WildMonEncounterSlotChances: ; 13918 (4:7918)
+WildMonEncounterSlotChances: ; 138e2 (4:78e2)
 ; There are 10 slots for wild pokemon, and this is the table that defines how common each of
 ; those 10 slots is. A random number is generated and then the first byte of each pair in this
 ; table is compared against that random number. If the random number is less than or equal
