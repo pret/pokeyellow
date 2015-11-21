@@ -3522,6 +3522,7 @@ NineTile:                       INCBIN "gfx/9_tile.2bpp"
 TextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
 TextBoxGraphicsEnd:
 PokedexTileGraphics:            INCBIN "gfx/pokedex.2bpp"
+PokedexTileGraphicsEnd:
 WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
 WorldMapTileGraphicsEnd:
 PlayerCharacterTitleGraphics:   INCBIN "gfx/player_title.2bpp"
@@ -3576,11 +3577,8 @@ INCLUDE "engine/battle/moveEffects/haze_effect.asm"
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
 
-	dr $14000,$1401b
-_InitMapSprites: ; 1401b (5:401b)
-	dr $1401b,$140d2
-Func_140d2: ; 140d2 (5:40d2)
-	dr $140d2,$143f1
+INCLUDE "engine/load_pokedex_tiles.asm"
+INCLUDE "engine/overworld/map_sprites.asm"
 
 RedCyclingSprite:     INCBIN "gfx/sprites/cycling.2bpp"
 RedSprite:            INCBIN "gfx/sprites/red.2bpp"

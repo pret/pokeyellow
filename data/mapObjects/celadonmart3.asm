@@ -22,9 +22,9 @@ CeladonMart3Object: ; 0x482c4 (size=94)
 
 	db $5 ; objects
 	object SPRITE_MART_GUY, $10, $5, STAY, NONE, $1 ; person
-	object SPRITE_GAMEBOY_KID_COPY, $b, $6, STAY, RIGHT, $2 ; person
-	object SPRITE_GAMEBOY_KID_COPY, $7, $2, STAY, DOWN, $3 ; person
-	object SPRITE_GAMEBOY_KID_COPY, $8, $2, STAY, DOWN, $4 ; person
+	object SPRITE_GAMEBOY_KID, $b, $6, STAY, RIGHT, $2 ; person
+	object SPRITE_GAMEBOY_KID, $7, $2, STAY, DOWN, $3 ; person
+	object SPRITE_GAMEBOY_KID, $8, $2, STAY, DOWN, $4 ; person
 	object SPRITE_YOUNG_BOY, $2, $5, STAY, UP, $5 ; person
 
 	; warp-to

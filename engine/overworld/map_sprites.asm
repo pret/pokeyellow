@@ -8,337 +8,49 @@
 ; fields, respectively, within loops. The X is the loop index.
 ; If there is an inner loop, Y is the inner loop index, i.e. $C1Y* and $C2Y*
 ; denote fields of the sprite slots interated over in the inner loop.
-_InitMapSprites: ; 1785b (5:785b)
+_InitMapSprites: ; 1401b (5:401b)
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
 ; if the map is an inside map (i.e. mapID >= $25)
-	ld hl,wSpriteStateData1
-	ld de,wSpriteStateData2 + $0d
-; Loop to copy picture ID's from $C1X0 to $C2XD for LoadMapSpriteTilePatterns.
-.copyPictureIDLoop
-	ld a,[hl] ; $C1X0 (picture ID)
-	ld [de],a ; $C2XD
-	ld a,$10
-	add e
-	ld e,a
-	ld a,$10
-	add l
-	ld l,a
-	jr nz,.copyPictureIDLoop
-
-; This is used for both inside and outside maps, since it is called by
-; InitOutsideMapSprites.
-; Loads tile pattern data for sprites into VRAM.
-LoadMapSpriteTilePatterns: ; 17871 (5:7871)
-	ld a,[wNumSprites]
-	and a ; are there any sprites?
-	jr nz,.spritesExist
+	call Func_14061
+	call Func_140b7
+	call Func_14150
 	ret
-.spritesExist
-	ld c,a ; c = [wNumSprites]
-	ld b,$10 ; number of sprite slots
-	ld hl,wSpriteStateData2 + $0d
-	xor a
-	ld [hFourTileSpriteCount],a
-.copyPictureIDLoop ; loop to copy picture ID from $C2XD to $C2XE
-	ld a,[hli] ; $C2XD (sprite picture ID)
-	ld [hld],a ; $C2XE
-	ld a,l
-	add a,$10
-	ld l,a
-	dec b
-	jr nz,.copyPictureIDLoop
-	ld hl,wSpriteStateData2 + $1e
-.loadTilePatternLoop
-	ld de,wSpriteStateData2 + $1d
-; Check if the current picture ID has already had its tile patterns loaded.
-; This done by looping through the previous sprite slots and seeing if any of
-; their picture ID's match that of the current sprite slot.
-.checkIfAlreadyLoadedLoop
-	ld a,e
-	and a,$f0
-	ld b,a ; b = offset of the wSpriteStateData2 sprite slot being checked against
-	ld a,l
-	and a,$f0 ; a = offset of current wSpriteStateData2 sprite slot
-	cp b ; done checking all previous sprite slots?
-	jr z,.notAlreadyLoaded
-	ld a,[de] ; picture ID of the wSpriteStateData2 sprite slot being checked against
-	cp [hl] ; do the picture ID's match?
-	jp z,.alreadyLoaded
-	ld a,e
-	add a,$10
-	ld e,a
-	jr .checkIfAlreadyLoadedLoop
-.notAlreadyLoaded
-	ld de,wSpriteStateData2 + $0e
-	ld b,$01
-; loop to find the highest tile pattern VRAM slot (among the first 10 slots) used by a previous sprite slot
-; this is done in order to find the first free VRAM slot available
-.findNextVRAMSlotLoop
-	ld a,e
-	add a,$10
-	ld e,a
-	ld a,l
-	cp e ; reached current slot?
-	jr z,.foundNextVRAMSlot
-	ld a,[de] ; $C2YE (VRAM slot)
-	cp a,11 ; is it one of the first 10 slots?
-	jr nc,.findNextVRAMSlotLoop
-	cp b ; compare the slot being checked to the current max
-	jr c,.findNextVRAMSlotLoop ; if the slot being checked is less than the current max
-; if the slot being checked is greater than or equal to the current max
-	ld b,a ; store new max VRAM slot
-	jr .findNextVRAMSlotLoop
-.foundNextVRAMSlot
-	inc b ; increment previous max value to get next VRAM tile pattern slot
-	ld a,b ; a = next VRAM tile pattern slot
-	push af
-	ld a,[hl] ; $C2XE (sprite picture ID)
-	ld b,a ; b = current sprite picture ID
-	cp a,SPRITE_BALL ; is it a 4-tile sprite?
-	jr c,.notFourTileSprite
-	pop af
-	ld a,[hFourTileSpriteCount]
-	add a,11
-	jr .storeVRAMSlot
-.notFourTileSprite
-	pop af
-.storeVRAMSlot
-	ld [hl],a ; store VRAM slot at $C2XE
-	ld [hVRAMSlot],a ; used to determine if it's 4-tile sprite later
-	ld a,b ; a = current sprite picture ID
-	dec a
-	add a
-	add a
-	push bc
-	push hl
-	ld hl,SpriteSheetPointerTable
-	jr nc,.noCarry
-	inc h
-.noCarry
-	add l
-	ld l,a
-	jr nc,.noCarry2
-	inc h
-.noCarry2
-	push hl
-	call ReadSpriteSheetData
-	push af
-	push de
-	push bc
-	ld hl,vNPCSprites ; VRAM base address
-	ld bc,$c0 ; number of bytes per VRAM slot
-	ld a,[hVRAMSlot]
-	cp a,11 ; is it a 4-tile sprite?
-	jr nc,.fourTileSpriteVRAMAddr
-	ld d,a
-	dec d
-; Equivalent to multiplying $C0 (number of bytes in 12 tiles) times the VRAM
-; slot and adding the result to $8000 (the VRAM base address).
-.calculateVRAMAddrLoop
-	add hl,bc
-	dec d
-	jr nz,.calculateVRAMAddrLoop
-	jr .loadStillTilePattern
-.fourTileSpriteVRAMAddr
-	ld hl,vSprites + $7c0 ; address for second 4-tile sprite
-	ld a,[hFourTileSpriteCount]
-	and a
-	jr nz,.loadStillTilePattern
-; if it's the first 4-tile sprite
-	ld hl,vSprites + $780 ; address for first 4-tile sprite
-	inc a
-	ld [hFourTileSpriteCount],a
-.loadStillTilePattern
-	pop bc
-	pop de
-	pop af
-	push hl
-	push hl
-	ld h,d
-	ld l,e
-	pop de
-	ld b,a
-	ld a,[wFontLoaded]
-	bit 0,a ; reloading upper half of tile patterns after displaying text?
-	jr nz,.skipFirstLoad ; if so, skip loading data into the lower half
-	ld a,b
-	ld b,0
-	call FarCopyData ; load tile pattern data for sprite when standing still
-.skipFirstLoad
-	pop de
-	pop hl
-	ld a,[hVRAMSlot]
-	cp a,11 ; is it a 4-tile sprite?
-	jr nc,.skipSecondLoad ; if so, there is no second block
-	push de
-	call ReadSpriteSheetData
-	push af
-	ld a,$c0
-	add e
-	ld e,a
-	jr nc,.noCarry3
-	inc d
-.noCarry3
-	ld a,[wFontLoaded]
-	bit 0,a ; reloading upper half of tile patterns after displaying text?
-	jr nz,.loadWhileLCDOn
-	pop af
-	pop hl
-	set 3,h ; add $800 to hl
-	push hl
-	ld h,d
-	ld l,e
-	pop de
-	call FarCopyData ; load tile pattern data for sprite when walking
-	jr .skipSecondLoad
-; When reloading the upper half of tile patterns after diplaying text, the LCD
-; will be on, so CopyVideoData (which writes to VRAM only during V-blank) must
-; be used instead of FarCopyData.
-.loadWhileLCDOn
-	pop af
-	pop hl
-	set 3,h ; add $800 to hl
-	ld b,a
-	swap c
-	call CopyVideoData ; load tile pattern data for sprite when walking
-.skipSecondLoad
-	pop hl
-	pop bc
-	jr .nextSpriteSlot
-.alreadyLoaded ; if the current picture ID has already had its tile patterns loaded
-	inc de
-	ld a,[de] ; a = VRAM slot for the current picture ID (from $C2YE)
-	ld [hl],a ; store VRAM slot in current wSpriteStateData2 sprite slot (at $C2XE)
-.nextSpriteSlot
-	ld a,l
-	add a,$10
-	ld l,a
-	dec c
-	jp nz,.loadTilePatternLoop
-	ld hl,wSpriteStateData2 + $0d
-	ld b,$10
-; the pictures ID's stored at $C2XD are no longer needed, so zero them
-.zeroStoredPictureIDLoop
-	xor a
-	ld [hl],a ; $C2XD
-	ld a,$10
-	add l
-	ld l,a
-	dec b
-	jr nz,.zeroStoredPictureIDLoop
-	ret
-
-; reads data from SpriteSheetPointerTable
-; INPUT:
-; hl = address of sprite sheet entry
-; OUTPUT:
-; de = pointer to sprite sheet
-; bc = length in bytes
-; a = ROM bank
-ReadSpriteSheetData: ; 17971 (5:7971)
-	ld a,[hli]
-	ld e,a
-	ld a,[hli]
-	ld d,a
-	ld a,[hli]
-	ld c,a
-	xor a
-	ld b,a
-	ld a,[hli]
-	ret
-
+	
 ; Loads sprite set for outside maps (cities and routes) and sets VRAM slots.
 ; sets carry if the map is a city or route, unsets carry if not
-InitOutsideMapSprites: ; 1797b (5:797b)
+InitOutsideMapSprites: ; 14029 (5:4029)
 	ld a,[wCurMap]
 	cp a,REDS_HOUSE_1F ; is the map a city or a route (map ID less than $25)?
 	ret nc ; if not, return
-	ld hl,MapSpriteSets
-	add l
-	ld l,a
-	jr nc,.noCarry
-	inc h
-.noCarry
-	ld a,[hl] ; a = spriteSetID
-	cp a,$f0 ; does the map have 2 sprite sets?
-	call nc,GetSplitMapSpriteSetID ; if so, choose the appropriate one
+	call GetSplitMapSpriteSetID
+; if so, choose the appropriate one
 	ld b,a ; b = spriteSetID
 	ld a,[wFontLoaded]
 	bit 0,a ; reloading upper half of tile patterns after displaying text?
 	jr nz,.loadSpriteSet ; if so, forcibly reload the sprite set
-	ld a,[W_SPRITESETID]
+	ld a,[wSpriteSetID]
 	cp b ; has the sprite set ID changed?
 	jr z,.skipLoadingSpriteSet ; if not, don't load it again
 .loadSpriteSet
 	ld a,b
-	ld [W_SPRITESETID],a
+	ld [wSpriteSetID],a
 	dec a
-	ld b,a
-	sla a
 	ld c,a
-	sla a
-	sla a
-	add c
-	add b ; a = (spriteSetID - 1) * 11
-	ld de,SpriteSets
-; add a to de to get offset of sprite set
-	add e
-	ld e,a
-	jr nc,.noCarry2
-	inc d
-.noCarry2
-	ld hl,wSpriteStateData2 + $0d
-	ld a,SPRITE_RED
-	ld [hl],a
-	ld bc,W_SPRITESET
-; Load the sprite set into RAM.
-; This loop also fills $C2XD (sprite picture ID) where X is from $0 to $A
-; with picture ID's. This is done so that LoadMapSpriteTilePatterns will
-; load tile patterns for all sprite pictures in the sprite set.
-.loadSpriteSetLoop
-	ld a,$10
-	add l
-	ld l,a
-	ld a,[de] ; sprite picture ID from sprite set
-	ld [hl],a ; $C2XD (sprite picture ID)
-	ld [bc],a
-	inc de
-	inc bc
-	ld a,l
-	cp a,$bd ; reached 11th sprite slot?
-	jr nz,.loadSpriteSetLoop
-	ld b,4 ; 4 remaining sprite slots
-.zeroRemainingSlotsLoop ; loop to zero the picture ID's of the remaining sprite slots
-	ld a,$10
-	add l
-	ld l,a
-	xor a
-	ld [hl],a ; $C2XD (sprite picture ID)
-	dec b
-	jr nz,.zeroRemainingSlotsLoop
-	ld a,[wNumSprites]
-	push af ; save number of sprites
-	ld a,11 ; 11 sprites in sprite set
-	ld [wNumSprites],a
-	call LoadMapSpriteTilePatterns
-	pop af
-	ld [wNumSprites],a ; restore number of sprites
-	ld hl,wSpriteStateData2 + $1e
-	ld b,$0f
-; The VRAM tile pattern slots that LoadMapSpriteTilePatterns set are in the
-; order of the map's sprite set, not the order of the actual sprites loaded
-; for the current map. So, they are not needed and are zeroed by this loop.
-.zeroVRAMSlotsLoop
-	xor a
-	ld [hl],a ; $C2XE (VRAM slot)
-	ld a,$10
-	add l
-	ld l,a
-	dec b
-	jr nz,.zeroVRAMSlotsLoop
+	ld b,0
+	ld a, (wSpriteSetID - wSpriteSet)
+	ld hl,SpriteSets
+	call AddNTimes ; get sprite set offset
+	ld de, wSpriteSet
+	ld bc, (wSpriteSetID - wSpriteSet)
+	call CopyData ; copy it to wSpriteSet
+	call Func_140b7
 .skipLoadingSpriteSet
-	ld hl,wSpriteStateData1 + $10
+	call Func_14150
+	scf
+	ret
+	
+Func_14061: ; 14061 (5:4061)
 ; This loop stores the correct VRAM tile pattern slots according the sprite
 ; data from the map's header. Since the VRAM tile pattern slots are filled in
 ; the order of the sprite set, in order to find the VRAM tile pattern slot
@@ -346,48 +58,250 @@ InitOutsideMapSprites: ; 1797b (5:797b)
 ; sprite set. The index of the picture ID within the sprite set plus one
 ; (since the Red sprite always has the first VRAM tile pattern slot) is the
 ; VRAM tile pattern slot.
-.storeVRAMSlotsLoop
-	ld c,0
-	ld a,[hl] ; $C1X0 (picture ID) (zero if sprite slot is not used)
-	and a ; is the sprite slot used?
-	jr z,.skipGettingPictureIndex ; if the sprite slot is not used
-	ld b,a ; b = picture ID
-	ld de,W_SPRITESET
-; Loop to find the index of the sprite's picture ID within the sprite set.
-.getPictureIndexLoop
-	inc c
-	ld a,[de]
-	inc de
-	cp b ; does the picture ID match?
-	jr nz,.getPictureIndexLoop
-	inc c
-.skipGettingPictureIndex
-	push hl
-	inc h
+	ld hl, wSpriteSet
+	ld bc, (wSpriteSetID - wSpriteSet)
+	xor a
+	call FillMemory
+	ld a, SPRITE_PIKACHU
+	ld [wSpriteSet], a
+	ld hl,wSpriteStateData1 + $10
 	ld a,$0e
-	add l
-	ld l,a
-	ld a,c ; a = VRAM slot (zero if sprite slot is not used)
-	ld [hl],a ; $C2XE (VRAM slot)
-	pop hl
-	ld a,$10
-	add l
-	ld l,a
+.storeVRAMSlotsLoop
+	push af
+	ld a, [hl] ; $C1X0 (picture ID) (zero if sprite slot is not used)
+	and a ; is the sprite slot used?
+	jr z,.continue ; if the sprite slot is not used
+	ld c, a
+	call CheckForNewYellowSprite
+	jr nc, .asm_1408a
+	ld de, wSpriteSet + 9
+	ld b, 2
+	call Func_1409b
+	jr .continue
+.asm_1408a
+	ld de, wSpriteSet
+	ld b, 9
+	call Func_1409b
+.continue
+	ld de, $10
+	add hl, de
+	pop af
+	dec a
+	jr nz, .storeVRAMSlotsLoop
+	ret
+
+Func_1409b: ; 1409b (5:409b)
+	ld a, [de]
 	and a
-	jr nz,.storeVRAMSlotsLoop
+	jr z, .asm_140a7
+	cp c
+	ret z
+	dec b
+	jr z, .asm_140aa
+	inc de
+	jr Func_1409b
+.asm_140a7
+	ld a, c
+	ld [de], a
+	ret
+.asm_140aa
 	scf
 	ret
 
+CheckForNewYellowSprite: ; 140ac (5:40ac)
+; Checks for a sprite added in yellow
+; Returns z flag if it is SPRITE_PIKACHU
+; Else, returns carry if not a yellow sprite and vice versa
+	cp SPRITE_PIKACHU ; is this the Pikachu Sprite?
+	ret z ; return if yes
+	cp SPRITE_BALL ; is this a yellow sprite?
+	jr nc, .notYellowSprite
+	and a
+	ret
+.notYellowSprite
+	scf
+	ret
+
+Func_140b7: ; 140b7 (5:40b7)
+	ld a, $0
+.loop
+	ld [hVRAMSlot], a
+	cp 9
+	jr nc, .fourTileSprite
+	call LoadStillTilePattern
+	call LoadWalkingTilePattern
+	jr .continue
+.fourTileSprite
+	call LoadStillTilePattern
+.continue
+	ld a, [hVRAMSlot]
+	inc a
+	cp 11
+	jr nz, .loop
+	ret
+	
+Func_140d2: ; 140d2 (5:40d2)
+	xor a
+.loop
+	ld [hVRAMSlot], a
+	cp 9
+	jr nc, .asm_140dc
+	call LoadWalkingTilePattern
+.asm_140dc
+	ld a, [hVRAMSlot]
+	inc a
+	cp 11
+	jr nz, .loop
+	ret
+	
+LoadStillTilePattern: ; 140e4 (5:40e4)
+	ld a, [wFontLoaded]
+	bit 0, a ; reloading upper half of tile patterns after displaying text?
+	ret nz ; if so, skip loading data into the lower half
+	call ReadSpriteSheetData
+	ret nc
+	call GetSpriteVRAMAddress
+	call CopyVideoDataAlternate ; new yellow function
+	ret
+	
+LoadWalkingTilePattern: ; 140f5 (5:40f5)
+	call ReadSpriteSheetData
+	ret nc
+	ld hl, $c0
+	add hl, de
+	ld d, h
+	ld e, l
+	call GetSpriteVRAMAddress
+	set 3, h ; add $800 to hl
+	call CopyVideoDataAlternate
+	ret
+	
+GetSpriteVRAMAddress: ; 14018 (5:4108)
+	push bc
+	ld a, [hVRAMSlot]
+	ld c, a
+	ld b, 0
+	ld hl, SpriteVRAMAddresses
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	pop bc
+	ret
+	
+SpriteVRAMAddresses: ; 14118 (5:4118)
+; Equivalent to multiplying $C0 (number of bytes in 12 tiles) times the VRAM
+; slot and adding the result to $8000 (the VRAM base address).
+	dw vChars0 + $c0
+	dw vChars0 + $180
+	dw vChars0 + $240
+	dw vChars0 + $300
+	dw vChars0 + $3c0
+	dw vChars0 + $480
+	dw vChars0 + $540
+	dw vChars0 + $600
+	dw vChars0 + $6c0
+	dw vChars0 + $780
+	dw vChars0 + $7c0
+	
+ReadSpriteSheetData: ; 1412e (5:412e)
+	ld a, [hVRAMSlot]
+	ld e, a
+	ld d, 0
+	ld hl, wSpriteSet
+	add hl, de
+	ld a, [hl]
+	and a
+	ret z
+
+	dec a
+	ld l, a
+	ld h, 0
+	add hl, hl
+	add hl, hl
+	ld de, SpriteSheetPointerTable
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	inc hl
+	ld c, [hl]
+	swap c ; get the number of tiles, not the raw byte length
+		   ; this is because of the use of CopyVideoDataAlternate
+	inc hl
+	ld b, [hl]
+	inc hl
+	scf
+	ret
+	
+Func_14150: ; 14150 (5:4150)
+	ld a, $1
+	ld [wSpriteStateData2 + $e], a
+	ld a, $2
+	ld [wSpriteStateData2 + $fe], a
+	ld a, $e
+	ld hl, wSpriteStateData1 + $10
+.loop
+	ld [hVRAMSlot], a
+	ld a, [hl]
+	and a
+	jr z, .asm_1416f
+	call Func_14179
+	push hl
+	ld de, $10e
+	add hl, de
+	ld [hl], a
+	pop hl
+.asm_1416f
+	ld de, $10
+	add hl, de
+	ld a, [hVRAMSlot]
+	dec a
+	jr nz, .loop
+	ret
+	
+Func_14179: ; 14179 (5:4179)
+	push de
+	push bc
+	ld c, a
+	ld b, 11
+	ld de, wSpriteSet
+.asm_14181
+	ld a, [de]
+	cp c
+	jr z, .asm_1418d
+	inc de
+	dec b
+	jr nz, .asm_14181
+	ld a, $1
+	jr .done
+.asm_1418d
+	ld a, $d
+	sub b
+.done
+	pop bc
+	pop de
+	ret
+
+GetSplitMapSpriteSetID: ; 14193 (5:4193)
+	ld e, a
+	ld d, 0
+	ld hl,MapSpriteSets
+	add hl, de
+	ld a,[hl] ; a = spriteSetID
+	cp a,$f0 ; does the map have 2 sprite sets?
+	ret c
+; GetSplitMapSpriteSetID
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.
-GetSplitMapSpriteSetID: ; 17a1a (5:7a1a)
 	cp a,$f8
 	jr z,.route20
 	ld hl,SplitMapSpriteSets
 	and a,$0f
 	dec a
-	sla a
-	sla a
+	add a
+	add a
 	add l
 	ld l,a
 	jr nc,.noCarry

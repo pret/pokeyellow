@@ -4820,7 +4820,7 @@ ReloadMapSpriteTilePatterns:: ; 3e1e (0:3e1e)
 	res 0, [hl]
 	push hl
 	xor a
-	ld [W_SPRITESETID], a
+	ld [wSpriteSetID], a
 	call DisableLCD
 	call InitMapSprites
 	call EnableLCD

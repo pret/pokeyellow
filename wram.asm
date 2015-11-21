@@ -2468,11 +2468,11 @@ wEastConnectedMapXAlignment:: ; d39a
 wEastConnectedMapViewPointer:: ; d39b
 	ds 2
 
-W_SPRITESET:: ; d39d
+wSpriteSet:: ; d39d
 ; sprite set for the current map (11 sprite picture ID's)
 	ds 11
 
-W_SPRITESETID:: ; d3a8
+wSpriteSetID:: ; d3a8
 ; sprite set ID for the current map
 	ds 1
 

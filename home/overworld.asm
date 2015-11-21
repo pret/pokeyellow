@@ -2044,7 +2044,7 @@ ResetMapVariables:: ; 0f56 (0:0f56)
 	ld [hSCX],a
 	ld [wWalkCounter],a
 	ld [wUnusedD119],a
-	ld [W_SPRITESETID],a
+	ld [wSpriteSetID],a
 	ld [wWalkBikeSurfStateCopy],a
 	ret
 

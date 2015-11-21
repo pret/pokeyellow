@@ -1,5 +1,5 @@
 ; Loads tile patterns for tiles used in the pokedex.
-LoadPokedexTilePatterns: ; 17840 (5:7840)
+LoadPokedexTilePatterns: ; 14000 (5:4000)
 	call LoadHpBarAndStatusTilePatterns
 	ld de,PokedexTileGraphics
 	ld hl,vChars2 + $600
