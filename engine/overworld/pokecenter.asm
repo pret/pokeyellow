@@ -78,7 +78,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call LoadCurrentMapView
 	call Delay3
 	call UpdateSprites
-	callab Func_140d2
+	callab ReloadWalkingTilePatterns
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	ld a, $1

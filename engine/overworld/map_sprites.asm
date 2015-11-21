@@ -12,8 +12,8 @@ _InitMapSprites: ; 1401b (5:401b)
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
 ; if the map is an inside map (i.e. mapID >= $25)
-	call Func_14061
-	call Func_140b7
+	call LoadSpriteSetFromMapHeader
+	call LoadMapSpriteTilePatterns
 	call Func_14150
 	ret
 	
@@ -44,25 +44,25 @@ InitOutsideMapSprites: ; 14029 (5:4029)
 	ld de, wSpriteSet
 	ld bc, (wSpriteSetID - wSpriteSet)
 	call CopyData ; copy it to wSpriteSet
-	call Func_140b7
+	call LoadMapSpriteTilePatterns
 .skipLoadingSpriteSet
 	call Func_14150
 	scf
 	ret
 	
-Func_14061: ; 14061 (5:4061)
+LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 ; This loop stores the correct VRAM tile pattern slots according the sprite
 ; data from the map's header. Since the VRAM tile pattern slots are filled in
 ; the order of the sprite set, in order to find the VRAM tile pattern slot
 ; for a sprite slot, the picture ID for the sprite is looked up within the
-; sprite set. The index of the picture ID within the sprite set plus one
-; (since the Red sprite always has the first VRAM tile pattern slot) is the
-; VRAM tile pattern slot.
+; sprite set. The index of the picture ID within the sprite set plus two
+; (since the Red sprite always has the first VRAM tile pattern slot and the
+; Pikachu sprite reserves the second slot) is the VRAM tile pattern slot.
 	ld hl, wSpriteSet
 	ld bc, (wSpriteSetID - wSpriteSet)
 	xor a
 	call FillMemory
-	ld a, SPRITE_PIKACHU
+	ld a, SPRITE_PIKACHU ; load Pikachu separately
 	ld [wSpriteSet], a
 	ld hl,wSpriteStateData1 + $10
 	ld a,$0e
@@ -70,18 +70,20 @@ Func_14061: ; 14061 (5:4061)
 	push af
 	ld a, [hl] ; $C1X0 (picture ID) (zero if sprite slot is not used)
 	and a ; is the sprite slot used?
-	jr z,.continue ; if the sprite slot is not used
+	jr z, .continue ; if the sprite slot is not used
 	ld c, a
-	call CheckForNewYellowSprite
-	jr nc, .asm_1408a
+	call CheckForFourTileSprite ; is this a four tile sprite?
+	jr nc, .isFourTileSprite
+; loop through the space reserved for four tile picture IDs
 	ld de, wSpriteSet + 9
 	ld b, 2
-	call Func_1409b
+	call CheckIfPictureIDAlreadyLoaded
 	jr .continue
-.asm_1408a
+.isFourTileSprite
+; loop through the space reserved for regular picture IDs 
 	ld de, wSpriteSet
 	ld b, 9
-	call Func_1409b
+	call CheckIfPictureIDAlreadyLoaded
 .continue
 	ld de, $10
 	add hl, de
@@ -90,40 +92,47 @@ Func_14061: ; 14061 (5:4061)
 	jr nz, .storeVRAMSlotsLoop
 	ret
 
-Func_1409b: ; 1409b (5:409b)
+CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
+; Check if the current picture ID has already had its tile patterns loaded.
+; This done by looping through the previous sprite slots and seeing if any of
+; their picture ID's match that of the current sprite slot.
 	ld a, [de]
-	and a
-	jr z, .asm_140a7
-	cp c
-	ret z
-	dec b
-	jr z, .asm_140aa
+	and a ; is sprite set slot not taken up yet?
+	jr z, .spriteSlotNotTaken ; if so, load it as it signifies we've reached 
+	                          ; the end of data for the last sprite set
+
+	cp c  ; is the tile pattern already loaded?
+	ret z ; don't redundantly load 
+	dec b ; have we reached the end of the sprite set?
+	jr z, .spriteNotAlreadyLoaded ; if so, we're done here
 	inc de
-	jr Func_1409b
-.asm_140a7
+	jr CheckIfPictureIDAlreadyLoaded
+.spriteSlotNotTaken
 	ld a, c
 	ld [de], a
 	ret
-.asm_140aa
+.spriteNotAlreadyLoaded
 	scf
 	ret
 
-CheckForNewYellowSprite: ; 140ac (5:40ac)
+CheckForFourTileSprite: ; 140ac (5:40ac)
 ; Checks for a sprite added in yellow
-; Returns z flag if it is SPRITE_PIKACHU
-; Else, returns carry if not a yellow sprite and vice versa
-	cp SPRITE_PIKACHU ; is this the Pikachu Sprite?
-	ret z ; return if yes
-	cp SPRITE_BALL ; is this a yellow sprite?
-	jr nc, .notYellowSprite
+; Returns no carry if the sprite is Pikachu, as its sprite is handled separately
+; Else, returns carry if the sprite uses 4 tiles
+	cp SPRITE_PIKACHU       ; is this the Pikachu Sprite?
+	ret z                   ; return if yes
+	
+	cp SPRITE_BALL          ; is this a four tile sprite?
+	jr nc, .notYellowSprite ; set carry if yes
+; regular sprite
 	and a
 	ret
 .notYellowSprite
-	scf
+	scf 
 	ret
 
-Func_140b7: ; 140b7 (5:40b7)
-	ld a, $0
+LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
+	ld a, 0
 .loop
 	ld [hVRAMSlot], a
 	cp 9
@@ -140,14 +149,14 @@ Func_140b7: ; 140b7 (5:40b7)
 	jr nz, .loop
 	ret
 	
-Func_140d2: ; 140d2 (5:40d2)
+ReloadWalkingTilePatterns: ; 140d2 (5:40d2)
 	xor a
 .loop
 	ld [hVRAMSlot], a
 	cp 9
-	jr nc, .asm_140dc
+	jr nc, .fourTileSprite
 	call LoadWalkingTilePattern
-.asm_140dc
+.fourTileSprite
 	ld a, [hVRAMSlot]
 	inc a
 	cp 11
@@ -237,23 +246,24 @@ ReadSpriteSheetData: ; 1412e (5:412e)
 	
 Func_14150: ; 14150 (5:4150)
 	ld a, $1
-	ld [wSpriteStateData2 + $e], a
+	ld [wSpriteStateData2 + $e], a ; vram slot for player
 	ld a, $2
-	ld [wSpriteStateData2 + $fe], a
+	ld [wSpriteStateData2 + $fe], a ; vram slot for Pikachu
+	
 	ld a, $e
 	ld hl, wSpriteStateData1 + $10
 .loop
-	ld [hVRAMSlot], a
-	ld a, [hl]
-	and a
-	jr z, .asm_1416f
+	ld [hVRAMSlot], a ; store current sprite set slot as a counter
+	ld a, [hl] ; $c1x0 (picture ID)
+	and a ; is the sprite unused?
+	jr z, .spriteUnused
 	call Func_14179
 	push hl
-	ld de, $10e
-	add hl, de
-	ld [hl], a
+	ld de, (wSpriteStateData2 + $e) - (wSpriteStateData1) ; $10e
+	add hl, de ; get $c2xe (sprite image base offset)
+	ld [hl], a ; write offset
 	pop hl
-.asm_1416f
+.spriteUnused
 	ld de, $10
 	add hl, de
 	ld a, [hVRAMSlot]
@@ -264,21 +274,21 @@ Func_14150: ; 14150 (5:4150)
 Func_14179: ; 14179 (5:4179)
 	push de
 	push bc
-	ld c, a
+	ld c, a  ; c = picture ID
 	ld b, 11
 	ld de, wSpriteSet
-.asm_14181
-	ld a, [de]
-	cp c
-	jr z, .asm_1418d
+.findSpriteImageBaseOffsetLoop
+	ld a, [de] ; a = sprite set picture ID
+	cp c ; have we found a match?
+	jr z, .foundSpritePictureID ; if so, get the sprite image base offset and return
 	inc de
-	dec b
-	jr nz, .asm_14181
-	ld a, $1
+	dec b ; have we looped through all entries in wSpriteSet?
+	jr nz, .findSpriteImageBaseOffsetLoop ; continue looping if not
+	ld a, $1 ; assume slot one if this ever happens
 	jr .done
-.asm_1418d
-	ld a, $d
-	sub b
+.foundSpritePictureID
+	ld a, 13
+	sub b ; get sprite image base offset
 .done
 	pop bc
 	pop de
@@ -292,7 +302,6 @@ GetSplitMapSpriteSetID: ; 14193 (5:4193)
 	ld a,[hl] ; a = spriteSetID
 	cp a,$f0 ; does the map have 2 sprite sets?
 	ret c
-; GetSplitMapSpriteSetID
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.
 	cp a,$f8
