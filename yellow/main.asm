@@ -4329,9 +4329,8 @@ Func_82bd4: ; 82bd4 (20:6bd4)
 	dr $82bd4,$84000
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
-	dr $bd000,$bf450
-Func_bf450: ; bf450 (2f:7450)
-	dr $bf450,$c0000
+
+INCLUDE "engine/bg_map_attributes.asm"
 
 SECTION "bank30",ROMX,BANK[$30]
 

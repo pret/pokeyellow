@@ -1116,9 +1116,10 @@ _UpdateGBCPal_OBP:: ; 7256c (1c:656c)
 	ret
 	
 Func_725be:: ; 725be (1c:65be)
+; translate the sgb pal packets into something usable for the CGB
 	push hl
 	pop de
-	ld hl,Pointer_725e2
+	ld hl,PalPacketPointers
 	ld a,[hli]
 	ld c,a
 .asm_725c5
@@ -1141,12 +1142,25 @@ Func_725be:: ; 725be (1c:65be)
 	jr nz,.asm_725c5
 	ret
 .asm_725d9
-	callba Func_bf450 ; 2f:7250
+	callba LoadBGMapAttributes ; 2f:7250
 	ret
 
-Pointer_725e2:: ; 725e2 (1c:65e2)	
-	db $0c,$11,$66,$21,$66,$41,$66,$51,$66,$61,$66,$81,$66,$a1,$66,$2d
-	db $cf,$5b,$cc,$31,$67,$2c,$cf,$51,$67
+PalPacketPointers:: ; 725e2 (1c:65e2)
+	db (palPacketPointersEnd - palPacketPointers) / $2
+palPacketPointers
+	dw BlkPacket_WholeScreen
+	dw BlkPacket_Battle
+	dw BlkPacket_StatusScreen
+	dw BlkPacket_Pokedex
+	dw BlkPacket_Slots
+	dw BlkPacket_Titlescreen
+	dw BlkPacket_NidorinoIntro
+	dw wPartyMenuBlkPacket
+	dw wTrainerCardBlkPacket
+	dw BlkPacket_GameFreakIntro
+	dw wPalPacket
+	dw UnknownPacket_72751
+palPacketPointersEnd
 	
 CopySGBBorderTiles: ; 725fb (1c:65fb)
 ; SGB tile data is stored in a 4BPP planar format.

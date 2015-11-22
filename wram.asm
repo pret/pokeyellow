@@ -517,7 +517,9 @@ wNPCMovementDirections:: ; cc5b
 wDexRatingNumMonsOwned:: ; cc5c
 	ds 1
 
+
 wDexRatingText:: ; cc5d
+wTrainerCardBadgeAttributes:: ; cc5d
 	ds 1
 
 wSlotMachineSavedROMBank:: ; cc5e
@@ -1355,7 +1357,9 @@ wPalPacket:: ; cf2d
 
 wPartyMenuBlkPacket:: ; cf2e
 ; $30 bytes
-	ds 29
+	ds 9
+wPartyHPBarAttributes:: ; cf36
+	ds 20
 
 wExpAmountGained:: ; cf4b
 ; 2-byte big-endian number
