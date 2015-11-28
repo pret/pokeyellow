@@ -1,15 +1,15 @@
-SubstituteEffect_: ; 17dad (5:7dad)
+SubstituteEffect_: ; 17c31 (5:7c31)
 	ld c, 50
 	call DelayFrames
 	ld hl, wBattleMonMaxHP
 	ld de, wPlayerSubstituteHP
-	ld bc, W_PLAYERBATTSTATUS2
+	ld bc, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .notEnemy
 	ld hl, wEnemyMonMaxHP
 	ld de, wEnemySubstituteHP
-	ld bc, W_ENEMYBATTSTATUS2
+	ld bc, wEnemyBattleStatus2
 .notEnemy
 	ld a, [bc]
 	bit HasSubstituteUp, a ; user already has substitute?
@@ -64,14 +64,14 @@ SubstituteEffect_: ; 17dad (5:7dad)
 .printText
 	jp PrintText
 
-SubstituteText: ; 17e1d (5:7e1d)
+SubstituteText: ; 17ca1 (5:7ca1)
 	TX_FAR _SubstituteText
 	db "@"
 
-HasSubstituteText: ; 17e22 (5:7e22)
+HasSubstituteText: ; 17ca6 (5:7ca6)
 	TX_FAR _HasSubstituteText
 	db "@"
 
-TooWeakSubstituteText: ; 17e27 (5:7e27)
+TooWeakSubstituteText: ; 17cab (5:7cab)
 	TX_FAR _TooWeakSubstituteText
 	db "@"

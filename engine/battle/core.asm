@@ -380,13 +380,13 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [wFirstMonsNotOutYet], a
-	ld a, [W_PLAYERBATTSTATUS2]
+	ld a, [wPlayerBattleStatus2]
 	and (1 << NeedsToRecharge) | (1 << UsingRage) ; check if the player is using Rage or needs to recharge
 	jr nz, .selectEnemyMove
 ; the player is not using Rage and doesn't need to recharge
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res Flinched, [hl] ; reset flinch bit
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	res Flinched, [hl] ; reset flinch bit
 	ld a, [hl]
 	and (1 << ThrashingAbout) | (1 << ChargingUp) ; check if the player is thrashing about or charging for an attack
@@ -400,10 +400,10 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	ld a, [wBattleMonStatus]
 	and (1 << FRZ) | SLP ; is mon frozen or asleep?
 	jr nz, .selectEnemyMove ; if so, jump
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	and (1 << StoringEnergy) | (1 << UsingTrappingMove) ; check player is using Bide or using a multi-turn attack like wrap
 	jr nz, .selectEnemyMove ; if so, jump
-	ld a, [W_ENEMYBATTSTATUS1]
+	ld a, [wEnemyBattleStatus1]
 	bit UsingTrappingMove, a ; check if enemy is using a multi-turn attack like wrap
 	jr z, .selectPlayerMove ; if not, jump
 ; enemy is using a mult-turn attack like wrap, so player is trapped and cannot execute a move
@@ -441,7 +441,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	sub $4
 	jr c, .noLinkBattle
 ; the link battle enemy has switched mons
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	bit UsingTrappingMove, a ; check if using multi-turn move like Wrap
 	jr z, .asm_3c2dd
 	ld a, [wPlayerMoveListIndex]
@@ -584,11 +584,11 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	pop hl
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 .notBurnedOrPoisoned
-	ld de, W_PLAYERBATTSTATUS2
+	ld de, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn2
-	ld de, W_ENEMYBATTSTATUS2
+	ld de, wEnemyBattleStatus2
 .playersTurn2
 	ld a, [de]
 	add a
@@ -659,12 +659,12 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 	jr nz, .nonZeroDamage
 	inc c         ; damage is at least 1
 .nonZeroDamage
-	ld hl, W_PLAYERBATTSTATUS3
+	ld hl, wPlayerBattleStatus3
 	ld de, W_PLAYERTOXICCOUNTER
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
-	ld hl, W_ENEMYBATTSTATUS3
+	ld hl, wEnemyBattleStatus3
 	ld de, W_ENEMYTOXICCOUNTER
 .playersTurn
 	bit BadlyPoisoned, [hl]
@@ -775,14 +775,14 @@ CheckNumAttacksLeft: ; 3c50f (f:450f)
 	and a
 	jr nz, .checkEnemy
 ; player has 0 attacks left
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	res UsingTrappingMove, [hl] ; player not using multi-turn attack like wrap any more
 .checkEnemy
 	ld a, [wEnemyNumAttacksLeft]
 	and a
 	ret nz
 ; enemy has 0 attacks left
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res UsingTrappingMove, [hl] ; enemy not using multi-turn attack like wrap any more
 	ret
 
@@ -832,7 +832,7 @@ FaintEnemyPokemon: ; 0x3c567
 	ld [hli], a
 	ld [hl], a
 .wild
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	res AttackingMultipleTimes, [hl]
 ; Bug. This only zeroes the high byte of the player's accumulated damage,
 ; setting the accumulated damage to itself mod 256 instead of 0 as was probably
@@ -1094,7 +1094,7 @@ RemoveFaintedPlayerMon: ; 3c741 (f:4741)
 	ld hl, wPartyGainExpFlags
 	ld b, FLAG_RESET
 	predef FlagActionPredef ; clear gain exp flag for fainted mon
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res 2, [hl]   ; reset "attacking multiple times" flag
 	ld a, [wLowHealthAlarm]
 	bit 7, a      ; skip sound flag (red bar (?))
@@ -1392,7 +1392,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld [hl],a
 	dec a
 	ld [wAICount],a
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res 5,[hl]
 	coord hl, 18, 0
 	ld a,8
@@ -1839,7 +1839,7 @@ SendOutMon: ; 3cc91 (f:4c91)
 	ld [wPlayerMonMinimized], a
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res UsingTrappingMove, [hl]
 	ld a, $1
 	ld [H_WHOSETURN], a
@@ -2340,13 +2340,13 @@ UseBagItem:
 	and a ; was the item used successfully?
 	jp z, BagWasSelected ; if not, go back to the bag menu
 
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	bit UsingTrappingMove, a ; is the player using a multi-turn move like wrap?
 	jr z, .checkIfMonCaptured
 	ld hl, wPlayerNumAttacksLeft
 	dec [hl]
 	jr nz, .checkIfMonCaptured
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	res UsingTrappingMove, [hl] ; not using multi-turn move any more
 
 .checkIfMonCaptured
@@ -2453,7 +2453,7 @@ PartyMenuOrRockOrRun:
 	predef StatusScreen
 	predef StatusScreen2
 ; now we need to reload the enemy mon pic
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does the enemy mon have a substitute?
 	ld hl, AnimationSubstitute
 	jr nz, .doEnemyMonAnimation
@@ -2730,7 +2730,7 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	dec a
 	cp c
 	jr z, .disabled
-	ld a, [W_PLAYERBATTSTATUS3]
+	ld a, [wPlayerBattleStatus3]
 	bit 3, a ; transformed
 	jr nz, .dummy ; game freak derp
 .dummy
@@ -3010,20 +3010,20 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, [hl]
 	jr .done
 .noLinkBattle
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 	and (1 << NeedsToRecharge) | (1 << UsingRage) ; need to recharge or using rage
 	ret nz
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	and (1 << ChargingUp) | (1 << ThrashingAbout) ; using a charging move or thrash/petal dance
 	ret nz
 	ld a, [wEnemyMonStatus]
 	and SLP | 1 << FRZ ; sleeping or frozen
 	ret nz
-	ld a, [W_ENEMYBATTSTATUS1]
+	ld a, [wEnemyBattleStatus1]
 	and (1 << UsingTrappingMove) | (1 << StoringEnergy) ; using a trapping move like wrap or bide
 	ret nz
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	bit UsingTrappingMove, a ; caught in player's trapping move (e.g. wrap)
 	jr z, .canSelectMove
 .unableToSelectMove
@@ -3150,7 +3150,7 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	jp [hl]
 .playerHasNoSpecialCondition
 	call GetCurrentMove
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	bit ChargingUp, [hl] ; charging up for attack
 	jr nz, PlayerCanExecuteChargingMove
 	call CheckForDisobedience
@@ -3166,7 +3166,7 @@ CheckIfPlayerNeedsToChargeUp: ; 3d69a (f:569a)
 
 ; in-battle stuff
 PlayerCanExecuteChargingMove: ; 3d6a9 (f:56a9)
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res ChargingUp,[hl] ; reset charging up and invulnerability statuses if mon was charging up for an attack
 	                    ; being fully paralyzed or hurting oneself in confusion removes charging up status
 	                    ; resulting in the Pokemon being invulnerable for the whole battle
@@ -3221,7 +3221,7 @@ getPlayerAnimationType
 	ld a,5 ; move has effect
 playPlayerMoveAnimation
 	push af
-	ld a,[W_PLAYERBATTSTATUS2]
+	ld a,[wPlayerBattleStatus2]
 	bit HasSubstituteUp,a
 	ld hl,HideSubstituteShowMonAnim
 	ld b,BANK(HideSubstituteShowMonAnim)
@@ -3232,7 +3232,7 @@ playPlayerMoveAnimation
 	call PlayMoveAnimation
 	call HandleExplodingAnimation
 	call DrawPlayerHUDAndHPBar
-	ld a,[W_PLAYERBATTSTATUS2]
+	ld a,[wPlayerBattleStatus2]
 	bit HasSubstituteUp,a
 	ld hl,ReshowSubstituteAnim
 	ld b,BANK(ReshowSubstituteAnim)
@@ -3299,7 +3299,7 @@ MirrorMoveCheck
 	ret z ; don't do anything else if the enemy fainted
 	call HandleBuildingRage
 
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	bit AttackingMultipleTimes,[hl]
 	jr z,.executeOtherEffects
 	ld a,[wPlayerNumAttacksLeft]
@@ -3420,7 +3420,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL
 
 .HeldInPlaceCheck
-	ld a,[W_ENEMYBATTSTATUS1]
+	ld a,[wEnemyBattleStatus1]
 	bit UsingTrappingMove,a ; is enemy using a mult-turn move like wrap?
 	jp z,.FlinchedCheck
 	ld hl,CantMoveText
@@ -3429,7 +3429,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL
 
 .FlinchedCheck
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	bit Flinched,[hl]
 	jp z,.HyperBeamCheck
 	res Flinched,[hl] ; reset player's flinch status
@@ -3439,7 +3439,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL
 
 .HyperBeamCheck
-	ld hl,W_PLAYERBATTSTATUS2
+	ld hl,wPlayerBattleStatus2
 	bit NeedsToRecharge,[hl]
 	jr z,.AnyMoveDisabledCheck
 	res NeedsToRecharge,[hl] ; reset player's recharge status
@@ -3463,13 +3463,13 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	call PrintText
 
 .ConfusedCheck
-	ld a,[W_PLAYERBATTSTATUS1]
+	ld a,[wPlayerBattleStatus1]
 	add a ; is player confused?
 	jr nc,.TriedToUseDisabledMoveCheck
 	ld hl,W_PLAYERCONFUSEDCOUNTER
 	dec [hl]
 	jr nz,.IsConfused
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res Confused,[hl] ; if confused counter hit 0, reset confusion status
 	ld hl,ConfusedNoMoreText
 	call PrintText
@@ -3484,9 +3484,9 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	call BattleRandom
 	cp a,$80 ; 50% chance to hurt itself
 	jr c,.TriedToUseDisabledMoveCheck
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	ld a,[hl]
-	and a, 1 << Confused ; if mon hurts itself, clear every other status from W_PLAYERBATTSTATUS1
+	and a, 1 << Confused ; if mon hurts itself, clear every other status from wPlayerBattleStatus1
 	ld [hl],a
 	call HandleSelfConfusionDamage
 	jr .MonHurtItselfOrFullyParalysed
@@ -3514,7 +3514,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	call PrintText
 
 .MonHurtItselfOrFullyParalysed
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	ld a,[hl]
 	; clear bide, thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
 	and $ff ^ ((1 << StoringEnergy) | (1 << ThrashingAbout) | (1 << ChargingUp) | (1 << UsingTrappingMove))
@@ -3536,7 +3536,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL ; if using a two-turn move, we need to recharge the first turn
 
 .BideCheck
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	bit StoringEnergy,[hl] ; is mon using bide?
 	jr z,.ThrashingAboutCheck
 	xor a
@@ -3558,7 +3558,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld hl,ExecutePlayerMoveDone
 	jp .returnToHL ; unless mon unleashes energy, can't move this turn
 .UnleashEnergy
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res StoringEnergy,[hl] ; not using bide any more
 	ld hl,UnleashedEnergyText
 	call PrintText
@@ -3597,7 +3597,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld hl,PlayerCalcMoveDamage ; skip DecrementPP
 	jp nz,.returnToHL
 	push hl
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res ThrashingAbout,[hl] ; no longer thrashing about
 	set Confused,[hl] ; confused
 	call BattleRandom
@@ -3622,7 +3622,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL
 
 .RageCheck
-	ld a, [W_PLAYERBATTSTATUS2]
+	ld a, [wPlayerBattleStatus2]
 	bit UsingRage, a ; is mon using rage?
 	jp z, .checkPlayerStatusConditionsDone ; if we made it this far, mon can move normally this turn
 	ld a, RAGE
@@ -3705,12 +3705,12 @@ CantMoveText: ; 3da83 (f:5a83)
 
 PrintMoveIsDisabledText: ; 3da88 (f:5a88)
 	ld hl, wPlayerSelectedMove
-	ld de, W_PLAYERBATTSTATUS1
+	ld de, wPlayerBattleStatus1
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .removeChargingUp
 	inc hl
-	ld de, W_ENEMYBATTSTATUS1
+	ld de, wEnemyBattleStatus1
 .removeChargingUp
 	ld a, [de]
 	res ChargingUp, a ; end the pokemon's
@@ -4246,7 +4246,7 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 	ld a, [hli]
 	ld b, a
 	ld c, [hl] ; bc = enemy defense
-	ld a, [W_ENEMYBATTSTATUS3]
+	ld a, [wEnemyBattleStatus3]
 	bit HasReflectUp, a ; check for Reflect
 	jr z, .physicalAttackCritCheck
 ; if the enemy has used Reflect, double the enemy's defense
@@ -4276,7 +4276,7 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 	ld a, [hli]
 	ld b, a
 	ld c, [hl] ; bc = enemy special
-	ld a, [W_ENEMYBATTSTATUS3]
+	ld a, [wEnemyBattleStatus3]
 	bit HasLightScreenUp, a ; check for Light Screen
 	jr z, .specialAttackCritCheck
 ; if the enemy has used Light Screen, double the enemy's special
@@ -4359,7 +4359,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	ld a, [hli]
 	ld b, a
 	ld c, [hl] ; bc = player defense
-	ld a, [W_PLAYERBATTSTATUS3]
+	ld a, [wPlayerBattleStatus3]
 	bit HasReflectUp, a ; check for Reflect
 	jr z, .physicalAttackCritCheck
 ; if the player has used Reflect, double the player's defense
@@ -4389,7 +4389,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	ld a, [hli]
 	ld b, a
 	ld c, [hl]
-	ld a, [W_PLAYERBATTSTATUS3]
+	ld a, [wPlayerBattleStatus3]
 	bit HasLightScreenUp, a ; check for Light Screen
 	jr z, .specialAttackCritCheck
 ; if the player has used Light Screen, double the player's special
@@ -4694,10 +4694,10 @@ CriticalHitTest: ; 3e023 (f:6023)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, W_PLAYERMOVEPOWER
-	ld de, W_PLAYERBATTSTATUS2
+	ld de, wPlayerBattleStatus2
 	jr z, .calcCriticalHitProbability
 	ld hl, W_ENEMYMOVEPOWER
-	ld de, W_ENEMYBATTSTATUS2
+	ld de, wEnemyBattleStatus2
 .calcCriticalHitProbability
 	ld a, [hld]                  ; read base power from RAM
 	and a
@@ -4891,7 +4891,7 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	ld a,[hl]
 	or b
 	jr z,ApplyAttackToEnemyPokemonDone ; we're done if damage is 0
-	ld a,[W_ENEMYBATTSTATUS2]
+	ld a,[wEnemyBattleStatus2]
 	bit HasSubstituteUp,a ; does the enemy have a substitute?
 	jp nz,AttackSubstitute
 ; subtract the damage from the pokemon's current HP
@@ -5010,7 +5010,7 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	ld a,[hl]
 	or b
 	jr z,ApplyAttackToPlayerPokemonDone ; we're done if damage is 0
-	ld a,[W_PLAYERBATTSTATUS2]
+	ld a,[wPlayerBattleStatus2]
 	bit HasSubstituteUp,a ; does the player have a substitute?
 	jp nz,AttackSubstitute
 ; subtract the damage from the pokemon's current HP
@@ -5067,13 +5067,13 @@ AttackSubstitute: ; 3e25e (f:625e)
 	call PrintText
 ; values for player turn
 	ld de,wEnemySubstituteHP
-	ld bc,W_ENEMYBATTSTATUS2
+	ld bc,wEnemyBattleStatus2
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.applyDamageToSubstitute
 ; values for enemy turn
 	ld de,wPlayerSubstituteHP
-	ld bc,W_PLAYERBATTSTATUS2
+	ld bc,wPlayerBattleStatus2
 .applyDamageToSubstitute
 	ld hl,wDamage
 	ld a,[hli]
@@ -5121,14 +5121,14 @@ SubstituteBrokeText: ; 3e2b1 (f:62b1)
 ; this function raises the attack modifier of a pokemon using Rage when that pokemon is attacked
 HandleBuildingRage: ; 3e2b6 (f:62b6)
 ; values for the player turn
-	ld hl,W_ENEMYBATTSTATUS2
+	ld hl,wEnemyBattleStatus2
 	ld de,wEnemyMonStatMods
 	ld bc,W_ENEMYMOVENUM
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.next
 ; values for the enemy turn
-	ld hl,W_PLAYERBATTSTATUS2
+	ld hl,wPlayerBattleStatus2
 	ld de,wPlayerMonStatMods
 	ld bc,W_PLAYERMOVENUM
 .next
@@ -5436,14 +5436,14 @@ INCLUDE "data/type_effects.asm"
 ; some tests that need to pass for a move to hit
 MoveHitTest: ; 3e56b (f:656b)
 ; player's turn
-	ld hl,W_ENEMYBATTSTATUS1
+	ld hl,wEnemyBattleStatus1
 	ld de,W_PLAYERMOVEEFFECT
 	ld bc,wEnemyMonStatus
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.dreamEaterCheck
 ; enemy's turn
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	ld de,W_ENEMYMOVEEFFECT
 	ld bc,wBattleMonStatus
 .dreamEaterCheck
@@ -5490,11 +5490,11 @@ MoveHitTest: ; 3e56b (f:656b)
 ; FLASH, CONVERSION*, HAZE*, SCREECH, LIGHT SCREEN*, REFLECT*
 ; the moves that are marked with an asterisk are not affected since this
 ; function is not called when those moves are used
-	ld a,[W_ENEMYBATTSTATUS2]
+	ld a,[wEnemyBattleStatus2]
 	bit ProtectedByMist,a ; is mon protected by mist?
 	jp nz,.moveMissed
 .skipEnemyMistCheck
-	ld a,[W_PLAYERBATTSTATUS2]
+	ld a,[wPlayerBattleStatus2]
 	bit UsingXAccuracy,a ; is the player using X Accuracy?
 	ret nz ; if so, always hit regardless of accuracy/evasion
 	jr .calcHitChance
@@ -5511,11 +5511,11 @@ MoveHitTest: ; 3e56b (f:656b)
 	jr .skipPlayerMistCheck
 .playerMistCheck
 ; similar to enemy mist check
-	ld a,[W_PLAYERBATTSTATUS2]
+	ld a,[wPlayerBattleStatus2]
 	bit ProtectedByMist,a ; is mon protected by mist?
 	jp nz,.moveMissed
 .skipPlayerMistCheck
-	ld a,[W_ENEMYBATTSTATUS2]
+	ld a,[wEnemyBattleStatus2]
 	bit UsingXAccuracy,a ; is the enemy using X Accuracy?
 	ret nz ; if so, always hit regardless of accuracy/evasion
 .calcHitChance
@@ -5545,11 +5545,11 @@ MoveHitTest: ; 3e56b (f:656b)
 	and a
 	jr z,.playerTurn2
 .enemyTurn2
-	ld hl,W_ENEMYBATTSTATUS1
+	ld hl,wEnemyBattleStatus1
 	res UsingTrappingMove,[hl] ; end multi-turn attack e.g. wrap
 	ret
 .playerTurn2
-	ld hl,W_PLAYERBATTSTATUS1
+	ld hl,wPlayerBattleStatus1
 	res UsingTrappingMove,[hl] ; end multi-turn attack e.g. wrap
 	ret
 
@@ -5690,7 +5690,7 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	jr nz, .enemyHasNoSpecialConditions
 	jp [hl]
 .enemyHasNoSpecialConditions
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	bit ChargingUp, [hl] ; is the enemy charging up for attack?
 	jr nz, EnemyCanExecuteChargingMove ; if so, jump
 	call GetCurrentMove
@@ -5703,7 +5703,7 @@ CheckIfEnemyNeedsToChargeUp: ; 3e6fc (f:66fc)
 	jp z, JumpMoveEffect
 	jr EnemyCanExecuteMove
 EnemyCanExecuteChargingMove: ; 3e70b (f:670b)
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res ChargingUp, [hl] ; no longer charging up for attack
 	res Invulnerable, [hl] ; no longer invulnerable to typical attacks
 	ld a, [W_ENEMYMOVENUM]
@@ -5772,7 +5772,7 @@ asm_3e7a0: ; 3e7a0 (f:67a0)
 	xor a
 playEnemyMoveAnimation: ; 3e7a4 (f:67a4)
 	push af
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does mon have a substitute?
 	ld hl, HideSubstituteShowMonAnim
 	ld b, BANK(HideSubstituteShowMonAnim)
@@ -5783,7 +5783,7 @@ playEnemyMoveAnimation: ; 3e7a4 (f:67a4)
 	call PlayMoveAnimation
 	call HandleExplodingAnimation
 	call DrawEnemyHUDAndHPBar
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does mon have a substitute?
 	ld hl, ReshowSubstituteAnim
 	ld b, BANK(ReshowSubstituteAnim)
@@ -5849,7 +5849,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	or b
 	ret z
 	call HandleBuildingRage
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	bit AttackingMultipleTimes, [hl] ; is mon hitting multiple times? (example: double kick)
 	jr z, .asm_3e873
 	push hl
@@ -5916,7 +5916,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
 .checkIfTrapped
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	bit UsingTrappingMove, a ; is the player using a multi-turn attack like warp
 	jp z, .checkIfFlinched
 	ld hl, CantMoveText
@@ -5924,7 +5924,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
 .checkIfFlinched
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	bit Flinched, [hl] ; check if enemy mon flinched
 	jp z, .checkIfMustRecharge
 	res Flinched, [hl]
@@ -5933,7 +5933,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
 .checkIfMustRecharge
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 	bit NeedsToRecharge, [hl] ; check if enemy mon has to recharge after using a move
 	jr z, .checkIfAnyMoveDisabled
 	res NeedsToRecharge, [hl]
@@ -5955,13 +5955,13 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, DisabledNoMoreText
 	call PrintText
 .checkIfConfused
-	ld a, [W_ENEMYBATTSTATUS1]
+	ld a, [wEnemyBattleStatus1]
 	add a ; check if enemy mon is confused
 	jp nc, .checkIfTriedToUseDisabledMove
 	ld hl, W_ENEMYCONFUSEDCOUNTER
 	dec [hl]
 	jr nz, .isConfused
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res Confused, [hl] ; if confused counter hit 0, reset confusion status
 	ld hl, ConfusedNoMoreText
 	call PrintText
@@ -5976,9 +5976,9 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	call BattleRandom
 	cp $80
 	jr c, .checkIfTriedToUseDisabledMove
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
-	and 1 << Confused ; if mon hurts itself, clear every other status from W_ENEMYBATTSTATUS1
+	and 1 << Confused ; if mon hurts itself, clear every other status from wEnemyBattleStatus1
 	ld [hl], a
 	ld hl, HurtItselfText
 	call PrintText
@@ -6042,7 +6042,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, FullyParalyzedText
 	call PrintText
 .monHurtItselfOrFullyParalysed
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
 	and $ff ^ ((1 << StoringEnergy) | (1 << ThrashingAbout) | (1 << ChargingUp) | (1 << UsingTrappingMove))
@@ -6062,7 +6062,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone
 	jp .enemyReturnToHL ; if using a two-turn move, enemy needs to recharge the first turn
 .checkIfUsingBide
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	bit StoringEnergy, [hl] ; is mon using bide?
 	jr z, .checkIfThrashingAbout
 	xor a
@@ -6084,7 +6084,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone
 	jp .enemyReturnToHL ; unless mon unleashes energy, can't move this turn
 .unleashEnergy
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res StoringEnergy, [hl] ; not using bide any more
 	ld hl, UnleashedEnergyText
 	call PrintText
@@ -6123,7 +6123,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, EnemyCalcMoveDamage ; skip DecrementPP
 	jp nz, .enemyReturnToHL
 	push hl
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	res ThrashingAbout, [hl] ; mon is no longer using thrash or petal dance
 	set Confused, [hl] ; mon is now confused
 	call BattleRandom
@@ -6145,7 +6145,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	jp nz, .enemyReturnToHL
 	jp .enemyReturnToHL
 .checkIfUsingRage
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 	bit UsingRage, a ; is mon using rage?
 	jp z, .checkEnemyStatusConditionsDone ; if we made it this far, mon can move normally this turn
 	ld a, RAGE
@@ -6203,7 +6203,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld [wEnemyMonSpecies], a
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [W_ENEMYBATTSTATUS3]
+	ld a, [wEnemyBattleStatus3]
 	bit Transformed, a ; is enemy mon transformed?
 	ld hl, wTransformedEnemyMonOriginalDVs ; original DVs before transforming
 	ld a, [hli]
@@ -6235,7 +6235,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 	jr z, .copyHPAndStatusFromPartyData
-	ld a, [W_ENEMYBATTSTATUS3]
+	ld a, [wEnemyBattleStatus3]
 	bit Transformed, a ; is enemy mon transformed?
 	jr nz, .copyTypes ; if transformed, jump
 ; if it's a wild mon and not transformed, init the current HP to max HP and the status to 0
@@ -6800,11 +6800,11 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wEnemyMonType1
-	ld de, W_ENEMYBATTSTATUS1
+	ld de, wEnemyBattleStatus1
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .asm_3eeea
 	ld hl, wBattleMonType1
-	ld de, W_ENEMYBATTSTATUS1
+	ld de, wEnemyBattleStatus1
 	ld a, [W_ENEMYMOVENUM]
 .asm_3eeea
 	cp SELFDESTRUCT
@@ -6952,12 +6952,12 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 
 SleepEffect: ; 3f1fc (f:71fc)
 	ld de, wEnemyMonStatus
-	ld bc, W_ENEMYBATTSTATUS2
+	ld bc, wEnemyBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jp z, .sleepEffect
 	ld de, wBattleMonStatus
-	ld bc, W_PLAYERBATTSTATUS2
+	ld bc, wPlayerBattleStatus2
 
 .sleepEffect
 	ld a, [bc]
@@ -7051,12 +7051,12 @@ PoisonEffect: ; 3f24f (f:724f)
 	ld a, [H_WHOSETURN]
 	and a
 	ld b, ANIM_C7
-	ld hl, W_PLAYERBATTSTATUS3
+	ld hl, wPlayerBattleStatus3
 	ld a, [de]
 	ld de, W_PLAYERTOXICCOUNTER
 	jr nz, .ok
 	ld b, ANIM_A9
-	ld hl, W_ENEMYBATTSTATUS3
+	ld hl, wEnemyBattleStatus3
 	ld de, W_ENEMYTOXICCOUNTER
 .ok
 	cp TOXIC
@@ -7101,12 +7101,12 @@ DrainHPEffect: ; 3f2e9 (f:72e9)
 
 ExplodeEffect: ; 3f2f1 (f:72f1)
 	ld hl, wBattleMonHP
-	ld de, W_PLAYERBATTSTATUS2
+	ld de, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .faintUser
 	ld hl, wEnemyMonHP
-	ld de, W_ENEMYBATTSTATUS2
+	ld de, wEnemyBattleStatus2
 .faintUser
 	xor a
 	ld [hli], a ; set the mon's HP to 0
@@ -7379,13 +7379,13 @@ UpdateStatDone: ; 3f4ca (f:74ca)
 	ld b, c
 	inc b
 	call PrintStatText
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 	ld de, W_PLAYERMOVENUM
 	ld bc, wPlayerMonMinimized
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f4e6
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 	ld de, W_ENEMYMOVENUM
 	ld bc, wEnemyMonMinimized
 .asm_3f4e6
@@ -7460,13 +7460,13 @@ RoseText: ; 3f547 (f:7547)
 StatModifierDownEffect: ; 3f54c (f:754c)
 	ld hl, wEnemyMonStatMods
 	ld de, W_PLAYERMOVEEFFECT
-	ld bc, W_ENEMYBATTSTATUS1
+	ld bc, wEnemyBattleStatus1
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .statModifierDownEffect
 	ld hl, wPlayerMonStatMods
 	ld de, W_ENEMYMOVEEFFECT
-	ld bc, W_PLAYERBATTSTATUS1
+	ld bc, wPlayerBattleStatus1
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .statModifierDownEffect
@@ -7702,13 +7702,13 @@ StatModifierRatios: ; 3f6cb (f:76cb)
 	db  4,   1  ; 4.00
 
 BideEffect: ; 3f6e5 (f:76e5)
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerBideAccumulatedDamage
 	ld bc, wPlayerNumAttacksLeft
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .bideEffect
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, wEnemyBideAccumulatedDamage
 	ld bc, wEnemyNumAttacksLeft
 .bideEffect
@@ -7729,12 +7729,12 @@ BideEffect: ; 3f6e5 (f:76e5)
 	jp PlayBattleAnimation2
 
 ThrashPetalDanceEffect: ; 3f717 (f:7717)
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerNumAttacksLeft
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .thrashPetalDanceEffect
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, wEnemyNumAttacksLeft
 .thrashPetalDanceEffect
 	set ThrashingAbout, [hl] ; mon is now using thrash/petal dance
@@ -7863,13 +7863,13 @@ WasBlownAwayText: ; 3f80c (f:780c)
 	db "@"
 
 TwoToFiveAttacksEffect: ; 3f811 (f:7811)
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerNumAttacksLeft
 	ld bc, wPlayerNumHits
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .twoToFiveAttacksEffect
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, wEnemyNumAttacksLeft
 	ld bc, wEnemyNumHits
 .twoToFiveAttacksEffect
@@ -7910,12 +7910,12 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 FlinchSideEffect: ; 3f85b (f:785b)
 	call CheckTargetSubstitute
 	ret nz
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, W_PLAYERMOVEEFFECT
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .flinchSideEffect
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, W_ENEMYMOVEEFFECT
 .flinchSideEffect
 	ld a, [de]
@@ -7935,13 +7935,13 @@ OneHitKOEffect: ; 3f884 (f:7884)
 	jpab OneHitKOEffect_
 
 ChargeEffect: ; 3f88c (f:788c)
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, W_PLAYERMOVEEFFECT
 	ld a, [H_WHOSETURN]
 	and a
 	ld b, XSTATITEM_ANIM
 	jr z, .chargeEffect
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, W_ENEMYMOVEEFFECT
 	ld b, ANIM_AF
 .chargeEffect
@@ -8017,12 +8017,12 @@ DugAHoleText: ; 3f912 (f:7912)
 	db "@"
 
 TrappingEffect: ; 3f917 (f:7917)
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerNumAttacksLeft
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .trappingEffect
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld de, wEnemyNumAttacksLeft
 .trappingEffect
 	bit UsingTrappingMove, [hl]
@@ -8067,11 +8067,11 @@ ConfusionEffect: ; 3f961 (f:7961)
 ConfusionSideEffectSuccess: ; 3f96f (f:796f)
 	ld a, [H_WHOSETURN]
 	and a
-	ld hl, W_ENEMYBATTSTATUS1
+	ld hl, wEnemyBattleStatus1
 	ld bc, W_ENEMYCONFUSEDCOUNTER
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .confuseTarget
-	ld hl, W_PLAYERBATTSTATUS1
+	ld hl, wPlayerBattleStatus1
 	ld bc, W_PLAYERCONFUSEDCOUNTER
 	ld a, [W_ENEMYMOVEEFFECT]
 .confuseTarget
@@ -8108,33 +8108,33 @@ SubstituteEffect: ; 3f9b9 (f:79b9)
 	jpab SubstituteEffect_
 
 HyperBeamEffect: ; 3f9c1 (f:79c1)
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .hyperBeamEffect
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 .hyperBeamEffect
 	set NeedsToRecharge, [hl] ; mon now needs to recharge
 	ret
 
 ClearHyperBeam: ; 3f9cf (f:79cf)
 	push hl
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .asm_3f9db
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 .asm_3f9db
 	res NeedsToRecharge, [hl] ; mon no longer needs to recharge
 	pop hl
 	ret
 
 RageEffect: ; 3f9df (f:79df)
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .player
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 .player
 	set UsingRage, [hl] ; mon is now in "rage" mode
 	ret
@@ -8149,13 +8149,13 @@ MimicEffect: ; 3f9ed (f:79ed)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wBattleMonMoves
-	ld a, [W_PLAYERBATTSTATUS1]
+	ld a, [wPlayerBattleStatus1]
 	jr nz, .asm_3fa13
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .asm_3fa3a
 	ld hl, wEnemyMonMoves
-	ld a, [W_ENEMYBATTSTATUS1]
+	ld a, [wEnemyBattleStatus1]
 .asm_3fa13
 	bit Invulnerable, a
 	jr nz, .asm_3fa74
@@ -8180,7 +8180,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	ld a, [wEnemyMoveListIndex]
 	jr .asm_3fa5f
 .asm_3fa3a
-	ld a, [W_ENEMYBATTSTATUS1]
+	ld a, [wEnemyBattleStatus1]
 	bit Invulnerable, a
 	jr nz, .asm_3fa74
 	ld a, [wCurrentMenuItem]
@@ -8374,11 +8374,11 @@ ParalyzedMayNotAttackText: ; 3fb74 (f:7b74)
 
 CheckTargetSubstitute: ; 3fb79 (f:7b79)
 	push hl
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .next1
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 .next1
 	bit HasSubstituteUp, [hl]
 	pop hl

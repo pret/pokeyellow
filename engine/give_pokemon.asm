@@ -12,7 +12,7 @@ _GivePokemon: ; f66fa (3d:66fa)
 	jr nc, .boxFull
 ; add to box
 	xor a
-	ld [W_ENEMYBATTSTATUS3], a
+	ld [wEnemyBattleStatus3], a
 	ld a, [wcf91]
 	ld [wEnemyMonSpecies2], a
 	callab LoadEnemyMonData

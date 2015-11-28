@@ -30,7 +30,7 @@ SetPal_Battle: ; 71eda (1c:5eda)
 	ld de, wPalPacket
 	ld bc, $10
 	call CopyData
-	;ld a, [W_PLAYERBATTSTATUS3]
+	;ld a, [wPlayerBattleStatus3]
 	ld hl, wBattleMonSpecies
 	ld a, [hl]
 	and a
@@ -42,7 +42,7 @@ SetPal_Battle: ; 71eda (1c:5eda)
 .asm_71ef9
 	call DeterminePaletteID
 	ld b, a
-	;ld a, [W_ENEMYBATTSTATUS3]
+	;ld a, [wEnemyBattleStatus3]
 	ld hl, wEnemyMonSpecies2
 	call DeterminePaletteID
 	ld c, a

@@ -3621,9 +3621,8 @@ BrunoSprite:          INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite:        INCBIN "gfx/sprites/lorelei.2bpp"
 SeelSprite:           INCBIN "gfx/sprites/seel.2bpp"
 
-	dr $17c31,$17cb0
-ActivatePC: ; 17cb0 (5:7cb0)
-	dr $17cb0,$18000
+INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
+INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
 	dr $18000,$1a4ea
@@ -3646,7 +3645,9 @@ SECTION "bank07",ROMX,BANK[$07]
 
 	dr $1c000,$1c21e
 DoClearSaveDialogue: ; 1c21e (7:421e)
-	dr $1c21e,$1e321
+	dr $1c21e,$1e2ae
+OpenOaksPC: ; 1e2ae (7:62ae)
+	dr $1e2ae,$1e321
 SafariZoneCheck: ; 1e321 (7:6e21)
 	dr $1e321,$1e330
 SafariZoneCheckSteps: ; 1e330 (7:6330)
@@ -4293,13 +4294,17 @@ SECTION "bank1D",ROMX,BANK[$1D]
 HiddenItemNear: ; 7405c (1d:405c)
 	dr $7405c,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
-	dr $74726,$78000
+	dr $74726,$75dfe
+PKMNLeaguePC: ; 75dfe (1d:5dfe)
+	dr $75dfe,$78000
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
 	dr $78000,$78757
 AnimationTileset2: ; 78757 (1e:4757)
-	dr $78757,$79816
+	dr $78757,$797af
+AnimationSubstitute: ; 797af (1e:57af)
+	dr $797af,$79816
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)
 	dr $79816,$798b2
 ReshowSubstituteAnim: ; 798b2 (1e:58b2)

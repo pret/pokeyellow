@@ -2088,10 +2088,10 @@ HideSubstituteShowMonAnim: ; 79747 (1e:5747)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wPlayerMonMinimized
-	ld a, [W_PLAYERBATTSTATUS2]
+	ld a, [wPlayerBattleStatus2]
 	jr z, .next1
 	ld hl, wEnemyMonMinimized
-	ld a, [W_ENEMYBATTSTATUS2]
+	ld a, [wEnemyBattleStatus2]
 .next1
 	push hl
 ; if the substitute broke, slide it down, else slide it offscreen horizontally

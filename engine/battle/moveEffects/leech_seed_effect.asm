@@ -3,12 +3,12 @@ LeechSeedEffect_: ; 2bea9 (a:7ea9)
 	ld a, [W_MOVEMISSED]
 	and a
 	jr nz, .moveMissed
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 	ld de, wEnemyMonType1
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .leechSeedEffect
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 	ld de, wBattleMonType1
 .leechSeedEffect
 ; miss if the target is grass-type or already seeded

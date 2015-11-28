@@ -223,7 +223,7 @@ GainExperience: ; 5524f (15:524f)
 	ld bc, 1 + NUM_STATS * 2 ; size of stats
 	call CopyData
 	pop hl
-	ld a, [W_PLAYERBATTSTATUS3]
+	ld a, [wPlayerBattleStatus3]
 	bit 3, a ; is the mon transformed?
 	jr nz, .recalcStatChanges
 ; the mon is not transformed, so update the unmodified stats

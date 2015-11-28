@@ -1646,7 +1646,7 @@ wPlayerStatsToHalve:: ; d061
 ; always 0
 	ds 1
 
-W_PLAYERBATTSTATUS1:: ; d062
+wPlayerBattleStatus1:: ; d062
 ; bit 0 - bide
 ; bit 1 - thrash / petal dance
 ; bit 2 - attacking multiple times (e.g. double kick)
@@ -1657,7 +1657,7 @@ W_PLAYERBATTSTATUS1:: ; d062
 ; bit 7 - confusion
 	ds 1
 
-W_PLAYERBATTSTATUS2:: ; d063
+wPlayerBattleStatus2:: ; d063
 ; bit 0 - X Accuracy effect
 ; bit 1 - protected by "mist"
 ; bit 2 - focus energy effect
@@ -1667,7 +1667,7 @@ W_PLAYERBATTSTATUS2:: ; d063
 ; bit 7 - leech seeded
 	ds 1
 
-W_PLAYERBATTSTATUS3:: ; d064
+wPlayerBattleStatus3:: ; d064
 ; bit 0 - toxic
 ; bit 1 - light screen
 ; bit 2 - reflect
@@ -1682,11 +1682,11 @@ wEnemyStatsToHalve:: ; d066
 ; always 0
 	ds 1
 
-W_ENEMYBATTSTATUS1:: ; d067
+wEnemyBattleStatus1:: ; d067
 	ds 1
-W_ENEMYBATTSTATUS2:: ; d068
+wEnemyBattleStatus2:: ; d068
 	ds 1
-W_ENEMYBATTSTATUS3:: ; d069
+wEnemyBattleStatus3:: ; d069
 	ds 1
 
 wPlayerNumAttacksLeft::

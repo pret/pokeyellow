@@ -371,7 +371,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld a,[hl]
 	push af		;...and status ailments
 	push hl
-	ld hl,W_ENEMYBATTSTATUS3
+	ld hl,wEnemyBattleStatus3
 	bit Transformed,[hl]
 	jr z,.next15
 	ld a,$4c
@@ -861,7 +861,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	xor a
 	ld [wBattleMonStatus],a ; remove the status ailment in the in-battle pokemon data
 	push hl
-	ld hl,W_PLAYERBATTSTATUS3
+	ld hl,wPlayerBattleStatus3
 	res BadlyPoisoned,[hl] ; heal Toxic status
 	pop hl
 	ld bc,30
@@ -1536,7 +1536,7 @@ ItemUseXAccuracy: ; de3e (3:5e3e)
 	ld a,[wIsInBattle]
 	and a
 	jp z,ItemUseNotTime
-	ld hl,W_PLAYERBATTSTATUS2
+	ld hl,wPlayerBattleStatus2
 	set UsingXAccuracy,[hl] ; X Accuracy bit
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	jp PrintItemUseTextAndRemoveItem
@@ -1655,7 +1655,7 @@ ItemUseGuardSpec: ; df11 (3:5f11)
 	pop af
 	ld [wWhichPokemon], a
 	
-	ld hl,W_PLAYERBATTSTATUS2
+	ld hl,wPlayerBattleStatus2
 	set ProtectedByMist,[hl] ; Mist bit
 	jp PrintItemUseTextAndRemoveItem
 
@@ -1680,7 +1680,7 @@ ItemUseDireHit: ; df42 (3:5f42)
 	pop af
 	ld [wWhichPokemon], a
 	
-	ld hl,W_PLAYERBATTSTATUS2
+	ld hl,wPlayerBattleStatus2
 	set GettingPumped,[hl] ; Focus Energy bit
 	jp PrintItemUseTextAndRemoveItem
 
@@ -2079,7 +2079,7 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 	ld a, [wPlayerMonNumber]
 	cp b
 	jr nz, .usePPItem
-	ld a, [W_PLAYERBATTSTATUS3]
+	ld a, [wPlayerBattleStatus3]
 	bit Transformed, a
 	jr z, .usePPItem
 	call ItemUseNotTime

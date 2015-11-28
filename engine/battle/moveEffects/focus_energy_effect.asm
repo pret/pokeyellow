@@ -1,9 +1,9 @@
 FocusEnergyEffect_: ; f628b (3d:628b)
-	ld hl, W_PLAYERBATTSTATUS2
+	ld hl, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .notEnemy
-	ld hl, W_ENEMYBATTSTATUS2
+	ld hl, wEnemyBattleStatus2
 .notEnemy
 	bit GettingPumped, [hl] ; is mon already using focus energy?
 	jr nz, .alreadyUsing

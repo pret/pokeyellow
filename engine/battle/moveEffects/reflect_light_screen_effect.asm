@@ -1,10 +1,10 @@
 ReflectLightScreenEffect_: ; f645d (3d:645d)
-	ld hl, W_PLAYERBATTSTATUS3
+	ld hl, wPlayerBattleStatus3
 	ld de, W_PLAYERMOVEEFFECT
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .reflectLightScreenEffect
-	ld hl, W_ENEMYBATTSTATUS3
+	ld hl, wEnemyBattleStatus3
 	ld de, W_ENEMYMOVEEFFECT
 .reflectLightScreenEffect
 	ld a, [de]
