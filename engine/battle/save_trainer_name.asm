@@ -1,4 +1,4 @@
-SaveTrainerName: ; 27e4a (9:7e4a)
+SaveTrainerName: ; 27dff (9:7dff)
 	ld hl,TrainerNamePointers
 	ld a,[W_TRAINERCLASS]
 	dec a
@@ -18,95 +18,95 @@ SaveTrainerName: ; 27e4a (9:7e4a)
 	jr nz,.CopyCharacter
 	ret
 
-TrainerNamePointers: ; 27e64 (9:7e64)
+TrainerNamePointers: ; 27e19 (9:7e19)
 ; what is the point of these?
 	dw YoungsterName
 	dw BugCatcherName
 	dw LassName
-	dw W_TRAINERNAME
+	dw wTrainerName
 	dw JrTrainerMName
 	dw JrTrainerFName
 	dw PokemaniacName
 	dw SuperNerdName
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
+	dw wTrainerName
+	dw wTrainerName
 	dw BurglarName
 	dw EngineerName
 	dw JugglerXName
-	dw W_TRAINERNAME
+	dw wTrainerName
 	dw SwimmerName
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
+	dw wTrainerName
+	dw wTrainerName
 	dw BeautyName
-	dw W_TRAINERNAME
+	dw wTrainerName
 	dw RockerName
 	dw JugglerName
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
+	dw wTrainerName
+	dw wTrainerName
 	dw BlackbeltName
-	dw W_TRAINERNAME
+	dw wTrainerName
 	dw ProfOakName
 	dw ChiefName
 	dw ScientistName
-	dw W_TRAINERNAME
+	dw wTrainerName
 	dw RocketName
 	dw CooltrainerMName
 	dw CooltrainerFName
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
-	dw W_TRAINERNAME
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
+	dw wTrainerName
 
-YoungsterName: ; 27ec2 (9:7ec2)
+YoungsterName: ; 27e77 (9:7e77)
 	db "YOUNGSTER@"
-BugCatcherName: ; 27ecc (9:7ecc)
+BugCatcherName: ; 27e81 (9:7e81)
 	db "BUG CATCHER@"
-LassName: ; 27ed8 (9:7ed8)
+LassName: ; 27e8d (9:7e8d)
 	db "LASS@"
-JrTrainerMName: ; 27edd (9:7edd)
+JrTrainerMName: ; 27e92 (9:7e92)
 	db "JR.TRAINER♂@"
-JrTrainerFName: ; 27ee9 (9:7ee9)
+JrTrainerFName: ; 27e9e (9:7e9e)
 	db "JR.TRAINER♀@"
-PokemaniacName: ; 27ef5 (9:7ef5)
+PokemaniacName: ; 27eaa (9:7eaa)
 	db "POKéMANIAC@"
-SuperNerdName: ; 27f00 (9:7f00)
+SuperNerdName: ; 27eb5 (9:7eb5)
 	db "SUPER NERD@"
-BurglarName: ; 27f0b (9:7f0b)
+BurglarName: ; 27ec0 (9:7ec0)
 	db "BURGLAR@"
-EngineerName: ; 27f13 (9:7f13)
+EngineerName: ; 27ec8 (9:7ec8)
 	db "ENGINEER@"
-JugglerXName: ; 27f1c (9:7f1c)
+JugglerXName: ; 27ed1 (9:7ed1)
 	db "JUGGLER@"
-SwimmerName: ; 27f24 (9:7f24)
+SwimmerName: ; 27ed9 (9:7ed9)
 	db "SWIMMER@"
-BeautyName: ; 27f2c (9:7f2c)
+BeautyName: ; 27ee1 (9:7ee1)
 	db "BEAUTY@"
-RockerName: ; 27f33 (9:7f33)
+RockerName: ; 27ee8 (9:7ee8)
 	db "ROCKER@"
-JugglerName: ; 27f3a (9:7f3a)
+JugglerName: ; 27eef (9:7eef)
 	db "JUGGLER@"
-BlackbeltName: ; 27f42 (9:7f42)
+BlackbeltName: ; 27ef7 (9:7ef7)
 	db "BLACKBELT@"
-ProfOakName: ; 27f4c (9:7f4c)
+ProfOakName: ; 27f01 (9:7f01)
 	db "PROF.OAK@"
-ChiefName: ; 27f55 (9:7f55)
+ChiefName: ; 27f0a (9:7f0a)
 	db "CHIEF@"
-ScientistName: ; 27f5b (9:7f5b)
+ScientistName: ; 27f10 (9:7f10)
 	db "SCIENTIST@"
-RocketName: ; 27f65 (9:7f65)
+RocketName: ; 27f1a (9:7f1a)
 	db "ROCKET@"
-CooltrainerMName: ; 27f6c (9:7f6c)
+CooltrainerMName: ; 27f21 (9:7f21)
 	db "COOLTRAINER♂@"
-CooltrainerFName: ; 27f79 (9:7f79)
+CooltrainerFName: ; 27f2e (9:7f2e)
 	db "COOLTRAINER♀@"

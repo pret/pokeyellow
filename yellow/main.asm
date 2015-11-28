@@ -3720,9 +3720,8 @@ PinsirPicBack:       INCBIN "pic/monback/pinsirb.pic"
 TangelaPicFront:     INCBIN "pic/ymon/tangela.pic"
 TangelaPicBack:      INCBIN "pic/monback/tangelab.pic"
 
-	dr $27d20,$27dff
-SaveTrainerName: ; 27dff (9:7dff)
-	dr $27dff,$28000
+INCLUDE "engine/battle/print_type.asm"
+INCLUDE "engine/battle/save_trainer_name.asm"
 
 SECTION "Pics 2", ROMX, BANK[PICS_2]
 

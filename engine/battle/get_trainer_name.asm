@@ -20,6 +20,6 @@ GetTrainerName_: ; f67a5 (3d:67a5)
 	ld hl, wcd6d
 .foundName
 .rival
-	ld de, W_TRAINERNAME
+	ld de, wTrainerName
 	ld bc, $d
 	jp CopyData

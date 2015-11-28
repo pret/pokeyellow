@@ -1,4 +1,4 @@
-TypeNames:
+TypeNames: ; 27d63 (9:7d63)
 
 	dw .Normal
 	dw .Fighting

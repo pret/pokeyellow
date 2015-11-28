@@ -232,7 +232,7 @@ INCLUDE "text/maps/seafoam_islands_b3f.asm"
 INCLUDE "text/maps/seafoam_islands_b4f.asm"
 
 _AIBattleWithdrawText::
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text " with-"
 	line "drew @"
 	TX_RAM wEnemyMonNick
@@ -240,7 +240,7 @@ _AIBattleWithdrawText::
 	prompt
 
 _AIBattleUseItemText::
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	db $0
 	line "used @"
 	TX_RAM wcd6d
@@ -1138,7 +1138,7 @@ _MoneyForWinningText::
 _TrainerDefeatedText::
 	text $52, " defeated"
 	line "@"
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text "!"
 	prompt
 
@@ -1168,12 +1168,12 @@ _PlayerBlackedOutText2::
 _LinkBattleLostText::
 	text $52, " lost to"
 	line "@"
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text "!"
 	prompt
 
 _TrainerAboutToUseText::
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text " is"
 	line "about to use"
 	cont"@"
@@ -1185,7 +1185,7 @@ _TrainerAboutToUseText::
 	done
 
 _TrainerSentOutText::
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text " sent"
 	line "out @"
 	TX_RAM wEnemyMonNick
@@ -1542,7 +1542,7 @@ _EnemyAppearedText::
 	prompt
 
 _TrainerWantsToFightText::
-	TX_RAM W_TRAINERNAME
+	TX_RAM wTrainerName
 	text " wants"
 	line "to fight!"
 	prompt

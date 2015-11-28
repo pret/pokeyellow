@@ -1582,7 +1582,7 @@ wMissableObjectCounter:: ; d048
 
 	ds 1
 
-W_TRAINERNAME:: ; d04a
+wTrainerName:: ; d04a
 ; 13 bytes for the letters of the opposing trainer
 ; the name is terminated with $50 with possible
 ; unused trailing letters
