@@ -3135,7 +3135,7 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	inc a
 	jp z, ExecutePlayerMoveDone ; for selected move = FF, skip most of player's turn
 	xor a
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 	ld [wMonIsDisobedient], a
 	ld [wMoveDidntMiss], a
 	ld a, $a
@@ -3206,7 +3206,7 @@ PlayerCalcMoveDamage: ; 3d6dc (f:56dc)
 .moveHitTest
 	call MoveHitTest
 handleIfPlayerMoveMissed
-	ld a,[W_MOVEMISSED]
+	ld a,[wMoveMissed]
 	and a
 	jr z,getPlayerAnimationType
 	ld a,[W_PLAYERMOVEEFFECT]
@@ -3272,7 +3272,7 @@ MirrorMoveCheck
 	ld de,1
 	call IsInArray
 	jp c,JumpMoveEffect ; done here after executing effects of ResidualEffects2
-	ld a,[W_MOVEMISSED]
+	ld a,[wMoveMissed]
 	and a
 	jr z,.moveDidNotMiss
 	call PrintMoveFailureText
@@ -3575,7 +3575,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	or b
 	jr nz,.next
 	ld a,1
-	ld [W_MOVEMISSED],a
+	ld [wMoveMissed],a
 .next
 	xor a
 	ld [hli],a
@@ -4661,7 +4661,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 
 JumpToOHKOMoveEffect: ; 3e016 (f:6016)
 	call JumpMoveEffect
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	dec a
 	ret
 
@@ -4775,7 +4775,7 @@ HandleCounterMove: ; 3e093 (f:6093)
 	cp a,COUNTER
 	ret nz ; return if not using Counter
 	ld a,$01
-	ld [W_MOVEMISSED],a ; initialize the move missed variable to true (it is set to false below if the move hits)
+	ld [wMoveMissed],a ; initialize the move missed variable to true (it is set to false below if the move hits)
 	ld a,[hl]
 	cp a,COUNTER
 	ret z ; miss if the opponent's last selected move is Counter.
@@ -4813,7 +4813,7 @@ HandleCounterMove: ; 3e093 (f:6093)
 	ld [hl],a
 .noCarry
 	xor a
-	ld [W_MOVEMISSED],a
+	ld [wMoveMissed],a
 	call MoveHitTest ; do the normal move hit test in addition to Counter's special rules
 	xor a
 	ret
@@ -5382,7 +5382,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 ; if damage is 0, make the move miss
 ; this only occurs if a move that would do 2 or 3 damage is 0.25x effective against the target
 	inc a
-	ld [W_MOVEMISSED],a
+	ld [wMoveMissed],a
 .skipTypeImmunity
 	pop bc
 	pop hl
@@ -5540,7 +5540,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ld [hli],a
 	ld [hl],a
 	inc a
-	ld [W_MOVEMISSED],a
+	ld [wMoveMissed],a
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.playerTurn2
@@ -5682,7 +5682,7 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld hl, wAILayer2Encouragement
 	inc [hl]
 	xor a
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 	ld [wMoveDidntMiss], a
 	ld a, $a
 	ld [wDamageMultipliers], a
@@ -5750,7 +5750,7 @@ EnemyCalcMoveDamage: ; 3e750 (f:6750)
 EnemyMoveHitTest: ; 3e77f (f:677f)
 	call MoveHitTest
 handleIfEnemyMoveMissed: ; 3e782 (f:6782)
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr z, .asm_3e791
 	ld a, [W_ENEMYMOVEEFFECT]
@@ -5823,7 +5823,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	ld de, $1
 	call IsInArray
 	jp c, JumpMoveEffect
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr z, .asm_3e82b
 	call PrintMoveFailureText
@@ -6101,7 +6101,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	or b
 	jr nz, .next
 	ld a, $1
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 .next
 	xor a
 	ld [hli], a
@@ -6821,7 +6821,7 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	ld a, [hl]
 	cp GHOST
 	ret z
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	ret nz
 	ld a, 5
@@ -6979,7 +6979,7 @@ SleepEffect: ; 3f1fc (f:71fc)
 	push de
 	call MoveHitTest ; apply accuracy tests
 	pop de
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .didntAffect
 .setSleepCounter
@@ -7035,7 +7035,7 @@ PoisonEffect: ; 3f24f (f:724f)
 	call MoveHitTest ; apply accuracy tests
 	pop de
 	pop hl
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .didntAffect
 	jr .inflictPoison
@@ -7493,7 +7493,7 @@ StatModifierDownEffect: ; 3f54c (f:754c)
 	pop bc
 	pop de
 	pop hl
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jp nz, MoveMissed
 	ld a, [bc]
@@ -8060,7 +8060,7 @@ ConfusionEffect: ; 3f961 (f:7961)
 	call CheckTargetSubstitute
 	jr nz, ConfusionEffectFailed
 	call MoveHitTest
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, ConfusionEffectFailed
 
@@ -8143,7 +8143,7 @@ MimicEffect: ; 3f9ed (f:79ed)
 	ld c, 50
 	call DelayFrames
 	call MoveHitTest
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .asm_3fa74
 	ld a, [H_WHOSETURN]
@@ -8224,7 +8224,7 @@ SplashEffect: ; 3fa84 (f:7a84)
 
 DisableEffect: ; 3fa8a (f:7a8a)
 	call MoveHitTest
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .moveMissed
 	ld de, W_ENEMYDISABLEDMOVE

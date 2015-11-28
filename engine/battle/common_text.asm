@@ -23,7 +23,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	call PlayCry
 .continue
 	ld hl, WildMonAppearedText
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr z, .notFishing
 	ld hl, HookedMonAttackedText

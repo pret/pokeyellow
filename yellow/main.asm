@@ -1796,7 +1796,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	and a ; are any party members poisoned?
 	jr z, .skipPoisonEffectAndSound
 	ld b, $2
-	predef ChangeBGPalColor0_4Frames ; change BG white to dark grey for 4 frames
+	predef InvertBGPalColor0_4Frames ; change BG white to dark grey for 4 frames
 	ld a, SFX_POISONED
 	call PlaySound
 .skipPoisonEffectAndSound
@@ -3790,8 +3790,8 @@ JynxPicBack:         INCBIN "pic/monback/jynxb.pic"
 MoltresPicFront:     INCBIN "pic/ymon/moltres.pic"
 MoltresPicBack:      INCBIN "pic/monback/moltresb.pic"
 
-	dr $2bd4c,$2c000
-
+INCLUDE "engine/predefsA.asm"
+INCLUDE "engine/battle/moveEffects/leech_seed_effect.asm"
 
 SECTION "Pics 3", ROMX, BANK[PICS_3]
 

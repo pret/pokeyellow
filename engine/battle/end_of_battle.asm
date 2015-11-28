@@ -53,7 +53,7 @@ EndOfBattle: ; 13765 (4:7765)
 	ld [wChannelSoundIDs + CH4], a
 	ld [wIsInBattle], a
 	ld [W_BATTLETYPE], a
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 	ld [wCurOpponent], a
 	ld [wForcePlayerToChooseMon], a
 	ld [wNumRunAttempts], a

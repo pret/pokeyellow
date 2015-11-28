@@ -1,6 +1,6 @@
-LeechSeedEffect_: ; 2bea9 (a:7ea9)
+LeechSeedEffect_: ; 2bdba (a:7dba)
 	callab MoveHitTest
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .moveMissed
 	ld hl, wEnemyBattleStatus2
@@ -31,10 +31,10 @@ LeechSeedEffect_: ; 2bea9 (a:7ea9)
 	ld hl, EvadedAttackText
 	jp PrintText
 
-WasSeededText: ; 2bef2 (a:7ef2)
+WasSeededText: ; 2be03 (a:7e03)
 	TX_FAR _WasSeededText
 	db "@"
 
-EvadedAttackText: ; 2bef7 (a:7ef7)
+EvadedAttackText: ; 2be08 (a:7e08)
 	TX_FAR _EvadedAttackText
 	db "@"

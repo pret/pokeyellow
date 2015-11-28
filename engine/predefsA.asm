@@ -1,17 +1,19 @@
-; b = new colour for BG colour 0 (usually white) for 4 frames
-ChangeBGPalColor0_4Frames: ; 480eb (12:40eb)
-	call GetPredefRegisters
+; inverts the BGP for 4 (6 on CGB due to lag) frames
+InvertBGPalColor0_4Frames: ; 2bd4c (a:7d4c)
+	call GetPredefRegisters ; leftover of red/blue, has no use here
 	ld a, [rBGP]
-	or b
+	xor $ff
 	ld [rBGP], a
+	call UpdateGBCPal_BGP
 	ld c, 4
 	call DelayFrames
 	ld a, [rBGP]
-	and %11111100
+	xor $ff
 	ld [rBGP], a
+	call UpdateGBCPal_BGP
 	ret
 
-PredefShakeScreenVertically: ; 480ff (12:40ff)
+PredefShakeScreenVertically: ; 2bd67 (a:7d67)
 ; Moves the window down and then back in a sequence of progressively smaller
 ; numbers of pixels, starting at b.
 	call GetPredefRegisters
@@ -29,7 +31,7 @@ PredefShakeScreenVertically: ; 480ff (12:40ff)
 	ld [wDisableVBlankWYUpdate], a
 	ret
 
-.MutateWY ; 48119 (12:4119)
+.MutateWY ; 2bd81 (a:7d81)
 	ld a, [$ff96]
 	xor b
 	ld [$ff96], a
@@ -37,7 +39,7 @@ PredefShakeScreenVertically: ; 480ff (12:40ff)
 	ld c, 3
 	jp DelayFrames
 
-PredefShakeScreenHorizontally: ; 48125 (12:4125)
+PredefShakeScreenHorizontally: ; 2bd8d (a:7d8d)
 ; Moves the window right and then back in a sequence of progressively smaller
 ; numbers of pixels, starting at b.
 	call GetPredefRegisters
@@ -57,7 +59,7 @@ PredefShakeScreenHorizontally: ; 48125 (12:4125)
 	ld [rWX], a
 	ret
 
-.MutateWX ; 4813f (12:413f)
+.MutateWX ; 2bda7 (a:4da7)
 	ld a, [$ff97]
 	xor b
 	ld [$ff97], a

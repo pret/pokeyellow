@@ -28,7 +28,7 @@ ParalyzeEffect_: ; f6562 (3d:6562)
 	push hl
 	callab MoveHitTest
 	pop hl
-	ld a, [W_MOVEMISSED]
+	ld a, [wMoveMissed]
 	and a
 	jr nz, .didntAffect
 	set PAR, [hl]

@@ -34,5 +34,5 @@ OneHitKOEffect_: ; f64db (3d:64db)
 .userIsSlower
 ; keep damage at 0 and set move missed flag if target's current speed is higher instead
 	ld a, $1
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 	ret

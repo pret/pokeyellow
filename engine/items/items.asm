@@ -1972,7 +1972,7 @@ RodResponse: ; e15b (3:615b)
 	jr nz, DoNotGenerateFishingEncounter
 	; if yes, store level and species data
 	ld a, 1
-	ld [W_MOVEMISSED], a
+	ld [wMoveMissed], a
 	ld a, b ; level
 	ld [wCurEnemyLVL], a
 	ld a, c ; species

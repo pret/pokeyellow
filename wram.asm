@@ -1635,7 +1635,7 @@ wCriticalHitOrOHKO:: ; d05e
 ; $ff = failed OHKO
 	ds 1
 
-W_MOVEMISSED:: ; d05f
+wMoveMissed:: ; d05f
 	ds 1
 
 wPlayerStatsToDouble:: ; d060

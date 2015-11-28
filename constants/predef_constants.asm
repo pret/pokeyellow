@@ -31,7 +31,7 @@ const_value = 0
 	predef_const GetQuantityOfItemInBag
 	predef_const CheckForHiddenObjectOrBookshelfOrCardKeyDoor ; for these two, the bank number is actually 0
 	predef_const GiveItem
-	predef_const ChangeBGPalColor0_4Frames
+	predef_const InvertBGPalColor0_4Frames
 	predef_const FindPathToPlayer
 	predef_const Func_480ff
 	predef_const CalcPositionOfPlayerRelativeToNPC
