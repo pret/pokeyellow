@@ -84,7 +84,7 @@ PredefPointers:: ; f681d (3d:681d)
 	;add_predef IsItemInBag_
 	;dbw $03,CheckForHiddenObjectOrBookshelfOrCardKeyDoor ; for these two, the bank number is actually 0
 	;dbw $03,GiveItem
-	;add_predef InvertBGPalColor0_4Frames
+	;add_predef InvertBGPal_4Frames
 	;add_predef FindPathToPlayer
 	;add_predef Func_480ff
 	;add_predef CalcPositionOfPlayerRelativeToNPC

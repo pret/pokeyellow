@@ -1796,7 +1796,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	and a ; are any party members poisoned?
 	jr z, .skipPoisonEffectAndSound
 	ld b, $2
-	predef InvertBGPalColor0_4Frames ; change BG white to dark grey for 4 frames
+	predef InvertBGPal_4Frames ; change BG white to dark grey for 4 frames
 	ld a, SFX_POISONED
 	call PlaySound
 .skipPoisonEffectAndSound
@@ -3866,12 +3866,17 @@ BeedrillPicBack:     INCBIN "pic/monback/beedrillb.pic"
 
 FossilKabutopsPic:   INCBIN "pic/ymon/fossilkabutops.pic"
 
-	dr $2fd25,$2fd42
-CheckIfMoveIsKnown: ; 2fd42 (b:7d42)
-	dr $2fd42,$2fd6a
+INCLUDE "engine/battle/display_effectiveness.asm"
+INCLUDE "engine/items/tmhm.asm"
 Func_2fd6a: ; 2fd6a (b:7d6a)
-	dr $2fd6a,$30000
-
+	callab IsThisPartymonOurPikachu
+	ret nc
+	ld a, $3
+	ld [wd431], a
+	ret
+	
+INCLUDE "engine/battle/scale_sprites.asm"
+INCLUDE "engine/game_corner_slots2.asm"
 
 SECTION "Pics 4", ROMX, BANK[PICS_4]
 

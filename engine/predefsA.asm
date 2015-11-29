@@ -1,5 +1,5 @@
 ; inverts the BGP for 4 (6 on CGB due to lag) frames
-InvertBGPalColor0_4Frames: ; 2bd4c (a:7d4c)
+InvertBGPal_4Frames: ; 2bd4c (a:7d4c)
 	call GetPredefRegisters ; leftover of red/blue, has no use here
 	ld a, [rBGP]
 	xor $ff
