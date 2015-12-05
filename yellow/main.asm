@@ -3997,7 +3997,9 @@ WeepinbellPicBack:    INCBIN "pic/monback/weepinbellb.pic"
 VictreebelPicFront:   INCBIN "pic/ymon/victreebel.pic"
 VictreebelPicBack:    INCBIN "pic/monback/victreebelb.pic"
 
-	dr $3749e,$38000
+INCLUDE "engine/titlescreen2.asm"
+INCLUDE "engine/slot_machine.asm"
+INCLUDE "engine/game_corner_slots.asm"
 
 SECTION "bank0E",ROMX,BANK[$0E]
 
@@ -4306,7 +4308,9 @@ SECTION "bank1E",ROMX,BANK[$1E]
 
 	dr $78000,$78757
 AnimationTileset2: ; 78757 (1e:4757)
-	dr $78757,$797af
+	dr $78757,$78c17
+SlotMachineTiles2: ; 78c17 (1e:4c17)
+	dr $78c17,$797af
 AnimationSubstitute: ; 797af (1e:57af)
 	dr $797af,$79816
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)

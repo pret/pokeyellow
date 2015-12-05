@@ -1,22 +1,24 @@
-TitleScroll_WaitBall: ; 37244 (d:7244)
+; Leftover of Red/Blue. Seemingly unused
+
+TitleScroll_WaitBall: ; 3749e (d:749e)
 ; Wait around for the TitleBall animation to play out.
 ; hi: speed
 ; lo: duration
 	db $05, $05, 0
 
-TitleScroll_In: ; 37247 (d:7247)
+TitleScroll_In: ; 374a1 (d:74a1)
 ; Scroll a TitleMon in from the right.
 ; hi: speed
 ; lo: duration
 	db $a2, $94, $84, $63, $52, $31, $11, 0
 
-TitleScroll_Out: ; 3724f (d:724f)
+TitleScroll_Out: ; 374a9 (d:74a9)
 ; Scroll a TitleMon out to the left.
 ; hi: speed
 ; lo: duration
 	db $12, $22, $32, $42, $52, $62, $83, $93, 0
 
-TitleScroll: ; 37258 (d:7258)
+TitleScroll: ; 374b2 (d:74b2)
 	ld a, d
 
 	ld bc, TitleScroll_In
@@ -31,7 +33,7 @@ TitleScroll: ; 37258 (d:7258)
 	ld e, 0 ; don't animate titleball
 .ok
 
-_TitleScroll: ; 3726a (d:726a)
+_TitleScroll: ; 374c4 (d:74c4)
 	ld a, [bc]
 	and a
 	ret z
@@ -67,7 +69,7 @@ _TitleScroll: ; 3726a (d:726a)
 	pop bc
 	jr _TitleScroll
 
-.ScrollBetween ; 37292 (d:7292)
+.ScrollBetween ; 374ec (d:74ec)
 .wait
 	ld a, [rLY] ; rLY
 	cp l
@@ -82,12 +84,12 @@ _TitleScroll: ; 3726a (d:726a)
 	jr z, .wait2
 	ret
 
-TitleBallYTable: ; 372a0 (d:72a0)
+TitleBallYTable: ; 374fa (d:74fa)
 ; OBJ y-positions for the Poke Ball held by Red in the title screen.
 ; This is really two 0-terminated lists. Initiated with an index of 1.
 	db 0, $71, $6f, $6e, $6d, $6c, $6d, $6e, $6f, $71, $74, 0
 
-TitleScreenAnimateBallIfStarterOut: ; 372ac (d:72ac)
+TitleScreenAnimateBallIfStarterOut: ; 37506 (d:7506)
 ; Animate the TitleBall if a starter just got scrolled out.
 	ld a, [wTitleMonSpecies]
 	cp STARTER1
@@ -102,7 +104,7 @@ TitleScreenAnimateBallIfStarterOut: ; 372ac (d:72ac)
 	ld d, 0
 	jp _TitleScroll
 
-GetTitleBallY: ; 372c4 (d:72c4)
+GetTitleBallY: ; 3751e (d:751e)
 ; Get position e from TitleBallYTable
 	push de
 	push hl

@@ -383,9 +383,9 @@ Trade_AnimLeftToRight: ; 41376 (10:5376)
 	ld a, $e4
 	ld [rOBP0], a
 	ld a, $54
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld a, $1c
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, [wLeftGBMonSpecies]
 	ld [wMonPartySpriteSpecies], a
 	call Trade_WriteCircledMonOAM
@@ -415,9 +415,9 @@ Trade_AnimRightToLeft: ; 413c6 (10:53c6)
 	xor a
 	ld [wTradedMonMovingRight], a
 	ld a, $64
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld a, $44
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, [wRightGBMonSpecies]
 	ld [wMonPartySpriteSpecies], a
 	call Trade_WriteCircledMonOAM
@@ -622,10 +622,10 @@ Trade_AddOffsetsToOAMCoords: ; 41510 (10:5510)
 	ld hl, wOAMBuffer
 	ld c, $14
 .loop
-	ld a, [W_BASECOORDY]
+	ld a, [wBaseCoordY]
 	add [hl]
 	ld [hli], a
-	ld a, [W_BASECOORDX]
+	ld a, [wBaseCoordX]
 	add [hl]
 	ld [hli], a
 	inc hl
@@ -657,9 +657,9 @@ Trade_AnimMonMoveVertical: ; 41525 (10:5525)
 	lb bc, -4, 0 ; move left
 .doAnim
 	ld a, b
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld a, c
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld d, $4
 .loop
 	call Trade_AddOffsetsToOAMCoords

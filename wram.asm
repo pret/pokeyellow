@@ -1767,9 +1767,9 @@ wSavedListScrollOffset:: ; d07e
 	ds 2
 
 ; base coordinates of frame block
-W_BASECOORDX:: ; d081
+wBaseCoordX:: ; d081
 	ds 1
-W_BASECOORDY:: ; d082
+wBaseCoordY:: ; d082
 	ds 1
 
 ; low health alarm counter/enable

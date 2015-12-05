@@ -23,15 +23,15 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	dec a
 	jr z,.flipBaseCoords              ; 3
 .noTransformation
-	ld a,[W_BASECOORDY]
+	ld a,[wBaseCoordY]
 	add [hl]
 	ld [de],a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a,[wBaseCoordX]
 	jr .finishCopying
 .flipBaseCoords
-	ld a,[W_BASECOORDY]
+	ld a,[wBaseCoordY]
 	ld b,a
 	ld a,136
 	sub b ; flip Y base coordinate
@@ -39,7 +39,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld [de],a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a,[wBaseCoordX]
 	ld b,a
 	ld a,168
 	sub b ; flip X base coordinate
@@ -57,7 +57,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	inc de
 	jp .nextTile
 .flipHorizontalAndVertical
-	ld a,[W_BASECOORDY]
+	ld a,[wBaseCoordY]
 	add [hl] ; Y offset
 	ld b,a
 	ld a,136
@@ -65,7 +65,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld [de],a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a,[wBaseCoordX]
 	add [hl] ; X offset
 	ld b,a
 	ld a,168
@@ -95,13 +95,13 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	inc de
 	jp .nextTile
 .flipHorizontalTranslateDown
-	ld a,[W_BASECOORDY]
+	ld a,[wBaseCoordY]
 	add [hl]
 	add a,40 ; translate Y coordinate downwards
 	ld [de],a ; store Y
 	inc hl
 	inc de
-	ld a,[W_BASECOORDX]
+	ld a,[wBaseCoordX]
 	add [hl]
 	ld b,a
 	ld a,168
@@ -577,9 +577,9 @@ PlaySubanimation: ; 78e53 (1e:4e53)
 	add hl,de
 	add hl,de
 	ld a,[hli]
-	ld [W_BASECOORDY],a
+	ld [wBaseCoordY],a
 	ld a,[hl]
-	ld [W_BASECOORDX],a
+	ld [wBaseCoordX],a
 	pop hl
 	inc hl
 	ld a,[hl] ; frame block mode
@@ -1235,17 +1235,17 @@ AnimationWaterDropletsEverywhere: ; 79215 (1e:5215)
 	call LoadAnimationTileset
 	ld d, 32
 	ld a, -16
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld a, $71
 	ld [wDropletTile], a
 .loop
 	ld a, 16
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, 0
 	ld [wUnusedD08A], a
 	call _AnimationWaterDroplets
 	ld a, 24
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, 32
 	ld [wUnusedD08A], a
 	call _AnimationWaterDroplets
@@ -1256,24 +1256,24 @@ AnimationWaterDropletsEverywhere: ; 79215 (1e:5215)
 _AnimationWaterDroplets: ; 79246 (1e:5246)
 	ld hl, wOAMBuffer
 .loop
-	ld a, [W_BASECOORDY]
+	ld a, [wBaseCoordY]
 	ld [hli], a ; Y
-	ld a, [W_BASECOORDX]
+	ld a, [wBaseCoordX]
 	add 27
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld [hli], a ; X
 	ld a, [wDropletTile]
 	ld [hli], a ; tile
 	xor a
 	ld [hli], a ; attribute
-	ld a, [W_BASECOORDX]
+	ld a, [wBaseCoordX]
 	cp 144
 	jr c, .loop
 	sub 168
-	ld [W_BASECOORDX], a
-	ld a, [W_BASECOORDY]
+	ld [wBaseCoordX], a
+	ld a, [wBaseCoordY]
 	add 16
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	cp 112
 	jr c, .loop
 	call AnimationCleanOAM
@@ -1379,14 +1379,14 @@ ShakeEnemyHUD_WritePlayerMonPicOAM: ; 792fd (1e:52fd)
 ; Writes the OAM entries for a copy of the player mon's pic in OAM.
 ; The top 5 rows are reproduced in OAM, although only 2 are actually needed.
 	ld a, $10
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld a, $30
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld hl, wOAMBuffer
 	ld d, 0
 	ld c, 7
 .loop
-	ld a, [W_BASECOORDY]
+	ld a, [wBaseCoordY]
 	ld e, a
 	ld b, 5
 .innerLoop
@@ -1398,21 +1398,21 @@ ShakeEnemyHUD_WritePlayerMonPicOAM: ; 792fd (1e:52fd)
 	ret z
 	inc d
 	inc d
-	ld a, [W_BASECOORDX]
+	ld a, [wBaseCoordX]
 	add 8
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	jr .loop
 
 BattleAnimWriteOAMEntry: ; 79329 (1e:5329)
 ; Y coordinate = e (increased by 8 each call, before the write to OAM)
-; X coordinate = [W_BASECOORDX]
+; X coordinate = [wBaseCoordX]
 ; tile = d
 ; attributes = 0
 	ld a, e
 	add 8
 	ld e, a
 	ld [hli], a
-	ld a, [W_BASECOORDX]
+	ld a, [wBaseCoordX]
 	ld [hli], a
 	ld a, d
 	ld [hli], a
@@ -1741,9 +1741,9 @@ AnimationShootBallsUpward: ; 794f9 (1e:54f9)
 	lb bc, 6 * 8, 5 * 8
 .next
 	ld a, b
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, c
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	lb bc, 5, 1
 	call _AnimationShootBallsUpward
 	jp AnimationCleanOAM
@@ -1757,7 +1757,7 @@ _AnimationShootBallsUpward: ; 79517 (1e:5517)
 	ld d, $7a ; ball tile
 	ld hl, wOAMBuffer
 	push bc
-	ld a, [W_BASECOORDY]
+	ld a, [wBaseCoordY]
 	ld e, a
 .initOAMLoop
 	call BattleAnimWriteOAMEntry
@@ -1771,7 +1771,7 @@ _AnimationShootBallsUpward: ; 79517 (1e:5517)
 	push bc
 	ld hl, wOAMBuffer
 .innerLoop
-	ld a, [W_BASECOORDY]
+	ld a, [wBaseCoordY]
 	add 8
 	ld e, a
 	ld a, [hl]
@@ -1811,11 +1811,11 @@ AnimationShootManyBallsUpward: ; 79566 (1e:5566)
 	ld [wSavedY], a
 .loop
 	ld a, [wSavedY]
-	ld [W_BASECOORDY], a
+	ld [wBaseCoordY], a
 	ld a, [hli]
 	cp $ff
 	jp z, AnimationCleanOAM
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	lb bc, 4, 1
 	push hl
 	call _AnimationShootBallsUpward
@@ -2188,7 +2188,7 @@ InitMultipleObjectsOAM: ; 797e8 (1e:57e8)
 	pop bc
 	xor a
 	ld e, a
-	ld [W_BASECOORDX], a
+	ld [wBaseCoordX], a
 	ld hl, wOAMBuffer
 .loop
 	call BattleAnimWriteOAMEntry
