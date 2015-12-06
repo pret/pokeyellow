@@ -4,7 +4,7 @@ RecoilEffect_: ; 138f6 (4:78f6)
 	ld a, [W_PLAYERMOVENUM]
 	ld hl, wBattleMonMaxHP
 	jr z, .recoilEffect
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	ld hl, wEnemyMonMaxHP
 .recoilEffect
 	ld d, a

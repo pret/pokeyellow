@@ -5,7 +5,7 @@ ParalyzeEffect_: ; f6562 (3d:6562)
 	and a
 	jp z, .next
 	ld hl, wBattleMonStatus
-	ld de, W_ENEMYMOVETYPE
+	ld de, wEnemyMoveType
 .next
 	ld a, [hl]
 	and a ; does the target already have a status ailment?

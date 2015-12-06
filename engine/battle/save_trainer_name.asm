@@ -1,6 +1,6 @@
 SaveTrainerName: ; 27dff (9:7dff)
 	ld hl,TrainerNamePointers
-	ld a,[W_TRAINERCLASS]
+	ld a,[wTrainerClass]
 	dec a
 	ld c,a
 	ld b,0

@@ -32,7 +32,7 @@ asm_f601d: ; f601d (f:601d)
 	ld a, [wEnemyMonSpecies2]
 	sub $c8
 	jp c, InitWildBattle
-	ld [W_TRAINERCLASS], a
+	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callab ReadTrainer
 	callab DoBattleTransitionAndInitBattleVariables
@@ -100,7 +100,7 @@ InitWildBattle: ; f607c (3d:607c)
 	call LoadMonFrontSprite ; load mon sprite
 .spriteLoaded
 	xor a
-	ld [W_TRAINERCLASS], a
+	ld [wTrainerClass], a
 	ld [$ffe1], a
 	coord hl, 12, 0
 	predef CopyUncompressedPicToTilemap

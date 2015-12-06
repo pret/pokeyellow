@@ -1,4 +1,4 @@
-TrainerNames: ; 399ff (e:59ff)
+TrainerNames: ; 3997e (e:597e)
 	db "YOUNGSTER@"
 	db "BUG CATCHER@"
 	db "LASS@"

@@ -1,14 +1,51 @@
-TrainerDataPointers: ; 39d3b (e:5d3b)
-	dw YoungsterData,BugCatcherData,LassData,SailorData,JrTrainerMData
-	dw JrTrainerFData,PokemaniacData,SuperNerdData,HikerData,BikerData
-	dw BurglarData,EngineerData,Juggler1Data,FisherData,SwimmerData
-	dw CueBallData,GamblerData,BeautyData,PsychicData,RockerData
-	dw JugglerData,TamerData,BirdKeeperData,BlackbeltData,Green1Data
-	dw ProfOakData,ChiefData,ScientistData,GiovanniData,RocketData
-	dw CooltrainerMData,CooltrainerFData,BrunoData,BrockData,MistyData
-	dw LtSurgeData,ErikaData,KogaData,BlaineData,SabrinaData
-	dw GentlemanData,Green2Data,Green3Data,LoreleiData,ChannelerData
-	dw AgathaData,LanceData
+TrainerDataPointers: ; 39dd1 (e:5dd1)
+	dw YoungsterData
+	dw BugCatcherData
+	dw LassData
+	dw SailorData
+	dw JrTrainerMData
+	dw JrTrainerFData
+	dw PokemaniacData
+	dw SuperNerdData
+	dw HikerData
+	dw BikerData
+	dw BurglarData
+	dw EngineerData
+	dw Juggler1Data
+	dw FisherData
+	dw SwimmerData
+	dw CueBallData
+	dw GamblerData
+	dw BeautyData
+	dw PsychicData
+	dw RockerData
+	dw JugglerData
+	dw TamerData
+	dw BirdKeeperData
+	dw BlackbeltData
+	dw Green1Data
+	dw ProfOakData
+	dw ChiefData
+	dw ScientistData
+	dw GiovanniData
+	dw RocketData
+	dw CooltrainerMData
+	dw CooltrainerFData
+	dw BrunoData
+	dw BrockData
+	dw MistyData
+	dw LtSurgeData
+	dw ErikaData
+	dw KogaData
+	dw BlaineData
+	dw SabrinaData
+	dw GentlemanData
+	dw Green2Data
+	dw Green3Data
+	dw LoreleiData
+	dw ChannelerData
+	dw AgathaData
+	dw LanceData
 
 ; if first byte != FF, then
 	; first byte is level (of all pokemon on this team)
@@ -19,7 +56,7 @@ TrainerDataPointers: ; 39d3b (e:5d3b)
 	; every next two bytes are a level and species
 	; null-terminated
 
-YoungsterData: ; 39d99 (e:5d99)
+YoungsterData:
 	db 11,RATTATA,EKANS,0
 	db 14,SPEAROW,0
 	db 10,RATTATA,RATTATA,ZUBAT,0
@@ -34,7 +71,7 @@ YoungsterData: ; 39d99 (e:5d99)
 	db 18,NIDORAN_M,NIDORINO,0
 	db 17,SPEAROW,RATTATA,RATTATA,SPEAROW,0
 	db 24,SANDSHREW,0
-BugCatcherData: ; 39dce (e:5dce)
+BugCatcherData:
 	db 7,CATERPIE,CATERPIE,0
 	db 6,METAPOD,CATERPIE,METAPOD,0
 	db 10,CATERPIE,0
@@ -50,7 +87,7 @@ BugCatcherData: ; 39dce (e:5dce)
 	db 19,BEEDRILL,BEEDRILL,0
 	db 20,CATERPIE,WEEDLE,VENONAT,0
 	db 8,CATERPIE,METAPOD,0
-LassData: ; 39e0c (e:5e0c)
+LassData:
 	db 9,PIDGEY,PIDGEY,0
 	db 10,RATTATA,NIDORAN_M,0
 	db 14,JIGGLYPUFF,0
@@ -70,7 +107,7 @@ LassData: ; 39e0c (e:5e0c)
 	db 23,BELLSPROUT,WEEPINBELL,0
 	db 23,ODDISH,GLOOM,0
 	db 6,NIDORAN_F,NIDORAN_M,0
-SailorData: ; 39e58 (e:5e58)
+SailorData:
 	db 18,MACHOP,SHELLDER,0
 	db 17,MACHOP,TENTACOOL,0
 	db 21,SHELLDER,0
@@ -79,7 +116,7 @@ SailorData: ; 39e58 (e:5e58)
 	db 17,HORSEA,HORSEA,HORSEA,0
 	db 20,MACHOP,0
 	db 24,MAGNEMITE,0
-JrTrainerMData: ; 39e78 (e:5e78)
+JrTrainerMData:
 	db 9,DIGLETT,SANDSHREW,0
 	db 14,RATTATA,EKANS,0
 	db 18,MANKEY,0
@@ -90,7 +127,7 @@ JrTrainerMData: ; 39e78 (e:5e78)
 	db 19,RATTATA,DIGLETT,EKANS,SANDSHREW,0
 	db 29,NIDORAN_M,NIDORINO,0
 	db 16,WEEPINBELL,0
-JrTrainerFData: ; 39e9d (e:5e9d)
+JrTrainerFData:
 	db 19,GOLDEEN,0
 	db 16,ODDISH,BELLSPROUT,0
 	db 16,PIDGEY,PIDGEY,PIDGEY,0
@@ -116,7 +153,7 @@ JrTrainerFData: ; 39e9d (e:5e9d)
 	db 29,BELLSPROUT,ODDISH,TANGELA,0
 	db 30,TENTACOOL,HORSEA,SEEL,0
 	db 20,CUBONE,0
-PokemaniacData: ; 39f09 (e:5f09)
+PokemaniacData:
 	db 30,RHYHORN,LICKITUNG,0
 	db 20,CUBONE,SLOWPOKE,0
 	db 20,SLOWPOKE,SLOWPOKE,SLOWPOKE,0
@@ -124,7 +161,7 @@ PokemaniacData: ; 39f09 (e:5f09)
 	db 25,SLOWPOKE,0
 	db 40,CHARMELEON,LAPRAS,LICKITUNG,0
 	db 23,CUBONE,SLOWPOKE,0
-SuperNerdData: ; 39f26 (e:5f26)
+SuperNerdData:
 	db 11,MAGNEMITE,VOLTORB,0
 	db 12,GRIMER,VOLTORB,KOFFING,0
 	db 20,VOLTORB,KOFFING,VOLTORB,MAGNEMITE,0
@@ -137,7 +174,7 @@ SuperNerdData: ; 39f26 (e:5f26)
 	db 34,PONYTA,CHARMANDER,VULPIX,GROWLITHE,0
 	db 41,RAPIDASH,0
 	db 37,GROWLITHE,VULPIX,0
-HikerData: ; 39f5e (e:5f5e)
+HikerData:
 	db 10,GEODUDE,GEODUDE,ONIX,0
 	db 15,MACHOP,GEODUDE,0
 	db 13,GEODUDE,GEODUDE,MACHOP,GEODUDE,0
@@ -152,7 +189,7 @@ HikerData: ; 39f5e (e:5f5e)
 	db 19,GEODUDE,MACHOP,GEODUDE,GEODUDE,0
 	db 20,ONIX,ONIX,GEODUDE,0
 	db 21,GEODUDE,GRAVELER,0
-BikerData: ; 39f9c (e:5f9c)
+BikerData:
 	db 28,KOFFING,KOFFING,KOFFING,0
 	db 29,KOFFING,GRIMER,0
 	db 25,KOFFING,KOFFING,WEEZING,KOFFING,GRIMER,0
@@ -168,7 +205,7 @@ BikerData: ; 39f9c (e:5f9c)
 	db 26,KOFFING,KOFFING,GRIMER,KOFFING,0
 	db 28,GRIMER,GRIMER,KOFFING,0
 	db 29,KOFFING,MUK,0
-BurglarData: ; 39fe4 (e:5fe4)
+BurglarData:
 	db 29,GROWLITHE,VULPIX,0
 	db 33,GROWLITHE,0
 	db 28,VULPIX,CHARMANDER,PONYTA,0
@@ -178,13 +215,13 @@ BurglarData: ; 39fe4 (e:5fe4)
 	db 34,CHARMANDER,CHARMELEON,0
 	db 38,NINETALES,0
 	db 34,GROWLITHE,PONYTA,0
-EngineerData: ; 3a007 (e:6007)
+EngineerData:
 	db 21,VOLTORB,MAGNEMITE,0
 	db 21,MAGNEMITE,0
 	db 18,MAGNEMITE,MAGNEMITE,MAGNETON,0
-Juggler1Data: ; 3a013 (e:6013)
+Juggler1Data:
 ; none
-FisherData: ; 3a013 (e:6013)
+FisherData:
 	db 17,GOLDEEN,TENTACOOL,GOLDEEN,0
 	db 17,TENTACOOL,STARYU,SHELLDER,0
 	db 22,GOLDEEN,POLIWAG,GOLDEEN,0
@@ -196,7 +233,7 @@ FisherData: ; 3a013 (e:6013)
 	db 27,MAGIKARP,MAGIKARP,MAGIKARP,MAGIKARP,MAGIKARP,MAGIKARP,0
 	db 33,SEAKING,GOLDEEN,0
 	db 24,MAGIKARP,MAGIKARP,0
-SwimmerData: ; 3a049 (e:6049)
+SwimmerData:
 	db 16,HORSEA,SHELLDER,0
 	db 30,TENTACOOL,SHELLDER,0
 	db 29,GOLDEEN,HORSEA,STARYU,0
@@ -212,7 +249,7 @@ SwimmerData: ; 3a049 (e:6049)
 	db 37,STARMIE,0
 	db 33,STARYU,WARTORTLE,0
 	db 32,POLIWHIRL,TENTACOOL,SEADRA,0
-CueBallData: ; 3a08d (e:608d)
+CueBallData:
 	db 28,MACHOP,MANKEY,MACHOP,0
 	db 29,MANKEY,MACHOP,0
 	db 33,MACHOP,0
@@ -222,7 +259,7 @@ CueBallData: ; 3a08d (e:608d)
 	db 26,MANKEY,MANKEY,MACHOKE,MACHOP,0
 	db 29,PRIMEAPE,MACHOKE,0
 	db 31,TENTACOOL,TENTACOOL,TENTACRUEL,0
-GamblerData: ; 3a0b3 (e:60b3)
+GamblerData:
 	db 18,POLIWAG,HORSEA,0
 	db 18,BELLSPROUT,ODDISH,0
 	db 18,VOLTORB,MAGNEMITE,0
@@ -230,7 +267,7 @@ GamblerData: ; 3a0b3 (e:60b3)
 	db 22,POLIWAG,POLIWAG,POLIWHIRL,0
 	db 22,ONIX,GEODUDE,GRAVELER,0
 	db 24,GROWLITHE,VULPIX,0
-BeautyData: ; 3a0d1 (e:60d1)
+BeautyData:
 	db 21,ODDISH,BELLSPROUT,ODDISH,BELLSPROUT,0
 	db 24,BELLSPROUT,BELLSPROUT,0
 	db 26,EXEGGCUTE,0
@@ -246,15 +283,15 @@ BeautyData: ; 3a0d1 (e:60d1)
 	db 30,GOLDEEN,SEAKING,0
 	db 29,STARYU,STARYU,STARYU,0
 	db 30,SEADRA,HORSEA,SEADRA,0
-PsychicData: ; 3a115 (e:6115)
+PsychicData:
 	db 31,KADABRA,SLOWPOKE,MR_MIME,KADABRA,0
 	db 34,MR_MIME,KADABRA,0
 	db 33,SLOWPOKE,SLOWPOKE,SLOWBRO,0
 	db 38,SLOWBRO,0
-RockerData: ; 3a127 (e:6127)
+RockerData:
 	db 20,VOLTORB,VOLTORB,VOLTORB,0
 	db 29,VOLTORB,ELECTRODE,0
-JugglerData: ; 3a130 (e:6130)
+JugglerData:
 	db 29,KADABRA,MR_MIME,0
 	db 41,DROWZEE,HYPNO,KADABRA,KADABRA,0
 	db 31,DROWZEE,DROWZEE,KADABRA,DROWZEE,0
@@ -263,14 +300,14 @@ JugglerData: ; 3a130 (e:6130)
 	db 33,HYPNO,0
 	db 38,HYPNO,0
 	db 34,DROWZEE,KADABRA,0
-TamerData: ; 3a151 (e:6151)
+TamerData:
 	db 34,SANDSLASH,ARBOK,0
 	db 33,ARBOK,SANDSLASH,ARBOK,0
 	db 43,RHYHORN,0
 	db 39,ARBOK,TAUROS,0
 	db 44,PERSIAN,GOLDUCK,0
 	db 42,RHYHORN,PRIMEAPE,ARBOK,TAUROS,0
-BirdKeeperData: ; 3a16b (e:616b)
+BirdKeeperData:
 	db 29,PIDGEY,PIDGEOTTO,0
 	db 25,SPEAROW,PIDGEY,PIDGEY,SPEAROW,SPEAROW,0
 	db 26,PIDGEY,PIDGEOTTO,SPEAROW,FEAROW,0
@@ -288,7 +325,7 @@ BirdKeeperData: ; 3a16b (e:616b)
 	db 26,PIDGEY,SPEAROW,PIDGEY,FEAROW,0
 	db 29,PIDGEOTTO,FEAROW,0
 	db 28,SPEAROW,DODUO,FEAROW,0
-BlackbeltData: ; 3a1be (e:61be)
+BlackbeltData:
 	db 37,HITMONLEE,HITMONCHAN,0
 	db 31,MANKEY,MANKEY,PRIMEAPE,0
 	db 32,MACHOP,MACHOKE,0
@@ -298,17 +335,17 @@ BlackbeltData: ; 3a1be (e:61be)
 	db 43,MACHOKE,0
 	db 38,MACHOKE,MACHOP,MACHOKE,0
 	db 43,MACHOKE,MACHOP,MACHOKE,0
-Green1Data: ; 3a1e4 (e:61e4)
+Green1Data:
 	db 5,EEVEE,0
 	db $FF,9,SPEAROW,8,EEVEE,0
 	db $FF,18,SPEAROW,15,SANDSHREW,15,RATTATA,17,EEVEE,0
-ProfOakData: ; 3a21d (e:621d)
+ProfOakData:
 	db $FF,66,TAUROS,67,EXEGGUTOR,68,ARCANINE,69,BLASTOISE,70,GYARADOS,0
 	db $FF,66,TAUROS,67,EXEGGUTOR,68,ARCANINE,69,VENUSAUR,70,GYARADOS,0
 	db $FF,66,TAUROS,67,EXEGGUTOR,68,ARCANINE,69,CHARIZARD,70,GYARADOS,0
-ChiefData: ; 3a241 (e:6241)
+ChiefData:
 ; none
-ScientistData: ; 3a241 (e:6241)
+ScientistData:
 	db 34,KOFFING,VOLTORB,0
 	db 26,GRIMER,WEEZING,KOFFING,WEEZING,0
 	db 28,MAGNEMITE,VOLTORB,MAGNETON,0
@@ -322,11 +359,11 @@ ScientistData: ; 3a241 (e:6241)
 	db 29,MAGNEMITE,KOFFING,0
 	db 33,MAGNEMITE,MAGNETON,VOLTORB,0
 	db 34,MAGNEMITE,ELECTRODE,0
-GiovanniData: ; 3a27e (e:627e)
+GiovanniData:
 	db $FF,25,ONIX,24,RHYHORN,29,PERSIAN,0
 	db $FF,37,NIDORINO,35,PERSIAN,37,RHYHORN,41,NIDOQUEEN,0
 	db $FF,50,DUGTRIO,53,PERSIAN,53,NIDOQUEEN,55,NIDOKING,55,RHYDON,0
-RocketData: ; 3a29c (e:629c)
+RocketData:
 	db 13,RATTATA,ZUBAT,0
 	db 11,SANDSHREW,RATTATA,ZUBAT,0
 	db 12,ZUBAT,EKANS,0
@@ -377,7 +414,7 @@ JessieJamesData:
 	db 27,KOFFING,0
 	db 29,WEEZING,0
 	db 33,WEEZING,0
-CooltrainerMData: ; 3a35a (e:635a)
+CooltrainerMData:
 	db 39,NIDORINO,NIDOKING,0
 	db 43,EXEGGUTOR,CLOYSTER,ARCANINE,0
 	db 43,KINGLER,TENTACRUEL,BLASTOISE,0
@@ -388,7 +425,7 @@ CooltrainerMData: ; 3a35a (e:635a)
 	db 44,KINGLER,CLOYSTER,0
 	db 39,SANDSLASH,DUGTRIO,0
 	db 43,RHYHORN,0
-CooltrainerFData: ; 3a385 (e:6385)
+CooltrainerFData:
 	db 24,WEEPINBELL,GLOOM,IVYSAUR,0
 	db 43,BELLSPROUT,WEEPINBELL,VICTREEBEL,0
 	db 43,PARASECT,DEWGONG,CHANSEY,0
@@ -397,29 +434,29 @@ CooltrainerFData: ; 3a385 (e:6385)
 	db 45,IVYSAUR,VENUSAUR,0
 	db 45,NIDORINA,NIDOQUEEN,0
 	db 43,PERSIAN,NINETALES,RAICHU,0
-BrunoData: ; 3a3a9 (e:63a9)
+BrunoData:
 	db $FF,53,ONIX,55,HITMONCHAN,55,HITMONLEE,56,ONIX,58,MACHAMP,0
-BrockData: ; 3a3b5 (e:63b5)
+BrockData:
 	db $FF,10,GEODUDE,12,ONIX,0
-MistyData: ; 3a3bb (e:63bb)
+MistyData:
 	db $FF,18,STARYU,21,STARMIE,0
-LtSurgeData: ; 3a3c1 (e:63c1)
+LtSurgeData:
 	db $FF,28,RAICHU,0
-ErikaData: ; 3a3c9 (e:63c9)
+ErikaData:
 	db $FF,30,TANGELA,32,WEEPINBELL,32,GLOOM,0
-KogaData: ; 3a3d1 (e:63d1)
+KogaData:
 	db $FF,44,VENONAT,46,VENONAT,48,VENONAT,50,VENOMOTH,0
-BlaineData: ; 3a3db (e:63db)
+BlaineData:
 	db $FF,48,NINETALES,50,RAPIDASH,54,ARCANINE,0
-SabrinaData: ; 3a3e5 (e:63e5)
+SabrinaData:
 	db $FF,50,ABRA,50,KADABRA,50,ALAKAZAM,0
-GentlemanData: ; 3a3ef (e:63ef)
+GentlemanData:
 	db 18,GROWLITHE,GROWLITHE,0
 	db 19,NIDORAN_M,NIDORAN_F,0
 	db 22,VOLTORB,MAGNEMITE,0
 	db 48,PRIMEAPE,0
 	db 17,GROWLITHE,PONYTA,0
-Green2Data: ; 3a401 (e:6401)
+Green2Data:
 	db $FF,19,SPEAROW,16,RATTATA,18,SANDSHREW,20,EEVEE,0
 	db $FF,25,FEAROW,23,SHELLDER,22,VULPIX,20,SANDSHREW,25,EEVEE,0
 	db $FF,25,FEAROW,23,MAGNEMITE,22,SHELLDER,20,SANDSHREW,25,EEVEE,0
@@ -430,13 +467,13 @@ Green2Data: ; 3a401 (e:6401)
 	db $FF,47,SANDSLASH,45,EXEGGCUTE,45,NINETALES,47,CLOYSTER,50,KADABRA,53,JOLTEON,0
 	db $FF,47,SANDSLASH,45,EXEGGCUTE,45,CLOYSTER,47,MAGNETON,50,KADABRA,53,FLAREON,0
 	db $FF,47,SANDSLASH,45,EXEGGCUTE,45,MAGNETON,47,NINETALES,50,KADABRA,53,VAPOREON,0
-Green3Data: ; 3a491 (e:6491)
+Green3Data:
 	db $FF,61,SANDSLASH,59,ALAKAZAM,61,EXEGGUTOR,61,CLOYSTER,63,NINETALES,65,JOLTEON,0
 	db $FF,61,SANDSLASH,59,ALAKAZAM,61,EXEGGUTOR,61,MAGNETON,63,CLOYSTER,65,FLAREON,0
 	db $FF,61,SANDSLASH,59,ALAKAZAM,61,EXEGGUTOR,61,NINETALES,63,MAGNETON,65,VAPOREON,0
-LoreleiData: ; 3a4bb (e:64bb)
+LoreleiData:
 	db $FF,54,DEWGONG,53,CLOYSTER,54,SLOWBRO,56,JYNX,56,LAPRAS,0
-ChannelerData: ; 3a4c7 (e:64c7)
+ChannelerData:
 	db 22,GASTLY,0
 	db 24,GASTLY,0
 	db 23,GASTLY,GASTLY,0
@@ -461,7 +498,7 @@ ChannelerData: ; 3a4c7 (e:64c7)
 	db 34,GASTLY,HAUNTER,0
 	db 38,HAUNTER,0
 	db 33,GASTLY,GASTLY,HAUNTER,0
-AgathaData: ; 3a516 (e:6516)
+AgathaData:
 	db $FF,56,GENGAR,56,GOLBAT,55,HAUNTER,58,ARBOK,60,GENGAR,0
-LanceData: ; 3a522 (e:6522)
+LanceData:
 	db $FF,58,GYARADOS,56,DRAGONAIR,56,DRAGONAIR,60,AERODACTYL,62,DRAGONITE,0

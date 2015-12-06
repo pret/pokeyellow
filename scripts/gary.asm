@@ -81,7 +81,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 .Charmander
 	ld a, $3
 .done
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 
 	xor a
 	ld [hJoyHeld], a

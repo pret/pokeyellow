@@ -851,7 +851,7 @@ FaintEnemyPokemon: ; 0x3c567
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld [W_ENEMYDISABLEDMOVE], a
+	ld [wEnemyDisabledMove], a
 	ld [wEnemyDisabledMoveNumber], a
 	ld [wEnemyMonMinimized], a
 	ld hl, wPlayerUsedMove
@@ -994,7 +994,7 @@ ReplaceFaintedEnemyMon: ; 3c664 (f:4664)
 .notLinkBattle
 	call EnemySendOut
 	xor a
-	ld [W_ENEMYMOVENUM], a
+	ld [wEnemyMoveNum], a
 	ld [wActionResultOrTookBattleTurn], a
 	ld [wAILayer2Encouragement], a
 	inc a ; reset Z flag
@@ -1008,7 +1008,7 @@ TrainerBattleVictory: ; 3c696 (f:4696)
 	jr nz, .gymleader
 	ld b, MUSIC_DEFEATED_TRAINER
 .gymleader
-	ld a, [W_TRAINERCLASS]
+	ld a, [wTrainerClass]
 	cp SONY3 ; final battle against rival
 	jr nz, .notrival
 	ld b, MUSIC_DEFEATED_GYM_LEADER
@@ -1384,7 +1384,7 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld [hli],a
 	ld [hli],a
 	ld [hl],a
-	ld [W_ENEMYDISABLEDMOVE],a
+	ld [wEnemyDisabledMove],a
 	ld [wEnemyDisabledMoveNumber],a
 	ld [wEnemyMonMinimized],a
 	ld hl,wPlayerUsedMove
@@ -3034,7 +3034,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, [hld]
 	and a
 	jr nz, .atLeastTwoMovesAvailable
-	ld a, [W_ENEMYDISABLEDMOVE]
+	ld a, [wEnemyDisabledMove]
 	and a
 	ld a, STRUGGLE ; struggle if the only move is disabled
 	jr nz, .done
@@ -3063,7 +3063,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, b
 	dec a
 	ld [wEnemyMoveListIndex], a
-	ld a, [W_ENEMYDISABLEDMOVE]
+	ld a, [wEnemyDisabledMove]
 	swap a
 	and $f
 	cp b
@@ -3786,7 +3786,7 @@ MonName1Text: ; 3dafb (f:5afb)
 	ld a, [W_PLAYERMOVENUM]
 	ld hl, wPlayerUsedMove
 	jr z, .asm_3db11
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	ld hl, wEnemyUsedMove
 .asm_3db11
 	ld [hl], a
@@ -3921,7 +3921,7 @@ PrintMoveFailureText: ; 3dbe2 (f:5be2)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 .playersTurn
 	ld hl, DoesntAffectMonText
 	ld a, [wDamageMultipliers]
@@ -4351,7 +4351,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	ld d, a ; d = move power
 	and a
 	ret z ; return if move power is zero
-	ld a, [hl] ; a = [W_ENEMYMOVETYPE]
+	ld a, [hl] ; a = [wEnemyMoveType]
 	cp FIRE ; types >= FIRE are all special
 	jr nc, .specialAttack
 .physicalAttack
@@ -4508,7 +4508,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .effect
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .effect
 
 ; EXPLODE_EFFECT halves defense.
@@ -4938,7 +4938,7 @@ ApplyAttackToEnemyPokemonDone: ; 3e19d (f:619d)
 	jp DrawHUDsAndHPBars
 
 ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
-	ld a,[W_ENEMYMOVEEFFECT]
+	ld a,[wEnemyMoveEffect]
 	cp a,OHKO_EFFECT
 	jr z,ApplyDamageToPlayerPokemon
 	cp a,SUPER_FANG_EFFECT
@@ -4971,7 +4971,7 @@ ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	ld hl,wEnemyMonLevel
 	ld a,[hl]
 	ld b,a
-	ld a,[W_ENEMYMOVENUM]
+	ld a,[wEnemyMoveNum]
 	cp a,SEISMIC_TOSS
 	jr z,.storeDamage
 	cp a,NIGHT_SHADE
@@ -5104,7 +5104,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld hl,W_PLAYERMOVEEFFECT ; value for player's turn
 	and a
 	jr z,.nullifyEffect
-	ld hl,W_ENEMYMOVEEFFECT ; value for enemy's turn
+	ld hl,wEnemyMoveEffect ; value for enemy's turn
 .nullifyEffect
 	xor a
 	ld [hl],a ; zero the effect of the attacker's move
@@ -5123,7 +5123,7 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 ; values for the player turn
 	ld hl,wEnemyBattleStatus2
 	ld de,wEnemyMonStatMods
-	ld bc,W_ENEMYMOVENUM
+	ld bc,wEnemyMoveNum
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.next
@@ -5183,7 +5183,7 @@ MirrorMoveCopyMove: ; 3e2fd (f:62fd)
 	jr z,.next
 ; values for enemy turn
 	ld a,[wPlayerUsedMove]
-	ld de,W_ENEMYMOVENUM
+	ld de,wEnemyMoveNum
 	ld hl,wEnemySelectedMove
 .next
 	ld [hl],a
@@ -5231,7 +5231,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 	and a
 	jr z,.pickMoveLoop
 ; values for enemy turn
-	ld de,W_ENEMYMOVENUM
+	ld de,wEnemyMoveNum
 	ld hl,wEnemySelectedMove
 ; loop to pick a random number in the range [1, $a5) to be the move used by Metronome
 .pickMoveLoop
@@ -5304,7 +5304,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	ld a,[hli]
 	ld d,a    ; d = type 1 of defender
 	ld e,[hl] ; e = type 2 of defender
-	ld a,[W_ENEMYMOVETYPE]
+	ld a,[wEnemyMoveType]
 	ld [wMoveType],a
 .next
 	ld a,[wMoveType]
@@ -5400,7 +5400,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 ; ($05 is not very effective, $10 is neutral, $14 is super effective)
 ; as far is can tell, this is only used once in some AI code to help decide which move to use
 AIGetTypeEffectiveness: ; 3e449 (f:6449)
-	ld a,[W_ENEMYMOVETYPE]
+	ld a,[wEnemyMoveType]
 	ld d,a                    ; d = type of enemy move
 	ld hl,wBattleMonType
 	ld b,[hl]                 ; b = type 1 of player's pokemon
@@ -5444,7 +5444,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	jr z,.dreamEaterCheck
 ; enemy's turn
 	ld hl,wPlayerBattleStatus1
-	ld de,W_ENEMYMOVEEFFECT
+	ld de,wEnemyMoveEffect
 	ld bc,wBattleMonStatus
 .dreamEaterCheck
 	ld a,[de]
@@ -5499,7 +5499,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	ret nz ; if so, always hit regardless of accuracy/evasion
 	jr .calcHitChance
 .enemyTurn
-	ld a,[W_ENEMYMOVEEFFECT]
+	ld a,[wEnemyMoveEffect]
 	cp a,ATTACK_DOWN1_EFFECT
 	jr c,.skipPlayerMistCheck
 	cp a,HAZE_EFFECT + 1
@@ -5696,7 +5696,7 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	call GetCurrentMove
 
 CheckIfEnemyNeedsToChargeUp: ; 3e6fc (f:66fc)
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect
 	cp FLY_EFFECT
@@ -5706,7 +5706,7 @@ EnemyCanExecuteChargingMove: ; 3e70b (f:670b)
 	ld hl, wEnemyBattleStatus1
 	res ChargingUp, [hl] ; no longer charging up for attack
 	res Invulnerable, [hl] ; no longer invulnerable to typical attacks
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	ld [wd0b5], a
 	ld a, BANK(MoveNames)
 	ld [wPredefBank], a
@@ -5719,19 +5719,19 @@ EnemyCanExecuteMove: ; 3e72b (f:672b)
 	xor a
 	ld [wMonIsDisobedient], a
 	call PrintMonName1Text
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	ld hl, ResidualEffects1
 	ld de, $1
 	call IsInArray
 	jp c, JumpMoveEffect
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	ld hl, SpecialEffectsCont
 	ld de, $1
 	call IsInArray
 	call c, JumpMoveEffect
 EnemyCalcMoveDamage: ; 3e750 (f:6750)
 	call SwapPlayerAndEnemyLevels
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	ld hl, SetDamageEffects
 	ld de, $1
 	call IsInArray
@@ -5753,7 +5753,7 @@ handleIfEnemyMoveMissed: ; 3e782 (f:6782)
 	ld a, [wMoveMissed]
 	and a
 	jr z, .asm_3e791
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp EXPLODE_EFFECT
 	jr z, asm_3e7a0
 	jr EnemyCheckIfFlyOrChargeEffect
@@ -5761,7 +5761,7 @@ handleIfEnemyMoveMissed: ; 3e782 (f:6782)
 	call SwapPlayerAndEnemyLevels
 
 GetEnemyAnimationType: ; 3e794 (f:6794)
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	and a
 	ld a, $1
 	jr z, playEnemyMoveAnimation
@@ -5779,7 +5779,7 @@ playEnemyMoveAnimation: ; 3e7a4 (f:67a4)
 	call nz, Bankswitch
 	pop af
 	ld [wAnimationType], a
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	call PlayMoveAnimation
 	call HandleExplodingAnimation
 	call DrawEnemyHUDAndHPBar
@@ -5794,7 +5794,7 @@ EnemyCheckIfFlyOrChargeEffect: ; 3e7d1 (f:67d1)
 	call SwapPlayerAndEnemyLevels
 	ld c, 30
 	call DelayFrames
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp FLY_EFFECT
 	jr z, .playAnim
 	cp CHARGE_EFFECT
@@ -5806,7 +5806,7 @@ EnemyCheckIfFlyOrChargeEffect: ; 3e7d1 (f:67d1)
 	ld a,STATUS_AFFECTED_ANIM
 	call PlayMoveAnimation
 EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp MIRROR_MOVE_EFFECT
 	jr nz, .notMirrorMoveEffect
 	call MirrorMoveCopyMove
@@ -5818,7 +5818,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	call MetronomePickMove
 	jp CheckIfEnemyNeedsToChargeUp
 .notMetronomeEffect
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	ld hl, ResidualEffects2
 	ld de, $1
 	call IsInArray
@@ -5827,7 +5827,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	and a
 	jr z, .asm_3e82b
 	call PrintMoveFailureText
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp EXPLODE_EFFECT
 	jr z, .asm_3e83e
 	jp ExecuteEnemyMoveDone
@@ -5838,7 +5838,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	ld a, 1
 	ld [wMoveDidntMiss], a
 .asm_3e83e
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	ld hl, AlwaysHappenSideEffects
 	ld de, $1
 	call IsInArray
@@ -5863,7 +5863,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	xor a
 	ld [wEnemyNumHits], a
 .asm_3e873
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	and a
 	jr z, ExecuteEnemyMoveDone
 	ld hl, SpecialEffects
@@ -5942,7 +5942,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
 .checkIfAnyMoveDisabled
-	ld hl, W_ENEMYDISABLEDMOVE
+	ld hl, wEnemyDisabledMove
 	ld a, [hl]
 	and a
 	jr z, .checkIfConfused
@@ -5991,7 +5991,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [hli], a
 	ld a, [wEnemyMonDefense + 1]
 	ld [hl], a
-	ld hl, W_ENEMYMOVEEFFECT
+	ld hl, wEnemyMoveEffect
 	push hl
 	ld a, [hl]
 	push af
@@ -6047,7 +6047,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
 	and $ff ^ ((1 << StoringEnergy) | (1 << ThrashingAbout) | (1 << ChargingUp) | (1 << UsingTrappingMove))
 	ld [hl], a
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp FLY_EFFECT
 	jr z, .flyOrChargeEffect
 	cp CHARGE_EFFECT
@@ -6066,7 +6066,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	bit StoringEnergy, [hl] ; is mon using bide?
 	jr z, .checkIfThrashingAbout
 	xor a
-	ld [W_ENEMYMOVENUM], a
+	ld [wEnemyMoveNum], a
 	ld hl, wDamage
 	ld a, [hli]
 	ld b, a
@@ -6107,7 +6107,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [hli], a
 	ld [hl], a
 	ld a, BIDE
-	ld [W_ENEMYMOVENUM], a
+	ld [wEnemyMoveNum], a
 	call SwapPlayerAndEnemyLevels
 	ld hl, handleIfEnemyMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
 	jp .enemyReturnToHL
@@ -6115,7 +6115,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	bit ThrashingAbout, [hl] ; is mon using thrash or petal dance?
 	jr z, .checkIfUsingMultiturnMove
 	ld a, THRASH
-	ld [W_ENEMYMOVENUM], a
+	ld [wEnemyMoveNum], a
 	ld hl, ThrashingAboutText
 	call PrintText
 	ld hl, wEnemyNumAttacksLeft
@@ -6153,7 +6153,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	call GetMoveName
 	call CopyStringToCF4B
 	xor a
-	ld [W_ENEMYMOVEEFFECT], a
+	ld [wEnemyMoveEffect], a
 	ld hl, EnemyCanExecuteMove
 	jp .enemyReturnToHL
 .enemyReturnToHL
@@ -6168,7 +6168,7 @@ GetCurrentMove: ; 3eabe (f:6abe)
 	ld a, [H_WHOSETURN]
 	and a
 	jp z, .player
-	ld de, W_ENEMYMOVENUM
+	ld de, wEnemyMoveNum
 	ld a, [wEnemySelectedMove]
 	jr .selected
 .player
@@ -6805,7 +6805,7 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	jr z, .asm_3eeea
 	ld hl, wBattleMonType1
 	ld de, wEnemyBattleStatus1
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 .asm_3eeea
 	cp SELFDESTRUCT
 	jr z, .asm_3eef1
@@ -6849,7 +6849,7 @@ _JumpMoveEffect: ; 3f138 (f:7138)
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .next1
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .next1
 	dec a ; subtract 1, there is no special effect for 00
 	add a ; x2, 16bit pointers
@@ -7009,7 +7009,7 @@ PoisonEffect: ; 3f24f (f:724f)
 	and a
 	jr z, .poisonEffect
 	ld hl, wBattleMonStatus
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 .poisonEffect
 	call CheckTargetSubstitute
 	jr nz, .noEffect ; can't posion a substitute target
@@ -7181,7 +7181,7 @@ opponentAttacker: ; 3f382 (f:7382)
 	ld a, [wBattleMonStatus] ; mostly same as above with addresses swapped for opponent
 	and a
 	jp nz, CheckDefrost
-	ld a, [W_ENEMYMOVETYPE]
+	ld a, [wEnemyMoveType]
 	ld b, a
 	ld a, [wBattleMonType1]
 	cp b
@@ -7189,7 +7189,7 @@ opponentAttacker: ; 3f382 (f:7382)
 	ld a, [wBattleMonType2]
 	cp b
 	ret z
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 	cp a, PARALYZE_SIDE_EFFECT1 + 1
 	ld b, $1a
 	jr c, .next1
@@ -7252,7 +7252,7 @@ CheckDefrost: ; 3f3e2 (f:73e2)
 	ld hl, FireDefrostedText
 	jr .common
 .opponent
-	ld a, [W_ENEMYMOVETYPE]	; same as above with addresses swapped
+	ld a, [wEnemyMoveType]	; same as above with addresses swapped
 	sub a, FIRE
 	ret nz
 	ld [wBattleMonStatus], a
@@ -7277,7 +7277,7 @@ StatModifierUpEffect: ; 3f428 (f:7428)
 	and a
 	jr z, .statModifierUpEffect
 	ld hl, wEnemyMonStatMods
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 .statModifierUpEffect
 	ld a, [de]
 	sub ATTACK_UP1_EFFECT
@@ -7386,7 +7386,7 @@ UpdateStatDone: ; 3f4ca (f:74ca)
 	and a
 	jr z, .asm_3f4e6
 	ld hl, wEnemyBattleStatus2
-	ld de, W_ENEMYMOVENUM
+	ld de, wEnemyMoveNum
 	ld bc, wEnemyMonMinimized
 .asm_3f4e6
 	ld a, [de]
@@ -7442,7 +7442,7 @@ MonsStatsRoseText: ; 3f528 (f:7528)
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f53b
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .asm_3f53b
 	cp ATTACK_DOWN1_EFFECT
 	ret nc
@@ -7465,7 +7465,7 @@ StatModifierDownEffect: ; 3f54c (f:754c)
 	and a
 	jr z, .statModifierDownEffect
 	ld hl, wPlayerMonStatMods
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 	ld bc, wPlayerBattleStatus1
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -7644,7 +7644,7 @@ MonsStatsFellText: ; 3f661 (f:7661)
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .asm_3f674
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .asm_3f674
 	cp $1a
 	ret c
@@ -7718,7 +7718,7 @@ BideEffect: ; 3f6e5 (f:76e5)
 	inc de
 	ld [de], a
 	ld [W_PLAYERMOVEEFFECT], a
-	ld [W_ENEMYMOVEEFFECT], a
+	ld [wEnemyMoveEffect], a
 	call BattleRandom
 	and $1
 	inc a
@@ -7814,7 +7814,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	jr nc, .asm_3f7c1
 	ld c, 50
 	call DelayFrames
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	cp TELEPORT
 	jp nz, PrintDidntAffectText
 	jp PrintButItFailedText_
@@ -7824,13 +7824,13 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	ld [wAnimationType], a
 	inc a
 	ld [wEscapedFromBattle], a
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	jr .asm_3f7e4
 .asm_3f7d1
 	ld c, 50
 	call DelayFrames
 	ld hl, IsUnaffectedText
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 	cp TELEPORT
 	jp nz, PrintText
 	jp ConditionalPrintButItFailed
@@ -7880,7 +7880,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .setNumberOfHits
-	ld hl, W_ENEMYMOVEEFFECT
+	ld hl, wEnemyMoveEffect
 .setNumberOfHits
 	ld a, [hl]
 	cp TWINEEDLE_EFFECT
@@ -7916,7 +7916,7 @@ FlinchSideEffect: ; 3f85b (f:785b)
 	and a
 	jr z, .flinchSideEffect
 	ld hl, wPlayerBattleStatus1
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 .flinchSideEffect
 	ld a, [de]
 	cp FLINCH_SIDE_EFFECT1
@@ -7942,7 +7942,7 @@ ChargeEffect: ; 3f88c (f:788c)
 	ld b, XSTATITEM_ANIM
 	jr z, .chargeEffect
 	ld hl, wEnemyBattleStatus1
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 	ld b, ANIM_AF
 .chargeEffect
 	set ChargingUp, [hl]
@@ -8073,7 +8073,7 @@ ConfusionSideEffectSuccess: ; 3f96f (f:796f)
 	jr z, .confuseTarget
 	ld hl, wPlayerBattleStatus1
 	ld bc, W_PLAYERCONFUSEDCOUNTER
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .confuseTarget
 	bit Confused, [hl] ; is mon confused?
 	jr nz, ConfusionEffectFailed
@@ -8227,7 +8227,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	ld a, [wMoveMissed]
 	and a
 	jr nz, .moveMissed
-	ld de, W_ENEMYDISABLEDMOVE
+	ld de, wEnemyDisabledMove
 	ld hl, wEnemyMonMoves
 	ld a, [H_WHOSETURN]
 	and a
@@ -8286,7 +8286,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	inc a ; 1-8 turns disabled
 	inc c ; move 1-4 will be disabled
 	swap c
-	add c ; map disabled move to high nibble of W_ENEMYDISABLEDMOVE / W_PLAYERDISABLEDMOVE
+	add c ; map disabled move to high nibble of wEnemyDisabledMove / W_PLAYERDISABLEDMOVE
 	ld [de], a
 	call PlayCurrentMoveAnimation2
 	ld hl, wPlayerDisabledMoveNumber
@@ -8391,7 +8391,7 @@ PlayCurrentMoveAnimation2: ; 3fb89 (f:7b89)
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .notEnemyTurn
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 .notEnemyTurn
 	and a
 	ret z
@@ -8417,7 +8417,7 @@ PlayCurrentMoveAnimation: ; 3fba8 (f:7ba8)
 	and a
 	ld a, [W_PLAYERMOVENUM]
 	jr z, .notEnemyTurn
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 .notEnemyTurn
 	and a
 	ret z

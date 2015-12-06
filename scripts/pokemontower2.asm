@@ -159,7 +159,7 @@ PokemonTower2Text1: ; 605df (18:45df)
 .Charmander
 	ld a, $6
 .done
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 
 	ld a, $1
 	ld [W_POKEMONTOWER2CURSCRIPT], a

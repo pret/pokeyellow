@@ -87,7 +87,7 @@ DrainHPEffect_: ; 76e7 (1:76e7)
 	and a
 	ld a, [W_PLAYERMOVEEFFECT]
 	jr z, .next3
-	ld a, [W_ENEMYMOVEEFFECT]
+	ld a, [wEnemyMoveEffect]
 .next3
 	cp DREAM_EATER_EFFECT
 	jr nz, .printText

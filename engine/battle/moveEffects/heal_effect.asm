@@ -7,7 +7,7 @@ HealEffect_: ; f62ba (3d:62ba)
 	jr z, .healEffect
 	ld de, wEnemyMonHP
 	ld hl, wEnemyMonMaxHP
-	ld a, [W_ENEMYMOVENUM]
+	ld a, [wEnemyMoveNum]
 .healEffect
 	ld b, a
 	ld a, [de]

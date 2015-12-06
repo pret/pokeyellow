@@ -32,7 +32,7 @@ Route22Script_50ed6: ; 50ed6 (14:4ed6)
 	jr .asm_50eda
 .asm_50ee1
 	ld a, [hl]
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 	ret
 
 Route22MoveRivalSprite: ; 50ee6 (14:4ee6)

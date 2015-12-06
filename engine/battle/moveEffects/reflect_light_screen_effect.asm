@@ -5,7 +5,7 @@ ReflectLightScreenEffect_: ; f645d (3d:645d)
 	and a
 	jr z, .reflectLightScreenEffect
 	ld hl, wEnemyBattleStatus3
-	ld de, W_ENEMYMOVEEFFECT
+	ld de, wEnemyMoveEffect
 .reflectLightScreenEffect
 	ld a, [de]
 	cp LIGHT_SCREEN_EFFECT

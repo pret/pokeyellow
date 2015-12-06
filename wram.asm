@@ -1484,13 +1484,13 @@ wUpdateSpritesEnabled:: ; cfcb
 ; other values aren't used
 	ds 1
 
-W_ENEMYMOVENUM:: ; cfcc
+wEnemyMoveNum:: ; cfcc
 	ds 1
-W_ENEMYMOVEEFFECT:: ; cfcd
+wEnemyMoveEffect:: ; cfcd
 	ds 1
 W_ENEMYMOVEPOWER:: ; cfce
 	ds 1
-W_ENEMYMOVETYPE:: ; cfcf
+wEnemyMoveType:: ; cfcf
 	ds 1
 W_ENEMYMOVEACCURACY:: ; cfd0
 	ds 1
@@ -1557,7 +1557,7 @@ wBattleMonNick:: ds NAME_LENGTH ; d009
 wBattleMon:: battle_struct wBattleMon ; d014
 
 
-W_TRAINERCLASS:: ; d031
+wTrainerClass:: ; d031
 	ds 1
 
 	ds 1
@@ -1624,7 +1624,7 @@ wLoneAttackNo:: ; d05c
 wGymLeaderNo:: ; d05c
 ; it's actually the same thing as ^
 	ds 1
-W_TRAINERNO:: ; d05d
+wTrainerNo:: ; d05d
 ; which instance of [youngster, lass, etc] is this?
 	ds 1
 
@@ -1714,7 +1714,7 @@ W_ENEMYCONFUSEDCOUNTER:: ; d070
 
 W_ENEMYTOXICCOUNTER:: ; d071
 	ds 1
-W_ENEMYDISABLEDMOVE:: ; d072
+wEnemyDisabledMove:: ; d072
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
 	ds 1

@@ -1,10 +1,9 @@
 ; yellow has its own format.
 
-; entry ≔ trainerclass, trainerid, moveset+, 0
-; moveset ≔ partymon, partymon'smove, moveid
+; entry = trainerclass, trainerid, moveset+, 0
+; moveset = partymon location, partymon's move, moveid
 
-LoneMoves:
-TeamMoves:
+SpecialTrainerMoves: ; 39c6b (e:5c6b)
 	db BUG_CATCHER,$f
 	db 2,2,TACKLE
 	db 2,3,STRING_SHOT

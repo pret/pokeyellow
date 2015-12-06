@@ -198,7 +198,7 @@ SilphCo7Script3: ; 51c82 (14:5c82)
 .asm_51cbe
 	ld a, $9
 .asm_51cc0
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 	ld a, $4
 	jp SilphCo7Text_51c10
 

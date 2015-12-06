@@ -4,7 +4,7 @@ GetTrainerName_: ; f67a5 (3d:67a5)
 	and a
 	jr nz, .foundName
 	ld hl, wRivalName
-	ld a, [W_TRAINERCLASS]
+	ld a, [wTrainerClass]
 	cp SONY1
 	jr z, .foundName
 	cp SONY2

@@ -151,7 +151,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 .Charmander
 	ld a, $9
 .done
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 
 	xor a
 	ld [hJoyHeld], a

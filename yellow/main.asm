@@ -4005,18 +4005,9 @@ SECTION "bank0E",ROMX,BANK[$0E]
 
 INCLUDE "data/moves.asm"
 BaseStats: INCLUDE "data/base_stats.asm"
-INCLUDE "data/cries.asm"	
-	dr $3969c,$39893
-TrainerPicAndMoneyPointers: ; 39893 (e:5893)
-	dr $39893,$3997e
-TrainerNames: ; 3997e (e:597e)
-	dr $3997e,$39b06
-FormatMovesString: ; 39b06 (e:5b06)
-	dr $39b06,$39b54
-InitList: ; 39b54 (e:5b54)
-	dr $39b54,$39bb6
-ReadTrainer: ; 39bb6 (e:5bb6)
-	dr $39bb6,$3a8df
+INCLUDE "data/cries.asm"
+INCLUDE "engine/battle/trainer_ai.asm"
+
 DrawAllPokeballs: ; 3a8df (e:68df)
 	dr $3a8df,$3a9e9
 SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
@@ -4050,7 +4041,9 @@ SECTION "bank0F",ROMX,BANK[$0F]
 SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	dr $3c04c,$3c127
 StartBattle: ; 3c127 (f:4127)
-	dr $3c127,$3cae8
+	dr $3c127,$3c973
+EnemySendOut: ; 3c973 (f:4973)
+	dr $3c973,$3cae8
 AnyPartyAlive: ; 3cae8 (f:4ae8)
 	dr $3cae8,$3ce08
 ReadPlayerMonCurHPAndStatus: ; 3ce08 (f:4e08)
@@ -4067,7 +4060,7 @@ PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
 	dr $3ddc3,$3e5bb
 
 AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
-	ld a,[W_ENEMYMOVETYPE]
+	ld a,[wEnemyMoveType]
 	ld d,a                 ; d = type of enemy move
 	ld hl,wBattleMonType
 	ld b,[hl]              ; b = type 1 of player's pokemon
@@ -4095,7 +4088,7 @@ AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
 	jr .loop
 
 .done
-	ld a, [W_TRAINERCLASS]
+	ld a, [wTrainerClass]
 	cp LORELEI
 	jr nz, .ok
 	ld a, [wEnemyMonSpecies]

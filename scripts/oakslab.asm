@@ -396,7 +396,7 @@ OaksLabScript11: ; 1cdb9 (7:4db9)
 .Charmander
 	ld a, $3
 .done
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 	ld a, $1
 	ld [wSpriteIndex], a
 	call GetSpritePosition1

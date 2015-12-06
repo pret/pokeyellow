@@ -2690,7 +2690,7 @@ InitBattleEnemyParameters:: ; 3273 (0:3273)
 	cp 200
 	ld a, [wEngagedTrainerSet]
 	jr c, .noTrainer
-	ld [W_TRAINERNO], a
+	ld [wTrainerNo], a
 	ret
 .noTrainer
 	ld [wCurEnemyLVL], a
@@ -3214,7 +3214,7 @@ GetTrainerInformation:: ; 3563 (0:3563)
 	jr nz, .linkBattle
 	ld a, BANK(TrainerPicAndMoneyPointers)
 	call BankswitchHome
-	ld a, [W_TRAINERCLASS]
+	ld a, [wTrainerClass]
 	dec a
 	ld hl, TrainerPicAndMoneyPointers
 	ld bc, $5
@@ -3242,10 +3242,10 @@ GetTrainerInformation:: ; 3563 (0:3563)
 	ret
 
 IsFightingJessieJames:: ; 359e (0:359e)
-	ld a,[W_TRAINERCLASS]
+	ld a,[wTrainerClass]
 	cp ROCKET
 	ret nz
-	ld a,[W_TRAINERNO]
+	ld a,[wTrainerNo]
 	cp $2a
 	ret c
 	ld de,JessieJamesPic
