@@ -1,4 +1,4 @@
-DrawAllPokeballs: ; 3a849 (e:6849)
+DrawAllPokeballs: ; 3a8df (e:68df)
 	call LoadPartyPokeballGfx
 	call SetupOwnPartyPokeballs
 	ld a, [wIsInBattle]
@@ -6,17 +6,17 @@ DrawAllPokeballs: ; 3a849 (e:6849)
 	ret z ; return if wild pokémon
 	jp SetupEnemyPartyPokeballs
 
-DrawEnemyPokeballs: ; 3a857 (e:6857)
+DrawEnemyPokeballs: ; 3a8ed (e:68ed)
 	call LoadPartyPokeballGfx
 	jp SetupEnemyPartyPokeballs
 
-LoadPartyPokeballGfx: ; 3a85d (e:685d)
+LoadPartyPokeballGfx: ; 3a8f3 (e:68f3)
 	ld de, PokeballTileGraphics
 	ld hl, vSprites + $310
 	lb bc, BANK(PokeballTileGraphics), (PokeballTileGraphicsEnd - PokeballTileGraphics) / $10
 	jp CopyVideoData
 
-SetupOwnPartyPokeballs: ; 3a869 (e:6869)
+SetupOwnPartyPokeballs: ; 3a8ff (e:68ff)
 	call PlacePlayerHUDTiles
 	ld hl, wPartyMon1
 	ld de, wPartyCount
@@ -27,10 +27,12 @@ SetupOwnPartyPokeballs: ; 3a869 (e:6869)
 	ld [hl], a
 	ld a, 8
 	ld [wHUDPokeballGfxOffsetX], a
+	xor a
+	ld [wdef5], a
 	ld hl, wOAMBuffer
 	jp WritePokeballOAMData
 
-SetupEnemyPartyPokeballs: ; 3a887 (e:6887)
+SetupEnemyPartyPokeballs: ; 3a921 (e:6921)
 	call PlaceEnemyHUDTiles
 	ld hl, wEnemyMons
 	ld de, wEnemyPartyCount
@@ -41,10 +43,12 @@ SetupEnemyPartyPokeballs: ; 3a887 (e:6887)
 	ld [hl], $20
 	ld a, -8
 	ld [wHUDPokeballGfxOffsetX], a
+	ld a, $1
+	ld [wdef5], a
 	ld hl, wOAMBuffer + PARTY_LENGTH * 4
 	jp WritePokeballOAMData
 
-SetupPokeballs: ; 0x3a8a6
+SetupPokeballs: ; 3a945 (e:6945)
 	ld a, [de]
 	push af
 	ld de, wBuffer
@@ -66,7 +70,7 @@ SetupPokeballs: ; 0x3a8a6
 	jr nz, .monloop
 	ret
 
-PickPokeball: ; 3a8c2 (e:68c2)
+PickPokeball: ; 3a961 (e:6961)
 	inc hl
 	ld a, [hli]
 	and a
@@ -94,7 +98,7 @@ PickPokeball: ; 3a8c2 (e:68c2)
 	add hl, bc ; next mon struct
 	ret
 
-WritePokeballOAMData: ; 3a8e1 (e:68e1)
+WritePokeballOAMData: ; 3a980 (e:6980)
 	ld de, wBuffer
 	ld c, PARTY_LENGTH
 .loop
@@ -104,7 +108,7 @@ WritePokeballOAMData: ; 3a8e1 (e:68e1)
 	ld [hli], a
 	ld a, [de]
 	ld [hli], a
-	xor a
+	ld a, [wdef5]
 	ld [hli], a
 	ld a, [wBaseCoordX]
 	ld b, a
@@ -116,7 +120,7 @@ WritePokeballOAMData: ; 3a8e1 (e:68e1)
 	jr nz, .loop
 	ret
 
-PlacePlayerHUDTiles: ; 3a902 (e:6902)
+PlacePlayerHUDTiles: ; 3a9a3 (e:69a3)
 	ld hl, PlayerBattleHUDGraphicsTiles
 	ld de, wHUDGraphicsTiles
 	ld bc, $3
@@ -125,13 +129,13 @@ PlacePlayerHUDTiles: ; 3a902 (e:6902)
 	ld de, -1
 	jr PlaceHUDTiles
 
-PlayerBattleHUDGraphicsTiles: ; 3a916 (e:6916)
+PlayerBattleHUDGraphicsTiles: ; 3a9b7 (e:69b7)
 ; The tile numbers for specific parts of the battle display for the player's pokemon
 	db $73 ; unused ($73 is hardcoded into the routine that uses these bytes)
 	db $77 ; lower-right corner tile of the HUD
 	db $6F ; lower-left triangle tile of the HUD
 
-PlaceEnemyHUDTiles: ; 3a919 (e:6919)
+PlaceEnemyHUDTiles: ; 3a9ba (e:69ba)
 	ld hl, EnemyBattleHUDGraphicsTiles
 	ld de, wHUDGraphicsTiles
 	ld bc, $3
@@ -140,13 +144,13 @@ PlaceEnemyHUDTiles: ; 3a919 (e:6919)
 	ld de, $1
 	jr PlaceHUDTiles
 
-EnemyBattleHUDGraphicsTiles: ; 3a92d (e:692d)
+EnemyBattleHUDGraphicsTiles: ; 3a9ce (e:69ce)
 ; The tile numbers for specific parts of the battle display for the enemy
 	db $73 ; unused ($73 is hardcoded in the routine that uses these bytes)
 	db $74 ; lower-left corner tile of the HUD
 	db $78 ; lower-right triangle tile of the HUD
 
-PlaceHUDTiles: ; 3a930 (e:6930)
+PlaceHUDTiles: ; 3a9d1 (e:69d1)
 	ld [hl], $73
 	ld bc, SCREEN_WIDTH
 	add hl, bc
@@ -163,7 +167,7 @@ PlaceHUDTiles: ; 3a930 (e:6930)
 	ld [hl], a
 	ret
 
-SetupPlayerAndEnemyPokeballs: ; 3a948 (e:6948)
+SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
 	call LoadPartyPokeballGfx
 	ld hl, wPartyMons
 	ld de, wPartyCount
@@ -174,6 +178,8 @@ SetupPlayerAndEnemyPokeballs: ; 3a948 (e:6948)
 	ld [hl], $40
 	ld a, 8
 	ld [wHUDPokeballGfxOffsetX], a
+	xor a
+	ld [wdef5], a
 	ld hl, wOAMBuffer
 	call WritePokeballOAMData
 	ld hl, wEnemyMons
@@ -183,10 +189,12 @@ SetupPlayerAndEnemyPokeballs: ; 3a948 (e:6948)
 	ld a, $50
 	ld [hli], a
 	ld [hl], $68
+	ld a, $1
+	ld [wdef5], a
 	ld hl, wOAMBuffer + $18
 	jp WritePokeballOAMData
 
 ; four tiles: pokeball, black pokeball (status ailment), crossed out pokeball (faited) and pokeball slot (no mon)
-PokeballTileGraphics:: ; 3a97e (e:697e)
+PokeballTileGraphics:: ; 3aa28 (e:6a28)
 	INCBIN "gfx/pokeball.2bpp"
 PokeballTileGraphicsEnd:

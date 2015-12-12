@@ -4007,16 +4007,7 @@ INCLUDE "data/moves.asm"
 BaseStats: INCLUDE "data/base_stats.asm"
 INCLUDE "data/cries.asm"
 INCLUDE "engine/battle/trainer_ai.asm"
-
-DrawAllPokeballs: ; 3a8df (e:68df)
-	dr $3a8df,$3a9e9
-SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
-	dr $3a9e9,$3aa28
-	
-PokeballTileGraphics:: ; 3aa28 (e:6a28)
-;	INCBIN "gfx/pokeball.2bpp"
-;PokeballTileGraphicsEnd:
-	dr $3aa28,$3aa68
+INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 
 TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
