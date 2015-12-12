@@ -4017,11 +4017,8 @@ TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
 
-TryEvolvingMon:
-EvolveTradeMon: ; 3adb8 (e:6db8)
-	dr $3adb8,$3b10f
-Func_3b10f: ; 3b01f (e:710f)
-	dr $3b10f,$3b1e5
+INCLUDE "engine/evos_moves.asm"
+
 EvosMovesPointerTable: ; 3b1e5 (e:71e5)
 	dr $3b1e5,$3c000
 
@@ -4228,7 +4225,9 @@ PrintStatusAilment: ; 58e8b (16:4e8b)
 
 SECTION "bank17",ROMX,BANK[$17]
 
-	dr $5c000,$60000
+	dr $5c000,$5da70
+EvolveMon: ; 5da70 (17:5a70)
+	dr $5da70,$60000
 
 
 SECTION "bank18",ROMX,BANK[$18]

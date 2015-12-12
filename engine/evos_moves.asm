@@ -1,5 +1,6 @@
 ; try to evolve the mon in [wWhichPokemon]
-TryEvolvingMon: ; 3ad0e (e:6d0e)
+TryEvolvingMon: ; 3adb8 (e:6db8)
+EvolveTradeMon:
 	ld hl, wCanEvolveFlags
 	xor a
 	ld [hl], a
@@ -10,7 +11,7 @@ TryEvolvingMon: ; 3ad0e (e:6d0e)
 
 ; this is only called after battle
 ; it is supposed to do level up evolutions, though there is a bug that allows item evolutions to occur
-EvolutionAfterBattle: ; 3ad1c (e:6d1c)
+EvolutionAfterBattle: ; 3adc6 (e:6dc6)
 	ld a, [hTilesetType]
 	push af
 	xor a
@@ -23,7 +24,8 @@ EvolutionAfterBattle: ; 3ad1c (e:6d1c)
 	ld hl, wPartyCount
 	push hl
 
-Evolution_PartyMonLoop: ; loop over party mons
+Evolution_PartyMonLoop: ; 3add8 (e:6dd8)
+; loop over party mons
 	ld hl, wWhichPokemon
 	inc [hl]
 	pop hl
@@ -93,9 +95,13 @@ Evolution_PartyMonLoop: ; loop over party mons
 	jp c, Evolution_PartyMonLoop ; if so, go the next mon
 	jr .doEvolution
 .checkItemEvo
+	ld a, [wIsInBattle] ; are we in battle?
+	and a
 	ld a, [hli]
+	jp nz, .nextEvoEntry1 ; don't evolve if we're in a battle as wcf91 could be holding the last mon sent out
+	
 	ld b, a ; evolution item
-	ld a, [wcf91] ; this is supposed to be the last item used, but it is also used to hold species numbers
+	ld a, [wcf91] ; last item used
 	cp b ; was the evolution item in this entry used?
 	jp nz, .nextEvoEntry1 ; if not, go to the next evolution entry
 .checkLevel
@@ -140,7 +146,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld [wEvoNewSpecies], a
 	ld a, MONSTER_NAME
 	ld [wNameListType], a
-	ld a, BANK(TrainerNames) ; bank is not used for monster names
+	ld a, BANK(MonsterNames) ; bank is not used for monster names
 	ld [wPredefBank], a
 	call GetName
 	push hl
@@ -257,7 +263,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	call nz, PlayDefaultMusic
 	ret
 
-RenameEvolvedMon: ; 3aef7 (e:6ef7)
+RenameEvolvedMon: ; 3afa8 (e:6fa8)
 ; Renames the mon to its new, evolved form's standard name unless it had a
 ; nickname, in which case the nickname is kept.
 	ld a, [wd0b5]
@@ -287,7 +293,7 @@ RenameEvolvedMon: ; 3aef7 (e:6ef7)
 	pop de
 	jp CopyData
 
-CancelledEvolution: ; 3af2e (e:6f2e)
+CancelledEvolution: ; 3afdf (e:6fdf)
 	ld hl, StoppedEvolvingText
 	call PrintText
 	call ClearScreen
@@ -295,46 +301,32 @@ CancelledEvolution: ; 3af2e (e:6f2e)
 	call Evolution_ReloadTilesetTilePatterns
 	jp Evolution_PartyMonLoop
 
-EvolvedText: ; 3af3e (e:6f3e)
+EvolvedText: ; 3afef (e:6fef)
 	TX_FAR _EvolvedText
 	db "@"
 
-IntoText: ; 3af43 (e:6f43)
+IntoText: ; 3aff4 (e:6ff4)
 	TX_FAR _IntoText
 	db "@"
 
-StoppedEvolvingText: ; 3af48 (e:6f48)
+StoppedEvolvingText: ; 3aff9 (e:6ff9)
 	TX_FAR _StoppedEvolvingText
 	db "@"
 
-IsEvolvingText: ; 3af4d (e:6f4d)
+IsEvolvingText: ; 3affe (e:6ffes)
 	TX_FAR _IsEvolvingText
 	db "@"
 
-Evolution_ReloadTilesetTilePatterns: ; 3af52 (e:6f52)
+Evolution_ReloadTilesetTilePatterns: ; 3b003 (e:7003)
 	ld a, [wLinkState]
 	cp LINK_STATE_TRADING
 	ret z
 	jp ReloadTilesetTilePatterns
 
-LearnMoveFromLevelUp: ; 3af5b (e:6f5b)
-	ld hl, EvosMovesPointerTable
+LearnMoveFromLevelUp: ; 3b00c (e:700c)
 	ld a, [wd11e] ; species
 	ld [wcf91], a
-	dec a
-	ld bc, 0
-	ld hl, EvosMovesPointerTable
-	add a
-	rl b
-	ld c, a
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-.skipEvolutionDataLoop ; loop to skip past the evolution data, which comes before the move data
-	ld a, [hli]
-	and a ; have we reached the end of the evolution data?
-	jr nz, .skipEvolutionDataLoop ; if not, jump back up
+	call GetMonLearnset
 .learnSetLoop ; loop over the learn set until we reach a move that is learnt at the current level or the end of the list
 	ld a, [hli]
 	and a ; have we reached the end of the learn set?
@@ -370,33 +362,180 @@ LearnMoveFromLevelUp: ; 3af5b (e:6f5b)
 	call GetMoveName
 	call CopyStringToCF4B
 	predef LearnMove
+	ld a, b
+	and a
+	jr z, .done
+	callab IsThisPartymonOurPikachu
+	jr nc, .done
+	ld a, [wMoveNum]
+	cp THUNDERBOLT
+	jr z, .foundThunderOrThunderbolt
+	cp THUNDER
+	jr nz, .done
+.foundThunderOrThunderbolt
+	ld a, $5
+	ld [wd49c], a
+	ld a, $85
+	ld [wPikachuMood], a
 .done
 	ld a, [wcf91]
 	ld [wd11e], a
 	ret
 
-; writes the moves a mon has at level [wCurEnemyLVL] to [de]
-; move slots are being filled up sequentially and shifted if all slots are full
-WriteMonMoves: ; 3afb8 (e:6fb8)
-	call GetPredefRegisters
-	push hl
-	push de
-	push bc
+Func_3b079: ; 3b079 (e:7079)
+	ld a, [wcf91]
+	push af
+	call Func_3b0a2
+	jr c, .asm_3b09c
+	
+	call Func_3b10f
+	jr nc, .asm_3b096
+	
+	call Func_3b0a2
+	jr c, .asm_3b09c
+	
+	call Func_3b10f
+	jr nc, .asm_3b096
+	
+	call Func_3b0a2
+	jr c, .asm_3b09c
+.asm_3b096
+	pop af
+	ld [wcf91], a
+	and a
+	ret
+.asm_3b09c
+	pop af
+	ld [wcf91], a
+	scf
+	ret
+
+Func_3b0a2: ; 3b0a2 (e:70a2)
+; XXX what is wcf91 entering this function?
+	ld a, [wd11e]
+	ld [wMoveNum], a
+	predef CanLearnTM
+	ld a, c
+	and a
+	jr nz, .asm_3b0ec
+	ld hl, Pointer_3b0ee
+	ld a, [wcf91]
+	ld de, $1
+	call IsInArray
+	jr c, .asm_3b0d2
+	ld a, $ff
+	ld [wMonHGrowthRate], a
+	ld a, [wd11e]
+	ld hl, wMonHMoves
+	ld de, $1
+	call IsInArray
+	jr c, .asm_3b0ec
+.asm_3b0d2
+	ld a, [wd11e]
+	ld d, a
+	call GetMonLearnset
+.loop
+	ld a, [hli]
+	and a
+	jr z, .asm_3b0ea
+	ld b, a
+	ld a, [wCurEnemyLVL]
+	cp b
+	jr c, .asm_3b0ea
+	ld a, [hli]
+	cp d
+	jr z, .asm_3b0ec
+	jr .loop
+.asm_3b0ea
+	and a
+	ret
+.asm_3b0ec
+	scf
+	ret
+	
+Pointer_3b0ee: ; 3b0ee (e:70ee)
+	db NIDOKING
+	db IVYSAUR
+	db EXEGGUTOR
+	db GENGAR
+	db NIDOQUEEN
+	db ARCANINE
+	db GYARADOS
+	db BLASTOISE
+	db GOLEM
+	db DRAGONITE
+	db NINETALES
+	db DRAGONAIR
+	db KABUTOPS
+	db OMASTAR
+	db JIGGLYPUFF
+	db FLAREON
+	db JOLTEON
+	db VAPOREON
+	db BEEDRILL
+	db BUTTERFREE
+	db MACHAMP
+	db CLOYSTER
+	db CLEFABLE
+	db ALAKAZAM
+	db STARMIE
+	db VENUSAUR
+	db TENTACRUEL
+	db CHARMELEON
+	db WARTORTLE
+	db CHARIZARD
+	db VILEPLUME
+	db VICTREEBEL
+	db $ff
+	
+Func_3b10f: ; 3b10f (e:710f)
+	ld c, $0
+.asm_3b111
 	ld hl, EvosMovesPointerTable
-	ld b, 0
-	ld a, [wcf91]  ; cur mon ID
-	dec a
-	add a
-	rl b
-	ld c, a
+	ld b, $0
+	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-.skipEvoEntriesLoop
+.asm_3b11b
 	ld a, [hli]
 	and a
-	jr nz, .skipEvoEntriesLoop
+	jr z, .asm_3b130
+	cp $2
+	jr nz, .asm_3b124
+	inc hl
+.asm_3b124
+	inc hl
+	ld a, [wcf91]
+	cp [hl]
+	jr z, .asm_3b138
+	inc hl
+	ld a, [hl]
+	and a
+	jr nz, .asm_3b11b
+.asm_3b130
+	inc c
+	ld a, c
+	cp VICTREEBEL
+	jr c, .asm_3b111
+	and a
+	ret
+.asm_3b138
+	inc c
+	ld a, c
+	ld [wcf91], a
+	scf
+	ret
+
+; writes the moves a mon has at level [wCurEnemyLVL] to [de]
+; move slots are being filled up sequentially and shifted if all slots are full
+WriteMonMoves: ; 3113f (e:713f)
+	call GetPredefRegisters
+	push hl
+	push de
+	push bc
+	call GetMonLearnset
 	jr .firstMove
 .nextMove
 	pop de
@@ -497,7 +636,7 @@ WriteMonMoves: ; 3afb8 (e:6fb8)
 	ret
 
 ; shifts all move data one up (freeing 4th move slot)
-WriteMonMoves_ShiftMoveData: ; 3b04e (e:704e)
+WriteMonMoves_ShiftMoveData: ; 3b1c3 (e:71c3)
 	ld c, NUM_MOVES - 1
 .loop
 	inc de
@@ -507,7 +646,24 @@ WriteMonMoves_ShiftMoveData: ; 3b04e (e:704e)
 	jr nz, .loop
 	ret
 
-Evolution_FlagAction: ; 3b057 (e:7057)
+Evolution_FlagAction: ; 3b1cc (e:71cc)
 	predef_jump FlagActionPredef
 
-INCLUDE "data/evos_moves.asm"
+GetMonLearnset: ; 3b1d1 (e:71d1)
+	ld hl, EvosMovesPointerTable
+	ld b, 0
+	ld a, [wcf91]
+	dec a
+	ld c, a
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+.skipEvolutionDataLoop ; loop to skip past the evolution data, which comes before the move data
+	ld a, [hli]
+	and a ; have we reached the end of the evolution data?
+	jr nz, .skipEvolutionDataLoop ; if not, jump back up
+	ret
+	
+;INCLUDE "data/evos_moves.asm"

@@ -1,4 +1,4 @@
-EvosMovesPointerTable: ; 3b05c (e:705c)
+EvosMovesPointerTable: ; 3b1e5 (e:71e5)
 	dw Mon112_EvosMoves
 	dw Mon115_EvosMoves
 	dw Mon032_EvosMoves
