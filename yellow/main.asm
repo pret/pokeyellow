@@ -4121,8 +4121,8 @@ SECTION "bank10",ROMX,BANK[$10]
 	dr $40000,$4050b
 Pointer_4050b: ; 4050b (10:450b)
 	dr $4050b,$41c70
-DisplayOptionMenu_: ; 41c70 (10:57c0)
-	dr $41c70,$44000
+
+INCLUDE "engine/menu/options.asm"
 
 
 SECTION "bank11",ROMX,BANK[$11]

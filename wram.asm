@@ -847,6 +847,8 @@ wCoordIndex:: ; cd3d
 
 wOptionsTextSpeedCursorX:: ; cd3d
 
+wOptionsCursorLocation:: ; cd3d
+
 wTrainerInfoTextBoxWidthPlus1:: ; cd3d
 
 wSwappedMenuItem:: ; cd3d
