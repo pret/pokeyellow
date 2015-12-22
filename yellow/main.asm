@@ -4020,9 +4020,6 @@ TradingAnimationGraphics2:
 
 INCLUDE "engine/evos_moves.asm"
 
-EvosMovesPointerTable: ; 3b1e5 (e:71e5)
-	dr $3b1e5,$3c000
-
 
 SECTION "bank0F",ROMX,BANK[$0F]
 

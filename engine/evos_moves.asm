@@ -666,4 +666,4 @@ GetMonLearnset: ; 3b1d1 (e:71d1)
 	jr nz, .skipEvolutionDataLoop ; if not, jump back up
 	ret
 	
-;INCLUDE "data/evos_moves.asm"
+INCLUDE "data/evos_moves.asm"
