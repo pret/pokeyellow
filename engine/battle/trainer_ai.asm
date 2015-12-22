@@ -280,8 +280,8 @@ TrainerClassMoveChoiceModifications: ; 3981e (e:581e)
 	db 1,0    ; BUG CATCHER
 	db 1,0    ; LASS
 	db 1,3,0  ; SAILOR
-	db 1,0    ; JR__TRAINER_M
-	db 1,0    ; JR__TRAINER_F
+	db 1,0    ; JR_TRAINER_M
+	db 1,0    ; JR_TRAINER_F
 	db 1,2,3,0; POKEMANIAC
 	db 1,2,0  ; SUPER_NERD
 	db 1,0    ; HIKER
@@ -311,7 +311,7 @@ TrainerClassMoveChoiceModifications: ; 3981e (e:581e)
 	db 1,0    ; BRUNO
 	db 1,0    ; BROCK
 	db 1,3,0  ; MISTY
-	db 1,0    ; LT__SURGE
+	db 1,0    ; LT_SURGE
 	db 1,3,0  ; ERIKA
 	db 1,3,0  ; KOGA
 	db 1,0  ; BLAINE
@@ -752,7 +752,7 @@ AIUseGuardSpec: ; 3a84b (e:684b)
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
 	set 1,[hl]
-	ld a,GUARD_SPEC_
+	ld a,GUARD_SPEC
 	jp AIPrintItemUse
 
 AIUseDireHit: ; 3a858 (e:6858)

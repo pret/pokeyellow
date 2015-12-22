@@ -953,7 +953,7 @@ Mon159_EvosMoves: ; 3b67f (e:767f)
 	db 0
 
 Mon083_EvosMoves: ; 3b681 (e:7681)
-;FARFETCH_D
+;FARFETCHD
 ;Evolutions
 	db 0
 ;Learnset
