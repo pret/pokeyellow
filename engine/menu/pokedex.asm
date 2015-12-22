@@ -675,9 +675,7 @@ DrawTileLine: ; 40501 (10:4501)
 	pop bc
 	ret
 
-PokedexEntryPointers: ; 4050b (10:450b)
-	dr $4050b,$41086
-;INCLUDE "data/pokedex_entries.asm"
+INCLUDE "data/pokedex_entries.asm"
 
 PokedexToIndex: ; 41086 (10:5086)
 	; converts the Pokédex number at wd11e to an index
