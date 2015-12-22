@@ -1,4 +1,4 @@
-PokedexOrder: ; 41024 (10:5024)
+PokedexOrder: ; 410b1 (10:50b1)
 	db DEX_RHYDON
 	db DEX_KANGASKHAN
 	db DEX_NIDORAN_M

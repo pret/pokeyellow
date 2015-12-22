@@ -3868,6 +3868,7 @@ FossilKabutopsPic:   INCBIN "pic/ymon/fossilkabutops.pic"
 
 INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
+
 Func_2fd6a: ; 2fd6a (b:7d6a)
 	callab IsThisPartymonOurPikachu
 	ret nc
@@ -4118,10 +4119,10 @@ PlayCurrentMoveAnimation: ; 3fb83 (f:7b83)
 
 SECTION "bank10",ROMX,BANK[$10]
 
-	dr $40000,$4050b
-Pointer_4050b: ; 4050b (10:450b)
-	dr $4050b,$41c70
+INCLUDE "engine/menu/pokedex.asm"
 
+	dr $4116f,$41c70
+	
 INCLUDE "engine/menu/options.asm"
 
 
@@ -4343,7 +4344,9 @@ MonsterNames: ; e8000 (3a:4000)
 IsPlayerJustOutsideMap: ; e876c (3a:476c)
 	dr $e876c,$e8a5e
 Func_e8a5e: ; e8a5e (3a:4a5e)
-	dr $e8a5e,$e8d35
+	dr $e8a5e,$e8b74
+Func_e8b74: ; e8b74 (3a:4b74)
+	dr $e8b74,$e8d35
 Func_e8d35:: ; e8d35 (3a:4d35)
 	dr $e8d35,$e8e79
 Func_e8e79: ; e8e79 (3a:4e79)

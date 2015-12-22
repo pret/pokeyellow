@@ -340,12 +340,12 @@ PetitCup:: ; f553a (3d:553a)
 	dec a
 	ld c,a
 	ld b,$0
-	ld hl,Pointer_4050b
+	ld hl,PokedexEntryPointers
 	add hl,bc
 	add hl,bc
 	ld de,wcd6d
 	ld bc,$2
-	ld a,BANK(Pointer_4050b)
+	ld a,BANK(PokedexEntryPointers)
 	call FarCopyData
 	ld hl,wcd6d
 	ld a,[hli]
@@ -353,7 +353,7 @@ PetitCup:: ; f553a (3d:553a)
 	ld l,a
 	ld de,wcd6d
 	ld bc,$14
-	ld a,BANK(Pointer_4050b)
+	ld a,BANK(PokedexEntryPointers)
 	call FarCopyData
 	ld hl,wcd6d
 .loop2

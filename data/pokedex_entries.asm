@@ -1,4 +1,4 @@
-PokedexEntryPointers: ; 4047e (10:447e)
+PokedexEntryPointers: ; 4050b (10:450b)
 	dw RhydonDexEntry
 	dw KangaskhanDexEntry
 	dw NidoranMDexEntry
@@ -1256,4 +1256,5 @@ MissingNoDexEntry: ; 40fe5 (10:4fe5)
 	db "???@"
 	db 10 ; 1.0 m
 	db 100 ; 10.0 kg
-	db 0,"コメント さくせいちゅう@" ; コメント作成中 (Comment to be written)
+	text "コメント さくせいちゅう" ; コメント作成中 (Comment to be written)
+	db "@"
