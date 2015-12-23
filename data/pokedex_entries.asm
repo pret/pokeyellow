@@ -1260,6 +1260,6 @@ MissingNoDexEntry: ; 41072 (10:5072)
 
 ; what the game sees
 ;	db "???@"
-;	db 10,100 ; 10 feet 100 inches
-;	dw 41097 ; dw "コメ"
-;	db "ント さくせいちゅう@" ; a whole bunch of sound effects
+;	db 10,100 ; 10 feet, 100 inches
+;	dw 35072 ; dw ("コ" << 8 | 0), 3507.2 lbs
+;	db "メント さくせいちゅう@" ; a whole bunch of sound effects

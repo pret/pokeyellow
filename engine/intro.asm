@@ -2,14 +2,13 @@ MOVE_GENGAR_RIGHT   EQU $00
 MOVE_GENGAR_LEFT    EQU $01
 MOVE_NIDORINO_RIGHT EQU $ff
 
-PlayIntro: ; 41682 (10:5682)
+PlayIntro: ; 41997 (10:5997)
 	xor a
 	ld [hJoyHeld], a
 	inc a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call PlayShootingStar
-	call PlayIntroScene
-	call GBFadeOutToWhite
+	callab PlayIntroScene ; 3e:582d
 	xor a
 	ld [hSCX], a
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -17,163 +16,7 @@ PlayIntro: ; 41682 (10:5682)
 	call DelayFrame
 	ret
 
-PlayIntroScene: ; 4169d (10:569d)
-	ld b, SET_PAL_NIDORINO_INTRO
-	call RunPaletteCommand
-	ld a, %11100100
-	ld [rBGP], a
-	ld [rOBP0], a
-	ld [rOBP1], a
-	xor a
-	ld [hSCX], a
-	ld b, $3 ; Gengar tiles
-	call IntroCopyTiles
-	ld a, 0
-	ld [wBaseCoordX], a
-	ld a, 80
-	ld [wBaseCoordY], a
-	lb bc, 6, 6
-	call InitIntroNidorinoOAM
-	lb de, 80 / 2, MOVE_NIDORINO_RIGHT
-	call IntroMoveMon
-	ret c
-
-; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
-	xor a
-	ld [wIntroNidorinoBaseTile], a
-	ld de, IntroNidorinoAnimation1
-	call AnimateIntroNidorino
-; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
-	ld de, IntroNidorinoAnimation2
-	call AnimateIntroNidorino
-	ld c, $a
-	call CheckForUserInterruption
-	ret c
-
-; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
-	ld de, IntroNidorinoAnimation1
-	call AnimateIntroNidorino
-; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
-	ld de, IntroNidorinoAnimation2
-	call AnimateIntroNidorino
-	ld c, $1e
-	call CheckForUserInterruption
-	ret c
-
-; raise
-	ld b, $4
-	call IntroCopyTiles
-	ld a, SFX_INTRO_RAISE
-	call PlaySound
-	lb de, 8 / 2, MOVE_GENGAR_LEFT
-	call IntroMoveMon
-	ld c, $1e
-	call CheckForUserInterruption
-	ret c
-
-; slash
-	ld b, $5
-	call IntroCopyTiles
-	ld a, SFX_INTRO_CRASH
-	call PlaySound
-	lb de, 16 / 2, MOVE_GENGAR_RIGHT
-	call IntroMoveMon
-; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
-	ld a, $24
-	ld [wIntroNidorinoBaseTile], a
-	ld de, IntroNidorinoAnimation3
-	call AnimateIntroNidorino
-	ld c, $1e
-	call CheckForUserInterruption
-	ret c
-
-	lb de, 8 / 2, MOVE_GENGAR_LEFT
-	call IntroMoveMon
-	ld b, $3
-	call IntroCopyTiles
-	ld c, $3c
-	call CheckForUserInterruption
-	ret c
-
-; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
-	xor a
-	ld [wIntroNidorinoBaseTile], a
-	ld de, IntroNidorinoAnimation4
-	call AnimateIntroNidorino
-; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
-	ld de, IntroNidorinoAnimation5
-	call AnimateIntroNidorino
-	ld c, $14
-	call CheckForUserInterruption
-	ret c
-
-	ld a, $24
-	ld [wIntroNidorinoBaseTile], a
-	ld de, IntroNidorinoAnimation6
-	call AnimateIntroNidorino
-	ld c, $1e
-	call CheckForUserInterruption
-	ret c
-
-; lunge
-	ld a, SFX_INTRO_LUNGE
-	call PlaySound
-	ld a, $48
-	ld [wIntroNidorinoBaseTile], a
-	ld de, IntroNidorinoAnimation7
-	jp AnimateIntroNidorino
-
-AnimateIntroNidorino: ; 41793 (10:5793)
-	ld a, [de]
-	cp $50
-	ret z
-	ld [wBaseCoordY], a
-	inc de
-	ld a, [de]
-	ld [wBaseCoordX], a
-	push de
-	ld c, 6 * 6
-	call UpdateIntroNidorinoOAM
-	ld c, 5
-	call DelayFrames
-	pop de
-	inc de
-	jr AnimateIntroNidorino
-
-UpdateIntroNidorinoOAM: ; 417ae (10:57ae)
-	ld hl, wOAMBuffer
-	ld a, [wIntroNidorinoBaseTile]
-	ld d, a
-.loop
-	ld a, [wBaseCoordY]
-	add [hl]
-	ld [hli], a ; Y
-	ld a, [wBaseCoordX]
-	add [hl]
-	ld [hli], a ; X
-	ld a, d
-	ld [hli], a ; tile
-	inc hl
-	inc d
-	dec c
-	jr nz, .loop
-	ret
-
-InitIntroNidorinoOAM: ; 417c7 (10:57c7)
+InitIntroNidorinoOAM: ; 419b4 (10:59b4)
 	ld hl, wOAMBuffer
 	ld d, 0
 .loop
@@ -202,17 +45,17 @@ InitIntroNidorinoOAM: ; 417c7 (10:57c7)
 	jr nz, .loop
 	ret
 
-IntroClearScreen: ; 417f0 (10:57f0)
+IntroClearScreen: ; 419dd (10:59dd)
 	ld hl, vBGMap1
 	ld bc, $240
 	jr IntroClearCommon
 
-IntroClearMiddleOfScreen: ; 417f8 (10:57f8)
+IntroClearMiddleOfScreen: ; 419e5 (10:59e5)
 ; clear the area of the tile map between the black bars on the top and bottom
 	coord hl, 0, 4
 	ld bc, SCREEN_WIDTH * 10
 
-IntroClearCommon: ; 417fe (10:57fe)
+IntroClearCommon: ; 419eb (10:59eb)
 	ld [hl], $0
 	inc hl
 	dec bc
@@ -221,7 +64,7 @@ IntroClearCommon: ; 417fe (10:57fe)
 	jr nz, IntroClearCommon
 	ret
 
-IntroPlaceBlackTiles: ; 41807 (10:5807)
+IntroPlaceBlackTiles: ; 419f4 (10:59f4)
 	ld a, $1
 .loop
 	ld [hli], a
@@ -229,62 +72,34 @@ IntroPlaceBlackTiles: ; 41807 (10:5807)
 	jr nz, .loop
 	ret
 
-IntroMoveMon: ; 4180e (10:580e)
-; d = number of times to move the mon (2 pixels each time)
-; e: $00 = move Gengar right, $01 = move Gengar left, $ff = move Nidorino right
-	ld a, e
-	cp $ff
-	jr z, .moveNidorinoRight
-	cp $1
-	jr z, .moveGengarLeft
-; move Gengar right
-	ld a, [hSCX]
-	dec a
-	dec a
-	jr .next
-.moveNidorinoRight
-	push de
-	ld a, 2
-	ld [wBaseCoordX], a
-	xor a
-	ld [wBaseCoordY], a
-	ld c, 6 * 6
-	call UpdateIntroNidorinoOAM
-	pop de
-.moveGengarLeft
-	ld a, [hSCX]
-	inc a
-	inc a
-.next
-	ld [hSCX], a
-	push de
-	ld c, 2
-	call CheckForUserInterruption
-	pop de
-	ret c
-	dec d
-	jr nz, IntroMoveMon
-	ret
-
-IntroCopyTiles: ; 4183f (10:583f)
-	coord hl, 13, 7
-
-CopyTileIDsFromList_ZeroBaseTileID: ; 41842 (10:5842)
+CopyTileIDsFromList_ZeroBaseTileID: ; 419fb (10:59fb)
 	ld c, 0
 	predef_jump CopyTileIDsFromList
 
-PlayMoveSoundB: ; 41849 (10:5849)
-; unused
-	predef GetMoveSoundB
-	ld a, b
-	jp PlaySound
-
-LoadIntroGraphics: ; 41852 (10:5852)
-	ld hl, FightIntroBackMon
-	ld de, vChars2
-	ld bc, FightIntroBackMonEnd - FightIntroBackMon
-	ld a, BANK(FightIntroBackMon)
-	call FarCopyData
+PlayShootingStar: ; 41a02 (10:5a02)
+	ld b, SET_PAL_GAME_FREAK_INTRO
+	call RunPaletteCommand
+	callba LoadCopyrightAndTextBoxTiles
+	ld a, %11100100
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	ld c, 180
+	call DelayFrames
+	call ClearScreen
+	call DisableLCD
+	xor a
+	ld [wCurOpponent], a
+	call IntroDrawBlackBars
+; write the black and white tiles
+	ld hl, vChars2
+	ld bc, $10
+	xor a
+	call FillMemory
+	ld hl, vChars2 + $10
+	ld bc, $10
+	ld a, $ff
+	call FillMemory
+; copy gamefreak logo and others
 	ld hl, GameFreakIntro
 	ld de, vChars2 + $600
 	ld bc, GameFreakIntroEnd - GameFreakIntro
@@ -295,26 +110,7 @@ LoadIntroGraphics: ; 41852 (10:5852)
 	ld bc, GameFreakIntroEnd - GameFreakIntro
 	ld a, BANK(GameFreakIntro)
 	call FarCopyData
-	ld hl, FightIntroFrontMon
-	ld de, vChars0
-	ld bc, FightIntroFrontMonEnd - FightIntroFrontMon
-	ld a, BANK(FightIntroFrontMon)
-	jp FarCopyData
 
-PlayShootingStar: ; 4188a (10:588a)
-	ld b, SET_PAL_GAME_FREAK_INTRO
-	call RunPaletteCommand
-	callba LoadCopyrightAndTextBoxTiles
-	ld a, $e4
-	ld [rBGP], a
-	ld c, 180
-	call DelayFrames
-	call ClearScreen
-	call DisableLCD
-	xor a
-	ld [wCurOpponent], a
-	call IntroDrawBlackBars
-	call LoadIntroGraphics
 	call EnableLCD
 	ld hl, rLCDC
 	res 5, [hl]
@@ -328,17 +124,11 @@ PlayShootingStar: ; 4188a (10:588a)
 	ld c, 40
 	call DelayFrames
 .next
-	ld a, BANK(Music_IntroBattle)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, MUSIC_INTRO_BATTLE
-	ld [wNewSoundID], a
-	call PlaySound
 	call IntroClearMiddleOfScreen
 	call ClearSprites
 	jp Delay3
 
-IntroDrawBlackBars: ; 418e9 (10:58e9)
+IntroDrawBlackBars: ; 41a82 (10:5a82)
 ; clear the screen and draw black bars on the top and bottom
 	call IntroClearScreen
 	coord hl, 0, 0
@@ -354,96 +144,11 @@ IntroDrawBlackBars: ; 418e9 (10:58e9)
 	ld c, $80
 	jp IntroPlaceBlackTiles
 
-EmptyFunc4: ; 4190c (10:590c)
+EmptyFunc4: ; 41aa5 (10:5aa5)
 	ret
 
-IntroNidorinoAnimation0: ; 4190d (10:590d)
-	db 0, 0
-	db $50
-
-IntroNidorinoAnimation1: ; 41910 (10:5910)
-; This is a sequence of pixel movements for part of the Nidorino animation. This
-; list describes how Nidorino should hop.
-; First byte is y movement, second byte is x movement
-	db  0, 0
-	db -2, 2
-	db -1, 2
-	db  1, 2
-	db  2, 2
-	db $50 ; list terminator
-
-IntroNidorinoAnimation2: ; 4191b (10:591b)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db  0,  0
-	db -2, -2
-	db -1, -2
-	db  1, -2
-	db  2, -2
-	db $50 ; list terminator
-
-IntroNidorinoAnimation3: ; 41926 (10:5926)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db   0, 0
-	db -12, 6
-	db  -8, 6
-	db   8, 6
-	db  12, 6
-	db $50 ; list terminator
-
-IntroNidorinoAnimation4: ; 41931 (10:5931)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db  0,  0
-	db -8, -4
-	db -4, -4
-	db  4, -4
-	db  8, -4
-	db $50 ; list terminator
-
-IntroNidorinoAnimation5: ; 4193c (10:593c)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db  0, 0
-	db -8, 4
-	db -4, 4
-	db  4, 4
-	db  8, 4
-	db $50 ; list terminator
-
-IntroNidorinoAnimation6: ; 41947 (10:5947)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db 0, 0
-	db 2, 0
-	db 2, 0
-	db 0, 0
-	db $50 ; list terminator
-
-IntroNidorinoAnimation7: ; 41950 (10:5950)
-; This is a sequence of pixel movements for part of the Nidorino animation.
-; First byte is y movement, second byte is x movement
-	db -8, -16
-	db -7, -14
-	db -6, -12
-	db -4, -10
-	db $50 ; list terminator
-
-GameFreakIntro: ; 41959 (10:5959)
+GameFreakIntro: ; 41959 (10:5aa6)
 	INCBIN "gfx/gamefreak_intro.2bpp"
 	INCBIN "gfx/gamefreak_logo.2bpp"
 	ds $10 ; blank tile
 GameFreakIntroEnd:
-
-FightIntroBackMon: ; 41a99 (10:5a99)
-	INCBIN "gfx/intro_fight.2bpp"
-FightIntroBackMonEnd:
-
-FightIntroFrontMon: ; 42099 (10:6099)
-	INCBIN "gfx/intro_nido_1.6x6.2bpp"
-	INCBIN "gfx/intro_nido_2.6x6.2bpp"
-	INCBIN "gfx/intro_nido_3.6x6.2bpp"
-FightIntroFrontMonEnd:
-
-	ds $10 ; blank tile

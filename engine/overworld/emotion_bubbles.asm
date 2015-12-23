@@ -1,13 +1,16 @@
-EmotionBubble: ; 17c47 (5:7c47)
+EmotionBubble: ; 4116f (10:516f)
 	ld a, [wWhichEmotionBubble]
+	and $f
+	swap a
 	ld c, a
-	ld b, 0
-	ld hl, EmotionBubblesPointerTable
+	ld b, $0
+	ld hl, EmotionBubbles
+	add hl, bc ; each emotion bubble is 16 bytes, so calculate the offset directly instead of with a pointer table
 	add hl, bc
 	add hl, bc
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
+	add hl, bc
+	ld e, l
+	ld d, h
 	ld hl, vChars1 + $780
 	lb bc, BANK(EmotionBubbles), $04
 	call CopyVideoData
@@ -17,11 +20,11 @@ EmotionBubble: ; 17c47 (5:7c47)
 	ld [wUpdateSpritesEnabled], a
 	ld a, [wd736]
 	bit 6, a ; are the last 4 OAM entries reserved for a shadow or fishing rod?
-	ld hl, wOAMBuffer + $8f
-	ld de, wOAMBuffer + $9f
+	ld hl, wOAMBuffer + 4 * 35 + $3 ; $8f
+	ld de, wOAMBuffer + 4 * 39 + $3 ; $9f
 	jr z, .next
-	ld hl, wOAMBuffer + $7f
-	ld de, wOAMBuffer + $8f
+	ld hl, wOAMBuffer + 4 * 31 + $3 ; $7f
+	ld de, wOAMBuffer + 4 * 35 + $3 ; $8f
 
 ; Copy OAM data 16 bytes forward to make room for emotion bubble OAM data at the
 ; start of the OAM buffer.
@@ -59,16 +62,13 @@ EmotionBubble: ; 17c47 (5:7c47)
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	call DelayFrame
-	jp UpdateSprites
+	call UpdateSprites
+	ret
+	; jp UpdateSprites
 
-EmotionBubblesPointerTable: ; 17caf (5:7caf)
-	dw EmotionBubbles
-	dw EmotionBubbles + $40
-	dw EmotionBubbles + $80
-
-EmotionBubblesOAM: ; 17cb5 (5:7cb5)
+EmotionBubblesOAM: ; 411dd (5:51dd)
 	db $F8,$00,$F9,$00
 	db $FA,$00,$FB,$00
 
-EmotionBubbles: ; 17cbd (5:7cbd)
+EmotionBubbles: ; 411e5 (10:51e5)
 	INCBIN "gfx/emotion_bubbles.2bpp"

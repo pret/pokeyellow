@@ -149,17 +149,19 @@ FillMemory:: ; 166e (0:166e)
 	jr nz, .loop
 	ret
 	
-Func_1681:: ; 1681 (0:1681)
+GetFarByte:: ; 1681 (0:1681)
+; get a byte from a:hl
+; and return it in a
 	push bc
-	ld b,a
+	ld b, a
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a,b
+	ld a, b
 	call BankswitchCommon
-	ld b,[hl]
+	ld b, [hl]
 	pop af
 	call BankswitchCommon
-	ld a,b
+	ld a, b
 	pop bc
 	ret
 

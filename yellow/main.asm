@@ -4013,10 +4013,12 @@ INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
 	INCBIN "gfx/link_cable.2bpp"
-
+TradingAnimationGraphicsEnd:
+	
 TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
+TradingAnimationGraphics2End:
 
 INCLUDE "engine/evos_moves.asm"
 
@@ -4117,9 +4119,10 @@ PlayCurrentMoveAnimation: ; 3fb83 (f:7b83)
 SECTION "bank10",ROMX,BANK[$10]
 
 INCLUDE "engine/menu/pokedex.asm"
-
-	dr $4116f,$41c70
-	
+INCLUDE "engine/overworld/emotion_bubbles.asm"
+INCLUDE "engine/trade.asm"
+INCLUDE "engine/intro.asm"
+INCLUDE "engine/trade2.asm"
 INCLUDE "engine/menu/options.asm"
 
 
@@ -4367,7 +4370,9 @@ INCLUDE "engine/bank3d/main.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
 
-	dr $f8000,$fa35a
+	dr $f8000,$f982d
+PlayIntroScene: ; f982d (3e:582d)
+	dr $f982d,$fa35a
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 

@@ -1,4 +1,4 @@
-Trade_PrintPlayerMonInfoText: ; 42769 (10:6769)
+Trade_PrintPlayerMonInfoText: ; 41be6 (10:5be6)
 	coord hl, 5, 0
 	ld de,Trade_MonInfoText
 	call PlaceString
@@ -20,7 +20,7 @@ Trade_PrintPlayerMonInfoText: ; 42769 (10:6769)
 	lb bc, LEADING_ZEROES | 2, 5
 	jp PrintNumber
 
-Trade_PrintEnemyMonInfoText: ; 427a7 (10:67a7)
+Trade_PrintEnemyMonInfoText: ; 41c24 (10:5c24)
 	coord hl, 5, 10
 	ld de,Trade_MonInfoText
 	call PlaceString
@@ -42,8 +42,8 @@ Trade_PrintEnemyMonInfoText: ; 427a7 (10:67a7)
 	lb bc, LEADING_ZEROES | 2, 5
 	jp PrintNumber
 
-Trade_MonInfoText: ; 427e5 (10:67e5)
-	db "──",$74,$F2,$4E
-	db $4E
-	db "OT/",$4E
-	db $73,"№",$F2,"@"
+Trade_MonInfoText: ; 41c62 (10:5c62)
+	db "──",$74,$F2
+	db $4e ; next
+	next "OT/"
+	next $73,"№",$F2,"@"

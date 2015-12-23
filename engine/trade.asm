@@ -1,4 +1,4 @@
-InternalClockTradeAnim: ; 410e2 (10:50e2)
+InternalClockTradeAnim: ; 413e5 (10:53e5)
 ; Do the trading animation with the player's gameboy on the left.
 ; In-game trades and internally clocked link cable trades use this.
 	ld a, [wTradedPlayerMonSpecies]
@@ -8,7 +8,7 @@ InternalClockTradeAnim: ; 410e2 (10:50e2)
 	ld de, InternalClockTradeFuncSequence
 	jr TradeAnimCommon
 
-ExternalClockTradeAnim: ; 410f3 (10:50f3)
+ExternalClockTradeAnim: ; 413f6 (10:53f6)
 ; Do the trading animation with the player's gameboy on the right.
 ; Externally clocked link cable trades use this.
 	ld a, [wTradedEnemyMonSpecies]
@@ -17,15 +17,16 @@ ExternalClockTradeAnim: ; 410f3 (10:50f3)
 	ld [wRightGBMonSpecies], a
 	ld de, ExternalClockTradeFuncSequence
 
-TradeAnimCommon: ; 41102 (10:5102)
+TradeAnimCommon: ; 41405 (10:5405)
 	ld a, [wOptions]
 	push af
+	and %110000 ; preserve speaker options
+	ld [wOptions], a
 	ld a, [hSCY]
 	push af
 	ld a, [hSCX]
 	push af
 	xor a
-	ld [wOptions], a
 	ld [hSCY], a
 	ld [hSCX], a
 	push de
@@ -69,7 +70,7 @@ tradefunc: MACRO
 ; They are from opposite perspectives. The external clock one makes use of
 ; Trade_SwapNames to swap the player and enemy names for some functions.
 
-InternalClockTradeFuncSequence: ; 41138 (10:5138)
+InternalClockTradeFuncSequence: ; 4143d (10:543d)
 	tradefunc LoadTradingGFXAndMonNames
 	tradefunc Trade_ShowPlayerMon
 	tradefunc Trade_DrawOpenEndOfLinkCable
@@ -88,7 +89,7 @@ InternalClockTradeFuncSequence: ; 41138 (10:5138)
 	tradefunc Trade_Cleanup
 	db $FF
 
-ExternalClockTradeFuncSequence: ; 41149 (10:5149)
+ExternalClockTradeFuncSequence: ; 4144e (10:544e)
 	tradefunc LoadTradingGFXAndMonNames
 	tradefunc Trade_ShowClearedWindow
 	tradefunc PrintTradeWillTradeText
@@ -112,7 +113,7 @@ ExternalClockTradeFuncSequence: ; 41149 (10:5149)
 	tradefunc Trade_Cleanup
 	db $FF
 
-TradeFuncPointerTable: ; 4115f (10:515f)
+TradeFuncPointerTable: ; 41464 (10:5464)
 	addtradefunc LoadTradingGFXAndMonNames
 	addtradefunc Trade_ShowPlayerMon
 	addtradefunc Trade_DrawOpenEndOfLinkCable
@@ -131,11 +132,11 @@ TradeFuncPointerTable: ; 4115f (10:515f)
 	addtradefunc Trade_SlideTextBoxOffScreen
 	addtradefunc Trade_SwapNames
 
-Trade_Delay100: ; 41181 (10:5181)
+Trade_Delay100: ; 41486 (10:5486)
 	ld c, 100
 	jp DelayFrames
 
-Trade_CopyTileMapToVRAM: ; 41186 (10:5186)
+Trade_CopyTileMapToVRAM: ; 4148b (10:548b)
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
@@ -143,17 +144,17 @@ Trade_CopyTileMapToVRAM: ; 41186 (10:5186)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-Trade_Delay80: ; 41191 (10:5191)
+Trade_Delay80: ; 41496 (10:5496)
 	ld c, 80
 	jp DelayFrames
 
-Trade_ClearTileMap: ; 41196 (10:5196)
+Trade_ClearTileMap: ; 4149b (10:549b)
 	coord hl, 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, " "
 	jp FillMemory
 
-LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
+LoadTradingGFXAndMonNames: ; 414a6 (10:54a6)
 	call Trade_ClearTileMap
 	call DisableLCD
 	ld hl, TradingAnimationGraphics
@@ -182,6 +183,7 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	ld a, $f0 ; SGB OBP0
 .next
 	ld [rOBP0], a
+	call UpdateGBCPal_OBP0
 	call EnableLCD
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -196,12 +198,13 @@ LoadTradingGFXAndMonNames: ; 411a1 (10:51a1)
 	ld [wd11e], a
 	jp GetMonName
 
-Trade_LoadMonPartySpriteGfx: ; 4120b (10:520b)
+Trade_LoadMonPartySpriteGfx: ; 41513 (10:5513)
 	ld a, %11010000
 	ld [rOBP1], a
+	call UpdateGBCPal_OBP1
 	jpba LoadMonPartySpriteGfx
 
-Trade_SwapNames: ; 41217 (10:5217)
+Trade_SwapNames: ; 41522 (10:5522)
 	ld hl, wPlayerName
 	ld de, wBuffer
 	ld bc, NAME_LENGTH
@@ -215,14 +218,14 @@ Trade_SwapNames: ; 41217 (10:5217)
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-Trade_Cleanup: ; 4123b (10:523b)
+Trade_Cleanup: ; 41546 (10:5546)
 	xor a
 	call LoadGBPal
 	ld hl, wd730
 	res 6, [hl] ; turn off instant text printing
 	ret
 
-Trade_ShowPlayerMon: ; 41245 (10:5245)
+Trade_ShowPlayerMon: ; 41550 (10:5550)
 	ld a, %10101011
 	ld [rLCDC], a
 	ld a, $50
@@ -233,8 +236,7 @@ Trade_ShowPlayerMon: ; 41245 (10:5245)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 4, 0
-	ld b, 6
-	ld c, 10
+	lb bc, 6, 10
 	call TextBoxBorder
 	call Trade_PrintPlayerMonInfoText
 	ld b, vBGMap0 / $100
@@ -251,7 +253,7 @@ Trade_ShowPlayerMon: ; 41245 (10:5245)
 	ld [hSCX], a
 	dec a
 	dec a
-	and a
+	and a ; useless since flags are updated with dec a
 	jr nz, .slideScreenLoop
 	call Trade_Delay80
 	ld a, TRADE_BALL_POOF_ANIM
@@ -264,7 +266,7 @@ Trade_ShowPlayerMon: ; 41245 (10:5245)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-Trade_DrawOpenEndOfLinkCable: ; 41298 (10:5298)
+Trade_DrawOpenEndOfLinkCable: ; 415a2 (10:55a2)
 	call Trade_ClearTileMap
 	ld b, vBGMap0 / $100
 	call CopyScreenTileBufferToVRAM
@@ -296,16 +298,17 @@ Trade_DrawOpenEndOfLinkCable: ; 41298 (10:5298)
 	jr nz, .loop
 	ret
 
-Trade_AnimateBallEnteringLinkCable: ; 412d2 (10:52d2)
+Trade_AnimateBallEnteringLinkCable: ; 415dc (10:55dc)
 	ld a, TRADE_BALL_SHAKE_ANIM
 	call Trade_ShowAnimation
 	ld c, 10
 	call DelayFrames
 	ld a, %11100100
 	ld [rOBP0], a
+	call UpdateGBCPal_OBP0
 	xor a
 	ld [wLinkCableAnimBulgeToggle], a
-	ld bc, $2060
+	lb bc, $20, $60
 .moveBallInsideLinkCableLoop
 	push bc
 	xor a
@@ -345,17 +348,16 @@ Trade_AnimateBallEnteringLinkCable: ; 412d2 (10:52d2)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-Trade_BallInsideLinkCableOAM: ; 4132e (10:532e)
+Trade_BallInsideLinkCableOAM: ; 4163b  (10:563b)
 	db $7E,$00,$7E,$20
 	db $7E,$40,$7E,$60
 
-Trade_ShowEnemyMon: ; 41336 (10:5336)
+Trade_ShowEnemyMon: ; 41643 (10:5643)
 	ld a, TRADE_BALL_TILT_ANIM
 	call Trade_ShowAnimation
 	call Trade_ShowClearedWindow
 	coord hl, 4, 10
-	ld b, 6
-	ld c, 10
+	lb bc, 6, 10
 	call TextBoxBorder
 	call Trade_PrintEnemyMonInfoText
 	call Trade_CopyTileMapToVRAM
@@ -375,13 +377,14 @@ Trade_ShowEnemyMon: ; 41336 (10:5336)
 	call ClearScreenArea
 	jp PrintTradeTakeCareText
 
-Trade_AnimLeftToRight: ; 41376 (10:5376)
+Trade_AnimLeftToRight: ; 41682 (10:5682)
 ; Animates the mon moving from the left GB to the right one.
 	call Trade_InitGameboyTransferGfx
 	ld a, $1
 	ld [wTradedMonMovingRight], a
-	ld a, $e4
+	ld a, %11100100
 	ld [rOBP0], a
+	call UpdateGBCPal_OBP0
 	ld a, $54
 	ld [wBaseCoordX], a
 	ld a, $1c
@@ -409,7 +412,7 @@ Trade_AnimLeftToRight: ; 41376 (10:5376)
 	call Trade_AnimMonMoveVertical
 	jp ClearSprites
 
-Trade_AnimRightToLeft: ; 413c6 (10:53c6)
+Trade_AnimRightToLeft: ; 416d5 (10:56d5)
 ; Animates the mon moving from the right GB to the left one.
 	call Trade_InitGameboyTransferGfx
 	xor a
@@ -441,11 +444,13 @@ Trade_AnimRightToLeft: ; 413c6 (10:53c6)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	jp ClearSprites
 
-Trade_InitGameboyTransferGfx: ; 41411 (10:5411)
+Trade_InitGameboyTransferGfx: ; 41720 (10:5720)
 ; Initialises the graphics for showing a mon moving between gameboys.
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call ClearScreen
+	ld b, SET_PAL_GENERIC
+	call RunPaletteCommand
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Trade_LoadMonPartySpriteGfx
@@ -458,7 +463,7 @@ Trade_InitGameboyTransferGfx: ; 41411 (10:5411)
 	ld [hWY], a
 	ret
 
-Trade_DrawLeftGameboy: ; 4142d (10:542d)
+Trade_DrawLeftGameboy: ; 41741 (10:5741)
 	call Trade_ClearTileMap
 
 ; draw link cable
@@ -466,7 +471,7 @@ Trade_DrawLeftGameboy: ; 4142d (10:542d)
 	ld a, $5d
 	ld [hli], a
 	ld a, $5e
-	ld c, $8
+	ld c, 8
 .loop
 	ld [hli], a
 	dec c
@@ -479,8 +484,7 @@ Trade_DrawLeftGameboy: ; 4142d (10:542d)
 
 ; draw text box with player name below gameboy pic
 	coord hl, 4, 12
-	ld b, 2
-	ld c, 7
+	lb bc, 2, 7
 	call TextBoxBorder
 	coord hl, 5, 14
 	ld de, wPlayerName
@@ -488,7 +492,7 @@ Trade_DrawLeftGameboy: ; 4142d (10:542d)
 
 	jp DelayFrame
 
-Trade_DrawRightGameboy: ; 4145c (10:545c)
+Trade_DrawRightGameboy: ; 4176f (10:576f)
 	call Trade_ClearTileMap
 
 ; draw horizontal segment of link cable
@@ -526,8 +530,7 @@ Trade_DrawRightGameboy: ; 4145c (10:545c)
 
 ; draw text box with enemy name above link cable
 	coord hl, 6, 0
-	ld b, $2
-	ld c, $7
+	lb bc, 2, 7
 	call TextBoxBorder
 	coord hl, 7, 2
 	ld de, wLinkEnemyTrainerName
@@ -535,7 +538,7 @@ Trade_DrawRightGameboy: ; 4145c (10:545c)
 
 	jp DelayFrame
 
-Trade_DrawCableAcrossScreen: ; 4149f (10:549f)
+Trade_DrawCableAcrossScreen: ; 417b1 (10:57b1)
 ; Draws the link cable across the screen.
 	call Trade_ClearTileMap
 	coord hl, 0, 4
@@ -547,7 +550,7 @@ Trade_DrawCableAcrossScreen: ; 4149f (10:549f)
 	jr nz, .loop
 	ret
 
-Trade_CopyCableTilesOffScreen: ; 414ae (10:54ae)
+Trade_CopyCableTilesOffScreen: ; 417c0 (10:57c0)
 ; This is used to copy the link cable tiles off screen so that the cable
 ; continues when the screen is scrolled.
 	push hl
@@ -563,7 +566,7 @@ Trade_CopyCableTilesOffScreen: ; 414ae (10:54ae)
 	ld c, 10
 	jp DelayFrames
 
-Trade_AnimMonMoveHorizontal: ; 414c5 (10:54c5)
+Trade_AnimMonMoveHorizontal: ; 417d7 (10:57d7)
 ; Animates the mon going through the link cable horizontally over a distance of
 ; b 16-pixel units.
 	ld a, [wTradedMonMovingRight]
@@ -590,7 +593,7 @@ Trade_AnimMonMoveHorizontal: ; 414c5 (10:54c5)
 	jr nz, Trade_AnimMonMoveHorizontal
 	ret
 
-Trade_AnimCircledMon: ; 414e8 (10:54e8)
+Trade_AnimCircledMon: ; 417fa (10:57fa)
 ; Cycles between the two animation frames of the mon party sprite, cycles
 ; between a circle and an oval around the mon sprite, and makes the cable flash.
 	push de
@@ -599,6 +602,7 @@ Trade_AnimCircledMon: ; 414e8 (10:54e8)
 	ld a, [rBGP]
 	xor $3c ; make link cable flash
 	ld [rBGP], a
+	call UpdateGBCPal_BGP
 	ld hl, wOAMBuffer + $02
 	ld de, $4
 	ld c, $14
@@ -614,13 +618,13 @@ Trade_AnimCircledMon: ; 414e8 (10:54e8)
 	pop de
 	ret
 
-Trade_WriteCircledMonOAM: ; 41505 (10:5505)
+Trade_WriteCircledMonOAM: ; 4181a (10:581a)
 	callba WriteMonPartySpriteOAMBySpecies
 	call Trade_WriteCircleOAM
 
-Trade_AddOffsetsToOAMCoords: ; 41510 (10:5510)
+Trade_AddOffsetsToOAMCoords: ; 41825 (10:5825)
 	ld hl, wOAMBuffer
-	ld c, $14
+	ld c, $14 ; SCREEN_WIDTH?
 .loop
 	ld a, [wBaseCoordY]
 	add [hl]
@@ -634,7 +638,7 @@ Trade_AddOffsetsToOAMCoords: ; 41510 (10:5510)
 	jr nz, .loop
 	ret
 
-Trade_AnimMonMoveVertical: ; 41525 (10:5525)
+Trade_AnimMonMoveVertical: ; 4183a (10:583a)
 ; Animates the mon going through the link cable vertically as well as
 ; horizontally for a bit. The last bit of horizontal movement (when moving
 ; right) or the first bit of horizontal movement (when moving left) are done
@@ -670,7 +674,7 @@ Trade_AnimMonMoveVertical: ; 41525 (10:5525)
 	jr nz, .loop
 	ret
 
-Trade_WriteCircleOAM: ; 41558 (10:5558)
+Trade_WriteCircleOAM: ; 4186d (10:586d)
 ; Writes the OAM blocks for the circle around the traded mon as it passes
 ; the link cable.
 	ld hl, Trade_CircleOAMPointers
@@ -697,7 +701,7 @@ Trade_WriteCircleOAM: ; 41558 (10:5558)
 	jr nz, .loop
 	ret
 
-Trade_CircleOAMPointers: ; 41574 (10:5574)
+Trade_CircleOAMPointers: ; 41889 (10:5889)
 	dw Trade_CircleOAM0
 	db $08,$08
 	dw Trade_CircleOAM1
@@ -707,24 +711,24 @@ Trade_CircleOAMPointers: ; 41574 (10:5574)
 	dw Trade_CircleOAM3
 	db $18,$18
 
-Trade_CircleOAM0: ; 41584 (10:5584)
+Trade_CircleOAM0: ; 41899 (10:5899)
 	db $38,$10,$39,$10
 	db $3A,$10,$3B,$10
 
-Trade_CircleOAM1: ; 4158c (10:558c)
+Trade_CircleOAM1: ; 418a1 (10:58a1)
 	db $39,$30,$38,$30
 	db $3B,$30,$3A,$30
 
-Trade_CircleOAM2: ; 41594 (10:5594)
+Trade_CircleOAM2: ; 418a9 (10:58a9)
 	db $3A,$50,$3B,$50
 	db $38,$50,$39,$50
 
-Trade_CircleOAM3: ; 4159c (10:559c)
+Trade_CircleOAM3: ; 418b1 (10:58b1)
 	db $3B,$70,$3A,$70
 	db $39,$70,$38,$70
 
 ; a = species
-Trade_LoadMonSprite: ; 415a4 (10:55a4)
+Trade_LoadMonSprite: ; 418b9 (10:58b9)
 	ld [wcf91], a
 	ld [wd0b5], a
 	ld [wWholeScreenPaletteMonSpecies], a
@@ -740,7 +744,7 @@ Trade_LoadMonSprite: ; 415a4 (10:55a4)
 	ld c, 10
 	jp DelayFrames
 
-Trade_ShowClearedWindow: ; 415c8 (10:55c8)
+Trade_ShowClearedWindow: ; 418dd (10:58dd)
 ; clears the window and covers the BG entirely with the window
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -755,7 +759,7 @@ Trade_ShowClearedWindow: ; 415c8 (10:55c8)
 	ld [hSCX], a
 	ret
 
-Trade_SlideTextBoxOffScreen: ; 415df (10:55df)
+Trade_SlideTextBoxOffScreen: ; 418f4 (10:58f4)
 ; Slides the window right until it's off screen. The window usually just has
 ; a text box at the bottom when this is called. However, when this is called
 ; after Trade_ShowEnemyMon in the external clock sequence, there is a mon pic
@@ -777,18 +781,18 @@ Trade_SlideTextBoxOffScreen: ; 415df (10:55df)
 	ld [rWX], a
 	ret
 
-PrintTradeWentToText: ; 415fe (10:55fe)
+PrintTradeWentToText: ; 41913 (10:5913)
 	ld hl, TradeWentToText
 	call PrintText
 	ld c, 200
 	call DelayFrames
 	jp Trade_SlideTextBoxOffScreen
 
-TradeWentToText: ; 4160c (10:560c)
+TradeWentToText: ; 41921 (10:5921)
 	TX_FAR _TradeWentToText
 	db "@"
 
-PrintTradeForSendsText: ; 41611 (10:5611)
+PrintTradeForSendsText: ; 41926 (10:5926)
 	ld hl, TradeForText
 	call PrintText
 	call Trade_Delay80
@@ -796,15 +800,15 @@ PrintTradeForSendsText: ; 41611 (10:5611)
 	call PrintText
 	jp Trade_Delay80
 
-TradeForText: ; 41623 (10:5623)
+TradeForText: ; 41938 (10:5938)
 	TX_FAR _TradeForText
 	db "@"
 
-TradeSendsText: ; 41628 (10:5628)
+TradeSendsText: ; 4193d (10:593d)
 	TX_FAR _TradeSendsText
 	db "@"
 
-PrintTradeFarewellText: ; 4162d (10:562d)
+PrintTradeFarewellText: ; 41942 (10:5942)
 	ld hl, TradeWavesFarewellText
 	call PrintText
 	call Trade_Delay80
@@ -813,24 +817,24 @@ PrintTradeFarewellText: ; 4162d (10:562d)
 	call Trade_Delay80
 	jp Trade_SlideTextBoxOffScreen
 
-TradeWavesFarewellText: ; 41642 (10:5642)
+TradeWavesFarewellText: ; 41957 (10:5957)
 	TX_FAR _TradeWavesFarewellText
 	db "@"
 
-TradeTransferredText: ; 41647 (10:5647)
+TradeTransferredText: ; 4195c (10:595c)
 	TX_FAR _TradeTransferredText
 	db "@"
 
-PrintTradeTakeCareText: ; 4164c (10:564c)
+PrintTradeTakeCareText: ; 41961 (10:5961)
 	ld hl, TradeTakeCareText
 	call PrintText
 	jp Trade_Delay80
 
-TradeTakeCareText: ; 41655 (10:5655)
+TradeTakeCareText: ; 4196a (10:596a)
 	TX_FAR _TradeTakeCareText
 	db "@"
 
-PrintTradeWillTradeText: ; 4165a (10:565a)
+PrintTradeWillTradeText: ; 4196f (10:596f)
 	ld hl, TradeWillTradeText
 	call PrintText
 	call Trade_Delay80
@@ -838,15 +842,15 @@ PrintTradeWillTradeText: ; 4165a (10:565a)
 	call PrintText
 	jp Trade_Delay80
 
-TradeWillTradeText: ; 4166c (10:566c)
+TradeWillTradeText: ; 41981 (10:5981)
 	TX_FAR _TradeWillTradeText
 	db "@"
 
-TradeforText: ; 41671 (10:5671)
+TradeforText: ; 41986 (10:5986)
 	TX_FAR _TradeforText
 	db "@"
 
-Trade_ShowAnimation: ; 41676 (10:5676)
+Trade_ShowAnimation: ; 4198b (10:598b)
 	ld [W_ANIMATIONID], a
 	xor a
 	ld [wAnimationType], a
