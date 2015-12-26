@@ -157,6 +157,9 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 	ld [rBGP], a
 	ld [rOBP0], a
 	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 .slideSilhouettesLoop ; slide silhouettes of the player's pic and the enemy's pic onto the screen
 	ld h, b
 	ld l, $40
@@ -193,7 +196,7 @@ SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
 ; the lower of the player's pic (his body) is part of the background, but his head is a sprite
 ; the reason for this is that it shares Y coordinates with the lower part of the enemy pic, so background scrolling wouldn't work for both pics
 ; instead, the enemy pic is part of the background and uses the scroll register, while the player's head is a sprite and is slid by changing its X coordinates in a loop
-SlidePlayerHeadLeft: ; 3c0ff (f:40ff)
+SlidePlayerHeadLeft: ; 3c108 (f:4108)
 	push bc
 	ld hl, wOAMBuffer + $01
 	ld c, $15 ; number of OAM entries
@@ -207,7 +210,7 @@ SlidePlayerHeadLeft: ; 3c0ff (f:40ff)
 	pop bc
 	ret
 
-SetScrollXForSlidingPlayerBodyLeft: ; 3c110 (f:4110)
+SetScrollXForSlidingPlayerBodyLeft: ; 3c119 (f:4119)
 	ld a, [rLY]
 	cp l
 	jr nz, SetScrollXForSlidingPlayerBodyLeft
@@ -219,7 +222,7 @@ SetScrollXForSlidingPlayerBodyLeft: ; 3c110 (f:4110)
 	jr z, .loop
 	ret
 
-StartBattle: ; 3c11e (f:411e)
+StartBattle: ; 3c127 (f:4127)
 	xor a
 	ld [wPartyGainExpFlags], a
 	ld [wPartyFoughtCurrentEnemyFlags], a
@@ -246,12 +249,17 @@ StartBattle: ; 3c11e (f:411e)
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 .checkAnyPartyAlive
+	ld a, [wBattleType]
+	cp $3
+	jp z, .specialBattle
+	cp $4
+	jp z, .specialBattle
 	call AnyPartyAlive
 	ld a, d
 	and a
 	jp z, HandlePlayerBlackOut ; jump if no mon is alive
 	call LoadScreenTilesFromBuffer1
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	and a ; is it a normal battle?
 	jp z, .playerSendOutFirstMon ; if so, send out player mon
 ; safari zone battle
@@ -341,7 +349,7 @@ StartBattle: ; 3c11e (f:411e)
 	jr MainInBattleLoop
 
 ; wild mon or link battle enemy ran from battle
-EnemyRan: ; 3c202 (f:4202)
+EnemyRan: ; 3c202 (f:4218)
 	call LoadScreenTilesFromBuffer1
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -359,15 +367,15 @@ EnemyRan: ; 3c202 (f:4202)
 	ld [H_WHOSETURN], a
 	jpab AnimationSlideEnemyMonOff
 
-WildRanText: ; 3c229 (f:4229)
+WildRanText: ; 3c23f (f:423f)
 	TX_FAR _WildRanText
 	db "@"
 
-EnemyRanText: ; 3c22e (f:422e)
+EnemyRanText: ; 3c23f (f:423f)
 	TX_FAR _EnemyRanText
 	db "@"
 
-MainInBattleLoop: ; 3c233 (f:4233)
+MainInBattleLoop: ; 3c249 (f:4249)
 	call ReadPlayerMonCurHPAndStatus
 	ld hl, wBattleMonHP
 	ld a, [hli]
@@ -443,7 +451,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 ; the link battle enemy has switched mons
 	ld a, [wPlayerBattleStatus1]
 	bit UsingTrappingMove, a ; check if using multi-turn move like Wrap
-	jr z, .asm_3c2dd
+	jr z, .specialMoveNotUsed
 	ld a, [wPlayerMoveListIndex]
 	ld hl, wBattleMonMoves
 	ld c, a
@@ -452,9 +460,9 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	ld a, [hl]
 	cp METRONOME ; a MIRROR MOVE check is missing, might lead to a desync in link battles
 	             ; when combined with multi-turn moves
-	jr nz, .asm_3c2dd
+	jr nz, .specialMoveNotUsed
 	ld [wPlayerSelectedMove], a
-.asm_3c2dd
+.specialMoveNotUsed
 	callab SwitchEnemyMon
 .noLinkBattle
 	ld a, [wPlayerSelectedMove]
@@ -1583,7 +1591,7 @@ NoWillText: ; 3cab4 (f:4ab4)
 TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	call IsGhostBattle
 	jp z, .canEscape ; jump if it's a ghost battle
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2
 	jp z, .canEscape ; jump if it's a safari battle
 	ld a, [wLinkState]
@@ -2086,14 +2094,14 @@ CenterMonName: ; 3ce9c (f:4e9c)
 
 DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	and a
 	jr nz, .nonstandardbattle
 	call DrawHUDsAndHPBars
 	call PrintEmptyString
 	call SaveScreenTilesToBuffer1
 .nonstandardbattle
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; safari
 	ld a, BATTLE_MENU_TEMPLATE
 	jr nz, .menuselected
@@ -2101,7 +2109,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 .menuselected
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	dec a
 	jp nz, .handleBattleMenuInput ; handle menu input if it's not the old man tutorial
 ; the following happens for the old man tutorial
@@ -2143,7 +2151,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	ld [wLastMenuItem], a
 	jr .rightColumn
 .leftColumn ; put cursor in left column of menu
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2
 	ld a, " "
 	jr z, .safariLeftColumn
@@ -2176,7 +2184,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	jr nz, .rightColumn
 	jr .AButtonPressed ; the A button was pressed
 .rightColumn ; put cursor in right column of menu
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2
 	ld a, " "
 	jr z, .safariRightColumn
@@ -2213,7 +2221,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	ld [wCurrentMenuItem], a
 .AButtonPressed
 	call PlaceUnfilledArrowMenuCursor
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; is it a Safari battle?
 	ld a, [wCurrentMenuItem]
 	ld [wBattleAndStartSavedMenuItem], a
@@ -2235,7 +2243,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	and a
 	jr nz, .upperLeftMenuItemWasNotSelected
 ; the upper left menu item was selected
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2
 	jr z, .throwSafariBallWasSelected
 ; the "FIGHT" menu was selected
@@ -2263,7 +2271,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 
 .notLinkBattle
 	call SaveScreenTilesToBuffer2
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; is it a safari battle?
 	jr nz, BagWasSelected
 
@@ -2274,14 +2282,14 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 
 BagWasSelected:
 	call LoadScreenTilesFromBuffer1
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	and a ; is it a normal battle?
 	jr nz, .next
 
 ; normal battle
 	call DrawHUDsAndHPBars
 .next
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	dec a ; is it the old man tutorial?
 	jr nz, DisplayPlayerBag ; no, it is a normal battle
 	ld hl, OldManItemList
@@ -2332,7 +2340,7 @@ UseBagItem:
 	call ClearSprites
 	xor a
 	ld [wCurrentMenuItem], a
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; is it a safari battle?
 	jr z, .checkIfMonCaptured
 
@@ -2354,7 +2362,7 @@ UseBagItem:
 	and a ; was the enemy mon captured with a ball?
 	jr nz, .returnAfterCapturingMon
 
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; is it a safari battle?
 	jr z, .returnAfterUsingItem_NoCapture
 ; not a safari battle
@@ -2385,7 +2393,7 @@ PartyMenuOrRockOrRun:
 	jp nz, BattleMenu_RunWasSelected
 ; party menu or rock was selected
 	call SaveScreenTilesToBuffer2
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $2 ; is it a safari battle?
 	jr nz, .partyMenuWasSelected
 ; safari battle
@@ -6406,7 +6414,7 @@ SwapPlayerAndEnemyLevels: ; 3ec81 (f:6c81)
 ; also writes OAM data and loads tile patterns for the Red or Old Man back sprite's head
 ; (for use when scrolling the player sprite and enemy's silhouettes on screen)
 LoadPlayerBackPic: ; 3ec92 (f:6c92)
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	dec a ; is it the old man tutorial?
 	ld de, RedPicBack
 	jr nz, .next

@@ -72,7 +72,7 @@ ViridianCityScript1: ; 19062 (6:5062)
 
 	; set up battle for Old Man
 	ld a, $1
-	ld [W_BATTLETYPE], a
+	ld [wBattleType], a
 	ld a, 5
 	ld [wCurEnemyLVL], a
 	ld a, WEEDLE
@@ -98,7 +98,7 @@ ViridianCityScript2: ; 1908f (6:508f)
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
-	ld [W_BATTLETYPE], a
+	ld [wBattleType], a
 	ld [wJoyIgnore], a
 	ld a, $0
 	ld [W_VIRIDIANCITYCURSCRIPT], a

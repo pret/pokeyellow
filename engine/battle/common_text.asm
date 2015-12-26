@@ -8,7 +8,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	cp LAVENDER_HOUSE_1
 	jr c, .pokemonTower
 .notPokemonTower
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	cp $4 ; new battle type?
 	jr nz,.notnewbattletype
 	callab Func_fd0d0
@@ -35,7 +35,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	call DelayFrames
 	ld hl, TrainerWantsToFightText
 .wildBattle
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	and a
 	jr nz, .doNotDrawPokeballs
 	push hl

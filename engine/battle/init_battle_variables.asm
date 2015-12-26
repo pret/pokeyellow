@@ -33,6 +33,6 @@ InitBattleVariables: ; f6236 (3d:6236)
 	cp SAFARI_ZONE_REST_HOUSE_1
 	jr nc, .notSafariBattle
 	ld a, $2 ; safari battle
-	ld [W_BATTLETYPE], a
+	ld [wBattleType], a
 .notSafariBattle
 	jpab PlayBattleMusic

@@ -1540,7 +1540,7 @@ DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	ld [H_AUTOBGTRANSFERENABLED],a ; disable auto-transfer
 	ld a,1
 	ld [hJoy7],a ; joypad state update flag
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	and a ; is it the Old Man battle?
 	jr nz,.specialBattleType
 	ld a,$01 ; hardcoded bank
@@ -1596,7 +1596,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	ld a,1
 	ld [H_AUTOBGTRANSFERENABLED],a ; enable transfer
 	call Delay3
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	and a ; is it the Old Man battle?
 	jr z,.notOldManBattle
 .oldManBattle

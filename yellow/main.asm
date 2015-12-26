@@ -4025,96 +4025,7 @@ INCLUDE "engine/evos_moves.asm"
 
 SECTION "bank0F",ROMX,BANK[$0F]
 
-	dr $3c000,$3c04c
-SlidePlayerAndEnemySilhouettesOnScreen: ; 3c04c (f:404c)
-	dr $3c04c,$3c127
-StartBattle: ; 3c127 (f:4127)
-	dr $3c127,$3c973
-EnemySendOut: ; 3c973 (f:4973)
-	dr $3c973,$3cae8
-AnyPartyAlive: ; 3cae8 (f:4ae8)
-	dr $3cae8,$3ce08
-ReadPlayerMonCurHPAndStatus: ; 3ce08 (f:4e08)
-	dr $3ce08,$3ce1f
-DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
-	dr $3ce1f,$3ceb1
-DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)
-	dr $3ceb1,$3d320
-MoveSelectionMenu: ; 3d320 (f:5320)
-	dr $3d320,$3d9ac
-IsGhostBattle: ; 3d9ac (f:59ac)
-	dr $3d9ac,$3ddc3
-PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
-	dr $3ddc3,$3e5bb
-
-AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
-	ld a,[wEnemyMoveType]
-	ld d,a                 ; d = type of enemy move
-	ld hl,wBattleMonType
-	ld b,[hl]              ; b = type 1 of player's pokemon
-	inc hl
-	ld c,[hl]              ; c = type 2 of player's pokemon
-	ld a,$10
-	ld [wd11e],a           ; initialize [wd11e] to neutral effectiveness
-	ld hl,TypeEffects
-.loop
-	ld a,[hli]
-	cp a,$ff
-	ret z
-	cp d                   ; match the type of the move
-	jr nz,.nextTypePair1
-	ld a,[hli]
-	cp b                   ; match with type 1 of pokemon
-	jr z,.done
-	cp c                   ; or match with type 2 of pokemon
-	jr z,.done
-	jr .nextTypePair2
-.nextTypePair1
-	inc hl
-.nextTypePair2
-	inc hl
-	jr .loop
-
-.done
-	ld a, [wTrainerClass]
-	cp LORELEI
-	jr nz, .ok
-	ld a, [wEnemyMonSpecies]
-	cp DEWGONG
-	jr nz, .ok
-	call BattleRandom
-	cp $66 ; 40 percent
-	ret c
-.ok
-
-	ld a,[hl]
-	ld [wd11e],a           ; store damage multiplier
-	ret
-
-INCLUDE "data/type_effects.asm"
-
-MoveHitTest: ; 3e6f1 (f:66f1)
-	dr $3e6f1,$3ec87
-LoadEnemyMonData: ; 3ec87 (f:6c87)
-	dr $3ec87,$3edb8
-DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
-	dr $3edb8,$3eeb3
-QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3efe7
-LoadHudTilePatterns: ; 3efe7 (f:6fe7)
-	dr $3efe7,$3f027
-BattleRandom: ; 3f027 (f:7027)
-	dr $3f027,$3f3de
-StatModifierUpEffect: ; 3f3de (f:73de)
-	dr $3f3de,$3fb2e
-PrintButItFailedText_: ; 3fb2e (f:7b2e)
-	dr $3fb2e,$3fb39
-PrintDidntAffectText: ; 3fb39 (f:7b39)
-	dr $3fb39,$3fb49
-PrintMayNotAttackText: ; 3fb49 (f:7b49)
-	dr $3fb49,$3fb83
-PlayCurrentMoveAnimation: ; 3fb83 (f:7b83)
-	dr $3fb83,$40000
+INCLUDE "engine/battle/core_.asm"
 
 SECTION "bank10",ROMX,BANK[$10]
 
@@ -4294,7 +4205,9 @@ SECTION "bank1E",ROMX,BANK[$1E]
 AnimationTileset2: ; 78757 (1e:4757)
 	dr $78757,$78c17
 SlotMachineTiles2: ; 78c17 (1e:4c17)
-	dr $78c17,$797af
+	dr $78c17,$79353
+AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
+	dr $79353,$797af
 AnimationSubstitute: ; 797af (1e:57af)
 	dr $797af,$79816
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)

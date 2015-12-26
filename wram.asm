@@ -1606,7 +1606,7 @@ wCurOpponent:: ; d059
 ; in a trainer battle, this is the trainer class + 200
 	ds 1
 
-W_BATTLETYPE:: ; d05a
+wBattleType:: ; d05a
 ; in normal battle, this is 0
 ; in old man battle, this is 1
 ; in safari battle, this is 2

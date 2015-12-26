@@ -106,7 +106,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	jp z,ItemUseNotTime ; not in battle
 	dec a
 	jp nz,ThrowBallAtTrainerMon
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	cp $1
 	jr z,.UseBall
 	cp $4 ; pikachu battle?
@@ -121,7 +121,7 @@ ItemUseBall: ; d3ad (3:53ad)
 ;ok, you can use a ball
 	xor a
 	ld [wCapturedMonSpecies],a
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	cp a,2		;SafariBattle
 	jr nz,.skipSafariZoneCode
 .safariZone
@@ -138,7 +138,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	callab IsGhostBattle
 	ld b,$10
 	jp z,.next12
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	cp $1
 	jr z,.oldManBattle
 	cp $4
@@ -149,7 +149,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld de,wPlayerName
 	ld bc,NAME_LENGTH
 	call CopyData ; save the player's name in the Wild Monster data
-	ld a, [W_BATTLETYPE]
+	ld a, [wBattleType]
 	cp $1
 	jp nz,.BallSuccess
 	ld a,$1
@@ -406,7 +406,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld [wCapturedMonSpecies],a
 	ld [wcf91],a
 	ld [wd11e],a
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	cp $1
 	jp z,.printText1 ; just barely out of reach for a relative jump
 	cp $4
@@ -468,7 +468,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	call PrintText
 	call ClearSprites
 .End
-	ld a,[W_BATTLETYPE]
+	ld a,[wBattleType]
 	and a
 	ret nz
 	ld hl,wNumBagItems

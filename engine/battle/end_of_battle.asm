@@ -52,7 +52,7 @@ EndOfBattle: ; 13765 (4:7765)
 	ld [wLowHealthAlarm], a ;disable low health alarm
 	ld [wChannelSoundIDs + CH4], a
 	ld [wIsInBattle], a
-	ld [W_BATTLETYPE], a
+	ld [wBattleType], a
 	ld [wMoveMissed], a
 	ld [wCurOpponent], a
 	ld [wForcePlayerToChooseMon], a
