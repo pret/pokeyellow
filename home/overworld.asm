@@ -267,7 +267,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 .battleOccurred
 	ld hl,wd72d
 	res 6,[hl]
-	ld hl,W_FLAGS_D733
+	ld hl,wFlags_D733
 	res 3,[hl]
 	ld hl,wd126
 	set 5,[hl]
@@ -390,7 +390,7 @@ CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
 	pop hl
 	jr nc,CheckWarpsNoCollisionRetry2
 ; if the extra check passed
-	ld a,[W_FLAGS_D733]
+	ld a,[wFlags_D733]
 	bit 2,a
 	jr nz,WarpFound1
 	push de
@@ -1603,7 +1603,7 @@ JoypadOverworld:: ; 0c51 (0:0c51)
 	ret
 	
 ForceBikeDown:: ; 0c65 (0:0c65)
-	ld a,[W_FLAGS_D733]
+	ld a,[wFlags_D733]
 	bit 3,a ; check if a trainer wants a challenge
 	ret nz
 	ld a,[wCurMap]
@@ -1989,7 +1989,7 @@ LoadMapData:: ; 1241 (0:1241)
 	ld a,[wd732]
 	and a,1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jr nz,.restoreRomBank
-	ld a,[W_FLAGS_D733]
+	ld a,[wFlags_D733]
 	bit 1,a
 	jr nz,.restoreRomBank
 	call Func_21e3 ; music related

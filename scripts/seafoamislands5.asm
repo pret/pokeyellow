@@ -46,7 +46,7 @@ SeafoamIslands5Script0: ; 467c7 (11:67c7)
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
 	call StartSimulatingJoypadStates
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	res 2, [hl]
 	ld a, $1
 	ld [wSeafoamIslands5CurScript], a

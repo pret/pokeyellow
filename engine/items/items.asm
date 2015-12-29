@@ -673,7 +673,7 @@ ItemUseEvoStone: ; d7d0 (3:57d0)
 	ld [wcf91],a
 	call Func_d85d
 	jr nc, .noEffect
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .notPlayerPikachu
 	ld e, $1b
 	callab PlayPikachuSoundClip
@@ -2373,7 +2373,7 @@ ItemUseTMHM: ; e374 (3:6374)
 	ld a,d
 	ld [wWhichPokemon],a
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc,.notTeachingThunderboltOrThunderToPikachu
 	ld a,[wcf91]
 	cp a,TM_24 ; are we teaching thunderbolt to the player pikachu?

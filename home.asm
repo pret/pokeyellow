@@ -475,7 +475,7 @@ HandlePartyMenuInput:: ; 1226 (0:1226)
 	jr nz,.asm_1258
 	ld a,[wCurrentMenuItem]
 	ld [wWhichPokemon],a
-	callab IsThisPartymonOurPikachu ; 3f:4e18
+	callab IsThisPartymonStarterPikachu_Party ; 3f:4e18
 	jr nc,.asm_1258
 	call Func_154a
 	jr nz,.asm_128f
@@ -2476,7 +2476,7 @@ ExecuteCurMapScriptInTable:: ; 30fc (0:30fc)
 	pop hl
 	pop af
 	push hl
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	bit 4, [hl]
 	res 4, [hl]
 	jr z, .useProvidedIndex   ; test if map script index was overridden manually
@@ -2574,7 +2574,7 @@ TalkToTrainer:: ; 3168 (0:3168)
 	call ReadTrainerHeaderInfo     ; read end battle text
 	pop de
 	call SaveEndBattleTextPointers
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 4, [hl]                    ; activate map script index override (index is set below)
 	ld hl, wFlags_0xcd60
 	bit 0, [hl]                    ; test if player is already engaging the trainer (because the trainer saw the player)
@@ -2596,7 +2596,7 @@ CheckFightingMapTrainers:: ; 31b5 (0:31b5)
 	ld [wTrainerHeaderFlagBit], a
 	ret
 .trainerEngaging
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 3, [hl]
 	ld [wEmotionBubbleSpriteIndex], a
 	xor a ; EXCLAMATION_BUBBLE
@@ -2958,7 +2958,7 @@ IsItemInBag:: ; 3422 (0:3422)
 	
 IsSurfingPikachuInParty:: ; 342a (0:342a)
 ; set bit 6 of wd472 if true
-; also calls Func_3467, which is a bankswitch to IsPikachuInOurParty
+; also calls Func_3467, which is a bankswitch to IsStarterPikachuInOurParty
 	ld a,[wd472]
 	and $3f
 	ld [wd472],a
@@ -3001,7 +3001,7 @@ IsSurfingPikachuInParty:: ; 342a (0:342a)
 Func_3467:: ; 3467 (0:3467)
 	push hl
 	push bc
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	pop bc
 	pop hl
 	ret nc

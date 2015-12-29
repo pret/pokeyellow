@@ -499,7 +499,7 @@ TestBattle:
 	ld a, %10000000 ; EARTHBADGE
 	ld [wObtainedBadges], a
 
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 0, [hl]
 
 	; Reset the party.
@@ -2534,7 +2534,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld a, $d0
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .curMonNotPlayerPikachu
 	ld e, $3
 	callab PlayPikachuSoundClip

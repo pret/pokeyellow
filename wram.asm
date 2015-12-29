@@ -1698,7 +1698,7 @@ wPlayerNumAttacksLeft::
 W_PLAYERCONFUSEDCOUNTER:: ; d06b
 	ds 1
 
-W_PLAYERTOXICCOUNTER:: ; d06c
+wPlayerToxicCounter:: ; d06c
 	ds 1
 W_PLAYERDISABLEDMOVE:: ; d06d
 ; high nibble: which move is disabled (1-4)
@@ -1714,7 +1714,7 @@ wEnemyNumAttacksLeft:: ; d06f
 W_ENEMYCONFUSEDCOUNTER:: ; d070
 	ds 1
 
-W_ENEMYTOXICCOUNTER:: ; d071
+wEnemyToxicCounter:: ; d071
 	ds 1
 wEnemyDisabledMove:: ; d072
 ; high nibble: which move is disabled (1-4)
@@ -3017,7 +3017,7 @@ wd732:: ; d732
 ; bit 6: map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)
 	ds 1
 
-W_FLAGS_D733:: ; d733
+wFlags_D733:: ; d733
 ; bit 0: running a test battle
 ; bit 4: use variable [W_CURMAPSCRIPT] instead of the provided index for next frame's map script (used to start battle when talking to trainers)
 ; bit 7: used fly out of battle

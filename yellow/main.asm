@@ -1755,7 +1755,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld a, $d0
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .curMonNotPlayerPikachu
 	ld e, $3
 	callab PlayPikachuSoundClip
@@ -3870,7 +3870,7 @@ INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
 
 Func_2fd6a: ; 2fd6a (b:7d6a)
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	ret nc
 	ld a, $3
 	ld [wd431], a
@@ -4113,7 +4113,9 @@ CeladonPrizeMenu: ; 5267d (14:667d)
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$56745
+	dr $54000,$5525f
+GainExperience: ; 5525f (15:525f)
+	dr $5525f,$56745
 _GetSpritePosition1: ; 56745 (15:6745)
 	dr $56745,$56765
 _GetSpritePosition2: ; 56765 (15:6765)

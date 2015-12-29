@@ -2,7 +2,7 @@ const_value = 0
 
 	predef_const DrawPlayerHUDAndHPBar
 	predef_const CopyUncompressedPicToTilemap
-	predef_const Func_3f073
+	predef_const AnimateSendingOutMon
 	predef_const ScaleSpriteByTwo
 	predef_const LoadMonBackPic
 	predef_const Func_79aba

@@ -28,7 +28,7 @@ HallofFameRoomScript2: ; 5a4bb (16:64bb)
 	predef HallOfFamePC
 	pop af
 	ld [wLetterPrintingDelayFlags], a
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	res 1, [hl]
 	inc hl
 	set 0, [hl]

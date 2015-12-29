@@ -5,7 +5,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	call Delay3
 	push hl
 	call GBFadeInFromWhite
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	bit 7, [hl] ; used fly out of battle?
 	res 7, [hl]
 	jr nz, .flyAnimation

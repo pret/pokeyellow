@@ -17,6 +17,22 @@ lb: MACRO ; r, hi, lo
 	ld \1, (\2) << 8 + ((\3) & $ff)
 	ENDM
 
+SHADE_BLACK EQU %11
+SHADE_DARK  EQU %10
+SHADE_LIGHT EQU %01
+SHADE_WHITE EQU %00
+
+setpal: MACRO
+	ld a, \1 << 6 | \2 << 4 | \3 << 2 | \4
+ENDM
+
+setpalBGP: MACRO
+	setpal SHADE_BLACK, SHADE_DARK, SHADE_LIGHT, SHADE_WHITE
+ENDM
+
+setpalOBP: MACRO
+	setpal SHADE_BLACK, SHADE_DARK, SHADE_WHITE, SHADE_WHITE
+ENDM
 
 ; Constant enumeration is useful for monsters, items, moves, etc.
 const_def: MACRO

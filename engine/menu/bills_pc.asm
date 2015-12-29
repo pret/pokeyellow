@@ -225,7 +225,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .asm_215ad
 	call Func_154a
 	jr z, .asm_215ad
@@ -235,7 +235,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 .asm_215ad
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .asm_215c9
 	ld e, $1b
 	callab PlayPikachuSoundClip
@@ -298,7 +298,7 @@ BillsPCWithdraw: ; 21613 (8:5613)
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
-	callab Func_fce0d
+	callab IsThisPartymonStarterPikachu_Box
 	jr nc, .asm_21660
 	ld e, $22
 	callab PlayPikachuSoundClip
@@ -329,7 +329,7 @@ BillsPCRelease: ; 21690 (8:5690)
 	ld hl, wNumInBox
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callab Func_fce0d
+	callab IsThisPartymonStarterPikachu_Box
 	jr c, .asm_216cb
 	ld hl, OnceReleasedText
 	call PrintText

@@ -51,7 +51,7 @@ RedrawPartyMenu_: ; 11886 (4:5886)
 	call PlaceString ; print the pokemon's name
 	ld a,[hPartyMonIndex]
 	ld [wWhichPokemon],a
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .regularMon
 	call Func_154a
 	jr z, .regularMon

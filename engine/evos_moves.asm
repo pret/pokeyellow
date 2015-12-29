@@ -365,7 +365,7 @@ LearnMoveFromLevelUp: ; 3b00c (e:700c)
 	ld a, b
 	and a
 	jr z, .done
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .done
 	ld a, [wMoveNum]
 	cp THUNDERBOLT

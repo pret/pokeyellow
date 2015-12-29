@@ -156,7 +156,7 @@ HoFDisplayAndRecordMonInfo: ; 7030e (1c:430e)
 	call HoFDisplayMonInfo
 	ld a, [wHoFPartyMonIndex]
 	ld [wWhichPokemon], a
-	callab IsThisPartymonOurPikachu ; 3f:4e18
+	callab IsThisPartymonStarterPikachu_Party ; 3f:4e18
 	jr nc, .asm_70336
 	ld e, $22
 	callab PlayPikachuSoundClip

@@ -70,7 +70,7 @@ SeafoamIslands4Script0: ; 46603 (11:6603)
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 2, [hl]
 	ld a, $1
 	ld [wSeafoamIslands4CurScript], a
@@ -112,7 +112,7 @@ SeafoamIslands4Script2: ; 46644 (11:6644)
 	ld [wSpriteStateData2 + $06], a
 	ld hl, wd730
 	set 7, [hl]
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 2, [hl]
 	ld a, $3
 .asm_4667b

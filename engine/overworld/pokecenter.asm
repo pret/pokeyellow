@@ -25,7 +25,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	and a
 	jp nz, .declinedHealing ; if the player chose No
 	call SetLastBlackoutMap
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	jr nc, .notHealingPlayerPikachu
 	call Func_154a
 	jr nz, .notHealingPlayerPikachu
@@ -41,7 +41,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call Func_154a
 	jr nz, .playerPikachuNotOnScreen
 	call Func_152d
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	call c, Func_6eaa
 .playerPikachuNotOnScreen
 	lb bc, 1, 8
@@ -60,7 +60,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call PlaySound
 	call Func_154a
 	jr nz, .doNotReturnPikachu
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	call c, Func_6eaa
 	ld a, $5
 	ld [wd431], a
@@ -70,7 +70,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call Func_6ebb
 	ld hl, PokemonFightingFitText
 	call PrintText
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	jr nc, .notInParty
 	lb bc, 15, 0
 	call Func_6ebb

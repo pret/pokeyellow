@@ -79,7 +79,7 @@ PalletMovementScript_OakMoveLeft: ; 1a44c (6:644c)
 	ld a, $3
 	ld [wNPCMovementScriptFunctionNum], a
 .done
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 1, [hl]
 	ld a, $fc
 	ld [wJoyIgnore], a

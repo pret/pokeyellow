@@ -60,14 +60,14 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	cp PIKAHAPPY_WALKING
 	jr z, .checkanywhereinparty
 	push de
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	pop de
 	ret nc
 	jr .proceed
 
 .checkanywhereinparty
 	push de
-	callab IsPikachuInOurParty
+	callab IsStarterPikachuInOurParty
 	pop de
 	ret nc
 

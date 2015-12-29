@@ -565,7 +565,7 @@ MainInBattleLoop: ; 3c249 (f:4249)
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
 
-HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
+HandlePoisonBurnLeechSeed: ; 3c3d3 (f:43d3)
 	ld hl, wBattleMonHP
 	ld de, wBattleMonStatus
 	ld a, [H_WHOSETURN]
@@ -629,15 +629,15 @@ HandlePoisonBurnLeechSeed: ; 3c3bd (f:43bd)
 	xor a
 	ret
 
-HurtByPoisonText: ; 3c42e (f:442e)
+HurtByPoisonText: ; 3c444 (f:4444)
 	TX_FAR _HurtByPoisonText
 	db "@"
 
-HurtByBurnText: ; 3c433 (f:4433)
+HurtByBurnText: ; 3c449 (f:4449)
 	TX_FAR _HurtByBurnText
 	db "@"
 
-HurtByLeechSeedText: ; 3c438 (f:4438)
+HurtByLeechSeedText: ; 3c44e (f:444e)
 	TX_FAR _HurtByLeechSeedText
 	db "@"
 
@@ -668,12 +668,12 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 	inc c         ; damage is at least 1
 .nonZeroDamage
 	ld hl, wPlayerBattleStatus3
-	ld de, W_PLAYERTOXICCOUNTER
+	ld de, wPlayerToxicCounter
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
 	ld hl, wEnemyBattleStatus3
-	ld de, W_ENEMYTOXICCOUNTER
+	ld de, wEnemyToxicCounter
 .playersTurn
 	bit BadlyPoisoned, [hl]
 	jr z, .noToxic
@@ -713,7 +713,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP: ; 3c43d (f:443d)
 
 ; adds bc to enemy HP
 ; bc isn't updated if HP substracted was capped to prevent overkill
-HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
+HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4b9 (f:44b9)
 	push hl
 	ld hl, wEnemyMonMaxHP
 	ld a, [H_WHOSETURN]
@@ -763,7 +763,7 @@ HandlePoisonBurnLeechSeed_IncreaseEnemyHP: ; 3c4a3 (f:44a3)
 	pop hl
 	ret
 
-UpdateCurMonHPBar: ; 3c4f6 (f:44f6)
+UpdateCurMonHPBar: ; 3c50c (f:450c)
 	coord hl, 10, 9    ; tile pointer to player HP bar
 	ld a, [H_WHOSETURN]
 	and a
@@ -778,7 +778,7 @@ UpdateCurMonHPBar: ; 3c4f6 (f:44f6)
 	pop bc
 	ret
 
-CheckNumAttacksLeft: ; 3c50f (f:450f)
+CheckNumAttacksLeft: ; 3c525 (f:4525)
 	ld a, [wPlayerNumAttacksLeft]
 	and a
 	jr nz, .checkEnemy
@@ -794,7 +794,7 @@ CheckNumAttacksLeft: ; 3c50f (f:450f)
 	res UsingTrappingMove, [hl] ; enemy not using multi-turn attack like wrap any more
 	ret
 
-HandleEnemyMonFainted: ; 3c525 (f:4525)
+HandleEnemyMonFainted: ; 3c53b (f:453b)
 	xor a
 	ld [wInHandlePlayerMonFainted], a
 	call FaintEnemyPokemon
@@ -827,7 +827,7 @@ HandleEnemyMonFainted: ; 3c525 (f:4525)
 	ld [wActionResultOrTookBattleTurn], a
 	jp MainInBattleLoop
 
-FaintEnemyPokemon: ; 0x3c567
+FaintEnemyPokemon: ; 3c57d (f:457d)
 	call ReadPlayerMonCurHPAndStatus
 	ld a, [wIsInBattle]
 	dec a
@@ -892,6 +892,8 @@ FaintEnemyPokemon: ; 0x3c567
 	ld a, MUSIC_DEFEATED_WILD_MON
 	call PlayBattleVictoryMusic
 .sfxplayed
+; bug: win sfx is played for wild battles before checking for player mon HP
+; this can lead to odd scenarios where both player and enemy faint, as the win sfx plays yet the player never won the battle
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
@@ -953,11 +955,11 @@ FaintEnemyPokemon: ; 0x3c567
 	ld [wPartyGainExpFlags], a
 	jpab GainExperience
 
-EnemyMonFaintedText: ; 0x3c63e
+EnemyMonFaintedText: ; 3c654 (f:4654)
 	TX_FAR _EnemyMonFaintedText
 	db "@"
 
-EndLowHealthAlarm: ; 3c643 (f:4643)
+EndLowHealthAlarm: ; 3c659 (f:4659)
 ; This function is called when the player has the won the battle. It turns off
 ; the low health alarm and prevents it from reactivating until the next battle.
 	xor a
@@ -967,7 +969,7 @@ EndLowHealthAlarm: ; 3c643 (f:4643)
 	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
 	ret
 
-AnyEnemyPokemonAliveCheck: ; 3c64f (f:464f)
+AnyEnemyPokemonAliveCheck: ; 3c665 (f:4665)
 	ld a, [wEnemyPartyCount]
 	ld b, a
 	xor a
@@ -985,10 +987,15 @@ AnyEnemyPokemonAliveCheck: ; 3c64f (f:464f)
 	ret
 
 ; stores whether enemy ran in Z flag
-ReplaceFaintedEnemyMon: ; 3c664 (f:4664)
+ReplaceFaintedEnemyMon: ; 3c67a (f:467a)
 	ld hl, wEnemyHPBarColor
 	ld e, $30
 	call GetBattleHealthBarColor
+	setpal SHADE_BLACK, SHADE_DARK, SHADE_LIGHT, SHADE_WHITE
+	ld [rOBP0], a
+	ld [rOBP1], a
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	callab DrawEnemyPokeballs
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -1008,7 +1015,7 @@ ReplaceFaintedEnemyMon: ; 3c664 (f:4664)
 	inc a ; reset Z flag
 	ret
 
-TrainerBattleVictory: ; 3c696 (f:4696)
+TrainerBattleVictory: ; 3c6b8 (f:46b8)
 	call EndLowHealthAlarm
 	ld b, MUSIC_DEFEATED_GYM_LEADER
 	ld a, [wGymLeaderNo]
@@ -1020,7 +1027,7 @@ TrainerBattleVictory: ; 3c696 (f:4696)
 	cp SONY3 ; final battle against rival
 	jr nz, .notrival
 	ld b, MUSIC_DEFEATED_GYM_LEADER
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	set 1, [hl]
 .notrival
 	ld a, [wLinkState]
@@ -1044,25 +1051,23 @@ TrainerBattleVictory: ; 3c696 (f:4696)
 	ld c, $3
 	predef_jump AddBCDPredef
 
-MoneyForWinningText: ; 3c6e4 (f:46e4)
+MoneyForWinningText: ; 3c706 (f:4706)
 	TX_FAR _MoneyForWinningText
 	db "@"
 
-TrainerDefeatedText: ; 3c6e9 (f:46e9)
+TrainerDefeatedText: ; 3c70b (f:470b)
 	TX_FAR _TrainerDefeatedText
 	db "@"
 
-PlayBattleVictoryMusic: ; 3c6ee (f:46ee)
+PlayBattleVictoryMusic: ; 3c710 (f:4710)
 	push af
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySoundWaitForCurrent
+	call StopAllMusic
 	ld c, BANK(Music_DefeatedTrainer)
 	pop af
 	call PlayMusic
 	jp Delay3
 
-HandlePlayerMonFainted: ; 3c700 (f:4700)
+HandlePlayerMonFainted: ; 3c71d (f:471d)
 	ld a, 1
 	ld [wInHandlePlayerMonFainted], a
 	call RemoveFaintedPlayerMon
@@ -1096,7 +1101,7 @@ HandlePlayerMonFainted: ; 3c700 (f:4700)
 	jp MainInBattleLoop
 
 ; resets flags, slides mon's pic down, plays cry, and prints fainted message
-RemoveFaintedPlayerMon: ; 3c741 (f:4741)
+RemoveFaintedPlayerMon: ; 3c75e (f:475e)
 	ld a, [wPlayerMonNumber]
 	ld c, a
 	ld hl, wPartyGainExpFlags
@@ -1134,18 +1139,42 @@ RemoveFaintedPlayerMon: ; 3c741 (f:4741)
 	and a ; was this called by HandleEnemyMonFainted?
 	ret z ; if so, return
 
+	ld a, [wPlayerMonIndex]
+	ld [wWhichPokemon], a
+	callab IsThisPartymonStarterPikachu_Party
+	jr nc, .notPlayerPikachu
+	ld e, $3
+	callab PlayPikachuSoundClip
+	jr .printText
+.notPlayerPikachu
 	ld a, [wBattleMonSpecies]
 	call PlayCry
+.printText
 	ld hl, PlayerMonFaintedText
-	jp PrintText
-
-PlayerMonFaintedText: ; 3c796 (f:4796)
+	call PrintText
+	ld a, [wPlayerMonIndex]
+	ld [wWhichPokemon], a
+	ld a, [wBattleMonLevel]
+	ld b, a
+	ld a, [wEnemyMonLevel]
+	sub b ; enemylevel - playerlevel
+	      ; are we stronger than the opposing pokemon?
+	jr c, .carelessTrainer ; if so, punish the player for being careless, as they had a level advantage
+	cp 30 ; is the enemy 30 levels greater than us?
+	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
+	callabd_ModifyPikachuHappiness PIKAHAPPY_FAINTED
+	ret
+.carelessTrainer
+	calladb_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
+	ret
+	
+PlayerMonFaintedText: ; 3c7fa (f:47fa)
 	TX_FAR _PlayerMonFaintedText
 	db "@"
 
 ; asks if you want to use next mon
 ; stores whether you ran in C flag
-DoUseNextMonDialogue: ; 3c79b (f:479b)
+DoUseNextMonDialogue: ; 3c7ff (f:47ff)
 	call PrintEmptyString
 	call SaveScreenTilesToBuffer1
 	ld a, [wIsInBattle]
@@ -1173,13 +1202,13 @@ DoUseNextMonDialogue: ; 3c79b (f:479b)
 	ld de, wEnemyMonSpeed
 	jp TryRunningFromBattle
 
-UseNextMonText: ; 3c7d3 (f:47d3)
+UseNextMonText: ; 3c837 (f:4837)
 	TX_FAR _UseNextMonText
 	db "@"
 
 ; choose next player mon to send out
 ; stores whether enemy mon has no HP left in Z flag
-ChooseNextMon: ; 3c7d8 (f:47d8)
+ChooseNextMon: ; 3c83c (f:483c)
 	ld a, BATTLE_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	call DisplayPartyMenu
@@ -1225,7 +1254,7 @@ ChooseNextMon: ; 3c7d8 (f:47d8)
 
 ; called when player is out of usable mons.
 ; prints approriate lose message, sets carry flag if player blacked out (special case for initial rival fight)
-HandlePlayerBlackOut: ; 3c837 (f:4837)
+HandlePlayerBlackOut: ; 3c89c (f:489c)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .notSony1Battle
@@ -1260,21 +1289,21 @@ HandlePlayerBlackOut: ; 3c837 (f:4837)
 	scf
 	ret
 
-Sony1WinText: ; 3c884 (f:4884)
+Sony1WinText: ; 3c8e9 (f:48e9)
 	TX_FAR _Sony1WinText
 	db "@"
 
-PlayerBlackedOutText2: ; 3c889 (f:4889)
+PlayerBlackedOutText2: ; 3c8ee (f:48ee)
 	TX_FAR _PlayerBlackedOutText2
 	db "@"
 
-LinkBattleLostText: ; 3c88e (f:488e)
+LinkBattleLostText: ; 3c8f3 (f:48f3)
 	TX_FAR _LinkBattleLostText
 	db "@"
 
 ; slides pic of fainted mon downwards until it disappears
 ; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
-SlideDownFaintedMonPic: ; 3c893 (f:4893)
+SlideDownFaintedMonPic: ; 3c8f8 (f:48f8)
 	ld a, [wd730]
 	push af
 	set 6, a
@@ -1293,7 +1322,7 @@ SlideDownFaintedMonPic: ; 3c893 (f:4893)
 	call CopyData
 	pop de
 	pop hl
-	ld bc, -20
+	ld bc, -SCREEN_WIDTH
 	add hl, bc
 	push hl
 	ld h, d
@@ -1305,7 +1334,7 @@ SlideDownFaintedMonPic: ; 3c893 (f:4893)
 	pop bc
 	dec b
 	jr nz, .rowLoop
-	ld bc, 20
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	ld de, SevenSpacesText
 	call PlaceString
@@ -1320,14 +1349,14 @@ SlideDownFaintedMonPic: ; 3c893 (f:4893)
 	ld [wd730], a
 	ret
 
-SevenSpacesText: ; 3c8d7 (f:48d7)
+SevenSpacesText: ; 3c93c (f:493c)
 	db "       @"
 
 ; slides the player or enemy trainer off screen
 ; a is the number of tiles to slide it horizontally (always 9 for the player trainer or 8 for the enemy trainer)
 ; if a is 8, the slide is to the right, else it is to the left
 ; bug: when this is called, [H_AUTOBGTRANSFERENABLED] is non-zero, so there is screen tearing
-SlideTrainerPicOffScreen: ; 3c8df (f:48df)
+SlideTrainerPicOffScreen: ; 3c944 (f:4944)
 	ld [hSlideAmount], a
 	ld c, a
 .slideStepLoop ; each iteration, the trainer pic is slid one tile left/right
@@ -1368,7 +1397,7 @@ SlideTrainerPicOffScreen: ; 3c8df (f:48df)
 	ret
 
 ; send out a trainer's mon
-EnemySendOut: ; 3c90e (f:490e)
+EnemySendOut: ; 3c973 (f:4973)
 	ld hl,wPartyGainExpFlags
 	xor a
 	ld [hl],a
@@ -1384,7 +1413,7 @@ EnemySendOut: ; 3c90e (f:490e)
 	predef FlagActionPredef
 
 ; don't change wPartyGainExpFlags or wPartyFoughtCurrentEnemyFlags
-EnemySendOutFirstMon: ; 3c92a (f:492a)
+EnemySendOutFirstMon: ; 3c98f (f:498f)
 	xor a
 	ld hl,wEnemyStatsToDouble ; clear enemy statuses
 	ld [hli],a
@@ -1537,17 +1566,17 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	call SaveScreenTilesToBuffer1
 	jp SwitchPlayerMon
 
-TrainerAboutToUseText: ; 3ca79 (f:4a79)
+TrainerAboutToUseText: ; 3cade (f:4ade)
 	TX_FAR _TrainerAboutToUseText
 	db "@"
 
-TrainerSentOutText: ; 3ca7e (f:4a7e)
+TrainerSentOutText: ; 3cae3 (f:4ae3)
 	TX_FAR _TrainerSentOutText
 	db "@"
 
 ; tests if the player has any pokemon that are not fainted
 ; sets d = 0 if all fainted, d != 0 if some mons are still alive
-AnyPartyAlive: ; 3ca83 (f:4a83)
+AnyPartyAlive: ; 3cae8 (f:4ae8)
 	ld a, [wPartyCount]
 	ld e, a
 	xor a
@@ -1565,7 +1594,7 @@ AnyPartyAlive: ; 3ca83 (f:4a83)
 
 ; tests if player mon has fainted
 ; stores whether mon has fainted in Z flag
-HasMonFainted: ; 3ca97 (f:4a97)
+HasMonFainted: ; 3cafc (f:4afc)
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1HP
 	ld bc, wPartyMon2 - wPartyMon1
@@ -2649,7 +2678,7 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .matchedkeyspicked
-	ld a, [W_FLAGS_D733]
+	ld a, [wFlags_D733]
 	bit BIT_TEST_BATTLE, a
 	ld b, D_UP | D_DOWN | A_BUTTON | B_BUTTON | SELECT
 	jr z, .matchedkeyspicked
@@ -2677,7 +2706,7 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	call PlaceString
 	jr .select
 .battleselect
-	ld a, [W_FLAGS_D733]
+	ld a, [wFlags_D733]
 	bit BIT_TEST_BATTLE, a
 	jr nz, .select
 	call PrintMenuItem
@@ -6181,7 +6210,7 @@ GetCurrentMove: ; 3eabe (f:6abe)
 	jr .selected
 .player
 	ld de, W_PLAYERMOVENUM
-	ld a, [W_FLAGS_D733]
+	ld a, [wFlags_D733]
 	bit BIT_TEST_BATTLE, a
 	ld a, [wTestBattlePlayerSelectedMove]
 	jr nz, .selected
@@ -7061,11 +7090,11 @@ PoisonEffect: ; 3f24f (f:724f)
 	ld b, ANIM_C7
 	ld hl, wPlayerBattleStatus3
 	ld a, [de]
-	ld de, W_PLAYERTOXICCOUNTER
+	ld de, wPlayerToxicCounter
 	jr nz, .ok
 	ld b, ANIM_A9
 	ld hl, wEnemyBattleStatus3
-	ld de, W_ENEMYTOXICCOUNTER
+	ld de, wEnemyToxicCounter
 .ok
 	cp TOXIC
 	jr nz, .normalPoison ; done if move is not Toxic

@@ -175,11 +175,11 @@ StatusScreen: ; 114cc (4:54cc)
 	jr z, .playRegularCry
 	cp BOX_DATA
 	jr z, .checkBoxData
-	callab IsThisPartymonOurPikachu
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .playRegularCry
 	jr .playPikachuSoundClip
 .checkBoxData
-	callab Func_fce0d
+	callab IsThisPartymonStarterPikachu_Box
 	jr nc, .playRegularCry
 .playPikachuSoundClip
 	ld e, 16

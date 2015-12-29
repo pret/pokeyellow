@@ -10,7 +10,7 @@ Func_fc4dd:: ; fc4dd (3f:44dd)
 	ld a,[wd430]
 	bit 7,a
 	jr nz,.asm_fc4f8
-	call IsPikachuInOurParty
+	call IsStarterPikachuInOurParty
 	jr nc,.asm_fc4f8
 	ld a,[wWalkBikeSurfState]
 	and a
@@ -1477,7 +1477,7 @@ Func_fcdad: ; fcdad (3f:4dad)
 	pop bc
 	ret
 
-IsPikachuInOurParty:: ; fcdb8 (3f:4db8)
+IsStarterPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	ld hl,wPartySpecies
 	ld de,wPartyMon1OTID
 	ld bc,wPartyMonOT
@@ -1541,13 +1541,13 @@ IsPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	and a
 	ret
 
-Func_fce0d:: ; fce0d (3f:4e0d)
+IsThisPartymonStarterPikachu_Box:: ; fce0d (3f:4e0d)
 	ld hl,wBoxMon1
 	ld bc,wBoxMon2 - wBoxMon1
 	ld de,wBoxMonOT
 	jr asm_fce21
 
-IsThisPartymonOurPikachu:: ; fce18 (3f:4e18)
+IsThisPartymonStarterPikachu_Party:: ; fce18 (3f:4e18)
 	ld hl,wPartyMon1
 	ld bc,wPartyMon2 - wPartyMon1
 	ld de,wPartyMonOT
@@ -1590,7 +1590,7 @@ asm_fce21: ; fce21 (3f:4e21)
 	
 Func_fce5a:: ; fce5a (3f:4e5a)
 	push de
-	call IsPikachuInOurParty
+	call IsStarterPikachuInOurParty
 	pop de
 	ret nc
 	ld a,d
@@ -1619,7 +1619,7 @@ Func_fce73:: ; fce73 (3f:4e73)
 	cp $ff
 	jr z,.asm_fcea9
 	push hl
-	call IsThisPartymonOurPikachu
+	call IsThisPartymonStarterPikachu_Party
 	pop hl
 	jr nc,.asm_fce9e
 	ld a,[wWhichPokemon]

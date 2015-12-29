@@ -116,7 +116,7 @@ OaksLabScript4: ; 1cbd2 (7:4bd2)
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	call UpdateSprites
-	ld hl, W_FLAGS_D733
+	ld hl, wFlags_D733
 	res 1, [hl]
 	call PlayDefaultMusic
 
