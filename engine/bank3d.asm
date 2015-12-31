@@ -303,7 +303,7 @@ Pointer_f468f:: ; f468f (3d:468f)
 PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
 
-INCLUDE "engine/bank3d/link_menu.asm"
+INCLUDE "engine/menu/link_menu.asm"
 
 HandleMenuInputDouble:: ; f5a40 (3d:5a40)
 	xor a
@@ -684,10 +684,10 @@ GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
 	ret
 	
 INCLUDE "data/super_rod.asm"
-INCLUDE "engine/bank3d/bank3d_battle.asm"
+INCLUDE "engine/battle/bank3d_battle.asm"
 INCLUDE "engine/items/tm_prices.asm"
 INCLUDE "engine/multiply_divide.asm"
 INCLUDE "engine/give_pokemon.asm"
 INCLUDE "engine/battle/get_trainer_name.asm"
-INCLUDE "engine/bank3d/random.asm"
+INCLUDE "engine/random.asm"
 INCLUDE "engine/predefs.asm"

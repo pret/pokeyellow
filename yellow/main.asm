@@ -4283,11 +4283,11 @@ FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
 
 SECTION "bank3C",ROMX,BANK[$3C]
 
-INCLUDE "engine/bank3c/main.asm"
+INCLUDE "engine/bank3c.asm"
 
 SECTION "bank3D",ROMX,BANK[$3D]
 
-INCLUDE "engine/bank3d/main.asm"
+INCLUDE "engine/bank3d.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
 
@@ -4301,4 +4301,4 @@ YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
 SECTION "bank3F",ROMX,BANK[$3F]
 
-INCLUDE "engine/bank3f/main.asm"
+INCLUDE "engine/bank3f.asm"

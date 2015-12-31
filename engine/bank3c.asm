@@ -152,7 +152,7 @@ PikachuCriesPointerTable: ; f008e (3c:408e)
 	dbw BANK(PikachuCry41), PikachuCry41 ; 36:6746
 	dbw BANK(PikachuCry42), PikachuCry42 ; 38:6976
 
-INCLUDE "engine/bank3c/overworld.asm"
+INCLUDE "engine/overworld/advance_player_sprite.asm"
 
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 ; Reset player status on blackout.

@@ -6,19 +6,19 @@ Func_f531b:: ; f531b (3d:531b)
 	xor a
 	ld [wUnknownSerialFlag_d499],a
 	coord hl, 0,0
-	ld bc,$405
+	lb bc, 4, 5
 	call TextBoxBorder
 	ld de,Text_f5791
 	coord hl, 1,2
 	call PlaceString
 	coord hl, 8,0
-	ld bc,$80a
+	lb bc, 8, 10
 	call TextBoxBorder
 	coord hl, 10,2
 	ld de,Text_f579c
 	call PlaceString
 	coord hl, 0,10
-	ld bc,$612
+	lb bc, 6, 18
 	call TextBoxBorder
 	call UpdateSprites
 	xor a
@@ -514,7 +514,7 @@ Func_f56bd:: ; f56bd (3d:56bd)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
 	coord hl, 1,11
-	ld bc,$612
+	lb bc, 6, 18
 	call ClearScreenArea
 	ld a,[wCurrentMenuItem]
 	cp $3
@@ -643,7 +643,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld hl, ColosseumWhereToText
 	call PrintText
 	coord hl, 5, 3
-	ld bc, $80d
+	lb bc, 8, 13
 	call TextBoxBorder
 	call UpdateSprites
 	coord hl, 7, 5
@@ -690,13 +690,13 @@ LinkMenu: ; f580c (3d:580c)
 	ld b, a
 	and $f0
 	cp $d0
-	jr z, .asm_5c7d
+	jr z, .asm_f5c7d
 	ld a, [wLinkMenuSelectionReceiveBuffer + 1]
 	ld b, a
 	and $f0
 	cp $d0
 	jr nz, .exchangeMenuSelectionLoop
-.asm_5c7d
+.asm_f5c7d
 	ld a, b
 	and $c ; did the enemy press A or B?
 	jr nz, .enemyPressedAOrB
@@ -730,10 +730,10 @@ LinkMenu: ; f580c (3d:580c)
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ld [rSC], a
 .skipStartingTransfer
-	ld b, $7f
-	ld c, $7f
-	ld d, $7f
-	ld e, $ec
+	ld b, " "
+	ld c, " "
+	ld d, " "
+	ld e, "▷"
 	ld a, [wLinkMenuSelectionSendBuffer]
 	and (B_BUTTON << 2) ; was B button pressed?
 	jr nz, .updateCursorPosition
@@ -772,14 +772,14 @@ LinkMenu: ; f580c (3d:580c)
 	ld [wd72d], a
 	ld hl, ColosseumPleaseWaitText
 	call PrintText
-	ld c, $32
+	ld c, 50
 	call DelayFrames
 	ld hl, wd732
 	res 1, [hl]
 	ld a, [wAnimationID]
 	ld [wDestinationMap], a
 	callab SpecialWarpIn
-	ld c, $14
+	ld c, 20
 	call DelayFrames
 	xor a
 	ld [wMenuJoypadPollCount], a
@@ -803,10 +803,10 @@ LinkMenu: ; f580c (3d:580c)
 	ld a,[wd11e]
 	and a
 	jr nz,.asm_f5974
-	ld b,$7f
-	ld c,$7f
-	ld d,$ec
-	ld e,$7f
+	ld b," "
+	ld c," "
+	ld d,"▷"
+	ld e," "
 	call Func_f59ec
 .asm_f5974
 	xor a
@@ -848,10 +848,10 @@ LinkMenu: ; f580c (3d:580c)
 	ld a,[wd11e]
 	and a
 	jr z,.asm_f59cd
-	ld b,$7f
-	ld c,$7f
-	ld d,$7f
-	ld e,$ec
+	ld b," "
+	ld c," "
+	ld d," "
+	ld e,"▷"
 	call Func_f59ec
 	jp .choseCancel
 	
@@ -861,10 +861,10 @@ LinkMenu: ; f580c (3d:580c)
 	jp .choseCancel
 
 .asm_f59d6
-	ld b,$7f
-	ld c,$7f
-	ld d,$ec
-	ld e,$7f
+	ld b," "
+	ld c," "
+	ld d,"▷"
+	ld e," "
 	call Func_f59ec
 	call Func_f531b
 	jp c,.choseCancel

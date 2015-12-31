@@ -1,6 +1,6 @@
-INCLUDE "engine/bank3f/data/map_songs.asm"
-INCLUDE "engine/bank3f/data/map_header_pointers.asm"
-INCLUDE "engine/bank3f/data/map_header_banks.asm"
+INCLUDE "data/map_songs.asm"
+INCLUDE "data/map_header_pointers.asm"
+INCLUDE "data/map_header_banks.asm"
 
 Func_fc4dd:: ; fc4dd (3f:44dd)
 ; possibly to test if pika should be out?
