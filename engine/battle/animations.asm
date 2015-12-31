@@ -142,7 +142,7 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	jr z,.advanceFrameBlockDestAddr ; skip cleaning OAM buffer
 	cp a,4
 	jr z,.done ; skip cleaning OAM buffer and don't advance the frame block destination address
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 	cp a,GROWL
 	jr z,.resetFrameBlockDestAddr
 	call AnimationCleanOAM
@@ -165,7 +165,7 @@ PlayAnimation: ; 780f1 (1e:40f1)
 	xor a
 	ld [$FF8B],a ; it looks like nothing reads this
 	ld [W_SUBANIMTRANSFORM],a
-	ld a,[W_ANIMATIONID] ; get animation number
+	ld a,[wAnimationID] ; get animation number
 	dec a
 	ld l,a
 	ld h,0
@@ -376,7 +376,7 @@ MoveAnimation: ; 78d5e (1e:4d5e)
 	push af
 	call WaitForSoundToFinish
 	call SetAnimationPalette
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 	and a
 	jr z,.AnimationFinished
 
@@ -422,7 +422,7 @@ ShareMoveAnimations: ; 78da6 (1e:4da6)
 
 	; opponent’s turn
 
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 
 	cp a,AMNESIA
 	ld b,CONF_ANIM
@@ -434,7 +434,7 @@ ShareMoveAnimations: ; 78da6 (1e:4da6)
 
 .Replace
 	ld a,b
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	ret
 
 PlayApplyingAttackAnimation: ; 78dbd (1e:4dbd)
@@ -521,7 +521,7 @@ SetAnimationPalette: ; 78e23 (1e:4e23)
 	ld a, $f0
 	ld [wAnimPalette], a
 	ld b, $e4
-	ld a, [W_ANIMATIONID]
+	ld a, [wAnimationID]
 	cp TRADE_BALL_DROP_ANIM
 	jr c, .next
 	cp TRADE_BALL_POOF_ANIM + 1
@@ -626,7 +626,7 @@ DoSpecialEffectByAnimationId: ; 78ed7 (1e:4ed7)
 	push hl
 	push de
 	push bc
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 	ld hl,AnimationIdSpecialEffects
 	ld de,3
 	call IsInArray
@@ -2346,7 +2346,7 @@ GetMoveSound: ; 7986f (1e:586f)
 
 IsCryMove: ; 798ad (1e:58ad)
 ; set carry if the move animation involves playing a monster cry
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 	cp a,GROWL
 	jr z,.CryMove
 	cp a,ROAR
@@ -2976,7 +2976,7 @@ TossBallAnimation: ; 79e16 (1e:5e16)
 .done
 	ld a,b
 .PlayNextAnimation
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	push bc
 	push hl
 	call PlayAnimation
@@ -2993,12 +2993,12 @@ TossBallAnimation: ; 79e16 (1e:5e16)
 
 .BlockBall ; 5E55
 	ld a,TOSS_ANIM
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	call PlayAnimation
 	ld a,SFX_FAINT_THUD
 	call PlaySound
 	ld a,BLOCKBALL_ANIM
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	jp PlayAnimation
 
 PlayApplyingAttackSound: ; 79e6a (1e:5e6a)

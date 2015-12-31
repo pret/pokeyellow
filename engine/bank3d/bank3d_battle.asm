@@ -206,7 +206,7 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	ld a, $1
 	ld [wNumMovesMinusOne], a
 	ld bc, $303
-	predef Func_79aba
+	predef CopyDownscaledMonTiles
 	ld c, $4
 	call DelayFrames
 	ld bc, -41
@@ -214,7 +214,7 @@ Func_f61a6: ; f61a6 (3d:f61a6)
 	xor a
 	ld [wNumMovesMinusOne], a
 	ld bc, $505
-	predef Func_79aba
+	predef CopyDownscaledMonTiles
 	ld c, $5
 	call DelayFrames
 	ld bc, -41

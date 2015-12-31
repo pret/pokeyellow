@@ -31,7 +31,7 @@ HazeEffect_: ; 139a4 (4:79a4)
 
 .cureVolatileStatuses
 	xor a
-	ld [W_PLAYERDISABLEDMOVE], a
+	ld [wPlayerDisabledMove], a
 	ld [wEnemyDisabledMove], a
 	ld hl, wPlayerDisabledMoveNumber
 	ld [hli], a

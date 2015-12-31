@@ -56,7 +56,7 @@ OakSpeech: ; 5e85 (1:5e85)
 	ld a,1
 	ld [wItemQuantity],a
 	call AddItemToInventory  ; give one potion
-	ld a,[W_ANIMATIONID]
+	ld a,[wAnimationID]
 	ld [wDestinationMap],a
 	call SpecialWarpIn
 	xor a

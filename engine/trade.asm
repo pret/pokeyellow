@@ -851,7 +851,7 @@ TradeforText: ; 41986 (10:5986)
 	db "@"
 
 Trade_ShowAnimation: ; 4198b (10:598b)
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	xor a
 	ld [wAnimationType], a
 	predef_jump MoveAnimation

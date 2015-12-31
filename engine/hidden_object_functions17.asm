@@ -95,7 +95,7 @@ LinkCableHelp: ; 5dc29 (17:5c29)
 	ld hl, LinkCableHelpText1
 	call PrintText
 	xor a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld a, A_BUTTON | B_BUTTON
@@ -179,7 +179,7 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld hl, ViridianSchoolBlackboardText1
 	call PrintText
 	xor a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld a, D_LEFT | D_RIGHT | A_BUTTON | B_BUTTON
@@ -217,7 +217,7 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld a, $6
 	ld [wTopMenuItemX], a
 	ld a, $3
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	jr .blackboardLoop
 .didNotPressRight
 	bit 5, a ; pressed left
@@ -230,12 +230,12 @@ ViridianSchoolBlackboard: ; 5dced (17:5ced)
 	ld a, $1
 	ld [wTopMenuItemX], a
 	xor a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	jr .blackboardLoop
 .didNotPressLeftOrRight
 	ld a, [wCurrentMenuItem]
 	ld b, a
-	ld a, [W_ANIMATIONID]
+	ld a, [wAnimationID]
 	add b
 	cp $5 ; cursor is pointing to "QUIT"
 	jr z, .exitBlackboard

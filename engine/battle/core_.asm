@@ -425,7 +425,7 @@ MainInBattleLoop: ; 3c249 (f:4249)
 	jr nz, .selectEnemyMove
 	ld [wMoveMenuType], a
 	inc a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	xor a
 	ld [wMenuItemToSwap], a
 	call MoveSelectionMenu
@@ -1596,32 +1596,1358 @@ AnyPartyAlive: ; 3cae8 (f:4ae8)
 	ld d, a
 	ret
 
+; tests if player mon has fainted
+; stores whether mon has fainted in Z flag
 HasMonFainted: ; 3cafc (f:4afc)
-	dr $3cafc,$3cb1e
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1HP
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a, [hli]
+	or [hl]
+	ret nz
+	ld a, [wFirstMonsNotOutYet]
+	and a
+	jr nz, .done
+	ld hl, NoWillText
+	call PrintText
+.done
+	xor a
+	ret
+
+NoWillText: ; 3cb19 (f:4b19)
+	TX_FAR _NoWillText
+	db "@"
+
+; try to run from battle (hl = player speed, de = enemy speed)
+; stores whether the attempt was successful in carry flag
 TryRunningFromBattle: ; 3cb1e (f:4b1e)
-	dr $3cb1e,$3cc10
+	call IsGhostBattle
+	jp z, .canEscape ; jump if it's a ghost battle
+	ld a, [wBattleType]
+	cp $2
+	jp z, .canEscape ; jump if it's a safari battle
+	cp $3
+	jp z, .canEscape ; hurry, get away?
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jp z, .canEscape
+	ld a, [wIsInBattle]
+	dec a
+	jr nz, .trainerBattle ; jump if it's a trainer battle
+	ld a, [wNumRunAttempts]
+	inc a
+	ld [wNumRunAttempts], a
+	ld a, [hli]
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [hl]
+	ld [H_MULTIPLICAND + 2], a
+	ld a, [de]
+	ld [hEnemySpeed], a
+	inc de
+	ld a, [de]
+	ld [hEnemySpeed + 1], a
+	call LoadScreenTilesFromBuffer1
+	ld de, H_MULTIPLICAND + 1
+	ld hl, hEnemySpeed
+	ld c, 2
+	call StringCmp
+	jr nc, .canEscape ; jump if player speed greater than enemy speed
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld a, 32
+	ld [H_MULTIPLIER], a
+	call Multiply ; multiply player speed by 32
+	ld a, [H_PRODUCT + 2]
+	ld [H_DIVIDEND], a
+	ld a, [H_PRODUCT + 3]
+	ld [H_DIVIDEND + 1], a
+	ld a, [hEnemySpeed]
+	ld b, a
+	ld a, [hEnemySpeed + 1]
+; divide enemy speed by 4
+	srl b
+	rr a
+	srl b
+	rr a
+	and a
+	jr z, .canEscape ; jump if enemy speed divided by 4, mod 256 is 0
+	ld [H_DIVISOR], a ; ((enemy speed / 4) % 256)
+	ld b, $2
+	call Divide ; divide (player speed * 32) by ((enemy speed / 4) % 256)
+	ld a, [H_QUOTIENT + 2]
+	and a ; is the quotient greater than 256?
+	jr nz, .canEscape ; if so, the player can escape
+	ld a, [wNumRunAttempts]
+	ld c, a
+; add 30 to the quotient for each run attempt
+.loop
+	dec c
+	jr z, .compareWithRandomValue
+	ld b, 30
+	ld a, [H_QUOTIENT + 3]
+	add b
+	ld [H_QUOTIENT + 3], a
+	jr c, .canEscape
+	jr .loop
+.compareWithRandomValue
+	call BattleRandom
+	ld b, a
+	ld a, [H_QUOTIENT + 3]
+	cp b
+	jr nc, .canEscape ; if the random value was less than or equal to the quotient
+	                  ; plus 30 times the number of attempts, the player can escape
+; can't escape
+	ld a, $1
+	ld [wActionResultOrTookBattleTurn], a ; you lose your turn when you can't escape
+	ld hl, CantEscapeText
+	jr .printCantEscapeOrNoRunningText
+.trainerBattle
+	ld hl, NoRunningText
+.printCantEscapeOrNoRunningText
+	call PrintText
+	ld a, 1
+	ld [wForcePlayerToChooseMon], a
+	call SaveScreenTilesToBuffer1
+	and a ; reset carry
+	ret
+.canEscape
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	ld a, $2
+	jr nz, .playSound
+; link battle
+	call SaveScreenTilesToBuffer1
+	xor a
+	ld [wActionResultOrTookBattleTurn], a
+	ld a, $f
+	ld [wPlayerMoveListIndex], a
+	call LinkBattleExchangeData
+	call LoadScreenTilesFromBuffer1
+	ld a, [wSerialExchangeNybbleReceiveData]
+	cp $f
+	ld a, $2
+	jr z, .playSound
+	dec a
+.playSound
+	ld [wBattleResult], a
+	ld a, SFX_RUN
+	call PlaySoundWaitForCurrent
+	ld hl, GotAwayText
+	call PrintText
+	call WaitForSoundToFinish
+	call SaveScreenTilesToBuffer1
+	scf ; set carry
+	ret
+
+CantEscapeText: ; 3cc01 (f:4c01)
+	TX_FAR _CantEscapeText
+	db "@"
+
+NoRunningText: ; 3cc06 (f:4c06)
+	TX_FAR _NoRunningText
+	db "@"
+
+GotAwayText: ; 3cc0b (f:4c0b)
+	TX_FAR _GotAwayText
+	db "@"
+
+; copies from party data to battle mon data when sending out a new player mon
 LoadBattleMonFromParty: ; 3cc10 (f:4c10)
-	dr $3cc10,$3ccfb
+	ld a, [wWhichPokemon]
+	ld bc, wPartyMon2 - wPartyMon1
+	ld hl, wPartyMon1Species
+	call AddNTimes
+	ld de, wBattleMonSpecies
+	ld bc, wBattleMonDVs - wBattleMonSpecies
+	call CopyData
+	ld bc, wPartyMon1DVs - wPartyMon1OTID
+	add hl, bc
+	ld de, wBattleMonDVs
+	ld bc, NUM_DVS
+	call CopyData
+	ld de, wBattleMonPP
+	ld bc, NUM_MOVES
+	call CopyData
+	ld de, wBattleMonLevel
+	ld bc, $b
+	call CopyData
+	ld a, [wBattleMonSpecies2]
+	ld [wd0b5], a
+	call GetMonHeader
+	ld hl, wPartyMonNicks
+	ld a, [wPlayerMonNumber]
+	call SkipFixedLengthTextEntries
+	ld de, wBattleMonNick
+	ld bc, NAME_LENGTH
+	call CopyData
+	ld hl, wBattleMonLevel
+	ld de, wPlayerMonUnmodifiedLevel ; block of memory used for unmodified stats
+	ld bc, 1 + NUM_STATS * 2
+	call CopyData
+	call ApplyBurnAndParalysisPenaltiesToPlayer
+	call ApplyBadgeStatBoosts
+	ld a, $7 ; default stat modifier
+	ld b, NUM_STAT_MODS
+	ld hl, wPlayerMonAttackMod
+.statModLoop
+	ld [hli], a
+	dec b
+	jr nz, .statModLoop
+	ret
+
+; copies from enemy party data to current enemy mon data when sending out a new enemy mon
+LoadEnemyMonFromParty: ; 3cc7d (f:4c7d)
+	ld a, [wWhichPokemon]
+	ld bc, wEnemyMon2 - wEnemyMon1
+	ld hl, wEnemyMons
+	call AddNTimes
+	ld de, wEnemyMonSpecies
+	ld bc, wEnemyMonDVs - wEnemyMonSpecies
+	call CopyData
+	ld bc, wEnemyMon1DVs - wEnemyMon1OTID
+	add hl, bc
+	ld de, wEnemyMonDVs
+	ld bc, NUM_DVS
+	call CopyData
+	ld de, wEnemyMonPP
+	ld bc, NUM_MOVES
+	call CopyData
+	ld de, wEnemyMonLevel
+	ld bc, $b
+	call CopyData
+	ld a, [wEnemyMonSpecies]
+	ld [wd0b5], a
+	call GetMonHeader
+	ld hl, wEnemyMonNicks
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+	ld de, wEnemyMonNick
+	ld bc, NAME_LENGTH
+	call CopyData
+	ld hl, wEnemyMonLevel
+	ld de, wEnemyMonUnmodifiedLevel ; block of memory used for unmodified stats
+	ld bc, 1 + NUM_STATS * 2
+	call CopyData
+	call ApplyBurnAndParalysisPenaltiesToEnemy
+	ld hl, wMonHBaseStats
+	ld de, wEnemyMonBaseStats
+	ld b, NUM_STATS
+.copyBaseStatsLoop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .copyBaseStatsLoop
+	ld a, $7 ; default stat modifier
+	ld b, NUM_STAT_MODS
+	ld hl, wEnemyMonStatMods
+.statModLoop
+	ld [hli], a
+	dec b
+	jr nz, .statModLoop
+	ld a, [wWhichPokemon]
+	ld [wEnemyMonPartyPos], a
+	ret
+
 SendOutMon: ; 3ccfb (f:4cfb)
-	dr $3ccfb,$3ce08
+	callab PrintSendOutMonMessage
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl] ; is enemy mon HP zero?
+	jp z, .skipDrawingEnemyHUDAndHPBar; if HP is zero, skip drawing the HUD and HP bar
+	call DrawEnemyHUDAndHPBar
+.skipDrawingEnemyHUDAndHPBar
+	call DrawPlayerHUDAndHPBar
+	predef LoadMonBackPic
+	xor a
+	ld [hStartTileID], a
+	ld hl, wBattleAndStartSavedMenuItem
+	ld [hli], a
+	ld [hl], a
+	ld [wBoostExpByExpAll], a
+	ld [wDamageMultipliers], a
+	ld [W_PLAYERMOVENUM], a
+	ld hl, wPlayerUsedMove
+	ld [hli], a
+	ld [hl], a
+	ld hl, wPlayerStatsToDouble
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld [wPlayerDisabledMove], a
+	ld [wPlayerDisabledMoveNumber], a
+	ld [wPlayerMonMinimized], a
+	ld b, SET_PAL_BATTLE
+	call RunPaletteCommand
+	ld hl, wEnemyBattleStatus1
+	res UsingTrappingMove, [hl]
+	callab IsThisPartymonStarterPikachu
+	jr c, .starterPikachu
+	ld a, $1
+	ld [H_WHOSETURN], a
+	ld a, POOF_ANIM
+	call PlayMoveAnimation
+	coord hl, 4, 11
+	predef AnimateSendingOutMon
+	jr .playRegularCry
+.starterPikachu
+	xor a
+	ld [H_WHOSETURN], a
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	callab Func_f429f
+	callab Func_fd0d0
+	ld e, $24
+	jr c, .asm_3cd81
+	ld e, $a
+.asm_3cd81
+	callab PlayPikachuSoundClip
+	jr .done
+.playRegularCry
+	ld a, [wcf91]
+	call PlayCry
+.done
+	call PrintEmptyString
+	jp SaveScreenTilesToBuffer1
+
+; show 2 stages of the player mon getting smaller before disappearing
+AnimateRetreatingPlayerMon: ; 3cd97 (f:4d97)
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callab IsThisPartymonStarterPikachu
+	pop bc
+	ld a, b
+	ld [wWhichPokemon], a
+	jr c, .starterPikachu
+	coord hl, 1, 5
+	lb bc, 7, 7
+	call ClearScreenArea
+	coord hl, 3, 7
+	lb bc, 5, 5
+	xor a
+	ld [wDownscaledMonSize], a
+	ld [hBaseTileID], a
+	predef CopyDownscaledMonTiles
+	ld c, 4
+	call DelayFrames
+	call .clearScreenArea
+	coord hl, 4, 9
+	lb bc, 3, 3
+	ld a, 1
+	ld [wDownscaledMonSize], a
+	xor a
+	ld [hBaseTileID], a
+	predef CopyDownscaledMonTiles
+	call Delay3
+	call .clearScreenArea
+	ld a, $4c
+	Coorda 5, 11
+	jr .clearScreenArea
+.starterPikachu
+	xor a
+	ld [H_WHOSETURN], a
+	callab AnimationSlideMonOff
+	ret
+.clearScreenArea
+	coord hl, 1, 5
+	lb bc, 7, 7
+	call ClearScreenArea ; jp
+	ret
+
+; reads player's current mon's HP into wBattleMonHP
 ReadPlayerMonCurHPAndStatus: ; 3ce08 (f:4e08)
-	dr $3ce08,$3ce1f
+	ld a, [wPlayerMonNumber]
+	ld hl, wPartyMon1HP
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld d, h
+	ld e, l
+	ld hl, wBattleMonHP
+	ld bc, $4               ; 2 bytes HP, 1 byte unknown (unused?), 1 byte status
+	jp CopyData
+
 DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
-	dr $3ce1f,$3ce25
+	call DrawPlayerHUDAndHPBar
+	jp DrawEnemyHUDAndHPBar
+
 DrawPlayerHUDAndHPBar: ; 3ce25 (f:4e25)
-	dr $3ce25,$3ceb1
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	coord hl, 9, 7
+	lb bc, 5, 11
+	call ClearScreenArea
+	callab PlacePlayerHUDTiles
+	coord hl, 18, 9
+	ld [hl], $73
+	ld de, wBattleMonNick
+	coord hl, 10, 7
+	call CenterMonName
+	call PlaceString
+	ld hl, wBattleMonSpecies
+	ld de, wLoadedMon
+	ld bc, $c
+	call CopyData
+	ld hl, wBattleMonLevel
+	ld de, wLoadedMonLevel
+	ld bc, $b
+	call CopyData
+	coord hl, 14, 8
+	push hl
+	inc hl
+	ld de, wLoadedMonStatus
+	call PrintStatusConditionNotFainted
+	pop hl
+	jr nz, .doNotPrintLevel
+	call PrintLevel
+.doNotPrintLevel
+	ld a, [wLoadedMonSpecies]
+	ld [wcf91], a
+	coord hl, 10, 9
+	predef DrawHP
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld hl, wPlayerHPBarColor
+	call GetBattleHealthBarColor
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jr z, .fainted
+	ld a, [wLowHealthAlarmDisabled]
+	and a ; has the alarm been disabled because the player has already won?
+	ret nz ; if so, return
+	ld a, [wPlayerHPBarColor]
+	cp HP_BAR_RED
+	jr z, .setLowHealthAlarm
+.fainted
+	ld hl, wLowHealthAlarm
+	bit 7, [hl] ;low health alarm enabled?
+	ld [hl], $0
+	ret z
+	xor a
+	ld [wChannelSoundIDs + CH4], a
+	ret
+.setLowHealthAlarm
+	ld hl, wLowHealthAlarm
+	set 7, [hl] ;enable low health alarm
+	ret
+
 DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)
-	dr $3ceb1,$3cf55
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	coord hl, 0, 0
+	lb bc, 4, 12
+	call ClearScreenArea
+	callab PlaceEnemyHUDTiles
+	ld de, wEnemyMonNick
+	coord hl, 1, 0
+	call CenterMonName
+	call PlaceString
+	coord hl, 4, 1
+	push hl
+	inc hl
+	ld de, wEnemyMonStatus
+	call PrintStatusConditionNotFainted
+	pop hl
+	jr nz, .skipPrintLevel ; if the mon has a status condition, skip printing the level
+	ld a, [wEnemyMonLevel]
+	ld [wLoadedMonLevel], a
+	call PrintLevel
+.skipPrintLevel
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [hld]
+	ld [H_MULTIPLICAND + 2], a
+	or [hl] ; is current HP zero?
+	jr nz, .hpNonzero
+; current HP is 0
+; set variables for DrawHPBar
+	ld c, a
+	ld e, a
+	ld d, $6
+	jp .drawHPBar
+.hpNonzero
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld a, 48
+	ld [H_MULTIPLIER], a
+	call Multiply ; multiply current HP by 48
+	ld hl, wEnemyMonMaxHP
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	ld [H_DIVISOR], a
+	ld a, b
+	and a ; is max HP > 255?
+	jr z, .doDivide
+; if max HP > 255, scale both (current HP * 48) and max HP by dividing by 4 so that max HP fits in one byte
+; (it needs to be one byte so it can be used as the divisor for the Divide function)
+	ld a, [H_DIVISOR]
+	srl b
+	rr a
+	srl b
+	rr a
+	ld [H_DIVISOR], a
+	ld a, [H_PRODUCT + 2]
+	ld b, a
+	srl b
+	ld a, [H_PRODUCT + 3]
+	rr a
+	srl b
+	rr a
+	ld [H_PRODUCT + 3], a
+	ld a, b
+	ld [H_PRODUCT + 2], a
+.doDivide
+	ld a, [H_PRODUCT + 2]
+	ld [H_DIVIDEND], a
+	ld a, [H_PRODUCT + 3]
+	ld [H_DIVIDEND + 1], a
+	ld a, $2
+	ld b, a
+	call Divide ; divide (current HP * 48) by max HP
+	ld a, [H_QUOTIENT + 3]
+; set variables for DrawHPBar
+	ld e, a
+	ld a, $6
+	ld d, a
+	ld c, a
+.drawHPBar
+	xor a
+	ld [wHPBarType], a
+	coord hl, 2, 2
+	call DrawHPBar
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld hl, wEnemyHPBarColor
+
 GetBattleHealthBarColor: ; 3cf55 (f:4f55)
-	dr $3cf55,$3cf78
+	ld b, [hl]
+	call GetHealthBarColor
+	ld a, [hl]
+	cp b
+	ret z
+	ld b, SET_PAL_BATTLE
+	jp RunPaletteCommand
+
+; center's mon's name on the battle screen
+; if the name is 1 or 2 letters long, it is printed 2 spaces more to the right than usual
+; (i.e. for names longer than 4 letters)
+; if the name is 3 or 4 letters long, it is printed 1 space more to the right than usual
+; (i.e. for names longer than 4 letters)
+CenterMonName: ; 3cf61 (f:4f61)
+	push de
+	inc hl
+	inc hl
+	ld b, $2
+.loop
+	inc de
+	ld a, [de]
+	cp "@"
+	jr z, .done
+	inc de
+	ld a, [de]
+	cp "@"
+	jr z, .done
+	dec hl
+	dec b
+	jr nz, .loop
+.done
+	pop de
+	ret
+
 DisplayBattleMenu: ; 3cf78 (f:4f78)
-	dr $3cf78,$3d2c1
+	call LoadScreenTilesFromBuffer1 ; restore saved screen
+	ld a, [wBattleType]
+	and a
+	jr nz, .nonstandardbattle
+	call DrawHUDsAndHPBars
+	call PrintEmptyString
+	call SaveScreenTilesToBuffer1
+.nonstandardbattle
+	ld a, [wBattleType]
+	cp $2 ; safari
+	ld a, BATTLE_MENU_TEMPLATE
+	jr nz, .menuselected
+	ld a, SAFARI_BATTLE_MENU_TEMPLATE
+.menuselected
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld a, [wBattleType]
+	cp $1
+	jr z, .doSimulatedMenuInput ; simulate menu input if it's the old man or prof. oak pikachu battle
+	cp $4
+	jr z, .doSimulatedMenuInput
+	jp .handleBattleMenuInput
+; the following happens for the old man tutorial and prof. oak pikachu battle
+.doSimulatedMenuInput
+	ld hl, wPlayerName
+	ld de, wGrassRate
+	ld bc, NAME_LENGTH
+	call CopyData  ; temporarily save the player name in unused space,
+	               ; which is supposed to get overwritten when entering a
+	               ; map with wild Pokémon.
+				   ; In Red/Blue, due to an oversight, the data
+	               ; may not get overwritten (cinnabar) and the infamous
+	               ; Missingno. glitch can show up. However,
+				   ; this has been fixed in yellow
+	ld hl, .oldManName
+	ld a, [wBattleType]
+	dec a
+	jr z, .useOldManName
+	ld hl, .profOakName
+.useOldManName
+	ld de, wPlayerName
+	ld bc, NAME_LENGTH
+	call CopyData
+; the following simulates the keystrokes by drawing menus on screen
+	coord hl, 9, 14
+	ld [hl], "▶"
+	ld c, 20
+	call DelayFrames
+	ld [hl], " "
+	coord hl, 9, 16
+	ld [hl], "▶"
+	ld c, 20
+	call DelayFrames
+	ld [hl], $ec
+	ld a, $2 ; select the "ITEM" menu
+	jp .upperLeftMenuItemWasNotSelected
+.oldManName
+	db "OLD MAN@"
+.profOakName
+	db "PROF.OAK@"
+.handleBattleMenuInput
+	ld a, [wBattleAndStartSavedMenuItem]
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
+	sub 2 ; check if the cursor is in the left column
+	jr c, .leftColumn
+; cursor is in the right column
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
+	jr .rightColumn
+.leftColumn ; put cursor in left column of menu
+	ld a, [wBattleType]
+	cp $2
+	ld a, " "
+	jr z, .safariLeftColumn
+; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
+	Coorda 15, 14 ; clear upper cursor position in right column
+	Coorda 15, 16 ; clear lower cursor position in right column
+	ld b, $9 ; top menu item X
+	jr .leftColumn_WaitForInput
+.safariLeftColumn
+	Coorda 13, 14
+	Coorda 13, 16
+	coord hl, 7, 14
+	ld de, wNumSafariBalls
+	lb bc, 1, 2
+	call PrintNumber
+	ld b, $1 ; top menu item X
+.leftColumn_WaitForInput
+	ld hl, wTopMenuItemY
+	ld a, $e
+	ld [hli], a ; wTopMenuItemY
+	ld a, b
+	ld [hli], a ; wTopMenuItemX
+	inc hl
+	inc hl
+	ld a, $1
+	ld [hli], a ; wMaxMenuItem
+	ld [hl], D_RIGHT | A_BUTTON ; wMenuWatchedKeys
+	call HandleMenuInput
+	bit 4, a ; check if right was pressed
+	jr nz, .rightColumn
+	jr .AButtonPressed ; the A button was pressed
+.rightColumn ; put cursor in right column of menu
+	ld a, [wBattleType]
+	cp $2
+	ld a, " "
+	jr z, .safariRightColumn
+; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
+	Coorda 9, 14 ; clear upper cursor position in left column
+	Coorda 9, 16 ; clear lower cursor position in left column
+	ld b, $f ; top menu item X
+	jr .rightColumn_WaitForInput
+.safariRightColumn
+	Coorda 1, 14 ; clear upper cursor position in left column
+	Coorda 1, 16 ; clear lower cursor position in left column
+	coord hl, 7, 14
+	ld de, wNumSafariBalls
+	lb bc, 1, 2
+	call PrintNumber
+	ld b, $d ; top menu item X
+.rightColumn_WaitForInput
+	ld hl, wTopMenuItemY
+	ld a, $e
+	ld [hli], a ; wTopMenuItemY
+	ld a, b
+	ld [hli], a ; wTopMenuItemX
+	inc hl
+	inc hl
+	ld a, $1
+	ld [hli], a ; wMaxMenuItem
+	ld a, D_LEFT | A_BUTTON
+	ld [hli], a ; wMenuWatchedKeys
+	call HandleMenuInput
+	bit 5, a ; check if left was pressed
+	jr nz, .leftColumn ; if left was pressed, jump
+	ld a, [wCurrentMenuItem]
+	add $2 ; if we're in the right column, the actual id is +2
+	ld [wCurrentMenuItem], a
+.AButtonPressed
+	call PlaceUnfilledArrowMenuCursor
+	ld a, [wBattleType]
+	cp HURRY_RUN_AWAY_BATTLE
+	jr z, .handleUnusedBattle
+	ld a, [wBattleType]
+	cp SAFARI_BATTLE ; is it a Safari battle?
+	ld a, [wCurrentMenuItem]
+	ld [wBattleAndStartSavedMenuItem], a
+	jr z, .handleMenuSelection
+; not Safari battle
+; swap the IDs of the item menu and party menu (this is probably because they swapped the positions
+; of these menu items in first generation English versions)
+	cp $1 ; was the item menu selected?
+	jr nz, .notItemMenu
+; item menu was selected
+	inc a ; increment a to 2
+	jr .handleMenuSelection
+.notItemMenu
+	cp $2 ; was the party menu selected?
+	jr nz, .handleMenuSelection
+; party menu selected
+	dec a ; decrement a to 1
+.handleMenuSelection
+	and a
+	jr nz, .upperLeftMenuItemWasNotSelected
+; the upper left menu item was selected
+	ld a, [wBattleType]
+	cp $2
+	jr z, .throwSafariBallWasSelected
+; the "FIGHT" menu was selected
+	xor a
+	ld [wNumRunAttempts], a
+	jp LoadScreenTilesFromBuffer1 ; restore saved screen and return
+.throwSafariBallWasSelected
+	ld a, SAFARI_BALL
+	ld [wcf91], a
+	jp UseBagItem
+.handleUnusedBattle
+	ld a, [wCurrentMenuItem]
+	cp $3
+	jp z, BattleMenu_RunWasSelected
+	ld hl, .RunAwayText
+	call PrintText
+	jp DisplayBattleMenu
+
+.RunAwayText ; 3d0df (f:50df)
+	TX_FAR _RunAwayText
+	db "@"
+	
+.upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
+	cp $2
+	jp nz, PartyMenuOrRockOrRun
+	
+; either the bag (normal battle) or bait (safari battle) was selected
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr nz, .notLinkBattle
+
+; can't use items in link battles
+	ld hl, ItemsCantBeUsedHereText
+	call PrintText
+	jp DisplayBattleMenu
+
+.notLinkBattle
+	call SaveScreenTilesToBuffer2
+	ld a, [wBattleType]
+	cp $2 ; is it a safari battle?
+	jr nz, BagWasSelected
+
+; bait was selected
+	ld a, SAFARI_BAIT
+	ld [wcf91], a
+	jr UseBagItem
+
+BagWasSelected: ; 3d10a (f:510a)
+	call LoadScreenTilesFromBuffer1
+	ld a, [wBattleType]
+	and a ; is it a normal battle?
+	jr nz, .next
+
+; normal battle
+	call DrawHUDsAndHPBars
+.next
+	ld a, [wBattleType]
+	cp OLD_MAN_BATTLE ; is it the old man tutorial?
+	jr z, .simulatedInputBattle
+	cp STARTER_PIKACHU_BATTLE ; is it the prof oak battle with pikachu?
+	jr z, .simulatedInputBattle
+	jr DisplayPlayerBag
+.simulatedInputBattle
+	ld hl, SimulatedInputBattleItemList
+	ld a, l
+	ld [wListPointer], a
+	ld a, h
+	ld [wListPointer + 1], a
+	jr DisplayBagMenu
+
+SimulatedInputBattleItemList: ; 3c130 (f:5130)
+	db 1 ; # of items
+	db POKE_BALL, 1
+	db $ff
+
+DisplayPlayerBag: ; 3c134 (f:5134)
+	; get the pointer to player's bag when in a normal battle
+	ld hl, wNumBagItems
+	ld a, l
+	ld [wListPointer], a
+	ld a, h
+	ld [wListPointer + 1], a
+
+DisplayBagMenu: ; 3c13f (f:513f)
+	xor a
+	ld [wPrintItemPrices], a
+	ld a, ITEMLISTMENU
+	ld [wListMenuID], a
+	ld a, [wBagSavedMenuItem]
+	ld [wCurrentMenuItem], a
+	call DisplayListMenuID
+	ld a, [wCurrentMenuItem]
+	ld [wBagSavedMenuItem], a
+	ld a, $0
+	ld [wMenuWatchMovingOutOfBounds], a
+	ld [wMenuItemToSwap], a
+	jp c, DisplayBattleMenu ; go back to battle menu if an item was not selected
+
+UseBagItem: ; 3c162 (f:5162)
+	; either use an item from the bag or use a safari zone item
+	ld a, [wcf91]
+	ld [wd11e], a
+	call GetItemName
+	call CopyStringToCF4B ; copy name
+	xor a
+	ld [wPseudoItemID], a
+	call UseItem
+	call LoadHudTilePatterns
+	call ClearSprites
+	xor a
+	ld [wCurrentMenuItem], a
+	ld a, [wBattleType]
+	cp SAFARI_BATTLE ; is it a safari battle?
+	jr z, .checkIfMonCaptured
+
+	ld a, [wActionResultOrTookBattleTurn]
+	and a ; was the item used successfully?
+	jp z, BagWasSelected ; if not, go back to the bag menu
+
+	ld a, [wPlayerBattleStatus1]
+	bit UsingTrappingMove, a ; is the player using a multi-turn move like wrap?
+	jr z, .checkIfMonCaptured
+	ld hl, wPlayerNumAttacksLeft
+	dec [hl]
+	jr nz, .checkIfMonCaptured
+	ld hl, wPlayerBattleStatus1
+	res UsingTrappingMove, [hl] ; not using multi-turn move any more
+
+.checkIfMonCaptured
+	ld a, [wCapturedMonSpecies]
+	and a ; was the enemy mon captured with a ball?
+	jr nz, .returnAfterCapturingMon
+
+	ld a, [wBattleType]
+	cp SAFARI_BATTLE ; is it a safari battle?
+	jr z, .returnAfterUsingItem_NoCapture
+; not a safari battle
+	call LoadScreenTilesFromBuffer1
+	call DrawHUDsAndHPBars
+	call Delay3
+.returnAfterUsingItem_NoCapture
+
+	call GBPalNormal
+	and a ; reset carry
+	ret
+
+.returnAfterCapturingMon
+	call GBPalNormal
+	xor a
+	ld [wCapturedMonSpecies], a
+	ld a, $2
+	ld [wBattleResult], a
+	scf ; set carry
+	ret
+
+ItemsCantBeUsedHereText: ; 3d1c8 (f:51c8)
+	TX_FAR _ItemsCantBeUsedHereText
+	db "@"
+
+PartyMenuOrRockOrRun: ; 3d1cd (f:51cd)
+	dec a ; was Run selected?
+	jp nz, BattleMenu_RunWasSelected
+; party menu or rock was selected
+	call SaveScreenTilesToBuffer2
+	ld a, [wBattleType]
+	cp $2 ; is it a safari battle?
+	jr nz, .partyMenuWasSelected
+; safari battle
+	ld a, SAFARI_ROCK
+	ld [wcf91], a
+	jp UseBagItem
+.partyMenuWasSelected
+	call LoadScreenTilesFromBuffer1
+	xor a ; NORMAL_PARTY_MENU
+	ld [wPartyMenuTypeOrMessageID], a
+	ld [wMenuItemToSwap], a
+	call DisplayPartyMenu
+.checkIfPartyMonWasSelected
+	jp nc, .partyMonWasSelected ; if a party mon was selected, jump, else we quit the party menu
+.quitPartyMenu
+	call ClearSprites
+	call GBPalWhiteOut
+	call LoadHudTilePatterns
+	call LoadScreenTilesFromBuffer2
+	call RunDefaultPaletteCommand
+	call GBPalNormal
+	jp DisplayBattleMenu
+.partyMonDeselected
+	coord hl, 11, 11
+	ld bc, 6 * SCREEN_WIDTH + 9
+	ld a, " "
+	call FillMemory
+	xor a ; NORMAL_PARTY_MENU
+	ld [wPartyMenuTypeOrMessageID], a
+	call GoBackToPartyMenu
+	jr .checkIfPartyMonWasSelected
+.partyMonWasSelected
+	ld a, SWITCH_STATS_CANCEL_MENU_TEMPLATE
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld hl, wTopMenuItemY
+	ld a, $c
+	ld [hli], a ; wTopMenuItemY
+	ld [hli], a ; wTopMenuItemX
+	xor a
+	ld [hli], a ; wCurrentMenuItem
+	inc hl
+	ld a, $2
+	ld [hli], a ; wMaxMenuItem
+	ld a, B_BUTTON | A_BUTTON
+	ld [hli], a ; wMenuWatchedKeys
+	xor a
+	ld [hl], a ; wLastMenuItem
+	call HandleMenuInput
+	bit 1, a ; was A pressed?
+	jr nz, .partyMonDeselected ; if B was pressed, jump
+; A was pressed
+	call PlaceUnfilledArrowMenuCursor
+	ld a, [wCurrentMenuItem]
+	cp $2 ; was Cancel selected?
+	jr z, .quitPartyMenu ; if so, quit the party menu entirely
+	and a ; was Switch selected?
+	jr z, .switchMon ; if so, jump
+; Stats was selected
+	xor a ; PLAYER_PARTY_DATA
+	ld [wMonDataLocation], a
+	ld hl, wPartyMon1
+	call ClearSprites
+; display the two status screens
+	predef StatusScreen
+	predef StatusScreen2
+; now we need to reload the enemy mon pic
+	ld a, $1
+	ld [H_WHOSETURN], a
+	ld a, [wEnemyBattleStatus2]
+	bit HasSubstituteUp, a ; does the enemy mon have a substitute?
+	ld hl, AnimationSubstitute
+	jr nz, .doEnemyMonAnimation
+; enemy mon doesn't have substitute
+	ld a, [wEnemyMonMinimized]
+	and a ; has the enemy mon used Minimise?
+	ld hl, AnimationMinimizeMon
+	jr nz, .doEnemyMonAnimation
+; enemy mon is not minimised
+	ld a, [wEnemyMonSpecies]
+	ld [wcf91], a
+	ld [wd0b5], a
+	call GetMonHeader
+	ld de, vFrontPic
+	call LoadMonFrontSprite
+	jr .enemyMonPicReloaded
+.doEnemyMonAnimation
+	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	call Bankswitch
+.enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
+	jp .partyMenuWasSelected
+.switchMon
+	ld a, [wPlayerMonNumber]
+	ld d, a
+	ld a, [wWhichPokemon]
+	cp d ; check if the mon to switch to is already out
+	jr nz, .notAlreadyOut
+; mon is already out
+	ld hl, AlreadyOutText
+	call PrintText
+	jp .partyMonDeselected
+.notAlreadyOut
+	call HasMonFainted
+	jp z, .partyMonDeselected ; can't switch to fainted mon
+	ld a, $1
+	ld [wActionResultOrTookBattleTurn], a
+	call GBPalWhiteOut
+	call ClearSprites
+	call LoadHudTilePatterns
+	call LoadScreenTilesFromBuffer1
+	call RunDefaultPaletteCommand
+	call GBPalNormal
+; fall through to SwitchPlayerMon
+
 SwitchPlayerMon: ; 3d2c1 (f:52c1)
-	dr $3d2c1,$3d2fc
+	callab RetreatMon
+	ld c, 50
+	call DelayFrames
+	call AnimateRetreatingPlayerMon
+	ld a, [wWhichPokemon]
+	ld [wPlayerMonNumber], a
+	ld c, a
+	ld b, FLAG_SET
+	push bc
+	ld hl, wPartyGainExpFlags
+	predef FlagActionPredef
+	pop bc
+	ld hl, wPartyFoughtCurrentEnemyFlags
+	predef FlagActionPredef
+	call LoadBattleMonFromParty
+	call SendOutMon
+	call SaveScreenTilesToBuffer1
+	ld a, $2
+	ld [wCurrentMenuItem], a
+	and a
+	ret
+
 AlreadyOutText: ; 3d2fc (f:52fc)
-	dr $3d2fc,$3d320
+	TX_FAR _AlreadyOutText
+	db "@"
+
+BattleMenu_RunWasSelected: ; 3d301 (f:5301)
+	call LoadScreenTilesFromBuffer1
+	ld a, $3
+	ld [wCurrentMenuItem], a
+	ld hl, wBattleMonSpeed
+	ld de, wEnemyMonSpeed
+	call TryRunningFromBattle
+	ld a, 0
+	ld [wForcePlayerToChooseMon], a
+	ret c
+	ld a, [wActionResultOrTookBattleTurn]
+	and a
+	ret nz ; return if the player couldn't escape
+	jp DisplayBattleMenu
+
 MoveSelectionMenu: ; 3d320 (f:5320)
-	dr $3d320,$3d6d6
+	ld a, [wMoveMenuType]
+	dec a
+	jr z, .mimicmenu
+	dec a
+	jr z, .relearnmenu
+	jr .regularmenu
+
+.loadmoves
+	ld de, wMoves
+	ld bc, NUM_MOVES
+	call CopyData
+	callab FormatMovesString
+	ret
+
+.writemoves
+	ld de, wMovesString
+	ld a, [hFlags_0xFFFA]
+	set 2, a
+	ld [hFlags_0xFFFA], a
+	call PlaceString
+	ld a, [hFlags_0xFFFA]
+	res 2, a
+	ld [hFlags_0xFFFA], a
+	ret
+
+.regularmenu
+	call AnyMoveToSelect
+	ret z
+	ld hl, wBattleMonMoves
+	call .loadmoves
+	coord hl, 4, 12
+	lb bc, 4, 14
+	di ; out of pure coincidence, it is possible for vblank to occur between the di and ei
+	   ; so it is necessary to put the di ei block to not cause tearing
+	call TextBoxBorder
+	coord hl, 4, 12
+	ld [hl], $7a
+	coord hl, 10, 12
+	ld [hl], $7e
+	ei
+	coord hl, 6, 13
+	call .writemoves
+	ld b, $5
+	ld a, $c
+	jr .menuset
+.mimicmenu
+	ld hl, wEnemyMonMoves
+	call .loadmoves
+	coord hl, 0, 7
+	lb bc, 4, 14
+	call TextBoxBorder
+	coord hl, 2, 8
+	call .writemoves
+	ld b, $1
+	ld a, $7
+	jr .menuset
+.relearnmenu
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Moves
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	call .loadmoves
+	coord hl, 4, 7
+	lb bc, 4, 14
+	call TextBoxBorder
+	coord hl, 6, 8
+	call .writemoves
+	ld b, $5
+	ld a, $7
+.menuset
+	ld hl, wTopMenuItemY
+	ld [hli], a ; wTopMenuItemY
+	ld a, b
+	ld [hli], a ; wTopMenuItemX
+	ld a, [wMoveMenuType]
+	cp $1
+	jr z, .selectedmoveknown
+	ld a, [wPlayerMoveListIndex]
+	inc a
+.selectedmoveknown
+	ld [hli], a ; wCurrentMenuItem
+	inc hl ; wTileBehindCursor untouched
+	ld a, [wNumMovesMinusOne]
+	inc a
+	inc a
+	ld [hli], a ; wMaxMenuItem
+	ld a, [wMoveMenuType]
+	dec a
+	ld b, D_UP | D_DOWN | A_BUTTON
+	jr z, .matchedkeyspicked
+	dec a
+	ld b, D_UP | D_DOWN | A_BUTTON | B_BUTTON
+	jr z, .matchedkeyspicked
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr z, .matchedkeyspicked
+	ld a, [wFlags_D733]
+	bit BIT_TEST_BATTLE, a
+	ld b, D_UP | D_DOWN | A_BUTTON | B_BUTTON | SELECT
+	jr z, .matchedkeyspicked
+	ld b, $ff
+.matchedkeyspicked
+	ld a, b
+	ld [hli], a ; wMenuWatchedKeys
+	ld a, [wMoveMenuType]
+	cp $1
+	jr z, .movelistindex1
+	ld a, [wPlayerMoveListIndex]
+	inc a
+.movelistindex1
+	ld [hl], a
+; fallthrough
+
+SelectMenuItem: ; 3d3fe (f:53fe)
+	ld a, [wMoveMenuType]
+	and a
+	jr z, .battleselect
+	dec a
+	jr nz, .select
+	coord hl, 1, 14
+	ld de, WhichTechniqueString
+	call PlaceString
+	jr .select
+.battleselect
+	ld a, [wFlags_D733]
+	bit BIT_TEST_BATTLE, a
+	jr nz, .select
+	call PrintMenuItem
+	ld a, [wMenuItemToSwap]
+	and a
+	jr z, .select
+	coord hl, 5, 13
+	dec a
+	ld bc, SCREEN_WIDTH
+	call AddNTimes
+	ld [hl], $ec
+.select
+	ld hl, hFlags_0xFFFA
+	set 1, [hl]
+	call HandleMenuInput
+	ld hl, hFlags_0xFFFA
+	res 1, [hl]
+	bit 6, a
+	jp nz, SelectMenuItem_CursorUp ; up
+	bit 7, a
+	jp nz, SelectMenuItem_CursorDown ; down
+	bit 2, a
+	jp nz, SwapMovesInMenu ; select
+	bit 1, a ; B, but was it reset above?
+	push af
+	xor a
+	ld [wMenuItemToSwap], a
+	ld a, [wCurrentMenuItem]
+	dec a
+	ld [wCurrentMenuItem], a
+	ld b, a
+	ld a, [wMoveMenuType]
+	dec a ; if not mimic
+	jr nz, .notB
+	pop af
+	ret
+.notB
+	dec a
+	ld a, b
+	ld [wPlayerMoveListIndex], a
+	jr nz, .moveselected
+	pop af
+	ret
+.moveselected
+	pop af
+	ret nz
+	ld hl, wBattleMonPP
+	ld a, [wCurrentMenuItem]
+	ld c, a
+	ld b, $0
+	add hl, bc
+	ld a, [hl]
+	and $3f
+	jr z, .noPP
+	ld a, [wPlayerDisabledMove]
+	swap a
+	and $f
+	dec a
+	cp c
+	jr z, .disabled
+	ld a, [wPlayerBattleStatus3]
+	bit 3, a ; transformed
+	jr nz, .dummy ; game freak derp
+.dummy
+	ld a, [wCurrentMenuItem]
+	ld hl, wBattleMonMoves
+	ld c, a
+	ld b, $0
+	add hl, bc
+	ld a, [hl]
+	ld [wPlayerSelectedMove], a
+	xor a
+	ret
+.disabled
+	ld hl, MoveDisabledText
+	jr .print
+.noPP
+	ld hl, MoveNoPPText
+.print
+	call PrintText
+	call LoadScreenTilesFromBuffer1
+	jp MoveSelectionMenu
+
+MoveNoPPText: ; 3d4ae (f:54ae)
+	TX_FAR _MoveNoPPText
+	db "@"
+
+MoveDisabledText: ; 3d4b3 (f:54b3)
+	TX_FAR _MoveDisabledText
+	db "@"
+
+WhichTechniqueString: ; 3d4b8 (f:54b8)
+	db "WHICH TECHNIQUE?@"
+
+SelectMenuItem_CursorUp: ; 3d4c9 (f:54c9)
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, SelectMenuItem
+	call EraseMenuCursor
+	ld a, [wNumMovesMinusOne]
+	inc a
+	ld [wCurrentMenuItem], a
+	jp SelectMenuItem
+
+SelectMenuItem_CursorDown: ; 3d4dd (f:54dd)
+	ld a, [wCurrentMenuItem]
+	ld b, a
+	ld a, [wNumMovesMinusOne]
+	inc a
+	inc a
+	cp b
+	jp nz, SelectMenuItem
+	call EraseMenuCursor
+	ld a, $1
+	ld [wCurrentMenuItem], a
+	jp SelectMenuItem
+
+Func_3d4f5: ; 3d4f5 (f:54f5)
+	bit 3, a
+	ld a, $0
+	jr nz, .asm_3d4fd
+	ld a, $1
+.asm_3d4fd
+	ld [H_WHOSETURN], a
+	call LoadScreenTilesFromBuffer1
+	call Func_3d536
+	ld a, [wTestBattlePlayerSelectedMove]
+	and a
+	jp z, MoveSelectionMenu
+	ld [wAnimationID], a
+	xor a
+	ld [wAnimationType], a
+	predef MoveAnimation
+	callab Func_78e98
+	jp MoveSelectionMenu
+	
+Func_3d523: ; 3d523 (f:5523)
+	ld a, [wTestBattlePlayerSelectedMove]
+	dec a
+	jr asm_3d52d
+Func_3d529: ; 3d529 (f:5529)
+	ld a, [wTestBattlePlayerSelectedMove]
+	inc a
+asm_3d52d: ; 3d52d (f:552d)
+	ld [wTestBattlePlayerSelectedMove], a
+	call Func_3d536
+	jp MoveSelectionMenu
+
+Func_3d536: ; 3d536 (f:5536)
+	coord hl, 10, 16
+	lb bc, 2, 10
+	call ClearScreenArea
+	coord hl, 10, 17
+	ld de, wTestBattlePlayerSelectedMove
+	lb bc, LEADING_ZEROES | 1, 3
+	call PrintNumber
+	ld a, [wTestBattlePlayerSelectedMove]
+	and a
+	ret z
+	cp STRUGGLE
+	ret nc
+	ld [wd11e], a
+	call GetMoveName
+	coord hl, 13, 17
+	jp PlaceString
+
+AnyMoveToSelect: ; 3d55f (f:555f)
+	dr $3d55f,$3d5a0
+SwapMovesInMenu: ; 3d5a0 (f:55a0)
+	dr $3d5a0,$3d629
+PrintMenuItem: ; 3d629 (f:5629)
+	dr $3d629,$3d6d6
 SelectEnemyMove: ; 3d6d6 (f:56d6)
 	dr $3d6d6,$3d777
 LinkBattleExchangeData: ; 3d777 (f:5777)
@@ -1690,9 +3016,15 @@ DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
 LoadPlayerBackPic: ; 3ee18 (f:6e18)
 	dr $3ee18,$3ee9e
 ScrollTrainerPicAfterBattle: ; 3ee9e (f:6e9e)
-	dr $3ee9e,$3eeb3
+	dr $3ee9e,$3eea6
+ApplyBurnAndParalysisPenaltiesToPlayer: ; 3eea6 (f:6ea6)
+	dr $3eea6,$3eeaa
+ApplyBurnAndParalysisPenaltiesToEnemy: ; 3eeaa (f:6eaa)
+	dr $3eeaa,$3eeb3
 QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3efe4
+	dr $3eeb3,$3efa5
+ApplyBadgeStatBoosts: ; 3efa5 (f:6fa5)
+	dr $3efa5,$3efe4
 LoadHudAndHpBarAndStatusTilePatterns: ; 3efe4 (f:6fe4)
 	dr $3efe4,$3efe7
 LoadHudTilePatterns: ; 3efe7 (f:6fe7)

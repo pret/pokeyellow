@@ -58,7 +58,7 @@ PredefPointers:: ; f681d (3d:681d)
 	;add_predef Func_3f073
 	;add_predef ScaleSpriteByTwo
 	;add_predef LoadMonBackPic
-	;add_predef Func_79aba
+	;add_predef CopyDownscaledMonTiles
 	;add_predef LoadMissableObjects
 	;add_predef HealParty
 	;add_predef MoveAnimation; 08 play move animation

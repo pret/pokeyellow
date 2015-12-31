@@ -52,6 +52,14 @@ NPC_MOVEMENT_UP    EQU $40
 NPC_MOVEMENT_LEFT  EQU $80
 NPC_MOVEMENT_RIGHT EQU $C0
 
+; battle types
+const_value set $0
+	const NORMAL_BATTLE ; $0
+	const OLD_MAN_BATTLE ; $1
+	const SAFARI_BATTLE ; $2
+	const HURRY_RUN_AWAY_BATTLE ; $3
+	const STARTER_PIKACHU_BATTLE ; $4
+	
 ; text box IDs
 MESSAGE_BOX                       EQU $01
 FIELD_MOVE_MON_MENU               EQU $04
@@ -207,6 +215,7 @@ LINK_STATE_BATTLING      EQU $04 ; in a link battle
 LINK_STATE_RESET         EQU $05 ; reset game (unused)
 LINK_STATE_TRADING       EQU $32 ; in a link trade
 
+; pikachu happiness modifiers
 const_value set 1
 	const PIKAHAPPY_LEVELUP
 	const PIKAHAPPY_USEDITEM

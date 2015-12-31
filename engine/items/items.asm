@@ -332,7 +332,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld c,20
 	call DelayFrames
 	ld a,TOSS_ANIM
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	xor a
 	ld [H_WHOSETURN],a
 	ld [wAnimationType],a
@@ -1441,7 +1441,7 @@ ItemUseRock: ; dd87 (3:5d87)
 	ld de,wSafariBaitFactor ; bait factor
 
 BaitRockCommon: ; dd9f (3:5d9f)
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	xor a
 	ld [wAnimationType],a
 	ld [H_WHOSETURN],a
@@ -2446,7 +2446,7 @@ ThrowBallAtTrainerMon: ; e4ca (3:64ca)
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	call Delay3
 	ld a,TOSS_ANIM
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	predef MoveAnimation ; do animation
 	ld hl,ThrowBallAtTrainerMonText1
 	call PrintText

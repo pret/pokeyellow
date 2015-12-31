@@ -424,7 +424,7 @@ MainInBattleLoop: ; 3c249 (f:4249)
 	jr nz, .selectEnemyMove
 	ld [wMoveMenuType], a
 	inc a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	xor a
 	ld [wMenuItemToSwap], a
 	call MoveSelectionMenu
@@ -1611,18 +1611,20 @@ HasMonFainted: ; 3cafc (f:4afc)
 	xor a
 	ret
 
-NoWillText: ; 3cab4 (f:4ab4)
+NoWillText: ; 3cb19 (f:4b19)
 	TX_FAR _NoWillText
 	db "@"
 
 ; try to run from battle (hl = player speed, de = enemy speed)
 ; stores whether the attempt was successful in carry flag
-TryRunningFromBattle: ; 3cab9 (f:4ab9)
+TryRunningFromBattle: ; 3cb1e (f:4b1e)
 	call IsGhostBattle
 	jp z, .canEscape ; jump if it's a ghost battle
 	ld a, [wBattleType]
 	cp $2
 	jp z, .canEscape ; jump if it's a safari battle
+	cp $3
+	jp z, .canEscape ; hurry, get away?
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .canEscape
@@ -1734,20 +1736,20 @@ TryRunningFromBattle: ; 3cab9 (f:4ab9)
 	scf ; set carry
 	ret
 
-CantEscapeText: ; 3cb97 (f:4b97)
+CantEscapeText: ; 3cc01 (f:4c01)
 	TX_FAR _CantEscapeText
 	db "@"
 
-NoRunningText: ; 3cb9c (f:4b9c)
+NoRunningText: ; 3cc06 (f:4c06)
 	TX_FAR _NoRunningText
 	db "@"
 
-GotAwayText: ; 3cba1 (f:4ba1)
+GotAwayText: ; 3cc0b (f:4c0b)
 	TX_FAR _GotAwayText
 	db "@"
 
 ; copies from party data to battle mon data when sending out a new player mon
-LoadBattleMonFromParty: ; 3cba6 (f:4ba6)
+LoadBattleMonFromParty: ; 3cc10 (f:4c10)
 	ld a, [wWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
 	ld hl, wPartyMon1Species
@@ -1791,7 +1793,7 @@ LoadBattleMonFromParty: ; 3cba6 (f:4ba6)
 	ret
 
 ; copies from enemy party data to current enemy mon data when sending out a new enemy mon
-LoadEnemyMonFromParty: ; 3cc13 (f:4c13)
+LoadEnemyMonFromParty: ; 3cc7d (f:4c7d)
 	ld a, [wWhichPokemon]
 	ld bc, wEnemyMon2 - wEnemyMon1
 	ld hl, wEnemyMons
@@ -1844,7 +1846,7 @@ LoadEnemyMonFromParty: ; 3cc13 (f:4c13)
 	ld [wEnemyMonPartyPos], a
 	ret
 
-SendOutMon: ; 3cc91 (f:4c91)
+SendOutMon: ; 3ccfb (f:4cfb)
 	callab PrintSendOutMonMessage
 	ld hl, wEnemyMonHP
 	ld a, [hli]
@@ -1871,26 +1873,53 @@ SendOutMon: ; 3cc91 (f:4c91)
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld [W_PLAYERDISABLEDMOVE], a
+	ld [wPlayerDisabledMove], a
 	ld [wPlayerDisabledMoveNumber], a
 	ld [wPlayerMonMinimized], a
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
 	ld hl, wEnemyBattleStatus1
 	res UsingTrappingMove, [hl]
+	callab IsThisPartymonStarterPikachu
+	jr c, .starterPikachu
 	ld a, $1
 	ld [H_WHOSETURN], a
 	ld a, POOF_ANIM
 	call PlayMoveAnimation
 	coord hl, 4, 11
 	predef AnimateSendingOutMon
+	jr .playRegularCry
+.playerPikachu
+	xor a
+	ld [H_WHOSETURN], a
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	callab Func_f429f
+	callab Func_fd0d0
+	ld e, $24
+	jr c, .asm_3cd81
+	ld e, $a
+.asm_3cd81
+	callab PlayPikachuSoundClip
+	jr .done
+.playRegularCry
 	ld a, [wcf91]
 	call PlayCry
+.done
 	call PrintEmptyString
 	jp SaveScreenTilesToBuffer1
 
 ; show 2 stages of the player mon getting smaller before disappearing
-AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
+AnimateRetreatingPlayerMon: ; 3cd97 (f:4d97)
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callab IsThisPartymonStarterPikachu
+	pop bc
+	ld a, b
+	ld [wWhichPokemon], a
+	jr c, .starterPikachu
 	coord hl, 1, 5
 	lb bc, 7, 7
 	call ClearScreenArea
@@ -1914,13 +1943,20 @@ AnimateRetreatingPlayerMon: ; 3ccfa (f:4cfa)
 	call .clearScreenArea
 	ld a, $4c
 	Coorda 5, 11
+	jr .clearScreenArea
+.starterPikachu
+	xor a
+	ld [H_WHOSETURN], a
+	callab AnimationSlideMonOff
+	ret
 .clearScreenArea
 	coord hl, 1, 5
 	lb bc, 7, 7
-	jp ClearScreenArea
+	call ClearScreenArea ; jp
+	ret
 
 ; reads player's current mon's HP into wBattleMonHP
-ReadPlayerMonCurHPAndStatus: ; 3cd43 (f:4d43)
+ReadPlayerMonCurHPAndStatus: ; 3ce08 (f:4e08)
 	ld a, [wPlayerMonNumber]
 	ld hl, wPartyMon1HP
 	ld bc, wPartyMon2 - wPartyMon1
@@ -1931,11 +1967,11 @@ ReadPlayerMonCurHPAndStatus: ; 3cd43 (f:4d43)
 	ld bc, $4               ; 2 bytes HP, 1 byte unknown (unused?), 1 byte status
 	jp CopyData
 
-DrawHUDsAndHPBars: ; 3cd5a (f:4d5a)
+DrawHUDsAndHPBars: ; 3ce1f (f:4e1f)
 	call DrawPlayerHUDAndHPBar
 	jp DrawEnemyHUDAndHPBar
 
-DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
+DrawPlayerHUDAndHPBar: ; 3ce25 (f:4e25)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 9, 7
@@ -1962,9 +1998,9 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	ld de, wLoadedMonStatus
 	call PrintStatusConditionNotFainted
 	pop hl
-	jr nz, .asm_3cdae
+	jr nz, .doNotPrintLevel
 	call PrintLevel
-.asm_3cdae
+.doNotPrintLevel
 	ld a, [wLoadedMonSpecies]
 	ld [wcf91], a
 	coord hl, 10, 9
@@ -1976,14 +2012,14 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
-	jr z, .asm_3cdd9
+	jr z, .fainted
 	ld a, [wLowHealthAlarmDisabled]
 	and a ; has the alarm been disabled because the player has already won?
 	ret nz ; if so, return
 	ld a, [wPlayerHPBarColor]
 	cp HP_BAR_RED
-	jr z, .asm_3cde6
-.asm_3cdd9
+	jr z, .setLowHealthAlarm
+.fainted
 	ld hl, wLowHealthAlarm
 	bit 7, [hl] ;low health alarm enabled?
 	ld [hl], $0
@@ -1991,12 +2027,12 @@ DrawPlayerHUDAndHPBar: ; 3cd60 (f:4d60)
 	xor a
 	ld [wChannelSoundIDs + CH4], a
 	ret
-.asm_3cde6
+.setLowHealthAlarm
 	ld hl, wLowHealthAlarm
 	set 7, [hl] ;enable low health alarm
 	ret
 
-DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
+DrawEnemyHUDAndHPBar: ; 3ceb1 (f:4eb1)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 0, 0
@@ -2086,7 +2122,7 @@ DrawEnemyHUDAndHPBar: ; 3cdec (f:4dec)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wEnemyHPBarColor
 
-GetBattleHealthBarColor: ; 3ce90 (f:4e90)
+GetBattleHealthBarColor: ; 3cf55 (f:4f55)
 	ld b, [hl]
 	call GetHealthBarColor
 	ld a, [hl]
@@ -2100,7 +2136,7 @@ GetBattleHealthBarColor: ; 3ce90 (f:4e90)
 ; (i.e. for names longer than 4 letters)
 ; if the name is 3 or 4 letters long, it is printed 1 space more to the right than usual
 ; (i.e. for names longer than 4 letters)
-CenterMonName: ; 3ce9c (f:4e9c)
+CenterMonName: ; 3cf61 (f:4f61)
 	push de
 	inc hl
 	inc hl
@@ -2121,7 +2157,7 @@ CenterMonName: ; 3ce9c (f:4e9c)
 	pop de
 	ret
 
-DisplayBattleMenu: ; 3ceb3 (f:4eb3)
+DisplayBattleMenu: ; 3cf78 (f:4f78)
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	ld a, [wBattleType]
 	and a
@@ -2139,36 +2175,49 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 	ld a, [wBattleType]
-	dec a
-	jp nz, .handleBattleMenuInput ; handle menu input if it's not the old man tutorial
-; the following happens for the old man tutorial
+	cp $1
+	jr z, .doSimulatedMenuInput ; simulate menu input if it's the old man or prof. oak pikachu battle
+	cp $4
+	jr z, .doSimulatedMenuInput
+	jp .handleBattleMenuInput
+; the following happens for the old man tutorial and prof. oak pikachu battle
+.doSimulatedMenuInput
 	ld hl, wPlayerName
 	ld de, wGrassRate
 	ld bc, NAME_LENGTH
 	call CopyData  ; temporarily save the player name in unused space,
 	               ; which is supposed to get overwritten when entering a
-	               ; map with wild Pokémon. Due to an oversight, the data
+	               ; map with wild Pokémon.
+				   ; In Red/Blue, due to an oversight, the data
 	               ; may not get overwritten (cinnabar) and the infamous
-	               ; Missingno. glitch can show up.
+	               ; Missingno. glitch can show up. However,
+				   ; this has been fixed in yellow
 	ld hl, .oldManName
+	ld a, [wBattleType]
+	dec a
+	jr z, .useOldManName
+	ld hl, .profOakName
+.useOldManName
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
 	call CopyData
 ; the following simulates the keystrokes by drawing menus on screen
 	coord hl, 9, 14
 	ld [hl], "▶"
-	ld c, 80
+	ld c, 20
 	call DelayFrames
 	ld [hl], " "
 	coord hl, 9, 16
 	ld [hl], "▶"
-	ld c, 50
+	ld c, 14
 	call DelayFrames
 	ld [hl], $ec
 	ld a, $2 ; select the "ITEM" menu
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
 	db "OLD MAN@"
+.profOakName
+	db "PROF.OAK@"
 .handleBattleMenuInput
 	ld a, [wBattleAndStartSavedMenuItem]
 	ld [wCurrentMenuItem], a
@@ -2251,7 +2300,9 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 .AButtonPressed
 	call PlaceUnfilledArrowMenuCursor
 	ld a, [wBattleType]
-	cp $2 ; is it a Safari battle?
+	cp HURRY_RUN_AWAY_BATTLE
+	jr z, .handleUnusedBattle
+	cp SAFARI_BATTLE ; is it a Safari battle?
 	ld a, [wCurrentMenuItem]
 	ld [wBattleAndStartSavedMenuItem], a
 	jr z, .handleMenuSelection
@@ -2282,12 +2333,23 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 .throwSafariBallWasSelected
 	ld a, SAFARI_BALL
 	ld [wcf91], a
-	jr UseBagItem
+	jp UseBagItem
+.handleUnusedBattle
+	ld a, [wCurrentMenuItem]
+	cp $3
+	jp z, BattleMenu_RunWasSelected
+	ld hl, RunAwayText
+	call PrintText
+	jp DisplayBattleMenu
 
+RunAwayText: ; 3d0df (f:50df)
+	TX_FAR _RunAwayText
+	db "@"
+	
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
 	cp $2
 	jp nz, PartyMenuOrRockOrRun
-
+	
 ; either the bag (normal battle) or bait (safari battle) was selected
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -2309,7 +2371,7 @@ DisplayBattleMenu: ; 3ceb3 (f:4eb3)
 	ld [wcf91], a
 	jr UseBagItem
 
-BagWasSelected:
+BagWasSelected: ; 3d10a (f:510a)
 	call LoadScreenTilesFromBuffer1
 	ld a, [wBattleType]
 	and a ; is it a normal battle?
@@ -2319,21 +2381,25 @@ BagWasSelected:
 	call DrawHUDsAndHPBars
 .next
 	ld a, [wBattleType]
-	dec a ; is it the old man tutorial?
-	jr nz, DisplayPlayerBag ; no, it is a normal battle
-	ld hl, OldManItemList
+	cp OLD_MAN_BATTLE ; is it the old man tutorial?
+	jr z, .simulatedInputBattle
+	cp STARTER_PIKACHU_BATTLE ; is it the prof oak battle with pikachu?
+	jr z, .simulatedInputBattle
+	jr DisplayPlayerBag
+.simulatedInputBattle
+	ld hl, SimulatedInputBattleItemList
 	ld a, l
 	ld [wListPointer], a
 	ld a, h
 	ld [wListPointer + 1], a
 	jr DisplayBagMenu
 
-OldManItemList:
-	db 1 ; # items
-	db POKE_BALL, 50
-	db -1
+SimulatedInputBattleItemList: ; 3c130 (f:5130)
+	db 1 ; # of items
+	db POKE_BALL, 1
+	db $ff
 
-DisplayPlayerBag:
+DisplayPlayerBag: ; 3c134 (f:5134)
 	; get the pointer to player's bag when in a normal battle
 	ld hl, wNumBagItems
 	ld a, l
@@ -2341,7 +2407,7 @@ DisplayPlayerBag:
 	ld a, h
 	ld [wListPointer + 1], a
 
-DisplayBagMenu:
+DisplayBagMenu: ; 3c13f (f:513f)
 	xor a
 	ld [wPrintItemPrices], a
 	ld a, ITEMLISTMENU
@@ -2356,7 +2422,7 @@ DisplayBagMenu:
 	ld [wMenuItemToSwap], a
 	jp c, DisplayBattleMenu ; go back to battle menu if an item was not selected
 
-UseBagItem:
+UseBagItem: ; 3c162 (f:5162)
 	; either use an item from the bag or use a safari zone item
 	ld a, [wcf91]
 	ld [wd11e], a
@@ -2364,13 +2430,14 @@ UseBagItem:
 	call CopyStringToCF4B ; copy name
 	xor a
 	ld [wPseudoItemID], a
+	ld a, [wBattleType]
 	call UseItem
 	call LoadHudTilePatterns
 	call ClearSprites
 	xor a
 	ld [wCurrentMenuItem], a
 	ld a, [wBattleType]
-	cp $2 ; is it a safari battle?
+	cp SAFARI_BATTLE ; is it a safari battle?
 	jr z, .checkIfMonCaptured
 
 	ld a, [wActionResultOrTookBattleTurn]
@@ -2392,7 +2459,7 @@ UseBagItem:
 	jr nz, .returnAfterCapturingMon
 
 	ld a, [wBattleType]
-	cp $2 ; is it a safari battle?
+	cp SAFARI_BATTLE ; is it a safari battle?
 	jr z, .returnAfterUsingItem_NoCapture
 ; not a safari battle
 	call LoadScreenTilesFromBuffer1
@@ -2413,11 +2480,11 @@ UseBagItem:
 	scf ; set carry
 	ret
 
-ItemsCantBeUsedHereText:
+ItemsCantBeUsedHereText: ; 3d1c8 (f:51c8)
 	TX_FAR _ItemsCantBeUsedHereText
 	db "@"
 
-PartyMenuOrRockOrRun:
+PartyMenuOrRockOrRun: ; 3d1cd (f:51cd)
 	dec a ; was Run selected?
 	jp nz, BattleMenu_RunWasSelected
 ; party menu or rock was selected
@@ -2490,6 +2557,8 @@ PartyMenuOrRockOrRun:
 	predef StatusScreen
 	predef StatusScreen2
 ; now we need to reload the enemy mon pic
+	ld a, $1
+	ld [H_WHOSETURN], a
 	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does the enemy mon have a substitute?
 	ld hl, AnimationSubstitute
@@ -2535,7 +2604,7 @@ PartyMenuOrRockOrRun:
 	call GBPalNormal
 ; fall through to SwitchPlayerMon
 
-SwitchPlayerMon: ; 3d1ba (f:51ba)
+SwitchPlayerMon: ; 3d2c1 (f:52c1)
 	callab RetreatMon
 	ld c, 50
 	call DelayFrames
@@ -2558,11 +2627,11 @@ SwitchPlayerMon: ; 3d1ba (f:51ba)
 	and a
 	ret
 
-AlreadyOutText: ; 3d1f5 (f:51f5)
+AlreadyOutText: ; 3d2fc (f:52fc)
 	TX_FAR _AlreadyOutText
 	db "@"
 
-BattleMenu_RunWasSelected: ; 3d1fa (f:51fa)
+BattleMenu_RunWasSelected: ; 3d301 (f:5301)
 	call LoadScreenTilesFromBuffer1
 	ld a, $3
 	ld [wCurrentMenuItem], a
@@ -2577,7 +2646,7 @@ BattleMenu_RunWasSelected: ; 3d1fa (f:51fa)
 	ret nz ; return if the player couldn't escape
 	jp DisplayBattleMenu
 
-MoveSelectionMenu: ; 3d219 (f:5219)
+MoveSelectionMenu: ; 3d320 (f:5320)
 	ld a, [wMoveMenuType]
 	dec a
 	jr z, .mimicmenu
@@ -2609,9 +2678,9 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld hl, wBattleMonMoves
 	call .loadmoves
 	coord hl, 4, 12
-	ld b, $4
-	ld c, $e
-	di
+	lb bc, 4, 14
+	di ; out of pure coincidence, it is possible for vblank to occur between the di and ei
+	   ; so it is necessary to put the di ei block to not cause tearing
 	call TextBoxBorder
 	coord hl, 4, 12
 	ld [hl], $7a
@@ -2627,8 +2696,7 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld hl, wEnemyMonMoves
 	call .loadmoves
 	coord hl, 0, 7
-	ld b, $4
-	ld c, $e
+	lb bc, 4, 14
 	call TextBoxBorder
 	coord hl, 2, 8
 	call .writemoves
@@ -2642,8 +2710,7 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	call AddNTimes
 	call .loadmoves
 	coord hl, 4, 7
-	ld b, $4
-	ld c, $e
+	lb bc, 4, 14
 	call TextBoxBorder
 	coord hl, 6, 8
 	call .writemoves
@@ -2657,8 +2724,6 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld a, [wMoveMenuType]
 	cp $1
 	jr z, .selectedmoveknown
-	ld a, $1
-	jr nc, .selectedmoveknown
 	ld a, [wPlayerMoveListIndex]
 	inc a
 .selectedmoveknown
@@ -2695,7 +2760,7 @@ MoveSelectionMenu: ; 3d219 (f:5219)
 	ld [hl], a
 ; fallthrough
 
-SelectMenuItem: ; 3d2fe (f:52fe)
+SelectMenuItem: ; 3d3fe (f:53fe)
 	ld a, [wMoveMenuType]
 	and a
 	jr z, .battleselect
@@ -2725,9 +2790,9 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	ld hl, hFlags_0xFFFA
 	res 1, [hl]
 	bit 6, a
-	jp nz, CursorUp ; up
+	jp nz, SelectMenuItem_CursorUp ; up
 	bit 7, a
-	jp nz, CursorDown ; down
+	jp nz, SelectMenuItem_CursorDown ; down
 	bit 2, a
 	jp nz, SwapMovesInMenu ; select
 	bit 1, a ; B, but was it reset above?
@@ -2740,10 +2805,10 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	ld b, a
 	ld a, [wMoveMenuType]
 	dec a ; if not mimic
-	jr nz, .nob
+	jr nz, .notB
 	pop af
 	ret
-.nob
+.notB
 	dec a
 	ld a, b
 	ld [wPlayerMoveListIndex], a
@@ -2760,8 +2825,8 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 	add hl, bc
 	ld a, [hl]
 	and $3f
-	jr z, .nopp
-	ld a, [W_PLAYERDISABLEDMOVE]
+	jr z, .noPP
+	ld a, [wPlayerDisabledMove]
 	swap a
 	and $f
 	dec a
@@ -2783,25 +2848,25 @@ SelectMenuItem: ; 3d2fe (f:52fe)
 .disabled
 	ld hl, MoveDisabledText
 	jr .print
-.nopp
+.noPP
 	ld hl, MoveNoPPText
 .print
 	call PrintText
 	call LoadScreenTilesFromBuffer1
 	jp MoveSelectionMenu
 
-MoveNoPPText: ; 3d3ae (f:53ae)
+MoveNoPPText: ; 3d4ae (f:54ae)
 	TX_FAR _MoveNoPPText
 	db "@"
 
-MoveDisabledText: ; 3d3b3 (f:53b3)
+MoveDisabledText: ; 3d4b3 (f:54b3)
 	TX_FAR _MoveDisabledText
 	db "@"
 
-WhichTechniqueString: ; 3d3b8 (f:53b8)
+WhichTechniqueString: ; 3d4b8 (f:54b8)
 	db "WHICH TECHNIQUE?@"
 
-CursorUp: ; 3d3c9 (f:53c9)
+SelectMenuItem_CursorUp: ; 3d4c9 (f:54c9)
 	ld a, [wCurrentMenuItem]
 	and a
 	jp nz, SelectMenuItem
@@ -2811,7 +2876,7 @@ CursorUp: ; 3d3c9 (f:53c9)
 	ld [wCurrentMenuItem], a
 	jp SelectMenuItem
 
-CursorDown: ; 3d3dd (f:53dd)
+SelectMenuItem_CursorDown: ; 3d4dd (f:54dd)
 	ld a, [wCurrentMenuItem]
 	ld b, a
 	ld a, [wNumMovesMinusOne]
@@ -2824,11 +2889,60 @@ CursorDown: ; 3d3dd (f:53dd)
 	ld [wCurrentMenuItem], a
 	jp SelectMenuItem
 
-AnyMoveToSelect: ; 3d3f5 (f:53f5)
+Func_3d4f5: ; 3d4f5 (f:54f5)
+	bit 3, a
+	ld a, $0
+	jr nz, .asm_3d4fd
+	ld a, $1
+	ld [H_WHOSETURN], a
+.asm_3d4fd
+	call LoadScreenTilesFromBuffer1
+	call Func_3d536
+	ld a, [wTestBattlePlayerSelectedMove]
+	and a
+	jp z, MoveSelectionMenu
+	ld [wAnimationID], a
+	xor a
+	ld [wAnimationType], a
+	predef MoveAnimation
+	callab Func_78e98
+	jp MoveSelectionMenu
+	
+Func_3d523: ; 3d523 (f:5523)
+	ld a, [wTestBattlePlayerSelectedMove]
+	dec a
+	jr asm_3d52d
+Func_3d529: ; 3d529 (f:5529)
+	ld a, [wTestBattlePlayerSelectedMove]
+	inc a
+asm_3d52d: ; 3d52d (f:552d)
+	ld [wTestBattlePlayerSelectedMove], a
+	call Func_3d536
+	jp MoveSelectionMenu
+
+Func_3d536: ; 3d536 (f:5536)
+	coord hl, 10, 9
+	lb bc, 2, 10
+	call TextBoxBorder
+	coord hl, 10, 17
+	ld de, wTestBattlePlayerSelectedMove
+	lb bc, LEADING_ZEROS | 1, 3
+	call PrintNumber
+	ld a, [wTestBattlePlayerSelectedMove]
+	and a
+	ret z
+	cp STRUGGLE
+	ret nc
+	ld [wd11e], a
+	call GetMoveName
+	coord hl, 13, 17
+	jp PlaceString
+	
+AnyMoveToSelect: ; 3d55f (f:555f)
 ; return z and Struggle as the selected move if all moves have 0 PP and/or are disabled
 	ld a, STRUGGLE
 	ld [wPlayerSelectedMove], a
-	ld a, [W_PLAYERDISABLEDMOVE]
+	ld a, [wPlayerDisabledMove]
 	and a
 	ld hl, wBattleMonPP
 	jr nz, .asm_3d40e
@@ -2880,7 +2994,7 @@ SwapMovesInMenu: ; 3d435 (f:5435)
 	ld hl, wBattleMonPP
 	call .swapBytes ; swap move PP
 ; update the index of the disabled move if necessary
-	ld hl, W_PLAYERDISABLEDMOVE
+	ld hl, wPlayerDisabledMove
 	ld a, [hl]
 	swap a
 	and $f
@@ -2954,7 +3068,7 @@ PrintMenuItem: ; 3d4b6 (f:54b6)
 	ld b, $3
 	ld c, $9
 	call TextBoxBorder
-	ld a, [W_PLAYERDISABLEDMOVE]
+	ld a, [wPlayerDisabledMove]
 	and a
 	jr z, .notDisabled
 	swap a
@@ -3486,7 +3600,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	jp .returnToHL
 
 .AnyMoveDisabledCheck
-	ld hl,W_PLAYERDISABLEDMOVE
+	ld hl,wPlayerDisabledMove
 	ld a,[hl]
 	and a
 	jr z,.ConfusedCheck
@@ -6424,7 +6538,7 @@ DoBattleTransitionAndInitBattleVariables: ; 3ec32 (f:6c32)
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld [W_PLAYERDISABLEDMOVE], a
+	ld [wPlayerDisabledMove], a
 	ret
 
 ; swaps the level values of the BattleMon and EnemyMon structs
@@ -6865,7 +6979,7 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	ld [wAnimationType], a
 
 PlayMoveAnimation: ; 3ef07 (f:6f07)
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	call Delay3
 	predef_jump MoveAnimation
 
@@ -8269,7 +8383,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .disableEffect
-	ld de, W_PLAYERDISABLEDMOVE
+	ld de, wPlayerDisabledMove
 	ld hl, wBattleMonMoves
 .disableEffect
 ; no effect if target already has a move disabled
@@ -8323,7 +8437,7 @@ DisableEffect: ; 3fa8a (f:7a8a)
 	inc a ; 1-8 turns disabled
 	inc c ; move 1-4 will be disabled
 	swap c
-	add c ; map disabled move to high nibble of wEnemyDisabledMove / W_PLAYERDISABLEDMOVE
+	add c ; map disabled move to high nibble of wEnemyDisabledMove / wPlayerDisabledMove
 	ld [de], a
 	call PlayCurrentMoveAnimation2
 	ld hl, wPlayerDisabledMoveNumber
@@ -8435,7 +8549,7 @@ PlayCurrentMoveAnimation2: ; 3fb89 (f:7b89)
 
 PlayBattleAnimation2: ; 3fb96 (f:7b96)
 ; play animation ID at a and animation type 6 or 3
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	ld a, [H_WHOSETURN]
 	and a
 	ld a, $6
@@ -8461,10 +8575,10 @@ PlayCurrentMoveAnimation: ; 3fba8 (f:7ba8)
 
 PlayBattleAnimation: ; 3fbb9 (f:7bb9)
 ; play animation ID at a and predefined animation type
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 
 PlayBattleAnimationGotID: ; 3fbbc (f:7bbc)
-; play animation at W_ANIMATIONID
+; play animation at wAnimationID
 	push hl
 	push de
 	push bc

@@ -20,7 +20,7 @@ MainMenu: ; 5ba6 (1:5ba6)
 	ld [hli],a
 	ld [hli],a
 	ld [hl],a
-	ld [W_ANIMATIONID],a
+	ld [wAnimationID],a
 	ld hl,wd72e
 	res 6,[hl]
 	call ClearScreen

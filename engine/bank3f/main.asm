@@ -1548,6 +1548,7 @@ IsThisPartymonStarterPikachu_Box:: ; fce0d (3f:4e0d)
 	jr asm_fce21
 
 IsThisPartymonStarterPikachu_Party:: ; fce18 (3f:4e18)
+IsThisPartymonStarterPikachu::
 	ld hl,wPartyMon1
 	ld bc,wPartyMon2 - wPartyMon1
 	ld de,wPartyMonOT

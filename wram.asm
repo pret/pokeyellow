@@ -1700,7 +1700,7 @@ W_PLAYERCONFUSEDCOUNTER:: ; d06b
 
 wPlayerToxicCounter:: ; d06c
 	ds 1
-W_PLAYERDISABLEDMOVE:: ; d06d
+wPlayerDisabledMove:: ; d06d
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
 	ds 1
@@ -1749,7 +1749,7 @@ wObjectToShow:: ; d07a
 
 	ds 1
 
-W_ANIMATIONID:: ; d07c
+wAnimationID:: ; d07c
 ; ID number of the current battle animation
 	ds 1
 

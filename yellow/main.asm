@@ -4207,9 +4207,15 @@ SECTION "bank1E",ROMX,BANK[$1E]
 AnimationTileset2: ; 78757 (1e:4757)
 	dr $78757,$78c17
 SlotMachineTiles2: ; 78c17 (1e:4c17)
-	dr $78c17,$79353
+	dr $78c17,$78e98
+Func_78e98: ; 78e98 (1e:4e98)
+	dr $78e98,$79349
+AnimationSlideMonOff: ; 79349 (1e:5349)
+	dr $79349,$79353
 AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
-	dr $79353,$797af
+	dr $79353,$7966e
+AnimationMinimizeMon: ; 7966e (1e:566e)
+	dr $7966e,$797af
 AnimationSubstitute: ; 797af (1e:57af)
 	dr $797af,$79816
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)

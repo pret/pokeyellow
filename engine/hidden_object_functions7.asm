@@ -391,7 +391,7 @@ BillsHousePokemonList: ; 1ec05 (7:6c05)
 	ld hl, BillsHousePokemonListText1
 	call PrintText
 	xor a
-	ld [W_ANIMATIONID], a
+	ld [wAnimationID], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld a, A_BUTTON | B_BUTTON

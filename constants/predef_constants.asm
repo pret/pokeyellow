@@ -5,7 +5,7 @@ const_value = 0
 	predef_const AnimateSendingOutMon
 	predef_const ScaleSpriteByTwo
 	predef_const LoadMonBackPic
-	predef_const Func_79aba
+	predef_const CopyDownscaledMonTiles
 	predef_const LoadMissableObjects
 	predef_const HealParty
 	predef_const MoveAnimation; 08 play move animation
