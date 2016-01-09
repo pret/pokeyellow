@@ -2368,7 +2368,7 @@ wCurMapWidth:: ; d369
 W_MAPDATAPTR:: ; d36a
 	ds 2
 
-W_MAPTEXTPTR:: ; d36c
+wMapTextPtr:: ; d36c
 	ds 2
 
 W_MAPSCRIPTPTR:: ; d36e

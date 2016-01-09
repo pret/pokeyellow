@@ -363,7 +363,7 @@ ChangeBox:: ; 73bed (1c:7bed)
 	call GetBoxSRAMLocation
 	ld de, wBoxDataStart
 	call CopyBoxToOrFromSRAM ; copy new box from SRAM to WRAM
-	ld hl, W_MAPTEXTPTR
+	ld hl, wMapTextPtr
 	ld de, wChangeBoxSavedMapTextPointer
 	ld a, [hli]
 	ld [de], a

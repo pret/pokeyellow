@@ -14,9 +14,9 @@ ViridianMartScript_1d47d: ; 1d47d (7:547d)
 	ld hl, ViridianMartTextPointers + $a ; starts at ViridianMartText6
 .asm_1d48c
 	ld a, l
-	ld [W_MAPTEXTPTR], a
+	ld [wMapTextPtr], a
 	ld a, h
-	ld [W_MAPTEXTPTR+1], a
+	ld [wMapTextPtr+1], a
 	ret
 
 ViridianMartScriptPointers: ; 1d495 (7:5495)

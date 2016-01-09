@@ -714,9 +714,9 @@ OaksLabScript_1d02b: ; 1d02b (7:502b)
 OaksLabScript_1d076: ; 1d076 (7:5076)
 	ld hl, OaksLabTextPointers + $36 ; starts at OaksLabText28
 	ld a, l
-	ld [W_MAPTEXTPTR], a
+	ld [wMapTextPtr], a
 	ld a, h
-	ld [W_MAPTEXTPTR+1], a
+	ld [wMapTextPtr+1], a
 	ret
 
 OaksLabTextPointers: ; 1d082 (7:5082)

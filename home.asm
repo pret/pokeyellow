@@ -1247,7 +1247,7 @@ DisplayTextID:: ; 2817 (0:2817)
 .skipSwitchToMapBank
 	ld a,30 ; half a second
 	ld [H_FRAMECOUNTER],a ; used as joypad poll timer
-	ld hl,W_MAPTEXTPTR
+	ld hl,wMapTextPtr
 	ld a,[hli]
 	ld h,[hl]
 	ld l,a ; hl = map text pointer
@@ -4874,7 +4874,7 @@ Random:: ; 3e6d (0:3e6d)
 
 BankswitchCommon:: ; 3e7e (0:3e7e)
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank], a
 	ret
 	
 Bankswitch:: ; 3e84 (0:3e84)
@@ -4884,31 +4884,31 @@ Bankswitch:: ; 3e84 (0:3e84)
 	push af
 	ld a,b
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank], a
 	call JumpToAddress
 	pop bc
 	ld a,b
 	ld [H_LOADEDROMBANK],a
-	ld [$2000],a
+	ld [MBC1RomBank], a
 	ret
 JumpToAddress:: ; 3e98 (0:3e98)
 	jp [hl]
 
 SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
 	push af
-	ld a,$1
-	ld [$6000],a
-	ld a,SRAM_ENABLE
-	ld [$0],a
+	ld a, $1
+	ld [MBC1SRamBankingMode], a
+	ld a, SRAM_ENABLE
+	ld [MBC1SRamEnable],a
 	pop af
-	ld [$4000],a
+	ld [MBC1SRamBank],a
 	ret
 	
 PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 	push af
-	ld a,$0
-	ld [$6000],a
-	ld [$0],a
+	ld a, $0
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamEnable], a
 	pop af
 	ret
 	
@@ -4960,7 +4960,7 @@ PrintPredefTextID:: ; 3f3a (0:3f3a)
 	call DisplayTextID
 
 RestoreMapTextPointer:: ; 3f4a (0:3f4a)
-	ld hl, W_MAPTEXTPTR
+	ld hl, wMapTextPtr
 	ld a, [$ffec]
 	ld [hli], a
 	ld a, [$ffec + 1]
@@ -4968,14 +4968,14 @@ RestoreMapTextPointer:: ; 3f4a (0:3f4a)
 	ret
 
 SetMapTextPointer:: ; 3f54 (0:3f54)
-	ld a, [W_MAPTEXTPTR]
+	ld a, [wMapTextPtr]
 	ld [$ffec], a
-	ld a, [W_MAPTEXTPTR + 1]
+	ld a, [wMapTextPtr + 1]
 	ld [$ffec + 1], a
 	ld a, l
-	ld [W_MAPTEXTPTR], a
+	ld [wMapTextPtr], a
 	ld a, h
-	ld [W_MAPTEXTPTR + 1], a
+	ld [wMapTextPtr + 1], a
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
