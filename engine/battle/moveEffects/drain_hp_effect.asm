@@ -85,7 +85,7 @@ DrainHPEffect_: ; 76e7 (1:76e7)
 	ld hl, SuckedHealthText
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .next3
 	ld a, [wEnemyMoveEffect]
 .next3

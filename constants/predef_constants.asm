@@ -36,7 +36,7 @@ const_value = 0
 	predef_const Func_480ff
 	predef_const CalcPositionOfPlayerRelativeToNPC
 	predef_const ConvertNPCMovementDirectionsToJoypadMasks
-	predef_const Func_48125
+	predef_const PredefShakeScreenHorizontally
 	predef_const UpdateHPBar
 	predef_const HPBarLength
 	predef_const Diploma_TextBoxBorder

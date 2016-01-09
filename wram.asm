@@ -1500,7 +1500,7 @@ W_ENEMYMOVEMAXPP:: ; cfd1
 	ds 1
 W_PLAYERMOVENUM:: ; cfd2
 	ds 1
-W_PLAYERMOVEEFFECT:: ; cfd3
+wPlayerMoveEffect:: ; cfd3
 	ds 1
 W_PLAYERMOVEPOWER:: ; cfd4
 	ds 1

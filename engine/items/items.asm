@@ -1697,7 +1697,7 @@ ItemUseXStat: ; df69 (3:df69)
 	ld a,[hli]
 	push af ; save [W_PLAYERMOVENUM]
 	ld a,[hl]
-	push af ; save [W_PLAYERMOVEEFFECT]
+	push af ; save [wPlayerMoveEffect]
 	push hl
 	ld a,[wcf91]
 	sub a,X_ATTACK - ATTACK_UP1_EFFECT
@@ -1721,7 +1721,7 @@ ItemUseXStat: ; df69 (3:df69)
 	
 	pop hl
 	pop af
-	ld [hld],a ; restore [W_PLAYERMOVEEFFECT]
+	ld [hld],a ; restore [wPlayerMoveEffect]
 	pop af
 	ld [hl],a ; restore [W_PLAYERMOVENUM]
 	ret

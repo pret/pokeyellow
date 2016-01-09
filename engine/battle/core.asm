@@ -3308,7 +3308,7 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	jp z, ExecutePlayerMoveDone
 
 CheckIfPlayerNeedsToChargeUp: ; 3d69a (f:569a)
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect
 	cp FLY_EFFECT
@@ -3328,19 +3328,19 @@ PlayerCanExecuteMove: ; 3d6b0 (f:56b0)
 	ld de,wPlayerSelectedMove ; pointer to the move just used
 	ld b,BANK(DecrementPP)
 	call Bankswitch
-	ld a,[W_PLAYERMOVEEFFECT] ; effect of the move just used
+	ld a,[wPlayerMoveEffect] ; effect of the move just used
 	ld hl,ResidualEffects1
 	ld de,1
 	call IsInArray
 	jp c,JumpMoveEffect ; ResidualEffects1 moves skip damage calculation and accuracy tests
 	                    ; unless executed as part of their exclusive effect functions
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	ld hl,SpecialEffectsCont
 	ld de,1
 	call IsInArray
 	call c,JumpMoveEffect ; execute the effects of SpecialEffectsCont moves (e.g. Wrap, Thrash) but don't skip anything
 PlayerCalcMoveDamage: ; 3d6dc (f:56dc)
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	ld hl,SetDamageEffects
 	ld de,1
 	call IsInArray
@@ -3360,12 +3360,12 @@ handleIfPlayerMoveMissed
 	ld a,[wMoveMissed]
 	and a
 	jr z,getPlayerAnimationType
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	sub a,EXPLODE_EFFECT
 	jr z,playPlayerMoveAnimation ; don't play any animation if the move missed, unless it was EXPLODE_EFFECT
 	jr playerCheckIfFlyOrChargeEffect
 getPlayerAnimationType
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	and a
 	ld a,4 ; move has no effect other than dealing damage
 	jr z,playPlayerMoveAnimation
@@ -3392,7 +3392,7 @@ playPlayerMoveAnimation
 playerCheckIfFlyOrChargeEffect
 	ld c,30
 	call DelayFrames
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,FLY_EFFECT
 	jr z,.playAnim
 	cp a,CHARGE_EFFECT
@@ -3404,7 +3404,7 @@ playerCheckIfFlyOrChargeEffect
 	ld a,STATUS_AFFECTED_ANIM
 	call PlayMoveAnimation
 MirrorMoveCheck
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,MIRROR_MOVE_EFFECT
 	jr nz,.metronomeCheck
 	call MirrorMoveCopyMove
@@ -3418,7 +3418,7 @@ MirrorMoveCheck
 	call MetronomePickMove
 	jp CheckIfPlayerNeedsToChargeUp ; Go back to damage calculation for the move picked by Metronome
 .next
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	ld hl,ResidualEffects2
 	ld de,1
 	call IsInArray
@@ -3427,7 +3427,7 @@ MirrorMoveCheck
 	and a
 	jr z,.moveDidNotMiss
 	call PrintMoveFailureText
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,EXPLODE_EFFECT ; even if Explosion or Selfdestruct missed, its effect still needs to be activated
 	jr z,.notDone
 	jp ExecutePlayerMoveDone ; otherwise, we're done if the move missed
@@ -3438,7 +3438,7 @@ MirrorMoveCheck
 	ld a,1
 	ld [wMoveDidntMiss],a
 .notDone
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	ld hl,AlwaysHappenSideEffects
 	ld de,1
 	call IsInArray
@@ -3464,7 +3464,7 @@ MirrorMoveCheck
 	xor a
 	ld [wPlayerNumHits],a
 .executeOtherEffects
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	and a
 	jp z,ExecutePlayerMoveDone
 	ld hl,SpecialEffects
@@ -3670,7 +3670,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	; clear bide, thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
 	and $ff ^ ((1 << StoringEnergy) | (1 << ThrashingAbout) | (1 << ChargingUp) | (1 << UsingTrappingMove))
 	ld [hl],a
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,FLY_EFFECT
 	jr z,.FlyOrChargeEffect
 	cp a,CHARGE_EFFECT
@@ -3781,7 +3781,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	call GetMoveName
 	call CopyStringToCF4B
 	xor a
-	ld [W_PLAYERMOVEEFFECT], a
+	ld [wPlayerMoveEffect], a
 	ld hl, PlayerCanExecuteMove
 	jp .returnToHL
 
@@ -3888,7 +3888,7 @@ HandleSelfConfusionDamage: ; 3daad (f:5aad)
 	ld [hli], a
 	ld a, [wBattleMonDefense + 1]
 	ld [hl], a
-	ld hl, W_PLAYERMOVEEFFECT
+	ld hl, wPlayerMoveEffect
 	push hl
 	ld a, [hl]
 	push af
@@ -4068,7 +4068,7 @@ ExclamationPointMoveSets: ; 3dba3 (f:5ba3)
 	db $FF ; terminator
 
 PrintMoveFailureText: ; 3dbe2 (f:5be2)
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playersTurn
@@ -4657,7 +4657,7 @@ CalculateDamage: ; 3df65 (f:5f65)
 
 	ld a, [H_WHOSETURN] ; whose turn?
 	and a
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .effect
 	ld a, [wEnemyMoveEffect]
 .effect
@@ -4970,7 +4970,7 @@ HandleCounterMove: ; 3e093 (f:6093)
 	ret
 
 ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,OHKO_EFFECT
 	jr z,ApplyDamageToEnemyPokemon
 	cp a,SUPER_FANG_EFFECT
@@ -5252,7 +5252,7 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld a,[H_WHOSETURN]
 	xor a,$01
 	ld [H_WHOSETURN],a
-	ld hl,W_PLAYERMOVEEFFECT ; value for player's turn
+	ld hl,wPlayerMoveEffect ; value for player's turn
 	and a
 	jr z,.nullifyEffect
 	ld hl,wEnemyMoveEffect ; value for enemy's turn
@@ -5588,7 +5588,7 @@ INCLUDE "data/type_effects.asm"
 MoveHitTest: ; 3e56b (f:656b)
 ; player's turn
 	ld hl,wEnemyBattleStatus1
-	ld de,W_PLAYERMOVEEFFECT
+	ld de,wPlayerMoveEffect
 	ld bc,wEnemyMonStatus
 	ld a,[H_WHOSETURN]
 	and a
@@ -5624,7 +5624,7 @@ MoveHitTest: ; 3e56b (f:656b)
 	jr nz,.enemyTurn
 .playerTurn
 ; this checks if the move effect is disallowed by mist
-	ld a,[W_PLAYERMOVEEFFECT]
+	ld a,[wPlayerMoveEffect]
 	cp a,ATTACK_DOWN1_EFFECT
 	jr c,.skipEnemyMistCheck
 	cp a,HAZE_EFFECT + 1
@@ -6998,7 +6998,7 @@ JumpMoveEffect: ; 3f132 (f:7132)
 _JumpMoveEffect: ; 3f138 (f:7138)
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .next1
 	ld a, [wEnemyMoveEffect]
 .next1
@@ -7155,7 +7155,7 @@ AlreadyAsleepText: ; 3f24a (f:724a)
 
 PoisonEffect: ; 3f24f (f:724f)
 	ld hl, wEnemyMonStatus
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .poisonEffect
@@ -7288,7 +7288,7 @@ FreezeBurnParalyzeEffect: ; 3f30c (f:730c)
 	ld a, [wEnemyMonType2]
 	cp b ; do target type 2 and move type match?
 	ret z  ; return if they match
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	cp a, PARALYZE_SIDE_EFFECT1 + 1 ; 10% status effects are 04, 05, 06 so 07 will set carry for those
 	ld b, $1a ; 0x1A/0x100 or 26/256 = 10.2%~ chance
 	jr c, .next1 ; branch ahead if this is a 10% chance effect..
@@ -7423,7 +7423,7 @@ FireDefrostedText: ; 3f423 (f:7423)
 
 StatModifierUpEffect: ; 3f428 (f:7428)
 	ld hl, wPlayerMonStatMods
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .statModifierUpEffect
@@ -7591,7 +7591,7 @@ MonsStatsRoseText: ; 3f528 (f:7528)
 	ld hl, GreatlyRoseText
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .asm_3f53b
 	ld a, [wEnemyMoveEffect]
 .asm_3f53b
@@ -7610,7 +7610,7 @@ RoseText: ; 3f547 (f:7547)
 
 StatModifierDownEffect: ; 3f54c (f:754c)
 	ld hl, wEnemyMonStatMods
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld bc, wEnemyBattleStatus1
 	ld a, [H_WHOSETURN]
 	and a
@@ -7793,7 +7793,7 @@ MonsStatsFellText: ; 3f661 (f:7661)
 	ld hl, FellText
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .asm_3f674
 	ld a, [wEnemyMoveEffect]
 .asm_3f674
@@ -7868,7 +7868,7 @@ BideEffect: ; 3f6e5 (f:76e5)
 	ld [de], a
 	inc de
 	ld [de], a
-	ld [W_PLAYERMOVEEFFECT], a
+	ld [wPlayerMoveEffect], a
 	ld [wEnemyMoveEffect], a
 	call BattleRandom
 	and $1
@@ -8027,7 +8027,7 @@ TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	bit AttackingMultipleTimes, [hl] ; is mon attacking multiple times?
 	ret nz
 	set AttackingMultipleTimes, [hl] ; mon is now attacking multiple times
-	ld hl, W_PLAYERMOVEEFFECT
+	ld hl, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .setNumberOfHits
@@ -8062,7 +8062,7 @@ FlinchSideEffect: ; 3f85b (f:785b)
 	call CheckTargetSubstitute
 	ret nz
 	ld hl, wEnemyBattleStatus1
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .flinchSideEffect
@@ -8087,7 +8087,7 @@ OneHitKOEffect: ; 3f884 (f:7884)
 
 ChargeEffect: ; 3f88c (f:788c)
 	ld hl, wPlayerBattleStatus1
-	ld de, W_PLAYERMOVEEFFECT
+	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
 	ld b, XSTATITEM_ANIM
@@ -8220,7 +8220,7 @@ ConfusionSideEffectSuccess: ; 3f96f (f:796f)
 	and a
 	ld hl, wEnemyBattleStatus1
 	ld bc, W_ENEMYCONFUSEDCOUNTER
-	ld a, [W_PLAYERMOVEEFFECT]
+	ld a, [wPlayerMoveEffect]
 	jr z, .confuseTarget
 	ld hl, wPlayerBattleStatus1
 	ld bc, W_PLAYERCONFUSEDCOUNTER
