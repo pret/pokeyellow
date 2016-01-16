@@ -34,7 +34,7 @@ EraseType2Text: ; 27d41 (9:7d41)
 PrintMoveType: ; 27d4d (9:7d4d)
 	call GetPredefRegisters
 	push hl
-	ld a, [W_PLAYERMOVETYPE]
+	ld a, [wPlayerMoveType]
 ; fall through
 
 PrintType_: ; 27d54 (9:7d54)

@@ -1863,7 +1863,7 @@ SendOutMon: ; 3ccfb (f:4cfb)
 	ld [hl], a
 	ld [wBoostExpByExpAll], a
 	ld [wDamageMultipliers], a
-	ld [W_PLAYERMOVENUM], a
+	ld [wPlayerMoveNum], a
 	ld hl, wPlayerUsedMove
 	ld [hli], a
 	ld [hl], a
@@ -3379,7 +3379,7 @@ playPlayerMoveAnimation
 	call nz,Bankswitch
 	pop af
 	ld [wAnimationType],a
-	ld a,[W_PLAYERMOVENUM]
+	ld a,[wPlayerMoveNum]
 	call PlayMoveAnimation
 	call HandleExplodingAnimation
 	call DrawPlayerHUDAndHPBar
@@ -3691,7 +3691,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	bit StoringEnergy,[hl] ; is mon using bide?
 	jr z,.ThrashingAboutCheck
 	xor a
-	ld [W_PLAYERMOVENUM],a
+	ld [wPlayerMoveNum],a
 	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
@@ -3714,7 +3714,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld hl,UnleashedEnergyText
 	call PrintText
 	ld a,1
-	ld [W_PLAYERMOVEPOWER],a
+	ld [wPlayerMovePower],a
 	ld hl,wPlayerBideAccumulatedDamage + 1
 	ld a,[hld]
 	add a
@@ -3732,7 +3732,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld [hli],a
 	ld [hl],a
 	ld a,BIDE
-	ld [W_PLAYERMOVENUM],a
+	ld [wPlayerMoveNum],a
 	ld hl,handleIfPlayerMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
 	jp .returnToHL
 
@@ -3740,7 +3740,7 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	bit ThrashingAbout,[hl] ; is mon using thrash or petal dance?
 	jr z,.MultiturnMoveCheck
 	ld a,THRASH
-	ld [W_PLAYERMOVENUM],a
+	ld [wPlayerMoveNum],a
 	ld hl,ThrashingAboutText
 	call PrintText
 	ld hl,wPlayerNumAttacksLeft
@@ -3934,7 +3934,7 @@ MonName1Text: ; 3dafb (f:5afb)
 	TX_ASM
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	ld hl, wPlayerUsedMove
 	jr z, .asm_3db11
 	ld a, [wEnemyMoveNum]
@@ -4145,7 +4145,7 @@ DoesntAffectMonText: ; 3dc57 (f:5c57)
 	db "@"
 
 ; if there was a critical hit or an OHKO was successful, print the corresponding text
-PrintCriticalOHKOText: ; 3dc5c (f:5c5c)
+PrintCriticalOHKOText: ; 3ddce (f:5dce)
 	ld a, [wCriticalHitOrOHKO]
 	and a
 	jr z, .done ; do nothing if there was no critical hit or successful OHKO
@@ -4165,21 +4165,21 @@ PrintCriticalOHKOText: ; 3dc5c (f:5c5c)
 	ld c, 20
 	jp DelayFrames
 
-CriticalOHKOTextPointers: ; 3dc7a (f:5c7a)
+CriticalOHKOTextPointers: ; 3ddec (f:5dec)
 	dw CriticalHitText
 	dw OHKOText
 
-CriticalHitText: ; 3dc7e (f:5c7e)
+CriticalHitText: ; 3ddf0 (f:5df0)
 	TX_FAR _CriticalHitText
 	db "@"
 
-OHKOText: ; 3dc83 (f:5c83)
+OHKOText: ; 3ddf5 (f:5df5)
 	TX_FAR _OHKOText
 	db "@"
 
 ; checks if a traded mon will disobey due to lack of badges
 ; stores whether the mon will use a move in Z flag
-CheckForDisobedience: ; 3dc88 (f:5c88)
+CheckForDisobedience: ; 3ddfa (f:5dfa)
 	xor a
 	ld [wMonIsDisobedient], a
 	ld a, [wLinkState]
@@ -4358,38 +4358,38 @@ CheckForDisobedience: ; 3dc88 (f:5c88)
 	xor a ; set Z flag
 	ret
 
-LoafingAroundText: ; 3ddb6 (f:5db6)
+LoafingAroundText: ; 3df28 (f:5f28)
 	TX_FAR _LoafingAroundText
 	db "@"
 
-BeganToNapText: ; 3ddbb (f:5dbb)
+BeganToNapText: ; 3df2d (f:5f2d)
 	TX_FAR _BeganToNapText
 	db "@"
 
-WontObeyText: ; 3ddc0 (f:5dc0)
+WontObeyText: ; 3df32 (f:5f32)
 	TX_FAR _WontObeyText
 	db "@"
 
-TurnedAwayText: ; 3ddc5 (f:5dc5)
+TurnedAwayText: ; 3df37 (f:5f37)
 	TX_FAR _TurnedAwayText
 	db "@"
 
-IgnoredOrdersText: ; 3ddca (f:5dca)
+IgnoredOrdersText: ; 3df3c (f:5f3c)
 	TX_FAR _IgnoredOrdersText
 	db "@"
 
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the player mon
-GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
+GetDamageVarsForPlayerAttack: ; 3df41 (f:5f41)
 	xor a
 	ld hl, wDamage ; damage to eventually inflict, initialise to zero
 	ldi [hl], a
 	ld [hl], a
-	ld hl, W_PLAYERMOVEPOWER
+	ld hl, wPlayerMovePower
 	ld a, [hli]
 	and a
 	ld d, a ; d = move power
 	ret z ; return if move power is zero
-	ld a, [hl] ; a = [W_PLAYERMOVETYPE]
+	ld a, [hl] ; a = [wPlayerMoveType]
 	cp FIRE ; types >= FIRE are all special
 	jr nc, .specialAttack
 .physicalAttack
@@ -4492,12 +4492,12 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 	ret
 
 ; sets b, c, d, and e for the CalculateDamage routine in the case of an attack by the enemy mon
-GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
+GetDamageVarsForEnemyAttack: ; 3dfe7 (f:5fe7)
 	ld hl, wDamage ; damage to eventually inflict, initialise to zero
 	xor a
 	ld [hli], a
 	ld [hl], a
-	ld hl, W_ENEMYMOVEPOWER
+	ld hl, wEnemyMovePower
 	ld a, [hli]
 	ld d, a ; d = move power
 	and a
@@ -4607,7 +4607,7 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 
 ; get stat c of enemy mon
 ; c: stat to get (HP=1,Attack=2,Defense=3,Speed=4,Special=5)
-GetEnemyMonStat: ; 3df1c (f:5f1c)
+GetEnemyMonStat: ; 3e08e (f:608e)
 	push de
 	push bc
 	ld a, [wLinkState]
@@ -4648,7 +4648,7 @@ GetEnemyMonStat: ; 3df1c (f:5f1c)
 	pop de
 	ret
 
-CalculateDamage: ; 3df65 (f:5f65)
+CalculateDamage: ; 3d0d7 (f:60d7)
 ; input:
 ;	b: attack
 ;	c: opponent defense
@@ -4741,31 +4741,31 @@ CalculateDamage: ; 3df65 (f:5f65)
 	ld a, [H_QUOTIENT + 3]
 	add b
 	ld [H_QUOTIENT + 3], a
-	jr nc, .asm_3dfd0
+	jr nc, .asm_3e142
 
 	ld a, [H_QUOTIENT + 2]
 	inc a
 	ld [H_QUOTIENT + 2], a
 	and a
-	jr z, .asm_3e004
+	jr z, .asm_3e176
 
-.asm_3dfd0
+.asm_3e142
 	ld a, [H_QUOTIENT]
 	ld b, a
 	ld a, [H_QUOTIENT + 1]
 	or a
-	jr nz, .asm_3e004
+	jr nz, .asm_3e176
 
 	ld a, [H_QUOTIENT + 2]
 	cp 998 / $100
-	jr c, .asm_3dfe8
+	jr c, .asm_3e15a
 	cp 998 / $100 + 1
-	jr nc, .asm_3e004
+	jr nc, .asm_3e176
 	ld a, [H_QUOTIENT + 3]
 	cp 998 % $100
-	jr nc, .asm_3e004
+	jr nc, .asm_3e176
 
-.asm_3dfe8
+.asm_3e15a
 	inc hl
 	ld a, [H_QUOTIENT + 3]
 	ld b, [hl]
@@ -4776,26 +4776,26 @@ CalculateDamage: ; 3df65 (f:5f65)
 	ld b, [hl]
 	adc b
 	ld [hl], a
-	jr c, .asm_3e004
+	jr c, .asm_3e176
 
 	ld a, [hl]
 	cp 998 / $100
-	jr c, .asm_3e00a
+	jr c, .asm_3e17c
 	cp 998 / $100 + 1
-	jr nc, .asm_3e004
+	jr nc, .asm_3e176
 	inc hl
 	ld a, [hld]
 	cp 998 % $100
-	jr c, .asm_3e00a
+	jr c, .asm_3e17c
 
-.asm_3e004
+.asm_3e176
 ; cap at 997
 	ld a, 997 / $100
 	ld [hli], a
 	ld a, 997 % $100
 	ld [hld], a
 
-.asm_3e00a
+.asm_3e17c
 ; add 2
 	inc hl
 	ld a, [hl]
@@ -4810,14 +4810,14 @@ CalculateDamage: ; 3df65 (f:5f65)
 	and a
 	ret
 
-JumpToOHKOMoveEffect: ; 3e016 (f:6016)
+JumpToOHKOMoveEffect: ; 3e188 (f:6188)
 	call JumpMoveEffect
 	ld a, [wMoveMissed]
 	dec a
 	ret
 
 
-UnusedHighCriticalMoves: ; 3e01e (f:601e)
+UnusedHighCriticalMoves: ; 3e190 (f:6190)
 	db KARATE_CHOP
 	db RAZOR_LEAF
 	db CRABHAMMER
@@ -4826,17 +4826,17 @@ UnusedHighCriticalMoves: ; 3e01e (f:601e)
 ; 3e023
 
 ; determines if attack is a critical hit
-; azure heights claims "the fastest pokémon (who are,not coincidentally,
+; azure heights claims "the fastest pokémon (who are, not coincidentally,
 ; among the most popular) tend to CH about 20 to 25% of the time."
-CriticalHitTest: ; 3e023 (f:6023)
+CriticalHitTest: ; 3e195 (f:6195)
 	xor a
 	ld [wCriticalHitOrOHKO], a
 	ld a, [H_WHOSETURN]
 	and a
 	ld a, [wEnemyMonSpecies]
-	jr nz, .asm_3e032
+	jr nz, .handleEnemy
 	ld a, [wBattleMonSpecies]
-.asm_3e032
+.handleEnemy
 	ld [wd0b5], a
 	call GetMonHeader
 	ld a, [wMonHBaseSpeed]
@@ -4844,10 +4844,10 @@ CriticalHitTest: ; 3e023 (f:6023)
 	srl b                        ; (effective (base speed/2))
 	ld a, [H_WHOSETURN]
 	and a
-	ld hl, W_PLAYERMOVEPOWER
+	ld hl, wPlayerMovePower
 	ld de, wPlayerBattleStatus2
 	jr z, .calcCriticalHitProbability
-	ld hl, W_ENEMYMOVEPOWER
+	ld hl, wEnemyMovePower
 	ld de, wEnemyBattleStatus2
 .calcCriticalHitProbability
 	ld a, [hld]                  ; read base power from RAM
@@ -4895,7 +4895,7 @@ CriticalHitTest: ; 3e023 (f:6023)
 	ret
 
 ; high critical hit moves
-HighCriticalMoves: ; 3e08e (f:608e)
+HighCriticalMoves: ; 3e200 (f:6200)
 	db KARATE_CHOP
 	db RAZOR_LEAF
 	db CRABHAMMER
@@ -4904,7 +4904,7 @@ HighCriticalMoves: ; 3e08e (f:608e)
 
 
 ; function to determine if Counter hits and if so, how much damage it does
-HandleCounterMove: ; 3e093 (f:6093)
+HandleCounterMove: ; 3e205 (f:6205)
 ; The variables checked by Counter are updated whenever the cursor points to a new move in the battle selection menu.
 ; This is irrelevant for the opponent's side outside of link battles, since the move selection is controlled by the AI.
 ; However, in the scenario where the player switches out and the opponent uses Counter,
@@ -4915,12 +4915,12 @@ HandleCounterMove: ; 3e093 (f:6093)
 	and a
 ; player's turn
 	ld hl,wEnemySelectedMove
-	ld de,W_ENEMYMOVEPOWER
+	ld de,wEnemyMovePower
 	ld a,[wPlayerSelectedMove]
 	jr z,.next
 ; enemy's turn
 	ld hl,wPlayerSelectedMove
-	ld de,W_PLAYERMOVEPOWER
+	ld de,wPlayerMovePower
 	ld a,[wEnemySelectedMove]
 .next
 	cp a,COUNTER
@@ -4969,7 +4969,7 @@ HandleCounterMove: ; 3e093 (f:6093)
 	xor a
 	ret
 
-ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
+ApplyAttackToEnemyPokemon: ; 3e251 (f:6251)
 	ld a,[wPlayerMoveEffect]
 	cp a,OHKO_EFFECT
 	jr z,ApplyDamageToEnemyPokemon
@@ -4977,7 +4977,7 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
 	jr z,.superFangEffect
 	cp a,SPECIAL_DAMAGE_EFFECT
 	jr z,.specialDamage
-	ld a,[W_PLAYERMOVEPOWER]
+	ld a,[wPlayerMovePower]
 	and a
 	jp z,ApplyAttackToEnemyPokemonDone ; no attack to apply if base power is 0
 	jr ApplyDamageToEnemyPokemon
@@ -5003,7 +5003,7 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
 	ld hl,wBattleMonLevel
 	ld a,[hl]
 	ld b,a ; Seismic Toss deals damage equal to the user's level
-	ld a,[W_PLAYERMOVENUM]
+	ld a,[wPlayerMoveNum]
 	cp a,SEISMIC_TOSS
 	jr z,.storeDamage
 	cp a,NIGHT_SHADE
@@ -5035,7 +5035,7 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
 	ld a,b
 	ld [hl],a
 
-ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
+ApplyDamageToEnemyPokemon: ; 3e2b4 (f:62b4)
 	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
@@ -5085,10 +5085,10 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	xor a
 	ld [wHPBarType],a
 	predef UpdateHPBar2 ; animate the HP bar shortening
-ApplyAttackToEnemyPokemonDone: ; 3e19d (f:619d)
+ApplyAttackToEnemyPokemonDone: ; 3e30f (f:630f)
 	jp DrawHUDsAndHPBars
 
-ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
+ApplyAttackToPlayerPokemon: ; 3e312 (f:6312)
 	ld a,[wEnemyMoveEffect]
 	cp a,OHKO_EFFECT
 	jr z,ApplyDamageToPlayerPokemon
@@ -5096,7 +5096,7 @@ ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	jr z,.superFangEffect
 	cp a,SPECIAL_DAMAGE_EFFECT
 	jr z,.specialDamage
-	ld a,[W_ENEMYMOVEPOWER]
+	ld a,[wEnemyMovePower]
 	and a
 	jp z,ApplyAttackToPlayerPokemonDone
 	jr ApplyDamageToPlayerPokemon
@@ -5154,7 +5154,7 @@ ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	ld a,b
 	ld [hl],a
 
-ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
+ApplyDamageToPlayerPokemon: ; 3e372 (f:6372)
 	ld hl,wDamage
 	ld a,[hli]
 	ld b,a
@@ -5203,10 +5203,10 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	ld a,$01
 	ld [wHPBarType],a
 	predef UpdateHPBar2 ; animate the HP bar shortening
-ApplyAttackToPlayerPokemonDone
+ApplyAttackToPlayerPokemonDone: ; 3e3cd (f:63cd)
 	jp DrawHUDsAndHPBars
 
-AttackSubstitute: ; 3e25e (f:625e)
+AttackSubstitute: ; 3e3d0 (f:63d0)
 ; Unlike the two ApplyAttackToPokemon functions, Attack Substitute is shared by player and enemy.
 ; Self-confusion damage as well as Hi-Jump Kick and Jump Kick recoil cause a momentary turn swap before being applied.
 ; If the user has a Substitute up and would take damage because of that,
@@ -5261,16 +5261,16 @@ AttackSubstitute: ; 3e25e (f:625e)
 	ld [hl],a ; zero the effect of the attacker's move
 	jp DrawHUDsAndHPBars
 
-SubstituteTookDamageText: ; 3e2ac (f:62ac)
+SubstituteTookDamageText: ; 3e41e (f:641e)
 	TX_FAR _SubstituteTookDamageText
 	db "@"
 
-SubstituteBrokeText: ; 3e2b1 (f:62b1)
+SubstituteBrokeText: ; 3e423 (f:6423)
 	TX_FAR _SubstituteBrokeText
 	db "@"
 
 ; this function raises the attack modifier of a pokemon using Rage when that pokemon is attacked
-HandleBuildingRage: ; 3e2b6 (f:62b6)
+HandleBuildingRage: ; 3e428 (f:6428)
 ; values for the player turn
 	ld hl,wEnemyBattleStatus2
 	ld de,wEnemyMonStatMods
@@ -5281,7 +5281,7 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 ; values for the enemy turn
 	ld hl,wPlayerBattleStatus2
 	ld de,wPlayerMonStatMods
-	ld bc,W_PLAYERMOVENUM
+	ld bc,wPlayerMoveNum
 .next
 	bit UsingRage,[hl] ; is the pokemon being attacked under the effect of Rage?
 	ret z ; return if not
@@ -5312,13 +5312,13 @@ HandleBuildingRage: ; 3e2b6 (f:62b6)
 	ld [H_WHOSETURN],a
 	ret
 
-BuildingRageText: ; 3e2f8 (f:62f8)
+BuildingRageText: ; 3e46a (f:646a)
 	TX_FAR _BuildingRageText
 	db "@"
 
 ; copy last move for Mirror Move
 ; sets zero flag on failure and unsets zero flag on success
-MirrorMoveCopyMove: ; 3e2fd (f:62fd)
+MirrorMoveCopyMove: ; 3e46f (f:646f)
 ; Mirror Move makes use of ccf1 (wPlayerUsedMove) and ccf2 (wEnemyUsedMove) addresses,
 ; which are mainly used to print the "[Pokemon] used [Move]" text.
 ; Both are set to 0 whenever a new Pokemon is sent out
@@ -5330,7 +5330,7 @@ MirrorMoveCopyMove: ; 3e2fd (f:62fd)
 ; values for player turn
 	ld a,[wEnemyUsedMove]
 	ld hl,wPlayerSelectedMove
-	ld de,W_PLAYERMOVENUM
+	ld de,wPlayerMoveNum
 	jr z,.next
 ; values for enemy turn
 	ld a,[wPlayerUsedMove]
@@ -5348,12 +5348,12 @@ MirrorMoveCopyMove: ; 3e2fd (f:62fd)
 	xor a
 	ret
 
-MirrorMoveFailedText: ; 3e324 (f:6324)
+MirrorMoveFailedText: ; 3e496 (f:6496)
 	TX_FAR _MirrorMoveFailedText
 	db "@"
 
 ; function used to reload move data for moves like Mirror Move and Metronome
-ReloadMoveData: ; 3e329 (f:6329)
+ReloadMoveData: ; 3e49b (f:649b)
 	ld [wd11e],a
 	dec a
 	ld hl,Moves
@@ -5370,13 +5370,13 @@ ReloadMoveData: ; 3e329 (f:6329)
 	ret
 
 ; function that picks a random move for metronome
-MetronomePickMove: ; 3e348 (f:6348)
+MetronomePickMove: ; 3e4ba (f:64ba)
 	xor a
 	ld [wAnimationType],a
 	ld a,METRONOME
 	call PlayMoveAnimation ; play Metronome's animation
 ; values for player turn
-	ld de,W_PLAYERMOVENUM
+	ld de,wPlayerMoveNum
 	ld hl,wPlayerSelectedMove
 	ld a,[H_WHOSETURN]
 	and a
@@ -5399,7 +5399,7 @@ MetronomePickMove: ; 3e348 (f:6348)
 ; this function increments the current move's PP
 ; it's used to prevent moves that run another move within the same turn
 ; (like Mirror Move and Metronome) from losing 2 PP
-IncrementMovePP: ; 3e373 (f:6373)
+IncrementMovePP: ; 3e4e5 (f:64e5)
 	ld a,[H_WHOSETURN]
 	and a
 ; values for player turn
@@ -5431,7 +5431,7 @@ IncrementMovePP: ; 3e373 (f:6373)
 	ret
 
 ; function to adjust the base damage of an attack to account for type effectiveness
-AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
+AdjustDamageForMoveType: ; 3e517 (f:6517)
 ; values for player turn
 	ld hl,wBattleMonType
 	ld a,[hli]
@@ -5441,7 +5441,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 	ld a,[hli]
 	ld d,a    ; d = type 1 of defender
 	ld e,[hl] ; e = type 2 of defender
-	ld a,[W_PLAYERMOVETYPE]
+	ld a,[wPlayerMoveType]
 	ld [wMoveType],a
 	ld a,[H_WHOSETURN]
 	and a
@@ -5550,7 +5550,7 @@ AdjustDamageForMoveType: ; 3e3a5 (f:63a5)
 ; the result is stored in [wTypeEffectiveness]
 ; ($05 is not very effective, $10 is neutral, $14 is super effective)
 ; as far is can tell, this is only used once in some AI code to help decide which move to use
-AIGetTypeEffectiveness: ; 3e449 (f:6449)
+AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
 	ld a,[wEnemyMoveType]
 	ld d,a                    ; d = type of enemy move
 	ld hl,wBattleMonType
@@ -6240,7 +6240,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld hl, UnleashedEnergyText
 	call PrintText
 	ld a, $1
-	ld [W_ENEMYMOVEPOWER], a
+	ld [wEnemyMovePower], a
 	ld hl, wEnemyBideAccumulatedDamage + 1
 	ld a, [hld]
 	add a
@@ -6323,7 +6323,7 @@ GetCurrentMove: ; 3eabe (f:6abe)
 	ld a, [wEnemySelectedMove]
 	jr .selected
 .player
-	ld de, W_PLAYERMOVENUM
+	ld de, wPlayerMoveNum
 	ld a, [wFlags_D733]
 	bit BIT_TEST_BATTLE, a
 	ld a, [wTestBattlePlayerSelectedMove]
@@ -6952,7 +6952,7 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	and a
 	ld hl, wEnemyMonType1
 	ld de, wEnemyBattleStatus1
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	jr z, .asm_3eeea
 	ld hl, wBattleMonType1
 	ld de, wEnemyBattleStatus1
@@ -7280,7 +7280,7 @@ FreezeBurnParalyzeEffect: ; 3f30c (f:730c)
 	ld a, [wEnemyMonStatus]
 	and a
 	jp nz, CheckDefrost ; can't inflict status if opponent is already statused
-	ld a, [W_PLAYERMOVETYPE]
+	ld a, [wPlayerMoveType]
 	ld b, a
 	ld a, [wEnemyMonType1]
 	cp b ; do target type 1 and move type match?
@@ -7390,7 +7390,7 @@ CheckDefrost: ; 3f3e2 (f:73e2)
 	and a
 	jr nz, .opponent
 	;player [attacker]
-	ld a, [W_PLAYERMOVETYPE]
+	ld a, [wPlayerMoveType]
 	sub a, FIRE
 	ret nz ; return if type of move used isn't fire
 	ld [wEnemyMonStatus], a	; set opponent status to 00 ["defrost" a frozen monster]
@@ -7531,7 +7531,7 @@ UpdateStatDone: ; 3f4ca (f:74ca)
 	inc b
 	call PrintStatText
 	ld hl, wPlayerBattleStatus2
-	ld de, W_PLAYERMOVENUM
+	ld de, wPlayerMoveNum
 	ld bc, wPlayerMonMinimized
 	ld a, [H_WHOSETURN]
 	and a
@@ -7923,7 +7923,7 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	jr nc, .asm_3f76e
 	ld c, 50
 	call DelayFrames
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	cp TELEPORT
 	jp nz, PrintDidntAffectText
 	jp PrintButItFailedText_
@@ -7933,13 +7933,13 @@ SwitchAndTeleportEffect: ; 3f739 (f:7739)
 	ld [wAnimationType], a
 	inc a
 	ld [wEscapedFromBattle], a
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	jr .asm_3f7e4
 .asm_3f77e
 	ld c, 50
 	call DelayFrames
 	ld hl, IsUnaffectedText
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	cp TELEPORT
 	jp nz, PrintText
 	jp PrintButItFailedText_
@@ -8540,7 +8540,7 @@ PlayCurrentMoveAnimation2: ; 3fb89 (f:7b89)
 ; plays wAnimationType 3 or 6
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	jr z, .notEnemyTurn
 	ld a, [wEnemyMoveNum]
 .notEnemyTurn
@@ -8566,7 +8566,7 @@ PlayCurrentMoveAnimation: ; 3fba8 (f:7ba8)
 	ld [wAnimationType], a
 	ld a, [H_WHOSETURN]
 	and a
-	ld a, [W_PLAYERMOVENUM]
+	ld a, [wPlayerMoveNum]
 	jr z, .notEnemyTurn
 	ld a, [wEnemyMoveNum]
 .notEnemyTurn

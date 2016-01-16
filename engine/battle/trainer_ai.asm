@@ -126,7 +126,7 @@ AIMoveChoiceModification1: ; 3972e (e:572e)
 	ret z ; no more moves in move set
 	inc de
 	call ReadMove
-	ld a, [W_ENEMYMOVEPOWER]
+	ld a, [wEnemyMovePower]
 	and a
 	jr nz, .nextMove
 	ld a, [wEnemyMoveEffect]
@@ -240,7 +240,7 @@ AIMoveChoiceModification3: ; 3979a (e:579a)
 	ld a, [wEnemyMoveType]
 	cp d
 	jr z, .loopMoves
-	ld a, [W_ENEMYMOVEPOWER]
+	ld a, [wEnemyMovePower]
 	and a
 	jr nz, .betterMoveFound ; damaging moves of a different type are considered to be better moves
 	jr .loopMoves

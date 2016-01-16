@@ -1693,9 +1693,9 @@ ItemUseXStat: ; df69 (3:df69)
 	ld [wActionResultOrTookBattleTurn],a ; item not used
 	ret
 .inBattle
-	ld hl,W_PLAYERMOVENUM
+	ld hl,wPlayerMoveNum
 	ld a,[hli]
-	push af ; save [W_PLAYERMOVENUM]
+	push af ; save [wPlayerMoveNum]
 	ld a,[hl]
 	push af ; save [wPlayerMoveEffect]
 	push hl
@@ -1704,7 +1704,7 @@ ItemUseXStat: ; df69 (3:df69)
 	ld [hl],a ; store player move effect
 	call PrintItemUseTextAndRemoveItem
 	ld a,XSTATITEM_ANIM ; X stat item animation ID
-	ld [W_PLAYERMOVENUM],a
+	ld [wPlayerMoveNum],a
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	call Delay3
 	xor a
@@ -1723,7 +1723,7 @@ ItemUseXStat: ; df69 (3:df69)
 	pop af
 	ld [hld],a ; restore [wPlayerMoveEffect]
 	pop af
-	ld [hl],a ; restore [W_PLAYERMOVENUM]
+	ld [hl],a ; restore [wPlayerMoveNum]
 	ret
 
 ItemUsePokeflute: ; dfbd (3:5fbd)

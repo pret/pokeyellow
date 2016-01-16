@@ -4225,7 +4225,9 @@ ReshowSubstituteAnim: ; 798b2 (1e:58b2)
 AnimationTransformMon: ; 798c8 (1e:58c8)
 	dr $798c8,$798d4
 ChangeMonPic: ; 798d4 (1e:58d4)
-	dr $798d4,$7a037
+	dr $798d4,$79929
+Func_79929: ; 79929 (1e:5929)
+	dr $79929,$7a037
 AnimCut: ; 7a037 (1e:6037)
 	dr $7a037,$7a0fb
 AnimateBoulderDust: ; 7a0fb (1e:60fb)
