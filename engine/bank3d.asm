@@ -83,11 +83,11 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	jr c, .wPikachuHappiness_div_100
 	inc e
 .wPikachuHappiness_div_100
-	; Get the (d, e) entry from .HappinessChangeTable.
+	; Get the (d, e) entry from HappinessChangeTable.
 	ld c, d
 	dec c
 	ld b, $0
-	ld hl, .HappinessChangeTable
+	ld hl, HappinessChangeTable
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -112,10 +112,10 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 .okay
 	ld [wPikachuHappiness], a
 	
-	; Restore d and get the d'th entry in .Moods.
+	; Restore d and get the d'th entry in PikachuMoods.
 	pop de
 	dec d
-	ld hl, .Moods
+	ld hl, PikachuMoods
 	ld e, d
 	ld d, $0
 	add hl, de
@@ -142,7 +142,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 .done
 	ret
 	
-.HappinessChangeTable: ; f4385 (3d:4385)
+HappinessChangeTable: ; f4385 (3d:4385)
 	; Increase
 	db   5,   3,   2 ; Gained a level
 	db   5,   3,   2 ; HP restore
@@ -157,7 +157,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	db  -5,  -5, -10 ; Unknown (d = 10)
 	db -10, -10, -20 ; Unknown (d = 11)
 
-.Moods: ; f43a6 (3d:43a6)
+PikachuMoods: ; f43a6 (3d:43a6)
 	; Increase
 	db $8a           ; Gained a level
 	db $83           ; HP restore
@@ -172,12 +172,9 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	db $6c           ; Unknown (d = 10)
 	db $00           ; Unknown (d = 11)
 
-; f43b1 (3d:43b1)
-RedPicBack::	   INCBIN "pic/trainer/redb.pic"
-OldManPic::	    INCBIN "pic/trainer/oldman.pic"
-OakPicBack::	   INCBIN "pic/ytrainer/prof.oakb.pic"
- 
-;SECTION "bank3d Yellow Intro",ROMX[$453f],BANK[$3D]
+RedPicBack::       INCBIN "pic/trainer/redb.pic"
+OldManPic::	       INCBIN "pic/trainer/oldman.pic"
+ProfOakPicBack::   INCBIN "pic/ytrainer/prof.oakb.pic"
 
 Func_f453f:: ; f453f (3d:453f)
 	ld hl,PokemonLogoGraphics

@@ -1,4 +1,4 @@
-_ScrollTrainerPicAfterBattle: ; f4259 (e:f4259)
+_ScrollTrainerPicAfterBattle: ; f4259 (3d:4259)
 ; Load the enemy trainer's pic and scrolls it into
 ; the screen from the right.
 	xor a

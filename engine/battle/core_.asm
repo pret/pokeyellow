@@ -5601,51 +5601,1445 @@ AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
 
 INCLUDE "data/type_effects.asm"
 
+; some tests that need to pass for a move to hit
 MoveHitTest: ; 3e6f1 (f:66f1)
-	dr $3e6f1,$3e80d
+; player's turn
+	ld hl,wEnemyBattleStatus1
+	ld de,wPlayerMoveEffect
+	ld bc,wEnemyMonStatus
+	ld a,[H_WHOSETURN]
+	and a
+	jr z,.dreamEaterCheck
+; enemy's turn
+	ld hl,wPlayerBattleStatus1
+	ld de,wEnemyMoveEffect
+	ld bc,wBattleMonStatus
+.dreamEaterCheck
+	ld a,[de]
+	cp a,DREAM_EATER_EFFECT
+	jr nz,.swiftCheck
+	ld a,[bc]
+	and a,SLP ; is the target pokemon sleeping?
+	jp z,.moveMissed
+.swiftCheck
+	ld a,[de]
+	cp a,SWIFT_EFFECT
+	ret z ; Swift never misses (interestingly, Azure Heights lists this is a myth, but it appears to be true)
+	call CheckTargetSubstitute ; substitute check (note that this overwrites a)
+	jr z,.checkForDigOrFlyStatus
+; this code is buggy. it's supposed to prevent HP draining moves from working on substitutes.
+; since $7b79 overwrites a with either $00 or $01, it never works.
+	cp a,DRAIN_HP_EFFECT
+	jp z,.moveMissed
+	cp a,DREAM_EATER_EFFECT
+	jp z,.moveMissed
+.checkForDigOrFlyStatus
+	bit Invulnerable,[hl]
+	jp nz,.moveMissed
+	ld a,[H_WHOSETURN]
+	and a
+	jr nz,.enemyTurn
+.playerTurn
+; this checks if the move effect is disallowed by mist
+	ld a,[wPlayerMoveEffect]
+	cp a,ATTACK_DOWN1_EFFECT
+	jr c,.skipEnemyMistCheck
+	cp a,HAZE_EFFECT + 1
+	jr c,.enemyMistCheck
+	cp a,ATTACK_DOWN2_EFFECT
+	jr c,.skipEnemyMistCheck
+	cp a,REFLECT_EFFECT + 1
+	jr c,.enemyMistCheck
+	jr .skipEnemyMistCheck
+.enemyMistCheck
+; if move effect is from $12 to $19 inclusive or $3a to $41 inclusive
+; i.e. the following moves
+; GROWL, TAIL WHIP, LEER, STRING SHOT, SAND-ATTACK, SMOKESCREEN, KINESIS,
+; FLASH, CONVERSION*, HAZE*, SCREECH, LIGHT SCREEN*, REFLECT*
+; the moves that are marked with an asterisk are not affected since this
+; function is not called when those moves are used
+	ld a,[wEnemyBattleStatus2]
+	bit ProtectedByMist,a ; is mon protected by mist?
+	jp nz,.moveMissed
+.skipEnemyMistCheck
+	ld a,[wPlayerBattleStatus2]
+	bit UsingXAccuracy,a ; is the player using X Accuracy?
+	ret nz ; if so, always hit regardless of accuracy/evasion
+	jr .calcHitChance
+.enemyTurn
+	ld a,[wEnemyMoveEffect]
+	cp a,ATTACK_DOWN1_EFFECT
+	jr c,.skipPlayerMistCheck
+	cp a,HAZE_EFFECT + 1
+	jr c,.playerMistCheck
+	cp a,ATTACK_DOWN2_EFFECT
+	jr c,.skipPlayerMistCheck
+	cp a,REFLECT_EFFECT + 1
+	jr c,.playerMistCheck
+	jr .skipPlayerMistCheck
+.playerMistCheck
+; similar to enemy mist check
+	ld a,[wPlayerBattleStatus2]
+	bit ProtectedByMist,a ; is mon protected by mist?
+	jp nz,.moveMissed
+.skipPlayerMistCheck
+	ld a,[wEnemyBattleStatus2]
+	bit UsingXAccuracy,a ; is the enemy using X Accuracy?
+	ret nz ; if so, always hit regardless of accuracy/evasion
+.calcHitChance
+	call CalcHitChance ; scale the move accuracy according to attacker's accuracy and target's evasion
+	ld a,[wPlayerMoveAccuracy]
+	ld b,a
+	ld a,[H_WHOSETURN]
+	and a
+	jr z,.doAccuracyCheck
+	ld a,[wEnemyMoveAccuracy]
+	ld b,a
+.doAccuracyCheck
+; if the random number generated is greater than or equal to the scaled accuracy, the move misses
+; note that this means that even the highest accuracy is still just a 255/256 chance, not 100%
+	call BattleRandom
+	cp b
+	jr nc,.moveMissed
+	ret
+.moveMissed
+	xor a
+	ld hl,wDamage ; zero the damage
+	ld [hli],a
+	ld [hl],a
+	inc a
+	ld [wMoveMissed],a
+	ld a,[H_WHOSETURN]
+	and a
+	jr z,.playerTurn2
+.enemyTurn2
+	ld hl,wEnemyBattleStatus1
+	res UsingTrappingMove,[hl] ; end multi-turn attack e.g. wrap
+	ret
+.playerTurn2
+	ld hl,wPlayerBattleStatus1
+	res UsingTrappingMove,[hl] ; end multi-turn attack e.g. wrap
+	ret
+
+; values for player turn
+CalcHitChance: ; 3e7aa (f:67aa)
+	ld hl,wPlayerMoveAccuracy
+	ld a,[H_WHOSETURN]
+	and a
+	ld a,[wPlayerMonAccuracyMod]
+	ld b,a
+	ld a,[wEnemyMonEvasionMod]
+	ld c,a
+	jr z,.next
+; values for enemy turn
+	ld hl,wEnemyMoveAccuracy
+	ld a,[wEnemyMonAccuracyMod]
+	ld b,a
+	ld a,[wPlayerMonEvasionMod]
+	ld c,a
+.next
+	ld a,$0e
+	sub c
+	ld c,a ; c = 14 - EVASIONMOD (this "reflects" the value over 7, so that an increase in the target's evasion
+	       ; decreases the hit chance instead of increasing the hit chance)
+; zero the high bytes of the multiplicand
+	xor a
+	ld [H_MULTIPLICAND],a
+	ld [H_MULTIPLICAND + 1],a
+	ld a,[hl]
+	ld [H_MULTIPLICAND + 2],a ; set multiplicand to move accuracy
+	push hl
+	ld d,$02 ; loop has two iterations
+; loop to do the calculations, the first iteration multiplies by the accuracy ratio and
+; the second iteration multiplies by the evasion ratio
+.loop
+	push bc
+	ld hl, StatModifierRatios  ; stat modifier ratios
+	dec b
+	sla b
+	ld c,b
+	ld b,$00
+	add hl,bc ; hl = address of stat modifier ratio
+	pop bc
+	ld a,[hli]
+	ld [H_MULTIPLIER],a ; set multiplier to the numerator of the ratio
+	call Multiply
+	ld a,[hl]
+	ld [H_DIVISOR],a ; set divisor to the the denominator of the ratio
+	                 ; (the dividend is the product of the previous multiplication)
+	ld b,$04 ; number of bytes in the dividend
+	call Divide
+	ld a,[H_QUOTIENT + 3]
+	ld b,a
+	ld a,[H_QUOTIENT + 2]
+	or b
+	jp nz,.nextCalculation
+; make sure the result is always at least one
+	ld [H_QUOTIENT + 2],a
+	ld a,$01
+	ld [H_QUOTIENT + 3],a
+.nextCalculation
+	ld b,c
+	dec d
+	jr nz,.loop
+	ld a,[H_QUOTIENT + 2]
+	and a ; is the calculated hit chance over 0xFF?
+	ld a,[H_QUOTIENT + 3]
+	jr z,.storeAccuracy
+; if calculated hit chance over 0xFF
+	ld a,$ff ; set the hit chance to 0xFF
+.storeAccuracy
+	pop hl
+	ld [hl],a ; store the hit chance in the move accuracy variable
+	ret
+
+; multiplies damage by a random percentage from ~85% to 100%
 RandomizeDamage: ; 3e80d (f:680d)
-	dr $3e80d,$3e842
+	ld hl, wDamage
+	ld a, [hli]
+	and a
+	jr nz, .DamageGreaterThanOne
+	ld a, [hl]
+	cp 2
+	ret c ; return if damage is equal to 0 or 1
+.DamageGreaterThanOne
+	xor a
+	ld [H_MULTIPLICAND], a
+	dec hl
+	ld a, [hli]
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [hl]
+	ld [H_MULTIPLICAND + 2], a
+; loop until a random number greater than or equal to 217 is generated
+.loop
+	call BattleRandom
+	rrca
+	cp 217
+	jr c, .loop
+	ld [H_MULTIPLIER], a
+	call Multiply ; multiply damage by the random number, which is in the range [217, 255]
+	ld a, 255
+	ld [H_DIVISOR], a
+	ld b, $4
+	call Divide ; divide the result by 255
+; store the modified damage
+	ld a, [H_QUOTIENT + 2]
+	ld hl, wDamage
+	ld [hli], a
+	ld a, [H_QUOTIENT + 3]
+	ld [hl], a
+	ret
+
+; for more detailed commentary, see equivalent function for player side (ExecutePlayerMove)
 ExecuteEnemyMove: ; 3e842 (f:6842)
-	dr $3e842,$3ec44
+	ld a, [wEnemySelectedMove]
+	inc a
+	jp z, ExecuteEnemyMoveDone
+	call PrintGhostText
+	jp z, ExecuteEnemyMoveDone
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr nz, .executeEnemyMove
+	ld b, $1
+	ld a, [wSerialExchangeNybbleReceiveData]
+	cp $e
+	jr z, .executeEnemyMove
+	cp $4
+	ret nc
+.executeEnemyMove
+	ld hl, wAILayer2Encouragement
+	inc [hl]
+	xor a
+	ld [wMoveMissed], a
+	ld [wMoveDidntMiss], a
+	ld a, $a
+	ld [wDamageMultipliers], a
+	call CheckEnemyStatusConditions
+	jr nz, .enemyHasNoSpecialConditions
+	jp [hl]
+.enemyHasNoSpecialConditions
+	ld hl, wEnemyBattleStatus1
+	bit ChargingUp, [hl] ; is the enemy charging up for attack?
+	jr nz, EnemyCanExecuteChargingMove ; if so, jump
+	call GetCurrentMove
+
+CheckIfEnemyNeedsToChargeUp: ; 3e882 (f:6882)
+	ld a, [wEnemyMoveEffect]
+	cp CHARGE_EFFECT
+	jp z, JumpMoveEffect
+	cp FLY_EFFECT
+	jp z, JumpMoveEffect
+	jr EnemyCanExecuteMove
+EnemyCanExecuteChargingMove: ; 3e891 (f:6891)
+	ld hl, wEnemyBattleStatus1
+	res ChargingUp, [hl] ; no longer charging up for attack
+	res Invulnerable, [hl] ; no longer invulnerable to typical attacks
+	ld a, [wEnemyMoveNum]
+	ld [wd0b5], a
+	ld a, BANK(MoveNames)
+	ld [wPredefBank], a
+	ld a, MOVE_NAME
+	ld [wNameListType], a
+	call GetName
+	ld de, wcd6d
+	call CopyStringToCF4B
+EnemyCanExecuteMove: ; 3e8b1 (f:68b1)
+	xor a
+	ld [wMonIsDisobedient], a
+	call PrintMonName1Text
+	ld a, [wEnemyMoveEffect]
+	ld hl, ResidualEffects1
+	ld de, $1
+	call IsInArray
+	jp c, JumpMoveEffect
+	ld a, [wEnemyMoveEffect]
+	ld hl, SpecialEffectsCont
+	ld de, $1
+	call IsInArray
+	call c, JumpMoveEffect
+EnemyCalcMoveDamage: ; 3e8d6 (f:68d6)
+	call SwapPlayerAndEnemyLevels
+	ld a, [wEnemyMoveEffect]
+	ld hl, SetDamageEffects
+	ld de, $1
+	call IsInArray
+	jp c, EnemyMoveHitTest
+	call CriticalHitTest
+	call HandleCounterMove
+	jr z, handleIfEnemyMoveMissed
+	call SwapPlayerAndEnemyLevels
+	call GetDamageVarsForEnemyAttack
+	call SwapPlayerAndEnemyLevels
+	call CalculateDamage
+	jp z, EnemyCheckIfFlyOrChargeEffect
+	call AdjustDamageForMoveType
+	call RandomizeDamage
+
+EnemyMoveHitTest: ; 3e905 (f:6905)
+	call MoveHitTest
+handleIfEnemyMoveMissed: ; 3e908 (f:6908)
+	ld a, [wMoveMissed]
+	and a
+	jr z, .moveDidNotMiss
+	ld a, [wEnemyMoveEffect]
+	cp EXPLODE_EFFECT
+	jr z, handleExplosionMiss
+	jr EnemyCheckIfFlyOrChargeEffect
+.moveDidNotMiss
+	call SwapPlayerAndEnemyLevels
+
+GetEnemyAnimationType: ; 3e91a (f:691a)
+	ld a, [wEnemyMoveEffect]
+	and a
+	ld a, $1
+	jr z, playEnemyMoveAnimation
+	ld a, $2
+	jr playEnemyMoveAnimation
+handleExplosionMiss: ; 3e926 (f:6926)
+	call SwapPlayerAndEnemyLevels
+	xor a
+playEnemyMoveAnimation: ; 3e92a (f:692a)
+	push af
+	ld a, [wEnemyBattleStatus2]
+	bit HasSubstituteUp, a ; does mon have a substitute?
+	ld hl, HideSubstituteShowMonAnim
+	ld b, BANK(HideSubstituteShowMonAnim)
+	call nz, Bankswitch
+	pop af
+	ld [wAnimationType], a
+	ld a, [wEnemyMoveNum]
+	call PlayMoveAnimation
+	call HandleExplodingAnimation
+	call DrawEnemyHUDAndHPBar
+	ld a, [wEnemyBattleStatus2]
+	bit HasSubstituteUp, a ; does mon have a substitute?
+	ld hl, ReshowSubstituteAnim
+	ld b, BANK(ReshowSubstituteAnim)
+	call nz, Bankswitch ; slide the substitute's sprite out
+	jr EnemyCheckIfMirrorMoveEffect
+
+EnemyCheckIfFlyOrChargeEffect: ; 3e957 (f:6957)
+	call SwapPlayerAndEnemyLevels
+	ld c, 30
+	call DelayFrames
+	ld a, [wEnemyMoveEffect]
+	cp FLY_EFFECT
+	jr z, .playAnim
+	cp CHARGE_EFFECT
+	jr z, .playAnim
+	jr EnemyCheckIfMirrorMoveEffect
+.playAnim
+	xor a
+	ld [wAnimationType], a
+	ld a,STATUS_AFFECTED_ANIM
+	call PlayMoveAnimation
+EnemyCheckIfMirrorMoveEffect: ; 3e975 (f:6975)
+	ld a, [wEnemyMoveEffect]
+	cp MIRROR_MOVE_EFFECT
+	jr nz, .notMirrorMoveEffect
+	call MirrorMoveCopyMove
+	jp z, ExecuteEnemyMoveDone
+	jp CheckIfEnemyNeedsToChargeUp
+.notMirrorMoveEffect
+	cp METRONOME_EFFECT
+	jr nz, .notMetronomeEffect
+	call MetronomePickMove
+	jp CheckIfEnemyNeedsToChargeUp
+.notMetronomeEffect
+	ld a, [wEnemyMoveEffect]
+	ld hl, ResidualEffects2
+	ld de, $1
+	call IsInArray
+	jp c, JumpMoveEffect
+	ld a, [wMoveMissed]
+	and a
+	jr z, .moveDidNotMiss
+	call PrintMoveFailureText
+	ld a, [wEnemyMoveEffect]
+	cp EXPLODE_EFFECT
+	jr z, .handleExplosionMiss
+	jp ExecuteEnemyMoveDone
+.moveDidNotMiss
+	call ApplyAttackToPlayerPokemon
+	call PrintCriticalOHKOText
+	callab DisplayEffectiveness
+	ld a, 1
+	ld [wMoveDidntMiss], a
+.handleExplosionMiss
+	ld a, [wEnemyMoveEffect]
+	ld hl, AlwaysHappenSideEffects
+	ld de, $1
+	call IsInArray
+	call c, JumpMoveEffect
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	ld b, [hl]
+	or b
+	ret z
+	call HandleBuildingRage
+	ld hl, wEnemyBattleStatus1
+	bit AttackingMultipleTimes, [hl] ; is mon hitting multiple times? (example: double kick)
+	jr z, .notMultiHitMove
+	push hl
+	ld hl, wEnemyNumAttacksLeft
+	dec [hl]
+	pop hl
+	jp nz, GetEnemyAnimationType
+	res AttackingMultipleTimes, [hl] ; mon is no longer hitting multiple times
+	ld hl, HitXTimesText
+	call PrintText
+	xor a
+	ld [wEnemyNumHits], a
+.notMultiHitMove
+	ld a, [wEnemyMoveEffect]
+	and a
+	jr z, ExecuteEnemyMoveDone
+	ld hl, SpecialEffects
+	ld de, $1
+	call IsInArray
+	call nc, JumpMoveEffect
+	jr ExecuteEnemyMoveDone
+
+HitXTimesText: ; 3ea0d (f:6a0d)
+	TX_FAR _HitXTimesText
+	db "@"
+
+ExecuteEnemyMoveDone: ; 3ea12 (f:6a12)
+	ld b, $1
+	ret
+
+; checks for various status conditions affecting the enemy mon
+; stores whether the mon cannot use a move this turn in Z flag
+CheckEnemyStatusConditions: ; 3ea15 (f:6a15)
+	ld hl, wEnemyMonStatus
+	ld a, [hl]
+	and SLP ; sleep mask
+	jr z, .checkIfFrozen
+	dec a ; decrement number of turns left
+	ld [wEnemyMonStatus], a
+	and a
+	jr z, .wokeUp ; if the number of turns hit 0, wake up
+	ld hl, FastAsleepText
+	call PrintText
+	xor a
+	ld [wAnimationType], a
+	ld a,SLP_ANIM
+	call PlayMoveAnimation
+	jr .sleepDone
+.wokeUp
+	ld hl, WokeUpText
+	call PrintText
+.sleepDone
+	xor a
+	ld [wEnemyUsedMove], a
+	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+	jp .enemyReturnToHL
+.checkIfFrozen
+	bit FRZ, [hl]
+	jr z, .checkIfTrapped
+	ld hl, IsFrozenText
+	call PrintText
+	xor a
+	ld [wEnemyUsedMove], a
+	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+	jp .enemyReturnToHL
+.checkIfTrapped
+	ld a, [wPlayerBattleStatus1]
+	bit UsingTrappingMove, a ; is the player using a multi-turn attack like warp
+	jp z, .checkIfFlinched
+	ld hl, CantMoveText
+	call PrintText
+	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+	jp .enemyReturnToHL
+.checkIfFlinched
+	ld hl, wEnemyBattleStatus1
+	bit Flinched, [hl] ; check if enemy mon flinched
+	jp z, .checkIfMustRecharge
+	res Flinched, [hl]
+	ld hl, FlinchedText
+	call PrintText
+	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+	jp .enemyReturnToHL
+.checkIfMustRecharge
+	ld hl, wEnemyBattleStatus2
+	bit NeedsToRecharge, [hl] ; check if enemy mon has to recharge after using a move
+	jr z, .checkIfAnyMoveDisabled
+	res NeedsToRecharge, [hl]
+	ld hl, MustRechargeText
+	call PrintText
+	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
+	jp .enemyReturnToHL
+.checkIfAnyMoveDisabled
+	ld hl, wEnemyDisabledMove
+	ld a, [hl]
+	and a
+	jr z, .checkIfConfused
+	dec a ; decrement disable counter
+	ld [hl], a
+	and $f ; did disable counter hit 0?
+	jr nz, .checkIfConfused
+	ld [hl], a
+	ld [wEnemyDisabledMoveNumber], a
+	ld hl, DisabledNoMoreText
+	call PrintText
+.checkIfConfused
+	ld a, [wEnemyBattleStatus1]
+	add a ; check if enemy mon is confused
+	jp nc, .checkIfTriedToUseDisabledMove
+	ld hl, W_ENEMYCONFUSEDCOUNTER
+	dec [hl]
+	jr nz, .isConfused
+	ld hl, wEnemyBattleStatus1
+	res Confused, [hl] ; if confused counter hit 0, reset confusion status
+	ld hl, ConfusedNoMoreText
+	call PrintText
+	jp .checkIfTriedToUseDisabledMove
+.isConfused
+	ld hl, IsConfusedText
+	call PrintText
+	xor a
+	ld [wAnimationType], a
+	ld a,CONF_ANIM
+	call PlayMoveAnimation
+	call BattleRandom
+	cp $80
+	jr c, .checkIfTriedToUseDisabledMove
+	ld hl, wEnemyBattleStatus1
+	ld a, [hl]
+	and 1 << Confused ; if mon hurts itself, clear every other status from wEnemyBattleStatus1
+	ld [hl], a
+	ld hl, HurtItselfText
+	call PrintText
+	ld hl, wBattleMonDefense
+	ld a, [hli]
+	push af
+	ld a, [hld]
+	push af
+	ld a, [wEnemyMonDefense]
+	ld [hli], a
+	ld a, [wEnemyMonDefense + 1]
+	ld [hl], a
+	ld hl, wEnemyMoveEffect
+	push hl
+	ld a, [hl]
+	push af
+	xor a
+	ld [hli], a
+	ld [wCriticalHitOrOHKO], a
+	ld a, 40
+	ld [hli], a
+	xor a
+	ld [hl], a
+	call GetDamageVarsForEnemyAttack
+	call CalculateDamage
+	pop af
+	pop hl
+	ld [hl], a
+	ld hl, wBattleMonDefense + 1
+	pop af
+	ld [hld], a
+	pop af
+	ld [hl], a
+	xor a
+	ld [wAnimationType], a
+	ld [H_WHOSETURN], a
+	ld a, POUND
+	call PlayMoveAnimation
+	ld a, $1
+	ld [H_WHOSETURN], a
+	call ApplyDamageToEnemyPokemon
+	jr .monHurtItselfOrFullyParalysed
+.checkIfTriedToUseDisabledMove
+; prevents a disabled move that was selected before being disabled from being used
+	ld a, [wEnemyDisabledMoveNumber]
+	and a
+	jr z, .checkIfParalysed
+	ld hl, wEnemySelectedMove
+	cp [hl]
+	jr nz, .checkIfParalysed
+	call PrintMoveIsDisabledText
+	ld hl, ExecuteEnemyMoveDone ; if a disabled move was somehow selected, player can't move this turn
+	jp .enemyReturnToHL
+.checkIfParalysed
+	ld hl, wEnemyMonStatus
+	bit PAR, [hl]
+	jr z, .checkIfUsingBide
+	call BattleRandom
+	cp $3f ; 25% to be fully paralysed
+	jr nc, .checkIfUsingBide
+	ld hl, FullyParalyzedText
+	call PrintText
+.monHurtItselfOrFullyParalysed
+	ld hl, wEnemyBattleStatus1
+	ld a, [hl]
+	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
+	and $ff ^ ((1 << StoringEnergy) | (1 << ThrashingAbout) | (1 << ChargingUp) | (1 << UsingTrappingMove))
+	ld [hl], a
+	ld a, [wEnemyMoveEffect]
+	cp FLY_EFFECT
+	jr z, .flyOrChargeEffect
+	cp CHARGE_EFFECT
+	jr z, .flyOrChargeEffect
+	jr .notFlyOrChargeEffect
+.flyOrChargeEffect
+	xor a
+	ld [wAnimationType], a
+	ld a, STATUS_AFFECTED_ANIM
+	call PlayMoveAnimation
+.notFlyOrChargeEffect
+	ld hl, ExecuteEnemyMoveDone
+	jp .enemyReturnToHL ; if using a two-turn move, enemy needs to recharge the first turn
+.checkIfUsingBide
+	ld hl, wEnemyBattleStatus1
+	bit StoringEnergy, [hl] ; is mon using bide?
+	jr z, .checkIfThrashingAbout
+	xor a
+	ld [wEnemyMoveNum], a
+	ld hl, wDamage
+	ld a, [hli]
+	ld b, a
+	ld c, [hl]
+	ld hl, wEnemyBideAccumulatedDamage + 1
+	ld a, [hl]
+	add c ; accumulate damage taken
+	ld [hld], a
+	ld a, [hl]
+	adc b
+	ld [hl], a
+	ld hl, wEnemyNumAttacksLeft
+	dec [hl] ; did Bide counter hit 0?
+	jr z, .unleashEnergy
+	ld hl, ExecuteEnemyMoveDone
+	jp .enemyReturnToHL ; unless mon unleashes energy, can't move this turn
+.unleashEnergy
+	ld hl, wEnemyBattleStatus1
+	res StoringEnergy, [hl] ; not using bide any more
+	ld hl, UnleashedEnergyText
+	call PrintText
+	ld a, $1
+	ld [wEnemyMovePower], a
+	ld hl, wEnemyBideAccumulatedDamage + 1
+	ld a, [hld]
+	add a
+	ld b, a
+	ld [wDamage + 1], a
+	ld a, [hl]
+	rl a ; double the damage
+	ld [wDamage], a
+	or b
+	jr nz, .next
+	ld a, $1
+	ld [wMoveMissed], a
+.next
+	xor a
+	ld [hli], a
+	ld [hl], a
+	ld a, BIDE
+	ld [wEnemyMoveNum], a
+	call SwapPlayerAndEnemyLevels
+	ld hl, handleIfEnemyMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
+	jp .enemyReturnToHL
+.checkIfThrashingAbout
+	bit ThrashingAbout, [hl] ; is mon using thrash or petal dance?
+	jr z, .checkIfUsingMultiturnMove
+	ld a, THRASH
+	ld [wEnemyMoveNum], a
+	ld hl, ThrashingAboutText
+	call PrintText
+	ld hl, wEnemyNumAttacksLeft
+	dec [hl] ; did Thrashing About counter hit 0?
+	ld hl, EnemyCalcMoveDamage ; skip DecrementPP
+	jp nz, .enemyReturnToHL
+	push hl
+	ld hl, wEnemyBattleStatus1
+	res ThrashingAbout, [hl] ; mon is no longer using thrash or petal dance
+	set Confused, [hl] ; mon is now confused
+	call BattleRandom
+	and $3
+	inc a
+	inc a ; confused for 2-5 turns
+	ld [W_ENEMYCONFUSEDCOUNTER], a
+	pop hl ; skip DecrementPP
+	jp .enemyReturnToHL
+.checkIfUsingMultiturnMove
+	bit UsingTrappingMove, [hl] ; is mon using multi-turn move?
+	jp z, .checkIfUsingRage
+	ld hl, AttackContinuesText
+	call PrintText
+	ld hl, wEnemyNumAttacksLeft
+	dec [hl] ; did multi-turn move end?
+	ld hl, GetEnemyAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
+	                             ; DecrementPP and MoveHitTest
+	jp nz, .enemyReturnToHL
+	jp .enemyReturnToHL
+.checkIfUsingRage
+	ld a, [wEnemyBattleStatus2]
+	bit UsingRage, a ; is mon using rage?
+	jp z, .checkEnemyStatusConditionsDone ; if we made it this far, mon can move normally this turn
+	ld a, RAGE
+	ld [wd11e], a
+	call GetMoveName
+	call CopyStringToCF4B
+	xor a
+	ld [wEnemyMoveEffect], a
+	ld hl, EnemyCanExecuteMove
+	jp .enemyReturnToHL
+.enemyReturnToHL
+	xor a ; set Z flag
+	ret
+.checkEnemyStatusConditionsDone
+	ld a, $1
+	and a ; clear Z flag
+	ret
+
 GetCurrentMove: ; 3ec44 (f:6c44)
-	dr $3ec44,$3ec87
+	ld a, [H_WHOSETURN]
+	and a
+	jp z, .player
+	ld de, wEnemyMoveNum
+	ld a, [wEnemySelectedMove]
+	jr .selected
+.player
+	ld de, wPlayerMoveNum
+	ld a, [wFlags_D733]
+	bit BIT_TEST_BATTLE, a
+	ld a, [wTestBattlePlayerSelectedMove]
+	jr nz, .selected
+	ld a, [wPlayerSelectedMove]
+.selected
+	ld [wd0b5], a
+	dec a
+	ld hl, Moves
+	ld bc, MoveEnd - Moves
+	call AddNTimes
+	ld a, BANK(Moves)
+	call FarCopyData
+
+	ld a, BANK(MoveNames)
+	ld [wPredefBank], a
+	ld a, MOVE_NAME
+	ld [wNameListType], a
+	call GetName
+	ld de, wcd6d
+	jp CopyStringToCF4B
+
 LoadEnemyMonData: ; 3ec87 (f:6c87)
-	dr $3ec87,$3edb8
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jp z, LoadEnemyMonFromParty
+	ld a, [wEnemyMonSpecies2]
+	ld [wEnemyMonSpecies], a
+	ld [wd0b5], a
+	call GetMonHeader
+	ld a, [wEnemyBattleStatus3]
+	bit Transformed, a ; is enemy mon transformed?
+	ld hl, wTransformedEnemyMonOriginalDVs ; original DVs before transforming
+	ld a, [hli]
+	ld b, [hl]
+	jr nz, .storeDVs
+	ld a, [wIsInBattle]
+	cp $2 ; is it a trainer battle?
+; fixed DVs for trainer mon
+	ld a, $98
+	ld b, $88
+	jr z, .storeDVs
+; random DVs for wild mon
+	call BattleRandom
+	ld b, a
+	call BattleRandom
+.storeDVs
+	ld hl, wEnemyMonDVs
+	ld [hli], a
+	ld [hl], b
+	ld de, wEnemyMonLevel
+	ld a, [wCurEnemyLVL]
+	ld [de], a
+	inc de
+	ld b, $0
+	ld hl, wEnemyMonHP
+	push hl
+	call CalcStats
+	pop hl
+	ld a, [wIsInBattle]
+	cp $2 ; is it a trainer battle?
+	jr z, .copyHPAndStatusFromPartyData
+	ld a, [wEnemyBattleStatus3]
+	bit Transformed, a ; is enemy mon transformed?
+	jr nz, .copyTypes ; if transformed, jump
+; if it's a wild mon and not transformed, init the current HP to max HP and the status to 0
+	ld a, [wEnemyMonMaxHP]
+	ld [hli], a
+	ld a, [wEnemyMonMaxHP+1]
+	ld [hli], a
+	xor a
+	inc hl
+	ld [hl], a ; init status to 0
+	jr .copyTypes
+; if it's a trainer mon, copy the HP and status from the enemy party data
+.copyHPAndStatusFromPartyData
+	ld hl, wEnemyMon1HP
+	ld a, [wWhichPokemon]
+	ld bc, wEnemyMon2 - wEnemyMon1
+	call AddNTimes
+	ld a, [hli]
+	ld [wEnemyMonHP], a
+	ld a, [hli]
+	ld [wEnemyMonHP + 1], a
+	ld a, [wWhichPokemon]
+	ld [wEnemyMonPartyPos], a
+	inc hl
+	ld a, [hl]
+	ld [wEnemyMonStatus], a
+	jr .copyTypes
+.copyTypes
+	ld hl, wMonHTypes
+	ld de, wEnemyMonType
+	ld a, [hli]            ; copy type 1
+	ld [de], a
+	inc de
+	ld a, [hli]            ; copy type 2
+	ld [de], a
+	inc de
+	ld a, [hli]            ; copy catch rate
+	ld [de], a
+	inc de
+	ld a, [wIsInBattle]
+	cp $2 ; is it a trainer battle?
+	jr nz, .copyStandardMoves
+; if it's a trainer battle, copy moves from enemy party data
+	ld hl, wEnemyMon1Moves
+	ld a, [wWhichPokemon]
+	ld bc, wEnemyMon2 - wEnemyMon1
+	call AddNTimes
+	ld bc, NUM_MOVES
+	call CopyData
+	jr .loadMovePPs
+.copyStandardMoves
+; for a wild mon, first copy default moves from the mon header
+	ld hl, wMonHMoves
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	dec de
+	dec de
+	dec de
+	xor a
+	ld [wLearningMovesFromDayCare], a
+	predef WriteMonMoves ; get moves based on current level
+.loadMovePPs
+	ld hl, wEnemyMonMoves
+	ld de, wEnemyMonPP - 1
+	predef LoadMovePPs
+	ld hl, wMonHBaseStats
+	ld de, wEnemyMonBaseStats
+	ld b, NUM_STATS
+.copyBaseStatsLoop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .copyBaseStatsLoop
+	ld hl, wMonHCatchRate
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]     ; base exp
+	ld [de], a
+	ld a, [wEnemyMonSpecies2]
+	ld [wd11e], a
+	call GetMonName
+	ld hl, wcd6d
+	ld de, wEnemyMonNick
+	ld bc, NAME_LENGTH
+	call CopyData
+	ld a, [wEnemyMonSpecies2]
+	ld [wd11e], a
+	predef IndexToPokedex
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, FLAG_SET
+	ld hl, wPokedexSeen
+	predef FlagActionPredef ; mark this mon as seen in the pokedex
+	ld hl, wEnemyMonLevel
+	ld de, wEnemyMonUnmodifiedLevel
+	ld bc, 1 + NUM_STATS * 2
+	call CopyData
+	ld a, $7 ; default stat mod
+	ld b, NUM_STAT_MODS ; number of stat mods
+	ld hl, wEnemyMonStatMods
+.statModLoop
+	ld [hli], a
+	dec b
+	jr nz, .statModLoop
+	ret
+
+; calls BattleTransition to show the battle transition animation and initializes some battle variables
 DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
-	dr $3edb8,$3ee18
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr nz, .next
+; link battle
+	xor a
+	ld [wMenuJoypadPollCount], a
+	callab DisplayLinkBattleVersusTextBox
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	call ClearScreen
+.next
+	call DelayFrame
+	predef BattleTransition
+	callab LoadHudAndHpBarAndStatusTilePatterns
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	call ClearSprites
+	call ClearScreen
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld [hWY], a
+	ld [rWY], a
+	ld [hTilesetType], a
+	ld hl, wPlayerStatsToDouble
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld [wPlayerDisabledMove], a
+	ret
+
+; swaps the level values of the BattleMon and EnemyMon structs
+SwapPlayerAndEnemyLevels: ; 3ee07 (f:6e07)
+	push bc
+	ld a, [wBattleMonLevel]
+	ld b, a
+	ld a, [wEnemyMonLevel]
+	ld [wBattleMonLevel], a
+	ld a, b
+	ld [wEnemyMonLevel], a
+	pop bc
+	ret
+
+; loads either red back pic or old man back pic
+; also writes OAM data and loads tile patterns for the Red or Old Man back sprite's head
+; (for use when scrolling the player sprite and enemy's silhouettes on screen)
 LoadPlayerBackPic: ; 3ee18 (f:6e18)
-	dr $3ee18,$3ee9e
+	ld a, [wBattleType]
+	ld de, OldManPic
+	cp OLD_MAN_BATTLE ; is it the old man tutorial?
+	jr z, .next
+	ld de, ProfOakPicBack
+	cp STARTER_PIKACHU_BATTLE ; is it the pikachu battle at the beginning of the game?
+	jr z, .next
+	ld de, RedPicBack
+.next
+	ld a, BANK(RedPicBack)
+	call UncompressSpriteFromDE
+	predef ScaleSpriteByTwo
+	ld hl, wOAMBuffer
+	xor a
+	ld [hOAMTile], a ; initial tile number
+	ld b, $7 ; 7 columns
+	ld e, $a0 ; X for the left-most column
+.loop ; each loop iteration writes 3 OAM entries in a vertical column
+	ld c, $3 ; 3 tiles per column
+	ld d, $38 ; Y for the top of each column
+.innerLoop ; each loop iteration writes 1 OAM entry in the column
+	ld [hl], d ; OAM Y
+	inc hl
+	ld [hl], e ; OAM X
+	ld a, $8 ; height of tile
+	add d ; increase Y by height of tile
+	ld d, a
+	inc hl
+	ld a, [hOAMTile]
+	ld [hli], a ; OAM tile number
+	inc a ; increment tile number
+	ld [hOAMTile], a
+	ld a, $2
+	ld [hl], a
+	inc hl
+	dec c
+	jr nz, .innerLoop
+	ld a, [hOAMTile]
+	add $4 ; increase tile number by 4
+	ld [hOAMTile], a
+	ld a, $8 ; width of tile
+	add e ; increase X by width of tile
+	ld e, a
+	dec b
+	jr nz, .loop
+	ld de, vBackPic
+	call InterlaceMergeSpriteBuffers
+	ld a, $0
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, vSprites
+	ld de, S_SPRITEBUFFER1
+	ld a, [H_LOADEDROMBANK]
+	ld b, a
+	ld c, 7 * 7
+	call CopyVideoData
+	call PrepareRTCDataAndDisableSRAM
+	ld a, $31
+	ld [hStartTileID], a
+	coord hl, 1, 5
+	predef_jump CopyUncompressedPicToTilemap
+
+; does nothing since no stats are ever selected (barring glitches)
+DoubleOrHalveSelectedStats: ; 3ee8e (f:6e8e)
+	callab DoubleSelectedStats
+	jpab HalveSelectedStats
+
 ScrollTrainerPicAfterBattle: ; 3ee9e (f:6e9e)
-	dr $3ee9e,$3eea6
+	jpab _ScrollTrainerPicAfterBattle
+
 ApplyBurnAndParalysisPenaltiesToPlayer: ; 3eea6 (f:6ea6)
-	dr $3eea6,$3eeaa
+	ld a, $1
+	jr ApplyBurnAndParalysisPenalties
+
 ApplyBurnAndParalysisPenaltiesToEnemy: ; 3eeaa (f:6eaa)
-	dr $3eeaa,$3eeb3
+	xor a
+
+ApplyBurnAndParalysisPenalties: ; 3eeab (f:6eab)
+	ld [H_WHOSETURN], a
+	call QuarterSpeedDueToParalysis
+	jp HalveAttackDueToBurn
+
 QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
-	dr $3eeb3,$3efa5
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .playerTurn
+.enemyTurn ; quarter the player's speed
+	ld a, [wBattleMonStatus]
+	and 1 << PAR
+	ret z ; return if player not paralysed
+	ld hl, wBattleMonSpeed + 1
+	ld a, [hld]
+	ld b, a
+	ld a, [hl]
+	srl a
+	rr b
+	srl a
+	rr b
+	ld [hli], a
+	or b
+	jr nz, .storePlayerSpeed
+	ld b, 1 ; give the player a minimum of at least one speed point
+.storePlayerSpeed
+	ld [hl], b
+	ret
+.playerTurn ; quarter the enemy's speed
+	ld a, [wEnemyMonStatus]
+	and 1 << PAR
+	ret z ; return if enemy not paralysed
+	ld hl, wEnemyMonSpeed + 1
+	ld a, [hld]
+	ld b, a
+	ld a, [hl]
+	srl a
+	rr b
+	srl a
+	rr b
+	ld [hli], a
+	or b
+	jr nz, .storeEnemySpeed
+	ld b, 1 ; give the enemy a minimum of at least one speed point
+.storeEnemySpeed
+	ld [hl], b
+	ret
+
+HalveAttackDueToBurn: ; 3eeef (f:6eef)
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .playerTurn
+.enemyTurn ; halve the player's attack
+	ld a, [wBattleMonStatus]
+	and 1 << BRN
+	ret z ; return if player not burnt
+	ld hl, wBattleMonAttack + 1
+	ld a, [hld]
+	ld b, a
+	ld a, [hl]
+	srl a
+	rr b
+	ld [hli], a
+	or b
+	jr nz, .storePlayerAttack
+	ld b, 1 ; give the player a minimum of at least one attack point
+.storePlayerAttack
+	ld [hl], b
+	ret
+.playerTurn ; halve the enemy's attack
+	ld a, [wEnemyMonStatus]
+	and 1 << BRN
+	ret z ; return if enemy not burnt
+	ld hl, wEnemyMonAttack + 1
+	ld a, [hld]
+	ld b, a
+	ld a, [hl]
+	srl a
+	rr b
+	ld [hli], a
+	or b
+	jr nz, .storeEnemyAttack
+	ld b, 1 ; give the enemy a minimum of at least one attack point
+.storeEnemyAttack
+	ld [hl], b
+	ret
+
+CalculateModifiedStats: ; 3ef25 (f:6f25)
+	ld c, 0
+.loop
+	call CalculateModifiedStat
+	inc c
+	ld a, c
+	cp NUM_STATS - 1
+	jr nz, .loop
+	ret
+
+; calculate modified stat for stat c (0 = attack, 1 = defense, 2 = speed, 3 = special)
+CalculateModifiedStat: ; 3ef31 (f:6f31)
+	push bc
+	push bc
+	ld a, [wCalculateWhoseStats]
+	and a
+	ld a, c
+	ld hl, wBattleMonAttack
+	ld de, wPlayerMonUnmodifiedAttack
+	ld bc, wPlayerMonStatMods
+	jr z, .next
+	ld hl, wEnemyMonAttack
+	ld de, wEnemyMonUnmodifiedAttack
+	ld bc, wEnemyMonStatMods
+.next
+	add c
+	ld c, a
+	jr nc, .noCarry1
+	inc b
+.noCarry1
+	ld a, [bc]
+	pop bc
+	ld b, a
+	push bc
+	sla c
+	ld b, 0
+	add hl, bc
+	ld a, c
+	add e
+	ld e, a
+	jr nc, .noCarry2
+	inc d
+.noCarry2
+	pop bc
+	push hl
+	ld hl, StatModifierRatios
+	dec b
+	sla b
+	ld c, b
+	ld b, 0
+	add hl, bc
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld a, [de]
+	ld [H_MULTIPLICAND + 1], a
+	inc de
+	ld a, [de]
+	ld [H_MULTIPLICAND + 2], a
+	ld a, [hli]
+	ld [H_MULTIPLIER], a
+	call Multiply
+	ld a, [hl]
+	ld [H_DIVISOR], a
+	ld b, $4
+	call Divide
+	pop hl
+	ld a, [H_DIVIDEND + 3]
+	sub 999 % $100
+	ld a, [H_DIVIDEND + 2]
+	sbc 999 / $100
+	jp c, .storeNewStatValue
+; cap the stat at 999
+	ld a, 999 / $100
+	ld [H_DIVIDEND + 2], a
+	ld a, 999 % $100
+	ld [H_DIVIDEND + 3], a
+.storeNewStatValue
+	ld a, [H_DIVIDEND + 2]
+	ld [hli], a
+	ld b, a
+	ld a, [H_DIVIDEND + 3]
+	ld [hl], a
+	or b
+	jr nz, .done
+	inc [hl] ; if the stat is 0, bump it up to 1
+.done
+	pop bc
+	ret
+
 ApplyBadgeStatBoosts: ; 3efa5 (f:6fa5)
-	dr $3efa5,$3efe4
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	ret z ; return if link battle
+	ld a, [wObtainedBadges]
+	ld b, a
+	ld hl, wBattleMonAttack
+	ld c, $4
+; the boost is applied for badges whose bit position is even
+; the order of boosts matches the order they are laid out in RAM
+; Boulder (bit 0) - attack
+; Thunder (bit 2) - defense
+; Soul (bit 4) - speed
+; Volcano (bit 6) - special
+.loop
+	srl b
+	call c, .applyBoostToStat
+	inc hl
+	inc hl
+	srl b
+	dec c
+	jr nz, .loop
+	ret
+
+; multiply stat at hl by 1.125
+; cap stat at 999
+.applyBoostToStat
+	ld a, [hli]
+	ld d, a
+	ld e, [hl]
+	srl d
+	rr e
+	srl d
+	rr e
+	srl d
+	rr e
+	ld a, [hl]
+	add e
+	ld [hld], a
+	ld a, [hl]
+	adc d
+	ld [hli], a
+	ld a, [hld]
+	sub 999 % $100
+	ld a, [hl]
+	sbc 999 / $100
+	ret c
+	ld a, 999 / $100
+	ld [hli], a
+	ld a, 999 % $100
+	ld [hld], a
+	ret
+
 LoadHudAndHpBarAndStatusTilePatterns: ; 3efe4 (f:6fe4)
-	dr $3efe4,$3efe7
+	call LoadHpBarAndStatusTilePatterns
+
 LoadHudTilePatterns: ; 3efe7 (f:6fe7)
-	dr $3efe7,$3f020
+	ld a, [rLCDC]
+	add a ; is LCD disabled?
+	jr c, .lcdEnabled
+.lcdDisabled
+	ld hl, BattleHudTiles1
+	ld de, vChars2 + $6d0
+	ld bc, BattleHudTiles1End - BattleHudTiles1
+	ld a, BANK(BattleHudTiles1)
+	call FarCopyDataDouble
+	ld hl, BattleHudTiles2
+	ld de, vChars2 + $730
+	ld bc, BattleHudTiles3End - BattleHudTiles2
+	ld a, BANK(BattleHudTiles2)
+	jp FarCopyDataDouble
+.lcdEnabled
+	ld de, BattleHudTiles1
+	ld hl, vChars2 + $6d0
+	lb bc, BANK(BattleHudTiles1), (BattleHudTiles1End - BattleHudTiles1) / $8
+	call CopyVideoDataDouble
+	ld de, BattleHudTiles2
+	ld hl, vChars2 + $730
+	lb bc, BANK(BattleHudTiles2), (BattleHudTiles3End - BattleHudTiles2) / $8
+	jp CopyVideoDataDouble
+
 PrintEmptyString: ; 3f020 (f:7020)
-	dr $3f020,$3f027
+	ld hl, .emptyString
+	jp PrintText
+.emptyString
+	db "@"
+
+
 BattleRandom: ; 3f027 (f:7027)
-	dr $3f027,$3f05f
+; Link battles use a shared PRNG.
+
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jp nz, Random
+
+	push hl
+	push bc
+	ld a, [wLinkBattleRandomNumberListIndex]
+	ld c, a
+	ld b, 0
+	ld hl, wLinkBattleRandomNumberList
+	add hl, bc
+	inc a
+	ld [wLinkBattleRandomNumberListIndex], a
+	cp 9
+	ld a, [hl]
+	pop bc
+	pop hl
+	ret c
+
+; if we picked the last seed, we need to recalculate the nine seeds
+	push hl
+	push bc
+	push af
+
+; point to seed 0 so we pick the first number the next time
+	xor a
+	ld [wLinkBattleRandomNumberListIndex], a
+
+	ld hl, wLinkBattleRandomNumberList
+	ld b, 9
+.loop
+	ld a, [hl]
+	ld c, a
+; multiply by 5
+	add a
+	add a
+	add c
+; add 1
+	inc a
+	ld [hli], a
+	dec b
+	jr nz, .loop
+
+	pop af
+	pop bc
+	pop hl
+	ret
+
+
 HandleExplodingAnimation: ; 3f05f (f:705f)
-	dr $3f05f,$3f093
+	ld a, [H_WHOSETURN]
+	and a
+	ld hl, wEnemyMonType1
+	ld de, wEnemyBattleStatus1
+	ld a, [wPlayerMoveNum]
+	jr z, .player
+	ld hl, wBattleMonType1
+	ld de, wEnemyBattleStatus1
+	ld a, [wEnemyMoveNum]
+.player
+	cp SELFDESTRUCT
+	jr z, .isExplodingMove
+	cp EXPLOSION
+	ret nz
+.isExplodingMove
+	ld a, [de]
+	bit Invulnerable, a ; fly/dig
+	ret nz
+	ld a, [hli]
+	cp GHOST
+	ret z
+	ld a, [hl]
+	cp GHOST
+	ret z
+	ld a, [wMoveMissed]
+	and a
+	ret nz
+	ld a, 5
+	ld [wAnimationType], a
+
 PlayMoveAnimation: ; 3f093 (f:7093)
-	dr $3f093,$3f0a7
+	ld [wAnimationID],a
+	call Delay3
+	predef MoveAnimation
+	callab Func_78e98
+	ret
+
 JumpMoveEffect: ; 3f0a7 (f:70a7)
-	dr $3f0a7,$3f3de
+	call _JumpMoveEffect
+	ld b, $1
+	ret
+
+_JumpMoveEffect: ; 3f0ad (f:70ad)
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveEffect]
+	jr z, .next1
+	ld a, [wEnemyMoveEffect]
+.next1
+	dec a ; subtract 1, there is no special effect for 00
+	add a ; x2, 16bit pointers
+	ld hl, MoveEffectPointerTable
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl] ; jump to special effect handler
+
+MoveEffectPointerTable: ; 3f0c5 (f:70c5)
+	dr $3f0c5,$3f3de
 StatModifierUpEffect: ; 3f3de (f:73de)
-	dr $3f3de,$3fb2e
+	dr $3f3de,$3f681
+StatModifierRatios: ; 3f681 (f:7681)
+	dr $3f681,$3fb2e
 PrintButItFailedText_: ; 3fb2e (f:7b2e)
 	dr $3fb2e,$3fb39
 PrintDidntAffectText: ; 3fb39 (f:7b39)
 	dr $3fb39,$3fb49
 PrintMayNotAttackText: ; 3fb49 (f:7b49)
-	dr $3fb49,$3fb83
+	dr $3fb49,$3fb54
+CheckTargetSubstitute: ; 3fb54 (f:7b54)
+	dr $3fb54,$3fb83
 PlayCurrentMoveAnimation: ; 3fb83 (f:7b83)
-	dr $3fb83,$40000
+	dr $3fb83,$3ff00

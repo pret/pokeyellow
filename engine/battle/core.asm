@@ -5585,7 +5585,7 @@ AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
 INCLUDE "data/type_effects.asm"
 
 ; some tests that need to pass for a move to hit
-MoveHitTest: ; 3e56b (f:656b)
+MoveHitTest: ; 3e6f1 (f:66f1)
 ; player's turn
 	ld hl,wEnemyBattleStatus1
 	ld de,wPlayerMoveEffect
@@ -5671,12 +5671,12 @@ MoveHitTest: ; 3e56b (f:656b)
 	ret nz ; if so, always hit regardless of accuracy/evasion
 .calcHitChance
 	call CalcHitChance ; scale the move accuracy according to attacker's accuracy and target's evasion
-	ld a,[W_PLAYERMOVEACCURACY]
+	ld a,[wPlayerMoveAccuracy]
 	ld b,a
 	ld a,[H_WHOSETURN]
 	and a
 	jr z,.doAccuracyCheck
-	ld a,[W_ENEMYMOVEACCURACY]
+	ld a,[wEnemyMoveAccuracy]
 	ld b,a
 .doAccuracyCheck
 ; if the random number generated is greater than or equal to the scaled accuracy, the move misses
@@ -5705,8 +5705,8 @@ MoveHitTest: ; 3e56b (f:656b)
 	ret
 
 ; values for player turn
-CalcHitChance: ; 3e624 (f:6624)
-	ld hl,W_PLAYERMOVEACCURACY
+CalcHitChance: ; 3e7aa (f:67aa)
+	ld hl,wPlayerMoveAccuracy
 	ld a,[H_WHOSETURN]
 	and a
 	ld a,[wPlayerMonAccuracyMod]
@@ -5715,7 +5715,7 @@ CalcHitChance: ; 3e624 (f:6624)
 	ld c,a
 	jr z,.next
 ; values for enemy turn
-	ld hl,W_ENEMYMOVEACCURACY
+	ld hl,wEnemyMoveAccuracy
 	ld a,[wEnemyMonAccuracyMod]
 	ld b,a
 	ld a,[wPlayerMonEvasionMod]
@@ -5777,7 +5777,7 @@ CalcHitChance: ; 3e624 (f:6624)
 	ret
 
 ; multiplies damage by a random percentage from ~85% to 100%
-RandomizeDamage: ; 3e687 (f:6687)
+RandomizeDamage: ; 3e80d (f:680d)
 	ld hl, wDamage
 	ld a, [hli]
 	and a
@@ -5814,7 +5814,7 @@ RandomizeDamage: ; 3e687 (f:6687)
 	ret
 
 ; for more detailed commentary, see equivalent function for player side (ExecutePlayerMove)
-ExecuteEnemyMove: ; 3e6bc (f:66bc)
+ExecuteEnemyMove: ; 3e842 (f:6842)
 	ld a, [wEnemySelectedMove]
 	inc a
 	jp z, ExecuteEnemyMoveDone
@@ -5846,14 +5846,14 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	jr nz, EnemyCanExecuteChargingMove ; if so, jump
 	call GetCurrentMove
 
-CheckIfEnemyNeedsToChargeUp: ; 3e6fc (f:66fc)
+CheckIfEnemyNeedsToChargeUp: ; 3e882 (f:6882)
 	ld a, [wEnemyMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect
 	cp FLY_EFFECT
 	jp z, JumpMoveEffect
 	jr EnemyCanExecuteMove
-EnemyCanExecuteChargingMove: ; 3e70b (f:670b)
+EnemyCanExecuteChargingMove: ; 3e891 (f:6891)
 	ld hl, wEnemyBattleStatus1
 	res ChargingUp, [hl] ; no longer charging up for attack
 	res Invulnerable, [hl] ; no longer invulnerable to typical attacks
@@ -5866,7 +5866,7 @@ EnemyCanExecuteChargingMove: ; 3e70b (f:670b)
 	call GetName
 	ld de, wcd6d
 	call CopyStringToCF4B
-EnemyCanExecuteMove: ; 3e72b (f:672b)
+EnemyCanExecuteMove: ; 3e8b1 (f:68b1)
 	xor a
 	ld [wMonIsDisobedient], a
 	call PrintMonName1Text
@@ -5880,7 +5880,7 @@ EnemyCanExecuteMove: ; 3e72b (f:672b)
 	ld de, $1
 	call IsInArray
 	call c, JumpMoveEffect
-EnemyCalcMoveDamage: ; 3e750 (f:6750)
+EnemyCalcMoveDamage: ; 3e8d6 (f:68d6)
 	call SwapPlayerAndEnemyLevels
 	ld a, [wEnemyMoveEffect]
 	ld hl, SetDamageEffects
@@ -5898,30 +5898,30 @@ EnemyCalcMoveDamage: ; 3e750 (f:6750)
 	call AdjustDamageForMoveType
 	call RandomizeDamage
 
-EnemyMoveHitTest: ; 3e77f (f:677f)
+EnemyMoveHitTest: ; 3e905 (f:6905)
 	call MoveHitTest
-handleIfEnemyMoveMissed: ; 3e782 (f:6782)
+handleIfEnemyMoveMissed: ; 3e908 (f:6908)
 	ld a, [wMoveMissed]
 	and a
-	jr z, .asm_3e791
+	jr z, .moveDidNotMiss
 	ld a, [wEnemyMoveEffect]
 	cp EXPLODE_EFFECT
-	jr z, asm_3e7a0
+	jr z, handleExplosionMiss
 	jr EnemyCheckIfFlyOrChargeEffect
-.asm_3e791
+.moveDidNotMiss
 	call SwapPlayerAndEnemyLevels
 
-GetEnemyAnimationType: ; 3e794 (f:6794)
+GetEnemyAnimationType: ; 3e91a (f:691a)
 	ld a, [wEnemyMoveEffect]
 	and a
 	ld a, $1
 	jr z, playEnemyMoveAnimation
 	ld a, $2
 	jr playEnemyMoveAnimation
-asm_3e7a0: ; 3e7a0 (f:67a0)
+handleExplosionMiss: ; 3e926 (f:6926)
 	call SwapPlayerAndEnemyLevels
 	xor a
-playEnemyMoveAnimation: ; 3e7a4 (f:67a4)
+playEnemyMoveAnimation: ; 3e92a (f:692a)
 	push af
 	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does mon have a substitute?
@@ -5941,7 +5941,7 @@ playEnemyMoveAnimation: ; 3e7a4 (f:67a4)
 	call nz, Bankswitch ; slide the substitute's sprite out
 	jr EnemyCheckIfMirrorMoveEffect
 
-EnemyCheckIfFlyOrChargeEffect: ; 3e7d1 (f:67d1)
+EnemyCheckIfFlyOrChargeEffect: ; 3e957 (f:6957)
 	call SwapPlayerAndEnemyLevels
 	ld c, 30
 	call DelayFrames
@@ -5956,7 +5956,7 @@ EnemyCheckIfFlyOrChargeEffect: ; 3e7d1 (f:67d1)
 	ld [wAnimationType], a
 	ld a,STATUS_AFFECTED_ANIM
 	call PlayMoveAnimation
-EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
+EnemyCheckIfMirrorMoveEffect: ; 3e975 (f:6975)
 	ld a, [wEnemyMoveEffect]
 	cp MIRROR_MOVE_EFFECT
 	jr nz, .notMirrorMoveEffect
@@ -5976,19 +5976,19 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	jp c, JumpMoveEffect
 	ld a, [wMoveMissed]
 	and a
-	jr z, .asm_3e82b
+	jr z, .moveDidNotMiss
 	call PrintMoveFailureText
 	ld a, [wEnemyMoveEffect]
 	cp EXPLODE_EFFECT
-	jr z, .asm_3e83e
+	jr z, .handleExplosionMiss
 	jp ExecuteEnemyMoveDone
-.asm_3e82b
+.moveDidNotMiss
 	call ApplyAttackToPlayerPokemon
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
 	ld a, 1
 	ld [wMoveDidntMiss], a
-.asm_3e83e
+.handleExplosionMiss
 	ld a, [wEnemyMoveEffect]
 	ld hl, AlwaysHappenSideEffects
 	ld de, $1
@@ -6002,7 +6002,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	call HandleBuildingRage
 	ld hl, wEnemyBattleStatus1
 	bit AttackingMultipleTimes, [hl] ; is mon hitting multiple times? (example: double kick)
-	jr z, .asm_3e873
+	jr z, .notMultiHitMove
 	push hl
 	ld hl, wEnemyNumAttacksLeft
 	dec [hl]
@@ -6013,7 +6013,7 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	call PrintText
 	xor a
 	ld [wEnemyNumHits], a
-.asm_3e873
+.notMultiHitMove
 	ld a, [wEnemyMoveEffect]
 	and a
 	jr z, ExecuteEnemyMoveDone
@@ -6023,17 +6023,17 @@ EnemyCheckIfMirrorMoveEffect: ; 3e7ef (f:67ef)
 	call nc, JumpMoveEffect
 	jr ExecuteEnemyMoveDone
 
-HitXTimesText: ; 3e887 (f:6887)
+HitXTimesText: ; 3ea0d (f:6a0d)
 	TX_FAR _HitXTimesText
 	db "@"
 
-ExecuteEnemyMoveDone: ; 3e88c (f:688c)
+ExecuteEnemyMoveDone: ; 3ea12 (f:6a12)
 	ld b, $1
 	ret
 
 ; checks for various status conditions affecting the enemy mon
 ; stores whether the mon cannot use a move this turn in Z flag
-CheckEnemyStatusConditions: ; 3e88f (f:688f)
+CheckEnemyStatusConditions: ; 3ea15 (f:6a15)
 	ld hl, wEnemyMonStatus
 	ld a, [hl]
 	and SLP ; sleep mask
@@ -6315,7 +6315,7 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	and a ; clear Z flag
 	ret
 
-GetCurrentMove: ; 3eabe (f:6abe)
+GetCurrentMove: ; 3ec44 (f:6c44)
 	ld a, [H_WHOSETURN]
 	and a
 	jp z, .player
@@ -6346,7 +6346,7 @@ GetCurrentMove: ; 3eabe (f:6abe)
 	ld de, wcd6d
 	jp CopyStringToCF4B
 
-LoadEnemyMonData: ; 3eb01 (f:6b01)
+LoadEnemyMonData: ; 3ec87 (f:6c87)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, LoadEnemyMonFromParty
@@ -6506,7 +6506,7 @@ LoadEnemyMonData: ; 3eb01 (f:6b01)
 	ret
 
 ; calls BattleTransition to show the battle transition animation and initializes some battle variables
-DoBattleTransitionAndInitBattleVariables: ; 3ec32 (f:6c32)
+DoBattleTransitionAndInitBattleVariables: ; 3edb8 (f:6db8)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .next
@@ -6542,7 +6542,7 @@ DoBattleTransitionAndInitBattleVariables: ; 3ec32 (f:6c32)
 	ret
 
 ; swaps the level values of the BattleMon and EnemyMon structs
-SwapPlayerAndEnemyLevels: ; 3ec81 (f:6c81)
+SwapPlayerAndEnemyLevels: ; 3ee07 (f:6e07)
 	push bc
 	ld a, [wBattleMonLevel]
 	ld b, a
@@ -6556,7 +6556,7 @@ SwapPlayerAndEnemyLevels: ; 3ec81 (f:6c81)
 ; loads either red back pic or old man back pic
 ; also writes OAM data and loads tile patterns for the Red or Old Man back sprite's head
 ; (for use when scrolling the player sprite and enemy's silhouettes on screen)
-LoadPlayerBackPic: ; 3ec92 (f:6c92)
+LoadPlayerBackPic: ; 3ee18 (f:6e18)
 	ld a, [wBattleType]
 	dec a ; is it the old man tutorial?
 	ld de, RedPicBack
@@ -6617,26 +6617,26 @@ LoadPlayerBackPic: ; 3ec92 (f:6c92)
 	predef_jump CopyUncompressedPicToTilemap
 
 ; does nothing since no stats are ever selected (barring glitches)
-DoubleOrHalveSelectedStats: ; 3ed02 (f:6d02)
+DoubleOrHalveSelectedStats: ; 3ee8e (f:6e8e)
 	callab DoubleSelectedStats
 	jpab HalveSelectedStats
 
-ScrollTrainerPicAfterBattle: ; 3ed12 (f:6d12)
+ScrollTrainerPicAfterBattle: ; 3ee9e (f:6e9e)
 	jpab _ScrollTrainerPicAfterBattle
 
-ApplyBurnAndParalysisPenaltiesToPlayer: ; 3ed1a (f:6d1a)
+ApplyBurnAndParalysisPenaltiesToPlayer: ; 3eea6 (f:6ea6)
 	ld a, $1
 	jr ApplyBurnAndParalysisPenalties
 
-ApplyBurnAndParalysisPenaltiesToEnemy: ; 3ed1e (f:6d1e)
+ApplyBurnAndParalysisPenaltiesToEnemy: ; 3eeaa (f:6eaa)
 	xor a
 
-ApplyBurnAndParalysisPenalties: ; 3ed1f (f:6d1f)
+ApplyBurnAndParalysisPenalties: ; 3eeab (f:6eab)
 	ld [H_WHOSETURN], a
 	call QuarterSpeedDueToParalysis
 	jp HalveAttackDueToBurn
 
-QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
+QuarterSpeedDueToParalysis: ; 3eeb3 (f:6eb3)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
@@ -6679,7 +6679,7 @@ QuarterSpeedDueToParalysis: ; 3ed27 (f:6d27)
 	ld [hl], b
 	ret
 
-HalveAttackDueToBurn: ; 3ed64 (f:6d64)
+HalveAttackDueToBurn: ; 3eeef (f:6eef)
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
@@ -6718,7 +6718,7 @@ HalveAttackDueToBurn: ; 3ed64 (f:6d64)
 	ld [hl], b
 	ret
 
-CalculateModifiedStats: ; 3ed99 (f:6d99)
+CalculateModifiedStats: ; 3ef25 (f:6f25)
 	ld c, 0
 .loop
 	call CalculateModifiedStat
@@ -6729,7 +6729,7 @@ CalculateModifiedStats: ; 3ed99 (f:6d99)
 	ret
 
 ; calculate modified stat for stat c (0 = attack, 1 = defense, 2 = speed, 3 = special)
-CalculateModifiedStat: ; 3eda5 (f:6da5)
+CalculateModifiedStat: ; 3ef31 (f:6f31)
 	push bc
 	push bc
 	ld a, [wCalculateWhoseStats]
@@ -6807,7 +6807,7 @@ CalculateModifiedStat: ; 3eda5 (f:6da5)
 	pop bc
 	ret
 
-ApplyBadgeStatBoosts: ; 3ee19 (f:6e19)
+ApplyBadgeStatBoosts: ; 3efa5 (f:6fa5)
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
@@ -6860,10 +6860,10 @@ ApplyBadgeStatBoosts: ; 3ee19 (f:6e19)
 	ld [hld], a
 	ret
 
-LoadHudAndHpBarAndStatusTilePatterns: ; 3ee58 (f:6e58)
+LoadHudAndHpBarAndStatusTilePatterns: ; 3efe4 (f:6fe4)
 	call LoadHpBarAndStatusTilePatterns
 
-LoadHudTilePatterns: ; 3ee5b (f:6e5b)
+LoadHudTilePatterns: ; 3efe7 (f:6fe7)
 	ld a, [rLCDC]
 	add a ; is LCD disabled?
 	jr c, .lcdEnabled
@@ -6888,14 +6888,14 @@ LoadHudTilePatterns: ; 3ee5b (f:6e5b)
 	lb bc, BANK(BattleHudTiles2), (BattleHudTiles3End - BattleHudTiles2) / $8
 	jp CopyVideoDataDouble
 
-PrintEmptyString: ; 3ee94 (f:6e94)
+PrintEmptyString: ; 3f020 (f:7020)
 	ld hl, .emptyString
 	jp PrintText
 .emptyString
 	db "@"
 
 
-BattleRandom:
+BattleRandom: ; 3f027 (f:7027)
 ; Link battles use a shared PRNG.
 
 	ld a, [wLinkState]
@@ -6947,22 +6947,22 @@ BattleRandom:
 	ret
 
 
-HandleExplodingAnimation: ; 3eed3 (f:6ed3)
+HandleExplodingAnimation: ; 3f05f (f:705f)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wEnemyMonType1
 	ld de, wEnemyBattleStatus1
 	ld a, [wPlayerMoveNum]
-	jr z, .asm_3eeea
+	jr z, .player
 	ld hl, wBattleMonType1
 	ld de, wEnemyBattleStatus1
 	ld a, [wEnemyMoveNum]
-.asm_3eeea
+.player
 	cp SELFDESTRUCT
-	jr z, .asm_3eef1
+	jr z, .isExplodingMove
 	cp EXPLOSION
 	ret nz
-.asm_3eef1
+.isExplodingMove
 	ld a, [de]
 	bit Invulnerable, a ; fly/dig
 	ret nz
@@ -6978,24 +6978,19 @@ HandleExplodingAnimation: ; 3eed3 (f:6ed3)
 	ld a, 5
 	ld [wAnimationType], a
 
-PlayMoveAnimation: ; 3ef07 (f:6f07)
+PlayMoveAnimation: ; 3f093 (f:7093)
 	ld [wAnimationID],a
 	call Delay3
-	predef_jump MoveAnimation
+	predef MoveAnimation
+	callab Func_78e98
+	ret
 
-; unreferenced
-ResetCryModifiers: ; 3f069 (f:7069)
-	xor a
-	ld [wFrequencyModifier], a
-	ld [wTempoModifier], a
-	jp PlaySound
-
-JumpMoveEffect: ; 3f132 (f:7132)
+JumpMoveEffect: ; 3f0a7 (f:70a7)
 	call _JumpMoveEffect
 	ld b, $1
 	ret
 
-_JumpMoveEffect: ; 3f138 (f:7138)
+_JumpMoveEffect: ; 3f0ad (f:70ad)
 	ld a, [H_WHOSETURN]
 	and a
 	ld a, [wPlayerMoveEffect]
@@ -7013,7 +7008,7 @@ _JumpMoveEffect: ; 3f138 (f:7138)
 	ld l, a
 	jp [hl] ; jump to special effect handler
 
-MoveEffectPointerTable: ; 3f150 (f:7150)
+MoveEffectPointerTable: ; 3f0c5 (f:70c5)
 	 dw SleepEffect               ; unused effect
 	 dw PoisonEffect              ; POISON_SIDE_EFFECT1
 	 dw DrainHPEffect             ; DRAIN_HP_EFFECT

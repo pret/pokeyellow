@@ -1494,7 +1494,7 @@ wEnemyMovePower:: ; cfce
 	ds 1
 wEnemyMoveType:: ; cfcf
 	ds 1
-W_ENEMYMOVEACCURACY:: ; cfd0
+wEnemyMoveAccuracy:: ; cfd0
 	ds 1
 W_ENEMYMOVEMAXPP:: ; cfd1
 	ds 1
@@ -1506,7 +1506,7 @@ wPlayerMovePower:: ; cfd4
 	ds 1
 wPlayerMoveType:: ; cfd5
 	ds 1
-W_PLAYERMOVEACCURACY:: ; cfd6
+wPlayerMoveAccuracy:: ; cfd6
 	ds 1
 W_PLAYERMOVEMAXPP:: ; cfd7
 	ds 1
