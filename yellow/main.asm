@@ -4027,7 +4027,7 @@ INCLUDE "engine/evos_moves.asm"
 
 SECTION "bank0F",ROMX,BANK[$0F]
 
-INCLUDE "engine/battle/core_.asm"
+INCLUDE "engine/battle/core.asm"
 
 SECTION "bank10",ROMX,BANK[$10]
 
