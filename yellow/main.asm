@@ -821,7 +821,11 @@ RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
-	dr $7a22a,$7c000
+AttackAnimationPointers: ; 7a22a (1e:622a)
+	dr $7a22a,$7a915
+
+SubanimationPointers: ; 7a915 (1e:6915)
+	dr $7a915,$7c000
 
 SECTION "bank20",ROMX,BANK[$20]
 

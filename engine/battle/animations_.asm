@@ -4,18 +4,20 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld l,c
 	ld h,b
 	ld a,[hli]
-	ld [W_NUMFBTILES],a
-	ld a,[W_FBDESTADDR + 1]
+	ld [wNumFBTiles],a
+	ld a,[wFBDestAddr + 1]
 	ld e,a
-	ld a,[W_FBDESTADDR]
+	ld a,[wFBDestAddr]
 	ld d,a
 	xor a
-	ld [W_FBTILECOUNTER],a ; loop counter
+	ld [wFBTileCounter],a ; loop counter
 .loop
-	ld a,[W_FBTILECOUNTER]
+	ld a,[wFBTileCounter]
 	inc a
-	ld [W_FBTILECOUNTER],a
-	ld a,[W_SUBANIMTRANSFORM]
+	ld [wFBTileCounter],a
+	ld a, $2
+	ld [wdef5], a
+	ld a,[wSubAnimTransform]
 	dec a
 	jr z,.flipHorizontalAndVertical   ; 1
 	dec a
@@ -43,9 +45,15 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld b,a
 	ld a,168
 	sub b ; flip X base coordinate
-.finishCopying ; finish copying values to OAM (when [W_SUBANIMTRANSFORM] not 1 or 2)
+.finishCopying ; finish copying values to OAM (when [wSubAnimTransform] not 1 or 2)
 	add [hl] ; X offset
 	ld [de],a ; store X
+	cp 88
+	jr c, .asm_78056
+	ld a, [wdef5]
+	inc a
+	ld [wdef5], a
+.asm_78056
 	inc hl
 	inc de
 	ld a,[hli]
@@ -53,6 +61,9 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld [de],a ; store tile ID
 	inc de
 	ld a,[hli]
+	ld b, a
+	ld a, [wdef5]
+	or b
 	ld [de],a ; store flags
 	inc de
 	jp .nextTile
@@ -71,6 +82,12 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld a,168
 	sub b ; flip X coordinate
 	ld [de],a ; store X
+	cp 88
+	jr c, .asm_78087
+	ld a, [wdef5]
+	inc a
+	ld [wdef5], a
+.asm_78087
 	inc hl
 	inc de
 	ld a,[hli]
@@ -90,7 +107,8 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	jr z,.storeFlags1
 	ld b,0
 .storeFlags1
-	ld a,b
+	ld a, [wdef5]
+	or b
 	ld [de],a
 	inc de
 	jp .nextTile
@@ -107,6 +125,12 @@ DrawFrameBlock: ; 78000 (1e:4000)
 	ld a,168
 	sub b ; flip X coordinate
 	ld [de],a ; store X
+	cp 88
+	jr c, .asm_780c8
+	ld a, [wdef5]
+	inc a
+	ld [wdef5], a
+.asm_780c8
 	inc hl
 	inc de
 	ld a,[hli]
@@ -122,22 +146,25 @@ DrawFrameBlock: ; 78000 (1e:4000)
 .disableHorizontalFlip
 	res 5,a
 .storeFlags2
+	ld b, a
+	ld a, [wdef5]
+	or b
 	ld [de],a
 	inc de
 .nextTile
-	ld a,[W_FBTILECOUNTER]
+	ld a,[wFBTileCounter]
 	ld c,a
-	ld a,[W_NUMFBTILES]
+	ld a,[wNumFBTiles]
 	cp c
 	jp nz,.loop ; go back up if there are more tiles to draw
 .afterDrawingTiles
-	ld a,[W_FBMODE]
+	ld a,[wFBMode]
 	cp a,2
 	jr z,.advanceFrameBlockDestAddr; skip delay and don't clean OAM buffer
-	ld a,[W_SUBANIMFRAMEDELAY]
+	ld a,[wSubAnimFrameDelay]
 	ld c,a
 	call DelayFrames
-	ld a,[W_FBMODE]
+	ld a,[wFBMode]
 	cp a,3
 	jr z,.advanceFrameBlockDestAddr ; skip cleaning OAM buffer
 	cp a,4
@@ -149,22 +176,22 @@ DrawFrameBlock: ; 78000 (1e:4000)
 .resetFrameBlockDestAddr
 	ld hl,wOAMBuffer ; OAM buffer
 	ld a,l
-	ld [W_FBDESTADDR + 1],a
+	ld [wFBDestAddr + 1],a
 	ld a,h
-	ld [W_FBDESTADDR],a ; set destination address to beginning of OAM buffer
+	ld [wFBDestAddr],a ; set destination address to beginning of OAM buffer
 	ret
 .advanceFrameBlockDestAddr
 	ld a,e
-	ld [W_FBDESTADDR + 1],a
+	ld [wFBDestAddr + 1],a
 	ld a,d
-	ld [W_FBDESTADDR],a
+	ld [wFBDestAddr],a
 .done
 	ret
 
 PlayAnimation: ; 78124 (1e:4124)
 	xor a
 	ld [$FF8B],a ; it looks like nothing reads this
-	ld [W_SUBANIMTRANSFORM],a
+	ld [wSubAnimTransform],a
 	ld a,[wAnimationID] ; get animation number
 	dec a
 	ld l,a
@@ -217,7 +244,7 @@ PlayAnimation: ; 78124 (1e:4124)
 .playSubanimation
 	ld c,a
 	and a,%00111111
-	ld [W_SUBANIMFRAMEDELAY],a
+	ld [wSubAnimFrameDelay],a
 	xor a
 	sla c
 	rla
@@ -235,9 +262,9 @@ PlayAnimation: ; 78124 (1e:4124)
 	ld de,SubanimationPointers
 	add hl,de
 	ld a,l
-	ld [W_SUBANIMADDRPTR],a
+	ld [wSubAnimAddrPtr],a
 	ld a,h
-	ld [W_SUBANIMADDRPTR + 1],a
+	ld [wSubAnimAddrPtr + 1],a
 	ld l,c
 	ld h,b
 	push hl
@@ -259,9 +286,9 @@ PlayAnimation: ; 78124 (1e:4124)
 	ret
 
 LoadSubanimation: ; 781b5 (1e:41b5)
-	ld a,[W_SUBANIMADDRPTR + 1]
+	ld a,[wSubAnimAddrPtr + 1]
 	ld h,a
-	ld a,[W_SUBANIMADDRPTR]
+	ld a,[wSubAnimAddrPtr]
 	ld l,a
 	ld a,[hli]
 	ld e,a
@@ -270,7 +297,7 @@ LoadSubanimation: ; 781b5 (1e:41b5)
 	ld a,[de]
 	ld b,a
 	and a,31
-	ld [W_SUBANIMCOUNTER],a ; number of frame blocks
+	ld [wSubAnimCounter],a ; number of frame blocks
 	ld a,b
 	and a,%11100000
 	cp a,5 << 5 ; is subanimation type 5?
@@ -284,12 +311,12 @@ LoadSubanimation: ; 781b5 (1e:41b5)
 ; place the upper 3 bits of a into bits 0-2 of a before storing
 	srl a
 	swap a
-	ld [W_SUBANIMTRANSFORM],a
+	ld [wSubAnimTransform],a
 	cp a,4 ; is the animation reversed?
 	ld hl,0
 	jr nz,.storeSubentryAddr
 ; if the animation is reversed, then place the initial subentry address at the end of the list of subentries
-	ld a,[W_SUBANIMCOUNTER]
+	ld a,[wSubAnimCounter]
 	dec a
 	ld bc,3
 .loop
@@ -300,9 +327,9 @@ LoadSubanimation: ; 781b5 (1e:41b5)
 	inc de
 	add hl,de
 	ld a,l
-	ld [W_SUBANIMSUBENTRYADDR],a
+	ld [wSubAnimSubEntryAddr],a
 	ld a,h
-	ld [W_SUBANIMSUBENTRYADDR + 1],a
+	ld [wSubAnimSubEntryAddr + 1],a
 	ret
 
 ; called if the subanimation type is not 5
@@ -373,7 +400,13 @@ SlotMachineTiles2: ; 78bde (1e:4c17)
 
 	dr $78d97,$78e98
 Func_78e98: ; 78e98 (1e:4e98)
-	dr $78e98,$79349
+	dr $78e98,$78ebb
+PlaySubanimation: ; 78ebb (1e:4ebb)
+	dr $78ebb,$78f30
+AnimationCleanOAM: ; 78f30 (1e:4f30)
+	dr $78f30,$79145
+SpecialEffectPointers: ; 79145 (1e:5145)
+	dr $79145,$79349
 AnimationSlideMonOff: ; 79349 (1e:5349)
 	dr $79349,$79353
 AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
@@ -391,4 +424,6 @@ AnimationTransformMon: ; 798c8 (1e:58c8)
 ChangeMonPic: ; 798d4 (1e:58d4)
 	dr $798d4,$79929
 Func_79929: ; 79929 (1e:5929)
-	dr $79929,$7a037
+	dr $79929,$799cb
+GetMoveSound: ; 799cb (1e:59cb)
+	dr $799cb,$7a037

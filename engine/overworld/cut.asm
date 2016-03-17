@@ -113,7 +113,7 @@ InitCutAnimOAM: ; ee74 (3:6e74)
 	ret
 
 LoadCutGrassAnimationTilePattern: ; eecc (3:6ecc)
-	ld de, AnimationTileset2 + $30 ; tile depicting a leaf
+	ld de, AnimationTileset2 + $60 ; tile depicting a leaf
 	lb bc, BANK(AnimationTileset2), $01
 	jp CopyVideoData
 

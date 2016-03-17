@@ -5,11 +5,11 @@ LoadShootingStarGraphics: ; 70000 (1c:4000)
 	ld [rOBP1], a ; $ff49
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
-	ld de, AnimationTileset2 ; $4757 ; star tile (top left quadrant)
+	ld de, AnimationTileset2 + $30 ; $4757 ; star tile (top left quadrant)
 	ld hl, vChars1 + $200
 	lb bc, BANK(AnimationTileset2), $01
 	call CopyVideoData
-	ld de, AnimationTileset2 + $100 ; $481e ; star tile (bottom left quadrant)
+	ld de, AnimationTileset2 + $130 ; $481e ; star tile (bottom left quadrant)
 	ld hl, vChars1 + $210
 	lb bc, BANK(AnimationTileset2), $01
 	call CopyVideoData
