@@ -809,31 +809,8 @@ PKMNLeaguePC: ; 75dfe (1d:5dfe)
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
-	dr $78000,$78757
-AnimationTileset2: ; 78757 (1e:4757)
-	dr $78757,$78c17
-SlotMachineTiles2: ; 78c17 (1e:4c17)
-	dr $78c17,$78e98
-Func_78e98: ; 78e98 (1e:4e98)
-	dr $78e98,$79349
-AnimationSlideMonOff: ; 79349 (1e:5349)
-	dr $79349,$79353
-AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
-	dr $79353,$7966e
-AnimationMinimizeMon: ; 7966e (1e:566e)
-	dr $7966e,$797af
-AnimationSubstitute: ; 797af (1e:57af)
-	dr $797af,$79816
-HideSubstituteShowMonAnim: ; 79816 (1e:5816)
-	dr $79816,$798b2
-ReshowSubstituteAnim: ; 798b2 (1e:58b2)
-	dr $798b2,$798c8
-AnimationTransformMon: ; 798c8 (1e:58c8)
-	dr $798c8,$798d4
-ChangeMonPic: ; 798d4 (1e:58d4)
-	dr $798d4,$79929
-Func_79929: ; 79929 (1e:5929)
-	dr $79929,$7a037
+INCLUDE "engine/battle/animations_.asm"
+
 AnimCut: ; 7a037 (1e:6037)
 	dr $7a037,$7a0fb
 AnimateBoulderDust: ; 7a0fb (1e:60fb)

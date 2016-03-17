@@ -164,7 +164,7 @@ DisplayNamingScreen: ; 6307 (1:6307)
 	call RunDefaultPaletteCommand
 	call GBPalNormal
 	xor a
-	ld [W_SUBANIMTRANSFORM], a
+	ld [wSubAnimTransform], a
 	ld hl, wd730
 	res 6, [hl]
 	ld a, [wIsInBattle]

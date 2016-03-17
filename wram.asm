@@ -1778,17 +1778,17 @@ wBaseCoordY:: ; d082
 ; high bit = enable, others = timer to cycle frequencies
 wLowHealthAlarm:: ds 1 ; d083
 
-W_FBTILECOUNTER:: ; d084
+wFBTileCounter:: ; d084
 ; counts how many tiles of the current frame block have been drawn
 	ds 1
 
 wMovingBGTilesCounter2:: ; d085
 	ds 1
 
-W_SUBANIMFRAMEDELAY:: ; d086
+wSubAnimFrameDelay:: ; d086
 ; duration of each frame of the current subanimation in terms of screen refreshes
 	ds 1
-W_SUBANIMCOUNTER:: ; d087
+wSubAnimCounter:: ; d087
 ; counts the number of subentries left in the current subanimation
 	ds 1
 
@@ -1797,7 +1797,7 @@ wSaveFileStatus:: ; d088
 ; 2 = save file exists and no corruption has been detected
 	ds 1
 
-W_NUMFBTILES:: ; d089
+wNumFBTiles:: ; d089
 ; number of tiles in current battle animation frame block
 	ds 1
 
@@ -1833,7 +1833,7 @@ wSlideMonDelay:: ; d08b
 wAnimCounter:: ; d08b
 ; generic counter variable for various animations
 
-W_SUBANIMTRANSFORM:: ; d08b
+wSubAnimTransform:: ; d08b
 ; controls what transformations are applied to the subanimation
 ; 01: flip horizontally and vertically
 ; 02: flip horizontally and translate downwards 40 pixels
@@ -1854,7 +1854,7 @@ wEndBattleTextRomBank:: ; d092
 
 	ds 1
 
-W_SUBANIMADDRPTR:: ; d094
+wSubAnimAddrPtr:: ; d094
 ; the address _of the address_ of the current subanimation entry
 	ds 2
 
@@ -1864,7 +1864,7 @@ wSlotMachineAllowMatchesCounter:: ; d096
 ; the only way it can increase. Winning certain payout amounts will decrement it
 ; or zero it.
 
-W_SUBANIMSUBENTRYADDR:: ; d096
+wSubAnimSubEntryAddr:: ; d096
 ; the address of the current subentry of the current subanimation
 	ds 2
 
@@ -1882,17 +1882,17 @@ wTownMapSpriteBlinkingEnabled:: ; d09b
 wUnusedD09B:: ; d09b
 	ds 1
 
-W_FBDESTADDR:: ; d09c
+wFBDestAddr:: ; d09c
 ; current destination address in OAM for frame blocks (big endian)
 	ds 2
 
-W_FBMODE:: ; d09e
+wFBMode:: ; d09e
 ; controls how the frame blocks are put together to form frames
 ; specifically, after finishing drawing the frame block, the frame block's mode determines what happens
 ; 00: clean OAM buffer and delay
 ; 02: move onto the next frame block with no delay and no cleaning OAM buffer
 ; 03: delay, but don't clean OAM buffer
-; 04: delay, without cleaning OAM buffer, and do not advance [W_FBDESTADDR], so that the next frame block will overwrite this one
+; 04: delay, without cleaning OAM buffer, and do not advance [wFBDestAddr], so that the next frame block will overwrite this one
 	ds 1
 
 wLinkCableAnimBulgeToggle:: ; d09f
