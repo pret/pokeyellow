@@ -30,7 +30,10 @@ INCLUDE "audio/headers/sfxheaders2.asm"
 SECTION "Sound Effect Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/sfxheaders3.asm"
 
-
+SECTION "Sound Effect Headers 4", ROMX, BANK[AUDIO_4]
+SFX_Headers_4:: ; 80000 (20:4000)
+	dr $80000,$801cb
+; INCLUDE "audio/headers/sfxheaders4.asm"
 
 SECTION "Music Headers 1", ROMX, BANK[AUDIO_1]
 INCLUDE "audio/headers/musicheaders1.asm"
@@ -41,7 +44,9 @@ INCLUDE "audio/headers/musicheaders2.asm"
 SECTION "Music Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/musicheaders3.asm"
 
-
+SECTION "Music Headers 4", ROMX, BANK[AUDIO_4]
+	dr $801cb,$801ec
+;INCLUDE "audio/headers/musicheaders4.asm"
 
 SECTION "Sound Effects 1", ROMX, BANK[AUDIO_1]
 
@@ -367,6 +372,9 @@ INCLUDE "audio/sfx/cry20_3.asm"
 INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
 
+SECTION "Sound Effects 4", ROMX, BANK[AUDIO_4]
+	dr $801ec, $80f14
+	
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]
 
 PlayBattleMusic:: ; 9064 (2:5064)
@@ -580,7 +588,11 @@ OwnedMonValues: ; 7d106 (1f:5106)
 	
 INCLUDE "audio/engine_3.asm"
 
+SECTION "Audio Engine 4", ROMX, BANK[AUDIO_4]
 
+SurfingPikachu1Graphics:  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
+
+INCLUDE "audio/engine_4.asm"
 
 SECTION "Music 1", ROMX, BANK[AUDIO_1]
 
@@ -655,14 +667,10 @@ INCLUDE "audio/music/credits.asm"
 INCLUDE "audio/music/yellowintro.asm"
 
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
-SFX_Headers_4: ; 80000 (20:4000)
-	dr $80000,$80f14
+INCLUDE "audio/music/surfingpikachu.asm"
+INCLUDE "audio/music/yellowunusedsong.asm"
 
-SurfingPikachu1Graphics:  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
-
-INCLUDE "audio/engine_4.asm"
-
-	dr $82ce8,$84000
+	dr $8316d,$84000
 	
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)
