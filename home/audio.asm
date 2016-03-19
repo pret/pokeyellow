@@ -23,7 +23,7 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	jr z, .walking
 	cp $2
 	jr z, .surfing
-	call Func_21c8
+	call CheckForNoBikingMusicMap
 	jr c, .walking
 	ld a, $d2 ; MUSIC_BIKE_RIDING
 	jr .next
@@ -67,26 +67,26 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	ld [wNewSoundID], a
 	jp PlaySound
 
-Func_21c8:: ; 21c8 (0:21c8)
+CheckForNoBikingMusicMap:: ; 21c8 (0:21c8)
 ; probably used to not change music upon getting on bike
 	ld a,[wCurMap]
 	cp ROUTE_23
-	jr z,.asm_21e1
+	jr z, .found
 	cp VICTORY_ROAD_1
-	jr z,.asm_21e1
+	jr z, .found
 	cp VICTORY_ROAD_2
-	jr z,.asm_21e1
+	jr z, .found
 	cp VICTORY_ROAD_3
-	jr z,.asm_21e1
+	jr z, .found
 	cp INDIGO_PLATEAU
-	jr z,.asm_21e1
+	jr z, .found
 	and a
 	ret
-.asm_21e1
+.found
 	scf
 	ret
 
-Func_21e3:: ; 21e3 (0:21e3)
+UpdateMusic6Times:: ; 21e3 (0:21e3)
 	ld c,$6
 .loop
 	push bc
@@ -97,34 +97,6 @@ Func_21e3:: ; 21e3 (0:21e3)
 	dec c
 	jr nz, .loop
 	ret
-	
-;Func_235f:: ; 235f (0:235f)
-;	ld a, [wAudioROMBank]
-;	ld b, a
-;	cp BANK(Music2_UpdateMusic)
-;	jr nz, .checkForBank08
-;.bank02
-;	ld hl, Music2_UpdateMusic
-;	jr .asm_2378
-;.checkForBank08
-;	cp BANK(Music8_UpdateMusic)
-;	jr nz, .bank1F
-;.bank08
-;	ld hl, Music8_UpdateMusic
-;	jr .asm_2378
-;.bank1F
-;	ld hl, Music1f_UpdateMusic
-;.asm_2378
-;	ld c, $6
-;.asm_237a
-;	push bc
-;	push hl
-;	call Bankswitch
-;	pop hl
-;	pop bc
-;	dec c
-;	jr nz, .asm_237a
-;	ret
 
 CompareMapMusicBankWithCurrentBank:: ; 21f5 (0:21f5)
 ; Compares the map music's audio ROM bank with the current audio ROM bank
@@ -207,7 +179,7 @@ PlaySound:: ; 2238 (0:2238)
 .noFadeOut
 	xor a
 	ld [wNewSoundID], a
-	call Func_22ec
+	call DetermineAudioFunction
 	jr .done
 .fadeOut
 	ld a,b
@@ -223,7 +195,7 @@ PlaySound:: ; 2238 (0:2238)
 	pop hl
 	ret
 
-Func_2288:: ; 2288 (0:2288)
+GetNextMusicByte:: ; 2288 (0:2288)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a, [wAudioROMBank]
@@ -249,63 +221,70 @@ Func_2288:: ; 2288 (0:2288)
 	ld a,e
 	ret
 
-Func_22aa:: ; 22aa (0:22aa)
+InitMusicVariables:: ; 22aa (0:22aa)
 	push hl
 	push de
 	push bc
-	homecall Audio2_219f8 ; 8:59f8
+	homecall Audio2_InitMusicVariables ; 8:59f8
 	pop bc
 	pop de
 	pop hl
 	ret
 	
-Func_22c0:: ; 22c0 (0:22c0)
+InitSFXVariables:: ; 22c0 (0:22c0)
 	push hl
 	push de
 	push bc
-	homecall Audio2_21ab7 ; 8:5ab7
+	homecall Audio2_InitSFXVariables ; 8:5ab7
 	pop bc
 	pop de
 	pop hl
 	ret
 	
-Func_22d6:: ; 22d6 (0:22d6)
+StopAllAudio:: ; 22d6 (0:22d6)
 	push hl
 	push de
 	push bc
-	homecall Audio2_21b3f
+	homecall Audio2_StopAllAudio
 	pop bc
 	pop de
 	pop hl
 	ret
 	
-Func_22ec:: ; 22ec (0:22ec)
+DetermineAudioFunction:: ; 22ec (0:22ec)
 	ld a,[H_LOADEDROMBANK]
 	push af
 	ld a,[wAudioROMBank]
 	call BankswitchCommon
+; determine the audio function, based on the bank
 	cp BANK(Audio1_PlaySound)
 	jr nz, .checkForBank08
-.bank02
+; bank 02 (audio 1)
 	ld a, b
 	call Audio1_PlaySound
 	jr .done
+
 .checkForBank08
 	cp BANK(Audio2_PlaySound)
 	jr nz, .checkForBank1F
-.bank08
+; bank 08 (audio 2)
 	ld a, b
 	call Audio2_PlaySound
 	jr .done
+
 .checkForBank1F
 	cp BANK(Audio3_PlaySound)
 	jr nz, .bank20
+; bank 1f (audio 3)
 	ld a, b
 	call Audio3_PlaySound
 	jr .done
+
 .bank20
+; invalid banks will default to XX:6bd4
+; this is seen when encountering Missingno, as its sprite dimensions overflow to wAudioROMBank
 	ld a,b
-	call Func_82bd4
+	call Audio4_PlaySound
 .done
 	pop af
 	call BankswitchCommon

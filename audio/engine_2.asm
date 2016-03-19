@@ -10,7 +10,7 @@ Audio2_PlaySound:: ; 218bb (8:58bb)
 	jr z, .asm_218d5
 	jp nc, Audio2_218db
 .asm_218d5
-	call Func_22aa
+	call InitMusicVariables
 	jp Audio2_21940
 
 Audio2_218db: ; 218db (8:58db)
@@ -72,7 +72,7 @@ Audio2_218db: ; 218db (8:58db)
 	jr c, .asm_21930
 	ret
 .asm_21930
-	call Func_22c0
+	call InitSFXVariables
 	ld a, c
 	and a
 	jp z, Audio2_21940
@@ -80,7 +80,7 @@ Audio2_218db: ; 218db (8:58db)
 	jp .asm_218f4
 
 Audio2_2193c: ; 2193c (8:593c)
-	call Func_22d6
+	call StopAllAudio
 	ret
 
 Audio2_21940: ; 21940 (8:5940)
@@ -208,7 +208,7 @@ Audio2_OverwriteChannelPointer: ; 219e6 (8:59e6)
 
 INCLUDE "audio/sfx/pokeflute_ch1_ch2.asm"
 	
-Audio2_219f8:: ; 219f8 (8:59f8)
+Audio2_InitMusicVariables:: ; 219f8 (8:59f8)
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
@@ -281,7 +281,7 @@ Audio2_219f8:: ; 219f8 (8:59f8)
 	ld [rNR50], a
 	ret
 
-Audio2_21ab7:: ; 21ab7 (8:5ab7)
+Audio2_InitSFXVariables:: ; 21ab7 (8:5ab7)
 	xor a
 	push de
 	ld h, d
@@ -369,7 +369,7 @@ Audio2_21ab7:: ; 21ab7 (8:5ab7)
 	ld [rNR10], a
 	ret
 
-Audio2_21b3f:: ; 21b3f (8:5b3f)
+Audio2_StopAllAudio:: ; 21b3f (8:5b3f)
 	ld a, $80
 	ld [rNR52], a
 	ld [rNR30], a

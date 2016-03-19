@@ -1992,7 +1992,7 @@ LoadMapData:: ; 1241 (0:1241)
 	ld a,[wFlags_D733]
 	bit 1,a
 	jr nz,.restoreRomBank
-	call Func_21e3 ; music related
+	call UpdateMusic6Times ; music related
 	call PlayDefaultMusicFadeOutCurrent ; music related
 .restoreRomBank
 	pop af

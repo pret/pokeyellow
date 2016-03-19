@@ -525,7 +525,7 @@ Audio1_unknownmusic0xef: ; 0x9407
 	call Audio1_GetNextMusicByte
 	push bc
 	ld b, a
-	call Func_22ec
+	call DetermineAudioFunction
 	pop bc
 	ld a, [wDisableChannelOutputWhenSfxEnds]
 	and a
@@ -681,7 +681,7 @@ asm_94fd
 	and a
 	jr nz, .asm_9508
 	ld b, d
-	call Func_22ec
+	call DetermineAudioFunction
 .asm_9508
 	pop bc
 	pop de
@@ -1293,7 +1293,7 @@ Audio1_ApplyDutyCycle: ; 0x980d
 	ret
 
 Audio1_GetNextMusicByte: ; 0x9825
-	call Func_2288
+	call GetNextMusicByte
 	ret
 
 Audio1_GetRegisterPointer: ; 0x9838
@@ -1366,7 +1366,7 @@ Audio1_PlaySound:: ; 984e (2:584e)
 	jp nc, .playSfx
 
 .playMusic
-	call Func_22aa
+	call InitMusicVariables
 	jp .playSoundCommon
 
 .playSfx
@@ -1428,7 +1428,7 @@ Audio1_PlaySound:: ; 984e (2:584e)
 	jr c, .asm_99a3
 	ret
 .asm_99a3
-	call Func_22c0
+	call InitSFXVariables
 .asm_9a2b
 	ld a, c
 	and a
@@ -1437,7 +1437,7 @@ Audio1_PlaySound:: ; 984e (2:584e)
 	jp .sfxChannelLoop
 
 .stopAllAudio
-	call Func_22d6
+	call StopAllAudio
 	ret
 
 .playSoundCommon

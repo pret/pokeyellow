@@ -12,7 +12,7 @@ Audio3_PlaySound:: ; 7d10d (1f:510d)
 	jr z, .asm_7d127
 	jp nc, Audio3_7d12d
 .asm_7d127
-	call Func_22aa
+	call InitMusicVariables
 	jp Audio3_7d192
 
 Audio3_7d12d: ; 7d12d (1f:512d)
@@ -74,7 +74,7 @@ Audio3_7d12d: ; 7d12d (1f:512d)
 	jr c, .asm_7d182
 	ret
 .asm_7d182
-	call Func_22c0
+	call InitSFXVariables
 	ld a, c
 	and a
 	jp z, Audio3_7d192
@@ -82,7 +82,7 @@ Audio3_7d12d: ; 7d12d (1f:512d)
 	jp .asm_7d146
 
 Audio3_7d18e: ; 7d18e (1f:518e)
-	call Func_22d6
+	call StopAllAudio
 	ret
 
 Audio3_7d192: ; 7d192 (1f:5192)
