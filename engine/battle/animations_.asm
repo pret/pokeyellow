@@ -398,19 +398,218 @@ AnimationTileset2: ; 78757 (1e:4757)
 SlotMachineTiles2: ; 78bde (1e:4c17)
 	INCBIN "gfx/slotmachine2.2bpp"
 
-	dr $78d97,$78e98
+MoveAnimation: ; 78d97 (1e:4d97)
+	push hl
+	push de
+	push bc
+	push af
+	call WaitForSoundToFinish
+	call SetAnimationPalette
+	ld a,[wAnimationID]
+	and a
+	jr z, .animationFinished
+
+	; if throwing a Poké Ball, skip the regular animation code
+	cp a,TOSS_ANIM
+	jr nz, .moveAnimation
+	ld de, .animationFinished
+	push de
+	jp TossBallAnimation
+
+.moveAnimation
+	; check if battle animations are disabled in the options
+	ld a,[wOptions]
+	bit 7,a
+	jr nz, .animationsDisabled
+	call ShareMoveAnimations
+	call PlayAnimation
+	jr .next4
+.animationsDisabled
+	ld c,30
+	call DelayFrames
+.next4
+	call PlayApplyingAttackAnimation ; shake the screen or flash the pic in and out (to show damage)
+.animationFinished
+	call WaitForSoundToFinish
+	xor a
+	ld [wSubAnimSubEntryAddr],a
+	ld [wUnusedD09B],a
+	ld [wSubAnimTransform],a
+	dec a
+	ld [wAnimSoundID],a
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+ShareMoveAnimations: ; 78ddf (1e:4ddf)
+; some moves just reuse animations from status conditions
+	ld a,[H_WHOSETURN]
+	and a
+	ret z
+
+	; opponent’s turn
+
+	ld a,[wAnimationID]
+
+	cp a,AMNESIA
+	ld b,CONF_ANIM
+	jr z, .replaceAnim
+
+	cp a,REST
+	ld b,SLP_ANIM
+	ret nz
+
+.replaceAnim
+	ld a,b
+	ld [wAnimationID],a
+	ret
+
+PlayApplyingAttackAnimation: ; 78df6 (1e:4df6)
+; Generic animation that shows after the move's individual animation
+; Different animation depending on whether the move has an additional effect and on whose turn it is
+	ld a,[wAnimationType]
+	and a
+	ret z
+	dec a
+	add a
+	ld c,a
+	ld b,0
+	ld hl,AnimationTypePointerTable
+	add hl,bc
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a
+	jp [hl]
+
+AnimationTypePointerTable: ; 78e08 (1e:4e08)
+	dw ShakeScreenVertically ; enemy mon has used a damaging move without a side effect
+	dw ShakeScreenHorizontallyHeavy ; enemy mon has used a damaging move with a side effect
+	dw ShakeScreenHorizontallySlow ; enemy mon has used a non-damaging move
+	dw BlinkEnemyMonSprite ; player mon has used a damaging move without a side effect
+	dw ShakeScreenHorizontallyLight ; player mon has used a damaging move with a side effect
+	dw ShakeScreenHorizontallySlow2 ; player mon has used a non-damaging move
+
+ShakeScreenVertically: ; 78e14 (1e:4e14)
+	call PlayApplyingAttackSound
+	ld b, 8
+	jp AnimationShakeScreenVertically
+
+ShakeScreenHorizontallyHeavy: ; 78e1c (1e:4e1c)
+	call PlayApplyingAttackSound
+	ld b, 8
+	jp AnimationShakeScreenHorizontallyFast
+
+ShakeScreenHorizontallySlow: ; 78e24 (1e:4e24)
+	lb bc, 6, 2
+	jr AnimationShakeScreenHorizontallySlow
+
+BlinkEnemyMonSprite: ; 78e29 (1e:4e29)
+	call PlayApplyingAttackSound
+	jp AnimationBlinkEnemyMon
+
+ShakeScreenHorizontallyLight: ; 78e2f (1e:4e2f)
+	call PlayApplyingAttackSound
+	ld b, 2
+	jp AnimationShakeScreenHorizontallyFast
+
+ShakeScreenHorizontallySlow2: ; 78e37 (1e:4e37)
+	lb bc, 3, 2
+
+AnimationShakeScreenHorizontallySlow: ; 78e3a (1e:4e3a)
+	push bc
+	push bc
+.loop1
+	ld a, [rWX]
+	inc a
+	ld [rWX], a
+	ld c, 2
+	call DelayFrames
+	dec b
+	jr nz, .loop1
+	pop bc
+.loop2
+	ld a, [rWX]
+	dec a
+	ld [rWX], a
+	ld c, 2
+	call DelayFrames
+	dec b
+	jr nz, .loop2
+	pop bc
+	dec c
+	jr nz, AnimationShakeScreenHorizontallySlow
+	ret
+
+SetAnimationPalette: ; 78e5c (1e:4e5c)
+	ld a, [wOnSGB]
+	and a
+	ld a, $e4
+	jr z, .notSGB
+	ld a, $f0
+	ld [wAnimPalette], a
+	ld b, $e4
+	ld a, [wAnimationID]
+	cp TRADE_BALL_DROP_ANIM
+	jr c, .next
+	cp TRADE_BALL_POOF_ANIM + 1
+	jr nc, .next
+	ld b, $f0
+.next
+	ld a, b
+	ld [rOBP0], a
+	ld a, $6c
+	ld [rOBP1], a
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ret
+.notSGB
+	ld a, $e4
+	ld [wAnimPalette], a
+	ld [rOBP0], a
+	ld a, $6c
+	ld [rOBP1], a
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ret
+	
 Func_78e98: ; 78e98 (1e:4e98)
-	dr $78e98,$78ebb
+	call SaveScreenTilesToBuffer2
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call ClearScreen
+	ld h, vBGMap0 / $100
+	call WriteLowerByteOfBGMapAndEnableBGTransfer
+	call Delay3
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call LoadScreenTilesFromBuffer2
+	ld h, vBGMap1 / $100
+	
+WriteLowerByteOfBGMapAndEnableBGTransfer: ; 78eb1 (1e:4eb1)
+	ld l, vBGMap0 & $ff
+	call BattleAnimCopyTileMapToVRAM
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ret
+	
 PlaySubanimation: ; 78ebb (1e:4ebb)
 	dr $78ebb,$78f30
 AnimationCleanOAM: ; 78f30 (1e:4f30)
 	dr $78f30,$79145
 SpecialEffectPointers: ; 79145 (1e:5145)
-	dr $79145,$79349
+	dr $79145,$79283
+AnimationShakeScreenVertically: ; 79283 (1e:5283)
+	dr $79283,$7928a
+AnimationShakeScreenHorizontallyFast: ; 7928a (1e:528a)
+	dr $7928a,$79349
 AnimationSlideMonOff: ; 79349 (1e:5349)
 	dr $79349,$79353
 AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
-	dr $79353,$7966e
+	dr $79353,$79421
+AnimationBlinkEnemyMon: ; 79421 (1e:5421)
+	dr $79421,$7966e
 AnimationMinimizeMon: ; 7966e (1e:566e)
 	dr $7966e,$797af
 AnimationSubstitute: ; 797af (1e:57af)
@@ -426,4 +625,10 @@ ChangeMonPic: ; 798d4 (1e:58d4)
 Func_79929: ; 79929 (1e:5929)
 	dr $79929,$799cb
 GetMoveSound: ; 799cb (1e:59cb)
-	dr $799cb,$7a037
+	dr $799cb,$79fae
+BattleAnimCopyTileMapToVRAM: ; 79fae (1e:59ae)
+	dr $79fae,$79fb7
+TossBallAnimation: ; 79fb7 (1e:5fb7)
+	dr $79fb7,$7a00b
+PlayApplyingAttackSound: ; 7a00b (1e:600b)
+	dr $7a00b,$7a037
