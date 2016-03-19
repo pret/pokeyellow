@@ -2,6 +2,7 @@
 AUDIO_1 EQU $2
 AUDIO_2 EQU $8
 AUDIO_3 EQU $1f
+AUDIO_4 EQU $20
 
 PCM_1  EQU $21
 PCM_2  EQU $22
@@ -653,7 +654,16 @@ INCLUDE "audio/music/halloffame.asm"
 INCLUDE "audio/music/credits.asm"
 INCLUDE "audio/music/yellowintro.asm"
 
+SECTION "Music 4", ROMX, BANK[AUDIO_4]
+SFX_Headers_4: ; 80000 (20:4000)
+	dr $80000,$80f14
 
+SurfingPikachu1Graphics:  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
+
+INCLUDE "audio/engine_4.asm"
+
+	dr $82ce8,$84000
+	
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)
 	dw (PikachuCry1_End - PikachuCry1) - 2 ; length of pcm data

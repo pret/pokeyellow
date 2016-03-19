@@ -827,14 +827,6 @@ AttackAnimationPointers: ; 7a22a (1e:622a)
 SubanimationPointers: ; 7a915 (1e:6915)
 	dr $7a915,$7c000
 
-SECTION "bank20",ROMX,BANK[$20]
-
-	dr $80000,$80f14
-
-SurfingPikachu1Graphics:  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
-Audio4_PlaySound: ; 82bd4 (20:6bd4)
-	dr $82bd4,$84000
-
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
 INCLUDE "engine/bg_map_attributes.asm"
