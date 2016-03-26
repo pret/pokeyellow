@@ -2,10 +2,10 @@ ReadJoypad_:: ; c000 (3:4000)
 ; Poll joypad input.
 ; Unlike the hardware register, button
 ; presses are indicated by a set bit.
-	ld a, [hReadJoypad]
+	ld a, [hDisableJoypadPolling]
 	and a
 	ret nz
-	
+
 	ld a, 1 << 5 ; select direction keys
 	;ld c, 0
 

@@ -3299,19 +3299,13 @@ wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX ; de06
 wBoxMonNicksEnd:: ; dee1
 wBoxDataEnd::
 
-wPalDataPointer1:: ds 2 ; dee1
-wPalDataPointer2:: ds 2 ; dee3
-wPalDataPointer3:: ds 2 ; dee5
-wPalDataPointer4:: ds 2 ; dee7
-wPalDataBuffer1:: ds 2 ; dee9
-wPalDataBuffer2:: ds 2 ; deeb
-wPalDataBuffer3:: ds 2 ; deed
-wPalDataBuffer4:: ds 2 ; deef
+wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2 ; dee1
+wGBCPal:: ds PAL_SIZE ; dee9
 wLastBGP:: ds 1 ; def1
 wLastOBP0:: ds 1 ; def2
 wLastOBP1:: ds 1 ; def3
 wdef5:: ds 1 ; def4
-wStoredBGPPalettes:: ds 1 ; def5
+wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE ; def5
 
 SECTION "Stack", WRAMX[$dfff], BANK[1]
 wStack:: ; dfff
