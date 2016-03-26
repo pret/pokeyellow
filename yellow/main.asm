@@ -821,11 +821,15 @@ RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
+;INCLUDE "data/animations.asm"
 AttackAnimationPointers: ; 7a22a (1e:622a)
 	dr $7a22a,$7a915
-
 SubanimationPointers: ; 7a915 (1e:6915)
-	dr $7a915,$7c000
+	dr $7a915,$7b11c
+FrameBlockPointers: ; 7b11c (1e:711c)
+	dr $7b11c,$7be2d
+FrameBlockBaseCoords: ; 7be2d (1e:7e2d)
+	dr $7be2d,$7c000
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 

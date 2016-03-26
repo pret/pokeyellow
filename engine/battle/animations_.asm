@@ -595,11 +595,449 @@ WriteLowerByteOfBGMapAndEnableBGTransfer: ; 78eb1 (1e:4eb1)
 	ret
 	
 PlaySubanimation: ; 78ebb (1e:4ebb)
-	dr $78ebb,$78f30
+	ld a,[wAnimSoundID]
+	cp a,$FF
+	jr z,.skipPlayingSound
+	call GetMoveSound
+	call PlaySound
+.skipPlayingSound
+	ld hl,wOAMBuffer ; base address of OAM buffer
+	ld a,l
+	ld [wFBDestAddr + 1],a
+	ld a,h
+	ld [wFBDestAddr],a
+	ld a,[wSubAnimSubEntryAddr + 1]
+	ld h,a
+	ld a,[wSubAnimSubEntryAddr]
+	ld l,a
+.loop
+	push hl
+	ld c,[hl] ; frame block ID
+	ld b,0
+	ld hl,FrameBlockPointers
+	add hl,bc
+	add hl,bc
+	ld a,[hli]
+	ld c,a
+	ld a,[hli]
+	ld b,a
+	pop hl
+	inc hl
+	push hl
+	ld e,[hl] ; base coordinate ID
+	ld d,0
+	ld hl,FrameBlockBaseCoords  ; base coordinate table
+	add hl,de
+	add hl,de
+	ld a,[hli]
+	ld [wBaseCoordY],a
+	ld a,[hl]
+	ld [wBaseCoordX],a
+	pop hl
+	inc hl
+	ld a,[hl] ; frame block mode
+	ld [wFBMode],a
+	call DrawFrameBlock
+	call DoSpecialEffectByAnimationId ; run animation-specific function (if there is one)
+	ld a,[wSubAnimCounter]
+	dec a
+	ld [wSubAnimCounter],a
+	ret z
+	ld a,[wSubAnimSubEntryAddr + 1]
+	ld h,a
+	ld a,[wSubAnimSubEntryAddr]
+	ld l,a
+	ld a,[wSubAnimTransform]
+	cp a,4 ; is the animation reversed?
+	ld bc,3
+	jr nz,.nextSubanimationSubentry
+	ld bc,-3
+.nextSubanimationSubentry
+	add hl,bc
+	ld a,h
+	ld [wSubAnimSubEntryAddr + 1],a
+	ld a,l
+	ld [wSubAnimSubEntryAddr],a
+	jp .loop
+
 AnimationCleanOAM: ; 78f30 (1e:4f30)
-	dr $78f30,$79145
+	push hl
+	push de
+	push bc
+	push af
+	call DelayFrame
+	call ClearSprites
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+; this runs after each frame block is drawn in a subanimation
+; it runs a particular special effect based on the animation ID
+DoSpecialEffectByAnimationId: ; 78f3f (1e:4f3f)
+	push hl
+	push de
+	push bc
+	ld a,[wAnimationID]
+	ld hl,AnimationIdSpecialEffects
+	ld de,3
+	call IsInArray
+	jr nc,.done
+	inc hl
+	ld a,[hli]
+	ld h,[hl]
+	ld l,a
+	ld de,.done
+	push de
+	jp [hl]
+.done
+	pop bc
+	pop de
+	pop hl
+	ret
+
+; Format: Animation ID (1 byte), Address (2 bytes)
+AnimationIdSpecialEffects: ; 78f5d (1e:4f5d)
+	db MEGA_PUNCH
+	dw AnimationFlashScreen
+
+	db GUILLOTINE
+	dw AnimationFlashScreen
+
+	db MEGA_KICK
+	dw AnimationFlashScreen
+
+	db HEADBUTT
+	dw AnimationFlashScreen
+
+	db TAIL_WHIP
+	dw TailWhipAnimationUnused
+
+	db GROWL
+	dw DoGrowlSpecialEffects
+
+	db DISABLE
+	dw AnimationFlashScreen
+
+	db BLIZZARD
+	dw DoBlizzardSpecialEffects
+
+	db BUBBLEBEAM
+	dw AnimationFlashScreen
+
+	db HYPER_BEAM
+	dw FlashScreenEveryFourFrameBlocks
+
+	db THUNDERBOLT
+	dw FlashScreenEveryEightFrameBlocks
+
+	db REFLECT
+	dw AnimationFlashScreen
+
+	db SELFDESTRUCT
+	dw DoExplodeSpecialEffects
+
+	db SPORE
+	dw FlashScreenEveryFourFrameBlocks
+
+	db EXPLOSION
+	dw DoExplodeSpecialEffects
+
+	db ROCK_SLIDE
+	dw DoRockSlideSpecialEffects
+
+	db TRADE_BALL_DROP_ANIM
+	dw TradeHidePokemon
+
+	db TRADE_BALL_SHAKE_ANIM
+	dw TradeShakePokeball
+
+	db TRADE_BALL_TILT_ANIM
+	dw TradeJumpPokeball
+
+	db TOSS_ANIM
+	dw DoBallTossSpecialEffects
+
+	db SHAKE_ANIM
+	dw DoBallShakeSpecialEffects
+
+	db POOF_ANIM
+	dw DoPoofSpecialEffects
+
+	db GREATTOSS_ANIM
+	dw DoBallTossSpecialEffects
+
+	db ULTRATOSS_ANIM
+	dw DoBallTossSpecialEffects
+
+	db $FF ; terminator
+
+DoBallTossSpecialEffects: ; 78fa6 (1e:4fa6)
+	ld a,[wcf91]
+	cp a,3 ; is it a Master Ball or Ultra Ball?
+	jr nc,.skipFlashingEffect
+.flashingEffect ; do a flashing effect if it's Master Ball or Ultra Ball
+	ld a,[rOBP0]
+	xor a,%00111100 ; complement colors 1 and 2
+	ld [rOBP0],a
+	call UpdateGBCPal_OBP0
+.skipFlashingEffect
+	ld a,[wSubAnimCounter]
+	cp a,11 ; is it the beginning of the subanimation?
+	jr nz,.skipPlayingSound
+; if it is the beginning of the subanimation, play a sound
+	ld a,SFX_BALL_TOSS
+	call PlaySound
+.skipPlayingSound
+	ld a,[wIsInBattle]
+	cp a,02 ; is it a trainer battle?
+	jr z,.isTrainerBattle
+	ld a,[wd11e]
+	cp a,$10 ; is the enemy pokemon the Ghost Marowak?
+	ret nz
+; if the enemy pokemon is the Ghost Marowak, make it dodge during the last 3 frames
+	ld a,[wSubAnimCounter]
+	cp a,3
+	jr z,.moveGhostMarowakLeft
+	cp a,2
+	jr z,.moveGhostMarowakLeft
+	cp a,1
+	ret nz
+.moveGhostMarowakLeft
+	coord hl, 17, 0
+	ld de,20
+	lb bc, 7, 7
+.loop
+	push hl
+	push bc
+	call AnimCopyRowRight ; move row of tiles left
+	pop bc
+	pop hl
+	add hl,de
+	dec b
+	jr nz,.loop
+	ld a,%00001000
+	ld [rNR10],a ; Channel 1 sweep register
+	ret
+.isTrainerBattle ; if it's a trainer battle, shorten the animation by one frame
+	ld a,[wSubAnimCounter]
+	cp a,3
+	ret nz
+	dec a
+	ld [wSubAnimCounter],a
+	ret
+
+DoBallShakeSpecialEffects: ; 79001 (1e:5001)
+	ld a,[wSubAnimCounter]
+	cp a,4 ; is it the beginning of a shake?
+	jr nz,.skipPlayingSound
+; if it is the beginning of a shake, play a sound and wait 2/3 of a second
+	ld a,SFX_TINK
+	call PlaySound
+	ld c,40
+	call DelayFrames
+.skipPlayingSound
+	ld a,[wSubAnimCounter]
+	dec a
+	ret nz
+; if it's the end of the ball shaking subanimation, check if more shakes are left and restart the subanimation
+	ld a,[wNumShakes] ; number of shakes
+	dec a ; decrement number of shakes
+	ld [wNumShakes],a
+	ret z
+; if there are shakes left, restart the subanimation
+	ld a,[wSubAnimSubEntryAddr]
+	ld l,a
+	ld a,[wSubAnimSubEntryAddr + 1]
+	ld h,a
+	ld de,-(4 * 3) ; 4 subentries and 3 bytes per subentry
+	add hl,de
+	ld a,l
+	ld [wSubAnimSubEntryAddr],a
+	ld a,h
+	ld [wSubAnimSubEntryAddr + 1],a
+	ld a,5 ; number of subentries in the ball shaking subanimation plus one
+	ld [wSubAnimCounter],a
+	ret
+
+; plays a sound after the second frame of the poof animation
+DoPoofSpecialEffects: ; 79039 (1e:5039)
+	ld a,[wSubAnimCounter]
+	cp a,5
+	ret nz
+	ld a,SFX_BALL_POOF
+	jp PlaySound
+
+DoRockSlideSpecialEffects: ; 79044 (1e:5044)
+	ld a,[wSubAnimCounter]
+	cp a,12
+	ret nc
+	cp a,8
+	jr nc,.shakeScreen
+	cp a,1
+	jp z,AnimationFlashScreen ; if it's the end of the subanimation, flash the screen
+	ret
+; if the subaninmation counter is between 8 and 11, shake the screen horizontally and vertically
+.shakeScreen
+	ld b,1
+	predef PredefShakeScreenHorizontally ; shake horizontally
+	ld b,1
+	predef_jump PredefShakeScreenVertically ; shake vertically
+
+FlashScreenEveryEightFrameBlocks: ; 79062 (1e:5062)
+	ld a,[wSubAnimCounter]
+	and a,7 ; is the subanimation counter exactly 8?
+	call z,AnimationFlashScreen ; if so, flash the screen
+	ret
+
+; flashes the screen if the subanimation counter is divisible by 4
+FlashScreenEveryFourFrameBlocks: ; 7906b (1e:506b)
+	ld a,[wSubAnimCounter]
+	and a,3
+	call z,AnimationFlashScreen
+	ret
+
+; used for Explosion and Selfdestruct
+DoExplodeSpecialEffects: ; 79074 (1e:5074)
+	ld a,[wSubAnimCounter]
+	cp a,1 ; is it the end of the subanimation?
+	jr nz,FlashScreenEveryFourFrameBlocks
+; if it's the end of the subanimation, make the attacking pokemon disappear
+	coord hl, 1, 5
+	jp AnimationHideMonPic ; make pokemon disappear
+
+; flashes the screen when subanimation counter is 1 modulo 4
+DoBlizzardSpecialEffects: ; 79081 (1e:5081)
+	ld a,[wSubAnimCounter]
+	cp a,13
+	jp z,AnimationFlashScreen
+	cp a,9
+	jp z,AnimationFlashScreen
+	cp a,5
+	jp z,AnimationFlashScreen
+	cp a,1
+	jp z,AnimationFlashScreen
+	ret
+
+; flashes the screen at 3 points in the subanimation
+; unused
+FlashScreenUnused: ; 79099 (1e:5099)
+	ld a,[wSubAnimCounter]
+	cp a,14
+	jp z,AnimationFlashScreen
+	cp a,9
+	jp z,AnimationFlashScreen
+	cp a,2
+	jp z,AnimationFlashScreen
+	ret
+
+; function to make the pokemon disappear at the beginning of the animation
+TradeHidePokemon: ; 790ac (1e:50ac)
+	ld a,[wSubAnimCounter]
+	cp a,6
+	ret nz
+	ld a,2 * SCREEN_WIDTH + 7
+	jp ClearMonPicFromTileMap ; make pokemon disappear
+
+; function to make a shaking pokeball jump up at the end of the animation
+TradeShakePokeball: ; 790b7 (1e:50b7)
+	ld a,[wSubAnimCounter]
+	cp a,1
+	ret nz
+; if it's the end of the animation, make the ball jump up
+	ld de,BallMoveDistances1
+.loop
+	ld hl,wOAMBuffer ; OAM buffer
+	ld bc,4
+.innerLoop
+	ld a,[de]
+	cp a,$ff
+	jr z,.done
+	add [hl] ; add to Y value of OAM entry
+	ld [hl],a
+	add hl,bc
+	ld a,l
+	cp a,4 * 4 ; there are 4 entries, each 4 bytes
+	jr nz,.innerLoop
+	inc de
+	push bc
+	call Delay3
+	pop bc
+	jr .loop
+.done
+	call AnimationCleanOAM
+	ld a,SFX_TRADE_MACHINE
+	jp PlaySound
+
+BallMoveDistances1: ; 790e3 (1e:50e3)
+	db -12,-12,-8
+	db $ff ; terminator
+
+; function to make the pokeball jump up
+TradeJumpPokeball: ; 790e7 (1e:50e7)
+	ld de,BallMoveDistances2
+.loop
+	ld hl,wOAMBuffer ; OAM buffer
+	ld bc,4
+.innerLoop
+	ld a,[de]
+	cp a,$ff
+	jp z,ClearScreen
+	add [hl]
+	ld [hl],a
+	add hl,bc
+	ld a,l
+	cp a,4 * 4 ; there are 4 entries, each 4 bytes
+	jr nz,.innerLoop
+	inc de
+	push de
+	ld a,[de]
+	cp a,12
+	jr z,.playSound
+	cp a,$ff
+	jr nz,.skipPlayingSound
+.playSound ; play sound if next move distance is 12 or this is the last one
+	ld a,SFX_BATTLE_18
+	call PlaySound
+.skipPlayingSound
+	push bc
+	ld c,5
+	call DelayFrames
+	pop bc
+	ld a,[hSCX] ; background scroll X
+	sub a,8 ; scroll to the left
+	ld [hSCX],a
+	pop de
+	jr .loop
+
+BallMoveDistances2: ; 7911f (1e:511f)
+	db 11,12,-12,-7,7,12,-8,8
+	db $ff ; terminator
+
+; this function copies the current musical note graphic
+; so that there are two musical notes flying towards the defending pokemon
+DoGrowlSpecialEffects: ; 79127 (1e:5127)
+	ld hl,wOAMBuffer ; OAM buffer
+	ld de,wOAMBuffer + $10
+	ld bc,$10
+	call CopyData ; copy the musical note graphic
+	ld a,[wSubAnimCounter]
+	dec a
+	call z,AnimationCleanOAM ; clean up at the end of the subanimation
+	ret
+
+; this is associated with Tail Whip, but Tail Whip doesn't use any subanimations
+TailWhipAnimationUnused: ; 7913b (1e:513b)
+	ld a,1
+	ld [wSubAnimCounter],a
+	ld c,20
+	jp DelayFrames
+
 SpecialEffectPointers: ; 79145 (1e:5145)
-	dr $79145,$79283
+	dr $79145,$7922c
+AnimationFlashScreen: ; 7922c (1e:522c)
+	dr $7922c,$79283
 AnimationShakeScreenVertically: ; 79283 (1e:5283)
 	dr $79283,$7928a
 AnimationShakeScreenHorizontallyFast: ; 7928a (1e:528a)
@@ -623,7 +1061,13 @@ AnimationTransformMon: ; 798c8 (1e:58c8)
 ChangeMonPic: ; 798d4 (1e:58d4)
 	dr $798d4,$79929
 Func_79929: ; 79929 (1e:5929)
-	dr $79929,$799cb
+	dr $79929,$7995d
+AnimationHideMonPic: ; 7995d (1e:595d)
+	dr $7995d,$79968
+ClearMonPicFromTileMap: ; 79968 (1e:5968)
+	dr $79968,$799be
+AnimCopyRowRight: ; 799be (1e:59be)
+	dr $799be,$799cb
 GetMoveSound: ; 799cb (1e:59cb)
 	dr $799cb,$79fae
 BattleAnimCopyTileMapToVRAM: ; 79fae (1e:59ae)

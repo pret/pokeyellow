@@ -33,7 +33,7 @@ const_value = 0
 	predef_const GiveItem
 	predef_const InvertBGPal_4Frames
 	predef_const FindPathToPlayer
-	predef_const Func_480ff
+	predef_const PredefShakeScreenVertically
 	predef_const CalcPositionOfPlayerRelativeToNPC
 	predef_const ConvertNPCMovementDirectionsToJoypadMasks
 	predef_const PredefShakeScreenHorizontally
