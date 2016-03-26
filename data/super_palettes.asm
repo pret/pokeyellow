@@ -199,7 +199,7 @@ SuperPalettes:
 	RGB 31, 25,  9
 	RGB  6,  6,  6
 
-Pointer_72af9:
+GBCBasePalettes:
 	RGB 31, 31, 31
 	RGB 16, 31,  4
 	RGB 11, 23, 31

@@ -2326,73 +2326,73 @@ DisplayTextBoxID:: ; 3010 (0:3010)
 
 UpdateGBCPal_BGP:: ; 3021 (0:3021)
 	push af
-	ld a,[hGBC]
+	ld a, [hGBC]
 	and a
-	jr z,.notgbc
+	jr z, .notGBC
 	push bc
 	push de
 	push hl
-	ld a,[rBGP]
-	ld b,a
-	ld a,[wLastBGP]
+	ld a, [rBGP]
+	ld b, a
+	ld a, [wLastBGP]
 	cp b
-	jr z,.noChangeInBGP
-	callba _UpdateGBCPal_BGP ; 1c:6524
+	jr z, .noChangeInBGP
+	callba _UpdateGBCPal_BGP
 .noChangeInBGP
 	pop hl
 	pop de
 	pop bc
-.notgbc
+.notGBC
 	pop af
 	ret
 	
 UpdateGBCPal_OBP0:: ; 3040 (0:3040)
 	push af
-	ld a,[hGBC]
+	ld a, [hGBC]
 	and a
-	jr z,.notgbc
+	jr z, .notGBC
 	push bc
 	push de
 	push hl
-	ld a,[rOBP0]
-	ld b,a
-	ld a,[wLastOBP0]
+	ld a, [rOBP0]
+	ld b, a
+	ld a, [wLastOBP0]
 	cp b
-	jr z,.noChangeInOBP0
-	ld b,BANK(_UpdateGBCPal_OBP) ; 1c:656c
-	ld hl,_UpdateGBCPal_OBP
-	ld c,$1
+	jr z, .noChangeInOBP0
+	ld b, BANK(_UpdateGBCPal_OBP)
+	ld hl, _UpdateGBCPal_OBP
+	ld c, CONVERT_OBP0
 	call Bankswitch
 .noChangeInOBP0
 	pop hl
 	pop de
 	pop bc
-.notgbc
+.notGBC
 	pop af
 	ret
 	
 UpdateGBCPal_OBP1:: ; 3061 (0:3061)
 	push af
-	ld a,[hGBC]
+	ld a, [hGBC]
 	and a
-	jr z,.notgbc
+	jr z, .notGBC
 	push bc
 	push de
 	push hl
-	ld a,[rOBP1]
-	ld b,a
-	ld a,[wLastOBP1]
+	ld a, [rOBP1]
+	ld b, a
+	ld a, [wLastOBP1]
 	cp b
-	jr z,.noChangeInOBP1
-	ld b,BANK(_UpdateGBCPal_OBP)
-	ld hl,_UpdateGBCPal_OBP
-	ld c,$2
+	jr z, .noChangeInOBP1
+	ld b, BANK(_UpdateGBCPal_OBP)
+	ld hl, _UpdateGBCPal_OBP
+	ld c, CONVERT_OBP1
 	call Bankswitch
 .noChangeInOBP1
 	pop hl
 	pop de
 	pop bc
-.notgbc
+.notGBC
 	pop af
 	ret
 	

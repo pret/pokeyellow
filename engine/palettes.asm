@@ -164,9 +164,9 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	cp BRUNOS_ROOM
 	jr z, .caveOrBruno
 	cp TRADE_CENTER
-	jr z,.asm_71ffd
+	jr z, .asm_71ffd
 	cp COLOSSEUM
-	jr z,.asm_71ffd
+	jr z, .asm_71ffd
 .normalDungeonOrBuilding
 	ld a, [wLastMap] ; town or route that current dungeon or building is located
 .townOrRoute
@@ -191,9 +191,9 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	xor a
 	jr .town
 .asm_71ffd
-	ld a,$18
+	ld a, $18
 	jr .town
-	
+
 ; used when a Pokemon is the only thing on the screen
 ; such as evolution, trading and the Hall of Fame
 SetPal_PokemonWholeScreen: ; 72001 (1c:6001)
@@ -256,13 +256,13 @@ SetPal_TrainerCard: ; 72025 (1c:6025)
 	ret
 
 SendUnknownPalPacket_7205d:: ; 7205d (1c:605d)
-	ld hl,UnknownPalPacket_72811
-	ld de,BlkPacket_WholeScreen
+	ld hl, UnknownPalPacket_72811
+	ld de, BlkPacket_WholeScreen
 	ret
-	
+
 SendUnknownPalPacket_72064:: ; 72064 (1c:6064)
-	ld hl,UnknownPalPacket_72821
-	ld de,UnknownPacket_72751
+	ld hl, UnknownPalPacket_72821
+	ld de, UnknownPacket_72751
 	ret
 
 SetPalFunctions: ; 7206b (1c:606b)
@@ -314,75 +314,75 @@ DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
 	ret
 
 Func_720ad:: ; 720ad (1c:60ad)
-	ld a,e
+	ld a, e
 	and a
-	jr nz,Func_720bd
-	ld hl,PalPacket_Generic
-	ld a,[hGBC]
+	jr nz, Func_720bd
+	ld hl, PalPacket_Generic
+	ld a, [hGBC]
 	and a
-	jp z,Func_721b4
+	jp z, SendSGBPacket
 	jp InitGBCPalettes
 
 Func_720bd:: ; 720bd (1c:60bd)
-	ld hl,UnknownPalPacket_72811
-	ld a,[hGBC]
+	ld hl, UnknownPalPacket_72811
+	ld a, [hGBC]
 	and a
-	jp z,Func_721b4
+	jp z, SendSGBPacket
 	call InitGBCPalettes
-	ld hl,PalPacket_Generic
+	ld hl, PalPacket_Generic
 	inc hl
-	ld a,[hli]
-	call Func_723fe
-	ld a,e
-	ld [wPalDataPointer2],a
-	ld a,d
-	ld [wPalDataPointer2+1],a
-	xor a
-	call UpdatePalData
-	ld a,$1
+	ld a, [hli]
+	call GetGBCBasePalAddress
+	ld a, e
+	ld [wGBCBasePalPointers + 2], a
+	ld a, d
+	ld [wGBCBasePalPointers + 2 + 1], a
+	xor a ; CONVERT_BGP
+	call DMGPalToGBCPal
+	ld a, 1
 	call TransferCurBGPData
 	ret
-	
+
 Func_720e3:: ; 720e3 (1c:60e3)
-	ld hl,PalPacket_Empty
-	ld de,wPalPacket
-	ld bc,$10
+	ld hl, PalPacket_Empty
+	ld de, wPalPacket
+	ld bc, $10
 	call CopyData
 	call Func_7213b
-	ld hl,wPartyMenuBlkPacket
-	ld [hl],a
-	ld hl,wPartyMenuBlkPacket + 2
-	ld a,$26
-	ld [hl],a
-	ld hl,wPalPacket
-	ld a,[hGBC]
+	ld hl, wPartyMenuBlkPacket
+	ld [hl], a
+	ld hl, wPartyMenuBlkPacket + 2
+	ld a, $26
+	ld [hl], a
+	ld hl, wPalPacket
+	ld a, [hGBC]
 	and a
-	jr nz,.asm_72109
-	call Func_721b4
+	jr nz, .asm_72109
+	call SendSGBPacket
 	jr .asm_7210c
 .asm_72109
 	call InitGBCPalettes
 .asm_7210c
-	ld hl,BlkPacket_WholeScreen
-	ld de,wPalPacket
-	ld bc,$10
+	ld hl, BlkPacket_WholeScreen
+	ld de, wPalPacket
+	ld bc, $10
 	call CopyData
-	ld hl,wPartyMenuBlkPacket + 2
-	ld a,$5
-	ld [hli],a
-	ld a,$7
-	ld [hli],a
-	ld a,$6
-	ld [hli],a
-	ld a,$b
-	ld [hli],a
-	ld a,$a
-	ld [hl],a
-	ld hl,wPalPacket
-	ld a,[hGBC]
+	ld hl, wPartyMenuBlkPacket + 2
+	ld a, $5
+	ld [hli], a
+	ld a, $7
+	ld [hli], a
+	ld a, $6
+	ld [hli], a
+	ld a, $b
+	ld [hli], a
+	ld a, $a
+	ld [hl], a
+	ld hl, wPalPacket
+	ld a, [hGBC]
 	and a
-	jr nz,.asm_72137
-	call Func_721b4
+	jr nz, .asm_72137
+	call SendSGBPacket
 	jr .asm_7213a
 .asm_72137
 	call InitGBCPalettes
@@ -408,9 +408,9 @@ Func_7213b:: ; 7213b (1c:613b)
 	cp BRUNOS_ROOM
 	jr z, .caveOrBruno
 	cp TRADE_CENTER
-	jr z,.battleOrTradeCenter
+	jr z, .battleOrTradeCenter
 	cp COLOSSEUM
-	jr z,.battleOrTradeCenter
+	jr z, .battleOrTradeCenter
 .normalDungeonOrBuilding
 	ld a, [wLastMap] ; town or route that current dungeon or building is located
 .townOrRoute
@@ -430,7 +430,7 @@ Func_7213b:: ; 7213b (1c:613b)
 	xor a
 	jr .town
 .battleOrTradeCenter
-	ld a,$18
+	ld a, $18
 	jr .town
 
 InitPartyMenuBlkPacket: ; 7217f (1c:617f)
@@ -467,68 +467,65 @@ UpdatePartyMenuBlkPacket: ; 7218b (1c:618b)
 	ld [hl], e
 	ret
 
-Func_721b4: ; 721b4 (1c:61b4)
-	ld a,$1
-; load a non-zero value in $fff9 to disable the routine that checks actual
-; joypad input (said routine, located at $15f, does nothing if $fff9 is not
-; zero)
-	ld [hReadJoypad],a
-	call SendSGBPacket
+SendSGBPacket: ; 721b4 (1c:61b4)
+	ld a, 1
+	ld [hDisableJoypadPolling], a ; don't poll joypad while sending packet
+	call _SendSGBPacket
 	xor a
-	ld [hReadJoypad],a
+	ld [hDisableJoypadPolling], a
 	ret
-	
-SendSGBPacket: ; 71feb (1c:5feb)
+
+_SendSGBPacket: ; 71feb (1c:5feb)
 ;check number of packets
-	ld a,[hl]
-	and a,$07
+	ld a, [hl]
+	and a, $07
 	ret z
 ; store number of packets in B
-	ld b,a
+	ld b, a
 .loop2
 ; save B for later use
 	push bc
 ; send RESET signal (P14=LOW, P15=LOW)
 	xor a
-	ld [rJOYP],a
+	ld [rJOYP], a
 ; set P14=HIGH, P15=HIGH
-	ld a,$30
-	ld [rJOYP],a
+	ld a, $30
+	ld [rJOYP], a
 ;load length of packets (16 bytes)
-	ld b,$10
+	ld b, $10
 .nextByte
 ;set bit counter (8 bits per byte)
-	ld e,$08
+	ld e, $08
 ; get next byte in the packet
-	ld a,[hli]
-	ld d,a
+	ld a, [hli]
+	ld d, a
 .nextBit0
-	bit 0,d
-; if 0th bit is not zero set P14=HIGH,P15=LOW (send bit 1)
-	ld a,$10
-	jr nz,.next0
-; else (if 0th bit is zero) set P14=LOW,P15=HIGH (send bit 0)
-	ld a,$20
+	bit 0, d
+; if 0th bit is not zero set P14=HIGH, P15=LOW (send bit 1)
+	ld a, $10
+	jr nz, .next0
+; else (if 0th bit is zero) set P14=LOW, P15=HIGH (send bit 0)
+	ld a, $20
 .next0
-	ld [rJOYP],a
-; must set P14=HIGH,P15=HIGH between each "pulse"
-	ld a,$30
-	ld [rJOYP],a
+	ld [rJOYP], a
+; must set P14=HIGH, P15=HIGH between each "pulse"
+	ld a, $30
+	ld [rJOYP], a
 ; rotation will put next bit in 0th position (so  we can always use command
-; "bit 0,d" to fetch the bit that has to be sent)
+; "bit 0, d" to fetch the bit that has to be sent)
 	rr d
 ; decrease bit counter so we know when we have sent all 8 bits of current byte
 	dec e
-	jr nz,.nextBit0
+	jr nz, .nextBit0
 	dec b
-	jr nz,.nextByte
+	jr nz, .nextByte
 ; send bit 1 as a "stop bit" (end of parameter data)
-	ld a,$20
-	ld [rJOYP],a
-; set P14=HIGH,P15=HIGH
-	ld a,$30
-	ld [rJOYP],a
-	call Wait7000	
+	ld a, $20
+	ld [rJOYP], a
+; set P14=HIGH, P15=HIGH
+	ld a, $30
+	ld [rJOYP], a
+	call Wait7000
 ; wait for about 70000 cycles
 ;	call Wait7000
 ; restore (previously pushed) number of packets
@@ -574,7 +571,7 @@ LoadSGB: ; 721f8 (1c:61f8)
 	call CopyGfxToSuperNintendoVRAM
 	call ClearVram
 	ld hl, MaskEnCancelPacket
-	jp Func_721b4
+	jp SendSGBPacket
 
 PrepareSuperNintendoVRAMTransfer: ; 72247 (1c:6247)
 	ld hl, .packetPointers
@@ -585,7 +582,7 @@ PrepareSuperNintendoVRAMTransfer: ; 72247 (1c:6247)
 	push hl
 	ld h, [hl]
 	ld l, a
-	call Func_721b4
+	call SendSGBPacket
 	pop hl
 	inc hl
 	pop bc
@@ -607,7 +604,7 @@ PrepareSuperNintendoVRAMTransfer: ; 72247 (1c:6247)
 
 CheckSGB: ; 7226d (1c:626d)
 	ld hl, MltReq2Packet
-	call Func_721b4
+	call SendSGBPacket
 	call Wait7000
 	ld a, [rJOYP]
 	and $3
@@ -654,7 +651,7 @@ CheckSGB: ; 7226d (1c:626d)
 
 SendMltReq1Packet: ; 722ce (1c:62ce)
 	ld hl, MltReq1Packet
-	call Func_721b4
+	call SendSGBPacket
 	jp Wait7000
 
 CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
@@ -662,7 +659,7 @@ CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
 	push de
 	call DisableLCD
 	ld a, $e4
-	ld [rBGP], a ; $ff47
+	ld [rBGP], a
 	call _UpdateGBCPal_BGP_CheckDMG
 	ld de, vChars1
 	ld a, [wCopyingSGBTileData]
@@ -691,9 +688,9 @@ CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
 	ld a, $e3
 	ld [rLCDC], a
 	pop hl
-	call Func_721b4
+	call SendSGBPacket
 	xor a
-	ld [rBGP], a ; $ff47
+	ld [rBGP], a
 	call _UpdateGBCPal_BGP_CheckDMG
 	ei
 	ret
@@ -719,434 +716,346 @@ SendSGBPackets: ; 72328 (1c:6328)
 	call InitGBCPalettes
 	pop hl
 	call InitGBCPalettes
-	ld a,[rLCDC]
+	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK
 	ret z
 	call Delay3
 	ret
 .notGBC
 	push de
-	call Func_721b4
+	call SendSGBPacket
 	pop hl
-	jp Func_721b4
+	jp SendSGBPacket
 
 InitGBCPalettes: ; 72346 (1c:6346)
-	ld a,[hl]
+	ld a, [hl]
 	and $f8
 	cp $20
-	jp z,Func_725be
+	jp z, TranslatePalPacketToBGMapAttributes
+
 	inc hl
-	ld a,[hli]
-	inc hl
-	push hl
-	call Func_723fe
-	ld a,e
-	ld [wPalDataPointer1],a
-	ld a,d
-	ld [wPalDataPointer1+1],a
-	
-	xor a
-	call UpdatePalData
-	ld a,$0
-	call TransferCurBGPData
-	ld a,$1
-	call UpdatePalData
-	ld a,$0
-	call TransferCurOBPData
-	ld a,$2
-	call UpdatePalData
-	ld a,$4
-	call TransferCurOBPData
-	
-	pop hl
-	ld a,[hli]
-	inc hl
-	push hl
-	call Func_723fe
-	ld a,e
-	ld [wPalDataPointer2],a
-	ld a,d
-	ld [wPalDataPointer2+1],a
-	
-	xor a
-	call UpdatePalData
-	ld a,$1
-	call TransferCurBGPData
-	ld a,$1
-	call UpdatePalData
-	ld a,$1
-	call TransferCurOBPData
-	ld a,$2
-	call UpdatePalData
-	ld a,$5
-	call TransferCurOBPData
-	
-	pop hl
-	ld a,[hli]
-	inc hl
-	push hl
-	call Func_723fe
-	ld a,e
-	ld [wPalDataPointer3],a
-	ld a,d
-	ld [wPalDataPointer3+1],a
-	
-	xor a
-	call UpdatePalData
-	ld a,$2
-	call TransferCurBGPData
-	ld a,$1
-	call UpdatePalData
-	ld a,$2
-	call TransferCurOBPData
-	ld a,$2
-	call UpdatePalData
-	ld a,$6
-	call TransferCurOBPData
-	
-	pop hl
-	ld a,[hli]
-	inc hl
-	call Func_723fe
-	ld a,e
-	ld [wPalDataPointer4],a
-	ld a,d
-	ld [wPalDataPointer4+1],a
-	
-	xor a
-	call UpdatePalData
-	ld a,$3
-	call TransferCurBGPData
-	ld a,$1
-	call UpdatePalData
-	ld a,$3
-	call TransferCurOBPData
-	ld a,$2
-	call UpdatePalData
-	ld a,$7
-	call TransferCurOBPData
-	
+
+index = 0
+
+	REPT NUM_ACTIVE_PALS
+		IF index > 0
+			pop hl
+		ENDC
+
+		ld a, [hli]
+		inc hl
+
+		IF index < (NUM_ACTIVE_PALS + -1)
+			push hl
+		ENDC
+
+		call GetGBCBasePalAddress
+		ld a, e
+		ld [wGBCBasePalPointers + index * 2], a
+		ld a, d
+		ld [wGBCBasePalPointers + index * 2 + 1], a
+
+		xor a ; CONVERT_BGP
+		call DMGPalToGBCPal
+		ld a, index
+		call TransferCurBGPData
+
+		ld a, CONVERT_OBP0
+		call DMGPalToGBCPal
+		ld a, index
+		call TransferCurOBPData
+
+		ld a, CONVERT_OBP1
+		call DMGPalToGBCPal
+		ld a, index + 4
+		call TransferCurOBPData
+
+index = index + 1
+	ENDR
+
 	ret
-	
-Func_723fe:: ; 723fe (1c:63fe)
+
+GetGBCBasePalAddress:: ; 723fe (1c:63fe)
+; Input: a = palette ID
+; Output: de = palette address
 	push hl
-	ld l,a
+	ld l, a
 	xor a
-	ld h,a
-	add hl,hl
-	add hl,hl
-	add hl,hl
-	ld de,Pointer_72af9 ; not exactly sure if actually super palettes
-	add hl,de
-	ld a,l
-	ld e,a
-	ld a,h
-	ld d,a
+	ld h, a
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld de, GBCBasePalettes
+	add hl, de
+	ld a, l
+	ld e, a
+	ld a, h
+	ld d, a
 	pop hl
 	ret
-	
-UpdatePalData:: ; 7240f (1c:640f)
+
+DMGPalToGBCPal:: ; 7240f (1c:640f)
+; Populate wGBCPal with colors from a base palette, selected using one of the
+; DMG palette registers.
+; Input:
+; a = which DMG palette register
+; de = address of GBC base palette
 	and a
-	jr nz,.notBGP
-	ld a,[rBGP]
-	ld [wLastBGP],a
-	jr .continue
+	jr nz, .notBGP
+	ld a, [rBGP]
+	ld [wLastBGP], a
+	jr .convert
 .notBGP
 	dec a
-	jr nz,.notOBP0
-	ld a,[rOBP0]
-	ld [wLastOBP0],a
-	jr .continue
+	jr nz, .notOBP0
+	ld a, [rOBP0]
+	ld [wLastOBP0], a
+	jr .convert
 .notOBP0
-	ld a,[rOBP1]
-	ld [wLastOBP1],a
-.continue
-	ld b,a ; save current GBP shade
-	and $3 ; get first shade
-	call GetPaletteShade
-	ld a,[hli] ; store in palette buffer
-	ld [wPalDataBuffer1],a
-	ld a,[hl]
-	ld [wPalDataBuffer1+1],a
-	ld a,b ; get second shade
-	rrca
-	rrca
-	ld b,a
-	and $3
-	call GetPaletteShade
-	ld a,[hli] ; store in second buffer
-	ld [wPalDataBuffer2],a
-	ld a,[hl]
-	ld [wPalDataBuffer2+1],a
-	ld a,b
-	rrca
-	rrca
-	ld b,a
-	and $3
-	call GetPaletteShade
-	ld a,[hli]
-	ld [wPalDataBuffer3],a
-	ld a,[hl]
-	ld [wPalDataBuffer3+1],a
-	ld a,b
-	rrca
-	rrca
-	ld b,a
-	and $3
-	call GetPaletteShade
-	ld a,[hli]
-	ld [wPalDataBuffer4],a
-	ld a,[hl]
-	ld [wPalDataBuffer4+1],a
+	ld a, [rOBP1]
+	ld [wLastOBP1], a
+.convert
+color_index = 0
+	REPT NUM_COLORS
+		ld b, a
+		and %11
+		call .GetColorAddress
+		ld a, [hli]
+		ld [wGBCPal + color_index * 2], a
+		ld a, [hl]
+		ld [wGBCPal + color_index * 2 + 1], a
+
+		IF color_index < (NUM_COLORS + -1)
+			ld a, b
+			rrca
+			rrca
+		ENDC
+
+color_index = color_index + 1
+	ENDR
 	ret
-	
-GetPaletteShade:: ; 7246a (1c:646a)
+
+.GetColorAddress: ; 7246a (1c:646a)
 	add a
-	ld l,a
+	ld l, a
 	xor a
-	ld h,a
-	add hl,de
+	ld h, a
+	add hl, de
 	ret
-	
+
 TransferCurBGPData:: ; 72470 (1c:6470)
 	push de
 	add a
 	add a
 	add a
-	or $80
-	ld [rBGPI],a
-	ld de,rBGPD
-	ld hl,wPalDataBuffer1
-	ld b,%10 ; searching oam STAT mode
-	ld a,[rLCDC]
+	or $80 ; auto-increment
+	ld [rBGPI], a
+	ld de, rBGPD
+	ld hl, wGBCPal
+	ld b, %10 ; mask for non-V-blank/non-H-blank STAT mode
+	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK
-	jr nz,.lcdenabled
-	rept 4
-	call TransferCurPalDataLCDDisabled
+	jr nz, .lcdEnabled
+	rept NUM_COLORS
+	call TransferPalColorLCDDisabled
 	endr
 	jr .done
-.lcdenabled
-	rept 4
-	call TransferCurPalDataLCDEnabled
+.lcdEnabled
+	rept NUM_COLORS
+	call TransferPalColorLCDEnabled
 	endr
 .done
 	pop de
 	ret
 
-WriteCurBGPDataToMainBuffer:: ; 724a2 (1c:64a2)
+BufferBGPPal:: ; 724a2 (1c:64a2)
+; Copy wGBCPal to palette a in wBGPPalsBuffer.
 	push de
 	add a
 	add a
-	add a ; get the ath entry with size of 8 bytes (4 pal entries)
-	ld l,a
+	add a
+	ld l, a
 	xor a
-	ld h,a
-	ld de,wStoredBGPPalettes
-	add hl,de
-	ld de,wPalDataBuffer1
-	ld c,$8
+	ld h, a
+	ld de, wBGPPalsBuffer
+	add hl, de
+	ld de, wGBCPal
+	ld c, PAL_SIZE
 .loop
-	ld a,[de] ; copy to main buffer
-	ld [hli],a
+	ld a, [de]
+	ld [hli], a
 	inc de
 	dec c
-	jr nz,.loop
+	jr nz, .loop
 	pop de
 	ret
 
-PreparePalDataTransfer:: ; 724ba (1c:64ba)
-; wait for vblank period unless LCD is disabled
-	ld a,[rLCDC]
+TransferBGPPals:: ; 724ba (1c:64ba)
+; Transfer the buffered BG palettes.
+	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK
-	jr z,.lcddisabled
+	jr z, .lcdDisabled
 	di
-.waitloop
-	ld a,[rLY]
+.waitLoop
+	ld a, [rLY]
 	cp 144
-	jr c,.waitloop
-.lcddisabled
-	call TransferPalData
+	jr c, .waitLoop
+.lcdDisabled
+	call .DoTransfer
 	ei
 	ret
 
-TransferPalData: ; 724cc (1c:64cc)
+.DoTransfer: ; 724cc (1c:64cc)
 	xor a
-	or $80
+	or $80 ; auto-increment
 	ld [rBGPI], a
-	ld de,rBGPD
-	ld hl,wStoredBGPPalettes
-	ld c,$20
+	ld de, rBGPD
+	ld hl, wBGPPalsBuffer
+	ld c, 4 * PAL_SIZE
 .loop
-	ld a,[hli]
-	ld [de],a
+	ld a, [hli]
+	ld [de], a
 	dec c
-	jr nz,.loop
+	jr nz, .loop
 	ret
-	
+
 TransferCurOBPData: ; 724df (1c:64df)
 	push de
 	add a
 	add a
 	add a
-	or $80
-	ld [rOBPI],a
-	ld de,rOBPD
-	ld hl,wPalDataBuffer1
-	ld b,%10 ; searching oam STAT mode
-	ld a,[rLCDC]
+	or $80 ; auto-increment
+	ld [rOBPI], a
+	ld de, rOBPD
+	ld hl, wGBCPal
+	ld b, %10 ; mask for non-V-blank/non-H-blank STAT mode
+	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK
-	jr nz,.lcdenabled
-	rept 4
-	call TransferCurPalDataLCDDisabled
+	jr nz, .lcdEnabled
+	rept NUM_COLORS
+	call TransferPalColorLCDDisabled
 	endr
 	jr .done
-.lcdenabled
-	rept 4
-	call TransferCurPalDataLCDEnabled
+.lcdEnabled
+	rept NUM_COLORS
+	call TransferPalColorLCDEnabled
 	endr
 .done
 	pop de
 	ret
-	
-TransferCurPalDataLCDEnabled: ; 72511 (1c:6511)
-	ld a,[rSTAT]
+
+TransferPalColorLCDEnabled: ; 72511 (1c:6511)
+; Transfer a palette color while the LCD is enabled.
+
+; In case we're already in H-blank or V-blank, wait for it to end. This is a
+; precaution so that the transfer doesn't extend past the blanking period.
+	ld a, [rSTAT]
 	and b
-	jr z,TransferCurPalDataLCDEnabled ; wait for non-vblank/hblank period
-									  ; this is a precaution in-case we're nearing the end of vblank/hblank
-.notinhblank
-	ld a,[rSTAT]
+	jr z, TransferPalColorLCDEnabled
+
+; Wait for H-blank or V-blank to begin.
+.notInBlankingPeriod
+	ld a, [rSTAT]
 	and b
-	jr nz,.notinhblank ; wait if transferring oam or data to lcd driver
-TransferCurPalDataLCDDisabled: ; 7251b (1c:651b)
-	ld a,[hli]
-	ld [de],a
-	ld a,[hli]
-	ld [de],a
+	jr nz, .notInBlankingPeriod
+; fall through
+
+TransferPalColorLCDDisabled: ; 7251b (1c:651b)
+; Transfer a palette color while the LCD is disabled.
+	ld a, [hli]
+	ld [de], a
+	ld a, [hli]
+	ld [de], a
 	ret
 
 _UpdateGBCPal_BGP_CheckDMG:: ; 72520 (1c:6520)
-	ld a,[hGBC]
+	ld a, [hGBC]
 	and a
 	ret z
-; fallthrough
+; fall through
+
 _UpdateGBCPal_BGP:: ; 72524 (1c:6524)
-	ld a,[wPalDataPointer1]
-	ld e,a
-	ld a,[wPalDataPointer1+1]
-	ld d,a
-	xor a
-	call UpdatePalData
-	ld a,$0
-	call WriteCurBGPDataToMainBuffer
-	ld a,[wPalDataPointer2]
-	ld e,a
-	ld a,[wPalDataPointer2+1]
-	ld d,a
-	xor a
-	call UpdatePalData
-	ld a,$1
-	call WriteCurBGPDataToMainBuffer
-	ld a,[wPalDataPointer3]
-	ld e,a
-	ld a,[wPalDataPointer3+1]
-	ld d,a
-	xor a
-	call UpdatePalData
-	ld a,$2
-	call WriteCurBGPDataToMainBuffer
-	ld a,[wPalDataPointer4]
-	ld e,a
-	ld a,[wPalDataPointer4+1]
-	ld d,a
-	xor a
-	call UpdatePalData
-	ld a,$3
-	call WriteCurBGPDataToMainBuffer
-	call PreparePalDataTransfer
+index = 0
+
+	REPT NUM_ACTIVE_PALS
+		ld a, [wGBCBasePalPointers + index * 2]
+		ld e, a
+		ld a, [wGBCBasePalPointers + index * 2 + 1]
+		ld d, a
+		xor a ; CONVERT_BGP
+		call DMGPalToGBCPal
+		ld a, index
+		call BufferBGPPal
+
+index = index + 1
+	ENDR
+
+	call TransferBGPPals
 	ret
-	
+
 _UpdateGBCPal_OBP:: ; 7256c (1c:656c)
-	ld a,[wPalDataPointer1]
-	ld e,a
-	ld a,[wPalDataPointer1+1]
-	ld d,a
-	ld a,c
-	call UpdatePalData
-	ld a,c
-	dec a
-	rlca
-	rlca
-	call TransferCurOBPData
-	ld a,[wPalDataPointer2]
-	ld e,a
-	ld a,[wPalDataPointer2+1]
-	ld d,a
-	ld a,c
-	call UpdatePalData
-	ld a,c
-	dec a
-	rlca
-	rlca
-	inc a
-	call TransferCurOBPData
-	ld a,[wPalDataPointer3]
-	ld e,a
-	ld a,[wPalDataPointer3+1]
-	ld d,a
-	ld a,c
-	call UpdatePalData
-	ld a,c
-	dec a
-	rlca
-	rlca
-	add $2
-	call TransferCurOBPData
-	ld a,[wPalDataPointer4]
-	ld e,a
-	ld a,[wPalDataPointer4+1]
-	ld d,a
-	ld a,c
-	call UpdatePalData
-	ld a,c
-	dec a
-	rlca
-	rlca
-	add $3
-	call TransferCurOBPData
+index = 0
+
+	REPT NUM_ACTIVE_PALS
+		ld a, [wGBCBasePalPointers + index * 2]
+		ld e, a
+		ld a, [wGBCBasePalPointers + index * 2 + 1]
+		ld d, a
+		ld a, c
+		call DMGPalToGBCPal
+		ld a, c
+		dec a
+		rlca
+		rlca
+
+		IF index > 0
+			IF index == 1
+				inc a
+			ELSE
+				add index
+			ENDC
+		ENDC
+
+		call TransferCurOBPData
+
+index = index + 1
+	ENDR
+
 	ret
-	
-Func_725be:: ; 725be (1c:65be)
-; translate the sgb pal packets into something usable for the CGB
+
+TranslatePalPacketToBGMapAttributes:: ; 725be (1c:65be)
+; translate the SGB pal packets into something usable for the GBC
 	push hl
 	pop de
-	ld hl,PalPacketPointers
-	ld a,[hli]
-	ld c,a
-.asm_725c5
-	ld a,e
+	ld hl, PalPacketPointers
+	ld a, [hli]
+	ld c, a
 .loop
+	ld a, e
+.innerLoop
 	cp [hl]
-	jr z,.asm_725cf
+	jr z, .checkHighByte
 	inc hl
 	inc hl
 	dec c
-	jr nz,.loop
+	jr nz, .innerLoop
 	ret
-.asm_725cf
+.checkHighByte
+; the low byte of pointer matched, so check the high byte
 	inc hl
-	ld a,d
+	ld a, d
 	cp [hl]
-	jr z,.asm_725d9
+	jr z, .foundMatchingPointer
 	inc hl
 	dec c
-	jr nz,.asm_725c5
+	jr nz, .loop
 	ret
-.asm_725d9
-	callba LoadBGMapAttributes ; 2f:7250
+.foundMatchingPointer
+	callba LoadBGMapAttributes
 	ret
 
 PalPacketPointers:: ; 725e2 (1c:65e2)
-	db (palPacketPointersEnd - palPacketPointers) / $2
+	db (palPacketPointersEnd - palPacketPointers) / 2
 palPacketPointers
 	dw BlkPacket_WholeScreen
 	dw BlkPacket_Battle
@@ -1161,7 +1070,7 @@ palPacketPointers
 	dw wPalPacket
 	dw UnknownPacket_72751
 palPacketPointersEnd
-	
+
 CopySGBBorderTiles: ; 725fb (1c:65fb)
 ; SGB tile data is stored in a 4BPP planar format.
 ; Each tile is 32 bytes. The first 16 bytes contain bit planes 1 and 2, while
@@ -1192,7 +1101,6 @@ CopySGBBorderTiles: ; 725fb (1c:65fb)
 	jr nz, .tileLoop
 	ret
 
-	;dr $725e2,$734b9
 INCLUDE "data/sgb_packets.asm"
 
 INCLUDE "data/mon_palettes.asm"

@@ -106,19 +106,19 @@ LoadBGMapAttributes:: ; bf450 (2f:7450)
 	ret
 	
 BGMapAttributesPointers: ; bf4de (2f:74de)
-	dw BGMapAttributes1
-	dw BGMapAttributes2
-	dw BGMapAttributes3
-	dw BGMapAttributes4
-	dw BGMapAttributes5
-	dw BGMapAttributes6
-	dw BGMapAttributes7
-	dw BGMapAttributes8
-	dw BGMapAttributes9
-	dw BGMapAttributes10
-	dw BGMapAttributes11
-	dw BGMapAttributes12
-	dw BGMapAttributes13
+	dw BGMapAttributes_Unknown1
+	dw BGMapAttributes_Unknown2
+	dw BGMapAttributes_GameFreakIntro
+	dw BGMapAttributes_TrainerCard
+	dw BGMapAttributes_PartyMenu
+	dw BGMapAttributes_NidorinoIntro
+	dw BGMapAttributes_TitleScreen
+	dw BGMapAttributes_Slots
+	dw BGMapAttributes_Pokedex
+	dw BGMapAttributes_StatusScreen
+	dw BGMapAttributes_Battle
+	dw BGMapAttributes_WholeScreen
+	dw BGMapAttributes_Unknown13
 
 HandleBadgeFaceAttributes: ; bf4f8 (2f:74f8)
 ; zero out the attributes if the player doesn't have the respective badge 
