@@ -809,7 +809,7 @@ PKMNLeaguePC: ; 75dfe (1d:5dfe)
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
-INCLUDE "engine/battle/animations_.asm"
+INCLUDE "engine/battle/animations.asm"
 
 AnimCut: ; 7a037 (1e:6037)
 	dr $7a037,$7a0fb
