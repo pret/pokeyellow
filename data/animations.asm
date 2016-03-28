@@ -1,4 +1,4 @@
-AttackAnimationPointers: ; 7a07d (1e:607d)
+AttackAnimationPointers: ; 7a22a (1e:622a)
 	dw PoundAnim
 	dw KarateChopAnim
 	dw DoubleSlapAnim
@@ -201,7 +201,6 @@ AttackAnimationPointers: ; 7a07d (1e:607d)
 	dw HidePicAnim
 	dw ThrowRockAnim
 	dw ThrowBaitAnim
-	dw ZigZagScreenAnim
 
 ; each animation is a list of subanimations and special effects
 ; if first byte < $56
@@ -209,10 +208,6 @@ AttackAnimationPointers: ; 7a07d (1e:607d)
 ; if first byte >= $D8
 ;	db special_effect_id, sound_id
 ; $FF terminated
-ZigZagScreenAnim: ; 7a213 (1e:6213)
-	db SE_WAVY_SCREEN, $FF
-	db $FF
-
 PoundAnim: ; 7a216 (1e:6216)
 StruggleAnim: ; 7a216 (1e:6216)
 	db $08,$00,$01

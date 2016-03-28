@@ -811,25 +811,24 @@ SECTION "bank1E",ROMX,BANK[$1E]
 
 INCLUDE "engine/battle/animations.asm"
 
-AnimCut: ; 7a037 (1e:6037)
-	dr $7a037,$7a0fb
-AnimateBoulderDust: ; 7a0fb (1e:60fb)
-	dr $7a0fb,$7a19a
+INCLUDE "engine/overworld/cut2.asm"
+
+INCLUDE "engine/overworld/ssanne.asm"
 	
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
-;INCLUDE "data/animations.asm"
-AttackAnimationPointers: ; 7a22a (1e:622a)
-	dr $7a22a,$7a915
-SubanimationPointers: ; 7a915 (1e:6915)
-	dr $7a915,$7b11c
-FrameBlockPointers: ; 7b11c (1e:711c)
-	dr $7b11c,$7be2d
-FrameBlockBaseCoords: ; 7be2d (1e:7e2d)
-	dr $7be2d,$7c000
+INCLUDE "data/animations.asm"
+;AttackAnimationPointers: ; 7a22a (1e:622a)
+;	dr $7a22a,$7a915
+;SubanimationPointers: ; 7a915 (1e:6915)
+;	dr $7a915,$7b11c
+;FrameBlockPointers: ; 7b11c (1e:711c)
+;	dr $7b11c,$7be2d
+;FrameBlockBaseCoords: ; 7be2d (1e:7e2d)
+;	dr $7be2d,$7c000
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 

@@ -1,4 +1,4 @@
-AnimCut: ; 79e96 (1e:5e96)
+AnimCut: ; 7a037 (1e:6037)
 	ld a, [wCutTile]
 	cp $52
 	jr z, .grass
@@ -18,6 +18,7 @@ AnimCut: ; 79e96 (1e:5e96)
 	ld a, [rOBP1]
 	xor $64
 	ld [rOBP1], a
+	call UpdateGBCPal_OBP1
 	call DelayFrame
 	pop bc
 	dec c
@@ -43,7 +44,7 @@ AnimCut: ; 79e96 (1e:5e96)
 	jr nz, .cutGrassLoop
 	ret
 
-AnimCutGrass_UpdateOAMEntries: ; 79eed (1e:5eed)
+AnimCutGrass_UpdateOAMEntries: ; 7a091 (1e:6091)
 	push bc
 	ld hl, wOAMBuffer + $91
 	ld a, 1
@@ -68,13 +69,14 @@ AnimCutGrass_UpdateOAMEntries: ; 79eed (1e:5eed)
 	ld a, [rOBP1]
 	xor $64
 	ld [rOBP1], a
+	call UpdateGBCPal_OBP1
 	call DelayFrame
 	pop bc
 	dec c
 	jr nz, AnimCutGrass_UpdateOAMEntries
 	ret
 
-AnimCutGrass_SwapOAMEntries: ; 79f30 (1e:5f30)
+AnimCutGrass_SwapOAMEntries: ; 7a0d7 (1e:60d7)
 	ld hl, wOAMBuffer + $90
 	ld de, wBuffer
 	ld bc, $8
