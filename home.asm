@@ -4741,9 +4741,7 @@ IsInRestOfArray:: ; 3da9 (0:3da9)
 	ret
 
 InitMapSprites::  ; 3dba (0:3dba)
-	ld hl, _InitMapSprites ; 1401b (5:401b)
-	ld b,BANK(_InitMapSprites)
-	jp Bankswitch
+	jpab _InitMapSprites
 
 RestoreScreenTilesAndReloadTilePatterns:: ; 3dc2 (0:3dc2)
 	call ClearSprites

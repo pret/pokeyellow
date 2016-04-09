@@ -2030,9 +2030,7 @@ Func_0f3d:: ; 0f3d (0:0f3d)
 	pop af
 	call BankswitchCommon
 asm_0f4d: ; 0f4d (0:0f4d)
-	ld hl, Func_f02da
-	ld b,BANK(Func_f02da) ; 3c:42da
-	jp Bankswitch
+	jpab Func_f02da
 	ret ; useless?
 	
 ResetMapVariables:: ; 0f56 (0:0f56)
@@ -2143,14 +2141,10 @@ IsSpinning:: ; 0ff0 (0:0ff0)
 	ld a,[wd736]
 	bit 7,a
 	ret z ; no spinning
-	ld b, BANK(LoadSpinnerArrowTiles); spin while moving
-	ld hl,LoadSpinnerArrowTiles ; 11:5077
-	jp Bankswitch
+	jpab LoadSpinnerArrowTiles ; spin while moving
 	
 Func_0ffe:: ; 0ffe (0:0ffe)
-	ld hl, IsPlayerTalkingToPikachu ; 3f:4f0c
-	ld b, BANK(IsPlayerTalkingToPikachu)
-	jp Bankswitch
+	jpab IsPlayerTalkingToPikachu
 
 InitSprites:: ; 1006 (0:1006)
 	ld a,[hli]
