@@ -2515,7 +2515,7 @@ wd438:: ds 1
 
 	ds 15
 
-wExpressionNumber::
+wExpressionNumber:: ; d447
 	ds 1
 
 	ds 1
@@ -2536,7 +2536,7 @@ wd47a:: ds 1
 
 	ds 24
 	
-wd493:: ds 1
+wPreventBlackout:: ds 1
 	
 	ds 1
 	

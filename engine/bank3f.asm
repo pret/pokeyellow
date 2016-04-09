@@ -1724,18 +1724,593 @@ Func_fceab:: ; fceab (3f:4eab)
 	and a
 	ret
 
-Func_fcf0c:: ; fcf0c (3f:4f0c)
-	dr $fcf0c,$fd001
+IsPlayerTalkingToPikachu:: ; fcf0c (3f:4f0c)
+	ld a, [wd436]
+	and a
+	ret z
+	ld a, [hSpriteIndexOrTextID]
+	cp $f
+	ret nz
+	call InitializePikachuTextID
+	xor a
+	ld [hSpriteIndexOrTextID], a
+	ld [wd436], a
+	ret
+	
+InitializePikachuTextID: ; fcf20 (3f:4f20)
+	ld a, $d4 ; display 
+	ld [hSpriteIndexOrTextID], a
+	xor a
+	ld [wPlayerMovingDirection], a
+	ld a, $1
+	ld [wAutoTextBoxDrawingControl], a
+	call DisplayTextID
+	xor a
+	ld [wAutoTextBoxDrawingControl], a
+	ret
+
+DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
+	ld e, a
+	ld d, $0
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+.loop
+	ld a, [de]
+	inc de
+	cp $ff
+	jr z, .done
+	ld c, a
+	ld b, $0
+	ld hl, Jumptable_fcf54
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call JumpToAddress
+	jr .loop
+.done
+	ret
+	
+Jumptable_fcf54: ; fcf54 (3f:4f54)
+	dw Func_fcf6a
+	dw Func_fcf6b
+	dw Func_fcf77
+	dw Func_fcf8d
+	dw Func_fcfb0
+	dw Func_fd9d0
+	dw Func_fcfc7
+	dw Func_fcfbe
+	dw Func_fcfe8
+	dw Func_fcfe9
+	dw Func_fcf6a
+	
+Func_fcf6a: ; fcf6a (3f:4f6a)
+	ret
+
+Func_fcf6b: ; fcf6b (3f:4f6b)
+	ld a, [de]
+	ld l, a
+	inc de
+	ld a, [de]
+	ld h, a
+	inc de
+	push de
+	call PrintText
+	pop de
+	ret
+	
+Func_fcf77: ; fcf77 (3f:4f77)
+	ld a, [de]
+	inc de
+	push de
+	ld e, a
+	nop
+	call Func_fcf81
+	pop de
+	ret
+
+Func_fcf81: ; fcf81 (3f:4f81)
+	cp $ff
+	ret z
+	callab PlayPikachuSoundClip
+	ret
+	
+Func_fcf8d: ; fcf8d (3f:4f8d)
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	ld a, [de]
+	inc de
+	push de
+	call Func_fcfa2
+	pop de
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	ret
+	
+Func_fcfa2: ; fcfa2 (3f:4fa2)
+	ld [wWhichEmotionBubble], a
+	ld a, $f
+	ld [wEmotionBubbleSpriteIndex], a
+	predef EmotionBubble
+	ret
+	
+Func_fcfb0: ; fcfb0 (3f:4fb0)
+	ld a, [de]
+	inc de
+	ld l, a
+	ld a, [de]
+	inc de
+	ld h, a
+	push de
+	ld b, $3f
+	call Func_fd2a1
+	pop de
+	ret
+	
+Func_fcfbe: ; fcfbe (3f:4fbe)
+	ld a, [de]
+	inc de
+	push de
+	ld c, a
+	call DelayFrames
+	pop de
+	ret
+	
+Func_fcfc7: ; fcfc7 (3f:4fc7)
+	ld a, [de]
+	inc de
+	push de
+	ld e, a
+	ld d, $0
+	ld hl, Jumptable_fcfda
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call JumpToAddress
+	pop de
+	ret
+
+Jumptable_fcfda:
+	dw Func_fd8ab
+	dw LoadFontTilePatterns
+	dw Func_fd8f8
+	dw WaitForTextScrollButtonPress
+	dw Func_fd8d4
+	dw Func_fd8e1
+	dw Func_fd8ee
+	
+Func_fcfe8: ; fcfe8 (3f:4fe8)
+	ret
+	
+Func_fcfe9: ; fcfe9 (3f:4fe9)
+	push de
+	call Func_fcff2
+	call UpdateSprites
+	pop de
+	ret
+
+Func_fcff2: ; fcff2 (3f:4ff2)
+	ld a, [wSpriteStateData1 + $9]
+	xor $4
+	ld [wSpriteStateData1 + $f9], a
+	ret
+	
+Func_fcffb: ; fcffb (3f:4ffb)
+; Inexplicably empty.
+	rept 5
+	nop
+	endr
+	ret
+
 Func_fd001:: ; fd001 (3f:5001)
-	dr $fd001,$fd004
+	ld a, e
+	jr asm_fd00f
+	
 Func_fd004:: ; fd004 (3f:5004)
-	dr $fd004,$fd0d0
-Func_fd0d0:: ; fd0d0 (3f:50d0)
-	dr $fd0d0,$fd252
+	call Func_fd05e
+	jr c, asm_fd00f
+	call Func_fd978
+	call Func_fcffb
+asm_fd00f: ; fd00f (3f:500f)
+	ld [wExpressionNumber], a
+	ld hl, PikachuEmotionTable
+	call DoStarterPikachuEmotions
+	ret
+	
+PikachuEmotionTable: ; fd019 (3f:4019)
+	dw PikachuEmotion0_fd115
+	dw PikachuEmotion1_fd141
+	dw PikachuEmotion2_fd116
+	dw PikachuEmotion3_fd160
+	dw PikachuEmotion4_fd136
+	dw PikachuEmotion5_fd14d
+	dw PikachuEmotion6_fd153
+	dw PikachuEmotion7_fd128
+	dw PikachuEmotion8_fd147
+	dw PikachuEmotion9_fd166
+	dw PikachuEmotion10_fd11e
+	dw PikachuEmotion11_fd173
+	dw PikachuEmotion12_fd17a
+	dw PikachuEmotion13_fd180
+	dw PikachuEmotion14_fd189
+	dw PikachuEmotion15_fd191
+	dw PikachuEmotion16_fd197
+	dw PikachuEmotion17_fd19d
+	dw PikachuEmotion18_fd1a3
+	dw PikachuEmotion19_fd1a9
+	dw PikachuEmotion20_fd1b1
+	dw PikachuEmotion21_fd1b9
+	dw PikachuEmotion22_fd1c1
+	dw PikachuEmotion23_fd1c7
+	dw PikachuEmotion24_fd1cf
+	dw PikachuEmotion25_fd1d7
+	dw PikachuEmotion26_fd1df
+	dw PikachuEmotion27_fd1eb
+	dw PikachuEmotion28_fd1f1
+	dw PikachuEmotion29_fd1f7
+	dw PikachuEmotion30_fd1fc
+	dw PikachuEmotion31_fd20a
+	dw PikachuEmotion32_fd213
+	dw PikachuEmotion33_fd05d
+	
+PikachuEmotion33_fd05d: ; fd05d (3f:505d)
+	db $ff
+	
+Func_fd05e: ; fd05e (3f:505e)
+	ld a, [wCurMap]
+	cp POKEMON_FAN_CLUB
+	jr nz, .notFanClub
+	ld hl, wPreventBlackout
+	bit 7, [hl]
+	ld a, $1d
+	jr z, .asm_fd0c9
+	call Func_154a
+	ld a, $1e
+	jr nz, .asm_fd0c9
+	jr .asm_fd096
+.notFanClub
+	ld a, [wCurMap]
+	cp PEWTER_POKECENTER
+	jr nz, .notPewterPokecenter
+	call Func_154a
+	ld a, $1a
+	jr nz, .asm_fd0c9
+	jr .asm_fd096
+.notPewterPokecenter
+	callab Func_f24ae
+	ld a, e
+	cp $ff
+	jr nz, .asm_fd0c9
+	jr .asm_fd096
+.asm_fd096
+	call IsPlayerPikachuAsleepInParty
+	ld a, $b
+	jr c, .asm_fd0c9
+	callab Func_fce73 ; same bank
+	ld a, $1c
+	jr c, .asm_fd0c9
+	ld a, [wCurMap]
+	cp POKEMONTOWER_1
+	jr c, .notInLavenderTower
+	cp POKEMONTOWER_7 + 1
+	ld a, $16
+	jr c, .asm_fd0c9
+.notInLavenderTower
+	ld a, [wd49c]
+	and a
+	jr z, .asm_fd0c7
+	dec a
+	ld c, a
+	ld b, $0
+	ld hl, Pointer_fd0cb
+	add hl, bc
+	ld a, [hl]
+	jr .asm_fd0c9
+.asm_fd0c7
+	and a
+	ret
+.asm_fd0c9
+	scf
+	ret
+	
+Pointer_fd0cb:
+	db $12,$15,$17,$18,$19
+	
+IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
+	xor a
+	ld [wWhichPokemon], a
+.loop
+	ld a, [wWhichPokemon]
+	ld c, a
+	ld b, $0
+	ld hl, wPartySpecies
+	add hl, bc
+	ld a, [hl]
+	cp $ff
+	jr z, .done
+	cp PIKACHU
+	jr nz, .curMonNotStarterPikachu
+	callab IsThisPartymonStarterPikachu
+	jr nc, .curMonNotStarterPikachu
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Status
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a, [hl]
+	and SLP
+	jr z, .done
+	jr .curMonSleepingPikachu
+.curMonNotStarterPikachu
+	ld a, [wWhichPokemon]
+	cp PARTY_LENGTH - 1
+	jr z, .done
+	inc a
+	ld [wWhichPokemon], a
+	jr .loop
+.curMonSleepingPikachu
+	scf
+	ret
+.done
+	and a
+	ret
+	
+PikachuEmotion0_fd115: ; fd115 (3f:5115)
+	db $ff
+
+PikachuEmotion2_fd116: ; fd116 (3f:5116)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble SMILE_BUBBLE
+	pikaemotion_pcm $22
+	pikaemotion_5 $2
+	db $ff
+
+PikachuEmotion10_fd11e: ; fd11e (3f:511e)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_emotebubble HEART_BUBBLE
+	pikaemotion_pcm $4
+	pikaemotion_5 $a
+	db $ff
+
+PikachuEmotion7_fd128: ; fd128 (3f:5128)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_4 Pointer_fd224
+	pikaemotion_pcm $0
+	pikaemotion_4 Pointer_fd224
+	pikaemotion_5 $7
+	db $ff
+
+PikachuEmotion4_fd136: ; fd136 (3f:5136)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_4 Pointer_fd230
+	pikaemotion_pcm $1c
+	pikaemotion_5 $4
+	db $ff
+
+PikachuEmotion1_fd141: ; fd141 (3f:5141)
+	pikaemotion_dummy2
+	pikaemotion_pcm $ff
+	pikaemotion_5 $1
+	db $ff
+
+PikachuEmotion8_fd147: ; fd147 (3f:5147)
+	pikaemotion_dummy2
+	pikaemotion_pcm $26
+	pikaemotion_5 $8
+	db $ff
+
+PikachuEmotion5_fd14d: ; fd14d (3f:514d)
+	pikaemotion_dummy2
+	pikaemotion_pcm $1e
+	pikaemotion_5 $5
+	db $ff
+
+PikachuEmotion6_fd153: ; fd153 (3f:5153)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_pcm $ff
+	pikaemotion_4 Pointer_fd21e
+	pikaemotion_emotebubble SKULL_BUBBLE
+	pikaemotion_5 $6
+	db $ff
+
+PikachuEmotion3_fd160: ; fd160 (3f:5160)
+	pikaemotion_dummy2
+	pikaemotion_pcm $27
+	pikaemotion_5 $3
+	db $ff
+
+PikachuEmotion9_fd166: ; fd166 (3f:5166)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_pcm $5
+	pikaemotion_4 Pointer_fd218
+	pikaemotion_emotebubble SKULL_BUBBLE
+	pikaemotion_5 $9
+	db $ff
+
+PikachuEmotion11_fd173: ; fd173 (3f:5173)
+	pikaemotion_emotebubble ZZZ_BUBBLE
+	pikaemotion_pcm $24
+	pikaemotion_5 $b
+	db $ff
+
+PikachuEmotion12_fd17a: ; fd17a (3f:517a)
+	pikaemotion_dummy2
+	pikaemotion_pcm $ff
+	pikaemotion_5 $c
+	db $ff
+
+PikachuEmotion13_fd180: ; fd180 (3f:5180)
+	pikaemotion_dummy2
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
+	pikaemotion_4 Pointer_fd21e
+	pikaemotion_5 $d
+	db $ff
+
+PikachuEmotion14_fd189: ; fd189 (3f:5189)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble BOLT_BUBBLE
+	pikaemotion_pcm $9
+	pikaemotion_5 $e
+	db $ff
+
+PikachuEmotion15_fd191: ; fd191 (3f:5191)
+	pikaemotion_dummy2
+	pikaemotion_pcm $21
+	pikaemotion_5 $f
+	db $ff
+
+PikachuEmotion16_fd197: ; fd197 (3f:5197)
+	pikaemotion_dummy2
+	pikaemotion_pcm $20
+	pikaemotion_5 $10
+	db $ff
+
+PikachuEmotion17_fd19d: ; fd19d (3f:519d)
+	pikaemotion_dummy2
+	pikaemotion_pcm $c
+	pikaemotion_5 $11
+	db $ff
+
+PikachuEmotion18_fd1a3: ; fd1a3 (3f:51a3)
+	pikaemotion_dummy2
+	pikaemotion_pcm $ff
+	pikaemotion_5 $12
+	db $ff
+
+PikachuEmotion19_fd1a9: ; fd1a9 (3f:51a9)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble HEART_BUBBLE
+	pikaemotion_pcm $20
+	pikaemotion_5 $13
+	db $ff
+
+PikachuEmotion20_fd1b1: ; fd1b1 (3f:51b1)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble HEART_BUBBLE
+	pikaemotion_pcm $4
+	pikaemotion_5 $14
+	db $ff
+
+PikachuEmotion21_fd1b9: ; fd1b9 (3f:51b9)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble FISH_BUBBLE
+	pikaemotion_pcm $ff
+	pikaemotion_5 $15
+	db $ff
+
+PikachuEmotion22_fd1c1: ; fd1c1 (3f:51c1)
+	pikaemotion_dummy2
+	pikaemotion_pcm $3
+	pikaemotion_5 $16
+	db $ff
+
+PikachuEmotion23_fd1c7: ; fd1c7 (3f:51c7)
+	pikaemotion_dummy2
+	pikaemotion_pcm $12
+	pikaemotion_5 $17
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_SHOWMAPVIEW
+	db $ff
+
+PikachuEmotion24_fd1cf: ; fd1cf (3f:51cf)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble EXCLAMATION_BUBBLE
+	pikaemotion_pcm $ff
+	pikaemotion_5 $18
+	db $ff
+
+PikachuEmotion25_fd1d7: ; fd1d7 (3f:51d7)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble BOLT_BUBBLE
+	pikaemotion_pcm $22
+	pikaemotion_5 $19
+	db $ff
+
+PikachuEmotion26_fd1df: ; fd1df (3f:51df)
+	pikaemotion_dummy2
+	pikaemotion_emotebubble ZZZ_BUBBLE
+	pikaemotion_pcm $24
+	pikaemotion_5 $1a
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_SHOWMAPVIEW
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_CHECKPEWTERCENTER
+	db $ff
+
+PikachuEmotion27_fd1eb: ; fd1eb (3f:51eb)
+	pikaemotion_dummy2
+	pikaemotion_pcm $8
+	pikaemotion_5 $1b
+	db $ff
+
+PikachuEmotion28_fd1f1: ; fd1f1 (3f:51f1)
+	pikaemotion_dummy2
+	pikaemotion_pcm $e
+	pikaemotion_5 $1c
+	db $ff
+
+PikachuEmotion29_fd1f7: ; fd1f7 (3f:51f7)
+	pikaemotion_pcm $4
+	pikaemotion_5 $a
+	db $ff
+
+PikachuEmotion30_fd1fc: ; fd1fc (3f:51fc)
+	pikaemotion_9
+	pikaemotion_emotebubble HEART_BUBBLE
+	pikaemotion_pcm $4
+	pikaemotion_5 $14
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_SHOWMAPVIEW
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_LOADFONT
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_CHECKLAVENDERTOWER
+	db $ff
+
+PikachuEmotion31_fd20a: ; fd20a (3f:520a)
+	pikaemotion_pcm $12
+	pikaemotion_5 $17
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_SHOWMAPVIEW
+	pikaemotion_subcmd PIKAEMOTION_SUBCMD_CHECKBILLSHOUSE
+	db $ff
+
+PikachuEmotion32_fd213: ; fd213 (3f:5213)
+	pikaemotion_pcm $19
+	pikaemotion_5 $17
+	db $ff
+
+Pointer_fd218: ; fd218 (3f:5218)
+	dr $fd218,$fd21e
+Pointer_fd21e: ; fd21e (3f:521e)
+	dr $fd21e,$fd224
+Pointer_fd224: ; fd224 (3f:5224)
+	dr $fd224,$fd230
+Pointer_fd230: ; fd230 (3f:5230)
+	dr $fd230,$fd252
 Func_fd252: ; fd252 (3f:5252)
 	dr $fd252,$fd2a1
 Func_fd2a1:: ; fd2a1 (3f:52a1)
-	dr $fd2a1,$fe66f
+	dr $fd2a1,$fd8ab
+Func_fd8ab: ; fd8ab (3f:58ab)
+	dr $fd8ab,$fd8d4
+Func_fd8d4: ; fd8d4 (3f:58d4)
+	dr $fd8d4,$fd8e1
+Func_fd8e1: ; fd8e1 (3f:58e1)
+	dr $fd8e1,$fd8ee
+Func_fd8ee: ; fd8ee (3f:58ee)
+	dr $fd8ee,$fd8f8
+Func_fd8f8: ; fd8f8 (3f:58f8)
+	dr $fd8f8,$fd978
+Func_fd978: ; fd978 (3f:5978)
+	dr $fd978,$fd9d0
+Func_fd9d0: ; fd9d0 (3f:59d0)
+	dr $fd9d0,$fe66f
 
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"

@@ -2148,8 +2148,8 @@ IsSpinning:: ; 0ff0 (0:0ff0)
 	jp Bankswitch
 	
 Func_0ffe:: ; 0ffe (0:0ffe)
-	ld hl, Func_fcf0c ; 3f:4f0c
-	ld b, BANK(Func_fcf0c)
+	ld hl, IsPlayerTalkingToPikachu ; 3f:4f0c
+	ld b, BANK(IsPlayerTalkingToPikachu)
 	jp Bankswitch
 
 InitSprites:: ; 1006 (0:1006)

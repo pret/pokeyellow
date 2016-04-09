@@ -3729,7 +3729,7 @@ JoypadLowSensitivity:: ; 381e (0:381e)
 	ld [H_FRAMECOUNTER],a
 	ret
 
-WaitForTextScrollButtonPress:: ; 3865 (0:3865)
+WaitForTextScrollButtonPress:: ; 3852 (0:3852)
 	ld a, [H_DOWNARROWBLINKCNT1]
 	push af
 	ld a, [H_DOWNARROWBLINKCNT2]

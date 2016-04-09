@@ -274,6 +274,8 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	dr $f0a82,$f220e
 BeachHouse_h: ; f220e (3c:620e)
 ;INCLUDE "data/mapHeaders/beach_house.asm"
-	dr $f220e,$f25f8
+	dr $f220e,$f24ae
+Func_f24ae: ; f24ae (3c:64ae)
+	dr $f24ae,$f25f8
 CheckForHiddenObject:: ; f25f8 (3c:65f8)
 	dr $f25f8,$f4000

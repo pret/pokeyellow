@@ -11,7 +11,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	ld a,[wBattleType]
 	cp $4 ; new battle type?
 	jr nz,.notnewbattletype
-	callab Func_fd0d0
+	callab IsPlayerPikachuAsleepInParty
 	ld e,$24
 	jr c,.asm_f4026
 	ld e,$a
