@@ -2141,7 +2141,7 @@ IsSpinning:: ; 0ff0 (0:0ff0)
 	ld a,[wd736]
 	bit 7,a
 	ret z ; no spinning
-	jpab LoadSpinnerArrowTiles ; spin while moving
+	jpba LoadSpinnerArrowTiles ; spin while moving
 	
 Func_0ffe:: ; 0ffe (0:0ffe)
 	jpab IsPlayerTalkingToPikachu
