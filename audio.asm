@@ -31,9 +31,7 @@ SECTION "Sound Effect Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/sfxheaders3.asm"
 
 SECTION "Sound Effect Headers 4", ROMX, BANK[AUDIO_4]
-SFX_Headers_4:: ; 80000 (20:4000)
-	dr $80000,$801cb
-; INCLUDE "audio/headers/sfxheaders4.asm"
+INCLUDE "audio/headers/sfxheaders4.asm"
 
 SECTION "Music Headers 1", ROMX, BANK[AUDIO_1]
 INCLUDE "audio/headers/musicheaders1.asm"
@@ -45,8 +43,7 @@ SECTION "Music Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/musicheaders3.asm"
 
 SECTION "Music Headers 4", ROMX, BANK[AUDIO_4]
-	dr $801cb,$801ec
-;INCLUDE "audio/headers/musicheaders4.asm"
+INCLUDE "audio/headers/musicheaders4.asm"
 
 SECTION "Sound Effects 1", ROMX, BANK[AUDIO_1]
 
@@ -373,7 +370,7 @@ INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
 
 SECTION "Sound Effects 4", ROMX, BANK[AUDIO_4]
-	dr $801ec, $80f14
+INCLUDE "audio/sfx/sound_effects_4.asm"
 	
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]
 
@@ -669,8 +666,9 @@ INCLUDE "audio/music/yellowintro.asm"
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
+INCLUDE "audio/music/jessieandjames.asm"
 
-	dr $8316d,$84000
+	dr $832b9,$84000
 	
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)
