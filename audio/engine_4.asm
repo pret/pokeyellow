@@ -10,6 +10,7 @@ Audio4_PlaySound:: ; 82bd4 (20:6bd4)
 	cp $a3
 	jr z, .asm_7d127
 	jp nc, Audio4_7d12d
+
 .asm_7d127
 	call InitMusicVariables
 	jp Audio4_7d192
@@ -61,6 +62,7 @@ Audio4_7d12d: ; 7d12d (1f:512d)
 	cp $14
 	jr nc, .asm_7d172
 	ret
+
 .asm_7d172
 	ld a, [hl]
 	cp $14
@@ -72,6 +74,7 @@ Audio4_7d12d: ; 7d12d (1f:512d)
 	jr z, .asm_7d182
 	jr c, .asm_7d182
 	ret
+
 .asm_7d182
 	call InitSFXVariables
 	ld a, c
@@ -158,6 +161,7 @@ Audio4_7d192: ; 7d192 (1f:5192)
 	cp $14
 	jr nc, .asm_7d1f5
 	jr .asm_7d21f
+
 .asm_7d1f5
 	ld a, [wSoundID]
 	cp $86

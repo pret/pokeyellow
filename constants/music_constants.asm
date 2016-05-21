@@ -94,6 +94,12 @@ ENDM
 	music_const MUSIC_MEET_FEMALE_TRAINER, Music_MeetFemaleTrainer
 	music_const MUSIC_MEET_MALE_TRAINER,   Music_MeetMaleTrainer
 
+	; AUDIO_4
+	music_const MUSIC_SURFING_PIKACHU,     Music_SurfingPikachu
+	music_const MUSIC_JESSIE_AND_JAMES,    Music_JessieAndJames
+	music_const MUSIC_YELLOW_UNUSED_SONG,  Music_YellowUnusedSong
+	music_const MUSIC_GB_PRINTER,          Music_GBPrinter
+
 	; AUDIO_1 AUDIO_2 AUDIO_3
 	music_const SFX_SNARE_1,            SFX_Snare1_1
 	music_const SFX_SNARE_2,            SFX_Snare2_1
@@ -267,3 +273,75 @@ ENDM
 	music_const SFX_SLOTS_REWARD,       SFX_Slots_Reward
 	music_const SFX_SLOTS_NEW_SPIN,     SFX_Slots_New_Spin
 	music_const SFX_SHOOTING_STAR,      SFX_Shooting_Star
+
+	; AUDIO_4
+	music_const SFX_UNKNOWN_80003_4,     SFX_80003_4
+	music_const SFX_UNKNOWN_80006_4,     SFX_80006_4
+	music_const SFX_UNKNOWN_80009_4,     SFX_80009_4
+	music_const SFX_UNKNOWN_8000C_4,     SFX_8000c_4
+	music_const SFX_UNKNOWN_8000F_4,     SFX_8000f_4
+	music_const SFX_UNKNOWN_80012_4,     SFX_80012_4
+	music_const SFX_UNKNOWN_80015_4,     SFX_80015_4
+	music_const SFX_UNKNOWN_80018_4,     SFX_80018_4
+	music_const SFX_UNKNOWN_8001B_4,     SFX_8001b_4
+	music_const SFX_UNKNOWN_8001E_4,     SFX_8001e_4
+	music_const SFX_UNKNOWN_80021_4,     SFX_80021_4
+	music_const SFX_UNKNOWN_80024_4,     SFX_80024_4
+	music_const SFX_UNKNOWN_80027_4,     SFX_80027_4
+	music_const SFX_UNKNOWN_8002A_4,     SFX_8002a_4
+	music_const SFX_UNKNOWN_8002D_4,     SFX_8002d_4
+	music_const SFX_UNKNOWN_80030_4,     SFX_80030_4
+	music_const SFX_UNKNOWN_80033_4,     SFX_80033_4
+	music_const SFX_UNKNOWN_80036_4,     SFX_80036_4
+	music_const SFX_UNKNOWN_80039_4,     SFX_80039_4
+	music_const SFX_UNKNOWN_8003C_4,     SFX_8003c_4
+	music_const SFX_UNKNOWN_80045_4,     SFX_80045_4
+	music_const SFX_UNKNOWN_8004E_4,     SFX_8004e_4
+	music_const SFX_UNKNOWN_80057_4,     SFX_80057_4
+	music_const SFX_UNKNOWN_80060_4,     SFX_80060_4
+	music_const SFX_UNKNOWN_80069_4,     SFX_80069_4
+	music_const SFX_UNKNOWN_80072_4,     SFX_80072_4
+	music_const SFX_UNKNOWN_8007B_4,     SFX_8007b_4
+	music_const SFX_UNKNOWN_80084_4,     SFX_80084_4
+	music_const SFX_UNKNOWN_8008D_4,     SFX_8008d_4
+	music_const SFX_UNKNOWN_80096_4,     SFX_80096_4
+	music_const SFX_UNKNOWN_8009F_4,     SFX_8009f_4
+	music_const SFX_UNKNOWN_800A8_4,     SFX_800a8_4
+	music_const SFX_UNKNOWN_800B1_4,     SFX_800b1_4
+	music_const SFX_UNKNOWN_800BA_4,     SFX_800ba_4
+	music_const SFX_UNKNOWN_800C3_4,     SFX_800c3_4
+	music_const SFX_UNKNOWN_800CC_4,     SFX_800cc_4
+	music_const SFX_UNKNOWN_800D5_4,     SFX_800d5_4
+	music_const SFX_UNKNOWN_800DE_4,     SFX_800de_4
+	music_const SFX_UNKNOWN_800E7_4,     SFX_800e7_4
+	music_const SFX_UNKNOWN_800F0_4,     SFX_800f0_4
+	music_const SFX_UNKNOWN_800F9_4,     SFX_800f9_4
+	music_const SFX_UNKNOWN_80102_4,     SFX_80102_4
+	music_const SFX_UNKNOWN_8010B_4,     SFX_8010b_4
+	music_const SFX_UNKNOWN_80114_4,     SFX_80114_4
+	music_const SFX_UNKNOWN_8011D_4,     SFX_8011d_4
+	music_const SFX_UNKNOWN_80126_4,     SFX_80126_4
+	music_const SFX_UNKNOWN_8012F_4,     SFX_8012f_4
+	music_const SFX_UNKNOWN_80138_4,     SFX_80138_4
+	music_const SFX_UNKNOWN_80141_4,     SFX_80141_4
+	music_const SFX_UNKNOWN_8014A_4,     SFX_8014a_4
+	music_const SFX_UNKNOWN_80153_4,     SFX_80153_4
+	music_const SFX_UNKNOWN_8015C_4,     SFX_8015c_4
+	music_const SFX_UNKNOWN_80165_4,     SFX_80165_4
+	music_const SFX_UNKNOWN_8016E_4,     SFX_8016e_4
+	music_const SFX_UNKNOWN_80177_4,     SFX_80177_4
+	music_const SFX_UNKNOWN_80180_4,     SFX_80180_4
+	music_const SFX_UNKNOWN_80189_4,     SFX_80189_4
+	music_const SFX_UNKNOWN_80192_4,     SFX_80192_4
+	music_const SFX_UNKNOWN_8019B_4,     SFX_8019b_4
+	music_const SFX_UNKNOWN_801A4_4,     SFX_801a4_4
+	music_const SFX_UNKNOWN_801A7_4,     SFX_801a7_4
+	music_const SFX_UNKNOWN_801AA_4,     SFX_801aa_4
+	music_const SFX_UNKNOWN_801AD_4,     SFX_801ad_4
+	music_const SFX_UNKNOWN_801B0_4,     SFX_801b0_4
+	music_const SFX_UNKNOWN_801B3_4,     SFX_801b3_4
+	music_const SFX_UNKNOWN_801B6_4,     SFX_801b6_4
+	music_const SFX_UNKNOWN_801B9_4,     SFX_801b9_4
+	music_const SFX_UNKNOWN_801BC_4,     SFX_801bc_4
+	music_const SFX_UNKNOWN_801BF_4,     SFX_801bf_4
+	music_const SFX_UNKNOWN_801C2_4,     SFX_801c2_4
