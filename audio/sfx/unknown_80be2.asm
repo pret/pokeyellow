@@ -22,7 +22,7 @@ SFX_80c05_4_Ch5:
 	unknownsfx0x20 $8, $b1, $51, $06
 	endchannel
 
-SFX_80c28_4_Ch7
+SFX_80c28_4_Ch7:
 	unknownnoise0x20 $6, $e3, $4c
 	unknownnoise0x20 $4, $c3, $3c
 	unknownnoise0x20 $5, $d4, $3c

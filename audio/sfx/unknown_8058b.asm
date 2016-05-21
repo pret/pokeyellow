@@ -10,7 +10,7 @@ SFX_8058b_4_Ch4:
 	unknownsfx0x20 $f, $91, $20, $07
 	endchannel
 
-SFX_805ae_4_Ch5
+SFX_805ae_4_Ch5:
 	dutycycle $79
 	unknownsfx0x20 $a, $e7, $82, $06
 	unknownsfx0x20 $2, $e7, $62, $06
