@@ -1,5 +1,5 @@
 SFX_Headers_4:: ; 80000 (20:4000)
-	db $ff, $ff, $ff
+	dbw -1, -1 ; padding
 
 SFX_80003_4:: ; 80003 (20:4003)
 	dbw CH7, SFX_801ec_4_Ch7
