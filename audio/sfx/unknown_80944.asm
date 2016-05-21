@@ -1,25 +1,25 @@
 SFX_80944_4_Ch4:
 	dutycycle $f0
-	unknownsfx0x20 $6, $f7, $c0, $06
-	unknownsfx0x20 $f, $e7, $00, $07
-	unknownsfx0x20 $4, $f4, $f0, $06
-	unknownsfx0x20 $4, $e4, $e0, $06
-	unknownsfx0x20 $8, $d1, $d0, $06
+	unknownsfx0x20 6, 247, 192, 6
+	unknownsfx0x20 15, 231, 0, 7
+	unknownsfx0x20 4, 244, 240, 6
+	unknownsfx0x20 4, 228, 224, 6
+	unknownsfx0x20 8, 209, 208, 6
 	endchannel
 
 SFX_8095b_4_Ch5:
 	dutycycle $0a
-	unknownsfx0x20 $7, $e6, $81, $06
-	unknownsfx0x20 $e, $d5, $c1, $06
-	unknownsfx0x20 $4, $c4, $b1, $06
-	unknownsfx0x20 $4, $d4, $a1, $06
-	unknownsfx0x20 $8, $c1, $91, $06
+	unknownsfx0x20 7, 230, 129, 6
+	unknownsfx0x20 14, 213, 193, 6
+	unknownsfx0x20 4, 196, 177, 6
+	unknownsfx0x20 4, 212, 161, 6
+	unknownsfx0x20 8, 193, 145, 6
 	endchannel
 
 SFX_80972_4_Ch7:
-	unknownnoise0x20 $a, $a6, $3c
-	unknownnoise0x20 $e, $94, $2c
-	unknownnoise0x20 $5, $a3, $3c
-	unknownnoise0x20 $8, $91, $2c
+	unknownnoise0x20 10, 166, 60
+	unknownnoise0x20 14, 148, 44
+	unknownnoise0x20 5, 163, 60
+	unknownnoise0x20 8, 145, 44
 	endchannel
 

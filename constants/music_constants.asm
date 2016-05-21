@@ -159,7 +159,7 @@ ENDM
 	music_const SFX_CRY_24,             SFX_Cry24_1
 	music_const SFX_CRY_25,             SFX_Cry25_1
 
-	music_const SFX_GET_ITEM_2,         SFX_Get_Item2_1
+	music_const SFX_GET_ITEM_2,         SFX_Get_Item2_1 ; also in bank audio 4
 	music_const SFX_TINK,               SFX_Tink_1
 	music_const SFX_HEAL_HP,            SFX_Heal_HP_1
 	music_const SFX_HEAL_AILMENT,       SFX_Heal_Ailment_1
@@ -344,4 +344,3 @@ ENDM
 	music_const SFX_UNKNOWN_801B9_4,     SFX_801b9_4
 	music_const SFX_UNKNOWN_801BC_4,     SFX_801bc_4
 	music_const SFX_UNKNOWN_801BF_4,     SFX_801bf_4
-	music_const SFX_UNKNOWN_801C2_4,     SFX_801c2_4

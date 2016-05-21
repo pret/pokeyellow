@@ -1,9 +1,9 @@
 SFX_801fc_4_Ch7:
-	unknownnoise0x20 $7, $84, $37
-	unknownnoise0x20 $6, $84, $36
-	unknownnoise0x20 $5, $83, $35
-	unknownnoise0x20 $4, $83, $34
-	unknownnoise0x20 $3, $82, $33
-	unknownnoise0x20 $2, $81, $32
+	unknownnoise0x20 7, 132, 55
+	unknownnoise0x20 6, 132, 54
+	unknownnoise0x20 5, 131, 53
+	unknownnoise0x20 4, 131, 52
+	unknownnoise0x20 3, 130, 51
+	unknownnoise0x20 2, 129, 50
 	endchannel
 

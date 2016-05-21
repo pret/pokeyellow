@@ -288,7 +288,7 @@ SFX_801bc_4:: ; 801bc (20:41bc)
 SFX_801bf_4:: ; 801bf (20:41bf)
 	dbw CH7, SFX_802d7_4_Ch7
 
-SFX_801c2_4:: ; 801c2 (20:41c2)
-	dbw ( $80 | CH4 ), SFX_802eb_4_Ch4
-	dbw CH5, SFX_8030a_4_Ch5
-	dbw CH6, SFX_80322_4_Ch6
+SFX_Get_Item2_4:: ; 801c2 (20:41c2)
+	dbw ( $80 | CH4 ), SFX_Get_Item2_4_Ch1
+	dbw CH5, SFX_Get_Item2_4_Ch2
+	dbw CH6, SFX_Get_Item2_4_Ch3
