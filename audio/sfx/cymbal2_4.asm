@@ -1,4 +1,4 @@
-SFX_8022e_4_Ch7:
+SFX_Cymbal2_4_Ch7:
 	unknownnoise0x20 0, 162, 17
 	endchannel
 

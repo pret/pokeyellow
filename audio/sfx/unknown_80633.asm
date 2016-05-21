@@ -1,5 +1,5 @@
 SFX_80633_4_Ch4:
-	dutycycle $fa
+	dutycycle 250
 	unknownsfx0x20 6, 131, 71, 2
 	unknownsfx0x20 15, 98, 38, 2
 	unknownsfx0x20 4, 82, 69, 2

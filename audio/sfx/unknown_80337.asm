@@ -1,5 +1,5 @@
 SFX_80337_4_Branch:
-	dutycycle $f0
+	dutycycle 240
 	unknownsfx0x20 15, 224, 128, 7
 	unknownsfx0x20 15, 240, 132, 7
 	unknownsfx0x20 15, 195, 224, 5
@@ -9,7 +9,7 @@ SFX_80337_4_Branch:
 	endchannel
 
 SFX_80352_4_Branch:
-	dutycycle $05
+	dutycycle 5
 	unknownsfx0x20 15, 160, 65, 7
 	unknownsfx0x20 15, 176, 67, 7
 	unknownsfx0x20 15, 147, 177, 5
@@ -29,23 +29,23 @@ SFX_8036c_4_Branch:
 	endchannel
 
 SFX_80383_4_Ch4:
-	dutycycle $f0
+	dutycycle 240
 	unknownsfx0x20 15, 247, 160, 7
 	unknownsfx0x20 6, 230, 163, 7
 	unknownsfx0x20 10, 244, 160, 7
-	dutycycle $a5
+	dutycycle 165
 	unknownsfx0x20 10, 246, 216, 7
 	unknownsfx0x20 4, 227, 215, 7
 	unknownsfx0x20 15, 242, 216, 7
 	endchannel
 
 SFX_803a0_4_Ch5:
-	dutycycle $05
+	dutycycle 5
 	unknownsfx0x20 2, 8, 0, 0
 	unknownsfx0x20 15, 167, 161, 6
 	unknownsfx0x20 6, 134, 162, 6
 	unknownsfx0x20 10, 116, 161, 6
-	dutycycle $5f
+	dutycycle 95
 	unknownsfx0x20 10, 118, 214, 6
 	unknownsfx0x20 4, 131, 217, 6
 	unknownsfx0x20 15, 162, 215, 6

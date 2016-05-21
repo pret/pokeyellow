@@ -1,5 +1,5 @@
 SFX_809b2_4_Ch4:
-	dutycycle $33
+	dutycycle 51
 	unknownsfx0x20 15, 246, 192, 5
 	unknownsfx0x20 8, 227, 188, 5
 	unknownsfx0x20 6, 210, 208, 5
@@ -9,7 +9,7 @@ SFX_809b2_4_Ch4:
 	endchannel
 
 SFX_809cd_4_Ch5:
-	dutycycle $99
+	dutycycle 153
 	unknownsfx0x20 14, 198, 177, 4
 	unknownsfx0x20 7, 195, 173, 4
 	unknownsfx0x20 5, 178, 193, 4

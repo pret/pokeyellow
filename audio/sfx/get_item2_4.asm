@@ -1,4 +1,4 @@
-SFX_Get_Item2_4_Ch1: ; 802eb (20:42eb)
+SFX_80ec8_4_Ch4:
 	executemusic
 	tempo 256
 	volume 7, 7
@@ -24,8 +24,7 @@ SFX_Get_Item2_4_Ch1: ; 802eb (20:42eb)
 	C_ 8
 	endchannel
 
-
-SFX_Get_Item2_4_Ch2: ; 8030a (20:430a)
+SFX_80ee7_4_Ch5:
 	executemusic
 	vibrato 8, 2, 7
 	duty 2
@@ -45,8 +44,7 @@ SFX_Get_Item2_4_Ch2: ; 8030a (20:430a)
 	A_ 8
 	endchannel
 
-
-SFX_Get_Item2_4_Ch3: ; 80322 (20:4322)
+SFX_80eff_4_Ch6:
 	executemusic
 	notetype 5, 1, 0
 	octave 5

@@ -1,62 +1,62 @@
 SFX_Headers_4:: ; 80000 (20:4000)
 	dbw -1, -1 ; padding
 
-SFX_80003_4:: ; 80003 (20:4003)
-	dbw CH7, SFX_801ec_4_Ch7
+SFX_Snare1_4:: ; 80003 (20:4003)
+	dbw CH7, SFX_Snare1_4_Ch7
 
-SFX_80006_4:: ; 80006 (20:4006)
-	dbw CH7, SFX_801f0_4_Ch7
+SFX_Snare2_4:: ; 80006 (20:4006)
+	dbw CH7, SFX_Snare2_4_Ch7
 
-SFX_80009_4:: ; 80009 (20:4009)
-	dbw CH7, SFX_801f4_4_Ch7
+SFX_Snare3_4:: ; 80009 (20:4009)
+	dbw CH7, SFX_Snare3_4_Ch7
 
-SFX_8000c_4:: ; 8000c (20:400c)
-	dbw CH7, SFX_801f8_4_Ch7
+SFX_Snare4_4:: ; 8000c (20:400c)
+	dbw CH7, SFX_Snare4_4_Ch7
 
-SFX_8000f_4:: ; 8000f (20:400f)
-	dbw CH7, SFX_801fc_4_Ch7
+SFX_Snare5_4:: ; 8000f (20:400f)
+	dbw CH7, SFX_Snare5_4_Ch7
 
-SFX_80012_4:: ; 80012 (20:4012)
-	dbw CH7, SFX_8020f_4_Ch7
+SFX_Triangle1_4:: ; 80012 (20:4012)
+	dbw CH7, SFX_Triangle1_4_Ch7
 
-SFX_80015_4:: ; 80015 (20:4015)
-	dbw CH7, SFX_80213_4_Ch7
+SFX_Triangle2_4:: ; 80015 (20:4015)
+	dbw CH7, SFX_Triangle2_4_Ch7
 
-SFX_80018_4:: ; 80018 (20:4018)
-	dbw CH7, SFX_8021a_4_Ch7
+SFX_Snare6_4:: ; 80018 (20:4018)
+	dbw CH7, SFX_Snare6_4_Ch7
 
-SFX_8001b_4:: ; 8001b (20:401b)
-	dbw CH7, SFX_8021e_4_Ch7
+SFX_Snare7_4:: ; 8001b (20:401b)
+	dbw CH7, SFX_Snare7_4_Ch7
 
-SFX_8001e_4:: ; 8001e (20:401e)
-	dbw CH7, SFX_80222_4_Ch7
+SFX_Snare8_4:: ; 8001e (20:401e)
+	dbw CH7, SFX_Snare8_4_Ch7
 
-SFX_80021_4:: ; 80021 (20:4021)
-	dbw CH7, SFX_80226_4_Ch7
+SFX_Snare9_4:: ; 80021 (20:4021)
+	dbw CH7, SFX_Snare9_4_Ch7
 
-SFX_80024_4:: ; 80024 (20:4024)
-	dbw CH7, SFX_8022a_4_Ch7
+SFX_Cymbal1_4:: ; 80024 (20:4024)
+	dbw CH7, SFX_Cymbal1_4_Ch7
 
-SFX_80027_4:: ; 80027 (20:4027)
-	dbw CH7, SFX_8022e_4_Ch7
+SFX_Cymbal2_4:: ; 80027 (20:4027)
+	dbw CH7, SFX_Cymbal2_4_Ch7
 
-SFX_8002a_4:: ; 8002a (20:402a)
-	dbw CH7, SFX_80232_4_Ch7
+SFX_Cymbal3_4:: ; 8002a (20:402a)
+	dbw CH7, SFX_Cymbal3_4_Ch7
 
-SFX_8002d_4:: ; 8002d (20:402d)
-	dbw CH7, SFX_80236_4_Ch7
+SFX_Muted_Snare1_4:: ; 8002d (20:402d)
+	dbw CH7, SFX_Muted_Snare1_4_Ch7
 
-SFX_80030_4:: ; 80030 (20:4030)
-	dbw CH7, SFX_8023d_4_Ch7
+SFX_Triangle3_4:: ; 80030 (20:4030)
+	dbw CH7, SFX_Triangle3_4_Ch7
 
-SFX_80033_4:: ; 80033 (20:4033)
-	dbw CH7, SFX_80244_4_Ch7
+SFX_Muted_Snare2_4:: ; 80033 (20:4033)
+	dbw CH7, SFX_Muted_Snare2_4_Ch7
 
-SFX_80036_4:: ; 80036 (20:4036)
-	dbw CH7, SFX_80248_4_Ch7
+SFX_Muted_Snare3_4:: ; 80036 (20:4036)
+	dbw CH7, SFX_Muted_Snare3_4_Ch7
 
-SFX_80039_4:: ; 80039 (20:4039)
-	dbw CH7, SFX_8024c_4_Ch7
+SFX_Muted_Snare4_4:: ; 80039 (20:4039)
+	dbw CH7, SFX_Muted_Snare4_4_Ch7
 
 SFX_8003c_4:: ; 8003c (20:403c)
 	dbw ( $80 | CH4 ), SFX_805db_4_Ch4
@@ -248,26 +248,26 @@ SFX_80189_4:: ; 80189 (20:4189)
 	dbw CH5, SFX_804d6_4_Ch5
 	dbw CH7, SFX_804ed_4_Ch7
 
-SFX_80192_4:: ; 80192 (20:4192)
+SFX_Get_Item1_4:: ; 80192 (20:4192)
 	dbw ( $80 | CH4 ), SFX_80e5a_4_Ch4
 	dbw CH5, SFX_80e71_4_Ch5
 	dbw CH6, SFX_80e81_4_Ch6
 
-SFX_8019b_4:: ; 8019b (20:419b)
+SFX_Get_Item2_4:: ; 8019b (20:419b)
 	dbw ( $80 | CH4 ), SFX_80ec8_4_Ch4
 	dbw CH5, SFX_80ee7_4_Ch5
 	dbw CH6, SFX_80eff_4_Ch6
 
-SFX_801a4_4:: ; 801a4 (20:41a4)
+SFX_Tink_4:: ; 801a4 (20:41a4)
 	dbw CH4, SFX_8028e_4_Ch4
 
-SFX_801a7_4:: ; 801a7 (20:41a7)
+SFX_Heal_Ailment_4:: ; 801a7 (20:41a7)
 	dbw CH4, SFX_8027f_4_Ch4
 
-SFX_801aa_4:: ; 801aa (20:41aa)
+SFX_Start_Menu_4:: ; 801aa (20:41aa)
 	dbw CH4, SFX_8026a_4_Ch4
 
-SFX_801ad_4:: ; 801ad (20:41ad)
+SFX_PressAB_4:: ; 801ad (20:41ad)
 	dbw CH7, SFX_80263_4_Ch7
 
 SFX_801b0_4:: ; 801b0 (20:41b0)
@@ -288,7 +288,7 @@ SFX_801bc_4:: ; 801bc (20:41bc)
 SFX_801bf_4:: ; 801bf (20:41bf)
 	dbw CH7, SFX_802d7_4_Ch7
 
-SFX_Get_Item2_4:: ; 801c2 (20:41c2)
-	dbw ( $80 | CH4 ), SFX_Get_Item2_4_Ch1
-	dbw CH5, SFX_Get_Item2_4_Ch2
-	dbw CH6, SFX_Get_Item2_4_Ch3
+SFX_Get_Item2_4_2:: ; 801c2 (20:41c2)
+	dbw ( $80 | CH4 ), SFX_Get_Item2_4_2_Ch1
+	dbw CH5, SFX_Get_Item2_4_2_Ch2
+	dbw CH6, SFX_Get_Item2_4_2_Ch3

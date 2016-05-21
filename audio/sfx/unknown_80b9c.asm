@@ -1,5 +1,5 @@
 SFX_80b9c_4_Ch4:
-	dutycycle $f4
+	dutycycle 244
 	unknownsfx0x20 15, 240, 5, 7
 	unknownsfx0x20 10, 224, 0, 7
 	unknownsfx0x20 6, 180, 16, 7
@@ -9,7 +9,7 @@ SFX_80b9c_4_Ch4:
 	endchannel
 
 SFX_80bb7_4_Ch5:
-	dutycycle $22
+	dutycycle 34
 	unknownsfx0x20 15, 176, 195, 6
 	unknownsfx0x20 10, 160, 193, 6
 	unknownsfx0x20 6, 132, 210, 6
