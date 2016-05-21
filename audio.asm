@@ -510,6 +510,8 @@ Music_RivalAlternateStartAndTempo:: ; 99e7 (2:59e7)
 asm_99ed: ; 99ed (2:59ed)
 	ld hl, wChannelCommandPointers
 	jp Audio1_OverwriteChannelPointer
+
+; XXX
 	ret
 
 ; an alternate tempo for Cities1 which is used for the Hall of Fame room
@@ -733,7 +735,7 @@ INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
 INCLUDE "audio/music/jessieandjames.asm"
 
-	dr $832b9,$84000
+INCBIN "audio/unknown_832b9.bin"
 	
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)
