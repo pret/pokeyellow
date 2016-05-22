@@ -187,3 +187,30 @@ GFX_ea563End: ; ea56b (3a:656b)
 GFX_ea56b:
 INCBIN "gfx/stats_screen_lv.1bpp"
 GFX_ea56bEnd: ; ea573 (3a:6573)
+
+Func_ea573: ; ea573 (3a:6573)
+	ld hl, vChars1 + $7e0
+	ld de, GFX_ea597
+	lb bc, BANK(GFX_ea597), (GFX_ea597End - GFX_ea597) / 16
+	call CopyVideoData
+
+	ld hl, wOAMBuffer + 32 * 4
+	ld a, $08
+	ld c, $08
+.loop
+	ld [hl], $10
+	inc hl
+	ld [hl], a
+	inc hl
+	ld [hl], $fe
+	inc hl
+	ld [hl], $00
+	inc hl
+	add $08
+	dec c
+	jr nz, .loop
+	ret
+
+GFX_ea597: ; ea597 (3a:6597)
+INCBIN "gfx/zero_one_ea597.2bpp"
+GFX_ea597End:
