@@ -875,8 +875,7 @@ SECTION "bank39",ROMX,BANK[$39]
 
 
 SECTION "bank3A",ROMX,BANK[$3A]
-MonsterNames: ; e8000 (3a:4000)
-	dr $e8000,$e876c
+INCLUDE "text/monster_names.asm"
 IsPlayerJustOutsideMap: ; e876c (3a:476c)
 	dr $e876c,$e8783
 Func_e8783: ; e8783 (3a:4783)

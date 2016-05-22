@@ -2536,7 +2536,7 @@ wd47a:: ds 1
 
 	ds 24
 	
-wPreventBlackout:: ds 1
+wPreventBlackout:: ds 1 ; d492
 	
 	ds 1
 	

@@ -42,7 +42,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	jr c, .asm_e8ddc
 	xor a
 	ld [wUnknownSerialFlag_d49a], a
-	ld [$d49a], a
+	ld [wUnknownSerialFlag_d49b], a
 	ld c, 12
 	call DelayFrames
 	xor a
