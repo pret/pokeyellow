@@ -892,7 +892,8 @@ SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
 
-	dr $ea3ea,$eaa02
+INCLUDE "engine/unknown_ea3ea.asm"
+	dr $ea573,$eaa02
 FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
 	ld a, [wCurMap]
 	cp POKEMONTOWER_7
