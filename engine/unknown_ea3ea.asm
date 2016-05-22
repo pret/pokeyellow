@@ -181,9 +181,9 @@ String_ea554: ; ea554 (3a:6554)
 	db "--------------@"
 
 GFX_ea563: ; ea563 (3a:6563)
-INCBIN "gfx/unknown_ea563.1bpp"
+INCBIN "gfx/stats_screen_hp.1bpp"
 GFX_ea563End: ; ea56b (3a:656b)
 
 GFX_ea56b:
-INCBIN "gfx/unknown_ea56b.1bpp"
+INCBIN "gfx/stats_screen_lv.1bpp"
 GFX_ea56bEnd: ; ea573 (3a:6573)
