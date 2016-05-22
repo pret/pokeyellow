@@ -96,9 +96,7 @@ PalletMovementScript_PlayerMoveLeft: ; 1a597 (6:6597)
 	ld a, [wNumStepsToTake]
 	ld [wSimulatedJoypadStatesIndex], a
 	ld [hNPCMovementDirections2Index], a
-	; predef ConvertNPCMovementDirectionsToJoypadMasks
-	ld a, $23
-	call Predef
+	predef ConvertNPCMovementDirectionsToJoypadMasks
 	call StartSimulatingJoypadStates
 	ld a, $2
 	ld [wNPCMovementScriptFunctionNum], a
@@ -157,9 +155,7 @@ PalletMovementScript_Done: ; 1a606 (6:6606)
 	ret nz
 	ld a, $0
 	ld [wMissableObjectIndex], a
-	; predef HideObject
-	ld a, $11
-	call Predef
+	predef HideObject
 	ld hl, wd730
 	res 7, [hl]
 	ld hl, wd72e
