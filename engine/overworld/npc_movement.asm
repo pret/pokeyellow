@@ -268,7 +268,3 @@ RLEList_PewterGymGuy: ; 1a6cd8(6:66d8)
 	db $FF
 
 INCLUDE "engine/overworld/pewter_guys.asm"
-; PewterGuys:
-	; dr $1a66e5,$1a785
-IsPlayerStandingOnDoorTile: ; 1a785 (6:6785)
-	dr $1a785,$1a7f4

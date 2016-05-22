@@ -1,4 +1,4 @@
-HandleLedges: ; 1a672 (6:6672)
+HandleLedges: ; 1a7f4 (6:67f4)
 	ld a, [wd736]
 	bit 6, a ; already jumping down ledge
 	ret nz
@@ -55,7 +55,7 @@ HandleLedges: ; 1a672 (6:6672)
 	ret
 
 	; (player direction) (tile player standing on) (ledge tile) (input required)
-LedgeTiles: ; 1a6cf (6:66cf)
+LedgeTiles: ; 1a851 (6:6851)
 	db SPRITE_FACING_DOWN, $2C,$37,D_DOWN
 	db SPRITE_FACING_DOWN, $39,$36,D_DOWN
 	db SPRITE_FACING_DOWN, $39,$37,D_DOWN
@@ -66,21 +66,25 @@ LedgeTiles: ; 1a6cf (6:66cf)
 	db SPRITE_FACING_RIGHT,$39,$0D,D_RIGHT
 	db $FF
 
-LoadHoppingShadowOAM: ; 1a6f0 (6:66f0)
+LoadHoppingShadowOAM: ; 1a872 (6:6872)
 	ld hl, vChars1 + $7f0
 	ld de, LedgeHoppingShadow
 	lb bc, BANK(LedgeHoppingShadow), (LedgeHoppingShadowEnd - LedgeHoppingShadow) / $8
 	call CopyVideoDataDouble
-	ld a, $9
-	lb bc, $54, $48 ; b, c = y, x coordinates of shadow
-	ld de, LedgeHoppingShadowOAM
-	call WriteOAMBlock
+	ld hl, LedgeHoppingShadowOAM
+	ld de, wOAMBuffer + 36 * 4
+	ld bc, LedgeHoppingShadowOAMEnd - LedgeHoppingShadowOAM
+	call CopyData
+	ld a, $a0
+	ld [wOAMBuffer + 38 * 4], a
+	ld [wOAMBuffer + 39 * 4], a
 	ret
 
-LedgeHoppingShadow: ; 1a708 (6:6708)
+LedgeHoppingShadow: ; 1a893 (6:6893)
 	INCBIN "gfx/ledge_hopping_shadow.1bpp"
 LedgeHoppingShadowEnd:
 
-LedgeHoppingShadowOAM: ; 1a710 (6:6710)
-	db $FF,$10,$FF,$20
-	db $FF,$40,$FF,$60
+LedgeHoppingShadowOAM: ; 1a89b (6:689b)
+	db $58,$48,$FF,$00
+	db $58,$50,$FF,$20
+LedgeHoppingShadowOAMEnd: ; 1a8a3 (6:68a3)

@@ -25,33 +25,21 @@ IsPlayerStandingOnDoorTile: ; 1a609 (6:6609)
 	and a
 	ret
 
-DoorTileIDPointers: ; 1a62c (6:662c)
-	db OVERWORLD
-	dw OverworldDoorTileIDs
-	db FOREST
-	dw ForestDoorTileIDs
-	db MART
-	dw MartDoorTileIDs
-	db HOUSE
-	dw HouseDoorTileIDs
-	db FOREST_GATE
-	dw TilesetMuseumDoorTileIDs
-	db MUSEUM
-	dw TilesetMuseumDoorTileIDs
-	db GATE
-	dw TilesetMuseumDoorTileIDs
-	db SHIP
-	dw ShipDoorTileIDs
-	db LOBBY
-	dw LobbyDoorTileIDs
-	db MANSION
-	dw MansionDoorTileIDs
-	db LAB
-	dw LabDoorTileIDs
-	db FACILITY
-	dw FacilityDoorTileIDs
-	db PLATEAU
-	dw PlateauDoorTileIDs
+DoorTileIDPointers: ; 1a7a8 (6:67a8)
+	dbw OVERWORLD,   OverworldDoorTileIDs
+	dbw FOREST,      ForestDoorTileIDs
+	dbw MART,        MartDoorTileIDs
+	dbw HOUSE,       HouseDoorTileIDs
+	dbw FOREST_GATE, TilesetMuseumDoorTileIDs
+	dbw MUSEUM, TilesetMuseumDoorTileIDs
+	dbw GATE, TilesetMuseumDoorTileIDs
+	dbw SHIP, ShipDoorTileIDs
+	dbw LOBBY, LobbyDoorTileIDs
+	dbw MANSION, MansionDoorTileIDs
+	dbw LAB, LabDoorTileIDs
+	dbw FACILITY, FacilityDoorTileIDs
+	dbw PLATEAU, PlateauDoorTileIDs
+	dbw INTERIOR, InteriorDoorTileIDs
 	db $ff
 
 OverworldDoorTileIDs: ; 1a654 (6:6654)
@@ -72,17 +60,20 @@ TilesetMuseumDoorTileIDs: ; 1a65d (6:665d)
 ShipDoorTileIDs: ; 1a65f (6:665f)
 	db $1e,$00
 
-LobbyDoorTileIDs: ; 1a661 (6:6661)
+LobbyDoorTileIDs: ; 1a7e0 (6:67e0)
 	db $1c,$38,$1a,$00
 
-MansionDoorTileIDs: ; 1a665 (6:6665)
+MansionDoorTileIDs: ; 1a7e4 (6:67e4)
 	db $1a,$1c,$53,$00
 
-LabDoorTileIDs: ; 1a669 (6:6669)
+LabDoorTileIDs: ; 1a7e8 (6:67e8)
 	db $34,$00
 
-FacilityDoorTileIDs: ; 1a66b (6:666b)
+FacilityDoorTileIDs: ; 1a7ea (6:67ea)
 	db $43,$58,$1b,$00
 
-PlateauDoorTileIDs: ; 1a66f (6:666f)
+PlateauDoorTileIDs: ; 1a7ee (6:67ee)
 	db $3b,$1b,$00
+
+InteriorDoorTileIDs: ; 1a7f1 (6:67f1)
+	db $04,$15,$00

@@ -234,8 +234,8 @@ SECTION "bank06",ROMX,BANK[$06]
 	dr $18000,$1a4ea
 
 INCLUDE "engine/overworld/npc_movement.asm"
-HandleLedges: ; 1a7f4 (6:67f4)
-	dr $1a7f4,$1c000
+INCLUDE "engine/overworld/doors.asm"
+INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
 
