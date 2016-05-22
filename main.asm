@@ -678,12 +678,12 @@ SECTION "bank11",ROMX,BANK[$11]
 
 	dr $44000,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
-	dr $45077,$48000
+	dr $45077,$46c12
 
 
 SECTION "bank12",ROMX,BANK[$12]
 
-	dr $48000,$4c000
+	dr $48000,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -737,7 +737,7 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-	dr $4fe79,$50000
+	dr $4fe79,$4ff1a
 
 
 SECTION "bank14",ROMX,BANK[$14]
@@ -746,7 +746,7 @@ SECTION "bank14",ROMX,BANK[$14]
 PrintCardKeyText: ; 525d8 (14:65d8)
 	dr $525d8,$5267d
 CeladonPrizeMenu: ; 5267d (14:667d)
-	dr $5267d,$54000
+	dr $5267d,$529a2
 
 SECTION "bank15",ROMX,BANK[$15]
 
@@ -762,7 +762,7 @@ _SetSpritePosition1: ; 56789 (15:6789)
 _SetSpritePosition2: ; 567a9 (15:67a9)
 	dr $567a9,$567cd
 TrainerWalkUpToPlayer: ; 567cd (15:67cd)
-	dr $567cd,$58000
+	dr $567cd,$56997
 SECTION "bank16",ROMX,BANK[$16]
 
 	dr $58000,$58d99
@@ -771,14 +771,14 @@ CalcLevelFromExperience: ; 58d99 (16:4d99)
 CalcExperience: ; 58dc0 (16:4dc0)
 	dr $58dc0,$58e8b
 PrintStatusAilment: ; 58e8b (16:4e8b)
-	dr $58e8b,$5c000
+	dr $58e8b,$5a555
 
 
 SECTION "bank17",ROMX,BANK[$17]
 
 	dr $5c000,$5da70
 EvolveMon: ; 5da70 (17:5a70)
-	dr $5da70,$60000
+	dr $5da70,$5df60
 
 
 SECTION "bank18",ROMX,BANK[$18]
