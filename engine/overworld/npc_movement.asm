@@ -79,9 +79,9 @@ PalletMovementScript_OakMoveLeft: ; 1a556 (6:6556)
 	ld a, $3
 	ld [wNPCMovementScriptFunctionNum], a
 .done
-	ld a, $2
+	ld a, BANK(Music_MuseumGuy)
 	ld c, a
-	ld a, SFX_BATTLE_34
+	ld a, MUSIC_MUSEUM_GUY
 	call PlayMusic
 	ld hl, wFlags_D733
 	set 1, [hl]
@@ -163,8 +163,112 @@ PalletMovementScript_Done: ; 1a606 (6:6606)
 	jp EndNPCMovementScript
 
 PewterMuseumGuyMovementScriptPointerTable: ; 1a622 (6:6622)
-	dr $1a622,$1a685
+	dw PewterMovementScript_WalkToMuseum
+	dw PewterMovementScript_Done
+
+PewterMovementScript_WalkToMuseum: ; 1a626 (6:6626)
+	ld a, BANK(Music_MuseumGuy)
+	ld c, a
+	ld a, MUSIC_MUSEUM_GUY
+	call PlayMusic
+	ld a, [wSpriteIndex]
+	swap a
+	ld [wNPCMovementScriptSpriteOffset], a
+	call StartSimulatingJoypadStates
+	ld hl, wSimulatedJoypadStatesEnd
+	ld de, RLEList_PewterMuseumPlayer
+	call DecodeRLEList
+	dec a
+	ld [wSimulatedJoypadStatesIndex], a
+	xor a
+	ld [wWhichPewterGuy], a
+	call PewterGuys
+	ld hl, wNPCMovementDirections2
+	ld de, RLEList_PewterMuseumGuy
+	call DecodeRLEList
+	ld hl, wd72e
+	res 7, [hl]
+	ld a, $1
+	ld [wNPCMovementScriptFunctionNum], a
+	ret
+
+RLEList_PewterMuseumPlayer: ; 1a661 (6:6661)
+	db 0, $01
+	db D_UP, $03
+	db D_LEFT, $0D
+	db D_UP, $06
+	db $FF
+
+RLEList_PewterMuseumGuy: ; 1a66a (6:666a)
+	db NPC_MOVEMENT_UP, $06
+	db NPC_MOVEMENT_LEFT, $0D
+	db NPC_MOVEMENT_UP, $03
+	db NPC_MOVEMENT_LEFT, $01
+	db $FF
+
+PewterMovementScript_Done: ; 1a673 (6:6673)
+	ld a, [wSimulatedJoypadStatesIndex]
+	and a
+	ret nz
+	ld hl, wd730
+	res 7, [hl]
+	ld hl, wd72e
+	res 7, [hl]
+	jp EndNPCMovementScript
+
 PewterGymGuyMovementScriptPointerTable: ; 1a685 (6:6685)
-	dr $1a685,$1a785
+	dw PewterMovementScript_WalkToGym
+	dw PewterMovementScript_Done
+
+PewterMovementScript_WalkToGym: ; 1a689 (6:6689)
+	ld a, BANK(Music_MuseumGuy)
+	ld c, a
+	ld a, MUSIC_MUSEUM_GUY
+	call PlayMusic
+	ld a, [wSpriteIndex]
+	swap a
+	ld [wNPCMovementScriptSpriteOffset], a
+	xor a
+	ld [wSpriteStateData2 + $06], a
+	ld hl, wSimulatedJoypadStatesEnd
+	ld de, RLEList_PewterGymPlayer
+	call DecodeRLEList
+	dec a
+	ld [wSimulatedJoypadStatesIndex], a
+	ld a, 1
+	ld [wWhichPewterGuy], a
+	call PewterGuys
+	ld hl, wNPCMovementDirections2
+	ld de, RLEList_PewterGymGuy
+	call DecodeRLEList
+	ld hl, wd72e
+	res 7, [hl]
+	ld hl, wd730
+	set 7, [hl]
+	ld a, $1
+	ld [wNPCMovementScriptFunctionNum], a
+	ret
+
+RLEList_PewterGymPlayer: ; 1a6cb (6:66cb)
+	db 0, $01
+	db D_RIGHT, $02
+	db D_DOWN, $05
+	db D_LEFT, $0B
+	db D_UP, $05
+	db D_LEFT, $0F
+	db $FF
+
+RLEList_PewterGymGuy: ; 1a6cd8(6:66d8)
+	db NPC_MOVEMENT_DOWN, $02
+	db NPC_MOVEMENT_LEFT, $0F
+	db NPC_MOVEMENT_UP, $05
+	db NPC_MOVEMENT_LEFT, $0B
+	db NPC_MOVEMENT_DOWN, $05
+	db NPC_MOVEMENT_RIGHT, $03
+	db $FF
+
+INCLUDE "engine/overworld/pewter_guys.asm"
+; PewterGuys:
+	; dr $1a66e5,$1a785
 IsPlayerStandingOnDoorTile: ; 1a785 (6:6785)
 	dr $1a785,$1a7f4
