@@ -878,17 +878,45 @@ SECTION "bank3A",ROMX,BANK[$3A]
 MonsterNames: ; e8000 (3a:4000)
 	dr $e8000,$e876c
 IsPlayerJustOutsideMap: ; e876c (3a:476c)
-	dr $e876c,$e8a5e
+	dr $e876c,$e8783
+Func_e8783: ; e8783 (3a:4783)
+	dr $e8783,$e87a8
+Func_e87a8: ; e87a8 (3a:47a8)
+	dr $e87a8,$e8a5e
 Func_e8a5e: ; e8a5e (3a:4a5e)
 	dr $e8a5e,$e8b74
 Func_e8b74: ; e8b74 (3a:4b74)
 	dr $e8b74,$e8d35
-Func_e8d35:: ; e8d35 (3a:4d35)
-	dr $e8d35,$e8e79
+	
+INCLUDE "engine/unknown_e8d35.asm"
+
 Func_e8e79: ; e8e79 (3a:4e79)
-	dr $e8e79,$e928a
+	dr $e8e79,$e8eca
+Func_e8eca: ; e8eca (3a:4eca)
+	dr $e8eca,$e8efc
+Func_e8efc: ; e8efc (3a:4efc)
+	dr $e8efc,$e8f09
+Func_e8f09: ; e8f09 (3a:4f09)
+	dr $e8f09,$e8f16
+Func_e8f16: ; e8f16 (3a:4f16)
+	dr $e8f16,$e8f24
+Func_e8f24: ; e8f24 (3a:4f24)
+	dr $e8f24,$e8f3b
+Func_e8f3b: ; e8f3b (3a:4f3b)
+	dr $e8f3b,$e8f51
+Func_e8f51: ; e8f51 (3a:4f51)
+	dr $e8f51,$e8f82
+Func_e8f82: ; e8f82 (3a:4f82)
+	dr $e8f82,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
-	dr $e988a,$e9bfa
+Func_e988a: ; e988a (3a:588a)
+	dr $e988a,$e98ec
+Func_e98ec: ; e98ec (3a:58ec)
+	dr $e98ec,$e9907
+Func_e9907: ; e9907 (3a:5907)
+	dr $e9907,$e9922
+Func_e9922: ; e9922 (3a:5922)
+	dr $e9922,$e9bfa
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
 
