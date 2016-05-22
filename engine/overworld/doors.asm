@@ -31,15 +31,15 @@ DoorTileIDPointers: ; 1a7a8 (6:67a8)
 	dbw MART,        MartDoorTileIDs
 	dbw HOUSE,       HouseDoorTileIDs
 	dbw FOREST_GATE, TilesetMuseumDoorTileIDs
-	dbw MUSEUM, TilesetMuseumDoorTileIDs
-	dbw GATE, TilesetMuseumDoorTileIDs
-	dbw SHIP, ShipDoorTileIDs
-	dbw LOBBY, LobbyDoorTileIDs
-	dbw MANSION, MansionDoorTileIDs
-	dbw LAB, LabDoorTileIDs
-	dbw FACILITY, FacilityDoorTileIDs
-	dbw PLATEAU, PlateauDoorTileIDs
-	dbw INTERIOR, InteriorDoorTileIDs
+	dbw MUSEUM,      TilesetMuseumDoorTileIDs
+	dbw GATE,        TilesetMuseumDoorTileIDs
+	dbw SHIP,        ShipDoorTileIDs
+	dbw LOBBY,       LobbyDoorTileIDs
+	dbw MANSION,     MansionDoorTileIDs
+	dbw LAB,         LabDoorTileIDs
+	dbw FACILITY,    FacilityDoorTileIDs
+	dbw PLATEAU,     PlateauDoorTileIDs
+	dbw INTERIOR,    InteriorDoorTileIDs
 	db $ff
 
 OverworldDoorTileIDs: ; 1a654 (6:6654)
