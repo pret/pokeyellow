@@ -783,7 +783,7 @@ EvolveMon: ; 5da70 (17:5a70)
 
 SECTION "bank18",ROMX,BANK[$18]
 
-	dr $60000,$64000
+	dr $60000,$62702
 
 
 SECTION "bank19",ROMX,BANK[$19]
@@ -793,7 +793,7 @@ Overworld_GFX:
 
 SECTION "bank1A",ROMX,BANK[$1A]
 
-	dr $68000,$6c000
+	dr $68000,$6bff1
 
 
 SECTION "bank1B",ROMX,BANK[$1B]
@@ -836,7 +836,7 @@ HiddenItemNear: ; 7405c (1d:405c)
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$78000
+	dr $75dfe,$76177
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
@@ -871,7 +871,7 @@ SECTION "bank30",ROMX,BANK[$30]
 
 SECTION "bank39",ROMX,BANK[$39]
 
-	dr $e4000,$e8000
+	dr $e4000,$e7ea3
 
 
 SECTION "bank3A",ROMX,BANK[$3A]
@@ -894,7 +894,7 @@ SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
 
 	dr $ea3ea,$eaa02
 FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
-	dr $eaa02,$ec000
+	dr $eaa02,$eaa24
 
 SECTION "bank3C",ROMX,BANK[$3C]
 
