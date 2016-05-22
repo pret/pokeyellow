@@ -1,7 +1,7 @@
 Func_e8d35:: ; e8d35 (3a:4e79)
 	ld a, [wBoxDataStart]
 	and a
-	jp z, Functione8df4
+	jp z, Func_e8df4
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	xor a
@@ -23,7 +23,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [$cae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
-	call Functione8dfb
+	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
 	ld [wUnknownSerialFlag_d49a], a
@@ -38,7 +38,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [$cae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
-	call Functione8dfb
+	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
 	ld [wUnknownSerialFlag_d49a], a
@@ -53,7 +53,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [$cae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
-	call Functione8dfb
+	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
 	ld [wUnknownSerialFlag_d49a], a
@@ -68,7 +68,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [$cae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
-	call Functione8dfb
+	call Func_e8dfb
 .asm_e8ddc
 	xor a
 	ld [wUnknownSerialFlag_d49a], a
@@ -83,12 +83,12 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-Functione8df4: ; e8df4
+Func_e8df4: ; e8df4
 	ld hl, String_e8e1f
 	call PrintText
 	ret
 
-Functione8dfb: ; e8dfb
+Func_e8dfb: ; e8dfb
 	call Func_e8f16
 .asm_e8dfe
 	call JoypadLowSensitivity
@@ -115,7 +115,7 @@ String_e8e1f: ; e8e1f
 	TX_FAR _NoPokemonText
 	db "@"
 
-Functione8e24: ; e8e24
+Func_e8e24: ; e8e24
 	xor a
 	ld [hItemCounter], a
 	call Func_e8f24

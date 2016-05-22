@@ -234,7 +234,7 @@ Func_ea5b7: ; ea5b7 (3a:65b7)
 	jr nz, .asm_ea5c2
 	ret
 
-Functionea5d1: ; ea5d1 (3a:65d1)
+Func_ea5d1: ; ea5d1 (3a:65d1)
 	ld a, [wOverworldMap]
 	ld e, a
 	ld d, 0
@@ -247,117 +247,117 @@ Functionea5d1: ; ea5d1 (3a:65d1)
 	jp [hl]
 
 Jumptable_ea5e0:
-	dw Functionea623
-	dw Functionea6d2
-	dw Functionea6af
-	dw Functionea645
-	dw Functionea701
-	dw Functionea6bd
-	dw Functionea671
-	dw Functionea701
-	dw Functionea6af
-	dw Functionea68a
-	dw Functionea701
-	dw Functionea6af
-	dw Functionea721
-	dw Functionea610
-	dw Functionea61a
-	dw Functionea6af
-	dw Functionea61e
-	dw Functionea72f
-	dw Functionea732
+	dw Func_ea623
+	dw Func_ea6d2
+	dw Func_ea6af
+	dw Func_ea645
+	dw Func_ea701
+	dw Func_ea6bd
+	dw Func_ea671
+	dw Func_ea701
+	dw Func_ea6af
+	dw Func_ea68a
+	dw Func_ea701
+	dw Func_ea6af
+	dw Func_ea721
+	dw Func_ea610
+	dw Func_ea61a
+	dw Func_ea6af
+	dw Func_ea61e
+	dw Func_ea72f
+	dw Func_ea732
 
 
-Functionea606: ; ea606 (3a:6606)
+Func_ea606: ; ea606 (3a:6606)
 	ld hl, wOverworldMap
 	inc [hl]
 	ret
 
-Functionea60b: ; ea60b (3a:660b)
+Func_ea60b: ; ea60b (3a:660b)
 	ld hl, wOverworldMap
 	dec [hl]
 	ret
 
-Functionea610: ; ea610 (3a:6610)
+Func_ea610: ; ea610 (3a:6610)
 	xor a
 	ld [$c971], a
 	ld hl, wOverworldMap
 	set 7, [hl]
 	ret
 
-Functionea61a: ; ea61a (3a:661a)
-	call Functionea606
+Func_ea61a: ; ea61a (3a:661a)
+	call Func_ea606
 	ret
 
-Functionea61e: ; ea61e (3a:661e)
+Func_ea61e: ; ea61e (3a:661e)
 	xor a
 	ld [wOverworldMap], a
 	ret
 
-Functionea623: ; ea623 (3a:6623)
-	call Functionea784
+Func_ea623: ; ea623 (3a:6623)
+	call Func_ea784
 	ld hl, Data_ea9de
-	call Functionea76b
+	call Func_ea76b
 	xor a
 	ld [$c976], a
 	ld [$c977], a
 	ld a, [$caf4]
 	ld [$c6e9], a
-	call Functionea606
-	call Functionea74c
+	call Func_ea606
+	call Func_ea74c
 	ld a, $01
 	ld [$cae0], a
 	ret
 
-Functionea645: ; ea645 (3a:6645)
-	call Functionea784
+Func_ea645: ; ea645 (3a:6645)
+	call Func_ea784
 	ld hl, $c6e9
 	ld a, [hl]
 	and a
-	jr z, Functionea671
+	jr z, Func_ea671
 	ld hl, Data_ea9ea
-	call Functionea76b
-	call Functionea7e9
+	call Func_ea76b
+	call Func_ea7e9
 	ld a, $80
 	ld [$c976], a
 	ld a, $02
 	ld [$c977], a
-	call Functionea7a2
-	call Functionea606
-	call Functionea74c
+	call Func_ea7a2
+	call Func_ea606
+	call Func_ea74c
 	ld a, $02
 	ld [$cae0], a
 	ret
 
-Functionea671: ; ea671 (3a:6671)
+Func_ea671: ; ea671 (3a:6671)
 	ld a, $06
 	ld [wOverworldMap], a
 	ld hl, Data_ea9f0
-	call Functionea76b
+	call Func_ea76b
 	xor a
 	ld [$c976], a
 	ld [$c977], a
-	call Functionea606
-	call Functionea74c
+	call Func_ea606
+	call Func_ea74c
 	ret
 
-Functionea68a: ; ea68a (3a:668a)
-	call Functionea784
+Func_ea68a: ; ea68a (3a:668a)
+	call Func_ea784
 	ld hl, Data_ea9e4
-	call Functionea76b
-	call Functionea7d2
+	call Func_ea76b
+	call Func_ea7d2
 	ld a, $04
 	ld [$c976], a
 	ld a, $00
 	ld [$c977], a
-	call Functionea7a2
-	call Functionea606
-	call Functionea74c
+	call Func_ea7a2
+	call Func_ea606
+	call Func_ea74c
 	ld a, $03
 	ld [$cae0], a
 	ret
 
-Functionea6af: ; ea6af (3a:66af)
+Func_ea6af: ; ea6af (3a:66af)
 	ld hl, $c973
 	inc [hl]
 	ld a, [hl]
@@ -365,10 +365,10 @@ Functionea6af: ; ea6af (3a:66af)
 	ret c
 	xor a
 	ld [hl], a
-	call Functionea606
+	call Func_ea606
 	ret
 
-Functionea6bd: ; ea6bd (3a:66bd)
+Func_ea6bd: ; ea6bd (3a:66bd)
 	ld hl, $c973
 	inc [hl]
 	ld a, [hl]
@@ -378,12 +378,12 @@ Functionea6bd: ; ea6bd (3a:66bd)
 	ld [hl], a
 	ld hl, $c6e9
 	dec [hl]
-	call Functionea60b
-	call Functionea60b
+	call Func_ea60b
+	call Func_ea60b
 	ret
 
-Functionea6d2: ; ea6d2 (3a:66d2)
-	call Functionea742
+Func_ea6d2: ; ea6d2 (3a:66d2)
+	call Func_ea742
 	ret c
 	ld a, [$c970]
 	cp a, $ff
@@ -400,7 +400,7 @@ Functionea6d2: ; ea6d2 (3a:66d2)
 	jr nz, .asm_ea6fb
 	ld hl, wUnknownSerialFlag_d49a
 	set 1, [hl]
-	call Functionea606
+	call Func_ea606
 	ret
 
 .asm_ea6fb
@@ -408,8 +408,8 @@ Functionea6d2: ; ea6d2 (3a:66d2)
 	ld [wOverworldMap], a
 	ret
 
-Functionea701: ; ea701 (3a:6701)
-	call Functionea742
+Func_ea701: ; ea701 (3a:6701)
+	call Func_ea742
 	ret c
 	ld a, [$c971]
 	and $f0
@@ -417,11 +417,11 @@ Functionea701: ; ea701 (3a:6701)
 	ld a, [$c971]
 	and $01
 	jr nz, .asm_ea717
-	call Functionea606
+	call Func_ea606
 	ret
 
 .asm_ea717
-	call Functionea60b
+	call Func_ea60b
 	ret
 
 .asm_ea71b
@@ -429,18 +429,18 @@ Functionea701: ; ea701 (3a:6701)
 	ld [wOverworldMap], a
 	ret
 
-Functionea721: ; ea721 (3a:6721)
-	call Functionea742
+Func_ea721: ; ea721 (3a:6721)
+	call Func_ea742
 	ret c
 	ld a, [$c971]
 	and $f3
 	ret nz
-	call Functionea606
+	call Func_ea606
 	ret
 
-Functionea72f: ; ea72f (3a:672f)
-	call Functionea606
-Functionea732: ; ea732 (3a:6732)
+Func_ea72f: ; ea72f (3a:672f)
+	call Func_ea606
+Func_ea732: ; ea732 (3a:6732)
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	ret nz
@@ -451,7 +451,7 @@ Functionea732: ; ea732 (3a:6732)
 	ld [wOverworldMap], a
 	ret
 
-Functionea742: ; ea742 (3a:6742)
+Func_ea742: ; ea742 (3a:6742)
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	jr nz, .asm_ea74a
@@ -462,7 +462,7 @@ Functionea742: ; ea742 (3a:6742)
 	scf
 	ret
 
-Functionea74c: ; ea74c (3a:674c)
+Func_ea74c: ; ea74c (3a:674c)
 .asm_ea74c
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
@@ -480,7 +480,7 @@ Functionea74c: ; ea74c (3a:674c)
 	ld [rSC], a
 	ret
 
-Functionea76b: ; ea76b (3a:676b)
+Func_ea76b: ; ea76b (3a:676b)
 	ld a, [hli]
 	ld [$c6ea], a
 	ld a, [hli]
@@ -495,7 +495,7 @@ Functionea76b: ; ea76b (3a:676b)
 	ld [$c6ef], a
 	ret
 
-Functionea784: ; ea784 (3a:6784)
+Func_ea784: ; ea784 (3a:6784)
 	xor a
 	ld hl, $c6ea
 	ld [hli], a
@@ -513,24 +513,24 @@ Functionea784: ; ea784 (3a:6784)
 	call FillMemory
 	ret
 
-Functionea7a2: ; ea7a2 (3a:67a2)
+Func_ea7a2: ; ea7a2 (3a:67a2)
 	ld hl, $0000
 	ld bc, $0004
 	ld de, $c6ea
-	call Functionea7c5
+	call Func_ea7c5
 	ld a, [$c976]
 	ld c, a
 	ld a, [$c977]
 	ld b, a
 	ld de, $c6f0
-	call Functionea7c5
+	call Func_ea7c5
 	ld a, l
 	ld [$c6ee], a
 	ld a, h
 	ld [$c6ef], a
 	ret
 
-Functionea7c5: ; ea7c5 (3a:67c5)
+Func_ea7c5: ; ea7c5 (3a:67c5)
 .asm_ea7c5
 	ld a, [de]
 	inc de
@@ -545,7 +545,7 @@ Functionea7c5: ; ea7c5 (3a:67c5)
 	jr nz, .asm_ea7c5
 	ret
 
-Functionea7d2: ; ea7d2 (3a:67d2)
+Func_ea7d2: ; ea7d2 (3a:67d2)
 	ld a, $01
 	ld [$c6f0], a
 	ld a, [$cae2]
@@ -556,7 +556,7 @@ Functionea7d2: ; ea7d2 (3a:67d2)
 	ld [$c6f3], a
 	ret
 
-Functionea7e9: ; ea7e9 (3a:67e9)
+Func_ea7e9: ; ea7e9 (3a:67e9)
 	ld a, [$c6e9]
 	ld b, a
 	ld a, [$caf4]
@@ -607,10 +607,10 @@ Functionea7e9: ; ea7e9 (3a:67e9)
 	pop bc
 	dec c
 	jr nz, .asm_ea805
-	call Functionea834
+	call Func_ea834
 	ret
 
-Functionea834: ; ea834 (3a:6834)
+Func_ea834: ; ea834 (3a:6834)
 	ld hl, $cbdc
 	ld bc, $0020
 	xor a
@@ -620,12 +620,12 @@ Functionea834: ; ea834 (3a:6834)
 .asm_ea843
 	push bc
 	push hl
-	call Functionea860
+	call Func_ea860
 	jr nc, .asm_ea856
-	call Functionea886
-	call Functionea8a1
-	call Functionea902
-	call Functionea999
+	call Func_ea886
+	call Func_ea8a1
+	call Func_ea902
+	call Func_ea999
 .asm_ea856
 	pop hl
 	inc hl
@@ -637,7 +637,7 @@ Functionea834: ; ea834 (3a:6834)
 	jr nz, .asm_ea843
 	ret
 
-Functionea860: ; ea860 (3a:6860)
+Func_ea860: ; ea860 (3a:6860)
 	ld a, [$c6e9]
 	ld b, a
 	ld a, [$caf4]
@@ -671,7 +671,7 @@ Functionea860: ; ea860 (3a:6860)
 	and a
 	ret
 
-Functionea886: ; ea886 (3a:6886)
+Func_ea886: ; ea886 (3a:6886)
 	push hl
 	inc hl
 	inc hl
@@ -690,17 +690,17 @@ Functionea886: ; ea886 (3a:6886)
 	pop hl
 	ret
 
-Functionea8a1: ; ea8a1 (3a:68a1)
+Func_ea8a1: ; ea8a1 (3a:68a1)
 	push hl
 	inc hl
 	inc hl
 	inc hl
 	ld a, [hl]
-	call Functionea8ab
+	call Func_ea8ab
 	pop hl
 	ret
 
-Functionea8ab: ; ea8ab (3a:68ab)
+Func_ea8ab: ; ea8ab (3a:68ab)
 	and $60
 	swap a
 	ld e, a
@@ -713,28 +713,28 @@ Functionea8ab: ; ea8ab (3a:68ab)
 	jp [hl]
 
 Jumptable_ea8ba: ; ea8ba (3a:68ba)
-	dw Functionea8c2
-	dw Functionea8c3
-	dw Functionea8c7
-	dw Functionea8cb
+	dw Func_ea8c2
+	dw Func_ea8c3
+	dw Func_ea8c7
+	dw Func_ea8cb
 
-Functionea8c2: ; ea8c2 (3a:68c2)
+Func_ea8c2: ; ea8c2 (3a:68c2)
 	ret
 
-Functionea8c3: ; ea8c3 (3a:68c3)
-	call Functionea8d2
+Func_ea8c3: ; ea8c3 (3a:68c3)
+	call Func_ea8d2
 	ret
 
-Functionea8c7: ; ea8c7 (3a:68c7)
-	call Functionea8e8
+Func_ea8c7: ; ea8c7 (3a:68c7)
+	call Func_ea8e8
 	ret
 
-Functionea8cb: ; ea8cb (3a:68cb)
-	call Functionea8d2
-	call Functionea8e8
+Func_ea8cb: ; ea8cb (3a:68cb)
+	call Func_ea8d2
+	call Func_ea8e8
 	ret
 
-Functionea8d2: ; ea8d2 (3a:68d2)
+Func_ea8d2: ; ea8d2 (3a:68d2)
 	ld hl, $cbdc
 	ld c, 16
 .asm_ea8d7
@@ -751,7 +751,7 @@ Functionea8d2: ; ea8d2 (3a:68d2)
 	jr nz, .asm_ea8d7
 	ret
 
-Functionea8e8: ; ea8e8 (3a:68e8)
+Func_ea8e8: ; ea8e8 (3a:68e8)
 	ld hl, $cbdc
 	ld de, $cbea
 	ld c, $04
@@ -774,7 +774,7 @@ Functionea8e8: ; ea8e8 (3a:68e8)
 	jr nz, .asm_ea8f0
 	ret
 
-Functionea902: ; ea902 (3a:6902)
+Func_ea902: ; ea902 (3a:6902)
 	push hl
 	ld hl, $cbdc
 	ld de, $cbec
@@ -794,7 +794,7 @@ Functionea902: ; ea902 (3a:6902)
 	dec hl
 	push hl
 	push de
-	call Functionea936
+	call Func_ea936
 	pop de
 	pop hl
 	pop af
@@ -814,12 +814,12 @@ Functionea902: ; ea902 (3a:6902)
 	pop hl
 	ret
 
-Functionea936 ; ea936 (3a:6936)
-	call Functionea93d
-	call Functionea96d
+Func_ea936 ; ea936 (3a:6936)
+	call Func_ea93d
+	call Func_ea96d
 	ret
 
-Functionea93d: ; ea93d (3a:693d)
+Func_ea93d: ; ea93d (3a:693d)
 	ld e, a
 	ld d, 0
 	ld hl, Jumptable_ea949
@@ -831,37 +831,37 @@ Functionea93d: ; ea93d (3a:693d)
 	jp [hl]
 
 Jumptable_ea949: ; ea949 (3a:6949)
-	dw Functionea951
-	dw Functionea95f
-	dw Functionea956
-	dw Functionea966
+	dw Func_ea951
+	dw Func_ea95f
+	dw Func_ea956
+	dw Func_ea966
 
-Functionea951: ; ea951 (3a:6951)
+Func_ea951: ; ea951 (3a:6951)
 	ld a, [rOBP0]
 	and $03
 	ret
 
-Functionea956: ; ea956 (3a:6956)
+Func_ea956: ; ea956 (3a:6956)
 	ld a, [rOBP0]
 	and $0c
 	srl a
 	srl a
 	ret
 
-Functionea95f: ; ea95f (3a:695f)
+Func_ea95f: ; ea95f (3a:695f)
 	ld a, [rOBP0]
 	and $30
 	swap a
 	ret
 
-Functionea966: ; ea966 (3a:6966)
+Func_ea966: ; ea966 (3a:6966)
 	ld a, [rOBP0]
 	and $c0
 	rlca
 	rlca
 	ret
 
-Functionea96d: ; ea96d (3a:696d)
+Func_ea96d: ; ea96d (3a:696d)
 	ld e, a
 	ld d, 0
 	ld hl, Jumptable_ea979
@@ -873,36 +873,36 @@ Functionea96d: ; ea96d (3a:696d)
 	jp [hl]
 
 Jumptable_ea979: ; ea979 (3a:6979)
-	dw Functionea981
-	dw Functionea986
-	dw Functionea98c
-	dw Functionea992
+	dw Func_ea981
+	dw Func_ea986
+	dw Func_ea98c
+	dw Func_ea992
 
-Functionea981: ; ea981 (3a:6981)
+Func_ea981: ; ea981 (3a:6981)
 	sla b
 	sla c
 	ret
 
-Functionea986: ; ea986 (3a:6986)
+Func_ea986: ; ea986 (3a:6986)
 	scf
 	rl b
 	sla c
 	ret
 
-Functionea98c: ; ea98c (3a:698c)
+Func_ea98c: ; ea98c (3a:698c)
 	sla b
 	scf
 	rl c
 	ret
 
-Functionea992: ; ea992 (3a:6992)
+Func_ea992: ; ea992 (3a:6992)
 	scf
 	rl b
 	scf
 	rl c
 	ret
 
-Functionea999: ; ea999 (3a:6999)
+Func_ea999: ; ea999 (3a:6999)
 	push hl
 	ld a, [hli]
 	ld c, [hl]
@@ -927,7 +927,7 @@ Functionea999: ; ea999 (3a:6999)
 	ld hl, $cbec
 	ld c, $08
 .asm_ea9bc
-	call Functionea9d0
+	call Func_ea9d0
 	ld a, [de]
 	and b
 	or [hl]
@@ -945,7 +945,7 @@ Functionea999: ; ea999 (3a:6999)
 	pop hl
 	ret
 
-Functionea9d0: ; ea9d0 (3a:69d0)
+Func_ea9d0: ; ea9d0 (3a:69d0)
 	push hl
 	push de
 	ld de, $fff0
