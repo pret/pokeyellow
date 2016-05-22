@@ -232,18 +232,8 @@ INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
 	dr $18000,$1a4ea
-PlayerStepOutFromDoor: ; 1a4ea (6:64ea)
-	dr $1a4ea,$1a527
-_EndNPCMovementScript: ; 1a527 (6:6527)
-	dr $1a527,$1a54c
-ProfOakMovementScriptPointerTable: ; 1a54c (6:654c)
-	dr $1a54c,$1a622
-PewterMuseumGuyMovementScriptPointerTable: ; 1a622 (6:6622)
-	dr $1a622,$1a685
-PewterGymGuyMovementScriptPointerTable: ; 1a685 (6:6685)
-	dr $1a685,$1a785
-IsPlayerStandingOnDoorTile: ; 1a785 (6:6785)
-	dr $1a785,$1a7f4
+
+INCLUDE "engine/overworld/npc_movement.asm"
 HandleLedges: ; 1a7f4 (6:67f4)
 	dr $1a7f4,$1c000
 

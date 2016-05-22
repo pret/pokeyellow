@@ -2447,7 +2447,7 @@ RunNPCMovementScript:: ; 30ae (0:30ae)
 	ret
 	
 .NPCMovementScriptPointerTables
-	dw ProfOakMovementScriptPointerTable
+	dw PalletMovementScriptPointerTable
 	dw PewterMuseumGuyMovementScriptPointerTable
 	dw PewterGymGuyMovementScriptPointerTable
 .playerStepOutFromDoor
