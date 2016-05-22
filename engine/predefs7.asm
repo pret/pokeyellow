@@ -1,6 +1,12 @@
-DisplayElevatorFloorMenu: ; 1c9c6 (7:49c6)
+DisplayElevatorFloorMenu: ; 1c264 (7:4264)
+	ld hl, wd730
+	ld a, [hl]
+	push af
+	set 6, [hl]
 	ld hl, WhichFloorText
 	call PrintText
+	pop af
+	ld [wd730], a
 	ld hl, wItemList
 	ld a, l
 	ld [wListPointer], a
@@ -43,6 +49,6 @@ DisplayElevatorFloorMenu: ; 1c9c6 (7:49c6)
 	ld [hli], a ; destination map ID
 	ret
 
-WhichFloorText: ; 1ca14 (7:4a14)
+WhichFloorText: ; 1c2bd (7:42bd)
 	TX_FAR _WhichFloorText
 	db "@"

@@ -231,7 +231,45 @@ INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
 INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
-	dr $18000,$1a4ea
+
+	dr $18000,$18dee ; headers, objects, blocks
+; INCLUDE "data/mapHeaders/celadoncity.asm"
+; INCLUDE "data/mapObjects/celadoncity.asm"
+; CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
+
+; INCLUDE "data/mapHeaders/pallettown.asm"
+; INCLUDE "data/mapObjects/pallettown.asm"
+; PalletTownBlocks: INCBIN "maps/pallettown.blk"
+
+; INCLUDE "data/mapHeaders/viridiancity.asm"
+; INCLUDE "data/mapObjects/viridiancity.asm"
+; ViridianCityBlocks: INCBIN "maps/viridiancity.blk"
+
+; INCLUDE "data/mapHeaders/pewtercity.asm"
+; INCLUDE "data/mapObjects/pewtercity.asm"
+; PewterCityBlocks: INCBIN "maps/pewtercity.blk"
+
+; INCLUDE "data/mapHeaders/ceruleancity.asm"
+; INCLUDE "data/mapObjects/ceruleancity.asm"
+; CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk"
+
+; INCLUDE "data/mapHeaders/vermilioncity.asm"
+; INCLUDE "data/mapObjects/vermilioncity.asm"
+; VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
+
+; INCLUDE "data/mapHeaders/fuchsiacity.asm"
+; INCLUDE "data/mapObjects/fuchsiacity.asm"
+; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
+
+	dr $18dee,$1a4ea ; map scripts
+
+; INCLUDE "scripts/pallettown.asm"
+; INCLUDE "scripts/viridiancity.asm"
+; INCLUDE "scripts/pewtercity.asm"
+; INCLUDE "scripts/ceruleancity.asm"
+; INCLUDE "scripts/vermilioncity.asm"
+; INCLUDE "scripts/celadoncity.asm"
+; INCLUDE "scripts/fuchsiacity.asm"
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
@@ -239,9 +277,12 @@ INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
 
-	dr $1c000,$1c21e
-DoClearSaveDialogue: ; 1c21e (7:421e)
-	dr $1c21e,$1e2ae
+	dr $1c000,$1c21e ; headers, objects, blocks
+
+INCLUDE "engine/clear_save.asm"
+INCLUDE "engine/predefs7.asm"
+
+	dr $1c2c2,$1e2ae ; map scripts
 OpenOaksPC: ; 1e2ae (7:62ae)
 	dr $1e2ae,$1e321
 SafariZoneCheck: ; 1e321 (7:6e21)
