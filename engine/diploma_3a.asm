@@ -108,9 +108,39 @@ Func_e9ad3:
 	call Func_e925d
 	ret
 
-Tilemap_e9b3e: INCBIN "gfx/unknown_e9b3e.tilemap"
-Tilemap_e9bb6: INCBIN "gfx/unknown_e9bb6.tilemap"
-TileMap_e9bc1: INCBIN "gfx/unknown_e9bc1.tilemap"
+Tilemap_e9b3e:
+	db $7f, $7f, $7f, $1a, $1b, $7f, $7f, $7f, $7f, $7f
+	db $7f, $7f, $7f, $7f, $7f, $1c, $1d, $1e, $1f, $20
+	db $7f, $21, $22, $23, $7f, $24, $25, $26, $27, $28
+	db $29, $2a, $2b, $2c, $2d, $2e, $2f, $30, $31, $32
+	db $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c
+	db $7f, $3d, $3e, $3f, $40, $41, $42, $43, $29, $44
+	db $45, $46, $47, $48, $49, $4a, $4b, $29, $29, $4c
+	db $4d, $4e, $4f, $50, $51, $52, $53, $54, $55, $56
+	db $57, $58, $59, $7f, $7f, $7f, $5a, $5b, $5c, $5d
+	db $5e, $5f, $60, $61, $62, $7f, $7f, $7f, $7f, $63
+	db $64, $65, $66, $67, $68, $7f, $7f, $7f, $7f, $7f
+	db $7f, $69, $6a, $6b, $6c, $6d, $6e, $7f, $7f, $7f
+
+Tilemap_e9bb6:
+	db $05
+	db $06
+	db $07
+	db $08
+	db $09
+	db $0a
+	db $0b
+	db $0c
+	db $0d
+	db $0e
+	db $0f
+
+TileMap_e9bc1:
+	db $70, $71, $7f, $72, $7f
+	db $73, $74, $75, $76, $77
+	db $7f, $78, $11, $12, $13
+	db $7f, $7f, $14, $15, $7f
+
 String_e9bd5:  db "PLAY TIME@"
 
 Func_e9bdf:
