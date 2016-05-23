@@ -283,16 +283,10 @@ INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
 
 	dr $1c2c2,$1e2ae ; map scripts
-OpenOaksPC: ; 1e2ae (7:62ae)
-	dr $1e2ae,$1e321
-SafariZoneCheck: ; 1e321 (7:6e21)
-	dr $1e321,$1e330
-SafariZoneCheckSteps: ; 1e330 (7:6330)
-	dr $1e330,$1e385
-PrintSafariGameOverText: ; 1e385 (7:6385)
-	dr $1e385,$1e4bf
-CinnabarGymQuiz_1e4bf: ; 1e4bf (7:64bf)
-	dr $1e4bf,$20000
+
+INCLUDE "engine/menu/oaks_pc.asm"
+
+INCLUDE "engine/hidden_object_functions7.asm"
 
 SECTION "Pics 1", ROMX, BANK[PICS_1]
 
@@ -770,12 +764,16 @@ INCLUDE "engine/overworld/trainers.asm"
 SECTION "bank16",ROMX,BANK[$16]
 
 	dr $58000,$58d99
-CalcLevelFromExperience: ; 58d99 (16:4d99)
-	dr $58d99,$58dc0
-CalcExperience: ; 58dc0 (16:4dc0)
-	dr $58dc0,$58e8b
-PrintStatusAilment: ; 58e8b (16:4e8b)
-	dr $58e8b,$5a555
+
+INCLUDE "engine/experience.asm"
+
+INCLUDE "engine/status_ailments.asm"
+
+INCLUDE "engine/overworld/oaks_aide.asm"
+
+	dr $58f47,$5a53a
+	
+INCLUDE "engine/overworld/saffron_guards.asm"
 
 
 SECTION "bank17",ROMX,BANK[$17]

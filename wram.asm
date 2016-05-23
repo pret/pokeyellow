@@ -2530,7 +2530,11 @@ wPikachuMood:: ds 1 ; d470
 wd472:: ds 1
 wd473:: ds 1
 	
-	ds 6
+	ds 1
+	
+wd475:: ds 1
+
+	ds 4
 
 wd47a:: ds 1
 
@@ -2752,7 +2756,7 @@ W_ROUTE19CURSCRIPT:: ; d61d
 	ds 1
 W_ROUTE21CURSCRIPT:: ; d61e
 	ds 1
-W_SAFARIZONEENTRANCECURSCRIPT:: ; d61f
+wSafariZoneEntranceCurScript:: ; d61f
 	ds 1
 W_ROCKTUNNEL2CURSCRIPT:: ; d620
 	ds 1
