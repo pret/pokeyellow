@@ -1,16 +1,16 @@
-PrintNotebookText: ; 52996 (14:6996)
+PrintNotebookText: ; 528f6 (14:68f6)
 	call EnableAutoTextBoxDrawing
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, [wHiddenObjectFunctionArgument]
 	jp PrintPredefTextID
 
-TMNotebook: ; 529a4 (14:69a4)
+TMNotebook: ; 52904 (14:6904)
 	TX_FAR TMNotebookText
 	db $0d
 	db "@"
 
-ViridianSchoolNotebook: ; 529aa (14:69aa)
+ViridianSchoolNotebook: ; 5290a (14:690a)
 	TX_ASM
 	ld hl, ViridianSchoolNotebookText1
 	call PrintText
@@ -39,62 +39,62 @@ TurnPageSchoolNotebook: ; 529db (14:69db)
 	and a
 	ret
 
-TurnPageText: ; 529e9 (14:69e9)
+TurnPageText: ; 52949 (14:6949)
 	TX_FAR _TurnPageText
 	db "@"
 
-ViridianSchoolNotebookText5: ; 529ee (14:69ee)
+ViridianSchoolNotebookText5: ; 5294e (14:694e)
 	TX_FAR _ViridianSchoolNotebookText5
 	db $0d
 	db "@"
 
-ViridianSchoolNotebookText1: ; 529f4 (14:69f4)
+ViridianSchoolNotebookText1: ; 52954 (14:6954)
 	TX_FAR _ViridianSchoolNotebookText1
 	db "@"
 
-ViridianSchoolNotebookText2: ; 529f9 (14:69f9)
+ViridianSchoolNotebookText2: ; 52959 (14:6959)
 	TX_FAR _ViridianSchoolNotebookText2
 	db "@"
 
-ViridianSchoolNotebookText3: ; 529fe (14:69fe)
+ViridianSchoolNotebookText3: ; 5295e (14:695e)
 	TX_FAR _ViridianSchoolNotebookText3
 	db "@"
 
-ViridianSchoolNotebookText4: ; 52a03 (14:6a03)
+ViridianSchoolNotebookText4: ; 52963 (14:6963)
 	TX_FAR _ViridianSchoolNotebookText4
 	db "@"
 
-PrintFightingDojoText2: ; 52a08 (14:6a08)
+PrintFightingDojoText2: ; 52968 (14:6968)
 	call EnableAutoTextBoxDrawing
-	tx_pre_jump FightingDojoText_52a10
+	tx_pre_jump EnemiesOnEverySideText
 
-FightingDojoText_52a10: ; 52a10 (14:6a10)
-	TX_FAR _FightingDojoText_52a10
+EnemiesOnEverySideText: ; 52970 (14:6970)
+	TX_FAR _EnemiesOnEverySideText
 	db "@"
 
-PrintFightingDojoText3: ; 52a15 (14:6a15)
+PrintFightingDojoText3: ; 52975 (14:6975)
 	call EnableAutoTextBoxDrawing
-	tx_pre_jump FightingDojoText_52a1d
+	tx_pre_jump WhatGoesAroundComesAroundText
 
-FightingDojoText_52a1d: ; 52a1d (14:6a1d)
-	TX_FAR _FightingDojoText_52a1d
+WhatGoesAroundComesAroundText: ; 5297d (14:697d)
+	TX_FAR _WhatGoesAroundComesAroundText
 	db "@"
 
-PrintFightingDojoText: ; 52a22 (14:6a22)
+PrintFightingDojoText: ; 52982 (14:6982)
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump FightingDojoText
 
-FightingDojoText: ; 52a2a (14:6a2a)
+FightingDojoText: ; 5298a (14:698a)
 	TX_FAR _FightingDojoText
 	db "@"
 
-PrintIndigoPlateauHQText: ; 52a2f (14:6a2f)
+PrintIndigoPlateauHQText: ; 5298f (14:698f)
 	ld a, [wSpriteStateData1 + 9]
 	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump IndigoPlateauHQText
 
-IndigoPlateauHQText: ; 52a3d (14:6a3d)
+IndigoPlateauHQText: ; 5299d (14:699d)
 	TX_FAR _IndigoPlateauHQText
 	db "@"

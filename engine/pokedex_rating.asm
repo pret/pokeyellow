@@ -26,7 +26,7 @@ DisplayDexRating: ; 44169 (11:4169)
 	CheckAndResetEventA EVENT_HALL_OF_FAME_DEX_RATING
 	jr nz, .hallOfFame
 	push hl
-	ld hl, PokedexRatingText_441cc
+	ld hl, DexCompletionText
 	call PrintText
 	pop hl
 	call PrintText
@@ -51,104 +51,104 @@ DisplayDexRating: ; 44169 (11:4169)
 	ld [de], a
 	ret
 
-PokedexRatingText_441cc: ; 441cc (11:41cc)
-	TX_FAR _OaksLabText_441cc
+DexCompletionText: ; 441cc (11:41cc)
+	TX_FAR _DexCompletionText
 	db "@"
 
 DexRatingsTable: ; 441d1 (11:41d1)
 	db 10
-	dw PokedexRatingText_44201
+	dw DexRatingText_Own0To9
 	db 20
-	dw PokedexRatingText_44206
+	dw DexRatingText_Own10To19
 	db 30
-	dw PokedexRatingText_4420b
+	dw DexRatingText_Own20To29
 	db 40
-	dw PokedexRatingText_44210
+	dw DexRatingText_Own30To39
 	db 50
-	dw PokedexRatingText_44215
+	dw DexRatingText_Own40To49
 	db 60
-	dw PokedexRatingText_4421a
+	dw DexRatingText_Own50To59
 	db 70
-	dw PokedexRatingText_4421f
+	dw DexRatingText_Own60To69
 	db 80
-	dw PokedexRatingText_44224
+	dw DexRatingText_Own70To79
 	db 90
-	dw PokedexRatingText_44229
+	dw DexRatingText_Own80To89
 	db 100
-	dw PokedexRatingText_4422e
+	dw DexRatingText_Own90To99
 	db 110
-	dw PokedexRatingText_44233
+	dw DexRatingText_Own100To109
 	db 120
-	dw PokedexRatingText_44238
+	dw DexRatingText_Own110To119
 	db 130
-	dw PokedexRatingText_4423d
+	dw DexRatingText_Own120To129
 	db 140
-	dw PokedexRatingText_44242
+	dw DexRatingText_Own130To139
 	db 150
-	dw PokedexRatingText_44247
+	dw DexRatingText_Own140To149
 	db 152
-	dw PokedexRatingText_4424c
+	dw DexRatingText_Own150To151
 
-PokedexRatingText_44201: ; 44201 (11:4201)
-	TX_FAR _OaksLabText_44201
+DexRatingText_Own0To9: ; 44201 (11:4201)
+	TX_FAR _DexRatingText_Own0To9
 	db "@"
 
-PokedexRatingText_44206: ; 44206 (11:4206)
-	TX_FAR _OaksLabText_44206
+DexRatingText_Own10To19: ; 44206 (11:4206)
+	TX_FAR _DexRatingText_Own10To19
 	db "@"
 
-PokedexRatingText_4420b: ; 4420b (11:420b)
-	TX_FAR _OaksLabText_4420b
+DexRatingText_Own20To29: ; 4420b (11:420b)
+	TX_FAR _DexRatingText_Own20To29
 	db "@"
 
-PokedexRatingText_44210: ; 44210 (11:4210)
-	TX_FAR _OaksLabText_44210
+DexRatingText_Own30To39: ; 44210 (11:4210)
+	TX_FAR _DexRatingText_Own30To39
 	db "@"
 
-PokedexRatingText_44215: ; 44215 (11:4215)
-	TX_FAR _OaksLabText_44215
+DexRatingText_Own40To49: ; 44215 (11:4215)
+	TX_FAR _DexRatingText_Own40To49
 	db "@"
 
-PokedexRatingText_4421a: ; 4421a (11:421a)
-	TX_FAR _OaksLabText_4421a
+DexRatingText_Own50To59: ; 4421a (11:421a)
+	TX_FAR _DexRatingText_Own50To59
 	db "@"
 
-PokedexRatingText_4421f: ; 4421f (11:421f)
-	TX_FAR _OaksLabText_4421f
+DexRatingText_Own60To69: ; 4421f (11:421f)
+	TX_FAR _DexRatingText_Own60To69
 	db "@"
 
-PokedexRatingText_44224: ; 44224 (11:4224)
-	TX_FAR _OaksLabText_44224
+DexRatingText_Own70To79: ; 44224 (11:4224)
+	TX_FAR _DexRatingText_Own70To79
 	db "@"
 
-PokedexRatingText_44229: ; 44229 (11:4229)
-	TX_FAR _OaksLabText_44229
+DexRatingText_Own80To89: ; 44229 (11:4229)
+	TX_FAR _DexRatingText_Own80To89
 	db "@"
 
-PokedexRatingText_4422e: ; 4422e (11:422e)
-	TX_FAR _OaksLabText_4422e
+DexRatingText_Own90To99: ; 4422e (11:422e)
+	TX_FAR _DexRatingText_Own90To99
 	db "@"
 
-PokedexRatingText_44233: ; 44233 (11:4233)
-	TX_FAR _OaksLabText_44233
+DexRatingText_Own100To109: ; 44233 (11:4233)
+	TX_FAR _DexRatingText_Own100To109
 	db "@"
 
-PokedexRatingText_44238: ; 44238 (11:4238)
-	TX_FAR _OaksLabText_44238
+DexRatingText_Own110To119: ; 44238 (11:4238)
+	TX_FAR _DexRatingText_Own110To119
 	db "@"
 
-PokedexRatingText_4423d: ; 4423d (11:423d)
-	TX_FAR _OaksLabText_4423d
+DexRatingText_Own120To129: ; 4423d (11:423d)
+	TX_FAR _DexRatingText_Own120To129
 	db "@"
 
-PokedexRatingText_44242: ; 44242 (11:4242)
-	TX_FAR _OaksLabText_44242
+DexRatingText_Own130To139: ; 44242 (11:4242)
+	TX_FAR _DexRatingText_Own130To139
 	db "@"
 
-PokedexRatingText_44247: ; 44247 (11:4247)
-	TX_FAR _OaksLabText_44247
+DexRatingText_Own140To149: ; 44247 (11:4247)
+	TX_FAR _DexRatingText_Own140To149
 	db "@"
 
-PokedexRatingText_4424c: ; 4424c (11:424c)
-	TX_FAR _OaksLabText_4424c
+DexRatingText_Own150To151: ; 4424c (11:424c)
+	TX_FAR _DexRatingText_Own150To151
 	db "@"

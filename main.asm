@@ -645,10 +645,15 @@ INCLUDE "engine/menu/options.asm"
 
 SECTION "bank11",ROMX,BANK[$11]
 
-	dr $44000,$45077
-LoadSpinnerArrowTiles: ; 45077 (11:5077)
-	dr $45077,$48000
+	dr $44000,$44169
 
+INCLUDE "engine/pokedex_rating.asm"
+
+	dr $44251,$45077
+LoadSpinnerArrowTiles: ; 45077 (11:5077)
+	dr $45077,$46bf3
+	
+INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
 
@@ -712,10 +717,13 @@ JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 SECTION "bank14",ROMX,BANK[$14]
 
 	dr $50000,$525d8
-PrintCardKeyText: ; 525d8 (14:65d8)
-	dr $525d8,$5267d
-CeladonPrizeMenu: ; 5267d (14:667d)
-	dr $5267d,$54000
+
+INCLUDE "engine/overworld/card_key.asm"
+
+INCLUDE "engine/menu/prize_menu.asm"
+
+INCLUDE "engine/hidden_object_functions14.asm"
+
 
 SECTION "bank15",ROMX,BANK[$15]
 

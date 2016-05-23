@@ -1,8 +1,8 @@
-PrizeMonLevelDictionary: ; 5298a (14:698a)
-	db ABRA,9
-	db CLEFAIRY,8
-	db NIDORINA,17
+PrizeMonLevelDictionary: ; 528ea (14:68ea)
+	db ABRA,15
+	db VULPIX,18
+	db WIGGLYTUFF,22
 
-	db DRATINI,18
-	db SCYTHER,25
+	db SCYTHER,30
+	db PINSIR,30
 	db PORYGON,26

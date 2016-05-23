@@ -1,4 +1,4 @@
-PrizeDifferentMenuPtrs: ; 52843 (14:6843)
+PrizeDifferentMenuPtrs: ; 527ae (14:67ae)
 	dw PrizeMenuMon1Entries
 	dw PrizeMenuMon1Cost
 
@@ -8,40 +8,37 @@ PrizeDifferentMenuPtrs: ; 52843 (14:6843)
 	dw PrizeMenuTMsEntries
 	dw PrizeMenuTMsCost
 
-NoThanksText: ; 5284f (14:684f)
-	db "NO THANKS@"
-
-PrizeMenuMon1Entries: ; 52859 (14:6859)
+PrizeMenuMon1Entries: ; 527b9 (14:67b9)
 	db ABRA
-	db CLEFAIRY
-	db NIDORINA
+	db VULPIX
+	db WIGGLYTUFF
 	db "@"
 
-PrizeMenuMon1Cost: ; 5285d (14:685d)
-	coins 180
-	coins 500
-	coins 1200
+PrizeMenuMon1Cost: ; 527be (14:67be)
+	coins 230
+	coins 1000
+	coins 2680
 	db "@"
 
-PrizeMenuMon2Entries: ; 52864 (14:6864)
-	db DRATINI
+PrizeMenuMon2Entries: ; 527c5 (14:67c5)
 	db SCYTHER
+	db PINSIR
 	db PORYGON
 	db "@"
 
-PrizeMenuMon2Cost: ; 52868 (14:6868)
-	coins 2800
-	coins 5500
+PrizeMenuMon2Cost: ; 527c9 (14:67c9)
+	coins 6500
+	coins 6500
 	coins 9999
 	db "@"
 
-PrizeMenuTMsEntries: ; 5286f (14:686f)
+PrizeMenuTMsEntries: ; 527df (14:67df)
 	db TM_23
 	db TM_15
 	db TM_50
 	db "@"
 
-PrizeMenuTMsCost: ; 52873 (14:6873)
+PrizeMenuTMsCost: ; 527e4 (14:67e4)
 	coins 3300
 	coins 5500
 	coins 7700
