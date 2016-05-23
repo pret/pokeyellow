@@ -31,9 +31,7 @@ SECTION "Sound Effect Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/sfxheaders3.asm"
 
 SECTION "Sound Effect Headers 4", ROMX, BANK[AUDIO_4]
-SFX_Headers_4:: ; 80000 (20:4000)
-	dr $80000,$801cb
-; INCLUDE "audio/headers/sfxheaders4.asm"
+INCLUDE "audio/headers/sfxheaders4.asm"
 
 SECTION "Music Headers 1", ROMX, BANK[AUDIO_1]
 INCLUDE "audio/headers/musicheaders1.asm"
@@ -45,8 +43,7 @@ SECTION "Music Headers 3", ROMX, BANK[AUDIO_3]
 INCLUDE "audio/headers/musicheaders3.asm"
 
 SECTION "Music Headers 4", ROMX, BANK[AUDIO_4]
-	dr $801cb,$801ec
-;INCLUDE "audio/headers/musicheaders4.asm"
+INCLUDE "audio/headers/musicheaders4.asm"
 
 SECTION "Sound Effects 1", ROMX, BANK[AUDIO_1]
 
@@ -373,7 +370,78 @@ INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
 
 SECTION "Sound Effects 4", ROMX, BANK[AUDIO_4]
-	dr $801ec, $80f14
+INCLUDE "audio/sfx/snare1_4.asm"
+INCLUDE "audio/sfx/snare2_4.asm"
+INCLUDE "audio/sfx/snare3_4.asm"
+INCLUDE "audio/sfx/snare4_4.asm"
+INCLUDE "audio/sfx/snare5_4.asm"
+INCLUDE "audio/sfx/triangle1_4.asm"
+INCLUDE "audio/sfx/triangle2_4.asm"
+INCLUDE "audio/sfx/snare6_4.asm"
+INCLUDE "audio/sfx/snare7_4.asm"
+INCLUDE "audio/sfx/snare8_4.asm"
+INCLUDE "audio/sfx/snare9_4.asm"
+INCLUDE "audio/sfx/cymbal1_4.asm"
+INCLUDE "audio/sfx/cymbal2_4.asm"
+INCLUDE "audio/sfx/cymbal3_4.asm"
+INCLUDE "audio/sfx/muted_snare1_4.asm"
+INCLUDE "audio/sfx/triangle3_4.asm"
+INCLUDE "audio/sfx/muted_snare2_4.asm"
+INCLUDE "audio/sfx/muted_snare3_4.asm"
+INCLUDE "audio/sfx/muted_snare4_4.asm"
+INCLUDE "audio/sfx/unknown_80250.asm"
+INCLUDE "audio/sfx/unknown_80263.asm"
+INCLUDE "audio/sfx/unknown_8026a.asm"
+INCLUDE "audio/sfx/heal_ailment_4.asm"
+INCLUDE "audio/sfx/tink_4.asm"
+INCLUDE "audio/sfx/unknown_8029f.asm"
+INCLUDE "audio/sfx/unknown_802b5.asm"
+INCLUDE "audio/sfx/unknown_802cc.asm"
+INCLUDE "audio/sfx/unknown_802d7.asm"
+INCLUDE "audio/sfx/unknown_802e1.asm"
+INCLUDE "audio/sfx/get_item2_4_2.asm"
+INCLUDE "audio/sfx/unknown_80337.asm"
+INCLUDE "audio/sfx/unknown_803da.asm"
+INCLUDE "audio/sfx/unknown_80411.asm"
+INCLUDE "audio/sfx/unknown_80467.asm"
+INCLUDE "audio/sfx/unknown_804bf.asm"
+INCLUDE "audio/sfx/unknown_804fa.asm"
+INCLUDE "audio/sfx/unknown_80545.asm"
+INCLUDE "audio/sfx/unknown_8058b.asm"
+INCLUDE "audio/sfx/unknown_805db.asm"
+INCLUDE "audio/sfx/unknown_80603.asm"
+INCLUDE "audio/sfx/unknown_80633.asm"
+INCLUDE "audio/sfx/unknown_80661.asm"
+INCLUDE "audio/sfx/unknown_80689.asm"
+INCLUDE "audio/sfx/unknown_806af.asm"
+INCLUDE "audio/sfx/unknown_80712.asm"
+INCLUDE "audio/sfx/unknown_80760.asm"
+INCLUDE "audio/sfx/unknown_8077e.asm"
+INCLUDE "audio/sfx/unknown_807eb.asm"
+INCLUDE "audio/sfx/unknown_8081e.asm"
+INCLUDE "audio/sfx/unknown_80879.asm"
+INCLUDE "audio/sfx/unknown_808a9.asm"
+INCLUDE "audio/sfx/unknown_808fa.asm"
+INCLUDE "audio/sfx/unknown_8091c.asm"
+INCLUDE "audio/sfx/unknown_80944.asm"
+INCLUDE "audio/sfx/unknown_8097f.asm"
+INCLUDE "audio/sfx/unknown_809b2.asm"
+INCLUDE "audio/sfx/unknown_809fb.asm"
+INCLUDE "audio/sfx/unknown_80a23.asm"
+INCLUDE "audio/sfx/unknown_80a89.asm"
+INCLUDE "audio/sfx/unknown_80ad2.asm"
+INCLUDE "audio/sfx/unknown_80b05.asm"
+INCLUDE "audio/sfx/unknown_80b53.asm"
+INCLUDE "audio/sfx/unknown_80b9c.asm"
+INCLUDE "audio/sfx/unknown_80be2.asm"
+INCLUDE "audio/sfx/unknown_80c3b.asm"
+INCLUDE "audio/sfx/unknown_80c6e.asm"
+INCLUDE "audio/sfx/unknown_80ca1.asm"
+INCLUDE "audio/sfx/unknown_80ce7.asm"
+INCLUDE "audio/music/printer.asm"
+INCLUDE "audio/sfx/unknown_80e5a.asm"
+INCLUDE "audio/sfx/unknown_80e91.asm"
+INCLUDE "audio/sfx/get_item2_4.asm"
 	
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]
 
@@ -448,6 +516,8 @@ Music_RivalAlternateStartAndTempo:: ; 99e7 (2:59e7)
 asm_99ed: ; 99ed (2:59ed)
 	ld hl, wChannelCommandPointers
 	jp Audio1_OverwriteChannelPointer
+
+; XXX
 	ret
 
 ; an alternate tempo for Cities1 which is used for the Hall of Fame room
@@ -669,8 +739,9 @@ INCLUDE "audio/music/yellowintro.asm"
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
+INCLUDE "audio/music/jessieandjames.asm"
 
-	dr $8316d,$84000
+INCBIN "audio/unknown_832b9.bin"
 	
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)

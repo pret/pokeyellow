@@ -74,7 +74,7 @@ SilphCoMapList: ; 52645 (14:6645)
 
 CardKeySuccessText: ; 52650 (14:6650)
 	TX_FAR _CardKeySuccessText1
-	db $0b
+	TX_SFX_ITEM
 	TX_FAR _CardKeySuccessText2
 	db "@"
 

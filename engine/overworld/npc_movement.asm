@@ -27,7 +27,7 @@ PlayerStepOutFromDoor: ; 1a3e0 (6:63e0)
 	res 7, [hl]
 	ret
 
-_EndNPCMovementScript: ; 1a41d (6:641d)
+_EndNPCMovementScript: ; 1a527 (6:6527)
 	ld hl, wd730
 	res 7, [hl]
 	ld hl, wd72e
@@ -37,21 +37,21 @@ _EndNPCMovementScript: ; 1a41d (6:641d)
 	res 1, [hl]
 	xor a
 	ld [wNPCMovementScriptSpriteOffset], a
-	ld [wNPCMovementScriptPointerTableNum], a
 	ld [wNPCMovementScriptFunctionNum], a
+	ld [wNPCMovementScriptPointerTableNum], a
 	ld [wWastedByteCD3A], a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld [wSimulatedJoypadStatesEnd], a
 	ret
 
-PalletMovementScriptPointerTable: ; 1a442 (6:6442)
+PalletMovementScriptPointerTable: ; 1a54c (6:654c)
 	dw PalletMovementScript_OakMoveLeft
 	dw PalletMovementScript_PlayerMoveLeft
 	dw PalletMovementScript_WaitAndWalkToLab
 	dw PalletMovementScript_WalkToLab
 	dw PalletMovementScript_Done
 
-PalletMovementScript_OakMoveLeft: ; 1a44c (6:644c)
+PalletMovementScript_OakMoveLeft: ; 1a556 (6:6556)
 	ld a, [wXCoord]
 	sub $a
 	ld [wNumStepsToTake], a
@@ -79,13 +79,17 @@ PalletMovementScript_OakMoveLeft: ; 1a44c (6:644c)
 	ld a, $3
 	ld [wNPCMovementScriptFunctionNum], a
 .done
+	ld a, BANK(Music_MuseumGuy)
+	ld c, a
+	ld a, MUSIC_MUSEUM_GUY
+	call PlayMusic
 	ld hl, wFlags_D733
 	set 1, [hl]
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ret
 
-PalletMovementScript_PlayerMoveLeft: ; 1a485 (6:6485)
+PalletMovementScript_PlayerMoveLeft: ; 1a597 (6:6597)
 	ld a, [wd730]
 	bit 0, a ; is an NPC being moved by a script?
 	ret nz ; return if Oak is still moving
@@ -98,12 +102,12 @@ PalletMovementScript_PlayerMoveLeft: ; 1a485 (6:6485)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-PalletMovementScript_WaitAndWalkToLab: ; 1a4a1 (6:64a1)
+PalletMovementScript_WaitAndWalkToLab: ; 1a5b3 (6:65b3)
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a ; is the player done moving left yet?
 	ret nz
 
-PalletMovementScript_WalkToLab: ; 1a4a6 (6:64a6)
+PalletMovementScript_WalkToLab: ; 1a5b8 (6:65b8)
 	xor a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	ld a, [wSpriteIndex]
@@ -127,8 +131,9 @@ PalletMovementScript_WalkToLab: ; 1a4a6 (6:64a6)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-RLEList_ProfOakWalkToLab: ; 1a4dc (6:64dc)
-	db NPC_MOVEMENT_DOWN, $05
+
+RLEList_ProfOakWalkToLab: ; 1a5ee (6:65ee)
+	db NPC_MOVEMENT_DOWN, $06 ; differs from red
 	db NPC_MOVEMENT_LEFT, $01
 	db NPC_MOVEMENT_DOWN, $05
 	db NPC_MOVEMENT_RIGHT, $03
@@ -136,15 +141,15 @@ RLEList_ProfOakWalkToLab: ; 1a4dc (6:64dc)
 	db $E0, $01 ; stand still
 	db $FF
 
-RLEList_PlayerWalkToLab: ; 1a4e9 (6:64e9)
+RLEList_PlayerWalkToLab: ; 1a5fb (6:65fb)
 	db D_UP, $02
 	db D_RIGHT, $03
 	db D_DOWN, $05
 	db D_LEFT, $01
-	db D_DOWN, $06
+	db D_DOWN, $07 ; differs from red
 	db $FF
 
-PalletMovementScript_Done: ; 1a4f4 (6:64f4)
+PalletMovementScript_Done: ; 1a606 (6:6606)
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -157,17 +162,15 @@ PalletMovementScript_Done: ; 1a4f4 (6:64f4)
 	res 7, [hl]
 	jp EndNPCMovementScript
 
-PewterMuseumGuyMovementScriptPointerTable: ; 1a510 (6:6510)
+PewterMuseumGuyMovementScriptPointerTable: ; 1a622 (6:6622)
 	dw PewterMovementScript_WalkToMuseum
 	dw PewterMovementScript_Done
 
-PewterMovementScript_WalkToMuseum: ; 1a514 (6:6514)
+PewterMovementScript_WalkToMuseum: ; 1a626 (6:6626)
 	ld a, BANK(Music_MuseumGuy)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
+	ld c, a
 	ld a, MUSIC_MUSEUM_GUY
-	ld [wNewSoundID], a
-	call PlaySound
+	call PlayMusic
 	ld a, [wSpriteIndex]
 	swap a
 	ld [wNPCMovementScriptSpriteOffset], a
@@ -179,7 +182,7 @@ PewterMovementScript_WalkToMuseum: ; 1a514 (6:6514)
 	ld [wSimulatedJoypadStatesIndex], a
 	xor a
 	ld [wWhichPewterGuy], a
-	predef PewterGuys
+	call PewterGuys
 	ld hl, wNPCMovementDirections2
 	ld de, RLEList_PewterMuseumGuy
 	call DecodeRLEList
@@ -189,21 +192,21 @@ PewterMovementScript_WalkToMuseum: ; 1a514 (6:6514)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-RLEList_PewterMuseumPlayer: ; 1a559 (6:6559)
+RLEList_PewterMuseumPlayer: ; 1a661 (6:6661)
 	db 0, $01
 	db D_UP, $03
 	db D_LEFT, $0D
 	db D_UP, $06
 	db $FF
 
-RLEList_PewterMuseumGuy: ; 1a562 (6:6562)
+RLEList_PewterMuseumGuy: ; 1a66a (6:666a)
 	db NPC_MOVEMENT_UP, $06
 	db NPC_MOVEMENT_LEFT, $0D
 	db NPC_MOVEMENT_UP, $03
 	db NPC_MOVEMENT_LEFT, $01
 	db $FF
 
-PewterMovementScript_Done: ; 1a56b (6:656b)
+PewterMovementScript_Done: ; 1a673 (6:6673)
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -213,17 +216,15 @@ PewterMovementScript_Done: ; 1a56b (6:656b)
 	res 7, [hl]
 	jp EndNPCMovementScript
 
-PewterGymGuyMovementScriptPointerTable: ; 1a57d (6:657d)
+PewterGymGuyMovementScriptPointerTable: ; 1a685 (6:6685)
 	dw PewterMovementScript_WalkToGym
 	dw PewterMovementScript_Done
 
-PewterMovementScript_WalkToGym: ; 1a581 (6:6581)
+PewterMovementScript_WalkToGym: ; 1a689 (6:6689)
 	ld a, BANK(Music_MuseumGuy)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
+	ld c, a
 	ld a, MUSIC_MUSEUM_GUY
-	ld [wNewSoundID], a
-	call PlaySound
+	call PlayMusic
 	ld a, [wSpriteIndex]
 	swap a
 	ld [wNPCMovementScriptSpriteOffset], a
@@ -236,7 +237,7 @@ PewterMovementScript_WalkToGym: ; 1a581 (6:6581)
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, 1
 	ld [wWhichPewterGuy], a
-	predef PewterGuys
+	call PewterGuys
 	ld hl, wNPCMovementDirections2
 	ld de, RLEList_PewterGymGuy
 	call DecodeRLEList
@@ -248,7 +249,7 @@ PewterMovementScript_WalkToGym: ; 1a581 (6:6581)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-RLEList_PewterGymPlayer: ; 1a5cd (6:65cd)
+RLEList_PewterGymPlayer: ; 1a6cb (6:66cb)
 	db 0, $01
 	db D_RIGHT, $02
 	db D_DOWN, $05
@@ -257,7 +258,7 @@ RLEList_PewterGymPlayer: ; 1a5cd (6:65cd)
 	db D_LEFT, $0F
 	db $FF
 
-RLEList_PewterGymGuy: ; 1a5da (6:65da)
+RLEList_PewterGymGuy: ; 1a6cd8(6:66d8)
 	db NPC_MOVEMENT_DOWN, $02
 	db NPC_MOVEMENT_LEFT, $0F
 	db NPC_MOVEMENT_UP, $05
@@ -266,27 +267,4 @@ RLEList_PewterGymGuy: ; 1a5da (6:65da)
 	db NPC_MOVEMENT_RIGHT, $03
 	db $FF
 
-FreezeEnemyTrainerSprite: ; 1a5e7 (6:65e7)
-	ld a, [wCurMap]
-	cp POKEMONTOWER_7
-	ret z ; the Rockets on Pokemon Tower 7F leave after battling, so don't freeze them
-	ld hl, RivalIDs
-	ld a, [wEngagedTrainerClass]
-	ld b, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .notRival
-	cp b
-	ret z ; the rival leaves after battling, so don't freeze him
-	jr .loop
-.notRival
-	ld a, [wSpriteIndex]
-	ld [H_SPRITEINDEX], a
-	jp SetSpriteMovementBytesToFF
-
-RivalIDs: ; 1a605 (6:6605)
-	db OPP_SONY1
-	db OPP_SONY2
-	db OPP_SONY3
-	db $ff
+INCLUDE "engine/overworld/pewter_guys.asm"

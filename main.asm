@@ -40,7 +40,7 @@ INCLUDE "engine/cable_club.asm"
 INCLUDE "engine/menu/main_menu.asm"
 INCLUDE "engine/oak_speech.asm"
 INCLUDE "engine/overworld/special_warps.asm"
-	
+
 INCLUDE "data/special_warps.asm"
 
 INCLUDE "engine/debug1.asm"
@@ -66,7 +66,7 @@ INCLUDE "engine/battle/moveEffects/drain_hp_effect.asm"
 INCLUDE "engine/menu/players_pc.asm"
 INCLUDE "engine/remove_pokemon.asm"
 INCLUDE "engine/display_pokedex.asm"
-	
+
 SECTION "bank03",ROMX,BANK[$03]
 
 INCLUDE "engine/joypad.asm"
@@ -231,27 +231,58 @@ INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
 INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
-	dr $18000,$1a4ea
-PlayerStepOutFromDoor: ; 1a4ea (6:64ea)
-	dr $1a4ea,$1a527
-_EndNPCMovementScript: ; 1a527 (6:6527)
-	dr $1a527,$1a54c
-ProfOakMovementScriptPointerTable: ; 1a54c (6:654c)
-	dr $1a54c,$1a622
-PewterMuseumGuyMovementScriptPointerTable: ; 1a622 (6:6622)
-	dr $1a622,$1a685
-PewterGymGuyMovementScriptPointerTable: ; 1a685 (6:6685)
-	dr $1a685,$1a785
-IsPlayerStandingOnDoorTile: ; 1a785 (6:6785)
-	dr $1a785,$1a7f4
-HandleLedges: ; 1a7f4 (6:67f4)
-	dr $1a7f4,$1c000
+
+	dr $18000,$18dee ; headers, objects, blocks
+; INCLUDE "data/mapHeaders/celadoncity.asm"
+; INCLUDE "data/mapObjects/celadoncity.asm"
+; CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
+
+; INCLUDE "data/mapHeaders/pallettown.asm"
+; INCLUDE "data/mapObjects/pallettown.asm"
+; PalletTownBlocks: INCBIN "maps/pallettown.blk"
+
+; INCLUDE "data/mapHeaders/viridiancity.asm"
+; INCLUDE "data/mapObjects/viridiancity.asm"
+; ViridianCityBlocks: INCBIN "maps/viridiancity.blk"
+
+; INCLUDE "data/mapHeaders/pewtercity.asm"
+; INCLUDE "data/mapObjects/pewtercity.asm"
+; PewterCityBlocks: INCBIN "maps/pewtercity.blk"
+
+; INCLUDE "data/mapHeaders/ceruleancity.asm"
+; INCLUDE "data/mapObjects/ceruleancity.asm"
+; CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk"
+
+; INCLUDE "data/mapHeaders/vermilioncity.asm"
+; INCLUDE "data/mapObjects/vermilioncity.asm"
+; VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
+
+; INCLUDE "data/mapHeaders/fuchsiacity.asm"
+; INCLUDE "data/mapObjects/fuchsiacity.asm"
+; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
+
+	dr $18dee,$1a4ea ; map scripts
+
+; INCLUDE "scripts/pallettown.asm"
+; INCLUDE "scripts/viridiancity.asm"
+; INCLUDE "scripts/pewtercity.asm"
+; INCLUDE "scripts/ceruleancity.asm"
+; INCLUDE "scripts/vermilioncity.asm"
+; INCLUDE "scripts/celadoncity.asm"
+; INCLUDE "scripts/fuchsiacity.asm"
+
+INCLUDE "engine/overworld/npc_movement.asm"
+INCLUDE "engine/overworld/doors.asm"
+INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
 
-	dr $1c000,$1c21e
-DoClearSaveDialogue: ; 1c21e (7:421e)
-	dr $1c21e,$1e2ae
+	dr $1c000,$1c21e ; headers, objects, blocks
+
+INCLUDE "engine/clear_save.asm"
+INCLUDE "engine/predefs7.asm"
+
+	dr $1c2c2,$1e2ae ; map scripts
 OpenOaksPC: ; 1e2ae (7:62ae)
 	dr $1e2ae,$1e321
 SafariZoneCheck: ; 1e321 (7:6e21)
@@ -481,7 +512,7 @@ Func_2fd6a: ; 2fd6a (b:7d6a)
 	ld a, $3
 	ld [wd431], a
 	ret
-	
+
 INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/game_corner_slots2.asm"
 
@@ -620,7 +651,7 @@ TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
 	INCBIN "gfx/link_cable.2bpp"
 TradingAnimationGraphicsEnd:
-	
+
 TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
@@ -652,12 +683,12 @@ INCLUDE "engine/pokedex_rating.asm"
 	dr $44251,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
-	
+
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
 
-	dr $48000,$4c000
+	dr $48000,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -711,19 +742,17 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-	dr $4fe79,$50000
+	dr $4fe79,$4ff1a
 
 
 SECTION "bank14",ROMX,BANK[$14]
 
 	dr $50000,$525d8
-
 INCLUDE "engine/overworld/card_key.asm"
 
 INCLUDE "engine/menu/prize_menu.asm"
 
 INCLUDE "engine/hidden_object_functions14.asm"
-
 
 SECTION "bank15",ROMX,BANK[$15]
 
@@ -746,19 +775,19 @@ CalcLevelFromExperience: ; 58d99 (16:4d99)
 CalcExperience: ; 58dc0 (16:4dc0)
 	dr $58dc0,$58e8b
 PrintStatusAilment: ; 58e8b (16:4e8b)
-	dr $58e8b,$5c000
+	dr $58e8b,$5a555
 
 
 SECTION "bank17",ROMX,BANK[$17]
 
 	dr $5c000,$5da70
 EvolveMon: ; 5da70 (17:5a70)
-	dr $5da70,$60000
+	dr $5da70,$5df60
 
 
 SECTION "bank18",ROMX,BANK[$18]
 
-	dr $60000,$64000
+	dr $60000,$62702
 
 
 SECTION "bank19",ROMX,BANK[$19]
@@ -768,7 +797,7 @@ Overworld_GFX:
 
 SECTION "bank1A",ROMX,BANK[$1A]
 
-	dr $68000,$6c000
+	dr $68000,$6bff1
 
 
 SECTION "bank1B",ROMX,BANK[$1B]
@@ -811,7 +840,7 @@ HiddenItemNear: ; 7405c (1d:405c)
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$78000
+	dr $75dfe,$76177
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
@@ -820,7 +849,7 @@ INCLUDE "engine/battle/animations.asm"
 INCLUDE "engine/overworld/cut2.asm"
 
 INCLUDE "engine/overworld/ssanne.asm"
-	
+
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
@@ -846,32 +875,59 @@ SECTION "bank30",ROMX,BANK[$30]
 
 SECTION "bank39",ROMX,BANK[$39]
 
-	dr $e4000,$e8000
+	dr $e4000,$e7ea3
 
 
 SECTION "bank3A",ROMX,BANK[$3A]
-MonsterNames: ; e8000 (3a:4000)
-	dr $e8000,$e876c
+INCLUDE "text/monster_names.asm"
 IsPlayerJustOutsideMap: ; e876c (3a:476c)
-	dr $e876c,$e8a5e
-Func_e8a5e: ; e8a5e (3a:4a5e)
-	dr $e8a5e,$e8b74
-Func_e8b74: ; e8b74 (3a:4b74)
-	dr $e8b74,$e8d35
-Func_e8d35:: ; e8d35 (3a:4d35)
-	dr $e8d35,$e8e79
-Func_e8e79: ; e8e79 (3a:4e79)
-	dr $e8e79,$e928a
-SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
-	dr $e988a,$e9a08
-_DisplayDiploma: ; e9a08 (3a:5a08)
-	dr $e9a08,$e9bfa
+	ld a, [wYCoord]
+	ld b, a
+	ld a, [wCurMapHeight]
+	call Func_e877e
+	ret z
+	ld a, [wXCoord]
+	ld b, a
+	ld a, [wCurMapWidth]
+Func_e877e:
+	add a
+	cp b
+	ret z
+	inc b
+	ret
+
+INCLUDE "engine/printer.asm"
+INCLUDE "engine/diploma_3a.asm"
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
+SurfingPikachu3GraphicsEnd:
 
-	dr $ea3ea,$eaa02
+INCLUDE "engine/unknown_ea3ea.asm"
+
 FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
-	dr $eaa02,$ec000
+	ld a, [wCurMap]
+	cp POKEMONTOWER_7
+	ret z ; the Rockets on Pokemon Tower 7F leave after battling, so don't freeze them
+	ld hl, RivalIDs
+	ld a, [wEngagedTrainerClass]
+	ld b, a
+.loop
+	ld a, [hli]
+	cp $ff
+	jr z, .notRival
+	cp b
+	ret z ; the rival leaves after battling, so don't freeze him
+	jr .loop
+.notRival
+	ld a, [wSpriteIndex]
+	ld [H_SPRITEINDEX], a
+	jp SetSpriteMovementBytesToFF
+
+RivalIDs: ; eaa20 (3a:6a20)
+	db OPP_SONY1
+	db OPP_SONY2
+	db OPP_SONY3
+	db $ff
 
 SECTION "bank3C",ROMX,BANK[$3C]
 

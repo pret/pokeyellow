@@ -94,7 +94,13 @@ ENDM
 	music_const MUSIC_MEET_FEMALE_TRAINER, Music_MeetFemaleTrainer
 	music_const MUSIC_MEET_MALE_TRAINER,   Music_MeetMaleTrainer
 
-	; AUDIO_1 AUDIO_2 AUDIO_3
+	; AUDIO_4
+	music_const MUSIC_SURFING_PIKACHU,     Music_SurfingPikachu
+	music_const MUSIC_JESSIE_AND_JAMES,    Music_JessieAndJames
+	music_const MUSIC_YELLOW_UNUSED_SONG,  Music_YellowUnusedSong
+	music_const MUSIC_GB_PRINTER,          Music_GBPrinter
+
+	; AUDIO_1 AUDIO_2 AUDIO_3 AUDIO_4
 	music_const SFX_SNARE_1,            SFX_Snare1_1
 	music_const SFX_SNARE_2,            SFX_Snare2_1
 	music_const SFX_SNARE_3,            SFX_Snare3_1
@@ -152,8 +158,9 @@ ENDM
 	music_const SFX_CRY_23,             SFX_Cry23_1
 	music_const SFX_CRY_24,             SFX_Cry24_1
 	music_const SFX_CRY_25,             SFX_Cry25_1
-
 	music_const SFX_GET_ITEM_2,         SFX_Get_Item2_1
+
+	; AUDIO_1 AUDIO_2 AUDIO_3
 	music_const SFX_TINK,               SFX_Tink_1
 	music_const SFX_HEAL_HP,            SFX_Heal_HP_1
 	music_const SFX_HEAL_AILMENT,       SFX_Heal_Ailment_1
@@ -194,7 +201,7 @@ ENDM
 	music_const SFX_SAVE,               SFX_Save_1
 
 	; AUDIO_1
-	music_const SFX_POKEFLUTE,           SFX_Pokeflute
+	music_const SFX_POKEFLUTE,          SFX_Pokeflute
 	music_const SFX_SAFARI_ZONE_PA,     SFX_Safari_Zone_PA
 
 	; AUDIO_2
@@ -267,3 +274,11 @@ ENDM
 	music_const SFX_SLOTS_REWARD,       SFX_Slots_Reward
 	music_const SFX_SLOTS_NEW_SPIN,     SFX_Slots_New_Spin
 	music_const SFX_SHOOTING_STAR,      SFX_Shooting_Star
+
+	; AUDIO_4
+	music_const SFX_UNKNOWN_801B3_4,       SFX_801b3_4
+	music_const SFX_UNKNOWN_801B6_4,       SFX_801b6_4
+	music_const SFX_UNKNOWN_801B9_4,       SFX_801b9_4
+	music_const SFX_UNKNOWN_801BC_4,       SFX_801bc_4
+	music_const SFX_UNKNOWN_801BF_4,       SFX_801bf_4
+	music_const SFX_UNKNOWN_GET_ITEM2_4_2, SFX_Get_Item2_4_2

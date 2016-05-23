@@ -286,6 +286,8 @@ TX_ASM: MACRO
 	db $08
 	ENDM
 
+TX_SFX_ITEM EQUS "db $0b"
+
 ; Predef macro.
 add_predef: MACRO
 \1Predef::

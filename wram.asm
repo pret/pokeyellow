@@ -2536,7 +2536,7 @@ wd47a:: ds 1
 
 	ds 24
 	
-wPreventBlackout:: ds 1
+wPreventBlackout:: ds 1 ; d492
 	
 	ds 1
 	
@@ -3026,7 +3026,10 @@ wFlags_D733:: ; d733
 wBeatLorelei:: ; d734
 ; bit 1: set when you beat Lorelei and reset in Indigo Plateau lobby
 ; the game uses this to tell when Elite 4 events need to be reset
-	ds 2
+	ds 1
+
+wd735:: ; d735
+	ds 1
 
 wd736:: ; d736
 ; bit 0: check if the player is standing on a door and make him walk down a step if so

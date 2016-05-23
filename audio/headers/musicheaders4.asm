@@ -1,22 +1,18 @@
-	db $80
-	dw $6ce8
-	db $1
-	dw $6d9d
-	db $2
-	dw $6e45
-	db $80
-	dw $716d
-	db $1
-	dw $71c8
-	db $2
-	dw $722a
-	db $c0
-	dw $6fbe
-	db $1
-	dw $7010
-	db $2
-	dw $7068
-	db $3
-	dw $7092
-	db $2
-	dw $4d1a
+Music_SurfingPikachu::
+	dbw ((3 - 1) << 6) | CH0, Music_SurfingPikachu_Ch1
+	dbw CH1, Music_SurfingPikachu_Ch2
+	dbw CH2, Music_SurfingPikachu_Ch3
+
+Music_JessieAndJames::
+	dbw ((3 - 1) << 6) | CH0, Music_JessieAndJames_Ch1
+	dbw CH1, Music_JessieAndJames_Ch2
+	dbw CH2, Music_JessieAndJames_Ch3
+
+Music_YellowUnusedSong::
+	dbw ((4 - 1) << 6) | CH0, Music_YellowUnusedSong_Ch1
+	dbw CH1, Music_YellowUnusedSong_Ch2
+	dbw CH2, Music_YellowUnusedSong_Ch3
+	dbw CH3, Music_YellowUnusedSong_Ch4
+
+Music_GBPrinter::
+	dbw ((1 - 1) << 6) | CH2, Music_GBPrinter_Ch3
