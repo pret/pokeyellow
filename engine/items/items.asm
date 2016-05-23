@@ -1502,7 +1502,7 @@ ItemUseEscapeRope: ; ddcf (3:5dcf)
 	res 7,[hl]
 	xor a
 	ld [wNumSafariBalls],a
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld [wSafariZoneEntranceCurScript],a
 	inc a
 	ld [wEscapedFromBattle],a
 	ld [wActionResultOrTookBattleTurn],a ; item used

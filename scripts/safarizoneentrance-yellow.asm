@@ -67,7 +67,7 @@
 	SetEvent EVENT_IN_SAFARI_ZONE
 	ResetEventReuseHL EVENT_SAFARI_GAME_OVER
 	ld a,3
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld [wSafariZoneEntranceCurScript],a
 	jr .done
 
 .PleaseComeAgain
@@ -78,7 +78,7 @@
 	ld c,1
 	call SafariZoneEntranceAutoWalk
 	ld a,4
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld [wSafariZoneEntranceCurScript],a
 .done
 	ret
 

@@ -1,4 +1,4 @@
-PlayerStepOutFromDoor: ; 1a3e0 (6:63e0)
+PlayerStepOutFromDoor: ; 1a4ea (6:64ea)
 	ld hl, wd730
 	res 1, [hl]
 	call IsPlayerStandingOnDoorTile
@@ -258,7 +258,7 @@ RLEList_PewterGymPlayer: ; 1a6cb (6:66cb)
 	db D_LEFT, $0F
 	db $FF
 
-RLEList_PewterGymGuy: ; 1a6cd8(6:66d8)
+RLEList_PewterGymGuy: ; 1a6cd8 (6:66d8)
 	db NPC_MOVEMENT_DOWN, $02
 	db NPC_MOVEMENT_LEFT, $0F
 	db NPC_MOVEMENT_UP, $05

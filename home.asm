@@ -1445,7 +1445,7 @@ DisplayPlayerBlackedOutText:: ; 2988 (0:2988)
 	ld [wSafariSteps+1],a
 	ld [wd790],a
 	ld [wcf0d],a
-	ld [W_SAFARIZONEENTRANCECURSCRIPT],a
+	ld [wSafariZoneEntranceCurScript],a
 .didnotblackoutinsafari
 	jp HoldTextDisplayOpen
 
@@ -4913,7 +4913,7 @@ PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 INCLUDE "home/predef.asm"
 
 UpdateCinnabarGymGateTileBlocks:: ; 3ef0 (0:3ef0)
-	callba CinnabarGymQuiz_1e4bf
+	callba UpdateCinnabarGymGateTileBlocks_
 	ret ; again?
 	;jp Bankswitch
 

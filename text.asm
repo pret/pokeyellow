@@ -559,7 +559,7 @@ _GameOverText::
 	line "GAME is over!"
 	done
 
-_CinnabarGymQuizIntroText::
+_CinnabarGymQuizDummyIntroText::
 	text "#MON Quiz!"
 
 	para "Get it right and"
@@ -578,6 +578,7 @@ _CinnabarGymQuizIntroText::
 	line "Here we go!"
 	prompt
 
+_CinnabarGymQuizIntroText::
 	text "#MON Quiz!"
 
 	para "Get it right and"
@@ -598,6 +599,7 @@ _CinnabarGymQuizIntroText::
 	db $51
 	done
 
+_CinnabarGymQuizShortIntroText::
 	text "#MON Quiz!"
 
 	line "Test your skill!"

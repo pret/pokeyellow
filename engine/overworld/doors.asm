@@ -1,5 +1,5 @@
 ; returns whether the player is standing on a door tile in carry
-IsPlayerStandingOnDoorTile: ; 1a609 (6:6609)
+IsPlayerStandingOnDoorTile: ; 1a785 (6:6785)
 	push de
 	ld hl, DoorTileIDPointers
 	ld a, [wCurMapTileset]
@@ -42,22 +42,22 @@ DoorTileIDPointers: ; 1a7a8 (6:67a8)
 	dbw INTERIOR,    InteriorDoorTileIDs
 	db $ff
 
-OverworldDoorTileIDs: ; 1a654 (6:6654)
+OverworldDoorTileIDs: ; 1a7d3 (6:67d3)
 	db $1B,$58,$00
 
-ForestDoorTileIDs: ; 1a657 (6:6657)
+ForestDoorTileIDs: ; 1a7d6 (6:67d6)
 	db $3a,$00
 
-MartDoorTileIDs: ; 1a659 (6:6659)
+MartDoorTileIDs: ; 1a7d8 (6:67d8)
 	db $5e,$00
 
-HouseDoorTileIDs: ; 1a65b (6:665b)
+HouseDoorTileIDs: ; 1a7da (6:67da)
 	db $54,$00
 
-TilesetMuseumDoorTileIDs: ; 1a65d (6:665d)
+TilesetMuseumDoorTileIDs: ; 1a7dc (6:67dc)
 	db $3b,$00
 
-ShipDoorTileIDs: ; 1a65f (6:665f)
+ShipDoorTileIDs: ; 1a7de (6:67de)
 	db $1e,$00
 
 LobbyDoorTileIDs: ; 1a7e0 (6:67e0)
