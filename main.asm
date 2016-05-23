@@ -877,17 +877,22 @@ SECTION "bank39",ROMX,BANK[$39]
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"
 IsPlayerJustOutsideMap: ; e876c (3a:476c)
-	dr $e876c,$e8783
-Func_e8783: ; e8783 (3a:4783)
-	dr $e8783,$e87a8
-Func_e87a8: ; e87a8 (3a:47a8)
-	dr $e87a8,$e8a5e
-Func_e8a5e: ; e8a5e (3a:4a5e)
-	dr $e8a5e,$e8b74
-Func_e8b74: ; e8b74 (3a:4b74)
-	dr $e8b74,$e8d35
-	
-INCLUDE "engine/unknown_e8d35.asm"
+	ld a, [wYCoord]
+	ld b, a
+	ld a, [wCurMapHeight]
+	call Func_e877e
+	ret z
+	ld a, [wXCoord]
+	ld b, a
+	ld a, [wCurMapWidth]
+Func_e877e:
+	add a
+	cp b
+	ret z
+	inc b
+	ret
+
+INCLUDE "engine/printer.asm"
 
 Func_e8e79: ; e8e79 (3a:4e79)
 	dr $e8e79,$e8eca
