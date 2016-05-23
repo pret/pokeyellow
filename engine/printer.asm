@@ -631,7 +631,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e988a
+	call $588a ; Func_e988a
 	call Func_e8783
 	ld a, $10
 	ld [$cae2], a
@@ -646,7 +646,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e98ec
+	call $58ec ; Func_e98ec
 	call Func_e8783
 	ld a, $00
 	ld [$cae2], a
@@ -661,7 +661,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e9907
+	call $5907 ; Func_e9907
 	call Func_e8783
 	ld a, $00
 	ld [$cae2], a
@@ -676,7 +676,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e9922
+	call $5922 ; Func_e9922
 	call Func_e8783
 	ld a, $03
 	ld [$cae2], a

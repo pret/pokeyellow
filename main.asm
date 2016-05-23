@@ -757,18 +757,16 @@ INCLUDE "engine/hidden_object_functions14.asm"
 SECTION "bank15",ROMX,BANK[$15]
 
 	dr $54000,$5525f
-GainExperience: ; 5525f (15:525f)
-	dr $5525f,$56745
-_GetSpritePosition1: ; 56745 (15:6745)
-	dr $56745,$56765
-_GetSpritePosition2: ; 56765 (15:6765)
-	dr $56765,$56789
-_SetSpritePosition1: ; 56789 (15:6789)
-	dr $56789,$567a9
-_SetSpritePosition2: ; 567a9 (15:67a9)
-	dr $567a9,$567cd
-TrainerWalkUpToPlayer: ; 567cd (15:67cd)
-	dr $567cd,$56997
+
+INCLUDE "engine/battle/experience.asm"
+
+	dr $554f7,$56714
+
+INCLUDE "engine/menu/diploma_1.asm"
+
+INCLUDE "engine/overworld/trainers.asm"
+
+
 SECTION "bank16",ROMX,BANK[$16]
 
 	dr $58000,$58d99
@@ -919,14 +917,9 @@ Func_e8f51: ; e8f51 (3a:4f51)
 Func_e8f82: ; e8f82 (3a:4f82)
 	dr $e8f82,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
-Func_e988a: ; e988a (3a:588a)
-	dr $e988a,$e98ec
-Func_e98ec: ; e98ec (3a:58ec)
-	dr $e98ec,$e9907
-Func_e9907: ; e9907 (3a:5907)
-	dr $e9907,$e9922
-Func_e9922: ; e9922 (3a:5922)
-	dr $e9922,$e9bfa
+	dr $e988a,$e9a08
+_DisplayDiploma: ; e9a08 (3a:5a08)
+	dr $e9a08,$e9bfa
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
 
