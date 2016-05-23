@@ -818,12 +818,12 @@ _ViridianSchoolNotebookText4::
 	line "#MON LEAGUE!"
 	prompt
 
-_FightingDojoText_52a10::
+_EnemiesOnEverySideText::
 	text "Enemies on every"
 	line "side!"
 	done
 
-_FightingDojoText_52a1d::
+_WhatGoesAroundComesAroundText::
 	text "What goes around"
 	line "comes around!"
 	done
@@ -2501,6 +2501,7 @@ _ColosseumText1::
 INCLUDE "text/maps/reds_house_1f.asm"
 INCLUDE "text/maps/blues_house.asm"
 INCLUDE "text/maps/oaks_lab.asm"
+INCLUDE "text/pokedex_ratings.asm"
 INCLUDE "text/maps/viridian_mart.asm"
 INCLUDE "text/maps/school.asm"
 INCLUDE "text/maps/viridian_house.asm"

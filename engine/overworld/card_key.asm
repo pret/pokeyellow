@@ -1,4 +1,4 @@
-PrintCardKeyText: ; 52673 (14:6673)
+PrintCardKeyText: ; 525d8 (14:65d8)
 	ld hl, SilphCoMapList
 	ld a, [wCurMap]
 	ld b, a
@@ -8,7 +8,8 @@ PrintCardKeyText: ; 52673 (14:6673)
 	ret z
 	cp b
 	jr nz, .silphCoMapListLoop
-	predef GetTileAndCoordsInFrontOfPlayer
+; does not check for tile in front of player. This might be buggy
+	;predef GetTileAndCoordsInFrontOfPlayer
 	ld a, [wTileInFrontOfPlayer]
 	cp $18
 	jr z, .cardKeyDoorInFrontOfPlayer
@@ -25,12 +26,12 @@ PrintCardKeyText: ; 52673 (14:6673)
 	ld b, CARD_KEY
 	call IsItemInBag
 	jr z, .noCardKey
-	call GetCoordsInFrontOfPlayer
-	push de
+	xor a
+	ld [wPlayerMovingDirection], a
 	tx_pre_id CardKeySuccessText
 	ld [hSpriteIndexOrTextID], a
 	call PrintPredefTextID
-	pop de
+	call GetCoordsInFrontOfPlayer
 	srl d
 	ld a, d
 	ld b, a
@@ -58,7 +59,7 @@ PrintCardKeyText: ; 52673 (14:6673)
 	ld [hSpriteIndexOrTextID], a
 	jp PrintPredefTextID
 
-SilphCoMapList: ; 526e3 (14:66e3)
+SilphCoMapList: ; 52645 (14:6645)
 	db SILPH_CO_2F
 	db SILPH_CO_3F
 	db SILPH_CO_4F
@@ -71,19 +72,19 @@ SilphCoMapList: ; 526e3 (14:66e3)
 	db SILPH_CO_11F
 	db $FF
 
-CardKeySuccessText: ; 526ee (14:66ee)
+CardKeySuccessText: ; 52650 (14:6650)
 	TX_FAR _CardKeySuccessText1
 	TX_SFX_ITEM
 	TX_FAR _CardKeySuccessText2
 	db "@"
 
-CardKeyFailText: ; 526f8 (14:66f8)
+CardKeyFailText: ; 5265a (14:665a)
 	TX_FAR _CardKeyFailText
 	db "@"
 
 ; d = Y
 ; e = X
-GetCoordsInFrontOfPlayer: ; 526fd (14:66fd)
+GetCoordsInFrontOfPlayer: ; 5265f (14:665f)
 	ld a, [wYCoord]
 	ld d, a
 	ld a, [wXCoord]

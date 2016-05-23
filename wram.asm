@@ -2191,11 +2191,11 @@ wNumberOfNoRandomBattleStepsLeft:: ; d13c
 ; after a battle, you have at least 3 steps before a random battle can occur
 	ds 1
 
-W_PRIZE1:: ; d13d
+wPrize1:: ; d13d
 	ds 1
-W_PRIZE2:: ; d13e
+wPrize2:: ; d13e
 	ds 1
-W_PRIZE3:: ; d13f
+wPrize3:: ; d13f
 	ds 1
 
 	ds 1

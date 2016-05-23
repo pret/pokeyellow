@@ -56,8 +56,8 @@ const_value = 1
 	tx_pre_const LinkCableHelp                        ; 34
 	tx_pre_const TMNotebook                           ; 35
 	tx_pre_const FightingDojoText                     ; 36
-	tx_pre_const FightingDojoText_52a10               ; 37
-	tx_pre_const FightingDojoText_52a1d               ; 38
+	tx_pre_const EnemiesOnEverySideText               ; 37
+	tx_pre_const WhatGoesAroundComesAroundText        ; 38
 	tx_pre_const NewBicycleText                       ; 39
 	tx_pre_const IndigoPlateauStatues                 ; 3A
 	tx_pre_const VermilionGymTrashSuccesText1         ; 3B
