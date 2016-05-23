@@ -82,11 +82,11 @@ Func_e9ad3:
 	ld de, Tilemap_e9b3e
 	coord hl, 6, 2
 	lb bc, 10, 12
-	call $525d ; Func_e925d
+	call Func_e925d
 	ld de, Tilemap_e9bb6
 	coord hl, 5, 13
 	lb bc, 1, 11
-	call $525d ; Func_e925d
+	call Func_e925d
 	ld de, String_e9bd5
 	coord hl, 2, 15
 	call PlaceString
@@ -105,7 +105,7 @@ Func_e9ad3:
 	ld de, TileMap_e9bc1
 	coord hl, 2, 0
 	lb bc, 4, 5
-	call $525d ; Func_e925d
+	call Func_e925d
 	ret
 
 Tilemap_e9b3e: INCBIN "gfx/unknown_e9b3e.tilemap"

@@ -915,9 +915,20 @@ Func_e8f3b: ; e8f3b (3a:4f3b)
 Func_e8f51: ; e8f51 (3a:4f51)
 	dr $e8f51,$e8f82
 Func_e8f82: ; e8f82 (3a:4f82)
-	dr $e8f82,$e928a
+	dr $e8f82,$e910a
+Func_e910a:
+	dr $e910a,$e925d
+Func_e925d:
+	dr $e925d,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
-	dr $e988a,$e9a08
+Func_e988a:
+	dr $e988a,$e98ec
+Func_e98ec:
+	dr $e98ec,$e9907
+Func_e9907:
+	dr $e9907,$e9922
+Func_e9922:
+	dr $e9922,$e9a08
 
 INCLUDE "engine/diploma_3a.asm"
 
