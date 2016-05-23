@@ -40,7 +40,7 @@ INCLUDE "engine/cable_club.asm"
 INCLUDE "engine/menu/main_menu.asm"
 INCLUDE "engine/oak_speech.asm"
 INCLUDE "engine/overworld/special_warps.asm"
-	
+
 INCLUDE "data/special_warps.asm"
 
 INCLUDE "engine/debug1.asm"
@@ -66,7 +66,7 @@ INCLUDE "engine/battle/moveEffects/drain_hp_effect.asm"
 INCLUDE "engine/menu/players_pc.asm"
 INCLUDE "engine/remove_pokemon.asm"
 INCLUDE "engine/display_pokedex.asm"
-	
+
 SECTION "bank03",ROMX,BANK[$03]
 
 INCLUDE "engine/joypad.asm"
@@ -512,7 +512,7 @@ Func_2fd6a: ; 2fd6a (b:7d6a)
 	ld a, $3
 	ld [wd431], a
 	ret
-	
+
 INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/game_corner_slots2.asm"
 
@@ -651,7 +651,7 @@ TradingAnimationGraphics:
 	INCBIN "gfx/game_boy.norepeat.2bpp"
 	INCBIN "gfx/link_cable.2bpp"
 TradingAnimationGraphicsEnd:
-	
+
 TradingAnimationGraphics2:
 ; Pokeball traveling through the link cable.
 	INCBIN "gfx/trade2.2bpp"
@@ -683,7 +683,7 @@ INCLUDE "engine/pokedex_rating.asm"
 	dr $44251,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
-	
+
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
@@ -849,7 +849,7 @@ INCLUDE "engine/battle/animations.asm"
 INCLUDE "engine/overworld/cut2.asm"
 
 INCLUDE "engine/overworld/ssanne.asm"
-	
+
 RedFishingTilesFront: INCBIN "gfx/red_fishing_tile_front.2bpp"
 RedFishingTilesBack:  INCBIN "gfx/red_fishing_tile_back.2bpp"
 RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
@@ -1001,19 +1001,170 @@ String_e98db: db "POKéMON LIST@"
 String_e98e8: db "BOX@"
 
 Func_e98ec:
-	dr $e98ec,$e9907
+	call ClearScreen
+	call Func_e99de
+	call Func_e99b9
+	ld a, [wBoxDataStart]
+	cp 4
+	ret c
+	coord hl, 4, 0
+	ld de, wBoxSpecies + 3
+	ld c, 6
+	call Func_e994e
+	ret
+
 Func_e9907:
-	dr $e9907,$e9922
+	call ClearScreen
+	call Func_e99de
+	call Func_e99b9
+	ld a, [wBoxDataStart]
+	cp 10
+	ret c
+	coord hl, 4, 0
+	ld de, wBoxSpecies + 9
+	ld c, 6
+	call Func_e994e
+	ret
+
 Func_e9922:
-	dr $e9922,$e994e
+	call ClearScreen
+	call Func_e99de
+	call Func_e99b9
+	coord hl, 0, 15
+	call Func_e99cf
+	coord hl, 0, 16
+	ld bc, 2 * SCREEN_WIDTH
+	ld a, " "
+	call FillMemory
+	ld a, [wBoxDataStart]
+	cp 16
+	ret c
+	coord hl, 4, 0
+	ld de, wBoxSpecies + 15
+	ld c, 5
+	call Func_e994e
+	ret
+
 Func_e994e:
-	dr $e994e,$e99a7
+.asm_e994e
+	ld a, c
+	and a
+	jr z, .asm_e99a6
+	dec c
+	ld a, [de]
+	cp $ff
+	jr z, .asm_e99a6
+	ld [$d11d], a
+	push bc
+	push hl
+	push de
+	push hl
+	ld bc, 12
+	ld a, " "
+	call FillMemory
+	pop hl
+	push hl
+	ld de, SCREEN_WIDTH
+	add hl, de
+	ld bc, 12
+	ld a, " "
+	call FillMemory
+	pop hl
+	push hl
+	call GetMonName
+	pop hl
+	call PlaceString
+	push hl
+	ld hl, wBoxMonNicks
+	ld bc, NAME_LENGTH
+	ld a, [wBoxNumString]
+	call AddNTimes
+	ld e, l
+	ld d, h
+	pop hl
+	ld bc, SCREEN_WIDTH + 1
+	add hl, bc
+	ld [hl], " "
+	inc hl
+	call PlaceString
+	ld hl, wBoxNumString
+	inc [hl]
+	pop de
+	pop hl
+	ld bc, 3 * SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	inc de
+	jr .asm_e994e
+
+.asm_e99a6
+	ret
+
 Func_e99a7:
-	dr $e99a7,$e99b9
+	coord hl, 0, 0
+	ld a, $79
+	ld [hli], a
+	ld a, $7a
+	ld c, SCREEN_WIDTH - 2
+.asm_e99b1
+	ld [hli], a
+	dec c
+	jr nz, .asm_e99b1
+	ld a, $7b
+	ld [hl], a
+	ret
+
 Func_e99b9:
-	dr $e99b9,$e99de
+	coord hl, 0, 0
+	ld de, SCREEN_WIDTH - 1
+	ld c, SCREEN_HEIGHT
+.asm_e99c1
+	ld a, $7c
+	ld [hl], a
+	add hl, de
+	ld a, $7c
+	ld [hli], a
+	dec c
+	jr nz, .asm_e99c1
+	ret
+
+Func_e99cc:
+	coord hl, 0, 17
+Func_e99cf:
+	ld a, $7d
+	ld [hli], a
+	ld a, $7a
+	ld c, SCREEN_WIDTH - 2
+.asm_e99b1
+	ld [hli], a
+	dec c
+	jr nz, .asm_e99b1
+	ld a, $7e
+	ld [hl], a
+	ret
+
 Func_e99de:
-	dr $e99de,$e9a08
+	coord hl, 4, 0
+	ld c, 6
+	call Func_e99eb
+	coord hl, 6, 1
+	ld c, 6
+Func_e99eb:
+.asm_e99eb
+	push bc
+	push hl
+	ld de, String_e99fd
+	call PlaceString
+	pop hl
+	ld bc, 3 * SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec c
+	jr nz, .asm_e99eb
+	ret
+
+String_e99fd:
+	db "----------@"
 
 INCLUDE "engine/diploma_3a.asm"
 
