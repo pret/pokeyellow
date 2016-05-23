@@ -432,7 +432,7 @@ Data_e8a58:
 	db $0f, $00, $00, $00, $0f, $00
 
 Func_e8a5e: ; e8a5e (3a:4a5e)
-	ld a, [$d49a]
+	ld a, [wUnknownSerialFlag_d49b]
 	ld e, a
 	ld d, 0
 	ld hl, Jumptable_e8a6d
@@ -1229,7 +1229,7 @@ Func_e994e:
 	ld a, [de]
 	cp $ff
 	jr z, .asm_e99a6
-	ld [$d11d], a
+	ld [wd11e], a
 	push bc
 	push hl
 	push de
