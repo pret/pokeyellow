@@ -918,8 +918,44 @@ Func_e8f82: ; e8f82 (3a:4f82)
 	dr $e8f82,$e910a
 Func_e910a:
 	dr $e910a,$e925d
+
 Func_e925d:
-	dr $e925d,$e928a
+.asm_e925d
+	push bc
+	push hl
+.asm_e925f
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .asm_e925f
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .asm_e925d
+	ret
+
+Func_e926f:
+	ld de, wd496
+	coord hl, 7, 6
+	ld a, [de]
+	call Func_e927a
+	ld a, [de]
+Func_e927a:
+	ld c, a
+	swap a
+	and $f
+	add -10
+	ld [hli], a
+	ld a, c
+	and $f
+	add -10
+	ld [hli], a
+	dec de
+	ret
+
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 Func_e988a:
 	dr $e988a,$e98ec
