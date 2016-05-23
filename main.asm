@@ -779,8 +779,10 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 SECTION "bank17",ROMX,BANK[$17]
 
 	dr $5c000,$5da70
-EvolveMon: ; 5da70 (17:5a70)
-	dr $5da70,$5df60
+
+INCLUDE "engine/evolution.asm"
+
+	dr $5db93,$5df60
 
 
 SECTION "bank18",ROMX,BANK[$18]
