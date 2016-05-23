@@ -918,10 +918,11 @@ Func_e8f82: ; e8f82 (3a:4f82)
 	dr $e8f82,$e928a
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 	dr $e988a,$e9a08
-_DisplayDiploma: ; e9a08 (3a:5a08)
-	dr $e9a08,$e9bfa
+
+INCLUDE "engine/diploma_3a.asm"
 
 SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.t1.2bpp"
+SurfingPikachu3GraphicsEnd:
 
 INCLUDE "engine/unknown_ea3ea.asm"
 
