@@ -957,14 +957,63 @@ Func_e927a:
 	ret
 
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
+
 Func_e988a:
-	dr $e988a,$e98ec
+	xor a
+	ld [wBoxNumString], a
+	call ClearScreen
+	call Func_e99de
+	coord hl, 0, 0
+	ld bc, 11 * SCREEN_WIDTH
+	ld a, " "
+	call FillMemory
+	call Func_e99b9
+	call Func_e99a7
+	coord hl, 4, 4
+	ld de, String_e98db
+	call PlaceString
+	coord hl, 7, 6
+	ld de, String_e98e8
+	call PlaceString
+	coord hl, 11, 6
+	ld a, [wCurrentBoxNum]
+	and $7f
+	cp 9
+	jr c, .asm_e98cc
+	sub 9
+	ld [hl], "1"
+	inc hl
+	add "0"
+	jr .asm_e98ce
+
+.asm_e98cc
+	add "1"
+.asm_e98ce
+	ld [hl], a
+	coord hl, 4, 9
+	ld de, wBoxSpecies
+	ld c, $03
+	call Func_e994e
+	ret
+
+
+String_e98db: db "POKéMON LIST@"
+String_e98e8: db "BOX@"
+
 Func_e98ec:
 	dr $e98ec,$e9907
 Func_e9907:
 	dr $e9907,$e9922
 Func_e9922:
-	dr $e9922,$e9a08
+	dr $e9922,$e994e
+Func_e994e:
+	dr $e994e,$e99a7
+Func_e99a7:
+	dr $e99a7,$e99b9
+Func_e99b9:
+	dr $e99b9,$e99de
+Func_e99de:
+	dr $e99de,$e9a08
 
 INCLUDE "engine/diploma_3a.asm"
 
