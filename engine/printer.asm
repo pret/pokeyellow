@@ -1,5 +1,6 @@
 Func_e8783: ; e8783 (3a:4783)
 	ld a, 9
+Func_e8785:
 	push af
 	ld hl, wOverworldMap
 	lb bc, 4, 13
@@ -610,7 +611,233 @@ Func_e8b6a:
 	ret
 
 Func_e8b74: ; e8b74 (3a:4b74)
-	dr $e8b74,$e8d35
+	ld a, [$cfca]
+	push af
+	xor a
+	ld [$cfca], a
+	ld [$ffdb], a
+	call Func_e8f24
+	ld a, [rIE]
+	push af
+	xor a
+	ld [rIF], a
+	ld a, $09
+	ld [rIE], a
+	xor a
+	ld [$ffba], a
+	call Func_e8c30
+	call Func_e8785
+	ld a, [$caf9]
+	and a
+	jr z, .asm_e8b9e
+	ld a, $10
+	jr .asm_e8ba0
+
+.asm_e8b9e
+	ld a, $13
+.asm_e8ba0
+	ld [$cae2], a
+	call Func_e8efc
+	call ClearScreen
+	callab Func_401c2
+	callab Func_4027c
+	ld a, $01
+	ld [$ffba], a
+	call Func_e8c0c
+	jr c, .asm_e8bf4
+	ld a, [$caf9]
+	and a
+	jr z, .asm_e8bf4
+	xor a
+	ld [wUnknownSerialFlag_d49a], a
+	ld [wUnknownSerialFlag_d49b], a
+	ld c, $0c
+	call DelayFrames
+	call SaveScreenTilesToBuffer1
+	xor a
+	ld [$ffba], a
+	call Func_e8c50
+	ld a, $07
+	call Func_e8785
+	ld a, $03
+	ld [$cae2], a
+	call Func_e8efc
+	call LoadScreenTilesFromBuffer1
+	ld a, $01
+	ld [$ffba], a
+	call Func_e8c0c
+.asm_e8bf4
+	xor a
+	ld [wUnknownSerialFlag_d49a], a
+	ld [wUnknownSerialFlag_d49b], a
+	xor a
+	ld [rIF], a
+	pop af
+	ld [rIE], a
+	call Func_0f3d
+	call Func_e8f3b
+	pop af
+	ld [$cfca], a
+	ret
+
+Func_e8c0c:
+	call Func_e8f16
+.asm_e8c0f
+	call JoypadLowSensitivity
+	call Func_e8eca
+	jr c, .asm_e8c2e
+	ld a, [$c6e8]
+	bit 7, a
+	jr nz, .asm_e8c2c
+	call Func_e87a8
+	call Func_e8f51
+	call Func_e8f82
+	call DelayFrame
+	jr .asm_e8c0f
+
+.asm_e8c2c
+	and a
+	ret
+
+.asm_e8c2e
+	scf
+	ret
+
+Func_e8c30:
+	callab Func_4039c
+	ld a, l
+	ld [$caf5], a
+	ld a, h
+	ld [$caf6], a
+	ld a, $00
+	rla
+	ld [$caf9], a
+	and a
+	jr z, .asm_e8c4d
+	ld a, $05
+	jr .asm_e8c4f
+
+.asm_e8c4d
+	ld a, $09
+.asm_e8c4f
+	ret
+
+Func_e8c50:
+	call ClearScreen
+	callab Func_404bc
+	ret
+
+Func_e8c5c:
+	xor a
+	ld [$ffdb], a
+	call Func_e8f24
+	call $510a ; Func_e910a
+	ld a, [rIE]
+	push af
+	xor a
+	ld [rIF], a
+	ld a, $09
+	ld [rIE], a
+	call Func_e8783
+	ld a, $13
+	ld [$cae2], a
+	call Func_e8efc
+	call Func_e8f16
+.asm_e8c7d
+	call JoypadLowSensitivity
+	call Func_e8eca
+	jr c, .asm_e8c9a
+	ld a, [$c6e8]
+	bit 7, a
+	jr nz, .asm_e8c9a
+	call Func_e87a8
+	call Func_e8f51
+	call Func_e8f82
+	call DelayFrame
+	jr .asm_e8c7d
+
+.asm_e8c9a
+	xor a
+	ld [wUnknownSerialFlag_d49a], a
+	ld [wUnknownSerialFlag_d49b], a
+	call Func_e8f09
+	xor a
+	ld [rIF], a
+	pop af
+	ld [rIE], a
+	call Func_0f3d
+	call Func_e8f3b
+	ret
+
+Func_e8cb1:
+	xor a
+	ld [$ffdb], a
+	call Func_e8f24
+	call $5a08 ; Func_e9a08
+	ld a, [rIE]
+	push af
+	xor a
+	ld [rIF], a
+	ld a, $09
+	ld [rIE], a
+	call Func_e8783
+	ld a, $10
+	ld [$cae2], a
+	call Func_e8efc
+	call Func_e8d11
+	jr c, .asm_e8cfa
+	xor a
+	ld [wUnknownSerialFlag_d49a], a
+	ld [wUnknownSerialFlag_d49b], a
+	ld c, $0c
+	call DelayFrames
+	call SaveScreenTilesToBuffer1
+	xor a
+	ld [$ffba], a
+	call $5ad3 ; Func_e9ad3
+	call Func_e8783
+	ld a, $03
+	ld [$cae2], a
+	call Func_e8efc
+	call LoadScreenTilesFromBuffer1
+	call Func_e8d11
+.asm_e8cfa
+	xor a
+	ld [wUnknownSerialFlag_d49a], a
+	ld [wUnknownSerialFlag_d49b], a
+	call Func_e8f09
+	xor a
+	ld [rIF], a
+	pop af
+	ld [rIE], a
+	call Func_0f3d
+	call Func_e8f3b
+	ret
+
+Func_e8d11:
+	call Func_e8f16
+.asm_e8d14
+	call JoypadLowSensitivity
+	call Func_e8eca
+	jr c, .asm_e8d33
+	ld a, [$c6e8]
+	bit 7, a
+	jr nz, .asm_e8d31
+	call Func_e87a8
+	call Func_e8f51
+	call Func_e8f82
+	call DelayFrame
+	jr .asm_e8d14
+
+.asm_e8d31
+	and a
+	ret
+
+.asm_e8d33
+	scf
+	ret
+
+
 	
 Func_e8d35:: ; e8d35 (3a:4e79)
 	ld a, [wBoxDataStart]
