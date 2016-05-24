@@ -835,12 +835,18 @@ INCLUDE "engine/save.asm"
 SECTION "bank1D",ROMX,BANK[$1D]
 
 	dr $74000,$7405c
-HiddenItemNear: ; 7405c (1d:405c)
-	dr $7405c,$74726
+
+INCLUDE "engine/items/itemfinder.asm"
+
+	dr $740af,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$76177
+	dr $75dfe,$75faa
+
+INCLUDE "data/hidden_item_coords.asm"
+
+	dr $76050,$76177
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
@@ -856,14 +862,6 @@ RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
 INCLUDE "data/animations.asm"
-;AttackAnimationPointers: ; 7a22a (1e:622a)
-;	dr $7a22a,$7a915
-;SubanimationPointers: ; 7a915 (1e:6915)
-;	dr $7a915,$7b11c
-;FrameBlockPointers: ; 7b11c (1e:711c)
-;	dr $7b11c,$7be2d
-;FrameBlockBaseCoords: ; 7be2d (1e:7e2d)
-;	dr $7be2d,$7c000
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
