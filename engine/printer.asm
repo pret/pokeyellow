@@ -356,7 +356,7 @@ Func_e89e6:
 	ld b, a
 	ld a, [$caf4]
 	sub b
-	ld hl, $c978
+	ld hl, wPrinterTileBuffer
 	ld de, $0028
 .asm_e89f4
 	and a
@@ -1078,19 +1078,142 @@ Func_e8eca: ; e8eca (3a:4eca)
 	ret
 
 Func_e8efc: ; e8efc (3a:4efc)
-	dr $e8efc,$e8f09
+	coord hl, 0, 0
+	coord de, 0, 0, wPrinterTileBuffer
+	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
+	call CopyData
+	ret
+
 Func_e8f09: ; e8f09 (3a:4f09)
-	dr $e8f09,$e8f16
+	coord hl, 0, 0, wPrinterTileBuffer
+	coord de, 0, 0
+	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
+	call CopyData
+	ret
+
 Func_e8f16: ; e8f16 (3a:4f16)
-	dr $e8f16,$e8f24
+	xor a
+	ld [hJoyLast], a
+	ld [hJoyReleased], a
+	ld [hJoyPressed], a
+	ld [hJoyHeld], a
+	ld [hJoy5], a
+	ld [hJoy6], a
+	ret
+
 Func_e8f24: ; e8f24 (3a:4f24)
-	dr $e8f24,$e8f3b
+	call Func_e8f42
+	ld a, [wAudioROMBank]
+	ld [wAudioSavedROMBank], a
+	ld a, BANK(Music_GBPrinter)
+	ld [wAudioROMBank], a
+	ld a, MUSIC_GB_PRINTER
+	ld [wNewSoundID], a
+	call PlaySound
+	ret
+
 Func_e8f3b: ; e8f3b (3a:4f3b)
-	dr $e8f3b,$e8f51
+	call Func_e8f42
+	call PlayDefaultMusic
+	ret
+
+Func_e8f42: ; e8f42 (3a:4f42)
+	ld a, $4
+	ld [wAudioFadeOutControl], a
+	call StopAllMusic
+.asm_e8f4a
+	ld a, [wAudioFadeOutControl]
+	and a
+	jr nz, .asm_e8f4a
+	ret
+
 Func_e8f51: ; e8f51 (3a:4f51)
-	dr $e8f51,$e8f82
+	ld a, [$c970]
+	cp $81
+	jr z, .asm_e8f62
+	ld a, [$c971]
+	cp $ff
+	jr z, .asm_e8f7c
+	xor a
+	jr .asm_e8f7e
+
+.asm_e8f62
+	ld a, [$c971]
+	and $e0
+	ret z
+	bit 7, a
+	jr nz, .asm_e8f78
+	bit 6, a
+	jr nz, .asm_e8f74
+	ld a, 6
+	jr .asm_e8f7e
+
+.asm_e8f74
+	ld a, 7
+	jr .asm_e8f7e
+
+.asm_e8f78
+	ld a, 4
+	jr .asm_e8f7e
+
+.asm_e8f7c
+	ld a, 5
+.asm_e8f7e
+	ld [wcae0], a
+	ret
+
 Func_e8f82: ; e8f82 (3a:4f82)
-	dr $e8f82,$e910a
+	dr $e8f82,$e8fb8
+
+String_e8fb8:
+	db "Press B to Cancel@"
+
+Table_e8fca:
+	dw String_e8fdc
+	dw String_e8fdd
+	dw String_e8ff0
+	dw String_e9003
+	dw String_e9014
+	dw String_e9049
+	dw String_e907e
+	dw String_e90b3
+	dw String_e90e8
+
+String_e8fdc:
+	db   "@"
+String_e8fdd:
+	db   ""
+	next " CHECKING LINK...@"
+String_e8ff0:
+	db   ""
+	next "  TRANSMITTING...@"
+String_e9003:
+	db   ""
+	next "    PRINTING...@"
+String_e9014:
+	db   " Printer Error 1"
+	next ""
+	next "Check the Game Boy"
+	next "Printer Manual.@"
+String_e9049:
+	db   " Printer Error 2"
+	next ""
+	next "Check the Game Boy"
+	next "Printer Manual.@"
+String_e907e:
+	db   " Printer Error 3"
+	next ""
+	next "Check the Game Boy"
+	next "Printer Manual.@"
+String_e90b3:
+	db   " Printer Error 4"
+	next ""
+	next "Check the Game Boy"
+	next "Printer Manual.@"
+String_e90e8:
+	db   "This is not the"
+	next "Game Boy Printer!@"
+
 Func_e910a:
 	dr $e910a,$e925d
 

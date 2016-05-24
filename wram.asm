@@ -286,7 +286,13 @@ wSerialEnemyMonsPatchList:: ; c5d0
 
 wTempPic::
 wOverworldMap:: ; c6e8
-	ds 1300
+	; ds 1300
+	ds $290
+	
+wPrinterTileBuffer:: ; c978
+	ds SCREEN_HEIGHT * SCREEN_WIDTH
+wcae0:: ; cae0
+	ds 284
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn

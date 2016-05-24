@@ -157,25 +157,41 @@ money equs "bcd3"
 ;\2 = X
 ;\3 = Y
 coord: MACRO
+if _NARG >= 4
+	ld \1, \4 + 20 * \3 + \2
+else
 	ld \1, wTileMap + 20 * \3 + \2
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
 aCoord: MACRO
+if _NARG >= 3
+	ld a, [\3 + 20 * \2 + \1]
+else
 	ld a, [wTileMap + 20 * \2 + \1]
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
 Coorda: MACRO
+if _NARG >= 3
+	ld [\3 + 20 * \2 + \1], a
+else
 	ld [wTileMap + 20 * \2 + \1], a
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
 dwCoord: MACRO
+if _NARG >= 3
+	dw \3 + 20 * \2 + \1
+else
 	dw wTileMap + 20 * \2 + \1
+endc
 	ENDM
 
 ;\1 = r
