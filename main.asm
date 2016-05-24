@@ -741,7 +741,13 @@ JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$525d8
+	dr $50000,$52060
+Mansion2Script_Switches:
+	dr $52060,$522a3
+Mansion3Script_Switches:
+	dr $522a3,$52449
+Mansion4Script_Switches:
+	dr $52449,$525d8
 INCLUDE "engine/overworld/card_key.asm"
 
 INCLUDE "engine/menu/prize_menu.asm"
@@ -782,13 +788,14 @@ SECTION "bank17",ROMX,BANK[$17]
 
 INCLUDE "engine/evolution.asm"
 
-	dr $5db93,$5df60
+	dr $5db93,$5dbae
 
+INCLUDE "engine/hidden_object_functions17.asm"
 
 SECTION "bank18",ROMX,BANK[$18]
 
-	dr $60000,$62702
-
+	dr $60000,$625e8
+INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]
 Overworld_GFX:
@@ -842,7 +849,9 @@ INCLUDE "engine/items/itemfinder.asm"
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$75faa
+	dr $75dfe,$75f74
+HiddenItems: ; 75f74 (1d:5f74)
+	dr $75f74,$75faa
 
 INCLUDE "data/hidden_item_coords.asm"
 

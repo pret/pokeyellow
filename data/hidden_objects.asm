@@ -1,244 +1,137 @@
-HiddenObjectMaps: ; 46a40 (11:6a40)
-	db REDS_HOUSE_2F
-	db BLUES_HOUSE
-	db OAKS_LAB
-	db VIRIDIAN_POKECENTER
-	db VIRIDIAN_MART
-	db VIRIDIAN_SCHOOL
-	db VIRIDIAN_GYM
-	db MUSEUM_1F
-	db PEWTER_GYM
-	db PEWTER_MART
-	db PEWTER_POKECENTER
-	db CERULEAN_POKECENTER
-	db CERULEAN_GYM
-	db CERULEAN_MART
-	db LAVENDER_POKECENTER
-	db VERMILION_POKECENTER
-	db VERMILION_GYM
-	db CELADON_MANSION_2
-	db CELADON_POKECENTER
-	db CELADON_GYM
-	db GAME_CORNER
-	db CELADON_HOTEL
-	db FUCHSIA_POKECENTER
-	db FUCHSIA_GYM
-	db CINNABAR_GYM
-	db CINNABAR_POKECENTER
-	db SAFFRON_GYM
-	db MT_MOON_POKECENTER
-	db ROCK_TUNNEL_POKECENTER
-	db TRADE_CENTER
-	db COLOSSEUM
-	db VIRIDIAN_FOREST
-	db MT_MOON_3
-	db INDIGO_PLATEAU
-	db ROUTE_25
-	db ROUTE_9
-	db SS_ANNE_6
-	db SS_ANNE_10
-	db ROCKET_HIDEOUT_1
-	db ROCKET_HIDEOUT_3
-	db ROCKET_HIDEOUT_4
-	db SAFFRON_POKECENTER
-	db POKEMONTOWER_5
-	db ROUTE_13
-	db SAFARI_ZONE_ENTRANCE
-	db SAFARI_ZONE_WEST
-	db SILPH_CO_5F
-	db SILPH_CO_9F
-	db COPYCATS_HOUSE_2F
-	db UNKNOWN_DUNGEON_1
-	db UNKNOWN_DUNGEON_3
-	db POWER_PLANT
-	db SEAFOAM_ISLANDS_3
-	db SEAFOAM_ISLANDS_5
-	db MANSION_1
-	db MANSION_3
-	db ROUTE_23
-	db VICTORY_ROAD_2
-	db $6F
-	db BILLS_HOUSE
-	db VIRIDIAN_CITY
-	db SAFARI_ZONE_REST_HOUSE_2
-	db SAFARI_ZONE_REST_HOUSE_3
-	db SAFARI_ZONE_REST_HOUSE_4
-	db ROUTE_15_GATE_2F
-	db LAVENDER_HOUSE_1
-	db CELADON_MANSION_5
-	db FIGHTING_DOJO
-	db ROUTE_10
-	db INDIGO_PLATEAU_LOBBY
-	db CINNABAR_LAB_4
-	db BIKE_SHOP
-	db ROUTE_11
-	db ROUTE_12
-	db MANSION_2
-	db MANSION_4
-	db SILPH_CO_11F
-	db ROUTE_17
-	db UNDERGROUND_PATH_NS
-	db UNDERGROUND_PATH_WE
-	db CELADON_CITY
-	db SEAFOAM_ISLANDS_4
-	db VERMILION_CITY
-	db CERULEAN_CITY
-	db ROUTE_4
+HiddenObjectMaps: ; f268d (3c:668d)
+	dbw SILPH_CO_11F,           SilphCo11FHiddenObjects
+	dbw SILPH_CO_5F,            SilphCo5FHiddenObjects
+	dbw SILPH_CO_9F,            SilphCo9FHiddenObjects
+	dbw MANSION_2,              Mansion2HiddenObjects
+	dbw MANSION_3,              Mansion3HiddenObjects
+	dbw MANSION_4,              Mansion4HiddenObjects
+	dbw SAFARI_ZONE_WEST,       SafariZoneWestHiddenObjects
+	dbw UNKNOWN_DUNGEON_2,      UnknownDungeon2HiddenObjects
+	dbw UNKNOWN_DUNGEON_3,      UnknownDungeon3HiddenObjects
+	dbw UNUSED_MAP_6F,          UnusedMap6FHiddenObjects
+	dbw SEAFOAM_ISLANDS_3,      SeafoamIslands3HiddenObjects
+	dbw SEAFOAM_ISLANDS_4,      SeafoamIslands4HiddenObjects
+	dbw SEAFOAM_ISLANDS_5,      SeafoamIslands5HiddenObjects
+	dbw VIRIDIAN_FOREST,        ViridianForestHiddenObjects
+	dbw MT_MOON_3,              MtMoon3HiddenObjects
+	dbw SS_ANNE_10,             SSAnne10HiddenObjects
+	dbw SS_ANNE_6,              SSAnne6HiddenObjects
+	dbw UNDERGROUND_PATH_NS,    UndergroundPathNsHiddenObjects
+	dbw UNDERGROUND_PATH_WE,    UndergroundPathWeHiddenObjects
+	dbw ROCKET_HIDEOUT_1,       RocketHideout1HiddenObjects
+	dbw ROCKET_HIDEOUT_3,       RocketHideout3HiddenObjects
+	dbw ROCKET_HIDEOUT_4,       RocketHideout4HiddenObjects
+	dbw ROUTE_10,               Route10HiddenObjects
+	dbw ROCK_TUNNEL_POKECENTER, RockTunnelPokecenterHiddenObjects
+	dbw POWER_PLANT,            PowerPlantHiddenObjects
+	dbw ROUTE_11,               Route11HiddenObjects
+	dbw ROUTE_12,               Route12HiddenObjects
+	dbw ROUTE_13,               Route13HiddenObjects
+	dbw ROUTE_15_GATE_2F,       Route15Gate2FHiddenObjects
+	dbw ROUTE_17,               Route17HiddenObjects
+	dbw ROUTE_23,               Route23HiddenObjects
+	dbw VICTORY_ROAD_2,         VictoryRoad2HiddenObjects
+	dbw ROUTE_25,               Route25HiddenObjects
+	dbw BILLS_HOUSE,            BillsHouseHiddenObjects
+	dbw ROUTE_4,                Route4HiddenObjects
+	dbw MT_MOON_POKECENTER,     MtMoonPokecenterHiddenObjects
+	dbw ROUTE_9,                Route9HiddenObjects
+	dbw TRADE_CENTER,           TradeCenterHiddenObjects
+	dbw COLOSSEUM,              ColosseumHiddenObjects
+	dbw INDIGO_PLATEAU,         IndigoPlateauHiddenObjects
+	dbw INDIGO_PLATEAU_LOBBY,   IndigoPlateauLobbyHiddenObjects
+	dbw COPYCATS_HOUSE_2F,      CopycatsHouse2FHiddenObjects
+	dbw FIGHTING_DOJO,          FightingDojoHiddenObjects
+	dbw SAFFRON_GYM,            SaffronGymHiddenObjects
+	dbw SAFFRON_POKECENTER,     SaffronPokecenterHiddenObjects
+	dbw REDS_HOUSE_2F,          RedsHouse2FHiddenObjects
+	dbw BLUES_HOUSE,            BluesHouseHiddenObjects
+	dbw OAKS_LAB,               OaksLabHiddenObjects
+	dbw VIRIDIAN_CITY,          ViridianCityHiddenObjects
+	dbw VIRIDIAN_POKECENTER,    ViridianPokecenterHiddenObjects
+	dbw VIRIDIAN_SCHOOL,        ViridianSchoolHiddenObjects
+	dbw VIRIDIAN_GYM,           ViridianGymHiddenObjects
+	dbw MUSEUM_1F,              Museum1FHiddenObjects
+	dbw PEWTER_GYM,             PewterGymHiddenObjects
+	dbw PEWTER_POKECENTER,      PewterPokecenterHiddenObjects
+	dbw CERULEAN_CITY,          CeruleanCityHiddenObjects
+	dbw CERULEAN_POKECENTER,    CeruleanPokecenterHiddenObjects
+	dbw CERULEAN_GYM,           CeruleanGymHiddenObjects
+	dbw BIKE_SHOP,              BikeShopHiddenObjects
+	dbw UNKNOWN_DUNGEON_1,      UnknownDungeon1HiddenObjects
+	dbw LAVENDER_POKECENTER,    LavenderPokecenterHiddenObjects
+	dbw POKEMONTOWER_5,         Pokemontower5HiddenObjects
+	dbw LAVENDER_HOUSE_1,       LavenderHouse1HiddenObjects
+	dbw VERMILION_CITY,         VermilionCityHiddenObjects
+	dbw VERMILION_POKECENTER,   VermilionPokecenterHiddenObjects
+	dbw POKEMON_FAN_CLUB,       PokemonFanClubHiddenObjects
+	dbw VERMILION_GYM,          VermilionGymHiddenObjects
+	dbw CELADON_CITY,           CeladonCityHiddenObjects
+	dbw CELADON_HOTEL,          CeladonHotelHiddenObjects
+	dbw CELADON_MANSION_2,      CeladonMansion2HiddenObjects
+	dbw CELADON_MANSION_5,      CeladonMansion5HiddenObjects
+	dbw CELADON_POKECENTER,     CeladonPokecenterHiddenObjects
+	dbw CELADON_GYM,            CeladonGymHiddenObjects
+	dbw GAME_CORNER,            GameCornerHiddenObjects
+	dbw FUCHSIA_POKECENTER,     FuchsiaPokecenterHiddenObjects
+	dbw SAFARI_ZONE_ENTRANCE,   SafariZoneEntranceHiddenObjects
+	dbw FUCHSIA_GYM,            FuchsiaGymHiddenObjects
+	dbw MANSION_1,              Mansion1HiddenObjects
+	dbw CINNABAR_GYM,           CinnabarGymHiddenObjects
+	dbw CINNABAR_LAB_4,         CinnabarLab4HiddenObjects
+	dbw CINNABAR_POKECENTER,    CinnabarPokecenterHiddenObjects
 	db $FF
-
-HiddenObjectPointers: ; 46a96 (11:6a96)
-; each of these pointers is for the corresponding map in HiddenObjectMaps
-	dw RedsHouse2FHiddenObjects
-	dw BluesHouseHiddenObjects
-	dw OaksLabHiddenObjects
-	dw ViridianPokecenterHiddenObjects
-	dw ViridianMartHiddenObjects
-	dw ViridianSchoolHiddenObjects
-	dw ViridianGymHiddenObjects
-	dw Museum1FHiddenObjects
-	dw PewterGymHiddenObjects
-	dw PewterMartHiddenObjects
-	dw PewterPokecenterHiddenObjects
-	dw CeruleanPokecenterHiddenObjects
-	dw CeruleanGymHiddenObjects
-	dw CeruleanMartHiddenObjects
-	dw LavenderPokecenterHiddenObjects
-	dw VermilionPokecenterHiddenObjects
-	dw VermilionGymHiddenObjects
-	dw CeladonMansion2HiddenObjects
-	dw CeladonPokecenterHiddenObjects
-	dw CeladonGymHiddenObjects
-	dw GameCornerHiddenObjects
-	dw CeladonHotelHiddenObjects
-	dw FuchsiaPokecenterHiddenObjects
-	dw FuchsiaGymHiddenObjects
-	dw CinnabarGymHiddenObjects
-	dw CinnabarPokecenterHiddenObjects
-	dw SaffronGymHiddenObjects
-	dw MtMoonPokecenterHiddenObjects
-	dw RockTunnelPokecenterHiddenObjects
-	dw TradeCenterHiddenObjects
-	dw ColosseumHiddenObjects
-	dw ViridianForestHiddenObjects
-	dw MtMoon3HiddenObjects
-	dw IndigoPlateauHiddenObjects
-	dw Route25HiddenObjects
-	dw Route9HiddenObjects
-	dw SSAnne6HiddenObjects
-	dw SSAnne10HiddenObjects
-	dw RocketHideout1HiddenObjects
-	dw RocketHideout3HiddenObjects
-	dw RocketHideout4HiddenObjects
-	dw SaffronPokecenterHiddenObjects
-	dw PokemonTower5HiddenObjects
-	dw Route13HiddenObjects
-	dw SafariZoneEntranceHiddenObjects
-	dw SafariZoneWestHiddenObjects
-	dw SilphCo5FHiddenObjects
-	dw SilphCo9FHiddenObjects
-	dw CopycatsHouse2FHiddenObjects
-	dw UnknownDungeon1HiddenObjects
-	dw UnknownDungeon3HiddenObjects
-	dw PowerPlantHiddenObjects
-	dw SeafoamIslands3HiddenObjects
-	dw SeafoamIslands5HiddenObjects
-	dw Mansion1HiddenObjects
-	dw Mansion3HiddenObjects
-	dw Route23HiddenObjects
-	dw VictoryRoad2HiddenObjects
-	dw Unused6FHiddenObjects
-	dw BillsHouseHiddenObjects
-	dw ViridianCityHiddenObjects
-	dw SafariZoneRestHouse2HiddenObjects
-	dw SafariZoneRestHouse3HiddenObjects
-	dw SafariZoneRestHouse4HiddenObjects
-	dw Route15GateUpstairsHiddenObjects
-	dw LavenderHouse1HiddenObjects
-	dw CeladonMansion5HiddenObjects
-	dw FightingDojoHiddenObjects
-	dw Route10HiddenObjects
-	dw IndigoPlateauLobbyHiddenObjects
-	dw CinnabarLab4HiddenObjects
-	dw BikeShopHiddenObjects
-	dw Route11HiddenObjects
-	dw Route12HiddenObjects
-	dw Mansion2HiddenObjects
-	dw Mansion4HiddenObjects
-	dw SilphCo11FHiddenObjects
-	dw Route17HiddenObjects
-	dw UndergroundPathNsHiddenObjects
-	dw UndergroundPathWeHiddenObjects
-	dw CeladonCityHiddenObjects
-	dw SeafoamIslands4HiddenObjects
-	dw VermilionCityHiddenObjects
-	dw CeruleanCityHiddenObjects
-	dw Route4HiddenObjects
 
 ; format: y-coord, x-coord, text id/item id, object routine
 TradeCenterHiddenObjects: ; 46b40 (11:6b40)
 	db $04,$05,$d0
-	db BANK(CableClubRightGameboy)
-	dw CableClubRightGameboy
+	dba CableClubRightGameboy
 	db $04,$04,$d0
-	db BANK(CableClubLeftGameboy)
-	dw CableClubLeftGameboy
+	dba CableClubLeftGameboy
 	db $FF
 ColosseumHiddenObjects: ; 46b4d (11:6b4d)
 	db $04,$05,$d0
-	db BANK(CableClubRightGameboy)
-	dw CableClubRightGameboy
+	dba CableClubRightGameboy
 	db $04,$04,$d0
-	db BANK(CableClubLeftGameboy)
-	dw CableClubLeftGameboy
+	dba CableClubLeftGameboy
 	db $FF
 RedsHouse2FHiddenObjects: ; 46b5a (11:6b5a)
 	db $01,$00,$04
-	dbw BANK(OpenRedsPC), OpenRedsPC
+	dba OpenRedsPC
 	db $05,$03,$d0
-	dbw BANK(PrintRedsNESText), PrintRedsNESText
+	dba PrintRedsNESText
 	db $FF
 BluesHouseHiddenObjects: ; 46b67 (11:6b67)
 	db $01,$00,$04
-	db BANK(PrintBookcaseText)
-	dw PrintBookcaseText
+	dba PrintBookcaseText
 	db $01,$01,$04
-	db BANK(PrintBookcaseText)
-	dw PrintBookcaseText
+	dba PrintBookcaseText
 	db $01,$07,$04
-	db BANK(PrintBookcaseText)
-	dw PrintBookcaseText
+	dba PrintBookcaseText
 	db $FF
 OaksLabHiddenObjects: ; 46b7a (11:6b7a)
 	db $00,$04,$04
-	db BANK(DisplayOakLabLeftPoster)
-	dw DisplayOakLabLeftPoster
+	dba DisplayOakLabLeftPoster
 	db $00,$05,$04
-	db BANK(DisplayOakLabRightPoster)
-	dw DisplayOakLabRightPoster
+	dba DisplayOakLabRightPoster
 	db $01,$00,$04
-	db BANK(DisplayOakLabEmailText)
-	dw DisplayOakLabEmailText
+	dba DisplayOakLabEmailText
 	db $01,$01,$04
-	db BANK(DisplayOakLabEmailText)
-	dw DisplayOakLabEmailText
+	dba DisplayOakLabEmailText
 	db $FF
 ViridianPokecenterHiddenObjects: ; 46b93 (11:6b93)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 ViridianMartHiddenObjects: ; 46ba0 (11:6ba0)
 	db $FF
 ViridianSchoolHiddenObjects: ; 46ba1 (11:6ba1)
 	db $04,$03,(ViridianSchoolNotebook_id - TextPredefs) / 2 + 1
-	db Bank(PrintNotebookText)
-	dw PrintNotebookText
+	dba PrintNotebookText
 	db $00,$03,(ViridianSchoolBlackboard_id - TextPredefs) / 2 + 1
-	db BANK(PrintBlackboardLinkCableText)
-	dw PrintBlackboardLinkCableText
+	dba PrintBlackboardLinkCableText
 	db $FF
 ViridianGymHiddenObjects: ; 46bae (11:6bae)
 	db $0f,$0f,$04
@@ -248,9 +141,9 @@ ViridianGymHiddenObjects: ; 46bae (11:6bae)
 	db $FF
 Museum1FHiddenObjects: ; 46bbb (11:6bbb)
 	db $03,$02,$04
-	dbw BANK(AerodactylFossil), AerodactylFossil
+	dba AerodactylFossil
 	db $06,$02,$04
-	dbw BANK(KabutopsFossil), KabutopsFossil
+	dba KabutopsFossil
 	db $FF
 PewterGymHiddenObjects: ; 46bc8 (11:6bc8)
 	db $0a,$03,$04
@@ -262,19 +155,15 @@ PewterMartHiddenObjects: ; 46bd5 (11:6bd5)
 	db $FF
 PewterPokecenterHiddenObjects: ; 46bd6 (11:6bd6)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 CeruleanPokecenterHiddenObjects: ; 46be3 (11:6be3)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 CeruleanGymHiddenObjects: ; 46bf0 (11:6bf0)
 	db $0b,$03,$04
@@ -286,70 +175,63 @@ CeruleanMartHiddenObjects: ; 46bfd (11:6bfd)
 	db $FF
 LavenderPokecenterHiddenObjects: ; 46bfe (11:6bfe)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 VermilionPokecenterHiddenObjects: ; 46c0b (11:6c0b)
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $04,$00,$04
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $FF
 VermilionGymHiddenObjects: ; 46c18 (11:6c18)
 	db $0e,$03,$04
-	dbw BANK(GymStatues), GymStatues
+	dba GymStatues
 	db $0e,$06,$04
-	dbw BANK(GymStatues), GymStatues
+	dba GymStatues
 	db $01,$06,$00
-	dbw BANK(PrintTrashText), PrintTrashText
+	dba PrintTrashText
 	db $07,$01,$00
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $09,$01,$01
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $0b,$01,$02
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $07,$03,$03
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $09,$03,$04
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $0b,$03,$05
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $07,$05,$06
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $09,$05,$07
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $0b,$05,$08
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $07,$07,$09
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $09,$07,$0a
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $0b,$07,$0b
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $07,$09,$0c
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $09,$09,$0d
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $0b,$09,$0e
-	dbw BANK(GymTrashScript), GymTrashScript
+	dba GymTrashScript
 	db $FF
 CeladonMansion2HiddenObjects: ; 46c85 (11:6c85)
 	db $05,$00,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 CeladonPokecenterHiddenObjects: ; 46c8c (11:6c8c)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 CeladonGymHiddenObjects: ; 46c99 (11:6c99)
 	db $0f,$03,$04
@@ -359,77 +241,77 @@ CeladonGymHiddenObjects: ; 46c99 (11:6c99)
 	db $FF
 GameCornerHiddenObjects: ; 46ca6 (11:6ca6)
 	db $0f,$12,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$12,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$12,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$12,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$12,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$12,$ff ; "Someone's Keys"
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$0d,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$0d,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$0d,$fe ; "Out To Lunch"
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$0d,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$0d,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0f,$0d,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0f,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$0c,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0f,$07,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0f,$06,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$06,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$06,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$06,$fd ; "Out Of Order"
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$06,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$06,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0a,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0b,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0c,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0d,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0e,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $0f,$01,$d0
-	dbw BANK(StartSlotMachine), StartSlotMachine
+	dba StartSlotMachine
 	db $08,$00,COIN+10
 	dbw BANK(HiddenCoins),HiddenCoins
 	db $10,$01,COIN+10
@@ -457,19 +339,15 @@ GameCornerHiddenObjects: ; 46ca6 (11:6ca6)
 	db $FF
 CeladonHotelHiddenObjects: ; 46dc7 (11:6dc7)
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $FF
 FuchsiaPokecenterHiddenObjects: ; 46dd4 (11:6dd4)
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $04,$00,$04
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $FF
 FuchsiaGymHiddenObjects: ; 46de1 (11:6de1)
 	db $0f,$03,$04
@@ -481,31 +359,23 @@ CinnabarGymHiddenObjects: ; 46dee (11:6dee)
 	db $0d,$11,$04
 	dbw BANK(GymStatues),GymStatues
 	db $07,$0f,$01
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $01,$0a,$12
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $07,$09,$13
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $0d,$09,$14
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $0d,$01,$05
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $07,$01,$16
-	db Bank(PrintCinnabarQuiz)
-	dw PrintCinnabarQuiz
+	dba PrintCinnabarQuiz
 	db $FF
 CinnabarPokecenterHiddenObjects: ; 46e19 (11:6e19)
 	db $04,$00,$04
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 SaffronGymHiddenObjects: ; 46e26 (11:6e26)
 	db $0f,$09,$04
@@ -513,19 +383,15 @@ SaffronGymHiddenObjects: ; 46e26 (11:6e26)
 	db $FF
 MtMoonPokecenterHiddenObjects: ; 46e2d (11:6e2d)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 RockTunnelPokecenterHiddenObjects: ; 46e3a (11:6e3a)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 ViridianForestHiddenObjects: ; 46e47 (11:6e47)
 	db $12,$01,POTION
@@ -541,11 +407,9 @@ MtMoon3HiddenObjects: ; 46e54 (11:6e54)
 	db $FF
 IndigoPlateauHiddenObjects: ; 46e61 (11:6e61)
 	db $0d,$08,$ff
-	db BANK(PrintIndigoPlateauHQText)
-	dw PrintIndigoPlateauHQText
+	dba PrintIndigoPlateauHQText
 	db $0d,$0b,$00
-	db BANK(PrintIndigoPlateauHQText)
-	dw PrintIndigoPlateauHQText
+	dba PrintIndigoPlateauHQText
 	db $FF
 Route25HiddenObjects: ; 46e6e (11:6e6e)
 	db $03,$26,ETHER
@@ -559,9 +423,9 @@ Route9HiddenObjects: ; 46e7b (11:6e7b)
 	db $FF
 SSAnne6HiddenObjects: ; 46e82 (11:6e82)
 	db $05,$0d,$00
-	dbw BANK(PrintTrashText), PrintTrashText
+	dba PrintTrashText
 	db $07,$0d,$00
-	dbw BANK(PrintTrashText), PrintTrashText
+	dba PrintTrashText
 	db $09,$0d,GREAT_BALL
 	dbw BANK(HiddenItems),HiddenItems
 	db $FF
@@ -589,11 +453,9 @@ RocketHideout4HiddenObjects: ; 46eb7 (11:6eb7)
 	db $FF
 SaffronPokecenterHiddenObjects: ; 46ebe (11:6ebe)
 	db $04,$00,$04
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 PokemonTower5HiddenObjects: ; 46ecb (11:6ecb)
 	db $0c,$04,ELIXER
@@ -651,30 +513,25 @@ Mansion1HiddenObjects: ; 46f2b (11:6f2b)
 	db $10,$08,MOON_STONE
 	dbw BANK(HiddenItems),HiddenItems
 	db $05,$02,$04
-	db BANK(Mansion1Script_Switches)
-	dw Mansion1Script_Switches
+	dba Mansion1Script_Switches
 	db $FF
 Mansion2HiddenObjects: ; 46f38 (11:6f38)
 	db $0b,$02,$04
-	db BANK(Mansion2Script_Switches)
-	dw Mansion2Script_Switches
+	dba Mansion2Script_Switches
 	db $FF
 Mansion3HiddenObjects: ; 46f3f (11:6f3f)
 	db $09,$01,MAX_REVIVE
 	dbw BANK(HiddenItems),HiddenItems
 	db $05,$0a,$04
-	db BANK(Mansion3Script_Switches)
-	dw Mansion3Script_Switches
+	dba Mansion3Script_Switches
 	db $FF
 Mansion4HiddenObjects: ; 46f4c (11:6f4c)
 	db $09,$01,RARE_CANDY
 	dbw BANK(HiddenItems),HiddenItems
 	db $03,$14,$04
-	db BANK(Mansion4Script_Switches)
-	dw Mansion4Script_Switches
+	dba Mansion4Script_Switches
 	db $19,$12,$04
-	db BANK(Mansion4Script_Switches)
-	dw Mansion4Script_Switches
+	dba Mansion4Script_Switches
 	db $FF
 Route23HiddenObjects: ; 46f5f (11:6f5f)
 	db $2c,$09,FULL_RESTORE
@@ -696,7 +553,7 @@ Unused6FHiddenObjects: ; 46f7f (11:6f7f)
 	db $FF
 BillsHouseHiddenObjects: ; 46f86 (11:6f86)
 	db $04,$01,$04
-	dbw BANK(BillsHousePC), BillsHousePC
+	dba BillsHousePC
 	db $FF
 ViridianCityHiddenObjects: ; 46f8d (11:6f8d)
 	db $04,$0e,POTION
@@ -704,95 +561,75 @@ ViridianCityHiddenObjects: ; 46f8d (11:6f8d)
 	db $FF
 SafariZoneRestHouse2HiddenObjects: ; 46f94 (11:6f94)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 SafariZoneRestHouse3HiddenObjects: ; 46fa1 (11:6fa1)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 SafariZoneRestHouse4HiddenObjects: ; 46fae (11:6fae)
 	db $04,$00,$08
-	db Bank(PrintBenchGuyText)
-	dw PrintBenchGuyText
+	dba PrintBenchGuyText
 	db $03,$0d,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 Route15GateUpstairsHiddenObjects: ; 46fbb (11:6fbb)
 	db $02,$01,$04
-	db BANK(Route15GateLeftBinoculars)
-	dw Route15GateLeftBinoculars
+	dba Route15GateLeftBinoculars
 	db $FF
 LavenderHouse1HiddenObjects: ; 46fc2 (11:6fc2)
 	db $01,$00,$00
-	db BANK(PrintMagazinesText)
-	dw PrintMagazinesText
+	dba PrintMagazinesText
 	db $01,$01,$00
-	db BANK(PrintMagazinesText)
-	dw PrintMagazinesText
+	dba PrintMagazinesText
 	db $01,$07,$00
-	db BANK(PrintMagazinesText)
-	dw PrintMagazinesText
+	dba PrintMagazinesText
 	db $FF
 CeladonMansion5HiddenObjects: ; 46fd5 (11:6fd5)
 	db $00,$03,(LinkCableHelp_id - TextPredefs) / 2 + 1
-	db BANK(PrintBlackboardLinkCableText)
-	dw PrintBlackboardLinkCableText
+	dba PrintBlackboardLinkCableText
 	db $00,$04,(LinkCableHelp_id - TextPredefs) / 2 + 1
-	db BANK(PrintBlackboardLinkCableText)
-	dw PrintBlackboardLinkCableText
+	dba PrintBlackboardLinkCableText
 	db $04,$03,(TMNotebook_id - TextPredefs) / 2 + 1
-	db Bank(PrintNotebookText)
-	dw PrintNotebookText
+	dba PrintNotebookText
 	db $FF
 FightingDojoHiddenObjects: ; 46fe8 (11:6fe8)
 	db $09,$03,$04
-	db BANK(PrintFightingDojoText)
-	dw PrintFightingDojoText
+	dba PrintFightingDojoText
 	db $09,$06,$04
-	db BANK(PrintFightingDojoText)
-	dw PrintFightingDojoText
+	dba PrintFightingDojoText
 	db $00,$04,$04
-	db BANK(PrintFightingDojoText2)
-	dw PrintFightingDojoText2
+	dba PrintFightingDojoText2
 	db $00,$05,$04
-	db BANK(PrintFightingDojoText3)
-	dw PrintFightingDojoText3
+	dba PrintFightingDojoText3
 	db $FF
 IndigoPlateauLobbyHiddenObjects: ; 47001 (11:7001)
 	db $07,$0f,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 CinnabarLab4HiddenObjects: ; 47008 (11:7008)
 	db $04,$00,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $04,$02,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 BikeShopHiddenObjects: ; 47015 (11:7015)
 	db $00,$01,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $01,$02,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $02,$01,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $02,$03,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $04,$00,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $05,$01,$d0
-	dbw BANK(PrintNewBikeText), PrintNewBikeText
+	dba PrintNewBikeText
 	db $FF
 Route11HiddenObjects: ; 4703a (11:703a)
 	db $05,$30,ESCAPE_ROPE
@@ -804,8 +641,7 @@ Route12HiddenObjects: ; 47041 (11:7041)
 	db $FF
 SilphCo11FHiddenObjects: ; 47048 (11:7048)
 	db $0c,$0a,$04
-	db BANK(OpenPokemonCenterPC)
-	dw OpenPokemonCenterPC
+	dba OpenPokemonCenterPC
 	db $FF
 Route17HiddenObjects: ; 4704f (11:704f)
 	db $0e,$0f,RARE_CANDY
