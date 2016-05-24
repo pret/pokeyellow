@@ -157,7 +157,7 @@ INCLUDE "engine/overworld/advance_player_sprite.asm"
 ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 ; Reset player status on blackout.
 	xor a
-	ld [wd435],a
+	ld [wd435], a
 	xor a ; gamefreak copypasting functions (double xor a)
 	ld [wBattleResult], a
 	ld [wWalkBikeSurfState], a
@@ -204,33 +204,33 @@ ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 	predef_jump HealParty
 	
 Func_f02da:: ; f02da (3c:42da)
-	ld a,[wCurMap]
+	ld a, [wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
-	jr z,.asm_f02ee
-	ld c,a
-	ld hl,Pointer_f02fa
+	jr z, .asm_f02ee
+	ld c, a
+	ld hl, Pointer_f02fa
 .asm_f02e5
-	ld a,[hli]
+	ld a, [hli]
 	cp c
-	jr z,.asm_f02f4
-	cp a,$ff
-	jr nz,.asm_f02e5
+	jr z, .asm_f02f4
+	cp a, $ff
+	jr nz, .asm_f02e5
 	ret
 .asm_f02ee
-	ld hl,wd126
-	set 6,[hl]
+	ld hl, wd126
+	set 6, [hl]
 	ret
 .asm_f02f4
-	ld hl,wd126
-	set 5,[hl]
+	ld hl, wd126
+	set 5, [hl]
 	ret
 
 Pointer_f02fa:: ; f02fa (3c:42fa)
-	db $cf,$d0,$d1,$d2,$d3,$d4
-	db $d5,$e9,$ea,$eb,$d6,$d7
-	db $d8,$a5,$a6,$87,$c7,$ca
-	db $c6,$6c,$c2,$71,$f5,$f6
-	db $f7,$ff
+	db $cf, $d0, $d1, $d2, $d3, $d4
+	db $d5, $e9, $ea, $eb, $d6, $d7
+	db $d8, $a5, $a6, $87, $c7, $ca
+	db $c6, $6c, $c2, $71, $f5, $f6
+	db $f7, $ff
 
 BeachHouse_GFX:: ; f0314 (3c:4314)
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
@@ -242,40 +242,44 @@ Func_f0a54:: ; f0a54 (3c:4a54)
 	ret
 	
 Func_f0a55:: ; f0a55 (3c:4a55)
-	ld hl,Pointer_f0a76 ; 3c:4a76
+	ld hl, Pointer_f0a76 ; 3c:4a76
 .loop
-	ld a,[hli]
-	cp a,$ff
+	ld a, [hli]
+	cp a, $ff
 	ret z
-	ld b,a
-	ld a,[wCurMap]
+	ld b, a
+	ld a, [wCurMap]
 	cp b
-	jr z,.asm_f0a68
+	jr z, .asm_f0a68
 	inc hl
 	inc hl
 	inc hl
 	jr .loop
 
 .asm_f0a68
-	ld a,[hli]
-	ld c,a
-	ld b,$0
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld de,wMissableObjectList
+	ld a, [hli]
+	ld c, a
+	ld b, $0
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, wMissableObjectList
 	call CopyData
 	ret
 
 Pointer_f0a76:: ; f0a76 (3c:4a76)
-	db $27,$07,$7b,$4a,$ff
-	db $01,$ec,$02,$ed,$03,$ee,$ff
+	db $27, $07, $7b, $4a, $ff
+	db $01, $ec, $02, $ed, $03, $ee, $ff
 
-	dr $f0a82,$f220e
+	dr $f0a82, $f220e
 BeachHouse_h: ; f220e (3c:620e)
 ;INCLUDE "data/mapHeaders/beach_house.asm"
-	dr $f220e,$f24ae
+	dr $f220e, $f24ae
 Func_f24ae: ; f24ae (3c:64ae)
-	dr $f24ae,$f25f8
+	dr $f24ae, $f25f8
 CheckForHiddenObject:: ; f25f8 (3c:65f8)
-	dr $f25f8,$f4000
+	dr $f25f8, $f268d
+INCLUDE "data/hidden_objects.asm"
+	dr $f2cd0, $f2d0c
+Func_f2d0c:
+	dr $f2d0c, $f2db8

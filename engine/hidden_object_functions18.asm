@@ -73,35 +73,35 @@ PrintBenchGuyText: ; 6245d (18:645d)
 ; format: db map id, player sprite facing direction, text id of PredefTextIDPointerTable
 BenchGuyTextPointers: ; 6247e (18:647e)
 	db VIRIDIAN_POKECENTER,     SPRITE_FACING_LEFT
-	db $11 ; (ViridianCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
+	db_tx_pre ViridianCityPokecenterBenchGuyText
 	db PEWTER_POKECENTER,       SPRITE_FACING_LEFT
-	db $12 ; (PewterCityPokecenterBenchGuyText_id     - TextPredefs) / 2 + 1
+	db_tx_pre PewterCityPokecenterBenchGuyText
 	db CERULEAN_POKECENTER,     SPRITE_FACING_LEFT
-	db $13 ; (CeruleanCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
+	db_tx_pre CeruleanCityPokecenterBenchGuyText
 	db LAVENDER_POKECENTER,     SPRITE_FACING_LEFT
-	db $14 ; (LavenderCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
+	db_tx_pre LavenderCityPokecenterBenchGuyText
 	db VERMILION_POKECENTER,    SPRITE_FACING_LEFT
-	db $15 ; (VermilionCityPokecenterBenchGuyText_id  - TextPredefs) / 2 + 1
+	db_tx_pre VermilionCityPokecenterBenchGuyText
 	db CELADON_POKECENTER,      SPRITE_FACING_LEFT
-	db $16 ; (CeladonCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
+	db_tx_pre CeladonCityPokecenterBenchGuyText
 	db CELADON_HOTEL,           SPRITE_FACING_LEFT
-	db $17 ; (CeladonCityHotelText_id                 - TextPredefs) / 2 + 1
+	db_tx_pre CeladonCityHotelText
 	db FUCHSIA_POKECENTER,      SPRITE_FACING_LEFT
-	db $18 ; (FuchsiaCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
+	db_tx_pre FuchsiaCityPokecenterBenchGuyText
 	db CINNABAR_POKECENTER,     SPRITE_FACING_LEFT
-	db $19 ; (CinnabarIslandPokecenterBenchGuyText_id - TextPredefs) / 2 + 1
+	db_tx_pre CinnabarIslandPokecenterBenchGuyText
 	db SAFFRON_POKECENTER,      SPRITE_FACING_LEFT
-	db $1a ; (SaffronCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
+	db_tx_pre SaffronCityPokecenterBenchGuyText
 	db MT_MOON_POKECENTER,      SPRITE_FACING_LEFT
-	db $1b ; (MtMoonPokecenterBenchGuyText_id         - TextPredefs) / 2 + 1
+	db_tx_pre MtMoonPokecenterBenchGuyText
 	db ROCK_TUNNEL_POKECENTER,  SPRITE_FACING_LEFT
-	db $1c ; (RockTunnelPokecenterBenchGuyText_id     - TextPredefs) / 2 + 1
+	db_tx_pre RockTunnelPokecenterBenchGuyText
 	db SAFARI_ZONE_REST_HOUSE_2,SPRITE_FACING_LEFT
-	db $1d
+	db_tx_pre UnusedBenchGuyText1
 	db SAFARI_ZONE_REST_HOUSE_3,SPRITE_FACING_LEFT
-	db $1e
+	db_tx_pre UnusedBenchGuyText2
 	db SAFARI_ZONE_REST_HOUSE_4,SPRITE_FACING_LEFT
-	db $1f
+	db_tx_pre UnusedBenchGuyText3
 	db $FF
 
 ViridianCityPokecenterBenchGuyText: ; 624a3 (18:64a3)

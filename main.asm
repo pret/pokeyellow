@@ -674,7 +674,9 @@ SECTION "bank11",ROMX,BANK[$11]
 
 INCLUDE "engine/pokedex_rating.asm"
 
-	dr $44251,$45077
+	dr $44251,$443b7
+Mansion1Script_Switches:
+	dr $443b7,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
 
@@ -850,12 +852,8 @@ VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
 	dr $75dfe,$75f74
-HiddenItems: ; 75f74 (1d:5f74)
-	dr $75f74,$75faa
 
-INCLUDE "data/hidden_item_coords.asm"
-
-	dr $76050,$76177
+INCLUDE "engine/overworld/hidden_items.asm"
 
 SECTION "bank1E",ROMX,BANK[$1E]
 

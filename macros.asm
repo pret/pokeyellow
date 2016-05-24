@@ -342,11 +342,11 @@ add_tx_pre: MACRO
 ENDM
 
 db_tx_pre: MACRO
-	db \1_id
+	db (\1_id - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre_id: MACRO
-	ld a, \1_id ; - TextPredefs) / 2 + 1
+	ld a, (\1_id - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre: MACRO
