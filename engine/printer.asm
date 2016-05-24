@@ -1215,7 +1215,115 @@ String_e90e8:
 	next "Game Boy Printer!@"
 
 Func_e910a:
-	dr $e910a,$e925d
+	call GBPalWhiteOutWithDelay3
+	call ClearScreen
+	ld de, SurfingPikachu2Graphics
+	ld hl, vChars2
+	lb bc, BANK(SurfingPikachu2Graphics), (SurfingPikachu2GraphicsEnd - SurfingPikachu2Graphics) / $10
+	call CopyVideoData
+	coord hl, 0, 0
+	call Func_e91a9
+	coord hl, 0, 17
+	call Func_e91a9
+	coord hl, 0, 0
+	call Func_e91b5
+	coord hl, 19, 0
+	call Func_e91b5
+	ld a, $04
+	coord hl, 0, 0
+	ld [hl], a
+	coord hl, 0, 17
+	ld [hl], a
+	coord hl, 19, 0
+	ld [hl], a
+	coord hl, 19, 17
+	ld [hl], a
+	ld de, Data_e91c4
+	coord hl, 10, 8
+	lb bc, 3, 8
+	call Func_e925d
+	ld de, Data_e91dc
+	coord hl, 2, 11
+	lb bc, 6, 16
+	call Func_e925d
+	ld de, String_e923c
+	coord hl, 3, 2
+	call PlaceString
+	ld de, String_e924b
+	coord hl, 9, 4
+	call PlaceString
+	ld de, String_e9256
+	coord hl, 12, 6
+	call PlaceString
+	ld de, wPlayerName
+	ld hl, wPlayerName
+	ld bc, 0
+.asm_e9182
+	ld a, [hli]
+	inc c
+	cp "@"
+	jr nz, .asm_e9182
+	ld a, 8
+	sub c
+	jr nc, .asm_e918e
+	xor a
+.asm_e918e
+	ld c, a
+	coord hl, 2, 4
+	add hl, bc
+	call PlaceString
+	call Func_e926f
+	ld b, 8
+	call RunPaletteCommand
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call Delay3
+	call GBPalNormal
+	ret
+
+Func_e91a9:
+	ld c, SCREEN_WIDTH / 2
+.asm_e91ab
+	ld [hl], $00
+	inc hl
+	ld [hl], $01
+	inc hl
+	dec c
+	jr nz, .asm_e91ab
+	ret
+
+Func_e91b5:
+	ld c, SCREEN_HEIGHT / 2
+	ld de, SCREEN_WIDTH
+.asm_e91ba
+	ld [hl], $02
+	add hl, de
+	ld [hl], $03
+	add hl, de
+	dec c
+	jr nz, .asm_e91ba
+	ret
+Data_e91c4:
+	db $7f, $7f, $10, $11, $12, $13, $14, $15
+	db $0f, $3c, $3d, $3e, $20, $21, $30, $31
+	db $4c, $4d, $4e, $50, $34, $1a, $51, $2d
+
+
+Data_e91dc:
+	db $7f, $7f, $7f, $7f, $7f, $7f, $16, $17, $18, $19, $7f, $1b, $1c, $1d, $1e, $1f
+	db $7f, $7f, $22, $23, $24, $25, $26, $27, $28, $29, $2a, $2b, $2c, $7f, $2e, $2f
+	db $7f, $7f, $32, $33, $33, $35, $36, $37, $38, $39, $3a, $3b, $7f, $7f, $7f, $3f
+	db $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $4a, $4b, $40, $40, $40, $4f
+	db $52, $52, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5d, $5e
+	db $7f, $7f, $7f, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $7f, $7f, $7f
+
+
+String_e923c:
+	db "Pikachu's Beach@"
+String_e924b:
+	db "'s Hi-Score@"
+String_e9256:
+	db "Points@"
 
 Func_e925d:
 .asm_e925d
@@ -1255,6 +1363,7 @@ Func_e927a:
 	ret
 
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
+SurfingPikachu2GraphicsEnd:
 
 Func_e988a:
 	xor a
