@@ -2892,19 +2892,308 @@ Func_fd601:
 	dr $fd601, $fd65c
 
 Jumptable_fd65c:
-	dr $fd65c, $fd75f
+	dw Func_fd678
+	dw Func_fd6a3
+	dw Func_fd698
+	dw Func_fd6f4
+	dw Func_fd6ff
+	dw Func_fd718
+	dw Func_fd68c
+	dw Func_fd6c6
+	dw Func_fd6c0
+	dw Func_fd6e2
+	dw Func_fd68b
+
+Func_fd672:
+	ld hl, $d44c
+	set 6, [hl]
+	ret
+
+Func_fd678:
+	ld hl, 7
+	add hl, bc
+	xor a
+	ld [hli], a
+	ld [hl], a
+	call Func_fd74a
+	ld d, a
+	call Func_fd75f
+	or d
+	ld [$d452], a
+	ret
+
+Func_fd68b:
+	ret
+
+Func_fd68c:
+	call Func_fd74a
+	ld d, a
+	call Func_fd755
+	or d
+	ld [$d452], a
+	ret
+
+Func_fd698:
+	call Func_fd74a
+	ld d, a
+	call Func_fd75f
+	or d
+	ld d, a
+	jr asm_fd6ac
+
+Func_fd6a3:
+	call Func_fd74a
+	ld d, a
+	call Func_fd755
+	or d
+	ld d, a
+asm_fd6ac
+	ld hl, 8
+	add hl, bc
+	call Func_fd78e
+	jr nz, .asm_fd6b6
+	inc [hl]
+.asm_fd6b6
+	ld a, [hl]
+	rrca
+	rrca
+	and 3
+	or d
+	ld [$d452], a
+	ret
+
+Func_fd6c0:
+	call Func_fd75f
+	ld d, a
+	jr asm_fd6ca
+
+Func_fd6c6:
+	call Func_fd755
+	ld d, a
+asm_fd6ca
+	call Func_fd74a
+	or d
+	ld d, a
+	call Func_fd736
+	or d
+	ld [$d452], a
+	call Func_fd79d
+	ld [$d456], a
+	and a
+	ret z
+	call Func_fd672
+	ret
+
+Func_fd6e2:
+	call Func_fd75f
+	ld d, a
+	call Func_fd74a
+	or d
+	ld [$d452], a
+	call Func_fd79d
+	ld [$d456], a
+	ret
+
+Func_fd6f4:
+	ld a, [$d44f]
+	and $40
+	cp $40
+	jr z, Func_fd6ff
+	jr Func_fd718
+
+Func_fd6ff:
+	call Func_fd755
+	ld d, a
+	call Func_fd78e
+	jr nz, .asm_fd710
+	ld hl, Data_fd731
+.asm_fd70b
+	ld a, [hli]
+	cp d
+	jr nz, .asm_fd70b
+	ld d, [hl]
+.asm_fd710
+	call Func_fd74a
+	or d
+	ld [$d452], a
+	ret
+
+Func_fd718:
+	call Func_fd755
+	ld d, a
+	call Func_fd78e
+	jr nz, .asm_fd529
+	ld hl, Data_fd731End
+.asm_fd524
+	ld a, [hld]
+	cp d
+	jr nz, .asm_fd524
+	ld d, [hl]
+.asm_fd529
+	call Func_fd74a
+	or d
+	ld [$d452], a
+	ret
+
+Data_fd731:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_DOWN
+Data_fd731End:
+
+Func_fd736:
+	push hl
+	ld hl, 7
+	add hl, bc
+	ld a, [hl]
+	inc a
+	and $3
+	ld [hli], a
+	jr nz, .asm_fd747
+	ld a, [hl]
+	inc a
+	and $3
+	ld [hl], a
+.asm_fd747
+	ld a, [hl]
+	pop hl
+	ret
+
+Func_fd74a:
+	push hl
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 14
+	add hl, bc
+	ld a, [hl]
+	dec a
+	swap a
+	pop hl
+	ret
+
+Func_fd755:
+	push hl
+	ld hl, 2
+	add hl, bc
+	ld a, [hl]
+	and $c
+	pop hl
+	ret
 
 Func_fd75f:
-	dr $fd75f, $fd769
+	push hl
+	ld hl, 9
+	add hl, bc
+	ld a, [hl]
+	and $c
+	pop hl
+	ret
 
 Func_fd769:
-	dr $fd769, $fd775
+	push hl
+	ld hl, 9
+	add hl, bc
+	add a
+	add a
+	and $c
+	ld [hl], a
+	pop hl
+	ret
+
 Func_fd775:
-	dr $fd775, $fd784
+	ld hl, $d457
+	inc [hl]
+	ld a, [$d44d]
+	and $1f
+	inc a
+	cp [hl]
+	ret nz
+	ld [hl], 0
+	ret
+
 Func_fd784:
-	dr $fd784, $fd7cb
+	ld a, [$d44d]
+	swap a
+	rrca
+	and $3
+	inc a
+	ret
+
+Func_fd78e:
+	ld hl, $d458
+	inc [hl]
+	ld a, [$d44f]
+	and $f
+	inc a
+	cp [hl]
+	ret nz
+	ld [hl], 0
+	ret
+
+Func_fd79d:
+	call Func_fd7b2
+	ld a, [$d458]
+	add e
+	ld [$d458], a
+	add $20
+	ld e, a
+	push hl
+	push bc
+	call Func_fd907
+	pop bc
+	pop hl
+	ret
+
+Func_fd7b2:
+	ld a, [$d44f]
+	and $f
+	inc a
+	ld d, a
+	ld a, [$d44f]
+	swap a
+	and $7
+	ld e, a
+	ld a, 1
+	jr z, .asm_fd7c9
+.asm_fd7c5
+	add a
+	dec e
+	jr nz, .asm_fd7c5
+.asm_fd7c9
+	ld e, a
+	ret
+
 Func_fd7cb:
-	dr $fd7cb, $fd7f3
+	push bc
+	ld c, a
+	ld b, 0
+	ld hl, Data_fd7e3
+	add hl, bc
+	add hl, bc
+	ld d, [hl]
+	inc hl
+	ld e, [hl]
+	pop bc
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hli], a
+	ld a, [hl]
+	add d
+	ld [hl], a
+	ret
+
+Data_fd7e3:
+	db  0,  1
+	db  0, -1
+	db -1,  0
+	db  1,  0
+	db -1,  1
+	db  1,  1
+	db -1, -1
+	db  1, -1
+
 Func_fd7f3:
 	dr $fd7f3, $fd831
 Func_fd831:
@@ -2918,7 +3207,9 @@ Func_fd8e1: ; fd8e1 (3f:58e1)
 Func_fd8ee: ; fd8ee (3f:58ee)
 	dr $fd8ee, $fd8f8
 Func_fd8f8: ; fd8f8 (3f:58f8)
-	dr $fd8f8, $fd978
+	dr $fd8f8, $fd907
+Func_fd907:
+	dr $fd907, $fd978
 Func_fd978: ; fd978 (3f:5978)
 	dr $fd978, $fd9d0
 Func_fd9d0: ; fd9d0 (3f:59d0)
