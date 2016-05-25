@@ -1775,21 +1775,21 @@ Func_fdad6:
 	jr nz, .asm_fdadb
 	ret
 
-Func_fdb32:
+PikaPicAnimCommand_object:
 	ld hl, wNPCMovementDirections2 + 1
 	ld de, 8
 	ld c, 4
-.asm_fdb3a
+.loop
 	ld a, [hl]
 	and a
-	jr z, .asm_fdb44
+	jr z, .found
 	add hl, de
 	dec c
-	jr nz, .asm_fdb3a
+	jr nz, .loop
 	scf
 	ret
 
-.asm_fdb44
+.found
 	ld a, [wNPCMovementDirections2]
 	inc a
 	ld [wNPCMovementDirections2], a
@@ -1810,7 +1810,7 @@ Func_fdb32:
 	and a
 	ret
 
-Func_fdb65:
+PikaPicAnimCommand_deleteobject:
 	call GetPikaPicAnimByte
 	ld b, a
 	ld hl, wNPCMovementDirections2 + 1
@@ -2436,11 +2436,11 @@ Data_fe016: ; fe016
 	db $73, $74, $75, $76, $77
 	db $78, $79, $7a, $7b, $7c
 
-Func_fe031:
+LoadPikaPicAnimGFXHeader:
 	push hl
 	ld e, a
 	ld d, 0
-	ld hl, Data_fe572
+	ld hl, PikaPicAnimGFXHeaders
 	add hl, de
 	add hl, de
 	add hl, de
@@ -2489,29 +2489,29 @@ Func_fe066:
 Jumptable_fe071:
 	dw PikaPicAnimCommand_nop ; 00, 0 params
 	dw PikaPicAnimCommand_writebyte ; 01, 1 param
-	dw Func_fe0db ; 02, 1 param
-	dw Func_fdb32 ; 03, 5 params
-	dw Func_fe0b6 ; 04, 0 params
-	dw Func_fe0b6 ; 05, 0 params
-	dw Func_fdb65 ; 06, 1 param
-	dw Func_fe0b6 ; 07, 0 params
-	dw Func_fe0b6 ; 08, 0 params
+	dw PikaPicAnimCommand_loadgfx ; 02, 1 param
+	dw PikaPicAnimCommand_object ; 03, 5 params
+	dw PikaPicAnimCommand_nop4 ; 04, 0 params
+	dw PikaPicAnimCommand_nop5 ; 05, 0 params
+	dw PikaPicAnimCommand_deleteobject ; 06, 1 param
+	dw PikaPicAnimCommand_nop7 ; 07, 0 params
+	dw PikaPicAnimCommand_nop8 ; 08, 0 params
 	dw PikaPicAnimCommand_jump ; 09, 1 dw param
 	dw PikaPicAnimCommand_setdelay ; 0a, 1 dw param
 	dw PikaPicAnimCommand_cry ; 0b, 1 param
 	dw PikaPicAnimCommand_thunderbolt ; 0c, 0 params
-	dw Func_fe0a9 ; 0d, 0 params (ret)
-	dw Func_fe090 ; 0e, 0 params (ret)
+	dw PikaPicAnimCommand_waitbgmap ; 0d, 0 params (ret)
+	dw PikaPicAnimCommand_ret ; 0e, 0 params (ret)
 
 PikaPicAnimCommand_nop:
 	ret
 
-Func_fe090:
+PikaPicAnimCommand_ret:
 	ld a, 1
 	ld [wPikaPicAnimTimer], a
 	xor a
 	ld [wPikaPicAnimTimer + 1], a
-	jr Func_fe0a9
+	jr PikaPicAnimCommand_waitbgmap
 
 Func_fe09b:
 	ret
@@ -2523,7 +2523,7 @@ PikaPicAnimCommand_setdelay:
 	ld [wPikaPicAnimTimer + 1], a
 	ret
 
-Func_fe0a9:
+PikaPicAnimCommand_waitbgmap:
 	ld a, $ff
 	ld [$d44f], a
 	ret
@@ -2533,7 +2533,10 @@ PikaPicAnimCommand_writebyte:
 	ld [wPikaSpriteX], a
 	ret
 
-Func_fe0b6:
+PikaPicAnimCommand_nop4:
+PikaPicAnimCommand_nop5:
+PikaPicAnimCommand_nop7:
+PikaPicAnimCommand_nop8:
 	ret
 
 PikaPicAnimCommand_jump:
@@ -2564,7 +2567,7 @@ UpdatePikaPicAnimPointer:
 	pop af
 	ret
 
-Func_fe0db:
+PikaPicAnimCommand_loadgfx:
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -2580,7 +2583,7 @@ Func_fe0db:
 	call GetPikaPicAnimByte
 	ld [$d450], a
 	ld a, [$d450]
-	call Func_fe031
+	call LoadPikaPicAnimGFXHeader
 	ld a, c
 	cp a, $ff
 	jr z, .asm_fe106
@@ -2825,20 +2828,30 @@ Data_fe242:
 	db $ff
 
 Data_fe26b:
-	pikapic_2 $1
-	pikapic_2 $f
-	pikapic_2 $3e
-	pikapic_3 $1, $80, $0
-	pikapic_3 $2, $5b2, $5
-	pikapic_3 $3, $5b6, $5
-	pikapic_d
-	pikapic_cry $ff
+	pikapic_loadgfx $1
+	pikapic_loadgfx $f
+	pikapic_loadgfx $3e
+	pikapic_object $1, $80, $0, $0
+	pikapic_object $2, $b2, $5, $5
+	pikapic_object $3, $b6, $5, $5
+	pikapic_waitbgmap
+	pikapic_cry
 Data_fe286:
-	pikapic_d
+	pikapic_waitbgmap
 	pikapic_jump Data_fe286
 
 Data_fe28a:
-	dr $fe28a, $fe2a4
+	pikapic_setdelay $28
+	pikapic_loadgfx $1
+	pikapic_loadgfx $2
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $6, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry PikachuCry3
+Data_fe2a0:
+	pikapic_waitbgmap
+	pikapic_jump Data_fe2a0
+
 Data_fe2a4:
 	dr $fe2a4, $fe2be
 Data_fe2be:
@@ -2894,5 +2907,67 @@ Data_fe53e:
 Data_fe558:
 	dr $fe558, $fe572
 
-Data_fe572:
-	dr $fe572, $fe66f
+PikaPicAnimGFXHeaders:
+	dbbw $01, $39, $0000
+	dbbw $ff, $39, $4000
+	dbbw $05, $39, $40cc
+	dbbw $ff, $39, $411c
+	dbbw $0a, $39, $41d2
+	dbbw $ff, $39, $4272
+	dbbw $06, $39, $4323
+	dbbw $ff, $39, $4383
+	dbbw $14, $39, $444b
+	dbbw $ff, $39, $458b
+	dbbw $04, $39, $463b
+	dbbw $ff, $39, $467b
+	dbbw $04, $39, $472e
+	dbbw $ff, $39, $476e
+	dbbw $19, $39, $4841
+	dbbw $ff, $39, $49d1
+	dbbw $0a, $39, $4a99
+	dbbw $ff, $39, $4b39
+	dbbw $06, $39, $4bde
+	dbbw $ff, $39, $4c3e
+	dbbw $19, $39, $4ce0
+	dbbw $19, $39, $4e70
+	dbbw $ff, $39, $5000
+	dbbw $19, $39, $50af
+	dbbw $ff, $39, $523f
+	dbbw $19, $39, $52fe
+	dbbw $ff, $39, $548e
+	dbbw $19, $39, $5541
+	dbbw $ff, $39, $56d1
+	dbbw $19, $39, $5794
+	dbbw $ff, $39, $5924
+	dbbw $19, $39, $59ed
+	dbbw $ff, $39, $5b7d
+	dbbw $19, $39, $5c4d
+	dbbw $ff, $39, $5ddd
+	dbbw $19, $39, $5e90
+	dbbw $19, $39, $6020
+	dbbw $19, $39, $61b0
+	dbbw $ff, $39, $6340
+	dbbw $19, $39, $63f7
+	dbbw $ff, $39, $6587
+	dbbw $19, $39, $6646
+	dbbw $ff, $39, $67d6
+	dbbw $19, $39, $682f
+	dbbw $19, $39, $69bf
+	dbbw $19, $39, $6b4f
+	dbbw $19, $39, $6cdf
+	dbbw $19, $39, $6e6f
+	dbbw $19, $39, $6fff
+	dbbw $19, $39, $718f
+	dbbw $19, $39, $731f
+	dbbw $19, $39, $74af
+	dbbw $19, $39, $763f
+	dbbw $ff, $39, $77cf
+	dbbw $19, $39, $7863
+	dbbw $19, $39, $79f3
+	dbbw $19, $39, $7b83
+	dbbw $19, $39, $7d13
+	dbbw $ff, $3c, $4abf
+	dbbw $19, $3c, $4b64
+	dbbw $ff, $3c, $4cf4
+	dbbw $19, $3c, $4d82
+	dbbw $18, BANK(PikachuSprite), PikachuSprite

@@ -1917,6 +1917,9 @@ Func_fd001:: ; fd001 (3f:5001)
 	
 INCLUDE "engine/pikachu_pic_animation.asm"
 
+Func_fe66e:
+	ret
+
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"
 SandshrewSprite:       INCBIN "gfx/sprites/sandshrew.2bpp"

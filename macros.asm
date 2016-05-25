@@ -266,6 +266,11 @@ dba: MACRO
 	dbw BANK(\1), \1
 	ENDM
 
+dbbw: MACRO
+	db \1, \2
+	dw \3
+	ENDM
+
 ; data format macros
 RGB: MACRO
 	dw (\3 << 10 | \2 << 5 | \1)
@@ -816,41 +821,41 @@ pikapic_writebyte: macro
 	db pikapic_writebyte_command, \1
 	endm
 
-	enum pikapic_2_command
-pikapic_2: macro
-	db pikapic_2_command, \1
+	enum pikapic_loadgfx_command
+pikapic_loadgfx: macro
+	db pikapic_loadgfx_command, \1 ; _id - PikaPicAnimGFXHeaders) / 4
 	endm
 
-	enum pikapic_3_command
-pikapic_3: macro
-	db pikapic_3_command
-	dw \1, \2
-	db \3
+	enum pikapic_object_command
+pikapic_object: macro
+	db pikapic_object_command
+	dw \1
+	db \2, \3, \4
 	endm
 
-	enum pikapic_4_command
-pikapic_4: macro
-	db pikapic_4_command
+	enum pikapic_nop4_command
+pikapic_nop4: macro
+	db pikapic_nop4_command
 	endm
 
-	enum pikapic_5_command
-pikapic_5: macro
-	db pikapic_5_command
+	enum pikapic_nop5_command
+pikapic_nop5: macro
+	db pikapic_nop5_command
 	endm
 
-	enum pikapic_6_command
-pikapic_6: macro
-	db pikapic_6_command, \1
+	enum pikapic_waitbgmapeleteobject_command
+pikapic_waitbgmapeleteobject: macro
+	db pikapic_waitbgmapeleteobject_command, \1
 	endm
 
-	enum pikapic_7_command
-pikapic_7: macro
-	db pikapic_7_command
+	enum pikapic_nop7_command
+pikapic_nop7: macro
+	db pikapic_nop7_command
 	endm
 
-	enum pikapic_8_command
-pikapic_8: macro
-	db pikapic_8_command
+	enum pikapic_nop8_command
+pikapic_nop8: macro
+	db pikapic_nop8_command
 	endm
 
 	enum pikapic_jump_command
@@ -866,8 +871,8 @@ pikapic_setdelay: macro ; a
 	enum pikapic_cry_command
 pikapic_cry: macro ; b
 	db pikapic_cry_command
-if \1 == $ff
-	db \1
+IF _NARG == 0
+	db $ff
 else
 	dpikacry \1
 	endc
@@ -878,12 +883,12 @@ pikapic_thunderbolt: macro ; c
 	db pikapic_thunderbolt_command
 	endm
 
-	enum pikapic_d_command
-pikapic_d: macro ; d
-	db pikapic_d_command
+	enum pikapic_waitbgmap_command
+pikapic_waitbgmap: macro ; d
+	db pikapic_waitbgmap_command
 	endm
 
-	enum pikapic_e_command
-pikapic_e: macro ; e
-	db pikapic_e_command
+	enum pikapic_ret_command
+pikapic_ret: macro ; e
+	db pikapic_ret_command
 	endm
