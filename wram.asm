@@ -2523,13 +2523,24 @@ wd438:: ds 1
 
 wExpressionNumber:: ; d447
 	ds 1
-
+wExpressionNumber2::
 	ds 1
 	
-wd44a:: ds 1
+wd44a:: ds 1 ; d449
 wd44b:: ds 1
-
-	ds 36
+wd44c:: ds 1
+wd44d:: ds 1
+wPikaPicAnimPointer:: dw   ; d44d
+wd450:: ds 1
+wd451:: ds 1
+wPikaPicAnimTimer:: ds 1 ; d451
+wd453:: ds 1
+wPikaPicAnimVar::
+wPikaSpriteX:: ds 1
+wPikaPicTextboxStartX::
+wPikaSpriteY:: ds 1 ; d454
+wPikaPicTextboxStartY:: ds 1
+	ds 25
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470

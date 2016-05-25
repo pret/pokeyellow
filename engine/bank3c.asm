@@ -90,67 +90,67 @@ PikachuCriesPointerTable: ; f008e (3c:408e)
 ; dw pointer to cry
 
 ; bank 21
-	dbw BANK(PikachuCry1), PikachuCry1 ; 21:4000
-	dbw BANK(PikachuCry2), PikachuCry2 ; 21:491a
-	dbw BANK(PikachuCry3), PikachuCry3 ; 21:4fdc
-	dbw BANK(PikachuCry4), PikachuCry4 ; 21:59ee
+	pikacry_def PikachuCry1 ; 21:4000
+	pikacry_def PikachuCry2 ; 21:491a
+	pikacry_def PikachuCry3 ; 21:4fdc
+	pikacry_def PikachuCry4 ; 21:59ee
 	
 ; bank 22
-	dbw BANK(PikachuCry5), PikachuCry5 ; 22:4000
-	dbw BANK(PikachuCry6), PikachuCry6 ; 22:5042
-	dbw BANK(PikachuCry7), PikachuCry7 ; 22:6254
+	pikacry_def PikachuCry5 ; 22:4000
+	pikacry_def PikachuCry6 ; 22:5042
+	pikacry_def PikachuCry7 ; 22:6254
 	
 ; bank 23
-	dbw BANK(PikachuCry8), PikachuCry8 ; 23:4000
-	dbw BANK(PikachuCry9), PikachuCry9 ; 23:50ca
-	dbw BANK(PikachuCry10), PikachuCry10 ; 23:5e0c
+	pikacry_def PikachuCry8 ; 23:4000
+	pikacry_def PikachuCry9 ; 23:50ca
+	pikacry_def PikachuCry10 ; 23:5e0c
 
 ; bank 24
-	dbw BANK(PikachuCry11), PikachuCry11 ; 24:4000
-	dbw BANK(PikachuCry12), PikachuCry12 ; 24:4722
-	dbw BANK(PikachuCry13), PikachuCry13 ; 24:54a4
+	pikacry_def PikachuCry11 ; 24:4000
+	pikacry_def PikachuCry12 ; 24:4722
+	pikacry_def PikachuCry13 ; 24:54a4
 	
 ; bank 25
-	dbw BANK(PikachuCry14), PikachuCry14 ; 25:4000
-	dbw BANK(PikachuCry15), PikachuCry15 ; 25:589a
+	pikacry_def PikachuCry14 ; 25:4000
+	pikacry_def PikachuCry15 ; 25:589a
 	
 ; banks 31-34, in no particular order
 
-	dbw BANK(PikachuCry16), PikachuCry16 ; 31:4000
-	dbw BANK(PikachuCry17), PikachuCry17 ; 34:4000
-	dbw BANK(PikachuCry18), PikachuCry18 ; 31:549a
-	dbw BANK(PikachuCry19), PikachuCry19 ; 33:4000
-	dbw BANK(PikachuCry20), PikachuCry20 ; 32:4000
-	dbw BANK(PikachuCry21), PikachuCry21 ; 32:6002
-	dbw BANK(PikachuCry22), PikachuCry22 ; 31:63a4
-	dbw BANK(PikachuCry23), PikachuCry23 ; 34:4862
-	dbw BANK(PikachuCry24), PikachuCry24 ; 33:5632
-	dbw BANK(PikachuCry25), PikachuCry25 ; 34:573c
-	dbw BANK(PikachuCry26), PikachuCry26 ; 33:725c
+	pikacry_def PikachuCry16 ; 31:4000
+	pikacry_def PikachuCry17 ; 34:4000
+	pikacry_def PikachuCry18 ; 31:549a
+	pikacry_def PikachuCry19 ; 33:4000
+	pikacry_def PikachuCry20 ; 32:4000
+	pikacry_def PikachuCry21 ; 32:6002
+	pikacry_def PikachuCry22 ; 31:63a4
+	pikacry_def PikachuCry23 ; 34:4862
+	pikacry_def PikachuCry24 ; 33:5632
+	pikacry_def PikachuCry25 ; 34:573c
+	pikacry_def PikachuCry26 ; 33:725c
 	
 ; bank 35
-	dbw BANK(PikachuCry27), PikachuCry27 ; 35:4000
-	dbw BANK(PikachuCry28), PikachuCry28 ; 35:4b5a
-	dbw BANK(PikachuCry29), PikachuCry29 ; 35:5da4
-	dbw BANK(PikachuCry30), PikachuCry30 ; 35:69ce
-	dbw BANK(PikachuCry31), PikachuCry31 ; 35:6e80
+	pikacry_def PikachuCry27 ; 35:4000
+	pikacry_def PikachuCry28 ; 35:4b5a
+	pikacry_def PikachuCry29 ; 35:5da4
+	pikacry_def PikachuCry30 ; 35:69ce
+	pikacry_def PikachuCry31 ; 35:6e80
 	
 ; bank 36
-	dbw BANK(PikachuCry32), PikachuCry32 ; 36:4000
-	dbw BANK(PikachuCry33), PikachuCry33 ; 36:458a
-	dbw BANK(PikachuCry34), PikachuCry34 ; 36:523c
+	pikacry_def PikachuCry32 ; 36:4000
+	pikacry_def PikachuCry33 ; 36:458a
+	pikacry_def PikachuCry34 ; 36:523c
 	
 ; bank 37
-	dbw BANK(PikachuCry35), PikachuCry35 ; 37:4000
-	dbw BANK(PikachuCry36), PikachuCry36 ; 37:522a
+	pikacry_def PikachuCry35 ; 37:4000
+	pikacry_def PikachuCry36 ; 37:522a
 
 ; banks 36-38
-	dbw BANK(PikachuCry37), PikachuCry37 ; 38:4000
-	dbw BANK(PikachuCry38), PikachuCry38 ; 38:4dfa
-	dbw BANK(PikachuCry39), PikachuCry39 ; 37:6e0c
-	dbw BANK(PikachuCry40), PikachuCry40 ; 38:5a64
-	dbw BANK(PikachuCry41), PikachuCry41 ; 36:6746
-	dbw BANK(PikachuCry42), PikachuCry42 ; 38:6976
+	pikacry_def PikachuCry37 ; 38:4000
+	pikacry_def PikachuCry38 ; 38:4dfa
+	pikacry_def PikachuCry39 ; 37:6e0c
+	pikacry_def PikachuCry40 ; 38:5a64
+	pikacry_def PikachuCry41 ; 36:6746
+	pikacry_def PikachuCry42 ; 38:6976
 
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 
@@ -312,7 +312,7 @@ Func_f0a82: ; f0a82
 	push af
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	callab Func_fd831
+	callab LoadPikachuShadowIntoVRAM
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl

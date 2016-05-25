@@ -769,3 +769,121 @@ x = 0
 x = x + (\1) * $40000
 	endr
 ENDM
+
+enum_start: macro
+if _NARG >= 1
+__enum__ = \1
+else
+__enum__ = 0
+endc
+if _NARG >= 2
+__enumdir__ = \2
+else
+__enumdir__ = +1
+endc
+endm
+
+enum: macro
+\1 = __enum__
+__enum__ = __enum__ + __enumdir__
+endm
+
+enum_set: macro
+__enum__ = \1
+endm
+
+pikacry_def: MACRO
+\1_id:: dba \1
+endm
+
+dpikacry: MACRO
+	db (\1_id - PikachuCriesPointerTable) / 3
+	endm
+
+pikacry: MACRO
+	ld a, (\1_id - PikachuCriesPointerTable) / 3
+	endm
+
+
+	enum_start
+	enum pikapic_nop_command
+pikapic_nop: macro
+	db pikapic_nop_command
+	endm
+
+	enum pikapic_writebyte_command
+pikapic_writebyte: macro
+	db pikapic_writebyte_command, \1
+	endm
+
+	enum pikapic_2_command
+pikapic_2: macro
+	db pikapic_2_command, \1
+	endm
+
+	enum pikapic_3_command
+pikapic_3: macro
+	db pikapic_3_command
+	dw \1, \2
+	db \3
+	endm
+
+	enum pikapic_4_command
+pikapic_4: macro
+	db pikapic_4_command
+	endm
+
+	enum pikapic_5_command
+pikapic_5: macro
+	db pikapic_5_command
+	endm
+
+	enum pikapic_6_command
+pikapic_6: macro
+	db pikapic_6_command, \1
+	endm
+
+	enum pikapic_7_command
+pikapic_7: macro
+	db pikapic_7_command
+	endm
+
+	enum pikapic_8_command
+pikapic_8: macro
+	db pikapic_8_command
+	endm
+
+	enum pikapic_jump_command
+pikapic_jump: macro ; 9
+	dbw pikapic_jump_command, \1
+	endm
+
+	enum pikapic_setdelay_command
+pikapic_setdelay: macro ; a
+	dbw pikapic_setdelay_command, \1
+	endm
+
+	enum pikapic_cry_command
+pikapic_cry: macro ; b
+	db pikapic_cry_command
+if \1 == $ff
+	db \1
+else
+	dpikacry \1
+	endc
+	endm
+
+	enum pikapic_thunderbolt_command
+pikapic_thunderbolt: macro ; c
+	db pikapic_thunderbolt_command
+	endm
+
+	enum pikapic_d_command
+pikapic_d: macro ; d
+	db pikapic_d_command
+	endm
+
+	enum pikapic_e_command
+pikapic_e: macro ; e
+	db pikapic_e_command
+	endm
