@@ -2912,21 +2912,63 @@ Jumptable_fd60f:
 	dw Func_fd647
 
 Func_fd61f:
-	dr $fd61f, $fd624
+	ld d, 0
+	ld e, a
+	jr Func_fd64d
+
 Func_fd624:
-	dr $fd624, $fd62b
+	ld d, 0
+	cpl
+	inc a
+	ld e, a
+	jr Func_fd64d
+
 Func_fd62b:
-	dr $fd62b, $fd632
+	cpl
+	inc a
+	ld d, a
+	ld e, 0
+	jr Func_fd64d
+
 Func_fd632:
-	dr $fd632, $fd637
+	ld d, a
+	ld e, 0
+	jr Func_fd64d
+
 Func_fd637:
-	dr $fd637, $fd63d
+	ld e, a
+	cpl
+	inc a
+	ld d, a
+	jr Func_fd64d
+
 Func_fd63d:
-	dr $fd63d, $fd641
+	ld e, a
+	ld d, a
+	jr Func_fd64d
+
 Func_fd641:
-	dr $fd641, $fd647
+	cpl
+	inc a
+	ld e, a
+	ld d, a
+	jr Func_fd64d
+
 Func_fd647:
-	dr $fd647, $fd65c
+	ld d, a
+	cpl
+	inc a
+	ld e, a
+	jr Func_fd64d
+
+Func_fd64d:
+	ld a, [$d453]
+	add d
+	ld [$d453], a
+	ld a, [$d454]
+	add e
+	ld [$d454], a
+	ret
 
 Jumptable_fd65c:
 	dw Func_fd678
