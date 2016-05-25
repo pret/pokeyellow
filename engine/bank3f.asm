@@ -2295,8 +2295,101 @@ Pointer_fd230: ; fd230 (3f:5230)
 	dr $fd230,$fd252
 Func_fd252: ; fd252 (3f:5252)
 	dr $fd252,$fd2a1
+
 Func_fd2a1:: ; fd2a1 (3f:52a1)
-	dr $fd2a1,$fd831
+	ld a, b
+	ld [wd44a], a
+	ld a, l
+	ld [wd44b], a
+	ld a, h
+	ld [wd44b + 1], a
+	call Func_fd2c1
+.asm_fd2b0
+	call Func_fd2f5
+	jr nc, .asm_fd2ba
+	call Func_fd329
+	jr .asm_fd2b0
+
+.asm_fd2ba
+	call Func_fd2c1
+	call DelayFrame
+	ret
+
+Func_fd2c1:
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	push hl
+	push de
+	push bc
+
+	ld hl, wSpriteStateData1
+	ld de, wSpriteStateData1 + $f0
+	ld c, $10
+	call Func_fd2eb
+
+	ld hl, wSpriteStateData2
+	ld de, wSpriteStateData2 + $f0
+	ld c, $10
+	call Func_fd2eb
+
+	pop bc
+	pop de
+	pop hl
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	ret
+
+Func_fd2eb:
+.asm_fd2eb
+	ld b, [hl]
+	ld a, [de]
+	ld [hli], a
+	ld a, b
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .asm_fd2eb
+	ret
+
+Func_fd2f5:
+	call Func_157c
+	cp $3f
+	ret z
+	ld c, a
+	ld b, 0
+	ld hl, Data_fd3b0
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld [wd44b + 4], a
+	ld a, [hli]
+	cp $80
+	jr nz, .asm_fd311
+	call Func_157c
+.asm_fd311
+	ld [wd44b + 3], a
+	ld a, [hli]
+	ld [wd44b + 6], a
+	ld a, [hli]
+	cp $80
+	jr nz, .asm_fd320
+	call Func_157c
+.asm_fd320
+	ld [wd44b + 5], a
+	xor a
+	ld [wd44b + 7], a
+	scf
+	ret
+
+Func_fd329:
+	dr $fd329,$fd3b0
+
+Data_fd3b0:
+	dr $fd3b0,$fd831
 Func_fd831:
 	dr $fd831,$fd8ab
 Func_fd8ab: ; fd8ab (3f:58ab)
