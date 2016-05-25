@@ -311,6 +311,8 @@ hSpriteAnimFrameCounter EQU $FFEA
 
 hItemAlreadyFound EQU $FFEB
 
+hDidntFindAnyHiddenObject EQU $FFEE
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hLCDCPointer EQU $FFF4

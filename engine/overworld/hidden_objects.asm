@@ -1,6 +1,6 @@
-; if a hidden object was found, stores $00 in [$ffee], else stores $ff
+; if a hidden object was found, stores $00 in [hDidntFindAnyHiddenObject], else stores $ff
 CheckForHiddenObject: ; f25f8 (3c:65f8)
-	ld hl, $ffeb
+	ld hl, hItemAlreadyFound
 	xor a
 	ld [hli], a
 	ld [hli], a
@@ -55,7 +55,7 @@ CheckForHiddenObject: ; f25f8 (3c:65f8)
 	ret
 .noMatch
 	ld a, $ff
-	ld [$ffee], a
+	ld [hDidntFindAnyHiddenObject], a
 	ret
 
 ; checks if the coordinates in front of the player's sprite match Y in b and X in c
