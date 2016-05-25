@@ -327,4 +327,6 @@ hFlags_0xFFFA EQU $FFFA
 
 hFieldMoveMonMenuTopMenuItemX EQU $FFFB
 
+h_0xFFFC EQU $FFFC
+
 hGBC EQU $FFFE ; 0 if DMG, != 0 if GBC
