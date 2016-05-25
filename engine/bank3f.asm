@@ -3247,7 +3247,41 @@ Func_fd814:
 	ret
 
 Func_fd831:
-	dr $fd831, $fd8ab
+	ld hl, vChars1 + $7f * $10
+	ld de, LedgeHoppingShadowGFX_3F
+	lb bc, BANK(LedgeHoppingShadowGFX_3F), (LedgeHoppingShadowGFX_3FEnd - LedgeHoppingShadowGFX_3F) / 8
+	jp CopyVideoDataDoubleAlternate
+
+LedgeHoppingShadowGFX_3F:
+INCBIN "gfx/ledge_hopping_shadow.1bpp"
+LedgeHoppingShadowGFX_3FEnd:
+
+Func_fd845:
+	ld hl, vChars1 + $7e * $10
+	ld de, GFX_fd86b
+	lb bc, BANK(GFX_fd86b), 1
+	jp CopyVideoDataDoubleAlternate
+
+Func_fd851:
+	ld hl, vChars0 + $c * $10
+	ld a, 3
+.asm_fd856
+	push af
+	push hl
+	ld de, GFX_fd86b
+	lb bc, BANK(GFX_fd86b), 4
+	call CopyVideoDataAlternate
+	pop hl
+	ld de, 4 * $10
+	add hl, de
+	pop af
+	dec a
+	jr nz, .asm_fd856
+	ret
+
+GFX_fd86b:
+INCBIN "gfx/unknown_fd86b.2bpp"
+
 Func_fd8ab: ; fd8ab (3f:58ab)
 	dr $fd8ab, $fd8d4
 Func_fd8d4: ; fd8d4 (3f:58d4)
