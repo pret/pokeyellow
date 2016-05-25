@@ -14,10 +14,11 @@ PlayPikachuSoundClip:: ; f0000 (3c:4000)
 	ld c, $4
 .loop
 	dec c
-	jr z, .asm_f0019
+	jr z, .done_delay
 	call DelayFrame
 	jr .loop
-.asm_f0019
+
+.done_delay
 	di
 	push bc
 	push hl
