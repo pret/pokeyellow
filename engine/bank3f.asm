@@ -2526,11 +2526,287 @@ Data_fd3b0:
 	db $02, $80, $06, $00
 
 Jumptable_fd4ac:
-	dr $fd4ac,$fd65c
+	dw Func_fd4e5
+ 	dw Func_fd4e9
+ 	dw Func_fd504
+ 	dw Func_fd50c
+ 	dw Func_fd511
+ 	dw Func_fd518
+ 	dw Func_fd52c
+ 	dw Func_fd540
+ 	dw Func_fd553
+ 	dw Func_fd566
+ 	dw Func_fd579
+ 	dw Func_fd5b1
+ 	dw Func_fd5b5
+ 	dw Func_fd5b9
+ 	dw Func_fd5bd
+ 	dw Func_fd5c1
+ 	dw Func_fd5c5
+ 	dw Func_fd5c9
+ 	dw Func_fd5cd
+ 	dw Func_fd5ea
+ 	dw Func_fd5ee
+ 	dw Func_fd5f2
+ 	dw Func_fd5f6
+ 	dw Func_fd4e5
+
+Func_fd4dc:
+	ld a, [$d44c]
+	set 7, a
+	ld [$d44c], a
+	ret
+
+Func_fd4e5:
+	call Func_fd4dc
+	ret
+
+Func_fd4e9:
+	ld hl, 4
+	add hl, bc
+	ld a, [hl]
+	ld [$d454], a
+	ld hl, 6
+	add hl, bc
+	ld a, [hl]
+	ld [$d453], a
+	xor a
+	ld [$d456], a
+	ld [$d455], a
+	call Func_fd4dc
+	ret
+
+Func_fd504:
+	call Func_fd775
+	ret nz
+	call Func_fd4dc
+	ret
+
+Func_fd50c:
+	call Func_fd75f
+	jr asm_fd58c
+
+Func_fd511:
+	call Func_fd75f
+	xor %100
+	jr asm_fd58c
+
+Func_fd518:
+	call Func_fd75f
+	ld hl, Data_fd523
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd523:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_UP
+	db $ff
+
+Func_fd52c:
+	call Func_fd75f
+	ld hl, Data_fd537
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd537:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_DOWN
+	db $ff
+
+Func_fd540:
+	call Func_fd75f
+	ld hl, Data_fd54b
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd54b:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_UP | $10
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_LEFT | $10
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_DOWN | $10
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_RIGHT | $10
+
+Func_fd553:
+	call Func_fd75f
+	ld hl, Data_fd55e
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd55e:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_DOWN | $10
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_RIGHT | $10
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_LEFT | $10
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_UP | $10
+
+Func_fd566:
+	call Func_fd75f
+	ld hl, Data_fd571
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd571:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_RIGHT | $10
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_DOWN | $10
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_UP | $10
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_LEFT | $10
+
+Func_fd579:
+	call Func_fd75f
+	ld hl, Data_fd584
+	call Func_fd5a0
+	jr asm_fd58c
+
+Data_fd584:
+	db SPRITE_FACING_DOWN
+	db SPRITE_FACING_LEFT | $10
+	db SPRITE_FACING_UP
+	db SPRITE_FACING_UP | $10
+	db SPRITE_FACING_LEFT
+	db SPRITE_FACING_RIGHT | $10
+	db SPRITE_FACING_RIGHT
+	db SPRITE_FACING_DOWN | $10
+
+asm_fd58c
+	rrca
+	rrca
+	and $7
+	ld e, a
+	call Func_fd784
+	ld d, a
+	call Func_fd601
+	call Func_fd775
+	ret nz
+	call Func_fd4dc
+	ret
+
+Func_fd5a0:
+	push de
+	ld d, a
+.asm_fd5a2
+	ld a, [hli]
+	cp d
+	jr z, .asm_fd5ad
+	inc hl
+	cp $ff
+	jr nz, .asm_fd5a2
+	pop de
+	ret
+
+.asm_fd5ad
+	ld a, [hl]
+	pop de
+	scf
+	ret
+
+Func_fd5b1:
+	ld a, 0
+	jr asm_fd5d1
+
+Func_fd5b5:
+	ld a, 1
+	jr asm_fd5d1
+
+Func_fd5b9:
+	ld a, 2
+	jr asm_fd5d1
+
+Func_fd5bd:
+	ld a, 3
+	jr asm_fd5d1
+
+Func_fd5c1:
+	ld e, 4
+	jr asm_fd5d5
+
+Func_fd5c5:
+	ld e, 5
+	jr asm_fd5d5
+
+Func_fd5c9:
+	ld e, 6
+	jr asm_fd5d5
+
+Func_fd5cd:
+	ld e, 7
+	jr asm_fd5d5
+
+asm_fd5d1
+	ld e, a
+	call Func_fd769
+asm_fd5d5
+	call Func_fd784
+	ld d, a
+	push de
+	call Func_fd601
+	pop de
+	call Func_fd775
+	ret nz
+	ld a, e
+	call Func_fd7cb
+	call Func_fd4dc
+	ret
+
+Func_fd5ea:
+	ld a, 0
+	jr asm_fd5fa
+
+Func_fd5ee:
+	ld a, 1
+	jr asm_fd5fa
+
+Func_fd5f2:
+	ld a, 2
+	jr asm_fd5fa
+
+Func_fd5f6:
+	ld a, 3
+	jr asm_fd5fa
+
+asm_fd5fa
+	call Func_fd769
+	call Func_fd4dc
+	ret
+
+Func_fd601:
+	dr $fd601,$fd65c
 
 Jumptable_fd65c:
-	dr $fd65c,$fd7f3
+	dr $fd65c,$fd75f
 
+Func_fd75f:
+	dr $fd75f,$fd769
+
+Func_fd769:
+	dr $fd769,$fd775
+Func_fd775:
+	dr $fd775,$fd784
+Func_fd784:
+	dr $fd784,$fd7cb
+Func_fd7cb:
+	dr $fd7cb,$fd7f3
 Func_fd7f3:
 	dr $fd7f3,$fd831
 Func_fd831:
