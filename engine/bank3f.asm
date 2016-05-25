@@ -4004,15 +4004,513 @@ Data_fdd59:
 	db $e0
 
 Func_fdd62:
-	dr $fdd62, $fe046
+	and a
+	ret z
+	ld e, a
+	ld d, 0
+	ld hl, Pointers_fddb8
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld a, [de]
+	ld c, a
+	inc de
+	ld a, [de]
+	ld b, a
+	inc de
+	push de
+	push bc
+	call Func_fdd98
+	pop bc
+	pop de
+.asm_fdd7c
+	push bc
+	push hl
+	ld a, [$d456]
+	ld c, a
+.asm_fdd82
+	ld a, [de]
+	inc de
+	cp $ff
+	jr z, .asm_fdd8a
+	add c
+	ld [hl], a
+.asm_fdd8a
+	inc hl
+	dec b
+	jr nz, .asm_fdd82
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec c
+	jr nz, .asm_fdd7c
+	ret
+
+Func_fdd98:
+	push bc
+	ld a, [$d458]
+	ld b, a
+	ld a, [$d455]
+	add b
+	coord hl, 0, 0
+	ld bc, SCREEN_WIDTH
+	call AddNTimes
+	ld a, [$d457]
+	ld c, a
+	ld a, [$d454]
+	add c
+	ld c, a
+	ld b, 0
+	add hl, bc
+	pop bc
+	ret
+
+Pointers_fddb8:
+	dw Data_fde0e
+	dw Data_fde0f
+	dw Data_fde2a
+	dw Data_fde60
+	dw Data_fde63
+	dw Data_fde67
+	dw Data_fde6b
+	dw Data_fde45
+	dw Data_fde6b
+	dw Data_fdfaa
+	dw Data_fdfc5
+	dw Data_fdfe0
+	dw Data_fdffb
+	dw Data_fe016
+	dw Data_fde81
+	dw Data_fde9c
+	dw Data_fdeb7
+	dw Data_fded2
+	dw Data_fdeed
+	dw Data_fdf08
+	dw Data_fdf23
+	dw Data_fdf3e
+	dw Data_fdf59
+	dw Data_fdf74
+	dw Data_fdf8f
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfaa
+	dw Data_fdfc5
+	dw Data_fdfe0
+	dw Data_fde0f
+
+Data_fde0e:
+	db $ff ; unused
+
+Data_fde0f: ; fde0f
+	db 5, 5
+	db $00, $05, $0a, $0f, $14
+	db $01, $06, $0b, $10, $15
+	db $02, $07, $0c, $11, $16
+	db $03, $08, $0d, $12, $17
+	db $04, $09, $0e, $13, $18
+
+Data_fde2a: ; fde2a
+	db 5, 5
+	db $19, $1e, $23, $28, $2d
+	db $1a, $1f, $24, $29, $2e
+	db $1b, $20, $25, $2a, $2f
+	db $1c, $21, $26, $2b, $30
+	db $1d, $22, $27, $2c, $31
+
+Data_fde45: ; fde45
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $20, $25, $ff, $ff
+	db $ff, $21, $26, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fde60: ; fde60
+	db 1, 1
+	db $00
+
+Data_fde63: ; fde63
+	db 2, 1
+	db $00
+	db $01
+
+Data_fde67: ; fde67
+	db 1, 2
+	db $00, $01
+
+Data_fde6b: ; fde6b
+	db 2, 2
+	db $00, $01
+	db $02, $03
+
+Data_fde71: ; fde71
+	db 3, 2
+	db $00, $01
+	db $02, $03
+	db $04, $05
+
+Data_fde79: ; fde79
+	db 2, 3
+	db $00, $01, $02
+	db $03, $04, $05
+
+Data_fde81: ; fde81
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $02, $03, $04
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fde9c: ; fde9c
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+
+Data_fdeb7: ; fdeb7
+	db 5, 5
+	db $00, $01, $ff, $ff, $ff
+	db $02, $03, $ff, $ff, $ff
+	db $04, $05, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fded2: ; fded2
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+	db $0a, $0b, $0c, $0d, $0e
+	db $0f, $10, $11, $12, $13
+
+Data_fdeed: ; fdeed
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $00, $01
+	db $ff, $ff, $ff, $02, $03
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fdf08: ; fdf08
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $ff, $ff, $ff
+	db $02, $03, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fdf23: ; fdf23
+	db 5, 5
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+	db $0a, $0b, $0c, $0d, $0e
+	db $0f, $10, $11, $12, $13
+	db $14, $15, $16, $17, $18
+
+Data_fdf3e: ; fdf3e
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+	db $ff, $ff, $ff, $ff, $ff
+
+Data_fdf59: ; fdf59
+	db 5, 5
+	db $ff, $ff, $ff, $ff, $ff
+	db $ff, $ff, $ff, $ff, $ff
+	db $00, $01, $ff, $ff, $ff
+	db $02, $03, $ff, $ff, $ff
+	db $04, $05, $ff, $ff, $ff
+
+Data_fdf74: ; fdf74
+	db 5, 5
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+	db $0a, $0b, $0c, $0d, $0e
+	db $0f, $10, $11, $12, $13
+	db $14, $15, $16, $17, $18
+
+Data_fdf8f: ; fdf8f
+	db 5, 5
+	db $19, $1a, $1b, $1c, $1d
+	db $1e, $1f, $20, $21, $22
+	db $23, $24, $25, $26, $27
+	db $28, $29, $2a, $2b, $2c
+	db $2d, $2e, $2f, $30, $31
+
+Data_fdfaa: ; fdfaa
+	db 5, 5
+	db $00, $01, $02, $03, $04
+	db $05, $06, $07, $08, $09
+	db $0a, $0b, $0c, $0d, $0e
+	db $0f, $10, $11, $12, $13
+	db $14, $15, $16, $17, $18
+
+Data_fdfc5: ; fdfc5
+	db 5, 5
+	db $19, $1a, $1b, $1c, $1d
+	db $1e, $1f, $20, $21, $22
+	db $23, $24, $25, $26, $27
+	db $28, $29, $2a, $2b, $2c
+	db $2d, $2e, $2f, $30, $31
+
+Data_fdfe0: ; fdfe0
+	db 5, 5
+	db $32, $33, $34, $35, $36
+	db $37, $38, $39, $3a, $3b
+	db $3c, $3d, $3e, $3f, $40
+	db $41, $42, $43, $44, $45
+	db $46, $47, $48, $49, $4a
+
+Data_fdffb: ; fdffb
+	db 5, 5
+	db $4b, $4c, $4d, $4e, $4f
+	db $50, $51, $52, $53, $54
+	db $55, $56, $57, $58, $59
+	db $5a, $5b, $5c, $5d, $5e
+	db $5f, $60, $61, $62, $63
+
+Data_fe016: ; fe016
+	db 5, 5
+	db $64, $65, $66, $67, $68
+	db $69, $6a, $6b, $6c, $6d
+	db $6e, $6f, $70, $71, $72
+	db $73, $74, $75, $76, $77
+	db $78, $79, $7a, $7b, $7c
+
+Func_fe031:
+	push hl
+	ld e, a
+	ld d, 0
+	ld hl, Data_fe572
+	add hl, de
+	add hl, de
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	pop hl
+	ret
+
 Func_fe046:
-	dr $fe046, $fe0c3
+	call Func_fe066
+	ret c
+	xor a
+	ld [$d44f], a
+.asm_fe04e
+	call Func_fe0c3
+	ld e, a
+	ld d, 0
+	ld hl, Jumptable_fe071
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call JumpToAddress
+	ld a, [$d44f]
+	and a
+	jr z, .asm_fe04e
+	ret
+
+Func_fe066:
+	ld a, [$d453]
+	and a
+	ret z
+	dec a
+	ld [$d453], a
+	scf
+	ret
+
+Jumptable_fe071:
+	dw Func_fe08f
+	dw Func_fe0af
+	dw Func_fe0db
+	dw Func_fdb32
+	dw Func_fe0b6
+	dw Func_fe0b6
+	dw Func_fdb65
+	dw Func_fe0b6
+	dw Func_fe0b6
+	dw Func_fe0b7
+	dw Func_fe09c
+	dw Func_fe1c7
+	dw Func_fe1d7
+	dw Func_fe0a9
+	dw Func_fe090
+
+Func_fe08f:
+	ret
+
+Func_fe090:
+	ld a, 1
+	ld [$d451], a
+	xor a
+	ld [$d452], a
+	jr Func_fe0a9
+
+Func_fe09b:
+	ret
+
+Func_fe09c:
+	call Func_fe0c3
+	ld [$d451], a
+	call Func_fe0c3
+	ld [$d452], a
+	ret
+
+Func_fe0a9:
+	ld a, $ff
+	ld [$d44f], a
+	ret
+
+Func_fe0af:
+	call Func_fe0c3
+	ld [$d453], a
+	ret
+
+Func_fe0b6:
+	ret
+
+Func_fe0b7:
+	call Func_fe0c3
+	ld l, a
+	call Func_fe0c3
+	ld h, a
+	call Func_fe0d0
+	ret
+
 Func_fe0c3:
-	dr $fe0c3, $fe0d0
+	push hl
+	ld hl, $d44d
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [hli]
+	call Func_fe0d0
+	pop hl
+	ret
+
 Func_fe0d0:
-	dr $fe0d0, $fe15c
+	push af
+	ld a, l
+	ld [$d44d], a
+	ld a, h
+	ld [$d44e], a
+	pop af
+	ret
+
+Func_fe0db:
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	ld a, [H_AUTOBGTRANSFERENABLED]
+	push af
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, [hTilesetType]
+	push af
+	xor a
+	ld [hTilesetType], a
+	call Func_fe0c3
+	ld [$d450], a
+	ld a, [$d450]
+	call Func_fe031
+	ld a, c
+	cp a, $ff
+	jr z, .asm_fe106
+	call Func_fe114
+	jr .asm_fe109
+
+.asm_fe106
+	call Func_fe128
+.asm_fe109
+	pop af
+	ld [hTilesetType], a
+	pop af
+	ld [H_AUTOBGTRANSFERENABLED], a
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	ret
+
+Func_fe114: ; fe114
+	push de
+	ld a, [$d450]
+	ld d, a
+	ld e, c
+	call Func_fe17a
+	pop de
+	jr c, .asm_fe127
+	call Func_fe167
+	call CopyVideoDataAlternate
+	and a
+.asm_fe127
+	ret
+
+Func_fe128: ; fe128
+	push de
+	ld a, [$d450]
+	ld d, a
+	ld e, $19
+	call Func_fe17a
+	pop de
+	jr c, .asm_fe15b
+	ld a, b
+	call UncompressSpriteFromDE
+	ld a, $00
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, S_SPRITEBUFFER1
+	ld de, S_SPRITEBUFFER0
+	ld bc, SPRITEBUFFERSIZE * 2
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ld a, [$d450]
+	call Func_fe1af
+	call Func_fe167
+	ld d, h
+	ld e, l
+	call InterlaceMergeSpriteBuffers
+.asm_fe15b
+	ret
+
 Func_fe15c:
-	dr $fe15c, $fe28a
+	dr $fe15c, $fe167
+Func_fe167:
+	dr $fe167, $fe17a
+Func_fe17a:
+	dr $fe17a, $fe1af
+Func_fe1af:
+	dr $fe1af, $fe1c7
+Func_fe1c7:
+	dr $fe1c7, $fe1d7
+Func_fe1d7:
+	dr $fe1d7, $fe28a
 
 Data_fe28a:
 	dr $fe28a, $fe2a4
@@ -4069,7 +4567,10 @@ Data_fe520:
 Data_fe53e:
 	dr $fe53e, $fe558
 Data_fe558:
-	dr $fe558, $fe66f
+	dr $fe558, $fe572
+
+Data_fe572:
+	dr $fe572, $fe66f
 
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"
