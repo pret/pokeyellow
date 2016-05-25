@@ -3195,7 +3195,57 @@ Data_fd7e3:
 	db  1, -1
 
 Func_fd7f3:
-	dr $fd7f3, $fd831
+	push bc
+	push de
+	push hl
+	
+	ld bc, wOAMBuffer + 4 * 36
+	ld a, [$d454]
+	ld e, a
+	ld a, [$d453]
+	ld d, a
+	ld hl, Data_fd80b
+	call Func_fd814
+
+	pop hl
+	pop de
+	pop bc
+	ret
+
+Data_fd80b:
+	db $02
+	db $0c, $00, $ff, 0
+	db $0c, $08, $ff, 1 << OAM_X_FLIP
+
+Func_fd814:
+	ld a, e
+	add $10
+	ld e, a
+	ld a, d
+	add $8
+	ld d, a
+	ld a, [hli]
+.asm_fd81d
+	push af
+	ld a, [hli]
+	add e
+	ld [bc], a
+	inc bc
+	ld a, [hli]
+	add d
+	ld [bc], a
+	inc bc
+	ld a, [hli]
+	ld [bc], a
+	inc bc
+	ld a, [hli]
+	ld [bc], a
+	inc bc
+	pop af
+	dec a
+	jr nz, .asm_fd81d
+	ret
+
 Func_fd831:
 	dr $fd831, $fd8ab
 Func_fd8ab: ; fd8ab (3f:58ab)
