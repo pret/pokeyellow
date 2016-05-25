@@ -2889,7 +2889,44 @@ asm_fd5fa
 	ret
 
 Func_fd601:
-	dr $fd601, $fd65c
+	push de
+	ld d, 0
+	ld hl, Jumptable_fd60f
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	pop de
+	ld a, d
+	jp [hl]
+
+Jumptable_fd60f:
+	dw Func_fd61f
+	dw Func_fd624
+	dw Func_fd62b
+	dw Func_fd632
+	dw Func_fd637
+	dw Func_fd63d
+	dw Func_fd641
+	dw Func_fd647
+
+Func_fd61f:
+	dr $fd61f, $fd624
+Func_fd624:
+	dr $fd624, $fd62b
+Func_fd62b:
+	dr $fd62b, $fd632
+Func_fd632:
+	dr $fd632, $fd637
+Func_fd637:
+	dr $fd637, $fd63d
+Func_fd63d:
+	dr $fd63d, $fd641
+Func_fd641:
+	dr $fd641, $fd647
+Func_fd647:
+	dr $fd647, $fd65c
 
 Jumptable_fd65c:
 	dw Func_fd678
@@ -4500,17 +4537,193 @@ Func_fe128: ; fe128
 	ret
 
 Func_fe15c:
-	dr $fe15c, $fe167
+	ld hl, wNPCMovementDirections
+	ld bc, $11
+	xor a
+	call FillMemory
+	ret
+
 Func_fe167:
-	dr $fe167, $fe17a
+	ld hl, vNPCSprites
+	push bc
+	ld b, a
+	and $f
+	swap a
+	ld c, a
+	ld a, b
+	and $f0
+	swap a
+	ld b, a
+	add hl, bc
+	pop bc
+	ret
+
 Func_fe17a:
-	dr $fe17a, $fe1af
+	push bc
+	push hl
+	ld hl, wNPCMovementDirections + 1
+	ld c, 8
+.asm_fe181
+	ld a, [hl]
+	and a
+	jr z, .asm_fe192
+	cp d
+	jr z, .asm_fe18f
+	inc hl
+	inc hl
+	dec c
+	jr nz, .asm_fe181
+	scf
+	ret
+
+.asm_fe18f
+	inc hl
+	ld a, [hl]
+	ret
+
+.asm_fe192
+	ld [hl], d
+	inc hl
+	ld a, [wNPCMovementDirections]
+	add $80
+	ld [hl], a
+	ld a, [wNPCMovementDirections]
+	add e
+	ld [wNPCMovementDirections], a
+	cp $80
+	jr z, .asm_fe1a7
+	jr nc, .asm_fe1ab
+.asm_fe1a7
+	ld a, [hl]
+	and a
+	jr .asm_fe1ac
+
+.asm_fe1ab
+	scf
+.asm_fe1ac
+	pop hl
+	pop bc
+	ret
+
 Func_fe1af:
-	dr $fe1af, $fe1c7
+	push bc
+	push hl
+	ld b, a
+	ld hl, wNPCMovementDirections + 1
+	ld c, 8
+.asm_fe1b7
+	ld a, [hli]
+	cp b
+	jr z, .asm_fe1c2
+	inc hl
+	dec c
+	jr nz, .asm_fe1b7
+	scf
+	jr .asm_fe1c4
+
+.asm_fe1c2
+	ld a, [hl]
+	and a
+.asm_fe1c4
+	pop hl
+	pop bc
+	ret
+
 Func_fe1c7:
-	dr $fe1c7, $fe1d7
+	call Func_fe0c3
+	cp $ff
+	ret z
+	ld e, a
+	callab PlayPikachuSoundClip
+	ret
+
 Func_fe1d7:
-	dr $fe1d7, $fe28a
+	ld a, $1
+	ld [wMuteAudioAndPauseMusic], a
+	call DelayFrame
+	ld a, [wAudioROMBank]
+	push af
+	ld a, BANK(SFX_Battle_2F)
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
+	call Func_fe203
+	call PlaySound
+	call Func_fe227
+	call WaitForSoundToFinish
+	pop af
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
+	xor a
+	ld [wMuteAudioAndPauseMusic], a
+	ret
+
+Func_fe203:
+	ld hl, MoveSoundTable
+	ld e, THUNDERBOLT
+	ld d, 0
+	add hl, de
+	add hl, de
+	add hl, de
+	ld a, BANK(MoveSoundTable)
+	call GetFarByte
+	ld b, a
+	inc hl
+	ld a, BANK(MoveSoundTable)
+	call GetFarByte
+	inc hl
+	ld [wFrequencyModifier], a
+	ld a, BANK(MoveSoundTable)
+	call GetFarByte
+	ld [wTempoModifier], a
+	ld a, b
+	ret
+
+Func_fe227:
+	ld hl, Data_fe242
+.asm_fe22a
+	ld a, [hli]
+	cp $ff
+	ret z
+	ld c, a
+	ld b, [hl]
+	inc hl
+	push hl
+	call Func_fe238
+	pop hl
+	jr .asm_fe22a
+
+Func_fe238:
+	ld a, b
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	call DelayFrames
+	ret
+
+Data_fe242:
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db 4, %11000000
+	db 4, %11100100
+	db $ff
+
+Data_fe26b:
+	dr $fe26b, $fe28a
 
 Data_fe28a:
 	dr $fe28a, $fe2a4
