@@ -2827,7 +2827,7 @@ Data_fe242:
 	db 4, %11100100
 	db $ff
 
-Data_fe26b:
+Data_fe26b: ; fe26b (3f:626b)
 	pikapic_loadgfx $1
 	pikapic_loadgfx $f
 	pikapic_loadgfx $3e
@@ -2836,11 +2836,11 @@ Data_fe26b:
 	pikapic_object $3, $b6, $5, $5
 	pikapic_waitbgmap
 	pikapic_cry
-.loop
+Data_fe286: ; fe286 (3f:6286)
 	pikapic_waitbgmap
-	pikapic_jump .loop
+	pikapic_jump Data_fe286
 
-Data_fe28a:
+Data_fe28a: ; fe28a (3f:628a)
 	pikapic_setdelay 40
 	pikapic_loadgfx $1
 	pikapic_loadgfx $2
@@ -2848,11 +2848,11 @@ Data_fe28a:
 	pikapic_object $6, $99, $0, $0
 	pikapic_waitbgmap
 	pikapic_cry PikachuCry3
-.loop
+Data_fe2a0: ; fe2a0 (3f:62a0)
 	pikapic_waitbgmap
-	pikapic_jump .loop
+	pikapic_jump Data_fe2a0
 
-Data_fe2a4:
+Data_fe2a4: ; fe2a4 (3f:62a4)
 	pikapic_setdelay 44
 	pikapic_loadgfx $3
 	pikapic_loadgfx $4
@@ -2860,62 +2860,331 @@ Data_fe2a4:
 	pikapic_object $7, $99, $0, $0
 	pikapic_waitbgmap
 	pikapic_cry
-.loop
+Data_fe2ba: ; fe2ba (3f:62ba)
 	pikapic_waitbgmap
-	pikapic_jump .loop
+	pikapic_jump Data_fe2ba
 
-Data_fe2be:
-	dr $fe2be, $fe2d8
-Data_fe2d8:
-	dr $fe2d8, $fe2f2
-Data_fe2f2:
-	dr $fe2f2, $fe30c
-Data_fe30c:
-	dr $fe30c, $fe326
-Data_fe326:
-	dr $fe326, $fe340
-Data_fe340:
-	dr $fe340, $fe35a
-Data_fe35a:
-	dr $fe35a, $fe374
-Data_fe374:
-	dr $fe374, $fe390
-Data_fe390:
-	dr $fe390, $fe3aa
-Data_fe3aa:
-	dr $fe3aa, $fe3c4
-Data_fe3c4:
-	dr $fe3c4, $fe3de
-Data_fe3de:
-	dr $fe3de, $fe3f8
-Data_fe3f8:
-	dr $fe3f8, $fe412
-Data_fe412:
-	dr $fe412, $fe42c
-Data_fe42c:
-	dr $fe42c, $fe446
-Data_fe446:
-	dr $fe446, $fe460
-Data_fe460:
-	dr $fe460, $fe47a
-Data_fe47a:
-	dr $fe47a, $fe494
-Data_fe494:
-	dr $fe494, $fe4b4
-Data_fe4b4:
-	dr $fe4b4, $fe4ce
-Data_fe4ce:
-	dr $fe4ce, $fe4e8
-Data_fe4e8:
-	dr $fe4e8, $fe502
-Data_fe502:
-	dr $fe502, $fe520
-Data_fe520:
-	dr $fe520, $fe53e
-Data_fe53e:
-	dr $fe53e, $fe558
-Data_fe558:
-	dr $fe558, $fe572
+Data_fe2be: ; fe2be (3f:62be)
+	pikapic_setdelay 80
+	pikapic_loadgfx $5
+	pikapic_loadgfx $6
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $8, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe2d4: ; fe2d4 (3f:62d4)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe2d4
+
+Data_fe2d8: ; fe2d8 (3f:62d8)
+	pikapic_setdelay 70
+	pikapic_loadgfx $7
+	pikapic_loadgfx $8
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $9, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe2ee: ; fe2ee (3f:62ee)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe2ee
+
+Data_fe2f2: ; fe2f2 (3f:62f2)
+	pikapic_setdelay 32
+	pikapic_loadgfx $9
+	pikapic_loadgfx $a
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $a, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe308: ; fe308 (3f:6308)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe308
+
+Data_fe30c: ; fe30c (3f:630c)
+	pikapic_setdelay 50
+	pikapic_loadgfx $b
+	pikapic_loadgfx $c
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $b, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry PikachuCry38
+Data_fe322: ; fe322 (3f:6322)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe322
+
+Data_fe326: ; fe326 (3f:6326)
+	pikapic_setdelay 58
+	pikapic_loadgfx $d
+	pikapic_loadgfx $e
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $c, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe33c: ; fe33c (3f:633c)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe33c
+
+Data_fe340: ; fe340 (3f:6340)
+	pikapic_setdelay 44
+	pikapic_loadgfx $f
+	pikapic_loadgfx $10
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $d, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe356: ; fe356 (3f:6356)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe356
+
+Data_fe35a: ; fe35a (3f:635a)
+	pikapic_setdelay 56
+	pikapic_loadgfx $11
+	pikapic_loadgfx $12
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $e, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe370: ; fe370 (3f:6370)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe370
+
+Data_fe374: ; fe374 (3f:6374)
+	pikapic_setdelay 56
+	pikapic_loadgfx $13
+	pikapic_loadgfx $14
+	pikapic_loadgfx $15
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $10, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe38c: ; fe38c (3f:638c)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe38c
+
+Data_fe390: ; fe390 (3f:6390)
+	pikapic_setdelay 100
+	pikapic_loadgfx $16
+	pikapic_loadgfx $17
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $11, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe3a6: ; fe3a6 (3f:63a6)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe3a6
+
+Data_fe3aa: ; fe3aa (3f:63aa)
+	pikapic_setdelay 50
+	pikapic_loadgfx $18
+	pikapic_loadgfx $19
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $12, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry PikachuCry25
+Data_fe3c0: ; fe3c0 (3f:63c0)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe3c0
+
+Data_fe3c4: ; fe3c4 (3f:63c4)
+	pikapic_setdelay 50
+	pikapic_loadgfx $1a
+	pikapic_loadgfx $1b
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $13, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe3da: ; fe3da (3f:63da)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe3da
+
+Data_fe3de: ; fe3de (3f:63de)
+	pikapic_setdelay 40
+	pikapic_loadgfx $1c
+	pikapic_loadgfx $1d
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $14, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe3f4: ; fe3f4 (3f:63f4)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe3f4
+
+Data_fe3f8: ; fe3f8 (3f:63f8)
+	pikapic_setdelay 50
+	pikapic_loadgfx $1e
+	pikapic_loadgfx $1f
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $15, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe40e: ; fe40e (3f:640e)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe40e
+
+Data_fe412: ; fe412 (3f:6412)
+	pikapic_setdelay 32
+	pikapic_loadgfx $20
+	pikapic_loadgfx $21
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $16, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe428: ; fe428 (3f:6428)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe428
+
+Data_fe42c: ; fe42c (3f:642c)
+	pikapic_setdelay 100
+	pikapic_loadgfx $22
+	pikapic_loadgfx $23
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $17, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe442: ; fe442 (3f:6442)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe442
+
+Data_fe446: ; fe446 (3f:6446)
+	pikapic_setdelay 32
+	pikapic_loadgfx $24
+	pikapic_loadgfx $25
+	pikapic_object $5, $80, $0, $0
+	pikapic_object $18, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry PikachuCry18
+Data_fe45c: ; fe45c (3f:645c)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe45c
+
+Data_fe460: ; fe460 (3f:6460)
+	pikapic_setdelay 44
+	pikapic_loadgfx $26
+	pikapic_loadgfx $27
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $19, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe476: ; fe476 (3f:6476)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe476
+
+Data_fe47a: ; fe47a (3f:647a)
+	pikapic_setdelay 50
+	pikapic_loadgfx $28
+	pikapic_loadgfx $29
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $1a, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe490: ; fe490 (3f:6490)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe490
+
+Data_fe494: ; fe494 (3f:6494)
+	pikapic_setdelay 40
+	pikapic_loadgfx $2a
+	pikapic_loadgfx $2b
+	pikapic_loadgfx $2c
+	pikapic_loadgfx $2d
+	pikapic_loadgfx $2e
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $1b, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry PikachuCry20
+Data_fe4b0: ; fe4b0 (3f:64b0)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe4b0
+
+Data_fe4b4: ; fe4b4 (3f:64b4)
+	pikapic_setdelay 40
+	pikapic_loadgfx $2f
+	pikapic_loadgfx $30
+	pikapic_object $5, $80, $0, $0
+	pikapic_object $1c, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe4ca: ; fe4ca (3f:64ca)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe4ca
+
+Data_fe4ce: ; fe4ce (3f:64ce)
+	pikapic_setdelay 70
+	pikapic_loadgfx $31
+	pikapic_loadgfx $32
+	pikapic_object $5, $80, $0, $0
+	pikapic_object $1d, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe4e4: ; fe4e4 (3f:64e4)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe4e4
+
+Data_fe4e8: ; fe4e8 (3f:64e8)
+	pikapic_setdelay 60
+	pikapic_loadgfx $33
+	pikapic_loadgfx $34
+	pikapic_object $5, $80, $0, $0
+	pikapic_object $1e, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe4fe: ; fe4fe (3f:64fe)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe4fe
+
+Data_fe502: ; fe502 (3f:6502)
+	pikapic_setdelay 50
+	pikapic_loadgfx $35
+	pikapic_loadgfx $36
+	pikapic_loadgfx $37
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $1f, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+	pikapic_writebyte 13
+	pikapic_waitbgmap
+	pikapic_thunderbolt
+	pikapic_ret
+
+Data_fe51f: ; fe51f (3f:651f)
+	pikapic_waitbgmap
+Data_fe520: ; fe520 (3f:6520)
+	pikapic_setdelay 100
+	pikapic_loadgfx $16
+	pikapic_loadgfx $17
+	pikapic_loadgfx $38
+	pikapic_loadgfx $39
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $20, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe53a: ; fe53a (3f:653a)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe53a
+
+Data_fe53e: ; fe53e (3f:653e)
+	pikapic_setdelay 30
+	pikapic_loadgfx $3a
+	pikapic_loadgfx $3b
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $21, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe554: ; fe554 (3f:6554)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe554
+
+Data_fe558: ; fe558 (3f:6558)
+	pikapic_setdelay 64
+	pikapic_loadgfx $3c
+	pikapic_loadgfx $3d
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $22, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+Data_fe56e: ; fe56e (3f:656e)
+	pikapic_waitbgmap
+	pikapic_jump Data_fe56e
 
 PikaPicAnimGFXHeaders:
 pikapicanimgfx: MACRO
