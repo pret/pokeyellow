@@ -406,6 +406,8 @@ GymTrashCans: ; 5de7d (17:5e7d)
 ; Note that the mask is simply the number of valid trash can indices that
 ; follow. The remaining bytes are filled with -1 to pad the length of each entry
 ; to 5 bytes.
+; This is functionally replaced with GymTrashCans3a but was never removed from source.
+
 	db 2,  1,  3, -1, -1 ; 0
 	db 3,  0,  2,  4, -1 ; 1
 	db 2,  1,  5, -1, -1 ; 2

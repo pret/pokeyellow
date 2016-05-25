@@ -351,18 +351,41 @@ Func_f2d0c:
 	ret
 	
 GymTrashCans3a: ; f2d31 (3c:6d31)
-	db $04, $01, $03, $03, $01, $01, $ff, $03, $ff
-	db $03, $00, $02, $02, $04, $04, $00, $ff, $ff
-	db $04, $01, $05, $05, $01, $01, $ff, $05, $ff
-	db $03, $00, $04, $04, $06, $06, $00, $ff, $ff
-	db $04, $01, $03, $03, $01, $05, $05, $07, $07
-	db $03, $02, $04, $04, $08, $08, $02, $ff, $ff
-	db $03, $03, $07, $07, $09, $09, $03, $ff, $ff
-	db $04, $04, $08, $06, $0a, $08, $04, $0a, $06
-	db $03, $05, $07, $07, $0b, $0b, $05, $ff, $ff
-	db $03, $06, $0a, $0a, $0c, $0c, $06, $ff, $ff
-	db $04, $07, $09, $09, $07, $0b, $0d, $0d, $0b
-	db $03, $08, $0a, $0a, $0e, $0e, $08, $ff, $ff
-	db $04, $09, $0d, $0d, $09, $09, $ff, $0d, $ff
-	db $03, $0a, $0c, $0c, $0e, $0e, $0a, $ff, $ff
-	db $04, $0b, $0d, $0d, $0b, $0b, $ff, $0d, $ff
+; First byte: number of trashcan entries
+; Following four byte pairs: indices for the second trash can.
+; BUG: Rows that have 3 trashcan entries are sampled incorrectly.
+; The sampling occurs by taking a random number and seeing which
+; third of the range 0-255 the number falls in.  However, it returns
+; that value to the wrong register, so the result is never used.
+; Instead of using an offset in [0,1,2], the offset is instead
+; in the full range 0-255.  This results in truly random behavior.
+	db 4
+	db  1,3,   3,1,   1,-1,  3,-1
+	db 3
+	db  0,2,   2,4,   4,0,  -1,-1
+	db 4
+	db  1,5,   5,1,   1,-1,  5,-1
+	db 3
+	db  0,4,   4,6,   6,0,  -1,-1
+	db 4
+	db  1,3,   3,1,   5,5,   7,7
+	db 3
+	db  2,4,   4,8,   8,2,  -1,-1
+	db 3
+	db  3,7,   7,9,   9,3,  -1,-1
+	db 4
+	db  4,8,   6,10,  8,4,  10,6
+	db 3
+	db  5,7,   7,11, 11,5,  -1,-1
+	db 3
+	db  6,10, 10,12, 12,6,  -1,-1
+	db 4
+	db  7,9,   9,7,  11,13, 13,11
+	db 3
+	db  8,10, 10,14, 14,8,  -1,-1
+	db 4
+	db  9,13, 13,9,   9,-1, 13,-1
+	db 3
+	db 10,12, 12,14, 14,10, -1,-1
+	db 4
+	db 11,13, 13,11, 11,-1, 13,-1
