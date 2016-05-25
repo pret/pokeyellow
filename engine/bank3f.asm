@@ -3247,7 +3247,7 @@ Func_fd814:
 	ret
 
 Func_fd831:
-	ld hl, vChars1 + $7f * $10
+	ld hl, vNPCSprites2 + $7f * $10
 	ld de, LedgeHoppingShadowGFX_3F
 	lb bc, BANK(LedgeHoppingShadowGFX_3F), (LedgeHoppingShadowGFX_3FEnd - LedgeHoppingShadowGFX_3F) / 8
 	jp CopyVideoDataDoubleAlternate
@@ -3257,13 +3257,13 @@ INCBIN "gfx/ledge_hopping_shadow.1bpp"
 LedgeHoppingShadowGFX_3FEnd:
 
 Func_fd845:
-	ld hl, vChars1 + $7e * $10
+	ld hl, vNPCSprites2 + $7e * $10
 	ld de, GFX_fd86b
 	lb bc, BANK(GFX_fd86b), 1
 	jp CopyVideoDataDoubleAlternate
 
 Func_fd851:
-	ld hl, vChars0 + $c * $10
+	ld hl, vNPCSprites + $c * $10
 	ld a, 3
 .asm_fd856
 	push af
@@ -3283,19 +3283,146 @@ GFX_fd86b:
 INCBIN "gfx/unknown_fd86b.2bpp"
 
 Func_fd8ab: ; fd8ab (3f:58ab)
-	dr $fd8ab, $fd8d4
+	ld de, PikachuSprite
+	lb bc, BANK(PikachuSprite), (SandshrewSprite - PikachuSprite) / 32
+	ld hl, vNPCSprites + $c * $10
+	push bc
+	call CopyVideoDataAlternate
+	ld de, PikachuSprite + $c * $10
+	ld hl, vNPCSprites2 + $c * $10
+	ld a, [h_0xFFFC]
+	and a
+	jr z, .asm_fd8c9
+	ld de, PikachuSprite + $c * $10
+	ld hl, vNPCSprites2 + $4c * $10
+.asm_fd8c9
+	pop bc
+	call CopyVideoDataAlternate
+	call Func_fd831
+	call Func_fd845
+	ret
+
 Func_fd8d4: ; fd8d4 (3f:58d4)
-	dr $fd8d4, $fd8e1
+	ld a, [wCurMap]
+	cp PEWTER_POKECENTER
+	ret nz
+	call Func_1542
+	call Func_fcff2
+	ret
+
 Func_fd8e1: ; fd8e1 (3f:58e1)
-	dr $fd8e1, $fd8ee
+	ld a, [wCurMap]
+	cp POKEMON_FAN_CLUB
+	ret nz
+	call Func_1542
+	call Func_fcff2
+	ret
+
 Func_fd8ee: ; fd8ee (3f:58ee)
-	dr $fd8ee, $fd8f8
+	ld a, [wCurMap]
+	cp BILLS_HOUSE
+	ret nz
+	call Func_1542
+	ret
+
 Func_fd8f8: ; fd8f8 (3f:58f8)
-	dr $fd8f8, $fd907
-Func_fd907:
-	dr $fd907, $fd978
+	call LoadCurrentMapView
+	call UpdateSprites
+	call Delay3
+	ret
+
+Func_fd902: ; cosine?
+	ld a, e
+	add $10
+	jr asm_fd908
+
+Func_fd907: ; sine?
+	ld a, e
+asm_fd908
+	and $3f
+	cp $20
+	jr nc, .asm_fd913
+	call Func_fd91c
+	ld a, h
+	ret
+
+.asm_fd913
+	and $1f
+	call Func_fd91c
+	ld a, h
+	cpl
+	inc a
+	ret
+
+Func_fd91c:
+	ld e, a
+	ld a, d
+	ld d, 0
+	ld hl, Data_fd938
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld hl, 0
+.asm_fd92b
+	srl a
+	jr nc, .asm_fd930
+	add hl, de
+.asm_fd930
+	sla e
+	rl d
+	and a
+	jr nz, .asm_fd92b
+	ret
+
+Data_fd938:
+	sine_wave $100
+
 Func_fd978: ; fd978 (3f:5978)
-	dr $fd978, $fd9d0
+	ld hl, Data_fd99c
+	ld a, [wPikachuMood]
+	ld d, a
+.asm_fd97f
+	ld a, [hli]
+	inc hl
+	cp d
+	jr c, .asm_fd97f
+	dec hl
+	ld e, [hl]
+	ld hl, Data_fd9a6
+	ld a, [wPikachuHappiness]
+	ld d, a
+	ld bc, 6
+.asm_fd990
+	ld a, [hl]
+	cp d
+	jr nc, .asm_fd997
+	add hl, bc
+	jr .asm_fd990
+
+.asm_fd997
+	ld d, 0
+	add hl, de
+	ld a, [hl]
+	ret
+
+Data_fd99c:
+	db $28, 1
+	db $7f, 2
+	db $80, 3
+	db $d2, 4
+	db $ff, 5
+
+Data_fd9a6:
+	db $32, $0e, $0e, $06, $0d, $0d
+	db $64, $09, $09, $05, $0c, $0c
+	db $82, $03, $03, $01, $08, $08
+	db $a0, $03, $03, $04, $0f, $0f
+	db $c8, $11, $11, $07, $02, $02
+	db $fa, $11, $11, $10, $0a, $0a
+	db $ff, $11, $11, $13, $14, $14
+
 Func_fd9d0: ; fd9d0 (3f:59d0)
 	dr $fd9d0, $fe66f
 
