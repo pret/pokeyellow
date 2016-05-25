@@ -3408,6 +3408,8 @@ Func_fd978: ; fd978 (3f:5978)
 	ret
 
 Data_fd99c:
+; First byte: mood threshold
+; Second byte: column index in Data_fd9a6
 	db $28, 1
 	db $7f, 2
 	db $80, 3
@@ -3415,6 +3417,8 @@ Data_fd99c:
 	db $ff, 5
 
 Data_fd9a6:
+; First byte: happiness threshold
+; Remaining bytes: loaded based on Pikachu's mood
 	db $32, $0e, $0e, $06, $0d, $0d
 	db $64, $09, $09, $05, $0c, $0c
 	db $82, $03, $03, $01, $08, $08
@@ -3424,7 +3428,648 @@ Data_fd9a6:
 	db $ff, $11, $11, $13, $14, $14
 
 Func_fd9d0: ; fd9d0 (3f:59d0)
-	dr $fd9d0, $fe66f
+	ld a, [H_AUTOBGTRANSFERENABLED]
+	push af
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, [de]
+	ld [$d448], a
+	inc de
+	push de
+	call Func_fd9e4
+	pop de
+	pop af
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ret
+
+Func_fd9e4:
+	call Func_fda2c
+	callab Func_720e3
+	call Func_fd9ff
+	call Func_fda46
+	call Func_fda9a
+	call Func_fda2c
+	call RunDefaultPaletteCommand
+	ret
+
+Func_fd9ff:
+	ld hl, $d44d
+	ld bc, $0011
+	xor a
+	call FillMemory
+	ld hl, wNPCMovementDirections2
+	ld bc, $0021
+	xor a
+	call FillMemory
+	call Func_fe15c
+	ld hl, $0064
+	ld a, l
+	ld [$d451], a
+	ld a, h
+	ld [$d452], a
+	ld a, $07
+	ld [$d454], a
+	ld a, $06
+	ld [$d455], a
+	ret
+
+Func_fda2c:
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	coord hl, 6, 5
+	lb bc, 5, 5
+	call TextBoxBorder
+	call Delay3
+	call UpdateSprites
+	ld a, $01
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call Delay3
+	ret
+
+Func_fda46:
+	ld a, [$d448]
+	cp $1d
+	jr c, .asm_fda4f
+	ld a, $00
+.asm_fda4f
+	ld e, a
+	ld d, $00
+	ld hl, Data_fda5e
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_fe0d0
+	ret
+
+Data_fda5e:
+	dw Data_fe28a
+	dw Data_fe28a
+	dw Data_fe2a4
+	dw Data_fe2be
+	dw Data_fe2d8
+	dw Data_fe2f2
+	dw Data_fe30c
+	dw Data_fe326
+	dw Data_fe340
+	dw Data_fe35a
+	dw Data_fe374
+	dw Data_fe390
+	dw Data_fe3aa
+	dw Data_fe3c4
+	dw Data_fe3de
+	dw Data_fe3f8
+	dw Data_fe412
+	dw Data_fe42c
+	dw Data_fe446
+	dw Data_fe460
+	dw Data_fe47a
+	dw Data_fe494
+	dw Data_fe4b4
+	dw Data_fe4ce
+	dw Data_fe4e8
+	dw Data_fe502
+	dw Data_fe520
+	dw Data_fe53e
+	dw Data_fe558
+	dw Data_fe28a
+
+
+Func_fda9a:
+.asm_fda9a
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call Func_fe046
+	call Func_fdad5
+	call Func_fdad6
+	call Func_fdad5
+	ld a, $01
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call Func_fdab4
+	and a
+	jr z, .asm_fda9a
+	ret
+
+Func_fdab4:
+	call Delay3
+	call Func_fdac4
+	and a
+	ret nz
+	call JoypadLowSensitivity
+	ld a, [hJoyPressed]
+	and A_BUTTON | B_BUTTON
+	ret
+
+Func_fdac4:
+	ld hl, $d451
+	dec [hl]
+	jr nz, .asm_fdad0
+	inc hl
+	ld a, [hl]
+	and a
+	jr z, .asm_fdad2
+	dec [hl]
+.asm_fdad0
+	xor a
+	ret
+
+.asm_fdad2
+	ld a, $01
+	ret
+
+Func_fdad5:
+	ret
+
+Func_fdad6:
+	ld bc, wNPCMovementDirections2 + 1
+	ld a, 4
+.asm_fdadb
+	push af
+	push bc
+	ld hl, 0
+	add hl, bc
+	ld a, [hli]
+	and a
+	jr z, .asm_fdb26
+	ld a, [hli]
+	ld [$d459], a
+	ld a, [hli]
+	ld [$d45a], a
+	ld a, [hli]
+	ld [$d45b], a
+	ld a, [hli]
+	ld [$d456], a
+	ld a, [hli]
+	ld [$d457], a
+	ld a, [hli]
+	ld [$d458], a
+	ld a, [hli]
+	ld [$d45c], a
+	push bc
+	call Func_fdb7e
+	pop bc
+	ld hl, 1
+	add hl, bc
+	ld a, [$d459]
+	ld [hli], a
+	ld a, [$d45a]
+	ld [hli], a
+	ld a, [$d45b]
+	ld [hli], a
+	ld a, [$d456]
+	ld [hli], a
+	ld a, [$d457]
+	ld [hli], a
+	ld a, [$d458]
+	ld [hli], a
+	ld a, [$d45c]
+	ld [hl], a
+.asm_fdb26
+	pop bc
+	ld hl, 8
+	add hl, bc
+	ld b, h
+	ld c, l
+	pop af
+	dec a
+	jr nz, .asm_fdadb
+	ret
+
+Func_fdb32:
+	ld hl, wNPCMovementDirections2 + 1
+	ld de, 8
+	ld c, 4
+.asm_fdb3a
+	ld a, [hl]
+	and a
+	jr z, .asm_fdb44
+	add hl, de
+	dec c
+	jr nz, .asm_fdb3a
+	scf
+	ret
+
+.asm_fdb44
+	ld a, [wNPCMovementDirections2]
+	inc a
+	ld [wNPCMovementDirections2], a
+	ld [hli], a
+	call Func_fe0c3
+	ld [hli], a
+	call Func_fe0c3
+	ld [hl], a
+	xor a
+	ld [hli], a
+	ld [hli], a
+	call Func_fe0c3
+	ld [hli], a
+	call Func_fe0c3
+	ld [hli], a
+	call Func_fe0c3
+	ld [hli], a
+	and a
+	ret
+
+Func_fdb65
+	call Func_fe0c3
+	ld b, a
+	ld hl, wNPCMovementDirections2 + 1
+	ld de, 8
+	ld c, 4
+.asm_fdb71
+	ld a, [hl]
+	cp b
+	jr z, .asm_fdb7b
+	add hl, de
+	dec c
+	jr nz, .asm_fdb71
+	scf
+	ret
+
+.asm_fdb7b
+	xor a
+	ld [hl], a
+	ret
+
+Func_fdb7e:
+.asm_fdb7e
+	ld a, [$d459]
+	cp $23
+	jr c, .asm_fdb87
+	ld a, $04
+.asm_fdb87
+	ld e, a
+	ld d, $00
+	ld hl, Pointers_fdbc9
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [$d45a]
+	ld e, a
+	ld d, 0
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	cp $e0
+	jr z, .asm_fdba1
+	jr .asm_fdbaa
+
+.asm_fdba1
+	xor a
+	ld [$d45a], a
+	ld [$d45b], a
+	jr .asm_fdb7e
+
+.asm_fdbaa
+	push hl
+	call Func_fdd62
+	pop hl
+	ld a, [hl]
+	and a
+	jr z, .asm_fdbc8
+	ld a, [$d45b]
+	inc a
+	ld [$d45b], a
+	cp [hl]
+	jr nz, .asm_fdbc8
+	xor a
+	ld [$d45b], a
+	ld a, [$d45a]
+	inc a
+	ld [$d45a], a
+.asm_fdbc8
+	ret
+
+Pointers_fdbc9:
+	dw Data_fdc11
+	dw Data_fdc11
+	dw Data_fdc29
+	dw Data_fdc32
+	dw Data_fdc3b
+	dw Data_fdc3e
+	dw Data_fdc41
+	dw Data_fdc50
+	dw Data_fdc61
+	dw Data_fdc6e
+	dw Data_fdc77
+	dw Data_fdc84
+	dw Data_fdc8d
+	dw Data_fdc98
+	dw Data_fdca5
+	dw Data_fdcb2
+	dw Data_fdcb7
+	dw Data_fdcc2
+	dw Data_fdccb
+	dw Data_fdcd4
+	dw Data_fdcdf
+	dw Data_fdce8
+	dw Data_fdcf1
+	dw Data_fdcf6
+	dw Data_fdd01
+	dw Data_fdd0a
+	dw Data_fdd13
+	dw Data_fdd1c
+	dw Data_fdd27
+	dw Data_fdd2c
+	dw Data_fdd35
+	dw Data_fdd40
+	dw Data_fdd47
+	dw Data_fdd54
+	dw Data_fdd59
+	dw Data_fdc3b
+
+Data_fdc11:
+	db $01, $14
+	db $07, $02
+	db $01, $01
+	db $07, $02
+	db $01, $01
+	db $07, $08
+	db $e0
+Data_fdc1e:
+	db $02, $02
+	db $01, $01
+	db $02, $02
+	db $01, $01
+	db $02, $08
+	db $e0
+Data_fdc29:
+	db $00, $08
+	db $08, $08
+	db $00, $08
+	db $08, $08
+	db $e0
+Data_fdc32:
+	db $08, $08
+	db $00, $08
+	db $08, $08
+	db $00, $08
+	db $e0
+Data_fdc3b:
+	db $01, $00
+	db $e0
+Data_fdc3e:
+	db $09, $00
+	db $e0
+Data_fdc41:
+	db $00, $02
+	db $0e, $04
+	db $00, $08
+	db $0e, $04
+	db $00, $40
+	db $0e, $04
+	db $00, $40
+	db $e0
+Data_fdc50:
+	db $00, $04
+	db $0f, $04
+	db $00, $04
+	db $0f, $04
+	db $00, $08
+	db $0f, $04
+	db $00, $08
+	db $0f, $04
+	db $e0
+Data_fdc61:
+	db $10, $01
+	db $00, $01
+	db $10, $01
+	db $00, $40
+	db $10, $01
+	db $00, $40
+	db $e0
+Data_fdc6e:
+	db $00, $08
+	db $11, $08
+	db $00, $14
+	db $11, $08
+	db $e0
+Data_fdc77:
+	db $00, $02
+	db $12, $02
+	db $00, $02
+	db $12, $40
+	db $00, $03
+	db $12, $40
+	db $e0
+Data_fdc84:
+	db $00, $08
+	db $13, $40
+	db $00, $04
+	db $13, $40
+	db $e0
+Data_fdc8d:
+	db $14, $08
+	db $00, $02
+	db $14, $08
+	db $00, $02
+	db $14, $08
+	db $e0
+Data_fdc98:
+	db $15, $04
+	db $00, $08
+	db $15, $04
+	db $00, $40
+	db $15, $04
+	db $00, $40
+	db $e0
+Data_fdca5:
+	db $00, $02
+	db $16, $02
+	db $00, $02
+	db $16, $02
+	db $00, $14
+	db $16, $02
+	db $e0
+Data_fdcb2:
+	db $00, $08
+	db $17, $08
+	db $e0
+Data_fdcb7:
+	db $00, $08
+	db $17, $03
+	db $18, $05
+	db $17, $03
+	db $00, $05
+	db $e0
+Data_fdcc2:
+	db $00, $14
+	db $19, $08
+	db $00, $14
+	db $19, $08
+	db $e0
+Data_fdccb:
+	db $00, $0d
+	db $1a, $0c
+	db $00, $64
+	db $1a, $08
+	db $e0
+Data_fdcd4:
+	db $00, $05
+	db $1b, $05
+	db $00, $05
+	db $1b, $05
+	db $00, $64
+	db $e0
+Data_fdcdf:
+	db $00, $02
+	db $1c, $02
+	db $00, $02
+	db $1c, $02
+	db $e0
+Data_fdce8:
+	db $00, $05
+	db $1d, $05
+	db $00, $05
+	db $1d, $05
+	db $e0
+Data_fdcf1:
+	db $1e, $08
+	db $00, $64
+	db $e0
+Data_fdcf6:
+	db $00, $0a
+	db $1f, $03
+	db $00, $03
+	db $1f, $03
+	db $00, $64
+	db $e0
+Data_fdd01:
+	db $00, $03
+	db $20, $64
+	db $00, $08
+	db $20, $08
+	db $e0
+Data_fdd0a:
+	db $21, $06
+	db $00, $06
+	db $21, $06
+	db $00, $06
+	db $e0
+Data_fdd13:
+	db $00, $08
+	db $22, $0c
+	db $00, $08
+	db $22, $0c
+	db $e0
+Data_fdd1c:
+	db $00, $08
+	db $09, $02
+	db $0a, $01
+	db $0b, $01
+	db $0c, $64
+	db $e0
+Data_fdd27:
+	db $00, $08
+	db $24, $64
+	db $e0
+Data_fdd2c:
+	db $00, $10
+	db $25, $10
+	db $00, $10
+	db $25, $10
+	db $e0
+Data_fdd35:
+	db $00, $06
+	db $26, $06
+	db $00, $06
+	db $26, $06
+	db $00, $64
+	db $e0
+Data_fdd40:
+	db $00, $06
+	db $09, $06
+	db $0a, $64
+	db $e0
+Data_fdd47:
+	db $00, $14
+	db $09, $08
+	db $00, $14
+	db $09, $08
+	db $0a, $08
+	db $0b, $64
+	db $e0
+Data_fdd54:
+	db $00, $04
+	db $09, $64
+	db $e0
+Data_fdd59:
+    db $00, $0c
+	db $09, $0c
+	db $00, $0c
+	db $09, $64
+	db $e0
+
+Func_fdd62:
+	dr $fdd62, $fe046
+Func_fe046:
+	dr $fe046, $fe0c3
+Func_fe0c3:
+	dr $fe0c3, $fe0d0
+Func_fe0d0:
+	dr $fe0d0, $fe15c
+Func_fe15c:
+	dr $fe15c, $fe28a
+
+Data_fe28a:
+	dr $fe28a, $fe2a4
+Data_fe2a4:
+	dr $fe2a4, $fe2be
+Data_fe2be:
+	dr $fe2be, $fe2d8
+Data_fe2d8:
+	dr $fe2d8, $fe2f2
+Data_fe2f2:
+	dr $fe2f2, $fe30c
+Data_fe30c:
+	dr $fe30c, $fe326
+Data_fe326:
+	dr $fe326, $fe340
+Data_fe340:
+	dr $fe340, $fe35a
+Data_fe35a:
+	dr $fe35a, $fe374
+Data_fe374:
+	dr $fe374, $fe390
+Data_fe390:
+	dr $fe390, $fe3aa
+Data_fe3aa:
+	dr $fe3aa, $fe3c4
+Data_fe3c4:
+	dr $fe3c4, $fe3de
+Data_fe3de:
+	dr $fe3de, $fe3f8
+Data_fe3f8:
+	dr $fe3f8, $fe412
+Data_fe412:
+	dr $fe412, $fe42c
+Data_fe42c:
+	dr $fe42c, $fe446
+Data_fe446:
+	dr $fe446, $fe460
+Data_fe460:
+	dr $fe460, $fe47a
+Data_fe47a:
+	dr $fe47a, $fe494
+Data_fe494:
+	dr $fe494, $fe4b4
+Data_fe4b4:
+	dr $fe4b4, $fe4ce
+Data_fe4ce:
+	dr $fe4ce, $fe4e8
+Data_fe4e8:
+	dr $fe4e8, $fe502
+Data_fe502:
+	dr $fe502, $fe520
+Data_fe520:
+	dr $fe520, $fe53e
+Data_fe53e:
+	dr $fe53e, $fe558
+Data_fe558:
+	dr $fe558, $fe66f
 
 OfficerJennySprite:    INCBIN "gfx/sprites/officer_jenny.2bpp"
 PikachuSprite:         INCBIN "gfx/sprites/pikachu.2bpp"
