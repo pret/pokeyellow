@@ -279,7 +279,90 @@ Func_f24ae: ; f24ae (3c:64ae)
 	dr $f24ae, $f25f8
 CheckForHiddenObject:: ; f25f8 (3c:65f8)
 	dr $f25f8, $f268d
+
 INCLUDE "data/hidden_objects.asm"
-	dr $f2cd0, $f2d0c
+
+Func_f2cd0:
+	ld d, 0
+	ld hl, Jumptable_f2ce1
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call JumpToAddress
+	ld e, a
+	ld d, 0
+	ret
+
+Jumptable_f2ce1:
+	dw Func_f2ceb
+	dw Func_f2ceb
+	dw Func_f2cee
+	dw Func_f2cf4
+	dw Func_f2d06
+
+Func_f2ceb:
+	ld a, 0
+	ret
+
+Func_f2cee:
+	call Random
+	and $1
+	ret
+
+Func_f2cf4: ; should return to a, instead returns to b
+	call Random
+	swap a
+	cp $55
+	ld b, 0
+	ret c
+	cp $aa
+	ld b, 1
+	ret c
+	ld b, 2
+	ret
+
+Func_f2d06:
+	call Random
+	and $3
+	ret
+
 Func_f2d0c:
-	dr $f2d0c, $f2db8
+	ld hl, GymTrashCans3a
+	ld a, [wGymTrashCanIndex]
+	ld c, a
+	ld b, 0
+	ld a, 9
+	call AddNTimes
+	call AddNTimes ; ????
+	ld a, [hli]
+	ld [hGymTrashCanRandNumMask], a
+	ld e, a
+	push hl
+	call Func_f2cd0
+	pop hl
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld [wSecondLockTrashCanIndex], a
+	ld a, [hl]
+	ld [wSecondLockTrashCanIndex + 1], a
+	ret
+	
+GymTrashCans3a: ; f2d31 (3c:6d31)
+	db $04, $01, $03, $03, $01, $01, $ff, $03, $ff
+	db $03, $00, $02, $02, $04, $04, $00, $ff, $ff
+	db $04, $01, $05, $05, $01, $01, $ff, $05, $ff
+	db $03, $00, $04, $04, $06, $06, $00, $ff, $ff
+	db $04, $01, $03, $03, $01, $05, $05, $07, $07
+	db $03, $02, $04, $04, $08, $08, $02, $ff, $ff
+	db $03, $03, $07, $07, $09, $09, $03, $ff, $ff
+	db $04, $04, $08, $06, $0a, $08, $04, $0a, $06
+	db $03, $05, $07, $07, $0b, $0b, $05, $ff, $ff
+	db $03, $06, $0a, $0a, $0c, $0c, $06, $ff, $ff
+	db $04, $07, $09, $09, $07, $0b, $0d, $0d, $0b
+	db $03, $08, $0a, $0a, $0e, $0e, $08, $ff, $ff
+	db $04, $09, $0d, $0d, $09, $09, $ff, $0d, $ff
+	db $03, $0a, $0c, $0c, $0e, $0e, $0a, $ff, $ff
+	db $04, $0b, $0d, $0d, $0b, $0b, $ff, $0d, $ff
