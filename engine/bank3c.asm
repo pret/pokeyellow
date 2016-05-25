@@ -226,11 +226,32 @@ Func_f02da:: ; f02da (3c:42da)
 	ret
 
 Pointer_f02fa:: ; f02fa (3c:42fa)
-	db $cf, $d0, $d1, $d2, $d3, $d4
-	db $d5, $e9, $ea, $eb, $d6, $d7
-	db $d8, $a5, $a6, $87, $c7, $ca
-	db $c6, $6c, $c2, $71, $f5, $f6
-	db $f7, $ff
+	db SILPH_CO_2F
+	db SILPH_CO_3F
+	db SILPH_CO_4F
+	db SILPH_CO_5F
+	db SILPH_CO_6F
+	db SILPH_CO_7F
+	db SILPH_CO_8F
+	db SILPH_CO_9F
+	db SILPH_CO_10F
+	db SILPH_CO_11F
+	db MANSION_2
+	db MANSION_3
+	db MANSION_4
+	db MANSION_1
+	db CINNABAR_GYM
+	db GAME_CORNER
+	db ROCKET_HIDEOUT_1
+	db ROCKET_HIDEOUT_4
+	db VICTORY_ROAD_3
+	db VICTORY_ROAD_1
+	db VICTORY_ROAD_2
+	db LANCES_ROOM
+	db LORELEIS_ROOM
+	db BRUNOS_ROOM
+	db AGATHAS_ROOM
+	db $ff
 
 BeachHouse_GFX:: ; f0314 (3c:4314)
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
