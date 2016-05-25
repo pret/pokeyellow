@@ -555,13 +555,13 @@ Func_fd2f5:
 .asm_fd311
 	ld [wPikaPicAnimPointer], a
 	ld a, [hli]
-	ld [$d450], a
+	ld [wPikaPicAnimCurGraphicID], a
 	ld a, [hli]
 	cp $80
 	jr nz, .asm_fd320
 	call Func_157c
 .asm_fd320
-	ld [$d44f], a
+	ld [wPikaPicAnimPointerSetupFinished], a
 	xor a
 	ld [wPikaPicAnimTimer], a
 	scf
@@ -570,8 +570,8 @@ Func_fd2f5:
 Func_fd329:
 	xor a
 	ld [$d44c], a
-	ld [$d457], a
-	ld [$d458], a
+	ld [wd457], a
+	ld [wd458], a
 	ld a, [wSpriteStateData2 + 7]
 	push af
 .asm_fd337
@@ -579,7 +579,7 @@ Func_fd329:
 	ld a, [wPikaPicAnimPointer + 1]
 	ld hl, Jumptable_fd4ac
 	call Func_fd365
-	ld a, [$d450]
+	ld a, [wPikaPicAnimCurGraphicID]
 	ld hl, Jumptable_fd65c
 	call Func_fd365
 	call Func_fd36e
@@ -611,14 +611,14 @@ Func_fd36e:
 	ld [hl], a
 	ld a, [wPikaSpriteY]
 	ld d, a
-	ld a, [$d456]
+	ld a, [wd456]
 	add d
 	ld hl, 4
 	add hl, bc
 	ld [hl], a
-	ld a, [wPikaSpriteX]
+	ld a, [wPikaPicAnimDelay]
 	ld d, a
-	ld a, [$d455]
+	ld a, [wPikaPicTextboxStartY]
 	add d
 	ld hl, 6
 	add hl, bc
@@ -751,10 +751,10 @@ Func_fd4e9:
 	ld hl, 6
 	add hl, bc
 	ld a, [hl]
-	ld [wPikaSpriteX], a
+	ld [wPikaPicAnimDelay], a
 	xor a
-	ld [$d456], a
-	ld [$d455], a
+	ld [wd456], a
+	ld [wPikaPicTextboxStartY], a
 	call Func_fd4dc
 	ret
 
@@ -1022,9 +1022,9 @@ MovePikachuSpriteUpRight:
 	jr asm_fd64d
 
 asm_fd64d
-	ld a, [wPikaSpriteX]
+	ld a, [wPikaPicAnimDelay]
 	add d
-	ld [wPikaSpriteX], a
+	ld [wPikaPicAnimDelay], a
 	ld a, [wPikaSpriteY]
 	add e
 	ld [wPikaSpriteY], a
@@ -1117,7 +1117,7 @@ asm_fd6ca
 	or d
 	ld [wPikaPicAnimTimer + 1], a
 	call Func_fd79d
-	ld [$d456], a
+	ld [wd456], a
 	and a
 	ret z
 	call Func_fd672
@@ -1130,11 +1130,11 @@ Func_fd6e2:
 	or d
 	ld [wPikaPicAnimTimer + 1], a
 	call Func_fd79d
-	ld [$d456], a
+	ld [wd456], a
 	ret
 
 Func_fd6f4:
-	ld a, [$d44f]
+	ld a, [wPikaPicAnimPointerSetupFinished]
 	and $40
 	cp $40
 	jr z, Func_fd6ff
@@ -1240,7 +1240,7 @@ SetObjectFacing:
 	ret
 
 Func_fd775:
-	ld hl, $d457
+	ld hl, wd457
 	inc [hl]
 	ld a, [wPikaPicAnimPointer]
 	and $1f
@@ -1259,9 +1259,9 @@ Func_fd784:
 	ret
 
 Func_fd78e:
-	ld hl, $d458
+	ld hl, wd458
 	inc [hl]
-	ld a, [$d44f]
+	ld a, [wPikaPicAnimPointerSetupFinished]
 	and $f
 	inc a
 	cp [hl]
@@ -1271,9 +1271,9 @@ Func_fd78e:
 
 Func_fd79d:
 	call Func_fd7b2
-	ld a, [$d458]
+	ld a, [wd458]
 	add e
-	ld [$d458], a
+	ld [wd458], a
 	add $20
 	ld e, a
 	push hl
@@ -1284,11 +1284,11 @@ Func_fd79d:
 	ret
 
 Func_fd7b2:
-	ld a, [$d44f]
+	ld a, [wPikaPicAnimPointerSetupFinished]
 	and $f
 	inc a
 	ld d, a
-	ld a, [$d44f]
+	ld a, [wPikaPicAnimPointerSetupFinished]
 	swap a
 	and $7
 	ld e, a
@@ -1341,7 +1341,7 @@ Func_fd7f3:
 	ld bc, wOAMBuffer + 4 * 36
 	ld a, [wPikaSpriteY]
 	ld e, a
-	ld a, [wPikaSpriteX]
+	ld a, [wPikaPicAnimDelay]
 	ld d, a
 	ld hl, Data_fd80b
 	call Func_fd814
@@ -1596,7 +1596,7 @@ Func_fd9ff:
 	ld bc, $11
 	xor a
 	call FillMemory
-	ld hl, wNPCMovementDirections2
+	ld hl, wPikaPicAnimObjectDataBufferSize
 	ld bc, $21
 	xor a
 	call FillMemory
@@ -1609,7 +1609,7 @@ Func_fd9ff:
 	ld a, $07
 	ld [wPikaSpriteY], a
 	ld a, $06
-	ld [$d455], a
+	ld [wPikaPicTextboxStartY], a
 	ret
 
 Func_fda2c:
@@ -1721,7 +1721,7 @@ Func_fdad5:
 	ret
 
 Func_fdad6:
-	ld bc, wNPCMovementDirections2 + 1
+	ld bc, wPikaPicAnimObjectDataBuffer
 	ld a, 4
 .asm_fdadb
 	push af
@@ -1732,37 +1732,37 @@ Func_fdad6:
 	and a
 	jr z, .asm_fdb26
 	ld a, [hli]
-	ld [$d459], a
+	ld [wCurPikaPicAnimObject], a
 	ld a, [hli]
-	ld [$d45a], a
+	ld [wCurPikaPicAnimObject + 1], a
 	ld a, [hli]
-	ld [$d45b], a
+	ld [wCurPikaPicAnimObject + 2], a
 	ld a, [hli]
-	ld [$d456], a
+	ld [wd456], a
 	ld a, [hli]
-	ld [$d457], a
+	ld [wd457], a
 	ld a, [hli]
-	ld [$d458], a
+	ld [wd458], a
 	ld a, [hli]
-	ld [$d45c], a
+	ld [wCurPikaPicAnimObject + 3], a
 	push bc
 	call Func_fdb7e
 	pop bc
 	ld hl, 1
 	add hl, bc
-	ld a, [$d459]
+	ld a, [wCurPikaPicAnimObject]
 	ld [hli], a
-	ld a, [$d45a]
+	ld a, [wCurPikaPicAnimObject + 1]
 	ld [hli], a
-	ld a, [$d45b]
+	ld a, [wCurPikaPicAnimObject + 2]
 	ld [hli], a
-	ld a, [$d456]
+	ld a, [wd456]
 	ld [hli], a
-	ld a, [$d457]
+	ld a, [wd457]
 	ld [hli], a
-	ld a, [$d458]
+	ld a, [wd458]
 	ld [hli], a
-	ld a, [$d45c]
+	ld a, [wCurPikaPicAnimObject + 3]
 	ld [hl], a
 .asm_fdb26
 	pop bc
@@ -1776,7 +1776,7 @@ Func_fdad6:
 	ret
 
 PikaPicAnimCommand_object:
-	ld hl, wNPCMovementDirections2 + 1
+	ld hl, wPikaPicAnimObjectDataBuffer
 	ld de, 8
 	ld c, 4
 .loop
@@ -1790,9 +1790,9 @@ PikaPicAnimCommand_object:
 	ret
 
 .found
-	ld a, [wNPCMovementDirections2]
+	ld a, [wPikaPicAnimObjectDataBufferSize]
 	inc a
-	ld [wNPCMovementDirections2], a
+	ld [wPikaPicAnimObjectDataBufferSize], a
 	ld [hli], a
 	call GetPikaPicAnimByte
 	ld [hli], a
@@ -1813,27 +1813,27 @@ PikaPicAnimCommand_object:
 PikaPicAnimCommand_deleteobject:
 	call GetPikaPicAnimByte
 	ld b, a
-	ld hl, wNPCMovementDirections2 + 1
+	ld hl, wPikaPicAnimObjectDataBuffer
 	ld de, 8
 	ld c, 4
-.asm_fdb71
+.search
 	ld a, [hl]
 	cp b
-	jr z, .asm_fdb7b
+	jr z, .delete
 	add hl, de
 	dec c
-	jr nz, .asm_fdb71
+	jr nz, .search
 	scf
 	ret
 
-.asm_fdb7b
+.delete
 	xor a
 	ld [hl], a
 	ret
 
 Func_fdb7e:
 .asm_fdb7e
-	ld a, [$d459]
+	ld a, [wCurPikaPicAnimObject]
 	cp $23
 	jr c, .asm_fdb87
 	ld a, $04
@@ -1846,7 +1846,7 @@ Func_fdb7e:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [$d45a]
+	ld a, [wCurPikaPicAnimObject + 1]
 	ld e, a
 	ld d, 0
 	add hl, de
@@ -1858,8 +1858,8 @@ Func_fdb7e:
 
 .asm_fdba1
 	xor a
-	ld [$d45a], a
-	ld [$d45b], a
+	ld [wCurPikaPicAnimObject + 1], a
+	ld [wCurPikaPicAnimObject + 2], a
 	jr .asm_fdb7e
 
 .asm_fdbaa
@@ -1869,16 +1869,16 @@ Func_fdb7e:
 	ld a, [hl]
 	and a
 	jr z, .asm_fdbc8
-	ld a, [$d45b]
+	ld a, [wCurPikaPicAnimObject + 2]
 	inc a
-	ld [$d45b], a
+	ld [wCurPikaPicAnimObject + 2], a
 	cp [hl]
 	jr nz, .asm_fdbc8
 	xor a
-	ld [$d45b], a
-	ld a, [$d45a]
+	ld [wCurPikaPicAnimObject + 2], a
+	ld a, [wCurPikaPicAnimObject + 1]
 	inc a
-	ld [$d45a], a
+	ld [wCurPikaPicAnimObject + 1], a
 .asm_fdbc8
 	ret
 
@@ -2167,7 +2167,7 @@ Func_fdd62:
 .asm_fdd7c
 	push bc
 	push hl
-	ld a, [$d456]
+	ld a, [wd456]
 	ld c, a
 .asm_fdd82
 	ld a, [de]
@@ -2190,14 +2190,14 @@ Func_fdd62:
 
 Func_fdd98:
 	push bc
-	ld a, [$d458]
+	ld a, [wd458]
 	ld b, a
-	ld a, [$d455]
+	ld a, [wPikaPicTextboxStartY]
 	add b
 	coord hl, 0, 0
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
-	ld a, [$d457]
+	ld a, [wd457]
 	ld c, a
 	ld a, [wPikaSpriteY]
 	add c
@@ -2460,7 +2460,7 @@ RunPikaPicAnimScript:
 	call Func_fe066
 	ret c
 	xor a
-	ld [$d44f], a
+	ld [wPikaPicAnimPointerSetupFinished], a
 .loop
 	call GetPikaPicAnimByte
 	ld e, a
@@ -2472,17 +2472,17 @@ RunPikaPicAnimScript:
 	ld h, [hl]
 	ld l, a
 	call JumpToAddress
-	ld a, [$d44f]
+	ld a, [wPikaPicAnimPointerSetupFinished]
 	and a
 	jr z, .loop
 	ret
 
 Func_fe066:
-	ld a, [wPikaSpriteX]
+	ld a, [wPikaPicAnimDelay]
 	and a
 	ret z
 	dec a
-	ld [wPikaSpriteX], a
+	ld [wPikaPicAnimDelay], a
 	scf
 	ret
 
@@ -2525,12 +2525,12 @@ PikaPicAnimCommand_setdelay:
 
 PikaPicAnimCommand_waitbgmap:
 	ld a, $ff
-	ld [$d44f], a
+	ld [wPikaPicAnimPointerSetupFinished], a
 	ret
 
 PikaPicAnimCommand_writebyte:
 	call GetPikaPicAnimByte
-	ld [wPikaSpriteX], a
+	ld [wPikaPicAnimDelay], a
 	ret
 
 PikaPicAnimCommand_nop4:
@@ -2581,17 +2581,17 @@ PikaPicAnimCommand_loadgfx:
 	xor a
 	ld [hTilesetType], a
 	call GetPikaPicAnimByte
-	ld [$d450], a
-	ld a, [$d450]
+	ld [wPikaPicAnimCurGraphicID], a
+	ld a, [wPikaPicAnimCurGraphicID]
 	call LoadPikaPicAnimGFXHeader
 	ld a, c
 	cp a, $ff
-	jr z, .asm_fe106
-	call Func_fe114
+	jr z, .compressed
+	call RequestPikaPicAnimGFX
 	jr .asm_fe109
 
-.asm_fe106
-	call Func_fe128
+.compressed
+	call DecompressRequestPikaPicAnimGFX
 .asm_fe109
 	pop af
 	ld [hTilesetType], a
@@ -2601,44 +2601,44 @@ PikaPicAnimCommand_loadgfx:
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-Func_fe114: ; fe114
+RequestPikaPicAnimGFX: ; fe114
 	push de
-	ld a, [$d450]
+	ld a, [wPikaPicAnimCurGraphicID]
 	ld d, a
 	ld e, c
-	call Func_fe17a
+	call CheckIfThereIsRoomForPikaPicAnimGFX
 	pop de
-	jr c, .asm_fe127
-	call Func_fe167
+	jr c, .failed
+	call GetPikaPicVRAMAddressForNewGFX
 	call CopyVideoDataAlternate
 	and a
-.asm_fe127
+.failed
 	ret
 
-Func_fe128: ; fe128
+DecompressRequestPikaPicAnimGFX: ; fe128
 	push de
-	ld a, [$d450]
+	ld a, [wPikaPicAnimCurGraphicID]
 	ld d, a
-	ld e, $19
-	call Func_fe17a
+	ld e, 5 * 5
+	call CheckIfThereIsRoomForPikaPicAnimGFX
 	pop de
-	jr c, .asm_fe15b
+	jr c, .failed
 	ld a, b
 	call UncompressSpriteFromDE
-	ld a, $00
+	ld a, BANK(S_SPRITEBUFFER1)
 	call SwitchSRAMBankAndLatchClockData
 	ld hl, S_SPRITEBUFFER1
 	ld de, S_SPRITEBUFFER0
 	ld bc, SPRITEBUFFERSIZE * 2
 	call CopyData
 	call PrepareRTCDataAndDisableSRAM
-	ld a, [$d450]
-	call Func_fe1af
-	call Func_fe167
+	ld a, [wPikaPicAnimCurGraphicID]
+	call LookUpTileOffsetForCurrentPikaPicAnimGFX
+	call GetPikaPicVRAMAddressForNewGFX
 	ld d, h
 	ld e, l
 	call InterlaceMergeSpriteBuffers
-.asm_fe15b
+.failed
 	ret
 
 Func_fe15c:
@@ -2648,7 +2648,7 @@ Func_fe15c:
 	call FillMemory
 	ret
 
-Func_fe167:
+GetPikaPicVRAMAddressForNewGFX:
 	ld hl, vNPCSprites
 	push bc
 	ld b, a
@@ -2663,30 +2663,30 @@ Func_fe167:
 	pop bc
 	ret
 
-Func_fe17a:
+CheckIfThereIsRoomForPikaPicAnimGFX:
 	push bc
 	push hl
 	ld hl, wNPCMovementDirections + 1
 	ld c, 8
-.asm_fe181
+.loop
 	ld a, [hl]
 	and a
-	jr z, .asm_fe192
+	jr z, .empty
 	cp d
-	jr z, .asm_fe18f
+	jr z, .found
 	inc hl
 	inc hl
 	dec c
-	jr nz, .asm_fe181
+	jr nz, .loop
 	scf
-	ret
+	ret ; execute hl, then bc
 
-.asm_fe18f
+.found
 	inc hl
 	ld a, [hl]
-	ret
+	ret ; execute hl, then bc
 
-.asm_fe192
+.empty
 	ld [hl], d
 	inc hl
 	ld a, [wNPCMovementDirections]
@@ -2697,39 +2697,39 @@ Func_fe17a:
 	ld [wNPCMovementDirections], a
 	cp $80
 	jr z, .asm_fe1a7
-	jr nc, .asm_fe1ab
+	jr nc, .failed
 .asm_fe1a7
 	ld a, [hl]
 	and a
-	jr .asm_fe1ac
+	jr .pop_ret
 
-.asm_fe1ab
+.failed
 	scf
-.asm_fe1ac
+.pop_ret
 	pop hl
 	pop bc
 	ret
 
-Func_fe1af:
+LookUpTileOffsetForCurrentPikaPicAnimGFX:
 	push bc
 	push hl
 	ld b, a
 	ld hl, wNPCMovementDirections + 1
 	ld c, 8
-.asm_fe1b7
+.loop
 	ld a, [hli]
 	cp b
-	jr z, .asm_fe1c2
+	jr z, .found
 	inc hl
 	dec c
-	jr nz, .asm_fe1b7
+	jr nz, .loop
 	scf
-	jr .asm_fe1c4
+	jr .pop_ret
 
-.asm_fe1c2
+.found
 	ld a, [hl]
 	and a
-.asm_fe1c4
+.pop_ret
 	pop hl
 	pop bc
 	ret
@@ -2836,24 +2836,34 @@ Data_fe26b:
 	pikapic_object $3, $b6, $5, $5
 	pikapic_waitbgmap
 	pikapic_cry
-Data_fe286:
+.loop
 	pikapic_waitbgmap
-	pikapic_jump Data_fe286
+	pikapic_jump .loop
 
 Data_fe28a:
-	pikapic_setdelay $28
+	pikapic_setdelay 40
 	pikapic_loadgfx $1
 	pikapic_loadgfx $2
 	pikapic_object $4, $80, $0, $0
 	pikapic_object $6, $99, $0, $0
 	pikapic_waitbgmap
 	pikapic_cry PikachuCry3
-Data_fe2a0:
+.loop
 	pikapic_waitbgmap
-	pikapic_jump Data_fe2a0
+	pikapic_jump .loop
 
 Data_fe2a4:
-	dr $fe2a4, $fe2be
+	pikapic_setdelay 44
+	pikapic_loadgfx $3
+	pikapic_loadgfx $4
+	pikapic_object $4, $80, $0, $0
+	pikapic_object $7, $99, $0, $0
+	pikapic_waitbgmap
+	pikapic_cry
+.loop
+	pikapic_waitbgmap
+	pikapic_jump .loop
+
 Data_fe2be:
 	dr $fe2be, $fe2d8
 Data_fe2d8:
@@ -2908,9 +2918,15 @@ Data_fe558:
 	dr $fe558, $fe572
 
 PikaPicAnimGFXHeaders:
+pikapicanimgfx: MACRO
+\2_id::
+	db \1
+	dba \2
+	endm
+
 	dbbw $01, $39, $0000
-	dbbw $ff, $39, $4000
-	dbbw $05, $39, $40cc
+	pikapicanimgfx $ff, Pic_e4000
+	pikapicanimgfx 5, GFX_e40cc
 	dbbw $ff, $39, $411c
 	dbbw $0a, $39, $41d2
 	dbbw $ff, $39, $4272

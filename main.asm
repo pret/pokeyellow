@@ -879,8 +879,12 @@ SECTION "bank30",ROMX,BANK[$30]
 	dr $c0000,$c4000
 
 SECTION "bank39",ROMX,BANK[$39]
-
-	dr $e4000,$e7ea3
+Pic_e4000:
+	dr $e4000,$e40cc
+GFX_e40cc:
+	dr $e40cc,$e411c
+Pic_e411c:
+	dr $e411c,$e7ea3
 
 
 SECTION "bank3A",ROMX,BANK[$3A]

@@ -541,9 +541,23 @@ wAnimPalette:: ; cc79
 
 wNPCMovementDirections2:: ; cc97
 
+wPikaPicAnimObjectDataBufferSize:: ; cc97
+
 wSwitchPartyMonTempBuffer:: ; cc97
 ; temporary buffer when swapping party mon data
-	ds 10
+	ds 1
+
+wPikaPicAnimObjectDataBuffer:: ; cc98
+; 4 structs each of length 8
+; 	0: index
+; 	1: object id (dw)
+; 	3: ?
+; 	4: ?
+; 	5: ?
+; 	6: ?
+; 	7: ?
+
+	ds 9
 
 wNumStepsToTake:: ; cca1
 ; used in Pallet Town scripted movement
@@ -2531,16 +2545,21 @@ wd44b:: ds 1
 wd44c:: ds 1
 wd44d:: ds 1
 wPikaPicAnimPointer:: dw   ; d44d
-wd450:: ds 1
-wd451:: ds 1
-wPikaPicAnimTimer:: ds 1 ; d451
-wd453:: ds 1
-wPikaPicAnimVar::
+wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
+wPikaPicAnimCurGraphicID:: ds 1
+wPikaPicAnimTimer:: ds 2 ; d451
+wPikaPicAnimDelay::
 wPikaSpriteX:: ds 1
 wPikaPicTextboxStartX::
 wPikaSpriteY:: ds 1 ; d454
-wPikaPicTextboxStartY:: ds 1
-	ds 25
+wPikaPicTextboxStartY:: ds 1 ; d455
+wd456:: ds 1 ; d456
+wd457:: ds 1 ; d457
+wd458:: ds 1 ; d458
+wCurPikaPicAnimObject:: ; d459
+wCurPikaPicAnimObjectIndex:: ds 1
+wCurPikaPicAnimObjectGraphicID:: dw
+	ds 19
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470
