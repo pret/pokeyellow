@@ -2365,31 +2365,112 @@ Func_fd2f5:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wd44b + 4], a
+	ld [$d44e], a
 	ld a, [hli]
 	cp $80
 	jr nz, .asm_fd311
 	call Func_157c
 .asm_fd311
-	ld [wd44b + 3], a
+	ld [$d44d], a
 	ld a, [hli]
-	ld [wd44b + 6], a
+	ld [$d450], a
 	ld a, [hli]
 	cp $80
 	jr nz, .asm_fd320
 	call Func_157c
 .asm_fd320
-	ld [wd44b + 5], a
+	ld [$d44f], a
 	xor a
-	ld [wd44b + 7], a
+	ld [$d451], a
 	scf
 	ret
 
 Func_fd329:
-	dr $fd329,$fd3b0
+	xor a
+	ld [$d44c], a
+	ld [$d457], a
+	ld [$d458], a
+	ld a, [wSpriteStateData2 + 7]
+	push af
+.asm_fd337
+	ld bc, wSpriteStateData1
+	ld a, [$d44e]
+	ld hl, Jumptable_fd4ac
+	call Func_fd365
+	ld a, [$d450]
+	ld hl, Jumptable_fd65c
+	call Func_fd365
+	call Func_fd36e
+	call Func_fd39d
+	call DelayFrame
+	call DelayFrame
+	ld hl, $d44c
+	bit 7, [hl]
+	jr z, .asm_fd337
+	pop af
+	ld [wSpriteStateData2 + 7], a
+	scf
+	ret
+
+Func_fd365:
+	ld e, a
+	ld d, 0
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl]
+
+Func_fd36e:
+	ld hl, 2
+	add hl, bc
+	ld a, [$d452]
+	ld [hl], a
+	ld a, [$d454]
+	ld d, a
+	ld a, [$d456]
+	add d
+	ld hl, 4
+	add hl, bc
+	ld [hl], a
+	ld a, [$d453]
+	ld d, a
+	ld a, [$d455]
+	add d
+	ld hl, 6
+	add hl, bc
+	ld [hl], a
+	ld hl, $d44c
+	bit 6, [hl]
+	ret z
+	ld hl, wSpriteStateData2 + 7 - wSpriteStateData1
+	add hl, bc
+	ld [hl], 0
+	ret
+
+Func_fd39d:
+	ld hl, $d44c
+	bit 6, [hl]
+	res 6, [hl]
+	ld hl, wd736
+	res 6, [hl]
+	ret z
+	set 6, [hl]
+	call Func_fd7f3
+	ret
 
 Data_fd3b0:
-	dr $fd3b0,$fd831
+	dr $fd3b0,$fd4ac
+
+Jumptable_fd4ac:
+	dr $fd4ac,$fd65c
+
+Jumptable_fd65c:
+	dr $fd65c,$fd7f3
+
+Func_fd7f3:
+	dr $fd7f3,$fd831
 Func_fd831:
 	dr $fd831,$fd8ab
 Func_fd8ab: ; fd8ab (3f:58ab)
