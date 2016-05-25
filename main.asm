@@ -965,7 +965,15 @@ PlayIntroScene: ; f982d (3e:582d)
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
-	dr $fbb5a,$fc000
+Func_fbb5a:
+	ld hl, wTileMapBackup
+	ld bc, 10 * SCREEN_WIDTH
+	xor a
+	call FillMemory
+	ret
+
+Func_fbb65:
+	dr $fbb65,$fbd76
 
 SECTION "bank3F",ROMX,BANK[$3F]
 
