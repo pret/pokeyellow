@@ -293,7 +293,34 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	db $01, $ec, $02, $ed, $03, $ee, $ff
 
 Func_f0a82: ; f0a82
-	dr $f0a82, $f220e
+	ld a, [wd472]
+	bit 7, a
+	ret z
+	ld a, [wWalkBikeSurfState]
+	and a
+	ret nz
+	push hl
+	push bc
+	callab Func_fcb4d
+	pop bc
+	pop hl
+	ld a, b
+	cp e
+	ret nz
+	push hl
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	callab Func_fd831
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	pop hl
+	call Func_159b
+	callab Func_fcba1
+	ret
+
+	dr $f0abf, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"

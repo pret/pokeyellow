@@ -2296,7 +2296,9 @@ Pointer_fd230: ; fd230 (3f:5230)
 Func_fd252: ; fd252 (3f:5252)
 	dr $fd252,$fd2a1
 Func_fd2a1:: ; fd2a1 (3f:52a1)
-	dr $fd2a1,$fd8ab
+	dr $fd2a1,$fd831
+Func_fd831:
+	dr $fd831,$fd8ab
 Func_fd8ab: ; fd8ab (3f:58ab)
 	dr $fd8ab,$fd8d4
 Func_fd8d4: ; fd8d4 (3f:58d4)
