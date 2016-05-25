@@ -292,11 +292,18 @@ Pointer_f0a76:: ; f0a76 (3c:4a76)
 	db $27, $07, $7b, $4a, $ff
 	db $01, $ec, $02, $ed, $03, $ee, $ff
 
+Func_f0a82: ; f0a82
 	dr $f0a82, $f220e
-BeachHouse_h: ; f220e (3c:620e)
-;INCLUDE "data/mapHeaders/beach_house.asm"
-	dr $f220e, $f24ae
-Func_f24ae: ; f24ae (3c:64ae)
+
+INCLUDE "data/mapHeaders/beach_house.asm"
+INCLUDE "scripts/beach_house.asm"
+BeachHouseBlockdata: ; f2388 (3c:6388)
+INCBIN "maps/beach_house.blk"
+INCLUDE "data/mapObjects/beach_house.asm"
+
+Func_f23d0: ; f23d0
+	dr $f23d0, $f24ae
+Func_f24ae: ; f24ae
 	dr $f24ae, $f25f8
 
 INCLUDE "engine/overworld/hidden_objects.asm"

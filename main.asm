@@ -943,7 +943,7 @@ SECTION "bank3D",ROMX,BANK[$3D]
 INCLUDE "engine/bank3d.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
-
+Func_f8000: ; f8000
 	dr $f8000,$f982d
 PlayIntroScene: ; f982d (3e:582d)
 	dr $f982d,$fa35a
