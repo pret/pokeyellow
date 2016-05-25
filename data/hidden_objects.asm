@@ -84,463 +84,463 @@ HiddenObjectMaps: ; f268d (3c:668d)
 
 ; format: y-coord, x-coord, text id/item id, object routine
 SilphCo11FHiddenObjects:
-	db $0c, $0a, $04
+	db $0c, $0a, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 SilphCo5FHiddenObjects:
-	db $03, $0c, $52
+	db $03, $0c, ELIXER
 	dba HiddenItems
 	db $FF
 SilphCo9FHiddenObjects:
-	db $0f, $02, $11
+	db $0f, $02, MAX_POTION
 	dba HiddenItems
 	db $FF
 Mansion2HiddenObjects:
-	db $0b, $02, $04
+	db $0b, $02, SPRITE_FACING_UP
 	dba Mansion2Script_Switches
 	db $FF
 Mansion3HiddenObjects:
-	db $09, $01, $36
+	db $09, $01, MAX_REVIVE
 	dba HiddenItems
- 	db $05, $0a, $04
+	db $05, $0a, SPRITE_FACING_UP
 	dba Mansion3Script_Switches
 	db $FF
 Mansion4HiddenObjects:
-	db $09, $01, $28
+	db $09, $01, RARE_CANDY
 	dba HiddenItems
- 	db $03, $14, $04
+	db $03, $14, SPRITE_FACING_UP
 	dba Mansion4Script_Switches
- 	db $19, $12, $04
+	db $19, $12, SPRITE_FACING_UP
 	dba Mansion4Script_Switches
 	db $FF
 SafariZoneWestHiddenObjects:
-	db $05, $06, $35
+	db $05, $06, REVIVE
 	dba HiddenItems
 	db $FF
 UnknownDungeon2HiddenObjects:
-	db $0d, $10, $4f
+	db $0d, $10, PP_UP
 	dba HiddenItems
 	db $FF
 UnknownDungeon3HiddenObjects:
-	db $0e, $08, $4f
+	db $0e, $08, PP_UP
 	dba HiddenItems
 	db $FF
 UnusedMap6FHiddenObjects:
-	db $0b, $0e, $53
+	db $0b, $0e, MAX_ELIXER
 	dba HiddenItems
 	db $FF
 SeafoamIslands3HiddenObjects:
-	db $0f, $0f, $31
+	db $0f, $0f, NUGGET
 	dba HiddenItems
 	db $FF
 SeafoamIslands4HiddenObjects:
-	db $10, $09, $53
+	db $10, $09, MAX_ELIXER
 	dba HiddenItems
 	db $FF
 SeafoamIslands5HiddenObjects:
-	db $11, $19, $02
+	db $11, $19, ULTRA_BALL
 	dba HiddenItems
 	db $FF
 ViridianForestHiddenObjects:
-	db $12, $01, $14
+	db $12, $01, POTION
 	dba HiddenItems
- 	db $2a, $10, $0b
+	db $2a, $10, ANTIDOTE
 	dba HiddenItems
 	db $FF
 MtMoon3HiddenObjects:
-	db $0c, $12, $0a
+	db $0c, $12, MOON_STONE
 	dba HiddenItems
- 	db $09, $21, $50
+	db $09, $21, ETHER
 	dba HiddenItems
 	db $FF
 SSAnne10HiddenObjects:
-	db $01, $03, $12
+	db $01, $03, HYPER_POTION
 	dba HiddenItems
 	db $FF
 SSAnne6HiddenObjects:
-	db $05, $0d, $00
+	db $05, $0d, SPRITE_FACING_DOWN
 	dba PrintTrashText
- 	db $07, $0d, $00
+	db $07, $0d, SPRITE_FACING_DOWN
 	dba PrintTrashText
- 	db $09, $0d, $03
+	db $09, $0d, GREAT_BALL
 	dba HiddenItems
 	db $FF
 UndergroundPathNsHiddenObjects:
-	db $04, $03, $10
+	db $04, $03, FULL_RESTORE
 	dba HiddenItems
- 	db $22, $04, $44
+	db $22, $04, X_SPECIAL
 	dba HiddenItems
 	db $FF
 UndergroundPathWeHiddenObjects:
-	db $02, $0c, $31
+	db $02, $0c, NUGGET
 	dba HiddenItems
- 	db $05, $15, $52
+	db $05, $15, ELIXER
 	dba HiddenItems
 	db $FF
 RocketHideout1HiddenObjects:
-	db $0f, $15, $4f
+	db $0f, $15, PP_UP
 	dba HiddenItems
 	db $FF
 RocketHideout3HiddenObjects:
-	db $11, $1b, $31
+	db $11, $1b, NUGGET
 	dba HiddenItems
 	db $FF
 RocketHideout4HiddenObjects:
-	db $01, $19, $13
+	db $01, $19, SUPER_POTION
 	dba HiddenItems
 	db $FF
 Route10HiddenObjects:
-	db $11, $09, $13
+	db $11, $09, SUPER_POTION
 	dba HiddenItems
- 	db $35, $10, $51
+	db $35, $10, MAX_ETHER
 	dba HiddenItems
 	db $FF
 RockTunnelPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 PowerPlantHiddenObjects:
-	db $10, $11, $53
+	db $10, $11, MAX_ELIXER
 	dba HiddenItems
- 	db $01, $0c, $4f
+	db $01, $0c, PP_UP
 	dba HiddenItems
 	db $FF
 Route11HiddenObjects:
-	db $05, $30, $1d
+	db $05, $30, ESCAPE_ROPE
 	dba HiddenItems
 	db $FF
 Route12HiddenObjects:
-	db $3f, $02, $12
+	db $3f, $02, HYPER_POTION
 	dba HiddenItems
 	db $FF
 Route13HiddenObjects:
-	db $0e, $01, $4f
+	db $0e, $01, PP_UP
 	dba HiddenItems
- 	db $0d, $10, $27
+	db $0d, $10, CALCIUM
 	dba HiddenItems
 	db $FF
 Route15Gate2FHiddenObjects:
-	db $02, $01, $04
+	db $02, $01, SPRITE_FACING_UP
 	dba Route15GateLeftBinoculars
 	db $FF
 Route17HiddenObjects:
-	db $0e, $0f, $28
+	db $0e, $0f, RARE_CANDY
 	dba HiddenItems
- 	db $2d, $08, $10
+	db $2d, $08, FULL_RESTORE
 	dba HiddenItems
- 	db $48, $11, $4f
+	db $48, $11, PP_UP
 	dba HiddenItems
- 	db $5b, $04, $36
+	db $5b, $04, MAX_REVIVE
 	dba HiddenItems
- 	db $79, $08, $53
+	db $79, $08, MAX_ELIXER
 	dba HiddenItems
 	db $FF
 Route23HiddenObjects:
-	db $2c, $09, $10
+	db $2c, $09, FULL_RESTORE
 	dba HiddenItems
- 	db $46, $13, $02
+	db $46, $13, ULTRA_BALL
 	dba HiddenItems
- 	db $5a, $08, $51
+	db $5a, $08, MAX_ETHER
 	dba HiddenItems
 	db $FF
 VictoryRoad2HiddenObjects:
-	db $02, $05, $02
+	db $02, $05, ULTRA_BALL
 	dba HiddenItems
- 	db $07, $1a, $10
+	db $07, $1a, FULL_RESTORE
 	dba HiddenItems
 	db $FF
 Route25HiddenObjects:
-	db $03, $26, $50
+	db $03, $26, ETHER
 	dba HiddenItems
- 	db $01, $0a, $52
+	db $01, $0a, ELIXER
 	dba HiddenItems
 	db $FF
 BillsHouseHiddenObjects:
-	db $04, $01, $04
+	db $04, $01, SPRITE_FACING_UP
 	dba BillsHousePC
 	db $FF
 Route4HiddenObjects:
-	db $03, $28, $03
+	db $03, $28, GREAT_BALL
 	dba HiddenItems
 	db $FF
 MtMoonPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 Route9HiddenObjects:
-	db $07, $0e, $50
+	db $07, $0e, ETHER
 	dba HiddenItems
 	db $FF
 TradeCenterHiddenObjects:
 	db $04, $05, $d0
 	dba CableClubRightGameboy
- 	db $04, $04, $d0
+	db $04, $04, $d0
 	dba CableClubLeftGameboy
 	db $FF
 ColosseumHiddenObjects:
 	db $04, $05, $d0
 	dba CableClubRightGameboy
- 	db $04, $04, $d0
+	db $04, $04, $d0
 	dba CableClubLeftGameboy
 	db $FF
 IndigoPlateauHiddenObjects:
 	db $0d, $08, $ff
 	dba PrintIndigoPlateauHQText
-	db $0d, $0b, $00
+	db $0d, $0b, SPRITE_FACING_DOWN
 	dba PrintIndigoPlateauHQText
 	db $FF
 IndigoPlateauLobbyHiddenObjects:
-	db $07, $0f, $04
+	db $07, $0f, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CopycatsHouse2FHiddenObjects:
-	db $01, $01, $31
+	db $01, $01, NUGGET
 	dba HiddenItems
 	db $FF
 FightingDojoHiddenObjects:
-	db $09, $03, $04
+	db $09, $03, SPRITE_FACING_UP
 	dba PrintFightingDojoText
- 	db $09, $06, $04
+	db $09, $06, SPRITE_FACING_UP
 	dba PrintFightingDojoText
- 	db $00, $04, $04
+	db $00, $04, SPRITE_FACING_UP
 	dba PrintFightingDojoText2
- 	db $00, $05, $04
+	db $00, $05, SPRITE_FACING_UP
 	dba PrintFightingDojoText3
 	db $FF
 SaffronGymHiddenObjects:
-	db $0f, $09, $04
+	db $0f, $09, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 SaffronPokecenterHiddenObjects:
-	db $04, $00, $04
+	db $04, $00, SPRITE_FACING_UP
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 RedsHouse2FHiddenObjects:
-	db $01, $00, $04
+	db $01, $00, SPRITE_FACING_UP
 	dba OpenRedsPC
- 	db $05, $03, $d0
+	db $05, $03, $d0
 	dba PrintRedsNESText
 	db $FF
 BluesHouseHiddenObjects:
-	db $01, $00, $04
+	db $01, $00, SPRITE_FACING_UP
 	dba PrintBookcaseText
- 	db $01, $01, $04
+	db $01, $01, SPRITE_FACING_UP
 	dba PrintBookcaseText
- 	db $01, $07, $04
+	db $01, $07, SPRITE_FACING_UP
 	dba PrintBookcaseText
 	db $FF
 OaksLabHiddenObjects:
-	db $00, $04, $04
+	db $00, $04, SPRITE_FACING_UP
 	dba DisplayOakLabLeftPoster
- 	db $00, $05, $04
+	db $00, $05, SPRITE_FACING_UP
 	dba DisplayOakLabRightPoster
- 	db $01, $00, $04
+	db $01, $00, SPRITE_FACING_UP
 	dba DisplayOakLabEmailText
- 	db $01, $01, $04
+	db $01, $01, SPRITE_FACING_UP
 	dba DisplayOakLabEmailText
 	db $FF
 ViridianCityHiddenObjects:
-	db $04, $0e, $14
+	db $04, $0e, POTION
 	dba HiddenItems
 	db $FF
 ViridianPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 ViridianSchoolHiddenObjects:
-	db $04, $03, $22
+	db $04, $03, (ViridianSchoolNotebook_id - TextPredefs) / 2 + 1
 	dba PrintNotebookText
- 	db $00, $03, $23
+	db $00, $03, (ViridianSchoolBlackboard_id - TextPredefs) / 2 + 1
 	dba PrintBlackboardLinkCableText
 	db $FF
 ViridianGymHiddenObjects:
-	db $0f, $0f, $04
+	db $0f, $0f, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0f, $12, $04
+	db $0f, $12, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 Museum1FHiddenObjects:
-	db $03, $02, $04
+	db $03, $02, SPRITE_FACING_UP
 	dba AerodactylFossil
- 	db $06, $02, $04
+	db $06, $02, SPRITE_FACING_UP
 	dba KabutopsFossil
 	db $FF
 PewterGymHiddenObjects:
-	db $0a, $03, $04
+	db $0a, $03, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0a, $06, $04
+	db $0a, $06, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 PewterPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CeruleanCityHiddenObjects:
-	db $08, $0f, $28
+	db $08, $0f, RARE_CANDY
 	dba HiddenItems
 	db $FF
 CeruleanPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CeruleanGymHiddenObjects:
-	db $0b, $03, $04
+	db $0b, $03, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0b, $06, $04
+	db $0b, $06, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 BikeShopHiddenObjects:
 	db $00, $01, $d0
 	dba PrintNewBikeText
- 	db $01, $02, $d0
+	db $01, $02, $d0
 	dba PrintNewBikeText
- 	db $02, $01, $d0
+	db $02, $01, $d0
 	dba PrintNewBikeText
- 	db $02, $03, $d0
+	db $02, $03, $d0
 	dba PrintNewBikeText
- 	db $04, $00, $d0
+	db $04, $00, $d0
 	dba PrintNewBikeText
- 	db $05, $01, $d0
+	db $05, $01, $d0
 	dba PrintNewBikeText
 	db $FF
 UnknownDungeon1HiddenObjects:
-	db $07, $12, $4f
+	db $07, $12, PP_UP
 	dba HiddenItems
 	db $FF
 LavenderPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 Pokemontower5HiddenObjects:
-	db $0c, $04, $52
+	db $0c, $04, ELIXER
 	dba HiddenItems
 	db $FF
 LavenderHouse1HiddenObjects:
-	db $01, $00, $00
+	db $01, $00, SPRITE_FACING_DOWN
 	dba PrintMagazinesText
- 	db $01, $01, $00
+	db $01, $01, SPRITE_FACING_DOWN
 	dba PrintMagazinesText
- 	db $01, $07, $00
+	db $01, $07, SPRITE_FACING_DOWN
 	dba PrintMagazinesText
 	db $FF
 VermilionCityHiddenObjects:
-	db $0b, $0e, $51
+	db $0b, $0e, MAX_ETHER
 	dba HiddenItems
 	db $FF
 VermilionPokecenterHiddenObjects:
-	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
- 	db $04, $00, $04
+	db $04, $00, SPRITE_FACING_UP
 	dba PrintBenchGuyText
 	db $FF
 PokemonFanClubHiddenObjects:
-	db $00, $01, $04
+	db $00, $01, SPRITE_FACING_UP
 	dba FanClubPicture1
- 	db $00, $06, $04
+	db $00, $06, SPRITE_FACING_UP
 	dba FanClubPicture2
 	db $FF
 VermilionGymHiddenObjects:
-	db $0e, $03, $04
+	db $0e, $03, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0e, $06, $04
+	db $0e, $06, SPRITE_FACING_UP
 	dba GymStatues
- 	db $01, $06, $00
+	db $01, $06, SPRITE_FACING_DOWN
 	dba PrintTrashText
- 	db $07, $01, $00
+	db $07, $01, 0
 	dba GymTrashScript
- 	db $09, $01, $01
+	db $09, $01, 1
 	dba GymTrashScript
- 	db $0b, $01, $02
+	db $0b, $01, 2
 	dba GymTrashScript
- 	db $07, $03, $03
+	db $07, $03, 3
 	dba GymTrashScript
- 	db $09, $03, $04
+	db $09, $03, 4
 	dba GymTrashScript
- 	db $0b, $03, $05
+	db $0b, $03, 5
 	dba GymTrashScript
- 	db $07, $05, $06
+	db $07, $05, 6
 	dba GymTrashScript
- 	db $09, $05, $07
+	db $09, $05, 7
 	dba GymTrashScript
- 	db $0b, $05, $08
+	db $0b, $05, 8
 	dba GymTrashScript
- 	db $07, $07, $09
+	db $07, $07, 9
 	dba GymTrashScript
- 	db $09, $07, $0a
+	db $09, $07, 10
 	dba GymTrashScript
- 	db $0b, $07, $0b
+	db $0b, $07, 11
 	dba GymTrashScript
- 	db $07, $09, $0c
+	db $07, $09, 12
 	dba GymTrashScript
- 	db $09, $09, $0d
+	db $09, $09, 13
 	dba GymTrashScript
- 	db $0b, $09, $0e
+	db $0b, $09, 14
 	dba GymTrashScript
 	db $FF
 CeladonCityHiddenObjects:
-	db $0f, $30, $4f
+	db $0f, $30, PP_UP
 	dba HiddenItems
 	db $FF
 CeladonHotelHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
 	db $FF
 CeladonMansion2HiddenObjects:
-	db $05, $00, $04
+	db $05, $00, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CeladonMansion5HiddenObjects:
-	db $00, $03, $36
-	dbw $17, $5c7f
- 	db $00, $04, $36
-	dbw $17, $5c7f
- 	db $04, $03, $37
-	dbw $14, $68f6
+	db $00, $03, (LinkCableHelp_id - TextPredefs) / 2 + 1
+	dba PrintBlackboardLinkCableText
+	db $00, $04, (LinkCableHelp_id - TextPredefs) / 2 + 1
+	dba PrintBlackboardLinkCableText
+	db $04, $03, (TMNotebook_id - TextPredefs) / 2 + 1
+	dba PrintNotebookText
 	db $FF
 CeladonPokecenterHiddenObjects:
-	db $04, $00, $08
+	db $04, $00, SPRITE_FACING_LEFT
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CeladonGymHiddenObjects:
-	db $0f, $03, $04
+	db $0f, $03, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0f, $06, $04
+	db $0f, $06, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 GameCornerHiddenObjects:
 	db $0f, $12, $d0
 	dba StartSlotMachine
- 	db $0e, $12, $d0
+	db $0e, $12, $d0
 	dba StartSlotMachine
- 	db $0d, $12, $d0
+	db $0d, $12, $d0
 	dba StartSlotMachine
- 	db $0c, $12, $d0
+	db $0c, $12, $d0
 	dba StartSlotMachine
- 	db $0b, $12, $d0
+	db $0b, $12, $d0
 	dba StartSlotMachine
-	db $0a, $12, $ff
+	db $0a, $12, $ff ; "Someone's Keys"
 	dba StartSlotMachine
 	db $0a, $0d, $d0
 	dba StartSlotMachine
 	db $0b, $0d, $d0
 	dba StartSlotMachine
-	db $0c, $0d, $fe
+	db $0c, $0d, $fe ; "Out To Lunch"
 	dba StartSlotMachine
 	db $0d, $0d, $d0
 	dba StartSlotMachine
@@ -578,7 +578,7 @@ GameCornerHiddenObjects:
 	dba StartSlotMachine
 	db $0d, $06, $d0
 	dba StartSlotMachine
-	db $0c, $06, $fd
+	db $0c, $06, $fd ; "Out Of Order"
 	dba StartSlotMachine
 	db $0b, $06, $d0
 	dba StartSlotMachine
@@ -622,53 +622,53 @@ GameCornerHiddenObjects:
 	dba HiddenCoins
 	db $FF
 FuchsiaPokecenterHiddenObjects:
-	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
- 	db $04, $00, $04
+	db $04, $00, SPRITE_FACING_UP
 	dba PrintBenchGuyText
 	db $FF
 SafariZoneEntranceHiddenObjects:
-	db $01, $0a, $31
+	db $01, $0a, NUGGET
 	dba HiddenItems
 	db $FF
 FuchsiaGymHiddenObjects:
-	db $0f, $03, $04
+	db $0f, $03, SPRITE_FACING_UP
 	dba GymStatues
- 	db $0f, $06, $04
+	db $0f, $06, SPRITE_FACING_UP
 	dba GymStatues
 	db $FF
 Mansion1HiddenObjects:
-	db $10, $08, $0a
+	db $10, $08, MOON_STONE
 	dba HiddenItems
- 	db $05, $02, $04
+	db $05, $02, SPRITE_FACING_UP
 	dba Mansion1Script_Switches
 	db $FF
 CinnabarGymHiddenObjects:
-	db $0d, $11, $04
+	db $0d, $11, SPRITE_FACING_UP
 	dba GymStatues
- 	db $07, $0f, $01
+	db $07, $0f, (0 << 4) | 1
 	dba PrintCinnabarQuiz
- 	db $01, $0a, $12
+	db $01, $0a, (1 << 4) | 2
 	dba PrintCinnabarQuiz
- 	db $07, $09, $13
+	db $07, $09, (1 << 4) | 3
 	dba PrintCinnabarQuiz
- 	db $0d, $09, $14
+	db $0d, $09, (1 << 4) | 4
 	dba PrintCinnabarQuiz
- 	db $0d, $01, $05
+	db $0d, $01, (0 << 4) | 5
 	dba PrintCinnabarQuiz
- 	db $07, $01, $16
+	db $07, $01, (1 << 4) | 6
 	dba PrintCinnabarQuiz
 	db $FF
 CinnabarLab4HiddenObjects:
-	db $04, $00, $04
+	db $04, $00, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
- 	db $04, $02, $04
+	db $04, $02, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 CinnabarPokecenterHiddenObjects: ; 6cc3
-	db $04, $00, $04
+	db $04, $00, SPRITE_FACING_UP
 	dba PrintBenchGuyText
- 	db $03, $0d, $04
+	db $03, $0d, SPRITE_FACING_UP
 	dba OpenPokemonCenterPC
 	db $FF
 ; 6cd0
