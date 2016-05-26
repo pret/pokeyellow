@@ -687,12 +687,15 @@ LoadSpinnerArrowTiles: ; 45077 (11:5077)
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
-	dr $48000, $48051
-; INCLUDE "data/mapHeaders/route7.asm"
-; INCLUDE "data/mapObjects/route7.asm"
+INCLUDE "data/mapHeaders/route7.asm"
+INCLUDE "data/mapObjects/route7.asm"
 Route7Blocks: ; 48051
 INCBIN "maps/route7.blk"
-	dr $480ab,$4a540
+	dr $480ab,$480eb
+INCLUDE "scripts/route7.asm"
+; INCLUDE "data/mapHeaders/redshouse1f.asm"
+; INCLUDE "data/mapObjects/redshouse1f.asm"
+	dr $480f6,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -746,12 +749,29 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-	dr $4fe79,$4ff1a
+; 4fe79 (13:7e79)
+
+INCLUDE "data/mapHeaders/tradecenter.asm"
+INCLUDE "scripts/tradecenter.asm"
+INCLUDE "data/mapObjects/tradecenter.asm"
+TradeCenterBlocks:
+INCBIN "maps/tradecenter.blk"
+
+; 4fee6 (13:7ee6)
+
+INCLUDE "data/mapHeaders/colosseum.asm"
+INCLUDE "scripts/colosseum.asm"
+INCLUDE "data/mapObjects/colosseum.asm"
+ColosseumBlocks:
+INCBIN "maps/colosseum.blk"
 
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$52060
+	dr $50000,$50a98
+SaffronCityBlocks:
+INCBIN "maps/saffroncity.blk"
+	dr $50c00,$52060
 Mansion2Script_Switches:
 	dr $52060,$522a3
 Mansion3Script_Switches:
