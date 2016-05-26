@@ -768,10 +768,18 @@ INCBIN "maps/colosseum.blk"
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$50a98
-SaffronCityBlocks:
+	dr $50000,$509aa
+
+INCLUDE "data/mapHeaders/saffroncity.asm"
+INCLUDE "data/mapObjects/saffroncity.asm"
+SaffronCityBlocks: ; 50a98 (14:4a98)
 INCBIN "maps/saffroncity.blk"
-	dr $50c00,$52060
+INCLUDE "scripts/saffroncity.asm"
+
+	dr $50ca9,$517cc
+
+; victoryroad2
+	dr $517cc,$52060
 Mansion2Script_Switches:
 	dr $52060,$522a3
 Mansion3Script_Switches:
@@ -786,7 +794,10 @@ INCLUDE "engine/hidden_object_functions14.asm"
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$5525f
+	dr $54000,$545da
+Route5Blocks: ; 545da
+INCBIN "maps/route5.blk"
+	dr $5468e,$5525f
 
 INCLUDE "engine/battle/experience.asm"
 
@@ -799,7 +810,13 @@ INCLUDE "engine/overworld/trainers.asm"
 
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58b84
+	dr $58000,$58079
+Route6Blocks: ; 58079
+INCBIN "maps/route6.blk"
+	dr $5812d,$581c6
+Route8Blocks: ; 581c6
+INCBIN "maps/route8.blk"
+	dr $582d4,$58b84
 Route16Blocks: ; 58b84
 INCBIN "maps/route16.blk"
 	dr $58c38,$58d99
