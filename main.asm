@@ -236,10 +236,10 @@ INCLUDE "data/mapHeaders/celadoncity.asm"
 INCLUDE "data/mapObjects/celadoncity.asm"
 CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
-	dr $182a1,$18357 ; headers, objects, blocks
+	dr $182a1,$182fd ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/pallettown.asm"
 ; INCLUDE "data/mapObjects/pallettown.asm"
-; PalletTownBlocks: INCBIN "maps/pallettown.blk"
+PalletTownBlocks: INCBIN "maps/pallettown.blk"
 
 INCLUDE "data/mapHeaders/viridiancity.asm"
 INCLUDE "data/mapObjects/viridiancity.asm"
@@ -283,8 +283,14 @@ INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
+; INCLUDE "data/mapHeaders/cinnabarisland.asm"
+; INCLUDE "data/mapObjects/cinnabarisland.asm"
+	dr $1c000,$1c069 ; headers, objects, blocks
+CinnabarIslandBlocks:
+INCBIN "maps/cinnabarisland.blk"
 
-	dr $1c000,$1c0fc ; headers, objects, blocks
+INCLUDE "data/mapHeaders/route1.asm"
+INCLUDE "data/mapObjects/route1.asm"
 Route1Blocks: ; 1c0fc
 INCBIN "maps/route1.blk"
 	dr $1c1b0,$1c21e ; headers, objects, blocks
@@ -292,7 +298,9 @@ INCBIN "maps/route1.blk"
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
 
-	dr $1c2c2,$1e2ae ; map scripts
+	dr $1c2c2,$1c358 ; map scripts
+INCLUDE "scripts/route1.asm"
+	dr $1c386,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 

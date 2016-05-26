@@ -345,7 +345,11 @@ NurseChanseyText:
 	dr $f0f26, $f18bb
 
 INCLUDE "scripts/viridiancity2.asm"
-	dr $f1a0f, $f220e
+	dr $f1a0f, $f1ad2
+
+INCLUDE "scripts/route1_2.asm"
+
+	dr $f1b27, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
