@@ -879,13 +879,120 @@ SECTION "bank30",ROMX,BANK[$30]
 	dr $c0000,$c4000
 
 SECTION "bank39",ROMX,BANK[$39]
-Pic_e4000:
-	dr $e4000,$e40cc
-GFX_e40cc:
-	dr $e40cc,$e411c
-Pic_e411c:
-	dr $e411c,$e7ea3
-
+Pic_e4000: ; e4000
+	dr $e4000, $e40cc
+GFX_e40cc: ; e40cc
+	dr $e40cc, $e411c
+Pic_e411c: ; e411c
+	dr $e411c, $e41d2
+GFX_e41d2: ; e41d2
+	dr $e41d2, $e4272
+Pic_e4272: ; e4272
+	dr $e4272, $e4323
+GFX_e4323: ; e4323
+	dr $e4323, $e4383
+Pic_e4383: ; e4383
+	dr $e4383, $e444b
+GFX_e444b: ; e444b
+	dr $e444b, $e458b
+Pic_e458b: ; e458b
+	dr $e458b, $e463b
+GFX_e463b: ; e463b
+	dr $e463b, $e467b
+Pic_e467b: ; e467b
+	dr $e467b, $e472e
+GFX_e472e: ; e472e
+	dr $e472e, $e476e
+Pic_e476e: ; e476e
+	dr $e476e, $e4841
+GFX_e4841: ; e4841
+	dr $e4841, $e49d1
+Pic_e49d1: ; e49d1
+	dr $e49d1, $e4a99
+GFX_e4a99: ; e4a99
+	dr $e4a99, $e4b39
+Pic_e4b39: ; e4b39
+	dr $e4b39, $e4bde
+GFX_e4bde: ; e4bde
+	dr $e4bde, $e4c3e
+Pic_e4c3e: ; e4c3e
+	dr $e4c3e, $e4ce0
+GFX_e4ce0: ; e4ce0
+	dr $e4ce0, $e4e70
+GFX_e4e70: ; e4e70
+	dr $e4e70, $e5000
+Pic_e5000: ; e5000
+	dr $e5000, $e50af
+GFX_e50af: ; e50af
+	dr $e50af, $e523f
+Pic_e523f: ; e523f
+	dr $e523f, $e52fe
+GFX_e52fe: ; e52fe
+	dr $e52fe, $e548e
+Pic_e548e: ; e548e
+	dr $e548e, $e5541
+GFX_e5541: ; e5541
+	dr $e5541, $e56d1
+Pic_e56d1: ; e56d1
+	dr $e56d1, $e5794
+GFX_e5794: ; e5794
+	dr $e5794, $e5924
+Pic_e5924: ; e5924
+	dr $e5924, $e59ed
+GFX_e59ed: ; e59ed
+	dr $e59ed, $e5b7d
+Pic_e5b7d: ; e5b7d
+	dr $e5b7d, $e5c4d
+GFX_e5c4d: ; e5c4d
+	dr $e5c4d, $e5ddd
+Pic_e5ddd: ; e5ddd
+	dr $e5ddd, $e5e90
+GFX_e5e90: ; e5e90
+	dr $e5e90, $e6020
+GFX_e6020: ; e6020
+	dr $e6020, $e61b0
+GFX_e61b0: ; e61b0
+	dr $e61b0, $e6340
+Pic_e6340: ; e6340
+	dr $e6340, $e63f7
+GFX_e63f7: ; e63f7
+	dr $e63f7, $e6587
+Pic_e6587: ; e6587
+	dr $e6587, $e6646
+GFX_e6646: ; e6646
+	dr $e6646, $e67d6
+Pic_e67d6: ; e67d6
+	dr $e67d6, $e682f
+GFX_e682f: ; e682f
+	dr $e682f, $e69bf
+GFX_e69bf: ; e69bf
+	dr $e69bf, $e6b4f
+GFX_e6b4f: ; e6b4f
+	dr $e6b4f, $e6cdf
+GFX_e6cdf: ; e6cdf
+	dr $e6cdf, $e6e6f
+GFX_e6e6f: ; e6e6f
+	dr $e6e6f, $e6fff
+GFX_e6fff: ; e6fff
+	dr $e6fff, $e718f
+GFX_e718f: ; e718f
+	dr $e718f, $e731f
+GFX_e731f: ; e731f
+	dr $e731f, $e74af
+GFX_e74af: ; e74af
+	dr $e74af, $e763f
+GFX_e763f: ; e763f
+	dr $e763f, $e77cf
+Pic_e77cf: ; e77cf
+	dr $e77cf, $e7863
+GFX_e7863: ; e7863
+	dr $e7863, $e79f3
+GFX_e79f3: ; e79f3
+	dr $e79f3, $e7b83
+GFX_e7b83: ; e7b83
+	dr $e7b83, $e7d13
+GFX_e7d13: ; e7d13
+	dr $e7d13, $e7ea3
 
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"

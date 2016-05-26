@@ -321,7 +321,28 @@ Func_f0a82: ; f0a82
 	callab Func_fcba1
 	ret
 
-	dr $f0abf, $f220e
+Pic_f0abf: ; f0abf (3c:4abf)
+	dr $f0abf, $f0b64
+GFX_f0b64: ; f0b64 (3c:4b64)
+	dr $f0b64, $f0cf4
+Pic_f0cf4: ; f0cf4 (3c:4cf4)
+	dr $f0cf4, $f0d82
+GFX_f0d82: ; f0d82 (3c:4d82)
+	dr $f0d82, $f0f12
+
+Func_f0f12:
+	ld hl, NurseChanseyText
+	call PrintText
+	ld a, CHANSEY
+	call PlayCry
+	call WaitForSoundToFinish
+	ret
+
+NurseChanseyText:
+	TX_FAR _NurseChanseyText
+	db "@"
+
+	dr $f0f26, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"

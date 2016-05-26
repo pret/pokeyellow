@@ -823,7 +823,7 @@ pikapic_writebyte: macro
 
 	enum pikapic_loadgfx_command
 pikapic_loadgfx: macro
-	db pikapic_loadgfx_command, \1 ; _id - PikaPicAnimGFXHeaders) / 4
+	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
 	endm
 
 	enum pikapic_object_command
@@ -863,9 +863,9 @@ pikapic_jump: macro ; 9
 	dbw pikapic_jump_command, \1
 	endm
 
-	enum pikapic_setdelay_command
-pikapic_setdelay: macro ; a
-	dbw pikapic_setdelay_command, \1
+	enum pikapic_setduration_command
+pikapic_setduration: macro ; a
+	dbw pikapic_setduration_command, \1
 	endm
 
 	enum pikapic_cry_command
