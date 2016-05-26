@@ -267,12 +267,9 @@ CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 ; INCLUDE "scripts/pallettown.asm"
 ; INCLUDE "scripts/viridiancity.asm"
 INCLUDE "scripts/pewtercity.asm"
-; INCLUDE "scripts/ceruleancity.asm"
-CeruleanCityScript:
-	dr $1953d,$196cd ; map scripts
+INCLUDE "scripts/ceruleancity.asm"
 
-CeruleanCityTextPointers:
-	dr $196cd,$19a43 ; map scripts
+	dr $19841,$19a43 ; vermilion scripts
 ; INCLUDE "scripts/vermilioncity.asm"
 ; INCLUDE "scripts/celadoncity.asm"
 CeladonCityScript:
@@ -928,8 +925,8 @@ SECTION "bank1D",ROMX,BANK[$1D]
 	dr $74000,$7405c
 
 INCLUDE "engine/items/itemfinder.asm"
-
-	dr $740af,$74726
+INCLUDE "scripts/ceruleancity2.asm"
+	dr $740d4,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
