@@ -342,7 +342,9 @@ NurseChanseyText:
 	TX_FAR _NurseChanseyText
 	db "@"
 
-	dr $f0f26, $f220e
+	dr $f0f26, $f1a01
+Func_f1a01:
+	dr $f1a01, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
