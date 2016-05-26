@@ -312,6 +312,8 @@ TX_ASM: MACRO
 	ENDM
 
 TX_SFX_ITEM EQUS "db $0b"
+TX_SFX_CONGRATS EQUS "db $10"
+TX_SFX_KEY_ITEM EQUS "db $11"
 
 ; Predef macro.
 add_predef: MACRO

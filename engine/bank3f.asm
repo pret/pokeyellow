@@ -1051,32 +1051,35 @@ Func_fcb52: ; fcb52 (3f:4b52)
 	ld a, [wYCoord]
 	add $4
 	ld e, a
-	ld hl, $104
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
 	add hl, bc
 	ld a, [hl]
 	cp e
 	jr z, Func_fcb71
 	jr nc, .asm_fcb6e
-	ld a, $4
+	ld a, SPRITE_FACING_UP
 	ret
+
 .asm_fcb6e
-	ld a, $0
+	ld a, SPRITE_FACING_DOWN
 	ret
 	
 Func_fcb71: ; fcb71 (3f:4b71)
-	ld hl, $105
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 5
 	add hl, bc
 	ld a, [hl]
 	cp d
 	jr z, .asm_fcb81
 	jr nc, .asm_fcb7e
-	ld a, $8
+	ld a, SPRITE_FACING_LEFT
 	ret
+
 .asm_fcb7e
-	ld a, $c
+	ld a, SPRITE_FACING_RIGHT
 	ret
+
 .asm_fcb81
-	ld a, $ff
+	ld a, $ff ; standing
 	ret
 
 Func_fcb84: ; fcb84 (3f:4b84)

@@ -302,7 +302,7 @@ Func_f0a82: ; f0a82
 	ret nz
 	push hl
 	push bc
-	callab Func_fcb4d
+	callab Func_fcb4d ; get Pikachu's position with respect to you?
 	pop bc
 	pop hl
 	ld a, b
@@ -317,7 +317,7 @@ Func_f0a82: ; f0a82
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
-	call Func_159b
+	call Func_159b ; homecall Func_fd2a1 - pikachu movement script?
 	callab Func_fcba1
 	ret
 
@@ -342,9 +342,10 @@ NurseChanseyText:
 	TX_FAR _NurseChanseyText
 	db "@"
 
-	dr $f0f26, $f1a01
-Func_f1a01:
-	dr $f1a01, $f220e
+	dr $f0f26, $f18bb
+
+INCLUDE "scripts/viridiancity2.asm"
+	dr $f1a0f, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"

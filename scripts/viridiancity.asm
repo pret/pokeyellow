@@ -51,7 +51,7 @@ ViridianCityScript_1905b:
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $80
+	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
 	ld [wSpriteStateData1 + 9], a
@@ -158,7 +158,7 @@ ViridianCityScript_1914d:
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, $80
+	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
 	ld [wSpriteStateData1 + 9], a
@@ -256,4 +256,109 @@ ViridianCityScript10: ; 191f9
 	ret
 
 ViridianCityTextPointers:
-	dr $19213,$192f5
+	dw ViridianCityText_0 ; 19233
+	dw ViridianCityText_1 ; 1923f
+	dw ViridianCityText_2 ; 1924b
+	dw ViridianCityText_3 ; 19257
+	dw ViridianCityText_4 ; 19263
+	dw ViridianCityText_5 ; 1926f
+	dw ViridianCityText_6 ; 1927b
+	dw ViridianCityText_7 ; 1928c
+	dw ViridianCityText_8 ; 192b9
+	dw ViridianCityText_9 ; 192c5
+	dw ViridianCityText_10 ; 192d1
+	dw MartSignText ; 23e5
+	dw PokeCenterSignText ; 23ea
+	dw ViridianCityText_11 ; 192dd
+	dw ViridianCityText_12 ; 192e9
+	dw ViridianCityText_13 ; 19287
+
+ViridianCityText_0:
+	TX_ASM
+	callba Func_f18bb
+	jp TextScriptEnd
+
+ViridianCityText_1:
+	TX_ASM
+	callba Func_f18c7
+	jp TextScriptEnd
+
+ViridianCityText_2:
+	TX_ASM
+	callba Func_f18e9
+	jp TextScriptEnd
+
+ViridianCityText_3:
+	TX_ASM
+	callba Func_f1911
+	jp TextScriptEnd
+
+ViridianCityText_4:
+	TX_ASM
+	callba Func_f192c
+	jp TextScriptEnd
+
+ViridianCityText_5:
+	TX_ASM
+	callba Func_f194a
+	jp TextScriptEnd
+
+ViridianCityText_6:
+	TX_ASM
+	callba Func_f198e
+	jp TextScriptEnd
+
+ViridianCityText_13:
+	TX_FAR _ViridianCityText_19219
+	db "@"
+
+ViridianCityText_7:
+	TX_ASM
+	CheckEvent EVENT_02D
+	jr nz, .asm_192a6
+	ld hl, ViridianCityText_192af
+	call PrintText
+	ld c, 2
+	call DelayFrames
+	ld a, $7
+	ld [W_VIRIDIANCITYCURSCRIPT], a
+	jr .asm_192ac
+
+.asm_192a6
+	ld hl, ViridianCityText_192b4
+	call PrintText
+.asm_192ac
+	jp TextScriptEnd
+
+ViridianCityText_192af:
+	TX_FAR _ViridianCityText_1920a
+	db "@"
+
+ViridianCityText_192b4:
+	TX_FAR _OldManTextAfterBattle
+	db "@"
+
+ViridianCityText_8:
+	TX_ASM
+	callba Func_f19c5
+	jp TextScriptEnd
+
+ViridianCityText_9:
+	TX_ASM
+	callba Func_f19d1
+	jp TextScriptEnd
+
+ViridianCityText_10:
+	TX_ASM
+	callba Func_f19dd
+	jp TextScriptEnd
+
+ViridianCityText_11:
+	TX_ASM
+	callba Func_f19e9
+	jp TextScriptEnd
+
+ViridianCityText_12:
+	TX_ASM
+	callba Func_f19f5
+	jp TextScriptEnd
