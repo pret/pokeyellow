@@ -236,7 +236,7 @@ INCLUDE "data/mapHeaders/celadoncity.asm"
 INCLUDE "data/mapObjects/celadoncity.asm"
 CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
-	dr $182a1,$18836 ; headers, objects, blocks
+	dr $182a1,$18754 ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/pallettown.asm"
 ; INCLUDE "data/mapObjects/pallettown.asm"
 ; PalletTownBlocks: INCBIN "maps/pallettown.blk"
@@ -249,8 +249,8 @@ CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 ; INCLUDE "data/mapObjects/pewtercity.asm"
 ; PewterCityBlocks: INCBIN "maps/pewtercity.blk"
 
-; INCLUDE "data/mapHeaders/ceruleancity.asm"
-; INCLUDE "data/mapObjects/ceruleancity.asm"
+INCLUDE "data/mapHeaders/ceruleancity.asm"
+INCLUDE "data/mapObjects/ceruleancity.asm"
 CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 	dr $1899e,$18dee ; headers, objects, blocks
 
@@ -262,12 +262,17 @@ CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 ; INCLUDE "data/mapObjects/fuchsiacity.asm"
 ; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-	dr $18dee,$19a43 ; map scripts
+	dr $18dee,$1953d ; map scripts
 
 ; INCLUDE "scripts/pallettown.asm"
 ; INCLUDE "scripts/viridiancity.asm"
 ; INCLUDE "scripts/pewtercity.asm"
 ; INCLUDE "scripts/ceruleancity.asm"
+CeruleanCityScript:
+	dr $1953d,$196cd ; map scripts
+
+CeruleanCityTextPointers:
+	dr $196cd,$19a43 ; map scripts
 ; INCLUDE "scripts/vermilioncity.asm"
 ; INCLUDE "scripts/celadoncity.asm"
 CeladonCityScript:
@@ -769,7 +774,10 @@ INCBIN "maps/colosseum.blk"
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$509aa
+	dr $50000,$506ed
+Route24Blocks: ; 506ed (14:46ed)
+INCBIN "maps/route24.blk"
+	dr $507a1,$509aa
 
 INCLUDE "data/mapHeaders/saffroncity.asm"
 INCLUDE "data/mapObjects/saffroncity.asm"
@@ -795,12 +803,17 @@ INCLUDE "engine/hidden_object_functions14.asm"
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$54589
+	dr $54000,$543f4
+Route4Blocks: ; 543f4
+INCBIN "maps/route4.blk"
 INCLUDE "data/mapHeaders/route5.asm"
 INCLUDE "data/mapObjects/route5.asm"
 Route5Blocks: ; 545da
 INCBIN "maps/route5.blk"
-	dr $5468e,$5525f
+	dr $5468e,$54706
+Route9Blocks: ; 54706
+INCBIN "maps/route9.blk"
+	dr $54814,$5525f
 
 INCLUDE "engine/battle/experience.asm"
 
