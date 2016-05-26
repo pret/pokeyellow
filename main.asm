@@ -232,11 +232,11 @@ INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
 
-	dr $18000,$18dee ; headers, objects, blocks
-; INCLUDE "data/mapHeaders/celadoncity.asm"
-; INCLUDE "data/mapObjects/celadoncity.asm"
-; CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
+INCLUDE "data/mapHeaders/celadoncity.asm"
+INCLUDE "data/mapObjects/celadoncity.asm"
+CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
+	dr $182a1,$18dee ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/pallettown.asm"
 ; INCLUDE "data/mapObjects/pallettown.asm"
 ; PalletTownBlocks: INCBIN "maps/pallettown.blk"
@@ -261,7 +261,7 @@ SECTION "bank06",ROMX,BANK[$06]
 ; INCLUDE "data/mapObjects/fuchsiacity.asm"
 ; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-	dr $18dee,$1a4ea ; map scripts
+	dr $18dee,$19a43 ; map scripts
 
 ; INCLUDE "scripts/pallettown.asm"
 ; INCLUDE "scripts/viridiancity.asm"
@@ -269,6 +269,10 @@ SECTION "bank06",ROMX,BANK[$06]
 ; INCLUDE "scripts/ceruleancity.asm"
 ; INCLUDE "scripts/vermilioncity.asm"
 ; INCLUDE "scripts/celadoncity.asm"
+CeladonCityScript:
+	dr $19a43,$19a5f
+CeladonCityTextPointers:
+	dr $19a5f,$1a4ea
 ; INCLUDE "scripts/fuchsiacity.asm"
 
 INCLUDE "engine/overworld/npc_movement.asm"
@@ -683,8 +687,12 @@ LoadSpinnerArrowTiles: ; 45077 (11:5077)
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
-
-	dr $48000,$4a540
+	dr $48000, $48051
+; INCLUDE "data/mapHeaders/route7.asm"
+; INCLUDE "data/mapObjects/route7.asm"
+Route7Blocks: ; 48051
+INCBIN "maps/route7.blk"
+	dr $480ab,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -771,7 +779,10 @@ INCLUDE "engine/overworld/trainers.asm"
 
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58d99
+	dr $58000,$58b84
+Route16Blocks: ; 58b84
+INCBIN "maps/route16.blk"
+	dr $58c38,$58d99
 
 INCLUDE "engine/experience.asm"
 
