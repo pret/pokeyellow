@@ -803,7 +803,11 @@ INCLUDE "engine/hidden_object_functions14.asm"
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$543f4
+	dr $54000,$5425d
+Route3Blocks: ; 5425d
+INCBIN "maps/route3.blk"
+INCLUDE "data/mapHeaders/route4.asm"
+INCLUDE "data/mapObjects/route4.asm"
 Route4Blocks: ; 543f4
 INCBIN "maps/route4.blk"
 INCLUDE "data/mapHeaders/route5.asm"
@@ -817,7 +821,8 @@ INCBIN "maps/route9.blk"
 
 INCLUDE "engine/battle/experience.asm"
 
-	dr $554f7,$556c6
+	dr $554f7,$5566c
+INCLUDE "scripts/route4.asm"
 INCLUDE "scripts/route5.asm"
 	dr $556d0,$56714
 
