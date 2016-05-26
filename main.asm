@@ -236,7 +236,7 @@ INCLUDE "data/mapHeaders/celadoncity.asm"
 INCLUDE "data/mapObjects/celadoncity.asm"
 CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
-	dr $182a1,$18dee ; headers, objects, blocks
+	dr $182a1,$18836 ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/pallettown.asm"
 ; INCLUDE "data/mapObjects/pallettown.asm"
 ; PalletTownBlocks: INCBIN "maps/pallettown.blk"
@@ -251,7 +251,8 @@ CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
 ; INCLUDE "data/mapHeaders/ceruleancity.asm"
 ; INCLUDE "data/mapObjects/ceruleancity.asm"
-; CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk"
+CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
+	dr $1899e,$18dee ; headers, objects, blocks
 
 ; INCLUDE "data/mapHeaders/vermilioncity.asm"
 ; INCLUDE "data/mapObjects/vermilioncity.asm"
@@ -794,14 +795,18 @@ INCLUDE "engine/hidden_object_functions14.asm"
 
 SECTION "bank15",ROMX,BANK[$15]
 
-	dr $54000,$545da
+	dr $54000,$54589
+INCLUDE "data/mapHeaders/route5.asm"
+INCLUDE "data/mapObjects/route5.asm"
 Route5Blocks: ; 545da
 INCBIN "maps/route5.blk"
 	dr $5468e,$5525f
 
 INCLUDE "engine/battle/experience.asm"
 
-	dr $554f7,$56714
+	dr $554f7,$556c6
+INCLUDE "scripts/route5.asm"
+	dr $556d0,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"
 

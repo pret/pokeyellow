@@ -1,8 +1,8 @@
-Route5Object: ; 0x545a3 (size=47)
+Route5Object: ; 0x545ab (size=47)
 	db $a ; border block
 
 	db $5 ; warps
-	db $1d, $a, $3, ROUTE_5_GATE
+	db $1d, $a, $2, ROUTE_5_GATE
 	db $1d, $9, $2, ROUTE_5_GATE
 	db $21, $a, $0, ROUTE_5_GATE
 	db $1b, $11, $0, PATH_ENTRANCE_ROUTE_5
