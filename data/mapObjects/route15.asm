@@ -3,9 +3,9 @@ Route15Object: ; 0x5894e (size=126)
 
 	db $4 ; warps
 	db $8, $7, $0, ROUTE_15_GATE_1F
-	db $9, $7, $1, ROUTE_15_GATE_1F
+	db $9, $7, $0, ROUTE_15_GATE_1F
 	db $8, $e, $2, ROUTE_15_GATE_1F
-	db $9, $e, $3, ROUTE_15_GATE_1F
+	db $9, $e, $2, ROUTE_15_GATE_1F
 
 	db $1 ; signs
 	db $9, $27, $c ; Route15Text12
