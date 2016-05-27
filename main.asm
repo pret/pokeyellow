@@ -854,7 +854,12 @@ INCBIN "maps/route5.blk"
 Route9Blocks: ; 54706
 INCBIN "maps/route9.blk"
 
-	dr $54814,$54a1a
+	dr $54814,$54893
+Route13Blocks:
+INCBIN "maps/route13.blk"
+
+INCLUDE "data/mapHeaders/route14.asm"
+INCLUDE "data/mapObjects/route14.asm"
 Route14Blocks:
 INCBIN "maps/route14.blk"
 
@@ -879,7 +884,8 @@ INCLUDE "scripts/route2.asm"
 INCLUDE "scripts/route3.asm"
 INCLUDE "scripts/route4.asm"
 INCLUDE "scripts/route5.asm"
-	dr $556d0,$55b8e
+	dr $556d0,$559e7
+INCLUDE "scripts/route14.asm"
 INCLUDE "scripts/route17.asm"
 INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
