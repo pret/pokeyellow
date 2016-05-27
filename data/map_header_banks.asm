@@ -29,7 +29,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $16 ; db BANK(Route15_h) ; ROUTE_15
 	db $16 ; db BANK(Route16_h) ; ROUTE_16
 	db $15 ; db BANK(Route17_h) ; ROUTE_17
-	db $16 ; db BANK(Route18_h) ; ROUTE_18
+	db BANK(Route18_h) ; ROUTE_18
 	db BANK(Route19_h) ; ROUTE_19
 	db BANK(Route20_h) ; ROUTE_20
 	db BANK(Route21_h) ; ROUTE_21

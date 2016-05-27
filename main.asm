@@ -853,7 +853,11 @@ INCBIN "maps/route5.blk"
 	dr $5468e,$54706
 Route9Blocks: ; 54706
 INCBIN "maps/route9.blk"
-	dr $54814,$54e80
+
+	dr $54814,$54bb0
+Route17Blocks:
+INCBIN "maps/route17.blk"
+
 INCLUDE "data/mapHeaders/route19.asm"
 INCLUDE "data/mapObjects/route19.asm"
 Route19Blocks:
@@ -898,7 +902,9 @@ INCBIN "maps/route15.blk"
 	dr $58ada,$58b84
 Route16Blocks: ; 58b84
 INCBIN "maps/route16.blk"
-	dr $58c38,$58c9c
+
+INCLUDE "data/mapHeaders/route18.asm"
+INCLUDE "data/mapObjects/route18.asm"
 Route18Blocks:
 INCBIN "maps/route18.blk"
 	dr $58d7d,$58d99
@@ -910,7 +916,9 @@ INCLUDE "engine/status_ailments.asm"
 INCLUDE "engine/overworld/oaks_aide.asm"
 
 INCLUDE "scripts/route6.asm"
-	dr $59052,$5a53a
+	dr $59052,$59963
+INCLUDE "scripts/route18.asm"
+	dr $59a00,$5a53a
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 
