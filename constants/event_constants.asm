@@ -5,7 +5,7 @@ const_value = 0
 	const EVENT_002                                  ; 002, (D747, bit 2)
 	const EVENT_HALL_OF_FAME_DEX_RATING              ; 003, (D747, bit 3)
 	const EVENT_004                                  ; 004, (D747, bit 4)
-	const EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN   ; 005, (D747, bit 5)
+	const EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN  ; 005, (D747, bit 5)
 	const EVENT_PALLET_AFTER_GETTING_POKEBALLS       ; 006, (D747, bit 6)
 	const EVENT_007                                  ; 007, (D747, bit 7)
 	const EVENT_008                                  ; 008, (D748, bit 0)
