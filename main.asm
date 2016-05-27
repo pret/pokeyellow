@@ -679,7 +679,10 @@ INCLUDE "engine/menu/options.asm"
 
 SECTION "bank11",ROMX,BANK[$11]
 
-	dr $44000,$44169
+	dr $44000,$44085
+LavenderTownBlocks:
+INCBIN "maps/lavendertown.blk"
+	dr $440df,$44169
 
 INCLUDE "engine/pokedex_rating.asm"
 
@@ -913,7 +916,8 @@ INCBIN "maps/route8.blk"
 Route11Blocks: ; 5854f
 INCBIN "maps/route11.blk"
 
-	dr $5866d,$58710
+INCLUDE "data/mapHeaders/route12.asm"
+INCLUDE "data/mapObjects/route12.asm"
 Route12Blocks:
 INCBIN "maps/route12.blk"
 
@@ -940,7 +944,8 @@ INCLUDE "engine/status_ailments.asm"
 INCLUDE "engine/overworld/oaks_aide.asm"
 
 INCLUDE "scripts/route6.asm"
-	dr $59052,$5964a
+	dr $59052,$5948f
+INCLUDE "scripts/route12.asm"
 INCLUDE "scripts/route15.asm"
 INCLUDE "scripts/route16.asm"
 INCLUDE "scripts/route18.asm"

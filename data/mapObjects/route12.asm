@@ -3,7 +3,7 @@ Route12Object: ; 0x5869a (size=118)
 
 	db $4 ; warps
 	db $f, $a, $0, ROUTE_12_GATE_1F
-	db $f, $b, $1, ROUTE_12_GATE_1F
+	db $f, $b, $0, ROUTE_12_GATE_1F
 	db $15, $a, $2, ROUTE_12_GATE_1F
 	db $4d, $b, $0, ROUTE_12_HOUSE
 
