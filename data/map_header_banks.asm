@@ -34,7 +34,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $14 ; db BANK(Route20_h) ; ROUTE_20
 	db $15 ; db BANK(Route21_h) ; ROUTE_21
 	db BANK(Route22_h) ; ROUTE_22
-	db $14 ; db BANK(Route23_h) ; ROUTE_23
+	db BANK(Route23_h) ; ROUTE_23
 	db BANK(Route24_h) ; ROUTE_24
 	db BANK(Route25_h) ; ROUTE_25
 	db $12 ; db BANK(RedsHouse1F_h)

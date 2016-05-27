@@ -782,7 +782,10 @@ INCLUDE "data/mapHeaders/route22.asm"
 INCLUDE "data/mapObjects/route22.asm"
 Route22Blocks:
 INCBIN "maps/route22.blk"
-	dr $500f1,$503b2
+	dr $500f1,$5033f
+
+INCLUDE "data/mapHeaders/route23.asm"
+INCLUDE "data/mapObjects/route23.asm"
 Route23Blocks:
 INCBIN "maps/route23.blk"
 
@@ -796,8 +799,10 @@ INCLUDE "data/mapObjects/route25.asm"
 Route25Blocks: ; 50816 (14:4816)
 INCBIN "maps/route25.blk"
 
-; victoryroad2
-	dr $50924,$509aa
+; indigoplateau
+	dr $50924,$50950
+IndigoPlateauBlocks: ; 50950 (14:4950)
+INCBIN "maps/indigoplateau.blk"
 
 INCLUDE "data/mapHeaders/saffroncity.asm"
 INCLUDE "data/mapObjects/saffroncity.asm"
@@ -807,7 +812,7 @@ INCLUDE "scripts/saffroncity.asm"
 
 	dr $50ca9,$50eb2
 INCLUDE "scripts/route22.asm"
-	dr $51193,$51366
+INCLUDE "scripts/route23.asm"
 INCLUDE "scripts/route24.asm"
 INCLUDE "scripts/route25.asm"
 
