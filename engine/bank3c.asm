@@ -342,8 +342,7 @@ NurseChanseyText:
 	TX_FAR _NurseChanseyText
 	db "@"
 
-	dr $f0f26, $f18bb
-
+INCLUDE "engine/HoF_room_pc.asm"
 INCLUDE "scripts/viridiancity2.asm"
 INCLUDE "scripts/vermilioncity2.asm"
 INCLUDE "scripts/celadoncity2.asm"

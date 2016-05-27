@@ -2,38 +2,37 @@ CreditsOrder: ; 74243 (1d:4243)
 ; subsequent credits elements will be displayed on separate lines.
 ; $FF, $FE, $FD, $FC, $FB, and $FA are commands that are used
 ; to go to the next set of credits texts.
-	db CRED_MON, CRED_VERSION, $FF
-	db CRED_DIRECTOR, CRED_TAJIRI, $FF
-	db CRED_PROGRAMMERS, CRED_TA_OOTA, CRED_MORIMOTO, $FD
-	db CRED_PROGRAMMERS, CRED_WATANABE, CRED_MASUDE, CRED_TAMADA, $FE
-	db CRED_CHAR_DESIGN, CRED_SUGIMORI, CRED_NISHIDA, $FF
-	db CRED_MUSIC, CRED_MASUDE, $FD
-	db CRED_SOUND_EFFECTS, CRED_MASUDE, $FE
-	db CRED_GAME_DESIGN, CRED_TAJIRI, $FF
-	db CRED_MONSTER_DESIGN, CRED_SUGIMORI, CRED_NISHIDA, CRED_FUZIWARA, $FD
-	db CRED_MONSTER_DESIGN, CRED_MORIMOTO, CRED_SA_OOTA, CRED_YOSHIKAWA, $FE
-	db CRED_GAME_SCENE, CRED_TAJIRI, $FD
-	db CRED_GAME_SCENE, CRED_TANIGUCHI, CRED_NONOMURA, CRED_ZINNAI, $FE
-	db CRED_PARAM, CRED_NISINO, CRED_TA_NAKAMURA, $FF
-	db CRED_MAP, CRED_TAJIRI, CRED_NISINO, $FD
-	db CRED_MAP, CRED_MATSUSIMA, CRED_NONOMURA, CRED_TANIGUCHI, $FE
-	db CRED_TEST, CRED_KAKEI, CRED_TSUCHIYA, $FD
-	db CRED_TEST, CRED_TA_NAKAMURA, CRED_YUDA, $FE
-	db CRED_SPECIAL, CRED_HISHIDA, CRED_SAKAI, $FD
-	db CRED_SPECIAL, CRED_YAMAGUCHI, CRED_YAMAMOTO, $FC
-	db CRED_SPECIAL, CRED_TOMISAWA, CRED_KAWAMOTO, CRED_TO_OOTA, $FE
-	db CRED_PRODUCERS, CRED_MIYAMOTO, $FD
-	db CRED_PRODUCERS, CRED_KAWAGUCHI, $FC
-	db CRED_PRODUCERS, CRED_ISHIHARA, $FE
-	db CRED_US_STAFF, $FD
-	db CRED_US_COORD, CRED_TILDEN, $FD
-	db CRED_US_COORD, CRED_KAWAKAMI, CRED_HI_NAKAMURA, $FC
-	db CRED_US_COORD, CRED_GIESE, CRED_OSBORNE, $FC
-	db CRED_TRANS, CRED_OGASAWARA, $FD
-	db CRED_PROGRAMMERS, CRED_MURAKAWA, CRED_FUKUI, $FD
-	db CRED_SPECIAL, CRED_IWATA, $FD
-	db CRED_SPECIAL, CRED_HARADA, $FC
-	db CRED_TEST, CRED_PAAD, CRED_CLUB, $FD
-	db CRED_PRODUCER, CRED_IZUSHI, $FD
-	db CRED_EXECUTIVE, CRED_YAMAUCHI, $FF
-	db $FB, $FF, $FA
+	db $1c, $00, $ff
+	db $1d, $01, $ff
+	db $1e, $02, $03, $04, $fd
+	db $1e, $05, $2b, $fe
+	db $1f, $07, $08, $ff
+	db $20, $05, $fd
+	db $21, $05, $04, $fe
+	db $22, $01, $06, $ff
+	db $23, $07, $08, $2f, $ff
+	db $24, $01, $fd
+	db $24, $30, $fe
+	db $25, $06, $ff
+	db $26, $01, $06, $31, $ff
+	db $27, $32, $31, $fd
+	db $27, $33, $34, $fe
+	db $28, $3d, $ff
+	db $3f, $3e, $ff
+	db $29, $36, $fd
+	db $29, $0a, $fc
+	db $29, $0b, $fe
+	db $40, $fd
+	db $41, $42, $fd
+	db $41, $43, $44, $fc
+	db $41, $45, $46, $fc
+	db $47, $48, $fd
+	db $1e, $4c, $4d, $fd
+	db $1f, $51, $fd
+	db $28, $52, $4b, $fd
+	db $28, $53, $54, $55, $fc
+	db $27, $4f, $4e, $fd
+	db $2a, $0c, $ff
+	db $fb
+	db $ff
+	db $fa

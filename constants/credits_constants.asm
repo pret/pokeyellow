@@ -64,4 +64,6 @@ const_value = 0
 	const CRED_FUKUI          ; $3D
 	const CRED_CLUB           ; $3E
 	const CRED_PAAD           ; $3F
+	const CRED_40
+	
 

@@ -14,3 +14,7 @@ CreditsMons: ; 74131 (1d:4131)
 	db VILEPLUME
 	db NIDOKING
 	db PARASECT
+
+rept 9
+	db GENGAR
+endr
