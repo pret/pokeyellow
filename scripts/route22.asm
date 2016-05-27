@@ -22,16 +22,17 @@ Route22Script7: ; 50ed5 (14:4ed5)
 	ret
 
 Route22Script_50ed6: ; 50ed6 (14:4ed6)
+	ld a, OPP_SONY1
+	ld [wCurOpponent], a
+	ld a, $2
+	ld [wTrainerNo], a
+	ret
+
+Route22Script_50ee1:
+	ld a, OPP_SONY2
+	ld [wCurOpponent], a
 	ld a, [W_RIVALSTARTER]
-	ld b, a
-.asm_50eda
-	ld a, [hli]
-	cp b
-	jr z, .asm_50ee1
-	inc hl
-	jr .asm_50eda
-.asm_50ee1
-	ld a, [hl]
+	add 7
 	ld [wTrainerNo], a
 	ret
 
@@ -88,9 +89,7 @@ Route22Script0: ; 50f00 (14:4f00)
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_50f4e
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 .asm_50f4e
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
@@ -131,24 +130,29 @@ Route22Script1: ; 50f62 (14:4f62)
 	ld hl, Route22RivalDefeatedText1
 	ld de, Route22Text_511bc
 	call SaveEndBattleTextPointers
-	ld a, OPP_SONY1
-	ld [wCurOpponent], a
-	ld hl, StarterMons_50faf
 	call Route22Script_50ed6
 	ld a, $2
 	ld [W_ROUTE22CURSCRIPT], a
 	ret
 
-StarterMons_50faf: ; 50faf (14:4faf)
-; starter the rival picked, rival trainer number
-	db STARTER2,$04
-	db STARTER3,$05
-	db STARTER1,$06
+Route22RivalDefeatedText1: ; 511b7 (14:51b7)
+	TX_FAR _Route22RivalDefeatedText1
+	db "@"
+
+Route22Text_511bc: ; 511bc (14:51bc)
+	TX_FAR _Route22Text_511bc
+	db "@"
 
 Route22Script2: ; 50fb5 (14:4fb5)
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
+	ld a, [W_RIVALSTARTER]
+	cp 2
+	jr nz, .asm_50fc9
+	ld a, $1
+	ld [W_RIVALSTARTER], a
+.asm_50fc9
 	ld a, [wSpriteStateData1 + 9]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .notDown
@@ -167,9 +171,7 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	callba Music_RivalAlternateStart
 	ld a, [wcf0d]
 	cp $1
@@ -241,13 +243,9 @@ Route22Script_5104e: ; 5104e (14:504e)
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .skipYVisibilityTesta
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 .skipYVisibilityTesta
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	callba Music_RivalAlternateTempo
 	ld a, $2
 	ld [H_SPRITEINDEX], a
@@ -287,18 +285,18 @@ Route22Script4: ; 51087 (14:5087)
 	ld hl, Route22RivalDefeatedText2
 	ld de, Route22Text_511d0
 	call SaveEndBattleTextPointers
-	ld a, OPP_SONY2
-	ld [wCurOpponent], a
-	ld hl, StarterMons_510d9
-	call Route22Script_50ed6
+	call Route22Script_50ee1
 	ld a, $5
 	ld [W_ROUTE22CURSCRIPT], a
 	ret
 
-StarterMons_510d9: ; 510d9 (14:50d9)
-	db STARTER2,$0a
-	db STARTER3,$0b
-	db STARTER1,$0c
+Route22RivalDefeatedText2: ; 511cb (14:51cb)
+	TX_FAR _Route22RivalDefeatedText2
+	db "@"
+
+Route22Text_511d0: ; 511d0 (14:51d0)
+	TX_FAR _Route22Text_511d0
+	db "@"
 
 Route22Script5: ; 510df (14:50df)
 	ld a, [wIsInBattle]
@@ -326,9 +324,7 @@ Route22Script5: ; 510df (14:50df)
 	ld a, $2
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	callba Music_RivalAlternateStartAndTempo
 	ld a, [wcf0d]
 	cp $1
@@ -384,62 +380,15 @@ Route22TextPointers: ; 51175 (14:5175)
 
 Route22Text1: ; 5117b (14:517b)
 	TX_ASM
-	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
-	jr z, .asm_5118b
-	ld hl, Route22RivalAfterBattleText1
-	call PrintText
-	jr .asm_51191
-.asm_5118b
-	ld hl, Route22RivalBeforeBattleText1
-	call PrintText
-.asm_51191
+	callba Func_f1b27
 	jp TextScriptEnd
 
 Route22Text2: ; 51194 (14:5194)
 	TX_ASM
-	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_2ND_BATTLE
-	jr z, .asm_511a4
-	ld hl, Route22RivalAfterBattleText2
-	call PrintText
-	jr .asm_511aa
-.asm_511a4
-	ld hl, Route22RivalBeforeBattleText2
-	call PrintText
-.asm_511aa
+	callba Func_f1b47
 	jp TextScriptEnd
 
-Route22RivalBeforeBattleText1: ; 511ad (14:51ad)
-	TX_FAR _Route22RivalBeforeBattleText1
-	db "@"
-
-Route22RivalAfterBattleText1: ; 511b2 (14:51b2)
-	TX_FAR _Route22RivalAfterBattleText1
-	db "@"
-
-Route22RivalDefeatedText1: ; 511b7 (14:51b7)
-	TX_FAR _Route22RivalDefeatedText1
-	db "@"
-
-Route22Text_511bc: ; 511bc (14:51bc)
-	TX_FAR _Route22Text_511bc
-	db "@"
-
-Route22RivalBeforeBattleText2: ; 511c1 (14:51c1)
-	TX_FAR _Route22RivalBeforeBattleText2
-	db "@"
-
-Route22RivalAfterBattleText2: ; 511c6 (14:51c6)
-	TX_FAR _Route22RivalAfterBattleText2
-	db "@"
-
-Route22RivalDefeatedText2: ; 511cb (14:51cb)
-	TX_FAR _Route22RivalDefeatedText2
-	db "@"
-
-Route22Text_511d0: ; 511d0 (14:51d0)
-	TX_FAR _Route22Text_511d0
-	db "@"
-
 Route22FrontGateText: ; 511d5 (14:51d5)
-	TX_FAR _Route22FrontGateText
-	db "@"
+	TX_ASM
+	callba Func_f1b67
+	jp TextScriptEnd

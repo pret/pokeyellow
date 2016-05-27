@@ -41,7 +41,7 @@ const_value = 1
 	trainer_const BRUNO         ; $21
 	trainer_const BROCK         ; $22
 	trainer_const MISTY         ; $23
-	trainer_const LT_SURGE     ; $24
+	trainer_const LT_SURGE      ; $24
 	trainer_const ERIKA         ; $25
 	trainer_const KOGA          ; $26
 	trainer_const BLAINE        ; $27

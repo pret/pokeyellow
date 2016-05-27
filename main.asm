@@ -778,10 +778,13 @@ INCBIN "maps/colosseum.blk"
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$5003d
+INCLUDE "data/mapHeaders/route22.asm"
+INCLUDE "data/mapObjects/route22.asm"
 Route22Blocks:
 INCBIN "maps/route22.blk"
-	dr $500f1,$50682
+	dr $500f1,$503b2
+Route23Blocks:
+INCBIN "maps/route23.blk"
 
 INCLUDE "data/mapHeaders/route24.asm"
 INCLUDE "data/mapObjects/route24.asm"
@@ -802,7 +805,9 @@ SaffronCityBlocks: ; 50a98 (14:4a98)
 INCBIN "maps/saffroncity.blk"
 INCLUDE "scripts/saffroncity.asm"
 
-	dr $50ca9,$51366
+	dr $50ca9,$50eb2
+INCLUDE "scripts/route22.asm"
+	dr $51193,$51366
 INCLUDE "scripts/route24.asm"
 INCLUDE "scripts/route25.asm"
 
