@@ -1,9 +1,9 @@
 ; see also MapHeaderBanks
 MapHeaderPointers:: ; fc1f2 (3f:41f2)
-	dw $42a1 ; dw PalletTown_h
-	dw $4357 ; dw ViridianCity_h
-	dw $455a ; dw PewterCity_h
-	dw $4754 ; dw CeruleanCity_h
+	dw PalletTown_h
+	dw ViridianCity_h
+	dw PewterCity_h
+	dw CeruleanCity_h
 	dw $4000 ; dw LavenderTown_h
 	dw $499e ; dw VermilionCity_h
 	dw CeladonCity_h
@@ -12,10 +12,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $4924 ; dw IndigoPlateau_h
 	dw SaffronCity_h
 	dw SaffronCity_h
-	dw $40c3 ; dw Route1_h
-	dw $4000 ; dw Route2_h
-	dw $41ee ; dw Route3_h
-	dw $4398 ; dw Route4_h
+	dw Route1_h
+	dw Route2_h
+	dw Route3_h
+	dw Route4_h
 	dw Route5_h
 	dw $4000 ; dw Route6_h
 	dw Route7_h

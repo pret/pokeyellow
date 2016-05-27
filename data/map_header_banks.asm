@@ -1,9 +1,9 @@
 ; see also MapHeaderPointers
 MapHeaderBanks:: ; fc3e4 (3f:43e4)
-	db $06 ; db BANK(PalletTown_h) ;PALLET_TOWN
-	db $06 ; db BANK(ViridianCity_h) ; VIRIDIAN_CITY
-	db $06 ; db BANK(PewterCity_h) ; PEWTER_CITY
-	db $06 ; db BANK(CeruleanCity_h) ; CERULEAN_CITY
+	db BANK(PalletTown_h) ;PALLET_TOWN
+	db BANK(ViridianCity_h) ; VIRIDIAN_CITY
+	db BANK(PewterCity_h) ; PEWTER_CITY
+	db BANK(CeruleanCity_h) ; CERULEAN_CITY
 	db $11 ; db BANK(LavenderTown_h) ; LAVENDER_TOWN
 	db $06 ; db BANK(VermilionCity_h) ; VERMILION_CITY
 	db BANK(CeladonCity_h) ; CELADON_CITY
@@ -11,11 +11,11 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $07 ; db BANK(CinnabarIsland_h) ; CINNABAR_ISLAND
 	db $14 ; db BANK(IndigoPlateau_h) ; INDIGO_PLATEAU
 	db BANK(SaffronCity_h) ; SAFFRON_CITY
-	db $01 ; db $1 ; unused
-	db $07 ; db BANK(Route1_h) ; ROUTE_1
-	db $15 ; db BANK(Route2_h) ; ROUTE_2
-	db $15 ; db BANK(Route3_h) ; ROUTE_3
-	db $15 ; db BANK(Route4_h) ; ROUTE_4
+	db $01 ; unused
+	db BANK(Route1_h) ; ROUTE_1
+	db BANK(Route2_h) ; ROUTE_2
+	db BANK(Route3_h) ; ROUTE_3
+	db BANK(Route4_h) ; ROUTE_4
 	db BANK(Route5_h) ; ROUTE_5
 	db $16 ; db BANK(Route6_h) ; ROUTE_6
 	db BANK(Route7_h) ; ROUTE_7
