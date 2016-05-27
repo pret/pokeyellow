@@ -255,10 +255,8 @@ CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 INCLUDE "data/mapHeaders/vermilioncity.asm"
 INCLUDE "data/mapObjects/vermilioncity.asm"
 VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
-
-	dr $18bb3,$18c92 ; headers, objects, blocks
-; INCLUDE "data/mapHeaders/fuchsiacity.asm"
-; INCLUDE "data/mapObjects/fuchsiacity.asm"
+INCLUDE "data/mapHeaders/fuchsiacity.asm"
+INCLUDE "data/mapObjects/fuchsiacity.asm"
 FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
 
@@ -268,9 +266,8 @@ INCLUDE "scripts/pewtercity.asm"
 INCLUDE "scripts/ceruleancity.asm"
 INCLUDE "scripts/vermilioncity.asm"
 INCLUDE "scripts/celadoncity.asm"
-
-	dr $19b2b,$1a4ea
-; INCLUDE "scripts/fuchsiacity.asm"
+INCLUDE "scripts/fuchsiacity.asm"
+	dr $19c2f,$1a4ea
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
@@ -895,10 +892,16 @@ INCBIN "maps/route8.blk"
 	dr $582d4,$5855f
 Route11Blocks: ; 5854f
 INCBIN "maps/route11.blk"
-	dr $5866d,$58b84
+	dr $5866d,$589cc
+Route15Blocks:
+INCBIN "maps/route15.blk"
+	dr $58ada,$58b84
 Route16Blocks: ; 58b84
 INCBIN "maps/route16.blk"
-	dr $58c38,$58d99
+	dr $58c38,$58c9c
+Route18Blocks:
+INCBIN "maps/route18.blk"
+	dr $58d7d,$58d99
 
 INCLUDE "engine/experience.asm"
 
