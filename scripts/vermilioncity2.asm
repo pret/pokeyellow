@@ -1,5 +1,5 @@
 Func_f1a0f:
-	CheckEvent EVENT_147
+	CheckEvent EVENT_GOT_SQUIRTLE_FROM_OFFICER_JENNY
 	jr nz, .asm_f1a69
 	ld a, [wBeatGymFlags]
 	bit 2, a ; THUNDERBADGE
@@ -31,7 +31,7 @@ Func_f1a0f:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, OfficerJennyText3
 	call PrintText
-	SetEvent EVENT_147
+	SetEvent EVENT_GOT_SQUIRTLE_FROM_OFFICER_JENNY
 	ret
 
 .asm_f1a62

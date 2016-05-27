@@ -26,11 +26,11 @@ PalletTownScript0: ; 18e81 (6:4e81)
 	ld a, [wYCoord]
 	cp 0 ; is player at north exit?
 	ret nz
-	ResetEvent EVENT_005
+	ResetEvent EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN
 	ld a, [wXCoord]
 	cp 10
 	jr z, .asm_18e40
-	SetEventReuseHL EVENT_005
+	SetEventReuseHL EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN
 .asm_18e40
 	xor a
 	ld [hJoyHeld], a
@@ -121,7 +121,7 @@ PalletTownScript3: ; 18f12 (6:4f12)
 	ld [wJoyIgnore], a
 	ld a, $2
 	ld [wSpriteStateData1 + 1 * $10 + 1], a
-	CheckEvent EVENT_005
+	CheckEvent EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN
 	ld a, SPRITE_FACING_RIGHT
 	jr z, .asm_18f01
 	ld a, SPRITE_FACING_LEFT
