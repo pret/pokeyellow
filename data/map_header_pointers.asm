@@ -24,7 +24,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $42d4 ; dw Route10_h
 	dw $44be ; dw Route11_h
 	dw $466d ; dw Route12_h
-	dw $4814 ; dw Route13_h
+	dw Route13_h
 	dw Route14_h
 	dw Route15_h
 	dw Route16_h
