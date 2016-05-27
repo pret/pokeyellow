@@ -873,7 +873,8 @@ INCLUDE "engine/overworld/trainers.asm"
 
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58079
+INCLUDE "data/mapHeaders/route6.asm"
+INCLUDE "data/mapObjects/route6.asm"
 Route6Blocks: ; 58079
 INCBIN "maps/route6.blk"
 	dr $5812d,$581c6
@@ -893,7 +894,8 @@ INCLUDE "engine/status_ailments.asm"
 
 INCLUDE "engine/overworld/oaks_aide.asm"
 
-	dr $58f47,$5a53a
+INCLUDE "scripts/route6.asm"
+	dr $59052,$5a53a
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 
