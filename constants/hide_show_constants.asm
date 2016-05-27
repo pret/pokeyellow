@@ -6,8 +6,8 @@
 
 const_value = 0
 
-	const HS_PIKACHU                      ; 00
-	const HS_PALLET_TOWN_OAK              ; 01
+	const HS_PALLET_TOWN_OAK              ; 00
+	const HS_PIKACHU                      ; 01
 	const HS_LYING_OLD_MAN                ; 02
 	const HS_OLD_MAN                      ; 03
 	const HS_MUSEUM_GUY                   ; 04
