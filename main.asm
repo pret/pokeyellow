@@ -903,7 +903,9 @@ INCBIN "maps/route11.blk"
 	dr $5866d,$589cc
 Route15Blocks:
 INCBIN "maps/route15.blk"
-	dr $58ada,$58b84
+
+INCLUDE "data/mapHeaders/route16.asm"
+INCLUDE "data/mapObjects/route16.asm"
 Route16Blocks: ; 58b84
 INCBIN "maps/route16.blk"
 
@@ -920,7 +922,8 @@ INCLUDE "engine/status_ailments.asm"
 INCLUDE "engine/overworld/oaks_aide.asm"
 
 INCLUDE "scripts/route6.asm"
-	dr $59052,$59963
+	dr $59052,$597cf
+INCLUDE "scripts/route16.asm"
 INCLUDE "scripts/route18.asm"
 	dr $59a00,$5a53a
 	
