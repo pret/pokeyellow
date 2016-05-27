@@ -345,8 +345,7 @@ NurseChanseyText:
 	dr $f0f26, $f18bb
 
 INCLUDE "scripts/viridiancity2.asm"
-	dr $f1a0f, $f1ad2
-
+INCLUDE "scripts/vermilioncity2.asm"
 INCLUDE "scripts/route1_2.asm"
 
 	dr $f1b27, $f220e
