@@ -256,10 +256,10 @@ INCLUDE "data/mapHeaders/vermilioncity.asm"
 INCLUDE "data/mapObjects/vermilioncity.asm"
 VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
 
-	dr $18bb3,$18dfa ; headers, objects, blocks
+	dr $18bb3,$18c92 ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/fuchsiacity.asm"
 ; INCLUDE "data/mapObjects/fuchsiacity.asm"
-; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
+FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
 
 INCLUDE "scripts/pallettown.asm"
@@ -856,7 +856,9 @@ INCBIN "maps/route5.blk"
 	dr $5468e,$54706
 Route9Blocks: ; 54706
 INCBIN "maps/route9.blk"
-	dr $54814,$54f01
+	dr $54814,$54e80
+INCLUDE "data/mapHeaders/route19.asm"
+INCLUDE "data/mapObjects/route19.asm"
 Route19Blocks:
 INCBIN "maps/route19.blk"
 INCLUDE "data/mapHeaders/route21.asm"
@@ -871,7 +873,8 @@ INCLUDE "scripts/route2.asm"
 INCLUDE "scripts/route3.asm"
 INCLUDE "scripts/route4.asm"
 INCLUDE "scripts/route5.asm"
-	dr $556d0,$55edb
+	dr $556d0,$55d58
+INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
 	dr $56054,$56714
 
