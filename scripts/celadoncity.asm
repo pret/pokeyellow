@@ -1,5 +1,14 @@
-CeladonCityScript: ; 19956 (6:5956)
+CeladonCityScript: ; 19a43 (6:5a43)
 	call EnableAutoTextBoxDrawing
+	ld hl, CeladonCityScriptPointers
+	ld a, [W_CELADONCITYCURSCRIPT]
+	call JumpTable
+	ret
+
+CeladonCityScriptPointers:
+	dw CeladonCityScript1
+
+CeladonCityScript1:
 	ResetEvents EVENT_1B8, EVENT_1BF
 	ResetEvent EVENT_67F
 	ret
@@ -99,8 +108,9 @@ CeladonCityText9: ; 199fe (6:59fe)
 	db "@"
 
 CeladonCityText10: ; 19a03 (6:5a03)
-	TX_FAR _CeladonCityText10
-	db "@"
+	TX_ASM
+	callba Func_f1ac6
+	jp TextScriptEnd
 
 CeladonCityText11: ; 19a08 (6:5a08)
 	TX_FAR _CeladonCityText11

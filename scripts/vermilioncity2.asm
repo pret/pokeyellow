@@ -65,4 +65,4 @@ OfficerJennyText5:
 	TX_FAR _OfficerJennyText5
 	db "@"
 
-	dr $f1a8a,$f1ad2
+	dr $f1a8a,$f1ac6

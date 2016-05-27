@@ -261,7 +261,6 @@ CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 ; INCLUDE "data/mapObjects/fuchsiacity.asm"
 ; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-	; dr $18dee,$1902a ; map scripts
 
 INCLUDE "scripts/pallettown.asm"
 INCLUDE "scripts/viridiancity.asm"
@@ -270,11 +269,9 @@ INCLUDE "scripts/ceruleancity.asm"
 
 	dr $19841,$19a43 ; vermilion scripts
 ; INCLUDE "scripts/vermilioncity.asm"
-; INCLUDE "scripts/celadoncity.asm"
-CeladonCityScript:
-	dr $19a43,$19a5f
-CeladonCityTextPointers:
-	dr $19a5f,$1a4ea
+INCLUDE "scripts/celadoncity.asm"
+
+	dr $19b2b,$1a4ea
 ; INCLUDE "scripts/fuchsiacity.asm"
 
 INCLUDE "engine/overworld/npc_movement.asm"

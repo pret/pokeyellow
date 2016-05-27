@@ -105,19 +105,19 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $18 ; db BANK(SSAnne8_h)
 	db $18 ; db BANK(SSAnne9_h)
 	db $18 ; db BANK(SSAnne10_h)
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
+	db $1d ; unused
+	db $1d ; unused
+	db $1d ; unused
 	db $17 ; db BANK(VictoryRoad1_h)
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
+	db $1d ; unused
+	db $1d ; unused
+	db $1d ; unused
+	db $1d ; unused
 	db $16 ; db BANK(Lance_h)
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
-	db $1d ; db $1D ;unused
+	db $1d ; unused
+	db $1d ; unused
+	db $1d ; unused
+	db $1d ; unused
 	db $16 ; db BANK(HallofFameRoom_h)
 	db $18 ; db BANK(UndergroundPathNS_h)
 	db $1d ; db BANK(Gary_h)
@@ -204,9 +204,9 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $11 ; db BANK(RocketHideout3_h)
 	db $11 ; db BANK(RocketHideout4_h)
 	db $11 ; db BANK(RocketHideoutElevator_h)
-	db $01 ; db $01
-	db $01 ; db $01
-	db $01 ; db $01
+	db $01 ; unused
+	db $01 ; unused
+	db $01 ; unused
 	db $16 ; db BANK(SilphCo2_h)
 	db $16 ; db BANK(SilphCo3_h)
 	db $06 ; db BANK(SilphCo4_h)
@@ -231,20 +231,20 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $1d ; db BANK(UnknownDungeon1_h)
 	db $07 ; db BANK(NameRater_h)
 	db $1d ; db BANK(CeruleanHouse2_h)
-	db $01 ; db $01
+	db $01 ; unused
 	db $11 ; db BANK(RockTunnel2_h)
 	db $17 ; db BANK(SilphCo9_h)
 	db $16 ; db BANK(SilphCo10_h)
 	db $18 ; db BANK(SilphCo11_h)
 	db $11 ; db BANK(SilphCoElevator_h)
-	db $11 ; db $11
-	db $11 ; db $11
+	db $11 ; unused
+	db $11 ; unused
 	db BANK(TradeCenter_h)
 	db BANK(Colosseum_h)
-	db $11 ; db $11
-	db $11 ; db $11
-	db $11 ; db $11
-	db $11 ; db $11
+	db $11 ; unused
+	db $11 ; unused
+	db $11 ; unused
+	db $11 ; unused
 	db $1d ; db BANK(Lorelei_h)
 	db $1d ; db BANK(Bruno_h)
 	db $1d ; db BANK(Agatha_h)
