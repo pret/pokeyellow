@@ -4,7 +4,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(ViridianCity_h) ; VIRIDIAN_CITY
 	db BANK(PewterCity_h) ; PEWTER_CITY
 	db BANK(CeruleanCity_h) ; CERULEAN_CITY
-	db $11 ; db BANK(LavenderTown_h) ; LAVENDER_TOWN
+	db BANK(LavenderTown_h) ; LAVENDER_TOWN
 	db BANK(VermilionCity_h) ; VERMILION_CITY
 	db BANK(CeladonCity_h) ; CELADON_CITY
 	db BANK(FuchsiaCity_h) ; FUCHSIA_CITY

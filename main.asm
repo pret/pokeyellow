@@ -679,10 +679,14 @@ INCLUDE "engine/menu/options.asm"
 
 SECTION "bank11",ROMX,BANK[$11]
 
-	dr $44000,$44085
+INCLUDE "data/mapHeaders/lavendertown.asm"
+INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks:
 INCBIN "maps/lavendertown.blk"
-	dr $440df,$44169
+	dr $440df,$4410b
+
+INCLUDE "scripts/lavendertown.asm"
+	; dr $440df,$44169
 
 INCLUDE "engine/pokedex_rating.asm"
 
@@ -912,7 +916,9 @@ INCBIN "maps/route6.blk"
 Route8Blocks: ; 581c6
 INCBIN "maps/route8.blk"
 
-	dr $582d4,$584be
+	dr $582d4,$58356
+Route10Blocks:
+INCBIN "maps/route10.blk"
 
 INCLUDE "data/mapHeaders/route11.asm"
 INCLUDE "data/mapObjects/route11.asm"

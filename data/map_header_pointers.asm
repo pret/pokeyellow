@@ -4,7 +4,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw ViridianCity_h
 	dw PewterCity_h
 	dw CeruleanCity_h
-	dw $4000 ; dw LavenderTown_h
+	dw LavenderTown_h
 	dw VermilionCity_h
 	dw CeladonCity_h
 	dw FuchsiaCity_h
