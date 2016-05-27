@@ -226,6 +226,8 @@ const_value SET $7c ; idk anymore lol
 	const HS_VICTORY_ROAD_1_ITEM_1        ; D6
 	const HS_VICTORY_ROAD_1_ITEM_2        ; D7
 	const HS_CHAMPIONS_ROOM_OAK           ; D8
+
+const_value SET $df
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_1  ; D9
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_2  ; DA
 	const HS_SEAFOAM_ISLANDS_2_BOULDER_1  ; DB

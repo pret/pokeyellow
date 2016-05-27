@@ -780,9 +780,8 @@ INCLUDE "data/mapHeaders/route22.asm"
 INCLUDE "data/mapObjects/route22.asm"
 Route22Blocks:
 INCBIN "maps/route22.blk"
-; INCLUDE "data/mapHeaders/route20.asm"
-; INCLUDE "data/mapObjects/route20.asm"
-	dr $500f1,$5017d
+INCLUDE "data/mapHeaders/route20.asm"
+INCLUDE "data/mapObjects/route20.asm"
 Route20Blocks:
 INCBIN "maps/route20.blk"
 
@@ -813,8 +812,7 @@ INCLUDE "data/mapObjects/saffroncity.asm"
 SaffronCityBlocks: ; 50a98 (14:4a98)
 INCBIN "maps/saffroncity.blk"
 INCLUDE "scripts/saffroncity.asm"
-; INCLUDE "scripts/route20.asm"
-	dr $50ca9,$50eb2
+INCLUDE "scripts/route20.asm"
 INCLUDE "scripts/route22.asm"
 INCLUDE "scripts/route23.asm"
 INCLUDE "scripts/route24.asm"
@@ -858,7 +856,9 @@ INCBIN "maps/route5.blk"
 	dr $5468e,$54706
 Route9Blocks: ; 54706
 INCBIN "maps/route9.blk"
-	dr $54814,$5500f
+	dr $54814,$54f01
+Route19Blocks:
+INCBIN "maps/route19.blk"
 INCLUDE "data/mapHeaders/route21.asm"
 INCLUDE "data/mapObjects/route21.asm"
 Route21Blocks: ; 5507d
