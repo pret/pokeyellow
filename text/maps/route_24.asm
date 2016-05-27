@@ -4,13 +4,13 @@ _Route24Text_51510::
 	cont "contest trainers!@@"
 
 _Route24Text_51515::
-	db $0
+	text ""
 	para "You just earned a"
 	line "fabulous prize!"
 	prompt
 
 _Route24Text_5151a::
-	text $52, " received"
+	text "<PLAYER> received"
 	line "a @"
 	TX_RAM wcf4b
 	text "!@@"
@@ -181,4 +181,3 @@ _Route24DamianText4::
 	text "How's CHARMANDER"
 	line "doing?"
 	done
-

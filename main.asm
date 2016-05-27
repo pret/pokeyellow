@@ -788,13 +788,12 @@ INCLUDE "data/mapObjects/route24.asm"
 Route24Blocks: ; 506ed (14:46ed)
 INCBIN "maps/route24.blk"
 
-; INCLUDE "data/mapHeaders/route25.asm"
-; INCLUDE "data/mapObjects/route25.asm"
-	dr $507a1,$50816
+INCLUDE "data/mapHeaders/route25.asm"
+INCLUDE "data/mapObjects/route25.asm"
 Route25Blocks: ; 50816 (14:4816)
 INCBIN "maps/route25.blk"
 
-
+; victoryroad2
 	dr $50924,$509aa
 
 INCLUDE "data/mapHeaders/saffroncity.asm"
@@ -805,7 +804,7 @@ INCLUDE "scripts/saffroncity.asm"
 
 	dr $50ca9,$51366
 INCLUDE "scripts/route24.asm"
-	dr $515f3,$517cc
+INCLUDE "scripts/route25.asm"
 
 ; victoryroad2
 	dr $517cc,$52060

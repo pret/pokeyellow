@@ -35,8 +35,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $500f ; dw Route21_h
 	dw $4000 ; dw Route22_h
 	dw $433f ; dw Route23_h
-	dw $4682 ; dw Route24_h
-	dw $47a1 ; dw Route25_h
+	dw Route24_h
+	dw Route25_h
 	dw $40f6 ; dw RedsHouse1F_h
 	dw $40a4 ; dw RedsHouse2F_h
 	dw $5c2f ; dw BluesHouse_h
