@@ -277,9 +277,8 @@ INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
-; INCLUDE "data/mapHeaders/cinnabarisland.asm"
-; INCLUDE "data/mapObjects/cinnabarisland.asm"
-	dr $1c000,$1c069 ; headers, objects, blocks
+INCLUDE "data/mapHeaders/cinnabarisland.asm"
+INCLUDE "data/mapObjects/cinnabarisland.asm"
 CinnabarIslandBlocks:
 INCBIN "maps/cinnabarisland.blk"
 
@@ -292,7 +291,8 @@ INCBIN "maps/route1.blk"
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
 
-	dr $1c2c2,$1c358 ; map scripts
+INCLUDE "scripts/cinnabarisland.asm"
+	; dr $1c2c2,$1c358 ; map scripts
 INCLUDE "scripts/route1.asm"
 	dr $1c386,$1e2ae ; map scripts
 
@@ -780,7 +780,11 @@ INCLUDE "data/mapHeaders/route22.asm"
 INCLUDE "data/mapObjects/route22.asm"
 Route22Blocks:
 INCBIN "maps/route22.blk"
-	dr $500f1,$5033f
+; INCLUDE "data/mapHeaders/route20.asm"
+; INCLUDE "data/mapObjects/route20.asm"
+	dr $500f1,$5017d
+Route20Blocks:
+INCBIN "maps/route20.blk"
 
 INCLUDE "data/mapHeaders/route23.asm"
 INCLUDE "data/mapObjects/route23.asm"
@@ -809,6 +813,7 @@ INCLUDE "data/mapObjects/saffroncity.asm"
 SaffronCityBlocks: ; 50a98 (14:4a98)
 INCBIN "maps/saffroncity.blk"
 INCLUDE "scripts/saffroncity.asm"
+; INCLUDE "scripts/route20.asm"
 	dr $50ca9,$50eb2
 INCLUDE "scripts/route22.asm"
 INCLUDE "scripts/route23.asm"
@@ -853,7 +858,9 @@ INCBIN "maps/route5.blk"
 	dr $5468e,$54706
 Route9Blocks: ; 54706
 INCBIN "maps/route9.blk"
-	dr $54814,$5507d
+	dr $54814,$5500f
+INCLUDE "data/mapHeaders/route21.asm"
+INCLUDE "data/mapObjects/route21.asm"
 Route21Blocks: ; 5507d
 INCBIN "maps/route21.blk"
 	dr $5523f,$5525f
@@ -864,7 +871,9 @@ INCLUDE "scripts/route2.asm"
 INCLUDE "scripts/route3.asm"
 INCLUDE "scripts/route4.asm"
 INCLUDE "scripts/route5.asm"
-	dr $556d0,$56714
+	dr $556d0,$55edb
+INCLUDE "scripts/route21.asm"
+	dr $56054,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"
 

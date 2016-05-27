@@ -8,7 +8,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VermilionCity_h
 	dw CeladonCity_h
 	dw $4bb3 ; dw FuchsiaCity_h
-	dw $4000 ; dw CinnabarIsland_h
+	dw CinnabarIsland_h
 	dw IndigoPlateau_h
 	dw SaffronCity_h
 	dw SaffronCity_h
@@ -32,7 +32,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $4c38 ; dw Route18_h
 	dw $4e80 ; dw Route19_h
 	dw $40f1 ; dw Route20_h
-	dw $500f ; dw Route21_h
+	dw Route21_h
 	dw Route22_h
 	dw Route23_h
 	dw Route24_h

@@ -8,7 +8,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(VermilionCity_h) ; VERMILION_CITY
 	db BANK(CeladonCity_h) ; CELADON_CITY
 	db $06 ; db BANK(FuchsiaCity_h) ; FUCHSIA_CITY
-	db $07 ; db BANK(CinnabarIsland_h) ; CINNABAR_ISLAND
+	db BANK(CinnabarIsland_h) ; CINNABAR_ISLAND
 	db BANK(IndigoPlateau_h) ; INDIGO_PLATEAU
 	db BANK(SaffronCity_h) ; SAFFRON_CITY
 	db $01 ; unused
@@ -32,7 +32,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $16 ; db BANK(Route18_h) ; ROUTE_18
 	db $15 ; db BANK(Route19_h) ; ROUTE_19
 	db $14 ; db BANK(Route20_h) ; ROUTE_20
-	db $15 ; db BANK(Route21_h) ; ROUTE_21
+	db BANK(Route21_h) ; ROUTE_21
 	db BANK(Route22_h) ; ROUTE_22
 	db BANK(Route23_h) ; ROUTE_23
 	db BANK(Route24_h) ; ROUTE_24
