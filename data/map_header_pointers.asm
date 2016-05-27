@@ -9,7 +9,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeladonCity_h
 	dw $4bb3 ; dw FuchsiaCity_h
 	dw $4000 ; dw CinnabarIsland_h
-	dw $4924 ; dw IndigoPlateau_h
+	dw IndigoPlateau_h
 	dw SaffronCity_h
 	dw SaffronCity_h
 	dw Route1_h

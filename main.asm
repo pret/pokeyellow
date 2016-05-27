@@ -800,7 +800,9 @@ Route25Blocks: ; 50816 (14:4816)
 INCBIN "maps/route25.blk"
 
 ; indigoplateau
-	dr $50924,$50950
+INCLUDE "data/mapHeaders/indigoplateau.asm"
+INCLUDE "scripts/indigoplateau.asm"
+INCLUDE "data/mapObjects/indigoplateau.asm"
 IndigoPlateauBlocks: ; 50950 (14:4950)
 INCBIN "maps/indigoplateau.blk"
 
@@ -809,7 +811,6 @@ INCLUDE "data/mapObjects/saffroncity.asm"
 SaffronCityBlocks: ; 50a98 (14:4a98)
 INCBIN "maps/saffroncity.blk"
 INCLUDE "scripts/saffroncity.asm"
-
 	dr $50ca9,$50eb2
 INCLUDE "scripts/route22.asm"
 INCLUDE "scripts/route23.asm"
