@@ -1,264 +1,264 @@
 CreditsTextPointers: ; 742c3 (1d:42c3)
-	dw CreditsText_f128f
-	dw CreditsText_f12a9
-	dw CreditsText_f12b9
-	dw CreditsText_f12c8
-	dw CreditsText_f12da
-	dw CreditsText_f12ec
-	dw CreditsText_f12fc
-	dw CreditsText_f130b
-	dw CreditsText_f1319
-	dw CreditsText_f1329
-	dw CreditsText_f133b
-	dw CreditsText_f134e
-	dw CreditsText_f1362
-	dw CreditsText_f1374
-	dw CreditsText_f1385
-	dw CreditsText_f1396
-	dw CreditsText_f13a6
-	dw CreditsText_f13b8
-	dw CreditsText_f13cb
-	dw CreditsText_f13df
-	dw CreditsText_f13f2
-	dw CreditsText_f1405
-	dw CreditsText_f1416
-	dw CreditsText_f1428
-	dw CreditsText_f143a
-	dw CreditsText_f144a
-	dw CreditsText_f145b
-	dw CreditsText_f146b
-	dw CreditsText_f147b
-	dw CreditsText_f1481
-	dw CreditsText_f148b
-	dw CreditsText_f1498
-	dw CreditsText_f14aa
-	dw CreditsText_f14b1
-	dw CreditsText_f14c0
-	dw CreditsText_f14cd
-	dw CreditsText_f14dd
-	dw CreditsText_f14ec
-	dw CreditsText_f14ff
-	dw CreditsText_f150b
-	dw CreditsText_f151c
-	dw CreditsText_f1537
-	dw CreditsText_f1541
-	dw CreditsText_f1555
-	dw CreditsText_f1565
-	dw CreditsText_f1573
-	dw CreditsText_f1583
-	dw CreditsText_f15b7
-	dw CreditsText_f1593
-	dw CreditsText_f15a8
-	dw CreditsText_f15c9
-	dw CreditsText_f15da
-	dw CreditsText_f15ed
-	dw CreditsText_f1603
-	dw CreditsText_f1619
-	dw CreditsText_f162a
-	dw CreditsText_f1639
-	dw CreditsText_f164a
-	dw CreditsText_f165c
-	dw CreditsText_f1670
-	dw CreditsText_f167d
-	dw CreditsText_f168b
-	dw CreditsText_f16a2
-	dw CreditsText_f16af
-	dw CreditsText_f16c8
-	dw CreditsText_f16da
-	dw CreditsText_f16eb
-	dw CreditsText_f16f8
-	dw CreditsText_f1708
-	dw CreditsText_f1717
-	dw CreditsText_f1727
-	dw CreditsText_f1735
-	dw CreditsText_f1747
-	dw CreditsText_f1756
-	dw CreditsText_f1764
-	dw CreditsText_f1775
-	dw CreditsText_f1786
-	dw CreditsText_f1797
-	dw CreditsText_f17a4
-	dw CreditsText_f17ba
-	dw CreditsText_f152c
-	dw CreditsText_f17c8
-	dw CreditsText_f17db
-	dw CreditsText_f17e8
-	dw CreditsText_f17fa
-	dw CreditsText_f180b
+	dw CreditsText_Version
+	dw CreditsText_Tajiri
+	dw CreditsText_Oota
+	dw CreditsText_Morimoto
+	dw CreditsText_Watanabe
+	dw CreditsText_Masuda
+	dw CreditsText_Nishino
+	dw CreditsText_Sugimori
+	dw CreditsText_Nishida
+	dw CreditsText_Miyamoto
+	dw CreditsText_Kawaguchi
+	dw CreditsText_Ishihara
+	dw CreditsText_Yamauchi
+	dw CreditsText_Zinnai
+	dw CreditsText_Hishida
+	dw CreditsText_Sakai
+	dw CreditsText_Yamaguchi
+	dw CreditsText_Yamamoto
+	dw CreditsText_Taniguchi
+	dw CreditsText_Nonomura
+	dw CreditsText_Fuziwara
+	dw CreditsText_Matsusima
+	dw CreditsText_Tomisawa
+	dw CreditsText_Kawamoto
+	dw CreditsText_Kakei
+	dw CreditsText_Tsuchiya
+	dw CreditsText_Nakamura
+	dw CreditsText_Yuda
+	dw CreditsText_Pokemon
+	dw CreditsText_Director
+	dw CreditsText_Programmers
+	dw CreditsText_CharacterDesign
+	dw CreditsText_Music
+	dw CreditsText_SoundEffects
+	dw CreditsText_GameDesign
+	dw CreditsText_MonsterDesign
+	dw CreditsText_GameScenario
+	dw CreditsText_ParametricDesign
+	dw CreditsText_MapDesign
+	dw CreditsText_Testing
+	dw CreditsText_SpecialThanks
+	dw CreditsText_Producer
+	dw CreditsText_ExecutiveProducer
+	dw CreditsText_Tamada
+	dw CreditsText_Oota2
+	dw CreditsText_Yoshikawa
+	dw CreditsText_Oota23
+	dw CreditsText_Yoshida
+	dw CreditsText_Matsumita
+	dw CreditsText_Seya
+	dw CreditsText_Sekine
+	dw CreditsText_Shimamura
+	dw CreditsText_Shimoyamada
+	dw CreditsText_SuperMarioClub
+	dw CreditsText_Izushi
+	dw CreditsText_Nomura
+	dw CreditsText_Harada
+	dw CreditsText_Yamagami
+	dw CreditsText_Nishimura
+	dw CreditsText_Saeki
+	dw CreditsText_Fuzii
+	dw CreditsText_Shogakukan
+	dw CreditsText_Ootani
+	dw CreditsText_PikachuVoice
+	dw CreditsText_USStaff
+	dw CreditsText_USCoord
+	dw CreditsText_Tilden
+	dw CreditsText_Kawakami
+	dw CreditsText_Nakamura2
+	dw CreditsText_Shoemake
+	dw CreditsText_Osborne
+	dw CreditsText_Translation
+	dw CreditsText_Ogasawara
+	dw CreditsText_Iwata
+	dw CreditsText_Izushi2
+	dw CreditsText_Harada2
+	dw CreditsText_Murakawa
+	dw CreditsText_Fukui
+	dw CreditsText_SuperMarioClub2
+	dw CreditsText_Paad
+	dw CreditsText_Producers
+	dw CreditsText_Hosokawa
+	dw CreditsText_Okubo
+	dw CreditsText_Nakamichi
+	dw CreditsText_Yoshimura
+	dw CreditsText_Yamazaki
 
-CreditsText_f128f:
+CreditsText_Version:
 	db -6, "YELLOW VERSION"
 	next   "    STAFF@"
-CreditsText_f12a9:
+CreditsText_Tajiri:
 	db -6, "SATOSHI TAJIRI@"
-CreditsText_f12b9:
+CreditsText_Oota:
 	db -6, "TAKENORI OOTA@"
-CreditsText_f12c8:
+CreditsText_Morimoto:
 	db -7, "SHIGEKI MORIMOTO@"
-CreditsText_f12da:
+CreditsText_Watanabe:
 	db -7, "TETSUYA WATANABE@"
-CreditsText_f12ec:
+CreditsText_Masuda:
 	db -6, "JUNICHI MASUDA@"
-CreditsText_f12fc:
+CreditsText_Nishino:
 	db -5, "KOHJI NISHINO@"
-CreditsText_f130b:
+CreditsText_Sugimori:
 	db -5, "KEN SUGIMORI@"
-CreditsText_f1319:
+CreditsText_Nishida:
 	db -6, "ATSUKO NISHIDA@"
-CreditsText_f1329:
+CreditsText_Miyamoto:
 	db -7, "SHIGERU MIYAMOTO@"
-CreditsText_f133b:
+CreditsText_Kawaguchi:
 	db -8, "TAKASHI KAWAGUCHI@"
-CreditsText_f134e:
+CreditsText_Ishihara:
 	db -8, "TSUNEKAZU ISHIHARA@"
-CreditsText_f1362:
+CreditsText_Yamauchi:
 	db -7, "HIROSHI YAMAUCHI@"
-CreditsText_f1374:
+CreditsText_Zinnai:
 	db -7, "HIROYUKI ZINNAI@"
-CreditsText_f1385:
+CreditsText_Hishida:
 	db -7, "TATSUYA HISHIDA@"
-CreditsText_f1396:
+CreditsText_Sakai:
 	db -6, "YASUHIRO SAKAI@"
-CreditsText_f13a6:
+CreditsText_Yamaguchi:
 	db -7, "WATARU YAMAGUCHI@"
-CreditsText_f13b8:
+CreditsText_Yamamoto:
 	db -8, "KAZUYUKI YAMAMOTO@"
-CreditsText_f13cb:
+CreditsText_Taniguchi:
 	db -8, "RYOHSUKE TANIGUCHI@"
-CreditsText_f13df:
+CreditsText_Nonomura:
 	db -8, "FUMIHIRO NONOMURA@"
-CreditsText_f13f2:
+CreditsText_Fuziwara:
 	db -7, "MOTOFUMI FUZIWARA@"
-CreditsText_f1405:
+CreditsText_Matsusima:
 	db -7, "KENJI MATSUSIMA@"
-CreditsText_f1416:
+CreditsText_Tomisawa:
 	db -7, "AKIHITO TOMISAWA@"
-CreditsText_f1428:
+CreditsText_Kawamoto:
 	db -7, "HIROSHI KAWAMOTO@"
-CreditsText_f143a:
+CreditsText_Kakei:
 	db -6, "AKIYOSHI KAKEI@"
-CreditsText_f144a:
+CreditsText_Tsuchiya:
 	db -7, "KAZUKI TSUCHIYA@"
-CreditsText_f145b:
+CreditsText_Nakamura:
 	db -6, "TAKEO NAKAMURA@"
-CreditsText_f146b:
+CreditsText_Yuda:
 	db -6, "MASAMITSU YUDA@"
-CreditsText_f147b:
+CreditsText_Pokemon:
 	db -3, "#MON@"
-CreditsText_f1481:
+CreditsText_Director:
 	db -3, "DIRECTOR@"
-CreditsText_f148b:
+CreditsText_Programmers:
 	db -5, "PROGRAMMERS@"
-CreditsText_f1498:
+CreditsText_CharacterDesign:
 	db -7, "CHARACTER DESIGN@"
-CreditsText_f14aa:
+CreditsText_Music:
 	db -2, "MUSIC@"
-CreditsText_f14b1:
+CreditsText_SoundEffects:
 	db -6, "SOUND EFFECTS@"
-CreditsText_f14c0:
+CreditsText_GameDesign:
 	db -5, "GAME DESIGN@"
-CreditsText_f14cd:
+CreditsText_MonsterDesign:
 	db -6, "MONSTER DESIGN@"
-CreditsText_f14dd:
+CreditsText_GameScenario:
 	db -6, "GAME SCENARIO@"
-CreditsText_f14ec:
+CreditsText_ParametricDesign:
 	db -7, "PARAMETRIC DESIGN@"
-CreditsText_f14ff:
+CreditsText_MapDesign:
 	db -4, "MAP DESIGN@"
-CreditsText_f150b:
+CreditsText_Testing:
 	db -6, "PRODUCT TESTING@"
-CreditsText_f151c:
+CreditsText_SpecialThanks:
 	db -6, "SPECIAL THANKS@"
-CreditsText_f152c:
+CreditsText_Producers:
 	db -4, "PRODUCERS@"
-CreditsText_f1537:
+CreditsText_Producer:
 	db -3, "PRODUCER@"
-CreditsText_f1541:
+CreditsText_ExecutiveProducer:
 	db -8, "EXECUTIVE PRODUCER@"
-CreditsText_f1555:
+CreditsText_Tamada:
 	db -6, "SOUSUKE TAMADA@"
-CreditsText_f1565:
+CreditsText_Oota2:
 	db -5, "SATOSHI OOTA@"
-CreditsText_f1573:
+CreditsText_Yoshikawa:
 	db -6, "RENA YOSHIKAWA@"
-CreditsText_f1583:
+CreditsText_Oota23:
 	db -6, "TOMOMICHI OOTA@"
-CreditsText_f1593:
+CreditsText_Matsumita:
 	db -8, "TOSHINOBU MATSUMIYA@"
-CreditsText_f15a8:
+CreditsText_Seya:
 	db -5, "NOBUHIRO SEYA@"
-CreditsText_f15b7:
+CreditsText_Yoshida:
 	db -7, "HIRONOBU YOSHIDA@"
-CreditsText_f15c9:
+CreditsText_Sekine:
 	db -6, "KAZUHITO SEKINE@"
-CreditsText_f15da:
+CreditsText_Shimamura:
 	db -7, "KAZUSHI SHIMAMURA@"
-CreditsText_f15ed:
+CreditsText_Shimoyamada:
 	db -9, "TERUYUKI SHIMOYAMADA@"
-CreditsText_f1603:
+CreditsText_SuperMarioClub:
 	db -9, "NCL SUPER MARIO CLUB@"
-CreditsText_f1619:
+CreditsText_Izushi:
 	db -7, "TAKEHIRO IZUSHI@"
-CreditsText_f162a:
+CreditsText_Nomura:
 	db -5, "FUZIKO NOMURA@"
-CreditsText_f1639:
+CreditsText_Harada:
 	db -6, "TAKAHIRO HARADA@"
-CreditsText_f164a:
+CreditsText_Yamagami:
 	db -7, "HITOSHI YAMAGAMI@"
-CreditsText_f165c:
+CreditsText_Nishimura:
 	db -8, "KENTAROU NISHIMURA@"
-CreditsText_f1670:
+CreditsText_Saeki:
 	db -5, "NAOKO SAEKI@"
-CreditsText_f167d:
+CreditsText_Fuzii:
 	db -5, "TAKAYA FUZII@"
-CreditsText_f168b:
+CreditsText_Shogakukan:
 	db -4, "SHOGAKUKAN"
 	next   "PRODUCTION@"
-CreditsText_f16a2:
+CreditsText_Ootani:
 	db -5, "IKUE OOTANI@"
-CreditsText_f16af:
+CreditsText_PikachuVoice:
 	db -6, "PIKACHU VOICE@"
 
 	db -3, "××××××××@"
-CreditsText_f16c8:
+CreditsText_USStaff:
 	db -7, "US VERSION STAFF@"
-CreditsText_f16da:
+CreditsText_USCoord:
 	db -7, "US COORDINATION@"
-CreditsText_f16eb:
+CreditsText_Tilden:
 	db -5, "GAIL TILDEN@"
-CreditsText_f16f8:
+CreditsText_Kawakami:
 	db -6, "NAOKO KAWAKAMI@"
-CreditsText_f1708:
+CreditsText_Nakamura2:
 	db -6, "HIRO NAKAMURA@"
-CreditsText_f1717:
+CreditsText_Shoemake:
 	db -6, "RANDY SHOEMAKE@"
-CreditsText_f1727:
+CreditsText_Osborne:
 	db -5, "SARA OSBORNE@"
-CreditsText_f1735:
+CreditsText_Translation:
 	db -7, "TEXT TRANSLATION@"
-CreditsText_f1747:
+CreditsText_Ogasawara:
 	db -6, "NOB OGASAWARA@"
-CreditsText_f1756:
+CreditsText_Iwata:
 	db -5, "SATORU IWATA@"
-CreditsText_f1764:
+CreditsText_Izushi2:
 	db -7, "TAKEHIRO IZUSHI@"
-CreditsText_f1775:
+CreditsText_Harada2:
 	db -7, "TAKAHIRO HARADA@"
-CreditsText_f1786:
+CreditsText_Murakawa:
 	db -7, "TERUKI MURAKAWA@"
-CreditsText_f1797:
+CreditsText_Fukui:
 	db -5, "KOHTA FUKUI@"
-CreditsText_f17a4:
+CreditsText_SuperMarioClub2:
 	db -9, "NCL SUPER MARIO CLUB@"
-CreditsText_f17ba:
+CreditsText_Paad:
 	db -5, "PAAD TESTING@"
-CreditsText_f17c8:
+CreditsText_Hosokawa:
 	db -8, "TAKEHIKO HOSOKAWA@"
-CreditsText_f17db:
+CreditsText_Okubo:
 	db -5, "KENJI OKUBO@"
-CreditsText_f17e8:
+CreditsText_Nakamichi:
 	db -7, "KIMIKO NAKAMICHI@"
-CreditsText_f17fa:
+CreditsText_Yoshimura:
 	db -6, "KAMON YOSHIMURA@"
-CreditsText_f180b:
+CreditsText_Yamazaki:
 	db -6, "SAKAE YAMAZAKI@"
