@@ -8,7 +8,7 @@ Route9Object: ; 0x546a8 (size=86)
 
 	db $a ; objects
 	object SPRITE_LASS, $d, $a, STAY, LEFT, $1, OPP_JR_TRAINER_F, $5
-	object SPRITE_BLACK_HAIR_BOY_1, $18, $7, STAY, LEFT, $2, OPP_JR_TRAINER_M, $7
+	object SPRITE_BLACK_HAIR_BOY_1, $18, $7, STAY, LEFT, $2, OPP_YOUNGSTER, $e
 	object SPRITE_BLACK_HAIR_BOY_1, $1f, $7, STAY, RIGHT, $3, OPP_JR_TRAINER_M, $8
 	object SPRITE_LASS, $30, $8, STAY, RIGHT, $4, OPP_JR_TRAINER_F, $6
 	object SPRITE_HIKER, $10, $f, STAY, LEFT, $5, OPP_HIKER, $b
