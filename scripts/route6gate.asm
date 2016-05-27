@@ -2,7 +2,7 @@ Route6GateScript: ; 1e03d (7:603d)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route6GateScriptPointers
 	ld a, [W_ROUTE6GATECURSCRIPT]
-	call CallFunctionInTable
+	call JumpTable
 	ret
 
 Route6GateScriptPointers: ; 1e04a (7:604a)

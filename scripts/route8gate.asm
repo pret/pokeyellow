@@ -2,7 +2,7 @@ Route8GateScript: ; 1e1c7 (7:61c7)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route8GateScriptPointers
 	ld a, [W_ROUTE8GATECURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route8GateScriptPointers: ; 1e1d3 (7:61d3)
 	dw Route8GateScript0

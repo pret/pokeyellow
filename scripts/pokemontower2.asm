@@ -2,7 +2,7 @@ PokemonTower2Script: ; 604f2 (18:44f2)
 	call EnableAutoTextBoxDrawing
 	ld hl, PokemonTower2ScriptPointers
 	ld a, [W_POKEMONTOWER2CURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 PokemonTower2Script_604fe: ; 604fe (18:44fe)
 	xor a

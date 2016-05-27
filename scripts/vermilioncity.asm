@@ -1,5 +1,7 @@
 VermilionCityScript: ; 197a1 (6:57a1)
 	call EnableAutoTextBoxDrawing
+	ld hl, wPreventBlackout
+	res 7, [hl]
 	ld hl, wd126
 	bit 6, [hl]
 	res 6, [hl]
@@ -11,11 +13,24 @@ VermilionCityScript: ; 197a1 (6:57a1)
 	call nz, VermilionCityScript_197c0
 	ld hl, VermilionCityScriptPointers
 	ld a, [W_VERMILIONCITYCURSCRIPT]
-	jp CallFunctionInTable
+	call JumpTable
+	call VermilionCityScript_19869
+	ret
+
+VermilionCityScript_19869:
+	CheckEventHL EVENT_152
+	ret nz
+	CheckEventReuseHL EVENT_GOT_BIKE_VOUCHER
+	ret z
+	SetEventReuseHL EVENT_152
+	ret
 
 VermilionCityScript_197c0: ; 197c0 (6:57c0)
 	call Random
-	ld a, [$ffd4]
+	ld a, [hRandomAdd]
+	ld b, a
+	ld a, [hRandomSub]
+	adc b
 	and $e
 	ld [wFirstLockTrashCanIndex], a
 	ret
@@ -40,10 +55,10 @@ VermilionCityScriptPointers: ; 197dc (6:57dc)
 VermilionCityScript0: ; 197e6 (6:57e6)
 	ld a, [wSpriteStateData1 + 9]
 	and a ; cp SPRITE_FACING_DOWN
-	ret nz
+	jr nz, .asm_198de
 	ld hl, CoordsData_19823
 	call ArePlayerCoordsInArray
-	ret nc
+	jr nc, .asm_198de
 	xor a
 	ld [hJoyHeld], a
 	ld [wcf0d], a
@@ -65,6 +80,9 @@ VermilionCityScript0: ; 197e6 (6:57e6)
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [W_VERMILIONCITYCURSCRIPT], a
+	ret
+
+.asm_198de
 	ret
 
 CoordsData_19823: ; 19823 (6:5823)
@@ -122,11 +140,12 @@ VermilionCityTextPointers: ; 1986f (6:586f)
 	dw VermilionCityText6
 	dw VermilionCityText7
 	dw VermilionCityText8
+	dw VermilionCityText9
 	dw MartSignText
 	dw PokeCenterSignText
-	dw VermilionCityText11
 	dw VermilionCityText12
 	dw VermilionCityText13
+	dw VermilionCityText14
 
 VermilionCityText1: ; 19889 (6:5889)
 	TX_FAR _VermilionCityText1
@@ -225,33 +244,43 @@ VermilionCityText5: ; 19922 (6:5922)
 	ld a, MACHOP
 	call PlayCry
 	call WaitForSoundToFinish
-	ld hl, VermilionCityText14
+	ld hl, VermilionCityText15
 	ret
 
-VermilionCityText14: ; 19933 (6:5933)
-	TX_FAR _VermilionCityText14
+VermilionCityText15: ; 19933 (6:5933)
+	TX_FAR _VermilionCityText15
 	db "@"
 
 VermilionCityText6: ; 19938 (6:5938)
 	TX_FAR _VermilionCityText6
 	db "@"
 
-VermilionCityText7: ; 1993d (6:593d)
-	TX_FAR _VermilionCityText7
-	db "@"
+VermilionCityText8: ; 1993d (6:593d)
+	TX_ASM
+	callba Func_f1a8a
+	jp TextScriptEnd
 
-VermilionCityText8: ; 19942 (6:5942)
-	TX_FAR _VermilionCityText8
-	db "@"
+VermilionCityText9: ; 19942 (6:5942)
+	TX_ASM
+	callba Func_f1a96
+	jp TextScriptEnd
 
-VermilionCityText11: ; 19947 (6:5947)
-	TX_FAR _VermilionCityText11
-	db "@"
+VermilionCityText12:
+	TX_ASM
+	callba Func_f1aa2
+	jp TextScriptEnd
 
-VermilionCityText12: ; 1994c (6:594c)
-	TX_FAR _VermilionCityText12
-	db "@"
+VermilionCityText13: ; 19947 (6:5947)
+	TX_ASM
+	callba Func_f1aae
+	jp TextScriptEnd
 
-VermilionCityText13: ; 19951 (6:5951)
-	TX_FAR _VermilionCityText13
-	db "@"
+VermilionCityText14: ; 1994c (6:594c)
+	TX_ASM
+	callba Func_f1aba
+	jp TextScriptEnd
+
+VermilionCityText7: ; 19951 (6:5951)
+	TX_ASM
+	callba Func_f1a0f
+	jp TextScriptEnd

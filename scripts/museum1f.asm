@@ -5,7 +5,7 @@ Museum1FScript: ; 5c0f7 (17:40f7)
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, Museum1FScriptPointers
 	ld a, [W_MUSEUM1FCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 Museum1FScriptPointers: ; 5c109 (17:4109)
 	dw Museum1FScript0

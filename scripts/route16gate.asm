@@ -4,7 +4,7 @@ Route16GateScript: ; 496be (12:56be)
 	call EnableAutoTextBoxDrawing
 	ld a, [W_ROUTE16GATECURSCRIPT]
 	ld hl, Route16GateScriptPointers
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route16GateScriptPointers: ; 496cf (12:56cf)
 	dw Route16GateScript0

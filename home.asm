@@ -2441,7 +2441,7 @@ RunNPCMovementScript:: ; 30ae (0:30ae)
 	ld a, [wNPCMovementScriptBank]
 	call BankswitchCommon
 	ld a, [wNPCMovementScriptFunctionNum]
-	call CallFunctionInTable
+	call JumpTable
 	pop af
 	call BankswitchCommon
 	ret
@@ -2484,7 +2484,7 @@ ExecuteCurMapScriptInTable:: ; 30fc (0:30fc)
 .useProvidedIndex
 	pop hl
 	ld [W_CURMAPSCRIPT], a
-	call CallFunctionInTable
+	call JumpTable
 	ld a, [W_CURMAPSCRIPT]
 	ret
 
@@ -4690,8 +4690,7 @@ endm
 	ret
 
 
-CallFunctionInTable:: ; 3d93 (0:3d93)
-JumpTable::
+JumpTable:: ; 3d93 (0:3d93)
 ; Call function a in jumptable hl.
 ; de is not preserved.
 	push hl

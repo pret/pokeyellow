@@ -2,7 +2,7 @@ RedsHouse2FScript: ; 5c0b0 (17:40b0)
 	call EnableAutoTextBoxDrawing
 	ld hl,RedsHouse2FScriptPointers
 	ld a,[W_REDSHOUSE2CURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 RedsHouse2FScriptPointers: ; 5c0bc (17:40bc)
 	dw RedsHouse2FScript0

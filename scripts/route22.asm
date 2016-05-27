@@ -2,7 +2,7 @@ Route22Script: ; 50eb2 (14:4eb2)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22ScriptPointers
 	ld a, [W_ROUTE22CURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route22ScriptPointers: ; 50ebe (14:4ebe)
 	dw Route22Script0

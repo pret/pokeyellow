@@ -2,7 +2,7 @@ BluesHouseScript: ; 19b3b (6:5b3b)
 	call EnableAutoTextBoxDrawing
 	ld hl,BluesHouseScriptPointers
 	ld a,[W_BLUESHOUSECURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 BluesHouseScriptPointers: ; 19b47 (6:5b47)
 	dw BluesHouseScript0

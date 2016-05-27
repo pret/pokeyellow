@@ -2,7 +2,7 @@ SeafoamIslands5Script: ; 46799 (11:6799)
 	call EnableAutoTextBoxDrawing
 	ld a, [wSeafoamIslands5CurScript]
 	ld hl, SeafoamIslands5ScriptPointers
-	jp CallFunctionInTable
+	jp JumpTable
 
 SeafoamIslands5Script_467a5: ; 467a5 (11:67a5)
 	xor a

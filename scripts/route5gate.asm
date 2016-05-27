@@ -2,7 +2,7 @@ Route5GateScript: ; 1df33 (7:5f33)
 	call EnableAutoTextBoxDrawing
 	ld a, [W_ROUTE5GATECURSCRIPT]
 	ld hl, Route5GateScriptPointers
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route5GateScriptPointers: ; 1df3f (7:5f3f)
 	dw Route5GateScript0

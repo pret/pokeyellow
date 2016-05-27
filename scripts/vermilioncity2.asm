@@ -65,4 +65,47 @@ OfficerJennyText5:
 	TX_FAR _OfficerJennyText5
 	db "@"
 
-	dr $f1a8a,$f1ac6
+Func_f1a8a:
+	ld hl, VermilionCityText_f1a91
+	call PrintText
+	ret
+
+VermilionCityText_f1a91:
+	TX_FAR _VermilionCityText8
+	db "@"
+
+Func_f1a96:
+	ld hl, VermilionCityText_f1a9d
+	call PrintText
+	ret
+
+VermilionCityText_f1a9d:
+	TX_FAR _VermilionCityText9
+	db "@"
+
+Func_f1aa2:
+	ld hl, VermilionCityText_f1aa9
+	call PrintText
+	ret
+
+VermilionCityText_f1aa9:
+	TX_FAR _VermilionCityText12
+	db "@"
+
+Func_f1aae:
+	ld hl, VermilionCityText_f1ab5
+	call PrintText
+	ret
+
+VermilionCityText_f1ab5:
+	TX_FAR _VermilionCityText13
+	db "@"
+
+Func_f1aba:
+	ld hl, VermilionCityText_f1ac1
+	call PrintText
+	ret
+
+VermilionCityText_f1ac1:
+	TX_FAR _VermilionCityText14
+	db "@"

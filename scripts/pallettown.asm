@@ -6,7 +6,7 @@ PalletTownScript: ; 18e5b (6:4e5b)
 	call EnableAutoTextBoxDrawing
 	ld hl, PalletTownScriptPointers
 	ld a, [W_PALLETTOWNCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 PalletTownScriptPointers: ; 18e73 (6:4e73)
 	dw PalletTownScript0

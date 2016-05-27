@@ -251,12 +251,12 @@ PewterCityBlocks: INCBIN "maps/pewtercity.blk"
 INCLUDE "data/mapHeaders/ceruleancity.asm"
 INCLUDE "data/mapObjects/ceruleancity.asm"
 CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
-	dr $1899e,$18dfa ; headers, objects, blocks
 
-; INCLUDE "data/mapHeaders/vermilioncity.asm"
-; INCLUDE "data/mapObjects/vermilioncity.asm"
-; VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
+INCLUDE "data/mapHeaders/vermilioncity.asm"
+INCLUDE "data/mapObjects/vermilioncity.asm"
+VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
 
+	dr $18bb3,$18dfa ; headers, objects, blocks
 ; INCLUDE "data/mapHeaders/fuchsiacity.asm"
 ; INCLUDE "data/mapObjects/fuchsiacity.asm"
 ; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
@@ -266,9 +266,7 @@ INCLUDE "scripts/pallettown.asm"
 INCLUDE "scripts/viridiancity.asm"
 INCLUDE "scripts/pewtercity.asm"
 INCLUDE "scripts/ceruleancity.asm"
-
-	dr $19841,$19a43 ; vermilion scripts
-; INCLUDE "scripts/vermilioncity.asm"
+INCLUDE "scripts/vermilioncity.asm"
 INCLUDE "scripts/celadoncity.asm"
 
 	dr $19b2b,$1a4ea
@@ -881,7 +879,10 @@ INCBIN "maps/route6.blk"
 	dr $5812d,$581c6
 Route8Blocks: ; 581c6
 INCBIN "maps/route8.blk"
-	dr $582d4,$58b84
+	dr $582d4,$5855f
+Route11Blocks: ; 5854f
+INCBIN "maps/route11.blk"
+	dr $5866d,$58b84
 Route16Blocks: ; 58b84
 INCBIN "maps/route16.blk"
 	dr $58c38,$58d99

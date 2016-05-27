@@ -3,7 +3,7 @@ ViridianMartScript: ; 1d46e (7:546e)
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianMartScriptPointers
 	ld a, [W_VIRIDIANMARKETCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 ViridianMartScript_1d47d: ; 1d47d (7:547d)
 	CheckEvent EVENT_OAK_GOT_PARCEL

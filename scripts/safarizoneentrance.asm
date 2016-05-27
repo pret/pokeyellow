@@ -2,7 +2,7 @@ SafariZoneEntranceScript: ; 751cd (1d:51cd)
 	call EnableAutoTextBoxDrawing
 	ld hl, SafariZoneEntranceScriptPointers
 	ld a, [wSafariZoneEntranceCurScript]
-	jp CallFunctionInTable
+	jp JumpTable
 
 SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	dw .SafariZoneEntranceScript0

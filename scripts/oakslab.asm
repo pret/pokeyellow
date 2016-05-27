@@ -7,7 +7,7 @@ OaksLabScript: ; 1cb0e (7:4b0e)
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, OaksLabScriptPointers
 	ld a, [W_OAKSLABCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 OaksLabScriptPointers: ; 1cb28 (7:4b28)
 	dw OaksLabScript0

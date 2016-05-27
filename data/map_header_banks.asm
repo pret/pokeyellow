@@ -5,7 +5,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(PewterCity_h) ; PEWTER_CITY
 	db BANK(CeruleanCity_h) ; CERULEAN_CITY
 	db $11 ; db BANK(LavenderTown_h) ; LAVENDER_TOWN
-	db $06 ; db BANK(VermilionCity_h) ; VERMILION_CITY
+	db BANK(VermilionCity_h) ; VERMILION_CITY
 	db BANK(CeladonCity_h) ; CELADON_CITY
 	db $06 ; db BANK(FuchsiaCity_h) ; FUCHSIA_CITY
 	db $07 ; db BANK(CinnabarIsland_h) ; CINNABAR_ISLAND
