@@ -3,9 +3,9 @@ Route11Object: ; 0x584e0 (size=127)
 
 	db $5 ; warps
 	db $8, $31, $0, ROUTE_11_GATE_1F
-	db $9, $31, $1, ROUTE_11_GATE_1F
+	db $9, $31, $0, ROUTE_11_GATE_1F
 	db $8, $3a, $2, ROUTE_11_GATE_1F
-	db $9, $3a, $3, ROUTE_11_GATE_1F
+	db $9, $3a, $2, ROUTE_11_GATE_1F
 	db $5, $4, $0, DIGLETTS_CAVE_ENTRANCE
 
 	db $1 ; signs
