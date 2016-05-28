@@ -705,9 +705,13 @@ Route7Blocks: ; 48051
 INCBIN "maps/route7.blk"
 	dr $480ab,$480eb
 INCLUDE "scripts/route7.asm"
-; INCLUDE "data/mapHeaders/redshouse1f.asm"
-; INCLUDE "data/mapObjects/redshouse1f.asm"
-	dr $480f6,$4a540
+
+INCLUDE "data/mapHeaders/redshouse1f.asm"
+INCLUDE "scripts/redshouse1f.asm"
+INCLUDE "data/mapObjects/redshouse1f.asm"
+RedsHouse1FBlocks:
+INCBIN "maps/redshouse1f.blk"
+	dr $48157,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -899,6 +903,8 @@ INCLUDE "scripts/route14.asm"
 INCLUDE "scripts/route17.asm"
 INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
+
+; vermilion house 2
 	dr $56054,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"

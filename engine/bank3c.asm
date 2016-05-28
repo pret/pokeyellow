@@ -348,7 +348,8 @@ INCLUDE "scripts/vermilioncity2.asm"
 INCLUDE "scripts/celadoncity2.asm"
 INCLUDE "scripts/route1_2.asm"
 INCLUDE "scripts/route22_2.asm"
-	dr $f1b73, $f220e
+INCLUDE "scripts/redshouse1f2.asm"
+	dr $f1be0, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
