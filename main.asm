@@ -292,7 +292,10 @@ INCBIN "maps/route1.blk"
 	dr $1c1b0,$1c1c0 ; headers, objects, blocks
 OaksLabBlocks:
 INCBIN "maps/oakslab.blk"
-	dr $1c1de,$1c21e ; headers, objects, blocks
+	dr $1c1de,$1c1ee ; headers, objects, blocks
+SchoolBlocks:
+INCBIN "maps/school.blk"
+	dr $1c1fe,$1c21e ; headers, objects, blocks
 
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
@@ -317,7 +320,12 @@ SaffronMartBlocks:
 FuchsiaMartBlocks:
 CinnabarMartBlocks:
 INCBIN "maps/viridianmart.blk"
-	dr $1cd6d,$1e2ae ; map scripts
+
+INCLUDE "data/mapHeaders/school.asm"
+INCLUDE "scripts/school.asm"
+INCLUDE "data/mapObjects/school.asm"
+
+	dr $1cdc6,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 

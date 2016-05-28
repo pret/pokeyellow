@@ -350,7 +350,11 @@ INCLUDE "scripts/route1_2.asm"
 INCLUDE "scripts/route22_2.asm"
 INCLUDE "scripts/redshouse1f2.asm"
 Func_f1be0:
-	dr $f1be0, $f220e
+	dr $f1be0, $f1c03
+Func_f1c03:
+	dr $f1c03, $f1c0f
+Func_f1c0f:
+	dr $f1c0f, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"

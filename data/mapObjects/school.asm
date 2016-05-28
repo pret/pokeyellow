@@ -7,9 +7,10 @@ SchoolObject: ; 0x1d55d (size=32)
 
 	db $0 ; signs
 
-	db $2 ; objects
+	db $3 ; objects
 	object SPRITE_BRUNETTE_GIRL, $3, $5, STAY, UP, $1 ; person
 	object SPRITE_LASS, $4, $1, STAY, DOWN, $2 ; person
+	object SPRITE_LITTLE_GIRL, $4, $5, STAY, UP, $3 ; person
 
 	; warp-to
 	EVENT_DISP VIRIDIAN_SCHOOL_WIDTH, $7, $2
