@@ -811,8 +811,12 @@ dpikacry: MACRO
 	db (\1_id - PikachuCriesPointerTable) / 3
 	endm
 
+ldpikacry: MACRO
+	ld \1, (\2_id - PikachuCriesPointerTable) / 3
+	ENDM
+
 pikacry: MACRO
-	ld a, (\1_id - PikachuCriesPointerTable) / 3
+	ldpikacry a, \1
 	endm
 
 

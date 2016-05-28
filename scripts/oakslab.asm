@@ -1062,35 +1062,101 @@ OaksLabText_1cb8a:
 	db "@"
 
 OaksLabText10:
-	dr $1cb90,$1cb9f
+	TX_ASM
+	ld hl, OaksLabText_1cb9a
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cb9a:
+	TX_FAR _OaksLabLeavingText
+	db "@"
+
 OaksLabText11:
-	dr $1cb9f,$1cbae
+	TX_ASM
+	ld hl, OaksLabText_1cba9
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cba9:
+	TX_FAR _OaksLabRivalChallengeText
+	db "@"
 
 OaksLabRivalDefeatedText:
-	dr $1cbae,$1cbb3
+	TX_FAR _OaksLabText_1d3be
+	db "@"
 
 OaksLabRivalBeatYouText:
-	dr $1cbb3,$1cbb8
+	TX_FAR _OaksLabText_1d3c3
+	db "@"
+
 OaksLabText12:
-	dr $1cbb8,$1cbc7
+	TX_ASM
+	ld hl, OaksLabText_1cbc2
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cbc2:
+	TX_FAR _OaksLabRivalToughenUpText
+	db "@"
+
 OaksLabText26:
-	dr $1cbc7,$1cbe0
+	TX_ASM
+	ldpikacry e, PikachuCry2
+	callab PlayPikachuSoundClip
+	ld hl, OaksLabText_1cbdb
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cbdb:
+	TX_FAR _OaksLabPikachuDislikesPokeballsText1
+	db "@"
+
 OaksLabText27:
-	dr $1cbe0,$1cbef
+	TX_ASM
+	ld hl, OaksLabText_1cbea
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cbea:
+	TX_FAR _OaksLabPikachuDislikesPokeballsText2
+	db "@"
+
 OaksLabText19:
-	dr $1cbef,$1cbf4
+	TX_FAR _OaksLabText21
+	db "@"
+
 OaksLabText20:
-	dr $1cbf4,$1cbf9
+	TX_FAR _OaksLabText22
+	db "@"
+
 OaksLabText21:
-	dr $1cbf9,$1cbfe
+	TX_FAR _OaksLabText23
+	db "@"
+
 OaksLabText22:
-	dr $1cbfe,$1cc03
+	TX_FAR _OaksLabText24
+	db "@"
+
 OaksLabText23:
-	dr $1cc03,$1cc09
+	TX_FAR _OaksLabText25
+	TX_SFX_KEY_ITEM
+	db "@"
+
 OaksLabText24:
-	dr $1cc09,$1cc0e
+	TX_FAR _OaksLabText26
+	db "@"
+
 OaksLabText25:
-	dr $1cc0e,$1cc13
+	TX_FAR _OaksLabText27
+	db "@"
+
 OaksLabText8:
 OaksLabText9:
-	dr $1cc13,$1cc22
+	TX_ASM
+	ld hl, OaksLabText_1c31d
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1c31d:
+	TX_FAR _OaksLabText_1d405
+	db "@"
