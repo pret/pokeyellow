@@ -288,7 +288,6 @@ OaksLabRLE_PlayerWalksToOak:
 	db D_LEFT, 1
 	db $FF
 
-
 OaksLabScript11:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
@@ -701,7 +700,7 @@ OaksLabScript_1c8b9:
 	ret
 
 OaksLabScript_1d076:
-	ld hl, OaksLabText_1c946
+	ld hl, OaksLabTextPointers2
 	ld a, l
 	ld [wMapTextPtr], a
 	ld a, h
@@ -709,13 +708,389 @@ OaksLabScript_1d076:
 	ret
 
 OaksLabTextPointers: ; 1d082 (7:5082)
-	dr $1c910,$1c946
+	dw OaksLabText1
+	dw OaksLabText2
+	dw OaksLabText3
+	dw OaksLabText4
+	dw OaksLabText5
+	dw OaksLabText6
+	dw OaksLabText7
+	dw OaksLabText8
+	dw OaksLabText9
+	dw OaksLabText10
+	dw OaksLabText11
+	dw OaksLabText12
+	dw OaksLabText13
+	dw OaksLabText14
+	dw OaksLabText15
+	dw OaksLabText16
+	dw OaksLabText17
+	dw OaksLabText18
+	dw OaksLabText19
+	dw OaksLabText20
+	dw OaksLabText21
+	dw OaksLabText22
+	dw OaksLabText23
+	dw OaksLabText24
+	dw OaksLabText25
+	dw OaksLabText26
+	dw OaksLabText27
 
-OaksLabText_1c946:
-	dr $1c946,$1cbae
+OaksLabTextPointers2:
+	dw OaksLabText1
+	dw OaksLabText2
+	dw OaksLabText3
+	dw OaksLabText4
+	dw OaksLabText5
+	dw OaksLabText6
+	dw OaksLabText7
+	dw OaksLabText8
+	dw OaksLabText9
+
+OaksLabText1:
+	TX_ASM
+	CheckEvent EVENT_FOLLOWED_OAK_INTO_LAB_2
+	jr nz, .asm_1c968
+	ld hl, OaksLabText_1c97d
+	call PrintText
+	jr .asm_1c97a
+
+.asm_1c968
+	CheckEventReuseA EVENT_GOT_STARTER
+	jr nz, .asm_1c974
+	ld hl, OaksLabText_1c982
+	call PrintText
+	jr .asm_1c97a
+
+.asm_1c974
+	ld hl, OaksLabText_1c987
+	call PrintText
+.asm_1c97a
+	jp TextScriptEnd
+
+OaksLabText_1c97d:
+	TX_FAR _OaksLabGaryText1
+	db "@"
+
+OaksLabText_1c982:
+	TX_FAR _OaksLabText40
+	db "@"
+
+OaksLabText_1c987:
+	TX_FAR _OaksLabText41
+	db "@"
+
+OaksLabText2:
+	TX_ASM
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	CheckEvent EVENT_OAK_ASKED_TO_CHOOSE_MON
+	jr nz, OaksLabScript_1c9ac
+	ld a, $0
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld hl, OaksLabText_1c9a7
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1c9a7:
+	TX_FAR _OaksLabText39
+	db "@"
+
+OaksLabScript_1c9ac:
+	ld a, $1
+	ld [wSavedPlayerScreenY], a
+	xor a
+	ld [wWhichEmotionBubble], a
+	predef EmotionBubble
+	ld a, $8
+	ld [W_OAKSLABCURSCRIPT], a
+	jp TextScriptEnd
+
+OaksLabText3:
+	TX_ASM
+	CheckEvent EVENT_PALLET_AFTER_GETTING_POKEBALLS
+	jr nz, .asm_1c9d9
+	ld hl, wPokedexOwned
+	ld b, wPokedexOwnedEnd - wPokedexOwned
+	call CountSetBits
+	ld a, [wNumSetBits]
+	cp 2
+	jr c, .asm_1c9ec
+.asm_1c9d9
+	ld hl, OaksLabText_1ca9f
+	call PrintText
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	predef DisplayDexRating
+	jp .asm_1ca6f
+
+.asm_1c9ec
+	ld b, POKE_BALL
+	call IsItemInBag
+	jr nz, .asm_1ca69
+	ld hl, wPokedexOwned
+	ld b, wPokedexOwnedEnd - wPokedexOwned
+	call CountSetBits
+	ld a, [wNumSetBits]
+	cp 2
+	jr nc, .asm_1ca69
+	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
+	jr nz, .asm_1ca52
+	CheckEvent EVENT_GOT_POKEDEX
+	jr nz, .asm_1ca4a
+	CheckEventReuseA EVENT_BATTLED_RIVAL_IN_OAKS_LAB
+	jr nz, .asm_1ca2b
+	ld a, [wd72e]
+	bit 3, a
+	jr nz, .asm_1ca23
+	ld hl, OaksLabText_1ca72
+	call PrintText
+	jr .asm_1ca6f
+
+.asm_1ca23
+	ld hl, OaksLabText_1ca77
+	call PrintText
+	jr .asm_1ca6f
+
+.asm_1ca2b
+	ld b, OAKS_PARCEL
+	call IsItemInBag
+	jr nz, .asm_1ca3a
+	ld hl, OaksLabText_1ca7c
+	call PrintText
+	jr .asm_1ca6f
+
+.asm_1ca3a
+	ld hl, OaksLabText_1ca81
+	call PrintText
+	call OaksLabScript_1c897
+	ld a, $13
+	ld [W_OAKSLABCURSCRIPT], a
+	jr .asm_1ca6f
+
+.asm_1ca4a
+	ld hl, OaksLabText_1ca8b
+	call PrintText
+	jr .asm_1ca6f
+
+.asm_1ca52
+	CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+	jr nz, .asm_1ca69
+	lb bc, POKE_BALL, 5
+	call GiveItem
+	ld hl, OaksLabText_1ca90
+	call PrintText
+	jr .asm_1ca6f
+
+.asm_1ca69
+	ld hl, OaksLabText_1ca9a
+	call PrintText
+.asm_1ca6f
+	jp TextScriptEnd
+	
+OaksLabText_1ca72:
+	TX_FAR _OaksLabPikachuText
+	db "@"
+
+OaksLabText_1ca77:
+	TX_FAR _OaksLabText_1d2f5
+	db "@"
+
+OaksLabText_1ca7c:
+	TX_FAR _OaksLabText_1d2fa
+	db "@"
+
+OaksLabText_1ca81:
+	TX_FAR _OaksLabDeliverParcelText1
+	TX_SFX_KEY_ITEM
+	TX_FAR _OaksLabDeliverParcelText2
+	db "@"
+
+OaksLabText_1ca8b:
+	TX_FAR _OaksLabAroundWorldText
+	db "@"
+
+OaksLabText_1ca90:
+	TX_FAR _OaksLabGivePokeballsText1
+	TX_SFX_KEY_ITEM
+	TX_FAR _OaksLabGivePokeballsText2
+	db "@"
+
+OaksLabText_1ca9a:
+	TX_FAR _OaksLabPleaseVisitText
+	db "@"
+
+OaksLabText_1ca9f:
+	TX_FAR _OaksLabText_1d31d
+	db "@"
+
+OaksLabText4:
+OaksLabText5:
+	TX_ASM
+	ld hl, OaksLabText_1caae
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1caae:
+	TX_FAR _OaksLabText_1d32c
+	db "@"
+
+OaksLabText6:
+	TX_FAR _OaksLabText8
+	db "@"
+
+OaksLabText7:
+	TX_ASM
+	ld hl, OaksLabText_1cac2
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cac2:
+	TX_FAR _OaksLabText_1d340
+	db "@"
+
+OaksLabText13:
+	TX_ASM
+	ld hl, OaksLabText_1cad1
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cad1:
+	TX_FAR _OaksLabRivalWaitingText
+	db "@"
+
+OaksLabText14:
+	TX_ASM
+	ld hl, OaksLabText_1cae0
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cae0:
+	TX_FAR _OaksLabChooseMonText
+	db "@"
+
+OaksLabText15:
+	TX_ASM
+	ld hl, OaksLabText_1caef
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1caef:
+	TX_FAR _OaksLabRivalInterjectionText
+	db "@"
+
+OaksLabText16:
+	TX_ASM
+	ld hl, OaksLabText_1cafe
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cafe:
+	TX_FAR _OaksLabBePatientText
+	db "@"
+
+OaksLabText17:
+	TX_ASM
+	ld hl, OaksLabText_1cb25
+	call PrintText
+	ld hl, OaksLabText_1cb2a
+	call PrintText
+	ld hl, OaksLabText_1cb30
+	call PrintText
+	ld hl, OaksLabText_1cb35
+	call PrintText
+	ld hl, OaksLabText_1cb3a
+	call PrintText
+	jp TextScriptEnd
+
+OaksLabText_1cb25:
+	TX_FAR _OaksLabRivalTakesText1
+	db "@"
+
+OaksLabText_1cb2a:
+	TX_FAR _OaksLabRivalTakesText2
+	TX_SFX_KEY_ITEM
+	db "@"
+
+OaksLabText_1cb30:
+	TX_FAR _OaksLabRivalTakesText3
+	db "@"
+
+OaksLabText_1cb35:
+	TX_FAR _OaksLabRivalTakesText4
+	db "@"
+
+OaksLabText_1cb3a:
+	TX_FAR _OaksLabRivalTakesText5
+	db "@"
+
+OaksLabText18:
+	TX_ASM
+	ld a, PIKACHU
+	ld [W_PLAYERSTARTER], a
+	ld [wd11e], a
+	call GetMonName
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld hl, OaksLabText_1cb85
+	call PrintText
+	ld hl, OaksLabText_1cb8a
+	call PrintText
+	xor a
+	ld [wMonDataLocation], a
+	ld a, 5
+	ld [wCurEnemyLVL], a
+	ld a, PIKACHU
+	ld [wd11e], a
+	ld [wcf91], a
+	call AddPartyMon
+	ld a, 163
+	ld [wPartyMon1CatchRate], a
+	call Func_152d
+	SetEvent EVENT_GOT_STARTER
+	ld hl, wd72e
+	set 3, [hl]
+	jp TextScriptEnd
+
+OaksLabText_1cb85:
+	TX_FAR _OaksLabOakGivesText
+	db "@"
+
+OaksLabText_1cb8a:
+	TX_FAR _OaksLabReceivedText
+	TX_SFX_KEY_ITEM
+	db "@"
+
+OaksLabText10:
+	dr $1cb90,$1cb9f
+OaksLabText11:
+	dr $1cb9f,$1cbae
 
 OaksLabRivalDefeatedText:
 	dr $1cbae,$1cbb3
 
 OaksLabRivalBeatYouText:
-	dr $1cbb3,$1cc22
+	dr $1cbb3,$1cbb8
+OaksLabText12:
+	dr $1cbb8,$1cbc7
+OaksLabText26:
+	dr $1cbc7,$1cbe0
+OaksLabText27:
+	dr $1cbe0,$1cbef
+OaksLabText19:
+	dr $1cbef,$1cbf4
+OaksLabText20:
+	dr $1cbf4,$1cbf9
+OaksLabText21:
+	dr $1cbf9,$1cbfe
+OaksLabText22:
+	dr $1cbfe,$1cc03
+OaksLabText23:
+	dr $1cc03,$1cc09
+OaksLabText24:
+	dr $1cc09,$1cc0e
+OaksLabText25:
+	dr $1cc0e,$1cc13
+OaksLabText8:
+OaksLabText9:
+	dr $1cc13,$1cc22
