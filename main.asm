@@ -696,14 +696,28 @@ INCLUDE "data/mapHeaders/lavendertown.asm"
 INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks:
 INCBIN "maps/lavendertown.blk"
-	dr $440df,$4410b
+ViridianPokecenterBlocks:
+PewterPokecenterBlocks:
+CeruleanPokecenterBlocks:
+VermilionPokecenterBlocks:
+SaffronPokecenterBlocks:
+LavenderPokecenterBlocks:
+CeladonPokecenterBlocks:
+FuchsiaPokecenterBlocks:
+CinnabarPokecenterBlocks:
+MtMoonPokecenterBlocks:
+RockTunnelPokecenterBlocks:
+INCBIN "maps/viridianpokecenter.blk"
+	dr $440fb,$4410b
 
 INCLUDE "scripts/lavendertown.asm"
-	; dr $440df,$44169
 
 INCLUDE "engine/pokedex_rating.asm"
 
-	dr $44251,$443b7
+INCLUDE "data/mapHeaders/viridianpokecenter.asm"
+INCLUDE "scripts/viridianpokecenter.asm"
+INCLUDE "data/mapObjects/viridianpokecenter.asm"
+	dr $442b7,$443b7
 Mansion1Script_Switches:
 	dr $443b7,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)

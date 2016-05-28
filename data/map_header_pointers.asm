@@ -40,8 +40,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RedsHouse1F_h
 	dw RedsHouse2F_h
 	dw BluesHouse_h
-	dw $4386 ; dw OaksLab_h ;id=40
-	dw $4251 ; dw ViridianPokecenter_h
+	dw OaksLab_h ;id=40
+	dw ViridianPokecenter_h
 	dw $4c6e ; dw ViridianMart_h
 	dw $4d6d ; dw School_h
 	dw $4dc6 ; dw ViridianHouse_h
