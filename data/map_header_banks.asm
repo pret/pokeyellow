@@ -37,9 +37,9 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(Route23_h) ; ROUTE_23
 	db BANK(Route24_h) ; ROUTE_24
 	db BANK(Route25_h) ; ROUTE_25
-	db $12 ; db BANK(RedsHouse1F_h)
-	db $17 ; db BANK(RedsHouse2F_h)
-	db $06 ; db BANK(BluesHouse_h)
+	db BANK(RedsHouse1F_h)
+	db BANK(RedsHouse2F_h)
+	db BANK(BluesHouse_h)
 	db $07 ; db BANK(OaksLab_h)
 	db $11 ; db BANK(ViridianPokecenter_h)
 	db $07 ; db BANK(ViridianMart_h)

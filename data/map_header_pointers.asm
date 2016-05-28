@@ -37,9 +37,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Route23_h
 	dw Route24_h
 	dw Route25_h
-	dw $40f6 ; dw RedsHouse1F_h
-	dw $40a4 ; dw RedsHouse2F_h
-	dw $5c2f ; dw BluesHouse_h
+	dw RedsHouse1F_h
+	dw RedsHouse2F_h
+	dw BluesHouse_h
 	dw $4386 ; dw OaksLab_h ;id=40
 	dw $4251 ; dw ViridianPokecenter_h
 	dw $4c6e ; dw ViridianMart_h

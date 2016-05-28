@@ -75,7 +75,7 @@ const_value = 0
 	const HS_POKEMONTOWER_7_ROCKET_2      ; 42 X
 	const HS_POKEMONTOWER_7_ROCKET_3      ; 43
 
-const_value SET $43 ; something above was deleted, idk what yet
+const_value SET $43 ; replace the tower rockets with jessie/james
 	const HS_POKEMONTOWER_7_MR_FUJI       ; 43
 	const HS_LAVENDER_HOUSE_1_MR_FUJI     ; 44
 	const HS_CELADON_MANSION_5_GIFT       ; 45

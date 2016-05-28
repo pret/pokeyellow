@@ -267,7 +267,13 @@ INCLUDE "scripts/ceruleancity.asm"
 INCLUDE "scripts/vermilioncity.asm"
 INCLUDE "scripts/celadoncity.asm"
 INCLUDE "scripts/fuchsiacity.asm"
-	dr $19c2f,$1a4ea
+
+INCLUDE "data/mapHeaders/blueshouse.asm"
+INCLUDE "scripts/blueshouse.asm"
+INCLUDE "data/mapObjects/blueshouse.asm"
+BluesHouseBlocks:
+INCBIN "maps/blueshouse.blk"
+	dr $19d05,$1a4ea
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
