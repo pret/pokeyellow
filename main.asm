@@ -976,7 +976,14 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 
 SECTION "bank17",ROMX,BANK[$17]
 
-	dr $5c000,$5da70
+	dr $5c000,$5c010
+RedsHouse2FBlocks:
+INCBIN "maps/redshouse2f.blk"
+	dr $5c020,$5c0a4
+INCLUDE "data/mapHeaders/redshouse2f.asm"
+INCLUDE "scripts/redshouse2f.asm"
+INCLUDE "data/mapObjects/redshouse2f.asm"
+	dr $5c0d4,$5da70
 
 INCLUDE "engine/evolution.asm"
 
