@@ -290,17 +290,186 @@ OaksLabRLE_PlayerWalksToOak:
 
 
 OaksLabScript11:
-	dr $1c5b8,$1c5ce
+	ld a, [wSimulatedJoypadStatesIndex]
+	and a
+	ret nz
+	ld a, $12
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	xor a
+	ld [wJoyIgnore], a
+
+	ld a, $c
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript12:
-	dr $1c5ce,$1c61a
+	ld a, [wYCoord]
+	cp $6
+	ret nz
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	xor a
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	ld c, BANK(Music_MeetRival)
+	ld a, MUSIC_MEET_RIVAL
+	call PlayMusic
+	ld a, $b
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	ld a, $1
+	ld [hNPCPlayerRelativePosPerspective], a
+	ld a, $1
+	swap a
+	ld [hNPCPlayerYDistance], a
+	predef CalcPositionOfPlayerRelativeToNPC
+	ld a, [hNPCPlayerYDistance]
+	dec a
+	ld [hNPCPlayerYDistance], a
+	predef FindPathToPlayer
+	ld de, wNPCMovementDirections2
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	call MoveSprite
+	ld a, $d
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript13:
-	dr $1c61a,$1c651
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+	ld a, $1
+	ld [wSpriteIndex], a
+	call GetSpritePosition1
+	ld a, OPP_SONY1
+	ld [wCurOpponent], a
+	ld a, $1
+	ld [wTrainerNo], a
+	ld hl, OaksLabRivalDefeatedText
+	ld de, OaksLabRivalBeatYouText
+	call SaveEndBattleTextPointers
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	xor a
+	ld [wJoyIgnore], a
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
+	ld a, $e
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript14:
-	dr $1c651,$1c692
+	ld a, $ff
+	ld [wJoyIgnore], a
+
+	; If you beat your rival here, his Eevee will evolve into
+	; Jolteon if you beat him on Route 22, or Flareon if you
+	; skip or lose that battle.
+	; Otherwise, it will evolve into Vaporeon.
+	ld a, [wBattleResult]
+	and a
+	ld b, $3
+	jr nz, .asm_1c660
+	ld b, $2
+.asm_1c660
+	ld a, b
+	ld [W_RIVALSTARTER], a
+
+	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
+	call UpdateSprites
+	ld a, $1
+	ld [wSpriteIndex], a
+	call SetSpritePosition1
+	ld a, $2
+	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	xor a
+	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	predef HealParty
+	ld hl, wd74b
+	set 3, [hl]
+	ld a, $f
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript15:
-	dr $1c692,$1c6ce
+	ld c, 20
+	call DelayFrames
+	ld a, $c
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	callba Music_RivalAlternateStart
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	ld de, .OaksLabMovement_RivalWalksOut1
+	call MoveSprite
+	ld a, [wXCoord]
+	cp $4
+	jr nz, .asm_1c6bb
+	ld a, NPC_MOVEMENT_RIGHT
+	jr .asm_1c6bd
+
+.asm_1c6bb
+	ld a, NPC_MOVEMENT_LEFT
+.asm_1c6bd
+	ld [wNPCMovementDirections], a
+	ld a, $10
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
+.OaksLabMovement_RivalWalksOut1
+	db $e0
+	db $00
+	db $04
+	db $04
+	db $04
+	db $04
+	db $04
+	db $ff
+
 OaksLabScript16:
-	dr $1c6ce,$1c70b
+	ld a, [wd730]
+	bit 0, a
+	jr nz, .asm_1c6ed
+	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld a, HS_OAKS_LAB_RIVAL
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	call PlayDefaultMusic
+	ld a, $11
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
+.asm_1c6ed
+	ld a, [wNPCNumScriptedSteps]
+	cp 5
+	jr nz, .asm_1c703
+	ld a, [wXCoord]
+	cp 4
+	jr nz, .asm_1c6ff
+	ld a, SPRITE_FACING_RIGHT
+	jr .asm_1c707
+
+.asm_1c6ff
+	ld a, SPRITE_FACING_LEFT
+	jr .asm_1c707
+
+.asm_1c703
+	cp 4
+	ret nz
+	xor a
+.asm_1c707
+	ld [wSpriteStateData1 + 9], a
+	ret
+
 OaksLabScript17:
 	dr $1c70b,$1c72d
 OaksLabScript18:
@@ -317,4 +486,10 @@ OaksLabScript_1d076:
 	dr $1c904,$1c910
 
 OaksLabTextPointers: ; 1d082 (7:5082)
-	dr $1c910,$1cc22
+	dr $1c910,$1cbae
+
+OaksLabRivalDefeatedText:
+	dr $1cbae,$1cbb3
+
+OaksLabRivalBeatYouText:
+	dr $1cbb3,$1cc22
