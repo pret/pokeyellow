@@ -471,22 +471,248 @@ OaksLabScript16:
 	ret
 
 OaksLabScript17:
-	dr $1c70b,$1c72d
+; Pikachu comes out
+	ld a, SPRITE_FACING_UP
+	ld [wSpriteStateData1 + 9], a
+	ld a, $2
+	ld [wd431], a
+	callba Func_fc4fa
+	call Func_1525
+	ld a, $1a
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	ld a, $12
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript18:
-	dr $1c72d,$1c73e
+	ld a, $1b
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	xor a
+	ld [wJoyIgnore], a
+	ld a, $16
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript19:
-	dr $1c73e,$1c7a4
+	xor a
+	ld [hJoyHeld], a
+	call EnableAutoTextBoxDrawing
+	call StopAllMusic
+	callba Music_RivalAlternateStart
+	ld a, $13
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	callab Func_f1be0
+	call OaksLabScript_1c8b9
+	ld a, HS_OAKS_LAB_RIVAL
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, [wNPCMovementDirections2Index]
+	ld [wSavedNPCMovementDirections2Index], a
+	ld b, 0
+	ld c, a
+	ld hl, wNPCMovementDirections2
+	ld a, NPC_MOVEMENT_UP
+	call FillMemory
+	ld [hl], $ff
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	ld de, wNPCMovementDirections2
+	call MoveSprite
+	ld a, $14
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
+OaksLabScript_1c78e:
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	ld a, SPRITE_FACING_UP
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	ld a, $6
+	ld [hSpriteIndexOrTextID], a
+	xor a
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	ret
+
 OaksLabScript20:
-	dr $1c7a4,$1c866
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+	call EnableAutoTextBoxDrawing
+	call PlayDefaultMusic
+	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	call OaksLabScript_1c78e
+	ld a, $14
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	call DelayFrame
+	call OaksLabScript_1c78e
+	ld a, $15
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	call DelayFrame
+	call OaksLabScript_1c78e
+	ld a, $16
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	call DelayFrame
+	ld a, $17
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	call Delay3
+	ld a, HS_POKEDEX_1
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	ld a, HS_POKEDEX_2
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	call OaksLabScript_1c78e
+	ld a, $18
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	ld a, SPRITE_FACING_RIGHT
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	call Delay3
+	ld a, $19
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	SetEvent EVENT_GOT_POKEDEX
+	ld a, $1
+	ld [W_VIRIDIANCITYCURSCRIPT], a
+	SetEvent EVENT_OAK_GOT_PARCEL
+	ld a, HS_LYING_OLD_MAN
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	ld a, HS_OLD_MAN
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, [wSavedNPCMovementDirections2Index]
+	ld b, 0
+	ld c, a
+	ld hl, wNPCMovementDirections2
+	xor a
+	call FillMemory
+	ld [hl], $ff
+	call StopAllMusic
+	callba Music_RivalAlternateStart
+	ld a, $1
+	ld [hSpriteIndexOrTextID], a
+	ld de, wNPCMovementDirections2 
+	call MoveSprite
+	ld a, $15
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript21:
-	dr $1c866,$1c896
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+	call PlayDefaultMusic
+	ld a, HS_OAKS_LAB_RIVAL
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	SetEvent EVENT_1ST_ROUTE22_RIVAL_BATTLE
+	ResetEventReuseHL EVENT_2ND_ROUTE22_RIVAL_BATTLE
+	SetEventReuseHL EVENT_ROUTE22_RIVAL_WANTS_BATTLE
+	ld a, HS_ROUTE_22_RIVAL_1
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	xor a
+	ld [wJoyIgnore], a
+	ld a, $16
+	ld [W_OAKSLABCURSCRIPT], a
+	ret
+
 OaksLabScript22:
-	dr $1c896,$1c904
+	ret
+
+OaksLabScript_1c897:
+	ld hl, wBagItems
+	ld bc, 0
+.asm_1c89d
+	ld a, [hli]
+	cp $ff
+	ret z
+	cp OAKS_PARCEL
+	jr z, .asm_1c8a9
+	inc hl
+	inc c
+	jr .asm_1c89d
+
+.asm_1c8a9
+	ld hl, wNumBagItems
+	ld a, c
+	ld [wWhichPokemon], a
+	ld a, 1
+	ld [wItemQuantity], a
+	call RemoveItemFromInventory
+	ret
+
+OaksLabScript_1c8b9:
+	ld a, $7c
+	ld [$ffeb], a
+	ld a, $8
+	ld [$ffee], a
+	ld a, [wYCoord]
+	cp 3
+	jr nz, .asm_1c8d3
+	ld a, $4
+	ld [wNPCMovementDirections2Index], a
+	ld a, $30
+	ld b, $b
+	jr .asm_1c8f6
+
+.asm_1c8d3
+	cp $1
+	jr nz, .asm_1c8e2
+	ld a, $2
+	ld [wNPCMovementDirections2Index], a
+	ld a, $30
+	ld b, $9
+	jr .asm_1c8f6
+
+.asm_1c8e2
+	ld a, $3
+	ld [wNPCMovementDirections2Index], a
+	ld b, $a
+	ld a, [wXCoord]
+	cp $4
+	jr nz, .asm_1c8f4
+	ld a, $40
+	jr .asm_1c8f6
+
+.asm_1c8f4
+	ld a, $20
+.asm_1c8f6
+	ld [$ffec], a
+	ld a, b
+	ld [$ffed], a
+	ld a, $1
+	ld [wSpriteIndex], a
+	call SetSpritePosition1
+	ret
+
 OaksLabScript_1d076:
-	dr $1c904,$1c910
+	ld hl, OaksLabText_1c946
+	ld a, l
+	ld [wMapTextPtr], a
+	ld a, h
+	ld [wMapTextPtr + 1], a
+	ret
 
 OaksLabTextPointers: ; 1d082 (7:5082)
-	dr $1c910,$1cbae
+	dr $1c910,$1c946
+
+OaksLabText_1c946:
+	dr $1c946,$1cbae
 
 OaksLabRivalDefeatedText:
 	dr $1cbae,$1cbb3
