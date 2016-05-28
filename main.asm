@@ -289,15 +289,22 @@ INCLUDE "data/mapHeaders/route1.asm"
 INCLUDE "data/mapObjects/route1.asm"
 Route1Blocks: ; 1c0fc
 INCBIN "maps/route1.blk"
-	dr $1c1b0,$1c21e ; headers, objects, blocks
+	dr $1c1b0,$1c1c0 ; headers, objects, blocks
+OaksLabBlocks:
+INCBIN "maps/oakslab.blk"
+	dr $1c1de,$1c21e ; headers, objects, blocks
 
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
 
 INCLUDE "scripts/cinnabarisland.asm"
-	; dr $1c2c2,$1c358 ; map scripts
 INCLUDE "scripts/route1.asm"
-	dr $1c386,$1e2ae ; map scripts
+
+INCLUDE "data/mapHeaders/oakslab.asm"
+INCLUDE "scripts/oakslab.asm"
+INCLUDE "data/mapObjects/oakslab.asm"
+
+	dr $1cc6e,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 

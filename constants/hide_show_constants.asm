@@ -53,27 +53,29 @@ const_value = 0
 	const HS_STARTER_BALL_1               ; 2C
 	const HS_STARTER_BALL_2               ; 2D
 	const HS_STARTER_BALL_3               ; 2E
-	const HS_OAKS_LAB_OAK_1               ; 2F
-	const HS_POKEDEX_1                    ; 30
-	const HS_POKEDEX_2                    ; 31
-	const HS_OAKS_LAB_OAK_2               ; 32
-	const HS_VIRIDIAN_GYM_GIOVANNI        ; 33 X
-	const HS_VIRIDIAN_GYM_ITEM            ; 34
-	const HS_OLD_AMBER                    ; 35 X
-	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 36 X
-	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 37 X
-	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 38
-	const HS_POKEMONTOWER_2_RIVAL         ; 39 X
-	const HS_POKEMONTOWER_3_ITEM          ; 3A X
-	const HS_POKEMONTOWER_4_ITEM_1        ; 3B X
-	const HS_POKEMONTOWER_4_ITEM_2        ; 3C X
-	const HS_POKEMONTOWER_4_ITEM_3        ; 3D X
-	const HS_POKEMONTOWER_5_ITEM          ; 3E X
-	const HS_POKEMONTOWER_6_ITEM_1        ; 3F X
-	const HS_POKEMONTOWER_6_ITEM_2        ; 40 X
-	const HS_POKEMONTOWER_7_ROCKET_1      ; 41 X
-	const HS_POKEMONTOWER_7_ROCKET_2      ; 42 X
-	const HS_POKEMONTOWER_7_ROCKET_3      ; 43
+
+const_value SET $2D
+	const HS_OAKS_LAB_OAK_1               ; 2D
+	const HS_POKEDEX_1                    ; 2E
+	const HS_POKEDEX_2                    ; 2F
+	const HS_OAKS_LAB_OAK_2               ; 30
+	const HS_VIRIDIAN_GYM_GIOVANNI        ; 31
+	const HS_VIRIDIAN_GYM_ITEM            ; 32
+	const HS_OLD_AMBER                    ; 33 X
+	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 34
+	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 35 X
+	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 36 X
+	const HS_POKEMONTOWER_2_RIVAL         ; 37 X
+	const HS_POKEMONTOWER_3_ITEM          ; 38
+	const HS_POKEMONTOWER_4_ITEM_1        ; 39 X
+	const HS_POKEMONTOWER_4_ITEM_2        ; 3A X
+	const HS_POKEMONTOWER_4_ITEM_3        ; 3B X
+	const HS_POKEMONTOWER_5_ITEM          ; 3C X
+	const HS_POKEMONTOWER_6_ITEM_1        ; 3D X
+	const HS_POKEMONTOWER_6_ITEM_2        ; 3E X
+	const HS_POKEMONTOWER_7_ROCKET_1      ; 3F X
+	const HS_POKEMONTOWER_7_ROCKET_2      ; 40 X
+	const HS_POKEMONTOWER_7_ROCKET_3      ; 41 X
 
 const_value SET $43 ; replace the tower rockets with jessie/james
 	const HS_POKEMONTOWER_7_MR_FUJI       ; 43
