@@ -3,9 +3,9 @@ Route8Object: ; 0x5814f (size=119)
 
 	db $5 ; warps
 	db $9, $1, $0, ROUTE_8_GATE
-	db $a, $1, $1, ROUTE_8_GATE
+	db $a, $1, $0, ROUTE_8_GATE
 	db $9, $8, $2, ROUTE_8_GATE
-	db $a, $8, $3, ROUTE_8_GATE
+	db $a, $8, $2, ROUTE_8_GATE
 	db $3, $d, $0, PATH_ENTRANCE_ROUTE_8
 
 	db $1 ; signs
