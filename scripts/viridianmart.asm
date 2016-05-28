@@ -3,7 +3,8 @@ ViridianMartScript: ; 1d46e (7:546e)
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianMartScriptPointers
 	ld a, [W_VIRIDIANMARKETCURSCRIPT]
-	jp JumpTable
+	call JumpTable
+	ret
 
 ViridianMartScript_1d47d: ; 1d47d (7:547d)
 	CheckEvent EVENT_OAK_GOT_PARCEL
@@ -57,8 +58,19 @@ ViridianMartScript1: ; 1d4c0 (7:54c0)
 	SetEvent EVENT_GOT_OAKS_PARCEL
 	ld a, $2
 	ld [W_VIRIDIANMARKETCURSCRIPT], a
-	; fallthrough
+	ret
+
 ViridianMartScript2: ; 1d4df (7:54df)
+	CheckEventHL EVENT_02D
+	ret z
+	CheckAndSetEventReuseHL EVENT_02C
+	ret nz
+	ld a, HS_OLD_MAN
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	ld a, HS_OLD_MAN_1
+	ld [wMissableObjectIndex], a
+	predef ShowObject
 	ret
 
 ViridianMartTextPointers: ; 1d4e0 (7:54e0)

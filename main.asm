@@ -304,7 +304,20 @@ INCLUDE "data/mapHeaders/oakslab.asm"
 INCLUDE "scripts/oakslab.asm"
 INCLUDE "data/mapObjects/oakslab.asm"
 
-	dr $1cc6e,$1e2ae ; map scripts
+INCLUDE "data/mapHeaders/viridianmart.asm"
+INCLUDE "scripts/viridianmart.asm"
+INCLUDE "data/mapObjects/viridianmart.asm"
+ViridianMartBlocks:
+PewterMartBlocks:
+CeruleanMartBlocks:
+VermilionMartBlocks:
+LavenderMartBlocks:
+CeladonMartBlocks:
+SaffronMartBlocks:
+FuchsiaMartBlocks:
+CinnabarMartBlocks:
+INCBIN "maps/viridianmart.blk"
+	dr $1cd6d,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
