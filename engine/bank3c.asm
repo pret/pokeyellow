@@ -360,7 +360,72 @@ INCBIN "maps/beach_house.blk"
 INCLUDE "data/mapObjects/beach_house.asm"
 
 Func_f23d0: ; f23d0
-	dr $f23d0, $f24ae
+	call SaveScreenTilesToBuffer2
+	xor a
+	ld [wUpdateSpritesEnabled], a
+	ld hl, wd730
+	set 6, [hl]
+	callab Func_e8c5c
+	ld hl, wd730
+	res 6, [hl]
+	call GBPalWhiteOutWithDelay3
+	call ReloadTilesetTilePatterns
+	call RestoreScreenTilesAndReloadTilePatterns
+	call LoadScreenTilesFromBuffer2
+	call Delay3
+	call GBPalNormal
+	ld hl, Text_f2412
+	ld a, [hOaksAideResult]
+	and a
+	jr nz, .asm_f2406
+	ld hl, Text_f240c
+.asm_f2406
+	call PrintText
+	jp TextScriptEnd
+
+Text_f240c:
+	TX_FAR _BeachHousePrinterText5
+	TX_SFX_ITEM2
+	db "@"
+
+Text_f2412:
+	TX_FAR _BeachHousePrinterText6
+	TX_SFX_ITEM2
+	db "@"
+
+Func_f2418:
+	ld hl, BillsHouseText_f243b
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .asm_f2433
+.asm_f2427
+	ld hl, BillsHouseText_f2440
+	call PrintText
+	ld a, $2
+	ld [W_BILLSHOUSECURSCRIPT], a
+	ret
+
+.asm_f2433
+	ld hl, BillsHouseText_f2445
+	call PrintText
+	jr .asm_f2427
+
+BillsHouseText_f243b:
+	TX_FAR _BillsHouseText_1e865
+	db "@"
+
+BillsHouseText_f2440:
+	TX_FAR _BillsHouseText_1e86a
+	db "@"
+
+BillsHouseText_f2445:
+	TX_FAR _BillsHouseText_1e86f
+	db "@"
+
+Func_f244a:
+	dr $f244a, $f24ae
 Func_f24ae: ; f24ae
 	dr $f24ae, $f2528
 
