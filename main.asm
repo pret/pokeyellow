@@ -909,7 +909,15 @@ INCLUDE "scripts/route24.asm"
 INCLUDE "scripts/route25.asm"
 
 ; victoryroad2
-	dr $517cc,$52060
+	dr $517cc,$51a78
+
+INCLUDE "data/mapHeaders/mtmoon2.asm"
+INCLUDE "scripts/mtmoon2.asm"
+INCLUDE "data/mapObjects/mtmoon2.asm"
+MtMoon2Blocks:
+INCBIN "maps/mtmoon2.blk"
+
+	dr $51b97,$52060
 Mansion2Script_Switches:
 	dr $52060,$522a3
 Mansion3Script_Switches:

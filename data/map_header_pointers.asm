@@ -60,7 +60,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw PewterHouse2_h
 	dw PewterPokecenter_h
 	dw MtMoon1_h
-	dw $5a78 ; dw MtMoon2_h ;id=60
+	dw MtMoon2_h ;id=60
 	dw $5c7e ; dw MtMoon3_h
 	dw $4ec3 ; dw CeruleanHouseTrashed_h
 	dw $4f34 ; dw CeruleanHouse1_h
