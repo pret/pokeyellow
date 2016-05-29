@@ -289,14 +289,19 @@ INCLUDE "data/mapHeaders/route1.asm"
 INCLUDE "data/mapObjects/route1.asm"
 Route1Blocks: ; 1c0fc
 INCBIN "maps/route1.blk"
-	dr $1c1b0,$1c1c0 ; headers, objects, blocks
+UndergroundPathEntranceRoute8Blocks:
+INCBIN "maps/undergroundpathentranceroute8.blk"
 OaksLabBlocks:
 INCBIN "maps/oakslab.blk"
 ViridianHouseBlocks:
+Route2HouseBlocks:
 INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 INCBIN "maps/school.blk"
-	dr $1c1fe,$1c21e ; headers, objects, blocks
+CeruleanHouseTrashedBlocks:
+INCBIN "maps/ceruleanhousetrashed.blk"
+DiglettsCaveRoute2Blocks:
+INCBIN "maps/diglettscaveroute2.blk"
 
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
@@ -329,7 +334,16 @@ INCLUDE "data/mapObjects/school.asm"
 INCLUDE "data/mapHeaders/viridianhouse.asm"
 INCLUDE "scripts/viridianhouse.asm"
 INCLUDE "data/mapObjects/viridianhouse.asm"
-	dr $1ce30,$1e2ae ; map scripts
+	dr $1ce30,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
+INCLUDE "scripts/diglettscaveroute2.asm"
+INCLUDE "data/mapObjects/diglettscaveroute2.asm"
+
+INCLUDE "data/mapHeaders/route2house.asm"
+INCLUDE "scripts/route2house.asm"
+INCLUDE "data/mapObjects/route2house.asm"
+	dr $1d831,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
@@ -1031,11 +1045,30 @@ SECTION "bank17",ROMX,BANK[$17]
 	dr $5c000,$5c010
 RedsHouse2FBlocks:
 INCBIN "maps/redshouse2f.blk"
-	dr $5c020,$5c0a4
+	dr $5c020,$5c090
+ViridianForestEntranceBlocks:
+ViridianForestExitBlocks:
+Route2GateBlocks:
+INCBIN "maps/viridianforestentrance.blk"
+
 INCLUDE "data/mapHeaders/redshouse2f.asm"
 INCLUDE "scripts/redshouse2f.asm"
 INCLUDE "data/mapObjects/redshouse2f.asm"
-	dr $5c0d4,$5da70
+	dr $5c0d4,$5d485
+
+INCLUDE "data/mapHeaders/viridianforestexit.asm"
+INCLUDE "scripts/viridianforestexit.asm"
+INCLUDE "data/mapObjects/viridianforestexit.asm"
+
+INCLUDE "data/mapHeaders/route2gate.asm"
+INCLUDE "scripts/route2gate.asm"
+INCLUDE "data/mapObjects/route2gate.asm"
+
+INCLUDE "data/mapHeaders/viridianforestentrance.asm"
+INCLUDE "scripts/viridianforestentrance.asm"
+INCLUDE "data/mapObjects/viridianforestentrance.asm"
+
+	dr $5d5a8,$5da70
 
 INCLUDE "engine/evolution.asm"
 
