@@ -425,7 +425,59 @@ BillsHouseText_f2445:
 	db "@"
 
 Func_f244a:
-	dr $f244a, $f24ae
+	CheckEvent EVENT_GOT_SS_TICKET
+	jr nz, .asm_f247e
+	ld hl, BillsHouseText_f248c
+	call PrintText
+	lb bc, S_S_TICKET, 1
+	call GiveItem
+	jr nc, .asm_f2485
+	ld hl, BillsHouseText_f2491
+	call PrintText
+	SetEvent EVENT_GOT_SS_TICKET
+	ld a, HS_CERULEAN_GUARD_1
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, HS_CERULEAN_GUARD_2
+	ld [wMissableObjectIndex], a
+	predef HideObject
+.asm_f247e
+	ld hl, BillsHouseText_f249d
+	call PrintText
+	ret
+
+.asm_f2485
+	ld hl, BillsHouseText_f2498
+	call PrintText
+	ret
+
+BillsHouseText_f248c:
+	TX_FAR _BillThankYouText
+	db "@"
+
+BillsHouseText_f2491:
+	TX_FAR _SSTicketReceivedText
+	TX_SFX_KEY_ITEM
+	TX_BUTTON_SOUND
+	db "@"
+
+BillsHouseText_f2498:
+	TX_FAR _SSTicketNoRoomText
+	db "@"
+
+BillsHouseText_f249d:
+	TX_FAR _BillsHouseText_1e8cb
+	db "@"
+
+Func_f24a2:
+	ld hl, BillsHouseText_f24a9
+	call PrintText
+	ret
+
+BillsHouseText_f24a9:
+	TX_FAR _BillsHouseText_1e8da
+	db "@"
+
 Func_f24ae: ; f24ae
 	dr $f24ae, $f2528
 
