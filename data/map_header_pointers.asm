@@ -45,7 +45,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw ViridianMart_h
 	dw School_h
 	dw ViridianHouse_h
-	dw $40d4 ; dw ViridianGym_h
+	dw ViridianGym_h
 	dw $57ae ; dw DiglettsCaveRoute2_h
 	dw $5485 ; dw ViridianForestExit_h
 	dw $57eb ; dw Route2House_h

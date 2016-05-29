@@ -1096,7 +1096,13 @@ SECTION "bank1D",ROMX,BANK[$1D]
 
 INCLUDE "engine/items/itemfinder.asm"
 INCLUDE "scripts/ceruleancity2.asm"
-	dr $740d4,$74726
+
+INCLUDE "data/mapHeaders/viridiangym.asm"
+INCLUDE "scripts/viridiangym.asm"
+INCLUDE "data/mapObjects/viridiangym.asm"
+ViridianGymBlocks:
+INCBIN "maps/viridiangym.blk"
+	dr $744de,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
