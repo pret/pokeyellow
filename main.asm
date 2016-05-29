@@ -1047,7 +1047,9 @@ RedsHouse2FBlocks:
 INCBIN "maps/redshouse2f.blk"
 Museum1FBlocks:
 INCBIN "maps/museum1f.blk"
-	dr $5c048,$5c090
+Museum2FBlocks:
+INCBIN "maps/museum2f.blk"
+	dr $5c064,$5c090
 ViridianForestEntranceBlocks:
 ViridianForestExitBlocks:
 Route2GateBlocks:
@@ -1061,7 +1063,17 @@ INCLUDE "data/mapObjects/redshouse2f.asm"
 INCLUDE "data/mapHeaders/museum1f.asm"
 INCLUDE "scripts/museum1f.asm"
 INCLUDE "data/mapObjects/museum1f.asm"
-	dr $5c1b4,$5d485
+
+INCLUDE "data/mapHeaders/museum2f.asm"
+INCLUDE "scripts/museum2f.asm"
+INCLUDE "data/mapObjects/museum2f.asm"
+
+INCLUDE "data/mapHeaders/pewtergym.asm"
+INCLUDE "scripts/pewtergym.asm"
+INCLUDE "data/mapObjects/pewtergym.asm"
+PewterGymBlocks:
+INCBIN "maps/pewtergym.blk"
+	dr $5c46e,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"

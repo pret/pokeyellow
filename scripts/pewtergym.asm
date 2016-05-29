@@ -14,7 +14,8 @@ PewterGymScript: ; 5c387 (17:4387)
 PewterGymScript_5c3a4: ; 5c3a4 (17:43a4)
 	ld hl, Gym1CityName
 	ld de, Gym1LeaderName
-	jp LoadGymLeaderAndCityName
+	call LoadGymLeaderAndCityName
+	ret
 
 Gym1CityName: ; 5c3ad (17:43ad)
 	db "PEWTER CITY@"
@@ -41,7 +42,6 @@ PewterGymScript3: ; 5c3d2 (17:43d2)
 	jp z, PewterGymScript_5c3bf
 	ld a, $f0
 	ld [wJoyIgnore], a
-
 PewterGymScript_5c3df: ; 5c3df (17:43df)
 	ld a, $4
 	ld [hSpriteIndexOrTextID], a
@@ -55,6 +55,7 @@ PewterGymScript_5c3df: ; 5c3df (17:43df)
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM34
 	jr .asm_5c408
+
 .BagFull
 	ld a, $6
 	ld [hSpriteIndexOrTextID], a
@@ -149,7 +150,7 @@ PewterGymText4: ; 5c4a8 (17:44a8)
 
 PewterGymText5: ; 5c4ad (17:44ad)
 	TX_FAR _ReceivedTM34Text
-	db $0B
+	TX_SFX_ITEM
 	TX_FAR _TM34ExplanationText
 	db "@"
 
@@ -159,7 +160,7 @@ PewterGymText6: ; 5c4b7 (17:44b7)
 
 PewterGymText_5c4bc: ; 5c4bc (17:44bc)
 	TX_FAR _PewterGymText_5c4bc
-	db $0B
+	TX_SFX_ITEM
 	TX_FAR _PewterGymText_5c4c1
 	db "@"
 
@@ -192,6 +193,9 @@ PewterGymText3: ; 5c4df (17:44df)
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .asm_5c4fe
+	ld a, [wd472]
+	bit 7, a
+	jp nz, .asm_5c3fa
 	ld hl, PewterGymText_5c51a
 	call PrintText
 	jr .asm_5c504
@@ -206,6 +210,11 @@ PewterGymText3: ; 5c4df (17:44df)
 	ld hl, PewterGymText_5c529
 	call PrintText
 .asm_5c512
+	jp TextScriptEnd
+
+.asm_5c3fa
+	ld hl, PewterGymText_5c41c
+	call PrintText
 	jp TextScriptEnd
 
 PewterGymText_5c515: ; 5c515 (17:4515)
@@ -227,3 +236,8 @@ PewterGymText_5c524: ; 5c524 (17:4524)
 PewterGymText_5c529: ; 5c529 (17:4529)
 	TX_FAR _PewterGymText_5c529
 	db "@"
+
+PewterGymText_5c41c:
+	TX_FAR _PewterGymGuyText
+	db "@"
+

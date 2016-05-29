@@ -53,8 +53,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw ViridianForestEntrance_h ;id=50
 	dw ViridianForest_h
 	dw Museum1F_h
-	dw $41b4 ; dw Museum2F_h
-	dw $4257 ; dw PewterGym_h
+	dw Museum2F_h
+	dw PewterGym_h
 	dw $4e30 ; dw PewterHouse1_h
 	dw $44de ; dw PewterMart_h
 	dw $4e86 ; dw PewterHouse2_h
