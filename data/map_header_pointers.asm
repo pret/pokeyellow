@@ -55,9 +55,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Museum1F_h
 	dw Museum2F_h
 	dw PewterGym_h
-	dw $4e30 ; dw PewterHouse1_h
-	dw $44de ; dw PewterMart_h
-	dw $4e86 ; dw PewterHouse2_h
+	dw PewterHouse1_h
+	dw PewterMart_h
+	dw PewterHouse2_h
 	dw $446e ; dw PewterPokecenter_h
 	dw $5953 ; dw MtMoon1_h
 	dw $5a78 ; dw MtMoon2_h ;id=60

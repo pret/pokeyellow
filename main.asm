@@ -295,6 +295,8 @@ OaksLabBlocks:
 INCBIN "maps/oakslab.blk"
 ViridianHouseBlocks:
 Route2HouseBlocks:
+PewterHouse1Blocks:
+PewterHouse2Blocks:
 INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 INCBIN "maps/school.blk"
@@ -317,7 +319,6 @@ INCLUDE "data/mapHeaders/viridianmart.asm"
 INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
-PewterMartBlocks:
 CeruleanMartBlocks:
 VermilionMartBlocks:
 LavenderMartBlocks:
@@ -334,7 +335,16 @@ INCLUDE "data/mapObjects/school.asm"
 INCLUDE "data/mapHeaders/viridianhouse.asm"
 INCLUDE "scripts/viridianhouse.asm"
 INCLUDE "data/mapObjects/viridianhouse.asm"
-	dr $1ce30,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/pewterhouse1.asm"
+INCLUDE "scripts/pewterhouse1.asm"
+INCLUDE "data/mapObjects/pewterhouse1.asm"
+
+INCLUDE "data/mapHeaders/pewterhouse2.asm"
+INCLUDE "scripts/pewterhouse2.asm"
+INCLUDE "data/mapObjects/pewterhouse2.asm"
+
+	dr $1cec3,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
@@ -1150,7 +1160,11 @@ INCLUDE "engine/save.asm"
 
 SECTION "bank1D",ROMX,BANK[$1D]
 
-	dr $74000,$7405c
+	dr $74000,$74010
+
+PewterMartBlocks:
+INCBIN "maps/pewtermart.blk"
+	dr $74020,$7405c
 
 INCLUDE "engine/items/itemfinder.asm"
 INCLUDE "scripts/ceruleancity2.asm"
@@ -1160,7 +1174,12 @@ INCLUDE "scripts/viridiangym.asm"
 INCLUDE "data/mapObjects/viridiangym.asm"
 ViridianGymBlocks:
 INCBIN "maps/viridiangym.blk"
-	dr $744de,$74726
+
+INCLUDE "data/mapHeaders/pewtermart.asm"
+INCLUDE "scripts/pewtermart.asm"
+INCLUDE "data/mapObjects/pewtermart.asm"
+
+	dr $7453d,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
