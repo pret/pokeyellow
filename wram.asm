@@ -2523,7 +2523,7 @@ wDestinationWarpID:: ; d42f
 ; if $ff, the player's coordinates are not updated when entering the map
 	ds 1
 
-wd430:: ds 1 ; d42f
+wPikachuOverworldStateFlags:: ds 1 ; d42f
 wd431:: ds 1 ; d430
 wd432:: ds 1 ; d431
 wd433:: ds 1 ; d432

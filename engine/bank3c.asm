@@ -95,12 +95,12 @@ PikachuCriesPointerTable: ; f008e (3c:408e)
 	pikacry_def PikachuCry2 ; 21:491a
 	pikacry_def PikachuCry3 ; 21:4fdc
 	pikacry_def PikachuCry4 ; 21:59ee
-	
+
 ; bank 22
 	pikacry_def PikachuCry5 ; 22:4000
 	pikacry_def PikachuCry6 ; 22:5042
 	pikacry_def PikachuCry7 ; 22:6254
-	
+
 ; bank 23
 	pikacry_def PikachuCry8 ; 23:4000
 	pikacry_def PikachuCry9 ; 23:50ca
@@ -110,11 +110,11 @@ PikachuCriesPointerTable: ; f008e (3c:408e)
 	pikacry_def PikachuCry11 ; 24:4000
 	pikacry_def PikachuCry12 ; 24:4722
 	pikacry_def PikachuCry13 ; 24:54a4
-	
+
 ; bank 25
 	pikacry_def PikachuCry14 ; 25:4000
 	pikacry_def PikachuCry15 ; 25:589a
-	
+
 ; banks 31-34, in no particular order
 
 	pikacry_def PikachuCry16 ; 31:4000
@@ -128,19 +128,19 @@ PikachuCriesPointerTable: ; f008e (3c:408e)
 	pikacry_def PikachuCry24 ; 33:5632
 	pikacry_def PikachuCry25 ; 34:573c
 	pikacry_def PikachuCry26 ; 33:725c
-	
+
 ; bank 35
 	pikacry_def PikachuCry27 ; 35:4000
 	pikacry_def PikachuCry28 ; 35:4b5a
 	pikacry_def PikachuCry29 ; 35:5da4
 	pikacry_def PikachuCry30 ; 35:69ce
 	pikacry_def PikachuCry31 ; 35:6e80
-	
+
 ; bank 36
 	pikacry_def PikachuCry32 ; 36:4000
 	pikacry_def PikachuCry33 ; 36:458a
 	pikacry_def PikachuCry34 ; 36:523c
-	
+
 ; bank 37
 	pikacry_def PikachuCry35 ; 37:4000
 	pikacry_def PikachuCry36 ; 37:522a
@@ -203,7 +203,7 @@ ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 	ld a, %11111111
 	ld [wJoyIgnore], a
 	predef_jump HealParty
-	
+
 Func_f02da:: ; f02da (3c:42da)
 	ld a, [wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
@@ -262,7 +262,7 @@ BeachHouse_Block:: ; f0914 (3c:4914)
 
 Func_f0a54:: ; f0a54 (3c:4a54)
 	ret
-	
+
 Func_f0a55:: ; f0a55 (3c:4a55)
 	ld hl, Pointer_f0a76 ; 3c:4a76
 .loop
@@ -359,130 +359,11 @@ BeachHouseBlockdata: ; f2388 (3c:6388)
 INCBIN "maps/beach_house.blk"
 INCLUDE "data/mapObjects/beach_house.asm"
 
-Func_f23d0: ; f23d0
-	call SaveScreenTilesToBuffer2
-	xor a
-	ld [wUpdateSpritesEnabled], a
-	ld hl, wd730
-	set 6, [hl]
-	callab Func_e8c5c
-	ld hl, wd730
-	res 6, [hl]
-	call GBPalWhiteOutWithDelay3
-	call ReloadTilesetTilePatterns
-	call RestoreScreenTilesAndReloadTilePatterns
-	call LoadScreenTilesFromBuffer2
-	call Delay3
-	call GBPalNormal
-	ld hl, Text_f2412
-	ld a, [hOaksAideResult]
-	and a
-	jr nz, .asm_f2406
-	ld hl, Text_f240c
-.asm_f2406
-	call PrintText
-	jp TextScriptEnd
-
-Text_f240c:
-	TX_FAR _BeachHousePrinterText5
-	TX_SFX_ITEM2
-	db "@"
-
-Text_f2412:
-	TX_FAR _BeachHousePrinterText6
-	TX_SFX_ITEM2
-	db "@"
-
-Func_f2418:
-	ld hl, BillsHouseText_f243b
-	call PrintText
-	call YesNoChoice
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .asm_f2433
-.asm_f2427
-	ld hl, BillsHouseText_f2440
-	call PrintText
-	ld a, $2
-	ld [W_BILLSHOUSECURSCRIPT], a
-	ret
-
-.asm_f2433
-	ld hl, BillsHouseText_f2445
-	call PrintText
-	jr .asm_f2427
-
-BillsHouseText_f243b:
-	TX_FAR _BillsHouseText_1e865
-	db "@"
-
-BillsHouseText_f2440:
-	TX_FAR _BillsHouseText_1e86a
-	db "@"
-
-BillsHouseText_f2445:
-	TX_FAR _BillsHouseText_1e86f
-	db "@"
-
-Func_f244a:
-	CheckEvent EVENT_GOT_SS_TICKET
-	jr nz, .asm_f247e
-	ld hl, BillsHouseText_f248c
-	call PrintText
-	lb bc, S_S_TICKET, 1
-	call GiveItem
-	jr nc, .asm_f2485
-	ld hl, BillsHouseText_f2491
-	call PrintText
-	SetEvent EVENT_GOT_SS_TICKET
-	ld a, HS_CERULEAN_GUARD_1
-	ld [wMissableObjectIndex], a
-	predef ShowObject
-	ld a, HS_CERULEAN_GUARD_2
-	ld [wMissableObjectIndex], a
-	predef HideObject
-.asm_f247e
-	ld hl, BillsHouseText_f249d
-	call PrintText
-	ret
-
-.asm_f2485
-	ld hl, BillsHouseText_f2498
-	call PrintText
-	ret
-
-BillsHouseText_f248c:
-	TX_FAR _BillThankYouText
-	db "@"
-
-BillsHouseText_f2491:
-	TX_FAR _SSTicketReceivedText
-	TX_SFX_KEY_ITEM
-	TX_BUTTON_SOUND
-	db "@"
-
-BillsHouseText_f2498:
-	TX_FAR _SSTicketNoRoomText
-	db "@"
-
-BillsHouseText_f249d:
-	TX_FAR _BillsHouseText_1e8cb
-	db "@"
-
-Func_f24a2:
-	ld hl, BillsHouseText_f24a9
-	call PrintText
-	ret
-
-BillsHouseText_f24a9:
-	TX_FAR _BillsHouseText_1e8da
-	db "@"
-
-Func_f24ae: ; f24ae
-	dr $f24ae, $f2528
-
+INCLUDE "scripts/beach_house2.asm"
+INCLUDE "scripts/billshouse2.asm"
 INCLUDE "scripts/viridianforest2.asm"
-	dr $f2564, $f25f8
+INCLUDE "scripts/ssanne9_2.asm"
+INCLUDE "scripts/silphco11_2.asm"
 
 INCLUDE "engine/overworld/hidden_objects.asm"
 
@@ -553,7 +434,7 @@ Func_f2d0c:
 	ld a, [hl]
 	ld [wSecondLockTrashCanIndex + 1], a
 	ret
-	
+
 GymTrashCans3a: ; f2d31 (3c:6d31)
 ; First byte: number of trashcan entries
 ; Following four byte pairs: indices for the second trash can.

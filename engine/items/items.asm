@@ -607,7 +607,7 @@ ItemUseSurfboard: ; d725 (3:5725)
 	call .makePlayerMoveForward
 	ld a,$3
 	ld [wd431], a
-	ld hl,wd430
+	ld hl,wPikachuOverworldStateFlags
 	set 5,[hl]
 	ld hl,wd730
 	set 7,[hl]

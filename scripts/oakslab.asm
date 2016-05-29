@@ -798,7 +798,7 @@ OaksLabText_1c9a7:
 
 OaksLabScript_1c9ac:
 	ld a, $1
-	ld [wSavedPlayerScreenY], a
+	ld [wEmotionBubbleSpriteIndex], a
 	xor a
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble

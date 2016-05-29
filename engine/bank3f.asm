@@ -4,26 +4,26 @@ INCLUDE "data/map_header_banks.asm"
 
 Func_fc4dd:: ; fc4dd (3f:44dd)
 ; possibly to test if pika should be out?
-	ld a, [wd430]
+	ld a, [wPikachuOverworldStateFlags]
 	bit 5, a
-	jr nz, .asm_fc4f8 ; 3f:44f8
-	ld a, [wd430]
+	jr nz, .hide ; 3f:44f8
+	ld a, [wPikachuOverworldStateFlags]
 	bit 7, a
-	jr nz, .asm_fc4f8
+	jr nz, .hide
 	call IsStarterPikachuInOurParty
-	jr nc, .asm_fc4f8
+	jr nc, .hide
 	ld a, [wWalkBikeSurfState]
 	and a
-	jr nz, .asm_fc4f8
+	jr nz, .hide
 	scf
 	ret
 
-.asm_fc4f8
+.hide
 	and a
 	ret
 
 Func_fc4fa:: ; fc4fa (3f:44fa)
-	ld hl, wd430
+	ld hl, wPikachuOverworldStateFlags
 	bit 4, [hl]
 	res 4, [hl]
 	jr nz, .asm_fc515
@@ -316,14 +316,14 @@ Func_fc69a:: ; fc69a (3f:469a)
 
 Func_fc6c5:: ; fc6c5 (3f:46c5)
 	push hl
-	ld hl, wd430
+	ld hl, wPikachuOverworldStateFlags
 	set 2, [hl]
 	pop hl
 	ret
 
 Func_fc6cd:: ; fc6cd (3f:46cd)
 	push hl
-	ld hl, wd430
+	ld hl, wPikachuOverworldStateFlags
 	res 2, [hl]
 	pop hl
 	ret
@@ -944,7 +944,7 @@ Func_fca7e: ; fca7e (3f:4a7e)
 	ret
 
 Func_fca99: ; fca99 (3f:4a99)
-	ld a, [wd430]
+	ld a, [wPikachuOverworldStateFlags]
 	bit 3, a
 	jr nz, .asm_fcad1
 	ld hl, $10e
@@ -1238,10 +1238,10 @@ Func_fcc08:: ; fcc08 (3f:4c08)
 	ret
 
 Func_fcc23: ; fcc23 (3f:4c28)
-	ld a, [wd430]
+	ld a, [wPikachuOverworldStateFlags]
 	bit 5, a
 	jr nz, .asm_fcc40
-	ld a, [wd430]
+	ld a, [wPikachuOverworldStateFlags]
 	bit 7, a
 	jr nz, .asm_fcc40
 	ld a, [wd472]
@@ -1288,7 +1288,7 @@ Func_fcc42: ; fcc42 (3f:4c42)
 	ret
 
 Func_fcc64: ; fcc64 (3f:4c64)
-	ld hl, wd430
+	ld hl, wPikachuOverworldStateFlags
 	bit 6, [hl]
 	jr z, .asm_fcc6e
 	res 6, [hl]

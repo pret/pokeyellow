@@ -43,3 +43,11 @@ Text_f255f:
 	TX_FAR _ViridianForestText13
 	db "@"
 
+Func_f2564:
+	ld hl, ViridianForestText_f256b
+	call PrintText
+	ret
+
+ViridianForestText_f256b:
+	TX_FAR _ViridianForestText14
+	db "@"
