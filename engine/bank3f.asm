@@ -17,10 +17,11 @@ Func_fc4dd:: ; fc4dd (3f:44dd)
 	jr nz, .asm_fc4f8
 	scf
 	ret
+
 .asm_fc4f8
 	and a
 	ret
-	
+
 Func_fc4fa:: ; fc4fa (3f:44fa)
 	ld hl, wd430
 	bit 4, [hl]
@@ -30,10 +31,10 @@ Func_fc4fa:: ; fc4fa (3f:44fa)
 	call Func_fc523
 	ld a, $ff
 	ld [wSpriteStateData1 + $f2], a
-	call Func_fcb84
+	call ClearPikachuFollowCommandBuffer
 	call Func_fc5bc
 	ret
-	
+
 .asm_fc515
 	call Func_fc53f
 	xor a
@@ -41,7 +42,7 @@ Func_fc4fa:: ; fc4fa (3f:44fa)
 	ld a, [wSpriteStateData1 + $9]
 	ld [wSpriteStateData1 + $f9], a
 	ret
-	
+
 Func_fc523:: ; fc523 (3f:4523)
 	ld hl, wSpriteStateData1 + $f0
 	call Func_fc52c
@@ -58,7 +59,7 @@ Func_fc534:: ; fc534 (3f:4534)
 	xor a
 	ld [wd431], a
 	ret
-	
+
 Func_fc53f:: ; fc53f (3f:453f)
 	ld bc, wSpriteStateData1 + $f0
 	ld a, [wYCoord]
@@ -85,12 +86,12 @@ Func_fc53f:: ; fc53f (3f:453f)
 	cp $7
 	jr z, .asm_fc572
 	jr .asm_fc59e
-	
+
 .asm_fc572
 	ld a, [wSpriteStateData1 + $9]
 	and a ; SPRITE_FACING_DOWN
 	jr z, .asm_fc5a4
-	cp SPRITE_FACING_UP 
+	cp SPRITE_FACING_UP
 	jr z, .asm_fc5a7
 	cp SPRITE_FACING_LEFT
 	jr z, .asm_fc5a1
@@ -102,28 +103,35 @@ Func_fc53f:: ; fc53f (3f:453f)
 	jr nz, .asm_fc58d
 	dec e
 	jr .asm_fc5aa
+
 .asm_fc58d
 	cp SPRITE_FACING_UP
 	jr nz, .asm_fc594
 	inc e
 	jr .asm_fc5aa
+
 .asm_fc594
 	cp SPRITE_FACING_LEFT
 	jr nz, .asm_fc59b
 	inc d
 	jr .asm_fc5aa
+
 .asm_fc59b
 	dec d
 	jr .asm_fc5aa
+
 .asm_fc59e
 	inc d
 	jr .asm_fc5aa
+
 .asm_fc5a1
 	dec d
 	jr .asm_fc5aa
+
 .asm_fc5a4
 	inc e
 	jr .asm_fc5aa
+
 .asm_fc5a7
 	dec e
 	jr .asm_fc5aa ; useless jr
@@ -141,7 +149,7 @@ Func_fc4b2:: ; fc4b2 (3f:44b2)
 	set 5, [hl]
 	pop hl
 	ret
-	
+
 Func_fc5bc:: ; fc5bc (3f:45bc)
 	ld a, $49
 	ld [wSpriteStateData1 + $f0], a
@@ -162,15 +170,17 @@ Func_fc5bc:: ; fc5bc (3f:45bc)
 	jr z, .asm_fc5f1
 	call Func_fccb2
 	ret
-	
+
 .asm_fc5e4
 	ld a, [wSpriteStateData1 + $9]
 	ld [wSpriteStateData1 + $f9], a
 	ret
+
 .asm_fc5eb
 	ld a, $0
 	ld [wSpriteStateData1 + $f9], a
 	ret
+
 .asm_fc5f1
 	ld a, [wSpriteStateData1 + $9]
 	xor $4
@@ -200,24 +210,29 @@ Func_fc5fa:: ; fc5fa (3f:45fa)
 	jr nz, .asm_fc641
 	ld a, $3
 	jr .asm_fc647
-	
+
 .asm_fc62d
 	ld a, [wSpriteStateData1 + $9]
 	and a
 	jr z, .asm_fc645
 	jr .asm_fc641
+
 .asm_fc635
 	ld a, $3
 	jr .asm_fc647
+
 .asm_fc639
 	ld a, $4
 	jr .asm_fc647
+
 .asm_fc63d
 	ld a, $6
 	jr .asm_fc647
+
 .asm_fc641
 	ld a, $1
 	jr .asm_fc647
+
 .asm_fc645
 	ld a, $3
 .asm_fc647
@@ -226,7 +241,7 @@ Func_fc5fa:: ; fc5fa (3f:45fa)
 
 Pointer_fc64b:: ; fc64b (3f:464b)
 	db $c2, $4c, $4f, $ba, $be, $b8, $54, $ff
-	
+
 Pointer_fc653:: ; fc653 (3f:4653)
 	db $2f, $e6, $3e, $5e, $80, $31, $a4, $ff
 
@@ -241,28 +256,32 @@ Func_fc65b:: ; fc65b (3f:465b)
 	call Func_1568
 	jr c, .asm_fc688
 	jr .asm_fc684
+
 .asm_fc673
 	ld a, [wSpriteStateData1 + $9]
 	cp SPRITE_FACING_UP
 	jr z, .asm_fc688
 	jr .asm_fc684
+
 .asm_fc67c
 	ld a, [wSpriteStateData1 + $9]
 	and a ; SPRITE_FACING_DOWN
 	jr z, .asm_fc684
 	jr .asm_fc688
+
 .asm_fc684
 	ld a, $0
 	jr .asm_fc68a
+
 .asm_fc688
 	ld a, $1
 .asm_fc68a
 	ld [wd431], a
 	ret
-	
+
 Pointer_fc68e:: ; fc68e (3f:468e)
 	db $33, $dd, $df, $e0, $e1, $de, $ec, $7f, $a8, $a9, $aa, $ff
-	
+
 Func_fc69a:: ; fc69a (3f:469a)
 	ld a, [wCurMap]
 	cp ROUTE_22_GATE
@@ -270,22 +289,27 @@ Func_fc69a:: ; fc69a (3f:469a)
 	cp ROUTE_2_GATE
 	jr z, .asm_fc6b0
 	jr .asm_fc6bd
+
 .asm_fc6a7
 	ld a, [wSpriteStateData1 + $9]
 	cp SPRITE_FACING_UP
 	jr z, .asm_fc6b9
 	jr .asm_fc6bd
+
 .asm_fc6b0
 	ld a, [wSpriteStateData1 + $9]
 	cp SPRITE_FACING_UP
 	jr z, .asm_fc6b9
 	jr .asm_fc6bd
+
 .asm_fc6b9
 	ld a, $1
 	jr .asm_fc6c1
+
 .asm_fc6bd
 	ld a, $3
 	jr .asm_fc6c1
+
 .asm_fc6c1
 	ld [wd431], a
 	ret
@@ -337,7 +361,7 @@ Func_fc6d5:: ; fc6d5 (3f:46d5)
 	ld h, [hl]
 	ld l, a
 	jp hl
-	
+
 PointerTable_fc710: ; fc710 (3f:4710)
 	dw Func_fc793
 	dw Func_fc7aa
@@ -350,7 +374,7 @@ PointerTable_fc710: ; fc710 (3f:4710)
 	dw asm_fc937
 	dw asm_fc969
 	dw Func_fc726
-	
+
 Func_fc726: ; fc726 (3f:4726)
 	ret
 
@@ -368,6 +392,7 @@ Func_fc727: ; fc727 (3f:4727)
 .asm_fc739
 	scf
 	ret
+
 .asm_fc73b
 	ld hl, wSpriteStateData1 + $f2
 	ld [hl], $ff
@@ -375,6 +400,7 @@ Func_fc727: ; fc727 (3f:4727)
 	ld [hl], $0
 	xor a
 	ret
+
 asm_fc745: ; fc745 (3f:4745)
 	ld hl, $1
 	add hl, bc
@@ -397,6 +423,7 @@ asm_fc745: ; fc745 (3f:4745)
 	ld [hl], a
 	call Func_fca99
 	ret
+
 asm_fc76a: ; fc76a (3f:476a)
 	xor a
 	ld hl, $7
@@ -485,7 +512,7 @@ Pointer_fc7e3: ; fc7e3 (3f:47e3)
 	db $0, $4
 	db $c, $1
 	db $0, $4
-	
+
 Func_fc803: ; fc803 (3f:4803)
 	call Func_fcae2
 	ret c
@@ -528,7 +555,7 @@ Func_fc835: ; fc835 (3f:4835)
 	add hl, bc
 	ld [hl], $1
 	ret
-	
+
 Func_fc842: ; fc842 (3f:4842)
 	ld hl, $0
 	push af
@@ -545,13 +572,13 @@ Func_fc842: ; fc842 (3f:4842)
 	ld l, a
 	pop af
 	jp hl
-	
+
 PointerTable_fc85a: ; fc85a (3f:485a)
 	dw Func_fc862
 	dw Func_fc8f8
 	dw Func_fc92b
 	dw Func_fc95d
-	
+
 Func_fc862: ; fc862 (3f:4862)
 	dec a
 	add a
@@ -616,7 +643,7 @@ asm_fc87f: ; fc87f (3f:487f)
 	dec [hl]
 	ret nz
 	jp Func_fc835
-	
+
 Func_fc8c7: ; fc8c7 (3f:48c7)
 	ld hl, $4
 	add hl, bc
@@ -638,7 +665,7 @@ Pointer_fc8d6: ; fc8d6 (3f:48d6)
 	db $fc, $fe, $fe, $fd, $0
 	db $fc, $fe, $fd, $fc, $fe
 	db $fe, $ff, $00, $00
-	
+
 Func_fc8f8: ; fc8f8 (3f:48f8)
 	ld hl, $1
 	add hl, bc
@@ -670,7 +697,7 @@ asm_fc904: ; fc904 (3f:4904)
 	dec [hl]
 	ret nz
 	jp Func_fc835
-	
+
 Func_fc92b: ; fc92b (3f:492b)
 	ld hl, wSpriteStateData2 - wSpriteStateData1
 	add hl, bc
@@ -701,7 +728,7 @@ asm_fc937: ; fc937 (3f:4937)
 	dec [hl]
 	ret nz
 	jp Func_fc835
-	
+
 Func_fc95d: ; fc95d (3f:495d)
 	ld hl, wSpriteStateData2 - wSpriteStateData1
 	add hl, bc
@@ -734,7 +761,7 @@ asm_fc969: ; fc969 (3f:4969)
 	dec [hl]
 	ret nz
 	jp Func_fc835
-	
+
 Func_fc994: ; fc994 (3f:4994)
 	push hl
 	ld hl, Pointer_fc9ac
@@ -746,7 +773,7 @@ Func_fc994: ; fc994 (3f:4994)
 	ld a, [hl]
 	pop hl
 	ret
-	
+
 Func_fc9a0: ; fc9a0 (3f:49a0)
 	push hl
 	ld hl, Pointer_fc9ac_End
@@ -758,7 +785,7 @@ Func_fc9a0: ; fc9a0 (3f:49a0)
 	ld a, [hl]
 	pop hl
 	ret
-	
+
 Pointer_fc9ac: ; fc9ac (3f:49ac)
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
@@ -785,7 +812,7 @@ asm_fc9c3: ; fc9c3 (3f:49c3)
 	add hl, bc
 	ld [hl], $1
 	ret
-	
+
 Func_fc9df: ; fc9df (3f:49df)
 	ld hl, wSpriteStateData2 - wSpriteStateData1
 	add hl, bc
@@ -808,7 +835,7 @@ asm_fc9ee: ; fc9ee (3f:49ee)
 	add hl, bc
 	ld [hl], $1
 	ret
-	
+
 Func_fca0a: ; fca0a (3f:4a0a)
 	ld hl, wSpriteStateData2 - wSpriteStateData1
 	add hl, bc
@@ -832,7 +859,7 @@ asm_fca1c: ; fca1c (3f:4a1c)
 	add hl, bc
 	ld [hl], $1
 	ret
-	
+
 Func_fca38: ; fca38 (3f:4a38)
 	ld hl, $3
 	add hl, bc
@@ -849,7 +876,7 @@ Func_fca38: ; fca38 (3f:4a38)
 	add d
 	ld [hl], a
 	ret
-	
+
 Func_fca4b: ; fca4b (3f:4a4b)
 	ld a, [wWalkBikeSurfState]
 	cp $1
@@ -871,7 +898,7 @@ asm_fca59: ; fca59 (3f:4a59)
 	add [hl]
 	ld [hl], a
 	ret
-	
+
 Func_fca68: ; fca68 (3f:4a68)
 	ld hl, $3
 	add hl, bc
@@ -884,7 +911,7 @@ Func_fca68: ; fca68 (3f:4a68)
 	add [hl]
 	ld [hli], a
 	ret
-	
+
 Func_fca75: ; fca75 (3f:4a75)
 	ld hl, $3
 	add hl, bc
@@ -893,7 +920,7 @@ Func_fca75: ; fca75 (3f:4a75)
 	inc hl
 	ld [hl], a
 	ret
-	
+
 Func_fca7e: ; fca7e (3f:4a7e)
 	call Func_fcdad
 	ld d, $2
@@ -915,7 +942,7 @@ Func_fca7e: ; fca7e (3f:4a7e)
 	and $3
 	ld [hl], a
 	ret
-	
+
 Func_fca99: ; fca99 (3f:4a99)
 	ld a, [wd430]
 	bit 3, a
@@ -940,6 +967,7 @@ Func_fca99: ; fca99 (3f:4a99)
 	call Func_fcae2
 	ret c
 	jr .asm_fcacb
+
 .asm_fcac4
 	ld hl, $8
 	add hl, bc
@@ -951,18 +979,20 @@ Func_fca99: ; fca99 (3f:4a99)
 	add hl, bc
 	ld [hl], d
 	ret
+
 .asm_fcad1
 	ld hl, $2
 	add hl, bc
 	ld [hl], $ff
 	ret
+
 .asm_fcad8
 	ld a, [wSpriteStateData1 + $2]
 	and $f
 	or d
 	ld [wSpriteStateData1 + $f2], a
 	ret
-	
+
 Func_fcae2: ; fcae2 (3f:4ae2)
 	ld hl, $104
 	add hl, bc
@@ -980,6 +1010,7 @@ Func_fcae2: ; fcae2 (3f:4ae2)
 	ld [hl], $ff
 	scf
 	ret
+
 .asm_fcaff
 	and a
 	ret
@@ -1006,6 +1037,7 @@ Func_fcb01: ; fcb01 (3f:4b01)
 	cp $1
 	jr z, .asm_fcb26
 	jr .asm_fcb48
+
 .asm_fcb26
 	ld hl, $105
 	add hl, bc
@@ -1013,6 +1045,7 @@ Func_fcb01: ; fcb01 (3f:4b01)
 	sub d
 	jr z, .asm_fcb43
 	jr .asm_fcb48
+
 .asm_fcb30
 	ld hl, $105
 	add hl, bc
@@ -1025,12 +1058,14 @@ Func_fcb01: ; fcb01 (3f:4b01)
 	and a
 	jr z, .asm_fcb43
 	jr .asm_fcb48
+
 .asm_fcb43
 	pop hl
 	pop de
 	pop bc
 	scf
 	ret
+
 .asm_fcb48
 	pop hl
 	pop de
@@ -1038,12 +1073,12 @@ Func_fcb01: ; fcb01 (3f:4b01)
 	xor a
 	ret
 
-Func_fcb4d: ; fcb4d (3f:4b4d)
-	call Func_fcb52
+GetPikachuFacingDirectionAndReturnToE: ; fcb4d (3f:4b4d)
+	call GetPikachuFacingDirection
 	ld e, a
 	ret
-	
-Func_fcb52: ; fcb52 (3f:4b52)
+
+GetPikachuFacingDirection: ; fcb52 (3f:4b52)
 	ld bc, wSpriteStateData1 + $f0
 	ld a, [wXCoord]
 	add $4
@@ -1055,7 +1090,7 @@ Func_fcb52: ; fcb52 (3f:4b52)
 	add hl, bc
 	ld a, [hl]
 	cp e
-	jr z, Func_fcb71
+	jr z, .asm_fcb71
 	jr nc, .asm_fcb6e
 	ld a, SPRITE_FACING_UP
 	ret
@@ -1063,8 +1098,8 @@ Func_fcb52: ; fcb52 (3f:4b52)
 .asm_fcb6e
 	ld a, SPRITE_FACING_DOWN
 	ret
-	
-Func_fcb71: ; fcb71 (3f:4b71)
+
+.asm_fcb71
 	ld hl, wSpriteStateData2 - wSpriteStateData1 + 5
 	add hl, bc
 	ld a, [hl]
@@ -1082,9 +1117,9 @@ Func_fcb71: ; fcb71 (3f:4b71)
 	ld a, $ff ; standing
 	ret
 
-Func_fcb84: ; fcb84 (3f:4b84)
+ClearPikachuFollowCommandBuffer: ; fcb84 (3f:4b84)
 	push bc
-	ld hl, wd437
+	ld hl, wPikachuFollowCommandBufferSize
 	ld [hl], $ff
 	inc hl
 	ld bc, $10
@@ -1092,91 +1127,99 @@ Func_fcb84: ; fcb84 (3f:4b84)
 	call FillMemory
 	pop bc
 	ret
-	
-Func_fcb94: ; fcb94 (3f:4b94)
-	ld hl, wd437
+
+AppendPikachuFollowCommandToBuffer: ; fcb94 (3f:4b94)
+	ld hl, wPikachuFollowCommandBufferSize
 	inc [hl]
 	ld e, [hl]
 	ld d, 0
-	ld hl, wd438
+	ld hl, wPikachuFollowCommandBuffer
 	add hl, de
 	ld [hl], a
 	ret
-	
+
 Func_fcba1: ; fcba1 (3f:4ba1)
-	call Func_fcb84
-	call Func_fcbac
+	call ClearPikachuFollowCommandBuffer
+	call GetPikachuFollowCommand
 	ret c
-	call Func_fcb94
+	call AppendPikachuFollowCommandToBuffer
 	ret
-	
-Func_fcbac: ; fcbac (3f:4bac)
+
+GetPikachuFollowCommand: ; fcbac (3f:4bac)
 	ld bc, wSpriteStateData1 + $f0
-	ld hl, $104
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
 	add hl, bc
 	ld a, [wYCoord]
 	add $4
 	sub [hl]
-	jr z, .asm_fcbd7
-	jr c, .asm_fcbca
-	call Func_fcc01
-	jr c, .asm_fcbc6
+	jr z, .checkXCoord
+	jr c, .pikaAbovePlayer
+	call CheckAbsoluteValueLessThan2
+	jr c, .return1
 	ld a, $5
 	and a
 	ret
-.asm_fcbc6
+
+.return1
 	ld a, $1
 	and a
 	ret
-.asm_fcbca
-	call Func_fcc01
-	jr c, .asm_fcbd3
+
+.pikaAbovePlayer
+	call CheckAbsoluteValueLessThan2
+	jr c, .return2
 	ld a, $6
 	and a
 	ret
-.asm_fcbd3
+
+.return2
 	ld a, $2
 	and a
 	ret
-.asm_fcbd7
-	ld hl, $105
+
+.checkXCoord
+	ld hl, wSpriteStateData2 - wSpriteStateData1 + 5
 	add hl, bc
 	ld a, [wXCoord]
 	add $4
 	sub [hl]
-	jr z, .asm_fcbff
-	jr c, .asm_fcbf2
-	call Func_fcc01
-	jr c, .asm_fcbee
+	jr z, .pikachuOnTopOfPlayer
+	jr c, .pikaToLeftOfPlayer
+	call CheckAbsoluteValueLessThan2
+	jr c, .return4
 	ld a, $8
 	and a
 	ret
-.asm_fcbee
+
+.return4
 	ld a, $4
 	and a
 	ret
-.asm_fcbf2
-	call Func_fcc01
-	jr c, .asm_fcbfb
+
+.pikaToLeftOfPlayer
+	call CheckAbsoluteValueLessThan2
+	jr c, .return3
 	ld a, $7
 	and a
 	ret
-.asm_fcbfb
+
+.return3
 	ld a, $3
 	and a
 	ret
-.asm_fcbff
+
+.pikachuOnTopOfPlayer
 	scf
 	ret
-	
-Func_fcc01: ; fcc01 (3f:4c01)
-	jr nc, .asm_fcc05
+
+CheckAbsoluteValueLessThan2: ; fcc01 (3f:4c01)
+	jr nc, .positive
 	cpl
 	inc a
-.asm_fcc05
+.positive
 	cp $2
 	ret
-	
+
 Func_fcc08:: ; fcc08 (3f:4c08)
 	call Func_fcc23
 	ret nc
@@ -1185,14 +1228,15 @@ Func_fcc08:: ; fcc08 (3f:4c08)
 	jr nz, .asm_fcc1b
 	call Func_fcc42
 	ret c
-	call Func_fcb94
+	call AppendPikachuFollowCommandToBuffer
 	ret
+
 .asm_fcc1b
 	call Func_fcc64
 	ret c
-	call Func_fcb94
+	call AppendPikachuFollowCommandToBuffer
 	ret
-	
+
 Func_fcc23: ; fcc23 (3f:4c28)
 	ld a, [wd430]
 	bit 5, a
@@ -1208,10 +1252,11 @@ Func_fcc23: ; fcc23 (3f:4c28)
 	jr nz, .asm_fcc40
 	scf
 	ret
+
 .asm_fcc40
 	and a
 	ret
-	
+
 Func_fcc42: ; fcc42 (3f:4c42)
 	xor a
 	ld a, [wPlayerDirection]
@@ -1225,25 +1270,30 @@ Func_fcc42: ; fcc42 (3f:4c42)
 	jr nz, .asm_fcc61
 	scf
 	ret
+
 .asm_fcc58
 	ld a, $2
 	ret
+
 .asm_fcc5b
 	ld a, $1
 	ret
+
 .asm_fcc5e
 	ld a, $3
 	ret
+
 .asm_fcc61
 	ld a, $4
 	ret
-	
+
 Func_fcc64: ; fcc64 (3f:4c64)
 	ld hl, wd430
 	bit 6, [hl]
 	jr z, .asm_fcc6e
 	res 6, [hl]
 	ret
+
 .asm_fcc6e
 	set 6, [hl]
 	xor a
@@ -1258,21 +1308,25 @@ Func_fcc64: ; fcc64 (3f:4c64)
 	jr nz, .asm_fcc8f
 	scf
 	ret
+
 .asm_fcc86
 	ld a, $6
 	ret
+
 .asm_fcc89
 	ld a, $5
 	ret
+
 .asm_fcc8c
 	ld a, $7
 	ret
+
 .asm_fcc8f
 	ld a, $8
 	ret
 
 Func_fcc92: ; fcc92 (3f:4c92)
-	ld hl, wd437
+	ld hl, wPikachuFollowCommandBufferSize
 	ld a, [hl]
 	cp $ff
 	jr z, .asm_fccb0
@@ -1281,7 +1335,7 @@ Func_fcc92: ; fcc92 (3f:4c92)
 	dec [hl]
 	ld e, a
 	ld d, 0
-	ld hl, wd438
+	ld hl, wPikachuFollowCommandBuffer
 	add hl, de
 	inc e
 	ld a, $ff
@@ -1293,6 +1347,7 @@ Func_fcc92: ; fcc92 (3f:4c92)
 	jr nz, .asm_fcca8
 	and a
 	ret
+
 .asm_fccb0
 	scf
 	ret
@@ -1306,6 +1361,7 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	add a
 	add a
 	jr .asm_fccea
+
 .asm_fccbf
 	ld a, [wYCoord]
 	add $4
@@ -1320,6 +1376,7 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	jr c, .asm_fccea
 	ld a, SPRITE_FACING_UP
 	jr .asm_fccea
+
 .asm_fccd9
 	ld a, [wSpriteStateData2 + $f5]
 	cp e
@@ -1328,29 +1385,31 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	jr c, .asm_fccea
 	ld a, SPRITE_FACING_LEFT
 	jr .asm_fccea
+
 .asm_fcce7
 	ld a, [wSpriteStateData1 + $9]
 .asm_fccea
 	ld [wSpriteStateData1 + $f9], a
 	ret
-	
+
 Func_fccee: ; fccee (3f:4cee)
-	ld hl, wd437
+	ld hl, wPikachuFollowCommandBufferSize
 	ld a, [hl]
 	cp $ff
 	jr z, .asm_fccff
 	ld e, a
 	ld d, 0
-	ld hl, wd438
+	ld hl, wPikachuFollowCommandBuffer
 	add hl, de
 	ld a, [hl]
 	ret
+
 .asm_fccff
 	xor a
 	ret
-	
+
 Func_fcd01: ; fcd01 (3f:4d01)
-	ld hl, wd437
+	ld hl, wPikachuFollowCommandBufferSize
 	ld a, [hl]
 	cp $ff
 	jr z, .asm_fcd15
@@ -1358,26 +1417,28 @@ Func_fcd01: ; fcd01 (3f:4d01)
 	jr z, .asm_fcd15
 	ld e, a
 	ld d, 0
-	ld hl, wd438
+	ld hl, wPikachuFollowCommandBuffer
 	add hl, de
 	ld a, [hl]
 	ret
+
 .asm_fcd15
 	xor a
 	ret
-	
+
 Func_fcd17: ; fcd17 (3f:4d17)
-	ld a, [wd437]
+	ld a, [wPikachuFollowCommandBufferSize]
 	cp $ff
 	ret z
 	cp $2
 	jr nc, .asm_fcd23
 	and a
 	ret
+
 .asm_fcd23
 	scf
 	ret
-	
+
 Func_fcd25: ; fcd25 (3f:4d25)
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -1427,6 +1488,7 @@ Func_fcd25: ; fcd25 (3f:4d25)
 	ld [hl], $ff
 	scf
 	jr .asm_fcd82
+
 .asm_fcd6f
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -1442,7 +1504,7 @@ Func_fcd25: ; fcd25 (3f:4d25)
 	and a
 .asm_fcd82
 	ret
-	
+
 Func_fcd83: ; fcd83 (3f:4d83)
 	ld h, wSpriteStateData1 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -1469,7 +1531,7 @@ Func_fcd83: ; fcd83 (3f:4d83)
 	endr
 	add hl, de
 	ret
-	
+
 Func_fcdad: ; fcdad (3f:4dad)
 	push bc
 	push af
@@ -1526,6 +1588,7 @@ IsStarterPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	ld b, h
 	ld c, l
 	jr .loop
+
 .sameOT
 	pop bc
 	pop de
@@ -1539,6 +1602,7 @@ IsStarterPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	pop hl
 	scf
 	ret
+
 .noPlayerPikachu
 	pop hl
 	and a
@@ -1588,10 +1652,11 @@ asm_fce21: ; fce21 (3f:4e21)
 .notPlayerPikachu
 	and a
 	ret
+
 .isPlayerPikachu
 	scf
 	ret
-	
+
 Func_fce5a:: ; fce5a (3f:4e5a)
 	push de
 	call IsStarterPikachuInOurParty
@@ -1604,6 +1669,7 @@ Func_fce5a:: ; fce5a (3f:4e5a)
 	cp d
 	jr c, .asm_fce6e
 	ret
+
 .asm_fce6c
 	cp d
 	ret c
@@ -1639,14 +1705,17 @@ Func_fce73:: ; fce73 (3f:4e73)
 	and a
 	jr nz, .asm_fcea7
 	jr .asm_fcea9
+
 .asm_fce9e
 	ld a, [wWhichPokemon]
 	inc a
 	ld [wWhichPokemon], a
 	jr .loop
+
 .asm_fcea7
 	scf
 	ret
+
 .asm_fcea9
 	and a
 	ret
@@ -1678,6 +1747,7 @@ IsSurfingPikachuInThePlayersParty:: ; fceab (3f:4eab)
 	pop bc
 	pop hl
 	jr .curMonNotSurfingPlayerPikachu
+
 .foundSurfingPikachu
 	pop bc
 	pop hl
@@ -1716,17 +1786,19 @@ IsSurfingPikachuInThePlayersParty:: ; fceab (3f:4eab)
 	ld b, h
 	ld c, l
 	jr .loop
+
 .foundSurfingPlayerPikachu
 	pop bc
 	pop de
 	pop hl
 	scf
 	ret
+
 .noSurfingPlayerPikachu
 	pop hl
 	and a
 	ret
-	
+
 INCLUDE "engine/pikachu_pic_animation.asm"
 
 Func_fe66e:

@@ -1077,8 +1077,14 @@ INCLUDE "engine/evolution.asm"
 INCLUDE "engine/hidden_object_functions17.asm"
 
 SECTION "bank18",ROMX,BANK[$18]
+ViridianForestBlocks:
+INCBIN "maps/viridianforest.blk"
+	dr $60198,$610ed
 
-	dr $60000,$625e8
+INCLUDE "data/mapHeaders/viridianforest.asm"
+INCLUDE "scripts/viridianforest.asm"
+INCLUDE "data/mapObjects/viridianforest.asm"
+	dr $612a4,$625e8
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]

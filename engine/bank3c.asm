@@ -302,7 +302,7 @@ Func_f0a82: ; f0a82
 	ret nz
 	push hl
 	push bc
-	callab Func_fcb4d ; get Pikachu's position with respect to you?
+	callab GetPikachuFacingDirectionAndReturnToE
 	pop bc
 	pop hl
 	ld a, b
@@ -349,12 +349,9 @@ INCLUDE "scripts/celadoncity2.asm"
 INCLUDE "scripts/route1_2.asm"
 INCLUDE "scripts/route22_2.asm"
 INCLUDE "scripts/redshouse1f2.asm"
-Func_f1be0:
-	dr $f1be0, $f1c03
-Func_f1c03:
-	dr $f1c03, $f1c0f
-Func_f1c0f:
-	dr $f1c0f, $f220e
+INCLUDE "scripts/oakslab2.asm"
+INCLUDE "scripts/school2.asm"
+	dr $f1c1b, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
@@ -365,7 +362,10 @@ INCLUDE "data/mapObjects/beach_house.asm"
 Func_f23d0: ; f23d0
 	dr $f23d0, $f24ae
 Func_f24ae: ; f24ae
-	dr $f24ae, $f25f8
+	dr $f24ae, $f2528
+
+INCLUDE "scripts/viridianforest2.asm"
+	dr $f2564, $f25f8
 
 INCLUDE "engine/overworld/hidden_objects.asm"
 

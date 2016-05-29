@@ -2530,10 +2530,8 @@ wd433:: ds 1 ; d432
 wd434:: ds 1
 wd435:: ds 1
 wd436:: ds 1
-wd437:: ds 1
-wd438:: ds 1
-
-	ds 15
+wPikachuFollowCommandBufferSize:: ds 1
+wPikachuFollowCommandBuffer:: ds 16
 
 wExpressionNumber:: ; d447
 	ds 1
