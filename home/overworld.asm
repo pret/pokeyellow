@@ -1222,7 +1222,7 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 ; if no sprite collision
 	cp $f
 	jr nz,.collision
-	call Func_154a
+	call CheckPikachuAsleep
 	jr nz,.collision
 	ld a,[hJoyHeld]
 	and $2

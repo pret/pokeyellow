@@ -960,6 +960,8 @@ wPlayerSpinWhileMovingUpOrDownAnimMaxY:: ; cd3e
 wHiddenObjectFunctionRomBank:: ; cd3e
 
 wTrainerEngageDistance:: ; cd3e
+
+wJigglypuffFacingDirections2:: ; cd3e
 	ds 1
 
 wHUDGraphicsTiles:: ; cd3f
@@ -1040,6 +1042,8 @@ wHoFTeamNo:: ; cd42
 wSlotMachineWheel1MiddleTile:: ; cd42
 
 wFieldMovesLeftmostXCoord:: ; cd42
+
+wcd42:: ; cd42
 	ds 1
 
 wLastFieldMoveID:: ; cd43

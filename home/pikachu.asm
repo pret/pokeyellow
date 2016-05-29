@@ -30,21 +30,21 @@ Func_152d:: ; 152d (0:152d)
 	pop hl
 	ret
 	
-Func_153a:: ; 153a (0:153a)
+SetPikachuAsleep:: ; 153a (0:153a)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 1, [hl]
 	pop hl
 	ret
 
-Func_1542:: ; 1542 (0:1542)
+ResetPikachuAsleep:: ; 1542 (0:1542)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	res 1, [hl]
 	pop hl
 	ret
 	
-Func_154a:: ; 154a (0:154a)
+CheckPikachuAsleep:: ; 154a (0:154a)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	bit 1, [hl]

@@ -53,7 +53,7 @@ RedrawPartyMenu_: ; 11886 (4:5886)
 	ld [wWhichPokemon],a
 	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .regularMon
-	call Func_154a
+	call CheckPikachuAsleep
 	jr z, .regularMon
 	ld a, $ff
 	ld [hPartyMonIndex], a

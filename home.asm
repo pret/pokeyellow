@@ -477,7 +477,7 @@ HandlePartyMenuInput:: ; 1226 (0:1226)
 	ld [wWhichPokemon], a
 	callab IsThisPartymonStarterPikachu_Party ; 3f:4e18
 	jr nc, .asm_1258
-	call Func_154a
+	call CheckPikachuAsleep
 	jr nz, .asm_128f
 .asm_1258
 	pop af

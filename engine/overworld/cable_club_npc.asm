@@ -1,7 +1,7 @@
 CableClubNPC: ; 7035 (1:7035)
 	ld hl, CableClubNPCWelcomeText
 	call PrintText
-	call Func_154a
+	call CheckPikachuAsleep
 	jr nz, .asm_7048
 	CheckEvent EVENT_GOT_POKEDEX
 	jp nz, .receivedPokedex
