@@ -292,7 +292,8 @@ INCBIN "maps/route1.blk"
 	dr $1c1b0,$1c1c0 ; headers, objects, blocks
 OaksLabBlocks:
 INCBIN "maps/oakslab.blk"
-	dr $1c1de,$1c1ee ; headers, objects, blocks
+ViridianHouseBlocks:
+INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 INCBIN "maps/school.blk"
 	dr $1c1fe,$1c21e ; headers, objects, blocks
@@ -325,7 +326,10 @@ INCLUDE "data/mapHeaders/school.asm"
 INCLUDE "scripts/school.asm"
 INCLUDE "data/mapObjects/school.asm"
 
-	dr $1cdc6,$1e2ae ; map scripts
+INCLUDE "data/mapHeaders/viridianhouse.asm"
+INCLUDE "scripts/viridianhouse.asm"
+INCLUDE "data/mapObjects/viridianhouse.asm"
+	dr $1ce30,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
