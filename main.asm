@@ -786,7 +786,14 @@ INCLUDE "scripts/redshouse1f.asm"
 INCLUDE "data/mapObjects/redshouse1f.asm"
 RedsHouse1FBlocks:
 INCBIN "maps/redshouse1f.blk"
-	dr $48157,$4a540
+	dr $48157,$49953
+
+INCLUDE "data/mapHeaders/mtmoon1.asm"
+INCLUDE "scripts/mtmoon1.asm"
+INCLUDE "data/mapObjects/mtmoon1.asm"
+MtMoon1Blocks:
+INCBIN "maps/mtmoon1.blk"
+	dr $49c7e,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]

@@ -97,42 +97,37 @@ MtMoon1TrainerHeader7: ; 49a45 (12:5a45)
 MtMoon1Text1: ; 49a52 (12:5a52)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader0
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text2: ; 49a5c (12:5a5c)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader2
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text3: ; 49a66 (12:5a66)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader3
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text4: ; 49a70 (12:5a70)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader4
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text5: ; 49a7a (12:5a7a)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader5
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text6: ; 49a84 (12:5a84)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader6
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon1TalkToTrainer
 
 MtMoon1Text7: ; 49a8e (12:5a8e)
 	TX_ASM
 	ld hl, MtMoon1TrainerHeader7
+MtMoon1TalkToTrainer:
 	call TalkToTrainer
 	jp TextScriptEnd
 
