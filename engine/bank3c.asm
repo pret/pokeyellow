@@ -351,7 +351,8 @@ INCLUDE "scripts/route22_2.asm"
 INCLUDE "scripts/redshouse1f2.asm"
 INCLUDE "scripts/oakslab2.asm"
 INCLUDE "scripts/school2.asm"
-	dr $f1c1b, $f220e
+INCLUDE "scripts/museum1f2.asm"
+	dr $f1d98, $f220e
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
