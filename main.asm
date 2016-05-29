@@ -1045,7 +1045,9 @@ SECTION "bank17",ROMX,BANK[$17]
 	dr $5c000,$5c010
 RedsHouse2FBlocks:
 INCBIN "maps/redshouse2f.blk"
-	dr $5c020,$5c090
+Museum1FBlocks:
+INCBIN "maps/museum1f.blk"
+	dr $5c048,$5c090
 ViridianForestEntranceBlocks:
 ViridianForestExitBlocks:
 Route2GateBlocks:
@@ -1054,7 +1056,12 @@ INCBIN "maps/viridianforestentrance.blk"
 INCLUDE "data/mapHeaders/redshouse2f.asm"
 INCLUDE "scripts/redshouse2f.asm"
 INCLUDE "data/mapObjects/redshouse2f.asm"
-	dr $5c0d4,$5d485
+	dr $5c0d4,$5c0e3
+
+INCLUDE "data/mapHeaders/museum1f.asm"
+INCLUDE "scripts/museum1f.asm"
+INCLUDE "data/mapObjects/museum1f.asm"
+	dr $5c1b4,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
