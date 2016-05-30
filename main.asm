@@ -754,7 +754,6 @@ INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks:
 INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks:
-CeruleanPokecenterBlocks:
 VermilionPokecenterBlocks:
 SaffronPokecenterBlocks:
 LavenderPokecenterBlocks:
@@ -1128,7 +1127,14 @@ INCBIN "maps/viridianforestentrance.blk"
 INCLUDE "data/mapHeaders/redshouse2f.asm"
 INCLUDE "scripts/redshouse2f.asm"
 INCLUDE "data/mapObjects/redshouse2f.asm"
-	dr $5c0d4,$5c0e3
+
+Func_5c0d4:
+	ld a, %01001011
+	ld [wPokedexOwned], a
+	predef ShowPokedexData
+	xor a
+	ld [wPokedexOwned], a
+	ret
 
 INCLUDE "data/mapHeaders/museum1f.asm"
 INCLUDE "scripts/museum1f.asm"
@@ -1148,7 +1154,13 @@ INCLUDE "data/mapHeaders/pewterpokecenter.asm"
 INCLUDE "scripts/pewterpokecenter.asm"
 INCLUDE "data/mapObjects/pewterpokecenter.asm"
 
-	dr $5c4f5,$5d485
+INCLUDE "data/mapHeaders/ceruleanpokecenter.asm"
+INCLUDE "scripts/ceruleanpokecenter.asm"
+INCLUDE "data/mapObjects/ceruleanpokecenter.asm"
+CeruleanPokecenterBlocks:
+INCBIN "maps/ceruleanpokecenter.blk"
+
+	dr $5c577,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"

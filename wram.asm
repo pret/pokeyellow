@@ -2290,7 +2290,7 @@ wPartyDataEnd::
 
 wMainDataStart::
 
-wPokedexOwned:: ; d2f7
+wPokedexOwned:: ; d2f6
 	flag_array NUM_POKEMON
 wPokedexOwnedEnd::
 

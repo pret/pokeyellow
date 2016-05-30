@@ -7,6 +7,7 @@ CeruleanPokecenterTextPointers: ; 5c64b (17:464b)
 	dw CeruleanPokecenterText2
 	dw CeruleanPokecenterText3
 	dw CeruleanPokecenterText4
+	dw CeruleanPokecenterText5
 
 CeruleanPokecenterText4: ; 5c653 (17:4653)
 	db $f6
@@ -21,3 +22,8 @@ CeruleanPokecenterText2: ; 5c655 (17:4655)
 CeruleanPokecenterText3: ; 5c65a (17:465a)
 	TX_FAR _CeruleanPokecenterText3
 	db "@"
+
+CeruleanPokecenterText5:
+	TX_ASM
+	callab Func_f0f12
+	jp TextScriptEnd
