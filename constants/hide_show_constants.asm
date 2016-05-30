@@ -114,27 +114,27 @@ const_value SET $43 ; replace the tower rockets with jessie/james
 	const HS_VIRIDIAN_FOREST_ITEM_1       ; 64 X
 	const HS_VIRIDIAN_FOREST_ITEM_2       ; 65 X
 	const HS_VIRIDIAN_FOREST_ITEM_3       ; 66 X
-	const HS_MT_MOON_1_ITEM_1             ; 67 X
-	const HS_MT_MOON_1_ITEM_2             ; 68 X
+	const HS_MT_MOON_1_ITEM_1             ; 67
+	const HS_MT_MOON_1_ITEM_2             ; 68
 	const HS_MT_MOON_1_ITEM_3             ; 69 X
 	const HS_MT_MOON_1_ITEM_4             ; 6A X
 	const HS_MT_MOON_1_ITEM_5             ; 6B X
 	const HS_MT_MOON_1_ITEM_6             ; 6C X
-	const HS_MT_MOON_3_FOSSIL_1           ; 6D
-	const HS_MT_MOON_3_FOSSIL_2           ; 6E
-	const HS_MT_MOON_3_ITEM_1             ; 6F X
-	const HS_MT_MOON_3_ITEM_2             ; 70 X
-	const HS_SS_ANNE_2_RIVAL              ; 71
-	const HS_SS_ANNE_8_ITEM               ; 72 X
-	const HS_SS_ANNE_9_ITEM_1             ; 73 X
-	const HS_SS_ANNE_9_ITEM_2             ; 74 X
-	const HS_SS_ANNE_10_ITEM_1            ; 75 X
-	const HS_SS_ANNE_10_ITEM_2            ; 76 X
-	const HS_SS_ANNE_10_ITEM_3            ; 77 X
-	const HS_VICTORY_ROAD_3_ITEM_1        ; 78 X
-	const HS_VICTORY_ROAD_3_ITEM_2        ; 79 X
-
-const_value SET $7c ; idk anymore lol
+	const HS_MT_MOON_JESSIE               ; 6D
+	const HS_MT_MOON_JAMES                ; 6E
+	const HS_MT_MOON_3_FOSSIL_1           ; 6F X
+	const HS_MT_MOON_3_FOSSIL_2           ; 70 X
+	const HS_MT_MOON_3_ITEM_1             ; 71
+	const HS_MT_MOON_3_ITEM_2             ; 72 X
+	const HS_SS_ANNE_2_RIVAL              ; 73 X
+	const HS_SS_ANNE_8_ITEM               ; 74 X
+	const HS_SS_ANNE_9_ITEM_1             ; 75 X
+	const HS_SS_ANNE_9_ITEM_2             ; 76 X
+	const HS_SS_ANNE_10_ITEM_1            ; 77 X
+	const HS_SS_ANNE_10_ITEM_2            ; 78 X
+	const HS_SS_ANNE_10_ITEM_3            ; 79 X
+	const HS_VICTORY_ROAD_3_ITEM_1        ; 7A
+	const HS_VICTORY_ROAD_3_ITEM_2        ; 7B
 	const HS_VICTORY_ROAD_3_BOULDER       ; 7C X
 	const HS_ROCKET_HIDEOUT_1_ITEM_1      ; 7D X
 	const HS_ROCKET_HIDEOUT_1_ITEM_2      ; 7E X

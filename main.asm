@@ -793,7 +793,15 @@ INCLUDE "scripts/mtmoon1.asm"
 INCLUDE "data/mapObjects/mtmoon1.asm"
 MtMoon1Blocks:
 INCBIN "maps/mtmoon1.blk"
-	dr $49c7e,$4a540
+
+INCLUDE "data/mapHeaders/mtmoon3.asm"
+INCLUDE "scripts/mtmoon3.asm"
+INCLUDE "data/mapObjects/mtmoon3.asm"
+MtMoon3Blocks:
+INCBIN "maps/mtmoon3.blk"
+
+MtMoon3Script_4a325: ; pikachu-related function?
+	dr $4a325,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]

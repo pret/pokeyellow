@@ -1,6 +1,6 @@
 MtMoon3Script: ; 49d0b (12:5d0b)
 	call EnableAutoTextBoxDrawing
-	ld hl, MtMoon3TrainerHeader0
+	ld hl, MtMoon3TrainerHeaders
 	ld de, MtMoon3ScriptPointers
 	ld a, [W_MTMOON3CURSCRIPT]
 	call ExecuteCurMapScriptInTable
@@ -37,11 +37,21 @@ CoordsData_49d37: ; 49d37 (12:5d37)
 	db $08,$0E
 	db $FF
 
-MtMoon3Script_49d58: ; 49d58 (12:5d58)
+MtMoon3Script_49cd7: ; 49d58 (12:5d58)
+	CheckAndResetEvent EVENT_57E
+	call nz, MtMoon3Script_49cec
 	xor a
 	ld [wJoyIgnore], a
+MtMoon3Script_49ce5:
 	ld [W_MTMOON3CURSCRIPT], a
 	ld [W_CURMAPSCRIPT], a
+	ret
+
+MtMoon3Script_49cec:
+	ld a, HS_MT_MOON_JESSIE
+	call MtMoon3Script_49f93
+	ld a, HS_MT_MOON_JAMES
+	call MtMoon3Script_49f93
 	ret
 
 MtMoon3ScriptPointers: ; 49d63 (12:5d63)
@@ -51,23 +61,41 @@ MtMoon3ScriptPointers: ; 49d63 (12:5d63)
 	dw MtMoon3Script3
 	dw MtMoon3Script4
 	dw MtMoon3Script5
+	dw MtMoon3Script6
+	dw MtMoon3Script7
+	dw MtMoon3Script8
+	dw MtMoon3Script9
+	dw MtMoon3Script10
+	dw MtMoon3Script11
+	dw MtMoon3Script12
+	dw MtMoon3Script13
+	dw MtMoon3Script14
+	dw MtMoon3Script15
 
 MtMoon3Script0: ; 49d6f (12:5d6f)
+	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+	call z, MtMoon3Script_49d28
+	CheckEvent EVENT_BEAT_MT_MOON_3_TRAINER_0
+	call z, MtMoon3Script_49e15
+	ret
+
+MtMoon3Script_49d28:
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
-	jp nz, MtMoon3Script_49d91
+	jp nz, .asm_49d4b
 	ld a, [wYCoord]
 	cp $8
-	jp nz, MtMoon3Script_49d91
+	jp nz, .asm_49d4b
 	ld a, [wXCoord]
 	cp $d
-	jp nz, MtMoon3Script_49d91
+	jp nz, .asm_49d4b
 	xor a
 	ld [hJoyHeld], a
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
-	jp DisplayTextID
+	call DisplayTextID
+	ret
 
-MtMoon3Script_49d91: ; 49d91 (12:5d91)
+.asm_49d4b
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
 	jp z, CheckFightingMapTrainers
 	ret
@@ -75,57 +103,93 @@ MtMoon3Script_49d91: ; 49d91 (12:5d91)
 MtMoon3Script3: ; 49d9a (12:5d9a)
 	ld a, [wIsInBattle]
 	cp $ff
-	jp z, MtMoon3Script_49d58
+	jp z, MtMoon3Script_49cd7
 	call UpdateSprites
 	call Delay3
 	SetEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $0
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	call MtMoon3Script_49ce5
 	ret
 
 MtMoon3Script4: ; 49dba (12:5dba)
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
-	ld hl, CoordsData_49dea
+	ld hl, CoordsData_49dc7
 	call ArePlayerCoordsInArray
-	jr c, .asm_49dd7
-	ld hl, CoordsData_49df1
+	jr c, .asm_49da8
+	ld hl, CoordsData_49dc0
 	call ArePlayerCoordsInArray
-	jp nc, CheckFightingMapTrainers
-	ld de, MovementData_49df9
-	jr .asm_49dda
-.asm_49dd7
-	ld de, MovementData_49df8
-.asm_49dda
+	jr c, .asm_49db0
+	ld hl, CoordsData_49dd5
+	call ArePlayerCoordsInArray
+	jr c, .asm_49d9b
+	ld hl, CoordsData_49dce
+	call ArePlayerCoordsInArray
+	jr c, .asm_49da3
+	jp CheckFightingMapTrainers
+
+.asm_49d9b
+	ld b, SPRITE_FACING_LEFT
+	ld hl, PikachuMovementData_49dd8
+	call MtMoon3Script_4a325
+.asm_49da3
+	ld de, MovementData_49ddd
+	jr .asm_49db3
+
+.asm_49da8
+	ld b, SPRITE_FACING_RIGHT
+	ld hl, PikachuMovementData_49dca
+	call MtMoon3Script_4a325
+.asm_49db0
+	ld de, MovementData_49ddc
+.asm_49db3
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, $5
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	call MtMoon3Script_49ce5
 	ret
 
-CoordsData_49dea: ; 49dea (12:5dea)
+CoordsData_49dc0:
 	db $07,$0C
 	db $06,$0B
 	db $05,$0C
 	db $FF
 
-CoordsData_49df1: ; 49df1 (12:5df1)
+CoordsData_49dc7:
+	db $07,$0C
+	db $FF
+
+PikachuMovementData_49dca:
+	db $00
+	db $35
+	db $33
+	db $3f
+
+CoordsData_49dce:
 	db $07,$0D
 	db $06,$0E
 	db $05,$0E
 	db $FF
 
-MovementData_49df8: ; 49df8 (12:5df8)
-	db NPC_MOVEMENT_RIGHT
+CoordsData_49dd5:
+	db $07,$0D
+	db $FF
 
-MovementData_49df9: ; 49df9 (12:5df9)
-	db NPC_MOVEMENT_UP,$FF
+PikachuMovementData_49dd8:
+	db $00
+	db $35
+	db $34
+	db $3f
+
+MovementData_49ddc: ; 49df8 (12:5df8)
+	db NPC_MOVEMENT_RIGHT
+MovementData_49ddd: ; 49df9 (12:5df9)
+	db NPC_MOVEMENT_UP
+	db $FF
 
 MtMoon3Script5: ; 49dfb (12:5dfb)
 	ld a, [wd730]
@@ -135,23 +199,213 @@ MtMoon3Script5: ; 49dfb (12:5dfb)
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld a, $a
+	ld a, $b
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	CheckEvent EVENT_GOT_DOME_FOSSIL
+	CheckEvent EVENT_GOT_HELIX_FOSSIL
 	jr z, .asm_49e1d
-	ld a, HS_MT_MOON_3_FOSSIL_2
+	ld a, HS_MT_MOON_3_FOSSIL_1
 	jr .asm_49e1f
 .asm_49e1d
-	ld a, HS_MT_MOON_3_FOSSIL_1
+	ld a, HS_MT_MOON_3_FOSSIL_2
 .asm_49e1f
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $0
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script_49e15:
+	ld a, [wXCoord]
+	cp $3
+	ret nz
+	ld a, [wYCoord]
+	cp $5
+	ret nz
+	call StopAllMusic
+	ld c, BANK(Music_JessieAndJames)
+	ld a, MUSIC_JESSIE_AND_JAMES
+	call PlayMusic
+	xor a
+	ld [hJoyHeld], a
+	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld a, HS_MT_MOON_JESSIE
+	call MtMoon3Script_49f84
+	ld a, HS_MT_MOON_JAMES
+	call MtMoon3Script_49f84
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld a, $c
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	xor a
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld a, $1
+	ld [wSimulatedJoypadStatesIndex], a
+	ld a, D_UP
+	ld [wSimulatedJoypadStatesEnd], a
+	call StartSimulatingJoypadStates
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, $6
+	call MtMoon3Script_49ce5
+	ret
+
+MovementData_f9e65:
+	db $06
+MovementData_f9e66:
+	db $06
+	db $06
+	db $06
+	db $06
+	db $06
+	db $FF
+
+MtMoon3Script6:
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, [wSimulatedJoypadStatesIndex]
+	and a
+	ret nz
+	call Delay3
+	ld a, $2
+	ld [H_SPRITEINDEX], a
+	ld de, MovementData_f9e65
+	call MoveSprite
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, $7
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script7:
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+MtMoon3Script8:
+	ld a, $2
+	ld [wSpriteStateData1 + 2 * $10 + 1], a
+	ld a, SPRITE_FACING_DOWN
+	ld [wSpriteStateData1 + 2 * $10 + 9], a
+MtMoon3Script9:
+	ld a, $6
+	ld [H_SPRITEINDEX], a
+	ld de, MovementData_f9e66
+	call MoveSprite
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, $a
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script10:
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, [wd730]
+	bit 0, a
+	ret nz
+MtMoon3Script11:
+	ld a, $2
+	ld [wSpriteStateData1 + 6 * $10 + 1], a
+	ld a, SPRITE_FACING_LEFT
+	ld [wSpriteStateData1 + 6 * $10 + 9], a
+	call Delay3
+	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld a, $d
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+MtMoon3Script12:
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, MtMoon3JessieJamesEndBattleText
+	ld de, MtMoon3JessieJamesEndBattleText
+	call SaveEndBattleTextPointers
+	ld a, OPP_ROCKET
+	ld [wCurOpponent], a
+	ld a, $2a
+	ld [wTrainerNo], a
+	xor a
+	ld [hJoyHeld], a
+	ld [wJoyIgnore], a
+	SetEvent EVENT_57E
+	ld a, $d
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script13:
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, MtMoon3Script_49cd7
+	ld a, $2
+	ld [wSpriteStateData1 + 2 * $10 + 1], a
+	ld [wSpriteStateData1 + 6 * $10 + 1], a
+	xor a
+	ld [wSpriteStateData1 + 2 * $10 + 9], a
+	ld [wSpriteStateData1 + 6 * $10 + 9], a
+	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld a, $e
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	xor a
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	call StopAllMusic
+	ld c, BANK(Music_JessieAndJames)
+	ld a, MUSIC_JESSIE_AND_JAMES
+	call PlayMusic
+	ld a, $ff
+	ld [wJoyIgnore], a
+	ld a, $e
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script14:
+	ld a, $ff
+	ld [wJoyIgnore], a
+	call GBFadeOutToBlack
+	ld a, HS_MT_MOON_JESSIE
+	call MtMoon3Script_49f93
+	ld a, HS_MT_MOON_JAMES
+	call MtMoon3Script_49f93
+	call UpdateSprites
+	call Delay3
+	call GBFadeInFromBlack
+	ld a, $f
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script15:
+	call PlayDefaultMusic
+	xor a
+	ld [hJoyHeld], a
+	ld [wJoyIgnore], a
+	SetEvent EVENT_BEAT_MT_MOON_3_TRAINER_0
+	ResetEventReuseHL EVENT_57E
+	ld a, $0
+	call MtMoon3Script_49ce5
+	ret
+
+MtMoon3Script_49f84:
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	call UpdateSprites
+	call Delay3
+	ret
+
+MtMoon3Script_49f93:
+	ld [wMissableObjectIndex], a
+	predef HideObject
 	ret
 
 MtMoon3TextPointers: ; 49e34 (12:5e34)
@@ -162,242 +416,258 @@ MtMoon3TextPointers: ; 49e34 (12:5e34)
 	dw MtMoon3Text5
 	dw MtMoon3Text6
 	dw MtMoon3Text7
+	dw MtMoon3Text8
 	dw PickUpItemText
 	dw PickUpItemText
-	dw MtMoon3Text_49f99
+	dw MtMoon3Text11
+	dw MtMoon3Text12
+	dw MtMoon3Text13
+	dw MtMoon3Text14
 
-MtMoon3TrainerHeaders: ; 49e48 (12:5e48)
-MtMoon3TrainerHeader0: ; 49e48 (12:5e48)
-	dbEventFlagBit EVENT_BEAT_MT_MOON_3_TRAINER_0
-	db ($4 << 4) ; trainer's view range
-	dwEventFlagAddress EVENT_BEAT_MT_MOON_3_TRAINER_0
-	dw MtMoon3BattleText2 ; TextBeforeBattle
-	dw MtMoon3AfterBattleText2 ; TextAfterBattle
-	dw MtMoon3EndBattleText2 ; TextEndBattle
-	dw MtMoon3EndBattleText2 ; TextEndBattle
-
-MtMoon3TrainerHeader2: ; 49e54 (12:5e54)
+MtMoon3TrainerHeaders:
+MtMoon3TrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_MT_MOON_3_TRAINER_2
-	db ($4 << 4) ; trainer's view range
+	db ($4 << 4)
 	dwEventFlagAddress EVENT_BEAT_MT_MOON_3_TRAINER_2
-	dw MtMoon3BattleText3 ; TextBeforeBattle
-	dw MtMoon3AfterBattleText3 ; TextAfterBattle
-	dw MtMoon3EndBattleText3 ; TextEndBattle
-	dw MtMoon3EndBattleText3 ; TextEndBattle
+	dw MtMoon3BattleText3
+	dw MtMoon3AfterBattleText3
+	dw MtMoon3EndBattleText3
+	dw MtMoon3EndBattleText3
 
-MtMoon3TrainerHeader3: ; 49e60 (12:5e60)
+MtMoon3TrainerHeader1:
 	dbEventFlagBit EVENT_BEAT_MT_MOON_3_TRAINER_3
-	db ($4 << 4) ; trainer's view range
+	db ($4 << 4)
 	dwEventFlagAddress EVENT_BEAT_MT_MOON_3_TRAINER_3
-	dw MtMoon3BattleText4 ; TextBeforeBattle
-	dw MtMoon3AfterBattleText4 ; TextAfterBattle
-	dw MtMoon3EndBattleText4 ; TextEndBattle
-	dw MtMoon3EndBattleText4 ; TextEndBattle
+	dw MtMoon3BattleText4
+	dw MtMoon3AfterBattleText4
+	dw MtMoon3EndBattleText4
+	dw MtMoon3EndBattleText4
 
-MtMoon3TrainerHeader4: ; 49e6c (12:5e6c)
+MtMoon3TrainerHeader2:
 	dbEventFlagBit EVENT_BEAT_MT_MOON_3_TRAINER_4
-	db ($4 << 4) ; trainer's view range
+	db ($4 << 4)
 	dwEventFlagAddress EVENT_BEAT_MT_MOON_3_TRAINER_4
-	dw MtMoon3BattleText5 ; TextBeforeBattle
-	dw MtMoon3AfterBattleText5 ; TextAfterBattle
-	dw MtMoon3EndBattleText5 ; TextEndBattle
-	dw MtMoon3EndBattleText5 ; TextEndBattle
+	dw MtMoon3BattleText5
+	dw MtMoon3AfterBattleText5
+	dw MtMoon3EndBattleText5
+	dw MtMoon3EndBattleText5
 
-	db $ff
+	db $FF
 
-MtMoon3Text1: ; 49e79 (12:5e79)
+MtMoon3Text2:
+MtMoon3Text6:
+	db "@"
+
+MtMoon3Text12:
+	TX_FAR _MtMoonJessieJamesText1
+	TX_ASM
+	ld c, 10
+	call DelayFrames
+	ld a, PLAYER_DIR_UP
+	ld [wPlayerMovingDirection], a
+	ld a, $0
+	ld [wEmotionBubbleSpriteIndex], a
+	ld a, $0
+	ld [wWhichEmotionBubble], a
+	predef EmotionBubble
+	ld c, 20
+	call DelayFrames
+	jp TextScriptEnd
+
+MtMoon3Text13:
+	TX_FAR _MtMoonJessieJamesText2
+	db "@"
+
+MtMoon3JessieJamesEndBattleText:
+	TX_FAR _MtMoonJessieJamesText3
+	db "@"
+
+MtMoon3Text14:
+	TX_FAR _MtMoonJessieJamesText4
+	TX_ASM
+	ld c, 64
+	call DelayFrames
+	jp TextScriptEnd
+
+MtMoon3Text1:
 	TX_ASM
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
-	jr z, .asm_49e8d
-	and $c0
-	jr nz, .asm_49eb8
-	ld hl, MtMoon3Text_49f8f
+	jr z, .asm_4a02f
+	and $81 ; CheckEitherEventSetReuseA EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+	jr nz, .asm_4a057
+	ld hl, MtMoon3Text_4a116
 	call PrintText
-	jr .asm_49ebe
-.asm_49e8d
-	ld hl, MtMoon3Text_49f85
+	jr .asm_4a05d
+
+.asm_4a02f
+	ld hl, MtMoon3Text_4a10c
 	call PrintText
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, MtMoon3Text_49f8a
-	ld de, MtMoon3Text_49f8a
+	ld hl, MtMoon3SuperNerdEndBattleText
+	ld de, MtMoon3SuperNerdEndBattleText
 	call SaveEndBattleTextPointers
 	ld a, [H_SPRITEINDEX]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $3
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
-	jr .asm_49ebe
-.asm_49eb8
-	ld hl, MtMoon3Text_49f94
+	call MtMoon3Script_49ce5
+	jr .asm_4a05d
+
+.asm_4a057
+	ld hl, MtMoon3Text_4a11b
 	call PrintText
-.asm_49ebe
+.asm_4a05d
 	jp TextScriptEnd
 
-MtMoon3Text2: ; 49ec1 (12:5ec1)
+MtMoon3Text3:
 	TX_ASM
 	ld hl, MtMoon3TrainerHeader0
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr MtMoon3TalkToTrainer
 
-MtMoon3Text3: ; 49ecb (12:5ecb)
+MtMoon3Text4:
+	TX_ASM
+	ld hl, MtMoon3TrainerHeader1
+	jr MtMoon3TalkToTrainer
+
+
+MtMoon3Text5:
 	TX_ASM
 	ld hl, MtMoon3TrainerHeader2
+MtMoon3TalkToTrainer:
 	call TalkToTrainer
 	jp TextScriptEnd
 
-MtMoon3Text4: ; 49ed5 (12:5ed5)
-	TX_ASM
-	ld hl, MtMoon3TrainerHeader3
-	call TalkToTrainer
-	jp TextScriptEnd
-
-MtMoon3Text5: ; 49edf (12:5edf)
-	TX_ASM
-	ld hl, MtMoon3TrainerHeader4
-	call TalkToTrainer
-	jp TextScriptEnd
-
-MtMoon3Text6: ; 49ee9 (12:5ee9)
+MtMoon3Text7:
 	TX_ASM
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, MtMoon3Text_49f24
+	ld hl, MtMoon3Text_4a0ae
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_49f21
+	jr nz, .asm_4a0ab
 	lb bc, DOME_FOSSIL, 1
 	call GiveItem
-	jp nc, MtMoon3Script_49f76
-	call MtMoon3Script_49f69
+	jp nc, MtMoon3Script_4a0fd
+	call MtMoon3Script_4a0f0
 	ld a, HS_MT_MOON_3_FOSSIL_1
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_GOT_DOME_FOSSIL
 	ld a, $4
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
-.asm_49f21
+	call MtMoon3Script_49ce5
+.asm_4a0ab
 	jp TextScriptEnd
 
-MtMoon3Text_49f24: ; 49f24 (12:5f24)
+MtMoon3Text_4a0ae:
 	TX_FAR _MtMoon3Text_49f24
 	db "@"
 
-MtMoon3Text7: ; 49f29 (12:5f29)
+MtMoon3Text8:
 	TX_ASM
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, MtMoon3Text_49f64
+	ld hl, MtMoon3Text_4a0eb
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_49f61
+	jr nz, .asm_4a0e8
 	lb bc, HELIX_FOSSIL, 1
 	call GiveItem
-	jp nc, MtMoon3Script_49f76
-	call MtMoon3Script_49f69
+	jp nc, MtMoon3Script_4a0fd
+	call MtMoon3Script_4a0f0
 	ld a, HS_MT_MOON_3_FOSSIL_2
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_GOT_HELIX_FOSSIL
 	ld a, $4
-	ld [W_MTMOON3CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
-.asm_49f61
+	call MtMoon3Script_49ce5
+.asm_4a0e8
 	jp TextScriptEnd
 
-MtMoon3Text_49f64: ; 49f64 (12:5f64)
+MtMoon3Text_4a0eb:
 	TX_FAR _MtMoon3Text_49f64
 	db "@"
 
-MtMoon3Script_49f69: ; 49f69 (12:5f69)
-	ld hl, MtMoon3Text_49f6f
+MtMoon3Script_4a0f0:
+	ld hl, MtMoon3Text_4a0f6
 	jp PrintText
 
-MtMoon3Text_49f6f: ; 49f6f (12:5f6f)
+MtMoon3Text_4a0f6:
 	TX_FAR _MtMoon3Text_49f6f
-	db $11, $d, "@"
+	TX_SFX_KEY_ITEM
+	TX_WAIT_BUTTON
+	db "@"
 
-MtMoon3Script_49f76: ; 49f76 (12:5f76)
-	ld hl, MtMoon3Text_49f7f
+MtMoon3Script_4a0fd:
+	ld hl, MtMoon3Text_4a106
 	call PrintText
 	jp TextScriptEnd
 
-MtMoon3Text_49f7f: ; 49f7f (12:5f7f)
+MtMoon3Text_4a106:
 	TX_FAR _MtMoon3Text_49f7f
-	db $d, "@"
+	TX_WAIT_BUTTON
+	db "@"
 
-MtMoon3Text_49f85: ; 49f85 (12:5f85)
+MtMoon3Text_4a10c:
 	TX_FAR _MtMoon3Text_49f85
 	db "@"
 
-MtMoon3Text_49f8a: ; 49f8a (12:5f8a)
+MtMoon3SuperNerdEndBattleText:
 	TX_FAR _MtMoon3Text_49f8a
 	db "@"
 
-MtMoon3Text_49f8f: ; 49f8f (12:5f8f)
+MtMoon3Text_4a116:
 	TX_FAR _MtMoon3Text_49f8f
 	db "@"
 
-MtMoon3Text_49f94: ; 49f94 (12:5f94)
+MtMoon3Text_4a11b:
 	TX_FAR _MtMoon3Text_49f94
 	db "@"
 
-MtMoon3Text_49f99: ; 49f99 (12:5f99)
+MtMoon3Text11:
 	TX_FAR _MtMoon3Text_49f99
-	db $11, "@"
-
-MtMoon3BattleText2: ; 49f9f (12:5f9f)
-	TX_FAR _MtMoon3BattleText2
+	TX_SFX_KEY_ITEM
 	db "@"
 
-MtMoon3EndBattleText2: ; 49fa4 (12:5fa4)
-	TX_FAR _MtMoon3EndBattleText2
-	db "@"
-
-MtMoon3AfterBattleText2: ; 49fa9 (12:5fa9)
-	TX_FAR _MtMoon3AfterBattleText2
-	db "@"
-
-MtMoon3BattleText3: ; 49fae (12:5fae)
+MtMoon3BattleText3:
 	TX_FAR _MtMoon3BattleText3
 	db "@"
 
-MtMoon3EndBattleText3: ; 49fb3 (12:5fb3)
+MtMoon3EndBattleText3:
 	TX_FAR _MtMoon3EndBattleText3
 	db "@"
 
-MtMoon3AfterBattleText3: ; 49fb8 (12:5fb8)
+MtMoon3AfterBattleText3:
 	TX_FAR _MtMoon3AfterBattleText3
 	db "@"
 
-MtMoon3BattleText4: ; 49fbd (12:5fbd)
+MtMoon3BattleText4:
 	TX_FAR _MtMoon3BattleText4
 	db "@"
 
-MtMoon3EndBattleText4: ; 49fc2 (12:5fc2)
+MtMoon3EndBattleText4:
 	TX_FAR _MtMoon3EndBattleText4
 	db "@"
 
-MtMoon3AfterBattleText4: ; 49fc7 (12:5fc7)
+MtMoon3AfterBattleText4:
 	TX_FAR _MtMoon3AfterBattleText4
 	db "@"
 
-MtMoon3BattleText5: ; 49fcc (12:5fcc)
+MtMoon3BattleText5:
 	TX_FAR _MtMoon3BattleText5
 	db "@"
 
-MtMoon3EndBattleText5: ; 49fd1 (12:5fd1)
+MtMoon3EndBattleText5:
 	TX_FAR _MtMoon3EndBattleText5
 	db "@"
 
-MtMoon3AfterBattleText5: ; 49fd6 (12:5fd6)
+MtMoon3AfterBattleText5:
 	TX_FAR _MtMoon3AfterBattleText5
 	db "@"
+
