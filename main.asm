@@ -289,6 +289,7 @@ INCLUDE "data/mapHeaders/route1.asm"
 INCLUDE "data/mapObjects/route1.asm"
 Route1Blocks: ; 1c0fc
 INCBIN "maps/route1.blk"
+
 UndergroundPathEntranceRoute8Blocks:
 INCBIN "maps/undergroundpathentranceroute8.blk"
 OaksLabBlocks:
@@ -304,6 +305,7 @@ INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks:
 INCBIN "maps/ceruleanhousetrashed.blk"
 DiglettsCaveRoute2Blocks:
+DiglettsCaveEntranceRoute11Blocks:
 INCBIN "maps/diglettscaveroute2.blk"
 
 INCLUDE "engine/clear_save.asm"
@@ -400,7 +402,11 @@ INCLUDE "scripts/powerplant.asm"
 INCLUDE "data/mapObjects/powerplant.asm"
 PowerPlantBlocks:
 INCBIN "maps/powerplant.blk"
-	dr $1deb8,$1e2ae ; map scripts
+
+INCLUDE "data/mapHeaders/diglettscaveroute11.asm"
+INCLUDE "scripts/diglettscaveroute11.asm"
+INCLUDE "data/mapObjects/diglettscaveroute11.asm"
+	dr $1def6,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
