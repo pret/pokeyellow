@@ -485,7 +485,9 @@ CeladonMansion1Text_f1eee:
 	TX_FAR _CeladonMansion1Text12
 	db "@"
 
-	dr $f1ef3, $f220e
+	dr $f1ef3, $f218c
+
+INCLUDE "scripts/mtmoonpokecenter2.asm"
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"

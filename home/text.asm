@@ -382,9 +382,9 @@ TextCommandProcessor:: ; 1919 (0:1919)
 	xor e
 	ld [wLetterPrintingDelayFlags], a
 	ld a, c
-	ld [wUnusedCC3A], a
+	ld [wTextDestinationTileAddrBuffer], a
 	ld a, b
-	ld [wUnusedCC3B], a
+	ld [wTextDestinationTileAddrBuffer + 1], a
 
 NextTextCommand:: ; 192e (0:192e)
 	ld a, [hli]
@@ -493,10 +493,10 @@ TextCommand02:: ; 197e (0:197e)
 TextCommand03:: ; 1990 (0:1990)
 	pop hl
 	ld a, [hli]
-	ld [wUnusedCC3A], a
+	ld [wTextDestinationTileAddrBuffer], a
 	ld c, a
 	ld a, [hli]
-	ld [wUnusedCC3B], a
+	ld [wTextDestinationTileAddrBuffer + 1], a
 	ld b, a
 	jp NextTextCommand
 

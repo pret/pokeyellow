@@ -68,7 +68,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeruleanGym_h
 	dw BikeShop_h
 	dw CeruleanMart_h
-	dw $52a9 ; dw MtMoonPokecenter_h
+	dw MtMoonPokecenter_h
 	dw CeruleanHouseTrashed_h ; copy
 	dw $5831 ; dw Route5Gate_h
 	dw $55a8 ; dw UndergroundPathEntranceRoute5_h

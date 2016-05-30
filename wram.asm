@@ -386,11 +386,7 @@ wTradeCenterPointerTableIndex:: ; cc38
 
 	ds 1
 
-wUnusedCC3A:: ; cc3a
-	ds 1
-
-wUnusedCC3B:: ; cc3b
-	ds 1
+wTextDestinationTileAddrBuffer:: dw ; cc3a
 
 wDoNotWaitForButtonPressAfterDisplayingText:: ; cc3c
 ; if non-zero, skip waiting for a button press after displaying text in DisplayTextID

@@ -153,44 +153,61 @@ bcd3: MACRO
 coins equs "bcd2"
 money equs "bcd3"
 
+validateCoords: MACRO
+	if \1 >= SCREEN_WIDTH
+		fail "x coord out of range"
+	endc
+	if \2 >= SCREEN_HEIGHT
+		fail "y coord out of range"
+	endc
+	endm
+
 ;\1 = r
 ;\2 = X
 ;\3 = Y
+;\4 = which tilemap (optional)
 coord: MACRO
+	validateCoords \2, \3
 if _NARG >= 4
-	ld \1, \4 + 20 * \3 + \2
+	ld \1, \4 + SCREEN_WIDTH * \3 + \2
 else
-	ld \1, wTileMap + 20 * \3 + \2
+	ld \1, wTileMap + SCREEN_WIDTH * \3 + \2
 endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 aCoord: MACRO
+	validateCoords \1, \2
 if _NARG >= 3
-	ld a, [\3 + 20 * \2 + \1]
+	ld a, [\3 + SCREEN_WIDTH * \2 + \1]
 else
-	ld a, [wTileMap + 20 * \2 + \1]
+	ld a, [wTileMap + SCREEN_WIDTH * \2 + \1]
 endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 Coorda: MACRO
+	validateCoords \1, \2
 if _NARG >= 3
-	ld [\3 + 20 * \2 + \1], a
+	ld [\3 + SCREEN_WIDTH * \2 + \1], a
 else
-	ld [wTileMap + 20 * \2 + \1], a
+	ld [wTileMap + SCREEN_WIDTH * \2 + \1], a
 endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 dwCoord: MACRO
+	validateCoords \1, \2
 if _NARG >= 3
-	dw \3 + 20 * \2 + \1
+	dw \3 + SCREEN_WIDTH * \2 + \1
 else
-	dw wTileMap + 20 * \2 + \1
+	dw wTileMap + SCREEN_WIDTH * \2 + \1
 endc
 	ENDM
 
@@ -266,6 +283,15 @@ dba: MACRO
 	dbw BANK(\1), \1
 	ENDM
 
+dwb: MACRO
+	dw \1
+	db \2
+	ENDM
+
+dab: MACRO
+	dwb \1, BANK(\1)
+	ENDM
+
 dbbw: MACRO
 	db \1, \2
 	dw \3
@@ -277,22 +303,6 @@ RGB: MACRO
 	ENDM
 
 ; text macros
-TX_NUM: MACRO
-; print a big-endian decimal number.
-; \1: address to read from
-; \2: number of bytes to read
-; \3: number of digits to display
-	db $09
-	dw \1
-	db \2 << 4 | \3
-	ENDM
-
-TX_FAR: MACRO
-	db $17
-	dw \1
-	db BANK(\1)
-	ENDM
-
 ; text engine command $1
 TX_RAM: MACRO
 ; prints text to screen
@@ -307,18 +317,42 @@ TX_BCD: MACRO
 	db \2
 	ENDM
 
-TX_ASM: MACRO
-	db $08
+TX_CURSOR: MACRO
+; Move cursor to (\1, \2)
+; \1: X coord (0 - 19)
+; \2: Y coord (0 - 17)
+	db $3
+	dwCoord \1, \2
 	ENDM
 
-TX_BUTTON_SOUND: MACRO
-	db $06
+TX_LINE EQUS "db $05"
+TX_BUTTON_SOUND EQUS "db $06"
+TX_ASM EQUS "db $08"
+
+TX_NUM: MACRO
+; print a big-endian decimal number.
+; \1: address to read from
+; \2: number of bytes to read
+; \3: number of digits to display
+	db $09
+	dw \1
+	db \2 << 4 | \3
 	ENDM
 
 TX_SFX_ITEM EQUS "db $0b"
 TX_WAIT_BUTTON EQUS "db $0d"
 TX_SFX_CONGRATS EQUS "db $10"
 TX_SFX_KEY_ITEM EQUS "db $11"
+
+TX_FAR: MACRO
+; 17AAAABB (call text at BB:AAAA)
+	db $17
+	dab \1
+	ENDM
+
+
+TX_POKECENTER_PC EQUS "db $f6"
+TX_POKECENTER_NURSE EQUS "db $ff"
 
 ; Predef macro.
 add_predef: MACRO
