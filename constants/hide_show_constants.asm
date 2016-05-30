@@ -51,10 +51,6 @@ const_value = 0
 	const HS_TOWN_MAP                     ; 2A
 	const HS_OAKS_LAB_RIVAL               ; 2B
 	const HS_STARTER_BALL_1               ; 2C
-	const HS_STARTER_BALL_2               ; 2D
-	const HS_STARTER_BALL_3               ; 2E
-
-const_value SET $2D
 	const HS_OAKS_LAB_OAK_1               ; 2D
 	const HS_POKEDEX_1                    ; 2E
 	const HS_POKEDEX_2                    ; 2F
@@ -62,22 +58,21 @@ const_value SET $2D
 	const HS_VIRIDIAN_GYM_GIOVANNI        ; 31
 	const HS_VIRIDIAN_GYM_ITEM            ; 32
 	const HS_OLD_AMBER                    ; 33 X
-	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 34
-	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 35 X
-	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 36 X
-	const HS_POKEMONTOWER_2_RIVAL         ; 37 X
-	const HS_POKEMONTOWER_3_ITEM          ; 38
-	const HS_POKEMONTOWER_4_ITEM_1        ; 39 X
-	const HS_POKEMONTOWER_4_ITEM_2        ; 3A X
-	const HS_POKEMONTOWER_4_ITEM_3        ; 3B X
-	const HS_POKEMONTOWER_5_ITEM          ; 3C X
-	const HS_POKEMONTOWER_6_ITEM_1        ; 3D X
-	const HS_POKEMONTOWER_6_ITEM_2        ; 3E X
-	const HS_POKEMONTOWER_7_ROCKET_1      ; 3F X
-	const HS_POKEMONTOWER_7_ROCKET_2      ; 40 X
-	const HS_POKEMONTOWER_7_ROCKET_3      ; 41 X
-
-const_value SET $43 ; replace the tower rockets with jessie/james
+	const HS_CERULEAN_BULBASAUR           ; 34
+	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 35 X
+	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 36 X
+	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 37 X
+	const HS_POKEMONTOWER_2_RIVAL         ; 38
+	const HS_POKEMONTOWER_3_ITEM          ; 39 X
+	const HS_POKEMONTOWER_4_ITEM_1        ; 3A X
+	const HS_POKEMONTOWER_4_ITEM_2        ; 3B X
+	const HS_POKEMONTOWER_4_ITEM_3        ; 3C X
+	const HS_POKEMONTOWER_5_ITEM          ; 3D X
+	const HS_POKEMONTOWER_6_ITEM_1        ; 3E X
+	const HS_POKEMONTOWER_6_ITEM_2        ; 3F X
+	const HS_POKEMONTOWER_7_ROCKET_1      ; 40 X
+	const HS_POKEMONTOWER_7_ROCKET_2      ; 41 X
+	const HS_POKEMONTOWER_7_ROCKET_3      ; 42
 	const HS_POKEMONTOWER_7_MR_FUJI       ; 43
 	const HS_LAVENDER_HOUSE_1_MR_FUJI     ; 44
 	const HS_CELADON_MANSION_5_GIFT       ; 45

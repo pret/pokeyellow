@@ -168,7 +168,7 @@ const_value = 0
 	const EVENT_0A5                                  ; 0A5, (D75B, bit 5)
 	const EVENT_0A6                                  ; 0A6, (D75B, bit 6)
 	const EVENT_BEAT_CERULEAN_ROCKET_THIEF           ; 0A7, (D75B, bit 7)
-	const EVENT_0A8                                  ; 0A8, (D75C, bit 0)
+	const EVENT_GOT_BULBASAUR_IN_CERULEAN            ; 0A8, (D75C, bit 0)
 	const EVENT_0A9                                  ; 0A9, (D75C, bit 1)
 	const EVENT_0AA                                  ; 0AA, (D75C, bit 2)
 	const EVENT_0AB                                  ; 0AB, (D75C, bit 3)
