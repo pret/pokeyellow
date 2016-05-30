@@ -395,7 +395,12 @@ INCLUDE "data/mapHeaders/undergroundpathentranceroute8.asm"
 INCLUDE "scripts/undergroundpathentranceroute8.asm"
 INCLUDE "data/mapObjects/undergroundpathentranceroute8.asm"
 
-	dr $1dbc4,$1e2ae ; map scripts
+INCLUDE "data/mapHeaders/powerplant.asm"
+INCLUDE "scripts/powerplant.asm"
+INCLUDE "data/mapObjects/powerplant.asm"
+PowerPlantBlocks:
+INCBIN "maps/powerplant.blk"
+	dr $1deb8,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
