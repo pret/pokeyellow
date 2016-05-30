@@ -801,7 +801,35 @@ MtMoon3Blocks:
 INCBIN "maps/mtmoon3.blk"
 
 MtMoon3Script_4a325: ; pikachu-related function?
-	dr $4a325,$4a540
+	ld a, [wd472]
+	bit 7, a
+	ret z
+	ld a, [wWalkBikeSurfState]
+	and a
+	ret nz
+
+	push hl
+	push bc
+	callab GetPikachuFacingDirectionAndReturnToE
+	pop bc
+	pop hl
+	ld a, b
+	cp e
+	ret nz
+
+	push hl
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	callab LoadPikachuShadowIntoVRAM
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	pop hl
+	call Func_159b
+	ret
+
+	dr $4a35a,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
