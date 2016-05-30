@@ -806,7 +806,15 @@ INCLUDE "scripts/viridianpokecenter.asm"
 INCLUDE "data/mapObjects/viridianpokecenter.asm"
 	dr $442b7,$443b7
 Mansion1Script_Switches:
-	dr $443b7,$45077
+	dr $443b7,$44571
+
+INCLUDE "data/mapHeaders/rocktunnel1.asm"
+INCLUDE "scripts/rocktunnel1.asm"
+INCLUDE "data/mapObjects/rocktunnel1.asm"
+RockTunnel1Blocks:
+INCBIN "maps/rocktunnel1.blk"
+
+	dr $4487e,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
 
