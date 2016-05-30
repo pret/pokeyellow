@@ -1,5 +1,6 @@
 BikeShopScript: ; 1d73c (7:573c)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 BikeShopTextPointers: ; 1d73f (7:573f)
 	dw BikeShopText1
@@ -13,6 +14,7 @@ BikeShopText1: ; 1d745 (7:5745)
 	ld hl, BikeShopText_1d82f
 	call PrintText
 	jp .Done
+
 .asm_260d4
 	ld b, BIKE_VOUCHER
 	call IsItemInBag
@@ -29,10 +31,12 @@ BikeShopText1: ; 1d745 (7:5745)
 	ld hl, BikeShopText_1d824
 	call PrintText
 	jr .Done
+
 .BagFull
 	ld hl, BikeShopText_1d834
 	call PrintText
 	jr .Done
+
 .asm_41190
 	ld hl, BikeShopText_1d810
 	call PrintText
@@ -50,8 +54,7 @@ BikeShopText1: ; 1d745 (7:5745)
 	ld hl, wd730
 	set 6, [hl]
 	coord hl, 0, 0
-	ld b, $4
-	ld c, $f
+	lb bc, 4, 15
 	call TextBoxBorder
 	call UpdateSprites
 	coord hl, 2, 2
@@ -62,11 +65,12 @@ BikeShopText1: ; 1d745 (7:5745)
 	call PlaceString
 	ld hl, BikeShopText_1d815
 	call PrintText
-	call HandleMenuInput
-	bit 1, a
-	jr nz, .cancel
+	; This fixes the bike shop instatext glitch
 	ld hl, wd730
 	res 6, [hl]
+	call HandleMenuInput
+	bit BIT_B_BUTTON, a
+	jr nz, .cancel
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .cancel
@@ -94,7 +98,7 @@ BikeShopText_1d815: ; 1d815 (7:5815)
 	db "@"
 
 BikeShopCantAffordText: ; 1d81a (7:581a)
-	TX_FAR _BikeShopCantAffordText
+	TX_FAR _BikeShopText_1d81a
 	db "@"
 
 BikeShopText_1d81f: ; 1d81f (7:581f)
@@ -103,10 +107,11 @@ BikeShopText_1d81f: ; 1d81f (7:581f)
 
 BikeShopText_1d824: ; 1d824 (7:5824)
 	TX_FAR _BikeShopText_1d824
-	db $11, "@"
+	TX_SFX_KEY_ITEM
+	db "@"
 
 BikeShopComeAgainText: ; 1d82a (7:582a)
-	TX_FAR _BikeShopComeAgainText
+	TX_FAR _BikeShopText_1d82a
 	db "@"
 
 BikeShopText_1d82f: ; 1d82f (7:582f)

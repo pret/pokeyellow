@@ -352,7 +352,13 @@ INCLUDE "data/mapObjects/ceruleanhousetrashed.asm"
 INCLUDE "data/mapHeaders/ceruleanhouse1.asm"
 INCLUDE "scripts/ceruleanhouse1.asm"
 INCLUDE "data/mapObjects/ceruleanhouse1.asm"
-	dr $1d038,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/bikeshop.asm"
+INCLUDE "scripts/bikeshop.asm"
+INCLUDE "data/mapObjects/bikeshop.asm"
+BikeShopBlocks:
+INCBIN "maps/bikeshop.blk"
+	dr $1d1a4,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
