@@ -74,8 +74,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw UndergroundPathEntranceRoute5_h
 	dw DayCareM_h
 	dw Route6Gate_h
-	dw $55ee ; dw UndergroundPathEntranceRoute6_h
-	dw $55ee ; dw UndergroundPathEntranceRoute6_h ; unused
+	dw UndergroundPathEntranceRoute6_h
+	dw UndergroundPathEntranceRoute6_h ; unused
 	dw $59fe ; dw Route7Gate_h
 	dw $562b ; dw UndergroundPathEntranceRoute7_h
 	dw $5668 ; dw UndergroundPathEntranceRoute7Copy_h
