@@ -320,7 +320,6 @@ INCLUDE "data/mapHeaders/viridianmart.asm"
 INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
-CeruleanMartBlocks:
 VermilionMartBlocks:
 LavenderMartBlocks:
 CeladonMartBlocks:
@@ -1114,8 +1113,8 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 
 
 SECTION "bank17",ROMX,BANK[$17]
-
-	dr $5c000,$5c010
+CeruleanMartBlocks:
+INCBIN "maps/ceruleanmart.blk"
 RedsHouse2FBlocks:
 INCBIN "maps/redshouse2f.blk"
 Museum1FBlocks:
@@ -1172,7 +1171,11 @@ INCLUDE "data/mapObjects/ceruleangym.asm"
 CeruleanGymBlocks:
 INCBIN "maps/ceruleangym.blk"
 
-	dr $5c757,$5d485
+INCLUDE "data/mapHeaders/ceruleanmart.asm"
+INCLUDE "scripts/ceruleanmart.asm"
+INCLUDE "data/mapObjects/ceruleanmart.asm"
+
+	dr $5c79c,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
