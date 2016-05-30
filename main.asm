@@ -1359,8 +1359,8 @@ INCLUDE "scripts/pewtermart.asm"
 INCLUDE "data/mapObjects/pewtermart.asm"
 
 	dr $7453d,$74726
-VendingMachineMenu: ; 74726 (1d:4726)
-	dr $74726,$75dfe
+INCLUDE "engine/menu/vending_machine.asm"
+	dr $74851,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
 	dr $75dfe,$75f74
 
