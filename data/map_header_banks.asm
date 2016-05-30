@@ -81,7 +81,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(UndergroundPathEntranceRoute7Copy_h) ;FREEZE
 	db BANK(Route8Gate_h)
 	db BANK(UndergroundPathEntranceRoute8_h)
-	db $12 ; db BANK(RockTunnelPokecenter_h)
+	db BANK(RockTunnelPokecenter_h)
 	db $11 ; db BANK(RockTunnel1_h)
 	db $07 ; db BANK(PowerPlant_h)
 	db $12 ; db BANK(Route11Gate_h)

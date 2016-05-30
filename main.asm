@@ -794,7 +794,6 @@ LavenderPokecenterBlocks:
 CeladonPokecenterBlocks:
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks:
-RockTunnelPokecenterBlocks:
 INCBIN "maps/viridianpokecenter.blk"
 	dr $440fb,$4410b
 
@@ -819,6 +818,7 @@ INCLUDE "data/mapObjects/route7.asm"
 Route7Blocks: ; 48051
 INCBIN "maps/route7.blk"
 MtMoonPokecenterBlocks:
+RockTunnelPokecenterBlocks:
 INCBIN "maps/mtmoonpokecenter.blk"
 	dr $480c7,$480eb
 INCLUDE "scripts/route7.asm"
@@ -834,7 +834,11 @@ INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"
 INCLUDE "data/mapObjects/mtmoonpokecenter.asm"
 
-	dr $49330,$49953
+INCLUDE "data/mapHeaders/rocktunnelpokecenter.asm"
+INCLUDE "scripts/rocktunnelpokecenter.asm"
+INCLUDE "data/mapObjects/rocktunnelpokecenter.asm"
+
+	dr $49396,$49953
 
 INCLUDE "data/mapHeaders/mtmoon1.asm"
 INCLUDE "scripts/mtmoon1.asm"

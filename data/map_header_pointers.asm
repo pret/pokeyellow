@@ -81,7 +81,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw UndergroundPathEntranceRoute7Copy_h
 	dw Route8Gate_h
 	dw UndergroundPathEntranceRoute8_h ;id=80
-	dw $5330 ; dw RockTunnelPokecenter_h
+	dw RockTunnelPokecenter_h
 	dw $4571 ; dw RockTunnel1_h
 	dw $5bc4 ; dw PowerPlant_h
 	dw $5396 ; dw Route11Gate_h

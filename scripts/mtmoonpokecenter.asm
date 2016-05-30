@@ -32,7 +32,7 @@ MtMoonPokecenterText5: ; 49370 (12:5370)
 	db "@"
 
 MtMoonPokecenterText6: ; 49375 (12:5375)
-	TX_POKECENTER_PC
+	TX_CABLE_CLUB_RECEPTIONIST
 
 MtMoonPokecenterText7:
 	TX_ASM
