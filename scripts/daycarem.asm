@@ -50,11 +50,21 @@ DayCareMText1: ; 56254 (15:6254)
 	ld a, PARTY_TO_DAYCARE
 	ld [wMoveMonType], a
 	call MoveMon
+	callab IsThisPartymonStarterPikachu
+	push af
 	xor a
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
+	pop af
+	jr c, .depositedPikachuIntoDayCare
 	ld a, [wcf91]
 	call PlayCry
+	jr .asm_562e3
+
+.depositedPikachuIntoDayCare
+	ldpikacry e, PikachuCry28
+	callab PlayPikachuSoundClip
+.asm_562e3
 	ld hl, DayCareComeSeeMeInAWhileText
 	jp .done
 
@@ -197,8 +207,27 @@ DayCareMText1: ; 56254 (15:6254)
 	ld a, [hl]
 	ld [de], a
 
+	ld a, [wPartyCount]
+	dec a
+	ld [wWhichPokemon], a
+	callab IsThisPartymonStarterPikachu
+	jr c, .withdrewPikachuFromDayCare
 	ld a, [wcf91]
 	call PlayCry
+	jr .asm_56430
+
+.withdrewPikachuFromDayCare
+	ld a, $6
+	ld [wd431], a
+
+	; GameFreak... TriHard
+	ld hl, Func_fc4fa
+	ld b, BANK(Func_fc4fa)
+	ld hl, Bankswitch
+
+	ldpikacry e, PikachuCry35
+	callab PlayPikachuSoundClip
+.asm_56430
 	ld hl, DayCareGotMonBackText
 	jr .done
 

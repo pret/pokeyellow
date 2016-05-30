@@ -1041,7 +1041,10 @@ INCLUDE "data/mapHeaders/route21.asm"
 INCLUDE "data/mapObjects/route21.asm"
 Route21Blocks: ; 5507d
 INCBIN "maps/route21.blk"
-	dr $5523f,$5525f
+
+DayCareMBlocks:
+INCBIN "maps/daycarem.blk"
+	dr $5524f,$5525f
 
 INCLUDE "engine/battle/experience.asm"
 
@@ -1057,7 +1060,12 @@ INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
 
 ; vermilion house 2
-	dr $56054,$56714
+	dr $56054,$56233
+
+INCLUDE "data/mapHeaders/daycarem.asm"
+INCLUDE "scripts/daycarem.asm"
+INCLUDE "data/mapObjects/daycarem.asm"
+	dr $564a5,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"
 
