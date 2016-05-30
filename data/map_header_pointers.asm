@@ -84,10 +84,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RockTunnelPokecenter_h
 	dw RockTunnel1_h
 	dw PowerPlant_h
-	dw $5396 ; dw Route11Gate_h
+	dw Route11Gate_h
 	dw DiglettsCaveEntranceRoute11_h
-	dw $53de ; dw Route11GateUpstairs_h
-	dw $548f ; dw Route12Gate_h
+	dw Route11GateUpstairs_h
+	dw Route12Gate_h
 	dw $606e ; dw BillsHouse_h
 	dw $4865 ; dw VermilionPokecenter_h
 	dw $5a00 ; dw FanClub_h ;id=90

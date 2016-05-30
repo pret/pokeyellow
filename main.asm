@@ -839,7 +839,11 @@ INCBIN "maps/route7.blk"
 MtMoonPokecenterBlocks:
 RockTunnelPokecenterBlocks:
 INCBIN "maps/mtmoonpokecenter.blk"
-	dr $480c7,$480eb
+Route11GateBlocks:
+INCBIN "maps/route11gate.blk"
+Route11GateUpstairsBlocks:
+Route12GateUpstairsBlocks:
+INCBIN "maps/route11gateupstairs.blk"
 INCLUDE "scripts/route7.asm"
 
 INCLUDE "data/mapHeaders/redshouse1f.asm"
@@ -857,7 +861,24 @@ INCLUDE "data/mapHeaders/rocktunnelpokecenter.asm"
 INCLUDE "scripts/rocktunnelpokecenter.asm"
 INCLUDE "data/mapObjects/rocktunnelpokecenter.asm"
 
-	dr $49396,$49953
+INCLUDE "data/mapHeaders/route11gate.asm"
+INCLUDE "scripts/route11gate.asm"
+INCLUDE "data/mapObjects/route11gate.asm"
+
+INCLUDE "data/mapHeaders/route11gateupstairs.asm"
+INCLUDE "scripts/route11gateupstairs.asm"
+INCLUDE "data/mapObjects/route11gateupstairs.asm"
+
+INCLUDE "data/mapHeaders/route12gate.asm"
+INCLUDE "scripts/route12gate.asm"
+INCLUDE "data/mapObjects/route12gate.asm"
+Route12GateBlocks:
+INCBIN "maps/route12gate.blk"
+
+INCLUDE "data/mapHeaders/route12gateupstairs.asm"
+INCLUDE "scripts/route12gateupstairs.asm"
+INCLUDE "data/mapObjects/route12gateupstairs.asm"
+	dr $4958d,$49953
 
 INCLUDE "data/mapHeaders/mtmoon1.asm"
 INCLUDE "scripts/mtmoon1.asm"
