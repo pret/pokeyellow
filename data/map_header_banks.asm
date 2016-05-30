@@ -73,7 +73,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(Route5Gate_h)
 	db BANK(UndergroundPathEntranceRoute5_h)
 	db BANK(DayCareM_h)
-	db $07 ; db BANK(Route6Gate_h)
+	db BANK(Route6Gate_h)
 	db $17 ; db BANK(UndergroundPathEntranceRoute6_h)
 	db $17 ; db BANK(UndergroundPathEntranceRoute6_h) ;FREEZE
 	db $07 ; db BANK(Route7Gate_h)

@@ -373,7 +373,13 @@ INCLUDE "data/mapObjects/route5gate.asm"
 Route5GateBlocks: ; 1d92f
 INCBIN "maps/route5gate.blk"
 
-	dr $1d93b,$1e2ae ; map scripts
+INCLUDE "data/mapHeaders/route6gate.asm"
+INCLUDE "scripts/route6gate.asm"
+INCLUDE "data/mapObjects/route6gate.asm"
+Route6GateBlocks: ; 1d9f2
+INCBIN "maps/route6gate.blk"
+
+	dr $1d9fe,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
