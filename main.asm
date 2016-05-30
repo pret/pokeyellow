@@ -344,7 +344,10 @@ INCLUDE "data/mapHeaders/pewterhouse2.asm"
 INCLUDE "scripts/pewterhouse2.asm"
 INCLUDE "data/mapObjects/pewterhouse2.asm"
 
-	dr $1cec3,$1d7ae ; map scripts
+INCLUDE "data/mapHeaders/ceruleanhousetrashed.asm"
+INCLUDE "scripts/ceruleanhousetrashed.asm"
+INCLUDE "data/mapObjects/ceruleanhousetrashed.asm"
+	dr $1cf34,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"

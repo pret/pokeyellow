@@ -62,14 +62,14 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw MtMoon1_h
 	dw MtMoon2_h ;id=60
 	dw MtMoon3_h
-	dw $4ec3 ; dw CeruleanHouseTrashed_h
+	dw CeruleanHouseTrashed_h
 	dw $4f34 ; dw CeruleanHouse1_h
 	dw $44f5 ; dw CeruleanPokecenter_h
 	dw $4577 ; dw CeruleanGym_h
 	dw $5038 ; dw BikeShop_h
 	dw $4757 ; dw CeruleanMart_h
 	dw $52a9 ; dw MtMoonPokecenter_h
-	dw $4ec3 ; dw CeruleanHouseTrashed_h ; copy
+	dw CeruleanHouseTrashed_h ; copy
 	dw $5831 ; dw Route5Gate_h
 	dw $55a8 ; dw UndergroundPathEntranceRoute5_h
 	dw $6233 ; dw DayCareM_h
