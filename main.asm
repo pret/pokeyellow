@@ -366,7 +366,14 @@ INCLUDE "data/mapObjects/diglettscaveroute2.asm"
 INCLUDE "data/mapHeaders/route2house.asm"
 INCLUDE "scripts/route2house.asm"
 INCLUDE "data/mapObjects/route2house.asm"
-	dr $1d831,$1e2ae ; map scripts
+
+INCLUDE "data/mapHeaders/route5gate.asm"
+INCLUDE "scripts/route5gate.asm"
+INCLUDE "data/mapObjects/route5gate.asm"
+Route5GateBlocks: ; 1d92f
+INCBIN "maps/route5gate.blk"
+
+	dr $1d93b,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
