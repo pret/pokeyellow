@@ -1359,10 +1359,14 @@ INCLUDE "scripts/pewtermart.asm"
 INCLUDE "data/mapObjects/pewtermart.asm"
 
 	dr $7453d,$74726
+
 INCLUDE "engine/menu/vending_machine.asm"
+
 	dr $74851,$75dfe
-PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$75f74
+	
+INCLUDE "engine/menu/league_pc.asm"
+
+INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/overworld/hidden_items.asm"
 

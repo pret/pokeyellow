@@ -316,7 +316,7 @@ OverwritewMoves:: ; 113a (0:113a)
 
 LoadFlippedFrontSpriteByMonIndex:: ; 1144 (0:1144)
 	ld a, 1
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 
 LoadFrontSpriteByMonIndex:: ; 1149 (0:1149)
 	push hl
@@ -350,7 +350,7 @@ LoadFrontSpriteByMonIndex:: ; 1149 (0:1149)
 	ld [hStartTileID], a
 	call CopyUncompressedPicToHL
 	xor a
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 	pop af
 	jp BankswitchCommon
 
@@ -949,7 +949,7 @@ InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	dec a
 	ld [H_SPRITEINTERLACECOUNTER], a
 	jr nz, .interlaceLoop
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	and a
 	jr z, .notFlipped
 	ld bc, 2*SPRITEBUFFERSIZE

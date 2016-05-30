@@ -237,7 +237,7 @@ CopyUncompressedPicToHL: ; f6203 (3d:6203)
 	ld bc, $707
 	ld de, $14
 	push af
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	and a
 	jr nz, .asm_f6220
 	pop af

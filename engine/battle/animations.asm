@@ -2300,7 +2300,7 @@ ChangeMonPic: ; 798d4 (1e:58d4)
 	ld [wcf91], a
 	ld [wd0b5], a
 	xor a
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 	call GetMonHeader
 	coord hl, 12, 0
 	call LoadFrontSpriteByMonIndex

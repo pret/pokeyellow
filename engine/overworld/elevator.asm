@@ -1,11 +1,10 @@
-ShakeElevator: ; 7bf15 (1e:7f15)
+ShakeElevator: ; 75f07 (1d:5f07)
 	ld de, -$20
 	call ShakeElevatorRedrawRow
 	ld de, SCREEN_HEIGHT * $20
 	call ShakeElevatorRedrawRow
 	call Delay3
-	ld a, $ff
-	call PlaySound
+	call StopAllMusic
 	ld a, [hSCY]
 	ld d, a
 	ld e, $1
@@ -27,19 +26,18 @@ ShakeElevator: ; 7bf15 (1e:7f15)
 	jr nz, .shakeLoop
 	ld a, d
 	ld [hSCY], a
-	ld a, $ff
-	call PlaySound
+	call StopAllMusic
 	ld c, BANK(SFX_Safari_Zone_PA)
 	ld a, SFX_SAFARI_ZONE_PA
 	call PlayMusic
 .musicLoop
 	ld a, [wChannelSoundIDs + CH4]
-	cp $b9
+	cp SFX_SAFARI_ZONE_PA
 	jr z, .musicLoop
 	call UpdateSprites
 	jp PlayDefaultMusic
 
-ShakeElevatorRedrawRow: ; 7bf64 (1e:7f64)
+ShakeElevatorRedrawRow: ; 75f52 (1d:5f52)
 ; This function is used to redraw certain portions of the screen, but it does
 ; not appear to ever result in any visible effect, so this function seems to
 ; be pointless.
@@ -56,7 +54,7 @@ ShakeElevatorRedrawRow: ; 7bf64 (1e:7f64)
 	add hl, de
 	ld a, h
 	and $3
-	or $98
+	or vBGMap0 / $100
 	ld d, a
 	ld a, l
 	pop hl
