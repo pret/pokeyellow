@@ -1,5 +1,6 @@
 PewterHouse1Script: ; 1d5f3 (7:55f3)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 PewterHouse1TextPointers: ; 1d5f6 (7:55f6)
 	dw PewterHouse1Text1

@@ -14,7 +14,7 @@ Route9ScriptPointers: ; 556cf (15:56cf)
 
 Route9TextPointers: ; 556d5 (15:56d5)
 	dw Route9Text1
-	dw Route9Text2
+	dw Route9TextAJ
 	dw Route9Text3
 	dw Route9Text4
 	dw Route9Text5
@@ -39,10 +39,10 @@ Route9TrainerHeader2: ; 556f7 (15:56f7)
 	dbEventFlagBit EVENT_BEAT_ROUTE_9_TRAINER_2
 	db ($2 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_ROUTE_9_TRAINER_2
-	dw Route9BattleText2 ; TextBeforeBattle
-	dw Route9AfterBattleText2 ; TextAfterBattle
-	dw Route9EndBattleText2 ; TextEndBattle
-	dw Route9EndBattleText2 ; TextEndBattle
+	dw Route9BattleTextAJ ; TextBeforeBattle
+	dw Route9AfterBattleTextAJ ; TextAfterBattle
+	dw Route9EndBattleTextAJ ; TextEndBattle
+	dw Route9EndBattleTextAJ ; TextEndBattle
 
 Route9TrainerHeader3: ; 55703 (15:5703)
 	dbEventFlagBit EVENT_BEAT_ROUTE_9_TRAINER_3
@@ -114,7 +114,7 @@ Route9Text1: ; 55758 (15:5758)
 	ld hl, Route9TrainerHeader0
 	jr Route9TalkToTrainer
 
-Route9Text2: ; 5575e (15:575e)
+Route9TextAJ: ; 5575e (15:575e)
 	TX_ASM
 	ld hl, Route9TrainerHeader2
 	jr Route9TalkToTrainer
@@ -168,16 +168,16 @@ Route9AfterBattleText1: ; 5579c (15:579c)
 	TX_FAR _Route9AfterBattleText1
 	db "@"
 
-Route9BattleText2: ; 557a1 (15:57a1)
-	TX_FAR _Route9BattleText2
+Route9BattleTextAJ: ; 557a1 (15:57a1)
+	TX_FAR _Route9BattleTextAJ
 	db "@"
 
-Route9EndBattleText2: ; 557a6 (15:57a6)
-	TX_FAR _Route9EndBattleText2
+Route9EndBattleTextAJ: ; 557a6 (15:57a6)
+	TX_FAR _Route9EndBattleTextAJ
 	db "@"
 
-Route9AfterBattleText2: ; 557ab (15:57ab)
-	TX_FAR _Route9AfterBattleText2
+Route9AfterBattleTextAJ: ; 557ab (15:57ab)
+	TX_FAR _Route9AfterBattleTextAJ
 	db "@"
 
 Route9BattleText3: ; 557b0 (15:57b0)

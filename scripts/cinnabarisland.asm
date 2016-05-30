@@ -6,7 +6,7 @@ CinnabarIslandScript: ; 1ca19 (7:4a19)
 	ResetEvent EVENT_LAB_STILL_REVIVING_FOSSIL
 	ld hl, CinnabarIslandScriptPointers
 	ld a, [W_CINNABARISLANDCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 CinnabarIslandScriptPointers: ; 1ca34 (7:4a34)
 	dw CinnabarIslandScript0

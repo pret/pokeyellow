@@ -2,7 +2,7 @@ Route7GateScript: ; 1e100 (7:6100)
 	call EnableAutoTextBoxDrawing
 	ld a, [W_ROUTE7GATECURSCRIPT]
 	ld hl, Route7GateScriptPointers
-	call CallFunctionInTable
+	call JumpTable
 	ret
 
 Route7GateScriptPointers: ; 1e10d (7:610d)

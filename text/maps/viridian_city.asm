@@ -1,4 +1,4 @@
-_ViridianCityText_19219::
+_ViridianCityText_19219:: ; 2d:4478
 	text "First, you need"
 	line "to weaken the"
 	cont "target #MON."

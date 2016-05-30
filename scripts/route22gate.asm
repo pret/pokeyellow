@@ -2,7 +2,7 @@ Route22GateScript: ; 1e683 (7:6683)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22GateScriptPointers
 	ld a, [W_ROUTE22GATECURSCRIPT]
-	call CallFunctionInTable
+	call JumpTable
 	ld a, [wYCoord]
 	cp $4
 	ld a, ROUTE_23

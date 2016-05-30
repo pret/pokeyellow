@@ -4,13 +4,13 @@ _Route24Text_51510::
 	cont "contest trainers!@@"
 
 _Route24Text_51515::
-	db $0
+	text ""
 	para "You just earned a"
 	line "fabulous prize!"
 	prompt
 
 _Route24Text_5151a::
-	text $52, " received"
+	text "<PLAYER> received"
 	line "a @"
 	TX_RAM wcf4b
 	text "!@@"
@@ -154,3 +154,30 @@ _Route24AfterBattleText6::
 	line "have no regrets!"
 	done
 
+_Route24DamianText1::
+	text "I'm not good at"
+	line "raising #MON."
+
+	para "I should release"
+	line "my CHARMANDER"
+	cont "because I haven't"
+	cont "raised it well..."
+
+	para "If you promise me"
+	line "you'll care for"
+	cont "it, it's yours."
+	done
+
+_Route24DamianText2::
+	text "Take good care of"
+	line "my CHARMANDER!@@"
+
+_Route24DamianText3::
+	text "Oh... I'd better"
+	line "release it then."
+	done
+
+_Route24DamianText4::
+	text "How's CHARMANDER"
+	line "doing?"
+	done

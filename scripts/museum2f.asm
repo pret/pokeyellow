@@ -1,5 +1,6 @@
 Museum2FScript: ; 5c317 (17:4317)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 Museum2FTextPointers: ; 5c31a (17:431a)
 	dw Museum2FText1
@@ -27,7 +28,38 @@ Museum2FText4: ; 5c337 (17:4337)
 	db "@"
 
 Museum2FText5: ; 5c33c (17:433c)
+	TX_ASM
+	ld a, [wd472]
+	bit 7, a
+	jr nz, .asm_5c1f6
+	ld hl, Museum2FText_5c20e
+	call PrintText
+	jr .asm_5c20b
+
+.asm_5c1f6
+	ld a, [wPikachuHappiness]
+	cp 101
+	jr c, .asm_5c205
+	ld hl, Museum2FText_5c218
+	call PrintText
+	jr .asm_5c20b
+
+.asm_5c205
+	ld hl, Museum2FText_5c213
+	call PrintText
+.asm_5c20b
+	jp TextScriptEnd
+
+Museum2FText_5c20e:
 	TX_FAR _Museum2FText5
+	db "@"
+
+Museum2FText_5c213:
+	TX_FAR _Museum2FPikachuText1
+	db "@"
+
+Museum2FText_5c218:
+	TX_FAR _Museum2FPikachuText2
 	db "@"
 
 Museum2FText6: ; 5c341 (17:4341)

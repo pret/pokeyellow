@@ -7,6 +7,7 @@ ViridianPokecenterTextPointers: ; 44263 (11:4263)
 	dw ViridianPokeCenterText2
 	dw ViridianPokeCenterText3
 	dw ViridianPokeCenterText4
+	dw ViridianPokeCenterText5
 
 ViridianPokeCenterText1: ; 4426b (11:426b)
 	db $ff
@@ -21,3 +22,8 @@ ViridianPokeCenterText3: ; 44271 (11:4271)
 
 ViridianPokeCenterText4: ; 44276 (11:4276)
 	db $f6
+
+ViridianPokeCenterText5:
+	TX_ASM
+	callab Func_f0f12
+	jp TextScriptEnd

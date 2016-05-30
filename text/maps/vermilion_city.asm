@@ -35,7 +35,7 @@ _SSAnneWelcomeText9::
 	prompt
 
 _SSAnneFlashedTicketText::
-	text $52, " flashed"
+	text "<PLAYER> flashed"
 	line "the S.S.TICKET!"
 
 	para "Great! Welcome to"
@@ -43,7 +43,7 @@ _SSAnneFlashedTicketText::
 	done
 
 _SSAnneNoTicketText::
-	text $52, " doesn't"
+	text "<PLAYER> doesn't"
 	line "have the needed"
 	cont "S.S.TICKET."
 
@@ -70,8 +70,8 @@ _VermilionCityText5::
 	text "MACHOP: Guoh!"
 	line "Gogogoh!@@"
 
-_VermilionCityText14::
-	db $0
+_VermilionCityText15::
+	text ""
 	para "A MACHOP is"
 	line "stomping the land"
 	cont "flat."
@@ -127,13 +127,13 @@ _OfficerJennyText5::
 	line "doing?"
 	done
 
-_VermilionCityText7::
+_VermilionCityText8::
 	text "VERMILION CITY"
 	line "The Port of"
 	cont "Exquisite Sunsets"
 	done
 
-_VermilionCityText8::
+_VermilionCityText9::
 	text "NOTICE!"
 
 	para "ROUTE 12 may be"
@@ -147,13 +147,13 @@ _VermilionCityText8::
 	para "VERMILION POLICE"
 	done
 
-_VermilionCityText11::
+_VermilionCityText12::
 	text "#MON FAN CLUB"
 	line "All #MON fans"
 	cont "welcome!"
 	done
 
-_VermilionCityText12::
+_VermilionCityText13::
 	text "VERMILION CITY"
 	line "#MON GYM"
 	cont "LEADER: LT.SURGE"
@@ -162,7 +162,7 @@ _VermilionCityText12::
 	line "American!"
 	done
 
-_VermilionCityText13::
+_VermilionCityText14::
 	text "VERMILION HARBOR"
 	done
 

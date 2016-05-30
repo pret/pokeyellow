@@ -37,7 +37,7 @@ Route19TrainerHeader0: ; 55d73 (15:5d73)
 
 Route19TrainerHeader1: ; 55d7f (15:5d7f)
 	dbEventFlagBit EVENT_BEAT_ROUTE_19_TRAINER_1
-	db ($3 << 4) ; trainer's view range
+	db ($4 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_ROUTE_19_TRAINER_1
 	dw Route19BattleText2 ; TextBeforeBattle
 	dw Route19AfterBattleText2 ; TextAfterBattle
@@ -121,60 +121,52 @@ Route19TrainerHeader9: ; 55ddf (15:5ddf)
 Route19Text1: ; 55dec (15:5dec)
 	TX_ASM
 	ld hl, Route19TrainerHeader0
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text2: ; 55df6 (15:5df6)
 	TX_ASM
 	ld hl, Route19TrainerHeader1
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text3: ; 55e00 (15:5e00)
 	TX_ASM
 	ld hl, Route19TrainerHeader2
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text4: ; 55e0a (15:5e0a)
 	TX_ASM
 	ld hl, Route19TrainerHeader3
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text5: ; 55e14 (15:5e14)
 	TX_ASM
 	ld hl, Route19TrainerHeader4
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text6: ; 55e1e (15:5e1e)
 	TX_ASM
 	ld hl, Route19TrainerHeader5
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text7: ; 55e28 (15:5e28)
 	TX_ASM
 	ld hl, Route19TrainerHeader6
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text8: ; 55e32 (15:5e32)
 	TX_ASM
 	ld hl, Route19TrainerHeader7
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text9: ; 55e3c (15:5e3c)
 	TX_ASM
 	ld hl, Route19TrainerHeader8
-	call TalkToTrainer
-	jp TextScriptEnd
+	jr Route19_TalkToTrainer
 
 Route19Text10: ; 55e46 (15:5e46)
 	TX_ASM
 	ld hl, Route19TrainerHeader9
+Route19_TalkToTrainer:
 	call TalkToTrainer
 	jp TextScriptEnd
 

@@ -3,7 +3,7 @@ ViridianForestEntranceObject: ; 0x5d66d (size=48)
 
 	db $4 ; warps
 	db $0, $4, $3, VIRIDIAN_FOREST
-	db $0, $5, $4, VIRIDIAN_FOREST
+	db $0, $5, $3, VIRIDIAN_FOREST
 	db $7, $4, $5, $ff
 	db $7, $5, $5, $ff
 

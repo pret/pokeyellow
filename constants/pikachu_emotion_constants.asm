@@ -35,7 +35,11 @@ ENDM
 
 pikaemotion_pcm: MACRO
 	db PIKAEMOTION_PLAYPCMSOUNDCLIP
-	db \1
+IF _NARG > 0
+	dpikacry \1
+ELSE
+	db $ff
+ENDC
 ENDM
 
 pikaemotion_emotebubble: MACRO

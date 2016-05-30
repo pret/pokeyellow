@@ -3,13 +3,13 @@ Route16Object: ; 0x58afc (size=136)
 
 	db $9 ; warps
 	db $a, $11, $0, ROUTE_16_GATE_1F
-	db $b, $11, $1, ROUTE_16_GATE_1F
+	db $b, $11, $0, ROUTE_16_GATE_1F
 	db $a, $18, $2, ROUTE_16_GATE_1F
-	db $b, $18, $3, ROUTE_16_GATE_1F
+	db $b, $18, $2, ROUTE_16_GATE_1F
 	db $4, $11, $4, ROUTE_16_GATE_1F
-	db $5, $11, $5, ROUTE_16_GATE_1F
+	db $5, $11, $4, ROUTE_16_GATE_1F
 	db $4, $18, $6, ROUTE_16_GATE_1F
-	db $5, $18, $7, ROUTE_16_GATE_1F
+	db $5, $18, $6, ROUTE_16_GATE_1F
 	db $5, $7, $0, ROUTE_16_HOUSE
 
 	db $2 ; signs

@@ -232,57 +232,181 @@ INCLUDE "engine/menu/pc.asm"
 
 SECTION "bank06",ROMX,BANK[$06]
 
-	dr $18000,$18dee ; headers, objects, blocks
-; INCLUDE "data/mapHeaders/celadoncity.asm"
-; INCLUDE "data/mapObjects/celadoncity.asm"
-; CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
+INCLUDE "data/mapHeaders/celadoncity.asm"
+INCLUDE "data/mapObjects/celadoncity.asm"
+CeladonCityBlocks: INCBIN "maps/celadoncity.blk"
 
-; INCLUDE "data/mapHeaders/pallettown.asm"
-; INCLUDE "data/mapObjects/pallettown.asm"
-; PalletTownBlocks: INCBIN "maps/pallettown.blk"
+INCLUDE "data/mapHeaders/pallettown.asm"
+INCLUDE "data/mapObjects/pallettown.asm"
+PalletTownBlocks: INCBIN "maps/pallettown.blk"
 
-; INCLUDE "data/mapHeaders/viridiancity.asm"
-; INCLUDE "data/mapObjects/viridiancity.asm"
-; ViridianCityBlocks: INCBIN "maps/viridiancity.blk"
+INCLUDE "data/mapHeaders/viridiancity.asm"
+INCLUDE "data/mapObjects/viridiancity.asm"
+ViridianCityBlocks: INCBIN "maps/viridiancity.blk"
 
-; INCLUDE "data/mapHeaders/pewtercity.asm"
-; INCLUDE "data/mapObjects/pewtercity.asm"
-; PewterCityBlocks: INCBIN "maps/pewtercity.blk"
+INCLUDE "data/mapHeaders/pewtercity.asm"
+INCLUDE "data/mapObjects/pewtercity.asm"
+PewterCityBlocks: INCBIN "maps/pewtercity.blk"
 
-; INCLUDE "data/mapHeaders/ceruleancity.asm"
-; INCLUDE "data/mapObjects/ceruleancity.asm"
-; CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk"
+INCLUDE "data/mapHeaders/ceruleancity.asm"
+INCLUDE "data/mapObjects/ceruleancity.asm"
+CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
 
-; INCLUDE "data/mapHeaders/vermilioncity.asm"
-; INCLUDE "data/mapObjects/vermilioncity.asm"
-; VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
+INCLUDE "data/mapHeaders/vermilioncity.asm"
+INCLUDE "data/mapObjects/vermilioncity.asm"
+VermilionCityBlocks: INCBIN "maps/vermilioncity.blk"
+INCLUDE "data/mapHeaders/fuchsiacity.asm"
+INCLUDE "data/mapObjects/fuchsiacity.asm"
+FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-; INCLUDE "data/mapHeaders/fuchsiacity.asm"
-; INCLUDE "data/mapObjects/fuchsiacity.asm"
-; FuchsiaCityBlocks: INCBIN "maps/fuchsiacity.blk"
 
-	dr $18dee,$1a4ea ; map scripts
+INCLUDE "scripts/pallettown.asm"
+INCLUDE "scripts/viridiancity.asm"
+INCLUDE "scripts/pewtercity.asm"
+INCLUDE "scripts/ceruleancity.asm"
+INCLUDE "scripts/vermilioncity.asm"
+INCLUDE "scripts/celadoncity.asm"
+INCLUDE "scripts/fuchsiacity.asm"
 
-; INCLUDE "scripts/pallettown.asm"
-; INCLUDE "scripts/viridiancity.asm"
-; INCLUDE "scripts/pewtercity.asm"
-; INCLUDE "scripts/ceruleancity.asm"
-; INCLUDE "scripts/vermilioncity.asm"
-; INCLUDE "scripts/celadoncity.asm"
-; INCLUDE "scripts/fuchsiacity.asm"
+INCLUDE "data/mapHeaders/blueshouse.asm"
+INCLUDE "scripts/blueshouse.asm"
+INCLUDE "data/mapObjects/blueshouse.asm"
+BluesHouseBlocks:
+INCBIN "maps/blueshouse.blk"
+	dr $19d05,$1a4ea
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
 SECTION "bank07",ROMX,BANK[$07]
+INCLUDE "data/mapHeaders/cinnabarisland.asm"
+INCLUDE "data/mapObjects/cinnabarisland.asm"
+CinnabarIslandBlocks:
+INCBIN "maps/cinnabarisland.blk"
 
-	dr $1c000,$1c21e ; headers, objects, blocks
+INCLUDE "data/mapHeaders/route1.asm"
+INCLUDE "data/mapObjects/route1.asm"
+Route1Blocks: ; 1c0fc
+INCBIN "maps/route1.blk"
+
+UndergroundPathEntranceRoute8Blocks:
+INCBIN "maps/undergroundpathentranceroute8.blk"
+OaksLabBlocks:
+INCBIN "maps/oakslab.blk"
+ViridianHouseBlocks:
+Route2HouseBlocks:
+PewterHouse1Blocks:
+PewterHouse2Blocks:
+CeruleanHouse1Blocks:
+INCBIN "maps/viridianhouse.blk"
+SchoolBlocks:
+INCBIN "maps/school.blk"
+CeruleanHouseTrashedBlocks:
+INCBIN "maps/ceruleanhousetrashed.blk"
+DiglettsCaveRoute2Blocks:
+DiglettsCaveEntranceRoute11Blocks:
+INCBIN "maps/diglettscaveroute2.blk"
 
 INCLUDE "engine/clear_save.asm"
 INCLUDE "engine/predefs7.asm"
 
-	dr $1c2c2,$1e2ae ; map scripts
+INCLUDE "scripts/cinnabarisland.asm"
+INCLUDE "scripts/route1.asm"
+
+INCLUDE "data/mapHeaders/oakslab.asm"
+INCLUDE "scripts/oakslab.asm"
+INCLUDE "data/mapObjects/oakslab.asm"
+
+INCLUDE "data/mapHeaders/viridianmart.asm"
+INCLUDE "scripts/viridianmart.asm"
+INCLUDE "data/mapObjects/viridianmart.asm"
+ViridianMartBlocks:
+VermilionMartBlocks:
+LavenderMartBlocks:
+CeladonMartBlocks:
+SaffronMartBlocks:
+FuchsiaMartBlocks:
+CinnabarMartBlocks:
+INCBIN "maps/viridianmart.blk"
+
+INCLUDE "data/mapHeaders/school.asm"
+INCLUDE "scripts/school.asm"
+INCLUDE "data/mapObjects/school.asm"
+
+INCLUDE "data/mapHeaders/viridianhouse.asm"
+INCLUDE "scripts/viridianhouse.asm"
+INCLUDE "data/mapObjects/viridianhouse.asm"
+
+INCLUDE "data/mapHeaders/pewterhouse1.asm"
+INCLUDE "scripts/pewterhouse1.asm"
+INCLUDE "data/mapObjects/pewterhouse1.asm"
+
+INCLUDE "data/mapHeaders/pewterhouse2.asm"
+INCLUDE "scripts/pewterhouse2.asm"
+INCLUDE "data/mapObjects/pewterhouse2.asm"
+
+INCLUDE "data/mapHeaders/ceruleanhousetrashed.asm"
+INCLUDE "scripts/ceruleanhousetrashed.asm"
+INCLUDE "data/mapObjects/ceruleanhousetrashed.asm"
+
+INCLUDE "data/mapHeaders/ceruleanhouse1.asm"
+INCLUDE "scripts/ceruleanhouse1.asm"
+INCLUDE "data/mapObjects/ceruleanhouse1.asm"
+
+INCLUDE "data/mapHeaders/bikeshop.asm"
+INCLUDE "scripts/bikeshop.asm"
+INCLUDE "data/mapObjects/bikeshop.asm"
+BikeShopBlocks:
+INCBIN "maps/bikeshop.blk"
+	dr $1d1a4,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
+INCLUDE "scripts/diglettscaveroute2.asm"
+INCLUDE "data/mapObjects/diglettscaveroute2.asm"
+
+INCLUDE "data/mapHeaders/route2house.asm"
+INCLUDE "scripts/route2house.asm"
+INCLUDE "data/mapObjects/route2house.asm"
+
+INCLUDE "data/mapHeaders/route5gate.asm"
+INCLUDE "scripts/route5gate.asm"
+INCLUDE "data/mapObjects/route5gate.asm"
+Route5GateBlocks: ; 1d92f
+INCBIN "maps/route5gate.blk"
+
+INCLUDE "data/mapHeaders/route6gate.asm"
+INCLUDE "scripts/route6gate.asm"
+INCLUDE "data/mapObjects/route6gate.asm"
+Route6GateBlocks: ; 1d9f2
+INCBIN "maps/route6gate.blk"
+
+INCLUDE "data/mapHeaders/route7gate.asm"
+INCLUDE "scripts/route7gate.asm"
+INCLUDE "data/mapObjects/route7gate.asm"
+Route7GateBlocks: ; 1dab9
+INCBIN "maps/route7gate.blk"
+
+INCLUDE "data/mapHeaders/route8gate.asm"
+INCLUDE "scripts/route8gate.asm"
+INCLUDE "data/mapObjects/route8gate.asm"
+Route8GateBlocks: ; 1dab9
+INCBIN "maps/route8gate.blk"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute8.asm"
+INCLUDE "scripts/undergroundpathentranceroute8.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute8.asm"
+
+INCLUDE "data/mapHeaders/powerplant.asm"
+INCLUDE "scripts/powerplant.asm"
+INCLUDE "data/mapObjects/powerplant.asm"
+PowerPlantBlocks:
+INCBIN "maps/powerplant.blk"
+
+INCLUDE "data/mapHeaders/diglettscaveroute11.asm"
+INCLUDE "scripts/diglettscaveroute11.asm"
+INCLUDE "data/mapObjects/diglettscaveroute11.asm"
+	dr $1def6,$1e2ae ; map scripts
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
@@ -670,19 +794,113 @@ INCLUDE "engine/menu/options.asm"
 
 SECTION "bank11",ROMX,BANK[$11]
 
-	dr $44000,$44169
+INCLUDE "data/mapHeaders/lavendertown.asm"
+INCLUDE "data/mapObjects/lavendertown.asm"
+LavenderTownBlocks:
+INCBIN "maps/lavendertown.blk"
+ViridianPokecenterBlocks:
+VermilionPokecenterBlocks:
+SaffronPokecenterBlocks:
+LavenderPokecenterBlocks:
+CeladonPokecenterBlocks:
+FuchsiaPokecenterBlocks:
+CinnabarPokecenterBlocks:
+INCBIN "maps/viridianpokecenter.blk"
+	dr $440fb,$4410b
+
+INCLUDE "scripts/lavendertown.asm"
 
 INCLUDE "engine/pokedex_rating.asm"
 
-	dr $44251,$45077
+INCLUDE "data/mapHeaders/viridianpokecenter.asm"
+INCLUDE "scripts/viridianpokecenter.asm"
+INCLUDE "data/mapObjects/viridianpokecenter.asm"
+	dr $442b7,$443b7
+Mansion1Script_Switches:
+	dr $443b7,$44571
+
+INCLUDE "data/mapHeaders/rocktunnel1.asm"
+INCLUDE "scripts/rocktunnel1.asm"
+INCLUDE "data/mapObjects/rocktunnel1.asm"
+RockTunnel1Blocks:
+INCBIN "maps/rocktunnel1.blk"
+
+	dr $4487e,$45077
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
 
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
 SECTION "bank12",ROMX,BANK[$12]
+INCLUDE "data/mapHeaders/route7.asm"
+INCLUDE "data/mapObjects/route7.asm"
+Route7Blocks: ; 48051
+INCBIN "maps/route7.blk"
+MtMoonPokecenterBlocks:
+RockTunnelPokecenterBlocks:
+INCBIN "maps/mtmoonpokecenter.blk"
+	dr $480c7,$480eb
+INCLUDE "scripts/route7.asm"
 
-	dr $48000,$4a540
+INCLUDE "data/mapHeaders/redshouse1f.asm"
+INCLUDE "scripts/redshouse1f.asm"
+INCLUDE "data/mapObjects/redshouse1f.asm"
+RedsHouse1FBlocks:
+INCBIN "maps/redshouse1f.blk"
+	dr $48157,$492a9
+
+INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
+INCLUDE "scripts/mtmoonpokecenter.asm"
+INCLUDE "data/mapObjects/mtmoonpokecenter.asm"
+
+INCLUDE "data/mapHeaders/rocktunnelpokecenter.asm"
+INCLUDE "scripts/rocktunnelpokecenter.asm"
+INCLUDE "data/mapObjects/rocktunnelpokecenter.asm"
+
+	dr $49396,$49953
+
+INCLUDE "data/mapHeaders/mtmoon1.asm"
+INCLUDE "scripts/mtmoon1.asm"
+INCLUDE "data/mapObjects/mtmoon1.asm"
+MtMoon1Blocks:
+INCBIN "maps/mtmoon1.blk"
+
+INCLUDE "data/mapHeaders/mtmoon3.asm"
+INCLUDE "scripts/mtmoon3.asm"
+INCLUDE "data/mapObjects/mtmoon3.asm"
+MtMoon3Blocks:
+INCBIN "maps/mtmoon3.blk"
+
+MtMoon3Script_4a325: ; pikachu-related function?
+	ld a, [wd472]
+	bit 7, a
+	ret z
+	ld a, [wWalkBikeSurfState]
+	and a
+	ret nz
+
+	push hl
+	push bc
+	callab GetPikachuFacingDirectionAndReturnToE
+	pop bc
+	pop hl
+	ld a, b
+	cp e
+	ret nz
+
+	push hl
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	callab LoadPikachuShadowIntoVRAM
+	pop af
+	ld [wUpdateSpritesEnabled], a
+	pop hl
+	call Func_159b
+	ret
+
+	dr $4a35a,$4a540
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -736,12 +954,83 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-	dr $4fe79,$4ff1a
+; 4fe79 (13:7e79)
+
+INCLUDE "data/mapHeaders/tradecenter.asm"
+INCLUDE "scripts/tradecenter.asm"
+INCLUDE "data/mapObjects/tradecenter.asm"
+TradeCenterBlocks:
+INCBIN "maps/tradecenter.blk"
+
+; 4fee6 (13:7ee6)
+
+INCLUDE "data/mapHeaders/colosseum.asm"
+INCLUDE "scripts/colosseum.asm"
+INCLUDE "data/mapObjects/colosseum.asm"
+ColosseumBlocks:
+INCBIN "maps/colosseum.blk"
 
 
 SECTION "bank14",ROMX,BANK[$14]
 
-	dr $50000,$525d8
+INCLUDE "data/mapHeaders/route22.asm"
+INCLUDE "data/mapObjects/route22.asm"
+Route22Blocks:
+INCBIN "maps/route22.blk"
+INCLUDE "data/mapHeaders/route20.asm"
+INCLUDE "data/mapObjects/route20.asm"
+Route20Blocks:
+INCBIN "maps/route20.blk"
+
+INCLUDE "data/mapHeaders/route23.asm"
+INCLUDE "data/mapObjects/route23.asm"
+Route23Blocks:
+INCBIN "maps/route23.blk"
+
+INCLUDE "data/mapHeaders/route24.asm"
+INCLUDE "data/mapObjects/route24.asm"
+Route24Blocks: ; 506ed (14:46ed)
+INCBIN "maps/route24.blk"
+
+INCLUDE "data/mapHeaders/route25.asm"
+INCLUDE "data/mapObjects/route25.asm"
+Route25Blocks: ; 50816 (14:4816)
+INCBIN "maps/route25.blk"
+
+; indigoplateau
+INCLUDE "data/mapHeaders/indigoplateau.asm"
+INCLUDE "scripts/indigoplateau.asm"
+INCLUDE "data/mapObjects/indigoplateau.asm"
+IndigoPlateauBlocks: ; 50950 (14:4950)
+INCBIN "maps/indigoplateau.blk"
+
+INCLUDE "data/mapHeaders/saffroncity.asm"
+INCLUDE "data/mapObjects/saffroncity.asm"
+SaffronCityBlocks: ; 50a98 (14:4a98)
+INCBIN "maps/saffroncity.blk"
+INCLUDE "scripts/saffroncity.asm"
+INCLUDE "scripts/route20.asm"
+INCLUDE "scripts/route22.asm"
+INCLUDE "scripts/route23.asm"
+INCLUDE "scripts/route24.asm"
+INCLUDE "scripts/route25.asm"
+
+; victoryroad2
+	dr $517cc,$51a78
+
+INCLUDE "data/mapHeaders/mtmoon2.asm"
+INCLUDE "scripts/mtmoon2.asm"
+INCLUDE "data/mapObjects/mtmoon2.asm"
+MtMoon2Blocks:
+INCBIN "maps/mtmoon2.blk"
+
+	dr $51b97,$52060
+Mansion2Script_Switches:
+	dr $52060,$522a3
+Mansion3Script_Switches:
+	dr $522a3,$52449
+Mansion4Script_Switches:
+	dr $52449,$525d8
 INCLUDE "engine/overworld/card_key.asm"
 
 INCLUDE "engine/menu/prize_menu.asm"
@@ -749,12 +1038,79 @@ INCLUDE "engine/menu/prize_menu.asm"
 INCLUDE "engine/hidden_object_functions14.asm"
 
 SECTION "bank15",ROMX,BANK[$15]
+INCLUDE "data/mapHeaders/route2.asm"
+INCLUDE "data/mapObjects/route2.asm"
+Route2Blocks: ; 54086
+INCBIN "maps/route2.blk"
 
-	dr $54000,$5525f
+INCLUDE "data/mapHeaders/route3.asm"
+INCLUDE "data/mapObjects/route3.asm"
+Route3Blocks: ; 5425d
+INCBIN "maps/route3.blk"
+
+INCLUDE "data/mapHeaders/route4.asm"
+INCLUDE "data/mapObjects/route4.asm"
+Route4Blocks: ; 543f4
+INCBIN "maps/route4.blk"
+
+INCLUDE "data/mapHeaders/route5.asm"
+INCLUDE "data/mapObjects/route5.asm"
+Route5Blocks: ; 545da
+INCBIN "maps/route5.blk"
+
+INCLUDE "data/mapHeaders/route9.asm"
+INCLUDE "data/mapObjects/route9.asm"
+Route9Blocks: ; 54706
+INCBIN "maps/route9.blk"
+
+INCLUDE "data/mapHeaders/route13.asm"
+INCLUDE "data/mapObjects/route13.asm"
+Route13Blocks:
+INCBIN "maps/route13.blk"
+
+INCLUDE "data/mapHeaders/route14.asm"
+INCLUDE "data/mapObjects/route14.asm"
+Route14Blocks:
+INCBIN "maps/route14.blk"
+
+INCLUDE "data/mapHeaders/route17.asm"
+INCLUDE "data/mapObjects/route17.asm"
+Route17Blocks:
+INCBIN "maps/route17.blk"
+
+INCLUDE "data/mapHeaders/route19.asm"
+INCLUDE "data/mapObjects/route19.asm"
+Route19Blocks:
+INCBIN "maps/route19.blk"
+INCLUDE "data/mapHeaders/route21.asm"
+INCLUDE "data/mapObjects/route21.asm"
+Route21Blocks: ; 5507d
+INCBIN "maps/route21.blk"
+
+DayCareMBlocks:
+INCBIN "maps/daycarem.blk"
+	dr $5524f,$5525f
 
 INCLUDE "engine/battle/experience.asm"
 
-	dr $554f7,$56714
+INCLUDE "scripts/route2.asm"
+INCLUDE "scripts/route3.asm"
+INCLUDE "scripts/route4.asm"
+INCLUDE "scripts/route5.asm"
+INCLUDE "scripts/route9.asm"
+INCLUDE "scripts/route13.asm"
+INCLUDE "scripts/route14.asm"
+INCLUDE "scripts/route17.asm"
+INCLUDE "scripts/route19.asm"
+INCLUDE "scripts/route21.asm"
+
+; vermilion house 2
+	dr $56054,$56233
+
+INCLUDE "data/mapHeaders/daycarem.asm"
+INCLUDE "scripts/daycarem.asm"
+INCLUDE "data/mapObjects/daycarem.asm"
+	dr $564a5,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"
 
@@ -763,7 +1119,46 @@ INCLUDE "engine/overworld/trainers.asm"
 
 SECTION "bank16",ROMX,BANK[$16]
 
-	dr $58000,$58d99
+INCLUDE "data/mapHeaders/route6.asm"
+INCLUDE "data/mapObjects/route6.asm"
+Route6Blocks: ; 58079
+INCBIN "maps/route6.blk"
+
+INCLUDE "data/mapHeaders/route8.asm"
+INCLUDE "data/mapObjects/route8.asm"
+Route8Blocks: ; 581c6
+INCBIN "maps/route8.blk"
+
+INCLUDE "data/mapHeaders/route10.asm"
+INCLUDE "data/mapObjects/route10.asm"
+Route10Blocks:
+INCBIN "maps/route10.blk"
+
+INCLUDE "data/mapHeaders/route11.asm"
+INCLUDE "data/mapObjects/route11.asm"
+Route11Blocks: ; 5855f
+INCBIN "maps/route11.blk"
+
+INCLUDE "data/mapHeaders/route12.asm"
+INCLUDE "data/mapObjects/route12.asm"
+Route12Blocks:
+INCBIN "maps/route12.blk"
+
+INCLUDE "data/mapHeaders/route15.asm"
+INCLUDE "data/mapObjects/route15.asm"
+Route15Blocks:
+INCBIN "maps/route15.blk"
+
+INCLUDE "data/mapHeaders/route16.asm"
+INCLUDE "data/mapObjects/route16.asm"
+Route16Blocks: ; 58b84
+INCBIN "maps/route16.blk"
+
+INCLUDE "data/mapHeaders/route18.asm"
+INCLUDE "data/mapObjects/route18.asm"
+Route18Blocks:
+INCBIN "maps/route18.blk"
+	dr $58d7d,$58d99
 
 INCLUDE "engine/experience.asm"
 
@@ -771,22 +1166,134 @@ INCLUDE "engine/status_ailments.asm"
 
 INCLUDE "engine/overworld/oaks_aide.asm"
 
-	dr $58f47,$5a53a
+INCLUDE "scripts/route6.asm"
+INCLUDE "scripts/route8.asm"
+INCLUDE "scripts/route10.asm"
+INCLUDE "scripts/route11.asm"
+INCLUDE "scripts/route12.asm"
+INCLUDE "scripts/route15.asm"
+INCLUDE "scripts/route16.asm"
+INCLUDE "scripts/route18.asm"
+	dr $59a00,$5a53a
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 
 
 SECTION "bank17",ROMX,BANK[$17]
+CeruleanMartBlocks:
+INCBIN "maps/ceruleanmart.blk"
+RedsHouse2FBlocks:
+INCBIN "maps/redshouse2f.blk"
+Museum1FBlocks:
+INCBIN "maps/museum1f.blk"
+Museum2FBlocks:
+INCBIN "maps/museum2f.blk"
+PewterPokecenterBlocks:
+INCBIN "maps/pewterpokecenter.blk"
+UndergroundPathEntranceRoute5Blocks:
+UndergroundPathEntranceRoute6Blocks:
+UndergroundPathEntranceRoute7Blocks:
+UndergroundPathEntranceRoute7CopyBlocks:
+INCBIN "maps/undergroundpathentranceroute5.blk"
+ViridianForestEntranceBlocks:
+ViridianForestExitBlocks:
+Route2GateBlocks:
+INCBIN "maps/viridianforestentrance.blk"
 
-	dr $5c000,$5da70
-EvolveMon: ; 5da70 (17:5a70)
-	dr $5da70,$5df60
+INCLUDE "data/mapHeaders/redshouse2f.asm"
+INCLUDE "scripts/redshouse2f.asm"
+INCLUDE "data/mapObjects/redshouse2f.asm"
 
+Func_5c0d4:
+	ld a, %01001011
+	ld [wPokedexOwned], a
+	predef ShowPokedexData
+	xor a
+	ld [wPokedexOwned], a
+	ret
+
+INCLUDE "data/mapHeaders/museum1f.asm"
+INCLUDE "scripts/museum1f.asm"
+INCLUDE "data/mapObjects/museum1f.asm"
+
+INCLUDE "data/mapHeaders/museum2f.asm"
+INCLUDE "scripts/museum2f.asm"
+INCLUDE "data/mapObjects/museum2f.asm"
+
+INCLUDE "data/mapHeaders/pewtergym.asm"
+INCLUDE "scripts/pewtergym.asm"
+INCLUDE "data/mapObjects/pewtergym.asm"
+PewterGymBlocks:
+INCBIN "maps/pewtergym.blk"
+
+INCLUDE "data/mapHeaders/pewterpokecenter.asm"
+INCLUDE "scripts/pewterpokecenter.asm"
+INCLUDE "data/mapObjects/pewterpokecenter.asm"
+
+INCLUDE "data/mapHeaders/ceruleanpokecenter.asm"
+INCLUDE "scripts/ceruleanpokecenter.asm"
+INCLUDE "data/mapObjects/ceruleanpokecenter.asm"
+CeruleanPokecenterBlocks:
+INCBIN "maps/ceruleanpokecenter.blk"
+
+INCLUDE "data/mapHeaders/ceruleangym.asm"
+INCLUDE "scripts/ceruleangym.asm"
+INCLUDE "data/mapObjects/ceruleangym.asm"
+CeruleanGymBlocks:
+INCBIN "maps/ceruleangym.blk"
+
+INCLUDE "data/mapHeaders/ceruleanmart.asm"
+INCLUDE "scripts/ceruleanmart.asm"
+INCLUDE "data/mapObjects/ceruleanmart.asm"
+
+	dr $5c79c,$5d485
+
+INCLUDE "data/mapHeaders/viridianforestexit.asm"
+INCLUDE "scripts/viridianforestexit.asm"
+INCLUDE "data/mapObjects/viridianforestexit.asm"
+
+INCLUDE "data/mapHeaders/route2gate.asm"
+INCLUDE "scripts/route2gate.asm"
+INCLUDE "data/mapObjects/route2gate.asm"
+
+INCLUDE "data/mapHeaders/viridianforestentrance.asm"
+INCLUDE "scripts/viridianforestentrance.asm"
+INCLUDE "data/mapObjects/viridianforestentrance.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute5.asm"
+INCLUDE "scripts/undergroundpathentranceroute5.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute5.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute6.asm"
+INCLUDE "scripts/undergroundpathentranceroute6.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute6.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute7.asm"
+INCLUDE "scripts/undergroundpathentranceroute7.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute7.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute7copy.asm"
+INCLUDE "scripts/undergroundpathentranceroute7copy.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute7copy.asm"
+
+	dr $5d6ba,$5da70
+
+INCLUDE "engine/evolution.asm"
+
+	dr $5db93,$5dbae
+
+INCLUDE "engine/hidden_object_functions17.asm"
 
 SECTION "bank18",ROMX,BANK[$18]
+ViridianForestBlocks:
+INCBIN "maps/viridianforest.blk"
+	dr $60198,$610ed
 
-	dr $60000,$62702
-
+INCLUDE "data/mapHeaders/viridianforest.asm"
+INCLUDE "scripts/viridianforest.asm"
+INCLUDE "data/mapObjects/viridianforest.asm"
+	dr $612a4,$625e8
+INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]
 Overworld_GFX:
@@ -832,13 +1339,32 @@ INCLUDE "engine/save.asm"
 
 SECTION "bank1D",ROMX,BANK[$1D]
 
-	dr $74000,$7405c
-HiddenItemNear: ; 7405c (1d:405c)
-	dr $7405c,$74726
+	dr $74000,$74010
+
+PewterMartBlocks:
+INCBIN "maps/pewtermart.blk"
+	dr $74020,$7405c
+
+INCLUDE "engine/items/itemfinder.asm"
+INCLUDE "scripts/ceruleancity2.asm"
+
+INCLUDE "data/mapHeaders/viridiangym.asm"
+INCLUDE "scripts/viridiangym.asm"
+INCLUDE "data/mapObjects/viridiangym.asm"
+ViridianGymBlocks:
+INCBIN "maps/viridiangym.blk"
+
+INCLUDE "data/mapHeaders/pewtermart.asm"
+INCLUDE "scripts/pewtermart.asm"
+INCLUDE "data/mapObjects/pewtermart.asm"
+
+	dr $7453d,$74726
 VendingMachineMenu: ; 74726 (1d:4726)
 	dr $74726,$75dfe
 PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$76177
+	dr $75dfe,$75f74
+
+INCLUDE "engine/overworld/hidden_items.asm"
 
 SECTION "bank1E",ROMX,BANK[$1E]
 
@@ -854,14 +1380,6 @@ RedFishingTilesSide:  INCBIN "gfx/red_fishing_tile_side.2bpp"
 RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
 INCLUDE "data/animations.asm"
-;AttackAnimationPointers: ; 7a22a (1e:622a)
-;	dr $7a22a,$7a915
-;SubanimationPointers: ; 7a915 (1e:6915)
-;	dr $7a915,$7b11c
-;FrameBlockPointers: ; 7b11c (1e:711c)
-;	dr $7b11c,$7be2d
-;FrameBlockBaseCoords: ; 7be2d (1e:7e2d)
-;	dr $7be2d,$7c000
 
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
@@ -872,9 +1390,120 @@ SECTION "bank30",ROMX,BANK[$30]
 	dr $c0000,$c4000
 
 SECTION "bank39",ROMX,BANK[$39]
-
-	dr $e4000,$e7ea3
-
+Pic_e4000: ; e4000
+	dr $e4000, $e40cc
+GFX_e40cc: ; e40cc
+	dr $e40cc, $e411c
+Pic_e411c: ; e411c
+	dr $e411c, $e41d2
+GFX_e41d2: ; e41d2
+	dr $e41d2, $e4272
+Pic_e4272: ; e4272
+	dr $e4272, $e4323
+GFX_e4323: ; e4323
+	dr $e4323, $e4383
+Pic_e4383: ; e4383
+	dr $e4383, $e444b
+GFX_e444b: ; e444b
+	dr $e444b, $e458b
+Pic_e458b: ; e458b
+	dr $e458b, $e463b
+GFX_e463b: ; e463b
+	dr $e463b, $e467b
+Pic_e467b: ; e467b
+	dr $e467b, $e472e
+GFX_e472e: ; e472e
+	dr $e472e, $e476e
+Pic_e476e: ; e476e
+	dr $e476e, $e4841
+GFX_e4841: ; e4841
+	dr $e4841, $e49d1
+Pic_e49d1: ; e49d1
+	dr $e49d1, $e4a99
+GFX_e4a99: ; e4a99
+	dr $e4a99, $e4b39
+Pic_e4b39: ; e4b39
+	dr $e4b39, $e4bde
+GFX_e4bde: ; e4bde
+	dr $e4bde, $e4c3e
+Pic_e4c3e: ; e4c3e
+	dr $e4c3e, $e4ce0
+GFX_e4ce0: ; e4ce0
+	dr $e4ce0, $e4e70
+GFX_e4e70: ; e4e70
+	dr $e4e70, $e5000
+Pic_e5000: ; e5000
+	dr $e5000, $e50af
+GFX_e50af: ; e50af
+	dr $e50af, $e523f
+Pic_e523f: ; e523f
+	dr $e523f, $e52fe
+GFX_e52fe: ; e52fe
+	dr $e52fe, $e548e
+Pic_e548e: ; e548e
+	dr $e548e, $e5541
+GFX_e5541: ; e5541
+	dr $e5541, $e56d1
+Pic_e56d1: ; e56d1
+	dr $e56d1, $e5794
+GFX_e5794: ; e5794
+	dr $e5794, $e5924
+Pic_e5924: ; e5924
+	dr $e5924, $e59ed
+GFX_e59ed: ; e59ed
+	dr $e59ed, $e5b7d
+Pic_e5b7d: ; e5b7d
+	dr $e5b7d, $e5c4d
+GFX_e5c4d: ; e5c4d
+	dr $e5c4d, $e5ddd
+Pic_e5ddd: ; e5ddd
+	dr $e5ddd, $e5e90
+GFX_e5e90: ; e5e90
+	dr $e5e90, $e6020
+GFX_e6020: ; e6020
+	dr $e6020, $e61b0
+GFX_e61b0: ; e61b0
+	dr $e61b0, $e6340
+Pic_e6340: ; e6340
+	dr $e6340, $e63f7
+GFX_e63f7: ; e63f7
+	dr $e63f7, $e6587
+Pic_e6587: ; e6587
+	dr $e6587, $e6646
+GFX_e6646: ; e6646
+	dr $e6646, $e67d6
+Pic_e67d6: ; e67d6
+	dr $e67d6, $e682f
+GFX_e682f: ; e682f
+	dr $e682f, $e69bf
+GFX_e69bf: ; e69bf
+	dr $e69bf, $e6b4f
+GFX_e6b4f: ; e6b4f
+	dr $e6b4f, $e6cdf
+GFX_e6cdf: ; e6cdf
+	dr $e6cdf, $e6e6f
+GFX_e6e6f: ; e6e6f
+	dr $e6e6f, $e6fff
+GFX_e6fff: ; e6fff
+	dr $e6fff, $e718f
+GFX_e718f: ; e718f
+	dr $e718f, $e731f
+GFX_e731f: ; e731f
+	dr $e731f, $e74af
+GFX_e74af: ; e74af
+	dr $e74af, $e763f
+GFX_e763f: ; e763f
+	dr $e763f, $e77cf
+Pic_e77cf: ; e77cf
+	dr $e77cf, $e7863
+GFX_e7863: ; e7863
+	dr $e7863, $e79f3
+GFX_e79f3: ; e79f3
+	dr $e79f3, $e7b83
+GFX_e7b83: ; e7b83
+	dr $e7b83, $e7d13
+GFX_e7d13: ; e7d13
+	dr $e7d13, $e7ea3
 
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"
@@ -936,14 +1565,33 @@ SECTION "bank3D",ROMX,BANK[$3D]
 INCLUDE "engine/bank3d.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
+Func_f8000: ; f8000
+	dr $f8000,$f8bcb
 
-	dr $f8000,$f982d
+Func_f8bcb: ; f8bcb
+	push de
+	callab IsSurfingPikachuInThePlayersParty
+	pop de
+	ret nc
+	callab PlayPikachuSoundClip
+	ret
+
+Func_f8bdf: ; f8bdf
+	dr $f8bdf,$f982d
 PlayIntroScene: ; f982d (3e:582d)
 	dr $f982d,$fa35a
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
-	dr $fbb5a,$fc000
+Func_fbb5a:
+	ld hl, wTileMapBackup
+	ld bc, 10 * SCREEN_WIDTH
+	xor a
+	call FillMemory
+	ret
+
+Func_fbb65:
+	dr $fbb65,$fbd76
 
 SECTION "bank3F",ROMX,BANK[$3F]
 

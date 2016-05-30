@@ -1,10 +1,13 @@
-PewterCityScript: ; 19237 (6:5237)
+PewterCityScript: ; 192f5 (6:52f5)
 	call EnableAutoTextBoxDrawing
+	ld hl, wPreventBlackout
+	res 7, [hl]
 	ld hl, PewterCityScriptPointers
 	ld a, [W_PEWTERCITYCURSCRIPT]
-	jp CallFunctionInTable
+	call JumpTable
+	ret
 
-PewterCityScriptPointers: ; 19243 (6:5243)
+PewterCityScriptPointers: ; 19307 (6:5307)
 	dw PewterCityScript0
 	dw PewterCityScript1
 	dw PewterCityScript2
@@ -13,7 +16,7 @@ PewterCityScriptPointers: ; 19243 (6:5243)
 	dw PewterCityScript5
 	dw PewterCityScript6
 
-PewterCityScript0: ; 19251 (6:5251)
+PewterCityScript0: ; 19315 (6:5315)
 	xor a
 	ld [W_MUSEUM1FCURSCRIPT], a
 	ResetEvent EVENT_BOUGHT_MUSEUM_TICKET
@@ -26,7 +29,7 @@ PewterCityScript_1925e: ; 1925e (6:525e)
 	ld hl, CoordsData_19277
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $f0
+	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $5
 	ld [hSpriteIndexOrTextID], a
@@ -48,9 +51,9 @@ PewterCityScript1: ; 19280 (6:5280)
 	ld a, SPRITE_FACING_UP
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
-	ld a, ($3 << 4) | SPRITE_FACING_UP
+	ld a, SPRITE_FACING_UP
 	ld [hSpriteImageIndex], a
-	call SetSpriteImageIndexAfterSettingFacingDirection
+	call SpriteFunc_34a1
 	call PlayDefaultMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
@@ -115,10 +118,7 @@ PewterCityScript4: ; 19305 (6:5305)
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_LEFT
 	ld [hSpriteFacingDirection], a
-	call SetSpriteFacingDirectionAndDelay
-	ld a, ($1 << 4) | SPRITE_FACING_LEFT
-	ld [hSpriteImageIndex], a
-	call SetSpriteImageIndexAfterSettingFacingDirection
+	call SpriteFunc_34a1
 	call PlayDefaultMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]

@@ -16,15 +16,15 @@ const_value = 0
 	predef_const DivideBCDPredef3
 	predef_const DivideBCDPredef4
 	predef_const InitPlayerData
-	predef_const FlagActionPredef
-	predef_const HideObject
+	predef_const FlagActionPredef ; 10
+	predef_const HideObject ; 11
 	predef_const IsObjectHidden
 	predef_const ApplyOutOfBattlePoisonDamage
 	predef_const AnyPartyAlive
 	predef_const ShowObject
 	predef_const ShowObject2
 	predef_const ReplaceTileBlock
-	predef_const InitPlayerData2
+	predef_const InitPlayerData2 ; 18
 	predef_const LoadTilesetHeader
 	predef_const LearnMoveFromLevelUp
 	predef_const LearnMove

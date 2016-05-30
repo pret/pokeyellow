@@ -3,7 +3,7 @@ Route23Script: ; 511da (14:51da)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route23ScriptPointers
 	ld a, [W_ROUTE23CURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route23Script_511e9: ; 511e9 (14:51e9)
 	ld hl, wd126

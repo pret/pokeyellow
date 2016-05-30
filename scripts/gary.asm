@@ -2,7 +2,7 @@ GaryScript: ; 75f1d (1d:5f1d)
 	call EnableAutoTextBoxDrawing
 	ld hl, GaryScriptPointers
 	ld a, [W_GARYCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 GaryScript_75f29: ; 75f29 (1d:5f29)
 	xor a

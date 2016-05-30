@@ -153,29 +153,62 @@ bcd3: MACRO
 coins equs "bcd2"
 money equs "bcd3"
 
+validateCoords: MACRO
+	if \1 >= SCREEN_WIDTH
+		fail "x coord out of range"
+	endc
+	if \2 >= SCREEN_HEIGHT
+		fail "y coord out of range"
+	endc
+	endm
+
 ;\1 = r
 ;\2 = X
 ;\3 = Y
+;\4 = which tilemap (optional)
 coord: MACRO
-	ld \1, wTileMap + 20 * \3 + \2
+	validateCoords \2, \3
+if _NARG >= 4
+	ld \1, \4 + SCREEN_WIDTH * \3 + \2
+else
+	ld \1, wTileMap + SCREEN_WIDTH * \3 + \2
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 aCoord: MACRO
-	ld a, [wTileMap + 20 * \2 + \1]
+	validateCoords \1, \2
+if _NARG >= 3
+	ld a, [\3 + SCREEN_WIDTH * \2 + \1]
+else
+	ld a, [wTileMap + SCREEN_WIDTH * \2 + \1]
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 Coorda: MACRO
-	ld [wTileMap + 20 * \2 + \1], a
+	validateCoords \1, \2
+if _NARG >= 3
+	ld [\3 + SCREEN_WIDTH * \2 + \1], a
+else
+	ld [wTileMap + SCREEN_WIDTH * \2 + \1], a
+endc
 	ENDM
 
 ;\1 = X
 ;\2 = Y
+;\3 = which tilemap (optional)
 dwCoord: MACRO
-	dw wTileMap + 20 * \2 + \1
+	validateCoords \1, \2
+if _NARG >= 3
+	dw \3 + SCREEN_WIDTH * \2 + \1
+else
+	dw wTileMap + SCREEN_WIDTH * \2 + \1
+endc
 	ENDM
 
 ;\1 = r
@@ -246,28 +279,30 @@ dbw: MACRO
 	dw \2
 	ENDM
 
+dba: MACRO
+	dbw BANK(\1), \1
+	ENDM
+
+dwb: MACRO
+	dw \1
+	db \2
+	ENDM
+
+dab: MACRO
+	dwb \1, BANK(\1)
+	ENDM
+
+dbbw: MACRO
+	db \1, \2
+	dw \3
+	ENDM
+
 ; data format macros
 RGB: MACRO
 	dw (\3 << 10 | \2 << 5 | \1)
 	ENDM
 
 ; text macros
-TX_NUM: MACRO
-; print a big-endian decimal number.
-; \1: address to read from
-; \2: number of bytes to read
-; \3: number of digits to display
-	db $09
-	dw \1
-	db \2 << 4 | \3
-	ENDM
-
-TX_FAR: MACRO
-	db $17
-	dw \1
-	db BANK(\1)
-	ENDM
-
 ; text engine command $1
 TX_RAM: MACRO
 ; prints text to screen
@@ -282,11 +317,42 @@ TX_BCD: MACRO
 	db \2
 	ENDM
 
-TX_ASM: MACRO
-	db $08
+TX_CURSOR: MACRO
+; Move cursor to (\1, \2)
+; \1: X coord (0 - 19)
+; \2: Y coord (0 - 17)
+	db $3
+	dwCoord \1, \2
+	ENDM
+
+TX_LINE EQUS "db $05"
+TX_BUTTON_SOUND EQUS "db $06"
+TX_ASM EQUS "db $08"
+
+TX_NUM: MACRO
+; print a big-endian decimal number.
+; \1: address to read from
+; \2: number of bytes to read
+; \3: number of digits to display
+	db $09
+	dw \1
+	db \2 << 4 | \3
 	ENDM
 
 TX_SFX_ITEM EQUS "db $0b"
+TX_WAIT_BUTTON EQUS "db $0d"
+TX_SFX_CONGRATS EQUS "db $10"
+TX_SFX_KEY_ITEM EQUS "db $11"
+
+TX_FAR: MACRO
+; 17AAAABB (call text at BB:AAAA)
+	db $17
+	dab \1
+	ENDM
+
+
+TX_CABLE_CLUB_RECEPTIONIST EQUS "db $f6"
+TX_POKECENTER_NURSE EQUS "db $ff"
 
 ; Predef macro.
 add_predef: MACRO
@@ -322,11 +388,11 @@ add_tx_pre: MACRO
 ENDM
 
 db_tx_pre: MACRO
-	db \1_id
+	db (\1_id - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre_id: MACRO
-	ld a, \1_id ; - TextPredefs) / 2 + 1
+	ld a, (\1_id - TextPredefs) / 2 + 1
 ENDM
 
 tx_pre: MACRO
@@ -738,3 +804,136 @@ ENDC
 	endr
 	db x
 ENDM
+
+sine_wave: MACRO
+; \1: amplitude
+
+x = 0
+	rept $20
+	; Round up.
+	dw (sin(x) + (sin(x) & $ff)) >> 8
+x = x + (\1) * $40000
+	endr
+ENDM
+
+enum_start: macro
+if _NARG >= 1
+__enum__ = \1
+else
+__enum__ = 0
+endc
+if _NARG >= 2
+__enumdir__ = \2
+else
+__enumdir__ = +1
+endc
+endm
+
+enum: macro
+\1 = __enum__
+__enum__ = __enum__ + __enumdir__
+endm
+
+enum_set: macro
+__enum__ = \1
+endm
+
+pikacry_def: MACRO
+\1_id:: dba \1
+endm
+
+dpikacry: MACRO
+	db (\1_id - PikachuCriesPointerTable) / 3
+	endm
+
+ldpikacry: MACRO
+	ld \1, (\2_id - PikachuCriesPointerTable) / 3
+	ENDM
+
+pikacry: MACRO
+	ldpikacry a, \1
+	endm
+
+
+	enum_start
+	enum pikapic_nop_command
+pikapic_nop: macro
+	db pikapic_nop_command
+	endm
+
+	enum pikapic_writebyte_command
+pikapic_writebyte: macro
+	db pikapic_writebyte_command, \1
+	endm
+
+	enum pikapic_loadgfx_command
+pikapic_loadgfx: macro
+	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
+	endm
+
+	enum pikapic_object_command
+pikapic_object: macro
+	db pikapic_object_command
+	dw \1
+	db \2, \3, \4
+	endm
+
+	enum pikapic_nop4_command
+pikapic_nop4: macro
+	db pikapic_nop4_command
+	endm
+
+	enum pikapic_nop5_command
+pikapic_nop5: macro
+	db pikapic_nop5_command
+	endm
+
+	enum pikapic_waitbgmapeleteobject_command
+pikapic_waitbgmapeleteobject: macro
+	db pikapic_waitbgmapeleteobject_command, \1
+	endm
+
+	enum pikapic_nop7_command
+pikapic_nop7: macro
+	db pikapic_nop7_command
+	endm
+
+	enum pikapic_nop8_command
+pikapic_nop8: macro
+	db pikapic_nop8_command
+	endm
+
+	enum pikapic_jump_command
+pikapic_jump: macro ; 9
+	dbw pikapic_jump_command, \1
+	endm
+
+	enum pikapic_setduration_command
+pikapic_setduration: macro ; a
+	dbw pikapic_setduration_command, \1
+	endm
+
+	enum pikapic_cry_command
+pikapic_cry: macro ; b
+	db pikapic_cry_command
+IF _NARG == 0
+	db $ff
+else
+	dpikacry \1
+	endc
+	endm
+
+	enum pikapic_thunderbolt_command
+pikapic_thunderbolt: macro ; c
+	db pikapic_thunderbolt_command
+	endm
+
+	enum pikapic_waitbgmap_command
+pikapic_waitbgmap: macro ; d
+	db pikapic_waitbgmap_command
+	endm
+
+	enum pikapic_ret_command
+pikapic_ret: macro ; e
+	db pikapic_ret_command
+	endm

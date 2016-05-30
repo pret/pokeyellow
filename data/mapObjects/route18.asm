@@ -3,9 +3,9 @@ Route18Object: ; 0x58c5a (size=66)
 
 	db $4 ; warps
 	db $8, $21, $0, ROUTE_18_GATE_1F
-	db $9, $21, $1, ROUTE_18_GATE_1F
+	db $9, $21, $0, ROUTE_18_GATE_1F
 	db $8, $28, $2, ROUTE_18_GATE_1F
-	db $9, $28, $3, ROUTE_18_GATE_1F
+	db $9, $28, $2, ROUTE_18_GATE_1F
 
 	db $2 ; signs
 	db $7, $2b, $4 ; Route18Text4

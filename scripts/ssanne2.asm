@@ -2,7 +2,7 @@ SSAnne2Script: ; 6139f (18:539f)
 	call EnableAutoTextBoxDrawing
 	ld hl, SSAnne2ScriptPointers
 	ld a, [W_SSANNE2CURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 SSAnne2Script_613ab: ; 613ab (18:53ab)
 	xor a

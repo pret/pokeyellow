@@ -1,27 +1,17 @@
-; if a hidden object was found, stores $00 in [$ffee], else stores $ff
-CheckForHiddenObject: ; 469a0 (11:69a0)
-	ld hl, $ffeb
+; if a hidden object was found, stores $00 in [hDidntFindAnyHiddenObject], else stores $ff
+CheckForHiddenObject: ; f25f8 (3c:65f8)
+	ld hl, hItemAlreadyFound
 	xor a
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld de, $0
 	ld hl, HiddenObjectMaps
-.hiddenMapLoop
-	ld a, [hli]
-	ld b, a
-	cp $ff
-	jr z, .noMatch
+	ld de, 3
 	ld a, [wCurMap]
-	cp b
-	jr z, .foundMatchingMap
-	inc de
-	inc de
-	jr .hiddenMapLoop
-.foundMatchingMap
-	ld hl, HiddenObjectPointers
-	add hl, de
+	call IsInArray
+	jr nc, .noMatch
+	inc hl
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -65,7 +55,7 @@ CheckForHiddenObject: ; 469a0 (11:69a0)
 	ret
 .noMatch
 	ld a, $ff
-	ld [$ffee], a
+	ld [hDidntFindAnyHiddenObject], a
 	ret
 
 ; checks if the coordinates in front of the player's sprite match Y in b and X in c

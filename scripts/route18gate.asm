@@ -4,7 +4,7 @@ Route18GateScript: ; 49876 (12:5876)
 	call EnableAutoTextBoxDrawing
 	ld a, [W_ROUTE18GATECURSCRIPT]
 	ld hl, Route18GateScriptPointers
-	jp CallFunctionInTable
+	jp JumpTable
 
 Route18GateScriptPointers: ; 49887 (12:5887)
 	dw Route18GateScript0

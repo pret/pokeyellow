@@ -9,7 +9,7 @@ HiddenItems: ; 76688 (1d:6688)
 	predef FlagActionPredef
 	ld a, c
 	and a
-	ret nz
+	jr nz, .asm_75fa5
 	call EnableAutoTextBoxDrawing
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -17,6 +17,11 @@ HiddenItems: ; 76688 (1d:6688)
 	ld [wd11e], a
 	call GetItemName
 	tx_pre_jump FoundHiddenItemText
+
+.asm_75fa5
+	ld a, $ff
+	ld [hItemAlreadyFound], a
+	ret
 
 INCLUDE "data/hidden_item_coords.asm"
 
@@ -54,7 +59,7 @@ HiddenCoins: ; 76799 (1d:6799)
 	predef GetQuantityOfItemInBag
 	ld a, b
 	and a
-	ret z
+	jr z, .asm_760ce
 	ld hl, HiddenCoinCoords
 	call FindHiddenItemOrCoinsIndex
 	ld [wHiddenItemOrCoinsIndex], a
@@ -65,7 +70,7 @@ HiddenCoins: ; 76799 (1d:6799)
 	predef FlagActionPredef
 	ld a, c
 	and a
-	ret nz
+	jr nz, .asm_760ce
 	xor a
 	ld [hUnusedCoinsByte], a
 	ld [hCoins], a
@@ -79,6 +84,12 @@ HiddenCoins: ; 76799 (1d:6799)
 	cp 40
 	jr z, .bcd20
 	jr .bcd100
+
+.asm_760ce
+	ld a, $ff
+	ld [hItemAlreadyFound], a
+	ret
+
 .bcd10
 	ld a, $10
 	ld [hCoins + 1], a

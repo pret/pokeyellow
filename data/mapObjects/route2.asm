@@ -1,13 +1,14 @@
 Route2Object: ; 0x54022 (size=72)
 	db $f ; border block
 
-	db $6 ; warps
+	db $7 ; warps
 	db $9, $c, $0, DIGLETTS_CAVE_EXIT
 	db $b, $3, $1, VIRIDIAN_FOREST_EXIT
 	db $13, $f, $0, ROUTE_2_HOUSE
 	db $23, $10, $1, ROUTE_2_GATE
 	db $27, $f, $2, ROUTE_2_GATE
 	db $2b, $3, $2, VIRIDIAN_FOREST_ENTRANCE
+	db $23, $11, $1, ROUTE_2_GATE
 
 	db $2 ; signs
 	db $41, $5, $3 ; Route2Text3
@@ -24,10 +25,12 @@ Route2Object: ; 0x54022 (size=72)
 	EVENT_DISP ROUTE_2_WIDTH, $23, $10 ; ROUTE_2_GATE
 	EVENT_DISP ROUTE_2_WIDTH, $27, $f ; ROUTE_2_GATE
 	EVENT_DISP ROUTE_2_WIDTH, $2b, $3 ; VIRIDIAN_FOREST_ENTRANCE
+	EVENT_DISP ROUTE_2_WIDTH, $23, $11 ; ROUTE_2_GATE
 
 	; unused
 	EVENT_DISP $4, $7, $2
-	db   $12, $c7, $9, $7
+	dw      $c712
+	db             $9, $7
 	EVENT_DISP $4, $7, $2
 	EVENT_DISP $4, $7, $2
 	EVENT_DISP $4, $7, $2

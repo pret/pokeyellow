@@ -1,4 +1,4 @@
-Route24Script: ; 513ad (14:53ad)
+Route24Script: ; 51366 (14:5366)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route24TrainerHeaders
 	ld de, Route24ScriptPointers
@@ -84,6 +84,7 @@ Route24TextPointers: ; 5144b (14:544b)
 	dw Route24Text6
 	dw Route24Text7
 	dw PickUpItemText
+	dw Route24Text8
 
 Route24TrainerHeaders: ; 5145b (14:545b)
 Route24TrainerHeader0: ; 5145b (14:545b)
@@ -191,7 +192,9 @@ Route24Text_51510: ; 51510 (14:5510)
 
 Route24Text_5151a: ; 5151a (14:551a)
 	TX_FAR _Route24Text_5151a
-	db $0B, $6, "@"
+	TX_SFX_KEY_ITEM
+	TX_BUTTON_SOUND
+	db "@"
 
 Route24Text_51521: ; 51521 (14:5521)
 	TX_FAR _Route24Text_51521
@@ -316,3 +319,60 @@ Route24EndBattleText6: ; 515c1 (14:55c1)
 Route24AfterBattleText6: ; 515c6 (14:55c6)
 	TX_FAR _Route24AfterBattleText6
 	db "@"
+
+Route24Text8:
+	TX_ASM
+	CheckEvent EVENT_54F
+	jr nz, .asm_515d5
+	ld hl, Route24Text_515de
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .asm_515d0
+	ld a, CHARMANDER
+	ld [wd11e], a
+	ld [wcf91], a
+	call GetMonName
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	lb bc, CHARMANDER, 10
+	call GivePokemon
+	jp nc, TextScriptEnd
+	ld a, [wAddedToParty]
+	and a
+	call z, WaitForTextScrollButtonPress
+	ld a, $1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld hl, Route24Text_515e3
+	call PrintText
+	SetEvent EVENT_54F
+	jp TextScriptEnd
+
+.asm_515d0
+	ld hl, Route24Text_515e9
+	jr .asm_515d8
+
+.asm_515d5
+	ld hl, Route24Text_515ee
+.asm_515d8
+	call PrintText
+	jp TextScriptEnd
+
+Route24Text_515de:
+	TX_FAR _Route24DamianText1
+	db "@"
+
+Route24Text_515e3:
+	TX_FAR _Route24DamianText2
+	db $d
+	db "@"
+
+Route24Text_515e9:
+	TX_FAR _Route24DamianText3
+	db "@"
+
+Route24Text_515ee:
+	TX_FAR _Route24DamianText4
+	db "@"
+

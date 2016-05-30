@@ -1,4 +1,4 @@
-GymStatues: ; 62419 (18:6419)
+GymStatues: ; 625e8 (18:65e8)
 ; if in a gym and have the corresponding badge, a = GymStatueText2_id and jp PrintPredefTextID
 ; if in a gym and don’t have the corresponding badge, a = GymStatueText1_id and jp PrintPredefTextID
 ; else ret
@@ -29,14 +29,14 @@ GymStatues: ; 62419 (18:6419)
 	jp PrintPredefTextID
 
 .BadgeFlags: ; 62442 (18:6442)
-	db PEWTER_GYM,   %00000001
-	db CERULEAN_GYM, %00000010
-	db VERMILION_GYM,%00000100
-	db CELADON_GYM,  %00001000
-	db FUCHSIA_GYM,  %00010000
-	db SAFFRON_GYM,  %00100000
-	db CINNABAR_GYM, %01000000
-	db VIRIDIAN_GYM, %10000000
+	db PEWTER_GYM,    %00000001
+	db CERULEAN_GYM,  %00000010
+	db VERMILION_GYM, %00000100
+	db CELADON_GYM,   %00001000
+	db FUCHSIA_GYM,   %00010000
+	db SAFFRON_GYM,   %00100000
+	db CINNABAR_GYM,  %01000000
+	db VIRIDIAN_GYM,  %10000000
 	db $ff
 
 GymStatueText1: ; 62453 (18:6453)
@@ -72,30 +72,36 @@ PrintBenchGuyText: ; 6245d (18:645d)
 
 ; format: db map id, player sprite facing direction, text id of PredefTextIDPointerTable
 BenchGuyTextPointers: ; 6247e (18:647e)
-	db VIRIDIAN_POKECENTER,   SPRITE_FACING_LEFT
-	db (ViridianCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
-	db PEWTER_POKECENTER,     SPRITE_FACING_LEFT
-	db (PewterCityPokecenterBenchGuyText_id     - TextPredefs) / 2 + 1
-	db CERULEAN_POKECENTER,   SPRITE_FACING_LEFT
-	db (CeruleanCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
-	db LAVENDER_POKECENTER,   SPRITE_FACING_LEFT
-	db (LavenderCityPokecenterBenchGuyText_id   - TextPredefs) / 2 + 1
-	db VERMILION_POKECENTER,  SPRITE_FACING_LEFT
-	db (VermilionCityPokecenterBenchGuyText_id  - TextPredefs) / 2 + 1
-	db CELADON_POKECENTER,    SPRITE_FACING_LEFT
-	db (CeladonCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
-	db CELADON_HOTEL,         SPRITE_FACING_LEFT
-	db (CeladonCityHotelText_id                 - TextPredefs) / 2 + 1
-	db FUCHSIA_POKECENTER,    SPRITE_FACING_LEFT
-	db (FuchsiaCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
-	db CINNABAR_POKECENTER,   SPRITE_FACING_LEFT
-	db (CinnabarIslandPokecenterBenchGuyText_id - TextPredefs) / 2 + 1
-	db SAFFRON_POKECENTER,    SPRITE_FACING_LEFT
-	db (SaffronCityPokecenterBenchGuyText_id    - TextPredefs) / 2 + 1
-	db MT_MOON_POKECENTER,    SPRITE_FACING_LEFT
-	db (MtMoonPokecenterBenchGuyText_id         - TextPredefs) / 2 + 1
-	db ROCK_TUNNEL_POKECENTER,SPRITE_FACING_LEFT
-	db (RockTunnelPokecenterBenchGuyText_id     - TextPredefs) / 2 + 1
+	db VIRIDIAN_POKECENTER,     SPRITE_FACING_LEFT
+	db_tx_pre ViridianCityPokecenterBenchGuyText
+	db PEWTER_POKECENTER,       SPRITE_FACING_LEFT
+	db_tx_pre PewterCityPokecenterBenchGuyText
+	db CERULEAN_POKECENTER,     SPRITE_FACING_LEFT
+	db_tx_pre CeruleanCityPokecenterBenchGuyText
+	db LAVENDER_POKECENTER,     SPRITE_FACING_LEFT
+	db_tx_pre LavenderCityPokecenterBenchGuyText
+	db VERMILION_POKECENTER,    SPRITE_FACING_LEFT
+	db_tx_pre VermilionCityPokecenterBenchGuyText
+	db CELADON_POKECENTER,      SPRITE_FACING_LEFT
+	db_tx_pre CeladonCityPokecenterBenchGuyText
+	db CELADON_HOTEL,           SPRITE_FACING_LEFT
+	db_tx_pre CeladonCityHotelText
+	db FUCHSIA_POKECENTER,      SPRITE_FACING_LEFT
+	db_tx_pre FuchsiaCityPokecenterBenchGuyText
+	db CINNABAR_POKECENTER,     SPRITE_FACING_LEFT
+	db_tx_pre CinnabarIslandPokecenterBenchGuyText
+	db SAFFRON_POKECENTER,      SPRITE_FACING_LEFT
+	db_tx_pre SaffronCityPokecenterBenchGuyText
+	db MT_MOON_POKECENTER,      SPRITE_FACING_LEFT
+	db_tx_pre MtMoonPokecenterBenchGuyText
+	db ROCK_TUNNEL_POKECENTER,  SPRITE_FACING_LEFT
+	db_tx_pre RockTunnelPokecenterBenchGuyText
+	db SAFARI_ZONE_REST_HOUSE_2,SPRITE_FACING_LEFT
+	db_tx_pre UnusedBenchGuyText1
+	db SAFARI_ZONE_REST_HOUSE_3,SPRITE_FACING_LEFT
+	db_tx_pre UnusedBenchGuyText2
+	db SAFARI_ZONE_REST_HOUSE_4,SPRITE_FACING_LEFT
+	db_tx_pre UnusedBenchGuyText3
 	db $FF
 
 ViridianCityPokecenterBenchGuyText: ; 624a3 (18:64a3)
@@ -177,7 +183,7 @@ CeladonCityHotelText: ; 62502 (18:6502)
 UnusedPredefText: ; 62508 (18:6508)
 	db "@"
 
-PrintBookcaseText: ; 6509 (18:6509)
+PrintBookcaseText: ; 626e1 (18:66e1)
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump BookcaseText
 

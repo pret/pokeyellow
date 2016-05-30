@@ -2,7 +2,7 @@ CeruleanCityScript: ; 19480 (6:5480)
 	call EnableAutoTextBoxDrawing
 	ld hl, CeruleanCityScriptPointers
 	ld a, [W_CERULEANCITYCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 CeruleanCityScript_1948c: ; 1948c (6:548c)
 	xor a
@@ -64,9 +64,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_19512
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 .asm_19512
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
@@ -136,23 +134,8 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY1
 	ld [wCurOpponent], a
-
-	; select which team to use during the encounter
-	ld a, [W_RIVALSTARTER]
-	cp STARTER2
-	jr nz, .NotSquirtle
-	ld a, $7
-	jr .done
-.NotSquirtle
-	cp STARTER3
-	jr nz, .Charmander
-	ld a, $8
-	jr .done
-.Charmander
-	ld a, $9
-.done
+	ld a, 3
 	ld [wTrainerNo], a
-
 	xor a
 	ld [hJoyHeld], a
 	call CeruleanCityScript_1955d
@@ -171,9 +154,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	callba Music_RivalAlternateStart
 	ld a, $1
 	ld [H_SPRITEINDEX], a

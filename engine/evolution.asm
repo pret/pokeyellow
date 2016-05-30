@@ -1,4 +1,4 @@
-EvolveMon: ; 7bde9 (1e:7de9)
+EvolveMon: ; 5da70 (17:5a70)
 	push hl
 	push de
 	push bc
@@ -9,9 +9,7 @@ EvolveMon: ; 7bde9 (1e:7de9)
 	xor a
 	ld [wLowHealthAlarm], a
 	ld [wChannelSoundIDs + CH4], a
-	dec a
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld a, SFX_TINK
@@ -67,9 +65,7 @@ EvolveMon: ; 7bde9 (1e:7de9)
 	ld a, [wEvoNewSpecies]
 .done
 	ld [wWholeScreenPaletteMonSpecies], a
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	ld a, [wWholeScreenPaletteMonSpecies]
 	call PlayCry
 	ld c, 0

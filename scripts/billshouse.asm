@@ -2,7 +2,7 @@ BillsHouseScript: ; 1e76a (7:676a)
 	call EnableAutoTextBoxDrawing
 	ld a, [W_BILLSHOUSECURSCRIPT]
 	ld hl, BillsHouseScriptPointers
-	jp CallFunctionInTable
+	jp JumpTable
 
 BillsHouseScriptPointers: ; 1e776 (7:6776)
 	dw BillsHouseScript0

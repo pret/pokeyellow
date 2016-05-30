@@ -55,6 +55,7 @@ CeruleanGymScript_5c70d: ; 5c70d (17:470d)
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM11
 	jr .asm_5c736
+
 .BagFull
 	ld a, $7
 	ld [hSpriteIndexOrTextID], a
@@ -158,7 +159,7 @@ CeruleanGymText7: ; 5c7d3 (17:47d3)
 
 CeruleanGymText_5c7d8: ; 5c7d8 (17:47d8)
 	TX_FAR _CeruleanGymText_5c7d8
-	db $11, $6, "@"
+	db "@"
 
 CeruleanGymText2: ; 5c7df (17:47df)
 	TX_ASM

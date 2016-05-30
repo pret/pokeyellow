@@ -4,7 +4,7 @@ CeladonGameCornerScript: ; 48bbd (12:4bbd)
 	call EnableAutoTextBoxDrawing
 	ld hl, CeladonGameCornerScriptPointers
 	ld a, [W_CELADONGAMECORNERCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 CeladonGameCornerScript_48bcf: ; 48bcf (12:4bcf)
 	ld hl, wd126

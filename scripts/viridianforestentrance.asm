@@ -1,5 +1,6 @@
 ViridianForestEntranceScript: ; 5d65c (17:565c)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 ViridianForestEntranceTextPointers: ; 5d65f (17:565f)
 	dw ViridianForestEntranceText1

@@ -607,7 +607,7 @@ ItemUseSurfboard: ; d725 (3:5725)
 	call .makePlayerMoveForward
 	ld a,$3
 	ld [wd431], a
-	ld hl,wd430
+	ld hl,wPikachuOverworldStateFlags
 	set 5,[hl]
 	ld hl,wd730
 	set 7,[hl]
@@ -1765,7 +1765,7 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 .notRoute16
 	cp a,PEWTER_POKECENTER
 	jr nz,.noSnorlaxOrPikachuToWakeUp
-	call Func_154a
+	call CheckPikachuAsleep
 	jr z,.noSnorlaxOrPikachuToWakeUp
 	callab Func_fcb01
 	jr nc,.noSnorlaxOrPikachuToWakeUp

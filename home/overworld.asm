@@ -638,7 +638,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld [wCurrentTileBlockMapViewPointer + 1],a
 .loadNewMap ; 06ce (0:06ce)
 ; load the connected map that was entered
-	ld hl,wd430
+	ld hl,wPikachuOverworldStateFlags
 	set 4,[hl]
 	ld a,$2
 	ld [wd431],a
@@ -1222,7 +1222,7 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 ; if no sprite collision
 	cp $f
 	jr nz,.collision
-	call Func_154a
+	call CheckPikachuAsleep
 	jr nz,.collision
 	ld a,[hJoyHeld]
 	and $2
@@ -1716,7 +1716,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 .stopSurfing ; based game freak
 	ld a,$3
 	ld [wd431],a
-	ld hl,wd430
+	ld hl,wPikachuOverworldStateFlags
 	set 5,[hl]
 	xor a
 	ld [wWalkBikeSurfState],a

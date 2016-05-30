@@ -2,7 +2,7 @@ HallofFameRoomScript: ; 5a49e (16:649e)
 	call EnableAutoTextBoxDrawing
 	ld hl, HallofFameRoomScriptPointers
 	ld a, [W_HALLOFFAMEROOMCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 HallofFameRoomScript_5a4aa: ; 5a4aa (16:64aa)
 	xor a

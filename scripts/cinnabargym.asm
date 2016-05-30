@@ -3,7 +3,7 @@ CinnabarGymScript: ; 7574a (1d:574a)
 	call EnableAutoTextBoxDrawing
 	ld hl, CinnabarGymScriptPointers
 	ld a, [W_CINNABARGYMCURSCRIPT]
-	jp CallFunctionInTable
+	jp JumpTable
 
 CinnabarGymScript_75759: ; 75759 (1d:5759)
 	ld hl, wd126

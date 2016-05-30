@@ -1,4 +1,4 @@
-SaffronCityObject: ; 0x509dc (size=188)
+SaffronCityObject: ; 0x509e2 (size=188)
 	db $f ; border block
 
 	db $8 ; warps
@@ -23,7 +23,7 @@ SaffronCityObject: ; 0x509dc (size=188)
 	db $1d, $1b, $18 ; SaffronCityText24
 	db $13, $1, $19 ; SaffronCityText25
 
-	db $f ; objects
+	db $e ; objects
 	object SPRITE_ROCKET, $7, $6, STAY, NONE, $1 ; person
 	object SPRITE_ROCKET, $14, $8, WALK, $2, $2 ; person
 	object SPRITE_ROCKET, $22, $4, STAY, NONE, $3 ; person
@@ -38,7 +38,6 @@ SaffronCityObject: ; 0x509dc (size=188)
 	object SPRITE_BIRD, $1f, $c, STAY, DOWN, $c ; person
 	object SPRITE_ROCKER, $12, $8, STAY, UP, $d ; person
 	object SPRITE_ROCKET, $12, $16, STAY, DOWN, $e ; person
-	object SPRITE_ROCKET, $13, $16, STAY, DOWN, $f ; person
 
 	; warp-to
 	EVENT_DISP SAFFRON_CITY_WIDTH, $5, $7 ; COPYCATS_HOUSE_1F

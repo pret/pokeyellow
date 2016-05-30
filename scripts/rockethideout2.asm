@@ -313,7 +313,7 @@ RocketHideout2Script3: ; 44fc2 (11:4fc2)
 	ld [W_CURMAPSCRIPT], a
 	ret
 
-LoadSpinnerArrowTiles: ; 44fd7 (11:4fd7)
+LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	ld a, [wSpriteStateData1 + 2]
 	srl a
 	srl a

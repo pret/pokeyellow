@@ -309,6 +309,10 @@ hCoordsInFrontOfPlayerMatch EQU $FFEA
 
 hSpriteAnimFrameCounter EQU $FFEA
 
+hItemAlreadyFound EQU $FFEB
+
+hDidntFindAnyHiddenObject EQU $FFEE
+
 H_WHOSETURN EQU $FFF3 ; 0 on player’s turn, 1 on enemy’s turn
 
 hLCDCPointer EQU $FFF4
@@ -322,5 +326,7 @@ hDisableJoypadPolling EQU $FFF8 ; non-zero value disables polling of joypad
 hFlags_0xFFFA EQU $FFFA
 
 hFieldMoveMonMenuTopMenuItemX EQU $FFFB
+
+h_0xFFFC EQU $FFFC
 
 hGBC EQU $FFFE ; 0 if DMG, != 0 if GBC

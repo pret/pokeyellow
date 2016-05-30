@@ -33,7 +33,7 @@ FuchsiaCityObject: ; 0x18bd4 (size=178)
 	object SPRITE_GAMBLER, $1c, $11, WALK, $2, $2 ; person
 	object SPRITE_FISHER2, $1e, $e, STAY, DOWN, $3 ; person
 	object SPRITE_BUG_CATCHER, $18, $8, STAY, UP, $4 ; person
-	object SPRITE_CLEFAIRY, $1f, $5, WALK, $0, $5 ; person
+	object SPRITE_CHANSEY, $1f, $5, STAY, DOWN, $5 ; person
 	object SPRITE_BALL, $19, $6, STAY, NONE, $6 ; person
 	object SPRITE_SLOWBRO, $c, $6, WALK, $2, $7 ; person
 	object SPRITE_SLOWBRO, $1e, $c, WALK, $2, $8 ; person

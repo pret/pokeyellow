@@ -125,6 +125,27 @@ CheckAndResetEventA: MACRO
 	ld [wEventFlags + ((\1) / 8)], a
 	ENDM
 
+CheckAndSetEventReuseHL: MACRO
+	IF event_byte != ((\1) / 8)
+event_byte = ((\1) / 8)
+		ld hl, wEventFlags + event_byte
+	ENDC
+
+	bit (\1) % 8, [hl]
+	set (\1) % 8, [hl]
+	ENDM
+
+CheckAndResetEventReuseHL: MACRO
+	IF event_byte != ((\1) / 8)
+event_byte = ((\1) / 8)
+		ld hl, wEventFlags + event_byte
+	ENDC
+
+	bit (\1) % 8, [hl]
+	res (\1) % 8, [hl]
+	ENDM
+
+
 ;\1 = event index
 SetEvent: MACRO
 event_byte = ((\1) / 8)
@@ -406,6 +427,36 @@ event_byte = ((\1) / 8)
 ;\1 = event index 1
 ;\2 = event index 2
 CheckEitherEventSet: MACRO
+	IF ((\1) / 8) == ((\2) / 8)
+		ld a, [wEventFlags + ((\1) / 8)]
+		and (1 << ((\1) % 8)) | (1 << ((\2) % 8))
+	ELSE
+		; This case doesn't happen in the original ROM.
+		IF ((\1) % 8) == ((\2) % 8)
+			push hl
+			ld a, [wEventFlags + ((\1) / 8)]
+			ld hl, wEventFlags + ((\2) / 8)
+			or [hl]
+			bit ((\1) % 8), a
+			pop hl
+		ELSE
+			push bc
+			ld a, [wEventFlags + ((\1) / 8)]
+			and (1 << ((\1) % 8))
+			ld b, a
+			ld a, [wEventFlags + ((\2) / 8)]
+			and (1 << ((\2) % 8))
+			or b
+			pop bc
+		ENDC
+	ENDC
+	ENDM
+
+CheckEitherEventSetReuseA: MACRO
+	IF event_byte != ((\1) / 8)
+event_byte = ((\1) / 8)
+		ld a, [wEventFlags + event_byte]
+	ENDC
 	IF ((\1) / 8) == ((\2) / 8)
 		ld a, [wEventFlags + ((\1) / 8)]
 		and (1 << ((\1) % 8)) | (1 << ((\2) % 8))

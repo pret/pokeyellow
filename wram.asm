@@ -286,7 +286,13 @@ wSerialEnemyMonsPatchList:: ; c5d0
 
 wTempPic::
 wOverworldMap:: ; c6e8
-	ds 1300
+	; ds 1300
+	ds $290
+	
+wPrinterTileBuffer:: ; c978
+	ds SCREEN_HEIGHT * SCREEN_WIDTH
+wcae0:: ; cae0
+	ds 284
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
@@ -380,11 +386,7 @@ wTradeCenterPointerTableIndex:: ; cc38
 
 	ds 1
 
-wUnusedCC3A:: ; cc3a
-	ds 1
-
-wUnusedCC3B:: ; cc3b
-	ds 1
+wTextDestinationTileAddrBuffer:: dw ; cc3a
 
 wDoNotWaitForButtonPressAfterDisplayingText:: ; cc3c
 ; if non-zero, skip waiting for a button press after displaying text in DisplayTextID
@@ -535,9 +537,23 @@ wAnimPalette:: ; cc79
 
 wNPCMovementDirections2:: ; cc97
 
+wPikaPicAnimObjectDataBufferSize:: ; cc97
+
 wSwitchPartyMonTempBuffer:: ; cc97
 ; temporary buffer when swapping party mon data
-	ds 10
+	ds 1
+
+wPikaPicAnimObjectDataBuffer:: ; cc98
+; 4 structs each of length 8
+; 	0: index
+; 	1: object id (dw)
+; 	3: ?
+; 	4: ?
+; 	5: ?
+; 	6: ?
+; 	7: ?
+
+	ds 9
 
 wNumStepsToTake:: ; cca1
 ; used in Pallet Town scripted movement
@@ -940,6 +956,8 @@ wPlayerSpinWhileMovingUpOrDownAnimMaxY:: ; cd3e
 wHiddenObjectFunctionRomBank:: ; cd3e
 
 wTrainerEngageDistance:: ; cd3e
+
+wJigglypuffFacingDirections2:: ; cd3e
 	ds 1
 
 wHUDGraphicsTiles:: ; cd3f
@@ -1020,6 +1038,8 @@ wHoFTeamNo:: ; cd42
 wSlotMachineWheel1MiddleTile:: ; cd42
 
 wFieldMovesLeftmostXCoord:: ; cd42
+
+wcd42:: ; cd42
 	ds 1
 
 wLastFieldMoveID:: ; cd43
@@ -2266,7 +2286,7 @@ wPartyDataEnd::
 
 wMainDataStart::
 
-wPokedexOwned:: ; d2f7
+wPokedexOwned:: ; d2f6
 	flag_array NUM_POKEMON
 wPokedexOwnedEnd::
 
@@ -2503,27 +2523,41 @@ wDestinationWarpID:: ; d42f
 ; if $ff, the player's coordinates are not updated when entering the map
 	ds 1
 
-wd430:: ds 1 ; d42f
+wPikachuOverworldStateFlags:: ds 1 ; d42f
 wd431:: ds 1 ; d430
 wd432:: ds 1 ; d431
 wd433:: ds 1 ; d432
 wd434:: ds 1
 wd435:: ds 1
 wd436:: ds 1
-wd437:: ds 1
-wd438:: ds 1
-
-	ds 15
+wPikachuFollowCommandBufferSize:: ds 1
+wPikachuFollowCommandBuffer:: ds 16
 
 wExpressionNumber:: ; d447
 	ds 1
-
+wExpressionNumber2::
 	ds 1
 	
-wd44a:: ds 1
+wd44a:: ds 1 ; d449
 wd44b:: ds 1
-
-	ds 36
+wd44c:: ds 1
+wd44d:: ds 1
+wPikaPicAnimPointer:: dw   ; d44d
+wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
+wPikaPicAnimCurGraphicID:: ds 1
+wPikaPicAnimTimer:: ds 2 ; d451
+wPikaPicAnimDelay::
+wPikaSpriteX:: ds 1
+wPikaPicTextboxStartX::
+wPikaSpriteY:: ds 1 ; d454
+wPikaPicTextboxStartY:: ds 1 ; d455
+wd456:: ds 1 ; d456
+wd457:: ds 1 ; d457
+wd458:: ds 1 ; d458
+wCurPikaPicAnimObject:: ; d459
+wCurPikaPicAnimObjectIndex:: ds 1
+wCurPikaPicAnimObjectGraphicID:: dw
+	ds 19
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470
@@ -2816,7 +2850,9 @@ W_MANSION4CURSCRIPT:: ; d63e
 W_VICTORYROAD2CURSCRIPT:: ; d63f
 	ds 1
 W_VICTORYROAD3CURSCRIPT:: ; d640
-	ds 2
+	ds 1
+W_CELADONCITYCURSCRIPT::
+	ds 1
 W_FIGHTINGDOJOCURSCRIPT:: ; d642
 	ds 1
 W_SILPHCO2CURSCRIPT:: ; d643

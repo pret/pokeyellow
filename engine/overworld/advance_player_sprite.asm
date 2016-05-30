@@ -7,7 +7,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	dec [hl]
 	jr nz,.afterUpdateMapCoords
 ; if it's the end of the animation, update the player's map coordinates
-	ld hl, wd430
+	ld hl, wPikachuOverworldStateFlags
 	res 5, [hl]
 	ld a,[wYCoord]
 	add b

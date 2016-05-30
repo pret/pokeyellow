@@ -343,7 +343,7 @@ MapHS2D: ; c925 (3:4925)
 MapHS34: ; c92b (3:492b)
 	db MUSEUM_1F,$05,Show
 MapHS3F: ; c92e (3:492e) ; bulbasaur adoption house
-	db CERULEAN_HOUSE,$02,Show
+	db CERULEAN_HOUSE_1,$02,Show
 MapHSE4: ; c931 (3:4931)
 	db UNKNOWN_DUNGEON_1,$01,Show
 	db UNKNOWN_DUNGEON_1,$02,Show
