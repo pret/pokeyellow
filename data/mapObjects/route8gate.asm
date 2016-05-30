@@ -2,9 +2,9 @@ Route8GateObject: ; 0x1e247 (size=42)
 	db $a ; border block
 
 	db $4 ; warps
-	db $3, $0, $0, $ff
+	db $3, $0, $1, $ff
 	db $4, $0, $1, $ff
-	db $3, $5, $2, $ff
+	db $3, $5, $3, $ff
 	db $4, $5, $3, $ff
 
 	db $0 ; signs
