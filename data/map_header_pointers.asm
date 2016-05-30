@@ -77,8 +77,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw UndergroundPathEntranceRoute6_h
 	dw UndergroundPathEntranceRoute6_h ; unused
 	dw $59fe ; dw Route7Gate_h
-	dw $562b ; dw UndergroundPathEntranceRoute7_h
-	dw $5668 ; dw UndergroundPathEntranceRoute7Copy_h
+	dw UndergroundPathEntranceRoute7_h
+	dw UndergroundPathEntranceRoute7Copy_h
 	dw $5ac5 ; dw Route8Gate_h
 	dw $5b87 ; dw UndergroundPathEntranceRoute8_h ;id=80
 	dw $5330 ; dw RockTunnelPokecenter_h

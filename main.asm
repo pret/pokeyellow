@@ -1153,6 +1153,8 @@ PewterPokecenterBlocks:
 INCBIN "maps/pewterpokecenter.blk"
 UndergroundPathEntranceRoute5Blocks:
 UndergroundPathEntranceRoute6Blocks:
+UndergroundPathEntranceRoute7Blocks:
+UndergroundPathEntranceRoute7CopyBlocks:
 INCBIN "maps/undergroundpathentranceroute5.blk"
 ViridianForestEntranceBlocks:
 ViridianForestExitBlocks:
@@ -1227,7 +1229,15 @@ INCLUDE "data/mapHeaders/undergroundpathentranceroute6.asm"
 INCLUDE "scripts/undergroundpathentranceroute6.asm"
 INCLUDE "data/mapObjects/undergroundpathentranceroute6.asm"
 
-	dr $5d62b,$5da70
+INCLUDE "data/mapHeaders/undergroundpathentranceroute7.asm"
+INCLUDE "scripts/undergroundpathentranceroute7.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute7.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathentranceroute7copy.asm"
+INCLUDE "scripts/undergroundpathentranceroute7copy.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute7copy.asm"
+
+	dr $5d6ba,$5da70
 
 INCLUDE "engine/evolution.asm"
 
