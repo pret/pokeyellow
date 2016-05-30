@@ -1137,7 +1137,8 @@ Museum2FBlocks:
 INCBIN "maps/museum2f.blk"
 PewterPokecenterBlocks:
 INCBIN "maps/pewterpokecenter.blk"
-	dr $5c080,$5c090
+UndergroundPathEntranceRoute5Blocks:
+INCBIN "maps/undergroundpathentranceroute5.blk"
 ViridianForestEntranceBlocks:
 ViridianForestExitBlocks:
 Route2GateBlocks:
@@ -1203,7 +1204,11 @@ INCLUDE "data/mapHeaders/viridianforestentrance.asm"
 INCLUDE "scripts/viridianforestentrance.asm"
 INCLUDE "data/mapObjects/viridianforestentrance.asm"
 
-	dr $5d5a8,$5da70
+INCLUDE "data/mapHeaders/undergroundpathentranceroute5.asm"
+INCLUDE "scripts/undergroundpathentranceroute5.asm"
+INCLUDE "data/mapObjects/undergroundpathentranceroute5.asm"
+
+	dr $5d5ee,$5da70
 
 INCLUDE "engine/evolution.asm"
 

@@ -71,7 +71,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw MtMoonPokecenter_h
 	dw CeruleanHouseTrashed_h ; copy
 	dw Route5Gate_h
-	dw $55a8 ; dw UndergroundPathEntranceRoute5_h
+	dw UndergroundPathEntranceRoute5_h
 	dw $6233 ; dw DayCareM_h
 	dw $593b ; dw Route6Gate_h
 	dw $55ee ; dw UndergroundPathEntranceRoute6_h
