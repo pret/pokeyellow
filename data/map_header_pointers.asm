@@ -65,7 +65,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeruleanHouseTrashed_h
 	dw CeruleanHouse1_h
 	dw CeruleanPokecenter_h
-	dw $4577 ; dw CeruleanGym_h
+	dw CeruleanGym_h
 	dw $5038 ; dw BikeShop_h
 	dw $4757 ; dw CeruleanMart_h
 	dw $52a9 ; dw MtMoonPokecenter_h

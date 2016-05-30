@@ -1160,7 +1160,13 @@ INCLUDE "data/mapObjects/ceruleanpokecenter.asm"
 CeruleanPokecenterBlocks:
 INCBIN "maps/ceruleanpokecenter.blk"
 
-	dr $5c577,$5d485
+INCLUDE "data/mapHeaders/ceruleangym.asm"
+INCLUDE "scripts/ceruleangym.asm"
+INCLUDE "data/mapObjects/ceruleangym.asm"
+CeruleanGymBlocks:
+INCBIN "maps/ceruleangym.blk"
+
+	dr $5c757,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
