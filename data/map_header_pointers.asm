@@ -94,7 +94,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VermilionMart_h
 	dw VermilionGym_h
 	dw VermilionHouse1_h
-	dw $544e ; dw VermilionDock_h
+	dw VermilionDock_h
 	dw $52a4 ; dw SSAnne1_h
 	dw $53de ; dw SSAnne2_h
 	dw $49bf ; dw SSAnne3_h

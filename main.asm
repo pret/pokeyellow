@@ -364,7 +364,13 @@ INCBIN "maps/bikeshop.blk"
 INCLUDE "data/mapHeaders/vermilionhouse1.asm"
 INCLUDE "scripts/vermilionhouse1.asm"
 INCLUDE "data/mapObjects/vermilionhouse1.asm"
-	dr $1d44e,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/vermiliondock.asm"
+INCLUDE "scripts/vermiliondock.asm"
+INCLUDE "data/mapObjects/vermiliondock.asm"
+VermilionDockBlocks:
+INCBIN "maps/vermiliondock.blk"
+	dr $1d636,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
