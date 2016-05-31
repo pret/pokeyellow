@@ -1231,7 +1231,12 @@ INCLUDE "scripts/lance.asm"
 INCLUDE "data/mapObjects/lance.asm"
 LanceBlocks:
 INCBIN "maps/lance.blk"
-	dr $5a42d,$5a53a
+
+INCLUDE "data/mapHeaders/halloffameroom.asm"
+INCLUDE "scripts/halloffameroom.asm"
+INCLUDE "data/mapObjects/halloffameroom.asm"
+HallofFameRoomBlocks:
+INCBIN "maps/halloffameroom.blk"
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 

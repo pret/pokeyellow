@@ -118,7 +118,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Lance_h ; unused
 	dw Lance_h ; unused
 	dw Lance_h ; unused
-	dw $642d ; dw HallofFameRoom_h
+	dw HallofFameRoom_h
 	dw $5f31 ; dw UndergroundPathNS_h
 	dw $57a0 ; dw Gary_h ;id=120
 	dw $5f55 ; dw UndergroundPathWE_h
