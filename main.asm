@@ -1287,7 +1287,13 @@ INCLUDE "data/mapObjects/vermilionpokecenter.asm"
 INCLUDE "data/mapHeaders/vermilionmart.asm"
 INCLUDE "scripts/vermilionmart.asm"
 INCLUDE "data/mapObjects/vermilionmart.asm"
-	dr $5c910,$5d485
+
+INCLUDE "data/mapHeaders/vermiliongym.asm"
+INCLUDE "scripts/vermiliongym.asm"
+INCLUDE "data/mapObjects/vermiliongym.asm"
+VermilionGymBlocks:
+INCBIN "maps/vermiliongym.blk"
+	dr $5cb5b,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
