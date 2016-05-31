@@ -1383,7 +1383,11 @@ INCLUDE "engine/hidden_object_functions17.asm"
 SECTION "bank18",ROMX,BANK[$18]
 ViridianForestBlocks:
 INCBIN "maps/viridianforest.blk"
-	dr $60198,$603c0
+UndergroundPathNSBlocks:
+INCBIN "maps/undergroundpathns.blk"
+UndergroundPathWEBlocks:
+INCBIN "maps/undergroundpathwe.blk"
+	dr $60258,$603c0
 
 SSAnne9Blocks:
 SSAnne10Blocks:
@@ -1443,7 +1447,17 @@ INCLUDE "data/mapObjects/ssanne9.asm"
 INCLUDE "data/mapHeaders/ssanne10.asm"
 INCLUDE "scripts/ssanne10.asm"
 INCLUDE "data/mapObjects/ssanne10.asm"
-	dr $61f31,$625e8
+
+INCLUDE "data/mapHeaders/undergroundpathns.asm"
+INCLUDE "scripts/undergroundpathns.asm"
+INCLUDE "data/mapObjects/undergroundpathns.asm"
+
+INCLUDE "data/mapHeaders/undergroundpathwe.asm"
+INCLUDE "scripts/undergroundpathwe.asm"
+INCLUDE "data/mapObjects/undergroundpathwe.asm"
+
+
+	dr $61f79,$625e8
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]

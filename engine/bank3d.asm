@@ -28,7 +28,7 @@ Func_f429f:: ; f429f (3d:429f)
 	pop bc
 	inc hl
 	jr .asm_f42a4
-	
+
 Func_f42c2:: ; f42c2 (3d:f42c2)
 	push hl
 	push de
@@ -50,7 +50,7 @@ Func_f42c2:: ; f42c2 (3d:f42c2)
 	pop de
 	pop hl
 	ret
-	
+
 INCLUDE "engine/battle/decrement_pp.asm"
 
 ModifyPikachuHappiness:: ; f430a (3d:430a)
@@ -111,7 +111,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	xor a
 .okay
 	ld [wPikachuHappiness], a
-	
+
 	; Restore d and get the d'th entry in PikachuMoods.
 	pop de
 	dec d
@@ -141,7 +141,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 	ld [wPikachuMood], a
 .done
 	ret
-	
+
 HappinessChangeTable: ; f4385 (3d:4385)
 	; Increase
 	db   5, 3, 2 ; Gained a level
@@ -198,14 +198,14 @@ Func_f453f:: ; f453f (3d:453f)
 	ld a, BANK(YellowLogoGraphics)
 	call FarCopyData
 	ret
-	
+
 Func_f4578:: ; f4578 (3d:4578)
 	coord hl, 2, 1
 	ld de, Pointer_f45f9
 	ld bc, 7 << 8 | 16 ; 16x7 (xy)
 	call CopyScreenArea
 	ret
-	
+
 Func_f4585:: ; f4585 (3d:4585)
 	coord hl, 6, 4
 	ld de, Pointer_f4673
@@ -216,7 +216,7 @@ Func_f4585:: ; f4585 (3d:4585)
 	inc hl
 	ld [hl], $65
 	ret
-	
+
 Func_f459a:: ; f459a (3d:459a)
 	coord hl, 4, 8
 	ld de, Pointer_f468f
@@ -235,7 +235,7 @@ Func_f459a:: ; f459a (3d:459a)
 	ld bc, $20
 	call CopyData
 	ret
-	
+
 Pointer_f45c7: ; f45c7 (3d:45c7)
 	db $60, $40, $f1, $22
 	db $60, $48, $f0, $22
@@ -245,7 +245,7 @@ Pointer_f45c7: ; f45c7 (3d:45c7)
 	db $60, $68, $f1, $02
 	db $68, $60, $f2, $02
 	db $68, $68, $f3, $02
-	
+
 CopyScreenArea:: ; f45e7 (3d:45e7)
 ; copy cxb (xy) screen area from de to hl
 	push bc
@@ -263,7 +263,7 @@ CopyScreenArea:: ; f45e7 (3d:45e7)
 	dec b
 	jr nz, CopyScreenArea
 	ret
-	
+
 Pointer_f45f9: ; f45f9 (3d:45f9)
 ; 16x7 (xy)
 	db $f4, $f4, $f4, $f4, $f4, $f4, $49, $f4, $72, $30, $f4, $f4, $f4, $f4, $f4, $f4
@@ -276,14 +276,14 @@ Pointer_f45f9: ; f45f9 (3d:45f9)
 
 Pointer_f4669:: ; f4669 (3d:4669)
 	db $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $5f
-	
+
 Pointer_f4673:: ; f4673 (3d:4673)
 ; 7x4 (xy)
 	db $24, $25, $66, $67, $68, $69, $2a
 	db $50, $51, $52, $53, $54, $55, $56
 	db $57, $58, $59, $5a, $5b, $5c, $5d
 	db $6d, $5e, $5f, $60, $61, $62, $63
-	
+
 Pointer_f468f:: ; f468f (3d:468f)
 ; 12x9 (xy)
 	db $80, $81, $82, $83, $00, $00, $00, $00, $84, $85, $86, $87
@@ -295,7 +295,7 @@ Pointer_f468f:: ; f468f (3d:468f)
 	db $00, $b2, $b3, $b4, $8a, $8a, $8a, $8a, $b5, $b6, $b7, $b8
 	db $00, $b9, $ba, $8a, $8a, $8a, $8a, $8a, $8a, $bb, $bc, $00
 	db $00, $00, $bd, $8a, $8a, $8a, $8a, $8a, $8a, $be, $bf, $00
-	
+
 ; f46f9 (3d:46f9)
 PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
@@ -375,7 +375,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld [H_DOWNARROWBLINKCNT1], a ; restore previous values
 	ld a, [hJoy5]
 	ret
-	
+
 Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	ld a, [wTopMenuItemY]
 	and a
@@ -431,7 +431,7 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	ld a, [wCurrentMenuItem]
 	ld [wLastMenuItem], a
 	ret
-	
+
 PrintStrengthTxt:: ; f5b06 (3d:5b06)
 	ld hl, wd728
 	set 0, [hl]
@@ -439,7 +439,7 @@ PrintStrengthTxt:: ; f5b06 (3d:5b06)
 	call PrintText
 	ld hl, Text_f5b28
 	jp PrintText
-	
+
 Text_f5b17:: ; f5b17 (3d:5b17)
 	TX_FAR _UsedStrengthText ; 2d:417e
 	db $08 ; asm
@@ -447,11 +447,11 @@ Text_f5b17:: ; f5b17 (3d:5b17)
 	call PlayCry
 	call Delay3
 	jp TextScriptEnd
-	
+
 Text_f5b28:: ; f5b28 (3d:5b28)
 	TX_FAR _CanMoveBouldersText ; 2d:4193
 	db "@"
-	
+
 CheckForForcedBikeSurf:: ; f5b2d (3d:5b2d)
 	ld hl, wd728
 	set 1, [hl]
@@ -475,19 +475,19 @@ CheckForForcedBikeSurf:: ; f5b2d (3d:5b2d)
 	res 1, [hl]
 	ld hl, CyclingIsFunText
 	jp PrintText
-	
+
 CoordsData_f5b64:: ; f5b64 (3d:5b64)
 	db 11, 07
 	db $ff
-	
+
 CurrentTooFastText:: ; f5b67 (3d:5b67)
 	TX_FAR _CurrentTooFastText ; 2d:41ab
 	db "@"
-	
+
 CyclingIsFunText:: ; f5b6c (3d:5b6c)
 	TX_FAR _CyclingIsFunText ; 2d:41ca
 	db "@"
-	
+
 AddItemToInventory_:: ; f5b70 (3d:5b70)
 	ld a, [wItemQuantity] ; a = item quantity
 	push af
@@ -548,7 +548,7 @@ AddItemToInventory_:: ; f5b70 (3d:5b70)
 	add b ; a = new item quantity
 	cp a, 100
 	jp c, .storeNewQuantity ; if the new quantity is less than 100, store it
-; if the new quantity is greater than or equal to 100, 
+; if the new quantity is greater than or equal to 100,
 ; try to max out the current slot and add the rest in a new slot
 	sub a, 99
 	ld [wItemQuantity], a ; a = amount left over (to put in the new slot)
@@ -601,7 +601,7 @@ RemoveItemFromInventory_: ; f5be1 (3d:5be1)
 	ld [wMaxItemQuantity], a
 	and a
 	jr nz, .skipMovingUpSlots
-; if the remaining quantity is 0, 
+; if the remaining quantity is 0,
 ; remove the emptied item slot and move up all the following item slots
 .moveSlotsUp
 	ld e, l
@@ -659,7 +659,7 @@ ReadSuperRodData:: ; f5ea4 (3d:5ea4)
 .notfound
 	ld de, $0
 	ret
-	
+
 GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
 	call Random
 	cp $66
@@ -679,7 +679,7 @@ GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
 	inc hl
 	ld d, [hl]
 	ret
-	
+
 INCLUDE "data/super_rod.asm"
 INCLUDE "engine/battle/bank3d_battle.asm"
 INCLUDE "engine/items/tm_prices.asm"
