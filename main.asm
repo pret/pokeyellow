@@ -831,7 +831,13 @@ INCLUDE "engine/pokedex_rating.asm"
 INCLUDE "data/mapHeaders/viridianpokecenter.asm"
 INCLUDE "scripts/viridianpokecenter.asm"
 INCLUDE "data/mapObjects/viridianpokecenter.asm"
-	dr $442b7,$443b7
+
+INCLUDE "data/mapHeaders/celadonmart1.asm"
+INCLUDE "scripts/celadonmart1.asm"
+INCLUDE "data/mapObjects/celadonmart1.asm"
+CeladonMart1Blocks:
+INCBIN "maps/celadonmart1.blk"
+	dr $44344,$443b7
 Mansion1Script_Switches:
 	dr $443b7,$44571
 

@@ -366,7 +366,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	and A_BUTTON | B_BUTTON
 	jr z, .skipPlayingSound
 .AButtonOrBButtonPressed
-	ld a, $90 ; (SFX_02_40 - SFX_Headers_02) / 3
+	ld a, SFX_PRESS_AB
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
@@ -381,7 +381,7 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	and a
 	jr z, .asm_f5ac0
 	coord hl, 0, 0
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 .loop
 	add hl, bc
 	dec a
@@ -442,7 +442,7 @@ PrintStrengthTxt:: ; f5b06 (3d:5b06)
 
 Text_f5b17:: ; f5b17 (3d:5b17)
 	TX_FAR _UsedStrengthText ; 2d:417e
-	db $08 ; asm
+	TX_ASM
 	ld a, [wcf91]
 	call PlayCry
 	call Delay3

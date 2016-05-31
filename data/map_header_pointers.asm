@@ -122,7 +122,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw UndergroundPathNS_h
 	dw Gary_h ;id=120
 	dw UndergroundPathWE_h
-	dw $42b7 ; dw CeladonMart1_h
+	dw CeladonMart1_h
 	dw $60d9 ; dw CeladonMart2_h
 	dw $4157 ; dw CeladonMart3_h
 	dw $4251 ; dw CeladonMart4_h
