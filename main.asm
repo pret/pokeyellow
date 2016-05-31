@@ -299,6 +299,7 @@ Route2HouseBlocks:
 PewterHouse1Blocks:
 PewterHouse2Blocks:
 CeruleanHouse1Blocks:
+VermilionHouse1Blocks:
 INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 INCBIN "maps/school.blk"
@@ -358,7 +359,12 @@ INCLUDE "scripts/bikeshop.asm"
 INCLUDE "data/mapObjects/bikeshop.asm"
 BikeShopBlocks:
 INCBIN "maps/bikeshop.blk"
-	dr $1d1a4,$1d7ae ; map scripts
+	dr $1d1a4,$1d3f8 ; map scripts
+
+INCLUDE "data/mapHeaders/vermilionhouse1.asm"
+INCLUDE "scripts/vermilionhouse1.asm"
+INCLUDE "data/mapObjects/vermilionhouse1.asm"
+	dr $1d44e,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"

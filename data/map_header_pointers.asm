@@ -93,7 +93,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw FanClub_h ;id=90
 	dw VermilionMart_h
 	dw VermilionGym_h
-	dw $53f8 ; dw VermilionHouse1_h
+	dw VermilionHouse1_h
 	dw $544e ; dw VermilionDock_h
 	dw $52a4 ; dw SSAnne1_h
 	dw $53de ; dw SSAnne2_h
