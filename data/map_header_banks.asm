@@ -108,7 +108,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $1d ; unused
 	db $1d ; unused
 	db $1d ; unused
-	db $17 ; db BANK(VictoryRoad1_h)
+	db BANK(VictoryRoad1_h)
 	db $1d ; unused
 	db $1d ; unused
 	db $1d ; unused

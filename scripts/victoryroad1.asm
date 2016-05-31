@@ -29,6 +29,9 @@ VictoryRoad1Script0: ; 5da40 (17:5a40)
 	ld hl, CoordsData_5da5c
 	call CheckBoulderCoords
 	jp nc, CheckFightingMapTrainers
+	ld a, [H_SPRITEINDEX]
+	cp $f
+	jp z, CheckFightingMapTrainers
 	ld hl, wd126
 	set 5, [hl]
 	SetEvent EVENT_VICTORY_ROAD_1_BOULDER_ON_SWITCH

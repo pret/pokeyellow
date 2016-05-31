@@ -108,7 +108,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $623d ; dw Lance_h ; unused
 	dw $623d ; dw Lance_h ; unused
 	dw $623d ; dw Lance_h ; unused
-	dw $5909 ; dw VictoryRoad1_h
+	dw VictoryRoad1_h
 	dw $623d ; dw Lance_h ; unused
 	dw $623d ; dw Lance_h ; unused ;id=110
 	dw $623d ; dw Lance_h ; unused
@@ -248,4 +248,4 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $59ef ; dw Lorelei_h
 	dw $5b4a ; dw Bruno_h
 	dw $5ca1 ; dw Agatha_h ;247
-	dw $620e ; dw BeachHouse_h
+	dw BeachHouse_h

@@ -1341,8 +1341,13 @@ INCLUDE "data/mapObjects/undergroundpathentranceroute7.asm"
 INCLUDE "data/mapHeaders/undergroundpathentranceroute7copy.asm"
 INCLUDE "scripts/undergroundpathentranceroute7copy.asm"
 INCLUDE "data/mapObjects/undergroundpathentranceroute7copy.asm"
+	dr $5d6ba,$5d909
 
-	dr $5d6ba,$5da70
+INCLUDE "data/mapHeaders/victoryroad1.asm"
+INCLUDE "scripts/victoryroad1.asm"
+INCLUDE "data/mapObjects/victoryroad1.asm"
+VictoryRoad1Blocks:
+INCBIN "maps/victoryroad1.blk"
 
 INCLUDE "engine/evolution.asm"
 
