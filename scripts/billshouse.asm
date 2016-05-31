@@ -1,8 +1,10 @@
 BillsHouseScript: ; 1e76a (7:676a)
+	call BillsHouseScript_1e09e
 	call EnableAutoTextBoxDrawing
 	ld a, [W_BILLSHOUSECURSCRIPT]
 	ld hl, BillsHouseScriptPointers
-	jp JumpTable
+	call JumpTable
+	ret
 
 BillsHouseScriptPointers: ; 1e776 (7:6776)
 	dw BillsHouseScript0
@@ -11,21 +13,65 @@ BillsHouseScriptPointers: ; 1e776 (7:6776)
 	dw BillsHouseScript3
 	dw BillsHouseScript4
 	dw BillsHouseScript5
+	dw BillsHouseScript6
+	dw BillsHouseScript7
+	dw BillsHouseScript8
+	dw BillsHouseScript9
+
+BillsHouseScript_1e09e:
+	ld hl, wPreventBlackout
+	bit 7, [hl]
+	set 7, [hl]
+	ret nz
+	ld hl, wd7f2
+	bit 5, [hl]
+	jr z, .asm_1e0af
+	jr .asm_1e0b3
+
+.asm_1e0af
+	ld a, $0
+	jr .asm_1e0b5
+
+.asm_1e0b3
+	ld a, $9
+.asm_1e0b5
+	ld [W_BILLSHOUSECURSCRIPT], a
+	ret
 
 BillsHouseScript0: ; 1e782 (7:6782)
+	ld a, [wd472]
+	bit 7, a
+	jr z, .asm_1e0d2
+	callab Func_fce73
+	jr c, .asm_1e0d2
+	callab Func_f24d5
+.asm_1e0d2
+	xor a
+	ld [wJoyIgnore], a
+	ld a, $1
+	ld [W_BILLSHOUSECURSCRIPT], a
 	ret
 
 BillsHouseScript1: ; 1e783 (7:6783)
+	ret
+
+BillsHouseScript2:
+	ld a, $ff
+	ld [wJoyIgnore], a
 	ld a, [wSpriteStateData1 + 9]
 	and a ; cp SPRITE_FACING_DOWN
 	ld de, MovementData_1e79c
 	jr nz, .notDown
+	call CheckPikachuAsleep
+	jr nz, .asm_1e0f8
+	callab Func_f250b
+.asm_1e0f8
 	ld de, MovementData_1e7a0
 .notDown
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
-	ld a, $2
+	ld a, $3
 	ld [W_BILLSHOUSECURSCRIPT], a
 	ret
 
@@ -44,25 +90,58 @@ MovementData_1e7a0: ; 1e7a0 (7:67a0)
 	db NPC_MOVEMENT_UP
 	db $FF
 
-BillsHouseScript2: ; 1e7a6 (7:67a6)
+BillsHouseScript3: ; 1e7a6 (7:67a6)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
 	ld a, HS_BILL_POKEMON
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	SetEvent EVENT_BILL_SAID_USE_CELL_SEPARATOR
+	call CheckPikachuAsleep
+	jr z, .asm_1e13e
+	ld hl, PikachuMovementData_1e14d
+	ld a, [wSpriteStateData1 + 9]
+	and a ; cp SPRITE_FACING_DOWN
+	jr nz, .asm_1e133
+	ld hl, PikachuMovementData_1e152
+.asm_1e133
+	call Func_159b
+	callab InitializePikachuTextID
+.asm_1e13e
 	xor a
 	ld [wJoyIgnore], a
-	ld a, $3
+	SetEvent EVENT_BILL_SAID_USE_CELL_SEPARATOR
+	ld a, $4
 	ld [W_BILLSHOUSECURSCRIPT], a
 	ret
 
-BillsHouseScript3: ; 1e7c5 (7:67c5)
+PikachuMovementData_1e14d:
+	db $00
+	db $1e
+	db $1e
+	db $1e
+	db $3f
+
+PikachuMovementData_1e152:
+	db $00
+	db $1e
+	db $1f
+	db $1e
+	db $1e
+	db $20
+	db $36
+	db $3f
+
+BillsHouseScript4: ; 1e7c5 (7:67c5)
 	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret z
-	ld a, $f0
+	ld a, $fc
 	ld [wJoyIgnore], a
+	ld a, $5
+	ld [W_BILLSHOUSECURSCRIPT], a
+	ret
+
+BillsHouseScript5:
 	ld a, $2
 	ld [wSpriteIndex], a
 	ld a, $c
@@ -79,11 +158,30 @@ BillsHouseScript3: ; 1e7c5 (7:67c5)
 	predef ShowObject
 	ld c, 8
 	call DelayFrames
+	ld hl, wd472
+	bit 7, [hl]
+	jr z, .asm_1e1c6
+	call CheckPikachuAsleep
+	jr z, .asm_1e1c6
+	ld a, $2
+	ld [H_SPRITEINDEX], a
+	ld a, SPRITE_FACING_DOWN
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	ld hl, PikachuMovementData_1e1a9
+	call Func_159b
+	ld a, $f
+	ld [wEmotionBubbleSpriteIndex], a
+	ld a, $0
+	ld [wWhichEmotionBubble], a
+	predef EmotionBubble
+	callab InitializePikachuTextID
+.asm_1e1c6
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	ld de, MovementData_1e807
 	call MoveSprite
-	ld a, $4
+	ld a, $6
 	ld [W_BILLSHOUSECURSCRIPT], a
 	ret
 
@@ -95,24 +193,65 @@ MovementData_1e807: ; 1e807 (7:6807)
 	db NPC_MOVEMENT_DOWN
 	db $FF
 
-BillsHouseScript4: ; 1e80d (7:680d)
+PikachuMovementData_1e1a9:
+	db $00
+	db $37
+	db $3f
+
+BillsHouseScript6: ; 1e80d (7:680d)
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	xor a
-	ld [wJoyIgnore], a
 	SetEvent EVENT_MET_BILL_2 ; this event seems redundant
 	SetEvent EVENT_MET_BILL
-	ld a, $0
+	ld a, $7
 	ld [W_BILLSHOUSECURSCRIPT], a
 	ret
 
-BillsHouseScript5: ; 1e827 (7:6827)
-	ld a, $4
+BillsHouseScript7:
+	xor a
+	ld [wPlayerMovingDirection], a
+	ld a, SPRITE_FACING_UP
+	ld [wSpriteStateData1 + 9], a
+	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld [wJoyIgnore], a
+	ld de, RLE_1e219
+	ld hl, wSimulatedJoypadStatesEnd
+	call DecodeRLEList
+	dec a
+	ld [wSimulatedJoypadStatesIndex], a
+	call StartSimulatingJoypadStates
+	ld a, $8
+	ld [W_BILLSHOUSECURSCRIPT], a
+	ret
+
+RLE_1e219:
+	db D_RIGHT,$3
+	db $FF
+
+BillsHouseScript8:
+	ld a, [wSimulatedJoypadStatesIndex]
+	and a
+	ret nz
+	xor a
+	ld [wPlayerMovingDirection], a
+	ld a, SPRITE_FACING_UP
+	ld [wSpriteStateData1 + 9], a
+	ld a, $2
+	ld [H_SPRITEINDEX], a
+	ld a, SPRITE_FACING_DOWN
+	ld [hSpriteFacingDirection], a
+	call SetSpriteFacingDirectionAndDelay
+	xor a
+	ld [wJoyIgnore], a
+	ld a, $2
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $0
+	ld a, $9
 	ld [W_BILLSHOUSECURSCRIPT], a
+	ret
+
+BillsHouseScript9: ; 1e827 (7:6827)
 	ret
 
 BillsHouseTextPointers: ; 1e834 (7:6834)
@@ -122,91 +261,20 @@ BillsHouseTextPointers: ; 1e834 (7:6834)
 	dw BillsHouseText4
 
 BillsHouseText4: ; 1e83c (7:683c)
-	db $fd
+	TX_FAR _BillsHouseDontLeaveText
+	db "@"
 
 BillsHouseText1: ; 1e83d (7:683d)
 	TX_ASM
-	ld hl, BillsHouseText_1e865
-	call PrintText
-	call YesNoChoice
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .asm_1e85a
-.asm_1e84d
-	ld hl, BillsHouseText_1e86a
-	call PrintText
-	ld a, $1
-	ld [W_BILLSHOUSECURSCRIPT], a
-	jr .asm_1e862
-.asm_1e85a
-	ld hl, BillsHouseText_1e86f
-	call PrintText
-	jr .asm_1e84d
-.asm_1e862
+	callba Func_f2418
 	jp TextScriptEnd
-
-BillsHouseText_1e865: ; 1e865 (7:6865)
-	TX_FAR _BillsHouseText_1e865
-	db "@"
-
-BillsHouseText_1e86a: ; 1e86a (7:686a)
-	TX_FAR _BillsHouseText_1e86a
-	db "@"
-
-BillsHouseText_1e86f: ; 1e86f (7:686f)
-	TX_FAR _BillsHouseText_1e86f
-	db "@"
 
 BillsHouseText2: ; 1e874 (7:6874)
 	TX_ASM
-	CheckEvent EVENT_GOT_SS_TICKET
-	jr nz, .asm_1e8a9
-	ld hl, BillThankYouText
-	call PrintText
-	lb bc, S_S_TICKET, 1
-	call GiveItem
-	jr nc, .BagFull
-	ld hl, SSTicketReceivedText
-	call PrintText
-	SetEvent EVENT_GOT_SS_TICKET
-	ld a, HS_CERULEAN_GUARD_1
-	ld [wMissableObjectIndex], a
-	predef ShowObject
-	ld a, HS_CERULEAN_GUARD_2
-	ld [wMissableObjectIndex], a
-	predef HideObject
-.asm_1e8a9
-	ld hl, BillsHouseText_1e8cb
-	call PrintText
-	jr .asm_1e8b7
-.BagFull
-	ld hl, SSTicketNoRoomText
-	call PrintText
-.asm_1e8b7
+	callba Func_f244a
 	jp TextScriptEnd
-
-BillThankYouText: ; 1e8ba (7:68ba)
-	TX_FAR _BillThankYouText
-	db "@"
-
-SSTicketReceivedText: ; 1e8bf (7:68bf)
-	TX_FAR _SSTicketReceivedText
-	db $11, $6, "@"
-
-SSTicketNoRoomText: ; 1e8c6 (7:68c6)
-	TX_FAR _SSTicketNoRoomText
-	db "@"
-
-BillsHouseText_1e8cb: ; 1e8cb (7:68cb)
-	TX_FAR _BillsHouseText_1e8cb
-	db "@"
 
 BillsHouseText3: ; 1e8d0 (7:68d0)
 	TX_ASM
-	ld hl, BillsHouseText_1e8da
-	call PrintText
+	callba Func_f24a2
 	jp TextScriptEnd
-
-BillsHouseText_1e8da: ; 1e8da (7:68da)
-	TX_FAR _BillsHouseText_1e8da
-	db "@"

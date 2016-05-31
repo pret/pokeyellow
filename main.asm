@@ -406,7 +406,13 @@ INCBIN "maps/powerplant.blk"
 INCLUDE "data/mapHeaders/diglettscaveroute11.asm"
 INCLUDE "scripts/diglettscaveroute11.asm"
 INCLUDE "data/mapObjects/diglettscaveroute11.asm"
-	dr $1def6,$1e2ae ; map scripts
+	dr $1def6,$1e06e ; map scripts
+
+INCLUDE "data/mapHeaders/billshouse.asm"
+INCLUDE "scripts/billshouse.asm"
+INCLUDE "data/mapObjects/billshouse.asm"
+BillsHouseBlocks:
+INCBIN "maps/billshouse.blk"
 
 INCLUDE "engine/menu/oaks_pc.asm"
 
