@@ -224,9 +224,9 @@ const_value SET $8d
 	const HS_UNKNOWN_DUNGEON_3_ITEM_2     ; D7
 	const HS_VICTORY_ROAD_1_ITEM_1        ; D8
 	const HS_VICTORY_ROAD_1_ITEM_2        ; D9
-	const HS_CHAMPIONS_ROOM_OAK           ; DA
 
-const_value SET $df
+const_value SET $de
+	const HS_CHAMPIONS_ROOM_OAK           ; DE
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_1  ; DF
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_2  ; E0
 	const HS_SEAFOAM_ISLANDS_2_BOULDER_1  ; E1

@@ -2739,7 +2739,7 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	xor a
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic ; stop music
-	ld a, $1f ; BANK(Music_MeetEvilTrainer)
+	ld a, BANK(Music_MeetEvilTrainer)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	ld a, [wEngagedTrainerClass]
@@ -2751,7 +2751,7 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	jr z, .noEvilTrainer
 	cp b
 	jr nz, .evilTrainerListLoop
-	ld a, $f5 ; MUSIC_MEET_EVIL_TRAINER
+	ld a, MUSIC_MEET_EVIL_TRAINER
 	jr .PlaySound
 .noEvilTrainer
 	ld hl, FemaleTrainerList
@@ -2761,10 +2761,10 @@ PlayTrainerMusic:: ; 3379 (0:3379)
 	jr z, .maleTrainer
 	cp b
 	jr nz, .femaleTrainerListLoop
-	ld a, $f8 ; MUSIC_MEET_FEMALE_TRAINER
+	ld a, MUSIC_MEET_FEMALE_TRAINER
 	jr .PlaySound
 .maleTrainer
-	ld a, $fb ; MUSIC_MEET_MALE_TRAINER
+	ld a, MUSIC_MEET_MALE_TRAINER
 .PlaySound
 	ld [wNewSoundID], a
 	jp PlaySound
@@ -3515,7 +3515,7 @@ GetItemPrice:: ; 37d2 (0:37d2)
 	push af
 	ld a, [wListMenuID]
 	cp MOVESLISTMENU
-	ld a, $1 ; BANK(ItemPrices)
+	ld a, BANK(ItemPrices)
 	jr nz, .asm_37e0
 	ld a, $f ; hardcoded Bank
 .asm_37e0

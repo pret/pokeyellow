@@ -120,7 +120,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $1d ; unused
 	db BANK(HallofFameRoom_h)
 	db $18 ; db BANK(UndergroundPathNS_h)
-	db $1d ; db BANK(Gary_h)
+	db BANK(Gary_h)
 	db $18 ; db BANK(UndergroundPathWE_h)
 	db $11 ; db BANK(CeladonMart1_h)
 	db $15 ; db BANK(CeladonMart2_h)

@@ -2,7 +2,8 @@ GaryScript: ; 75f1d (1d:5f1d)
 	call EnableAutoTextBoxDrawing
 	ld hl, GaryScriptPointers
 	ld a, [W_GARYCURSCRIPT]
-	jp JumpTable
+	call JumpTable
+	ret
 
 GaryScript_75f29: ; 75f29 (1d:5f29)
 	xor a
@@ -40,9 +41,9 @@ GaryScript1: ; 75f48 (1d:5f48)
 	ret
 
 RLEMovement75f63: ; 75f63 (1d:5f63)
-	db D_UP,1
-	db D_RIGHT,1
-	db D_UP,3
+	db D_UP, 1
+	db D_RIGHT, 1
+	db D_UP, 3
 	db $ff
 
 GaryScript2: ; 75f6a (1d:5f6a)
@@ -69,18 +70,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 
 	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
-	cp STARTER2
-	jr nz, .NotSquirtle
-	ld a, $1
-	jr .done
-.NotSquirtle
-	cp STARTER3
-	jr nz, .Charmander
-	ld a, $2
-	jr .done
-.Charmander
-	ld a, $3
-.done
+	add $0 ; Wow GameFreak
 	ld [wTrainerNo], a
 
 	xor a
@@ -217,8 +207,8 @@ GaryScript9: ; 76099 (1d:6099)
 	ret
 
 RLEMovement760b4: ; 760b4 (1d:60b4)
-	db D_UP,4
-	db D_LEFT,1
+	db D_UP, 4
+	db D_LEFT, 1
 	db $ff
 
 GaryScript10: ; 760b9 (1d:60b9)

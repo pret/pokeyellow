@@ -1268,7 +1268,7 @@ INCLUDE "data/mapHeaders/redshouse2f.asm"
 INCLUDE "scripts/redshouse2f.asm"
 INCLUDE "data/mapObjects/redshouse2f.asm"
 
-Func_5c0d4:
+StarterDex:
 	ld a, %01001011
 	ld [wPokedexOwned], a
 	predef ShowPokedexData
@@ -1363,7 +1363,20 @@ INCBIN "maps/victoryroad1.blk"
 
 INCLUDE "engine/evolution.asm"
 
-	dr $5db93,$5dbae
+SetPartyMonTypes::
+	call GetPredefRegisters
+	ld bc, 5
+	add hl, bc
+	ld a, [wd11e]
+	ld [wd0b5], a
+	push hl
+	call GetMonHeader
+	pop hl
+	ld a, [wMonHType1]
+	ld [hli], a
+	ld a, [wMonHType2]
+	ld [hl], a
+	ret
 
 INCLUDE "engine/hidden_object_functions17.asm"
 
@@ -1499,8 +1512,14 @@ INCLUDE "data/mapObjects/pewtermart.asm"
 	dr $7453d,$74726
 
 INCLUDE "engine/menu/vending_machine.asm"
+	dr $74851,$757a0
 
-	dr $74851,$75dfe
+INCLUDE "data/mapHeaders/gary.asm"
+INCLUDE "scripts/gary.asm"
+INCLUDE "data/mapObjects/gary.asm"
+GaryBlocks:
+INCBIN "maps/gary.blk"
+	dr $759ef,$75dfe
 	
 INCLUDE "engine/menu/league_pc.asm"
 

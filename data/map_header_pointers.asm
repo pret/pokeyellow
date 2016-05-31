@@ -120,7 +120,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Lance_h ; unused
 	dw HallofFameRoom_h
 	dw $5f31 ; dw UndergroundPathNS_h
-	dw $57a0 ; dw Gary_h ;id=120
+	dw Gary_h ;id=120
 	dw $5f55 ; dw UndergroundPathWE_h
 	dw $42b7 ; dw CeladonMart1_h
 	dw $60d9 ; dw CeladonMart2_h

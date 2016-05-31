@@ -355,6 +355,10 @@ TX_CABLE_CLUB_RECEPTIONIST EQUS "db $f6"
 TX_POKECENTER_NURSE EQUS "db $ff"
 
 ; Predef macro.
+predef_const: MACRO
+	const \1PredefID
+	ENDM
+
 add_predef: MACRO
 \1Predef::
 	db BANK(\1)
@@ -362,7 +366,7 @@ add_predef: MACRO
 	ENDM
 
 predef_id: MACRO
-	ld a, (\1Predef) ; - PredefPointers) / 3
+	ld a, (\1Predef - PredefPointers) / 3
 	ENDM
 
 predef: MACRO
@@ -373,10 +377,6 @@ predef: MACRO
 predef_jump: MACRO
 	predef_id \1
 	jp Predef
-	ENDM
-
-predef_const: MACRO
-	const \1Predef
 	ENDM
 	
 tx_pre_const: MACRO
