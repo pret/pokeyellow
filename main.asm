@@ -1155,7 +1155,14 @@ INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
 
 ; vermilion house 2
-	dr $56054,$56233
+	dr $56054,$560d9
+
+INCLUDE "data/mapHeaders/celadonmart2.asm"
+INCLUDE "scripts/celadonmart2.asm"
+INCLUDE "data/mapObjects/celadonmart2.asm"
+CeladonMart2Blocks:
+INCBIN "maps/celadonmart2.blk"
+	dr $56160,$56233
 
 INCLUDE "data/mapHeaders/daycarem.asm"
 INCLUDE "scripts/daycarem.asm"
