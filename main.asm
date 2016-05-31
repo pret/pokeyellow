@@ -1346,12 +1346,68 @@ INCLUDE "engine/hidden_object_functions17.asm"
 SECTION "bank18",ROMX,BANK[$18]
 ViridianForestBlocks:
 INCBIN "maps/viridianforest.blk"
-	dr $60198,$610ed
+	dr $60198,$603c0
+
+SSAnne9Blocks:
+SSAnne10Blocks:
+INCBIN "maps/ssanne9.blk"
+	dr $60420,$610ed
 
 INCLUDE "data/mapHeaders/viridianforest.asm"
 INCLUDE "scripts/viridianforest.asm"
 INCLUDE "data/mapObjects/viridianforest.asm"
-	dr $612a4,$625e8
+
+INCLUDE "data/mapHeaders/ssanne1.asm"
+INCLUDE "scripts/ssanne1.asm"
+INCLUDE "data/mapObjects/ssanne1.asm"
+SSAnne1Blocks:
+INCBIN "maps/ssanne1.blk"
+
+INCLUDE "data/mapHeaders/ssanne2.asm"
+INCLUDE "scripts/ssanne2.asm"
+INCLUDE "data/mapObjects/ssanne2.asm"
+SSAnne2Blocks:
+INCBIN "maps/ssanne2.blk"
+
+INCLUDE "data/mapHeaders/ssanne4.asm"
+INCLUDE "scripts/ssanne4.asm"
+INCLUDE "data/mapObjects/ssanne4.asm"
+SSAnne4Blocks:
+INCBIN "maps/ssanne4.blk"
+
+INCLUDE "data/mapHeaders/ssanne5.asm"
+INCLUDE "scripts/ssanne5.asm"
+INCLUDE "data/mapObjects/ssanne5.asm"
+SSAnne5Blocks:
+INCBIN "maps/ssanne5.blk"
+
+INCLUDE "data/mapHeaders/ssanne6.asm"
+INCLUDE "scripts/ssanne6.asm"
+INCLUDE "data/mapObjects/ssanne6.asm"
+SSAnne6Blocks:
+INCBIN "maps/ssanne6.blk"
+
+; INCLUDE "data/mapHeaders/ssanne7.asm"
+; INCLUDE "scripts/ssanne7.asm"
+; INCLUDE "data/mapObjects/ssanne7.asm"
+	dr $618b7,$61987
+SSAnne7Blocks:
+INCBIN "maps/ssanne7.blk"
+
+INCLUDE "data/mapHeaders/ssanne8.asm"
+INCLUDE "scripts/ssanne8.asm"
+INCLUDE "data/mapObjects/ssanne8.asm"
+SSAnne8Blocks:
+INCBIN "maps/ssanne8.blk"
+
+INCLUDE "data/mapHeaders/ssanne9.asm"
+INCLUDE "scripts/ssanne9.asm"
+INCLUDE "data/mapObjects/ssanne9.asm"
+
+INCLUDE "data/mapHeaders/ssanne10.asm"
+INCLUDE "scripts/ssanne10.asm"
+INCLUDE "data/mapObjects/ssanne10.asm"
+	dr $61f31,$625e8
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]

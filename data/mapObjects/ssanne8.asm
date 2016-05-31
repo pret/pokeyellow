@@ -19,7 +19,7 @@ SSAnne8Object: ; 0x61a60 (size=127)
 	object SPRITE_GIRL, $16, $3, WALK, $1, $5 ; person
 	object SPRITE_FAT_BALD_GUY, $0, $e, STAY, NONE, $6 ; person
 	object SPRITE_LITTLE_GIRL, $2, $b, STAY, DOWN, $7 ; person
-	object SPRITE_CLEFAIRY, $3, $b, STAY, DOWN, $8 ; person
+	object SPRITE_JIGGLYPUFF, $3, $b, STAY, DOWN, $8 ; person
 	object SPRITE_GIRL, $a, $d, STAY, RIGHT, $9 ; person
 	object SPRITE_BALL, $c, $f, STAY, NONE, $a, TM_08
 	object SPRITE_GENTLEMAN, $15, $d, WALK, $2, $b ; person
