@@ -299,7 +299,7 @@ SpriteDifferentialDecode:: ; 25ca (0:25ca)
 	ld [W_SPRITECURPOSX], a
 	ld [W_SPRITECURPOSY], a
 	call StoreSpriteOutputPointer
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	and a
 	jr z, .notFlipped
 	ld hl, DecodeNybble0TableFlipped
@@ -386,7 +386,7 @@ DifferentialDecodeNybble:: ; 2663 (0:2663)
 	ld c, $1
 .evenNumber
 	ld l, a
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	and a
 	jr z, .notFlipped     ; determine if initial value is 0 or one
 	bit 3, e              ; if flipped, consider MSB of last data
@@ -479,7 +479,7 @@ XorSpriteChunks:: ; 26bd (0:26bd)
 	ld a, [W_SPRITEOUTPUTPTRCACHED+1]
 	ld d, a
 .xorChunksLoop
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	and a
 	jr z, .notFlipped
 	push de
@@ -563,10 +563,10 @@ NybbleReverseTable:: ; 275d (0:275d)
 ; combines the two loaded chunks with xor (the chunk loaded second is the destination). Both chunks are differeintial decoded beforehand.
 UnpackSpriteMode2:: ; 276d (0:276d)
 	call ResetSpriteBufferPointers
-	ld a, [W_SPRITEFLIPPED]
+	ld a, [wSpriteFlipped]
 	push af
 	xor a
-	ld [W_SPRITEFLIPPED], a            ; temporarily clear flipped flag for decoding the destination chunk
+	ld [wSpriteFlipped], a            ; temporarily clear flipped flag for decoding the destination chunk
 	ld a, [W_SPRITEOUTPUTPTRCACHED]
 	ld l, a
 	ld a, [W_SPRITEOUTPUTPTRCACHED+1]
@@ -574,7 +574,7 @@ UnpackSpriteMode2:: ; 276d (0:276d)
 	call SpriteDifferentialDecode
 	call ResetSpriteBufferPointers
 	pop af
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 	jp XorSpriteChunks
 
 ; stores hl into the output pointers

@@ -1,4 +1,4 @@
-PKMNLeaguePC: ; 0x7657e
+PKMNLeaguePC: ; 75dfe (1d:5dfe)
 	ld hl, AccessedHoFPCText
 	call PrintText
 	ld hl, wd730
@@ -10,7 +10,7 @@ PKMNLeaguePC: ; 0x7657e
 	push af
 	xor a
 	ld [hTilesetType], a
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 	ld [wUpdateSpritesEnabled], a
 	ld [wHoFTeamIndex2], a
 	ld [wHoFTeamNo], a
@@ -50,7 +50,7 @@ PKMNLeaguePC: ; 0x7657e
 	call RunDefaultPaletteCommand
 	jp GBPalNormal
 
-LeaguePCShowTeam: ; 765e5 (1d:65e5)
+LeaguePCShowTeam: ; 75e65 (1d:5e65)
 	ld c, PARTY_LENGTH
 .loop
 	push bc
@@ -77,7 +77,7 @@ LeaguePCShowTeam: ; 765e5 (1d:65e5)
 	scf
 	ret
 
-LeaguePCShowMon: ; 76610 (1d:6610)
+LeaguePCShowMon: ; 75e90 (1d:5e90)
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld hl, wHallOfFame
@@ -100,8 +100,7 @@ LeaguePCShowMon: ; 76610 (1d:6610)
 	call LoadFrontSpriteByMonIndex
 	call GBPalNormal
 	coord hl, 0, 13
-	ld b, 2
-	ld c, $12
+	lb bc, 2, 18
 	call TextBoxBorder
 	coord hl, 1, 15
 	ld de, HallOfFameNoText
@@ -110,11 +109,11 @@ LeaguePCShowMon: ; 76610 (1d:6610)
 	ld de, wHoFTeamNo
 	lb bc, 1, 3
 	call PrintNumber
-	jpba HoFDisplayMonInfo
+	jpba Func_7033f
 
-HallOfFameNoText: ; 76670 (1d:6670)
+HallOfFameNoText: ; 75eef (1d:5eef)
 	db "HALL OF FAME No   @"
 
-AccessedHoFPCText: ; 76683 (1d:6683)
+AccessedHoFPCText: ; 75f02 (1d:5f02)
 	TX_FAR _AccessedHoFPCText
 	db "@"

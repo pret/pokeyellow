@@ -1,4 +1,4 @@
-HiddenCoinCoords: ; 76822 (1d:6822)
+HiddenCoinCoords: ; 7608e (1d:608e)
 	db GAME_CORNER,$08,$00
 	db GAME_CORNER,$10,$01
 	db GAME_CORNER,$0b,$03

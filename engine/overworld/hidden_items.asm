@@ -1,4 +1,4 @@
-HiddenItems: ; 76688 (1d:6688)
+HiddenItems: ; 75f74 (1d:5f74)
 	ld hl, HiddenItemCoords
 	call FindHiddenItemOrCoinsIndex
 	ld [wHiddenItemOrCoinsIndex], a
@@ -9,7 +9,7 @@ HiddenItems: ; 76688 (1d:6688)
 	predef FlagActionPredef
 	ld a, c
 	and a
-	jr nz, .asm_75fa5
+	jr nz, .itemAlreadyFound
 	call EnableAutoTextBoxDrawing
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -18,21 +18,21 @@ HiddenItems: ; 76688 (1d:6688)
 	call GetItemName
 	tx_pre_jump FoundHiddenItemText
 
-.asm_75fa5
+.itemAlreadyFound
 	ld a, $ff
 	ld [hItemAlreadyFound], a
 	ret
 
 INCLUDE "data/hidden_item_coords.asm"
 
-FoundHiddenItemText: ; 7675b (1d:675b)
+FoundHiddenItemText: ; 76050 (1d:6050)
 	TX_FAR _FoundHiddenItemText
 	TX_ASM
 	ld a, [wHiddenObjectFunctionArgument] ; item ID
 	ld b, a
 	ld c, 1
 	call GiveItem
-	jr nc, .BagFull
+	jr nc, .bagFull
 	ld hl, wObtainedHiddenItemsFlags
 	ld a, [wHiddenItemOrCoinsIndex]
 	ld c, a
@@ -42,7 +42,7 @@ FoundHiddenItemText: ; 7675b (1d:675b)
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	jp TextScriptEnd
-.BagFull
+.bagFull
 	call WaitForTextScrollButtonPress ; wait for button press
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -50,16 +50,16 @@ FoundHiddenItemText: ; 7675b (1d:675b)
 	call PrintText
 	jp TextScriptEnd
 
-HiddenItemBagFullText: ; 76794 (1d:6794)
+HiddenItemBagFullText: ; 76089 (1d:6089)
 	TX_FAR _HiddenItemBagFullText
 	db "@"
 
-HiddenCoins: ; 76799 (1d:6799)
+HiddenCoins: ; 7608e (1d:608e)
 	ld b, COIN_CASE
 	predef GetQuantityOfItemInBag
 	ld a, b
 	and a
-	jr z, .asm_760ce
+	jr z, .doNotPickUpCoins
 	ld hl, HiddenCoinCoords
 	call FindHiddenItemOrCoinsIndex
 	ld [wHiddenItemOrCoinsIndex], a
@@ -70,7 +70,7 @@ HiddenCoins: ; 76799 (1d:6799)
 	predef FlagActionPredef
 	ld a, c
 	and a
-	jr nz, .asm_760ce
+	jr nz, .doNotPickUpCoins
 	xor a
 	ld [hUnusedCoinsByte], a
 	ld [hCoins], a
@@ -82,10 +82,10 @@ HiddenCoins: ; 76799 (1d:6799)
 	cp 20
 	jr z, .bcd20
 	cp 40
-	jr z, .bcd20
+	jr z, .bcd20 ; should be bcd40
 	jr .bcd100
 
-.asm_760ce
+.doNotPickUpCoins
 	ld a, $ff
 	ld [hItemAlreadyFound], a
 	ret
@@ -93,19 +93,19 @@ HiddenCoins: ; 76799 (1d:6799)
 .bcd10
 	ld a, $10
 	ld [hCoins + 1], a
-	jr .bcddone
+	jr .bcdDone
 .bcd20
 	ld a, $20
 	ld [hCoins + 1], a
-	jr .bcddone
+	jr .bcdDone
 .bcd40 ; due to a typo, this is never used
 	ld a, $40
 	ld [hCoins + 1], a
-	jr .bcddone
+	jr .bcdDone
 .bcd100
 	ld a, $1
 	ld [hCoins], a
-.bcddone
+.bcdDone
 	ld de, wPlayerCoins + 1
 	ld hl, hCoins + 1
 	ld c, $2
@@ -118,30 +118,30 @@ HiddenCoins: ; 76799 (1d:6799)
 	call EnableAutoTextBoxDrawing
 	ld a, [wPlayerCoins]
 	cp $99
-	jr nz, .RoomInCoinCase
+	jr nz, .roomInCoinCase
 	ld a, [wPlayerCoins + 1]
 	cp $99
-	jr nz, .RoomInCoinCase
+	jr nz, .roomInCoinCase
 	tx_pre_id DroppedHiddenCoinsText
 	jr .done
-.RoomInCoinCase
+.roomInCoinCase
 	tx_pre_id FoundHiddenCoinsText
 .done
 	jp PrintPredefTextID
 
 INCLUDE "data/hidden_coins.asm"
 
-FoundHiddenCoinsText: ; 76847 (1d:6847)
+FoundHiddenCoinsText: ; 76143 (1d:6143)
 	TX_FAR _FoundHiddenCoinsText
 	db $10,"@"
 
-DroppedHiddenCoinsText: ; 7684d (1d:684d)
+DroppedHiddenCoinsText: ; 76149 (1d:6149)
 	TX_FAR _FoundHiddenCoins2Text
 	db $10
 	TX_FAR _DroppedHiddenCoinsText
 	db "@"
 
-FindHiddenItemOrCoinsIndex: ; 76857 (1d:6857)
+FindHiddenItemOrCoinsIndex: ; 76153 (1d:6153)
 	ld a, [wHiddenObjectY]
 	ld d, a
 	ld a, [wHiddenObjectX]

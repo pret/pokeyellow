@@ -20,7 +20,7 @@ AnimateHallOfFame: ; 701c6 (1c:41c6)
 	xor a
 	ld [wUpdateSpritesEnabled], a
 	ld [hTilesetType], a
-	ld [W_SPRITEFLIPPED], a
+	ld [wSpriteFlipped], a
 	ld [wLetterPrintingDelayFlags], a ; no delay
 	ld [wHoFMonOrPlayer], a ; mon
 	inc a

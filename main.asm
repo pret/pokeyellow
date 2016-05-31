@@ -1386,10 +1386,14 @@ INCLUDE "scripts/pewtermart.asm"
 INCLUDE "data/mapObjects/pewtermart.asm"
 
 	dr $7453d,$74726
-VendingMachineMenu: ; 74726 (1d:4726)
-	dr $74726,$75dfe
-PKMNLeaguePC: ; 75dfe (1d:5dfe)
-	dr $75dfe,$75f74
+
+INCLUDE "engine/menu/vending_machine.asm"
+
+	dr $74851,$75dfe
+	
+INCLUDE "engine/menu/league_pc.asm"
+
+INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/overworld/hidden_items.asm"
 
@@ -1592,33 +1596,8 @@ SECTION "bank3D",ROMX,BANK[$3D]
 INCLUDE "engine/bank3d.asm"
 
 SECTION "bank3E",ROMX,BANK[$3E]
-Func_f8000: ; f8000
-	dr $f8000,$f8bcb
 
-Func_f8bcb: ; f8bcb
-	push de
-	callab IsSurfingPikachuInThePlayersParty
-	pop de
-	ret nc
-	callab PlayPikachuSoundClip
-	ret
-
-Func_f8bdf: ; f8bdf
-	dr $f8bdf,$f982d
-PlayIntroScene: ; f982d (3e:582d)
-	dr $f982d,$fa35a
-
-YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
-
-Func_fbb5a:
-	ld hl, wTileMapBackup
-	ld bc, 10 * SCREEN_WIDTH
-	xor a
-	call FillMemory
-	ret
-
-Func_fbb65:
-	dr $fbb65,$fbd76
+INCLUDE "engine/bank3e.asm"
 
 SECTION "bank3F",ROMX,BANK[$3F]
 

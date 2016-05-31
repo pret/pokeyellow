@@ -1967,7 +1967,7 @@ W_SPRITELOADFLAGS:: ; d0a8
 	ds 1
 W_SPRITEUNPACKMODE:: ; d0a9
 	ds 1
-W_SPRITEFLIPPED:: ; d0aa
+wSpriteFlipped:: ; d0aa
 	ds 1
 
 W_SPRITEINPUTPTR:: ; d0ab
