@@ -4,48 +4,48 @@ GetPredefPointer: ; f67ed (3d:67ed)
  ; Then put the bank and address of predef
  ; wPredefID in [wPredefBank] and hl.
 
-	ld a,h
-	ld [wPredefRegisters],a
-	ld a,l
-	ld [wPredefRegisters + 1],a
+	ld a, h
+	ld [wPredefRegisters], a
+	ld a, l
+	ld [wPredefRegisters + 1], a
 
-	ld hl,wPredefRegisters + 2
-	ld a,d
-	ld [hli],a
-	ld a,e
-	ld [hli],a
+	ld hl, wPredefRegisters + 2
+	ld a, d
+	ld [hli], a
+	ld a, e
+	ld [hli], a
 
-	ld a,b
-	ld [hli],a
-	ld [hl],c
+	ld a, b
+	ld [hli], a
+	ld [hl], c
 
-	ld hl,PredefPointers
-	ld de,0
+	ld hl, PredefPointers
+	ld de, 0
 
-	ld a,[wPredefID]
-	ld e,a
+	ld a, [wPredefID]
+	ld e, a
 	add a
 	add e
-	ld e,a
-	jr nc,.nocarry
+	ld e, a
+	jr nc, .nocarry
 	inc d
 
 .nocarry
-	add hl,de
-	ld d,h
-	ld e,l
+	add hl, de
+	ld d, h
+	ld e, l
 
-	 ; get bank of predef routine
-	ld a,[de]
-	ld [wPredefBank],a
+	; get bank of predef routine
+	ld a, [de]
+	ld [wPredefBank], a
 
-	 ; get pointer
+	; get pointer
 	inc de
-	ld a,[de]
-	ld l,a
+	ld a, [de]
+	ld l, a
 	inc de
-	ld a,[de]
-	ld h,a
+	ld a, [de]
+	ld h, a
 
 	ret
 
@@ -144,10 +144,12 @@ PredefPointers:: ; f681d (3d:681d)
 	add_predef DoInGameTradeDialogue ; 54 initiate trade (1c:5b86)
 	add_predef HallOfFamePC
 	add_predef DisplayDexRating
+
 	predef_const _LeaveMapAnim
 	predef_const EnterMapAnim
 	dbw $1E, _LeaveMapAnim ; wrong bank
 	dbw $1E, EnterMapAnim ; wrong bank
+
 	add_predef GetTileTwoStepsInFrontOfPlayer
 	add_predef CheckForCollisionWhenPushingBoulder
 	add_predef PrintStrengthTxt

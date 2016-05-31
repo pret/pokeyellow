@@ -4,7 +4,7 @@
 ; (they are either items or sprites that deactivate after battle
 ; and are detected in wMissableObjectList)
 
-const_value = 0
+	const_def
 
 	const HS_PALLET_TOWN_OAK              ; 00
 	const HS_LYING_OLD_MAN                ; 01
@@ -62,17 +62,17 @@ const_value = 0
 	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 35 X
 	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 36 X
 	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 37 X
-	const HS_POKEMONTOWER_2_RIVAL         ; 38
-	const HS_POKEMONTOWER_3_ITEM          ; 39 X
-	const HS_POKEMONTOWER_4_ITEM_1        ; 3A X
-	const HS_POKEMONTOWER_4_ITEM_2        ; 3B X
-	const HS_POKEMONTOWER_4_ITEM_3        ; 3C X
-	const HS_POKEMONTOWER_5_ITEM          ; 3D X
-	const HS_POKEMONTOWER_6_ITEM_1        ; 3E X
-	const HS_POKEMONTOWER_6_ITEM_2        ; 3F X
-	const HS_POKEMONTOWER_7_ROCKET_1      ; 40 X
-	const HS_POKEMONTOWER_7_ROCKET_2      ; 41 X
-	const HS_POKEMONTOWER_7_ROCKET_3      ; 42
+	const HS_UNKNOWN_DUNGEON_1_ITEM_4     ; 38 X
+	const HS_POKEMONTOWER_2_RIVAL         ; 39 X
+	const HS_POKEMONTOWER_3_ITEM          ; 3A X
+	const HS_POKEMONTOWER_4_ITEM_1        ; 3B X
+	const HS_POKEMONTOWER_4_ITEM_2        ; 3C X
+	const HS_POKEMONTOWER_4_ITEM_3        ; 3D X
+	const HS_POKEMONTOWER_5_ITEM          ; 3E X
+	const HS_POKEMONTOWER_6_ITEM_1        ; 3F X
+	const HS_POKEMONTOWER_6_ITEM_2        ; 40 X
+	const HS_POKEMONTOWER_7_JESSIE        ; 41 X
+	const HS_POKEMONTOWER_7_JAMES         ; 42
 	const HS_POKEMONTOWER_7_MR_FUJI       ; 43
 	const HS_LAVENDER_HOUSE_1_MR_FUJI     ; 44
 	const HS_CELADON_MANSION_5_GIFT       ; 45
@@ -145,8 +145,8 @@ const_value = 0
 	const HS_ROCKET_HIDEOUT_4_ITEM_3      ; 88
 	const HS_ROCKET_HIDEOUT_4_ITEM_4      ; 89 XXX never (de)activated?
 	const HS_ROCKET_HIDEOUT_4_ITEM_5      ; 8A
-	
-const_value SET $8d
+	const HS_ROCKET_HIDEOUT_4_ITEM_6      ; 8B
+	const HS_ROCKET_HIDEOUT_4_ITEM_7      ; 8C
 	const HS_SILPH_CO_2F_1                ; 8D
 	const HS_SILPH_CO_2F_2                ; 8E
 	const HS_SILPH_CO_2F_3                ; 8F
@@ -195,37 +195,39 @@ const_value SET $8d
 	const HS_SILPH_CO_10F_ITEM_3          ; BA XXX sprite doesn't exist
 	const HS_SILPH_CO_11F_1               ; BB X
 	const HS_SILPH_CO_11F_2               ; BC X
-	const HS_SILPH_CO_11F_3               ; BD X
-	const HS_MAP_F4_1                     ; BE X
-	const HS_MANSION_2_ITEM               ; BF X
-	const HS_MANSION_3_ITEM_1             ; C0 X
-	const HS_MANSION_3_ITEM_2             ; C1 X
-	const HS_MANSION_4_ITEM_1             ; C2 X
-	const HS_MANSION_4_ITEM_2             ; C3 X
-	const HS_MANSION_4_ITEM_3             ; C4 X
-	const HS_MANSION_4_ITEM_4             ; C5 X
-	const HS_MANSION_4_ITEM_5             ; C6 X
-	const HS_SAFARI_ZONE_EAST_ITEM_1      ; C7 X
-	const HS_SAFARI_ZONE_EAST_ITEM_2      ; C8 X
-	const HS_SAFARI_ZONE_EAST_ITEM_3      ; C9 X
-	const HS_SAFARI_ZONE_EAST_ITEM_4      ; CA X
-	const HS_SAFARI_ZONE_NORTH_ITEM_1     ; CB X
-	const HS_SAFARI_ZONE_NORTH_ITEM_2     ; CC X
-	const HS_SAFARI_ZONE_WEST_ITEM_1      ; CD X
-	const HS_SAFARI_ZONE_WEST_ITEM_2      ; CE X
-	const HS_SAFARI_ZONE_WEST_ITEM_3      ; CF X
-	const HS_SAFARI_ZONE_WEST_ITEM_4      ; D0 X
-	const HS_SAFARI_ZONE_CENTER_ITEM      ; D1 X
-	const HS_UNKNOWN_DUNGEON_2_ITEM_1     ; D2 X
-	const HS_UNKNOWN_DUNGEON_2_ITEM_2     ; D3 X
-	const HS_UNKNOWN_DUNGEON_2_ITEM_3     ; D4 X
-	const HS_MEWTWO                       ; D5 X
-	const HS_UNKNOWN_DUNGEON_3_ITEM_1     ; D6
-	const HS_UNKNOWN_DUNGEON_3_ITEM_2     ; D7
-	const HS_VICTORY_ROAD_1_ITEM_1        ; D8
-	const HS_VICTORY_ROAD_1_ITEM_2        ; D9
-
-const_value SET $de
+	const HS_SILPH_CO_11F_JESSIE          ; BD X
+	const HS_SILPH_CO_11F_JAMES           ; BE X
+	const HS_MAP_F4_1                     ; BF X
+	const HS_MANSION_2_ITEM               ; C0 X
+	const HS_MANSION_3_ITEM_1             ; C1 X
+	const HS_MANSION_3_ITEM_2             ; C2 X
+	const HS_MANSION_4_ITEM_1             ; C3 X
+	const HS_MANSION_4_ITEM_2             ; C4 X
+	const HS_MANSION_4_ITEM_3             ; C5 X
+	const HS_MANSION_4_ITEM_4             ; C6 X
+	const HS_MANSION_4_ITEM_5             ; C7 X
+	const HS_SAFARI_ZONE_EAST_ITEM_1      ; C8 X
+	const HS_SAFARI_ZONE_EAST_ITEM_2      ; C9 X
+	const HS_SAFARI_ZONE_EAST_ITEM_3      ; CA X
+	const HS_SAFARI_ZONE_EAST_ITEM_4      ; CB X
+	const HS_SAFARI_ZONE_NORTH_ITEM_1     ; CC X
+	const HS_SAFARI_ZONE_NORTH_ITEM_2     ; CD X
+	const HS_SAFARI_ZONE_WEST_ITEM_1      ; CE X
+	const HS_SAFARI_ZONE_WEST_ITEM_2      ; CF X
+	const HS_SAFARI_ZONE_WEST_ITEM_3      ; D0 X
+	const HS_SAFARI_ZONE_WEST_ITEM_4      ; D1 X
+	const HS_SAFARI_ZONE_CENTER_ITEM      ; D2 X
+	const HS_UNKNOWN_DUNGEON_2_ITEM_1     ; D3 X
+	const HS_UNKNOWN_DUNGEON_2_ITEM_2     ; D4 X
+	const HS_UNKNOWN_DUNGEON_2_ITEM_3     ; D5 X
+	const HS_UNKNOWN_DUNGEON_2_ITEM_4     ; D6
+	const HS_MEWTWO                       ; D7
+	const HS_UNKNOWN_DUNGEON_3_ITEM_1     ; D8
+	const HS_UNKNOWN_DUNGEON_3_ITEM_2     ; D9
+	const HS_UNKNOWN_DUNGEON_3_ITEM_3     ; DA
+	const HS_UNKNOWN_DUNGEON_3_ITEM_4     ; DB
+	const HS_VICTORY_ROAD_1_ITEM_1        ; DC
+	const HS_VICTORY_ROAD_1_ITEM_2        ; DD
 	const HS_CHAMPIONS_ROOM_OAK           ; DE
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_1  ; DF
 	const HS_SEAFOAM_ISLANDS_1_BOULDER_2  ; E0

@@ -71,6 +71,6 @@ MissableObjects_f25ce
 	db HS_SILPH_CO_10F_2
 	db HS_SILPH_CO_11F_1
 	db HS_SILPH_CO_11F_2
-	db HS_SILPH_CO_11F_3
-	db HS_MAP_F4_1
+	db HS_SILPH_CO_11F_JESSIE
+	db HS_SILPH_CO_11F_JAMES
 	db $ff
