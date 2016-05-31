@@ -805,7 +805,6 @@ INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks:
 INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks:
-VermilionPokecenterBlocks:
 SaffronPokecenterBlocks:
 LavenderPokecenterBlocks:
 CeladonPokecenterBlocks:
@@ -1216,6 +1215,7 @@ INCBIN "maps/museum1f.blk"
 Museum2FBlocks:
 INCBIN "maps/museum2f.blk"
 PewterPokecenterBlocks:
+VermilionPokecenterBlocks:
 INCBIN "maps/pewterpokecenter.blk"
 UndergroundPathEntranceRoute5Blocks:
 UndergroundPathEntranceRoute6Blocks:
@@ -1272,8 +1272,12 @@ INCBIN "maps/ceruleangym.blk"
 INCLUDE "data/mapHeaders/ceruleanmart.asm"
 INCLUDE "scripts/ceruleanmart.asm"
 INCLUDE "data/mapObjects/ceruleanmart.asm"
+	dr $5c79c,$5c865
 
-	dr $5c79c,$5d485
+INCLUDE "data/mapHeaders/vermilionpokecenter.asm"
+INCLUDE "scripts/vermilionpokecenter.asm"
+INCLUDE "data/mapObjects/vermilionpokecenter.asm"
+	dr $5c8cb,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"

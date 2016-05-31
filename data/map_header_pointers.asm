@@ -89,7 +89,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Route11GateUpstairs_h
 	dw Route12Gate_h
 	dw BillsHouse_h
-	dw $4865 ; dw VermilionPokecenter_h
+	dw VermilionPokecenter_h
 	dw $5a00 ; dw FanClub_h ;id=90
 	dw $48cb ; dw VermilionMart_h
 	dw $4910 ; dw VermilionGym_h

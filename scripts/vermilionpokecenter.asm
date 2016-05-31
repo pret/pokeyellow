@@ -7,6 +7,7 @@ VermilionPokecenterTextPointers: ; 5c995 (17:4995)
 	dw VermilionPokecenterText2
 	dw VermilionPokecenterText3
 	dw VermilionPokecenterText4
+	dw VermilionPokecenterText5
 
 VermilionPokecenterText1: ; 5c99d (17:499d)
 	db $ff
@@ -21,3 +22,8 @@ VermilionPokecenterText3: ; 5c9a3 (17:49a3)
 
 VermilionPokecenterText4: ; 5c9a8 (17:49a8)
 	db $f6
+
+VermilionPokecenterText5:
+	TX_ASM
+	callab Func_f0f12
+	jp TextScriptEnd
