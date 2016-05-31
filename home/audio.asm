@@ -25,11 +25,11 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	jr z, .surfing
 	call CheckForNoBikingMusicMap
 	jr c, .walking
-	ld a, $d2 ; MUSIC_BIKE_RIDING
+	ld a, MUSIC_BIKE_RIDING
 	jr .next
 
 .surfing
-	ld a, $d6 ; MUSIC_SURFING
+	ld a, MUSIC_SURFING
 
 .next
 	ld b, a

@@ -95,16 +95,16 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VermilionGym_h
 	dw VermilionHouse1_h
 	dw VermilionDock_h
-	dw $52a4 ; dw SSAnne1_h
-	dw $53de ; dw SSAnne2_h
-	dw $49bf ; dw SSAnne3_h
-	dw $5650 ; dw SSAnne4_h
-	dw $56d0 ; dw SSAnne5_h
-	dw $57d5 ; dw SSAnne6_h ;id=100
-	dw $58b7 ; dw SSAnne7_h
-	dw $5993 ; dw SSAnne8_h
-	dw $5b68 ; dw SSAnne9_h
-	dw $5d60 ; dw SSAnne10_h
+	dw SSAnne1_h
+	dw SSAnne2_h
+	dw SSAnne3_h
+	dw SSAnne4_h
+	dw SSAnne5_h
+	dw SSAnne6_h ;id=100
+	dw SSAnne7_h
+	dw SSAnne8_h
+	dw SSAnne9_h
+	dw SSAnne10_h
 	dw $623d ; dw Lance_h ; unused
 	dw $623d ; dw Lance_h ; unused
 	dw $623d ; dw Lance_h ; unused

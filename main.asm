@@ -840,8 +840,15 @@ INCLUDE "scripts/rocktunnel1.asm"
 INCLUDE "data/mapObjects/rocktunnel1.asm"
 RockTunnel1Blocks:
 INCBIN "maps/rocktunnel1.blk"
+	dr $4487e,$449bf
 
-	dr $4487e,$45077
+INCLUDE "data/mapHeaders/ssanne3.asm"
+INCLUDE "scripts/ssanne3.asm"
+INCLUDE "data/mapObjects/ssanne3.asm"
+SSAnne3Blocks:
+INCBIN "maps/ssanne3.blk"
+	dr $44a0d,$45077
+
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46bf3
 
@@ -1387,10 +1394,9 @@ INCLUDE "data/mapObjects/ssanne6.asm"
 SSAnne6Blocks:
 INCBIN "maps/ssanne6.blk"
 
-; INCLUDE "data/mapHeaders/ssanne7.asm"
-; INCLUDE "scripts/ssanne7.asm"
-; INCLUDE "data/mapObjects/ssanne7.asm"
-	dr $618b7,$61987
+INCLUDE "data/mapHeaders/ssanne7.asm"
+INCLUDE "scripts/ssanne7.asm"
+INCLUDE "data/mapObjects/ssanne7.asm"
 SSAnne7Blocks:
 INCBIN "maps/ssanne7.blk"
 
