@@ -1200,7 +1200,13 @@ INCLUDE "scripts/route12.asm"
 INCLUDE "scripts/route15.asm"
 INCLUDE "scripts/route16.asm"
 INCLUDE "scripts/route18.asm"
-	dr $59a00,$5a53a
+
+INCLUDE "data/mapHeaders/fanclub.asm"
+INCLUDE "scripts/fanclub.asm"
+INCLUDE "data/mapObjects/fanclub.asm"
+FanClubBlocks:
+INCBIN "maps/fanclub.blk"
+	dr $59c80,$5a53a
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 

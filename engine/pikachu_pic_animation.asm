@@ -247,7 +247,7 @@ Func_fd05e: ; fd05e (3f:505e)
 	bit 7, [hl]
 	ld a, $1d
 	jr z, .asm_fd0c9
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	ld a, $1e
 	jr nz, .asm_fd0c9
 	jr .asm_fd096
@@ -255,7 +255,7 @@ Func_fd05e: ; fd05e (3f:505e)
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	jr nz, .notPewterPokecenter
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	ld a, $1a
 	jr nz, .asm_fd0c9
 	jr .asm_fd096
@@ -1636,7 +1636,7 @@ PikachuPewterPokecenterCheck: ; fd8d4 (3f:58d4)
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	call Func_fcff2
 	ret
 
@@ -1644,7 +1644,7 @@ PikachuFanClubCheck: ; fd8e1 (3f:58e1)
 	ld a, [wCurMap]
 	cp POKEMON_FAN_CLUB
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	call Func_fcff2
 	ret
 
@@ -1652,7 +1652,7 @@ PikachuBillsHouseCheck: ; fd8ee (3f:58ee)
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	ret
 
 Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3: ; fd8f8 (3f:58f8)

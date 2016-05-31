@@ -57,7 +57,7 @@ Func_f1da4:
 	ret z
 	callab Func_fce73
 	ret c
-	call SetPikachuAsleep
+	call DisablePikachuFollowingPlayer
 	ret
 
 PewterPokecenterText_f1e19:

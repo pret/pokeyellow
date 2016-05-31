@@ -2,7 +2,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	jr nz, .regularCenter
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr z, .regularCenter
 	ld hl, LooksContentText ; if pikachu is sleeping, don't heal
 	call PrintText
@@ -27,7 +27,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call SetLastBlackoutMap
 	callab IsStarterPikachuInOurParty
 	jr nc, .notHealingPlayerPikachu
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr nz, .notHealingPlayerPikachu
 	call LoadCurrentMapView
 	call Delay3
@@ -38,7 +38,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call PrintText
 	ld c, 64
 	call DelayFrames
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr nz, .playerPikachuNotOnScreen
 	call Func_152d
 	callab IsStarterPikachuInOurParty
@@ -58,7 +58,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	ld [wLastMusicSoundID], a
 	ld [wNewSoundID], a
 	call PlaySound
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr nz, .doNotReturnPikachu
 	callab IsStarterPikachuInOurParty
 	call c, Func_6eaa

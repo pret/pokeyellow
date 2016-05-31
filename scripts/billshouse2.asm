@@ -87,7 +87,7 @@ Func_f24ae: ; f24ae
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	jr nz, .asm_f24d2
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr z, .asm_f24d2
 	ld a, [W_BILLSHOUSECURSCRIPT]
 	cp $5
@@ -120,7 +120,7 @@ Func_f24d5:
 	ld a, $1
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
-	call SetPikachuAsleep
+	call DisablePikachuFollowingPlayer
 	callab InitializePikachuTextID
 	ret
 
