@@ -1224,7 +1224,14 @@ INCLUDE "scripts/fanclub.asm"
 INCLUDE "data/mapObjects/fanclub.asm"
 FanClubBlocks:
 INCBIN "maps/fanclub.blk"
-	dr $59c80,$5a53a
+	dr $59c80,$5a23d
+
+INCLUDE "data/mapHeaders/lance.asm"
+INCLUDE "scripts/lance.asm"
+INCLUDE "data/mapObjects/lance.asm"
+LanceBlocks:
+INCBIN "maps/lance.blk"
+	dr $5a42d,$5a53a
 	
 INCLUDE "engine/overworld/saffron_guards.asm"
 

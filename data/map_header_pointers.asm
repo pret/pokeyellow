@@ -105,19 +105,19 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SSAnne8_h
 	dw SSAnne9_h
 	dw SSAnne10_h
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h ; unused
 	dw VictoryRoad1_h
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused ;id=110
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
-	dw $623d ; dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h ; unused ;id=110
+	dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h
+	dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h ; unused
+	dw Lance_h ; unused
 	dw $642d ; dw HallofFameRoom_h
 	dw $5f31 ; dw UndergroundPathNS_h
 	dw $57a0 ; dw Gary_h ;id=120

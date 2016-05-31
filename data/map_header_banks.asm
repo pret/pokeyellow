@@ -113,7 +113,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $1d ; unused
 	db $1d ; unused
 	db $1d ; unused
-	db $16 ; db BANK(Lance_h)
+	db BANK(Lance_h)
 	db $1d ; unused
 	db $1d ; unused
 	db $1d ; unused
