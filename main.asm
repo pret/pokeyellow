@@ -302,6 +302,7 @@ CeruleanHouse1Blocks:
 VermilionHouse1Blocks:
 INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
+CeladonMansion5Blocks:
 INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks:
 INCBIN "maps/ceruleanhousetrashed.blk"
@@ -370,7 +371,11 @@ INCLUDE "scripts/vermiliondock.asm"
 INCLUDE "data/mapObjects/vermiliondock.asm"
 VermilionDockBlocks:
 INCBIN "maps/vermiliondock.blk"
-	dr $1d636,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/celadonmansion5.asm"
+INCLUDE "scripts/celadonmansion5.asm"
+INCLUDE "data/mapObjects/celadonmansion5.asm"
+	dr $1d685,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
