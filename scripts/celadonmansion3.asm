@@ -1,5 +1,13 @@
 CeladonMansion3Script: ; 48790 (12:4790)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
+
+CeladonMansion3_PokedexCount:
+	ld hl, wPokedexOwned
+	ld b, wPokedexOwnedEnd - wPokedexOwned
+	call CountSetBits
+	ld a, [wNumSetBits]
+	ret
 
 CeladonMansion3TextPointers: ; 48793 (12:4793)
 	dw ProgrammerText
@@ -12,31 +20,120 @@ CeladonMansion3TextPointers: ; 48793 (12:4793)
 	dw GameFreakSignText
 
 ProgrammerText: ; 487a3 (12:47a3)
+	TX_ASM
+	call CeladonMansion3_PokedexCount
+	cp 150
+	ld hl, CeladonMansion3Text_486f5
+	jr nc, .print
+	ld hl, CeladonMansion3Text_486f0
+.print
+	call PrintText
+	jp TextScriptEnd
+
+CeladonMansion3Text_486f0:
 	TX_FAR _ProgrammerText
 	db "@"
 
+CeladonMansion3Text_486f5:
+	TX_FAR _ProgrammerText2
+	db "@"
+
 GraphicArtistText: ; 487a8 (12:47a8)
+	TX_ASM
+	call CeladonMansion3_PokedexCount
+	cp 150
+	jr nc, .completed
+	ld hl, CeladonMansion3Text_48757
+	jr .print
+
+.completed
+	ld hl, CeladonMansion3Text_4875c
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .declined_print
+	call SaveScreenTilesToBuffer2
+	xor a
+	ld [wUpdateSpritesEnabled], a
+	ld hl, wd730
+	set 6, [hl]
+	callab Func_e8cb1
+	ld hl, wd730
+	res 6, [hl]
+	call GBPalWhiteOutWithDelay3
+	call ReloadTilesetTilePatterns
+	call RestoreScreenTilesAndReloadTilePatterns
+	call LoadScreenTilesFromBuffer2
+	call Delay3
+	call GBPalNormal
+	ld hl, CeladonMansion3Text_4876b
+	ld a, [$ffdb]
+	and a
+	jr nz, .print
+	ld hl, CeladonMansion3Text_48766
+	jr .print
+
+.declined_print
+	ld hl, CeladonMansion3Text_48761
+.print
+	call PrintText
+	jp TextScriptEnd
+
+CeladonMansion3Text_48757:
 	TX_FAR _GraphicArtistText
 	db "@"
 
+CeladonMansion3Text_4875c:
+	TX_FAR _GraphicArtistText2
+	db "@"
+
+CeladonMansion3Text_48761:
+	TX_FAR _GraphicArtistText3
+	db "@"
+
+CeladonMansion3Text_48766:
+	TX_FAR _GraphicArtistText4
+	db "@"
+
+CeladonMansion3Text_4876b:
+	TX_FAR _GraphicArtistText5
+	db "@"
+
 WriterText: ; 487ad (12:47ad)
+	TX_ASM
+	call CeladonMansion3_PokedexCount
+	cp 150
+	ld hl, CeladonMansion3Text_48789
+	jr nc, .print
+	ld hl, CeladonMansion3Text_48784
+.print
+	call PrintText
+	jp TextScriptEnd
+
+CeladonMansion3Text_48784:
 	TX_FAR _WriterText
+	db "@"
+
+CeladonMansion3Text_48789:
+	TX_FAR _WriterText2
 	db "@"
 
 DirectorText: ; 487b2 (12:47b2)
 	TX_ASM
-
+	call CeladonMansion3_PokedexCount
 	; check pokédex
-	ld hl, wPokedexOwned
-	ld b, wPokedexOwnedEnd - wPokedexOwned
-	call CountSetBits
-	ld a, [wNumSetBits]
 	cp 150
 	jr nc, .CompletedDex
 	ld hl, .GameDesigner
 	jr .done
 .CompletedDex
 	ld hl, .CompletedDexText
+	call PrintText
+	call Delay3
+	xor a
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	ld hl, .UnlockedDiplomaPrinting
 .done
 	call PrintText
 	jp TextScriptEnd
@@ -47,25 +144,33 @@ DirectorText: ; 487b2 (12:47b2)
 
 .CompletedDexText
 	TX_FAR _CompletedDexText
-	db $6
+	TX_BUTTON_SOUND
 	TX_ASM
 	callab DisplayDiploma
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	jp TextScriptEnd
 
-GameFreakPCText1: ; 487eb (12:47eb)
-	TX_FAR _CeladonMansion3Text5
+.UnlockedDiplomaPrinting
+	TX_FAR _CompletedDexText2
 	db "@"
+
+GameFreakPCText1: ; 487eb (12:47eb)
+	TX_ASM
+	callba Func_f1ef3
+	jp TextScriptEnd
 
 GameFreakPCText2: ; 487f0 (12:47f0)
-	TX_FAR _CeladonMansion3Text6
-	db "@"
+	TX_ASM
+	callba Func_f1eff
+	jp TextScriptEnd
 
 GameFreakPCText3: ; 487f5 (12:47f5)
-	TX_FAR _CeladonMansion3Text7
-	db "@"
+	TX_ASM
+	callba Func_f1f0b
+	jp TextScriptEnd
 
 GameFreakSignText: ; 487fa (12:47fa)
-	TX_FAR _CeladonMansion3Text8
-	db "@"
+	TX_ASM
+	callba Func_f1f17
+	jp TextScriptEnd

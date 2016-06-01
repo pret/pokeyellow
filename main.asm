@@ -904,7 +904,31 @@ INCLUDE "scripts/celadonmartelevator.asm"
 INCLUDE "data/mapObjects/celadonmartelevator.asm"
 CeladonMartElevatorBlocks:
 INCBIN "maps/celadonmartelevator.blk"
-	dr $48593,$492a9
+
+INCLUDE "data/mapHeaders/celadonmansion1.asm"
+INCLUDE "scripts/celadonmansion1.asm"
+INCLUDE "data/mapObjects/celadonmansion1.asm"
+CeladonMansion1Blocks:
+INCBIN "maps/celadonmansion1.blk"
+
+INCLUDE "data/mapHeaders/celadonmansion2.asm"
+INCLUDE "scripts/celadonmansion2.asm"
+INCLUDE "data/mapObjects/celadonmansion2.asm"
+CeladonMansion2Blocks:
+INCBIN "maps/celadonmansion2.blk"
+
+INCLUDE "data/mapHeaders/celadonmansion3.asm"
+INCLUDE "scripts/celadonmansion3.asm"
+INCLUDE "data/mapObjects/celadonmansion3.asm"
+CeladonMansion3Blocks:
+INCBIN "maps/celadonmansion3.blk"
+
+INCLUDE "data/mapHeaders/celadonmansion4.asm"
+INCLUDE "scripts/celadonmansion4.asm"
+INCLUDE "data/mapObjects/celadonmansion4.asm"
+CeladonMansion4Blocks:
+INCBIN "maps/celadonmansion4.blk"
+	dr $488af,$492a9
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"

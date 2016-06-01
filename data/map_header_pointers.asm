@@ -128,10 +128,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeladonMart4_h
 	dw CeladonMartRoof_h
 	dw CeladonMartElevator_h
-	dw $4593 ; dw CeladonMansion1_h
-	dw $465a ; dw CeladonMansion2_h
-	dw $46b0 ; dw CeladonMansion3_h ;id=130
-	dw $4861 ; dw CeladonMansion4_h
+	dw CeladonMansion1_h
+	dw CeladonMansion2_h
+	dw CeladonMansion3_h ;id=130
+	dw CeladonMansion4_h
 	dw $5636 ; dw CeladonMansion5_h
 	dw $48af ; dw CeladonPokecenter_h
 	dw $4915 ; dw CeladonGym_h
