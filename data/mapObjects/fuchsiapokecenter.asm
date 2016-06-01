@@ -7,11 +7,12 @@ FuchsiaPokecenterObject: ; 0x7507d (size=44)
 
 	db $0 ; signs
 
-	db $4 ; objects
+	db $5 ; objects
 	object SPRITE_NURSE, $3, $1, STAY, DOWN, $1 ; person
-	object SPRITE_ROCKER, $2, $3, STAY, NONE, $2 ; person
+	object SPRITE_ROCKER, $4, $3, STAY, UP, $2 ; person
 	object SPRITE_LASS, $6, $5, WALK, $2, $3 ; person
 	object SPRITE_CABLE_CLUB_WOMAN, $b, $2, STAY, DOWN, $4 ; person
+	object SPRITE_CHANSEY, $4, $1, STAY, DOWN, $5 ; person
 
 	; warp-to
 	EVENT_DISP FUCHSIA_POKECENTER_WIDTH, $7, $3

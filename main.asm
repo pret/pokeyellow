@@ -820,7 +820,6 @@ INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks: INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks:
 SaffronPokecenterBlocks:
-FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks: INCBIN "maps/viridianpokecenter.blk"
 	dr $440fb,$4410b
 
@@ -1593,7 +1592,9 @@ SECTION "bank1D",ROMX,BANK[$1D]
 	dr $74000,$74010
 
 PewterMartBlocks: INCBIN "maps/pewtermart.blk"
-	dr $74020,$7405c
+FuchsiaHouse1Blocks: INCBIN "maps/fuchsiahouse1.blk"
+FuchsiaPokecenterBlocks: INCBIN "maps/fuchsiapokecenter.blk"
+	dr $7404c,$7405c
 
 INCLUDE "engine/items/itemfinder.asm"
 INCLUDE "scripts/ceruleancity2.asm"
@@ -1610,7 +1611,15 @@ INCLUDE "data/mapObjects/pewtermart.asm"
 	dr $7453d,$74726
 
 INCLUDE "engine/menu/vending_machine.asm"
-	dr $74851,$757a0
+
+INCLUDE "data/mapHeaders/fuchsiahouse1.asm"
+INCLUDE "scripts/fuchsiahouse1.asm"
+INCLUDE "data/mapObjects/fuchsiahouse1.asm"
+
+INCLUDE "data/mapHeaders/fuchsiapokecenter.asm"
+INCLUDE "scripts/fuchsiapokecenter.asm"
+INCLUDE "data/mapObjects/fuchsiapokecenter.asm"
+	dr $74902,$757a0
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"

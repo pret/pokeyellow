@@ -7,6 +7,7 @@ FuchsiaPokecenterTextPointers: ; 75069 (1d:5069)
 	dw FuchsiaPokecenterText2
 	dw FuchsiaPokecenterText3
 	dw FuchsiaPokecenterText4
+	dw FuchsiaPokecenterText5
 
 FuchsiaPokecenterText1: ; 75071 (1d:5071)
 	db $ff
@@ -21,3 +22,8 @@ FuchsiaPokecenterText3: ; 75077 (1d:5077)
 
 FuchsiaPokecenterText4: ; 7507c (1d:507c)
 	db $f6
+
+FuchsiaPokecenterText5:
+	TX_ASM
+	callab PokecenterChanseyText
+	jp TextScriptEnd

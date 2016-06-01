@@ -153,8 +153,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw LavenderMart_h ;id=150
 	dw LavenderHouse2_h
 	dw FuchsiaMart_h
-	dw $4851 ; dw FuchsiaHouse1_h
-	dw $489c ; dw FuchsiaPokecenter_h
+	dw FuchsiaHouse1_h
+	dw FuchsiaPokecenter_h
 	dw $4902 ; dw FuchsiaHouse2_h
 	dw $4a1a ; dw SafariZoneEntrance_h
 	dw $4bd9 ; dw FuchsiaGym_h
