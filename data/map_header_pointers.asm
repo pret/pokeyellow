@@ -138,7 +138,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeladonGameCorner_h
 	dw CeladonMart5_h
 	dw CeladonPrizeRoom_h
-	dw $5168 ; dw CeladonDiner_h
+	dw CeladonDiner_h
 	dw $51e8 ; dw CeladonHouse_h
 	dw $5243 ; dw CeladonHotel_h ;id=140
 	dw $479c ; dw LavenderPokecenter_h
