@@ -149,9 +149,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw PokemonTower5_h
 	dw PokemonTower6_h
 	dw PokemonTower7_h
-	dw $51a4 ; dw LavenderHouse1_h
+	dw LavenderHouse1_h
 	dw LavenderMart_h ;id=150
-	dw $52aa ; dw LavenderHouse2_h
+	dw LavenderHouse2_h
 	dw $5685 ; dw FuchsiaMart_h
 	dw $4851 ; dw FuchsiaHouse1_h
 	dw $489c ; dw FuchsiaPokecenter_h
