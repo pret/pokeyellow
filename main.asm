@@ -823,7 +823,6 @@ INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks:
 SaffronPokecenterBlocks:
 LavenderPokecenterBlocks:
-CeladonPokecenterBlocks:
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks:
 INCBIN "maps/viridianpokecenter.blk"
@@ -872,6 +871,7 @@ Route7Blocks: ; 48051
 INCBIN "maps/route7.blk"
 MtMoonPokecenterBlocks:
 RockTunnelPokecenterBlocks:
+CeladonPokecenterBlocks:
 INCBIN "maps/mtmoonpokecenter.blk"
 Route11GateBlocks:
 INCBIN "maps/route11gate.blk"
@@ -933,7 +933,11 @@ INCLUDE "scripts/celadonmansion4.asm"
 INCLUDE "data/mapObjects/celadonmansion4.asm"
 CeladonMansion4Blocks:
 INCBIN "maps/celadonmansion4.blk"
-	dr $488af,$492a9
+
+INCLUDE "data/mapHeaders/celadonpokecenter.asm"
+INCLUDE "scripts/celadonpokecenter.asm"
+INCLUDE "data/mapObjects/celadonpokecenter.asm"
+	dr $48915,$492a9
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"

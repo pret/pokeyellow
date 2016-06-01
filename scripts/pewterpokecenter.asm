@@ -14,7 +14,7 @@ PewterPokecenterTextPointers: ; 5c58d (17:458d)
 	dw PewterPokecenterText6
 
 PewterPokecenterText1: ; 5c595 (17:4595)
-	db $ff
+	TX_POKECENTER_NURSE
 
 PewterPokecenterText2: ; 5c596 (17:4596)
 	TX_FAR _PewterPokecenterText1
@@ -26,7 +26,7 @@ PewterPokecenterText3: ; 5c59b (17:459b)
 	jp TextScriptEnd
 
 PewterPokecenterText4: ; 5c60c (17:460c)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
 
 PewterPokecenterText5: ; 5c603 (17:4603)
 	TX_ASM
@@ -35,5 +35,5 @@ PewterPokecenterText5: ; 5c603 (17:4603)
 
 PewterPokecenterText6:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

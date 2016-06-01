@@ -10,7 +10,7 @@ VermilionPokecenterTextPointers: ; 5c995 (17:4995)
 	dw VermilionPokecenterText5
 
 VermilionPokecenterText1: ; 5c99d (17:499d)
-	db $ff
+	TX_POKECENTER_NURSE
 
 VermilionPokecenterText2: ; 5c99e (17:499e)
 	TX_FAR _VermilionPokecenterText1
@@ -21,9 +21,9 @@ VermilionPokecenterText3: ; 5c9a3 (17:49a3)
 	db "@"
 
 VermilionPokecenterText4: ; 5c9a8 (17:49a8)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
 
 VermilionPokecenterText5:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

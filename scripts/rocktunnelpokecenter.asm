@@ -25,5 +25,5 @@ RockTunnelPokecenterText4: ; 493d3 (12:53d3)
 
 RockTunnelPokecenterText5:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

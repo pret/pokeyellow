@@ -10,10 +10,10 @@ CeruleanPokecenterTextPointers: ; 5c64b (17:464b)
 	dw CeruleanPokecenterText5
 
 CeruleanPokecenterText4: ; 5c653 (17:4653)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
 
 CeruleanPokecenterText1: ; 5c654 (17:4654)
-	db $ff
+	TX_POKECENTER_NURSE
 
 CeruleanPokecenterText2: ; 5c655 (17:4655)
 	TX_FAR _CeruleanPokecenterText1
@@ -25,5 +25,5 @@ CeruleanPokecenterText3: ; 5c65a (17:465a)
 
 CeruleanPokecenterText5:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

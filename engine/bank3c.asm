@@ -330,7 +330,7 @@ Pic_f0cf4: ; f0cf4 (3c:4cf4)
 GFX_f0d82: ; f0d82 (3c:4d82)
 	dr $f0d82, $f0f12
 
-Func_f0f12:
+PokecenterChanseyText:
 	ld hl, NurseChanseyText
 	call PrintText
 	ld a, CHANSEY
