@@ -370,7 +370,22 @@ PikachuMovementData_f1e2b:
 INCLUDE "scripts/celadonmart3_2.asm"
 INCLUDE "scripts/celadonmansion1_2.asm"
 INCLUDE "scripts/celadonmansion3_2.asm"
-	dr $f1f23, $f218c
+
+Func_f1f23:
+	ld hl, PikachuMovementData_f1f2c
+	ld b, SPRITE_FACING_DOWN
+	call Func_f0a82
+	ret
+
+PikachuMovementData_f1f2c:
+	db $00
+	db $20
+	db $1e
+	db $35
+	db $3f
+
+Func_f1f31:
+	dr $f1f31, $f218c
 
 INCLUDE "scripts/mtmoonpokecenter2.asm"
 

@@ -71,8 +71,12 @@ CeladonGameCornerScript1: ; 48c19 (12:4c19)
 .asm_48c43
 	ld a, [wXCoord]
 	cp $8
-	jr nz, .asm_48c4d
+	jr nz, .pikachu
 	ld de, MovementData_48c63
+	jr .asm_48c4d
+.pikachu
+	callab Func_f1f23
+	ld de, MovementData_48c5a
 .asm_48c4d
 	ld a, $b
 	ld [H_SPRITEINDEX], a
@@ -85,8 +89,8 @@ MovementData_48c5a: ; 48c5a (12:4c5a)
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
-	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_RIGHT
+	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
@@ -144,7 +148,7 @@ CeladonGameCornerText2: ; 48ca9 (12:4ca9)
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .asm_48d0f
-	ld b,COIN_CASE
+	ld b, COIN_CASE
 	call IsItemInBag
 	jr z, .asm_48d19
 	call Has9990Coins
@@ -267,7 +271,8 @@ CeladonGameCornerText_48d9c: ; 48d9c (12:4d9c)
 
 Received10CoinsText: ; 48da1 (12:4da1)
 	TX_FAR _Received10CoinsText
-	db $0B, "@"
+	TX_SFX_ITEM
+	db "@"
 
 CeladonGameCornerText_48da7: ; 48da7 (12:4da7)
 	TX_FAR _CeladonGameCornerText_48da7
@@ -360,7 +365,7 @@ CeladonGameCornerText10: ; 48e3b (12:4e3b)
 	jr nz, .asm_48e75
 	ld hl, CeladonGameCornerText_48e88
 	call PrintText
-	ld b,COIN_CASE
+	ld b, COIN_CASE
 	call IsItemInBag
 	jr z, .asm_48e7f
 	call Has9990Coins
@@ -472,13 +477,11 @@ CeladonGameCornerScript_48f1e: ; 48f1e (12:4f1e)
 	ld hl, wd730
 	set 6, [hl]
 	coord hl, 11, 0
-	ld b, $5
-	ld c, $7
+	lb bc, 5, 7
 	call TextBoxBorder
 	call UpdateSprites
 	coord hl, 12, 1
-	ld b, 4
-	ld c, 7
+	lb bc, 4, 7
 	call ClearScreenArea
 	coord hl, 12, 2
 	ld de, GameCornerMoneyText
@@ -488,7 +491,7 @@ CeladonGameCornerScript_48f1e: ; 48f1e (12:4f1e)
 	call PlaceString
 	coord hl, 12, 3
 	ld de, wPlayerMoney
-	ld c, $a3
+	ld c, 3 | MONEY_SIGH | LEADING_ZEROES
 	call PrintBCDNumber
 	coord hl, 12, 4
 	ld de, GameCornerCoinText

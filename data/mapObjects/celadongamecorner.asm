@@ -18,8 +18,8 @@ CeladonGameCornerObject: ; 0x48fa0 (size=99)
 	object SPRITE_MOM_GEISHA, $8, $b, STAY, LEFT, $6 ; person
 	object SPRITE_GYM_HELPER, $8, $e, STAY, LEFT, $7 ; person
 	object SPRITE_GAMBLER, $b, $f, STAY, RIGHT, $8 ; person
-	object SPRITE_MART_GUY, $e, $b, STAY, LEFT, $9 ; person
-	object SPRITE_GENTLEMAN, $11, $d, STAY, RIGHT, $a ; person
+	object SPRITE_FAT_BALD_GUY, $e, $b, STAY, LEFT, $9 ; person
+	object SPRITE_FISHER, $11, $d, STAY, RIGHT, $a ; person
 	object SPRITE_ROCKET, $9, $5, STAY, UP, $b, OPP_ROCKET, $7
 
 	; warp-to

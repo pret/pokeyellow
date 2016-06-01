@@ -943,7 +943,13 @@ INCLUDE "scripts/celadongym.asm"
 INCLUDE "data/mapObjects/celadongym.asm"
 CeladonGymBlocks:
 INCBIN "maps/celadongym.blk"
-	dr $48bc8,$492a9
+
+INCLUDE "data/mapHeaders/celadongamecorner.asm"
+INCLUDE "scripts/celadongamecorner.asm"
+INCLUDE "data/mapObjects/celadongamecorner.asm"
+CeladonGameCornerBlocks:
+INCBIN "maps/celadongamecorner.blk"
+	dr $4907f,$492a9
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"
