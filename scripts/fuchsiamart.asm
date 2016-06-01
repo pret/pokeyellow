@@ -1,5 +1,6 @@
 FuchsiaMartScript: ; 1dd88 (7:5d88)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 FuchsiaMartTextPointers: ; 1dd8b (7:5d8b)
 	dw FuchsiaMartText1

@@ -320,7 +320,6 @@ INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
 CeladonMartBlocks:
 SaffronMartBlocks:
-FuchsiaMartBlocks:
 CinnabarMartBlocks: INCBIN "maps/viridianmart.blk"
 
 INCLUDE "data/mapHeaders/school.asm"
@@ -373,7 +372,12 @@ VermilionDockBlocks: INCBIN "maps/vermiliondock.blk"
 INCLUDE "data/mapHeaders/celadonmansion5.asm"
 INCLUDE "scripts/celadonmansion5.asm"
 INCLUDE "data/mapObjects/celadonmansion5.asm"
-	dr $1d685,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/fuchsiamart.asm"
+INCLUDE "scripts/fuchsiamart.asm"
+INCLUDE "data/mapObjects/fuchsiamart.asm"
+FuchsiaMartBlocks: INCBIN "maps/fuchsiamart.blk"
+	dr $1d6db,$1d7ae ; map scripts
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
