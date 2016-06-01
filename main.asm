@@ -1510,7 +1510,50 @@ INCBIN "maps/undergroundpathwe.blk"
 SSAnne9Blocks:
 SSAnne10Blocks:
 INCBIN "maps/ssanne9.blk"
-	dr $60420,$610ed
+
+INCLUDE "data/mapHeaders/pokemontower1.asm"
+INCLUDE "scripts/pokemontower1.asm"
+INCLUDE "data/mapObjects/pokemontower1.asm"
+PokemonTower1Blocks:
+INCBIN "maps/pokemontower1.blk"
+
+INCLUDE "data/mapHeaders/pokemontower2.asm"
+INCLUDE "scripts/pokemontower2.asm"
+INCLUDE "data/mapObjects/pokemontower2.asm"
+PokemonTower2Blocks:
+INCBIN "maps/pokemontower2.blk"
+
+INCLUDE "data/mapHeaders/pokemontower3.asm"
+INCLUDE "scripts/pokemontower3.asm"
+INCLUDE "data/mapObjects/pokemontower3.asm"
+PokemonTower3Blocks:
+INCBIN "maps/pokemontower3.blk"
+
+INCLUDE "data/mapHeaders/pokemontower4.asm"
+INCLUDE "scripts/pokemontower4.asm"
+INCLUDE "data/mapObjects/pokemontower4.asm"
+PokemonTower4Blocks:
+INCBIN "maps/pokemontower4.blk"
+
+INCLUDE "data/mapHeaders/pokemontower5.asm"
+INCLUDE "scripts/pokemontower5.asm"
+INCLUDE "data/mapObjects/pokemontower5.asm"
+PokemonTower5Blocks:
+INCBIN "maps/pokemontower5.blk"
+
+INCLUDE "data/mapHeaders/pokemontower6.asm"
+INCLUDE "scripts/pokemontower6.asm"
+INCLUDE "data/mapObjects/pokemontower6.asm"
+PokemonTower6Blocks:
+INCBIN "maps/pokemontower6.blk"
+	dr $60cde,$60ce8
+
+INCLUDE "data/mapHeaders/pokemontower7.asm"
+INCLUDE "scripts/pokemontower7.asm"
+INCLUDE "data/mapObjects/pokemontower7.asm"
+PokemonTower7Blocks:
+INCBIN "maps/pokemontower7.blk"
+	dr $60ff2,$610ed
 
 INCLUDE "data/mapHeaders/viridianforest.asm"
 INCLUDE "scripts/viridianforest.asm"

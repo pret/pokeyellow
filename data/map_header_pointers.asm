@@ -142,13 +142,13 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeladonHouse_h
 	dw CeladonHotel_h ;id=140
 	dw LavenderPokecenter_h
-	dw $4420 ; dw PokemonTower1_h
-	dw $44e7 ; dw PokemonTower2_h
-	dw $46af ; dw PokemonTower3_h
-	dw $47d9 ; dw PokemonTower4_h
-	dw $4915 ; dw PokemonTower5_h
-	dw $4ad2 ; dw PokemonTower6_h
-	dw $4ce8 ; dw PokemonTower7_h
+	dw PokemonTower1_h
+	dw PokemonTower2_h
+	dw PokemonTower3_h
+	dw PokemonTower4_h
+	dw PokemonTower5_h
+	dw PokemonTower6_h
+	dw PokemonTower7_h
 	dw $51a4 ; dw LavenderHouse1_h
 	dw LavenderMart_h ;id=150
 	dw $52aa ; dw LavenderHouse2_h
