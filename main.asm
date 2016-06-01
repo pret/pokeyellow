@@ -880,7 +880,31 @@ INCLUDE "scripts/redshouse1f.asm"
 INCLUDE "data/mapObjects/redshouse1f.asm"
 RedsHouse1FBlocks:
 INCBIN "maps/redshouse1f.blk"
-	dr $48157,$492a9
+
+INCLUDE "data/mapHeaders/celadonmart3.asm"
+INCLUDE "scripts/celadonmart3.asm"
+INCLUDE "data/mapObjects/celadonmart3.asm"
+CeladonMart3Blocks:
+INCBIN "maps/celadonmart3.blk"
+
+INCLUDE "data/mapHeaders/celadonmart4.asm"
+INCLUDE "scripts/celadonmart4.asm"
+INCLUDE "data/mapObjects/celadonmart4.asm"
+CeladonMart4Blocks:
+INCBIN "maps/celadonmart4.blk"
+
+INCLUDE "data/mapHeaders/celadonmartroof.asm"
+INCLUDE "scripts/celadonmartroof.asm"
+INCLUDE "data/mapObjects/celadonmartroof.asm"
+CeladonMartRoofBlocks:
+INCBIN "maps/celadonmartroof.blk"
+
+INCLUDE "data/mapHeaders/celadonmartelevator.asm"
+INCLUDE "scripts/celadonmartelevator.asm"
+INCLUDE "data/mapObjects/celadonmartelevator.asm"
+CeladonMartElevatorBlocks:
+INCBIN "maps/celadonmartelevator.blk"
+	dr $48593,$492a9
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"
