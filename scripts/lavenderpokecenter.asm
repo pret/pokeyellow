@@ -7,12 +7,13 @@ LavenderPokecenterTextPointers: ; 5c8e0 (17:48e0)
 	dw LavenderPokecenterText2
 	dw LavenderPokecenterText3
 	dw LavenderPokecenterText4
+	dw LavenderPokecenterText5
 
 LavenderPokecenterText4: ; 5c8e8 (17:48e8)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
 
 LavenderPokecenterText1: ; 5c8e9 (17:48e9)
-	db $ff
+	TX_POKECENTER_NURSE
 
 LavenderPokecenterText2: ; 5c8ea (17:48ea)
 	TX_FAR _LavenderPokecenterText1
@@ -21,3 +22,8 @@ LavenderPokecenterText2: ; 5c8ea (17:48ea)
 LavenderPokecenterText3: ; 5c8ef (17:48ef)
 	TX_FAR _LavenderPokecenterText3
 	db "@"
+
+LavenderPokecenterText5:
+	TX_ASM
+	callab PokecenterChanseyText
+	jp TextScriptEnd

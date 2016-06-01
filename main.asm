@@ -324,7 +324,6 @@ INCLUDE "data/mapHeaders/viridianmart.asm"
 INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
-LavenderMartBlocks:
 CeladonMartBlocks:
 SaffronMartBlocks:
 FuchsiaMartBlocks:
@@ -822,7 +821,6 @@ LavenderTownBlocks:
 INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks:
 SaffronPokecenterBlocks:
-LavenderPokecenterBlocks:
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks:
 INCBIN "maps/viridianpokecenter.blk"
@@ -1355,6 +1353,7 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 SECTION "bank17",ROMX,BANK[$17]
 CeruleanMartBlocks:
 VermilionMartBlocks:
+LavenderMartBlocks:
 INCBIN "maps/ceruleanmart.blk"
 RedsHouse2FBlocks:
 INCBIN "maps/redshouse2f.blk"
@@ -1364,6 +1363,7 @@ Museum2FBlocks:
 INCBIN "maps/museum2f.blk"
 PewterPokecenterBlocks:
 VermilionPokecenterBlocks:
+LavenderPokecenterBlocks:
 INCBIN "maps/pewterpokecenter.blk"
 UndergroundPathEntranceRoute5Blocks:
 UndergroundPathEntranceRoute6Blocks:
@@ -1420,7 +1420,14 @@ INCBIN "maps/ceruleangym.blk"
 INCLUDE "data/mapHeaders/ceruleanmart.asm"
 INCLUDE "scripts/ceruleanmart.asm"
 INCLUDE "data/mapObjects/ceruleanmart.asm"
-	dr $5c79c,$5c865
+
+INCLUDE "data/mapHeaders/lavenderpokecenter.asm"
+INCLUDE "scripts/lavenderpokecenter.asm"
+INCLUDE "data/mapObjects/lavenderpokecenter.asm"
+
+INCLUDE "data/mapHeaders/lavendermart.asm"
+INCLUDE "scripts/lavendermart.asm"
+INCLUDE "data/mapObjects/lavendermart.asm"
 
 INCLUDE "data/mapHeaders/vermilionpokecenter.asm"
 INCLUDE "scripts/vermilionpokecenter.asm"
