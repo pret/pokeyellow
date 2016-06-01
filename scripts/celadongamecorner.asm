@@ -491,7 +491,7 @@ CeladonGameCornerScript_48f1e: ; 48f1e (12:4f1e)
 	call PlaceString
 	coord hl, 12, 3
 	ld de, wPlayerMoney
-	ld c, 3 | MONEY_SIGH | LEADING_ZEROES
+	ld c, 3 | MONEY_SIGN | LEADING_ZEROES
 	call PrintBCDNumber
 	coord hl, 12, 4
 	ld de, GameCornerCoinText

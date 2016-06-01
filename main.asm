@@ -955,7 +955,13 @@ INCLUDE "scripts/celadonmart5.asm"
 INCLUDE "data/mapObjects/celadonmart5.asm"
 CeladonMart5Blocks:
 INCBIN "maps/celadonmart5.blk"
-	dr $49107,$492a9
+
+INCLUDE "data/mapHeaders/celadonprizeroom.asm"
+INCLUDE "scripts/celadonprizeroom.asm"
+INCLUDE "data/mapObjects/celadonprizeroom.asm"
+CeladonPrizeRoomBlocks:
+INCBIN "maps/celadonprizeroom.blk"
+	dr $49168,$492a9
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"

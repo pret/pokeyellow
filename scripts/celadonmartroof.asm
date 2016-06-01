@@ -252,7 +252,7 @@ CeladonMartRoofText4: ; 4859d (12:459d)
 	db "@"
 
 CeladonMartRoofText5: ; 485a2 (12:45a2)
-	db $f5
+	TX_VENDING_MACHINE
 
 CeladonMartRoofText6: ; 485a3 (12:45a3)
 	TX_FAR _CeladonMartRoofText6

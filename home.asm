@@ -117,12 +117,12 @@ PlayPikachuPCM:: ; 0150 (0:0150)
 .playSingleSample
 	dec a
 	jr nz, .playSingleSample
-	
+
 	rept 7
 	call LoadNextSoundClipSample
 	call PlaySoundClipSample
 	endr
-	
+
 	call LoadNextSoundClipSample
 	dec bc
 	ld a, c
@@ -140,7 +140,7 @@ LoadNextSoundClipSample:: ; 0199 (0:0199)
 	ld [rNR32], a
 	sla d
 	ret
-	
+
 PlaySoundClipSample:: ; 01a5 (0:01a5)
 	ld a, $3
 .loop
@@ -164,7 +164,7 @@ Joypad:: ; 01b9 (0:01b9)
 
 ReadJoypad:: ; 01c8 (0:01c8)
 	homecall_jump ReadJoypad_
-	
+
 INCLUDE "home/overworld.asm"
 
 CheckForUserInterruption:: ; 10ba (0:10ba)
@@ -391,8 +391,8 @@ GetCryData:: ; 11a5 (0:11a5)
 	ld [wTempoModifier], a
 	call BankswitchBack
 
-	; Cry headers have 3 channels, 
-	; and start from index $14, 
+	; Cry headers have 3 channels,
+	; and start from index $14,
 	; so add 3 times the cry id.
 	ld a, b
 	ld c, $14
@@ -411,7 +411,7 @@ DisplayPartyMenu:: ; 11c8 (0:11c8)
 	call PartyMenuInit
 	call DrawPartyMenu
 	jp HandlePartyMenuInput
-	
+
 GoBackToPartyMenu:: ; 11dd (0:11dd)
 	ld a, [hTilesetType]
 	push af
@@ -538,13 +538,13 @@ HandlePartyMenuInput:: ; 1226 (0:1226)
 PartyMenuText_12cc:: ; 12cc (0:12cc)
 	TX_FAR _SleepingPikachuText1 ; 28:411b
 	db "@"
-	
+
 DrawPartyMenu:: ; 12d1 (0:12d1)
 	ld hl, DrawPartyMenu_ ; 4:5875
 	jr DrawPartyMenuCommon
 
 RedrawPartyMenu:: ; 12d6 (0:12d6)
-	ld hl, RedrawPartyMenu_ ; 4:5886 
+	ld hl, RedrawPartyMenu_ ; 4:5886
 
 DrawPartyMenuCommon:: ; 12d9 (0:12d9)
 	ld b, BANK(RedrawPartyMenu_)
@@ -586,7 +586,7 @@ PrintLevel:: ; 1303 (0:1303)
 	ld [hli], a
 	ld c, 2 ; number of digits
 	ld a, [wLoadedMonLevel] ; level
-	cp a, 100
+	cp 100
 	jr c, PrintLevelCommon
 ; if level at least 100, write over the ":L" tile
 	dec hl
@@ -634,16 +634,16 @@ GetMonHeader:: ; 132f (0:132f)
 	ld [wd11e], a
 	ld de, FossilKabutopsPic
 	ld b, $66 ; size of Kabutops fossil and Ghost sprites
-	cp a, FOSSIL_KABUTOPS ; Kabutops fossil
+	cp FOSSIL_KABUTOPS ; Kabutops fossil
 	jr z, .specialID
 	ld de, GhostPic
-	cp a, MON_GHOST ; Ghost
+	cp MON_GHOST ; Ghost
 	jr z, .specialID
 	ld de, FossilAerodactylPic
 	ld b, $77 ; size of Aerodactyl fossil sprite
-	cp a, FOSSIL_AERODACTYL ; Aerodactyl fossil
+	cp FOSSIL_AERODACTYL ; Aerodactyl fossil
 	jr z, .specialID
-	;cp a, MEW 
+	;cp MEW
 	;jr z, .mew
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a, [wd11e]
@@ -760,7 +760,7 @@ PrintBCDDigit:: ; 13e4 (0:13e4)
 .skipCurrencySymbol
 	res 7, b ; unset 7 to indicate that a nonzero digit has been reached
 .outputDigit
-	add a, "0"
+	add "0"
 	ld [hli], a
 	jp PrintLetterDelay
 .zeroDigit
@@ -1065,7 +1065,7 @@ ResetPlayerSpriteData_ClearSpriteData:: ; 27ba (0:27ba)
 	ld bc, $10
 	xor a
 	call FillMemory ; XXX why replaced with call + ret?
-	ret 
+	ret
 	;jp FillMemory
 
 FadeOutAudio:: ; 27c2 (0:27c2)
@@ -1143,15 +1143,15 @@ DisplayTextID:: ; 2817 (0:2817)
 	ld [wSpriteIndex], a
 	and a
 	jp z, DisplayStartMenu
-	cp a, $d4 ; new yellow asm
+	cp TEXT_PIKACHU_ANIM ; new yellow asm
 	jp z, DisplayUnknownText_29c6
-	cp a, TEXT_SAFARI_GAME_OVER
+	cp TEXT_SAFARI_GAME_OVER
 	jp z, DisplaySafariGameOverText
-	cp a, TEXT_MON_FAINTED
+	cp TEXT_MON_FAINTED
 	jp z, DisplayPokemonFaintedText
-	cp a, TEXT_BLACKED_OUT
+	cp TEXT_BLACKED_OUT
 	jp z, DisplayPlayerBlackedOutText
-	cp a, TEXT_REPEL_WORE_OFF
+	cp TEXT_REPEL_WORE_OFF
 	jp z, DisplayRepelWoreOffText
 	ld a, [wNumSprites]
 	ld e, a
@@ -1189,24 +1189,24 @@ DisplayTextID:: ; 2817 (0:2817)
 	ld l, a ; hl = address of the text
 	ld a, [hl] ; a = first byte of text
 ; check first byte of text for special cases
-	cp a, $fe   ; Pokemart NPC
+	cp $fe   ; Pokemart NPC
 	jp z, DisplayPokemartDialogue
-	cp a, $ff   ; Pokemon Center NPC
+	cp $ff   ; Pokemon Center NPC
 	jp z, DisplayPokemonCenterDialogue
-	cp a, $fc   ; Item Storage PC
+	cp $fc   ; Item Storage PC
 	jp z, FuncTX_ItemStoragePC
-	cp a, $fd   ; Bill's PC
+	cp $fd   ; Bill's PC
 	jp z, FuncTX_BillsPC
-	cp a, $f9   ; Pokemon Center PC
+	cp $f9   ; Pokemon Center PC
 	jp z, FuncTX_PokemonCenterPC
-	cp a, $f5   ; Vending Machine
+	cp $f5   ; Vending Machine
 	jr nz, .notVendingMachine
 	callba VendingMachineMenu ; jump banks to vending machine routine
 	jr AfterDisplayingTextID
 .notVendingMachine
-	cp a, $f7   ; slot machine
-	jp z, FuncTX_SlotMachine
-	cp a, $f6   ; cable connection NPC in Pokemon Center
+	cp $f7   ; slot machine
+	jp z, FuncTX_GameCornerPrizeMenu
+	cp $f6   ; cable connection NPC in Pokemon Center
 	jr nz, .notSpecialCase
 	callab CableClubNPC
 	jr AfterDisplayingTextID
@@ -1289,7 +1289,7 @@ LoadItemList:: ; 293d (0:293d)
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp a, $ff
+	cp $ff
 	jr nz, .loop
 	ret
 
@@ -1352,7 +1352,7 @@ RepelWoreOffText:: ; 29c1 (0:29c1)
 DisplayUnknownText_29c6:: ; 29c6 (0:29c6)
 	callab Func_fd004 ; 3f:5004
 	jp CloseTextDisplay
-	
+
 INCLUDE "engine/menu/start_menu.asm"
 
 ; function to count how many bits are set in a string of bytes
@@ -1462,7 +1462,7 @@ DisplayListMenuID:: ; 2ae0 (0:2ae0)
 	ld a, 1 ; max menu item ID is 1 if the list has less than 2 entries
 	ld [wMenuWatchMovingOutOfBounds], a
 	ld a, [wListCount]
-	cp a, 2 ; does the list have less than 2 entries?
+	cp 2 ; does the list have less than 2 entries?
 	jr c, .setMenuVariables
 	ld a, 2 ; max menu item ID is 2 if the list has at least 2 entries
 .setMenuVariables
@@ -1532,7 +1532,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	ld a, c
 	ld [wWhichPokemon], a
 	ld a, [wListMenuID]
-	cp a, ITEMLISTMENU
+	cp ITEMLISTMENU
 	jr nz, .skipMultiplying
 ; if it's an item menu
 	sla c ; item entries are 2 bytes long, so multiply by 2
@@ -1553,7 +1553,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	call GetItemPrice
 	pop hl
 	ld a, [wListMenuID]
-	cp a, ITEMLISTMENU
+	cp ITEMLISTMENU
 	jr nz, .skipGettingQuantity
 ; if it's an item menu
 	inc hl
@@ -1599,7 +1599,7 @@ DisplayListMenuIDLoop:: ; 2b4d (0:2b4d)
 	jr z, .upPressed
 .downPressed
 	ld a, [hl]
-	add a, 3
+	add 3
 	ld b, a
 	ld a, [wListCount]
 	cp b ; will going down scroll past the Cancel button?
@@ -1618,7 +1618,7 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 	coord hl, 15, 9
 	lb bc, 1, 3 ; height and width
 	ld a, [wListMenuID]
-	cp a, PRICEDITEMLISTMENU
+	cp PRICEDITEMLISTMENU
 	jr nz, .drawTextBox
 ; text box dimensions/coordinates for quantity and price
 	coord hl, 7, 9
@@ -1627,7 +1627,7 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 	call TextBoxBorder
 	coord hl, 16, 10
 	ld a, [wListMenuID]
-	cp a, PRICEDITEMLISTMENU
+	cp PRICEDITEMLISTMENU
 	jr nz, .printInitialQuantity
 	coord hl, 8, 10
 .printInitialQuantity
@@ -1671,7 +1671,7 @@ DisplayChooseQuantityMenu:: ; 2c51 (0:2c51)
 .handleNewQuantity
 	coord hl, 17, 10
 	ld a, [wListMenuID]
-	cp a, PRICEDITEMLISTMENU
+	cp PRICEDITEMLISTMENU
 	jr nz, .printQuantity
 .printPrice
 	ld c, $03
@@ -1764,7 +1764,7 @@ PrintListMenuEntries:: ; 2d52 (0:2d52)
 	ld a, [wListScrollOffset]
 	ld c, a
 	ld a, [wListMenuID]
-	cp a, ITEMLISTMENU
+	cp ITEMLISTMENU
 	ld a, c
 	jr nz, .skipMultiplying
 ; if it's an item menu
@@ -1784,7 +1784,7 @@ PrintListMenuEntries:: ; 2d52 (0:2d52)
 	ld [wWhichPokemon], a
 	ld a, [de]
 	ld [wd11e], a
-	cp a, $ff
+	cp $ff
 	jp z, .printCancelMenuItem
 	push bc
 	push de
@@ -1794,7 +1794,7 @@ PrintListMenuEntries:: ; 2d52 (0:2d52)
 	ld a, [wListMenuID]
 	and a
 	jr z, .pokemonPCMenu
-	cp a, $01
+	cp $01
 	jr z, .movesMenu
 .itemMenu
 	call GetItemName
@@ -1882,7 +1882,7 @@ PrintListMenuEntries:: ; 2d52 (0:2d52)
 	pop de
 	inc de
 	ld a, [wListMenuID]
-	cp a, ITEMLISTMENU
+	cp ITEMLISTMENU
 	jr nz, .nextListEntry
 .printItemQuantity
 	ld a, [wd11e]
@@ -2054,9 +2054,9 @@ HiddenPrefix:: ; 2f33 (0:2f33)
 ; sets carry if item is HM, clears carry if item is not HM
 ; Input: a = item ID
 IsItemHM:: ; 2f35 (0:2f35)
-	cp a, HM_01
+	cp HM_01
 	jr c, .notHM
-	cp a, TM_01
+	cp TM_01
 	ret
 .notHM
 	and a
@@ -2123,7 +2123,7 @@ ChooseFlyDestination:: ; 2f9a (0:2f9a)
 Func_2fa7:: ; 2fa7 (0:2fa7)
 	homecall Func_e8a5e
 	ret
-	
+
 SerialFunction:: ; 2fb7 (0:2fb7)
 	ld a, [wUnknownSerialFlag_d49a]
 	bit 0, a
@@ -2147,7 +2147,7 @@ SerialFunction:: ; 2fb7 (0:2fb7)
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ld [rSC], a
 	ret
-	
+
 ; causes the text box to close without waiting for a button press after displaying text
 DisableWaitingAfterTextDisplay:: ; 2fde (0:2fde)
 	ld a, $01
@@ -2208,7 +2208,7 @@ IsKeyItem:: ; 3000 (0:3000)
 ; INPUT:
 ; [wTextBoxID] = text box ID
 DisplayTextBoxID:: ; 3010 (0:3010)
-	homecall_sf DisplayTextBoxID_ 
+	homecall_sf DisplayTextBoxID_
 	ret
 
 UpdateGBCPal_BGP:: ; 3021 (0:3021)
@@ -2232,7 +2232,7 @@ UpdateGBCPal_BGP:: ; 3021 (0:3021)
 .notGBC
 	pop af
 	ret
-	
+
 UpdateGBCPal_OBP0:: ; 3040 (0:3040)
 	push af
 	ld a, [hGBC]
@@ -2257,7 +2257,7 @@ UpdateGBCPal_OBP0:: ; 3040 (0:3040)
 .notGBC
 	pop af
 	ret
-	
+
 UpdateGBCPal_OBP1:: ; 3061 (0:3061)
 	push af
 	ld a, [hGBC]
@@ -2282,7 +2282,7 @@ UpdateGBCPal_OBP1:: ; 3061 (0:3061)
 .notGBC
 	pop af
 	ret
-	
+
 Func_3082:: ; 3082 (0:3082)
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -2332,7 +2332,7 @@ RunNPCMovementScript:: ; 30ae (0:30ae)
 	pop af
 	call BankswitchCommon
 	ret
-	
+
 .NPCMovementScriptPointerTables
 	dw PalletMovementScriptPointerTable
 	dw PewterMuseumGuyMovementScriptPointerTable
@@ -2811,7 +2811,7 @@ FuncTX_BillsPC:: ; 33f9 (0:33f9)
 	ld hl, BillsPC_
 	jr bankswitchAndContinue
 
-FuncTX_SlotMachine:: ; 3403 (0:3403)
+FuncTX_GameCornerPrizeMenu:: ; 3403 (0:3403)
 ; XXX find a better name for this function
 ; special_F7
 	ld b, BANK(CeladonPrizeMenu)
@@ -2842,7 +2842,7 @@ IsItemInBag:: ; 3422 (0:3422)
 	ld a, b
 	and a
 	ret
-	
+
 IsSurfingPikachuInParty:: ; 342a (0:342a)
 ; set bit 6 of wd472 if true
 ; also calls Func_3467, which is a bankswitch to IsStarterPikachuInOurParty
@@ -2884,7 +2884,7 @@ IsSurfingPikachuInParty:: ; 342a (0:342a)
 	jr nz, .loop
 	call Func_3467
 	ret
-	
+
 Func_3467:: ; 3467 (0:3467)
 	push hl
 	push bc
@@ -2896,7 +2896,7 @@ Func_3467:: ; 3467 (0:3467)
 	set 7, a
 	ld [wd472], a
 	ret
-	
+
 DisplayPokedex:: ; 347d (0:347d)
 	ld [wd11e], a
 	jpba _DisplayPokedex
@@ -2939,7 +2939,7 @@ SpriteFunc_34a1:: ; 34a1 (0:34a1)
 	dec h
 	ld [hl], c
 	ret
-	
+
 ; tests if the player's coordinates are in a specified array
 ; INPUT:
 ; hl = address of array
@@ -2958,7 +2958,7 @@ CheckCoords:: ; 34c4 (0:34c4)
 	ld [wCoordIndex], a
 .loop
 	ld a, [hli]
-	cp a, $ff ; reached terminator?
+	cp $ff ; reached terminator?
 	jr z, .notInArray
 	push hl
 	ld hl, wCoordIndex
@@ -3077,7 +3077,7 @@ GetSpriteMovementByte1Pointer:: ; 354b (0:354b)
 	ld h, $C2
 	ld a, [H_SPRITEINDEX]
 	swap a
-	add a, 6
+	add 6
 	ld l, a
 	ret
 
@@ -3145,7 +3145,7 @@ IsFightingJessieJames:: ; 359e (0:359e)
 	ld [hli], a
 	ld [hl], d
 	ret
-	
+
 GetTrainerName:: ; 35bb (0:35bb)
 	jpba GetTrainerName_
 
@@ -3249,7 +3249,7 @@ MoveSprite_:: ; 3640 (0:3640)
 	ld [hli], a
 	inc de
 	inc c
-	cp a, $FF ; have we reached the end of the movement data?
+	cp $FF ; have we reached the end of the movement data?
 	jr nz, .loop
 
 	ld a, c
@@ -3265,7 +3265,7 @@ MoveSprite_:: ; 3640 (0:3640)
 	dec a
 	ld [wJoyIgnore], a
 	ld [wWastedByteCD3A], a
-	ret	
+	ret
 
 ; divides [hDividend2] by [hDivisor2] and stores the quotient in [hQuotient2]
 DivideBytes:: ; 366e (0:366e)
@@ -3485,7 +3485,7 @@ GetName:: ; 3762 (0:3762)
 	ld e, l
 .nextChar
 	ld a, [hli]
-	cp a, "@"
+	cp "@"
 	jr nz, .nextChar
 	inc c           ;entry counter
 	ld a, b          ;wanted entry
@@ -3571,9 +3571,9 @@ CopyString:: ; 3816 (0:3816)
 ;    Just copies [hJoyPressed] to [hJoy5].
 ; 2. Get currently pressed buttons at low sample rate with delay
 ;    ([hJoy7] == 1, [hJoy6] != 0)
-;    If the user holds down buttons for more than half a second, 
+;    If the user holds down buttons for more than half a second,
 ;    report buttons as being pressed up to 12 times per second thereafter.
-;    If the user holds down buttons for less than half a second, 
+;    If the user holds down buttons for less than half a second,
 ;    report only one button press.
 ; 3. Same as 2, but report no buttons as pressed if A or B is held down.
 ;    ([hJoy7] == 1, [hJoy6] == 0)
@@ -3634,7 +3634,7 @@ WaitForTextScrollButtonPress:: ; 3852 (0:3852)
 	push bc
 	callab TownMapSpriteBlinkingAnimation ; 1c:5753
 	pop bc
-	pop de 
+	pop de
 .skipAnimation
 	coord hl, 18, 16
 	call HandleDownArrowBlinkTiming
@@ -3744,7 +3744,7 @@ PrintLetterDelay:: ; 38c8 (0:38c8)
 	ret
 
 ; Copies [hl, bc) to [de, bc - hl).
-; In other words, the source data is from hl up to but not including bc, 
+; In other words, the source data is from hl up to but not including bc,
 ; and the destination is de.
 CopyDataUntil:: ; 3908 (0:3908)
 	ld a, [hli]
@@ -4207,7 +4207,7 @@ PlaceMenuCursor:: ; 3b6d (0:3b6d)
 	jr nz, .oldMenuItemLoop
 .checkForArrow1
 	ld a, [hl]
-	cp a, "▶" ; was an arrow next to the previously selected menu item?
+	cp "▶" ; was an arrow next to the previously selected menu item?
 	jr nz, .skipClearingArrow
 .clearArrow
 	ld a, [wTileBehindCursor]
@@ -4231,7 +4231,7 @@ PlaceMenuCursor:: ; 3b6d (0:3b6d)
 	jr nz, .currentMenuItemLoop
 .checkForArrow2
 	ld a, [hl]
-	cp a, "▶" ; has the right arrow already been placed?
+	cp "▶" ; has the right arrow already been placed?
 	jr z, .skipSavingTile ; if so, don't lose the saved tile
 	ld [wTileBehindCursor], a ; save tile before overwriting with right arrow
 .skipSavingTile
@@ -4247,7 +4247,7 @@ PlaceMenuCursor:: ; 3b6d (0:3b6d)
 
 ; This is used to mark a menu cursor other than the one currently being
 ; manipulated. In the case of submenus, this is used to show the location of
-; the menu cursor in the parent menu. In the case of swapping items in list, 
+; the menu cursor in the parent menu. In the case of swapping items in list,
 ; this is used to mark the item that was first chosen to be swapped.
 PlaceUnfilledArrowMenuCursor:: ; 3bd9 (0:3bd9)
 	ld b, a
@@ -4271,7 +4271,7 @@ EraseMenuCursor:: ; 3be6 (0:3be6)
 ; This toggles a blinking down arrow at hl on and off after a delay has passed.
 ; This is often called even when no blinking is occurring.
 ; The reason is that most functions that call this initialize H_DOWNARROWBLINKCNT1 to 0.
-; The effect is that if the tile at hl is initialized with a down arrow, 
+; The effect is that if the tile at hl is initialized with a down arrow,
 ; this function will toggle that down arrow on and off, but if the tile isn't
 ; initliazed with a down arrow, this function does nothing.
 ; That allows this to be called without worrying about if a down arrow should
@@ -4291,7 +4291,7 @@ HandleDownArrowBlinkTiming:: ; 3bf1 (0:3bf1)
 	dec a
 	ld [H_DOWNARROWBLINKCNT2], a
 	ret nz
-	ld a, " "	
+	ld a, " "
 	ld [hl], a
 	ld a, $ff
 	ld [H_DOWNARROWBLINKCNT1], a
@@ -4357,7 +4357,7 @@ FarPrintText:: ; 3c4c (0:3c4c)
 	pop af
 	call BankswitchCommon
 	ret
-	
+
 PrintNumber:: ; 3c5b (0:3c5b)
 ; Print the c-digit, b-byte value at de.
 ; Allows 2 to 7 digits. For 1-digit numbers, add
@@ -4562,7 +4562,7 @@ endm
 	ret
 
 .NextDigit: ; 3d85 (0:3d85)
-; Increment unless the number is left-aligned, 
+; Increment unless the number is left-aligned,
 ; leading zeroes are not printed, and no digits
 ; have been printed yet.
 	bit BIT_LEADING_ZEROES, d
@@ -4717,7 +4717,7 @@ ReloadMapSpriteTilePatterns:: ; 3e1e (0:3e1e)
 
 
 GiveItem:: ; 3e3f (0:3e3f)
-; Give player quantity c of item b, 
+; Give player quantity c of item b,
 ; and copy the item's name to wcf4b.
 ; Return carry on success.
 	ld a, b
@@ -4760,7 +4760,7 @@ BankswitchCommon:: ; 3e7e (0:3e7e)
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ret
-	
+
 Bankswitch:: ; 3e84 (0:3e84)
 ; self-contained bankswitch, use this when not in the home bank
 ; switches to the bank in b
@@ -4787,7 +4787,7 @@ SwitchSRAMBankAndLatchClockData:: ; 3e99 (0:3e99)
 	pop af
 	ld [MBC1SRamBank], a
 	ret
-	
+
 PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 	push af
 	ld a, $0
@@ -4795,7 +4795,7 @@ PrepareRTCDataAndDisableSRAM:: ; 3ea9 (0:3ea9)
 	ld [MBC1SRamEnable], a
 	pop af
 	ret
-	
+
 INCLUDE "home/predef.asm"
 
 UpdateCinnabarGymGateTileBlocks:: ; 3ef0 (0:3ef0)
@@ -4863,8 +4863,8 @@ SetMapTextPointer:: ; 3f54 (0:3f54)
 	ret
 
 TextPredefs:: ; 3f67 (0:3f67)
-const_value = 1	
-	
+const_value = 1
+
 	add_tx_pre CardKeySuccessText                   ; 01
 	add_tx_pre CardKeyFailText                      ; 02
 	add_tx_pre RedBedroomPCText                     ; 03

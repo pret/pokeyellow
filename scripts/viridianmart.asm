@@ -93,7 +93,7 @@ ViridianMartText4: ; 1d4f5 (7:54f5)
 
 ViridianMartText5: ; 1d4fa (7:54fa)
 	TX_FAR ViridianMartParcelQuestText
-	db $11
+	TX_SFX_KEY_ITEM
 	db "@"
 
 ViridianMartText2: ; 1d500 (7:5500)
