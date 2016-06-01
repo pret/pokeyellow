@@ -352,7 +352,8 @@ TX_FAR: MACRO
 
 
 TX_CABLE_CLUB_RECEPTIONIST EQUS "db $f6"
-TX_POKECENTER_NURSE EQUS "db $ff"
+TX_PRIZE_VENDOR            EQUS "db $f7"
+TX_POKECENTER_NURSE        EQUS "db $ff"
 
 ; Predef macro.
 predef_const: MACRO
