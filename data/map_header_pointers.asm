@@ -140,7 +140,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CeladonPrizeRoom_h
 	dw CeladonDiner_h
 	dw CeladonHouse_h
-	dw $5243 ; dw CeladonHotel_h ;id=140
+	dw CeladonHotel_h ;id=140
 	dw $479c ; dw LavenderPokecenter_h
 	dw $4420 ; dw PokemonTower1_h
 	dw $44e7 ; dw PokemonTower2_h

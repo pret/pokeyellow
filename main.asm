@@ -973,7 +973,12 @@ INCLUDE "scripts/celadonhouse.asm"
 INCLUDE "data/mapObjects/celadonhouse.asm"
 CeladonHouseBlocks:
 INCBIN "maps/celadonhouse.blk"
-	dr $49243,$492a9
+
+INCLUDE "data/mapHeaders/celadonhotel.asm"
+INCLUDE "scripts/celadonhotel.asm"
+INCLUDE "data/mapObjects/celadonhotel.asm"
+CeladonHotelBlocks:
+INCBIN "maps/celadonhotel.blk"
 
 INCLUDE "data/mapHeaders/mtmoonpokecenter.asm"
 INCLUDE "scripts/mtmoonpokecenter.asm"
