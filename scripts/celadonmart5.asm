@@ -1,5 +1,6 @@
 CeladonMart5Script: ; 49069 (12:5069)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 CeladonMart5TextPointers: ; 4906c (12:506c)
 	dw CeladonMart5Text1
