@@ -1647,7 +1647,31 @@ INCLUDE "data/mapHeaders/fuchsiameetingroom.asm"
 INCLUDE "scripts/fuchsiameetingroom.asm"
 INCLUDE "data/mapObjects/fuchsiameetingroom.asm"
 FuchsiaMeetingRoomBlocks: INCBIN "maps/fuchsiameetingroom.blk"
-	dr $74ee6,$757a0
+
+INCLUDE "data/mapHeaders/cinnabargym.asm"
+INCLUDE "scripts/cinnabargym.asm"
+INCLUDE "data/mapObjects/cinnabargym.asm"
+CinnabarGymBlocks: INCBIN "maps/cinnabargym.blk"
+
+CinnabarGymScript_753de:
+	callab Func_f2150
+	jp TextScriptEnd
+
+CinnabarGymScript_753e9:
+	push hl
+	ld hl, wd475
+	bit 7, [hl]
+	res 7, [hl]
+	pop hl
+	ret
+
+CinnabarGymScript_753f3:
+	push hl
+	ld hl, wd475
+	bit 7, [hl]
+	pop hl
+	ret
+	dr $753fb,$757a0
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"

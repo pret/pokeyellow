@@ -166,7 +166,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VermilionHouse2_h
 	dw FuchsiaHouse3_h
 	dw Mansion1_h
-	dw $4ee6 ; dw CinnabarGym_h
+	dw CinnabarGym_h
 	dw $53fb ; dw Lab1_h
 	dw $5490 ; dw Lab2_h
 	dw $54f6 ; dw Lab3_h
