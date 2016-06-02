@@ -176,8 +176,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CinnabarMart_h ; unused
 	dw IndigoPlateauLobby_h
 	dw CopycatsHouse1F_h
-	dw $4b5b ; dw CopycatsHouse2F_h
-	dw $4c47 ; dw FightingDojo_h
+	dw CopycatsHouse2F_h
+	dw FightingDojo_h
 	dw $4ef7 ; dw SaffronGym_h
 	dw $56db ; dw SaffronHouse1_h
 	dw $52f3 ; dw SaffronMart_h ;id=180

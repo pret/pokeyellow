@@ -1319,7 +1319,8 @@ SECTION "bank17",ROMX,BANK[$17]
 CeruleanMartBlocks:
 VermilionMartBlocks:
 LavenderMartBlocks: INCBIN "maps/ceruleanmart.blk"
-RedsHouse2FBlocks: INCBIN "maps/redshouse2f.blk"
+RedsHouse2FBlocks:
+CopycatsHouse2FBlocks: INCBIN "maps/redshouse2f.blk"
 Museum1FBlocks: INCBIN "maps/museum1f.blk"
 Museum2FBlocks: INCBIN "maps/museum2f.blk"
 PewterPokecenterBlocks:
@@ -1396,7 +1397,16 @@ INCLUDE "data/mapHeaders/vermiliongym.asm"
 INCLUDE "scripts/vermiliongym.asm"
 INCLUDE "data/mapObjects/vermiliongym.asm"
 VermilionGymBlocks: INCBIN "maps/vermiliongym.blk"
-	dr $5cb5b,$5d485
+
+INCLUDE "data/mapHeaders/copycatshouse2f.asm"
+INCLUDE "scripts/copycatshouse2f.asm"
+INCLUDE "data/mapObjects/copycatshouse2f.asm"
+
+INCLUDE "data/mapHeaders/fightingdojo.asm"
+INCLUDE "scripts/fightingdojo.asm"
+INCLUDE "data/mapObjects/fightingdojo.asm"
+FightingDojoBlocks: INCBIN "maps/fightingdojo.blk"
+	dr $5cef7,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
