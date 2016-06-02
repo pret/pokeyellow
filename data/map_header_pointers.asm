@@ -184,14 +184,14 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SilphCo1_h
 	dw SaffronPokecenter_h
 	dw SaffronHouse2_h
-	dw $558d ; dw Route15Gate_h
-	dw $55d5 ; dw Route15GateUpstairs_h
-	dw $5649 ; dw Route16Gate_h
-	dw $5796 ; dw Route16GateUpstairs_h
+	dw Route15Gate_h
+	dw Route15GateUpstairs_h
+	dw Route16Gate_h
+	dw Route16GateUpstairs_h
 	dw $5ef6 ; dw Route16House_h
 	dw $64a5 ; dw Route12House_h
-	dw $5801 ; dw Route18Gate_h ;id=190
-	dw $5900 ; dw Route18GateUpstairs_h
+	dw Route18Gate_h ;id=190
+	dw Route18GateUpstairs_h
 	dw $487e ; dw SeafoamIslands1_h
 	dw $5f81 ; dw Route22Gate_h
 	dw $57cc ; dw VictoryRoad2_h

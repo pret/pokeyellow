@@ -891,9 +891,14 @@ Route7Blocks: INCBIN "maps/route7.blk" ; 48051
 MtMoonPokecenterBlocks:
 RockTunnelPokecenterBlocks:
 CeladonPokecenterBlocks: INCBIN "maps/mtmoonpokecenter.blk"
-Route11GateBlocks: INCBIN "maps/route11gate.blk"
+Route11GateBlocks:
+Route15GateBlocks:
+Route18GateBlocks: INCBIN "maps/route11gate.blk"
 Route11GateUpstairsBlocks:
-Route12GateUpstairsBlocks: INCBIN "maps/route11gateupstairs.blk"
+Route12GateUpstairsBlocks:
+Route15GateUpstairsBlocks:
+Route16GateUpstairsBlocks:
+Route18GateUpstairsBlocks: INCBIN "maps/route11gateupstairs.blk"
 INCLUDE "scripts/route7.asm"
 
 INCLUDE "data/mapHeaders/redshouse1f.asm"
@@ -1004,7 +1009,31 @@ Route12GateBlocks: INCBIN "maps/route12gate.blk"
 INCLUDE "data/mapHeaders/route12gateupstairs.asm"
 INCLUDE "scripts/route12gateupstairs.asm"
 INCLUDE "data/mapObjects/route12gateupstairs.asm"
-	dr $4958d,$49953
+
+INCLUDE "data/mapHeaders/route15gate.asm"
+INCLUDE "scripts/route15gate.asm"
+INCLUDE "data/mapObjects/route15gate.asm"
+
+INCLUDE "data/mapHeaders/route15gateupstairs.asm"
+INCLUDE "scripts/route15gateupstairs.asm"
+INCLUDE "data/mapObjects/route15gateupstairs.asm"
+
+INCLUDE "data/mapHeaders/route16gate.asm"
+INCLUDE "scripts/route16gate.asm"
+INCLUDE "data/mapObjects/route16gate.asm"
+Route16GateBlocks: INCBIN "maps/route16gate.blk"
+
+INCLUDE "data/mapHeaders/route16gateupstairs.asm"
+INCLUDE "scripts/route16gateupstairs.asm"
+INCLUDE "data/mapObjects/route16gateupstairs.asm"
+
+INCLUDE "data/mapHeaders/route18gate.asm"
+INCLUDE "scripts/route18gate.asm"
+INCLUDE "data/mapObjects/route18gate.asm"
+
+INCLUDE "data/mapHeaders/route18gateupstairs.asm"
+INCLUDE "scripts/route18gateupstairs.asm"
+INCLUDE "data/mapObjects/route18gateupstairs.asm"
 
 INCLUDE "data/mapHeaders/mtmoon1.asm"
 INCLUDE "scripts/mtmoon1.asm"
