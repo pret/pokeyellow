@@ -325,8 +325,7 @@ INCLUDE "data/mapHeaders/viridianmart.asm"
 INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
-CeladonMartBlocks:
-SaffronMartBlocks: INCBIN "maps/viridianmart.blk"
+CeladonMartBlocks:INCBIN "maps/viridianmart.blk"
 
 INCLUDE "data/mapHeaders/school.asm"
 INCLUDE "scripts/school.asm"
@@ -827,8 +826,7 @@ SECTION "bank11",ROMX,BANK[$11]
 INCLUDE "data/mapHeaders/lavendertown.asm"
 INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks: INCBIN "maps/lavendertown.blk"
-ViridianPokecenterBlocks:
-SaffronPokecenterBlocks: INCBIN "maps/viridianpokecenter.blk"
+ViridianPokecenterBlocks: INCBIN "maps/viridianpokecenter.blk"
 	dr $440fb,$4410b
 
 INCLUDE "scripts/lavendertown.asm"
@@ -1327,14 +1325,16 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 SECTION "bank17",ROMX,BANK[$17]
 CeruleanMartBlocks:
 VermilionMartBlocks:
-LavenderMartBlocks: INCBIN "maps/ceruleanmart.blk"
+LavenderMartBlocks:
+SaffronMartBlocks: INCBIN "maps/ceruleanmart.blk"
 RedsHouse2FBlocks:
 CopycatsHouse2FBlocks: INCBIN "maps/redshouse2f.blk"
 Museum1FBlocks: INCBIN "maps/museum1f.blk"
 Museum2FBlocks: INCBIN "maps/museum2f.blk"
 PewterPokecenterBlocks:
 VermilionPokecenterBlocks:
-LavenderPokecenterBlocks: INCBIN "maps/pewterpokecenter.blk"
+LavenderPokecenterBlocks:
+SaffronPokecenterBlocks: INCBIN "maps/pewterpokecenter.blk"
 UndergroundPathEntranceRoute5Blocks:
 UndergroundPathEntranceRoute6Blocks:
 UndergroundPathEntranceRoute7Blocks:
@@ -1420,7 +1420,19 @@ INCLUDE "data/mapHeaders/saffrongym.asm"
 INCLUDE "scripts/saffrongym.asm"
 INCLUDE "data/mapObjects/saffrongym.asm"
 SaffronGymBlocks: INCBIN "maps/saffrongym.blk"
-	dr $5d2f3,$5d485
+
+INCLUDE "data/mapHeaders/saffronmart.asm"
+INCLUDE "scripts/saffronmart.asm"
+INCLUDE "data/mapObjects/saffronmart.asm"
+
+INCLUDE "data/mapHeaders/silphco1.asm"
+INCLUDE "scripts/silphco1.asm"
+INCLUDE "data/mapObjects/silphco1.asm"
+SilphCo1Blocks: INCBIN "maps/silphco1.blk"
+
+INCLUDE "data/mapHeaders/saffronpokecenter.asm"
+INCLUDE "scripts/saffronpokecenter.asm"
+INCLUDE "data/mapObjects/saffronpokecenter.asm"
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"

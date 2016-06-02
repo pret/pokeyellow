@@ -180,9 +180,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw FightingDojo_h
 	dw SaffronGym_h
 	dw SaffronHouse1_h
-	dw $52f3 ; dw SaffronMart_h ;id=180
-	dw $5338 ; dw SilphCo1_h
-	dw $541f ; dw SaffronPokecenter_h
+	dw SaffronMart_h ;id=180
+	dw SilphCo1_h
+	dw SaffronPokecenter_h
 	dw SaffronHouse2_h
 	dw $558d ; dw Route15Gate_h
 	dw $55d5 ; dw Route15GateUpstairs_h
