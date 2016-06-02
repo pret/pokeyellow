@@ -163,9 +163,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SeafoamIslands3_h ;id=160
 	dw SeafoamIslands4_h
 	dw SeafoamIslands5_h
-	dw $6054 ; dw VermilionHouse2_h
-	dw $6160 ; dw FuchsiaHouse3_h
-	dw $4344 ; dw Mansion1_h
+	dw VermilionHouse2_h
+	dw FuchsiaHouse3_h
+	dw Mansion1_h
 	dw $4ee6 ; dw CinnabarGym_h
 	dw $53fb ; dw Lab1_h
 	dw $5490 ; dw Lab2_h

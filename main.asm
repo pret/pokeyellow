@@ -285,8 +285,7 @@ CinnabarIslandBlocks: INCBIN "maps/cinnabarisland.blk"
 
 INCLUDE "data/mapHeaders/route1.asm"
 INCLUDE "data/mapObjects/route1.asm"
-Route1Blocks: ; 1c0fc
-INCBIN "maps/route1.blk"
+Route1Blocks: INCBIN "maps/route1.blk" ; 1c0fc
 
 UndergroundPathEntranceRoute8Blocks: INCBIN "maps/undergroundpathentranceroute8.blk"
 OaksLabBlocks: INCBIN "maps/oakslab.blk"
@@ -390,26 +389,22 @@ INCLUDE "data/mapObjects/route2house.asm"
 INCLUDE "data/mapHeaders/route5gate.asm"
 INCLUDE "scripts/route5gate.asm"
 INCLUDE "data/mapObjects/route5gate.asm"
-Route5GateBlocks: ; 1d92f
-INCBIN "maps/route5gate.blk"
+Route5GateBlocks: INCBIN "maps/route5gate.blk" ; 1d92f
 
 INCLUDE "data/mapHeaders/route6gate.asm"
 INCLUDE "scripts/route6gate.asm"
 INCLUDE "data/mapObjects/route6gate.asm"
-Route6GateBlocks: ; 1d9f2
-INCBIN "maps/route6gate.blk"
+Route6GateBlocks: INCBIN "maps/route6gate.blk" ; 1d9f2
 
 INCLUDE "data/mapHeaders/route7gate.asm"
 INCLUDE "scripts/route7gate.asm"
 INCLUDE "data/mapObjects/route7gate.asm"
-Route7GateBlocks: ; 1dab9
-INCBIN "maps/route7gate.blk"
+Route7GateBlocks: INCBIN "maps/route7gate.blk" ; 1dab9
 
 INCLUDE "data/mapHeaders/route8gate.asm"
 INCLUDE "scripts/route8gate.asm"
 INCLUDE "data/mapObjects/route8gate.asm"
-Route8GateBlocks: ; 1dab9
-INCBIN "maps/route8gate.blk"
+Route8GateBlocks: INCBIN "maps/route8gate.blk" ; 1dab9
 
 INCLUDE "data/mapHeaders/undergroundpathentranceroute8.asm"
 INCLUDE "scripts/undergroundpathentranceroute8.asm"
@@ -835,9 +830,11 @@ INCLUDE "data/mapHeaders/celadonmart1.asm"
 INCLUDE "scripts/celadonmart1.asm"
 INCLUDE "data/mapObjects/celadonmart1.asm"
 CeladonMart1Blocks: INCBIN "maps/celadonmart1.blk"
-	dr $44344,$443b7
-Mansion1Script_Switches:
-	dr $443b7,$44571
+
+INCLUDE "data/mapHeaders/mansion1.asm"
+INCLUDE "scripts/mansion1.asm"
+INCLUDE "data/mapObjects/mansion1.asm"
+Mansion1Blocks: INCBIN "maps/mansion1.blk"
 
 INCLUDE "data/mapHeaders/rocktunnel1.asm"
 INCLUDE "scripts/rocktunnel1.asm"
@@ -879,8 +876,7 @@ INCLUDE "engine/overworld/dungeon_warps.asm"
 SECTION "bank12",ROMX,BANK[$12]
 INCLUDE "data/mapHeaders/route7.asm"
 INCLUDE "data/mapObjects/route7.asm"
-Route7Blocks: ; 48051
-INCBIN "maps/route7.blk"
+Route7Blocks: INCBIN "maps/route7.blk" ; 48051
 MtMoonPokecenterBlocks:
 RockTunnelPokecenterBlocks:
 CeladonPokecenterBlocks: INCBIN "maps/mtmoonpokecenter.blk"
@@ -1122,25 +1118,21 @@ Route23Blocks: INCBIN "maps/route23.blk"
 
 INCLUDE "data/mapHeaders/route24.asm"
 INCLUDE "data/mapObjects/route24.asm"
-Route24Blocks: ; 506ed (14:46ed)
-INCBIN "maps/route24.blk"
+Route24Blocks: INCBIN "maps/route24.blk" ; 506ed (14:46ed)
 
 INCLUDE "data/mapHeaders/route25.asm"
 INCLUDE "data/mapObjects/route25.asm"
-Route25Blocks: ; 50816 (14:4816)
-INCBIN "maps/route25.blk"
+Route25Blocks: INCBIN "maps/route25.blk" ; 50816 (14:4816)
 
 ; indigoplateau
 INCLUDE "data/mapHeaders/indigoplateau.asm"
 INCLUDE "scripts/indigoplateau.asm"
 INCLUDE "data/mapObjects/indigoplateau.asm"
-IndigoPlateauBlocks: ; 50950 (14:4950)
-INCBIN "maps/indigoplateau.blk"
+IndigoPlateauBlocks: INCBIN "maps/indigoplateau.blk" ; 50950 (14:4950)
 
 INCLUDE "data/mapHeaders/saffroncity.asm"
 INCLUDE "data/mapObjects/saffroncity.asm"
-SaffronCityBlocks: ; 50a98 (14:4a98)
-INCBIN "maps/saffroncity.blk"
+SaffronCityBlocks: INCBIN "maps/saffroncity.blk" ; 50a98 (14:4a98)
 INCLUDE "scripts/saffroncity.asm"
 INCLUDE "scripts/route20.asm"
 INCLUDE "scripts/route22.asm"
@@ -1172,28 +1164,23 @@ INCLUDE "engine/hidden_object_functions14.asm"
 SECTION "bank15",ROMX,BANK[$15]
 INCLUDE "data/mapHeaders/route2.asm"
 INCLUDE "data/mapObjects/route2.asm"
-Route2Blocks: ; 54086
-INCBIN "maps/route2.blk"
+Route2Blocks: INCBIN "maps/route2.blk" ; 54086
 
 INCLUDE "data/mapHeaders/route3.asm"
 INCLUDE "data/mapObjects/route3.asm"
-Route3Blocks: ; 5425d
-INCBIN "maps/route3.blk"
+Route3Blocks: INCBIN "maps/route3.blk" ; 5425d
 
 INCLUDE "data/mapHeaders/route4.asm"
 INCLUDE "data/mapObjects/route4.asm"
-Route4Blocks: ; 543f4
-INCBIN "maps/route4.blk"
+Route4Blocks: INCBIN "maps/route4.blk" ; 543f4
 
 INCLUDE "data/mapHeaders/route5.asm"
 INCLUDE "data/mapObjects/route5.asm"
-Route5Blocks: ; 545da
-INCBIN "maps/route5.blk"
+Route5Blocks: INCBIN "maps/route5.blk" ; 545da
 
 INCLUDE "data/mapHeaders/route9.asm"
 INCLUDE "data/mapObjects/route9.asm"
-Route9Blocks: ; 54706
-INCBIN "maps/route9.blk"
+Route9Blocks: INCBIN "maps/route9.blk" ; 54706
 
 INCLUDE "data/mapHeaders/route13.asm"
 INCLUDE "data/mapObjects/route13.asm"
@@ -1210,13 +1197,14 @@ Route17Blocks: INCBIN "maps/route17.blk"
 INCLUDE "data/mapHeaders/route19.asm"
 INCLUDE "data/mapObjects/route19.asm"
 Route19Blocks: INCBIN "maps/route19.blk"
+
 INCLUDE "data/mapHeaders/route21.asm"
 INCLUDE "data/mapObjects/route21.asm"
-Route21Blocks: ; 5507d
-INCBIN "maps/route21.blk"
+Route21Blocks: INCBIN "maps/route21.blk" ; 5507d
 
-DayCareMBlocks: INCBIN "maps/daycarem.blk"
-	dr $5524f,$5525f
+DayCareMBlocks:
+VermilionHouse2Blocks: INCBIN "maps/daycarem.blk"
+FuchsiaHouse3Blocks: INCBIN "maps/fuchsiahouse3.blk"
 
 INCLUDE "engine/battle/experience.asm"
 
@@ -1231,14 +1219,18 @@ INCLUDE "scripts/route17.asm"
 INCLUDE "scripts/route19.asm"
 INCLUDE "scripts/route21.asm"
 
-; vermilion house 2
-	dr $56054,$560d9
+INCLUDE "data/mapHeaders/vermilionhouse2.asm"
+INCLUDE "scripts/vermilionhouse2.asm"
+INCLUDE "data/mapObjects/vermilionhouse2.asm"
 
 INCLUDE "data/mapHeaders/celadonmart2.asm"
 INCLUDE "scripts/celadonmart2.asm"
 INCLUDE "data/mapObjects/celadonmart2.asm"
 CeladonMart2Blocks: INCBIN "maps/celadonmart2.blk"
-	dr $56160,$56233
+
+INCLUDE "data/mapHeaders/fuchsiahouse3.asm"
+INCLUDE "scripts/fuchsiahouse3.asm"
+INCLUDE "data/mapObjects/fuchsiahouse3.asm"
 
 INCLUDE "data/mapHeaders/daycarem.asm"
 INCLUDE "scripts/daycarem.asm"
@@ -1254,13 +1246,11 @@ SECTION "bank16",ROMX,BANK[$16]
 
 INCLUDE "data/mapHeaders/route6.asm"
 INCLUDE "data/mapObjects/route6.asm"
-Route6Blocks: ; 58079
-INCBIN "maps/route6.blk"
+Route6Blocks: INCBIN "maps/route6.blk" ; 58079
 
 INCLUDE "data/mapHeaders/route8.asm"
 INCLUDE "data/mapObjects/route8.asm"
-Route8Blocks: ; 581c6
-INCBIN "maps/route8.blk"
+Route8Blocks: INCBIN "maps/route8.blk" ; 581c6
 
 INCLUDE "data/mapHeaders/route10.asm"
 INCLUDE "data/mapObjects/route10.asm"
@@ -1268,8 +1258,7 @@ Route10Blocks: INCBIN "maps/route10.blk"
 
 INCLUDE "data/mapHeaders/route11.asm"
 INCLUDE "data/mapObjects/route11.asm"
-Route11Blocks: ; 5855f
-INCBIN "maps/route11.blk"
+Route11Blocks: INCBIN "maps/route11.blk" ; 5855f
 
 INCLUDE "data/mapHeaders/route12.asm"
 INCLUDE "data/mapObjects/route12.asm"
@@ -1281,8 +1270,7 @@ Route15Blocks: INCBIN "maps/route15.blk"
 
 INCLUDE "data/mapHeaders/route16.asm"
 INCLUDE "data/mapObjects/route16.asm"
-Route16Blocks: ; 58b84
-INCBIN "maps/route16.blk"
+Route16Blocks: INCBIN "maps/route16.blk" ; 58b84
 
 INCLUDE "data/mapHeaders/route18.asm"
 INCLUDE "data/mapObjects/route18.asm"
