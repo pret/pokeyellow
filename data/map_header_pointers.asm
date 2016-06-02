@@ -171,7 +171,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Lab2_h
 	dw Lab3_h
 	dw Lab4_h ;id=170
-	dw $569b ; dw CinnabarPokecenter_h
+	dw CinnabarPokecenter_h
 	dw $5701 ; dw CinnabarMart_h
 	dw $5701 ; dw CinnabarMart_h ; unused
 	dw $5d45 ; dw IndigoPlateauLobby_h
