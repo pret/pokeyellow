@@ -6,8 +6,9 @@ SeafoamIslands5Script: ; 46799 (11:6799)
 
 SeafoamIslands5Script_467a5: ; 467a5 (11:67a5)
 	xor a
-	ld [wSeafoamIslands5CurScript], a
 	ld [wJoyIgnore], a
+	ld [wSeafoamIslands5CurScript], a
+	ld [W_CURMAPSCRIPT], a
 	ret
 
 SeafoamIslands5ScriptPointers: ; 467ad (11:67ad)

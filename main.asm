@@ -852,7 +852,27 @@ SSAnne3Blocks: INCBIN "maps/ssanne3.blk"
 	dr $44a0d,$45077
 
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
-	dr $45077,$46bf3
+	dr $45077,$46578
+
+INCLUDE "data/mapHeaders/seafoamislands2.asm"
+INCLUDE "scripts/seafoamislands2.asm"
+INCLUDE "data/mapObjects/seafoamislands2.asm"
+SeafoamIslands2Blocks: INCBIN "maps/seafoamislands2.blk"
+
+INCLUDE "data/mapHeaders/seafoamislands3.asm"
+INCLUDE "scripts/seafoamislands3.asm"
+INCLUDE "data/mapObjects/seafoamislands3.asm"
+SeafoamIslands3Blocks: INCBIN "maps/seafoamislands3.blk"
+
+INCLUDE "data/mapHeaders/seafoamislands4.asm"
+INCLUDE "scripts/seafoamislands4.asm"
+INCLUDE "data/mapObjects/seafoamislands4.asm"
+SeafoamIslands4Blocks: INCBIN "maps/seafoamislands4.blk"
+
+INCLUDE "data/mapHeaders/seafoamislands5.asm"
+INCLUDE "scripts/seafoamislands5.asm"
+INCLUDE "data/mapObjects/seafoamislands5.asm"
+SeafoamIslands5Blocks: INCBIN "maps/seafoamislands5.blk"
 
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
