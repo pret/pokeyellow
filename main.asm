@@ -272,7 +272,13 @@ INCLUDE "data/mapHeaders/blueshouse.asm"
 INCLUDE "scripts/blueshouse.asm"
 INCLUDE "data/mapObjects/blueshouse.asm"
 BluesHouseBlocks: INCBIN "maps/blueshouse.blk"
-	dr $19d05,$1a4ea
+	dr $19d05,$19d45
+
+INCLUDE "data/mapHeaders/indigoplateaulobby.asm"
+INCLUDE "scripts/indigoplateaulobby.asm"
+INCLUDE "data/mapObjects/indigoplateaulobby.asm"
+IndigoPlateauLobbyBlocks: INCBIN "maps/indigoplateaulobby.blk"
+	dr $19e09,$1a4ea
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"

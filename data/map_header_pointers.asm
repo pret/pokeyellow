@@ -174,7 +174,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw CinnabarPokecenter_h
 	dw CinnabarMart_h
 	dw CinnabarMart_h ; unused
-	dw $5d45 ; dw IndigoPlateauLobby_h
+	dw IndigoPlateauLobby_h
 	dw CopycatsHouse1F_h
 	dw $4b5b ; dw CopycatsHouse2F_h
 	dw $4c47 ; dw FightingDojo_h
