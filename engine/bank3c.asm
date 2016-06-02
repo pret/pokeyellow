@@ -385,7 +385,8 @@ PikachuMovementData_f1f2c:
 	db $3f
 
 INCLUDE "scripts/celadondiner2.asm"
-	dr $f1f77, $f218c
+INCLUDE "scripts/safarizoneentrance2.asm"
+	dr $f2133, $f218c
 
 INCLUDE "scripts/mtmoonpokecenter2.asm"
 

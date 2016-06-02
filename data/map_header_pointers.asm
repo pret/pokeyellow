@@ -155,10 +155,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw FuchsiaMart_h
 	dw FuchsiaHouse1_h
 	dw FuchsiaPokecenter_h
-	dw $4902 ; dw FuchsiaHouse2_h
-	dw $4a1a ; dw SafariZoneEntrance_h
-	dw $4bd9 ; dw FuchsiaGym_h
-	dw $4e7f ; dw FuchsiaMeetingRoom_h
+	dw FuchsiaHouse2_h
+	dw SafariZoneEntrance_h
+	dw FuchsiaGym_h
+	dw FuchsiaMeetingRoom_h
 	dw $6578 ; dw SeafoamIslands2_h
 	dw $66b4 ; dw SeafoamIslands3_h ;id=160
 	dw $67f0 ; dw SeafoamIslands4_h

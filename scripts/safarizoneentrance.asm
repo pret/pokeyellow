@@ -2,7 +2,8 @@ SafariZoneEntranceScript: ; 751cd (1d:51cd)
 	call EnableAutoTextBoxDrawing
 	ld hl, SafariZoneEntranceScriptPointers
 	ld a, [wSafariZoneEntranceCurScript]
-	jp JumpTable
+	call JumpTable
+	ret
 
 SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	dw .SafariZoneEntranceScript0
@@ -43,8 +44,8 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	ret
 
 .CoordsData_75221: ; 75221 (1d:5221)
-	db $02,$03
-	db $02,$04
+	db $02, $03
+	db $02, $04
 	db $FF
 
 .SafariZoneEntranceScript1
@@ -85,6 +86,8 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	call DisplayTextID
 	xor a
 	ld [wNumSafariBalls], a
+	ld [wSafariSteps], a
+	ld [wSafariSteps], a ; ?????
 	ld a, D_DOWN
 	ld c, $3
 	call SafariZoneEntranceAutoWalk
@@ -117,10 +120,10 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 
 SafariZoneEntranceAutoWalk:
 	push af
-	ld b,0
-	ld a,c
-	ld [wSimulatedJoypadStatesIndex],a
-	ld hl,wSimulatedJoypadStatesEnd
+	ld b, 0
+	ld a, c
+	ld [wSimulatedJoypadStatesIndex], a
+	ld hl, wSimulatedJoypadStatesEnd
 	pop af
 	call FillMemory
 	jp StartSimulatingJoypadStates
@@ -143,89 +146,15 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	db "@"
 
 .SafariZoneEntranceText4
-	TX_FAR SafariZoneEntranceText_9e6e4
 	TX_ASM
-	ld a, MONEY_BOX
-	ld [wTextBoxID],a
-	call DisplayTextBoxID
-	call YesNoChoice
-	ld a,[wCurrentMenuItem]
-	and a
-	jp nz,.PleaseComeAgain
-	xor a
-	ld [hMoney],a
-	ld a,$05
-	ld [hMoney + 1],a
-	ld a,$00
-	ld [hMoney + 2],a
-	call HasEnoughMoney
-	jr nc,.success
-	ld hl,.NotEnoughMoneyText
-	call PrintText
-	jr .CantPayWalkDown
-
-.success
-	xor a
-	ld [wPriceTemp],a
-	ld a,$05
-	ld [wPriceTemp + 1],a
-	ld a,$00
-	ld [wPriceTemp + 2],a
-	ld hl,wPriceTemp + 2
-	ld de,wPlayerMoney + 2
-	ld c,3
-	predef SubBCDPredef
-	ld a,MONEY_BOX
-	ld [wTextBoxID],a
-	call DisplayTextBoxID
-	ld hl,.MakePaymentText
-	call PrintText
-	ld a,30
-	ld [wNumSafariBalls],a
-	ld a,502 / $100
-	ld [wSafariSteps],a
-	ld a, 502 % $100
-	ld [wSafariSteps + 1],a
-	ld a,D_UP
-	ld c,3
-	call SafariZoneEntranceAutoWalk
-	SetEvent EVENT_IN_SAFARI_ZONE
-	ResetEventReuseHL EVENT_SAFARI_GAME_OVER
-	ld a,3
-	ld [wSafariZoneEntranceCurScript],a
-	jr .done
-
-.PleaseComeAgain
-	ld hl,.PleaseComeAgainText
-	call PrintText
-.CantPayWalkDown
-	ld a,D_DOWN
-	ld c,1
-	call SafariZoneEntranceAutoWalk
-	ld a,4
-	ld [wSafariZoneEntranceCurScript],a
-.done
+	callab Func_f1f77
 	jp TextScriptEnd
-
-.MakePaymentText
-	TX_FAR SafariZoneEntranceText_9e747
-	db $b
-	TX_FAR _SafariZoneEntranceText_75360
-	db "@"
-
-.PleaseComeAgainText
-	TX_FAR _SafariZoneEntranceText_75365
-	db "@"
-
-.NotEnoughMoneyText
-	TX_FAR _SafariZoneEntranceText_7536a
-	db "@"
 
 .SafariZoneEntranceText5
 	TX_FAR SafariZoneEntranceText_9e814
 	TX_ASM
 	call YesNoChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .asm_7539c
 	ld hl, .SafariZoneEntranceText_753bb
@@ -268,26 +197,5 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 
 .SafariZoneEntranceText2
 	TX_ASM
-	ld hl,.FirstTimeQuestionText
-	call PrintText
-	call YesNoChoice
-	ld a,[wCurrentMenuItem]
-	and a
-	ld hl,.RegularText
-	jr nz,.Explanation
-	ld hl,.ExplanationText
-.Explanation
-	call PrintText
+	callab Func_f203e
 	jp TextScriptEnd
-
-.FirstTimeQuestionText
-	TX_FAR _SafariZoneEntranceText_753e6
-	db "@"
-
-.ExplanationText
-	TX_FAR _SafariZoneEntranceText_753eb
-	db "@"
-
-.RegularText
-	TX_FAR _SafariZoneEntranceText_753f0
-	db "@"

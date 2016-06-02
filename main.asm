@@ -1619,7 +1619,27 @@ INCLUDE "data/mapObjects/fuchsiahouse1.asm"
 INCLUDE "data/mapHeaders/fuchsiapokecenter.asm"
 INCLUDE "scripts/fuchsiapokecenter.asm"
 INCLUDE "data/mapObjects/fuchsiapokecenter.asm"
-	dr $74902,$757a0
+
+INCLUDE "data/mapHeaders/fuchsiahouse2.asm"
+INCLUDE "scripts/fuchsiahouse2.asm"
+INCLUDE "data/mapObjects/fuchsiahouse2.asm"
+FuchsiaHouse2Blocks: INCBIN "maps/fuchsiahouse2.blk"
+
+INCLUDE "data/mapHeaders/safarizoneentrance.asm"
+INCLUDE "data/mapObjects/safarizoneentrance.asm"
+SafariZoneEntranceBlocks: INCBIN "maps/safarizoneentrance.blk"
+INCLUDE "scripts/safarizoneentrance.asm"
+
+INCLUDE "data/mapHeaders/fuchsiagym.asm"
+INCLUDE "scripts/fuchsiagym.asm"
+INCLUDE "data/mapObjects/fuchsiagym.asm"
+FuchsiaGymBlocks: INCBIN "maps/fuchsiagym.blk"
+
+INCLUDE "data/mapHeaders/fuchsiameetingroom.asm"
+INCLUDE "scripts/fuchsiameetingroom.asm"
+INCLUDE "data/mapObjects/fuchsiameetingroom.asm"
+FuchsiaMeetingRoomBlocks: INCBIN "maps/fuchsiameetingroom.blk"
+	dr $74ee6,$757a0
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"
