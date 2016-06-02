@@ -11,7 +11,7 @@ CopycatsHouse1FObject: ; 0x75ee3 (size=46)
 	db $3 ; objects
 	object SPRITE_MOM_GEISHA, $2, $2, STAY, DOWN, $1 ; person
 	object SPRITE_FAT_BALD_GUY, $5, $4, STAY, LEFT, $2 ; person
-	object SPRITE_CLEFAIRY, $1, $4, WALK, $1, $3 ; person
+	object SPRITE_CHANSEY, $1, $4, STAY, NONE, $3 ; person
 
 	; warp-to
 	EVENT_DISP COPYCATS_HOUSE_1F_WIDTH, $7, $2

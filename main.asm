@@ -1596,8 +1596,7 @@ INCLUDE "engine/save.asm"
 
 SECTION "bank1D",ROMX,BANK[$1D]
 
-	dr $74000,$74010
-
+CopycatsHouse1FBlocks: INCBIN "maps/copycatshouse1f.blk"
 PewterMartBlocks:
 CinnabarMartBlocks: INCBIN "maps/pewtermart.blk"
 FuchsiaHouse1Blocks: INCBIN "maps/fuchsiahouse1.blk"
@@ -1700,7 +1699,10 @@ INCLUDE "data/mapObjects/cinnabarpokecenter.asm"
 INCLUDE "data/mapHeaders/cinnabarmart.asm"
 INCLUDE "scripts/cinnabarmart.asm"
 INCLUDE "data/mapObjects/cinnabarmart.asm"
-	dr $75746,$757a0
+
+INCLUDE "data/mapHeaders/copycatshouse1f.asm"
+INCLUDE "scripts/copycatshouse1f.asm"
+INCLUDE "data/mapObjects/copycatshouse1f.asm"
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"
