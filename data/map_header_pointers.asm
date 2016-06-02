@@ -188,8 +188,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Route15GateUpstairs_h
 	dw Route16Gate_h
 	dw Route16GateUpstairs_h
-	dw $5ef6 ; dw Route16House_h
-	dw $64a5 ; dw Route12House_h
+	dw Route16House_h
+	dw Route12House_h
 	dw Route18Gate_h ;id=190
 	dw Route18GateUpstairs_h
 	dw $487e ; dw SeafoamIslands1_h

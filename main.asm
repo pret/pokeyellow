@@ -304,7 +304,8 @@ VermilionHouse1Blocks:
 LavenderHouse1Blocks:
 LavenderHouse2Blocks:
 SaffronHouse1Blocks:
-SaffronHouse2Blocks: INCBIN "maps/viridianhouse.blk"
+SaffronHouse2Blocks:
+Route16HouseBlocks: INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 CeladonMansion5Blocks: INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks: INCBIN "maps/ceruleanhousetrashed.blk"
@@ -431,7 +432,11 @@ PowerPlantBlocks: INCBIN "maps/powerplant.blk"
 INCLUDE "data/mapHeaders/diglettscaveroute11.asm"
 INCLUDE "scripts/diglettscaveroute11.asm"
 INCLUDE "data/mapObjects/diglettscaveroute11.asm"
-	dr $1def6,$1e06e ; map scripts
+
+INCLUDE "data/mapHeaders/route16house.asm"
+INCLUDE "scripts/route16house.asm"
+INCLUDE "data/mapObjects/route16house.asm"
+	dr $1df81,$1e06e ; map scripts
 
 INCLUDE "data/mapHeaders/billshouse.asm"
 INCLUDE "scripts/billshouse.asm"
@@ -1243,7 +1248,8 @@ INCLUDE "data/mapObjects/route21.asm"
 Route21Blocks: INCBIN "maps/route21.blk" ; 5507d
 
 DayCareMBlocks:
-VermilionHouse2Blocks: INCBIN "maps/daycarem.blk"
+VermilionHouse2Blocks:
+Route12HouseBlocks: INCBIN "maps/daycarem.blk"
 FuchsiaHouse3Blocks: INCBIN "maps/fuchsiahouse3.blk"
 
 INCLUDE "engine/battle/experience.asm"
@@ -1275,7 +1281,11 @@ INCLUDE "data/mapObjects/fuchsiahouse3.asm"
 INCLUDE "data/mapHeaders/daycarem.asm"
 INCLUDE "scripts/daycarem.asm"
 INCLUDE "data/mapObjects/daycarem.asm"
-	dr $564a5,$56714
+
+INCLUDE "data/mapHeaders/route12house.asm"
+INCLUDE "scripts/route12house.asm"
+INCLUDE "data/mapObjects/route12house.asm"
+	dr $5652a,$56714
 
 INCLUDE "engine/menu/diploma_1.asm"
 
