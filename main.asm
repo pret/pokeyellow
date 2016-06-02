@@ -318,8 +318,7 @@ INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
 CeladonMartBlocks:
-SaffronMartBlocks:
-CinnabarMartBlocks: INCBIN "maps/viridianmart.blk"
+SaffronMartBlocks: INCBIN "maps/viridianmart.blk"
 
 INCLUDE "data/mapHeaders/school.asm"
 INCLUDE "scripts/school.asm"
@@ -1599,7 +1598,8 @@ SECTION "bank1D",ROMX,BANK[$1D]
 
 	dr $74000,$74010
 
-PewterMartBlocks: INCBIN "maps/pewtermart.blk"
+PewterMartBlocks:
+CinnabarMartBlocks: INCBIN "maps/pewtermart.blk"
 FuchsiaHouse1Blocks: INCBIN "maps/fuchsiahouse1.blk"
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks: INCBIN "maps/fuchsiapokecenter.blk"
@@ -1696,7 +1696,11 @@ Lab4Blocks: INCBIN "maps/lab4.blk"
 INCLUDE "data/mapHeaders/cinnabarpokecenter.asm"
 INCLUDE "scripts/cinnabarpokecenter.asm"
 INCLUDE "data/mapObjects/cinnabarpokecenter.asm"
-	dr $75701,$757a0
+
+INCLUDE "data/mapHeaders/cinnabarmart.asm"
+INCLUDE "scripts/cinnabarmart.asm"
+INCLUDE "data/mapObjects/cinnabarmart.asm"
+	dr $75746,$757a0
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"
