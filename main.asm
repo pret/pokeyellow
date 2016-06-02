@@ -1406,7 +1406,12 @@ INCLUDE "data/mapHeaders/fightingdojo.asm"
 INCLUDE "scripts/fightingdojo.asm"
 INCLUDE "data/mapObjects/fightingdojo.asm"
 FightingDojoBlocks: INCBIN "maps/fightingdojo.blk"
-	dr $5cef7,$5d485
+
+INCLUDE "data/mapHeaders/saffrongym.asm"
+INCLUDE "scripts/saffrongym.asm"
+INCLUDE "data/mapObjects/saffrongym.asm"
+SaffronGymBlocks: INCBIN "maps/saffrongym.blk"
+	dr $5d2f3,$5d485
 
 INCLUDE "data/mapHeaders/viridianforestexit.asm"
 INCLUDE "scripts/viridianforestexit.asm"
