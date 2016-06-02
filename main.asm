@@ -1492,7 +1492,8 @@ INCLUDE "data/mapHeaders/pokemontower7.asm"
 INCLUDE "scripts/pokemontower7.asm"
 INCLUDE "data/mapObjects/pokemontower7.asm"
 PokemonTower7Blocks: INCBIN "maps/pokemontower7.blk"
-	dr $60ff2,$610ed
+
+INCLUDE "engine/overworld/cinnabar_lab.asm"
 
 INCLUDE "data/mapHeaders/viridianforest.asm"
 INCLUDE "scripts/viridianforest.asm"
@@ -1671,7 +1672,27 @@ CinnabarGymScript_753f3:
 	bit 7, [hl]
 	pop hl
 	ret
-	dr $753fb,$757a0
+
+INCLUDE "data/mapHeaders/lab1.asm"
+INCLUDE "scripts/lab1.asm"
+INCLUDE "data/mapObjects/lab1.asm"
+Lab1Blocks: INCBIN "maps/lab1.blk"
+
+INCLUDE "data/mapHeaders/lab2.asm"
+INCLUDE "scripts/lab2.asm"
+INCLUDE "data/mapObjects/lab2.asm"
+Lab2Blocks: INCBIN "maps/lab2.blk"
+
+INCLUDE "data/mapHeaders/lab3.asm"
+INCLUDE "scripts/lab3.asm"
+INCLUDE "data/mapObjects/lab3.asm"
+Lab3Blocks: INCBIN "maps/lab3.blk"
+
+INCLUDE "data/mapHeaders/lab4.asm"
+INCLUDE "scripts/lab4.asm"
+INCLUDE "data/mapObjects/lab4.asm"
+Lab4Blocks: INCBIN "maps/lab4.blk"
+	dr $7569b,$757a0
 
 INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"

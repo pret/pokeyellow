@@ -167,10 +167,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw FuchsiaHouse3_h
 	dw Mansion1_h
 	dw CinnabarGym_h
-	dw $53fb ; dw Lab1_h
-	dw $5490 ; dw Lab2_h
-	dw $54f6 ; dw Lab3_h
-	dw $55a0 ; dw Lab4_h ;id=170
+	dw Lab1_h
+	dw Lab2_h
+	dw Lab3_h
+	dw Lab4_h ;id=170
 	dw $569b ; dw CinnabarPokecenter_h
 	dw $5701 ; dw CinnabarMart_h
 	dw $5701 ; dw CinnabarMart_h ; unused
