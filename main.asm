@@ -302,7 +302,9 @@ PewterHouse2Blocks:
 CeruleanHouse1Blocks:
 VermilionHouse1Blocks:
 LavenderHouse1Blocks:
-LavenderHouse2Blocks: INCBIN "maps/viridianhouse.blk"
+LavenderHouse2Blocks:
+SaffronHouse1Blocks:
+SaffronHouse2Blocks: INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 CeladonMansion5Blocks: INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks: INCBIN "maps/ceruleanhousetrashed.blk"
@@ -381,7 +383,14 @@ INCLUDE "data/mapHeaders/fuchsiamart.asm"
 INCLUDE "scripts/fuchsiamart.asm"
 INCLUDE "data/mapObjects/fuchsiamart.asm"
 FuchsiaMartBlocks: INCBIN "maps/fuchsiamart.blk"
-	dr $1d6db,$1d7ae ; map scripts
+
+INCLUDE "data/mapHeaders/saffronhouse1.asm"
+INCLUDE "scripts/saffronhouse1.asm"
+INCLUDE "data/mapObjects/saffronhouse1.asm"
+
+INCLUDE "data/mapHeaders/saffronhouse2.asm"
+INCLUDE "scripts/saffronhouse2.asm"
+INCLUDE "data/mapObjects/saffronhouse2.asm"
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"
