@@ -436,7 +436,11 @@ INCLUDE "data/mapObjects/diglettscaveroute11.asm"
 INCLUDE "data/mapHeaders/route16house.asm"
 INCLUDE "scripts/route16house.asm"
 INCLUDE "data/mapObjects/route16house.asm"
-	dr $1df81,$1e06e ; map scripts
+
+INCLUDE "data/mapHeaders/route22gate.asm"
+INCLUDE "scripts/route22gate.asm"
+INCLUDE "data/mapObjects/route22gate.asm"
+Route22GateBlocks: INCBIN "maps/route22gate.blk"
 
 INCLUDE "data/mapHeaders/billshouse.asm"
 INCLUDE "scripts/billshouse.asm"
@@ -856,7 +860,11 @@ INCLUDE "data/mapHeaders/rocktunnel1.asm"
 INCLUDE "scripts/rocktunnel1.asm"
 INCLUDE "data/mapObjects/rocktunnel1.asm"
 RockTunnel1Blocks: INCBIN "maps/rocktunnel1.blk"
-	dr $4487e,$449bf
+
+INCLUDE "data/mapHeaders/seafoamislands1.asm"
+INCLUDE "scripts/seafoamislands1.asm"
+INCLUDE "data/mapObjects/seafoamislands1.asm"
+SeafoamIslands1Blocks: INCBIN "maps/seafoamislands1.blk"
 
 INCLUDE "data/mapHeaders/ssanne3.asm"
 INCLUDE "scripts/ssanne3.asm"

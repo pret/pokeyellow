@@ -192,8 +192,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Route12House_h
 	dw Route18Gate_h ;id=190
 	dw Route18GateUpstairs_h
-	dw $487e ; dw SeafoamIslands1_h
-	dw $5f81 ; dw Route22Gate_h
+	dw SeafoamIslands1_h
+	dw Route22Gate_h
 	dw $57cc ; dw VictoryRoad2_h
 	dw $54eb ; dw Route12GateUpstairs_h
 	dw $5d05 ; dw VermilionHouse3_h
