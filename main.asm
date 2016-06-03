@@ -874,7 +874,12 @@ INCLUDE "data/mapHeaders/ssanne3.asm"
 INCLUDE "scripts/ssanne3.asm"
 INCLUDE "data/mapObjects/ssanne3.asm"
 SSAnne3Blocks: INCBIN "maps/ssanne3.blk"
-	dr $44a0d,$45077
+
+INCLUDE "data/mapHeaders/victoryroad3.asm"
+INCLUDE "scripts/victoryroad3.asm"
+INCLUDE "data/mapObjects/victoryroad3.asm"
+VictoryRoad3Blocks: INCBIN "maps/victoryroad3.blk"
+	dr $44c5e,$45077
 
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
 	dr $45077,$46578
@@ -1643,8 +1648,12 @@ INCLUDE "data/mapHeaders/undergroundpathwe.asm"
 INCLUDE "scripts/undergroundpathwe.asm"
 INCLUDE "data/mapObjects/undergroundpathwe.asm"
 
+INCLUDE "data/mapHeaders/diglettscave.asm"
+INCLUDE "scripts/diglettscave.asm"
+INCLUDE "data/mapObjects/diglettscave.asm"
+DiglettsCaveBlocks: INCBIN "maps/diglettscave.blk"
+	dr $62105,$625e8
 
-	dr $61f79,$625e8
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]

@@ -197,8 +197,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VictoryRoad2_h
 	dw Route12GateUpstairs_h
 	dw VermilionHouse3_h
-	dw $5f79 ; dw DiglettsCave_h
-	dw $4a0d ; dw VictoryRoad3_h
+	dw DiglettsCave_h
+	dw VictoryRoad3_h
 	dw $4c5e ; dw RocketHideout1_h
 	dw $4ebb ; dw RocketHideout2_h ;200
 	dw $52b9 ; dw RocketHideout3_h
