@@ -1357,7 +1357,11 @@ INCLUDE "data/mapObjects/daycarem.asm"
 INCLUDE "data/mapHeaders/route12house.asm"
 INCLUDE "scripts/route12house.asm"
 INCLUDE "data/mapObjects/route12house.asm"
-	dr $5652a,$56714
+
+INCLUDE "data/mapHeaders/silphco8.asm"
+INCLUDE "scripts/silphco8.asm"
+INCLUDE "data/mapObjects/silphco8.asm"
+SilphCo8Blocks: INCBIN "maps/silphco8.blk"
 
 INCLUDE "engine/menu/diploma_1.asm"
 

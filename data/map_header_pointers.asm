@@ -213,7 +213,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SilphCo5_h ;210
 	dw SilphCo6_h
 	dw SilphCo7_h
-	dw $652a ; dw SilphCo8_h
+	dw SilphCo8_h
 	dw Mansion2_h
 	dw Mansion3_h
 	dw Mansion4_h
