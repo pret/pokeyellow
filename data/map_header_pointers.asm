@@ -212,11 +212,11 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SilphCo4_h
 	dw SilphCo5_h ;210
 	dw SilphCo6_h
-	dw $5b97 ; dw SilphCo7_h
+	dw SilphCo7_h
 	dw $652a ; dw SilphCo8_h
-	dw $5ff5 ; dw Mansion2_h
-	dw $620b ; dw Mansion3_h
-	dw $63d6 ; dw Mansion4_h
+	dw Mansion2_h
+	dw Mansion3_h
+	dw Mansion4_h
 	dw $5ab3 ; dw SafariZoneEast_h
 	dw $5bf3 ; dw SafariZoneNorth_h
 	dw $635a ; dw SafariZoneWest_h
@@ -229,7 +229,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $6053 ; dw UnknownDungeon2_h
 	dw $6141 ; dw UnknownDungeon3_h
 	dw $453d ; dw UnknownDungeon1_h
-	dw $530e ; dw NameRater_h
+	dw NameRater_h
 	dw $4643 ; dw CeruleanHouse2_h
 	dw $5649 ; dw Route16Gate_h ; unused
 	dw $624e ; dw RockTunnel2_h

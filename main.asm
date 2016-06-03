@@ -323,7 +323,8 @@ LavenderHouse1Blocks:
 LavenderHouse2Blocks:
 SaffronHouse1Blocks:
 SaffronHouse2Blocks:
-Route16HouseBlocks: INCBIN "maps/viridianhouse.blk"
+Route16HouseBlocks:
+NameRaterBlocks: INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 CeladonMansion5Blocks: INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks: INCBIN "maps/ceruleanhousetrashed.blk"
@@ -382,7 +383,10 @@ INCLUDE "data/mapObjects/lavenderhouse1.asm"
 INCLUDE "data/mapHeaders/lavenderhouse2.asm"
 INCLUDE "scripts/lavenderhouse2.asm"
 INCLUDE "data/mapObjects/lavenderhouse2.asm"
-	dr $1d30e,$1d3f8 ; map scripts
+
+INCLUDE "data/mapHeaders/namerater.asm"
+INCLUDE "scripts/namerater.asm"
+INCLUDE "data/mapObjects/namerater.asm"
 
 INCLUDE "data/mapHeaders/vermilionhouse1.asm"
 INCLUDE "scripts/vermilionhouse1.asm"
@@ -1248,13 +1252,26 @@ INCLUDE "scripts/mtmoon2.asm"
 INCLUDE "data/mapObjects/mtmoon2.asm"
 MtMoon2Blocks: INCBIN "maps/mtmoon2.blk"
 
-	dr $51b97,$52060
-Mansion2Script_Switches:
-	dr $52060,$522a3
-Mansion3Script_Switches:
-	dr $522a3,$52449
-Mansion4Script_Switches:
-	dr $52449,$525d8
+INCLUDE "data/mapHeaders/silphco7.asm"
+INCLUDE "scripts/silphco7.asm"
+INCLUDE "data/mapObjects/silphco7.asm"
+SilphCo7Blocks: INCBIN "maps/silphco7.blk"
+
+INCLUDE "data/mapHeaders/mansion2.asm"
+INCLUDE "scripts/mansion2.asm"
+INCLUDE "data/mapObjects/mansion2.asm"
+Mansion2Blocks: INCBIN "maps/mansion2.blk"
+
+INCLUDE "data/mapHeaders/mansion3.asm"
+INCLUDE "scripts/mansion3.asm"
+INCLUDE "data/mapObjects/mansion3.asm"
+Mansion3Blocks: INCBIN "maps/mansion3.blk"
+
+INCLUDE "data/mapHeaders/mansion4.asm"
+INCLUDE "scripts/mansion4.asm"
+INCLUDE "data/mapObjects/mansion4.asm"
+Mansion4Blocks: INCBIN "maps/mansion4.blk"
+
 INCLUDE "engine/overworld/card_key.asm"
 
 INCLUDE "engine/menu/prize_menu.asm"
