@@ -199,14 +199,14 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw VermilionHouse3_h
 	dw DiglettsCave_h
 	dw VictoryRoad3_h
-	dw $4c5e ; dw RocketHideout1_h
-	dw $4ebb ; dw RocketHideout2_h ;200
-	dw $52b9 ; dw RocketHideout3_h
-	dw $54f1 ; dw RocketHideout4_h
-	dw $5958 ; dw RocketHideoutElevator_h
-	dw $5958 ; dw RocketHideoutElevator_h ; unused
-	dw $5958 ; dw RocketHideoutElevator_h ; unused
-	dw $5958 ; dw RocketHideoutElevator_h ; unused
+	dw RocketHideout1_h
+	dw RocketHideout2_h ;200
+	dw RocketHideout3_h
+	dw RocketHideout4_h
+	dw RocketHideoutElevator_h
+	dw RocketHideoutElevator_h ; unused
+	dw RocketHideoutElevator_h ; unused
+	dw RocketHideoutElevator_h ; unused
 	dw $5c80 ; dw SilphCo2_h
 	dw $5eea ; dw SilphCo3_h
 	dw $5e09 ; dw SilphCo4_h

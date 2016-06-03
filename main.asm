@@ -879,10 +879,32 @@ INCLUDE "data/mapHeaders/victoryroad3.asm"
 INCLUDE "scripts/victoryroad3.asm"
 INCLUDE "data/mapObjects/victoryroad3.asm"
 VictoryRoad3Blocks: INCBIN "maps/victoryroad3.blk"
-	dr $44c5e,$45077
 
-LoadSpinnerArrowTiles: ; 45077 (11:5077)
-	dr $45077,$46578
+INCLUDE "data/mapHeaders/rockethideout1.asm"
+INCLUDE "scripts/rockethideout1.asm"
+INCLUDE "data/mapObjects/rockethideout1.asm"
+RocketHideout1Blocks: INCBIN "maps/rockethideout1.blk"
+
+INCLUDE "data/mapHeaders/rockethideout2.asm"
+INCLUDE "scripts/rockethideout2.asm"
+INCLUDE "data/mapObjects/rockethideout2.asm"
+RocketHideout2Blocks: INCBIN "maps/rockethideout2.blk"
+
+INCLUDE "data/mapHeaders/rockethideout3.asm"
+INCLUDE "scripts/rockethideout3.asm"
+INCLUDE "data/mapObjects/rockethideout3.asm"
+RocketHideout3Blocks: INCBIN "maps/rockethideout3.blk"
+
+INCLUDE "data/mapHeaders/rockethideout4.asm"
+INCLUDE "scripts/rockethideout4.asm"
+INCLUDE "data/mapObjects/rockethideout4.asm"
+RocketHideout4Blocks: INCBIN "maps/rockethideout4.blk"
+
+INCLUDE "data/mapHeaders/rockethideoutelevator.asm"
+INCLUDE "scripts/rockethideoutelevator.asm"
+INCLUDE "data/mapObjects/rockethideoutelevator.asm"
+RocketHideoutElevatorBlocks: INCBIN "maps/rockethideoutelevator.blk"
+	dr $45a08,$46578
 
 INCLUDE "data/mapHeaders/seafoamislands2.asm"
 INCLUDE "scripts/seafoamislands2.asm"
@@ -1658,12 +1680,68 @@ INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]
 Overworld_GFX:
-	dr $64000,$68000
-
+	dr $64000,$64600
+Overworld_Block:
+	dr $64600,$64e00
+RedsHouse1_GFX:
+RedsHouse2_GFX:
+	dr $64e00,$65290
+RedsHouse1_Block:
+RedsHouse2_Block:
+	dr $65290,$653c0
+House_GFX:
+	dr $653c0,$659a0
+House_Block:
+	dr $659a0,$65bd0
+Mansion_GFX:
+	dr $65bd0,$661b0
+Mansion_Block:
+	dr $661b0,$66630
+ShipPort_GFX:
+	dr $66630,$66c10
+ShipPort_Block:
+	dr $66c10,$66d80
+Interior_GFX:
+	dr $66d80,$67370
+Interior_Block:
+	dr $67370,$67710
+Plateau_GFX:
+	dr $67710,$67b70
+Plateau_Block:
+	dr $67b70,$68000
 
 SECTION "bank1A",ROMX,BANK[$1A]
-
-	dr $68000,$6bff1
+	dr $68000,$68040
+Dojo_GFX:
+Gym_GFX:
+	dr $68040,$68640
+Dojo_Block:
+Gym_Block:
+	dr $68640,$68d80
+Mart_GFX:
+Pokecenter_GFX:
+	dr $68d80,$69380
+Mart_Block:
+Pokecenter_Block:
+	dr $69380,$69600
+ForestGate_GFX:
+Gate_GFX:
+	dr $69600,$69600
+Museum_GFX:
+	dr $69600,$69bf0
+ForestGate_Block:
+Gate_Block:
+	dr $69bf0,$69bf0
+Museum_Block:
+	dr $69bf0,$6a3f0
+Forest_GFX:
+	dr $6a3f0,$6a9f0
+Forest_Block:
+	dr $6a9f0,$6b1f0
+Facility_GFX:
+	dr $6b1f0,$6b7f0
+Facility_Block:
+	dr $6b7f0,$6bff1
 
 
 SECTION "bank1B",ROMX,BANK[$1B]

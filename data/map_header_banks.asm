@@ -199,11 +199,11 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(VermilionHouse3_h)
 	db BANK(DiglettsCave_h)
 	db BANK(VictoryRoad3_h)
-	db $11 ; db BANK(RocketHideout1_h)
-	db $11 ; db BANK(RocketHideout2_h)
-	db $11 ; db BANK(RocketHideout3_h)
-	db $11 ; db BANK(RocketHideout4_h)
-	db $11 ; db BANK(RocketHideoutElevator_h)
+	db BANK(RocketHideout1_h)
+	db BANK(RocketHideout2_h)
+	db BANK(RocketHideout3_h)
+	db BANK(RocketHideout4_h)
+	db BANK(RocketHideoutElevator_h)
 	db $01 ; unused
 	db $01 ; unused
 	db $01 ; unused
