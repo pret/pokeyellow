@@ -1193,8 +1193,10 @@ INCLUDE "scripts/route23.asm"
 INCLUDE "scripts/route24.asm"
 INCLUDE "scripts/route25.asm"
 
-; victoryroad2
-	dr $517cc,$51a78
+INCLUDE "data/mapHeaders/victoryroad2.asm"
+INCLUDE "scripts/victoryroad2.asm"
+INCLUDE "data/mapObjects/victoryroad2.asm"
+VictoryRoad2Blocks: INCBIN "maps/victoryroad2.blk"
 
 INCLUDE "data/mapHeaders/mtmoon2.asm"
 INCLUDE "scripts/mtmoon2.asm"

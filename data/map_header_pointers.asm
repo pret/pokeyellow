@@ -194,7 +194,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Route18GateUpstairs_h
 	dw SeafoamIslands1_h
 	dw Route22Gate_h
-	dw $57cc ; dw VictoryRoad2_h
+	dw VictoryRoad2_h
 	dw $54eb ; dw Route12GateUpstairs_h
 	dw $5d05 ; dw VermilionHouse3_h
 	dw $5f79 ; dw DiglettsCave_h
