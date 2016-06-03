@@ -33,7 +33,7 @@ INCLUDE "engine/overworld/oam.asm"
 
 INCLUDE "engine/print_waiting_text.asm"
 
-INCLUDE "engine/overworld/map_sprite_functions1.asm"	
+INCLUDE "engine/overworld/map_sprite_functions1.asm"
 INCLUDE "engine/overworld/item.asm"
 INCLUDE "engine/overworld/movement.asm"
 INCLUDE "engine/cable_club.asm"
@@ -1398,7 +1398,7 @@ INCLUDE "data/mapHeaders/halloffameroom.asm"
 INCLUDE "scripts/halloffameroom.asm"
 INCLUDE "data/mapObjects/halloffameroom.asm"
 HallofFameRoomBlocks: INCBIN "maps/halloffameroom.blk"
-	
+
 INCLUDE "engine/overworld/saffron_guards.asm"
 
 
@@ -1679,58 +1679,58 @@ DiglettsCaveBlocks: INCBIN "maps/diglettscave.blk"
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]
-Overworld_GFX: INCBIN "gfx/tilesets/overworld.2bpp"
-Overworld_Block: INCBIN "gfx/blocksets/overworld.bst"
+Overworld_GFX:     INCBIN "gfx/tilesets/overworld.2bpp"
+Overworld_Block:   INCBIN "gfx/blocksets/overworld.bst"
 RedsHouse1_GFX:
-RedsHouse2_GFX: INCBIN "gfx/tilesets/redshouse2.t7.2bpp"
+RedsHouse2_GFX:    INCBIN "gfx/tilesets/redshouse2.t7.2bpp"
 RedsHouse1_Block:
-RedsHouse2_Block: INCBIN "gfx/blocksets/redshouse2.bst"
-House_GFX: INCBIN "gfx/tilesets/house.t2.2bpp"
-House_Block: INCBIN "gfx/blocksets/house.bst"
-Mansion_GFX: INCBIN "gfx/tilesets/mansion.t2.2bpp"
-Mansion_Block: INCBIN "gfx/blocksets/mansion.bst"
-ShipPort_GFX: INCBIN "gfx/tilesets/shipport.t2.2bpp"
-ShipPort_Block: INCBIN "gfx/blocksets/shipport.bst"
-Interior_GFX: INCBIN "gfx/tilesets/interior.t1.2bpp"
-Interior_Block: INCBIN "gfx/blocksets/interior.bst"
-Plateau_GFX: INCBIN "gfx/tilesets/plateau.t10.2bpp"
-Plateau_Block: INCBIN "gfx/blocksets/plateau.bst"
+RedsHouse2_Block:  INCBIN "gfx/blocksets/redshouse2.bst"
+House_GFX:         INCBIN "gfx/tilesets/house.t2.2bpp"
+House_Block:       INCBIN "gfx/blocksets/house.bst"
+Mansion_GFX:       INCBIN "gfx/tilesets/mansion.t2.2bpp"
+Mansion_Block:     INCBIN "gfx/blocksets/mansion.bst"
+ShipPort_GFX:      INCBIN "gfx/tilesets/shipport.t2.2bpp"
+ShipPort_Block:    INCBIN "gfx/blocksets/shipport.bst"
+Interior_GFX:      INCBIN "gfx/tilesets/interior.t1.2bpp"
+Interior_Block:    INCBIN "gfx/blocksets/interior.bst"
+Plateau_GFX:       INCBIN "gfx/tilesets/plateau.t10.2bpp"
+Plateau_Block:     INCBIN "gfx/blocksets/plateau.bst"
 
 SECTION "bank1A",ROMX,BANK[$1A]
 	dr $68000,$68040
 Dojo_GFX:
-Gym_GFX: INCBIN "gfx/tilesets/gym.2bpp"
+Gym_GFX:           INCBIN "gfx/tilesets/gym.2bpp"
 Dojo_Block:
-Gym_Block: INCBIN "gfx/blocksets/gym.bst"
+Gym_Block:         INCBIN "gfx/blocksets/gym.bst"
 Mart_GFX:
-Pokecenter_GFX: INCBIN "gfx/tilesets/pokecenter.2bpp"
+Pokecenter_GFX:    INCBIN "gfx/tilesets/pokecenter.2bpp"
 Mart_Block:
-Pokecenter_Block: INCBIN "gfx/blocksets/pokecenter.bst"
+Pokecenter_Block:  INCBIN "gfx/blocksets/pokecenter.bst"
 ForestGate_GFX:
 Gate_GFX:
-Museum_GFX: INCBIN "gfx/tilesets/museum.t1.2bpp"
+Museum_GFX:        INCBIN "gfx/tilesets/museum.t1.2bpp"
 ForestGate_Block:
 Gate_Block:
-Museum_Block: INCBIN "gfx/blocksets/museum.bst"
-Forest_GFX: INCBIN "gfx/tilesets/forest.2bpp"
-Forest_Block: INCBIN "gfx/blocksets/forest.bst"
-Facility_GFX: INCBIN "gfx/tilesets/facility.2bpp"
-Facility_Block: INCBIN "gfx/blocksets/facility.bst"
+Museum_Block:      INCBIN "gfx/blocksets/museum.bst"
+Forest_GFX:        INCBIN "gfx/tilesets/forest.2bpp"
+Forest_Block:      INCBIN "gfx/blocksets/forest.bst"
+Facility_GFX:      INCBIN "gfx/tilesets/facility.2bpp"
+Facility_Block:    INCBIN "gfx/blocksets/facility.bst"
 
 SECTION "bank1B",ROMX,BANK[$1B]
-Cemetery_GFX: INCBIN "gfx/tilesets/cemetery.t4.2bpp"
-Cemetery_Block: INCBIN "gfx/blocksets/cemetery.bst"
-Cavern_GFX: INCBIN "gfx/tilesets/cavern.t14.2bpp"
-Cavern_Block: INCBIN "gfx/blocksets/cavern.bst"
-Lobby_GFX: INCBIN "gfx/tilesets/lobby.t2.2bpp"
-Lobby_Block: INCBIN "gfx/blocksets/lobby.bst"
-Ship_GFX: INCBIN "gfx/tilesets/ship.t6.2bpp"
-Ship_Block: INCBIN "gfx/blocksets/ship.bst"
-Lab_GFX: INCBIN "gfx/tilesets/lab.t4.2bpp"
-Lab_Block: INCBIN "gfx/blocksets/lab.bst"
-Club_GFX: INCBIN "gfx/tilesets/club.t5.2bpp"
-Club_Block: INCBIN "gfx/blocksets/club.bst"
-Underground_GFX: INCBIN "gfx/tilesets/underground.t7.2bpp"
+Cemetery_GFX:      INCBIN "gfx/tilesets/cemetery.t4.2bpp"
+Cemetery_Block:    INCBIN "gfx/blocksets/cemetery.bst"
+Cavern_GFX:        INCBIN "gfx/tilesets/cavern.t14.2bpp"
+Cavern_Block:      INCBIN "gfx/blocksets/cavern.bst"
+Lobby_GFX:         INCBIN "gfx/tilesets/lobby.t2.2bpp"
+Lobby_Block:       INCBIN "gfx/blocksets/lobby.bst"
+Ship_GFX:          INCBIN "gfx/tilesets/ship.t6.2bpp"
+Ship_Block:        INCBIN "gfx/blocksets/ship.bst"
+Lab_GFX:           INCBIN "gfx/tilesets/lab.t4.2bpp"
+Lab_Block:         INCBIN "gfx/blocksets/lab.bst"
+Club_GFX:          INCBIN "gfx/tilesets/club.t5.2bpp"
+Club_Block:        INCBIN "gfx/blocksets/club.bst"
+Underground_GFX:   INCBIN "gfx/tilesets/underground.t7.2bpp"
 Underground_Block: INCBIN "gfx/blocksets/underground.bst"
 
 SECTION "bank1C",ROMX,BANK[$1C]
@@ -1863,7 +1863,7 @@ INCLUDE "scripts/gary.asm"
 INCLUDE "data/mapObjects/gary.asm"
 GaryBlocks: INCBIN "maps/gary.blk"
 	dr $759ef,$75dfe
-	
+
 INCLUDE "engine/menu/league_pc.asm"
 
 INCLUDE "engine/overworld/elevator.asm"
