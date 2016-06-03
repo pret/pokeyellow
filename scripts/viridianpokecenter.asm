@@ -10,7 +10,7 @@ ViridianPokecenterTextPointers: ; 44263 (11:4263)
 	dw ViridianPokeCenterText5
 
 ViridianPokeCenterText1: ; 4426b (11:426b)
-	db $ff
+	TX_POKECENTER_NURSE
 
 ViridianPokeCenterText2: ; 4426c (11:426c)
 	TX_FAR _ViridianPokeCenterText1
@@ -21,9 +21,9 @@ ViridianPokeCenterText3: ; 44271 (11:4271)
 	db "@"
 
 ViridianPokeCenterText4: ; 44276 (11:4276)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
 
 ViridianPokeCenterText5:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

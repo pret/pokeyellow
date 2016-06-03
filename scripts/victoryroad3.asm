@@ -36,6 +36,9 @@ VictoryRoad3Script0: ; 449b7 (11:49b7)
 	ld a, [wCoordIndex]
 	cp $1
 	jr nz, .asm_449dc
+	ld a, [hSpriteIndexOrTextID]
+	cp $f ; Pikachu
+	jp z, .asm_449fe
 	ld hl, wd126
 	set 5, [hl]
 	SetEvent EVENT_VICTORY_ROAD_3_BOULDER_ON_SWITCH1

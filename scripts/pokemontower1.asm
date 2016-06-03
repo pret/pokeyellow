@@ -1,5 +1,6 @@
 PokemonTower1Script: ; 6042c (18:442c)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 PokemonTower1TextPointers: ; 6042f (18:442f)
 	dw PokemonTower1Text1

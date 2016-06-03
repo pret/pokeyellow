@@ -27,7 +27,7 @@ Func_fc4fa:: ; fc4fa (3f:44fa)
 	bit 4, [hl]
 	res 4, [hl]
 	jr nz, .asm_fc515
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	call Func_fc523
 	ld a, $ff
 	ld [wSpriteStateData1 + $f2], a
@@ -344,7 +344,7 @@ Func_fc6d5:: ; fc6d5 (3f:46d5)
 	ld a, [wFontLoaded]
 	bit 0, a
 	jp nz, asm_fc76a
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jp nz, asm_fc76a
 	ld a, [hl]
 	and $7f
@@ -408,7 +408,7 @@ asm_fc745: ; fc745 (3f:4745)
 	ld hl, wSpriteStateData2 - wSpriteStateData1
 	add hl, bc
 	ld [hl], a
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr nz, .asm_fc75f
 	ld a, [wSpriteStateData1 + $9]
 	xor $4
@@ -1679,7 +1679,7 @@ Func_fce5a:: ; fce5a (3f:4e5a)
 	ret
 
 Func_fce73:: ; fce73 (3f:4e73)
-; function to test if a pokemon is alive?
+; function to test if Pikachu is alive?
 	xor a
 	ld [wWhichPokemon], a
 	ld hl, wPartyCount

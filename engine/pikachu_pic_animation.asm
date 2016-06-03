@@ -247,7 +247,7 @@ Func_fd05e: ; fd05e (3f:505e)
 	bit 7, [hl]
 	ld a, $1d
 	jr z, .asm_fd0c9
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	ld a, $1e
 	jr nz, .asm_fd0c9
 	jr .asm_fd096
@@ -255,7 +255,7 @@ Func_fd05e: ; fd05e (3f:505e)
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	jr nz, .notPewterPokecenter
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	ld a, $1a
 	jr nz, .asm_fd0c9
 	jr .asm_fd096
@@ -863,10 +863,10 @@ Data_fd3b0:
 	db $04, $80, $07, $80 ; $1a
 	db $05, $80, $07, $80 ; $1b
 	db $06, $80, $07, $80 ; $1c
-	db $0b, $27, $02, $00 ; $1d
-	db $0c, $27, $02, $00 ; $1e
-	db $0d, $27, $02, $00 ; $1f
-	db $0e, $27, $02, $00 ; $20
+	db $0b, $27, $02, $00 ; $1d step down
+	db $0c, $27, $02, $00 ; $1e step up
+	db $0d, $27, $02, $00 ; $1f step left
+	db $0e, $27, $02, $00 ; $20 step right
 	db $0f, $27, $02, $00 ; $21
 	db $10, $27, $02, $00 ; $22
 	db $11, $27, $02, $00 ; $23
@@ -887,10 +887,10 @@ Data_fd3b0:
 	db $10, $0f, $08, $17 ; $32
 	db $11, $0f, $08, $17 ; $33
 	db $12, $0f, $08, $17 ; $34
-	db $13, $0f, $06, $00 ; $35
-	db $14, $0f, $06, $00 ; $36
-	db $15, $0f, $06, $00 ; $37
-	db $16, $0f, $06, $00 ; $38
+	db $13, $0f, $06, $00 ; $35 look down
+	db $14, $0f, $06, $00 ; $36 look up
+	db $15, $0f, $06, $00 ; $37 look left
+	db $16, $0f, $06, $00 ; $38 look right
 	db $02, $80, $04, $00 ; $39
 	db $02, $80, $05, $00 ; $3a
 	db $02, $80, $03, $80 ; $3b
@@ -1636,7 +1636,7 @@ PikachuPewterPokecenterCheck: ; fd8d4 (3f:58d4)
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	call Func_fcff2
 	ret
 
@@ -1644,7 +1644,7 @@ PikachuFanClubCheck: ; fd8e1 (3f:58e1)
 	ld a, [wCurMap]
 	cp POKEMON_FAN_CLUB
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	call Func_fcff2
 	ret
 
@@ -1652,7 +1652,7 @@ PikachuBillsHouseCheck: ; fd8ee (3f:58ee)
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	ret nz
-	call ResetPikachuAsleep
+	call EnablePikachuFollowingPlayer
 	ret
 
 Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3: ; fd8f8 (3f:58f8)

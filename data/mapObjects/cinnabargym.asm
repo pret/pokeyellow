@@ -8,7 +8,7 @@ CinnabarGymObject: ; 0x75acc (size=90)
 	db $0 ; signs
 
 	db $9 ; objects
-	object SPRITE_FAT_BALD_GUY, $3, $3, STAY, DOWN, $1, OPP_BLAINE, $1
+	object SPRITE_MR_MASTERBALL, $3, $3, STAY, DOWN, $1, OPP_BLAINE, $1
 	object SPRITE_BLACK_HAIR_BOY_2, $11, $2, STAY, DOWN, $2, OPP_SUPER_NERD, $9
 	object SPRITE_BLACK_HAIR_BOY_2, $11, $8, STAY, DOWN, $3, OPP_BURGLAR, $4
 	object SPRITE_BLACK_HAIR_BOY_2, $b, $4, STAY, DOWN, $4, OPP_SUPER_NERD, $a

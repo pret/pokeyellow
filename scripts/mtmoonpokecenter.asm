@@ -36,5 +36,5 @@ MtMoonPokecenterText6: ; 49375 (12:5375)
 
 MtMoonPokecenterText7:
 	TX_ASM
-	callab Func_f0f12
+	callab PokecenterChanseyText
 	jp TextScriptEnd

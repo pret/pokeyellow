@@ -1,5 +1,6 @@
 CeladonMansion5Script: ; 1dd3a (7:5d3a)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 CeladonMansion5TextPointers: ; 1dd3d (7:5d3d)
 	dw CeladonMansion5Text1

@@ -1765,7 +1765,7 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 .notRoute16
 	cp a,PEWTER_POKECENTER
 	jr nz,.noSnorlaxOrPikachuToWakeUp
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr z,.noSnorlaxOrPikachuToWakeUp
 	callab Func_fcb01
 	jr nc,.noSnorlaxOrPikachuToWakeUp

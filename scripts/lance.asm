@@ -17,22 +17,21 @@ LanceScript_5a2c4: ; 5a2c4 (16:62c4)
 	jr nz, .asm_5a2da
 	ld a, $31
 	ld b, $32
-	jp LanceScript_5a2de
+	jp .asm_5a2de
+
 .asm_5a2da
 	ld a, $72
 	ld b, $73
-
-LanceScript_5a2de: ; 5a2de (16:62de)
+.asm_5a2de
 	push bc
 	ld [wNewTileBlockID], a
 	lb bc, 6, 2
-	call LanceScript_5a2f0
+	call .asm_5a2f0
 	pop bc
 	ld a, b
 	ld [wNewTileBlockID], a
 	lb bc, 6, 3
-
-LanceScript_5a2f0: ; 5a2f0 (16:62f0)
+.asm_5a2f0
 	predef_jump ReplaceTileBlock
 
 LanceScript_5a2f5: ; 5a2f5 (16:62f5)
@@ -107,7 +106,7 @@ LanceScript_5a35b: ; 5a35b (16:635b)
 	ret
 
 RLEList_5a379: ; 5a379 (16:6379)
-	db D_UP, $0C
+	db D_UP, $0D
 	db D_LEFT, $0C
 	db D_DOWN, $07
 	db D_LEFT, $06

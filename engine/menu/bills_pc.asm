@@ -227,7 +227,7 @@ BillsPCDeposit: ; 2156d (8:556d)
 	jp c, BillsPCMenu
 	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .asm_215ad
-	call CheckPikachuAsleep
+	call CheckPikachuFollowingPlayer
 	jr z, .asm_215ad
 	ld hl, SleepingPikachuText2
 	call PrintText

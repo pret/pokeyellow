@@ -5,7 +5,7 @@ Route22GateObject: ; 0x1e720 (size=42)
 	db $7, $4, $0, $ff
 	db $7, $5, $0, $ff
 	db $0, $4, $0, $ff
-	db $0, $5, $1, $ff
+	db $0, $5, $0, $ff
 
 	db $0 ; signs
 

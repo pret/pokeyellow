@@ -22,40 +22,8 @@ CeladonMart3TextPointers: ; 48228 (12:4228)
 
 CeladonMart3Text1: ; 4824a (12:424a)
 	TX_ASM
-	CheckEvent EVENT_GOT_TM18
-	jr nz, .asm_a5463
-	ld hl, TM18PreReceiveText
-	call PrintText
-	lb bc, TM_18, 1
-	call GiveItem
-	jr nc, .BagFull
-	SetEvent EVENT_GOT_TM18
-	ld hl, ReceivedTM18Text
-	jr .asm_81359
-.BagFull
-	ld hl, TM18NoRoomText
-	jr .asm_81359
-.asm_a5463
-	ld hl, TM18ExplanationText
-.asm_81359
-	call PrintText
+	callab Func_f1e30
 	jp TextScriptEnd
-
-TM18PreReceiveText: ; 48278 (12:4278)
-	TX_FAR _TM18PreReceiveText
-	db "@"
-
-ReceivedTM18Text: ; 4827d (12:427d)
-	TX_FAR _ReceivedTM18Text
-	db $0B, "@"
-
-TM18ExplanationText: ; 48283 (12:4283)
-	TX_FAR _TM18ExplanationText
-	db "@"
-
-TM18NoRoomText: ; 48288 (12:4288)
-	TX_FAR _TM18NoRoomText
-	db "@"
 
 CeladonMart3Text2: ; 4828d (12:428d)
 	TX_FAR _CeladonMart3Text2

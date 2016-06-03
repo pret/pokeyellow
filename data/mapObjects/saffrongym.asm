@@ -38,7 +38,7 @@ SaffronGymObject: ; 0x5d259 (size=330)
 	db $0 ; signs
 
 	db $9 ; objects
-	object SPRITE_GIRL, $9, $8, STAY, DOWN, $1, OPP_SABRINA, $1
+	object SPRITE_LASS, $9, $8, STAY, DOWN, $1, OPP_SABRINA, $1
 	object SPRITE_MEDIUM, $a, $1, STAY, DOWN, $2, OPP_CHANNELER, $16
 	object SPRITE_BUG_CATCHER, $11, $1, STAY, DOWN, $3, OPP_PSYCHIC_TR, $1
 	object SPRITE_MEDIUM, $3, $7, STAY, DOWN, $4, OPP_CHANNELER, $17

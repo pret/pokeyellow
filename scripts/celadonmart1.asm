@@ -1,5 +1,6 @@
 CeladonMart1Script: ; 60f86 (18:4f86)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 CeladonMart1TextPointers: ; 60f89 (18:4f89)
 	dw CeladonMart1Text1

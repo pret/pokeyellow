@@ -23,9 +23,12 @@ Route22GateScript0: ; 1e6a4 (7:66a4)
 	ret nc
 	xor a
 	ld [hJoyHeld], a
+	ld a, SPRITE_FACING_LEFT
+	ld [wSpriteStateData1 + 1 * $10 + 9], a
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
-	jp DisplayTextID
+	call DisplayTextID
+	ret
 
 Route22GateScriptCoords: ; 1e6b5 (7:66b5)
 	db 2,4
@@ -59,7 +62,7 @@ Route22GateTextPointers: ; 1e6df (7:66df)
 Route22GateText1: ; 1e6e1 (7:66e1)
 	TX_ASM
 	ld a, [wObtainedBadges]
-	bit 0, a
+	bit 0, a ; BOULDERBADGE
 	jr nz, .asm_1e6f6
 	ld hl, Route22GateText_1e704
 	call PrintText
@@ -89,4 +92,5 @@ Route22GateText_1e715: ; 1e715 (7:6715)
 
 Route22GateText_1e71a: ; 1e71a (7:671a)
 	TX_FAR _Route22GateText_1e71a
-	db $0B, "@"
+	TX_SFX_ITEM
+	db "@"

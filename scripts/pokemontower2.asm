@@ -22,9 +22,7 @@ PokemonTower2Script0: ; 6050f (18:450f)
 	ld hl, CoordsData_6055e
 	call ArePlayerCoordsInArray
 	ret nc
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
@@ -71,14 +69,13 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	ld de, MovementData_605b2
 	CheckEvent EVENT_POKEMON_TOWER_RIVAL_ON_LEFT
 	jr nz, .asm_60589
+	callab Func_f1e22
 	ld de, MovementData_605a9
 .asm_60589
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	callba Music_RivalAlternateStart
 	ld a, $2
 	ld [W_POKEMONTOWER2CURSCRIPT], a
@@ -144,21 +141,8 @@ PokemonTower2Text1: ; 605df (18:45df)
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-
-	; select which team to use during the encounter
 	ld a, [W_RIVALSTARTER]
-	cp STARTER2
-	jr nz, .NotSquirtle
-	ld a, $4
-	jr .done
-.NotSquirtle
-	cp STARTER3
-	jr nz, .Charmander
-	ld a, $5
-	jr .done
-.Charmander
-	ld a, $6
-.done
+	add $1
 	ld [wTrainerNo], a
 
 	ld a, $1

@@ -17,7 +17,6 @@ VictoryRoad2Script: ; 5179d (14:579d)
 
 VictoryRoad2Script_517c4: ; 517c4 (14:57c4)
 	ResetEvent EVENT_VICTORY_ROAD_1_BOULDER_ON_SWITCH
-
 VictoryRoad2Script_517c9: ; 517c9 (14:57c9)
 	CheckEvent EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH1
 	jr z, .asm_517da
@@ -31,7 +30,6 @@ VictoryRoad2Script_517c9: ; 517c9 (14:57c9)
 	ret z
 	ld a, $1d
 	lb bc, 7, 11
-
 VictoryRoad2Script_517e2: ; 517e2 (14:57e2)
 	ld [wNewTileBlockID], a
 	predef ReplaceTileBlock
@@ -46,6 +44,9 @@ VictoryRoad2Script0: ; 517f1 (14:57f1)
 	ld hl, CoordsData_51816
 	call CheckBoulderCoords
 	jp nc, CheckFightingMapTrainers
+	ld a, [hSpriteIndexOrTextID]
+	cp $f
+	jp z, CheckFightingMapTrainers
 	EventFlagAddress hl, EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH1
 	ld a, [wCoordIndex]
 	cp $2

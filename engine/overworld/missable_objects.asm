@@ -30,17 +30,17 @@ MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ld a, h
 	ld [H_DIVIDEND], a
 	ld a, l
-	ld [H_DIVIDEND+1], a
+	ld [H_DIVIDEND + 1], a
 	xor a
-	ld [H_DIVIDEND+2], a
-	ld [H_DIVIDEND+3], a
+	ld [H_DIVIDEND + 2], a
+	ld [H_DIVIDEND + 3], a
 	ld a, $3
 	ld [H_DIVISOR], a
 	ld b, $2
 	call Divide                ; divide difference by 3, resulting in the global offset (number of missable items before ours)
 	ld a, [wCurMap]
 	ld b, a
-	ld a, [H_DIVIDEND+3]
+	ld a, [H_DIVIDEND + 3]
 	ld c, a                    ; store global offset in c
 	ld de, wMissableObjectList
 	pop hl

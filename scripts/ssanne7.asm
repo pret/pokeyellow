@@ -3,7 +3,7 @@ SSAnne7Script: ; 61895 (18:5895)
 	jp EnableAutoTextBoxDrawing
 
 SSAnne7Script_6189b: ; 6189b (18:589b)
-	CheckEvent EVENT_RUBBED_CAPTAINS_BACK
+	CheckEvent EVENT_GOT_HM01
 	ret nz
 	ld hl, wd72d
 	set 5, [hl]
@@ -28,12 +28,12 @@ SSAnne7Text1: ; 618ad (18:58ad)
 	ld hl, ReceivedHM01Text
 	call PrintText
 	SetEvent EVENT_GOT_HM01
+	ld hl, wd72d
+	res 5, [hl]
 	jr .asm_0faf5
 .BagFull
 	ld hl, HM01NoRoomText
 	call PrintText
-	ld hl, wd72d
-	set 5, [hl]
 	jr .asm_0faf5
 .asm_797c4
 	ld hl, SSAnne7Text_61932
@@ -45,12 +45,10 @@ SSAnne7RubText: ; 618ec (18:58ec)
 	TX_FAR _SSAnne7RubText
 	TX_ASM
 	ld a, [wAudioROMBank]
-	cp BANK(Audio3_UpdateMusic)
+	cp AUDIO_3
 	ld [wAudioSavedROMBank], a
 	jr nz, .asm_61908
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	ld a, Bank(Music_PkmnHealed)
 	ld [wAudioROMBank], a
 .asm_61908

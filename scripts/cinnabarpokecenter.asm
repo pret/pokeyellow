@@ -7,9 +7,10 @@ CinnabarPokecenterTextPointers: ; 75e32 (1d:5e32)
 	dw CinnabarPokecenterText2
 	dw CinnabarPokecenterText3
 	dw CinnabarPokecenterText4
+	dw CinnabarPokecenterText5
 
 CinnabarPokecenterText1: ; 75e3a (1d:5e3a)
-	db $ff
+	TX_POKECENTER_NURSE
 
 CinnabarPokecenterText2: ; 75e3b (1d:5e3b)
 	TX_FAR _CinnabarPokecenterText1
@@ -20,4 +21,9 @@ CinnabarPokecenterText3: ; 75e40 (1d:5e40)
 	db "@"
 
 CinnabarPokecenterText4: ; 75e45 (1d:5e45)
-	db $f6
+	TX_CABLE_CLUB_RECEPTIONIST
+
+CinnabarPokecenterText5:
+	TX_ASM
+	callab PokecenterChanseyText
+	jp TextScriptEnd

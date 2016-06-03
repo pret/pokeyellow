@@ -56,7 +56,7 @@ _WriterText::
 	line "I like her!"
 	done
 
-_WriteText2::
+_WriterText2::
 	text "I wrote the story!"
 
 	para "It's great you"

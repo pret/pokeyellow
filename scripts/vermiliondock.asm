@@ -40,8 +40,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	SetEventForceReuseHL EVENT_SS_ANNE_LEFT
 	ld a, $ff
 	ld [wJoyIgnore], a
-	ld [wNewSoundID], a
-	call PlaySound
+	call StopAllMusic
 	ld c, BANK(Music_Surfing)
 	ld a, MUSIC_SURFING
 	call PlayMusic
@@ -63,6 +62,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld [wSSAnneSmokeDriftAmount], a
 	ld [rOBP1], a
+	call UpdateGBCPal_OBP1
 	ld a, 88
 	ld [wSSAnneSmokeX], a
 	ld hl, wMapViewVRAMPointer
@@ -124,7 +124,7 @@ VermilionDock_1db9b: ; 1db9b (7:5b9b)
 VermilionDock_AnimSmokePuffDriftRight: ; 1dc42 (7:5c42)
 	push bc
 	push de
-	ld hl, wOAMBuffer + $11
+	ld hl, wOAMBuffer + 4 * $4 + 1 ; x coord
 	ld a, [wSSAnneSmokeDriftAmount]
 	swap a
 	ld c, a

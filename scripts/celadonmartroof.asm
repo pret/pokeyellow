@@ -1,5 +1,6 @@
 CeladonMartRoofScript: ; 483d5 (12:43d5)
-	jp EnableAutoTextBoxDrawing
+	call EnableAutoTextBoxDrawing
+	ret
 
 CeladonMartRoofScript_GetDrinksInBag: ; 483d8 (12:43d8)
 ; construct a list of all drinks in the player's bag
@@ -71,7 +72,7 @@ CeladonMartRoofScript_GiveDrinkToGirl: ; 4840c (12:440c)
 	ld hl, wd730
 	res 6, [hl]
 	call HandleMenuInput
-	bit 1, a ; pressed b
+	bit BIT_B_BUTTON, a ; pressed b
 	ret nz
 	ld hl, wFilteredBagItems
 	ld a, [wCurrentMenuItem]
@@ -125,13 +126,16 @@ CeladonMartRoofScript_GiveDrinkToGirl: ; 4840c (12:440c)
 	ret
 .bagFull
 	ld hl, CeladonMartRoofText_48526
-	jp PrintText
+	call PrintText
+	ret
 .alreadyGaveDrink
 	ld hl, CeladonMartRoofText_4852c
-	jp PrintText
+	call PrintText
+	ret
 
 RemoveItemByIDBank12: ; 484e6 (12:44e6)
-	jpba RemoveItemByID
+	callba RemoveItemByID
+	ret
 
 CeladonMartRoofText_484ee: ; 484ee (12:44ee)
 	TX_FAR _CeladonMartRoofText_484ee
@@ -248,7 +252,7 @@ CeladonMartRoofText4: ; 4859d (12:459d)
 	db "@"
 
 CeladonMartRoofText5: ; 485a2 (12:45a2)
-	db $f5
+	TX_VENDING_MACHINE
 
 CeladonMartRoofText6: ; 485a3 (12:45a3)
 	TX_FAR _CeladonMartRoofText6

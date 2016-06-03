@@ -10,8 +10,8 @@ RocketHideout4Object: ; 0x455f1 (size=95)
 
 	db $9 ; objects
 	object SPRITE_GIOVANNI, $19, $3, STAY, DOWN, $1, OPP_GIOVANNI, $1
-	object SPRITE_ROCKET, $17, $c, STAY, DOWN, $2, OPP_ROCKET, $10
-	object SPRITE_ROCKET, $1a, $c, STAY, DOWN, $3, OPP_ROCKET, $11
+	object SPRITE_JAMES, $19, $a, STAY, DOWN, $2
+	object SPRITE_JESSIE, $18, $a, STAY, DOWN, $3
 	object SPRITE_ROCKET, $b, $2, STAY, DOWN, $4, OPP_ROCKET, $12
 	object SPRITE_BALL, $a, $c, STAY, NONE, $5, HP_UP
 	object SPRITE_BALL, $9, $4, STAY, NONE, $6, TM_02

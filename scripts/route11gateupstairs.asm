@@ -9,7 +9,7 @@ Route11GateUpstairsTextPointers: ; 49457 (12:5457)
 
 Route11GateUpstairsText1: ; 4945f (12:545f)
 	TX_ASM
-	xor a
+	ld a, $0
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 Route11GateUpstairsScriptEnd: ; 49469 (12:5469)

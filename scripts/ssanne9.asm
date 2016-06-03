@@ -1,8 +1,5 @@
 SSAnne9Script: ; 61b4b (18:5b4b)
-	ld a, $1
-	ld [wAutoTextBoxDrawingControl], a
-	xor a
-	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	call DisableAutoTextBoxDrawing
 	ld hl, SSAnne9TrainerHeaders
 	ld de, SSAnne9ScriptPointers
 	ld a, [W_SSANNE9CURSCRIPT]
@@ -129,43 +126,23 @@ SSAnne9Text_61c10: ; 61c10 (18:5c10)
 
 SSAnne9Text10: ; 61c15 (18:5c15)
 	TX_ASM
-	ld hl, SSAnne9Text_61c1f
-	call PrintText
+	callba Func_f2570
 	jp TextScriptEnd
-
-SSAnne9Text_61c1f: ; 61c1f (18:5c1f)
-	TX_FAR _SSAnne9Text_61c1f
-	db "@"
 
 SSAnne9Text11: ; 61c24 (18:5c24)
 	TX_ASM
-	ld hl, SSAnne9Text_61c2e
-	call PrintText
+	callba Func_f257c
 	jp TextScriptEnd
-
-SSAnne9Text_61c2e: ; 61c2e (18:5c2e)
-	TX_FAR _SSAnne9Text_61c2e
-	db "@"
 
 SSAnne9Text12: ; 61c33 (18:5c33)
 	TX_ASM
-	ld hl, SSAnne9Text_61c3d
-	call PrintText
+	callba Func_f2588
 	jp TextScriptEnd
-
-SSAnne9Text_61c3d: ; 61c3d (18:5c3d)
-	TX_FAR _SSAnne9Text_61c3d
-	db "@"
 
 SSAnne9Text13: ; 61c42 (18:5c42)
 	TX_ASM
-	ld hl, SSAnne9Text_61c4c
-	call PrintText
+	callba Func_f2594
 	jp TextScriptEnd
-
-SSAnne9Text_61c4c: ; 61c4c (18:5c4c)
-	TX_FAR _SSAnne9Text_61c4c
-	db "@"
 
 SSAnne9BattleText1: ; 61c51 (18:5c51)
 	TX_FAR _SSAnne9BattleText1
