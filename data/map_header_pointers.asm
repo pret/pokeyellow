@@ -233,7 +233,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $4643 ; dw CeruleanHouse2_h
 	dw $5649 ; dw Route16Gate_h ; unused
 	dw $624e ; dw RockTunnel2_h
-	dw $56ba ; dw SilphCo9_h
+	dw SilphCo9_h
 	dw SilphCo10_h
 	dw $6105 ; dw SilphCo11_h
 	dw $5a08 ; dw SilphCoElevator_h

@@ -1401,7 +1401,8 @@ Route16Blocks: INCBIN "maps/route16.blk" ; 58b84
 INCLUDE "data/mapHeaders/route18.asm"
 INCLUDE "data/mapObjects/route18.asm"
 Route18Blocks: INCBIN "maps/route18.blk"
-	dr $58d7d,$58d99
+
+INCBIN "maps/unusedblocks58d7d.blk"
 
 INCLUDE "engine/experience.asm"
 
@@ -1590,7 +1591,11 @@ INCLUDE "data/mapObjects/undergroundpathentranceroute7.asm"
 INCLUDE "data/mapHeaders/undergroundpathentranceroute7copy.asm"
 INCLUDE "scripts/undergroundpathentranceroute7copy.asm"
 INCLUDE "data/mapObjects/undergroundpathentranceroute7copy.asm"
-	dr $5d6ba,$5d909
+
+INCLUDE "data/mapHeaders/silphco9.asm"
+INCLUDE "scripts/silphco9.asm"
+INCLUDE "data/mapObjects/silphco9.asm"
+SilphCo9Blocks: INCBIN "maps/silphco9.blk"
 
 INCLUDE "data/mapHeaders/victoryroad1.asm"
 INCLUDE "scripts/victoryroad1.asm"

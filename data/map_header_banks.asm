@@ -233,7 +233,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $1d ; db BANK(CeruleanHouse2_h)
 	db $01 ; unused
 	db $11 ; db BANK(RockTunnel2_h)
-	db $17 ; db BANK(SilphCo9_h)
+	db BANK(SilphCo9_h)
 	db BANK(SilphCo10_h)
 	db $18 ; db BANK(SilphCo11_h)
 	db $11 ; db BANK(SilphCoElevator_h)
