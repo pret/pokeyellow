@@ -1679,87 +1679,59 @@ DiglettsCaveBlocks: INCBIN "maps/diglettscave.blk"
 INCLUDE "engine/hidden_object_functions18.asm"
 
 SECTION "bank19",ROMX,BANK[$19]
-Overworld_GFX:
-	dr $64000,$64600
-Overworld_Block:
-	dr $64600,$64e00
+Overworld_GFX: INCBIN "gfx/tilesets/overworld.2bpp"
+Overworld_Block: INCBIN "gfx/blocksets/overworld.bst"
 RedsHouse1_GFX:
-RedsHouse2_GFX:
-	dr $64e00,$65290
+RedsHouse2_GFX: INCBIN "gfx/tilesets/redshouse2.t7.2bpp"
 RedsHouse1_Block:
-RedsHouse2_Block:
-	dr $65290,$653c0
-House_GFX:
-	dr $653c0,$659a0
-House_Block:
-	dr $659a0,$65bd0
-Mansion_GFX:
-	dr $65bd0,$661b0
-Mansion_Block:
-	dr $661b0,$66630
-ShipPort_GFX:
-	dr $66630,$66c10
-ShipPort_Block:
-	dr $66c10,$66d80
-Interior_GFX:
-	dr $66d80,$67370
-Interior_Block:
-	dr $67370,$67710
-Plateau_GFX:
-	dr $67710,$67b70
-Plateau_Block:
-	dr $67b70,$68000
+RedsHouse2_Block: INCBIN "gfx/blocksets/redshouse2.bst"
+House_GFX: INCBIN "gfx/tilesets/house.t2.2bpp"
+House_Block: INCBIN "gfx/blocksets/house.bst"
+Mansion_GFX: INCBIN "gfx/tilesets/mansion.t2.2bpp"
+Mansion_Block: INCBIN "gfx/blocksets/mansion.bst"
+ShipPort_GFX: INCBIN "gfx/tilesets/shipport.t2.2bpp"
+ShipPort_Block: INCBIN "gfx/blocksets/shipport.bst"
+Interior_GFX: INCBIN "gfx/tilesets/interior.t1.2bpp"
+Interior_Block: INCBIN "gfx/blocksets/interior.bst"
+Plateau_GFX: INCBIN "gfx/tilesets/plateau.t10.2bpp"
+Plateau_Block: INCBIN "gfx/blocksets/plateau.bst"
 
 SECTION "bank1A",ROMX,BANK[$1A]
 	dr $68000,$68040
 Dojo_GFX:
-Gym_GFX:
-	dr $68040,$68640
+Gym_GFX: INCBIN "gfx/tilesets/gym.2bpp"
 Dojo_Block:
-Gym_Block:
-	dr $68640,$68d80
+Gym_Block: INCBIN "gfx/blocksets/gym.bst"
 Mart_GFX:
-Pokecenter_GFX:
-	dr $68d80,$69380
+Pokecenter_GFX: INCBIN "gfx/tilesets/pokecenter.2bpp"
 Mart_Block:
-Pokecenter_Block:
-	dr $69380,$69600
+Pokecenter_Block: INCBIN "gfx/blocksets/pokecenter.bst"
 ForestGate_GFX:
 Gate_GFX:
-	dr $69600,$69600
-Museum_GFX:
-	dr $69600,$69bf0
+Museum_GFX: INCBIN "gfx/tilesets/museum.t1.2bpp"
 ForestGate_Block:
 Gate_Block:
-	dr $69bf0,$69bf0
-Museum_Block:
-	dr $69bf0,$6a3f0
-Forest_GFX:
-	dr $6a3f0,$6a9f0
-Forest_Block:
-	dr $6a9f0,$6b1f0
-Facility_GFX:
-	dr $6b1f0,$6b7f0
-Facility_Block:
-	dr $6b7f0,$6bff1
-
+Museum_Block: INCBIN "gfx/blocksets/museum.bst"
+Forest_GFX: INCBIN "gfx/tilesets/forest.2bpp"
+Forest_Block: INCBIN "gfx/blocksets/forest.bst"
+Facility_GFX: INCBIN "gfx/tilesets/facility.2bpp"
+Facility_Block: INCBIN "gfx/blocksets/facility.bst"
 
 SECTION "bank1B",ROMX,BANK[$1B]
-Cemetery_GFX:      INCBIN "gfx/tilesets/cemetery.t4.2bpp"
-Cemetery_Block:    INCBIN "gfx/blocksets/cemetery.bst"
-Cavern_GFX:        INCBIN "gfx/tilesets/cavern.t14.2bpp"
-Cavern_Block:      INCBIN "gfx/blocksets/cavern.bst"
-Lobby_GFX:         INCBIN "gfx/tilesets/lobby.t2.2bpp"
-Lobby_Block:       INCBIN "gfx/blocksets/lobby.bst"
-Ship_GFX:          INCBIN "gfx/tilesets/ship.t6.2bpp"
-Ship_Block:        INCBIN "gfx/blocksets/ship.bst"
-Lab_GFX:           INCBIN "gfx/tilesets/lab.t4.2bpp"
-Lab_Block:         INCBIN "gfx/blocksets/lab.bst"
-Club_GFX:          INCBIN "gfx/tilesets/club.t5.2bpp"
-Club_Block:        INCBIN "gfx/blocksets/club.bst"
-Underground_GFX:   INCBIN "gfx/tilesets/underground.t7.2bpp"
+Cemetery_GFX: INCBIN "gfx/tilesets/cemetery.t4.2bpp"
+Cemetery_Block: INCBIN "gfx/blocksets/cemetery.bst"
+Cavern_GFX: INCBIN "gfx/tilesets/cavern.t14.2bpp"
+Cavern_Block: INCBIN "gfx/blocksets/cavern.bst"
+Lobby_GFX: INCBIN "gfx/tilesets/lobby.t2.2bpp"
+Lobby_Block: INCBIN "gfx/blocksets/lobby.bst"
+Ship_GFX: INCBIN "gfx/tilesets/ship.t6.2bpp"
+Ship_Block: INCBIN "gfx/blocksets/ship.bst"
+Lab_GFX: INCBIN "gfx/tilesets/lab.t4.2bpp"
+Lab_Block: INCBIN "gfx/blocksets/lab.bst"
+Club_GFX: INCBIN "gfx/tilesets/club.t5.2bpp"
+Club_Block: INCBIN "gfx/blocksets/club.bst"
+Underground_GFX: INCBIN "gfx/tilesets/underground.t7.2bpp"
 Underground_Block: INCBIN "gfx/blocksets/underground.bst"
-
 
 SECTION "bank1C",ROMX,BANK[$1C]
 
