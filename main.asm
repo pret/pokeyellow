@@ -1387,7 +1387,21 @@ INCLUDE "data/mapHeaders/fanclub.asm"
 INCLUDE "scripts/fanclub.asm"
 INCLUDE "data/mapObjects/fanclub.asm"
 FanClubBlocks: INCBIN "maps/fanclub.blk"
-	dr $59c80,$5a23d
+
+INCLUDE "data/mapHeaders/silphco2.asm"
+INCLUDE "scripts/silphco2.asm"
+INCLUDE "data/mapObjects/silphco2.asm"
+SilphCo2Blocks: INCBIN "maps/silphco2.blk"
+
+INCLUDE "data/mapHeaders/silphco3.asm"
+INCLUDE "scripts/silphco3.asm"
+INCLUDE "data/mapObjects/silphco3.asm"
+SilphCo3Blocks: INCBIN "maps/silphco3.blk"
+
+INCLUDE "data/mapHeaders/silphco10.asm"
+INCLUDE "scripts/silphco10.asm"
+INCLUDE "data/mapObjects/silphco10.asm"
+SilphCo10Blocks: INCBIN "maps/silphco10.blk"
 
 INCLUDE "data/mapHeaders/lance.asm"
 INCLUDE "scripts/lance.asm"

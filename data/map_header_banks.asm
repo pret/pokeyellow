@@ -207,8 +207,8 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $01 ; unused
 	db $01 ; unused
 	db $01 ; unused
-	db $16 ; db BANK(SilphCo2_h)
-	db $16 ; db BANK(SilphCo3_h)
+	db BANK(SilphCo2_h)
+	db BANK(SilphCo3_h)
 	db $06 ; db BANK(SilphCo4_h)
 	db $06 ; db BANK(SilphCo5_h)
 	db $06 ; db BANK(SilphCo6_h)
@@ -234,7 +234,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $01 ; unused
 	db $11 ; db BANK(RockTunnel2_h)
 	db $17 ; db BANK(SilphCo9_h)
-	db $16 ; db BANK(SilphCo10_h)
+	db BANK(SilphCo10_h)
 	db $18 ; db BANK(SilphCo11_h)
 	db $11 ; db BANK(SilphCoElevator_h)
 	db $11 ; unused

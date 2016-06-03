@@ -207,8 +207,8 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RocketHideoutElevator_h ; unused
 	dw RocketHideoutElevator_h ; unused
 	dw RocketHideoutElevator_h ; unused
-	dw $5c80 ; dw SilphCo2_h
-	dw $5eea ; dw SilphCo3_h
+	dw SilphCo2_h
+	dw SilphCo3_h
 	dw $5e09 ; dw SilphCo4_h
 	dw $6035 ; dw SilphCo5_h ;210
 	dw $62a7 ; dw SilphCo6_h
@@ -234,17 +234,17 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw $5649 ; dw Route16Gate_h ; unused
 	dw $624e ; dw RockTunnel2_h
 	dw $56ba ; dw SilphCo9_h
-	dw $60c8 ; dw SilphCo10_h
+	dw SilphCo10_h
 	dw $6105 ; dw SilphCo11_h
 	dw $5a08 ; dw SilphCoElevator_h
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
 	dw TradeCenter_h
 	dw Colosseum_h
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
 	dw $59ef ; dw Lorelei_h
 	dw $5b4a ; dw Bruno_h
 	dw $5ca1 ; dw Agatha_h ;247
