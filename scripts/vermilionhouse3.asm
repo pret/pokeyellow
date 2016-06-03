@@ -5,8 +5,5 @@ VermilionHouse3TextPointers: ; 19c15 (6:5c15)
 	dw VermilionHouse3Text1
 
 VermilionHouse3Text1: ; 19c17 (6:5c17)
-	TX_ASM
-	ld a, $4
-	ld [wWhichTrade], a
-	predef DoInGameTradeDialogue
-	jp TextScriptEnd
+	TX_FAR TeachingHMsText
+	db "@"

@@ -272,7 +272,11 @@ INCLUDE "data/mapHeaders/blueshouse.asm"
 INCLUDE "scripts/blueshouse.asm"
 INCLUDE "data/mapObjects/blueshouse.asm"
 BluesHouseBlocks: INCBIN "maps/blueshouse.blk"
-	dr $19d05,$19d45
+
+INCLUDE "data/mapHeaders/vermilionhouse3.asm"
+INCLUDE "scripts/vermilionhouse3.asm"
+INCLUDE "data/mapObjects/vermilionhouse3.asm"
+VermilionHouse3Blocks: INCBIN "maps/vermilionhouse3.blk"
 
 INCLUDE "data/mapHeaders/indigoplateaulobby.asm"
 INCLUDE "scripts/indigoplateaulobby.asm"
