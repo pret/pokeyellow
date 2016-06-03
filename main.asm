@@ -282,7 +282,21 @@ INCLUDE "data/mapHeaders/indigoplateaulobby.asm"
 INCLUDE "scripts/indigoplateaulobby.asm"
 INCLUDE "data/mapObjects/indigoplateaulobby.asm"
 IndigoPlateauLobbyBlocks: INCBIN "maps/indigoplateaulobby.blk"
-	dr $19e09,$1a4ea
+
+INCLUDE "data/mapHeaders/silphco4.asm"
+INCLUDE "scripts/silphco4.asm"
+INCLUDE "data/mapObjects/silphco4.asm"
+SilphCo4Blocks: INCBIN "maps/silphco4.blk"
+
+INCLUDE "data/mapHeaders/silphco5.asm"
+INCLUDE "scripts/silphco5.asm"
+INCLUDE "data/mapObjects/silphco5.asm"
+SilphCo5Blocks: INCBIN "maps/silphco5.blk"
+
+INCLUDE "data/mapHeaders/silphco6.asm"
+INCLUDE "scripts/silphco6.asm"
+INCLUDE "data/mapObjects/silphco6.asm"
+SilphCo6Blocks: INCBIN "maps/silphco6.blk"
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"

@@ -209,9 +209,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RocketHideoutElevator_h ; unused
 	dw SilphCo2_h
 	dw SilphCo3_h
-	dw $5e09 ; dw SilphCo4_h
-	dw $6035 ; dw SilphCo5_h ;210
-	dw $62a7 ; dw SilphCo6_h
+	dw SilphCo4_h
+	dw SilphCo5_h ;210
+	dw SilphCo6_h
 	dw $5b97 ; dw SilphCo7_h
 	dw $652a ; dw SilphCo8_h
 	dw $5ff5 ; dw Mansion2_h
