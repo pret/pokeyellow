@@ -98,4 +98,5 @@ InternalMapEntries: ; 7140b (1c:540b)
 	IMAP ROCK_TUNNEL_2,             $E,$3,RockTunnelName
 	IMAP SILPH_CO_ELEVATOR,         $A,$5,SilphCoName
 	IMAP AGATHAS_ROOM,              $0,$2,PokemonLeagueName
+	IMAP BEACH_HOUSE,               $6,$F,Route19Name
 	db $FF

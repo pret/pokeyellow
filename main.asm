@@ -2036,119 +2036,119 @@ SECTION "bank30",ROMX,BANK[$30]
 
 SECTION "bank39",ROMX,BANK[$39]
 Pic_e4000: ; e4000
-	dr $e4000, $e40cc
+INCBIN "gfx/pikachu/unknown_e4000.pic"
 GFX_e40cc: ; e40cc
-	dr $e40cc, $e411c
+INCBIN "gfx/pikachu/unknown_e40cc.2bpp"
 Pic_e411c: ; e411c
-	dr $e411c, $e41d2
+INCBIN "gfx/pikachu/unknown_e411c.pic"
 GFX_e41d2: ; e41d2
-	dr $e41d2, $e4272
+INCBIN "gfx/pikachu/unknown_e41d2.2bpp"
 Pic_e4272: ; e4272
-	dr $e4272, $e4323
+INCBIN "gfx/pikachu/unknown_e4272.pic"
 GFX_e4323: ; e4323
-	dr $e4323, $e4383
+INCBIN "gfx/pikachu/unknown_e4323.2bpp"
 Pic_e4383: ; e4383
-	dr $e4383, $e444b
+INCBIN "gfx/pikachu/unknown_e4383.pic"
 GFX_e444b: ; e444b
-	dr $e444b, $e458b
+INCBIN "gfx/pikachu/unknown_e444b.2bpp"
 Pic_e458b: ; e458b
-	dr $e458b, $e463b
+INCBIN "gfx/pikachu/unknown_e458b.pic"
 GFX_e463b: ; e463b
-	dr $e463b, $e467b
+INCBIN "gfx/pikachu/unknown_e463b.2bpp"
 Pic_e467b: ; e467b
-	dr $e467b, $e472e
+INCBIN "gfx/pikachu/unknown_e467b.pic"
 GFX_e472e: ; e472e
-	dr $e472e, $e476e
+INCBIN "gfx/pikachu/unknown_e472e.2bpp"
 Pic_e476e: ; e476e
-	dr $e476e, $e4841
+INCBIN "gfx/pikachu/unknown_e476e.pic"
 GFX_e4841: ; e4841
-	dr $e4841, $e49d1
+INCBIN "gfx/pikachu/unknown_e4841.2bpp"
 Pic_e49d1: ; e49d1
-	dr $e49d1, $e4a99
+INCBIN "gfx/pikachu/unknown_e49d1.pic"
 GFX_e4a99: ; e4a99
-	dr $e4a99, $e4b39
+INCBIN "gfx/pikachu/unknown_e4a99.2bpp"
 Pic_e4b39: ; e4b39
-	dr $e4b39, $e4bde
+INCBIN "gfx/pikachu/unknown_e4b39.pic"
 GFX_e4bde: ; e4bde
-	dr $e4bde, $e4c3e
+INCBIN "gfx/pikachu/unknown_e4bde.2bpp"
 Pic_e4c3e: ; e4c3e
-	dr $e4c3e, $e4ce0
+INCBIN "gfx/pikachu/unknown_e4c3e.pic"
 GFX_e4ce0: ; e4ce0
-	dr $e4ce0, $e4e70
+INCBIN "gfx/pikachu/unknown_e4ce0.2bpp"
 GFX_e4e70: ; e4e70
-	dr $e4e70, $e5000
+INCBIN "gfx/pikachu/unknown_e4e70.2bpp"
 Pic_e5000: ; e5000
-	dr $e5000, $e50af
+INCBIN "gfx/pikachu/unknown_e5000.pic"
 GFX_e50af: ; e50af
-	dr $e50af, $e523f
+INCBIN "gfx/pikachu/unknown_e50af.2bpp"
 Pic_e523f: ; e523f
-	dr $e523f, $e52fe
+INCBIN "gfx/pikachu/unknown_e523f.pic"
 GFX_e52fe: ; e52fe
-	dr $e52fe, $e548e
+INCBIN "gfx/pikachu/unknown_e52fe.2bpp"
 Pic_e548e: ; e548e
-	dr $e548e, $e5541
+INCBIN "gfx/pikachu/unknown_e548e.pic"
 GFX_e5541: ; e5541
-	dr $e5541, $e56d1
+INCBIN "gfx/pikachu/unknown_e5541.2bpp"
 Pic_e56d1: ; e56d1
-	dr $e56d1, $e5794
+INCBIN "gfx/pikachu/unknown_e56d1.pic"
 GFX_e5794: ; e5794
-	dr $e5794, $e5924
+INCBIN "gfx/pikachu/unknown_e5794.2bpp"
 Pic_e5924: ; e5924
-	dr $e5924, $e59ed
+INCBIN "gfx/pikachu/unknown_e5924.pic"
 GFX_e59ed: ; e59ed
-	dr $e59ed, $e5b7d
+INCBIN "gfx/pikachu/unknown_e59ed.2bpp"
 Pic_e5b7d: ; e5b7d
-	dr $e5b7d, $e5c4d
+INCBIN "gfx/pikachu/unknown_e5b7d.pic"
 GFX_e5c4d: ; e5c4d
-	dr $e5c4d, $e5ddd
+INCBIN "gfx/pikachu/unknown_e5c4d.2bpp"
 Pic_e5ddd: ; e5ddd
-	dr $e5ddd, $e5e90
+INCBIN "gfx/pikachu/unknown_e5ddd.pic"
 GFX_e5e90: ; e5e90
-	dr $e5e90, $e6020
+INCBIN "gfx/pikachu/unknown_e5e90.2bpp"
 GFX_e6020: ; e6020
-	dr $e6020, $e61b0
+INCBIN "gfx/pikachu/unknown_e6020.2bpp"
 GFX_e61b0: ; e61b0
-	dr $e61b0, $e6340
+INCBIN "gfx/pikachu/unknown_e61b0.2bpp"
 Pic_e6340: ; e6340
-	dr $e6340, $e63f7
+INCBIN "gfx/pikachu/unknown_e6340.pic"
 GFX_e63f7: ; e63f7
-	dr $e63f7, $e6587
+INCBIN "gfx/pikachu/unknown_e63f7.2bpp"
 Pic_e6587: ; e6587
-	dr $e6587, $e6646
+INCBIN "gfx/pikachu/unknown_e6587.pic"
 GFX_e6646: ; e6646
-	dr $e6646, $e67d6
+INCBIN "gfx/pikachu/unknown_e6646.2bpp"
 Pic_e67d6: ; e67d6
-	dr $e67d6, $e682f
+INCBIN "gfx/pikachu/unknown_e67d6.pic"
 GFX_e682f: ; e682f
-	dr $e682f, $e69bf
+INCBIN "gfx/pikachu/unknown_e682f.2bpp"
 GFX_e69bf: ; e69bf
-	dr $e69bf, $e6b4f
+INCBIN "gfx/pikachu/unknown_e69bf.2bpp"
 GFX_e6b4f: ; e6b4f
-	dr $e6b4f, $e6cdf
+INCBIN "gfx/pikachu/unknown_e6b4f.2bpp"
 GFX_e6cdf: ; e6cdf
-	dr $e6cdf, $e6e6f
+INCBIN "gfx/pikachu/unknown_e6cdf.2bpp"
 GFX_e6e6f: ; e6e6f
-	dr $e6e6f, $e6fff
+INCBIN "gfx/pikachu/unknown_e6e6f.2bpp"
 GFX_e6fff: ; e6fff
-	dr $e6fff, $e718f
+INCBIN "gfx/pikachu/unknown_e6fff.2bpp"
 GFX_e718f: ; e718f
-	dr $e718f, $e731f
+INCBIN "gfx/pikachu/unknown_e718f.2bpp"
 GFX_e731f: ; e731f
-	dr $e731f, $e74af
+INCBIN "gfx/pikachu/unknown_e731f.2bpp"
 GFX_e74af: ; e74af
-	dr $e74af, $e763f
+INCBIN "gfx/pikachu/unknown_e74af.2bpp"
 GFX_e763f: ; e763f
-	dr $e763f, $e77cf
+INCBIN "gfx/pikachu/unknown_e763f.2bpp"
 Pic_e77cf: ; e77cf
-	dr $e77cf, $e7863
+INCBIN "gfx/pikachu/unknown_e77cf.pic"
 GFX_e7863: ; e7863
-	dr $e7863, $e79f3
+INCBIN "gfx/pikachu/unknown_e7863.2bpp"
 GFX_e79f3: ; e79f3
-	dr $e79f3, $e7b83
+INCBIN "gfx/pikachu/unknown_e79f3.2bpp"
 GFX_e7b83: ; e7b83
-	dr $e7b83, $e7d13
+INCBIN "gfx/pikachu/unknown_e7b83.2bpp"
 GFX_e7d13: ; e7d13
-	dr $e7d13, $e7ea3
+INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
 
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"

@@ -239,7 +239,7 @@ EMAP: MACRO ; emap x-coordinate,y-coordinate,textpointer
 	; nybble: y-coordinate
 	; nybble: x-coordinate
 	; word  : pointer to map name
-	db (\1 + (\2 << 4))
+	dn \2, \1
 	dw \3
 	ENDM
 
@@ -251,7 +251,7 @@ IMAP: MACRO ; imap mapid_less_than,x-coordinate,y-coordinate,textpointer
 	; nybble: x-coordinate
 	; word  : pointer to map name
 	db \1 + 1
-	db \2 + \3 << 4
+	dn \3, \2
 	dw \4
 	ENDM
 
