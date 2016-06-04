@@ -1817,7 +1817,16 @@ Plateau_GFX:       INCBIN "gfx/tilesets/plateau.t10.2bpp"
 Plateau_Block:     INCBIN "gfx/blocksets/plateau.bst"
 
 SECTION "bank1A",ROMX,BANK[$1A]
-	dr $68000,$68040
+Unknown_68000:
+	db $00, $00, $00, $f3, $db, $f3, $db, $f3
+	db $00, $00, $00, $00, $69, $6b, $6b, $39
+	db $00, $00, $00, $00, $c0, $40, $80, $c0
+	db $00, $00, $00, $cc, $cc, $cd, $79, $30
+	db $00, $00, $00, $00, $ef, $ac, $cc, $ec
+	db $00, $00, $00, $01, $3c, $71, $1d, $79
+	db $00, $00, $00, $80, $1c, $b6, $b6, $9c
+	db $00, $00, $00, $00, $e0, $d0, $d0, $d0
+
 Dojo_GFX:
 Gym_GFX:           INCBIN "gfx/tilesets/gym.2bpp"
 Dojo_Block:
@@ -2032,7 +2041,8 @@ INCLUDE "engine/bg_map_attributes.asm"
 
 SECTION "bank30",ROMX,BANK[$30]
 
-	dr $c0000,$c4000
+; This whole bank is garbage data.
+INCBIN "engine/bank30.bin"
 
 SECTION "bank39",ROMX,BANK[$39]
 Pic_e4000: ; e4000
