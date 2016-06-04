@@ -1708,17 +1708,582 @@ Func_f8bcb: ; f8bcb (3e:4bcb)
 	callab PlayPikachuSoundClip
 	ret
 
-Func_f8bdf: ; f8bdf (3e:4bdf)
-	dr $f8bdf,$f8bed
+Func_f8bdf:
+	ld a, [$c5d9]
+	inc a
+	cp $4
+	jr c, .asm_f8be9
+	ld a, $3
+.asm_f8be9
+	ld [$c5d9], a
+	ret
+
 Func_f8bed:
-	dr $f8bed,$f8c97
+	ld a, [$c5d9]
+	and a
+	ret z
+	ld a, [$c62f]
+	and $3
+	cp $3
+	jr z, .asm_f8c2b
+	ld a, [$c5d9]
+	ld d, a
+	ld e, $1
+	ld a, $0
+.asm_f8c03
+	add e
+	sla e
+	dec d
+	jr nz, .asm_f8c03
+.asm_f8c09
+	push af
+	ld e, $50
+	call Func_f8c7c
+	pop af
+	dec a
+	jr nz, .asm_f8c09
+	ld hl, $5
+	add hl, bc
+	ld a, [hl]
+	sub $10
+	ld d, a
+	ld hl, $4
+	add hl, bc
+	ld e, [hl]
+	ld a, [$c5d9]
+	add $3
+	push bc
+	call Func_fbb93
+	pop bc
+	ret
+
+.asm_f8c2b
+	ld a, [$c5d9]
+	cp $3
+	jr c, .asm_f8c53
+	ld a, $a
+.asm_f8c34
+	push af
+	ld e, $50
+	call Func_f8c7c
+	pop af
+	dec a
+	jr nz, .asm_f8c34
+	ld hl, $5
+	add hl, bc
+	ld a, [hl]
+	sub $10
+	ld d, a
+	ld hl, $4
+	add hl, bc
+	ld e, [hl]
+	ld a, $9
+	push bc
+	call Func_fbb93
+	pop bc
+	ret
+
+.asm_f8c53
+	ld e, $50
+	call Func_f8c7c
+	ld e, $50
+	call Func_f8c7c
+	ld e, $50
+	call Func_f8c7c
+	ld e, $30
+	call Func_f8c7c
+	ld hl, $5
+	add hl, bc
+	ld a, [hl]
+	sub $10
+	ld d, a
+	ld hl, $4
+	add hl, bc
+	ld e, [hl]
+	ld a, $8
+	push bc
+	call Func_fbb93
+	pop bc
+	ret
+
+Func_f8c7c:
+	ld a, [$c5da]
+	add e
+	daa
+	ld [$c5da], a
+	ld a, [$c5db]
+	adc $0
+	daa
+	ld [$c5db], a
+	ret nc
+	ld a, $99
+	ld [$c5da], a
+	ld [$c5db], a
+	ret
+
 Func_f8c97:
-	dr $f8c97,$f8cb0
+	ld a, $a0
+	ld [$c62e], a
+	ld a, [hSCX]
+	ld h, a
+	ld a, [$c617]
+	ld l, a
+	ld de, $900
+	add hl, de
+	ld a, l
+	ld [$c617], a
+	ld a, h
+	ld [hSCX], a
+	jr Func_f8cc7
 
 Func_f8cb0:
-	dr $f8cb0,$f8cc7
+	ld a, $a0
+	ld [$c62e], a
+	ld a, [hSCX]
+	ld h, a
+	ld a, [$c617]
+	ld l, a
+	ld de, $180
+	add hl, de
+	ld a, l
+	ld [$c617], a
+	ld a, h
+	ld [hSCX], a
 Func_f8cc7:
-	dr $f8cc7,$f8fb3
+	ld hl, $c618
+	ld a, [hSCX]
+	cp [hl]
+	ret z
+	ld [hl], a
+	and $f0
+	ld hl, $c619
+	cp [hl]
+	ret z
+	ld [hl], a
+	call Func_f8d44
+	ld a, b
+	ld [$c5e8], a
+	ld a, c
+	ld [$c5e9], a
+	push de
+	ld hl, $c61a
+	ld de, $c61c
+	ld c, $12
+.asm_f8ceb
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .asm_f8ceb
+	ld a, [$c5e8]
+	ld [hli], a
+	ld a, [$c5e9]
+	ld [hl], a
+	pop de
+	ld hl, wRedrawRowOrColumnSrcTiles
+	ld c, $8
+.asm_f8cff
+	ld a, [de]
+	call Func_f8d28
+	inc de
+	dec c
+	jr nz, .asm_f8cff
+	ld a, [$c62e]
+	ld e, a
+	ld a, [hSCX]
+	add e
+	and $f0
+	srl a
+	srl a
+	srl a
+	ld e, a
+	ld d, $0
+	ld hl, $9800
+	add hl, de
+	ld a, l
+	ld [hRedrawRowOrColumnDest], a
+	ld a, h
+	ld [$ffd2], a
+	ld a, $1
+	ld [hRedrawRowOrColumnMode], a
+	ret
+
+Func_f8d28:
+	push de
+	push hl
+	ld l, a
+	ld h, $0
+	ld de, Unkn_f96e5
+	add hl, hl
+	add hl, hl
+	add hl, de
+	ld e, l
+	ld d, h
+	pop hl
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
+	pop de
+	ret
+
+Func_f8d44:
+	ld a, [$c5d3]
+	ld e, a
+	ld d, $0
+	ld hl, Jumptable_f8d53
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl]
+
+Jumptable_f8d53:
+	dw Func_f8e4b
+	dw Func_f8f28
+	dw Func_f8f31
+	dw Func_f8f3a
+	dw Func_f8f43
+	dw Func_f8e7d
+	dw Func_f8f4c
+	dw Func_f8f55
+	dw Func_f8f5e
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8ec5
+	dw Func_f8ece
+	dw Func_f8ed7
+	dw Func_f8ee0
+	dw Func_f8ee9
+	dw Func_f8ef2
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8efb
+	dw Func_f8f04
+	dw Func_f8f0d
+	dw Func_f8f16
+	dw Func_f8f1f
+	dw Func_f8efb
+	dw Func_f8f04
+	dw Func_f8f0d
+	dw Func_f8f16
+	dw Func_f8f1f
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8f28
+	dw Func_f8f31
+	dw Func_f8f3a
+	dw Func_f8f43
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8f4c
+	dw Func_f8f55
+	dw Func_f8f5e
+	dw Func_f8f4c
+	dw Func_f8f55
+	dw Func_f8f5e
+	dw Func_f8f4c
+	dw Func_f8f55
+	dw Func_f8f5e
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8f67
+	dw Func_f8f70
+	dw Func_f8efb
+	dw Func_f8f04
+	dw Func_f8f0d
+	dw Func_f8f16
+	dw Func_f8f1f
+	dw Func_f8f67
+	dw Func_f8f70
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8ec5
+	dw Func_f8ece
+	dw Func_f8ed7
+	dw Func_f8ee0
+	dw Func_f8ee9
+	dw Func_f8ef2
+	dw Func_f8e7d
+	dw Func_f8f67
+	dw Func_f8f70
+	dw Func_f8f67
+	dw Func_f8f70
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8efb
+	dw Func_f8f04
+	dw Func_f8f0d
+	dw Func_f8f16
+	dw Func_f8f1f
+	dw Func_f8f28
+	dw Func_f8f31
+	dw Func_f8f3a
+	dw Func_f8f43
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8e7d
+	dw Func_f8f94
+	dw Func_f8e86
+	dw Func_f8e8f
+	dw Func_f8e98
+	dw Func_f8ea1
+	dw Func_f8eaa
+	dw Func_f8eb3
+	dw Func_f8ebc
+	dw Func_f8f9d
+	dw Func_f8e7d
+	dw Func_f8f79
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f82
+	dw Func_f8f8b
+
+Func_f8e4b:
+	ld a, [$c5e5]
+	cp $16
+	jr c, .asm_f8e5a
+	jr z, .asm_f8e56
+	jr nc, .asm_f8e6e
+.asm_f8e56
+	ld a, $6a
+	jr .asm_f8e6b
+
+.asm_f8e5a
+	ld a, [$c5d5]
+	and a
+	jr z, .asm_f8e6e
+	dec a
+	and $7
+	ld e, a
+	ld d, $0
+	ld hl, Unkn_f8e75
+	add hl, de
+	ld a, [hl]
+.asm_f8e6b
+	ld [$c5d3], a
+.asm_f8e6e
+	lb bc, $74, $74
+	ld de, Unkn_f973d
+	ret
+
+Unkn_f8e75:
+	db $01,$0e,$1a,$29,$32,$40,$4d,$5c
+
+Func_f8e7d:
+	lb bc, $74, $74
+	ld de, Unkn_f973d
+	jp Func_f8fa9
+
+Func_f8e86:
+	lb bc, $74, $6c
+	ld de, Unkn_f9745
+	jp Func_f8fa9
+
+Func_f8e8f:
+	lb bc, $64, $5c
+	ld de, Unkn_f974d
+	jp Func_f8fa9
+
+Func_f8e98:
+	lb bc, $54, $4c
+	ld de, Unkn_f9755
+	jp Func_f8fa9
+
+Func_f8ea1:
+	lb bc, $44, $44
+	ld de, Unkn_f975d
+	jp Func_f8fa9
+
+Func_f8eaa:
+	lb bc, $44, $4c
+	ld de, Unkn_f9765
+	jp Func_f8fa9
+
+Func_f8eb3:
+	lb bc, $54, $5c
+	ld de, Unkn_f976d
+	jp Func_f8fa9
+
+Func_f8ebc:
+	lb bc, $64, $6c
+	ld de, Unkn_f9775
+	jp Func_f8fa9
+
+Func_f8ec5:
+	lb bc, $74, $6c
+	ld de, Unkn_f977d
+	jp Func_f8fa9
+
+Func_f8ece:
+	lb bc, $64, $5c
+	ld de, Unkn_f9785
+	jp Func_f8fa9
+
+Func_f8ed7:
+	lb bc, $54, $4c
+	ld de, Unkn_f978d
+	jp Func_f8fa9
+
+Func_f8ee0:
+	lb bc, $4c, $4c
+	ld de, Unkn_f9795
+	jp Func_f8fa9
+
+Func_f8ee9:
+	lb bc, $54, $5c
+	ld de, Unkn_f979d
+	jp Func_f8fa9
+
+Func_f8ef2:
+	lb bc, $64, $6c
+	ld de, Unkn_f97a5
+	jp Func_f8fa9
+
+Func_f8efb:
+	lb bc, $74, $6c
+	ld de, Unkn_f97ad
+	jp Func_f8fa9
+
+Func_f8f04:
+	lb bc, $64, $5c
+	ld de, Unkn_f97b5
+	jp Func_f8fa9
+
+Func_f8f0d:
+	lb bc, $54, $54
+	ld de, Unkn_f97bd
+	jp Func_f8fa9
+
+Func_f8f16:
+	lb bc, $54, $5c
+	ld de, Unkn_f97c5
+	jp Func_f8fa9
+
+Func_f8f1f:
+	lb bc, $64, $6c
+	ld de, Unkn_f97cd
+	jp Func_f8fa9
+
+Func_f8f28:
+	lb bc, $74, $6c
+	ld de, Unkn_f97d5
+	jp Func_f8fa9
+
+Func_f8f31:
+	lb bc, $64, $5c
+	ld de, Unkn_f97dd
+	jp Func_f8fa9
+
+Func_f8f3a:
+	lb bc, $5c, $5c
+	ld de, Unkn_f97e5
+	jp Func_f8fa9
+
+Func_f8f43:
+	lb bc, $64, $6c
+	ld de, Unkn_f97ed
+	jp Func_f8fa9
+
+Func_f8f4c:
+	lb bc, $74, $6c
+	ld de, Unkn_f97f5
+	jp Func_f8fa9
+
+Func_f8f55:
+	lb bc, $64, $64
+	ld de, Unkn_f97fd
+	jp Func_f8fa9
+
+Func_f8f5e:
+	lb bc, $64, $6c
+	ld de, Unkn_f9805
+	jp Func_f8fa9
+
+Func_f8f67:
+	lb bc, $74, $6c
+	ld de, Unkn_f980d
+	jp Func_f8fa9
+
+Func_f8f70:
+	lb bc, $6c, $6c
+	ld de, Unkn_f9815
+	jp Func_f8fa9
+
+Func_f8f79:
+	lb bc, $74, $74
+	ld de, Unkn_f981d
+	jp Func_f8fa9
+
+Func_f8f82:
+	lb bc, $74, $74
+	ld de, Unkn_f9825
+	jp Func_f8fa9
+
+Func_f8f8b:
+	lb bc, $74, $74
+	ld de, Unkn_f9825
+	jp Func_f8fae
+
+Func_f8f94:
+	lb bc, $74, $74
+	ld de, Unkn_f973d
+	jp Func_f8fae
+
+Func_f8f9d:
+	lb bc, $74, $74
+	ld de, Unkn_f973d
+	ret
+
+Func_f8fa4:
+	inc a
+	ld [$c5d3], a
+	ret
+
+Func_f8fa9:
+	ld hl, $c5d3
+	inc [hl]
+	ret
+
+Func_f8fae:
+	xor a
+	ld [$c5d3], a
+	ret
+
 Func_f8fb3:
 	dr $f8fb3,$f9210
 Func_f9210:
@@ -1738,7 +2303,70 @@ Func_f928c:
 Func_f9350:
 	dr $f9350,$f9362
 Func_f9362:
-	dr $f9362,$f982d
+	dr $f9362,$f96e5
+
+Unkn_f96e5:
+	dr $f96e5,$f973d
+Unkn_f973d:
+	dr $f973d,$f9745
+Unkn_f9745:
+	dr $f9745,$f974d
+Unkn_f974d:
+	dr $f974d,$f9755
+Unkn_f9755:
+	dr $f9755,$f975d
+Unkn_f975d:
+	dr $f975d,$f9765
+Unkn_f9765:
+	dr $f9765,$f976d
+Unkn_f976d:
+	dr $f976d,$f9775
+Unkn_f9775:
+	dr $f9775,$f977d
+Unkn_f977d:
+	dr $f977d,$f9785
+Unkn_f9785:
+	dr $f9785,$f978d
+Unkn_f978d:
+	dr $f978d,$f9795
+Unkn_f9795:
+	dr $f9795,$f979d
+Unkn_f979d:
+	dr $f979d,$f97a5
+Unkn_f97a5:
+	dr $f97a5,$f97ad
+Unkn_f97ad:
+	dr $f97ad,$f97b5
+Unkn_f97b5:
+	dr $f97b5,$f97bd
+Unkn_f97bd:
+	dr $f97bd,$f97c5
+Unkn_f97c5:
+	dr $f97c5,$f97cd
+Unkn_f97cd:
+	dr $f97cd,$f97d5
+Unkn_f97d5:
+	dr $f97d5,$f97dd
+Unkn_f97dd:
+	dr $f97dd,$f97e5
+Unkn_f97e5:
+	dr $f97e5,$f97ed
+Unkn_f97ed:
+	dr $f97ed,$f97f5
+Unkn_f97f5:
+	dr $f97f5,$f97fd
+Unkn_f97fd:
+	dr $f97fd,$f9805
+Unkn_f9805:
+	dr $f9805,$f980d
+Unkn_f980d:
+	dr $f980d,$f9815
+Unkn_f9815:
+	dr $f9815,$f981d
+Unkn_f981d:
+	dr $f981d,$f9825
+Unkn_f9825:
+	dr $f9825,$f982d
 PlayIntroScene: ; f982d (3e:582d)
 	dr $f982d,$fa35a
 
