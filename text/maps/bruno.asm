@@ -31,7 +31,7 @@ _BrunoAfterBattleText::
 	cont "challenge!"
 	done
 
-_UnnamedText_763d2::
+_BrunoDontRunAwayText::
 	text "Someone's voice:"
 	line "Don't run away!"
 	done

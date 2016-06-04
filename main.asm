@@ -1876,7 +1876,7 @@ CinnabarMartBlocks: INCBIN "maps/pewtermart.blk"
 FuchsiaHouse1Blocks: INCBIN "maps/fuchsiahouse1.blk"
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks: INCBIN "maps/fuchsiapokecenter.blk"
-	dr $7404c,$7405c
+CeruleanHouse2Blocks: INCBIN "maps/ceruleanhouse2.blk"
 
 INCLUDE "engine/items/itemfinder.asm"
 INCLUDE "scripts/ceruleancity2.asm"
@@ -1890,7 +1890,14 @@ INCLUDE "data/mapHeaders/pewtermart.asm"
 INCLUDE "scripts/pewtermart.asm"
 INCLUDE "data/mapObjects/pewtermart.asm"
 
-	dr $7453d,$74726
+INCLUDE "data/mapHeaders/unknowndungeon1.asm"
+INCLUDE "scripts/unknowndungeon1.asm"
+INCLUDE "data/mapObjects/unknowndungeon1.asm"
+UnknownDungeon1Blocks: INCBIN "maps/unknowndungeon1.blk"
+
+INCLUDE "data/mapHeaders/ceruleanhouse2.asm"
+INCLUDE "scripts/ceruleanhouse2.asm"
+INCLUDE "data/mapObjects/ceruleanhouse2.asm"
 
 INCLUDE "engine/menu/vending_machine.asm"
 
@@ -1982,7 +1989,21 @@ INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"
 INCLUDE "data/mapObjects/gary.asm"
 GaryBlocks: INCBIN "maps/gary.blk"
-	dr $759ef,$75dfe
+
+INCLUDE "data/mapHeaders/lorelei.asm"
+INCLUDE "scripts/lorelei.asm"
+INCLUDE "data/mapObjects/lorelei.asm"
+LoreleiBlocks: INCBIN "maps/lorelei.blk"
+
+INCLUDE "data/mapHeaders/bruno.asm"
+INCLUDE "scripts/bruno.asm"
+INCLUDE "data/mapObjects/bruno.asm"
+BrunoBlocks: INCBIN "maps/bruno.blk"
+
+INCLUDE "data/mapHeaders/agatha.asm"
+INCLUDE "scripts/agatha.asm"
+INCLUDE "data/mapObjects/agatha.asm"
+AgathaBlocks: INCBIN "maps/agatha.blk"
 
 INCLUDE "engine/menu/league_pc.asm"
 

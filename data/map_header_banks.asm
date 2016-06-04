@@ -228,9 +228,9 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(SafariZoneRestHouse4_h)
 	db BANK(UnknownDungeon2_h)
 	db BANK(UnknownDungeon3_h)
-	db $1d ; db BANK(UnknownDungeon1_h)
+	db BANK(UnknownDungeon1_h)
 	db BANK(NameRater_h)
-	db $1d ; db BANK(CeruleanHouse2_h)
+	db BANK(CeruleanHouse2_h)
 	db $01 ; unused
 	db BANK(RockTunnel2_h)
 	db BANK(SilphCo9_h)
@@ -245,7 +245,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db $11 ; unused
 	db $11 ; unused
 	db $11 ; unused
-	db $1d ; db BANK(Lorelei_h)
-	db $1d ; db BANK(Bruno_h)
-	db $1d ; db BANK(Agatha_h)
+	db BANK(Lorelei_h)
+	db BANK(Bruno_h)
+	db BANK(Agatha_h)
 	db BANK(BeachHouse_h)

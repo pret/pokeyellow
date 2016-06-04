@@ -228,9 +228,9 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SafariZoneRestHouse4_h
 	dw UnknownDungeon2_h
 	dw UnknownDungeon3_h
-	dw $453d ; dw UnknownDungeon1_h
+	dw UnknownDungeon1_h
 	dw NameRater_h
-	dw $4643 ; dw CeruleanHouse2_h
+	dw CeruleanHouse2_h
 	dw Route16Gate_h ; unused
 	dw RockTunnel2_h
 	dw SilphCo9_h
@@ -245,7 +245,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SilphCo2_h ; unused
 	dw SilphCo2_h ; unused
 	dw SilphCo2_h ; unused
-	dw $59ef ; dw Lorelei_h
-	dw $5b4a ; dw Bruno_h
-	dw $5ca1 ; dw Agatha_h ;247
+	dw Lorelei_h
+	dw Bruno_h
+	dw Agatha_h ;247
 	dw BeachHouse_h
