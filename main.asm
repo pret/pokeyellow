@@ -1686,7 +1686,8 @@ SECTION "bank18",ROMX,BANK[$18]
 ViridianForestBlocks: INCBIN "maps/viridianforest.blk"
 UndergroundPathNSBlocks: INCBIN "maps/undergroundpathns.blk"
 UndergroundPathWEBlocks: INCBIN "maps/undergroundpathwe.blk"
-	dr $60258,$603c0
+
+INCBIN "maps/unusedblocks60258.blk"
 
 SSAnne9Blocks:
 SSAnne10Blocks: INCBIN "maps/ssanne9.blk"
@@ -1789,7 +1790,11 @@ INCLUDE "data/mapHeaders/diglettscave.asm"
 INCLUDE "scripts/diglettscave.asm"
 INCLUDE "data/mapObjects/diglettscave.asm"
 DiglettsCaveBlocks: INCBIN "maps/diglettscave.blk"
-	dr $62105,$625e8
+
+INCLUDE "data/mapHeaders/silphco11.asm"
+INCLUDE "scripts/silphco11.asm"
+INCLUDE "data/mapObjects/silphco11.asm"
+SilphCo11Blocks: INCBIN "maps/silphco11.blk"
 
 INCLUDE "engine/hidden_object_functions18.asm"
 

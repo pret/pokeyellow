@@ -192,9 +192,9 @@
 	const HS_SILPH_CO_10F_ITEM_2          ; B9
 	const HS_SILPH_CO_10F_ITEM_3          ; BA
 	const HS_SILPH_CO_11F_1               ; BB
-	const HS_SILPH_CO_11F_2               ; BC
-	const HS_SILPH_CO_11F_JESSIE          ; BD
-	const HS_SILPH_CO_11F_JAMES           ; BE
+	const HS_SILPH_CO_11F_JAMES           ; BC
+	const HS_SILPH_CO_11F_2               ; BD
+	const HS_SILPH_CO_11F_JESSIE          ; BE
 	const HS_MAP_F4_1                     ; BF
 	const HS_MANSION_2_ITEM               ; C0
 	const HS_MANSION_3_ITEM_1             ; C1

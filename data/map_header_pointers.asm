@@ -235,7 +235,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RockTunnel2_h
 	dw SilphCo9_h
 	dw SilphCo10_h
-	dw $6105 ; dw SilphCo11_h
+	dw SilphCo11_h
 	dw SilphCoElevator_h
 	dw SilphCo2_h ; unused
 	dw SilphCo2_h ; unused

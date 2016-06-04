@@ -235,7 +235,7 @@ MapHeaderBanks:: ; fc3e4 (3f:43e4)
 	db BANK(RockTunnel2_h)
 	db BANK(SilphCo9_h)
 	db BANK(SilphCo10_h)
-	db $18 ; db BANK(SilphCo11_h)
+	db BANK(SilphCo11_h)
 	db BANK(SilphCoElevator_h)
 	db $11 ; unused
 	db $11 ; unused
