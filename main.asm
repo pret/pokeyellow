@@ -858,7 +858,10 @@ INCLUDE "data/mapHeaders/lavendertown.asm"
 INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks: INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks: INCBIN "maps/viridianpokecenter.blk"
-	dr $440fb,$4410b
+SafariZoneRestHouse1Blocks:
+SafariZoneRestHouse2Blocks:
+SafariZoneRestHouse3Blocks:
+SafariZoneRestHouse4Blocks: INCBIN "maps/safarizoneresthouse1.blk"
 
 INCLUDE "scripts/lavendertown.asm"
 
@@ -922,7 +925,57 @@ INCLUDE "data/mapHeaders/rockethideoutelevator.asm"
 INCLUDE "scripts/rockethideoutelevator.asm"
 INCLUDE "data/mapObjects/rockethideoutelevator.asm"
 RocketHideoutElevatorBlocks: INCBIN "maps/rockethideoutelevator.blk"
-	dr $45a08,$46578
+
+INCLUDE "data/mapHeaders/silphcoelevator.asm"
+INCLUDE "scripts/silphcoelevator.asm"
+INCLUDE "data/mapObjects/silphcoelevator.asm"
+SilphCoElevatorBlocks: INCBIN "maps/silphcoelevator.blk"
+
+INCLUDE "data/mapHeaders/safarizoneeast.asm"
+INCLUDE "scripts/safarizoneeast.asm"
+INCLUDE "data/mapObjects/safarizoneeast.asm"
+SafariZoneEastBlocks: INCBIN "maps/safarizoneeast.blk"
+
+INCLUDE "data/mapHeaders/safarizonenorth.asm"
+INCLUDE "scripts/safarizonenorth.asm"
+INCLUDE "data/mapObjects/safarizonenorth.asm"
+SafariZoneNorthBlocks: INCBIN "maps/safarizonenorth.blk"
+
+INCLUDE "data/mapHeaders/safarizonecenter.asm"
+INCLUDE "scripts/safarizonecenter.asm"
+INCLUDE "data/mapObjects/safarizonecenter.asm"
+SafariZoneCenterBlocks: INCBIN "maps/safarizonecenter.blk"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse1.asm"
+INCLUDE "scripts/safarizoneresthouse1.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse1.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse2.asm"
+INCLUDE "scripts/safarizoneresthouse2.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse2.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse3.asm"
+INCLUDE "scripts/safarizoneresthouse3.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse3.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse4.asm"
+INCLUDE "scripts/safarizoneresthouse4.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse4.asm"
+
+INCLUDE "data/mapHeaders/unknowndungeon2.asm"
+INCLUDE "scripts/unknowndungeon2.asm"
+INCLUDE "data/mapObjects/unknowndungeon2.asm"
+UnknownDungeon2Blocks: INCBIN "maps/unknowndungeon2.blk"
+
+INCLUDE "data/mapHeaders/unknowndungeon3.asm"
+INCLUDE "scripts/unknowndungeon3.asm"
+INCLUDE "data/mapObjects/unknowndungeon3.asm"
+UnknownDungeon3Blocks: INCBIN "maps/unknowndungeon3.blk"
+
+INCLUDE "data/mapHeaders/rocktunnel2.asm"
+INCLUDE "scripts/rocktunnel2.asm"
+INCLUDE "data/mapObjects/rocktunnel2.asm"
+RockTunnel2Blocks: INCBIN "maps/rocktunnel2.blk"
 
 INCLUDE "data/mapHeaders/seafoamislands2.asm"
 INCLUDE "scripts/seafoamislands2.asm"
