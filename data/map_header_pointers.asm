@@ -219,10 +219,10 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw Mansion4_h
 	dw SafariZoneEast_h
 	dw SafariZoneNorth_h
-	dw $635a ; dw SafariZoneWest_h
+	dw SafariZoneWest_h
 	dw SafariZoneCenter_h ;220
 	dw SafariZoneRestHouse1_h
-	dw $64bc ; dw SafariZoneSecretHouse_h
+	dw SafariZoneSecretHouse_h
 	dw SafariZoneRestHouse2_h
 	dw SafariZoneRestHouse3_h
 	dw SafariZoneRestHouse4_h
@@ -236,7 +236,7 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw SilphCo9_h
 	dw SilphCo10_h
 	dw $6105 ; dw SilphCo11_h
-	dw $5a08 ; dw SilphCoElevator_h
+	dw SilphCoElevator_h
 	dw SilphCo2_h ; unused
 	dw SilphCo2_h ; unused
 	dw TradeCenter_h

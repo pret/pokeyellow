@@ -1189,7 +1189,15 @@ MtMoon3Script_4a325: ; pikachu-related function?
 	call Func_159b
 	ret
 
-	dr $4a35a,$4a540
+INCLUDE "data/mapHeaders/safarizonewest.asm"
+INCLUDE "scripts/safarizonewest.asm"
+INCLUDE "data/mapObjects/safarizonewest.asm"
+SafariZoneWestBlocks: INCBIN "maps/safarizonewest.blk"
+
+INCLUDE "data/mapHeaders/safarizonesecrethouse.asm"
+INCLUDE "scripts/safarizonesecrethouse.asm"
+INCLUDE "data/mapObjects/safarizonesecrethouse.asm"
+SafariZoneSecretHouseBlocks: INCBIN "maps/safarizonesecrethouse.blk"
 
 
 SECTION "bank13",ROMX,BANK[$13]
