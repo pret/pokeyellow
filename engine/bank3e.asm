@@ -32,7 +32,7 @@ SurfingPikachuMinigame:
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
-	call Func_fbb5a
+	call ClearObjectAnimationBuffers
 	call ClearSprites
 	xor a
 	ld [hLCDCPointer], a
@@ -73,8 +73,8 @@ Func_f807a:
 	ret nz
 	call Func_f8282
 	ld a, $3c
-	ld [wc5bd], a
-	call Func_fbb65
+	ld [wCurrentAnimatedObjectOAMBufferOffset], a
+	call RunObjectAnimations
 	call Func_f8848
 	call Func_f80a8
 	call Func_f80c4
@@ -172,7 +172,7 @@ Func_f8116:
 	call FillMemory
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_fbb5a
+	call ClearObjectAnimationBuffers
 
 	ld hl, SurfingPikachu1Graphics
 	ld de, $9000
@@ -187,22 +187,22 @@ Func_f8116:
 	call FarCopyData
 
 	ld a, Unkn_f93d3 % $100
-	ld [wc5c0], a
+	ld [wAnimatedObjectSpawnStateDataPointer], a
 	ld a, Unkn_f93d3 / $100
-	ld [wc5c0 + 1], a
-	ld a, Unkn_f93fa % $100
-	ld [wc5c4], a
-	ld a, Unkn_f93fa / $100
-	ld [wc5c4 + 1], a
+	ld [wAnimatedObjectSpawnStateDataPointer + 1], a
+	ld a, Jumptable_f93fa % $100
+	ld [wAnimatedObjectJumptablePointer], a
+	ld a, Jumptable_f93fa / $100
+	ld [wAnimatedObjectJumptablePointer + 1], a
 	ld a, Unkn_f9507 % $100
-	ld [wc5c6], a
+	ld [wAnimatedObjectOAMDataPointer], a
 	ld a, Unkn_f9507 / $100
-	ld [wc5c6 + 1], a
+	ld [wAnimatedObjectOAMDataPointer + 1], a
 	ld a, Unkn_f9405 % $100
-	ld [wc5c2], a
+	ld [wAnimatedObjectFramesDataPointer], a
 	ld a, Unkn_f9405 / $100
-	ld [wc5c2 + 1], a
-	ld hl, $9800
+	ld [wAnimatedObjectFramesDataPointer + 1], a
+	ld hl, vBGMap0
 	ld bc, $800
 	ld a, $0
 	call FillMemory
@@ -212,7 +212,7 @@ Func_f8116:
 	call FillMemory
 	ld a, $1
 	lb de, $74, $58
-	call Func_fbb93
+	call SpawnAnimatedObject
 	ld a, $74
 	ld [wc5ea], a
 	call Func_f9223
@@ -391,7 +391,7 @@ Jumptable_f8291:
 Func_f82ab:
 	ld a, $2
 	lb de, $48, $e0
-	call Func_fbb93
+	call SpawnAnimatedObject
 	ld hl, wc5d1
 	inc [hl]
 	ld a, $1
@@ -438,7 +438,7 @@ Func_f8300:
 	ld [wc631], a
 	ld a, $b
 	lb de, $88, $58
-	call Func_fbb93
+	call SpawnAnimatedObject
 	ld hl, $7
 	add hl, bc
 	ld [hl], $80
@@ -740,7 +740,7 @@ Func_f84e2:
 	ld a, $60
 	ld [wc5e1], a
 	ld a, $10
-	call Func_fbcd4
+	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	xor a
 	ld [wChannelSoundIDs + CH7], a
 	ld a, $93
@@ -793,7 +793,7 @@ Func_f8545:
 	ld a, $0
 	ld [wc5d2], a
 	ld a, $4
-	call Func_fbcd4
+	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	ret
 
 Func_f8561:
@@ -806,7 +806,7 @@ Func_f8561:
 
 Func_f856d:
 	ld a, $f
-	call Func_fbcd4
+	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	ld hl, $c
 	add hl, bc
 	ld [hl], $0
@@ -1194,7 +1194,7 @@ Func_f87b5:
 	ld e, [hl]
 	ld a, $a
 	push bc
-	call Func_fbb93
+	call SpawnAnimatedObject
 	pop bc
 	ret
 
@@ -1243,7 +1243,7 @@ Func_f87fb:
 	ret
 
 Func_f8807:
-	call Func_fbbe8
+	call MaskCurrentAnimatedObjectStruct
 	ret
 
 Func_f880b:
@@ -1288,7 +1288,7 @@ Func_f882b:
 .asm_f883f
 	ld a, $1
 	ld [wc633], a
-	call Func_fbbe8
+	call MaskCurrentAnimatedObjectStruct
 	ret
 
 Func_f8848:
@@ -1325,7 +1325,7 @@ Func_f886b:
 	srl e
 	srl e
 	ld d, $0
-	ld hl, $9800
+	ld hl, vBGMap0
 	add hl, de
 	ld a, [wc5ea]
 	srl a
@@ -1768,7 +1768,7 @@ Func_f8bed:
 	ld a, [wc5d9]
 	add $3
 	push bc
-	call Func_fbb93
+	call SpawnAnimatedObject
 	pop bc
 	ret
 
@@ -1794,7 +1794,7 @@ Func_f8bed:
 	ld e, [hl]
 	ld a, $9
 	push bc
-	call Func_fbb93
+	call SpawnAnimatedObject
 	pop bc
 	ret
 
@@ -1817,7 +1817,7 @@ Func_f8bed:
 	ld e, [hl]
 	ld a, $8
 	push bc
-	call Func_fbb93
+	call SpawnAnimatedObject
 	pop bc
 	ret
 
@@ -1913,7 +1913,7 @@ Func_f8cc7:
 	srl a
 	ld e, a
 	ld d, $0
-	ld hl, $9800
+	ld hl, vBGMap0
 	add hl, de
 	ld a, l
 	ld [hRedrawRowOrColumnDest], a
@@ -2305,31 +2305,31 @@ Func_f8fb3:
 	call DisableLCD
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_fbb5a
+	call ClearObjectAnimationBuffers
 	ld hl, $6324
 	ld de, $8800
 	ld bc, $900
 	ld a, $20
 	call FarCopyData
 	ld a, Unkn_f93d3 % $100
-	ld [wc5c0], a
+	ld [wAnimatedObjectSpawnStateDataPointer], a
 	ld a, Unkn_f93d3 / $100
-	ld [wc5c0 + 1], a
-	ld a, Unkn_f93fa % $100
-	ld [wc5c4], a
-	ld a, Unkn_f93fa / $100
-	ld [wc5c4 + 1], a
+	ld [wAnimatedObjectSpawnStateDataPointer + 1], a
+	ld a, Jumptable_f93fa % $100
+	ld [wAnimatedObjectJumptablePointer], a
+	ld a, Jumptable_f93fa / $100
+	ld [wAnimatedObjectJumptablePointer + 1], a
 	ld a, Unkn_f9507 % $100
-	ld [wc5c6], a
+	ld [wAnimatedObjectOAMDataPointer], a
 	ld a, Unkn_f9507 / $100
-	ld [wc5c6 + 1], a
+	ld [wAnimatedObjectOAMDataPointer + 1], a
 	ld a, Unkn_f9405 % $100
-	ld [wc5c2], a
+	ld [wAnimatedObjectFramesDataPointer], a
 	ld a, Unkn_f9405 / $100
-	ld [wc5c2 + 1], a
+	ld [wAnimatedObjectFramesDataPointer + 1], a
 	ld a, $c
 	lb de, $74, $58
-	call Func_fbb93
+	call SpawnAnimatedObject
 	call Func_f9053
 	xor a
 	ld [hSCX], a
@@ -2363,8 +2363,8 @@ Func_f8fb3:
 	and a
 	ret nz
 	ld a, $0
-	ld [wc5bd], a
-	call Func_fbb65
+	ld [wCurrentAnimatedObjectOAMBufferOffset], a
+	call RunObjectAnimations
 	call DelayFrame
 	jr .asm_f9041
 
@@ -2721,7 +2721,7 @@ Unkn_f93d3:
 	db $13, $03, $00
 	db $1b, $04, $00
 
-Unkn_f93fa:
+Jumptable_f93fa:
 	dw Func_f9404
 	dw Func_f8470
 	dw Func_f87fb
@@ -2762,89 +2762,175 @@ Unkn_f9405:
 	dw Unkn_f94fe
 
 Unkn_f943d:
-	db $00,$20
-	db $ff
+	frame $00, 32
+	endanim
+
 Unkn_f9440:
-	db $01,$08, $02,$08
-	db $fe
+	frame $01, 8
+	frame $02, 8
+	dorestart
+
 Unkn_f9445:
-	db $03,$08, $04,$08
-	db $fe
+	frame $03, 8
+	frame $04, 8
+	dorestart
+
 Unkn_f944a:
-	db $05,$08, $06,$08
-	db $fe
+	frame $05, 8
+	frame $06, 8
+	dorestart
+
 Unkn_f944f:
-	db $07,$08, $08,$08
-	db $fe
+	frame $07, 8
+	frame $08, 8
+	dorestart
+
 Unkn_f9454:
-	db $09,$08, $0a,$08
-	db $fe
+	frame $09, 8
+	frame $0a, 8
+	dorestart
+
 Unkn_f9459:
-	db $0b,$08, $0c,$08
-	db $fe
+	frame $0b, 8
+	frame $0c, 8
+	dorestart
+
 Unkn_f945e:
-	db $0d,$08, $0e,$08
-	db $fe
+	frame $0d, 8
+	frame $0e, 8
+	dorestart
+
 Unkn_f9463:
-	db $01,$c8, $02,$c8
-	db $fe
+	frame $01, 8, OAM_HFLIP, OAM_VFLIP
+	frame $02, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f9468:
-	db $03,$c8, $04,$c8
-	db $fe
+	frame $03, 8, OAM_HFLIP, OAM_VFLIP
+	frame $04, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f946d:
-	db $05,$c8, $06,$c8
-	db $fe
+	frame $05, 8, OAM_HFLIP, OAM_VFLIP
+	frame $06, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f9472:
-	db $07,$c8, $08,$c8
-	db $fe
+	frame $07, 8, OAM_HFLIP, OAM_VFLIP
+	frame $08, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f9477:
-	db $09,$c8, $0a,$c8
-	db $fe
+	frame $09, 8, OAM_HFLIP, OAM_VFLIP
+	frame $0a, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f947c:
-	db $0b,$c8, $0c,$c8
-	db $fe
+	frame $0b, 8, OAM_HFLIP, OAM_VFLIP
+	frame $0c, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f9481:
-	db $0d,$c8, $0e,$c8
-	db $fe
+	frame $0d, 8, OAM_HFLIP, OAM_VFLIP
+	frame $0e, 8, OAM_HFLIP, OAM_VFLIP
+	dorestart
+
 Unkn_f9486:
-	db $11,$07, $12,$07
-	db $fe
+	frame $11, 7
+	frame $12, 7
+	dorestart
+
 Unkn_f948b:
-	db $13,$02, $14,$02, $fd,$08, $15,$02
-	db $ff
+	frame $13, 2
+	frame $14, 2
+	dorepeat 8
+	frame $15, 2
+	endanim
+
 Unkn_f9494:
-	db $16,$20, $16,$20
-	db $fc
+	frame $16, 32
+	frame $16, 32
+	delanim
+
 Unkn_f9499:
-	db $17,$20, $17,$20
-	db $fc
+	frame $17, 32
+	frame $17, 32
+	delanim
+
 Unkn_f949e:
-	db $18,$20
-	db $ff
+	frame $18, 32
+	endanim
+
 Unkn_f94a1:
-	db $1a,$04, $fd,$01, $1a,$03, $fd,$01, $1a,$02, $fd,$01, $1a,$01
-	db $fc
+	frame $1a, 4
+	dorepeat 1
+	frame $1a, 3
+	dorepeat 1
+	frame $1a, 2
+	dorepeat 1
+	frame $1a, 1
+	delanim
+
 Unkn_f94b0:
-	db $1b,$04, $fd,$01, $1b,$03, $fd,$01, $1b,$02, $fd,$01, $1b,$01
-	db $fc
+	frame $1b, 4
+	dorepeat 1
+	frame $1b, 3
+	dorepeat 1
+	frame $1b, 2
+	dorepeat 1
+	frame $1b, 1
+	delanim
+
 Unkn_f94bf:
-	db $1c,$04, $fd,$01, $1c,$03, $fd,$01, $1c,$02, $fd,$01, $1c,$01
-	db $fc
+	frame $1c, 4
+	dorepeat 1
+	frame $1c, 3
+	dorepeat 1
+	frame $1c, 2
+	dorepeat 1
+	frame $1c, 1
+	delanim
+
 Unkn_f94ce:
-	db $1d,$04, $fd,$01, $1d,$03, $fd,$01, $1d,$02, $fd,$01, $1d,$01
-	db $fc
+	frame $1d, 4
+	dorepeat 1
+	frame $1d, 3
+	dorepeat 1
+	frame $1d, 2
+	dorepeat 1
+	frame $1d, 1
+	delanim
+
 Unkn_f94dd:
-	db $1e,$04, $fd,$01, $1e,$03, $fd,$01, $1e,$02, $fd,$01, $1e,$01
-	db $fc
+	frame $1e, 4
+	dorepeat 1
+	frame $1e, 3
+	dorepeat 1
+	frame $1e, 2
+	dorepeat 1
+	frame $1e, 1
+	delanim
+
 Unkn_f94ec:
-	db $1f,$04, $fd,$01, $1f,$03, $fd,$01, $1f,$02, $fd,$01, $1f,$01
-	db $fc
+	frame $1f, 4
+	dorepeat 1
+	frame $1f, 3
+	dorepeat 1
+	frame $1f, 2
+	dorepeat 1
+	frame $1f, 1
+	delanim
+
 Unkn_f94fb:
-	db $19,$01
-	db $fc
+	frame $19, 1
+	delanim
+
 Unkn_f94fe:
-	db $20,$07, $21,$07, $22,$07, $23,$07
-	db $fe
+	frame $20, 7
+	frame $21, 7
+	frame $22, 7
+	frame $23, 7
+	dorestart
 
 Unkn_f9507:
 	dbw $00, Unkn_f9573
@@ -3119,8 +3205,8 @@ PlayIntroScene:
 	jr nz, .asm_f986e
 	call Func_f98fc
 	ld a, $0
-	ld [wc5bd], a
-	call Func_fbb65
+	ld [wCurrentAnimatedObjectOAMBufferOffset], a
+	call RunObjectAnimations
 	ld a, [wc634]
 	cp $7
 	call z, Func_f98a2
@@ -3140,7 +3226,7 @@ PlayIntroScene:
 	ld [rIE], a
 	ld a, $90
 	ld [hWY], a
-	call Func_fbb5a
+	call ClearObjectAnimationBuffers
 	ld hl, wTileMap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	xor a
@@ -3263,13 +3349,13 @@ Func_f996a:
 	call UpdateMusicCTimes
 	xor a
 	ld [hLCDCPointer], a
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $400
 	xor a
 	call Func_f9fb3
 	call Func_f9996
-	ld de, $58b8
-	ld a, $4
+	lb de, $58, $b8 ; overloaded
+	ld a, $4 ; overloaded
 	call Func_f99d2
 	ld a, $1
 	call Func_f9e9a
@@ -3334,7 +3420,7 @@ Func_f99d2:
 	push hl
 	push af
 	ld a, $8
-	call Func_fbb93
+	call SpawnAnimatedObject
 	pop af
 	ld hl, $b
 	add hl, bc
@@ -3366,7 +3452,7 @@ Func_f9a08:
 	ret
 
 .asm_f9a17
-	call Func_fbbef
+	call MaskAllAnimatedObjectStructs
 	call Func_f992a
 	ret
 
@@ -3423,7 +3509,7 @@ Func_f9a6b:
 	ld a, $42
 	ld [hLCDCPointer], a
 	call Func_f9ec4
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $60
 	xor a
 	call Func_f9fb3
@@ -3506,11 +3592,11 @@ Func_f9b04:
 	call UpdateMusicCTimes
 	xor a
 	ld [hLCDCPointer], a
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $400
 	xor a
 	call Func_f9fb3
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $100
 	ld a, $2
 	call Func_f9fb3
@@ -3598,7 +3684,7 @@ Func_f9cac:
 	call UpdateMusicCTimes
 	xor a
 	ld [hLCDCPointer], a
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $80
 	ld a, $1
 	call Func_f9fb3
@@ -3647,7 +3733,7 @@ Func_f9d12:
 	ret nc
 	lb de, $68, $58
 	ld a, $a
-	call Func_fbb93
+	call SpawnAnimatedObject
 	call Func_f992a
 	ret
 
@@ -3665,7 +3751,7 @@ Func_f9d22:
 	ret
 
 .asm_f9d3c
-	call Func_fbbef
+	call MaskAllAnimatedObjectStructs
 	call Func_f9fbe
 	ld hl, wTileMap
 	ld bc, $50
@@ -3765,7 +3851,7 @@ Func_f9e12:
 	ret
 
 Func_f9e1d:
-	call Func_fbb93
+	call SpawnAnimatedObject
 	ld a, c
 	ld [wc636], a
 	ld a, b
@@ -3777,7 +3863,7 @@ Func_f9e29:
 	ld c, a
 	ld a, [wc636 + 1]
 	ld b, a
-	call Func_fbbe8
+	call MaskCurrentAnimatedObjectStruct
 	ret
 
 Func_f9e35:
@@ -3821,7 +3907,7 @@ Func_f9e4d:
 	ret
 
 Func_f9e5f:
-	ld hl, $9800
+	ld hl, vBGMap0
 	ld bc, $80
 	ld a, $1
 	call Func_f9fb3
@@ -3932,7 +4018,7 @@ Func_f9f0d:
 	ld hl, $9000
 	ld bc, $3e80
 	call CopyVideoData
-	call Func_fbb5a
+	call ClearObjectAnimationBuffers
 	call Func_f9f75
 	ld b, $8
 	call RunPaletteCommand
@@ -3949,21 +4035,21 @@ Func_f9f0d:
 
 Func_f9f75:
 	ld a, Unkn_f9fda % $100
-	ld [wc5c0], a
+	ld [wAnimatedObjectSpawnStateDataPointer], a
 	ld a, Unkn_f9fda / $100
-	ld [wc5c0 + 1], a
+	ld [wAnimatedObjectSpawnStateDataPointer + 1], a
 	ld a, Jumptable_f9ffb % $100
-	ld [wc5c4], a
+	ld [wAnimatedObjectJumptablePointer], a
 	ld a, Jumptable_f9ffb / $100
-	ld [wc5c4 + 1], a
+	ld [wAnimatedObjectJumptablePointer + 1], a
 	ld a, Unkn_fa13d % $100
-	ld [wc5c6], a
+	ld [wAnimatedObjectOAMDataPointer], a
 	ld a, Unkn_fa13d / $100
-	ld [wc5c6 + 1], a
+	ld [wAnimatedObjectOAMDataPointer + 1], a
 	ld a, Unkn_fa0ea % $100
-	ld [wc5c2], a
+	ld [wAnimatedObjectFramesDataPointer], a
 	ld a, Unkn_fa0ea / $100
-	ld [wc5c2 + 1], a
+	ld [wAnimatedObjectFramesDataPointer + 1], a
 	ret
 
 Func_f9f9e:
@@ -4184,38 +4270,62 @@ Unkn_fa0ea:
 	dw Unkn_fa138
 
 Unkn_fa100:
-	db $00,$20
-	db $ff
+	frame $00, 32
+	endanim
+
 Unkn_fa103:
-	db $01,$04, $02,$04, $03,$04
-	db $fe
+	frame $01, 4
+	frame $02, 4
+	frame $03, 4
+	dorestart
+
 Unkn_fa10a:
-	db $04,$04, $05,$04, $06,$04
-	db $fe
+	frame $04, 4
+	frame $05, 4
+	frame $06, 4
+	dorestart
+
 Unkn_fa111:
-	db $07,$04, $08,$04, $09,$04
-	db $fe
+	frame $07, 4
+	frame $08, 4
+	frame $09, 4
+	dorestart
+
 Unkn_fa118:
-	db $0a,$20
-	db $ff
+	frame $0a, 32
+	endanim
+
 Unkn_fa11b:
-	db $0b,$20
-	db $ff
+	frame $0b, 32
+	endanim
+
 Unkn_fa11e:
-	db $0c,$20
-	db $ff
+	frame $0c, 32
+	endanim
+
 Unkn_fa121:
-	db $0d,$20
-	db $ff
+	frame $0d, 32
+	endanim
+
 Unkn_fa124:
-	db $0e,$20
-	db $ff
+	frame $0e, 32
+	endanim
+
 Unkn_fa127:
-	db $0f,$1f, $11,$02, $0f,$02, $11,$02, $0f,$1f, $11,$02, $0f,$17, $10,$20
-	db $ff
+	frame $0f, 31
+	frame $11, 2
+	frame $0f, 2
+	frame $11, 2
+	frame $0f, 31
+	frame $11, 2
+	frame $0f, 23
+	frame $10, 32
+	endanim
+
 Unkn_fa138:
-	db $12,$04, $13,$04
-	db $fe
+	frame $12, 4
+	frame $13, 4
+	dorestart
 
 Unkn_fa13d:
 	dbw $00, Unkn_fa179
@@ -4383,399 +4493,6 @@ Unkn_fa329:
 	db $00, $18, $11, $30
 	db $00, $20, $10, $30
 
-
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
-Func_fbb5a: ; fbb5a (3e:7b5a)
-	ld hl, wTileMapBackup
-	ld bc, 10 * SCREEN_WIDTH
-	xor a
-	call FillMemory
-	ret
-
-Func_fbb65:
-	ld hl, wc51c
-	ld e, $a
-.asm_fbb6a
-	ld a, [hl]
-	and a
-	jr z, .asm_fbb7c
-	ld c, l
-	ld b, h
-	push hl
-	push de
-	call Func_fbd61
-	call Func_fbbfe
-	pop de
-	pop hl
-	jr c, .asm_fbb92
-.asm_fbb7c
-	ld bc, $10
-	add hl, bc
-	dec e
-	jr nz, .asm_fbb6a
-	ld a, [wc5bd]
-	ld l, a
-	ld h, $c3
-.asm_fbb89
-	ld a, l
-	cp $a0
-	jr nc, .asm_fbb92
-	xor a
-	ld [hli], a
-	jr .asm_fbb89
-
-.asm_fbb92
-	ret
-
-Func_fbb93:
-	push de
-	push af
-	ld hl, wc51c
-	ld e, $a
-.asm_fbb9a
-	ld a, [hl]
-	and a
-	jr z, .asm_fbba9
-	ld bc, $10
-	add hl, bc
-	dec e
-	jr nz, .asm_fbb9a
-	pop af
-	pop de
-	scf
-	ret
-
-.asm_fbba9
-	pop af
-	ld c, l
-	ld b, h
-	ld hl, wc5bc
-	inc [hl]
-	ld e, a
-	ld d, $0
-	ld a, [wc5c0]
-	ld l, a
-	ld a, [wc5c0 + 1]
-	ld h, a
-	add hl, de
-	add hl, de
-	add hl, de
-	ld e, l
-	ld d, h
-	ld hl, $0
-	add hl, bc
-	ld a, [wc5bc]
-	ld [hli], a
-	ld a, [de]
-	ld [hli], a
-	inc de
-	ld a, [de]
-	ld [hli], a
-	inc de
-	xor a
-	ld [hli], a
-	pop de
-	ld hl, $4
-	add hl, bc
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-	xor a
-	ld [hli], a
-	ld [hli], a
-	xor a
-	ld [hli], a
-	ld [hli], a
-	dec a
-	ld [hli], a
-	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
-	ret
-
-Func_fbbe8:
-	ld hl, $0
-	add hl, bc
-	ld [hl], $0
-	ret
-
-Func_fbbef:
-	ld hl, wc51c
-	ld e, $a
-.asm_fbbf4
-	ld [hl], $0
-	ld bc, $10
-	add hl, bc
-	dec e
-	jr nz, .asm_fbbf4
-	ret
-
-Func_fbbfe:
-	xor a
-	ld [wc5c8], a
-	ld hl, $3
-	add hl, bc
-	ld a, [hli]
-	ld [wc5c9], a
-	ld a, [hli]
-	ld [wc5ca], a
-	ld a, [hli]
-	ld [wc5cb], a
-	ld a, [hli]
-	ld [wc5cc], a
-	ld a, [hl]
-	ld [wc5cd], a
-	call Func_fbcec
-	cp $fd
-	jr z, .asm_fbc8d
-	cp $fc
-	jr z, .asm_fbc8a
-	call Func_fbcc5
-	ld a, [wc5c9]
-	add [hl]
-	ld [wc5c9], a
-	inc hl
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	push bc
-	ld a, [wc5bd]
-	ld e, a
-	ld d, $c3
-	ld a, [hli]
-	ld c, a
-.asm_fbc3c
-	ld a, [wc5cb]
-	ld b, a
-	ld a, [wc5cd]
-	add b
-	ld b, a
-	ld a, [wc5ce]
-	add b
-	ld b, a
-	call Func_fbc92
-	add b
-	ld [de], a
-	inc hl
-	inc de
-	ld a, [wc5ca]
-	ld b, a
-	ld a, [wc5cc]
-	add b
-	ld b, a
-	ld a, [wc5cf]
-	add b
-	ld b, a
-	call Func_fbca2
-	add b
-	ld [de], a
-	inc hl
-	inc de
-	ld a, [wc5c9]
-	add [hl]
-	ld [de], a
-	inc hl
-	inc de
-	call Func_fbcb2
-	ld b, a
-	ld a, [wc634]
-	cp $7
-	ld a, b
-	jr z, .asm_fbc7a
-	ld [de], a
-.asm_fbc7a
-	inc hl
-	inc de
-	ld a, e
-	ld [wc5bd], a
-	cp $a0
-	jr nc, .asm_fbc8f
-	dec c
-	jr nz, .asm_fbc3c
-	pop bc
-	jr .asm_fbc8d
-
-.asm_fbc8a
-	call Func_fbbe8
-.asm_fbc8d
-	and a
-	ret
-
-.asm_fbc8f
-	pop bc
-	scf
-	ret
-
-Func_fbc92:
-	push hl
-	ld a, [hl]
-	ld hl, wc5c8
-	bit 6, [hl]
-	jr z, .asm_fbca0
-	add $8
-	xor $ff
-	inc a
-.asm_fbca0
-	pop hl
-	ret
-
-Func_fbca2:
-	push hl
-	ld a, [hl]
-	ld hl, wc5c8
-	bit 5, [hl]
-	jr z, .asm_fbcb0
-	add $8
-	xor $ff
-	inc a
-.asm_fbcb0
-	pop hl
-	ret
-
-Func_fbcb2:
-	ld a, [wc5c8]
-	ld b, a
-	ld a, [hl]
-	xor b
-	and $e0
-	ld b, a
-	ld a, [hl]
-	and $10
-	or b
-	bit 4, a
-	ret z
-	or $4
-	ret
-
-Func_fbcc5:
-	ld e, a
-	ld d, $0
-	ld a, [wc5c6]
-	ld l, a
-	ld a, [wc5c6 + 1]
-	ld h, a
-	add hl, de
-	add hl, de
-	add hl, de
-	ret
-
-Func_fbcd4:
-	ld hl, $1
-	add hl, bc
-	ld [hl], a
-	ld hl, $8
-	add hl, bc
-	ld [hl], $0
-	ld hl, $9
-	add hl, bc
-	ld [hl], $0
-	ld hl, $a
-	add hl, bc
-	ld [hl], $ff
-	ret
-
-Func_fbcec:
-	ld hl, $8
-	add hl, bc
-	ld a, [hl]
-	and a
-	jr z, .asm_fbcfc
-	dec [hl]
-	call Func_fbd43
-	ld a, [hli]
-	push af
-	jr .asm_fbd1d
-
-.asm_fbcfc
-	ld hl, $a
-	add hl, bc
-	inc [hl]
-	call Func_fbd43
-	ld a, [hli]
-	cp $fe
-	jr z, .asm_fbd35
-	cp $ff
-	jr z, .asm_fbd27
-	push af
-	ld a, [hl]
-	push hl
-	and $3f
-	ld hl, $9
-	add hl, bc
-	add [hl]
-	ld hl, $8
-	add hl, bc
-	ld [hl], a
-	pop hl
-.asm_fbd1d
-	ld a, [hl]
-	and $c0
-	srl a
-	ld [wc5c8], a
-	pop af
-	ret
-
-.asm_fbd27
-	xor a
-	ld hl, $8
-	add hl, bc
-	ld [hl], a
-	ld hl, $a
-	add hl, bc
-	dec [hl]
-	dec [hl]
-	jr Func_fbcec
-
-.asm_fbd35
-	xor a
-	ld hl, $8
-	add hl, bc
-	ld [hl], a
-	dec a
-	ld hl, $a
-	add hl, bc
-	ld [hl], a
-	jr Func_fbcec
-
-Func_fbd43:
-	ld hl, $1
-	add hl, bc
-	ld e, [hl]
-	ld d, $0
-	ld a, [wc5c2]
-	ld l, a
-	ld a, [wc5c2 + 1]
-	ld h, a
-	add hl, de
-	add hl, de
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	ld hl, $a
-	add hl, bc
-	ld l, [hl]
-	ld h, $0
-	add hl, hl
-	add hl, de
-	ret
-
-Func_fbd61:
-	ld hl, $2
-	add hl, bc
-	ld e, [hl]
-	ld d, $0
-	ld a, [wc5c4]
-	ld l, a
-	ld a, [wc5c4 + 1]
-	ld h, a
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp [hl]
+INCLUDE "engine/animated_objects_3e.asm"

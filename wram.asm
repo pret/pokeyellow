@@ -263,6 +263,7 @@ SECTION "OAM Buffer", WRAM0[$c300]
 wOAMBuffer:: ; c300
 ; buffer for OAM data. Copied to OAM by DMA
 	ds 4 * 40
+wOAMBufferEnd::
 
 wTileMap:: ; c3a0
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
@@ -275,37 +276,44 @@ wTileMapBackup:: ; c508
 ; buffer for temporarily saving and restoring current screen's tiles
 ; (e.g. if menus are drawn on top)
 ;	ds 20 * 18
-	ds 20
-wc51c:: ; c51c
-	ds 160
-wc5bc:: ; c5bc
+
+wAnimatedObjectsData::
+; Used by functions in BANK 3E
+; This looks similar to the address structure for Gen 2 OAM animations.
+
+wAnimatedObjectStartTileOffsets::
+	ds 10 * 2
+wAnimatedObjectDataStructs:: ; c51c
+	ds 10 * $10
+wNumLoadedAnimatedObjects:: ; c5bc
 	ds 1
-wc5bd:: ; c5bd
+wCurrentAnimatedObjectOAMBufferOffset:: ; c5bd
 	ds 3
-wc5c0:: ; c5c0
+wAnimatedObjectSpawnStateDataPointer:: ; c5c0
 	dw
-wc5c2:: ; c5c2
+wAnimatedObjectFramesDataPointer:: ; c5c2
 	dw
-wc5c4:: ; c5c4
+wAnimatedObjectJumptablePointer:: ; c5c4
 	dw
-wc5c6:: ; c5c6
+wAnimatedObjectOAMDataPointer:: ; c5c6
 	dw
-wc5c8:: ; c5c8
+wCurAnimatedObjectOAMAttributes:: ; c5c8
 	ds 1
-wc5c9:: ; c5c9
+wCurrentAnimatedObjectVTileOffset:: ; c5c9
 	ds 1
-wc5ca:: ; c5ca
+wCurrentAnimatedObjectXCoord:: ; c5ca
 	ds 1
-wc5cb:: ; c5cb
+wCurrentAnimatedObjectYCoord:: ; c5cb
 	ds 1
-wc5cc:: ; c5cc
+wCurrentAnimatedObjectXOffset:: ; c5cc
 	ds 1
-wc5cd:: ; c5cd
+wCurrentAnimatedObjectYOffset:: ; c5cd
 	ds 1
-wc5ce:: ; c5ce
+wAnimatedObjectGlobalYOffset:: ; c5ce
 	ds 1
-wc5cf:: ; c5cf
+wAnimatedObjectGlobalXOffset:: ; c5cf
 	ds 1
+wAnimatedObjectsDataEnd::
 
 wSerialEnemyMonsPatchList:: ; c5d0
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
