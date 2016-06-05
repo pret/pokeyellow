@@ -287,7 +287,13 @@ wSerialEnemyMonsPatchList:: ; c5d0
 wTempPic::
 wOverworldMap:: ; c6e8
 	; ds 1300
-	ds $290
+	ds $18
+wc700:: ; c700
+	ds $10
+wc710:: ; c710
+	ds $f0
+wc800:: ; c800
+	ds $178
 	
 wPrinterTileBuffer:: ; c978
 	ds SCREEN_HEIGHT * SCREEN_WIDTH

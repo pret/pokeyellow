@@ -129,7 +129,7 @@ Func_f80c4:
 	add hl, de
 	add hl, de
 	ld a, [hli]
-	ld [$c0e9], a
+	ld [wMusicTempo + 1], a
 	ld a, [hl]
 	ld [wMusicTempo], a
 	ret
@@ -153,7 +153,7 @@ Func_f80ff:
 	cp [hl]
 	ret nz
 	ld a, $75
-	ld [$c0e9], a
+	ld [wMusicTempo + 1], a
 	xor a
 	ld [wMusicTempo], a
 	ret
@@ -645,7 +645,7 @@ Func_f844c:
 	ret nc
 	ld hl, $c5e5
 	inc [hl]
-	ld hl, $c311
+	ld hl, wOAMBuffer + 4 * 4 + 1
 	dec [hl]
 	dec [hl]
 	ret
@@ -703,7 +703,7 @@ Func_f848d:
 	ld [$c5d9], a
 	ld [$c62f], a
 	xor a
-	ld [$c02d], a
+	ld [wChannelSoundIDs + CH7], a
 	ld a, $91
 	call PlaySound
 	ret
@@ -739,7 +739,7 @@ Func_f84e2:
 	ld a, $10
 	call Func_fbcd4
 	xor a
-	ld [$c02d], a
+	ld [wChannelSoundIDs + CH7], a
 	ld a, $93
 	call PlaySound
 	ret
@@ -997,7 +997,7 @@ Func_f8606:
 	call Func_f86d0
 .asm_f86a2
 	xor a
-	ld [$c02d], a
+	ld [wChannelSoundIDs + CH7], a
 	ld a, $95
 	call PlaySound
 	and a
@@ -1300,7 +1300,7 @@ Func_f8848:
 	ld a, l
 	ld [$c635], a
 	ld d, h
-	ld hl, $c315
+	ld hl, wOAMBuffer + 5 * 4 + 1
 	ld e, $9
 .asm_f8861
 	ld a, [hl]
@@ -1417,10 +1417,10 @@ Func_f88f0:
 
 Func_f88fd:
 	ld de, $c5d7
-	ld hl, $c302
+	ld hl, wOAMBuffer + 0 * 4 + 2
 	ld a, [de]
 	call Func_f890b
-	ld hl, $c30a
+	ld hl, wOAMBuffer + 2 * 4 + 2
 	ld a, [de]
 Func_f890b:
 	ld c, a
@@ -1448,7 +1448,7 @@ Func_f891e:
 	ld bc, Tilemap_f8946End - Tilemap_f8946
 	call CopyData
 	call Func_f8a0e
-	ld hl, $c315
+	ld hl, wOAMBuffer + 5 * 4 + 1
 	ld bc, $24
 	xor a
 	call FillMemory
@@ -2884,43 +2884,43 @@ PlayIntroScene:
 	ret
 
 Func_f98a2:
-	ld a, [$c323]
+	ld a, [wOAMBuffer + 8 * 4 + 3]
 	or $1
-	ld [$c323], a
-	ld a, [$c33b]
+	ld [wOAMBuffer + 8 * 4 + 3], a
+	ld a, [wOAMBuffer + 14 * 4 + 3]
 	or $1
-	ld [$c33b], a
-	ld a, [$c343]
+	ld [wOAMBuffer + 14 * 4 + 3], a
+	ld a, [wOAMBuffer + 16 * 4 + 3]
 	or $1
-	ld [$c343], a
+	ld [wOAMBuffer + 16 * 4 + 3], a
 Func_f98b8:
-	ld a, [$c34b]
+	ld a, [wOAMBuffer + 18 * 4 + 3]
 	or $1
-	ld [$c34b], a
-	ld a, [$c34f]
+	ld [wOAMBuffer + 18 * 4 + 3], a
+	ld a, [wOAMBuffer + 19 * 4 + 3]
 	or $1
-	ld [$c34f], a
+	ld [wOAMBuffer + 19 * 4 + 3], a
 	ret
 
 Func_f98cb:
-	ld a, [$c34b]
+	ld a, [wOAMBuffer + 18 * 4 + 3]
 	or $1
-	ld [$c34b], a
-	ld a, [$c34f]
+	ld [wOAMBuffer + 18 * 4 + 3], a
+	ld a, [wOAMBuffer + 19 * 4 + 3]
 	or $1
-	ld [$c34f], a
-	ld a, [$c353]
+	ld [wOAMBuffer + 19 * 4 + 3], a
+	ld a, [wOAMBuffer + 20 * 4 + 3]
 	or $1
-	ld [$c353], a
-	ld a, [$c367]
+	ld [wOAMBuffer + 20 * 4 + 3], a
+	ld a, [wOAMBuffer + 25 * 4 + 3]
 	or $1
-	ld [$c367], a
-	ld a, [$c36b]
+	ld [wOAMBuffer + 25 * 4 + 3], a
+	ld a, [wOAMBuffer + 26 * 4 + 3]
 	or $1
-	ld [$c36b], a
-	ld a, [$c373]
+	ld [wOAMBuffer + 26 * 4 + 3], a
+	ld a, [wOAMBuffer + 28 * 4 + 3]
 	or $1
-	ld [$c373], a
+	ld [wOAMBuffer + 28 * 4 + 3], a
 	ret
 
 Func_f98fc:
@@ -2957,7 +2957,7 @@ Func_f992a:
 Func_f992f:
 	xor a
 	ld [hLCDCPointer], a
-	ld de, $5858
+	lb de, $58, $58
 	ld a, $1
 	call Func_f9e1d
 	xor a
@@ -3128,7 +3128,7 @@ Func_f9a1e:
 	xor a
 	ld [hLCDCPointer], a
 	call Func_f9e5f
-	ld de, $5858
+	lb de, $58, $58
 	ld a, $2
 	call Func_f9e1d
 	xor a
@@ -3169,7 +3169,7 @@ Func_f9a6b:
 	ld bc, $300
 	ld a, $10
 	call Func_f9fb3
-	ld de, $40f8
+	lb de, $40, $f8
 	ld a, $5
 	call Func_f9e1d
 	ld a, $1
@@ -3212,7 +3212,7 @@ Func_f9ad8:
 	xor a
 	ld [hLCDCPointer], a
 	call Func_f9e5f
-	ld de, $5858
+	lb de, $58, $58
 	ld a, $3
 	call Func_f9e1d
 	xor a
@@ -3254,7 +3254,7 @@ Func_f9b04:
 	ld de, Unkn_f9bf2
 	lb bc, 2, 2
 	call .FillBGMapBox
-	ld de, $9858
+	lb de, $98, $58
 	ld a, $6
 	call Func_f9e1d
 	ld a, $1
@@ -3419,7 +3419,7 @@ Func_f9d22:
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
-	ld de, $5858
+	lb de, $58, $58
 	ld a, $7
 	call Func_f9e1d
 	call Func_f992a
