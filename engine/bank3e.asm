@@ -1,5 +1,5 @@
-Func_f8000:
-	call Func_f9254
+SurfingPikachuMinigame:
+	call SurfingPikachuMinigame_BlankPals
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
@@ -19,10 +19,10 @@ Func_f8000:
 	ld [rIE], a
 	ld a, $8
 	ld [rSTAT], a
-	ld a, [$ffbd]
+	ld a, [H_AUTOBGTRANSFERDEST + 1]
 	push af
 	ld a, $98
-	ld [$ffbd], a
+	ld [H_AUTOBGTRANSFERDEST + 1], a
 	call Func_f8fb3
 	call Func_f807a
 	xor a
@@ -42,7 +42,7 @@ Func_f8000:
 	ld [hWY], a
 	call DelayFrame
 	pop af
-	ld [$ffbd], a
+	ld [H_AUTOBGTRANSFERDEST + 1], a
 	xor a
 	ld [rIF], a
 	pop af
@@ -64,7 +64,7 @@ Func_f807a:
 	call DelayFrame
 	ld b, $e
 	call RunPaletteCommand
-.asm_f8085
+.loop
 	ld a, [wc5d1]
 	bit 7, a
 	ret nz
@@ -78,7 +78,7 @@ Func_f807a:
 	call Func_f8848
 	call Func_f80a8
 	call Func_f80c4
-	jr .asm_f8085
+	jr .loop
 
 Func_f80a8:
 	call DelayFrame
@@ -1918,7 +1918,7 @@ Func_f8cc7:
 	ld a, l
 	ld [hRedrawRowOrColumnDest], a
 	ld a, h
-	ld [$ffd2], a
+	ld [hRedrawRowOrColumnDest + 1], a
 	ld a, $1
 	ld [hRedrawRowOrColumnMode], a
 	ret
@@ -2487,7 +2487,7 @@ Func_f923f:
 	ld [hJoy5], a
 	ret
 
-Func_f9254:
+SurfingPikachuMinigame_BlankPals:
 	xor a
 	ld [rBGP], a
 	ld [rOBP0], a
@@ -2497,7 +2497,7 @@ Func_f9254:
 	call UpdateGBCPal_OBP1
 	ret
 
-Func_f9265:
+SurfingPikachuMinigame_NormalPals:
 	ld a, $e4
 	ld [rBGP], a
 	ld [rOBP0], a
@@ -3008,38 +3008,10 @@ Unkn_f9694:
 	db $04, $08, $20, $20
 
 Unkn_f96c5:
-	db 0
-	db 0
-	db 0
-	db 1
-	db 1
-	db 1
-	db 1
-	db 2
-	db 2
-	db 2
-	db 1
-	db 1
-	db 1
-	db 1
-	db 0
-	db 0
-	db 0
-	db 0
-	db 0
-	db -1
-	db -1
-	db -1
-	db -1
-	db -2
-	db -2
-	db -2
-	db -1
-	db -1
-	db -1
-	db -1
-	db 0
-	db 0
+	db  0,  0,  0,  1,  1,  1,  1,  2
+	db  2,  2,  1,  1,  1,  1,  0,  0
+	db  0,  0,  0, -1, -1, -1, -1, -2
+	db -2, -2, -1, -1, -1, -1,  0,  0
 
 Unkn_f96e5:
 	db $00, $00, $00, $00
@@ -3935,7 +3907,7 @@ Func_f9f0d:
 	ld [hSCY], a
 	ld [H_AUTOBGTRANSFERDEST], a
 	ld a, $98
-	ld [$ffbd], a
+	ld [H_AUTOBGTRANSFERDEST + 1], a
 	call Func_f9f9e
 	ld hl, wTileMap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT

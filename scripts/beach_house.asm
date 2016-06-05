@@ -35,7 +35,7 @@ SurfinDudeText:
 	jr nz, .asm_f226b
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	callba Func_f8000
+	callba SurfingPikachuMinigame
 	ld hl, wPreventBlackout
 	set 1, [hl]
 	jr .done
