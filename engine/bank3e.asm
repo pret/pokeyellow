@@ -91,6 +91,8 @@ Func_f80ac:
 	ld a, [hJoyPressed]
 	and $4
 	ret
+
+Func_f80b7:
 	ld a, [hJoyPressed]
 	and $8
 	ret z
@@ -647,6 +649,8 @@ Func_f844c:
 	dec [hl]
 	dec [hl]
 	ret
+
+Func_f8470
 	ld a, [$c5d2]
 	ld e, a
 	ld d, $0
@@ -1224,6 +1228,8 @@ Func_f87ce:
 	and $7
 	add [hl]
 	ret
+
+Func_f87fb:
 	ld hl, $4
 	add hl, bc
 	ld a, [hl]
@@ -1232,8 +1238,12 @@ Func_f87ce:
 	add $4
 	ld [hl], a
 	ret
+
+Func_f8807:
 	call Func_fbbe8
 	ret
+
+Func_f880b:
 	ld hl, $b
 	add hl, bc
 	ld a, [hl]
@@ -1256,6 +1266,8 @@ Func_f87ce:
 	add hl, bc
 	ld [hl], a
 	ret
+
+Func_f882b:
 	ld hl, $b
 	add hl, bc
 	ld a, [hl]
@@ -2485,6 +2497,8 @@ Func_f9254:
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
 	ret
+
+Func_f9265:
 	ld a, $e4
 	ld [rBGP], a
 	ld [rOBP0], a
@@ -2793,8 +2807,1037 @@ Unkn_f981d:
 Unkn_f9825:
 	dr $f9825,$f982d
 
-PlayIntroScene: ; f982d (3e:582d)
-	dr $f982d,$fa35a
+PlayIntroScene:
+	ld a, [rIE]
+	push af
+	xor a
+	ld [rIF], a
+	ld a, $f
+	ld [rIE], a
+	ld a, $8
+	ld [rSTAT], a
+	call Func_f9f0d
+	call DelayFrame
+.asm_f9841
+	ld a, [$c634]
+	bit 7, a
+	jr nz, .asm_f986e
+	call JoypadLowSensitivity
+	ld a, [hJoyPressed]
+	and $b
+	jr nz, .asm_f986e
+	call Func_f98fc
+	ld a, $0
+	ld [$c5bd], a
+	call Func_fbb65
+	ld a, [$c634]
+	cp $7
+	call z, Func_f98a2
+	cp $b
+	call z, Func_f98cb
+	call DelayFrame
+	jr .asm_f9841
+
+.asm_f986e
+	call Func_f9fc9
+	xor a
+	ld [hLCDCPointer], a
+	call DelayFrame
+	xor a
+	ld [rIF], a
+	pop af
+	ld [rIE], a
+	ld a, $90
+	ld [hWY], a
+	call Func_fbb5a
+	ld hl, wTileMap
+	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	xor a
+	call Func_f9fb3
+	call Func_f9fbe
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call DelayFrame
+	call DelayFrame
+	call DelayFrame
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ret
+
+Func_f98a2:
+	ld a, [$c323]
+	or $1
+	ld [$c323], a
+	ld a, [$c33b]
+	or $1
+	ld [$c33b], a
+	ld a, [$c343]
+	or $1
+	ld [$c343], a
+Func_f98b8:
+	ld a, [$c34b]
+	or $1
+	ld [$c34b], a
+	ld a, [$c34f]
+	or $1
+	ld [$c34f], a
+	ret
+
+Func_f98cb:
+	ld a, [$c34b]
+	or $1
+	ld [$c34b], a
+	ld a, [$c34f]
+	or $1
+	ld [$c34f], a
+	ld a, [$c353]
+	or $1
+	ld [$c353], a
+	ld a, [$c367]
+	or $1
+	ld [$c367], a
+	ld a, [$c36b]
+	or $1
+	ld [$c36b], a
+	ld a, [$c373]
+	or $1
+	ld [$c373], a
+	ret
+
+Func_f98fc:
+	ld a, [$c634]
+	ld hl, Jumptable_f9906
+	call Func_fa06e
+	jp [hl]
+
+Jumptable_f9906:
+	dw Func_f992f
+	dw Func_f995f
+	dw Func_f996a
+	dw Func_f9a08
+	dw Func_f9a1e
+	dw Func_f9a60
+	dw Func_f9a6b
+	dw Func_f9ab1
+	dw Func_f9ad8
+	dw Func_f9af9
+	dw Func_f9b04
+	dw Func_f9bf6
+	dw Func_f9cac
+	dw Func_f9d12
+	dw Func_f9d22
+	dw Func_f9d8f
+	dw Func_f9dbf
+	dw Func_f9e12
+
+Func_f992a:
+	ld hl, $c634
+	inc [hl]
+	ret
+
+Func_f992f:
+	xor a
+	ld [hLCDCPointer], a
+	ld de, $5858
+	ld a, $1
+	call Func_f9e1d
+	xor a
+	ld [hSCX], a
+	ld [hSCY], a
+	ld a, $90
+	ld [hWY], a
+	ld a, $e4
+	ld [rBGP], a
+	ld [rOBP0], a
+	ld a, $c4
+	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ld a, $82
+	ld [$c635], a
+	call Func_f992a
+	ret
+
+Func_f995f:
+	call Func_f9e41
+	ret nc
+	call Func_f9e29
+	call Func_f992a
+	ret
+
+Func_f996a:
+	call Func_f9e80
+	ld c, $8
+	call UpdateMusicCTimes
+	xor a
+	ld [hLCDCPointer], a
+	ld hl, $9800
+	ld bc, $400
+	xor a
+	call Func_f9fb3
+	call Func_f9996
+	ld de, $58b8
+	ld a, $4
+	call Func_f99d2
+	ld a, $1
+	call Func_f9e9a
+	call Func_f9e35
+	call Func_f992a
+	ret
+
+Func_f9996:
+	ld hl, $98d4
+	ld de, $20
+	ld b, $6
+	ld a, $90
+.asm_f99a0
+	ld c, $6
+	push af
+	push hl
+.asm_f99a4
+	ld [hli], a
+	inc a
+	dec c
+	jr nz, .asm_f99a4
+	pop hl
+	add hl, de
+	pop af
+	add $10
+	dec b
+	jr nz, .asm_f99a0
+	ld a, [hGBC]
+	and a
+	jr z, .asm_f99d1
+	ld hl, $98d4
+	ld de, $20
+	ld b, $6
+	ld a, $1
+	ld [rVBK], a
+.asm_f99c2
+	ld c, $6
+	push hl
+.asm_f99c5
+	ld [hli], a
+	dec c
+	jr nz, .asm_f99c5
+	pop hl
+	add hl, de
+	dec b
+	jr nz, .asm_f99c2
+	xor a
+	ld [rVBK], a
+.asm_f99d1
+	ret
+
+Func_f99d2:
+	ld hl, Unkn_f99f0
+	ld a, $8
+.asm_f99d7
+	push af
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	inc hl
+	ld a, [hli]
+	push hl
+	push af
+	ld a, $8
+	call Func_fbb93
+	pop af
+	ld hl, $b
+	add hl, bc
+	ld [hl], a
+	pop hl
+	pop af
+	dec a
+	jr nz, .asm_f99d7
+	ret
+
+Unkn_f99f0:
+	dr $f99f0,$f9a08
+
+Func_f9a08:
+	call Func_f9e41
+	jr c, .asm_f9a17
+	ld a, [hSCX]
+	cp $68
+	ret z
+	add $4
+	ld [hSCX], a
+	ret
+
+.asm_f9a17
+	call Func_fbbef
+	call Func_f992a
+	ret
+
+Func_f9a1e:
+	call Func_f9e80
+	ld c, $5
+	call UpdateMusicCTimes
+	ld a, [hGBC]
+	and a
+	jr z, .asm_f9a47
+	ld hl, $98d4
+	ld de, $20
+	ld b, $6
+	ld a, $1
+	ld [rVBK], a
+	xor a
+.asm_f9a38
+	ld c, $6
+	push hl
+.asm_f9a3b
+	ld [hli], a
+	dec c
+	jr nz, .asm_f9a3b
+	pop hl
+	add hl, de
+	dec b
+	jr nz, .asm_f9a38
+	xor a
+	ld [rVBK], a
+.asm_f9a47
+	xor a
+	ld [hLCDCPointer], a
+	call Func_f9e5f
+	ld de, $5858
+	ld a, $2
+	call Func_f9e1d
+	xor a
+	call Func_f9e9a
+	call Func_f9e35
+	call Func_f992a
+	ret
+
+Func_f9a60:
+	call Func_f9e41
+	ret nc
+	call Func_f9e29
+	call Func_f992a
+	ret
+
+Func_f9a6b:
+	call Func_f9e80
+	ld c, $5
+	call UpdateMusicCTimes
+	ld a, $42
+	ld [hLCDCPointer], a
+	call Func_f9ec4
+	ld hl, $9800
+	ld bc, $60
+	xor a
+	call Func_f9fb3
+	ld hl, $9860
+	ld c, $10
+	ld a, $20
+.asm_f9a8b
+	ld [hli], a
+	inc a
+	ld [hli], a
+	dec a
+	dec c
+	jr nz, .asm_f9a8b
+	ld hl, $9880
+	ld bc, $300
+	ld a, $10
+	call Func_f9fb3
+	ld de, $40f8
+	ld a, $5
+	call Func_f9e1d
+	ld a, $1
+	call Func_f9e9a
+	call Func_f9e3b
+	call Func_f992a
+	ret
+
+Func_f9ab1:
+	call Func_f9e41
+	jr c, .asm_f9ad1
+	ld hl, hSCX
+	inc [hl]
+	inc [hl]
+	ld hl, $c800
+	ld de, $c801
+	ld a, [hl]
+	push af
+	ld c, $ff
+.asm_f9ac5
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .asm_f9ac5
+	pop af
+	ld [hl], a
+	call Func_f9ef8
+	ret
+
+.asm_f9ad1
+	call Func_f9e29
+	call Func_f992a
+	ret
+
+Func_f9ad8:
+	call Func_f9e80
+	ld c, $5
+	call UpdateMusicCTimes
+	xor a
+	ld [hLCDCPointer], a
+	call Func_f9e5f
+	ld de, $5858
+	ld a, $3
+	call Func_f9e1d
+	xor a
+	call Func_f9e9a
+	call Func_f9e35
+	call Func_f992a
+	ret
+
+Func_f9af9:
+	call Func_f9e41
+	ret nc
+	call Func_f9e29
+	call Func_f992a
+	ret
+
+Func_f9b04:
+	call Func_f9e80
+	ld c, $5
+	call UpdateMusicCTimes
+	xor a
+	ld [hLCDCPointer], a
+	ld hl, $9800
+	ld bc, $400
+	xor a
+	call Func_f9fb3
+	ld hl, $9800
+	ld bc, $100
+	ld a, $2
+	call Func_f9fb3
+	ld hl, $9900
+	ld de, Unkn_f9b6e
+	ld bc, $614
+	call Func_f9b5c
+	ld hl, $988c
+	lb de, $5b, $e6
+	ld bc, $304
+	call Func_f9b5c
+	ld hl, $98e3
+	lb de, $5b, $f2
+	ld bc, $202
+	call Func_f9b5c
+	ld de, $9858
+	ld a, $6
+	call Func_f9e1d
+	ld a, $1
+	call Func_f9e9a
+	call Func_f9e35
+	call Func_f992a
+	ret
+
+Func_f9b5c:
+	push bc
+	push hl
+.asm_f9b5e
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .asm_f9b5e
+	pop hl
+	ld bc, $20
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, Func_f9b5c
+	ret
+
+Unkn_f9b6e:
+	dr $f9b6e,$f9bf6
+
+Func_f9bf6:
+	call Func_f9e41
+	jr c, .asm_f9c25
+	ld a, [$c635]
+	and $7
+	ret nz
+	ld a, [$c635]
+	and $8
+	sla a
+	sla a
+	sla a
+	ld e, a
+	ld d, $0
+	ld hl, Unkn_f9c2c
+	add hl, de
+	ld a, l
+	ld [H_VBCOPYSRC], a
+	ld a, h
+	ld [$ffc8], a
+.asm_f9c19
+	xor a
+	ld [H_VBCOPYDEST], a
+	ld a, $96
+	ld [$ffca], a
+	ld a, $4
+	ld [H_VBCOPYSIZE], a
+	ret
+
+.asm_f9c25
+	call Func_f9e29
+	call Func_f992a
+	ret
+
+Unkn_f9c2c:
+	dr $f9c2c,$f9cac
+
+Func_f9cac:
+	call Func_f9e80
+	ld c, $5
+	call UpdateMusicCTimes
+	xor a
+	ld [hLCDCPointer], a
+	ld hl, $9800
+	ld bc, $80
+	ld a, $1
+	call Func_f9fb3
+	ld hl, $9880
+	ld bc, $140
+	xor a
+	call Func_f9fb3
+	ld hl, $99c0
+	ld bc, $80
+	ld a, $1
+	call Func_f9fb3
+	ld hl, $98c5
+	ld de, $20
+	ld a, $4
+	ld b, $8
+.asm_f9ce1
+	ld c, $c
+	push hl
+.asm_f9ce4
+	ld [hli], a
+	inc a
+	dec c
+	jr nz, .asm_f9ce4
+	pop hl
+	add hl, de
+	add $4
+	dec b
+	jr nz, .asm_f9ce1
+	ld hl, $98c4
+	ld [hl], $3
+	ld hl, $98e4
+	ld [hl], $74
+	ld hl, $99a5
+	ld [hl], $0
+	lb de, $60, $58
+	ld a, $9
+	call Func_f9e1d
+	xor a
+	call Func_f9e9a
+	call Func_f9e35
+	call Func_f992a
+	ret
+
+Func_f9d12:
+	call Func_f9e41
+	ret nc
+	lb de, $68, $58
+	ld a, $a
+	call Func_fbb93
+	call Func_f992a
+	ret
+
+Func_f9d22:
+	ld de, Unkn_f9dd6
+	call Func_f9e4d
+	jr c, .asm_f9d3c
+	ld [rBGP], a
+	ld [rOBP0], a
+	and $f0
+	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ret
+
+.asm_f9d3c
+	call Func_fbbef
+	call Func_f9fbe
+	ld hl, wTileMap
+	ld bc, $50
+	ld a, $1
+	call Func_f9fb3
+	coord hl, 0, 4
+	ld bc, CopyVideoDataAlternate
+	xor a
+	call Func_f9fb3
+	coord hl, 0, 14
+	ld bc, $50
+	ld a, $1
+	call Func_f9fb3
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call DelayFrame
+	call DelayFrame
+	call DelayFrame
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, $e4
+	ld [rOBP0], a
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	ld de, $5858
+	ld a, $7
+	call Func_f9e1d
+	call Func_f992a
+	ld a, $28
+	ld [$c635], a
+	ret
+
+Func_f9d8f:
+	call Func_f9e41
+	jr c, .asm_f9dad
+	ld a, [$c635]
+	and $3
+	ret nz
+	ld a, [rOBP0]
+	xor $ff
+	ld [rOBP0], a
+	ld a, [rBGP]
+	xor $3
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	ret
+
+.asm_f9dad
+	xor a
+	ld [hLCDCPointer], a
+	ld a, $e4
+	ld [rBGP], a
+	ld [rOBP0], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call Func_f992a
+Func_f9dbf:
+	lb de, $5e, $0a
+	call Func_f9e4d
+	jr c, .asm_f9dd2
+	ld [rOBP0], a
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	ret
+
+.asm_f9dd2
+	call Func_f992a
+	ret
+
+Unkn_f9dd6:
+	dr $f9dd6,$f9e12
+
+Func_f9e12:
+	ld c, $40
+	call DelayFrames
+	ld hl, $c634
+	set 7, [hl]
+	ret
+
+Func_f9e1d:
+	call Func_fbb93
+	ld a, c
+	ld [$c636], a
+	ld a, b
+	ld [$c637], a
+	ret
+
+Func_f9e29:
+	ld a, [$c636]
+	ld c, a
+	ld a, [$c637]
+	ld b, a
+	call Func_fbbe8
+	ret
+
+Func_f9e35:
+	ld a, $80
+	ld [$c635], a
+	ret
+
+Func_f9e3b:
+	ld a, $58
+	ld [$c635], a
+	ret
+
+Func_f9e41:
+	ld hl, $c635
+	ld a, [hl]
+	and a
+	jr z, .asm_f9e4b
+	dec [hl]
+	and a
+	ret
+
+.asm_f9e4b
+	scf
+	ret
+
+Func_f9e4d:
+	ld hl, $c635
+	ld a, [hl]
+	inc [hl]
+	ld l, a
+	ld h, $0
+	add hl, de
+	ld a, [hl]
+	cp $ff
+	jr z, .asm_f9e5d
+	and a
+	ret
+
+.asm_f9e5d
+	scf
+	ret
+
+Func_f9e5f:
+	ld hl, $9800
+	ld bc, $80
+	ld a, $1
+	call Func_f9fb3
+	ld hl, $9880
+	ld bc, $140
+	xor a
+	call Func_f9fb3
+	ld hl, $99c0
+	ld bc, $80
+	ld a, $1
+	call Func_f9fb3
+	ret
+
+Func_f9e80:
+	xor a
+	ld [rBGP], a
+	ld [rOBP0], a
+	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	call DelayFrame
+	call DelayFrame
+	call DisableLCD
+	ret
+
+Func_f9e9a:
+	ld e, a
+	callab Func_720ad
+	xor a
+	ld [hSCX], a
+	ld [hSCY], a
+	ld a, $90
+	ld [hWY], a
+	ld a, $e3
+	ld [rLCDC], a
+	ld a, $e4
+	ld [rBGP], a
+	ld [rOBP0], a
+	ld a, $e0
+	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ret
+
+Func_f9ec4:
+	ld de, $c800
+	ld a, $8
+.asm_f9ec9
+	push af
+	ld hl, Unkn_f9ed8
+	ld bc, $20
+	call Func_f9faa
+	pop af
+	dec a
+	jr nz, .asm_f9ec9
+	ret
+
+Unkn_f9ed8:
+	dr $f9ed8,$f9ef8
+
+Func_f9ef8:
+	ld a, $10
+	ld [H_VBCOPYSRC], a
+	ld a, $c8
+	ld [$ffc8], a
+	ld a, $10
+	ld [H_VBCOPYDEST], a
+	ld a, $c7
+	ld [$ffca], a
+	ld a, $7
+	ld [H_VBCOPYSIZE], a
+	ret
+
+Func_f9f0d:
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld [hSCX], a
+	ld [hSCY], a
+	ld [H_AUTOBGTRANSFERDEST], a
+	ld a, $98
+	ld [$ffbd], a
+	call Func_f9f9e
+	ld hl, wTileMap
+	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld a, $1
+	call Func_f9fb3
+	coord hl, 0, 4
+	ld bc, CopyVideoDataAlternate
+	xor a
+	call Func_f9fb3
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	call DelayFrame
+	call DelayFrame
+	call DelayFrame
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	ld de, $6b5a
+	ld hl, $8000
+	ld bc, $3eff
+	call CopyVideoData
+	ld de, $635a
+	ld hl, $9000
+	ld bc, $3e80
+	call CopyVideoData
+	call Func_fbb5a
+	call Func_f9f75
+	ld b, $8
+	call RunPaletteCommand
+	xor a
+	ld hl, $c634
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld a, MUSIC_INTRO_BATTLE
+	ld c, BANK(Music_IntroBattle)
+	call PlayMusic
+	ret
+
+Func_f9f75:
+	ld a, Unkn_f9fda % $100
+	ld [$c5c0], a
+	ld a, Unkn_f9fda / $100
+	ld [$c5c1], a
+	ld a, Unkn_f9ffb % $100
+	ld [$c5c4], a
+	ld a, Unkn_f9ffb / $100
+	ld [$c5c5], a
+	ld a, Unkn_fa13d % $100
+	ld [$c5c6], a
+	ld a, Unkn_fa13d / $100
+	ld [$c5c7], a
+	ld a, Unkn_fa0ea % $100
+	ld [$c5c2], a
+	ld a, Unkn_fa0ea / $100
+	ld [$c5c3], a
+	ret
+
+Func_f9f9e:
+	ld hl, wTileMap
+	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld a, $7f
+	call Func_f9fb3
+	ret
+
+Func_f9faa:
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec bc
+	ld a, c
+	or b
+	jr nz, Func_f9faa
+	ret
+
+Func_f9fb3:
+	push de
+	ld e, a
+.asm_f9fb5
+	ld a, e
+	ld [hli], a
+	dec bc
+	ld a, c
+	or b
+	jr nz, .asm_f9fb5
+	pop de
+	ret
+
+Func_f9fbe:
+	ld hl, wSpriteDataEnd
+	ld bc, $a0
+	xor a
+	call Func_f9fb3
+	ret
+
+Func_f9fc9:
+	xor a
+	ld [rBGP], a
+	ld [rOBP0], a
+	ld [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
+	ret
+
+Unkn_f9fda:
+	dr $f9fda,$f9ffb
+Unkn_f9ffb:
+	dr $f9ffb,$fa008
+
+Func_fa008:
+	ld hl, $4
+	add hl, bc
+	ld a, [hl]
+	cp $58
+	ret z
+	sub $4
+	ld [hl], a
+	ret
+
+Func_fa014:
+	ld hl, $4
+	add hl, bc
+	ld a, [hl]
+	cp $58
+	jr z, .asm_fa020
+	add $4
+	ld [hl], a
+.asm_fa020
+	ld hl, $5
+	add hl, bc
+	cp $58
+	ret z
+	add $1
+	ld [hl], a
+	ret
+
+Func_fa02b:
+	ld hl, $b
+	add hl, bc
+	ld e, [hl]
+	ld d, $0
+	ld hl, Jumptable_fa03b
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl]
+
+Jumptable_fa03b:
+	dw Func_fa03f
+	dw Func_fa051
+
+Func_fa03f:
+	ld hl, $5
+	add hl, bc
+	ld a, [hl]
+	cp $58
+	jr z, .asm_fa04c
+	sub $2
+	ld [hl], a
+	ret
+
+.asm_fa04c
+	ld hl, $b
+	add hl, bc
+	inc [hl]
+Func_fa051:
+	ld hl, $c
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	ld d, $8
+	call Func_fa079
+	ld hl, $7
+	add hl, bc
+	ld [hl], a
+	ret
+
+Func_fa062:
+	ld hl, $b
+	add hl, bc
+	ld a, [hl]
+	ld hl, $4
+	add hl, bc
+	add [hl]
+	ld [hl], a
+	ret
+
+Func_fa06e:
+	ld e, a
+	ld d, $0
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ret
+
+Func_fa077: ; cosine
+	add $10
+Func_fa079:
+	and $3f
+	cp $20
+	jr nc, .asm_fa084
+	call Func_fa08e
+	ld a, h
+	ret
+
+.asm_fa084
+	and $1f
+	call Func_fa08e
+	ld a, h
+	xor $ff
+	inc a
+	ret
+
+Func_fa08e:
+	ld e, a
+	ld a, d
+	ld d, $0
+	ld hl, Unkn_fa0aa
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld hl, $0
+.asm_fa09d
+	srl a
+	jr nc, .asm_fa0a2
+	add hl, de
+.asm_fa0a2
+	sla e
+	rl d
+	and a
+	jr nz, .asm_fa09d
+	ret
+
+Unkn_fa0aa:
+	sine_wave $100
+
+Unkn_fa0ea:
+	dr $fa0ea,$fa13d
+
+Unkn_fa13d:
+	dr $fa13d,$fa35a
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
@@ -2805,11 +3848,389 @@ Func_fbb5a: ; fbb5a (3e:7b5a)
 	call FillMemory
 	ret
 
-Func_fbb65: ; fbb65 (3e:7b65)
-	dr $fbb65,$fbb93
+Func_fbb65:
+	ld hl, $c51c
+	ld e, $a
+.asm_fbb6a
+	ld a, [hl]
+	and a
+	jr z, .asm_fbb7c
+	ld c, l
+	ld b, h
+	push hl
+	push de
+	call Func_fbd61
+	call Func_fbbfe
+	pop de
+	pop hl
+	jr c, .asm_fbb92
+.asm_fbb7c
+	ld bc, $10
+	add hl, bc
+	dec e
+	jr nz, .asm_fbb6a
+	ld a, [$c5bd]
+	ld l, a
+	ld h, $c3
+.asm_fbb89
+	ld a, l
+	cp $a0
+	jr nc, .asm_fbb92
+	xor a
+	ld [hli], a
+	jr .asm_fbb89
+
+.asm_fbb92
+	ret
+
 Func_fbb93:
-	dr $fbb93,$fbbe8
+	push de
+	push af
+	ld hl, $c51c
+	ld e, $a
+.asm_fbb9a
+	ld a, [hl]
+	and a
+	jr z, .asm_fbba9
+	ld bc, $10
+	add hl, bc
+	dec e
+	jr nz, .asm_fbb9a
+	pop af
+	pop de
+	scf
+	ret
+
+.asm_fbba9
+	pop af
+	ld c, l
+	ld b, h
+	ld hl, $c5bc
+	inc [hl]
+	ld e, a
+	ld d, $0
+	ld a, [$c5c0]
+	ld l, a
+	ld a, [$c5c1]
+	ld h, a
+	add hl, de
+	add hl, de
+	add hl, de
+	ld e, l
+	ld d, h
+	ld hl, $0
+	add hl, bc
+	ld a, [$c5bc]
+	ld [hli], a
+	ld a, [de]
+	ld [hli], a
+	inc de
+	ld a, [de]
+	ld [hli], a
+	inc de
+	xor a
+	ld [hli], a
+	pop de
+	ld hl, $4
+	add hl, bc
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	xor a
+	ld [hli], a
+	ld [hli], a
+	xor a
+	ld [hli], a
+	ld [hli], a
+	dec a
+	ld [hli], a
+	xor a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ret
+
 Func_fbbe8:
-	dr $fbbe8,$fbcd4
+	ld hl, $0
+	add hl, bc
+	ld [hl], $0
+	ret
+
+Func_fbbef:
+	ld hl, $c51c
+	ld e, $a
+.asm_fbbf4
+	ld [hl], $0
+	ld bc, $10
+	add hl, bc
+	dec e
+	jr nz, .asm_fbbf4
+	ret
+
+Func_fbbfe:
+	xor a
+	ld [$c5c8], a
+	ld hl, $3
+	add hl, bc
+	ld a, [hli]
+	ld [$c5c9], a
+	ld a, [hli]
+	ld [$c5ca], a
+	ld a, [hli]
+	ld [$c5cb], a
+	ld a, [hli]
+	ld [$c5cc], a
+	ld a, [hl]
+	ld [$c5cd], a
+	call Func_fbcec
+	cp $fd
+	jr z, .asm_fbc8d
+	cp $fc
+	jr z, .asm_fbc8a
+	call Func_fbcc5
+	ld a, [$c5c9]
+	add [hl]
+	ld [$c5c9], a
+	inc hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	push bc
+	ld a, [$c5bd]
+	ld e, a
+	ld d, $c3
+	ld a, [hli]
+	ld c, a
+.asm_fbc3c
+	ld a, [$c5cb]
+	ld b, a
+	ld a, [$c5cd]
+	add b
+	ld b, a
+	ld a, [$c5ce]
+	add b
+	ld b, a
+	call Func_fbc92
+	add b
+	ld [de], a
+	inc hl
+	inc de
+	ld a, [$c5ca]
+	ld b, a
+	ld a, [$c5cc]
+	add b
+	ld b, a
+	ld a, [$c5cf]
+	add b
+	ld b, a
+	call Func_fbca2
+	add b
+	ld [de], a
+	inc hl
+	inc de
+	ld a, [$c5c9]
+	add [hl]
+	ld [de], a
+	inc hl
+	inc de
+	call Func_fbcb2
+	ld b, a
+	ld a, [$c634]
+	cp $7
+	ld a, b
+	jr z, .asm_fbc7a
+	ld [de], a
+.asm_fbc7a
+	inc hl
+	inc de
+	ld a, e
+	ld [$c5bd], a
+	cp $a0
+	jr nc, .asm_fbc8f
+	dec c
+	jr nz, .asm_fbc3c
+	pop bc
+	jr .asm_fbc8d
+
+.asm_fbc8a
+	call Func_fbbe8
+.asm_fbc8d
+	and a
+	ret
+
+.asm_fbc8f
+	pop bc
+	scf
+	ret
+
+Func_fbc92:
+	push hl
+	ld a, [hl]
+	ld hl, $c5c8
+	bit 6, [hl]
+	jr z, .asm_fbca0
+	add $8
+	xor $ff
+	inc a
+.asm_fbca0
+	pop hl
+	ret
+
+Func_fbca2:
+	push hl
+	ld a, [hl]
+	ld hl, $c5c8
+	bit 5, [hl]
+	jr z, .asm_fbcb0
+	add $8
+	xor $ff
+	inc a
+.asm_fbcb0
+	pop hl
+	ret
+
+Func_fbcb2:
+	ld a, [$c5c8]
+	ld b, a
+	ld a, [hl]
+	xor b
+	and $e0
+	ld b, a
+	ld a, [hl]
+	and $10
+	or b
+	bit 4, a
+	ret z
+	or $4
+	ret
+
+Func_fbcc5:
+	ld e, a
+	ld d, $0
+	ld a, [$c5c6]
+	ld l, a
+	ld a, [$c5c7]
+	ld h, a
+	add hl, de
+	add hl, de
+	add hl, de
+	ret
+
 Func_fbcd4:
-	dr $fbcd4,$fbd76
+	ld hl, $1
+	add hl, bc
+	ld [hl], a
+	ld hl, $8
+	add hl, bc
+	ld [hl], $0
+	ld hl, $9
+	add hl, bc
+	ld [hl], $0
+	ld hl, $a
+	add hl, bc
+	ld [hl], $ff
+	ret
+
+Func_fbcec:
+	ld hl, $8
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .asm_fbcfc
+	dec [hl]
+	call Func_fbd43
+	ld a, [hli]
+	push af
+	jr .asm_fbd1d
+
+.asm_fbcfc
+	ld hl, $a
+	add hl, bc
+	inc [hl]
+	call Func_fbd43
+	ld a, [hli]
+	cp $fe
+	jr z, .asm_fbd35
+	cp $ff
+	jr z, .asm_fbd27
+	push af
+	ld a, [hl]
+	push hl
+	and $3f
+	ld hl, $9
+	add hl, bc
+	add [hl]
+	ld hl, $8
+	add hl, bc
+	ld [hl], a
+	pop hl
+.asm_fbd1d
+	ld a, [hl]
+	and $c0
+	srl a
+	ld [$c5c8], a
+	pop af
+	ret
+
+.asm_fbd27
+	xor a
+	ld hl, $8
+	add hl, bc
+	ld [hl], a
+	ld hl, $a
+	add hl, bc
+	dec [hl]
+	dec [hl]
+	jr Func_fbcec
+
+.asm_fbd35
+	xor a
+	ld hl, $8
+	add hl, bc
+	ld [hl], a
+	dec a
+	ld hl, $a
+	add hl, bc
+	ld [hl], a
+	jr Func_fbcec
+
+Func_fbd43:
+	ld hl, $1
+	add hl, bc
+	ld e, [hl]
+	ld d, $0
+	ld a, [$c5c2]
+	ld l, a
+	ld a, [$c5c3]
+	ld h, a
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld hl, $a
+	add hl, bc
+	ld l, [hl]
+	ld h, $0
+	add hl, hl
+	add hl, de
+	ret
+
+Func_fbd61:
+	ld hl, $2
+	add hl, bc
+	ld e, [hl]
+	ld d, $0
+	ld a, [$c5c4]
+	ld l, a
+	ld a, [$c5c5]
+	ld h, a
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp [hl]

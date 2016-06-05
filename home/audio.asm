@@ -88,6 +88,7 @@ CheckForNoBikingMusicMap:: ; 21c8 (0:21c8)
 
 UpdateMusic6Times:: ; 21e3 (0:21e3)
 	ld c, $6
+UpdateMusicCTimes::
 .loop
 	push bc
 	push hl
