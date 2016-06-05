@@ -65,7 +65,7 @@ Func_f807a:
 	ld b, $e
 	call RunPaletteCommand
 .asm_f8085
-	ld a, [$c5d1]
+	ld a, [wc5d1]
 	bit 7, a
 	ret nz
 	call Func_f923f
@@ -73,7 +73,7 @@ Func_f807a:
 	ret nz
 	call Func_f8282
 	ld a, $3c
-	ld [$c5bd], a
+	ld [wc5bd], a
 	call Func_fbb65
 	call Func_f8848
 	call Func_f80a8
@@ -96,14 +96,14 @@ Func_f80b7:
 	ld a, [hJoyPressed]
 	and $8
 	ret z
-	ld hl, $c5e2
+	ld hl, wc5e2
 	ld a, [hl]
 	xor $1
 	ld [hl], a
 	ret
 
 Func_f80c4:
-	ld a, [$c634]
+	ld a, [wc634]
 	and a
 	ret z
 	ld hl, wChannelNoteDelayCounters
@@ -116,9 +116,9 @@ Func_f80c4:
 	inc hl
 	cp [hl]
 	ret nz
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld e, a
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	and $3
 	ld d, a
 	sla e
@@ -166,39 +166,42 @@ Func_f8116:
 	ld bc, $67
 	xor a
 	call FillMemory
-	ld hl, $c700
+	ld hl, wc700
 	ld bc, $200
 	xor a
 	call FillMemory
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_fbb5a
-	ld hl, $4f14
+
+	ld hl, SurfingPikachu1Graphics
 	ld de, $9000
 	ld bc, $500
-	ld a, $20
+	ld a, BANK(SurfingPikachu1Graphics)
 	call FarCopyData
-	ld hl, $5324
+
+	ld hl, SurfingPikachu1Graphics + $410
 	ld de, $8000
 	ld bc, $1000
-	ld a, $20
+	ld a, BANK(SurfingPikachu1Graphics)
 	call FarCopyData
-	ld a, $d3
-	ld [$c5c0], a
-	ld a, $53
-	ld [$c5c1], a
-	ld a, $fa
-	ld [$c5c4], a
-	ld a, $53
-	ld [$c5c5], a
-	ld a, $7
-	ld [$c5c6], a
-	ld a, $55
-	ld [$c5c7], a
-	ld a, $5
-	ld [$c5c2], a
-	ld a, $54
-	ld [$c5c3], a
+
+	ld a, Unkn_f93d3 % $100
+	ld [wc5c0], a
+	ld a, Unkn_f93d3 / $100
+	ld [wc5c0 + 1], a
+	ld a, Unkn_f93fa % $100
+	ld [wc5c4], a
+	ld a, Unkn_f93fa / $100
+	ld [wc5c4 + 1], a
+	ld a, Unkn_f9507 % $100
+	ld [wc5c6], a
+	ld a, Unkn_f9507 / $100
+	ld [wc5c6 + 1], a
+	ld a, Unkn_f9405 % $100
+	ld [wc5c2], a
+	ld a, Unkn_f9405 / $100
+	ld [wc5c2 + 1], a
 	ld hl, $9800
 	ld bc, $800
 	ld a, $0
@@ -211,7 +214,7 @@ Func_f8116:
 	lb de, $74, $58
 	call Func_fbb93
 	ld a, $74
-	ld [$c5ea], a
+	ld [wc5ea], a
 	call Func_f9223
 	xor a
 	ld [hSCX], a
@@ -221,14 +224,14 @@ Func_f8116:
 	ld a, $42
 	ld [hLCDCPointer], a
 	ld a, $40
-	ld [$c5e3], a
+	ld [wc5e3], a
 	xor a
-	ld [$c5e4], a
+	ld [wc5e3 + 1], a
 	xor a
-	ld [$c5d6], a
+	ld [wc5d6], a
 	ld a, $60
-	ld [$c5d7], a
-	ld hl, $c61a
+	ld [wc5d7], a
+	ld hl, wc61a
 	ld bc, $14
 	ld a, $74
 	call FillMemory
@@ -359,7 +362,7 @@ Unkn_f8279:
 	db $19
 
 Func_f8282:
-	ld a, [$c5d1]
+	ld a, [wc5d1]
 	ld e, a
 	ld d, $0
 	ld hl, Jumptable_f8291
@@ -389,23 +392,23 @@ Func_f82ab:
 	ld a, $2
 	lb de, $48, $e0
 	call Func_fbb93
-	ld hl, $c5d1
+	ld hl, wc5d1
 	inc [hl]
 	ld a, $1
-	ld [$c634], a
+	ld [wc634], a
 	ret
 
 Func_f82bd:
-	ld a, [$c5e5]
+	ld a, [wc5e5]
 	cp $18
 	jr nc, .asm_f82e8
-	ld hl, $c5d6
+	ld hl, wc5d6
 	ld a, [hli]
 	or [hl]
 	and a
 	jr z, .asm_f82f6
 	call Random
-	ld [$c5d5], a
+	ld [wc5d5], a
 	call Func_f9210
 	call Func_f88ae
 	call Func_f886b
@@ -416,23 +419,23 @@ Func_f82bd:
 	ret
 
 .asm_f82e8
-	ld hl, $c5d1
+	ld hl, wc5d1
 	inc [hl]
 	xor a
-	ld [$c634], a
+	ld [wc634], a
 	ld a, $c0
-	ld [$c632], a
+	ld [wc632], a
 	ret
 
 .asm_f82f6
 	ld a, $1
 Func_f82f8:
-	ld [$c630], a
+	ld [wc630], a
 	ld a, $c
-	ld [$c5d1], a
+	ld [wc5d1], a
 Func_f8300:
 	ld a, $80
-	ld [$c631], a
+	ld [wc631], a
 	ld a, $b
 	lb de, $88, $58
 	call Func_fbb93
@@ -446,14 +449,14 @@ Func_f8300:
 	add hl, bc
 	ld [hl], $30
 	xor a
-	ld [$c634], a
+	ld [wc634], a
 	ret
 
 Func_f8324:
 	call Func_f8440
 	jr c, .asm_f833d
 	xor a
-	ld [$c5d5], a
+	ld [wc5d5], a
 	call Func_f9210
 	call Func_f88ae
 	call Func_f886b
@@ -462,19 +465,19 @@ Func_f8324:
 	ret
 
 .asm_f833d
-	ld hl, $c5d1
+	ld hl, wc5d1
 	inc [hl]
 	ld a, $90
 	ld [hSCX], a
 	ld a, $72
-	ld [$c5d3], a
+	ld [wc5d3], a
 	ld a, $4
-	ld [$c5d2], a
+	ld [wc5d2], a
 	xor a
 	ld [hLCDCPointer], a
-	ld [$c617], a
-	ld [$c618], a
-	ld [$c619], a
+	ld [wc617], a
+	ld [wc618], a
+	ld [wc619], a
 	ret
 
 Func_f835c:
@@ -491,25 +494,25 @@ Func_f835c:
 	dec a
 	ld [hSCX], a
 	ld a, $e0
-	ld [$c62e], a
+	ld [wc62e], a
 	call Func_f8cc7
 	ret
 
 .asm_f837b
 	xor a
-	ld [$c5e3], a
-	ld [$c5e4], a
-	ld hl, $c5d1
+	ld [wc5e3], a
+	ld [wc5e3 + 1], a
+	ld hl, wc5d1
 	inc [hl]
 	ld a, $5
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ret
 
 Func_f838c:
 	call Func_f891e
 	ld a, $20
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -518,8 +521,8 @@ Func_f8399:
 	ret nc
 	call Func_f8a92
 	ld a, $40
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -528,8 +531,8 @@ Func_f83aa:
 	ret nc
 	call Func_f8ae4
 	ld a, $40
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -538,8 +541,8 @@ Func_f83bb:
 	ret nc
 	call Func_f8b7a
 	ld a, $40
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -552,8 +555,8 @@ Func_f83cc:
 	pop af
 	ret nc
 	ld a, $40
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -566,22 +569,22 @@ Func_f83e3:
 	pop af
 	ret nc
 	ld a, $80
-	ld [$c632], a
-	ld hl, $c5d1
+	ld [wc632], a
+	ld hl, wc5d1
 	inc [hl]
 	call Func_f8b92
 	ret nc
 	call Func_f8a7c
 Func_f83ff:
 	ld a, $6
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ret
 
 Func_f8406:
 	call Func_f8440
 Func_f8408:
 	ret nc
-	ld hl, $c5d1
+	ld hl, wc5d1
 	inc [hl]
 	ret
 
@@ -590,7 +593,7 @@ Func_f840f:
 	ld a, [hJoyPressed]
 	and $1
 	ret z
-	ld hl, $c5d1
+	ld hl, wc5d1
 	set 7, [hl]
 	ret
 
@@ -600,7 +603,7 @@ Func_f841d:
 	call Func_f886b
 	call Func_f8cb0
 	call Func_f80ff
-	ld hl, $c631
+	ld hl, wc631
 	ld a, [hl]
 	and a
 	jr z, .asm_f8435
@@ -611,12 +614,12 @@ Func_f841d:
 	ld a, [hJoyPressed]
 	and $1
 	ret z
-	ld hl, $c5d1
+	ld hl, wc5d1
 	set 7, [hl]
 	ret
 
 Func_f8440:
-	ld hl, $c632
+	ld hl, wc632
 	ld a, [hl]
 	and a
 	jr z, .asm_f844a
@@ -629,21 +632,21 @@ Func_f8440:
 	ret
 
 Func_f844c:
-	ld a, [$c5e6]
+	ld a, [wc5e6]
 	ld h, a
-	ld a, [$c5e7]
+	ld a, [wc5e7]
 	ld l, a
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld e, a
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	ld d, a
 	add hl, de
 	ld a, h
-	ld [$c5e6], a
+	ld [wc5e6], a
 	ld a, l
-	ld [$c5e7], a
+	ld [wc5e7], a
 	ret nc
-	ld hl, $c5e5
+	ld hl, wc5e5
 	inc [hl]
 	ld hl, wOAMBuffer + 4 * 4 + 1
 	dec [hl]
@@ -651,7 +654,7 @@ Func_f844c:
 	ret
 
 Func_f8470
-	ld a, [$c5d2]
+	ld a, [wc5d2]
 	ld e, a
 	ld d, $0
 	ld hl, Jumptable_f847f
@@ -672,11 +675,11 @@ Jumptable_f847f:
 	dw Func_f8579
 
 Func_f848d:
-	ld a, [$c630]
+	ld a, [wc630]
 	and a
 	jr nz, .asm_f84d2
 	call Func_f87b5
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld hl, $5
 	add hl, bc
 	ld [hl], a
@@ -689,7 +692,7 @@ Func_f848d:
 .asm_f84aa
 	call Func_f8742
 	ld a, $1
-	ld [$c5d2], a
+	ld [wc5d2], a
 	xor a
 	ld hl, $c
 	add hl, bc
@@ -700,8 +703,8 @@ Func_f848d:
 	ld hl, $e
 	add hl, bc
 	ld [hl], a
-	ld [$c5d9], a
-	ld [$c62f], a
+	ld [wc5d9], a
+	ld [wc62f], a
 	xor a
 	ld [wChannelSoundIDs + CH7], a
 	ld a, $91
@@ -710,10 +713,10 @@ Func_f848d:
 
 .asm_f84d2
 	xor a
-	ld [$c5e3], a
-	ld [$c5e4], a
+	ld [wc5e3], a
+	ld [wc5e3 + 1], a
 	ld a, $4
-	ld [$c5d2], a
+	ld [wc5d2], a
 	call Func_f8742
 	ret
 
@@ -728,14 +731,14 @@ Func_f84e2:
 	add hl, bc
 	ld [hl], $0
 	ld a, $2
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ret
 
 .asm_f84fd
 	ld a, $3
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ld a, $60
-	ld [$c5e1], a
+	ld [wc5e1], a
 	ld a, $10
 	call Func_fbcd4
 	xor a
@@ -760,7 +763,7 @@ Func_f8516:
 	add hl, bc
 	ld [hl], a
 	call Func_f87b5
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld hl, $5
 	add hl, bc
 	ld [hl], a
@@ -771,16 +774,16 @@ Func_f8516:
 	add hl, bc
 	ld [hl], $0
 	ld a, $0
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ret
 
 Func_f8545:
-	ld hl, $c5e1
+	ld hl, wc5e1
 	ld a, [hl]
 	and a
 	jr z, .asm_f8556
 	dec [hl]
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld hl, $5
 	add hl, bc
 	ld [hl], a
@@ -788,13 +791,13 @@ Func_f8545:
 
 .asm_f8556
 	ld a, $0
-	ld [$c5d2], a
+	ld [wc5d2], a
 	ld a, $4
 	call Func_fbcd4
 	ret
 
 Func_f8561:
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld hl, $5
 	add hl, bc
 	ld [hl], a
@@ -852,7 +855,7 @@ Func_f8598:
 	cp $b
 	jr c, .asm_f85be
 	call Func_f85f2
-	ld hl, $c62f
+	ld hl, wc62f
 	set 0, [hl]
 .asm_f85be
 	ld hl, $1
@@ -878,7 +881,7 @@ Func_f8598:
 	cp $d
 	jr c, .asm_f85e4
 	call Func_f85f2
-	ld hl, $c62f
+	ld hl, wc62f
 	set 1, [hl]
 .asm_f85e4
 	ld hl, $1
@@ -909,7 +912,7 @@ Func_f85f2:
 Func_f8606:
 	ld hl, $1
 	add hl, bc
-	ld a, [$c5ef]
+	ld a, [wc5ef]
 	cp $6
 	jr z, .asm_f863d
 	cp $14
@@ -1005,73 +1008,73 @@ Func_f8606:
 
 .asm_f86ad
 	ld a, $40
-	ld [$c5e3], a
+	ld [wc5e3], a
 	xor a
-	ld [$c5e4], a
+	ld [wc5e3 + 1], a
 	scf
 	ret
 
 Func_f86b8:
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	cp $2
 	ret nc
 	ld h, a
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld l, a
 	ld de, $2
 	add hl, de
 	ld a, h
-	ld [$c5e4], a
+	ld [wc5e3 + 1], a
 	ld a, l
-	ld [$c5e3], a
+	ld [wc5e3], a
 	ret
 
 Func_f86d0:
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	and a
 	jr nz, .asm_f86e2
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	cp $40
 	jr nc, .asm_f86e2
 	xor a
-	ld [$c5e3], a
+	ld [wc5e3], a
 	ret
 
 .asm_f86e2
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	ld h, a
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld l, a
 	ld de, $ffc0
 	add hl, de
 	ld a, h
-	ld [$c5e4], a
+	ld [wc5e3 + 1], a
 	ld a, l
-	ld [$c5e3], a
+	ld [wc5e3], a
 	ret
 
 Func_f86f7:
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	and a
 	jr nz, .asm_f8709
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	cp $80
 	jr nc, .asm_f8709
 	xor a
-	ld [$c5e3], a
+	ld [wc5e3], a
 	ret
 
 .asm_f8709
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	ld h, a
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld l, a
 	ld de, $ff80
 	add hl, de
 	ld a, h
-	ld [$c5e4], a
+	ld [wc5e3 + 1], a
 	ld a, l
-	ld [$c5e3], a
+	ld [wc5e3], a
 	ret
 
 Func_f871e:
@@ -1081,13 +1084,13 @@ Func_f871e:
 	jr c, .asm_f8740
 	cp $5
 	jr nc, .asm_f8740
-	ld a, [$c5ef]
+	ld a, [wc5ef]
 	cp $14
 	jr nz, .asm_f8740
 	call Func_f87a8
 	cp $a
 	jr c, .asm_f8740
-	ld [$c5ec], a
+	ld [wc5ec], a
 	call Func_f9284
 	scf
 	ret
@@ -1103,7 +1106,7 @@ Func_f8742:
 	ret c
 	cp $5
 	ret nc
-	ld a, [$c5ef]
+	ld a, [wc5ef]
 	cp $6
 	jr z, .asm_f8766
 	cp $14
@@ -1125,7 +1128,7 @@ Func_f8742:
 	ld a, $2
 .asm_f876c
 	ld e, a
-	ld a, [$c5de]
+	ld a, [wc5de]
 	dec a
 	add e
 	ld hl, $1
@@ -1134,43 +1137,43 @@ Func_f8742:
 	ret
 
 Func_f8778:
-	ld hl, $c5e0
+	ld hl, wc5e0
 	ld a, [hl]
 	inc [hl]
 	and $7
 	ret nz
-	ld a, [$c5df]
+	ld a, [wc5df]
 	and a
 	jr z, .asm_f8796
-	ld a, [$c5de]
+	ld a, [wc5de]
 	and a
 	jr z, .asm_f8791
 	dec a
-	ld [$c5de], a
+	ld [wc5de], a
 	ret
 
 .asm_f8791
 	xor a
-	ld [$c5df], a
+	ld [wc5df], a
 	ret
 
 .asm_f8796
-	ld a, [$c5de]
+	ld a, [wc5de]
 	cp $2
 	jr z, .asm_f87a2
 	inc a
-	ld [$c5de], a
+	ld [wc5de], a
 	ret
 
 .asm_f87a2
 	ld a, $1
-	ld [$c5df], a
+	ld [wc5df], a
 	ret
 
 Func_f87a8:
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld l, a
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	ld h, a
 	add hl, hl
 	add hl, hl
@@ -1179,7 +1182,7 @@ Func_f87a8:
 	ret
 
 Func_f87b5:
-	ld hl, $c5eb
+	ld hl, wc5eb
 	ld a, [hl]
 	inc [hl]
 	and $3
@@ -1199,13 +1202,13 @@ Func_f87ce:
 	ld a, [hSCX]
 	and $8
 	jr nz, .asm_f87d9
-	ld hl, $c622
+	ld hl, wc622
 	jr .asm_f87dc
 
 .asm_f87d9
-	ld hl, $c623
+	ld hl, wc623
 .asm_f87dc
-	ld a, [$c5f0]
+	ld a, [wc5f0]
 	cp $6
 	jr z, .asm_f87ed
 	cp $14
@@ -1284,21 +1287,21 @@ Func_f882b:
 
 .asm_f883f
 	ld a, $1
-	ld [$c633], a
+	ld [wc633], a
 	call Func_fbbe8
 	ret
 
 Func_f8848:
-	ld a, [$c635]
+	ld a, [wc635]
 	ld e, a
 	ld d, $0
-	ld a, [$c5e3]
+	ld a, [wc5e3]
 	ld l, a
-	ld a, [$c5e4]
+	ld a, [wc5e3 + 1]
 	ld h, a
 	add hl, de
 	ld a, l
-	ld [$c635], a
+	ld [wc635], a
 	ld d, h
 	ld hl, wOAMBuffer + 5 * 4 + 1
 	ld e, $9
@@ -1314,7 +1317,7 @@ Func_f8848:
 	ret
 
 Func_f886b:
-	ld a, [$c5ef]
+	ld a, [wc5ef]
 	ld a, [hSCX]
 	add $48
 	ld e, a
@@ -1324,7 +1327,7 @@ Func_f886b:
 	ld d, $0
 	ld hl, $9800
 	add hl, de
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	srl a
 	srl a
 	srl a
@@ -1343,7 +1346,7 @@ Func_f886b:
 	jr .asm_f8889
 
 .asm_f889a
-	ld de, $c5ef
+	ld de, wc5ef
 	ld a, e
 	ld [H_VBCOPYDEST], a
 	ld a, d
@@ -1360,13 +1363,13 @@ Func_f88ae:
 	ld a, [hSCX]
 	and $8
 	jr nz, .asm_f88b9
-	ld hl, $c621
+	ld hl, wc621
 	jr .asm_f88bc
 
 .asm_f88b9
-	ld hl, $c622
+	ld hl, wc622
 .asm_f88bc
-	ld a, [$c5ef]
+	ld a, [wc5ef]
 	cp $6
 	jr z, .asm_f88d0
 	cp $14
@@ -1374,7 +1377,7 @@ Func_f88ae:
 	cp $7
 	jr z, .asm_f88db
 	ld a, [hl]
-	ld [$c5ea], a
+	ld [wc5ea], a
 	ret
 
 .asm_f88d0
@@ -1383,18 +1386,18 @@ Func_f88ae:
 	ld e, a
 	ld a, [hl]
 	sub e
-	ld [$c5ea], a
+	ld [wc5ea], a
 	ret
 
 .asm_f88db
 	ld a, [hSCX]
 	and $7
 	add [hl]
-	ld [$c5ea], a
+	ld [wc5ea], a
 	ret
 
 Func_f88e4:
-	ld hl, $c5d6
+	ld hl, wc5d6
 	ld e, $99
 	call Func_f88f0
 	ret nc
@@ -1416,7 +1419,7 @@ Func_f88f0:
 	ret
 
 Func_f88fd:
-	ld de, $c5d7
+	ld de, wc5d7
 	ld hl, wOAMBuffer + 0 * 4 + 2
 	ld a, [de]
 	call Func_f890b
@@ -1535,7 +1538,7 @@ Func_f8aa9:
 	ld c, $63
 .asm_f8aab
 	push bc
-	ld hl, $c5d6
+	ld hl, wc5d6
 	ld a, [hli]
 	or [hl]
 	and a
@@ -1561,7 +1564,7 @@ Func_f8aa9:
 
 Func_f8aca:
 	coord hl, 10, 2
-	ld de, $c5d7
+	ld de, wc5d7
 	ld a, [de]
 	call Func_f9350
 	inc hl
@@ -1591,7 +1594,7 @@ Func_f8afb:
 	ld c, $63
 .asm_f8afd
 	push bc
-	ld hl, $c5da
+	ld hl, wc5da
 	ld a, [hli]
 	ld e, a
 	or [hl]
@@ -1623,10 +1626,10 @@ Func_f8afb:
 	ret
 
 Func_f8b25:
-	ld a, [$c5db]
+	ld a, [wc5db]
 	coord hl, 10, 4
 	call Func_f9350
-	ld a, [$c5da]
+	ld a, [wc5da]
 	coord hl, 12, 4
 	call Func_f9350
 	inc hl
@@ -1639,25 +1642,25 @@ Func_f8b25:
 	ret
 
 Func_f8b42:
-	ld a, [$c5dc]
+	ld a, [wc5dc]
 	add e
 	daa
-	ld [$c5dc], a
-	ld a, [$c5dd]
+	ld [wc5dc], a
+	ld a, [wc5dd]
 	adc $0
 	daa
-	ld [$c5dd], a
+	ld [wc5dd], a
 	ret nc
 	ld a, $99
-	ld [$c5dc], a
-	ld [$c5dd], a
+	ld [wc5dc], a
+	ld [wc5dd], a
 	ret
 
 Func_f8b5d:
-	ld a, [$c5dd]
+	ld a, [wc5dd]
 	coord hl, 10, 6
 	call Func_f9350
-	ld a, [$c5dc]
+	ld a, [wc5dc]
 	coord hl, 12, 6
 	call Func_f9350
 	inc hl
@@ -1683,12 +1686,12 @@ Tilemap_f8b8d:
 	
 Func_f8b92:
 	ld hl, wd496
-	ld a, [$c5dd]
+	ld a, [wc5dd]
 	cp [hl]
 	jr c, .asm_f8ba6
 	jr nz, .asm_f8bb0
 	dec hl
-	ld a, [$c5dc]
+	ld a, [wc5dc]
 	cp [hl]
 	jr c, .asm_f8ba6
 	jr nz, .asm_f8bb0
@@ -1700,9 +1703,9 @@ Func_f8b92:
 	ret
 
 .asm_f8bb0
-	ld a, [$c5dc]
+	ld a, [wc5dc]
 	ld [wd495], a
-	ld a, [$c5dd]
+	ld a, [wc5dd]
 	ld [wd496], a
 	call WaitForSoundToFinish
 	ld e, $21
@@ -1721,24 +1724,24 @@ Func_f8bcb: ; f8bcb (3e:4bcb)
 	ret
 
 Func_f8bdf:
-	ld a, [$c5d9]
+	ld a, [wc5d9]
 	inc a
 	cp $4
 	jr c, .asm_f8be9
 	ld a, $3
 .asm_f8be9
-	ld [$c5d9], a
+	ld [wc5d9], a
 	ret
 
 Func_f8bed:
-	ld a, [$c5d9]
+	ld a, [wc5d9]
 	and a
 	ret z
-	ld a, [$c62f]
+	ld a, [wc62f]
 	and $3
 	cp $3
 	jr z, .asm_f8c2b
-	ld a, [$c5d9]
+	ld a, [wc5d9]
 	ld d, a
 	ld e, $1
 	ld a, $0
@@ -1762,7 +1765,7 @@ Func_f8bed:
 	ld hl, $4
 	add hl, bc
 	ld e, [hl]
-	ld a, [$c5d9]
+	ld a, [wc5d9]
 	add $3
 	push bc
 	call Func_fbb93
@@ -1770,7 +1773,7 @@ Func_f8bed:
 	ret
 
 .asm_f8c2b
-	ld a, [$c5d9]
+	ld a, [wc5d9]
 	cp $3
 	jr c, .asm_f8c53
 	ld a, $a
@@ -1819,67 +1822,67 @@ Func_f8bed:
 	ret
 
 Func_f8c7c:
-	ld a, [$c5da]
+	ld a, [wc5da]
 	add e
 	daa
-	ld [$c5da], a
-	ld a, [$c5db]
+	ld [wc5da], a
+	ld a, [wc5db]
 	adc $0
 	daa
-	ld [$c5db], a
+	ld [wc5db], a
 	ret nc
 	ld a, $99
-	ld [$c5da], a
-	ld [$c5db], a
+	ld [wc5da], a
+	ld [wc5db], a
 	ret
 
 Func_f8c97:
 	ld a, $a0
-	ld [$c62e], a
+	ld [wc62e], a
 	ld a, [hSCX]
 	ld h, a
-	ld a, [$c617]
+	ld a, [wc617]
 	ld l, a
 	ld de, $900
 	add hl, de
 	ld a, l
-	ld [$c617], a
+	ld [wc617], a
 	ld a, h
 	ld [hSCX], a
 	jr Func_f8cc7
 
 Func_f8cb0:
 	ld a, $a0
-	ld [$c62e], a
+	ld [wc62e], a
 	ld a, [hSCX]
 	ld h, a
-	ld a, [$c617]
+	ld a, [wc617]
 	ld l, a
 	ld de, $180
 	add hl, de
 	ld a, l
-	ld [$c617], a
+	ld [wc617], a
 	ld a, h
 	ld [hSCX], a
 Func_f8cc7:
-	ld hl, $c618
+	ld hl, wc618
 	ld a, [hSCX]
 	cp [hl]
 	ret z
 	ld [hl], a
 	and $f0
-	ld hl, $c619
+	ld hl, wc619
 	cp [hl]
 	ret z
 	ld [hl], a
 	call Func_f8d44
 	ld a, b
-	ld [$c5e8], a
+	ld [wc5e8], a
 	ld a, c
-	ld [$c5e9], a
+	ld [wc5e9], a
 	push de
-	ld hl, $c61a
-	ld de, $c61c
+	ld hl, wc61a
+	ld de, wc61c
 	ld c, $12
 .asm_f8ceb
 	ld a, [de]
@@ -1887,9 +1890,9 @@ Func_f8cc7:
 	ld [hli], a
 	dec c
 	jr nz, .asm_f8ceb
-	ld a, [$c5e8]
+	ld a, [wc5e8]
 	ld [hli], a
-	ld a, [$c5e9]
+	ld a, [wc5e9]
 	ld [hl], a
 	pop de
 	ld hl, wRedrawRowOrColumnSrcTiles
@@ -1900,7 +1903,7 @@ Func_f8cc7:
 	inc de
 	dec c
 	jr nz, .asm_f8cff
-	ld a, [$c62e]
+	ld a, [wc62e]
 	ld e, a
 	ld a, [hSCX]
 	add e
@@ -1948,7 +1951,7 @@ Func_f8d28:
 	ret
 
 Func_f8d44:
-	ld a, [$c5d3]
+	ld a, [wc5d3]
 	ld e, a
 	ld d, $0
 	ld hl, Jumptable_f8d53
@@ -2086,7 +2089,7 @@ Jumptable_f8d53:
 	dw Func_f8f8b
 
 Func_f8e4b:
-	ld a, [$c5e5]
+	ld a, [wc5e5]
 	cp $16
 	jr c, .asm_f8e5a
 	jr z, .asm_f8e56
@@ -2096,7 +2099,7 @@ Func_f8e4b:
 	jr .asm_f8e6b
 
 .asm_f8e5a
-	ld a, [$c5d5]
+	ld a, [wc5d5]
 	and a
 	jr z, .asm_f8e6e
 	dec a
@@ -2107,7 +2110,7 @@ Func_f8e4b:
 	add hl, de
 	ld a, [hl]
 .asm_f8e6b
-	ld [$c5d3], a
+	ld [wc5d3], a
 .asm_f8e6e
 	lb bc, $74, $74
 	ld de, Unkn_f973d
@@ -2283,17 +2286,17 @@ Func_f8f9d:
 
 Func_f8fa4:
 	inc a
-	ld [$c5d3], a
+	ld [wc5d3], a
 	ret
 
 Func_f8fa9:
-	ld hl, $c5d3
+	ld hl, wc5d3
 	inc [hl]
 	ret
 
 Func_f8fae:
 	xor a
-	ld [$c5d3], a
+	ld [wc5d3], a
 	ret
 
 Func_f8fb3:
@@ -2308,22 +2311,22 @@ Func_f8fb3:
 	ld bc, $900
 	ld a, $20
 	call FarCopyData
-	ld a, $d3
-	ld [$c5c0], a
-	ld a, $53
-	ld [$c5c1], a
-	ld a, $fa
-	ld [$c5c4], a
-	ld a, $53
-	ld [$c5c5], a
-	ld a, $7
-	ld [$c5c6], a
-	ld a, $55
-	ld [$c5c7], a
-	ld a, $5
-	ld [$c5c2], a
-	ld a, $54
-	ld [$c5c3], a
+	ld a, Unkn_f93d3 % $100
+	ld [wc5c0], a
+	ld a, Unkn_f93d3 / $100
+	ld [wc5c0 + 1], a
+	ld a, Unkn_f93fa % $100
+	ld [wc5c4], a
+	ld a, Unkn_f93fa / $100
+	ld [wc5c4 + 1], a
+	ld a, Unkn_f9507 % $100
+	ld [wc5c6], a
+	ld a, Unkn_f9507 / $100
+	ld [wc5c6 + 1], a
+	ld a, Unkn_f9405 % $100
+	ld [wc5c2], a
+	ld a, Unkn_f9405 / $100
+	ld [wc5c2 + 1], a
 	ld a, $c
 	lb de, $74, $58
 	call Func_fbb93
@@ -2354,13 +2357,13 @@ Func_f8fb3:
 	ld c, $20
 	call PlayMusic
 	xor a
-	ld [$c633], a
+	ld [wc633], a
 .asm_f9041
-	ld a, [$c633]
+	ld a, [wc633]
 	and a
 	ret nz
 	ld a, $0
-	ld [$c5bd], a
+	ld [wc5bd], a
 	call Func_fbb65
 	call DelayFrame
 	jr .asm_f9041
@@ -2431,11 +2434,9 @@ Tilemap_f91ac: INCBIN "gfx/unknown_f91ac.map"
 Tilemap_f91bb: INCBIN "gfx/unknown_f91bb.map"
 Tilemap_f91c8: INCBIN "gfx/unknown_f91c8.map"
 
-Unkn_f91d7: INCBIN "gfx/unknown_f91d7.bin"
-
 Func_f9210:
-	ld hl, $c710
-	ld de, $c711
+	ld hl, wc710
+	ld de, wc710 + 1
 	ld c, $80
 	ld a, [hl]
 	push af
@@ -2450,7 +2451,7 @@ Func_f9210:
 	ret
 
 Func_f9223:
-	ld hl, $c700
+	ld hl, wc700
 	ld bc, $100
 	ld de, $0
 .asm_f922c
@@ -2516,27 +2517,27 @@ Func_f9279:
 
 Func_f9284:
 	xor a
-	ld [$c5ed], a
-	ld [$c5ee], a
+	ld [wc5ed], a
+	ld [wc5ee], a
 	ret
 
 Func_f928c:
-	ld a, [$c5ed]
+	ld a, [wc5ed]
 	and a
 	jr nz, .asm_f92e4
-	ld a, [$c5ec]
+	ld a, [wc5ec]
 	ld d, a
-	ld a, [$c5ee]
+	ld a, [wc5ee]
 	or d
 	jr z, .asm_f92dd
-	ld a, [$c5ee]
+	ld a, [wc5ee]
 	ld e, a
 	ld hl, $ff80
 	add hl, de
 	ld a, l
-	ld [$c5ee], a
+	ld [wc5ee], a
 	ld a, h
-	ld [$c5ec], a
+	ld [wc5ec], a
 	ld e, a
 	ld d, $0
 	call Func_f9340
@@ -2573,12 +2574,12 @@ Func_f928c:
 
 .asm_f92dd
 	ld a, $1
-	ld [$c5ed], a
+	ld [wc5ed], a
 	and a
 	ret
 
 .asm_f92e4
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld e, a
 	ld hl, $5
 	add hl, bc
@@ -2588,16 +2589,16 @@ Func_f928c:
 	cp e
 	jr nc, .asm_f9330
 .asm_f92f4
-	ld a, [$c5ec]
+	ld a, [wc5ec]
 	ld d, a
-	ld a, [$c5ee]
+	ld a, [wc5ee]
 	ld e, a
 	ld hl, $80
 	add hl, de
 	ld a, l
-	ld [$c5ee], a
+	ld [wc5ee], a
 	ld a, h
-	ld [$c5ec], a
+	ld [wc5ec], a
 	ld e, a
 	ld d, $0
 	call Func_f9340
@@ -2628,7 +2629,7 @@ Func_f928c:
 .asm_f9330
 	ld hl, $5
 	add hl, bc
-	ld a, [$c5ea]
+	ld a, [wc5ea]
 	ld [hl], a
 	ld hl, $c
 	add hl, bc
@@ -2705,8 +2706,307 @@ Func_f9377:
 Unkn_f9393:
 	sine_wave $100
 
-Unkn_f93d3: INCBIN "gfx/unknown_f93d3.bin"
-	
+Unkn_f93d3:
+	db $00, $00, $00
+	db $04, $01, $00
+	db $11, $02, $00
+	db $12, $02, $00
+	db $15, $00, $00
+	db $16, $00, $00
+	db $17, $00, $00
+	db $18, $00, $00
+	db $19, $00, $00
+	db $1a, $00, $00
+	db $14, $00, $00
+	db $13, $03, $00
+	db $1b, $04, $00
+
+Unkn_f93fa:
+	dw Func_f9404
+	dw Func_f8470
+	dw Func_f87fb
+	dw Func_f880b
+	dw Func_f882b
+
+Func_f9404:
+	ret
+
+Unkn_f9405:
+	dw Unkn_f943d
+	dw Unkn_f9440
+	dw Unkn_f9445
+	dw Unkn_f944a
+	dw Unkn_f944f
+	dw Unkn_f9454
+	dw Unkn_f9459
+	dw Unkn_f945e
+	dw Unkn_f9463
+	dw Unkn_f9468
+	dw Unkn_f946d
+	dw Unkn_f9472
+	dw Unkn_f9477
+	dw Unkn_f947c
+	dw Unkn_f9481
+	dw Unkn_f9486
+	dw Unkn_f948b
+	dw Unkn_f9494
+	dw Unkn_f9499
+	dw Unkn_f949e
+	dw Unkn_f94fb
+	dw Unkn_f94a1
+	dw Unkn_f94b0
+	dw Unkn_f94bf
+	dw Unkn_f94ce
+	dw Unkn_f94dd
+	dw Unkn_f94ec
+	dw Unkn_f94fe
+
+Unkn_f943d:
+	db $00,$20
+	db $ff
+Unkn_f9440:
+	db $01,$08, $02,$08
+	db $fe
+Unkn_f9445:
+	db $03,$08, $04,$08
+	db $fe
+Unkn_f944a:
+	db $05,$08, $06,$08
+	db $fe
+Unkn_f944f:
+	db $07,$08, $08,$08
+	db $fe
+Unkn_f9454:
+	db $09,$08, $0a,$08
+	db $fe
+Unkn_f9459:
+	db $0b,$08, $0c,$08
+	db $fe
+Unkn_f945e:
+	db $0d,$08, $0e,$08
+	db $fe
+Unkn_f9463:
+	db $01,$c8, $02,$c8
+	db $fe
+Unkn_f9468:
+	db $03,$c8, $04,$c8
+	db $fe
+Unkn_f946d:
+	db $05,$c8, $06,$c8
+	db $fe
+Unkn_f9472:
+	db $07,$c8, $08,$c8
+	db $fe
+Unkn_f9477:
+	db $09,$c8, $0a,$c8
+	db $fe
+Unkn_f947c:
+	db $0b,$c8, $0c,$c8
+	db $fe
+Unkn_f9481:
+	db $0d,$c8, $0e,$c8
+	db $fe
+Unkn_f9486:
+	db $11,$07, $12,$07
+	db $fe
+Unkn_f948b:
+	db $13,$02, $14,$02, $fd,$08, $15,$02
+	db $ff
+Unkn_f9494:
+	db $16,$20, $16,$20
+	db $fc
+Unkn_f9499:
+	db $17,$20, $17,$20
+	db $fc
+Unkn_f949e:
+	db $18,$20
+	db $ff
+Unkn_f94a1:
+	db $1a,$04, $fd,$01, $1a,$03, $fd,$01, $1a,$02, $fd,$01, $1a,$01
+	db $fc
+Unkn_f94b0:
+	db $1b,$04, $fd,$01, $1b,$03, $fd,$01, $1b,$02, $fd,$01, $1b,$01
+	db $fc
+Unkn_f94bf:
+	db $1c,$04, $fd,$01, $1c,$03, $fd,$01, $1c,$02, $fd,$01, $1c,$01
+	db $fc
+Unkn_f94ce:
+	db $1d,$04, $fd,$01, $1d,$03, $fd,$01, $1d,$02, $fd,$01, $1d,$01
+	db $fc
+Unkn_f94dd:
+	db $1e,$04, $fd,$01, $1e,$03, $fd,$01, $1e,$02, $fd,$01, $1e,$01
+	db $fc
+Unkn_f94ec:
+	db $1f,$04, $fd,$01, $1f,$03, $fd,$01, $1f,$02, $fd,$01, $1f,$01
+	db $fc
+Unkn_f94fb:
+	db $19,$01
+	db $fc
+Unkn_f94fe:
+	db $20,$07, $21,$07, $22,$07, $23,$07
+	db $fe
+
+Unkn_f9507:
+	dbw $00, Unkn_f9573
+	dbw $00, Unkn_f9578
+	dbw $36, Unkn_f9578
+	dbw $03, Unkn_f9578
+	dbw $39, Unkn_f9578
+	dbw $06, Unkn_f9578
+	dbw $3c, Unkn_f9578
+	dbw $09, Unkn_f9578
+	dbw $60, Unkn_f9578
+	dbw $0c, Unkn_f9578
+	dbw $63, Unkn_f9578
+	dbw $30, Unkn_f9578
+	dbw $66, Unkn_f9578
+	dbw $33, Unkn_f9578
+	dbw $69, Unkn_f9578
+	dbw $6c, Unkn_f9578
+	dbw $9c, Unkn_f9578
+	dbw $a0, Unkn_f9578
+	dbw $a3, Unkn_f9578
+	dbw $a7, Unkn_f95db
+	dbw $a8, Unkn_f95f4
+	dbw $98, Unkn_f9625
+	dbw $e0, Unkn_f959d
+	dbw $e6, Unkn_f959d
+	dbw $ca, Unkn_f959d
+	dbw $a7, Unkn_f95ce
+	dbw $00, Unkn_f9632
+	dbw $00, Unkn_f963f
+	dbw $00, Unkn_f9650
+	dbw $00, Unkn_f9661
+	dbw $00, Unkn_f9672
+	dbw $00, Unkn_f9683
+	dbw $80, Unkn_f9694
+	dbw $84, Unkn_f9694
+	dbw $88, Unkn_f9694
+	dbw $8c, Unkn_f9694
+
+Unkn_f9573:
+	db 1
+	db $fc, $fc, $00, $00
+
+Unkn_f9578:
+	db 9
+	db $f4, $f4, $00, $00
+	db $f4, $fc, $01, $00
+	db $f4, $04, $02, $00
+	db $fc, $f4, $10, $00
+	db $fc, $fc, $11, $00
+	db $fc, $04, $12, $00
+	db $04, $f4, $20, $00
+	db $04, $fc, $21, $00
+	db $04, $04, $22, $00
+
+Unkn_f959d:
+	db 12
+	db $f8, $e8, $00, $00
+	db $f8, $f0, $01, $00
+	db $f8, $f8, $02, $00
+	db $f8, $00, $03, $00
+	db $f8, $08, $04, $00
+	db $f8, $10, $05, $00
+	db $00, $e8, $10, $00
+	db $00, $f0, $11, $00
+	db $00, $f8, $12, $00
+	db $00, $00, $13, $00
+	db $00, $08, $14, $00
+	db $00, $10, $15, $00
+
+Unkn_f95ce:
+	db 3
+	db $fc, $0b, $00, $10
+	db $04, $03, $0f, $10
+	db $04, $0b, $10, $10
+
+Unkn_f95db:
+	db 6
+	db $fc, $f0, $00, $30
+	db $fc, $08, $00, $10
+	db $04, $f0, $10, $30
+	db $04, $f8, $0f, $30
+	db $04, $00, $0f, $10
+	db $04, $08, $10, $10
+
+Unkn_f95f4:
+	db 12
+	db $f4, $f0, $00, $10
+	db $f4, $f8, $01, $10
+	db $f4, $00, $01, $30
+	db $f4, $08, $00, $30
+	db $fc, $f0, $10, $10
+	db $fc, $f8, $11, $10
+	db $fc, $00, $11, $30
+	db $fc, $08, $10, $30
+	db $04, $f0, $20, $10
+	db $04, $f8, $21, $10
+	db $04, $00, $21, $30
+	db $04, $08, $20, $30
+
+Unkn_f9625:
+	db 3
+	db $04, $f4, $00, $00
+	db $04, $fc, $01, $00
+	db $04, $04, $02, $00
+
+Unkn_f9632:
+	db 3
+	db $fc, $f4, $bf, $00
+	db $fc, $fc, $d5, $00
+	db $fc, $04, $d0, $00
+
+Unkn_f963f:
+	db 4
+	db $fc, $f0, $bf, $00
+	db $fc, $f8, $d1, $00
+	db $fc, $00, $d5, $00
+	db $fc, $08, $d0, $00
+
+Unkn_f9650:
+	db 4
+	db $fc, $f0, $bf, $00
+	db $fc, $f8, $d3, $00
+	db $fc, $00, $d5, $00
+	db $fc, $08, $d0, $00
+
+Unkn_f9661:
+	db 4
+	db $fc, $f0, $bf, $00
+	db $fc, $f8, $d7, $00
+	db $fc, $00, $d5, $00
+	db $fc, $08, $d0, $00
+
+Unkn_f9672:
+	db 4
+	db $fc, $f0, $bf, $00
+	db $fc, $f8, $d1, $00
+	db $fc, $00, $d8, $00
+	db $fc, $08, $d0, $00
+
+Unkn_f9683:
+	db 4
+	db $fc, $f0, $bf, $00
+	db $fc, $f8, $d5, $00
+	db $fc, $00, $d0, $00
+	db $fc, $08, $d0, $00
+
+Unkn_f9694:
+	db 12
+	db $f4, $f0, $03, $20
+	db $f4, $f8, $02, $20
+	db $f4, $00, $01, $20
+	db $f4, $08, $00, $20
+	db $fc, $f0, $13, $20
+	db $fc, $f8, $12, $20
+	db $fc, $00, $11, $20
+	db $fc, $08, $10, $20
+	db $04, $f0, $23, $20
+	db $04, $f8, $22, $20
+	db $04, $00, $21, $20
+	db $04, $08, $20, $20
+
 Unkn_f96c5:
 	db 0
 	db 0
@@ -2838,7 +3138,7 @@ PlayIntroScene:
 	call Func_f9f0d
 	call DelayFrame
 .asm_f9841
-	ld a, [$c634]
+	ld a, [wc634]
 	bit 7, a
 	jr nz, .asm_f986e
 	call JoypadLowSensitivity
@@ -2847,9 +3147,9 @@ PlayIntroScene:
 	jr nz, .asm_f986e
 	call Func_f98fc
 	ld a, $0
-	ld [$c5bd], a
+	ld [wc5bd], a
 	call Func_fbb65
-	ld a, [$c634]
+	ld a, [wc634]
 	cp $7
 	call z, Func_f98a2
 	cp $b
@@ -2924,7 +3224,7 @@ Func_f98cb:
 	ret
 
 Func_f98fc:
-	ld a, [$c634]
+	ld a, [wc634]
 	ld hl, Jumptable_f9906
 	call Func_fa06e
 	jp [hl]
@@ -2950,7 +3250,7 @@ Jumptable_f9906:
 	dw Func_f9e12
 
 Func_f992a:
-	ld hl, $c634
+	ld hl, wc634
 	inc [hl]
 	ret
 
@@ -2974,7 +3274,7 @@ Func_f992f:
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
 	ld a, $82
-	ld [$c635], a
+	ld [wc635], a
 	call Func_f992a
 	ret
 
@@ -3184,8 +3484,8 @@ Func_f9ab1:
 	ld hl, hSCX
 	inc [hl]
 	inc [hl]
-	ld hl, $c800
-	ld de, $c801
+	ld hl, wc800
+	ld de, wc800 + 1
 	ld a, [hl]
 	push af
 	ld c, $ff
@@ -3288,10 +3588,10 @@ Unkn_f9bf2: INCBIN "gfx/unknown_f9bf2.map"
 Func_f9bf6:
 	call Func_f9e41
 	jr c, .asm_f9c25
-	ld a, [$c635]
+	ld a, [wc635]
 	and $7
 	ret nz
-	ld a, [$c635]
+	ld a, [wc635]
 	and $8
 	sla a
 	sla a
@@ -3424,13 +3724,13 @@ Func_f9d22:
 	call Func_f9e1d
 	call Func_f992a
 	ld a, $28
-	ld [$c635], a
+	ld [wc635], a
 	ret
 
 Func_f9d8f:
 	call Func_f9e41
 	jr c, .asm_f9dad
-	ld a, [$c635]
+	ld a, [wc635]
 	and $3
 	ret nz
 	ld a, [rOBP0]
@@ -3488,38 +3788,38 @@ Unkn_f9e0a:
 Func_f9e12:
 	ld c, 64
 	call DelayFrames
-	ld hl, $c634
+	ld hl, wc634
 	set 7, [hl]
 	ret
 
 Func_f9e1d:
 	call Func_fbb93
 	ld a, c
-	ld [$c636], a
+	ld [wc636], a
 	ld a, b
-	ld [$c637], a
+	ld [wc636 + 1], a
 	ret
 
 Func_f9e29:
-	ld a, [$c636]
+	ld a, [wc636]
 	ld c, a
-	ld a, [$c637]
+	ld a, [wc636 + 1]
 	ld b, a
 	call Func_fbbe8
 	ret
 
 Func_f9e35:
 	ld a, $80
-	ld [$c635], a
+	ld [wc635], a
 	ret
 
 Func_f9e3b:
 	ld a, $58
-	ld [$c635], a
+	ld [wc635], a
 	ret
 
 Func_f9e41:
-	ld hl, $c635
+	ld hl, wc635
 	ld a, [hl]
 	and a
 	jr z, .asm_f9e4b
@@ -3532,7 +3832,7 @@ Func_f9e41:
 	ret
 
 Func_f9e4d:
-	ld hl, $c635
+	ld hl, wc635
 	ld a, [hl]
 	inc [hl]
 	ld l, a
@@ -3597,7 +3897,7 @@ Func_f9e9a:
 	ret
 
 Func_f9ec4:
-	ld de, $c800
+	ld de, wc800
 	ld a, $8
 .asm_f9ec9
 	push af
@@ -3665,7 +3965,7 @@ Func_f9f0d:
 	ld b, $8
 	call RunPaletteCommand
 	xor a
-	ld hl, $c634
+	ld hl, wc634
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
@@ -3677,21 +3977,21 @@ Func_f9f0d:
 
 Func_f9f75:
 	ld a, Unkn_f9fda % $100
-	ld [$c5c0], a
+	ld [wc5c0], a
 	ld a, Unkn_f9fda / $100
-	ld [$c5c1], a
+	ld [wc5c0 + 1], a
 	ld a, Jumptable_f9ffb % $100
-	ld [$c5c4], a
+	ld [wc5c4], a
 	ld a, Jumptable_f9ffb / $100
-	ld [$c5c5], a
+	ld [wc5c4 + 1], a
 	ld a, Unkn_fa13d % $100
-	ld [$c5c6], a
+	ld [wc5c6], a
 	ld a, Unkn_fa13d / $100
-	ld [$c5c7], a
+	ld [wc5c6 + 1], a
 	ld a, Unkn_fa0ea % $100
-	ld [$c5c2], a
+	ld [wc5c2], a
 	ld a, Unkn_fa0ea / $100
-	ld [$c5c3], a
+	ld [wc5c2 + 1], a
 	ret
 
 Func_f9f9e:
@@ -4122,7 +4422,7 @@ Func_fbb5a: ; fbb5a (3e:7b5a)
 	ret
 
 Func_fbb65:
-	ld hl, $c51c
+	ld hl, wc51c
 	ld e, $a
 .asm_fbb6a
 	ld a, [hl]
@@ -4142,7 +4442,7 @@ Func_fbb65:
 	add hl, bc
 	dec e
 	jr nz, .asm_fbb6a
-	ld a, [$c5bd]
+	ld a, [wc5bd]
 	ld l, a
 	ld h, $c3
 .asm_fbb89
@@ -4159,7 +4459,7 @@ Func_fbb65:
 Func_fbb93:
 	push de
 	push af
-	ld hl, $c51c
+	ld hl, wc51c
 	ld e, $a
 .asm_fbb9a
 	ld a, [hl]
@@ -4178,13 +4478,13 @@ Func_fbb93:
 	pop af
 	ld c, l
 	ld b, h
-	ld hl, $c5bc
+	ld hl, wc5bc
 	inc [hl]
 	ld e, a
 	ld d, $0
-	ld a, [$c5c0]
+	ld a, [wc5c0]
 	ld l, a
-	ld a, [$c5c1]
+	ld a, [wc5c0 + 1]
 	ld h, a
 	add hl, de
 	add hl, de
@@ -4193,7 +4493,7 @@ Func_fbb93:
 	ld d, h
 	ld hl, $0
 	add hl, bc
-	ld a, [$c5bc]
+	ld a, [wc5bc]
 	ld [hli], a
 	ld a, [de]
 	ld [hli], a
@@ -4233,7 +4533,7 @@ Func_fbbe8:
 	ret
 
 Func_fbbef:
-	ld hl, $c51c
+	ld hl, wc51c
 	ld e, $a
 .asm_fbbf4
 	ld [hl], $0
@@ -4245,45 +4545,45 @@ Func_fbbef:
 
 Func_fbbfe:
 	xor a
-	ld [$c5c8], a
+	ld [wc5c8], a
 	ld hl, $3
 	add hl, bc
 	ld a, [hli]
-	ld [$c5c9], a
+	ld [wc5c9], a
 	ld a, [hli]
-	ld [$c5ca], a
+	ld [wc5ca], a
 	ld a, [hli]
-	ld [$c5cb], a
+	ld [wc5cb], a
 	ld a, [hli]
-	ld [$c5cc], a
+	ld [wc5cc], a
 	ld a, [hl]
-	ld [$c5cd], a
+	ld [wc5cd], a
 	call Func_fbcec
 	cp $fd
 	jr z, .asm_fbc8d
 	cp $fc
 	jr z, .asm_fbc8a
 	call Func_fbcc5
-	ld a, [$c5c9]
+	ld a, [wc5c9]
 	add [hl]
-	ld [$c5c9], a
+	ld [wc5c9], a
 	inc hl
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	push bc
-	ld a, [$c5bd]
+	ld a, [wc5bd]
 	ld e, a
 	ld d, $c3
 	ld a, [hli]
 	ld c, a
 .asm_fbc3c
-	ld a, [$c5cb]
+	ld a, [wc5cb]
 	ld b, a
-	ld a, [$c5cd]
+	ld a, [wc5cd]
 	add b
 	ld b, a
-	ld a, [$c5ce]
+	ld a, [wc5ce]
 	add b
 	ld b, a
 	call Func_fbc92
@@ -4291,12 +4591,12 @@ Func_fbbfe:
 	ld [de], a
 	inc hl
 	inc de
-	ld a, [$c5ca]
+	ld a, [wc5ca]
 	ld b, a
-	ld a, [$c5cc]
+	ld a, [wc5cc]
 	add b
 	ld b, a
-	ld a, [$c5cf]
+	ld a, [wc5cf]
 	add b
 	ld b, a
 	call Func_fbca2
@@ -4304,14 +4604,14 @@ Func_fbbfe:
 	ld [de], a
 	inc hl
 	inc de
-	ld a, [$c5c9]
+	ld a, [wc5c9]
 	add [hl]
 	ld [de], a
 	inc hl
 	inc de
 	call Func_fbcb2
 	ld b, a
-	ld a, [$c634]
+	ld a, [wc634]
 	cp $7
 	ld a, b
 	jr z, .asm_fbc7a
@@ -4320,7 +4620,7 @@ Func_fbbfe:
 	inc hl
 	inc de
 	ld a, e
-	ld [$c5bd], a
+	ld [wc5bd], a
 	cp $a0
 	jr nc, .asm_fbc8f
 	dec c
@@ -4342,7 +4642,7 @@ Func_fbbfe:
 Func_fbc92:
 	push hl
 	ld a, [hl]
-	ld hl, $c5c8
+	ld hl, wc5c8
 	bit 6, [hl]
 	jr z, .asm_fbca0
 	add $8
@@ -4355,7 +4655,7 @@ Func_fbc92:
 Func_fbca2:
 	push hl
 	ld a, [hl]
-	ld hl, $c5c8
+	ld hl, wc5c8
 	bit 5, [hl]
 	jr z, .asm_fbcb0
 	add $8
@@ -4366,7 +4666,7 @@ Func_fbca2:
 	ret
 
 Func_fbcb2:
-	ld a, [$c5c8]
+	ld a, [wc5c8]
 	ld b, a
 	ld a, [hl]
 	xor b
@@ -4383,9 +4683,9 @@ Func_fbcb2:
 Func_fbcc5:
 	ld e, a
 	ld d, $0
-	ld a, [$c5c6]
+	ld a, [wc5c6]
 	ld l, a
-	ld a, [$c5c7]
+	ld a, [wc5c6 + 1]
 	ld h, a
 	add hl, de
 	add hl, de
@@ -4444,7 +4744,7 @@ Func_fbcec:
 	ld a, [hl]
 	and $c0
 	srl a
-	ld [$c5c8], a
+	ld [wc5c8], a
 	pop af
 	ret
 
@@ -4475,9 +4775,9 @@ Func_fbd43:
 	add hl, bc
 	ld e, [hl]
 	ld d, $0
-	ld a, [$c5c2]
+	ld a, [wc5c2]
 	ld l, a
-	ld a, [$c5c3]
+	ld a, [wc5c2 + 1]
 	ld h, a
 	add hl, de
 	add hl, de
@@ -4497,9 +4797,9 @@ Func_fbd61:
 	add hl, bc
 	ld e, [hl]
 	ld d, $0
-	ld a, [$c5c4]
+	ld a, [wc5c4]
 	ld l, a
-	ld a, [$c5c5]
+	ld a, [wc5c4 + 1]
 	ld h, a
 	add hl, de
 	add hl, de

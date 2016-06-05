@@ -266,7 +266,7 @@ wOAMBuffer:: ; c300
 
 wTileMap:: ; c3a0
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
-	ds 20 * 18
+	ds SCREEN_HEIGHT * SCREEN_WIDTH
 
 wSerialPartyMonsPatchList:: ; c508
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
@@ -275,13 +275,138 @@ wTileMapBackup:: ; c508
 ; buffer for temporarily saving and restoring current screen's tiles
 ; (e.g. if menus are drawn on top)
 ;	ds 20 * 18
-
-	ds 200
+	ds 20
+wc51c:: ; c51c
+	ds 160
+wc5bc:: ; c5bc
+	ds 1
+wc5bd:: ; c5bd
+	ds 3
+wc5c0:: ; c5c0
+	dw
+wc5c2:: ; c5c2
+	dw
+wc5c4:: ; c5c4
+	dw
+wc5c6:: ; c5c6
+	dw
+wc5c8:: ; c5c8
+	ds 1
+wc5c9:: ; c5c9
+	ds 1
+wc5ca:: ; c5ca
+	ds 1
+wc5cb:: ; c5cb
+	ds 1
+wc5cc:: ; c5cc
+	ds 1
+wc5cd:: ; c5cd
+	ds 1
+wc5ce:: ; c5ce
+	ds 1
+wc5cf:: ; c5cf
+	ds 1
 
 wSerialEnemyMonsPatchList:: ; c5d0
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
-	ds 200
+	ds 1
+wc5d1:: ; c5d1
+	ds 1
+wc5d2:: ; c5d2
+	ds 1
+wc5d3:: ; c5d3
+	ds 2
+wc5d5:: ; c5d5
+	ds 1
+wc5d6:: ; c5d6
+	ds 1
+wc5d7:: ; c5d7
+	ds 2
+wc5d9:: ; c5d9
+	ds 1
+wc5da:: ; c5da
+	ds 1
+wc5db:: ; c5db
+	ds 1
+wc5dc:: ; c5dc
+	ds 1
+wc5dd:: ; c5dd
+	ds 1
+wc5de:: ; c5de
+	ds 1
+wc5df:: ; c5df
+	ds 1
+wc5e0:: ; c5e0
+	ds 1
+wc5e1:: ; c5e1
+	ds 1
+wc5e2:: ; c5e2
+	ds 1
+wc5e3:: ; c5e3
+	ds 2
+wc5e5:: ; c5e5
+	ds 1
+wc5e6:: ; c5e6
+	ds 1
+wc5e7:: ; c5e7
+	ds 1
+wc5e8:: ; c5e8
+	ds 1
+wc5e9:: ; c5e9
+	ds 1
+wc5ea:: ; c5ea
+	ds 1
+wc5eb:: ; c5eb
+	ds 1
+wc5ec:: ; c5ec
+	ds 1
+wc5ed:: ; c5ed
+	ds 1
+wc5ee:: ; c5ee
+	ds 1
+wc5ef:: ; c5ef
+	ds 1
+wc5f0:: ; c5f0
+	ds 39
+wc617:: ; c617
+	ds 1
+wc618:: ; c618
+	ds 1
+wc619:: ; c619
+	ds 1
+wc61a:: ; c61a
+	ds 2
+wc61c:: ; c61c
+	ds 5
+wc621:: ; c621
+	ds 1
+wc622:: ; c622
+	ds 1
+wc623:: ; c623
+	ds 11
+wc62e:: ; c62e
+	ds 1
+wc62f:: ; c62f
+	ds 1
+wc630:: ; c630
+	ds 1
+wc631:: ; c631
+	ds 1
+wc632:: ; c632
+	ds 1
+wc633:: ; c633
+	ds 1
+wc634:: ; c634
+	ds 1
+wc635:: ; c635
+	ds 1
+wc636:: ; c636
+	ds 2
 
+; c638
+	ds 96
+
+; c698
 	ds 80
 
 wTempPic::
