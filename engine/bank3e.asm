@@ -208,7 +208,7 @@ Func_f8116:
 	ld a, $b
 	call FillMemory
 	ld a, $1
-	ld de, $7458
+	lb de, $74, $58
 	call Func_fbb93
 	ld a, $74
 	ld [$c5ea], a
@@ -387,7 +387,7 @@ Jumptable_f8291:
 
 Func_f82ab:
 	ld a, $2
-	ld de, $48e0
+	lb de, $48, $e0
 	call Func_fbb93
 	ld hl, $c5d1
 	inc [hl]
@@ -434,7 +434,7 @@ Func_f8300:
 	ld a, $80
 	ld [$c631], a
 	ld a, $b
-	ld de, $8858
+	lb de, $88, $58
 	call Func_fbb93
 	ld hl, $7
 	add hl, bc
@@ -1347,11 +1347,11 @@ Func_f886b:
 	ld a, e
 	ld [H_VBCOPYDEST], a
 	ld a, d
-	ld [$ffca], a
+	ld [H_VBCOPYDEST + 1], a
 	ld a, l
 	ld [H_VBCOPYSRC], a
 	ld a, h
-	ld [$ffc8], a
+	ld [H_VBCOPYSRC + 1], a
 	ld a, $1
 	ld [H_VBCOPYSIZE], a
 	ret
@@ -2325,7 +2325,7 @@ Func_f8fb3:
 	ld a, $54
 	ld [$c5c3], a
 	ld a, $c
-	ld de, $7458
+	lb de, $74, $58
 	call Func_fbb93
 	call Func_f9053
 	xor a
@@ -2370,70 +2370,68 @@ Func_f9053:
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, $ff
 	call FillMemory
-	ld hl, Unkn_f90bc
+	ld hl, Tilemap_f90bc
 	coord de, 0, 6
 	ld bc, 12 * SCREEN_WIDTH
 	call CopyData
-	ld de, Unkn_f91c8
+	ld de, Tilemap_f91c8
 	coord hl, 4, 0
 	lb bc, 6, 12
-	call Func_f9098
+	call .CopyBox
 	coord hl, 3, 7
 	lb bc, 3, 15
-	call Func_f90aa
-	ld hl, Unkn_f91ac
+	call .FillBoxWithFF
+	ld hl, Tilemap_f91ac
 	coord de, 3, 7
 	ld bc, 15
 	call CopyData
-	ld hl, Unkn_f91bb
+	ld hl, Tilemap_f91bb
 	coord de, 4, 9
 	ld bc, 13
 	call CopyData
 	ret
 
-Func_f9098:
-.asm_f9098
+.CopyBox:
+.copy_row
 	push bc
 	push hl
-.asm_f909a
+.copy_col
 	ld a, [de]
 	inc de
 	ld [hli], a
 	dec c
-	jr nz, .asm_f909a
-	ld bc, $14
+	jr nz, .copy_col
+	ld bc, SCREEN_WIDTH
 	pop hl
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_f9098
+	jr nz, .copy_row
 	ret
 
-Func_f90aa:
-.asm_f90aa
+.FillBoxWithFF:
+.fill_row
 	push bc
 	push hl
-.asm_f90ac
+.fill_col
 	ld [hl], $ff
 	inc hl
 	dec c
-	jr nz, .asm_f90ac
+	jr nz, .fill_col
 	pop hl
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_f90aa
+	jr nz, .fill_row
 	ret
 
-Unkn_f90bc:
-	dr $f90bc,$f91ac
-Unkn_f91ac:
-	dr $f91ac,$f91bb
-Unkn_f91bb:
-	dr $f91bb,$f91c8
-Unkn_f91c8:
-	dr $f91c8,$f9210
+Tilemap_f90bc: INCBIN "gfx/unknown_f90bc.map"
+Tilemap_f91ac: INCBIN "gfx/unknown_f91ac.map"
+Tilemap_f91bb: INCBIN "gfx/unknown_f91bb.map"
+Tilemap_f91c8: INCBIN "gfx/unknown_f91c8.map"
+
+Unkn_f91d7: INCBIN "gfx/unknown_f91d7.bin"
 
 Func_f9210:
 	ld hl, $c710
@@ -2707,8 +2705,7 @@ Func_f9377:
 Unkn_f9393:
 	sine_wave $100
 
-Unkn_f93d3:
-	dr $f93d3,$f96c5
+Unkn_f93d3: INCBIN "gfx/unknown_f93d3.bin"
 	
 Unkn_f96c5:
 	db 0
@@ -2745,67 +2742,89 @@ Unkn_f96c5:
 	db 0
 
 Unkn_f96e5:
-	dr $f96e5,$f973d
+	db $00, $00, $00, $00
+	db $0b, $0b, $0b, $0b
+	db $0b, $02, $02, $06
+	db $03, $0b, $07, $03
+	db $06, $06, $06, $06
+	db $07, $07, $07, $07
+	db $06, $04, $04, $08
+	db $05, $07, $08, $05
+	db $0b, $0b, $11, $12
+	db $0b, $0b, $13, $03
+	db $14, $12, $04, $08
+	db $13, $07, $08, $05
+	db $06, $14, $06, $14
+	db $13, $07, $13, $07
+	db $08, $08, $08, $08
+	db $14, $12, $14, $12
+	db $0b, $11, $02, $14
+	db $06, $14, $06, $14
+	db $0c, $0c, $0d, $0d
+	db $0d, $0d, $0d, $0d
+	db $0e, $0f, $10, $0b
+	db $12, $13, $12, $13
+
 Unkn_f973d:
-	dr $f973d,$f9745
+	db $00, $00, $00, $01, $01, $01, $01, $01
 Unkn_f9745:
-	dr $f9745,$f974d
+	db $00, $00, $00, $01, $01, $02, $04, $06
 Unkn_f974d:
-	dr $f974d,$f9755
+	db $00, $00, $00, $01, $02, $04, $06, $0e
 Unkn_f9755:
-	dr $f9755,$f975d
+	db $00, $00, $00, $10, $11, $06, $0e, $0e
 Unkn_f975d:
-	dr $f975d,$f9765
+	db $00, $00, $00, $15, $15, $0e, $0e, $0e
 Unkn_f9765:
-	dr $f9765,$f976d
+	db $00, $00, $00, $03, $05, $07, $0e, $0e
 Unkn_f976d:
-	dr $f976d,$f9775
+	db $00, $00, $00, $01, $03, $05, $07, $0e
 Unkn_f9775:
-	dr $f9775,$f977d
+	db $00, $00, $00, $01, $01, $03, $05, $07
 Unkn_f977d:
-	dr $f977d,$f9785
+	db $00, $00, $00, $01, $01, $02, $04, $06
 Unkn_f9785:
-	dr $f9785,$f978d
+	db $00, $00, $00, $01, $02, $04, $06, $0e
 Unkn_f978d:
-	dr $f978d,$f9795
+	db $00, $00, $00, $08, $0f, $0a, $0e, $0e
 Unkn_f9795:
-	dr $f9795,$f979d
+	db $00, $00, $00, $09, $0d, $0b, $0e, $0e
 Unkn_f979d:
-	dr $f979d,$f97a5
+	db $00, $00, $00, $01, $03, $05, $07, $0e
 Unkn_f97a5:
-	dr $f97a5,$f97ad
+	db $00, $00, $00, $01, $01, $03, $05, $07
 Unkn_f97ad:
-	dr $f97ad,$f97b5
+	db $00, $00, $00, $01, $01, $02, $04, $06
 Unkn_f97b5:
-	dr $f97b5,$f97bd
+	db $00, $00, $00, $01, $10, $11, $06, $0e
 Unkn_f97bd:
-	dr $f97bd,$f97c5
+	db $00, $00, $00, $01, $15, $15, $0e, $0e
 Unkn_f97c5:
-	dr $f97c5,$f97cd
+	db $00, $00, $00, $01, $03, $05, $07, $0e
 Unkn_f97cd:
-	dr $f97cd,$f97d5
+	db $00, $00, $00, $01, $01, $03, $05, $07
 Unkn_f97d5:
-	dr $f97d5,$f97dd
+	db $00, $00, $00, $01, $01, $02, $04, $06
 Unkn_f97dd:
-	dr $f97dd,$f97e5
+	db $00, $00, $00, $01, $08, $0f, $0a, $0e
 Unkn_f97e5:
-	dr $f97e5,$f97ed
+	db $00, $00, $00, $01, $09, $0d, $0b, $0e
 Unkn_f97ed:
-	dr $f97ed,$f97f5
+	db $00, $00, $00, $01, $01, $03, $05, $07
 Unkn_f97f5:
-	dr $f97f5,$f97fd
+	db $00, $00, $00, $01, $01, $10, $11, $06
 Unkn_f97fd:
-	dr $f97fd,$f9805
+	db $00, $00, $00, $01, $01, $15, $15, $0e
 Unkn_f9805:
-	dr $f9805,$f980d
+	db $00, $00, $00, $01, $01, $03, $05, $07
 Unkn_f980d:
-	dr $f980d,$f9815
+	db $00, $00, $00, $01, $01, $08, $0f, $0a
 Unkn_f9815:
-	dr $f9815,$f981d
+	db $00, $00, $00, $01, $01, $09, $0d, $0b
 Unkn_f981d:
-	dr $f981d,$f9825
+	db $00, $00, $00, $14, $14, $14, $14, $14
 Unkn_f9825:
-	dr $f9825,$f982d
+	db $00, $00, $00, $12, $13, $13, $13, $13
 
 PlayIntroScene:
 	ld a, [rIE]
@@ -3055,7 +3074,14 @@ Func_f99d2:
 	ret
 
 Unkn_f99f0:
-	dr $f99f0,$f9a08
+	db $d0, $20, $02
+	db $f0, $30, $04
+	db $d0, $40, $06
+	db $c0, $50, $08
+	db $e0, $60, $08
+	db $c0, $70, $06
+	db $e0, $80, $04
+	db $f0, $90, $02
 
 Func_f9a08:
 	call Func_f9e41
@@ -3218,16 +3244,16 @@ Func_f9b04:
 	call Func_f9fb3
 	ld hl, $9900
 	ld de, Unkn_f9b6e
-	ld bc, $614
-	call Func_f9b5c
+	lb bc, 6, 20
+	call .FillBGMapBox
 	ld hl, $988c
-	lb de, $5b, $e6
-	ld bc, $304
-	call Func_f9b5c
+	ld de, Unkn_f9be6
+	lb bc, 3, 4
+	call .FillBGMapBox
 	ld hl, $98e3
-	lb de, $5b, $f2
-	ld bc, $202
-	call Func_f9b5c
+	ld de, Unkn_f9bf2
+	lb bc, 2, 2
+	call .FillBGMapBox
 	ld de, $9858
 	ld a, $6
 	call Func_f9e1d
@@ -3237,25 +3263,27 @@ Func_f9b04:
 	call Func_f992a
 	ret
 
-Func_f9b5c:
+.FillBGMapBox:
+.fill_row
 	push bc
 	push hl
-.asm_f9b5e
+.fill_col
 	ld a, [de]
 	inc de
 	ld [hli], a
 	dec c
-	jr nz, .asm_f9b5e
+	jr nz, .fill_col
 	pop hl
 	ld bc, $20
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, Func_f9b5c
+	jr nz, .fill_row
 	ret
 
-Unkn_f9b6e:
-	dr $f9b6e,$f9bf6
+Unkn_f9b6e: INCBIN "gfx/unknown_f9b6e.map"
+Unkn_f9be6: INCBIN "gfx/unknown_f9be6.map"
+Unkn_f9bf2: INCBIN "gfx/unknown_f9bf2.map"
 
 Func_f9bf6:
 	call Func_f9e41
@@ -3270,17 +3298,16 @@ Func_f9bf6:
 	sla a
 	ld e, a
 	ld d, $0
-	ld hl, Unkn_f9c2c
+	ld hl, GFX_f9c2c
 	add hl, de
 	ld a, l
 	ld [H_VBCOPYSRC], a
 	ld a, h
-	ld [$ffc8], a
-.asm_f9c19
+	ld [H_VBCOPYSRC + 1], a
 	xor a
 	ld [H_VBCOPYDEST], a
 	ld a, $96
-	ld [$ffca], a
+	ld [H_VBCOPYDEST + 1], a
 	ld a, $4
 	ld [H_VBCOPYSIZE], a
 	ret
@@ -3290,8 +3317,8 @@ Func_f9bf6:
 	call Func_f992a
 	ret
 
-Unkn_f9c2c:
-	dr $f9c2c,$f9cac
+GFX_f9c2c: INCBIN "gfx/unknown_f9c2c.2bpp"
+GFX_f9c6c: INCBIN "gfx/unknown_f9c6c.2bpp" ; indirectly referenced
 
 Func_f9cac:
 	call Func_f9e80
@@ -3426,7 +3453,7 @@ Func_f9d8f:
 	call UpdateGBCPal_OBP0
 	call Func_f992a
 Func_f9dbf:
-	lb de, $5e, $0a
+	ld de, Unkn_f9e0a
 	call Func_f9e4d
 	jr c, .asm_f9dd2
 	ld [rOBP0], a
@@ -3440,10 +3467,26 @@ Func_f9dbf:
 	ret
 
 Unkn_f9dd6:
-	dr $f9dd6,$f9e12
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $e4
+	db $e4, $c0, $c0, $ff
+
+Unkn_f9e0a:
+	db $e4, $90, $90, $40
+	db $40, $00, $00, $ff
 
 Func_f9e12:
-	ld c, $40
+	ld c, 64
 	call DelayFrames
 	ld hl, $c634
 	set 7, [hl]
@@ -3567,17 +3610,20 @@ Func_f9ec4:
 	ret
 
 Unkn_f9ed8:
-	dr $f9ed8,$f9ef8
+	db  0,  0,  1,  2,  2,  3,  3,  3
+	db  4,  3,  3,  3,  2,  2,  1,  0
+	db  0,  0, -1, -2, -2, -3, -3, -3
+	db -4, -3, -3, -3, -2, -2, -1,  0
 
 Func_f9ef8:
 	ld a, $10
 	ld [H_VBCOPYSRC], a
 	ld a, $c8
-	ld [$ffc8], a
+	ld [H_VBCOPYSRC + 1], a
 	ld a, $10
 	ld [H_VBCOPYDEST], a
 	ld a, $c7
-	ld [$ffca], a
+	ld [H_VBCOPYDEST + 1], a
 	ld a, $7
 	ld [H_VBCOPYSIZE], a
 	ret
@@ -3634,9 +3680,9 @@ Func_f9f75:
 	ld [$c5c0], a
 	ld a, Unkn_f9fda / $100
 	ld [$c5c1], a
-	ld a, Unkn_f9ffb % $100
+	ld a, Jumptable_f9ffb % $100
 	ld [$c5c4], a
-	ld a, Unkn_f9ffb / $100
+	ld a, Jumptable_f9ffb / $100
 	ld [$c5c5], a
 	ld a, Unkn_fa13d % $100
 	ld [$c5c6], a
@@ -3696,9 +3742,28 @@ Func_f9fc9:
 	ret
 
 Unkn_f9fda:
-	dr $f9fda,$f9ffb
-Unkn_f9ffb:
-	dr $f9ffb,$fa008
+	db $00, $00, $00
+	db $01, $01, $00
+	db $02, $01, $00
+	db $03, $01, $00
+	db $04, $02, $00
+	db $05, $03, $00
+	db $06, $04, $00
+	db $07, $01, $00
+	db $08, $05, $00
+	db $09, $01, $00
+	db $0a, $01, $00
+
+Jumptable_f9ffb:
+	dw Func_fa007
+	dw Func_fa007
+	dw Func_fa008
+	dw Func_fa014
+	dw Func_fa02b
+	dw Func_fa062
+
+Func_fa007:
+	ret
 
 Func_fa008:
 	ld hl, $4
@@ -3834,10 +3899,218 @@ Unkn_fa0aa:
 	sine_wave $100
 
 Unkn_fa0ea:
-	dr $fa0ea,$fa13d
+	dw Unkn_fa100
+	dw Unkn_fa103
+	dw Unkn_fa10a
+	dw Unkn_fa111
+	dw Unkn_fa118
+	dw Unkn_fa11b
+	dw Unkn_fa11e
+	dw Unkn_fa121
+	dw Unkn_fa124
+	dw Unkn_fa127
+	dw Unkn_fa138
+
+Unkn_fa100:
+	db $00,$20
+	db $ff
+Unkn_fa103:
+	db $01,$04, $02,$04, $03,$04
+	db $fe
+Unkn_fa10a:
+	db $04,$04, $05,$04, $06,$04
+	db $fe
+Unkn_fa111:
+	db $07,$04, $08,$04, $09,$04
+	db $fe
+Unkn_fa118:
+	db $0a,$20
+	db $ff
+Unkn_fa11b:
+	db $0b,$20
+	db $ff
+Unkn_fa11e:
+	db $0c,$20
+	db $ff
+Unkn_fa121:
+	db $0d,$20
+	db $ff
+Unkn_fa124:
+	db $0e,$20
+	db $ff
+Unkn_fa127:
+	db $0f,$1f, $11,$02, $0f,$02, $11,$02, $0f,$1f, $11,$02, $0f,$17, $10,$20
+	db $ff
+Unkn_fa138:
+	db $12,$04, $13,$04
+	db $fe
 
 Unkn_fa13d:
-	dr $fa13d,$fa35a
+	dbw $00, Unkn_fa179
+	dbw $96, Unkn_fa17e
+	dbw $98, Unkn_fa17e
+	dbw $9a, Unkn_fa17e
+	dbw $0c, Unkn_fa18f
+	dbw $0e, Unkn_fa18f
+	dbw $3c, Unkn_fa18f
+	dbw $60, Unkn_fa1b0
+	dbw $70, Unkn_fa1b0
+	dbw $80, Unkn_fa1b0
+	dbw $90, Unkn_fa201
+	dbw $00, Unkn_fa201
+	dbw $06, Unkn_fa201
+	dbw $c6, Unkn_fa292
+	dbw $6d, Unkn_fa2f7
+	dbw $f0, Unkn_fa308
+	dbw $f4, Unkn_fa308
+	dbw $f8, Unkn_fa308
+	dbw $9c, Unkn_fa329
+	dbw $ec, Unkn_fa329
+
+Unkn_fa179:
+	db 1
+	db $fc, $fc, $00, $00
+Unkn_fa17e:
+	db 4
+	db $f8, $f8, $00, $00
+	db $f8, $00, $01, $00
+	db $00, $f8, $10, $00
+	db $00, $00, $11, $00
+
+Unkn_fa18f:
+	db 8
+	db $f0, $f8, $00, $00
+	db $f0, $00, $01, $00
+	db $f8, $f8, $10, $00
+	db $f8, $00, $11, $00
+	db $00, $f8, $20, $00
+	db $00, $00, $20, $20
+	db $08, $f8, $21, $00
+	db $08, $00, $21, $20
+
+Unkn_fa1b0:
+	db 20
+	db $e8, $f8, $00, $00
+	db $e8, $00, $01, $00
+	db $f0, $f8, $02, $00
+	db $f0, $00, $03, $00
+	db $f8, $f0, $04, $00
+	db $f8, $f8, $05, $00
+	db $f8, $00, $06, $00
+	db $f8, $08, $04, $20
+	db $00, $f0, $07, $00
+	db $00, $f8, $08, $00
+	db $00, $00, $08, $20
+	db $00, $08, $07, $20
+	db $08, $f0, $09, $00
+	db $08, $f8, $0a, $00
+	db $08, $00, $0a, $20
+	db $08, $08, $09, $20
+	db $10, $f0, $0b, $00
+	db $10, $f8, $0c, $00
+	db $10, $00, $0c, $20
+	db $10, $08, $0b, $20
+
+Unkn_fa201:
+	db 36
+	db $e8, $e8, $00, $00
+	db $e8, $f0, $01, $00
+	db $e8, $f8, $02, $00
+	db $e8, $00, $03, $00
+	db $e8, $08, $04, $00
+	db $e8, $10, $05, $00
+	db $f0, $e8, $10, $00
+	db $f0, $f0, $11, $00
+	db $f0, $f8, $12, $00
+	db $f0, $00, $13, $00
+	db $f0, $08, $14, $00
+	db $f0, $10, $15, $00
+	db $f8, $e8, $20, $00
+	db $f8, $f0, $21, $00
+	db $f8, $f8, $22, $00
+	db $f8, $00, $23, $00
+	db $f8, $08, $24, $00
+	db $f8, $10, $25, $00
+	db $00, $e8, $30, $00
+	db $00, $f0, $31, $00
+	db $00, $f8, $32, $00
+	db $00, $00, $33, $00
+	db $00, $08, $34, $00
+	db $00, $10, $35, $00
+	db $08, $e8, $40, $00
+	db $08, $f0, $41, $00
+	db $08, $f8, $42, $00
+	db $08, $00, $43, $00
+	db $08, $08, $44, $00
+	db $08, $10, $45, $00
+	db $10, $e8, $50, $00
+	db $10, $f0, $51, $00
+	db $10, $f8, $52, $00
+	db $10, $00, $53, $00
+	db $10, $08, $54, $00
+	db $10, $10, $55, $00
+
+Unkn_fa292:
+	db 25
+	db $ec, $f0, $00, $00
+	db $ec, $f8, $01, $00
+	db $ec, $00, $02, $00
+	db $ec, $08, $03, $00
+	db $ec, $10, $04, $00
+	db $f4, $f0, $05, $00
+	db $f4, $f8, $06, $00
+	db $f4, $00, $07, $00
+	db $f4, $08, $08, $00
+	db $f4, $10, $09, $00
+	db $fc, $f0, $10, $00
+	db $fc, $f8, $11, $00
+	db $fc, $00, $12, $00
+	db $fc, $08, $13, $00
+	db $fc, $10, $14, $00
+	db $04, $f0, $15, $00
+	db $04, $f8, $16, $00
+	db $04, $00, $17, $00
+	db $04, $08, $18, $00
+	db $04, $10, $19, $00
+	db $0c, $f0, $20, $00
+	db $0c, $f8, $21, $00
+	db $0c, $00, $22, $00
+	db $0c, $08, $23, $00
+	db $0c, $10, $24, $00
+
+Unkn_fa2f7:
+	db 4
+	db $fc, $f0, $00, $00
+	db $fc, $f8, $01, $00
+	db $fc, $00, $01, $20
+	db $fc, $08, $00, $20
+
+Unkn_fa308:
+	db 8
+	db $f8, $e8, $00, $10
+	db $f8, $f0, $01, $10
+	db $00, $e8, $02, $10
+	db $00, $f0, $03, $10
+	db $f8, $08, $01, $30
+	db $f8, $10, $00, $30
+	db $00, $08, $03, $30
+	db $00, $10, $02, $30
+
+Unkn_fa329:
+	db 12
+	db $f8, $d8, $00, $10
+	db $f8, $e0, $01, $10
+	db $f8, $e8, $02, $10
+	db $00, $d8, $10, $10
+	db $00, $e0, $11, $10
+	db $00, $e8, $12, $10
+	db $f8, $10, $02, $30
+	db $f8, $18, $01, $30
+	db $f8, $20, $00, $30
+	db $00, $10, $12, $30
+	db $00, $18, $11, $30
+	db $00, $20, $10, $30
+
 
 YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
 
