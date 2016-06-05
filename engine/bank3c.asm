@@ -322,13 +322,13 @@ Func_f0a82: ; f0a82
 	ret
 
 Pic_f0abf: ; f0abf (3c:4abf)
-	dr $f0abf, $f0b64
+INCBIN "gfx/pikachu/unknown_f0abf.pic"
 GFX_f0b64: ; f0b64 (3c:4b64)
-	dr $f0b64, $f0cf4
+INCBIN "gfx/pikachu/unknown_f0b64.2bpp"
 Pic_f0cf4: ; f0cf4 (3c:4cf4)
-	dr $f0cf4, $f0d82
+INCBIN "gfx/pikachu/unknown_f0cf4.pic"
 GFX_f0d82: ; f0d82 (3c:4d82)
-	dr $f0d82, $f0f12
+INCBIN "gfx/pikachu/unknown_f0d82.2bpp"
 
 PokecenterChanseyText:
 	ld hl, NurseChanseyText

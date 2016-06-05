@@ -38,7 +38,7 @@ _AgathaAfterBattleText::
 	cont "along now, child!"
 	done
 
-_AgathaText2::
+_AgathaDontRunAwayText::
 	text "Someone's voice:"
 	line "Don't run away!"
 	done

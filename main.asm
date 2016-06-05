@@ -282,7 +282,21 @@ INCLUDE "data/mapHeaders/indigoplateaulobby.asm"
 INCLUDE "scripts/indigoplateaulobby.asm"
 INCLUDE "data/mapObjects/indigoplateaulobby.asm"
 IndigoPlateauLobbyBlocks: INCBIN "maps/indigoplateaulobby.blk"
-	dr $19e09,$1a4ea
+
+INCLUDE "data/mapHeaders/silphco4.asm"
+INCLUDE "scripts/silphco4.asm"
+INCLUDE "data/mapObjects/silphco4.asm"
+SilphCo4Blocks: INCBIN "maps/silphco4.blk"
+
+INCLUDE "data/mapHeaders/silphco5.asm"
+INCLUDE "scripts/silphco5.asm"
+INCLUDE "data/mapObjects/silphco5.asm"
+SilphCo5Blocks: INCBIN "maps/silphco5.blk"
+
+INCLUDE "data/mapHeaders/silphco6.asm"
+INCLUDE "scripts/silphco6.asm"
+INCLUDE "data/mapObjects/silphco6.asm"
+SilphCo6Blocks: INCBIN "maps/silphco6.blk"
 
 INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
@@ -309,7 +323,8 @@ LavenderHouse1Blocks:
 LavenderHouse2Blocks:
 SaffronHouse1Blocks:
 SaffronHouse2Blocks:
-Route16HouseBlocks: INCBIN "maps/viridianhouse.blk"
+Route16HouseBlocks:
+NameRaterBlocks: INCBIN "maps/viridianhouse.blk"
 SchoolBlocks:
 CeladonMansion5Blocks: INCBIN "maps/school.blk"
 CeruleanHouseTrashedBlocks: INCBIN "maps/ceruleanhousetrashed.blk"
@@ -368,7 +383,10 @@ INCLUDE "data/mapObjects/lavenderhouse1.asm"
 INCLUDE "data/mapHeaders/lavenderhouse2.asm"
 INCLUDE "scripts/lavenderhouse2.asm"
 INCLUDE "data/mapObjects/lavenderhouse2.asm"
-	dr $1d30e,$1d3f8 ; map scripts
+
+INCLUDE "data/mapHeaders/namerater.asm"
+INCLUDE "scripts/namerater.asm"
+INCLUDE "data/mapObjects/namerater.asm"
 
 INCLUDE "data/mapHeaders/vermilionhouse1.asm"
 INCLUDE "scripts/vermilionhouse1.asm"
@@ -840,7 +858,10 @@ INCLUDE "data/mapHeaders/lavendertown.asm"
 INCLUDE "data/mapObjects/lavendertown.asm"
 LavenderTownBlocks: INCBIN "maps/lavendertown.blk"
 ViridianPokecenterBlocks: INCBIN "maps/viridianpokecenter.blk"
-	dr $440fb,$4410b
+SafariZoneRestHouse1Blocks:
+SafariZoneRestHouse2Blocks:
+SafariZoneRestHouse3Blocks:
+SafariZoneRestHouse4Blocks: INCBIN "maps/safarizoneresthouse1.blk"
 
 INCLUDE "scripts/lavendertown.asm"
 
@@ -904,7 +925,57 @@ INCLUDE "data/mapHeaders/rockethideoutelevator.asm"
 INCLUDE "scripts/rockethideoutelevator.asm"
 INCLUDE "data/mapObjects/rockethideoutelevator.asm"
 RocketHideoutElevatorBlocks: INCBIN "maps/rockethideoutelevator.blk"
-	dr $45a08,$46578
+
+INCLUDE "data/mapHeaders/silphcoelevator.asm"
+INCLUDE "scripts/silphcoelevator.asm"
+INCLUDE "data/mapObjects/silphcoelevator.asm"
+SilphCoElevatorBlocks: INCBIN "maps/silphcoelevator.blk"
+
+INCLUDE "data/mapHeaders/safarizoneeast.asm"
+INCLUDE "scripts/safarizoneeast.asm"
+INCLUDE "data/mapObjects/safarizoneeast.asm"
+SafariZoneEastBlocks: INCBIN "maps/safarizoneeast.blk"
+
+INCLUDE "data/mapHeaders/safarizonenorth.asm"
+INCLUDE "scripts/safarizonenorth.asm"
+INCLUDE "data/mapObjects/safarizonenorth.asm"
+SafariZoneNorthBlocks: INCBIN "maps/safarizonenorth.blk"
+
+INCLUDE "data/mapHeaders/safarizonecenter.asm"
+INCLUDE "scripts/safarizonecenter.asm"
+INCLUDE "data/mapObjects/safarizonecenter.asm"
+SafariZoneCenterBlocks: INCBIN "maps/safarizonecenter.blk"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse1.asm"
+INCLUDE "scripts/safarizoneresthouse1.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse1.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse2.asm"
+INCLUDE "scripts/safarizoneresthouse2.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse2.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse3.asm"
+INCLUDE "scripts/safarizoneresthouse3.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse3.asm"
+
+INCLUDE "data/mapHeaders/safarizoneresthouse4.asm"
+INCLUDE "scripts/safarizoneresthouse4.asm"
+INCLUDE "data/mapObjects/safarizoneresthouse4.asm"
+
+INCLUDE "data/mapHeaders/unknowndungeon2.asm"
+INCLUDE "scripts/unknowndungeon2.asm"
+INCLUDE "data/mapObjects/unknowndungeon2.asm"
+UnknownDungeon2Blocks: INCBIN "maps/unknowndungeon2.blk"
+
+INCLUDE "data/mapHeaders/unknowndungeon3.asm"
+INCLUDE "scripts/unknowndungeon3.asm"
+INCLUDE "data/mapObjects/unknowndungeon3.asm"
+UnknownDungeon3Blocks: INCBIN "maps/unknowndungeon3.blk"
+
+INCLUDE "data/mapHeaders/rocktunnel2.asm"
+INCLUDE "scripts/rocktunnel2.asm"
+INCLUDE "data/mapObjects/rocktunnel2.asm"
+RockTunnel2Blocks: INCBIN "maps/rocktunnel2.blk"
 
 INCLUDE "data/mapHeaders/seafoamislands2.asm"
 INCLUDE "scripts/seafoamislands2.asm"
@@ -1118,7 +1189,15 @@ MtMoon3Script_4a325: ; pikachu-related function?
 	call Func_159b
 	ret
 
-	dr $4a35a,$4a540
+INCLUDE "data/mapHeaders/safarizonewest.asm"
+INCLUDE "scripts/safarizonewest.asm"
+INCLUDE "data/mapObjects/safarizonewest.asm"
+SafariZoneWestBlocks: INCBIN "maps/safarizonewest.blk"
+
+INCLUDE "data/mapHeaders/safarizonesecrethouse.asm"
+INCLUDE "scripts/safarizonesecrethouse.asm"
+INCLUDE "data/mapObjects/safarizonesecrethouse.asm"
+SafariZoneSecretHouseBlocks: INCBIN "maps/safarizonesecrethouse.blk"
 
 
 SECTION "bank13",ROMX,BANK[$13]
@@ -1234,13 +1313,26 @@ INCLUDE "scripts/mtmoon2.asm"
 INCLUDE "data/mapObjects/mtmoon2.asm"
 MtMoon2Blocks: INCBIN "maps/mtmoon2.blk"
 
-	dr $51b97,$52060
-Mansion2Script_Switches:
-	dr $52060,$522a3
-Mansion3Script_Switches:
-	dr $522a3,$52449
-Mansion4Script_Switches:
-	dr $52449,$525d8
+INCLUDE "data/mapHeaders/silphco7.asm"
+INCLUDE "scripts/silphco7.asm"
+INCLUDE "data/mapObjects/silphco7.asm"
+SilphCo7Blocks: INCBIN "maps/silphco7.blk"
+
+INCLUDE "data/mapHeaders/mansion2.asm"
+INCLUDE "scripts/mansion2.asm"
+INCLUDE "data/mapObjects/mansion2.asm"
+Mansion2Blocks: INCBIN "maps/mansion2.blk"
+
+INCLUDE "data/mapHeaders/mansion3.asm"
+INCLUDE "scripts/mansion3.asm"
+INCLUDE "data/mapObjects/mansion3.asm"
+Mansion3Blocks: INCBIN "maps/mansion3.blk"
+
+INCLUDE "data/mapHeaders/mansion4.asm"
+INCLUDE "scripts/mansion4.asm"
+INCLUDE "data/mapObjects/mansion4.asm"
+Mansion4Blocks: INCBIN "maps/mansion4.blk"
+
 INCLUDE "engine/overworld/card_key.asm"
 
 INCLUDE "engine/menu/prize_menu.asm"
@@ -1326,7 +1418,11 @@ INCLUDE "data/mapObjects/daycarem.asm"
 INCLUDE "data/mapHeaders/route12house.asm"
 INCLUDE "scripts/route12house.asm"
 INCLUDE "data/mapObjects/route12house.asm"
-	dr $5652a,$56714
+
+INCLUDE "data/mapHeaders/silphco8.asm"
+INCLUDE "scripts/silphco8.asm"
+INCLUDE "data/mapObjects/silphco8.asm"
+SilphCo8Blocks: INCBIN "maps/silphco8.blk"
 
 INCLUDE "engine/menu/diploma_1.asm"
 
@@ -1366,7 +1462,8 @@ Route16Blocks: INCBIN "maps/route16.blk" ; 58b84
 INCLUDE "data/mapHeaders/route18.asm"
 INCLUDE "data/mapObjects/route18.asm"
 Route18Blocks: INCBIN "maps/route18.blk"
-	dr $58d7d,$58d99
+
+INCBIN "maps/unusedblocks58d7d.blk"
 
 INCLUDE "engine/experience.asm"
 
@@ -1387,7 +1484,21 @@ INCLUDE "data/mapHeaders/fanclub.asm"
 INCLUDE "scripts/fanclub.asm"
 INCLUDE "data/mapObjects/fanclub.asm"
 FanClubBlocks: INCBIN "maps/fanclub.blk"
-	dr $59c80,$5a23d
+
+INCLUDE "data/mapHeaders/silphco2.asm"
+INCLUDE "scripts/silphco2.asm"
+INCLUDE "data/mapObjects/silphco2.asm"
+SilphCo2Blocks: INCBIN "maps/silphco2.blk"
+
+INCLUDE "data/mapHeaders/silphco3.asm"
+INCLUDE "scripts/silphco3.asm"
+INCLUDE "data/mapObjects/silphco3.asm"
+SilphCo3Blocks: INCBIN "maps/silphco3.blk"
+
+INCLUDE "data/mapHeaders/silphco10.asm"
+INCLUDE "scripts/silphco10.asm"
+INCLUDE "data/mapObjects/silphco10.asm"
+SilphCo10Blocks: INCBIN "maps/silphco10.blk"
 
 INCLUDE "data/mapHeaders/lance.asm"
 INCLUDE "scripts/lance.asm"
@@ -1541,7 +1652,11 @@ INCLUDE "data/mapObjects/undergroundpathentranceroute7.asm"
 INCLUDE "data/mapHeaders/undergroundpathentranceroute7copy.asm"
 INCLUDE "scripts/undergroundpathentranceroute7copy.asm"
 INCLUDE "data/mapObjects/undergroundpathentranceroute7copy.asm"
-	dr $5d6ba,$5d909
+
+INCLUDE "data/mapHeaders/silphco9.asm"
+INCLUDE "scripts/silphco9.asm"
+INCLUDE "data/mapObjects/silphco9.asm"
+SilphCo9Blocks: INCBIN "maps/silphco9.blk"
 
 INCLUDE "data/mapHeaders/victoryroad1.asm"
 INCLUDE "scripts/victoryroad1.asm"
@@ -1571,7 +1686,8 @@ SECTION "bank18",ROMX,BANK[$18]
 ViridianForestBlocks: INCBIN "maps/viridianforest.blk"
 UndergroundPathNSBlocks: INCBIN "maps/undergroundpathns.blk"
 UndergroundPathWEBlocks: INCBIN "maps/undergroundpathwe.blk"
-	dr $60258,$603c0
+
+INCBIN "maps/unusedblocks60258.blk"
 
 SSAnne9Blocks:
 SSAnne10Blocks: INCBIN "maps/ssanne9.blk"
@@ -1674,7 +1790,11 @@ INCLUDE "data/mapHeaders/diglettscave.asm"
 INCLUDE "scripts/diglettscave.asm"
 INCLUDE "data/mapObjects/diglettscave.asm"
 DiglettsCaveBlocks: INCBIN "maps/diglettscave.blk"
-	dr $62105,$625e8
+
+INCLUDE "data/mapHeaders/silphco11.asm"
+INCLUDE "scripts/silphco11.asm"
+INCLUDE "data/mapObjects/silphco11.asm"
+SilphCo11Blocks: INCBIN "maps/silphco11.blk"
 
 INCLUDE "engine/hidden_object_functions18.asm"
 
@@ -1697,7 +1817,8 @@ Plateau_GFX:       INCBIN "gfx/tilesets/plateau.t10.2bpp"
 Plateau_Block:     INCBIN "gfx/blocksets/plateau.bst"
 
 SECTION "bank1A",ROMX,BANK[$1A]
-	dr $68000,$68040
+Unknown_68000: INCBIN "gfx/blueversion.1bpp"
+
 Dojo_GFX:
 Gym_GFX:           INCBIN "gfx/tilesets/gym.2bpp"
 Dojo_Block:
@@ -1756,7 +1877,7 @@ CinnabarMartBlocks: INCBIN "maps/pewtermart.blk"
 FuchsiaHouse1Blocks: INCBIN "maps/fuchsiahouse1.blk"
 FuchsiaPokecenterBlocks:
 CinnabarPokecenterBlocks: INCBIN "maps/fuchsiapokecenter.blk"
-	dr $7404c,$7405c
+CeruleanHouse2Blocks: INCBIN "maps/ceruleanhouse2.blk"
 
 INCLUDE "engine/items/itemfinder.asm"
 INCLUDE "scripts/ceruleancity2.asm"
@@ -1770,7 +1891,14 @@ INCLUDE "data/mapHeaders/pewtermart.asm"
 INCLUDE "scripts/pewtermart.asm"
 INCLUDE "data/mapObjects/pewtermart.asm"
 
-	dr $7453d,$74726
+INCLUDE "data/mapHeaders/unknowndungeon1.asm"
+INCLUDE "scripts/unknowndungeon1.asm"
+INCLUDE "data/mapObjects/unknowndungeon1.asm"
+UnknownDungeon1Blocks: INCBIN "maps/unknowndungeon1.blk"
+
+INCLUDE "data/mapHeaders/ceruleanhouse2.asm"
+INCLUDE "scripts/ceruleanhouse2.asm"
+INCLUDE "data/mapObjects/ceruleanhouse2.asm"
 
 INCLUDE "engine/menu/vending_machine.asm"
 
@@ -1862,7 +1990,21 @@ INCLUDE "data/mapHeaders/gary.asm"
 INCLUDE "scripts/gary.asm"
 INCLUDE "data/mapObjects/gary.asm"
 GaryBlocks: INCBIN "maps/gary.blk"
-	dr $759ef,$75dfe
+
+INCLUDE "data/mapHeaders/lorelei.asm"
+INCLUDE "scripts/lorelei.asm"
+INCLUDE "data/mapObjects/lorelei.asm"
+LoreleiBlocks: INCBIN "maps/lorelei.blk"
+
+INCLUDE "data/mapHeaders/bruno.asm"
+INCLUDE "scripts/bruno.asm"
+INCLUDE "data/mapObjects/bruno.asm"
+BrunoBlocks: INCBIN "maps/bruno.blk"
+
+INCLUDE "data/mapHeaders/agatha.asm"
+INCLUDE "scripts/agatha.asm"
+INCLUDE "data/mapObjects/agatha.asm"
+AgathaBlocks: INCBIN "maps/agatha.blk"
 
 INCLUDE "engine/menu/league_pc.asm"
 
@@ -1891,123 +2033,124 @@ INCLUDE "engine/bg_map_attributes.asm"
 
 SECTION "bank30",ROMX,BANK[$30]
 
-	dr $c0000,$c4000
+; This whole bank is garbage data.
+INCBIN "engine/bank30.bin"
 
 SECTION "bank39",ROMX,BANK[$39]
 Pic_e4000: ; e4000
-	dr $e4000, $e40cc
+INCBIN "gfx/pikachu/unknown_e4000.pic"
 GFX_e40cc: ; e40cc
-	dr $e40cc, $e411c
+INCBIN "gfx/pikachu/unknown_e40cc.2bpp"
 Pic_e411c: ; e411c
-	dr $e411c, $e41d2
+INCBIN "gfx/pikachu/unknown_e411c.pic"
 GFX_e41d2: ; e41d2
-	dr $e41d2, $e4272
+INCBIN "gfx/pikachu/unknown_e41d2.2bpp"
 Pic_e4272: ; e4272
-	dr $e4272, $e4323
+INCBIN "gfx/pikachu/unknown_e4272.pic"
 GFX_e4323: ; e4323
-	dr $e4323, $e4383
+INCBIN "gfx/pikachu/unknown_e4323.2bpp"
 Pic_e4383: ; e4383
-	dr $e4383, $e444b
+INCBIN "gfx/pikachu/unknown_e4383.pic"
 GFX_e444b: ; e444b
-	dr $e444b, $e458b
+INCBIN "gfx/pikachu/unknown_e444b.2bpp"
 Pic_e458b: ; e458b
-	dr $e458b, $e463b
+INCBIN "gfx/pikachu/unknown_e458b.pic"
 GFX_e463b: ; e463b
-	dr $e463b, $e467b
+INCBIN "gfx/pikachu/unknown_e463b.2bpp"
 Pic_e467b: ; e467b
-	dr $e467b, $e472e
+INCBIN "gfx/pikachu/unknown_e467b.pic"
 GFX_e472e: ; e472e
-	dr $e472e, $e476e
+INCBIN "gfx/pikachu/unknown_e472e.2bpp"
 Pic_e476e: ; e476e
-	dr $e476e, $e4841
+INCBIN "gfx/pikachu/unknown_e476e.pic"
 GFX_e4841: ; e4841
-	dr $e4841, $e49d1
+INCBIN "gfx/pikachu/unknown_e4841.2bpp"
 Pic_e49d1: ; e49d1
-	dr $e49d1, $e4a99
+INCBIN "gfx/pikachu/unknown_e49d1.pic"
 GFX_e4a99: ; e4a99
-	dr $e4a99, $e4b39
+INCBIN "gfx/pikachu/unknown_e4a99.2bpp"
 Pic_e4b39: ; e4b39
-	dr $e4b39, $e4bde
+INCBIN "gfx/pikachu/unknown_e4b39.pic"
 GFX_e4bde: ; e4bde
-	dr $e4bde, $e4c3e
+INCBIN "gfx/pikachu/unknown_e4bde.2bpp"
 Pic_e4c3e: ; e4c3e
-	dr $e4c3e, $e4ce0
+INCBIN "gfx/pikachu/unknown_e4c3e.pic"
 GFX_e4ce0: ; e4ce0
-	dr $e4ce0, $e4e70
+INCBIN "gfx/pikachu/unknown_e4ce0.2bpp"
 GFX_e4e70: ; e4e70
-	dr $e4e70, $e5000
+INCBIN "gfx/pikachu/unknown_e4e70.2bpp"
 Pic_e5000: ; e5000
-	dr $e5000, $e50af
+INCBIN "gfx/pikachu/unknown_e5000.pic"
 GFX_e50af: ; e50af
-	dr $e50af, $e523f
+INCBIN "gfx/pikachu/unknown_e50af.2bpp"
 Pic_e523f: ; e523f
-	dr $e523f, $e52fe
+INCBIN "gfx/pikachu/unknown_e523f.pic"
 GFX_e52fe: ; e52fe
-	dr $e52fe, $e548e
+INCBIN "gfx/pikachu/unknown_e52fe.2bpp"
 Pic_e548e: ; e548e
-	dr $e548e, $e5541
+INCBIN "gfx/pikachu/unknown_e548e.pic"
 GFX_e5541: ; e5541
-	dr $e5541, $e56d1
+INCBIN "gfx/pikachu/unknown_e5541.2bpp"
 Pic_e56d1: ; e56d1
-	dr $e56d1, $e5794
+INCBIN "gfx/pikachu/unknown_e56d1.pic"
 GFX_e5794: ; e5794
-	dr $e5794, $e5924
+INCBIN "gfx/pikachu/unknown_e5794.2bpp"
 Pic_e5924: ; e5924
-	dr $e5924, $e59ed
+INCBIN "gfx/pikachu/unknown_e5924.pic"
 GFX_e59ed: ; e59ed
-	dr $e59ed, $e5b7d
+INCBIN "gfx/pikachu/unknown_e59ed.2bpp"
 Pic_e5b7d: ; e5b7d
-	dr $e5b7d, $e5c4d
+INCBIN "gfx/pikachu/unknown_e5b7d.pic"
 GFX_e5c4d: ; e5c4d
-	dr $e5c4d, $e5ddd
+INCBIN "gfx/pikachu/unknown_e5c4d.2bpp"
 Pic_e5ddd: ; e5ddd
-	dr $e5ddd, $e5e90
+INCBIN "gfx/pikachu/unknown_e5ddd.pic"
 GFX_e5e90: ; e5e90
-	dr $e5e90, $e6020
+INCBIN "gfx/pikachu/unknown_e5e90.2bpp"
 GFX_e6020: ; e6020
-	dr $e6020, $e61b0
+INCBIN "gfx/pikachu/unknown_e6020.2bpp"
 GFX_e61b0: ; e61b0
-	dr $e61b0, $e6340
+INCBIN "gfx/pikachu/unknown_e61b0.2bpp"
 Pic_e6340: ; e6340
-	dr $e6340, $e63f7
+INCBIN "gfx/pikachu/unknown_e6340.pic"
 GFX_e63f7: ; e63f7
-	dr $e63f7, $e6587
+INCBIN "gfx/pikachu/unknown_e63f7.2bpp"
 Pic_e6587: ; e6587
-	dr $e6587, $e6646
+INCBIN "gfx/pikachu/unknown_e6587.pic"
 GFX_e6646: ; e6646
-	dr $e6646, $e67d6
+INCBIN "gfx/pikachu/unknown_e6646.2bpp"
 Pic_e67d6: ; e67d6
-	dr $e67d6, $e682f
+INCBIN "gfx/pikachu/unknown_e67d6.pic"
 GFX_e682f: ; e682f
-	dr $e682f, $e69bf
+INCBIN "gfx/pikachu/unknown_e682f.2bpp"
 GFX_e69bf: ; e69bf
-	dr $e69bf, $e6b4f
+INCBIN "gfx/pikachu/unknown_e69bf.2bpp"
 GFX_e6b4f: ; e6b4f
-	dr $e6b4f, $e6cdf
+INCBIN "gfx/pikachu/unknown_e6b4f.2bpp"
 GFX_e6cdf: ; e6cdf
-	dr $e6cdf, $e6e6f
+INCBIN "gfx/pikachu/unknown_e6cdf.2bpp"
 GFX_e6e6f: ; e6e6f
-	dr $e6e6f, $e6fff
+INCBIN "gfx/pikachu/unknown_e6e6f.2bpp"
 GFX_e6fff: ; e6fff
-	dr $e6fff, $e718f
+INCBIN "gfx/pikachu/unknown_e6fff.2bpp"
 GFX_e718f: ; e718f
-	dr $e718f, $e731f
+INCBIN "gfx/pikachu/unknown_e718f.2bpp"
 GFX_e731f: ; e731f
-	dr $e731f, $e74af
+INCBIN "gfx/pikachu/unknown_e731f.2bpp"
 GFX_e74af: ; e74af
-	dr $e74af, $e763f
+INCBIN "gfx/pikachu/unknown_e74af.2bpp"
 GFX_e763f: ; e763f
-	dr $e763f, $e77cf
+INCBIN "gfx/pikachu/unknown_e763f.2bpp"
 Pic_e77cf: ; e77cf
-	dr $e77cf, $e7863
+INCBIN "gfx/pikachu/unknown_e77cf.pic"
 GFX_e7863: ; e7863
-	dr $e7863, $e79f3
+INCBIN "gfx/pikachu/unknown_e7863.2bpp"
 GFX_e79f3: ; e79f3
-	dr $e79f3, $e7b83
+INCBIN "gfx/pikachu/unknown_e79f3.2bpp"
 GFX_e7b83: ; e7b83
-	dr $e7b83, $e7d13
+INCBIN "gfx/pikachu/unknown_e7b83.2bpp"
 GFX_e7d13: ; e7d13
-	dr $e7d13, $e7ea3
+INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
 
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"

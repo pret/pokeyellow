@@ -207,45 +207,45 @@ MapHeaderPointers:: ; fc1f2 (3f:41f2)
 	dw RocketHideoutElevator_h ; unused
 	dw RocketHideoutElevator_h ; unused
 	dw RocketHideoutElevator_h ; unused
-	dw $5c80 ; dw SilphCo2_h
-	dw $5eea ; dw SilphCo3_h
-	dw $5e09 ; dw SilphCo4_h
-	dw $6035 ; dw SilphCo5_h ;210
-	dw $62a7 ; dw SilphCo6_h
-	dw $5b97 ; dw SilphCo7_h
-	dw $652a ; dw SilphCo8_h
-	dw $5ff5 ; dw Mansion2_h
-	dw $620b ; dw Mansion3_h
-	dw $63d6 ; dw Mansion4_h
-	dw $5ab3 ; dw SafariZoneEast_h
-	dw $5bf3 ; dw SafariZoneNorth_h
-	dw $635a ; dw SafariZoneWest_h
-	dw $5dfa ; dw SafariZoneCenter_h ;220
-	dw $5f35 ; dw SafariZoneRestHouse1_h
-	dw $64bc ; dw SafariZoneSecretHouse_h
-	dw $5f72 ; dw SafariZoneRestHouse2_h
-	dw $5fbd ; dw SafariZoneRestHouse3_h
-	dw $6008 ; dw SafariZoneRestHouse4_h
-	dw $6053 ; dw UnknownDungeon2_h
-	dw $6141 ; dw UnknownDungeon3_h
-	dw $453d ; dw UnknownDungeon1_h
-	dw $530e ; dw NameRater_h
-	dw $4643 ; dw CeruleanHouse2_h
-	dw $5649 ; dw Route16Gate_h ; unused
-	dw $624e ; dw RockTunnel2_h
-	dw $56ba ; dw SilphCo9_h
-	dw $60c8 ; dw SilphCo10_h
-	dw $6105 ; dw SilphCo11_h
-	dw $5a08 ; dw SilphCoElevator_h
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
+	dw SilphCo2_h
+	dw SilphCo3_h
+	dw SilphCo4_h
+	dw SilphCo5_h ;210
+	dw SilphCo6_h
+	dw SilphCo7_h
+	dw SilphCo8_h
+	dw Mansion2_h
+	dw Mansion3_h
+	dw Mansion4_h
+	dw SafariZoneEast_h
+	dw SafariZoneNorth_h
+	dw SafariZoneWest_h
+	dw SafariZoneCenter_h ;220
+	dw SafariZoneRestHouse1_h
+	dw SafariZoneSecretHouse_h
+	dw SafariZoneRestHouse2_h
+	dw SafariZoneRestHouse3_h
+	dw SafariZoneRestHouse4_h
+	dw UnknownDungeon2_h
+	dw UnknownDungeon3_h
+	dw UnknownDungeon1_h
+	dw NameRater_h
+	dw CeruleanHouse2_h
+	dw Route16Gate_h ; unused
+	dw RockTunnel2_h
+	dw SilphCo9_h
+	dw SilphCo10_h
+	dw SilphCo11_h
+	dw SilphCoElevator_h
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
 	dw TradeCenter_h
 	dw Colosseum_h
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $5c80 ; dw SilphCo2_h ; unused
-	dw $59ef ; dw Lorelei_h
-	dw $5b4a ; dw Bruno_h
-	dw $5ca1 ; dw Agatha_h ;247
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw SilphCo2_h ; unused
+	dw Lorelei_h
+	dw Bruno_h
+	dw Agatha_h ;247
 	dw BeachHouse_h

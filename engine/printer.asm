@@ -1162,8 +1162,35 @@ Func_e8f51: ; e8f51 (3a:4f51)
 	ld [wcae0], a
 	ret
 
-Func_e8f82: ; e8f82 (3a:4f82)
-	dr $e8f82,$e8fb8
+Func_e8f82:
+	ld a, [wcae0]
+	and a
+	ret z
+	push af
+	xor a
+	ld [H_AUTOBGTRANSFERENABLED], a
+	coord hl, 0, 5
+	lb bc, 10, 18
+	call TextBoxBorder
+	pop af
+	ld e, a
+	ld d, $0
+	ld hl, Table_e8fca
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	coord hl, 1, 7
+	call PlaceString
+	coord hl, 2, 15
+	ld de, String_e8fb8
+	call PlaceString
+	ld a, $1
+	ld [H_AUTOBGTRANSFERENABLED], a
+	xor a
+	ld [wcae0], a
+	ret
 
 String_e8fb8:
 	db "Press B to Cancel@"

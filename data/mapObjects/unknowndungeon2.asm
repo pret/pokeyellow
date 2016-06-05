@@ -11,10 +11,11 @@ UnknownDungeon2Object: ; 0x45e14 (size=73)
 
 	db $0 ; signs
 
-	db $3 ; objects
-	object SPRITE_BALL, $1d, $9, STAY, NONE, $1, PP_UP
-	object SPRITE_BALL, $4, $f, STAY, NONE, $2, ULTRA_BALL
-	object SPRITE_BALL, $d, $6, STAY, NONE, $3, FULL_RESTORE
+	db $4 ; objects
+	object SPRITE_BALL, $0, $b, STAY, NONE, $1, RARE_CANDY
+	object SPRITE_BALL, $10, $7, STAY, NONE, $2, ULTRA_BALL
+	object SPRITE_BALL, $13, $b, STAY, NONE, $3, MAX_REVIVE
+	object SPRITE_BALL, $1b, $9, STAY, NONE, $4, FULL_RESTORE
 
 	; warp-to
 	EVENT_DISP UNKNOWN_DUNGEON_2_WIDTH, $1, $1d ; UNKNOWN_DUNGEON_1

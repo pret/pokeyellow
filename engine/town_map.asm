@@ -588,14 +588,14 @@ LoadTownMapEntry: ; 7137a (1c:537a)
 	ld l, a
 	ret
 	
-ExternalMapEntries: ; 7139c (1c:539c)
-	dr $7139c,$7140b
-InternalMapEntries: ; 7140b (1c:540b)
-	dr $7140b,$7174b
+; ExternalMapEntries: ; 7139c (1c:539c)
+	; dr $7139c,$7140b
+; InternalMapEntries: ; 7140b (1c:540b)
+	; dr $7140b,$7174b
 	
-;INCLUDE "data/town_map_entries.asm"
+INCLUDE "data/town_map_entries.asm"
 
-;INCLUDE "text/map_names.asm" ; TODO: relabel addresses
+INCLUDE "text/map_names.asm" ; TODO: relabel addresses
 
 MonNestIcon: ; 7174b (1c:574b)
 	INCBIN "gfx/mon_nest_icon.1bpp"

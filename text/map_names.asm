@@ -98,7 +98,7 @@ RocketHQName: ; 7167a (1c:567a)
 SilphCoName: ; 71684 (1c:5684)
 	db "SILPH CO.@"
 PokemonMansionName: ; 7168e (1c:568e)
-	db $4a," MANSION@"
+	db "<pkmn> MANSION@"
 SafariZoneName: ; 71698 (1c:5698)
 	db "SAFARI ZONE@"
 CeruleanCaveName: ; 716a4 (1c:56a4)

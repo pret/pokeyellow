@@ -14,10 +14,11 @@ UnknownDungeon1Object: ; 0x74d15 (size=97)
 
 	db $0 ; signs
 
-	db $3 ; objects
-	object SPRITE_BALL, $7, $d, STAY, NONE, $1, FULL_RESTORE
-	object SPRITE_BALL, $13, $3, STAY, NONE, $2, MAX_ELIXER
-	object SPRITE_BALL, $5, $0, STAY, NONE, $3, NUGGET
+	db $4 ; objects
+	object SPRITE_BALL, $1d, $10, STAY, NONE, $1, RARE_CANDY
+	object SPRITE_BALL, $7, $b, STAY, NONE, $2, MAX_ELIXER
+	object SPRITE_BALL, $1d, $9, STAY, NONE, $3, MAX_REVIVE
+	object SPRITE_BALL, $12, $3, STAY, NONE, $4, ULTRA_BALL
 
 	; warp-to
 	EVENT_DISP UNKNOWN_DUNGEON_1_WIDTH, $11, $18

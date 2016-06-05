@@ -5,3 +5,4 @@ UnknownDungeon1TextPointers: ; 74d0f (1d:4d0f)
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText
+	dw PickUpItemText
