@@ -404,8 +404,11 @@ wc632:: ; c632
 	ds 1
 wc633:: ; c633
 	ds 1
+
+wYellowIntroCurrentScene:: ; c634
 wc634:: ; c634
 	ds 1
+wYellowIntroSceneTimer:: ; c635
 wc635:: ; c635
 	ds 1
 wYellowIntroAnimatedObjectStructPointer:: ; c636
@@ -420,20 +423,75 @@ wYellowIntroAnimatedObjectStructPointer:: ; c636
 wTempPic::
 wOverworldMap:: ; c6e8
 	; ds 1300
-	ds $18
+wc6e8:: ; c6e8
+	ds 1
+wc6e9:: ; c6e9
+	ds 1
+wc6ea:: ; c6ea
+	ds 1
+wc6eb:: ; c6eb
+	ds 1
+wc6ec:: ; c6ec
+	ds 1
+wc6ed:: ; c6ed
+	ds 1
+wc6ee:: ; c6ee
+	ds 1
+wc6ef:: ; c6ef
+	ds 1
+wc6f0:: ; c6f0
+	ds 1
+wc6f1:: ; c6f1
+	ds 1
+wc6f2:: ; c6f2
+	ds 1
+wc6f3:: ; c6f3
+	ds 13
 wc700:: ; c700
 	ds $10
 wc710:: ; c710
 	ds $f0
-wc800:: ; c800
+wYellowIntroSurfingPikaSineWaveBuffer:: ; c800
+	; ds $100
 	ds $10
 wc810:: ; c810
-	ds $168
-	
+	ds $f0
+
+; c900
+	ds $70
+
+wc970:: ; c970
+	ds 1
+wc971:: ; c971
+	ds 1
+wc972:: ; c972
+	ds 1
+wc973:: ; c973
+	ds 1
+wc974:: ; c974
+	ds 1
+wc975:: ; c975
+	ds 1
+wc976:: ; c976
+	ds 1
+wc977:: ; c977
+	ds 1	
 wPrinterTileBuffer:: ; c978
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
-wcae0:: ; cae0
-	ds 284
+wPrinterStatusIndicator:: ; cae0
+	ds 2
+wcae2:: ; cae2
+	ds 1
+wcae3:: ; cae3
+	ds 17
+wcaf4:: ; caf4
+	ds 1
+wcaf5:: ; caf5
+	ds 1
+wcaf6:: ; caf6
+	ds 3
+wcaf9:: ; caf9
+	ds 259
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
@@ -1595,22 +1653,22 @@ wMaxItemQuantity:: ; cf97
 ; LoadMonData copies mon data here
 wLoadedMon:: party_struct wLoadedMon ; cf98
 
-wFontLoaded:: ; cfc4
+wFontLoaded:: ; cfc3
 ; bit 0: The space in VRAM that is used to store walk animation tile patterns
 ;        for the player and NPCs is in use for font tile patterns.
 ;        This means that NPC movement must be disabled.
 ; The other bits are unused.
 	ds 1
 
-wWalkCounter:: ; cfc5
+wWalkCounter:: ; cfc4
 ; walk animation counter
 	ds 1
 
-wTileInFrontOfPlayer:: ; cfc6
+wTileInFrontOfPlayer:: ; cfc5
 ; background tile number in front of the player (either 1 or 2 steps ahead)
 	ds 1
 
-wAudioFadeOutControl:: ; cfc7
+wAudioFadeOutControl:: ; cfc6
 ; The desired fade counter reload value is stored here prior to calling
 ; PlaySound in order to cause the current music to fade out before the new
 ; music begins playing. Storing 0 causes no fade out to occur and the new music
@@ -1622,13 +1680,13 @@ wAudioFadeOutControl:: ; cfc7
 ; audio, it zeroes this variable and starts playing the sound ID stored in it.
 	ds 1
 
-wAudioFadeOutCounterReloadValue:: ; cfc8
+wAudioFadeOutCounterReloadValue:: ; cfc7
 	ds 1
 
-wAudioFadeOutCounter:: ; cfc9
+wAudioFadeOutCounter:: ; cfc8
 	ds 1
 
-wLastMusicSoundID:: ; cfca
+wLastMusicSoundID:: ; cfc9
 ; This is used to determine whether the default music is already playing when
 ; attempting to play the default music (in order to avoid restarting the same
 ; music) and whether the music has already been stopped when attempting to
@@ -1640,45 +1698,45 @@ wLastMusicSoundID:: ; cfca
 ; the music).
 	ds 1
 
-wUpdateSpritesEnabled:: ; cfcb
+wUpdateSpritesEnabled:: ; cfca
 ; $00 = causes sprites to be hidden and the value to change to $ff
 ; $01 = enabled
 ; $ff = disabled
 ; other values aren't used
 	ds 1
 
-wEnemyMoveNum:: ; cfcc
+wEnemyMoveNum:: ; cfcb
 	ds 1
-wEnemyMoveEffect:: ; cfcd
+wEnemyMoveEffect:: ; cfcc
 	ds 1
-wEnemyMovePower:: ; cfce
+wEnemyMovePower:: ; cfcd
 	ds 1
-wEnemyMoveType:: ; cfcf
+wEnemyMoveType:: ; cfce
 	ds 1
-wEnemyMoveAccuracy:: ; cfd0
+wEnemyMoveAccuracy:: ; cfcf
 	ds 1
-wEnemyMoveMaxPP:: ; cfd1
+wEnemyMoveMaxPP:: ; cfd0
 	ds 1
-wPlayerMoveNum:: ; cfd2
+wPlayerMoveNum:: ; cfd1
 	ds 1
-wPlayerMoveEffect:: ; cfd3
+wPlayerMoveEffect:: ; cfd2
 	ds 1
-wPlayerMovePower:: ; cfd4
+wPlayerMovePower:: ; cfd3
 	ds 1
-wPlayerMoveType:: ; cfd5
+wPlayerMoveType:: ; cfd4
 	ds 1
-wPlayerMoveAccuracy:: ; cfd6
+wPlayerMoveAccuracy:: ; cfd5
 	ds 1
-wPlayerMoveMaxPP:: ; cfd7
-	ds 1
-
-
-wEnemyMonSpecies2:: ; cfd8
-	ds 1
-wBattleMonSpecies2:: ; cfd9
+wPlayerMoveMaxPP:: ; cfd6
 	ds 1
 
-wEnemyMonNick:: ds NAME_LENGTH ; cfda
+
+wEnemyMonSpecies2:: ; cfd7
+	ds 1
+wBattleMonSpecies2:: ; cfd8
+	ds 1
+
+wEnemyMonNick:: ds NAME_LENGTH ; cfd9
 
 wEnemyMon:: ; cfe5
 ; The wEnemyMon struct reaches past 0xcfff,
@@ -1708,9 +1766,9 @@ wEnemyMonAttack::    dw
 wEnemyMonDefense::   dw
 wEnemyMonSpeed::     dw
 wEnemyMonSpecial::   dw
-wEnemyMonPP::        ds 3 ; NUM_MOVES - 2
+wEnemyMonPP::        ds 3 ; NUM_MOVES - 1
 SECTION "WRAM Bank 1", WRAMX, BANK[1]
-                     ds 1 ; NUM_MOVES - 2
+                     ds 1 ; NUM_MOVES - 3
 
 wEnemyMonBaseStats:: ds 5
 wEnemyMonCatchRate:: ds 1

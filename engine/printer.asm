@@ -13,9 +13,9 @@ Func_e8785:
 	ld hl, wUnknownSerialFlag_d49a
 	set 0, [hl]
 	ld a, [wd498]
-	ld [$cae3], a
+	ld [wcae3], a
 	pop af
-	ld [$caf4], a
+	ld [wcaf4], a
 	ret
 
 ; e87a8
@@ -65,7 +65,7 @@ Func_e87e4:
 
 Func_e87e9:
 	xor a
-	ld [$c971], a
+	ld [wc971], a
 	ld hl, wOverworldMap
 	set 7, [hl]
 	ret
@@ -84,19 +84,19 @@ Func_e87fd:
 	ld hl, Data_e8a3a
 	call Func_e8968
 	xor a
-	ld [$c976], a
-	ld [$c977], a
-	ld a, [$caf4]
-	ld [$c6e9], a
+	ld [wc976], a
+	ld [wc977], a
+	ld a, [wcaf4]
+	ld [wc6e9], a
 	call Func_e87df
 	call Func_e8949
 	ld a, $01
-	ld [$cae0], a
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e881f:
 	call Func_e8981
-	ld hl, $c6e9
+	ld hl, wc6e9
 	ld a, [hl]
 	and a
 	jr z, Func_e884b
@@ -104,14 +104,14 @@ Func_e881f:
 	call Func_e8968
 	call Func_e89e6
 	ld a, $80
-	ld [$c976], a
+	ld [wc976], a
 	ld a, $02
-	ld [$c977], a
+	ld [wc977], a
 	call Func_e899f
 	call Func_e87df
 	call Func_e8949
 	ld a, $02
-	ld [$cae0], a
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e884b:
@@ -120,8 +120,8 @@ Func_e884b:
 	ld hl, Data_e8a4c
 	call Func_e8968
 	xor a
-	ld [$c976], a
-	ld [$c977], a
+	ld [wc976], a
+	ld [wc977], a
 	call Func_e87df
 	call Func_e8949
 	ret
@@ -132,14 +132,14 @@ Func_e8864:
 	call Func_e8968
 	call Func_e89cf
 	ld a, $04
-	ld [$c976], a
+	ld [wc976], a
 	ld a, $00
-	ld [$c977], a
+	ld [wc977], a
 	call Func_e899f
 	call Func_e87df
 	call Func_e8949
 	ld a, $03
-	ld [$cae0], a
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e8889:
@@ -147,16 +147,16 @@ Func_e8889:
 	ld hl, Data_e8a3a
 	call Func_e8968
 	xor a
-	ld [$c976], a
-	ld [$c977], a
-	ld a, [$caf4]
-	ld [$c6e9], a
+	ld [wc976], a
+	ld [wc977], a
+	ld a, [wcaf4]
+	ld [wc6e9], a
 	call Func_e87df
 	call Func_e8949
 	ret
 
 Func_e88a6:
-	ld hl, $c973
+	ld hl, wc973
 	inc [hl]
 	ld a, [hl]
 	cp a, $06
@@ -167,14 +167,14 @@ Func_e88a6:
 	ret
 
 Func_e88b4:
-	ld hl, $c973
+	ld hl, wc973
 	inc [hl]
 	ld a, [hl]
 	cp a, $06
 	ret c
 	xor a
 	ld [hl], a
-	ld hl, $c6e9
+	ld hl, wc6e9
 	dec [hl]
 	call Func_e87e4
 	call Func_e87e4
@@ -184,30 +184,30 @@ Func_e88c9:
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	ret nz
-	ld a, [$c970]
+	ld a, [wc970]
 	cp a, $ff
 	jr nz, .asm_e88dc
-	ld a, [$c971]
+	ld a, [wc971]
 	cp a, $ff
 	jr z, .asm_e88f8
 .asm_e88dc
-	ld a, [$c970]
+	ld a, [wc970]
 	cp a, $81
 	jr nz, .asm_e88f8
-	ld a, [$c971]
+	ld a, [wc971]
 	cp a, $00
 	jr nz, .asm_e88f8
 	ld hl, wUnknownSerialFlag_d49a
 	set 1, [hl]
 	ld a, $05
-	ld [$c972], a
+	ld [wc972], a
 	call Func_e87df
 	ret
 
 .asm_e88f8
 	ld a, $ff
-	ld [$c970], a
-	ld [$c971], a
+	ld [wc970], a
+	ld [wc971], a
 	ld a, $0e
 	ld [wOverworldMap], a
 	ret
@@ -216,10 +216,10 @@ Func_e8906:
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	ret nz
-	ld a, [$c971]
+	ld a, [wc971]
 	and a, $f0
 	jr nz, .asm_e8921
-	ld a, [$c971]
+	ld a, [wc971]
 	and a, $01
 	jr nz, .asm_e891d
 	call Func_e87df
@@ -238,7 +238,7 @@ Func_e8927:
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	ret nz
-	ld a, [$c971]
+	ld a, [wc971]
 	and a, $f3
 	ret nz
 	call Func_e87df
@@ -250,7 +250,7 @@ Func_e8939:
 	ld a, [wUnknownSerialFlag_d49b]
 	and a
 	ret nz
-	ld a, [$c971]
+	ld a, [wc971]
 	and a, $f0
 	ret nz
 	xor a
@@ -263,8 +263,8 @@ Func_e8949:
 	and a
 	jr nz, .asm_e8949
 	xor a
-	ld [$c974], a
-	ld [$c975], a
+	ld [wc974], a
+	ld [wc975], a
 	ld a, $01
 	ld [wUnknownSerialFlag_d49b], a
 	ld a, $88
@@ -277,33 +277,33 @@ Func_e8949:
 
 Func_e8968:
 	ld a, [hli]
-	ld [$c6ea], a
+	ld [wc6ea], a
 	ld a, [hli]
-	ld [$c6eb], a
+	ld [wc6eb], a
 	ld a, [hli]
-	ld [$c6ec], a
+	ld [wc6ec], a
 	ld a, [hli]
-	ld [$c6ed], a
+	ld [wc6ed], a
 	ld a, [hli]
-	ld [$c6ee], a
+	ld [wc6ee], a
 	ld a, [hl]
-	ld [$c6ef], a
+	ld [wc6ef], a
 	ret
 
 Func_e8981:
 	xor a
-	ld hl, $c6ea
+	ld hl, wc6ea
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c6ee
+	ld hl, wc6ee
 	ld [hli], a
 	ld [hl], a
 	xor a
-	ld [$c976], a
-	ld [$c977], a
-	ld hl, $c6f0
+	ld [wc976], a
+	ld [wc977], a
+	ld hl, wc6f0
 	ld bc, $0280
 	call Func_e8a2e
 	ret
@@ -311,18 +311,18 @@ Func_e8981:
 Func_e899f:
 	ld hl, $0000
 	ld bc, $0004
-	ld de, $c6ea
+	ld de, wc6ea
 	call Func_e89c2
-	ld a, [$c976]
+	ld a, [wc976]
 	ld c, a
-	ld a, [$c977]
+	ld a, [wc977]
 	ld b, a
-	ld de, $c6f0
+	ld de, wc6f0
 	call Func_e89c2
 	ld a, l
-	ld [$c6ee], a
+	ld [wc6ee], a
 	ld a, h
-	ld [$c6ef], a
+	ld [wc6ef], a
 	ret
 
 Func_e89c2:
@@ -342,19 +342,19 @@ Func_e89c2:
 
 Func_e89cf:
 	ld a, $01
-	ld [$c6f0], a
-	ld a, [$cae2]
-	ld [$c6f1], a
+	ld [wc6f0], a
+	ld a, [wcae2]
+	ld [wc6f1], a
 	ld a, $e4
-	ld [$c6f2], a
-	ld a, [$cae3]
-	ld [$c6f3], a
+	ld [wc6f2], a
+	ld a, [wcae3]
+	ld [wc6f3], a
 	ret
 
 Func_e89e6:
-	ld a, [$c6e9]
+	ld a, [wc6e9]
 	ld b, a
-	ld a, [$caf4]
+	ld a, [wcaf4]
 	sub b
 	ld hl, wPrinterTileBuffer
 	ld de, $0028
@@ -368,7 +368,7 @@ Func_e89e6:
 .asm_e89fb
 	ld e, l
 	ld d, h
-	ld hl, $c6f0
+	ld hl, wc6f0
 	ld c, $28
 .asm_e8a02
 	ld a, [de]
@@ -492,31 +492,31 @@ Func_e8ab3:
 	ret
 
 Func_e8abc:
-	ld a, [$c6ea]
+	ld a, [wc6ea]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
 
 Func_e8ac6:
-	ld a, [$c6eb]
+	ld a, [wc6eb]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
 
 Func_e8ad0:
-	ld a, [$c6ec]
+	ld a, [wc6ec]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
 
 Func_e8ada:
-	ld a, [$c6ed]
+	ld a, [wc6ed]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
 
 Func_e8ae4:
-	ld hl, $c976
+	ld hl, wc976
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
@@ -527,17 +527,17 @@ Func_e8ae4:
 	ld [hl], d
 	dec hl
 	ld [hl], e
-	ld a, [$c974]
+	ld a, [wc974]
 	ld e, a
-	ld a, [$c975]
+	ld a, [wc975]
 	ld d, a
-	ld hl, $c6f0
+	ld hl, wc6f0
 	add hl, de
 	inc de
 	ld a, e
-	ld [$c974], a
+	ld [wc974], a
 	ld a, d
-	ld [$c975], a
+	ld [wc975], a
 	ld a, [hl]
 	call Func_e8b5f
 	ret
@@ -545,13 +545,13 @@ Func_e8ae4:
 .asm_e8b0c
 	call Func_e8aad
 Func_e8b0f:
-	ld a, [$c6ee]
+	ld a, [wc6ee]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
 
 Func_e8b19:
-	ld a, [$c6ef]
+	ld a, [wc6ef]
 	call Func_e8b5f
 	call Func_e8aad
 	ret
@@ -564,7 +564,7 @@ Func_e8b23:
 
 Func_e8b2c:
 	ld a, [rSB]
-	ld [$c970], a
+	ld [wc970], a
 	ld a, $00
 	call Func_e8b5f
 	call Func_e8aad
@@ -572,7 +572,7 @@ Func_e8b2c:
 
 Func_e8b3a:
 	ld a, [rSB]
-	ld [$c971], a
+	ld [wc971], a
 	xor a
 	ld [wUnknownSerialFlag_d49b], a
 	ret
@@ -605,16 +605,16 @@ Func_e8b5f:
 
 Func_e8b6a:
 	ld a, [rSB]
-	ld [$c971], a
+	ld [wc971], a
 	xor a
 	ld [wUnknownSerialFlag_d49b], a
 	ret
 
 Func_e8b74: ; e8b74 (3a:4b74)
-	ld a, [$cfca]
+	ld a, [wUpdateSpritesEnabled]
 	push af
 	xor a
-	ld [$cfca], a
+	ld [wUpdateSpritesEnabled], a
 	ld [$ffdb], a
 	call Func_e8f24
 	ld a, [rIE]
@@ -627,7 +627,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld [$ffba], a
 	call Func_e8c30
 	call Func_e8785
-	ld a, [$caf9]
+	ld a, [wcaf9]
 	and a
 	jr z, .asm_e8b9e
 	ld a, $10
@@ -636,7 +636,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 .asm_e8b9e
 	ld a, $13
 .asm_e8ba0
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call ClearScreen
 	callab Func_401c2
@@ -645,7 +645,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld [$ffba], a
 	call Func_e8c0c
 	jr c, .asm_e8bf4
-	ld a, [$caf9]
+	ld a, [wcaf9]
 	and a
 	jr z, .asm_e8bf4
 	xor a
@@ -660,7 +660,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld a, $07
 	call Func_e8785
 	ld a, $03
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	ld a, $01
@@ -677,7 +677,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	call Func_0f3d
 	call Func_e8f3b
 	pop af
-	ld [$cfca], a
+	ld [wUpdateSpritesEnabled], a
 	ret
 
 Func_e8c0c:
@@ -686,12 +686,12 @@ Func_e8c0c:
 	call JoypadLowSensitivity
 	call Func_e8eca
 	jr c, .asm_e8c2e
-	ld a, [$c6e8]
+	ld a, [wc6e8]
 	bit 7, a
 	jr nz, .asm_e8c2c
 	call Func_e87a8
-	call Func_e8f51
-	call Func_e8f82
+	call GBPrinter_CheckForErrors
+	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
 	jr .asm_e8c0f
 
@@ -706,12 +706,12 @@ Func_e8c0c:
 Func_e8c30:
 	callab Func_4039c
 	ld a, l
-	ld [$caf5], a
+	ld [wcaf5], a
 	ld a, h
-	ld [$caf6], a
+	ld [wcaf6], a
 	ld a, $00
-	rla
-	ld [$caf9], a
+	rla ; copy carry flag state to bit 0
+	ld [wcaf9], a
 	and a
 	jr z, .asm_e8c4d
 	ld a, $05
@@ -740,19 +740,19 @@ Func_e8c5c:
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call Func_e8f16
 .asm_e8c7d
 	call JoypadLowSensitivity
 	call Func_e8eca
 	jr c, .asm_e8c9a
-	ld a, [$c6e8]
+	ld a, [wc6e8]
 	bit 7, a
 	jr nz, .asm_e8c9a
 	call Func_e87a8
-	call Func_e8f51
-	call Func_e8f82
+	call GBPrinter_CheckForErrors
+	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
 	jr .asm_e8c7d
 
@@ -782,7 +782,7 @@ Func_e8cb1:
 	ld [rIE], a
 	call Func_e8783
 	ld a, $10
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call Func_e8d11
 	jr c, .asm_e8cfa
@@ -797,7 +797,7 @@ Func_e8cb1:
 	call Func_e9ad3
 	call Func_e8783
 	ld a, $03
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	call Func_e8d11
@@ -820,12 +820,12 @@ Func_e8d11:
 	call JoypadLowSensitivity
 	call Func_e8eca
 	jr c, .asm_e8d33
-	ld a, [$c6e8]
+	ld a, [wc6e8]
 	bit 7, a
 	jr nz, .asm_e8d31
 	call Func_e87a8
-	call Func_e8f51
-	call Func_e8f82
+	call GBPrinter_CheckForErrors
+	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
 	jr .asm_e8d14
 
@@ -861,7 +861,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call Func_e988a
 	call Func_e8783
 	ld a, $10
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
@@ -876,7 +876,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call Func_e98ec
 	call Func_e8783
 	ld a, $00
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
@@ -891,7 +891,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call Func_e9907
 	call Func_e8783
 	ld a, $00
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
@@ -906,7 +906,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call Func_e9922
 	call Func_e8783
 	ld a, $03
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
@@ -939,8 +939,8 @@ Func_e8dfb: ; e8dfb
 	bit 7, a
 	jr nz, .asm_e8e1b
 	call Func_e87a8
-	call Func_e8f51
-	call Func_e8f82
+	call GBPrinter_CheckForErrors
+	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
 	jr .asm_e8dfe
 
@@ -969,7 +969,7 @@ Func_e8e24: ; e8e24
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
-	ld [$cae2], a
+	ld [wcae2], a
 	call Func_e8efc
 	call Func_e8f16
 .asm_e8e45
@@ -980,8 +980,8 @@ Func_e8e24: ; e8e24
 	bit 7, a
 	jr nz, .asm_e8e62
 	call Func_e87a8
-	call Func_e8f51
-	call Func_e8f82
+	call GBPrinter_CheckForErrors
+	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
 	jr .asm_e8e45
 
@@ -1012,7 +1012,7 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
-	ld [$cae2], a
+	ld [wcae2], a
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e8efc
@@ -1127,43 +1127,44 @@ Func_e8f42: ; e8f42 (3a:4f42)
 	jr nz, .asm_e8f4a
 	ret
 
-Func_e8f51: ; e8f51 (3a:4f51)
-	ld a, [$c970]
+GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
+	ld a, [wc970]
 	cp $81
-	jr z, .asm_e8f62
-	ld a, [$c971]
+	jr z, .check_other_errors
+	ld a, [wc971]
 	cp $ff
-	jr z, .asm_e8f7c
+	jr z, .error2
 	xor a
-	jr .asm_e8f7e
+	jr .load_status
 
-.asm_e8f62
-	ld a, [$c971]
+.check_other_errors
+	ld a, [wc971]
 	and $e0
 	ret z
 	bit 7, a
-	jr nz, .asm_e8f78
+	jr nz, .error1
 	bit 6, a
-	jr nz, .asm_e8f74
+	jr nz, .error4
+	; error 3
 	ld a, 6
-	jr .asm_e8f7e
+	jr .load_status
 
-.asm_e8f74
+.error4
 	ld a, 7
-	jr .asm_e8f7e
+	jr .load_status
 
-.asm_e8f78
+.error1
 	ld a, 4
-	jr .asm_e8f7e
+	jr .load_status
 
-.asm_e8f7c
+.error2
 	ld a, 5
-.asm_e8f7e
-	ld [wcae0], a
+.load_status
+	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_e8f82:
-	ld a, [wcae0]
+GBPrinter_UpdateStatusMessage:
+	ld a, [wPrinterStatusIndicator]
 	and a
 	ret z
 	push af
@@ -1189,55 +1190,55 @@ Func_e8f82:
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	xor a
-	ld [wcae0], a
+	ld [wPrinterStatusIndicator], a
 	ret
 
 String_e8fb8:
 	db "Press B to Cancel@"
 
 Table_e8fca:
-	dw String_e8fdc
-	dw String_e8fdd
-	dw String_e8ff0
-	dw String_e9003
-	dw String_e9014
-	dw String_e9049
-	dw String_e907e
-	dw String_e90b3
-	dw String_e90e8
+	dw .Blank
+	dw .CheckingLink
+	dw .Transmitting
+	dw .Printing
+	dw .Error1
+	dw .Error2
+	dw .Error3
+	dw .Error4
+	dw .WrongDevice
 
-String_e8fdc:
+.Blank:
 	db   "@"
-String_e8fdd:
+.CheckingLink:
 	db   ""
 	next " CHECKING LINK...@"
-String_e8ff0:
+.Transmitting:
 	db   ""
 	next "  TRANSMITTING...@"
-String_e9003:
+.Printing:
 	db   ""
 	next "    PRINTING...@"
-String_e9014:
+.Error1:
 	db   " Printer Error 1"
 	next ""
 	next "Check the Game Boy"
 	next "Printer Manual.@"
-String_e9049:
+.Error2:
 	db   " Printer Error 2"
 	next ""
 	next "Check the Game Boy"
 	next "Printer Manual.@"
-String_e907e:
+.Error3:
 	db   " Printer Error 3"
 	next ""
 	next "Check the Game Boy"
 	next "Printer Manual.@"
-String_e90b3:
+.Error4:
 	db   " Printer Error 4"
 	next ""
 	next "Check the Game Boy"
 	next "Printer Manual.@"
-String_e90e8:
+.WrongDevice:
 	db   "This is not the"
 	next "Game Boy Printer!@"
 

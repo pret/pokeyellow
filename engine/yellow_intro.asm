@@ -10,7 +10,7 @@ PlayIntroScene:
 	call InitYellowIntroGFXAndMusic
 	call DelayFrame
 .loop
-	ld a, [wc634]
+	ld a, [wYellowIntroCurrentScene]
 	bit 7, a
 	jr nz, .go_to_title_screen
 	call JoypadLowSensitivity
@@ -21,7 +21,7 @@ PlayIntroScene:
 	ld a, $0
 	ld [wCurrentAnimatedObjectOAMBufferOffset], a
 	call RunObjectAnimations
-	ld a, [wc634]
+	ld a, [wYellowIntroCurrentScene]
 	cp $7
 	call z, Func_f98a2
 	cp $b
@@ -65,7 +65,6 @@ Func_f98a2:
 	ld a, [wOAMBuffer + 16 * 4 + 3]
 	or $1
 	ld [wOAMBuffer + 16 * 4 + 3], a
-Func_f98b8:
 	ld a, [wOAMBuffer + 18 * 4 + 3]
 	or $1
 	ld [wOAMBuffer + 18 * 4 + 3], a
@@ -96,37 +95,37 @@ Func_f98cb:
 	ret
 
 Func_f98fc:
-	ld a, [wc634]
+	ld a, [wYellowIntroCurrentScene]
 	ld hl, Jumptable_f9906
 	call Func_fa06e
 	jp [hl]
 
 Jumptable_f9906:
-	dw Func_f992f
-	dw Func_f995f
-	dw Func_f996a
-	dw Func_f9a08
-	dw Func_f9a1e
-	dw Func_f9a60
-	dw Func_f9a6b
-	dw Func_f9ab1
-	dw Func_f9ad8
-	dw Func_f9af9
-	dw Func_f9b04
-	dw Func_f9bf6
-	dw Func_f9cac
-	dw Func_f9d12
-	dw Func_f9d22
-	dw Func_f9d8f
-	dw Func_f9dbf
-	dw Func_f9e12
+	dw YellowIntroScene0 ; running pika 1
+	dw YellowIntroScene1 ; wait last
+	dw YellowIntroScene2 ; pikachu kick
+	dw YellowIntroScene3 ; wait last
+	dw YellowIntroScene4 ; running pika 2
+	dw YellowIntroScene5 ; wait last
+	dw YellowIntroScene6 ; surfing pika
+	dw YellowIntroScene7 ; wait last
+	dw YellowIntroScene8 ; running pika 3
+	dw YellowIntroScene9 ; wait last
+	dw YellowIntroScene10 ; flying pika
+	dw YellowIntroScene11 ; wait last
+	dw YellowIntroScene12 ; pika close up
+	dw YellowIntroScene13 ; wait last
+	dw YellowIntroScene14 ; pika thunderbolt
+	dw YellowIntroScene15 ; wait last
+	dw YellowIntroScene16 ; fade to white
+	dw YellowIntroScene17 ; wait and quit
 
-Func_f992a:
-	ld hl, wc634
+YellowIntro_NextScene:
+	ld hl, wYellowIntroCurrentScene
 	inc [hl]
 	ret
 
-Func_f992f:
+YellowIntroScene0:
 	xor a
 	ld [hLCDCPointer], a
 	lb de, $58, $58
@@ -145,20 +144,20 @@ Func_f992f:
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
-	ld a, $82
-	ld [wc635], a
-	call Func_f992a
+	ld a, 130
+	ld [wYellowIntroSceneTimer], a
+	call YellowIntro_NextScene
 	ret
 
-Func_f995f:
-	call Func_f9e41
+YellowIntroScene1:
+	call YellowIntro_CheckFrameTimerDecrement
 	ret nc
 	call YellowIntro_MaskCurrentAnimatedObjectStruct
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f996a:
-	call Func_f9e80
+YellowIntroScene2:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $8
 	call UpdateMusicCTimes
 	xor a
@@ -167,64 +166,66 @@ Func_f996a:
 	ld bc, $400
 	xor a
 	call Bank3E_FillMemory
-	call Func_f9996
+	call YellowIntroScene2_PlaceGraphic
 	lb de, $58, $b8 ; overloaded
 	ld a, $4 ; overloaded
-	call Func_f99d2
+	call LoadYellowIntroFlyingSpeedBars
 	ld a, $1
 	call Func_f9e9a
-	call Func_f9e35
-	call Func_f992a
+	call YellowIntro_SetTimerFor128Frames
+	call YellowIntro_NextScene
 	ret
 
-Func_f9996:
-	ld hl, $98d4
+YellowIntroScene2_PlaceGraphic:
+	ld hl, $98d4 ; (20, 6)
 	ld de, $20
 	ld b, $6
 	ld a, $90
-.asm_f99a0
+.row
 	ld c, $6
 	push af
 	push hl
-.asm_f99a4
+.col
 	ld [hli], a
 	inc a
 	dec c
-	jr nz, .asm_f99a4
+	jr nz, .col
 	pop hl
 	add hl, de
 	pop af
 	add $10
 	dec b
-	jr nz, .asm_f99a0
+	jr nz, .row
 	ld a, [hGBC]
 	and a
-	jr z, .asm_f99d1
-	ld hl, $98d4
+	jr z, .dmg_sgb
+	; We can actually set palettes!
+	ld hl, $98d4 ; (20, 6)
 	ld de, $20
 	ld b, $6
 	ld a, $1
 	ld [rVBK], a
-.asm_f99c2
+.attr_row
 	ld c, $6
 	push hl
-.asm_f99c5
+.attr_col
 	ld [hli], a
 	dec c
-	jr nz, .asm_f99c5
+	jr nz, .attr_col
 	pop hl
 	add hl, de
 	dec b
-	jr nz, .asm_f99c2
+	jr nz, .attr_row
 	xor a
 	ld [rVBK], a
-.asm_f99d1
+.dmg_sgb
 	ret
 
-Func_f99d2:
-	ld hl, Unkn_f99f0
+LoadYellowIntroFlyingSpeedBars:
+	ld hl, YellowIntroFlyingSpeedBarData
 	ld a, $8
-.asm_f99d7
+.loop
+; Spawn object $8 at indicated coordinates with indicated speeds
 	push af
 	ld e, [hl]
 	inc hl
@@ -242,10 +243,11 @@ Func_f99d2:
 	pop hl
 	pop af
 	dec a
-	jr nz, .asm_f99d7
+	jr nz, .loop
 	ret
 
-Unkn_f99f0:
+YellowIntroFlyingSpeedBarData:
+	; y, x, speed
 	db $d0, $20, $02
 	db $f0, $30, $04
 	db $d0, $40, $06
@@ -255,9 +257,9 @@ Unkn_f99f0:
 	db $e0, $80, $04
 	db $f0, $90, $02
 
-Func_f9a08:
-	call Func_f9e41
-	jr c, .asm_f9a17
+YellowIntroScene3:
+	call YellowIntro_CheckFrameTimerDecrement
+	jr c, .expired
 	ld a, [hSCX]
 	cp $68
 	ret z
@@ -265,38 +267,39 @@ Func_f9a08:
 	ld [hSCX], a
 	ret
 
-.asm_f9a17
+.expired
 	call MaskAllAnimatedObjectStructs
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f9a1e:
-	call Func_f9e80
+YellowIntroScene4:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
 	ld a, [hGBC]
 	and a
-	jr z, .asm_f9a47
+	jr z, .dmg_sgb
+	; We can actually set palettes!
 	ld hl, $98d4
 	ld de, $20
 	ld b, $6
 	ld a, $1
 	ld [rVBK], a
 	xor a
-.asm_f9a38
+.attr_row
 	ld c, $6
 	push hl
-.asm_f9a3b
+.attr_col
 	ld [hli], a
 	dec c
-	jr nz, .asm_f9a3b
+	jr nz, .attr_col
 	pop hl
 	add hl, de
 	dec b
-	jr nz, .asm_f9a38
+	jr nz, .attr_row
 	xor a
 	ld [rVBK], a
-.asm_f9a47
+.dmg_sgb
 	xor a
 	ld [hLCDCPointer], a
 	call Func_f9e5f
@@ -305,24 +308,24 @@ Func_f9a1e:
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call Func_f9e9a
-	call Func_f9e35
-	call Func_f992a
+	call YellowIntro_SetTimerFor128Frames
+	call YellowIntro_NextScene
 	ret
 
-Func_f9a60:
-	call Func_f9e41
+YellowIntroScene5:
+	call YellowIntro_CheckFrameTimerDecrement
 	ret nc
 	call YellowIntro_MaskCurrentAnimatedObjectStruct
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f9a6b:
-	call Func_f9e80
+YellowIntroScene6:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
 	ld a, $42
 	ld [hLCDCPointer], a
-	call Func_f9ec4
+	call YellowIntro_Copy8BitSineWave
 	ld hl, vBGMap0
 	ld bc, $60
 	xor a
@@ -346,18 +349,18 @@ Func_f9a6b:
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
 	call Func_f9e9a
-	call Func_f9e3b
-	call Func_f992a
+	call YellowIntro_SetTimerFor88Frames
+	call YellowIntro_NextScene
 	ret
 
-Func_f9ab1:
-	call Func_f9e41
-	jr c, .asm_f9ad1
+YellowIntroScene7:
+	call YellowIntro_CheckFrameTimerDecrement
+	jr c, .expired
 	ld hl, hSCX
 	inc [hl]
 	inc [hl]
-	ld hl, wc800
-	ld de, wc800 + 1
+	ld hl, wYellowIntroSurfingPikaSineWaveBuffer
+	ld de, wYellowIntroSurfingPikaSineWaveBuffer + 1
 	ld a, [hl]
 	push af
 	ld c, $ff
@@ -369,16 +372,16 @@ Func_f9ab1:
 	jr nz, .shift_loop
 	pop af
 	ld [hl], a
-	call Prep7TileTransferFromC810ToC710
+	call Request7TileTransferFromC810ToC710
 	ret
 
-.asm_f9ad1
+.expired
 	call YellowIntro_MaskCurrentAnimatedObjectStruct
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f9ad8:
-	call Func_f9e80
+YellowIntroScene8:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
@@ -389,19 +392,19 @@ Func_f9ad8:
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call Func_f9e9a
-	call Func_f9e35
-	call Func_f992a
+	call YellowIntro_SetTimerFor128Frames
+	call YellowIntro_NextScene
 	ret
 
-Func_f9af9:
-	call Func_f9e41
+YellowIntroScene9:
+	call YellowIntro_CheckFrameTimerDecrement
 	ret nc
 	call YellowIntro_MaskCurrentAnimatedObjectStruct
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f9b04:
-	call Func_f9e80
+YellowIntroScene10:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
@@ -431,8 +434,8 @@ Func_f9b04:
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
 	call Func_f9e9a
-	call Func_f9e35
-	call Func_f992a
+	call YellowIntro_SetTimerFor128Frames
+	call YellowIntro_NextScene
 	ret
 
 .FillBGMapBox:
@@ -457,20 +460,20 @@ Unkn_f9b6e: INCBIN "gfx/unknown_f9b6e.map"
 Unkn_f9be6: INCBIN "gfx/unknown_f9be6.map"
 Unkn_f9bf2: INCBIN "gfx/unknown_f9bf2.map"
 
-Func_f9bf6:
-	call Func_f9e41
-	jr c, .asm_f9c25
-	ld a, [wc635]
+YellowIntroScene11:
+	call YellowIntro_CheckFrameTimerDecrement
+	jr c, .expired
+	ld a, [wYellowIntroSceneTimer]
 	and $7
 	ret nz
-	ld a, [wc635]
+	ld a, [wYellowIntroSceneTimer]
 	and $8
 	sla a
 	sla a
 	sla a
 	ld e, a
 	ld d, $0
-	ld hl, GFX_f9c2c
+	ld hl, YellowIntroCloudGFX1
 	add hl, de
 	ld a, l
 	ld [H_VBCOPYSRC], a
@@ -484,16 +487,16 @@ Func_f9bf6:
 	ld [H_VBCOPYSIZE], a
 	ret
 
-.asm_f9c25
+.expired
 	call YellowIntro_MaskCurrentAnimatedObjectStruct
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-GFX_f9c2c: INCBIN "gfx/unknown_f9c2c.2bpp"
-GFX_f9c6c: INCBIN "gfx/unknown_f9c6c.2bpp" ; indirectly referenced
+YellowIntroCloudGFX1: INCBIN "gfx/unknown_f9c2c.2bpp"
+YellowIntroCloudGFX2: INCBIN "gfx/unknown_f9c6c.2bpp" ; indirectly referenced
 
-Func_f9cac:
-	call Func_f9e80
+YellowIntroScene12:
+	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
@@ -510,51 +513,54 @@ Func_f9cac:
 	ld bc, $80
 	ld a, $1
 	call Bank3E_FillMemory
+
+	; paste 8x12 graphic into vBGMap0 at (5, 6) starting at tile 4, skipping 4 vtiles at the end of each row
 	ld hl, $98c5
 	ld de, $20
 	ld a, $4
-	ld b, $8
-.asm_f9ce1
-	ld c, $c
+	ld b, 8
+.row
+	ld c, 12
 	push hl
-.asm_f9ce4
+.col
 	ld [hli], a
 	inc a
 	dec c
-	jr nz, .asm_f9ce4
+	jr nz, .col
 	pop hl
 	add hl, de
 	add $4
 	dec b
-	jr nz, .asm_f9ce1
-	ld hl, $98c4
+	jr nz, .row
+
+	ld hl, $98c4 ; (4, 6)
 	ld [hl], $3
-	ld hl, $98e4
+	ld hl, $98e4 ; (4, 7)
 	ld [hl], $74
-	ld hl, $99a5
+	ld hl, $99a5 ; (5, 5)
 	ld [hl], $0
 	lb de, $60, $58
 	ld a, $9
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call Func_f9e9a
-	call Func_f9e35
-	call Func_f992a
+	call YellowIntro_SetTimerFor128Frames
+	call YellowIntro_NextScene
 	ret
 
-Func_f9d12:
-	call Func_f9e41
+YellowIntroScene13:
+	call YellowIntro_CheckFrameTimerDecrement
 	ret nc
 	lb de, $68, $58
 	ld a, $a
 	call SpawnAnimatedObject
-	call Func_f992a
+	call YellowIntro_NextScene
 	ret
 
-Func_f9d22:
-	ld de, Unkn_f9dd6
-	call Func_f9e4d
-	jr c, .asm_f9d3c
+YellowIntroScene14:
+	ld de, YellowIntroPalSequence_f9dd6
+	call YellowIntro_LoadDMGPalAndIncrementCounter
+	jr c, .expired
 	ld [rBGP], a
 	ld [rOBP0], a
 	and $f0
@@ -564,7 +570,7 @@ Func_f9d22:
 	call UpdateGBCPal_OBP1
 	ret
 
-.asm_f9d3c
+.expired
 	call MaskAllAnimatedObjectStructs
 	call YellowIntro_BlankOAMBuffer
 	ld hl, wTileMap
@@ -594,15 +600,15 @@ Func_f9d22:
 	lb de, $58, $58
 	ld a, $7
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
-	call Func_f992a
+	call YellowIntro_NextScene
 	ld a, $28
-	ld [wc635], a
+	ld [wYellowIntroSceneTimer], a
 	ret
 
-Func_f9d8f:
-	call Func_f9e41
-	jr c, .asm_f9dad
-	ld a, [wc635]
+YellowIntroScene15:
+	call YellowIntro_CheckFrameTimerDecrement
+	jr c, .expired
+	ld a, [wYellowIntroSceneTimer]
 	and $3
 	ret nz
 	ld a, [rOBP0]
@@ -615,7 +621,7 @@ Func_f9d8f:
 	call UpdateGBCPal_OBP0
 	ret
 
-.asm_f9dad
+.expired
 	xor a
 	ld [hLCDCPointer], a
 	ld a, $e4
@@ -623,22 +629,22 @@ Func_f9d8f:
 	ld [rOBP0], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
-	call Func_f992a
-Func_f9dbf:
-	ld de, Unkn_f9e0a
-	call Func_f9e4d
-	jr c, .asm_f9dd2
+	call YellowIntro_NextScene
+YellowIntroScene16:
+	ld de, YellowIntroPalSequence_f9e0a
+	call YellowIntro_LoadDMGPalAndIncrementCounter
+	jr c, .expired
 	ld [rOBP0], a
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	ret
 
-.asm_f9dd2
-	call Func_f992a
+.expired
+	call YellowIntro_NextScene
 	ret
 
-Unkn_f9dd6:
+YellowIntroPalSequence_f9dd6:
 	db $e4, $c0, $c0, $e4
 	db $e4, $c0, $c0, $e4
 	db $e4, $c0, $c0, $e4
@@ -653,14 +659,14 @@ Unkn_f9dd6:
 	db $e4, $c0, $c0, $e4
 	db $e4, $c0, $c0, $ff
 
-Unkn_f9e0a:
+YellowIntroPalSequence_f9e0a:
 	db $e4, $90, $90, $40
 	db $40, $00, $00, $ff
 
-Func_f9e12:
+YellowIntroScene17:
 	ld c, 64
 	call DelayFrames
-	ld hl, wc634
+	ld hl, wYellowIntroCurrentScene
 	set 7, [hl]
 	ret
 
@@ -680,18 +686,18 @@ YellowIntro_MaskCurrentAnimatedObjectStruct:
 	call MaskCurrentAnimatedObjectStruct
 	ret
 
-Func_f9e35:
-	ld a, $80
-	ld [wc635], a
+YellowIntro_SetTimerFor128Frames:
+	ld a, 128
+	ld [wYellowIntroSceneTimer], a
 	ret
 
-Func_f9e3b:
-	ld a, $58
-	ld [wc635], a
+YellowIntro_SetTimerFor88Frames:
+	ld a, 88
+	ld [wYellowIntroSceneTimer], a
 	ret
 
-Func_f9e41:
-	ld hl, wc635
+YellowIntro_CheckFrameTimerDecrement:
+	ld hl, wYellowIntroSceneTimer
 	ld a, [hl]
 	and a
 	jr z, .asm_f9e4b
@@ -703,8 +709,8 @@ Func_f9e41:
 	scf
 	ret
 
-Func_f9e4d:
-	ld hl, wc635
+YellowIntro_LoadDMGPalAndIncrementCounter:
+	ld hl, wYellowIntroSceneTimer
 	ld a, [hl]
 	inc [hl]
 	ld l, a
@@ -735,7 +741,7 @@ Func_f9e5f:
 	call Bank3E_FillMemory
 	ret
 
-Func_f9e80:
+YellowIntro_BlankPalsDelay2AndDisableLCD:
 	xor a
 	ld [rBGP], a
 	ld [rOBP0], a
@@ -750,7 +756,7 @@ Func_f9e80:
 
 Func_f9e9a:
 	ld e, a
-	callab Func_720ad
+	callab YellowIntroPaletteAction
 	xor a
 	ld [hSCX], a
 	ld [hSCY], a
@@ -768,26 +774,29 @@ Func_f9e9a:
 	call UpdateGBCPal_OBP1
 	ret
 
-Func_f9ec4:
-	ld de, wc800
+YellowIntro_Copy8BitSineWave:
+	; Copy this sine wave into wYellowIntroSurfingPikaSineWaveBuffer 8 times (end just before wc900)
+	ld de, wYellowIntroSurfingPikaSineWaveBuffer
 	ld a, $8
-.asm_f9ec9
+.loop
 	push af
-	ld hl, Unkn_f9ed8
-	ld bc, $20
+	ld hl, .SineWave
+	ld bc, .SineWaveEnd - .SineWave
 	call Bank3E_CopyData
 	pop af
 	dec a
-	jr nz, .asm_f9ec9
+	jr nz, .loop
 	ret
 
-Unkn_f9ed8:
+.SineWave:
+; a sine wave with amplitude 4
 	db  0,  0,  1,  2,  2,  3,  3,  3
 	db  4,  3,  3,  3,  2,  2,  1,  0
 	db  0,  0, -1, -2, -2, -3, -3, -3
 	db -4, -3, -3, -3, -2, -2, -1,  0
+.SineWaveEnd:
 
-Prep7TileTransferFromC810ToC710:
+Request7TileTransferFromC810ToC710:
 	ld a, wc810 % $100
 	ld [H_VBCOPYSRC], a
 	ld a, wc810 / $100
@@ -837,7 +846,7 @@ InitYellowIntroGFXAndMusic:
 	ld b, $8
 	call RunPaletteCommand
 	xor a
-	ld hl, wc634
+	ld hl, wYellowIntroCurrentScene
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a

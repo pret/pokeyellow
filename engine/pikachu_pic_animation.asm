@@ -1774,7 +1774,7 @@ StarterPikachuEmotionCommand_5: ; fd9d0 (3f:59d0)
 
 Func_fd9e4:
 	call Func_fda2c
-	callab Func_720e3
+	callab LoadOverworldPikachuFrontpicPalettes
 	call Func_fd9ff
 	call LoadCurrentPikaPicAnimScriptPointer
 	call Func_fda9a

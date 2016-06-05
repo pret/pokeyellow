@@ -1697,8 +1697,8 @@ Func_f8b92:
 	jr nz, .asm_f8bb0
 .asm_f8ba6
 	call WaitForSoundToFinish
-	ld e, $1b
-	call Func_f8bcb
+	ldpikacry e, PikachuCry28
+	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	and a
 	ret
 
@@ -1708,14 +1708,14 @@ Func_f8b92:
 	ld a, [wc5dd]
 	ld [wd496], a
 	call WaitForSoundToFinish
-	ld e, $21
-	call Func_f8bcb
+	ldpikacry e, PikachuCry34
+	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	ld a, SFX_GET_ITEM2_4_2
 	call PlaySound
 	scf
 	ret
 
-Func_f8bcb: ; f8bcb (3e:4bcb)
+SurfingMinigame_PlayPikaCryIfSurfingPikaInParty: ; f8bcb (3e:4bcb)
 	push de
 	callab IsSurfingPikachuInThePlayersParty
 	pop de
@@ -2734,6 +2734,7 @@ Func_f9404:
 INCLUDE "data/animated_objects_3e_1.asm"
 
 Unkn_f96c5:
+; a sine wave with amplitude 2
 	db  0,  0,  0,  1,  1,  1,  1,  2
 	db  2,  2,  1,  1,  1,  1,  0,  0
 	db  0,  0,  0, -1, -1, -1, -1, -2

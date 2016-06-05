@@ -164,9 +164,9 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	cp BRUNOS_ROOM
 	jr z, .caveOrBruno
 	cp TRADE_CENTER
-	jr z, .asm_71ffd
+	jr z, .trade_center_colosseum
 	cp COLOSSEUM
-	jr z, .asm_71ffd
+	jr z, .trade_center_colosseum
 .normalDungeonOrBuilding
 	ld a, [wLastMap] ; town or route that current dungeon or building is located
 .townOrRoute
@@ -181,17 +181,21 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 	ld a, SET_PAL_OVERWORLD
 	ld [wDefaultPaletteCommand], a
 	ret
+
 .PokemonTowerOrAgatha
 	ld a, PAL_GREYMON - 1
 	jr .town
+
 .caveOrBruno
 	ld a, PAL_CAVE - 1
 	jr .town
+
 .Lorelei
 	xor a
 	jr .town
-.asm_71ffd
-	ld a, $18
+
+.trade_center_colosseum
+	ld a, PAL_GREYMON - 1
 	jr .town
 
 ; used when a Pokemon is the only thing on the screen
@@ -313,17 +317,17 @@ DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
 	ld a, [hl]
 	ret
 
-Func_720ad:: ; 720ad (1c:60ad)
+YellowIntroPaletteAction:: ; 720ad (1c:60ad)
 	ld a, e
 	and a
-	jr nz, Func_720bd
+	jr nz, .asm_720bd
 	ld hl, PalPacket_Generic
 	ld a, [hGBC]
 	and a
 	jp z, SendSGBPacket
 	jp InitGBCPalettes
 
-Func_720bd:: ; 720bd (1c:60bd)
+.asm_720bd
 	ld hl, UnknownPalPacket_72811
 	ld a, [hGBC]
 	and a
@@ -343,12 +347,12 @@ Func_720bd:: ; 720bd (1c:60bd)
 	call TransferCurBGPData
 	ret
 
-Func_720e3:: ; 720e3 (1c:60e3)
+LoadOverworldPikachuFrontpicPalettes:: ; 720e3 (1c:60e3)
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
 	ld bc, $10
 	call CopyData
-	call Func_7213b
+	call GetPal_Pikachu
 	ld hl, wPartyMenuBlkPacket
 	ld [hl], a
 	ld hl, wPartyMenuBlkPacket + 2
@@ -357,12 +361,13 @@ Func_720e3:: ; 720e3 (1c:60e3)
 	ld hl, wPalPacket
 	ld a, [hGBC]
 	and a
-	jr nz, .asm_72109
+	jr nz, .cgb_1
 	call SendSGBPacket
-	jr .asm_7210c
-.asm_72109
+	jr .okay_1
+
+.cgb_1
 	call InitGBCPalettes
-.asm_7210c
+.okay_1
 	ld hl, BlkPacket_WholeScreen
 	ld de, wPalPacket
 	ld bc, $10
@@ -381,15 +386,16 @@ Func_720e3:: ; 720e3 (1c:60e3)
 	ld hl, wPalPacket
 	ld a, [hGBC]
 	and a
-	jr nz, .asm_72137
+	jr nz, .cgb_2
 	call SendSGBPacket
-	jr .asm_7213a
-.asm_72137
+	jr .okay_2
+
+.cgb_2
 	call InitGBCPalettes
-.asm_7213a
+.okay_2
 	ret
 
-Func_7213b:: ; 7213b (1c:613b)
+GetPal_Pikachu:: ; 7213b (1c:613b)
 ; similar to SetPal_Overworld
 	ld a, [wCurMapTileset]
 	cp CEMETERY
@@ -420,17 +426,21 @@ Func_7213b:: ; 7213b (1c:613b)
 .town
 	inc a ; a town's pallete ID is its map ID + 1
 	ret
+
 .PokemonTowerOrAgatha
 	ld a, PAL_GREYMON - 1
 	jr .town
+
 .caveOrBruno
 	ld a, PAL_CAVE - 1
 	jr .town
+
 .Lorelei
-	xor a
+	xor a ; PAL_PALLET - 1
 	jr .town
+
 .battleOrTradeCenter
-	ld a, $18
+	ld a, PAL_GREYMON - 1
 	jr .town
 
 InitPartyMenuBlkPacket: ; 7217f (1c:617f)
