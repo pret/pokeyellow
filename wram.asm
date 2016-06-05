@@ -408,7 +408,7 @@ wc634:: ; c634
 	ds 1
 wc635:: ; c635
 	ds 1
-wc636:: ; c636
+wYellowIntroAnimatedObjectStructPointer:: ; c636
 	ds 2
 
 ; c638
@@ -426,7 +426,9 @@ wc700:: ; c700
 wc710:: ; c710
 	ds $f0
 wc800:: ; c800
-	ds $178
+	ds $10
+wc810:: ; c810
+	ds $168
 	
 wPrinterTileBuffer:: ; c978
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
