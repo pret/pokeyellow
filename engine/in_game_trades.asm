@@ -223,7 +223,7 @@ InGameTrade_FlagActionPredef: ; 71ded (1c:5ded)
 	ld a,[wWhichTrade]
 	ld c,a
 	predef_jump FlagActionPredef
-	
+
 InGameTrade_CheckForTradeEvo: ; 71df9 (1c:5df9)
 	ld a,[wInGameTradeReceiveMonSpecies]
 	cp KADABRA
@@ -235,7 +235,7 @@ InGameTrade_CheckForTradeEvo: ; 71df9 (1c:5df9)
 	cp HAUNTER
 	jr z,.tradeEvo
 	ret
-	
+
 .tradeEvo
 	ld a,[wPartyCount]
 	dec a
@@ -248,7 +248,7 @@ InGameTrade_CheckForTradeEvo: ; 71df9 (1c:5df9)
 	xor a ; LINK_STATE_NONE
 	ld [wLinkState],a
 	jp PlayDefaultMusic
-	
+
 InGameTrade_TrainerString: ; 71e2d (1c:5e2d)
 	; "TRAINER@@@@@@@@@@"
 	db $5d, "@@@@@@@@@@"

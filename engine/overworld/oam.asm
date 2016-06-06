@@ -19,10 +19,10 @@ PrepareOAMData: ; 499b (1:499b)
 
 .spriteLoop
 	ld [hSpriteOffset2], a
-	
+
 	ld e, a
 	ld d, wSpriteStateData1 / $100
-	
+
 	ld a, [de] ; c1x0
 	and a
 	jp z, .nextSprite
@@ -42,7 +42,7 @@ PrepareOAMData: ; 499b (1:499b)
 	jr c, .usefacing
 
 ; unchanging
-	ld a, $0 
+	ld a, $0
 	jr .next
 
 .usefacing
@@ -81,7 +81,7 @@ PrepareOAMData: ; 499b (1:499b)
 	call Func_4a7b
 	ld [wd5cd], a
 	ld a, [hOAMBufferOffset]
-	
+
 	ld e, a
 	ld d, wOAMBuffer / $100
 
@@ -185,7 +185,7 @@ GetSpriteScreenXY: ; 4a5f (1:4a5f)
 	and $f0
 	ld [de], a  ; c1xb (x)
 	ret
-	
+
 Func_4a7b: ; 4a7b (1:4a7b)
 	push bc
 	ld a, [wd5cd]            ; temp copy of c1x2
@@ -228,5 +228,5 @@ _IsTilePassable:: ; 4aaa (1:4aaa)
 .tileNotPassable
 	scf
 	ret
-	
+
 INCLUDE "data/collision.asm" ; probably

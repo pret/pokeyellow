@@ -224,7 +224,7 @@ GetDefaultName: ; 6858 (1:6858)
 	ld de, wcd6d
 	ld bc, $14
 	jp CopyData
-	
+
 DefaultNamesPlayerList: ; 687d (1:687d)
 	db "NEW NAME@YELLOW@ASH@JACK@"
 DefaultNamesRivalList: ; 688d (1:688d)

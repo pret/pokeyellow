@@ -118,41 +118,41 @@ UnknownPacket_72751: ; 72751 (1c:6751)
 
 PalPacket_Empty: ; 72761 (1c:6761)
 	PAL_SET 0, 0, 0, 0
-	
+
 PalPacket_PartyMenu: ; 72771 (1c:6771)
 	PAL_SET PAL_MEWMON, PAL_GREENBAR, PAL_YELLOWBAR, PAL_REDBAR
-	
+
 PalPacket_Black: ; 72781 (1c:6781)
 	PAL_SET PAL_BLACK, PAL_BLACK, PAL_BLACK, PAL_BLACK
-	
+
 PalPacket_TownMap: ; 72791 (1c:6791)
 	PAL_SET PAL_TOWNMAP, 0, 0, 0
-	
+
 PalPacket_Pokedex: ; 727a1 (1c:67a1)
 	PAL_SET PAL_BROWNMON, 0, 0, 0
-	
+
 PalPacket_Slots: ; 727b1 (1c:67b1)
 	PAL_SET PAL_SLOTS1, PAL_SLOTS2, PAL_SLOTS3, PAL_SLOTS4
-	
+
 PalPacket_Titlescreen: ; 727c1 (1c:67c1)
 	PAL_SET PAL_LOGO2, PAL_LOGO1, PAL_MEWMON, PAL_PURPLEMON
-	
+
 PalPacket_TrainerCard: ; 727d1 (1c:67d1)
 	PAL_SET PAL_MEWMON, PAL_BADGE, PAL_REDMON, PAL_YELLOWMON
-	
+
 PalPacket_Generic: ; 727e1 (1c:67e1)
 	PAL_SET PAL_MEWMON, 0, 0, 0
-	
+
 PalPacket_NidorinoIntro: ; 727f1 (1c:67f1)
 	PAL_SET PAL_PURPLEMON, PAL_BLACK, 0, 0
-	
+
 PalPacket_GameFreakIntro: ; 72801 (1c:6801)
 	PAL_SET PAL_GAMEFREAK, PAL_REDMON, PAL_VIRIDIAN, PAL_BLUEMON
-	
+
 UnknownPalPacket_72811: ; 72811 (1c:6811)
 	db $51,$25,$0,$25,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
-	
-UnknownPalPacket_72821: ; 72821 (1c:6821)	
+
+UnknownPalPacket_72821: ; 72821 (1c:6821)
 	db $51,$25,$0,$27,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
 
 PalTrnPacket: ; 72831 (1c:6831)

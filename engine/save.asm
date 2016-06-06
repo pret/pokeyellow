@@ -182,7 +182,7 @@ WouldYouLikeToSaveText: ; 73ad1 (1c:7ad1)
 SavingText: ; 73ad6 (1c:7ad6)
 	TX_FAR _SavingText
 	db "@"
-	
+
 GameSavedText: ; 73adb (1c:7adb)
 	TX_FAR _GameSavedText
 	db "@"
@@ -190,7 +190,7 @@ GameSavedText: ; 73adb (1c:7adb)
 OlderFileWillBeErasedText: ; 73ae0 (1c:7ae0)
 	TX_FAR _OlderFileWillBeErasedText
 	db "@"
-	
+
 SaveSAVtoSRAM0: ; 73ae5 (1c:7ae5)
 	call EnableSRAMAndLatchClockData
 	ld a, $1
@@ -257,7 +257,7 @@ SaveSAVtoSRAM2: ; 73b56 (1c:7b56)
 	ld [de], a
 	ld hl, sPlayerName
 	ld bc, sMainDataCheckSum - sPlayerName
-	call SAVCheckSum	
+	call SAVCheckSum
 	ld [sMainDataCheckSum], a
 	call DisableSRAMAndPrepareClockData
 	ret
@@ -674,7 +674,7 @@ EnableSRAMAndLatchClockData: ; 73e9f (1c:7e9f)
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
 	ret
-	
+
 DisableSRAMAndPrepareClockData: ; 73eaa (1c:7eaa)
 	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a

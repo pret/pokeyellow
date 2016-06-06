@@ -1,7 +1,7 @@
 ; data for default hidden/shown
 ; objects for each map ($00-$F8)
 
-; Table of 2-Byte pointers, one pointer per map, 
+; Table of 2-Byte pointers, one pointer per map,
 ; goes up to Map_F7, ends with $FFFF.
 ; points to table listing all missable object in the area
 MapHSPointers: ; c69b (3:469b)
@@ -589,5 +589,5 @@ MapHS27Copy: ; cb56 (3:4b56)
 	db BLUES_HOUSE, $01, Show
 	db BLUES_HOUSE, $02, Hide
 	db BLUES_HOUSE, $03, Show
-	
+
 	db $FF, $01, Show

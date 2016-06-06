@@ -838,7 +838,7 @@ Func_e8d11:
 	ret
 
 
-	
+
 Func_e8d35:: ; e8d35 (3a:4e79)
 	ld a, [wBoxDataStart]
 	and a

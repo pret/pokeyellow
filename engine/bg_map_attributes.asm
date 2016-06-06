@@ -34,7 +34,7 @@ LoadBGMapAttributes:: ; bf450 (2f:7450)
 	ld [rHDMA3], a
 	ld a, e
 	ld [rHDMA4], a
-	
+
 	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK ; is LCD off?
 	jr z, .lcdOff ; if off, transfer immediately
@@ -47,7 +47,7 @@ LoadBGMapAttributes:: ; bf450 (2f:7450)
 	ld a, [rSTAT]
 	and %10 ; are we in HBlank or VBlank?
 	jr nz, .waitForAccessibleVRAMLoop1 ; loop until we're in a safe period to transfer to VRAM
-.lcdOff	
+.lcdOff
 	ld a, c ; number of BG attributes to transfer, plus 1 times 16
 	ld [rHDMA5], a ; initiate transfer
 	call Func_3082 ; update audio so it doesn't "lag"
@@ -104,7 +104,7 @@ LoadBGMapAttributes:: ; bf450 (2f:7450)
 	ld [rVBK], a
 	ei
 	ret
-	
+
 BGMapAttributesPointers: ; bf4de (2f:74de)
 	dw BGMapAttributes_Unknown1
 	dw BGMapAttributes_Unknown2
@@ -121,7 +121,7 @@ BGMapAttributesPointers: ; bf4de (2f:74de)
 	dw BGMapAttributes_Unknown13
 
 HandleBadgeFaceAttributes: ; bf4f8 (2f:74f8)
-; zero out the attributes if the player doesn't have the respective badge 
+; zero out the attributes if the player doesn't have the respective badge
 ; BOULDERBADGE
 	ld hl, vBGMap1 + $183
 	ld de, wTrainerCardBadgeAttributes + 6 * 0
@@ -174,7 +174,7 @@ HandleBadgeFaceAttributes: ; bf4f8 (2f:74f8)
 
 ZeroOutCurrentBadgeAttributes: ; bf551 (2f:7551)
 	push hl
-	xor a 
+	xor a
 	ld [hli], a
 	ld [hl], a
 	ld bc, $1f
@@ -202,16 +202,16 @@ HandlePartyHPBarAttributes: ; bf55d (2f:755d)
 	ld bc, $40 ; get 2nd party location
 	add hl, bc
 	push hl
-	
+
 	push de ; (inefficiently) copy de to hl
 	pop hl
-	
+
 	ld bc, $6
 	add hl, bc ; get the next palette
-	
+
 	push hl
 	pop de ; copy back to de
-	
+
 	pop hl
 	pop bc
 	dec c

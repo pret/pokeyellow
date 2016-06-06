@@ -55,7 +55,7 @@ UpdateNonPlayerSprite: ; 4be3 (1:4be3)
 ; multiple of $10 to make comparisons easier.
 DetectCollisionBetweenSprites: ; 4bf7 (1:4bf7)
 	; nop
-	
+
 	ld h, wSpriteStateData1 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	ld l, a
@@ -355,7 +355,7 @@ Func_4d0a: ; 4d0a (1:4d0a)
 	inc l
 	inc l
 	ret
-	
+
 SetSpriteCollisionValues: ; 4d22 (1:4d22)
 	and a
 	ld b, 0

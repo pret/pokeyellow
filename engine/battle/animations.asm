@@ -573,7 +573,7 @@ SetAnimationPalette: ; 78e5c (1e:4e5c)
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
 	ret
-	
+
 Func_78e98: ; 78e98 (1e:4e98)
 	call SaveScreenTilesToBuffer2
 	xor a
@@ -586,14 +586,14 @@ Func_78e98: ; 78e98 (1e:4e98)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call LoadScreenTilesFromBuffer2
 	ld h, vBGMap1 / $100
-	
+
 WriteLowerByteOfBGMapAndEnableBGTransfer: ; 78eb1 (1e:4eb1)
 	ld l, vBGMap0 & $ff
 	call BattleAnimCopyTileMapToVRAM
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
-	
+
 PlaySubanimation: ; 78ebb (1e:4ebb)
 	ld a,[wAnimSoundID]
 	cp a,$FF
@@ -1207,7 +1207,7 @@ FlashScreenLongDelay: ; 79216 (1e:5216)
 	ld c,1
 .delayFrames
 	jp DelayFrames
-	
+
 AnimationFlashScreen: ; 7922c (1e:522c)
 	ld a,[rBGP]
 	push af ; save initial palette
@@ -1273,14 +1273,14 @@ SetAnimationBGPalette: ; 79273 (1e:5273)
 	ret
 
 	ld b, $5
-	
+
 AnimationShakeScreenVertically: ; 79283 (1e:5283)
 	predef_jump PredefShakeScreenVertically
 
 AnimationShakeScreen: ; 79288 (1e:5288)
 ; Shakes the screen for a while. Used in Earthquake/Fissure/etc. animations.
 	ld b, $8
-	
+
 AnimationShakeScreenHorizontallyFast: ; 7928a (1e:528a)
 	predef_jump PredefShakeScreenHorizontally
 
@@ -1384,19 +1384,19 @@ AnimationSlideMonDown: ; 79331 (1e:5331)
 	dec b
 	jr nz, .loop
 	ret
-	
+
 AnimationSlideMonOff: ; 79349 (1e:5349)
 ; Slides the mon's sprite off the screen horizontally.
 	ld e, 8
 	ld a, 3
 	ld [wSlideMonDelay], a
 	jp _AnimationSlideMonOff
-	
+
 AnimationSlideEnemyMonOff: ; 79353 (1e:5353)
 ; Slides the enemy mon off the screen horizontally.
 	ld hl, AnimationSlideMonOff
 	jp CallWithTurnFlipped
-	
+
 _AnimationSlideMonUp: ; 79359 (1e:5359)
 	push de
 	push hl
@@ -1553,7 +1553,7 @@ AdjustOAMBlockYPos2: ; 7940d (1e:540d)
 	dec c
 	jr nz, .loop
 	ret
-	
+
 AnimationBlinkEnemyMon: ; 79421 (1e:5421)
 	; Make the enemy mon's sprite blink on and off for a second or two
 	ld hl, AnimationBlinkMon
@@ -1933,7 +1933,7 @@ UpwardBallsAnimXCoordinatesEnemyTurn: ; 79667 (1e:5667)
 ; AnimationShootManyBallsUpward animation. It's unused in the game.
 	db $60, $90, $78, $68, $88, $80
 	db $FF ; list terminator
-	
+
 AnimationMinimizeMon: ; 7966e (1e:566e)
 ; Changes the mon's sprite to a mini black sprite. Used by the
 ; Minimize animation.
@@ -1961,7 +1961,7 @@ AnimationMinimizeMon: ; 7966e (1e:566e)
 MinimizedMonSprite: ; 79693 (1e:5693)
 	INCBIN "gfx/minimized_mon_sprite.1bpp"
 MinimizedMonSpriteEnd:
-	
+
 AnimationSlideMonDownAndHide: ; 79698 (1e:5698)
 ; Slides the mon's sprite down and disappears. Used in Acid Armor.
 	ld a, $1
@@ -1971,7 +1971,7 @@ AnimationSlideMonDownAndHide: ; 79698 (1e:5698)
 	push af
 	call AnimationHideMonPic
 	pop af
-	push af	
+	push af
 	call GetTileIDList
 	call GetMonSpriteTileMapPointerFromRowCount
 	call CopyPicTiles
@@ -2138,7 +2138,7 @@ WavyScreenLineOffsets: ; 7978e (1e:578e)
 	db 0, 0, 0, 0, 0,  1,  1,  1,  2,  2,  2,  2,  2,  1,  1,  1
 	db 0, 0, 0, 0, 0, -1, -1, -1, -2, -2, -2, -2, -2, -1, -1, -1
 	db $80 ; terminator
-	
+
 AnimationSubstitute: ; 797af (1e:57af)
 ; Changes the pokemon's sprite to the mini sprite
 	ld hl, wTempPic
@@ -2182,7 +2182,7 @@ CopySlowbroSpriteData: ; 7980e (1e:580e)
 	ld bc, $0010
 	ld a, BANK(SlowbroSprite)
 	jp FarCopyData
-	
+
 HideSubstituteShowMonAnim: ; 79816 (1e:5816)
 	ld a, [H_WHOSETURN]
 	and a
@@ -2291,7 +2291,7 @@ AnimationTransformMon: ; 798c8 (1e:58c8)
 	ld [wChangeMonPicPlayerTurnSpecies], a
 	ld a, [wBattleMonSpecies]
 	ld [wChangeMonPicEnemyTurnSpecies], a
-	
+
 ChangeMonPic: ; 798d4 (1e:58d4)
 	ld a, [H_WHOSETURN]
 	and a
@@ -2332,7 +2332,7 @@ AnimationHideEnemyMonPic: ; 79919 (1e:5919)
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	jp Delay3
-	
+
 Func_79929: ; 79929 (1e:5929)
 	ld hl, wPlayerMonMinimized
 	ld a, [H_WHOSETURN]
@@ -2349,7 +2349,7 @@ Func_79929: ; 79929 (1e:5929)
 	call AnimationFlashMonPic
 	call AnimationShowMonPic
 	ret
-	
+
 InitMultipleObjectsOAM: ; 79943 (1e:5943)
 ; Writes c OAM entries with tile d.
 ; Sets their Y coordinates to sequential multiples of 8, starting from 0.
@@ -2370,9 +2370,9 @@ InitMultipleObjectsOAM: ; 79943 (1e:5943)
 	dec c
 	jr nz, .loop
 	ret
-	
+
 	ret ; unreferenced
-	
+
 AnimationHideMonPic: ; 7995d (1e:595d)
 ; Hides the mon's sprite.
 	ld a, [H_WHOSETURN]
@@ -2382,7 +2382,7 @@ AnimationHideMonPic: ; 7995d (1e:595d)
 	jr ClearMonPicFromTileMap
 .playerTurn
 	ld a, 5 * SCREEN_WIDTH + 1
-	
+
 ClearMonPicFromTileMap: ; 79968 (1e:5968)
 	push hl
 	push de
@@ -2397,7 +2397,7 @@ ClearMonPicFromTileMap: ; 79968 (1e:5968)
 	pop de
 	pop hl
 	ret
-	
+
 ; puts the tile map destination address of a mon sprite in hl, given the row count in b
 ; The usual row count is 7, but it may be smaller when sliding a mon sprite in/out,
 ; in order to show only a portion of the mon sprite.
@@ -2473,7 +2473,7 @@ AnimCopyRowRight: ; 799be (1e:59be)
 	jr nz, AnimCopyRowRight
 	ret
 
-; get the sound of the move id in b	
+; get the sound of the move id in b
 GetMoveSoundB: ; 799c5 (1e:59c5)
 	ld a, b
 	call GetMoveSound
@@ -2859,7 +2859,7 @@ AnimationLeavesFalling: ; 79dd0 (1e:5dd0)
 	ld a, 3 ; number of leaves
 	ld [wNumFallingObjects], a
 	jp AnimationFallingObjects
-	
+
 AnimationPetalsFalling: ; 79de2 (1e:5de2)
 ; Makes lots of petals fall down from the top of the screen. It's used in
 ; the animation for Petal Dance.
@@ -3153,7 +3153,7 @@ BattleAnimCopyTileMapToVRAM: ; 79fae (1e:5fae)
 	ld a, l
 	ld [H_AUTOBGTRANSFERDEST], a
 	jp Delay3
-	
+
 TossBallAnimation: ; 79fb7 (1e:5fb7)
 	ld a,[wIsInBattle]
 	cp a,2
@@ -3210,7 +3210,7 @@ TossBallAnimation: ; 79fb7 (1e:5fb7)
 	ld a,BLOCKBALL_ANIM
 	ld [wAnimationID],a
 	jp PlayAnimation
-	
+
 PlayApplyingAttackSound: ; 7a00b (1e:600b)
 ; play a different sound depending if move is not very effective, neutral, or super-effective
 ; don't play any sound at all if move is ineffective

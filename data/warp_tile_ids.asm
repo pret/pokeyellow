@@ -24,7 +24,7 @@ WarpTileIDPointers: ; c215 (3:4215)
 	dw FacilityWarpTileIDs
 	dw PlateauWarpTileIDs
 	dw BeachHouseWarpTileIDs
-	
+
 OverworldWarpTileIDs: ; c247 (3:4247)
 	db $1B,$58,$FF
 

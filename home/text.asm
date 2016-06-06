@@ -58,7 +58,7 @@ PlaceNextChar:: ; 1724 (0:1724)
 	pop hl
 	ret
 
-Char4ETest:: ; 172d (0:172d) 
+Char4ETest:: ; 172d (0:172d)
 	cp $4E
 	jr nz, .next
 	ld bc, $0028
@@ -304,7 +304,7 @@ Char49:: ; 18a3 (0:18a3)
 	jr z, .Char49
 	ld a, $4e
 	jp Char4ETest
-	
+
 .Char49
 	push de
 	ld a, $EE

@@ -10,9 +10,9 @@ IsPlayerTalkingToPikachu:: ; fcf0c (3f:4f0c)
 	ld [hSpriteIndexOrTextID], a
 	ld [wd436], a
 	ret
-	
+
 InitializePikachuTextID: ; fcf20 (3f:4f20)
-	ld a, $d4 ; display 
+	ld a, $d4 ; display
 	ld [hSpriteIndexOrTextID], a
 	xor a
 	ld [wPlayerMovingDirection], a
@@ -48,7 +48,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	jr .loop
 .done
 	ret
-	
+
 StarterPikachuEmotionsJumptable: ; fcf54 (3f:4f54)
 	dw StarterPikachuEmotionCommand_nop ; 0
 	dw StarterPikachuEmotionCommand_text ; 1
@@ -61,7 +61,7 @@ StarterPikachuEmotionsJumptable: ; fcf54 (3f:4f54)
 	dw StarterPikachuEmotionCommand_nop2 ; 8
 	dw StarterPikachuEmotionCommand_9 ; 9
 	dw StarterPikachuEmotionCommand_nop3 ; a
-	
+
 StarterPikachuEmotionCommand_nop: ; fcf6a (3f:4f6a)
 StarterPikachuEmotionCommand_nop3: ; fcf6a (3f:4f6a)
 	ret
@@ -77,7 +77,7 @@ StarterPikachuEmotionCommand_text: ; fcf6b (3f:4f6b)
 	call PrintText
 	pop de
 	ret
-	
+
 StarterPikachuEmotionCommand_pcm: ; fcf77 (3f:4f77)
 	ld a, [de]
 	inc de
@@ -93,7 +93,7 @@ PlayPikachuSoundClip_: ; fcf81 (3f:4f81)
 	ret z
 	callab PlayPikachuSoundClip
 	ret
-	
+
 StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
 	ld a, [wUpdateSpritesEnabled]
 	push af
@@ -107,14 +107,14 @@ StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ret
-	
+
 ShowPikachuEmoteBubble: ; fcfa2 (3f:4fa2)
 	ld [wWhichEmotionBubble], a
 	ld a, $f
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ret
-	
+
 StarterPikachuEmotionCommand_4: ; fcfb0 (3f:4fb0)
 	ld a, [de]
 	inc de
@@ -127,7 +127,7 @@ StarterPikachuEmotionCommand_4: ; fcfb0 (3f:4fb0)
 	call Func_fd2a1
 	pop de
 	ret
-	
+
 StarterPikachuEmotionCommand_delay: ; fcfbe (3f:4fbe)
 	ld a, [de]
 	inc de
@@ -136,7 +136,7 @@ StarterPikachuEmotionCommand_delay: ; fcfbe (3f:4fbe)
 	call DelayFrames
 	pop de
 	ret
-	
+
 StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	ld a, [de]
 	inc de
@@ -161,10 +161,10 @@ Jumptable_fcfda:
 	dw PikachuPewterPokecenterCheck
 	dw PikachuFanClubCheck
 	dw PikachuBillsHouseCheck
-	
+
 StarterPikachuEmotionCommand_nop2: ; fcfe8 (3f:4fe8)
 	ret
-	
+
 StarterPikachuEmotionCommand_9: ; fcfe9 (3f:4fe9)
 	push de
 	call Func_fcff2
@@ -177,7 +177,7 @@ Func_fcff2: ; fcff2 (3f:4ff2)
 	xor $4
 	ld [wSpriteStateData1 + $f9], a
 	ret
-	
+
 Func_fcffb: ; fcffb (3f:4ffb)
 ; Inexplicably empty.
 	rept 5
@@ -199,7 +199,7 @@ asm_fd00f: ; fd00f (3f:500f)
 	ld hl, PikachuEmotionTable
 	call DoStarterPikachuEmotions
 	ret
-	
+
 PikachuEmotionTable: ; fd019 (3f:4019)
 	dw PikachuEmotion0_fd115
 	dw PikachuEmotion1_fd141
@@ -235,10 +235,10 @@ PikachuEmotionTable: ; fd019 (3f:4019)
 	dw PikachuEmotion31_fd20a
 	dw PikachuEmotion32_fd213
 	dw PikachuEmotion33_fd05d
-	
+
 PikachuEmotion33_fd05d: ; fd05d (3f:505d)
 	db $ff
-	
+
 Func_fd05e: ; fd05e (3f:505e)
 	ld a, [wCurMap]
 	cp POKEMON_FAN_CLUB
@@ -295,10 +295,10 @@ Func_fd05e: ; fd05e (3f:505e)
 .asm_fd0c9
 	scf
 	ret
-	
+
 Pointer_fd0cb:
 	db $12, $15, $17, $18, $19
-	
+
 IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
 	xor a
 	ld [wWhichPokemon], a
@@ -336,7 +336,7 @@ IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
 .done
 	and a
 	ret
-	
+
 PikachuEmotion0_fd115: ; fd115 (3f:5115)
 	db $ff
 
@@ -1528,7 +1528,7 @@ Func_fd7f3:
 	push bc
 	push de
 	push hl
-	
+
 	ld bc, wOAMBuffer + 4 * 36
 	ld a, [wPikaSpriteY]
 	ld e, a

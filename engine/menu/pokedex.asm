@@ -461,7 +461,7 @@ ShowPokedexDataInternal: ; 40323 (10:4323)
 	ld a, $77 ; max volume
 	ld [rNR50], a
 	ret
-	
+
 HeightWeightText: ; 40370 (10:4370)
 	db "HT  ?", $60, "??", $61
 	next "WT   ???lb@"
@@ -656,7 +656,7 @@ Func_404bc: ; 404bc (10:44bc)
 	res 3, a
 	ld [hFlags_0xFFFA], a
 	ret
-	
+
 ; draws a line of tiles
 ; INPUT:
 ; b = tile ID

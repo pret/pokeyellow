@@ -9,7 +9,7 @@ VBlank:: ; 1de5 (0:1de5)
 	push af
 	xor a
 	ld [rVBK], a ; reset vram bank to 0
-	
+
 	ld a, [H_LOADEDROMBANK]
 	ld [wVBlankSavedROMBank], a
 
@@ -39,7 +39,7 @@ VBlank:: ; 1de5 (0:1de5)
 
 	; VBlank-sensitive operations end.
 	call TrackPlayTime ; keep track of time played
-	
+
 	call Random
 	call ReadJoypad
 
@@ -58,10 +58,10 @@ VBlank:: ; 1de5 (0:1de5)
 .skipDec
 
 	call FadeOutAudio
-	
+
 	callbs Music_DoLowHealthAlarm
 	callbs Audio1_UpdateMusic
-	
+
 	call SerialFunction
 
 	ld a, [wVBlankSavedROMBank]
@@ -70,7 +70,7 @@ VBlank:: ; 1de5 (0:1de5)
 
 	pop af
 	ld [rVBK],a
-	
+
 	pop hl
 	pop de
 	pop bc

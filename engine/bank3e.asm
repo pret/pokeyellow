@@ -1683,7 +1683,7 @@ Func_f8b7a:
 
 Tilemap_f8b8d:
 	db $2b,$2c,$25,$28,$2d
-	
+
 Func_f8b92:
 	ld hl, wd496
 	ld a, [wc5dd]

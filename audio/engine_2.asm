@@ -207,7 +207,7 @@ Audio2_OverwriteChannelPointer: ; 219e6 (8:59e6)
 	ret
 
 INCLUDE "audio/sfx/pokeflute_ch1_ch2.asm"
-	
+
 Audio2_InitMusicVariables:: ; 219f8 (8:59f8)
 	xor a
 	ld [wUnusedC000], a
@@ -407,7 +407,7 @@ Audio2_StopAllAudio:: ; 21b3f (8:5b3f)
 	ld a, $ff
 	ld [wStereoPanning], a
 	ret
-	
+
 FillAudioRAM2: ; 21b94 (8:5b94)
 	ld b, d
 .loop

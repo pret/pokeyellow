@@ -604,7 +604,7 @@ OaksLabScript20:
 	callba Music_RivalAlternateStart
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
-	ld de, wNPCMovementDirections2 
+	ld de, wNPCMovementDirections2
 	call MoveSprite
 	ld a, $15
 	ld [W_OAKSLABCURSCRIPT], a
@@ -887,7 +887,7 @@ OaksLabText3:
 	call PrintText
 .asm_1ca6f
 	jp TextScriptEnd
-	
+
 OaksLabText_1ca72:
 	TX_FAR _OaksLabPikachuText
 	db "@"

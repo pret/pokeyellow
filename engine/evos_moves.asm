@@ -99,7 +99,7 @@ Evolution_PartyMonLoop: ; 3add8 (e:6dd8)
 	and a
 	ld a, [hli]
 	jp nz, .nextEvoEntry1 ; don't evolve if we're in a battle as wcf91 could be holding the last mon sent out
-	
+
 	ld b, a ; evolution item
 	ld a, [wcf91] ; last item used
 	cp b ; was the evolution item in this entry used?
@@ -387,16 +387,16 @@ Func_3b079: ; 3b079 (e:7079)
 	push af
 	call Func_3b0a2
 	jr c, .asm_3b09c
-	
+
 	call Func_3b10f
 	jr nc, .asm_3b096
-	
+
 	call Func_3b0a2
 	jr c, .asm_3b09c
-	
+
 	call Func_3b10f
 	jr nc, .asm_3b096
-	
+
 	call Func_3b0a2
 	jr c, .asm_3b09c
 .asm_3b096
@@ -452,7 +452,7 @@ Func_3b0a2: ; 3b0a2 (e:70a2)
 .asm_3b0ec
 	scf
 	ret
-	
+
 Pointer_3b0ee: ; 3b0ee (e:70ee)
 	db NIDOKING
 	db IVYSAUR
@@ -487,7 +487,7 @@ Pointer_3b0ee: ; 3b0ee (e:70ee)
 	db VILEPLUME
 	db VICTREEBEL
 	db $ff
-	
+
 Func_3b10f: ; 3b10f (e:710f)
 	ld c, $0
 .asm_3b111
@@ -665,5 +665,5 @@ GetMonLearnset: ; 3b1d1 (e:71d1)
 	and a ; have we reached the end of the evolution data?
 	jr nz, .skipEvolutionDataLoop ; if not, jump back up
 	ret
-	
+
 INCLUDE "data/evos_moves.asm"

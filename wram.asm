@@ -427,7 +427,7 @@ wc710:: ; c710
 	ds $f0
 wc800:: ; c800
 	ds $178
-	
+
 wPrinterTileBuffer:: ; c978
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
 wcae0:: ; cae0
@@ -1131,7 +1131,7 @@ wPlayerSpinWhileMovingUpOrDownAnimFrameDelay:: ; cd3f
 wHiddenObjectIndex:: ; cd3f
 
 wTrainerFacingDirection:: ; cd3f
-	
+
 	ds 1
 
 wHoFMonOrPlayer:: ; cd40
@@ -1485,7 +1485,7 @@ wScriptedNPCWalkCounter:: ; cf18
 wOnSGB:: ; cf1b
 ; if running on SGB, it's 1, else it's 0
 	ds 1
-	
+
 wDefaultPaletteCommand:: ; cf1c
 	ds 1
 
@@ -2676,7 +2676,7 @@ wExpressionNumber:: ; d447
 	ds 1
 wExpressionNumber2::
 	ds 1
-	
+
 wd44a:: ds 1 ; d449
 wd44b:: ds 1
 wd44c:: ds 1
@@ -2702,9 +2702,9 @@ wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470
 wd472:: ds 1
 wd473:: ds 1
-	
+
 	ds 1
-	
+
 wd475:: ds 1
 
 	ds 4
@@ -2712,16 +2712,16 @@ wd475:: ds 1
 wd47a:: ds 1
 
 	ds 24
-	
+
 wPreventBlackout:: ds 1 ; d492
-	
+
 	ds 1
-	
+
 wd495:: ds 1
 wd496:: ds 1
 wd497:: ds 1
 wd498:: ds 1
-	
+
 wUnknownSerialFlag_d499:: ds 1 ; d498
 wUnknownSerialFlag_d49a:: ds 1 ; d499
 wUnknownSerialFlag_d49b:: ds 1 ; d49a
@@ -3246,7 +3246,7 @@ wSecondLockTrashCanIndex:: ; d744
 	ds 1
 
 	ds 2
-	
+
 wEventFlags::
 wd747:: ds 3 ; below here are mostly in game flags
 wd74a:: ds 1
@@ -3406,7 +3406,7 @@ wWaterRate:: db ; d8a4
 wWaterMons:: db ; d8a5
 
 	ds wWaterRate - @
-	
+
 wEnemyMons:: ; d8a4
 wEnemyMon1:: party_struct wEnemyMon1
 wEnemyMon2:: party_struct wEnemyMon2

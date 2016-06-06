@@ -216,7 +216,7 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	and a
 	jr nz, .audioFadeLoop
 	jp Init
-	
+
 .doClearSaveDialogue ; 432a (1:432a)
 	jpba DoClearSaveDialogue
 
@@ -249,7 +249,7 @@ CopyrightTextString: ; 4355 (1:4355)
 TitleScreen_PlayPikachuPCM: ; 4387 (1:4387)
 	callab PlayPikachuSoundClip
 	ret
-	
+
 Func_4390: ; 4390 (1:4390)
 	call Func_43de
 	ld a, [wTitleMonSpecies]
@@ -262,7 +262,7 @@ Func_4390: ; 4390 (1:4390)
 	ld h, [hl]
 	ld l, a
 	jp hl
-	
+
 PointerTable_43a2: ; 43a2 (1:43a2)
 	dw Func_43be
 	dw Func_43c3
@@ -276,13 +276,13 @@ PointerTable_43a2: ; 43a2 (1:43a2)
 	dw Func_43d9
 	dw Func_43bf
 	dw Func_43ba
-	
+
 Func_43ba: ; 43ba (1:43ba)
 	xor a
 	ld [wTitleMonSpecies], a
 Func_43be
 	ret
-	
+
 Func_43bf: ; 43bf (1:43bf)
 	ld e, 0
 	jr asm_43c9
@@ -308,7 +308,7 @@ Func_43d9: ; 43d9 (1:43d9)
 	ld hl, wTitleMonSpecies
 	inc [hl]
 	ret
-	
+
 Func_43de: ; 43de (1:43de)
 	ld hl, wTitleMonSpecies + 1
 	ld a, [hl]
@@ -328,7 +328,7 @@ Func_43de: ; 43de (1:43de)
 CopyFixedLengthText: ; 43f3 (1:43f3)
 	ld bc, NAME_LENGTH
 	jp CopyData
-	
+
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
 
@@ -349,7 +349,7 @@ IncrementResetCounter: ; 4405 (1:4405)
 .doReset
 	scf
 	ret
-	
+
 Func_4418: ; 4418 (1:4418)
 	xor a
 	call SwitchSRAMBankAndLatchClockData

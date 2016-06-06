@@ -142,7 +142,7 @@ PrintSendOutMonMessage: ; f40e0 (3d:40e5)
 	ld a, [H_QUOTIENT + 3] ; a = (enemy mon current HP * 25) / (enemy max HP / 4); this approximates the current percentage of max HP
 	ld hl, GoText ; 70% or greater
 	cp 70
-	jr nc, .printText	
+	jr nc, .printText
 	ld hl, DoItText ; 40% - 69%
 	cp 40
 	jr nc, .printText

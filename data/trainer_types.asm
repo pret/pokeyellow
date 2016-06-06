@@ -14,5 +14,5 @@ EvilTrainerList:: ; 33c8 (0:33c8)
 	db OPP_SCIENTIST
 	db OPP_GIOVANNI
 	db OPP_ROCKET
-	
+
 	db $ff

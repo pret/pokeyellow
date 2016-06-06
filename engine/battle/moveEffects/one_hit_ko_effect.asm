@@ -1,5 +1,5 @@
 OneHitKOEffect_: ; f64db (3d:64db)
-	ld hl, wDamage 
+	ld hl, wDamage
 	xor a
 	ld [hli], a
 	ld [hl], a ; set the damage output to zero

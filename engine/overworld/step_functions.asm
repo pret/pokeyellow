@@ -123,7 +123,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 .done
 	ld [wOutOfBattleBlackout], a
 	ret
-	
+
 Func_c4c7: ; c4c7 (3:44c7)
 	ld a, [wStepCounter]
 	and a

@@ -565,7 +565,7 @@ MainInBattleLoop: ; 3c249 (f:4249)
 	call DrawHUDsAndHPBars
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
-	
+
 HandlePoisonBurnLeechSeed: ; 3c3d3 (f:43d3)
 	ld hl, wBattleMonHP
 	ld de, wBattleMonStatus
@@ -1162,7 +1162,7 @@ RemoveFaintedPlayerMon: ; 3c75e (f:475e)
 	sub b ; enemylevel - playerlevel
 	      ; are we stronger than the opposing pokemon?
 	jr c, .regularFaint ; if so, deduct happiness regularly
-	
+
 	cp 30 ; is the enemy 30 levels greater than us?
 	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
 .regularFaint
@@ -1171,7 +1171,7 @@ RemoveFaintedPlayerMon: ; 3c75e (f:475e)
 .carelessTrainer
 	callabd_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
 	ret
-	
+
 PlayerMonFaintedText: ; 3c7fa (f:47fa)
 	TX_FAR _PlayerMonFaintedText
 	db "@"
@@ -2350,11 +2350,11 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 .RunAwayText ; 3d0df (f:50df)
 	TX_FAR _RunAwayText
 	db "@"
-	
+
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
 	cp $2
 	jp nz, PartyMenuOrRockOrRun
-	
+
 ; either the bag (normal battle) or bait (safari battle) was selected
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -2911,7 +2911,7 @@ Func_3d4f5: ; 3d4f5 (f:54f5)
 	predef MoveAnimation
 	callab Func_78e98
 	jp MoveSelectionMenu
-	
+
 Func_3d523: ; 3d523 (f:5523)
 	ld a, [wTestBattlePlayerSelectedMove]
 	dec a
@@ -2977,7 +2977,7 @@ AnyMoveToSelect: ; 3d55f (f:555f)
 .allMovesChecked
 ; bugfix: only check PP value and not PP up bits
 ; in case all other moves have no PP left and a move has a PP up used on it
-; and a non-PP up move is disabled 
+; and a non-PP up move is disabled
 	and $3f ; any PP left?
 	ret nz ; return if a move has PP left
 .noMovesLeft
@@ -4150,7 +4150,7 @@ UnaffectedText: ; 3ddbe (f:5dbe)
 PrintDoesntAffectText: ; 3ddc3 (f:5dc3)
 	ld hl, DoesntAffectMonText
 	jp PrintText
-	
+
 DoesntAffectMonText: ; 3ddc9 (f:5dc9)
 	TX_FAR _DoesntAffectMonText
 	db "@"
@@ -5554,7 +5554,7 @@ AdjustDamageForMoveType: ; 3e517 (f:6517)
 	jp .loop
 .done
 	ret
-	
+
 AIGetTypeEffectiveness: ; 3e5bb (f:65bb)
 	ld a,[wEnemyMoveType]
 	ld d,a                 ; d = type of enemy move

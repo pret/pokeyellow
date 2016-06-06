@@ -166,7 +166,7 @@ _LoadTrainerPic: ; f615a (3d:615a)
 	ld a, $77
 	ld c, a
 	jp LoadUncompressedSpriteData
-	
+
 LoadMonBackPic: ; f6178 (3d:6178)
 ; Assumes the monster's attributes have
 ; been loaded with GetMonHeader.
@@ -186,7 +186,7 @@ LoadMonBackPic: ; f6178 (3d:6178)
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
 	jp CopyVideoData
-	
+
 AnimateSendingOutMon: ; f61a6 (3d:f61a6)
 	ld a, [wPredefRegisters]
 	ld h, a
@@ -256,7 +256,7 @@ CopyUncompressedPicToHL: ; f6203 (3d:6203)
 	dec b
 	jr nz, .asm_f6211
 	ret
-	
+
 .asm_f6220
 	push bc
 	ld b, $0
@@ -279,7 +279,7 @@ CopyUncompressedPicToHL: ; f6203 (3d:6203)
 	dec b
 	jr nz, .asm_f6227
 	ret
-	
+
 INCLUDE "engine/battle/init_battle_variables.asm"
 INCLUDE "engine/battle/moveEffects/focus_energy_effect.asm"
 INCLUDE "engine/battle/moveEffects/heal_effect.asm"

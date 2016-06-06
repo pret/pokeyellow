@@ -16,7 +16,7 @@ _InitMapSprites: ; 1401b (5:401b)
 	call LoadMapSpriteTilePatterns
 	call Func_14150
 	ret
-	
+
 ; Loads sprite set for outside maps (cities and routes) and sets VRAM slots.
 ; sets carry if the map is a city or route, unsets carry if not
 InitOutsideMapSprites: ; 14029 (5:4029)
@@ -49,7 +49,7 @@ InitOutsideMapSprites: ; 14029 (5:4029)
 	call Func_14150
 	scf
 	ret
-	
+
 LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 ; This loop stores the correct VRAM tile pattern slots according the sprite
 ; data from the map's header. Since the VRAM tile pattern slots are filled in
@@ -80,7 +80,7 @@ LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 	call CheckIfPictureIDAlreadyLoaded
 	jr .continue
 .isFourTileSprite
-; loop through the space reserved for regular picture IDs 
+; loop through the space reserved for regular picture IDs
 	ld de, wSpriteSet
 	ld b, 9
 	call CheckIfPictureIDAlreadyLoaded
@@ -98,11 +98,11 @@ CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
 ; their picture ID's match that of the current sprite slot.
 	ld a, [de]
 	and a ; is sprite set slot not taken up yet?
-	jr z, .spriteSlotNotTaken ; if so, load it as it signifies we've reached 
+	jr z, .spriteSlotNotTaken ; if so, load it as it signifies we've reached
 	                          ; the end of data for the last sprite set
 
 	cp c  ; is the tile pattern already loaded?
-	ret z ; don't redundantly load 
+	ret z ; don't redundantly load
 	dec b ; have we reached the end of the sprite set?
 	jr z, .spriteNotAlreadyLoaded ; if so, we're done here
 	inc de
@@ -121,14 +121,14 @@ CheckForFourTileSprite: ; 140ac (5:40ac)
 ; Else, returns carry if the sprite uses 4 tiles
 	cp SPRITE_PIKACHU       ; is this the Pikachu Sprite?
 	ret z                   ; return if yes
-	
+
 	cp SPRITE_BALL          ; is this a four tile sprite?
 	jr nc, .notYellowSprite ; set carry if yes
 ; regular sprite
 	and a
 	ret
 .notYellowSprite
-	scf 
+	scf
 	ret
 
 LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
@@ -148,7 +148,7 @@ LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
 	cp 11
 	jr nz, .loop
 	ret
-	
+
 ReloadWalkingTilePatterns: ; 140d2 (5:40d2)
 	xor a
 .loop
@@ -162,7 +162,7 @@ ReloadWalkingTilePatterns: ; 140d2 (5:40d2)
 	cp 11
 	jr nz, .loop
 	ret
-	
+
 LoadStillTilePattern: ; 140e4 (5:40e4)
 	ld a, [wFontLoaded]
 	bit 0, a ; reloading upper half of tile patterns after displaying text?
@@ -172,7 +172,7 @@ LoadStillTilePattern: ; 140e4 (5:40e4)
 	call GetSpriteVRAMAddress
 	call CopyVideoDataAlternate ; new yellow function
 	ret
-	
+
 LoadWalkingTilePattern: ; 140f5 (5:40f5)
 	call ReadSpriteSheetData
 	ret nc
@@ -184,7 +184,7 @@ LoadWalkingTilePattern: ; 140f5 (5:40f5)
 	set 3, h ; add $800 to hl
 	call CopyVideoDataAlternate
 	ret
-	
+
 GetSpriteVRAMAddress: ; 14018 (5:4108)
 	push bc
 	ld a, [hVRAMSlot]
@@ -198,7 +198,7 @@ GetSpriteVRAMAddress: ; 14018 (5:4108)
 	ld l, a
 	pop bc
 	ret
-	
+
 SpriteVRAMAddresses: ; 14118 (5:4118)
 ; Equivalent to multiplying $C0 (number of bytes in 12 tiles) times the VRAM
 ; slot and adding the result to $8000 (the VRAM base address).
@@ -213,7 +213,7 @@ SpriteVRAMAddresses: ; 14118 (5:4118)
 	dw vChars0 + $6c0
 	dw vChars0 + $780
 	dw vChars0 + $7c0
-	
+
 ReadSpriteSheetData: ; 1412e (5:412e)
 	ld a, [hVRAMSlot]
 	ld e, a
@@ -243,13 +243,13 @@ ReadSpriteSheetData: ; 1412e (5:412e)
 	inc hl
 	scf
 	ret
-	
+
 Func_14150: ; 14150 (5:4150)
 	ld a, $1
 	ld [wSpriteStateData2 + $e], a ; vram slot for player
 	ld a, $2
 	ld [wSpriteStateData2 + $fe], a ; vram slot for Pikachu
-	
+
 	ld a, $e
 	ld hl, wSpriteStateData1 + $10
 .loop
@@ -270,7 +270,7 @@ Func_14150: ; 14150 (5:4150)
 	dec a
 	jr nz, .loop
 	ret
-	
+
 Func_14179: ; 14179 (5:4179)
 	push de
 	push bc

@@ -161,7 +161,7 @@ CinnabarGymQuiz: ; 1e3be (7:63be)
 CinnabarGymQuizDummyIntroText: ; 1e401 (7:6401)
 	TX_FAR _CinnabarGymQuizDummyIntroText
 	db "@"
-	
+
 CinnabarGymQuizIntroText: ; 1e406 (7:6406)
 	TX_FAR _CinnabarGymQuizIntroText
 	db "@"
@@ -169,7 +169,7 @@ CinnabarGymQuizIntroText: ; 1e406 (7:6406)
 CinnabarGymQuizShortIntroText: ; 1e40b (7:640b)
 	TX_FAR _CinnabarGymQuizShortIntroText
 	db "@"
-	
+
 CinnabarQuizQuestions: ; 1e410 (7:6410)
 	dw CinnabarQuizQuestionsText1
 	dw CinnabarQuizQuestionsText2
@@ -327,7 +327,7 @@ CinnabarGymGateCoords: ; 1e503 (7:6503)
 	db $02,$06,$54,$00
 	db $02,$03,$54,$00
 
-	
+
 CinnabarGym_ReplaceTileBlock: ; 1e51b (7:651b)
 ; basically a copy of the first half of ReplaceTileBlock
 ; before checking if it is necessary to redraw the map view

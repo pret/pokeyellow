@@ -106,7 +106,7 @@ Func_6eaa: ; 6eaa (1:6eaa)
 	ld c, 64
 	call DelayFrames
 	ret
-	
+
 Func_6ebb: ; 6ebb (1:6ebb)
 	ld a, b
 	ld [H_SPRITEINDEX], a
@@ -121,7 +121,7 @@ Func_6ebb: ; 6ebb (1:6ebb)
 	ld [hSpriteImageIndex], a
 	call SpriteFunc_34a1
 	ret
-	
+
 PokemonCenterWelcomeText: ; 6de0 (1:6de0)
 	TX_FAR _PokemonCenterWelcomeText
 	db "@"
@@ -143,7 +143,7 @@ PokemonCenterFarewellText: ; 6ee5 (1:6ee5)
 	db $a
 	TX_FAR _PokemonCenterFarewellText
 	db "@"
-	
+
 LooksContentText: ; 6eeb (1:6eeb)
 	TX_FAR _LooksContentText
 	db "@"

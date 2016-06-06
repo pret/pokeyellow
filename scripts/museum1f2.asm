@@ -104,7 +104,7 @@ Func_f1c1b:
 	call PrintText
 .asm_f1cfc
 	ret
-	
+
 Museum1FText_f1cfd:
 	TX_FAR _Museum1FText_5c21a
 	db "@"

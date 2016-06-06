@@ -166,12 +166,12 @@ HoFDisplayAndRecordMonInfo: ; 7030e (1c:430e)
 	call PlayCry
 .asm_7033c
 	jp HoFRecordMonInfo
-	
+
 Func_7033f: ; 7033f (1c:433f)
 	call HoFDisplayMonInfo
 	ld a,[wHoFMonSpecies]
 	jp PlayCry
-	
+
 HoFDisplayMonInfo: ; 70348 (1c:4348)
 	coord hl, 0, 2
 	lb bc, 9, 10

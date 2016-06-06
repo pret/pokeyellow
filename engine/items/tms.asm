@@ -25,7 +25,7 @@ CanLearnTM: ; 122f0 (4:62f0)
 	pop hl
 	ld c, 0
 	ret
-	
+
 ; converts TM/HM number in wd11e into move number
 ; HMs start at 51
 TMToMove: ; 1231d (4:631d)

@@ -39,7 +39,7 @@ SetDefaultNames: ; 5e27 (1:5e27)
 	ld bc, NAME_LENGTH
 	call CopyData ; rip optimizations
 	ret
-	
+
 OakSpeech: ; 5e85 (1:5e85)
 	call StopAllMusic ; stop music
 	ld a, BANK(Music_Routes2)
@@ -157,7 +157,7 @@ OakSpeech: ; 5e85 (1:5e85)
 	call GBFadeOutToWhite
 	call ClearScreen ; rip more tail-end optimizations
 	ret
-	
+
 OakSpeechText1: ; 5fb9 (1:5fb9)
 	TX_FAR _OakSpeechText1
 	db "@"

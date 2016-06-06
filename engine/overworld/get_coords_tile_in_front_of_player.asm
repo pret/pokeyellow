@@ -1,6 +1,6 @@
 GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d1)
 	call GetPredefRegisters
-	
+
 _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 	ld a, [wYCoord]
 	ld d, a
@@ -37,7 +37,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 	ld c, a
 	ld [wTileInFrontOfPlayer], a
 	ret
-	
+
 GetTileTwoStepsInFrontOfPlayer: ; c309 (3:4309)
 	xor a
 	ld [$ffdb], a

@@ -29,5 +29,5 @@ LoadWildData: ; cb62 (3:4b62)
 	ld de,wWaterMons  ; otherwise, load surfing data
 	ld bc,$0014
 	jp CopyData
-	
+
 INCLUDE "data/wild_mons.asm"

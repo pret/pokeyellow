@@ -39,7 +39,7 @@ OptionMenuJumpTable: ; 41ca4 (10:5ca4)
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
-	
+
 OptionsMenu_TextSpeed: ; 41cb4 (10:5cb4)
 	call Func_41d07
 	ld a, [hJoy5]
@@ -83,19 +83,19 @@ OptionsMenu_TextSpeed: ; 41cb4 (10:5cb4)
 	call PlaceString
 	and a
 	ret
-	
+
 TextSpeedStringsPointerTable: ; 41cf2 (10:5cf2)
 	dw FastText
 	dw MidText
 	dw SlowText
-	
+
 FastText: ; 41cf9 (10:5cf9)
 	db "FAST@"
 MidText: ; 41cfd (10:5cfd)
 	db "MID @"
 SlowText: ; 41d02 (10:5d02)
 	db "SLOW@"
-	
+
 Func_41d07: ; 41d07 (10:5d07)
 	ld a, [wOptions]
 	and $f
@@ -115,7 +115,7 @@ Func_41d07: ; 41d07 (10:5d07)
 	ld c, $0
 	lb de, 5, 3
 	ret
-	
+
 OptionsMenu_BattleAnimations: ; 41d26 (10:5d26)
 	ld a, [hJoy5]
 	and D_RIGHT | D_LEFT
@@ -141,16 +141,16 @@ OptionsMenu_BattleAnimations: ; 41d26 (10:5d26)
 	call PlaceString
 	and a
 	ret
-	
+
 AnimationOptionStringsPointerTable: ; 41d52 (10:5d52)
 	dw AnimationOnText
 	dw AnimationOffText
-	
+
 AnimationOnText: ; 41d56 (10:5d56)
 	db "ON @"
 AnimationOffText: ; 41d5a (10:5d5a)
 	db "OFF@"
-	
+
 OptionsMenu_BattleStyle: ; 41d5e (10:5d5e)
 	ld a, [hJoy5]
 	and D_LEFT | D_RIGHT
@@ -177,16 +177,16 @@ OptionsMenu_BattleStyle: ; 41d5e (10:5d5e)
 	call PlaceString
 	and a
 	ret
-	
+
 BattleStyleOptionStringsPointerTable: ; 41d8c (10:5d8c)
 	dw BattleStyleShiftText
 	dw BattleStyleSetText
-	
+
 BattleStyleShiftText: ; 41d90 (10:5d90)
 	db "SHIFT@"
 BattleStyleSetText: ; 41d96 (10:5d96)
 	db "SET  @"
-	
+
 OptionsMenu_SpeakerSettings: ; 41d9c (10:5d9c)
 	ld a, [wOptions]
 	and $30
@@ -235,7 +235,7 @@ SpeakerOptionStringsPointerTable: ; 41ddc (10:5ddc)
 	dw Earphone1SoundText
 	dw Earphone2SoundText
 	dw Earphone3SoundText
-	
+
 MonoSoundText: ; 41de4 (10:5de4)
 	db "MONO     @"
 Earphone1SoundText: ; 41dee (10:5dee)
@@ -244,7 +244,7 @@ Earphone2SoundText: ; 41df8 (10:5df8)
 	db "EARPHONE2@"
 Earphone3SoundText: ; 41e02 (10:5e02)
 	db "EARPHONE3@"
-	
+
 OptionsMenu_GBPrinterBrightness: ; 41e0c (10:5e0c)
 	call Func_41e7b
 	ld a, [hJoy5]
@@ -285,14 +285,14 @@ OptionsMenu_GBPrinterBrightness: ; 41e0c (10:5e0c)
 	call PlaceString
 	and a
 	ret
-	
+
 GBPrinterOptionStringsPointerTable: ; 41e44 (10:5e44)
 	dw LightestPrintText
 	dw LighterPrintText
 	dw NormalPrintText
 	dw DarkerPrintText
 	dw DarkestPrintText
-	
+
 LightestPrintText: ; 41e4e (10:5e4e)
 	db "LIGHTEST@"
 LighterPrintText: ; 41e57 (10:5e57)
@@ -303,7 +303,7 @@ DarkerPrintText: ; 41e69 (10:5e69)
 	db "DARKER  @"
 DarkestPrintText: ; 41e72 (10:5e72)
 	db "DARKEST @"
-	
+
 Func_41e7b: ; 41e7b (10:5e7b)
 	ld a, [wd498]
 	and a
@@ -347,7 +347,7 @@ OptionsMenu_Cancel: ; 41ead (10:5ead)
 .pressedCancel
 	scf
 	ret
-	
+
 Func_41eb7: ; 41eb7 (10:5eb7)
 	ld hl, wOptionsCursorLocation
 	ld a, [hJoy5]
@@ -387,7 +387,7 @@ Func_41eb7: ; 41eb7 (10:5eb7)
 	dec [hl]
 	scf
 	ret
-	
+
 Func_41ee9: ; 41ee9 (10:5ee9)
 	coord hl, 1, 1
 	ld de, SCREEN_WIDTH
@@ -431,13 +431,13 @@ Func_41f06: ; 41f06 (10:5f06)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	ret
-	
+
 AllOptionsText: ; 41f3e (10:5f3e)
 	db "TEXT SPEED :"
 	next "ANIMATION  :"
 	next "BATTLESTYLE:"
 	next "SOUND:"
 	next "PRINT:@"
-	
+
 OptionMenuCancelText: ; 41f73 (10:5f73)
 	db "CANCEL@"

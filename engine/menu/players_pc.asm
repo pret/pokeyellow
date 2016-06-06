@@ -13,7 +13,7 @@ PlayerPC: ; 778e (1:778e)
 	call PlaySound
 	ld hl, TurnedOnPC2Text
 	call PrintText
-	
+
 PlayerPCMenu: ; 790c (1:790c)
 	ld hl, wd730
 	set 6, [hl]

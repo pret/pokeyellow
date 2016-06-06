@@ -8,7 +8,7 @@ Route19Object: ; 0x54e9a (size=87)
 	db $b,$b,$b
 
 	db $a ; objects
-	
+
 	object SPRITE_BLACK_HAIR_BOY_1, $09, $07, STAY, RIGHT,  $1, OPP_SWIMMER, $2
 	object SPRITE_BLACK_HAIR_BOY_1, $0c, $09, STAY, LEFT,   $2, OPP_SWIMMER, $3
 	object SPRITE_SWIMMER,          $0d, $19, STAY, LEFT,   $3, OPP_SWIMMER, $4
