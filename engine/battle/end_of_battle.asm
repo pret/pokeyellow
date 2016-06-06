@@ -46,7 +46,7 @@ EndOfBattle: ; 13765 (4:7765)
 	ld [wForceEvolution], a
 	predef EvolutionAfterBattle
 	ld d, $82
-	callab Func_fce5a
+	callab UpdatePikachuMoodAfterBattle
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm

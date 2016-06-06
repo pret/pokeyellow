@@ -36,7 +36,7 @@ FanClubScript_59a44:
 	ld a, [wd472]
 	bit 7, a
 	ret z
-	callab Func_fce73
+	callab CheckPikachuFaintedOrStatused
 	ret c
 	ld a, $1
 	ld [W_FANCLUBCURSCRIPT], a

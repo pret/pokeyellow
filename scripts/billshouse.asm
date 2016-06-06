@@ -42,7 +42,7 @@ BillsHouseScript0: ; 1e782 (7:6782)
 	ld a, [wd472]
 	bit 7, a
 	jr z, .asm_1e0d2
-	callab Func_fce73
+	callab CheckPikachuFaintedOrStatused
 	jr c, .asm_1e0d2
 	callab Func_f24d5
 .asm_1e0d2

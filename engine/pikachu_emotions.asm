@@ -250,7 +250,7 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	call CheckPikachuFollowingPlayer
 	ld a, $1e
 	jr nz, .set_carry
-	jr .asm_fd096
+	jr .check_pikachu_status
 
 .notFanClub
 	ld a, [wCurMap]
@@ -259,20 +259,20 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	call CheckPikachuFollowingPlayer
 	ld a, $1a
 	jr nz, .set_carry
-	jr .asm_fd096
+	jr .check_pikachu_status
 
 .notPewterPokecenter
 	callab Func_f24ae
 	ld a, e
 	cp $ff
 	jr nz, .set_carry
-	jr .asm_fd096
+	jr .check_pikachu_status ; useless
 
-.asm_fd096
+.check_pikachu_status
 	call IsPlayerPikachuAsleepInParty
 	ld a, $b
 	jr c, .set_carry
-	callab Func_fce73 ; same bank
+	callab CheckPikachuFaintedOrStatused ; same bank
 	ld a, $1c
 	jr c, .set_carry
 	ld a, [wCurMap]
