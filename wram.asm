@@ -790,8 +790,11 @@ wAnimationType:: ; cc5b
 ; values between 0-6. Shake screen horizontally, shake screen vertically, blink Pokemon...
 
 wNPCMovementDirections:: ; cc5b
+
+wPikaPicUsedGFXCount:: ; cc5b
 	ds 1
 
+wPikaPicUsedGFX:: ; cc5c
 wDexRatingNumMonsOwned:: ; cc5c
 	ds 1
 
@@ -804,7 +807,9 @@ wSlotMachineSavedROMBank:: ; cc5e
 ; ROM back to return to when the player is done with the slot machine
 	ds 1
 
-	ds 26
+	ds 13
+wPikaPicUsedGFXEnd:: ; cc6c
+	ds 13
 
 wAnimPalette:: ; cc79
 	ds 1
@@ -833,7 +838,9 @@ wPikaPicAnimObjectDataBuffer:: ; cc98
 
 wNumStepsToTake:: ; cca1
 ; used in Pallet Town scripted movement
-	ds 49
+	ds 23
+wPikaPicAnimObjectDataBufferEnd:: ;ccb8
+	ds 26
 
 wRLEByteCount:: ; ccd2
 	ds 1
@@ -2834,7 +2841,9 @@ wd458:: ds 1 ; d458
 wCurPikaPicAnimObject:: ; d459
 wCurPikaPicAnimObjectIndex:: ds 1
 wCurPikaPicAnimObjectGraphicID:: dw
-	ds 19
+	ds 2
+wCurPikaMovementDataEnd::
+	ds 17
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470
