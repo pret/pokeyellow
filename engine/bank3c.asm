@@ -386,7 +386,7 @@ PikachuMovementData_f1f2c:
 
 INCLUDE "scripts/celadondiner2.asm"
 INCLUDE "scripts/safarizoneentrance2.asm"
-INCLUDE "scripts/cinnabargym2.asm"
+INCLUDE "scripts/cinnabargym3.asm"
 
 INCLUDE "scripts/mtmoonpokecenter2.asm"
 
