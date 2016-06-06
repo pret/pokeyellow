@@ -746,7 +746,7 @@ INCLUDE "audio/music/yellowintro.asm"
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
-INCLUDE "audio/music/jessieandjames.asm"
+INCLUDE "audio/music/meetjessiejames.asm"
 
 INCBIN "audio/unknown_832b9.bin"
 

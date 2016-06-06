@@ -1665,20 +1665,7 @@ VictoryRoad1Blocks: INCBIN "maps/victoryroad1.blk"
 
 INCLUDE "engine/evolution.asm"
 
-SetPartyMonTypes::
-	call GetPredefRegisters
-	ld bc, 5
-	add hl, bc
-	ld a, [wd11e]
-	ld [wd0b5], a
-	push hl
-	call GetMonHeader
-	pop hl
-	ld a, [wMonHType1]
-	ld [hli], a
-	ld a, [wMonHType2]
-	ld [hl], a
-	ret
+INCLUDE "engine/predefs17.asm"
 
 INCLUDE "engine/hidden_object_functions17.asm"
 
@@ -2154,21 +2141,8 @@ INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
 
 SECTION "bank3A",ROMX,BANK[$3A]
 INCLUDE "text/monster_names.asm"
-IsPlayerJustOutsideMap: ; e876c (3a:476c)
-	ld a, [wYCoord]
-	ld b, a
-	ld a, [wCurMapHeight]
-	call Func_e877e
-	ret z
-	ld a, [wXCoord]
-	ld b, a
-	ld a, [wCurMapWidth]
-Func_e877e:
-	add a
-	cp b
-	ret z
-	inc b
-	ret
+
+INCLUDE "engine/overworld/is_player_just_outside_map.asm"
 
 INCLUDE "engine/printer.asm"
 INCLUDE "engine/diploma_3a.asm"
