@@ -1,3 +1,4 @@
+INCLUDE "charmap.asm"
 
 AUDIO_1 EQU $2
 AUDIO_2 EQU $8
