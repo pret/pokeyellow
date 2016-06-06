@@ -1811,9 +1811,11 @@ LoadPlayerSpriteGraphicsCommon:: ; 0d8f (0:0d8f)
 ; function to load data from the map header
 LoadMapHeader:: ; 0dab (0:0dab)
 	callba MarkTownVisitedAndLoadMissableObjects
-	jr .asm_0dbd
+	jr asm_0dbd
+
+Func_0db5:: ; XXX
 	callba Func_f0a55 ; 3c:4a55
-.asm_0dbd
+asm_0dbd
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
 	ld a, [wCurMap]
@@ -2005,7 +2007,7 @@ LoadScreenRelatedData:: ; 0f0c (0:0f0c)
 	call LoadCurrentMapView
 	ret
 
-Func_0f16:: ; 0f16 (0:0f16)
+ReloadMapAfterSurfingMinigame:: ; 0f16 (0:0f16)
 	ld a, [H_LOADEDROMBANK]
 	push af
 	call DisableLCD
@@ -2021,7 +2023,8 @@ Func_0f16:: ; 0f16 (0:0f16)
 	pop af
 	call BankswitchCommon
 	jr asm_0f4d
-Func_0f3d:: ; 0f3d (0:0f3d)
+
+ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wCurMap]

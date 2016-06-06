@@ -50,7 +50,7 @@ SurfingPikachuMinigame:
 	xor a
 	ld [rSTAT], a
 	call RunDefaultPaletteCommand
-	call Func_0f16
+	call ReloadMapAfterSurfingMinigame
 	call PlayDefaultMusic
 	call GBPalNormal
 	pop af

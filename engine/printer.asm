@@ -1,3 +1,14 @@
+	const_def
+	const PRINTER_STATUS_BLANK
+	const PRINTER_STATUS_CHECKING_LINK
+	const PRINTER_STATUS_TRANSMITTING
+	const PRINTER_STATUS_PRINTING
+	const PRINTER_ERROR_1
+	const PRINTER_ERROR_2
+	const PRINTER_ERROR_3
+	const PRINTER_ERROR_4
+	const PRINTER_ERROR_WRONG_DEVICE
+
 INCLUDE "engine/printer/serial.asm"
 
 Func_e8b74: ; e8b74 (3a:4b74)
@@ -5,7 +16,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	push af
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld [$ffdb], a
+	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	ld a, [rIE]
 	push af
@@ -14,7 +25,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld a, $9
 	ld [rIE], a
 	xor a
-	ld [$ffba], a
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e8c30
 	call Func_e8785
 	ld a, [wcaf9]
@@ -32,7 +43,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	callab Func_401c2
 	callab Func_4027c
 	ld a, $1
-	ld [$ffba], a
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e8c0c
 	jr c, .asm_e8bf4
 	ld a, [wcaf9]
@@ -45,7 +56,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
-	ld [$ffba], a
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e8c50
 	ld a, $7
 	call Func_e8785
@@ -54,7 +65,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	ld a, $1
-	ld [$ffba], a
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e8c0c
 .asm_e8bf4
 	xor a
@@ -64,7 +75,7 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld [rIF], a
 	pop af
 	ld [rIE], a
-	call Func_0f3d
+	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	pop af
 	ld [wUpdateSpritesEnabled], a
@@ -76,7 +87,7 @@ Func_e8c0c:
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
 	jr c, .asm_e8c2e
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8c2c
 	call Func_e87a8
@@ -119,7 +130,7 @@ Func_e8c50:
 
 Func_e8c5c:
 	xor a
-	ld [$ffdb], a
+	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	call Func_e910a
 	ld a, [rIE]
@@ -137,7 +148,7 @@ Func_e8c5c:
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
 	jr c, .asm_e8c9a
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8c9a
 	call Func_e87a8
@@ -155,13 +166,13 @@ Func_e8c5c:
 	ld [rIF], a
 	pop af
 	ld [rIE], a
-	call Func_0f3d
+	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
 
 Func_e8cb1:
 	xor a
-	ld [$ffdb], a
+	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	call _DisplayDiploma
 	ld a, [rIE]
@@ -183,7 +194,7 @@ Func_e8cb1:
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
-	ld [$ffba], a
+	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9ad3
 	call Func_e8783
 	ld a, $3
@@ -200,7 +211,7 @@ Func_e8cb1:
 	ld [rIF], a
 	pop af
 	ld [rIE], a
-	call Func_0f3d
+	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
 
@@ -210,7 +221,7 @@ Func_e8d11:
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
 	jr c, .asm_e8d33
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8d31
 	call Func_e87a8
@@ -308,7 +319,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	ld [rIF], a
 	pop af
 	ld [rIE], a
-	call Func_0f3d
+	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	pop af
 	ld [wUpdateSpritesEnabled], a
@@ -325,7 +336,7 @@ Func_e8dfb: ; e8dfb
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
 	jr c, .asm_e8e1d
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8e1b
 	call Func_e87a8
@@ -366,7 +377,7 @@ Func_e8e24: ; e8e24
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
 	jr c, .asm_e8e62
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8e62
 	call Func_e87a8
@@ -384,7 +395,7 @@ Func_e8e24: ; e8e24
 	ld [rIF], a
 	pop af
 	ld [rIE], a
-	call Func_0f3d
+	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
 
@@ -408,7 +419,7 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call Func_ea573
 .asm_e8e9c
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8eae
 	call Func_ea5d1
@@ -442,7 +453,7 @@ Printer_CheckPressingB: ; e8eca (3a:4eca)
 	ret
 
 .quit
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	cp $c
 	jr nz, .already_done
 .wait_current_task
@@ -536,19 +547,19 @@ GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
 	bit 6, a
 	jr nz, .error4
 	; error 3
-	ld a, 6
+	ld a, PRINTER_ERROR_3
 	jr .load_status
 
 .error4
-	ld a, 7
+	ld a, PRINTER_ERROR_4
 	jr .load_status
 
 .error1
-	ld a, 4
+	ld a, PRINTER_ERROR_1
 	jr .load_status
 
 .error2
-	ld a, 5
+	ld a, PRINTER_ERROR_2
 .load_status
 	ld [wPrinterStatusIndicator], a
 	ret

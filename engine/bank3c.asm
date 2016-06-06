@@ -264,6 +264,7 @@ Func_f0a54:: ; f0a54 (3c:4a54)
 	ret
 
 Func_f0a55:: ; f0a55 (3c:4a55)
+; referenced in an unused function
 	ld hl, Pointer_f0a76 ; 3c:4a76
 .loop
 	ld a, [hli]
@@ -281,7 +282,7 @@ Func_f0a55:: ; f0a55 (3c:4a55)
 .asm_f0a68
 	ld a, [hli]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -290,8 +291,15 @@ Func_f0a55:: ; f0a55 (3c:4a55)
 	ret
 
 Pointer_f0a76:: ; f0a76 (3c:4a76)
-	db $27, $07, $7b, $4a, $ff
-	db $01, $ec, $02, $ed, $03, $ee, $ff
+	dbbw BLUES_HOUSE, Pointer_f0a7bEnd - Pointer_f0a7b, Pointer_f0a7b
+	db $ff
+
+Pointer_f0a7b:
+	db 1, HS_DAISY_SITTING_COPY
+	db 2, HS_DAISY_WALKING_COPY
+	db 3, HS_TOWN_MAP_COPY
+	db $ff
+Pointer_f0a7bEnd:
 
 Func_f0a82: ; f0a82
 	ld a, [wd472]

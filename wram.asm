@@ -424,7 +424,7 @@ wTempPic:: ; c6e8
 wPrinterData:: ; c6e8
 wOverworldMap:: ; c6e8
 	; ds 1300
-wPrinterReceiveJumptableIndex:: ; c6e8
+wPrinterSendState:: ; c6e8
 	ds 1
 wc6e9:: ; c6e9
 	ds 1
@@ -442,6 +442,9 @@ wc6ed:: ; c6ed
 wPrinterChecksum:: ; c6ee
 	dw
 
+wPrinterSendDataSource:: ; c6f0
+; a 40-tile buffer
+; ds $280
 wPrinterSerialReceived:: ; c6f0
 	ds 1
 wPrinterStatusReceived:: ; c6f1
@@ -467,6 +470,7 @@ wc810:: ; c810
 
 ; c900
 	ds $70
+wPrinterSendDataSourceEnd:: ; c970
 
 wc970:: ; c970
 	ds 1

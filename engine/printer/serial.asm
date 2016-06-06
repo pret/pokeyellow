@@ -20,7 +20,7 @@ Func_e8785:
 
 ; e87a8
 Func_e87a8: ; e87a8 (3a:47a8)
-	ld a, [wPrinterReceiveJumptableIndex]
+	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
 	ld hl, .Jumptable
@@ -54,19 +54,19 @@ Func_e87a8: ; e87a8 (3a:47a8)
 	dw Func_e8939 ; 14
 
 Printer_Next:
-	ld hl, wPrinterReceiveJumptableIndex
+	ld hl, wPrinterSendState
 	inc [hl]
 	ret
 
 Printer_Back:
-	ld hl, wPrinterReceiveJumptableIndex
+	ld hl, wPrinterSendState
 	dec [hl]
 	ret
 
 Printer_Quit:
 	xor a
 	ld [wc971], a
-	ld hl, wPrinterReceiveJumptableIndex
+	ld hl, wPrinterSendState
 	set 7, [hl]
 	ret
 
@@ -76,60 +76,60 @@ Printer_Next_:
 
 Printer_LoopBack:
 	ld a, $1
-	ld [wPrinterReceiveJumptableIndex], a
+	ld [wPrinterSendState], a
 	ret
 
 Printer_InitSerial:
-	call Func_e8981
+	call ResetPrinterData
 	ld hl, PrinterDataPacket1
-	call Func_e8968
+	call CopyPrinterDataHeader
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
 	ld a, [wcaf4]
 	ld [wc6e9], a
 	call Printer_Next
-	call Func_e8949
-	ld a, $1
+	call Printer_PrepareToSend
+	ld a, PRINTER_STATUS_CHECKING_LINK
 	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e881f:
-	call Func_e8981
+	call ResetPrinterData
 	ld hl, wc6e9
 	ld a, [hl]
 	and a
 	jr z, Func_e884b
 	ld hl, PrinterDataPacket3
-	call Func_e8968
+	call CopyPrinterDataHeader
 	call Func_e89e6
-	ld a, $80
+	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) % $100
 	ld [wPrinterDataSize], a
-	ld a, $2
+	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) / $100
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinterChecksum
 	call Printer_Next
-	call Func_e8949
-	ld a, $2
+	call Printer_PrepareToSend
+	ld a, PRINTER_STATUS_TRANSMITTING
 	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e884b:
 	ld a, $6
-	ld [wPrinterReceiveJumptableIndex], a
+	ld [wPrinterSendState], a
 	ld hl, PrinterDataPacket4
-	call Func_e8968
+	call CopyPrinterDataHeader
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
 	call Printer_Next
-	call Func_e8949
+	call Printer_PrepareToSend
 	ret
 
 Func_e8864:
-	call Func_e8981
+	call ResetPrinterData
 	ld hl, PrinterDataPacket2
-	call Func_e8968
+	call CopyPrinterDataHeader
 	call Func_e89cf
 	ld a, $4
 	ld [wPrinterDataSize], a
@@ -137,22 +137,22 @@ Func_e8864:
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinterChecksum
 	call Printer_Next
-	call Func_e8949
-	ld a, $3
+	call Printer_PrepareToSend
+	ld a, PRINTER_STATUS_PRINTING
 	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_e8889:
-	call Func_e8981
+	call ResetPrinterData
 	ld hl, PrinterDataPacket1
-	call Func_e8968
+	call CopyPrinterDataHeader
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
 	ld a, [wcaf4]
 	ld [wc6e9], a
 	call Printer_Next
-	call Func_e8949
+	call Printer_PrepareToSend
 	ret
 
 Func_e88a6:
@@ -209,7 +209,7 @@ Func_e88c9:
 	ld [wc970], a
 	ld [wc971], a
 	ld a, $e
-	ld [wPrinterReceiveJumptableIndex], a
+	ld [wPrinterSendState], a
 	ret
 
 Func_e8906:
@@ -231,7 +231,7 @@ Func_e8906:
 
 .asm_e8921
 	ld a, $12
-	ld [wPrinterReceiveJumptableIndex], a
+	ld [wPrinterSendState], a
 	ret
 
 Func_e8927:
@@ -254,10 +254,10 @@ Func_e8939:
 	and a, $f0
 	ret nz
 	xor a
-	ld [wPrinterReceiveJumptableIndex], a
+	ld [wPrinterSendState], a
 	ret
 
-Func_e8949:
+Printer_PrepareToSend:
 .wait_printer_operation
 	ld a, [wPrinterOpcode]
 	and a
@@ -275,7 +275,7 @@ Func_e8949:
 	ld [rSC], a
 	ret
 
-Func_e8968:
+CopyPrinterDataHeader:
 	ld a, [hli]
 	ld [wPrinterDataHeader], a
 	ld a, [hli]
@@ -290,7 +290,7 @@ Func_e8968:
 	ld [wPrinterChecksum + 1], a
 	ret
 
-Func_e8981:
+ResetPrinterData:
 	xor a
 	ld hl, wPrinterDataHeader
 	ld [hli], a
@@ -303,8 +303,8 @@ Func_e8981:
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
-	ld hl, wPrinterSerialReceived
-	ld bc, $280
+	ld hl, wPrinterSendDataSource
+	ld bc, wPrinterSendDataSourceEnd - wPrinterSendDataSource
 	call Printer_FillMemory
 	ret
 
@@ -317,7 +317,7 @@ ComputePrinterChecksum:
 	ld c, a
 	ld a, [wPrinterDataSize + 1]
 	ld b, a
-	ld de, wPrinterSerialReceived
+	ld de, wPrinterSendDataSource
 	call .AddToChecksum
 	ld a, l
 	ld [wPrinterChecksum], a
@@ -357,20 +357,20 @@ Func_e89e6:
 	ld a, [wcaf4]
 	sub b
 	ld hl, wPrinterTileBuffer
-	ld de, $28
-.asm_e89f4
+	ld de, 2 * SCREEN_WIDTH
+.get_row
 	and a
-	jr z, .asm_e89fb
+	jr z, .got_row
 	add hl, de
 	dec a
-	jr .asm_e89f4
+	jr .get_row
 
-.asm_e89fb
+.got_row
 	ld e, l
 	ld d, h
-	ld hl, wPrinterSerialReceived
-	ld c, $28
-.asm_e8a02
+	ld hl, wPrinterSendDataSource
+	ld c, 2 * SCREEN_WIDTH
+.loop
 	ld a, [de]
 	inc de
 	push bc
@@ -385,15 +385,15 @@ Func_e89e6:
 	ld d, a
 	and a, $8
 	ld a, d
-	jr nz, .asm_e8a1a
+	jr nz, .vchars1
 	or a, $90
-	jr .asm_e8a1c
+	jr .got_addr
 
-.asm_e8a1a
+.vchars1
 	or a, $80
-.asm_e8a1c
+.got_addr
 	ld d, a
-	ld bc, $3a01
+	lb bc, BANK(Func_e89e6), 1
 	call CopyVideoData
 	pop hl
 	ld de, $10
@@ -401,7 +401,7 @@ Func_e89e6:
 	pop de
 	pop bc
 	dec c
-	jr nz, .asm_e8a02
+	jr nz, .loop
 	ret
 
 Printer_FillMemory: ; e8a2e (3a:4a2e)
@@ -540,7 +540,7 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 	ld e, a
 	ld a, [wc975]
 	ld d, a
-	ld hl, wPrinterSerialReceived
+	ld hl, wPrinterSendDataSource
 	add hl, de
 	inc de
 	ld a, e
