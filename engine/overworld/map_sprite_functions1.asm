@@ -28,7 +28,7 @@ _UpdateSprites: ; 4bb7 (1:4bb7)
 	and a
 	jp z, UpdatePlayerSprite
 	cp $f0 ; pikachu
-	jp z, Func_1552
+	jp z, SpawnPikachu
 	ld a, [hl]
 
 UpdateNonPlayerSprite: ; 4be3 (1:4be3)

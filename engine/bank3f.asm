@@ -26,123 +26,122 @@ Func_fc4fa:: ; fc4fa (3f:44fa)
 	ld hl, wPikachuOverworldStateFlags
 	bit 4, [hl]
 	res 4, [hl]
-	jr nz, .asm_fc515
+	jr nz, .normal_spawn_state
 	call EnablePikachuFollowingPlayer
-	call Func_fc523
+	call ClearPikachuSpriteStateData
 	ld a, $ff
-	ld [wSpriteStateData1 + $f2], a
+	ld [wPikachuSpriteImageIdx], a
 	call ClearPikachuFollowCommandBuffer
-	call Func_fc5bc
+	call CalculatePikachuFacingDirection
 	ret
 
-.asm_fc515
-	call Func_fc53f
+.normal_spawn_state
+	call CalculatePikachuPlacementCoords
 	xor a
-	ld [wd431], a
-	ld a, [wSpriteStateData1 + $9]
-	ld [wSpriteStateData1 + $f9], a
+	ld [wPikachuSpawnState], a
+	ld a, [wPlayerFacingDirection]
+	ld [wPikachuFacingDirection], a
 	ret
 
-Func_fc523:: ; fc523 (3f:4523)
-	ld hl, wSpriteStateData1 + $f0
-	call Func_fc52c
-	ld hl, wSpriteStateData2 + $f0
-Func_fc52c:: ; fc52c (3f:4523)
+ClearPikachuSpriteStateData:: ; fc523 (3f:4523)
+	ld hl, wPikachuPictureID
+	call .clear
+	ld hl, wPikachuSpriteStateData2
+.clear
 	ld bc, $10
 	xor a
 	call FillMemory
 	ret
 
 Func_fc534:: ; fc534 (3f:4534)
-	call Func_fc53f
-	call Func_fc5bc
+	call CalculatePikachuPlacementCoords
+	call CalculatePikachuFacingDirection
 	xor a
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	ret
 
-Func_fc53f:: ; fc53f (3f:453f)
-	ld bc, wSpriteStateData1 + $f0
+CalculatePikachuPlacementCoords:: ; fc53f (3f:453f)
+	ld bc, wPikachuPictureID
 	ld a, [wYCoord]
 	add $4
 	ld e, a
 	ld a, [wXCoord]
 	add $4
 	ld d, a
-	ld a, [wd431]
+	ld a, [wPikachuSpawnState]
 	and a
-	jr z, .asm_fc5aa
+	jr z, .load_coords
 	cp $1
-	jr z, .asm_fc59e
+	jr z, .right_of_player
 	cp $2
-	jr z, .asm_fc584
+	jr z, .check_player_facing2
 	cp $3
-	jr z, .asm_fc5aa
+	jr z, .load_coords
 	cp $4
-	jr z, .asm_fc5a4
+	jr z, .below_player
 	cp $5
-	jr z, .asm_fc5a7
+	jr z, .above_player
 	cp $6
-	jr z, .asm_fc5a1
+	jr z, .left_of_player
 	cp $7
-	jr z, .asm_fc572
-	jr .asm_fc59e
+	jr z, .check_player_facing
+	jr .right_of_player
 
-.asm_fc572
-	ld a, [wSpriteStateData1 + $9]
+.check_player_facing
+	ld a, [wPlayerFacingDirection]
 	and a ; SPRITE_FACING_DOWN
-	jr z, .asm_fc5a4
+	jr z, .below_player
 	cp SPRITE_FACING_UP
-	jr z, .asm_fc5a7
+	jr z, .above_player
 	cp SPRITE_FACING_LEFT
-	jr z, .asm_fc5a1
+	jr z, .left_of_player
 	cp SPRITE_FACING_RIGHT
-	jr z, .asm_fc59e
-.asm_fc584
-	ld a, [wSpriteStateData1 + $9]
+	jr z, .right_of_player
+.check_player_facing2
+	ld a, [wPlayerFacingDirection]
 	and a
-	jr nz, .asm_fc58d
+	jr nz, .check_up
 	dec e
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc58d
+.check_up
 	cp SPRITE_FACING_UP
-	jr nz, .asm_fc594
+	jr nz, .check_left
 	inc e
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc594
+.check_left
 	cp SPRITE_FACING_LEFT
-	jr nz, .asm_fc59b
+	jr nz, .left_of_player_2
 	inc d
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc59b
+.left_of_player_2
 	dec d
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc59e
+.right_of_player
 	inc d
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc5a1
+.left_of_player
 	dec d
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc5a4
+.below_player
 	inc e
-	jr .asm_fc5aa
+	jr .load_coords
 
-.asm_fc5a7
+.above_player
 	dec e
-	jr .asm_fc5aa ; useless jr
-.asm_fc5aa
-	ld hl, $104
+	jr .load_coords ; useless jr
+.load_coords
+	ld hl, wPlayerMapY - wPlayerSpriteStateData1
 	add hl, bc
 	ld [hl], e
 	inc hl
 	ld [hl], d
 	inc hl
-Func_fc4b2:: ; fc4b2 (3f:44b2)
 	ld [hl], $fe
 	push hl
 	ld hl, wd472
@@ -150,139 +149,164 @@ Func_fc4b2:: ; fc4b2 (3f:44b2)
 	pop hl
 	ret
 
-Func_fc5bc:: ; fc5bc (3f:45bc)
+CalculatePikachuFacingDirection:: ; fc5bc (3f:45bc)
 	ld a, $49
-	ld [wSpriteStateData1 + $f0], a
+	ld [wPikachuPictureID], a
 	ld a, $ff
-	ld [wSpriteStateData1 + $f2], a
-	ld a, [wd431]
+	ld [wPikachuSpriteImageIdx], a
+	ld a, [wPikachuSpawnState]
 	and a
-	jr z, .asm_fc5e4
+	jr z, .copy_player_facing
 	cp $1
-	jr z, .asm_fc5e4
+	jr z, .copy_player_facing
 	cp $3
-	jr z, .asm_fc5eb
+	jr z, .force_facing_down
 	cp $4
-	jr z, .asm_fc5e4
+	jr z, .copy_player_facing
 	cp $6
-	jr z, .asm_fc5e4
+	jr z, .copy_player_facing
 	cp $7
-	jr z, .asm_fc5f1
+	jr z, .face_the_other_way
 	call Func_fccb2
 	ret
 
-.asm_fc5e4
-	ld a, [wSpriteStateData1 + $9]
-	ld [wSpriteStateData1 + $f9], a
+.copy_player_facing
+	ld a, [wPlayerFacingDirection]
+	ld [wPikachuFacingDirection], a
 	ret
 
-.asm_fc5eb
-	ld a, $0
-	ld [wSpriteStateData1 + $f9], a
+.force_facing_down
+	ld a, SPRITE_FACING_DOWN
+	ld [wPikachuFacingDirection], a
 	ret
 
-.asm_fc5f1
-	ld a, [wSpriteStateData1 + $9]
+.face_the_other_way
+	ld a, [wPlayerFacingDirection]
 	xor $4
-	ld [wSpriteStateData1 + $f9], a
+	ld [wPikachuFacingDirection], a
 	ret
 
-Func_fc5fa:: ; fc5fa (3f:45fa)
+CalculatePikachuSpawnState1:: ; fc5fa (3f:45fa)
 	ld a, [wCurMap]
 	cp OAKS_LAB
-	jr z, .asm_fc63d
+	jr z, .oaks_lab
 	cp ROUTE_22_GATE
-	jr z, .asm_fc62d
+	jr z, .route_22_gate
 	cp MT_MOON_2
-	jr z, .asm_fc635
+	jr z, .mt_moon_2
 	cp ROCK_TUNNEL_1
-	jr z, .asm_fc645
+	jr z, .rock_tunnel_1
 	ld a, [wCurMap]
 	ld hl, Pointer_fc64b
-	call Func_1568 ; similar to IsInArray, but not the same
-	jr c, .asm_fc639
+	call Pikachu_IsInArray ; similar to IsInArray, but not the same
+	jr c, .map_list_1
 	ld a, [wCurMap]
 	ld hl, Pointer_fc653
-	call Func_1568
-	jr nc, .asm_fc641
-	ld a, [wSpriteStateData1 + $9]
+	call Pikachu_IsInArray
+	jr nc, .not_map_list_2
+	ld a, [wPlayerFacingDirection]
 	and a
-	jr nz, .asm_fc641
+	jr nz, .not_map_list_2
 	ld a, $3
-	jr .asm_fc647
+	jr .load
 
-.asm_fc62d
-	ld a, [wSpriteStateData1 + $9]
+.route_22_gate
+	ld a, [wPlayerFacingDirection]
 	and a
-	jr z, .asm_fc645
-	jr .asm_fc641
+	jr z, .rock_tunnel_1
+	jr .not_map_list_2
 
-.asm_fc635
+.mt_moon_2
 	ld a, $3
-	jr .asm_fc647
+	jr .load
 
-.asm_fc639
+.map_list_1
 	ld a, $4
-	jr .asm_fc647
+	jr .load
 
-.asm_fc63d
+.oaks_lab
 	ld a, $6
-	jr .asm_fc647
+	jr .load
 
-.asm_fc641
+.not_map_list_2
 	ld a, $1
-	jr .asm_fc647
+	jr .load
 
-.asm_fc645
+.rock_tunnel_1
 	ld a, $3
-.asm_fc647
-	ld [wd431], a
+.load
+	ld [wPikachuSpawnState], a
 	ret
 
 Pointer_fc64b:: ; fc64b (3f:464b)
-	db $c2, $4c, $4f, $ba, $be, $b8, $54, $ff
+	db VICTORY_ROAD_2
+	db ROUTE_7_GATE
+	db ROUTE_8_GATE
+	db ROUTE_16_GATE_1F
+	db ROUTE_18_GATE_1F
+	db ROUTE_15_GATE_1F
+	db ROUTE_11_GATE_1F
+	db $ff
 
 Pointer_fc653:: ; fc653 (3f:4653)
-	db $2f, $e6, $3e, $5e, $80, $31, $a4, $ff
+	db VIRIDIAN_FOREST_EXIT
+	db CERULEAN_HOUSE_2
+	db TRASHED_HOUSE
+	db VERMILION_DOCK
+	db CELADON_MANSION_1
+	db ROUTE_2_GATE
+	db FUCHSIA_HOUSE_3
+	db $ff
 
-Func_fc65b:: ; fc65b (3f:465b)
+CalculatePikachuSpawnState2:: ; fc65b (3f:465b)
 	ld a, [wCurMap]
 	cp VIRIDIAN_FOREST_EXIT
-	jr z, .asm_fc673
+	jr z, .viridian_forest_exit
 	cp VIRIDIAN_FOREST_ENTRANCE
-	jr z, .asm_fc67c
+	jr z, .viridian_forest_entrance
 	ld a, [wCurMap]
 	ld hl, Pointer_fc68e
-	call Func_1568
-	jr c, .asm_fc688
-	jr .asm_fc684
+	call Pikachu_IsInArray
+	jr c, .in_array
+	jr .not_in_array
 
-.asm_fc673
-	ld a, [wSpriteStateData1 + $9]
+.viridian_forest_exit
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
-	jr z, .asm_fc688
-	jr .asm_fc684
+	jr z, .in_array
+	jr .not_in_array
 
-.asm_fc67c
-	ld a, [wSpriteStateData1 + $9]
+.viridian_forest_entrance
+	ld a, [wPlayerFacingDirection]
 	and a ; SPRITE_FACING_DOWN
-	jr z, .asm_fc684
-	jr .asm_fc688
+	jr z, .not_in_array
+	jr .in_array
 
-.asm_fc684
+.not_in_array
 	ld a, $0
-	jr .asm_fc68a
+	jr .load_spawn_state
 
-.asm_fc688
+.in_array
 	ld a, $1
-.asm_fc68a
-	ld [wd431], a
+.load_spawn_state
+	ld [wPikachuSpawnState], a
 	ret
 
 Pointer_fc68e:: ; fc68e (3f:468e)
-	db $33, $dd, $df, $e0, $e1, $de, $ec, $7f, $a8, $a9, $aa, $ff
+	db VIRIDIAN_FOREST
+	db SAFARI_ZONE_REST_HOUSE_1
+	db SAFARI_ZONE_REST_HOUSE_2
+	db SAFARI_ZONE_REST_HOUSE_3
+	db SAFARI_ZONE_REST_HOUSE_4
+	db SAFARI_ZONE_SECRET_HOUSE
+	db SILPH_CO_ELEVATOR
+	db CELADON_MART_ELEVATOR
+	db CINNABAR_LAB_2
+	db CINNABAR_LAB_3
+	db CINNABAR_LAB_4
+	db $ff
 
-Func_fc69a:: ; fc69a (3f:469a)
+CalculatePikachuSpawnState3:: ; fc69a (3f:469a)
 	ld a, [wCurMap]
 	cp ROUTE_22_GATE
 	jr z, .asm_fc6a7
@@ -291,13 +315,13 @@ Func_fc69a:: ; fc69a (3f:469a)
 	jr .asm_fc6bd
 
 .asm_fc6a7
-	ld a, [wSpriteStateData1 + $9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	jr z, .asm_fc6b9
 	jr .asm_fc6bd
 
 .asm_fc6b0
-	ld a, [wSpriteStateData1 + $9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	jr z, .asm_fc6b9
 	jr .asm_fc6bd
@@ -311,7 +335,7 @@ Func_fc69a:: ; fc69a (3f:469a)
 	jr .asm_fc6c1
 
 .asm_fc6c1
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	ret
 
 Func_fc6c5:: ; fc6c5 (3f:46c5)
@@ -328,7 +352,7 @@ Func_fc6cd:: ; fc6cd (3f:46cd)
 	pop hl
 	ret
 
-Func_fc6d5:: ; fc6d5 (3f:46d5)
+SpawnPikachu_:: ; fc6d5 (3f:46d5)
 	call Func_fc6cd
 	call Func_fc727
 	ret nc
@@ -336,8 +360,8 @@ Func_fc6d5:: ; fc6d5 (3f:46d5)
 	call Func_fcd25
 	pop bc
 	ret c
-	ld bc, wSpriteStateData1 + $f0
-	ld hl, $1
+	ld bc, wPikachuPictureID
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	bit 7, [hl]
 	jp nz, asm_fc745
@@ -380,21 +404,21 @@ Func_fc726: ; fc726 (3f:4726)
 
 Func_fc727: ; fc727 (3f:4727)
 	call Func_fc4dd
-	jr nc, .asm_fc73b
-	ld a, [wSpriteStateData1 + $f1]
+	jr nc, .dont_spawn
+	ld a, [wPikachuMovementStatus]
 	and a
-	jr nz, .asm_fc739
+	jr nz, .already_spawned
 	push bc
 	push hl
 	call Func_fc534
 	pop hl
 	pop bc
-.asm_fc739
+.already_spawned
 	scf
 	ret
 
-.asm_fc73b
-	ld hl, wSpriteStateData1 + $f2
+.dont_spawn
+	ld hl, wPikachuSpriteImageIdx
 	ld [hl], $ff
 	dec hl
 	ld [hl], $0
@@ -402,22 +426,22 @@ Func_fc727: ; fc727 (3f:4727)
 	ret
 
 asm_fc745: ; fc745 (3f:4745)
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	res 7, [hl]
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 	call CheckPikachuFollowingPlayer
 	jr nz, .asm_fc75f
-	ld a, [wSpriteStateData1 + $9]
+	ld a, [wPlayerFacingDirection]
 	xor $4
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 .asm_fc75f
 	xor a
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
@@ -426,7 +450,7 @@ asm_fc745: ; fc745 (3f:4745)
 
 asm_fc76a: ; fc76a (3f:476a)
 	xor a
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
@@ -437,21 +461,21 @@ asm_fc76a: ; fc76a (3f:476a)
 	callab InitializeSpriteScreenPosition
 	pop bc
 .asm_fc783
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $1
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $0
-	call Func_fcba1
+	call RefreshPikachuFollow
 	ret
 
 Func_fc793: ; fc793 (3f:4793)
-	call Func_fcba1
+	call RefreshPikachuFollow
 	push bc
 	callab InitializeSpriteScreenPosition
 	pop bc
-	ld hl, $2
+	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	dec hl
@@ -472,12 +496,12 @@ Func_fc7aa: ; fc7aa (3f:47aa)
 	ld e, l
 	ld a, [de]
 	inc de
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 	ld a, [de]
 	inc de
-	ld hl, $5
+	ld hl, wSprite01XStepVector - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 	dec hl
@@ -486,7 +510,7 @@ Func_fc7aa: ; fc7aa (3f:47aa)
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 	cp $4
@@ -496,27 +520,27 @@ Func_fc7aa: ; fc7aa (3f:47aa)
 	jp Func_fc9b4
 
 Pointer_fc7e3: ; fc7e3 (3f:47e3)
-	db $0, $0
-	db $1, $3
-	db $4, $0
-	db $ff, $3
-	db $8, $ff
-	db $0, $3
-	db $c, $1
-	db $0, $3
-	db $0, $0
-	db $1, $4
-	db $4, $0
-	db $ff, $4
-	db $8, $ff
-	db $0, $4
-	db $c, $1
-	db $0, $4
+	db  0,  0
+	db  1,  3
+	db  4,  0
+	db -1,  3
+	db  8, -1
+	db  0,  3
+	db 12,  1
+	db  0,  3
+	db  0,  0
+	db  1,  4
+	db  4,  0
+	db -1,  4
+	db  8, -1
+	db  0,  4
+	db 12,  1
+	db  0,  4
 
 Func_fc803: ; fc803 (3f:4803)
 	call Func_fcae2
 	ret c
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	jr nz, .asm_fc823
@@ -528,12 +552,12 @@ Func_fc803: ; fc803 (3f:4803)
 	ld [hl], $20
 	call Random
 	and $c
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
 .asm_fc823
 	xor a
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
@@ -548,10 +572,10 @@ Func_fc82e: ; fc82e (3f:482e)
 	ret
 
 Func_fc835: ; fc835 (3f:4835)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $10
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
@@ -584,16 +608,16 @@ Func_fc862: ; fc862 (3f:4862)
 	add a
 	add a
 	and $c
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], a
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $6
 	xor a
 	ld [wd432], a
 	ld [wd433], a
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $11
 asm_fc87f: ; fc87f (3f:487f)
@@ -604,7 +628,7 @@ asm_fc87f: ; fc87f (3f:487f)
 	call Func_fc82e
 	jr c, Func_fc8c7
 	call Func_fc6c5
-	ld hl, $4
+	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub e
@@ -614,14 +638,14 @@ asm_fc87f: ; fc87f (3f:487f)
 	ld a, [hl]
 	sub d
 	ld d, a
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
 	add a
-	add $d6
+	add Pointer_fc8d6 % $100
 	ld l, a
-	ld a, $48
+	ld a, Pointer_fc8d6 / $100
 	adc $0
 	ld h, a
 	ld a, [hli]
@@ -632,20 +656,20 @@ asm_fc87f: ; fc87f (3f:487f)
 	ld [wd433], a
 	add d
 	ld d, a
-	ld hl, $4
+	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], e
 	inc hl
 	inc hl
 	ld [hl], d
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc8c7: ; fc8c7 (3f:48c7)
-	ld hl, $4
+	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub e
@@ -658,26 +682,36 @@ Func_fc8c7: ; fc8c7 (3f:48c7)
 	jp Func_fc835
 
 Pointer_fc8d6: ; fc8d6 (3f:48d6)
-	db $0, $0, $fe, $1, $fc
-	db $2, $fe, $3, $0, $4
-	db $fe, $3, $fc, $2, $fe
-	db $1, $0, $0, $fe, $ff
-	db $fc, $fe, $fe, $fd, $0
-	db $fc, $fe, $fd, $fc, $fe
-	db $fe, $ff, $00, $00
+	db  0,  0
+	db -2,  1
+	db -4,  2
+	db -2,  3
+	db  0,  4
+	db -2,  3
+	db -4,  2
+	db -2,  1
+	db  0,  0
+	db -2, -1
+	db -4, -2
+	db -2, -3
+	db  0, -4
+	db -2, -3
+	db -4, -2
+	db -2, -1
+	db  0,  0
 
 Func_fc8f8: ; fc8f8 (3f:48f8)
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $7
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $30
 asm_fc904: ; fc904 (3f:4904)
 	call Func_fc82e
 	jp c, Func_fc835
 	call Func_fc6c5
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -692,24 +726,24 @@ asm_fc904: ; fc904 (3f:4904)
 	ld [hl], a
 .asm_fc91f
 	call Func_fca99
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc92b: ; fc92b (3f:492b)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $20
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $8
 asm_fc937: ; fc937 (3f:4937)
 	call Func_fc82e
 	jp c, Func_fc835
 	call Func_fc6c5
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -723,24 +757,24 @@ asm_fc937: ; fc937 (3f:4937)
 	ld [hl], a
 .asm_fc951
 	call Func_fca99
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc95d: ; fc95d (3f:495d)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $20
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $9
 asm_fc969: ; fc969 (3f:4969)
 	call Func_fc82e
 	jp c, Func_fc835
 	call Func_fc6c5
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -749,14 +783,14 @@ asm_fc969: ; fc969 (3f:4969)
 	jr nz, .asm_fc988
 	xor a
 	ld [hl], a
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	call Func_fc994
 	ld [hl], a
 .asm_fc988
 	call Func_fca99
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
@@ -790,11 +824,12 @@ Pointer_fc9ac: ; fc9ac (3f:49ac)
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
 Pointer_fc9ac_End:
+
 Func_fc9b4: ; fc9b4 (3f:49b4)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $8
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $3
 	call Func_fca38
@@ -802,22 +837,22 @@ asm_fc9c3: ; fc9c3 (3f:49c3)
 	call Func_fca4b
 	call Func_fca7e
 	call Func_fca99
-	ld hl, $100
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call Func_fca75
 	call Func_fccb2
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 Func_fc9df: ; fc9df (3f:49df)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $4
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $5
 	call Func_fca38
@@ -825,22 +860,22 @@ asm_fc9ee: ; fc9ee (3f:49ee)
 	call asm_fca59
 	call Func_fca7e
 	call Func_fca99
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call Func_fca75
 	call Func_fccb2
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 Func_fca0a: ; fca0a (3f:4a0a)
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $8
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $4
 	call Func_fca38
@@ -849,25 +884,25 @@ asm_fca1c: ; fca1c (3f:4a1c)
 	call asm_fca59
 	call Func_fca7e
 	call Func_fca99
-	ld hl, wSpriteStateData2 - wSpriteStateData1
+	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call Func_fca75
 	call Func_fccb2
-	ld hl, $1
+	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 Func_fca38: ; fca38 (3f:4a38)
-	ld hl, $3
+	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
 	add hl, bc
 	ld e, [hl]
 	inc hl
 	inc hl
 	ld d, [hl]
-	ld hl, $104
+	ld hl, wSprite01MapY - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	add e
@@ -885,7 +920,7 @@ Func_fca4b: ; fca4b (3f:4a4b)
 	bit 6, a
 	jr nz, Func_fca68
 asm_fca59: ; fca59 (3f:4a59)
-	ld hl, $3
+	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hli]
 	add a
@@ -900,7 +935,7 @@ asm_fca59: ; fca59 (3f:4a59)
 	ret
 
 Func_fca68: ; fca68 (3f:4a68)
-	ld hl, $3
+	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hli]
 	add a
@@ -913,7 +948,7 @@ Func_fca68: ; fca68 (3f:4a68)
 	ret
 
 Func_fca75: ; fca75 (3f:4a75)
-	ld hl, $3
+	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
 	add hl, bc
 	xor a
 	ld [hli], a
@@ -927,7 +962,7 @@ Func_fca7e: ; fca7e (3f:4a7e)
 	jr nc, .asm_fca87
 	ld d, $5
 .asm_fca87
-	ld hl, $7
+	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -947,7 +982,7 @@ Func_fca99: ; fca99 (3f:4a99)
 	ld a, [wPikachuOverworldStateFlags]
 	bit 3, a
 	jr nz, .asm_fcad1
-	ld hl, $10e
+	ld hl, wSprite01SpriteImageBaseOffset - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
@@ -956,7 +991,7 @@ Func_fca99: ; fca99 (3f:4a99)
 	ld a, [wd736]
 	bit 7, a
 	jr nz, .asm_fcad8
-	ld hl, $9
+	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	or d
@@ -969,32 +1004,32 @@ Func_fca99: ; fca99 (3f:4a99)
 	jr .asm_fcacb
 
 .asm_fcac4
-	ld hl, $8
+	ld hl, wSprite01AnimFrameCounter - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, d
 	or [hl]
 	ld d, a
 .asm_fcacb
-	ld hl, $2
+	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], d
 	ret
 
 .asm_fcad1
-	ld hl, $2
+	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	ret
 
 .asm_fcad8
-	ld a, [wSpriteStateData1 + $2]
+	ld a, [wPlayerSpriteImageIdx]
 	and $f
 	or d
-	ld [wSpriteStateData1 + $f2], a
+	ld [wPikachuSpriteImageIdx], a
 	ret
 
 Func_fcae2: ; fcae2 (3f:4ae2)
-	ld hl, $104
+	ld hl, wSprite01MapY - wSprite01SpriteStateData1
 	add hl, bc
 	ld a, [wYCoord]
 	add $4
@@ -1005,7 +1040,7 @@ Func_fcae2: ; fcae2 (3f:4ae2)
 	add $4
 	cp [hl]
 	jr nz, .asm_fcaff
-	ld hl, $2
+	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	scf
@@ -1015,58 +1050,58 @@ Func_fcae2: ; fcae2 (3f:4ae2)
 	and a
 	ret
 
-Func_fcb01: ; fcb01 (3f:4b01)
+IsPikachuRightNextToPlayer: ; fcb01 (3f:4b01)
 	push bc
 	push de
 	push hl
-	ld bc, wSpriteStateData1 + $f0
+	ld bc, wPikachuPictureID
 	ld a, [wXCoord]
 	add $4
 	ld d, a
 	ld a, [wYCoord]
 	add $4
 	ld e, a
-	ld hl, $104
+	ld hl, wPlayerMapY - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub e
 	and a
-	jr z, .asm_fcb30
+	jr z, .equal
 	cp $ff
-	jr z, .asm_fcb26
+	jr z, .one_away
 	cp $1
-	jr z, .asm_fcb26
-	jr .asm_fcb48
+	jr z, .one_away
+	jr .bad
 
-.asm_fcb26
-	ld hl, $105
+.one_away
+	ld hl, wPlayerMapX - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub d
-	jr z, .asm_fcb43
-	jr .asm_fcb48
+	jr z, .good
+	jr .bad
 
-.asm_fcb30
-	ld hl, $105
+.equal
+	ld hl, wPlayerMapX - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub d
 	cp $ff
-	jr z, .asm_fcb43
+	jr z, .good
 	cp $1
-	jr z, .asm_fcb43
+	jr z, .good
 	and a
-	jr z, .asm_fcb43
-	jr .asm_fcb48
+	jr z, .good
+	jr .bad
 
-.asm_fcb43
+.good
 	pop hl
 	pop de
 	pop bc
 	scf
 	ret
 
-.asm_fcb48
+.bad
 	pop hl
 	pop de
 	pop bc
@@ -1079,14 +1114,14 @@ GetPikachuFacingDirectionAndReturnToE: ; fcb4d (3f:4b4d)
 	ret
 
 GetPikachuFacingDirection: ; fcb52 (3f:4b52)
-	ld bc, wSpriteStateData1 + $f0
+	ld bc, wPikachuPictureID
 	ld a, [wXCoord]
 	add $4
 	ld d, a
 	ld a, [wYCoord]
 	add $4
 	ld e, a
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
+	ld hl, wPlayerMapY - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	cp e
@@ -1100,7 +1135,7 @@ GetPikachuFacingDirection: ; fcb52 (3f:4b52)
 	ret
 
 .asm_fcb71
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 5
+	ld hl, wPlayerMapX - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	cp d
@@ -1138,7 +1173,7 @@ AppendPikachuFollowCommandToBuffer: ; fcb94 (3f:4b94)
 	ld [hl], a
 	ret
 
-Func_fcba1: ; fcba1 (3f:4ba1)
+RefreshPikachuFollow: ; fcba1 (3f:4ba1)
 	call ClearPikachuFollowCommandBuffer
 	call GetPikachuFollowCommand
 	ret c
@@ -1146,8 +1181,8 @@ Func_fcba1: ; fcba1 (3f:4ba1)
 	ret
 
 GetPikachuFollowCommand: ; fcbac (3f:4bac)
-	ld bc, wSpriteStateData1 + $f0
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
+	ld bc, wPikachuPictureID
+	ld hl, wPlayerMapY - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [wYCoord]
 	add $4
@@ -1178,7 +1213,7 @@ GetPikachuFollowCommand: ; fcbac (3f:4bac)
 	ret
 
 .checkXCoord
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 5
+	ld hl, wPlayerMapX - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [wXCoord]
 	add $4
@@ -1369,7 +1404,7 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	ld a, [wXCoord]
 	add $4
 	ld e, a
-	ld a, [wSpriteStateData2 + $f4]
+	ld a, [wPikachuMapY]
 	cp d
 	jr z, .asm_fccd9
 	ld a, SPRITE_FACING_DOWN
@@ -1378,7 +1413,7 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	jr .asm_fccea
 
 .asm_fccd9
-	ld a, [wSpriteStateData2 + $f5]
+	ld a, [wPikachuMapX]
 	cp e
 	jr z, .asm_fcce7
 	ld a, SPRITE_FACING_RIGHT
@@ -1387,9 +1422,9 @@ Func_fccb2:: ; fccb2 (3f:4cb2)
 	jr .asm_fccea
 
 .asm_fcce7
-	ld a, [wSpriteStateData1 + $9]
+	ld a, [wPlayerFacingDirection]
 .asm_fccea
-	ld [wSpriteStateData1 + $f9], a
+	ld [wPikachuFacingDirection], a
 	ret
 
 Func_fccee: ; fccee (3f:4cee)
@@ -1799,6 +1834,8 @@ IsSurfingPikachuInThePlayersParty:: ; fceab (3f:4eab)
 	and a
 	ret
 
+INCLUDE "engine/pikachu_emotions.asm"
+INCLUDE "engine/pikachu_movement.asm"
 INCLUDE "engine/pikachu_pic_animation.asm"
 
 Func_fe66e:

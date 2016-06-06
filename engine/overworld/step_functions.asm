@@ -2,7 +2,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld a, [wd730]
 	add a
 	jp c, .noBlackOut ; no black out if joypad states are being simulated
-	ld a, [wPreventBlackout]
+	ld a, [wd492]
 	bit 7, a
 	jp nz, .noBlackOut
 	ld a, [wd72e]

@@ -26,7 +26,7 @@ SafariZoneEntranceScriptPointers: ; 751d9 (1d:51d9)
 	xor a
 	ld [hJoyHeld], a
 	ld a, SPRITE_FACING_RIGHT
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, [wCoordIndex]
 	cp $1
 	jr z, .asm_7520f
@@ -160,7 +160,7 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	ld hl, .SafariZoneEntranceText_753bb
 	call PrintText
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, D_DOWN
 	ld c, $3
 	call SafariZoneEntranceAutoWalk
@@ -172,7 +172,7 @@ SafariZoneEntranceTextPointers: ; 752b9 (1d:52b9)
 	ld hl, .SafariZoneEntranceText_753c0
 	call PrintText
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, D_UP
 	ld c, $1
 	call SafariZoneEntranceAutoWalk

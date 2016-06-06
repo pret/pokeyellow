@@ -1,5 +1,5 @@
 PewterPokecenterScript: ; 5c587 (17:4587)
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 7, [hl]
 	call Serial_TryEstablishingExternallyClockedConnection
 	call EnableAutoTextBoxDrawing

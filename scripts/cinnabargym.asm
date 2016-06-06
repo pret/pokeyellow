@@ -112,7 +112,7 @@ CinnabarGymScript_74fa3:
 	ld a, b
 	cp e
 	ret nz
-	call Func_159b
+	call ApplyPikachuMovementData
 	ret
 
 CinnabarGymScript1: ; 757dc (1d:57dc)

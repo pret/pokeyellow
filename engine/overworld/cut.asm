@@ -188,7 +188,7 @@ ReplaceTreeTileBlock: ; ef1f (3:6f1f)
 	ld h, [hl]
 	ld l, a
 	add hl, bc
-	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	ld a, [wPlayerFacingDirection] ; player sprite's facing direction
 	and a
 	jr z, .down
 	cp SPRITE_FACING_UP

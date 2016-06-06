@@ -218,7 +218,7 @@ DayCareMText1: ; 56254 (15:6254)
 
 .withdrewPikachuFromDayCare
 	ld a, $6
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 
 	; GameFreak... TriHard
 	ld hl, Func_fc4fa

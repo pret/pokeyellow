@@ -85,7 +85,7 @@ Func_f80a8:
 	ret
 
 Func_f80ac:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 1, [hl]
 	ret z
 	ld a, [hJoyPressed]

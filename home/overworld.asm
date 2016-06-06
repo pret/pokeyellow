@@ -70,6 +70,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	jr z, .notSimulating
 	ld a, [hJoyHeld]
 	jr .checkIfStartIsPressed
+
 .notSimulating
 	ld a, [hJoyPressed]
 .checkIfStartIsPressed
@@ -79,6 +80,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	xor a
 	ld [hSpriteIndexOrTextID], a ; start menu text ID
 	jp .displayDialogue
+
 .startButtonNotPressed
 	bit 0, a ; A button
 	jp z, .checkIfDownButtonIsPressed
@@ -116,6 +118,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	xor a
 	ld [wLinkTimeoutCounter], a
 	jp EnterMap
+
 ;	predef LoadSAV
 ;	ld a, [wCurMap]
 ;	ld [wDestinationMap], a
@@ -129,6 +132,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	and a
 	jp nz, .newBattle
 	jp OverworldLoop
+
 .noDirectionButtonsPressed
 	call UpdateSprites ; 231c
 	ld hl, wFlags_0xcd60
@@ -146,6 +150,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld [wPlayerMovingDirection], a ; zero the direction
 .overworldloop
 	jp OverworldLoop
+
 .checkIfDownButtonIsPressed
 	ld a, [hJoyHeld] ; current joypad state
 	bit 7, a ; down button
@@ -154,6 +159,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld [wSpriteStateData1 + 3], a ; delta Y
 	ld a, PLAYER_DIR_DOWN
 	jr .handleDirectionButtonPress
+
 .checkIfUpButtonIsPressed
 	bit 6, a ; up button
 	jr z, .checkIfLeftButtonIsPressed
@@ -161,6 +167,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld [wSpriteStateData1 + 3], a ; delta Y
 	ld a, PLAYER_DIR_UP
 	jr .handleDirectionButtonPress
+
 .checkIfLeftButtonIsPressed
 	bit 5, a ; left button
 	jr z, .checkIfRightButtonIsPressed
@@ -168,6 +175,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld [wSpriteStateData1 + 5], a ; delta X
 	ld a, PLAYER_DIR_LEFT
 	jr .handleDirectionButtonPress
+
 .checkIfRightButtonIsPressed
 	bit 4, a ; right button
 	jr z, .noDirectionButtonsPressed
@@ -199,6 +207,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	call NewBattle
 	jp c, .battleOccurred
 	jp OverworldLoop
+
 .noDirectionChange
 	ld a, [wPlayerDirection] ; current direction
 	ld [wPlayerMovingDirection], a ; save direction
@@ -221,6 +230,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	pop hl
 	jp c, CheckWarpsCollision
 	jp OverworldLoop
+
 .surfing
 	call CollisionCheckOnWater
 	jp c, OverworldLoop
@@ -229,6 +239,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld [wWalkCounter], a
 	callab Func_fcc08
 	jr .moveAhead2
+
 .moveAhead
 	call IsSpinning
 	call UpdateSprites ; move sprites
@@ -402,6 +413,7 @@ CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
 	and D_DOWN | D_UP | D_LEFT | D_RIGHT
 	jr z, CheckWarpsNoCollisionRetry2 ; if directional buttons aren't being pressed, do not pass through the warp
 	jr WarpFound1
+
 	
 CheckWarpsNoCollisionRetry1:: ; 050f (0:050f)
 	inc hl
@@ -413,6 +425,7 @@ ContinueCheckWarpsNoCollisionLoop:: ; 0512 (0:0512)
 	dec c ; decrement number of warps
 	jp nz, CheckWarpsNoCollisionLoop
 	jp CheckMapConnections
+
 	
 ; check if the player has stepped onto a warp after having collided
 CheckWarpsCollision:: ; 051a (0:051a)
@@ -435,6 +448,7 @@ CheckWarpsCollision:: ; 051a (0:051a)
 	ld a, [hl]
 	ld [hWarpDestinationMap], a
 	jr WarpFound2
+
 .retry1
 	inc hl
 .retry2
@@ -471,10 +485,12 @@ WarpFound2:: ; 054a (0:054a)
 	ld [wMapPalOffset], a
 	call GBFadeOutToBlack
 .notRockTunnel
-	callab Func_fc5fa ; 3f:45fa
+	callab CalculatePikachuSpawnState1 ; 3f:45fa
 	call PlayMapChangeSound
 	jr .done
-; for maps that can have the 0xFF destination map, which means to return to the outside map; not all these maps are necessarily indoors, though
+
+; for maps that can have the 0xFF destination map, which means to return to the outside map
+; not all these maps are necessarily indoors, though
 .indoorMaps
 	ld a, [hWarpDestinationMap] ; destination map
 	cp $ff
@@ -490,16 +506,18 @@ WarpFound2:: ; 054a (0:054a)
 	ld hl, wd732
 	set 3, [hl]
 	jr .skipMapChangeSound
+
 .notWarpPad
 	call PlayMapChangeSound
 .skipMapChangeSound
 	ld hl, wd736
 	res 0, [hl]
 	res 1, [hl]
-	callab Func_fc65b ; 3f:465b
+	callab CalculatePikachuSpawnState2 ; 3f:465b
 	jr .done
+
 .goBackOutside
-	callab Func_fc69a ; 3f:469a
+	callab CalculatePikachuSpawnState3 ; 3f:469a
 	ld a, [wLastMap]
 	ld [wCurMap], a
 	call PlayMapChangeSound
@@ -548,6 +566,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 	jp .loadNewMap
+
 .checkEastMap
 	ld b, a
 	ld a, [wCurrentMapWidth2] ; map width
@@ -584,6 +603,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 	jp .loadNewMap
+
 .checkNorthMap
 	ld a, [wYCoord]
 	cp $ff
@@ -610,6 +630,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 	jp .loadNewMap
+
 .checkSouthMap
 	ld b, a
 	ld a, [wCurrentMapHeight2]
@@ -641,7 +662,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld hl, wPikachuOverworldStateFlags
 	set 4, [hl]
 	ld a, $2
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	call LoadMapHeader ; 0dab (0:0dab)
 	call PlayDefaultMusicFadeOutCurrent ; music
 	ld b, SET_PAL_OVERWORLD
@@ -651,6 +672,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	call InitMapSprites
 	call LoadTileBlockMap
 	jp OverworldLoopLessDelay
+
 .didNotEnterConnectedMap
 	jp OverworldLoop
 
@@ -666,6 +688,7 @@ PlayMapChangeSound:: ; 06ef (0:06ef)
 	jr nz, .didNotGoThroughDoor
 	ld a, $ad ; SFX_GO_INSIDE
 	jr .playSound
+
 .didNotGoThroughDoor
 	ld a, $b5 ; SFX_GO_OUTSIDE
 .playSound
@@ -713,6 +736,7 @@ ExtraWarpCheck:: ; 071a (0:071a)
 .useFunction1
 	ld hl, IsPlayerFacingEdgeOfMap
 	jr .doBankswitch
+
 .useFunction2
 	ld hl, IsWarpTileInFrontOfPlayer
 .doBankswitch
@@ -779,6 +803,7 @@ Func_07c4:: ; 07c4 (0:07c4)
 	ret z
 	call PlayDefaultMusic
 	ret
+
 	
 LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 ; Load sprite graphics based on whether the player is standing, biking, or surfing.
@@ -1073,7 +1098,7 @@ IsSpriteInFrontOfPlayer:: ; 0983 (0:0983)
 	ld d, $10 ; talking range in pixels (normal range)
 IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	lb bc, $3c, $40 ; Y and X position of player sprite
-	ld a, [wSpriteStateData1 + 9] ; direction the player is facing
+	ld a, [wPlayerFacingDirection] ; direction the player is facing
 .checkIfPlayerFacingUp
 	cp SPRITE_FACING_UP
 	jr nz, .checkIfPlayerFacingDown
@@ -1083,6 +1108,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	ld b, a
 	ld a, PLAYER_DIR_UP
 	jr .doneCheckingDirection
+
 .checkIfPlayerFacingDown
 	cp SPRITE_FACING_DOWN
 	jr nz, .checkIfPlayerFacingRight
@@ -1092,6 +1118,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	ld b, a
 	ld a, PLAYER_DIR_DOWN
 	jr .doneCheckingDirection
+
 .checkIfPlayerFacingRight
 	cp SPRITE_FACING_RIGHT
 	jr nz, .playerFacingLeft
@@ -1101,6 +1128,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	ld c, a
 	ld a, PLAYER_DIR_RIGHT
 	jr .doneCheckingDirection
+
 .playerFacingLeft
 ; facing left
 	ld a, c
@@ -1140,6 +1168,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	jr nz, .spriteLoop
 	xor a
 	ret
+
 .foundSpriteInFrontOfPlayer
 	pop hl
 	ld a, l
@@ -1157,6 +1186,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 .dontwritetowd436
 	scf
 	ret
+
 	
 SignLoop:: ; 09f2 (0:09f2)
 ; search if a player is facing a sign
@@ -1171,6 +1201,7 @@ SignLoop:: ; 09f2 (0:09f2)
 	jr z, .yCoordMatched
 	inc hl
 	jr .retry
+
 .yCoordMatched
 	ld a, [hli] ; sign X
 	cp e
@@ -1189,6 +1220,7 @@ SignLoop:: ; 09f2 (0:09f2)
 	pop hl
 	scf
 	ret
+
 .retry
 	dec b
 	jr nz, .signLoop
@@ -1248,6 +1280,7 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 .setCarry
 	scf
 	ret
+
 .noCollision
 	and a
 	ret
@@ -1300,6 +1333,7 @@ CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 .retry
 	inc hl
 	jr .tilePairCollisionLoop
+
 .tilesetMatches
 	ld a, [wTilePlayerStandingOn] ; tile the player is on
 	ld b, a
@@ -1311,12 +1345,14 @@ CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 	cp b
 	jr z, .currentTileMatchesSecondInPair
 	jr .retry
+
 .currentTileMatchesFirstInPair
 	inc hl
 	ld a, [hl]
 	cp c
 	jr z, .foundMatch
 	jr .tilePairCollisionLoop
+
 .currentTileMatchesSecondInPair
 	dec hl
 	ld a, [hli]
@@ -1326,6 +1362,7 @@ CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 .foundMatch
 	scf
 	ret
+
 .noMatch
 	and a
 	ret
@@ -1480,6 +1517,7 @@ CopyToRedrawRowOrColumnSrcTiles:: ; 0baa (0:0baa)
 	dec c
 	jr nz, .loop
 	ret
+
 	
 ScheduleSouthRowRedraw:: ; 0bb6 (0:0bb6)
 	coord hl, 0, 16
@@ -1601,6 +1639,7 @@ JoypadOverworld:: ; 0c51 (0:0c51)
 	call ForceBikeDown
 	call AreInputsSimulated
 	ret
+
 	
 ForceBikeDown:: ; 0c65 (0:0c65)
 	ld a, [wFlags_D733]
@@ -1615,6 +1654,7 @@ ForceBikeDown:: ; 0c65 (0:0c65)
 	ld a, D_DOWN
 	ld [hJoyHeld], a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
+
 	
 AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld a, [wd730]
@@ -1634,6 +1674,7 @@ AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld [hJoyPressed], a
 	ld [hJoyReleased], a
 	ret
+
 	
 ; if done simulating button presses
 .doneSimulating
@@ -1650,6 +1691,7 @@ AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld hl, wd730
 	res 7, [hl]
 	ret
+
 	
 GetSimulatedInput:: ; 0cb3 (0:0cb3)
 	ld hl, wSimulatedJoypadStatesIndex
@@ -1666,6 +1708,7 @@ GetSimulatedInput:: ; 0cb3 (0:0cb3)
 	pop de
 	scf
 	ret
+
 .endofsimulatedinputs
 	and a
 	ret
@@ -1708,6 +1751,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 .setCarry
 	scf
 	jr .done
+
 .checkIfVermilionDockTileset
 	ld a, [wCurMapTileset] ; tileset
 	cp SHIP_PORT ; Vermilion Dock tileset
@@ -1715,7 +1759,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 .stopSurfing ; based game freak
 	ld a, $3
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	ld hl, wPikachuOverworldStateFlags
 	set 5, [hl]
 	xor a
@@ -1723,6 +1767,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	call LoadPlayerSpriteGraphics
 	call PlayDefaultMusic
 	jr .noCollision
+
 .noCollision ; ...and they do the same mistake twice
 	and a
 .done 
@@ -1762,6 +1807,7 @@ LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
 	ld b, BANK(RedSprite)
 	ld de, RedSprite ; $4180
 	jr LoadPlayerSpriteGraphicsCommon
+
 	
 LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld a, [wd473]
@@ -1779,6 +1825,7 @@ LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld b, BANK(SurfingPikachuSprite)
 	ld de, SurfingPikachuSprite ; 3f:6def
 	jr LoadPlayerSpriteGraphicsCommon
+
 	
 LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)
 	ld b, BANK(RedSprite) ; not sure, but probably same bank (5)
@@ -1970,6 +2017,7 @@ CopySignData:: ; 0eb3 (0:0eb3)
 	dec a
 	jr nz, .signcopyloop
 	ret
+
 	
 ; function to load map data
 LoadMapData:: ; 1241 (0:1241)
@@ -2217,6 +2265,7 @@ ZeroSpriteStateData:: ; 1050 (0:1050)
 	dec b
 	jr nz, .loop
 	ret
+
 	
 DisableRegularSprites:: ; 1060 (0:1060)
 ; initialize all C100-C1FF sprite entries to disabled (other than player's and pikachu)
@@ -2229,6 +2278,7 @@ DisableRegularSprites:: ; 1060 (0:1060)
 	dec c
 	jr nz, .loop
 	ret
+
 	
 LoadSprite:: ; 106f (0:106f)
 	push hl
@@ -2259,6 +2309,7 @@ LoadSprite:: ; 106f (0:106f)
 	ld [hl], a
 	pop hl
 	ret
+
 	
 .trainerSprite
 	ld a, [hli]
@@ -2274,6 +2325,7 @@ LoadSprite:: ; 106f (0:106f)
 	ld [hl], a ; store trainer number in byte 1 of the entry
 	pop hl
 	ret
+
 	
 .itemBallSprite
 	ld a, [hli]

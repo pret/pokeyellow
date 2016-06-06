@@ -20,26 +20,26 @@ _InitMapSprites: ; 1401b (5:401b)
 ; Loads sprite set for outside maps (cities and routes) and sets VRAM slots.
 ; sets carry if the map is a city or route, unsets carry if not
 InitOutsideMapSprites: ; 14029 (5:4029)
-	ld a,[wCurMap]
-	cp a,REDS_HOUSE_1F ; is the map a city or a route (map ID less than $25)?
+	ld a, [wCurMap]
+	cp a, REDS_HOUSE_1F ; is the map a city or a route (map ID less than $25)?
 	ret nc ; if not, return
 	call GetSplitMapSpriteSetID
 ; if so, choose the appropriate one
-	ld b,a ; b = spriteSetID
-	ld a,[wFontLoaded]
-	bit 0,a ; reloading upper half of tile patterns after displaying text?
-	jr nz,.loadSpriteSet ; if so, forcibly reload the sprite set
-	ld a,[wSpriteSetID]
+	ld b, a ; b = spriteSetID
+	ld a, [wFontLoaded]
+	bit 0, a ; reloading upper half of tile patterns after displaying text?
+	jr nz, .loadSpriteSet ; if so, forcibly reload the sprite set
+	ld a, [wSpriteSetID]
 	cp b ; has the sprite set ID changed?
-	jr z,.skipLoadingSpriteSet ; if not, don't load it again
+	jr z, .skipLoadingSpriteSet ; if not, don't load it again
 .loadSpriteSet
-	ld a,b
-	ld [wSpriteSetID],a
+	ld a, b
+	ld [wSpriteSetID], a
 	dec a
-	ld c,a
-	ld b,0
+	ld c, a
+	ld b, 0
 	ld a, (wSpriteSetID - wSpriteSet)
-	ld hl,SpriteSets
+	ld hl, SpriteSets
 	call AddNTimes ; get sprite set offset
 	ld de, wSpriteSet
 	ld bc, (wSpriteSetID - wSpriteSet)
@@ -64,8 +64,8 @@ LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 	call FillMemory
 	ld a, SPRITE_PIKACHU ; load Pikachu separately
 	ld [wSpriteSet], a
-	ld hl,wSpriteStateData1 + $10
-	ld a,$0e
+	ld hl, wSprite01SpriteStateData1
+	ld a, 14
 .storeVRAMSlotsLoop
 	push af
 	ld a, [hl] ; $C1X0 (picture ID) (zero if sprite slot is not used)
@@ -79,13 +79,14 @@ LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 	ld b, 2
 	call CheckIfPictureIDAlreadyLoaded
 	jr .continue
+
 .isFourTileSprite
 ; loop through the space reserved for regular picture IDs 
 	ld de, wSpriteSet
 	ld b, 9
 	call CheckIfPictureIDAlreadyLoaded
 .continue
-	ld de, $10
+	ld de, wSprite02SpriteStateData1 - wSprite01SpriteStateData1
 	add hl, de
 	pop af
 	dec a
@@ -96,6 +97,7 @@ CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
 ; Check if the current picture ID has already had its tile patterns loaded.
 ; This done by looping through the previous sprite slots and seeing if any of
 ; their picture ID's match that of the current sprite slot.
+.loop
 	ld a, [de]
 	and a ; is sprite set slot not taken up yet?
 	jr z, .spriteSlotNotTaken ; if so, load it as it signifies we've reached 
@@ -106,7 +108,8 @@ CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
 	dec b ; have we reached the end of the sprite set?
 	jr z, .spriteNotAlreadyLoaded ; if so, we're done here
 	inc de
-	jr CheckIfPictureIDAlreadyLoaded
+	jr .loop
+
 .spriteSlotNotTaken
 	ld a, c
 	ld [de], a
@@ -127,6 +130,7 @@ CheckForFourTileSprite: ; 140ac (5:40ac)
 ; regular sprite
 	and a
 	ret
+
 .notYellowSprite
 	scf 
 	ret
@@ -140,6 +144,7 @@ LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
 	call LoadStillTilePattern
 	call LoadWalkingTilePattern
 	jr .continue
+
 .fourTileSprite
 	call LoadStillTilePattern
 .continue
@@ -202,7 +207,7 @@ GetSpriteVRAMAddress: ; 14018 (5:4108)
 SpriteVRAMAddresses: ; 14118 (5:4118)
 ; Equivalent to multiplying $C0 (number of bytes in 12 tiles) times the VRAM
 ; slot and adding the result to $8000 (the VRAM base address).
-	dw vChars0 + $c0
+	dw vChars0 + $0c0
 	dw vChars0 + $180
 	dw vChars0 + $240
 	dw vChars0 + $300
@@ -211,8 +216,8 @@ SpriteVRAMAddresses: ; 14118 (5:4118)
 	dw vChars0 + $540
 	dw vChars0 + $600
 	dw vChars0 + $6c0
-	dw vChars0 + $780
-	dw vChars0 + $7c0
+	dw vChars0 + $780 ; 4-tile sprites
+	dw vChars0 + $7c0 ; 4-tile sprites
 	
 ReadSpriteSheetData: ; 1412e (5:412e)
 	ld a, [hVRAMSlot]
@@ -246,12 +251,12 @@ ReadSpriteSheetData: ; 1412e (5:412e)
 	
 Func_14150: ; 14150 (5:4150)
 	ld a, $1
-	ld [wSpriteStateData2 + $e], a ; vram slot for player
+	ld [wPlayerSpriteImageBaseOffset], a ; vram slot for player
 	ld a, $2
-	ld [wSpriteStateData2 + $fe], a ; vram slot for Pikachu
+	ld [wPikachuSpriteImageBaseOffset], a ; vram slot for Pikachu
 	
 	ld a, $e
-	ld hl, wSpriteStateData1 + $10
+	ld hl, wSprite01SpriteStateData1
 .loop
 	ld [hVRAMSlot], a ; store current sprite set slot as a counter
 	ld a, [hl] ; $c1x0 (picture ID)
@@ -259,12 +264,12 @@ Func_14150: ; 14150 (5:4150)
 	jr z, .spriteUnused
 	call Func_14179
 	push hl
-	ld de, (wSpriteStateData2 + $e) - (wSpriteStateData1) ; $10e
+	ld de, (wPlayerSpriteImageBaseOffset) - (wSpriteStateData1) ; $10e
 	add hl, de ; get $c2xe (sprite image base offset)
 	ld [hl], a ; write offset
 	pop hl
 .spriteUnused
-	ld de, $10
+	ld de, wSprite02SpriteStateData1 - wSprite01SpriteStateData1
 	add hl, de
 	ld a, [hVRAMSlot]
 	dec a
@@ -297,67 +302,68 @@ Func_14179: ; 14179 (5:4179)
 GetSplitMapSpriteSetID: ; 14193 (5:4193)
 	ld e, a
 	ld d, 0
-	ld hl,MapSpriteSets
+	ld hl, MapSpriteSets
 	add hl, de
-	ld a,[hl] ; a = spriteSetID
-	cp a,$f0 ; does the map have 2 sprite sets?
+	ld a, [hl] ; a = spriteSetID
+	cp a, $f0 ; does the map have 2 sprite sets?
 	ret c
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.
-	cp a,$f8
-	jr z,.route20
-	ld hl,SplitMapSpriteSets
-	and a,$0f
+	cp a, $f8
+	jr z, .route20
+	ld hl, SplitMapSpriteSets
+	and a, $0f
 	dec a
 	add a
 	add a
 	add l
-	ld l,a
-	jr nc,.noCarry
+	ld l, a
+	jr nc, .noCarry
 	inc h
 .noCarry
-	ld a,[hli] ; determines whether the map is split East/West or North/South
-	cp a,$01
-	ld a,[hli] ; position of dividing line
-	ld b,a
-	jr z,.eastWestDivide
+	ld a, [hli] ; determines whether the map is split East/West or North/South
+	cp a, $01
+	ld a, [hli] ; position of dividing line
+	ld b, a
+	jr z, .eastWestDivide
 .northSouthDivide
-	ld a,[wYCoord]
+	ld a, [wYCoord]
 	jr .compareCoord
+
 .eastWestDivide
-	ld a,[wXCoord]
+	ld a, [wXCoord]
 .compareCoord
 	cp b
-	jr c,.loadSpriteSetID
+	jr c, .loadSpriteSetID
 ; if in the East side or South side
 	inc hl
 .loadSpriteSetID
-	ld a,[hl]
+	ld a, [hl]
 	ret
 ; Uses sprite set $01 for West side and $0A for East side.
 ; Route 20 is a special case because the two map sections have a more complex
 ; shape instead of the map simply being split horizontally or vertically.
 .route20
-	ld hl,wXCoord
-	ld a,[hl]
-	cp a,$2b
-	ld a,$01
+	ld hl, wXCoord
+	ld a, [hl]
+	cp a, $2b
+	ld a, $01
 	ret c
-	ld a,[hl]
-	cp a,$3e
-	ld a,$0a
+	ld a, [hl]
+	cp a, $3e
+	ld a, $0a
 	ret nc
-	ld a,[hl]
-	cp a,$37
-	ld b,$08
-	jr nc,.next
-	ld b,$0d
+	ld a, [hl]
+	cp a, $37
+	ld b, $08
+	jr nc, .next
+	ld b, $0d
 .next
-	ld a,[wYCoord]
+	ld a, [wYCoord]
 	cp b
-	ld a,$0a
+	ld a, $0a
 	ret c
-	ld a,$01
+	ld a, $01
 	ret
 
 INCLUDE "data/sprite_sets.asm"

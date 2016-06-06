@@ -4,13 +4,13 @@ Func_f1be0:
 	jr z, .asm_f1bf0
 	ld b, SPRITE_FACING_DOWN
 	ld hl, Data_f1bf9
-	call Func_f0a82
+	call TryApplyPikachuMovementData
 	ret
 
 .asm_f1bf0
 	ld b, SPRITE_FACING_LEFT
 	ld hl, Data_f1bfe
-	call Func_f0a82
+	call TryApplyPikachuMovementData
 	ret
 
 Data_f1bf9:

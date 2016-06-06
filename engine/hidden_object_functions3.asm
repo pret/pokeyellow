@@ -1,6 +1,6 @@
 ; prints text for bookshelves in buildings without sign events
 PrintBookshelfText: ; f9de (3:79de)
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	jr nz, .noMatch
 ; facing up

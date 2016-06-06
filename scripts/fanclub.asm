@@ -10,18 +10,18 @@ FanClubScriptPointers:
 	dw FanClubScript2
 
 FanClubScript1:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	call z, FanClubScript_59a44
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 7, [hl]
 	ret
 
 FanClubScript2:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	call z, FanClubScript_59a39
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 7, [hl]
 	ret
 
@@ -50,7 +50,7 @@ FanClubScript_59a44:
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ld hl, PikachuMovementScript_59a8c
-	call Func_159b
+	call ApplyPikachuMovementData
 	ld a, $2
 	ld [wSpriteStateData1 + 3 * $10 + 1], a ; Seel
 	xor a ; SPRITE_FACING_DOWN

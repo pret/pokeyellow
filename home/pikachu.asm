@@ -2,7 +2,7 @@ Func_1510:: ; 1510 (0:1510)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 7, [hl]
-	ld hl, wSpriteStateData1 + $f2 ; pikachu data?
+	ld hl, wPikachuSpriteImageIdx ; pikachu data?
 	ld [hl], $ff
 	pop hl
 	ret
@@ -25,7 +25,7 @@ Func_152d:: ; 152d (0:152d)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 3, [hl]
-	ld hl, wSpriteStateData1 + $f2 ; pikachu data?
+	ld hl, wPikachuSpriteImageIdx ; pikachu data?
 	ld [hl], $ff
 	pop hl
 	ret
@@ -51,42 +51,43 @@ CheckPikachuFollowingPlayer:: ; 154a (0:154a)
 	pop hl
 	ret
 	
-Func_1552:: ; 1552 (0:1552)
+SpawnPikachu:: ; 1552 (0:1552)
 	ld a, [hl]
 	dec a
 	swap a
 	ld [hTilePlayerStandingOn], a
-	homecall Func_fc6d5 ; 3f:46d5
+	homecall SpawnPikachu_ ; 3f:46d5
 	ret
 
-Func_1568:: ; 1568 (0:1568)
+Pikachu_IsInArray:: ; 1568 (0:1568)
 	ld b, $0
 	ld c, a
-.asm_156b
+.loop
 	inc b
 	ld a, [hli]
 	cp $ff
-	jr z, .asm_1578
+	jr z, .not_in_array
 	cp c
-	jr nz, .asm_156b
+	jr nz, .loop
 	dec b
 	dec hl
 	scf
 	ret
-.asm_1578
+
+.not_in_array
 	dec b
 	dec hl
 	and a
 	ret
 	
-Func_157c:: ; 157c (0:157c)
+GetPikachuMovementScriptByte:: ; 157c (0:157c)
 	push hl
 	push bc
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, [wd44a]
+	ld a, [wPikachuMovementScriptBank]
 	call BankswitchCommon
-	ld hl, wd44b
+	ld hl, wPikachuMovementScriptAddress
 	ld c, [hl]
 	inc hl
 	ld b, [hl]
@@ -103,11 +104,11 @@ Func_157c:: ; 157c (0:157c)
 	pop hl
 	ret
 
-Func_159b:: ; 159b (0:159b)
+ApplyPikachuMovementData:: ; 159b (0:159b)
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
 	push af
-	callbs Func_fd2a1
+	callbs ApplyPikachuMovementData_
 	pop af
 	call BankswitchCommon
 	ret

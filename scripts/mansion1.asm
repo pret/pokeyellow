@@ -46,7 +46,7 @@ Mansion1ReplaceBlock: ; 44310 (11:4310)
 	ret
 
 Mansion1Script_Switches: ; 44316 (11:4316)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	xor a

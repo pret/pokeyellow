@@ -553,7 +553,7 @@ CableClubLeftGameboy:: ; 21867 (8:5867)
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	ret z
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_RIGHT
 	ret nz
 	ld a, [wCurMap]
@@ -570,7 +570,7 @@ CableClubRightGameboy:: ; 21887 (8:5887)
 	ld a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	ret z
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_LEFT
 	ret nz
 	ld a, [wCurMap]
@@ -587,7 +587,7 @@ JustAMomentText:: ; 218a7 (8:58a7)
 	TX_FAR _JustAMomentText
 	db "@"
 
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing

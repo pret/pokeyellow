@@ -1,6 +1,6 @@
 VermilionCityScript: ; 197a1 (6:57a1)
 	call EnableAutoTextBoxDrawing
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	res 7, [hl]
 	ld hl, wd126
 	bit 6, [hl]
@@ -53,7 +53,7 @@ VermilionCityScriptPointers: ; 197dc (6:57dc)
 	dw VermilionCityScript4
 
 VermilionCityScript0: ; 197e6 (6:57e6)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_198de
 	ld hl, CoordsData_19823
@@ -176,7 +176,7 @@ VermilionCityText3: ; 198b1 (6:58b1)
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .asm_198f6
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_RIGHT
 	jr z, .asm_198c8
 	ld hl, VermilionCityCoords1

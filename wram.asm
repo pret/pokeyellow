@@ -228,7 +228,39 @@ wSpriteStateData1:: ; c100
 ; C1xD
 ; C1xE
 ; C1xF
-	ds $10 * $10
+spritestatedata1: MACRO
+w\1SpriteStateData1::
+w\1PictureID:: db
+w\1MovementStatus:: db
+w\1SpriteImageIdx:: db
+w\1YStepVector:: db
+w\1YPixels:: db
+w\1XStepVector:: db
+w\1XPixels:: db
+w\1IntraAnimFrameCounter:: db
+w\1AnimFrameCounter:: db
+w\1FacingDirection:: db
+	ds 6
+w\1SpriteStateData1End::
+endm
+
+	spritestatedata1 Player
+	spritestatedata1 Sprite01
+	spritestatedata1 Sprite02
+	spritestatedata1 Sprite03
+	spritestatedata1 Sprite04
+	spritestatedata1 Sprite05
+	spritestatedata1 Sprite06
+	spritestatedata1 Sprite07
+	spritestatedata1 Sprite08
+	spritestatedata1 Sprite09
+	spritestatedata1 Sprite10
+	spritestatedata1 Sprite11
+	spritestatedata1 Sprite12
+	spritestatedata1 Sprite13
+	spritestatedata1 Sprite14
+	spritestatedata1 Pikachu
+	; ds $10 * $10
 
 
 ;SECTION "Sprite State Data 2", WRAM0[$c200]
@@ -253,7 +285,40 @@ wSpriteStateData2:: ; c200
 ; C2xD
 ; C2xE: sprite image base offset (in video ram, player always has value 1, used to compute c1x2)
 ; C2xF
-	ds $10 * $10
+spritestatedata2: MACRO
+w\1SpriteStateData2::
+w\1WalkAnimationCounter:: db
+	ds 1
+w\1YDisplacement:: db
+w\1XDisplacement:: db
+w\1MapY:: db
+w\1MapX:: db
+w\1MovementByte1:: db
+w\1GrassPriority:: db
+w\1MovementDelay:: db
+	ds 5
+w\1SpriteImageBaseOffset:: db
+	ds 1
+w\1SpriteStateData2End::
+endm
+
+	spritestatedata2 Player
+	spritestatedata2 Sprite01
+	spritestatedata2 Sprite02
+	spritestatedata2 Sprite03
+	spritestatedata2 Sprite04
+	spritestatedata2 Sprite05
+	spritestatedata2 Sprite06
+	spritestatedata2 Sprite07
+	spritestatedata2 Sprite08
+	spritestatedata2 Sprite09
+	spritestatedata2 Sprite10
+	spritestatedata2 Sprite11
+	spritestatedata2 Sprite12
+	spritestatedata2 Sprite13
+	spritestatedata2 Sprite14
+	spritestatedata2 Pikachu
+	; ds $10 * $10
 
 wSpriteDataEnd::
 
@@ -2735,7 +2800,7 @@ wDestinationWarpID:: ; d42f
 	ds 1
 
 wPikachuOverworldStateFlags:: ds 1 ; d42f
-wd431:: ds 1 ; d430
+wPikachuSpawnState:: ds 1 ; d430
 wd432:: ds 1 ; d431
 wd433:: ds 1 ; d432
 wd434:: ds 1
@@ -2749,11 +2814,12 @@ wExpressionNumber:: ; d447
 wExpressionNumber2::
 	ds 1
 	
-wd44a:: ds 1 ; d449
-wd44b:: ds 1
-wd44c:: ds 1
-wd44d:: ds 1
-wPikaPicAnimPointer:: dw   ; d44d
+wPikachuMovementScriptBank:: ds 1  ; d449
+wPikachuMovementScriptAddress:: dw ; d44a
+wd44d:: ds 1  ; d44c
+
+wCurPikaMovementData:: ; 
+wPikaPicAnimPointer:: dw ; d44d
 wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
 wPikaPicAnimCurGraphicID:: ds 1
 wPikaPicAnimTimer:: ds 2 ; d451
@@ -2785,7 +2851,7 @@ wd47a:: ds 1
 
 	ds 24
 	
-wPreventBlackout:: ds 1 ; d492
+wd492:: ds 1 ; d492
 	
 	ds 1
 	

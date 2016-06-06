@@ -466,15 +466,15 @@ OaksLabScript16:
 	ret nz
 	xor a
 .asm_1c707
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ret
 
 OaksLabScript17:
 ; Pikachu comes out
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $2
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	callba Func_fc4fa
 	call Func_1525
 	ld a, $1a

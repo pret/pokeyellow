@@ -9,7 +9,7 @@ Route25Script: ; 515cb (14:55cb)
 	ret
 
 Route25Script_515e1: ; 515e1 (14:55e1)
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	res 2, [hl]
 	res 3, [hl]
 	res 4, [hl]

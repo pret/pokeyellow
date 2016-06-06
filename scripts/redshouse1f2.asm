@@ -40,7 +40,7 @@ MomHealText2: ; 481c1 (12:41c1)
 
 Func_f1bc4:
 	ld hl, TVWrongSideText
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	jp nz, .notUp
 	ld hl, StandByMeText

@@ -19,7 +19,7 @@ BillsHouseScriptPointers: ; 1e776 (7:6776)
 	dw BillsHouseScript9
 
 BillsHouseScript_1e09e:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	set 7, [hl]
 	ret nz
@@ -58,7 +58,7 @@ BillsHouseScript1: ; 1e783 (7:6783)
 BillsHouseScript2:
 	ld a, $ff
 	ld [wJoyIgnore], a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	ld de, MovementData_1e79c
 	jr nz, .notDown
@@ -100,12 +100,12 @@ BillsHouseScript3: ; 1e7a6 (7:67a6)
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_1e13e
 	ld hl, PikachuMovementData_1e14d
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_1e133
 	ld hl, PikachuMovementData_1e152
 .asm_1e133
-	call Func_159b
+	call ApplyPikachuMovementData
 	callab InitializePikachuTextID
 .asm_1e13e
 	xor a
@@ -169,7 +169,7 @@ BillsHouseScript5:
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld hl, PikachuMovementData_1e1a9
-	call Func_159b
+	call ApplyPikachuMovementData
 	ld a, $f
 	ld [wEmotionBubbleSpriteIndex], a
 	ld a, $0
@@ -212,7 +212,7 @@ BillsHouseScript7:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld de, RLE_1e219
@@ -236,7 +236,7 @@ BillsHouseScript8:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_DOWN

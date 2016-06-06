@@ -118,7 +118,7 @@ Route23Script_512d8: ; 512d8 (14:52d8)
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld [wJoyIgnore], a
 	jp StartSimulatingJoypadStates
 

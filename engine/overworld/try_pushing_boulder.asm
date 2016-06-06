@@ -38,7 +38,7 @@ Func_f0a7: ; f0a7 (3:70a7)
 	jp nz, ResetBoulderPushFlags
 	ld a, [hJoyHeld]
 	ld b, a
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	jr z, .pushBoulderUp
 	cp SPRITE_FACING_LEFT

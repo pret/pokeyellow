@@ -6,7 +6,7 @@ _GetTileAndCoordsInFrontOfPlayer: ; c2d4 (3:42d4)
 	ld d, a
 	ld a, [wXCoord]
 	ld e, a
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .notFacingDown
 ; facing down
@@ -45,7 +45,7 @@ GetTileTwoStepsInFrontOfPlayer: ; c309 (3:4309)
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .notFacingDown
 ; facing down

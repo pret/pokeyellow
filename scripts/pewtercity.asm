@@ -1,6 +1,6 @@
 PewterCityScript: ; 192f5 (6:52f5)
 	call EnableAutoTextBoxDrawing
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	res 7, [hl]
 	ld hl, PewterCityScriptPointers
 	ld a, [W_PEWTERCITYCURSCRIPT]

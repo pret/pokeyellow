@@ -64,7 +64,7 @@ Route12GateUpstairsText_495c4: ; 495c4 (12:55c4)
 	db "@"
 
 GateUpstairsScript_PrintIfFacingUp: ; 495c9 (12:55c9)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	jr z, .up
 	ld a, $1
