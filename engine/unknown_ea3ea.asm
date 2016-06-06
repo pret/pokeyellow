@@ -398,7 +398,7 @@ Func_ea6d2: ; ea6d2 (3a:66d2)
 	ld a, [$c971]
 	cp a, $00
 	jr nz, .asm_ea6fb
-	ld hl, wUnknownSerialFlag_d49a
+	ld hl, wPrinterConnectionOpen
 	set 1, [hl]
 	call Func_ea606
 	ret
@@ -441,7 +441,7 @@ Func_ea721: ; ea721 (3a:6721)
 Func_ea72f: ; ea72f (3a:672f)
 	call Func_ea606
 Func_ea732: ; ea732 (3a:6732)
-	ld a, [wUnknownSerialFlag_d49b]
+	ld a, [wPrinterOpcode]
 	and a
 	ret nz
 	ld a, [$c971]
@@ -452,7 +452,7 @@ Func_ea732: ; ea732 (3a:6732)
 	ret
 
 Func_ea742: ; ea742 (3a:6742)
-	ld a, [wUnknownSerialFlag_d49b]
+	ld a, [wPrinterOpcode]
 	and a
 	jr nz, .asm_ea74a
 	and a
@@ -464,11 +464,11 @@ Func_ea742: ; ea742 (3a:6742)
 
 Func_ea74c: ; ea74c (3a:674c)
 .asm_ea74c
-	ld a, [wUnknownSerialFlag_d49b]
+	ld a, [wPrinterOpcode]
 	and a
 	jr nz, .asm_ea74c
 	ld a, $01
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterOpcode], a
 	xor a
 	ld [$c974], a
 	ld [$c975], a

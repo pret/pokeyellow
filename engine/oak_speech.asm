@@ -5,7 +5,7 @@ SetDefaultNames: ; 5e27 (1:5e27)
 	push af
 	ld a, [wd732]
 	push af
-	ld a, [wd498]
+	ld a, [wPrinterSettings]
 	push af
 	ld hl, wPlayerName
 	ld bc, wBoxDataEnd - wPlayerName
@@ -20,7 +20,7 @@ SetDefaultNames: ; 5e27 (1:5e27)
 	ld [wd496], a
 	ld [wd497], a
 	pop af
-	ld [wd498], a
+	ld [wPrinterSettings], a
 	pop af
 	ld [wd732], a
 	pop af

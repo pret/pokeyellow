@@ -2120,15 +2120,15 @@ ChooseFlyDestination:: ; 2f9a (0:2f9a)
 	res 4, [hl]
 	jpba LoadTownMap_Fly
 
-Func_2fa7:: ; 2fa7 (0:2fa7)
-	homecall Func_e8a5e
+PrinterSerial:: ; 2fa7 (0:2fa7)
+	homecall PrinterSerial_
 	ret
 
 SerialFunction:: ; 2fb7 (0:2fb7)
-	ld a, [wUnknownSerialFlag_d49a]
+	ld a, [wPrinterConnectionOpen]
 	bit 0, a
 	ret z
-	ld a, [wUnknownSerialFlag_d49b]
+	ld a, [wPrinterOpcode]
 	and a
 	ret nz
 	ld hl, wOverworldMap+650
@@ -2139,7 +2139,7 @@ SerialFunction:: ; 2fb7 (0:2fb7)
 	xor a
 	ld [hl], a
 	ld a, $0c
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterOpcode], a
 	ld a, $88
 	ld [rSB], a
 	ld a, $1

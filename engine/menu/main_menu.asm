@@ -128,7 +128,7 @@ InitOptions: ; 5bff (1:5bff)
 	ld a,3 ; medium speed
 	ld [wOptions],a
 	ld a,64 ; audio?
-	ld [wd498], a
+	ld [wPrinterSettings], a
 	ret
 
 Func_5cc1: ; 5cc1 (1:5cc1)

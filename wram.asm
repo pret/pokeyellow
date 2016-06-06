@@ -420,13 +420,17 @@ wYellowIntroAnimatedObjectStructPointer:: ; c636
 ; c698
 	ds 80
 
-wTempPic::
+wTempPic:: ; c6e8
+wPrinterData:: ; c6e8
 wOverworldMap:: ; c6e8
 	; ds 1300
-wc6e8:: ; c6e8
+wPrinterReceiveJumptableIndex:: ; c6e8
 	ds 1
 wc6e9:: ; c6e9
 	ds 1
+
+; Printer data header
+wPrinterDataHeader:: ; c6ea
 wc6ea:: ; c6ea
 	ds 1
 wc6eb:: ; c6eb
@@ -435,14 +439,18 @@ wc6ec:: ; c6ec
 	ds 1
 wc6ed:: ; c6ed
 	ds 1
-wc6ee:: ; c6ee
+wPrinterChecksum:: ; c6ee
+	dw
+
+wPrinterSerialReceived:: ; c6f0
 	ds 1
-wc6ef:: ; c6ef
+wPrinterStatusReceived:: ; c6f1
+; bit 7: set if error 1 (battery low)
+; bit 6: set if error 4 (too hot or cold)
+; bit 5: set if error 3 (paper jammed or empty)
+; if this and the previous byte are both $ff: error 2 (connection error)
 	ds 1
-wc6f0:: ; c6f0
-	ds 1
-wc6f1:: ; c6f1
-	ds 1
+
 wc6f2:: ; c6f2
 	ds 1
 wc6f3:: ; c6f3
@@ -472,20 +480,20 @@ wc974:: ; c974
 	ds 1
 wc975:: ; c975
 	ds 1
-wc976:: ; c976
-	ds 1
-wc977:: ; c977
-	ds 1	
+wPrinterDataSize:: ; c976
+	dw
 wPrinterTileBuffer:: ; c978
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
 wPrinterStatusIndicator:: ; cae0
 	ds 2
 wcae2:: ; cae2
 	ds 1
-wcae3:: ; cae3
+wPrinterSettingsTempCopy:: ; cae3
 	ds 17
 wcaf4:: ; caf4
 	ds 1
+wPrinterDataEnd:: ; caf5
+
 wcaf5:: ; caf5
 	ds 1
 wcaf6:: ; caf6
@@ -2780,11 +2788,11 @@ wPreventBlackout:: ds 1 ; d492
 wd495:: ds 1
 wd496:: ds 1
 wd497:: ds 1
-wd498:: ds 1
+wPrinterSettings:: ds 1
 	
 wUnknownSerialFlag_d499:: ds 1 ; d498
-wUnknownSerialFlag_d49a:: ds 1 ; d499
-wUnknownSerialFlag_d49b:: ds 1 ; d49a
+wPrinterConnectionOpen:: ds 1 ; d499
+wPrinterOpcode:: ds 1 ; d49a
 wd49c:: ds 1 ; d49b
 
 	ds 19

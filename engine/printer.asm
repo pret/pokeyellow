@@ -1,614 +1,4 @@
-Func_e8783: ; e8783 (3a:4783)
-	ld a, 9
-Func_e8785:
-	push af
-	ld hl, wOverworldMap
-	lb bc, 4, 13
-	xor a
-	call Func_e8a2e
-	xor a
-	ld [rSB], a
-	ld [rSC], a
-	ld [wUnknownSerialFlag_d49b], a
-	ld hl, wUnknownSerialFlag_d49a
-	set 0, [hl]
-	ld a, [wd498]
-	ld [wcae3], a
-	pop af
-	ld [wcaf4], a
-	ret
-
-; e87a8
-Func_e87a8: ; e87a8 (3a:47a8)
-	ld a, [wOverworldMap]
-	ld e, a
-	ld d, 0
-	ld hl, Jumptable_e87b7
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp [hl]
-
-Jumptable_e87b7:
-	dw Func_e87fd
-	dw Func_e88c9
-	dw Func_e88a6
-	dw Func_e881f
-	dw Func_e8906
-	dw Func_e88b4
-	dw Func_e884b
-	dw Func_e8906
-	dw Func_e88a6
-	dw Func_e8864
-	dw Func_e8906
-	dw Func_e88a6
-	dw Func_e8927
-	dw Func_e87e9
-	dw Func_e87f3
-	dw Func_e88a6
-	dw Func_e8889
-	dw Func_e87f7
-	dw Func_e8936
-	dw Func_e8939
-
-Func_e87df:
-	ld hl, wOverworldMap
-	inc [hl]
-	ret
-
-Func_e87e4:
-	ld hl, wOverworldMap
-	dec [hl]
-	ret
-
-Func_e87e9:
-	xor a
-	ld [wc971], a
-	ld hl, wOverworldMap
-	set 7, [hl]
-	ret
-
-Func_e87f3:
-	call Func_e87df
-	ret
-
-Func_e87f7:
-	ld a, $01
-	ld [wOverworldMap], a
-	ret
-
-Func_e87fd:
-	call Func_e8981
-	ld hl, Data_e8a3a
-	call Func_e8968
-	xor a
-	ld [wc976], a
-	ld [wc977], a
-	ld a, [wcaf4]
-	ld [wc6e9], a
-	call Func_e87df
-	call Func_e8949
-	ld a, $01
-	ld [wPrinterStatusIndicator], a
-	ret
-
-Func_e881f:
-	call Func_e8981
-	ld hl, wc6e9
-	ld a, [hl]
-	and a
-	jr z, Func_e884b
-	ld hl, Data_e8a46
-	call Func_e8968
-	call Func_e89e6
-	ld a, $80
-	ld [wc976], a
-	ld a, $02
-	ld [wc977], a
-	call Func_e899f
-	call Func_e87df
-	call Func_e8949
-	ld a, $02
-	ld [wPrinterStatusIndicator], a
-	ret
-
-Func_e884b:
-	ld a, $06
-	ld [wOverworldMap], a
-	ld hl, Data_e8a4c
-	call Func_e8968
-	xor a
-	ld [wc976], a
-	ld [wc977], a
-	call Func_e87df
-	call Func_e8949
-	ret
-
-Func_e8864:
-	call Func_e8981
-	ld hl, Data_e8a40
-	call Func_e8968
-	call Func_e89cf
-	ld a, $04
-	ld [wc976], a
-	ld a, $00
-	ld [wc977], a
-	call Func_e899f
-	call Func_e87df
-	call Func_e8949
-	ld a, $03
-	ld [wPrinterStatusIndicator], a
-	ret
-
-Func_e8889:
-	call Func_e8981
-	ld hl, Data_e8a3a
-	call Func_e8968
-	xor a
-	ld [wc976], a
-	ld [wc977], a
-	ld a, [wcaf4]
-	ld [wc6e9], a
-	call Func_e87df
-	call Func_e8949
-	ret
-
-Func_e88a6:
-	ld hl, wc973
-	inc [hl]
-	ld a, [hl]
-	cp a, $06
-	ret c
-	xor a
-	ld [hl], a
-	call Func_e87df
-	ret
-
-Func_e88b4:
-	ld hl, wc973
-	inc [hl]
-	ld a, [hl]
-	cp a, $06
-	ret c
-	xor a
-	ld [hl], a
-	ld hl, wc6e9
-	dec [hl]
-	call Func_e87e4
-	call Func_e87e4
-	ret
-
-Func_e88c9:
-	ld a, [wUnknownSerialFlag_d49b]
-	and a
-	ret nz
-	ld a, [wc970]
-	cp a, $ff
-	jr nz, .asm_e88dc
-	ld a, [wc971]
-	cp a, $ff
-	jr z, .asm_e88f8
-.asm_e88dc
-	ld a, [wc970]
-	cp a, $81
-	jr nz, .asm_e88f8
-	ld a, [wc971]
-	cp a, $00
-	jr nz, .asm_e88f8
-	ld hl, wUnknownSerialFlag_d49a
-	set 1, [hl]
-	ld a, $05
-	ld [wc972], a
-	call Func_e87df
-	ret
-
-.asm_e88f8
-	ld a, $ff
-	ld [wc970], a
-	ld [wc971], a
-	ld a, $0e
-	ld [wOverworldMap], a
-	ret
-
-Func_e8906:
-	ld a, [wUnknownSerialFlag_d49b]
-	and a
-	ret nz
-	ld a, [wc971]
-	and a, $f0
-	jr nz, .asm_e8921
-	ld a, [wc971]
-	and a, $01
-	jr nz, .asm_e891d
-	call Func_e87df
-	ret
-
-.asm_e891d
-	call Func_e87e4
-	ret
-
-.asm_e8921
-	ld a, $12
-	ld [wOverworldMap], a
-	ret
-
-Func_e8927:
-	ld a, [wUnknownSerialFlag_d49b]
-	and a
-	ret nz
-	ld a, [wc971]
-	and a, $f3
-	ret nz
-	call Func_e87df
-	ret
-
-Func_e8936:
-	call Func_e87df
-Func_e8939:
-	ld a, [wUnknownSerialFlag_d49b]
-	and a
-	ret nz
-	ld a, [wc971]
-	and a, $f0
-	ret nz
-	xor a
-	ld [wOverworldMap], a
-	ret
-
-Func_e8949:
-.asm_e8949
-	ld a, [wUnknownSerialFlag_d49b]
-	and a
-	jr nz, .asm_e8949
-	xor a
-	ld [wc974], a
-	ld [wc975], a
-	ld a, $01
-	ld [wUnknownSerialFlag_d49b], a
-	ld a, $88
-	ld [rSB], a
-	ld a, $01
-	ld [rSC], a
-	ld a, $81
-	ld [rSC], a
-	ret
-
-Func_e8968:
-	ld a, [hli]
-	ld [wc6ea], a
-	ld a, [hli]
-	ld [wc6eb], a
-	ld a, [hli]
-	ld [wc6ec], a
-	ld a, [hli]
-	ld [wc6ed], a
-	ld a, [hli]
-	ld [wc6ee], a
-	ld a, [hl]
-	ld [wc6ef], a
-	ret
-
-Func_e8981:
-	xor a
-	ld hl, wc6ea
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
-	ld hl, wc6ee
-	ld [hli], a
-	ld [hl], a
-	xor a
-	ld [wc976], a
-	ld [wc977], a
-	ld hl, wc6f0
-	ld bc, $0280
-	call Func_e8a2e
-	ret
-
-Func_e899f:
-	ld hl, $0000
-	ld bc, $0004
-	ld de, wc6ea
-	call Func_e89c2
-	ld a, [wc976]
-	ld c, a
-	ld a, [wc977]
-	ld b, a
-	ld de, wc6f0
-	call Func_e89c2
-	ld a, l
-	ld [wc6ee], a
-	ld a, h
-	ld [wc6ef], a
-	ret
-
-Func_e89c2:
-.asm_e89c2
-	ld a, [de]
-	inc de
-	add l
-	jr nc, .asm_e89c8
-	inc h
-.asm_e89c8
-	ld l, a
-	dec bc
-	ld a, c
-	or b
-	jr nz, .asm_e89c2
-	ret
-
-Func_e89cf:
-	ld a, $01
-	ld [wc6f0], a
-	ld a, [wcae2]
-	ld [wc6f1], a
-	ld a, $e4
-	ld [wc6f2], a
-	ld a, [wcae3]
-	ld [wc6f3], a
-	ret
-
-Func_e89e6:
-	ld a, [wc6e9]
-	ld b, a
-	ld a, [wcaf4]
-	sub b
-	ld hl, wPrinterTileBuffer
-	ld de, $0028
-.asm_e89f4
-	and a
-	jr z, .asm_e89fb
-	add hl, de
-	dec a
-	jr .asm_e89f4
-
-.asm_e89fb
-	ld e, l
-	ld d, h
-	ld hl, wc6f0
-	ld c, $28
-.asm_e8a02
-	ld a, [de]
-	inc de
-	push bc
-	push de
-	push hl
-	swap a
-	ld d, a
-	and a, $f0
-	ld e, a
-	ld a, d
-	and a, $0f
-	ld d, a
-	and a, $08
-	ld a, d
-	jr nz, .asm_e8a1a
-	or a, $90
-	jr .asm_e8a1c
-
-.asm_e8a1a
-	or a, $80
-.asm_e8a1c
-	ld d, a
-	ld bc, $3a01
-	call CopyVideoData
-	pop hl
-	ld de, $0010
-	add hl, de
-	pop de
-	pop bc
-	dec c
-	jr nz, .asm_e8a02
-	ret
-
-Func_e8a2e: ; e8a2e (3a:4a2e)
-	push de
-	ld e, a
-.asm_e8a30
-	ld [hl], e
-	inc hl
-	dec bc
-	ld a, c
-	or b
-	jr nz, .asm_e8a30
-	ld a, e
-	pop de
-	ret
-
-Data_e8a3a:
-	db $01, $00, $00, $00, $01, $00
-Data_e8a40:
-	db $02, $00, $04, $00, $00, $00
-Data_e8a46:
-	db $04, $00, $80, $02, $00, $00
-Data_e8a4c:
-	db $04, $00, $00, $00, $04, $00
-Data_e8a52:
-	db $08, $00, $00, $00, $08, $00
-Data_e8a58:
-	db $0f, $00, $00, $00, $0f, $00
-
-Func_e8a5e: ; e8a5e (3a:4a5e)
-	ld a, [wUnknownSerialFlag_d49b]
-	ld e, a
-	ld d, 0
-	ld hl, Jumptable_e8a6d
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp [hl]
-
-Jumptable_e8a6d:
-	dw Func_e8ab2
-	dw Func_e8ab3
-	dw Func_e8abc
-	dw Func_e8ac6
-	dw Func_e8ad0
-	dw Func_e8ada
-	dw Func_e8ae4
-	dw Func_e8b0f
-	dw Func_e8b19
-	dw Func_e8b23
-	dw Func_e8b2c
-	dw Func_e8b3a
-	dw Func_e8ab3
-	dw Func_e8b44
-	dw Func_e8b4d
-	dw Func_e8b4d
-	dw Func_e8b4d
-	dw Func_e8b44
-	dw Func_e8b4d
-	dw Func_e8b23
-	dw Func_e8b2c
-	dw Func_e8b6a
-	dw Func_e8ab3
-	dw Func_e8b56
-	dw Func_e8b4d
-	dw Func_e8b4d
-	dw Func_e8b4d
-	dw Func_e8b56
-	dw Func_e8b4d
-	dw Func_e8b23
-	dw Func_e8b2c
-	dw Func_e8b3a
-
-Func_e8aad:
-	ld hl, wUnknownSerialFlag_d49b
-	inc [hl]
-	ret
-
-Func_e8ab2:
-	ret
-
-Func_e8ab3:
-	ld a, $33
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8abc:
-	ld a, [wc6ea]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8ac6:
-	ld a, [wc6eb]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8ad0:
-	ld a, [wc6ec]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8ada:
-	ld a, [wc6ed]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8ae4:
-	ld hl, wc976
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	ld a, e
-	or d
-	jr z, .asm_e8b0c
-	dec de
-	ld [hl], d
-	dec hl
-	ld [hl], e
-	ld a, [wc974]
-	ld e, a
-	ld a, [wc975]
-	ld d, a
-	ld hl, wc6f0
-	add hl, de
-	inc de
-	ld a, e
-	ld [wc974], a
-	ld a, d
-	ld [wc975], a
-	ld a, [hl]
-	call Func_e8b5f
-	ret
-
-.asm_e8b0c
-	call Func_e8aad
-Func_e8b0f:
-	ld a, [wc6ee]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b19:
-	ld a, [wc6ef]
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b23:
-	ld a, $00
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b2c:
-	ld a, [rSB]
-	ld [wc970], a
-	ld a, $00
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b3a:
-	ld a, [rSB]
-	ld [wc971], a
-	xor a
-	ld [wUnknownSerialFlag_d49b], a
-	ret
-
-Func_e8b44:
-	ld a, $0f
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b4d:
-	ld a, $00
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b56:
-	ld a, $08
-	call Func_e8b5f
-	call Func_e8aad
-	ret
-
-Func_e8b5f:
-	ld [rSB], a
-	ld a, $01
-	ld [rSC], a
-	ld a, $81
-	ld [rSC], a
-	ret
-
-Func_e8b6a:
-	ld a, [rSB]
-	ld [wc971], a
-	xor a
-	ld [wUnknownSerialFlag_d49b], a
-	ret
+INCLUDE "engine/printer/serial.asm"
 
 Func_e8b74: ; e8b74 (3a:4b74)
 	ld a, [wUpdateSpritesEnabled]
@@ -616,12 +6,12 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	xor a
 	ld [wUpdateSpritesEnabled], a
 	ld [$ffdb], a
-	call Func_e8f24
+	call Printer_PlayPrinterMusic
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	xor a
 	ld [$ffba], a
@@ -637,11 +27,11 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld a, $13
 .asm_e8ba0
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call ClearScreen
 	callab Func_401c2
 	callab Func_4027c
-	ld a, $01
+	ld a, $1
 	ld [$ffba], a
 	call Func_e8c0c
 	jr c, .asm_e8bf4
@@ -649,44 +39,44 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	and a
 	jr z, .asm_e8bf4
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
-	ld c, $0c
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
+	ld c, $c
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [$ffba], a
 	call Func_e8c50
-	ld a, $07
+	ld a, $7
 	call Func_e8785
-	ld a, $03
+	ld a, $3
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
-	ld a, $01
+	ld a, $1
 	ld [$ffba], a
 	call Func_e8c0c
 .asm_e8bf4
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	xor a
 	ld [rIF], a
 	pop af
 	ld [rIE], a
 	call Func_0f3d
-	call Func_e8f3b
+	call Printer_PlayMapMusic
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ret
 
 Func_e8c0c:
-	call Func_e8f16
+	call Printer_ResetJoypadHRAM
 .asm_e8c0f
 	call JoypadLowSensitivity
-	call Func_e8eca
+	call Printer_CheckPressingB
 	jr c, .asm_e8c2e
-	ld a, [wc6e8]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8c2c
 	call Func_e87a8
@@ -709,16 +99,16 @@ Func_e8c30:
 	ld [wcaf5], a
 	ld a, h
 	ld [wcaf6], a
-	ld a, $00
+	ld a, $0
 	rla ; copy carry flag state to bit 0
 	ld [wcaf9], a
 	and a
 	jr z, .asm_e8c4d
-	ld a, $05
+	ld a, $5
 	jr .asm_e8c4f
 
 .asm_e8c4d
-	ld a, $09
+	ld a, $9
 .asm_e8c4f
 	ret
 
@@ -730,24 +120,24 @@ Func_e8c50:
 Func_e8c5c:
 	xor a
 	ld [$ffdb], a
-	call Func_e8f24
+	call Printer_PlayPrinterMusic
 	call Func_e910a
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
 	ld [wcae2], a
-	call Func_e8efc
-	call Func_e8f16
+	call Printer_CopyTileMapToPrinterTileBuffer
+	call Printer_ResetJoypadHRAM
 .asm_e8c7d
 	call JoypadLowSensitivity
-	call Func_e8eca
+	call Printer_CheckPressingB
 	jr c, .asm_e8c9a
-	ld a, [wc6e8]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8c9a
 	call Func_e87a8
@@ -758,69 +148,69 @@ Func_e8c5c:
 
 .asm_e8c9a
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
-	call Func_e8f09
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
+	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
 	ld [rIF], a
 	pop af
 	ld [rIE], a
 	call Func_0f3d
-	call Func_e8f3b
+	call Printer_PlayMapMusic
 	ret
 
 Func_e8cb1:
 	xor a
 	ld [$ffdb], a
-	call Func_e8f24
+	call Printer_PlayPrinterMusic
 	call _DisplayDiploma
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	call Func_e8783
 	ld a, $10
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call Func_e8d11
 	jr c, .asm_e8cfa
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
-	ld c, $0c
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
+	ld c, $c
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [$ffba], a
 	call Func_e9ad3
 	call Func_e8783
-	ld a, $03
+	ld a, $3
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call Func_e8d11
 .asm_e8cfa
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
-	call Func_e8f09
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
+	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
 	ld [rIF], a
 	pop af
 	ld [rIE], a
 	call Func_0f3d
-	call Func_e8f3b
+	call Printer_PlayMapMusic
 	ret
 
 Func_e8d11:
-	call Func_e8f16
+	call Printer_ResetJoypadHRAM
 .asm_e8d14
 	call JoypadLowSensitivity
-	call Func_e8eca
+	call Printer_CheckPressingB
 	jr c, .asm_e8d33
-	ld a, [wc6e8]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8d31
 	call Func_e87a8
@@ -847,13 +237,13 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	push af
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld [hItemCounter], a
-	call Func_e8f24
+	ld [hCanceledPrinting], a
+	call Printer_PlayPrinterMusic
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	call SaveScreenTilesToBuffer1
 	xor a
@@ -862,64 +252,64 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	call Func_e8783
 	ld a, $10
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	ld c, 12
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e98ec
 	call Func_e8783
-	ld a, $00
+	ld a, $0
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	ld c, 12
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9907
 	call Func_e8783
-	ld a, $00
+	ld a, $0
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
 	jr c, .asm_e8ddc
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	ld c, 12
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9922
 	call Func_e8783
-	ld a, $03
+	ld a, $3
 	ld [wcae2], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call Func_e8dfb
 .asm_e8ddc
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	xor a
 	ld [rIF], a
 	pop af
 	ld [rIE], a
 	call Func_0f3d
-	call Func_e8f3b
+	call Printer_PlayMapMusic
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ret
@@ -930,12 +320,12 @@ Func_e8df4: ; e8df4
 	ret
 
 Func_e8dfb: ; e8dfb
-	call Func_e8f16
+	call Printer_ResetJoypadHRAM
 .asm_e8dfe
 	call JoypadLowSensitivity
-	call Func_e8eca
+	call Printer_CheckPressingB
 	jr c, .asm_e8e1d
-	ld a, [wOverworldMap]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8e1b
 	call Func_e87a8
@@ -958,25 +348,25 @@ String_e8e1f: ; e8e1f
 
 Func_e8e24: ; e8e24
 	xor a
-	ld [hItemCounter], a
-	call Func_e8f24
+	ld [hCanceledPrinting], a
+	call Printer_PlayPrinterMusic
 	call Func_ea3ea
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
 	ld [wcae2], a
-	call Func_e8efc
-	call Func_e8f16
+	call Printer_CopyTileMapToPrinterTileBuffer
+	call Printer_ResetJoypadHRAM
 .asm_e8e45
 	call JoypadLowSensitivity
-	call Func_e8eca
+	call Printer_CheckPressingB
 	jr c, .asm_e8e62
-	ld a, [wOverworldMap]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8e62
 	call Func_e87a8
@@ -987,15 +377,15 @@ Func_e8e24: ; e8e24
 
 .asm_e8e62
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
-	call Func_e8f09
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
+	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
 	ld [rIF], a
 	pop af
 	ld [rIE], a
 	call Func_0f3d
-	call Func_e8f3b
+	call Printer_PlayMapMusic
 	ret
 
 Func_e8e79: ; e8e79 (3a:4e79)
@@ -1008,17 +398,17 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	push af
 	xor a
 	ld [rIF], a
-	ld a, $09
+	ld a, $9
 	ld [rIE], a
 	call Func_e8783
 	ld a, $13
 	ld [wcae2], a
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e8efc
+	call Printer_CopyTileMapToPrinterTileBuffer
 	call Func_ea573
 .asm_e8e9c
-	ld a, [wOverworldMap]
+	ld a, [wPrinterReceiveJumptableIndex]
 	bit 7, a
 	jr nz, .asm_e8eae
 	call Func_ea5d1
@@ -1028,10 +418,10 @@ Func_e8e79: ; e8e79 (3a:4e79)
 
 .asm_e8eae
 	xor a
-	ld [wUnknownSerialFlag_d49a], a
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterConnectionOpen], a
+	ld [wPrinterOpcode], a
 	ld hl, wOAMBuffer + 32 * 4
-	ld bc, $0020
+	ld bc, 8 * 4
 	xor a
 	call FillMemory
 	xor a
@@ -1044,54 +434,54 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	pop af
 	ret
 
-Func_e8eca: ; e8eca (3a:4eca)
+Printer_CheckPressingB: ; e8eca (3a:4eca)
 	ld a, [hJoyHeld]
 	and B_BUTTON
-	jr nz, .asm_e8ed2
+	jr nz, .quit
 	and a
 	ret
 
-.asm_e8ed2
-	ld a, [wOverworldMap]
-	cp $0c
-	jr nz, .asm_e8ef6
-.asm_e8ed9
-	ld a, [wUnknownSerialFlag_d49b]
+.quit
+	ld a, [wPrinterReceiveJumptableIndex]
+	cp $c
+	jr nz, .already_done
+.wait_current_task
+	ld a, [wPrinterOpcode]
 	and a
-	jr nz, .asm_e8ed9
+	jr nz, .wait_current_task
 	ld a, $16
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterOpcode], a
 	ld a, $88
 	ld [rSB], a
-	ld a, $01
+	ld a, $1
 	ld [rSC], a
 	ld a, $81
 	ld [rSC], a
-.asm_e8ef0
-	ld a, [wUnknownSerialFlag_d49b]
+.wait_send_cancel
+	ld a, [wPrinterOpcode]
 	and a
-	jr nz, .asm_e8ef0
-.asm_e8ef6
-	ld a, $01
-	ld [hItemCounter], a
+	jr nz, .wait_send_cancel
+.already_done
+	ld a, $1
+	ld [hCanceledPrinting], a
 	scf
 	ret
 
-Func_e8efc: ; e8efc (3a:4efc)
+Printer_CopyTileMapToPrinterTileBuffer: ; e8efc (3a:4efc)
 	coord hl, 0, 0
 	coord de, 0, 0, wPrinterTileBuffer
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
-Func_e8f09: ; e8f09 (3a:4f09)
+Printer_CopyTileMapFromPrinterTileBuffer: ; e8f09 (3a:4f09)
 	coord hl, 0, 0, wPrinterTileBuffer
 	coord de, 0, 0
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
-Func_e8f16: ; e8f16 (3a:4f16)
+Printer_ResetJoypadHRAM: ; e8f16 (3a:4f16)
 	xor a
 	ld [hJoyLast], a
 	ld [hJoyReleased], a
@@ -1101,8 +491,8 @@ Func_e8f16: ; e8f16 (3a:4f16)
 	ld [hJoy6], a
 	ret
 
-Func_e8f24: ; e8f24 (3a:4f24)
-	call Func_e8f42
+Printer_PlayPrinterMusic: ; e8f24 (3a:4f24)
+	call Printer_FadeOutMusicAndWait
 	ld a, [wAudioROMBank]
 	ld [wAudioSavedROMBank], a
 	ld a, BANK(Music_GBPrinter)
@@ -1112,19 +502,19 @@ Func_e8f24: ; e8f24 (3a:4f24)
 	call PlaySound
 	ret
 
-Func_e8f3b: ; e8f3b (3a:4f3b)
-	call Func_e8f42
+Printer_PlayMapMusic: ; e8f3b (3a:4f3b)
+	call Printer_FadeOutMusicAndWait
 	call PlayDefaultMusic
 	ret
 
-Func_e8f42: ; e8f42 (3a:4f42)
+Printer_FadeOutMusicAndWait: ; e8f42 (3a:4f42)
 	ld a, $4
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
-.asm_e8f4a
+.wait_music_stop
 	ld a, [wAudioFadeOutControl]
 	and a
-	jr nz, .asm_e8f4a
+	jr nz, .wait_music_stop
 	ret
 
 GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
@@ -1139,7 +529,7 @@ GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
 
 .check_other_errors
 	ld a, [wc971]
-	and $e0
+	and %11100000
 	ret z
 	bit 7, a
 	jr nz, .error1
@@ -1176,7 +566,7 @@ GBPrinter_UpdateStatusMessage:
 	pop af
 	ld e, a
 	ld d, $0
-	ld hl, Table_e8fca
+	ld hl, .PrinterStatusMessages
 	add hl, de
 	add hl, de
 	ld e, [hl]
@@ -1185,7 +575,7 @@ GBPrinter_UpdateStatusMessage:
 	coord hl, 1, 7
 	call PlaceString
 	coord hl, 2, 15
-	ld de, String_e8fb8
+	ld de, .PressBToCancel
 	call PlaceString
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -1193,10 +583,10 @@ GBPrinter_UpdateStatusMessage:
 	ld [wPrinterStatusIndicator], a
 	ret
 
-String_e8fb8:
+.PressBToCancel:
 	db "Press B to Cancel@"
 
-Table_e8fca:
+.PrinterStatusMessages:
 	dw .Blank
 	dw .CheckingLink
 	dw .Transmitting
@@ -1257,7 +647,7 @@ Func_e910a:
 	call Func_e91b5
 	coord hl, 19, 0
 	call Func_e91b5
-	ld a, $04
+	ld a, $4
 	coord hl, 0, 0
 	ld [hl], a
 	coord hl, 0, 17
@@ -1312,9 +702,9 @@ Func_e910a:
 Func_e91a9:
 	ld c, SCREEN_WIDTH / 2
 .asm_e91ab
-	ld [hl], $00
+	ld [hl], $0
 	inc hl
-	ld [hl], $01
+	ld [hl], $1
 	inc hl
 	dec c
 	jr nz, .asm_e91ab
@@ -1324,9 +714,9 @@ Func_e91b5:
 	ld c, SCREEN_HEIGHT / 2
 	ld de, SCREEN_WIDTH
 .asm_e91ba
-	ld [hl], $02
+	ld [hl], $2
 	add hl, de
-	ld [hl], $03
+	ld [hl], $3
 	add hl, de
 	dec c
 	jr nz, .asm_e91ba
@@ -1427,7 +817,7 @@ Func_e988a:
 	ld [hl], a
 	coord hl, 4, 9
 	ld de, wBoxSpecies
-	ld c, $03
+	ld c, $3
 	call Func_e994e
 	ret
 
