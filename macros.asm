@@ -44,10 +44,6 @@ const: MACRO
 const_value = const_value + 1
 ENDM
 
-dr: MACRO
-INCBIN "baserom.gbc",\1,\2 - \1
-ENDM
-
 homecall_jump: MACRO
 	ld a, [H_LOADEDROMBANK]
 	push af
