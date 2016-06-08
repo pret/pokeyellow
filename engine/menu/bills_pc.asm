@@ -204,7 +204,7 @@ ExitBillsPC: ; 2153e (8:553e)
 	ret
 
 BillsPCPrintBox: ; 21562 (8:5562)
-	callab Func_e8d35
+	callab PrintPCBox
 	jp BillsPCMenu
 
 BillsPCDeposit: ; 2156d (8:556d)

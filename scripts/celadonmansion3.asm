@@ -58,7 +58,7 @@ GraphicArtistText: ; 487a8 (12:47a8)
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab Func_e8cb1
+	callab PrintDiploma
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3

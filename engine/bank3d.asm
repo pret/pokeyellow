@@ -3,49 +3,49 @@ INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 
-Func_f429f:: ; f429f (3d:429f)
+StarterPikachuBattleEntranceAnimation: ; f429f (3d:429f)
 	coord hl, 0, 5
-	ld c, $0
-.asm_f42a4
+	ld c, 0
+.loop1
 	inc c
 	ld a, c
-	cp $9
+	cp 9
 	ret z
-	ld d, $5b
+	ld d, 7 * 13
 	push bc
 	push hl
-.asm_f42ad
-	call Func_f42c2
+.loop2
+	call .PlaceColumn
 	dec hl
 	ld a, d
-	sub $7
+	sub 7
 	ld d, a
 	dec c
-	jr nz, .asm_f42ad
-	ld c, $2
+	jr nz, .loop2
+	ld c, 2
 	call DelayFrames
 	pop hl
 	pop bc
 	inc hl
-	jr .asm_f42a4
+	jr .loop1
 
-Func_f42c2:: ; f42c2 (3d:f42c2)
+.PlaceColumn: ; f42c2 (3d:f42c2)
 	push hl
 	push de
 	push bc
-	ld e, $7
-.loop
+	ld e, 7
+.loop3
 	ld a, d
-	cp $31
-	jr nc, .asm_f42ce
+	cp 7 * 7
+	jr nc, .okay
 	ld a, $7f
-.asm_f42ce
+.okay
 	ld [hl], a
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	inc d
 	dec e
-	jr nz, .loop
+	jr nz, .loop3
 	pop bc
 	pop de
 	pop hl
@@ -172,56 +172,56 @@ PikachuMoods: ; f43a6 (3d:43a6)
 	db $6c           ; Unknown (d = 10)
 	db $00           ; Unknown (d = 11)
 
-RedPicBack::       INCBIN "pic/trainer/redb.pic"
-OldManPic::	       INCBIN "pic/trainer/oldman.pic"
-ProfOakPicBack::   INCBIN "pic/ytrainer/prof.oakb.pic"
+RedPicBack:       INCBIN "pic/trainer/redb.pic"
+OldManPic:	       INCBIN "pic/trainer/oldman.pic"
+ProfOakPicBack:   INCBIN "pic/ytrainer/prof.oakb.pic"
 
-Func_f453f:: ; f453f (3d:453f)
+LoadYellowTitleScreenGFX: ; f453f (3d:453f)
 	ld hl, PokemonLogoGraphics
 	ld de, vChars2
-	ld bc, $730
+	ld bc, 115 * $10
 	ld a, BANK(PokemonLogoGraphics) ; redundant because this function is in bank3d
 	call FarCopyData
-	ld hl, YellowLogoGraphics+$230
-	ld de, vChars0+$fd0
-	ld bc, $30
+	ld hl, YellowLogoGraphics + 35 * $10
+	ld de, vChars0 + 253 * $10
+	ld bc, 3 * $10
 	ld a, BANK(YellowLogoGraphics)
 	call FarCopyData
-	ld hl, YellowLogoGraphics+$260
+	ld hl, YellowLogoGraphics + 38 * $10
 	ld de, vChars1
-	ld bc, $400
+	ld bc, 64 * $10
 	ld a, BANK(YellowLogoGraphics)
 	call FarCopyData
-	ld hl, YellowLogoGraphics+$660
-	ld de, vChars0+$f00
-	ld bc, $c0
+	ld hl, YellowLogoGraphics + 102 * $10
+	ld de, vChars0 + 240 * $10
+	ld bc, 12 * $10
 	ld a, BANK(YellowLogoGraphics)
 	call FarCopyData
 	ret
 
-Func_f4578:: ; f4578 (3d:4578)
+TitleScreen_PlacePokemonLogo: ; f4578 (3d:4578)
 	coord hl, 2, 1
-	ld de, Pointer_f45f9
-	ld bc, 7 << 8 | 16 ; 16x7 (xy)
-	call CopyScreenArea
+	ld de, TitleScreenPokemonLogoTilemap
+	lb bc, 7, 16
+	call Bank3D_CopyBox
 	ret
 
-Func_f4585:: ; f4585 (3d:4585)
+TitleScreen_PlacePikaSpeechBubble: ; f4585 (3d:4585)
 	coord hl, 6, 4
-	ld de, Pointer_f4673
-	ld bc, 4 << 8 | 7 ; 7x4 (xy)
-	call CopyScreenArea
+	ld de, TitleScreenPikaBubbleTilemap
+	lb bc, 4, 7
+	call Bank3D_CopyBox
 	coord hl, 9, 8
 	ld [hl], $64
 	inc hl
 	ld [hl], $65
 	ret
 
-Func_f459a:: ; f459a (3d:459a)
+TitleScreen_PlacePikachu: ; f459a (3d:459a)
 	coord hl, 4, 8
-	ld de, Pointer_f468f
-	ld bc, 9 << 8 | 12 ; 12x9 (xy)
-	call CopyScreenArea
+	ld de, TitleScreenPikachuTilemap
+	lb bc, 9, 12
+	call Bank3D_CopyBox
 	coord hl, 16, 10
 	ld [hl], $96
 	coord hl, 16, 11
@@ -230,13 +230,13 @@ Func_f459a:: ; f459a (3d:459a)
 	ld [hl], $a7
 	coord hl, 16, 13
 	ld [hl], $b1
-	ld hl, Pointer_f45c7
+	ld hl, TitleScreenPikachuEyesOAMData
 	ld de, wOAMBuffer
 	ld bc, $20
 	call CopyData
 	ret
 
-Pointer_f45c7: ; f45c7 (3d:45c7)
+TitleScreenPikachuEyesOAMData: ; f45c7 (3d:45c7)
 	db $60, $40, $f1, $22
 	db $60, $48, $f0, $22
 	db $68, $40, $f3, $22
@@ -246,25 +246,26 @@ Pointer_f45c7: ; f45c7 (3d:45c7)
 	db $68, $60, $f2, $02
 	db $68, $68, $f3, $02
 
-CopyScreenArea:: ; f45e7 (3d:45e7)
+Bank3D_CopyBox: ; f45e7 (3d:45e7)
 ; copy cxb (xy) screen area from de to hl
+.row
 	push bc
 	push hl
-.loop
+.col
 	ld a, [de]
 	inc de
 	ld [hli], a
 	dec c
-	jr nz, .loop
+	jr nz, .col
 	pop hl
-	ld bc, $14
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, CopyScreenArea
+	jr nz, .row
 	ret
 
-Pointer_f45f9: ; f45f9 (3d:45f9)
+TitleScreenPokemonLogoTilemap: ; f45f9 (3d:45f9)
 ; 16x7 (xy)
 	db $f4, $f4, $f4, $f4, $f4, $f4, $49, $f4, $72, $30, $f4, $f4, $f4, $f4, $f4, $f4
 	db $fd, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $f4, $0d, $0e, $0f
@@ -274,17 +275,18 @@ Pointer_f45f9: ; f45f9 (3d:45f9)
 	db $f4, $41, $42, $43, $44, $45, $46, $47, $48, $f4, $4a, $4b, $4c, $4d, $4e, $4f
 	db $f4, $6a, $6b, $6c, $6d, $f4, $f4, $f4, $f4, $f4, $f4, $6e, $6f, $70, $71, $f4
 
-Pointer_f4669:: ; f4669 (3d:4669)
+Pointer_f4669: ; f4669 (3d:4669)
+; Unreferenced
 	db $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $5f
 
-Pointer_f4673:: ; f4673 (3d:4673)
+TitleScreenPikaBubbleTilemap: ; f4673 (3d:4673)
 ; 7x4 (xy)
 	db $24, $25, $66, $67, $68, $69, $2a
 	db $50, $51, $52, $53, $54, $55, $56
 	db $57, $58, $59, $5a, $5b, $5c, $5d
 	db $6d, $5e, $5f, $60, $61, $62, $63
 
-Pointer_f468f:: ; f468f (3d:468f)
+TitleScreenPikachuTilemap: ; f468f (3d:468f)
 ; 12x9 (xy)
 	db $80, $81, $82, $83, $00, $00, $00, $00, $84, $85, $86, $87
 	db $88, $89, $8a, $8b, $8c, $8d, $8d, $8e, $8f, $8a, $90, $91
@@ -298,15 +300,17 @@ Pointer_f468f:: ; f468f (3d:468f)
 
 ; f46f9 (3d:46f9)
 PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
+PokemonLogoGraphicsEnd:
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
+YellowLogoGraphicsEnd:
 
 INCLUDE "engine/menu/link_menu.asm"
 
-HandleMenuInputDouble:: ; f5a40 (3d:5a40)
+HandleMenuInputDouble: ; f5a40 (3d:5a40)
 	xor a
 	ld [wPartyMenuAnimMonEnabled], a
 
-HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
+HandleMenuInputPokemonSelectionDouble: ; f5a44 (3d:5a44)
 	ld a, [H_DOWNARROWBLINKCNT1]
 	push af
 	ld a, [H_DOWNARROWBLINKCNT2]
@@ -318,7 +322,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 .loop1
 	xor a
 	ld [wAnimCounter], a ; counter for pokemon shaking animation
-	call Func_f5ab0
+	call .UpdateCursorTile
 	call JoypadLowSensitivity
 	ld a, [hJoy5]
 	and a ; was a key pressed?
@@ -376,7 +380,7 @@ HandleMenuInputPokemonSelectionDouble:: ; f5a44 (3d:5a44)
 	ld a, [hJoy5]
 	ret
 
-Func_f5ab0:: ; f5ab0 (3d:5ab0)
+.UpdateCursorTile: ; f5ab0 (3d:5ab0)
 	ld a, [wTopMenuItemY]
 	and a
 	jr z, .asm_f5ac0
@@ -427,12 +431,12 @@ Func_f5ab0:: ; f5ab0 (3d:5ab0)
 	ld a, l
 	ld [wMenuCursorLocation], a
 	ld a, h
-	ld [wMenuCursorLocation+1], a
+	ld [wMenuCursorLocation + 1], a
 	ld a, [wCurrentMenuItem]
 	ld [wLastMenuItem], a
 	ret
 
-PrintStrengthTxt:: ; f5b06 (3d:5b06)
+PrintStrengthTxt: ; f5b06 (3d:5b06)
 	ld hl, wd728
 	set 0, [hl]
 	ld hl, Text_f5b17
@@ -440,7 +444,7 @@ PrintStrengthTxt:: ; f5b06 (3d:5b06)
 	ld hl, Text_f5b28
 	jp PrintText
 
-Text_f5b17:: ; f5b17 (3d:5b17)
+Text_f5b17: ; f5b17 (3d:5b17)
 	TX_FAR _UsedStrengthText ; 2d:417e
 	TX_ASM
 	ld a, [wcf91]
@@ -448,11 +452,11 @@ Text_f5b17:: ; f5b17 (3d:5b17)
 	call Delay3
 	jp TextScriptEnd
 
-Text_f5b28:: ; f5b28 (3d:5b28)
+Text_f5b28: ; f5b28 (3d:5b28)
 	TX_FAR _CanMoveBouldersText ; 2d:4193
 	db "@"
 
-CheckForForcedBikeSurf:: ; f5b2d (3d:5b2d)
+CheckForForcedBikeSurf: ; f5b2d (3d:5b2d)
 	ld hl, wd728
 	set 1, [hl]
 	ld a, [wd732]
@@ -476,19 +480,19 @@ CheckForForcedBikeSurf:: ; f5b2d (3d:5b2d)
 	ld hl, CyclingIsFunText
 	jp PrintText
 
-CoordsData_f5b64:: ; f5b64 (3d:5b64)
+CoordsData_f5b64: ; f5b64 (3d:5b64)
 	db 11, 07
 	db $ff
 
-CurrentTooFastText:: ; f5b67 (3d:5b67)
+CurrentTooFastText: ; f5b67 (3d:5b67)
 	TX_FAR _CurrentTooFastText ; 2d:41ab
 	db "@"
 
-CyclingIsFunText:: ; f5b6c (3d:5b6c)
+CyclingIsFunText: ; f5b6c (3d:5b6c)
 	TX_FAR _CyclingIsFunText ; 2d:41ca
 	db "@"
 
-AddItemToInventory_:: ; f5b70 (3d:5b70)
+AddItemToInventory_: ; f5b70 (3d:5b70)
 	ld a, [wItemQuantity] ; a = item quantity
 	push af
 	push bc
@@ -640,7 +644,7 @@ BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
 CircleTile:						INCBIN "gfx/circle_tile.2bpp"
 BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
 
-ReadSuperRodData:: ; f5ea4 (3d:5ea4)
+ReadSuperRodData: ; f5ea4 (3d:5ea4)
 	ld a, [wCurMap]
 	ld c, a
 	ld hl, FishingSlots

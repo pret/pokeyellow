@@ -158,7 +158,7 @@ BeachHouseSign4Text:
 	set 6, [hl]
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	callab Func_e910a
+	callab Printer_PrepareSurfingMinigameHighScoreTileMap
 	call WaitForTextScrollButtonPress
 	ld hl, wd730
 	res 6, [hl]

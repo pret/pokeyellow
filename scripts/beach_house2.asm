@@ -4,7 +4,7 @@ Func_f23d0: ; f23d0
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab Func_e8c5c
+	callab PrintSurfingMinigameHighScore
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3

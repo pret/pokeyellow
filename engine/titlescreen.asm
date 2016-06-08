@@ -42,22 +42,22 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	ld a, BANK(NineTile)
 	call FarCopyData
 	ld hl, GamefreakLogoGraphics  ; 4:4d78
-	ld de, vTitleLogo + $650
-	ld bc, $90
+	ld de, vTitleLogo + 101 * $10
+	ld bc, 9 * $10
 	ld a, BANK(GamefreakLogoGraphics)
 	call FarCopyData
-	callab Func_f453f
+	callab LoadYellowTitleScreenGFX
 	ld hl, vBGMap0
 	ld bc, (vBGMap1 + $400) - vBGMap0
 	ld a, " "
 	call FillMemory
-	callab Func_f4578
-	call Func_4418
+	callab TitleScreen_PlacePokemonLogo
+	call FillSpriteBuffer0WithAA
 	call .WriteCopyrightTiles
 	call SaveScreenTilesToBuffer2
 	call LoadScreenTilesFromBuffer2
 	call EnableLCD
-	callab Func_f459a
+	callab TitleScreen_PlacePikachu
 	ld a, $9b
 	call TitleScreenCopyTileMapToVRAM
 	call SaveScreenTilesToBuffer1
@@ -136,7 +136,7 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	call PlaySound
 
 ; scroll game version in from the right
-	callab Func_f4585
+	callab TitleScreen_PlacePikaSpeechBubble
 	ld a, SCREEN_HEIGHT_PIXELS
 	ld [hWY], a
 	call Delay3
@@ -147,15 +147,15 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	ld a, MUSIC_TITLE_SCREEN
 	ld [wNewSoundID], a
 	call PlaySound
-.asm_428f
+.loop
 	xor a
 	ld [wUnusedCC5B], a
-	ld [wTitleMonSpecies], a
-	ld [wTitleMonSpecies+1], a
-	ld [wTitleMonSpecies+2], a
-	ld [wTitleMonSpecies+3], a
+	ld [wTitleScreenScene], a
+	ld [wTitleScreenScene + 1], a
+	ld [wTitleScreenScene + 2], a
+	ld [wTitleScreenScene + 3], a
 	ld a, $f
-	ld [wTitleMonSpecies+4], a
+	ld [wTitleScreenScene + 4], a
 .titleScreenLoop
 	call IncrementResetCounter
 	jp c, .doTitlescreenReset
@@ -163,12 +163,13 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	call JoypadLowSensitivity
 	ld a, [hJoyHeld]
 	cp D_UP | SELECT | B_BUTTON
-	jr z, .asm_42bf
+	jr z, .go_to_main_menu
 	and A_BUTTON | START
-	jr nz, .asm_42bf
-	call Func_4390
+	jr nz, .go_to_main_menu
+	call DoTitleScreenFunction
 	jr .titleScreenLoop
-.asm_42bf
+
+.go_to_main_menu
 	ld e, $a
 	call TitleScreen_PlayPikachuPCM
 	call GBPalWhiteOutWithDelay3
@@ -190,24 +191,28 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	cp D_UP | SELECT | B_BUTTON
 	jp z, .doClearSaveDialogue
 	jp MainMenu
+
 .asm_42f0 ; 42f0 (1:42f0)
+; unreferenced
 	callab Func_e8e79
-	jp .asm_428f
+	jp .loop
 
 .asm_42fb ; 42fb (1:42fb)
-	ld a, [wTitleMonSpecies+4]
+; unreferenced
+	ld a, [wTitleScreenScene + 4]
 	inc a
 	cp $2a
 	jr c, .asm_4305
 	ld a, $f
 .asm_4305
-	ld [wTitleMonSpecies+4], a
+	ld [wTitleScreenScene + 4], a
 	ld e, a
 	callab PlayPikachuSoundClip
 	xor a
-	ld [wTitleMonSpecies+2], a
-	ld [wTitleMonSpecies+3], a
+	ld [wTitleScreenScene + 2], a
+	ld [wTitleScreenScene + 3], a
 	jp .titleScreenLoop
+
 .doTitlescreenReset ; 431b (1:431b)
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
@@ -216,6 +221,7 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	and a
 	jr nz, .audioFadeLoop
 	jp Init
+
 	
 .doClearSaveDialogue ; 432a (1:432a)
 	jpba DoClearSaveDialogue
@@ -249,49 +255,54 @@ CopyrightTextString: ; 4355 (1:4355)
 TitleScreen_PlayPikachuPCM: ; 4387 (1:4387)
 	callab PlayPikachuSoundClip
 	ret
+
 	
-Func_4390: ; 4390 (1:4390)
-	call Func_43de
-	ld a, [wTitleMonSpecies]
+DoTitleScreenFunction: ; 4390 (1:4390)
+	call .CheckTimer
+	ld a, [wTitleScreenScene]
 	ld e, a
 	ld d, 0
-	ld hl, PointerTable_43a2
+	ld hl, .Jumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp hl
+	jp [hl]
+
 	
-PointerTable_43a2: ; 43a2 (1:43a2)
-	dw Func_43be
-	dw Func_43c3
-	dw Func_43d9
-	dw Func_43d9
-	dw Func_43c7
-	dw Func_43d9
-	dw Func_43d9
-	dw Func_43c3
-	dw Func_43d9
-	dw Func_43d9
-	dw Func_43bf
-	dw Func_43ba
+.Jumptable: ; 43a2 (1:43a2)
+	dw .Nop
+	dw .BlinkHalf
+	dw .BlinkWait
+	dw .BlinkWait
+	dw .BlinkClosed
+	dw .BlinkWait
+	dw .BlinkWait
+	dw .BlinkHalf
+	dw .BlinkWait
+	dw .BlinkWait
+	dw .BlinkOpen
+	dw .GoBackToStart
 	
-Func_43ba: ; 43ba (1:43ba)
+.GoBackToStart: ; 43ba (1:43ba)
 	xor a
-	ld [wTitleMonSpecies], a
-Func_43be
+	ld [wTitleScreenScene], a
+.Nop
 	ret
+
 	
-Func_43bf: ; 43bf (1:43bf)
+.BlinkOpen: ; 43bf (1:43bf)
 	ld e, 0
-	jr asm_43c9
-Func_43c3: ; 43c3 (1:43c3)
+	jr .LoadBlinkFrame
+
+.BlinkHalf: ; 43c3 (1:43c3)
 	ld e, 4
-	jr asm_43c9
-Func_43c7: ; 43c7 (1:43c7)
+	jr .LoadBlinkFrame
+
+.BlinkClosed: ; 43c7 (1:43c7)
 	ld e, 8
-asm_43c9: ; 43c9 (1:43c9)
+.LoadBlinkFrame: ; 43c9 (1:43c9)
 	ld hl, wOAMBuffer + 2
 	ld c, 8
 .loop
@@ -304,36 +315,38 @@ asm_43c9: ; 43c9 (1:43c9)
 	inc hl
 	dec c
 	jr nz, .loop
-Func_43d9: ; 43d9 (1:43d9)
-	ld hl, wTitleMonSpecies
+.BlinkWait: ; 43d9 (1:43d9)
+	ld hl, wTitleScreenScene
 	inc [hl]
 	ret
+
 	
-Func_43de: ; 43de (1:43de)
-	ld hl, wTitleMonSpecies + 1
+.CheckTimer: ; 43de (1:43de)
+	ld hl, wTitleScreenTimer
 	ld a, [hl]
 	inc [hl]
 	and a
-	jr z, .asm_43ed
+	jr z, .restart
 	cp $80
-	jr z, .asm_43ed
+	jr z, .restart
 	cp $90
 	ret nz
-.asm_43ed
+.restart
 	ld a, $1
-	ld [wTitleMonSpecies], a
+	ld [wTitleScreenScene], a
 	ret
 
 ; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
 CopyFixedLengthText: ; 43f3 (1:43f3)
 	ld bc, NAME_LENGTH
 	jp CopyData
+
 	
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
 
 IncrementResetCounter: ; 4405 (1:4405)
-	ld hl, wTitleMonSpecies + 2
+	ld hl, wTitleScreenScene + 2
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
@@ -346,14 +359,16 @@ IncrementResetCounter: ; 4405 (1:4405)
 	ld [hl], e
 	and a
 	ret
+
 .doReset
 	scf
 	ret
+
 	
-Func_4418: ; 4418 (1:4418)
+FillSpriteBuffer0WithAA: ; 4418 (1:4418)
 	xor a
 	call SwitchSRAMBankAndLatchClockData
-	ld hl, $a000
+	ld hl, S_SPRITEBUFFER0
 	ld bc, $20
 	ld a, $aa
 	call FillMemory

@@ -1685,7 +1685,7 @@ Tilemap_f8b8d:
 	db $2b,$2c,$25,$28,$2d
 	
 Func_f8b92:
-	ld hl, wd496
+	ld hl, wSurfingMinigameHiScore + 1
 	ld a, [wc5dd]
 	cp [hl]
 	jr c, .asm_f8ba6
@@ -1704,9 +1704,9 @@ Func_f8b92:
 
 .asm_f8bb0
 	ld a, [wc5dc]
-	ld [wd495], a
+	ld [wSurfingMinigameHiScore], a
 	ld a, [wc5dd]
-	ld [wd496], a
+	ld [wSurfingMinigameHiScore + 1], a
 	call WaitForSoundToFinish
 	ldpikacry e, PikachuCry34
 	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty

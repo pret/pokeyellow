@@ -491,7 +491,7 @@ wOverworldMap:: ; c6e8
 	; ds 1300
 wPrinterSendState:: ; c6e8
 	ds 1
-wc6e9:: ; c6e9
+wPrinterRowIndex:: ; c6e9
 	ds 1
 
 ; Printer data header
@@ -537,18 +537,16 @@ wc810:: ; c810
 	ds $70
 wPrinterSendDataSourceEnd:: ; c970
 
-wc970:: ; c970
+wPrinterHandshake:: ; c970
 	ds 1
-wc971:: ; c971
+wPrinterStatusFlags:: ; c971
 	ds 1
-wc972:: ; c972
+wHandshakeFrameDelay:: ; c972
 	ds 1
-wc973:: ; c973
+wPrinterSerialFrameDelay:: ; c973
 	ds 1
-wc974:: ; c974
-	ds 1
-wc975:: ; c975
-	ds 1
+wPrinterSendByteOffset:: ; c974
+	dw
 wPrinterDataSize:: ; c976
 	dw
 wPrinterTileBuffer:: ; c978
@@ -559,15 +557,14 @@ wcae2:: ; cae2
 	ds 1
 wPrinterSettingsTempCopy:: ; cae3
 	ds 17
-wcaf4:: ; caf4
+wPrinterQueueLength:: ; caf4
 	ds 1
 wPrinterDataEnd:: ; caf5
 
-wcaf5:: ; caf5
-	ds 1
-wcaf6:: ; caf6
-	ds 3
-wcaf9:: ; caf9
+wPrinterPokedexEntryTextPointer:: ; caf5
+	dw
+	ds 2
+wPrinterPokedexMonIsOwned:: ; caf9
 	ds 259
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
@@ -1133,7 +1130,7 @@ wWhichBadge:: ; cd3d
 wPriceTemp:: ; cd3d
 ; 3-byte BCD number
 
-wTitleMonSpecies:: ; cd3d
+wTitleScreenScene:: ; cd3d
 
 wPlayerCharacterOAMTile:: ; cd3d
 
@@ -1195,6 +1192,8 @@ wTrainerSpriteOffset:: ; cd3d
 
 wUnusedCD3D:: ; cd3d
 	ds 1
+
+wTitleScreenTimer:: ; cd3e
 
 wHUDPokeballGfxOffsetX:: ; cd3e
 ; difference in X between the next ball and the current one
@@ -2864,9 +2863,8 @@ wd492:: ds 1 ; d492
 	
 	ds 1
 	
-wd495:: ds 1
-wd496:: ds 1
-wd497:: ds 1
+wSurfingMinigameHiScore:: ds 2 ; 4-digit BCD little-endian
+	ds 1
 wPrinterSettings:: ds 1
 	
 wUnknownSerialFlag_d499:: ds 1 ; d498

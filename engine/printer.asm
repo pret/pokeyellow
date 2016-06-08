@@ -11,7 +11,7 @@
 
 INCLUDE "engine/printer/serial.asm"
 
-Func_e8b74: ; e8b74 (3a:4b74)
+PrintPokedexEntry: ; e8b74 (3a:4b74)
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	xor a
@@ -26,29 +26,29 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld [rIE], a
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e8c30
-	call Func_e8785
-	ld a, [wcaf9]
+	call Printer_GetDexEntryRegisters
+	call Printer_StartTransmission
+	ld a, [wPrinterPokedexMonIsOwned]
 	and a
-	jr z, .asm_e8b9e
-	ld a, $10
-	jr .asm_e8ba0
+	jr z, .not_caught
+	ld a, 16
+	jr .got_size
 
-.asm_e8b9e
-	ld a, $13
-.asm_e8ba0
+.not_caught
+	ld a, 19
+.got_size
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call ClearScreen
-	callab Func_401c2
-	callab Func_4027c
+	callab Pokedex_DrawInterface
+	callab Pokedex_PlacePokemonList
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e8c0c
-	jr c, .asm_e8bf4
-	ld a, [wcaf9]
+	call .TryPrintPage
+	jr c, .finish_printing
+	ld a, [wPrinterPokedexMonIsOwned]
 	and a
-	jr z, .asm_e8bf4
+	jr z, .finish_printing
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
@@ -57,17 +57,17 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e8c50
+	call Printer_PrepareDexEntryForPrinting
 	ld a, $7
-	call Func_e8785
+	call Printer_StartTransmission
 	ld a, $3
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e8c0c
-.asm_e8bf4
+	call .TryPrintPage
+.finish_printing
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
@@ -81,83 +81,83 @@ Func_e8b74: ; e8b74 (3a:4b74)
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-Func_e8c0c:
+.TryPrintPage:
 	call Printer_ResetJoypadHRAM
-.asm_e8c0f
+.print_loop
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
-	jr c, .asm_e8c2e
+	jr c, .pressed_b
 	ld a, [wPrinterSendState]
 	bit 7, a
-	jr nz, .asm_e8c2c
-	call Func_e87a8
+	jr nz, .completed
+	call PrinterTransmissionJumptable
 	call GBPrinter_CheckForErrors
 	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
-	jr .asm_e8c0f
+	jr .print_loop
 
-.asm_e8c2c
+.completed
 	and a
 	ret
 
-.asm_e8c2e
+.pressed_b
 	scf
 	ret
 
-Func_e8c30:
-	callab Func_4039c
+Printer_GetDexEntryRegisters:
+	callab DrawDexEntryOnScreen
 	ld a, l
-	ld [wcaf5], a
+	ld [wPrinterPokedexEntryTextPointer], a
 	ld a, h
-	ld [wcaf6], a
+	ld [wPrinterPokedexEntryTextPointer + 1], a
 	ld a, $0
 	rla ; copy carry flag state to bit 0
-	ld [wcaf9], a
+	ld [wPrinterPokedexMonIsOwned], a
 	and a
-	jr z, .asm_e8c4d
+	jr z, .not_caught
 	ld a, $5
-	jr .asm_e8c4f
+	jr .got_num_rows
 
-.asm_e8c4d
+.not_caught
 	ld a, $9
-.asm_e8c4f
+.got_num_rows
 	ret
 
-Func_e8c50:
+Printer_PrepareDexEntryForPrinting:
 	call ClearScreen
-	callab Func_404bc
+	callab Pokedex_PrepareDexEntryForPrinting
 	ret
 
-Func_e8c5c:
+PrintSurfingMinigameHighScore:
 	xor a
 	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
-	call Func_e910a
+	call Printer_PrepareSurfingMinigameHighScoreTileMap
 	ld a, [rIE]
 	push af
 	xor a
 	ld [rIF], a
 	ld a, $9
 	ld [rIE], a
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call Printer_ResetJoypadHRAM
-.asm_e8c7d
+.loop
 	call JoypadLowSensitivity
 	call Printer_CheckPressingB
-	jr c, .asm_e8c9a
+	jr c, .quit
 	ld a, [wPrinterSendState]
 	bit 7, a
-	jr nz, .asm_e8c9a
-	call Func_e87a8
+	jr nz, .quit
+	call PrinterTransmissionJumptable
 	call GBPrinter_CheckForErrors
 	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
-	jr .asm_e8c7d
+	jr .loop
 
-.asm_e8c9a
+.quit
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
@@ -170,7 +170,7 @@ Func_e8c5c:
 	call Printer_PlayMapMusic
 	ret
 
-Func_e8cb1:
+PrintDiploma:
 	xor a
 	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
@@ -181,7 +181,7 @@ Func_e8cb1:
 	ld [rIF], a
 	ld a, $9
 	ld [rIE], a
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $10
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -196,7 +196,7 @@ Func_e8cb1:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9ad3
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $3
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -224,7 +224,7 @@ Func_e8d11:
 	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8d31
-	call Func_e87a8
+	call PrinterTransmissionJumptable
 	call GBPrinter_CheckForErrors
 	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
@@ -238,9 +238,7 @@ Func_e8d11:
 	scf
 	ret
 
-
-	
-Func_e8d35:: ; e8d35 (3a:4e79)
+PrintPCBox:: ; e8d35 (3a:4e79)
 	ld a, [wBoxDataStart]
 	and a
 	jp z, Func_e8df4
@@ -260,7 +258,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e988a
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $10
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -275,7 +273,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e98ec
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $0
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -290,7 +288,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9907
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $0
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -305,7 +303,7 @@ Func_e8d35:: ; e8d35 (3a:4e79)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Func_e9922
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $3
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -339,7 +337,7 @@ Func_e8dfb: ; e8dfb
 	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8e1b
-	call Func_e87a8
+	call PrinterTransmissionJumptable
 	call GBPrinter_CheckForErrors
 	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
@@ -357,7 +355,7 @@ String_e8e1f: ; e8e1f
 	TX_FAR _NoPokemonText
 	db "@"
 
-Func_e8e24: ; e8e24
+PrintFanClubPortrait: ; e8e24
 	xor a
 	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
@@ -368,7 +366,7 @@ Func_e8e24: ; e8e24
 	ld [rIF], a
 	ld a, $9
 	ld [rIE], a
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
@@ -380,7 +378,7 @@ Func_e8e24: ; e8e24
 	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .asm_e8e62
-	call Func_e87a8
+	call PrinterTransmissionJumptable
 	call GBPrinter_CheckForErrors
 	call GBPrinter_UpdateStatusMessage
 	call DelayFrame
@@ -411,23 +409,23 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	ld [rIF], a
 	ld a, $9
 	ld [rIE], a
-	call Func_e8783
+	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call Func_ea573
-.asm_e8e9c
+.loop
 	ld a, [wPrinterSendState]
 	bit 7, a
-	jr nz, .asm_e8eae
+	jr nz, .quit
 	call Func_ea5d1
 	call Func_ea5b7
 	call DelayFrame
-	jr .asm_e8e9c
+	jr .loop
 
-.asm_e8eae
+.quit
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
@@ -529,17 +527,17 @@ Printer_FadeOutMusicAndWait: ; e8f42 (3a:4f42)
 	ret
 
 GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
-	ld a, [wc970]
+	ld a, [wPrinterHandshake]
 	cp $81
 	jr z, .check_other_errors
-	ld a, [wc971]
+	ld a, [wPrinterStatusFlags]
 	cp $ff
 	jr z, .error2
 	xor a
 	jr .load_status
 
 .check_other_errors
-	ld a, [wc971]
+	ld a, [wPrinterStatusFlags]
 	and %11100000
 	ret z
 	bit 7, a
@@ -643,7 +641,7 @@ GBPrinter_UpdateStatusMessage:
 	db   "This is not the"
 	next "Game Boy Printer!@"
 
-Func_e910a:
+Printer_PrepareSurfingMinigameHighScoreTileMap:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld de, SurfingPikachu2Graphics
@@ -651,13 +649,13 @@ Func_e910a:
 	lb bc, BANK(SurfingPikachu2Graphics), (SurfingPikachu2GraphicsEnd - SurfingPikachu2Graphics) / $10
 	call CopyVideoData
 	coord hl, 0, 0
-	call Func_e91a9
+	call .PlaceRowAlternatingTiles
 	coord hl, 0, 17
-	call Func_e91a9
+	call .PlaceRowAlternatingTiles
 	coord hl, 0, 0
-	call Func_e91b5
+	call .PlaceColumnAlternatingTiles
 	coord hl, 19, 0
-	call Func_e91b5
+	call .PlaceColumnAlternatingTiles
 	ld a, $4
 	coord hl, 0, 0
 	ld [hl], a
@@ -667,41 +665,41 @@ Func_e910a:
 	ld [hl], a
 	coord hl, 19, 17
 	ld [hl], a
-	ld de, Data_e91c4
+	ld de, .Tilemap1
 	coord hl, 10, 8
 	lb bc, 3, 8
-	call Func_e925d
-	ld de, Data_e91dc
+	call Diploma_Surfing_CopyBox
+	ld de, .Tilemap2
 	coord hl, 2, 11
 	lb bc, 6, 16
-	call Func_e925d
-	ld de, String_e923c
+	call Diploma_Surfing_CopyBox
+	ld de, .PikachusBeachString
 	coord hl, 3, 2
 	call PlaceString
-	ld de, String_e924b
+	ld de, .HiScoreString
 	coord hl, 9, 4
 	call PlaceString
-	ld de, String_e9256
+	ld de, .PointsString
 	coord hl, 12, 6
 	call PlaceString
 	ld de, wPlayerName
 	ld hl, wPlayerName
 	ld bc, 0
-.asm_e9182
+.find_end_of_name
 	ld a, [hli]
 	inc c
 	cp "@"
-	jr nz, .asm_e9182
+	jr nz, .find_end_of_name
 	ld a, 8
 	sub c
-	jr nc, .asm_e918e
+	jr nc, .got_name_length
 	xor a
-.asm_e918e
+.got_name_length
 	ld c, a
 	coord hl, 2, 4
 	add hl, bc
 	call PlaceString
-	call Func_e926f
+	call CopySurfingMinigameScore
 	ld b, 8
 	call RunPaletteCommand
 	ld a, $1
@@ -710,35 +708,35 @@ Func_e910a:
 	call GBPalNormal
 	ret
 
-Func_e91a9:
+.PlaceRowAlternatingTiles:
 	ld c, SCREEN_WIDTH / 2
-.asm_e91ab
+.row_loop
 	ld [hl], $0
 	inc hl
 	ld [hl], $1
 	inc hl
 	dec c
-	jr nz, .asm_e91ab
+	jr nz, .row_loop
 	ret
 
-Func_e91b5:
+.PlaceColumnAlternatingTiles:
 	ld c, SCREEN_HEIGHT / 2
 	ld de, SCREEN_WIDTH
-.asm_e91ba
+.col_loop
 	ld [hl], $2
 	add hl, de
 	ld [hl], $3
 	add hl, de
 	dec c
-	jr nz, .asm_e91ba
+	jr nz, .col_loop
 	ret
-Data_e91c4:
+
+.Tilemap1:
 	db $7f, $7f, $10, $11, $12, $13, $14, $15
 	db $0f, $3c, $3d, $3e, $20, $21, $30, $31
 	db $4c, $4d, $4e, $50, $34, $1a, $51, $2d
 
-
-Data_e91dc:
+.Tilemap2:
 	db $7f, $7f, $7f, $7f, $7f, $7f, $16, $17, $18, $19, $7f, $1b, $1c, $1d, $1e, $1f
 	db $7f, $7f, $22, $23, $24, $25, $26, $27, $28, $29, $2a, $2b, $2c, $7f, $2e, $2f
 	db $7f, $7f, $32, $33, $33, $35, $36, $37, $38, $39, $3a, $3b, $7f, $7f, $7f, $3f
@@ -746,39 +744,38 @@ Data_e91dc:
 	db $52, $52, $52, $53, $54, $55, $56, $57, $58, $59, $5a, $5b, $5c, $5d, $5d, $5e
 	db $7f, $7f, $7f, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $7f, $7f, $7f
 
-
-String_e923c:
+.PikachusBeachString:
 	db "Pikachu's Beach@"
-String_e924b:
+.HiScoreString:
 	db "'s Hi-Score@"
-String_e9256:
+.PointsString:
 	db "Points@"
 
-Func_e925d:
-.asm_e925d
+Diploma_Surfing_CopyBox:
+.y
 	push bc
 	push hl
-.asm_e925f
+.x
 	ld a, [de]
 	inc de
 	ld [hli], a
 	dec c
-	jr nz, .asm_e925f
+	jr nz, .x
 	pop hl
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_e925d
+	jr nz, .y
 	ret
 
-Func_e926f:
-	ld de, wd496
+CopySurfingMinigameScore:
+	ld de, wSurfingMinigameHiScore + 1
 	coord hl, 7, 6
 	ld a, [de]
-	call Func_e927a
+	call .BCDConvertScore
 	ld a, [de]
-Func_e927a:
+.BCDConvertScore:
 	ld c, a
 	swap a
 	and $f
@@ -831,7 +828,6 @@ Func_e988a:
 	ld c, $3
 	call Func_e994e
 	ret
-
 
 String_e98db: db "POKéMON LIST@"
 String_e98e8: db "BOX@"

@@ -16,9 +16,9 @@ SetDefaultNames: ; 5e27 (1:5e27)
 	xor a
 	call FillMemory
 	xor a
-	ld [wd495], a
-	ld [wd496], a
-	ld [wd497], a
+	ld [wSurfingMinigameHiScore], a
+	ld [wSurfingMinigameHiScore + 1], a
+	ld [wSurfingMinigameHiScore + 2], a
 	pop af
 	ld [wPrinterSettings], a
 	pop af

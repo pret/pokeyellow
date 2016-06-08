@@ -244,7 +244,7 @@ FanClubText5:
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab Func_e8e24
+	callab PrintFanClubPortrait
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3

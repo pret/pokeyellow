@@ -1,6 +1,6 @@
-Func_e8783: ; e8783 (3a:4783)
+StartTransmission_Send9Rows: ; e8783 (3a:4783)
 	ld a, 9
-Func_e8785:
+Printer_StartTransmission:
 	push af
 	ld hl, wPrinterData
 	ld bc, wPrinterDataEnd - wPrinterData
@@ -15,11 +15,11 @@ Func_e8785:
 	ld a, [wPrinterSettings]
 	ld [wPrinterSettingsTempCopy], a
 	pop af
-	ld [wcaf4], a
+	ld [wPrinterQueueLength], a
 	ret
 
 ; e87a8
-Func_e87a8: ; e87a8 (3a:47a8)
+PrinterTransmissionJumptable: ; e87a8 (3a:47a8)
 	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
@@ -33,25 +33,27 @@ Func_e87a8: ; e87a8 (3a:47a8)
 
 .Jumptable:
 	dw Printer_InitSerial ; 00
-	dw Func_e88c9 ; 01
-	dw Func_e88a6 ; 02
-	dw Func_e881f ; 03
-	dw Func_e8906 ; 04
-	dw Func_e88b4 ; 05
-	dw Func_e884b ; 06
-	dw Func_e8906 ; 07
-	dw Func_e88a6 ; 08
-	dw Func_e8864 ; 09
-	dw Func_e8906 ; 0a
-	dw Func_e88a6 ; 0b
-	dw Func_e8927 ; 0c
+	dw Printer_CheckConnectionStatus ; 01
+	dw Printer_WaitSerial ; 02
+	dw Printer_StartTransmittingTilemap ; 03
+	dw Printer_TransmissionLoop ; 04
+	dw Printer_WaitSerialAndLoopBack2 ; 05
+	dw Printer_EndTilemapTransmission ; 06
+	dw Printer_TransmissionLoop ; 07
+	dw Printer_WaitSerial ; 08
+
+	dw Printer_SignalSendHeader ; 09
+	dw Printer_TransmissionLoop ; 0a
+	dw Printer_WaitSerial ; 0b
+	dw Printer_WaitUntilFinished ; 0c
 	dw Printer_Quit ; 0d
+
 	dw Printer_Next_ ; 0e
-	dw Func_e88a6 ; 10
-	dw Func_e8889 ; 11
-	dw Printer_LoopBack ; 12
-	dw Func_e8936 ; 13
-	dw Func_e8939 ; 14
+	dw Printer_WaitSerial ; 0f
+	dw Printer_SignalLoopBack ; 10
+	dw Printer_LoopBack ; 11
+	dw Printer_WaitLoopBack ; 12
+	dw Printer_WaitLoopBack_ ; 13
 
 Printer_Next:
 	ld hl, wPrinterSendState
@@ -65,7 +67,7 @@ Printer_Back:
 
 Printer_Quit:
 	xor a
-	ld [wc971], a
+	ld [wPrinterStatusFlags], a
 	ld hl, wPrinterSendState
 	set 7, [hl]
 	ret
@@ -86,23 +88,23 @@ Printer_InitSerial:
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
-	ld a, [wcaf4]
-	ld [wc6e9], a
+	ld a, [wPrinterQueueLength]
+	ld [wPrinterRowIndex], a
 	call Printer_Next
 	call Printer_PrepareToSend
 	ld a, PRINTER_STATUS_CHECKING_LINK
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_e881f:
+Printer_StartTransmittingTilemap:
 	call ResetPrinterData
-	ld hl, wc6e9
+	ld hl, wPrinterRowIndex
 	ld a, [hl]
 	and a
-	jr z, Func_e884b
+	jr z, Printer_EndTilemapTransmission
 	ld hl, PrinterDataPacket3
 	call CopyPrinterDataHeader
-	call Func_e89e6
+	call Printer_Convert2RowsTo2bpp
 	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) % $100
 	ld [wPrinterDataSize], a
 	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) / $100
@@ -114,7 +116,7 @@ Func_e881f:
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_e884b:
+Printer_EndTilemapTransmission:
 	ld a, $6
 	ld [wPrinterSendState], a
 	ld hl, PrinterDataPacket4
@@ -126,11 +128,11 @@ Func_e884b:
 	call Printer_PrepareToSend
 	ret
 
-Func_e8864:
+Printer_SignalSendHeader:
 	call ResetPrinterData
 	ld hl, PrinterDataPacket2
 	call CopyPrinterDataHeader
-	call Func_e89cf
+	call Printer_StageHeaderForSend
 	ld a, $4
 	ld [wPrinterDataSize], a
 	ld a, $0
@@ -142,85 +144,85 @@ Func_e8864:
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_e8889:
+Printer_SignalLoopBack:
 	call ResetPrinterData
 	ld hl, PrinterDataPacket1
 	call CopyPrinterDataHeader
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
-	ld a, [wcaf4]
-	ld [wc6e9], a
+	ld a, [wPrinterQueueLength]
+	ld [wPrinterRowIndex], a
 	call Printer_Next
 	call Printer_PrepareToSend
 	ret
 
-Func_e88a6:
-	ld hl, wc973
+Printer_WaitSerial:
+	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
-	cp a, $6
+	cp $6
 	ret c
 	xor a
 	ld [hl], a
 	call Printer_Next
 	ret
 
-Func_e88b4:
-	ld hl, wc973
+Printer_WaitSerialAndLoopBack2:
+	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
-	cp a, $6
+	cp $6
 	ret c
 	xor a
 	ld [hl], a
-	ld hl, wc6e9
+	ld hl, wPrinterRowIndex
 	dec [hl]
 	call Printer_Back
 	call Printer_Back
 	ret
 
-Func_e88c9:
+Printer_CheckConnectionStatus:
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld a, [wc970]
-	cp a, $ff
+	ld a, [wPrinterHandshake]
+	cp $ff
 	jr nz, .asm_e88dc
-	ld a, [wc971]
-	cp a, $ff
+	ld a, [wPrinterStatusFlags]
+	cp $ff
 	jr z, .asm_e88f8
 .asm_e88dc
-	ld a, [wc970]
-	cp a, $81
+	ld a, [wPrinterHandshake]
+	cp $81
 	jr nz, .asm_e88f8
-	ld a, [wc971]
-	cp a, $0
+	ld a, [wPrinterStatusFlags]
+	cp $0
 	jr nz, .asm_e88f8
 	ld hl, wPrinterConnectionOpen
 	set 1, [hl]
 	ld a, $5
-	ld [wc972], a
+	ld [wHandshakeFrameDelay], a
 	call Printer_Next
 	ret
 
 .asm_e88f8
 	ld a, $ff
-	ld [wc970], a
-	ld [wc971], a
+	ld [wPrinterHandshake], a
+	ld [wPrinterStatusFlags], a
 	ld a, $e
 	ld [wPrinterSendState], a
 	ret
 
-Func_e8906:
+Printer_TransmissionLoop:
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld a, [wc971]
-	and a, $f0
+	ld a, [wPrinterStatusFlags]
+	and $f0
 	jr nz, .asm_e8921
-	ld a, [wc971]
-	and a, $1
+	ld a, [wPrinterStatusFlags]
+	and $1
 	jr nz, .asm_e891d
 	call Printer_Next
 	ret
@@ -234,24 +236,24 @@ Func_e8906:
 	ld [wPrinterSendState], a
 	ret
 
-Func_e8927:
+Printer_WaitUntilFinished:
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld a, [wc971]
-	and a, $f3
+	ld a, [wPrinterStatusFlags]
+	and $f3
 	ret nz
 	call Printer_Next
 	ret
 
-Func_e8936:
+Printer_WaitLoopBack:
 	call Printer_Next
-Func_e8939:
+Printer_WaitLoopBack_:
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld a, [wc971]
-	and a, $f0
+	ld a, [wPrinterStatusFlags]
+	and $f0
 	ret nz
 	xor a
 	ld [wPrinterSendState], a
@@ -263,8 +265,8 @@ Printer_PrepareToSend:
 	and a
 	jr nz, .wait_printer_operation
 	xor a
-	ld [wc974], a
-	ld [wc975], a
+	ld [wPrinterSendByteOffset], a
+	ld [wPrinterSendByteOffset + 1], a
 	ld a, $1
 	ld [wPrinterOpcode], a
 	ld a, $88
@@ -340,21 +342,21 @@ ComputePrinterChecksum:
 	jr nz, .loop
 	ret
 
-Func_e89cf:
+Printer_StageHeaderForSend:
 	ld a, $1
-	ld [wPrinterSerialReceived], a
+	ld [wPrinterSendDataSource], a
 	ld a, [wcae2]
-	ld [wPrinterStatusReceived], a
-	ld a, $e4
-	ld [wc6f2], a
+	ld [wPrinterSendDataSource + 1], a
+	ld a, %11100100
+	ld [wPrinterSendDataSource + 2], a
 	ld a, [wPrinterSettingsTempCopy]
-	ld [wc6f3], a
+	ld [wPrinterSendDataSource + 3], a
 	ret
 
-Func_e89e6:
-	ld a, [wc6e9]
+Printer_Convert2RowsTo2bpp:
+	ld a, [wPrinterRowIndex]
 	ld b, a
-	ld a, [wcaf4]
+	ld a, [wPrinterQueueLength]
 	sub b
 	ld hl, wPrinterTileBuffer
 	ld de, 2 * SCREEN_WIDTH
@@ -378,22 +380,22 @@ Func_e89e6:
 	push hl
 	swap a
 	ld d, a
-	and a, $f0
+	and $f0
 	ld e, a
 	ld a, d
-	and a, $f
+	and $f
 	ld d, a
-	and a, $8
+	and $8
 	ld a, d
 	jr nz, .vchars1
-	or a, $90
+	or $90
 	jr .got_addr
 
 .vchars1
-	or a, $80
+	or $80
 .got_addr
 	ld d, a
-	lb bc, BANK(Func_e89e6), 1
+	lb bc, BANK(Printer_Convert2RowsTo2bpp), 1
 	call CopyVideoData
 	pop hl
 	ld de, $10
@@ -536,17 +538,17 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 	ld [hl], d
 	dec hl
 	ld [hl], e
-	ld a, [wc974]
+	ld a, [wPrinterSendByteOffset]
 	ld e, a
-	ld a, [wc975]
+	ld a, [wPrinterSendByteOffset + 1]
 	ld d, a
 	ld hl, wPrinterSendDataSource
 	add hl, de
 	inc de
 	ld a, e
-	ld [wc974], a
+	ld [wPrinterSendByteOffset], a
 	ld a, d
-	ld [wc975], a
+	ld [wPrinterSendByteOffset + 1], a
 	ld a, [hl]
 	call .SendByte
 	ret
@@ -573,7 +575,7 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 
 .Receive1:
 	ld a, [rSB]
-	ld [wc970], a
+	ld [wPrinterHandshake], a
 	ld a, $0
 	call .SendByte
 	call .NextInstruction
@@ -581,7 +583,7 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 
 .Receive2:
 	ld a, [rSB]
-	ld [wc971], a
+	ld [wPrinterStatusFlags], a
 	xor a
 	ld [wPrinterOpcode], a
 	ret
@@ -614,7 +616,7 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 
 .Receive2_:
 	ld a, [rSB]
-	ld [wc971], a
+	ld [wPrinterStatusFlags], a
 	xor a
 	ld [wPrinterOpcode], a
 	ret
