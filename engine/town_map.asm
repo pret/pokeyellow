@@ -587,12 +587,12 @@ LoadTownMapEntry: ; 7137a (1c:537a)
 	ld h, [hl]
 	ld l, a
 	ret
-	
+
 ; ExternalMapEntries: ; 7139c (1c:539c)
 	; dr $7139c,$7140b
 ; InternalMapEntries: ; 7140b (1c:540b)
 	; dr $7140b,$7174b
-	
+
 INCLUDE "data/town_map_entries.asm"
 
 INCLUDE "text/map_names.asm" ; TODO: relabel addresses

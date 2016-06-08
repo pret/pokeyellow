@@ -494,52 +494,52 @@ SpriteSheetPointerTable: ; 142a9 (5:42a9)
 	dw PikachuSprite
 	db $c0
 	db BANK(PikachuSprite)
-	
+
 	; SPRITE_OFFICER_JENNY
 	dw OfficerJennySprite
 	db $c0
 	db BANK(OfficerJennySprite)
-	
+
 	; SPRITE_SANDSHREW
 	dw SandshrewSprite
 	db $c0
 	db BANK(SandshrewSprite)
-	
+
 	; SPRITE_ODDISH
 	dw OddishSprite
 	db $c0
 	db BANK(OddishSprite)
-	
+
 	; SPRITE_BULBASAUR
 	dw BulbasaurSprite
 	db $c0
 	db BANK(BulbasaurSprite)
-	
+
 	; SPRITE_JIGGLYPUFF
 	dw JigglypuffSprite
 	db $c0
 	db BANK(JigglypuffSprite)
-	
+
 	; SPRITE_CLEFAIRY_2
 	dw Clefairy2Sprite
 	db $c0
 	db BANK(Clefairy2Sprite)
-	
+
 	; SPRITE_CHANSEY
 	dw ChanseySprite
 	db $c0
 	db BANK(ChanseySprite)
-	
+
 	; SPRITE_JESSIE
 	dw JessieSprite
 	db $c0
 	db BANK(JessieSprite)
-	
+
 	; SPRITE_JAMES
 	dw JamesSprite
 	db $c0
 	db BANK(JamesSprite)
-	
+
 	; SPRITE_BALL
 	dw BallSprite
 	db $40 ; byte count

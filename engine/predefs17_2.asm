@@ -1,5 +1,5 @@
 ; updates the types of a party mon (pointed to in hl) to the ones of the mon specified in wd11e
-SetPartyMonTypes: ; 5db5e (17:5b5e)
+SetPartyMonTypes: ; 5db93 (17:5b93)
 	call GetPredefRegisters
 	ld bc, wPartyMon1Type - wPartyMon1 ; $5
 	add hl, bc

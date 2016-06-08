@@ -1,6 +1,6 @@
 Tilesets: ; c558 (3:4558)
 	; dr $c558,$c684
-	
+
 	tileset Overworld_Block,   Overworld_GFX,   Overworld_Coll,   $FF,$FF,$FF, $52, OUTDOOR
 	tileset RedsHouse1_Block,  RedsHouse1_GFX,  RedsHouse1_Coll,  $FF,$FF,$FF, $FF, INDOOR
 	tileset Mart_Block,        Mart_GFX,        Mart_Coll,        $18,$19,$1E, $FF, INDOOR

@@ -183,7 +183,7 @@ BillsPCMenu: ; 21495 (8:5495)
 	jp z, BillsPCChangeBox ; change box
 	cp $4
 	jp z, BillsPCPrintBox
-	
+
 ExitBillsPC: ; 2153e (8:553e)
 	ld a, [wFlags_0xcd60]
 	bit 3, a ; accessing Bill's PC through another PC?
@@ -356,7 +356,7 @@ BillsPCRelease: ; 21690 (8:5690)
 	ld hl, PikachuUnhappyText
 	call PrintText
 	jp BillsPCMenu
-	
+
 BillsPCChangeBox: ; 216e7 (8:56e7)
 	callba ChangeBox
 	jp BillsPCMenu
@@ -540,7 +540,7 @@ PikachuUnhappyText: ; 21853 (8:5853)
 ReleaseWhichMonText: ; 21858 (8:5858)
 	TX_FAR _ReleaseWhichMonText
 	db "@"
-	
+
 OnceReleasedText: ; 2185d (8:585d)
 	TX_FAR _OnceReleasedText
 	db "@"

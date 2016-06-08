@@ -84,7 +84,7 @@ Func_f192c:
 ViridianCityText_f1945:
 	TX_FAR _ViridianCityText_19191
 	db "@"
-	
+
 Func_f194a:
 	CheckEvent EVENT_GOT_TM42
 	jr nz, .asm_f1972
@@ -157,7 +157,7 @@ ViridianCityText_f19bb:
 ViridianCityText_f19c0:
 	TX_FAR _OldManAgainText3
 	db "@"
-	
+
 Func_f19c5:
 	ld hl, ViridianCityText_f19cc
 	call PrintText

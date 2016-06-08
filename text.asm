@@ -1,3 +1,4 @@
+INCLUDE "charmap.asm"
 INCLUDE "constants/text_constants.asm"
 TEXT_1  EQU $26
 TEXT_2  EQU $27
@@ -1482,7 +1483,7 @@ _WithExpAllText::
 _BoostedText::
 	text "a boosted"
 	cont "@@"
-	
+
 _ExpPointsText::
 	TX_NUM wExpAmountGained, 2, 4
 	text " EXP. Points!"

@@ -62,7 +62,7 @@ Func_f1f77:
 	ld [wSafariSteps + 1], a
 	ld a, D_UP
 	ld c, 3
-	call SafariZoneEntranceStartSimulatiingJoypadStates
+	call SafariZoneEntranceStartSimulatingJoypadStates
 	SetEvent EVENT_IN_SAFARI_ZONE
 	ResetEventReuseHL EVENT_SAFARI_GAME_OVER
 	ld a, $3
@@ -74,7 +74,7 @@ Func_f1f77:
 .deny_entry
 	ld a, D_DOWN
 	ld c, 1
-	call SafariZoneEntranceStartSimulatiingJoypadStates
+	call SafariZoneEntranceStartSimulatingJoypadStates
 	ld a, $4
 	ld [wSafariZoneEntranceCurScript], a
 .asm_f2024
@@ -123,7 +123,7 @@ Func_f203e:
 	TX_FAR _SafariZoneEntranceText_753f0
 	db "@"
 
-SafariZoneEntranceStartSimulatiingJoypadStates:
+SafariZoneEntranceStartSimulatingJoypadStates:
 	push af
 	ld b, $0
 	ld a, c

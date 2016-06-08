@@ -96,7 +96,7 @@ ENDM
 
 	; AUDIO_4
 	music_const MUSIC_SURFING_PIKACHU,     Music_SurfingPikachu
-	music_const MUSIC_JESSIE_AND_JAMES,    Music_JessieAndJames
+	music_const MUSIC_MEET_JESSIE_JAMES,    Music_MeetJessieJames
 	music_const MUSIC_YELLOW_UNUSED_SONG,  Music_YellowUnusedSong
 	music_const MUSIC_GB_PRINTER,          Music_GBPrinter
 

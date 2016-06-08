@@ -24,7 +24,7 @@ CopyData:: ; 00b1 (0:00b1)
 	dec b
 	jr nz,.loop
 	ret
-	
+
 .copybytes	; 00c1
 	ld a, [hli]
 	ld [de], a
@@ -52,7 +52,7 @@ CopyVideoDataAlternate:: ; 00c8 (0:00c8)
 	ld c,a
 	pop af
 	jp FarCopyData
-	
+
 CopyVideoDataDoubleAlternate:: ; 00e3 (0:00e3)
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?

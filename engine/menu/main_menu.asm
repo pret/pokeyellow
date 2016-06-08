@@ -139,11 +139,11 @@ Func_5cc1: ; 5cc1 (1:5cc1)
 	ld hl, NotEnoughMemoryText
 	call PrintText
 	ret
-	
-NotEnoughMemoryText: ; 5ccd (1:5ccd)	
+
+NotEnoughMemoryText: ; 5ccd (1:5ccd)
 	TX_FAR _NotEnoughMemoryText
 	db "@"
-	
+
 StartNewGame: ; 5cd2 (1:5cd2)
 	ld hl, wd732
 	res 1, [hl]

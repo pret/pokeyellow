@@ -20,7 +20,7 @@ Func_1525:: ; 1525 (0:1525)
 	res 3, [hl]
 	pop hl
 	ret
-	
+
 Func_152d:: ; 152d (0:152d)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
@@ -29,7 +29,7 @@ Func_152d:: ; 152d (0:152d)
 	ld [hl], $ff
 	pop hl
 	ret
-	
+
 DisablePikachuFollowingPlayer:: ; 153a (0:153a)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
@@ -43,14 +43,14 @@ EnablePikachuFollowingPlayer:: ; 1542 (0:1542)
 	res 1, [hl]
 	pop hl
 	ret
-	
+
 CheckPikachuFollowingPlayer:: ; 154a (0:154a)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	bit 1, [hl]
 	pop hl
 	ret
-	
+
 SpawnPikachu:: ; 1552 (0:1552)
 	ld a, [hl]
 	dec a
@@ -79,7 +79,7 @@ Pikachu_IsInArray:: ; 1568 (0:1568)
 	dec hl
 	and a
 	ret
-	
+
 GetPikachuMovementScriptByte:: ; 157c (0:157c)
 	push hl
 	push bc

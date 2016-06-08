@@ -1,3 +1,4 @@
+INCLUDE "charmap.asm"
 
 AUDIO_1 EQU $2
 AUDIO_2 EQU $8
@@ -448,7 +449,7 @@ INCLUDE "audio/music/printer.asm"
 INCLUDE "audio/sfx/unknown_80e5a.asm"
 INCLUDE "audio/sfx/unknown_80e91.asm"
 INCLUDE "audio/sfx/get_item2_4.asm"
-	
+
 SECTION "Audio Engine 1", ROMX, BANK[AUDIO_1]
 
 PlayBattleMusic:: ; 9064 (2:5064)
@@ -514,7 +515,7 @@ Music_RivalAlternateTempo:: ; 99db (2:59db)
 	call PlayMusic
 	ld de, Music_MeetRival_branch_b119
 	jr asm_99ed
-	
+
 ; applies both the alternate start and alternate tempo
 Music_RivalAlternateStartAndTempo:: ; 99e7 (2:59e7)
 	call Music_RivalAlternateStart
@@ -661,7 +662,7 @@ PokedexRatingSfxPointers: ; 7d0f8 (1f:50f8)
 OwnedMonValues: ; 7d106 (1f:5106)
 	db 10, 40, 60, 90, 120, 150, $ff
 
-	
+
 INCLUDE "audio/engine_3.asm"
 
 SECTION "Audio Engine 4", ROMX, BANK[AUDIO_4]
@@ -745,10 +746,10 @@ INCLUDE "audio/music/yellowintro.asm"
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
-INCLUDE "audio/music/jessieandjames.asm"
+INCLUDE "audio/music/meetjessiejames.asm"
 
 INCBIN "audio/unknown_832b9.bin"
-	
+
 SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
 PikachuCry1:: ; 84000 (21:4000)
 	dw (PikachuCry1_End - PikachuCry1) - 2 ; length of pcm data

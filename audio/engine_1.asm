@@ -967,7 +967,7 @@ Audio1_ApplyWavePatternAndFrequency: ; 0x964b
 	ld a, $80
 	ld [wTempoModifier], a
 	ret
-	
+
 Audio1_SetSfxTempo: ; 9657 (2:5657)
 	call Audio1_IsCry
 	jr c, .isCry
@@ -1070,7 +1070,7 @@ Audio1_96c3: ; 96c3 (2:56c3)
 .asm_96de
 	scf
 	ret
-	
+
 Audio1_ApplyPitchBend: ; 0x96f9
 	ld hl, wChannelFlags1
 	add hl, bc
@@ -1566,7 +1566,7 @@ Audio1_9972: ; 9972 (2:5972)
 	pop bc
 	pop af
 	ret
-	
+
 Audio1_HWChannelEnableMasks: ; 9985 (2:5985)
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 0-3
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 4-7

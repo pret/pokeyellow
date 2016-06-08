@@ -115,6 +115,6 @@ DrawBadges: ; e880 (3:6880)
 
 .FaceBadgeTiles
 	db $20, $28, $30, $38, $40, $48, $50, $58
-	
+
 GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
 	INCBIN "gfx/badges.2bpp"

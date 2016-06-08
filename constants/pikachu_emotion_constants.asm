@@ -1,5 +1,5 @@
 ; Starter Pikachu emotion commands constants
-	
+
 const_value = 0
 	const PIKAEMOTION_DUMMY1
 	const PIKAEMOTION_PRINTTEXT
@@ -12,7 +12,7 @@ const_value = 0
 	const PIKAEMOTION_DUMMY2
 	const PIKAEMOTION_9
 	const PIKAEMOTION_DUMMY3
-	
+
 const_value = 0
 	const PIKAEMOTION_SUBCMD_LOADEXTRAPIKASPRITES
 	const PIKAEMOTION_SUBCMD_LOADFONT

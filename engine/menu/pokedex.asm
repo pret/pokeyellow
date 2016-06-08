@@ -475,7 +475,6 @@ ShowPokedexDataInternal: ; 40323 (10:4323)
 	ld [rNR50], a
 	ret
 
-	
 HeightWeightText: ; 40370 (10:4370)
 	db "HT  ?", $60, "??", $61
 	next "WT   ???lb@"
@@ -690,7 +689,6 @@ Pokedex_PrepareDexEntryForPrinting: ; 404bc (10:44bc)
 	ld [hFlags_0xFFFA], a
 	ret
 
-	
 ; draws a line of tiles
 ; INPUT:
 ; b = tile ID

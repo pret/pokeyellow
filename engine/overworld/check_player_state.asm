@@ -83,7 +83,7 @@ CheckForceBikeOrSurf: ; c0d2 (3:40d2)
 	ld [wWalkBikeSurfStateCopy], a
 	call ForceBikeOrSurf
 	ret
-	
+
 INCLUDE "data/force_bike_surf.asm"
 
 IsPlayerFacingEdgeOfMap: ; c148 (3:4148)

@@ -70,7 +70,7 @@ AnimateShootingStar: ; 7004a (1c:404a)
 	add hl, de
 	dec c
 	jr nz, .clearOAMLoop
-	
+
 ; Make Gamefreak logo flash.
 	ld b, 3
 .flashLogoLoop
@@ -95,7 +95,7 @@ AnimateShootingStar: ; 7004a (1c:404a)
 	pop af
 	dec a
 	jr nz, .initSmallStarsOAMLoop
-	
+
 ; Animate the small stars falling from the Gamefreak logo.
 	xor a
 	ld [wMoveDownSmallStarsOAMCount], a ; wWhichTrade

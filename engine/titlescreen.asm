@@ -222,7 +222,6 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	jr nz, .audioFadeLoop
 	jp Init
 
-	
 .doClearSaveDialogue ; 432a (1:432a)
 	jpba DoClearSaveDialogue
 
@@ -255,7 +254,6 @@ CopyrightTextString: ; 4355 (1:4355)
 TitleScreen_PlayPikachuPCM: ; 4387 (1:4387)
 	callab PlayPikachuSoundClip
 	ret
-
 	
 DoTitleScreenFunction: ; 4390 (1:4390)
 	call .CheckTimer
@@ -290,7 +288,6 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	ld [wTitleScreenScene], a
 .Nop
 	ret
-
 	
 .BlinkOpen: ; 43bf (1:43bf)
 	ld e, 0
@@ -319,7 +316,6 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	ld hl, wTitleScreenScene
 	inc [hl]
 	ret
-
 	
 .CheckTimer: ; 43de (1:43de)
 	ld hl, wTitleScreenTimer
@@ -341,7 +337,6 @@ CopyFixedLengthText: ; 43f3 (1:43f3)
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-	
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
 
@@ -364,7 +359,6 @@ IncrementResetCounter: ; 4405 (1:4405)
 	scf
 	ret
 
-	
 FillSpriteBuffer0WithAA: ; 4418 (1:4418)
 	xor a
 	call SwitchSRAMBankAndLatchClockData

@@ -59,7 +59,7 @@ const_value set $0
 	const SAFARI_BATTLE ; $2
 	const HURRY_RUN_AWAY_BATTLE ; $3
 	const STARTER_PIKACHU_BATTLE ; $4
-	
+
 ; text box IDs
 MESSAGE_BOX                       EQU $01
 FIELD_MOVE_MON_MENU               EQU $04

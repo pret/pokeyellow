@@ -414,7 +414,6 @@ CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
 	jr z, CheckWarpsNoCollisionRetry2 ; if directional buttons aren't being pressed, do not pass through the warp
 	jr WarpFound1
 
-	
 CheckWarpsNoCollisionRetry1:: ; 050f (0:050f)
 	inc hl
 CheckWarpsNoCollisionRetry2:: ; 0510 (0:0510)
@@ -426,7 +425,6 @@ ContinueCheckWarpsNoCollisionLoop:: ; 0512 (0:0512)
 	jp nz, CheckWarpsNoCollisionLoop
 	jp CheckMapConnections
 
-	
 ; check if the player has stepped onto a warp after having collided
 CheckWarpsCollision:: ; 051a (0:051a)
 	ld a, [wNumberOfWarps]
@@ -791,8 +789,8 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 
 LeaveMapAnim:: ; 07bc (0:07bc)
 	jpba _LeaveMapAnim
-	
-Func_07c4:: ; 07c4 (0:07c4)	
+
+Func_07c4:: ; 07c4 (0:07c4)
 	ld a, [wWalkBikeSurfState]
 	and a
 	ret z
@@ -804,7 +802,6 @@ Func_07c4:: ; 07c4 (0:07c4)
 	call PlayDefaultMusic
 	ret
 
-	
 LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 ; Load sprite graphics based on whether the player is standing, biking, or surfing.
 
@@ -822,7 +819,7 @@ LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 	jr .startWalking
 
 .ridingBike
-	; If the bike can't be used, 
+	; If the bike can't be used,
 	; start walking instead.
 	call IsBikeRidingAllowed
 	jr c, .determineGraphics
@@ -844,7 +841,7 @@ LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 	jp LoadWalkingPlayerSpriteGraphics
 
 IsBikeRidingAllowed:: ; 0805 (0:0805)
-; The bike can be used on Route 23 and Indigo Plateau, 
+; The bike can be used on Route 23 and Indigo Plateau,
 ; or maps with tilesets in BikeRidingTilesets.
 ; Return carry if biking is allowed.
 
@@ -1187,7 +1184,6 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	scf
 	ret
 
-	
 SignLoop:: ; 09f2 (0:09f2)
 ; search if a player is facing a sign
 	ld hl, wSignCoords ; start of sign coordinates
@@ -1518,7 +1514,6 @@ CopyToRedrawRowOrColumnSrcTiles:: ; 0baa (0:0baa)
 	jr nz, .loop
 	ret
 
-	
 ScheduleSouthRowRedraw:: ; 0bb6 (0:0bb6)
 	coord hl, 0, 16
 	call CopyToRedrawRowOrColumnSrcTiles
@@ -1640,7 +1635,6 @@ JoypadOverworld:: ; 0c51 (0:0c51)
 	call AreInputsSimulated
 	ret
 
-	
 ForceBikeDown:: ; 0c65 (0:0c65)
 	ld a, [wFlags_D733]
 	bit 3, a ; check if a trainer wants a challenge
@@ -1655,7 +1649,6 @@ ForceBikeDown:: ; 0c65 (0:0c65)
 	ld [hJoyHeld], a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
 
-	
 AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld a, [wd730]
 	bit 7, a
@@ -1675,7 +1668,6 @@ AreInputsSimulated:: ; 0c7b (0:0c7b)
 	ld [hJoyReleased], a
 	ret
 
-	
 ; if done simulating button presses
 .doneSimulating
 	xor a
@@ -1692,7 +1684,6 @@ AreInputsSimulated:: ; 0c7b (0:0c7b)
 	res 7, [hl]
 	ret
 
-	
 GetSimulatedInput:: ; 0cb3 (0:0cb3)
 	ld hl, wSimulatedJoypadStatesIndex
 	dec [hl]
@@ -1719,8 +1710,8 @@ GetSimulatedInput:: ; 0cb3 (0:0cb3)
 ; It seems that this function has a bug in it, but due to luck, it doesn't
 ; show up. After detecting a sprite collision, it jumps to the code that
 ; checks if the next tile is passable instead of just directly jumping to the
-; "collision detected" code. However, it doesn't store the next tile in c, 
-; so the old value of c is used. 2429 is always called before this function, 
+; "collision detected" code. However, it doesn't store the next tile in c,
+; so the old value of c is used. 2429 is always called before this function,
 ; and 2429 always sets c to 0xF0. There is no 0xF0 background tile, so it
 ; is considered impassable and it is detected as a collision.
 CollisionCheckOnWater:: ; 0cca (0:0cca)
@@ -1770,7 +1761,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 
 .noCollision ; ...and they do the same mistake twice
 	and a
-.done 
+.done
 	ret
 
 ; function to run the current map's script
@@ -1808,7 +1799,6 @@ LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
 	ld de, RedSprite ; $4180
 	jr LoadPlayerSpriteGraphicsCommon
 
-	
 LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld a, [wd473]
 	and a
@@ -1826,7 +1816,6 @@ LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld de, SurfingPikachuSprite ; 3f:6def
 	jr LoadPlayerSpriteGraphicsCommon
 
-	
 LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)
 	ld b, BANK(RedSprite) ; not sure, but probably same bank (5)
 	ld de, SeelSprite
@@ -2018,7 +2007,6 @@ CopySignData:: ; 0eb3 (0:0eb3)
 	jr nz, .signcopyloop
 	ret
 
-	
 ; function to load map data
 LoadMapData:: ; 1241 (0:1241)
 	ld a, [H_LOADEDROMBANK]
@@ -2083,7 +2071,7 @@ ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
 asm_0f4d: ; 0f4d (0:0f4d)
 	jpab Func_f02da
 	ret ; useless?
-	
+
 ResetMapVariables:: ; 0f56 (0:0f56)
 	ld a, $98
 	ld [wMapViewVRAMPointer + 1], a
@@ -2178,9 +2166,9 @@ ForceBikeOrSurf:: ; 0fd6 (0:0fd6)
 	ld hl, LoadPlayerSpriteGraphics
 	call Bankswitch
 	jp PlayDefaultMusic ; update map/player state?
-	
+
 ; Handle the player jumping down
-; a ledge in the overworld.	
+; a ledge in the overworld.
 HandleMidJump:: ; 0fe1 (0:0fe1)
 	ld a, [wd736]
 	bit 6, a ; jumping down a ledge?
@@ -2193,7 +2181,7 @@ IsSpinning:: ; 0ff0 (0:0ff0)
 	bit 7, a
 	ret z ; no spinning
 	jpba LoadSpinnerArrowTiles ; spin while moving
-	
+
 Func_0ffe:: ; 0ffe (0:0ffe)
 	jpab IsPlayerTalkingToPikachu
 
@@ -2266,7 +2254,6 @@ ZeroSpriteStateData:: ; 1050 (0:1050)
 	jr nz, .loop
 	ret
 
-	
 DisableRegularSprites:: ; 1060 (0:1060)
 ; initialize all C100-C1FF sprite entries to disabled (other than player's and pikachu)
 	ld hl, wSpriteStateData1 + 1 * $10 + 2
@@ -2279,7 +2266,6 @@ DisableRegularSprites:: ; 1060 (0:1060)
 	jr nz, .loop
 	ret
 
-	
 LoadSprite:: ; 106f (0:106f)
 	push hl
 	ld b, $0
@@ -2310,7 +2296,6 @@ LoadSprite:: ; 106f (0:106f)
 	pop hl
 	ret
 
-	
 .trainerSprite
 	ld a, [hli]
 	ld [$ff8d], a ; save trainer class
@@ -2326,7 +2311,6 @@ LoadSprite:: ; 106f (0:106f)
 	pop hl
 	ret
 
-	
 .itemBallSprite
 	ld a, [hli]
 	ld [$ff8d], a ; save item number
@@ -2338,4 +2322,4 @@ LoadSprite:: ; 106f (0:106f)
 	xor a
 	ld [hl], a ; zero byte 1, since it is not used
 	pop hl
-	ret ; end of home/overworld.asm = 10b9 (0:10b9) 
+	ret ; end of home/overworld.asm = 10b9 (0:10b9)

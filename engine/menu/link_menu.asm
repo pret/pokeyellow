@@ -175,7 +175,7 @@ Func_f531b:: ; f531b (3d:531b)
 	ld [wUnknownSerialCounter+1],a
 	and a
 	ret
-	
+
 Func_f5476:: ; f5476 (3d:5476)
 	ld hl,ColosseumIneligibleText
 	call PrintText
@@ -207,7 +207,7 @@ PokeCup:: ; f548e (3d:548e)
 	dec b
 	jr nz,.loop
 	dec hl
-	dec hl 
+	dec hl
 	cp [hl] ; is third mon second mon?
 	jp z,DuplicateSpecies
 	dec hl ; wPartySpecies
@@ -253,7 +253,7 @@ PikaCup:: ; f54e4 (3d:54e4)
 	dec b
 	jr nz,.loop
 	dec hl
-	dec hl 
+	dec hl
 	cp [hl] ; is third mon second mon?
 	jp z,DuplicateSpecies
 	dec hl ; wPartySpecies
@@ -285,7 +285,7 @@ PikaCup:: ; f54e4 (3d:54e4)
 	jp nc,CombinedLevelsAbove50
 	xor a
 	ret
-	
+
 PetitCup:: ; f553a (3d:553a)
 	ld hl,wPartyCount
 	ld a,[hli]
@@ -299,7 +299,7 @@ PetitCup:: ; f553a (3d:553a)
 	dec b
 	jr nz,.loop
 	dec hl
-	dec hl 
+	dec hl
 	cp [hl] ; is third mon second mon?
 	jp z,DuplicateSpecies
 	dec hl ; wPartySpecies
@@ -406,7 +406,7 @@ PetitCup:: ; f553a (3d:553a)
 	jp nc,CombinedLevelsAbove80
 	xor a
 	ret
-	
+
 NotThreeMonsInParty:: ; f561d (3d:516d)
 	ld hl,Colosseum3MonsText
 	call PrintText
@@ -418,67 +418,67 @@ MewInParty:: ; f5626 (3d:f5626)
 	call PrintText
 	ld a,$2
 	ret
-	
+
 DuplicateSpecies:: ; f562f (3d:f562f)
 	ld hl,ColosseumDifferentMonsText
 	call PrintText
 	ld a,$3
 	ret
-	
+
 LevelAbove55:: ; f5638 (3d:5638)
 	ld hl,ColosseumMaxL55Text
 	call PrintText
 	ld a,$4
 	ret
-	
+
 LevelUnder50:: ; f5641 (3d:5641)
 	ld hl,ColosseumMinL50Text
 	call PrintText
 	ld a,$5
 	ret
-	
+
 CombinedLevelsGreaterThan155:: ; f5641 (3d:564a)
 	ld hl,ColosseumTotalL155Text
 	call PrintText
 	ld a,$6
 	ret
-	
+
 LevelAbove30:: ; f5653 (3d:5653)
 	ld hl,ColosseumMaxL30Text
 	call PrintText
 	ld a,$7
 	ret
-	
+
 LevelUnder25:: ; f565c (3d:565c)
 	ld hl,ColosseumMinL25Text
 	call PrintText
 	ld a,$8
 	ret
-	
+
 CombinedLevelsAbove80:: ; f5665 (3d:5665)
 	ld hl,ColosseumTotalL80Text
 	call PrintText
 	ld a,$9
 	ret
-	
+
 LevelAbove20:: ; f566e (3d:566e)
 	ld hl,ColosseumMaxL20Text
 	call PrintText
 	ld a,$a
 	ret
-	
+
 LevelUnder15:: ; f5677 (3d:5677)
 	ld hl,ColosseumMinL15Text
 	call PrintText
 	ld a,$b
 	ret
-	
+
 CombinedLevelsAbove50:: ; f5680 (3d:5680)
 	ld hl,ColosseumTotalL50Text
 	call PrintText
 	ld a,$c
 	ret
-	
+
 asm_f5689:: ; f5689 (3d:5689)
 	pop af
 	pop bc
@@ -489,7 +489,7 @@ asm_f5689:: ; f5689 (3d:5689)
 	call PrintText
 	ld a,$d
 	ret
-	
+
 asm_f569b:: ; f569b (3d:569b)
 	pop af
 	pop bc
@@ -500,7 +500,7 @@ asm_f569b:: ; f569b (3d:569b)
 	call PrintText
 	ld a,$e
 	ret
-	
+
 asm_f56ad:: ; f56ad (3d:56ad)
 	ld a,[hl]
 	ld [wd11e],a
@@ -509,7 +509,7 @@ asm_f56ad:: ; f56ad (3d:56ad)
 	call PrintText
 	ld a,$f
 	ret
-	
+
 Func_f56bd:: ; f56bd (3d:56bd)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
@@ -537,31 +537,31 @@ Func_f56bd:: ; f56bd (3d:56bd)
 	ld a,$1
 	ld [H_AUTOBGTRANSFERENABLED],a
 	ret
-	
+
 PointerTable_f56ee:: ; f56ee (3d:56ee)
 	dw Text_f56f4
 	dw Text_f5728
 	dw Text_f575b
-	
+
 Text_f56f4:: ; f56f4 (3d:56f4)
 	db "LVs of 3<pkmn>:50-55"
 	next "Sum of LVs:155 MAX"
 	next "MEW can't attend.@"
-	
+
 Text_f5728:: ; f5728 (3d:5728)
 	db "LVs of 3<pkmn>:15-20"
 	next "Sum of LVs:50 MAX"
 	next "MEW can't attend.@"
-	
+
 Text_f575b:: ; f575b (3d:575b)
 	db "3 Basic <pkmn>.LV25-30"
 	next "Sum of LVs:80 MAX"
 	next "6′8″ and 44lb MAX@"
-	
+
 Text_f5791:: ; f5791 (3d:5791)
 	db "View"
 	next "Rules@"
-	
+
 Text_f579c:: ; f579c (3d:579c)
 	db "# Cup"
 	next "Pika Cup"
@@ -623,7 +623,7 @@ ColosseumHeightText:: ; f57f8 (3d:57f8)
 ColosseumWeightText:: ; f57fd (3d:57fd)
 	TX_FAR _ColosseumWeightText ; a0b9f
 	db "@"
-	
+
 ColosseumEvolvedText:: ; f5802 (3d:5802)
 	TX_FAR _ColosseumEvolvedText ; a0bbb
 	db "@"
@@ -631,7 +631,7 @@ ColosseumEvolvedText:: ; f5802 (3d:5802)
 ColosseumIneligibleText:: ; f5807 (3d:5807)
 	TX_FAR _ColosseumIneligibleText ; a0bd4
 	db "@"
-	
+
 LinkMenu: ; f580c (3d:580c)
 	xor a
 	ld [wLetterPrintingDelayFlags], a
@@ -854,7 +854,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld e,"▷"
 	call Func_f59ec
 	jp .choseCancel
-	
+
 .asm_f59cd
 	ld hl,ColosseumVersionText
 	call PrintText
@@ -870,7 +870,7 @@ LinkMenu: ; f580c (3d:580c)
 	jp c,.choseCancel
 	ld a,$f0
 	jp .next
-	
+
 Func_f59ec:: ; f59ec (3d:59ec)
 	ld a, b
 	Coorda 6, 5
@@ -883,7 +883,7 @@ Func_f59ec:: ; f59ec (3d:59ec)
 	ld c, 40
 	call DelayFrames
 	ret
-	
+
 ColosseumWhereToText: ; f5a02 (3d:5a02)
 	TX_FAR _ColosseumWhereToText
 	db "@"
@@ -899,7 +899,7 @@ ColosseumCanceledText: ; f5a0c (3d:5a0c)
 ColosseumVersionText: ; f5a11 (3d:5a11)
 	TX_FAR _ColosseumVersionText ; 28:4c47
 	db "@"
-	
+
 TextTerminator_f5a16: ; f5a16 (3d:5a16)
 	db "@"
 

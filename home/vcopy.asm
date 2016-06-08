@@ -335,7 +335,7 @@ VBlankCopy:: ; 1c21 (0:1c21)
 	ld [H_VBCOPYSRC],sp
 	ld sp,hl
 	ld [H_VBCOPYDEST],sp
-	
+
 	ld a, [H_SPTEMP]
 	ld l, a
 	ld a, [H_SPTEMP + 1]
@@ -356,7 +356,7 @@ UpdateMovingBgTiles:: ; 1c75 (0:1c75)
 	ld a,[rLY]
 	cp $90 ; check if not in vblank period??? (maybe if vblank is too long)
 	ret c
-	
+
 	ld a, [hMovingBGTilesCounter1]
 	inc a
 	ld [hMovingBGTilesCounter1], a

@@ -484,7 +484,7 @@ ItemUseBall: ; d3ad (3:53ad)
 
 .emptyString
 	db "@"
-	
+
 ItemUseBallText00: ; d697 (3:5697)
 ;"It dodged the thrown ball!"
 ;"This pokemon can't be caught"
@@ -744,7 +744,7 @@ Func_d85d: ; d85d (3:585d)
 	ld hl, wcd6d
 .loop
 	ld a, [hli]
-	and a 
+	and a
 	jr z, .cannotEvolveWithUsedStone
 	inc hl
 	inc hl
@@ -919,7 +919,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	pop hl
 	pop af
 	ld [wWhichPokemon], a
-	
+
 	ld a, [wIsInBattle]
 	and a
 	jr z, .compareCurrentHPToMaxHP
@@ -1410,7 +1410,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	predef LearnMoveFromLevelUp ; learn level up move, if any
-	
+
 	xor a
 	ld [wForceEvolution], a
 	callabd_ModifyPikachuHappiness PIKAHAPPY_LEVELUP
@@ -1421,7 +1421,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	callab Func_2fd6a ; evolve pokemon, if appropriate
 	pop af
 	ld [wWhichPokemon], a
-	
+
 	callab TryEvolvingMon
 	ld a, $01
 	ld [wUpdateSpritesEnabled], a
@@ -1628,7 +1628,7 @@ ItemUseCardKey: ; de57 (3:de57)
 	set 7, [hl]
 	ret
 
-; These tables are probably supposed to be door locations in Silph Co., 
+; These tables are probably supposed to be door locations in Silph Co.,
 ; but they are unused.
 ; The reason there are 3 tables is unknown.
 
@@ -1681,7 +1681,7 @@ ItemUseGuardSpec: ; df11 (3:5f11)
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
-	
+
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wPlayerMonNumber]
@@ -1689,7 +1689,7 @@ ItemUseGuardSpec: ; df11 (3:5f11)
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
-	
+
 	ld hl, wPlayerBattleStatus2
 	set ProtectedByMist, [hl] ; Mist bit
 	jp PrintItemUseTextAndRemoveItem
@@ -1706,7 +1706,7 @@ ItemUseDireHit: ; df42 (3:5f42)
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
-	
+
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wPlayerMonNumber]
@@ -1714,7 +1714,7 @@ ItemUseDireHit: ; df42 (3:5f42)
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
-	
+
 	ld hl, wPlayerBattleStatus2
 	set GettingPumped, [hl] ; Focus Energy bit
 	jp PrintItemUseTextAndRemoveItem
@@ -1746,7 +1746,7 @@ ItemUseXStat: ; df69 (3:df69)
 	xor a
 	ld [H_WHOSETURN], a ; set turn to player's turn
 	callba StatModifierUpEffect ; do stat increase move
-	
+
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wPlayerMonNumber]
@@ -1754,7 +1754,7 @@ ItemUseXStat: ; df69 (3:df69)
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
-	
+
 	pop hl
 	pop af
 	ld [hld], a ; restore [wPlayerMoveEffect]
@@ -2005,10 +2005,9 @@ ItemUseSuperRod: ; e130 (3:6130)
 	ld [wRodResponse], a
 	jr DoNotGenerateFishingEncounter
 
-	
 RodResponse: ; e15b (3:615b)
 	ld [wRodResponse], a
-	
+
 	dec a ; is there a bite?
 	jr nz, DoNotGenerateFishingEncounter
 	; if yes, store level and species data
@@ -2234,7 +2233,7 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 	ret z ; if so, return
 	add a, 10 ; increase current PP by 10
 ; b holds the max PP amount and b will hold the new PP amount.
-; So, if the new amount meets or exceeds the max amount, 
+; So, if the new amount meets or exceeds the max amount,
 ; cap the amount to the max amount by leaving b unchanged.
 ; Otherwise, store the new amount in b.
 	cp b ; does the new amount meet or exceed the maximum?
@@ -2420,7 +2419,7 @@ ItemUseTMHM: ; e374 (3:6374)
 	ld a, b
 	and a
 	ret z
-	
+
 	ld a, [wWhichPokemon]
 	push af
 	ld a, d
@@ -2494,7 +2493,6 @@ Func_e4bf: ; e4bf (3:64bf)
 	ld hl, DontHavePokemonText
 	jp PrintText
 
-	
 ThrowBallAtTrainerMon: ; e4ca (3:64ca)
 	call RunDefaultPaletteCommand
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
@@ -2559,7 +2557,7 @@ BoxFullCannotThrowBallText: ; e522 (3:6522)
 DontHavePokemonText: ; e527 (3:6527)
 	TX_FAR _DontHavePokemonText
 	db "@"
-	
+
 ItemUseText00: ; e52c (3:652c)
 	TX_FAR _ItemUseText001
 	db $05

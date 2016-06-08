@@ -148,7 +148,7 @@ FillMemory:: ; 166e (0:166e)
 	dec b
 	jr nz, .loop
 	ret
-	
+
 GetFarByte:: ; 1681 (0:1681)
 ; get a byte from a:hl
 ; and return it in a

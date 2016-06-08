@@ -16,7 +16,7 @@ LoadMonData_: ; 442b (1:442b)
 	ld a, [wWhichPokemon]
 	ld e, a
 	call GetMonSpecies
-	
+
 .GetMonHeader
 	ld a, [wcf91]
 	ld [wd0b5], a ; input for GetMonHeader
@@ -47,7 +47,7 @@ LoadMonData_: ; 442b (1:442b)
 	ld de, wLoadedMon
 	ld bc, wPartyMon2 - wPartyMon1
 	jp CopyData
-	
+
 ; get species of mon e in list [wMonDataLocation] for LoadMonData
 GetMonSpecies: ; 4478 (1:4478)
 	ld hl, wPartySpecies

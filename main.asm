@@ -12,10 +12,9 @@ PICS_3 EQU $B
 PICS_4 EQU $C
 PICS_5 EQU $D
 
-
-SECTION "home",ROM0
-
 INCLUDE "home.asm"
+
+
 SECTION "bank01",ROMX,BANK[$01]
 
 INCLUDE "data/facing.asm"
@@ -67,6 +66,7 @@ INCLUDE "engine/menu/players_pc.asm"
 INCLUDE "engine/remove_pokemon.asm"
 INCLUDE "engine/display_pokedex.asm"
 
+
 SECTION "bank03",ROMX,BANK[$03]
 
 INCLUDE "engine/joypad.asm"
@@ -108,6 +108,7 @@ INCLUDE "engine/overworld/npc_pathfinding.asm"
 INCLUDE "engine/hp_bar.asm"
 INCLUDE "engine/hidden_object_functions3.asm"
 
+
 SECTION "Graphics", ROMX, BANK[GFX]
 
 PokemonLogoJapanGraphics:       INCBIN "gfx/pokemon_logo_japan.2bpp"
@@ -142,6 +143,7 @@ ShrinkPic2:  INCBIN "pic/trainer/shrink2.pic"
 
 INCLUDE "engine/menu/start_sub_menus.asm"
 INCLUDE "engine/items/tms.asm"
+
 
 SECTION "NPC Sprites 1", ROMX, BANK[NPC_SPRITES_1]
 
@@ -230,6 +232,7 @@ SeelSprite:           INCBIN "gfx/sprites/seel.2bpp"
 INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
 INCLUDE "engine/menu/pc.asm"
 
+
 SECTION "bank06",ROMX,BANK[$06]
 
 INCLUDE "data/mapHeaders/celadoncity.asm"
@@ -302,7 +305,9 @@ INCLUDE "engine/overworld/npc_movement.asm"
 INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
+
 SECTION "bank07",ROMX,BANK[$07]
+
 INCLUDE "data/mapHeaders/cinnabarisland.asm"
 INCLUDE "data/mapObjects/cinnabarisland.asm"
 CinnabarIslandBlocks: INCBIN "maps/cinnabarisland.blk"
@@ -345,7 +350,7 @@ INCLUDE "data/mapHeaders/viridianmart.asm"
 INCLUDE "scripts/viridianmart.asm"
 INCLUDE "data/mapObjects/viridianmart.asm"
 ViridianMartBlocks:
-CeladonMartBlocks:INCBIN "maps/viridianmart.blk"
+CeladonMartBlocks: INCBIN "maps/viridianmart.blk"
 
 INCLUDE "data/mapHeaders/school.asm"
 INCLUDE "scripts/school.asm"
@@ -473,6 +478,7 @@ INCLUDE "engine/menu/oaks_pc.asm"
 
 INCLUDE "engine/hidden_object_functions7.asm"
 
+
 SECTION "Pics 1", ROMX, BANK[PICS_1]
 
 RhydonPicFront:      INCBIN "pic/ymon/rhydon.pic"
@@ -538,6 +544,7 @@ TangelaPicBack:      INCBIN "pic/monback/tangelab.pic"
 
 INCLUDE "engine/battle/print_type.asm"
 INCLUDE "engine/battle/save_trainer_name.asm"
+
 
 SECTION "Pics 2", ROMX, BANK[PICS_2]
 
@@ -608,6 +615,7 @@ MoltresPicBack:      INCBIN "pic/monback/moltresb.pic"
 
 INCLUDE "engine/predefsA.asm"
 INCLUDE "engine/battle/moveEffects/leech_seed_effect.asm"
+
 
 SECTION "Pics 3", ROMX, BANK[PICS_3]
 
@@ -694,6 +702,7 @@ Func_2fd6a: ; 2fd6a (b:7d6a)
 
 INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/game_corner_slots2.asm"
+
 
 SECTION "Pics 4", ROMX, BANK[PICS_4]
 
@@ -818,6 +827,7 @@ INCLUDE "engine/titlescreen2.asm"
 INCLUDE "engine/slot_machine.asm"
 INCLUDE "engine/game_corner_slots.asm"
 
+
 SECTION "bank0E",ROMX,BANK[$0E]
 
 INCLUDE "data/moves.asm"
@@ -841,6 +851,7 @@ INCLUDE "engine/evos_moves.asm"
 SECTION "bank0F",ROMX,BANK[$0F]
 
 INCLUDE "engine/battle/core.asm"
+
 
 SECTION "bank10",ROMX,BANK[$10]
 
@@ -999,7 +1010,9 @@ SeafoamIslands5Blocks: INCBIN "maps/seafoamislands5.blk"
 
 INCLUDE "engine/overworld/dungeon_warps.asm"
 
+
 SECTION "bank12",ROMX,BANK[$12]
+
 INCLUDE "data/mapHeaders/route7.asm"
 INCLUDE "data/mapObjects/route7.asm"
 Route7Blocks: INCBIN "maps/route7.blk" ; 48051
@@ -1159,35 +1172,7 @@ INCLUDE "data/mapHeaders/mtmoon3.asm"
 INCLUDE "scripts/mtmoon3.asm"
 INCLUDE "data/mapObjects/mtmoon3.asm"
 MtMoon3Blocks: INCBIN "maps/mtmoon3.blk"
-
-MtMoon3Script_4a325: ; pikachu-related function?
-	ld a, [wd472]
-	bit 7, a
-	ret z
-	ld a, [wWalkBikeSurfState]
-	and a
-	ret nz
-
-	push hl
-	push bc
-	callab GetPikachuFacingDirectionAndReturnToE
-	pop bc
-	pop hl
-	ld a, b
-	cp e
-	ret nz
-
-	push hl
-	ld a, [wUpdateSpritesEnabled]
-	push af
-	ld a, $ff
-	ld [wUpdateSpritesEnabled], a
-	callab LoadPikachuShadowIntoVRAM
-	pop af
-	ld [wUpdateSpritesEnabled], a
-	pop hl
-	call ApplyPikachuMovementData
-	ret
+INCLUDE "scripts/mtmoon3_2.asm"
 
 INCLUDE "data/mapHeaders/safarizonewest.asm"
 INCLUDE "scripts/safarizonewest.asm"
@@ -1339,7 +1324,9 @@ INCLUDE "engine/menu/prize_menu.asm"
 
 INCLUDE "engine/hidden_object_functions14.asm"
 
+
 SECTION "bank15",ROMX,BANK[$15]
+
 INCLUDE "data/mapHeaders/route2.asm"
 INCLUDE "data/mapObjects/route2.asm"
 Route2Blocks: INCBIN "maps/route2.blk" ; 54086
@@ -1514,6 +1501,7 @@ INCLUDE "engine/overworld/saffron_guards.asm"
 
 
 SECTION "bank17",ROMX,BANK[$17]
+
 CeruleanMartBlocks:
 VermilionMartBlocks:
 LavenderMartBlocks:
@@ -1538,13 +1526,7 @@ INCLUDE "data/mapHeaders/redshouse2f.asm"
 INCLUDE "scripts/redshouse2f.asm"
 INCLUDE "data/mapObjects/redshouse2f.asm"
 
-StarterDex:
-	ld a, %01001011
-	ld [wPokedexOwned], a
-	predef ShowPokedexData
-	xor a
-	ld [wPokedexOwned], a
-	ret
+INCLUDE "engine/predefs17.asm"
 
 INCLUDE "data/mapHeaders/museum1f.asm"
 INCLUDE "scripts/museum1f.asm"
@@ -1665,24 +1647,13 @@ VictoryRoad1Blocks: INCBIN "maps/victoryroad1.blk"
 
 INCLUDE "engine/evolution.asm"
 
-SetPartyMonTypes::
-	call GetPredefRegisters
-	ld bc, 5
-	add hl, bc
-	ld a, [wd11e]
-	ld [wd0b5], a
-	push hl
-	call GetMonHeader
-	pop hl
-	ld a, [wMonHType1]
-	ld [hli], a
-	ld a, [wMonHType2]
-	ld [hl], a
-	ret
+INCLUDE "engine/predefs17_2.asm"
 
 INCLUDE "engine/hidden_object_functions17.asm"
 
+
 SECTION "bank18",ROMX,BANK[$18]
+
 ViridianForestBlocks: INCBIN "maps/viridianforest.blk"
 UndergroundPathNSBlocks: INCBIN "maps/undergroundpathns.blk"
 UndergroundPathWEBlocks: INCBIN "maps/undergroundpathwe.blk"
@@ -1798,7 +1769,9 @@ SilphCo11Blocks: INCBIN "maps/silphco11.blk"
 
 INCLUDE "engine/hidden_object_functions18.asm"
 
+
 SECTION "bank19",ROMX,BANK[$19]
+
 Overworld_GFX:     INCBIN "gfx/tilesets/overworld.2bpp"
 Overworld_Block:   INCBIN "gfx/blocksets/overworld.bst"
 RedsHouse1_GFX:
@@ -1816,8 +1789,10 @@ Interior_Block:    INCBIN "gfx/blocksets/interior.bst"
 Plateau_GFX:       INCBIN "gfx/tilesets/plateau.t10.2bpp"
 Plateau_Block:     INCBIN "gfx/blocksets/plateau.bst"
 
+
 SECTION "bank1A",ROMX,BANK[$1A]
-Unknown_68000: INCBIN "gfx/blueversion.1bpp"
+
+INCBIN "gfx/blueversion.1bpp" ; unused
 
 Dojo_GFX:
 Gym_GFX:           INCBIN "gfx/tilesets/gym.2bpp"
@@ -1838,7 +1813,9 @@ Forest_Block:      INCBIN "gfx/blocksets/forest.bst"
 Facility_GFX:      INCBIN "gfx/tilesets/facility.2bpp"
 Facility_Block:    INCBIN "gfx/blocksets/facility.bst"
 
+
 SECTION "bank1B",ROMX,BANK[$1B]
+
 Cemetery_GFX:      INCBIN "gfx/tilesets/cemetery.t4.2bpp"
 Cemetery_Block:    INCBIN "gfx/blocksets/cemetery.bst"
 Cavern_GFX:        INCBIN "gfx/tilesets/cavern.t14.2bpp"
@@ -1853,6 +1830,7 @@ Club_GFX:          INCBIN "gfx/tilesets/club.t5.2bpp"
 Club_Block:        INCBIN "gfx/blocksets/club.bst"
 Underground_GFX:   INCBIN "gfx/tilesets/underground.t7.2bpp"
 Underground_Block: INCBIN "gfx/blocksets/underground.bst"
+
 
 SECTION "bank1C",ROMX,BANK[$1C]
 
@@ -1934,25 +1912,7 @@ INCLUDE "data/mapHeaders/cinnabargym.asm"
 INCLUDE "scripts/cinnabargym.asm"
 INCLUDE "data/mapObjects/cinnabargym.asm"
 CinnabarGymBlocks: INCBIN "maps/cinnabargym.blk"
-
-CinnabarGymScript_753de:
-	callab Func_f2150
-	jp TextScriptEnd
-
-CinnabarGymScript_753e9:
-	push hl
-	ld hl, wd475
-	bit 7, [hl]
-	res 7, [hl]
-	pop hl
-	ret
-
-CinnabarGymScript_753f3:
-	push hl
-	ld hl, wd475
-	bit 7, [hl]
-	pop hl
-	ret
+INCLUDE "scripts/cinnabargym2.asm"
 
 INCLUDE "data/mapHeaders/lab1.asm"
 INCLUDE "scripts/lab1.asm"
@@ -2012,6 +1972,7 @@ INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/overworld/hidden_items.asm"
 
+
 SECTION "bank1E",ROMX,BANK[$1E]
 
 INCLUDE "engine/battle/animations.asm"
@@ -2027,16 +1988,20 @@ RedFishingRodTiles:   INCBIN "gfx/red_fishingrod_tiles.2bpp"
 
 INCLUDE "data/animations.asm"
 
+
 SECTION "bank2f",ROMX[$5000],BANK[$2F]
 
 INCLUDE "engine/bg_map_attributes.asm"
+
 
 SECTION "bank30",ROMX,BANK[$30]
 
 ; This whole bank is garbage data.
 INCBIN "engine/bank30.bin"
 
+
 SECTION "bank39",ROMX,BANK[$39]
+
 Pic_e4000: ; e4000
 INCBIN "gfx/pikachu/unknown_e4000.pic"
 GFX_e40cc: ; e40cc
@@ -2152,23 +2117,12 @@ INCBIN "gfx/pikachu/unknown_e7b83.2bpp"
 GFX_e7d13: ; e7d13
 INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
 
+
 SECTION "bank3A",ROMX,BANK[$3A]
+
 INCLUDE "text/monster_names.asm"
-IsPlayerJustOutsideMap: ; e876c (3a:476c)
-	ld a, [wYCoord]
-	ld b, a
-	ld a, [wCurMapHeight]
-	call Func_e877e
-	ret z
-	ld a, [wXCoord]
-	ld b, a
-	ld a, [wCurMapWidth]
-Func_e877e:
-	add a
-	cp b
-	ret z
-	inc b
-	ret
+
+INCLUDE "engine/overworld/is_player_just_outside_map.asm"
 
 INCLUDE "engine/printer.asm"
 INCLUDE "engine/diploma_3a.asm"
@@ -2178,42 +2132,22 @@ SurfingPikachu3GraphicsEnd:
 
 INCLUDE "engine/unknown_ea3ea.asm"
 
-FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
-	ld a, [wCurMap]
-	cp POKEMONTOWER_7
-	ret z ; the Rockets on Pokemon Tower 7F leave after battling, so don't freeze them
-	ld hl, RivalIDs
-	ld a, [wEngagedTrainerClass]
-	ld b, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .notRival
-	cp b
-	ret z ; the rival leaves after battling, so don't freeze him
-	jr .loop
-.notRival
-	ld a, [wSpriteIndex]
-	ld [H_SPRITEINDEX], a
-	jp SetSpriteMovementBytesToFF
-
-RivalIDs: ; eaa20 (3a:6a20)
-	db OPP_SONY1
-	db OPP_SONY2
-	db OPP_SONY3
-	db $ff
+INCLUDE "engine/overworld/npc_movement_2.asm"
 
 SECTION "bank3C",ROMX,BANK[$3C]
 
 INCLUDE "engine/bank3c.asm"
 
+
 SECTION "bank3D",ROMX,BANK[$3D]
 
 INCLUDE "engine/bank3d.asm"
 
+
 SECTION "bank3E",ROMX,BANK[$3E]
 
 INCLUDE "engine/bank3e.asm"
+
 
 SECTION "bank3F",ROMX,BANK[$3F]
 

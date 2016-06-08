@@ -418,7 +418,7 @@ FishingAnim: ; 70816 (1c:4816)
 	cp $2
 	ld hl, NothingHereText
 	jr z, .done
-	
+
 ; there was a bite
 
 ; shake the player's sprite vertically
@@ -432,7 +432,7 @@ FishingAnim: ; 70816 (1c:4816)
 	call Delay3
 	dec b
 	jr nz, .loop
-	
+
 ; If the player is facing up, hide the fishing rod so it doesn't overlap with
 ; the exclamation bubble that will be shown next.
 	ld a, [wSpriteStateData1 + 2]

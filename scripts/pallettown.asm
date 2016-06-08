@@ -127,7 +127,7 @@ PalletTownScript3: ; 18f12 (6:4f12)
 	ld a, SPRITE_FACING_LEFT
 .asm_18f01
 	ld [wSpriteStateData1 + 1 * $10 + 9], a
-	
+
 	; trigger the next script
 	ld a, 4
 	ld [W_PALLETTOWNCURSCRIPT], a
@@ -188,7 +188,7 @@ PalletTownScript6: ; 18f87 (6:4f87)
 	ld a, 7
 	ld [W_PALLETTOWNCURSCRIPT], a
 	ret
-	
+
 PalletTownScript7:
 	ld a, [wNPCMovementScriptPointerTableNum]
 	and a
@@ -198,7 +198,7 @@ PalletTownScript7:
 	ld a, 8
 	ld [W_PALLETTOWNCURSCRIPT], a
 	ret
-	
+
 PalletTownScript8:
 	CheckEvent EVENT_DAISY_WALKING
 	jr nz, .asm_18f9e

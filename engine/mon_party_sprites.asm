@@ -227,12 +227,12 @@ MonPartySpritePointers: ; 7184d (1c:584d)
 	db $10 / $10 ; $10 bytes
 	db BANK(MonPartySprites)
 	dw vSprites + $260
-	
+
 	dw PikachuSprite
 	db $40 / $10 ; $40 bytes
 	db BANK(PikachuSprite)
 	dw vSprites + $280
-	
+
 	dw MonPartySprites + $100
 	db $40 / $10 ; $40 bytes
 	db BANK(MonPartySprites)

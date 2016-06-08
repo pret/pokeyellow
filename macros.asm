@@ -44,10 +44,6 @@ const: MACRO
 const_value = const_value + 1
 ENDM
 
-dr: MACRO
-INCBIN "baserom.gbc",\1,\2 - \1
-ENDM
-
 homecall_jump: MACRO
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -68,7 +64,7 @@ homecall_jump_sf: MACRO
 	ld a,b
 	jp BankswitchCommon
 	ENDM
-	
+
 homecall: MACRO
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -94,13 +90,13 @@ switchbank: MACRO
 	ld a, BANK(\1)
 	call BankswitchCommon
 	ENDM
-	
+
 callbs: MACRO
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
 	ENDM
-	
+
 callba: MACRO
 	ld b, BANK(\1)
 	ld hl, \1
@@ -119,7 +115,7 @@ calladb_ModifyPikachuHappiness: MACRO
 	ld b, BANK(ModifyPikachuHappiness)
 	call Bankswitch
 	ENDM
-	
+
 callabd_ModifyPikachuHappiness: MACRO
 	ld hl, ModifyPikachuHappiness
 	ld b, BANK(ModifyPikachuHappiness)
@@ -383,11 +379,11 @@ predef_jump: MACRO
 	predef_id \1
 	jp Predef
 	ENDM
-	
+
 tx_pre_const: MACRO
 	const \1_id
 	ENDM
-	
+
 add_tx_pre: MACRO
 \1_id:: dw \1
 ENDM

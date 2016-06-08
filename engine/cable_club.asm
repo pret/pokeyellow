@@ -978,7 +978,7 @@ CableClub_DrawHorizontalLine: ; 5b94 (1:5b94)
 	dec d
 	jr nz, .drawHorizontalLineLoop
 	ret
-	
+
 LoadTrainerInfoTextBoxTiles: ; 5b9a (1:5b9a)
 	ld de, TrainerInfoTextBoxTileGraphics
 	ld hl, vChars2 + $760

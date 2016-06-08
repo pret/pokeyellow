@@ -165,7 +165,7 @@ Serial_SyncAndExchangeNybbleDouble: ; 7131 (1:7131)
 	ld [wUnknownSerialCounter], a
 	ld [wUnknownSerialCounter + 1], a
 	ret
-	
+
 CableClubNPCAreaReservedFor2FriendsLinkedByCableText: ; 7188 (1:7188)
 	TX_FAR _CableClubNPCAreaReservedFor2FriendsLinkedByCableText
 	db "@"

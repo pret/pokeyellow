@@ -93,7 +93,7 @@ Func_4e32: ; 4e32 (1:4e32)
 	add b
 	ld [wSpriteStateData1 + 2], a
 	ret
-	
+
 UpdateNPCSprite: ; 4e3e (1:4e3e)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	swap a
@@ -836,7 +836,7 @@ AdvanceScriptedNPCAnimFrameCounter: ; 5264 (1:5264)
 	and $3
 	ld [hSpriteAnimFrameCounter], a
 	ret
-	
+
 Func_5274: ; 5274 (1:5274)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $7
@@ -853,7 +853,7 @@ Func_5274: ; 5274 (1:5274)
 	and $3
 	ld [hl], a                       ; advance to next animation frame every 4 ticks (16 ticks total for one step)
 	ret
-	
+
 Func_5288: ; 5288 (1:5288)
 ; nice lookup table
 ; a is supposedly [wNPCMovementDirections + $fe]
@@ -914,7 +914,7 @@ Func_5288: ; 5288 (1:5288)
 .asm_52e1
 	call Func_532b
 	jr .asm_530b
-	
+
 .asm_52e6
 	call Func_5337
 	call Func_5349
@@ -939,7 +939,7 @@ Func_5288: ; 5288 (1:5288)
 	call UpdateSpriteImage
 	scf
 	ret
-	
+
 .asm_530b
 	call Func_5337
 	call Func_5349
@@ -952,27 +952,27 @@ Func_5288: ; 5288 (1:5288)
 	call UpdateSpriteImage
 	scf
 	ret
-	
+
 Func_531f: ; 531f (1:531f)
 	lb de, 1, 0
 	ld c, SPRITE_FACING_DOWN
 	ret
-	
+
 Func_5325: ; 5325 (1:5325)
 	lb de, -1, 0
 	ld c, SPRITE_FACING_UP
 	ret
-	
+
 Func_532b: ; 532b (1:532b)
 	lb de, 0, 1
 	ld c, SPRITE_FACING_RIGHT
 	ret
-	
+
 Func_5331: ; 5331 (1:5331)
 	lb de, 0, -1
 	ld c, SPRITE_FACING_LEFT
 	ret
-	
+
 Func_5337: ; 5337 (1:5337)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $9
@@ -987,7 +987,7 @@ Func_5337: ; 5337 (1:5337)
 	inc l
 	ld [hl], e          ; c1x5 (update X movement delta)
 	ret
-	
+
 Func_5349: ; 5349 (1:5349)
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -1000,7 +1000,7 @@ Func_5349: ; 5349 (1:5349)
 	add e
 	ld [hl], a          ; update X position
 	ret
-	
+
 Func_5357: ; 5357 (1:5357)
 	call Func_5274
 	ld a, [H_CURRENTSPRITEOFFSET]

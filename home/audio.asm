@@ -136,7 +136,7 @@ PlayMusic:: ; 2211 (0:2211)
 	ld [wAudioSavedROMBank], a
 	ld a, b
 	jr PlaySound
-	
+
 Func_2223:: ; 2223 (0:2223)
 	xor a
 	ld [wChannelSoundIDs + CH4], a
@@ -145,7 +145,7 @@ Func_2223:: ; 2223 (0:2223)
 	ld [wChannelSoundIDs + CH7], a
 	ld [rNR10], a
 	ret
-	
+
 StopAllMusic:: ; 2233 (0:2233)
 	ld a, $FF
 	ld [wNewSoundID], a
@@ -232,7 +232,7 @@ InitMusicVariables:: ; 22aa (0:22aa)
 	pop de
 	pop hl
 	ret
-	
+
 InitSFXVariables:: ; 22c0 (0:22c0)
 	push hl
 	push de
@@ -242,7 +242,7 @@ InitSFXVariables:: ; 22c0 (0:22c0)
 	pop de
 	pop hl
 	ret
-	
+
 StopAllAudio:: ; 22d6 (0:22d6)
 	push hl
 	push de
@@ -252,7 +252,7 @@ StopAllAudio:: ; 22d6 (0:22d6)
 	pop de
 	pop hl
 	ret
-	
+
 DetermineAudioFunction:: ; 22ec (0:22ec)
 	ld a, [H_LOADEDROMBANK]
 	push af

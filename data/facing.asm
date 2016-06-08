@@ -13,12 +13,12 @@ SpriteFacingAndAnimationTable: ; 4000 (1:4000)
 	dw SpriteFacingLeftAndWalking         ; facing left, walk animation frame 1
 	dw SpriteFacingLeftAndStanding        ; facing left, walk animation frame 2
 	dw SpriteFacingLeftAndWalking         ; facing left, walk animation frame 3
-	
+
 	dw SpriteFacingRightAndStanding       ; facing right, walk animation frame 0
 	dw SpriteFacingRightAndWalking        ; facing right, walk animation frame 1
 	dw SpriteFacingRightAndStanding       ; facing right, walk animation frame 2
 	dw SpriteFacingRightAndWalking        ; facing right, walk animation frame 3
-	
+
 	dw SpriteFacingDownAndStanding        ; ---
 	dw SpriteFacingDownAndStanding        ; This table is used for sprites $a and $b.
 	dw SpriteFacingDownAndStanding        ; All orientation and animation parameters
@@ -69,7 +69,7 @@ SpriteFacingUpAndStanding: ; 4075 (1:4075)
 	db $00,$08,$05,$00                                      ; top right
 	db $08,$00,$06,OAMFLAG_CANBEMASKED                      ; bottom left
 	db $08,$08,$07,OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
-	
+
 SpriteFacingUpAndWalking: ; 4086 (1:4086)
 	db $04
 ; Sprite OAM Parameters
@@ -85,7 +85,7 @@ SpriteFacingUpAndWalking2: ; 4097 (1:4097)
 	db $00,$00,$85,OAMFLAG_VFLIPPED                                           ; top right
 	db $08,$08,$86,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED                     ; bottom left
 	db $08,$00,$87,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
-	
+
 SpriteFacingLeftAndStanding: ; 40a8 (1:40a8)
 	db $04
 ; Sprite OAM Parameters
@@ -109,7 +109,7 @@ SpriteFacingRightAndStanding: ; 40ca (1:40ca)
 	db $00,$00,$09,OAMFLAG_VFLIPPED                                           ; top right
 	db $08,$08,$0a,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED                     ; bottom left
 	db $08,$00,$0b,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
-	
+
 SpriteFacingRightAndWalking: ; 40db (1:40db)
 	db $04
 ; Sprite OAM Parameters
@@ -117,14 +117,14 @@ SpriteFacingRightAndWalking: ; 40db (1:40db)
 	db $00,$00,$89,OAMFLAG_VFLIPPED                                           ; top right
 	db $08,$08,$8a,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED                     ; bottom left
 	db $08,$00,$8b,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
-	
+
 SpriteSpecialCase ; 40ec (1:40ec)
 	db $09
 ; Sprite OAM Parameters
-	db -$4,-$4,$00,$00                                      
-	db -$4,$04,$01,$00                                      
-	db -$4,$0c,$00,OAMFLAG_VFLIPPED                         
-	db $04,-$4,$01,$00                                      
+	db -$4,-$4,$00,$00
+	db -$4,$04,$01,$00
+	db -$4,$0c,$00,OAMFLAG_VFLIPPED
+	db $04,-$4,$01,$00
 	db $04,$04,$02,$00
 	db $04,$0c,$01,$00
 	db $0c,-$4,$00,OAM_VFLIP | OAMFLAG_CANBEMASKED

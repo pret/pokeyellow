@@ -72,7 +72,7 @@ SetPokedexOwnedFlag: ; f676c (3d:676c)
 
 UnknownTerminator_f6794: ; f6794 (3d:6794)
 	db "@"
-	
+
 GotMonText: ; f6795 (3d:6795)
 	TX_FAR _GotMonText
 	db $0b
