@@ -1619,7 +1619,7 @@ wTextPredefFlag:: ; cf11
 wPredefParentBank:: ; cf12
 	ds 1
 
-wSpriteIndex:: ds 1
+wSpriteIndex:: ds 1 ; cf13
 
 wCurSpriteMovement2:: ; cf14
 ; movement byte 2 of current sprite

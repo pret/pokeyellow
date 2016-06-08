@@ -944,3 +944,15 @@ pikapic_looptofinish: macro
 	pikapic_waitbgmap
 	pikapic_jump .loop\@
 	endm
+
+pikapic_def: macro
+\1_id: dw \1
+endm
+
+dpikapic: macro
+	db (\1_id - PikaPicAnimPointers) / 2
+	endm
+
+ldpikapic: macro
+	ld \1, (\2_id - PikaPicAnimPointers) / 2
+	endm

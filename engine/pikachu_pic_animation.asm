@@ -2,25 +2,25 @@ GetPikaPicAnimationScriptIndex: ; fd978 (3f:5978)
 	ld hl, PikachuMoodLookupTable
 	ld a, [wPikachuMood]
 	ld d, a
-.asm_fd97f
+.get_mood_param
 	ld a, [hli]
 	inc hl
 	cp d
-	jr c, .asm_fd97f
+	jr c, .get_mood_param
 	dec hl
 	ld e, [hl]
 	ld hl, PikaPicAnimationScriptPointerLookupTable
 	ld a, [wPikachuHappiness]
 	ld d, a
 	ld bc, 6
-.asm_fd990
+.get_happiness_param
 	ld a, [hl]
 	cp d
-	jr nc, .asm_fd997
+	jr nc, .got_animation
 	add hl, bc
-	jr .asm_fd990
+	jr .get_happiness_param
 
-.asm_fd997
+.got_animation
 	ld d, 0
 	add hl, de
 	ld a, [hl]
@@ -29,22 +29,63 @@ GetPikaPicAnimationScriptIndex: ; fd978 (3f:5978)
 PikachuMoodLookupTable:
 ; First byte: mood threshold
 ; Second byte: column index in PikaPicAnimationScriptPointerLookupTable
-	db $28, 1
-	db $7f, 2
-	db $80, 3
-	db $d2, 4
-	db $ff, 5
+	db  40, 1
+	db 127, 2
+	db 128, 3
+	db 210, 4
+	db 255, 5
 
 PikaPicAnimationScriptPointerLookupTable:
 ; First byte: happiness threshold
 ; Remaining bytes: loaded based on Pikachu's mood
-	db $32, $0e, $0e, $06, $0d, $0d
-	db $64, $09, $09, $05, $0c, $0c
-	db $82, $03, $03, $01, $08, $08
-	db $a0, $03, $03, $04, $0f, $0f
-	db $c8, $11, $11, $07, $02, $02
-	db $fa, $11, $11, $10, $0a, $0a
-	db $ff, $11, $11, $13, $14, $14
+	db 50
+	dpikapic PikaPicAnimScript14
+	dpikapic PikaPicAnimScript14
+	dpikapic PikaPicAnimScript6
+	dpikapic PikaPicAnimScript13
+	dpikapic PikaPicAnimScript13
+
+	db 100
+	dpikapic PikaPicAnimScript9
+	dpikapic PikaPicAnimScript9
+	dpikapic PikaPicAnimScript5
+	dpikapic PikaPicAnimScript12
+	dpikapic PikaPicAnimScript12
+
+	db 130
+	dpikapic PikaPicAnimScript3
+	dpikapic PikaPicAnimScript3
+	dpikapic PikaPicAnimScript1
+	dpikapic PikaPicAnimScript8
+	dpikapic PikaPicAnimScript8
+
+	db 160
+	dpikapic PikaPicAnimScript3
+	dpikapic PikaPicAnimScript3
+	dpikapic PikaPicAnimScript4
+	dpikapic PikaPicAnimScript15
+	dpikapic PikaPicAnimScript15
+
+	db 200
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript7
+	dpikapic PikaPicAnimScript2
+	dpikapic PikaPicAnimScript2
+
+	db 250
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript16
+	dpikapic PikaPicAnimScript10
+	dpikapic PikaPicAnimScript10
+
+	db 255
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript17
+	dpikapic PikaPicAnimScript19
+	dpikapic PikaPicAnimScript20
+	dpikapic PikaPicAnimScript20
 
 StarterPikachuEmotionCommand_pikapic: ; fd9d0 (3f:59d0)
 	ld a, [H_AUTOBGTRANSFERENABLED]
@@ -55,18 +96,18 @@ StarterPikachuEmotionCommand_pikapic: ; fd9d0 (3f:59d0)
 	ld [wExpressionNumber2], a
 	inc de
 	push de
-	call Func_fd9e4
+	call .RunPikapic
 	pop de
 	pop af
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-Func_fd9e4:
+.RunPikapic:
 	call PlacePikapicTextBoxBorder
 	callab LoadOverworldPikachuFrontpicPalettes
 	call ResetPikaPicAnimBuffer
 	call LoadCurrentPikaPicAnimScriptPointer
-	call Func_fda9a
+	call ExecutePikaPicAnimScript
 	call PlacePikapicTextBoxBorder
 	call RunDefaultPaletteCommand
 	ret
@@ -113,7 +154,7 @@ LoadCurrentPikaPicAnimScriptPointer:
 .valid
 	ld e, a
 	ld d, 0
-	ld hl, Pointers_fda5e
+	ld hl, PikaPicAnimPointers
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -122,47 +163,47 @@ LoadCurrentPikaPicAnimScriptPointer:
 	call UpdatePikaPicAnimPointer
 	ret
 
-Pointers_fda5e:
-	dw Data_fe28a ; 00
-	dw Data_fe28a ; 01
-	dw Data_fe2a4 ; 02
-	dw Data_fe2be ; 03
-	dw Data_fe2d8 ; 04
-	dw Data_fe2f2 ; 05
-	dw Data_fe30c ; 06
-	dw Data_fe326 ; 07
-	dw Data_fe340 ; 08
-	dw Data_fe35a ; 09
-	dw Data_fe374 ; 0a
-	dw Data_fe390 ; 0b
-	dw Data_fe3aa ; 0c
-	dw Data_fe3c4 ; 0d
-	dw Data_fe3de ; 0e
-	dw Data_fe3f8 ; 0f
-	dw Data_fe412 ; 10
-	dw Data_fe42c ; 11
-	dw Data_fe446 ; 12
-	dw Data_fe460 ; 13
-	dw Data_fe47a ; 14
-	dw Data_fe494 ; 15
-	dw Data_fe4b4 ; 16
-	dw Data_fe4ce ; 17
-	dw Data_fe4e8 ; 18
-	dw Data_fe502 ; 19
-	dw Data_fe520 ; 1a
-	dw Data_fe53e ; 1b
-	dw Data_fe558 ; 1c
-	dw Data_fe28a ; 1d
+PikaPicAnimPointers:
+	pikapic_def PikaPicAnimScript0  ; 00
+	pikapic_def PikaPicAnimScript1  ; 01
+	pikapic_def PikaPicAnimScript2  ; 02
+	pikapic_def PikaPicAnimScript3  ; 03
+	pikapic_def PikaPicAnimScript4  ; 04
+	pikapic_def PikaPicAnimScript5  ; 05
+	pikapic_def PikaPicAnimScript6  ; 06
+	pikapic_def PikaPicAnimScript7  ; 07
+	pikapic_def PikaPicAnimScript8  ; 08
+	pikapic_def PikaPicAnimScript9  ; 09
+	pikapic_def PikaPicAnimScript10 ; 0a
+	pikapic_def PikaPicAnimScript11 ; 0b
+	pikapic_def PikaPicAnimScript12 ; 0c
+	pikapic_def PikaPicAnimScript13 ; 0d
+	pikapic_def PikaPicAnimScript14 ; 0e
+	pikapic_def PikaPicAnimScript15 ; 0f
+	pikapic_def PikaPicAnimScript16 ; 10
+	pikapic_def PikaPicAnimScript17 ; 11
+	pikapic_def PikaPicAnimScript18 ; 12
+	pikapic_def PikaPicAnimScript19 ; 13
+	pikapic_def PikaPicAnimScript20 ; 14
+	pikapic_def PikaPicAnimScript21 ; 15
+	pikapic_def PikaPicAnimScript22 ; 16
+	pikapic_def PikaPicAnimScript23 ; 17
+	pikapic_def PikaPicAnimScript24 ; 18
+	pikapic_def PikaPicAnimScript25 ; 19
+	pikapic_def PikaPicAnimScript26 ; 1a
+	pikapic_def PikaPicAnimScript27 ; 1b
+	pikapic_def PikaPicAnimScript28 ; 1c
+	pikapic_def PikaPicAnimScript29 ; 1d
 
 
-Func_fda9a:
+ExecutePikaPicAnimScript:
 .loop
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call RunPikaPicAnimScript
-	call Func_fdad5
-	call Func_fdad6
-	call Func_fdad5
+	call RunPikaPicAnimSetupScript
+	call DummyFunction_fdad5
+	call AnimateCurrentPikaPicAnimFrame
+	call DummyFunction_fdad5
 	ld a, $01
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call PikaPicAnimTimerAndJoypad
@@ -197,20 +238,20 @@ CheckPikaPicAnimTimer:
 	ld a, $01
 	ret
 
-Func_fdad5:
+DummyFunction_fdad5:
 	ret
 
-Func_fdad6:
+AnimateCurrentPikaPicAnimFrame:
 	ld bc, wPikaPicAnimObjectDataBuffer
 	ld a, 4
-.asm_fdadb
+.loop
 	push af
 	push bc
 	ld hl, 0
 	add hl, bc
 	ld a, [hli]
 	and a
-	jr z, .asm_fdb26
+	jr z, .skip
 	ld a, [hli]
 	ld [wCurPikaPicAnimObject], a
 	ld a, [hli]
@@ -226,7 +267,7 @@ Func_fdad6:
 	ld a, [hli]
 	ld [wCurPikaPicAnimObject + 3], a
 	push bc
-	call Func_fdb7e
+	call LoadPikaPicAnimObjectData
 	pop bc
 	ld hl, 1
 	add hl, bc
@@ -244,7 +285,7 @@ Func_fdad6:
 	ld [hli], a
 	ld a, [wCurPikaPicAnimObject + 3]
 	ld [hl], a
-.asm_fdb26
+.skip
 	pop bc
 	ld hl, 8
 	add hl, bc
@@ -252,7 +293,7 @@ Func_fdad6:
 	ld c, l
 	pop af
 	dec a
-	jr nz, .asm_fdadb
+	jr nz, .loop
 	ret
 
 PikaPicAnimCommand_object:
@@ -311,16 +352,16 @@ PikaPicAnimCommand_deleteobject:
 	ld [hl], a
 	ret
 
-Func_fdb7e:
-.asm_fdb7e
+LoadPikaPicAnimObjectData:
+.loop
 	ld a, [wCurPikaPicAnimObject]
 	cp $23
-	jr c, .asm_fdb87
-	ld a, $04
-.asm_fdb87
+	jr c, .valid
+	ld a, $4
+.valid
 	ld e, a
-	ld d, $00
-	ld hl, Pointers_fdbc9
+	ld d, 0
+	ld hl, PikaPicAnimOAMPointers
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -333,301 +374,43 @@ Func_fdb7e:
 	add hl, de
 	ld a, [hli]
 	cp $e0
-	jr z, .asm_fdba1
-	jr .asm_fdbaa
+	jr z, .end
+	jr .init
 
-.asm_fdba1
+.end
 	xor a
 	ld [wCurPikaPicAnimObject + 1], a
 	ld [wCurPikaPicAnimObject + 2], a
-	jr .asm_fdb7e
+	jr .loop
 
-.asm_fdbaa
+.init
 	push hl
-	call Func_fdd62
+	call LoadCurPikaPicObjectTilemap
 	pop hl
 	ld a, [hl]
 	and a
-	jr z, .asm_fdbc8
+	jr z, .done
 	ld a, [wCurPikaPicAnimObject + 2]
 	inc a
 	ld [wCurPikaPicAnimObject + 2], a
 	cp [hl]
-	jr nz, .asm_fdbc8
+	jr nz, .done
 	xor a
 	ld [wCurPikaPicAnimObject + 2], a
 	ld a, [wCurPikaPicAnimObject + 1]
 	inc a
 	ld [wCurPikaPicAnimObject + 1], a
-.asm_fdbc8
+.done
 	ret
 
-Pointers_fdbc9:
-	dw Data_fdc11
-	dw Data_fdc11
-	dw Data_fdc29
-	dw Data_fdc32
-	dw Data_fdc3b
-	dw Data_fdc3e
-	dw Data_fdc41
-	dw Data_fdc50
-	dw Data_fdc61
-	dw Data_fdc6e
-	dw Data_fdc77
-	dw Data_fdc84
-	dw Data_fdc8d
-	dw Data_fdc98
-	dw Data_fdca5
-	dw Data_fdcb2
-	dw Data_fdcb7
-	dw Data_fdcc2
-	dw Data_fdccb
-	dw Data_fdcd4
-	dw Data_fdcdf
-	dw Data_fdce8
-	dw Data_fdcf1
-	dw Data_fdcf6
-	dw Data_fdd01
-	dw Data_fdd0a
-	dw Data_fdd13
-	dw Data_fdd1c
-	dw Data_fdd27
-	dw Data_fdd2c
-	dw Data_fdd35
-	dw Data_fdd40
-	dw Data_fdd47
-	dw Data_fdd54
-	dw Data_fdd59
-	dw Data_fdc3b
+INCLUDE "data/pikachu_pic_objects.asm"
 
-Data_fdc11:
-	db $01, $14
-	db $07, $02
-	db $01, $01
-	db $07, $02
-	db $01, $01
-	db $07, $08
-	db $e0
-Data_fdc1e:
-	db $02, $02
-	db $01, $01
-	db $02, $02
-	db $01, $01
-	db $02, $08
-	db $e0
-Data_fdc29:
-	db $00, $08
-	db $08, $08
-	db $00, $08
-	db $08, $08
-	db $e0
-Data_fdc32:
-	db $08, $08
-	db $00, $08
-	db $08, $08
-	db $00, $08
-	db $e0
-Data_fdc3b:
-	db $01, $00
-	db $e0
-Data_fdc3e:
-	db $09, $00
-	db $e0
-Data_fdc41:
-	db $00, $02
-	db $0e, $04
-	db $00, $08
-	db $0e, $04
-	db $00, $40
-	db $0e, $04
-	db $00, $40
-	db $e0
-Data_fdc50:
-	db $00, $04
-	db $0f, $04
-	db $00, $04
-	db $0f, $04
-	db $00, $08
-	db $0f, $04
-	db $00, $08
-	db $0f, $04
-	db $e0
-Data_fdc61:
-	db $10, $01
-	db $00, $01
-	db $10, $01
-	db $00, $40
-	db $10, $01
-	db $00, $40
-	db $e0
-Data_fdc6e:
-	db $00, $08
-	db $11, $08
-	db $00, $14
-	db $11, $08
-	db $e0
-Data_fdc77:
-	db $00, $02
-	db $12, $02
-	db $00, $02
-	db $12, $40
-	db $00, $03
-	db $12, $40
-	db $e0
-Data_fdc84:
-	db $00, $08
-	db $13, $40
-	db $00, $04
-	db $13, $40
-	db $e0
-Data_fdc8d:
-	db $14, $08
-	db $00, $02
-	db $14, $08
-	db $00, $02
-	db $14, $08
-	db $e0
-Data_fdc98:
-	db $15, $04
-	db $00, $08
-	db $15, $04
-	db $00, $40
-	db $15, $04
-	db $00, $40
-	db $e0
-Data_fdca5:
-	db $00, $02
-	db $16, $02
-	db $00, $02
-	db $16, $02
-	db $00, $14
-	db $16, $02
-	db $e0
-Data_fdcb2:
-	db $00, $08
-	db $17, $08
-	db $e0
-Data_fdcb7:
-	db $00, $08
-	db $17, $03
-	db $18, $05
-	db $17, $03
-	db $00, $05
-	db $e0
-Data_fdcc2:
-	db $00, $14
-	db $19, $08
-	db $00, $14
-	db $19, $08
-	db $e0
-Data_fdccb:
-	db $00, $0d
-	db $1a, $0c
-	db $00, $64
-	db $1a, $08
-	db $e0
-Data_fdcd4:
-	db $00, $05
-	db $1b, $05
-	db $00, $05
-	db $1b, $05
-	db $00, $64
-	db $e0
-Data_fdcdf:
-	db $00, $02
-	db $1c, $02
-	db $00, $02
-	db $1c, $02
-	db $e0
-Data_fdce8:
-	db $00, $05
-	db $1d, $05
-	db $00, $05
-	db $1d, $05
-	db $e0
-Data_fdcf1:
-	db $1e, $08
-	db $00, $64
-	db $e0
-Data_fdcf6:
-	db $00, $0a
-	db $1f, $03
-	db $00, $03
-	db $1f, $03
-	db $00, $64
-	db $e0
-Data_fdd01:
-	db $00, $03
-	db $20, $64
-	db $00, $08
-	db $20, $08
-	db $e0
-Data_fdd0a:
-	db $21, $06
-	db $00, $06
-	db $21, $06
-	db $00, $06
-	db $e0
-Data_fdd13:
-	db $00, $08
-	db $22, $0c
-	db $00, $08
-	db $22, $0c
-	db $e0
-Data_fdd1c:
-	db $00, $08
-	db $09, $02
-	db $0a, $01
-	db $0b, $01
-	db $0c, $64
-	db $e0
-Data_fdd27:
-	db $00, $08
-	db $24, $64
-	db $e0
-Data_fdd2c:
-	db $00, $10
-	db $25, $10
-	db $00, $10
-	db $25, $10
-	db $e0
-Data_fdd35:
-	db $00, $06
-	db $26, $06
-	db $00, $06
-	db $26, $06
-	db $00, $64
-	db $e0
-Data_fdd40:
-	db $00, $06
-	db $09, $06
-	db $0a, $64
-	db $e0
-Data_fdd47:
-	db $00, $14
-	db $09, $08
-	db $00, $14
-	db $09, $08
-	db $0a, $08
-	db $0b, $64
-	db $e0
-Data_fdd54:
-	db $00, $04
-	db $09, $64
-	db $e0
-Data_fdd59:
-    db $00, $0c
-	db $09, $0c
-	db $00, $0c
-	db $09, $64
-	db $e0
-
-Func_fdd62:
+LoadCurPikaPicObjectTilemap:
 	and a
 	ret z
 	ld e, a
 	ld d, 0
-	ld hl, Pointers_fddb8
+	ld hl, PikaPicTilemapPointers
 	add hl, de
 	add hl, de
 	ld e, [hl]
@@ -641,34 +424,34 @@ Func_fdd62:
 	inc de
 	push de
 	push bc
-	call Func_fdd98
+	call .GetYCoordinate
 	pop bc
 	pop de
-.asm_fdd7c
+.row
 	push bc
 	push hl
 	ld a, [wd456]
 	ld c, a
-.asm_fdd82
+.col
 	ld a, [de]
 	inc de
 	cp $ff
-	jr z, .asm_fdd8a
+	jr z, .skip
 	add c
 	ld [hl], a
-.asm_fdd8a
+.skip
 	inc hl
 	dec b
-	jr nz, .asm_fdd82
+	jr nz, .col
 	pop hl
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec c
-	jr nz, .asm_fdd7c
+	jr nz, .row
 	ret
 
-Func_fdd98:
+.GetYCoordinate:
 	push bc
 	ld a, [wd458]
 	ld b, a
@@ -687,234 +470,7 @@ Func_fdd98:
 	pop bc
 	ret
 
-Pointers_fddb8:
-	dw Data_fde0e
-	dw Data_fde0f
-	dw Data_fde2a
-	dw Data_fde60
-	dw Data_fde63
-	dw Data_fde67
-	dw Data_fde6b
-	dw Data_fde45
-	dw Data_fde6b
-	dw Data_fdfaa
-	dw Data_fdfc5
-	dw Data_fdfe0
-	dw Data_fdffb
-	dw Data_fe016
-	dw Data_fde81
-	dw Data_fde9c
-	dw Data_fdeb7
-	dw Data_fded2
-	dw Data_fdeed
-	dw Data_fdf08
-	dw Data_fdf23
-	dw Data_fdf3e
-	dw Data_fdf59
-	dw Data_fdf74
-	dw Data_fdf8f
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfaa
-	dw Data_fdfc5
-	dw Data_fdfe0
-	dw Data_fde0f
-
-Data_fde0e:
-	db $ff ; unused
-
-Data_fde0f: ; fde0f
-	db 5, 5
-	db $00, $05, $0a, $0f, $14
-	db $01, $06, $0b, $10, $15
-	db $02, $07, $0c, $11, $16
-	db $03, $08, $0d, $12, $17
-	db $04, $09, $0e, $13, $18
-
-Data_fde2a: ; fde2a
-	db 5, 5
-	db $19, $1e, $23, $28, $2d
-	db $1a, $1f, $24, $29, $2e
-	db $1b, $20, $25, $2a, $2f
-	db $1c, $21, $26, $2b, $30
-	db $1d, $22, $27, $2c, $31
-
-Data_fde45: ; fde45
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $20, $25, $ff, $ff
-	db $ff, $21, $26, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fde60: ; fde60
-	db 1, 1
-	db $00
-
-Data_fde63: ; fde63
-	db 2, 1
-	db $00
-	db $01
-
-Data_fde67: ; fde67
-	db 1, 2
-	db $00, $01
-
-Data_fde6b: ; fde6b
-	db 2, 2
-	db $00, $01
-	db $02, $03
-
-Data_fde71: ; fde71
-	db 3, 2
-	db $00, $01
-	db $02, $03
-	db $04, $05
-
-Data_fde79: ; fde79
-	db 2, 3
-	db $00, $01, $02
-	db $03, $04, $05
-
-Data_fde81: ; fde81
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $02, $03, $04
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fde9c: ; fde9c
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-
-Data_fdeb7: ; fdeb7
-	db 5, 5
-	db $00, $01, $ff, $ff, $ff
-	db $02, $03, $ff, $ff, $ff
-	db $04, $05, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fded2: ; fded2
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-	db $0a, $0b, $0c, $0d, $0e
-	db $0f, $10, $11, $12, $13
-
-Data_fdeed: ; fdeed
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $00, $01
-	db $ff, $ff, $ff, $02, $03
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fdf08: ; fdf08
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $ff, $ff, $ff
-	db $02, $03, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fdf23: ; fdf23
-	db 5, 5
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-	db $0a, $0b, $0c, $0d, $0e
-	db $0f, $10, $11, $12, $13
-	db $14, $15, $16, $17, $18
-
-Data_fdf3e: ; fdf3e
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-	db $ff, $ff, $ff, $ff, $ff
-
-Data_fdf59: ; fdf59
-	db 5, 5
-	db $ff, $ff, $ff, $ff, $ff
-	db $ff, $ff, $ff, $ff, $ff
-	db $00, $01, $ff, $ff, $ff
-	db $02, $03, $ff, $ff, $ff
-	db $04, $05, $ff, $ff, $ff
-
-Data_fdf74: ; fdf74
-	db 5, 5
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-	db $0a, $0b, $0c, $0d, $0e
-	db $0f, $10, $11, $12, $13
-	db $14, $15, $16, $17, $18
-
-Data_fdf8f: ; fdf8f
-	db 5, 5
-	db $19, $1a, $1b, $1c, $1d
-	db $1e, $1f, $20, $21, $22
-	db $23, $24, $25, $26, $27
-	db $28, $29, $2a, $2b, $2c
-	db $2d, $2e, $2f, $30, $31
-
-Data_fdfaa: ; fdfaa
-	db 5, 5
-	db $00, $01, $02, $03, $04
-	db $05, $06, $07, $08, $09
-	db $0a, $0b, $0c, $0d, $0e
-	db $0f, $10, $11, $12, $13
-	db $14, $15, $16, $17, $18
-
-Data_fdfc5: ; fdfc5
-	db 5, 5
-	db $19, $1a, $1b, $1c, $1d
-	db $1e, $1f, $20, $21, $22
-	db $23, $24, $25, $26, $27
-	db $28, $29, $2a, $2b, $2c
-	db $2d, $2e, $2f, $30, $31
-
-Data_fdfe0: ; fdfe0
-	db 5, 5
-	db $32, $33, $34, $35, $36
-	db $37, $38, $39, $3a, $3b
-	db $3c, $3d, $3e, $3f, $40
-	db $41, $42, $43, $44, $45
-	db $46, $47, $48, $49, $4a
-
-Data_fdffb: ; fdffb
-	db 5, 5
-	db $4b, $4c, $4d, $4e, $4f
-	db $50, $51, $52, $53, $54
-	db $55, $56, $57, $58, $59
-	db $5a, $5b, $5c, $5d, $5e
-	db $5f, $60, $61, $62, $63
-
-Data_fe016: ; fe016
-	db 5, 5
-	db $64, $65, $66, $67, $68
-	db $69, $6a, $6b, $6c, $6d
-	db $6e, $6f, $70, $71, $72
-	db $73, $74, $75, $76, $77
-	db $78, $79, $7a, $7b, $7c
+INCLUDE "data/pikachu_pic_tilemaps.asm"
 
 LoadPikaPicAnimGFXHeader:
 	push hl
@@ -936,8 +492,8 @@ LoadPikaPicAnimGFXHeader:
 	pop hl
 	ret
 
-RunPikaPicAnimScript:
-	call Func_fe066
+RunPikaPicAnimSetupScript:
+	call .CheckAndAdvanceTimer
 	ret c
 	xor a
 	ld [wPikaPicAnimPointerSetupFinished], a
@@ -945,7 +501,7 @@ RunPikaPicAnimScript:
 	call GetPikaPicAnimByte
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_fe071
+	ld hl, .Jumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -957,7 +513,7 @@ RunPikaPicAnimScript:
 	jr z, .loop
 	ret
 
-Func_fe066:
+.CheckAndAdvanceTimer:
 	ld a, [wPikaPicAnimDelay]
 	and a
 	ret z
@@ -966,7 +522,7 @@ Func_fe066:
 	scf
 	ret
 
-Jumptable_fe071:
+.Jumptable:
 	dw PikaPicAnimCommand_nop ; 00, 0 params
 	dw PikaPicAnimCommand_writebyte ; 01, 1 param
 	dw PikaPicAnimCommand_loadgfx ; 02, 1 param
@@ -980,7 +536,7 @@ Jumptable_fe071:
 	dw PikaPicAnimCommand_setduration ; 0a, 1 dw param
 	dw PikaPicAnimCommand_cry ; 0b, 1 param
 	dw PikaPicAnimCommand_thunderbolt ; 0c, 0 params
-	dw PikaPicAnimCommand_waitbgmap ; 0d, 0 params (ret)
+	dw PikaPicAnimCommand_run ; 0d, 0 params (ret)
 	dw PikaPicAnimCommand_ret ; 0e, 0 params (ret)
 
 PikaPicAnimCommand_nop:
@@ -991,9 +547,9 @@ PikaPicAnimCommand_ret:
 	ld [wPikaPicAnimTimer], a
 	xor a
 	ld [wPikaPicAnimTimer + 1], a
-	jr PikaPicAnimCommand_waitbgmap
+	jr PikaPicAnimCommand_run
 
-Func_fe09b:
+; XXX
 	ret
 
 PikaPicAnimCommand_setduration:
@@ -1003,7 +559,7 @@ PikaPicAnimCommand_setduration:
 	ld [wPikaPicAnimTimer + 1], a
 	ret
 
-PikaPicAnimCommand_waitbgmap:
+PikaPicAnimCommand_run:
 	ld a, $ff
 	ld [wPikaPicAnimPointerSetupFinished], a
 	ret
@@ -1068,11 +624,11 @@ PikaPicAnimCommand_loadgfx:
 	cp a, $ff
 	jr z, .compressed
 	call RequestPikaPicAnimGFX
-	jr .asm_fe109
+	jr .done
 
 .compressed
 	call DecompressRequestPikaPicAnimGFX
-.asm_fe109
+.done
 	pop af
 	ld [hTilesetType], a
 	pop af
@@ -1176,9 +732,9 @@ CheckIfThereIsRoomForPikaPicAnimGFX:
 	add e
 	ld [wPikaPicUsedGFXCount], a
 	cp $80
-	jr z, .asm_fe1a7
+	jr z, .okay
 	jr nc, .failed
-.asm_fe1a7
+.okay
 	ld a, [hl]
 	and a
 	jr .pop_ret
@@ -1264,7 +820,7 @@ PikaPicAnimLoadThunderboltAudio:
 	ret
 
 PikaPicAnimThunderboltFlashScreen:
-	ld hl, Data_fe242
+	ld hl, PikaPicAnimThunderboltPals
 .loop
 	ld a, [hli]
 	cp $ff

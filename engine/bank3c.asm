@@ -1,7 +1,7 @@
 INCLUDE "engine/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 
-ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
+ResetStatusAndHalveMoneyOnBlackout: ; f0274 (3c:4274)
 ; Reset player status on blackout.
 	xor a
 	ld [wd435], a
@@ -50,31 +50,31 @@ ResetStatusAndHalveMoneyOnBlackout:: ; f0274 (3c:4274)
 	ld [wJoyIgnore], a
 	predef_jump HealParty
 
-Func_f02da:: ; f02da (3c:42da)
+Func_f02da: ; f02da (3c:42da)
 	ld a, [wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
-	jr z, .asm_f02ee
+	jr z, .verm_gym
 	ld c, a
-	ld hl, Pointer_f02fa
-.asm_f02e5
+	ld hl, .MapList
+.search_loop
 	ld a, [hli]
 	cp c
-	jr z, .asm_f02f4
+	jr z, .in_list
 	cp a, $ff
-	jr nz, .asm_f02e5
+	jr nz, .search_loop
 	ret
 
-.asm_f02ee
+.verm_gym
 	ld hl, wd126
 	set 6, [hl]
 	ret
 
-.asm_f02f4
+.in_list
 	ld hl, wd126
 	set 5, [hl]
 	ret
 
-Pointer_f02fa:: ; f02fa (3c:42fa)
+.MapList ; f02fa (3c:42fa)
 	db SILPH_CO_2F
 	db SILPH_CO_3F
 	db SILPH_CO_4F
@@ -102,16 +102,16 @@ Pointer_f02fa:: ; f02fa (3c:42fa)
 	db AGATHAS_ROOM
 	db $ff
 
-BeachHouse_GFX:: ; f0314 (3c:4314)
+BeachHouse_GFX: ; f0314 (3c:4314)
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
 
-BeachHouse_Block:: ; f0914 (3c:4914)
+BeachHouse_Block: ; f0914 (3c:4914)
 	INCBIN "gfx/blocksets/beachhouse.bst"
 
-Func_f0a54:: ; f0a54 (3c:4a54)
+Func_f0a54: ; f0a54 (3c:4a54)
 	ret
 
-Func_f0a55:: ; f0a55 (3c:4a55)
+Func_f0a55: ; f0a55 (3c:4a55)
 ; referenced in an unused function
 	ld hl, Pointer_f0a76 ; 3c:4a76
 .loop
@@ -138,7 +138,7 @@ Func_f0a55:: ; f0a55 (3c:4a55)
 	call CopyData
 	ret
 
-Pointer_f0a76:: ; f0a76 (3c:4a76)
+Pointer_f0a76: ; f0a76 (3c:4a76)
 	dbbw BLUES_HOUSE, Pointer_f0a7bEnd - Pointer_f0a7b, Pointer_f0a7b
 	db $ff
 

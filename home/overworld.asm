@@ -1945,9 +1945,9 @@ asm_0dbd
 	predef LoadTilesetHeader
 	ld a, [wd72e]
 	bit 5, a ; did a battle happen immediately before this?
-	jr nz, .asm_0e73
-	callab Func_fc4fa ; 3f:44fa
-.asm_0e73
+	jr nz, .skip_pika_spawn
+	callab SchedulePikachuSpawnForAfterText ; 3f:44fa
+.skip_pika_spawn
 	callab LoadWildData ; 3:4b62
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a, [wCurMapHeight] ; map height in 4x4 tile blocks
@@ -2150,7 +2150,7 @@ IgnoreInputForHalfSecond: ; 0fc3 (0:0fc3)
 	ld [wIgnoreInputCounter], a
 	ld hl, wd730
 	ld a, [hl]
-	or $26
+	or %00100110 ; $26
 	ld [hl], a ; set ignore input bit
 	ret
 

@@ -40,7 +40,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call DelayFrames
 	call CheckPikachuFollowingPlayer
 	jr nz, .playerPikachuNotOnScreen
-	call Func_152d
+	call DisablePikachuOverworldSpriteDrawing
 	callab IsStarterPikachuInOurParty
 	call c, Func_6eaa
 .playerPikachuNotOnScreen
@@ -64,7 +64,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call c, Func_6eaa
 	ld a, $5
 	ld [wPikachuSpawnState], a
-	call Func_1525
+	call EnablePikachuOverworldSpriteDrawing
 .doNotReturnPikachu
 	lb bc, 1, 0
 	call Func_6ebb

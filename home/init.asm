@@ -3,8 +3,6 @@ SoftReset:: ; 1d08 (0:1d08)
 	call GBPalWhiteOut
 	ld c, 32
 	call DelayFrames
-	; fallthrough
-
 Init:: ; 1d10 (0:1d10)
 ;  Program init.
 
@@ -99,7 +97,7 @@ rLCDC_DEFAULT EQU %11100011
 
 	predef LoadSGB
 
-	ld a, $1f ; BANK(SFX_1f_67)
+	ld a, BANK(SFX_Shooting_Star)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	ld a, $9c
