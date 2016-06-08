@@ -1,4 +1,4 @@
-FanClubScript: ; 59b70 (16:5b70)
+FanClubScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, FanClubScriptPointers
 	ld a, [W_FANCLUBCURSCRIPT]
@@ -68,7 +68,7 @@ PikachuMovementScript_59a8c:
 	db $1e
 	db $3f
 
-FanClubTextPointers: ; 59b84 (16:5b84)
+FanClubTextPointers:
 	dw FanClubText1
 	dw FanClubText2
 	dw FanClubText3
@@ -302,6 +302,6 @@ Text_59c2e:
 	TX_FAR FanClubChairPrintText4
 	db "@"
 
-FanClubText6: ; 59c88 (16:5c88)
+FanClubText6:
 	TX_FAR _FanClubText6
 	db "@"

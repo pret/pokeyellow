@@ -20,4 +20,3 @@ _CinnabarPokecenterText3::
 	para "I think it's"
 	line "worth a try!"
 	done
-

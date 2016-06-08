@@ -1,4 +1,4 @@
-LanceScript: ; 5a2ae (16:62ae)
+LanceScript:
 	call LanceScript_5a2c4
 	call EnableAutoTextBoxDrawing
 	ld hl, LanceTrainerHeaders
@@ -8,7 +8,7 @@ LanceScript: ; 5a2ae (16:62ae)
 	ld [W_LANCECURSCRIPT], a
 	ret
 
-LanceScript_5a2c4: ; 5a2c4 (16:62c4)
+LanceScript_5a2c4:
 	ld hl, wd126
 	bit 5, [hl]
 	res 5, [hl]
@@ -34,22 +34,22 @@ LanceScript_5a2c4: ; 5a2c4 (16:62c4)
 .asm_5a2f0
 	predef_jump ReplaceTileBlock
 
-LanceScript_5a2f5: ; 5a2f5 (16:62f5)
+LanceScript_5a2f5:
 	xor a
 	ld [W_LANCECURSCRIPT], a
 	ret
 
-LanceScriptPointers: ; 5a2fa (16:62fa)
+LanceScriptPointers:
 	dw LanceScript0
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw LanceScript2
 	dw LanceScript3
 	dw LanceScript4
 
-LanceScript4: ; 5a304 (16:6304)
+LanceScript4:
 	ret
 
-LanceScript0: ; 5a305 (16:6305)
+LanceScript0:
 	CheckEvent EVENT_BEAT_LANCE
 	ret nz
 	ld hl, CoordsData_5a33e
@@ -74,7 +74,7 @@ LanceScript0: ; 5a305 (16:6305)
 	call PlaySound
 	jp LanceScript_5a2c4
 
-CoordsData_5a33e: ; 5a33e (16:633e)
+CoordsData_5a33e:
 	db $01,$05
 	db $02,$06
 	db $0B,$05
@@ -82,7 +82,7 @@ CoordsData_5a33e: ; 5a33e (16:633e)
 	db $10,$18
 	db $FF
 
-LanceScript2: ; 5a349 (16:6349)
+LanceScript2:
 	call EndTrainerBattle
 	ld a, [wIsInBattle]
 	cp $ff
@@ -91,7 +91,7 @@ LanceScript2: ; 5a349 (16:6349)
 	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
-LanceScript_5a35b: ; 5a35b (16:635b)
+LanceScript_5a35b:
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld hl, wSimulatedJoypadStatesEnd
@@ -105,14 +105,14 @@ LanceScript_5a35b: ; 5a35b (16:635b)
 	ld [W_CURMAPSCRIPT], a
 	ret
 
-RLEList_5a379: ; 5a379 (16:6379)
+RLEList_5a379:
 	db D_UP, $0D
 	db D_LEFT, $0C
 	db D_DOWN, $07
 	db D_LEFT, $06
 	db $FF
 
-LanceScript3: ; 5a382 (16:6382)
+LanceScript3:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -123,11 +123,11 @@ LanceScript3: ; 5a382 (16:6382)
 	ld [W_CURMAPSCRIPT], a
 	ret
 
-LanceTextPointers: ; 5a395 (16:6395)
+LanceTextPointers:
 	dw LanceText1
 
-LanceTrainerHeaders: ; 5a397 (16:6397)
-LanceTrainerHeader0: ; 5a397 (16:6397)
+LanceTrainerHeaders:
+LanceTrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_LANCES_ROOM_TRAINER_0
 	db ($0 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_LANCES_ROOM_TRAINER_0
@@ -138,21 +138,21 @@ LanceTrainerHeader0: ; 5a397 (16:6397)
 
 	db $ff
 
-LanceText1: ; 5a3a4 (16:63a4)
+LanceText1:
 	TX_ASM
 	ld hl, LanceTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
-LanceBeforeBattleText: ; 5a3ae (16:63ae)
+LanceBeforeBattleText:
 	TX_FAR _LanceBeforeBattleText
 	db "@"
 
-LanceEndBattleText: ; 5a3b3 (16:63b3)
+LanceEndBattleText:
 	TX_FAR _LanceEndBattleText
 	db "@"
 
-LanceAfterBattleText: ; 5a3b8 (16:63b8)
+LanceAfterBattleText:
 	TX_FAR _LanceAfterBattleText
 	TX_ASM
 	SetEvent EVENT_BEAT_LANCE

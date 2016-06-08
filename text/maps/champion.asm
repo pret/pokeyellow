@@ -1,4 +1,4 @@
-_GaryText_760f4::
+_GaryChampionIntroText::
 	text $53, ": Hey!"
 
 	para "I was looking"
@@ -144,4 +144,3 @@ _GaryText_7612a::
 	para $52, "!"
 	line "Come with me!"
 	done
-

@@ -47,4 +47,3 @@ _TowerRescueFujiText::
 	cont "HOUSE at the foot"
 	cont "of this tower."
 	done
-

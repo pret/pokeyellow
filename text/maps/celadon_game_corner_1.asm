@@ -179,4 +179,3 @@ _CeladonGameCornerText_48f09::
 	para "A switch behind"
 	line "the poster!?"
 	cont "Let's push it!@@"
-

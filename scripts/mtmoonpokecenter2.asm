@@ -49,18 +49,18 @@ Func_f218c:
 .done
 	ret
 
-MtMoonPokecenterText_4935c: ; 4935c (12:535c)
+MtMoonPokecenterText_4935c:
 	TX_FAR _MtMoonPokecenterText_4935c
 	db "@"
 
-MtMoonPokecenterText_49361: ; 49361 (12:5361)
+MtMoonPokecenterText_49361:
 	TX_FAR _MtMoonPokecenterText_49361
 	db "@"
 
-MtMoonPokecenterText_49366: ; 49366 (12:5366)
+MtMoonPokecenterText_49366:
 	TX_FAR _MtMoonPokecenterText_49366
 	db "@"
 
-MtMoonPokecenterText_4936b: ; 4936b (12:536b)
+MtMoonPokecenterText_4936b:
 	TX_FAR _MtMoonPokecenterText_4936b
 	db "@"

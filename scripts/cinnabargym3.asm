@@ -9,11 +9,11 @@ Func_f2133:
 	call PrintText
 	ret
 
-CinnabarGymText_75ac2: ; 75ac2 (1d:5ac2)
+CinnabarGymText_75ac2:
 	TX_FAR _CinnabarGymText_75ac2
 	db "@"
 
-CinnabarGymText_75ac7: ; 75ac7 (1d:5ac7)
+CinnabarGymText_75ac7:
 	TX_FAR _CinnabarGymText_75ac7
 	db "@"
 

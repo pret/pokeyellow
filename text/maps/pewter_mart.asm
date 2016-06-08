@@ -15,4 +15,3 @@ _PewterMartText_74cd5::
 	cont "diligently, even"
 	cont "the weak ones!"
 	done
-

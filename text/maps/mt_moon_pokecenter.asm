@@ -46,4 +46,3 @@ _MtMoonPokecenterText_4936b::
 	text "MAN: Well, I don't"
 	line "give refunds!"
 	done
-

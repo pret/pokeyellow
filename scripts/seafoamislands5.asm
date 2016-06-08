@@ -1,24 +1,24 @@
-SeafoamIslands5Script: ; 46799 (11:6799)
+SeafoamIslands5Script:
 	call EnableAutoTextBoxDrawing
 	ld a, [wSeafoamIslands5CurScript]
 	ld hl, SeafoamIslands5ScriptPointers
 	jp JumpTable
 
-SeafoamIslands5Script_467a5: ; 467a5 (11:67a5)
+SeafoamIslands5Script_467a5:
 	xor a
 	ld [wJoyIgnore], a
 	ld [wSeafoamIslands5CurScript], a
 	ld [W_CURMAPSCRIPT], a
 	ret
 
-SeafoamIslands5ScriptPointers: ; 467ad (11:67ad)
+SeafoamIslands5ScriptPointers:
 	dw SeafoamIslands5Script0
 	dw SeafoamIslands5Script1
 	dw SeafoamIslands5Script2
 	dw SeafoamIslands5Script3
 	dw SeafoamIslands5Script4
 
-SeafoamIslands5Script4: ; 467b7 (11:67b7)
+SeafoamIslands5Script4:
 	ld a, [wIsInBattle]
 	cp $ff
 	jr z, SeafoamIslands5Script_467a5
@@ -27,7 +27,7 @@ SeafoamIslands5Script4: ; 467b7 (11:67b7)
 	ld [wSeafoamIslands5CurScript], a
 	ret
 
-SeafoamIslands5Script0: ; 467c7 (11:67c7)
+SeafoamIslands5Script0:
 	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	ret z
 	ld hl, CoordsData_467fe
@@ -53,14 +53,14 @@ SeafoamIslands5Script0: ; 467c7 (11:67c7)
 	ld [wSeafoamIslands5CurScript], a
 	ret
 
-CoordsData_467fe: ; 467fe (11:67fe)
+CoordsData_467fe:
 	db $11,$14
 	db $11,$15
 	db $10,$14
 	db $10,$15
 	db $FF
 
-SeafoamIslands5Script1: ; 46807 (11:6807)
+SeafoamIslands5Script1:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -70,7 +70,7 @@ SeafoamIslands5Script1: ; 46807 (11:6807)
 	ld [wSeafoamIslands5CurScript], a
 	ret
 
-SeafoamIslands5Script2: ; 46816 (11:6816)
+SeafoamIslands5Script2:
 	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
 	ld a, $0
 	jr z, .asm_46849
@@ -96,24 +96,24 @@ SeafoamIslands5Script2: ; 46816 (11:6816)
 	ld [wSeafoamIslands5CurScript], a
 	ret
 
-CoordsData_4684d: ; 4684d (11:684d)
+CoordsData_4684d:
 	db $0E,$04
 	db $0E,$05
 	db $FF
 
-RLEMovementData_46852: ; 46852 (11:6852)
+RLEMovementData_46852:
 	db D_UP,$03
 	db D_RIGHT,$02
 	db D_UP,$01
 	db $FF
 
-RLEMovementData_46859: ; 46859 (11:6859)
+RLEMovementData_46859:
 	db D_UP,$03
 	db D_RIGHT,$03
 	db D_UP,$01
 	db $FF
 
-SeafoamIslands5Script3: ; 46860 (11:6860)
+SeafoamIslands5Script3:
 	ld a, [wSimulatedJoypadStatesIndex]
 	ld b, a
 	cp $1
@@ -125,21 +125,21 @@ SeafoamIslands5Script3: ; 46860 (11:6860)
 	ld [wSeafoamIslands5CurScript], a
 	ret
 
-SeaFoamIslands5Script_46872: ; 46872 (11:6872)
+SeaFoamIslands5Script_46872:
 	xor a
 	ld [wWalkBikeSurfState], a
 	ld [wWalkBikeSurfStateCopy], a
 	jp ForceBikeOrSurf
 
-SeafoamIslands5TextPointers: ; 4687c (11:687c)
+SeafoamIslands5TextPointers:
 	dw BoulderText
 	dw BoulderText
 	dw SeafoamIslands5Text3
 	dw SeafoamIslands5Text4
 	dw SeafoamIslands5Text5
 
-SeafoamIslands5TrainerHeaders: ; 46886 (11:6886)
-SeafoamIslands5TrainerHeader0: ; 46886 (11:6886)
+SeafoamIslands5TrainerHeaders:
+SeafoamIslands5TrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_SEAFOAM_ISLANDS_5_TRAINER_0
 	db ($0 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_SEAFOAM_ISLANDS_5_TRAINER_0
@@ -150,7 +150,7 @@ SeafoamIslands5TrainerHeader0: ; 46886 (11:6886)
 
 	db $ff
 
-SeafoamIslands5Text3: ; 46893 (11:6893)
+SeafoamIslands5Text3:
 	TX_ASM
 	ld hl, SeafoamIslands5TrainerHeader0
 	call TalkToTrainer
@@ -158,7 +158,7 @@ SeafoamIslands5Text3: ; 46893 (11:6893)
 	ld [wSeafoamIslands5CurScript], a
 	jp TextScriptEnd
 
-SeafoamIslands5BattleText2: ; 468a2 (11:68a2)
+SeafoamIslands5BattleText2:
 	TX_FAR _SeafoamIslands5BattleText2
 	TX_ASM
 	ld a, ARTICUNO
@@ -166,10 +166,10 @@ SeafoamIslands5BattleText2: ; 468a2 (11:68a2)
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
-SeafoamIslands5Text4: ; 468b2 (11:68b2)
+SeafoamIslands5Text4:
 	TX_FAR _SeafoamIslands5Text4
 	db "@"
 
-SeafoamIslands5Text5: ; 468b7 (11:68b7)
+SeafoamIslands5Text5:
 	TX_FAR _SeafoamIslands5Text5
 	db "@"

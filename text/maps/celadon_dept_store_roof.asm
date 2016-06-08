@@ -133,4 +133,3 @@ _VendingMachineText6::
 _VendingMachineText7::
 	text "Not thirsty!"
 	done
-

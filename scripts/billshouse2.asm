@@ -83,7 +83,7 @@ BillsHouseText_f24a9:
 	TX_FAR _BillsHouseText_1e8da
 	db "@"
 
-Func_f24ae: ; f24ae
+Func_f24ae:
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	jr nz, .asm_f24d2

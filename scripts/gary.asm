@@ -1,17 +1,17 @@
-GaryScript: ; 75f1d (1d:5f1d)
+GaryScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, GaryScriptPointers
 	ld a, [W_GARYCURSCRIPT]
 	call JumpTable
 	ret
 
-GaryScript_75f29: ; 75f29 (1d:5f29)
+GaryScript_75f29:
 	xor a
 	ld [wJoyIgnore], a
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScriptPointers: ; 75f31 (1d:5f31)
+GaryScriptPointers:
 	dw GaryScript0
 	dw GaryScript1
 	dw GaryScript2
@@ -24,10 +24,10 @@ GaryScriptPointers: ; 75f31 (1d:5f31)
 	dw GaryScript9
 	dw GaryScript10
 
-GaryScript0: ; 75f47 (1d:5f47)
+GaryScript0:
 	ret
 
-GaryScript1: ; 75f48 (1d:5f48)
+GaryScript1:
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld hl, wSimulatedJoypadStatesEnd
@@ -40,13 +40,13 @@ GaryScript1: ; 75f48 (1d:5f48)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-RLEMovement75f63: ; 75f63 (1d:5f63)
+RLEMovement75f63:
 	db D_UP, 1
 	db D_RIGHT, 1
 	db D_UP, 3
 	db $ff
 
-GaryScript2: ; 75f6a (1d:5f6a)
+GaryScript2:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -79,7 +79,7 @@ GaryScript2: ; 75f6a (1d:5f6a)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript3: ; 75fbb (1d:5fbb)
+GaryScript3:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, GaryScript_75f29
@@ -97,7 +97,7 @@ GaryScript3: ; 75fbb (1d:5fbb)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript4: ; 75fe4 (1d:5fe4)
+GaryScript4:
 	callba Music_Cities1AlternateTempo
 	ld a, $2
 	ld [hSpriteIndexOrTextID], a
@@ -116,7 +116,7 @@ GaryScript4: ; 75fe4 (1d:5fe4)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-MovementData_76014: ; 76014 (1d:6014)
+MovementData_76014:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
@@ -124,7 +124,7 @@ MovementData_76014: ; 76014 (1d:6014)
 	db NPC_MOVEMENT_UP
 	db $FF
 
-GaryScript5: ; 7601a (1d:601a)
+GaryScript5:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -147,7 +147,7 @@ GaryScript5: ; 7601a (1d:601a)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript6: ; 76047 (1d:6047)
+GaryScript6:
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_RIGHT
@@ -160,7 +160,7 @@ GaryScript6: ; 76047 (1d:6047)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript7: ; 7605f (1d:605f)
+GaryScript7:
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	xor a ; SPRITE_FACING_DOWN
@@ -177,12 +177,12 @@ GaryScript7: ; 7605f (1d:605f)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-MovementData_76080: ; 76080 (1d:6080)
+MovementData_76080:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db $FF
 
-GaryScript8: ; 76083 (1d:6083)
+GaryScript8:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -193,7 +193,7 @@ GaryScript8: ; 76083 (1d:6083)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript9: ; 76099 (1d:6099)
+GaryScript9:
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld hl, wSimulatedJoypadStatesEnd
@@ -206,12 +206,12 @@ GaryScript9: ; 76099 (1d:6099)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-RLEMovement760b4: ; 760b4 (1d:60b4)
+RLEMovement760b4:
 	db D_UP, 4
 	db D_LEFT, 1
 	db $ff
 
-GaryScript10: ; 760b9 (1d:60b9)
+GaryScript10:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -221,7 +221,7 @@ GaryScript10: ; 760b9 (1d:60b9)
 	ld [W_GARYCURSCRIPT], a
 	ret
 
-GaryScript_760c8: ; 760c8 (1d:60c8)
+GaryScript_760c8:
 	ld a, $f0
 	ld [wJoyIgnore], a
 	call DisplayTextID
@@ -229,14 +229,14 @@ GaryScript_760c8: ; 760c8 (1d:60c8)
 	ld [wJoyIgnore], a
 	ret
 
-GaryTextPointers: ; 760d6 (1d:60d6)
+GaryTextPointers:
 	dw GaryText1
 	dw GaryText2
 	dw GaryText3
 	dw GaryText4
 	dw GaryText5
 
-GaryText1: ; 760e0 (1d:60e0)
+GaryText1:
 	TX_ASM
 	CheckEvent EVENT_BEAT_CHAMPION_RIVAL
 	ld hl, GaryText_760f4
@@ -246,27 +246,27 @@ GaryText1: ; 760e0 (1d:60e0)
 	call PrintText
 	jp TextScriptEnd
 
-GaryText_760f4: ; 760f4 (1d:60f4)
-	TX_FAR _GaryText_760f4
+GaryText_760f4:
+	TX_FAR _GaryChampionIntroText
 	db "@"
 
-GaryText_760f9: ; 760f9 (1d:60f9)
+GaryText_760f9:
 	TX_FAR _GaryText_760f9
 	db "@"
 
-GaryText_760fe: ; 760fe (1d:60fe)
+GaryText_760fe:
 	TX_FAR _GaryText_760fe
 	db "@"
 
-GaryText_76103: ; 76103 (1d:6103)
+GaryText_76103:
 	TX_FAR _GaryText_76103
 	db "@"
 
-GaryText2: ; 76108 (1d:6108)
+GaryText2:
 	TX_FAR _GaryText2
 	db "@"
 
-GaryText3: ; 7610d (1d:610d)
+GaryText3:
 	TX_ASM
 	ld a, [W_PLAYERSTARTER]
 	ld [wd11e], a
@@ -275,14 +275,14 @@ GaryText3: ; 7610d (1d:610d)
 	call PrintText
 	jp TextScriptEnd
 
-GaryText_76120: ; 76120 (1d:6120)
+GaryText_76120:
 	TX_FAR _GaryText_76120
 	db "@"
 
-GaryText4: ; 76125 (1d:6125)
+GaryText4:
 	TX_FAR _GaryText_76125
 	db "@"
 
-GaryText5: ; 7612a (1d:612a)
+GaryText5:
 	TX_FAR _GaryText_7612a
 	db "@"

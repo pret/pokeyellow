@@ -152,7 +152,7 @@ BeachHouseSign4Text:
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jp z, Func_f23d0 ; 0xf23d0
+	jp z, Func_f23d0
 	call SaveScreenTilesToBuffer2
 	ld hl, wd730
 	set 6, [hl]

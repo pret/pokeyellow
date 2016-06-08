@@ -250,4 +250,3 @@ _CinnabarGymText_7::
 	text "Come on, answer"
 	line "the question!"
 	done
-

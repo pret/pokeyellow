@@ -111,4 +111,3 @@ _SSAnne9Text_61c4c::
 	text "I hear many people"
 	line "get seasick!"
 	done
-

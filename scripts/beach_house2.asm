@@ -1,4 +1,4 @@
-Func_f23d0: ; f23d0
+Func_f23d0:
 	call SaveScreenTilesToBuffer2
 	xor a
 	ld [wUpdateSpritesEnabled], a

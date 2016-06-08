@@ -20,19 +20,19 @@ Func_f1f31:
 .asm_68b61
 	ret
 
-CeladonDinerText_491a7: ; 491a7 (12:51a7)
+CeladonDinerText_491a7:
 	TX_FAR _CeladonDinerText_491a7
 	db "@"
 
-ReceivedCoinCaseText: ; 491ac (12:51ac)
+ReceivedCoinCaseText:
 	TX_FAR _ReceivedCoinCaseText
 	TX_SFX_KEY_ITEM
 	db "@"
 
-CoinCaseNoRoomText: ; 491b2 (12:51b2)
+CoinCaseNoRoomText:
 	TX_FAR _CoinCaseNoRoomText
 	db "@"
 
-CeladonDinerText_491b7: ; 491b7 (12:51b7)
+CeladonDinerText_491b7:
 	TX_FAR _CeladonDinerText_491b7
 	db "@"
