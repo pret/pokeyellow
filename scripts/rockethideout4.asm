@@ -266,8 +266,7 @@ RocketHideout4Script13:
 	xor a
 	ld [hJoyHeld], a
 	ld [wJoyIgnore], a
-	ld hl, wd81b
-	set 2, [hl]
+	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
 	ld a, $0
 	call RocketHideout4Script_4551e
 	ret

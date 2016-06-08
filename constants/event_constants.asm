@@ -2560,3 +2560,5 @@ const_value = 0
 	const EVENT_9FD                                  ; 9FD, (D886, bit 5)
 	const EVENT_9FE                                  ; 9FE, (D886, bit 6)
 	const EVENT_9FF                                  ; 9FF, (D886, bit 7)
+
+NUM_EVENT_FLAGS EQU const_value

@@ -23,8 +23,7 @@ BillsHouseScript_1e09e:
 	bit 7, [hl]
 	set 7, [hl]
 	ret nz
-	ld hl, wd7f2
-	bit 5, [hl]
+	CheckEventHL EVENT_MET_BILL_2
 	jr z, .asm_1e0af
 	jr .asm_1e0b3
 

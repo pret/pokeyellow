@@ -2,7 +2,7 @@ UseItem_: ; d2ed (3:52ed)
 	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a ; initialise to success value
 	ld a, [wcf91]	;contains item_ID
-	cp a, HM_01
+	cp HM_01
 	jp nc, ItemUseTMHM
 	ld hl, ItemUsePtrTable
 	dec a
@@ -112,17 +112,17 @@ ItemUseBall: ; d3ad (3:53ad)
 	cp $4 ; pikachu battle?
 	jr z, .UseBall
 	ld a, [wPartyCount]	;is Party full?
-	cp a, PARTY_LENGTH
+	cp PARTY_LENGTH
 	jr nz, .UseBall
 	ld a, [wNumInBox]	;is Box full?
-	cp a, MONS_PER_BOX
+	cp MONS_PER_BOX
 	jp z, BoxFullCannotThrowBall
 .UseBall
 ;ok, you can use a ball
 	xor a
 	ld [wCapturedMonSpecies], a
 	ld a, [wBattleType]
-	cp a, 2		;SafariBattle
+	cp 2		;SafariBattle
 	jr nz, .skipSafariZoneCode
 .safariZone
 	; remove a Safari Ball from inventory
@@ -151,22 +151,21 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld bc, NAME_LENGTH
 	call CopyData ; save the player's name in the Wild Monster data
 	ld a, [wBattleType]
-	cp $1
+	cp MASTER_BALL
 	jp nz, .BallSuccess
 	ld a, $1
 	ld [wCapturedMonSpecies], a
-	ld a, [wd74c]
-	bit 7, a
+	CheckEvent EVENT_02F
 	ld b, $63
 	jp nz, .next12
 	jp .BallSuccess
 
 .notOldManBattle
 	ld a, [wCurMap]
-	cp a, POKEMONTOWER_6
+	cp POKEMONTOWER_6
 	jr nz, .loop
 	ld a, [wEnemyMonSpecies2]
-	cp a, MAROWAK
+	cp MAROWAK
 	ld b, $10
 	jp z, .next12
 ; if not fighting ghost Marowak, loop until a random number in the current
@@ -177,15 +176,15 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld hl, wcf91
 .asm_d54a
 	ld a, [hl]
-	cp a, MASTER_BALL
+	cp MASTER_BALL
 	jp z, .BallSuccess
-	cp a, POKE_BALL
+	cp POKE_BALL
 	jr z, .checkForAilments
 	ld a, 200
 	cp b
 	jr c, .loop	;get only numbers <= 200 for Great Ball
 	ld a, [hl]
-	cp a, GREAT_BALL
+	cp GREAT_BALL
 	jr z, .checkForAilments
 	ld a, 150	;get only numbers <= 150 for Ultra Ball
 	cp b
@@ -198,7 +197,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld a, [wEnemyMonStatus]	;status ailments
 	and a
 	jr z, .noAilments
-	and a, 1 << FRZ | SLP	;is frozen and/or asleep?
+	and 1 << FRZ | SLP	;is frozen and/or asleep?
 	ld c, 12
 	jr z, .notFrozenOrAsleep
 	ld c, 25
@@ -318,13 +317,13 @@ ItemUseBall: ; d3ad (3:53ad)
 	ld [H_QUOTIENT + 3], a
 .next13
 	ld a, [H_QUOTIENT + 3]
-	cp a, 10
+	cp 10
 	ld b, $20
 	jr c, .next12
-	cp a, 30
+	cp 30
 	ld b, $61
 	jr c, .next12
-	cp a, 70
+	cp 70
 	ld b, $62
 	jr c, .next12
 	ld b, $63
@@ -350,19 +349,19 @@ ItemUseBall: ; d3ad (3:53ad)
 	pop af
 	ld [wWhichPokemon], a
 	ld a, [wPokeBallAnimData]
-	cp a, $10
+	cp $10
 	ld hl, ItemUseBallText00
 	jp z, .printText0
-	cp a, $20
+	cp $20
 	ld hl, ItemUseBallText01
 	jp z, .printText0
-	cp a, $61
+	cp $61
 	ld hl, ItemUseBallText02
 	jp z, .printText0
-	cp a, $62
+	cp $62
 	ld hl, ItemUseBallText03
 	jp z, .printText0
-	cp a, $63
+	cp $63
 	ld hl, ItemUseBallText04
 	jp z, .printText0
 	ld hl, wEnemyMonHP	;current HP
@@ -460,8 +459,7 @@ ItemUseBall: ; d3ad (3:53ad)
 	call ClearSprites
 	call SendNewMonToBox
 	ld hl, ItemUseBallText07
-	ld a, [wd7f1]
-	bit 0, a
+	CheckEvent EVENT_MET_BILL
 	jr nz, .sendToBox2
 	ld hl, ItemUseBallText08
 .sendToBox2
@@ -540,7 +538,7 @@ ItemUseBicycle: ; d6d7 (3:56d7)
 	jp nz, ItemUseNotTime
 	ld a, [wWalkBikeSurfState]
 	ld [wWalkBikeSurfStateCopy], a
-	cp a, 2 ; is the player surfing?
+	cp 2 ; is the player surfing?
 	jp z, ItemUseNotTime
 	dec a ; is player already bicycling?
 	jr nz, .tryToGetOnBike
@@ -575,7 +573,7 @@ ItemUseBicycle: ; d6d7 (3:56d7)
 ItemUseSurfboard: ; d725 (3:5725)
 	ld a, [wWalkBikeSurfState]
 	ld [wWalkBikeSurfStateCopy], a
-	cp a, 2 ; is the player already surfing?
+	cp 2 ; is the player already surfing?
 	jr z, .tryToStopSurfing
 .tryToSurf
 	call IsNextTileShoreOrWater
@@ -831,13 +829,13 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	jr z, ItemUseMedicine ; if so, force another choice
 .checkItemType
 	ld a, [wcf91]
-	cp a, REVIVE
+	cp REVIVE
 	jr nc, .healHP ; if it's a Revive or Max Revive
-	cp a, FULL_HEAL
+	cp FULL_HEAL
 	jr z, .cureStatusAilment ; if it's a Full Heal
-	cp a, HP_UP
+	cp HP_UP
 	jp nc, .useVitamin ; if it's a vitamin or Rare Candy
-	cp a, FULL_RESTORE
+	cp FULL_RESTORE
 	jr nc, .healHP ; if it's a Full Restore or one of the potions
 ; fall through if it's one of the status-specifc healing items
 .cureStatusAilment
@@ -845,19 +843,19 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	add hl, bc ; hl now points to status
 	ld a, [wcf91]
 	lb bc, ANTIDOTE_MSG, 1 << PSN
-	cp a, ANTIDOTE
+	cp ANTIDOTE
 	jr z, .checkMonStatus
 	lb bc, BURN_HEAL_MSG, 1 << BRN
-	cp a, BURN_HEAL
+	cp BURN_HEAL
 	jr z, .checkMonStatus
 	lb bc, ICE_HEAL_MSG, 1 << FRZ
-	cp a, ICE_HEAL
+	cp ICE_HEAL
 	jr z, .checkMonStatus
 	lb bc, AWAKENING_MSG, SLP
-	cp a, AWAKENING
+	cp AWAKENING
 	jr z, .checkMonStatus
 	lb bc, PARALYZ_HEAL_MSG, 1 << PAR
-	cp a, PARLYZ_HEAL
+	cp PARLYZ_HEAL
 	jr z, .checkMonStatus
 	lb bc, FULL_HEAL_MSG, $ff ; Full Heal
 .checkMonStatus
@@ -899,9 +897,9 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	jr nz, .notFainted
 .fainted
 	ld a, [wcf91]
-	cp a, REVIVE
+	cp REVIVE
 	jr z, .updateInBattleFaintedData
-	cp a, MAX_REVIVE
+	cp MAX_REVIVE
 	jr z, .updateInBattleFaintedData
 	jp .healingItemNoEffect
 
@@ -947,9 +945,9 @@ ItemUseMedicine: ; d8ae (3:58ae)
 
 .notFainted
 	ld a, [wcf91]
-	cp a, REVIVE
+	cp REVIVE
 	jp z, .healingItemNoEffect
-	cp a, MAX_REVIVE
+	cp MAX_REVIVE
 	jp z, .healingItemNoEffect
 .compareCurrentHPToMaxHP
 	push hl
@@ -967,7 +965,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	jr nz, .notFullHP
 .fullHP ; if the pokemon's current HP equals its max HP
 	ld a, [wcf91]
-	cp a, FULL_RESTORE
+	cp FULL_RESTORE
 	jp nz, .healingItemNoEffect
 	inc hl
 	inc hl
@@ -1068,15 +1066,15 @@ ItemUseMedicine: ; d8ae (3:58ae)
 
 .notUsingSoftboiled2
 	ld a, [wcf91]
-	cp a, SODA_POP
+	cp SODA_POP
 	ld b, 60 ; Soda Pop heal amount
 	jr z, .addHealAmount
 	ld b, 80 ; Lemonade heal amount
 	jr nc, .addHealAmount
-	cp a, FRESH_WATER
+	cp FRESH_WATER
 	ld b, 50 ; Fresh Water heal amount
 	jr z, .addHealAmount
-	cp a, SUPER_POTION
+	cp SUPER_POTION
 	ld b, 200 ; Hyper Potion heal amount
 	jr c, .addHealAmount
 	ld b, 50 ; Super Potion heal amount
@@ -1103,7 +1101,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	ld hl, 33
 	add hl, de ; hl now points to max HP
 	ld a, [wcf91]
-	cp a, REVIVE
+	cp REVIVE
 	jr z, .setCurrentHPToHalfMaxHP
 	ld a, [hld]
 	ld b, a
@@ -1115,9 +1113,9 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	sbc b
 	jr nc, .setCurrentHPToMaxHp ; if current HP exceeds max HP after healing
 	ld a, [wcf91]
-	cp a, HYPER_POTION
+	cp HYPER_POTION
 	jr c, .setCurrentHPToMaxHp ; if using a Full Restore or Max Potion
-	cp a, MAX_REVIVE
+	cp MAX_REVIVE
 	jr z, .setCurrentHPToMaxHp ; if using a Max Revive
 	jr .updateInBattleData
 
@@ -1147,7 +1145,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	dec de
 .doneHealingPartyHP ; done updating the pokemon's current HP in the party data structure
 	ld a, [wcf91]
-	cp a, FULL_RESTORE
+	cp FULL_RESTORE
 	jr nz, .updateInBattleData
 	ld bc, -31
 	add hl, bc
@@ -1166,7 +1164,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	ld a, [hld]
 	ld [wBattleMonHP + 1], a
 	ld a, [wcf91]
-	cp a, FULL_RESTORE
+	cp FULL_RESTORE
 	jr nz, .calculateHPBarCoords
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
@@ -1193,9 +1191,9 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	pop hl
 .skipRemovingItem
 	ld a, [wcf91]
-	cp a, FULL_RESTORE
+	cp FULL_RESTORE
 	jr c, .playStatusAilmentCuringSound
-	cp a, FULL_HEAL
+	cp FULL_HEAL
 	jr z, .playStatusAilmentCuringSound
 	ld a, SFX_HEAL_HP
 	call PlaySoundWaitForCurrent
@@ -1211,9 +1209,9 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	ld a, REVIVE_MSG
 	ld [wPartyMenuTypeOrMessageID], a
 	ld a, [wcf91]
-	cp a, REVIVE
+	cp REVIVE
 	jr z, .showHealingItemMessage
-	cp a, MAX_REVIVE
+	cp MAX_REVIVE
 	jr z, .showHealingItemMessage
 	ld a, POTION_MSG
 	ld [wPartyMenuTypeOrMessageID], a
@@ -1269,10 +1267,10 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	pop de
 	pop hl
 	ld a, [wcf91]
-	cp a, RARE_CANDY
+	cp RARE_CANDY
 	jp z, .useRareCandy
 	push hl
-	sub a, HP_UP
+	sub HP_UP
 	add a
 	ld bc, 17
 	add hl, bc
@@ -1284,7 +1282,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	ld a, 10
 	ld b, a
 	ld a, [hl] ; a = MSB of stat experience of the appropriate stat
-	cp a, 100 ; is there already at least 25600 (256 * 100) stat experience?
+	cp 100 ; is there already at least 25600 (256 * 100) stat experience?
 	jr nc, .vitaminNoEffect ; if so, vitamins can't add any more
 	add b ; add 2560 (256 * 10) stat experience
 	jr nc, .noCarry3 ; a carry should be impossible here, so this will always jump
@@ -1295,7 +1293,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	call .recalculateStats
 	ld hl, VitaminText
 	ld a, [wcf91]
-	sub a, HP_UP - 1
+	sub HP_UP - 1
 	ld c, a
 .statNameLoop ; loop to get the address of the name of the stat the vitamin increases
 	dec c
@@ -1338,7 +1336,7 @@ ItemUseMedicine: ; d8ae (3:58ae)
 	ld bc, 33
 	add hl, bc ; hl now points to level
 	ld a, [hl] ; a = level
-	cp a, MAX_LEVEL
+	cp MAX_LEVEL
 	jr z, .vitaminNoEffect ; can't raise level above 100
 	inc a
 	ld [hl], a ; store incremented level
@@ -1478,8 +1476,8 @@ BaitRockCommon: ; dd9f (3:5d9f)
 	ld [de], a ; zero escape factor (for bait), zero bait factor (for rock)
 .randomLoop ; loop until a random number less than 5 is generated
 	call Random
-	and a, 7
-	cp a, 5
+	and 7
+	cp 5
 	jr nc, .randomLoop
 	inc a ; increment the random number, giving a range from 1 to 5 inclusive
 	ld b, a
@@ -1507,18 +1505,18 @@ ItemUseEscapeRope: ; ddcf (3:5dcf)
 	and a
 	jr nz, .notUsable
 	ld a, [wCurMap]
-	cp a, AGATHAS_ROOM
+	cp AGATHAS_ROOM
 	jr z, .notUsable
-	cp a, BILLS_HOUSE
+	cp BILLS_HOUSE
 	jr z, .notUsable
-	cp a, POKEMON_FAN_CLUB
+	cp POKEMON_FAN_CLUB
 	jr z, .notUsable
 	ld a, [wCurMapTileset]
 	ld b, a
 	ld hl, EscapeRopeTilesets
 .loop
 	ld a, [hli]
-	cp a, $ff
+	cp $ff
 	jr z, .notUsable
 	cp b
 	jr nz, .loop
@@ -1528,8 +1526,7 @@ ItemUseEscapeRope: ; ddcf (3:5dcf)
 	call Func_1510
 	ld hl, wd72e
 	res 4, [hl]
-	ld hl, wd790
-	res 7, [hl]
+	ResetEvent EVENT_IN_SAFARI_ZONE
 	xor a
 	ld [wNumSafariBalls], a
 	ld [wSafariZoneEntranceCurScript], a
@@ -1579,19 +1576,19 @@ ItemUseCardKey: ; de57 (3:de57)
 	ld [wUnusedD71F], a
 	call GetTileAndCoordsInFrontOfPlayer
 	ld a, [GetTileAndCoordsInFrontOfPlayer] ; $4586
-	cp a, $18
+	cp $18
 	jr nz, .next0
 	ld hl, CardKeyTable1
 	jr .next1
 
 .next0
-	cp a, $24
+	cp $24
 	jr nz, .next2
 	ld hl, CardKeyTable2
 	jr .next1
 
 .next2
-	cp a, $5e
+	cp $5e
 	jp nz, ItemUseNotTime
 	ld hl, CardKeyTable3
 .next1
@@ -1599,7 +1596,7 @@ ItemUseCardKey: ; de57 (3:de57)
 	ld b, a
 .loop
 	ld a, [hli]
-	cp a, $ff
+	cp $ff
 	jp z, ItemUseNotTime
 	cp b
 	jr nz, .nextEntry1
@@ -1736,7 +1733,7 @@ ItemUseXStat: ; df69 (3:df69)
 	push af ; save [wPlayerMoveEffect]
 	push hl
 	ld a, [wcf91]
-	sub a, X_ATTACK - ATTACK_UP1_EFFECT
+	sub X_ATTACK - ATTACK_UP1_EFFECT
 	ld [hl], a ; store player move effect
 	call PrintItemUseTextAndRemoveItem
 	ld a, XSTATITEM_ANIM ; X stat item animation ID
@@ -1769,10 +1766,9 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 ; if not in battle
 	call ItemUseReloadOverworldData
 	ld a, [wCurMap]
-	cp a, ROUTE_12
+	cp ROUTE_12
 	jr nz, .notRoute12
-	ld a, [wd7d8]
-	bit 7, a
+	CheckEvent EVENT_BEAT_ROUTE12_SNORLAX
 	jr nz, .noSnorlaxOrPikachuToWakeUp
 ; if the player hasn't beaten Route 12 Snorlax
 	ld hl, Route12SnorlaxFluteCoords
@@ -1780,15 +1776,13 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 	jr nc, .noSnorlaxOrPikachuToWakeUp
 	ld hl, PlayedFluteHadEffectText
 	call PrintText
-	ld hl, wd7d8
-	set 6, [hl]
+	SetEvent EVENT_FIGHT_ROUTE12_SNORLAX
 	ret
 
 .notRoute12
-	cp a, ROUTE_16
+	cp ROUTE_16
 	jr nz, .notRoute16
-	ld a, [wd7e0]
-	bit 1, a
+	CheckEvent EVENT_BEAT_ROUTE16_SNORLAX
 	jr nz, .noSnorlaxOrPikachuToWakeUp
 ; if the player hasn't beaten Route 16 Snorlax
 	ld hl, Route16SnorlaxFluteCoords
@@ -1796,12 +1790,11 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 	jr nc, .noSnorlaxOrPikachuToWakeUp
 	ld hl, PlayedFluteHadEffectText
 	call PrintText
-	ld hl, wd7e0
-	set 0, [hl]
+	SetEvent EVENT_FIGHT_ROUTE16_SNORLAX
 	ret
 
 .notRoute16
-	cp a, PEWTER_POKECENTER
+	cp PEWTER_POKECENTER
 	jr nz, .noSnorlaxOrPikachuToWakeUp
 	call CheckPikachuFollowingPlayer
 	jr z, .noSnorlaxOrPikachuToWakeUp
@@ -1841,7 +1834,7 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 	and b ; remove Sleep status
 	ld [hl], a
 	ld a, c
-	and a, SLP
+	and SLP
 	jr z, .asm_e063
 	ld a, $1
 	ld [wWereAnyMonsAsleep], a
@@ -1855,7 +1848,7 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 	ld hl, PlayedFluteHadEffectText
 	call PrintText
 	ld a, [wLowHealthAlarm]
-	and a, $80
+	and $80
 	jr nz, .skipMusic
 	call WaitForSoundToFinish ; wait for sound to end
 	callba Music_PokeFluteInBattle ; play in-battle pokeflute music
@@ -1880,7 +1873,7 @@ WakeUpEntireParty: ; e094 (3:6094)
 .loop
 	ld a, [hl]
 	push af
-	and a, SLP ; is pokemon asleep?
+	and SLP ; is pokemon asleep?
 	jr z, .notAsleep
 	ld a, 1
 	ld [wWereAnyMonsAsleep], a ; indicate that a pokemon had to be woken up
@@ -1933,7 +1926,7 @@ PlayedFluteHadEffectText: ; e0c4 (3:60c4)
 	call PlayMusic
 .musicWaitLoop ; wait for music to finish playing
 	ld a, [wChannelSoundIDs + CH2]
-	cp a, SFX_POKEFLUTE
+	cp SFX_POKEFLUTE
 	jr z, .musicWaitLoop
 	call PlayDefaultMusic ; start playing normal music again
 .done
@@ -2043,7 +2036,7 @@ FishingInit: ; e182 (3:6182)
 	call IsNextTileShoreOrWater
 	jr nc, .cannotFish
 	ld a, [wWalkBikeSurfState]
-	cp a, 2 ; Surfing?
+	cp 2 ; Surfing?
 	jr z, .cannotFish
 	call ItemUseReloadOverworldData
 	ld hl, ItemUseText00
@@ -2130,13 +2123,13 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 
 .usePPItem
 	ld a, [wPPRestoreItem]
-	cp a, ELIXER
+	cp ELIXER
 	jp nc, .useElixir ; if Elixir or Max Elixir
 	ld a, $02
 	ld [wMoveMenuType], a
 	ld hl, RaisePPWhichTechniqueText
 	ld a, [wPPRestoreItem]
-	cp a, ETHER ; is it a PP Up?
+	cp ETHER ; is it a PP Up?
 	jr c, .printWhichTechniqueMessage ; if so, print the raise PP message
 	ld hl, RestorePPWhichTechniqueText ; otherwise, print the restore PP message
 .printWhichTechniqueMessage
@@ -2157,13 +2150,13 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 	call CopyStringToCF4B ; copy name to wcf4b
 	pop hl
 	ld a, [wPPRestoreItem]
-	cp a, ETHER
+	cp ETHER
 	jr nc, .useEther ; if Ether or Max Ether
 .usePPUp
 	ld bc, 21
 	add hl, bc
 	ld a, [hl] ; move PP
-	cp a, 3 << 6 ; have 3 PP Ups already been used?
+	cp 3 << 6 ; have 3 PP Ups already been used?
 	jr c, .PPNotMaxedOut
 	ld hl, PPMaxedOutText
 	call PrintText
@@ -2171,7 +2164,7 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 
 .PPNotMaxedOut
 	ld a, [hl]
-	add a, 1 << 6 ; increase PP Up count by 1
+	add 1 << 6 ; increase PP Up count by 1
 	ld [hl], a
 	ld a, 1 ; 1 PP Up used
 	ld [wd11e], a
@@ -2225,13 +2218,13 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 	ld a, [wMaxPP]
 	ld b, a
 	ld a, [wPPRestoreItem]
-	cp a, MAX_ETHER
+	cp MAX_ETHER
 	jr z, .fullyRestorePP
 	ld a, [hl] ; move PP
-	and a, %00111111 ; lower 6 bit bits store current PP
+	and %00111111 ; lower 6 bit bits store current PP
 	cp b ; does current PP equal max PP?
 	ret z ; if so, return
-	add a, 10 ; increase current PP by 10
+	add 10 ; increase current PP by 10
 ; b holds the max PP amount and b will hold the new PP amount.
 ; So, if the new amount meets or exceeds the max amount,
 ; cap the amount to the max amount by leaving b unchanged.
@@ -2241,7 +2234,7 @@ ItemUsePPRestore: ; e1f7 (3:61f7)
 	ld b, a
 .storeNewAmount
 	ld a, [hl] ; move PP
-	and a, %11000000 ; PP Up counter bits
+	and %11000000 ; PP Up counter bits
 	add b
 	ld [hl], a
 	ret
@@ -2328,10 +2321,10 @@ ItemUseTMHM: ; e374 (3:6374)
 	and a
 	jp nz, ItemUseNotTime
 	ld a, [wcf91]
-	sub a, TM_01
+	sub TM_01
 	push af
 	jr nc, .skipAdding
-	add a, 55 ; if item is an HM, add 55
+	add 55 ; if item is an HM, add 55
 .skipAdding
 	inc a
 	ld [wd11e], a
@@ -2428,9 +2421,9 @@ ItemUseTMHM: ; e374 (3:6374)
 	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .notTeachingThunderboltOrThunderToPikachu
 	ld a, [wcf91]
-	cp a, TM_24 ; are we teaching thunderbolt to the player pikachu?
+	cp TM_24 ; are we teaching thunderbolt to the player pikachu?
 	jr z, .teachingThunderboltOrThunderToPlayerPikachu
-	cp a, TM_25 ; are we teaching thunder then?
+	cp TM_25 ; are we teaching thunder then?
 	jr nz, .notTeachingThunderboltOrThunderToPikachu
 .teachingThunderboltOrThunderToPlayerPikachu
 	ld a, $5
@@ -2599,7 +2592,7 @@ RestoreBonusPP: ; e54a (3:654a)
 .loop
 	inc b
 	ld a, b
-	cp a, 5 ; reached the end of the pokemon's moves?
+	cp 5 ; reached the end of the pokemon's moves?
 	ret z ; if so, return
 	ld a, [wUsingPPUp]
 	dec a ; using a PP Up?
@@ -2611,7 +2604,7 @@ RestoreBonusPP: ; e54a (3:654a)
 	jr nz, .nextMove
 .skipMenuItemIDCheck
 	ld a, [hl]
-	and a, %11000000 ; have any PP Ups been used?
+	and %11000000 ; have any PP Ups been used?
 	call nz, AddBonusPP ; if so, add bonus PP
 .nextMove
 	inc hl
@@ -2638,13 +2631,13 @@ AddBonusPP: ; e586 (3:6586)
 	ld a, [hl] ; move PP
 	ld b, a
 	swap a
-	and a, %1111
+	and %1111
 	srl a
 	srl a
 	ld c, a ; c = number of PP Ups used
 .loop
 	ld a, [H_QUOTIENT + 3]
-	cp a, 8 ; is the amount greater than or equal to 8?
+	cp 8 ; is the amount greater than or equal to 8?
 	jr c, .addAmount
 	ld a, 7 ; cap the amount at 7
 .addAmount
@@ -2712,13 +2705,13 @@ GetMaxPP: ; e5bb (3:65bb)
 	push bc
 	ld bc, wPartyMon1PP - wPartyMon1Moves ; PP offset if not player's in-battle pokemon data
 	ld a, [wMonDataLocation]
-	cp a, 4 ; player's in-battle pokemon?
+	cp 4 ; player's in-battle pokemon?
 	jr nz, .addPPOffset
 	ld bc, wBattleMonPP - wBattleMonMoves ; PP offset if player's in-battle pokemon data
 .addPPOffset
 	add hl, bc
 	ld a, [hl] ; a = current PP
-	and a, %11000000 ; get PP Up count
+	and %11000000 ; get PP Up count
 	pop bc
 	or b ; place normal max PP in 6 lower bits of a
 	ld h, d
@@ -2729,7 +2722,7 @@ GetMaxPP: ; e5bb (3:65bb)
 	ld [wUsingPPUp], a
 	call AddBonusPP ; add bonus PP from PP Ups
 	ld a, [hl]
-	and a, %00111111 ; mask out the PP Up count
+	and %00111111 ; mask out the PP Up count
 	ld [wMaxPP], a ; store max PP
 	ret
 
@@ -2777,7 +2770,7 @@ TossItem_: ; e635 (3:6635)
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; yes/no menu
 	ld a, [wMenuExitMethod]
-	cp a, CHOSE_SECOND_ITEM
+	cp CHOSE_SECOND_ITEM
 	pop hl
 	scf
 	ret z ; return if the player chose No
@@ -2826,7 +2819,7 @@ IsKeyItem_: ; e6a8 (3:66a8)
 	ld a, $01
 	ld [wIsKeyItem], a
 	ld a, [wcf91]
-	cp a, HM_01 ; is the item an HM or TM?
+	cp HM_01 ; is the item an HM or TM?
 	jr nc, .checkIfItemIsHM
 ; if the item is not an HM or TM
 	push af

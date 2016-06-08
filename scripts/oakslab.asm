@@ -129,8 +129,7 @@ OaksLabScript4: ; 1cbd2 (7:445f)
 	ret
 
 OaksLabScript5: ; 1cbfd (7:4bfd)
-	ld hl, wd74b
-	set 1, [hl]
+	SetEvent EVENT_OAK_ASKED_TO_CHOOSE_MON
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $d
@@ -392,8 +391,7 @@ OaksLabScript14:
 	xor a
 	ld [wSpriteStateData1 + 1 * $10 + 9], a
 	predef HealParty
-	ld hl, wd74b
-	set 3, [hl]
+	SetEvent EVENT_BATTLED_RIVAL_IN_OAKS_LAB
 	ld a, $f
 	ld [W_OAKSLABCURSCRIPT], a
 	ret

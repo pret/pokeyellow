@@ -255,8 +255,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	jp nz, CheckMapConnections ; it seems like this check will never succeed (the other place where CheckMapConnections is run works)
 ; walking animation finished
 	call StepCountCheck
-	ld a, [wd790]
-	bit 7, a ; in the safari zone?
+	CheckEvent EVENT_IN_SAFARI_ZONE ; in the safari zone?
 	jr z, .notSafariZone
 	callba SafariZoneCheckSteps
 	ld a, [wSafariZoneGameOver]
@@ -288,8 +287,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	ld a, [wCurMap]
 	cp CINNABAR_GYM
 	jr nz, .notCinnabarGym
-	ld hl, wd79b
-	set 7, [hl]
+	SetEvent EVENT_2A7
 .notCinnabarGym
 	ld hl, wd72e
 	set 5, [hl]
