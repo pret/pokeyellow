@@ -19,11 +19,11 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 	call LoadMonData
 
 	ld hl, wTileMap
-	lb bc, $10, $12
+	lb bc, 16, 18
 	call TextBoxBorder
 
 	coord hl, 0, 12
-	lb bc, $04, $12
+	lb bc, 4, 18
 	call TextBoxBorder
 
 	coord hl, 3, 10
@@ -46,7 +46,7 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 	ld [wPokeBallAnimData], a
 	ld [wd0b5], a
 	ld hl, wPartyMonNicks
-	call Func_ea511
+	call .GetNamePointer
 	coord hl, 8, 2
 	call PlaceString
 
@@ -65,16 +65,16 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 	call PrintNumber
 
 	coord hl, 8, 4
-	ld de, String_ea52f
+	ld de, .OT
 	call PlaceString
 
 	ld hl, wPartyMonOT
-	call Func_ea511
+	call .GetNamePointer
 	coord hl, 9, 5
 	call PlaceString
 
 	coord hl, 9, 6
-	ld de, String_ea533
+	ld de, .IDNo
 	call PlaceString
 
 	coord hl, 13, 6
@@ -83,7 +83,7 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 	call PrintNumber
 
 	coord hl, 9, 8
-	ld de, String_ea537
+	ld de, .Stats
 	ld a, [hFlags_0xFFFA]
 	set 2, a
 	ld [hFlags_0xFFFA], a
@@ -115,24 +115,24 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 
 	coord hl, 1, 13
 	ld a, [wLoadedMonMoves]
-	call Func_ea51d
+	call .PlaceMoveName
 
 	coord hl, 1, 14
 	ld a, [wLoadedMonMoves + 1]
-	call Func_ea51d
+	call .PlaceMoveName
 
 	coord hl, 1, 15
 	ld a, [wLoadedMonMoves + 2]
-	call Func_ea51d
+	call .PlaceMoveName
 
 	coord hl, 1, 16
 	ld a, [wLoadedMonMoves + 3]
-	call Func_ea51d
+	call .PlaceMoveName
 
-	ld b, $04 ; SET_PAL_STATUS_SCREEN
+	ld b, $4 ; SET_PAL_STATUS_SCREEN
 	call RunPaletteCommand
 
-	ld a, $01
+	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	call GBPalNormal
@@ -140,7 +140,7 @@ Func_ea3ea: ; ea3ea (3a:63ea)
 	call LoadFlippedFrontSpriteByMonIndex
 	ret
 
-Func_ea511: ; ea511 (3a:6511)
+.GetNamePointer: ; ea511 (3a:6511)
 	ld bc, NAME_LENGTH
 	ld a, [wWhichPokemon]
 	call AddNTimes
@@ -148,36 +148,36 @@ Func_ea511: ; ea511 (3a:6511)
 	ld d, h
 	ret
 
-Func_ea51d: ; ea51d (3a:651d)
+.PlaceMoveName: ; ea51d (3a:651d)
 	and a
-	jr z, .asm_e6528
+	jr z, .no_move
 	ld [wPokeBallAnimData], a
 	call GetMoveName
-	jr .asm_ea52b
+	jr .place_string
 
-.asm_e6528
-	ld de, String_ea554
-.asm_ea52b
+.no_move
+	ld de, .Blank
+.place_string
 	call PlaceString
 	ret
 ; ea52f
 
-String_ea52f:
+.OT:
 	db "OT/@"
 ; ea533
 
-String_ea533:
+.IDNo:
 	db $73, "№/@"
 ; ea537
 
-String_ea537:
+.Stats:
 	db   "ATTACK"
 	next "DEFENSE"
 	next "SPEED"
 	next "SPECIAL@"
 ; ea554
 
-String_ea554: ; ea554 (3a:6554)
+.Blank: ; ea554 (3a:6554)
 	db "--------------@"
 
 GFX_ea563: ; ea563 (3a:6563)
@@ -195,8 +195,8 @@ Func_ea573: ; ea573 (3a:6573)
 	call CopyVideoData
 
 	ld hl, wOAMBuffer + 32 * 4
-	ld a, $08
-	ld c, $08
+	ld a, $8
+	ld c, $8
 .loop
 	ld [hl], $10
 	inc hl
@@ -204,9 +204,9 @@ Func_ea573: ; ea573 (3a:6573)
 	inc hl
 	ld [hl], $fe
 	inc hl
-	ld [hl], $00
+	ld [hl], $0
 	inc hl
-	add $08
+	add $8
 	dec c
 	jr nz, .loop
 	ret
@@ -218,7 +218,7 @@ GFX_ea597End:
 Func_ea5b7: ; ea5b7 (3a:65b7)
 	ld hl, wOAMBuffer + 32 * 4 + 2
 	ld de, 4
-	ld a, [$c971]
+	ld a, [wPrinterStatusFlags]
 	ld c, 8
 .asm_ea5c2
 	sla a
@@ -235,7 +235,7 @@ Func_ea5b7: ; ea5b7 (3a:65b7)
 	ret
 
 Func_ea5d1: ; ea5d1 (3a:65d1)
-	ld a, [wOverworldMap]
+	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
 	ld hl, Jumptable_ea5e0
@@ -269,19 +269,19 @@ Jumptable_ea5e0:
 
 
 Func_ea606: ; ea606 (3a:6606)
-	ld hl, wOverworldMap
+	ld hl, wPrinterSendState
 	inc [hl]
 	ret
 
 Func_ea60b: ; ea60b (3a:660b)
-	ld hl, wOverworldMap
+	ld hl, wPrinterSendState
 	dec [hl]
 	ret
 
 Func_ea610: ; ea610 (3a:6610)
 	xor a
-	ld [$c971], a
-	ld hl, wOverworldMap
+	ld [wPrinterStatusFlags], a
+	ld hl, wPrinterSendState
 	set 7, [hl]
 	ret
 
@@ -291,7 +291,7 @@ Func_ea61a: ; ea61a (3a:661a)
 
 Func_ea61e: ; ea61e (3a:661e)
 	xor a
-	ld [wOverworldMap], a
+	ld [wPrinterSendState], a
 	ret
 
 Func_ea623: ; ea623 (3a:6623)
@@ -299,19 +299,19 @@ Func_ea623: ; ea623 (3a:6623)
 	ld hl, Data_ea9de
 	call Func_ea76b
 	xor a
-	ld [$c976], a
-	ld [$c977], a
-	ld a, [$caf4]
-	ld [$c6e9], a
+	ld [wPrinterDataSize], a
+	ld [wPrinterDataSize + 1], a
+	ld a, [wPrinterQueueLength]
+	ld [wPrinterRowIndex], a
 	call Func_ea606
 	call Func_ea74c
-	ld a, $01
-	ld [$cae0], a
+	ld a, $1
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_ea645: ; ea645 (3a:6645)
 	call Func_ea784
-	ld hl, $c6e9
+	ld hl, wPrinterRowIndex
 	ld a, [hl]
 	and a
 	jr z, Func_ea671
@@ -319,24 +319,24 @@ Func_ea645: ; ea645 (3a:6645)
 	call Func_ea76b
 	call Func_ea7e9
 	ld a, $80
-	ld [$c976], a
-	ld a, $02
-	ld [$c977], a
+	ld [wPrinterDataSize], a
+	ld a, $2
+	ld [wPrinterDataSize + 1], a
 	call Func_ea7a2
 	call Func_ea606
 	call Func_ea74c
-	ld a, $02
-	ld [$cae0], a
+	ld a, $2
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_ea671: ; ea671 (3a:6671)
-	ld a, $06
-	ld [wOverworldMap], a
+	ld a, $6
+	ld [wPrinterSendState], a
 	ld hl, Data_ea9f0
 	call Func_ea76b
 	xor a
-	ld [$c976], a
-	ld [$c977], a
+	ld [wPrinterDataSize], a
+	ld [wPrinterDataSize + 1], a
 	call Func_ea606
 	call Func_ea74c
 	ret
@@ -346,22 +346,22 @@ Func_ea68a: ; ea68a (3a:668a)
 	ld hl, Data_ea9e4
 	call Func_ea76b
 	call Func_ea7d2
-	ld a, $04
-	ld [$c976], a
-	ld a, $00
-	ld [$c977], a
+	ld a, $4
+	ld [wPrinterDataSize], a
+	ld a, $0
+	ld [wPrinterDataSize + 1], a
 	call Func_ea7a2
 	call Func_ea606
 	call Func_ea74c
-	ld a, $03
-	ld [$cae0], a
+	ld a, $3
+	ld [wPrinterStatusIndicator], a
 	ret
 
 Func_ea6af: ; ea6af (3a:66af)
-	ld hl, $c973
+	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
-	cp a, $06
+	cp a, $6
 	ret c
 	xor a
 	ld [hl], a
@@ -369,14 +369,14 @@ Func_ea6af: ; ea6af (3a:66af)
 	ret
 
 Func_ea6bd: ; ea6bd (3a:66bd)
-	ld hl, $c973
+	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
 	cp 6
 	ret c
 	xor a
 	ld [hl], a
-	ld hl, $c6e9
+	ld hl, wPrinterRowIndex
 	dec [hl]
 	call Func_ea60b
 	call Func_ea60b
@@ -385,18 +385,18 @@ Func_ea6bd: ; ea6bd (3a:66bd)
 Func_ea6d2: ; ea6d2 (3a:66d2)
 	call Func_ea742
 	ret c
-	ld a, [$c970]
+	ld a, [wPrinterHandshake]
 	cp a, $ff
 	jr nz, .asm_ea6e4
-	ld a, [$c971]
+	ld a, [wPrinterStatusFlags]
 	cp a, $ff
 	jr z, .asm_ea6fb
 .asm_ea6e4
-	ld a, [$c970]
+	ld a, [wPrinterHandshake]
 	cp a, $81
 	jr nz, .asm_ea6fb
-	ld a, [$c971]
-	cp a, $00
+	ld a, [wPrinterStatusFlags]
+	cp a, $0
 	jr nz, .asm_ea6fb
 	ld hl, wPrinterConnectionOpen
 	set 1, [hl]
@@ -404,18 +404,18 @@ Func_ea6d2: ; ea6d2 (3a:66d2)
 	ret
 
 .asm_ea6fb
-	ld a, $0e
-	ld [wOverworldMap], a
+	ld a, $e
+	ld [wPrinterSendState], a
 	ret
 
 Func_ea701: ; ea701 (3a:6701)
 	call Func_ea742
 	ret c
-	ld a, [$c971]
+	ld a, [wPrinterStatusFlags]
 	and $f0
 	jr nz, .asm_ea71b
-	ld a, [$c971]
-	and $01
+	ld a, [wPrinterStatusFlags]
+	and $1
 	jr nz, .asm_ea717
 	call Func_ea606
 	ret
@@ -426,13 +426,13 @@ Func_ea701: ; ea701 (3a:6701)
 
 .asm_ea71b
 	ld a, $11
-	ld [wOverworldMap], a
+	ld [wPrinterSendState], a
 	ret
 
 Func_ea721: ; ea721 (3a:6721)
 	call Func_ea742
 	ret c
-	ld a, [$c971]
+	ld a, [wPrinterStatusFlags]
 	and $f3
 	ret nz
 	call Func_ea606
@@ -444,11 +444,11 @@ Func_ea732: ; ea732 (3a:6732)
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld a, [$c971]
+	ld a, [wPrinterStatusFlags]
 	and $f0
 	ret nz
 	xor a
-	ld [wOverworldMap], a
+	ld [wPrinterSendState], a
 	ret
 
 Func_ea742: ; ea742 (3a:6742)
@@ -467,14 +467,14 @@ Func_ea74c: ; ea74c (3a:674c)
 	ld a, [wPrinterOpcode]
 	and a
 	jr nz, .asm_ea74c
-	ld a, $01
+	ld a, $1
 	ld [wPrinterOpcode], a
 	xor a
-	ld [$c974], a
-	ld [$c975], a
+	ld [wPrinterSendByteOffset], a
+	ld [wPrinterSendByteOffset + 1], a
 	ld a, $88
 	ld [rSB], a
-	ld a, $01
+	ld a, $1
 	ld [rSC], a
 	ld a, $81
 	ld [rSC], a
@@ -482,52 +482,52 @@ Func_ea74c: ; ea74c (3a:674c)
 
 Func_ea76b: ; ea76b (3a:676b)
 	ld a, [hli]
-	ld [$c6ea], a
+	ld [wPrinterDataHeader], a
 	ld a, [hli]
-	ld [$c6eb], a
+	ld [wPrinterDataHeader + 1], a
 	ld a, [hli]
-	ld [$c6ec], a
+	ld [wPrinterDataHeader + 2], a
 	ld a, [hli]
-	ld [$c6ed], a
+	ld [wPrinterDataHeader + 3], a
 	ld a, [hli]
-	ld [$c6ee], a
+	ld [wPrinterDataHeader + 4], a
 	ld a, [hl]
-	ld [$c6ef], a
+	ld [wPrinterDataHeader + 5], a
 	ret
 
 Func_ea784: ; ea784 (3a:6784)
 	xor a
-	ld hl, $c6ea
+	ld hl, wPrinterDataHeader
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c6ee
+	ld hl, wPrinterDataHeader + 4
 	ld [hli], a
 	ld [hl], a
 	xor a
-	ld [$c976], a
-	ld [$c977], a
-	ld hl, $c6f0
+	ld [wPrinterDataSize], a
+	ld [wPrinterDataSize + 1], a
+	ld hl, wPrinterSendDataSource
 	ld bc, $280
 	call FillMemory
 	ret
 
 Func_ea7a2: ; ea7a2 (3a:67a2)
-	ld hl, $0000
-	ld bc, $0004
-	ld de, $c6ea
+	ld hl, $0
+	ld bc, $4
+	ld de, wPrinterDataHeader
 	call Func_ea7c5
-	ld a, [$c976]
+	ld a, [wPrinterDataSize]
 	ld c, a
-	ld a, [$c977]
+	ld a, [wPrinterDataSize + 1]
 	ld b, a
-	ld de, $c6f0
+	ld de, wPrinterSendDataSource
 	call Func_ea7c5
 	ld a, l
-	ld [$c6ee], a
+	ld [wPrinterDataHeader + 4], a
 	ld a, h
-	ld [$c6ef], a
+	ld [wPrinterDataHeader + 5], a
 	ret
 
 Func_ea7c5: ; ea7c5 (3a:67c5)
@@ -546,36 +546,36 @@ Func_ea7c5: ; ea7c5 (3a:67c5)
 	ret
 
 Func_ea7d2: ; ea7d2 (3a:67d2)
-	ld a, $01
-	ld [$c6f0], a
-	ld a, [$cae2]
-	ld [$c6f1], a
+	ld a, $1
+	ld [wPrinterSendDataSource], a
+	ld a, [wcae2]
+	ld [wPrinterStatusReceived], a
 	ld a, $e4
-	ld [$c6f2], a
-	ld a, [$cae3]
-	ld [$c6f3], a
+	ld [wc6f2], a
+	ld a, [wPrinterSettingsTempCopy]
+	ld [wc6f3], a
 	ret
 
 Func_ea7e9: ; ea7e9 (3a:67e9)
-	ld a, [$c6e9]
+	ld a, [wPrinterRowIndex]
 	ld b, a
-	ld a, [$caf4]
+	ld a, [wPrinterQueueLength]
 	sub b
-	ld hl, $c978
-	ld de, $0028
-.asm_ea7f7
+	ld hl, wPrinterTileBuffer
+	ld de, $28
+.get_start_addr
 	and a
-	jr z, .asm_ea7fe
+	jr z, .start_working
 	add hl, de
 	dec a
-	jr .asm_ea7f7
+	jr .get_start_addr
 
-.asm_ea7fe
+.start_working
 	ld e, l
 	ld d, h
-	ld hl, $c6f0
+	ld hl, wPrinterSendDataSource
 	ld c, $28
-.asm_ea805
+.prep_loop
 	ld a, [de]
 	inc de
 	push bc
@@ -586,47 +586,47 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 	and $f0
 	ld e, a
 	ld a, d
-	and $0f
+	and $f
 	ld d, a
-	and $08
+	and $8
 	ld a, d
-	jr nz, .asm_ea81d
+	jr nz, .vtiles1
 	or $90
-	jr .asm_ea81f
+	jr .got_vram_address
 
-.asm_ea81d
+.vtiles1
 	or $80
-.asm_ea81f
+.got_vram_address
 	ld d, a
-	lb bc, $3a, $01
+	lb bc, BANK(Func_ea7e9), $1
 	call CopyVideoData
 	pop hl
-	ld de, $0010
+	ld de, $10
 	add hl, de
 	pop de
 	pop bc
 	dec c
-	jr nz, .asm_ea805
-	call Func_ea834
+	jr nz, .prep_loop
+	call .UnnecessaryCall
 	ret
 
-Func_ea834: ; ea834 (3a:6834)
-	ld hl, $cbdc
-	ld bc, $0020
+.UnnecessaryCall: ; ea834 (3a:6834)
+	ld hl, wcbdc
+	ld bc, $20
 	xor a
 	call FillMemory
-	ld hl, $c300
+	ld hl, wOAMBuffer
 	ld c, $28
-.asm_ea843
+.master_loop
 	push bc
 	push hl
-	call Func_ea860
-	jr nc, .asm_ea856
-	call Func_ea886
-	call Func_ea8a1
-	call Func_ea902
-	call Func_ea999
-.asm_ea856
+	call .AreWePrintingThisSegment
+	jr nc, .skip_segment
+	call .GetVRAMAddress
+	call .GetOAMFlags
+	call .ApplyObjectPalettes
+	call .PlaceObject
+.skip_segment
 	pop hl
 	inc hl
 	inc hl
@@ -634,44 +634,44 @@ Func_ea834: ; ea834 (3a:6834)
 	inc hl
 	pop bc
 	dec c
-	jr nz, .asm_ea843
+	jr nz, .master_loop
 	ret
 
-Func_ea860: ; ea860 (3a:6860)
-	ld a, [$c6e9]
+.AreWePrintingThisSegment: ; ea860 (3a:6860)
+	ld a, [wPrinterRowIndex]
 	ld b, a
-	ld a, [$caf4]
+	ld a, [wPrinterQueueLength]
 	sub b
 	ld c, a
 	ld b, $10
-.asm_ea86b
+.add_n_times
 	ld a, c
 	and a
-	jr z, .asm_ea876
+	jr z, .check
 	ld a, b
 	add $10
 	ld b, a
 	dec c
-	jr .asm_ea86b
+	jr .add_n_times
 
-.asm_ea876
+.check
 	ld a, b
 	ld e, a
 	add $10
 	ld d, a
 	ld a, [hl]
 	cp e
-	jr c, .asm_ea884
+	jr c, .not_printing
 	cp d
-	jr nc, .asm_ea884
+	jr nc, .not_printing
 	scf
 	ret
 
-.asm_ea884
+.not_printing
 	and a
 	ret
 
-Func_ea886: ; ea886 (3a:6886)
+.GetVRAMAddress: ; ea886 (3a:6886)
 	push hl
 	inc hl
 	inc hl
@@ -681,81 +681,81 @@ Func_ea886: ; ea886 (3a:6886)
 	and $f0
 	ld e, a
 	ld a, d
-	and $0f
+	and $f
 	or $80
 	ld d, a
-	ld hl, $cbdc
-	lb bc, $3a, $01
+	ld hl, wcbdc
+	lb bc, BANK(.GetVRAMAddress), $1
 	call CopyVideoData
 	pop hl
 	ret
 
-Func_ea8a1: ; ea8a1 (3a:68a1)
+.GetOAMFlags: ; ea8a1 (3a:68a1)
 	push hl
 	inc hl
 	inc hl
 	inc hl
 	ld a, [hl]
-	call Func_ea8ab
+	call .DoBitOperation
 	pop hl
 	ret
 
-Func_ea8ab: ; ea8ab (3a:68ab)
+.DoBitOperation: ; ea8ab (3a:68ab)
 	and $60
 	swap a
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_ea8ba
+	ld hl, .Jumptable
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	jp [hl]
 
-Jumptable_ea8ba: ; ea8ba (3a:68ba)
-	dw Func_ea8c2
-	dw Func_ea8c3
-	dw Func_ea8c7
-	dw Func_ea8cb
+.Jumptable: ; ea8ba (3a:68ba)
+	dw .nop
+	dw .one
+	dw .two
+	dw .both
 
-Func_ea8c2: ; ea8c2 (3a:68c2)
+.nop: ; ea8c2 (3a:68c2)
 	ret
 
-Func_ea8c3: ; ea8c3 (3a:68c3)
-	call Func_ea8d2
+.one: ; ea8c3 (3a:68c3)
+	call .Invert
 	ret
 
-Func_ea8c7: ; ea8c7 (3a:68c7)
-	call Func_ea8e8
+.two: ; ea8c7 (3a:68c7)
+	call .Swap
 	ret
 
-Func_ea8cb: ; ea8cb (3a:68cb)
-	call Func_ea8d2
-	call Func_ea8e8
+.both: ; ea8cb (3a:68cb)
+	call .Invert
+	call .Swap
 	ret
 
-Func_ea8d2: ; ea8d2 (3a:68d2)
-	ld hl, $cbdc
+.Invert: ; ea8d2 (3a:68d2)
+	ld hl, wcbdc
 	ld c, 16
-.asm_ea8d7
+.byte_loop
 	ld d, [hl]
 	ld a, 0
 	ld b, 8
-.asm_ea8dc
+.bit_loop
 	sla d
 	rr a
 	dec b
-	jr nz, .asm_ea8dc
+	jr nz, .bit_loop
 	ld [hli], a
 	dec c
-	jr nz, .asm_ea8d7
+	jr nz, .byte_loop
 	ret
 
-Func_ea8e8: ; ea8e8 (3a:68e8)
-	ld hl, $cbdc
-	ld de, $cbea
-	ld c, $04
-.asm_ea8f0
+.Swap: ; ea8e8 (3a:68e8)
+	ld hl, wcbdc
+	ld de, wcbea
+	ld c, $4
+.swap_loop
 	ld b, [hl]
 	ld a, [de]
 	ld [hli], a
@@ -771,19 +771,19 @@ Func_ea8e8: ; ea8e8 (3a:68e8)
 	dec de
 	dec de
 	dec c
-	jr nz, .asm_ea8f0
+	jr nz, .swap_loop
 	ret
 
-Func_ea902: ; ea902 (3a:6902)
+.ApplyObjectPalettes: ; ea902 (3a:6902)
 	push hl
-	ld hl, $cbdc
-	ld de, $cbec
-	ld a, $08
-.asm_ea90b
+	ld hl, wcbdc
+	ld de, wcbec
+	ld a, 8
+.loop1
 	push af
-	ld bc, $0000
-	ld a, $08
-.asm_ea911
+	ld bc, $0
+	ld a, 8
+.loop2
 	push af
 	xor a
 	rlc [hl]
@@ -794,12 +794,12 @@ Func_ea902: ; ea902 (3a:6902)
 	dec hl
 	push hl
 	push de
-	call Func_ea936
+	call .ExpandPalettesToBC
 	pop de
 	pop hl
 	pop af
 	dec a
-	jr nz, .asm_ea911
+	jr nz, .loop2
 	inc hl
 	inc hl
 	ld a, b
@@ -810,19 +810,19 @@ Func_ea902: ; ea902 (3a:6902)
 	inc de
 	pop af
 	dec a
-	jr nz, .asm_ea90b
+	jr nz, .loop1
 	pop hl
 	ret
 
-Func_ea936 ; ea936 (3a:6936)
-	call Func_ea93d
-	call Func_ea96d
+.ExpandPalettesToBC: ; ea936 (3a:6936)
+	call .GetPaletteFunction
+	call .ApplyPaletteFunction
 	ret
 
-Func_ea93d: ; ea93d (3a:693d)
+.GetPaletteFunction: ; ea93d (3a:693d)
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_ea949
+	ld hl, .PalJumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -830,41 +830,41 @@ Func_ea93d: ; ea93d (3a:693d)
 	ld l, a
 	jp [hl]
 
-Jumptable_ea949: ; ea949 (3a:6949)
-	dw Func_ea951
-	dw Func_ea95f
-	dw Func_ea956
-	dw Func_ea966
+.PalJumptable: ; ea949 (3a:6949)
+	dw .Pal0
+	dw .Pal1
+	dw .Pal2
+	dw .Pal3
 
-Func_ea951: ; ea951 (3a:6951)
+.Pal0: ; ea951 (3a:6951)
 	ld a, [rOBP0]
-	and $03
+	and $3
 	ret
 
-Func_ea956: ; ea956 (3a:6956)
+.Pal2: ; ea956 (3a:6956)
 	ld a, [rOBP0]
-	and $0c
+	and $c
 	srl a
 	srl a
 	ret
 
-Func_ea95f: ; ea95f (3a:695f)
+.Pal1: ; ea95f (3a:695f)
 	ld a, [rOBP0]
 	and $30
 	swap a
 	ret
 
-Func_ea966: ; ea966 (3a:6966)
+.Pal3: ; ea966 (3a:6966)
 	ld a, [rOBP0]
 	and $c0
 	rlca
 	rlca
 	ret
 
-Func_ea96d: ; ea96d (3a:696d)
+.ApplyPaletteFunction: ; ea96d (3a:696d)
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_ea979
+	ld hl, .PalFunJumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -872,62 +872,62 @@ Func_ea96d: ; ea96d (3a:696d)
 	ld l, a
 	jp [hl]
 
-Jumptable_ea979: ; ea979 (3a:6979)
-	dw Func_ea981
-	dw Func_ea986
-	dw Func_ea98c
-	dw Func_ea992
+.PalFunJumptable: ; ea979 (3a:6979)
+	dw .zero_zero
+	dw .one_zero
+	dw .zero_one
+	dw .one_one
 
-Func_ea981: ; ea981 (3a:6981)
+.zero_zero: ; ea981 (3a:6981)
 	sla b
 	sla c
 	ret
 
-Func_ea986: ; ea986 (3a:6986)
+.one_zero: ; ea986 (3a:6986)
 	scf
 	rl b
 	sla c
 	ret
 
-Func_ea98c: ; ea98c (3a:698c)
+.zero_one: ; ea98c (3a:698c)
 	sla b
 	scf
 	rl c
 	ret
 
-Func_ea992: ; ea992 (3a:6992)
+.one_one: ; ea992 (3a:6992)
 	scf
 	rl b
 	scf
 	rl c
 	ret
 
-Func_ea999: ; ea999 (3a:6999)
+.PlaceObject: ; ea999 (3a:6999)
 	push hl
 	ld a, [hli]
 	ld c, [hl]
-	and $08
-	jr nz, .asm_ea9a5
-	ld hl, $c6f0
-	jr .asm_ea9a8
+	and $8
+	jr nz, .use_wc830
+	ld hl, wPrinterSendDataSource
+	jr .got_data_source
 
-.asm_ea9a5
-	ld hl, $c830
-.asm_ea9a8
-	ld b, $00
+.use_wc830
+	ld hl, wc830
+.got_data_source
+	ld b, $0
 	ld a, c
-	and $f8
-	sub $08
+	and %11111000
+	sub $8
 	ld c, a
 	sla c
 	rl b
 	add hl, bc
 	ld e, l
 	ld d, h
-	ld hl, $cbec
-	ld c, $08
-.asm_ea9bc
-	call Func_ea9d0
+	ld hl, wcbec
+	ld c, $8
+.coord_copy_loop
+	call .GetBitMask
 	ld a, [de]
 	and b
 	or [hl]
@@ -941,14 +941,14 @@ Func_ea999: ; ea999 (3a:6999)
 	inc hl
 	inc de
 	dec c
-	jr nz, .asm_ea9bc
+	jr nz, .coord_copy_loop
 	pop hl
 	ret
 
-Func_ea9d0: ; ea9d0 (3a:69d0)
+.GetBitMask: ; ea9d0 (3a:69d0)
 	push hl
 	push de
-	ld de, $fff0
+	ld de, -$10
 	add hl, de
 	ld a, [hli]
 	or [hl]
@@ -959,14 +959,20 @@ Func_ea9d0: ; ea9d0 (3a:69d0)
 	ret
 
 Data_ea9de: ; ea9de
-	db $01, $00, $00, $00, $01, $00
+	db  1, 0, $00, 0
+	dw 1
 Data_ea9e4: ; ea9e4
-	db $02, $00, $04, $00, $00, $00
+	db  2, 0, $04, 0
+	dw 0
 Data_ea9ea: ; ea9ea
-	db $04, $00, $80, $02, $00, $00
+	db  4, 0, $80, 2
+	dw 0
 Data_ea9f0: ; ea9f0
-	db $04, $00, $00, $00, $04, $00
+	db  4, 0, $00, 0
+	dw 4
 Data_ea9f6: ; ea9f6
-	db $08, $00, $00, $00, $08, $00
+	db  8, 0, $00, 0
+	dw 8
 Data_ea9fc: ; ea9fc
-	db $0f, $00, $00, $00, $0f, $00
+	db 15, 0, $00, 0
+	dw 15

@@ -531,7 +531,9 @@ wYellowIntroSurfingPikaSineWaveBuffer:: ; c800
 	; ds $100
 	ds $10
 wc810:: ; c810
-	ds $f0
+	ds $20
+wc830:: ; c830
+	ds $d0
 
 ; c900
 	ds $70
@@ -565,7 +567,16 @@ wPrinterPokedexEntryTextPointer:: ; caf5
 	dw
 	ds 2
 wPrinterPokedexMonIsOwned:: ; caf9
-	ds 259
+	ds 227
+
+wcbdc:: ; cbdc
+	ds 14
+
+wcbea:: ; cbea
+	ds 2
+
+wcbec:: ; cbec
+	ds 16
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn

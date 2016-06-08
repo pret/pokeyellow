@@ -257,7 +257,7 @@ PrintPCBox:: ; e8d35 (3a:4e79)
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e988a
+	call PrintPCBox_DrawPage1
 	call StartTransmission_Send9Rows
 	ld a, $10
 	ld [wcae2], a
@@ -272,7 +272,7 @@ PrintPCBox:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e98ec
+	call PrintPCBox_DrawPage2
 	call StartTransmission_Send9Rows
 	ld a, $0
 	ld [wcae2], a
@@ -287,7 +287,7 @@ PrintPCBox:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e9907
+	call PrintPCBox_DrawPage3
 	call StartTransmission_Send9Rows
 	ld a, $0
 	ld [wcae2], a
@@ -302,7 +302,7 @@ PrintPCBox:: ; e8d35 (3a:4e79)
 	call DelayFrames
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	call Func_e9922
+	call PrintPCBox_DrawPage4
 	call StartTransmission_Send9Rows
 	ld a, $3
 	ld [wcae2], a
@@ -791,79 +791,79 @@ CopySurfingMinigameScore:
 SurfingPikachu2Graphics:  INCBIN "gfx/surfing_pikachu_2.2bpp"
 SurfingPikachu2GraphicsEnd:
 
-Func_e988a:
+PrintPCBox_DrawPage1:
 	xor a
 	ld [wBoxNumString], a
 	call ClearScreen
-	call Func_e99de
+	call PrintPCBox_PlaceHorizontalLines
 	coord hl, 0, 0
 	ld bc, 11 * SCREEN_WIDTH
 	ld a, " "
 	call FillMemory
-	call Func_e99b9
-	call Func_e99a7
+	call PrintPCBox_DrawLeftAndRightBorders
+	call PrintPCBox_DrawTopBorder
 	coord hl, 4, 4
-	ld de, String_e98db
+	ld de, .PokemonListString
 	call PlaceString
 	coord hl, 7, 6
-	ld de, String_e98e8
+	ld de, .BoxString
 	call PlaceString
 	coord hl, 11, 6
 	ld a, [wCurrentBoxNum]
 	and $7f
 	cp 9
-	jr c, .asm_e98cc
+	jr c, .less_than_9
 	sub 9
 	ld [hl], "1"
 	inc hl
 	add "0"
-	jr .asm_e98ce
+	jr .placed_box_number
 
-.asm_e98cc
+.less_than_9
 	add "1"
-.asm_e98ce
+.placed_box_number
 	ld [hl], a
 	coord hl, 4, 9
 	ld de, wBoxSpecies
 	ld c, $3
-	call Func_e994e
+	call PrintPCBox_PlaceBoxMonInfo
 	ret
 
-String_e98db: db "POKéMON LIST@"
-String_e98e8: db "BOX@"
+.PokemonListString: db "POKéMON LIST@"
+.BoxString: db "BOX@"
 
-Func_e98ec:
+PrintPCBox_DrawPage2:
 	call ClearScreen
-	call Func_e99de
-	call Func_e99b9
+	call PrintPCBox_PlaceHorizontalLines
+	call PrintPCBox_DrawLeftAndRightBorders
 	ld a, [wBoxDataStart]
 	cp 4
 	ret c
 	coord hl, 4, 0
 	ld de, wBoxSpecies + 3
 	ld c, 6
-	call Func_e994e
+	call PrintPCBox_PlaceBoxMonInfo
 	ret
 
-Func_e9907:
+PrintPCBox_DrawPage3:
 	call ClearScreen
-	call Func_e99de
-	call Func_e99b9
+	call PrintPCBox_PlaceHorizontalLines
+	call PrintPCBox_DrawLeftAndRightBorders
 	ld a, [wBoxDataStart]
 	cp 10
 	ret c
 	coord hl, 4, 0
 	ld de, wBoxSpecies + 9
 	ld c, 6
-	call Func_e994e
+	call PrintPCBox_PlaceBoxMonInfo
 	ret
 
-Func_e9922:
+PrintPCBox_DrawPage4:
 	call ClearScreen
-	call Func_e99de
-	call Func_e99b9
+	call PrintPCBox_PlaceHorizontalLines
+	call PrintPCBox_DrawLeftAndRightBorders
 	coord hl, 0, 15
-	call Func_e99cf
+	call PrintPCBox_DrawBottomBorderAtHL
 	coord hl, 0, 16
 	ld bc, 2 * SCREEN_WIDTH
 	ld a, " "
@@ -874,18 +874,18 @@ Func_e9922:
 	coord hl, 4, 0
 	ld de, wBoxSpecies + 15
 	ld c, 5
-	call Func_e994e
+	call PrintPCBox_PlaceBoxMonInfo
 	ret
 
-Func_e994e:
-.asm_e994e
+PrintPCBox_PlaceBoxMonInfo:
+.loop
 	ld a, c
 	and a
-	jr z, .asm_e99a6
+	jr z, .done
 	dec c
 	ld a, [de]
 	cp $ff
-	jr z, .asm_e99a6
+	jr z, .done
 	ld [wd11e], a
 	push bc
 	push hl
@@ -927,73 +927,73 @@ Func_e994e:
 	add hl, bc
 	pop bc
 	inc de
-	jr .asm_e994e
+	jr .loop
 
-.asm_e99a6
+.done
 	ret
 
-Func_e99a7:
+PrintPCBox_DrawTopBorder:
 	coord hl, 0, 0
 	ld a, $79
 	ld [hli], a
 	ld a, $7a
 	ld c, SCREEN_WIDTH - 2
-.asm_e99b1
+.loop
 	ld [hli], a
 	dec c
-	jr nz, .asm_e99b1
+	jr nz, .loop
 	ld a, $7b
 	ld [hl], a
 	ret
 
-Func_e99b9:
+PrintPCBox_DrawLeftAndRightBorders:
 	coord hl, 0, 0
 	ld de, SCREEN_WIDTH - 1
 	ld c, SCREEN_HEIGHT
-.asm_e99c1
+.loop
 	ld a, $7c
 	ld [hl], a
 	add hl, de
 	ld a, $7c
 	ld [hli], a
 	dec c
-	jr nz, .asm_e99c1
+	jr nz, .loop
 	ret
 
-Func_e99cc:
+PrintPCBox_DrawBottomBorder:
 	coord hl, 0, 17
-Func_e99cf:
+PrintPCBox_DrawBottomBorderAtHL:
 	ld a, $7d
 	ld [hli], a
 	ld a, $7a
 	ld c, SCREEN_WIDTH - 2
-.asm_e99b1
+.loop
 	ld [hli], a
 	dec c
-	jr nz, .asm_e99b1
+	jr nz, .loop
 	ld a, $7e
 	ld [hl], a
 	ret
 
-Func_e99de:
+PrintPCBox_PlaceHorizontalLines:
 	coord hl, 4, 0
 	ld c, 6
-	call Func_e99eb
+	call .PlaceHorizontalLine
 	coord hl, 6, 1
 	ld c, 6
-Func_e99eb:
-.asm_e99eb
+.PlaceHorizontalLine:
+.loop
 	push bc
 	push hl
-	ld de, String_e99fd
+	ld de, .HorizontalLineString
 	call PlaceString
 	pop hl
 	ld bc, 3 * SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec c
-	jr nz, .asm_e99eb
+	jr nz, .loop
 	ret
 
-String_e99fd:
+.HorizontalLineString:
 	db "----------@"
