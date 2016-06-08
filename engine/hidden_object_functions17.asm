@@ -365,7 +365,7 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 .openFirstLock
 ; Next can is trying for the second switch.
 	SetEvent EVENT_1ST_LOCK_OPENED
-	callab Func_f2d0c
+	callab Yellow_SampleSecondTrashCan
 	tx_pre_id VermilionGymTrashSuccesText1
 	jr .done
 

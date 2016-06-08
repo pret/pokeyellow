@@ -164,6 +164,10 @@ LoadCurrentPikaPicAnimScriptPointer:
 	ret
 
 PikaPicAnimPointers:
+pikapic_def: macro
+\1_id: dw \1
+endm
+
 	pikapic_def PikaPicAnimScript0  ; 00
 	pikapic_def PikaPicAnimScript1  ; 01
 	pikapic_def PikaPicAnimScript2  ; 02

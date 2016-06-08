@@ -1144,7 +1144,7 @@ DisplayTextID:: ; 2817 (0:2817)
 	and a
 	jp z, DisplayStartMenu
 	cp TEXT_PIKACHU_ANIM ; new yellow asm
-	jp z, DisplayUnknownText_29c6
+	jp z, DisplayPikachuEmotion
 	cp TEXT_SAFARI_GAME_OVER
 	jp z, DisplaySafariGameOverText
 	cp TEXT_MON_FAINTED
@@ -1348,8 +1348,8 @@ RepelWoreOffText:: ; 29c1 (0:29c1)
 	TX_FAR _RepelWoreOffText
 	db "@"
 
-DisplayUnknownText_29c6:: ; 29c6 (0:29c6)
-	callab Func_fd004 ; 3f:5004
+DisplayPikachuEmotion:: ; 29c6 (0:29c6)
+	callab TalkToPikachu ; 3f:5004
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"

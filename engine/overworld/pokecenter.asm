@@ -32,7 +32,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call LoadCurrentMapView
 	call Delay3
 	call UpdateSprites
-	callab Func_fd252 ; todo
+	callab PikachuWalksToNurseJoy ; todo
 .notHealingPlayerPikachu
 	ld hl, NeedYourPokemonText
 	call PrintText

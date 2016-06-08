@@ -1848,7 +1848,7 @@ LoadMapHeader:: ; 0dab (0:0dab)
 	jr asm_0dbd
 
 Func_0db5:: ; XXX
-	callba Func_f0a55 ; 3c:4a55
+	callba LoadUnusedBluesHouseMissableObjectData ; 3c:4a55
 asm_0dbd
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
@@ -2067,7 +2067,7 @@ ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
 	pop af
 	call BankswitchCommon
 asm_0f4d: ; 0f4d (0:0f4d)
-	jpab Func_f02da
+	jpab SetMapSpecificScriptFlagsOnMapReload
 	ret ; useless?
 
 ResetMapVariables:: ; 0f56 (0:0f56)
