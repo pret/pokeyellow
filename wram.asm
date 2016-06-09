@@ -230,16 +230,16 @@ wSpriteStateData1:: ; c100
 ; C1xF
 spritestatedata1: MACRO
 w\1SpriteStateData1::
-w\1PictureID:: db
-w\1MovementStatus:: db
-w\1SpriteImageIdx:: db
-w\1YStepVector:: db
-w\1YPixels:: db
-w\1XStepVector:: db
-w\1XPixels:: db
-w\1IntraAnimFrameCounter:: db
-w\1AnimFrameCounter:: db
-w\1FacingDirection:: db
+w\1PictureID:: db ; 0
+w\1MovementStatus:: db ; 1
+w\1SpriteImageIdx:: db ; 2
+w\1YStepVector:: db ; 3
+w\1YPixels:: db ; 4
+w\1XStepVector:: db ; 5
+w\1XPixels:: db ; 6
+w\1IntraAnimFrameCounter:: db ; 7
+w\1AnimFrameCounter:: db ; 8
+w\1FacingDirection:: db ; 9
 	ds 6
 w\1SpriteStateData1End::
 endm
@@ -287,17 +287,17 @@ wSpriteStateData2:: ; c200
 ; C2xF
 spritestatedata2: MACRO
 w\1SpriteStateData2::
-w\1WalkAnimationCounter:: db
+w\1WalkAnimationCounter:: db ; 0
 	ds 1
-w\1YDisplacement:: db
-w\1XDisplacement:: db
-w\1MapY:: db
-w\1MapX:: db
-w\1MovementByte1:: db
-w\1GrassPriority:: db
-w\1MovementDelay:: db
+w\1YDisplacement:: db ; 2
+w\1XDisplacement:: db ; 3
+w\1MapY:: db ; 4
+w\1MapX:: db ; 5
+w\1MovementByte1:: db ; 6
+w\1GrassPriority:: db ; 7
+w\1MovementDelay:: db ; 8
 	ds 5
-w\1SpriteImageBaseOffset:: db
+w\1SpriteImageBaseOffset:: db ; e
 	ds 1
 w\1SpriteStateData2End::
 endm
@@ -2835,15 +2835,27 @@ wPikachuMovementScriptBank:: ds 1  ; d449
 wPikachuMovementScriptAddress:: dw ; d44a
 wd44d:: ds 1  ; d44c
 
-wCurPikaMovementData:: ; 
+wCurPikaMovementData:: ; d44d
+wCurPikaMovementParam1:: ds 1 ; d44d
+wCurPikaMovementFunc1:: ds 1 ; d44e
+wCurPikaMovementParam2:: ds 1 ; d44f
+wCurPikaMovementFunc2:: ds 1 ; d450
+wd451:: ds 1 ; d451
+wCurPikaMovementSpriteImageIdx:: ds 1 ; d452
+wPikaSpriteX:: ds 1 ; d453
+wPikaSpriteY:: ds 1 ; d454
+wPikachuMovementXOffset:: ds 1 ; d455
+wPikachuMovementYOffset:: ds 1 ; d456
+	ds wCurPikaMovementData - @
+
+
 wPikaPicAnimPointer:: dw ; d44d
 wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
 wPikaPicAnimCurGraphicID:: ds 1
 wPikaPicAnimTimer:: ds 2 ; d451
 wPikaPicAnimDelay::
-wPikaSpriteX:: ds 1
-wPikaPicTextboxStartX::
-wPikaSpriteY:: ds 1 ; d454
+wPikaPicTextboxStartX:: ds 1 ; d453
+wd454:: ds 1 ; d454
 wPikaPicTextboxStartY:: ds 1 ; d455
 wd456:: ds 1 ; d456
 wd457:: ds 1 ; d457

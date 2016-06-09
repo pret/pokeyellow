@@ -25,7 +25,7 @@ InitializePikachuTextID: ; fcf20 (3f:4f20)
 
 DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	add hl, de
 	ld e, [hl]
@@ -37,7 +37,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	cp $ff
 	jr z, .done
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, StarterPikachuEmotionsJumptable
 	add hl, bc
 	add hl, bc
@@ -46,6 +46,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	ld l, a
 	call JumpToAddress
 	jr .loop
+
 .done
 	ret
 	
@@ -110,7 +111,7 @@ StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
 	
 ShowPikachuEmoteBubble: ; fcfa2 (3f:4fa2)
 	ld [wWhichEmotionBubble], a
-	ld a, $f
+	ld a, $f ; Pikachu
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ret
@@ -142,8 +143,8 @@ StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	inc de
 	push de
 	ld e, a
-	ld d, $0
-	ld hl, Jumptable_fcfda
+	ld d, 0
+	ld hl, .Subcommands
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -153,7 +154,7 @@ StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	pop de
 	ret
 
-Jumptable_fcfda:
+.Subcommands:
 	dw LoadPikachuSpriteIntoVRAM
 	dw LoadFontTilePatterns
 	dw Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3
@@ -250,10 +251,10 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	ld hl, wd492
 	bit 7, [hl]
 	ldpikaemotion a, PikachuEmotion29
-	jr z, .set_carry
+	jr z, .play_emotion
 	call CheckPikachuFollowingPlayer
 	ldpikaemotion a, PikachuEmotion30
-	jr nz, .set_carry
+	jr nz, .play_emotion
 	jr .check_pikachu_status
 
 .notFanClub
@@ -262,46 +263,46 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	jr nz, .notPewterPokecenter
 	call CheckPikachuFollowingPlayer
 	ldpikaemotion a, PikachuEmotion26
-	jr nz, .set_carry
+	jr nz, .play_emotion
 	jr .check_pikachu_status
 
 .notPewterPokecenter
 	callab Func_f24ae
 	ld a, e
 	cp $ff
-	jr nz, .set_carry
+	jr nz, .play_emotion
 	jr .check_pikachu_status ; useless
 
 .check_pikachu_status
 	call IsPlayerPikachuAsleepInParty
 	ldpikaemotion a, PikachuEmotion11
-	jr c, .set_carry
+	jr c, .play_emotion
 	callab CheckPikachuFaintedOrStatused ; same bank
 	ldpikaemotion a, PikachuEmotion28
-	jr c, .set_carry
+	jr c, .play_emotion
 	ld a, [wCurMap]
 	cp POKEMONTOWER_1
 	jr c, .notInLavenderTower
 	cp POKEMONTOWER_7 + 1
 	ldpikaemotion a, PikachuEmotion22
-	jr c, .set_carry
+	jr c, .play_emotion
 .notInLavenderTower
 	ld a, [wd49c]
 	and a
-	jr z, .no_carry
+	jr z, .mood_based_emotion
 	dec a
 	ld c, a
 	ld b, $0
 	ld hl, .Emotions
 	add hl, bc
 	ld a, [hl]
-	jr .set_carry
+	jr .play_emotion
 
-.no_carry
+.mood_based_emotion
 	and a
 	ret
 
-.set_carry
+.play_emotion
 	scf
 	ret
 	
@@ -318,7 +319,7 @@ IsPlayerPikachuAsleepInParty: ; fd0d0 (3f:50d0)
 .loop
 	ld a, [wWhichPokemon]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, wPartySpecies
 	add hl, bc
 	ld a, [hl]
