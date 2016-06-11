@@ -3,20 +3,20 @@ LavenderPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 LavenderPokecenterTextPointers:
-	dw LavenderPokecenterText1
+	dw LavenderHealNurseText
 	dw LavenderPokecenterText2
 	dw LavenderPokecenterText3
-	dw LavenderPokecenterText4
+	dw LavenderTradeNurseText
 	dw LavenderPokecenterText5
 
-LavenderPokecenterText4:
+LavenderTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
-LavenderPokecenterText1:
+LavenderHealNurseText:
 	TX_POKECENTER_NURSE
 
 LavenderPokecenterText2:
-	TX_FAR _LavenderPokecenterText1
+	TX_FAR _LavenderPokecenterText2
 	db "@"
 
 LavenderPokecenterText3:

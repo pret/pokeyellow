@@ -2,8 +2,8 @@ CeladonMart2Script:
 	jp EnableAutoTextBoxDrawing
 
 CeladonMart2TextPointers:
-	dw CeladonMart2Text1
-	dw CeladonMart2Text2
+	dw CeladonMart2Clerk1Text
+	dw CeladonMart2Clerk2Text
 	dw CeladonMart2Text3
 	dw CeladonMart2Text4
 	dw CeladonMart2Text5

@@ -3,24 +3,24 @@ CinnabarPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 CinnabarPokecenterTextPointers:
-	dw CinnabarPokecenterText1
+	dw CinnabarHealNurseText
 	dw CinnabarPokecenterText2
 	dw CinnabarPokecenterText3
-	dw CinnabarPokecenterText4
+	dw CinnabarTradeNurseText
 	dw CinnabarPokecenterText5
 
-CinnabarPokecenterText1:
+CinnabarHealNurseText:
 	TX_POKECENTER_NURSE
 
 CinnabarPokecenterText2:
-	TX_FAR _CinnabarPokecenterText1
+	TX_FAR _CinnabarPokecenterText2
 	db "@"
 
 CinnabarPokecenterText3:
 	TX_FAR _CinnabarPokecenterText3
 	db "@"
 
-CinnabarPokecenterText4:
+CinnabarTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 CinnabarPokecenterText5:

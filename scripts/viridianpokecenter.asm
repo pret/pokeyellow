@@ -3,24 +3,24 @@ ViridianPokeCenterScript:
 	jp EnableAutoTextBoxDrawing
 
 ViridianPokecenterTextPointers:
-	dw ViridianPokeCenterText1
+	dw ViridianHealNurseText
 	dw ViridianPokeCenterText2
 	dw ViridianPokeCenterText3
-	dw ViridianPokeCenterText4
+	dw ViridianTradeNurseText
 	dw ViridianPokeCenterText5
 
-ViridianPokeCenterText1:
+ViridianHealNurseText:
 	TX_POKECENTER_NURSE
 
 ViridianPokeCenterText2:
-	TX_FAR _ViridianPokeCenterText1
+	TX_FAR _ViridianPokeCenterText2
 	db "@"
 
 ViridianPokeCenterText3:
 	TX_FAR _ViridianPokeCenterText3
 	db "@"
 
-ViridianPokeCenterText4:
+ViridianTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 ViridianPokeCenterText5:

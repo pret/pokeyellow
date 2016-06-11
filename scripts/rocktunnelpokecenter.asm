@@ -3,24 +3,24 @@ RockTunnelPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 RockTunnelPokecenterTextPointers:
-	dw RockTunnelPokecenterText1
+	dw RockTunnelHealNurseText
 	dw RockTunnelPokecenterText2
 	dw RockTunnelPokecenterText3
-	dw RockTunnelPokecenterText4
+	dw RockTunnelTradeNurseText
 	dw RockTunnelPokecenterText5
 
-RockTunnelPokecenterText1:
+RockTunnelHealNurseText:
 	TX_POKECENTER_NURSE
 
 RockTunnelPokecenterText2:
-	TX_FAR _RockTunnelPokecenterText1
+	TX_FAR _RockTunnelPokecenterText2
 	db "@"
 
 RockTunnelPokecenterText3:
 	TX_FAR _RockTunnelPokecenterText3
 	db "@"
 
-RockTunnelPokecenterText4:
+RockTunnelTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 RockTunnelPokecenterText5:

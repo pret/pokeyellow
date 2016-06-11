@@ -3,16 +3,16 @@ CeruleanPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 CeruleanPokecenterTextPointers:
-	dw CeruleanPokecenterText1
+	dw CeruleanHealNurseText
 	dw CeruleanPokecenterText2
 	dw CeruleanPokecenterText3
-	dw CeruleanPokecenterText4
+	dw CeruleanTradeNurseText
 	dw CeruleanPokecenterText5
 
-CeruleanPokecenterText4:
+CeruleanTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
-CeruleanPokecenterText1:
+CeruleanHealNurseText:
 	TX_POKECENTER_NURSE
 
 CeruleanPokecenterText2:

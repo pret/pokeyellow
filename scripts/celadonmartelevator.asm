@@ -32,23 +32,23 @@ CeladonMartElevatorScript_4862a:
 	ret
 
 CeladonMartElevatorScript_48631:
-	ld hl, CeladonMartElavatorFloors
+	ld hl, CeladonMartElevatorFloors
 	call LoadItemList
-	ld hl, CeldaonMartElevatorWarpMaps
+	ld hl, CeladonMartElevatorWarpMaps
 	ld de, wElevatorWarpMaps
-	ld bc, CeldaonMartElevatorWarpMapsEnd - CeldaonMartElevatorWarpMaps
+	ld bc, CeladonMartElevatorWarpMapsEnd - CeladonMartElevatorWarpMaps
 	jp CopyData
 
-CeladonMartElavatorFloors:
-	db $05 ; num elements in list
+CeladonMartElevatorFloors:
+	db 5 ; number of elements in list
 	db FLOOR_1F
 	db FLOOR_2F
 	db FLOOR_3F
 	db FLOOR_4F
 	db FLOOR_5F
-	db $FF ; terminator
+	db $FF
 
-CeldaonMartElevatorWarpMaps:
+CeladonMartElevatorWarpMaps:
 ; first byte is warp number
 ; second byte is map number
 ; These specify where the player goes after getting out of the elevator.
@@ -57,7 +57,7 @@ CeldaonMartElevatorWarpMaps:
 	db $02, CELADON_MART_3
 	db $02, CELADON_MART_4
 	db $02, CELADON_MART_5
-CeldaonMartElevatorWarpMapsEnd:
+CeladonMartElevatorWarpMapsEnd:
 
 CeladonMartElevatorScript_48654:
 	jpba ShakeElevator
@@ -68,6 +68,6 @@ CeladonMartElevatorTextPointers:
 CeladonMartElevatorText1:
 	TX_ASM
 	call CeladonMartElevatorScript_48631
-	ld hl, CeldaonMartElevatorWarpMaps
+	ld hl, CeladonMartElevatorWarpMaps
 	predef DisplayElevatorFloorMenu
 	jp TextScriptEnd

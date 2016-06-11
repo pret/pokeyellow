@@ -226,9 +226,16 @@ GetDefaultName: ; 6858 (1:6858)
 	jp CopyData
 
 DefaultNamesPlayerList: ; 687d (1:687d)
-	db "NEW NAME@YELLOW@ASH@JACK@"
+	db "NEW NAME@"
+	db "YELLOW@"
+	db "ASH@"
+	db "JACK@"
+
 DefaultNamesRivalList: ; 688d (1:688d)
-	db "NEW NAME@BLUE@GARY@JOHN@"
+	db "NEW NAME@"
+	db "BLUE@"
+	db "GARY@"
+	db "JOHN@"
 
 TextTerminator_6b20: ; 68a5 (1:68a5)
 	db "@"

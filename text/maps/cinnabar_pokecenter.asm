@@ -1,5 +1,4 @@
 _CinnabarPokecenterText2::
-_CinnabarPokecenterText1::
 	text "You can cancel"
 	line "evolution."
 

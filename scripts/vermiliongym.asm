@@ -1,4 +1,4 @@
-VermilionGymScript: ; 5ca26 (17:4a26)
+VermilionGymScript:
 	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]

@@ -6,26 +6,26 @@ PewterPokecenterScript:
 	ret
 
 PewterPokecenterTextPointers:
-	dw PewterPokecenterText1
+	dw PewterHealNurseText
 	dw PewterPokecenterText2
-	dw PewterPokecenterText3
-	dw PewterPokecenterText4
+	dw PewterJigglypuffText
+	dw PewterTradeNurseText
 	dw PewterPokecenterText5
 	dw PewterPokecenterText6
 
-PewterPokecenterText1:
+PewterHealNurseText:
 	TX_POKECENTER_NURSE
 
 PewterPokecenterText2:
-	TX_FAR _PewterPokecenterText1
+	TX_FAR _PewterPokecenterText2
 	db "@"
 
-PewterPokecenterText3:
+PewterJigglypuffText:
 	TX_ASM
-	callba Func_f1da4
+	callba PewterJigglypuff
 	jp TextScriptEnd
 
-PewterPokecenterText4:
+PewterTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 PewterPokecenterText5:

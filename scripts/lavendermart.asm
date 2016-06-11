@@ -2,7 +2,7 @@ LavenderMartScript:
 	jp EnableAutoTextBoxDrawing
 
 LavenderMartTextPointers:
-	dw LavenderMartText1
+	dw LavenderCashierText
 	dw LavenderMartText2
 	dw LavenderMartText3
 
@@ -13,20 +13,20 @@ LavenderMartText2:
 LavenderMartText3:
 	TX_ASM
 	CheckEvent EVENT_RESCUED_MR_FUJI
-	jr nz, .asm_c88d4
-	ld hl, LavenderMart_5c953
+	jr nz, .Nugget
+	ld hl, .ReviveText
 	call PrintText
-	jr .asm_6d225
-.asm_c88d4
-	ld hl, LavenderMart_5c958
+	jr .done
+.Nugget
+	ld hl, .NuggetText
 	call PrintText
-.asm_6d225
+.done
 	jp TextScriptEnd
 
-LavenderMart_5c953:
-	TX_FAR _LavenderMart_5c953
+.ReviveText
+	TX_FAR _LavenderMartReviveText
 	db "@"
 
-LavenderMart_5c958:
-	TX_FAR _LavenderMart_5c958
+.NuggetText
+	TX_FAR _LavenderMartNuggetText
 	db "@"

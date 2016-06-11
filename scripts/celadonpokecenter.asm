@@ -3,16 +3,16 @@ CeladonPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 CeladonPokecenterTextPointers:
-	dw CeladonPokecenterText1
+	dw CeladonHealNurseText
 	dw CeladonPokecenterText2
 	dw CeladonPokecenterText3
-	dw CeladonPokecenterText4
+	dw CeladonTradeNurseText
 	dw CeladonPokecenterText5
 
-CeladonPokecenterText4:
+CeladonTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
-CeladonPokecenterText1:
+CeladonHealNurseText:
 	TX_POKECENTER_NURSE
 
 CeladonPokecenterText2:

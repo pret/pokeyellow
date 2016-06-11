@@ -1,4 +1,4 @@
-_RockTunnelPokecenterText1::
+_RockTunnelPokecenterText2::
 	text "The element types"
 	line "of #MON make"
 	cont "them stronger"

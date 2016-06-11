@@ -5,26 +5,26 @@ PewterMartScript:
 	ret
 
 PewterMartTextPointers:
-	dw PewterMartText1
+	dw PewterCashierText
 	dw PewterMartText2
 	dw PewterMartText3
 
 PewterMartText2:
 	TX_ASM
-	ld hl, PewterMartText_74cc6
+	ld hl, .Text
 	call PrintText
 	jp TextScriptEnd
 
-PewterMartText_74cc6:
-	TX_FAR _PewterMartText_74cc6
+.Text
+	TX_FAR _PewterMartText2
 	db "@"
 
 PewterMartText3:
 	TX_ASM
-	ld hl, PewterMartText_74cd5
+	ld hl, .Text
 	call PrintText
 	jp TextScriptEnd
 
-PewterMartText_74cd5:
-	TX_FAR _PewterMartText_74cd5
+.Text
+	TX_FAR _PewterMartText3
 	db "@"

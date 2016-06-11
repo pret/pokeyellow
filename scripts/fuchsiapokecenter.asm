@@ -3,14 +3,14 @@ FuchsiaPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 FuchsiaPokecenterTextPointers:
-	dw FuchsiaPokecenterText1
+	dw FuchsiaHealNurseText
 	dw FuchsiaPokecenterText2
 	dw FuchsiaPokecenterText3
-	dw FuchsiaPokecenterText4
+	dw FuchsiaTradeNurseText
 	dw FuchsiaPokecenterText5
 
-FuchsiaPokecenterText1:
-	db $ff
+FuchsiaHealNurseText:
+	TX_POKECENTER_NURSE
 
 FuchsiaPokecenterText2:
 	TX_FAR _FuchsiaPokecenterText1
@@ -20,8 +20,8 @@ FuchsiaPokecenterText3:
 	TX_FAR _FuchsiaPokecenterText3
 	db "@"
 
-FuchsiaPokecenterText4:
-	db $f6
+FuchsiaTradeNurseText:
+	TX_CABLE_CLUB_RECEPTIONIST
 
 FuchsiaPokecenterText5:
 	TX_ASM

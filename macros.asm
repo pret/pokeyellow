@@ -355,6 +355,15 @@ TX_BILLS_PC                EQUS "db $fd"
 TX_POKEMART_CLERK          EQUS "db $fe"
 TX_POKECENTER_NURSE        EQUS "db $ff"
 
+TX_MART: MACRO
+	db $FE, _NARG
+	rept _NARG
+	db \1
+	shift
+	endr
+	db $FF
+	ENDM
+
 ; Predef macro.
 predef_const: MACRO
 	const \1PredefID
@@ -405,10 +414,6 @@ tx_pre_jump: MACRO
 	tx_pre_id \1
 	jp PrintPredefTextID
 ENDM
-
-sound0x0A: macro
-	db $11
-endm
 
 WALK EQU $FE
 STAY EQU $FF

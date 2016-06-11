@@ -65,7 +65,7 @@ DaisyOfferMapText:
 
 GotMapText:
 	TX_FAR _GotMapText
-	sound0x0A
+	TX_SFX_KEY_ITEM
 	db "@"
 
 DaisyBagFullText:

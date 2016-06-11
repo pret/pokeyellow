@@ -3,24 +3,24 @@ VermilionPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 VermilionPokecenterTextPointers:
-	dw VermilionPokecenterText1
+	dw VermilionHealNurseText
 	dw VermilionPokecenterText2
 	dw VermilionPokecenterText3
-	dw VermilionPokecenterText4
+	dw VermilionTradeNurseText
 	dw VermilionPokecenterText5
 
-VermilionPokecenterText1:
+VermilionHealNurseText:
 	TX_POKECENTER_NURSE
 
 VermilionPokecenterText2:
-	TX_FAR _VermilionPokecenterText1
+	TX_FAR _VermilionPokecenterText2
 	db "@"
 
 VermilionPokecenterText3:
 	TX_FAR _VermilionPokecenterText3
 	db "@"
 
-VermilionPokecenterText4:
+VermilionTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 VermilionPokecenterText5:

@@ -3,15 +3,15 @@ MtMoonPokecenterScript:
 	jp EnableAutoTextBoxDrawing
 
 MtMoonPokecenterTextPointers:
-	dw MtMoonPokecenterText1
+	dw MtMoonHealNurseText
 	dw MtMoonPokecenterText2
 	dw MtMoonPokecenterText3
-	dw MtMoonPokecenterText4
+	dw MagikarpSalesmanText
 	dw MtMoonPokecenterText5
-	dw MtMoonPokecenterText6
+	dw MtMoonTradeNurseText
 	dw MtMoonPokecenterText7
 
-MtMoonPokecenterText1:
+MtMoonHealNurseText:
 	TX_POKECENTER_NURSE
 
 MtMoonPokecenterText2:
@@ -22,16 +22,16 @@ MtMoonPokecenterText3:
 	TX_FAR _MtMoonPokecenterText3
 	db "@"
 
-MtMoonPokecenterText4:
+MagikarpSalesmanText:
 	TX_ASM
-	callab Func_f218c
+	callab MagikarpSalesman
 	jp TextScriptEnd
 
 MtMoonPokecenterText5:
 	TX_FAR _MtMoonPokecenterText5
 	db "@"
 
-MtMoonPokecenterText6:
+MtMoonTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 MtMoonPokecenterText7:

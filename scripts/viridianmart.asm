@@ -12,7 +12,7 @@ ViridianMartScript_1d47d:
 	ld hl, ViridianMartTextPointers
 	jr .asm_1d48c
 .asm_1d489
-	ld hl, ViridianMartTextPointers + $a ; starts at ViridianMartText6
+	ld hl, ViridianMartTextPointers + $a ; starts at ViridianCashierText
 .asm_1d48c
 	ld a, l
 	ld [wMapTextPtr], a
@@ -79,7 +79,7 @@ ViridianMartTextPointers:
 	dw ViridianMartText3
 	dw ViridianMartText4
 	dw ViridianMartText5
-	dw ViridianMartText6
+	dw ViridianCashierText
 	dw ViridianMartText2
 	dw ViridianMartText3
 

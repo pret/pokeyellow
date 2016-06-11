@@ -4,13 +4,13 @@ Func_f1d98:
 	ret
 
 PewterPokecenterText_f1d9f:
-	TX_FAR _PewterPokecenterText2
+	TX_FAR _PewterPokecenterText3
 	db "@"
 
-Func_f1da4:
+PewterJigglypuff:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, PewterPokecenterText_f1e19
+	ld hl, .Text
 	call PrintText
 	call StopAllMusic
 	ld c, 32
@@ -60,8 +60,8 @@ Func_f1da4:
 	call DisablePikachuFollowingPlayer
 	ret
 
-PewterPokecenterText_f1e19:
-	TX_FAR _PewterPokecenterText5
+.Text
+	TX_FAR _PewterJigglypuffText
 	db "@"
 
 JigglypuffSpinData:

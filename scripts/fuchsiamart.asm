@@ -3,7 +3,7 @@ FuchsiaMartScript:
 	ret
 
 FuchsiaMartTextPointers:
-	dw FuchsiaMartText1
+	dw FuchsiaCashierText
 	dw FuchsiaMartText2
 	dw FuchsiaMartText3
 

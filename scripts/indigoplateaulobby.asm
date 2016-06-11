@@ -15,25 +15,25 @@ IndigoPlateauLobbyScript:
 	ret
 
 IndigoPlateauLobbyTextPointers:
-	dw IndigoPlateauLobbyText1
+	dw IndigoHealNurseText
 	dw IndigoPlateauLobbyText2
 	dw IndigoPlateauLobbyText3
-	dw IndigoPlateauLobbyText4
-	dw IndigoPlateauLobbyText5
+	dw IndigoCashierText
+	dw IndigoTradeNurseText
 	dw IndigoPlateauLobbyText6
 
-IndigoPlateauLobbyText1:
+IndigoHealNurseText:
 	TX_POKECENTER_NURSE
 
 IndigoPlateauLobbyText2:
-	TX_FAR _IndigoPlateauLobbyText1
+	TX_FAR _IndigoPlateauLobbyText2
 	db "@"
 
 IndigoPlateauLobbyText3:
 	TX_FAR _IndigoPlateauLobbyText3
 	db "@"
 
-IndigoPlateauLobbyText5:
+IndigoTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 IndigoPlateauLobbyText6:

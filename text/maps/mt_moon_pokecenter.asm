@@ -20,7 +20,7 @@ _MtMoonPokecenterText5::
 	db $0
 	done
 
-_MtMoonPokecenterText_4935c::
+_MagikarpSalesmanText1::
 	text "MAN: Hello, there!"
 	line "Have I got a deal"
 	cont "just for you!"
@@ -31,18 +31,18 @@ _MtMoonPokecenterText_4935c::
 	cont "What do you say?"
 	done
 
-_MtMoonPokecenterText_49361::
+_MagikarpSalesmanNoText::
 	text "No? I'm only"
 	line "doing this as a"
 	cont "favor to you!"
 	done
 
-_MtMoonPokecenterText_49366::
+_MagikarpSalesmanNoMoneyText::
 	text "You'll need more"
 	line "money than that!"
 	done
 
-_MtMoonPokecenterText_4936b::
+_MagikarpSalesmanText2::
 	text "MAN: Well, I don't"
 	line "give refunds!"
 	done
