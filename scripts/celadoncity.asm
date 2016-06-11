@@ -1,7 +1,7 @@
 CeladonCityScript: ; 19a43 (6:5a43)
 	call EnableAutoTextBoxDrawing
 	ld hl, CeladonCityScriptPointers
-	ld a, [W_CELADONCITYCURSCRIPT]
+	ld a, [wCeladonCityCurScript]
 	call JumpTable
 	ret
 

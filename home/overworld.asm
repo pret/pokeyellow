@@ -34,7 +34,7 @@ EnterMap:: ; 01d7 (0:01d7)
 	ld hl, wd72d
 	res 5, [hl]
 	call UpdateSprites
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	set 6, [hl]
 	xor a
@@ -269,7 +269,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	res 6, [hl]
 	ld hl, wFlags_D733
 	res 3, [hl]
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	set 6, [hl]
 	xor a
@@ -517,7 +517,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, [wXCoord]
 	cp $ff
 	jr nz, .checkEastMap
-	ld a, [W_MAPCONN3PTR]
+	ld a, [wMapConn3Ptr]
 	ld [wCurMap], a
 	ld a, [wWestConnectedMapXAlignment] ; new X coordinate upon entering west map
 	ld [wXCoord], a
@@ -553,7 +553,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, [wCurrentMapWidth2] ; map width
 	cp b
 	jr nz, .checkNorthMap
-	ld a, [W_MAPCONN4PTR]
+	ld a, [wMapConn4Ptr]
 	ld [wCurMap], a
 	ld a, [wEastConnectedMapXAlignment] ; new X coordinate upon entering east map
 	ld [wXCoord], a
@@ -588,7 +588,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, [wYCoord]
 	cp $ff
 	jr nz, .checkSouthMap
-	ld a, [W_MAPCONN1PTR]
+	ld a, [wMapConn1Ptr]
 	ld [wCurMap], a
 	ld a, [wNorthConnectedMapYAlignment] ; new Y coordinate upon entering north map
 	ld [wYCoord], a
@@ -615,7 +615,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	ld a, [wCurrentMapHeight2]
 	cp b
 	jr nz, .didNotEnterConnectedMap
-	ld a, [W_MAPCONN2PTR]
+	ld a, [wMapConn2Ptr]
 	ld [wCurMap], a
 	ld a, [wSouthConnectedMapYAlignment] ; new Y coordinate upon entering south map
 	ld [wYCoord], a
@@ -881,9 +881,9 @@ LoadTileBlockMap:: ; 083c (0:083c)
 	add hl, bc
 	ld c, MAP_BORDER
 	add hl, bc ; this puts us past the (west) border
-	ld a, [W_MAPDATAPTR] ; tile map pointer
+	ld a, [wMapDataPtr] ; tile map pointer
 	ld e, a
-	ld a, [W_MAPDATAPTR + 1]
+	ld a, [wMapDataPtr + 1]
 	ld d, a ; de = tile map pointer
 	ld a, [wCurMapHeight]
 	ld b, a
@@ -908,7 +908,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 	dec b
 	jr nz, .rowLoop
 .northConnection
-	ld a, [W_MAPCONN1PTR]
+	ld a, [wMapConn1Ptr]
 	cp $ff
 	jr z, .southConnection
 	call SwitchToMapRomBank
@@ -926,7 +926,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 	ld [hNorthSouthConnectedMapWidth], a
 	call LoadNorthSouthConnectionsTileMap
 .southConnection
-	ld a, [W_MAPCONN2PTR]
+	ld a, [wMapConn2Ptr]
 	cp $ff
 	jr z, .westConnection
 	call SwitchToMapRomBank
@@ -944,7 +944,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 	ld [hNorthSouthConnectedMapWidth], a
 	call LoadNorthSouthConnectionsTileMap
 .westConnection
-	ld a, [W_MAPCONN3PTR]
+	ld a, [wMapConn3Ptr]
 	cp $ff
 	jr z, .eastConnection
 	call SwitchToMapRomBank
@@ -962,7 +962,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 	ld [hEastWestConnectedMapWidth], a
 	call LoadEastWestConnectionsTileMap
 .eastConnection
-	ld a, [W_MAPCONN4PTR]
+	ld a, [wMapConn4Ptr]
 	cp $ff
 	jr z, .done
 	call SwitchToMapRomBank
@@ -1058,7 +1058,7 @@ IsSpriteOrSignInFrontOfPlayer:: ; 095e (0:095e)
 .extendRangeOverCounter
 ; check if the player is front of a counter in a pokemon center, pokemart, etc. and if so, extend the range at which he can talk to the NPC
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player in c
-	ld hl, W_TILESETTALKINGOVERTILES ; list of tiles that extend talking range (counter tiles)
+	ld hl, wTileSetTalkingOverTiles ; list of tiles that extend talking range (counter tiles)
 	ld b, 3
 	ld d, $20 ; talking range in pixels (long range)
 .counterTilesLoop
@@ -1145,8 +1145,8 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	ld a, l
 	and $f0
 	inc a
-	ld l, a
-	set 7, [hl]
+	ld l, a ; hl = $c1x1
+	set 7, [hl] ; set flag to make the sprite face the player
 	ld a, e
 	ld [hSpriteIndexOrTextID], a
 	ld a, [hSpriteIndexOrTextID] ; possible useless read because a already has the value of the read address
@@ -1553,9 +1553,9 @@ ScheduleWestColumnRedraw:: ; 0c0c (0:0c0c)
 ; Input: c = tile block ID, hl = destination address
 DrawTileBlock:: ; 0c21 (0:0c21)
 	push hl
-	ld a, [W_TILESETBLOCKSPTR] ; pointer to tiles
+	ld a, [wTileSetBlocksPtr] ; pointer to tiles
 	ld l, a
-	ld a, [W_TILESETBLOCKSPTR + 1]
+	ld a, [wTileSetBlocksPtr + 1]
 	ld h, a
 	ld a, c
 	swap a
@@ -1745,7 +1745,7 @@ RunMapScript:: ; 0d2c (0:0d2c)
 	call RunNPCMovementScript
 	ld a, [wCurMap] ; current map number
 	call SwitchToMapRomBank ; change to the ROM bank the map's data is in
-	ld hl, W_MAPSCRIPTPTR
+	ld hl, wMapScriptPtr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -1837,32 +1837,32 @@ LoadMapHeader:: ; 0dab (0:0dab)
 	jr nz, .copyFixedHeaderLoop
 ; initialize all the connected maps to disabled at first, before loading the actual values
 	ld a, $ff
-	ld [W_MAPCONN1PTR], a
-	ld [W_MAPCONN2PTR], a
-	ld [W_MAPCONN3PTR], a
-	ld [W_MAPCONN4PTR], a
+	ld [wMapConn1Ptr], a
+	ld [wMapConn2Ptr], a
+	ld [wMapConn3Ptr], a
+	ld [wMapConn4Ptr], a
 ; copy connection data (if any) to WRAM
-	ld a, [W_MAPCONNECTIONS]
+	ld a, [wMapConnections]
 	ld b, a
 .checkNorth
 	bit 3, b
 	jr z, .checkSouth
-	ld de, W_MAPCONN1PTR
+	ld de, wMapConn1Ptr
 	call CopyMapConnectionHeader
 .checkSouth
 	bit 2, b
 	jr z, .checkWest
-	ld de, W_MAPCONN2PTR
+	ld de, wMapConn2Ptr
 	call CopyMapConnectionHeader
 .checkWest
 	bit 1, b
 	jr z, .checkEast
-	ld de, W_MAPCONN3PTR
+	ld de, wMapConn3Ptr
 	call CopyMapConnectionHeader
 .checkEast
 	bit 0, b
 	jr z, .getObjectDataPointer
-	ld de, W_MAPCONN4PTR
+	ld de, wMapConn4Ptr
 	call CopyMapConnectionHeader
 .getObjectDataPointer
 	ld a, [hli]

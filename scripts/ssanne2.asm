@@ -1,13 +1,13 @@
 SSAnne2Script: ; 6139f (18:539f)
 	call EnableAutoTextBoxDrawing
 	ld hl, SSAnne2ScriptPointers
-	ld a, [W_SSANNE2CURSCRIPT]
+	ld a, [wSSAnne2CurScript]
 	jp JumpTable
 
 SSAnne2Script_613ab: ; 613ab (18:53ab)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_SSANNE2CURSCRIPT], a
+	ld [wSSAnne2CurScript], a
 	ret
 
 SSAnne2ScriptPointers: ; 613b3 (18:53b3)
@@ -51,7 +51,7 @@ SSAnne2Script0: ; 613be (18:53be)
 .asm_61403
 	call MoveSprite
 	ld a, $1
-	ld [W_SSANNE2CURSCRIPT], a
+	ld [wSSAnne2CurScript], a
 	ret
 
 MovementData_6140c: ; 6140c (18:540c)
@@ -101,7 +101,7 @@ SSAnne2Script1: ; 61430 (18:5430)
 	ld [wTrainerNo], a
 	call SSAnne2Script_61416
 	ld a, $2
-	ld [W_SSANNE2CURSCRIPT], a
+	ld [wSSAnne2CurScript], a
 	ret
 
 SSAnne2Script2: ; 6146d (18:546d)
@@ -131,7 +131,7 @@ SSAnne2Script2: ; 6146d (18:546d)
 	call StopAllMusic
 	callba Music_RivalAlternateStart
 	ld a, $3
-	ld [W_SSANNE2CURSCRIPT], a
+	ld [wSSAnne2CurScript], a
 	ret
 
 MovementData_614b7: ; 614b7 (18:54b7)
@@ -156,7 +156,7 @@ SSAnne2Script3: ; 614be (18:54be)
 	predef HideObject
 	call PlayDefaultMusic
 	ld a, $4
-	ld [W_SSANNE2CURSCRIPT], a
+	ld [wSSAnne2CurScript], a
 	ret
 
 SSAnne2TextPointers: ; 614db (18:54db)

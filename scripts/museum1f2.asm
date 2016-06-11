@@ -85,7 +85,7 @@ Func_f1c1b:
 
 .asm_f1cd7
 	ld a, $1
-	ld [W_MUSEUM1FCURSCRIPT], a
+	ld [wMuseum1FCurScript], a
 	jr .asm_f1cfc
 
 .asm_f1cde

@@ -1,7 +1,7 @@
 PokemonTower7Script: ; 60d05 (18:4d05)
 	call EnableAutoTextBoxDrawing
 	ld hl, PokemonTower7ScriptPointers
-	ld a, [W_POKEMONTOWER7CURSCRIPT]
+	ld a, [wPokemonTower7CurScript]
 	call JumpTable
 	ret
 
@@ -9,7 +9,7 @@ PokemonTower7Script_60d01: ; 60d18 (18:4d18)
 	xor a
 	ld [wJoyIgnore], a
 PokemonTower7Script_60d05:
-	ld [W_POKEMONTOWER7CURSCRIPT], a
+	ld [wPokemonTower7CurScript], a
 	ret
 
 PokemonTower7ScriptPointers:
@@ -245,7 +245,7 @@ PokemonTower7Script11:
 	ld hl, wd72d
 	set 3, [hl]
 	ld a, $0
-	ld [W_POKEMONTOWER7CURSCRIPT], a
+	ld [wPokemonTower7CurScript], a
 	ret
 
 PokemonTower7TextPointers:
@@ -307,7 +307,7 @@ PokemonTower7Text3:
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	ld a, $b
-	ld [W_POKEMONTOWER7CURSCRIPT], a
+	ld [wPokemonTower7CurScript], a
 	jp TextScriptEnd
 
 PokemonTower7Text_60f75:

@@ -1,7 +1,7 @@
 Route22Script: ; 50eb2 (14:4eb2)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22ScriptPointers
-	ld a, [W_ROUTE22CURSCRIPT]
+	ld a, [wRoute22CurScript]
 	jp JumpTable
 
 Route22ScriptPointers: ; 50ebe (14:4ebe)
@@ -17,7 +17,7 @@ Route22ScriptPointers: ; 50ebe (14:4ebe)
 Route22Script_50ece: ; 50ece (14:4ece)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 Route22Script7: ; 50ed5 (14:4ed5)
 	ret
 
@@ -31,7 +31,7 @@ Route22Script_50ed6: ; 50ed6 (14:4ed6)
 Route22Script_50ee1:
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-	ld a, [W_RIVALSTARTER]
+	ld a, [wRivalStarter]
 	add 7
 	ld [wTrainerNo], a
 	ret
@@ -98,7 +98,7 @@ Route22Script0: ; 50f00 (14:4f00)
 	ld [H_SPRITEINDEX], a
 	call Route22MoveRivalSprite
 	ld a, $1
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22Script1: ; 50f62 (14:4f62)
@@ -132,7 +132,7 @@ Route22Script1: ; 50f62 (14:4f62)
 	call SaveEndBattleTextPointers
 	call Route22Script_50ed6
 	ld a, $2
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22RivalDefeatedText1: ; 511b7 (14:51b7)
@@ -147,11 +147,11 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
-	ld a, [W_RIVALSTARTER]
+	ld a, [wRivalStarter]
 	cp 2
 	jr nz, .asm_50fc9
 	ld a, $1
-	ld [W_RIVALSTARTER], a
+	ld [wRivalStarter], a
 .asm_50fc9
 	ld a, [wSpriteStateData1 + 9]
 	and a ; cp SPRITE_FACING_DOWN
@@ -182,7 +182,7 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	call Route22Script_5100d
 .asm_51002
 	ld a, $3
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22Script_51008: ; 51008 (14:5008)
@@ -231,7 +231,7 @@ Route22Script3: ; 5102a (14:502a)
 	call PlayDefaultMusic
 	ResetEvents EVENT_1ST_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $0
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22Script_5104e: ; 5104e (14:504e)
@@ -251,7 +251,7 @@ Route22Script_5104e: ; 5104e (14:504e)
 	ld [H_SPRITEINDEX], a
 	call Route22MoveRivalSprite
 	ld a, $4
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22Script4: ; 51087 (14:5087)
@@ -287,7 +287,7 @@ Route22Script4: ; 51087 (14:5087)
 	call SaveEndBattleTextPointers
 	call Route22Script_50ee1
 	ld a, $5
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22RivalDefeatedText2: ; 511cb (14:51cb)
@@ -335,7 +335,7 @@ Route22Script5: ; 510df (14:50df)
 	call Route22Script_51142
 .asm_51137
 	ld a, $6
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22Script_5113d: ; 5113d (14:513d)
@@ -370,7 +370,7 @@ Route22Script6: ; 51151 (14:5151)
 	call PlayDefaultMusic
 	ResetEvents EVENT_2ND_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $7
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
 Route22TextPointers: ; 51175 (14:5175)

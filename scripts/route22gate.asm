@@ -1,7 +1,7 @@
 Route22GateScript: ; 1e683 (7:6683)
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22GateScriptPointers
-	ld a, [W_ROUTE22GATECURSCRIPT]
+	ld a, [wRoute22GateCurScript]
 	call JumpTable
 	ld a, [wYCoord]
 	cp $4
@@ -52,7 +52,7 @@ Route22GateScript1: ; 1e6cd (7:66cd)
 	ld [wJoyIgnore], a
 	call Delay3
 	ld a, $0
-	ld [W_ROUTE22GATECURSCRIPT], a
+	ld [wRoute22GateCurScript], a
 Route22GateScript2: ; 1e6de (7:66de)
 	ret
 
@@ -74,7 +74,7 @@ Route22GateText1: ; 1e6e1 (7:66e1)
 	call PrintText
 	ld a, $2
 .asm_1e6fe
-	ld [W_ROUTE22GATECURSCRIPT], a
+	ld [wRoute22GateCurScript], a
 	jp TextScriptEnd
 
 Route22GateText_1e704: ; 1e704 (7:6704)

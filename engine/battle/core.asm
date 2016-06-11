@@ -250,9 +250,9 @@ StartBattle: ; 3c127 (f:4127)
 	call SaveScreenTilesToBuffer1
 .checkAnyPartyAlive
 	ld a, [wBattleType]
-	cp $3
+	cp BATTLE_TYPE_RUN
 	jp z, .specialBattle
-	cp $4
+	cp BATTLE_TYPE_PIKACHU
 	jp z, .specialBattle
 	call AnyPartyAlive
 	ld a, d
@@ -1625,9 +1625,9 @@ TryRunningFromBattle: ; 3cb1e (f:4b1e)
 	call IsGhostBattle
 	jp z, .canEscape ; jump if it's a ghost battle
 	ld a, [wBattleType]
-	cp $2
+	cp BATTLE_TYPE_SAFARI
 	jp z, .canEscape ; jump if it's a safari battle
-	cp $3
+	cp BATTLE_TYPE_RUN
 	jp z, .canEscape ; hurry, get away?
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -1770,7 +1770,7 @@ LoadBattleMonFromParty: ; 3cc10 (f:4c10)
 	ld bc, NUM_MOVES
 	call CopyData
 	ld de, wBattleMonLevel
-	ld bc, $b
+	ld bc, wBattleMonPP - wBattleMonLevel
 	call CopyData
 	ld a, [wBattleMonSpecies2]
 	ld [wd0b5], a
@@ -1814,7 +1814,7 @@ LoadEnemyMonFromParty: ; 3cc7d (f:4c7d)
 	ld bc, NUM_MOVES
 	call CopyData
 	ld de, wEnemyMonLevel
-	ld bc, $b
+	ld bc, wEnemyMonPP - wEnemyMonLevel
 	call CopyData
 	ld a, [wEnemyMonSpecies]
 	ld [wd0b5], a
@@ -1990,11 +1990,11 @@ DrawPlayerHUDAndHPBar: ; 3ce25 (f:4e25)
 	call PlaceString
 	ld hl, wBattleMonSpecies
 	ld de, wLoadedMon
-	ld bc, $c
+	ld bc, wBattleMonDVs - wBattleMonSpecies
 	call CopyData
 	ld hl, wBattleMonLevel
 	ld de, wLoadedMonLevel
-	ld bc, $b
+	ld bc, wBattleMonPP - wBattleMonLevel
 	call CopyData
 	coord hl, 14, 8
 	push hl
@@ -2171,7 +2171,7 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 	call SaveScreenTilesToBuffer1
 .nonstandardbattle
 	ld a, [wBattleType]
-	cp $2 ; safari
+	cp BATTLE_TYPE_SAFARI
 	ld a, BATTLE_MENU_TEMPLATE
 	jr nz, .menuselected
 	ld a, SAFARI_BATTLE_MENU_TEMPLATE
@@ -2179,9 +2179,9 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 	ld a, [wBattleType]
-	cp $1
+	cp BATTLE_TYPE_OLD_MAN
 	jr z, .doSimulatedMenuInput ; simulate menu input if it's the old man or prof. oak pikachu battle
-	cp $4
+	cp BATTLE_TYPE_PIKACHU
 	jr z, .doSimulatedMenuInput
 	jp .handleBattleMenuInput
 ; the following happens for the old man tutorial and prof. oak pikachu battle
@@ -2234,7 +2234,7 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 	jr .rightColumn
 .leftColumn ; put cursor in left column of menu
 	ld a, [wBattleType]
-	cp $2
+	cp BATTLE_TYPE_SAFARI
 	ld a, " "
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
@@ -2267,7 +2267,7 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 	jr .AButtonPressed ; the A button was pressed
 .rightColumn ; put cursor in right column of menu
 	ld a, [wBattleType]
-	cp $2
+	cp BATTLE_TYPE_SAFARI
 	ld a, " "
 	jr z, .safariRightColumn
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
@@ -2304,10 +2304,10 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 .AButtonPressed
 	call PlaceUnfilledArrowMenuCursor
 	ld a, [wBattleType]
-	cp HURRY_RUN_AWAY_BATTLE
+	cp BATTLE_TYPE_RUN
 	jr z, .handleUnusedBattle
 	ld a, [wBattleType]
-	cp SAFARI_BATTLE ; is it a Safari battle?
+	cp BATTLE_TYPE_SAFARI
 	ld a, [wCurrentMenuItem]
 	ld [wBattleAndStartSavedMenuItem], a
 	jr z, .handleMenuSelection
@@ -2329,7 +2329,7 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 	jr nz, .upperLeftMenuItemWasNotSelected
 ; the upper left menu item was selected
 	ld a, [wBattleType]
-	cp $2
+	cp BATTLE_TYPE_SAFARI
 	jr z, .throwSafariBallWasSelected
 ; the "FIGHT" menu was selected
 	xor a
@@ -2368,7 +2368,7 @@ DisplayBattleMenu: ; 3cf78 (f:4f78)
 .notLinkBattle
 	call SaveScreenTilesToBuffer2
 	ld a, [wBattleType]
-	cp $2 ; is it a safari battle?
+	cp BATTLE_TYPE_SAFARI
 	jr nz, BagWasSelected
 
 ; bait was selected
@@ -2386,9 +2386,9 @@ BagWasSelected: ; 3d10a (f:510a)
 	call DrawHUDsAndHPBars
 .next
 	ld a, [wBattleType]
-	cp OLD_MAN_BATTLE ; is it the old man tutorial?
+	cp BATTLE_TYPE_OLD_MAN ; is it the old man tutorial?
 	jr z, .simulatedInputBattle
-	cp STARTER_PIKACHU_BATTLE ; is it the prof oak battle with pikachu?
+	cp BATTLE_TYPE_PIKACHU ; is it the prof oak battle with pikachu?
 	jr z, .simulatedInputBattle
 	jr DisplayPlayerBag
 .simulatedInputBattle
@@ -2441,7 +2441,7 @@ UseBagItem: ; 3c162 (f:5162)
 	xor a
 	ld [wCurrentMenuItem], a
 	ld a, [wBattleType]
-	cp SAFARI_BATTLE ; is it a safari battle?
+	cp BATTLE_TYPE_SAFARI
 	jr z, .checkIfMonCaptured
 
 	ld a, [wActionResultOrTookBattleTurn]
@@ -2463,7 +2463,7 @@ UseBagItem: ; 3c162 (f:5162)
 	jr nz, .returnAfterCapturingMon
 
 	ld a, [wBattleType]
-	cp SAFARI_BATTLE ; is it a safari battle?
+	cp BATTLE_TYPE_SAFARI
 	jr z, .returnAfterUsingItem_NoCapture
 ; not a safari battle
 	call LoadScreenTilesFromBuffer1
@@ -2494,7 +2494,7 @@ PartyMenuOrRockOrRun: ; 3d1cd (f:51cd)
 ; party menu or rock was selected
 	call SaveScreenTilesToBuffer2
 	ld a, [wBattleType]
-	cp $2 ; is it a safari battle?
+	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
 	ld a, SAFARI_ROCK
@@ -3626,7 +3626,7 @@ CheckPlayerStatusConditions: ; 3d9c6 (f:59c6)
 	ld a,[wPlayerBattleStatus1]
 	add a ; is player confused?
 	jr nc,.TriedToUseDisabledMoveCheck
-	ld hl,W_PLAYERCONFUSEDCOUNTER
+	ld hl,wPlayerConfusedCounter
 	dec [hl]
 	jr nz,.IsConfused
 	ld hl,wPlayerBattleStatus1
@@ -3764,7 +3764,7 @@ CheckPlayerStatusConditions: ; 3d9c6 (f:59c6)
 	and a,3
 	inc a
 	inc a ; confused for 2-5 turns
-	ld [W_PLAYERCONFUSEDCOUNTER],a
+	ld [wPlayerConfusedCounter],a
 	pop hl ; skip DecrementPP
 	jp .returnToHL
 
@@ -6126,7 +6126,7 @@ CheckEnemyStatusConditions: ; 3ea15 (f:6a15)
 	ld a, [wEnemyBattleStatus1]
 	add a ; check if enemy mon is confused
 	jp nc, .checkIfTriedToUseDisabledMove
-	ld hl, W_ENEMYCONFUSEDCOUNTER
+	ld hl, wEnemyConfusedCounter
 	dec [hl]
 	jr nz, .isConfused
 	ld hl, wEnemyBattleStatus1
@@ -6298,7 +6298,7 @@ CheckEnemyStatusConditions: ; 3ea15 (f:6a15)
 	and $3
 	inc a
 	inc a ; confused for 2-5 turns
-	ld [W_ENEMYCONFUSEDCOUNTER], a
+	ld [wEnemyConfusedCounter], a
 	pop hl ; skip DecrementPP
 	jp .enemyReturnToHL
 .checkIfUsingMultiturnMove
@@ -6576,10 +6576,10 @@ SwapPlayerAndEnemyLevels: ; 3ee07 (f:6e07)
 LoadPlayerBackPic: ; 3ee18 (f:6e18)
 	ld a, [wBattleType]
 	ld de, OldManPic
-	cp OLD_MAN_BATTLE ; is it the old man tutorial?
+	cp BATTLE_TYPE_OLD_MAN ; is it the old man tutorial?
 	jr z, .next
 	ld de, ProfOakPicBack
-	cp STARTER_PIKACHU_BATTLE ; is it the pikachu battle at the beginning of the game?
+	cp BATTLE_TYPE_PIKACHU ; is it the pikachu battle at the beginning of the game?
 	jr z, .next
 	ld de, RedPicBack
 .next
@@ -6624,7 +6624,7 @@ LoadPlayerBackPic: ; 3ee18 (f:6e18)
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
 	ld hl, vSprites
-	ld de, S_SPRITEBUFFER1
+	ld de, sSpriteBuffer1
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
 	ld c, 7 * 7
@@ -8292,11 +8292,11 @@ ConfusionSideEffectSuccess: ; 3f94a (f:794a)
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wEnemyBattleStatus1
-	ld bc, W_ENEMYCONFUSEDCOUNTER
+	ld bc, wEnemyConfusedCounter
 	ld a, [wPlayerMoveEffect]
 	jr z, .confuseTarget
 	ld hl, wPlayerBattleStatus1
-	ld bc, W_PLAYERCONFUSEDCOUNTER
+	ld bc, wPlayerConfusedCounter
 	ld a, [wEnemyMoveEffect]
 .confuseTarget
 	bit Confused, [hl] ; is mon confused?

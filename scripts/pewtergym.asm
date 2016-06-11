@@ -1,14 +1,14 @@
 PewterGymScript: ; 5c387 (17:4387)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	call nz, PewterGymScript_5c3a4
 	call EnableAutoTextBoxDrawing
 	ld hl, PewterGymTrainerHeaders
 	ld de, PewterGymScriptPointers
-	ld a, [W_PEWTERGYMCURSCRIPT]
+	ld a, [wPewterGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_PEWTERGYMCURSCRIPT], a
+	ld [wPewterGymCurScript], a
 	ret
 
 PewterGymScript_5c3a4: ; 5c3a4 (17:43a4)
@@ -26,8 +26,8 @@ Gym1LeaderName: ; 5c3b9 (17:43b9)
 PewterGymScript_5c3bf: ; 5c3bf (17:43bf)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_PEWTERGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPewterGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 PewterGymScriptPointers: ; 5c3ca (17:43ca)
@@ -131,8 +131,8 @@ PewterGymText1: ; 5c44e (17:444e)
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3
-	ld [W_PEWTERGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPewterGymCurScript], a
+	ld [wCurMapScript], a
 .asm_5c49b
 	jp TextScriptEnd
 

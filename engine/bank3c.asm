@@ -218,11 +218,11 @@ Func_f02da:: ; f02da (3c:42da)
 	jr nz, .asm_f02e5
 	ret
 .asm_f02ee
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 6, [hl]
 	ret
 .asm_f02f4
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	ret
 

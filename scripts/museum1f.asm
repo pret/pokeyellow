@@ -4,7 +4,7 @@ Museum1FScript: ; 5c0f7 (17:40f7)
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, Museum1FScriptPointers
-	ld a, [W_MUSEUM1FCURSCRIPT]
+	ld a, [wMuseum1FCurScript]
 	call JumpTable
 	ret
 

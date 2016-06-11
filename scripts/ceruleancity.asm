@@ -1,13 +1,13 @@
 CeruleanCityScript: ; 19480 (6:5480)
 	call EnableAutoTextBoxDrawing
 	ld hl, CeruleanCityScriptPointers
-	ld a, [W_CERULEANCITYCURSCRIPT]
+	ld a, [wCeruleanCityCurScript]
 	jp JumpTable
 
 CeruleanCityScript_1948c: ; 1948c (6:548c)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ld a, HS_CERULEAN_RIVAL
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
@@ -31,7 +31,7 @@ CeruleanCityScript4: ; 194a7 (6:54a7)
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ret
 
 CeruleanCityScript0: ; 194c8 (6:54c8)
@@ -91,7 +91,7 @@ CeruleanCityScript0: ; 194c8 (6:54c8)
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, $1
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ret
 
 CeruleanCityCoords1: ; 1954f (6:554f)
@@ -140,7 +140,7 @@ CeruleanCityScript1: ; 19567 (6:5567)
 	ld [hJoyHeld], a
 	call CeruleanCityScript_1955d
 	ld a, $2
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ret
 
 CeruleanCityScript2: ; 195b1 (6:55b1)
@@ -171,7 +171,7 @@ CeruleanCityScript2: ; 195b1 (6:55b1)
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, $3
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ret
 
 CeruleanCityMovement3: ; 19600 (6:5600)
@@ -205,7 +205,7 @@ CeruleanCityScript3: ; 19610 (6:5610)
 	ld [wJoyIgnore], a
 	call PlayDefaultMusic
 	ld a, $0
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	ret
 
 CeruleanCityTextPointers: ; 1962d (6:562d)
@@ -275,7 +275,7 @@ CeruleanCityText2: ; 1967c (6:567c)
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $4
-	ld [W_CERULEANCITYCURSCRIPT], a
+	ld [wCeruleanCityCurScript], a
 	jp TextScriptEnd
 .asm_4ca20
 	ld hl, CeruleanCityText_196f3

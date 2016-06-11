@@ -14,7 +14,7 @@ BluesHouseScript0: ; 19b4b (6:5b4b)
 
 	; trigger the next script
 	ld a, 1
-	ld [W_BLUESHOUSECURSCRIPT], a
+	ld [wBluesHouseCurScript], a
 BluesHouseScript1: ; 19b56 (6:5b56)
 	ret
 
@@ -65,7 +65,8 @@ DaisyOfferMapText: ; 19baf (6:5baf)
 
 GotMapText: ; 19bb4 (6:5bb4)
 	TX_FAR _GotMapText
-	db $11, "@"
+	sound0x0A
+	db "@"
 
 DaisyBagFullText: ; 19bba (6:5bba)
 	TX_FAR _DaisyBagFullText

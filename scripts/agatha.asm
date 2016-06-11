@@ -1,33 +1,34 @@
 AgathaScript: ; 7642d (1d:642d)
-	call AgathaScript_76443
+	call AgathaShowOrHideExitBlock
 	call EnableAutoTextBoxDrawing
 	ld hl, AgathaTrainerHeaders
 	ld de, AgathaScriptPointers
-	ld a, [W_AGATHACURSCRIPT]
+	ld a, [wAgathaCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_AGATHACURSCRIPT], a
+	ld [wAgathaCurScript], a
 	ret
 
-AgathaScript_76443: ; 76443 (1d:6443)
-	ld hl, wd126
+AgathaShowOrHideExitBlock: ; 76443 (1d:6443)
+; Blocks or clears the exit to the next room.
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
 	CheckEvent EVENT_BEAT_AGATHAS_ROOM_TRAINER_0
-	jr z, .asm_76457
+	jr z, .blockExitToNextRoom
 	ld a, $e
-	jp AgathaScript_76459
-.asm_76457
+	jp .setExitBlock
+.blockExitToNextRoom
 	ld a, $3b
 
-AgathaScript_76459: ; 76459 (1d:6459)
+.setExitBlock
 	ld [wNewTileBlockID], a
 	lb bc, 0, 2
 	predef_jump ReplaceTileBlock
 
-AgathaScript_76464: ; 76464 (1d:6464)
+ResetAgathaScript: ; 76464 (1d:6464)
 	xor a
-	ld [W_AGATHACURSCRIPT], a
+	ld [wAgathaCurScript], a
 	ret
 
 AgathaScriptPointers: ; 76469 (1d:6469)
@@ -40,7 +41,8 @@ AgathaScriptPointers: ; 76469 (1d:6469)
 AgathaScript4: ; 76473 (1d:6473)
 	ret
 
-AgathaScript_76474: ; 76474 (1d:6474)
+AgathaScriptWalkIntoRoom: ; 76474 (1d:6474)
+; Walk six steps upward.
 	ld hl, wSimulatedJoypadStatesEnd
 	ld a, D_UP
 	ld [hli], a
@@ -53,12 +55,12 @@ AgathaScript_76474: ; 76474 (1d:6474)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $3
-	ld [W_AGATHACURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wAgathaCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 AgathaScript0: ; 76490 (1d:6490)
-	ld hl, CoordsData_764d1
+	ld hl, AgathaEntranceCoords
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	xor a
@@ -67,25 +69,25 @@ AgathaScript0: ; 76490 (1d:6490)
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, [wCoordIndex]
-	cp $3
-	jr c, .asm_764b4
+	cp $3  ; Is player standing one tile above the exit?
+	jr c, .stopPlayerFromLeaving
 	CheckAndSetEvent EVENT_AUTOWALKED_INTO_AGATHAS_ROOM
-	jr z, AgathaScript_76474
-.asm_764b4
+	jr z, AgathaScriptWalkIntoRoom
+.stopPlayerFromLeaving
 	ld a, $2
 	ld [hSpriteIndexOrTextID], a
-	call DisplayTextID
+	call DisplayTextID  ; "Don't run away!"
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $3
-	ld [W_AGATHACURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wAgathaCurScript], a
+	ld [wCurMapScript], a
 	ret
 
-CoordsData_764d1: ; 764d1 (1d:64d1)
+AgathaEntranceCoords: ; 764d1 (1d:64d1)
 	db $0A,$04
 	db $0A,$05
 	db $0B,$04
@@ -99,20 +101,20 @@ AgathaScript3: ; 764da (1d:64da)
 	call Delay3
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_AGATHACURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wAgathaCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 AgathaScript2: ; 764ed (1d:64ed)
 	call EndTrainerBattle
 	ld a, [wIsInBattle]
 	cp $ff
-	jp z, AgathaScript_76464
+	jp z, ResetAgathaScript
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $1
-	ld [W_GARYCURSCRIPT], a
+	ld [wGaryCurScript], a
 	ret
 
 AgathaTextPointers: ; 76505 (1d:6505)

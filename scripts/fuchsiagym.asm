@@ -3,13 +3,13 @@ FuchsiaGymScript: ; 7543d (1d:543d)
 	call EnableAutoTextBoxDrawing
 	ld hl, FuchsiaGymTrainerHeaders
 	ld de, FuchsiaGymScriptPointers
-	ld a, [W_FUCHSIAGYMCURSCRIPT]
+	ld a, [wFuchsiaGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_FUCHSIAGYMCURSCRIPT], a
+	ld [wFuchsiaGymCurScript], a
 	ret
 
 FuchsiaGymScript_75453: ; 75453 (1d:5453)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	ret z
@@ -26,8 +26,8 @@ Gym5LeaderName: ; 75472 (1d:5472)
 FuchsiaGymScript_75477: ; 75477 (1d:5477)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_FUCHSIAGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wFuchsiaGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 FuchsiaGymScriptPointers: ; 75482 (1d:5482)
@@ -171,7 +171,7 @@ FuchsiaGymText1: ; 75534 (1d:5534)
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3
-	ld [W_FUCHSIAGYMCURSCRIPT], a
+	ld [wFuchsiaGymCurScript], a
 .asm_e84c6
 	jp TextScriptEnd
 

@@ -118,8 +118,8 @@ UpdateNPCSprite: ; 4e3e (1:4e3e)
 	ld l, a
 	inc l
 	ld a, [hl]        ; c1x1
-	bit 7, a
-	jp nz, InitializeSpriteFacingDirection  ; c1x1 >= $80
+	bit 7, a ; is the face player flag set?
+	jp nz, MakeNPCFacePlayer
 	ld b, a
 	ld a, [wFontLoaded]
 	bit 0, a
@@ -156,7 +156,7 @@ UpdateNPCSprite: ; 4e3e (1:4e3e)
 	call LoadDEPlusA ; a = [wNPCMovementDirections + movement byte 1]
 	cp $e0
 	jp z, ChangeFacingDirection
-	cp $ff
+	cp STAY
 	jr nz, .next
 ; reached end of wNPCMovementDirections list
 	ld [hl], a ; store $ff in movement byte 1, disabling scripted movement
@@ -167,7 +167,7 @@ UpdateNPCSprite: ; 4e3e (1:4e3e)
 	ld [wWastedByteCD3A], a
 	ret
 .next
-	cp $fe
+	cp WALK
 	jr nz, .asm_4ecb
 ; current NPC movement data is $fe. this seems buggy
 	ld [hl], $1     ; set movement byte 1 to $1
@@ -359,7 +359,11 @@ notYetMoving: ; 4fc5 (1:4fc5)
 	ld [hl], $0             ; c1x8 = 0 (walk animation frame)
 	jp UpdateSpriteImage
 
-InitializeSpriteFacingDirection: ; 4fd1 (1:4fd1)
+MakeNPCFacePlayer: ; 507f (1:507f)
+; Make an NPC face the player if the player has spoken to him or her.
+
+; Check if the behaviour of the NPC facing the player when spoken to is
+; disabled. This is only done when rubbing the S.S. Anne captain's back.
 	ld a, [wd72d]
 	bit 5, a
 	jr nz, notYetMoving

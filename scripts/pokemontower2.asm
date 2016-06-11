@@ -1,14 +1,14 @@
 PokemonTower2Script: ; 604f2 (18:44f2)
 	call EnableAutoTextBoxDrawing
 	ld hl, PokemonTower2ScriptPointers
-	ld a, [W_POKEMONTOWER2CURSCRIPT]
+	ld a, [wPokemonTower2CurScript]
 	jp JumpTable
 
 PokemonTower2Script_604fe: ; 604fe (18:44fe)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_POKEMONTOWER2CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPokemonTower2CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 PokemonTower2ScriptPointers: ; 60509 (18:4509)
@@ -78,8 +78,8 @@ PokemonTower2Script1: ; 60563 (18:4563)
 	call StopAllMusic
 	callba Music_RivalAlternateStart
 	ld a, $2
-	ld [W_POKEMONTOWER2CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPokemonTower2CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 MovementData_605a9: ; 605a9 (18:45a9)
@@ -115,8 +115,8 @@ PokemonTower2Script2: ; 605bb (18:45bb)
 	ld [wJoyIgnore], a
 	call PlayDefaultMusic
 	ld a, $0
-	ld [W_POKEMONTOWER2CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPokemonTower2CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 PokemonTower2TextPointers: ; 605db (18:45db)
@@ -141,13 +141,13 @@ PokemonTower2Text1: ; 605df (18:45df)
 	call SaveEndBattleTextPointers
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-	ld a, [W_RIVALSTARTER]
+	ld a, [wRivalStarter]
 	add $1
 	ld [wTrainerNo], a
 
 	ld a, $1
-	ld [W_POKEMONTOWER2CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wPokemonTower2CurScript], a
+	ld [wCurMapScript], a
 .asm_41852
 	jp TextScriptEnd
 

@@ -9,7 +9,7 @@ Func_f2418:
 	ld hl, BillsHouseText_f2440
 	call PrintText
 	ld a, $2
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
 .asm_f2433
@@ -89,7 +89,7 @@ Func_f24ae: ; f24ae
 	jr nz, .asm_f24d2
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_f24d2
-	ld a, [W_BILLSHOUSECURSCRIPT]
+	ld a, [wBillsHouseCurScript]
 	cp $5
 	ld e, $1b
 	ret z

@@ -2816,10 +2816,10 @@ DecompressRequestPikaPicAnimGFX: ; fe128
 	jr c, .failed
 	ld a, b
 	call UncompressSpriteFromDE
-	ld a, BANK(S_SPRITEBUFFER1)
+	ld a, BANK(sSpriteBuffer1)
 	call SwitchSRAMBankAndLatchClockData
-	ld hl, S_SPRITEBUFFER1
-	ld de, S_SPRITEBUFFER0
+	ld hl, sSpriteBuffer1
+	ld de, sSpriteBuffer0
 	ld bc, SPRITEBUFFERSIZE * 2
 	call CopyData
 	call PrepareRTCDataAndDisableSRAM

@@ -1,7 +1,7 @@
 ViridianCityScript: ; 1902a (6:502a)
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianCityScriptPointers
-	ld a, [W_VIRIDIANCITYCURSCRIPT]
+	ld a, [wViridianCityCurScript]
 	call JumpTable
 	ret
 
@@ -58,7 +58,7 @@ ViridianCityScript_1905b:
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
 	ld a, $6
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript6:  ; 1909d
@@ -67,7 +67,7 @@ ViridianCityScript6:  ; 1909d
 	ret nz
 	call Delay3
 	ld a, $2
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript_190ab:
@@ -84,7 +84,7 @@ ViridianCityScript_190ab:
 	ld [hJoyHeld], a
 	call ViridianCityScript_1914d
 	ld a, $5
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript3:  ; 190ca
@@ -92,13 +92,13 @@ ViridianCityScript3:  ; 190ca
 	call ViridianCityScript_190db
 	ResetEvent EVENT_02F
 	ld a, $4
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript_190db:
 	xor a
 	ld [wListScrollOffset], a
-	ld a, OLD_MAN_BATTLE
+	ld a, BATTLE_TYPE_OLD_MAN
 	ld [wBattleType], a
 	ld a, 5
 	ld [wCurEnemyLVL], a
@@ -131,7 +131,7 @@ ViridianCityScript4:  ; 19104
 	ld [wBattleType], a
 	ld [wJoyIgnore], a
 	ld a, $2
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript_1912a:
@@ -151,7 +151,7 @@ ViridianCityScript5:  ; 1913f
 	ret nz
 	call Delay3
 	ld a, $0
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript_1914d:
@@ -195,7 +195,7 @@ ViridianCityScript7:  ; 19191
 	ld a, D_UP | D_DOWN | D_LEFT | D_RIGHT | START | SELECT
 	ld [wJoyIgnore], a
 	ld a, $8
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript8:  ; 191a7
@@ -213,7 +213,7 @@ ViridianCityScript8:  ; 191a7
 	dec a
 	ld [wJoyIgnore], a
 	ld a, $9
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityScript9:  ; 191cf
@@ -228,7 +228,7 @@ ViridianCityScript9:  ; 191cf
 	ld [hSpriteIndexOrTextID], a
 	call MoveSprite
 	ld a, $a
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityOldManMovementData1:
@@ -252,7 +252,7 @@ ViridianCityScript10: ; 191f9
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $2
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityTextPointers:
@@ -321,7 +321,7 @@ ViridianCityText_7:
 	ld c, 2
 	call DelayFrames
 	ld a, $7
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	jr .asm_192ac
 
 .asm_192a6

@@ -1,14 +1,14 @@
 SaffronGymScript: ; 5d00d (17:500d)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	call nz, .extra
 	call EnableAutoTextBoxDrawing
 	ld hl, SaffronGymTrainerHeader0
 	ld de, SaffronGymScriptPointers
-	ld a, [W_SAFFRONGYMCURSCRIPT]
+	ld a, [wSaffronGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_SAFFRONGYMCURSCRIPT], a
+	ld [wSaffronGymCurScript], a
 	ret
 
 .extra
@@ -25,8 +25,8 @@ Gym6LeaderName: ; 5d040 (17:5040)
 SaffronGymText_5d048: ; 5d048 (17:5048)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_SAFFRONGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wSaffronGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 SaffronGymScriptPointers: ; 5d053 (17:5053)
@@ -179,7 +179,7 @@ SaffronGymText1: ; 5d118 (17:5118)
 	ld a, $6
 	ld [wGymLeaderNo], a
 	ld a, $3
-	ld [W_SAFFRONGYMCURSCRIPT], a
+	ld [wSaffronGymCurScript], a
 .asm_5d15f
 	jp TextScriptEnd
 

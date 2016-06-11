@@ -9,12 +9,12 @@ ScaleSpriteByTwo: ; 2fd79 (b:7d79)
 	ret
 
 ScaleSpriteByTwo_: ; 2fd85 (b:7d85)
-	ld de, S_SPRITEBUFFER1 + (4*4*8) - 5          ; last byte of input data, last 4 rows already skipped
-	ld hl, S_SPRITEBUFFER0 + SPRITEBUFFERSIZE - 1 ; end of destination buffer
+	ld de, sSpriteBuffer1 + (4*4*8) - 5          ; last byte of input data, last 4 rows already skipped
+	ld hl, sSpriteBuffer0 + SPRITEBUFFERSIZE - 1 ; end of destination buffer
 	call ScaleLastSpriteColumnByTwo               ; last tile column is special case
 	call ScaleFirstThreeSpriteColumnsByTwo        ; scale first 3 tile columns
-	ld de, S_SPRITEBUFFER2 + (4*4*8) - 5          ; last byte of input data, last 4 rows already skipped
-	ld hl, S_SPRITEBUFFER1 + SPRITEBUFFERSIZE - 1 ; end of destination buffer
+	ld de, sSpriteBuffer2 + (4*4*8) - 5          ; last byte of input data, last 4 rows already skipped
+	ld hl, sSpriteBuffer1 + SPRITEBUFFERSIZE - 1 ; end of destination buffer
 	call ScaleLastSpriteColumnByTwo               ; last tile column is special case
 
 ScaleFirstThreeSpriteColumnsByTwo: ; 2fd9a (b:7d9a)

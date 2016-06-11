@@ -1,14 +1,14 @@
 CeruleanGymScript: ; 5c6b3 (17:46b3)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	call nz, CeruleanGymScript_5c6d0
 	call EnableAutoTextBoxDrawing
 	ld hl, CeruleanGymTrainerHeaders
 	ld de, CeruleanGymScriptPointers
-	ld a, [W_CERULEANGYMCURSCRIPT]
+	ld a, [wCeruleanGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_CERULEANGYMCURSCRIPT], a
+	ld [wCeruleanGymCurScript], a
 	ret
 
 CeruleanGymScript_5c6d0: ; 5c6d0 (17:46d0)
@@ -25,8 +25,8 @@ Gym2LeaderName: ; 5c6e7 (17:46e7)
 CeruleanGymScript_5c6ed: ; 5c6ed (17:46ed)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_CERULEANGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wCeruleanGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 CeruleanGymScriptPointers: ; 5c6f8 (17:46f8)
@@ -132,7 +132,7 @@ CeruleanGymText1: ; 5c771 (17:4771)
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3
-	ld [W_CERULEANGYMCURSCRIPT], a
+	ld [wCeruleanGymCurScript], a
 .asm_5c7bb
 	jp TextScriptEnd
 

@@ -1,16 +1,16 @@
 INCLUDE "charmap.asm"
 INCLUDE "constants/text_constants.asm"
 TEXT_1  EQU $26
-TEXT_2  EQU $27
-TEXT_3  EQU $28
-TEXT_4  EQU $29
-TEXT_5  EQU $2a
-TEXT_6  EQU $2b
-TEXT_7  EQU $2c
-TEXT_8  EQU $2d
+TEXT_2  EQU TEXT_1 + 1
+TEXT_3  EQU TEXT_2 + 1
+TEXT_4  EQU TEXT_3 + 1
+TEXT_5  EQU TEXT_4 + 1
+TEXT_6  EQU TEXT_5 + 1
+TEXT_7  EQU TEXT_6 + 1
+TEXT_8  EQU TEXT_7 + 1
 
-POKEDEX_TEXT EQU $2e
-MOVE_NAMES   EQU $2f
+POKEDEX_TEXT EQU TEXT_8 + 1
+MOVE_NAMES   EQU POKEDEX_TEXT + 1
 
 INCLUDE "macros.asm"
 INCLUDE "hram.asm"
@@ -947,7 +947,7 @@ _ViridianBlackboardPoisonText::
 	line "to cure poison!"
 	prompt
 
-_ViridianBlackbaordPrlzText::
+_ViridianBlackboardPrlzText::
 	text "Paralysis could"
 	line "make #MON"
 	cont "moves misfire!"
@@ -990,7 +990,7 @@ _VermilionGymTrashText::
 	line "only trash here."
 	done
 
-_VermilionGymTrashSuccesText1::
+_VermilionGymTrashSuccessText1::
 	text "Hey! There's a"
 	line "switch under the"
 	cont "trash!"
@@ -999,14 +999,14 @@ _VermilionGymTrashSuccesText1::
 	para "The 1st electric"
 	line "lock opened!@@"
 
-_VermilionGymTrashSuccesText2::
+_VermilionGymTrashSuccessText2::
 	text "Hey! There's"
 	line "another switch"
 	cont "under the trash!"
 	cont "Turn it on!"
 	prompt
 
-_VermilionGymTrashSuccesText3::
+_VermilionGymTrashSuccessText3::
 	text "The 2nd electric"
 	line "lock opened!"
 

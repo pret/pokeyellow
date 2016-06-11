@@ -1,7 +1,7 @@
 FanClubScript: ; 59b70 (16:5b70)
 	call EnableAutoTextBoxDrawing
 	ld hl, FanClubScriptPointers
-	ld a, [W_FANCLUBCURSCRIPT]
+	ld a, [wFanClubCurScript]
 	call JumpTable
 	ret
 
@@ -39,7 +39,7 @@ FanClubScript_59a44:
 	callab Func_fce73
 	ret c
 	ld a, $1
-	ld [W_FANCLUBCURSCRIPT], a
+	ld [wFanClubCurScript], a
 	xor a
 	ld [wPlayerMovingDirection], a
 	call UpdateSprites

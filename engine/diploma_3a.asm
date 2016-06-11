@@ -91,12 +91,12 @@ Func_e9ad3:
 	coord hl, 2, 15
 	call PlaceString
 	coord hl, 12, 15
-	ld de, wPlayTimeHours + 1
+	ld de, wPlayTimeHours
 	lb bc, $40 | 1, 3
 	call PrintNumber
 	ld [hl], $16
 	inc hl
-	ld de, wPlayTimeMinutes + 1
+	ld de, wPlayTimeMinutes
 	lb bc, $80 | 1, 2
 	call PrintNumber
 	ld a, [wNumSetBits]

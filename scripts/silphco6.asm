@@ -3,13 +3,13 @@ SilphCo6Script: ; 1a1a9 (6:61a9)
 	call EnableAutoTextBoxDrawing
 	ld hl, SilphCo6TrainerHeaders
 	ld de, SilphCo6ScriptPointers
-	ld a, [W_SILPHCO6CURSCRIPT]
+	ld a, [wSilphCo6CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_SILPHCO6CURSCRIPT], a
+	ld [wSilphCo6CurScript], a
 	ret
 
 SilphCo6Script_1a1bf: ; 1a1bf (6:61bf)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	ret z

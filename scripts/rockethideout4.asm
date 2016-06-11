@@ -2,9 +2,9 @@ RocketHideout4Script: ; 4545d (11:545d)
 	call EnableAutoTextBoxDrawing
 	ld hl, RocketHideout4TrainerHeader0
 	ld de, RocketHideout4ScriptPointers
-	ld a, [W_ROCKETHIDEOUT4CURSCRIPT]
+	ld a, [wRocketHideout4CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_ROCKETHIDEOUT4CURSCRIPT], a
+	ld [wRocketHideout4CurScript], a
 	ret
 
 RocketHideout4Script_45510: ; 45510 (11:54a3)
@@ -13,8 +13,8 @@ RocketHideout4Script_45510: ; 45510 (11:54a3)
 	xor a
 	ld [wJoyIgnore], a
 RocketHideout4Script_4551e:
-	ld [W_ROCKETHIDEOUT4CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wRocketHideout4CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 RocketHideout4Script_45525:
@@ -61,11 +61,11 @@ RocketHideout4Script3: ; 454b6 (11:54b6)
 	call GBFadeInFromBlack
 	xor a
 	ld [wJoyIgnore], a
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	ld a, $0
-	ld [W_ROCKETHIDEOUT4CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wRocketHideout4CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 RocketHideout4Script0:
@@ -364,8 +364,8 @@ RocketHideout4Text0:
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3
-	ld [W_ROCKETHIDEOUT4CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wRocketHideout4CurScript], a
+	ld [wCurMapScript], a
 	jr .asm_45801
 
 .asm_457fb

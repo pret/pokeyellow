@@ -3,13 +3,13 @@ SilphCo11Script: ; 62111 (18:60fa)
 	call EnableAutoTextBoxDrawing
 	ld hl, SilphCo11TrainerHeaders
 	ld de, SilphCo11ScriptPointers
-	ld a, [W_SILPHCO11CURSCRIPT]
+	ld a, [wSilphCo11CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_SILPHCO11CURSCRIPT], a
+	ld [wSilphCo11CurScript], a
 	ret
 
 SilphCo11Script_62127: ; 62127 (18:6110)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
@@ -75,8 +75,8 @@ SilphCo11Script_62185: ; 62185 (18:61c4)
 	xor a
 	ld [wJoyIgnore], a
 SilphCo11Script_62189: ; 62189 (18:61c8)
-	ld [W_SILPHCO11CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wSilphCo11CurScript], a
+	ld [wCurMapScript], a
 	ret
 
 SilphCo11ScriptPointers: ; 62190 (18:6190)

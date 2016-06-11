@@ -1,5 +1,5 @@
 VermilionGymScript: ; 5ca26 (17:4a26)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	push hl
@@ -11,9 +11,9 @@ VermilionGymScript: ; 5ca26 (17:4a26)
 	call EnableAutoTextBoxDrawing
 	ld hl, VermilionGymTrainerHeader0
 	ld de, VermilionGymScriptPointers
-	ld a, [W_VERMILIONGYMCURSCRIPT]
+	ld a, [wVermilionGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_VERMILIONGYMCURSCRIPT], a
+	ld [wVermilionGymCurScript], a
 	ret
 
 VermilionGymScript_5ca4c: ; 5ca4c (17:4a4c)
@@ -44,8 +44,8 @@ VermilionGymScript_5ca6d: ; 5ca6d (17:4a6d)
 VermilionGymScript_5ca8a: ; 5ca8a (17:4a8a)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_VERMILIONGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wVermilionGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 VermilionGymScriptPointers: ; 5ca95 (17:4a95)
@@ -160,8 +160,8 @@ VermilionGymText1: ; 5cb1d (17:4b1d)
 	xor a
 	ld [hJoyHeld], a
 	ld a, $3
-	ld [W_VERMILIONGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wVermilionGymCurScript], a
+	ld [wCurMapScript], a
 .asm_5cb6a
 	jp TextScriptEnd
 

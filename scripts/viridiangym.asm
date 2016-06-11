@@ -5,9 +5,9 @@ ViridianGymScript: ; 748a3 (1d:48a3)
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianGymTrainerHeaders
 	ld de, ViridianGymScriptPointers
-	ld a, [W_VIRIDIANGYMCURSCRIPT]
+	ld a, [wViridianGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_VIRIDIANGYMCURSCRIPT], a
+	ld [wViridianGymCurScript], a
 	ret
 
 Gym8CityName: ; 748bf (1d:48bf)
@@ -18,8 +18,8 @@ Gym8LeaderName: ; 748cd (1d:48cd)
 ViridianGymScript_748d6: ; 748d6 (1d:48d6)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_VIRIDIANGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wViridianGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 ViridianGymScriptPointers: ; 748e1 (1d:48e1)
@@ -46,7 +46,7 @@ ViridianGymScript0: ; 748eb (1d:48eb)
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld a, $4
-	ld [W_CURMAPSCRIPT], a
+	ld [wCurMapScript], a
 	ret
 
 ;format:
@@ -125,7 +125,7 @@ ViridianGymScript4: ; 7496b (1d:496b)
 	ld hl, wd736
 	res 7, [hl]
 	ld a, $0
-	ld [W_CURMAPSCRIPT], a
+	ld [wCurMapScript], a
 	ret
 .asm_74980
 	jpba LoadSpinnerArrowTiles
@@ -297,7 +297,7 @@ ViridianGymText1: ; 74a69 (1d:4a69)
 	ld a, $8
 	ld [wGymLeaderNo], a
 	ld a, $3
-	ld [W_VIRIDIANGYMCURSCRIPT], a
+	ld [wViridianGymCurScript], a
 .asm_6dff7
 	jp TextScriptEnd
 

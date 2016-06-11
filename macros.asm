@@ -406,6 +406,10 @@ tx_pre_jump: MACRO
 	jp PrintPredefTextID
 ENDM
 
+sound0x0A: macro
+	db $11
+endm
+
 WALK EQU $FE
 STAY EQU $FF
 

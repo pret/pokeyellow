@@ -25,7 +25,7 @@ DisplayElevatorFloorMenu: ; 1c264 (7:4264)
 	ld a, b
 	ld [wListScrollOffset], a
 	ret c
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 7, [hl]
 	ld hl, wElevatorWarpMaps
 	ld a, [wWhichPokemon]

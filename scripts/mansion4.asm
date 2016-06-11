@@ -3,13 +3,13 @@ Mansion4Script: ; 523b9 (14:63b9)
 	call EnableAutoTextBoxDrawing
 	ld hl, Mansion4TrainerHeader0
 	ld de, Mansion4ScriptPointers
-	ld a, [W_MANSION4CURSCRIPT]
+	ld a, [wMansion4CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_MANSION4CURSCRIPT], a
+	ld [wMansion4CurScript], a
 	ret
 
 Mansion4Script_523cf: ; 523cf (14:63cf)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	ret z

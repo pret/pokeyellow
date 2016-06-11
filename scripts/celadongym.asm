@@ -1,14 +1,14 @@
 CeladonGymScript: ; 4890a (12:490a)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	call nz, CeladonGymScript_48927
 	call EnableAutoTextBoxDrawing
 	ld hl, CeladonGymTrainerHeaders
 	ld de, CeladonGymScriptPointers
-	ld a, [W_CELADONGYMCURSCRIPT]
+	ld a, [wCeladonGymCurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_CELADONGYMCURSCRIPT], a
+	ld [wCeladonGymCurScript], a
 	ret
 
 CeladonGymScript_48927: ; 48927 (12:4927)
@@ -25,8 +25,8 @@ Gym4LeaderName: ; 4893d (12:493d)
 CeladonGymText_48943: ; 48943 (12:4943)
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_CELADONGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wCeladonGymCurScript], a
+	ld [wCurMapScript], a
 	ret
 
 CeladonGymScriptPointers: ; 4894e (12:494e)
@@ -178,8 +178,8 @@ CeladonGymText1: ; 48a11 (12:4a11)
 	ld a, $4
 	ld [wGymLeaderNo], a
 	ld a, $3
-	ld [W_CELADONGYMCURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+	ld [wCeladonGymCurScript], a
+	ld [wCurMapScript], a
 .asm_48a5b
 	jp TextScriptEnd
 

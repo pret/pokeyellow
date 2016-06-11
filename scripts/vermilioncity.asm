@@ -2,7 +2,7 @@ VermilionCityScript: ; 197a1 (6:57a1)
 	call EnableAutoTextBoxDrawing
 	ld hl, wPreventBlackout
 	res 7, [hl]
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	push hl
@@ -12,7 +12,7 @@ VermilionCityScript: ; 197a1 (6:57a1)
 	res 5, [hl]
 	call nz, VermilionCityScript_197c0
 	ld hl, VermilionCityScriptPointers
-	ld a, [W_VERMILIONCITYCURSCRIPT]
+	ld a, [wVermilionCityCurScript]
 	call JumpTable
 	call VermilionCityScript_19869
 	ret
@@ -42,7 +42,7 @@ VermilionCityScript_197cb: ; 197cb (6:57cb)
 	SetEventReuseHL EVENT_WALKED_PAST_GUARD_AFTER_SS_ANNE_LEFT
 	ret nz
 	ld a, $2
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 VermilionCityScriptPointers: ; 197dc (6:57dc)
@@ -79,7 +79,7 @@ VermilionCityScript0: ; 197e6 (6:57e6)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $1
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 .asm_198de
@@ -94,7 +94,7 @@ VermilionCityScript4: ; 19826 (6:5826)
 	call ArePlayerCoordsInArray
 	ret c
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 VermilionCityScript2: ; 19833 (6:5833)
@@ -107,7 +107,7 @@ VermilionCityScript2: ; 19833 (6:5833)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $3
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 VermilionCityScript3: ; 1984e (6:584e)
@@ -118,7 +118,7 @@ VermilionCityScript3: ; 1984e (6:584e)
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 VermilionCityScript1: ; 1985f (6:585f)
@@ -128,7 +128,7 @@ VermilionCityScript1: ; 1985f (6:585f)
 	ld c, 10
 	call DelayFrames
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 VermilionCityTextPointers: ; 1986f (6:586f)
@@ -201,7 +201,7 @@ VermilionCityText3: ; 198b1 (6:58b1)
 	ld hl, SSAnneFlashedTicketText
 	call PrintText
 	ld a, $4
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	jr .asm_198fc
 .asm_198f6
 	ld hl, SSAnneNotHereText

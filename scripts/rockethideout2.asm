@@ -2,9 +2,9 @@ RocketHideout2Script: ; 44e27 (11:4e27)
 	call EnableAutoTextBoxDrawing
 	ld hl, RocketHideout2TrainerHeaders
 	ld de, RocketHideout2ScriptPointers
-	ld a, [W_ROCKETHIDEOUT2CURSCRIPT]
+	ld a, [wRocketHideout2CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_ROCKETHIDEOUT2CURSCRIPT], a
+	ld [wRocketHideout2CurScript], a
 	ret
 
 RocketHideout2ScriptPointers: ; 44e3a (11:4e3a)
@@ -30,7 +30,7 @@ RocketHideout2Script0: ; 44e42 (11:4e42)
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld a, $3
-	ld [W_CURMAPSCRIPT], a
+	ld [wCurMapScript], a
 	ret
 
 ;format:
@@ -310,7 +310,7 @@ RocketHideout2Script3: ; 44fc2 (11:4fc2)
 	ld hl, wd736
 	res 7, [hl]
 	ld a, $0
-	ld [W_CURMAPSCRIPT], a
+	ld [wCurMapScript], a
 	ret
 
 LoadSpinnerArrowTiles: ; 45077 (11:5077)
