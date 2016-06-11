@@ -1,4 +1,4 @@
-CeladonMansion3Script: ; 48790 (12:4790)
+CeladonMansion3Script:
 	call EnableAutoTextBoxDrawing
 	ret
 
@@ -9,7 +9,7 @@ CeladonMansion3_PokedexCount:
 	ld a, [wNumSetBits]
 	ret
 
-CeladonMansion3TextPointers: ; 48793 (12:4793)
+CeladonMansion3TextPointers:
 	dw ProgrammerText
 	dw GraphicArtistText
 	dw WriterText
@@ -19,7 +19,7 @@ CeladonMansion3TextPointers: ; 48793 (12:4793)
 	dw GameFreakPCText3
 	dw GameFreakSignText
 
-ProgrammerText: ; 487a3 (12:47a3)
+ProgrammerText:
 	TX_ASM
 	call CeladonMansion3_PokedexCount
 	cp 150
@@ -38,7 +38,7 @@ CeladonMansion3Text_486f5:
 	TX_FAR _ProgrammerText2
 	db "@"
 
-GraphicArtistText: ; 487a8 (12:47a8)
+GraphicArtistText:
 	TX_ASM
 	call CeladonMansion3_PokedexCount
 	cp 150
@@ -58,7 +58,7 @@ GraphicArtistText: ; 487a8 (12:47a8)
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab Func_e8cb1
+	callab PrintDiploma
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
@@ -100,7 +100,7 @@ CeladonMansion3Text_4876b:
 	TX_FAR _GraphicArtistText5
 	db "@"
 
-WriterText: ; 487ad (12:47ad)
+WriterText:
 	TX_ASM
 	call CeladonMansion3_PokedexCount
 	cp 150
@@ -119,7 +119,7 @@ CeladonMansion3Text_48789:
 	TX_FAR _WriterText2
 	db "@"
 
-DirectorText: ; 487b2 (12:47b2)
+DirectorText:
 	TX_ASM
 	call CeladonMansion3_PokedexCount
 	; check pokédex
@@ -138,7 +138,7 @@ DirectorText: ; 487b2 (12:47b2)
 	call PrintText
 	jp TextScriptEnd
 
-.GameDesigner ; 487d0 (12:47d0)
+.GameDesigner
 	TX_FAR _GameDesignerText
 	db "@"
 
@@ -155,22 +155,22 @@ DirectorText: ; 487b2 (12:47b2)
 	TX_FAR _CompletedDexText2
 	db "@"
 
-GameFreakPCText1: ; 487eb (12:47eb)
+GameFreakPCText1:
 	TX_ASM
 	callba Func_f1ef3
 	jp TextScriptEnd
 
-GameFreakPCText2: ; 487f0 (12:47f0)
+GameFreakPCText2:
 	TX_ASM
 	callba Func_f1eff
 	jp TextScriptEnd
 
-GameFreakPCText3: ; 487f5 (12:47f5)
+GameFreakPCText3:
 	TX_ASM
 	callba Func_f1f0b
 	jp TextScriptEnd
 
-GameFreakSignText: ; 487fa (12:47fa)
+GameFreakSignText:
 	TX_ASM
 	callba Func_f1f17
 	jp TextScriptEnd

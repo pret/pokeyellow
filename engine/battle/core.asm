@@ -1898,7 +1898,7 @@ SendOutMon: ; 3ccfb (f:4cfb)
 	ld [H_WHOSETURN], a
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	callab Func_f429f
+	callab StarterPikachuBattleEntranceAnimation
 	callab IsPlayerPikachuAsleepInParty
 	ld e, $24
 	jr c, .asm_3cd81

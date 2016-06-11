@@ -18,4 +18,3 @@ _VermilionPokecenterText3::
 	cont "fainted while we"
 	cont "were walking!"
 	done
-

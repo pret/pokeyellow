@@ -1,9 +1,9 @@
-Route5Script: ; 556c6 (15:56c6)
+Route5Script:
 	jp EnableAutoTextBoxDrawing
 
-Route5TextPointers: ; 556c9 (15:56c9)
+Route5TextPointers:
 	dw Route5Text1
 
-Route5Text1: ; 556cb (15:56cb)
+Route5Text1:
 	TX_FAR _Route5Text1
 	db "@"

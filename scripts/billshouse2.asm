@@ -83,7 +83,7 @@ BillsHouseText_f24a9:
 	TX_FAR _BillsHouseText_1e8da
 	db "@"
 
-Func_f24ae: ; f24ae
+Func_f24ae:
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	jr nz, .asm_f24d2
@@ -114,7 +114,7 @@ Func_f24d5:
 	call UpdateSprites
 	call UpdateSprites
 	ld hl, Data_f2505
-	call Func_159b
+	call ApplyPikachuMovementData
 	ld a, $f ; pikachu
 	ld [wEmotionBubbleSpriteIndex], a
 	ld a, $1
@@ -135,10 +135,10 @@ Data_f2505:
 Func_f250b:
 	ld hl, Data_f251c
 	ld b, SPRITE_FACING_UP
-	call Func_f0a82
+	call TryApplyPikachuMovementData
 	ld hl, Data_f2521
 	ld b, SPRITE_FACING_RIGHT
-	call Func_f0a82
+	call TryApplyPikachuMovementData
 	ret
 
 Data_f251c:

@@ -1,4 +1,4 @@
-MtMoon3Script: ; 49d0b (12:5d0b)
+MtMoon3Script:
 	call EnableAutoTextBoxDrawing
 	ld hl, MtMoon3TrainerHeaders
 	ld de, MtMoon3ScriptPointers
@@ -18,7 +18,7 @@ MtMoon3Script: ; 49d0b (12:5d0b)
 	res 4, [hl]
 	ret
 
-CoordsData_49d37: ; 49d37 (12:5d37)
+CoordsData_49d37:
 	db $05,$0B
 	db $05,$0C
 	db $05,$0D
@@ -37,7 +37,7 @@ CoordsData_49d37: ; 49d37 (12:5d37)
 	db $08,$0E
 	db $FF
 
-MtMoon3Script_49cd7: ; 49d58 (12:5d58)
+MtMoon3Script_49cd7:
 	CheckAndResetEvent EVENT_57E
 	call nz, MtMoon3Script_49cec
 	xor a
@@ -54,7 +54,7 @@ MtMoon3Script_49cec:
 	call MtMoon3Script_49f93
 	ret
 
-MtMoon3ScriptPointers: ; 49d63 (12:5d63)
+MtMoon3ScriptPointers:
 	dw MtMoon3Script0
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
@@ -72,7 +72,7 @@ MtMoon3ScriptPointers: ; 49d63 (12:5d63)
 	dw MtMoon3Script14
 	dw MtMoon3Script15
 
-MtMoon3Script0: ; 49d6f (12:5d6f)
+MtMoon3Script0:
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
 	call z, MtMoon3Script_49d28
 	CheckEvent EVENT_BEAT_MT_MOON_3_TRAINER_0
@@ -100,7 +100,7 @@ MtMoon3Script_49d28:
 	jp z, CheckFightingMapTrainers
 	ret
 
-MtMoon3Script3: ; 49d9a (12:5d9a)
+MtMoon3Script3:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, MtMoon3Script_49cd7
@@ -113,7 +113,7 @@ MtMoon3Script3: ; 49d9a (12:5d9a)
 	call MtMoon3Script_49ce5
 	ret
 
-MtMoon3Script4: ; 49dba (12:5dba)
+MtMoon3Script4:
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	call SetSpriteMovementBytesToFF
@@ -185,13 +185,13 @@ PikachuMovementData_49dd8:
 	db $34
 	db $3f
 
-MovementData_49ddc: ; 49df8 (12:5df8)
+MovementData_49ddc:
 	db NPC_MOVEMENT_RIGHT
-MovementData_49ddd: ; 49df9 (12:5df9)
+MovementData_49ddd:
 	db NPC_MOVEMENT_UP
 	db $FF
 
-MtMoon3Script5: ; 49dfb (12:5dfb)
+MtMoon3Script5:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -408,7 +408,7 @@ MtMoon3Script_49f93:
 	predef HideObject
 	ret
 
-MtMoon3TextPointers: ; 49e34 (12:5e34)
+MtMoon3TextPointers:
 	dw MtMoon3Text1
 	dw MtMoon3Text2
 	dw MtMoon3Text3

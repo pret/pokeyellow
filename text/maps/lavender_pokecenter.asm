@@ -12,4 +12,3 @@ _LavenderPokecenterText3::
 	cont "to escape from"
 	cont "TEAM ROCKET!"
 	done
-

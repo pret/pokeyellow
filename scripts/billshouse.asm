@@ -1,4 +1,4 @@
-BillsHouseScript: ; 1e76a (7:676a)
+BillsHouseScript:
 	call BillsHouseScript_1e09e
 	call EnableAutoTextBoxDrawing
 	ld a, [wBillsHouseCurScript]
@@ -6,7 +6,7 @@ BillsHouseScript: ; 1e76a (7:676a)
 	call JumpTable
 	ret
 
-BillsHouseScriptPointers: ; 1e776 (7:6776)
+BillsHouseScriptPointers:
 	dw BillsHouseScript0
 	dw BillsHouseScript1
 	dw BillsHouseScript2
@@ -19,12 +19,11 @@ BillsHouseScriptPointers: ; 1e776 (7:6776)
 	dw BillsHouseScript9
 
 BillsHouseScript_1e09e:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	set 7, [hl]
 	ret nz
-	ld hl, wd7f2
-	bit 5, [hl]
+	CheckEventHL EVENT_MET_BILL_2
 	jr z, .asm_1e0af
 	jr .asm_1e0b3
 
@@ -38,11 +37,11 @@ BillsHouseScript_1e09e:
 	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript0: ; 1e782 (7:6782)
+BillsHouseScript0:
 	ld a, [wd472]
 	bit 7, a
 	jr z, .asm_1e0d2
-	callab Func_fce73
+	callab CheckPikachuFaintedOrStatused
 	jr c, .asm_1e0d2
 	callab Func_f24d5
 .asm_1e0d2
@@ -52,13 +51,13 @@ BillsHouseScript0: ; 1e782 (7:6782)
 	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript1: ; 1e783 (7:6783)
+BillsHouseScript1:
 	ret
 
 BillsHouseScript2:
 	ld a, $ff
 	ld [wJoyIgnore], a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	ld de, MovementData_1e79c
 	jr nz, .notDown
@@ -75,14 +74,14 @@ BillsHouseScript2:
 	ld [wBillsHouseCurScript], a
 	ret
 
-MovementData_1e79c: ; 1e79c (7:679c)
+MovementData_1e79c:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db $FF
 
 ; make Bill walk around the player
-MovementData_1e7a0: ; 1e7a0 (7:67a0)
+MovementData_1e7a0:
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
@@ -90,7 +89,7 @@ MovementData_1e7a0: ; 1e7a0 (7:67a0)
 	db NPC_MOVEMENT_UP
 	db $FF
 
-BillsHouseScript3: ; 1e7a6 (7:67a6)
+BillsHouseScript3:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -100,12 +99,12 @@ BillsHouseScript3: ; 1e7a6 (7:67a6)
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_1e13e
 	ld hl, PikachuMovementData_1e14d
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_1e133
 	ld hl, PikachuMovementData_1e152
 .asm_1e133
-	call Func_159b
+	call ApplyPikachuMovementData
 	callab InitializePikachuTextID
 .asm_1e13e
 	xor a
@@ -132,7 +131,7 @@ PikachuMovementData_1e152:
 	db $36
 	db $3f
 
-BillsHouseScript4: ; 1e7c5 (7:67c5)
+BillsHouseScript4:
 	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret z
 	ld a, $fc
@@ -169,7 +168,7 @@ BillsHouseScript5:
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld hl, PikachuMovementData_1e1a9
-	call Func_159b
+	call ApplyPikachuMovementData
 	ld a, $f
 	ld [wEmotionBubbleSpriteIndex], a
 	ld a, $0
@@ -185,7 +184,7 @@ BillsHouseScript5:
 	ld [wBillsHouseCurScript], a
 	ret
 
-MovementData_1e807: ; 1e807 (7:6807)
+MovementData_1e807:
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
@@ -198,7 +197,7 @@ PikachuMovementData_1e1a9:
 	db $37
 	db $3f
 
-BillsHouseScript6: ; 1e80d (7:680d)
+BillsHouseScript6:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -212,7 +211,7 @@ BillsHouseScript7:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld de, RLE_1e219
@@ -236,7 +235,7 @@ BillsHouseScript8:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_DOWN
@@ -251,30 +250,30 @@ BillsHouseScript8:
 	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript9: ; 1e827 (7:6827)
+BillsHouseScript9:
 	ret
 
-BillsHouseTextPointers: ; 1e834 (7:6834)
+BillsHouseTextPointers:
 	dw BillsHouseText1
 	dw BillsHouseText2
 	dw BillsHouseText3
 	dw BillsHouseText4
 
-BillsHouseText4: ; 1e83c (7:683c)
+BillsHouseText4:
 	TX_FAR _BillsHouseDontLeaveText
 	db "@"
 
-BillsHouseText1: ; 1e83d (7:683d)
+BillsHouseText1:
 	TX_ASM
 	callba Func_f2418
 	jp TextScriptEnd
 
-BillsHouseText2: ; 1e874 (7:6874)
+BillsHouseText2:
 	TX_ASM
 	callba Func_f244a
 	jp TextScriptEnd
 
-BillsHouseText3: ; 1e8d0 (7:68d0)
+BillsHouseText3:
 	TX_ASM
 	callba Func_f24a2
 	jp TextScriptEnd

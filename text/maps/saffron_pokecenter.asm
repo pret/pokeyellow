@@ -10,4 +10,3 @@ _SaffronPokecenterText3::
 	cont "why it attracted"
 	cont "TEAM ROCKET!"
 	done
-

@@ -35,7 +35,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	ld hl, wFacingDirectionList
 	call PlayerSpinInPlace
 	ld a, $1
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 .restoreDefaultMusic
 	call PlayDefaultMusic
 .done
@@ -46,7 +46,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	call DelayFrames
 	call PlayerSpinWhileMovingDown
 	ld a, $0
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	jr .done
 .flyAnimation
 	pop hl
@@ -63,7 +63,7 @@ EnterMapAnim: ; 70567 (1c:4567)
 	call DoFlyAnimation
 	call LoadPlayerSpriteGraphics
 	ld a, $1
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	jr .restoreDefaultMusic
 
 FlyAnimationEnterScreenCoords: ; 705ed (1c:45ed)

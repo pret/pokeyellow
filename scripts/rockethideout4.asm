@@ -1,4 +1,4 @@
-RocketHideout4Script: ; 4545d (11:545d)
+RocketHideout4Script:
 	call EnableAutoTextBoxDrawing
 	ld hl, RocketHideout4TrainerHeader0
 	ld de, RocketHideout4ScriptPointers
@@ -7,7 +7,7 @@ RocketHideout4Script: ; 4545d (11:545d)
 	ld [wRocketHideout4CurScript], a
 	ret
 
-RocketHideout4Script_45510: ; 45510 (11:54a3)
+RocketHideout4Script_45510:
 	CheckAndResetEvent EVENT_6A0
 	call nz, RocketHideout4Script_45525
 	xor a
@@ -24,7 +24,7 @@ RocketHideout4Script_45525:
 	call RocketHideout4Script_45756
 	ret
 
-RocketHideout4ScriptPointers: ; 454ae (11:54ae)c
+RocketHideout4ScriptPointers:
 	dw RocketHideout4Script0
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
@@ -40,7 +40,7 @@ RocketHideout4ScriptPointers: ; 454ae (11:54ae)c
 	dw RocketHideout4Script12
 	dw RocketHideout4Script13
 
-RocketHideout4Script3: ; 454b6 (11:54b6)
+RocketHideout4Script3:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, RocketHideout4Script_45510
@@ -200,8 +200,8 @@ RocketHideout4Script10:
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, RocketHideout4JessieJamesEndBattleText ; 457b2
-	ld de, RocketHideout4JessieJamesEndBattleText ; 457b2
+	ld hl, RocketHideout4JessieJamesEndBattleText
+	ld de, RocketHideout4JessieJamesEndBattleText
 	call SaveEndBattleTextPointers
 	ld a, OPP_ROCKET
 	ld [wCurOpponent], a
@@ -266,8 +266,7 @@ RocketHideout4Script13:
 	xor a
 	ld [hJoyHeld], a
 	ld [wJoyIgnore], a
-	ld hl, wd81b
-	set 2, [hl]
+	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
 	ld a, $0
 	call RocketHideout4Script_4551e
 	ret
@@ -284,7 +283,7 @@ RocketHideout4Script_45756:
 	predef HideObject
 	ret
 
-RocketHideout4TextPointers: ; 45501 (11:5501)
+RocketHideout4TextPointers:
 	dw RocketHideout4Text0
 	dw RocketHideout4Text1
 	dw RocketHideout4Text2
@@ -304,10 +303,10 @@ RocketHideout4TrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_3
 	db ($1 << 4)
 	dwEventFlagAddress EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_3
-	dw RocketHideout4Trainer0BeforeText    ; 4581d
-	dw RocketHideout4Trainer0AfterText     ; 4583a
-	dw RocketHideout4Trainer0EndBattleText ; 45822
-	dw RocketHideout4Trainer0EndBattleText ; 45822
+	dw RocketHideout4Trainer0BeforeText
+	dw RocketHideout4Trainer0AfterText
+	dw RocketHideout4Trainer0EndBattleText
+	dw RocketHideout4Trainer0EndBattleText
 	db $ff
 
 RocketHideout4Text1:

@@ -57,6 +57,16 @@ event_byte = ((\2) / 8)
 	ld \1, wEventFlags + event_byte
 	ENDM
 
+EventFlagAddressa: MACRO
+event_byte = ((\1) / 8)
+	ld [wEventFlags + event_byte], a
+	ENDM
+
+aEventFlagAddress: MACRO
+event_byte = ((\1) / 8)
+	ld a, [wEventFlags + event_byte]
+	ENDM
+
 ;\1 = event index
 CheckEventHL: MACRO
 event_byte = ((\1) / 8)

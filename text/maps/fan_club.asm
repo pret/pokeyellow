@@ -176,4 +176,3 @@ _FanClubText6::
 	line "very vocal about"
 	cont "#MON."
 	done
-

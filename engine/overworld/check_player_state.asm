@@ -90,7 +90,7 @@ IsPlayerFacingEdgeOfMap: ; c148 (3:4148)
 	push hl
 	push de
 	push bc
-	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	ld a, [wPlayerFacingDirection] ; player sprite's facing direction
 	srl a
 	ld c, a
 	ld b, $0
@@ -160,7 +160,7 @@ IsWarpTileInFrontOfPlayer: ; c197 (3:4197)
 	ld a, [wCurMap]
 	cp SS_ANNE_5
 	jr z, .ssAnne5
-	ld a, [wSpriteStateData1 + 9] ; player sprite's facing direction
+	ld a, [wPlayerFacingDirection] ; player sprite's facing direction
 	srl a
 	ld c, a
 	ld b, 0

@@ -32,7 +32,7 @@ AnimateBoulderDust: ; 7a0fb (1e:60fb)
 	jp LoadPlayerSpriteGraphics
 
 GetMoveBoulderDustFunctionPointer: ; 7913f (1e:613f)
-	ld a, [wSpriteStateData1 + 9] ; player's sprite facing direction
+	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	ld hl, MoveBoulderDustFunctionPointerTable
 	ld c, a
 	ld b, $0

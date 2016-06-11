@@ -63,7 +63,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	callab IsStarterPikachuInOurParty
 	call c, Func_6eaa
 	ld a, $5
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	call Func_1525
 .doNotReturnPikachu
 	lb bc, 1, 0

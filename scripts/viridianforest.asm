@@ -1,4 +1,4 @@
-ViridianForestScript: ; 6110d (18:510d)
+ViridianForestScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianForestTrainerHeaders
 	ld de, ViridianForestScriptPointers
@@ -7,12 +7,12 @@ ViridianForestScript: ; 6110d (18:510d)
 	ld [wViridianForestCurScript], a
 	ret
 
-ViridianForestScriptPointers: ; 61120 (18:5120)
+ViridianForestScriptPointers:
 	dw CheckFightingMapTrainers
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 
-ViridianForestTextPointers: ; 61126 (18:5126)
+ViridianForestTextPointers:
 	dw ViridianForestText1
 	dw ViridianForestText2
 	dw ViridianForestText3
@@ -30,8 +30,8 @@ ViridianForestTextPointers: ; 61126 (18:5126)
 	dw ViridianForestText15
 	dw ViridianForestText16
 
-ViridianForestTrainerHeaders: ; 61142 (18:5142)
-ViridianForestTrainerHeader0: ; 61142 (18:5142)
+ViridianForestTrainerHeaders:
+ViridianForestTrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_0
 	db ($4 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_0
@@ -40,7 +40,7 @@ ViridianForestTrainerHeader0: ; 61142 (18:5142)
 	dw ViridianForestEndBattleText1 ; TextEndBattle
 	dw ViridianForestEndBattleText1 ; TextEndBattle
 
-ViridianForestTrainerHeader1: ; 6114e (18:514e)
+ViridianForestTrainerHeader1:
 	dbEventFlagBit EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_1
 	db ($4 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_1
@@ -49,7 +49,7 @@ ViridianForestTrainerHeader1: ; 6114e (18:514e)
 	dw ViridianForestEndBattleText2 ; TextEndBattle
 	dw ViridianForestEndBattleText2 ; TextEndBattle
 
-ViridianForestTrainerHeader2: ; 6115a (18:515a)
+ViridianForestTrainerHeader2:
 	dbEventFlagBit EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2
 	db ($1 << 4) ; trainer's view range
 	dwEventFlagAddress EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2
@@ -78,21 +78,21 @@ ViridianForestTrainerHeader4:
 
 	db $ff
 
-ViridianForestText1: ; 61167 (18:5167)
+ViridianForestText1:
 	TX_FAR _ViridianForestText1
 	db "@"
 
-ViridianForestText2: ; 6116c (18:516c)
+ViridianForestText2:
 	TX_ASM
 	ld hl, ViridianForestTrainerHeader0
 	jr ViridianForestTalkToTrainer
 
-ViridianForestText3: ; 61176 (18:5176)
+ViridianForestText3:
 	TX_ASM
 	ld hl, ViridianForestTrainerHeader1
 	jr ViridianForestTalkToTrainer
 
-ViridianForestText4: ; 61180 (18:5180)
+ViridianForestText4:
 	TX_ASM
 	ld hl, ViridianForestTrainerHeader2
 	jr ViridianForestTalkToTrainer
@@ -109,96 +109,96 @@ ViridianForestTalkToTrainer:
 	call TalkToTrainer
 	jp TextScriptEnd
 
-ViridianForestBattleText1: ; 6118a (18:518a)
+ViridianForestBattleText1:
 	TX_FAR _ViridianForestBattleText1
 	db "@"
 
-ViridianForestEndBattleText1: ; 6118f (18:518f)
+ViridianForestEndBattleText1:
 	TX_FAR _ViridianForestEndBattleText1
 	db "@"
 
-ViridianForestAfterBattleText1: ; 61194 (18:5194)
+ViridianForestAfterBattleText1:
 	TX_FAR _ViridianFrstAfterBattleText1
 	db "@"
 
-ViridianForestBattleText2: ; 61199 (18:5199)
+ViridianForestBattleText2:
 	TX_FAR _ViridianForestBattleText2
 	db "@"
 
-ViridianForestEndBattleText2: ; 6119e (18:519e)
+ViridianForestEndBattleText2:
 	TX_FAR _ViridianForestEndBattleText2
 	db "@"
 
-ViridianForestAfterBattleText2: ; 611a3 (18:51a3)
+ViridianForestAfterBattleText2:
 	TX_FAR _ViridianFrstAfterBattleText2
 	db "@"
 
-ViridianForestBattleText3: ; 611a8 (18:51a8)
+ViridianForestBattleText3:
 	TX_FAR _ViridianForestBattleText3
 	db "@"
 
-ViridianForestEndBattleText3: ; 611ad (18:51ad)
+ViridianForestEndBattleText3:
 	TX_FAR _ViridianForestEndBattleText3
 	db "@"
 
-ViridianForestAfterBattleText3: ; 611b2 (18:51b2)
+ViridianForestAfterBattleText3:
 	TX_FAR _ViridianFrstAfterBattleText3
 	db "@"
 
-ViridianForestBattleText4: ; 611a8 (18:51a8)
+ViridianForestBattleText4:
 	TX_FAR _ViridianForestBattleTextPikaGirl
 	db "@"
 
-ViridianForestEndBattleText4: ; 611ad (18:51ad)
+ViridianForestEndBattleText4:
 	TX_FAR _ViridianForestEndBattleTextPikaGirl
 	db "@"
 
-ViridianForestAfterBattleText4: ; 611b2 (18:51b2)
+ViridianForestAfterBattleText4:
 	TX_FAR _ViridianForestAfterBattleTextPikaGirl
 	db "@"
 
-ViridianForestBattleText5: ; 611a8 (18:51a8)
+ViridianForestBattleText5:
 	TX_FAR _ViridianForestBattleTextSamurai
 	db "@"
 
-ViridianForestEndBattleText5: ; 611ad (18:51ad)
+ViridianForestEndBattleText5:
 	TX_FAR _ViridianForestEndBattleTextSamurai
 	db "@"
 
-ViridianForestAfterBattleText5: ; 611b2 (18:51b2)
+ViridianForestAfterBattleText5:
 	TX_FAR _ViridianForestAfterBattleTextSamurai
 	db "@"
 
-ViridianForestText10: ; 611b7 (18:51b7)
+ViridianForestText10:
 	TX_FAR _ViridianForestText8
 	db "@"
 
-ViridianForestText11: ; 611bc (18:51bc)
+ViridianForestText11:
 	TX_ASM
 	ld hl, Func_f2528
 	jp ViridianForestScript_6120d
 
-ViridianForestText12: ; 611c1 (18:51c1)
+ViridianForestText12:
 	TX_ASM
 	ld hl, Func_f2534
 	jp ViridianForestScript_6120d
 
-ViridianForestText13: ; 611c6 (18:51c6)
+ViridianForestText13:
 	TX_ASM
 	ld hl, Func_f2540
 	jp ViridianForestScript_6120d
 
-ViridianForestText14: ; 611cb (18:51cb)
+ViridianForestText14:
 	TX_ASM
 	ld hl, Func_f254c
 	jp ViridianForestScript_6120d
 
-ViridianForestText15: ; 611d0 (18:51d0)
+ViridianForestText15:
 	TX_ASM
 	ld hl, Func_f2558
 	jp ViridianForestScript_6120d
 
-ViridianForestText16: ; 611d5 (18:51d5)
+ViridianForestText16:
 	TX_ASM
 	ld hl, Func_f2528
 ViridianForestScript_6120d

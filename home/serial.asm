@@ -3,9 +3,9 @@ Serial:: ; 1f78 (0:1f78)
 	push bc
 	push de
 	push hl
-	ld a, [wUnknownSerialFlag_d49a]
-	bit 0,a
-	jp nz,Func_2162
+	ld a, [wPrinterConnectionOpen]
+	bit 0, a
+	jp nz, PrinterSerial__
 	ld a, [hSerialConnectionStatus]
 	inc a
 	jr z, .connectionNotYetEstablished
@@ -314,8 +314,8 @@ Serial_TryEstablishingExternallyClockedConnection:: ; 22fa (0:22fa)
 	ld [rSC], a
 	ret
 
-Func_2162:: ; 2162 (0:2162)
-	call Func_2fa7
+PrinterSerial__:: ; 2162 (0:2162)
+	call PrinterSerial
 	pop hl
 	pop de
 	pop bc

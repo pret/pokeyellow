@@ -3,7 +3,7 @@ GymStatues: ; 625e8 (18:65e8)
 ; if in a gym and don’t have the corresponding badge, a = GymStatueText1_id and jp PrintPredefTextID
 ; else ret
 	call EnableAutoTextBoxDrawing
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	ld hl, .BadgeFlags
@@ -64,7 +64,7 @@ PrintBenchGuyText: ; 6245d (18:645d)
 .match
 	ld a, [hli]
 	ld b, a
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp b
 	jr nz, .loop ; player isn't facing left at the bench guy
 	ld a, [hl]
@@ -192,7 +192,7 @@ BookcaseText: ; 62511 (18:6511)
 	db "@"
 
 OpenPokemonCenterPC: ; 62516 (18:6516)
-	ld a, [wSpriteStateData1 + 9]
+	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP ; check to see if player is facing up
 	ret nz
 	call EnableAutoTextBoxDrawing

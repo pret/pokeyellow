@@ -697,7 +697,7 @@ Func_2fd6a: ; 2fd6a (b:7d6a)
 	callab IsThisPartymonStarterPikachu_Party
 	ret nc
 	ld a, $3
-	ld [wd431], a
+	ld [wPikachuSpawnState], a
 	ret
 
 INCLUDE "engine/battle/scale_sprites.asm"

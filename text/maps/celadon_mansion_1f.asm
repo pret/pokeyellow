@@ -62,4 +62,3 @@ _CeladonMansion1Text12::
 	para "You're making me"
 	line "jealous!"
 	done
-

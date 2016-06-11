@@ -47,12 +47,12 @@ pikaemotion_emotebubble: MACRO
 	db \1
 ENDM
 
-pikaemotion_4: MACRO
+pikaemotion_movement: MACRO
 	db PIKAEMOTION_4
 	dw \1
 ENDM
 
-pikaemotion_5: MACRO
+pikaemotion_pikapic: MACRO
 	db PIKAEMOTION_5
 	db \1
 ENDM

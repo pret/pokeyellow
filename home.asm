@@ -168,7 +168,7 @@ ReadJoypad:: ; 01c8 (0:01c8)
 INCLUDE "home/overworld.asm"
 
 CheckForUserInterruption:: ; 10ba (0:10ba)
-; Return carry if Up+Select+B, Start or A are pressed in c frames.
+; Return carry if Up + Select + B, Start or A are pressed in c frames.
 ; Used only in the intro and title screen.
 	call DelayFrame
 
@@ -780,7 +780,7 @@ UncompressMonSprite:: ; 1407 (0:1407)
 	ld a, [hli]
 	ld [wSpriteInputPtr], a    ; fetch sprite input pointer
 	ld a, [hl]
-	ld [wSpriteInputPtr+1], a
+	ld [wSpriteInputPtr + 1], a
 ; define (by index number) the bank that a pokemon's image is in
 ; index = Mew, bank 1
 ; index = Kabutops fossil, bank $B
@@ -1323,14 +1323,13 @@ DisplayPlayerBlackedOutText:: ; 2988 (0:2988)
 	ld a, [wd732]
 	res 5, a ; reset forced to use bike bit
 	ld [wd732], a
-	ld a, [wd790]
-	bit 7, a
+	CheckEvent EVENT_IN_SAFARI_ZONE
 	jr z, .didnotblackoutinsafari
 	xor a
 	ld [wNumSafariBalls], a
 	ld [wSafariSteps], a
-	ld [wSafariSteps+1], a
-	ld [wd790], a
+	ld [wSafariSteps + 1], a
+	EventFlagAddressa EVENT_IN_SAFARI_ZONE
 	ld [wcf0d], a
 	ld [wSafariZoneEntranceCurScript], a
 .didnotblackoutinsafari
@@ -2120,18 +2119,18 @@ ChooseFlyDestination:: ; 2f9a (0:2f9a)
 	res 4, [hl]
 	jpba LoadTownMap_Fly
 
-Func_2fa7:: ; 2fa7 (0:2fa7)
-	homecall Func_e8a5e
+PrinterSerial:: ; 2fa7 (0:2fa7)
+	homecall PrinterSerial_
 	ret
 
 SerialFunction:: ; 2fb7 (0:2fb7)
-	ld a, [wUnknownSerialFlag_d49a]
+	ld a, [wPrinterConnectionOpen]
 	bit 0, a
 	ret z
-	ld a, [wUnknownSerialFlag_d49b]
+	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld hl, wOverworldMap+650
+	ld hl, wOverworldMap + 650
 	inc [hl]
 	ld a, [hl]
 	cp $6
@@ -2139,7 +2138,7 @@ SerialFunction:: ; 2fb7 (0:2fb7)
 	xor a
 	ld [hl], a
 	ld a, $0c
-	ld [wUnknownSerialFlag_d49b], a
+	ld [wPrinterOpcode], a
 	ld a, $88
 	ld [rSB], a
 	ld a, $1
@@ -2351,7 +2350,7 @@ StoreTrainerHeaderPointer:: ; 30f3 (0:30f3)
 	ld a, h
 	ld [wTrainerHeaderPtr], a
 	ld a, l
-	ld [wTrainerHeaderPtr+1], a
+	ld [wTrainerHeaderPtr + 1], a
 	ret
 
 ; executes the current map script from the function pointer array provided in hl.
@@ -3781,10 +3780,10 @@ CalcStats:: ; 392b (0:392b)
 .statsLoop
 	inc c
 	call CalcStat
-	ld a, [H_MULTIPLICAND+1]
+	ld a, [H_MULTIPLICAND + 1]
 	ld [de], a
 	inc de
-	ld a, [H_MULTIPLICAND+2]
+	ld a, [H_MULTIPLICAND + 2]
 	ld [de], a
 	inc de
 	ld a, c
@@ -3818,12 +3817,12 @@ CalcStat:: ; 393f (0:393f)
 .statExpLoop            ; calculates ceil(Sqrt(stat exp)) in b
 	xor a
 	ld [H_MULTIPLICAND], a
-	ld [H_MULTIPLICAND+1], a
+	ld [H_MULTIPLICAND + 1], a
 	inc b               ; increment current stat exp bonus
 	ld a, b
 	cp $ff
 	jr z, .statExpDone
-	ld [H_MULTIPLICAND+2], a
+	ld [H_MULTIPLICAND + 2], a
 	ld [H_MULTIPLIER], a
 	call Multiply
 	ld a, [hld]
@@ -3912,9 +3911,9 @@ CalcStat:: ; 393f (0:393f)
 	jr nc, .noCarry2
 	inc d                     ; da = (Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4
 .noCarry2
-	ld [H_MULTIPLICAND+2], a
+	ld [H_MULTIPLICAND + 2], a
 	ld a, d
-	ld [H_MULTIPLICAND+1], a
+	ld [H_MULTIPLICAND + 1], a
 	xor a
 	ld [H_MULTIPLICAND], a
 	ld a, [wCurEnemyLVL]
@@ -3922,10 +3921,10 @@ CalcStat:: ; 393f (0:393f)
 	call Multiply            ; ((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level
 	ld a, [H_MULTIPLICAND]
 	ld [H_DIVIDEND], a
-	ld a, [H_MULTIPLICAND+1]
-	ld [H_DIVIDEND+1], a
-	ld a, [H_MULTIPLICAND+2]
-	ld [H_DIVIDEND+2], a
+	ld a, [H_MULTIPLICAND + 1]
+	ld [H_DIVIDEND + 1], a
+	ld a, [H_MULTIPLICAND + 2]
+	ld [H_DIVIDEND + 2], a
 	ld a, $64
 	ld [H_DIVISOR], a
 	ld a, $3
@@ -3937,38 +3936,38 @@ CalcStat:: ; 393f (0:393f)
 	jr nz, .notHPStat
 	ld a, [wCurEnemyLVL]
 	ld b, a
-	ld a, [H_MULTIPLICAND+2]
+	ld a, [H_MULTIPLICAND + 2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ld [H_MULTIPLICAND + 2], a
 	jr nc, .noCarry3
-	ld a, [H_MULTIPLICAND+1]
+	ld a, [H_MULTIPLICAND + 1]
 	inc a
-	ld [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
+	ld [H_MULTIPLICAND + 1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level
 .noCarry3
-	ld a, 10 ; +10 for HP stat
+	ld a, 10 ; + 10 for HP stat
 .notHPStat
 	ld b, a
-	ld a, [H_MULTIPLICAND+2]
+	ld a, [H_MULTIPLICAND + 2]
 	add b
-	ld [H_MULTIPLICAND+2], a
+	ld [H_MULTIPLICAND + 2], a
 	jr nc, .noCarry4
-	ld a, [H_MULTIPLICAND+1]
+	ld a, [H_MULTIPLICAND + 1]
 	inc a                    ; non-HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + 5
-	ld [H_MULTIPLICAND+1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
+	ld [H_MULTIPLICAND + 1], a ; HP: (((Base + IV) * 2 + ceil(Sqrt(stat exp)) / 4) * Level) / 100 + Level + 10
 .noCarry4
-	ld a, [H_MULTIPLICAND+1] ; check for overflow (>999)
+	ld a, [H_MULTIPLICAND + 1] ; check for overflow (>999)
 	cp 999 / $100 + 1
 	jr nc, .overflow
 	cp 999 / $100
 	jr c, .noOverflow
-	ld a, [H_MULTIPLICAND+2]
+	ld a, [H_MULTIPLICAND + 2]
 	cp 999 % $100 + 1
 	jr c, .noOverflow
 .overflow
 	ld a, 999 / $100               ; overflow: cap at 999
-	ld [H_MULTIPLICAND+1], a
+	ld [H_MULTIPLICAND + 1], a
 	ld a, 999 % $100
-	ld [H_MULTIPLICAND+2], a
+	ld [H_MULTIPLICAND + 2], a
 .noOverflow
 	pop bc
 	pop de

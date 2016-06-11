@@ -23,4 +23,3 @@ _IndigoPlateauLobbyText3::
 	cont "next trainer!"
 	cont "Good luck!"
 	done
-

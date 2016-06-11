@@ -1,4 +1,4 @@
-IndigoPlateauLobbyScript: ; 19c5b (6:5c5b)
+IndigoPlateauLobbyScript:
 	call Serial_TryEstablishingExternallyClockedConnection
 	call EnableAutoTextBoxDrawing
 	ld hl, wCurrentMapScriptFlags
@@ -14,7 +14,7 @@ IndigoPlateauLobbyScript: ; 19c5b (6:5c5b)
 	ResetEventRange ELITE4_EVENTS_START, EVENT_LANCES_ROOM_LOCK_DOOR
 	ret
 
-IndigoPlateauLobbyTextPointers: ; 19c7f (6:5c7f)
+IndigoPlateauLobbyTextPointers:
 	dw IndigoPlateauLobbyText1
 	dw IndigoPlateauLobbyText2
 	dw IndigoPlateauLobbyText3
@@ -22,18 +22,18 @@ IndigoPlateauLobbyTextPointers: ; 19c7f (6:5c7f)
 	dw IndigoPlateauLobbyText5
 	dw IndigoPlateauLobbyText6
 
-IndigoPlateauLobbyText1: ; 19c89 (6:5c89)
+IndigoPlateauLobbyText1:
 	TX_POKECENTER_NURSE
 
-IndigoPlateauLobbyText2: ; 19c8a (6:5c8a)
+IndigoPlateauLobbyText2:
 	TX_FAR _IndigoPlateauLobbyText1
 	db "@"
 
-IndigoPlateauLobbyText3: ; 19c8f (6:5c8f)
+IndigoPlateauLobbyText3:
 	TX_FAR _IndigoPlateauLobbyText3
 	db "@"
 
-IndigoPlateauLobbyText5: ; 19c94 (6:5c94)
+IndigoPlateauLobbyText5:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 IndigoPlateauLobbyText6:

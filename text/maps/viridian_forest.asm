@@ -155,4 +155,3 @@ _ViridianForestText14::
 	line "VIRIDIAN FOREST"
 	cont "PEWTER CITY AHEAD"
 	done
-

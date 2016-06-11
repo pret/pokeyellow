@@ -272,7 +272,7 @@ OptionsMenu_GBPrinterBrightness: ; 41e0c (10:5e0c)
 	ld a, d
 .asm_41e2e
 	ld b, a
-	ld [wd498], a
+	ld [wPrinterSettings], a
 .asm_41e32
 	ld b, $0
 	ld hl, GBPrinterOptionStringsPointerTable
@@ -305,7 +305,7 @@ DarkestPrintText: ; 41e72 (10:5e72)
 	db "DARKEST @"
 
 Func_41e7b: ; 41e7b (10:5e7b)
-	ld a, [wd498]
+	ld a, [wPrinterSettings]
 	and a
 	jr z, .asm_41e93
 	cp $20

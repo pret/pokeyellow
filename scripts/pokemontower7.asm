@@ -1,11 +1,11 @@
-PokemonTower7Script: ; 60d05 (18:4d05)
+PokemonTower7Script:
 	call EnableAutoTextBoxDrawing
 	ld hl, PokemonTower7ScriptPointers
 	ld a, [wPokemonTower7CurScript]
 	call JumpTable
 	ret
 
-PokemonTower7Script_60d01: ; 60d18 (18:4d18)
+PokemonTower7Script_60d01:
 	xor a
 	ld [wJoyIgnore], a
 PokemonTower7Script_60d05:
@@ -13,18 +13,18 @@ PokemonTower7Script_60d05:
 	ret
 
 PokemonTower7ScriptPointers:
-	dw PokemonTower7Script0  ; $4d21
-	dw PokemonTower7Script1  ; $4d7f
-	dw PokemonTower7Script2  ; $4d9e
-	dw PokemonTower7Script3  ; $4da9
-	dw PokemonTower7Script4  ; $4dbf
-	dw PokemonTower7Script5  ; $4dde
-	dw PokemonTower7Script6  ; $4de9
-	dw PokemonTower7Script7  ; $4e0e
-	dw PokemonTower7Script8  ; $4e34
-	dw PokemonTower7Script9  ; $4e7a
-	dw PokemonTower7Script10 ; $4e9b
-	dw PokemonTower7Script11 ; $4ec7
+	dw PokemonTower7Script0
+	dw PokemonTower7Script1
+	dw PokemonTower7Script2
+	dw PokemonTower7Script3
+	dw PokemonTower7Script4
+	dw PokemonTower7Script5
+	dw PokemonTower7Script6
+	dw PokemonTower7Script7
+	dw PokemonTower7Script8
+	dw PokemonTower7Script9
+	dw PokemonTower7Script10
+	dw PokemonTower7Script11
 
 PokemonTower7Script0:
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
@@ -146,8 +146,8 @@ PokemonTower7Script7:
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, PokemonTower7JessieJamesEndBattleText ; 60f2c
-	ld de, PokemonTower7JessieJamesEndBattleText ; 60f2c
+	ld hl, PokemonTower7JessieJamesEndBattleText
+	ld de, PokemonTower7JessieJamesEndBattleText
 	call SaveEndBattleTextPointers
 	ld a, OPP_ROCKET
 	ld [wCurOpponent], a
@@ -235,7 +235,7 @@ PokemonTower7Script11:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, LAVENDER_HOUSE_1
 	ld [hWarpDestinationMap], a
 	ld a, $1

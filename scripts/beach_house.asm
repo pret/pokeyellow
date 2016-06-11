@@ -19,7 +19,7 @@ SurfinDudeText:
 	call PrintText
 	jr .done
 .next
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 0, [hl]
 	set 0, [hl]
 	jr nz, .next2
@@ -36,7 +36,7 @@ SurfinDudeText:
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	callba SurfingPikachuMinigame
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 1, [hl]
 	jr .done
 .asm_f226b
@@ -133,7 +133,7 @@ BeachHouseSign4Text:
 	bit 6, a
 	jr z, .asm_f2369
 
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 1, [hl]
 	jr z, .next2
 	ld a, 0
@@ -141,7 +141,7 @@ BeachHouseSign4Text:
 .next2
 	ld hl, .BeachHousePrinterText2
 	call PrintText
-	ld a, [wPreventBlackout]
+	ld a, [wd492]
 	bit 1, a
 	jr z, .asm_f236f
 
@@ -152,13 +152,13 @@ BeachHouseSign4Text:
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jp z, Func_f23d0 ; 0xf23d0
+	jp z, Func_f23d0
 	call SaveScreenTilesToBuffer2
 	ld hl, wd730
 	set 6, [hl]
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	callab Func_e910a
+	callab Printer_PrepareSurfingMinigameHighScoreTileMap
 	call WaitForTextScrollButtonPress
 	ld hl, wd730
 	res 6, [hl]

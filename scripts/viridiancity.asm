@@ -1,31 +1,31 @@
-ViridianCityScript: ; 1902a (6:502a)
+ViridianCityScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianCityScriptPointers
 	ld a, [wViridianCityCurScript]
 	call JumpTable
 	ret
 
-ViridianCityScriptPointers: ; 19037 (6:5037)
-	dw ViridianCityScript0  ; 1904d
-	dw ViridianCityScript1  ; 19054
-	dw ViridianCityScript2  ; 19057
-	dw ViridianCityScript3  ; 190ca
-	dw ViridianCityScript4  ; 19104
-	dw ViridianCityScript5  ; 1913f
-	dw ViridianCityScript6  ; 1909d
-	dw ViridianCityScript7  ; 19191
-	dw ViridianCityScript8  ; 191a7
-	dw ViridianCityScript9  ; 191cf
-	dw ViridianCityScript10 ; 191f9
+ViridianCityScriptPointers:
+	dw ViridianCityScript0
+	dw ViridianCityScript1
+	dw ViridianCityScript2
+	dw ViridianCityScript3
+	dw ViridianCityScript4
+	dw ViridianCityScript5
+	dw ViridianCityScript6
+	dw ViridianCityScript7
+	dw ViridianCityScript8
+	dw ViridianCityScript9
+	dw ViridianCityScript10
 
 ViridianCityScript0:
 	call ViridianCityScript_1905b
 	call ViridianCityScript_190ab
 	ret
 
-ViridianCityScript1:  ; 19054
+ViridianCityScript1:
 	call ViridianCityScript_19162
-ViridianCityScript2:  ; 19057
+ViridianCityScript2:
 	call ViridianCityScript_1905b
 	ret
 
@@ -54,14 +54,14 @@ ViridianCityScript_1905b:
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
 	ld a, $6
 	ld [wViridianCityCurScript], a
 	ret
 
-ViridianCityScript6:  ; 1909d
+ViridianCityScript6:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -87,7 +87,7 @@ ViridianCityScript_190ab:
 	ld [wViridianCityCurScript], a
 	ret
 
-ViridianCityScript3:  ; 190ca
+ViridianCityScript3:
 	call ViridianCityScript_190ef
 	call ViridianCityScript_190db
 	ResetEvent EVENT_02F
@@ -117,7 +117,7 @@ ViridianCityScript_190ef:
 	ld [$ffee], a
 	ret
 
-ViridianCityScript4:  ; 19104
+ViridianCityScript4:
 	call ViridianCityScript_1912a
 	call UpdateSprites
 	call Delay3
@@ -145,7 +145,7 @@ ViridianCityScript_1912a:
 	ld [wSpriteStateData2 + 3 * $10 + 5], a
 	ret
 
-ViridianCityScript5:  ; 1913f
+ViridianCityScript5:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -161,7 +161,7 @@ ViridianCityScript_1914d:
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld [wJoyIgnore], a
 	ret
 
@@ -180,7 +180,7 @@ ViridianCityScript_19162:
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
-	ld [wSpriteStateData1 + 9], a
+	ld [wPlayerFacingDirection], a
 	ld a, $8
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -188,7 +188,7 @@ ViridianCityScript_19162:
 	ld [wJoyIgnore], a
 	ret
 
-ViridianCityScript7:  ; 19191
+ViridianCityScript7:
 	call ViridianCityScript_190ef
 	call ViridianCityScript_190db
 	SetEvent EVENT_02F
@@ -198,7 +198,7 @@ ViridianCityScript7:  ; 19191
 	ld [wViridianCityCurScript], a
 	ret
 
-ViridianCityScript8:  ; 191a7
+ViridianCityScript8:
 	call ViridianCityScript_1912a
 	call UpdateSprites
 	call Delay3
@@ -216,7 +216,7 @@ ViridianCityScript8:  ; 191a7
 	ld [wViridianCityCurScript], a
 	ret
 
-ViridianCityScript9:  ; 191cf
+ViridianCityScript9:
 	ld de, ViridianCityOldManMovementData2
 	ld a, [wXCoord]
 	cp 19
@@ -242,7 +242,7 @@ ViridianCityOldManMovementData2:
 	db NPC_MOVEMENT_DOWN
 	db $ff
 
-ViridianCityScript10: ; 191f9
+ViridianCityScript10:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -256,22 +256,22 @@ ViridianCityScript10: ; 191f9
 	ret
 
 ViridianCityTextPointers:
-	dw ViridianCityText_0 ; 19233
-	dw ViridianCityText_1 ; 1923f
-	dw ViridianCityText_2 ; 1924b
-	dw ViridianCityText_3 ; 19257
-	dw ViridianCityText_4 ; 19263
-	dw ViridianCityText_5 ; 1926f
-	dw ViridianCityText_6 ; 1927b
-	dw ViridianCityText_7 ; 1928c
-	dw ViridianCityText_8 ; 192b9
-	dw ViridianCityText_9 ; 192c5
-	dw ViridianCityText_10 ; 192d1
-	dw MartSignText ; 23e5
-	dw PokeCenterSignText ; 23ea
-	dw ViridianCityText_11 ; 192dd
-	dw ViridianCityText_12 ; 192e9
-	dw ViridianCityText_13 ; 19287
+	dw ViridianCityText_0
+	dw ViridianCityText_1
+	dw ViridianCityText_2
+	dw ViridianCityText_3
+	dw ViridianCityText_4
+	dw ViridianCityText_5
+	dw ViridianCityText_6
+	dw ViridianCityText_7
+	dw ViridianCityText_8
+	dw ViridianCityText_9
+	dw ViridianCityText_10
+	dw MartSignText
+	dw PokeCenterSignText
+	dw ViridianCityText_11
+	dw ViridianCityText_12
+	dw ViridianCityText_13
 
 ViridianCityText_0:
 	TX_ASM

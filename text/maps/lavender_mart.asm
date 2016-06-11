@@ -28,4 +28,3 @@ _LavenderMart_5c958::
 	line "useless, but it"
 	cont "sold for ¥5000!"
 	done
-

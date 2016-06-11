@@ -1,4 +1,4 @@
-Museum1FScript: ; 5c0f7 (17:40f7)
+Museum1FScript:
 	ld a, $1
 	ld [wAutoTextBoxDrawingControl], a
 	xor a
@@ -8,11 +8,11 @@ Museum1FScript: ; 5c0f7 (17:40f7)
 	call JumpTable
 	ret
 
-Museum1FScriptPointers: ; 5c109 (17:4109)
+Museum1FScriptPointers:
 	dw Museum1FScript0
 	dw Museum1FScript1
 
-Museum1FScript0: ; 5c10d (17:410d)
+Museum1FScript0:
 	ld a, [wYCoord]
 	cp $4
 	ret nz
@@ -29,37 +29,37 @@ Museum1FScript0: ; 5c10d (17:410d)
 	ld [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
-Museum1FScript1: ; 5c12a (17:412a)
+Museum1FScript1:
 	ret
 
-Museum1FTextPointers: ; 5c12b (17:412b)
+Museum1FTextPointers:
 	dw Museum1FText1
 	dw Museum1FText2
 	dw Museum1FText3
 	dw Museum1FText4
 	dw Museum1FText5
 
-Museum1FText1: ; 5c135 (17:4135)
+Museum1FText1:
 	TX_ASM
 	callba Func_f1c1b
 	jp TextScriptEnd
 
-Museum1FText2: ; 5c135 (17:4135)
+Museum1FText2:
 	TX_ASM
 	callba Func_f1d2a
 	jp TextScriptEnd
 
-Museum1FText3: ; 5c135 (17:4135)
+Museum1FText3:
 	TX_ASM
 	callba Func_f1d36
 	jp TextScriptEnd
 
-Museum1FText4: ; 5c135 (17:4135)
+Museum1FText4:
 	TX_ASM
 	callba Func_f1d80
 	jp TextScriptEnd
 
-Museum1FText5: ; 5c135 (17:4135)
+Museum1FText5:
 	TX_ASM
 	callba Func_f1d8c
 	jp TextScriptEnd

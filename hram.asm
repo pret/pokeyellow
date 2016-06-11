@@ -271,6 +271,8 @@ H_CURRENTSPRITEOFFSET EQU $FFDA ; multiple of $10
 
 hItemCounter EQU $FFDB
 
+hCanceledPrinting EQU $FFDB
+
 hGymGateIndex EQU $FFDB
 
 hGymTrashCanRandNumMask EQU $FFDB

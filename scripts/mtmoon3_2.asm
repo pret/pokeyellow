@@ -24,5 +24,5 @@ MtMoon3Script_4a325: ; pikachu-related function?
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
-	call Func_159b
+	call ApplyPikachuMovementData
 	ret

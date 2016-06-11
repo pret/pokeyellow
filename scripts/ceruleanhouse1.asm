@@ -1,14 +1,14 @@
-CeruleanHouse1Script: ; 1d6f6 (7:56f6)
+CeruleanHouse1Script:
 	call EnableAutoTextBoxDrawing
 	ret
 
-CeruleanHouse1TextPointers: ; 1d6f9 (7:56f9)
+CeruleanHouse1TextPointers:
 	dw CeruleanHouse1Text1
 	dw CeruleanHouse1Text2
 	dw CeruleanHouse1Text3
 	dw CeruleanHouse1Text4
 
-CeruleanHouse1Text1: ; 1d6fd (7:56fd)
+CeruleanHouse1Text1:
 	TX_ASM
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -84,21 +84,21 @@ CeruleanHouse1Text_1cfdf:
 	TX_WAIT_BUTTON
 	db "@"
 
-CeruleanHouse1Text2: ; 1d702 (7:5702)
+CeruleanHouse1Text2:
 	TX_FAR MelanieBulbasaurText
 	TX_ASM
 	ld a, BULBASAUR
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanHouse1Text3: ; 1d702 (7:5702)
+CeruleanHouse1Text3:
 	TX_FAR MelanieOddishText
 	TX_ASM
 	ld a, ODDISH
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanHouse1Text4: ; 1d702 (7:5702)
+CeruleanHouse1Text4:
 	TX_FAR MelanieSandshrewText
 	TX_ASM
 	ld a, SANDSHREW

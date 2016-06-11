@@ -1,4 +1,4 @@
-FanClubScript: ; 59b70 (16:5b70)
+FanClubScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, FanClubScriptPointers
 	ld a, [wFanClubCurScript]
@@ -10,18 +10,18 @@ FanClubScriptPointers:
 	dw FanClubScript2
 
 FanClubScript1:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	call z, FanClubScript_59a44
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 7, [hl]
 	ret
 
 FanClubScript2:
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	bit 7, [hl]
 	call z, FanClubScript_59a39
-	ld hl, wPreventBlackout
+	ld hl, wd492
 	set 7, [hl]
 	ret
 
@@ -36,7 +36,7 @@ FanClubScript_59a44:
 	ld a, [wd472]
 	bit 7, a
 	ret z
-	callab Func_fce73
+	callab CheckPikachuFaintedOrStatused
 	ret c
 	ld a, $1
 	ld [wFanClubCurScript], a
@@ -50,7 +50,7 @@ FanClubScript_59a44:
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ld hl, PikachuMovementScript_59a8c
-	call Func_159b
+	call ApplyPikachuMovementData
 	ld a, $2
 	ld [wSpriteStateData1 + 3 * $10 + 1], a ; Seel
 	xor a ; SPRITE_FACING_DOWN
@@ -68,7 +68,7 @@ PikachuMovementScript_59a8c:
 	db $1e
 	db $3f
 
-FanClubTextPointers: ; 59b84 (16:5b84)
+FanClubTextPointers:
 	dw FanClubText1
 	dw FanClubText2
 	dw FanClubText3
@@ -244,7 +244,7 @@ FanClubText5:
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab Func_e8e24
+	callab PrintFanClubPortrait
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
@@ -302,6 +302,6 @@ Text_59c2e:
 	TX_FAR FanClubChairPrintText4
 	db "@"
 
-FanClubText6: ; 59c88 (16:5c88)
+FanClubText6:
 	TX_FAR _FanClubText6
 	db "@"

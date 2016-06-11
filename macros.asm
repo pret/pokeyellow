@@ -942,3 +942,9 @@ pikapic_waitbgmap: macro ; d
 pikapic_ret: macro ; e
 	db pikapic_ret_command
 	endm
+
+pikapic_looptofinish: macro
+.loop\@
+	pikapic_waitbgmap
+	pikapic_jump .loop\@
+	endm

@@ -55,7 +55,7 @@ Func_f1da4:
 	ld a, [wd472]
 	bit 7, a
 	ret z
-	callab Func_fce73
+	callab CheckPikachuFaintedOrStatused
 	ret c
 	call DisablePikachuFollowingPlayer
 	ret

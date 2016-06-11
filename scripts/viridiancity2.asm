@@ -207,7 +207,7 @@ ViridianCityText_f19fc:
 Func_f1a01:
 	ld hl, Data_f1a0a
 	ld b, SPRITE_FACING_RIGHT
-	call Func_f0a82
+	call TryApplyPikachuMovementData
 	ret
 
 Data_f1a0a:
