@@ -239,7 +239,7 @@ StartMenu_Pokemon:
 	res 4,[hl]
 	ld c,60
 	call DelayFrames
-	call GBPalWhiteOutWithDelay3 ; zero all three palettes and wait 3 frames
+	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .warpToLastPokemonCenterText
 	TX_FAR _WarpToLastPokemonCenterText

@@ -33,7 +33,7 @@ CeladonPrizeMenu:
 	bit 1,a ; keypress = B (Cancel)
 	jr nz, .noChoice
 	ld a,[wCurrentMenuItem]
-	cp $03 ; "NO,THANKS" choice
+	cp 3 ; "NO,THANKS" choice
 	jr z, .noChoice
 	call HandlePrizeChoice
 .noChoice
@@ -68,7 +68,7 @@ GetPrizeMenuId:
 	ld [wWhichPrizeWindow], a    ; prize-texts' id (relative, i.e. 0, 1 or 2)
 	add a
 	add a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, PrizeDifferentMenuPtrs
 	add hl, de
@@ -84,10 +84,10 @@ GetPrizeMenuId:
 	ld h, [hl]
 	ld l, a
 	ld de, wPrize1Price
-	ld bc, $6
+	ld bc, 6
 	call CopyData
 	ld a, [wWhichPrizeWindow]
-	cp $02        ;is TM_menu?
+	cp 2        ;is TM_menu?
 	jr nz, .putMonName
 	ld a, [wPrize1]
 	ld [wd11e], a
@@ -155,10 +155,10 @@ PrintPrizePrice:
 	call TextBoxBorder
 	call UpdateSprites
 	coord hl, 12, 0
-	ld de, CoinString
+	ld de, .CoinString
 	call PlaceString
 	coord hl, 13, 1
-	ld de, SixSpacesString
+	ld de, .SixSpacesString
 	call PlaceString
 	coord hl, 13, 1
 	ld de,wPlayerCoins
@@ -166,16 +166,16 @@ PrintPrizePrice:
 	call PrintBCDNumber
 	ret
 
-CoinString:
+.CoinString:
 	db "COIN@"
 
-SixSpacesString:
+.SixSpacesString:
 	db "      @"
 
 LoadCoinsToSubtract:
 	ld a,[wWhichPrize]
 	add a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, wPrize1Price
 	add hl, de ; get selected prize's price
@@ -190,14 +190,14 @@ LoadCoinsToSubtract:
 HandlePrizeChoice:
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPrize], a
-	ld d, $0
+	ld d, 0
 	ld e, a
 	ld hl, wPrize1
 	add hl, de
 	ld a, [hl]
 	ld [wd11e], a
 	ld a, [wWhichPrizeWindow]
-	cp $02 ; is prize a TM?
+	cp 2 ; is prize a TM?
 	jr nz, .getMonName
 	call GetItemName
 	jr .givePrize
@@ -261,7 +261,7 @@ HandlePrizeChoice:
 	ld hl,OhFineThenTextPtr
 	jp PrintText
 
-UnknownData528b1:
+UnknownPrizeData:
 ; XXX what's this?
 	db $00,$01,$00,$01,$00,$01,$00,$00,$01
 

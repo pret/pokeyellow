@@ -39,7 +39,7 @@ AnimateShootingStar:
 	push bc
 .bigStarInnerLoop
 	ld a, [hl] ; Y
-	add 4 ; y
+	add 4
 	ld [hli], a
 	ld a, [hl] ; X
 	add -4
@@ -60,11 +60,11 @@ AnimateShootingStar:
 .next
 	cp b
 	jr nz, .bigStarLoop
+
+; Clear big star OAM.
 	ld hl, wOAMBuffer
 	ld c, 4
 	ld de, 4
-
-; Clear big star OAM.
 .clearOAMLoop
 	ld [hl], 160
 	add hl, de
@@ -83,6 +83,7 @@ AnimateShootingStar:
 	ret c
 	dec b
 	jr nz, .flashLogoLoop
+
 ; Copy 24 instances of the small stars OAM data.
 ; Note that their coordinates put them off-screen.
 	ld de, wOAMBuffer
@@ -98,7 +99,7 @@ AnimateShootingStar:
 
 ; Animate the small stars falling from the Gamefreak logo.
 	xor a
-	ld [wMoveDownSmallStarsOAMCount], a ; wWhichTrade
+	ld [wMoveDownSmallStarsOAMCount], a
 	ld hl, SmallStarsWaveCoordsPointerTable
 	ld c, 6
 .smallStarsLoop
@@ -214,7 +215,7 @@ MoveDownSmallStars:
 	ld de, -4
 	ld c, a
 .innerLoop
-	inc [hl]
+	inc [hl] ; Y
 	add hl, de
 	dec c
 	jr nz, .innerLoop

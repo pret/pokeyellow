@@ -85,7 +85,7 @@ SafariZoneGameOver:
 	ld a, $5
 	ld [wSafariZoneEntranceCurScript], a
 	SetEvent EVENT_SAFARI_GAME_OVER
-	ld a, $1
+	ld a, 1
 	ld [wSafariZoneGameOver], a
 	ret
 
@@ -138,7 +138,7 @@ CinnabarGymQuiz:
 	ld [$ffdc], a
 	ld a, [hGymGateIndex]
 	ld hl, CinnabarGymQuizIntroText
-	cp $1
+	cp 1
 	jr z, .onFirstQuestion
 	ld hl, CinnabarGymQuizShortIntroText
 .onFirstQuestion
@@ -154,7 +154,7 @@ CinnabarGymQuiz:
 	ld h, [hl]
 	ld l, a
 	call PrintText
-	ld a, $1
+	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	call CinnabarGymQuiz_1ea92
 	jp TextScriptEnd
@@ -435,16 +435,16 @@ BillsHousePokemonList:
 	ld hl, BillsHousePokemonListText1
 	call PrintText
 	xor a
-	ld [wMenuItemOffset], a
+	ld [wMenuItemOffset], a ; not used
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld a, A_BUTTON | B_BUTTON
 	ld [wMenuWatchedKeys], a
-	ld a, $4
+	ld a, 4
 	ld [wMaxMenuItem], a
-	ld a, $2
+	ld a, 2
 	ld [wTopMenuItemY], a
-	ld a, $1
+	ld a, 1
 	ld [wTopMenuItemX], a
 .billsPokemonLoop
 	ld hl, wd730

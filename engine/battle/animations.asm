@@ -1034,6 +1034,7 @@ TailWhipAnimationUnused:
 	ld c, 20
 	jp DelayFrames
 
+; Format: Special Effect ID (1 byte), Address (2 bytes)
 SpecialEffectPointers:
 	db SE_DARK_SCREEN_FLASH ; $FE
 	dw AnimationFlashScreen

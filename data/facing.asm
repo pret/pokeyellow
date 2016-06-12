@@ -118,7 +118,7 @@ SpriteFacingRightAndWalking:
 	db $08,$08,$8a,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED                     ; bottom left
 	db $08,$00,$8b,OAMFLAG_VFLIPPED | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
 
-SpriteSpecialCase ; 40ec (1:40ec)
+SpriteSpecialCase
 	db $09
 ; Sprite OAM Parameters
 	db -$4,-$4,$00,$00

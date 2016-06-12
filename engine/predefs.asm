@@ -61,7 +61,7 @@ PredefPointers::
 	add_predef CopyDownscaledMonTiles
 	add_predef Func_f0a7
 	add_predef HealParty
-	add_predef MoveAnimation ; 08 play move animation
+	add_predef MoveAnimation
 	add_predef DivideBCDPredef
 	add_predef DivideBCDPredef2
 	add_predef AddBCDPredef
@@ -116,7 +116,7 @@ PredefPointers::
 	add_predef InternalClockTradeAnim
 	add_predef TrainerEngage
 	add_predef IndexToPokedex
-	add_predef DisplayPicCenteredOrUpperRight ; 3B display pic?
+	add_predef DisplayPicCenteredOrUpperRight
 	add_predef UsedCut
 	add_predef ShowPokedexData
 	add_predef WriteMonMoves
@@ -127,13 +127,13 @@ PredefPointers::
 	add_predef CanLearnTM
 	add_predef TMToMove
 	add_predef _RunPaletteCommand
-	add_predef StarterDex ; 46
+	add_predef StarterDex
 	add_predef _AddPartyMon
 	add_predef UpdateHPBar2
 	add_predef DrawEnemyHUDAndHPBar
 	add_predef LoadTownMap_Nest
 	add_predef PrintMonType
-	add_predef EmotionBubble ; 4C player exclamation
+	add_predef EmotionBubble
 	add_predef EmptyFunc3 ; return immediately
 	add_predef AskName
 	add_predef PewterGuys
@@ -141,7 +141,7 @@ PredefPointers::
 	add_predef LoadSAV2
 	add_predef LoadSAV
 	add_predef SaveSAVtoSRAM1
-	add_predef DoInGameTradeDialogue ; 54 initiate trade
+	add_predef DoInGameTradeDialogue
 	add_predef HallOfFamePC
 	add_predef DisplayDexRating
 
@@ -149,7 +149,6 @@ PredefPointers::
 	predef_const EnterMapAnim
 	dbw $1E, _LeaveMapAnim ; wrong bank
 	dbw $1E, EnterMapAnim ; wrong bank
-
 	add_predef GetTileTwoStepsInFrontOfPlayer
 	add_predef CheckForCollisionWhenPushingBoulder
 	add_predef PrintStrengthTxt

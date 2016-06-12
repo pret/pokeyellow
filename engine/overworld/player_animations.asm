@@ -9,7 +9,7 @@ EnterMapAnim:
 	bit 7, [hl] ; used fly out of battle?
 	res 7, [hl]
 	jr nz, .flyAnimation
-	ld a, $a0 ; (SFX_02_4c - SFX_Headers_02) / 3
+	ld a, SFX_TELEPORT_ENTER_1
 	call PlaySound
 	ld hl, wd732
 	bit 4, [hl] ; used dungeon warp?
@@ -17,7 +17,7 @@ EnterMapAnim:
 	;res 4, [hl]
 	jr nz, .dungeonWarpAnimation
 	call PlayerSpinWhileMovingDown
-	ld a, $a3 ; (SFX_02_4f - SFX_Headers_02) / 3
+	ld a, SFX_TELEPORT_ENTER_2
 	call PlaySound
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b
@@ -51,7 +51,7 @@ EnterMapAnim:
 .flyAnimation
 	pop hl
 	call LoadBirdSpriteGraphics
-	ld a, $a4 ; SFX_BIRD_FLY
+	ld a, SFX_FLY
 	call PlaySound
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
@@ -104,7 +104,7 @@ _LeaveMapAnim:
 	dec a
 	jp nz, LeaveMapThroughHoleAnim
 .spinWhileMovingUp
-	ld a, $9f ; (SFX_02_4b - SFX_Headers_02) / 3
+	ld a, SFX_TELEPORT_EXIT_1
 	call PlaySound
 	ld hl, wPlayerSpinWhileMovingUpOrDownAnimDeltaY
 	ld a, -$10
@@ -138,7 +138,7 @@ _LeaveMapAnim:
 	ld [hli], a ; wPlayerSpinInPlaceAnimFrameDelayDelta
 	xor a
 	ld [hli], a ; wPlayerSpinInPlaceAnimFrameDelayEndValue
-	ld [hl], $a1 ; SFX_TELEPORT_EXIT_2
+	ld [hl], SFX_TELEPORT_EXIT_2 ; wPlayerSpinInPlaceAnimSoundID
 	ld hl, wFacingDirectionList
 	call PlayerSpinInPlace
 	jr .spinWhileMovingUp
@@ -151,7 +151,7 @@ _LeaveMapAnim:
 	ld [hli], a ; wFlyAnimCounter
 	ld [hl], $c ; wFlyAnimBirdSpriteImageIndex
 	call DoFlyAnimation
-	ld a, $a4 ; SFX_FLY
+	ld a, SFX_FLY
 	call PlaySound
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
@@ -258,7 +258,7 @@ LoadBirdSpriteGraphics:
 	ld c, $c
 	ld hl, vNPCSprites
 	call CopyVideoData
-	ld de, BirdSprite + $c0 ; moving amination sprite
+	ld de, BirdSprite + $c0 ; moving animation sprite
 	ld b, BANK(BirdSprite)
 	ld c, $0c
 	ld hl, vNPCSprites2
@@ -392,7 +392,7 @@ FishingAnim:
 	ld c, 10
 	call DelayFrames
 	ld hl, wd736
-	set 6, [hl]
+	set 6, [hl] ; reserve the last 4 OAM entries
 	ld hl, vNPCSprites
 	ld de, RedSprite
 	ld b, BANK(RedSprite)
@@ -422,7 +422,6 @@ FishingAnim:
 ; there was a bite
 
 ; shake the player's sprite vertically
-
 	ld b, 10
 .loop
 	ld hl, wSpriteStateData1 + 4 ; player's sprite Y screen position
@@ -435,17 +434,19 @@ FishingAnim:
 
 ; If the player is facing up, hide the fishing rod so it doesn't overlap with
 ; the exclamation bubble that will be shown next.
-	ld a, [wSpriteStateData1 + 2]
+	ld a, [wSpriteStateData1 + 2] ; player's sprite facing direction
 	cp SPRITE_FACING_UP
 	jr nz, .skipHidingFishingRod
 	ld a, $a0
 	ld [wOAMBuffer + $9c], a
+
 .skipHidingFishingRod
 	ld hl, wEmotionBubbleSpriteIndex
 	xor a
 	ld [hli], a ; player's sprite
 	ld [hl], a ; EXCLAMATION_BUBBLE
 	predef EmotionBubble
+
 ; If the player is facing up, unhide the fishing rod.
 	ld a, [wSpriteStateData1 + 2] ; player's sprite facing direction
 	cp SPRITE_FACING_UP

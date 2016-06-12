@@ -60,19 +60,19 @@ PlaceNextChar::
 
 Char4ETest::
 	cp $4E ; next
-	jr nz, .next
+	jr nz, .char4FTest
 	ld bc, 2 * SCREEN_WIDTH
 	ld a, [hFlags_0xFFFA]
 	bit 2, a
-	jr z, .next2
+	jr z, .ok
 	ld bc, SCREEN_WIDTH
-.next2
+.ok
 	pop hl
 	add hl, bc
 	push hl
 	jp PlaceNextChar_inc
 
-.next
+.char4FTest
 	cp $4F ; line
 	jr nz, .next3
 	pop hl
@@ -256,13 +256,13 @@ Char5F::
 Char58:: ; prompt
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	jp z, .next
+	jp z, .ok
 	ld a, $EE
 	Coorda 18, 16
-.next
+.ok
 	call ProtectedDelay3
 	call ManualTextScroll
-	ld a, " " ; space
+	ld a, " "
 	Coorda 18, 16
 Char57:: ; done
 	pop hl
@@ -393,14 +393,14 @@ NextTextCommand::
 	ld hl, TextCommandJumpTable
 	push bc
 	add a
-	ld b, $00
+	ld b, 0
 	ld c, a
 	add hl, bc
 	pop bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 ; draw box
 ; 04AAAABBCC
@@ -521,7 +521,7 @@ TextCommand06::
 TextCommand07::
 	ld a, " "
 	Coorda 18, 16 ; place blank space in lower right corner of dialogue text box
-	call ScrollTextUpOneLine ; scroll up text
+	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine
 	pop hl
 	coord bc, 1, 16 ; address of second line of dialogue text box
@@ -533,7 +533,7 @@ TextCommand08::
 	pop hl
 	ld de, NextTextCommand
 	push de ; return address
-	jp [hl]
+	jp hl
 
 ; print decimal number (converted from binary number)
 ; 09AAAABB
@@ -629,7 +629,7 @@ TextCommandSounds::
 	db $10, SFX_GET_ITEM_2
 	db $11, SFX_GET_KEY_ITEM
 	db $13, SFX_TRADE_MACHINE
-	db $14, PIKACHU ; used in OakSpeech
+	db $14, PIKACHU  ; used in OakSpeech
 	db $15, PIDGEOT  ; used in SaffronCityText12
 	db $16, DEWGONG  ; unused?
 

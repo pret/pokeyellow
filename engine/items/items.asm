@@ -3211,7 +3211,6 @@ FindWildLocationsOfMon:
 	inc hl
 	inc c
 	jr .loop
-
 .done
 	ld a, $ff ; list terminator
 	ld [de], a

@@ -328,7 +328,6 @@ GetSplitMapSpriteSetID:
 .northSouthDivide
 	ld a, [wYCoord]
 	jr .compareCoord
-
 .eastWestDivide
 	ld a, [wXCoord]
 .compareCoord

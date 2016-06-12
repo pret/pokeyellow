@@ -69,7 +69,7 @@ DisplayTownMap:
 	ld b, a
 	and A_BUTTON | B_BUTTON | D_UP | D_DOWN
 	jr z, .inputLoop
-	ld a, $8c
+	ld a, SFX_TINK
 	call PlaySound
 	bit 6, b
 	jr nz, .pressedUp
@@ -84,7 +84,6 @@ DisplayTownMap:
 	pop af
 	ld [hl], a
 	ret
-
 .pressedUp
 	ld a, [wWhichTownMapLocation]
 	inc a
@@ -205,7 +204,7 @@ LoadTownMap_Fly:
 	jr z, .inputLoop
 	bit 0, b
 	jr nz, .pressedA
-	ld a, $8c ; SFX_TINK
+	ld a, SFX_TINK
 	call PlaySound
 	bit 6, b
 	jr nz, .pressedUp
@@ -213,7 +212,7 @@ LoadTownMap_Fly:
 	jr nz, .pressedDown
 	jr .pressedB
 .pressedA
-	ld a, $8e ; SFX_HEAL_AILMENT
+	ld a, SFX_HEAL_AILMENT
 	call PlaySound
 	ld a, [hl]
 	ld [wDestinationMap], a
@@ -366,12 +365,12 @@ DrawPlayerOrBirdSprite:
 	call WritePlayerOrBirdSpriteOAM
 	pop hl
 	ld de, wcd6d
-.asm_71266
+.loop
 	ld a, [hli]
 	ld [de], a
 	inc de
 	cp "@"
-	jr nz, .asm_71266
+	jr nz, .loop
 	ld hl, wOAMBuffer
 	ld de, wTileMapBackup
 	ld bc, $a0
@@ -465,7 +464,7 @@ WriteTownMapSpriteOAM:
 	pop hl
 
 WriteAsymmetricMonPartySpriteOAM:
-; Writes 4 OAM blocks for a helix mon party sprite, since is does not have
+; Writes 4 OAM blocks for a helix mon party sprite, since it does not have
 ; a vertical line of symmetry.
 	lb de, 2, 2
 .loop
@@ -483,14 +482,14 @@ WriteAsymmetricMonPartySpriteOAM:
 	xor a
 	ld [hli], a
 	inc d
-	ld a, $8
+	ld a, 8
 	add c
 	ld c, a
 	dec e
 	jr nz, .innerLoop
 	pop bc
 	pop de
-	ld a, $8
+	ld a, 8
 	add b
 	ld b, a
 	dec d
@@ -594,7 +593,7 @@ LoadTownMapEntry:
 
 INCLUDE "data/town_map_entries.asm"
 
-INCLUDE "text/map_names.asm" ; TODO: relabel addresses
+INCLUDE "text/map_names.asm"
 
 MonNestIcon:
 	INCBIN "gfx/mon_nest_icon.1bpp"

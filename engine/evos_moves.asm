@@ -24,8 +24,7 @@ EvolutionAfterBattle:
 	ld hl, wPartyCount
 	push hl
 
-Evolution_PartyMonLoop:
-; loop over party mons
+Evolution_PartyMonLoop: ; loop over party mons
 	ld hl, wWhichPokemon
 	inc [hl]
 	pop hl
