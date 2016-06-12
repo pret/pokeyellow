@@ -1,4 +1,4 @@
-PayDayEffect_: ; f6511 (3d:6511)
+PayDayEffect_:
 	xor a
 	ld hl, wcd6d
 	ld [hli], a
@@ -40,6 +40,6 @@ PayDayEffect_: ; f6511 (3d:6511)
 	ld hl, CoinsScatteredText
 	jp PrintText
 
-CoinsScatteredText: ; f655d (3d:655d)
+CoinsScatteredText:
 	TX_FAR _CoinsScatteredText
 	db "@"

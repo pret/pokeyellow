@@ -1,4 +1,4 @@
-AnimateBoulderDust: ; 7a0fb (1e:60fb)
+AnimateBoulderDust:
 	ld a, $1
 	ld [wWhichAnimationOffsets], a ; select the boulder dust offsets
 	ld a, [wUpdateSpritesEnabled]
@@ -31,7 +31,7 @@ AnimateBoulderDust: ; 7a0fb (1e:60fb)
 	ld [wUpdateSpritesEnabled], a
 	jp LoadPlayerSpriteGraphics
 
-GetMoveBoulderDustFunctionPointer: ; 7913f (1e:613f)
+GetMoveBoulderDustFunctionPointer:
 	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
 	ld hl, MoveBoulderDustFunctionPointerTable
 	ld c, a
@@ -53,7 +53,7 @@ GetMoveBoulderDustFunctionPointer: ; 7913f (1e:613f)
 	pop hl
 	ret
 
-MoveBoulderDustFunctionPointerTable: ; 7a15d (1e:615d)
+MoveBoulderDustFunctionPointerTable:
 ; facing down
 	db $FF,$00
 	dw AdjustOAMBlockYPos
@@ -70,7 +70,7 @@ MoveBoulderDustFunctionPointerTable: ; 7a15d (1e:615d)
 	db $FF,$01
 	dw AdjustOAMBlockXPos
 
-LoadSmokeTileFourTimes: ; 7916d (1e:616d)
+LoadSmokeTileFourTimes:
 	ld hl, vChars1 + $7c0
 	ld c, $4
 .loop
@@ -85,11 +85,11 @@ LoadSmokeTileFourTimes: ; 7916d (1e:616d)
 	jr nz, .loop
 	ret
 
-LoadSmokeTile: ; 7a181 (1e:6181)
+LoadSmokeTile:
 	ld de, SSAnneSmokePuffTile
 	lb bc, BANK(SSAnneSmokePuffTile), (SSAnneSmokePuffTileEnd - SSAnneSmokePuffTile) / $10
 	jp CopyVideoData
 
-SSAnneSmokePuffTile: ; 7a18a (1e:618a)
+SSAnneSmokePuffTile:
 	INCBIN "gfx/ss_anne_smoke_puff.2bpp"
 SSAnneSmokePuffTileEnd:

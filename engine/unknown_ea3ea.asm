@@ -1,4 +1,4 @@
-Printer_GetMonStats: ; ea3ea (3a:63ea)
+Printer_GetMonStats:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call LoadHpBarAndStatusTilePatterns
@@ -140,7 +140,7 @@ Printer_GetMonStats: ; ea3ea (3a:63ea)
 	call LoadFlippedFrontSpriteByMonIndex
 	ret
 
-.GetNamePointer: ; ea511 (3a:6511)
+.GetNamePointer:
 	ld bc, NAME_LENGTH
 	ld a, [wWhichPokemon]
 	call AddNTimes
@@ -148,7 +148,7 @@ Printer_GetMonStats: ; ea3ea (3a:63ea)
 	ld d, h
 	ret
 
-.PlaceMoveName: ; ea51d (3a:651d)
+.PlaceMoveName:
 	and a
 	jr z, .no_move
 	ld [wPokeBallAnimData], a
@@ -177,18 +177,18 @@ Printer_GetMonStats: ; ea3ea (3a:63ea)
 	next "SPECIAL@"
 ; ea554
 
-.Blank: ; ea554 (3a:6554)
+.Blank:
 	db "--------------@"
 
-GFX_ea563: ; ea563 (3a:6563)
+GFX_ea563:
 INCBIN "gfx/stats_screen_hp.1bpp"
-GFX_ea563End: ; ea56b (3a:656b)
+GFX_ea563End:
 
 GFX_ea56b:
 INCBIN "gfx/stats_screen_lv.1bpp"
-GFX_ea56bEnd: ; ea573 (3a:6573)
+GFX_ea56bEnd:
 
-PrinterDebug_LoadGFX: ; ea573 (3a:6573)
+PrinterDebug_LoadGFX:
 	ld hl, vChars1 + $7e0
 	ld de, GFX_ea597
 	lb bc, BANK(GFX_ea597), (GFX_ea597End - GFX_ea597) / 16
@@ -211,11 +211,11 @@ PrinterDebug_LoadGFX: ; ea573 (3a:6573)
 	jr nz, .loop
 	ret
 
-GFX_ea597: ; ea597 (3a:6597)
+GFX_ea597:
 INCBIN "gfx/zero_one_ea597.2bpp"
 GFX_ea597End:
 
-PrinterDebug_ConvertStatusFlagsToTiles: ; ea5b7 (3a:65b7)
+PrinterDebug_ConvertStatusFlagsToTiles:
 	ld hl, wOAMBuffer + 32 * 4 + 2
 	ld de, 4
 	ld a, [wPrinterStatusFlags]
@@ -234,7 +234,7 @@ PrinterDebug_ConvertStatusFlagsToTiles: ; ea5b7 (3a:65b7)
 	jr nz, .loop
 	ret
 
-PrinterDebug_DoFunction: ; ea5d1 (3a:65d1)
+PrinterDebug_DoFunction:
 	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
@@ -267,33 +267,33 @@ PrinterDebug_DoFunction: ; ea5d1 (3a:65d1)
 	dw Func_ea72f
 	dw Func_ea732
 
-Func_ea606: ; ea606 (3a:6606)
+Func_ea606:
 	ld hl, wPrinterSendState
 	inc [hl]
 	ret
 
-Func_ea60b: ; ea60b (3a:660b)
+Func_ea60b:
 	ld hl, wPrinterSendState
 	dec [hl]
 	ret
 
-Func_ea610: ; ea610 (3a:6610)
+Func_ea610:
 	xor a
 	ld [wPrinterStatusFlags], a
 	ld hl, wPrinterSendState
 	set 7, [hl]
 	ret
 
-Func_ea61a: ; ea61a (3a:661a)
+Func_ea61a:
 	call Func_ea606
 	ret
 
-Func_ea61e: ; ea61e (3a:661e)
+Func_ea61e:
 	xor a
 	ld [wPrinterSendState], a
 	ret
 
-Func_ea623: ; ea623 (3a:6623)
+Func_ea623:
 	call Func_ea784
 	ld hl, Data_ea9de
 	call Func_ea76b
@@ -308,7 +308,7 @@ Func_ea623: ; ea623 (3a:6623)
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_ea645: ; ea645 (3a:6645)
+Func_ea645:
 	call Func_ea784
 	ld hl, wPrinterRowIndex
 	ld a, [hl]
@@ -328,7 +328,7 @@ Func_ea645: ; ea645 (3a:6645)
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_ea671: ; ea671 (3a:6671)
+Func_ea671:
 	ld a, $6
 	ld [wPrinterSendState], a
 	ld hl, Data_ea9f0
@@ -340,7 +340,7 @@ Func_ea671: ; ea671 (3a:6671)
 	call Func_ea74c
 	ret
 
-Func_ea68a: ; ea68a (3a:668a)
+Func_ea68a:
 	call Func_ea784
 	ld hl, Data_ea9e4
 	call Func_ea76b
@@ -356,7 +356,7 @@ Func_ea68a: ; ea68a (3a:668a)
 	ld [wPrinterStatusIndicator], a
 	ret
 
-Func_ea6af: ; ea6af (3a:66af)
+Func_ea6af:
 	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
@@ -367,7 +367,7 @@ Func_ea6af: ; ea6af (3a:66af)
 	call Func_ea606
 	ret
 
-Func_ea6bd: ; ea6bd (3a:66bd)
+Func_ea6bd:
 	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
@@ -381,7 +381,7 @@ Func_ea6bd: ; ea6bd (3a:66bd)
 	call Func_ea60b
 	ret
 
-Func_ea6d2: ; ea6d2 (3a:66d2)
+Func_ea6d2:
 	call Func_ea742
 	ret c
 	ld a, [wPrinterHandshake]
@@ -407,7 +407,7 @@ Func_ea6d2: ; ea6d2 (3a:66d2)
 	ld [wPrinterSendState], a
 	ret
 
-Func_ea701: ; ea701 (3a:6701)
+Func_ea701:
 	call Func_ea742
 	ret c
 	ld a, [wPrinterStatusFlags]
@@ -428,7 +428,7 @@ Func_ea701: ; ea701 (3a:6701)
 	ld [wPrinterSendState], a
 	ret
 
-Func_ea721: ; ea721 (3a:6721)
+Func_ea721:
 	call Func_ea742
 	ret c
 	ld a, [wPrinterStatusFlags]
@@ -437,9 +437,9 @@ Func_ea721: ; ea721 (3a:6721)
 	call Func_ea606
 	ret
 
-Func_ea72f: ; ea72f (3a:672f)
+Func_ea72f:
 	call Func_ea606
-Func_ea732: ; ea732 (3a:6732)
+Func_ea732:
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
@@ -450,7 +450,7 @@ Func_ea732: ; ea732 (3a:6732)
 	ld [wPrinterSendState], a
 	ret
 
-Func_ea742: ; ea742 (3a:6742)
+Func_ea742:
 	ld a, [wPrinterOpcode]
 	and a
 	jr nz, .asm_ea74a
@@ -461,7 +461,7 @@ Func_ea742: ; ea742 (3a:6742)
 	scf
 	ret
 
-Func_ea74c: ; ea74c (3a:674c)
+Func_ea74c:
 .asm_ea74c
 	ld a, [wPrinterOpcode]
 	and a
@@ -479,7 +479,7 @@ Func_ea74c: ; ea74c (3a:674c)
 	ld [rSC], a
 	ret
 
-Func_ea76b: ; ea76b (3a:676b)
+Func_ea76b:
 	ld a, [hli]
 	ld [wPrinterDataHeader], a
 	ld a, [hli]
@@ -494,7 +494,7 @@ Func_ea76b: ; ea76b (3a:676b)
 	ld [wPrinterDataHeader + 5], a
 	ret
 
-Func_ea784: ; ea784 (3a:6784)
+Func_ea784:
 	xor a
 	ld hl, wPrinterDataHeader
 	ld [hli], a
@@ -512,7 +512,7 @@ Func_ea784: ; ea784 (3a:6784)
 	call FillMemory
 	ret
 
-Func_ea7a2: ; ea7a2 (3a:67a2)
+Func_ea7a2:
 	ld hl, $0
 	ld bc, $4
 	ld de, wPrinterDataHeader
@@ -529,7 +529,7 @@ Func_ea7a2: ; ea7a2 (3a:67a2)
 	ld [wPrinterDataHeader + 5], a
 	ret
 
-Func_ea7c5: ; ea7c5 (3a:67c5)
+Func_ea7c5:
 .asm_ea7c5
 	ld a, [de]
 	inc de
@@ -544,7 +544,7 @@ Func_ea7c5: ; ea7c5 (3a:67c5)
 	jr nz, .asm_ea7c5
 	ret
 
-Func_ea7d2: ; ea7d2 (3a:67d2)
+Func_ea7d2:
 	ld a, $1
 	ld [wPrinterSendDataSource1], a
 	ld a, [wcae2]
@@ -555,7 +555,7 @@ Func_ea7d2: ; ea7d2 (3a:67d2)
 	ld [wc6f3], a
 	ret
 
-PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
+PrinterDebug_PrepOAMForPrinting:
 	ld a, [wPrinterRowIndex]
 	ld b, a
 	ld a, [wPrinterQueueLength]
@@ -609,7 +609,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	call .UnnecessaryCall
 	ret
 
-.UnnecessaryCall: ; ea834 (3a:6834)
+.UnnecessaryCall:
 	ld hl, wcbdc
 	ld bc, $20
 	xor a
@@ -636,7 +636,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	jr nz, .master_loop
 	ret
 
-.AreWePrintingThisSegment: ; ea860 (3a:6860)
+.AreWePrintingThisSegment:
 	ld a, [wPrinterRowIndex]
 	ld b, a
 	ld a, [wPrinterQueueLength]
@@ -670,7 +670,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	and a
 	ret
 
-.GetVRAMAddress: ; ea886 (3a:6886)
+.GetVRAMAddress:
 	push hl
 	inc hl
 	inc hl
@@ -689,7 +689,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	pop hl
 	ret
 
-.GetOAMFlags: ; ea8a1 (3a:68a1)
+.GetOAMFlags:
 	push hl
 	inc hl
 	inc hl
@@ -699,7 +699,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	pop hl
 	ret
 
-.DoBitOperation: ; ea8ab (3a:68ab)
+.DoBitOperation:
 	and $60
 	swap a
 	ld e, a
@@ -711,29 +711,29 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	ld l, a
 	jp [hl]
 
-.Jumptable: ; ea8ba (3a:68ba)
+.Jumptable:
 	dw .nop
 	dw .xflip
 	dw .yflip
 	dw .both
 
-.nop: ; ea8c2 (3a:68c2)
+.nop:
 	ret
 
-.xflip: ; ea8c3 (3a:68c3)
+.xflip:
 	call .XFlip
 	ret
 
-.yflip: ; ea8c7 (3a:68c7)
+.yflip:
 	call .YFlip
 	ret
 
-.both: ; ea8cb (3a:68cb)
+.both:
 	call .XFlip
 	call .YFlip
 	ret
 
-.XFlip: ; ea8d2 (3a:68d2)
+.XFlip:
 	ld hl, wcbdc
 	ld c, 16
 .byte_loop
@@ -750,7 +750,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	jr nz, .byte_loop
 	ret
 
-.YFlip: ; ea8e8 (3a:68e8)
+.YFlip:
 	ld hl, wcbdc
 	ld de, wcbea
 	ld c, $4
@@ -773,7 +773,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	jr nz, .swap_loop
 	ret
 
-.ApplyObjectPalettes: ; ea902 (3a:6902)
+.ApplyObjectPalettes:
 	push hl
 	ld hl, wcbdc
 	ld de, wcbec
@@ -813,12 +813,12 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	pop hl
 	ret
 
-.ExpandPalettesToBC: ; ea936 (3a:6936)
+.ExpandPalettesToBC:
 	call .GetPaletteFunction
 	call .ApplyPaletteFunction
 	ret
 
-.GetPaletteFunction: ; ea93d (3a:693d)
+.GetPaletteFunction:
 	ld e, a
 	ld d, 0
 	ld hl, .PalJumptable
@@ -829,38 +829,38 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	ld l, a
 	jp [hl]
 
-.PalJumptable: ; ea949 (3a:6949)
+.PalJumptable:
 	dw .Pal0
 	dw .Pal1
 	dw .Pal2
 	dw .Pal3
 
-.Pal0: ; ea951 (3a:6951)
+.Pal0:
 	ld a, [rOBP0]
 	and $3
 	ret
 
-.Pal2: ; ea956 (3a:6956)
+.Pal2:
 	ld a, [rOBP0]
 	and $c
 	srl a
 	srl a
 	ret
 
-.Pal1: ; ea95f (3a:695f)
+.Pal1:
 	ld a, [rOBP0]
 	and $30
 	swap a
 	ret
 
-.Pal3: ; ea966 (3a:6966)
+.Pal3:
 	ld a, [rOBP0]
 	and $c0
 	rlca
 	rlca
 	ret
 
-.ApplyPaletteFunction: ; ea96d (3a:696d)
+.ApplyPaletteFunction:
 	ld e, a
 	ld d, 0
 	ld hl, .PalFunJumptable
@@ -871,37 +871,37 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	ld l, a
 	jp [hl]
 
-.PalFunJumptable: ; ea979 (3a:6979)
+.PalFunJumptable:
 	dw .zero_zero
 	dw .xflip_zero
 	dw .zero_xflip
 	dw .xflip_xflip
 
-.zero_zero: ; ea981 (3a:6981)
+.zero_zero:
 	sla b
 	sla c
 	ret
 
-.xflip_zero: ; ea986 (3a:6986)
+.xflip_zero:
 	scf
 	rl b
 	sla c
 	ret
 
-.zero_xflip: ; ea98c (3a:698c)
+.zero_xflip:
 	sla b
 	scf
 	rl c
 	ret
 
-.xflip_xflip: ; ea992 (3a:6992)
+.xflip_xflip:
 	scf
 	rl b
 	scf
 	rl c
 	ret
 
-.PlaceObject: ; ea999 (3a:6999)
+.PlaceObject:
 	push hl
 	ld a, [hli]
 	ld c, [hl]
@@ -944,7 +944,7 @@ PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	pop hl
 	ret
 
-.GetBitMask: ; ea9d0 (3a:69d0)
+.GetBitMask:
 	push hl
 	push de
 	ld de, -$10

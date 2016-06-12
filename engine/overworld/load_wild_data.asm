@@ -1,4 +1,4 @@
-LoadWildData: ; cb62 (3:4b62)
+LoadWildData:
 	ld hl,WildDataPointers
 	ld a,[wCurMap]
 

@@ -1,4 +1,4 @@
-VBlank:: ; 1de5 (0:1de5)
+VBlank::
 
 	push af
 	push bc
@@ -78,7 +78,7 @@ VBlank:: ; 1de5 (0:1de5)
 	reti
 
 
-DelayFrame:: ; 1e64 (0:1e64)
+DelayFrame::
 ; Wait for the next vblank interrupt.
 ; As a bonus, this saves battery.
 

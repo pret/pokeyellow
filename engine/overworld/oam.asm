@@ -1,4 +1,4 @@
-PrepareOAMData: ; 499b (1:499b)
+PrepareOAMData:
 ; Determine OAM data for currently visible
 ; sprites and write it to wOAMBuffer.
 ; Yellow code has been changed to use registers more efficiently
@@ -164,7 +164,7 @@ PrepareOAMData: ; 499b (1:499b)
 	jr nz, .clearLoop
 	ret
 
-GetSpriteScreenXY: ; 4a5f (1:4a5f)
+GetSpriteScreenXY:
 	inc e
 	inc e
 	ld a, [de] ; c1x4
@@ -186,7 +186,7 @@ GetSpriteScreenXY: ; 4a5f (1:4a5f)
 	ld [de], a  ; c1xb (x)
 	ret
 
-Func_4a7b: ; 4a7b (1:4a7b)
+Func_4a7b:
 	push bc
 	ld a, [wd5cd]            ; temp copy of c1x2
 	swap a                   ; high nybble determines sprite used (0 is always player sprite, next are some npcs)
@@ -212,7 +212,7 @@ Func_4a7b: ; 4a7b (1:4a7b)
 
 INCLUDE "engine/oam_dma.asm"
 
-_IsTilePassable:: ; 4aaa (1:4aaa)
+_IsTilePassable::
 	ld hl,wTilesetCollisionPtr ; pointer to list of passable tiles
 	ld a,[hli]
 	ld h,[hl]

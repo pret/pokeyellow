@@ -1,4 +1,4 @@
-PrizeMonLevelDictionary: ; 528ea (14:68ea)
+PrizeMonLevelDictionary:
 	db ABRA,15
 	db VULPIX,18
 	db WIGGLYTUFF,22

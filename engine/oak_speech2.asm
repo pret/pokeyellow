@@ -1,4 +1,4 @@
-ChoosePlayerName: ; 66db (1:66db)
+ChoosePlayerName:
 	call OakSpeechSlidePicRight
 	ld de, DefaultNamesPlayer
 	call DisplayIntroNameTextBox
@@ -27,11 +27,11 @@ ChoosePlayerName: ; 66db (1:66db)
 	ld hl, YourNameIsText
 	jp PrintText
 
-YourNameIsText: ; 671d (1:671d)
+YourNameIsText:
 	TX_FAR _YourNameIsText
 	db "@"
 
-ChooseRivalName: ; 6722 (1:6722)
+ChooseRivalName:
 	call OakSpeechSlidePicRight
 	ld de, DefaultNamesRival
 	call DisplayIntroNameTextBox
@@ -60,11 +60,11 @@ ChooseRivalName: ; 6722 (1:6722)
 	ld hl, HisNameIsText
 	jp PrintText
 
-HisNameIsText: ; 6765 (1:6765)
+HisNameIsText:
 	TX_FAR _HisNameIsText
 	db "@"
 
-OakSpeechSlidePicLeft: ; 676a (1:676a)
+OakSpeechSlidePicLeft:
 	push de
 	coord hl, 0, 0
 	lb bc, 12, 11
@@ -81,12 +81,12 @@ OakSpeechSlidePicLeft: ; 676a (1:676a)
 	ld a, $ff
 	jr OakSpeechSlidePicCommon
 
-OakSpeechSlidePicRight: ; 6790 (1:6790)
+OakSpeechSlidePicRight:
 	coord hl, 5, 4
 	lb de, 6, 6 * SCREEN_WIDTH + 5
 	xor a
 
-OakSpeechSlidePicCommon: ; 6797 (1:6797)
+OakSpeechSlidePicCommon:
 	push hl
 	push de
 	push bc
@@ -160,7 +160,7 @@ OakSpeechSlidePicCommon: ; 6797 (1:6797)
 	pop hl
 	ret
 
-DisplayIntroNameTextBox: ; 67ec (1:67ec)
+DisplayIntroNameTextBox:
 	push de
 	coord hl, 0, 0
 	lb bc, 10, 9
@@ -187,21 +187,21 @@ DisplayIntroNameTextBox: ; 67ec (1:67ec)
 .namestring ; 6822 (1:6822)
 	db "NAME@"
 
-DefaultNamesPlayer: ; 6827 (1:6827)
+DefaultNamesPlayer:
 	db   "NEW NAME"
 	next "YELLOW"
 	next "ASH"
 	next "JACK"
 	db   "@"
 
-DefaultNamesRival: ; 6840 (1:6840)
+DefaultNamesRival:
 	db   "NEW NAME"
 	next "BLUE"
 	next "GARY"
 	next "JOHN"
 	db   "@"
 
-GetDefaultName: ; 6858 (1:6858)
+GetDefaultName:
 ; a = name index
 ; hl = name list
 	ld b, a
@@ -225,17 +225,17 @@ GetDefaultName: ; 6858 (1:6858)
 	ld bc, $14
 	jp CopyData
 
-DefaultNamesPlayerList: ; 687d (1:687d)
+DefaultNamesPlayerList:
 	db "NEW NAME@"
 	db "YELLOW@"
 	db "ASH@"
 	db "JACK@"
 
-DefaultNamesRivalList: ; 688d (1:688d)
+DefaultNamesRivalList:
 	db "NEW NAME@"
 	db "BLUE@"
 	db "GARY@"
 	db "JOHN@"
 
-TextTerminator_6b20: ; 68a5 (1:68a5)
+TextTerminator_6b20:
 	db "@"

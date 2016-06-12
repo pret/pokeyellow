@@ -1,6 +1,6 @@
 ; [wd0b5] = pokemon ID
 ; hl = dest addr
-PrintMonType: ; 27d20 (9:7d20)
+PrintMonType:
 	call GetPredefRegisters
 	push hl
 	call GetMonHeader
@@ -19,25 +19,25 @@ PrintMonType: ; 27d20 (9:7d20)
 
 ; a = type
 ; hl = dest addr
-PrintType: ; 27d3e (9:7d3e)
+PrintType:
 	push hl
 	jr PrintType_
 
 ; erase "TYPE2/" if the mon only has 1 type
-EraseType2Text: ; 27d41 (9:7d41)
+EraseType2Text:
 	ld a, " "
 	ld bc, $13
 	add hl, bc
 	ld bc, $6
 	jp FillMemory
 
-PrintMoveType: ; 27d4d (9:7d4d)
+PrintMoveType:
 	call GetPredefRegisters
 	push hl
 	ld a, [wPlayerMoveType]
 ; fall through
 
-PrintType_: ; 27d54 (9:7d54)
+PrintType_:
 	add a
 	ld hl, TypeNames
 	ld e, a

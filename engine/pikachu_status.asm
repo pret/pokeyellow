@@ -1,4 +1,4 @@
-IsStarterPikachuInOurParty:: ; fcdb8 (3f:4db8)
+IsStarterPikachuInOurParty::
 	ld hl, wPartySpecies
 	ld de, wPartyMon1OTID
 	ld bc, wPartyMonOT
@@ -64,18 +64,18 @@ IsStarterPikachuInOurParty:: ; fcdb8 (3f:4db8)
 	and a
 	ret
 
-IsThisPartymonStarterPikachu_Box:: ; fce0d (3f:4e0d)
+IsThisPartymonStarterPikachu_Box::
 	ld hl, wBoxMon1
 	ld bc, wBoxMon2 - wBoxMon1
 	ld de, wBoxMonOT
 	jr asm_fce21
 
-IsThisPartymonStarterPikachu_Party:: ; fce18 (3f:4e18)
+IsThisPartymonStarterPikachu_Party::
 IsThisPartymonStarterPikachu::
 	ld hl, wPartyMon1
 	ld bc, wPartyMon2 - wPartyMon1
 	ld de, wPartyMonOT
-asm_fce21: ; fce21 (3f:4e21)
+asm_fce21:
 	ld a, [wWhichPokemon]
 	call AddNTimes
 	ld a, [hl]
@@ -113,7 +113,7 @@ asm_fce21: ; fce21 (3f:4e21)
 	scf
 	ret
 
-UpdatePikachuMoodAfterBattle:: ; fce5a (3f:4e5a)
+UpdatePikachuMoodAfterBattle::
 ; because d is always $82 at this function, it serves to
 ; ensure Pikachu's mood is at least 130 after battle
 	push de
@@ -136,7 +136,7 @@ UpdatePikachuMoodAfterBattle:: ; fce5a (3f:4e5a)
 	ld [wPikachuMood], a
 	ret
 
-CheckPikachuFaintedOrStatused:: ; fce73 (3f:4e73)
+CheckPikachuFaintedOrStatused::
 ; function to test if Pikachu is alive?
 	xor a
 	ld [wWhichPokemon], a
@@ -178,7 +178,7 @@ CheckPikachuFaintedOrStatused:: ; fce73 (3f:4e73)
 	and a
 	ret
 
-IsSurfingPikachuInThePlayersParty:: ; fceab (3f:4eab)
+IsSurfingPikachuInThePlayersParty::
 	ld hl, wPartySpecies
 	ld de, wPartyMon1Moves
 	ld bc, wPartyMonOT

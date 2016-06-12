@@ -1,4 +1,4 @@
-FarCopyData:: ; 009d (0:009d)
+FarCopyData::
 ; Copy bc bytes from a:hl to de.
 	ld [wFarCopyDataSavedROMBank], a
 	ld a, [H_LOADEDROMBANK]
@@ -10,7 +10,7 @@ FarCopyData:: ; 009d (0:009d)
 	call BankswitchCommon
 	ret
 
-CopyData:: ; 00b1 (0:00b1)
+CopyData::
 ; Copy bc bytes from hl to de.
 	ld a,b
 	and a
@@ -33,7 +33,7 @@ CopyData:: ; 00b1 (0:00b1)
 	jr nz, .copybytes
 	ret
 
-CopyVideoDataAlternate:: ; 00c8 (0:00c8)
+CopyVideoDataAlternate::
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?
 	jp nz, CopyVideoData ; if yes, then copy video data
@@ -53,7 +53,7 @@ CopyVideoDataAlternate:: ; 00c8 (0:00c8)
 	pop af
 	jp FarCopyData
 
-CopyVideoDataDoubleAlternate:: ; 00e3 (0:00e3)
+CopyVideoDataDoubleAlternate::
 	ld a, [rLCDC]
 	bit 7,a ; LCD enabled?
 	jp nz, CopyVideoDataDouble ; if yes, then copy video data

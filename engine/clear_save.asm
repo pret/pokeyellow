@@ -1,4 +1,4 @@
-DoClearSaveDialogue: ; DoClearSaveDialogue: ; 1c21e (7:421e)
+DoClearSaveDialogue: ; DoClearSaveDialogue:
 	call ClearScreen
 	call RunDefaultPaletteCommand
 	call LoadFontTilePatterns
@@ -22,6 +22,6 @@ DoClearSaveDialogue: ; DoClearSaveDialogue: ; 1c21e (7:421e)
 	callba ClearSAV
 	jp Init
 
-ClearSaveDataText: ; 1c25f (7:425f)
+ClearSaveDataText:
 	TX_FAR _ClearSaveDataText
 	db "@"

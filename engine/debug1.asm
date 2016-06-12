@@ -1,5 +1,5 @@
 ; not IshiharaTeam
-SetDebugTeam: ; 623e (1:623e)
+SetDebugTeam:
 	ld de, DebugTeam
 .loop
 	ld a, [de]
@@ -13,12 +13,12 @@ SetDebugTeam: ; 623e (1:623e)
 	call AddPartyMon
 	jr .loop
 
-DebugTeam: ; 6253 (1:6253)
+DebugTeam:
 	db SNORLAX,80
 	db PERSIAN,80
 	db JIGGLYPUFF,15
 	db PIKACHU,5
 	db $FF
 
-EmptyFunc: ; 64ea (1:64ea)
+EmptyFunc:
 	ret

@@ -1,13 +1,13 @@
 ; divide hMoney by hDivideBCDDivisor
 ; return output in hDivideBCDQuotient (same as hDivideBCDDivisor)
 ; used only to halve player money upon losing a fight
-DivideBCDPredef:: ; f5a4 (3:75a4)
+DivideBCDPredef::
 DivideBCDPredef2::
 DivideBCDPredef3:: ; only used function
 DivideBCDPredef4::
 	call GetPredefRegisters
 
-DivideBCD:: ; f5a8 (3:75a8)
+DivideBCD::
 	xor a
 	ld [hDivideBCDBuffer], a
 	ld [hDivideBCDBuffer + 1], a
@@ -118,7 +118,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	jr nz, .loop2
 	ret
 
-DivideBCD_f65d: ; f65d (3:765d)
+DivideBCD_f65d:
 	ld a, [hDivideBCDDivisor + 2]
 	swap a
 	and $f
@@ -143,7 +143,7 @@ DivideBCD_f65d: ; f65d (3:765d)
 	ld [hDivideBCDDivisor], a
 	ret
 
-DivideBCD_f686: ; f686 (3:7686)
+DivideBCD_f686:
 	ld bc, $3
 .asm_f689
 	ld de, hMoney
@@ -161,10 +161,10 @@ DivideBCD_f686: ; f686 (3:7686)
 	jr .asm_f689
 
 
-AddBCDPredef:: ; f6a3 (3:76a3)
+AddBCDPredef::
 	call GetPredefRegisters
 
-AddBCD:: ; f6a6 (3:76a6)
+AddBCD::
 	and a
 	ld b, c
 .add
@@ -188,10 +188,10 @@ AddBCD:: ; f6a6 (3:76a6)
 	ret
 
 
-SubBCDPredef:: ; f6bc (3:76bc)
+SubBCDPredef::
 	call GetPredefRegisters
 
-SubBCD:: ; f6bf (3:76bf)
+SubBCD::
 	and a
 	ld b, c
 .sub

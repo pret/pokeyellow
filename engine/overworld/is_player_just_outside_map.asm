@@ -1,5 +1,5 @@
 ; returns whether the player is one tile outside the map in Z
-IsPlayerJustOutsideMap: ; e876c (3a:476c)
+IsPlayerJustOutsideMap:
 	ld a, [wYCoord]
 	ld b, a
 	ld a, [wCurMapHeight]

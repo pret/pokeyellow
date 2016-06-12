@@ -1,4 +1,4 @@
-DecrementPP: ; f42db (3d:42db)
+DecrementPP:
 ; after using a move, decrement pp in battle and (if not transformed?) in party
 	ld a, [de]
 	cp a, STRUGGLE

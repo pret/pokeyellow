@@ -1,4 +1,4 @@
-MonsterPalettes: ; 72921 (1c:6921)
+MonsterPalettes:
 	db PAL_MEWMON    ; MISSINGNO
 	db PAL_GREENMON  ; BULBASAUR
 	db PAL_GREENMON  ; IVYSAUR

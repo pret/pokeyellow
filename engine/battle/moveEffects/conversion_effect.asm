@@ -1,4 +1,4 @@
-ConversionEffect_: ; 1396d (4:796d)
+ConversionEffect_:
 	ld hl, wEnemyMonType1
 	ld de, wBattleMonType1
 	ld a, [H_WHOSETURN]
@@ -24,12 +24,12 @@ ConversionEffect_: ; 1396d (4:796d)
 	ld hl, ConvertedTypeText
 	jp PrintText
 
-ConvertedTypeText: ; 13997 (4:7997)
+ConvertedTypeText:
 	TX_FAR _ConvertedTypeText
 	db "@"
 
-PrintButItFailedText: ; 1399c (4:799c)
+PrintButItFailedText:
 	ld hl, PrintButItFailedText_
-CallBankF: ; 1399f (4:799f)
+CallBankF:
 	ld b, BANK(PrintButItFailedText_)
 	jp Bankswitch

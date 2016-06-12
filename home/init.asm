@@ -1,9 +1,9 @@
-SoftReset:: ; 1d08 (0:1d08)
+SoftReset::
 	call StopAllSounds
 	call GBPalWhiteOut
 	ld c, 32
 	call DelayFrames
-Init:: ; 1d10 (0:1d10)
+Init::
 ;  Program init.
 
 rLCDC_DEFAULT EQU %11100011
@@ -118,7 +118,7 @@ rLCDC_DEFAULT EQU %11100011
 
 	jp SetDefaultNamesBeforeTitlescreen
 
-ClearVram: ; 1dc6 (0:1dc6)
+ClearVram:
 	ld hl, $8000
 	ld bc, $2000
 	xor a

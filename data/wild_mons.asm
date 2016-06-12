@@ -1,4 +1,4 @@
-WildDataPointers: ; cb95 (3:4b95)
+WildDataPointers:
 	dw NoMons      ; PALLET_TOWN
 	dw NoMons      ; VIRIDIAN_CITY
 	dw NoMons      ; PEWTER_CITY

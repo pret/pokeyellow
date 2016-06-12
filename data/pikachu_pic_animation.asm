@@ -21,7 +21,7 @@ PikaPicAnimThunderboltPals:
 	db 4, %11100100
 	db $ff
 
-Data_fe26b: ; fe26b (3f:626b)
+Data_fe26b:
 	pikapic_loadgfx Pic_e4000
 	pikapic_loadgfx Pic_e49d1
 	pikapic_loadgfx PikachuSprite
@@ -32,9 +32,9 @@ Data_fe26b: ; fe26b (3f:626b)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript0: ; fe28a (3f:628a)
-PikaPicAnimScript1: ; fe28a (3f:628a)
-PikaPicAnimScript29: ; fe28a (3f:628a)
+PikaPicAnimScript0:
+PikaPicAnimScript1:
+PikaPicAnimScript29:
 	pikapic_setduration 40
 	pikapic_loadgfx Pic_e4000
 	pikapic_loadgfx GFX_e40cc
@@ -44,7 +44,7 @@ PikaPicAnimScript29: ; fe28a (3f:628a)
 	pikapic_cry PikachuCry3
 	pikapic_looptofinish
 
-PikaPicAnimScript2: ; fe2a4 (3f:62a4)
+PikaPicAnimScript2:
 	pikapic_setduration 44
 	pikapic_loadgfx Pic_e411c
 	pikapic_loadgfx GFX_e41d2
@@ -54,7 +54,7 @@ PikaPicAnimScript2: ; fe2a4 (3f:62a4)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript3: ; fe2be (3f:62be)
+PikaPicAnimScript3:
 	pikapic_setduration 80
 	pikapic_loadgfx Pic_e4272
 	pikapic_loadgfx GFX_e4323
@@ -64,7 +64,7 @@ PikaPicAnimScript3: ; fe2be (3f:62be)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript4: ; fe2d8 (3f:62d8)
+PikaPicAnimScript4:
 	pikapic_setduration 70
 	pikapic_loadgfx Pic_e4383
 	pikapic_loadgfx GFX_e444b
@@ -74,7 +74,7 @@ PikaPicAnimScript4: ; fe2d8 (3f:62d8)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript5: ; fe2f2 (3f:62f2)
+PikaPicAnimScript5:
 	pikapic_setduration 32
 	pikapic_loadgfx Pic_e458b
 	pikapic_loadgfx GFX_e463b
@@ -84,7 +84,7 @@ PikaPicAnimScript5: ; fe2f2 (3f:62f2)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript6: ; fe30c (3f:630c)
+PikaPicAnimScript6:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e467b
 	pikapic_loadgfx GFX_e472e
@@ -94,7 +94,7 @@ PikaPicAnimScript6: ; fe30c (3f:630c)
 	pikapic_cry PikachuCry38
 	pikapic_looptofinish
 
-PikaPicAnimScript7: ; fe326 (3f:6326)
+PikaPicAnimScript7:
 	pikapic_setduration 58
 	pikapic_loadgfx Pic_e476e
 	pikapic_loadgfx GFX_e4841
@@ -104,7 +104,7 @@ PikaPicAnimScript7: ; fe326 (3f:6326)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript8: ; fe340 (3f:6340)
+PikaPicAnimScript8:
 	pikapic_setduration 44
 	pikapic_loadgfx Pic_e49d1
 	pikapic_loadgfx GFX_e4a99
@@ -114,7 +114,7 @@ PikaPicAnimScript8: ; fe340 (3f:6340)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript9: ; fe35a (3f:635a)
+PikaPicAnimScript9:
 	pikapic_setduration 56
 	pikapic_loadgfx Pic_e4b39
 	pikapic_loadgfx GFX_e4bde
@@ -124,7 +124,7 @@ PikaPicAnimScript9: ; fe35a (3f:635a)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript10: ; fe374 (3f:6374)
+PikaPicAnimScript10:
 	pikapic_setduration 56
 	pikapic_loadgfx Pic_e4c3e
 	pikapic_loadgfx GFX_e4ce0
@@ -135,7 +135,7 @@ PikaPicAnimScript10: ; fe374 (3f:6374)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript11: ; fe390 (3f:6390)
+PikaPicAnimScript11:
 	pikapic_setduration 100
 	pikapic_loadgfx Pic_e5000
 	pikapic_loadgfx GFX_e50af
@@ -145,7 +145,7 @@ PikaPicAnimScript11: ; fe390 (3f:6390)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript12: ; fe3aa (3f:63aa)
+PikaPicAnimScript12:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e523f
 	pikapic_loadgfx GFX_e52fe
@@ -155,7 +155,7 @@ PikaPicAnimScript12: ; fe3aa (3f:63aa)
 	pikapic_cry PikachuCry25
 	pikapic_looptofinish
 
-PikaPicAnimScript13: ; fe3c4 (3f:63c4)
+PikaPicAnimScript13:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e548e
 	pikapic_loadgfx GFX_e5541
@@ -165,7 +165,7 @@ PikaPicAnimScript13: ; fe3c4 (3f:63c4)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript14: ; fe3de (3f:63de)
+PikaPicAnimScript14:
 	pikapic_setduration 40
 	pikapic_loadgfx Pic_e56d1
 	pikapic_loadgfx GFX_e5794
@@ -175,7 +175,7 @@ PikaPicAnimScript14: ; fe3de (3f:63de)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript15: ; fe3f8 (3f:63f8)
+PikaPicAnimScript15:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e5924
 	pikapic_loadgfx GFX_e59ed
@@ -185,7 +185,7 @@ PikaPicAnimScript15: ; fe3f8 (3f:63f8)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript16: ; fe412 (3f:6412)
+PikaPicAnimScript16:
 	pikapic_setduration 32
 	pikapic_loadgfx Pic_e5b7d
 	pikapic_loadgfx GFX_e5c4d
@@ -195,7 +195,7 @@ PikaPicAnimScript16: ; fe412 (3f:6412)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript17: ; fe42c (3f:642c)
+PikaPicAnimScript17:
 	pikapic_setduration 100
 	pikapic_loadgfx Pic_e5ddd
 	pikapic_loadgfx GFX_e5e90
@@ -205,7 +205,7 @@ PikaPicAnimScript17: ; fe42c (3f:642c)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript18: ; fe446 (3f:6446)
+PikaPicAnimScript18:
 	pikapic_setduration 32
 	pikapic_loadgfx GFX_e6020
 	pikapic_loadgfx GFX_e61b0
@@ -215,7 +215,7 @@ PikaPicAnimScript18: ; fe446 (3f:6446)
 	pikapic_cry PikachuCry18
 	pikapic_looptofinish
 
-PikaPicAnimScript19: ; fe460 (3f:6460)
+PikaPicAnimScript19:
 	pikapic_setduration 44
 	pikapic_loadgfx Pic_e6340
 	pikapic_loadgfx GFX_e63f7
@@ -225,7 +225,7 @@ PikaPicAnimScript19: ; fe460 (3f:6460)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript20: ; fe47a (3f:647a)
+PikaPicAnimScript20:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e6587
 	pikapic_loadgfx GFX_e6646
@@ -235,7 +235,7 @@ PikaPicAnimScript20: ; fe47a (3f:647a)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript21: ; fe494 (3f:6494)
+PikaPicAnimScript21:
 	pikapic_setduration 40
 	pikapic_loadgfx Pic_e67d6
 	pikapic_loadgfx GFX_e682f
@@ -248,7 +248,7 @@ PikaPicAnimScript21: ; fe494 (3f:6494)
 	pikapic_cry PikachuCry20
 	pikapic_looptofinish
 
-PikaPicAnimScript22: ; fe4b4 (3f:64b4)
+PikaPicAnimScript22:
 	pikapic_setduration 40
 	pikapic_loadgfx GFX_e6e6f
 	pikapic_loadgfx GFX_e6fff
@@ -258,7 +258,7 @@ PikaPicAnimScript22: ; fe4b4 (3f:64b4)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript23: ; fe4ce (3f:64ce)
+PikaPicAnimScript23:
 	pikapic_setduration 70
 	pikapic_loadgfx GFX_e718f
 	pikapic_loadgfx GFX_e731f
@@ -268,7 +268,7 @@ PikaPicAnimScript23: ; fe4ce (3f:64ce)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript24: ; fe4e8 (3f:64e8)
+PikaPicAnimScript24:
 	pikapic_setduration 60
 	pikapic_loadgfx GFX_e74af
 	pikapic_loadgfx GFX_e763f
@@ -278,7 +278,7 @@ PikaPicAnimScript24: ; fe4e8 (3f:64e8)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript25: ; fe502 (3f:6502)
+PikaPicAnimScript25:
 	pikapic_setduration 50
 	pikapic_loadgfx Pic_e77cf
 	pikapic_loadgfx GFX_e7863
@@ -292,9 +292,9 @@ PikaPicAnimScript25: ; fe502 (3f:6502)
 	pikapic_thunderbolt
 	pikapic_ret
 
-Data_fe51f: ; fe51f (3f:651f)
+Data_fe51f:
 	pikapic_waitbgmap
-PikaPicAnimScript26: ; fe520 (3f:6520)
+PikaPicAnimScript26:
 	pikapic_setduration 100
 	pikapic_loadgfx Pic_e5000
 	pikapic_loadgfx GFX_e50af
@@ -306,7 +306,7 @@ PikaPicAnimScript26: ; fe520 (3f:6520)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript27: ; fe53e (3f:653e)
+PikaPicAnimScript27:
 	pikapic_setduration 30
 	pikapic_loadgfx Pic_f0abf
 	pikapic_loadgfx GFX_f0b64
@@ -316,7 +316,7 @@ PikaPicAnimScript27: ; fe53e (3f:653e)
 	pikapic_cry
 	pikapic_looptofinish
 
-PikaPicAnimScript28: ; fe558 (3f:6558)
+PikaPicAnimScript28:
 	pikapic_setduration 64
 	pikapic_loadgfx Pic_f0cf4
 	pikapic_loadgfx GFX_f0d82

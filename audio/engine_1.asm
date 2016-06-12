@@ -1,6 +1,6 @@
 ; The first of three duplicated sound engines.
 
-Audio1_UpdateMusic:: ; 909d (2:509d)
+Audio1_UpdateMusic::
 	ld c, CH0
 .loop
 	ld b, 0
@@ -36,7 +36,7 @@ Audio1_UpdateMusic:: ; 909d (2:509d)
 
 ; this routine checks flags for music effects currently applied
 ; to the channel and calls certain functions based on flags.
-Audio1_ApplyMusicAffects: ; 90d2 (2:50d2)
+Audio1_ApplyMusicAffects:
 	ld b, $0
 	ld hl, wChannelNoteDelayCounters ; delay until next note
 	add hl, bc
@@ -144,7 +144,7 @@ Audio1_ApplyMusicAffects: ; 90d2 (2:50d2)
 ; this routine executes all music commands that take up no time,
 ; like tempo changes, duty changes etc. and doesn't return
 ; until the first note is reached
-Audio1_PlayNextNote: ; 916a (2:516a)
+Audio1_PlayNextNote:
 ; reload the vibrato delay counter
 	ld hl, wChannelVibratoDelayCounterReloadValues
 	add hl, bc
@@ -839,7 +839,7 @@ Audio1_notepitch: ; 0x9568
 	call Audio1_ApplyWavePatternAndFrequency
 	ret
 
-Audio1_EnableChannelOutput: ; 95a3 (2:55a3)
+Audio1_EnableChannelOutput:
 	ld b, 0
 	call Audio1_9972
 	add hl, bc
@@ -968,7 +968,7 @@ Audio1_ApplyWavePatternAndFrequency: ; 0x964b
 	ld [wTempoModifier], a
 	ret
 
-Audio1_SetSfxTempo: ; 9657 (2:5657)
+Audio1_SetSfxTempo:
 	call Audio1_IsCry
 	jr c, .isCry
 	call Audio1_96c3
@@ -991,7 +991,7 @@ Audio1_SetSfxTempo: ; 9657 (2:5657)
 	ld [wSfxTempo], a
 	ret
 
-Audio1_ApplyFrequencyModifier: ; 967c (2:567c)
+Audio1_ApplyFrequencyModifier:
 	call Audio1_IsCry
 	jr c, .isCry
 	call Audio1_96c3
@@ -1011,7 +1011,7 @@ Audio1_ApplyFrequencyModifier: ; 967c (2:567c)
 .done
 	ret
 
-Audio1_GoBackOneCommandIfCry: ; 9692 (2:5692)
+Audio1_GoBackOneCommandIfCry:
 	call Audio1_IsCry
 	jr nc, .done
 	ld hl, wChannelCommandPointers
@@ -1033,7 +1033,7 @@ Audio1_GoBackOneCommandIfCry: ; 9692 (2:5692)
 	and a
 	ret
 
-Audio1_IsCry: ; 96af (2:56af)
+Audio1_IsCry:
 ; Returns whether the currently playing audio is a cry in carry.
 	ld a, [wChannelSoundIDs + CH4]
 	cp CRY_SFX_START
@@ -1051,7 +1051,7 @@ Audio1_IsCry: ; 96af (2:56af)
 	scf
 	ret
 
-Audio1_96c3: ; 96c3 (2:56c3)
+Audio1_96c3:
 	ld a, [wAudioROMBank]
 	cp AUDIO_2
 	jr nz, .asm_96dc
@@ -1353,7 +1353,7 @@ Audio1_CalculateFrequency: ; 0x9858
 	ld d, a
 	ret
 
-Audio1_PlaySound:: ; 984e (2:584e)
+Audio1_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
 	cp $ff
@@ -1541,19 +1541,19 @@ Audio1_PlaySound:: ; 984e (2:584e)
 .done
 	ret
 
-Audio1_CryEndchannel: ; 9961 (2:5961)
+Audio1_CryEndchannel:
 	endchannel
 
-Audio1_HWChannelBaseAddresses: ; 9962 (2:5962)
+Audio1_HWChannelBaseAddresses:
 ; the low bytes of each HW channel's base address
 	db HW_CH1_BASE, HW_CH2_BASE, HW_CH3_BASE, HW_CH4_BASE ; channels 0-3
 	db HW_CH1_BASE, HW_CH2_BASE, HW_CH3_BASE, HW_CH4_BASE ; channels 4-7
 
-Audio1_HWChannelDisableMasks: ; 996a (2:596a)
+Audio1_HWChannelDisableMasks:
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 0-3
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 4-7
 
-Audio1_9972: ; 9972 (2:5972)
+Audio1_9972:
 	push af
 	push bc
 	ld a, [wOptions]
@@ -1567,7 +1567,7 @@ Audio1_9972: ; 9972 (2:5972)
 	pop af
 	ret
 
-Audio1_HWChannelEnableMasks: ; 9985 (2:5985)
+Audio1_HWChannelEnableMasks:
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 0-3
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 4-7
 	db $01,$20,$44,$88
@@ -1577,7 +1577,7 @@ Audio1_HWChannelEnableMasks: ; 9985 (2:5985)
 	db $01,$02,$40,$80
 	db $01,$02,$40,$80
 
-Audio1_Pitches: ; 99a5 (2:59a5)
+Audio1_Pitches:
 	dw $F82C ; C_
 	dw $F89D ; C#
 	dw $F907 ; D_

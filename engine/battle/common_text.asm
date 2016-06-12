@@ -1,4 +1,4 @@
-PrintBeginningBattleText: ; f4000 (3d:4000)
+PrintBeginningBattleText:
 	ld a, [wIsInBattle] ; W_ISINBATTLE
 	dec a
 	jr nz, .trainerBattle
@@ -86,31 +86,31 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 .done
 	ret
 
-WildMonAppearedText: ; f40c7 (3d:40c7)
+WildMonAppearedText:
 	TX_FAR _WildMonAppearedText
 	db "@"
 
-HookedMonAttackedText: ; f40cc (3d:40cc)
+HookedMonAttackedText:
 	TX_FAR _HookedMonAttackedText
 	db "@"
 
-EnemyAppearedText: ; f40d1 (3d:40d1)
+EnemyAppearedText:
 	TX_FAR _EnemyAppearedText
 	db "@"
 
-TrainerWantsToFightText: ; f40d6 (3d:40d6)
+TrainerWantsToFightText:
 	TX_FAR _TrainerWantsToFightText
 	db "@"
 
-UnveiledGhostText: ; f40db (3d:40db)
+UnveiledGhostText:
 	TX_FAR _UnveiledGhostText
 	db "@"
 
-GhostCantBeIDdText: ; f40e0 (3d:40e0)
+GhostCantBeIDdText:
 	TX_FAR _GhostCantBeIDdText
 	db "@"
 
-PrintSendOutMonMessage: ; f40e0 (3d:40e5)
+PrintSendOutMonMessage:
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	or [hl]
@@ -153,38 +153,38 @@ PrintSendOutMonMessage: ; f40e0 (3d:40e5)
 .printText
 	jp PrintText
 
-GoText: ; f413a (3d:413a)
+GoText:
 	TX_FAR _GoText
 	TX_ASM
 	jr PrintPlayerMon1Text
 
-DoItText: ; f4141 (3d:4141)
+DoItText:
 	TX_FAR _DoItText
 	TX_ASM
 	jr PrintPlayerMon1Text
 
-GetmText: ; f4148 (3d:4148)
+GetmText:
 	TX_FAR _GetmText
 	TX_ASM
 	jr PrintPlayerMon1Text
 
-EnemysWeakText: ; f414f (3d:414f)
+EnemysWeakText:
 	TX_FAR _EnemysWeakText
 	TX_ASM
 
-PrintPlayerMon1Text: ; f4154 (3d:4154)
+PrintPlayerMon1Text:
 	ld hl, PlayerMon1Text
 	ret
 
-PlayerMon1Text: ; f4158 (3d:4158)
+PlayerMon1Text:
 	TX_FAR _PlayerMon1Text
 	db "@"
 
-RetreatMon: ; f415d (3d:415d)
+RetreatMon:
 	ld hl, PlayerMon2Text
 	jp PrintText
 
-PlayerMon2Text: ; f4163 (3d:4163)
+PlayerMon2Text:
 	TX_FAR _PlayerMon2Text
 	TX_ASM
 	push de
@@ -235,25 +235,25 @@ PlayerMon2Text: ; f4163 (3d:4163)
 	ld hl, GoodText ; HP went down 70% or more
 	ret
 
-EnoughText: ; f41b1 (3d:41b1)
+EnoughText:
 	TX_FAR _EnoughText
 	TX_ASM
 	jr PrintComeBackText
 
-OKExclamationText: ; f41b8 (3d:41b8)
+OKExclamationText:
 	TX_FAR _OKExclamationText
 	TX_ASM
 	jr PrintComeBackText
 
-GoodText: ; f41bf (3d:41bf)
+GoodText:
 	TX_FAR _GoodText
 	TX_ASM
 	jr PrintComeBackText
 
-PrintComeBackText: ; f41c6 (3d:41c6)
+PrintComeBackText:
 	ld hl, ComeBackText
 	ret
 
-ComeBackText: ; f41ca (3d:41ca)
+ComeBackText:
 	TX_FAR _ComeBackText
 	db "@"

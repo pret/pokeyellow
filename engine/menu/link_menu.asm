@@ -1,4 +1,4 @@
-Func_f531b:: ; f531b (3d:531b)
+Func_f531b::
 	ld c,$14
 	call DelayFrames
 	ld a,$1
@@ -176,25 +176,25 @@ Func_f531b:: ; f531b (3d:531b)
 	and a
 	ret
 
-Func_f5476:: ; f5476 (3d:5476)
+Func_f5476::
 	ld hl,ColosseumIneligibleText
 	call PrintText
-asm_f547c:: ; f547c (3d:574c)
+asm_f547c::
 	jp Func_f531b
 
-asm_f547f:: ; f547f (3d:547f)
+asm_f547f::
 	xor a
 	ld [wUnknownSerialCounter],a
 	ld [wUnknownSerialCounter+1],a
 	scf
 	ret
 
-PointerTable_f5488:: ; f5488 (3d:5488)
+PointerTable_f5488::
 	dw PokeCup
 	dw PikaCup
 	dw PetitCup
 
-PokeCup:: ; f548e (3d:548e)
+PokeCup::
 	ld hl,wPartyCount
 	ld a,[hli]
 	cp $3
@@ -240,7 +240,7 @@ PokeCup:: ; f548e (3d:548e)
 	xor a
 	ret
 
-PikaCup:: ; f54e4 (3d:54e4)
+PikaCup::
 	ld hl,wPartyCount
 	ld a,[hli]
 	cp $3
@@ -286,7 +286,7 @@ PikaCup:: ; f54e4 (3d:54e4)
 	xor a
 	ret
 
-PetitCup:: ; f553a (3d:553a)
+PetitCup::
 	ld hl,wPartyCount
 	ld a,[hli]
 	cp $3
@@ -407,79 +407,79 @@ PetitCup:: ; f553a (3d:553a)
 	xor a
 	ret
 
-NotThreeMonsInParty:: ; f561d (3d:516d)
+NotThreeMonsInParty::
 	ld hl,Colosseum3MonsText
 	call PrintText
 	ld a,$1
 	ret
 
-MewInParty:: ; f5626 (3d:f5626)
+MewInParty::
 	ld hl,ColosseumMewText
 	call PrintText
 	ld a,$2
 	ret
 
-DuplicateSpecies:: ; f562f (3d:f562f)
+DuplicateSpecies::
 	ld hl,ColosseumDifferentMonsText
 	call PrintText
 	ld a,$3
 	ret
 
-LevelAbove55:: ; f5638 (3d:5638)
+LevelAbove55::
 	ld hl,ColosseumMaxL55Text
 	call PrintText
 	ld a,$4
 	ret
 
-LevelUnder50:: ; f5641 (3d:5641)
+LevelUnder50::
 	ld hl,ColosseumMinL50Text
 	call PrintText
 	ld a,$5
 	ret
 
-CombinedLevelsGreaterThan155:: ; f5641 (3d:564a)
+CombinedLevelsGreaterThan155::
 	ld hl,ColosseumTotalL155Text
 	call PrintText
 	ld a,$6
 	ret
 
-LevelAbove30:: ; f5653 (3d:5653)
+LevelAbove30::
 	ld hl,ColosseumMaxL30Text
 	call PrintText
 	ld a,$7
 	ret
 
-LevelUnder25:: ; f565c (3d:565c)
+LevelUnder25::
 	ld hl,ColosseumMinL25Text
 	call PrintText
 	ld a,$8
 	ret
 
-CombinedLevelsAbove80:: ; f5665 (3d:5665)
+CombinedLevelsAbove80::
 	ld hl,ColosseumTotalL80Text
 	call PrintText
 	ld a,$9
 	ret
 
-LevelAbove20:: ; f566e (3d:566e)
+LevelAbove20::
 	ld hl,ColosseumMaxL20Text
 	call PrintText
 	ld a,$a
 	ret
 
-LevelUnder15:: ; f5677 (3d:5677)
+LevelUnder15::
 	ld hl,ColosseumMinL15Text
 	call PrintText
 	ld a,$b
 	ret
 
-CombinedLevelsAbove50:: ; f5680 (3d:5680)
+CombinedLevelsAbove50::
 	ld hl,ColosseumTotalL50Text
 	call PrintText
 	ld a,$c
 	ret
 
-asm_f5689:: ; f5689 (3d:5689)
+asm_f5689::
 	pop af
 	pop bc
 	pop hl
@@ -490,7 +490,7 @@ asm_f5689:: ; f5689 (3d:5689)
 	ld a,$d
 	ret
 
-asm_f569b:: ; f569b (3d:569b)
+asm_f569b::
 	pop af
 	pop bc
 	pop hl
@@ -501,7 +501,7 @@ asm_f569b:: ; f569b (3d:569b)
 	ld a,$e
 	ret
 
-asm_f56ad:: ; f56ad (3d:56ad)
+asm_f56ad::
 	ld a,[hl]
 	ld [wd11e],a
 	call GetMonName
@@ -510,7 +510,7 @@ asm_f56ad:: ; f56ad (3d:56ad)
 	ld a,$f
 	ret
 
-Func_f56bd:: ; f56bd (3d:56bd)
+Func_f56bd::
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
 	coord hl, 1,11
@@ -538,101 +538,101 @@ Func_f56bd:: ; f56bd (3d:56bd)
 	ld [H_AUTOBGTRANSFERENABLED],a
 	ret
 
-PointerTable_f56ee:: ; f56ee (3d:56ee)
+PointerTable_f56ee::
 	dw Text_f56f4
 	dw Text_f5728
 	dw Text_f575b
 
-Text_f56f4:: ; f56f4 (3d:56f4)
+Text_f56f4::
 	db "LVs of 3<pkmn>:50-55"
 	next "Sum of LVs:155 MAX"
 	next "MEW can't attend.@"
 
-Text_f5728:: ; f5728 (3d:5728)
+Text_f5728::
 	db "LVs of 3<pkmn>:15-20"
 	next "Sum of LVs:50 MAX"
 	next "MEW can't attend.@"
 
-Text_f575b:: ; f575b (3d:575b)
+Text_f575b::
 	db "3 Basic <pkmn>.LV25-30"
 	next "Sum of LVs:80 MAX"
 	next "6′8″ and 44lb MAX@"
 
-Text_f5791:: ; f5791 (3d:5791)
+Text_f5791::
 	db "View"
 	next "Rules@"
 
-Text_f579c:: ; f579c (3d:579c)
+Text_f579c::
 	db "# Cup"
 	next "Pika Cup"
 	next "Petit Cup"
 	next "CANCEL@"
 
-Colosseum3MonsText:: ; f57bc (3d:57bc)
+Colosseum3MonsText::
 	TX_FAR _Colosseum3MonsText ; a0a2b
 	db "@"
 
-ColosseumMewText:: ; f57c1 (3d:57c1)
+ColosseumMewText::
 	TX_FAR _ColosseumMewText ; a0a46
 	db "@"
 
-ColosseumDifferentMonsText:: ; f57c6 (3d:57c6)
+ColosseumDifferentMonsText::
 	TX_FAR _ColosseumDifferentMonsText ; a0a5f
 	db "@"
 
-ColosseumMaxL55Text:: ; f57cb (3d:57cb)
+ColosseumMaxL55Text::
     TX_FAR _ColosseumMaxL55Text ; a0a81
     db "@"
 
-ColosseumMinL50Text:: ; f57d0 (3d:57d0)
+ColosseumMinL50Text::
 	TX_FAR _ColosseumMinL50Text ; a0a9a
 	db "@"
 
-ColosseumTotalL155Text:: ; f57d5 (3d:57d5)
+ColosseumTotalL155Text::
 	TX_FAR _ColosseumTotalL155Text ; a0aba
 	db "@"
 
-ColosseumMaxL30Text:: ; f57da (3d:57da)
+ColosseumMaxL30Text::
 	TX_FAR _ColosseumMaxL30Text ; a0ad9
 	db "@"
 
-ColosseumMinL25Text:: ; f57df (3d:57df)
+ColosseumMinL25Text::
 	TX_FAR _ColosseumMinL25Text ; a0af2
 	db "@"
 
-ColosseumTotalL80Text:: ; f57e4 (3d:57e4)
+ColosseumTotalL80Text::
 	TX_FAR _ColosseumTotalL80Text ; a0b12
 	db "@"
 
-ColosseumMaxL20Text:: ; f57e9 (3d:57e9)
+ColosseumMaxL20Text::
 	TX_FAR _ColosseumMaxL20Text ; a0b30
 	db "@"
 
-ColosseumMinL15Text:: ; f57ee (3d:57ee)
+ColosseumMinL15Text::
 	TX_FAR _ColosseumMinL15Text ; a0b49
 	db "@"
 
-ColosseumTotalL50Text:: ; f57f3 (3d:57f3)
+ColosseumTotalL50Text::
 	TX_FAR _ColosseumTotalL50Text ; a0b69
 	db "@"
 
-ColosseumHeightText:: ; f57f8 (3d:57f8)
+ColosseumHeightText::
 	TX_FAR _ColosseumHeightText ; a0b87
 	db "@"
 
-ColosseumWeightText:: ; f57fd (3d:57fd)
+ColosseumWeightText::
 	TX_FAR _ColosseumWeightText ; a0b9f
 	db "@"
 
-ColosseumEvolvedText:: ; f5802 (3d:5802)
+ColosseumEvolvedText::
 	TX_FAR _ColosseumEvolvedText ; a0bbb
 	db "@"
 
-ColosseumIneligibleText:: ; f5807 (3d:5807)
+ColosseumIneligibleText::
 	TX_FAR _ColosseumIneligibleText ; a0bd4
 	db "@"
 
-LinkMenu: ; f580c (3d:580c)
+LinkMenu:
 	xor a
 	ld [wLetterPrintingDelayFlags], a
 	ld hl, wd72e
@@ -871,7 +871,7 @@ LinkMenu: ; f580c (3d:580c)
 	ld a,$f0
 	jp .next
 
-Func_f59ec:: ; f59ec (3d:59ec)
+Func_f59ec::
 	ld a, b
 	Coorda 6, 5
 	ld a, c
@@ -884,26 +884,26 @@ Func_f59ec:: ; f59ec (3d:59ec)
 	call DelayFrames
 	ret
 
-ColosseumWhereToText: ; f5a02 (3d:5a02)
+ColosseumWhereToText:
 	TX_FAR _ColosseumWhereToText
 	db "@"
 
-ColosseumPleaseWaitText: ; f5a07 (3d:5a07)
+ColosseumPleaseWaitText:
 	TX_FAR _ColosseumPleaseWaitText
 	db "@"
 
-ColosseumCanceledText: ; f5a0c (3d:5a0c)
+ColosseumCanceledText:
 	TX_FAR _ColosseumCanceledText
 	db "@"
 
-ColosseumVersionText: ; f5a11 (3d:5a11)
+ColosseumVersionText:
 	TX_FAR _ColosseumVersionText ; 28:4c47
 	db "@"
 
-TextTerminator_f5a16: ; f5a16 (3d:5a16)
+TextTerminator_f5a16:
 	db "@"
 
-TradeCenterText: ; f5a17 (3d:5a17)
+TradeCenterText:
 	db "TRADE CENTER"
 	next "COLOSSEUM"
 	next "COLOSSEUM2"

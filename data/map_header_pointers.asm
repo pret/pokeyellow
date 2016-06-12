@@ -1,5 +1,5 @@
 ; see also MapHeaderBanks
-MapHeaderPointers:: ; fc1f2 (3f:41f2)
+MapHeaderPointers::
 	dw PalletTown_h
 	dw ViridianCity_h
 	dw PewterCity_h

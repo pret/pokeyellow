@@ -1,4 +1,4 @@
-AskName: ; 625d (1:625d)
+AskName:
 	call SaveScreenTilesToBuffer1
 	call GetPredefRegisters
 	push hl
@@ -48,11 +48,11 @@ AskName: ; 625d (1:625d)
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-DoYouWantToNicknameText: ; 62c8 (1:62c8)
+DoYouWantToNicknameText:
 	TX_FAR _DoYouWantToNicknameText
 	db "@"
 
-DisplayNameRaterScreen: ; 62cd (1:62cd)
+DisplayNameRaterScreen:
 	ld hl, wBuffer
 	xor a
 	ld [wUpdateSpritesEnabled], a
@@ -80,7 +80,7 @@ DisplayNameRaterScreen: ; 62cd (1:62cd)
 	scf
 	ret
 
-DisplayNamingScreen: ; 6307 (1:6307)
+DisplayNamingScreen:
 	push hl
 	ld hl, wd730
 	set 6, [hl]
@@ -321,7 +321,7 @@ DisplayNamingScreen: ; 6307 (1:6307)
 	ld [wTopMenuItemX], a
 	jp EraseMenuCursor
 
-LoadEDTile: ; 675b (1:675b)
+LoadEDTile:
 ; In Red/Blue, the bank for the ED_tile was defined incorrectly as bank0
 ; Luckily, the MBC3 treats loading $0 into $2000-$2fff range as loading bank1 into $4000-$7fff range
 ; Because Yellow uses the MBC5, loading $0 into $2000 - $2fff range will load bank0 instead of bank1 and thus incorrectly load the tile
@@ -345,11 +345,11 @@ LoadEDTile: ; 675b (1:675b)
 	jr nz, .waitForHBlankLoop
 	ret
 
-ED_Tile: ; 64e5 (1:64e5)
+ED_Tile:
 	INCBIN "gfx/ED_tile.1bpp"
 ED_TileEnd:
 
-PrintAlphabet: ; 676f (1:676f)
+PrintAlphabet:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld a, [wAlphabetCase]
@@ -379,13 +379,13 @@ PrintAlphabet: ; 676f (1:676f)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	jp Delay3
 
-LowerCaseAlphabet: ; 651c (1:651c)
+LowerCaseAlphabet:
 	db "abcdefghijklmnopqrstuvwxyz ×():;[]",$e1,$e2,"-?!♂♀/",$f2,",¥UPPER CASE@"
 
-UpperCaseAlphabet: ; 6554 (1:6554)
+UpperCaseAlphabet:
 	db "ABCDEFGHIJKLMNOPQRSTUVWXYZ ×():;[]",$e1,$e2,"-?!♂♀/",$f2,",¥lower case@"
 
-PrintNicknameAndUnderscores: ; 658c (1:658c)
+PrintNicknameAndUnderscores:
 	call CalcStringLength
 	ld a, c
 	ld [wNamingScreenNameLength], a
@@ -439,7 +439,7 @@ PrintNicknameAndUnderscores: ; 658c (1:658c)
 	ld [hl], $77 ; raised underscore tile id
 	ret
 
-DakutensAndHandakutens: ; 65ef (1:65ef)
+DakutensAndHandakutens:
 	push de
 	call CalcStringLength
 	dec hl
@@ -453,7 +453,7 @@ DakutensAndHandakutens: ; 65ef (1:65ef)
 	ld [wNamingScreenLetter], a
 	ret
 
-Dakutens: ; 6603 (1:6603)
+Dakutens:
 	db "かが", "きぎ", "くぐ", "けげ", "こご"
 	db "さざ", "しじ", "すず", "せぜ", "そぞ"
 	db "ただ", "ちぢ", "つづ", "てで", "とど"
@@ -464,13 +464,13 @@ Dakutens: ; 6603 (1:6603)
 	db "ハバ", "ヒビ", "フブ", "へべ", "ホボ"
 	db $ff
 
-Handakutens: ; 6654 (1:6654)
+Handakutens:
 	db "はぱ", "ひぴ", "ふぷ", "へぺ", "ほぽ"
 	db "ハパ", "ヒピ", "フプ", "へぺ", "ホポ"
 	db $ff
 
 ; calculates the length of the string at wcf4b and stores it in c
-CalcStringLength: ; 6669 (1:6669)
+CalcStringLength:
 	ld hl, wcf4b
 	ld c, $0
 .loop
@@ -481,7 +481,7 @@ CalcStringLength: ; 6669 (1:6669)
 	inc c
 	jr .loop
 
-PrintNamingText: ; 6676 (1:6676)
+PrintNamingText:
 	coord hl, 0, 1
 	ld a, [wNamingScreenType]
 	ld de, YourTextString
@@ -513,14 +513,14 @@ PrintNamingText: ; 6676 (1:6676)
 .placeString
 	jp PlaceString
 
-YourTextString: ; 66bd (1:66bd)
+YourTextString:
 	db "YOUR @"
 
-RivalsTextString: ; 66c3 (1:66c3)
+RivalsTextString:
 	db "RIVAL's @"
 
-NameTextString: ; 66cb (1:66cb)
+NameTextString:
 	db "NAME?@"
 
-NicknameTextString: ; 66d1 (1:66d1)
+NicknameTextString:
 	db "NICKNAME?@"

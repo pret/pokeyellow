@@ -1,4 +1,4 @@
-StartSlotMachine: ; 37ed1 (d:7ed1)
+StartSlotMachine:
 	ld a, [wHiddenObjectFunctionArgument]
 	cp $fd
 	jr z, .printOutOfOrder
@@ -41,14 +41,14 @@ StartSlotMachine: ; 37ed1 (d:7ed1)
 	call PrintPredefTextID
 	ret
 
-GameCornerOutOfOrderText: ; 37f1d (d:7f1d)
+GameCornerOutOfOrderText:
 	TX_FAR _GameCornerOutOfOrderText
 	db "@"
 
-GameCornerOutToLunchText: ; 37f22 (d:7f22)
+GameCornerOutToLunchText:
 	TX_FAR _GameCornerOutToLunchText
 	db "@"
 
-GameCornerSomeonesKeysText: ; 37f27 (d:7f27)
+GameCornerSomeonesKeysText:
 	TX_FAR _GameCornerSomeonesKeysText
 	db "@"

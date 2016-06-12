@@ -1,8 +1,8 @@
-TryPushingBoulder: ; f0a1 (3:70a1)
+TryPushingBoulder:
 	ld a, [wd728]
 	bit 0, a ; using Strength?
 	ret z
-Func_f0a7: ; f0a7 (3:70a7)
+Func_f0a7:
 ; where LoadMissableObjects predef points to now
 	ld a, [wFlags_0xcd60]
 	bit 1, a ; has boulder dust animation from previous push played yet?
@@ -72,19 +72,19 @@ Func_f0a7: ; f0a7 (3:70a7)
 	set 1, [hl]
 	ret
 
-PushBoulderUpMovementData: ; f129 (3:7129)
+PushBoulderUpMovementData:
 	db NPC_MOVEMENT_UP,$FF
 
-PushBoulderDownMovementData: ; f12b (3:712b)
+PushBoulderDownMovementData:
 	db NPC_MOVEMENT_DOWN,$FF
 
-PushBoulderLeftMovementData: ; f12d (3:712d)
+PushBoulderLeftMovementData:
 	db NPC_MOVEMENT_LEFT,$FF
 
-PushBoulderRightMovementData: ; f12f (3:712f)
+PushBoulderRightMovementData:
 	db NPC_MOVEMENT_RIGHT,$FF
 
-DoBoulderDustAnimation: ; f131 (3:7131)
+DoBoulderDustAnimation:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -100,7 +100,7 @@ DoBoulderDustAnimation: ; f131 (3:7131)
 	ld a, SFX_CUT
 	jp PlaySound
 
-ResetBoulderPushFlags: ; f159 (3:7159)
+ResetBoulderPushFlags:
 	ld hl, wFlags_0xcd60
 	res 1, [hl]
 	res 6, [hl]

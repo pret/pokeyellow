@@ -1,4 +1,4 @@
-PrintSafariZoneBattleText: ; 4111 (1:4111)
+PrintSafariZoneBattleText:
 	ld hl, wSafariBaitFactor
 	ld a, [hl]
 	and a
@@ -27,10 +27,10 @@ PrintSafariZoneBattleText: ; 4111 (1:4111)
 	pop hl
 	jp PrintText
 
-SafariZoneEatingText: ; 4141 (1:4141)
+SafariZoneEatingText:
 	TX_FAR _SafariZoneEatingText
 	db "@"
 
-SafariZoneAngryText: ; 4146 (1:4146)
+SafariZoneAngryText:
 	TX_FAR _SafariZoneAngryText
 	db "@"

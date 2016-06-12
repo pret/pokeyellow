@@ -1,4 +1,4 @@
-MistEffect_: ; f64ac (3d:64ac)
+MistEffect_:
 	ld hl, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
@@ -14,6 +14,6 @@ MistEffect_: ; f64ac (3d:64ac)
 .mistAlreadyInUse
 	jpab PrintButItFailedText_
 
-ShroudedInMistText: ; f64d3 (3d:64d3)
+ShroudedInMistText:
 	TX_FAR _ShroudedInMistText
 	db "@"

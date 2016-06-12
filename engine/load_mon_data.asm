@@ -1,4 +1,4 @@
-LoadMonData_: ; 442b (1:442b)
+LoadMonData_:
 ; Load monster [wWhichPokemon] from list [wMonDataLocation]:
 ;  0: partymon
 ;  1: enemymon
@@ -49,7 +49,7 @@ LoadMonData_: ; 442b (1:442b)
 	jp CopyData
 
 ; get species of mon e in list [wMonDataLocation] for LoadMonData
-GetMonSpecies: ; 4478 (1:4478)
+GetMonSpecies:
 	ld hl, wPartySpecies
 	ld a, [wMonDataLocation]
 	and a

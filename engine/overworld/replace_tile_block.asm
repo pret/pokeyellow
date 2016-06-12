@@ -2,7 +2,7 @@
 ; and redraws the map view if necessary
 ; b = Y
 ; c = X
-ReplaceTileBlock: ; ed1b (3:6d1b)
+ReplaceTileBlock:
 	call GetPredefRegisters
 	ld hl, wOverworldMap
 	ld a, [wCurMapWidth]
@@ -46,7 +46,7 @@ ReplaceTileBlock: ; ed1b (3:6d1b)
 	call CompareHLWithBC
 	ret c ; return if the replaced tile block is above the map view in memory
 
-RedrawMapView: ; ed59 (3:6d59)
+RedrawMapView:
 	ld a, [wIsInBattle]
 	inc a
 	ret z
@@ -117,7 +117,7 @@ RedrawMapView: ; ed59 (3:6d59)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
-CompareHLWithBC: ; edcb (3:6dcb)
+CompareHLWithBC:
 	ld a, h
 	sub b
 	ret nz

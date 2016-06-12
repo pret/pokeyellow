@@ -1,4 +1,4 @@
-WarpTileIDPointers: ; c215 (3:4215)
+WarpTileIDPointers:
 	dw OverworldWarpTileIDs
 	dw RedsHouse1WarpTileIDs
 	dw MartWarpTileIDs
@@ -25,65 +25,65 @@ WarpTileIDPointers: ; c215 (3:4215)
 	dw PlateauWarpTileIDs
 	dw BeachHouseWarpTileIDs
 
-OverworldWarpTileIDs: ; c247 (3:4247)
+OverworldWarpTileIDs:
 	db $1B,$58,$FF
 
-ForestGateWarpTileIDs: ; c24a (3:424a)
-MuseumWarpTileIDs: ; c24a (3:424a)
-GateWarpTileIDs: ; c24a (3:424a)
+ForestGateWarpTileIDs:
+MuseumWarpTileIDs:
+GateWarpTileIDs:
 	db $3B
 
-RedsHouse1WarpTileIDs: ; c24b (3:424b)
-RedsHouse2WarpTileIDs: ; c24b (3:424b)
+RedsHouse1WarpTileIDs:
+RedsHouse2WarpTileIDs:
 	db $1A,$1C,$FF
 
-MartWarpTileIDs: ; c24e (3:424e)
-PokecenterWarpTileIDs: ; c24e (3:424e)
+MartWarpTileIDs:
+PokecenterWarpTileIDs:
 	db $5E,$FF
 
-ForestWarpTileIDs: ; c250 (3:4250)
+ForestWarpTileIDs:
 	db $5A,$5C,$3A,$FF
 
-DojoWarpTileIDs: ; c254 (3:4254)
-GymWarpTileIDs: ; c254 (3:4254)
+DojoWarpTileIDs:
+GymWarpTileIDs:
 	db $4A,$FF
 
-HouseWarpTileIDs: ; c256 (3:4256)
+HouseWarpTileIDs:
 	db $54,$5C,$32,$FF
 
-ShipWarpTileIDs: ; c25a (3:425a)
+ShipWarpTileIDs:
 	db $37,$39,$1E,$4A,$FF
 
-InteriorWarpTileIDs: ; c25f (3:425f)
+InteriorWarpTileIDs:
 	db $15,$55,$04,$FF
 
-CavernWarpTileIDs: ; c263 (3:4263)
+CavernWarpTileIDs:
 	db $18,$1A,$22,$FF
 
-LobbyWarpTileIDs: ; c267 (3:4267)
+LobbyWarpTileIDs:
 	db $1A,$1C,$38,$FF
 
-MansionWarpTileIDs: ; c26b (3:426b)
+MansionWarpTileIDs:
 	db $1A,$1C,$53,$FF
 
-LabWarpTileIDs: ; c26f (3:426f)
+LabWarpTileIDs:
 	db $34,$FF
 
-FacilityWarpTileIDs: ; c271 (3:4571)
+FacilityWarpTileIDs:
 	db $43,$58,$20
 
-CemeteryWarpTileIDs: ; c274 (3:4274)
+CemeteryWarpTileIDs:
 	db $1B
 
-UndergroundWarpTileIDs: ; c275 (3:4275)
+UndergroundWarpTileIDs:
 	db $13,$FF
 
-PlateauWarpTileIDs: ; c277 (3:4277)
+PlateauWarpTileIDs:
 	db $1B,$3B
 
-ShipPortWarpTileIDs: ; c279 (3:4279)
-ClubWarpTileIDs: ; c279 (3:4279)
+ShipPortWarpTileIDs:
+ClubWarpTileIDs:
 	db $FF
 
-BeachHouseWarpTileIDs: ; c27a (3:427a)
+BeachHouseWarpTileIDs:
 	db $FF

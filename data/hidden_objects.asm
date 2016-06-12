@@ -1,4 +1,4 @@
-HiddenObjectMaps: ; f268d (3c:668d)
+HiddenObjectMaps:
 	dbw SILPH_CO_11F,           SilphCo11FHiddenObjects
 	dbw SILPH_CO_5F,            SilphCo5FHiddenObjects
 	dbw SILPH_CO_9F,            SilphCo9FHiddenObjects

@@ -1,4 +1,4 @@
-GainExperience: ; 5524f (15:525f)
+GainExperience:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
@@ -297,7 +297,7 @@ GainExperience: ; 5524f (15:525f)
 	predef_jump FlagActionPredef ; set the fought current enemy flag for the mon that is currently out
 
 ; divide enemy base stats, catch rate, and base exp by the number of mons gaining exp
-DivideExpDataByNumMonsGainingExp: ; 5547b (15:547b)
+DivideExpDataByNumMonsGainingExp:
 	ld a, [wPartyGainExpFlags]
 	ld b, a
 	xor a
@@ -331,7 +331,7 @@ DivideExpDataByNumMonsGainingExp: ; 5547b (15:547b)
 	ret
 
 ; multiplies exp by 1.5
-BoostExp: ; 554ae (15:54ae)
+BoostExp:
 	ld a, [H_QUOTIENT + 2]
 	ld b, a
 	ld a, [H_QUOTIENT + 3]
@@ -345,11 +345,11 @@ BoostExp: ; 554ae (15:54ae)
 	ld [H_QUOTIENT + 2], a
 	ret
 
-Bankswitch15ToF: ; 554c1 (15:54c1)
+Bankswitch15ToF:
 	ld b, BANK(BattleCore)
 	jp Bankswitch
 
-GainedText: ; 554c6 (15:54c6)
+GainedText:
 	TX_FAR _GainedText
 	TX_ASM
 	ld a, [wBoostExpByExpAll]
@@ -363,20 +363,20 @@ GainedText: ; 554c6 (15:54c6)
 	ld hl, BoostedText
 	ret
 
-WithExpAllText: ; 554df (15:54df)
+WithExpAllText:
 	TX_FAR _WithExpAllText
 	TX_ASM
 	ld hl, ExpPointsText
 	ret
 
-BoostedText: ; 554e8 (15:54e8)
+BoostedText:
 	TX_FAR _BoostedText
 
-ExpPointsText: ; 554ec (15:54ec)
+ExpPointsText:
 	TX_FAR _ExpPointsText
 	db "@"
 
-GrewLevelText: ; 554f1 (15:54f1)
+GrewLevelText:
 	TX_FAR _GrewLevelText
 	db $0b
 	db "@"

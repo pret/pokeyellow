@@ -1,7 +1,7 @@
 ; this function seems to be used only once
 ; it store the address of a row and column of the VRAM background map in hl
 ; INPUT: h - row, l - column, b - high byte of background tile map address in VRAM
-GetRowColAddressBgMap:: ; 1cdd (0:1cdd)
+GetRowColAddressBgMap::
 	xor a
 	srl h
 	rr a
@@ -18,7 +18,7 @@ GetRowColAddressBgMap:: ; 1cdd (0:1cdd)
 
 ; clears a VRAM background map with blank space tiles
 ; INPUT: h - high byte of background tile map address in VRAM
-ClearBgMap:: ; 1cf0 (0:1cf0)
+ClearBgMap::
 	ld a," "
 	jr .next
 	ld a,l
@@ -39,7 +39,7 @@ ClearBgMap:: ; 1cf0 (0:1cf0)
 ; row or column is more efficient than redrawing the entire screen.
 ; However, this function is also called repeatedly to redraw the whole screen
 ; when necessary. It is also used in trade animation and elevator code.
-RedrawRowOrColumn:: ; 1ada (0:1ada)
+RedrawRowOrColumn::
 	ld a,[hRedrawRowOrColumnMode]
 	and a
 	ret z
@@ -119,7 +119,7 @@ RedrawRowOrColumn:: ; 1ada (0:1ada)
 ; on when talking to sprites, battling, using menus, etc. This is because
 ; the above function, RedrawRowOrColumn, is used when walking to
 ; improve efficiency.
-AutoBgMapTransfer:: ; 1b30 (0:1b30)
+AutoBgMapTransfer::
 	ld a,[H_AUTOBGTRANSFERENABLED]
 	and a
 	ret z
@@ -163,7 +163,7 @@ AutoBgMapTransfer:: ; 1b30 (0:1b30)
 	ld [H_AUTOBGTRANSFERPORTION],a ; store next portion
 	ld b,6
 
-TransferBgRows:: ; 1d9e (0:1d9e)
+TransferBgRows::
 ; unrolled loop and using pop for speed
 
 	rept 20 / 2 - 1
@@ -197,7 +197,7 @@ TransferBgRows:: ; 1d9e (0:1d9e)
 
 ; Copies [H_VBCOPYBGNUMROWS] rows from H_VBCOPYBGSRC to H_VBCOPYBGDEST.
 ; If H_VBCOPYBGSRC is XX00, the transfer is disabled.
-VBlankCopyBgMap:: ; 1bb5 (0:1bb5)
+VBlankCopyBgMap::
 	ld a,[H_VBCOPYBGSRC] ; doubles as enabling byte
 	and a
 	ret z
@@ -218,7 +218,7 @@ VBlankCopyBgMap:: ; 1bb5 (0:1bb5)
 	jr TransferBgRows
 
 
-VBlankCopyDouble:: ; 1bd1 (0:1bd1)
+VBlankCopyDouble::
 ; Copy [H_VBCOPYDOUBLESIZE] 1bpp tiles
 ; from H_VBCOPYDOUBLESRC to H_VBCOPYDOUBLEDEST.
 
@@ -286,7 +286,7 @@ VBlankCopyDouble:: ; 1bd1 (0:1bd1)
 	ret
 
 
-VBlankCopy:: ; 1c21 (0:1c21)
+VBlankCopy::
 ; Copy [H_VBCOPYSIZE] 2bpp tiles (or 16 * [H_VBCOPYSIZE] tile map entries)
 ; from H_VBCOPYSRC to H_VBCOPYDEST.
 
@@ -345,7 +345,7 @@ VBlankCopy:: ; 1c21 (0:1c21)
 	ret
 
 
-UpdateMovingBgTiles:: ; 1c75 (0:1c75)
+UpdateMovingBgTiles::
 ; Animate water and flower
 ; tiles in the overworld.
 

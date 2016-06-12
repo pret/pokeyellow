@@ -1,4 +1,4 @@
-StartTransmission_Send9Rows: ; e8783 (3a:4783)
+StartTransmission_Send9Rows:
 	ld a, 9
 Printer_StartTransmission:
 	push af
@@ -19,7 +19,7 @@ Printer_StartTransmission:
 	ret
 
 ; e87a8
-PrinterTransmissionJumptable: ; e87a8 (3a:47a8)
+PrinterTransmissionJumptable:
 	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
@@ -406,7 +406,7 @@ Printer_Convert2RowsTo2bpp:
 	jr nz, .loop
 	ret
 
-Printer_FillMemory: ; e8a2e (3a:4a2e)
+Printer_FillMemory:
 	push de
 	ld e, a
 .loop
@@ -439,7 +439,7 @@ PrinterDataPacket6: ; unused
 	db 15, 0, $00, 0
 	dw 15
 
-PrinterSerial_: ; e8a5e (3a:4a5e)
+PrinterSerial_:
 	ld a, [wPrinterOpcode]
 	ld e, a
 	ld d, 0

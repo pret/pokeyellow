@@ -1,4 +1,4 @@
-PrizeDifferentMenuPtrs: ; 527ae (14:67ae)
+PrizeDifferentMenuPtrs:
 	dw PrizeMenuMon1Entries
 	dw PrizeMenuMon1Cost
 
@@ -8,37 +8,37 @@ PrizeDifferentMenuPtrs: ; 527ae (14:67ae)
 	dw PrizeMenuTMsEntries
 	dw PrizeMenuTMsCost
 
-PrizeMenuMon1Entries: ; 527b9 (14:67b9)
+PrizeMenuMon1Entries:
 	db ABRA
 	db VULPIX
 	db WIGGLYTUFF
 	db "@"
 
-PrizeMenuMon1Cost: ; 527be (14:67be)
+PrizeMenuMon1Cost:
 	coins 230
 	coins 1000
 	coins 2680
 	db "@"
 
-PrizeMenuMon2Entries: ; 527c5 (14:67c5)
+PrizeMenuMon2Entries:
 	db SCYTHER
 	db PINSIR
 	db PORYGON
 	db "@"
 
-PrizeMenuMon2Cost: ; 527c9 (14:67c9)
+PrizeMenuMon2Cost:
 	coins 6500
 	coins 6500
 	coins 9999
 	db "@"
 
-PrizeMenuTMsEntries: ; 527df (14:67df)
+PrizeMenuTMsEntries:
 	db TM_23
 	db TM_15
 	db TM_50
 	db "@"
 
-PrizeMenuTMsCost: ; 527e4 (14:67e4)
+PrizeMenuTMsCost:
 	coins 3300
 	coins 5500
 	coins 7700

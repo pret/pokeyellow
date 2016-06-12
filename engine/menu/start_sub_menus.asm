@@ -1,4 +1,4 @@
-StartMenu_Pokedex: ; 11c22 (4:5c22)
+StartMenu_Pokedex:
 	predef ShowPokedexMenu
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call Delay3
@@ -6,7 +6,7 @@ StartMenu_Pokedex: ; 11c22 (4:5c22)
 	call UpdateSprites
 	jp RedisplayStartMenu
 
-StartMenu_Pokemon: ; 11c36 (4:5c36)
+StartMenu_Pokemon:
 	ld a,[wPartyCount]
 	and a
 	jp z,RedisplayStartMenu
@@ -301,7 +301,7 @@ StartMenu_Pokemon: ; 11c36 (4:5c36)
 	db "@"
 
 ; writes a blank tile to all possible menu cursor positions on the party menu
-ErasePartyMenuCursors: ; 11e98 (4:5e98)
+ErasePartyMenuCursors:
 	coord hl, 0, 1
 	ld bc,2 * 20 ; menu cursor positions are 2 rows apart
 	ld a,6 ; 6 menu cursor positions
@@ -312,11 +312,11 @@ ErasePartyMenuCursors: ; 11e98 (4:5e98)
 	jr nz,.loop
 	ret
 
-ItemMenuLoop: ; 11ea7 (4:5ea7)
+ItemMenuLoop:
 	call LoadScreenTilesFromBuffer2DisableBGTransfer ; restore saved screen
 	call RunDefaultPaletteCommand
 
-StartMenu_Item: ; 11ead (4:5ead)
+StartMenu_Item:
 	ld a,[wLinkState]
 	dec a ; is the player in the Colosseum or Trade Centre?
 	jr nz,.notInCableClubRoom
@@ -454,16 +454,16 @@ StartMenu_Item: ; 11ead (4:5ead)
 .tossZeroItems
 	jp ItemMenuLoop
 
-CannotUseItemsHereText: ; 11fd4 (4:5fd4)
+CannotUseItemsHereText:
 	TX_FAR _CannotUseItemsHereText
 	db "@"
 
-CannotGetOffHereText: ; 11fd9 (4:5fd9)
+CannotGetOffHereText:
 	TX_FAR _CannotGetOffHereText
 	db "@"
 
 ; items which bring up the party menu when used
-UsableItems_PartyMenu: ; 11fde (4:5fde)
+UsableItems_PartyMenu:
 	db MOON_STONE
 	db ANTIDOTE
 	db BURN_HEAL
@@ -503,7 +503,7 @@ UsableItems_PartyMenu: ; 11fde (4:5fde)
 	db $ff
 
 ; items which close the item menu when used
-UsableItems_CloseMenu: ; 12003 (4:6003)
+UsableItems_CloseMenu:
 	db ESCAPE_ROPE
 	db ITEMFINDER
 	db POKE_FLUTE
@@ -512,7 +512,7 @@ UsableItems_CloseMenu: ; 12003 (4:6003)
 	db SUPER_ROD
 	db $ff
 
-StartMenu_TrainerInfo: ; 1200a (4:600a)
+StartMenu_TrainerInfo:
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites
@@ -538,7 +538,7 @@ StartMenu_TrainerInfo: ; 1200a (4:600a)
 	jp RedisplayStartMenu_DoNotDrawStartMenu
 
 ; loads tile patterns and draws everything except for gym leader faces / badges
-DrawTrainerInfo: ; 1204c (4:604c)
+DrawTrainerInfo:
 	ld de,RedPicFront
 	lb bc, BANK(RedPicFront), $01
 	predef DisplayPicCenteredOrUpperRight
@@ -627,17 +627,17 @@ DrawTrainerInfo: ; 1204c (4:604c)
 	lb bc, LEADING_ZEROES | 1, 2
 	jp PrintNumber
 
-TrainerInfo_FarCopyData: ; 12131 (4:6131)
+TrainerInfo_FarCopyData:
 	ld a,BANK(TrainerInfoTextBoxTileGraphics)
 	jp FarCopyData
 
-TrainerInfo_NameMoneyTimeText: ; 12136 (4:6136)
+TrainerInfo_NameMoneyTimeText:
 	db   "NAME/"
 	next "MONEY/"
 	next "TIME/@"
 
 ; $76 is a circle tile
-TrainerInfo_BadgesText: ; 12149 (4:6149)
+TrainerInfo_BadgesText:
 	db $76,"BADGES",$76,"@"
 
 ; draws a text box on the trainer info screen
@@ -647,7 +647,7 @@ TrainerInfo_BadgesText: ; 12149 (4:6149)
 ; [wTrainerInfoTextBoxWidthPlus1] = width
 ; [wTrainerInfoTextBoxWidth] = width - 1
 ; [wTrainerInfoTextBoxNextRowOffset] = distance from the end of a text box row to the start of the next
-TrainerInfo_DrawTextBox: ; 12152 (4:6152)
+TrainerInfo_DrawTextBox:
 	ld a,$79 ; upper left corner tile ID
 	lb de, $7a, $7b ; top edge and upper right corner tile ID's
 	call TrainerInfo_DrawHorizontalEdge ; draw top edge
@@ -666,7 +666,7 @@ TrainerInfo_DrawTextBox: ; 12152 (4:6152)
 	ld a,$7d ; lower left corner tile ID
 	lb de,$77, $7e ; bottom edge and lower right corner tile ID's
 
-TrainerInfo_DrawHorizontalEdge: ; 12175 (4:6175)
+TrainerInfo_DrawHorizontalEdge:
 	ld [hli],a ; place left corner tile
 	ld a,[wTrainerInfoTextBoxWidth]
 	ld c,a
@@ -679,7 +679,7 @@ TrainerInfo_DrawHorizontalEdge: ; 12175 (4:6175)
 	ld [hl],a ; place right corner tile
 	ret
 
-TrainerInfo_NextTextBoxRow: ; 12182 (4:6182)
+TrainerInfo_NextTextBoxRow:
 	ld a,[wTrainerInfoTextBoxNextRowOffset] ; distance to the start of the next row
 .loop
 	inc hl
@@ -691,7 +691,7 @@ TrainerInfo_NextTextBoxRow: ; 12182 (4:6182)
 ; INPUT:
 ; hl = address of top tile in the line
 ; a = tile ID
-TrainerInfo_DrawVerticalLine: ; 1218a (4:618a)
+TrainerInfo_DrawVerticalLine:
 	ld de,20
 	ld c,8
 .loop
@@ -701,7 +701,7 @@ TrainerInfo_DrawVerticalLine: ; 1218a (4:618a)
 	jr nz,.loop
 	ret
 
-StartMenu_SaveReset: ; 12195 (4:6195)
+StartMenu_SaveReset:
 	ld a,[wd72e]
 	bit 6,a ; is the player using the link feature?
 	jp nz,Init
@@ -709,7 +709,7 @@ StartMenu_SaveReset: ; 12195 (4:6195)
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	jp HoldTextDisplayOpen
 
-StartMenu_Option: ; 121a9 (4:61a9)
+StartMenu_Option:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED],a
 	call ClearScreen
@@ -720,7 +720,7 @@ StartMenu_Option: ; 121a9 (4:61a9)
 	call UpdateSprites
 	jp RedisplayStartMenu
 
-SwitchPartyMon: ; 121c5 (4:61c5)
+SwitchPartyMon:
 	call SwitchPartyMon_InitVarOrSwapData ; swap data
 	ld a, [wSwappedMenuItem]
 	call SwitchPartyMon_ClearGfx
@@ -728,7 +728,7 @@ SwitchPartyMon: ; 121c5 (4:61c5)
 	call SwitchPartyMon_ClearGfx
 	jp RedrawPartyMenu_
 
-SwitchPartyMon_ClearGfx: ; 121d7 (4:61d7)
+SwitchPartyMon_ClearGfx:
 	push af
 	coord hl, 0, 0
 	ld bc, SCREEN_WIDTH * 2
@@ -754,7 +754,7 @@ SwitchPartyMon_ClearGfx: ; 121d7 (4:61d7)
 	ld a, SFX_SWAP
 	jp PlaySound
 
-SwitchPartyMon_InitVarOrSwapData: ; 12205 (4:6205)
+SwitchPartyMon_InitVarOrSwapData:
 ; This is used to initialise [wMenuItemToSwap] and to actually swap the data.
 	ld a, [wMenuItemToSwap]
 	and a ; has [wMenuItemToSwap] been initialised yet?

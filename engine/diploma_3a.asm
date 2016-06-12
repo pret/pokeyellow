@@ -1,4 +1,4 @@
-_DisplayDiploma: ; e9a08 (3a:5a08)
+_DisplayDiploma:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld de, SurfingPikachu3Graphics

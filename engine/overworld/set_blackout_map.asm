@@ -1,4 +1,4 @@
-SetLastBlackoutMap: ; 6ef0 (1:6ef0)
+SetLastBlackoutMap:
 ; Set the map to return to when
 ; blacking out or using Teleport or Dig.
 ; Safari rest houses don't count.
@@ -22,7 +22,7 @@ SetLastBlackoutMap: ; 6ef0 (1:6ef0)
 	pop hl
 	ret
 
-SafariZoneRestHouses: ; 6f0a (1:6f0a)
+SafariZoneRestHouses:
 	db SAFARI_ZONE_REST_HOUSE_2
 	db SAFARI_ZONE_REST_HOUSE_3
 	db SAFARI_ZONE_REST_HOUSE_4

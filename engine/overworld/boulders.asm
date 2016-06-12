@@ -1,4 +1,4 @@
-CheckForCollisionWhenPushingBoulder: ; c356 (3:4356)
+CheckForCollisionWhenPushingBoulder:
 	call GetTileTwoStepsInFrontOfPlayer
 	call IsTilePassable
 	jr c, .done
@@ -16,7 +16,7 @@ CheckForCollisionWhenPushingBoulder: ; c356 (3:4356)
 	ret
 
 ; sets a to $ff if there is a collision and $00 if there is no collision
-CheckForBoulderCollisionWithSprites: ; c378 (3:4378)
+CheckForBoulderCollisionWithSprites:
 	ld a, [wBoulderSpriteIndex]
 	dec a
 	swap a

@@ -1,4 +1,4 @@
-TrainerDataPointers: ; 39dd1 (e:5dd1)
+TrainerDataPointers:
 	dw YoungsterData
 	dw BugCatcherData
 	dw LassData

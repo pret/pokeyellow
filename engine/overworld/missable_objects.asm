@@ -1,4 +1,4 @@
-MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
+MarkTownVisitedAndLoadMissableObjects:
 	ld a, [wCurMap]
 	cp ROUTE_1
 	jr nc, .notInTown
@@ -17,7 +17,7 @@ MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ld h, [hl]
 	; fall through
 
-; LoadMissableObjects: ; efb2 (3:6fb2)
+; LoadMissableObjects:
 ; seems to not exist in yellow (predef replaced with something near TryPushingBoulder)
 	ld l, a
 	push hl
@@ -64,7 +64,7 @@ MarkTownVisitedAndLoadMissableObjects: ; ef93 (3:6f93)
 	ld [de], a                 ; write sentinel
 	ret
 
-InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
+InitializeMissableObjectsFlags:
 	ld hl, wMissableObjectFlags
 	ld bc, wMissableObjectFlagsEnd - wMissableObjectFlags
 	xor a
@@ -95,7 +95,7 @@ InitializeMissableObjectsFlags: ; eff1 (3:6ff1)
 	jr .missableObjectsLoop
 
 ; tests if current sprite is a missable object that is hidden/has been removed
-IsObjectHidden: ; f022 (3:7022)
+IsObjectHidden:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	swap a
 	ld b, a
@@ -122,7 +122,7 @@ IsObjectHidden: ; f022 (3:7022)
 
 ; adds missable object (items, leg. pokemon, etc.) to the map
 ; [wMissableObjectIndex]: index of the missable object to be added (global index)
-ShowObject: ; f044 (3:7044)
+ShowObject:
 ShowObject2:
 	ld hl, wMissableObjectFlags
 	ld a, [wMissableObjectIndex]
@@ -133,7 +133,7 @@ ShowObject2:
 
 ; removes missable object (items, leg. pokemon, etc.) from the map
 ; [wMissableObjectIndex]: index of the missable object to be removed (global index)
-HideObject: ; f053 (3:7053)
+HideObject:
 	ld hl, wMissableObjectFlags
 	ld a, [wMissableObjectIndex]
 	ld c, a
@@ -141,7 +141,7 @@ HideObject: ; f053 (3:7053)
 	call MissableObjectFlagAction   ; set "removed" flag
 	jp UpdateSprites
 
-MissableObjectFlagAction: ; f062 (3:7062)
+MissableObjectFlagAction:
 ; identical to FlagAction
 
 	push hl

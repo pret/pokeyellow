@@ -1,6 +1,6 @@
 ; creates a set of moves that may be used and returns its address in hl
 ; unused slots are filled with 0, all used slots may be chosen with equal probability
-AIEnemyTrainerChooseMoves: ; 3969c (e:569c)
+AIEnemyTrainerChooseMoves:
 	ld a, $a
 	ld hl, wBuffer ; init temporary move selection array. Only the moves with the lowest numbers are chosen in the end
 	ld [hli], a   ; move 1
@@ -103,14 +103,14 @@ AIEnemyTrainerChooseMoves: ; 3969c (e:569c)
 	ld hl, wEnemyMonMoves    ; use original move set
 	ret
 
-AIMoveChoiceModificationFunctionPointers: ; 39726 (e:5726)
+AIMoveChoiceModificationFunctionPointers:
 	dw AIMoveChoiceModification1
 	dw AIMoveChoiceModification2
 	dw AIMoveChoiceModification3
 	dw AIMoveChoiceModification4 ; unused, does nothing
 
 ; discourages moves that cause no damage but only a status ailment if player's mon already has one
-AIMoveChoiceModification1: ; 3972e (e:572e)
+AIMoveChoiceModification1:
 	ld a, [wBattleMonStatus]
 	and a
 	ret z ; return if no status ailment on player's mon
@@ -145,7 +145,7 @@ AIMoveChoiceModification1: ; 3972e (e:572e)
 	ld [hl], a
 	jr .nextMove
 
-StatusAilmentMoveEffects: ; 39765 (e:5765)
+StatusAilmentMoveEffects:
 	db $01 ; unused sleep effect
 	db SLEEP_EFFECT
 	db POISON_EFFECT
@@ -155,7 +155,7 @@ StatusAilmentMoveEffects: ; 39765 (e:5765)
 ; slightly encourage moves with specific effects.
 ; in particular, stat-modifying moves and other move effects
 ; that fall in-bewteen
-AIMoveChoiceModification2: ; 3976a (e:576a)
+AIMoveChoiceModification2:
 	ld a, [wAILayer2Encouragement]
 	cp $1
 	ret nz
@@ -188,7 +188,7 @@ AIMoveChoiceModification2: ; 3976a (e:576a)
 ; encourages moves that are effective against the player's mon (even if non-damaging).
 ; discourage damaging moves that are ineffective or not very effective against the player's mon,
 ; unless there's no damaging move that deals at least neutral damage
-AIMoveChoiceModification3: ; 3979a (e:579a)
+AIMoveChoiceModification3:
 	ld hl, wBuffer - 1 ; temp move selection array (-1 byte offset)
 	ld de, wEnemyMonMoves ; enemy moves
 	ld b, NUM_MOVES + 1
@@ -255,10 +255,10 @@ AIMoveChoiceModification3: ; 3979a (e:579a)
 	jr z, .nextMove
 	inc [hl] ; sligthly discourage this move
 	jr .nextMove
-AIMoveChoiceModification4: ; 39806 (e:5806)
+AIMoveChoiceModification4:
 	ret
 
-ReadMove: ; 39807 (e:5807)
+ReadMove:
 	push hl
 	push de
 	push bc
@@ -275,7 +275,7 @@ ReadMove: ; 39807 (e:5807)
 
 ; move choice modification methods that are applied for each trainer class
 ; 0 is sentinel value
-TrainerClassMoveChoiceModifications: ; 3981e (e:581e)
+TrainerClassMoveChoiceModifications:
 	db 0      ; YOUNGSTER
 	db 1,0    ; BUG CATCHER
 	db 1,0    ; LASS
@@ -336,7 +336,7 @@ INCLUDE "data/trainer_moves.asm"
 
 INCLUDE "data/trainer_parties.asm"
 
-TrainerAI: ; 3a5b2 (e:65b2)
+TrainerAI:
 	ld a,[wIsInBattle]
 	dec a
 	jr z, .done ; if not a trainer, we're done here
@@ -377,7 +377,7 @@ TrainerAI: ; 3a5b2 (e:65b2)
 	and a
 	ret
 
-TrainerAIPointers: ; 3a5f2 (e:65f2)
+TrainerAIPointers:
 ; one entry per trainer class
 ; first byte, number of times (per Pokémon) it can occur
 ; next two bytes, pointer to AI subroutine for trainer class
@@ -429,27 +429,27 @@ TrainerAIPointers: ; 3a5f2 (e:65f2)
 	dbw 2,AgathaAI ; agatha
 	dbw 1,LanceAI ; lance
 
-JugglerAI: ; 3a67f (e:667f)
+JugglerAI:
 	cp $40
 	ret nc
 	jp AISwitchIfEnoughMons
 
-BlackbeltAI: ; 3a685 (e:6685)
+BlackbeltAI:
 	cp $20
 	ret nc
 	jp AIUseXAttack
 
-GiovanniAI: ; 3a68b (e:668b)
+GiovanniAI:
 	cp $40
 	ret nc
 	jp AIUseGuardSpec
 
-CooltrainerMAI: ; 3a691 (e:6691)
+CooltrainerMAI:
 	cp $40
 	ret nc
 	jp AIUseXAttack
 
-CooltrainerFAI: ; 3a697 (e:6697)
+CooltrainerFAI:
 	cp $40
 	ld a,$A
 	call AICheckIfHPBelowFraction
@@ -459,24 +459,24 @@ CooltrainerFAI: ; 3a697 (e:6697)
 	ret nc
 	jp AISwitchIfEnoughMons
 
-BrockAI: ; 3a6aa (e:66aa)
+BrockAI:
 ; if his active monster has a status condition, use a full heal
 	ld a,[wEnemyMonStatus]
 	and a
 	ret z
 	jp AIUseFullHeal
 
-MistyAI: ; 3a6b2 (e:66b2)
+MistyAI:
 	cp $40
 	ret nc
 	jp AIUseXDefend
 
-LtSurgeAI: ; 3a6b8 (e:66b8)
+LtSurgeAI:
 	cp $40
 	ret nc
 	jp AIUseXSpeed
 
-ErikaAI: ; 3a6be (e:66be)
+ErikaAI:
 	cp $80
 	ret nc
 	ld a,$A
@@ -484,12 +484,12 @@ ErikaAI: ; 3a6be (e:66be)
 	ret nc
 	jp AIUseSuperPotion
 
-KogaAI: ; 3a6ca (e:66ca)
+KogaAI:
 	cp $20
 	ret nc
 	jp AIUseXAttack
 
-BlaineAI: ; 3a6d0 (e:66d0)
+BlaineAI:
 	cp $40
 	ret nc
 	ld a,$A
@@ -497,12 +497,12 @@ BlaineAI: ; 3a6d0 (e:66d0)
 	ret nc
 	jp AIUseSuperPotion
 
-SabrinaAI: ; 3a6dc (e:66dc)
+SabrinaAI:
 	cp $40
 	ret nc
 	jp AIUseXDefend
 
-Sony2AI: ; 3a6e2 (e:66e2)
+Sony2AI:
 	cp $20
 	ret nc
 	ld a,5
@@ -510,7 +510,7 @@ Sony2AI: ; 3a6e2 (e:66e2)
 	ret nc
 	jp AIUsePotion
 
-Sony3AI: ; 3a6ee (e:66ee)
+Sony3AI:
 	cp $20
 	ret nc
 	ld a,5
@@ -518,7 +518,7 @@ Sony3AI: ; 3a6ee (e:66ee)
 	ret nc
 	jp AIUseFullRestore
 
-LoreleiAI: ; 3a6fa (e:66fa)
+LoreleiAI:
 	cp $80
 	ret nc
 	ld a,5
@@ -526,12 +526,12 @@ LoreleiAI: ; 3a6fa (e:66fa)
 	ret nc
 	jp AIUseSuperPotion
 
-BrunoAI: ; 3a706 (e:6706)
+BrunoAI:
 	cp $40
 	ret nc
 	jp AIUseXDefend
 
-AgathaAI: ; 3a70c (e:670c)
+AgathaAI:
 	cp $14
 	jp c,AISwitchIfEnoughMons
 	cp $80
@@ -541,7 +541,7 @@ AgathaAI: ; 3a70c (e:670c)
 	ret nc
 	jp AIUseSuperPotion
 
-LanceAI: ; 3a71d (e:671d)
+LanceAI:
 	cp $80
 	ret nc
 	ld a,5
@@ -549,23 +549,23 @@ LanceAI: ; 3a71d (e:671d)
 	ret nc
 	jp AIUseHyperPotion
 
-GenericAI: ; 3a729 (e:6729)
+GenericAI:
 	and a ; clear carry
 	ret
 
 ; end of individual trainer AI routines
 
-DecrementAICount: ; 3a72b (e:672b)
+DecrementAICount:
 	ld hl,wAICount
 	dec [hl]
 	scf
 	ret
 
-AIPlayRestoringSFX: ; 3a731 (e:6731)
+AIPlayRestoringSFX:
 	ld a,SFX_HEAL_AILMENT
 	jp PlaySoundWaitForCurrent
 
-AIUseFullRestore: ; 3a736 (e:6736)
+AIUseFullRestore:
 	call AICureStatus
 	ld a,FULL_RESTORE
 	ld [wAIItem],a
@@ -589,25 +589,25 @@ AIUseFullRestore: ; 3a736 (e:6736)
 	ld [wEnemyMonHP],a
 	jr AIPrintItemUseAndUpdateHPBar
 
-AIUsePotion: ; 3a760 (e:6760)
+AIUsePotion:
 ; enemy trainer heals his monster with a potion
 	ld a,POTION
 	ld b,20
 	jr AIRecoverHP
 
-AIUseSuperPotion: ; 3a766 (e:6766)
+AIUseSuperPotion:
 ; enemy trainer heals his monster with a super potion
 	ld a,SUPER_POTION
 	ld b,50
 	jr AIRecoverHP
 
-AIUseHyperPotion: ; 3a76c (e:676c)
+AIUseHyperPotion:
 ; enemy trainer heals his monster with a hyper potion
 	ld a,HYPER_POTION
 	ld b,200
 	; fallthrough
 
-AIRecoverHP: ; 3a770 (e:6770)
+AIRecoverHP:
 ; heal b HP and print "trainer used $(a) on pokemon!"
 	ld [wAIItem],a
 	ld hl,wEnemyMonHP + 1
@@ -648,7 +648,7 @@ AIRecoverHP: ; 3a770 (e:6770)
 	ld [wHPBarNewHP+1],a
 	; fallthrough
 
-AIPrintItemUseAndUpdateHPBar: ; 3a7ae (e:67ae)
+AIPrintItemUseAndUpdateHPBar:
 	call AIPrintItemUse_
 	coord hl, 2, 2
 	xor a
@@ -656,7 +656,7 @@ AIPrintItemUseAndUpdateHPBar: ; 3a7ae (e:67ae)
 	predef UpdateHPBar2
 	jp DecrementAICount
 
-AISwitchIfEnoughMons: ; 3a7c0 (e:67c0)
+AISwitchIfEnoughMons:
 ; enemy trainer switches if there are 3 or more unfainted mons in party
 	ld a,[wEnemyPartyCount]
 	ld c,a
@@ -686,7 +686,7 @@ AISwitchIfEnoughMons: ; 3a7c0 (e:67c0)
 	and a
 	ret
 
-SwitchEnemyMon: ; 3a7e1 (e:67e1)
+SwitchEnemyMon:
 
 ; prepare to withdraw the active monster: copy hp, number, and status to roster
 
@@ -717,17 +717,17 @@ SwitchEnemyMon: ; 3a7e1 (e:67e1)
 	scf
 	ret
 
-AIBattleWithdrawText: ; 3a817 (e:6817)
+AIBattleWithdrawText:
 	TX_FAR _AIBattleWithdrawText
 	db "@"
 
-AIUseFullHeal: ; 3a81c (e:681c)
+AIUseFullHeal:
 	call AIPlayRestoringSFX
 	call AICureStatus
 	ld a,FULL_HEAL
 	jp AIPrintItemUse
 
-AICureStatus: ; 3a827 (e:6827)
+AICureStatus:
 ; cures the status of enemy's active pokemon
 	ld a,[wEnemyMonPartyPos]
 	ld hl,wEnemyMon1Status
@@ -740,7 +740,7 @@ AICureStatus: ; 3a827 (e:6827)
 	res 0,[hl]
 	ret
 
-AIUseXAccuracy: ; 3a83e (e:683e)
+AIUseXAccuracy:
 ; unused
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
@@ -748,14 +748,14 @@ AIUseXAccuracy: ; 3a83e (e:683e)
 	ld a,X_ACCURACY
 	jp AIPrintItemUse
 
-AIUseGuardSpec: ; 3a84b (e:684b)
+AIUseGuardSpec:
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
 	set 1,[hl]
 	ld a,GUARD_SPEC
 	jp AIPrintItemUse
 
-AIUseDireHit: ; 3a858 (e:6858)
+AIUseDireHit:
 ; unused
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
@@ -763,7 +763,7 @@ AIUseDireHit: ; 3a858 (e:6858)
 	ld a,DIRE_HIT
 	jp AIPrintItemUse
 
-AICheckIfHPBelowFraction: ; 3a865 (e:6865)
+AICheckIfHPBelowFraction:
 ; return carry if enemy trainer's current HP is below 1 / a of the maximum
 	ld [H_DIVISOR],a
 	ld hl,wEnemyMonMaxHP
@@ -789,27 +789,27 @@ AICheckIfHPBelowFraction: ; 3a865 (e:6865)
 	sub c
 	ret
 
-AIUseXAttack: ; 3a888 (e:6888)
+AIUseXAttack:
 	ld b,$A
 	ld a,X_ATTACK
 	jr AIIncreaseStat
 
-AIUseXDefend: ; 3a88e (e:688e)
+AIUseXDefend:
 	ld b,$B
 	ld a,X_DEFEND
 	jr AIIncreaseStat
 
-AIUseXSpeed: ; 3a894 (e:6894)
+AIUseXSpeed:
 	ld b,$C
 	ld a,X_SPEED
 	jr AIIncreaseStat
 
-AIUseXSpecial: ; 3a89a (e:689a)
+AIUseXSpecial:
 	ld b,$D
 	ld a,X_SPECIAL
 	; fallthrough
 
-AIIncreaseStat: ; 3a89e (e:689e)
+AIIncreaseStat:
 	ld [wAIItem],a
 	push bc
 	call AIPrintItemUse_
@@ -831,12 +831,12 @@ AIIncreaseStat: ; 3a89e (e:689e)
 	ld [hl],a
 	jp DecrementAICount
 
-AIPrintItemUse: ; 3a8c2 (e:68c2)
+AIPrintItemUse:
 	ld [wAIItem],a
 	call AIPrintItemUse_
 	jp DecrementAICount
 
-AIPrintItemUse_: ; 3a8cb (e:68cb)
+AIPrintItemUse_:
 ; print "x used [wAIItem] on z!"
 	ld a,[wAIItem]
 	ld [wd11e],a
@@ -844,6 +844,6 @@ AIPrintItemUse_: ; 3a8cb (e:68cb)
 	ld hl, AIBattleUseItemText
 	jp PrintText
 
-AIBattleUseItemText: ; 3a8da (e:68da)
+AIBattleUseItemText:
 	TX_FAR _AIBattleUseItemText
 	db "@"

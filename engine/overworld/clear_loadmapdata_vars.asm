@@ -1,4 +1,4 @@
-ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
+ClearVariablesAfterLoadingMapData:
 	ld a, $90
 	ld [hWY], a
 	ld [rWY], a

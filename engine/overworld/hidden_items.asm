@@ -1,4 +1,4 @@
-HiddenItems: ; 75f74 (1d:5f74)
+HiddenItems:
 	ld hl, HiddenItemCoords
 	call FindHiddenItemOrCoinsIndex
 	ld [wHiddenItemOrCoinsIndex], a
@@ -25,7 +25,7 @@ HiddenItems: ; 75f74 (1d:5f74)
 
 INCLUDE "data/hidden_item_coords.asm"
 
-FoundHiddenItemText: ; 76050 (1d:6050)
+FoundHiddenItemText:
 	TX_FAR _FoundHiddenItemText
 	TX_ASM
 	ld a, [wHiddenObjectFunctionArgument] ; item ID
@@ -50,11 +50,11 @@ FoundHiddenItemText: ; 76050 (1d:6050)
 	call PrintText
 	jp TextScriptEnd
 
-HiddenItemBagFullText: ; 76089 (1d:6089)
+HiddenItemBagFullText:
 	TX_FAR _HiddenItemBagFullText
 	db "@"
 
-HiddenCoins: ; 7608e (1d:608e)
+HiddenCoins:
 	ld b, COIN_CASE
 	predef GetQuantityOfItemInBag
 	ld a, b
@@ -131,17 +131,17 @@ HiddenCoins: ; 7608e (1d:608e)
 
 INCLUDE "data/hidden_coins.asm"
 
-FoundHiddenCoinsText: ; 76143 (1d:6143)
+FoundHiddenCoinsText:
 	TX_FAR _FoundHiddenCoinsText
 	db $10,"@"
 
-DroppedHiddenCoinsText: ; 76149 (1d:6149)
+DroppedHiddenCoinsText:
 	TX_FAR _FoundHiddenCoins2Text
 	db $10
 	TX_FAR _DroppedHiddenCoinsText
 	db "@"
 
-FindHiddenItemOrCoinsIndex: ; 76153 (1d:6153)
+FindHiddenItemOrCoinsIndex:
 	ld a, [wHiddenObjectY]
 	ld d, a
 	ld a, [wHiddenObjectX]

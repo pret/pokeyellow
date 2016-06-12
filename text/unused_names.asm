@@ -1,4 +1,4 @@
-UnusedNames: ; 491e (1:491e)
+UnusedNames:
 	db "かみなりバッヂ@"
 	db "かいがらバッヂ@"
 	db "おじぞうバッヂ@"

@@ -1,4 +1,4 @@
-ApplyPikachuMovementData_:: ; fd2a1 (3f:52a1)
+ApplyPikachuMovementData_::
 	ld a, b
 	ld [wPikachuMovementScriptBank], a
 	ld a, l
@@ -950,7 +950,7 @@ Func_fd851:
 GFX_fd86b:
 INCBIN "gfx/unknown_fd86b.2bpp"
 
-LoadPikachuSpriteIntoVRAM: ; fd8ab (3f:58ab)
+LoadPikachuSpriteIntoVRAM:
 	ld de, PikachuSprite
 	lb bc, BANK(PikachuSprite), (SandshrewSprite - PikachuSprite) / 32
 	ld hl, vNPCSprites + $c * $10
@@ -970,7 +970,7 @@ LoadPikachuSpriteIntoVRAM: ; fd8ab (3f:58ab)
 	call LoadPikachuBallIconIntoVRAM
 	ret
 
-PikachuPewterPokecenterCheck: ; fd8d4 (3f:58d4)
+PikachuPewterPokecenterCheck:
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	ret nz
@@ -978,7 +978,7 @@ PikachuPewterPokecenterCheck: ; fd8d4 (3f:58d4)
 	call StarterPikachuEmotionCommand_turnawayfromplayer
 	ret
 
-PikachuFanClubCheck: ; fd8e1 (3f:58e1)
+PikachuFanClubCheck:
 	ld a, [wCurMap]
 	cp POKEMON_FAN_CLUB
 	ret nz
@@ -986,14 +986,14 @@ PikachuFanClubCheck: ; fd8e1 (3f:58e1)
 	call StarterPikachuEmotionCommand_turnawayfromplayer
 	ret
 
-PikachuBillsHouseCheck: ; fd8ee (3f:58ee)
+PikachuBillsHouseCheck:
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
 	ret nz
 	call EnablePikachuFollowingPlayer
 	ret
 
-Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3: ; fd8f8 (3f:58f8)
+Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3:
 	call LoadCurrentMapView
 	call UpdateSprites
 	call Delay3

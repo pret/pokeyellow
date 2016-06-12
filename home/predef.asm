@@ -1,4 +1,4 @@
-Predef:: ; 3eb4 (0:3eb4)
+Predef::
 ; Call predefined function a.
 ; To preserve other registers, have the
 ; destination call GetPredefRegisters.
@@ -30,7 +30,7 @@ Predef:: ; 3eb4 (0:3eb4)
 	call BankswitchCommon
 	ret
 
-GetPredefRegisters:: ; 3ed7 (0:3ed7)
+GetPredefRegisters::
 ; Restore the contents of register pairs
 ; when GetPredefPointer was called.
 	ld a, [wPredefRegisters + 0]

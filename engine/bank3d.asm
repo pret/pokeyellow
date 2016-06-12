@@ -3,7 +3,7 @@ INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 
-StarterPikachuBattleEntranceAnimation: ; f429f (3d:429f)
+StarterPikachuBattleEntranceAnimation:
 	coord hl, 0, 5
 	ld c, 0
 .loop1
@@ -29,7 +29,7 @@ StarterPikachuBattleEntranceAnimation: ; f429f (3d:429f)
 	inc hl
 	jr .loop1
 
-.PlaceColumn: ; f42c2 (3d:f42c2)
+.PlaceColumn:
 	push hl
 	push de
 	push bc
@@ -53,7 +53,7 @@ StarterPikachuBattleEntranceAnimation: ; f429f (3d:429f)
 
 INCLUDE "engine/battle/decrement_pp.asm"
 
-ModifyPikachuHappiness:: ; f430a (3d:430a)
+ModifyPikachuHappiness::
 	ld a, d
 	cp PIKAHAPPY_GYMLEADER
 	jr z, .checkanywhereinparty
@@ -142,7 +142,7 @@ ModifyPikachuHappiness:: ; f430a (3d:430a)
 .done
 	ret
 
-HappinessChangeTable: ; f4385 (3d:4385)
+HappinessChangeTable:
 	; Increase
 	db   5, 3, 2 ; Gained a level
 	db   5, 3, 2 ; HP restore
@@ -157,7 +157,7 @@ HappinessChangeTable: ; f4385 (3d:4385)
 	db  -5, -5, -10 ; Unknown (d = 10)
 	db -10, -10, -20 ; Unknown (d = 11)
 
-PikachuMoods: ; f43a6 (3d:43a6)
+PikachuMoods:
 	; Increase
 	db $8a           ; Gained a level
 	db $83           ; HP restore
@@ -176,7 +176,7 @@ RedPicBack:       INCBIN "pic/trainer/redb.pic"
 OldManPic:	       INCBIN "pic/trainer/oldman.pic"
 ProfOakPicBack:   INCBIN "pic/ytrainer/prof.oakb.pic"
 
-LoadYellowTitleScreenGFX: ; f453f (3d:453f)
+LoadYellowTitleScreenGFX:
 	ld hl, PokemonLogoGraphics
 	ld de, vChars2
 	ld bc, 115 * $10
@@ -199,14 +199,14 @@ LoadYellowTitleScreenGFX: ; f453f (3d:453f)
 	call FarCopyData
 	ret
 
-TitleScreen_PlacePokemonLogo: ; f4578 (3d:4578)
+TitleScreen_PlacePokemonLogo:
 	coord hl, 2, 1
 	ld de, TitleScreenPokemonLogoTilemap
 	lb bc, 7, 16
 	call Bank3D_CopyBox
 	ret
 
-TitleScreen_PlacePikaSpeechBubble: ; f4585 (3d:4585)
+TitleScreen_PlacePikaSpeechBubble:
 	coord hl, 6, 4
 	ld de, TitleScreenPikaBubbleTilemap
 	lb bc, 4, 7
@@ -217,7 +217,7 @@ TitleScreen_PlacePikaSpeechBubble: ; f4585 (3d:4585)
 	ld [hl], $65
 	ret
 
-TitleScreen_PlacePikachu: ; f459a (3d:459a)
+TitleScreen_PlacePikachu:
 	coord hl, 4, 8
 	ld de, TitleScreenPikachuTilemap
 	lb bc, 9, 12
@@ -236,7 +236,7 @@ TitleScreen_PlacePikachu: ; f459a (3d:459a)
 	call CopyData
 	ret
 
-TitleScreenPikachuEyesOAMData: ; f45c7 (3d:45c7)
+TitleScreenPikachuEyesOAMData:
 	db $60, $40, $f1, $22
 	db $60, $48, $f0, $22
 	db $68, $40, $f3, $22
@@ -246,7 +246,7 @@ TitleScreenPikachuEyesOAMData: ; f45c7 (3d:45c7)
 	db $68, $60, $f2, $02
 	db $68, $68, $f3, $02
 
-Bank3D_CopyBox: ; f45e7 (3d:45e7)
+Bank3D_CopyBox:
 ; copy cxb (xy) screen area from de to hl
 .row
 	push bc
@@ -265,7 +265,7 @@ Bank3D_CopyBox: ; f45e7 (3d:45e7)
 	jr nz, .row
 	ret
 
-TitleScreenPokemonLogoTilemap: ; f45f9 (3d:45f9)
+TitleScreenPokemonLogoTilemap:
 ; 16x7 (xy)
 	db $f4, $f4, $f4, $f4, $f4, $f4, $49, $f4, $72, $30, $f4, $f4, $f4, $f4, $f4, $f4
 	db $fd, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $f4, $0d, $0e, $0f
@@ -275,18 +275,18 @@ TitleScreenPokemonLogoTilemap: ; f45f9 (3d:45f9)
 	db $f4, $41, $42, $43, $44, $45, $46, $47, $48, $f4, $4a, $4b, $4c, $4d, $4e, $4f
 	db $f4, $6a, $6b, $6c, $6d, $f4, $f4, $f4, $f4, $f4, $f4, $6e, $6f, $70, $71, $f4
 
-Pointer_f4669: ; f4669 (3d:4669)
+Pointer_f4669:
 ; Unreferenced
 	db $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $5f
 
-TitleScreenPikaBubbleTilemap: ; f4673 (3d:4673)
+TitleScreenPikaBubbleTilemap:
 ; 7x4 (xy)
 	db $24, $25, $66, $67, $68, $69, $2a
 	db $50, $51, $52, $53, $54, $55, $56
 	db $57, $58, $59, $5a, $5b, $5c, $5d
 	db $6d, $5e, $5f, $60, $61, $62, $63
 
-TitleScreenPikachuTilemap: ; f468f (3d:468f)
+TitleScreenPikachuTilemap:
 ; 12x9 (xy)
 	db $80, $81, $82, $83, $00, $00, $00, $00, $84, $85, $86, $87
 	db $88, $89, $8a, $8b, $8c, $8d, $8d, $8e, $8f, $8a, $90, $91
@@ -306,11 +306,11 @@ YellowLogoGraphicsEnd:
 
 INCLUDE "engine/menu/link_menu.asm"
 
-HandleMenuInputDouble: ; f5a40 (3d:5a40)
+HandleMenuInputDouble:
 	xor a
 	ld [wPartyMenuAnimMonEnabled], a
 
-HandleMenuInputPokemonSelectionDouble: ; f5a44 (3d:5a44)
+HandleMenuInputPokemonSelectionDouble:
 	ld a, [H_DOWNARROWBLINKCNT1]
 	push af
 	ld a, [H_DOWNARROWBLINKCNT2]
@@ -380,7 +380,7 @@ HandleMenuInputPokemonSelectionDouble: ; f5a44 (3d:5a44)
 	ld a, [hJoy5]
 	ret
 
-.UpdateCursorTile: ; f5ab0 (3d:5ab0)
+.UpdateCursorTile:
 	ld a, [wTopMenuItemY]
 	and a
 	jr z, .asm_f5ac0
@@ -436,7 +436,7 @@ HandleMenuInputPokemonSelectionDouble: ; f5a44 (3d:5a44)
 	ld [wLastMenuItem], a
 	ret
 
-PrintStrengthTxt: ; f5b06 (3d:5b06)
+PrintStrengthTxt:
 	ld hl, wd728
 	set 0, [hl]
 	ld hl, Text_f5b17
@@ -444,7 +444,7 @@ PrintStrengthTxt: ; f5b06 (3d:5b06)
 	ld hl, Text_f5b28
 	jp PrintText
 
-Text_f5b17: ; f5b17 (3d:5b17)
+Text_f5b17:
 	TX_FAR _UsedStrengthText ; 2d:417e
 	TX_ASM
 	ld a, [wcf91]
@@ -452,11 +452,11 @@ Text_f5b17: ; f5b17 (3d:5b17)
 	call Delay3
 	jp TextScriptEnd
 
-Text_f5b28: ; f5b28 (3d:5b28)
+Text_f5b28:
 	TX_FAR _CanMoveBouldersText ; 2d:4193
 	db "@"
 
-IsSurfingAllowed: ; f5b2d (3d:5b2d)
+IsSurfingAllowed:
 ; Returns whether surfing is allowed in bit 1 of wd728.
 ; Surfing isn't allowed on the Cycling Road or in the lowest level of the
 ; Seafoam Islands before the current has been slowed with boulders.
@@ -483,19 +483,19 @@ IsSurfingAllowed: ; f5b2d (3d:5b2d)
 	ld hl, CyclingIsFunText
 	jp PrintText
 
-CoordsData_f5b64: ; f5b64 (3d:5b64)
+CoordsData_f5b64:
 	db 11, 07
 	db $ff
 
-CurrentTooFastText: ; f5b67 (3d:5b67)
+CurrentTooFastText:
 	TX_FAR _CurrentTooFastText ; 2d:41ab
 	db "@"
 
-CyclingIsFunText: ; f5b6c (3d:5b6c)
+CyclingIsFunText:
 	TX_FAR _CyclingIsFunText ; 2d:41ca
 	db "@"
 
-AddItemToInventory_: ; f5b70 (3d:5b70)
+AddItemToInventory_:
 	ld a, [wItemQuantity] ; a = item quantity
 	push af
 	push bc
@@ -589,7 +589,7 @@ AddItemToInventory_: ; f5b70 (3d:5b70)
 ; hl = address of inventory (either wNumBagItems or wNumBoxItems)
 ; [wWhichPokemon] = index (within the inventory) of the item to remove
 ; [wItemQuantity] = quantity to remove
-RemoveItemFromInventory_: ; f5be1 (3d:5be1)
+RemoveItemFromInventory_:
 	push hl
 	inc hl
 	ld a, [wWhichPokemon] ; index (within the inventory) of the item being removed
@@ -647,7 +647,7 @@ BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
 CircleTile:						INCBIN "gfx/circle_tile.2bpp"
 BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
 
-ReadSuperRodData: ; f5ea4 (3d:5ea4)
+ReadSuperRodData:
 	ld a, [wCurMap]
 	ld c, a
 	ld hl, FishingSlots
@@ -667,7 +667,7 @@ ReadSuperRodData: ; f5ea4 (3d:5ea4)
 	ld de, $0
 	ret
 
-GenerateRandomFishingEncounter: ; f5ec1 (3d:5ec1)
+GenerateRandomFishingEncounter:
 	call Random
 	cp $66
 	jr c, .asm_f5ed6

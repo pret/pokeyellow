@@ -1,4 +1,4 @@
-Func_1510:: ; 1510 (0:1510)
+Func_1510::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 7, [hl]
@@ -7,21 +7,21 @@ Func_1510:: ; 1510 (0:1510)
 	pop hl
 	ret
 
-Func_151d:: ; 151d (0:151d)
+Func_151d::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	res 7, [hl]
 	pop hl
 	ret
 
-EnablePikachuOverworldSpriteDrawing:: ; 1525 (0:1525)
+EnablePikachuOverworldSpriteDrawing::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	res 3, [hl]
 	pop hl
 	ret
 
-DisablePikachuOverworldSpriteDrawing:: ; 152d (0:152d)
+DisablePikachuOverworldSpriteDrawing::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 3, [hl]
@@ -30,28 +30,28 @@ DisablePikachuOverworldSpriteDrawing:: ; 152d (0:152d)
 	pop hl
 	ret
 
-DisablePikachuFollowingPlayer:: ; 153a (0:153a)
+DisablePikachuFollowingPlayer::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 1, [hl]
 	pop hl
 	ret
 
-EnablePikachuFollowingPlayer:: ; 1542 (0:1542)
+EnablePikachuFollowingPlayer::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	res 1, [hl]
 	pop hl
 	ret
 
-CheckPikachuFollowingPlayer:: ; 154a (0:154a)
+CheckPikachuFollowingPlayer::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	bit 1, [hl]
 	pop hl
 	ret
 
-SpawnPikachu:: ; 1552 (0:1552)
+SpawnPikachu::
 	ld a, [hl]
 	dec a
 	swap a
@@ -59,7 +59,7 @@ SpawnPikachu:: ; 1552 (0:1552)
 	homecall SpawnPikachu_ ; 3f:46d5
 	ret
 
-Pikachu_IsInArray:: ; 1568 (0:1568)
+Pikachu_IsInArray::
 	ld b, $0
 	ld c, a
 .loop
@@ -80,7 +80,7 @@ Pikachu_IsInArray:: ; 1568 (0:1568)
 	and a
 	ret
 
-GetPikachuMovementScriptByte:: ; 157c (0:157c)
+GetPikachuMovementScriptByte::
 	push hl
 	push bc
 	ld a, [H_LOADEDROMBANK]
@@ -104,7 +104,7 @@ GetPikachuMovementScriptByte:: ; 157c (0:157c)
 	pop hl
 	ret
 
-ApplyPikachuMovementData:: ; 159b (0:159b)
+ApplyPikachuMovementData::
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
 	push af

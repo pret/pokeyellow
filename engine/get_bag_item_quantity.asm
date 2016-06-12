@@ -1,4 +1,4 @@
-GetQuantityOfItemInBag: ; f735 (3:7735)
+GetQuantityOfItemInBag:
 ; In: b = item ID
 ; Out: b = how many of that item are in the bag
 	call GetPredefRegisters

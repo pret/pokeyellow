@@ -1,4 +1,4 @@
-_Multiply: ; f660e (3d:660e)
+_Multiply:
 	ld a, $8
 	ld b, a
 	xor a
@@ -60,7 +60,7 @@ _Multiply: ; f660e (3d:660e)
 	ld [H_PRODUCT], a ; $ff95
 	ret
 
-_Divide: ; f6672 (3d:6672)
+_Divide:
 	xor a
 	ld [H_DIVIDEBUFFER], a   ; ff9a
 	ld [H_DIVIDEBUFFER+1], a ; ff9b

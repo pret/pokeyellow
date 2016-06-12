@@ -1,4 +1,4 @@
-AnimateHealingMachine: ; 7048b (1c:448b)
+AnimateHealingMachine:
 	ld de, PokeCenterFlashingMonitorAndHealBall ; $44b7
 	ld hl, vChars0 + $7c0
 	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), $03 ; loads one too many tiles
@@ -60,10 +60,10 @@ AnimateHealingMachine: ; 7048b (1c:448b)
 	ld [hl], a
 	jp UpdateSprites
 
-PokeCenterFlashingMonitorAndHealBall: ; 7050b (1c:450b)
+PokeCenterFlashingMonitorAndHealBall:
 	INCBIN "gfx/pokecenter_ball.2bpp"
 
-PokeCenterOAMData: ; 7042b (1c:442b)
+PokeCenterOAMData:
 	db $24,$34,$7C,$14 ; heal machine monitor
 	db $2B,$30,$7D,$14 ; pokeballs 1-6
 	db $2B,$38,$7D,$34
@@ -73,7 +73,7 @@ PokeCenterOAMData: ; 7042b (1c:442b)
 	db $35,$38,$7D,$34
 
 ; d = value to xor with palette
-FlashSprite8Times: ; 70547 (1c:4547)
+FlashSprite8Times:
 	ld b, 8
 .loop
 	ld a, [rOBP1]
@@ -86,7 +86,7 @@ FlashSprite8Times: ; 70547 (1c:4547)
 	jr nz, .loop
 	ret
 
-CopyHealingMachineOAM: ; 7055a (1c:455a)
+CopyHealingMachineOAM:
 ; copy one OAM entry and advance the pointers
 	ld a, [de]
 	inc de

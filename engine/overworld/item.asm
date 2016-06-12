@@ -1,4 +1,4 @@
-PickUpItem: ; 4d55 (1:4d55)
+PickUpItem:
 	call EnableAutoTextBoxDrawing
 
 	ld a, [hSpriteIndexOrTextID]
@@ -44,11 +44,11 @@ PickUpItem: ; 4d55 (1:4d55)
 	call PrintText
 	ret
 
-FoundItemText: ; 4d9a (1:4d9a)
+FoundItemText:
 	TX_FAR _FoundItemText
 	db $0B
 	db "@"
 
-NoMoreRoomForItemText: ; 4da0 (1:4da0)
+NoMoreRoomForItemText:
 	TX_FAR _NoMoreRoomForItemText
 	db "@"

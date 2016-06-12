@@ -1,4 +1,4 @@
-IsPlayerOnDungeonWarp: ; 46bf3 (11:6bf3)
+IsPlayerOnDungeonWarp:
 	xor a
 	ld [wWhichDungeonWarp], a
 	ld a, [wd72d]

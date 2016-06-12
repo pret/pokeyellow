@@ -1,4 +1,4 @@
-DisplayDiploma: ; 56714 (15:6714)
+DisplayDiploma:
 	call SaveScreenTilesToBuffer2
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen

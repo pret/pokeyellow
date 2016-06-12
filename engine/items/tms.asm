@@ -1,5 +1,5 @@
 ; tests if mon [wcf91] can learn move [wMoveNum]
-CanLearnTM: ; 122f0 (4:62f0)
+CanLearnTM:
 	ld a, [wcf91]
 	ld [wd0b5], a
 	call GetMonHeader
@@ -28,7 +28,7 @@ CanLearnTM: ; 122f0 (4:62f0)
 
 ; converts TM/HM number in wd11e into move number
 ; HMs start at 51
-TMToMove: ; 1231d (4:631d)
+TMToMove:
 	ld a, [wd11e]
 	dec a
 	ld hl, TechnicalMachines

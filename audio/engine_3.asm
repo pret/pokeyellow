@@ -1,6 +1,6 @@
 ; The third of three duplicated sound engines.
 
-Audio3_PlaySound:: ; 7d10d (1f:510d)
+Audio3_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
 	cp $ff
@@ -15,7 +15,7 @@ Audio3_PlaySound:: ; 7d10d (1f:510d)
 	call InitMusicVariables
 	jp Audio3_7d192
 
-Audio3_7d12d: ; 7d12d (1f:512d)
+Audio3_7d12d:
 	ld l, a
 	ld e, a
 	ld h, $0
@@ -81,11 +81,11 @@ Audio3_7d12d: ; 7d12d (1f:512d)
 	dec c
 	jp .asm_7d146
 
-Audio3_7d18e: ; 7d18e (1f:518e)
+Audio3_7d18e:
 	call StopAllAudio
 	ret
 
-Audio3_7d192: ; 7d192 (1f:5192)
+Audio3_7d192:
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
@@ -186,5 +186,5 @@ Audio3_7d192: ; 7d192 (1f:5192)
 .asm_7d21f
 	ret
 
-Noise3_endchannel: ; 7d220 (1f:5220)
+Noise3_endchannel:
 	endchannel

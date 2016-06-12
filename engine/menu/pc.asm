@@ -1,4 +1,4 @@
-ActivatePC: ; 17cb0 (5:7cb0)
+ActivatePC:
 	call SaveScreenTilesToBuffer2
 	ld a, SFX_TURN_ON_PC
 	call PlaySound
@@ -9,7 +9,7 @@ ActivatePC: ; 17cb0 (5:7cb0)
 	set 3, [hl]
 	call LoadScreenTilesFromBuffer2
 	call Delay3
-PCMainMenu: ; 17ccc (5:7ccc)
+PCMainMenu:
 	callba DisplayPCMainMenu
 	ld hl, wFlags_0xcd60
 	set 5, [hl]
@@ -58,19 +58,19 @@ PCMainMenu: ; 17ccc (5:7ccc)
 	call PrintText
 	callba PlayerPC
 	jr ReloadMainMenu
-OaksPC: ; 17d44 (5:7d44)
+OaksPC:
 	ld a, SFX_ENTER_PC
 	call PlaySound
 	call WaitForSoundToFinish
 	callba OpenOaksPC
 	jr ReloadMainMenu
-PKMNLeague: ; 17d56 (5:7d56)
+PKMNLeague:
 	ld a, SFX_ENTER_PC
 	call PlaySound
 	call WaitForSoundToFinish
 	callba PKMNLeaguePC
 	jr ReloadMainMenu
-BillsPC: ; 17d68 (5:7d68)
+BillsPC:
 	ld a, SFX_ENTER_PC
 	call PlaySound
 	call WaitForSoundToFinish
@@ -83,13 +83,13 @@ BillsPC: ; 17d68 (5:7d68)
 .printText
 	call PrintText
 	callba BillsPC_
-ReloadMainMenu: ; 17d8a (5:7d8a)
+ReloadMainMenu:
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	call ReloadMapData
 	call UpdateSprites
 	jp PCMainMenu
-LogOff: ; 17d97 (5:7d97)
+LogOff:
 	ld a, SFX_TURN_OFF_PC
 	call PlaySound
 	call WaitForSoundToFinish
@@ -98,24 +98,24 @@ LogOff: ; 17d97 (5:7d97)
 	res 5, [hl]
 	ret
 
-TurnedOnPC1Text: ; 17da7 (5:7da7)
+TurnedOnPC1Text:
 	TX_FAR _TurnedOnPC1Text
 	db "@"
 
-AccessedBillsPCText: ; 17dac (5:7dac)
+AccessedBillsPCText:
 	TX_FAR _AccessedBillsPCText
 	db "@"
 
-AccessedSomeonesPCText: ; 17db1 (5:7db1)
+AccessedSomeonesPCText:
 	TX_FAR _AccessedSomeonesPCText
 	db "@"
 
-AccessedMyPCText: ; 17db6 (5:7db6)
+AccessedMyPCText:
 	TX_FAR _AccessedMyPCText
 	db "@"
 
 ; removes one of the specified item ID [hItemToRemoveID] from bag (if existent)
-RemoveItemByID: ; 17dbb (5:7dbb)
+RemoveItemByID:
 	ld hl, wBagItems
 	ld a, [hItemToRemoveID]
 	ld b, a

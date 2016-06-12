@@ -1,4 +1,4 @@
-DisplayElevatorFloorMenu: ; 1c264 (7:4264)
+DisplayElevatorFloorMenu:
 	ld hl, wd730
 	ld a, [hl]
 	push af
@@ -49,6 +49,6 @@ DisplayElevatorFloorMenu: ; 1c264 (7:4264)
 	ld [hli], a ; destination map ID
 	ret
 
-WhichFloorText: ; 1c2bd (7:42bd)
+WhichFloorText:
 	TX_FAR _WhichFloorText
 	db "@"

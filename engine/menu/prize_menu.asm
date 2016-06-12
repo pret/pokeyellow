@@ -1,4 +1,4 @@
-CeladonPrizeMenu: ; 5267d (14:667d)
+CeladonPrizeMenu:
 	ld b,COIN_CASE
 	call IsItemInBag
 	jr nz,.havingCoinCase
@@ -41,20 +41,20 @@ CeladonPrizeMenu: ; 5267d (14:667d)
 	res 6, [hl]
 	ret
 
-RequireCoinCaseTextPtr: ; 526df (14:66df)
+RequireCoinCaseTextPtr:
 	TX_FAR _RequireCoinCaseText
 	db $0D
 	db "@"
 
-ExchangeCoinsForPrizesTextPtr: ; 526e5 (14:66e5)
+ExchangeCoinsForPrizesTextPtr:
 	TX_FAR _ExchangeCoinsForPrizesText
 	db "@"
 
-WhichPrizeTextPtr: ; 526ea (14:66ea)
+WhichPrizeTextPtr:
 	TX_FAR _WhichPrizeText
 	db "@"
 
-GetPrizeMenuId: ; 526ef (14:66ef)
+GetPrizeMenuId:
 ; determine which one among the three
 ; prize-texts has been selected
 ; using the text ID (stored in [hSpriteIndexOrTextID])
@@ -144,12 +144,12 @@ GetPrizeMenuId: ; 526ef (14:66ef)
 	ld c, (1 << 7 | 2)
 	jp PrintBCDNumber
 
-NoThanksText: ; 527a4 (14:67a4)
+NoThanksText:
 	db "NO THANKS@"
 
 INCLUDE "data/prizes.asm"
 
-PrintPrizePrice: ; 527db (14:67db)
+PrintPrizePrice:
 	coord hl, 11, 0
 	lb bc, 1, 7
 	call TextBoxBorder
@@ -166,13 +166,13 @@ PrintPrizePrice: ; 527db (14:67db)
 	call PrintBCDNumber
 	ret
 
-CoinString: ; 52805 (14:6805)
+CoinString:
 	db "COIN@"
 
-SixSpacesString: ; 5280a (14:680a)
+SixSpacesString:
 	db "      @"
 
-LoadCoinsToSubtract: ; 52811 (14:6811)
+LoadCoinsToSubtract:
 	ld a,[wWhichPrize]
 	add a
 	ld d, $0
@@ -187,7 +187,7 @@ LoadCoinsToSubtract: ; 52811 (14:6811)
 	ld [hCoins + 1], a
 	ret
 
-HandlePrizeChoice: ; 52826 (14:6826)
+HandlePrizeChoice:
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPrize], a
 	ld d, $0
@@ -261,35 +261,35 @@ HandlePrizeChoice: ; 52826 (14:6826)
 	ld hl,OhFineThenTextPtr
 	jp PrintText
 
-UnknownData528b1: ; 528b1 (14:68b1)
+UnknownData528b1:
 ; XXX what's this?
 	db $00,$01,$00,$01,$00,$01,$00,$00,$01
 
-HereYouGoTextPtr: ; 528ca (14:68ba)
+HereYouGoTextPtr:
 	TX_FAR _HereYouGoText
 	db $0D
 	db "@"
 
-SoYouWantPrizeTextPtr: ; 528c0 (14:68c0)
+SoYouWantPrizeTextPtr:
 	TX_FAR _SoYouWantPrizeText
 	db "@"
 
-SorryNeedMoreCoinsText: ; 528c5 (14:68c5)
+SorryNeedMoreCoinsText:
 	TX_FAR _SorryNeedMoreCoinsText
 	db $0D
 	db "@"
 
-PrizeRoomBagIsFullTextPtr: ; 528cb (14:68cb)
+PrizeRoomBagIsFullTextPtr:
 	TX_FAR _OopsYouDontHaveEnoughRoomText
 	db $0D
 	db "@"
 
-OhFineThenTextPtr: ; 528d1 (14:68d1)
+OhFineThenTextPtr:
 	TX_FAR _OhFineThenText
 	db $0D ; wait keypress (A/B) without blink
 	db "@"
 
-GetPrizeMonLevel: ; 528d7 (14:68d7)
+GetPrizeMonLevel:
 	ld a, [wcf91]
 	ld b, a
 	ld hl, PrizeMonLevelDictionary

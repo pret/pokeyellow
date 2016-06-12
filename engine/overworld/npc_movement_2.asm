@@ -1,4 +1,4 @@
-FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
+FreezeEnemyTrainerSprite:
 	ld a, [wCurMap]
 	cp POKEMONTOWER_7
 	ret z ; the Rockets on Pokemon Tower 7F leave after battling, so don't freeze them
@@ -17,7 +17,7 @@ FreezeEnemyTrainerSprite: ; eaa02 (3a:6a02)
 	ld [H_SPRITEINDEX], a
 	jp SetSpriteMovementBytesToFF
 
-RivalIDs: ; eaa20 (3a:6a20)
+RivalIDs:
 	db OPP_SONY1
 	db OPP_SONY2
 	db OPP_SONY3

@@ -1,4 +1,4 @@
-ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
+ApplyOutOfBattlePoisonDamage:
 	ld a, [wd730]
 	add a
 	jp c, .noBlackOut ; no black out if joypad states are being simulated
@@ -124,7 +124,7 @@ ApplyOutOfBattlePoisonDamage: ; c3de (3:43de)
 	ld [wOutOfBattleBlackout], a
 	ret
 
-Func_c4c7: ; c4c7 (3:44c7)
+Func_c4c7:
 	ld a, [wStepCounter]
 	and a
 	jr nz, .asm_c4de

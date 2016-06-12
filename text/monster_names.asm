@@ -1,4 +1,4 @@
-MonsterNames: ; e8000 (3a:4000)
+MonsterNames:
 	db "RHYDON@@@@"
 	db "KANGASKHAN"
 	db "NIDORAN♂@@"

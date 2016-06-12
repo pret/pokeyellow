@@ -1,7 +1,7 @@
 ; performs the appropriate action when the player uses the gameboy on the table in the Colosseum or Trade Center
 ; In the Colosseum, it starts a battle. In the Trade Center, it displays the trade selection screen.
 ; Before doing either action, it swaps random numbers, trainer names and party data with the other gameboy.
-CableClub_DoBattleOrTrade: ; 53a5 (1:53a5)
+CableClub_DoBattleOrTrade:
 	ld c, 80
 	call DelayFrames
 	call ClearScreen
@@ -22,7 +22,7 @@ CableClub_DoBattleOrTrade: ; 53a5 (1:53a5)
 	; fall through
 
 ; This is called after completing a trade.
-CableClub_DoBattleOrTradeAgain: ; 53d2 (1:53d2)
+CableClub_DoBattleOrTradeAgain:
 	ld hl, wSerialPlayerDataBlock
 	ld a, SERIAL_PREAMBLE_BYTE
 	ld b, 6
@@ -294,10 +294,10 @@ CableClub_DoBattleOrTradeAgain: ; 53d2 (1:53d2)
 	call PlayMusic
 	jr CallCurrentTradeCenterFunction
 
-PleaseWaitString: ; 55a9 (1:55a9)
+PleaseWaitString:
 	db "PLEASE WAIT!@"
 
-CallCurrentTradeCenterFunction: ; 55b6 (1:55b6)
+CallCurrentTradeCenterFunction:
 	ld hl, TradeCenterPointerTable
 	ld b, 0
 	ld a, [wTradeCenterPointerTableIndex]
@@ -311,7 +311,7 @@ CallCurrentTradeCenterFunction: ; 55b6 (1:55b6)
 	ld l, a
 	jp [hl]
 
-TradeCenter_SelectMon: ; 55ca (1:55ca)
+TradeCenter_SelectMon:
 	call ClearScreen
 	call Delay3
 	ld b, $9
@@ -584,7 +584,7 @@ TradeCenter_SelectMon: ; 55ca (1:55ca)
 	jr nz, .cancelMenuItem_Loop
 	; fall through
 
-ReturnToCableClubRoom: ; 581e (1:581e)
+ReturnToCableClubRoom:
 	call GBPalWhiteOutWithDelay3
 	ld hl, wFontLoaded
 	ld a, [hl]
@@ -603,7 +603,7 @@ ReturnToCableClubRoom: ; 581e (1:581e)
 	call GBFadeInFromWhite
 	ret
 
-TradeCenter_DrawCancelBox: ; 5843 (1:5843)
+TradeCenter_DrawCancelBox:
 	coord hl, 11, 15
 	ld a, $7e
 	ld bc, 2 * SCREEN_WIDTH + 9
@@ -615,10 +615,10 @@ TradeCenter_DrawCancelBox: ; 5843 (1:5843)
 	ld de, CancelTextString
 	jp PlaceString
 
-CancelTextString: ; 5860 (1:5860)
+CancelTextString:
 	db "CANCEL@"
 
-TradeCenter_PlaceSelectedEnemyMonMenuCursor: ; 5867 (1:5867)
+TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	ld a, [wSerialSyncAndExchangeNybbleReceiveData]
 	coord hl, 1, 9
 	ld bc, SCREEN_WIDTH
@@ -626,7 +626,7 @@ TradeCenter_PlaceSelectedEnemyMonMenuCursor: ; 5867 (1:5867)
 	ld [hl], $ec ; cursor
 	ret
 
-TradeCenter_DisplayStats: ; 5876 (1:5876)
+TradeCenter_DisplayStats:
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
 	predef StatusScreen
@@ -639,7 +639,7 @@ TradeCenter_DisplayStats: ; 5876 (1:5876)
 	call TradeCenter_DrawPartyLists
 	jp TradeCenter_DrawCancelBox
 
-TradeCenter_DrawPartyLists: ; 589a (1:589a)
+TradeCenter_DrawPartyLists:
 	coord hl, 0, 0
 	lb bc, 6, 18
 	call CableClub_TextBoxBorder
@@ -659,7 +659,7 @@ TradeCenter_DrawPartyLists: ; 589a (1:589a)
 	ld de, wEnemyPartyMons
 	; fall through
 
-TradeCenter_PrintPartyListNames: ; 58cd (1:58cd)
+TradeCenter_PrintPartyListNames:
 	ld c, $0
 .loop
 	ld a, [de]
@@ -684,7 +684,7 @@ TradeCenter_PrintPartyListNames: ; 58cd (1:58cd)
 	inc c
 	jr .loop
 
-TradeCenter_Trade: ; 58ef (1:58ef)
+TradeCenter_Trade:
 	ld c, 100
 	call DelayFrames
 	xor a
@@ -880,22 +880,22 @@ TradeCenter_Trade: ; 58ef (1:58ef)
 	ld [wTradeCenterPointerTableIndex], a
 	jp CallCurrentTradeCenterFunction
 
-WillBeTradedText: ; 5ad8 (1:5ad8)
+WillBeTradedText:
 	TX_FAR _WillBeTradedText
 	db "@"
 
-TradeCompleted: ; 5add (1:5add)
+TradeCompleted:
 	db "Trade completed!@"
 
-TradeCanceled: ; 5aee (1:5aee)
+TradeCanceled:
 	db   "Too bad! The trade"
 	next "was canceled!@"
 
-TradeCenterPointerTable: ; 5b0f (1:5b0f)
+TradeCenterPointerTable:
 	dw TradeCenter_SelectMon
 	dw TradeCenter_Trade
 
-CableClub_Run: ; 5b13 (1:5b13)
+CableClub_Run:
 	ld a, [wLinkState]
 	cp LINK_STATE_START_TRADE
 	jr z, .doBattleOrTrade
@@ -932,15 +932,15 @@ CableClub_Run: ; 5b13 (1:5b13)
 	ld [wNewSoundID], a
 	jp PlaySound
 
-EmptyFunc3: ; 5b63 (1:5b63)
+EmptyFunc3:
 	ret
 
-Diploma_TextBoxBorder: ; 5b64 (1:5b64)
+Diploma_TextBoxBorder:
 	call GetPredefRegisters
 
 ; b = height
 ; c = width
-CableClub_TextBoxBorder: ; 5b67 (1:5b67)
+CableClub_TextBoxBorder:
 	push hl
 	ld a, $78 ; border upper left corner tile
 	ld [hli], a
@@ -971,7 +971,7 @@ CableClub_TextBoxBorder: ; 5b67 (1:5b67)
 	ret
 
 ; c = width
-CableClub_DrawHorizontalLine: ; 5b94 (1:5b94)
+CableClub_DrawHorizontalLine:
 	ld d, c
 .drawHorizontalLineLoop
 	ld [hli], a
@@ -979,7 +979,7 @@ CableClub_DrawHorizontalLine: ; 5b94 (1:5b94)
 	jr nz, .drawHorizontalLineLoop
 	ret
 
-LoadTrainerInfoTextBoxTiles: ; 5b9a (1:5b9a)
+LoadTrainerInfoTextBoxTiles:
 	ld de, TrainerInfoTextBoxTileGraphics
 	ld hl, vChars2 + $760
 	lb bc, BANK(TrainerInfoTextBoxTileGraphics), (TrainerInfoTextBoxTileGraphicsEnd - TrainerInfoTextBoxTileGraphics) / $10

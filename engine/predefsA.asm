@@ -1,5 +1,5 @@
 ; inverts the BGP for 4 (6 on CGB due to lag) frames
-InvertBGPal_4Frames: ; 2bd4c (a:7d4c)
+InvertBGPal_4Frames:
 	call GetPredefRegisters ; leftover of red/blue, has no use here
 	ld a, [rBGP]
 	xor $ff
@@ -13,7 +13,7 @@ InvertBGPal_4Frames: ; 2bd4c (a:7d4c)
 	call UpdateGBCPal_BGP
 	ret
 
-PredefShakeScreenVertically: ; 2bd67 (a:7d67)
+PredefShakeScreenVertically:
 ; Moves the window down and then back in a sequence of progressively smaller
 ; numbers of pixels, starting at b.
 	call GetPredefRegisters
@@ -39,7 +39,7 @@ PredefShakeScreenVertically: ; 2bd67 (a:7d67)
 	ld c, 3
 	jp DelayFrames
 
-PredefShakeScreenHorizontally: ; 2bd8d (a:7d8d)
+PredefShakeScreenHorizontally:
 ; Moves the window right and then back in a sequence of progressively smaller
 ; numbers of pixels, starting at b.
 	call GetPredefRegisters

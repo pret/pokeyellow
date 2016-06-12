@@ -1,4 +1,4 @@
-ShowPokedexMenu: ; 40000 (10:4000)
+ShowPokedexMenu:
 	call GBPalWhiteOut
 	call ClearScreen
 	call UpdateSprites
@@ -61,7 +61,7 @@ ShowPokedexMenu: ; 40000 (10:4000)
 ; 00: showed pokemon data or area
 ; 01: the player chose Quit
 ; 02: the pokemon has not been seen yet or the player pressed the B button
-HandlePokedexSideMenu: ; 40070 (10:4070)
+HandlePokedexSideMenu:
 	call PlaceUnfilledArrowMenuCursor
 	ld a, [wCurrentMenuItem]
 	push af
@@ -179,7 +179,7 @@ HandlePokedexSideMenu: ; 40070 (10:4070)
 
 ; handles the list of pokemon on the left of the pokedex screen
 ; sets carry flag if player presses A, unsets carry flag if player presses B
-HandlePokedexListMenu: ; 40140 (10:4140)
+HandlePokedexListMenu:
 	call Pokedex_DrawInterface
 .loop
 	call Pokedex_PlacePokemonList
@@ -255,7 +255,7 @@ HandlePokedexListMenu: ; 40140 (10:4140)
 	and a
 	ret
 
-Pokedex_DrawInterface: ; 401c2 (10:41c2)
+Pokedex_DrawInterface:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 ; draw the horizontal line separating the seen and owned amounts from the menu
@@ -317,7 +317,7 @@ Pokedex_DrawInterface: ; 401c2 (10:41c2)
 	ld [wDexMaxSeenMon], a
 	ret
 
-DrawPokedexVerticalLine: ; 40243 (10:4243)
+DrawPokedexVerticalLine:
 	ld c, 9 ; height of line
 	ld de, SCREEN_WIDTH ; width of screen
 	ld a, $71 ; vertical line tile
@@ -329,23 +329,23 @@ DrawPokedexVerticalLine: ; 40243 (10:4243)
 	jr nz, .loop
 	ret
 
-PokedexSeenText: ; 40252 (10:4252)
+PokedexSeenText:
 	db "SEEN@"
 
-PokedexOwnText: ; 40257 (10:4257)
+PokedexOwnText:
 	db "OWN@"
 
-PokedexContentsText: ; 4025b (10:425b)
+PokedexContentsText:
 	db "CONTENTS@"
 
-PokedexMenuItemsText: ; 40264 (10:4264)
+PokedexMenuItemsText:
 	db   "DATA"
 	next "CRY"
 	next "AREA"
 	next "PRNT"
 	next "QUIT@"
 
-Pokedex_PlacePokemonList: ; 4027c (10:427c)
+Pokedex_PlacePokemonList:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 4, 2
@@ -420,7 +420,7 @@ Pokedex_PlacePokemonList: ; 4027c (10:427c)
 ; INPUT:
 ; [wd11e] = pokedex number
 ; hl = address of bit field
-IsPokemonBitSet: ; 40303 (10:4303)
+IsPokemonBitSet:
 	ld a, [wd11e]
 	dec a
 	ld c, a
@@ -431,14 +431,14 @@ IsPokemonBitSet: ; 40303 (10:4303)
 	ret
 
 ; function to display pokedex data from outside the pokedex
-ShowPokedexData: ; 40312 (10:4312)
+ShowPokedexData:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call UpdateSprites
 	callab LoadPokedexTilePatterns ; load pokedex tiles
 
 ; function to display pokedex data from inside the pokedex
-ShowPokedexDataInternal: ; 40323 (10:4323)
+ShowPokedexDataInternal:
 	ld hl, wd72c
 	set 1, [hl]
 	ld a, $33 ; 3/7 volume
@@ -475,23 +475,23 @@ ShowPokedexDataInternal: ; 40323 (10:4323)
 	ld [rNR50], a
 	ret
 
-HeightWeightText: ; 40370 (10:4370)
+HeightWeightText:
 	db "HT  ?", $60, "??", $61
 	next "WT   ???lb@"
 
 ; XXX does anything point to this?
-PokeText: ; 40385 (10:4385)
+PokeText:
 	db "#@"
 
 ; horizontal line that divides the pokedex text description from the rest of the data
-PokedexDataDividerLine: ; 40387 (10:4387)
+PokedexDataDividerLine:
 	db $68, $69, $6B, $69, $6B
 	db $69, $6B, $69, $6B, $6B
 	db $6B, $6B, $69, $6B, $69
 	db $6B, $69, $6B, $69, $6A
 	db "@"
 
-DrawDexEntryOnScreen: ; 4039c (10:439c)
+DrawDexEntryOnScreen:
 	call ClearScreen
 
 	coord hl, 0, 0
@@ -649,9 +649,9 @@ DrawDexEntryOnScreen: ; 4039c (10:439c)
 	scf
 	ret
 
-Pokedex_PrintFlavorTextAtRow11: ; 404ae (10:44ae)
+Pokedex_PrintFlavorTextAtRow11:
 	coord bc, 1, 11
-Pokedex_PrintFlavorTextAtBC: ; 404b1 (10:44b1)
+Pokedex_PrintFlavorTextAtBC:
 	ld a, 2
 	ld [$fff9], a
 	call TextCommandProcessor ; print pokedex description text
@@ -659,7 +659,7 @@ Pokedex_PrintFlavorTextAtBC: ; 404b1 (10:44b1)
 	ld [$fff9], a
 	ret
 
-Pokedex_PrepareDexEntryForPrinting: ; 404bc (10:44bc)
+Pokedex_PrepareDexEntryForPrinting:
 	coord hl, 0, 0
 	ld de, SCREEN_WIDTH
 	lb bc, $66, $d
@@ -695,7 +695,7 @@ Pokedex_PrepareDexEntryForPrinting: ; 404bc (10:44bc)
 ; c = number of tile ID's to write
 ; de = amount to destination address after each tile (1 for horizontal, 20 for vertical)
 ; hl = destination address
-DrawTileLine: ; 40501 (10:4501)
+DrawTileLine:
 	push bc
 	push de
 .loop
@@ -709,7 +709,7 @@ DrawTileLine: ; 40501 (10:4501)
 
 INCLUDE "data/pokedex_entries.asm"
 
-PokedexToIndex: ; 41086 (10:5086)
+PokedexToIndex:
 	; converts the Pokédex number at wd11e to an index
 	push bc
 	push hl
@@ -730,7 +730,7 @@ PokedexToIndex: ; 41086 (10:5086)
 	pop bc
 	ret
 
-IndexToPokedex: ; 4109d (10:509d)
+IndexToPokedex:
 	; converts the indexédex number at wd11e to a Pokédex number
 	push bc
 	push hl

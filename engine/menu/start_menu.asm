@@ -1,13 +1,13 @@
-DisplayStartMenu:: ; 29d1 (0:29d1)
+DisplayStartMenu::
 	switchbank StartMenu_Pokedex ; also bank for other functions
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a
 	ld a, $8f ; (SFX_02_3f - SFX_Headers_02) / 3 ; Start menu sound
 	call PlaySound
 
-RedisplayStartMenu:: ; 29e1 (0:29e1)
+RedisplayStartMenu::
 	callba DrawStartMenu
-RedisplayStartMenu_DoNotDrawStartMenu: ; 29e9 (0:29e9)
+RedisplayStartMenu_DoNotDrawStartMenu:
 	callba PrintSafariZoneSteps ; print Safari Zone info, if in Safari Zone
 	call UpdateSprites
 .loop
@@ -75,7 +75,7 @@ RedisplayStartMenu_DoNotDrawStartMenu: ; 29e9 (0:29e9)
 	jp z, StartMenu_Option
 
 ; EXIT falls through to here
-CloseStartMenu:: ; 2a72 (0:2a72)
+CloseStartMenu::
 	call Joypad
 	ld a, [hJoyPressed]
 	bit 0, a ; was A button newly pressed?

@@ -51,32 +51,32 @@ DATA_SND: MACRO
 	db \3 ; length (1-11)
 ENDM
 
-BlkPacket_WholeScreen: ; 72611 (1c:6611)
+BlkPacket_WholeScreen:
 	db $21
 	db $1,$3,$0,$0,$0,$13,$11,$0
 	db $0,$0,$0,$0,$0,$0,$0
-BlkPacket_Battle: ; 72621 (1c:6621)
+BlkPacket_Battle:
 	db $22
 	db $5,$7,$a,$0,$c,$13,$11,$3,$5,$1
 	db $0,$a,$3,$3,$0,$a,$7,$13,$a
 	db $3,$a,$0,$4,$8,$b,$3,$f,$b
 	db $0,$13,$6
-BlkPacket_StatusScreen: ; 72641 (1c:6641)
+BlkPacket_StatusScreen:
 	db $21
 	db $1,$7,$5,$1,$0
 	db $7,$6,$0,$0,$0,$0,$0,$0,$0
 	db $0
-BlkPacket_Pokedex: ; 72651 (1c:6651)
+BlkPacket_Pokedex:
 	db $21
 	db $1,$7,$5,$1,$1,$8,$8
 	db $0,$0,$0,$0,$0,$0,$0,$0
-BlkPacket_Slots: ; 72661 (1c:6661)
+BlkPacket_Slots:
 	db $22
 	db $5,$3,$5,$0,$0,$13,$b,$3,$a
 	db $0,$4,$13,$9,$2,$f,$0,$6,$13
 	db $7,$3,$0,$4,$4,$f,$9,$3,$0
 	db $0,$c,$13,$11
-BlkPacket_Titlescreen: ; 72681 (1c:6681)
+BlkPacket_Titlescreen:
 	db $22
 	db $3,$3,$0,$0
 	db $0,$13,$7,$3,$a,$0,$8,$13,$11
@@ -88,7 +88,7 @@ BlkPacket_NidorinoIntro ; 726a1 (1c:66a1)
 	db $0,$0,$4,$13,$d,$3,$5,$0,$e
 	db $13,$11,$0,$0,$0,$0,$0,$0,$0
 	db $0,$0,$0,$0,$0
-BlkPacket_PartyMenu: ; 726c1 (1c:66c1)
+BlkPacket_PartyMenu:
 	db $23
 	db $7,$6,$10
 	db $1,$0,$2,$c,$2,$0,$5,$1,$b
@@ -96,7 +96,7 @@ BlkPacket_PartyMenu: ; 726c1 (1c:66c1)
 	db $5,$5,$b,$5,$2,$0,$5,$7,$b
 	db $7,$2,$0,$5,$9,$b,$9,$2,$0
 	db $5,$b,$b,$b,$0,$0,$0,$0
-BlkPacket_TrainerCard: ; 726f1 (1c:66f1)
+BlkPacket_TrainerCard:
 	db $24
 	db $a,$2,$0,$3,$c,$4,$d,$2,$5
 	db $7,$c,$8,$d,$2,$f,$b,$c,$c
@@ -105,70 +105,70 @@ BlkPacket_TrainerCard: ; 726f1 (1c:66f1)
 	db $d,$2,$a,$3,$f,$4,$10,$2,$f
 	db $7,$f,$8,$10,$2,$a,$b,$f,$c
 	db $10,$2,$5,$f,$f,$10,$10,$0,$0
-BlkPacket_GameFreakIntro: ; 72731 (1c:6731)
+BlkPacket_GameFreakIntro:
 	db $22
 	db $3,$7,$5,$5,$b,$7,$d,$2
 	db $a,$8,$b,$9,$d,$3,$f,$c,$b
 	db $e,$d,$0,$0,$0,$0,$0,$0,$0
 	db $0,$0,$0,$0,$0
-UnknownPacket_72751: ; 72751 (1c:6751)
+UnknownPacket_72751:
 	db $21,$1,$7,$5
 	db $4,$0,$f,$5,$0,$0,$0,$0,$0
 	db $0,$0,$0
 
-PalPacket_Empty: ; 72761 (1c:6761)
+PalPacket_Empty:
 	PAL_SET 0, 0, 0, 0
 
-PalPacket_PartyMenu: ; 72771 (1c:6771)
+PalPacket_PartyMenu:
 	PAL_SET PAL_MEWMON, PAL_GREENBAR, PAL_YELLOWBAR, PAL_REDBAR
 
-PalPacket_Black: ; 72781 (1c:6781)
+PalPacket_Black:
 	PAL_SET PAL_BLACK, PAL_BLACK, PAL_BLACK, PAL_BLACK
 
-PalPacket_TownMap: ; 72791 (1c:6791)
+PalPacket_TownMap:
 	PAL_SET PAL_TOWNMAP, 0, 0, 0
 
-PalPacket_Pokedex: ; 727a1 (1c:67a1)
+PalPacket_Pokedex:
 	PAL_SET PAL_BROWNMON, 0, 0, 0
 
-PalPacket_Slots: ; 727b1 (1c:67b1)
+PalPacket_Slots:
 	PAL_SET PAL_SLOTS1, PAL_SLOTS2, PAL_SLOTS3, PAL_SLOTS4
 
-PalPacket_Titlescreen: ; 727c1 (1c:67c1)
+PalPacket_Titlescreen:
 	PAL_SET PAL_LOGO2, PAL_LOGO1, PAL_MEWMON, PAL_PURPLEMON
 
-PalPacket_TrainerCard: ; 727d1 (1c:67d1)
+PalPacket_TrainerCard:
 	PAL_SET PAL_MEWMON, PAL_BADGE, PAL_REDMON, PAL_YELLOWMON
 
-PalPacket_Generic: ; 727e1 (1c:67e1)
+PalPacket_Generic:
 	PAL_SET PAL_MEWMON, 0, 0, 0
 
-PalPacket_NidorinoIntro: ; 727f1 (1c:67f1)
+PalPacket_NidorinoIntro:
 	PAL_SET PAL_PURPLEMON, PAL_BLACK, 0, 0
 
-PalPacket_GameFreakIntro: ; 72801 (1c:6801)
+PalPacket_GameFreakIntro:
 	PAL_SET PAL_GAMEFREAK, PAL_REDMON, PAL_VIRIDIAN, PAL_BLUEMON
 
-UnknownPalPacket_72811: ; 72811 (1c:6811)
+UnknownPalPacket_72811:
 	db $51,$25,$0,$25,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
 
-UnknownPalPacket_72821: ; 72821 (1c:6821)
+UnknownPalPacket_72821:
 	db $51,$25,$0,$27,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
 
-PalTrnPacket: ; 72831 (1c:6831)
+PalTrnPacket:
 	PAL_TRN
-MltReq1Packet: ; 72841 (1c:6841)
+MltReq1Packet:
 	MLT_REQ 1
-MltReq2Packet: ; 72851 (1c:6851)
+MltReq2Packet:
 	MLT_REQ 2
-ChrTrnPacket: ; 72861 (1c:6861)
+ChrTrnPacket:
 	CHR_TRN 0, 0
-PctTrnPacket: ; 72871 (1c:6871)
+PctTrnPacket:
 	PCT_TRN
 
-MaskEnFreezePacket: ; 72881 (1c:6881)
+MaskEnFreezePacket:
 	MASK_EN 1
-MaskEnCancelPacket: ; 72891 (1c:6891)
+MaskEnCancelPacket:
 	MASK_EN 0
 
 ; These are DATA_SND packets containing SNES code.

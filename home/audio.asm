@@ -1,4 +1,4 @@
-PlayDefaultMusic:: ; 216b (0:216b)
+PlayDefaultMusic::
 	call WaitForSoundToFinish
 	xor a
 	ld c, a
@@ -6,7 +6,7 @@ PlayDefaultMusic:: ; 216b (0:216b)
 	ld [wLastMusicSoundID], a
 	jr PlayDefaultMusicCommon
 
-PlayDefaultMusicFadeOutCurrent:: ; 2176 (0:2176)
+PlayDefaultMusicFadeOutCurrent::
 ; Fade out the current music and then play the default music.
 	ld c, 10
 	ld d, 0
@@ -17,7 +17,7 @@ PlayDefaultMusicFadeOutCurrent:: ; 2176 (0:2176)
 	ld [wLastMusicSoundID], a
 	ld c, 8
 	ld d, c
-PlayDefaultMusicCommon:: ; 2118 (0:2118)
+PlayDefaultMusicCommon::
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .walking
@@ -67,7 +67,7 @@ PlayDefaultMusicCommon:: ; 2118 (0:2118)
 	ld [wNewSoundID], a
 	jp PlaySound
 
-CheckForNoBikingMusicMap:: ; 21c8 (0:21c8)
+CheckForNoBikingMusicMap::
 ; probably used to not change music upon getting on bike
 	ld a, [wCurMap]
 	cp ROUTE_23
@@ -86,7 +86,7 @@ CheckForNoBikingMusicMap:: ; 21c8 (0:21c8)
 	scf
 	ret
 
-UpdateMusic6Times:: ; 21e3 (0:21e3)
+UpdateMusic6Times::
 	ld c, $6
 UpdateMusicCTimes::
 .loop
@@ -99,7 +99,7 @@ UpdateMusicCTimes::
 	jr nz, .loop
 	ret
 
-CompareMapMusicBankWithCurrentBank:: ; 21f5 (0:21f5)
+CompareMapMusicBankWithCurrentBank::
 ; Compares the map music's audio ROM bank with the current audio ROM bank
 ; and updates the audio ROM bank variables.
 ; Returns whether the banks are different in carry.
@@ -126,7 +126,7 @@ CompareMapMusicBankWithCurrentBank:: ; 21f5 (0:21f5)
 	scf
 	ret
 
-PlayMusic:: ; 2211 (0:2211)
+PlayMusic::
 	ld b, a
 	ld [wNewSoundID], a
 	xor a
@@ -137,7 +137,7 @@ PlayMusic:: ; 2211 (0:2211)
 	ld a, b
 	jr PlaySound
 
-Func_2223:: ; 2223 (0:2223)
+Func_2223::
 	xor a
 	ld [wChannelSoundIDs + CH4], a
 	ld [wChannelSoundIDs + CH5], a
@@ -146,11 +146,11 @@ Func_2223:: ; 2223 (0:2223)
 	ld [rNR10], a
 	ret
 
-StopAllMusic:: ; 2233 (0:2233)
+StopAllMusic::
 	ld a, $FF
 	ld [wNewSoundID], a
 ; plays music specified by a. If value is $ff, music is stopped
-PlaySound:: ; 2238 (0:2238)
+PlaySound::
 	push hl
 	push de
 	push bc
@@ -197,7 +197,7 @@ PlaySound:: ; 2238 (0:2238)
 	pop hl
 	ret
 
-GetNextMusicByte:: ; 2288 (0:2288)
+GetNextMusicByte::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wAudioROMBank]
@@ -223,7 +223,7 @@ GetNextMusicByte:: ; 2288 (0:2288)
 	ld a, e
 	ret
 
-InitMusicVariables:: ; 22aa (0:22aa)
+InitMusicVariables::
 	push hl
 	push de
 	push bc
@@ -233,7 +233,7 @@ InitMusicVariables:: ; 22aa (0:22aa)
 	pop hl
 	ret
 
-InitSFXVariables:: ; 22c0 (0:22c0)
+InitSFXVariables::
 	push hl
 	push de
 	push bc
@@ -243,7 +243,7 @@ InitSFXVariables:: ; 22c0 (0:22c0)
 	pop hl
 	ret
 
-StopAllAudio:: ; 22d6 (0:22d6)
+StopAllAudio::
 	push hl
 	push de
 	push bc
@@ -253,7 +253,7 @@ StopAllAudio:: ; 22d6 (0:22d6)
 	pop hl
 	ret
 
-DetermineAudioFunction:: ; 22ec (0:22ec)
+DetermineAudioFunction::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wAudioROMBank]

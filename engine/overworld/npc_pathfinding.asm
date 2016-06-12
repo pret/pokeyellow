@@ -1,4 +1,4 @@
-FindPathToPlayer: ; f74a (3:774a)
+FindPathToPlayer:
 	xor a
 	ld hl, hFindPathNumSteps
 	ld [hli], a ; hFindPathNumSteps
@@ -74,7 +74,7 @@ FindPathToPlayer: ; f74a (3:774a)
 	ld [hl], $ff
 	ret
 
-CalcPositionOfPlayerRelativeToNPC: ; f7b9 (3:77b9)
+CalcPositionOfPlayerRelativeToNPC:
 	xor a
 	ld [hNPCPlayerRelativePosFlags], a
 	ld a, [wSpriteStateData1 + 4] ; player's sprite screen Y position in pixels
@@ -151,7 +151,7 @@ CalcPositionOfPlayerRelativeToNPC: ; f7b9 (3:77b9)
 	ld [hNPCPlayerRelativePosFlags], a
 	ret
 
-ConvertNPCMovementDirectionsToJoypadMasks: ; f830 (3:7830)
+ConvertNPCMovementDirectionsToJoypadMasks:
 	ld a, [hNPCMovementDirections2Index]
 	ld [wNPCMovementDirections2Index], a
 	dec a
@@ -172,7 +172,7 @@ ConvertNPCMovementDirectionsToJoypadMasks: ; f830 (3:7830)
 	jr nz, .loop
 	ret
 
-ConvertNPCMovementDirectionToJoypadMask: ; f84f (3:784f)
+ConvertNPCMovementDirectionToJoypadMask:
 	push hl
 	ld b, a
 	ld hl, NPCMovementDirectionsToJoypadMasksTable
@@ -190,7 +190,7 @@ ConvertNPCMovementDirectionToJoypadMask: ; f84f (3:784f)
 	pop hl
 	ret
 
-NPCMovementDirectionsToJoypadMasksTable: ; f862 (3:7862)
+NPCMovementDirectionsToJoypadMasksTable:
 	db NPC_MOVEMENT_UP, D_UP
 	db NPC_MOVEMENT_DOWN, D_DOWN
 	db NPC_MOVEMENT_LEFT, D_LEFT

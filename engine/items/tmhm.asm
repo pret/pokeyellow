@@ -1,5 +1,5 @@
 ; checks if the mon in [wWhichPokemon] already knows the move in [wMoveNum]
-CheckIfMoveIsKnown: ; 2fd42 (b:7d42)
+CheckIfMoveIsKnown:
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Moves
 	ld bc, wPartyMon2 - wPartyMon1
@@ -21,6 +21,6 @@ CheckIfMoveIsKnown: ; 2fd42 (b:7d42)
 	scf
 	ret
 
-AlreadyKnowsText: ; 2fd65 (b:7d65)
+AlreadyKnowsText:
 	TX_FAR _AlreadyKnowsText
 	db "@"

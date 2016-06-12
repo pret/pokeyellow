@@ -1,4 +1,4 @@
-FarCopyDataDouble:: ; 15d4 (0:15d4)
+FarCopyDataDouble::
 ; Expand bc bytes of 1bpp image data
 ; from a:de to 2bpp data at hl.
 	ld [wFarCopyDataSavedROMBank],a
@@ -33,7 +33,7 @@ FarCopyDataDouble:: ; 15d4 (0:15d4)
 	call BankswitchCommon
 	ret
 
-CopyVideoData:: ; 15fe (0:15fe)
+CopyVideoData::
 ; Wait for the next VBlank, then copy c 2bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -82,7 +82,7 @@ CopyVideoData:: ; 15fe (0:15fe)
 	ld c, a
 	jr .loop
 
-CopyVideoDataDouble:: ; 1636 (0:1636)
+CopyVideoDataDouble::
 ; Wait for the next VBlank, then copy c 1bpp
 ; tiles from b:de to hl, 8 tiles at a time.
 ; This takes c/8 frames.
@@ -129,7 +129,7 @@ CopyVideoDataDouble:: ; 1636 (0:1636)
 	ld c, a
 	jr .loop
 
-FillMemory:: ; 166e (0:166e)
+FillMemory::
 	push af
 	ld a,b
 	and a
@@ -149,7 +149,7 @@ FillMemory:: ; 166e (0:166e)
 	jr nz, .loop
 	ret
 
-GetFarByte:: ; 1681 (0:1681)
+GetFarByte::
 ; get a byte from a:hl
 ; and return it in a
 	push bc
@@ -165,7 +165,7 @@ GetFarByte:: ; 1681 (0:1681)
 	pop bc
 	ret
 
-ClearScreenArea:: ; 1692 (0:1692)
+ClearScreenArea::
 ; Clear tilemap area cxb at hl.
 	ld a, " " ; blank tile
 	ld de, 20 ; screen width
@@ -183,7 +183,7 @@ ClearScreenArea:: ; 1692 (0:1692)
 	jr nz, .y
 	ret
 
-CopyScreenTileBufferToVRAM:: ; 16a4 (0:16a4)
+CopyScreenTileBufferToVRAM::
 ; Copy wTileMap to the BG Map starting at b * $100.
 ; This is done in thirds of 6 rows, so it takes 3 frames.
 
@@ -218,7 +218,7 @@ CopyScreenTileBufferToVRAM:: ; 16a4 (0:16a4)
 	ld [H_VBCOPYBGSRC], a
 	ret
 
-ClearScreen:: ; 16dd (0:16dd)
+ClearScreen::
 ; Clear wTileMap, then wait
 ; for the bg map to update.
 	ld bc, 20 * 18

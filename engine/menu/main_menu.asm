@@ -1,4 +1,4 @@
-MainMenu: ; 5ba6 (1:5ba6)
+MainMenu:
 ; Check save file
 	call InitOptions
 	xor a
@@ -122,7 +122,7 @@ MainMenu: ; 5ba6 (1:5ba6)
 	call SpecialWarpIn
 	jp SpecialEnterMap
 
-InitOptions: ; 5bff (1:5bff)
+InitOptions:
 	ld a,1 ; no delay
 	ld [wLetterPrintingDelayFlags],a
 	ld a,3 ; medium speed
@@ -131,7 +131,7 @@ InitOptions: ; 5bff (1:5bff)
 	ld [wPrinterSettings], a
 	ret
 
-Func_5cc1: ; 5cc1 (1:5cc1)
+Func_5cc1:
 ; unused?
 	ld a, $6d
 	cp $80
@@ -140,11 +140,11 @@ Func_5cc1: ; 5cc1 (1:5cc1)
 	call PrintText
 	ret
 
-NotEnoughMemoryText: ; 5ccd (1:5ccd)
+NotEnoughMemoryText:
 	TX_FAR _NotEnoughMemoryText
 	db "@"
 
-StartNewGame: ; 5cd2 (1:5cd2)
+StartNewGame:
 	ld hl, wd732
 	res 1, [hl]
 	call OakSpeech
@@ -154,7 +154,7 @@ StartNewGame: ; 5cd2 (1:5cd2)
 	call DelayFrames
 
 ; enter map after using a special warp or loading the game from the main menu
-SpecialEnterMap: ; 5ce4 (1:5ce4)
+SpecialEnterMap:
 	xor a
 	ld [hJoyPressed], a
 	ld [hJoyHeld], a
@@ -171,14 +171,14 @@ SpecialEnterMap: ; 5ce4 (1:5ce4)
 	ret nz
 	jp EnterMap
 
-ContinueText: ; 5d06 (1:5d06)
+ContinueText:
 	db "CONTINUE", $4e
 
-NewGameText: ; 5d0f (1:5d0f)
+NewGameText:
 	db "NEW GAME", $4e
 	db "OPTION@"
 
-DisplayContinueGameInfo: ; 5d1f (1:5d1f)
+DisplayContinueGameInfo:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 4, 7
@@ -201,7 +201,7 @@ DisplayContinueGameInfo: ; 5d1f (1:5d1f)
 	ld c, 30
 	jp DelayFrames
 
-PrintSaveScreenText: ; 5d58 (1:5d58)
+PrintSaveScreenText:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	coord hl, 4, 0
@@ -226,7 +226,7 @@ PrintSaveScreenText: ; 5d58 (1:5d58)
 	ld c, 30
 	jp DelayFrames
 
-PrintNumBadges: ; 5d97 (1:5d97)
+PrintNumBadges:
 	push hl
 	ld hl, wObtainedBadges
 	ld b, $1
@@ -236,7 +236,7 @@ PrintNumBadges: ; 5d97 (1:5d97)
 	lb bc, 1, 2
 	jp PrintNumber
 
-PrintNumOwnedMons: ; 5daa (1:5daa)
+PrintNumOwnedMons:
 	push hl
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
@@ -246,7 +246,7 @@ PrintNumOwnedMons: ; 5daa (1:5daa)
 	lb bc, 1, 3
 	jp PrintNumber
 
-PrintPlayTime: ; 5dbd (1:5dbd)
+PrintPlayTime:
 	ld de, wPlayTimeHours
 	lb bc, 1, 3
 	call PrintNumber
@@ -256,17 +256,17 @@ PrintPlayTime: ; 5dbd (1:5dbd)
 	lb bc, LEADING_ZEROES | 1, 2
 	jp PrintNumber
 
-SaveScreenInfoText: ; 5dd2 (1:5dd2)
+SaveScreenInfoText:
 	db   "PLAYER"
 	next "BADGES    "
 	next "#DEX    "
 	next "TIME@"
 
-DisplayOptionMenu: ; 5df2 (1:5df2)
+DisplayOptionMenu:
 	callab DisplayOptionMenu_ ; 10:5c70
 	ret
 
-CheckForPlayerNameInSRAM: ; 5dfb (1:5dfb)
+CheckForPlayerNameInSRAM:
 ; Check if the player name data in SRAM has a string terminator character
 ; (indicating that a name may have been saved there) and return whether it does
 ; in carry.
