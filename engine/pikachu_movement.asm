@@ -5,7 +5,7 @@ ApplyPikachuMovementData_:: ; fd2a1 (3f:52a1)
 	ld [wPikachuMovementScriptAddress], a
 	ld a, h
 	ld [wPikachuMovementScriptAddress + 1], a
-	call PikachuSwapSpriteStateData
+	call .SwapSpriteStateData
 .loop
 	call LoadPikachuMovementCommandData
 	jr nc, .done
@@ -13,11 +13,11 @@ ApplyPikachuMovementData_:: ; fd2a1 (3f:52a1)
 	jr .loop
 
 .done
-	call PikachuSwapSpriteStateData
+	call .SwapSpriteStateData
 	call DelayFrame
 	ret
 
-PikachuSwapSpriteStateData:
+.SwapSpriteStateData:
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -29,12 +29,12 @@ PikachuSwapSpriteStateData:
 	ld hl, wPlayerSpriteStateData1
 	ld de, wPikachuSpriteStateData1
 	ld c, $10
-	call SwapBytes3f
+	call .SwapBytes
 
-	ld hl, wSpriteStateData2
+	ld hl, wPlayerSpriteStateData2
 	ld de, wPikachuSpriteStateData2
 	ld c, $10
-	call SwapBytes3f
+	call .SwapBytes
 
 	pop bc
 	pop de
@@ -43,8 +43,7 @@ PikachuSwapSpriteStateData:
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-SwapBytes3f:
-.loop
+.SwapBytes:
 	ld b, [hl]
 	ld a, [de]
 	ld [hli], a
@@ -52,7 +51,7 @@ SwapBytes3f:
 	ld [de], a
 	inc de
 	dec c
-	jr nz, .loop
+	jr nz, .SwapBytes
 	ret
 
 LoadPikachuMovementCommandData:
@@ -89,13 +88,13 @@ LoadPikachuMovementCommandData:
 
 ExecutePikachuMovementCommand:
 	xor a
-	ld [wd44d], a
-	ld [wd457], a
-	ld [wd458], a
+	ld [wPikachuMovementFlags], a
+	ld [wPikachuStepTimer], a
+	ld [wPikachuStepSubtimer], a
 	ld a, [wPlayerGrassPriority]
 	push af
 .loop
-	ld bc, wPlayerSpriteStateData1
+	ld bc, wPlayerSpriteStateData1 ; Currently holds Pikachu's sprite state data
 	ld a, [wCurPikaMovementFunc1]
 	ld hl, PikaMovementFunc1Jumptable
 	call .JumpTable
@@ -106,7 +105,7 @@ ExecutePikachuMovementCommand:
 	call AnimatePikachuShadow
 	call DelayFrame
 	call DelayFrame
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	bit 7, [hl]
 	jr z, .loop
 	pop af
@@ -143,7 +142,7 @@ GetCoordsForPikachuShadow:
 	ld hl, wPlayerXPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld [hl], a
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	bit 6, [hl]
 	ret z
 	ld hl, wPlayerGrassPriority - wPlayerSpriteStateData1
@@ -152,7 +151,7 @@ GetCoordsForPikachuShadow:
 	ret
 
 AnimatePikachuShadow:
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	bit 6, [hl]
 	res 6, [hl]
 	ld hl, wd736
@@ -163,25 +162,25 @@ AnimatePikachuShadow:
 	ret
 
 PikachuMovementDatabase:
-	db $01, $00, $00, $00 ; $00 start
+	db $01, 1 - 1, $00, 1 - 1 ; $00 start
 
-	db $03, $80, $01, $00 ; $01
-	db $04, $80, $01, $00 ; $02
-	db $05, $80, $01, $00 ; $03
-	db $06, $80, $01, $00 ; $04
-	db $07, $80, $01, $00 ; $05
-	db $08, $80, $01, $00 ; $06
-	db $09, $80, $01, $00 ; $07
-	db $0a, $80, $01, $00 ; $08
+	db $03, $80, $01, 1 - 1 ; $01
+	db $04, $80, $01, 1 - 1 ; $02
+	db $05, $80, $01, 1 - 1 ; $03
+	db $06, $80, $01, 1 - 1 ; $04
+	db $07, $80, $01, 1 - 1 ; $05
+	db $08, $80, $01, 1 - 1 ; $06
+	db $09, $80, $01, 1 - 1 ; $07
+	db $0a, $80, $01, 1 - 1 ; $08
 
-	db $03, $80, $06, $00 ; $09
-	db $04, $80, $06, $00 ; $0a
-	db $05, $80, $06, $00 ; $0b
-	db $06, $80, $06, $00 ; $0c
-	db $07, $80, $06, $00 ; $0d
-	db $08, $80, $06, $00 ; $0e
-	db $09, $80, $06, $00 ; $0f
-	db $0a, $80, $06, $00 ; $10
+	db $03, $80, $06, 1 - 1 ; $09
+	db $04, $80, $06, 1 - 1 ; $0a
+	db $05, $80, $06, 1 - 1 ; $0b
+	db $06, $80, $06, 1 - 1 ; $0c
+	db $07, $80, $06, 1 - 1 ; $0d
+	db $08, $80, $06, 1 - 1 ; $0e
+	db $09, $80, $06, 1 - 1 ; $0f
+	db $0a, $80, $06, 1 - 1 ; $10
 
 	db $03, $80, $03, $80 ; $11
 	db $04, $80, $03, $80 ; $12
@@ -197,48 +196,48 @@ PikachuMovementDatabase:
 	db $05, $80, $07, $80 ; $1b
 	db $06, $80, $07, $80 ; $1c
 
-	db $0b, $20 | $7, $02, $00 ; $1d step down
-	db $0c, $20 | $7, $02, $00 ; $1e step up
-	db $0d, $20 | $7, $02, $00 ; $1f step left
-	db $0e, $20 | $7, $02, $00 ; $20 step right
-	db $0f, $20 | $7, $02, $00 ; $21 step down left
-	db $10, $20 | $7, $02, $00 ; $22 step down right
-	db $11, $20 | $7, $02, $00 ; $23 step up left
-	db $12, $20 | $7, $02, $00 ; $24 step up right
+	db $0b, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1d step down
+	db $0c, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1e step up
+	db $0d, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1f step left
+	db $0e, (1 << 5) | 8 - 1, $02, 1 - 1 ; $20 step right
+	db $0f, (1 << 5) | 8 - 1, $02, 1 - 1 ; $21 step down left
+	db $10, (1 << 5) | 8 - 1, $02, 1 - 1 ; $22 step down right
+	db $11, (1 << 5) | 8 - 1, $02, 1 - 1 ; $23 step up left
+	db $12, (1 << 5) | 8 - 1, $02, 1 - 1 ; $24 step up right
 
-	db $0b, $0f, $02, $00 ; $25 slide down
-	db $0c, $0f, $02, $00 ; $26 slide up
-	db $0d, $0f, $02, $00 ; $27 slide left
-	db $0e, $0f, $02, $00 ; $28 slide right
-	db $0f, $0f, $02, $00 ; $29 slide down left
-	db $10, $0f, $02, $00 ; $2a slide down right
-	db $11, $0f, $02, $00 ; $2b slide up left
-	db $12, $0f, $02, $00 ; $2c slide up right
+	db $0b, 16 - 1, $02, 1 - 1 ; $25 slide down
+	db $0c, 16 - 1, $02, 1 - 1 ; $26 slide up
+	db $0d, 16 - 1, $02, 1 - 1 ; $27 slide left
+	db $0e, 16 - 1, $02, 1 - 1 ; $28 slide right
+	db $0f, 16 - 1, $02, 1 - 1 ; $29 slide down left
+	db $10, 16 - 1, $02, 1 - 1 ; $2a slide down right
+	db $11, 16 - 1, $02, 1 - 1 ; $2b slide up left
+	db $12, 16 - 1, $02, 1 - 1 ; $2c slide up right
 
-	db $0b, $0f, $08, $10 | $07 ; $2d hop down
-	db $0c, $0f, $08, $10 | $07 ; $2e hop up
-	db $0d, $0f, $08, $10 | $07 ; $2f hop left
-	db $0e, $0f, $08, $10 | $07 ; $30 hop right
-	db $0f, $0f, $08, $10 | $07 ; $31 hop down left
-	db $10, $0f, $08, $10 | $07 ; $32 hop down right
-	db $11, $0f, $08, $10 | $07 ; $33 hop up left
-	db $12, $0f, $08, $10 | $07 ; $34 hop up right
+	db $0b, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2d hop down
+	db $0c, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2e hop up
+	db $0d, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2f hop left
+	db $0e, 16 - 1, $08, (1 << 4) | 8 - 1 ; $30 hop right
+	db $0f, 16 - 1, $08, (1 << 4) | 8 - 1 ; $31 hop down left
+	db $10, 16 - 1, $08, (1 << 4) | 8 - 1 ; $32 hop down right
+	db $11, 16 - 1, $08, (1 << 4) | 8 - 1 ; $33 hop up left
+	db $12, 16 - 1, $08, (1 << 4) | 8 - 1 ; $34 hop up right
 
-	db $13, $0f, $06, $00 ; $35 look down
-	db $14, $0f, $06, $00 ; $36 look up
-	db $15, $0f, $06, $00 ; $37 look left
-	db $16, $0f, $06, $00 ; $38 look right
+	db $13, 16 - 1, $06, 1 - 1 ; $35 look down
+	db $14, 16 - 1, $06, 1 - 1 ; $36 look up
+	db $15, 16 - 1, $06, 1 - 1 ; $37 look left
+	db $16, 16 - 1, $06, 1 - 1 ; $38 look right
 
-	db $02, $80, $04, $00 ; $39
-	db $02, $80, $05, $00 ; $3a
+	db $02, $80, $04, 1 - 1 ; $39
+	db $02, $80, $05, 1 - 1 ; $3a
 	db $02, $80, $03, $80 ; $3b
 	db $02, $80, $07, $80 ; $3c
 	db $02, $80, $09, $80 ; $3d
-	db $02, $80, $06, $00 ; $3e
+	db $02, $80, $06, 1 - 1 ; $3e
 
 PikaMovementFunc1Jumptable:
-	dw PikaMovementFunc1_SignalSetCarry_ ; 00
- 	dw PikaMovementFunc1_CopyPlayerPositionToPika ; 01
+	dw PikaMovementFunc1_EndCommand_ ; 00
+ 	dw PikaMovementFunc1_LoadPikachuCurrentPosition ; 01
  	dw PikaMovementFunc1_DelayFrames ; 02
  	dw PikaMovementFunc1_WalkInCurrentFacingDirection ; 03
  	dw PikaMovementFunc1_WalkInOppositeFacingDirection ; 04
@@ -259,20 +258,20 @@ PikaMovementFunc1Jumptable:
  	dw PikaMovementFunc1_LookDown ; 13
  	dw PikaMovementFunc1_LookUp ; 14
  	dw PikaMovementFunc1_LookLeft ; 15
- 	dw PikaMovementFunc1_LookRIght ; 16
- 	dw PikaMovementFunc1_SignalSetCarry_ ; 17
+ 	dw PikaMovementFunc1_LookRight ; 16
+ 	dw PikaMovementFunc1_EndCommand_ ; 17
 
-PikaMovementFunc1_SignalSetCarry:
-	ld a, [wd44d]
+PikaMovementFunc1_EndCommand:
+	ld a, [wPikachuMovementFlags]
 	set 7, a
-	ld [wd44d], a
+	ld [wPikachuMovementFlags], a
 	ret
 
-PikaMovementFunc1_SignalSetCarry_:
-	call PikaMovementFunc1_SignalSetCarry
+PikaMovementFunc1_EndCommand_:
+	call PikaMovementFunc1_EndCommand
 	ret
 
-PikaMovementFunc1_CopyPlayerPositionToPika:
+PikaMovementFunc1_LoadPikachuCurrentPosition:
 	ld hl, wPlayerYPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
@@ -284,13 +283,13 @@ PikaMovementFunc1_CopyPlayerPositionToPika:
 	xor a
 	ld [wPikachuMovementYOffset], a
 	ld [wPikachuMovementXOffset], a
-	call PikaMovementFunc1_SignalSetCarry
+	call PikaMovementFunc1_EndCommand
 	ret
 
 PikaMovementFunc1_DelayFrames:
 	call CheckPikachuStepTimer1
 	ret nz
-	call PikaMovementFunc1_SignalSetCarry
+	call PikaMovementFunc1_EndCommand
 	ret
 
 PikaMovementFunc1_WalkInCurrentFacingDirection:
@@ -386,7 +385,7 @@ PikaMovementFunc1_ApplyStepVector:
 	call UpdatePikachuPosition
 	call CheckPikachuStepTimer1
 	ret nz
-	call PikaMovementFunc1_SignalSetCarry
+	call PikaMovementFunc1_EndCommand
 	ret
 
 PikaMovementFunc1_GetNextFacing:
@@ -453,7 +452,7 @@ PikaMovementFunc1_MoveDiagonally:
 	ret nz
 	ld a, e
 	call ApplyPikachuStepVector
-	call PikaMovementFunc1_SignalSetCarry
+	call PikaMovementFunc1_EndCommand
 	ret
 
 PikaMovementFunc1_LookDown:
@@ -468,13 +467,13 @@ PikaMovementFunc1_LookLeft:
 	ld a, PIKASTEPDIR_LEFT
 	jr PikaMovementFunc1_ApplyFacing
 
-PikaMovementFunc1_LookRIght:
+PikaMovementFunc1_LookRight:
 	ld a, PIKASTEPDIR_RIGHT
 	jr PikaMovementFunc1_ApplyFacing
 
 PikaMovementFunc1_ApplyFacing:
 	call SetPikachuFacing
-	call PikaMovementFunc1_SignalSetCarry
+	call PikaMovementFunc1_EndCommand
 	ret
 
 UpdatePikachuPosition:
@@ -573,7 +572,7 @@ PikaMovementFunc2Jumptable:
 	dw PikaMovementFunc2_nop ; 10
 
 PikaMovement_SetSpawnShadow:
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	set 6, [hl]
 	ret
 
@@ -618,7 +617,7 @@ PikaMovementFunc2_UpdateSpriteImageIdxWithPreviousImageIdxDirection:
 PikaMovementFunc2_UpdateSpriteImageIdx:
 	ld hl, wPlayerAnimFrameCounter - wPlayerSpriteStateData1
 	add hl, bc
-	call CheckPikachuStepTimer2
+	call CheckPikachuStepTimer2 ; does not preserve hl
 	jr nz, .skip
 	inc [hl]
 .skip
@@ -769,7 +768,7 @@ SetPikachuFacing:
 	ret
 
 CheckPikachuStepTimer1:
-	ld hl, wd457
+	ld hl, wPikachuStepTimer
 	inc [hl]
 	ld a, [wCurPikaMovementParam1]
 	and $1f
@@ -789,7 +788,7 @@ GetPikachuStepVectorMagnitude:
 	ret
 
 CheckPikachuStepTimer2:
-	ld hl, wd458
+	ld hl, wPikachuStepSubtimer
 	inc [hl]
 	ld a, [wCurPikaMovementParam2]
 	and $f
@@ -801,9 +800,9 @@ CheckPikachuStepTimer2:
 
 PikaMovementFunc_Sine:
 	call .GetArgument
-	ld a, [wd458]
+	ld a, [wPikachuStepSubtimer]
 	add e
-	ld [wd458], a
+	ld [wPikachuStepSubtimer], a
 	add $20
 	ld e, a
 	push hl

@@ -14,7 +14,7 @@ ClearVariablesAfterLoadingMapData: ; c07c (3:407c)
 	ld hl, wCardKeyDoorY
 	ld [hli], a
 	ld [hl], a
-	ld hl, wWhichTrade
-	ld bc, $1e
+	ld hl, wUnusedCD3D
+	ld bc, wStandingOnWarpPadOrHole - wUnusedCD3D
 	call FillMemory
 	ret

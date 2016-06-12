@@ -14,6 +14,17 @@ ldpikaemotion: macro
 	ld \1, (\2_id - PikachuEmotionTable) / 2
 	endm
 
+dpikaanim: macro
+	db (\1_id - PikaPicAnimBGFramesPointers) / 2
+	endm
+
+pikaframeend EQUS "db $e0"
+pikaframe: macro
+	db (\1_id - PikaPicTilemapPointers) / 2, \2
+	endm
+
+pikaframedelay EQUS "db 0,"
+
 ; Starter Pikachu emotion commands constants
 
 	const_def
@@ -138,11 +149,12 @@ pikapic_loadgfx: macro
 	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
 	endm
 
-	enum pikapic_object_command
-pikapic_object: macro
-	db pikapic_object_command
-	dw \1
-	db \2, \3, \4
+	enum pikapic_animation_command
+pikapic_animation: macro
+	; frameset pointer, starting vtile, y offset, x offset
+	db pikapic_animation_command
+	dpikaanim \1
+	db 0, \2, \3, \4
 	endm
 
 	enum pikapic_nop4_command

@@ -93,7 +93,7 @@ StarterPikachuEmotionCommand_pikapic: ; fd9d0 (3f:59d0)
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld a, [de]
-	ld [wExpressionNumber2], a
+	ld [wPikaPicAnimNumber], a
 	inc de
 	push de
 	call .RunPikapic
@@ -127,10 +127,10 @@ ResetPikaPicAnimBuffer:
 	ld [wPikaPicAnimTimer], a
 	ld a, h
 	ld [wPikaPicAnimTimer + 1], a
-	ld a, $07
-	ld [wPikaSpriteY], a
-	ld a, $06
-	ld [wPikaPicTextboxStartY], a
+	ld a, $7
+	ld [wPikaPicPikaDrawStartX], a
+	ld a, $6
+	ld [wPikaPicPikaDrawStartY], a
 	ret
 
 PlacePikapicTextBoxBorder:
@@ -141,16 +141,16 @@ PlacePikapicTextBoxBorder:
 	call TextBoxBorder
 	call Delay3
 	call UpdateSprites
-	ld a, $01
+	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	ret
 
 LoadCurrentPikaPicAnimScriptPointer:
-	ld a, [wExpressionNumber2]
+	ld a, [wPikaPicAnimNumber]
 	cp $1d
 	jr c, .valid
-	ld a, 0
+	ld a, $0
 .valid
 	ld e, a
 	ld d, 0
@@ -199,7 +199,6 @@ endm
 	pikapic_def PikaPicAnimScript28 ; 1c
 	pikapic_def PikaPicAnimScript29 ; 1d
 
-
 ExecutePikaPicAnimScript:
 .loop
 	xor a
@@ -208,7 +207,7 @@ ExecutePikaPicAnimScript:
 	call DummyFunction_fdad5
 	call AnimateCurrentPikaPicAnimFrame
 	call DummyFunction_fdad5
-	ld a, $01
+	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call PikaPicAnimTimerAndJoypad
 	and a
@@ -239,7 +238,7 @@ CheckPikaPicAnimTimer:
 	ret
 
 .timer_expired
-	ld a, $01
+	ld a, $1
 	ret
 
 DummyFunction_fdad5:
@@ -251,43 +250,43 @@ AnimateCurrentPikaPicAnimFrame:
 .loop
 	push af
 	push bc
-	ld hl, 0
+	ld hl, 0 ; struct index
 	add hl, bc
 	ld a, [hli]
 	and a
 	jr z, .skip
 	ld a, [hli]
-	ld [wCurPikaPicAnimObject], a
+	ld [wCurPikaPicAnimObjectScriptIdx], a
 	ld a, [hli]
-	ld [wCurPikaPicAnimObject + 1], a
+	ld [wCurPikaPicAnimObjectFrameIdx], a
 	ld a, [hli]
-	ld [wCurPikaPicAnimObject + 2], a
+	ld [wCurPikaPicAnimObjectFrameTimer], a
 	ld a, [hli]
-	ld [wd456], a
+	ld [wCurPikaPicAnimObjectVTileOffset], a
 	ld a, [hli]
-	ld [wd457], a
+	ld [wCurPikaPicAnimObjectXOffset], a
 	ld a, [hli]
-	ld [wd458], a
+	ld [wCurPikaPicAnimObjectYOffset], a
 	ld a, [hli]
-	ld [wCurPikaPicAnimObject + 3], a
+	ld [wCurPikaPicAnimObject + 6], a
 	push bc
 	call LoadPikaPicAnimObjectData
 	pop bc
-	ld hl, 1
+	ld hl, 1 ; script index
 	add hl, bc
-	ld a, [wCurPikaPicAnimObject]
+	ld a, [wCurPikaPicAnimObjectScriptIdx]
 	ld [hli], a
-	ld a, [wCurPikaPicAnimObject + 1]
+	ld a, [wCurPikaPicAnimObjectFrameIdx]
 	ld [hli], a
-	ld a, [wCurPikaPicAnimObject + 2]
+	ld a, [wCurPikaPicAnimObjectFrameTimer]
 	ld [hli], a
-	ld a, [wd456]
+	ld a, [wCurPikaPicAnimObjectVTileOffset]
 	ld [hli], a
-	ld a, [wd457]
+	ld a, [wCurPikaPicAnimObjectXOffset]
 	ld [hli], a
-	ld a, [wd458]
+	ld a, [wCurPikaPicAnimObjectYOffset]
 	ld [hli], a
-	ld a, [wCurPikaPicAnimObject + 3]
+	ld a, [wCurPikaPicAnimObject + 6]
 	ld [hl], a
 .skip
 	pop bc
@@ -324,7 +323,7 @@ PikaPicAnimCommand_object:
 	call GetPikaPicAnimByte
 	ld [hl], a
 	xor a
-	ld [hli], a
+	ld [hli], a ; overloads
 	ld [hli], a
 	call GetPikaPicAnimByte
 	ld [hli], a
@@ -358,20 +357,20 @@ PikaPicAnimCommand_deleteobject:
 
 LoadPikaPicAnimObjectData:
 .loop
-	ld a, [wCurPikaPicAnimObject]
+	ld a, [wCurPikaPicAnimObjectScriptIdx]
 	cp $23
 	jr c, .valid
 	ld a, $4
 .valid
 	ld e, a
 	ld d, 0
-	ld hl, PikaPicAnimOAMPointers
+	ld hl, PikaPicAnimBGFramesPointers
 	add hl, de
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [wCurPikaPicAnimObject + 1]
+	ld a, [wCurPikaPicAnimObjectFrameIdx]
 	ld e, a
 	ld d, 0
 	add hl, de
@@ -383,8 +382,8 @@ LoadPikaPicAnimObjectData:
 
 .end
 	xor a
-	ld [wCurPikaPicAnimObject + 1], a
-	ld [wCurPikaPicAnimObject + 2], a
+	ld [wCurPikaPicAnimObjectFrameIdx], a
+	ld [wCurPikaPicAnimObjectFrameTimer], a
 	jr .loop
 
 .init
@@ -393,18 +392,18 @@ LoadPikaPicAnimObjectData:
 	pop hl
 	ld a, [hl]
 	and a
-	jr z, .done
-	ld a, [wCurPikaPicAnimObject + 2]
+	jr z, .not_done ; lasts forever
+	ld a, [wCurPikaPicAnimObjectFrameTimer]
 	inc a
-	ld [wCurPikaPicAnimObject + 2], a
+	ld [wCurPikaPicAnimObjectFrameTimer], a
 	cp [hl]
-	jr nz, .done
+	jr nz, .not_done
 	xor a
-	ld [wCurPikaPicAnimObject + 2], a
-	ld a, [wCurPikaPicAnimObject + 1]
+	ld [wCurPikaPicAnimObjectFrameTimer], a
+	ld a, [wCurPikaPicAnimObjectFrameIdx]
 	inc a
-	ld [wCurPikaPicAnimObject + 1], a
-.done
+	ld [wCurPikaPicAnimObjectFrameIdx], a
+.not_done
 	ret
 
 INCLUDE "data/pikachu_pic_objects.asm"
@@ -428,13 +427,13 @@ LoadCurPikaPicObjectTilemap:
 	inc de
 	push de
 	push bc
-	call .GetYCoordinate
+	call .GetStartCoords
 	pop bc
 	pop de
 .row
 	push bc
 	push hl
-	ld a, [wd456]
+	ld a, [wCurPikaPicAnimObjectVTileOffset] ; tile id offset
 	ld c, a
 .col
 	ld a, [de]
@@ -455,18 +454,18 @@ LoadCurPikaPicObjectTilemap:
 	jr nz, .row
 	ret
 
-.GetYCoordinate:
+.GetStartCoords:
 	push bc
-	ld a, [wd458]
+	ld a, [wCurPikaPicAnimObjectYOffset] ; Y offset
 	ld b, a
-	ld a, [wPikaPicTextboxStartY]
+	ld a, [wPikaPicPikaDrawStartY]
 	add b
 	coord hl, 0, 0
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
-	ld a, [wd457]
+	ld a, [wCurPikaPicAnimObjectXOffset] ; X offset
 	ld c, a
-	ld a, [wPikaSpriteY]
+	ld a, [wPikaPicPikaDrawStartX]
 	add c
 	ld c, a
 	ld b, 0
@@ -704,6 +703,11 @@ GetPikaPicVRAMAddressForNewGFX:
 	ret
 
 CheckIfThereIsRoomForPikaPicAnimGFX:
+; d: idx
+; e: size
+; FATAL: If the graphic has already been loaded, or if there are
+; already 8 graphics objects loaded, the game will execute arbitrary
+; code.
 	push bc
 	push hl
 	ld hl, wPikaPicUsedGFX
@@ -788,12 +792,12 @@ PikaPicAnimCommand_thunderbolt:
 	call DelayFrame
 	ld a, [wAudioROMBank]
 	push af
-	ld a, BANK(SFX_Battle_2F)
+	ld a, BANK(SFX_Thunderbolt)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
-	call PikaPicAnimLoadThunderboltAudio
+	call .LoadAudio
 	call PlaySound
-	call PikaPicAnimThunderboltFlashScreen
+	call .FlashScreen
 	call WaitForSoundToFinish
 	pop af
 	ld [wAudioROMBank], a
@@ -802,7 +806,7 @@ PikaPicAnimCommand_thunderbolt:
 	ld [wMuteAudioAndPauseMusic], a
 	ret
 
-PikaPicAnimLoadThunderboltAudio:
+.LoadAudio:
 	ld hl, MoveSoundTable
 	ld e, THUNDERBOLT
 	ld d, 0
@@ -823,7 +827,7 @@ PikaPicAnimLoadThunderboltAudio:
 	ld a, b
 	ret
 
-PikaPicAnimThunderboltFlashScreen:
+.FlashScreen:
 	ld hl, PikaPicAnimThunderboltPals
 .loop
 	ld a, [hli]
@@ -833,11 +837,11 @@ PikaPicAnimThunderboltFlashScreen:
 	ld b, [hl]
 	inc hl
 	push hl
-	call GetDMGBGPalForPikaThunderbolt
+	call .UpdatePal
 	pop hl
 	jr .loop
 
-GetDMGBGPalForPikaThunderbolt:
+.UpdatePal:
 	ld a, b
 	ld [rBGP], a
 	call UpdateGBCPal_BGP

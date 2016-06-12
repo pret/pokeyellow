@@ -667,7 +667,9 @@ INCLUDE "audio/engine_3.asm"
 
 SECTION "Audio Engine 4", ROMX, BANK[AUDIO_4]
 
-SurfingPikachu1Graphics::  INCBIN "gfx/surfing_pikachu_1.t4.2bpp"
+SurfingPikachu1Graphics1::  INCBIN "gfx/surfing_pikachu_1a.2bpp"
+SurfingPikachu1Graphics2::  INCBIN "gfx/surfing_pikachu_1b.2bpp"
+SurfingPikachu1Graphics3::  INCBIN "gfx/surfing_pikachu_1c.t5.2bpp"
 
 INCLUDE "audio/engine_4.asm"
 

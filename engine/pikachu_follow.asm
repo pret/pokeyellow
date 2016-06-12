@@ -431,13 +431,14 @@ Func_fc745: ; fc745 (3f:4745)
 	add hl, bc
 	ld [hl], a
 	call CheckPikachuFollowingPlayer
-	jr nz, .asm_fc75f
+	jr nz, .okay
+	; Have Pikachu face in the opposite direction of you
 	ld a, [wPlayerFacingDirection]
 	xor $4
 	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
-.asm_fc75f
+.okay
 	xor a
 	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
@@ -454,11 +455,11 @@ Func_fc76a: ; fc76a (3f:476a)
 	ld [hl], a
 	call UpdatePikachuWalkingSprite
 	call Func_fc82e
-	jr c, .asm_fc783
+	jr c, .skip
 	push bc
 	callab InitializeSpriteScreenPosition
 	pop bc
-.asm_fc783
+.skip
 	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
@@ -778,15 +779,15 @@ asm_fc969: ; fc969 (3f:4969)
 	inc a
 	cp $8
 	ld [hl], a
-	jr nz, .asm_fc988
+	jr nz, .skip
 	xor a
 	ld [hl], a
 	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
-	call Func_fc994
+	call .TurnClockwise
 	ld [hl], a
-.asm_fc988
+.skip
 	call UpdatePikachuWalkingSprite
 	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
@@ -794,9 +795,9 @@ asm_fc969: ; fc969 (3f:4969)
 	ret nz
 	jp Func_fc835
 
-Func_fc994: ; fc994 (3f:4994)
+.TurnClockwise: ; fc994 (3f:4994)
 	push hl
-	ld hl, Pointer_fc9ac
+	ld hl, .Facings
 	ld d, a
 .loop
 	ld a, [hli]
@@ -806,22 +807,22 @@ Func_fc994: ; fc994 (3f:4994)
 	pop hl
 	ret
 
-Func_fc9a0: ; fc9a0 (3f:49a0)
+.TurnCounterclockwise: ; fc9a0 (3f:49a0)
 	push hl
-	ld hl, Pointer_fc9ac_End
+	ld hl, .Facings_End
 	ld d, a
-.loop
+.loop_
 	ld a, [hld]
 	cp d
-	jr nz, .loop
+	jr nz, .loop_
 	ld a, [hl]
 	pop hl
 	ret
 
-Pointer_fc9ac: ; fc9ac (3f:49ac)
+.Facings: ; fc9ac (3f:49ac)
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
-Pointer_fc9ac_End:
+.Facings_End:
 
 NormalPikachuFollow: ; fc9b4 (3f:49b4)
 	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1

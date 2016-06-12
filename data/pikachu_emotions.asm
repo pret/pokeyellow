@@ -223,44 +223,44 @@ PikachuEmotion32: ; fd213 (3f:5213)
 
 PikachuMovementData_fd218: ; fd218 (3f:5218)
 	db $00
-	db $39, $01
-	db $3e, $1e
+	db $39,  2 - 1
+	db $3e, 31 - 1
 	db $3f
 
 PikachuMovementData_fd21e: ; fd21e (3f:521e)
 	db $00
-	db $39, $00
-	db $3e, $1e
+	db $39,  1 - 1
+	db $3e, 31 - 1
 	db $3f
 
 PikachuMovementData_fd224: ; fd224 (3f:5224)
 	db $00
-	db $3c, $07, $2f
-	db $3c, $07, $2f
+	db $3c, 8 - 1, (2 << 4) | (16 - 1)
+	db $3c, 8 - 1, (2 << 4) | (16 - 1)
 	db $3f
 
 PikachuMovementData_fd22c: ; fd22c (3f:522c)
-	db $3b, $1f, $03
+	db $3b, 32 - 1, 4 - 1
 	db $3f
 
 PikachuMovementData_fd230: ; fd230 (3f:5230)
 	db $00
-	db $3c, $0f, $1f
-	db $3c, $0f, $1f
+	db $3c, 16 - 1, (1 << 4) | (16 - 1)
+	db $3c, 16 - 1, (1 << 4) | (16 - 1)
 	db $3f
 
 PikachuMovementData_fd238: ; fd238 (3f:5238)
 	db $00
-	db $05, $07
-	db $39, $00
-	db $05, $07
-	db $06, $07
-	db $39, $00
-	db $06, $07
-	db $08, $07
-	db $39, $00
-	db $08, $07
-	db $07, $07
-	db $39, $00
-	db $07, $07
+	db $05, 8 - 1
+	db $39, 1 - 1
+	db $05, 8 - 1
+	db $06, 8 - 1
+	db $39, 1 - 1
+	db $06, 8 - 1
+	db $08, 8 - 1
+	db $39, 1 - 1
+	db $08, 8 - 1
+	db $07, 8 - 1
+	db $39, 1 - 1
+	db $07, 8 - 1
 	db $3f

@@ -308,6 +308,8 @@ TX_RAM: MACRO
 	ENDM
 
 TX_BCD: MACRO
+; \1: RAM address to read from
+; \2: number of bytes + print flags
 	db $2
 	dw \1
 	db \2
@@ -352,7 +354,16 @@ TX_PRIZE_VENDOR            EQUS "db $f7"
 TX_POKECENTER_PC           EQUS "db $f9"
 TX_PLAYERS_PC              EQUS "db $fc"
 TX_BILLS_PC                EQUS "db $fd"
-TX_POKEMART_CLERK          EQUS "db $fe"
+
+TX_MART: MACRO
+	db $FE, _NARG
+	rept _NARG
+	db \1
+	shift
+	endr
+	db $FF
+	ENDM
+
 TX_POKECENTER_NURSE        EQUS "db $ff"
 
 ; Predef macro.
@@ -838,3 +849,20 @@ endm
 enum_set: macro
 __enum__ = \1
 endm
+
+ANIM_OBJ_INDEX           EQUS "AnimatedObject0Index - AnimatedObject0"
+ANIM_OBJ_FRAME_SET       EQUS "AnimatedObject0FramesetID - AnimatedObject0"
+ANIM_OBJ_CALLBACK        EQUS "AnimatedObject0AnimSeqID - AnimatedObject0"
+ANIM_OBJ_TILE            EQUS "AnimatedObject0TileID - AnimatedObject0"
+ANIM_OBJ_X_COORD         EQUS "AnimatedObject0XCoord - AnimatedObject0"
+ANIM_OBJ_Y_COORD         EQUS "AnimatedObject0YCoord - AnimatedObject0"
+ANIM_OBJ_X_OFFSET        EQUS "AnimatedObject0XOffset - AnimatedObject0"
+ANIM_OBJ_Y_OFFSET        EQUS "AnimatedObject0YOffset - AnimatedObject0"
+ANIM_OBJ_DURATION        EQUS "AnimatedObject0Duration - AnimatedObject0"
+ANIM_OBJ_DURATION_OFFSET EQUS "AnimatedObject0DurationOffset - AnimatedObject0"
+ANIM_OBJ_FRAME_IDX       EQUS "AnimatedObject0FrameIndex - AnimatedObject0"
+ANIM_OBJ_FIELD_B EQU $b
+ANIM_OBJ_FIELD_C EQU $c
+ANIM_OBJ_FIELD_D EQU $d
+ANIM_OBJ_FIELD_E EQU $e
+ANIM_OBJ_FIELD_F EQU $f

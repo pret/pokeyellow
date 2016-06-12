@@ -405,9 +405,9 @@ SFX_Battle_28:: ; 20246 (8:4246)
 	dbw CH5, SFX_Battle_28_Ch2
 	dbw CH7, SFX_Battle_28_Ch3
 
-SFX_Battle_29:: ; 2024f (8:424f)
-	dbw ( $40 | CH4 ), SFX_Battle_29_Ch1
-	dbw CH7, SFX_Battle_29_Ch2
+SFX_Earthquake:: ; 2024f (8:424f)
+	dbw ( $40 | CH4 ), SFX_Earthquake_Ch1
+	dbw CH7, SFX_Earthquake_Ch2
 
 SFX_Battle_2A:: ; 20255 (8:4255)
 	dbw ( $80 | CH4 ), SFX_Battle_2A_Ch1
@@ -433,10 +433,10 @@ SFX_Battle_2E:: ; 20276 (8:4276)
 	dbw CH5, SFX_Battle_2E_Ch2
 	dbw CH7, SFX_Battle_2E_Ch3
 
-SFX_Battle_2F:: ; 2027f (8:427f)
-	dbw ( $80 | CH4 ), SFX_Battle_2F_Ch1
-	dbw CH5, SFX_Battle_2F_Ch2
-	dbw CH7, SFX_Battle_2F_Ch3
+SFX_Thunderbolt:: ; 2027f (8:427f)
+	dbw ( $80 | CH4 ), SFX_Thunderbolt_Ch1
+	dbw CH5, SFX_Thunderbolt_Ch2
+	dbw CH7, SFX_Thunderbolt_Ch3
 
 SFX_Psychic_M:: ; 20288 (8:4288)
 	dbw ( $80 | CH4 ), SFX_Psychic_M_Ch1
