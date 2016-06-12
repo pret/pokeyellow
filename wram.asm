@@ -2981,18 +2981,18 @@ wPlayerDirection:: ; d529
 wTilesetBank:: ; d52a
 	ds 1
 
-wTileSetBlocksPtr:: ; d52b
+wTilesetBlocksPtr:: ; d52b
 ; maps blocks (4x4 tiles) to tiles
 	ds 2
 
-wTilesetGFXPtr:: ; d52d
+wTilesetGfxPtr:: ; d52d
 	ds 2
 
 wTilesetCollisionPtr:: ; d52f
 ; list of all walkable tiles
 	ds 2
 
-wTileSetTalkingOverTiles:: ; d531
+wTilesetTalkingOverTiles:: ; d531
 	ds 3
 
 wGrassTile:: ; d534

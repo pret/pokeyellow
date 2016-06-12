@@ -869,9 +869,9 @@ INCLUDE "data/bike_riding_tilesets.asm"
 
 ; load the tile pattern data of the current tileset into VRAM
 LoadTilesetTilePatternData::
-	ld a, [wTilesetGFXPtr]
+	ld a, [wTilesetGfxPtr]
 	ld l, a
-	ld a, [wTilesetGFXPtr + 1]
+	ld a, [wTilesetGfxPtr + 1]
 	ld h, a
 	ld de, vTileset
 	ld bc, $600
@@ -1078,7 +1078,7 @@ IsSpriteOrSignInFrontOfPlayer::
 .extendRangeOverCounter
 ; check if the player is front of a counter in a pokemon center, pokemart, etc. and if so, extend the range at which he can talk to the NPC
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player in c
-	ld hl, wTileSetTalkingOverTiles ; list of tiles that extend talking range (counter tiles)
+	ld hl, wTilesetTalkingOverTiles ; list of tiles that extend talking range (counter tiles)
 	ld b, 3
 	ld d, $20 ; talking range in pixels (long range)
 .counterTilesLoop
@@ -1584,9 +1584,9 @@ ScheduleWestColumnRedraw::
 ; Input: c = tile block ID, hl = destination address
 DrawTileBlock::
 	push hl
-	ld a, [wTileSetBlocksPtr] ; pointer to tiles
+	ld a, [wTilesetBlocksPtr] ; pointer to tiles
 	ld l, a
-	ld a, [wTileSetBlocksPtr + 1]
+	ld a, [wTilesetBlocksPtr + 1]
 	ld h, a
 	ld a, c
 	swap a
