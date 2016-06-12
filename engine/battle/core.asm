@@ -1227,7 +1227,7 @@ ChooseNextMon:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .notLinkBattle
-	ld a, $1
+	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a
 	call LinkBattleExchangeData
 .notLinkBattle
@@ -1956,7 +1956,7 @@ AnimateRetreatingPlayerMon:
 .clearScreenArea
 	coord hl, 1, 5
 	lb bc, 7, 7
-	call ClearScreenArea ; jp
+	call ClearScreenArea
 	ret
 
 ; reads player's current mon's HP into wBattleMonHP
@@ -2347,7 +2347,7 @@ DisplayBattleMenu:
 	call PrintText
 	jp DisplayBattleMenu
 
-.RunAwayText ; 3d0df (f:50df)
+.RunAwayText
 	TX_FAR _RunAwayText
 	db "@"
 
@@ -2561,7 +2561,7 @@ PartyMenuOrRockOrRun:
 	predef StatusScreen
 	predef StatusScreen2
 ; now we need to reload the enemy mon pic
-	ld a, $1
+	ld a, 1
 	ld [H_WHOSETURN], a
 	ld a, [wEnemyBattleStatus2]
 	bit HasSubstituteUp, a ; does the enemy mon have a substitute?
@@ -2961,7 +2961,7 @@ AnyMoveToSelect:
 	jr .noMovesLeft
 .handleDisabledMove
 	swap a
-	and $f ; get move disabled
+	and $f ; get disabled move
 	ld b, a
 	ld d, NUM_MOVES + 1
 	xor a
@@ -3379,7 +3379,7 @@ getPlayerAnimationType:
 	ld a,4 ; move has no effect other than dealing damage
 	jr z,playPlayerMoveAnimation
 	ld a,5 ; move has effect
-playPlayerMoveAnimation ; 3d890 (f:5890)
+playPlayerMoveAnimation:
 	push af
 	ld a,[wPlayerBattleStatus2]
 	bit HasSubstituteUp,a
@@ -3398,7 +3398,7 @@ playPlayerMoveAnimation ; 3d890 (f:5890)
 	ld b,BANK(ReshowSubstituteAnim)
 	call nz,Bankswitch
 	jr MirrorMoveCheck
-playerCheckIfFlyOrChargeEffect ; 3d8bd (f:58bd)
+playerCheckIfFlyOrChargeEffect:
 	ld c,30
 	call DelayFrames
 	ld a,[wPlayerMoveEffect]
@@ -4105,7 +4105,7 @@ PrintMoveFailureText:
 	ret nz
 
 	; if you get here, the mon used jump kick or hi jump kick and missed
-	ld hl, wDamage ; since the move missed, W_DAMAGE will always contain 0 at this point.
+	ld hl, wDamage ; since the move missed, wDamage will always contain 0 at this point.
 	                ; Thus, recoil damage will always be equal to 1
 	                ; even if it was intended to be potential damage/8.
 	ld a, [hli]
@@ -7173,7 +7173,7 @@ FellAsleepText:
 	TX_FAR _FellAsleepText
 	db "@"
 
-AlreadyAsleepText: ; 3f1cd (f:71cds)
+AlreadyAsleepText:
 	TX_FAR _AlreadyAsleepText
 	db "@"
 

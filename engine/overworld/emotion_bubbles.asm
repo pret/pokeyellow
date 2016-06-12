@@ -3,7 +3,7 @@ EmotionBubble:
 	and $f
 	swap a
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, EmotionBubbles
 	add hl, bc ; each emotion bubble is 16 bytes, so calculate the offset directly instead of with a pointer table
 	add hl, bc
@@ -64,7 +64,7 @@ EmotionBubble:
 	call DelayFrame
 	call UpdateSprites
 	ret
-	; jp UpdateSprites
+
 
 EmotionBubblesOAM:
 	db $F8,$00,$F9,$00

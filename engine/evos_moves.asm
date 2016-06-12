@@ -24,8 +24,7 @@ EvolutionAfterBattle:
 	ld hl, wPartyCount
 	push hl
 
-Evolution_PartyMonLoop:
-; loop over party mons
+Evolution_PartyMonLoop: ; loop over party mons
 	ld hl, wWhichPokemon
 	inc [hl]
 	pop hl
@@ -313,7 +312,7 @@ StoppedEvolvingText:
 	TX_FAR _StoppedEvolvingText
 	db "@"
 
-IsEvolvingText: ; 3affe (e:6ffes)
+IsEvolvingText:
 	TX_FAR _IsEvolvingText
 	db "@"
 

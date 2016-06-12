@@ -254,7 +254,7 @@ BillsPCDeposit:
 	call WaitForSoundToFinish
 	ld hl, wBoxNumString
 	ld a, [wCurrentBoxNum]
-	and " "
+	and $7f
 	cp 9
 	jr c, .singleDigitBoxNum
 	sub 9
@@ -423,7 +423,7 @@ HMMoveArray:
 	db SURF
 	db STRENGTH
 	db FLASH
-	db $ff
+	db -1
 
 DisplayDepositWithdrawMenu:
 	coord hl, 9, 10
@@ -595,3 +595,4 @@ JustAMomentText::
 
 OpenBillsPCText::
 	db $FD ; FuncTX_BillsPC
+

@@ -8,7 +8,7 @@ PlayIntro:
 	inc a
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call PlayShootingStar
-	callab PlayIntroScene ; 3e:582d
+	callab PlayIntroScene
 	xor a
 	ld [hSCX], a
 	ld [H_AUTOBGTRANSFERENABLED], a

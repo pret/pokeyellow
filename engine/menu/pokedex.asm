@@ -393,7 +393,6 @@ Pokedex_PlacePokemonList:
 	jr nz, .getPokemonName ; if the player has seen the pokemon
 	ld de, .dashedLine ; print a dashed line in place of the name if the player hasn't seen the pokemon
 	jr .skipGettingName
-
 .dashedLine ; for unseen pokemon in the list
 	db "----------@"
 .getPokemonName
@@ -519,10 +518,9 @@ DrawDexEntryOnScreen:
 	ld a, $6c ; lower left corner tile
 	Coorda 0, 17
 	ld a, $6e ; lower right corner tile
-
 	Coorda 19, 17
-	coord hl, 0, 9
 
+	coord hl, 0, 9
 	ld de, PokedexDataDividerLine
 	call PlaceString ; draw horizontal divider line
 

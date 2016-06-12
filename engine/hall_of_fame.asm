@@ -33,8 +33,8 @@ AnimateHallOfFame:
 .skipInc
 	ld a, $90
 	ld [hWY], a
-	ld c, $1f ; BANK(Music_HallOfFame)
-	ld a, $ca ; MUSIC_HALL_OF_FAME
+	ld c, BANK(Music_HallOfFame)
+	ld a, MUSIC_HALL_OF_FAME
 	call PlayMusic
 	ld hl, wPartySpecies
 	ld c, $ff
@@ -151,7 +151,7 @@ HoFShowMonOrPlayer:
 
 HoFDisplayAndRecordMonInfo:
 	ld a, [wHoFPartyMonIndex]
-	ld hl, wPartyMonNicks ; wPartyMonNicks
+	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	call HoFDisplayMonInfo
 	ld a, [wHoFPartyMonIndex]
@@ -197,7 +197,7 @@ HoFMonInfoText:
 	next "TYPE2/@"
 
 HoFLoadPlayerPics:
-	ld de, RedPicFront ; $6ede
+	ld de, RedPicFront
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
 	ld a,$0
@@ -218,7 +218,8 @@ HoFLoadPlayerPics:
 	ld c, $1
 
 HoFLoadMonPlayerPicTileIDs:
-	ld b, $0
+; c = base tile ID
+	ld b, 0
 	coord hl, 12, 5
 	predef_jump CopyTileIDsFromList
 

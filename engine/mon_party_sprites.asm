@@ -372,7 +372,7 @@ UnusedPartyMonSpriteFunction:
 	ld [wMonPartySpriteSpecies], a
 	jr WriteMonPartySpriteOAMBySpecies
 
-.LoadTilePatterns ; 71959 (1c:5959)
+.LoadTilePatterns
 	push hl
 	add a
 	ld c, a

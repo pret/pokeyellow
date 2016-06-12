@@ -1,5 +1,5 @@
 BattleTransition:
-	ld a, $1
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a
@@ -363,7 +363,7 @@ BattleTransition_FlashScreen_:
 	jr z, .done
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
-	ld c, $2
+	ld c, 2
 	call DelayFrames
 	jr .loop
 .done
@@ -377,7 +377,7 @@ BattleTransition_FlashScreenPalettes:
 
 ; used for low level trainer dungeon battles
 BattleTransition_Shrink:
-	ld c,9
+	ld c, 9
 .loop
 	push bc
 	xor a
@@ -411,7 +411,7 @@ BattleTransition_Shrink:
 
 ; used for high level trainer dungeon battles
 BattleTransition_Split:
-	ld c,$9
+	ld c, 9
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
 .loop
@@ -632,7 +632,7 @@ BattleTransition_Circle_Sub1:
 	ret
 
 BattleTransition_TransferDelay3:
-	ld a, $1
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
 	xor a

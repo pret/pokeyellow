@@ -261,7 +261,7 @@ SaveSAVtoSRAM2:
 	ld [sMainDataCheckSum], a
 	call DisableSRAMAndPrepareClockData
 	ret
-;;;
+
 SaveSAVtoSRAM:
 	ld a, $2
 	ld [wSaveFileStatus], a

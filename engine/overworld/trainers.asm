@@ -57,7 +57,7 @@ _SetSpritePosition1:
 
 _SetSpritePosition2:
 	ld hl, wSpriteStateData1
-	ld de, $4
+	ld de, 4
 	ld a, [wSpriteIndex]
 	ld [H_SPRITEINDEX], a
 	call GetSpriteDataPointer
@@ -262,13 +262,13 @@ CheckSpriteCanSeePlayer:
 	jr .notInLine         ; player too far away
 .checkIfLinedUp
 	ld a, [wTrainerFacingDirection]         ; sprite facing direction
-	cp SPRITE_FACING_DOWN  ; down
+	cp SPRITE_FACING_DOWN
 	jr z, .checkXCoord
-	cp SPRITE_FACING_UP    ; up
+	cp SPRITE_FACING_UP
 	jr z, .checkXCoord
-	cp SPRITE_FACING_LEFT  ; left
+	cp SPRITE_FACING_LEFT
 	jr z, .checkYCoord
-	cp SPRITE_FACING_RIGHT ; right
+	cp SPRITE_FACING_RIGHT
 	jr z, .checkYCoord
 	jr .notInLine
 .checkXCoord

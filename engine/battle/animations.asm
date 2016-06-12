@@ -1034,6 +1034,7 @@ TailWhipAnimationUnused:
 	ld c, 20
 	jp DelayFrames
 
+; Format: Special Effect ID (1 byte), Address (2 bytes)
 SpecialEffectPointers:
 	db SE_DARK_SCREEN_FLASH ; $FE
 	dw AnimationFlashScreen
@@ -2040,7 +2041,7 @@ _AnimationSlideMonOff:
 ; functions below catch it by checking if the tile number is within the valid
 ; range and if not, replacing it with a blank tile.
 
-.PlayerNextTile ; 79702 (1e:5702)
+.PlayerNextTile
 	ld a, [hl]
 	add 7
 ; bugfix: compares against the max tile + 1 as opposed to the max tile
@@ -2049,7 +2050,7 @@ _AnimationSlideMonOff:
 	ld a, " "
 	ret
 
-.EnemyNextTile ; 7970b (1e:570b)
+.EnemyNextTile
 	ld a, [hl]
 	sub 7
 ; This has the same problem as above, but it has no visible effect because
@@ -3202,7 +3203,7 @@ TossBallAnimation:
 ; sequence of animations that make up the Poké Ball toss
 	db POOF_ANIM, HIDEPIC_ANIM, SHAKE_ANIM, POOF_ANIM, SHOWPIC_ANIM
 
-.BlockBall ; 79ff6 (1e:5ff6)
+.BlockBall
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a
 	call PlayAnimation

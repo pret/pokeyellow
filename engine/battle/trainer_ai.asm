@@ -740,8 +740,7 @@ AICureStatus:
 	res 0,[hl]
 	ret
 
-AIUseXAccuracy:
-; unused
+AIUseXAccuracy: ; unused
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
 	set 0,[hl]
@@ -755,8 +754,7 @@ AIUseGuardSpec:
 	ld a,GUARD_SPEC
 	jp AIPrintItemUse
 
-AIUseDireHit:
-; unused
+AIUseDireHit: ; unused
 	call AIPlayRestoringSFX
 	ld hl,wEnemyBattleStatus2
 	set 2,[hl]

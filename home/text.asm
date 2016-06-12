@@ -60,19 +60,19 @@ PlaceNextChar::
 
 Char4ETest::
 	cp $4E ; next
-	jr nz, .next
+	jr nz, .char4FTest
 	ld bc, 2 * SCREEN_WIDTH
 	ld a, [hFlags_0xFFFA]
 	bit 2, a
-	jr z, .next2
+	jr z, .ok
 	ld bc, SCREEN_WIDTH
-.next2
+.ok
 	pop hl
 	add hl, bc
 	push hl
-	jp PlaceNextChar_inc ; 17b6
+	jp PlaceNextChar_inc
 
-.next
+.char4FTest
 	cp $4F ; line
 	jr nz, .next3
 	pop hl
@@ -125,51 +125,51 @@ Char00::
 	dec de
 	ret
 
-Char00Text:: ; 17c2 (0:17c2) ; “%d ERROR.”
-	TX_FAR _Char00Text ; a0c66 (28:4c66)
+Char00Text:: ; “%d ERROR.”
+	TX_FAR _Char00Text
 	db "@"
 
-Char52:: ; 17c7 (0:17c7) ; player’s name
+Char52:: ; player’s name
 	push de
 	ld de, wPlayerName
 	jr FinishDTE
 
-Char53:: ; 17cd (0:17cd) ; rival’s name
+Char53:: ; rival’s name
 	push de
 	ld de, wRivalName
 	jr FinishDTE
 
-Char5D:: ; 17d3 (0:17d3) ; TRAINER
+Char5D:: ; TRAINER
 	push de
 	ld de, Char5DText
 	jr FinishDTE
 
-Char5C:: ; 17d9 (0:17d9) ; TM
+Char5C:: ; TM
 	push de
 	ld de, Char5CText
 	jr FinishDTE
 
-Char5B:: ; 17df (0:17df) ; PC
+Char5B:: ; PC
 	push de
 	ld de, Char5BText
 	jr FinishDTE
 
-Char5E:: ; 17e5 (0:17e5) ; ROCKET
+Char5E:: ; ROCKET
 	push de
 	ld de, Char5EText
 	jr FinishDTE
 
-Char54:: ; 17eb (0:17eb) ; POKé
+Char54:: ; POKé
 	push de
 	ld de, Char54Text
 	jr FinishDTE
 
-Char56:: ; 17f1 (0:17f1) ; ……
+Char56:: ; ……
 	push de
 	ld de, Char56Text
 	jr FinishDTE
 
-Char4A:: ; 17f7 (0:17f7) ; PKMN
+Char4A:: ; PKMN
 	push de
 	ld de, Char4AText
 	jr FinishDTE
@@ -235,7 +235,7 @@ Char55::
 	ld b, h
 	ld c, l
 	ld hl, Char55Text
-	call TextCommandProcessor ; 1919
+	call TextCommandProcessor
 	ld h, b
 	ld l, c
 	pop de
@@ -244,7 +244,7 @@ Char55::
 
 Char55Text::
 ; equivalent to Char4B
-	TX_FAR _Char55Text ; a0c73 (28:4c73)
+	TX_FAR _Char55Text
 	db "@"
 
 Char5F::
@@ -253,18 +253,18 @@ Char5F::
 	pop hl
 	ret
 
-Char58:: ; 1863 (0:1863) prompt
+Char58:: ; prompt
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	jp z, .next
+	jp z, .ok
 	ld a, $EE
 	Coorda 18, 16
-.next ; 1870 (0:1870)
-	call ProtectedDelay3 ; 1913
-	call ManualTextScroll ; 388e
-	ld a, " " ; space
+.ok
+	call ProtectedDelay3
+	call ManualTextScroll
+	ld a, " "
 	Coorda 18, 16
-Char57:: ; 1aad (0:1aad) done
+Char57:: ; done
 	pop hl
 	ld de, Char58Text
 	dec de
@@ -273,7 +273,7 @@ Char57:: ; 1aad (0:1aad) done
 Char58Text::
 	db "@"
 
-Char51:: ; 1882 (0:1882) para
+Char51:: ; para
 	push de
 	ld a, $EE
 	Coorda 18, 16
@@ -324,7 +324,7 @@ Char4B::
 	;fall through
 Char4C::
 	push de
-	call ScrollTextUpOneLine ; 18f1
+	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine
 	coord hl, 1, 16
 	pop de
@@ -393,14 +393,14 @@ NextTextCommand::
 	ld hl, TextCommandJumpTable
 	push bc
 	add a
-	ld b, $00
+	ld b, 0
 	ld c, a
 	add hl, bc
 	pop bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 ; draw box
 ; 04AAAABBCC
@@ -521,7 +521,7 @@ TextCommand06::
 TextCommand07::
 	ld a, " "
 	Coorda 18, 16 ; place blank space in lower right corner of dialogue text box
-	call ScrollTextUpOneLine ; scroll up text
+	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine
 	pop hl
 	coord bc, 1, 16 ; address of second line of dialogue text box
@@ -533,7 +533,7 @@ TextCommand08::
 	pop hl
 	ld de, NextTextCommand
 	push de ; return address
-	jp [hl]
+	jp hl
 
 ; print decimal number (converted from binary number)
 ; 09AAAABB
@@ -629,7 +629,7 @@ TextCommandSounds::
 	db $10, SFX_GET_ITEM_2
 	db $11, SFX_GET_KEY_ITEM
 	db $13, SFX_TRADE_MACHINE
-	db $14, PIKACHU ; used in OakSpeech
+	db $14, PIKACHU  ; used in OakSpeech
 	db $15, PIDGEOT  ; used in SaffronCityText12
 	db $16, DEWGONG  ; unused?
 
