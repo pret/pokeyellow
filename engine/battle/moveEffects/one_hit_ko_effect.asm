@@ -1,4 +1,4 @@
-OneHitKOEffect_: ; f64db (3d:64db)
+OneHitKOEffect_:
 	ld hl, wDamage
 	xor a
 	ld [hli], a

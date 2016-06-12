@@ -1,4 +1,4 @@
-OpenOaksPC: ; 1e2ae (7:62ae)
+OpenOaksPC:
 	call SaveScreenTilesToBuffer2
 	ld hl, AccessedOaksPCText
 	call PrintText
@@ -14,14 +14,14 @@ OpenOaksPC: ; 1e2ae (7:62ae)
 	call PrintText
 	jp LoadScreenTilesFromBuffer2
 
-GetDexRatedText: ; 1e2d4 (7:62d4)
+GetDexRatedText:
 	TX_FAR _GetDexRatedText
 	db "@"
 
-ClosedOaksPCText: ; 1e2d9 (7:62d9)
+ClosedOaksPCText:
 	TX_FAR _ClosedOaksPCText
 	db $0d,"@"
 
-AccessedOaksPCText: ; 1e2df (7:62df)
+AccessedOaksPCText:
 	TX_FAR _AccessedOaksPCText
 	db "@"

@@ -8,7 +8,7 @@
 ; fields, respectively, within loops. The X is the loop index.
 ; If there is an inner loop, Y is the inner loop index, i.e. $C1Y* and $C2Y*
 ; denote fields of the sprite slots interated over in the inner loop.
-_InitMapSprites: ; 1401b (5:401b)
+_InitMapSprites:
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
 ; if the map is an inside map (i.e. mapID >= $25)
@@ -19,7 +19,7 @@ _InitMapSprites: ; 1401b (5:401b)
 
 ; Loads sprite set for outside maps (cities and routes) and sets VRAM slots.
 ; sets carry if the map is a city or route, unsets carry if not
-InitOutsideMapSprites: ; 14029 (5:4029)
+InitOutsideMapSprites:
 	ld a, [wCurMap]
 	cp a, REDS_HOUSE_1F ; is the map a city or a route (map ID less than $25)?
 	ret nc ; if not, return
@@ -50,7 +50,7 @@ InitOutsideMapSprites: ; 14029 (5:4029)
 	scf
 	ret
 
-LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
+LoadSpriteSetFromMapHeader:
 ; This loop stores the correct VRAM tile pattern slots according the sprite
 ; data from the map's header. Since the VRAM tile pattern slots are filled in
 ; the order of the sprite set, in order to find the VRAM tile pattern slot
@@ -93,7 +93,7 @@ LoadSpriteSetFromMapHeader: ; 14061 (5:4061)
 	jr nz, .storeVRAMSlotsLoop
 	ret
 
-CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
+CheckIfPictureIDAlreadyLoaded:
 ; Check if the current picture ID has already had its tile patterns loaded.
 ; This done by looping through the previous sprite slots and seeing if any of
 ; their picture ID's match that of the current sprite slot.
@@ -118,7 +118,7 @@ CheckIfPictureIDAlreadyLoaded: ; 1409b (5:409b)
 	scf
 	ret
 
-CheckForFourTileSprite: ; 140ac (5:40ac)
+CheckForFourTileSprite:
 ; Checks for a sprite added in yellow
 ; Returns no carry if the sprite is Pikachu, as its sprite is handled separately
 ; Else, returns carry if the sprite uses 4 tiles
@@ -135,7 +135,7 @@ CheckForFourTileSprite: ; 140ac (5:40ac)
 	scf
 	ret
 
-LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
+LoadMapSpriteTilePatterns:
 	ld a, 0
 .loop
 	ld [hVRAMSlot], a
@@ -154,7 +154,7 @@ LoadMapSpriteTilePatterns: ; 140b7 (5:40b7)
 	jr nz, .loop
 	ret
 
-ReloadWalkingTilePatterns: ; 140d2 (5:40d2)
+ReloadWalkingTilePatterns:
 	xor a
 .loop
 	ld [hVRAMSlot], a
@@ -168,7 +168,7 @@ ReloadWalkingTilePatterns: ; 140d2 (5:40d2)
 	jr nz, .loop
 	ret
 
-LoadStillTilePattern: ; 140e4 (5:40e4)
+LoadStillTilePattern:
 	ld a, [wFontLoaded]
 	bit 0, a ; reloading upper half of tile patterns after displaying text?
 	ret nz ; if so, skip loading data into the lower half
@@ -178,7 +178,7 @@ LoadStillTilePattern: ; 140e4 (5:40e4)
 	call CopyVideoDataAlternate ; new yellow function
 	ret
 
-LoadWalkingTilePattern: ; 140f5 (5:40f5)
+LoadWalkingTilePattern:
 	call ReadSpriteSheetData
 	ret nc
 	ld hl, $c0
@@ -190,7 +190,7 @@ LoadWalkingTilePattern: ; 140f5 (5:40f5)
 	call CopyVideoDataAlternate
 	ret
 
-GetSpriteVRAMAddress: ; 14018 (5:4108)
+GetSpriteVRAMAddress:
 	push bc
 	ld a, [hVRAMSlot]
 	ld c, a
@@ -204,7 +204,7 @@ GetSpriteVRAMAddress: ; 14018 (5:4108)
 	pop bc
 	ret
 
-SpriteVRAMAddresses: ; 14118 (5:4118)
+SpriteVRAMAddresses:
 ; Equivalent to multiplying $C0 (number of bytes in 12 tiles) times the VRAM
 ; slot and adding the result to $8000 (the VRAM base address).
 	dw vChars0 + $0c0
@@ -219,7 +219,7 @@ SpriteVRAMAddresses: ; 14118 (5:4118)
 	dw vChars0 + $780 ; 4-tile sprites
 	dw vChars0 + $7c0 ; 4-tile sprites
 
-ReadSpriteSheetData: ; 1412e (5:412e)
+ReadSpriteSheetData:
 	ld a, [hVRAMSlot]
 	ld e, a
 	ld d, 0
@@ -249,7 +249,7 @@ ReadSpriteSheetData: ; 1412e (5:412e)
 	scf
 	ret
 
-Func_14150: ; 14150 (5:4150)
+Func_14150:
 	ld a, $1
 	ld [wPlayerSpriteImageBaseOffset], a ; vram slot for player
 	ld a, $2
@@ -275,7 +275,7 @@ Func_14150: ; 14150 (5:4150)
 	jr nz, .loop
 	ret
 
-Func_14179: ; 14179 (5:4179)
+Func_14179:
 	push de
 	push bc
 	ld c, a  ; c = picture ID
@@ -298,7 +298,7 @@ Func_14179: ; 14179 (5:4179)
 	pop de
 	ret
 
-GetSplitMapSpriteSetID: ; 14193 (5:4193)
+GetSplitMapSpriteSetID:
 	ld e, a
 	ld d, 0
 	ld hl, MapSpriteSets

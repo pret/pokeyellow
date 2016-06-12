@@ -287,7 +287,7 @@ ShowTheEndGFX:
 	call PlaceString
 	jp FadeInCreditsText
 
-TheEndTextString: ; 74229 (1d:4229)
+TheEndTextString:
 ; "T H E  E N D"
 	db $60, " ", $62, " ", $64, "  ", $64, " ", $66, " ", $68, "@"
 	db $61, " ", $63, " ", $65, "  ", $65, " ", $67, " ", $69, "@"

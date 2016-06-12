@@ -1,4 +1,4 @@
-DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
+DisplayPokemonCenterDialogue_:
 	ld a, [wCurMap]
 	cp PEWTER_POKECENTER
 	jr nz, .regularCenter
@@ -97,7 +97,7 @@ DisplayPokemonCenterDialogue_: ; 6d97 (1:6d97)
 	call UpdateSprites
 	ret
 
-Func_6eaa: ; 6eaa (1:6eaa)
+Func_6eaa:
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	ld a, $4
@@ -107,7 +107,7 @@ Func_6eaa: ; 6eaa (1:6eaa)
 	call DelayFrames
 	ret
 
-Func_6ebb: ; 6ebb (1:6ebb)
+Func_6ebb:
 	ld a, b
 	ld [H_SPRITEINDEX], a
 	ld a, c
@@ -122,28 +122,28 @@ Func_6ebb: ; 6ebb (1:6ebb)
 	call SpriteFunc_34a1
 	ret
 
-PokemonCenterWelcomeText: ; 6de0 (1:6de0)
+PokemonCenterWelcomeText:
 	TX_FAR _PokemonCenterWelcomeText
 	db "@"
 
-ShallWeHealYourPokemonText: ; 6de5 (1:6de5)
+ShallWeHealYourPokemonText:
 	db $a
 	TX_FAR _ShallWeHealYourPokemonText
 	db "@"
 
-NeedYourPokemonText: ; 6deb (1:6deb)
+NeedYourPokemonText:
 	TX_FAR _NeedYourPokemonText
 	db "@"
 
-PokemonFightingFitText: ; 6ee0 (1:6ee0)
+PokemonFightingFitText:
 	TX_FAR _PokemonFightingFitText
 	db "@"
 
-PokemonCenterFarewellText: ; 6ee5 (1:6ee5)
+PokemonCenterFarewellText:
 	db $a
 	TX_FAR _PokemonCenterFarewellText
 	db "@"
 
-LooksContentText: ; 6eeb (1:6eeb)
+LooksContentText:
 	TX_FAR _LooksContentText
 	db "@"

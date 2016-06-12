@@ -1,7 +1,7 @@
 ; Format: (size 2 bytes)
 ; 00: target map ID
 ; 01: which dungeon warp in the source map was used
-DungeonWarpList: ; 6133 (1:6133)
+DungeonWarpList:
 	db SEAFOAM_ISLANDS_2,$01
 	db SEAFOAM_ISLANDS_2,$02
 	db SEAFOAM_ISLANDS_3,$01
@@ -16,7 +16,7 @@ DungeonWarpList: ; 6133 (1:6133)
 	db MANSION_2,$03
 	db $FF
 
-DungeonWarpData: ; 614c (1:614c)
+DungeonWarpData:
 	FLYWARP_DATA SEAFOAM_ISLANDS_2_WIDTH,7,18
 	FLYWARP_DATA SEAFOAM_ISLANDS_2_WIDTH,7,23
 	FLYWARP_DATA SEAFOAM_ISLANDS_3_WIDTH,7,19
@@ -34,32 +34,32 @@ DungeonWarpData: ; 614c (1:614c)
 ;	db Map_id
 ;	FLYWARP_DATA [Map Width][Y-pos][X-pos]
 ;	db Tileset_id
-FirstMapSpec: ; 6194 (1:6194)
+FirstMapSpec:
 	db REDS_HOUSE_2F
 	FLYWARP_DATA REDS_HOUSE_2F_WIDTH,6,3
 	db REDS_HOUSE_2
 
-TradeCenterSpec1: ; 619a (1:619a)
+TradeCenterSpec1:
 	db TRADE_CENTER
 	FLYWARP_DATA TRADE_CENTER_WIDTH,4,3
 	db CLUB
 
-TradeCenterSpec2: ; 61a3 (1:61a3)
+TradeCenterSpec2:
 	db TRADE_CENTER
 	FLYWARP_DATA TRADE_CENTER_WIDTH,4,6
 	db CLUB
 
-ColosseumSpec1: ; 61ac (1:61ac)
+ColosseumSpec1:
 	db COLOSSEUM
 	FLYWARP_DATA COLOSSEUM_WIDTH,4,3
 	db CLUB
 
-ColosseumSpec2: ; 61b3 (1:61b3)
+ColosseumSpec2:
 	db COLOSSEUM
 	FLYWARP_DATA COLOSSEUM_WIDTH,4,6
 	db CLUB
 
-FlyWarpDataPtr: ; 61bc (1:61bc)
+FlyWarpDataPtr:
 	db PALLET_TOWN, 0
 	dw PalletTownFlyWarp
 	db VIRIDIAN_CITY, 0
@@ -91,29 +91,29 @@ FlyWarpDataPtr: ; 61bc (1:61bc)
 ;   [Event Displacement][Y-block][X-block][Y-sub_block][X-sub_block]
 ; Macro Format:
 ;   FLYWARP_DATA [Map Width][Y-pos][X-pos]
-PalletTownFlyWarp: ; 61f0 (1:61f0)
+PalletTownFlyWarp:
 	FLYWARP_DATA PALLET_TOWN_WIDTH,      6,  5
-ViridianCityFlyWarp: ; 61f6 (1:61f6)
+ViridianCityFlyWarp:
 	FLYWARP_DATA VIRIDIAN_CITY_WIDTH,   26, 23
-PewterCityFlyWarp: ; 61fc (1:61fc)
+PewterCityFlyWarp:
 	FLYWARP_DATA PEWTER_CITY_WIDTH,     26, 13
-CeruleanCityFlyWarp: ; 6202 (1:6202)
+CeruleanCityFlyWarp:
 	FLYWARP_DATA CERULEAN_CITY_WIDTH,   18, 19
-LavenderTownFlyWarp: ; 6208 (1:6208)
+LavenderTownFlyWarp:
 	FLYWARP_DATA LAVENDER_TOWN_WIDTH,    6,  3
-VermilionCityFlyWarp: ; 620e (1:620e)
+VermilionCityFlyWarp:
 	FLYWARP_DATA VERMILION_CITY_WIDTH,   4, 11
-CeladonCityFlyWarp: ; 6214 (1:6214)
+CeladonCityFlyWarp:
 	FLYWARP_DATA CELADON_CITY_WIDTH,    10, 41
-FuchsiaCityFlyWarp: ; 621a (1:621a)
+FuchsiaCityFlyWarp:
 	FLYWARP_DATA FUCHSIA_CITY_WIDTH,    28, 19
-CinnabarIslandFlyWarp: ; 6220 (1:6220)
+CinnabarIslandFlyWarp:
 	FLYWARP_DATA CINNABAR_ISLAND_WIDTH, 12, 11
-IndigoPlateauFlyWarp: ; 6226 (1:6226)
+IndigoPlateauFlyWarp:
 	FLYWARP_DATA INDIGO_PLATEAU_WIDTH,   6,  9
-SaffronCityFlyWarp: ; 622c (1:622c)
+SaffronCityFlyWarp:
 	FLYWARP_DATA SAFFRON_CITY_WIDTH,    30,  9
-Route4FlyWarp: ; 6232 (1:6232)
+Route4FlyWarp:
 	FLYWARP_DATA ROUTE_4_WIDTH,          6, 11
-Route10FlyWarp: ; 6238 (1:6238)
+Route10FlyWarp:
 	FLYWARP_DATA ROUTE_10_WIDTH,        20, 11

@@ -1,4 +1,4 @@
-TrackPlayTime: ; 1ef5 (0:1ef5)
+TrackPlayTime:
 	call CountDownIgnoreInputBitReset
 	ld hl, wd47a
 	bit 0, [hl]
@@ -46,7 +46,7 @@ TrackPlayTime: ; 1ef5 (0:1ef5)
 	ld [wPlayTimeMaxed], a
 	ret
 
-CountDownIgnoreInputBitReset: ; 1f54 (0:1f54)
+CountDownIgnoreInputBitReset:
 	ld a, [wIgnoreInputCounter]
 	and a
 	jr nz, .asm_1f5e

@@ -1,4 +1,4 @@
-PlayPikachuSoundClip:: ; f0000 (3c:4000)
+PlayPikachuSoundClip::
 	ld a, e
 	ld e, a
 	ld d, $0
@@ -85,7 +85,7 @@ PlayPikachuSoundClip:: ; f0000 (3c:4000)
 	ei
 	ret
 
-PikachuCriesPointerTable: ; f008e (3c:408e)
+PikachuCriesPointerTable:
 ; format:
 ; db bank
 ; dw pointer to cry

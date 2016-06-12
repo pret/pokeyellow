@@ -1,4 +1,4 @@
-PKMNLeaguePC: ; 75dfe (1d:5dfe)
+PKMNLeaguePC:
 	ld hl, AccessedHoFPCText
 	call PrintText
 	ld hl, wd730
@@ -50,7 +50,7 @@ PKMNLeaguePC: ; 75dfe (1d:5dfe)
 	call RunDefaultPaletteCommand
 	jp GBPalNormal
 
-LeaguePCShowTeam: ; 75e65 (1d:5e65)
+LeaguePCShowTeam:
 	ld c, PARTY_LENGTH
 .loop
 	push bc
@@ -77,7 +77,7 @@ LeaguePCShowTeam: ; 75e65 (1d:5e65)
 	scf
 	ret
 
-LeaguePCShowMon: ; 75e90 (1d:5e90)
+LeaguePCShowMon:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld hl, wHallOfFame
@@ -111,9 +111,9 @@ LeaguePCShowMon: ; 75e90 (1d:5e90)
 	call PrintNumber
 	jpba Func_7033f
 
-HallOfFameNoText: ; 75eef (1d:5eef)
+HallOfFameNoText:
 	db "HALL OF FAME No   @"
 
-AccessedHoFPCText: ; 75f02 (1d:5f02)
+AccessedHoFPCText:
 	TX_FAR _AccessedHoFPCText
 	db "@"

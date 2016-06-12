@@ -1,4 +1,4 @@
-IncrementDayCareMonExp: ; c684 (3:4684)
+IncrementDayCareMonExp:
 	ld a, [wDayCareInUse]
 	and a
 	ret z

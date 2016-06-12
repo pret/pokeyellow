@@ -1,5 +1,5 @@
 ; try to evolve the mon in [wWhichPokemon]
-TryEvolvingMon: ; 3adb8 (e:6db8)
+TryEvolvingMon:
 EvolveTradeMon:
 	ld hl, wCanEvolveFlags
 	xor a
@@ -11,7 +11,7 @@ EvolveTradeMon:
 
 ; this is only called after battle
 ; it is supposed to do level up evolutions, though there is a bug that allows item evolutions to occur
-EvolutionAfterBattle: ; 3adc6 (e:6dc6)
+EvolutionAfterBattle:
 	ld a, [hTilesetType]
 	push af
 	xor a
@@ -24,7 +24,7 @@ EvolutionAfterBattle: ; 3adc6 (e:6dc6)
 	ld hl, wPartyCount
 	push hl
 
-Evolution_PartyMonLoop: ; 3add8 (e:6dd8)
+Evolution_PartyMonLoop:
 ; loop over party mons
 	ld hl, wWhichPokemon
 	inc [hl]
@@ -263,7 +263,7 @@ Evolution_PartyMonLoop: ; 3add8 (e:6dd8)
 	call nz, PlayDefaultMusic
 	ret
 
-RenameEvolvedMon: ; 3afa8 (e:6fa8)
+RenameEvolvedMon:
 ; Renames the mon to its new, evolved form's standard name unless it had a
 ; nickname, in which case the nickname is kept.
 	ld a, [wd0b5]
@@ -293,7 +293,7 @@ RenameEvolvedMon: ; 3afa8 (e:6fa8)
 	pop de
 	jp CopyData
 
-CancelledEvolution: ; 3afdf (e:6fdf)
+CancelledEvolution:
 	ld hl, StoppedEvolvingText
 	call PrintText
 	call ClearScreen
@@ -301,15 +301,15 @@ CancelledEvolution: ; 3afdf (e:6fdf)
 	call Evolution_ReloadTilesetTilePatterns
 	jp Evolution_PartyMonLoop
 
-EvolvedText: ; 3afef (e:6fef)
+EvolvedText:
 	TX_FAR _EvolvedText
 	db "@"
 
-IntoText: ; 3aff4 (e:6ff4)
+IntoText:
 	TX_FAR _IntoText
 	db "@"
 
-StoppedEvolvingText: ; 3aff9 (e:6ff9)
+StoppedEvolvingText:
 	TX_FAR _StoppedEvolvingText
 	db "@"
 
@@ -317,13 +317,13 @@ IsEvolvingText: ; 3affe (e:6ffes)
 	TX_FAR _IsEvolvingText
 	db "@"
 
-Evolution_ReloadTilesetTilePatterns: ; 3b003 (e:7003)
+Evolution_ReloadTilesetTilePatterns:
 	ld a, [wLinkState]
 	cp LINK_STATE_TRADING
 	ret z
 	jp ReloadTilesetTilePatterns
 
-LearnMoveFromLevelUp: ; 3b00c (e:700c)
+LearnMoveFromLevelUp:
 	ld a, [wd11e] ; species
 	ld [wcf91], a
 	call GetMonLearnset
@@ -382,7 +382,7 @@ LearnMoveFromLevelUp: ; 3b00c (e:700c)
 	ld [wd11e], a
 	ret
 
-Func_3b079: ; 3b079 (e:7079)
+Func_3b079:
 	ld a, [wcf91]
 	push af
 	call Func_3b0a2
@@ -410,7 +410,7 @@ Func_3b079: ; 3b079 (e:7079)
 	scf
 	ret
 
-Func_3b0a2: ; 3b0a2 (e:70a2)
+Func_3b0a2:
 ; XXX what is wcf91 entering this function?
 	ld a, [wd11e]
 	ld [wMoveNum], a
@@ -453,7 +453,7 @@ Func_3b0a2: ; 3b0a2 (e:70a2)
 	scf
 	ret
 
-Pointer_3b0ee: ; 3b0ee (e:70ee)
+Pointer_3b0ee:
 	db NIDOKING
 	db IVYSAUR
 	db EXEGGUTOR
@@ -488,7 +488,7 @@ Pointer_3b0ee: ; 3b0ee (e:70ee)
 	db VICTREEBEL
 	db $ff
 
-Func_3b10f: ; 3b10f (e:710f)
+Func_3b10f:
 	ld c, $0
 .asm_3b111
 	ld hl, EvosMovesPointerTable
@@ -530,7 +530,7 @@ Func_3b10f: ; 3b10f (e:710f)
 
 ; writes the moves a mon has at level [wCurEnemyLVL] to [de]
 ; move slots are being filled up sequentially and shifted if all slots are full
-WriteMonMoves: ; 3113f (e:713f)
+WriteMonMoves:
 	call GetPredefRegisters
 	push hl
 	push de
@@ -636,7 +636,7 @@ WriteMonMoves: ; 3113f (e:713f)
 	ret
 
 ; shifts all move data one up (freeing 4th move slot)
-WriteMonMoves_ShiftMoveData: ; 3b1c3 (e:71c3)
+WriteMonMoves_ShiftMoveData:
 	ld c, NUM_MOVES - 1
 .loop
 	inc de
@@ -646,10 +646,10 @@ WriteMonMoves_ShiftMoveData: ; 3b1c3 (e:71c3)
 	jr nz, .loop
 	ret
 
-Evolution_FlagAction: ; 3b1cc (e:71cc)
+Evolution_FlagAction:
 	predef_jump FlagActionPredef
 
-GetMonLearnset: ; 3b1d1 (e:71d1)
+GetMonLearnset:
 	ld hl, EvosMovesPointerTable
 	ld b, 0
 	ld a, [wcf91]

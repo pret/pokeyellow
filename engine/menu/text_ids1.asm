@@ -1,5 +1,5 @@
 ; function that performs initialization for DisplayTextID
-DisplayTextIDInit: ; 6f0e (1:6f0e)
+DisplayTextIDInit:
 	xor a
 	ld [wListMenuID],a
 	ld a,[wAutoTextBoxDrawingControl]
@@ -75,7 +75,7 @@ DisplayTextIDInit: ; 6f0e (1:6f0e)
 	ret
 
 ; function that displays the start menu
-DrawStartMenu: ; 6f80 (1:6f80)
+DrawStartMenu:
 	CheckEvent EVENT_GOT_POKEDEX
 ; menu with pokedex
 	coord hl, 10, 0
@@ -133,28 +133,28 @@ DrawStartMenu: ; 6f80 (1:6f80)
 	res 6,[hl] ; turn pauses between printing letters back on
 	ret
 
-StartMenuPokedexText: ; 7002 (1:7002)
+StartMenuPokedexText:
 	db "POKéDEX@"
 
-StartMenuPokemonText: ; 700a (1:700a)
+StartMenuPokemonText:
 	db "#MON@"
 
-StartMenuItemText: ; 700f (1:700f)
+StartMenuItemText:
 	db "ITEM@"
 
-StartMenuSaveText: ; 7014 (1:7014)
+StartMenuSaveText:
 	db "SAVE@"
 
-StartMenuResetText: ; 7019 (1:7019)
+StartMenuResetText:
 	db "RESET@"
 
-StartMenuExitText: ; 701f (1:701f)
+StartMenuExitText:
 	db "EXIT@"
 
-StartMenuOptionText: ; 7024 (1:7024)
+StartMenuOptionText:
 	db "OPTION@"
 
-PrintStartMenuItem: ; 702b (1:702b)
+PrintStartMenuItem:
 	push hl
 	call PlaceString
 	pop hl

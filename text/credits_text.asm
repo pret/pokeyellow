@@ -1,4 +1,4 @@
-CreditsTextPointers: ; 742c3 (1d:42c3)
+CreditsTextPointers:
 	dw CreditsText_Version
 	dw CreditsText_Tajiri
 	dw CreditsText_Oota

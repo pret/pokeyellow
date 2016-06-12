@@ -67,7 +67,7 @@ Yellow_SampleSecondTrashCan:
 	ld [wSecondLockTrashCanIndex + 1], a
 	ret
 
-GymTrashCans3c: ; f2d31 (3c:6d31)
+GymTrashCans3c:
 ; First byte: number of trashcan entries
 ; Following four byte pairs: indices for the second trash can.
 ; BUG: Rows that have 3 trashcan entries are sampled incorrectly.

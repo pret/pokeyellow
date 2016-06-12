@@ -1,4 +1,4 @@
-_RunPaletteCommand: ; 71ddf (1c:5ddf)
+_RunPaletteCommand:
 	call GetPredefRegisters
 	ld a, b
 	cp $ff
@@ -19,13 +19,13 @@ _RunPaletteCommand: ; 71ddf (1c:5ddf)
 	push de
 	jp [hl]
 
-SetPal_Black: ; 71ed3 (1c:5ed3)
+SetPal_Black:
 	ld hl, PalPacket_Black
 	ld de, BlkPacket_Battle
 	ret
 
 ; uses PalPacket_Empty to build a packet based on mon IDs and health color
-SetPal_Battle: ; 71eda (1c:5eda)
+SetPal_Battle:
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
 	ld bc, $10
@@ -66,13 +66,13 @@ SetPal_Battle: ; 71eda (1c:5eda)
 	ld [wDefaultPaletteCommand], a
 	ret
 
-SetPal_TownMap: ; 71f26 (1c:5f26)
+SetPal_TownMap:
 	ld hl, PalPacket_TownMap
 	ld de, BlkPacket_WholeScreen
 	ret
 
 ; uses PalPacket_Empty to build a packet based the mon ID
-SetPal_StatusScreen: ; 71f2d (1c:5f2d)
+SetPal_StatusScreen:
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
 	ld bc, $10
@@ -95,12 +95,12 @@ SetPal_StatusScreen: ; 71f2d (1c:5f2d)
 	ld de, BlkPacket_StatusScreen
 	ret
 
-SetPal_PartyMenu: ; 71f59 (1c:5f59)
+SetPal_PartyMenu:
 	ld hl, PalPacket_PartyMenu
 	ld de, wPartyMenuBlkPacket
 	ret
 
-SetPal_Pokedex: ; 71f60 (1c:5f60)
+SetPal_Pokedex:
 	ld hl, PalPacket_Pokedex
 	ld de, wPalPacket
 	ld bc, $10
@@ -113,28 +113,28 @@ SetPal_Pokedex: ; 71f60 (1c:5f60)
 	ld de, BlkPacket_Pokedex
 	ret
 
-SetPal_Slots: ; 71f7d (1c:5f7d)
+SetPal_Slots:
 	ld hl, PalPacket_Slots
 	ld de, BlkPacket_Slots
 	ret
 
-SetPal_Titlescreen: ; 71f84 (1c:5f84)
+SetPal_Titlescreen:
 	ld hl, PalPacket_Titlescreen
 	ld de, BlkPacket_Titlescreen
 	ret
 
 ; used mostly for menus and the Oak intro
-SetPal_Generic: ; 71f8b (1c:5f8b)
+SetPal_Generic:
 	ld hl, PalPacket_Generic
 	ld de, BlkPacket_WholeScreen
 	ret
 
-SetPal_NidorinoIntro: ; 71f92 (1c:5f92)
+SetPal_NidorinoIntro:
 	ld hl, PalPacket_NidorinoIntro
 	ld de, BlkPacket_NidorinoIntro
 	ret
 
-SetPal_GameFreakIntro: ; 71f99 (1c:5f99)
+SetPal_GameFreakIntro:
 	ld hl, PalPacket_GameFreakIntro
 	ld de, BlkPacket_GameFreakIntro
 	ld a, SET_PAL_GENERIC
@@ -142,7 +142,7 @@ SetPal_GameFreakIntro: ; 71f99 (1c:5f99)
 	ret
 
 ; uses PalPacket_Empty to build a packet based on the current map
-SetPal_Overworld: ; 71fa5 (1c:5fa5)
+SetPal_Overworld:
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
 	ld bc, $10
@@ -200,7 +200,7 @@ SetPal_Overworld: ; 71fa5 (1c:5fa5)
 
 ; used when a Pokemon is the only thing on the screen
 ; such as evolution, trading and the Hall of Fame
-SetPal_PokemonWholeScreen: ; 72001 (1c:6001)
+SetPal_PokemonWholeScreen:
 	push bc
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
@@ -219,7 +219,7 @@ SetPal_PokemonWholeScreen: ; 72001 (1c:6001)
 	ld de, BlkPacket_WholeScreen
 	ret
 
-SetPal_TrainerCard: ; 72025 (1c:6025)
+SetPal_TrainerCard:
 	ld hl, BlkPacket_TrainerCard
 	ld de, wTrainerCardBlkPacket
 	ld bc, $40
@@ -259,17 +259,17 @@ SetPal_TrainerCard: ; 72025 (1c:6025)
 	ld de, wTrainerCardBlkPacket
 	ret
 
-SendUnknownPalPacket_7205d:: ; 7205d (1c:605d)
+SendUnknownPalPacket_7205d::
 	ld hl, UnknownPalPacket_72811
 	ld de, BlkPacket_WholeScreen
 	ret
 
-SendUnknownPalPacket_72064:: ; 72064 (1c:6064)
+SendUnknownPalPacket_72064::
 	ld hl, UnknownPalPacket_72821
 	ld de, UnknownPacket_72751
 	ret
 
-SetPalFunctions: ; 7206b (1c:606b)
+SetPalFunctions:
 	dw SetPal_Black
 	dw SetPal_Battle
 	dw SetPal_TownMap
@@ -289,7 +289,7 @@ SetPalFunctions: ; 7206b (1c:606b)
 
 ; The length of the blk data of each badge on the Trainer Card.
 ; The Rainbow Badge has 3 entries because of its many colors.
-BadgeBlkDataLengths: ; 7208b (1c:608b)
+BadgeBlkDataLengths:
 	db 6     ; Boulder Badge
 	db 6     ; Cascade Badge
 	db 6     ; Thunder Badge
@@ -299,9 +299,9 @@ BadgeBlkDataLengths: ; 7208b (1c:608b)
 	db 6     ; Volcano Badge
 	db 6     ; Earth Badge
 
-DeterminePaletteID: ; 72093 (1c:6093)
+DeterminePaletteID:
 	ld a, [hl]
-DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
+DeterminePaletteIDOutOfBattle:
 	ld [wd11e], a
 	and a ; is the mon index 0?
 	jr z, .skipDexNumConversion
@@ -317,7 +317,7 @@ DeterminePaletteIDOutOfBattle: ; 72094 (1c:6094)
 	ld a, [hl]
 	ret
 
-YellowIntroPaletteAction:: ; 720ad (1c:60ad)
+YellowIntroPaletteAction::
 	ld a, e
 	and a
 	jr nz, .asm_720bd
@@ -347,7 +347,7 @@ YellowIntroPaletteAction:: ; 720ad (1c:60ad)
 	call TransferCurBGPData
 	ret
 
-LoadOverworldPikachuFrontpicPalettes:: ; 720e3 (1c:60e3)
+LoadOverworldPikachuFrontpicPalettes::
 	ld hl, PalPacket_Empty
 	ld de, wPalPacket
 	ld bc, $10
@@ -395,7 +395,7 @@ LoadOverworldPikachuFrontpicPalettes:: ; 720e3 (1c:60e3)
 .okay_2
 	ret
 
-GetPal_Pikachu:: ; 7213b (1c:613b)
+GetPal_Pikachu::
 ; similar to SetPal_Overworld
 	ld a, [wCurMapTileset]
 	cp CEMETERY
@@ -443,13 +443,13 @@ GetPal_Pikachu:: ; 7213b (1c:613b)
 	ld a, PAL_GREYMON - 1
 	jr .town
 
-InitPartyMenuBlkPacket: ; 7217f (1c:617f)
+InitPartyMenuBlkPacket:
 	ld hl, BlkPacket_PartyMenu
 	ld de, wPartyMenuBlkPacket
 	ld bc, $30
 	jp CopyData
 
-UpdatePartyMenuBlkPacket: ; 7218b (1c:618b)
+UpdatePartyMenuBlkPacket:
 ; Update the blk packet with the palette of the HP bar that is
 ; specified in [wWhichPartyMenuHPBar].
 	ld hl, wPartyMenuHPBarColors
@@ -477,7 +477,7 @@ UpdatePartyMenuBlkPacket: ; 7218b (1c:618b)
 	ld [hl], e
 	ret
 
-SendSGBPacket: ; 721b4 (1c:61b4)
+SendSGBPacket:
 	ld a, 1
 	ld [hDisableJoypadPolling], a ; don't poll joypad while sending packet
 	call _SendSGBPacket
@@ -485,7 +485,7 @@ SendSGBPacket: ; 721b4 (1c:61b4)
 	ld [hDisableJoypadPolling], a
 	ret
 
-_SendSGBPacket: ; 71feb (1c:5feb)
+_SendSGBPacket:
 ;check number of packets
 	ld a, [hl]
 	and a, $07
@@ -546,7 +546,7 @@ _SendSGBPacket: ; 71feb (1c:5feb)
 ; else send 16 more bytes
 	jr .loop2
 
-LoadSGB: ; 721f8 (1c:61f8)
+LoadSGB:
 	xor a
 	ld [wOnSGB], a
 	call CheckSGB
@@ -583,7 +583,7 @@ LoadSGB: ; 721f8 (1c:61f8)
 	ld hl, MaskEnCancelPacket
 	jp SendSGBPacket
 
-PrepareSuperNintendoVRAMTransfer: ; 72247 (1c:6247)
+PrepareSuperNintendoVRAMTransfer:
 	ld hl, .packetPointers
 	ld c, 9
 .loop
@@ -612,7 +612,7 @@ PrepareSuperNintendoVRAMTransfer: ; 72247 (1c:6247)
 	dw DataSnd_72901
 	dw DataSnd_72911
 
-CheckSGB: ; 7226d (1c:626d)
+CheckSGB:
 	ld hl, MltReq2Packet
 	call SendSGBPacket
 	call Wait7000
@@ -659,12 +659,12 @@ CheckSGB: ; 7226d (1c:626d)
 	scf
 	ret
 
-SendMltReq1Packet: ; 722ce (1c:62ce)
+SendMltReq1Packet:
 	ld hl, MltReq1Packet
 	call SendSGBPacket
 	jp Wait7000
 
-CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
+CopyGfxToSuperNintendoVRAM:
 	di
 	push de
 	call DisableLCD
@@ -705,7 +705,7 @@ CopyGfxToSuperNintendoVRAM: ; 722d7 (1c:62d7)
 	ei
 	ret
 
-Wait7000: ; 7231c (1c:631c)
+Wait7000:
 ; Each loop takes 9 cycles so this routine actually waits 63000 cycles.
 	ld de, 7000
 .loop
@@ -718,7 +718,7 @@ Wait7000: ; 7231c (1c:631c)
 	jr nz, .loop
 	ret
 
-SendSGBPackets: ; 72328 (1c:6328)
+SendSGBPackets:
 	ld a, [hGBC]
 	and a
 	jr z, .notGBC
@@ -737,7 +737,7 @@ SendSGBPackets: ; 72328 (1c:6328)
 	pop hl
 	jp SendSGBPacket
 
-InitGBCPalettes: ; 72346 (1c:6346)
+InitGBCPalettes:
 	ld a, [hl]
 	and $f8
 	cp $20
@@ -785,7 +785,7 @@ index = index + 1
 
 	ret
 
-GetGBCBasePalAddress:: ; 723fe (1c:63fe)
+GetGBCBasePalAddress::
 ; Input: a = palette ID
 ; Output: de = palette address
 	push hl
@@ -804,7 +804,7 @@ GetGBCBasePalAddress:: ; 723fe (1c:63fe)
 	pop hl
 	ret
 
-DMGPalToGBCPal:: ; 7240f (1c:640f)
+DMGPalToGBCPal::
 ; Populate wGBCPal with colors from a base palette, selected using one of the
 ; DMG palette registers.
 ; Input:
@@ -845,7 +845,7 @@ color_index = color_index + 1
 	ENDR
 	ret
 
-.GetColorAddress: ; 7246a (1c:646a)
+.GetColorAddress:
 	add a
 	ld l, a
 	xor a
@@ -853,7 +853,7 @@ color_index = color_index + 1
 	add hl, de
 	ret
 
-TransferCurBGPData:: ; 72470 (1c:6470)
+TransferCurBGPData::
 	push de
 	add a
 	add a
@@ -878,7 +878,7 @@ TransferCurBGPData:: ; 72470 (1c:6470)
 	pop de
 	ret
 
-BufferBGPPal:: ; 724a2 (1c:64a2)
+BufferBGPPal::
 ; Copy wGBCPal to palette a in wBGPPalsBuffer.
 	push de
 	add a
@@ -900,7 +900,7 @@ BufferBGPPal:: ; 724a2 (1c:64a2)
 	pop de
 	ret
 
-TransferBGPPals:: ; 724ba (1c:64ba)
+TransferBGPPals::
 ; Transfer the buffered BG palettes.
 	ld a, [rLCDC]
 	and rLCDC_ENABLE_MASK
@@ -915,7 +915,7 @@ TransferBGPPals:: ; 724ba (1c:64ba)
 	ei
 	ret
 
-.DoTransfer: ; 724cc (1c:64cc)
+.DoTransfer:
 	xor a
 	or $80 ; auto-increment
 	ld [rBGPI], a
@@ -929,7 +929,7 @@ TransferBGPPals:: ; 724ba (1c:64ba)
 	jr nz, .loop
 	ret
 
-TransferCurOBPData: ; 724df (1c:64df)
+TransferCurOBPData:
 	push de
 	add a
 	add a
@@ -954,7 +954,7 @@ TransferCurOBPData: ; 724df (1c:64df)
 	pop de
 	ret
 
-TransferPalColorLCDEnabled: ; 72511 (1c:6511)
+TransferPalColorLCDEnabled:
 ; Transfer a palette color while the LCD is enabled.
 
 ; In case we're already in H-blank or V-blank, wait for it to end. This is a
@@ -970,7 +970,7 @@ TransferPalColorLCDEnabled: ; 72511 (1c:6511)
 	jr nz, .notInBlankingPeriod
 ; fall through
 
-TransferPalColorLCDDisabled: ; 7251b (1c:651b)
+TransferPalColorLCDDisabled:
 ; Transfer a palette color while the LCD is disabled.
 	ld a, [hli]
 	ld [de], a
@@ -978,13 +978,13 @@ TransferPalColorLCDDisabled: ; 7251b (1c:651b)
 	ld [de], a
 	ret
 
-_UpdateGBCPal_BGP_CheckDMG:: ; 72520 (1c:6520)
+_UpdateGBCPal_BGP_CheckDMG::
 	ld a, [hGBC]
 	and a
 	ret z
 ; fall through
 
-_UpdateGBCPal_BGP:: ; 72524 (1c:6524)
+_UpdateGBCPal_BGP::
 index = 0
 
 	REPT NUM_ACTIVE_PALS
@@ -1003,7 +1003,7 @@ index = index + 1
 	call TransferBGPPals
 	ret
 
-_UpdateGBCPal_OBP:: ; 7256c (1c:656c)
+_UpdateGBCPal_OBP::
 index = 0
 
 	REPT NUM_ACTIVE_PALS
@@ -1033,7 +1033,7 @@ index = index + 1
 
 	ret
 
-TranslatePalPacketToBGMapAttributes:: ; 725be (1c:65be)
+TranslatePalPacketToBGMapAttributes::
 ; translate the SGB pal packets into something usable for the GBC
 	push hl
 	pop de
@@ -1064,7 +1064,7 @@ TranslatePalPacketToBGMapAttributes:: ; 725be (1c:65be)
 	callba LoadBGMapAttributes
 	ret
 
-PalPacketPointers:: ; 725e2 (1c:65e2)
+PalPacketPointers::
 	db (palPacketPointersEnd - palPacketPointers) / 2
 palPacketPointers
 	dw BlkPacket_WholeScreen
@@ -1081,7 +1081,7 @@ palPacketPointers
 	dw UnknownPacket_72751
 palPacketPointersEnd
 
-CopySGBBorderTiles: ; 725fb (1c:65fb)
+CopySGBBorderTiles:
 ; SGB tile data is stored in a 4BPP planar format.
 ; Each tile is 32 bytes. The first 16 bytes contain bit planes 1 and 2, while
 ; the second 16 bytes contain bit planes 3 and 4.

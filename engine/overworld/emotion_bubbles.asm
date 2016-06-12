@@ -1,4 +1,4 @@
-EmotionBubble: ; 4116f (10:516f)
+EmotionBubble:
 	ld a, [wWhichEmotionBubble]
 	and $f
 	swap a
@@ -66,9 +66,9 @@ EmotionBubble: ; 4116f (10:516f)
 	ret
 	; jp UpdateSprites
 
-EmotionBubblesOAM: ; 411dd (5:51dd)
+EmotionBubblesOAM:
 	db $F8,$00,$F9,$00
 	db $FA,$00,$FB,$00
 
-EmotionBubbles: ; 411e5 (10:51e5)
+EmotionBubbles:
 	INCBIN "gfx/emotion_bubbles.2bpp"

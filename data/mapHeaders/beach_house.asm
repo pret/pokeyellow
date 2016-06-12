@@ -1,4 +1,4 @@
-BeachHouse_h: ; f220e (3c:620e)
+BeachHouse_h:
 
 	db BEACH_HOUSE_TILESET
 	db BEACH_HOUSE_HEIGHT, BEACH_HOUSE_WIDTH ; dimensions (y, x)

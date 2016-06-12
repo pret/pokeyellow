@@ -1,4 +1,4 @@
-TownMapOrder: ; 70f95 (1c:4f95)
+TownMapOrder:
 	db PALLET_TOWN
 	db ROUTE_1
 	db VIRIDIAN_CITY

@@ -1,4 +1,4 @@
-LearnMove: ; 6bc8 (1:6bc8)
+LearnMove:
 	call SaveScreenTilesToBuffer1
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
@@ -8,7 +8,7 @@ LearnMove: ; 6bc8 (1:6bc8)
 	ld bc, NAME_LENGTH
 	call CopyData
 
-DontAbandonLearning: ; 6be0 (1:6be0)
+DontAbandonLearning:
 	ld hl, wPartyMon1Moves
 	ld bc, wPartyMon2Moves - wPartyMon1Moves
 	ld a, [wWhichPokemon]
@@ -73,7 +73,7 @@ DontAbandonLearning: ; 6be0 (1:6be0)
 	call CopyData
 	jp PrintLearnedMove
 
-AbandonLearning: ; 6c5f (1:6c5f)
+AbandonLearning:
 	ld hl, AbandonLearningText
 	call PrintText
 	coord hl, 14, 7
@@ -89,13 +89,13 @@ AbandonLearning: ; 6c5f (1:6c5f)
 	ld b, 0
 	ret
 
-PrintLearnedMove: ; 6c83 (1:6c83)
+PrintLearnedMove:
 	ld hl, LearnedMove1Text
 	call PrintText
 	ld b, 1
 	ret
 
-TryingToLearn: ; 6c8c (1:6c8c)
+TryingToLearn:
 	push hl
 	ld hl, TryingToLearnText
 	call PrintText
@@ -182,27 +182,27 @@ TryingToLearn: ; 6c8c (1:6c8c)
 	scf
 	ret
 
-LearnedMove1Text: ; 6d31 (1:6d31)
+LearnedMove1Text:
 	TX_FAR _LearnedMove1Text
 	db $b,6,"@"
 
-WhichMoveToForgetText: ; 6d38 (1:6d38)
+WhichMoveToForgetText:
 	TX_FAR _WhichMoveToForgetText
 	db "@"
 
-AbandonLearningText: ; 6d3d (1:6d3d)
+AbandonLearningText:
 	TX_FAR _AbandonLearningText
 	db "@"
 
-DidNotLearnText: ; 6d42 (1:6d42)
+DidNotLearnText:
 	TX_FAR _DidNotLearnText
 	db "@"
 
-TryingToLearnText: ; 6d47 (1:6d47)
+TryingToLearnText:
 	TX_FAR _TryingToLearnText
 	db "@"
 
-OneTwoAndText: ; 6d4c (1:6d4c)
+OneTwoAndText:
 ; bugfix: In Red/Blue, the SFX_SWAP sound was played in the wrong bank, which played an incorrect sound
 ; Yellow has fixed this by swapping to the correct bank
 	TX_FAR _OneTwoAndText
@@ -236,13 +236,13 @@ OneTwoAndText: ; 6d4c (1:6d4c)
 	ld hl, PoofText
 	ret
 
-PoofText: ; 6d88 (1:6d88)
+PoofText:
 	TX_FAR _PoofText
 	db $a
-ForgotAndText: ; 6d8d (1:6d8d)
+ForgotAndText:
 	TX_FAR _ForgotAndText
 	db "@"
 
-HMCantDeleteText: ; 6d92 (1:6d92)
+HMCantDeleteText:
 	TX_FAR _HMCantDeleteText
 	db "@"

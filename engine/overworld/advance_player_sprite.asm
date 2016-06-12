@@ -1,4 +1,4 @@
-_AdvancePlayerSprite:: ; f010c (3c:410c)
+_AdvancePlayerSprite::
 	ld a,[wSpriteStateData1 + 3] ; delta Y
 	ld b,a
 	ld a,[wSpriteStateData1 + 5] ; delta X
@@ -192,7 +192,7 @@ _AdvancePlayerSprite:: ; f010c (3c:410c)
 	ld [hSCX],a ; update background scroll X
 	ret
 
-MoveTileBlockMapPointerEast:: ; f0248 (3c:4248)
+MoveTileBlockMapPointerEast::
 	ld a,[de]
 	add $1
 	ld [de],a
@@ -203,7 +203,7 @@ MoveTileBlockMapPointerEast:: ; f0248 (3c:4248)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerWest:: ; f0252 (3c:4252)
+MoveTileBlockMapPointerWest::
 	ld a,[de]
 	sub $1
 	ld [de],a
@@ -214,7 +214,7 @@ MoveTileBlockMapPointerWest:: ; f0252 (3c:4252)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerSouth:: ; f025c (3c:425c)
+MoveTileBlockMapPointerSouth::
 	add $6
 	ld b,a
 	ld a,[de]
@@ -227,7 +227,7 @@ MoveTileBlockMapPointerSouth:: ; f025c (3c:425c)
 	ld [de],a
 	ret
 
-MoveTileBlockMapPointerNorth:: ; f0268 (3c:4268)
+MoveTileBlockMapPointerNorth::
 	add $6
 	ld b,a
 	ld a,[de]

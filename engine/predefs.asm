@@ -1,4 +1,4 @@
-GetPredefPointer: ; f67ed (3d:67ed)
+GetPredefPointer:
  ; Store the contents of the register
  ; pairs (hl, de, bc) at wPredefRegisters.
  ; Then put the bank and address of predef
@@ -49,7 +49,7 @@ GetPredefPointer: ; f67ed (3d:67ed)
 
 	ret
 
-PredefPointers:: ; f681d (3d:681d)
+PredefPointers::
  ; these are pointers to ASM routines.
  ; they appear to be used in overworld map scripts.
 	const_def

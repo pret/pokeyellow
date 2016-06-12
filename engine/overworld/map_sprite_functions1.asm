@@ -1,4 +1,4 @@
-_UpdateSprites: ; 4bb7 (1:4bb7)
+_UpdateSprites:
 	ld h, wSpriteStateData1 / $100
 	inc h
 	ld a, $e    ; (wSpriteStateData2 + $0e) & $ff
@@ -31,7 +31,7 @@ _UpdateSprites: ; 4bb7 (1:4bb7)
 	jp z, SpawnPikachu
 	ld a, [hl]
 
-UpdateNonPlayerSprite: ; 4be3 (1:4be3)
+UpdateNonPlayerSprite:
 	dec a
 	swap a
 	ld [$ff93], a  ; $10 * sprite#
@@ -53,7 +53,7 @@ UpdateNonPlayerSprite: ; 4be3 (1:4be3)
 ; 9 values when the sprite is aligned with the grid: $fc, $0c, $1c, $2c, ..., $7c.
 ; The reason that 4 is added below to the coordinate is to make it align with a
 ; multiple of $10 to make comparisons easier.
-DetectCollisionBetweenSprites: ; 4bf7 (1:4bf7)
+DetectCollisionBetweenSprites:
 	; nop
 
 	ld h, wSpriteStateData1 / $100
@@ -336,7 +336,7 @@ DetectCollisionBetweenSprites: ; 4bf7 (1:4bf7)
 ; c = 0 if delta X/Y is 0
 ; c = 7 if delta X/Y is 1
 ; c = 9 if delta X/Y is -1
-Func_4d0a: ; 4d0a (1:4d0a)
+Func_4d0a:
 	ld a, [$ff91]
 	ld b, a
 	ld a, [$ff90]
@@ -356,7 +356,7 @@ Func_4d0a: ; 4d0a (1:4d0a)
 	inc l
 	ret
 
-SetSpriteCollisionValues: ; 4d22 (1:4d22)
+SetSpriteCollisionValues:
 	and a
 	ld b, 0
 	ld c, 0
@@ -371,7 +371,7 @@ SetSpriteCollisionValues: ; 4d22 (1:4d22)
 .done
 	ret
 
-SpriteCollisionBitTable: ; 4d35 (1:4d35)
+SpriteCollisionBitTable:
 	db %00000000,%00000001
 	db %00000000,%00000010
 	db %00000000,%00000100

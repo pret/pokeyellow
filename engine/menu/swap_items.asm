@@ -1,4 +1,4 @@
-HandleItemListSwapping: ; 68c9 (1:68c9)
+HandleItemListSwapping:
 	ld a,[wListMenuID]
 	cp a,ITEMLISTMENU
 	jp nz,DisplayListMenuIDLoop ; only rearrange item list menus

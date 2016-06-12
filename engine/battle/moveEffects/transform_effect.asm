@@ -1,4 +1,4 @@
-TransformEffect_: ; f637f (3d:637f)
+TransformEffect_:
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies
 	ld bc, wEnemyBattleStatus3
@@ -136,6 +136,6 @@ TransformEffect_: ; f637f (3d:637f)
 	ld hl, PrintButItFailedText_
 	jp Bankswitch3DtoF
 
-TransformedText: ; f6458 (3d:6458)
+TransformedText:
 	TX_FAR _TransformedText
 	db "@"

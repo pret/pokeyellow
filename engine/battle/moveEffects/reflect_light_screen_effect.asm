@@ -1,4 +1,4 @@
-ReflectLightScreenEffect_: ; f645d (3d:645d)
+ReflectLightScreenEffect_:
 	ld hl, wPlayerBattleStatus3
 	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
@@ -32,14 +32,14 @@ ReflectLightScreenEffect_: ; f645d (3d:645d)
 	ld hl, PrintButItFailedText_
 	jp Bankswitch3DtoF
 
-LightScreenProtectedText: ; f649d (3d:649d)
+LightScreenProtectedText:
 	TX_FAR _LightScreenProtectedText
 	db "@"
 
-ReflectGainedArmorText: ; f64a2 (3d:64a2)
+ReflectGainedArmorText:
 	TX_FAR _ReflectGainedArmorText
 	db "@"
 
-Bankswitch3DtoF: ; f64a7 (3d:64a7)
+Bankswitch3DtoF:
 	ld b, BANK(BattleCore)
 	jp Bankswitch

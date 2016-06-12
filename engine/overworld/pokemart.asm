@@ -1,4 +1,4 @@
-DisplayPokemartDialogue_: ; 69a5 (1:69a5)
+DisplayPokemartDialogue_:
 	ld a,[wListScrollOffset]
 	ld [wSavedListScrollOffset],a
 	call UpdateSprites
@@ -227,46 +227,46 @@ DisplayPokemartDialogue_: ; 69a5 (1:69a5)
 	ld [wListScrollOffset],a
 	ret
 
-PokemartBuyingGreetingText: ; 6b91 (1:6b91)
+PokemartBuyingGreetingText:
 	TX_FAR _PokemartBuyingGreetingText
 	db "@"
 
-PokemartTellBuyPriceText: ; 6b96 (1:6b96)
+PokemartTellBuyPriceText:
 	TX_FAR _PokemartTellBuyPriceText
 	db "@"
 
-PokemartBoughtItemText: ; 6b9b (1:6b9b)
+PokemartBoughtItemText:
 	TX_FAR _PokemartBoughtItemText
 	db "@"
 
-PokemartNotEnoughMoneyText: ; 6ba0 (1:6ba0)
+PokemartNotEnoughMoneyText:
 	TX_FAR _PokemartNotEnoughMoneyText
 	db "@"
 
-PokemartItemBagFullText: ; 6ba5 (1:6ba5)
+PokemartItemBagFullText:
 	TX_FAR _PokemartItemBagFullText
 	db "@"
 
-PokemonSellingGreetingText: ; 6baa (1:6baa)
+PokemonSellingGreetingText:
 	TX_FAR _PokemonSellingGreetingText
 	db "@"
 
-PokemartTellSellPriceText: ; 6baf (1:6baf)
+PokemartTellSellPriceText:
 	TX_FAR _PokemartTellSellPriceText
 	db "@"
 
-PokemartItemBagEmptyText: ; 6bb4 (1:6bb4)
+PokemartItemBagEmptyText:
 	TX_FAR _PokemartItemBagEmptyText
 	db "@"
 
-PokemartUnsellableItemText: ; 6bb9 (1:6bb9)
+PokemartUnsellableItemText:
 	TX_FAR _PokemartUnsellableItemText
 	db "@"
 
-PokemartThankYouText: ; 6bbe (1:6bbe)
+PokemartThankYouText:
 	TX_FAR _PokemartThankYouText
 	db "@"
 
-PokemartAnythingElseText: ; 6bc3 (1:6bc3)
+PokemartAnythingElseText:
 	TX_FAR _PokemartAnythingElseText
 	db "@"

@@ -1,4 +1,4 @@
-SetDefaultNamesBeforeTitlescreen: ; 414b (1:414b)
+SetDefaultNamesBeforeTitlescreen:
 	ld hl, NintenText
 	ld de, wPlayerName
 	call CopyFixedLengthText
@@ -16,7 +16,7 @@ SetDefaultNamesBeforeTitlescreen: ; 414b (1:414b)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 
-DisplayTitleScreen: ; 4171 (1:4171)
+DisplayTitleScreen:
 	call GBPalWhiteOut
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -226,17 +226,17 @@ DisplayTitleScreen: ; 4171 (1:4171)
 	jpba DoClearSaveDialogue
 
 
-TitleScreenCopyTileMapToVRAM: ; 4332 (1:4332)
+TitleScreenCopyTileMapToVRAM:
 	ld [H_AUTOBGTRANSFERDEST + 1], a
 	jp Delay3
 
-LoadCopyrightAndTextBoxTiles: ; 4337 (1:4337)
+LoadCopyrightAndTextBoxTiles:
 	xor a
 	ld [hWY], a
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 
-LoadCopyrightTiles: ; 4340 (1:4340)
+LoadCopyrightTiles:
 	ld de, NintendoCopyrightLogoGraphics
 	ld hl, vChars2 + $600
 	lb bc, BANK(NintendoCopyrightLogoGraphics), (TextBoxGraphics + $10 - NintendoCopyrightLogoGraphics) / $10 ; bug: overflows into text box graphics and copies the "A" tile
@@ -245,17 +245,17 @@ LoadCopyrightTiles: ; 4340 (1:4340)
 	ld de, CopyrightTextString
 	jp PlaceString
 
-CopyrightTextString: ; 4355 (1:4355)
+CopyrightTextString:
 	db   $60,$61,$62,$63,$61,$62,$7c,$7f,$65,$66,$67,$68,$69,$6a			 ; ©1995-1999  Nintendo
 	next $60,$61,$62,$63,$61,$62,$7c,$7f,$6b,$6c,$6d,$6e,$6f,$70,$71,$72	 ; ©1995-1999  Creatures inc.
 	next $60,$61,$62,$63,$61,$62,$7c,$7f,$73,$74,$75,$76,$77,$78,$79,$7a,$7b ; ©1995-1999  GAME FREAK inc.
 	db   "@"
 
-TitleScreen_PlayPikachuPCM: ; 4387 (1:4387)
+TitleScreen_PlayPikachuPCM:
 	callab PlayPikachuSoundClip
 	ret
 	
-DoTitleScreenFunction: ; 4390 (1:4390)
+DoTitleScreenFunction:
 	call .CheckTimer
 	ld a, [wTitleScreenScene]
 	ld e, a
@@ -269,7 +269,7 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	jp [hl]
 
 	
-.Jumptable: ; 43a2 (1:43a2)
+.Jumptable:
 	dw .Nop
 	dw .BlinkHalf
 	dw .BlinkWait
@@ -283,23 +283,23 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	dw .BlinkOpen
 	dw .GoBackToStart
 	
-.GoBackToStart: ; 43ba (1:43ba)
+.GoBackToStart:
 	xor a
 	ld [wTitleScreenScene], a
 .Nop
 	ret
 	
-.BlinkOpen: ; 43bf (1:43bf)
+.BlinkOpen:
 	ld e, 0
 	jr .LoadBlinkFrame
 
-.BlinkHalf: ; 43c3 (1:43c3)
+.BlinkHalf:
 	ld e, 4
 	jr .LoadBlinkFrame
 
-.BlinkClosed: ; 43c7 (1:43c7)
+.BlinkClosed:
 	ld e, 8
-.LoadBlinkFrame: ; 43c9 (1:43c9)
+.LoadBlinkFrame:
 	ld hl, wOAMBuffer + 2
 	ld c, 8
 .loop
@@ -312,12 +312,12 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	inc hl
 	dec c
 	jr nz, .loop
-.BlinkWait: ; 43d9 (1:43d9)
+.BlinkWait:
 	ld hl, wTitleScreenScene
 	inc [hl]
 	ret
 	
-.CheckTimer: ; 43de (1:43de)
+.CheckTimer:
 	ld hl, wTitleScreenTimer
 	ld a, [hl]
 	inc [hl]
@@ -333,14 +333,14 @@ DoTitleScreenFunction: ; 4390 (1:4390)
 	ret
 
 ; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
-CopyFixedLengthText: ; 43f3 (1:43f3)
+CopyFixedLengthText:
 	ld bc, NAME_LENGTH
 	jp CopyData
 
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
 
-IncrementResetCounter: ; 4405 (1:4405)
+IncrementResetCounter:
 	ld hl, wTitleScreenScene + 2
 	ld e, [hl]
 	inc hl
@@ -359,7 +359,7 @@ IncrementResetCounter: ; 4405 (1:4405)
 	scf
 	ret
 
-FillSpriteBuffer0WithAA: ; 4418 (1:4418)
+FillSpriteBuffer0WithAA:
 	xor a
 	call SwitchSRAMBankAndLatchClockData
 	ld hl, sSpriteBuffer0

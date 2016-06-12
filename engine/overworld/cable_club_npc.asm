@@ -1,4 +1,4 @@
-CableClubNPC: ; 7035 (1:7035)
+CableClubNPC:
 	ld hl, CableClubNPCWelcomeText
 	call PrintText
 	call CheckPikachuFollowingPlayer
@@ -118,7 +118,7 @@ CableClubNPC: ; 7035 (1:7035)
 	ret
 
 ; seems to be similar of Serial_SyncAndExchangeNybble
-Serial_SyncAndExchangeNybbleDouble: ; 7131 (1:7131)
+Serial_SyncAndExchangeNybbleDouble:
 	ld a, $ff
 	ld [wSerialExchangeNybbleReceiveData], a
 .loop
@@ -166,35 +166,35 @@ Serial_SyncAndExchangeNybbleDouble: ; 7131 (1:7131)
 	ld [wUnknownSerialCounter + 1], a
 	ret
 
-CableClubNPCAreaReservedFor2FriendsLinkedByCableText: ; 7188 (1:7188)
+CableClubNPCAreaReservedFor2FriendsLinkedByCableText:
 	TX_FAR _CableClubNPCAreaReservedFor2FriendsLinkedByCableText
 	db "@"
 
-CableClubNPCWelcomeText: ; 718d (1:718d)
+CableClubNPCWelcomeText:
 	TX_FAR _CableClubNPCWelcomeText
 	db "@"
 
-CableClubNPCPleaseApplyHereHaveToSaveText: ; 7192 (1:7192)
+CableClubNPCPleaseApplyHereHaveToSaveText:
 	TX_FAR _CableClubNPCPleaseApplyHereHaveToSaveText
 	db "@"
 
-CableClubNPCPleaseWaitText: ; 7197 (1:7197)
+CableClubNPCPleaseWaitText:
 	TX_FAR _CableClubNPCPleaseWaitText
 	db $a, "@"
 
-CableClubNPCLinkClosedBecauseOfInactivityText: ; 719d (1:719d)
+CableClubNPCLinkClosedBecauseOfInactivityText:
 	TX_FAR _CableClubNPCLinkClosedBecauseOfInactivityText
 	db "@"
 
-CableClubNPCPleaseComeAgainText: ; 71a2 (1:71a2)
+CableClubNPCPleaseComeAgainText:
 	TX_FAR _CableClubNPCPleaseComeAgainText
 	db "@"
 
-CableClubNPCMakingPreparationsText: ; 71a7 (1:71a7)
+CableClubNPCMakingPreparationsText:
 	TX_FAR _CableClubNPCMakingPreparationsText
 	db "@"
 
-CloseLinkConnection: ; 71ac (1:71ac)
+CloseLinkConnection:
 	call Delay3
 	ld a, CONNECTION_NOT_ESTABLISHED
 	ld [hSerialConnectionStatus], a

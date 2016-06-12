@@ -1,6 +1,6 @@
 INCLUDE "data/bg_map_attributes.asm"
 
-LoadBGMapAttributes:: ; bf450 (2f:7450)
+LoadBGMapAttributes::
 	ld hl, BGMapAttributesPointers
 	ld a, c ; c = which packet
 	push af ; save for later (to determine if we're handling the trainer card or party menu)
@@ -105,7 +105,7 @@ LoadBGMapAttributes:: ; bf450 (2f:7450)
 	ei
 	ret
 
-BGMapAttributesPointers: ; bf4de (2f:74de)
+BGMapAttributesPointers:
 	dw BGMapAttributes_Unknown1
 	dw BGMapAttributes_Unknown2
 	dw BGMapAttributes_GameFreakIntro
@@ -120,7 +120,7 @@ BGMapAttributesPointers: ; bf4de (2f:74de)
 	dw BGMapAttributes_WholeScreen
 	dw BGMapAttributes_Unknown13
 
-HandleBadgeFaceAttributes: ; bf4f8 (2f:74f8)
+HandleBadgeFaceAttributes:
 ; zero out the attributes if the player doesn't have the respective badge
 ; BOULDERBADGE
 	ld hl, vBGMap1 + $183
@@ -172,7 +172,7 @@ HandleBadgeFaceAttributes: ; bf4f8 (2f:74f8)
 	call z, ZeroOutCurrentBadgeAttributes
 	ret
 
-ZeroOutCurrentBadgeAttributes: ; bf551 (2f:7551)
+ZeroOutCurrentBadgeAttributes:
 	push hl
 	xor a
 	ld [hli], a
@@ -184,7 +184,7 @@ ZeroOutCurrentBadgeAttributes: ; bf551 (2f:7551)
 	pop hl
 	ret
 
-HandlePartyHPBarAttributes: ; bf55d (2f:755d)
+HandlePartyHPBarAttributes:
 ; hp bars require 3 (green, orange, red) colours, when there are only 2 "free" colours per palette
 ; therefore, we must transfer individual bg attributes where the locations of the hp bars are in vram
 	ld hl, vBGMap1 + $25 ; location of start of the HP bar in vram

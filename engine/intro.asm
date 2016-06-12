@@ -2,7 +2,7 @@ MOVE_GENGAR_RIGHT   EQU $00
 MOVE_GENGAR_LEFT    EQU $01
 MOVE_NIDORINO_RIGHT EQU $ff
 
-PlayIntro: ; 41997 (10:5997)
+PlayIntro:
 	xor a
 	ld [hJoyHeld], a
 	inc a
@@ -16,7 +16,7 @@ PlayIntro: ; 41997 (10:5997)
 	call DelayFrame
 	ret
 
-InitIntroNidorinoOAM: ; 419b4 (10:59b4)
+InitIntroNidorinoOAM:
 	ld hl, wOAMBuffer
 	ld d, 0
 .loop
@@ -45,17 +45,17 @@ InitIntroNidorinoOAM: ; 419b4 (10:59b4)
 	jr nz, .loop
 	ret
 
-IntroClearScreen: ; 419dd (10:59dd)
+IntroClearScreen:
 	ld hl, vBGMap1
 	ld bc, $240
 	jr IntroClearCommon
 
-IntroClearMiddleOfScreen: ; 419e5 (10:59e5)
+IntroClearMiddleOfScreen:
 ; clear the area of the tile map between the black bars on the top and bottom
 	coord hl, 0, 4
 	ld bc, SCREEN_WIDTH * 10
 
-IntroClearCommon: ; 419eb (10:59eb)
+IntroClearCommon:
 	ld [hl], $0
 	inc hl
 	dec bc
@@ -64,7 +64,7 @@ IntroClearCommon: ; 419eb (10:59eb)
 	jr nz, IntroClearCommon
 	ret
 
-IntroPlaceBlackTiles: ; 419f4 (10:59f4)
+IntroPlaceBlackTiles:
 	ld a, $1
 .loop
 	ld [hli], a
@@ -72,11 +72,11 @@ IntroPlaceBlackTiles: ; 419f4 (10:59f4)
 	jr nz, .loop
 	ret
 
-CopyTileIDsFromList_ZeroBaseTileID: ; 419fb (10:59fb)
+CopyTileIDsFromList_ZeroBaseTileID:
 	ld c, 0
 	predef_jump CopyTileIDsFromList
 
-PlayShootingStar: ; 41a02 (10:5a02)
+PlayShootingStar:
 	ld b, SET_PAL_GAME_FREAK_INTRO
 	call RunPaletteCommand
 	callba LoadCopyrightAndTextBoxTiles
@@ -128,7 +128,7 @@ PlayShootingStar: ; 41a02 (10:5a02)
 	call ClearSprites
 	jp Delay3
 
-IntroDrawBlackBars: ; 41a82 (10:5a82)
+IntroDrawBlackBars:
 ; clear the screen and draw black bars on the top and bottom
 	call IntroClearScreen
 	coord hl, 0, 0
@@ -144,10 +144,10 @@ IntroDrawBlackBars: ; 41a82 (10:5a82)
 	ld c, $80
 	jp IntroPlaceBlackTiles
 
-EmptyFunc4: ; 41aa5 (10:5aa5)
+EmptyFunc4:
 	ret
 
-GameFreakIntro: ; 41959 (10:5aa6)
+GameFreakIntro:
 	INCBIN "gfx/gamefreak_intro.2bpp"
 	INCBIN "gfx/gamefreak_logo.2bpp"
 	ds $10 ; blank tile

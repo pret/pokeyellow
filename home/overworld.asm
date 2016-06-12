@@ -1,4 +1,4 @@
-EnterMap:: ; 01d7 (0:01d7)
+EnterMap::
 ; Load a new map.
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -40,9 +40,9 @@ EnterMap:: ; 01d7 (0:01d7)
 	xor a
 	ld [wJoyIgnore], a
 
-OverworldLoop:: ; 0242 (0:0242)
+OverworldLoop::
 	call DelayFrame
-OverworldLoopLessDelay:: ; 0245 (0:0245)
+OverworldLoopLessDelay::
 	call DelayFrame
 	call IsSurfingPikachuInParty
 	call LoadGBPal
@@ -303,7 +303,7 @@ OverworldLoopLessDelay:: ; 0245 (0:0245)
 	call DelayFrames
 	jp EnterMap
 
-StepCountCheck:: ; 0457 (0:0457)
+StepCountCheck::
 	ld a, [wd730]
 	bit 7, a
 	jr nz, .doneStepCounting ; if button presses are being simulated, don't count steps
@@ -321,7 +321,7 @@ StepCountCheck:: ; 0457 (0:0457)
 .doneStepCounting
 	ret
 
-AllPokemonFainted:: ; 0475 (0:0475)
+AllPokemonFainted::
 	ld a, $ff
 	ld [wIsInBattle], a
 	call RunMapScript
@@ -329,7 +329,7 @@ AllPokemonFainted:: ; 0475 (0:0475)
 
 ; function to determine if there will be a battle and execute it (either a trainer battle or wild battle)
 ; sets carry if a battle occurred and unsets carry if not
-NewBattle:: ; 0480 (0:0480)
+NewBattle::
 	ld a, [wd72d]
 	bit 4, a
 	jr nz, .noBattle
@@ -343,7 +343,7 @@ NewBattle:: ; 0480 (0:0480)
 	and a
 	ret
 
-DoBikeSpeedup:: ; 049d (0:049d)
+DoBikeSpeedup::
 	ld a, [wWalkBikeSurfState]
 	dec a ; riding a bike?
 	ret nz
@@ -364,7 +364,7 @@ DoBikeSpeedup:: ; 049d (0:049d)
 	ret
 
 ; check if the player has stepped onto a warp after having not collided
-CheckWarpsNoCollision:: ; 04bd (0:04bd)
+CheckWarpsNoCollision::
 	ld a, [wNumberOfWarps]
 	and a
 	jp z, CheckMapConnections
@@ -376,7 +376,7 @@ CheckWarpsNoCollision:: ; 04bd (0:04bd)
 	ld a, [wXCoord]
 	ld e, a
 	ld hl, wWarpEntries
-CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
+CheckWarpsNoCollisionLoop::
 	ld a, [hli] ; check if the warp's Y position matches
 	cp d
 	jr nz, CheckWarpsNoCollisionRetry1
@@ -412,19 +412,19 @@ CheckWarpsNoCollisionLoop:: ; 04d5 (0:04d5)
 	jr z, CheckWarpsNoCollisionRetry2 ; if directional buttons aren't being pressed, do not pass through the warp
 	jr WarpFound1
 
-CheckWarpsNoCollisionRetry1:: ; 050f (0:050f)
+CheckWarpsNoCollisionRetry1::
 	inc hl
-CheckWarpsNoCollisionRetry2:: ; 0510 (0:0510)
+CheckWarpsNoCollisionRetry2::
 	inc hl
 	inc hl
-ContinueCheckWarpsNoCollisionLoop:: ; 0512 (0:0512)
+ContinueCheckWarpsNoCollisionLoop::
 	inc b ; increment warp number
 	dec c ; decrement number of warps
 	jp nz, CheckWarpsNoCollisionLoop
 	jp CheckMapConnections
 
 ; check if the player has stepped onto a warp after having collided
-CheckWarpsCollision:: ; 051a (0:051a)
+CheckWarpsCollision::
 	ld a, [wNumberOfWarps]
 	ld c, a
 	ld hl, wWarpEntries
@@ -454,13 +454,13 @@ CheckWarpsCollision:: ; 051a (0:051a)
 	jr nz, .loop
 	jp OverworldLoop
 
-WarpFound1:: ; 0543 (0:0543)
+WarpFound1::
 	ld a, [hli]
 	ld [wDestinationWarpID], a
 	ld a, [hli]
 	ld [hWarpDestinationMap], a
 
-WarpFound2:: ; 054a (0:054a)
+WarpFound2::
 	ld a, [wNumberOfWarps]
 	sub c
 	ld [wWarpedFromWhichWarp], a ; save ID of used warp
@@ -526,7 +526,7 @@ WarpFound2:: ; 054a (0:054a)
 	jp EnterMap
 
 ; if no matching warp was found
-CheckMapConnections:: ; 05db (0:05db)
+CheckMapConnections::
 .checkWestMap
 	ld a, [wXCoord]
 	cp $ff
@@ -673,7 +673,7 @@ CheckMapConnections:: ; 05db (0:05db)
 	jp OverworldLoop
 
 ; function to play a sound when changing maps
-PlayMapChangeSound:: ; 06ef (0:06ef)
+PlayMapChangeSound::
 	ld a, [wCurMapTileset]
 	cp FACILITY
 	jr z, .didNotGoThroughDoor
@@ -694,7 +694,7 @@ PlayMapChangeSound:: ; 06ef (0:06ef)
 	ret nz
 	jp GBFadeOutToBlack
 
-CheckIfInOutsideMap:: ; 0712 (0:0712)
+CheckIfInOutsideMap::
 ; If the player is in an outside map (a town or route), set the z flag
 	ld a, [wCurMapTileset]
 	and a ; most towns/routes have tileset 0 (OVERWORLD)
@@ -708,7 +708,7 @@ CheckIfInOutsideMap:: ; 0712 (0:0712)
 ; "function 1" passes when the player is at the edge of the map and is facing towards the outside of the map
 ; "function 2" passes when the the tile in front of the player is among a certain set
 ; sets carry if the check passes, otherwise clears carry
-ExtraWarpCheck:: ; 071a (0:071a)
+ExtraWarpCheck::
 	ld a, [wCurMap]
 	cp SS_ANNE_3
 	jr z, .useFunction1
@@ -739,14 +739,14 @@ ExtraWarpCheck:: ; 071a (0:071a)
 	ld b, BANK(IsWarpTileInFrontOfPlayer)
 	jp Bankswitch
 
-MapEntryAfterBattle:: ; 0750 (0:0750)
+MapEntryAfterBattle::
 	callba IsPlayerStandingOnWarp ; for enabling warp testing after collisions
 	ld a, [wMapPalOffset]
 	and a
 	jp z, GBFadeInFromWhite
 	jp LoadGBPal
 
-HandleBlackOut:: ; 0762 (0:0762)
+HandleBlackOut::
 ; For when all the player's pokemon faint.
 ; Does not print the "blacked out" message.
 
@@ -761,7 +761,7 @@ HandleBlackOut:: ; 0762 (0:0762)
 	call PlayDefaultMusicFadeOutCurrent
 	jp SpecialEnterMap
 
-StopMusic:: ; 0788 (0:0788)
+StopMusic::
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
 .wait
@@ -770,7 +770,7 @@ StopMusic:: ; 0788 (0:0788)
 	jr nz, .wait
 	jp StopAllSounds
 
-HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
+HandleFlyWarpOrDungeonWarp::
 	call UpdateSprites
 	call Delay3
 	xor a
@@ -785,10 +785,10 @@ HandleFlyWarpOrDungeonWarp:: ; 0794 (0:0794)
 	callbs SpecialWarpIn
 	jp SpecialEnterMap
 
-LeaveMapAnim:: ; 07bc (0:07bc)
+LeaveMapAnim::
 	jpba _LeaveMapAnim
 
-Func_07c4:: ; 07c4 (0:07c4)
+Func_07c4::
 	ld a, [wWalkBikeSurfState]
 	and a
 	ret z
@@ -800,7 +800,7 @@ Func_07c4:: ; 07c4 (0:07c4)
 	call PlayDefaultMusic
 	ret
 
-LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
+LoadPlayerSpriteGraphics::
 ; Load sprite graphics based on whether the player is standing, biking, or surfing.
 
 	; 0: standing
@@ -838,7 +838,7 @@ LoadPlayerSpriteGraphics:: ; 07d7 (0:07d7)
 	jp z, LoadSurfingPlayerSpriteGraphics2
 	jp LoadWalkingPlayerSpriteGraphics
 
-IsBikeRidingAllowed:: ; 0805 (0:0805)
+IsBikeRidingAllowed::
 ; The bike can be used on Route 23 and Indigo Plateau,
 ; or maps with tilesets in BikeRidingTilesets.
 ; Return carry if biking is allowed.
@@ -868,7 +868,7 @@ IsBikeRidingAllowed:: ; 0805 (0:0805)
 INCLUDE "data/bike_riding_tilesets.asm"
 
 ; load the tile pattern data of the current tileset into VRAM
-LoadTilesetTilePatternData:: ; 0828 (0:0828)
+LoadTilesetTilePatternData::
 	ld a, [wTilesetGFXPtr]
 	ld l, a
 	ld a, [wTilesetGFXPtr + 1]
@@ -880,7 +880,7 @@ LoadTilesetTilePatternData:: ; 0828 (0:0828)
 
 ; this loads the current maps complete tile map (which references blocks, not individual tiles) to C6E8
 ; it can also load partial tile maps of connected maps into a border of length 3 around the current map
-LoadTileBlockMap:: ; 083c (0:083c)
+LoadTileBlockMap::
 ; fill C6E8-CBFB with the background tile
 	ld hl, wOverworldMap
 	ld bc, $0514
@@ -1002,7 +1002,7 @@ LoadTileBlockMap:: ; 083c (0:083c)
 .done
 	ret
 
-LoadNorthSouthConnectionsTileMap:: ; 0919 (0:0919)
+LoadNorthSouthConnectionsTileMap::
 	ld c, MAP_BORDER
 .loop
 	push de
@@ -1034,7 +1034,7 @@ LoadNorthSouthConnectionsTileMap:: ; 0919 (0:0919)
 	jr nz, .loop
 	ret
 
-LoadEastWestConnectionsTileMap:: ; 093d (0:093d)
+LoadEastWestConnectionsTileMap::
 	push hl
 	push de
 	ld c, MAP_BORDER
@@ -1065,7 +1065,7 @@ LoadEastWestConnectionsTileMap:: ; 093d (0:093d)
 
 ; function to check if there is a sign or sprite in front of the player
 ; if so, carry is set. otherwise, carry is cleared
-IsSpriteOrSignInFrontOfPlayer:: ; 095e (0:095e)
+IsSpriteOrSignInFrontOfPlayer::
 	xor a
 	ld [hSpriteIndexOrTextID], a
 	ld a, [wNumSigns]
@@ -1089,9 +1089,9 @@ IsSpriteOrSignInFrontOfPlayer:: ; 095e (0:095e)
 	jr nz, .counterTilesLoop
 
 ; sets carry flag if a sprite is in front of the player, resets if not
-IsSpriteInFrontOfPlayer:: ; 0983 (0:0983)
+IsSpriteInFrontOfPlayer::
 	ld d, $10 ; talking range in pixels (normal range)
-IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
+IsSpriteInFrontOfPlayer2::
 	lb bc, $3c, $40 ; Y and X position of player sprite
 	ld a, [wPlayerFacingDirection] ; direction the player is facing
 .checkIfPlayerFacingUp
@@ -1182,7 +1182,7 @@ IsSpriteInFrontOfPlayer2:: ; 0985 (0:0985)
 	scf
 	ret
 
-SignLoop:: ; 09f2 (0:09f2)
+SignLoop::
 ; search if a player is facing a sign
 	ld hl, wSignCoords ; start of sign coordinates
 	ld a, [wNumSigns] ; number of signs in the map
@@ -1223,7 +1223,7 @@ SignLoop:: ; 09f2 (0:09f2)
 
 ; function to check if the player will jump down a ledge and check if the tile ahead is passable (when not surfing)
 ; sets the carry flag if there is a collision, and unsets it if there isn't a collision
-CollisionCheckOnLand:: ; 0a1c (0:0a1c)
+CollisionCheckOnLand::
 	ld a, [wd736]
 	bit 6, a ; is the player jumping?
 	jr nz, .noCollision
@@ -1281,7 +1281,7 @@ CollisionCheckOnLand:: ; 0a1c (0:0a1c)
 
 ; function that checks if the tile in front of the player is passable
 ; clears carry if it is, sets carry if not
-CheckTilePassable:: ; 0a79 (0:0a79)
+CheckTilePassable::
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	ld c, a
@@ -1292,7 +1292,7 @@ CheckTilePassable:: ; 0a79 (0:0a79)
 ; and check for collisions that only occur between certain pairs of tiles
 ; Input: hl - address of directional collision data
 ; sets carry if there is a collision and unsets carry if not
-CheckForJumpingAndTilePairCollisions:: ; 0a86 (0:0a86)
+CheckForJumpingAndTilePairCollisions::
 	push hl
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player
 	push de
@@ -1308,11 +1308,11 @@ CheckForJumpingAndTilePairCollisions:: ; 0a86 (0:0a86)
 	ret nz
 ; if not jumping
 
-CheckForTilePairCollisions2:: ; 0aa0 (0:0aa0)
+CheckForTilePairCollisions2::
 	aCoord 8, 9 ; tile the player is on
 	ld [wTilePlayerStandingOn], a
 
-CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
+CheckForTilePairCollisions::
 	ld a, [wTileInFrontOfPlayer]
 	ld c, a
 .tilePairCollisionLoop
@@ -1366,7 +1366,7 @@ CheckForTilePairCollisions:: ; 0aa6 (0:0aa6)
 ; these entries indicate that the player may not cross between tile 1 and tile 2
 ; it's mainly used to simulate differences in elevation
 
-TilePairCollisionsLand:: ; 0ada (0:0ada)
+TilePairCollisionsLand::
 	db CAVERN, $20, $05
 	db CAVERN, $41, $05
 	db FOREST, $30, $2E
@@ -1380,14 +1380,14 @@ TilePairCollisionsLand:: ; 0ada (0:0ada)
 	db FOREST, $5F, $2E
 	db $FF
 
-TilePairCollisionsWater:: ; 0afc (0:0afc)
+TilePairCollisionsWater::
 	db FOREST, $14, $2E
 	db FOREST, $48, $2E
 	db CAVERN, $14, $05
 	db $FF
 
 ; this builds a tile map from the tile block map based on the current X/Y coordinates of the player's character
-LoadCurrentMapView:: ; 0b06 (0:0b06)
+LoadCurrentMapView::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wTilesetBank] ; tile data ROM bank
@@ -1475,7 +1475,7 @@ LoadCurrentMapView:: ; 0b06 (0:0b06)
 	call BankswitchCommon ; restore previous ROM bank
 	ret
 
-AdvancePlayerSprite:: ; 0b7f (0:0b7f)
+AdvancePlayerSprite::
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $FF
@@ -1490,7 +1490,7 @@ AdvancePlayerSprite:: ; 0b7f (0:0b7f)
 ; the following 6 functions are used to tell the V-blank handler to redraw
 ; the portion of the map that was newly exposed due to the player's movement
 
-ScheduleNorthRowRedraw:: ; 0b95 (0:0b95)
+ScheduleNorthRowRedraw::
 	coord hl, 0, 0
 	call CopyToRedrawRowOrColumnSrcTiles
 	ld a, [wMapViewVRAMPointer]
@@ -1501,7 +1501,7 @@ ScheduleNorthRowRedraw:: ; 0b95 (0:0b95)
 	ld [hRedrawRowOrColumnMode], a
 	ret
 
-CopyToRedrawRowOrColumnSrcTiles:: ; 0baa (0:0baa)
+CopyToRedrawRowOrColumnSrcTiles::
 	ld de, wRedrawRowOrColumnSrcTiles
 	ld c, 2 * SCREEN_WIDTH
 .loop
@@ -1512,7 +1512,7 @@ CopyToRedrawRowOrColumnSrcTiles:: ; 0baa (0:0baa)
 	jr nz, .loop
 	ret
 
-ScheduleSouthRowRedraw:: ; 0bb6 (0:0bb6)
+ScheduleSouthRowRedraw::
 	coord hl, 0, 16
 	call CopyToRedrawRowOrColumnSrcTiles
 	ld a, [wMapViewVRAMPointer]
@@ -1531,7 +1531,7 @@ ScheduleSouthRowRedraw:: ; 0bb6 (0:0bb6)
 	ld [hRedrawRowOrColumnMode], a
 	ret
 
-ScheduleEastColumnRedraw:: ; 0bd6 (0:0bd7)
+ScheduleEastColumnRedraw::
 	coord hl, 18, 0
 	call ScheduleColumnRedrawHelper
 	ld a, [wMapViewVRAMPointer]
@@ -1549,7 +1549,7 @@ ScheduleEastColumnRedraw:: ; 0bd6 (0:0bd7)
 	ld [hRedrawRowOrColumnMode], a
 	ret
 
-ScheduleColumnRedrawHelper:: ; 0bf6 (0:0bf6)
+ScheduleColumnRedrawHelper::
 	ld de, wRedrawRowOrColumnSrcTiles
 	ld c, SCREEN_HEIGHT
 .loop
@@ -1569,7 +1569,7 @@ ScheduleColumnRedrawHelper:: ; 0bf6 (0:0bf6)
 	jr nz, .loop
 	ret
 
-ScheduleWestColumnRedraw:: ; 0c0c (0:0c0c)
+ScheduleWestColumnRedraw::
 	coord hl, 0, 0
 	call ScheduleColumnRedrawHelper
 	ld a, [wMapViewVRAMPointer]
@@ -1582,7 +1582,7 @@ ScheduleWestColumnRedraw:: ; 0c0c (0:0c0c)
 
 ; function to write the tiles that make up a tile block to memory
 ; Input: c = tile block ID, hl = destination address
-DrawTileBlock:: ; 0c21 (0:0c21)
+DrawTileBlock::
 	push hl
 	ld a, [wTileSetBlocksPtr] ; pointer to tiles
 	ld l, a
@@ -1623,7 +1623,7 @@ DrawTileBlock:: ; 0c21 (0:0c21)
 	ret
 
 ; function to update joypad state and simulate button presses
-JoypadOverworld:: ; 0c51 (0:0c51)
+JoypadOverworld::
 	xor a
 	ld [wSpriteStateData1 + 3], a
 	ld [wSpriteStateData1 + 5], a
@@ -1633,7 +1633,7 @@ JoypadOverworld:: ; 0c51 (0:0c51)
 	call AreInputsSimulated
 	ret
 
-ForceBikeDown:: ; 0c65 (0:0c65)
+ForceBikeDown::
 	ld a, [wFlags_D733]
 	bit 3, a ; check if a trainer wants a challenge
 	ret nz
@@ -1647,7 +1647,7 @@ ForceBikeDown:: ; 0c65 (0:0c65)
 	ld [hJoyHeld], a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
 
-AreInputsSimulated:: ; 0c7b (0:0c7b)
+AreInputsSimulated::
 	ld a, [wd730]
 	bit 7, a
 	ret z
@@ -1682,7 +1682,7 @@ AreInputsSimulated:: ; 0c7b (0:0c7b)
 	res 7, [hl]
 	ret
 
-GetSimulatedInput:: ; 0cb3 (0:0cb3)
+GetSimulatedInput::
 	ld hl, wSimulatedJoypadStatesIndex
 	dec [hl]
 	ld a, [hl]
@@ -1712,7 +1712,7 @@ GetSimulatedInput:: ; 0cb3 (0:0cb3)
 ; so the old value of c is used. 2429 is always called before this function,
 ; and 2429 always sets c to 0xF0. There is no 0xF0 background tile, so it
 ; is considered impassable and it is detected as a collision.
-CollisionCheckOnWater:: ; 0cca (0:0cca)
+CollisionCheckOnWater::
 	ld a, [wd730]
 	bit 7, a
 	jp nz, .noCollision ; return and clear carry if button presses are being simulated
@@ -1763,7 +1763,7 @@ CollisionCheckOnWater:: ; 0cca (0:0cca)
 	ret
 
 ; function to run the current map's script
-RunMapScript:: ; 0d2c (0:0d2c)
+RunMapScript::
 	push hl
 	push de
 	push bc
@@ -1789,7 +1789,7 @@ RunMapScript:: ; 0d2c (0:0d2c)
 .return
 	ret
 
-LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
+LoadWalkingPlayerSpriteGraphics::
 ; new sprite copy stuff
 	xor a
 	ld [wd473], a
@@ -1797,7 +1797,7 @@ LoadWalkingPlayerSpriteGraphics:: ; 0d5e (0:0d5e)
 	ld de, RedSprite ; $4180
 	jr LoadPlayerSpriteGraphicsCommon
 
-LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
+LoadSurfingPlayerSpriteGraphics2::
 	ld a, [wd473]
 	and a
 	jr z, .asm_0d75
@@ -1814,15 +1814,15 @@ LoadSurfingPlayerSpriteGraphics2:: ; 0d69 (0:0d69)
 	ld de, SurfingPikachuSprite ; 3f:6def
 	jr LoadPlayerSpriteGraphicsCommon
 
-LoadSurfingPlayerSpriteGraphics:: ; 0d83 (0:0d83)
+LoadSurfingPlayerSpriteGraphics::
 	ld b, BANK(RedSprite) ; not sure, but probably same bank (5)
 	ld de, SeelSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
-LoadBikePlayerSpriteGraphics:: ; 0d8a (0:0d8a)
+LoadBikePlayerSpriteGraphics::
 	ld b, BANK(RedCyclingSprite)
 	ld de, RedCyclingSprite
-LoadPlayerSpriteGraphicsCommon:: ; 0d8f (0:0d8f)
+LoadPlayerSpriteGraphicsCommon::
 	ld hl, vNPCSprites
 	push de
 	push hl
@@ -1843,7 +1843,7 @@ LoadPlayerSpriteGraphicsCommon:: ; 0d8f (0:0d8f)
 	jp CopyVideoData
 
 ; function to load data from the map header
-LoadMapHeader:: ; 0dab (0:0dab)
+LoadMapHeader::
 	callba MarkTownVisitedAndLoadMissableObjects
 	jr asm_0dbd
 
@@ -1975,7 +1975,7 @@ asm_0dbd
 
 ; function to copy map connection data from ROM to WRAM
 ; Input: hl = source, de = destination
-CopyMapConnectionHeader:: ; 0eaa (0:0eaa)
+CopyMapConnectionHeader::
 	ld c, $0b
 .loop
 	ld a, [hli]
@@ -1985,7 +1985,7 @@ CopyMapConnectionHeader:: ; 0eaa (0:0eaa)
 	jr nz, .loop
 	ret
 
-CopySignData:: ; 0eb3 (0:0eb3)
+CopySignData::
 	ld de, wSignCoords ; start of sign coords
 	ld bc, wSignTextIDs ; start of sign text ids
 	ld a, [wNumSigns] ; number of signs
@@ -2006,7 +2006,7 @@ CopySignData:: ; 0eb3 (0:0eb3)
 	ret
 
 ; function to load map data
-LoadMapData:: ; 1241 (0:1241)
+LoadMapData::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	call DisableLCD
@@ -2035,13 +2035,13 @@ LoadMapData:: ; 1241 (0:1241)
 	call BankswitchCommon
 	ret
 
-LoadScreenRelatedData:: ; 0f0c (0:0f0c)
+LoadScreenRelatedData::
 	call LoadTileBlockMap
 	call LoadTilesetTilePatternData
 	call LoadCurrentMapView
 	ret
 
-ReloadMapAfterSurfingMinigame:: ; 0f16 (0:0f16)
+ReloadMapAfterSurfingMinigame::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	call DisableLCD
@@ -2058,7 +2058,7 @@ ReloadMapAfterSurfingMinigame:: ; 0f16 (0:0f16)
 	call BankswitchCommon
 	jr asm_0f4d
 
-ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
+ReloadMapAfterPrinter::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wCurMap]
@@ -2066,11 +2066,11 @@ ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
 	call LoadTileBlockMap
 	pop af
 	call BankswitchCommon
-asm_0f4d: ; 0f4d (0:0f4d)
+asm_0f4d:
 	jpab SetMapSpecificScriptFlagsOnMapReload
 	ret ; useless?
 
-ResetMapVariables:: ; 0f56 (0:0f56)
+ResetMapVariables::
 	ld a, $98
 	ld [wMapViewVRAMPointer + 1], a
 	xor a
@@ -2083,10 +2083,10 @@ ResetMapVariables:: ; 0f56 (0:0f56)
 	ld [wWalkBikeSurfStateCopy], a
 	ret
 
-CopyMapViewToVRAM:: ; 0f70 (0:0f70)
+CopyMapViewToVRAM::
 ; copy current map view to VRAM
 	ld de, vBGMap0
-CopyMapViewToVRAM2: ; 0f73 (0:0f73)
+CopyMapViewToVRAM2:
 	ld hl, wTileMap
 	ld b, 18
 .vramCopyLoop
@@ -2109,7 +2109,7 @@ CopyMapViewToVRAM2: ; 0f73 (0:0f73)
 
 ; function to switch to the ROM bank that a map is stored in
 ; Input: a = map number
-SwitchToMapRomBank:: ; 0f8b (0:0f8b)
+SwitchToMapRomBank::
 	push hl
 	push bc
 	ld c, a
@@ -2127,7 +2127,7 @@ SwitchToMapRomBank:: ; 0f8b (0:0f8b)
 	pop hl
 	ret
 
-GetMapHeaderPointer:: ; 0fa7 (0:0fa7)
+GetMapHeaderPointer::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	switchbank MapHeaderPointers ; 3f:41f2
@@ -2145,7 +2145,7 @@ GetMapHeaderPointer:: ; 0fa7 (0:0fa7)
 	pop af
 	jp BankswitchCommon
 
-IgnoreInputForHalfSecond: ; 0fc3 (0:0fc3)
+IgnoreInputForHalfSecond:
 	ld a, 30
 	ld [wIgnoreInputCounter], a
 	ld hl, wd730
@@ -2154,12 +2154,12 @@ IgnoreInputForHalfSecond: ; 0fc3 (0:0fc3)
 	ld [hl], a ; set ignore input bit
 	ret
 
-ResetUsingStrengthOutOfBattleBit: ; 0fd0 (0:0fd0)
+ResetUsingStrengthOutOfBattleBit:
 	ld hl, wd728
 	res 0, [hl]
 	ret
 
-ForceBikeOrSurf:: ; 0fd6 (0:0fd6)
+ForceBikeOrSurf::
 	ld b, BANK(RedSprite)
 	ld hl, LoadPlayerSpriteGraphics
 	call Bankswitch
@@ -2167,23 +2167,23 @@ ForceBikeOrSurf:: ; 0fd6 (0:0fd6)
 
 ; Handle the player jumping down
 ; a ledge in the overworld.
-HandleMidJump:: ; 0fe1 (0:0fe1)
+HandleMidJump::
 	ld a, [wd736]
 	bit 6, a ; jumping down a ledge?
 	ret z
 	callba _HandleMidJump
 	ret
 
-IsSpinning:: ; 0ff0 (0:0ff0)
+IsSpinning::
 	ld a, [wd736]
 	bit 7, a
 	ret z ; no spinning
 	jpba LoadSpinnerArrowTiles ; spin while moving
 
-Func_0ffe:: ; 0ffe (0:0ffe)
+Func_0ffe::
 	jpab IsPlayerTalkingToPikachu
 
-InitSprites:: ; 1006 (0:1006)
+InitSprites::
 	ld a, [hli]
 	ld [wNumSprites], a ; save the number of sprites
 	push hl
@@ -2237,7 +2237,7 @@ InitSprites:: ; 1006 (0:1006)
 	jr nz, .loadSpriteLoop
 	ret
 
-ZeroSpriteStateData:: ; 1050 (0:1050)
+ZeroSpriteStateData::
 ; zero C110-C1EF and C210-C2EF
 ; C1F0-C1FF and C2F0-C2FF is used for Pikachu
 	ld hl, wSpriteStateData1 + $10
@@ -2252,7 +2252,7 @@ ZeroSpriteStateData:: ; 1050 (0:1050)
 	jr nz, .loop
 	ret
 
-DisableRegularSprites:: ; 1060 (0:1060)
+DisableRegularSprites::
 ; initialize all C100-C1FF sprite entries to disabled (other than player's and pikachu)
 	ld hl, wSpriteStateData1 + 1 * $10 + 2
 	ld de, $10
@@ -2264,7 +2264,7 @@ DisableRegularSprites:: ; 1060 (0:1060)
 	jr nz, .loop
 	ret
 
-LoadSprite:: ; 106f (0:106f)
+LoadSprite::
 	push hl
 	ld b, $0
 	ld hl, wMapSpriteData

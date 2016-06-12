@@ -1,7 +1,7 @@
 INCLUDE "engine/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 
-ResetStatusAndHalveMoneyOnBlackout: ; f0274 (3c:4274)
+ResetStatusAndHalveMoneyOnBlackout:
 ; Reset player status on blackout.
 	xor a
 	ld [wd435], a
@@ -50,7 +50,7 @@ ResetStatusAndHalveMoneyOnBlackout: ; f0274 (3c:4274)
 	ld [wJoyIgnore], a
 	predef_jump HealParty
 
-SetMapSpecificScriptFlagsOnMapReload: ; f02da (3c:42da)
+SetMapSpecificScriptFlagsOnMapReload:
 	ld a, [wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
 	jr z, .verm_gym
@@ -102,16 +102,16 @@ SetMapSpecificScriptFlagsOnMapReload: ; f02da (3c:42da)
 	db AGATHAS_ROOM
 	db $ff
 
-BeachHouse_GFX: ; f0314 (3c:4314)
+BeachHouse_GFX:
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
 
-BeachHouse_Block: ; f0914 (3c:4914)
+BeachHouse_Block:
 	INCBIN "gfx/blocksets/beachhouse.bst"
 
-Func_f0a54: ; f0a54 (3c:4a54)
+Func_f0a54:
 	ret
 
-LoadUnusedBluesHouseMissableObjectData: ; f0a55 (3c:4a55)
+LoadUnusedBluesHouseMissableObjectData:
 ; referenced in an unused function
 	ld hl, .MissableObjectsMaps
 .loop
@@ -177,13 +177,13 @@ TryApplyPikachuMovementData: ; f0a82
 	callab RefreshPikachuFollow
 	ret
 
-Pic_f0abf: ; f0abf (3c:4abf)
+Pic_f0abf:
 INCBIN "gfx/pikachu/unknown_f0abf.pic"
-GFX_f0b64: ; f0b64 (3c:4b64)
+GFX_f0b64:
 INCBIN "gfx/pikachu/unknown_f0b64.2bpp"
-Pic_f0cf4: ; f0cf4 (3c:4cf4)
+Pic_f0cf4:
 INCBIN "gfx/pikachu/unknown_f0cf4.pic"
-GFX_f0d82: ; f0d82 (3c:4d82)
+GFX_f0d82:
 INCBIN "gfx/pikachu/unknown_f0d82.2bpp"
 
 PokecenterChanseyText:
@@ -221,7 +221,7 @@ INCLUDE "scripts/mtmoonpokecenter2.asm"
 
 INCLUDE "data/mapHeaders/beach_house.asm"
 INCLUDE "scripts/beach_house.asm"
-BeachHouseBlockdata: ; f2388 (3c:6388)
+BeachHouseBlockdata:
 INCBIN "maps/beach_house.blk"
 INCLUDE "data/mapObjects/beach_house.asm"
 

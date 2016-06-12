@@ -11,7 +11,7 @@
 
 INCLUDE "engine/printer/serial.asm"
 
-PrintPokedexEntry: ; e8b74 (3a:4b74)
+PrintPokedexEntry:
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	xor a
@@ -238,7 +238,7 @@ Func_e8d11:
 	scf
 	ret
 
-PrintPCBox:: ; e8d35 (3a:4e79)
+PrintPCBox::
 	ld a, [wBoxDataStart]
 	and a
 	jp z, Func_e8df4
@@ -397,7 +397,7 @@ PrintFanClubPortrait: ; e8e24
 	call Printer_PlayMapMusic
 	ret
 
-PrinterDebug: ; e8e79 (3a:4e79)
+PrinterDebug:
 	push af
 	push bc
 	push de
@@ -443,7 +443,7 @@ PrinterDebug: ; e8e79 (3a:4e79)
 	pop af
 	ret
 
-Printer_CheckPressingB: ; e8eca (3a:4eca)
+Printer_CheckPressingB:
 	ld a, [hJoyHeld]
 	and B_BUTTON
 	jr nz, .quit
@@ -476,21 +476,21 @@ Printer_CheckPressingB: ; e8eca (3a:4eca)
 	scf
 	ret
 
-Printer_CopyTileMapToPrinterTileBuffer: ; e8efc (3a:4efc)
+Printer_CopyTileMapToPrinterTileBuffer:
 	coord hl, 0, 0
 	coord de, 0, 0, wPrinterTileBuffer
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
-Printer_CopyTileMapFromPrinterTileBuffer: ; e8f09 (3a:4f09)
+Printer_CopyTileMapFromPrinterTileBuffer:
 	coord hl, 0, 0, wPrinterTileBuffer
 	coord de, 0, 0
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
-Printer_ResetJoypadHRAM: ; e8f16 (3a:4f16)
+Printer_ResetJoypadHRAM:
 	xor a
 	ld [hJoyLast], a
 	ld [hJoyReleased], a
@@ -500,7 +500,7 @@ Printer_ResetJoypadHRAM: ; e8f16 (3a:4f16)
 	ld [hJoy6], a
 	ret
 
-Printer_PlayPrinterMusic: ; e8f24 (3a:4f24)
+Printer_PlayPrinterMusic:
 	call Printer_FadeOutMusicAndWait
 	ld a, [wAudioROMBank]
 	ld [wAudioSavedROMBank], a
@@ -511,12 +511,12 @@ Printer_PlayPrinterMusic: ; e8f24 (3a:4f24)
 	call PlaySound
 	ret
 
-Printer_PlayMapMusic: ; e8f3b (3a:4f3b)
+Printer_PlayMapMusic:
 	call Printer_FadeOutMusicAndWait
 	call PlayDefaultMusic
 	ret
 
-Printer_FadeOutMusicAndWait: ; e8f42 (3a:4f42)
+Printer_FadeOutMusicAndWait:
 	ld a, $4
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
@@ -526,7 +526,7 @@ Printer_FadeOutMusicAndWait: ; e8f42 (3a:4f42)
 	jr nz, .wait_music_stop
 	ret
 
-GBPrinter_CheckForErrors: ; e8f51 (3a:4f51)
+GBPrinter_CheckForErrors:
 	ld a, [wPrinterHandshake]
 	cp $81
 	jr z, .check_other_errors

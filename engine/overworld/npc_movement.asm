@@ -1,4 +1,4 @@
-PlayerStepOutFromDoor: ; 1a4ea (6:64ea)
+PlayerStepOutFromDoor:
 	ld hl, wd730
 	res 1, [hl]
 	call IsPlayerStandingOnDoorTile
@@ -27,7 +27,7 @@ PlayerStepOutFromDoor: ; 1a4ea (6:64ea)
 	res 7, [hl]
 	ret
 
-_EndNPCMovementScript: ; 1a527 (6:6527)
+_EndNPCMovementScript:
 	ld hl, wd730
 	res 7, [hl]
 	ld hl, wd72e
@@ -44,14 +44,14 @@ _EndNPCMovementScript: ; 1a527 (6:6527)
 	ld [wSimulatedJoypadStatesEnd], a
 	ret
 
-PalletMovementScriptPointerTable: ; 1a54c (6:654c)
+PalletMovementScriptPointerTable:
 	dw PalletMovementScript_OakMoveLeft
 	dw PalletMovementScript_PlayerMoveLeft
 	dw PalletMovementScript_WaitAndWalkToLab
 	dw PalletMovementScript_WalkToLab
 	dw PalletMovementScript_Done
 
-PalletMovementScript_OakMoveLeft: ; 1a556 (6:6556)
+PalletMovementScript_OakMoveLeft:
 	ld a, [wXCoord]
 	sub $a
 	ld [wNumStepsToTake], a
@@ -89,7 +89,7 @@ PalletMovementScript_OakMoveLeft: ; 1a556 (6:6556)
 	ld [wJoyIgnore], a
 	ret
 
-PalletMovementScript_PlayerMoveLeft: ; 1a597 (6:6597)
+PalletMovementScript_PlayerMoveLeft:
 	ld a, [wd730]
 	bit 0, a ; is an NPC being moved by a script?
 	ret nz ; return if Oak is still moving
@@ -102,12 +102,12 @@ PalletMovementScript_PlayerMoveLeft: ; 1a597 (6:6597)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-PalletMovementScript_WaitAndWalkToLab: ; 1a5b3 (6:65b3)
+PalletMovementScript_WaitAndWalkToLab:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a ; is the player done moving left yet?
 	ret nz
 
-PalletMovementScript_WalkToLab: ; 1a5b8 (6:65b8)
+PalletMovementScript_WalkToLab:
 	xor a
 	ld [wOverrideSimulatedJoypadStatesMask], a
 	ld a, [wSpriteIndex]
@@ -132,7 +132,7 @@ PalletMovementScript_WalkToLab: ; 1a5b8 (6:65b8)
 	ret
 
 
-RLEList_ProfOakWalkToLab: ; 1a5ee (6:65ee)
+RLEList_ProfOakWalkToLab:
 	db NPC_MOVEMENT_DOWN, $06 ; differs from red
 	db NPC_MOVEMENT_LEFT, $01
 	db NPC_MOVEMENT_DOWN, $05
@@ -141,7 +141,7 @@ RLEList_ProfOakWalkToLab: ; 1a5ee (6:65ee)
 	db $E0, $01 ; stand still
 	db $FF
 
-RLEList_PlayerWalkToLab: ; 1a5fb (6:65fb)
+RLEList_PlayerWalkToLab:
 	db D_UP, $02
 	db D_RIGHT, $03
 	db D_DOWN, $05
@@ -149,7 +149,7 @@ RLEList_PlayerWalkToLab: ; 1a5fb (6:65fb)
 	db D_DOWN, $07 ; differs from red
 	db $FF
 
-PalletMovementScript_Done: ; 1a606 (6:6606)
+PalletMovementScript_Done:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -162,11 +162,11 @@ PalletMovementScript_Done: ; 1a606 (6:6606)
 	res 7, [hl]
 	jp EndNPCMovementScript
 
-PewterMuseumGuyMovementScriptPointerTable: ; 1a622 (6:6622)
+PewterMuseumGuyMovementScriptPointerTable:
 	dw PewterMovementScript_WalkToMuseum
 	dw PewterMovementScript_Done
 
-PewterMovementScript_WalkToMuseum: ; 1a626 (6:6626)
+PewterMovementScript_WalkToMuseum:
 	ld a, BANK(Music_MuseumGuy)
 	ld c, a
 	ld a, MUSIC_MUSEUM_GUY
@@ -192,21 +192,21 @@ PewterMovementScript_WalkToMuseum: ; 1a626 (6:6626)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-RLEList_PewterMuseumPlayer: ; 1a661 (6:6661)
+RLEList_PewterMuseumPlayer:
 	db 0, $01
 	db D_UP, $03
 	db D_LEFT, $0D
 	db D_UP, $06
 	db $FF
 
-RLEList_PewterMuseumGuy: ; 1a66a (6:666a)
+RLEList_PewterMuseumGuy:
 	db NPC_MOVEMENT_UP, $06
 	db NPC_MOVEMENT_LEFT, $0D
 	db NPC_MOVEMENT_UP, $03
 	db NPC_MOVEMENT_LEFT, $01
 	db $FF
 
-PewterMovementScript_Done: ; 1a673 (6:6673)
+PewterMovementScript_Done:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -216,11 +216,11 @@ PewterMovementScript_Done: ; 1a673 (6:6673)
 	res 7, [hl]
 	jp EndNPCMovementScript
 
-PewterGymGuyMovementScriptPointerTable: ; 1a685 (6:6685)
+PewterGymGuyMovementScriptPointerTable:
 	dw PewterMovementScript_WalkToGym
 	dw PewterMovementScript_Done
 
-PewterMovementScript_WalkToGym: ; 1a689 (6:6689)
+PewterMovementScript_WalkToGym:
 	ld a, BANK(Music_MuseumGuy)
 	ld c, a
 	ld a, MUSIC_MUSEUM_GUY
@@ -249,7 +249,7 @@ PewterMovementScript_WalkToGym: ; 1a689 (6:6689)
 	ld [wNPCMovementScriptFunctionNum], a
 	ret
 
-RLEList_PewterGymPlayer: ; 1a6cb (6:66cb)
+RLEList_PewterGymPlayer:
 	db 0, $01
 	db D_RIGHT, $02
 	db D_DOWN, $05
@@ -258,7 +258,7 @@ RLEList_PewterGymPlayer: ; 1a6cb (6:66cb)
 	db D_LEFT, $0F
 	db $FF
 
-RLEList_PewterGymGuy: ; 1a6cd8 (6:66d8)
+RLEList_PewterGymGuy:
 	db NPC_MOVEMENT_DOWN, $02
 	db NPC_MOVEMENT_LEFT, $0F
 	db NPC_MOVEMENT_UP, $05

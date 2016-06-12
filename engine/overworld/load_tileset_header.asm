@@ -1,4 +1,4 @@
-LoadTilesetHeader: ; c4f4 (3:44f4)
+LoadTilesetHeader:
 	call GetPredefRegisters
 	push hl
 	ld d, 0

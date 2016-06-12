@@ -1,4 +1,4 @@
-SFX_Save_3_Ch1: ; 7c45e (1f:445e)
+SFX_Save_3_Ch1:
 	duty 2
 	unknownsfx0x20 3, 228, 0, 6
 	unknownsfx0x20 3, 228, 128, 6
@@ -7,7 +7,7 @@ SFX_Save_3_Ch1: ; 7c45e (1f:445e)
 	unknownsfx0x20 15, 242, 224, 7
 	endchannel
 
-SFX_Save_3_Ch2: ; 7c475 (1f:4475)
+SFX_Save_3_Ch2:
 	duty 2
 	unknownsfx0x20 3, 8, 0, 0
 	unknownsfx0x20 3, 196, 1, 6

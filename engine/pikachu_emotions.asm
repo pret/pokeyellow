@@ -1,4 +1,4 @@
-IsPlayerTalkingToPikachu: ; fcf0c (3f:4f0c)
+IsPlayerTalkingToPikachu:
 	ld a, [wd436]
 	and a
 	ret z
@@ -11,7 +11,7 @@ IsPlayerTalkingToPikachu: ; fcf0c (3f:4f0c)
 	ld [wd436], a
 	ret
 	
-InitializePikachuTextID: ; fcf20 (3f:4f20)
+InitializePikachuTextID:
 	ld a, $d4 ; display 
 	ld [hSpriteIndexOrTextID], a
 	xor a
@@ -23,7 +23,7 @@ InitializePikachuTextID: ; fcf20 (3f:4f20)
 	ld [wAutoTextBoxDrawingControl], a
 	ret
 
-DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
+DoStarterPikachuEmotions:
 	ld e, a
 	ld d, 0
 	add hl, de
@@ -50,7 +50,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 .done
 	ret
 	
-StarterPikachuEmotionsJumptable: ; fcf54 (3f:4f54)
+StarterPikachuEmotionsJumptable:
 	dw StarterPikachuEmotionCommand_nop ; 0
 	dw StarterPikachuEmotionCommand_text ; 1
 	dw StarterPikachuEmotionCommand_pcm ; 2
@@ -63,11 +63,11 @@ StarterPikachuEmotionsJumptable: ; fcf54 (3f:4f54)
 	dw StarterPikachuEmotionCommand_9 ; 9
 	dw StarterPikachuEmotionCommand_nop3 ; a
 	
-StarterPikachuEmotionCommand_nop: ; fcf6a (3f:4f6a)
-StarterPikachuEmotionCommand_nop3: ; fcf6a (3f:4f6a)
+StarterPikachuEmotionCommand_nop:
+StarterPikachuEmotionCommand_nop3:
 	ret
 
-StarterPikachuEmotionCommand_text: ; fcf6b (3f:4f6b)
+StarterPikachuEmotionCommand_text:
 	ld a, [de]
 	ld l, a
 	inc de
@@ -79,7 +79,7 @@ StarterPikachuEmotionCommand_text: ; fcf6b (3f:4f6b)
 	pop de
 	ret
 	
-StarterPikachuEmotionCommand_pcm: ; fcf77 (3f:4f77)
+StarterPikachuEmotionCommand_pcm:
 	ld a, [de]
 	inc de
 	push de
@@ -89,13 +89,13 @@ StarterPikachuEmotionCommand_pcm: ; fcf77 (3f:4f77)
 	pop de
 	ret
 
-PlayPikachuSoundClip_: ; fcf81 (3f:4f81)
+PlayPikachuSoundClip_:
 	cp $ff
 	ret z
 	callab PlayPikachuSoundClip
 	ret
 	
-StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
+StarterPikachuEmotionCommand_emote:
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -109,14 +109,14 @@ StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
 	ld [wUpdateSpritesEnabled], a
 	ret
 	
-ShowPikachuEmoteBubble: ; fcfa2 (3f:4fa2)
+ShowPikachuEmoteBubble:
 	ld [wWhichEmotionBubble], a
 	ld a, $f ; Pikachu
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ret
 	
-StarterPikachuEmotionCommand_movement: ; fcfb0 (3f:4fb0)
+StarterPikachuEmotionCommand_movement:
 	ld a, [de]
 	inc de
 	ld l, a
@@ -129,7 +129,7 @@ StarterPikachuEmotionCommand_movement: ; fcfb0 (3f:4fb0)
 	pop de
 	ret
 	
-StarterPikachuEmotionCommand_delay: ; fcfbe (3f:4fbe)
+StarterPikachuEmotionCommand_delay:
 	ld a, [de]
 	inc de
 	push de
@@ -138,7 +138,7 @@ StarterPikachuEmotionCommand_delay: ; fcfbe (3f:4fbe)
 	pop de
 	ret
 	
-StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
+StarterPikachuEmotionCommand_subcmd:
 	ld a, [de]
 	inc de
 	push de
@@ -163,45 +163,45 @@ StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	dw PikachuFanClubCheck
 	dw PikachuBillsHouseCheck
 	
-StarterPikachuEmotionCommand_nop2: ; fcfe8 (3f:4fe8)
+StarterPikachuEmotionCommand_nop2:
 	ret
 	
-StarterPikachuEmotionCommand_9: ; fcfe9 (3f:4fe9)
+StarterPikachuEmotionCommand_9:
 	push de
 	call StarterPikachuEmotionCommand_turnawayfromplayer
 	call UpdateSprites
 	pop de
 	ret
 
-StarterPikachuEmotionCommand_turnawayfromplayer: ; fcff2 (3f:4ff2)
+StarterPikachuEmotionCommand_turnawayfromplayer:
 	ld a, [wPlayerFacingDirection]
 	xor $4
 	ld [wPikachuFacingDirection], a
 	ret
 	
-DeletedFunction_fcffb: ; fcffb (3f:4ffb)
+DeletedFunction_fcffb:
 ; Inexplicably empty.
 	rept 5
 	nop
 	endr
 	ret
 
-PlaySpecificPikachuEmotion: ; fd001 (3f:5001)
+PlaySpecificPikachuEmotion:
 	ld a, e
 	jr load_expression
 
-TalkToPikachu: ; fd004 (3f:5004)
+TalkToPikachu:
 	call MapSpecificPikachuExpression
 	jr c, load_expression
 	call GetPikaPicAnimationScriptIndex
 	call DeletedFunction_fcffb
-load_expression: ; fd00f (3f:500f)
+load_expression:
 	ld [wExpressionNumber], a
 	ld hl, PikachuEmotionTable
 	call DoStarterPikachuEmotions
 	ret
 	
-PikachuEmotionTable: ; fd019 (3f:4019)
+PikachuEmotionTable:
 pikaemotion_def: MACRO
 \1_id: dw \1
 	endm
@@ -241,10 +241,10 @@ pikaemotion_def: MACRO
 	pikaemotion_def PikachuEmotion32
 	pikaemotion_def PikachuEmotion33
 	
-PikachuEmotion33: ; fd05d (3f:505d)
+PikachuEmotion33:
 	db $ff
 	
-MapSpecificPikachuExpression: ; fd05e (3f:505e)
+MapSpecificPikachuExpression:
 	ld a, [wCurMap]
 	cp POKEMON_FAN_CLUB
 	jr nz, .notFanClub
@@ -313,7 +313,7 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	dpikaemotion PikachuEmotion24
 	dpikaemotion PikachuEmotion25
 	
-IsPlayerPikachuAsleepInParty: ; fd0d0 (3f:50d0)
+IsPlayerPikachuAsleepInParty:
 	xor a
 	ld [wWhichPokemon], a
 .loop
@@ -356,7 +356,7 @@ IsPlayerPikachuAsleepInParty: ; fd0d0 (3f:50d0)
 	
 INCLUDE "data/pikachu_emotions.asm"
 
-PikachuWalksToNurseJoy: ; fd252 (3f:5252)
+PikachuWalksToNurseJoy:
 	ld a, $40
 	ld [h_0xFFFC], a
 	call LoadPikachuSpriteIntoVRAM

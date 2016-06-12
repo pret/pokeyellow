@@ -1,4 +1,4 @@
-Audio2_PlaySound:: ; 218bb (8:58bb)
+Audio2_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
 	cp $ff
@@ -13,7 +13,7 @@ Audio2_PlaySound:: ; 218bb (8:58bb)
 	call InitMusicVariables
 	jp Audio2_21940
 
-Audio2_218db: ; 218db (8:58db)
+Audio2_218db:
 	ld l, a
 	ld e, a
 	ld h, $0
@@ -79,11 +79,11 @@ Audio2_218db: ; 218db (8:58db)
 	dec c
 	jp .asm_218f4
 
-Audio2_2193c: ; 2193c (8:593c)
+Audio2_2193c:
 	call StopAllAudio
 	ret
 
-Audio2_21940: ; 21940 (8:5940)
+Audio2_21940:
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
@@ -184,10 +184,10 @@ Audio2_21940: ; 21940 (8:5940)
 .asm_219cd
 	ret
 
-Noise2_endchannel: ; 222d5 (8:62d5)
+Noise2_endchannel:
 	endchannel
 
-Music_PokeFluteInBattle:: ; 219cf (8:59cf)
+Music_PokeFluteInBattle::
 	; begin playing the "caught mon" sound effect
 	ld a, SFX_CAUGHT_MON
 	call PlaySoundWaitForCurrent
@@ -199,7 +199,7 @@ Music_PokeFluteInBattle:: ; 219cf (8:59cf)
 	call Audio2_OverwriteChannelPointer
 	ld de, SFX_08_PokeFlute_Ch3
 
-Audio2_OverwriteChannelPointer: ; 219e6 (8:59e6)
+Audio2_OverwriteChannelPointer:
 	ld a, e
 	ld [hli], a
 	ld a, d
@@ -208,7 +208,7 @@ Audio2_OverwriteChannelPointer: ; 219e6 (8:59e6)
 
 INCLUDE "audio/sfx/pokeflute_ch1_ch2.asm"
 
-Audio2_InitMusicVariables:: ; 219f8 (8:59f8)
+Audio2_InitMusicVariables::
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
@@ -281,7 +281,7 @@ Audio2_InitMusicVariables:: ; 219f8 (8:59f8)
 	ld [rNR50], a
 	ret
 
-Audio2_InitSFXVariables:: ; 21ab7 (8:5ab7)
+Audio2_InitSFXVariables::
 	xor a
 	push de
 	ld h, d
@@ -369,7 +369,7 @@ Audio2_InitSFXVariables:: ; 21ab7 (8:5ab7)
 	ld [rNR10], a
 	ret
 
-Audio2_StopAllAudio:: ; 21b3f (8:5b3f)
+Audio2_StopAllAudio::
 	ld a, $80
 	ld [rNR52], a
 	ld [rNR30], a
@@ -408,7 +408,7 @@ Audio2_StopAllAudio:: ; 21b3f (8:5b3f)
 	ld [wStereoPanning], a
 	ret
 
-FillAudioRAM2: ; 21b94 (8:5b94)
+FillAudioRAM2:
 	ld b, d
 .loop
 	ld [hli], a

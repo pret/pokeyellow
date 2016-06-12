@@ -1,4 +1,4 @@
-Audio4_PlaySound:: ; 82bd4 (20:6bd4)
+Audio4_PlaySound::
 ; Duplicate of Audio3_PlaySound
 	ld [wSoundID], a
 	ld a, [wSoundID]
@@ -15,7 +15,7 @@ Audio4_PlaySound:: ; 82bd4 (20:6bd4)
 	call InitMusicVariables
 	jp Audio4_7d192
 
-Audio4_7d12d: ; 7d12d (1f:512d)
+Audio4_7d12d:
 	ld l, a
 	ld e, a
 	ld h, $0
@@ -83,11 +83,11 @@ Audio4_7d12d: ; 7d12d (1f:512d)
 	dec c
 	jp .asm_7d146
 
-Audio4_7d18e: ; 7d18e (1f:518e)
+Audio4_7d18e:
 	call StopAllAudio
 	ret
 
-Audio4_7d192: ; 7d192 (1f:5192)
+Audio4_7d192:
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
@@ -189,5 +189,5 @@ Audio4_7d192: ; 7d192 (1f:5192)
 .asm_7d21f
 	ret
 
-Noise4_endchannel: ; 7d220 (1f:5220)
+Noise4_endchannel:
 	endchannel

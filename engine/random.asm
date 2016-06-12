@@ -1,4 +1,4 @@
-Random_:: ; f67dc (3d:67dc)
+Random_::
 ; Generate a random 16-bit value.
 	ld a, [rDIV]
 	ld b, a

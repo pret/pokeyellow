@@ -1,4 +1,4 @@
-BorderPalettes: ; 72c39 (1c:6c39)
+BorderPalettes:
 	INCBIN "gfx/tilemaps/sgbborder.map"
 
 	ds $100
@@ -83,5 +83,5 @@ BorderPalettes: ; 72c39 (1c:6c39)
 	RGB 31, 31, 25
 	RGB 31, 31, 25
 
-SGBBorderGraphics: ; 734b9 (1c:74b9)
+SGBBorderGraphics:
 	INCBIN "gfx/pokemon_yellow.t6.2bpp"

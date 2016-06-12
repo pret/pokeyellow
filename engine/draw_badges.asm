@@ -1,4 +1,4 @@
-DrawBadges: ; e880 (3:6880)
+DrawBadges:
 ; Draw 4x2 gym leader faces, with the faces replaced by
 ; badges if they are owned. Used in the player status screen.
 
@@ -116,5 +116,5 @@ DrawBadges: ; e880 (3:6880)
 .FaceBadgeTiles
 	db $20, $28, $30, $38, $40, $48, $50, $58
 
-GymLeaderFaceAndBadgeTileGraphics: ; e91b (3:691b)
+GymLeaderFaceAndBadgeTileGraphics:
 	INCBIN "gfx/badges.2bpp"

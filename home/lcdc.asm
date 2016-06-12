@@ -1,4 +1,4 @@
-LCDC:: ; 15ac (0:15ac)
+LCDC::
 	push af
 	ld a, [hLCDCPointer] ; doubles as enabling byte
 	and a

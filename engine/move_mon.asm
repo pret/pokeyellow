@@ -1,4 +1,4 @@
-_MoveMon: ; f3a4 (3:73a4)
+_MoveMon:
 	ld a, [wMoveMonType]
 	and a
 	jr z, .checkPartyMonSlots

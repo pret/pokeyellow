@@ -1,4 +1,4 @@
-PrintSafariZoneSteps: ; c27b (3:427b)
+PrintSafariZoneSteps:
 	ld a, [wCurMap]
 	cp SAFARI_ZONE_EAST
 	ret c
@@ -29,8 +29,8 @@ PrintSafariZoneSteps: ; c27b (3:427b)
 	lb bc, 1, 2
 	jp PrintNumber
 
-SafariSteps: ; c2c4 (3:42c4)
+SafariSteps:
 	db "/500@"
 
-SafariBallText: ; c5c9 (3:42c9)
+SafariBallText:
 	db "BALL×× @"

@@ -1,4 +1,4 @@
-HealEffect_: ; f62ba (3d:62ba)
+HealEffect_:
 	ld a, [H_WHOSETURN]
 	and a
 	ld de, wBattleMonHP
@@ -107,14 +107,14 @@ HealEffect_: ; f62ba (3d:62ba)
 	ld hl, PrintButItFailedText_
 	jp Bankswitch3DtoF
 
-StartedSleepingEffect: ; f6370 (3d:6370)
+StartedSleepingEffect:
 	TX_FAR _StartedSleepingEffect
 	db "@"
 
-FellAsleepBecameHealthyText: ; f6375 (3d:6375)
+FellAsleepBecameHealthyText:
 	TX_FAR _FellAsleepBecameHealthyText
 	db "@"
 
-RegainedHealthText: ; f637a (3d:637a)
+RegainedHealthText:
 	TX_FAR _RegainedHealthText
 	db "@"

@@ -1,6 +1,6 @@
 ; subtracts the amount the player paid from their money
 ; sets carry flag if there is enough money and unsets carry flag if not
-SubtractAmountPaidFromMoney_: ; 68a6 (1:68a6)
+SubtractAmountPaidFromMoney_:
 	ld de, wPlayerMoney
 	ld hl, hMoney ; total price of items
 	ld c, 3 ; length of money in bytes

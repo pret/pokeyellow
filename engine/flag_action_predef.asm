@@ -1,7 +1,7 @@
-FlagActionPredef: ; f4ec (3:74ec)
+FlagActionPredef:
 	call GetPredefRegisters
 
-FlagAction: ; f4ef (3:74ef)
+FlagAction:
 ; Perform action b on bit c
 ; in the bitfield at hl.
 ;  0: reset

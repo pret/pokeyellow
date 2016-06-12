@@ -1,5 +1,5 @@
 ; function to draw various text boxes
-DisplayTextBoxID_: ; 71bf (1:71bf)
+DisplayTextBoxID_:
 	ld a,[wTextBoxID]
 	cp a,TWO_OPTION_MENU
 	jp z,DisplayTwoOptionMenu
@@ -50,7 +50,7 @@ DisplayTextBoxID_: ; 71bf (1:71bf)
 
 ; function to search a table terminated with $ff for a byte matching c in increments of de
 ; sets carry flag if a match is found and clears carry flag if not
-SearchTextBoxTable: ; 7221 (1:7221)
+SearchTextBoxTable:
 	dec de
 .loop
 	ld a,[hli]
@@ -73,7 +73,7 @@ SearchTextBoxTable: ; 7221 (1:7221)
 ; c = width
 ; d = row of upper left corner
 ; e = column of upper left corner
-GetTextBoxIDCoords: ; 722f (1:722f)
+GetTextBoxIDCoords:
 	ld a,[hli] ; column of upper left corner
 	ld e,a
 	ld a,[hli] ; row of upper left corner
@@ -89,7 +89,7 @@ GetTextBoxIDCoords: ; 722f (1:722f)
 	ret
 
 ; function to load a text address and text coordinates from the TextBoxTextAndCoordTable
-GetTextBoxIDText: ; 723c (1:723c)
+GetTextBoxIDText:
 	ld a,[hli]
 	ld e,a
 	ld a,[hli]
@@ -109,7 +109,7 @@ GetTextBoxIDText: ; 723c (1:723c)
 ; e = column
 ; OUTPUT:
 ; hl = address of upper left corner of text box
-GetAddressOfScreenCoords: ; 724a (1:724a)
+GetAddressOfScreenCoords:
 	push bc
 	coord hl, 0, 0
 	ld bc,20
@@ -128,7 +128,7 @@ GetAddressOfScreenCoords: ; 724a (1:724a)
 ; Format:
 ; 00: text box ID
 ; 01-02: function address
-TextBoxFunctionTable: ; 725c (1:725c)
+TextBoxFunctionTable:
 	dbw MONEY_BOX, DisplayMoneyBox
 	dbw BUY_SELL_QUIT_MENU, DoBuySellQuitMenu
 	dbw FIELD_MOVE_MON_MENU, DisplayFieldMoveMonMenu
@@ -140,7 +140,7 @@ TextBoxFunctionTable: ; 725c (1:725c)
 ; 02: row of upper left corner
 ; 03: column of lower right corner
 ; 04: row of lower right corner
-TextBoxCoordTable: ; 7266 (1:7266)
+TextBoxCoordTable:
 	db MESSAGE_BOX,       0, 12, 19, 17
 	db $03,               0,  0, 19, 14
 	db $07,               0,  0, 11,  6
@@ -159,7 +159,7 @@ TextBoxCoordTable: ; 7266 (1:7266)
 ; 07: column of beginning of text
 ; 08: row of beginning of text
 ; table of window positions and corresponding text [key, start column, start row, end column, end row, text pointer [2 bytes], text column, text row]
-TextBoxTextAndCoordTable: ; 7285 (1:7285)
+TextBoxTextAndCoordTable:
 	db JP_MOCHIMONO_MENU_TEMPLATE
 	db 0,0,14,17   ; text box coordinates
 	dw JapaneseMochimonoText
@@ -217,56 +217,56 @@ TextBoxTextAndCoordTable: ; 7285 (1:7285)
 
 ; note that there is no terminator
 
-BuySellQuitText: ; 72e8 (1:72e8)
+BuySellQuitText:
 	db   "BUY"
 	next "SELL"
 	next "QUIT@@"
 
-UseTossText: ; 72f7 (1:72f7)
+UseTossText:
 	db   "USE"
 	next "TOSS@"
 
-JapaneseSaveMessageText: ; 7300 (1:7300)
+JapaneseSaveMessageText:
 	db   "きろく"
 	next "メッセージ@"
 
-JapaneseSpeedOptionsText: ; 7309 (1:7309)
+JapaneseSpeedOptionsText:
 	db   "はやい"
 	next "おそい@"
 
-MoneyText: ; 7312 (1:7312)
+MoneyText:
 	db "MONEY@"
 
-JapaneseMochimonoText: ; 7318 (1:7318)
+JapaneseMochimonoText:
 	db "もちもの@"
 
-JapaneseMainMenuText: ; 731d (1:731d)
+JapaneseMainMenuText:
 	db   "つづきから"
 	next "さいしょから@"
 
-BattleMenuText: ; 732a (1:732a)
+BattleMenuText:
 	db   "FIGHT ",$E1,$E2
 	next "ITEM  RUN@"
 
-SafariZoneBattleMenuText: ; 733d (1:733d)
+SafariZoneBattleMenuText:
 	db   "BALL×       BAIT"
 	next "THROW ROCK  RUN@"
 
-SwitchStatsCancelText: ; 735e (1:735e)
+SwitchStatsCancelText:
 	db   "SWITCH"
 	next "STATS"
 	next "CANCEL@"
 
-JapaneseAhText: ; 7372 (1:7372)
+JapaneseAhText:
 	db "アッ!@"
 
-JapanesePokedexMenu: ; 7376 (1:7376)
+JapanesePokedexMenu:
 	db   "データをみる"
 	next "なきごえ"
 	next "ぶんぷをみる"
 	next "キャンセル@"
 
-DisplayMoneyBox: ; 738f (1:738f)
+DisplayMoneyBox:
 	ld hl, wd730
 	set 6, [hl]
 	ld a, MONEY_BOX_TEMPLATE
@@ -283,10 +283,10 @@ DisplayMoneyBox: ; 738f (1:738f)
 	res 6, [hl]
 	ret
 
-CurrencyString: ; 73b6 (1:73b6)
+CurrencyString:
 	db "      ¥@"
 
-DoBuySellQuitMenu: ; 73be (1:73be)
+DoBuySellQuitMenu:
 	ld a, [wd730]
 	set 6, a ; no printing delay
 	ld [wd730], a
@@ -341,7 +341,7 @@ DoBuySellQuitMenu: ; 73be (1:73be)
 ; b = Y of upper left corner of text region
 ; c = X of upper left corner of text region
 ; hl = address where the text box border should be drawn
-DisplayTwoOptionMenu: ; 742d (1:742d)
+DisplayTwoOptionMenu:
 	push hl
 	ld a, [wd730]
 	set 6, a ; no printing delay
@@ -452,7 +452,7 @@ DisplayTwoOptionMenu: ; 742d (1:742d)
 ; they cover be fully saved/restored by the two functions below.
 ; The bottom and right edges of the menu may remain after the function returns.
 
-TwoOptionMenu_SaveScreenTiles: ; 74e7 (1:74e7)
+TwoOptionMenu_SaveScreenTiles:
 	ld de, wBuffer
 	lb bc, 5, 6
 .loop
@@ -470,7 +470,7 @@ TwoOptionMenu_SaveScreenTiles: ; 74e7 (1:74e7)
 	jr nz, .loop
 	ret
 
-TwoOptionMenu_RestoreScreenTiles: ; 74ff (1:74ff)
+TwoOptionMenu_RestoreScreenTiles:
 	ld de, wBuffer
 	lb bc, 5, 6
 .loop
@@ -494,7 +494,7 @@ TwoOptionMenu_RestoreScreenTiles: ; 74ff (1:74ff)
 ; 01: byte height
 ; 02: byte put blank line before first menu item
 ; 03: word text pointer
-TwoOptionMenuStrings: ; 751a (1:751a)
+TwoOptionMenuStrings:
 	db 4,3,0
 	dw .YesNoMenu
 	db 6,3,0
@@ -527,7 +527,7 @@ TwoOptionMenuStrings: ; 751a (1:751a)
 .HealCancelMenu ; 757e (1:757e)
 	db "HEAL",$4E,"CANCEL@"
 
-DisplayFieldMoveMonMenu: ; 758a (1:758a)
+DisplayFieldMoveMonMenu:
 	xor a
 	ld hl, wFieldMoves
 	ld [hli], a ; wFieldMoves
@@ -646,7 +646,7 @@ DisplayFieldMoveMonMenu: ; 758a (1:758a)
 	ld de, PokemonMenuEntries
 	jp PlaceString
 
-FieldMoveNames: ; 7635 (1:7635)
+FieldMoveNames:
 	db "CUT@"
 	db "FLY@"
 	db "@"
@@ -657,12 +657,12 @@ FieldMoveNames: ; 7635 (1:7635)
 	db "TELEPORT@"
 	db "SOFTBOILED@"
 
-PokemonMenuEntries: ; 766a (1:766a)
+PokemonMenuEntries:
 	db   "STATS"
 	next "SWITCH"
 	next "CANCEL@"
 
-GetMonFieldMoves: ; 767e (1:767e)
+GetMonFieldMoves:
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Moves
 	ld bc, wPartyMon2 - wPartyMon1
@@ -719,7 +719,7 @@ GetMonFieldMoves: ; 767e (1:767e)
 ; Name index = index of name in FieldMoveNames
 ; Leftmost tile = -1 + tile column in which the first letter of the move's name should be displayed
 ;                 "SOFTBOILED" is $08 because it has 4 more letters than "SURF", for example, whose value is $0C
-FieldMoveDisplayData: ; 76cb (1:76cb)
+FieldMoveDisplayData:
 	db CUT, $01, $0C
 	db FLY, $02, $0C
 	db $B4, $03, $0C ; unused field move

@@ -1,4 +1,4 @@
-DisplayDexRating: ; 44169 (11:4169)
+DisplayDexRating:
 	ld hl, wPokedexSeen
 	ld b, wPokedexSeenEnd - wPokedexSeen
 	call CountSetBits
@@ -51,11 +51,11 @@ DisplayDexRating: ; 44169 (11:4169)
 	ld [de], a
 	ret
 
-DexCompletionText: ; 441cc (11:41cc)
+DexCompletionText:
 	TX_FAR _DexCompletionText
 	db "@"
 
-DexRatingsTable: ; 441d1 (11:41d1)
+DexRatingsTable:
 	db 10
 	dw DexRatingText_Own0To9
 	db 20
@@ -89,66 +89,66 @@ DexRatingsTable: ; 441d1 (11:41d1)
 	db 152
 	dw DexRatingText_Own150To151
 
-DexRatingText_Own0To9: ; 44201 (11:4201)
+DexRatingText_Own0To9:
 	TX_FAR _DexRatingText_Own0To9
 	db "@"
 
-DexRatingText_Own10To19: ; 44206 (11:4206)
+DexRatingText_Own10To19:
 	TX_FAR _DexRatingText_Own10To19
 	db "@"
 
-DexRatingText_Own20To29: ; 4420b (11:420b)
+DexRatingText_Own20To29:
 	TX_FAR _DexRatingText_Own20To29
 	db "@"
 
-DexRatingText_Own30To39: ; 44210 (11:4210)
+DexRatingText_Own30To39:
 	TX_FAR _DexRatingText_Own30To39
 	db "@"
 
-DexRatingText_Own40To49: ; 44215 (11:4215)
+DexRatingText_Own40To49:
 	TX_FAR _DexRatingText_Own40To49
 	db "@"
 
-DexRatingText_Own50To59: ; 4421a (11:421a)
+DexRatingText_Own50To59:
 	TX_FAR _DexRatingText_Own50To59
 	db "@"
 
-DexRatingText_Own60To69: ; 4421f (11:421f)
+DexRatingText_Own60To69:
 	TX_FAR _DexRatingText_Own60To69
 	db "@"
 
-DexRatingText_Own70To79: ; 44224 (11:4224)
+DexRatingText_Own70To79:
 	TX_FAR _DexRatingText_Own70To79
 	db "@"
 
-DexRatingText_Own80To89: ; 44229 (11:4229)
+DexRatingText_Own80To89:
 	TX_FAR _DexRatingText_Own80To89
 	db "@"
 
-DexRatingText_Own90To99: ; 4422e (11:422e)
+DexRatingText_Own90To99:
 	TX_FAR _DexRatingText_Own90To99
 	db "@"
 
-DexRatingText_Own100To109: ; 44233 (11:4233)
+DexRatingText_Own100To109:
 	TX_FAR _DexRatingText_Own100To109
 	db "@"
 
-DexRatingText_Own110To119: ; 44238 (11:4238)
+DexRatingText_Own110To119:
 	TX_FAR _DexRatingText_Own110To119
 	db "@"
 
-DexRatingText_Own120To129: ; 4423d (11:423d)
+DexRatingText_Own120To129:
 	TX_FAR _DexRatingText_Own120To129
 	db "@"
 
-DexRatingText_Own130To139: ; 44242 (11:4242)
+DexRatingText_Own130To139:
 	TX_FAR _DexRatingText_Own130To139
 	db "@"
 
-DexRatingText_Own140To149: ; 44247 (11:4247)
+DexRatingText_Own140To149:
 	TX_FAR _DexRatingText_Own140To149
 	db "@"
 
-DexRatingText_Own150To151: ; 4424c (11:424c)
+DexRatingText_Own150To151:
 	TX_FAR _DexRatingText_Own150To151
 	db "@"

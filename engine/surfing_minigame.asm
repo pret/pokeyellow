@@ -1721,7 +1721,7 @@ DidPlayerGetAHighScore:
 	scf
 	ret
 
-SurfingMinigame_PlayPikaCryIfSurfingPikaInParty: ; f8bcb (3e:4bcb)
+SurfingMinigame_PlayPikaCryIfSurfingPikaInParty:
 	push de
 	callab IsSurfingPikachuInThePlayersParty
 	pop de

@@ -1,4 +1,4 @@
-AnimateHallOfFame: ; 701c6 (1c:41c6)
+AnimateHallOfFame:
 	call HoFFadeOutScreenAndMusic
 	call ClearScreen
 	ld c, 100
@@ -90,10 +90,10 @@ AnimateHallOfFame: ; 701c6 (1c:41c6)
 	res 3, [hl]
 	ret
 
-HallOfFameText: ; 70295 (1c:4295)
+HallOfFameText:
 	db "HALL OF FAME@"
 
-HoFShowMonOrPlayer: ; 702a2 (1c:42a2)
+HoFShowMonOrPlayer:
 	call ClearScreen
 	ld a, $d0
 	ld [hSCY], a
@@ -149,7 +149,7 @@ HoFShowMonOrPlayer: ; 702a2 (1c:42a2)
 	jr nz, .ScrollPic
 	ret
 
-HoFDisplayAndRecordMonInfo: ; 7030e (1c:430e)
+HoFDisplayAndRecordMonInfo:
 	ld a, [wHoFPartyMonIndex]
 	ld hl, wPartyMonNicks ; wPartyMonNicks
 	call GetPartyMonName
@@ -167,12 +167,12 @@ HoFDisplayAndRecordMonInfo: ; 7030e (1c:430e)
 .asm_7033c
 	jp HoFRecordMonInfo
 
-Func_7033f: ; 7033f (1c:433f)
+Func_7033f:
 	call HoFDisplayMonInfo
 	ld a,[wHoFMonSpecies]
 	jp PlayCry
 
-HoFDisplayMonInfo: ; 70348 (1c:4348)
+HoFDisplayMonInfo:
 	coord hl, 0, 2
 	lb bc, 9, 10
 	call TextBoxBorder
@@ -191,12 +191,12 @@ HoFDisplayMonInfo: ; 70348 (1c:4348)
 	predef PrintMonType
 	ret
 
-HoFMonInfoText: ; 7037b (1c:437b)
+HoFMonInfoText:
 	db   "LEVEL/"
 	next "TYPE1/"
 	next "TYPE2/@"
 
-HoFLoadPlayerPics: ; 70390 (1c:433e)
+HoFLoadPlayerPics:
 	ld de, RedPicFront ; $6ede
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
@@ -217,12 +217,12 @@ HoFLoadPlayerPics: ; 70390 (1c:433e)
 	call InterlaceMergeSpriteBuffers
 	ld c, $1
 
-HoFLoadMonPlayerPicTileIDs: ; 703c7 (1c:43c7)
+HoFLoadMonPlayerPicTileIDs:
 	ld b, $0
 	coord hl, 12, 5
 	predef_jump CopyTileIDsFromList
 
-HoFDisplayPlayerStats: ; 703d1 (1c:43d1)
+HoFDisplayPlayerStats:
 	SetEvent EVENT_HALL_OF_FAME_DEX_RATING
 	predef DisplayDexRating
 	coord hl, 0, 4
@@ -259,26 +259,26 @@ HoFDisplayPlayerStats: ; 703d1 (1c:43d1)
 	call HoFPrintTextAndDelay
 	ld hl, wDexRatingText
 
-HoFPrintTextAndDelay: ; 7043a (1c:443a)
+HoFPrintTextAndDelay:
 	call PrintText
 	ld c, 120
 	jp DelayFrames
 
-HoFPlayTimeText: ; 70442 (1c:4442)
+HoFPlayTimeText:
 	db "PLAY TIME@"
 
-HoFMoneyText: ; 7044c (1c:444c)
+HoFMoneyText:
 	db "MONEY@"
 
-DexSeenOwnedText: ; 70452 (1c:4452)
+DexSeenOwnedText:
 	TX_FAR _DexSeenOwnedText
 	db "@"
 
-DexRatingText: ; 70457 (1c:4457)
+DexRatingText:
 	TX_FAR _DexRatingText
 	db "@"
 
-HoFRecordMonInfo: ; 7045c (1c:445c)
+HoFRecordMonInfo:
 	ld hl, wHallOfFame
 	ld bc, HOF_MON
 	ld a, [wHoFPartyMonIndex]
@@ -293,7 +293,7 @@ HoFRecordMonInfo: ; 7045c (1c:445c)
 	ld bc, NAME_LENGTH
 	jp CopyData
 
-HoFFadeOutScreenAndMusic: ; 7047b (1c:447b)
+HoFFadeOutScreenAndMusic:
 	ld a, 10
 	ld [wAudioFadeOutCounterReloadValue], a
 	ld [wAudioFadeOutCounter], a

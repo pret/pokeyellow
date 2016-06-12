@@ -1,4 +1,4 @@
-HiddenItemCoords: ; 75faa (1d:5faa)
+HiddenItemCoords:
 ; map ID, then coords
 	db SILPH_CO_5F, $03, $0c
 	db SILPH_CO_9F, $0f, $02

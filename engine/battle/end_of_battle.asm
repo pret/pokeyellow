@@ -1,4 +1,4 @@
-EndOfBattle: ; 13765 (4:7765)
+EndOfBattle:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .notLinkBattle
@@ -78,15 +78,15 @@ EndOfBattle: ; 13765 (4:7765)
 	ld [wDestinationWarpID], a
 	ret
 
-YouWinText: ; 1381d (4:781d)
+YouWinText:
 	db "YOU WIN@"
 
-YouLoseText: ; 13825 (4:7825)
+YouLoseText:
 	db "YOU LOSE@"
 
-DrawText: ; 1382e (4:782e)
+DrawText:
 	db "  DRAW@"
 
-PickUpPayDayMoneyText: ; 13835 (4:7835)
+PickUpPayDayMoneyText:
 	TX_FAR _PickUpPayDayMoneyText
 	db "@"

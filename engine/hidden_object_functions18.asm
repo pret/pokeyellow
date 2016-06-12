@@ -1,4 +1,4 @@
-GymStatues: ; 625e8 (18:65e8)
+GymStatues:
 ; if in a gym and have the corresponding badge, a = GymStatueText2_id and jp PrintPredefTextID
 ; if in a gym and don’t have the corresponding badge, a = GymStatueText1_id and jp PrintPredefTextID
 ; else ret
@@ -28,7 +28,7 @@ GymStatues: ; 625e8 (18:65e8)
 .haveBadge
 	jp PrintPredefTextID
 
-.BadgeFlags: ; 62442 (18:6442)
+.BadgeFlags:
 	db PEWTER_GYM,    %00000001
 	db CERULEAN_GYM,  %00000010
 	db VERMILION_GYM, %00000100
@@ -39,15 +39,15 @@ GymStatues: ; 625e8 (18:65e8)
 	db VIRIDIAN_GYM,  %10000000
 	db $ff
 
-GymStatueText1: ; 62453 (18:6453)
+GymStatueText1:
 	TX_FAR _GymStatueText1
 	db "@"
 
-GymStatueText2: ; 62458 (18:6458)
+GymStatueText2:
 	TX_FAR _GymStatueText2
 	db "@"
 
-PrintBenchGuyText: ; 6245d (18:645d)
+PrintBenchGuyText:
 	call EnableAutoTextBoxDrawing
 	ld hl, BenchGuyTextPointers
 	ld a, [wCurMap]
@@ -71,7 +71,7 @@ PrintBenchGuyText: ; 6245d (18:645d)
 	jp PrintPredefTextID
 
 ; format: db map id, player sprite facing direction, text id of PredefTextIDPointerTable
-BenchGuyTextPointers: ; 6247e (18:647e)
+BenchGuyTextPointers:
 	db VIRIDIAN_POKECENTER,     SPRITE_FACING_LEFT
 	db_tx_pre ViridianCityPokecenterBenchGuyText
 	db PEWTER_POKECENTER,       SPRITE_FACING_LEFT
@@ -104,59 +104,59 @@ BenchGuyTextPointers: ; 6247e (18:647e)
 	db_tx_pre UnusedBenchGuyText3
 	db $FF
 
-ViridianCityPokecenterBenchGuyText: ; 624a3 (18:64a3)
+ViridianCityPokecenterBenchGuyText:
 	TX_FAR _ViridianCityPokecenterGuyText
 	db "@"
 
-PewterCityPokecenterBenchGuyText: ; 624a8 (18:64a8)
+PewterCityPokecenterBenchGuyText:
 	TX_FAR _PewterCityPokecenterGuyText
 	db "@"
 
-CeruleanCityPokecenterBenchGuyText: ; 624ad (18:64ad)
+CeruleanCityPokecenterBenchGuyText:
 	TX_FAR _CeruleanPokecenterGuyText
 	db "@"
 
-LavenderCityPokecenterBenchGuyText: ; 624b2 (18:64b2)
+LavenderCityPokecenterBenchGuyText:
 	TX_FAR _LavenderPokecenterGuyText
 	db "@"
 
-MtMoonPokecenterBenchGuyText: ; 624b7 (18:64b7)
+MtMoonPokecenterBenchGuyText:
 	TX_FAR _MtMoonPokecenterBenchGuyText
 	db "@"
 
-RockTunnelPokecenterBenchGuyText: ; 624bc (18:64bc)
+RockTunnelPokecenterBenchGuyText:
 	TX_FAR _RockTunnelPokecenterGuyText
 	db "@"
 
-UnusedBenchGuyText1: ; 624c1 (18:64c1)
+UnusedBenchGuyText1:
 	TX_FAR _UnusedBenchGuyText1
 	db "@"
 
-UnusedBenchGuyText2: ; 624c6 (18:64c6)
+UnusedBenchGuyText2:
 	TX_FAR _UnusedBenchGuyText2
 	db "@"
 
-UnusedBenchGuyText3: ; 624cb (18:64cb)
+UnusedBenchGuyText3:
 	TX_FAR _UnusedBenchGuyText3
 	db "@"
 
-VermilionCityPokecenterBenchGuyText: ; 624d0 (18:64d0)
+VermilionCityPokecenterBenchGuyText:
 	TX_FAR _VermilionPokecenterGuyText
 	db "@"
 
-CeladonCityPokecenterBenchGuyText: ; 624d5 (18:64d5)
+CeladonCityPokecenterBenchGuyText:
 	TX_FAR _CeladonCityPokecenterGuyText
 	db "@"
 
-FuchsiaCityPokecenterBenchGuyText: ; 624da (18:64da)
+FuchsiaCityPokecenterBenchGuyText:
 	TX_FAR _FuchsiaCityPokecenterGuyText
 	db "@"
 
-CinnabarIslandPokecenterBenchGuyText: ; 624df (18:64df)
+CinnabarIslandPokecenterBenchGuyText:
 	TX_FAR _CinnabarPokecenterGuyText
 	db "@"
 
-SaffronCityPokecenterBenchGuyText: ; 624e4 (18:64e4)
+SaffronCityPokecenterBenchGuyText:
 	TX_ASM
 	CheckEvent EVENT_BEAT_SILPH_CO_GIOVANNI
 	ld hl, SaffronCityPokecenterBenchGuyText2
@@ -166,32 +166,32 @@ SaffronCityPokecenterBenchGuyText: ; 624e4 (18:64e4)
 	call PrintText
 	jp TextScriptEnd
 
-SaffronCityPokecenterBenchGuyText1: ; 624f8 (18:64f8)
+SaffronCityPokecenterBenchGuyText1:
 	TX_FAR _SaffronCityPokecenterGuyText1
 	db "@"
 
-SaffronCityPokecenterBenchGuyText2: ; 624fd (18:64fd)
+SaffronCityPokecenterBenchGuyText2:
 	TX_FAR _SaffronCityPokecenterGuyText2
 	db "@"
 
-CeladonCityHotelText: ; 62502 (18:6502)
+CeladonCityHotelText:
 	TX_FAR _CeladonCityHotelText
 	db "@"
 
 	ret
 
-UnusedPredefText: ; 62508 (18:6508)
+UnusedPredefText:
 	db "@"
 
-PrintBookcaseText: ; 626e1 (18:66e1)
+PrintBookcaseText:
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump BookcaseText
 
-BookcaseText: ; 62511 (18:6511)
+BookcaseText:
 	TX_FAR _BookcaseText
 	db "@"
 
-OpenPokemonCenterPC: ; 62516 (18:6516)
+OpenPokemonCenterPC:
 	ld a, [wPlayerFacingDirection]
 	cp SPRITE_FACING_UP ; check to see if player is facing up
 	ret nz
@@ -200,5 +200,5 @@ OpenPokemonCenterPC: ; 62516 (18:6516)
 	ld [wAutoTextBoxDrawingControl], a
 	tx_pre_jump PokemonCenterPCText
 
-PokemonCenterPCText: ; 62529 (18:6529)
+PokemonCenterPCText:
 	db $F9 ; FuncTX_PokemonCenterPC

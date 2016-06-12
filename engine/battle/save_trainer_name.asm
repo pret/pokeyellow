@@ -1,4 +1,4 @@
-SaveTrainerName: ; 27dff (9:7dff)
+SaveTrainerName:
 	ld hl,TrainerNamePointers
 	ld a,[wTrainerClass]
 	dec a
@@ -18,7 +18,7 @@ SaveTrainerName: ; 27dff (9:7dff)
 	jr nz,.CopyCharacter
 	ret
 
-TrainerNamePointers: ; 27e19 (9:7e19)
+TrainerNamePointers:
 ; what is the point of these?
 	dw YoungsterName
 	dw BugCatcherName
@@ -68,45 +68,45 @@ TrainerNamePointers: ; 27e19 (9:7e19)
 	dw wTrainerName
 	dw wTrainerName
 
-YoungsterName: ; 27e77 (9:7e77)
+YoungsterName:
 	db "YOUNGSTER@"
-BugCatcherName: ; 27e81 (9:7e81)
+BugCatcherName:
 	db "BUG CATCHER@"
-LassName: ; 27e8d (9:7e8d)
+LassName:
 	db "LASS@"
-JrTrainerMName: ; 27e92 (9:7e92)
+JrTrainerMName:
 	db "JR.TRAINER♂@"
-JrTrainerFName: ; 27e9e (9:7e9e)
+JrTrainerFName:
 	db "JR.TRAINER♀@"
-PokemaniacName: ; 27eaa (9:7eaa)
+PokemaniacName:
 	db "POKéMANIAC@"
-SuperNerdName: ; 27eb5 (9:7eb5)
+SuperNerdName:
 	db "SUPER NERD@"
-BurglarName: ; 27ec0 (9:7ec0)
+BurglarName:
 	db "BURGLAR@"
-EngineerName: ; 27ec8 (9:7ec8)
+EngineerName:
 	db "ENGINEER@"
-JugglerXName: ; 27ed1 (9:7ed1)
+JugglerXName:
 	db "JUGGLER@"
-SwimmerName: ; 27ed9 (9:7ed9)
+SwimmerName:
 	db "SWIMMER@"
-BeautyName: ; 27ee1 (9:7ee1)
+BeautyName:
 	db "BEAUTY@"
-RockerName: ; 27ee8 (9:7ee8)
+RockerName:
 	db "ROCKER@"
-JugglerName: ; 27eef (9:7eef)
+JugglerName:
 	db "JUGGLER@"
-BlackbeltName: ; 27ef7 (9:7ef7)
+BlackbeltName:
 	db "BLACKBELT@"
-ProfOakName: ; 27f01 (9:7f01)
+ProfOakName:
 	db "PROF.OAK@"
-ChiefName: ; 27f0a (9:7f0a)
+ChiefName:
 	db "CHIEF@"
-ScientistName: ; 27f10 (9:7f10)
+ScientistName:
 	db "SCIENTIST@"
-RocketName: ; 27f1a (9:7f1a)
+RocketName:
 	db "ROCKET@"
-CooltrainerMName: ; 27f21 (9:7f21)
+CooltrainerMName:
 	db "COOLTRAINER♂@"
-CooltrainerFName: ; 27f2e (9:7f2e)
+CooltrainerFName:
 	db "COOLTRAINER♀@"

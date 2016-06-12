@@ -1,4 +1,4 @@
-GetPikaPicAnimationScriptIndex: ; fd978 (3f:5978)
+GetPikaPicAnimationScriptIndex:
 	ld hl, PikachuMoodLookupTable
 	ld a, [wPikachuMood]
 	ld d, a
@@ -87,7 +87,7 @@ PikaPicAnimationScriptPointerLookupTable:
 	dpikapic PikaPicAnimScript20
 	dpikapic PikaPicAnimScript20
 
-StarterPikachuEmotionCommand_pikapic: ; fd9d0 (3f:59d0)
+StarterPikachuEmotionCommand_pikapic:
 	ld a, [H_AUTOBGTRANSFERENABLED]
 	push af
 	xor a

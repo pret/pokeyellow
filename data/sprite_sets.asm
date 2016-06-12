@@ -1,4 +1,4 @@
-MapSpriteSets: ; 141e6 (5:41e6)
+MapSpriteSets:
 	db $01 ; PALLET_TOWN
 	db $01 ; VIRIDIAN_CITY
 	db $02 ; PEWTER_CITY
@@ -44,7 +44,7 @@ MapSpriteSets: ; 141e6 (5:41e6)
 ; 01: coordinate of dividing line
 ; 02: sprite set ID if in the West or North side
 ; 03: sprite set ID if in the East or South side
-SplitMapSpriteSets: ; 1402b (5:420b)
+SplitMapSpriteSets:
 	db $02,$25,$02,$01 ; $f1
 	db $02,$32,$02,$03 ; $f2
 	db $01,$39,$04,$08 ; $f3
@@ -58,7 +58,7 @@ SplitMapSpriteSets: ; 1402b (5:420b)
 	db $01,$11,$05,$07 ; $fb
 	db $01,$03,$07,$03 ; $fc
 
-SpriteSets: ; 1423d (5:423d)
+SpriteSets:
 ; sprite set $01
 	db SPRITE_PIKACHU
 	db SPRITE_BLUE
@@ -189,7 +189,7 @@ SpriteSets: ; 1423d (5:423d)
 	db SPRITE_BALL
 	db SPRITE_OMANYTE
 
-SpriteSheetPointerTable: ; 142a9 (5:42a9)
+SpriteSheetPointerTable:
 	; SPRITE_RED
 	dw RedSprite
 	db $c0 ; byte count

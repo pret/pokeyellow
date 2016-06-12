@@ -1,4 +1,4 @@
-DrawAllPokeballs: ; 3a8df (e:68df)
+DrawAllPokeballs:
 	call LoadPartyPokeballGfx
 	call SetupOwnPartyPokeballs
 	ld a, [wIsInBattle]
@@ -6,17 +6,17 @@ DrawAllPokeballs: ; 3a8df (e:68df)
 	ret z ; return if wild pokémon
 	jp SetupEnemyPartyPokeballs
 
-DrawEnemyPokeballs: ; 3a8ed (e:68ed)
+DrawEnemyPokeballs:
 	call LoadPartyPokeballGfx
 	jp SetupEnemyPartyPokeballs
 
-LoadPartyPokeballGfx: ; 3a8f3 (e:68f3)
+LoadPartyPokeballGfx:
 	ld de, PokeballTileGraphics
 	ld hl, vSprites + $310
 	lb bc, BANK(PokeballTileGraphics), (PokeballTileGraphicsEnd - PokeballTileGraphics) / $10
 	jp CopyVideoData
 
-SetupOwnPartyPokeballs: ; 3a8ff (e:68ff)
+SetupOwnPartyPokeballs:
 	call PlacePlayerHUDTiles
 	ld hl, wPartyMon1
 	ld de, wPartyCount
@@ -32,7 +32,7 @@ SetupOwnPartyPokeballs: ; 3a8ff (e:68ff)
 	ld hl, wOAMBuffer
 	jp WritePokeballOAMData
 
-SetupEnemyPartyPokeballs: ; 3a921 (e:6921)
+SetupEnemyPartyPokeballs:
 	call PlaceEnemyHUDTiles
 	ld hl, wEnemyMons
 	ld de, wEnemyPartyCount
@@ -48,7 +48,7 @@ SetupEnemyPartyPokeballs: ; 3a921 (e:6921)
 	ld hl, wOAMBuffer + PARTY_LENGTH * 4
 	jp WritePokeballOAMData
 
-SetupPokeballs: ; 3a945 (e:6945)
+SetupPokeballs:
 	ld a, [de]
 	push af
 	ld de, wBuffer
@@ -70,7 +70,7 @@ SetupPokeballs: ; 3a945 (e:6945)
 	jr nz, .monloop
 	ret
 
-PickPokeball: ; 3a961 (e:6961)
+PickPokeball:
 	inc hl
 	ld a, [hli]
 	and a
@@ -98,7 +98,7 @@ PickPokeball: ; 3a961 (e:6961)
 	add hl, bc ; next mon struct
 	ret
 
-WritePokeballOAMData: ; 3a980 (e:6980)
+WritePokeballOAMData:
 	ld de, wBuffer
 	ld c, PARTY_LENGTH
 .loop
@@ -120,7 +120,7 @@ WritePokeballOAMData: ; 3a980 (e:6980)
 	jr nz, .loop
 	ret
 
-PlacePlayerHUDTiles: ; 3a9a3 (e:69a3)
+PlacePlayerHUDTiles:
 	ld hl, PlayerBattleHUDGraphicsTiles
 	ld de, wHUDGraphicsTiles
 	ld bc, $3
@@ -129,13 +129,13 @@ PlacePlayerHUDTiles: ; 3a9a3 (e:69a3)
 	ld de, -1
 	jr PlaceHUDTiles
 
-PlayerBattleHUDGraphicsTiles: ; 3a9b7 (e:69b7)
+PlayerBattleHUDGraphicsTiles:
 ; The tile numbers for specific parts of the battle display for the player's pokemon
 	db $73 ; unused ($73 is hardcoded into the routine that uses these bytes)
 	db $77 ; lower-right corner tile of the HUD
 	db $6F ; lower-left triangle tile of the HUD
 
-PlaceEnemyHUDTiles: ; 3a9ba (e:69ba)
+PlaceEnemyHUDTiles:
 	ld hl, EnemyBattleHUDGraphicsTiles
 	ld de, wHUDGraphicsTiles
 	ld bc, $3
@@ -144,13 +144,13 @@ PlaceEnemyHUDTiles: ; 3a9ba (e:69ba)
 	ld de, $1
 	jr PlaceHUDTiles
 
-EnemyBattleHUDGraphicsTiles: ; 3a9ce (e:69ce)
+EnemyBattleHUDGraphicsTiles:
 ; The tile numbers for specific parts of the battle display for the enemy
 	db $73 ; unused ($73 is hardcoded in the routine that uses these bytes)
 	db $74 ; lower-left corner tile of the HUD
 	db $78 ; lower-right triangle tile of the HUD
 
-PlaceHUDTiles: ; 3a9d1 (e:69d1)
+PlaceHUDTiles:
 	ld [hl], $73
 	ld bc, SCREEN_WIDTH
 	add hl, bc
@@ -167,7 +167,7 @@ PlaceHUDTiles: ; 3a9d1 (e:69d1)
 	ld [hl], a
 	ret
 
-SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
+SetupPlayerAndEnemyPokeballs:
 	call LoadPartyPokeballGfx
 	ld hl, wPartyMons
 	ld de, wPartyCount
@@ -195,6 +195,6 @@ SetupPlayerAndEnemyPokeballs: ; 3a9e9 (e:69e9)
 	jp WritePokeballOAMData
 
 ; four tiles: pokeball, black pokeball (status ailment), crossed out pokeball (faited) and pokeball slot (no mon)
-PokeballTileGraphics:: ; 3aa28 (e:6a28)
+PokeballTileGraphics::
 	INCBIN "gfx/pokeball.2bpp"
 PokeballTileGraphicsEnd:

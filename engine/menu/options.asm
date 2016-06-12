@@ -1,4 +1,4 @@
-DisplayOptionMenu_: ; 41c70 (10:5c70)
+DisplayOptionMenu_:
 	call Func_41f06
 .optionMenuLoop
 	call JoypadLowSensitivity
@@ -18,7 +18,7 @@ DisplayOptionMenu_: ; 41c70 (10:5c70)
 .exitOptionMenu
 	ret
 
-Func_41c95: ; 41c95 (10:5c95)
+Func_41c95:
 	ld a, [wOptionsCursorLocation]
 	ld e, a
 	ld d, $0
@@ -30,7 +30,7 @@ Func_41c95: ; 41c95 (10:5c95)
 	ld l, a
 	jp hl
 
-OptionMenuJumpTable: ; 41ca4 (10:5ca4)
+OptionMenuJumpTable:
 	dw OptionsMenu_TextSpeed
 	dw OptionsMenu_BattleAnimations
 	dw OptionsMenu_BattleStyle
@@ -40,7 +40,7 @@ OptionMenuJumpTable: ; 41ca4 (10:5ca4)
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
 
-OptionsMenu_TextSpeed: ; 41cb4 (10:5cb4)
+OptionsMenu_TextSpeed:
 	call Func_41d07
 	ld a, [hJoy5]
 	bit 4, a ; right
@@ -84,19 +84,19 @@ OptionsMenu_TextSpeed: ; 41cb4 (10:5cb4)
 	and a
 	ret
 
-TextSpeedStringsPointerTable: ; 41cf2 (10:5cf2)
+TextSpeedStringsPointerTable:
 	dw FastText
 	dw MidText
 	dw SlowText
 
-FastText: ; 41cf9 (10:5cf9)
+FastText:
 	db "FAST@"
-MidText: ; 41cfd (10:5cfd)
+MidText:
 	db "MID @"
-SlowText: ; 41d02 (10:5d02)
+SlowText:
 	db "SLOW@"
 
-Func_41d07: ; 41d07 (10:5d07)
+Func_41d07:
 	ld a, [wOptions]
 	and $f
 	cp $5
@@ -116,7 +116,7 @@ Func_41d07: ; 41d07 (10:5d07)
 	lb de, 5, 3
 	ret
 
-OptionsMenu_BattleAnimations: ; 41d26 (10:5d26)
+OptionsMenu_BattleAnimations:
 	ld a, [hJoy5]
 	and D_RIGHT | D_LEFT
 	jr nz, .asm_41d33
@@ -142,16 +142,16 @@ OptionsMenu_BattleAnimations: ; 41d26 (10:5d26)
 	and a
 	ret
 
-AnimationOptionStringsPointerTable: ; 41d52 (10:5d52)
+AnimationOptionStringsPointerTable:
 	dw AnimationOnText
 	dw AnimationOffText
 
-AnimationOnText: ; 41d56 (10:5d56)
+AnimationOnText:
 	db "ON @"
-AnimationOffText: ; 41d5a (10:5d5a)
+AnimationOffText:
 	db "OFF@"
 
-OptionsMenu_BattleStyle: ; 41d5e (10:5d5e)
+OptionsMenu_BattleStyle:
 	ld a, [hJoy5]
 	and D_LEFT | D_RIGHT
 	jr nz, .asm_41d6b
@@ -178,16 +178,16 @@ OptionsMenu_BattleStyle: ; 41d5e (10:5d5e)
 	and a
 	ret
 
-BattleStyleOptionStringsPointerTable: ; 41d8c (10:5d8c)
+BattleStyleOptionStringsPointerTable:
 	dw BattleStyleShiftText
 	dw BattleStyleSetText
 
-BattleStyleShiftText: ; 41d90 (10:5d90)
+BattleStyleShiftText:
 	db "SHIFT@"
-BattleStyleSetText: ; 41d96 (10:5d96)
+BattleStyleSetText:
 	db "SET  @"
 
-OptionsMenu_SpeakerSettings: ; 41d9c (10:5d9c)
+OptionsMenu_SpeakerSettings:
 	ld a, [wOptions]
 	and $30
 	swap a
@@ -230,22 +230,22 @@ OptionsMenu_SpeakerSettings: ; 41d9c (10:5d9c)
 	and a
 	ret
 
-SpeakerOptionStringsPointerTable: ; 41ddc (10:5ddc)
+SpeakerOptionStringsPointerTable:
 	dw MonoSoundText
 	dw Earphone1SoundText
 	dw Earphone2SoundText
 	dw Earphone3SoundText
 
-MonoSoundText: ; 41de4 (10:5de4)
+MonoSoundText:
 	db "MONO     @"
-Earphone1SoundText: ; 41dee (10:5dee)
+Earphone1SoundText:
 	db "EARPHONE1@"
-Earphone2SoundText: ; 41df8 (10:5df8)
+Earphone2SoundText:
 	db "EARPHONE2@"
-Earphone3SoundText: ; 41e02 (10:5e02)
+Earphone3SoundText:
 	db "EARPHONE3@"
 
-OptionsMenu_GBPrinterBrightness: ; 41e0c (10:5e0c)
+OptionsMenu_GBPrinterBrightness:
 	call Func_41e7b
 	ld a, [hJoy5]
 	bit 4, a
@@ -286,25 +286,25 @@ OptionsMenu_GBPrinterBrightness: ; 41e0c (10:5e0c)
 	and a
 	ret
 
-GBPrinterOptionStringsPointerTable: ; 41e44 (10:5e44)
+GBPrinterOptionStringsPointerTable:
 	dw LightestPrintText
 	dw LighterPrintText
 	dw NormalPrintText
 	dw DarkerPrintText
 	dw DarkestPrintText
 
-LightestPrintText: ; 41e4e (10:5e4e)
+LightestPrintText:
 	db "LIGHTEST@"
-LighterPrintText: ; 41e57 (10:5e57)
+LighterPrintText:
 	db "LIGHTER @"
-NormalPrintText: ; 41e60 (10:5e60)
+NormalPrintText:
 	db "NORMAL  @"
-DarkerPrintText: ; 41e69 (10:5e69)
+DarkerPrintText:
 	db "DARKER  @"
-DarkestPrintText: ; 41e72 (10:5e72)
+DarkestPrintText:
 	db "DARKEST @"
 
-Func_41e7b: ; 41e7b (10:5e7b)
+Func_41e7b:
 	ld a, [wPrinterSettings]
 	and a
 	jr z, .asm_41e93
@@ -334,11 +334,11 @@ Func_41e7b: ; 41e7b (10:5e7b)
 	lb de, $60, $0
 	ret
 
-OptionsMenu_Dummy: ; 41eab (10:5eab)
+OptionsMenu_Dummy:
 	and a
 	ret
 
-OptionsMenu_Cancel: ; 41ead (10:5ead)
+OptionsMenu_Cancel:
 	ld a, [hJoy5]
 	and A_BUTTON
 	jr nz, .pressedCancel
@@ -348,7 +348,7 @@ OptionsMenu_Cancel: ; 41ead (10:5ead)
 	scf
 	ret
 
-Func_41eb7: ; 41eb7 (10:5eb7)
+Func_41eb7:
 	ld hl, wOptionsCursorLocation
 	ld a, [hJoy5]
 	cp D_DOWN
@@ -388,7 +388,7 @@ Func_41eb7: ; 41eb7 (10:5eb7)
 	scf
 	ret
 
-Func_41ee9: ; 41ee9 (10:5ee9)
+Func_41ee9:
 	coord hl, 1, 1
 	ld de, SCREEN_WIDTH
 	ld c, 16
@@ -404,7 +404,7 @@ Func_41ee9: ; 41ee9 (10:5ee9)
 	ld [hl], "▶"
 	ret
 
-Func_41f06: ; 41f06 (10:5f06)
+Func_41f06:
 	coord hl, 0, 0
 	lb bc, SCREEN_HEIGHT - 2, SCREEN_WIDTH - 2
 	call TextBoxBorder
@@ -432,12 +432,12 @@ Func_41f06: ; 41f06 (10:5f06)
 	call Delay3
 	ret
 
-AllOptionsText: ; 41f3e (10:5f3e)
+AllOptionsText:
 	db "TEXT SPEED :"
 	next "ANIMATION  :"
 	next "BATTLESTYLE:"
 	next "SOUND:"
 	next "PRINT:@"
 
-OptionMenuCancelText: ; 41f73 (10:5f73)
+OptionMenuCancelText:
 	db "CANCEL@"

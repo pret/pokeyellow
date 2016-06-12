@@ -1,4 +1,4 @@
-MonPartyData: ; 719ba (1c:59ba)
+MonPartyData:
 ; MON = 0
 ; BALL_M = 1
 ; HELIX = 2

@@ -1,4 +1,4 @@
-UsedCut: ; edd1 (3:6dd1)
+UsedCut:
 	xor a
 	ld [wActionResultOrTookBattleTurn], a ; initialise to failure value
 	ld a, [wCurMapTileset]
@@ -67,11 +67,11 @@ UsedCut: ; edd1 (3:6dd1)
 	call UpdateSprites
 	jp RedrawMapView
 
-UsedCutText: ; ee6f (3:6e6f)
+UsedCutText:
 	TX_FAR _UsedCutText
 	db "@"
 
-InitCutAnimOAM: ; ee74 (3:6e74)
+InitCutAnimOAM:
 	xor a
 	ld [wWhichAnimationOffsets], a
 	ld a, %11100100
@@ -112,22 +112,22 @@ InitCutAnimOAM: ; ee74 (3:6e74)
 	jr nz, .loop
 	ret
 
-LoadCutGrassAnimationTilePattern: ; eecc (3:6ecc)
+LoadCutGrassAnimationTilePattern:
 	ld de, AnimationTileset2 + $60 ; tile depicting a leaf
 	lb bc, BANK(AnimationTileset2), $01
 	jp CopyVideoData
 
-WriteCutOrBoulderDustAnimationOAMBlock: ; eed5 (3:6ed5)
+WriteCutOrBoulderDustAnimationOAMBlock:
 	call GetCutOrBoulderDustAnimationOffsets
 	ld a, $9
 	ld de, CutOrBoulderDustAnimationTilesAndAttributes
 	jp WriteOAMBlock
 
-CutOrBoulderDustAnimationTilesAndAttributes: ; eee0 (3:6ee0)
+CutOrBoulderDustAnimationTilesAndAttributes:
 	db $FC,$14,$FD,$14
 	db $FE,$14,$FF,$14
 
-GetCutOrBoulderDustAnimationOffsets: ; eee8 (3:6ee8)
+GetCutOrBoulderDustAnimationOffsets:
 	ld hl, wSpriteStateData1 + 4
 	ld a, [hli] ; player's sprite screen Y position
 	ld b, a
@@ -158,14 +158,14 @@ GetCutOrBoulderDustAnimationOffsets: ; eee8 (3:6ee8)
 	ld c, a
 	ret
 
-CutAnimationOffsets: ; ef0f (3:6f0f)
+CutAnimationOffsets:
 ; Each pair represents the x and y pixels offsets from the player of where the cut tree animation should be drawn
 	db  8, 36 ; player is facing down
 	db  8,  4 ; player is facing up
 	db -8, 20 ; player is facing left
 	db 24, 20 ; player is facing right
 
-BoulderDustAnimationOffsets: ; ef17 (3:6f17)
+BoulderDustAnimationOffsets:
 ; Each pair represents the x and y pixels offsets from the player of where the cut tree animation should be drawn
 ; These offsets represent 2 blocks away from the player
 	db  8,  52 ; player is facing down
@@ -173,7 +173,7 @@ BoulderDustAnimationOffsets: ; ef17 (3:6f17)
 	db -24, 20 ; player is facing left
 	db 40,  20 ; player is facing right
 
-ReplaceTreeTileBlock: ; ef1f (3:6f1f)
+ReplaceTreeTileBlock:
 ; Determine the address of the tile block that contains the tile in front of the
 ; player (i.e. where the tree is) and replace it with the corresponding tile
 ; block that doesn't have the tree.
@@ -249,7 +249,7 @@ ReplaceTreeTileBlock: ; ef1f (3:6f1f)
 	ld [hl], a
 	ret
 
-CutTreeBlockSwaps: ; ef80 (3:6f80)
+CutTreeBlockSwaps:
 ; first byte = tileset block containing the cut tree
 ; second byte = corresponding tileset block after the cut animation happens
 	db $32, $6D

@@ -1,4 +1,4 @@
-_ScrollTrainerPicAfterBattle: ; f4259 (3d:4259)
+_ScrollTrainerPicAfterBattle:
 ; Load the enemy trainer's pic and scrolls it into
 ; the screen from the right.
 	xor a
@@ -32,7 +32,7 @@ _ScrollTrainerPicAfterBattle: ; f4259 (3d:4259)
 	jr .scrollLoop
 
 ; write one 7-tile column of the trainer pic to the tilemap
-DrawTrainerPicColumn: ; f428d (3d:428d)
+DrawTrainerPicColumn:
 	push hl
 	push de
 	push bc

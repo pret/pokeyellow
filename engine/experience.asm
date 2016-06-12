@@ -1,5 +1,5 @@
 ; calculates the level a mon should be based on its current exp
-CalcLevelFromExperience: ; 58d99 (16:4d99)
+CalcLevelFromExperience:
 	ld a, [wLoadedMonSpecies]
 	ld [wd0b5], a
 	call GetMonHeader
@@ -28,7 +28,7 @@ CalcLevelFromExperience: ; 58d99 (16:4d99)
 	ret
 
 ; calculates the amount of experience needed for level d
-CalcExperience: ; 58dc0 (16:4dc0)
+CalcExperience:
 	ld a, [wMonHGrowthRate]
 	add a
 	add a
@@ -137,7 +137,7 @@ CalcExperience: ; 58dc0 (16:4dc0)
 	ret
 
 ; calculates d*d
-CalcDSquared: ; 58e66 (16:4e66)
+CalcDSquared:
 	xor a
 	ld [H_MULTIPLICAND], a
 	ld [H_MULTIPLICAND + 1], a
@@ -151,7 +151,7 @@ CalcDSquared: ; 58e66 (16:4e66)
 ; resulting in
 ;  (a*n^3)/b + sign*c*n^2 + d*n - e
 ; where sign = -1 <=> S=1
-GrowthRateTable: ; 58e73 (16:4e73)
+GrowthRateTable:
 	db $11,$00,$00,$00 ; medium fast      n^3
 	db $34,$0A,$00,$1E ; (unused?)    3/4 n^3 + 10 n^2         - 30
 	db $34,$14,$00,$46 ; (unused?)    3/4 n^3 + 20 n^2         - 70

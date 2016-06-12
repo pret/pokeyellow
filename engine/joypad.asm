@@ -1,4 +1,4 @@
-ReadJoypad_:: ; c000 (3:4000)
+ReadJoypad_::
 ; Poll joypad input.
 ; Unlike the hardware register, button
 ; presses are indicated by a set bit.
@@ -33,7 +33,7 @@ ReadJoypad_:: ; c000 (3:4000)
 	ret
 
 
-_Joypad:: ; c02d (3:402d)
+_Joypad::
 ; hJoyReleased: (hJoyLast ^ hJoyInput) & hJoyLast
 ; hJoyPressed:  (hJoyLast ^ hJoyInput) & hJoyInput
 

@@ -693,7 +693,7 @@ FossilKabutopsPic:   INCBIN "pic/ymon/fossilkabutops.pic"
 INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
 
-Func_2fd6a: ; 2fd6a (b:7d6a)
+Func_2fd6a:
 	callab IsThisPartymonStarterPikachu_Party
 	ret nc
 	ld a, $3

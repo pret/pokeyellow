@@ -1,14 +1,14 @@
-InitBattle: ; f5ff2 (3d:5ff2)
+InitBattle:
 	ld a, [wCurOpponent]
 	and a
 	jr z, asm_f6003
 
-InitOpponent: ; f5ff8 (3d:5ff8)
+InitOpponent:
 	ld a, [wCurOpponent]
 	ld [wcf91], a
 	ld [wEnemyMonSpecies2], a
 	jr asm_f601d
-asm_f6003: ; f6003 (3d:6003)
+asm_f6003:
 	ld a, [wd732]
 	bit 1, a
 	jr z, .asm_f600f
@@ -21,7 +21,7 @@ asm_f6003: ; f6003 (3d:6003)
 	ret nz
 	callab TryDoWildEncounter
 	ret nz
-asm_f601d: ; f601d (f:601d)
+asm_f601d:
 	ld a, [wMapPalOffset]
 	push af
 	ld hl, wLetterPrintingDelayFlags
@@ -56,7 +56,7 @@ asm_f601d: ; f601d (f:601d)
 	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
 	jp InitBattle_Common
 
-InitWildBattle: ; f607c (3d:607c)
+InitWildBattle:
 	ld a, $1
 	ld [wIsInBattle], a
 	callab LoadEnemyMonData
@@ -106,7 +106,7 @@ InitWildBattle: ; f607c (3d:607c)
 	predef CopyUncompressedPicToTilemap
 
 ; common code that executes after init battle code specific to trainer or wild battles
-InitBattle_Common: ; f60eb (3d:60eb)
+InitBattle_Common:
 	ld b, $0
 	call RunPaletteCommand
 	callab SlidePlayerAndEnemySilhouettesOnScreen
@@ -149,7 +149,7 @@ InitBattle_Common: ; f60eb (3d:60eb)
 .emptyString
 	db "@"
 
-_LoadTrainerPic: ; f615a (3d:615a)
+_LoadTrainerPic:
 ; wd033-wd034 contain pointer to pic
 	ld a, [wTrainerPicPointer] ; wd033
 	ld e, a
@@ -167,7 +167,7 @@ _LoadTrainerPic: ; f615a (3d:615a)
 	ld c, a
 	jp LoadUncompressedSpriteData
 
-LoadMonBackPic: ; f6178 (3d:6178)
+LoadMonBackPic:
 ; Assumes the monster's attributes have
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
@@ -187,7 +187,7 @@ LoadMonBackPic: ; f6178 (3d:6178)
 	ld b, a
 	jp CopyVideoData
 
-AnimateSendingOutMon: ; f61a6 (3d:f61a6)
+AnimateSendingOutMon:
 	ld a, [wPredefRegisters]
 	ld h, a
 	ld a, [wPredefRegisters + 1]
@@ -227,13 +227,13 @@ AnimateSendingOutMon: ; f61a6 (3d:f61a6)
 	add $31
 	jr CopyUncompressedPicToHL
 
-CopyUncompressedPicToTilemap: ; f61f9 (3d:61f9)
+CopyUncompressedPicToTilemap:
 	ld a, [wPredefRegisters]
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
 	ld a, [$ffe1]
-CopyUncompressedPicToHL: ; f6203 (3d:6203)
+CopyUncompressedPicToHL:
 	ld bc, $707
 	ld de, $14
 	push af

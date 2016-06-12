@@ -1,4 +1,4 @@
-UpdatePlayerSprite: ; 4da5 (1:4da5)
+UpdatePlayerSprite:
 	ld a, [wSpriteStateData2]
 	and a
 	jr z, .checkIfTextBoxInFrontOfSprite
@@ -86,7 +86,7 @@ UpdatePlayerSprite: ; 4da5 (1:4da5)
 	ld [wSpriteStateData2 + $07], a
 	ret
 
-Func_4e32: ; 4e32 (1:4e32)
+Func_4e32:
 	ld a, [wSpriteStateData1 + 8]
 	ld b, a
 	ld a, [wPlayerFacingDirection]
@@ -94,7 +94,7 @@ Func_4e32: ; 4e32 (1:4e32)
 	ld [wSpriteStateData1 + 2], a
 	ret
 
-UpdateNPCSprite: ; 4e3e (1:4e3e)
+UpdateNPCSprite:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	swap a
 	dec a
@@ -242,7 +242,7 @@ UpdateNPCSprite: ; 4e3e (1:4e3e)
 	jr TryWalking
 
 ; changes facing direction by zeroing the movement delta and calling TryWalking
-ChangeFacingDirection: ; 4f43 (1:4f43)
+ChangeFacingDirection:
 	ld de, $0
 	; fall through
 
@@ -252,7 +252,7 @@ ChangeFacingDirection: ; 4f43 (1:4f43)
 ; e: X movement delta (-1, 0 or 1)
 ; hl: pointer to tile the sprite would walk onto
 ; set carry on failure, clears carry on success
-TryWalking: ; 4f46 (1:4f46)
+TryWalking:
 	push hl
 	call Func_5337
 	pop hl
@@ -271,7 +271,7 @@ TryWalking: ; 4f46 (1:4f46)
 	jp UpdateSpriteImage
 
 ; update the walking animation parameters for a sprite that is currently walking
-UpdateSpriteInWalkingAnimation: ; 4f61 (1:4f61)
+UpdateSpriteInWalkingAnimation:
 	call Func_5274
 .noNextAnimationFrame
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -330,7 +330,7 @@ UpdateSpriteInWalkingAnimation: ; 4f61 (1:4f61)
 	ret
 
 ; update delay value (c2x8) for sprites in the delayed state (c1x1)
-UpdateSpriteMovementDelay: ; 4fa9 (1:4fa9)
+UpdateSpriteMovementDelay:
 	ld h, $c2
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $6
@@ -351,7 +351,7 @@ UpdateSpriteMovementDelay: ; 4fa9 (1:4fa9)
 	inc a
 	ld l, a
 	ld [hl], $1             ; c1x1 = 1 (mark as ready to move)
-notYetMoving: ; 4fc5 (1:4fc5)
+notYetMoving:
 	ld h, wSpriteStateData1 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $8
@@ -359,7 +359,7 @@ notYetMoving: ; 4fc5 (1:4fc5)
 	ld [hl], $0             ; c1x8 = 0 (walk animation frame)
 	jp UpdateSpriteImage
 
-MakeNPCFacePlayer: ; 507f (1:507f)
+MakeNPCFacePlayer:
 ; Make an NPC face the player if the player has spoken to him or her.
 
 ; Check if the behaviour of the NPC facing the player when spoken to is
@@ -392,7 +392,7 @@ MakeNPCFacePlayer: ; 507f (1:507f)
 	ld [hl], c              ; c1x9: set facing direction
 	jr notYetMoving
 
-InitializeSpriteStatus: ; 4fff (1:4fff)
+InitializeSpriteStatus:
 	ld [hl], $1   ; $c1x1: set movement status to ready
 	inc l
 	ld [hl], $ff  ; $c1x2: set sprite image to $ff (invisible/off screen)
@@ -407,7 +407,7 @@ InitializeSpriteStatus: ; 4fff (1:4fff)
 	ret
 
 ; calculates the spprite's scrren position form its map position and the player position
-InitializeSpriteScreenPosition: ; 5012 (1:5012)
+InitializeSpriteScreenPosition:
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $4
@@ -430,7 +430,7 @@ InitializeSpriteScreenPosition: ; 5012 (1:5012)
 	ld [hl], a      ; c1x6 (screen X position)
 	ret
 
-Func_5033: ; 5033 (1:5033)
+Func_5033:
 	jr nc, .asm_503c
 	cpl
 	inc a
@@ -443,7 +443,7 @@ Func_5033: ; 5033 (1:5033)
 	ret
 
 ; tests if sprite is off screen or otherwise unable to do anything
-CheckSpriteAvailability: ; 503f (1:503f)
+CheckSpriteAvailability:
 	predef IsObjectHidden
 	ld a, [$ffe5]
 	and a
@@ -524,7 +524,7 @@ CheckSpriteAvailability: ; 503f (1:503f)
 .done
 	ret
 
-UpdateSpriteImage: ; 50ba (1:50ba)
+UpdateSpriteImage:
 	ld h, $c1
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $8
@@ -549,7 +549,7 @@ UpdateSpriteImage: ; 50ba (1:50ba)
 ; d: Y movement delta (-1, 0 or 1)
 ; e: X movement delta (-1, 0 or 1)
 ; set carry on failure, clears carry on success
-CanWalkOntoTile: ; 50d1 (1:50d1)
+CanWalkOntoTile:
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $6
@@ -658,7 +658,7 @@ CanWalkOntoTile: ; 50d1 (1:50d1)
 ; calculates the tile pointer pointing to the tile the current sprite stancs on
 ; this is always the lower left tile of the 2x2 tile blocks all sprites are snapped to
 ; hl: output pointer
-GetTileSpriteStandsOn: ; 516a (1:516a)
+GetTileSpriteStandsOn:
 	ld h, wSpriteStateData1 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $4
@@ -687,7 +687,7 @@ GetTileSpriteStandsOn: ; 516a (1:516a)
 	ret
 
 ; loads [de+a] into a
-LoadDEPlusA: ; 5192 (1:5192)
+LoadDEPlusA:
 	add e
 	ld e, a
 	jr nc, .noCarry
@@ -696,7 +696,7 @@ LoadDEPlusA: ; 5192 (1:5192)
 	ld a, [de]
 	ret
 
-DoScriptedNPCMovement: ; 5199 (1:5199)
+DoScriptedNPCMovement:
 ; This is an alternative method of scripting an NPC's movement and is only used
 ; a few times in the game. It is used when the NPC and player must walk together
 ; in sync, such as when the player is following the NPC somewhere. An NPC can't
@@ -767,23 +767,23 @@ DoScriptedNPCMovement: ; 5199 (1:5199)
 	inc [hl]
 	ret
 
-InitScriptedNPCMovement: ; 5209 (1:5209)
+InitScriptedNPCMovement:
 	xor a
 	ld [wNPCMovementDirections2Index], a
 	ld a, 8
 	ld [wScriptedNPCWalkCounter], a
 	jp AnimScriptedNPCMovement
 
-GetSpriteScreenYPointer: ; 5215 (1:5215)
+GetSpriteScreenYPointer:
 	ld a, $4
 	ld b, a
 	jr GetSpriteScreenXYPointerCommon
 
-GetSpriteScreenXPointer: ; 521a (1:521a)
+GetSpriteScreenXPointer:
 	ld a, $6
 	ld b, a
 
-GetSpriteScreenXYPointerCommon: ; 521d (1:521d)
+GetSpriteScreenXYPointerCommon:
 	ld hl, wSpriteStateData1
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add l
@@ -791,7 +791,7 @@ GetSpriteScreenXYPointerCommon: ; 521d (1:521d)
 	ld l, a
 	ret
 
-AnimScriptedNPCMovement: ; 5226 (1:5226)
+AnimScriptedNPCMovement:
 	ld hl, wSpriteStateData2
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $e
@@ -830,7 +830,7 @@ AnimScriptedNPCMovement: ; 5226 (1:5226)
 	ld [hl], a
 	ret
 
-AdvanceScriptedNPCAnimFrameCounter: ; 5264 (1:5264)
+AdvanceScriptedNPCAnimFrameCounter:
 	call Func_5274
 	ld h, wSpriteStateData1 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
@@ -841,7 +841,7 @@ AdvanceScriptedNPCAnimFrameCounter: ; 5264 (1:5264)
 	ld [hSpriteAnimFrameCounter], a
 	ret
 
-Func_5274: ; 5274 (1:5274)
+Func_5274:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $7
 	ld l, a
@@ -858,7 +858,7 @@ Func_5274: ; 5274 (1:5274)
 	ld [hl], a                       ; advance to next animation frame every 4 ticks (16 ticks total for one step)
 	ret
 
-Func_5288: ; 5288 (1:5288)
+Func_5288:
 ; nice lookup table
 ; a is supposedly [wNPCMovementDirections + $fe]
 	cp $5
@@ -957,27 +957,27 @@ Func_5288: ; 5288 (1:5288)
 	scf
 	ret
 
-Func_531f: ; 531f (1:531f)
+Func_531f:
 	lb de, 1, 0
 	ld c, SPRITE_FACING_DOWN
 	ret
 
-Func_5325: ; 5325 (1:5325)
+Func_5325:
 	lb de, -1, 0
 	ld c, SPRITE_FACING_UP
 	ret
 
-Func_532b: ; 532b (1:532b)
+Func_532b:
 	lb de, 0, 1
 	ld c, SPRITE_FACING_RIGHT
 	ret
 
-Func_5331: ; 5331 (1:5331)
+Func_5331:
 	lb de, 0, -1
 	ld c, SPRITE_FACING_LEFT
 	ret
 
-Func_5337: ; 5337 (1:5337)
+Func_5337:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $9
 	ld l, a
@@ -992,7 +992,7 @@ Func_5337: ; 5337 (1:5337)
 	ld [hl], e          ; c1x5 (update X movement delta)
 	ret
 
-Func_5349: ; 5349 (1:5349)
+Func_5349:
 	ld h, wSpriteStateData2 / $100
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $4
@@ -1005,7 +1005,7 @@ Func_5349: ; 5349 (1:5349)
 	ld [hl], a          ; update X position
 	ret
 
-Func_5357: ; 5357 (1:5357)
+Func_5357:
 	call Func_5274
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $3

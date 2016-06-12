@@ -1,4 +1,4 @@
-InitPlayerData: ; f6d6 (3:76d6)
+InitPlayerData:
 InitPlayerData2:
 
 	call Random
@@ -52,7 +52,7 @@ START_MONEY EQU $3000
 
 	jp InitializeMissableObjectsFlags
 
-InitializeEmptyList: ; f730 (3:7730)
+InitializeEmptyList:
 	xor a ; count
 	ld [hli], a
 	dec a ; terminator

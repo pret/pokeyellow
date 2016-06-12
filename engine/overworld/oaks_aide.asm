@@ -1,4 +1,4 @@
-OaksAideScript: ; 58ecc (16:4ecc)
+OaksAideScript:
 	ld hl, OaksAideHiText
 	call PrintText
 	call YesNoChoice
@@ -45,27 +45,27 @@ OaksAideScript: ; 58ecc (16:4ecc)
 	ld [hOaksAideResult], a
 	ret
 
-OaksAideHiText: ; 58f28 (16:4f28)
+OaksAideHiText:
 	TX_FAR _OaksAideHiText
 	db "@"
 
-OaksAideUhOhText: ; 58f2d (16:4f2d)
+OaksAideUhOhText:
 	TX_FAR _OaksAideUhOhText
 	db "@"
 
-OaksAideComeBackText: ; 58f32 (16:4f32)
+OaksAideComeBackText:
 	TX_FAR _OaksAideComeBackText
 	db "@"
 
-OaksAideHereYouGoText: ; 58f37 (16:4f37)
+OaksAideHereYouGoText:
 	TX_FAR _OaksAideHereYouGoText
 	db "@"
 
-OaksAideGotItemText: ; 58f3c (16:4f3c)
+OaksAideGotItemText:
 	TX_FAR _OaksAideGotItemText
 	db $0b
 	db "@"
 
-OaksAideNoRoomText: ; 58f41 (16:4f41)
+OaksAideNoRoomText:
 	TX_FAR _OaksAideNoRoomText
 	db "@"

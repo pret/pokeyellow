@@ -1,4 +1,4 @@
-TradeMons: ; 71c1d (1c:5c1d)
+TradeMons:
 ; givemonster, getmonster, textstring, nickname (11 bytes), 14 bytes total
 	db LICKITUNG, DUGTRIO, 0,"GURIO@@@@@@"
 	db CLEFAIRY,  MR_MIME, 0,"MILES@@@@@@"

@@ -1,4 +1,4 @@
-SpecialWarpIn: ; 6042 (1:6042)
+SpecialWarpIn:
 	call LoadSpecialWarpData
 	predef LoadTilesetHeader
 	ld hl,wd732
@@ -29,7 +29,7 @@ SpecialWarpIn: ; 6042 (1:6042)
 	ret
 
 ; gets the map ID, tile block map view pointer, tileset, and coordinates
-LoadSpecialWarpData: ; 6073 (1:6073)
+LoadSpecialWarpData:
 	ld a, [wd72d]
 	cp TRADE_CENTER
 	jr nz, .notTradeCenter

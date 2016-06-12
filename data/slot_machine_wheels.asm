@@ -1,4 +1,4 @@
-SlotMachineWheel1: ; 37c15 (d:7c15)
+SlotMachineWheel1:
 	dw SLOTS7
 	dw SLOTSMOUSE
 	dw SLOTSFISH
@@ -18,7 +18,7 @@ SlotMachineWheel1: ; 37c15 (d:7c15)
 	dw SLOTSMOUSE
 	dw SLOTSFISH
 
-SlotMachineWheel2: ; 37c39 (d:7c39)
+SlotMachineWheel2:
 	dw SLOTS7
 	dw SLOTSFISH
 	dw SLOTSCHERRY
@@ -38,7 +38,7 @@ SlotMachineWheel2: ; 37c39 (d:7c39)
 	dw SLOTSFISH
 	dw SLOTSCHERRY
 
-SlotMachineWheel3: ; 37c5d (d:7c5d)
+SlotMachineWheel3:
 	dw SLOTS7
 	dw SLOTSBIRD
 	dw SLOTSFISH

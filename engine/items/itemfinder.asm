@@ -1,4 +1,4 @@
-HiddenItemNear: ; 7405c (1d:405c)
+HiddenItemNear:
 	ld hl, HiddenItemCoords
 	ld b, 0
 .loop
@@ -43,7 +43,7 @@ HiddenItemNear: ; 7405c (1d:405c)
 	scf
 	ret
 
-Sub5ClampTo0: ; 740a8 (1d:40a8)
+Sub5ClampTo0:
 ; subtract 5 but clamp to 0
 	sub 5
 	cp $f0

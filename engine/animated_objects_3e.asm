@@ -1,4 +1,4 @@
-ClearObjectAnimationBuffers: ; fbb5a (3e:7b5a)
+ClearObjectAnimationBuffers:
 	ld hl, wAnimatedObjectsData
 	ld bc, wAnimatedObjectsDataEnd - wAnimatedObjectsData
 	xor a

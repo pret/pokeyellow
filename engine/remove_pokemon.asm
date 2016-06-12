@@ -1,4 +1,4 @@
-_RemovePokemon: ; 7a0f (1:7a0f)
+_RemovePokemon:
 	ld hl, wPartyCount
 	ld a, [wRemoveMonFromBox]
 	and a

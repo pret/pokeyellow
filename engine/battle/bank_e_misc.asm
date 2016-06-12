@@ -1,5 +1,5 @@
 ; formats a string at wMovesString that lists the moves at wMoves
-FormatMovesString: ; 39b06 (e:5b06)
+FormatMovesString:
 	ld hl, wMoves
 	ld de, wMovesString
 	ld b, $0
@@ -52,7 +52,7 @@ FormatMovesString: ; 39b06 (e:5b06)
 	ret
 
 ; XXX this is called in a few places, but it doesn't appear to do anything useful
-InitList: ; 39b53 (e:5b53)
+InitList:
 	ld a, [wInitListType]
 	cp INIT_ENEMYOT_LIST
 	jr nz, .notEnemy

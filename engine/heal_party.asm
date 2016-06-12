@@ -1,4 +1,4 @@
-HealParty: ; f52b (3:752b)
+HealParty:
 ; Restore HP and PP.
 
 	ld hl, wPartySpecies

@@ -1,4 +1,4 @@
-GetTrainerName_: ; f67a5 (3d:67a5)
+GetTrainerName_:
 	ld hl, wGrassRate
 	ld a, [wLinkState]
 	and a
