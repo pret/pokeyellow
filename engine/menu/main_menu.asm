@@ -263,7 +263,7 @@ SaveScreenInfoText:
 	next "TIME@"
 
 DisplayOptionMenu:
-	callab DisplayOptionMenu_ ; 10:5c70
+	callab DisplayOptionMenu_
 	ret
 
 CheckForPlayerNameInSRAM:

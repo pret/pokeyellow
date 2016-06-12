@@ -640,7 +640,7 @@ PikaPicAnimCommand_loadgfx:
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-RequestPikaPicAnimGFX: ; fe114
+RequestPikaPicAnimGFX:
 	push de
 	ld a, [wPikaPicAnimCurGraphicID]
 	ld d, a
@@ -654,7 +654,7 @@ RequestPikaPicAnimGFX: ; fe114
 .failed
 	ret
 
-DecompressRequestPikaPicAnimGFX: ; fe128
+DecompressRequestPikaPicAnimGFX:
 	push de
 	ld a, [wPikaPicAnimCurGraphicID]
 	ld d, a

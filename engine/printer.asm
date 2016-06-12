@@ -323,12 +323,12 @@ PrintPCBox::
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-Func_e8df4: ; e8df4
+Func_e8df4:
 	ld hl, String_e8e1f
 	call PrintText
 	ret
 
-Func_e8dfb: ; e8dfb
+Func_e8dfb:
 	call Printer_ResetJoypadHRAM
 .asm_e8dfe
 	call JoypadLowSensitivity
@@ -351,11 +351,11 @@ Func_e8dfb: ; e8dfb
 	scf
 	ret
 
-String_e8e1f: ; e8e1f
+String_e8e1f:
 	TX_FAR _NoPokemonText
 	db "@"
 
-PrintFanClubPortrait: ; e8e24
+PrintFanClubPortrait:
 	xor a
 	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic

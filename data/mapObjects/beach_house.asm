@@ -1,4 +1,4 @@
-BeachHouseObjects: ; 0xf23a4
+BeachHouseObjects:
 	db $a ; border block
 
 	db 2 ; warps

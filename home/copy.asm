@@ -25,7 +25,7 @@ CopyData::
 	jr nz,.loop
 	ret
 
-.copybytes	; 00c1
+.copybytes
 	ld a, [hli]
 	ld [de], a
 	inc de

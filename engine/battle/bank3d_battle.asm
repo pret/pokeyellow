@@ -28,7 +28,7 @@ asm_f601d:
 	ld a, [hl]
 	push af
 	res 1, [hl]
-	call InitBattleVariables ; 3d:6236
+	call InitBattleVariables
 	ld a, [wEnemyMonSpecies2]
 	sub $c8
 	jp c, InitWildBattle
@@ -36,7 +36,7 @@ asm_f601d:
 	call GetTrainerInformation
 	callab ReadTrainer
 	callab DoBattleTransitionAndInitBattleVariables
-	call _LoadTrainerPic ; 3d:615a
+	call _LoadTrainerPic
 	xor a
 	ld [wEnemyMonSpecies2], a
 	ld [$ffe1], a
@@ -151,9 +151,9 @@ InitBattle_Common:
 
 _LoadTrainerPic:
 ; wd033-wd034 contain pointer to pic
-	ld a, [wTrainerPicPointer] ; wd033
+	ld a, [wTrainerPicPointer]
 	ld e, a
-	ld a, [wTrainerPicPointer + 1] ; wd034
+	ld a, [wTrainerPicPointer + 1]
 	ld d, a ; de contains pointer to trainer pic
 	ld a, [wLinkState]
 	and a

@@ -2,14 +2,14 @@ LoadShootingStarGraphics:
 	ld a, $f9
 	ld [rOBP0], a
 	ld a, $a4
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
-	ld de, AnimationTileset2 + $30 ; $4757 ; star tile (top left quadrant)
+	ld de, AnimationTileset2 + $30 ; star tile (top left quadrant)
 	ld hl, vChars1 + $200
 	lb bc, BANK(AnimationTileset2), $01
 	call CopyVideoData
-	ld de, AnimationTileset2 + $130 ; $481e ; star tile (bottom left quadrant)
+	ld de, AnimationTileset2 + $130 ; star tile (bottom left quadrant)
 	ld hl, vChars1 + $210
 	lb bc, BANK(AnimationTileset2), $01
 	call CopyVideoData
@@ -74,7 +74,7 @@ AnimateShootingStar:
 ; Make Gamefreak logo flash.
 	ld b, 3
 .flashLogoLoop
-	ld hl, rOBP0 ; $ff48
+	ld hl, rOBP0
 	rrc [hl]
 	rrc [hl]
 	call UpdateGBCPal_OBP0
@@ -89,7 +89,7 @@ AnimateShootingStar:
 	ld a, 24
 .initSmallStarsOAMLoop
 	push af
-	ld hl, SmallStarsOAM ; $40ee
+	ld hl, SmallStarsOAM
 	ld bc, SmallStarsOAMEnd - SmallStarsOAM
 	call CopyData
 	pop af
@@ -99,7 +99,7 @@ AnimateShootingStar:
 ; Animate the small stars falling from the Gamefreak logo.
 	xor a
 	ld [wMoveDownSmallStarsOAMCount], a ; wWhichTrade
-	ld hl, SmallStarsWaveCoordsPointerTable ; 1c:4105
+	ld hl, SmallStarsWaveCoordsPointerTable
 	ld c, 6
 .smallStarsLoop
 	ld a, [hli]
@@ -220,9 +220,9 @@ MoveDownSmallStars:
 	jr nz, .innerLoop
 ; Toggle the palette so that the lower star in the small stars tile blinks in
 ; and out.
-	ld a, [rOBP1] ; $ff49
+	ld a, [rOBP1]
 	xor %10100000
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP1
 	ld c, 3
 	call CheckForUserInterruption

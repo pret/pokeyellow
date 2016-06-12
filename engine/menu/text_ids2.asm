@@ -512,19 +512,19 @@ TwoOptionMenuStrings:
 	db 4,3,0
 	dw .NoYesMenu
 
-.NoYesMenu ; 7542 (1:7542)
+.NoYesMenu
 	db "NO",$4E,"YES@"
-.YesNoMenu ; 7549 (1:7549)
+.YesNoMenu
 	db "YES",$4E,"NO@"
-.NorthWestMenu ; 7550 (1:7550)
+.NorthWestMenu
 	db "NORTH",$4E,"WEST@"
-.SouthEastMenu ; 755b (1:755b)
+.SouthEastMenu
 	db "SOUTH",$4E,"EAST@"
-.NorthEastMenu ; 7566 (1:7566)
+.NorthEastMenu
 	db "NORTH",$4E,"EAST@"
-.TradeCancelMenu ; 7571 (1:7571)
+.TradeCancelMenu
 	db "TRADE",$4E,"CANCEL@"
-.HealCancelMenu ; 757e (1:757e)
+.HealCancelMenu
 	db "HEAL",$4E,"CANCEL@"
 
 DisplayFieldMoveMonMenu:

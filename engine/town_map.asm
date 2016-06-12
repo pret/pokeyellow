@@ -27,7 +27,7 @@ DisplayTownMap:
 	pop af
 	jr .enterLoop
 
-.townMapLoop ; 70ef4 (1c:4ef4)
+.townMapLoop
 	coord hl, 0, 0
 	lb bc, 1, 20
 	call ClearScreenArea
@@ -37,7 +37,7 @@ DisplayTownMap:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-.enterLoop ; 70f08 (1c:4f08)
+.enterLoop
 	ld de, wTownMapCoords
 	call LoadTownMapEntry
 	ld a, [de]
@@ -149,7 +149,7 @@ LoadTownMap_Fly:
 	ld [hJoy7], a
 	call LoadPlayerSpriteGraphics
 	call LoadFontTilePatterns
-	ld de, BirdSprite ; $4d80
+	ld de, BirdSprite
 	ld b, BANK(BirdSprite)
 	ld c, $c
 	ld hl, vSprites + $40
@@ -299,7 +299,7 @@ LoadTownMap:
 	ld bc, WorldMapTileGraphicsEnd - WorldMapTileGraphics
 	ld a, BANK(WorldMapTileGraphics)
 	call FarCopyData
-	ld hl, MonNestIcon ; $574b
+	ld hl, MonNestIcon
 	ld de, vSprites + $40
 	ld bc, MonNestIconEnd - MonNestIcon
 	ld a, BANK(MonNestIcon)
@@ -591,11 +591,6 @@ LoadTownMapEntry:
 	ld h, [hl]
 	ld l, a
 	ret
-
-; ExternalMapEntries:
-	; dr $7139c,$7140b
-; InternalMapEntries:
-	; dr $7140b,$7174b
 
 INCLUDE "data/town_map_entries.asm"
 

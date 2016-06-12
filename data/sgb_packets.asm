@@ -175,13 +175,13 @@ MaskEnCancelPacket:
 ; This set of packets is found in several Japanese SGB-compatible titles.
 ; It appears to be part of NCL's SGB devkit.
 
-DataSnd_728a1: DATA_SND $85d, $0, 11 ; 728a1 (1c:68a1)
+DataSnd_728a1: DATA_SND $85d, $0, 11
 	db  $8C                 ; cpx #$8c (2)
 	db  $D0, $F4            ; bne -$0c
 	db  $60                 ; rts
 	ds  7
 
-DataSnd_728b1: DATA_SND $852, $0, 11 ; 728b1 (1c:68b1)
+DataSnd_728b1: DATA_SND $852, $0, 11
 	db  $A9, $E7            ; lda #$e7
 	db  $9F, $01, $C0, $7E  ; sta $7ec001, x
 	db  $E8                 ; inx
@@ -209,7 +209,7 @@ DataSnd_728d1: DATA_SND $83c, $0, 11 ; 728d1 (1c:68d1)
 	db  $CA                 ; dex
 	db  $C9                 ; cmp #$c4 (1)
 
-DataSnd_728e1: DATA_SND $831, $0, 11 ; 728e1 (1c:68e1)
+DataSnd_728e1: DATA_SND $831, $0, 11
 	dbw $0C, $CAA5          ; tsb $caa5
 	db  $C9, $7E            ; cmp #$7e
 	db  $D0, $06            ; bne +$06
@@ -217,7 +217,7 @@ DataSnd_728e1: DATA_SND $831, $0, 11 ; 728e1 (1c:68e1)
 	db  $CB                 ; wai
 	db  $C9, $7E            ; cmp #$7e
 
-DataSnd_728f1: DATA_SND $826, $0, 11 ; 728f1 (1c:68f1)
+DataSnd_728f1: DATA_SND $826, $0, 11
 	db  $39                 ; bne +$39 (2)
 	dbw $CD, $C48           ; cmp $c48
 	db  $D0, $34            ; bne +$34
@@ -225,7 +225,7 @@ DataSnd_728f1: DATA_SND $826, $0, 11 ; 728f1 (1c:68f1)
 	db  $C9, $C9            ; cmp #$c9
 	db  $80, $D0            ; bra -$30
 
-DataSnd_72901: DATA_SND $81b, $0, 11 ; 72901 (1c:6901)
+DataSnd_72901: DATA_SND $81b, $0, 11
 	db  $EA                 ; nop
 	db  $EA                 ; nop
 	db  $EA                 ; nop
@@ -236,7 +236,7 @@ DataSnd_72901: DATA_SND $81b, $0, 11 ; 72901 (1c:6901)
 	dbw $CD,$C4F            ; cmp $c4f
 	db  $D0                 ; bne +$39 (1)
 
-DataSnd_72911: DATA_SND $810, $0, 11 ; 72911 (1c:6911)
+DataSnd_72911: DATA_SND $810, $0, 11
 	dbw $4C, $820           ; jmp $820
 	db  $EA                 ; nop
 	db  $EA                 ; nop

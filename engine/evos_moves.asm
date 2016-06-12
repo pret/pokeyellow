@@ -313,7 +313,7 @@ StoppedEvolvingText:
 	TX_FAR _StoppedEvolvingText
 	db "@"
 
-IsEvolvingText: ; 3affe (e:6ffes)
+IsEvolvingText:
 	TX_FAR _IsEvolvingText
 	db "@"
 

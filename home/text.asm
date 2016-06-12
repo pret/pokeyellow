@@ -70,7 +70,7 @@ Char4ETest::
 	pop hl
 	add hl, bc
 	push hl
-	jp PlaceNextChar_inc ; 17b6
+	jp PlaceNextChar_inc
 
 .next
 	cp $4F ; line
@@ -235,7 +235,7 @@ Char55::
 	ld b, h
 	ld c, l
 	ld hl, Char55Text
-	call TextCommandProcessor ; 1919
+	call TextCommandProcessor
 	ld h, b
 	ld l, c
 	pop de
@@ -244,7 +244,7 @@ Char55::
 
 Char55Text::
 ; equivalent to Char4B
-	TX_FAR _Char55Text ; a0c73 (28:4c73)
+	TX_FAR _Char55Text
 	db "@"
 
 Char5F::
@@ -253,18 +253,18 @@ Char5F::
 	pop hl
 	ret
 
-Char58:: ; 1863 (0:1863) prompt
+Char58:: ; prompt
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .next
 	ld a, $EE
 	Coorda 18, 16
-.next ; 1870 (0:1870)
-	call ProtectedDelay3 ; 1913
-	call ManualTextScroll ; 388e
+.next
+	call ProtectedDelay3
+	call ManualTextScroll
 	ld a, " " ; space
 	Coorda 18, 16
-Char57:: ; 1aad (0:1aad) done
+Char57:: ; done
 	pop hl
 	ld de, Char58Text
 	dec de
@@ -273,7 +273,7 @@ Char57:: ; 1aad (0:1aad) done
 Char58Text::
 	db "@"
 
-Char51:: ; 1882 (0:1882) para
+Char51:: ; para
 	push de
 	ld a, $EE
 	Coorda 18, 16
@@ -324,7 +324,7 @@ Char4B::
 	;fall through
 Char4C::
 	push de
-	call ScrollTextUpOneLine ; 18f1
+	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine
 	coord hl, 1, 16
 	pop de

@@ -160,22 +160,18 @@ Printer_GetMonStats:
 .place_string
 	call PlaceString
 	ret
-; ea52f
 
 .OT:
 	db "OT/@"
-; ea533
 
 .IDNo:
 	db $73, "№/@"
-; ea537
 
 .Stats:
 	db   "ATTACK"
 	next "DEFENSE"
 	next "SPEED"
 	next "SPECIAL@"
-; ea554
 
 .Blank:
 	db "--------------@"
@@ -957,21 +953,21 @@ PrinterDebug_PrepOAMForPrinting:
 	pop hl
 	ret
 
-Data_ea9de: ; ea9de
+Data_ea9de:
 	db  1, 0, $00, 0
 	dw 1
-Data_ea9e4: ; ea9e4
+Data_ea9e4:
 	db  2, 0, $04, 0
 	dw 0
-Data_ea9ea: ; ea9ea
+Data_ea9ea:
 	db  4, 0, $80, 2
 	dw 0
-Data_ea9f0: ; ea9f0
+Data_ea9f0:
 	db  4, 0, $00, 0
 	dw 4
-Data_ea9f6: ; ea9f6
+Data_ea9f6:
 	db  8, 0, $00, 0
 	dw 8
-Data_ea9fc: ; ea9fc
+Data_ea9fc:
 	db 15, 0, $00, 0
 	dw 15

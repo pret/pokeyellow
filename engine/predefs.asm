@@ -61,7 +61,7 @@ PredefPointers::
 	add_predef CopyDownscaledMonTiles
 	add_predef Func_f0a7
 	add_predef HealParty
-	add_predef MoveAnimation ; 08 play move animation (1e:4d97)
+	add_predef MoveAnimation ; 08 play move animation
 	add_predef DivideBCDPredef
 	add_predef DivideBCDPredef2
 	add_predef AddBCDPredef
@@ -116,7 +116,7 @@ PredefPointers::
 	add_predef InternalClockTradeAnim
 	add_predef TrainerEngage
 	add_predef IndexToPokedex
-	add_predef DisplayPicCenteredOrUpperRight ; 3B display pic? (01:600d)
+	add_predef DisplayPicCenteredOrUpperRight ; 3B display pic?
 	add_predef UsedCut
 	add_predef ShowPokedexData
 	add_predef WriteMonMoves
@@ -127,21 +127,21 @@ PredefPointers::
 	add_predef CanLearnTM
 	add_predef TMToMove
 	add_predef _RunPaletteCommand
-	add_predef StarterDex ; 46 (17:40d4)
+	add_predef StarterDex ; 46
 	add_predef _AddPartyMon
 	add_predef UpdateHPBar2
 	add_predef DrawEnemyHUDAndHPBar
 	add_predef LoadTownMap_Nest
 	add_predef PrintMonType
-	add_predef EmotionBubble ; 4C player exclamation (10:516f)
-	add_predef EmptyFunc3 ; return immediately (01:5b63)
+	add_predef EmotionBubble ; 4C player exclamation
+	add_predef EmptyFunc3 ; return immediately
 	add_predef AskName
 	add_predef PewterGuys
 	add_predef SaveSAVtoSRAM2
 	add_predef LoadSAV2
 	add_predef LoadSAV
 	add_predef SaveSAVtoSRAM1
-	add_predef DoInGameTradeDialogue ; 54 initiate trade (1c:5b86)
+	add_predef DoInGameTradeDialogue ; 54 initiate trade
 	add_predef HallOfFamePC
 	add_predef DisplayDexRating
 
@@ -156,7 +156,7 @@ PredefPointers::
 	add_predef PickUpItem
 	add_predef PrintMoveType
 	add_predef LoadMovePPs
-	add_predef DrawHP ; 5F (04:5468)
+	add_predef DrawHP
 	add_predef DrawHP2
 	add_predef DisplayElevatorFloorMenu
 	add_predef OaksAideScript

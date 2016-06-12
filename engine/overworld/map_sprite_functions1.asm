@@ -23,7 +23,7 @@ _UpdateSprites:
 	cp $e               ; test for overflow (back at $0e)
 	jr nz, .spriteLoop
 	ret
-.updateCurrentSprite ; 4bd7 (1:4bd7)
+.updateCurrentSprite
 	ld a, [H_CURRENTSPRITEOFFSET]
 	and a
 	jp z, UpdatePlayerSprite

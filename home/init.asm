@@ -49,7 +49,7 @@ rLCDC_DEFAULT EQU %11100011
 	or c
 	jr nz, .loop
 
-	call ClearVram ; 1dc6
+	call ClearVram
 
 	ld hl, $ff80
 	ld bc, $fffe - $ff80

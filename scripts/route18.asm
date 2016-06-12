@@ -110,4 +110,3 @@ Route18Text4:
 Route18Text5:
 	TX_FAR _Route18Text5
 	db "@"
-; 59b64

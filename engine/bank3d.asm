@@ -298,7 +298,6 @@ TitleScreenPikachuTilemap:
 	db $00, $b9, $ba, $8a, $8a, $8a, $8a, $8a, $8a, $bb, $bc, $00
 	db $00, $00, $bd, $8a, $8a, $8a, $8a, $8a, $8a, $be, $bf, $00
 
-; f46f9 (3d:46f9)
 PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
 PokemonLogoGraphicsEnd:
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
@@ -445,7 +444,7 @@ PrintStrengthTxt:
 	jp PrintText
 
 Text_f5b17:
-	TX_FAR _UsedStrengthText ; 2d:417e
+	TX_FAR _UsedStrengthText
 	TX_ASM
 	ld a, [wcf91]
 	call PlayCry
@@ -453,7 +452,7 @@ Text_f5b17:
 	jp TextScriptEnd
 
 Text_f5b28:
-	TX_FAR _CanMoveBouldersText ; 2d:4193
+	TX_FAR _CanMoveBouldersText
 	db "@"
 
 IsSurfingAllowed:
@@ -488,11 +487,11 @@ CoordsData_f5b64:
 	db $ff
 
 CurrentTooFastText:
-	TX_FAR _CurrentTooFastText ; 2d:41ab
+	TX_FAR _CurrentTooFastText
 	db "@"
 
 CyclingIsFunText:
-	TX_FAR _CyclingIsFunText ; 2d:41ca
+	TX_FAR _CyclingIsFunText
 	db "@"
 
 AddItemToInventory_:

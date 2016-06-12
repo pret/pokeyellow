@@ -253,7 +253,7 @@ PewterCityBlocks: INCBIN "maps/pewtercity.blk"
 
 INCLUDE "data/mapHeaders/ceruleancity.asm"
 INCLUDE "data/mapObjects/ceruleancity.asm"
-CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk" ; 18836
+CeruleanCityBlocks: INCBIN "maps/ceruleancity.blk"
 
 INCLUDE "data/mapHeaders/vermilioncity.asm"
 INCLUDE "data/mapObjects/vermilioncity.asm"
@@ -314,7 +314,7 @@ CinnabarIslandBlocks: INCBIN "maps/cinnabarisland.blk"
 
 INCLUDE "data/mapHeaders/route1.asm"
 INCLUDE "data/mapObjects/route1.asm"
-Route1Blocks: INCBIN "maps/route1.blk" ; 1c0fc
+Route1Blocks: INCBIN "maps/route1.blk"
 
 UndergroundPathEntranceRoute8Blocks: INCBIN "maps/undergroundpathentranceroute8.blk"
 OaksLabBlocks: INCBIN "maps/oakslab.blk"
@@ -430,22 +430,22 @@ INCLUDE "data/mapObjects/route2house.asm"
 INCLUDE "data/mapHeaders/route5gate.asm"
 INCLUDE "scripts/route5gate.asm"
 INCLUDE "data/mapObjects/route5gate.asm"
-Route5GateBlocks: INCBIN "maps/route5gate.blk" ; 1d92f
+Route5GateBlocks: INCBIN "maps/route5gate.blk"
 
 INCLUDE "data/mapHeaders/route6gate.asm"
 INCLUDE "scripts/route6gate.asm"
 INCLUDE "data/mapObjects/route6gate.asm"
-Route6GateBlocks: INCBIN "maps/route6gate.blk" ; 1d9f2
+Route6GateBlocks: INCBIN "maps/route6gate.blk"
 
 INCLUDE "data/mapHeaders/route7gate.asm"
 INCLUDE "scripts/route7gate.asm"
 INCLUDE "data/mapObjects/route7gate.asm"
-Route7GateBlocks: INCBIN "maps/route7gate.blk" ; 1dab9
+Route7GateBlocks: INCBIN "maps/route7gate.blk"
 
 INCLUDE "data/mapHeaders/route8gate.asm"
 INCLUDE "scripts/route8gate.asm"
 INCLUDE "data/mapObjects/route8gate.asm"
-Route8GateBlocks: INCBIN "maps/route8gate.blk" ; 1dab9
+Route8GateBlocks: INCBIN "maps/route8gate.blk"
 
 INCLUDE "data/mapHeaders/undergroundpathentranceroute8.asm"
 INCLUDE "scripts/undergroundpathentranceroute8.asm"
@@ -1015,7 +1015,7 @@ SECTION "bank12",ROMX,BANK[$12]
 
 INCLUDE "data/mapHeaders/route7.asm"
 INCLUDE "data/mapObjects/route7.asm"
-Route7Blocks: INCBIN "maps/route7.blk" ; 48051
+Route7Blocks: INCBIN "maps/route7.blk"
 MtMoonPokecenterBlocks:
 RockTunnelPokecenterBlocks:
 CeladonPokecenterBlocks: INCBIN "maps/mtmoonpokecenter.blk"
@@ -1236,14 +1236,10 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-; 4fe79 (13:7e79)
-
 INCLUDE "data/mapHeaders/tradecenter.asm"
 INCLUDE "scripts/tradecenter.asm"
 INCLUDE "data/mapObjects/tradecenter.asm"
 TradeCenterBlocks: INCBIN "maps/tradecenter.blk"
-
-; 4fee6 (13:7ee6)
 
 INCLUDE "data/mapHeaders/colosseum.asm"
 INCLUDE "scripts/colosseum.asm"
@@ -1266,21 +1262,21 @@ Route23Blocks: INCBIN "maps/route23.blk"
 
 INCLUDE "data/mapHeaders/route24.asm"
 INCLUDE "data/mapObjects/route24.asm"
-Route24Blocks: INCBIN "maps/route24.blk" ; 506ed (14:46ed)
+Route24Blocks: INCBIN "maps/route24.blk"
 
 INCLUDE "data/mapHeaders/route25.asm"
 INCLUDE "data/mapObjects/route25.asm"
-Route25Blocks: INCBIN "maps/route25.blk" ; 50816 (14:4816)
+Route25Blocks: INCBIN "maps/route25.blk"
 
 ; indigoplateau
 INCLUDE "data/mapHeaders/indigoplateau.asm"
 INCLUDE "scripts/indigoplateau.asm"
 INCLUDE "data/mapObjects/indigoplateau.asm"
-IndigoPlateauBlocks: INCBIN "maps/indigoplateau.blk" ; 50950 (14:4950)
+IndigoPlateauBlocks: INCBIN "maps/indigoplateau.blk"
 
 INCLUDE "data/mapHeaders/saffroncity.asm"
 INCLUDE "data/mapObjects/saffroncity.asm"
-SaffronCityBlocks: INCBIN "maps/saffroncity.blk" ; 50a98 (14:4a98)
+SaffronCityBlocks: INCBIN "maps/saffroncity.blk"
 INCLUDE "scripts/saffroncity.asm"
 INCLUDE "scripts/route20.asm"
 INCLUDE "scripts/route22.asm"
@@ -1329,23 +1325,23 @@ SECTION "bank15",ROMX,BANK[$15]
 
 INCLUDE "data/mapHeaders/route2.asm"
 INCLUDE "data/mapObjects/route2.asm"
-Route2Blocks: INCBIN "maps/route2.blk" ; 54086
+Route2Blocks: INCBIN "maps/route2.blk"
 
 INCLUDE "data/mapHeaders/route3.asm"
 INCLUDE "data/mapObjects/route3.asm"
-Route3Blocks: INCBIN "maps/route3.blk" ; 5425d
+Route3Blocks: INCBIN "maps/route3.blk"
 
 INCLUDE "data/mapHeaders/route4.asm"
 INCLUDE "data/mapObjects/route4.asm"
-Route4Blocks: INCBIN "maps/route4.blk" ; 543f4
+Route4Blocks: INCBIN "maps/route4.blk"
 
 INCLUDE "data/mapHeaders/route5.asm"
 INCLUDE "data/mapObjects/route5.asm"
-Route5Blocks: INCBIN "maps/route5.blk" ; 545da
+Route5Blocks: INCBIN "maps/route5.blk"
 
 INCLUDE "data/mapHeaders/route9.asm"
 INCLUDE "data/mapObjects/route9.asm"
-Route9Blocks: INCBIN "maps/route9.blk" ; 54706
+Route9Blocks: INCBIN "maps/route9.blk"
 
 INCLUDE "data/mapHeaders/route13.asm"
 INCLUDE "data/mapObjects/route13.asm"
@@ -1365,7 +1361,7 @@ Route19Blocks: INCBIN "maps/route19.blk"
 
 INCLUDE "data/mapHeaders/route21.asm"
 INCLUDE "data/mapObjects/route21.asm"
-Route21Blocks: INCBIN "maps/route21.blk" ; 5507d
+Route21Blocks: INCBIN "maps/route21.blk"
 
 DayCareMBlocks:
 VermilionHouse2Blocks:
@@ -1420,11 +1416,11 @@ SECTION "bank16",ROMX,BANK[$16]
 
 INCLUDE "data/mapHeaders/route6.asm"
 INCLUDE "data/mapObjects/route6.asm"
-Route6Blocks: INCBIN "maps/route6.blk" ; 58079
+Route6Blocks: INCBIN "maps/route6.blk"
 
 INCLUDE "data/mapHeaders/route8.asm"
 INCLUDE "data/mapObjects/route8.asm"
-Route8Blocks: INCBIN "maps/route8.blk" ; 581c6
+Route8Blocks: INCBIN "maps/route8.blk"
 
 INCLUDE "data/mapHeaders/route10.asm"
 INCLUDE "data/mapObjects/route10.asm"
@@ -1432,7 +1428,7 @@ Route10Blocks: INCBIN "maps/route10.blk"
 
 INCLUDE "data/mapHeaders/route11.asm"
 INCLUDE "data/mapObjects/route11.asm"
-Route11Blocks: INCBIN "maps/route11.blk" ; 5855f
+Route11Blocks: INCBIN "maps/route11.blk"
 
 INCLUDE "data/mapHeaders/route12.asm"
 INCLUDE "data/mapObjects/route12.asm"
@@ -1444,7 +1440,7 @@ Route15Blocks: INCBIN "maps/route15.blk"
 
 INCLUDE "data/mapHeaders/route16.asm"
 INCLUDE "data/mapObjects/route16.asm"
-Route16Blocks: INCBIN "maps/route16.blk" ; 58b84
+Route16Blocks: INCBIN "maps/route16.blk"
 
 INCLUDE "data/mapHeaders/route18.asm"
 INCLUDE "data/mapObjects/route18.asm"
@@ -2002,119 +1998,119 @@ INCBIN "engine/bank30.bin"
 
 SECTION "bank39",ROMX,BANK[$39]
 
-Pic_e4000: ; e4000
+Pic_e4000:
 INCBIN "gfx/pikachu/unknown_e4000.pic"
-GFX_e40cc: ; e40cc
+GFX_e40cc:
 INCBIN "gfx/pikachu/unknown_e40cc.2bpp"
-Pic_e411c: ; e411c
+Pic_e411c:
 INCBIN "gfx/pikachu/unknown_e411c.pic"
-GFX_e41d2: ; e41d2
+GFX_e41d2:
 INCBIN "gfx/pikachu/unknown_e41d2.2bpp"
-Pic_e4272: ; e4272
+Pic_e4272:
 INCBIN "gfx/pikachu/unknown_e4272.pic"
-GFX_e4323: ; e4323
+GFX_e4323:
 INCBIN "gfx/pikachu/unknown_e4323.2bpp"
-Pic_e4383: ; e4383
+Pic_e4383:
 INCBIN "gfx/pikachu/unknown_e4383.pic"
-GFX_e444b: ; e444b
+GFX_e444b:
 INCBIN "gfx/pikachu/unknown_e444b.2bpp"
-Pic_e458b: ; e458b
+Pic_e458b:
 INCBIN "gfx/pikachu/unknown_e458b.pic"
-GFX_e463b: ; e463b
+GFX_e463b:
 INCBIN "gfx/pikachu/unknown_e463b.2bpp"
-Pic_e467b: ; e467b
+Pic_e467b:
 INCBIN "gfx/pikachu/unknown_e467b.pic"
-GFX_e472e: ; e472e
+GFX_e472e:
 INCBIN "gfx/pikachu/unknown_e472e.2bpp"
-Pic_e476e: ; e476e
+Pic_e476e:
 INCBIN "gfx/pikachu/unknown_e476e.pic"
-GFX_e4841: ; e4841
+GFX_e4841:
 INCBIN "gfx/pikachu/unknown_e4841.2bpp"
-Pic_e49d1: ; e49d1
+Pic_e49d1:
 INCBIN "gfx/pikachu/unknown_e49d1.pic"
-GFX_e4a99: ; e4a99
+GFX_e4a99:
 INCBIN "gfx/pikachu/unknown_e4a99.2bpp"
-Pic_e4b39: ; e4b39
+Pic_e4b39:
 INCBIN "gfx/pikachu/unknown_e4b39.pic"
-GFX_e4bde: ; e4bde
+GFX_e4bde:
 INCBIN "gfx/pikachu/unknown_e4bde.2bpp"
-Pic_e4c3e: ; e4c3e
+Pic_e4c3e:
 INCBIN "gfx/pikachu/unknown_e4c3e.pic"
-GFX_e4ce0: ; e4ce0
+GFX_e4ce0:
 INCBIN "gfx/pikachu/unknown_e4ce0.2bpp"
-GFX_e4e70: ; e4e70
+GFX_e4e70:
 INCBIN "gfx/pikachu/unknown_e4e70.2bpp"
-Pic_e5000: ; e5000
+Pic_e5000:
 INCBIN "gfx/pikachu/unknown_e5000.pic"
-GFX_e50af: ; e50af
+GFX_e50af:
 INCBIN "gfx/pikachu/unknown_e50af.2bpp"
-Pic_e523f: ; e523f
+Pic_e523f:
 INCBIN "gfx/pikachu/unknown_e523f.pic"
-GFX_e52fe: ; e52fe
+GFX_e52fe:
 INCBIN "gfx/pikachu/unknown_e52fe.2bpp"
-Pic_e548e: ; e548e
+Pic_e548e:
 INCBIN "gfx/pikachu/unknown_e548e.pic"
-GFX_e5541: ; e5541
+GFX_e5541:
 INCBIN "gfx/pikachu/unknown_e5541.2bpp"
-Pic_e56d1: ; e56d1
+Pic_e56d1:
 INCBIN "gfx/pikachu/unknown_e56d1.pic"
-GFX_e5794: ; e5794
+GFX_e5794:
 INCBIN "gfx/pikachu/unknown_e5794.2bpp"
-Pic_e5924: ; e5924
+Pic_e5924:
 INCBIN "gfx/pikachu/unknown_e5924.pic"
-GFX_e59ed: ; e59ed
+GFX_e59ed:
 INCBIN "gfx/pikachu/unknown_e59ed.2bpp"
-Pic_e5b7d: ; e5b7d
+Pic_e5b7d:
 INCBIN "gfx/pikachu/unknown_e5b7d.pic"
-GFX_e5c4d: ; e5c4d
+GFX_e5c4d:
 INCBIN "gfx/pikachu/unknown_e5c4d.2bpp"
-Pic_e5ddd: ; e5ddd
+Pic_e5ddd:
 INCBIN "gfx/pikachu/unknown_e5ddd.pic"
-GFX_e5e90: ; e5e90
+GFX_e5e90:
 INCBIN "gfx/pikachu/unknown_e5e90.2bpp"
-GFX_e6020: ; e6020
+GFX_e6020:
 INCBIN "gfx/pikachu/unknown_e6020.2bpp"
-GFX_e61b0: ; e61b0
+GFX_e61b0:
 INCBIN "gfx/pikachu/unknown_e61b0.2bpp"
-Pic_e6340: ; e6340
+Pic_e6340:
 INCBIN "gfx/pikachu/unknown_e6340.pic"
-GFX_e63f7: ; e63f7
+GFX_e63f7:
 INCBIN "gfx/pikachu/unknown_e63f7.2bpp"
-Pic_e6587: ; e6587
+Pic_e6587:
 INCBIN "gfx/pikachu/unknown_e6587.pic"
-GFX_e6646: ; e6646
+GFX_e6646:
 INCBIN "gfx/pikachu/unknown_e6646.2bpp"
-Pic_e67d6: ; e67d6
+Pic_e67d6:
 INCBIN "gfx/pikachu/unknown_e67d6.pic"
-GFX_e682f: ; e682f
+GFX_e682f:
 INCBIN "gfx/pikachu/unknown_e682f.2bpp"
-GFX_e69bf: ; e69bf
+GFX_e69bf:
 INCBIN "gfx/pikachu/unknown_e69bf.2bpp"
-GFX_e6b4f: ; e6b4f
+GFX_e6b4f:
 INCBIN "gfx/pikachu/unknown_e6b4f.2bpp"
-GFX_e6cdf: ; e6cdf
+GFX_e6cdf:
 INCBIN "gfx/pikachu/unknown_e6cdf.2bpp"
-GFX_e6e6f: ; e6e6f
+GFX_e6e6f:
 INCBIN "gfx/pikachu/unknown_e6e6f.2bpp"
-GFX_e6fff: ; e6fff
+GFX_e6fff:
 INCBIN "gfx/pikachu/unknown_e6fff.2bpp"
-GFX_e718f: ; e718f
+GFX_e718f:
 INCBIN "gfx/pikachu/unknown_e718f.2bpp"
-GFX_e731f: ; e731f
+GFX_e731f:
 INCBIN "gfx/pikachu/unknown_e731f.2bpp"
-GFX_e74af: ; e74af
+GFX_e74af:
 INCBIN "gfx/pikachu/unknown_e74af.2bpp"
-GFX_e763f: ; e763f
+GFX_e763f:
 INCBIN "gfx/pikachu/unknown_e763f.2bpp"
-Pic_e77cf: ; e77cf
+Pic_e77cf:
 INCBIN "gfx/pikachu/unknown_e77cf.pic"
-GFX_e7863: ; e7863
+GFX_e7863:
 INCBIN "gfx/pikachu/unknown_e7863.2bpp"
-GFX_e79f3: ; e79f3
+GFX_e79f3:
 INCBIN "gfx/pikachu/unknown_e79f3.2bpp"
-GFX_e7b83: ; e7b83
+GFX_e7b83:
 INCBIN "gfx/pikachu/unknown_e7b83.2bpp"
-GFX_e7d13: ; e7d13
+GFX_e7d13:
 INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
 
 

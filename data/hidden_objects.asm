@@ -539,9 +539,7 @@ CinnabarLab4HiddenObjects:
 	hidden_object   4,   2, SPRITE_FACING_UP, OpenPokemonCenterPC
 	db $ff
 
-CinnabarPokecenterHiddenObjects: ; 6cc3
+CinnabarPokecenterHiddenObjects:
 	hidden_object   4,   0, SPRITE_FACING_UP, PrintBenchGuyText
 	hidden_object   3,  13, SPRITE_FACING_UP, OpenPokemonCenterPC
 	db $ff
-
-; 6cd0

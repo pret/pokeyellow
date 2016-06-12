@@ -342,7 +342,7 @@ MapHS2D:
 	db VIRIDIAN_GYM, $0B, Show
 MapHS34:
 	db MUSEUM_1F, $05, Show
-MapHS3F: ; c92e (3:492e) ; bulbasaur adoption house
+MapHS3F: ; bulbasaur adoption house
 	db CERULEAN_HOUSE_1, $02, Show
 MapHSE4:
 	db UNKNOWN_DUNGEON_1, $01, Show

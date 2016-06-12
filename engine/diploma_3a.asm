@@ -49,7 +49,6 @@ _DisplayDiploma:
 	call GBPalNormal
 	ret
 
-; e9a73
 String_e9a73:
 	db $10, "Diploma", $10, "@"
 

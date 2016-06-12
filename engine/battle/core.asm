@@ -2347,7 +2347,7 @@ DisplayBattleMenu:
 	call PrintText
 	jp DisplayBattleMenu
 
-.RunAwayText ; 3d0df (f:50df)
+.RunAwayText
 	TX_FAR _RunAwayText
 	db "@"
 
@@ -3379,7 +3379,7 @@ getPlayerAnimationType:
 	ld a,4 ; move has no effect other than dealing damage
 	jr z,playPlayerMoveAnimation
 	ld a,5 ; move has effect
-playPlayerMoveAnimation ; 3d890 (f:5890)
+playPlayerMoveAnimation
 	push af
 	ld a,[wPlayerBattleStatus2]
 	bit HasSubstituteUp,a
@@ -3398,7 +3398,7 @@ playPlayerMoveAnimation ; 3d890 (f:5890)
 	ld b,BANK(ReshowSubstituteAnim)
 	call nz,Bankswitch
 	jr MirrorMoveCheck
-playerCheckIfFlyOrChargeEffect ; 3d8bd (f:58bd)
+playerCheckIfFlyOrChargeEffect
 	ld c,30
 	call DelayFrames
 	ld a,[wPlayerMoveEffect]
@@ -7172,7 +7172,7 @@ FellAsleepText:
 	TX_FAR _FellAsleepText
 	db "@"
 
-AlreadyAsleepText: ; 3f1cd (f:71cds)
+AlreadyAsleepText:
 	TX_FAR _AlreadyAsleepText
 	db "@"
 
@@ -7361,7 +7361,7 @@ FreezeBurnParalyzeEffect:
 	call PlayBattleAnimation
 	ld hl, FrozenText
 	jp PrintText
-.opponentAttacker ; 3f382 (f:7382)
+.opponentAttacker
 	ld a, [wBattleMonStatus] ; mostly same as above with addresses swapped for opponent
 	and a
 	jp nz, CheckDefrost

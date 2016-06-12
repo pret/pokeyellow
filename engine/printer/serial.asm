@@ -18,7 +18,6 @@ Printer_StartTransmission:
 	ld [wPrinterQueueLength], a
 	ret
 
-; e87a8
 PrinterTransmissionJumptable:
 	ld a, [wPrinterSendState]
 	ld e, a

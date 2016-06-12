@@ -52,7 +52,7 @@ DrawBadges:
 ;	call .DrawBadgeRow
 ;	ret
 
-.DrawBadgeRow ; e8c9 (3:68c9)
+.DrawBadgeRow
 ; Draw 4 badges.
 
 	ld c, 4

@@ -3,7 +3,7 @@ EnterMap::
 	ld a, $ff
 	ld [wJoyIgnore], a
 	call LoadMapData
-	callba ClearVariablesAfterLoadingMapData ; 3:407c
+	callba ClearVariablesAfterLoadingMapData
 	ld hl, wd72c
 	bit 0, [hl] ; has the player already made 3 steps since the last battle?
 	jr z, .skipGivingThreeStepsOfNoRandomBattles
@@ -51,7 +51,7 @@ OverworldLoopLessDelay::
 	and a
 	jp nz, .moveAhead ; if the player sprite has not yet completed the walking animation
 	call JoypadOverworld ; get joypad state (which is possibly simulated)
-	callba SafariZoneCheck ; 7:6321
+	callba SafariZoneCheck
 	ld a, [wSafariZoneGameOver]
 	and a
 	jp nz, WarpFound2
@@ -134,7 +134,7 @@ OverworldLoopLessDelay::
 	jp OverworldLoop
 
 .noDirectionButtonsPressed
-	call UpdateSprites ; 231c
+	call UpdateSprites
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
 	xor a
@@ -338,7 +338,7 @@ NewBattle::
 	ld a, [wd72e]
 	bit 4, a
 	jr nz, .noBattle
-	jpba InitBattle ; 3d:5ff2
+	jpba InitBattle
 .noBattle
 	and a
 	ret
@@ -481,7 +481,7 @@ WarpFound2::
 	ld [wMapPalOffset], a
 	call GBFadeOutToBlack
 .notRockTunnel
-	callab CalculatePikachuSpawnState1 ; 3f:45fa
+	callab CalculatePikachuSpawnState1
 	call PlayMapChangeSound
 	jr .done
 
@@ -509,11 +509,11 @@ WarpFound2::
 	ld hl, wd736
 	res 0, [hl]
 	res 1, [hl]
-	callab CalculatePikachuSpawnState2 ; 3f:465b
+	callab CalculatePikachuSpawnState2
 	jr .done
 
 .goBackOutside
-	callab CalculatePikachuSpawnState3 ; 3f:469a
+	callab CalculatePikachuSpawnState3
 	ld a, [wLastMap]
 	ld [wCurMap], a
 	call PlayMapChangeSound
@@ -653,13 +653,13 @@ CheckMapConnections::
 	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
-.loadNewMap ; 06ce (0:06ce)
+.loadNewMap
 ; load the connected map that was entered
 	ld hl, wPikachuOverworldStateFlags
 	set 4, [hl]
 	ld a, $2
 	ld [wPikachuSpawnState], a
-	call LoadMapHeader ; 0dab (0:0dab)
+	call LoadMapHeader
 	call PlayDefaultMusicFadeOutCurrent ; music
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
@@ -756,7 +756,7 @@ HandleBlackOut::
 	ld hl, wd72e
 	res 5, [hl]
 	switchbank SpecialWarpIn ; also Bank(SpecialEnterMap)
-	callab ResetStatusAndHalveMoneyOnBlackout ; 3c:4274
+	callab ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
 	call PlayDefaultMusicFadeOutCurrent
 	jp SpecialEnterMap
@@ -1297,7 +1297,7 @@ CheckForJumpingAndTilePairCollisions::
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player
 	push de
 	push bc
-	callba HandleLedges	; 6:67f4
+	callba HandleLedges
 						; check if the player is trying to jump a ledge
 	pop bc
 	pop de
@@ -1480,7 +1480,7 @@ AdvancePlayerSprite::
 	push af
 	ld a, $FF
 	ld [wUpdateSpritesEnabled], a
-	ld hl, _AdvancePlayerSprite ; 3c:410c
+	ld hl, _AdvancePlayerSprite
 	ld b, BANK(_AdvancePlayerSprite)
 	call Bankswitch
 	pop af
@@ -1725,7 +1725,7 @@ CollisionCheckOnWater::
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
-	callab IsNextTileShoreOrWater ; 3:6808
+	callab IsNextTileShoreOrWater
 	jr c, .noCollision
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	ld c, a
@@ -1794,7 +1794,7 @@ LoadWalkingPlayerSpriteGraphics::
 	xor a
 	ld [wd473], a
 	ld b, BANK(RedSprite)
-	ld de, RedSprite ; $4180
+	ld de, RedSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics2::
@@ -1811,7 +1811,7 @@ LoadSurfingPlayerSpriteGraphics2::
 	jr z, LoadSurfingPlayerSpriteGraphics
 .asm_0d7c
 	ld b, BANK(SurfingPikachuSprite)
-	ld de, SurfingPikachuSprite ; 3f:6def
+	ld de, SurfingPikachuSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics::
@@ -1848,7 +1848,7 @@ LoadMapHeader::
 	jr asm_0dbd
 
 Func_0db5:: ; XXX
-	callba LoadUnusedBluesHouseMissableObjectData ; 3c:4a55
+	callba LoadUnusedBluesHouseMissableObjectData
 asm_0dbd
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
@@ -1935,7 +1935,7 @@ asm_0dbd
 	ld [wNumSigns], a
 	and a ; are there any signs?
 	jr z, .loadSpriteData ; if not, skip this
-	call CopySignData ; 0eb3 (0:0eb3)
+	call CopySignData
 .loadSpriteData
 	ld a, [wd72e]
 	bit 5, a ; did a battle happen immediately before this?
@@ -1946,9 +1946,9 @@ asm_0dbd
 	ld a, [wd72e]
 	bit 5, a ; did a battle happen immediately before this?
 	jr nz, .skip_pika_spawn
-	callab SchedulePikachuSpawnForAfterText ; 3f:44fa
+	callab SchedulePikachuSpawnForAfterText
 .skip_pika_spawn
-	callab LoadWildData ; 3:4b62
+	callab LoadWildData
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a, [wCurMapHeight] ; map height in 4x4 tile blocks
 	add a ; double it
@@ -1962,7 +1962,7 @@ asm_0dbd
 	ld a, [H_LOADEDROMBANK]
 	push af
 	switchbank MapSongBanks
-	ld hl, MapSongBanks ; 3f:4000
+	ld hl, MapSongBanks
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -2130,7 +2130,7 @@ SwitchToMapRomBank::
 GetMapHeaderPointer::
 	ld a, [H_LOADEDROMBANK]
 	push af
-	switchbank MapHeaderPointers ; 3f:41f2
+	switchbank MapHeaderPointers
 	push de
 	ld a, [wCurMap]
 	ld e, a
@@ -2320,4 +2320,4 @@ LoadSprite::
 	xor a
 	ld [hl], a ; zero byte 1, since it is not used
 	pop hl
-	ret ; end of home/overworld.asm = 10b9 (0:10b9)
+	ret

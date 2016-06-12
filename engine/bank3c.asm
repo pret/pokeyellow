@@ -74,7 +74,7 @@ SetMapSpecificScriptFlagsOnMapReload:
 	set 5, [hl]
 	ret
 
-.MapList ; f02fa (3c:42fa)
+.MapList
 	db SILPH_CO_2F
 	db SILPH_CO_3F
 	db SILPH_CO_4F
@@ -149,7 +149,7 @@ LoadUnusedBluesHouseMissableObjectData:
 	db $ff
 .End:
 
-TryApplyPikachuMovementData: ; f0a82
+TryApplyPikachuMovementData:
 	ld a, [wd472]
 	bit 7, a
 	ret z

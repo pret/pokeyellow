@@ -87,7 +87,7 @@ INCLUDE "home/copy.asm"
 SECTION "Entry", ROM0 [$100]
 
 	nop
-	jp Start ; 01ab
+	jp Start
 
 
 SECTION "Header", ROM0 [$104]
@@ -475,7 +475,7 @@ HandlePartyMenuInput::
 	jr nz, .asm_1258
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
-	callab IsThisPartymonStarterPikachu_Party ; 3f:4e18
+	callab IsThisPartymonStarterPikachu_Party
 	jr nc, .asm_1258
 	call CheckPikachuFollowingPlayer
 	jr nz, .asm_128f
@@ -523,7 +523,7 @@ HandlePartyMenuInput::
 	bit 1, b ; was the B button pressed?
 	jr z, .handleSwap ; if not, handle swapping the pokemon
 .cancelSwap ; if the B button was pressed
-	callba ErasePartyMenuCursors ; 4:5e98
+	callba ErasePartyMenuCursors
 	xor a
 	ld [wMenuItemToSwap], a
 	ld [wPartyMenuTypeOrMessageID], a
@@ -532,19 +532,19 @@ HandlePartyMenuInput::
 .handleSwap
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
-	callba SwitchPartyMon ; 4:61c5
+	callba SwitchPartyMon
 	jp HandlePartyMenuInput
 
 PartyMenuText_12cc::
-	TX_FAR _SleepingPikachuText1 ; 28:411b
+	TX_FAR _SleepingPikachuText1
 	db "@"
 
 DrawPartyMenu::
-	ld hl, DrawPartyMenu_ ; 4:5875
+	ld hl, DrawPartyMenu_
 	jr DrawPartyMenuCommon
 
 RedrawPartyMenu::
-	ld hl, RedrawPartyMenu_ ; 4:5886
+	ld hl, RedrawPartyMenu_
 
 DrawPartyMenuCommon::
 	ld b, BANK(RedrawPartyMenu_)
@@ -816,7 +816,7 @@ UncompressMonSprite::
 	jr c, .GotBank
 	ld a, BANK(VictreebelPicFront)
 .GotBank
-	jp UncompressSpriteData ; 23f8
+	jp UncompressSpriteData
 
 ; de: destination location
 LoadMonFrontSprite::
@@ -879,7 +879,7 @@ LoadUncompressedSpriteData::
 	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
 	call PrepareRTCDataAndDisableSRAM
 	pop de
-	jp InterlaceMergeSpriteBuffers ; 14c7
+	jp InterlaceMergeSpriteBuffers
 
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
@@ -977,7 +977,7 @@ INCLUDE "home/lcdc.asm"
 
 IsTilePassable::
 ; sets carry if tile is passable, resets carry otherwise
-	homecall_sf _IsTilePassable ; 1:4aaa
+	homecall_sf _IsTilePassable
 	ret
 
 INCLUDE "home/copy2.asm"
@@ -1001,7 +1001,7 @@ UpdateSprites::
 	switchbank _UpdateSprites
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	call _UpdateSprites ; 1:4bb7
+	call _UpdateSprites
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a
 	pop af
@@ -1116,7 +1116,7 @@ FadeOutAudio::
 	jp PlaySound
 
 UnknownText_2812::
-	TX_FAR _PokemonText ; 2c:749a
+	TX_FAR _PokemonText
 	db "@"
 
 ; this function is used to display sign messages, sprite dialog, etc.
@@ -1349,7 +1349,7 @@ RepelWoreOffText::
 	db "@"
 
 DisplayPikachuEmotion::
-	callab TalkToPikachu ; 3f:5004
+	callab TalkToPikachu
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"
@@ -1951,7 +1951,7 @@ GetMonName::
 	ld [MBC1RomBank], a
 	ld a, [wd11e]
 	dec a
-	ld hl, MonsterNames ; 4000
+	ld hl, MonsterNames
 	ld c, 10
 	ld b, 0
 	call AddNTimes
@@ -3631,7 +3631,7 @@ WaitForTextScrollButtonPress::
 	jr z, .skipAnimation
 	push de
 	push bc
-	callab TownMapSpriteBlinkingAnimation ; 1c:5753
+	callab TownMapSpriteBlinkingAnimation
 	pop bc
 	pop de
 .skipAnimation
@@ -3672,7 +3672,7 @@ ManualTextScroll::
 Multiply::
 	push hl
 	push bc
-	callab _Multiply ; 3d:660e
+	callab _Multiply
 	pop bc
 	pop hl
 	ret
@@ -4040,7 +4040,7 @@ WriteOAMBlock::
 	add c
 	ld c, a
 	                      ; lower right
-.writeOneEntry ; 3aa0 (0:3aa0)
+.writeOneEntry
 	ld [hl], b ; Y coordinate
 	inc hl
 	ld [hl], c ; X coordinate
@@ -4740,7 +4740,7 @@ GivePokemon::
 	ld [wCurEnemyLVL], a
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
-	jpba _GivePokemon ; 3d:66fa
+	jpba _GivePokemon
 
 Random::
 ; Return a random number in a.
@@ -4835,7 +4835,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
 	ret
 
 PrintPredefTextID::
-	ld [hSpriteIndexOrTextID], a ; $ff8c
+	ld [hSpriteIndexOrTextID], a
 	ld hl, TextPredefs
 	call SetMapTextPointer
 	ld hl, wTextPredefFlag
@@ -4934,5 +4934,3 @@ const_value = 1
 	add_tx_pre BookOrSculptureText                  ; 42
 	add_tx_pre ElevatorText                         ; 43
 	add_tx_pre PokemonStuffText                     ; 44
-
-	; dr $3f67, $4000

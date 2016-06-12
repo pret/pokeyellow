@@ -1,5 +1,5 @@
 AnimateHealingMachine:
-	ld de, PokeCenterFlashingMonitorAndHealBall ; $44b7
+	ld de, PokeCenterFlashingMonitorAndHealBall
 	ld hl, vChars0 + $7c0
 	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), $03 ; loads one too many tiles
 	call CopyVideoData
@@ -11,10 +11,10 @@ AnimateHealingMachine:
 	ld a, [rOBP1]
 	push af
 	ld a, $e0
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP1
 	ld hl, wOAMBuffer + $84
-	ld de, PokeCenterOAMData ; $44d7
+	ld de, PokeCenterOAMData
 	call CopyHealingMachineOAM
 	ld a, 4
 	ld [wAudioFadeOutControl], a
@@ -53,7 +53,7 @@ AnimateHealingMachine:
 	ld c, 32
 	call DelayFrames
 	pop af
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP1
 	pop hl
 	pop af

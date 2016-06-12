@@ -92,7 +92,7 @@ UpdateMusicCTimes::
 .loop
 	push bc
 	push hl
-	callba Audio1_UpdateMusic ; 2:509d
+	callba Audio1_UpdateMusic
 	pop hl
 	pop bc
 	dec c
@@ -227,7 +227,7 @@ InitMusicVariables::
 	push hl
 	push de
 	push bc
-	homecall Audio2_InitMusicVariables ; 8:59f8
+	homecall Audio2_InitMusicVariables
 	pop bc
 	pop de
 	pop hl
@@ -237,7 +237,7 @@ InitSFXVariables::
 	push hl
 	push de
 	push bc
-	homecall Audio2_InitSFXVariables ; 8:5ab7
+	homecall Audio2_InitSFXVariables
 	pop bc
 	pop de
 	pop hl

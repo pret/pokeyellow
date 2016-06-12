@@ -2,7 +2,7 @@ ShouldPikachuSpawn::
 ; possibly to test if pika should be out?
 	ld a, [wPikachuOverworldStateFlags]
 	bit 5, a
-	jr nz, .hide ; 3f:44f8
+	jr nz, .hide
 	ld a, [wPikachuOverworldStateFlags]
 	bit 7, a
 	jr nz, .hide

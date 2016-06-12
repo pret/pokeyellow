@@ -249,7 +249,6 @@ SilphCo11Script_6229c:
 	ld a, $5
 	call SilphCo11Script_62189
 	ret
-; 622f4
 
 SilphCo11MovementData_622f5:
 	db $5

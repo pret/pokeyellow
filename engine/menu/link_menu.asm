@@ -569,67 +569,67 @@ Text_f579c::
 	next "CANCEL@"
 
 Colosseum3MonsText::
-	TX_FAR _Colosseum3MonsText ; a0a2b
+	TX_FAR _Colosseum3MonsText
 	db "@"
 
 ColosseumMewText::
-	TX_FAR _ColosseumMewText ; a0a46
+	TX_FAR _ColosseumMewText
 	db "@"
 
 ColosseumDifferentMonsText::
-	TX_FAR _ColosseumDifferentMonsText ; a0a5f
+	TX_FAR _ColosseumDifferentMonsText
 	db "@"
 
 ColosseumMaxL55Text::
-    TX_FAR _ColosseumMaxL55Text ; a0a81
+    TX_FAR _ColosseumMaxL55Text
     db "@"
 
 ColosseumMinL50Text::
-	TX_FAR _ColosseumMinL50Text ; a0a9a
+	TX_FAR _ColosseumMinL50Text
 	db "@"
 
 ColosseumTotalL155Text::
-	TX_FAR _ColosseumTotalL155Text ; a0aba
+	TX_FAR _ColosseumTotalL155Text
 	db "@"
 
 ColosseumMaxL30Text::
-	TX_FAR _ColosseumMaxL30Text ; a0ad9
+	TX_FAR _ColosseumMaxL30Text
 	db "@"
 
 ColosseumMinL25Text::
-	TX_FAR _ColosseumMinL25Text ; a0af2
+	TX_FAR _ColosseumMinL25Text
 	db "@"
 
 ColosseumTotalL80Text::
-	TX_FAR _ColosseumTotalL80Text ; a0b12
+	TX_FAR _ColosseumTotalL80Text
 	db "@"
 
 ColosseumMaxL20Text::
-	TX_FAR _ColosseumMaxL20Text ; a0b30
+	TX_FAR _ColosseumMaxL20Text
 	db "@"
 
 ColosseumMinL15Text::
-	TX_FAR _ColosseumMinL15Text ; a0b49
+	TX_FAR _ColosseumMinL15Text
 	db "@"
 
 ColosseumTotalL50Text::
-	TX_FAR _ColosseumTotalL50Text ; a0b69
+	TX_FAR _ColosseumTotalL50Text
 	db "@"
 
 ColosseumHeightText::
-	TX_FAR _ColosseumHeightText ; a0b87
+	TX_FAR _ColosseumHeightText
 	db "@"
 
 ColosseumWeightText::
-	TX_FAR _ColosseumWeightText ; a0b9f
+	TX_FAR _ColosseumWeightText
 	db "@"
 
 ColosseumEvolvedText::
-	TX_FAR _ColosseumEvolvedText ; a0bbb
+	TX_FAR _ColosseumEvolvedText
 	db "@"
 
 ColosseumIneligibleText::
-	TX_FAR _ColosseumIneligibleText ; a0bd4
+	TX_FAR _ColosseumIneligibleText
 	db "@"
 
 LinkMenu:
@@ -897,7 +897,7 @@ ColosseumCanceledText:
 	db "@"
 
 ColosseumVersionText:
-	TX_FAR _ColosseumVersionText ; 28:4c47
+	TX_FAR _ColosseumVersionText
 	db "@"
 
 TextTerminator_f5a16:

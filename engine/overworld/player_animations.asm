@@ -253,12 +253,12 @@ DoFlyAnimation:
 	ret
 
 LoadBirdSpriteGraphics:
-	ld de, BirdSprite ; $4d80
+	ld de, BirdSprite
 	ld b, BANK(BirdSprite)
 	ld c, $c
 	ld hl, vNPCSprites
 	call CopyVideoData
-	ld de, BirdSprite + $c0 ; $4e40 ; moving amination sprite
+	ld de, BirdSprite + $c0 ; moving amination sprite
 	ld b, BANK(BirdSprite)
 	ld c, $0c
 	ld hl, vNPCSprites2
@@ -394,7 +394,7 @@ FishingAnim:
 	ld hl, wd736
 	set 6, [hl]
 	ld hl, vNPCSprites
-	ld de, RedSprite ; $4180
+	ld de, RedSprite
 	ld b, BANK(RedSprite)
 	ld c, $c
 	call CopyVideoData
@@ -463,7 +463,7 @@ FishingAnim:
 	call LoadFontTilePatterns
 	ret
 
-.ShakePlayerSprite ; 708a3 (1c:48a3)
+.ShakePlayerSprite
 	ld a, [hl]
 	xor $1
 	ld [hl], a

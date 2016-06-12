@@ -600,7 +600,7 @@ PrepareSuperNintendoVRAMTransfer:
 	jr nz, .loop
 	ret
 
-.packetPointers ; 7225b (1c:625b)
+.packetPointers
 ; Only the first packet is needed.
 	dw MaskEnFreezePacket
 	dw DataSnd_728a1

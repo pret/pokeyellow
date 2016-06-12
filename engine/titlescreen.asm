@@ -31,17 +31,17 @@ DisplayTitleScreen:
 	call DisableLCD
 	call LoadFontTilePatterns
 ; todo: fix hl pointers
-	ld hl, NintendoCopyrightLogoGraphics ; 4:4c48
+	ld hl, NintendoCopyrightLogoGraphics
 	ld de, vTitleLogo + $600
 	ld bc, $50
 	ld a, BANK(NintendoCopyrightLogoGraphics)
 	call FarCopyData
-	ld hl, NineTile ; 4:4e08
+	ld hl, NineTile
 	ld de, vTitleLogo + $6e0
 	ld bc, $10
 	ld a, BANK(NineTile)
 	call FarCopyData
-	ld hl, GamefreakLogoGraphics  ; 4:4d78
+	ld hl, GamefreakLogoGraphics
 	ld de, vTitleLogo + 101 * $10
 	ld bc, 9 * $10
 	ld a, BANK(GamefreakLogoGraphics)
@@ -91,7 +91,7 @@ DisplayTitleScreen:
 	call .ScrollTitleScreenPokemonLogo
 	jr .bouncePokemonLogoLoop
 
-.TitleScreenPokemonLogoYScrolls ; 4228 (1:4228)
+.TitleScreenPokemonLogoYScrolls
 ; Controls the bouncing effect of the Pokemon logo on the title screen
 	db -4,16  ; y scroll amount, number of times to scroll
 	db 3,4
@@ -102,7 +102,7 @@ DisplayTitleScreen:
 	db -1,2
 	db 0      ; terminate list with 0
 
-.ScrollTitleScreenPokemonLogo ; 4237 (1:4237)
+.ScrollTitleScreenPokemonLogo
 ; Scrolls the Pokemon logo on the title screen to create the bouncing effect
 ; Scrolls d pixels e times
 	call DelayFrame
@@ -114,7 +114,7 @@ DisplayTitleScreen:
 	ret
 
 ; place tiles for title screen copyright
-.WriteCopyrightTiles ; 4241 (1:4241)
+.WriteCopyrightTiles
 	coord hl, 2, 17
 	ld de, .tileScreenCopyrightTiles
 .titleScreenCopyrightTilesLoop
@@ -125,10 +125,10 @@ DisplayTitleScreen:
 	ld [hli], a
 	jr .titleScreenCopyrightTilesLoop
 
-.tileScreenCopyrightTiles ; 424f (1:424f)
+.tileScreenCopyrightTiles
 	db $e0,$e1,$e2,$e3,$e1,$e2,$ee,$e5,$e6,$e7,$e8,$e9,$ea,$eb,$ec,$ed,$ff ; ©1995-1999 GAME FREAK inc.
 
-.finishedBouncingPokemonLogo ; 4260 (1:4260)
+.finishedBouncingPokemonLogo
 	call LoadScreenTilesFromBuffer1
 	ld c, 36
 	call DelayFrames
@@ -192,12 +192,12 @@ DisplayTitleScreen:
 	jp z, .doClearSaveDialogue
 	jp MainMenu
 
-.asm_42f0 ; 42f0 (1:42f0)
+.asm_42f0
 ; unreferenced
 	callab PrinterDebug
 	jp .loop
 
-.asm_42fb ; 42fb (1:42fb)
+.asm_42fb
 ; unreferenced
 	ld a, [wTitleScreenScene + 4]
 	inc a
@@ -213,7 +213,7 @@ DisplayTitleScreen:
 	ld [wTitleScreenScene + 3], a
 	jp .titleScreenLoop
 
-.doTitlescreenReset ; 431b (1:431b)
+.doTitlescreenReset
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
 .audioFadeLoop
@@ -222,7 +222,7 @@ DisplayTitleScreen:
 	jr nz, .audioFadeLoop
 	jp Init
 
-.doClearSaveDialogue ; 432a (1:432a)
+.doClearSaveDialogue
 	jpba DoClearSaveDialogue
 
 
