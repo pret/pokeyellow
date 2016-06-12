@@ -14,5 +14,4 @@ EvilTrainerList::
 	db OPP_SCIENTIST
 	db OPP_GIOVANNI
 	db OPP_ROCKET
-
-	db $ff
+	db $FF

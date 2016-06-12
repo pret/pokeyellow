@@ -1,4 +1,4 @@
-Route5_h: ; 0x54589 to 0x545ab (34 bytes) (id=16)
+Route5_h:
 	db OVERWORLD ; tileset
 	db ROUTE_5_HEIGHT, ROUTE_5_WIDTH ; dimensions (y, x)
 	dw Route5Blocks, Route5TextPointers, Route5Script ; blocks, texts, scripts
