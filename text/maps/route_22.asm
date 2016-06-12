@@ -78,7 +78,7 @@ _Route22RivalBeforeBattleText2::
 	cont "That's cool!"
 
 	para "Then I'll whip"
-	line "you, ", $52, ", as"
+	line "you, <PLAYER>, as"
 	cont "a warmup for"
 	cont "#MON LEAGUE!"
 
