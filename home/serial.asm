@@ -94,79 +94,79 @@ Serial_ExchangeByte::
 	ld [hSerialReceivedNewData], a
 	ld a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
-	jr nz, .asm_2003
+	jr nz, .loop
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ld [rSC], a
-.asm_2003
+.loop
 	ld a, [hSerialReceivedNewData]
 	and a
-	jr nz, .asm_204d
+	jr nz, .ok
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
-	jr nz, .asm_2028
+	jr nz, .doNotIncrementUnknownCounter
 	call IsUnknownCounterZero
-	jr z, .asm_2028
+	jr z, .doNotIncrementUnknownCounter
 	call WaitLoop_15Iterations
 	push hl
 	ld hl, wUnknownSerialCounter + 1
 	inc [hl]
-	jr nz, .asm_201f
+	jr nz, .noCarry
 	dec hl
 	inc [hl]
-.asm_201f
+.noCarry
 	pop hl
 	call IsUnknownCounterZero
-	jr nz, .asm_2003
+	jr nz, .loop
 	jp SetUnknownCounterToFFFF
-.asm_2028
+.doNotIncrementUnknownCounter
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	cp (1 << SERIAL)
-	jr nz, .asm_2003
+	jr nz, .loop
 	ld a, [wUnknownSerialCounter2]
 	dec a
 	ld [wUnknownSerialCounter2], a
-	jr nz, .asm_2003
+	jr nz, .loop
 	ld a, [wUnknownSerialCounter2 + 1]
 	dec a
 	ld [wUnknownSerialCounter2 + 1], a
-	jr nz, .asm_2003
+	jr nz, .loop
 	ld a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
-	jr z, .asm_204d
+	jr z, .ok
 	ld a, 255
 .waitLoop
 	dec a
 	jr nz, .waitLoop
-.asm_204d
+.ok
 	xor a
 	ld [hSerialReceivedNewData], a
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	sub (1 << SERIAL)
-	jr nz, .asm_2060
+	jr nz, .skipReloadingUnknownCounter2
 	ld [wUnknownSerialCounter2], a
 	ld a, $50
 	ld [wUnknownSerialCounter2 + 1], a
-.asm_2060
+.skipReloadingUnknownCounter2
 	ld a, [hSerialReceiveData]
 	cp SERIAL_NO_DATA_BYTE
 	ret nz
 	call IsUnknownCounterZero
-	jr z, .asm_207b
+	jr z, .done
 	push hl
 	ld hl, wUnknownSerialCounter + 1
 	ld a, [hl]
 	dec a
 	ld [hld], a
 	inc a
-	jr nz, .asm_2075
+	jr nz, .noBorrow
 	dec [hl]
-.asm_2075
+.noBorrow
 	pop hl
 	call IsUnknownCounterZero
 	jr z, SetUnknownCounterToFFFF
-.asm_207b
+.done
 	ld a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
 	cp (1 << SERIAL)
@@ -228,7 +228,7 @@ Serial_ExchangeLinkMenuSelection::
 
 Serial_PrintWaitingTextAndSyncAndExchangeNybble::
 	call SaveScreenTilesToBuffer1
-	callab PrintWaitingText ; 1:4b89
+	callab PrintWaitingText
 	call Serial_SyncAndExchangeNybble
 	jp LoadScreenTilesFromBuffer1
 
