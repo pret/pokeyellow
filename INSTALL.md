@@ -9,6 +9,7 @@
 	cd pokeyellow
 
 To build **pokeyellow.gbc**:
+
 	make
 
 
@@ -24,8 +25,6 @@ In **Terminal**, run:
 	git clone --recursive https://github.com/pret/pokeyellow
 	cd pokeyellow
 
-Copy the ROM "Pokemon Yellow (U) [C][!].gbc" to the same directory as the disassembly under the name "baserom.gbc".
-
 Then run (in the shell):
 
 	make
@@ -33,7 +32,7 @@ Then run (in the shell):
 
 # Windows
 
-To build on Windows, use [**Cygwin**](http://cygwin.com/install.html). Use the default settings.
+To build on Windows, use [**Cygwin**](http://cygwin.com/install.html). Use the default settings in the installer.
 
 In the installer, select the following packages: `make` `git` `python` `gettext`
 
@@ -44,8 +43,6 @@ In the **Cygwin terminal**:
 
 	git clone --recursive https://github.com/pret/pokeyellow
 	cd pokeyellow
-
-Copy the ROM "Pokemon Yellow (U) [C][!].gbc" to the same directory as the disassembly under the name "baserom.gbc".
 
 Then run (in the Cygwin terminal):
 
