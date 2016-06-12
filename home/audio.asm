@@ -17,6 +17,7 @@ PlayDefaultMusicFadeOutCurrent::
 	ld [wLastMusicSoundID], a
 	ld c, 8
 	ld d, c
+
 PlayDefaultMusicCommon::
 	ld a, [wWalkBikeSurfState]
 	and a
@@ -35,7 +36,7 @@ PlayDefaultMusicCommon::
 	ld b, a
 	ld a, d
 	and a ; should current music be faded out first?
-	ld a, $1f ; BANK(Music_BikeRiding)
+	ld a, BANK(Music_BikeRiding)
 	jr nz, .next2
 
 ; Only change the audio ROM bank if the current music isn't going to be faded
@@ -87,12 +88,12 @@ CheckForNoBikingMusicMap::
 	ret
 
 UpdateMusic6Times::
-	ld c, $6
+	ld c, 6
 UpdateMusicCTimes::
 .loop
 	push bc
 	push hl
-	callba Audio1_UpdateMusic ; 2:509d
+	callba Audio1_UpdateMusic
 	pop hl
 	pop bc
 	dec c
@@ -165,16 +166,17 @@ PlaySound::
 	ld [wChannelSoundIDs + CH7], a
 .next
 	ld a, [wAudioFadeOutControl]
-	and a
+	and a ; has a fade-out length been specified?
 	jr z, .noFadeOut
 	ld a, [wNewSoundID]
-	and a
-	jr z, .done
+	and a ; is the new sound ID 0?
+	jr z, .done ; if so, do nothing
 	xor a
 	ld [wNewSoundID], a
 	ld a, [wLastMusicSoundID]
-	cp $ff
-	jr nz, .fadeOut
+	cp $ff ; has the music been stopped?
+	jr nz, .fadeOut ; if not, fade out the current music
+; If it has been stopped, start playing the new music immediately.
 	xor a
 	ld [wAudioFadeOutControl], a
 .noFadeOut

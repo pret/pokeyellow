@@ -55,8 +55,8 @@ VBlank::
 	jr z, .skipDec
 	dec a
 	ld [H_FRAMECOUNTER], a
-.skipDec
 
+.skipDec
 	call FadeOutAudio
 
 	callbs Music_DoLowHealthAlarm

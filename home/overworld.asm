@@ -3,7 +3,7 @@ EnterMap::
 	ld a, $ff
 	ld [wJoyIgnore], a
 	call LoadMapData
-	callba ClearVariablesAfterLoadingMapData ; 3:407c
+	callba ClearVariablesAfterLoadingMapData
 	ld hl, wd72c
 	bit 0, [hl] ; has the player already made 3 steps since the last battle?
 	jr z, .skipGivingThreeStepsOfNoRandomBattles
@@ -51,7 +51,7 @@ OverworldLoopLessDelay::
 	and a
 	jp nz, .moveAhead ; if the player sprite has not yet completed the walking animation
 	call JoypadOverworld ; get joypad state (which is possibly simulated)
-	callba SafariZoneCheck ; 7:6321
+	callba SafariZoneCheck
 	ld a, [wSafariZoneGameOver]
 	and a
 	jp nz, WarpFound2
@@ -70,7 +70,6 @@ OverworldLoopLessDelay::
 	jr z, .notSimulating
 	ld a, [hJoyHeld]
 	jr .checkIfStartIsPressed
-
 .notSimulating
 	ld a, [hJoyPressed]
 .checkIfStartIsPressed
@@ -80,7 +79,6 @@ OverworldLoopLessDelay::
 	xor a
 	ld [hSpriteIndexOrTextID], a ; start menu text ID
 	jp .displayDialogue
-
 .startButtonNotPressed
 	bit 0, a ; A button
 	jp z, .checkIfDownButtonIsPressed
@@ -118,15 +116,6 @@ OverworldLoopLessDelay::
 	xor a
 	ld [wLinkTimeoutCounter], a
 	jp EnterMap
-
-;	predef LoadSAV
-;	ld a, [wCurMap]
-;	ld [wDestinationMap], a
-;	call SpecialWarpIn
-;	ld a, [wCurMap]
-;	call SwitchToMapRomBank ; switch to the ROM bank of the current map
-;	ld hl, wCurMapTileset
-;	set 7, [hl]
 .checkForOpponent
 	ld a, [wCurOpponent]
 	and a
@@ -134,12 +123,12 @@ OverworldLoopLessDelay::
 	jp OverworldLoop
 
 .noDirectionButtonsPressed
-	call UpdateSprites ; 231c
+	call UpdateSprites
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
 	xor a
 	ld [wd435], a
-	ld a, $1
+	ld a, 1
 	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerMovingDirection] ; the direction that was pressed last time
 	and a
@@ -179,9 +168,10 @@ OverworldLoopLessDelay::
 .checkIfRightButtonIsPressed
 	bit 4, a ; right button
 	jr z, .noDirectionButtonsPressed
-	ld a, $1
-	ld [wSpriteStateData1 + 5], a
-	ld a, $1
+	ld a, 1
+	ld [wSpriteStateData1 + 5], a ; delta X
+	ld a, 1
+
 .handleDirectionButtonPress
 	ld [wPlayerDirection], a ; new direction
 	ld a, [wd730]
@@ -234,6 +224,7 @@ OverworldLoopLessDelay::
 .surfing
 	call CollisionCheckOnWater
 	jp c, OverworldLoop
+
 .noCollision
 	ld a, $08
 	ld [wWalkCounter], a
@@ -242,7 +233,8 @@ OverworldLoopLessDelay::
 
 .moveAhead
 	call IsSpinning
-	call UpdateSprites ; move sprites
+	call UpdateSprites
+
 .moveAhead2
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
@@ -338,11 +330,12 @@ NewBattle::
 	ld a, [wd72e]
 	bit 4, a
 	jr nz, .noBattle
-	jpba InitBattle ; 3d:5ff2
+	jpba InitBattle
 .noBattle
 	and a
 	ret
 
+; function to make bikes twice as fast as walking
 DoBikeSpeedup::
 	ld a, [wWalkBikeSurfState]
 	dec a ; riding a bike?
@@ -354,7 +347,7 @@ DoBikeSpeedup::
 	and a
 	ret nz
 	ld a, [wCurMap]
-	cp ROUTE_17 ; cycling road
+	cp ROUTE_17 ; Cycling Road
 	jr nz, .goFaster
 	ld a, [hJoyHeld]
 	and D_UP | D_LEFT | D_RIGHT
@@ -444,7 +437,6 @@ CheckWarpsCollision::
 	ld a, [hl]
 	ld [hWarpDestinationMap], a
 	jr WarpFound2
-
 .retry1
 	inc hl
 .retry2
@@ -502,18 +494,17 @@ WarpFound2::
 	ld hl, wd732
 	set 3, [hl]
 	jr .skipMapChangeSound
-
 .notWarpPad
 	call PlayMapChangeSound
 .skipMapChangeSound
 	ld hl, wd736
 	res 0, [hl]
 	res 1, [hl]
-	callab CalculatePikachuSpawnState2 ; 3f:465b
+	callab CalculatePikachuSpawnState2
 	jr .done
 
 .goBackOutside
-	callab CalculatePikachuSpawnState3 ; 3f:469a
+	callab CalculatePikachuSpawnState3
 	ld a, [wLastMap]
 	ld [wCurMap], a
 	call PlayMapChangeSound
@@ -653,14 +644,13 @@ CheckMapConnections::
 	ld [wCurrentTileBlockMapViewPointer], a ; pointer to upper left corner of current tile block map section
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
-.loadNewMap ; 06ce (0:06ce)
-; load the connected map that was entered
+.loadNewMap ; load the connected map that was entered
 	ld hl, wPikachuOverworldStateFlags
 	set 4, [hl]
 	ld a, $2
 	ld [wPikachuSpawnState], a
-	call LoadMapHeader ; 0dab (0:0dab)
-	call PlayDefaultMusicFadeOutCurrent ; music
+	call LoadMapHeader
+	call PlayDefaultMusicFadeOutCurrent
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 ; Since the sprite set shouldn't change, this will just update VRAM slots at
@@ -680,13 +670,12 @@ PlayMapChangeSound::
 	cp CEMETERY
 	jr z, .didNotGoThroughDoor
 	aCoord 8, 8 ; upper left tile of the 4x4 square the player's sprite is standing on
-	cp UNDERGROUND ; door tile in tileset 0
+	cp $0b ; door tile in tileset 0
 	jr nz, .didNotGoThroughDoor
-	ld a, $ad ; SFX_GO_INSIDE
+	ld a, SFX_GO_INSIDE
 	jr .playSound
-
 .didNotGoThroughDoor
-	ld a, $b5 ; SFX_GO_OUTSIDE
+	ld a, SFX_GO_OUTSIDE
 .playSound
 	call PlaySound
 	ld a, [wMapPalOffset]
@@ -732,7 +721,6 @@ ExtraWarpCheck::
 .useFunction1
 	ld hl, IsPlayerFacingEdgeOfMap
 	jr .doBankswitch
-
 .useFunction2
 	ld hl, IsWarpTileInFrontOfPlayer
 .doBankswitch
@@ -1267,14 +1255,13 @@ CollisionCheckOnLand::
 	jr nc, .noCollision
 .collision
 	ld a, [wChannelSoundIDs + CH4]
-	cp $b4 ; SFX_COLLISION ; check if collision sound is already playing
+	cp SFX_COLLISION ; check if collision sound is already playing
 	jr z, .setCarry
-	ld a, $b4 ; SFX_COLLISION
+	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf
 	ret
-
 .noCollision
 	and a
 	ret
@@ -1297,8 +1284,7 @@ CheckForJumpingAndTilePairCollisions::
 	predef GetTileAndCoordsInFrontOfPlayer ; get the tile in front of the player
 	push de
 	push bc
-	callba HandleLedges	; 6:67f4
-						; check if the player is trying to jump a ledge
+	callba HandleLedges	; check if the player is trying to jump a ledge
 	pop bc
 	pop de
 	pop hl
@@ -1327,7 +1313,6 @@ CheckForTilePairCollisions::
 .retry
 	inc hl
 	jr .tilePairCollisionLoop
-
 .tilesetMatches
 	ld a, [wTilePlayerStandingOn] ; tile the player is on
 	ld b, a
@@ -1339,14 +1324,12 @@ CheckForTilePairCollisions::
 	cp b
 	jr z, .currentTileMatchesSecondInPair
 	jr .retry
-
 .currentTileMatchesFirstInPair
 	inc hl
 	ld a, [hl]
 	cp c
 	jr z, .foundMatch
 	jr .tilePairCollisionLoop
-
 .currentTileMatchesSecondInPair
 	dec hl
 	ld a, [hli]
@@ -1356,7 +1339,6 @@ CheckForTilePairCollisions::
 .foundMatch
 	scf
 	ret
-
 .noMatch
 	and a
 	ret
@@ -1480,7 +1462,7 @@ AdvancePlayerSprite::
 	push af
 	ld a, $FF
 	ld [wUpdateSpritesEnabled], a
-	ld hl, _AdvancePlayerSprite ; 3c:410c
+	ld hl, _AdvancePlayerSprite
 	ld b, BANK(_AdvancePlayerSprite)
 	call Bankswitch
 	pop af
@@ -1705,13 +1687,7 @@ GetSimulatedInput::
 
 ; function to check the tile ahead to determine if the character should get on land or keep surfing
 ; sets carry if there is a collision and clears carry otherwise
-; It seems that this function has a bug in it, but due to luck, it doesn't
-; show up. After detecting a sprite collision, it jumps to the code that
-; checks if the next tile is passable instead of just directly jumping to the
-; "collision detected" code. However, it doesn't store the next tile in c,
-; so the old value of c is used. 2429 is always called before this function,
-; and 2429 always sets c to 0xF0. There is no 0xF0 background tile, so it
-; is considered impassable and it is detected as a collision.
+; This function had a bug in Red/Blue, but it was fixed in Yellow.
 CollisionCheckOnWater::
 	ld a, [wd730]
 	bit 7, a
@@ -1720,12 +1696,12 @@ CollisionCheckOnWater::
 	ld d, a
 	ld a, [wSpriteStateData1 + 12] ; the player sprite's collision data (bit field) (set in the sprite movement code)
 	and d ; check if a sprite is in the direction the player is trying to go
-	jr nz, .collision ; bug?
+	jr nz, .collision
 	ld hl, TilePairCollisionsWater
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision
 	predef GetTileAndCoordsInFrontOfPlayer ; get tile in front of player (puts it in c and [wTileInFrontOfPlayer])
-	callab IsNextTileShoreOrWater ; 3:6808
+	callab IsNextTileShoreOrWater
 	jr c, .noCollision
 	ld a, [wTileInFrontOfPlayer] ; tile in front of player
 	ld c, a
@@ -1733,9 +1709,9 @@ CollisionCheckOnWater::
 	jr nc, .stopSurfing
 .collision
 	ld a, [wChannelSoundIDs + CH4]
-	cp $b4 ; SFX_COLLISION
+	cp SFX_COLLISION ; check if collision sound is already playing
 	jr z, .setCarry
-	ld a, $b4 ; SFX_COLLISION
+	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 .setCarry
 	scf
@@ -1815,7 +1791,7 @@ LoadSurfingPlayerSpriteGraphics2::
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics::
-	ld b, BANK(RedSprite) ; not sure, but probably same bank (5)
+	ld b, BANK(SeelSprite)
 	ld de, SeelSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
@@ -2150,7 +2126,7 @@ IgnoreInputForHalfSecond:
 	ld [wIgnoreInputCounter], a
 	ld hl, wd730
 	ld a, [hl]
-	or %00100110 ; $26
+	or %00100110
 	ld [hl], a ; set ignore input bit
 	ret
 
