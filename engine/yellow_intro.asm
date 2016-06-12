@@ -323,7 +323,7 @@ YellowIntroScene6:
 	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
-	ld a, $42
+	ld a, rSCY - $ff00
 	ld [hLCDCPointer], a
 	call YellowIntro_Copy8BitSineWave
 	ld hl, vBGMap0
@@ -359,8 +359,8 @@ YellowIntroScene7:
 	ld hl, hSCX
 	inc [hl]
 	inc [hl]
-	ld hl, wYellowIntroSurfingPikaSineWaveBuffer
-	ld de, wYellowIntroSurfingPikaSineWaveBuffer + 1
+	ld hl, wLYOverridesBuffer
+	ld de, wLYOverridesBuffer + 1
 	ld a, [hl]
 	push af
 	ld c, $ff
@@ -775,8 +775,8 @@ Func_f9e9a:
 	ret
 
 YellowIntro_Copy8BitSineWave:
-	; Copy this sine wave into wYellowIntroSurfingPikaSineWaveBuffer 8 times (end just before wc900)
-	ld de, wYellowIntroSurfingPikaSineWaveBuffer
+	; Copy this sine wave into wLYOverridesBuffer 8 times (end just before wc900)
+	ld de, wLYOverridesBuffer
 	ld a, $8
 .loop
 	push af
@@ -797,13 +797,13 @@ YellowIntro_Copy8BitSineWave:
 .SineWaveEnd:
 
 Request7TileTransferFromC810ToC710:
-	ld a, wc810 % $100
+	ld a, $10
 	ld [H_VBCOPYSRC], a
-	ld a, wc810 / $100
+	ld a, wLYOverridesBuffer / $100
 	ld [H_VBCOPYSRC + 1], a
-	ld a, wc710 % $100
+	ld a, $10
 	ld [H_VBCOPYDEST], a
-	ld a, wc710 / $100
+	ld a, wLYOverrides / $100
 	ld [H_VBCOPYDEST + 1], a
 	ld a, $7
 	ld [H_VBCOPYSIZE], a

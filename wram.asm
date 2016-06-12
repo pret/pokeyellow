@@ -231,16 +231,16 @@ wSpriteStateData1:: ; c100
 ; C1xF
 spritestatedata1: MACRO
 w\1SpriteStateData1::
-w\1PictureID:: db
-w\1MovementStatus:: db
-w\1SpriteImageIdx:: db
-w\1YStepVector:: db
-w\1YPixels:: db
-w\1XStepVector:: db
-w\1XPixels:: db
-w\1IntraAnimFrameCounter:: db
-w\1AnimFrameCounter:: db
-w\1FacingDirection:: db
+w\1PictureID:: db ; 0
+w\1MovementStatus:: db ; 1
+w\1SpriteImageIdx:: db ; 2
+w\1YStepVector:: db ; 3
+w\1YPixels:: db ; 4
+w\1XStepVector:: db ; 5
+w\1XPixels:: db ; 6
+w\1IntraAnimFrameCounter:: db ; 7
+w\1AnimFrameCounter:: db ; 8
+w\1FacingDirection:: db ; 9
 	ds 6
 w\1SpriteStateData1End::
 endm
@@ -288,17 +288,17 @@ wSpriteStateData2:: ; c200
 ; C2xF
 spritestatedata2: MACRO
 w\1SpriteStateData2::
-w\1WalkAnimationCounter:: db
+w\1WalkAnimationCounter:: db ; 0
 	ds 1
-w\1YDisplacement:: db
-w\1XDisplacement:: db
-w\1MapY:: db
-w\1MapX:: db
-w\1MovementByte1:: db
-w\1GrassPriority:: db
-w\1MovementDelay:: db
+w\1YDisplacement:: db ; 2
+w\1XDisplacement:: db ; 3
+w\1MapY:: db ; 4
+w\1MapX:: db ; 5
+w\1MovementByte1:: db ; 6
+w\1GrassPriority:: db ; 7
+w\1MovementDelay:: db ; 8
 	ds 5
-w\1SpriteImageBaseOffset:: db
+w\1SpriteImageBaseOffset:: db ; e
 	ds 1
 w\1SpriteStateData2End::
 endm
@@ -350,7 +350,34 @@ wAnimatedObjectsData::
 wAnimatedObjectStartTileOffsets::
 	ds 10 * 2
 wAnimatedObjectDataStructs:: ; c51c
-	ds 10 * $10
+animated_object: macro
+\1::
+\1Index::          db ; 0
+\1FramesetID::     db ; 1
+\1AnimSeqID::      db ; 2
+\1TileID::         db ; 3
+\1XCoord::         db ; 4
+\1YCoord::         db ; 5
+\1XOffset::        db ; 6
+\1YOffset::        db ; 7
+\1Duration::       db ; 8
+\1DurationOffset:: db ; 9
+\1FrameIndex::     db ; a
+	ds 5
+\1End::
+	endm
+
+	animated_object AnimatedObject0
+	animated_object AnimatedObject1
+	animated_object AnimatedObject2
+	animated_object AnimatedObject3
+	animated_object AnimatedObject4
+	animated_object AnimatedObject5
+	animated_object AnimatedObject6
+	animated_object AnimatedObject7
+	animated_object AnimatedObject8
+	animated_object AnimatedObject9
+
 wNumLoadedAnimatedObjects:: ; c5bc
 	ds 1
 wCurrentAnimatedObjectOAMBufferOffset:: ; c5bd
@@ -383,29 +410,29 @@ wAnimatedObjectsDataEnd::
 
 wSerialEnemyMonsPatchList:: ; c5d0
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
+
+; Surfing Minigame
+wSurfingMinigameData:: ; c5d0
 	ds 1
-wc5d1:: ; c5d1
+wSurfingMinigameRoutineNumber:: ; c5d1
 	ds 1
 wc5d2:: ; c5d2
 	ds 1
-wc5d3:: ; c5d3
+wSurfingMinigameWaveFunctionNumber:: ; c5d3
 	ds 2
 wc5d5:: ; c5d5
 	ds 1
-wc5d6:: ; c5d6
+wSurfingMinigamePikachuHP:: ; c5d6
+	ds 2 ; little-endian BCD
+wc5d8:: ; c5d8 unused?
 	ds 1
-wc5d7:: ; c5d7
-	ds 2
-wc5d9:: ; c5d9
+wSurfingMinigameRadnessMeter:: ; c5d9
+; number of consecutive tricks
 	ds 1
-wc5da:: ; c5da
-	ds 1
-wc5db:: ; c5db
-	ds 1
-wc5dc:: ; c5dc
-	ds 1
-wc5dd:: ; c5dd
-	ds 1
+wSurfingMinigameRadnessScore:: ; c5da
+	ds 2 ; little-endian BCD
+wSurfingMinigameTotalScore:: ; c5dc
+	ds 2 ; little-endian BCD
 wc5de:: ; c5de
 	ds 1
 wc5df:: ; c5df
@@ -417,18 +444,12 @@ wc5e1:: ; c5e1
 wc5e2:: ; c5e2
 	ds 1
 wc5e3:: ; c5e3
-	ds 2
+	ds 2 ; little-endian
 wc5e5:: ; c5e5
-	ds 1
-wc5e6:: ; c5e6
-	ds 1
-wc5e7:: ; c5e7
-	ds 1
-wc5e8:: ; c5e8
-	ds 1
-wc5e9:: ; c5e9
-	ds 1
-wc5ea:: ; c5ea
+	ds 3 ; big-endian
+wSurfingMinigameWaveHeightBuffer:: ; c5e8
+	ds 2
+wSurfingMinigamePikachuObjectHeight:: ; c5ea
 	ds 1
 wc5eb:: ; c5eb
 	ds 1
@@ -438,37 +459,25 @@ wc5ed:: ; c5ed
 	ds 1
 wc5ee:: ; c5ee
 	ds 1
-wc5ef:: ; c5ef
+wSurfingMinigameBGMapReadBuffer:: ; c5ef
+	ds 16
+
+	ds 24
+wSurfingMinigameSCX:: ; c617
+	ds 3
+wSurfingMinigameWaveHeight:: ; c61a
+	ds SCREEN_WIDTH
+wSurfingMinigameXOffset:: ; c62e
 	ds 1
-wc5f0:: ; c5f0
-	ds 39
-wc617:: ; c617
-	ds 1
-wc618:: ; c618
-	ds 1
-wc619:: ; c619
-	ds 1
-wc61a:: ; c61a
-	ds 2
-wc61c:: ; c61c
-	ds 5
-wc621:: ; c621
-	ds 1
-wc622:: ; c622
-	ds 1
-wc623:: ; c623
-	ds 11
-wc62e:: ; c62e
-	ds 1
-wc62f:: ; c62f
+wSurfingMinigameTrickFlags:: ; c62f
 	ds 1
 wc630:: ; c630
 	ds 1
 wc631:: ; c631
 	ds 1
-wc632:: ; c632
+wSurfingMinigameRoutineDelay:: ; c632
 	ds 1
-wc633:: ; c633
+wSurfingMinigameIntroAnimationFinished:: ; c633
 	ds 1
 
 wYellowIntroCurrentScene:: ; c634
@@ -478,13 +487,10 @@ wYellowIntroSceneTimer:: ; c635
 wc635:: ; c635
 	ds 1
 wYellowIntroAnimatedObjectStructPointer:: ; c636
-	ds 2
+	ds 1
+wSurfingMinigameDataEnd:: ; c637
 
-; c638
-	ds 96
-
-; c698
-	ds 80
+	ds 177
 
 wTempPic:: ; c6e8
 wPrinterData:: ; c6e8
@@ -508,9 +514,6 @@ wc6ed:: ; c6ed
 wPrinterChecksum:: ; c6ee
 	dw
 
-wPrinterSendDataSource:: ; c6f0
-; a 40-tile buffer
-; ds $280
 wPrinterSerialReceived:: ; c6f0
 	ds 1
 wPrinterStatusReceived:: ; c6f1
@@ -524,21 +527,20 @@ wc6f2:: ; c6f2
 	ds 1
 wc6f3:: ; c6f3
 	ds 13
-wc700:: ; c700
-	ds $10
-wc710:: ; c710
-	ds $f0
-wYellowIntroSurfingPikaSineWaveBuffer:: ; c800
-	; ds $100
-	ds $10
-wc810:: ; c810
-	ds $20
-wc830:: ; c830
-	ds $d0
+wLYOverrides:: ; c700
+	ds $100
+wLYOverridesEnd::
+wLYOverridesBuffer:: ; c800
+	ds $100
+wLYOverridesBufferEnd:: ; c900
+	ds wPrinterSerialReceived - @
 
-; c900
-	ds $70
-wPrinterSendDataSourceEnd:: ; c970
+wPrinterSendDataSource1:: ; c6f0
+; two 20-tile buffers
+	ds $140
+wPrinterSendDataSource2::
+	ds $140
+wPrinterSendDataSource1End:: ; c970
 
 wPrinterHandshake:: ; c970
 	ds 1
@@ -835,13 +837,14 @@ wSwitchPartyMonTempBuffer:: ; cc97
 
 wPikaPicAnimObjectDataBuffer:: ; cc98
 ; 4 structs each of length 8
-; 	0: index
-; 	1: object id (dw)
-; 	3: ?
-; 	4: ?
-; 	5: ?
-; 	6: ?
-; 	7: ?
+; 	0: buffer index
+; 	1: script index
+;   2: frame index
+; 	3: frame timer
+; 	4: vtile offset
+; 	5: x offset
+; 	6: y offset
+; 	7: unused
 
 	ds 9
 
@@ -1620,7 +1623,7 @@ wTextPredefFlag:: ; cf11
 wPredefParentBank:: ; cf12
 	ds 1
 
-wSpriteIndex:: ds 1
+wSpriteIndex:: ds 1 ; cf13
 
 wCurSpriteMovement2:: ; cf14
 ; movement byte 2 of current sprite
@@ -2836,32 +2839,53 @@ wPikachuFollowCommandBuffer:: ds 16 ; d437
 
 wExpressionNumber:: ; d447
 	ds 1
-wExpressionNumber2:: ; d448
+wPikaPicAnimNumber:: ; d448
 	ds 1
 	
 wPikachuMovementScriptBank:: ds 1  ; d449
 wPikachuMovementScriptAddress:: dw ; d44a
-wd44d:: ds 1  ; d44c
+wPikachuMovementFlags:: ; d44c
+; bit 6 - spawn shadow
+; bit 7 - signal end of command
+	ds 1
 
-wCurPikaMovementData:: ; 
+wCurPikaMovementData:: ; d44d
+wCurPikaMovementParam1:: ds 1 ; d44d
+wCurPikaMovementFunc1:: ds 1 ; d44e
+wCurPikaMovementParam2:: ds 1 ; d44f
+wCurPikaMovementFunc2:: ds 1 ; d450
+wd451:: ds 1 ; d451
+wCurPikaMovementSpriteImageIdx:: ds 1 ; d452
+wPikaSpriteX:: ds 1 ; d453
+wPikaSpriteY:: ds 1 ; d454
+wPikachuMovementXOffset:: ds 1 ; d455
+wPikachuMovementYOffset:: ds 1 ; d456
+wPikachuStepTimer:: ds 1 ; d457
+wPikachuStepSubtimer:: ds 1 ; d458
+	ds 5
+wCurPikaMovementDataEnd:: ; d45e
+	ds wCurPikaMovementData - @
+
+
 wPikaPicAnimPointer:: dw ; d44d
 wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
-wPikaPicAnimCurGraphicID:: ds 1
+wPikaPicAnimCurGraphicID:: ds 1 ; d450
 wPikaPicAnimTimer:: ds 2 ; d451
-wPikaPicAnimDelay::
-wPikaSpriteX:: ds 1
-wPikaPicTextboxStartX::
-wPikaSpriteY:: ds 1 ; d454
-wPikaPicTextboxStartY:: ds 1 ; d455
-wd456:: ds 1 ; d456
-wd457:: ds 1 ; d457
-wd458:: ds 1 ; d458
-wCurPikaPicAnimObject:: ; d459
-wCurPikaPicAnimObjectIndex:: ds 1 ; d459
-wCurPikaPicAnimObjectGraphicID:: dw ; d45a
-	ds 2
-wCurPikaMovementDataEnd:: ; d45e
-	ds 17
+wPikaPicAnimDelay:: ds 1 ; d453
+wPikaPicPikaDrawStartX:: ds 1 ; d454
+wPikaPicPikaDrawStartY:: ds 1 ; d455
+
+wCurPikaPicAnimObject:: ; d456
+wCurPikaPicAnimObjectVTileOffset:: db ; d456
+wCurPikaPicAnimObjectXOffset:: db ; d457
+wCurPikaPicAnimObjectYOffset:: db ; d458
+wCurPikaPicAnimObjectScriptIdx:: db ; d459
+wCurPikaPicAnimObjectFrameIdx:: db ; d45a
+wCurPikaPicAnimObjectFrameTimer:: db ; d45b
+	ds 1
+wCurPikaPicAnimObjectEnd:: ; d45d
+
+	ds 18
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470

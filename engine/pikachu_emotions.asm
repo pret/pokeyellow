@@ -1,4 +1,4 @@
-IsPlayerTalkingToPikachu:: ; fcf0c (3f:4f0c)
+IsPlayerTalkingToPikachu: ; fcf0c (3f:4f0c)
 	ld a, [wd436]
 	and a
 	ret z
@@ -25,7 +25,7 @@ InitializePikachuTextID: ; fcf20 (3f:4f20)
 
 DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	add hl, de
 	ld e, [hl]
@@ -37,7 +37,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	cp $ff
 	jr z, .done
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, StarterPikachuEmotionsJumptable
 	add hl, bc
 	add hl, bc
@@ -46,6 +46,7 @@ DoStarterPikachuEmotions: ; fcf35 (3f:4f35)
 	ld l, a
 	call JumpToAddress
 	jr .loop
+
 .done
 	ret
 	
@@ -110,7 +111,7 @@ StarterPikachuEmotionCommand_emote: ; fcf8d (3f:4f8d)
 	
 ShowPikachuEmoteBubble: ; fcfa2 (3f:4fa2)
 	ld [wWhichEmotionBubble], a
-	ld a, $f
+	ld a, $f ; Pikachu
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ret
@@ -142,8 +143,8 @@ StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	inc de
 	push de
 	ld e, a
-	ld d, $0
-	ld hl, Jumptable_fcfda
+	ld d, 0
+	ld hl, .Subcommands
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -153,7 +154,7 @@ StarterPikachuEmotionCommand_subcmd: ; fcfc7 (3f:4fc7)
 	pop de
 	ret
 
-Jumptable_fcfda:
+.Subcommands:
 	dw LoadPikachuSpriteIntoVRAM
 	dw LoadFontTilePatterns
 	dw Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3
@@ -185,11 +186,11 @@ DeletedFunction_fcffb: ; fcffb (3f:4ffb)
 	endr
 	ret
 
-Func_fd001:: ; fd001 (3f:5001)
+PlaySpecificPikachuEmotion: ; fd001 (3f:5001)
 	ld a, e
 	jr load_expression
 
-Func_fd004:: ; fd004 (3f:5004)
+TalkToPikachu: ; fd004 (3f:5004)
 	call MapSpecificPikachuExpression
 	jr c, load_expression
 	call GetPikaPicAnimationScriptIndex
@@ -201,42 +202,46 @@ load_expression: ; fd00f (3f:500f)
 	ret
 	
 PikachuEmotionTable: ; fd019 (3f:4019)
-	dw PikachuEmotion0_fd115
-	dw PikachuEmotion1_fd141
-	dw PikachuEmotion2_fd116
-	dw PikachuEmotion3_fd160
-	dw PikachuEmotion4_fd136
-	dw PikachuEmotion5_fd14d
-	dw PikachuEmotion6_fd153
-	dw PikachuEmotion7_fd128
-	dw PikachuEmotion8_fd147
-	dw PikachuEmotion9_fd166
-	dw PikachuEmotion10_fd11e
-	dw PikachuEmotion11_fd173
-	dw PikachuEmotion12_fd17a
-	dw PikachuEmotion13_fd180
-	dw PikachuEmotion14_fd189
-	dw PikachuEmotion15_fd191
-	dw PikachuEmotion16_fd197
-	dw PikachuEmotion17_fd19d
-	dw PikachuEmotion18_fd1a3
-	dw PikachuEmotion19_fd1a9
-	dw PikachuEmotion20_fd1b1
-	dw PikachuEmotion21_fd1b9 ; used a fishing rod
-	dw PikachuEmotion22_fd1c1
-	dw PikachuEmotion23_fd1c7
-	dw PikachuEmotion24_fd1cf
-	dw PikachuEmotion25_fd1d7
-	dw PikachuEmotion26_fd1df ; wake up pikachu in pewter pokemon center
-	dw PikachuEmotion27_fd1eb
-	dw PikachuEmotion28_fd1f1
-	dw PikachuEmotion29_fd1f7
-	dw PikachuEmotion30_fd1fc
-	dw PikachuEmotion31_fd20a
-	dw PikachuEmotion32_fd213
-	dw PikachuEmotion33_fd05d
+pikaemotion_def: MACRO
+\1_id: dw \1
+	endm
+
+	pikaemotion_def PikachuEmotion0
+	pikaemotion_def PikachuEmotion1
+	pikaemotion_def PikachuEmotion2
+	pikaemotion_def PikachuEmotion3
+	pikaemotion_def PikachuEmotion4
+	pikaemotion_def PikachuEmotion5
+	pikaemotion_def PikachuEmotion6
+	pikaemotion_def PikachuEmotion7
+	pikaemotion_def PikachuEmotion8
+	pikaemotion_def PikachuEmotion9
+	pikaemotion_def PikachuEmotion10
+	pikaemotion_def PikachuEmotion11
+	pikaemotion_def PikachuEmotion12
+	pikaemotion_def PikachuEmotion13
+	pikaemotion_def PikachuEmotion14
+	pikaemotion_def PikachuEmotion15
+	pikaemotion_def PikachuEmotion16
+	pikaemotion_def PikachuEmotion17
+	pikaemotion_def PikachuEmotion18
+	pikaemotion_def PikachuEmotion19
+	pikaemotion_def PikachuEmotion20
+	pikaemotion_def PikachuEmotion21 ; used a fishing rod
+	pikaemotion_def PikachuEmotion22
+	pikaemotion_def PikachuEmotion23
+	pikaemotion_def PikachuEmotion24
+	pikaemotion_def PikachuEmotion25
+	pikaemotion_def PikachuEmotion26 ; wake up pikachu in pewter pokemon center
+	pikaemotion_def PikachuEmotion27
+	pikaemotion_def PikachuEmotion28
+	pikaemotion_def PikachuEmotion29
+	pikaemotion_def PikachuEmotion30
+	pikaemotion_def PikachuEmotion31
+	pikaemotion_def PikachuEmotion32
+	pikaemotion_def PikachuEmotion33
 	
-PikachuEmotion33_fd05d: ; fd05d (3f:505d)
+PikachuEmotion33: ; fd05d (3f:505d)
 	db $ff
 	
 MapSpecificPikachuExpression: ; fd05e (3f:505e)
@@ -245,11 +250,11 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	jr nz, .notFanClub
 	ld hl, wd492
 	bit 7, [hl]
-	ld a, $1d
-	jr z, .set_carry
+	ldpikaemotion a, PikachuEmotion29
+	jr z, .play_emotion
 	call CheckPikachuFollowingPlayer
-	ld a, $1e
-	jr nz, .set_carry
+	ldpikaemotion a, PikachuEmotion30
+	jr nz, .play_emotion
 	jr .check_pikachu_status
 
 .notFanClub
@@ -257,60 +262,64 @@ MapSpecificPikachuExpression: ; fd05e (3f:505e)
 	cp PEWTER_POKECENTER
 	jr nz, .notPewterPokecenter
 	call CheckPikachuFollowingPlayer
-	ld a, $1a
-	jr nz, .set_carry
+	ldpikaemotion a, PikachuEmotion26
+	jr nz, .play_emotion
 	jr .check_pikachu_status
 
 .notPewterPokecenter
 	callab Func_f24ae
 	ld a, e
 	cp $ff
-	jr nz, .set_carry
+	jr nz, .play_emotion
 	jr .check_pikachu_status ; useless
 
 .check_pikachu_status
 	call IsPlayerPikachuAsleepInParty
-	ld a, $b
-	jr c, .set_carry
+	ldpikaemotion a, PikachuEmotion11
+	jr c, .play_emotion
 	callab CheckPikachuFaintedOrStatused ; same bank
-	ld a, $1c
-	jr c, .set_carry
+	ldpikaemotion a, PikachuEmotion28
+	jr c, .play_emotion
 	ld a, [wCurMap]
 	cp POKEMONTOWER_1
 	jr c, .notInLavenderTower
 	cp POKEMONTOWER_7 + 1
-	ld a, $16
-	jr c, .set_carry
+	ldpikaemotion a, PikachuEmotion22
+	jr c, .play_emotion
 .notInLavenderTower
 	ld a, [wd49c]
 	and a
-	jr z, .no_carry
+	jr z, .mood_based_emotion
 	dec a
 	ld c, a
 	ld b, $0
-	ld hl, Pointer_fd0cb
+	ld hl, .Emotions
 	add hl, bc
 	ld a, [hl]
-	jr .set_carry
+	jr .play_emotion
 
-.no_carry
+.mood_based_emotion
 	and a
 	ret
 
-.set_carry
+.play_emotion
 	scf
 	ret
 	
-Pointer_fd0cb:
-	db $12, $15, $17, $18, $19
+.Emotions:
+	dpikaemotion PikachuEmotion18
+	dpikaemotion PikachuEmotion21
+	dpikaemotion PikachuEmotion23
+	dpikaemotion PikachuEmotion24
+	dpikaemotion PikachuEmotion25
 	
-IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
+IsPlayerPikachuAsleepInParty: ; fd0d0 (3f:50d0)
 	xor a
 	ld [wWhichPokemon], a
 .loop
 	ld a, [wWhichPokemon]
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld hl, wPartySpecies
 	add hl, bc
 	ld a, [hl]
@@ -328,6 +337,7 @@ IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
 	and SLP
 	jr z, .done
 	jr .curMonSleepingPikachu
+
 .curMonNotStarterPikachu
 	ld a, [wWhichPokemon]
 	cp PARTY_LENGTH - 1
@@ -335,75 +345,77 @@ IsPlayerPikachuAsleepInParty:: ; fd0d0 (3f:50d0)
 	inc a
 	ld [wWhichPokemon], a
 	jr .loop
+
 .curMonSleepingPikachu
 	scf
 	ret
+
 .done
 	and a
 	ret
 	
 INCLUDE "data/pikachu_emotions.asm"
 
-Func_fd252: ; fd252 (3f:5252)
+PikachuWalksToNurseJoy: ; fd252 (3f:5252)
 	ld a, $40
 	ld [h_0xFFFC], a
 	call LoadPikachuSpriteIntoVRAM
-	call Func_fd266
+	call .GetMovementData
 	and a
-	jr z, .asm_fd262
+	jr z, .skip
 	call ApplyPikachuMovementData
-.asm_fd262
+.skip
 	xor a
 	ld [h_0xFFFC], a
 	ret
 
-Func_fd266:
-	ld a, [wSpriteStateData2 + 15 * 16 + 4]
+.GetMovementData:
+	ld a, [wPikachuMapY]
 	ld e, a
-	ld a, [wSpriteStateData2 + 15 * 16 + 5]
+	ld a, [wPikachuMapX]
 	ld d, a
 	ld a, [wYCoord]
 	add 4
 	cp e
-	jr z, .asm_fd280
-	jr nc, .asm_fd27e
-	ld hl, Data_fd294
+	jr z, .pikachu_at_same_y_as_player
+	jr nc, .pikachu_above_player
+	ld hl, .PikaMovementData1
 	ld a, 1
 	ret
 
-.asm_fd27e
+.pikachu_above_player
 	xor a
 	ret
 
-.asm_fd280
+.pikachu_at_same_y_as_player
 	ld a, [wXCoord]
 	add 4
 	cp d
-	jr c, .asm_fd28e
-	ld hl, Data_fd299
+	jr c, .pikachu_to_right_of_player
+	ld hl, .PikaMovementData2
 	ld a, 2
 	ret
 
-.asm_fd28e
-	ld hl, Data_fd29d
+.pikachu_to_right_of_player
+	ld hl, .PikaMovementData3
 	ld a, 3
 	ret
 
-Data_fd294:
-	db $00
-	db $36
-	db $2b
-	db $34
-	db $3f
+.PikaMovementData1:
+	db $00 ; init
+	db $36 ; look up
+	db $2b ; walk up left
+	db $34 ; hop up right
+	db $3f ; ret
 
-Data_fd299:
-	db $00
-	db $36
-	db $34
-	db $3f
+.PikaMovementData2:
+	db $00 ; init
+	db $36 ; look up
+	db $34 ; hop up right
+	db $3f ; ret
 
-Data_fd29d:
-	db $00
-	db $36
-	db $33
-	db $3f
+.PikaMovementData3:
+	db $00 ; init
+	db $36 ; look up
+	db $33 ; hop up left
+	db $3f ; ret

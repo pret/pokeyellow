@@ -1,4 +1,4 @@
-Func_fc4dd:: ; fc4dd (3f:44dd)
+ShouldPikachuSpawn:: ; fc4dd (3f:44dd)
 ; possibly to test if pika should be out?
 	ld a, [wPikachuOverworldStateFlags]
 	bit 5, a
@@ -18,7 +18,7 @@ Func_fc4dd:: ; fc4dd (3f:44dd)
 	and a
 	ret
 
-Func_fc4fa:: ; fc4fa (3f:44fa)
+SchedulePikachuSpawnForAfterText:: ; fc4fa (3f:44fa)
 	ld hl, wPikachuOverworldStateFlags
 	bit 4, [hl]
 	res 4, [hl]
@@ -49,7 +49,7 @@ ClearPikachuSpriteStateData:: ; fc523 (3f:4523)
 	call FillMemory
 	ret
 
-Func_fc534:: ; fc534 (3f:4534)
+CalculatePikachuSpawnCoordsAndFacing:: ; fc534 (3f:4534)
 	call CalculatePikachuPlacementCoords
 	call CalculatePikachuFacingDirection
 	xor a
@@ -350,7 +350,7 @@ ResetPikachuOverworldStateFlag2:: ; fc6cd (3f:46cd)
 
 SpawnPikachu_:: ; fc6d5 (3f:46d5)
 	call ResetPikachuOverworldStateFlag2
-	call Func_fc727
+	call TrySpawnPikachu
 	ret nc
 
 	push bc
@@ -358,16 +358,16 @@ SpawnPikachu_:: ; fc6d5 (3f:46d5)
 	pop bc
 	ret c
 
-	ld bc, wPikachuPictureID
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld bc, wPikachuSpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	bit 7, [hl]
-	jp nz, asm_fc745
+	jp nz, Func_fc745
 	ld a, [wFontLoaded]
 	bit 0, a
-	jp nz, asm_fc76a
+	jp nz, Func_fc76a
 	call CheckPikachuFollowingPlayer
-	jp nz, asm_fc76a
+	jp nz, Func_fc76a
 	ld a, [hl]
 	and $7f
 	cp $a
@@ -395,20 +395,20 @@ PointerTable_fc710: ; fc710 (3f:4710)
 	dw asm_fc904
 	dw asm_fc937
 	dw asm_fc969
-	dw Func_fc726
+	dw .nop
 
-Func_fc726: ; fc726 (3f:4726)
+.nop: ; fc726 (3f:4726)
 	ret
 
-Func_fc727: ; fc727 (3f:4727)
-	call Func_fc4dd
+TrySpawnPikachu: ; fc727 (3f:4727)
+	call ShouldPikachuSpawn
 	jr nc, .dont_spawn
 	ld a, [wPikachuMovementStatus]
 	and a
 	jr nz, .already_spawned
 	push bc
 	push hl
-	call Func_fc534
+	call CalculatePikachuSpawnCoordsAndFacing
 	pop hl
 	pop bc
 .already_spawned
@@ -423,46 +423,47 @@ Func_fc727: ; fc727 (3f:4727)
 	xor a
 	ret
 
-asm_fc745: ; fc745 (3f:4745)
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+Func_fc745: ; fc745 (3f:4745)
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	res 7, [hl]
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
 	call CheckPikachuFollowingPlayer
-	jr nz, .asm_fc75f
+	jr nz, .okay
+	; Have Pikachu face in the opposite direction of you
 	ld a, [wPlayerFacingDirection]
 	xor $4
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
-.asm_fc75f
+.okay
 	xor a
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
 	call UpdatePikachuWalkingSprite
 	ret
 
-asm_fc76a: ; fc76a (3f:476a)
+Func_fc76a: ; fc76a (3f:476a)
 	xor a
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
 	call UpdatePikachuWalkingSprite
 	call Func_fc82e
-	jr c, .asm_fc783
+	jr c, .skip
 	push bc
 	callab InitializeSpriteScreenPosition
 	pop bc
-.asm_fc783
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+.skip
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $0
 	call RefreshPikachuFollow
@@ -473,7 +474,7 @@ Func_fc793: ; fc793 (3f:4793)
 	push bc
 	callab InitializeSpriteScreenPosition
 	pop bc
-	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
+	ld hl, wPikachuSpriteImageIdx - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	dec hl
@@ -494,12 +495,12 @@ Func_fc7aa: ; fc7aa (3f:47aa)
 	ld e, l
 	ld a, [de]
 	inc de
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
 	ld a, [de]
 	inc de
-	ld hl, wSprite01XStepVector - wSprite01SpriteStateData1
+	ld hl, wPikachuXStepVector - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
 	dec hl
@@ -508,7 +509,7 @@ Func_fc7aa: ; fc7aa (3f:47aa)
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
 	cp $4
@@ -538,7 +539,7 @@ Pointer_fc7e3: ; fc7e3 (3f:47e3)
 Func_fc803: ; fc803 (3f:4803)
 	call Func_fcae2
 	ret c
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	jr nz, .asm_fc823
@@ -550,12 +551,12 @@ Func_fc803: ; fc803 (3f:4803)
 	ld [hl], $20
 	call Random
 	and $c
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
 .asm_fc823
 	xor a
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
@@ -570,10 +571,10 @@ Func_fc82e: ; fc82e (3f:482e)
 	ret
 
 Func_fc835: ; fc835 (3f:4835)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $10
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
@@ -606,16 +607,16 @@ Func_fc862: ; fc862 (3f:4862)
 	add a
 	add a
 	and $c
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], a
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $6
 	xor a
 	ld [wd432], a
 	ld [wd433], a
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $11
 asm_fc87f: ; fc87f (3f:487f)
@@ -626,7 +627,7 @@ asm_fc87f: ; fc87f (3f:487f)
 	call Func_fc82e
 	jr c, Func_fc8c7
 	call SetPikachuOverworldStateFlag2
-	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
+	ld hl, wPikachuYPixels - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub e
@@ -636,7 +637,7 @@ asm_fc87f: ; fc87f (3f:487f)
 	ld a, [hl]
 	sub d
 	ld d, a
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
@@ -654,20 +655,20 @@ asm_fc87f: ; fc87f (3f:487f)
 	ld [wd433], a
 	add d
 	ld d, a
-	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
+	ld hl, wPikachuYPixels - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], e
 	inc hl
 	inc hl
 	ld [hl], d
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc8c7: ; fc8c7 (3f:48c7)
-	ld hl, wSprite01YPixels - wSprite01SpriteStateData1
+	ld hl, wPikachuYPixels - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	sub e
@@ -699,17 +700,17 @@ Pointer_fc8d6: ; fc8d6 (3f:48d6)
 	db  0,  0
 
 Func_fc8f8: ; fc8f8 (3f:48f8)
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $7
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $30
 asm_fc904: ; fc904 (3f:4904)
 	call Func_fc82e
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -724,24 +725,24 @@ asm_fc904: ; fc904 (3f:4904)
 	ld [hl], a
 .asm_fc91f
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc92b: ; fc92b (3f:492b)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $20
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $8
 asm_fc937: ; fc937 (3f:4937)
 	call Func_fc82e
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -755,48 +756,48 @@ asm_fc937: ; fc937 (3f:4937)
 	ld [hl], a
 .asm_fc951
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
 Func_fc95d: ; fc95d (3f:495d)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $20
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $9
 asm_fc969: ; fc969 (3f:4969)
 	call Func_fc82e
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
 	cp $8
 	ld [hl], a
-	jr nz, .asm_fc988
+	jr nz, .skip
 	xor a
 	ld [hl], a
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
-	call Func_fc994
+	call .TurnClockwise
 	ld [hl], a
-.asm_fc988
+.skip
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	jp Func_fc835
 
-Func_fc994: ; fc994 (3f:4994)
+.TurnClockwise: ; fc994 (3f:4994)
 	push hl
-	ld hl, Pointer_fc9ac
+	ld hl, .Facings
 	ld d, a
 .loop
 	ld a, [hli]
@@ -806,28 +807,28 @@ Func_fc994: ; fc994 (3f:4994)
 	pop hl
 	ret
 
-Func_fc9a0: ; fc9a0 (3f:49a0)
+.TurnCounterclockwise: ; fc9a0 (3f:49a0)
 	push hl
-	ld hl, Pointer_fc9ac_End
+	ld hl, .Facings_End
 	ld d, a
-.loop
+.loop_
 	ld a, [hld]
 	cp d
-	jr nz, .loop
+	jr nz, .loop_
 	ld a, [hl]
 	pop hl
 	ret
 
-Pointer_fc9ac: ; fc9ac (3f:49ac)
+.Facings: ; fc9ac (3f:49ac)
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
 	db SPRITE_FACING_DOWN, SPRITE_FACING_LEFT, SPRITE_FACING_UP, SPRITE_FACING_RIGHT
-Pointer_fc9ac_End:
+.Facings_End:
 
 NormalPikachuFollow: ; fc9b4 (3f:49b4)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $8
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $3
 	call AddPikachuStepVector
@@ -835,22 +836,22 @@ asm_fc9c3: ; fc9c3 (3f:49c3)
 	call TryDoubleAddPikachuStepVectorToScreenPixelCoords
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call ResetPikachuStepVector
 	call ComputePikachuFacingDirection
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 FastPikachuFollow: ; fc9df (3f:49df)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $4
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $5
 	call AddPikachuStepVector
@@ -858,22 +859,22 @@ asm_fc9ee: ; fc9ee (3f:49ee)
 	call DoubleAddPikachuStepVectorToScreenPixelCoords
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call ResetPikachuStepVector
 	call ComputePikachuFacingDirection
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 Func_fca0a: ; fca0a (3f:4a0a)
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $8
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $4
 	call AddPikachuStepVector
@@ -882,25 +883,25 @@ asm_fca1c: ; fca1c (3f:4a1c)
 	call DoubleAddPikachuStepVectorToScreenPixelCoords
 	call GetPikachuWalkingAnimationSpeed
 	call UpdatePikachuWalkingSprite
-	ld hl, wSprite01WalkAnimationCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuWalkAnimationCounter - wPikachuSpriteStateData1
 	add hl, bc
 	dec [hl]
 	ret nz
 	call ResetPikachuStepVector
 	call ComputePikachuFacingDirection
-	ld hl, wSprite01MovementStatus - wSprite01SpriteStateData1
+	ld hl, wPikachuMovementStatus - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $1
 	ret
 
 AddPikachuStepVector: ; fca38 (3f:4a38)
-	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
+	ld hl, wPikachuYStepVector - wPikachuSpriteStateData1
 	add hl, bc
 	ld e, [hl]
 	inc hl
 	inc hl
 	ld d, [hl]
-	ld hl, wSprite01MapY - wSprite01SpriteStateData1
+	ld hl, wPikachuMapY - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	add e
@@ -918,7 +919,7 @@ TryDoubleAddPikachuStepVectorToScreenPixelCoords: ; fca4b (3f:4a4b)
 	bit 6, a
 	jr nz, AddPikachuStepVectorToScreenPixelCoords
 DoubleAddPikachuStepVectorToScreenPixelCoords: ; fca59 (3f:4a59)
-	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
+	ld hl, wPikachuYStepVector - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hli]
 	add a
@@ -933,7 +934,7 @@ DoubleAddPikachuStepVectorToScreenPixelCoords: ; fca59 (3f:4a59)
 	ret
 
 AddPikachuStepVectorToScreenPixelCoords: ; fca68 (3f:4a68)
-	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
+	ld hl, wPikachuYStepVector - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hli]
 	add a
@@ -946,7 +947,7 @@ AddPikachuStepVectorToScreenPixelCoords: ; fca68 (3f:4a68)
 	ret
 
 ResetPikachuStepVector: ; fca75 (3f:4a75)
-	ld hl, wSprite01YStepVector - wSprite01SpriteStateData1
+	ld hl, wPikachuYStepVector - wPikachuSpriteStateData1
 	add hl, bc
 	xor a
 	ld [hli], a
@@ -960,7 +961,7 @@ GetPikachuWalkingAnimationSpeed: ; fca7e (3f:4a7e)
 	jr nc, .happy
 	ld d, $5
 .happy
-	ld hl, wSprite01IntraAnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuIntraAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -980,7 +981,7 @@ UpdatePikachuWalkingSprite: ; fca99 (3f:4a99)
 	ld a, [wPikachuOverworldStateFlags]
 	bit 3, a
 	jr nz, .uninitialized
-	ld hl, wSprite01SpriteImageBaseOffset - wSprite01SpriteStateData1
+	ld hl, wPikachuSpriteImageBaseOffset - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
@@ -989,7 +990,7 @@ UpdatePikachuWalkingSprite: ; fca99 (3f:4a99)
 	ld a, [wd736]
 	bit 7, a
 	jr nz, .copy_player
-	ld hl, wSprite01FacingDirection - wSprite01SpriteStateData1
+	ld hl, wPikachuFacingDirection - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	or d
@@ -1002,19 +1003,19 @@ UpdatePikachuWalkingSprite: ; fca99 (3f:4a99)
 	jr .load_sprite_index
 
 .normal_get_sprite_index
-	ld hl, wSprite01AnimFrameCounter - wSprite01SpriteStateData1
+	ld hl, wPikachuAnimFrameCounter - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, d
 	or [hl]
 	ld d, a
 .load_sprite_index
-	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
+	ld hl, wPikachuSpriteImageIdx - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], d
 	ret
 
 .uninitialized
-	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
+	ld hl, wPikachuSpriteImageIdx - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	ret
@@ -1027,7 +1028,7 @@ UpdatePikachuWalkingSprite: ; fca99 (3f:4a99)
 	ret
 
 Func_fcae2: ; fcae2 (3f:4ae2)
-	ld hl, wSprite01MapY - wSprite01SpriteStateData1
+	ld hl, wPikachuMapY - wPikachuSpriteStateData1
 	add hl, bc
 	ld a, [wYCoord]
 	add $4
@@ -1038,7 +1039,7 @@ Func_fcae2: ; fcae2 (3f:4ae2)
 	add $4
 	cp [hl]
 	jr nz, .on_screen
-	ld hl, wSprite01SpriteImageIdx - wSprite01SpriteStateData1
+	ld hl, wPikachuSpriteImageIdx - wPikachuSpriteStateData1
 	add hl, bc
 	ld [hl], $ff
 	scf

@@ -1,4 +1,4 @@
-Func_ea3ea: ; ea3ea (3a:63ea)
+Printer_GetMonStats: ; ea3ea (3a:63ea)
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call LoadHpBarAndStatusTilePatterns
@@ -188,7 +188,7 @@ GFX_ea56b:
 INCBIN "gfx/stats_screen_lv.1bpp"
 GFX_ea56bEnd: ; ea573 (3a:6573)
 
-Func_ea573: ; ea573 (3a:6573)
+PrinterDebug_LoadGFX: ; ea573 (3a:6573)
 	ld hl, vChars1 + $7e0
 	ld de, GFX_ea597
 	lb bc, BANK(GFX_ea597), (GFX_ea597End - GFX_ea597) / 16
@@ -215,30 +215,30 @@ GFX_ea597: ; ea597 (3a:6597)
 INCBIN "gfx/zero_one_ea597.2bpp"
 GFX_ea597End:
 
-Func_ea5b7: ; ea5b7 (3a:65b7)
+PrinterDebug_ConvertStatusFlagsToTiles: ; ea5b7 (3a:65b7)
 	ld hl, wOAMBuffer + 32 * 4 + 2
 	ld de, 4
 	ld a, [wPrinterStatusFlags]
 	ld c, 8
-.asm_ea5c2
+.loop
 	sla a
-	jr c, .asm_ea5ca
+	jr c, .place_1
 	ld [hl], $fe
-	jr .asm_ea5cc
+	jr .okay
 
-.asm_ea5ca
+.place_1
 	ld [hl], $ff
-.asm_ea5cc
+.okay
 	add hl, de
 	dec c
-	jr nz, .asm_ea5c2
+	jr nz, .loop
 	ret
 
-Func_ea5d1: ; ea5d1 (3a:65d1)
+PrinterDebug_DoFunction: ; ea5d1 (3a:65d1)
 	ld a, [wPrinterSendState]
 	ld e, a
 	ld d, 0
-	ld hl, Jumptable_ea5e0
+	ld hl, .Jumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -246,7 +246,7 @@ Func_ea5d1: ; ea5d1 (3a:65d1)
 	ld l, a
 	jp [hl]
 
-Jumptable_ea5e0:
+.Jumptable:
 	dw Func_ea623
 	dw Func_ea6d2
 	dw Func_ea6af
@@ -266,7 +266,6 @@ Jumptable_ea5e0:
 	dw Func_ea61e
 	dw Func_ea72f
 	dw Func_ea732
-
 
 Func_ea606: ; ea606 (3a:6606)
 	ld hl, wPrinterSendState
@@ -317,7 +316,7 @@ Func_ea645: ; ea645 (3a:6645)
 	jr z, Func_ea671
 	ld hl, Data_ea9ea
 	call Func_ea76b
-	call Func_ea7e9
+	call PrinterDebug_PrepOAMForPrinting
 	ld a, $80
 	ld [wPrinterDataSize], a
 	ld a, $2
@@ -508,7 +507,7 @@ Func_ea784: ; ea784 (3a:6784)
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
-	ld hl, wPrinterSendDataSource
+	ld hl, wPrinterSendDataSource1
 	ld bc, $280
 	call FillMemory
 	ret
@@ -522,7 +521,7 @@ Func_ea7a2: ; ea7a2 (3a:67a2)
 	ld c, a
 	ld a, [wPrinterDataSize + 1]
 	ld b, a
-	ld de, wPrinterSendDataSource
+	ld de, wPrinterSendDataSource1
 	call Func_ea7c5
 	ld a, l
 	ld [wPrinterDataHeader + 4], a
@@ -547,7 +546,7 @@ Func_ea7c5: ; ea7c5 (3a:67c5)
 
 Func_ea7d2: ; ea7d2 (3a:67d2)
 	ld a, $1
-	ld [wPrinterSendDataSource], a
+	ld [wPrinterSendDataSource1], a
 	ld a, [wcae2]
 	ld [wPrinterStatusReceived], a
 	ld a, $e4
@@ -556,7 +555,7 @@ Func_ea7d2: ; ea7d2 (3a:67d2)
 	ld [wc6f3], a
 	ret
 
-Func_ea7e9: ; ea7e9 (3a:67e9)
+PrinterDebug_PrepOAMForPrinting: ; ea7e9 (3a:67e9)
 	ld a, [wPrinterRowIndex]
 	ld b, a
 	ld a, [wPrinterQueueLength]
@@ -573,7 +572,7 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 .start_working
 	ld e, l
 	ld d, h
-	ld hl, wPrinterSendDataSource
+	ld hl, wPrinterSendDataSource1
 	ld c, $28
 .prep_loop
 	ld a, [de]
@@ -598,7 +597,7 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 	or $80
 .got_vram_address
 	ld d, a
-	lb bc, BANK(Func_ea7e9), $1
+	lb bc, BANK(PrinterDebug_PrepOAMForPrinting), $1
 	call CopyVideoData
 	pop hl
 	ld de, $10
@@ -714,27 +713,27 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 
 .Jumptable: ; ea8ba (3a:68ba)
 	dw .nop
-	dw .one
-	dw .two
+	dw .xflip
+	dw .yflip
 	dw .both
 
 .nop: ; ea8c2 (3a:68c2)
 	ret
 
-.one: ; ea8c3 (3a:68c3)
-	call .Invert
+.xflip: ; ea8c3 (3a:68c3)
+	call .XFlip
 	ret
 
-.two: ; ea8c7 (3a:68c7)
-	call .Swap
+.yflip: ; ea8c7 (3a:68c7)
+	call .YFlip
 	ret
 
 .both: ; ea8cb (3a:68cb)
-	call .Invert
-	call .Swap
+	call .XFlip
+	call .YFlip
 	ret
 
-.Invert: ; ea8d2 (3a:68d2)
+.XFlip: ; ea8d2 (3a:68d2)
 	ld hl, wcbdc
 	ld c, 16
 .byte_loop
@@ -751,7 +750,7 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 	jr nz, .byte_loop
 	ret
 
-.Swap: ; ea8e8 (3a:68e8)
+.YFlip: ; ea8e8 (3a:68e8)
 	ld hl, wcbdc
 	ld de, wcbea
 	ld c, $4
@@ -874,28 +873,28 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 
 .PalFunJumptable: ; ea979 (3a:6979)
 	dw .zero_zero
-	dw .one_zero
-	dw .zero_one
-	dw .one_one
+	dw .xflip_zero
+	dw .zero_xflip
+	dw .xflip_xflip
 
 .zero_zero: ; ea981 (3a:6981)
 	sla b
 	sla c
 	ret
 
-.one_zero: ; ea986 (3a:6986)
+.xflip_zero: ; ea986 (3a:6986)
 	scf
 	rl b
 	sla c
 	ret
 
-.zero_one: ; ea98c (3a:698c)
+.zero_xflip: ; ea98c (3a:698c)
 	sla b
 	scf
 	rl c
 	ret
 
-.one_one: ; ea992 (3a:6992)
+.xflip_xflip: ; ea992 (3a:6992)
 	scf
 	rl b
 	scf
@@ -907,12 +906,12 @@ Func_ea7e9: ; ea7e9 (3a:67e9)
 	ld a, [hli]
 	ld c, [hl]
 	and $8
-	jr nz, .use_wc830
-	ld hl, wPrinterSendDataSource
+	jr nz, .use_source_2
+	ld hl, wPrinterSendDataSource1
 	jr .got_data_source
 
-.use_wc830
-	ld hl, wc830
+.use_source_2
+	ld hl, wPrinterSendDataSource2
 .got_data_source
 	ld b, $0
 	ld a, c

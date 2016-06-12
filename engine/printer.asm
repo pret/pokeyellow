@@ -359,7 +359,7 @@ PrintFanClubPortrait: ; e8e24
 	xor a
 	ld [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
-	call Func_ea3ea
+	call Printer_GetMonStats
 	ld a, [rIE]
 	push af
 	xor a
@@ -397,7 +397,7 @@ PrintFanClubPortrait: ; e8e24
 	call Printer_PlayMapMusic
 	ret
 
-Func_e8e79: ; e8e79 (3a:4e79)
+PrinterDebug: ; e8e79 (3a:4e79)
 	push af
 	push bc
 	push de
@@ -415,13 +415,13 @@ Func_e8e79: ; e8e79 (3a:4e79)
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Printer_CopyTileMapToPrinterTileBuffer
-	call Func_ea573
+	call PrinterDebug_LoadGFX
 .loop
 	ld a, [wPrinterSendState]
 	bit 7, a
 	jr nz, .quit
-	call Func_ea5d1
-	call Func_ea5b7
+	call PrinterDebug_DoFunction
+	call PrinterDebug_ConvertStatusFlagsToTiles
 	call DelayFrame
 	jr .loop
 

@@ -1928,8 +1928,8 @@ ItemUsePokeflute: ; dfbd (3:5fbd)
 	ld hl, PlayedFluteHadEffectText
 	call PrintText
 	call ItemUseReloadOverworldData
-	ld e, $1a
-	callab Func_fd001
+	ldpikaemotion e, PikachuEmotion26
+	callab PlaySpecificPikachuEmotion
 	ret
 
 .noSnorlaxOrPikachuToWakeUp

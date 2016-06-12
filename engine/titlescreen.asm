@@ -194,7 +194,7 @@ DisplayTitleScreen: ; 4171 (1:4171)
 
 .asm_42f0 ; 42f0 (1:42f0)
 ; unreferenced
-	callab Func_e8e79
+	callab PrinterDebug
 	jp .loop
 
 .asm_42fb ; 42fb (1:42fb)

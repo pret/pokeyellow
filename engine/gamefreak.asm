@@ -28,7 +28,7 @@ LoadShootingStarGraphics: ; 70000 (1c:4000)
 
 AnimateShootingStar: ; 7004a (1c:404a)
 	call LoadShootingStarGraphics
-	ld a, $c2 ; (SFX_1f_67 - SFX_Headers_1f) / 3
+	ld a, SFX_SHOOTING_STAR
 	call PlaySound
 
 ; Move the big star down and left across the screen.

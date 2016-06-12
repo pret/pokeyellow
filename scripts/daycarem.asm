@@ -221,8 +221,8 @@ DayCareMText1:
 	ld [wPikachuSpawnState], a
 
 	; GameFreak... TriHard
-	ld hl, Func_fc4fa
-	ld b, BANK(Func_fc4fa)
+	ld hl, SchedulePikachuSpawnForAfterText
+	ld b, BANK(SchedulePikachuSpawnForAfterText)
 	ld hl, Bankswitch
 
 	ldpikacry e, PikachuCry35

@@ -5,7 +5,7 @@ ApplyPikachuMovementData_:: ; fd2a1 (3f:52a1)
 	ld [wPikachuMovementScriptAddress], a
 	ld a, h
 	ld [wPikachuMovementScriptAddress + 1], a
-	call PikachuSwapSpriteStateData
+	call .SwapSpriteStateData
 .loop
 	call LoadPikachuMovementCommandData
 	jr nc, .done
@@ -13,11 +13,11 @@ ApplyPikachuMovementData_:: ; fd2a1 (3f:52a1)
 	jr .loop
 
 .done
-	call PikachuSwapSpriteStateData
+	call .SwapSpriteStateData
 	call DelayFrame
 	ret
 
-PikachuSwapSpriteStateData:
+.SwapSpriteStateData:
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -26,15 +26,15 @@ PikachuSwapSpriteStateData:
 	push de
 	push bc
 
-	ld hl, wSpriteStateData1
+	ld hl, wPlayerSpriteStateData1
 	ld de, wPikachuSpriteStateData1
 	ld c, $10
-	call SwapBytes3f
+	call .SwapBytes
 
-	ld hl, wSpriteStateData2
+	ld hl, wPlayerSpriteStateData2
 	ld de, wPikachuSpriteStateData2
 	ld c, $10
-	call SwapBytes3f
+	call .SwapBytes
 
 	pop bc
 	pop de
@@ -43,8 +43,7 @@ PikachuSwapSpriteStateData:
 	ld [wUpdateSpritesEnabled], a
 	ret
 
-SwapBytes3f:
-.loop
+.SwapBytes:
 	ld b, [hl]
 	ld a, [de]
 	ld [hli], a
@@ -52,7 +51,7 @@ SwapBytes3f:
 	ld [de], a
 	inc de
 	dec c
-	jr nz, .loop
+	jr nz, .SwapBytes
 	ret
 
 LoadPikachuMovementCommandData:
@@ -61,52 +60,52 @@ LoadPikachuMovementCommandData:
 	ret z
 	ld c, a
 	ld b, 0
-	ld hl, Data_fd3b0
+	ld hl, PikachuMovementDatabase
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wPikaPicAnimPointer + 1], a
+	ld [wCurPikaMovementFunc1], a
 	ld a, [hli]
 	cp $80
 	jr nz, .no_param
 	call GetPikachuMovementScriptByte
 .no_param
-	ld [wPikaPicAnimPointer], a
+	ld [wCurPikaMovementParam1], a
 	ld a, [hli]
-	ld [wPikaPicAnimCurGraphicID], a
+	ld [wCurPikaMovementFunc2], a
 	ld a, [hli]
 	cp $80
 	jr nz, .no_param2
 	call GetPikachuMovementScriptByte
 .no_param2
-	ld [wPikaPicAnimPointerSetupFinished], a
+	ld [wCurPikaMovementParam2], a
 	xor a
-	ld [wPikaPicAnimTimer], a
+	ld [wd451], a
 	scf
 	ret
 
 ExecutePikachuMovementCommand:
 	xor a
-	ld [wd44d], a
-	ld [wd457], a
-	ld [wd458], a
+	ld [wPikachuMovementFlags], a
+	ld [wPikachuStepTimer], a
+	ld [wPikachuStepSubtimer], a
 	ld a, [wPlayerGrassPriority]
 	push af
 .loop
-	ld bc, wSpriteStateData1
-	ld a, [wPikaPicAnimPointer + 1]
-	ld hl, Jumptable_fd4ac
+	ld bc, wPlayerSpriteStateData1 ; Currently holds Pikachu's sprite state data
+	ld a, [wCurPikaMovementFunc1]
+	ld hl, PikaMovementFunc1Jumptable
 	call .JumpTable
-	ld a, [wPikaPicAnimCurGraphicID]
-	ld hl, Jumptable_fd65c
+	ld a, [wCurPikaMovementFunc2]
+	ld hl, PikaMovementFunc2Jumptable
 	call .JumpTable
-	call Func_fd36e
-	call Func_fd39d
+	call GetCoordsForPikachuShadow
+	call AnimatePikachuShadow
 	call DelayFrame
 	call DelayFrame
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	bit 7, [hl]
 	jr z, .loop
 	pop af
@@ -124,62 +123,65 @@ ExecutePikachuMovementCommand:
 	ld l, a
 	jp [hl]
 
-Func_fd36e:
-	ld hl, 2
+GetCoordsForPikachuShadow:
+	ld hl, wPlayerSpriteImageIdx - wPlayerSpriteStateData1
 	add hl, bc
-	ld a, [wPikaPicAnimTimer + 1]
+	ld a, [wCurPikaMovementSpriteImageIdx]
 	ld [hl], a
 	ld a, [wPikaSpriteY]
 	ld d, a
-	ld a, [wd456]
+	ld a, [wPikachuMovementYOffset]
 	add d
-	ld hl, 4
+	ld hl, wPlayerYPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld [hl], a
-	ld a, [wPikaPicAnimDelay]
+	ld a, [wPikaSpriteX]
 	ld d, a
-	ld a, [wPikaPicTextboxStartY]
+	ld a, [wPikachuMovementXOffset]
 	add d
-	ld hl, 6
+	ld hl, wPlayerXPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld [hl], a
-	ld hl, wd44d
+	ld hl, wPikachuMovementFlags
 	bit 6, [hl]
 	ret z
-	ld hl, wPlayerGrassPriority - wSpriteStateData1
+	ld hl, wPlayerGrassPriority - wPlayerSpriteStateData1
 	add hl, bc
 	ld [hl], 0
 	ret
 
-Func_fd39d:
-	ld hl, wd44d
+AnimatePikachuShadow:
+	ld hl, wPikachuMovementFlags
 	bit 6, [hl]
 	res 6, [hl]
 	ld hl, wd736
 	res 6, [hl]
 	ret z
 	set 6, [hl]
-	call Func_fd7f3
+	call LoadPikachuShadowOAMData
 	ret
 
-Data_fd3b0:
-	db $01, $00, $00, $00 ; $00
-	db $03, $80, $01, $00 ; $01
-	db $04, $80, $01, $00 ; $02
-	db $05, $80, $01, $00 ; $03
-	db $06, $80, $01, $00 ; $04
-	db $07, $80, $01, $00 ; $05
-	db $08, $80, $01, $00 ; $06
-	db $09, $80, $01, $00 ; $07
-	db $0a, $80, $01, $00 ; $08
-	db $03, $80, $06, $00 ; $09
-	db $04, $80, $06, $00 ; $0a
-	db $05, $80, $06, $00 ; $0b
-	db $06, $80, $06, $00 ; $0c
-	db $07, $80, $06, $00 ; $0d
-	db $08, $80, $06, $00 ; $0e
-	db $09, $80, $06, $00 ; $0f
-	db $0a, $80, $06, $00 ; $10
+PikachuMovementDatabase:
+	db $01, 1 - 1, $00, 1 - 1 ; $00 start
+
+	db $03, $80, $01, 1 - 1 ; $01
+	db $04, $80, $01, 1 - 1 ; $02
+	db $05, $80, $01, 1 - 1 ; $03
+	db $06, $80, $01, 1 - 1 ; $04
+	db $07, $80, $01, 1 - 1 ; $05
+	db $08, $80, $01, 1 - 1 ; $06
+	db $09, $80, $01, 1 - 1 ; $07
+	db $0a, $80, $01, 1 - 1 ; $08
+
+	db $03, $80, $06, 1 - 1 ; $09
+	db $04, $80, $06, 1 - 1 ; $0a
+	db $05, $80, $06, 1 - 1 ; $0b
+	db $06, $80, $06, 1 - 1 ; $0c
+	db $07, $80, $06, 1 - 1 ; $0d
+	db $08, $80, $06, 1 - 1 ; $0e
+	db $09, $80, $06, 1 - 1 ; $0f
+	db $0a, $80, $06, 1 - 1 ; $10
+
 	db $03, $80, $03, $80 ; $11
 	db $04, $80, $03, $80 ; $12
 	db $05, $80, $03, $80 ; $13
@@ -188,290 +190,296 @@ Data_fd3b0:
 	db $08, $80, $03, $80 ; $16
 	db $09, $80, $03, $80 ; $17
 	db $0a, $80, $03, $80 ; $18
+
 	db $03, $80, $07, $80 ; $19
 	db $04, $80, $07, $80 ; $1a
 	db $05, $80, $07, $80 ; $1b
 	db $06, $80, $07, $80 ; $1c
-	db $0b, $27, $02, $00 ; $1d step down
-	db $0c, $27, $02, $00 ; $1e step up
-	db $0d, $27, $02, $00 ; $1f step left
-	db $0e, $27, $02, $00 ; $20 step right
-	db $0f, $27, $02, $00 ; $21
-	db $10, $27, $02, $00 ; $22
-	db $11, $27, $02, $00 ; $23
-	db $12, $27, $02, $00 ; $24
-	db $0b, $0f, $02, $00 ; $25
-	db $0c, $0f, $02, $00 ; $26
-	db $0d, $0f, $02, $00 ; $27
-	db $0e, $0f, $02, $00 ; $28
-	db $0f, $0f, $02, $00 ; $29
-	db $10, $0f, $02, $00 ; $2a
-	db $11, $0f, $02, $00 ; $2b
-	db $12, $0f, $02, $00 ; $2c
-	db $0b, $0f, $08, $17 ; $2d
-	db $0c, $0f, $08, $17 ; $2e
-	db $0d, $0f, $08, $17 ; $2f
-	db $0e, $0f, $08, $17 ; $30
-	db $0f, $0f, $08, $17 ; $31
-	db $10, $0f, $08, $17 ; $32
-	db $11, $0f, $08, $17 ; $33
-	db $12, $0f, $08, $17 ; $34
-	db $13, $0f, $06, $00 ; $35 look down
-	db $14, $0f, $06, $00 ; $36 look up
-	db $15, $0f, $06, $00 ; $37 look left
-	db $16, $0f, $06, $00 ; $38 look right
-	db $02, $80, $04, $00 ; $39
-	db $02, $80, $05, $00 ; $3a
+
+	db $0b, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1d step down
+	db $0c, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1e step up
+	db $0d, (1 << 5) | 8 - 1, $02, 1 - 1 ; $1f step left
+	db $0e, (1 << 5) | 8 - 1, $02, 1 - 1 ; $20 step right
+	db $0f, (1 << 5) | 8 - 1, $02, 1 - 1 ; $21 step down left
+	db $10, (1 << 5) | 8 - 1, $02, 1 - 1 ; $22 step down right
+	db $11, (1 << 5) | 8 - 1, $02, 1 - 1 ; $23 step up left
+	db $12, (1 << 5) | 8 - 1, $02, 1 - 1 ; $24 step up right
+
+	db $0b, 16 - 1, $02, 1 - 1 ; $25 slide down
+	db $0c, 16 - 1, $02, 1 - 1 ; $26 slide up
+	db $0d, 16 - 1, $02, 1 - 1 ; $27 slide left
+	db $0e, 16 - 1, $02, 1 - 1 ; $28 slide right
+	db $0f, 16 - 1, $02, 1 - 1 ; $29 slide down left
+	db $10, 16 - 1, $02, 1 - 1 ; $2a slide down right
+	db $11, 16 - 1, $02, 1 - 1 ; $2b slide up left
+	db $12, 16 - 1, $02, 1 - 1 ; $2c slide up right
+
+	db $0b, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2d hop down
+	db $0c, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2e hop up
+	db $0d, 16 - 1, $08, (1 << 4) | 8 - 1 ; $2f hop left
+	db $0e, 16 - 1, $08, (1 << 4) | 8 - 1 ; $30 hop right
+	db $0f, 16 - 1, $08, (1 << 4) | 8 - 1 ; $31 hop down left
+	db $10, 16 - 1, $08, (1 << 4) | 8 - 1 ; $32 hop down right
+	db $11, 16 - 1, $08, (1 << 4) | 8 - 1 ; $33 hop up left
+	db $12, 16 - 1, $08, (1 << 4) | 8 - 1 ; $34 hop up right
+
+	db $13, 16 - 1, $06, 1 - 1 ; $35 look down
+	db $14, 16 - 1, $06, 1 - 1 ; $36 look up
+	db $15, 16 - 1, $06, 1 - 1 ; $37 look left
+	db $16, 16 - 1, $06, 1 - 1 ; $38 look right
+
+	db $02, $80, $04, 1 - 1 ; $39
+	db $02, $80, $05, 1 - 1 ; $3a
 	db $02, $80, $03, $80 ; $3b
 	db $02, $80, $07, $80 ; $3c
 	db $02, $80, $09, $80 ; $3d
-	db $02, $80, $06, $00 ; $3e
+	db $02, $80, $06, 1 - 1 ; $3e
 
-Jumptable_fd4ac:
-	dw Func_fd4e5
- 	dw Func_fd4e9
- 	dw Func_fd504
- 	dw Func_fd50c
- 	dw Func_fd511
- 	dw Func_fd518
- 	dw Func_fd52c
- 	dw Func_fd540
- 	dw Func_fd553
- 	dw Func_fd566
- 	dw Func_fd579
- 	dw Func_fd5b1
- 	dw Func_fd5b5
- 	dw Func_fd5b9
- 	dw Func_fd5bd
- 	dw Func_fd5c1
- 	dw Func_fd5c5
- 	dw Func_fd5c9
- 	dw Func_fd5cd
- 	dw Func_fd5ea
- 	dw Func_fd5ee
- 	dw Func_fd5f2
- 	dw Func_fd5f6
- 	dw Func_fd4e5
+PikaMovementFunc1Jumptable:
+	dw PikaMovementFunc1_EndCommand_ ; 00
+ 	dw PikaMovementFunc1_LoadPikachuCurrentPosition ; 01
+ 	dw PikaMovementFunc1_DelayFrames ; 02
+ 	dw PikaMovementFunc1_WalkInCurrentFacingDirection ; 03
+ 	dw PikaMovementFunc1_WalkInOppositeFacingDirection ; 04
+ 	dw PikaMovementFunc1_StepTurningCounterclockwise ; 05
+ 	dw PikaMovementFunc1_StepTurningClockwise ; 06
+ 	dw PikaMovementFunc1_StepForwardLeft ; 07
+ 	dw PikaMovementFunc1_StepForwardRight ; 08
+ 	dw PikaMovementFunc1_StepBackwardLeft ; 09
+ 	dw PikaMovementFunc1_StepBackwardRight ; 0a
+ 	dw PikaMovementFunc1_MoveDown ; 0b
+ 	dw PikaMovementFunc1_MoveUp ; 0c
+ 	dw PikaMovementFunc1_MoveLeft ; 0d
+ 	dw PikaMovementFunc1_MoveRight ; 0e
+ 	dw PikaMovementFunc1_MoveDownLeft ; 0f
+ 	dw PikaMovementFunc1_MoveDownRight ; 10
+ 	dw PikaMovementFunc1_MoveUpLeft ; 11
+ 	dw PikaMovementFunc1_MoveUpRight ; 12
+ 	dw PikaMovementFunc1_LookDown ; 13
+ 	dw PikaMovementFunc1_LookUp ; 14
+ 	dw PikaMovementFunc1_LookLeft ; 15
+ 	dw PikaMovementFunc1_LookRight ; 16
+ 	dw PikaMovementFunc1_EndCommand_ ; 17
 
-Func_fd4dc:
-	ld a, [wd44d]
+PikaMovementFunc1_EndCommand:
+	ld a, [wPikachuMovementFlags]
 	set 7, a
-	ld [wd44d], a
+	ld [wPikachuMovementFlags], a
 	ret
 
-Func_fd4e5:
-	call Func_fd4dc
+PikaMovementFunc1_EndCommand_:
+	call PikaMovementFunc1_EndCommand
 	ret
 
-Func_fd4e9:
-	ld hl, 4
+PikaMovementFunc1_LoadPikachuCurrentPosition:
+	ld hl, wPlayerYPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	ld [wPikaSpriteY], a
-	ld hl, 6
+	ld hl, wPlayerXPixels - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
-	ld [wPikaPicAnimDelay], a
+	ld [wPikaSpriteX], a
 	xor a
-	ld [wd456], a
-	ld [wPikaPicTextboxStartY], a
-	call Func_fd4dc
+	ld [wPikachuMovementYOffset], a
+	ld [wPikachuMovementXOffset], a
+	call PikaMovementFunc1_EndCommand
 	ret
 
-Func_fd504:
-	call Func_fd775
+PikaMovementFunc1_DelayFrames:
+	call CheckPikachuStepTimer1
 	ret nz
-	call Func_fd4dc
+	call PikaMovementFunc1_EndCommand
 	ret
 
-Func_fd50c:
-	call GetObjectFacing
-	jr asm_fd58c
+PikaMovementFunc1_WalkInCurrentFacingDirection:
+	call GetPikachuFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Func_fd511:
-	call GetObjectFacing
+PikaMovementFunc1_WalkInOppositeFacingDirection:
+	call GetPikachuFacing
 	xor %100
-	jr asm_fd58c
+	jr PikaMovementFunc1_ApplyStepVector
 
-Func_fd518:
-	call GetObjectFacing
-	ld hl, Data_fd523
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepTurningCounterclockwise:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd523:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_RIGHT
-	db SPRITE_FACING_UP,    SPRITE_FACING_LEFT
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_DOWN
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_UP
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_RIGHT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_LEFT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_DOWN << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_UP << 2
 	db $ff
 
-Func_fd52c:
-	call GetObjectFacing
-	ld hl, Data_fd537
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepTurningClockwise:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd537:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_LEFT
-	db SPRITE_FACING_UP,    SPRITE_FACING_RIGHT
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_UP
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_DOWN
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_LEFT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_RIGHT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_UP << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_DOWN << 2
 	db $ff
 
-Func_fd540:
-	call GetObjectFacing
-	ld hl, Data_fd54b
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepForwardLeft:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd54b:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_UP | $10
-	db SPRITE_FACING_UP,    SPRITE_FACING_LEFT | $10
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_DOWN | $10
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_RIGHT | $10
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_DOWN_RIGHT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_UP_LEFT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_DOWN_LEFT << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_UP_RIGHT << 2
 
-Func_fd553:
-	call GetObjectFacing
-	ld hl, Data_fd55e
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepForwardRight:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd55e:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_DOWN | $10
-	db SPRITE_FACING_UP,    SPRITE_FACING_RIGHT | $10
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_LEFT | $10
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_UP | $10
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_DOWN_LEFT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_UP_RIGHT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_UP_LEFT << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_DOWN_RIGHT << 2
 
-Func_fd566:
-	call GetObjectFacing
-	ld hl, Data_fd571
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepBackwardLeft:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd571:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_RIGHT | $10
-	db SPRITE_FACING_UP,    SPRITE_FACING_DOWN | $10
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_UP | $10
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_LEFT | $10
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_UP_RIGHT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_DOWN_LEFT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_DOWN_RIGHT << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_UP_LEFT << 2
 
-Func_fd579:
-	call GetObjectFacing
-	ld hl, Data_fd584
-	call Func_fd5a0
-	jr asm_fd58c
+PikaMovementFunc1_StepBackwardRight:
+	call GetPikachuFacing
+	ld hl, .Data
+	call PikaMovementFunc1_GetNextFacing
+	jr PikaMovementFunc1_ApplyStepVector
 
-Data_fd584:
-	db SPRITE_FACING_DOWN,  SPRITE_FACING_LEFT | $10
-	db SPRITE_FACING_UP,    SPRITE_FACING_UP | $10
-	db SPRITE_FACING_LEFT,  SPRITE_FACING_RIGHT | $10
-	db SPRITE_FACING_RIGHT, SPRITE_FACING_DOWN | $10
+.Data:
+	db SPRITE_FACING_DOWN,  PIKASTEPDIR_UP_LEFT << 2
+	db SPRITE_FACING_UP,    PIKASTEPDIR_DOWN_RIGHT << 2
+	db SPRITE_FACING_LEFT,  PIKASTEPDIR_UP_RIGHT << 2
+	db SPRITE_FACING_RIGHT, PIKASTEPDIR_DOWN_LEFT << 2
 
-asm_fd58c
+PikaMovementFunc1_ApplyStepVector:
 	rrca
 	rrca
 	and $7
 	ld e, a
-	call Func_fd784
+	call GetPikachuStepVectorMagnitude
 	ld d, a
 	call UpdatePikachuPosition
-	call Func_fd775
+	call CheckPikachuStepTimer1
 	ret nz
-	call Func_fd4dc
+	call PikaMovementFunc1_EndCommand
 	ret
 
-Func_fd5a0:
+PikaMovementFunc1_GetNextFacing:
 	push de
 	ld d, a
-.asm_fd5a2
+.loop
 	ld a, [hli]
 	cp d
-	jr z, .asm_fd5ad
+	jr z, .found
 	inc hl
 	cp $ff
-	jr nz, .asm_fd5a2
+	jr nz, .loop
 	pop de
 	ret
 
-.asm_fd5ad
+.found
 	ld a, [hl]
 	pop de
 	scf
 	ret
 
-Func_fd5b1:
-	ld a, SPRITE_FACING_DOWN >> 2
-	jr asm_fd5d1
+PikaMovementFunc1_MoveDown:
+	ld a, PIKASTEPDIR_DOWN
+	jr PikaMovementFunc1_ApplyFacingAndMove
 
-Func_fd5b5:
-	ld a, SPRITE_FACING_UP >> 2
-	jr asm_fd5d1
+PikaMovementFunc1_MoveUp:
+	ld a, PIKASTEPDIR_UP
+	jr PikaMovementFunc1_ApplyFacingAndMove
 
-Func_fd5b9:
-	ld a, SPRITE_FACING_LEFT >> 2
-	jr asm_fd5d1
+PikaMovementFunc1_MoveLeft:
+	ld a, PIKASTEPDIR_LEFT
+	jr PikaMovementFunc1_ApplyFacingAndMove
 
-Func_fd5bd:
-	ld a, SPRITE_FACING_RIGHT >> 2
-	jr asm_fd5d1
+PikaMovementFunc1_MoveRight:
+	ld a, PIKASTEPDIR_RIGHT
+	jr PikaMovementFunc1_ApplyFacingAndMove
 
-Func_fd5c1:
-	ld e, 4
-	jr asm_fd5d5
+PikaMovementFunc1_MoveDownLeft:
+	ld e, PIKASTEPDIR_DOWN_LEFT
+	jr PikaMovementFunc1_MoveDiagonally
 
-Func_fd5c5:
-	ld e, 5
-	jr asm_fd5d5
+PikaMovementFunc1_MoveDownRight:
+	ld e, PIKASTEPDIR_DOWN_RIGHT
+	jr PikaMovementFunc1_MoveDiagonally
 
-Func_fd5c9:
-	ld e, 6
-	jr asm_fd5d5
+PikaMovementFunc1_MoveUpLeft:
+	ld e, PIKASTEPDIR_UP_LEFT
+	jr PikaMovementFunc1_MoveDiagonally
 
-Func_fd5cd:
-	ld e, 7
-	jr asm_fd5d5
+PikaMovementFunc1_MoveUpRight:
+	ld e, PIKASTEPDIR_UP_RIGHT
+	jr PikaMovementFunc1_MoveDiagonally
 
-asm_fd5d1
+PikaMovementFunc1_ApplyFacingAndMove:
 	ld e, a
-	call SetObjectFacing
-asm_fd5d5
-	call Func_fd784
+	call SetPikachuFacing
+PikaMovementFunc1_MoveDiagonally:
+	call GetPikachuStepVectorMagnitude
 	ld d, a
 	push de
 	call UpdatePikachuPosition
 	pop de
-	call Func_fd775
+	call CheckPikachuStepTimer1
 	ret nz
 	ld a, e
-	call Func_fd7cb
-	call Func_fd4dc
+	call ApplyPikachuStepVector
+	call PikaMovementFunc1_EndCommand
 	ret
 
-Func_fd5ea:
-	ld a, SPRITE_FACING_DOWN >> 2
-	jr asm_fd5fa
+PikaMovementFunc1_LookDown:
+	ld a, PIKASTEPDIR_DOWN
+	jr PikaMovementFunc1_ApplyFacing
 
-Func_fd5ee:
-	ld a, SPRITE_FACING_UP >> 2
-	jr asm_fd5fa
+PikaMovementFunc1_LookUp:
+	ld a, PIKASTEPDIR_UP
+	jr PikaMovementFunc1_ApplyFacing
 
-Func_fd5f2:
-	ld a, SPRITE_FACING_LEFT >> 2
-	jr asm_fd5fa
+PikaMovementFunc1_LookLeft:
+	ld a, PIKASTEPDIR_LEFT
+	jr PikaMovementFunc1_ApplyFacing
 
-Func_fd5f6:
-	ld a, SPRITE_FACING_RIGHT >> 2
-	jr asm_fd5fa
+PikaMovementFunc1_LookRight:
+	ld a, PIKASTEPDIR_RIGHT
+	jr PikaMovementFunc1_ApplyFacing
 
-asm_fd5fa
-	call SetObjectFacing
-	call Func_fd4dc
+PikaMovementFunc1_ApplyFacing:
+	call SetPikachuFacing
+	call PikaMovementFunc1_EndCommand
 	ret
 
 UpdatePikachuPosition:
 	push de
 	ld d, 0
-	ld hl, Jumptable_fd60f
+	ld hl, .Jumptable
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -481,217 +489,217 @@ UpdatePikachuPosition:
 	ld a, d
 	jp [hl]
 
-Jumptable_fd60f:
-	dw MovePikachuSpriteDown
-	dw MovePikachuSpriteUp
-	dw MovePikachuSpriteLeft
-	dw MovePikachuSpriteRight
-	dw MovePikachuSpriteDownLeft
-	dw MovePikachuSpriteDownRight
-	dw MovePikachuSpriteUpLeft
-	dw MovePikachuSpriteUpRight
+.Jumptable:
+	dw .Down
+	dw .Up
+	dw .Left
+	dw .Right
+	dw .DownLeft
+	dw .DownRight
+	dw .UpLeft
+	dw .UpRight
 
-MovePikachuSpriteDown:
+.Down:
 	ld d, 0
 	ld e, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteUp:
+.Up:
 	ld d, 0
 	cpl
 	inc a
 	ld e, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteLeft:
+.Left:
 	cpl
 	inc a
 	ld d, a
 	ld e, 0
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteRight:
+.Right:
 	ld d, a
 	ld e, 0
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteDownLeft:
+.DownLeft:
 	ld e, a
 	cpl
 	inc a
 	ld d, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteDownRight:
+.DownRight:
 	ld e, a
 	ld d, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteUpLeft:
+.UpLeft:
 	cpl
 	inc a
 	ld e, a
 	ld d, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-MovePikachuSpriteUpRight:
+.UpRight:
 	ld d, a
 	cpl
 	inc a
 	ld e, a
-	jr asm_fd64d
+	jr .ApplyVector
 
-asm_fd64d
-	ld a, [wPikaPicAnimDelay]
+.ApplyVector:
+	ld a, [wPikaSpriteX]
 	add d
-	ld [wPikaPicAnimDelay], a
+	ld [wPikaSpriteX], a
 	ld a, [wPikaSpriteY]
 	add e
 	ld [wPikaSpriteY], a
 	ret
 
-Jumptable_fd65c:
-	dw Func_fd678
-	dw Func_fd6a3
-	dw Func_fd698
-	dw Func_fd6f4
-	dw Func_fd6ff
-	dw Func_fd718
-	dw Func_fd68c
-	dw Func_fd6c6
-	dw Func_fd6c0
-	dw Func_fd6e2
-	dw Func_fd68b
+PikaMovementFunc2Jumptable:
+	dw PikaMovementFunc2_ResetFrameCounterAndFaceCurrent ; 0
+	dw PikaMovementFunc2_UpdateSpriteImageIdxWithPreviousImageIdxDirection ; 1
+	dw PikaMovementFunc2_UpdateSpriteImageIdxWithFacing ; 2
+	dw PikaMovementFunc2_TurnParameter ; 3
+	dw PikaMovementFunc2_TurnClockwise ; 4
+	dw PikaMovementFunc2_TurnCounterClockwise ; 5
+	dw PikaMovementFunc2_CopySpriteImageIdxDirectionToSpriteImageIdx ; 6
+	dw PikaMovementFunc2_UpdateJumpWithPreviousImageIdxDirection ; 7
+	dw PikaMovementFunc2_UpdateJumpWithFacing ; 8
+	dw PikaMovementFunc2_CopyFacingToJump ; 9
+	dw PikaMovementFunc2_nop ; 10
 
-Func_fd672:
-	ld hl, wd44d
+PikaMovement_SetSpawnShadow:
+	ld hl, wPikachuMovementFlags
 	set 6, [hl]
 	ret
 
-Func_fd678:
-	ld hl, 7
+PikaMovementFunc2_ResetFrameCounterAndFaceCurrent:
+	ld hl, wPlayerIntraAnimFrameCounter - wPlayerSpriteStateData1
 	add hl, bc
 	xor a
 	ld [hli], a
 	ld [hl], a
-	call Func_fd74a
+	call PikaMovementFunc2_GetImageBaseOffset
 	ld d, a
-	call GetObjectFacing
+	call GetPikachuFacing
 	or d
-	ld [wPikaPicAnimTimer + 1], a
+	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
-Func_fd68b:
+PikaMovementFunc2_nop:
 	ret
 
-Func_fd68c:
-	call Func_fd74a
+PikaMovementFunc2_CopySpriteImageIdxDirectionToSpriteImageIdx:
+	call PikaMovementFunc2_GetImageBaseOffset
 	ld d, a
-	call Func_fd755
+	call PikaMovementFunc2_GetSpriteImageIdxDirection
 	or d
-	ld [wPikaPicAnimTimer + 1], a
+	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
-Func_fd698:
-	call Func_fd74a
+PikaMovementFunc2_UpdateSpriteImageIdxWithFacing:
+	call PikaMovementFunc2_GetImageBaseOffset
 	ld d, a
-	call GetObjectFacing
+	call GetPikachuFacing
 	or d
 	ld d, a
-	jr asm_fd6ac
+	jr PikaMovementFunc2_UpdateSpriteImageIdx
 
-Func_fd6a3:
-	call Func_fd74a
+PikaMovementFunc2_UpdateSpriteImageIdxWithPreviousImageIdxDirection:
+	call PikaMovementFunc2_GetImageBaseOffset
 	ld d, a
-	call Func_fd755
+	call PikaMovementFunc2_GetSpriteImageIdxDirection
 	or d
 	ld d, a
-asm_fd6ac
-	ld hl, 8
+PikaMovementFunc2_UpdateSpriteImageIdx:
+	ld hl, wPlayerAnimFrameCounter - wPlayerSpriteStateData1
 	add hl, bc
-	call Func_fd78e
-	jr nz, .asm_fd6b6
+	call CheckPikachuStepTimer2 ; does not preserve hl
+	jr nz, .skip
 	inc [hl]
-.asm_fd6b6
+.skip
 	ld a, [hl]
 	rrca
 	rrca
 	and 3
 	or d
-	ld [wPikaPicAnimTimer + 1], a
+	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
-Func_fd6c0:
-	call GetObjectFacing
+PikaMovementFunc2_UpdateJumpWithFacing:
+	call GetPikachuFacing
 	ld d, a
-	jr asm_fd6ca
+	jr PikaMovementFunc2_UpdateJump
 
-Func_fd6c6:
-	call Func_fd755
+PikaMovementFunc2_UpdateJumpWithPreviousImageIdxDirection:
+	call PikaMovementFunc2_GetSpriteImageIdxDirection
 	ld d, a
-asm_fd6ca
-	call Func_fd74a
+PikaMovementFunc2_UpdateJump:
+	call PikaMovementFunc2_GetImageBaseOffset
 	or d
 	ld d, a
-	call Func_fd736
+	call PikaMovementFunc2_Timer
 	or d
-	ld [wPikaPicAnimTimer + 1], a
-	call Func_fd79d
-	ld [wd456], a
+	ld [wCurPikaMovementSpriteImageIdx], a
+	call PikaMovementFunc_Sine
+	ld [wPikachuMovementYOffset], a
 	and a
 	ret z
-	call Func_fd672
+	call PikaMovement_SetSpawnShadow
 	ret
 
-Func_fd6e2:
-	call GetObjectFacing
+PikaMovementFunc2_CopyFacingToJump:
+	call GetPikachuFacing
 	ld d, a
-	call Func_fd74a
+	call PikaMovementFunc2_GetImageBaseOffset
 	or d
-	ld [wPikaPicAnimTimer + 1], a
-	call Func_fd79d
-	ld [wd456], a
+	ld [wCurPikaMovementSpriteImageIdx], a
+	call PikaMovementFunc_Sine
+	ld [wPikachuMovementYOffset], a
 	ret
 
-Func_fd6f4:
-	ld a, [wPikaPicAnimPointerSetupFinished]
+PikaMovementFunc2_TurnParameter:
+	ld a, [wCurPikaMovementParam2]
 	and $40
 	cp $40
-	jr z, Func_fd6ff
-	jr Func_fd718
+	jr z, PikaMovementFunc2_TurnClockwise
+	jr PikaMovementFunc2_TurnCounterClockwise
 
-Func_fd6ff:
-	call Func_fd755
+PikaMovementFunc2_TurnClockwise:
+	call PikaMovementFunc2_GetSpriteImageIdxDirection
 	ld d, a
-	call Func_fd78e
-	jr nz, .asm_fd710
+	call CheckPikachuStepTimer2
+	jr nz, .skip
 	ld hl, Data_fd731
-.asm_fd70b
+.loop
 	ld a, [hli]
 	cp d
-	jr nz, .asm_fd70b
+	jr nz, .loop
 	ld d, [hl]
-.asm_fd710
-	call Func_fd74a
+.skip
+	call PikaMovementFunc2_GetImageBaseOffset
 	or d
-	ld [wPikaPicAnimTimer + 1], a
+	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
-Func_fd718:
-	call Func_fd755
+PikaMovementFunc2_TurnCounterClockwise:
+	call PikaMovementFunc2_GetSpriteImageIdxDirection
 	ld d, a
-	call Func_fd78e
-	jr nz, .asm_fd529
+	call CheckPikachuStepTimer2
+	jr nz, .skip
 	ld hl, Data_fd731End
-.asm_fd524
+.loop
 	ld a, [hld]
 	cp d
-	jr nz, .asm_fd524
+	jr nz, .loop
 	ld d, [hl]
-.asm_fd529
-	call Func_fd74a
+.skip
+	call PikaMovementFunc2_GetImageBaseOffset
 	or d
-	ld [wPikaPicAnimTimer + 1], a
+	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
 Data_fd731:
@@ -702,27 +710,27 @@ Data_fd731:
 	db SPRITE_FACING_DOWN
 Data_fd731End:
 
-Func_fd736:
+PikaMovementFunc2_Timer:
 	push hl
-	ld hl, 7
+	ld hl, wPlayerIntraAnimFrameCounter - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
 	and $3
 	ld [hli], a
-	jr nz, .asm_fd747
+	jr nz, .load_pop
 	ld a, [hl]
 	inc a
 	and $3
 	ld [hl], a
-.asm_fd747
+.load_pop
 	ld a, [hl]
 	pop hl
 	ret
 
-Func_fd74a:
+PikaMovementFunc2_GetImageBaseOffset:
 	push hl
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 14
+	ld hl, wPlayerSpriteImageBaseOffset - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
@@ -730,27 +738,27 @@ Func_fd74a:
 	pop hl
 	ret
 
-Func_fd755:
+PikaMovementFunc2_GetSpriteImageIdxDirection:
 	push hl
-	ld hl, 2
+	ld hl, wPlayerSpriteImageIdx - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	and $c
 	pop hl
 	ret
 
-GetObjectFacing:
+GetPikachuFacing:
 	push hl
-	ld hl, 9
+	ld hl, wPlayerFacingDirection - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	and $c
 	pop hl
 	ret
 
-SetObjectFacing:
+SetPikachuFacing:
 	push hl
-	ld hl, 9
+	ld hl, wPlayerFacingDirection - wPlayerSpriteStateData1
 	add hl, bc
 	add a
 	add a
@@ -759,10 +767,10 @@ SetObjectFacing:
 	pop hl
 	ret
 
-Func_fd775:
-	ld hl, wd457
+CheckPikachuStepTimer1:
+	ld hl, wPikachuStepTimer
 	inc [hl]
-	ld a, [wPikaPicAnimPointer]
+	ld a, [wCurPikaMovementParam1]
 	and $1f
 	inc a
 	cp [hl]
@@ -770,18 +778,19 @@ Func_fd775:
 	ld [hl], 0
 	ret
 
-Func_fd784:
-	ld a, [wPikaPicAnimPointer]
+GetPikachuStepVectorMagnitude:
+	; *XX*****
+	ld a, [wCurPikaMovementParam1]
 	swap a
 	rrca
 	and $3
 	inc a
 	ret
 
-Func_fd78e:
-	ld hl, wd458
+CheckPikachuStepTimer2:
+	ld hl, wPikachuStepSubtimer
 	inc [hl]
-	ld a, [wPikaPicAnimPointerSetupFinished]
+	ld a, [wCurPikaMovementParam2]
 	and $f
 	inc a
 	cp [hl]
@@ -789,11 +798,11 @@ Func_fd78e:
 	ld [hl], 0
 	ret
 
-Func_fd79d:
-	call Func_fd7b2
-	ld a, [wd458]
+PikaMovementFunc_Sine:
+	call .GetArgument
+	ld a, [wPikachuStepSubtimer]
 	add e
-	ld [wd458], a
+	ld [wPikachuStepSubtimer], a
 	add $20
 	ld e, a
 	push hl
@@ -803,37 +812,37 @@ Func_fd79d:
 	pop hl
 	ret
 
-Func_fd7b2:
-	ld a, [wPikaPicAnimPointerSetupFinished]
+.GetArgument:
+	ld a, [wCurPikaMovementParam2]
 	and $f
 	inc a
 	ld d, a
-	ld a, [wPikaPicAnimPointerSetupFinished]
+	ld a, [wCurPikaMovementParam2]
 	swap a
 	and $7
 	ld e, a
 	ld a, 1
-	jr z, .asm_fd7c9
-.asm_fd7c5
+	jr z, .okay
+.loop
 	add a
 	dec e
-	jr nz, .asm_fd7c5
-.asm_fd7c9
+	jr nz, .loop
+.okay
 	ld e, a
 	ret
 
-Func_fd7cb:
+ApplyPikachuStepVector:
 	push bc
 	ld c, a
 	ld b, 0
-	ld hl, Data_fd7e3
+	ld hl, .StepVectors
 	add hl, bc
 	add hl, bc
 	ld d, [hl]
 	inc hl
 	ld e, [hl]
 	pop bc
-	ld hl, wSpriteStateData2 - wSpriteStateData1 + 4
+	ld hl, wPlayerMapY - wPlayerSpriteStateData1
 	add hl, bc
 	ld a, [hl]
 	add e
@@ -843,7 +852,7 @@ Func_fd7cb:
 	ld [hl], a
 	ret
 
-Data_fd7e3:
+.StepVectors:
 	db  0,  1
 	db  0, -1
 	db -1,  0
@@ -853,7 +862,7 @@ Data_fd7e3:
 	db -1, -1
 	db  1, -1
 
-Func_fd7f3:
+LoadPikachuShadowOAMData:
 	push bc
 	push de
 	push hl
@@ -861,22 +870,22 @@ Func_fd7f3:
 	ld bc, wOAMBuffer + 4 * 36
 	ld a, [wPikaSpriteY]
 	ld e, a
-	ld a, [wPikaPicAnimDelay]
+	ld a, [wPikaSpriteX]
 	ld d, a
-	ld hl, Data_fd80b
-	call Func_fd814
+	ld hl, .OAMData
+	call .LoadOAMData
 
 	pop hl
 	pop de
 	pop bc
 	ret
 
-Data_fd80b:
-	db $02
+.OAMData:
+	db 2
 	db $0c, $00, $ff, 0
 	db $0c, $08, $ff, 1 << OAM_X_FLIP
 
-Func_fd814:
+.LoadOAMData:
 	ld a, e
 	add $10
 	ld e, a
@@ -884,7 +893,7 @@ Func_fd814:
 	add $8
 	ld d, a
 	ld a, [hli]
-.asm_fd81d
+.loop
 	push af
 	ld a, [hli]
 	add e
@@ -902,7 +911,7 @@ Func_fd814:
 	inc bc
 	pop af
 	dec a
-	jr nz, .asm_fd81d
+	jr nz, .loop
 	ret
 
 LoadPikachuShadowIntoVRAM:
@@ -924,7 +933,7 @@ LoadPikachuBallIconIntoVRAM:
 Func_fd851:
 	ld hl, vNPCSprites + $c * $10
 	ld a, 3
-.asm_fd856
+.loop
 	push af
 	push hl
 	ld de, GFX_fd86b
@@ -935,7 +944,7 @@ Func_fd851:
 	add hl, de
 	pop af
 	dec a
-	jr nz, .asm_fd856
+	jr nz, .loop
 	ret
 
 GFX_fd86b:

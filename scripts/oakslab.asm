@@ -473,8 +473,8 @@ OaksLabScript17:
 	ld [wPlayerFacingDirection], a
 	ld a, $2
 	ld [wPikachuSpawnState], a
-	callba Func_fc4fa
-	call Func_1525
+	callba SchedulePikachuSpawnForAfterText
+	call EnablePikachuOverworldSpriteDrawing
 	ld a, $1a
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -1044,7 +1044,7 @@ OaksLabText18:
 	call AddPartyMon
 	ld a, 163
 	ld [wPartyMon1CatchRate], a
-	call Func_152d
+	call DisablePikachuOverworldSpriteDrawing
 	SetEvent EVENT_GOT_STARTER
 	ld hl, wd72e
 	set 3, [hl]

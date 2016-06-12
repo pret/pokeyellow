@@ -247,13 +247,13 @@ ENDM
 	music_const SFX_BATTLE_26,          SFX_Battle_26
 	music_const SFX_BATTLE_27,          SFX_Battle_27
 	music_const SFX_BATTLE_28,          SFX_Battle_28
-	music_const SFX_BATTLE_29,          SFX_Battle_29
+	music_const SFX_EARTHQUAKE,         SFX_Earthquake
 	music_const SFX_BATTLE_2A,          SFX_Battle_2A
 	music_const SFX_BATTLE_2B,          SFX_Battle_2B
 	music_const SFX_BATTLE_2C,          SFX_Battle_2C
 	music_const SFX_PSYBEAM,            SFX_Psybeam
 	music_const SFX_BATTLE_2E,          SFX_Battle_2E
-	music_const SFX_BATTLE_2F,          SFX_Battle_2F
+	music_const SFX_THUNDERBOLT,        SFX_Thunderbolt
 	music_const SFX_PSYCHIC_M,          SFX_Psychic_M
 	music_const SFX_BATTLE_31,          SFX_Battle_31
 	music_const SFX_BATTLE_32,          SFX_Battle_32

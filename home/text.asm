@@ -59,9 +59,9 @@ PlaceNextChar:: ; 1724 (0:1724)
 	ret
 
 Char4ETest:: ; 172d (0:172d)
-	cp $4E
+	cp $4E ; next
 	jr nz, .next
-	ld bc, $0028
+	ld bc, 2 * SCREEN_WIDTH
 	ld a, [hFlags_0xFFFA]
 	bit 2, a
 	jr z, .next2
@@ -73,7 +73,7 @@ Char4ETest:: ; 172d (0:172d)
 	jp PlaceNextChar_inc ; 17b6
 
 .next
-	cp $4F
+	cp $4F ; line
 	jr nz, .next3
 	pop hl
 	coord hl, 1, 16
@@ -81,46 +81,36 @@ Char4ETest:: ; 172d (0:172d)
 	jp PlaceNextChar_inc
 
 .next3 ; Check against a dictionary
+dict: macro
+if \1 == 0
 	and a
-	jp z, Char00
-	cp $4C
-	jp z, Char4C
-	cp $4B
-	jp z, Char4B
-	cp $51
-	jp z, Char51
-	cp $49
-	jp z, Char49
-	cp $52
-	jp z, Char52
-	cp $53
-	jp z, Char53
-	cp $54
-	jp z, Char54
-	cp $5B
-	jp z, Char5B
-	cp $5E
-	jp z, Char5E
-	cp $5C
-	jp z, Char5C
-	cp $5D
-	jp z, Char5D
-	cp $55
-	jp z, Char55
-	cp $56
-	jp z, Char56
-	cp $57
-	jp z, Char57
-	cp $58
-	jp z, Char58
-	cp $4A
-	jp z, Char4A
-	cp $5F
-	jp z, Char5F
-	cp $59
-	jp z, Char59
-	cp $5A
-	jp z, Char5A
+else
+	cp \1
+endc
+	jp z, \2
+endm
+
+	dict $00, Char00 ; error
+	dict $4C, Char4C ; autocont
+	dict $4B, Char4B ; cont_
+	dict $51, Char51 ; para
+	dict $49, Char49 ; page
+	dict $52, Char52 ; player
+	dict $53, Char53 ; rival
+	dict $54, Char54 ; POKé
+	dict $5B, Char5B ; PC
+	dict $5E, Char5E ; ROCKET
+	dict $5C, Char5C ; TM
+	dict $5D, Char5D ; TRAINER
+	dict $55, Char55 ; cont
+	dict $56, Char56 ; 6 dots
+	dict $57, Char57 ; done
+	dict $58, Char58 ; prompt
+	dict $4A, Char4A ; PKMN
+	dict $5F, Char5F ; dex
+	dict $59, Char59 ; TARGET
+	dict $5A, Char5A ; USER
+
 	ld [hli], a
 	call PrintLetterDelay
 PlaceNextChar_inc:: ; 17b6 (0:17b6)
@@ -263,18 +253,18 @@ Char5F:: ; 185f (0:185f)
 	pop hl
 	ret
 
-Char58:: ; 1863 (0:1863)
+Char58:: ; 1863 (0:1863) prompt
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	jp z, Next1870
+	jp z, .next
 	ld a, $EE
 	Coorda 18, 16
-Next1870:: ; 1870 (0:1870)
+.next ; 1870 (0:1870)
 	call ProtectedDelay3 ; 1913
 	call ManualTextScroll ; 388e
 	ld a, " " ; space
 	Coorda 18, 16
-Char57:: ; 1aad (0:1aad)
+Char57:: ; 1aad (0:1aad) done
 	pop hl
 	ld de, Char58Text
 	dec de
@@ -283,7 +273,7 @@ Char57:: ; 1aad (0:1aad)
 Char58Text:: ; 1881 (0:1881)
 	db "@"
 
-Char51:: ; 1882 (0:1882)
+Char51:: ; 1882 (0:1882) para
 	push de
 	ld a, $EE
 	Coorda 18, 16
@@ -334,13 +324,13 @@ Char4B:: ; 18d1 (0:18d1)
 	;fall through
 Char4C:: ; 18e3 (0:18e3)
 	push de
-	call Next18F1 ; 18f1
-	call Next18F1
+	call ScrollTextUpOneLine ; 18f1
+	call ScrollTextUpOneLine
 	coord hl, 1, 16
 	pop de
 	jp PlaceNextChar_inc
 
-Next18F1:: ; 18f1 (0:18f1)
+ScrollTextUpOneLine:: ; 18f1 (0:18f1)
 	coord hl, 0, 14
 	coord de, 0, 13
 	ld b, 60
@@ -531,8 +521,8 @@ TextCommand06:: ; 19a5 (0:19a5)
 TextCommand07:: ; 19c0 (0:19c0)
 	ld a, " "
 	Coorda 18, 16 ; place blank space in lower right corner of dialogue text box
-	call Next18F1 ; scroll up text
-	call Next18F1
+	call ScrollTextUpOneLine ; scroll up text
+	call ScrollTextUpOneLine
 	pop hl
 	coord bc, 1, 16 ; address of second line of dialogue text box
 	jp NextTextCommand

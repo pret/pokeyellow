@@ -13,10 +13,10 @@ DivideBCD:: ; f5a8 (3:75a8)
 	ld [hDivideBCDBuffer + 1], a
 	ld [hDivideBCDBuffer + 2], a
 	ld d, $1
-.asm_f5b0
+.loop1
 	ld a, [hDivideBCDDivisor]
 	and $f0
-	jr nz, .asm_f5e1
+	jr nz, .go
 	inc d
 	ld a, [hDivideBCDDivisor]
 	swap a
@@ -40,8 +40,9 @@ DivideBCD:: ; f5a8 (3:75a8)
 	ld a, [hDivideBCDDivisor + 2]
 	and $f0
 	ld [hDivideBCDDivisor + 2], a
-	jr .asm_f5b0
-.asm_f5e1
+	jr .loop1
+
+.go
 	push de
 	push de
 	call DivideBCD_f686
@@ -51,7 +52,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	and $f0
 	ld [hDivideBCDBuffer], a
 	dec d
-	jr z, .asm_f642
+	jr z, .skip
 	push de
 	call DivideBCD_f65d
 	call DivideBCD_f686
@@ -60,7 +61,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	or b
 	ld [hDivideBCDBuffer], a
 	dec d
-	jr z, .asm_f642
+	jr z, .skip
 	push de
 	call DivideBCD_f65d
 	call DivideBCD_f686
@@ -70,7 +71,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	and $f0
 	ld [hDivideBCDBuffer + 1], a
 	dec d
-	jr z, .asm_f642
+	jr z, .skip
 	push de
 	call DivideBCD_f65d
 	call DivideBCD_f686
@@ -79,7 +80,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	or b
 	ld [hDivideBCDBuffer + 1], a
 	dec d
-	jr z, .asm_f642
+	jr z, .skip
 	push de
 	call DivideBCD_f65d
 	call DivideBCD_f686
@@ -89,7 +90,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	and $f0
 	ld [hDivideBCDBuffer + 2], a
 	dec d
-	jr z, .asm_f642
+	jr z, .skip
 	push de
 	call DivideBCD_f65d
 	call DivideBCD_f686
@@ -97,7 +98,7 @@ DivideBCD:: ; f5a8 (3:75a8)
 	ld a, [hDivideBCDBuffer + 2]
 	or b
 	ld [hDivideBCDBuffer + 2], a
-.asm_f642
+.skip
 	ld a, [hDivideBCDBuffer]
 	ld [hDivideBCDQuotient], a
 	ld a, [hDivideBCDBuffer + 1]
@@ -109,12 +110,12 @@ DivideBCD:: ; f5a8 (3:75a8)
 	sub d
 	and a
 	ret z
-.asm_f654
+.loop2
 	push af
 	call DivideBCD_f65d
 	pop af
 	dec a
-	jr nz, .asm_f654
+	jr nz, .loop2
 	ret
 
 DivideBCD_f65d: ; f65d (3:765d)

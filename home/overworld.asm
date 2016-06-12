@@ -1848,7 +1848,7 @@ LoadMapHeader:: ; 0dab (0:0dab)
 	jr asm_0dbd
 
 Func_0db5:: ; XXX
-	callba Func_f0a55 ; 3c:4a55
+	callba LoadUnusedBluesHouseMissableObjectData ; 3c:4a55
 asm_0dbd
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
@@ -1945,9 +1945,9 @@ asm_0dbd
 	predef LoadTilesetHeader
 	ld a, [wd72e]
 	bit 5, a ; did a battle happen immediately before this?
-	jr nz, .asm_0e73
-	callab Func_fc4fa ; 3f:44fa
-.asm_0e73
+	jr nz, .skip_pika_spawn
+	callab SchedulePikachuSpawnForAfterText ; 3f:44fa
+.skip_pika_spawn
 	callab LoadWildData ; 3:4b62
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a, [wCurMapHeight] ; map height in 4x4 tile blocks
@@ -2067,7 +2067,7 @@ ReloadMapAfterPrinter:: ; 0f3d (0:0f3d)
 	pop af
 	call BankswitchCommon
 asm_0f4d: ; 0f4d (0:0f4d)
-	jpab Func_f02da
+	jpab SetMapSpecificScriptFlagsOnMapReload
 	ret ; useless?
 
 ResetMapVariables:: ; 0f56 (0:0f56)
@@ -2150,7 +2150,7 @@ IgnoreInputForHalfSecond: ; 0fc3 (0:0fc3)
 	ld [wIgnoreInputCounter], a
 	ld hl, wd730
 	ld a, [hl]
-	or $26
+	or %00100110 ; $26
 	ld [hl], a ; set ignore input bit
 	ret
 

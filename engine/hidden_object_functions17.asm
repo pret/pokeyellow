@@ -11,7 +11,7 @@ OpenRedsPC: ; 5db86 (17:5b86)
 	tx_pre_jump RedBedroomPCText
 
 RedBedroomPCText: ; 5db8e (17:5b8e)
-	db $fc ; FuncTX_ItemStoragePC
+	TX_PLAYERS_PC
 
 Route15GateLeftBinoculars: ; 5db8f (17:5b8f)
 	ld a, [wPlayerFacingDirection]
@@ -365,7 +365,7 @@ GymTrashScript: ; 5ddfc (17:5dfc)
 .openFirstLock
 ; Next can is trying for the second switch.
 	SetEvent EVENT_1ST_LOCK_OPENED
-	callab Func_f2d0c
+	callab Yellow_SampleSecondTrashCan
 	tx_pre_id VermilionGymTrashSuccessText1
 	jr .done
 

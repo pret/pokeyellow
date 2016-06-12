@@ -105,9 +105,9 @@ Printer_StartTransmittingTilemap:
 	ld hl, PrinterDataPacket3
 	call CopyPrinterDataHeader
 	call Printer_Convert2RowsTo2bpp
-	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) % $100
+	ld a, (wPrinterSendDataSource1End - wPrinterSendDataSource1) % $100
 	ld [wPrinterDataSize], a
-	ld a, (wPrinterSendDataSourceEnd - wPrinterSendDataSource) / $100
+	ld a, (wPrinterSendDataSource1End - wPrinterSendDataSource1) / $100
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinterChecksum
 	call Printer_Next
@@ -305,8 +305,8 @@ ResetPrinterData:
 	xor a
 	ld [wPrinterDataSize], a
 	ld [wPrinterDataSize + 1], a
-	ld hl, wPrinterSendDataSource
-	ld bc, wPrinterSendDataSourceEnd - wPrinterSendDataSource
+	ld hl, wPrinterSendDataSource1
+	ld bc, wPrinterSendDataSource1End - wPrinterSendDataSource1
 	call Printer_FillMemory
 	ret
 
@@ -319,7 +319,7 @@ ComputePrinterChecksum:
 	ld c, a
 	ld a, [wPrinterDataSize + 1]
 	ld b, a
-	ld de, wPrinterSendDataSource
+	ld de, wPrinterSendDataSource1
 	call .AddToChecksum
 	ld a, l
 	ld [wPrinterChecksum], a
@@ -344,13 +344,13 @@ ComputePrinterChecksum:
 
 Printer_StageHeaderForSend:
 	ld a, $1
-	ld [wPrinterSendDataSource], a
+	ld [wPrinterSendDataSource1], a
 	ld a, [wcae2]
-	ld [wPrinterSendDataSource + 1], a
+	ld [wPrinterSendDataSource1 + 1], a
 	ld a, %11100100
-	ld [wPrinterSendDataSource + 2], a
+	ld [wPrinterSendDataSource1 + 2], a
 	ld a, [wPrinterSettingsTempCopy]
-	ld [wPrinterSendDataSource + 3], a
+	ld [wPrinterSendDataSource1 + 3], a
 	ret
 
 Printer_Convert2RowsTo2bpp:
@@ -370,7 +370,7 @@ Printer_Convert2RowsTo2bpp:
 .got_row
 	ld e, l
 	ld d, h
-	ld hl, wPrinterSendDataSource
+	ld hl, wPrinterSendDataSource1
 	ld c, 2 * SCREEN_WIDTH
 .loop
 	ld a, [de]
@@ -542,7 +542,7 @@ PrinterSerial_: ; e8a5e (3a:4a5e)
 	ld e, a
 	ld a, [wPrinterSendByteOffset + 1]
 	ld d, a
-	ld hl, wPrinterSendDataSource
+	ld hl, wPrinterSendDataSource1
 	add hl, de
 	inc de
 	ld a, e

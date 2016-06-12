@@ -308,6 +308,8 @@ TX_RAM: MACRO
 	ENDM
 
 TX_BCD: MACRO
+; \1: RAM address to read from
+; \2: number of bytes + print flags
 	db $2
 	dw \1
 	db \2
@@ -352,8 +354,6 @@ TX_PRIZE_VENDOR            EQUS "db $f7"
 TX_POKECENTER_PC           EQUS "db $f9"
 TX_PLAYERS_PC              EQUS "db $fc"
 TX_BILLS_PC                EQUS "db $fd"
-TX_POKEMART_CLERK          EQUS "db $fe"
-TX_POKECENTER_NURSE        EQUS "db $ff"
 
 TX_MART: MACRO
 	db $FE, _NARG
@@ -363,6 +363,8 @@ TX_MART: MACRO
 	endr
 	db $FF
 	ENDM
+
+TX_POKECENTER_NURSE        EQUS "db $ff"
 
 ; Predef macro.
 predef_const: MACRO
@@ -848,108 +850,19 @@ enum_set: macro
 __enum__ = \1
 endm
 
-pikacry_def: MACRO
-\1_id:: dba \1
-endm
-
-dpikacry: MACRO
-	db (\1_id - PikachuCriesPointerTable) / 3
-	endm
-
-ldpikacry: MACRO
-	ld \1, (\2_id - PikachuCriesPointerTable) / 3
-	ENDM
-
-pikacry: MACRO
-	ldpikacry a, \1
-	endm
-
-
-	enum_start
-	enum pikapic_nop_command
-pikapic_nop: macro
-	db pikapic_nop_command
-	endm
-
-	enum pikapic_writebyte_command
-pikapic_writebyte: macro
-	db pikapic_writebyte_command, \1
-	endm
-
-	enum pikapic_loadgfx_command
-pikapic_loadgfx: macro
-	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
-	endm
-
-	enum pikapic_object_command
-pikapic_object: macro
-	db pikapic_object_command
-	dw \1
-	db \2, \3, \4
-	endm
-
-	enum pikapic_nop4_command
-pikapic_nop4: macro
-	db pikapic_nop4_command
-	endm
-
-	enum pikapic_nop5_command
-pikapic_nop5: macro
-	db pikapic_nop5_command
-	endm
-
-	enum pikapic_waitbgmapeleteobject_command
-pikapic_waitbgmapeleteobject: macro
-	db pikapic_waitbgmapeleteobject_command, \1
-	endm
-
-	enum pikapic_nop7_command
-pikapic_nop7: macro
-	db pikapic_nop7_command
-	endm
-
-	enum pikapic_nop8_command
-pikapic_nop8: macro
-	db pikapic_nop8_command
-	endm
-
-	enum pikapic_jump_command
-pikapic_jump: macro ; 9
-	dbw pikapic_jump_command, \1
-	endm
-
-	enum pikapic_setduration_command
-pikapic_setduration: macro ; a
-	dbw pikapic_setduration_command, \1
-	endm
-
-	enum pikapic_cry_command
-pikapic_cry: macro ; b
-	db pikapic_cry_command
-IF _NARG == 0
-	db $ff
-else
-	dpikacry \1
-	endc
-	endm
-
-	enum pikapic_thunderbolt_command
-pikapic_thunderbolt: macro ; c
-	db pikapic_thunderbolt_command
-	endm
-
-	enum pikapic_waitbgmap_command
-pikapic_waitbgmap: macro ; d
-	db pikapic_waitbgmap_command
-	endm
-
-	enum pikapic_ret_command
-pikapic_ret: macro ; e
-	db pikapic_ret_command
-	endm
-
-pikapic_looptofinish: macro
-.loop\@
-	pikapic_waitbgmap
-	pikapic_jump .loop\@
-	endm
+ANIM_OBJ_INDEX           EQUS "AnimatedObject0Index - AnimatedObject0"
+ANIM_OBJ_FRAME_SET       EQUS "AnimatedObject0FramesetID - AnimatedObject0"
+ANIM_OBJ_CALLBACK        EQUS "AnimatedObject0AnimSeqID - AnimatedObject0"
+ANIM_OBJ_TILE            EQUS "AnimatedObject0TileID - AnimatedObject0"
+ANIM_OBJ_X_COORD         EQUS "AnimatedObject0XCoord - AnimatedObject0"
+ANIM_OBJ_Y_COORD         EQUS "AnimatedObject0YCoord - AnimatedObject0"
+ANIM_OBJ_X_OFFSET        EQUS "AnimatedObject0XOffset - AnimatedObject0"
+ANIM_OBJ_Y_OFFSET        EQUS "AnimatedObject0YOffset - AnimatedObject0"
+ANIM_OBJ_DURATION        EQUS "AnimatedObject0Duration - AnimatedObject0"
+ANIM_OBJ_DURATION_OFFSET EQUS "AnimatedObject0DurationOffset - AnimatedObject0"
+ANIM_OBJ_FRAME_IDX       EQUS "AnimatedObject0FrameIndex - AnimatedObject0"
+ANIM_OBJ_FIELD_B EQU $b
+ANIM_OBJ_FIELD_C EQU $c
+ANIM_OBJ_FIELD_D EQU $d
+ANIM_OBJ_FIELD_E EQU $e
+ANIM_OBJ_FIELD_F EQU $f

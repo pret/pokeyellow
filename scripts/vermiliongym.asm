@@ -29,14 +29,15 @@ Gym3LeaderName:
 
 VermilionGymScript_5ca6d:
 	CheckEvent EVENT_2ND_LOCK_OPENED
-	jr nz, .asm_5ca78
+	jr nz, .opened_second_lock
 	ld a, $24
-	jr .asm_5ca7f
-.asm_5ca78
+	jr .load_door_tile
+
+.opened_second_lock
 	ld a, SFX_GO_INSIDE
 	call PlaySound
 	ld a, $5
-.asm_5ca7f
+.load_door_tile
 	ld [wNewTileBlockID], a
 	lb bc, 2, 2
 	predef_jump ReplaceTileBlock
@@ -73,12 +74,13 @@ VermilionGymScript_5caaa:
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM24
-	jr .asm_5cad3
+	jr .set_gym_flags
+
 .BagFull
 	ld a, $8
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-.asm_5cad3
+.set_gym_flags
 	ld hl, wObtainedBadges
 	set 2, [hl]
 	ld hl, wBeatGymFlags
@@ -132,17 +134,19 @@ VermilionGymTrainerHeader2:
 VermilionGymText1:
 	TX_ASM
 	CheckEvent EVENT_BEAT_LT_SURGE
-	jr z, .asm_5cb39
+	jr z, .engage_surge
 	CheckEventReuseA EVENT_GOT_TM24
-	jr nz, .asm_5cb31
+	jr nz, .after_win_text
 	call z, VermilionGymScript_5caaa
 	call DisableWaitingAfterTextDisplay
-	jr .asm_5cb6a
-.asm_5cb31
+	jr .text_script_end
+
+.after_win_text
 	ld hl, VermilionGymText_5cb72
 	call PrintText
-	jr .asm_5cb6a
-.asm_5cb39
+	jr .text_script_end
+
+.engage_surge
 	ld hl, VermilionGymText_5cb6d
 	call PrintText
 	ld hl, wd72d
@@ -162,7 +166,7 @@ VermilionGymText1:
 	ld a, $3
 	ld [wVermilionGymCurScript], a
 	ld [wCurMapScript], a
-.asm_5cb6a
+.text_script_end
 	jp TextScriptEnd
 
 VermilionGymText_5cb6d:
@@ -179,7 +183,7 @@ VermilionGymText6:
 
 VermilionGymText7:
 	TX_FAR _ReceivedTM24Text
-	db $11
+	TX_SFX_KEY_ITEM
 	TX_FAR _TM24ExplanationText
 	db "@"
 
@@ -249,14 +253,15 @@ VermilionGymText5:
 	TX_ASM
 	ld a, [wBeatGymFlags]
 	bit 2, a
-	jr nz, .asm_5cbeb
+	jr nz, .beat_surge
 	ld hl, VermilionGymText_5cbf4
 	call PrintText
-	jr .asm_5cbf1
-.asm_5cbeb
+	jr .text_script_end
+
+.beat_surge
 	ld hl, VermilionGymText_5cbf9
 	call PrintText
-.asm_5cbf1
+.text_script_end
 	jp TextScriptEnd
 
 VermilionGymText_5cbf4:

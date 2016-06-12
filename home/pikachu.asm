@@ -14,14 +14,14 @@ Func_151d:: ; 151d (0:151d)
 	pop hl
 	ret
 
-Func_1525:: ; 1525 (0:1525)
+EnablePikachuOverworldSpriteDrawing:: ; 1525 (0:1525)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	res 3, [hl]
 	pop hl
 	ret
 
-Func_152d:: ; 152d (0:152d)
+DisablePikachuOverworldSpriteDrawing:: ; 152d (0:152d)
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 3, [hl]
