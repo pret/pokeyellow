@@ -201,4 +201,4 @@ OpenPokemonCenterPC:
 	tx_pre_jump PokemonCenterPCText
 
 PokemonCenterPCText:
-	db $F9 ; FuncTX_PokemonCenterPC
+	TX_POKECENTER_PC
