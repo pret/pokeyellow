@@ -115,4 +115,3 @@ _CeladonMansion3Text8::
 	text "GAME FREAK"
 	line "Development Room"
 	done
-

@@ -11,11 +11,11 @@ Func_f1b27:
 .asm_51191
 	ret
 
-Route22RivalBeforeBattleText1: ; 511ad (14:51ad)
+Route22RivalBeforeBattleText1:
 	TX_FAR _Route22RivalBeforeBattleText1
 	db "@"
 
-Route22RivalAfterBattleText1: ; 511b2 (14:51b2)
+Route22RivalAfterBattleText1:
 	TX_FAR _Route22RivalAfterBattleText1
 	db "@"
 
@@ -32,11 +32,11 @@ Func_f1b47:
 .asm_511aa
 	ret
 
-Route22RivalBeforeBattleText2: ; 511c1 (14:51c1)
+Route22RivalBeforeBattleText2:
 	TX_FAR _Route22RivalBeforeBattleText2
 	db "@"
 
-Route22RivalAfterBattleText2: ; 511c6 (14:51c6)
+Route22RivalAfterBattleText2:
 	TX_FAR _Route22RivalAfterBattleText2
 	db "@"
 

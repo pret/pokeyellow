@@ -1,7 +1,7 @@
-Route22GateScript: ; 1e683 (7:6683)
+Route22GateScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22GateScriptPointers
-	ld a, [W_ROUTE22GATECURSCRIPT]
+	ld a, [wRoute22GateCurScript]
 	call JumpTable
 	ld a, [wYCoord]
 	cp $4
@@ -12,12 +12,12 @@ Route22GateScript: ; 1e683 (7:6683)
 	ld [wLastMap], a
 	ret
 
-Route22GateScriptPointers: ; 1e69e (7:669e)
+Route22GateScriptPointers:
 	dw Route22GateScript0
 	dw Route22GateScript1
 	dw Route22GateScript2
 
-Route22GateScript0: ; 1e6a4 (7:66a4)
+Route22GateScript0:
 	ld hl, Route22GateScriptCoords
 	call ArePlayerCoordsInArray
 	ret nc
@@ -30,12 +30,12 @@ Route22GateScript0: ; 1e6a4 (7:66a4)
 	call DisplayTextID
 	ret
 
-Route22GateScriptCoords: ; 1e6b5 (7:66b5)
+Route22GateScriptCoords:
 	db 2,4
 	db 2,5
 	db $ff
 
-Route22GateScript_1e6ba: ; 1e6ba (7:66ba)
+Route22GateScript_1e6ba:
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, D_DOWN
@@ -44,7 +44,7 @@ Route22GateScript_1e6ba: ; 1e6ba (7:66ba)
 	ld [wJoyIgnore], a
 	jp StartSimulatingJoypadStates
 
-Route22GateScript1: ; 1e6cd (7:66cd)
+Route22GateScript1:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -52,14 +52,14 @@ Route22GateScript1: ; 1e6cd (7:66cd)
 	ld [wJoyIgnore], a
 	call Delay3
 	ld a, $0
-	ld [W_ROUTE22GATECURSCRIPT], a
-Route22GateScript2: ; 1e6de (7:66de)
+	ld [wRoute22GateCurScript], a
+Route22GateScript2:
 	ret
 
-Route22GateTextPointers: ; 1e6df (7:66df)
+Route22GateTextPointers:
 	dw Route22GateText1
 
-Route22GateText1: ; 1e6e1 (7:66e1)
+Route22GateText1:
 	TX_ASM
 	ld a, [wObtainedBadges]
 	bit 0, a ; BOULDERBADGE
@@ -74,10 +74,10 @@ Route22GateText1: ; 1e6e1 (7:66e1)
 	call PrintText
 	ld a, $2
 .asm_1e6fe
-	ld [W_ROUTE22GATECURSCRIPT], a
+	ld [wRoute22GateCurScript], a
 	jp TextScriptEnd
 
-Route22GateText_1e704: ; 1e704 (7:6704)
+Route22GateText_1e704:
 	TX_FAR _Route22GateText_1e704
 	TX_ASM
 	ld a, SFX_DENIED
@@ -86,11 +86,11 @@ Route22GateText_1e704: ; 1e704 (7:6704)
 	ld hl, Route22GateText_1e715
 	ret
 
-Route22GateText_1e715: ; 1e715 (7:6715)
+Route22GateText_1e715:
 	TX_FAR _Route22GateText_1e715
 	db "@"
 
-Route22GateText_1e71a: ; 1e71a (7:671a)
+Route22GateText_1e71a:
 	TX_FAR _Route22GateText_1e71a
 	TX_SFX_ITEM
 	db "@"

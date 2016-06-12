@@ -1,5 +1,5 @@
 ; bankswitches and runs _UncompressSpriteData
-; bank is given in a, sprite input stream is pointed to in W_SPRITEINPUTPTR
+; bank is given in a, sprite input stream is pointed to in wSpriteInputPtr
 UncompressSpriteData:: ; 23f8 (0:23f8)
 	ld b, a
 	ld a, [H_LOADEDROMBANK]
@@ -16,51 +16,51 @@ UncompressSpriteData:: ; 23f8 (0:23f8)
 
 ; initializes necessary data to load a sprite and runs UncompressSpriteDataLoop
 _UncompressSpriteData:: ; 2410 (0:2410)
-	ld hl, S_SPRITEBUFFER1
+	ld hl, sSpriteBuffer1
 	ld c, (2*SPRITEBUFFERSIZE) % $100
 	ld b, (2*SPRITEBUFFERSIZE) / $100
 	xor a
 	call FillMemory           ; clear sprite buffer 1 and 2
 	ld a, $1
-	ld [W_SPRITEINPUTBITCOUNTER], a
+	ld [wSpriteInputBitCounter], a
 	ld a, $3
-	ld [W_SPRITEOUTPUTBITOFFSET], a
+	ld [wSpriteOutputBitOffset], a
 	xor a
-	ld [W_SPRITECURPOSX], a
-	ld [W_SPRITECURPOSY], a
-	ld [W_SPRITELOADFLAGS], a
+	ld [wSpriteCurPosX], a
+	ld [wSpriteCurPosY], a
+	ld [wSpriteLoadFlags], a
 	call ReadNextInputByte    ; first byte of input determines sprite width (high nybble) and height (low nybble) in tiles (8x8 pixels)
 	ld b, a
 	and $f
 	add a
 	add a
 	add a
-	ld [W_SPRITEHEIGHT], a
+	ld [wSpriteHeight], a
 	ld a, b
 	swap a
 	and $f
 	add a
 	add a
 	add a
-	ld [W_SPRITEWITDH], a
+	ld [wSpriteWidth], a
 	call ReadNextInputBit
-	ld [W_SPRITELOADFLAGS], a ; initialite bit1 to 0 and bit0 to the first input bit
-				  ; this will load two chunks of data to S_SPRITEBUFFER1 and S_SPRITEBUFFER2
+	ld [wSpriteLoadFlags], a ; initialite bit1 to 0 and bit0 to the first input bit
+				  ; this will load two chunks of data to sSpriteBuffer1 and sSpriteBuffer2
 				  ; bit 0 decides in which one the first chunk is placed
 	; fall through
 
-; uncompresses a chunk from the sprite input data stream (pointed to at wd0da) into S_SPRITEBUFFER1 or S_SPRITEBUFFER2
+; uncompresses a chunk from the sprite input data stream (pointed to at wd0da) into sSpriteBuffer1 or sSpriteBuffer2
 ; each chunk is a 1bpp sprite. A 2bpp sprite consist of two chunks which are merged afterwards
 ; note that this is an endless loop which is terminated during a call to MoveToNextBufferPosition by manipulating the stack
 UncompressSpriteDataLoop:: ; 244c (0:244c)
-	ld hl, S_SPRITEBUFFER1
-	ld a, [W_SPRITELOADFLAGS]
+	ld hl, sSpriteBuffer1
+	ld a, [wSpriteLoadFlags]
 	bit 0, a
 	jr z, .useSpriteBuffer1    ; check which buffer to use
-	ld hl, S_SPRITEBUFFER2
+	ld hl, sSpriteBuffer2
 .useSpriteBuffer1
 	call StoreSpriteOutputPointer
-	ld a, [W_SPRITELOADFLAGS]
+	ld a, [wSpriteLoadFlags]
 	bit 1, a
 	jr z, .startDecompression  ; check if last iteration
 	call ReadNextInputBit      ; if last chunk, read 1-2 bit unpacking mode
@@ -69,7 +69,7 @@ UncompressSpriteDataLoop:: ; 244c (0:244c)
 	call ReadNextInputBit      ; 1 0 -> mode 1
 	inc a                      ; 1 1 -> mode 2
 .unpackingMode0
-	ld [W_SPRITEUNPACKMODE], a
+	ld [wSpriteUnpackMode], a
 .startDecompression
 	call ReadNextInputBit
 	and a
@@ -143,69 +143,69 @@ UncompressSpriteDataLoop:: ; 244c (0:244c)
 ; also cancels the calling function if the all output is done (by removing the return pointer from stack)
 ; and calls postprocessing functions according to the unpack mode
 MoveToNextBufferPosition:: ; 24ce (0:24ce)
-	ld a, [W_SPRITEHEIGHT]
+	ld a, [wSpriteHeight]
 	ld b, a
-	ld a, [W_SPRITECURPOSY]
+	ld a, [wSpriteCurPosY]
 	inc a
 	cp b
 	jr z, .curColumnDone
-	ld [W_SPRITECURPOSY], a
-	ld a, [W_SPRITEOUTPUTPTR]
+	ld [wSpriteCurPosY], a
+	ld a, [wSpriteOutputPtr]
 	inc a
-	ld [W_SPRITEOUTPUTPTR], a
+	ld [wSpriteOutputPtr], a
 	ret nz
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	inc a
-	ld [W_SPRITEOUTPUTPTR+1], a
+	ld [wSpriteOutputPtr+1], a
 	ret
 .curColumnDone
 	xor a
-	ld [W_SPRITECURPOSY], a
-	ld a, [W_SPRITEOUTPUTBITOFFSET]
+	ld [wSpriteCurPosY], a
+	ld a, [wSpriteOutputBitOffset]
 	and a
 	jr z, .bitOffsetsDone
 	dec a
-	ld [W_SPRITEOUTPUTBITOFFSET], a
-	ld hl, W_SPRITEOUTPUTPTRCACHED
+	ld [wSpriteOutputBitOffset], a
+	ld hl, wSpriteOutputPtrCached
 	ld a, [hli]
-	ld [W_SPRITEOUTPUTPTR], a
+	ld [wSpriteOutputPtr], a
 	ld a, [hl]
-	ld [W_SPRITEOUTPUTPTR+1], a
+	ld [wSpriteOutputPtr+1], a
 	ret
 .bitOffsetsDone
 	ld a, $3
-	ld [W_SPRITEOUTPUTBITOFFSET], a
-	ld a, [W_SPRITECURPOSX]
+	ld [wSpriteOutputBitOffset], a
+	ld a, [wSpriteCurPosX]
 	add $8
-	ld [W_SPRITECURPOSX], a
+	ld [wSpriteCurPosX], a
 	ld b, a
-	ld a, [W_SPRITEWITDH]
+	ld a, [wSpriteWidth]
 	cp b
 	jr z, .allColumnsDone
-	ld a, [W_SPRITEOUTPUTPTR]
+	ld a, [wSpriteOutputPtr]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
 	inc hl
 	jp StoreSpriteOutputPointer
 .allColumnsDone
 	pop hl
 	xor a
-	ld [W_SPRITECURPOSX], a
-	ld a, [W_SPRITELOADFLAGS]
+	ld [wSpriteCurPosX], a
+	ld a, [wSpriteLoadFlags]
 	bit 1, a
 	jr nz, .done            ; test if there is one more sprite to go
 	xor $1
 	set 1, a
-	ld [W_SPRITELOADFLAGS], a
+	ld [wSpriteLoadFlags], a
 	jp UncompressSpriteDataLoop
 .done
 	jp UnpackSprite
 
-; writes 2 bits (from a) to the output buffer (pointed to from W_SPRITEOUTPUTPTR)
+; writes 2 bits (from a) to the output buffer (pointed to from wSpriteOutputPtr)
 WriteSpriteBitsToBuffer:: ; 253f (0:253f)
 	ld e, a
-	ld a, [W_SPRITEOUTPUTBITOFFSET]
+	ld a, [wSpriteOutputBitOffset]
 	and a
 	jr z, .offset0
 	cp $2
@@ -221,9 +221,9 @@ WriteSpriteBitsToBuffer:: ; 253f (0:253f)
 .offset2
 	swap e
 .offset0
-	ld a, [W_SPRITEOUTPUTPTR]
+	ld a, [wSpriteOutputPtr]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
 	ld a, [hl]
 	or e
@@ -232,32 +232,32 @@ WriteSpriteBitsToBuffer:: ; 253f (0:253f)
 
 ; reads next bit from input stream and returns it in a
 ReadNextInputBit:: ; 2566 (0:2566)
-	ld a, [W_SPRITEINPUTBITCOUNTER]
+	ld a, [wSpriteInputBitCounter]
 	dec a
 	jr nz, .curByteHasMoreBitsToRead
 	call ReadNextInputByte
-	ld [W_SPRITEINPUTCURBYTE], a
+	ld [wSpriteInputCurByte], a
 	ld a, $8
 .curByteHasMoreBitsToRead
-	ld [W_SPRITEINPUTBITCOUNTER], a
-	ld a, [W_SPRITEINPUTCURBYTE]
+	ld [wSpriteInputBitCounter], a
+	ld a, [wSpriteInputCurByte]
 	rlca
-	ld [W_SPRITEINPUTCURBYTE], a
+	ld [wSpriteInputCurByte], a
 	and $1
 	ret
 
 ; reads next byte from input stream and returns it in a
 ReadNextInputByte:: ; 2581 (0:2581)
-	ld a, [W_SPRITEINPUTPTR]
+	ld a, [wSpriteInputPtr]
 	ld l, a
-	ld a, [W_SPRITEINPUTPTR+1]
+	ld a, [wSpriteInputPtr+1]
 	ld h, a
 	ld a, [hli]
 	ld b, a
 	ld a, l
-	ld [W_SPRITEINPUTPTR], a
+	ld [wSpriteInputPtr], a
 	ld a, h
-	ld [W_SPRITEINPUTPTR+1], a
+	ld [wSpriteInputPtr+1], a
 	ld a, b
 	ret
 
@@ -282,22 +282,22 @@ LengthEncodingOffsetList:: ; 2595 (0:2595)
 
 ; unpacks the sprite data depending on the unpack mode
 UnpackSprite:: ; 25b5 (0:25b5)
-	ld a, [W_SPRITEUNPACKMODE]
+	ld a, [wSpriteUnpackMode]
 	cp $2
 	jp z, UnpackSpriteMode2
 	and a
 	jp nz, XorSpriteChunks
-	ld hl, S_SPRITEBUFFER1
+	ld hl, sSpriteBuffer1
 	call SpriteDifferentialDecode
-	ld hl, S_SPRITEBUFFER2
+	ld hl, sSpriteBuffer2
 	; fall through
 
 ; decodes differential encoded sprite data
 ; input bit value 0 preserves the current bit value and input bit value 1 toggles it (starting from initial value 0).
 SpriteDifferentialDecode:: ; 25ca (0:25ca)
 	xor a
-	ld [W_SPRITECURPOSX], a
-	ld [W_SPRITECURPOSY], a
+	ld [wSpriteCurPosX], a
+	ld [wSpriteCurPosY], a
 	call StoreSpriteOutputPointer
 	ld a, [wSpriteFlipped]
 	and a
@@ -310,18 +310,18 @@ SpriteDifferentialDecode:: ; 25ca (0:25ca)
 	ld de, DecodeNybble1Table
 .storeDecodeTablesPointers
 	ld a, l
-	ld [W_SPRITEDECODETABLE0PTR], a
+	ld [wSpriteDecodeTable0Ptr], a
 	ld a, h
-	ld [W_SPRITEDECODETABLE0PTR+1], a
+	ld [wSpriteDecodeTable0Ptr+1], a
 	ld a, e
-	ld [W_SPRITEDECODETABLE1PTR], a
+	ld [wSpriteDecodeTable1Ptr], a
 	ld a, d
-	ld [W_SPRITEDECODETABLE1PTR+1], a
+	ld [wSpriteDecodeTable1Ptr+1], a
 	ld e, $0                          ; last decoded nybble, initialized to 0
 .decodeNextByteLoop
-	ld a, [W_SPRITEOUTPUTPTR]
+	ld a, [wSpriteOutputPtr]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
 	ld a, [hl]
 	ld b, a
@@ -335,47 +335,47 @@ SpriteDifferentialDecode:: ; 25ca (0:25ca)
 	call DifferentialDecodeNybble     ; decode low nybble
 	or d
 	ld b, a
-	ld a, [W_SPRITEOUTPUTPTR]
+	ld a, [wSpriteOutputPtr]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
 	ld a, b
 	ld [hl], a                        ; write back decoded data
-	ld a, [W_SPRITEHEIGHT]
+	ld a, [wSpriteHeight]
 	add l                             ; move on to next column
 	jr nc, .noCarry
 	inc h
 .noCarry
-	ld [W_SPRITEOUTPUTPTR], a
+	ld [wSpriteOutputPtr], a
 	ld a, h
-	ld [W_SPRITEOUTPUTPTR+1], a
-	ld a, [W_SPRITECURPOSX]
+	ld [wSpriteOutputPtr+1], a
+	ld a, [wSpriteCurPosX]
 	add $8
-	ld [W_SPRITECURPOSX], a
+	ld [wSpriteCurPosX], a
 	ld b, a
-	ld a, [W_SPRITEWITDH]
+	ld a, [wSpriteWidth]
 	cp b
 	jr nz, .decodeNextByteLoop        ; test if current row is done
 	xor a
 	ld e, a
-	ld [W_SPRITECURPOSX], a
-	ld a, [W_SPRITECURPOSY]           ; move on to next row
+	ld [wSpriteCurPosX], a
+	ld a, [wSpriteCurPosY]           ; move on to next row
 	inc a
-	ld [W_SPRITECURPOSY], a
+	ld [wSpriteCurPosY], a
 	ld b, a
-	ld a, [W_SPRITEHEIGHT]
+	ld a, [wSpriteHeight]
 	cp b
 	jr z, .done                       ; test if all rows finished
-	ld a, [W_SPRITEOUTPUTPTRCACHED]
+	ld a, [wSpriteOutputPtrCached]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTRCACHED+1]
+	ld a, [wSpriteOutputPtrCached+1]
 	ld h, a
 	inc hl
 	call StoreSpriteOutputPointer
 	jr .decodeNextByteLoop
 .done
 	xor a
-	ld [W_SPRITECURPOSY], a
+	ld [wSpriteCurPosY], a
 	ret
 
 ; decodes the nybble stored in a. Last decoded data is assumed to be in e (needed to determine if initial value is 0 or 1)
@@ -396,14 +396,14 @@ DifferentialDecodeNybble:: ; 2663 (0:2663)
 .selectLookupTable
 	ld e, l
 	jr nz, .initialValue1 ; load the appropriate table
-	ld a, [W_SPRITEDECODETABLE0PTR]
+	ld a, [wSpriteDecodeTable0Ptr]
 	ld l, a
-	ld a, [W_SPRITEDECODETABLE0PTR+1]
+	ld a, [wSpriteDecodeTable0Ptr+1]
 	jr .tableLookup
 .initialValue1
-	ld a, [W_SPRITEDECODETABLE1PTR]
+	ld a, [wSpriteDecodeTable1Ptr]
 	ld l, a
-	ld a, [W_SPRITEDECODETABLE1PTR+1]
+	ld a, [wSpriteDecodeTable1Ptr+1]
 .tableLookup
 	ld h, a
 	ld a, e
@@ -461,22 +461,22 @@ DecodeNybble1TableFlipped:: ; 26b5 (0:26b5)
 ; combines the two loaded chunks with xor (the chunk loaded second is the destination). The source chunk is differeintial decoded beforehand.
 XorSpriteChunks:: ; 26bd (0:26bd)
 	xor a
-	ld [W_SPRITECURPOSX], a
-	ld [W_SPRITECURPOSY], a
+	ld [wSpriteCurPosX], a
+	ld [wSpriteCurPosY], a
 	call ResetSpriteBufferPointers
-	ld a, [W_SPRITEOUTPUTPTR]          ; points to buffer 1 or 2, depending on flags
+	ld a, [wSpriteOutputPtr]          ; points to buffer 1 or 2, depending on flags
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
 	call SpriteDifferentialDecode      ; decode buffer 1 or 2, depending on flags
 	call ResetSpriteBufferPointers
-	ld a, [W_SPRITEOUTPUTPTR]          ; source buffer, points to buffer 1 or 2, depending on flags
+	ld a, [wSpriteOutputPtr]          ; source buffer, points to buffer 1 or 2, depending on flags
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTR+1]
+	ld a, [wSpriteOutputPtr+1]
 	ld h, a
-	ld a, [W_SPRITEOUTPUTPTRCACHED]    ; destination buffer, points to buffer 2 or 1, depending on flags
+	ld a, [wSpriteOutputPtrCached]    ; destination buffer, points to buffer 2 or 1, depending on flags
 	ld e, a
-	ld a, [W_SPRITEOUTPUTPTRCACHED+1]
+	ld a, [wSpriteOutputPtrCached+1]
 	ld d, a
 .xorChunksLoop
 	ld a, [wSpriteFlipped]
@@ -503,24 +503,24 @@ XorSpriteChunks:: ; 26bd (0:26bd)
 	xor b
 	ld [de], a
 	inc de
-	ld a, [W_SPRITECURPOSY]
+	ld a, [wSpriteCurPosY]
 	inc a
-	ld [W_SPRITECURPOSY], a             ; go to next row
+	ld [wSpriteCurPosY], a             ; go to next row
 	ld b, a
-	ld a, [W_SPRITEHEIGHT]
+	ld a, [wSpriteHeight]
 	cp b
 	jr nz, .xorChunksLoop               ; test if column finished
 	xor a
-	ld [W_SPRITECURPOSY], a
-	ld a, [W_SPRITECURPOSX]
+	ld [wSpriteCurPosY], a
+	ld a, [wSpriteCurPosX]
 	add $8
-	ld [W_SPRITECURPOSX], a             ; go to next column
+	ld [wSpriteCurPosX], a             ; go to next column
 	ld b, a
-	ld a, [W_SPRITEWITDH]
+	ld a, [wSpriteWidth]
 	cp b
 	jr nz, .xorChunksLoop               ; test if all columns finished
 	xor a
-	ld [W_SPRITECURPOSX], a
+	ld [wSpriteCurPosX], a
 	ret
 
 ; reverses the bits in the nybble given in register a
@@ -534,26 +534,26 @@ ReverseNybble:: ; 272d (0:272d)
 	ld a, [de]
 	ret
 
-; resets sprite buffer pointers to buffer 1 and 2, depending on W_SPRITELOADFLAGS
+; resets sprite buffer pointers to buffer 1 and 2, depending on wSpriteLoadFlags
 ResetSpriteBufferPointers:: ; 2737 (0:2737)
-	ld a, [W_SPRITELOADFLAGS] ; wd0a8
+	ld a, [wSpriteLoadFlags] ; wd0a8
 	bit 0, a
 	jr nz, .buffer2Selected
-	ld de, S_SPRITEBUFFER1
-	ld hl, S_SPRITEBUFFER2
+	ld de, sSpriteBuffer1
+	ld hl, sSpriteBuffer2
 	jr .storeBufferPointers
 .buffer2Selected
-	ld de, S_SPRITEBUFFER2
-	ld hl, S_SPRITEBUFFER1
+	ld de, sSpriteBuffer2
+	ld hl, sSpriteBuffer1
 .storeBufferPointers
 	ld a, l
-	ld [W_SPRITEOUTPUTPTR], a
+	ld [wSpriteOutputPtr], a
 	ld a, h
-	ld [W_SPRITEOUTPUTPTR+1], a
+	ld [wSpriteOutputPtr+1], a
 	ld a, e
-	ld [W_SPRITEOUTPUTPTRCACHED], a
+	ld [wSpriteOutputPtrCached], a
 	ld a, d
-	ld [W_SPRITEOUTPUTPTRCACHED+1], a
+	ld [wSpriteOutputPtrCached+1], a
 	ret
 
 ; maps each nybble to its reverse
@@ -567,9 +567,9 @@ UnpackSpriteMode2:: ; 276d (0:276d)
 	push af
 	xor a
 	ld [wSpriteFlipped], a            ; temporarily clear flipped flag for decoding the destination chunk
-	ld a, [W_SPRITEOUTPUTPTRCACHED]
+	ld a, [wSpriteOutputPtrCached]
 	ld l, a
-	ld a, [W_SPRITEOUTPUTPTRCACHED+1]
+	ld a, [wSpriteOutputPtrCached+1]
 	ld h, a
 	call SpriteDifferentialDecode
 	call ResetSpriteBufferPointers
@@ -580,9 +580,9 @@ UnpackSpriteMode2:: ; 276d (0:276d)
 ; stores hl into the output pointers
 StoreSpriteOutputPointer:: ; 278d (0:278d)
 	ld a, l
-	ld [W_SPRITEOUTPUTPTR], a
-	ld [W_SPRITEOUTPUTPTRCACHED], a
+	ld [wSpriteOutputPtr], a
+	ld [wSpriteOutputPtrCached], a
 	ld a, h
-	ld [W_SPRITEOUTPUTPTR+1], a
-	ld [W_SPRITEOUTPUTPTRCACHED+1], a
+	ld [wSpriteOutputPtr+1], a
+	ld [wSpriteOutputPtrCached+1], a
 	ret

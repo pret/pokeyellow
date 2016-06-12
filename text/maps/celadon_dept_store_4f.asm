@@ -28,4 +28,3 @@ _CeladonMart4Text4::
 	line "Element STONEs on"
 	cont "sale now!"
 	done
-

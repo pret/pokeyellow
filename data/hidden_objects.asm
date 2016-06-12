@@ -299,7 +299,7 @@ SaffronPokecenterHiddenObjects:
 
 RedsHouse2FHiddenObjects:
 	hidden_object   1,   0, SPRITE_FACING_UP, OpenRedsPC
-	hidden_object   5,   3, $d0, PrintRedsNESText
+	hidden_object   5,   3, $d0, PrintRedSNESText
 	db $ff
 
 BluesHouseHiddenObjects:

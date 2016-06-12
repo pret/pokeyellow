@@ -202,8 +202,8 @@ HoFLoadPlayerPics: ; 70390 (1c:433e)
 	call UncompressSpriteFromDE
 	ld a,$0
 	call SwitchSRAMBankAndLatchClockData
-	ld hl, S_SPRITEBUFFER1
-	ld de, S_SPRITEBUFFER0
+	ld hl, sSpriteBuffer1
+	ld de, sSpriteBuffer0
 	ld bc, $310
 	call CopyData
 	call PrepareRTCDataAndDisableSRAM
@@ -238,12 +238,12 @@ HoFDisplayPlayerStats: ; 703d1 (1c:43d1)
 	ld de, HoFPlayTimeText
 	call PlaceString
 	coord hl, 5, 7
-	ld de, wPlayTimeHours + 1
+	ld de, wPlayTimeHours
 	lb bc, 1, 3
 	call PrintNumber
 	ld [hl], $6d
 	inc hl
-	ld de, wPlayTimeMinutes + 1
+	ld de, wPlayTimeMinutes
 	lb bc, LEADING_ZEROES | 1, 2
 	call PrintNumber
 	coord hl, 1, 9

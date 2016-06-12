@@ -1506,4 +1506,3 @@ _MewDexEntry::
 	next "fine, delicate"
 	next "hair can be seen"
 	dex
-

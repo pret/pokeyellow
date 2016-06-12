@@ -778,9 +778,9 @@ UncompressMonSprite:: ; 1407 (0:1407)
 	ld bc, wMonHeader
 	add hl, bc
 	ld a, [hli]
-	ld [W_SPRITEINPUTPTR], a    ; fetch sprite input pointer
+	ld [wSpriteInputPtr], a    ; fetch sprite input pointer
 	ld a, [hl]
-	ld [W_SPRITEINPUTPTR + 1], a
+	ld [wSpriteInputPtr + 1], a
 ; define (by index number) the bank that a pokemon's image is in
 ; index = Mew, bank 1
 ; index = Kabutops fossil, bank $B
@@ -867,15 +867,15 @@ LoadUncompressedSpriteData:: ; 1672 (0:1672)
 	ld [H_SPRITEOFFSET], a
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
-	ld hl, S_SPRITEBUFFER0
+	ld hl, sSpriteBuffer0
 	call ZeroSpriteBuffer   ; zero buffer 0
-	ld de, S_SPRITEBUFFER1
-	ld hl, S_SPRITEBUFFER0
+	ld de, sSpriteBuffer1
+	ld hl, sSpriteBuffer0
 	call AlignSpriteDataCentered    ; copy and align buffer 1 to 0 (containing the MSB of the 2bpp sprite)
-	ld hl, S_SPRITEBUFFER1
+	ld hl, sSpriteBuffer1
 	call ZeroSpriteBuffer   ; zero buffer 1
-	ld de, S_SPRITEBUFFER2
-	ld hl, S_SPRITEBUFFER1
+	ld de, sSpriteBuffer2
+	ld hl, sSpriteBuffer1
 	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
 	call PrepareRTCDataAndDisableSRAM
 	pop de
@@ -927,9 +927,9 @@ InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
 	push de
-	ld hl, S_SPRITEBUFFER2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
-	ld de, S_SPRITEBUFFER1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
-	ld bc, S_SPRITEBUFFER0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
+	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
+	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
+	ld bc, sSpriteBuffer0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
 	ld a, SPRITEBUFFERSIZE/2 ; $c4
 	ld [H_SPRITEINTERLACECOUNTER], a
 .interlaceLoop
@@ -953,7 +953,7 @@ InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	and a
 	jr z, .notFlipped
 	ld bc, 2*SPRITEBUFFERSIZE
-	ld hl, S_SPRITEBUFFER1
+	ld hl, sSpriteBuffer1
 .swapLoop
 	swap [hl]    ; if flipped swap nybbles in all bytes
 	inc hl
@@ -963,7 +963,7 @@ InterlaceMergeSpriteBuffers:: ; 14c7 (0:14c7)
 	jr nz, .swapLoop
 .notFlipped
 	pop hl
-	ld de, S_SPRITEBUFFER1
+	ld de, sSpriteBuffer1
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
@@ -2366,12 +2366,12 @@ ExecuteCurMapScriptInTable:: ; 30fc (0:30fc)
 	bit 4, [hl]
 	res 4, [hl]
 	jr z, .useProvidedIndex   ; test if map script index was overridden manually
-	ld a, [W_CURMAPSCRIPT]
+	ld a, [wCurMapScript]
 .useProvidedIndex
 	pop hl
-	ld [W_CURMAPSCRIPT], a
+	ld [wCurMapScript], a
 	call JumpTable
-	ld a, [W_CURMAPSCRIPT]
+	ld a, [wCurMapScript]
 	ret
 
 LoadGymLeaderAndCityName:: ; 311b (0:311b)
@@ -2467,7 +2467,7 @@ TalkToTrainer:: ; 3168 (0:3168)
 	ret nz
 ; if the player talked to the trainer of his own volition
 	call EngageMapTrainer
-	ld hl, W_CURMAPSCRIPT
+	ld hl, wCurMapScript
 	inc [hl]      ; increment map script index before StartTrainerBattle increments it again (next script function is usually EndTrainerBattle)
 	jp StartTrainerBattle
 
@@ -2493,7 +2493,7 @@ CheckFightingMapTrainers:: ; 31b5 (0:31b5)
 	xor a
 	ld [hJoyHeld], a
 	call TrainerWalkUpToPlayer_Bank0
-	ld hl, W_CURMAPSCRIPT
+	ld hl, wCurMapScript
 	inc [hl]      ; increment map script index (next script function is usually DisplayEnemyTrainerTextAndStartBattle)
 	ret
 
@@ -2517,12 +2517,12 @@ StartTrainerBattle:: ; 31f9 (0:31f9)
 	set 7, [hl]
 	ld hl, wd72e
 	set 1, [hl]
-	ld hl, W_CURMAPSCRIPT
+	ld hl, wCurMapScript
 	inc [hl]        ; increment map script index (next script function is usually EndTrainerBattle)
 	ret
 
 EndTrainerBattle:: ; 3211 (0:3211)
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	set 6, [hl]
 	ld hl, wd72d
@@ -2538,7 +2538,7 @@ EndTrainerBattle:: ; 3211 (0:3211)
 	ld c, a
 	ld b, FLAG_SET
 	call TrainerFlagAction   ; flag trainer as fought
-	ld a, [W_ENEMYMONORTRAINERCLASS]
+	ld a, [wEnemyMonOrTrainerClass]
 	cp 200
 	jr nc, .skipRemoveSprite    ; test if trainer was fought (in that case skip removing the corresponding sprite)
 	ld hl, wMissableObjectList
@@ -2561,7 +2561,7 @@ ResetButtonPressedAndMapScript:: ; 325d (0:325d)
 	ld [hJoyHeld], a
 	ld [hJoyPressed], a
 	ld [hJoyReleased], a
-	ld [W_CURMAPSCRIPT], a               ; reset battle status
+	ld [wCurMapScript], a               ; reset battle status
 	ret
 
 ; calls TrainerWalkUpToPlayer
@@ -2572,7 +2572,7 @@ TrainerWalkUpToPlayer_Bank0:: ; 326b (0:326b)
 InitBattleEnemyParameters:: ; 3273 (0:3273)
 	ld a, [wEngagedTrainerClass]
 	ld [wCurOpponent], a
-	ld [W_ENEMYMONORTRAINERCLASS], a
+	ld [wEnemyMonOrTrainerClass], a
 	cp 200
 	ld a, [wEngagedTrainerSet]
 	jr c, .noTrainer
@@ -3338,7 +3338,7 @@ LoadHpBarAndStatusTilePatterns:: ; 36c3 (0:36c3)
 
 UncompressSpriteFromDE:: ; 36e3 (0:36e3)
 ; Decompress pic at a:de.
-	ld hl, W_SPRITEINPUTPTR
+	ld hl, wSpriteInputPtr
 	ld [hl], e
 	inc hl
 	ld [hl], d
@@ -3362,7 +3362,7 @@ LoadScreenTilesFromBuffer2DisableBGTransfer:: ; 3700 (0:3700)
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld hl, wTileMapBackup2
 	coord de, 0, 0
-	ld bc, $168
+	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	jp CopyData
 
 SaveScreenTilesToBuffer1:: ; 370f (0:370f)
@@ -4926,9 +4926,9 @@ const_value = 1
 	add_tx_pre WhatGoesAroundComesAroundText        ; 3A
 	add_tx_pre NewBicycleText                       ; 3B
 	add_tx_pre IndigoPlateauStatues                 ; 3C XXX unused
-	add_tx_pre VermilionGymTrashSuccesText1         ; 3D
-	add_tx_pre VermilionGymTrashSuccesText2         ; 3E
-	add_tx_pre VermilionGymTrashSuccesText3         ; 3F
+	add_tx_pre VermilionGymTrashSuccessText1        ; 3D
+	add_tx_pre VermilionGymTrashSuccessText2        ; 3E
+	add_tx_pre VermilionGymTrashSuccessText3        ; 3F
 	add_tx_pre VermilionGymTrashFailText            ; 40
 	add_tx_pre TownMapText                          ; 41
 	add_tx_pre BookOrSculptureText                  ; 42

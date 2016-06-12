@@ -1,16 +1,16 @@
 INCLUDE "charmap.asm"
 INCLUDE "constants/text_constants.asm"
 TEXT_1  EQU $26
-TEXT_2  EQU $27
-TEXT_3  EQU $28
-TEXT_4  EQU $29
-TEXT_5  EQU $2a
-TEXT_6  EQU $2b
-TEXT_7  EQU $2c
-TEXT_8  EQU $2d
+TEXT_2  EQU TEXT_1 + 1
+TEXT_3  EQU TEXT_2 + 1
+TEXT_4  EQU TEXT_3 + 1
+TEXT_5  EQU TEXT_4 + 1
+TEXT_6  EQU TEXT_5 + 1
+TEXT_7  EQU TEXT_6 + 1
+TEXT_8  EQU TEXT_7 + 1
 
-POKEDEX_TEXT EQU $2e
-MOVE_NAMES   EQU $2f
+POKEDEX_TEXT EQU TEXT_8 + 1
+MOVE_NAMES   EQU POKEDEX_TEXT + 1
 
 INCLUDE "macros.asm"
 INCLUDE "hram.asm"
@@ -176,7 +176,6 @@ INCLUDE "text/maps/mt_moon_b2f.asm"
 INCLUDE "text/maps/ss_anne_1.asm"
 INCLUDE "text/maps/ss_anne_2.asm"
 INCLUDE "text/maps/ss_anne_3.asm"
-INCLUDE "text/maps/ss_anne_4.asm"
 INCLUDE "text/maps/ss_anne_5.asm"
 INCLUDE "text/maps/ss_anne_6.asm"
 INCLUDE "text/maps/ss_anne_7.asm"
@@ -215,8 +214,6 @@ INCLUDE "text/maps/safari_zone_secret_house.asm"
 INCLUDE "text/maps/safari_zone_rest_house_2.asm"
 INCLUDE "text/maps/safari_zone_rest_house_3.asm"
 INCLUDE "text/maps/safari_zone_rest_house_4.asm"
-INCLUDE "text/maps/unknown_dungeon_1f.asm"
-INCLUDE "text/maps/unknown_dungeon_2f.asm"
 INCLUDE "text/maps/unknown_dungeon_b1f.asm"
 INCLUDE "text/maps/victory_road_1f.asm"
 INCLUDE "text/maps/lance.asm"
@@ -226,10 +223,6 @@ INCLUDE "text/maps/lorelei.asm"
 INCLUDE "text/maps/bruno.asm"
 INCLUDE "text/maps/agatha.asm"
 INCLUDE "text/maps/rock_tunnel_b2f.asm"
-INCLUDE "text/maps/seafoam_islands_1f.asm"
-INCLUDE "text/maps/seafoam_islands_b1f.asm"
-INCLUDE "text/maps/seafoam_islands_b2f.asm"
-INCLUDE "text/maps/seafoam_islands_b3f.asm"
 INCLUDE "text/maps/seafoam_islands_b4f.asm"
 
 _AIBattleWithdrawText::
@@ -947,7 +940,7 @@ _ViridianBlackboardPoisonText::
 	line "to cure poison!"
 	prompt
 
-_ViridianBlackbaordPrlzText::
+_ViridianBlackboardPrlzText::
 	text "Paralysis could"
 	line "make #MON"
 	cont "moves misfire!"
@@ -990,7 +983,7 @@ _VermilionGymTrashText::
 	line "only trash here."
 	done
 
-_VermilionGymTrashSuccesText1::
+_VermilionGymTrashSuccessText1::
 	text "Hey! There's a"
 	line "switch under the"
 	cont "trash!"
@@ -999,14 +992,14 @@ _VermilionGymTrashSuccesText1::
 	para "The 1st electric"
 	line "lock opened!@@"
 
-_VermilionGymTrashSuccesText2::
+_VermilionGymTrashSuccessText2::
 	text "Hey! There's"
 	line "another switch"
 	cont "under the trash!"
 	cont "Turn it on!"
 	prompt
 
-_VermilionGymTrashSuccesText3::
+_VermilionGymTrashSuccessText3::
 	text "The 2nd electric"
 	line "lock opened!"
 
@@ -2113,7 +2106,6 @@ INCLUDE "text/maps/viridian_forest_entrance.asm"
 INCLUDE "text/maps/mt_moon_pokecenter.asm"
 INCLUDE "text/maps/saffron_gates.asm"
 INCLUDE "text/maps/daycare.asm"
-INCLUDE "text/maps/underground_path_route_5_entrance.asm"
 INCLUDE "text/maps/underground_path_route_6_entrance.asm"
 INCLUDE "text/maps/underground_path_route_7_entrance.asm"
 INCLUDE "text/maps/underground_path_route_7_entrance_unused.asm"
@@ -2505,6 +2497,7 @@ INCLUDE "text/maps/reds_house_1f.asm"
 INCLUDE "text/maps/blues_house.asm"
 INCLUDE "text/maps/oaks_lab.asm"
 INCLUDE "text/pokedex_ratings.asm"
+INCLUDE "text/maps/viridian_pokecenter.asm"
 INCLUDE "text/maps/viridian_mart.asm"
 INCLUDE "text/maps/school.asm"
 INCLUDE "text/maps/viridian_house.asm"

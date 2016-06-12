@@ -1,10 +1,10 @@
-Route7Script: ; 480eb (12:40eb)
+Route7Script:
 	call EnableAutoTextBoxDrawing
 	ret
 
-Route7TextPointers: ; 480ef (12:40ef)
+Route7TextPointers:
 	dw Route7Text1
 
-Route7Text1: ; 480f1 (12:40f1)
+Route7Text1:
 	TX_FAR _Route7Text1
 	db "@"

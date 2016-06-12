@@ -11,7 +11,7 @@ _BikeShopText_1d815::
 	line "Do you want it?"
 	done
 
-_BikeShopText_1d81a::
+_BikeShopCantAffordText::
 	text "Sorry! You can't"
 	line "afford it!"
 	prompt
@@ -29,7 +29,7 @@ _BikeShopText_1d824::
 	line "the BIKE VOUCHER"
 	cont "for a BICYCLE.@@"
 
-_BikeShopText_1d82a::
+_BikeShopComeAgainText::
 	text "Come back again"
 	line "sometime!"
 	done
@@ -68,4 +68,3 @@ _BikeShopText_1d861::
 	text "Wow. Your BIKE is"
 	line "really cool!"
 	done
-

@@ -50,7 +50,7 @@ PrintCardKeyText: ; 525d8 (14:65d8)
 .replaceCardKeyDoorTileBlock
 	ld [wNewTileBlockID], a
 	predef ReplaceTileBlock
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	ld a, SFX_GO_INSIDE
 	jp PlaySound

@@ -776,7 +776,7 @@ LinkMenu: ; f580c (3d:580c)
 	call DelayFrames
 	ld hl, wd732
 	res 1, [hl]
-	ld a, [wAnimationID]
+	ld a, [wDefaultMap]
 	ld [wDestinationMap], a
 	callab SpecialWarpIn
 	ld c, 20

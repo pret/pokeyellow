@@ -1,8 +1,8 @@
-CeladonMartRoofScript: ; 483d5 (12:43d5)
+CeladonMartRoofScript:
 	call EnableAutoTextBoxDrawing
 	ret
 
-CeladonMartRoofScript_GetDrinksInBag: ; 483d8 (12:43d8)
+CeladonMartRoofScript_GetDrinksInBag:
 ; construct a list of all drinks in the player's bag
 	xor a
 	ld [wFilteredBagItemsCount], a
@@ -35,13 +35,13 @@ CeladonMartRoofScript_GetDrinksInBag: ; 483d8 (12:43d8)
 	ld [de], a
 	ret
 
-CeladonMartRoofDrinkList: ; 48408 (12:4408)
+CeladonMartRoofDrinkList:
 	db FRESH_WATER
 	db SODA_POP
 	db LEMONADE
 	db $00
 
-CeladonMartRoofScript_GiveDrinkToGirl: ; 4840c (12:440c)
+CeladonMartRoofScript_GiveDrinkToGirl:
 	ld hl, wd730
 	set 6, [hl]
 	ld hl, CeladonMartRoofText_484ee
@@ -133,61 +133,61 @@ CeladonMartRoofScript_GiveDrinkToGirl: ; 4840c (12:440c)
 	call PrintText
 	ret
 
-RemoveItemByIDBank12: ; 484e6 (12:44e6)
+RemoveItemByIDBank12:
 	callba RemoveItemByID
 	ret
 
-CeladonMartRoofText_484ee: ; 484ee (12:44ee)
+CeladonMartRoofText_484ee:
 	TX_FAR _CeladonMartRoofText_484ee
 	db "@"
 
-CeladonMartRoofText_484f3: ; 484f3 (12:44f3)
+CeladonMartRoofText_484f3:
 	TX_FAR _CeladonMartRoofText_484f3
 	db $0d
 	db "@"
 
-CeladonMartRoofText_484f9: ; 484f9 (12:44f9)
+CeladonMartRoofText_484f9:
 	TX_FAR _CeladonMartRoofText_484f9
 	db $0b
 	TX_FAR _CeladonMartRoofText_484fe
 	db $0d
 	db "@"
 
-CeladonMartRoofText_48504: ; 48504 (12:4504)
+CeladonMartRoofText_48504:
 	TX_FAR _CeladonMartRoofText_48504
 	db $0d
 	db "@"
 
-CeladonMartRoofText_4850a: ; 4850a (12:450a)
+CeladonMartRoofText_4850a:
 	TX_FAR _CeladonMartRoofText_4850a
 	db $0b
 	TX_FAR _CeladonMartRoofText_4850f
 	db $0d
 	db "@"
 
-CeladonMartRoofText_48515: ; 48515 (12:4515)
+CeladonMartRoofText_48515:
 	TX_FAR _CeladonMartRoofText_48515
 	db $0d
 	db "@"
 
-ReceivedTM49Text: ; 4851b (12:451b)
+ReceivedTM49Text:
 	TX_FAR _ReceivedTM49Text
 	db $0b
 	TX_FAR _CeladonMartRoofText_48520
 	db $0d
 	db "@"
 
-CeladonMartRoofText_48526: ; 48526 (12:4526)
+CeladonMartRoofText_48526:
 	TX_FAR _CeladonMartRoofText_48526
 	db $0d
 	db "@"
 
-CeladonMartRoofText_4852c: ; 4852c (12:452c)
+CeladonMartRoofText_4852c:
 	TX_FAR _CeladonMartRoofText_4852c
 	db $0d
 	db "@"
 
-CeladonMartRoofScript_PrintDrinksInBag: ; 48532 (12:4532)
+CeladonMartRoofScript_PrintDrinksInBag:
 	ld hl, wFilteredBagItems
 	xor a
 	ld [hItemCounter], a
@@ -209,7 +209,7 @@ CeladonMartRoofScript_PrintDrinksInBag: ; 48532 (12:4532)
 	pop hl
 	jr .loop
 
-CeladonMartRoofTextPointers: ; 4855b (12:455b)
+CeladonMartRoofTextPointers:
 	dw CeladonMartRoofText1
 	dw CeladonMartRoofText2
 	dw CeladonMartRoofText5
@@ -217,11 +217,11 @@ CeladonMartRoofTextPointers: ; 4855b (12:455b)
 	dw CeladonMartRoofText5
 	dw CeladonMartRoofText6
 
-CeladonMartRoofText1: ; 48567 (12:4567)
+CeladonMartRoofText1:
 	TX_FAR _CeladonMartRoofText1
 	db "@"
 
-CeladonMartRoofText2: ; 4856c (12:456c)
+CeladonMartRoofText2:
 	TX_ASM
 	call CeladonMartRoofScript_GetDrinksInBag
 	ld a, [wFilteredBagItemsCount]
@@ -243,17 +243,17 @@ CeladonMartRoofText2: ; 4856c (12:456c)
 .done
 	jp TextScriptEnd
 
-CeladonMartRoofText3: ; 48598 (12:4598)
+CeladonMartRoofText3:
 	TX_FAR _CeladonMartRoofText_48598
 	db "@"
 
-CeladonMartRoofText4: ; 4859d (12:459d)
+CeladonMartRoofText4:
 	TX_FAR _CeladonMartRoofText4
 	db "@"
 
-CeladonMartRoofText5: ; 485a2 (12:45a2)
+CeladonMartRoofText5:
 	TX_VENDING_MACHINE
 
-CeladonMartRoofText6: ; 485a3 (12:45a3)
+CeladonMartRoofText6:
 	TX_FAR _CeladonMartRoofText6
 	db "@"

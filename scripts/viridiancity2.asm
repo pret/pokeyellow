@@ -78,7 +78,7 @@ Func_f192c:
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	ld a, $5
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	ret
 
 ViridianCityText_f1945:
@@ -137,7 +137,7 @@ Func_f198e:
 	ld hl, ViridianCityText_f19bb
 	call PrintText
 	ld a, $3
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	jr .asm_f19b5
 
 .asm_f19af

@@ -1,4 +1,4 @@
-_SeafoamIslands5BattleText2::
+_ArticunoBattleText::
 	text "Gyaoo!@@"
 
 _SeafoamIslands5Text4::
@@ -11,4 +11,3 @@ _SeafoamIslands5Text5::
 	text "DANGER"
 	line "Fast current!"
 	done
-

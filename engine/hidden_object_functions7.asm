@@ -22,9 +22,10 @@ DisplayOakLabRightPoster: ; 1e2fe (7:62fe)
 	ld a, [wNumSetBits]
 	cp 2
 	tx_pre_id SaveOptionText
-	jr c, .ownOneMon
+	jr c, .ownLessThanTwo
+	; own two or more mon
 	tx_pre_id StrengthsAndWeaknessesText
-.ownOneMon
+.ownLessThanTwo
 	jp PrintPredefTextID
 
 SaveOptionText: ; 1e317 (7:6317)
@@ -209,7 +210,7 @@ CinnabarGymQuiz_1ea92: ; 1e43a (7:643a)
 	ld a, [wCurrentMenuItem]
 	cp c
 	jr nz, .wrongAnswer
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	ld a, [hGymGateIndex]
 	ld [$ffe0], a
@@ -434,7 +435,7 @@ BillsHousePokemonList: ; 1e5dc (7:65dc)
 	ld hl, BillsHousePokemonListText1
 	call PrintText
 	xor a
-	ld [wAnimationID], a
+	ld [wMenuItemOffset], a
 	ld [wCurrentMenuItem], a
 	ld [wLastMenuItem], a
 	ld a, A_BUTTON | B_BUTTON

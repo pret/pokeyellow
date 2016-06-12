@@ -1,34 +1,34 @@
-PewterPokecenterScript: ; 5c587 (17:4587)
+PewterPokecenterScript:
 	ld hl, wd492
 	set 7, [hl]
 	call Serial_TryEstablishingExternallyClockedConnection
 	call EnableAutoTextBoxDrawing
 	ret
 
-PewterPokecenterTextPointers: ; 5c58d (17:458d)
-	dw PewterPokecenterText1
+PewterPokecenterTextPointers:
+	dw PewterHealNurseText
 	dw PewterPokecenterText2
-	dw PewterPokecenterText3
-	dw PewterPokecenterText4
+	dw PewterJigglypuffText
+	dw PewterTradeNurseText
 	dw PewterPokecenterText5
 	dw PewterPokecenterText6
 
-PewterPokecenterText1: ; 5c595 (17:4595)
+PewterHealNurseText:
 	TX_POKECENTER_NURSE
 
-PewterPokecenterText2: ; 5c596 (17:4596)
-	TX_FAR _PewterPokecenterText1
+PewterPokecenterText2:
+	TX_FAR _PewterPokecenterText2
 	db "@"
 
-PewterPokecenterText3: ; 5c59b (17:459b)
+PewterJigglypuffText:
 	TX_ASM
-	callba Func_f1da4
+	callba PewterJigglypuff
 	jp TextScriptEnd
 
-PewterPokecenterText4: ; 5c60c (17:460c)
+PewterTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
-PewterPokecenterText5: ; 5c603 (17:4603)
+PewterPokecenterText5:
 	TX_ASM
 	callba Func_f1d98
 	jp TextScriptEnd

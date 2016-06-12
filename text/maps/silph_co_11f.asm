@@ -112,4 +112,3 @@ _SilphCo11AfterBattleText2::
 	line "my BOSS likes his"
 	cont "#MON tough!"
 	done
-

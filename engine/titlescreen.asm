@@ -362,7 +362,7 @@ IncrementResetCounter: ; 4405 (1:4405)
 FillSpriteBuffer0WithAA: ; 4418 (1:4418)
 	xor a
 	call SwitchSRAMBankAndLatchClockData
-	ld hl, S_SPRITEBUFFER0
+	ld hl, sSpriteBuffer0
 	ld bc, $20
 	ld a, $aa
 	call FillMemory

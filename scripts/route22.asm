@@ -1,10 +1,10 @@
-Route22Script: ; 50eb2 (14:4eb2)
+Route22Script:
 	call EnableAutoTextBoxDrawing
 	ld hl, Route22ScriptPointers
-	ld a, [W_ROUTE22CURSCRIPT]
+	ld a, [wRoute22CurScript]
 	jp JumpTable
 
-Route22ScriptPointers: ; 50ebe (14:4ebe)
+Route22ScriptPointers:
 	dw Route22Script0
 	dw Route22Script1
 	dw Route22Script2
@@ -14,14 +14,14 @@ Route22ScriptPointers: ; 50ebe (14:4ebe)
 	dw Route22Script6
 	dw Route22Script7
 
-Route22Script_50ece: ; 50ece (14:4ece)
+Route22Script_50ece:
 	xor a
 	ld [wJoyIgnore], a
-	ld [W_ROUTE22CURSCRIPT], a
-Route22Script7: ; 50ed5 (14:4ed5)
+	ld [wRoute22CurScript], a
+Route22Script7:
 	ret
 
-Route22Script_50ed6: ; 50ed6 (14:4ed6)
+Route22Script_50ed6:
 	ld a, OPP_SONY1
 	ld [wCurOpponent], a
 	ld a, $2
@@ -31,12 +31,12 @@ Route22Script_50ed6: ; 50ed6 (14:4ed6)
 Route22Script_50ee1:
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
-	ld a, [W_RIVALSTARTER]
+	ld a, [wRivalStarter]
 	add 7
 	ld [wTrainerNo], a
 	ret
 
-Route22MoveRivalSprite: ; 50ee6 (14:4ee6)
+Route22MoveRivalSprite:
 	ld de, Route22RivalMovementData
 	ld a, [wcf0d]
 	cp $1
@@ -48,14 +48,14 @@ Route22MoveRivalSprite: ; 50ee6 (14:4ee6)
 	ld [hSpriteFacingDirection], a
 	jp SetSpriteFacingDirectionAndDelay
 
-Route22RivalMovementData: ; 50efb (14:4efb)
+Route22RivalMovementData:
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
 	db $FF
 
-Route22Script0: ; 50f00 (14:4f00)
+Route22Script0:
 	CheckEvent EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ret z
 	ld hl, .Route22RivalBattleCoords
@@ -98,10 +98,10 @@ Route22Script0: ; 50f00 (14:4f00)
 	ld [H_SPRITEINDEX], a
 	call Route22MoveRivalSprite
 	ld a, $1
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22Script1: ; 50f62 (14:4f62)
+Route22Script1:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -132,26 +132,26 @@ Route22Script1: ; 50f62 (14:4f62)
 	call SaveEndBattleTextPointers
 	call Route22Script_50ed6
 	ld a, $2
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22RivalDefeatedText1: ; 511b7 (14:51b7)
+Route22RivalDefeatedText1:
 	TX_FAR _Route22RivalDefeatedText1
 	db "@"
 
-Route22Text_511bc: ; 511bc (14:51bc)
+Route22Text_511bc:
 	TX_FAR _Route22Text_511bc
 	db "@"
 
-Route22Script2: ; 50fb5 (14:4fb5)
+Route22Script2:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
-	ld a, [W_RIVALSTARTER]
+	ld a, [wRivalStarter]
 	cp 2
 	jr nz, .asm_50fc9
 	ld a, $1
-	ld [W_RIVALSTARTER], a
+	ld [wRivalStarter], a
 .asm_50fc9
 	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
@@ -182,21 +182,21 @@ Route22Script2: ; 50fb5 (14:4fb5)
 	call Route22Script_5100d
 .asm_51002
 	ld a, $3
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22Script_51008: ; 51008 (14:5008)
+Route22Script_51008:
 	ld de, Route22RivalExitMovementData1
 	jr Route22MoveRival1
 
-Route22Script_5100d: ; 5100d (14:500d)
+Route22Script_5100d:
 	ld de, Route22RivalExitMovementData2
-Route22MoveRival1: ; 51010 (14:5010)
+Route22MoveRival1:
 	ld a, $1
 	ld [H_SPRITEINDEX], a
 	jp MoveSprite
 
-Route22RivalExitMovementData1: ; 51017 (14:5017)
+Route22RivalExitMovementData1:
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_DOWN
@@ -206,7 +206,7 @@ Route22RivalExitMovementData1: ; 51017 (14:5017)
 	db NPC_MOVEMENT_DOWN
 	db $FF
 
-Route22RivalExitMovementData2: ; 5101f (14:501f)
+Route22RivalExitMovementData2:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
@@ -219,7 +219,7 @@ Route22RivalExitMovementData2: ; 5101f (14:501f)
 	db NPC_MOVEMENT_DOWN
 	db $FF
 
-Route22Script3: ; 5102a (14:502a)
+Route22Script3:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -231,10 +231,10 @@ Route22Script3: ; 5102a (14:502a)
 	call PlayDefaultMusic
 	ResetEvents EVENT_1ST_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $0
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22Script_5104e: ; 5104e (14:504e)
+Route22Script_5104e:
 	ld a, $2
 	ld [wEmotionBubbleSpriteIndex], a
 	xor a ; EXCLAMATION_BUBBLE
@@ -251,10 +251,10 @@ Route22Script_5104e: ; 5104e (14:504e)
 	ld [H_SPRITEINDEX], a
 	call Route22MoveRivalSprite
 	ld a, $4
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22Script4: ; 51087 (14:5087)
+Route22Script4:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -287,18 +287,18 @@ Route22Script4: ; 51087 (14:5087)
 	call SaveEndBattleTextPointers
 	call Route22Script_50ee1
 	ld a, $5
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22RivalDefeatedText2: ; 511cb (14:51cb)
+Route22RivalDefeatedText2:
 	TX_FAR _Route22RivalDefeatedText2
 	db "@"
 
-Route22Text_511d0: ; 511d0 (14:51d0)
+Route22Text_511d0:
 	TX_FAR _Route22Text_511d0
 	db "@"
 
-Route22Script5: ; 510df (14:50df)
+Route22Script5:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, Route22Script_50ece
@@ -335,30 +335,30 @@ Route22Script5: ; 510df (14:50df)
 	call Route22Script_51142
 .asm_51137
 	ld a, $6
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22Script_5113d: ; 5113d (14:513d)
+Route22Script_5113d:
 	ld de, MovementData_5114c
 	jr Route22MoveRival2
 
-Route22Script_51142: ; 51142 (14:5142)
+Route22Script_51142:
 	ld de, MovementData_5114d
-Route22MoveRival2: ; 51145 (14:5145)
+Route22MoveRival2:
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	jp MoveSprite
 
-MovementData_5114c: ; 5114c (14:514c)
+MovementData_5114c:
 	db NPC_MOVEMENT_LEFT
 
-MovementData_5114d: ; 5114d (14:514d)
+MovementData_5114d:
 	db NPC_MOVEMENT_LEFT
 	db NPC_MOVEMENT_LEFT
 	db NPC_MOVEMENT_LEFT
 	db $FF
 
-Route22Script6: ; 51151 (14:5151)
+Route22Script6:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -370,25 +370,25 @@ Route22Script6: ; 51151 (14:5151)
 	call PlayDefaultMusic
 	ResetEvents EVENT_2ND_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $7
-	ld [W_ROUTE22CURSCRIPT], a
+	ld [wRoute22CurScript], a
 	ret
 
-Route22TextPointers: ; 51175 (14:5175)
+Route22TextPointers:
 	dw Route22Text1
 	dw Route22Text2
 	dw Route22FrontGateText
 
-Route22Text1: ; 5117b (14:517b)
+Route22Text1:
 	TX_ASM
 	callba Func_f1b27
 	jp TextScriptEnd
 
-Route22Text2: ; 51194 (14:5194)
+Route22Text2:
 	TX_ASM
 	callba Func_f1b47
 	jp TextScriptEnd
 
-Route22FrontGateText: ; 511d5 (14:51d5)
+Route22FrontGateText:
 	TX_ASM
 	callba Func_f1b67
 	jp TextScriptEnd

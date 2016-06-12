@@ -6,11 +6,11 @@ Func_f1b73:
 	call PrintText
 	ret
 
-MomWakeUpText: ; 48185 (12:4185)
+MomWakeUpText:
 	TX_FAR _MomWakeUpText
 	db "@"
 
-MomHealPokemon: ; 4818a (12:418a)
+MomHealPokemon:
 	ld hl, MomHealText1
 	call PrintText
 	call GBFadeOutToWhite
@@ -31,10 +31,10 @@ MomHealPokemon: ; 4818a (12:418a)
 	call PrintText
 	ret
 
-MomHealText1: ; 481bc (12:41bc)
+MomHealText1:
 	TX_FAR _MomHealText1
 	db "@"
-MomHealText2: ; 481c1 (12:41c1)
+MomHealText2:
 	TX_FAR _MomHealText2
 	db "@"
 
@@ -48,11 +48,11 @@ Func_f1bc4:
 	call PrintText
 	ret
 
-StandByMeText: ; 481da (12:41da)
+StandByMeText:
 	TX_FAR _StandByMeText
 	db "@"
 
-TVWrongSideText: ; 481df (12:41df)
+TVWrongSideText:
 	TX_FAR _TVWrongSideText
 	db "@"
 

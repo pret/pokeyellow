@@ -96,4 +96,3 @@ _TM18NoRoomText::
 	text "Your pack is full"
 	line "of items!"
 	done
-

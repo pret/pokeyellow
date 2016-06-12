@@ -454,8 +454,12 @@ WritePlayerOrBirdSpriteOAM: ; 712f6 (1c:52f6)
 
 WriteTownMapSpriteOAM: ; 71302 (1c:5302)
 	push hl
+
+; Subtract 4 from c (X coord) and 4 from b (Y coord). However, the carry from c
+; is added to b, so the net result is that only 3 is subtracted from b.
 	lb hl, -4, -4
-	add hl, bc ; subtract 4 from c (X coord) and 4 from b (Y coord)
+	add hl, bc
+
 	ld b, h
 	ld c, l
 	pop hl

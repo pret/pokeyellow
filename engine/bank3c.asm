@@ -65,12 +65,12 @@ SetMapSpecificScriptFlagsOnMapReload: ; f02da (3c:42da)
 	ret
 
 .verm_gym
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 6, [hl]
 	ret
 
 .in_list
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	ret
 

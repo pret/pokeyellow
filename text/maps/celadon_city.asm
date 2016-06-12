@@ -150,4 +150,3 @@ _CeladonCityText10::
 	line "CELADON DEPT."
 	cont "STORE!"
 	done
-

@@ -1,7 +1,7 @@
-Func_f218c:
+MagikarpSalesman:
 	CheckEvent EVENT_BOUGHT_MAGIKARP, 1
 	jp c, .alreadyBoughtMagikarp
-	ld hl, MtMoonPokecenterText_4935c
+	ld hl, .Text1
 	call PrintText
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
@@ -18,7 +18,7 @@ Func_f218c:
 	ld [hMoney + 1], a
 	call HasEnoughMoney
 	jr nc, .enoughMoney
-	ld hl, MtMoonPokecenterText_49366
+	ld hl, .NoMoneyText
 	jr .printText
 .enoughMoney
 	lb bc, MAGIKARP, 5
@@ -40,27 +40,27 @@ Func_f218c:
 	SetEvent EVENT_BOUGHT_MAGIKARP
 	jr .done
 .choseNo
-	ld hl, MtMoonPokecenterText_49361
+	ld hl, .RefuseText
 	jr .printText
 .alreadyBoughtMagikarp
-	ld hl, MtMoonPokecenterText_4936b
+	ld hl, .Text2
 .printText
 	call PrintText
 .done
 	ret
 
-MtMoonPokecenterText_4935c: ; 4935c (12:535c)
-	TX_FAR _MtMoonPokecenterText_4935c
+.Text1
+	TX_FAR _MagikarpSalesmanText1
 	db "@"
 
-MtMoonPokecenterText_49361: ; 49361 (12:5361)
-	TX_FAR _MtMoonPokecenterText_49361
+.RefuseText
+	TX_FAR _MagikarpSalesmanNoText
 	db "@"
 
-MtMoonPokecenterText_49366: ; 49366 (12:5366)
-	TX_FAR _MtMoonPokecenterText_49366
+.NoMoneyText
+	TX_FAR _MagikarpSalesmanNoMoneyText
 	db "@"
 
-MtMoonPokecenterText_4936b: ; 4936b (12:536b)
-	TX_FAR _MtMoonPokecenterText_4936b
+.Text2
+	TX_FAR _MagikarpSalesmanText2
 	db "@"

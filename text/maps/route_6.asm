@@ -102,4 +102,3 @@ _Route6Text7::
 	line "CERULEAN CITY -"
 	cont "VERMILION CITY"
 	done
-

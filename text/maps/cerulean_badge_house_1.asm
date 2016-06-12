@@ -66,4 +66,3 @@ _CeruleanHouse2Text_74ea5::
 	line "use STRENGTH out-"
 	cont "side of battle."
 	prompt
-

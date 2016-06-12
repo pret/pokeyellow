@@ -163,7 +163,7 @@ StartMenu_Pokemon: ; 11c36 (4:5c36)
 .surf ; 11d66 (4:5d66)
 	bit 4,a ; does the player have the Soul Badge?
 	jp z,.newBadgeRequired
-	callba CheckForForcedBikeSurf
+	callba IsSurfingAllowed
 	ld hl,wd728
 	bit 1,[hl]
 	res 1,[hl]
@@ -618,12 +618,12 @@ DrawTrainerInfo: ; 1204c (4:604c)
 	ld c,$e3
 	call PrintBCDNumber
 	coord hl, 9, 6
-	ld de,wPlayTimeHours + 1 ; hours
+	ld de,wPlayTimeHours ; hours
 	lb bc, LEFT_ALIGN | 1, 3
 	call PrintNumber
 	ld [hl],$d6 ; colon tile ID
 	inc hl
-	ld de,wPlayTimeMinutes + 1 ; minutes
+	ld de,wPlayTimeMinutes ; minutes
 	lb bc, LEADING_ZEROES | 1, 2
 	jp PrintNumber
 

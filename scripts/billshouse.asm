@@ -1,12 +1,12 @@
-BillsHouseScript: ; 1e76a (7:676a)
+BillsHouseScript:
 	call BillsHouseScript_1e09e
 	call EnableAutoTextBoxDrawing
-	ld a, [W_BILLSHOUSECURSCRIPT]
+	ld a, [wBillsHouseCurScript]
 	ld hl, BillsHouseScriptPointers
 	call JumpTable
 	ret
 
-BillsHouseScriptPointers: ; 1e776 (7:6776)
+BillsHouseScriptPointers:
 	dw BillsHouseScript0
 	dw BillsHouseScript1
 	dw BillsHouseScript2
@@ -34,10 +34,10 @@ BillsHouseScript_1e09e:
 .asm_1e0b3
 	ld a, $9
 .asm_1e0b5
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript0: ; 1e782 (7:6782)
+BillsHouseScript0:
 	ld a, [wd472]
 	bit 7, a
 	jr z, .asm_1e0d2
@@ -48,10 +48,10 @@ BillsHouseScript0: ; 1e782 (7:6782)
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $1
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript1: ; 1e783 (7:6783)
+BillsHouseScript1:
 	ret
 
 BillsHouseScript2:
@@ -71,17 +71,17 @@ BillsHouseScript2:
 	ld [H_SPRITEINDEX], a
 	call MoveSprite
 	ld a, $3
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
-MovementData_1e79c: ; 1e79c (7:679c)
+MovementData_1e79c:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db $FF
 
 ; make Bill walk around the player
-MovementData_1e7a0: ; 1e7a0 (7:67a0)
+MovementData_1e7a0:
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
@@ -89,7 +89,7 @@ MovementData_1e7a0: ; 1e7a0 (7:67a0)
 	db NPC_MOVEMENT_UP
 	db $FF
 
-BillsHouseScript3: ; 1e7a6 (7:67a6)
+BillsHouseScript3:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -111,7 +111,7 @@ BillsHouseScript3: ; 1e7a6 (7:67a6)
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BILL_SAID_USE_CELL_SEPARATOR
 	ld a, $4
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
 PikachuMovementData_1e14d:
@@ -131,13 +131,13 @@ PikachuMovementData_1e152:
 	db $36
 	db $3f
 
-BillsHouseScript4: ; 1e7c5 (7:67c5)
+BillsHouseScript4:
 	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret z
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $5
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
 BillsHouseScript5:
@@ -181,10 +181,10 @@ BillsHouseScript5:
 	ld de, MovementData_1e807
 	call MoveSprite
 	ld a, $6
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
-MovementData_1e807: ; 1e807 (7:6807)
+MovementData_1e807:
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT
@@ -197,14 +197,14 @@ PikachuMovementData_1e1a9:
 	db $37
 	db $3f
 
-BillsHouseScript6: ; 1e80d (7:680d)
+BillsHouseScript6:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
 	SetEvent EVENT_MET_BILL_2 ; this event seems redundant
 	SetEvent EVENT_MET_BILL
 	ld a, $7
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
 BillsHouseScript7:
@@ -221,7 +221,7 @@ BillsHouseScript7:
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $8
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
 RLE_1e219:
@@ -247,33 +247,33 @@ BillsHouseScript8:
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $9
-	ld [W_BILLSHOUSECURSCRIPT], a
+	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript9: ; 1e827 (7:6827)
+BillsHouseScript9:
 	ret
 
-BillsHouseTextPointers: ; 1e834 (7:6834)
+BillsHouseTextPointers:
 	dw BillsHouseText1
 	dw BillsHouseText2
 	dw BillsHouseText3
 	dw BillsHouseText4
 
-BillsHouseText4: ; 1e83c (7:683c)
+BillsHouseText4:
 	TX_FAR _BillsHouseDontLeaveText
 	db "@"
 
-BillsHouseText1: ; 1e83d (7:683d)
+BillsHouseText1:
 	TX_ASM
 	callba Func_f2418
 	jp TextScriptEnd
 
-BillsHouseText2: ; 1e874 (7:6874)
+BillsHouseText2:
 	TX_ASM
 	callba Func_f244a
 	jp TextScriptEnd
 
-BillsHouseText3: ; 1e8d0 (7:68d0)
+BillsHouseText3:
 	TX_ASM
 	callba Func_f24a2
 	jp TextScriptEnd

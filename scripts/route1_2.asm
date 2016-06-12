@@ -17,24 +17,24 @@ Func_f1ad2:
 	call PrintText
 	ret
 
-Route1ViridianMartSampleText: ; 1cae3 (7:4ae3)
+Route1ViridianMartSampleText:
 	TX_FAR _Route1ViridianMartSampleText
 	db "@"
 
-Route1Text_f1aff: ; 1cae8 (7:4ae8)
+Route1Text_f1aff:
 	TX_FAR _Route1Text_1cae8
 	TX_SFX_ITEM
 	db "@"
 
-Route1Text_f1b05: ; 1caee (7:4aee)
+Route1Text_f1b05:
 	TX_FAR _Route1Text_1caee
 	db "@"
 
-Route1Text_f1b0a: ; 1caf3 (7:4af3)
+Route1Text_f1b0a:
 	TX_FAR _Route1Text_1caf3
 	db "@"
 
-Func_f1b0f: ; 1caf8 (7:4af8)
+Func_f1b0f:
 	ld hl, Route1Text_f1b16
 	call PrintText
 	ret
@@ -43,7 +43,7 @@ Route1Text_f1b16:
 	TX_FAR _Route1Text2
 	db "@"
 
-Func_f1b1b: ; 1cafd (7:4afd)
+Func_f1b1b:
 	ld hl, Route1Text_f1b22
 	call PrintText
 	ret

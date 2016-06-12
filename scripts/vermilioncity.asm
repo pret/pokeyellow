@@ -1,8 +1,8 @@
-VermilionCityScript: ; 197a1 (6:57a1)
+VermilionCityScript:
 	call EnableAutoTextBoxDrawing
 	ld hl, wd492
 	res 7, [hl]
-	ld hl, wd126
+	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]
 	push hl
@@ -12,7 +12,7 @@ VermilionCityScript: ; 197a1 (6:57a1)
 	res 5, [hl]
 	call nz, VermilionCityScript_197c0
 	ld hl, VermilionCityScriptPointers
-	ld a, [W_VERMILIONCITYCURSCRIPT]
+	ld a, [wVermilionCityCurScript]
 	call JumpTable
 	call VermilionCityScript_19869
 	ret
@@ -25,7 +25,7 @@ VermilionCityScript_19869:
 	SetEventReuseHL EVENT_152
 	ret
 
-VermilionCityScript_197c0: ; 197c0 (6:57c0)
+VermilionCityScript_197c0:
 	call Random
 	ld a, [hRandomAdd]
 	ld b, a
@@ -35,24 +35,24 @@ VermilionCityScript_197c0: ; 197c0 (6:57c0)
 	ld [wFirstLockTrashCanIndex], a
 	ret
 
-VermilionCityScript_197cb: ; 197cb (6:57cb)
+VermilionCityScript_197cb:
 	CheckEventHL EVENT_SS_ANNE_LEFT
 	ret z
 	CheckEventReuseHL EVENT_WALKED_PAST_GUARD_AFTER_SS_ANNE_LEFT
 	SetEventReuseHL EVENT_WALKED_PAST_GUARD_AFTER_SS_ANNE_LEFT
 	ret nz
 	ld a, $2
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
-VermilionCityScriptPointers: ; 197dc (6:57dc)
+VermilionCityScriptPointers:
 	dw VermilionCityScript0
 	dw VermilionCityScript1
 	dw VermilionCityScript2
 	dw VermilionCityScript3
 	dw VermilionCityScript4
 
-VermilionCityScript0: ; 197e6 (6:57e6)
+VermilionCityScript0:
 	ld a, [wPlayerFacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_198de
@@ -79,25 +79,25 @@ VermilionCityScript0: ; 197e6 (6:57e6)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $1
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
 .asm_198de
 	ret
 
-CoordsData_19823: ; 19823 (6:5823)
+CoordsData_19823:
 	db $1e,$12
 	db $ff
 
-VermilionCityScript4: ; 19826 (6:5826)
+VermilionCityScript4:
 	ld hl, CoordsData_19823
 	call ArePlayerCoordsInArray
 	ret c
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
-VermilionCityScript2: ; 19833 (6:5833)
+VermilionCityScript2:
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld a, D_UP
@@ -107,10 +107,10 @@ VermilionCityScript2: ; 19833 (6:5833)
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld a, $3
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
-VermilionCityScript3: ; 1984e (6:584e)
+VermilionCityScript3:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -118,20 +118,20 @@ VermilionCityScript3: ; 1984e (6:584e)
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
-VermilionCityScript1: ; 1985f (6:585f)
+VermilionCityScript1:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
 	ld c, 10
 	call DelayFrames
 	ld a, $0
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	ret
 
-VermilionCityTextPointers: ; 1986f (6:586f)
+VermilionCityTextPointers:
 	dw VermilionCityText1
 	dw VermilionCityText2
 	dw VermilionCityText3
@@ -147,11 +147,11 @@ VermilionCityTextPointers: ; 1986f (6:586f)
 	dw VermilionCityText13
 	dw VermilionCityText14
 
-VermilionCityText1: ; 19889 (6:5889)
+VermilionCityText1:
 	TX_FAR _VermilionCityText1
 	db "@"
 
-VermilionCityText2: ; 1988e (6:588e)
+VermilionCityText2:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .asm_1989e
@@ -164,15 +164,15 @@ VermilionCityText2: ; 1988e (6:588e)
 .asm_198a4
 	jp TextScriptEnd
 
-VermilionCityText_198a7: ; 198a7 (6:58a7)
+VermilionCityText_198a7:
 	TX_FAR _VermilionCityText_198a7
 	db "@"
 
-VermilionCityText_198ac: ; 198ac (6:58ac)
+VermilionCityText_198ac:
 	TX_FAR _VermilionCityText_198ac
 	db "@"
 
-VermilionCityText3: ; 198b1 (6:58b1)
+VermilionCityText3:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .asm_198f6
@@ -201,7 +201,7 @@ VermilionCityText3: ; 198b1 (6:58b1)
 	ld hl, SSAnneFlashedTicketText
 	call PrintText
 	ld a, $4
-	ld [W_VERMILIONCITYCURSCRIPT], a
+	ld [wVermilionCityCurScript], a
 	jr .asm_198fc
 .asm_198f6
 	ld hl, SSAnneNotHereText
@@ -209,36 +209,36 @@ VermilionCityText3: ; 198b1 (6:58b1)
 .asm_198fc
 	jp TextScriptEnd
 
-VermilionCityCoords1: ; 198ff (6:58ff)
+VermilionCityCoords1:
 	db $1d,$13
 	db $1f,$13
 	db $ff
 
-SSAnneWelcomeText4: ; 19904 (6:5904)
+SSAnneWelcomeText4:
 	TX_FAR _SSAnneWelcomeText4
 	db "@"
 
-SSAnneWelcomeText9: ; 19909 (6:5909)
+SSAnneWelcomeText9:
 	TX_FAR _SSAnneWelcomeText9
 	db "@"
 
-SSAnneFlashedTicketText: ; 1990e (6:590e)
+SSAnneFlashedTicketText:
 	TX_FAR _SSAnneFlashedTicketText
 	db "@"
 
-SSAnneNoTicketText: ; 19913 (6:5913)
+SSAnneNoTicketText:
 	TX_FAR _SSAnneNoTicketText
 	db "@"
 
-SSAnneNotHereText: ; 19918 (6:5918)
+SSAnneNotHereText:
 	TX_FAR _SSAnneNotHereText
 	db "@"
 
-VermilionCityText4: ; 1991d (6:591d)
+VermilionCityText4:
 	TX_FAR _VermilionCityText4
 	db "@"
 
-VermilionCityText5: ; 19922 (6:5922)
+VermilionCityText5:
 	TX_FAR _VermilionCityText5
 	TX_ASM
 	ld a, MACHOP
@@ -247,20 +247,20 @@ VermilionCityText5: ; 19922 (6:5922)
 	ld hl, VermilionCityText15
 	ret
 
-VermilionCityText15: ; 19933 (6:5933)
+VermilionCityText15:
 	TX_FAR _VermilionCityText15
 	db "@"
 
-VermilionCityText6: ; 19938 (6:5938)
+VermilionCityText6:
 	TX_FAR _VermilionCityText6
 	db "@"
 
-VermilionCityText8: ; 1993d (6:593d)
+VermilionCityText8:
 	TX_ASM
 	callba Func_f1a8a
 	jp TextScriptEnd
 
-VermilionCityText9: ; 19942 (6:5942)
+VermilionCityText9:
 	TX_ASM
 	callba Func_f1a96
 	jp TextScriptEnd
@@ -270,17 +270,17 @@ VermilionCityText12:
 	callba Func_f1aa2
 	jp TextScriptEnd
 
-VermilionCityText13: ; 19947 (6:5947)
+VermilionCityText13:
 	TX_ASM
 	callba Func_f1aae
 	jp TextScriptEnd
 
-VermilionCityText14: ; 1994c (6:594c)
+VermilionCityText14:
 	TX_ASM
 	callba Func_f1aba
 	jp TextScriptEnd
 
-VermilionCityText7: ; 19951 (6:5951)
+VermilionCityText7:
 	TX_ASM
 	callba Func_f1a0f
 	jp TextScriptEnd

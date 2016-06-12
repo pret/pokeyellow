@@ -1,4 +1,4 @@
-OaksLabScript: ; 1cb0e (7:4b0e)
+OaksLabScript:
 	CheckEvent EVENT_PALLET_AFTER_GETTING_POKEBALLS_2
 	call nz, OaksLabScript_1d076
 	ld a, $1
@@ -6,11 +6,11 @@ OaksLabScript: ; 1cb0e (7:4b0e)
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, OaksLabScriptPointers
-	ld a, [W_OAKSLABCURSCRIPT]
+	ld a, [wOaksLabCurScript]
 	call JumpTable
 	ret
 
-OaksLabScriptPointers: ; 1cb28 (7:4b28)
+OaksLabScriptPointers:
 	dw OaksLabScript0
 	dw OaksLabScript1
 	dw OaksLabScript2
@@ -35,7 +35,7 @@ OaksLabScriptPointers: ; 1cb28 (7:4b28)
 	dw OaksLabScript21
 	dw OaksLabScript22
 
-OaksLabScript0: ; 1cb4e (7:4b4e)
+OaksLabScript0:
 	CheckEvent EVENT_OAK_APPEARED_IN_PALLET
 	ret z
 	ld a, [wNPCMovementScriptFunctionNum]
@@ -48,26 +48,26 @@ OaksLabScript0: ; 1cb4e (7:4b4e)
 	res 4, [hl]
 
 	ld a, $1
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript1: ; 1cb6e (7:4b6e)
+OaksLabScript1:
 	ld a, $6
 	ld [H_SPRITEINDEX], a
 	ld de, OakEntryMovement
 	call MoveSprite
 
 	ld a, $2
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OakEntryMovement: ; 1cb7e (7:4b7e)
+OakEntryMovement:
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db NPC_MOVEMENT_UP
 	db $FF
 
-OaksLabScript2: ; 1cb82 (7:4b82)
+OaksLabScript2:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -79,10 +79,10 @@ OaksLabScript2: ; 1cb82 (7:4b82)
 	predef ShowObject
 
 	ld a, $3
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript3: ; 1cba2 (7:4ba2)
+OaksLabScript3:
 	call Delay3
 	ld hl, wSimulatedJoypadStatesEnd
 	ld de, PlayerEntryMovementRLE
@@ -102,14 +102,14 @@ OaksLabScript3: ; 1cba2 (7:4ba2)
 	call SetSpriteFacingDirectionAndDelay
 
 	ld a, $4
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-PlayerEntryMovementRLE: ; 1cbcf (7:4bcf)
+PlayerEntryMovementRLE:
 	db D_UP,$8
 	db $ff
 
-OaksLabScript4: ; 1cbd2 (7:445f)
+OaksLabScript4:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
@@ -125,10 +125,10 @@ OaksLabScript4: ; 1cbd2 (7:445f)
 	call PlayDefaultMusic
 
 	ld a, $5
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript5: ; 1cbfd (7:4bfd)
+OaksLabScript5:
 	SetEvent EVENT_OAK_ASKED_TO_CHOOSE_MON
 	ld a, $fc
 	ld [wJoyIgnore], a
@@ -155,10 +155,10 @@ OaksLabScript5: ; 1cbfd (7:4bfd)
 	ld [wJoyIgnore], a
 
 	ld a, $6
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript6: ; 1cc36 (7:4c36)
+OaksLabScript6:
 	ld a, [wYCoord]
 	cp $6
 	ret nz
@@ -185,26 +185,26 @@ OaksLabScript6: ; 1cc36 (7:4c36)
 	ld [wPlayerMovingDirection], a
 
 	ld a, $7
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript7: ; 1cc72 (7:4c72)
+OaksLabScript7:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
 	call Delay3
 
 	ld a, $6
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
-OaksLabScript8: ; 1cc80 (7:4c80)
+OaksLabScript8:
 	ld a, $1
 	ld [hSpriteIndexOrTextID], a
 	ld de, .SonyPushesPlayerAwayFromEeveeBall
 	call MoveSprite
 	ld a, $9
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 .SonyPushesPlayerAwayFromEeveeBall
@@ -214,7 +214,7 @@ OaksLabScript8: ; 1cc80 (7:4c80)
 	db $07
 	db $FF
 
-OaksLabScript9: ; 1cd00 (7:4d00)
+OaksLabScript9:
 	ld a, [wd730]
 	bit 0, a
 	jr nz, .asm_1c564
@@ -227,7 +227,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, 1
-	ld [W_RIVALSTARTER], a
+	ld [wRivalStarter], a
 	ld a, EEVEE
 	ld [wd11e], a
 	call GetMonName
@@ -238,7 +238,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	call DisplayTextID
 
 	ld a, $a
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 .asm_1c564
@@ -258,7 +258,7 @@ OaksLabScript9: ; 1cd00 (7:4d00)
 	call StartSimulatingJoypadStates
 	ret
 
-OaksLabScript10: ; 1cd6d (7:4d6d)
+OaksLabScript10:
 	ld a, [wYCoord]
 	cp $4
 	jr z, .asm_1c599
@@ -277,7 +277,7 @@ OaksLabScript10: ; 1cd6d (7:4d6d)
 .asm_1c5a6
 	call StartSimulatingJoypadStates
 	ld a, $b
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabRLE_PlayerWalksToOak:
@@ -298,7 +298,7 @@ OaksLabScript11:
 	ld [wJoyIgnore], a
 
 	ld a, $c
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript12:
@@ -333,7 +333,7 @@ OaksLabScript12:
 	ld [hSpriteIndexOrTextID], a
 	call MoveSprite
 	ld a, $d
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript13:
@@ -358,7 +358,7 @@ OaksLabScript13:
 	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
 	ld a, $e
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript14:
@@ -376,7 +376,7 @@ OaksLabScript14:
 	ld b, $2
 .asm_1c660
 	ld a, b
-	ld [W_RIVALSTARTER], a
+	ld [wRivalStarter], a
 
 	ld a, $ff ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
@@ -393,7 +393,7 @@ OaksLabScript14:
 	predef HealParty
 	SetEvent EVENT_BATTLED_RIVAL_IN_OAKS_LAB
 	ld a, $f
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript15:
@@ -418,7 +418,7 @@ OaksLabScript15:
 .asm_1c6bd
 	ld [wNPCMovementDirections], a
 	ld a, $10
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 .OaksLabMovement_RivalWalksOut1
@@ -442,7 +442,7 @@ OaksLabScript16:
 	predef HideObject
 	call PlayDefaultMusic
 	ld a, $11
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 .asm_1c6ed
@@ -479,7 +479,7 @@ OaksLabScript17:
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $12
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript18:
@@ -489,7 +489,7 @@ OaksLabScript18:
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $16
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript19:
@@ -519,7 +519,7 @@ OaksLabScript19:
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 	ld a, $14
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript_1c78e:
@@ -583,7 +583,7 @@ OaksLabScript20:
 	call DisplayTextID
 	SetEvent EVENT_GOT_POKEDEX
 	ld a, $1
-	ld [W_VIRIDIANCITYCURSCRIPT], a
+	ld [wViridianCityCurScript], a
 	SetEvent EVENT_OAK_GOT_PARCEL
 	ld a, HS_LYING_OLD_MAN
 	ld [wMissableObjectIndex], a
@@ -605,7 +605,7 @@ OaksLabScript20:
 	ld de, wNPCMovementDirections2
 	call MoveSprite
 	ld a, $15
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript21:
@@ -625,7 +625,7 @@ OaksLabScript21:
 	xor a
 	ld [wJoyIgnore], a
 	ld a, $16
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	ret
 
 OaksLabScript22:
@@ -705,7 +705,7 @@ OaksLabScript_1d076:
 	ld [wMapTextPtr + 1], a
 	ret
 
-OaksLabTextPointers: ; 1d082 (7:5082)
+OaksLabTextPointers:
 	dw OaksLabText1
 	dw OaksLabText2
 	dw OaksLabText3
@@ -801,7 +801,7 @@ OaksLabScript_1c9ac:
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	ld a, $8
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	jp TextScriptEnd
 
 OaksLabText3:
@@ -863,7 +863,7 @@ OaksLabText3:
 	call PrintText
 	call OaksLabScript_1c897
 	ld a, $13
-	ld [W_OAKSLABCURSCRIPT], a
+	ld [wOaksLabCurScript], a
 	jr .asm_1ca6f
 
 .asm_1ca4a
@@ -1025,7 +1025,7 @@ OaksLabText_1cb3a:
 OaksLabText18:
 	TX_ASM
 	ld a, PIKACHU
-	ld [W_PLAYERSTARTER], a
+	ld [wPlayerStarter], a
 	ld [wd11e], a
 	call GetMonName
 	ld a, $1

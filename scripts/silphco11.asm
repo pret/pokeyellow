@@ -1,15 +1,15 @@
-SilphCo11Script: ; 62111 (18:60fa)
+SilphCo11Script:
 	call SilphCo11Script_62127
 	call EnableAutoTextBoxDrawing
 	ld hl, SilphCo11TrainerHeaders
 	ld de, SilphCo11ScriptPointers
-	ld a, [W_SILPHCO11CURSCRIPT]
+	ld a, [wSilphCo11CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [W_SILPHCO11CURSCRIPT], a
+	ld [wSilphCo11CurScript], a
 	ret
 
-SilphCo11Script_62127: ; 62127 (18:6110)
-	ld hl, wd126
+SilphCo11Script_62127:
+	ld hl, wCurrentMapScriptFlags
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
@@ -24,11 +24,11 @@ SilphCo11Script_62127: ; 62127 (18:6110)
 	predef ReplaceTileBlock
 	ret
 
-SilphCo11GateCoords: ; 62134 (18:6134)
+SilphCo11GateCoords:
 	db $06,$03
 	db $FF
 
-SilphCo11Script_6214f: ; 6214f (18:6137)
+SilphCo11Script_6214f:
 	push hl
 	ld hl, wCardKeyDoorY
 	ld a, [hli]
@@ -64,39 +64,39 @@ SilphCo11Script_6214f: ; 6214f (18:6137)
 	ld [$ffe0], a
 	ret
 
-SilphCo11Script_6217b: ; 6217b (18:6163)
+SilphCo11Script_6217b:
 	ld a, [$ffe0]
 	and a
 	ret z
 	SetEvent EVENT_SILPH_CO_11_UNLOCKED_DOOR
 	ret
 
-SilphCo11Script_62185: ; 62185 (18:61c4)
+SilphCo11Script_62185:
 	xor a
 	ld [wJoyIgnore], a
-SilphCo11Script_62189: ; 62189 (18:61c8)
-	ld [W_SILPHCO11CURSCRIPT], a
-	ld [W_CURMAPSCRIPT], a
+SilphCo11Script_62189:
+	ld [wSilphCo11CurScript], a
+	ld [wCurMapScript], a
 	ret
 
-SilphCo11ScriptPointers: ; 62190 (18:6190)
-	dw SilphCo11Script0 ; 61ae
+SilphCo11ScriptPointers:
+	dw SilphCo11Script0
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
-	dw SilphCo11Script3 ; 620c
-	dw SilphCo11Script4 ; 6254
-	dw SilphCo11Script5 ; 6318
-	dw SilphCo11Script6 ; 633f
-	dw SilphCo11Script7 ; 634a
-	dw SilphCo11Script8 ; 6366
-	dw SilphCo11Script9 ; 638d
-	dw SilphCo11Script10 ; 639d
-	dw SilphCo11Script11 ; 63bb
-	dw SilphCo11Script12 ; 63e1
-	dw SilphCo11Script13 ; 6427
-	dw SilphCo11Script14 ; 6448
+	dw SilphCo11Script3
+	dw SilphCo11Script4
+	dw SilphCo11Script5
+	dw SilphCo11Script6
+	dw SilphCo11Script7
+	dw SilphCo11Script8
+	dw SilphCo11Script9
+	dw SilphCo11Script10
+	dw SilphCo11Script11
+	dw SilphCo11Script12
+	dw SilphCo11Script13
+	dw SilphCo11Script14
 
-SilphCo11Script0: ; 621db (18:61db)
+SilphCo11Script0:
 	CheckEvent EVENT_BEAT_SILPH_CO_11F_TRAINER_0
 	call z, SilphCo11Script_6229c
 	CheckEvent EVENT_782
@@ -127,12 +127,12 @@ SilphCo11Script_621c5:
 	call SilphCo11Script_62189
 	ret
 
-CoordsData_62211: ; 62211 (18:6211)
+CoordsData_62211:
 	db $0D,$06
 	db $0C,$07
 	db $FF
 
-MovementData_62216: ; 62216 (18:6216)
+MovementData_62216:
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_DOWN
@@ -146,7 +146,7 @@ SilphCo11Script_621ff:
 	ld [wSpriteStateData1 + 3 * $10 + 1], a
 	ret
 
-SilphCo11Script3: ; 62227 (18:6227)
+SilphCo11Script3:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SilphCo11Script_62185
@@ -176,7 +176,7 @@ SilphCo11Script3: ; 62227 (18:6227)
 	ld [wJoyIgnore], a
 	jp SilphCo11Script_62189
 
-SilphCo11Script4: ; 62254 (18:626a)
+SilphCo11Script4:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -464,7 +464,7 @@ SilphCo11Script_6246d:
 	predef HideObject
 	ret
 
-SilphCo11TextPointers: ; 62476 (18:62b7)
+SilphCo11TextPointers:
 	dw SilphCo11Text1
 	dw SilphCo11Text2
 	dw SilphCo11Text3
@@ -476,8 +476,8 @@ SilphCo11TextPointers: ; 62476 (18:62b7)
 	dw SilphCo11Text9
 	dw SilphCo11Text10
 
-SilphCo11TrainerHeaders: ; 6248a
-SilphCo11TrainerHeader0: ; 6248a
+SilphCo11TrainerHeaders:
+SilphCo11TrainerHeader0:
 	dbEventFlagBit EVENT_BEAT_SILPH_CO_11F_TRAINER_1
 	db ($3 << 4)
 	dwEventFlagAddress EVENT_BEAT_SILPH_CO_11F_TRAINER_1

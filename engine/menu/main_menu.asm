@@ -20,7 +20,7 @@ MainMenu: ; 5ba6 (1:5ba6)
 	ld [hli],a
 	ld [hli],a
 	ld [hl],a
-	ld [wAnimationID],a
+	ld [wDefaultMap],a
 	ld hl,wd72e
 	res 6,[hl]
 	call ClearScreen
@@ -88,7 +88,7 @@ MainMenu: ; 5ba6 (1:5ba6)
 	jp .mainMenuLoop
 .choseContinue
 	call DisplayContinueGameInfo
-	ld hl,wd126
+	ld hl,wCurrentMapScriptFlags
 	set 5,[hl]
 .inputLoop
 	xor a
@@ -247,12 +247,12 @@ PrintNumOwnedMons: ; 5daa (1:5daa)
 	jp PrintNumber
 
 PrintPlayTime: ; 5dbd (1:5dbd)
-	ld de, wPlayTimeHours + 1
+	ld de, wPlayTimeHours
 	lb bc, 1, 3
 	call PrintNumber
 	ld [hl], $6d
 	inc hl
-	ld de, wPlayTimeMinutes + 1
+	ld de, wPlayTimeMinutes
 	lb bc, LEADING_ZEROES | 1, 2
 	jp PrintNumber
 

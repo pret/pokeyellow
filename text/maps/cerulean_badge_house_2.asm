@@ -26,4 +26,3 @@ _CeruleanHouse2Text_74eb9::
 	text "All #MON will"
 	line "obey you!"
 	prompt
-

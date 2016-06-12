@@ -3,7 +3,7 @@ Func_f1ef3:
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1efa: ; 487eb (12:47eb)
+CeladonMansion3Text_f1efa:
 	TX_FAR _CeladonMansion3Text5
 	db "@"
 
@@ -12,7 +12,7 @@ Func_f1eff:
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f06: ; 487f0 (12:47f0)
+CeladonMansion3Text_f1f06:
 	TX_FAR _CeladonMansion3Text6
 	db "@"
 
@@ -21,7 +21,7 @@ Func_f1f0b:
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f12: ; 487f5 (12:47f5)
+CeladonMansion3Text_f1f12:
 	TX_FAR _CeladonMansion3Text7
 	db "@"
 
@@ -30,6 +30,6 @@ Func_f1f17:
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f1e: ; 487fa (12:47fa)
+CeladonMansion3Text_f1f1e:
 	TX_FAR _CeladonMansion3Text8
 	db "@"

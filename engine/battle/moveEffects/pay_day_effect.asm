@@ -1,4 +1,4 @@
-PayDayEffect_ ; f6511 (3d:6511)
+PayDayEffect_: ; f6511 (3d:6511)
 	xor a
 	ld hl, wcd6d
 	ld [hli], a

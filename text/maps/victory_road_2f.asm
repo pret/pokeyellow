@@ -1,4 +1,4 @@
-_VictoryRoad2BattleText6::
+_MoltresBattleText::
 	text "Gyaoo!@@"
 
 _VictoryRoad2BattleText1::
@@ -83,4 +83,3 @@ _VictoryRoad2AfterBattleText5::
 	line "up the challenge"
 	cont "here."
 	done
-

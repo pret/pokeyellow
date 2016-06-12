@@ -1,4 +1,4 @@
-_PewterPokecenterText1::
+_PewterPokecenterText2::
 	text "What!?"
 
 	para "TEAM ROCKET is"
@@ -8,7 +8,7 @@ _PewterPokecenterText1::
 	para "Scram!"
 	done
 
-_PewterPokecenterText2::
+_PewterPokecenterText3::
 	text "#MON CENTERS"
 	line "are wonderful!"
 
@@ -21,7 +21,7 @@ _PewterPokecenterText2::
 	cont "are cured."
 	done
 
-_PewterPokecenterText5::
+_PewterJigglypuffText::
 	text "JIGGLYPUFF: Puu"
 	line "pupuu!"
 	done

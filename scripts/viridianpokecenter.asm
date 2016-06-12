@@ -1,26 +1,26 @@
-ViridianPokeCenterScript: ; 4425d (11:425d)
+ViridianPokeCenterScript:
 	call Serial_TryEstablishingExternallyClockedConnection
 	jp EnableAutoTextBoxDrawing
 
-ViridianPokecenterTextPointers: ; 44263 (11:4263)
-	dw ViridianPokeCenterText1
+ViridianPokecenterTextPointers:
+	dw ViridianHealNurseText
 	dw ViridianPokeCenterText2
 	dw ViridianPokeCenterText3
-	dw ViridianPokeCenterText4
+	dw ViridianTradeNurseText
 	dw ViridianPokeCenterText5
 
-ViridianPokeCenterText1: ; 4426b (11:426b)
+ViridianHealNurseText:
 	TX_POKECENTER_NURSE
 
-ViridianPokeCenterText2: ; 4426c (11:426c)
-	TX_FAR _ViridianPokeCenterText1
+ViridianPokeCenterText2:
+	TX_FAR _ViridianPokeCenterText2
 	db "@"
 
-ViridianPokeCenterText3: ; 44271 (11:4271)
+ViridianPokeCenterText3:
 	TX_FAR _ViridianPokeCenterText3
 	db "@"
 
-ViridianPokeCenterText4: ; 44276 (11:4276)
+ViridianTradeNurseText:
 	TX_CABLE_CLUB_RECEPTIONIST
 
 ViridianPokeCenterText5:

@@ -56,7 +56,7 @@ OakSpeech: ; 5e85 (1:5e85)
 	ld a,1
 	ld [wItemQuantity],a
 	call AddItemToInventory  ; give one potion
-	ld a,[wAnimationID]
+	ld a,[wDefaultMap]
 	ld [wDestinationMap],a
 	call SpecialWarpIn
 	xor a
@@ -225,8 +225,8 @@ IntroDisplayPicCenteredOrUpperRight: ; 6010 (1:6010)
 	call UncompressSpriteFromDE
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
-	ld hl,S_SPRITEBUFFER1
-	ld de,S_SPRITEBUFFER0
+	ld hl,sSpriteBuffer1
+	ld de,sSpriteBuffer0
 	ld bc,$310
 	call CopyData
 	call PrepareRTCDataAndDisableSRAM

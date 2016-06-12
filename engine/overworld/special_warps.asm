@@ -69,7 +69,7 @@ LoadSpecialWarpData: ; 6073 (1:6073)
 	xor a
 	jr .done
 .notFirstMap
-	ld a, [wLastMap]
+	ld a, [wLastMap] ; this value is overwritten before it's ever read
 	ld hl, wd732
 	bit 4, [hl] ; used dungeon warp (jumped down hole/waterfall)?
 	jr nz, .usedDunegonWarp

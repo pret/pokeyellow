@@ -9,8 +9,8 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 	jr c, .pokemonTower
 .notPokemonTower
 	ld a,[wBattleType]
-	cp $4 ; new battle type?
-	jr nz,.notnewbattletype
+	cp BATTLE_TYPE_PIKACHU
+	jr nz,.notPikachuBattle
 	callab IsPlayerPikachuAsleepInParty
 	ld e,$24
 	jr c,.asm_f4026
@@ -18,7 +18,7 @@ PrintBeginningBattleText: ; f4000 (3d:4000)
 .asm_f4026
 	callab PlayPikachuSoundClip
 	jr .continue
-.notnewbattletype
+.notPikachuBattle
 	ld a, [wEnemyMonSpecies2]
 	call PlayCry
 .continue

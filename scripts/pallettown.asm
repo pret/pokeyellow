@@ -1,14 +1,14 @@
-PalletTownScript: ; 18e5b (6:4e5b)
+PalletTownScript:
 	CheckEvent EVENT_GOT_POKEBALLS_FROM_OAK
 	jr z, .next
 	SetEvent EVENT_PALLET_AFTER_GETTING_POKEBALLS
 .next
 	call EnableAutoTextBoxDrawing
 	ld hl, PalletTownScriptPointers
-	ld a, [W_PALLETTOWNCURSCRIPT]
+	ld a, [wPalletTownCurScript]
 	jp JumpTable
 
-PalletTownScriptPointers: ; 18e73 (6:4e73)
+PalletTownScriptPointers:
 	dw PalletTownScript0
 	dw PalletTownScript1
 	dw PalletTownScript2
@@ -20,7 +20,7 @@ PalletTownScriptPointers: ; 18e73 (6:4e73)
 	dw PalletTownScript8
 	dw PalletTownScript9
 
-PalletTownScript0: ; 18e81 (6:4e81)
+PalletTownScript0:
 	CheckEvent EVENT_FOLLOWED_OAK_INTO_LAB
 	ret nz
 	ld a, [wYCoord]
@@ -41,16 +41,16 @@ PalletTownScript0: ; 18e81 (6:4e81)
 	call StopAllMusic
 	ld a, BANK(Music_MeetProfOak)
 	ld c, a
-	ld a, MUSIC_MEET_PROF_OAK ; “oak appears” music
+	ld a, MUSIC_MEET_PROF_OAK
 	call PlayMusic
 	SetEvent EVENT_OAK_APPEARED_IN_PALLET
 
 	; trigger the next script
 	ld a, 1
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript1: ; 18eb2 (6:4eb2)
+PalletTownScript1:
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
@@ -75,10 +75,10 @@ PalletTownScript1: ; 18eb2 (6:4eb2)
 	ld a, SPRITE_FACING_UP
 	ld [wSpriteStateData1 + 1 * $10 + 9], a
 	ld a, 2
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript2: ; 18ed2 (6:4ed2)
+PalletTownScript2:
 	call Delay3
 	ld a, 0
 	ld [wYCoord], a
@@ -98,10 +98,10 @@ PalletTownScript2: ; 18ed2 (6:4ed2)
 
 	; trigger the next script
 	ld a, 3
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript3: ; 18f12 (6:4f12)
+PalletTownScript3:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -130,16 +130,16 @@ PalletTownScript3: ; 18f12 (6:4f12)
 
 	; trigger the next script
 	ld a, 4
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript4: ; 18f4b (6:4f4b)
+PalletTownScript4:
 	; start the pikachu battle
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
 	ld [wListScrollOffset], a
-	ld a, STARTER_PIKACHU_BATTLE
+	ld a, BATTLE_TYPE_PIKACHU
 	ld [wBattleType], a
 	ld a, PIKACHU
 	ld [wCurOpponent], a
@@ -148,10 +148,10 @@ PalletTownScript4: ; 18f4b (6:4f4b)
 
 	; trigger the next script
 	ld a, 5
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript5: ; 18f56 (6:4f56)
+PalletTownScript5:
 	ld a, $2
 	ld [wcf0d], a
 	ld a, $1
@@ -169,10 +169,10 @@ PalletTownScript5: ; 18f56 (6:4f56)
 
 	; trigger the next script
 	ld a, 6
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript6: ; 18f87 (6:4f87)
+PalletTownScript6:
 	xor a
 	ld [wPlayerFacingDirection], a
 	ld a, $1
@@ -186,7 +186,7 @@ PalletTownScript6: ; 18f87 (6:4f87)
 
 	; trigger the next script
 	ld a, 7
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
 PalletTownScript7:
@@ -196,7 +196,7 @@ PalletTownScript7:
 
 	; trigger the next script
 	ld a, 8
-	ld [W_PALLETTOWNCURSCRIPT], a
+	ld [wPalletTownCurScript], a
 	ret
 
 PalletTownScript8:
@@ -220,7 +220,7 @@ PalletTownScript8:
 PalletTownScript9:
 	ret
 
-PalletTownTextPointers: ; 18f88 (6:4f88)
+PalletTownTextPointers:
 	dw PalletTownText1
 	dw PalletTownText2
 	dw PalletTownText3
@@ -230,7 +230,7 @@ PalletTownTextPointers: ; 18f88 (6:4f88)
 	dw PalletTownText7
 	dw PalletTownText8
 
-PalletTownText1: ; 18f96 (6:4f96)
+PalletTownText1:
 	TX_ASM
 	ld a, [wcf0d]
 	and a
@@ -251,7 +251,7 @@ PalletTownText1: ; 18f96 (6:4f96)
 	call PrintText
 	jp TextScriptEnd
 
-OakAppearsText: ; 18fb0 (6:4fb0)
+OakAppearsText:
 	TX_FAR _OakAppearsText
 	TX_ASM
 	ld c, 10
@@ -265,7 +265,7 @@ OakAppearsText: ; 18fb0 (6:4fb0)
 	predef EmotionBubble
 	jp TextScriptEnd
 
-OakWalksUpText: ; 18fce (6:4fce)
+OakWalksUpText:
 	TX_FAR _OakWalksUpText
 	db "@"
 
@@ -273,27 +273,27 @@ PalletTownText_19002:
 	TX_FAR _OakWhewText
 	db "@"
 
-PalletTownText8: ; 0x18fd3 girl
+PalletTownText8: ; girl
 	TX_FAR _OakGrassText
 	db "@"
 
-PalletTownText2: ; 0x18fd8 fat man
+PalletTownText2: ; fat man
 	TX_FAR _PalletTownText2
 	db "@"
 
-PalletTownText3: ; 0x18fdd sign by lab
+PalletTownText3: ; sign by lab
 	TX_FAR _PalletTownText3
 	db "@"
 
-PalletTownText4: ; 0x18fe2 sign by fence
+PalletTownText4: ; sign by fence
 	TX_FAR _PalletTownText4
 	db "@"
 
-PalletTownText5: ; 0x18fe7 sign by Red’s house
+PalletTownText5: ; sign by Red’s house
 	TX_FAR _PalletTownText5
 	db "@"
 
-PalletTownText6: ; 0x18fec sign by Blue’s house
+PalletTownText6: ; sign by Blue’s house
 	TX_FAR _PalletTownText6
 	db "@"
 
