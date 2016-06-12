@@ -184,7 +184,7 @@ DisplayIntroNameTextBox:
 	ld [wMaxMenuItem], a
 	jp HandleMenuInput
 
-.namestring ; 6822 (1:6822)
+.namestring
 	db "NAME@"
 
 DefaultNamesPlayer:

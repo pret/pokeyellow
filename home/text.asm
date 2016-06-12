@@ -134,42 +134,42 @@ Char52:: ; 17c7 (0:17c7) ; player’s name
 	ld de, wPlayerName
 	jr FinishDTE
 
-Char53:: ; 17cd (0:17cd) ; rival’s name
+Char53:: ; rival’s name
 	push de
 	ld de, wRivalName
 	jr FinishDTE
 
-Char5D:: ; 17d3 (0:17d3) ; TRAINER
+Char5D:: ; TRAINER
 	push de
 	ld de, Char5DText
 	jr FinishDTE
 
-Char5C:: ; 17d9 (0:17d9) ; TM
+Char5C:: ; TM
 	push de
 	ld de, Char5CText
 	jr FinishDTE
 
-Char5B:: ; 17df (0:17df) ; PC
+Char5B:: ; PC
 	push de
 	ld de, Char5BText
 	jr FinishDTE
 
-Char5E:: ; 17e5 (0:17e5) ; ROCKET
+Char5E:: ; ROCKET
 	push de
 	ld de, Char5EText
 	jr FinishDTE
 
-Char54:: ; 17eb (0:17eb) ; POKé
+Char54:: ; POKé
 	push de
 	ld de, Char54Text
 	jr FinishDTE
 
-Char56:: ; 17f1 (0:17f1) ; ……
+Char56:: ; ……
 	push de
 	ld de, Char56Text
 	jr FinishDTE
 
-Char4A:: ; 17f7 (0:17f7) ; PKMN
+Char4A:: ; PKMN
 	push de
 	ld de, Char4AText
 	jr FinishDTE

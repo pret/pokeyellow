@@ -257,7 +257,7 @@ DrawLineBox:
 	ld [hl], $6f ; ← (halfarrow ending)
 	ret
 
-PTile: ; 11682 (4:5682) ; This is a single 1bpp "P" tile
+PTile: ; This is a single 1bpp "P" tile
 	INCBIN "gfx/p_tile.1bpp"
 PTileEnd:
 

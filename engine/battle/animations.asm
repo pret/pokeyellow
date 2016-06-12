@@ -2040,7 +2040,7 @@ _AnimationSlideMonOff:
 ; functions below catch it by checking if the tile number is within the valid
 ; range and if not, replacing it with a blank tile.
 
-.PlayerNextTile ; 79702 (1e:5702)
+.PlayerNextTile
 	ld a, [hl]
 	add 7
 ; bugfix: compares against the max tile + 1 as opposed to the max tile
@@ -2049,7 +2049,7 @@ _AnimationSlideMonOff:
 	ld a, " "
 	ret
 
-.EnemyNextTile ; 7970b (1e:570b)
+.EnemyNextTile
 	ld a, [hl]
 	sub 7
 ; This has the same problem as above, but it has no visible effect because
