@@ -129,7 +129,7 @@ StartMenu_Pokemon:
 	dw .dig
 	dw .teleport
 	dw .softboiled
-.fly ; 11d1b (4:5d1b)
+.fly
 	bit 2,a ; does the player have the Thunder Badge?
 	jp z,.newBadgeRequired
 	call CheckIfInOutsideMap
@@ -160,7 +160,7 @@ StartMenu_Pokemon:
 	and a
 	jp z,.loop
 	jp CloseTextDisplay
-.surf ; 11d66 (4:5d66)
+.surf
 	bit 4,a ; does the player have the Soul Badge?
 	jp z,.newBadgeRequired
 	callba IsSurfingAllowed
@@ -190,13 +190,13 @@ StartMenu_Pokemon:
 	xor a
 	ld [wd473], a
 	jp .loop
-.strength ; 11dab (4:5dab)
+.strength
 	bit 3,a ; does the player have the Rainbow Badge?
 	jp z,.newBadgeRequired
 	predef PrintStrengthTxt
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
-.flash ; 11dbb (4:5dbb)
+.flash
 	bit 0,a ; does the player have the Boulder Badge?
 	jp z,.newBadgeRequired
 	xor a
@@ -208,7 +208,7 @@ StartMenu_Pokemon:
 .flashLightsAreaText
 	TX_FAR _FlashLightsAreaText
 	db "@"
-.dig ; 11dd5 (4:5dd5)
+.dig
 	ld a,ESCAPE_ROPE
 	ld [wcf91],a
 	ld [wPseudoItemID],a
@@ -218,7 +218,7 @@ StartMenu_Pokemon:
 	jp z,.loop
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
-.teleport ; 11ded (4:5ded)
+.teleport
 	call CheckIfInOutsideMap
 	jr z,.canTeleport
 	ld a,[wWhichPokemon]
@@ -239,7 +239,7 @@ StartMenu_Pokemon:
 	res 4,[hl]
 	ld c,60
 	call DelayFrames
-	call GBPalWhiteOutWithDelay3 ; zero all three palettes and wait 3 frames
+	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .warpToLastPokemonCenterText
 	TX_FAR _WarpToLastPokemonCenterText
@@ -250,7 +250,7 @@ StartMenu_Pokemon:
 .cannotFlyHereText
 	TX_FAR _CannotFlyHereText
 	db "@"
-.softboiled ; 11e35 (4:5e35)
+.softboiled
 	ld hl,wPartyMon1MaxHP
 	ld a,[wWhichPokemon]
 	ld bc,wPartyMon2 - wPartyMon1

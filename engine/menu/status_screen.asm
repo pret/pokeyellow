@@ -257,7 +257,7 @@ DrawLineBox:
 	ld [hl], $6f ; ← (halfarrow ending)
 	ret
 
-PTile: ; 11682 (4:5682) ; This is a single 1bpp "P" tile
+PTile: ; This is a single 1bpp "P" tile
 	INCBIN "gfx/p_tile.1bpp"
 PTileEnd:
 
@@ -349,11 +349,11 @@ StatusScreen2:
 	ld c, a
 	ld a, "-"
 	call StatusScreen_PrintPP ; Fill the rest with --
-.InitPP ; 1175e
+.InitPP
 	ld hl, wLoadedMonMoves
 	coord de, 14, 10
 	ld b, 0
-.PrintPP ; 11766
+.PrintPP
 	ld a, [hli]
 	and a
 	jr z, .PPDone

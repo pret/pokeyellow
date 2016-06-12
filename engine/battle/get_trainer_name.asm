@@ -19,7 +19,6 @@ GetTrainerName_:
 	call GetName
 	ld hl, wcd6d
 .foundName
-.rival
 	ld de, wTrainerName
 	ld bc, $d
 	jp CopyData

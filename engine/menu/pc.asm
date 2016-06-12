@@ -123,10 +123,10 @@ RemoveItemByID:
 	ld [hItemToRemoveIndex], a
 .loop
 	ld a, [hli]
-	cp $ff ; have we reached the cancel button (terminator)
+	cp -1 ; reached terminator?
 	ret z
-	cp b ; is the current item the item we want?
-	jr z, .foundItem ; if so, remove it from the inventory
+	cp b
+	jr z, .foundItem
 	inc hl
 	ld a, [hItemToRemoveIndex]
 	inc a

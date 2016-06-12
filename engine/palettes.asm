@@ -181,19 +181,15 @@ SetPal_Overworld:
 	ld a, SET_PAL_OVERWORLD
 	ld [wDefaultPaletteCommand], a
 	ret
-
 .PokemonTowerOrAgatha
 	ld a, PAL_GREYMON - 1
 	jr .town
-
 .caveOrBruno
 	ld a, PAL_CAVE - 1
 	jr .town
-
 .Lorelei
 	xor a
 	jr .town
-
 .trade_center_colosseum
 	ld a, PAL_GREYMON - 1
 	jr .town
@@ -535,9 +531,8 @@ _SendSGBPacket:
 ; set P14=HIGH, P15=HIGH
 	ld a, $30
 	ld [rJOYP], a
-	call Wait7000
 ; wait for about 70000 cycles
-;	call Wait7000
+	call Wait7000
 ; restore (previously pushed) number of packets
 	pop bc
 	dec b
@@ -613,6 +608,7 @@ PrepareSuperNintendoVRAMTransfer:
 	dw DataSnd_72911
 
 CheckSGB:
+; Returns whether the game is running on an SGB in carry.
 	ld hl, MltReq2Packet
 	call SendSGBPacket
 	call Wait7000

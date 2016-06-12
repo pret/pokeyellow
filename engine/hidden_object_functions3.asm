@@ -81,9 +81,9 @@ IndigoPlateauStatues:
 	ld a, [wXCoord]
 	bit 0, a
 	ld hl, IndigoPlateauStatuesText2
-	jr nz, .asm_fa61
+	jr nz, .ok
 	ld hl, IndigoPlateauStatuesText3
-.asm_fa61
+.ok
 	call PrintText
 	jp TextScriptEnd
 
@@ -104,12 +104,12 @@ BookOrSculptureText:
 	ld hl, PokemonBooksText
 	ld a, [wCurMapTileset]
 	cp MANSION ; Celadon Mansion tileset
-	jr nz, .asm_fa8b
+	jr nz, .ok
 	aCoord 8, 6
 	cp $38
-	jr nz, .asm_fa8b
+	jr nz, .ok
 	ld hl, DiglettSculptureText
-.asm_fa8b
+.ok
 	call PrintText
 	jp TextScriptEnd
 

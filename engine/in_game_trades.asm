@@ -133,7 +133,7 @@ InGameTrade_DoTrade:
 	and a
 	ld a,$3
 	jr .tradeSucceeded
-.tradeFailed ; never jumped to
+.tradeFailed
 	scf
 .tradeSucceeded
 	ld [wInGameTradeTextPointerTableIndex],a

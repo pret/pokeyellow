@@ -253,7 +253,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld hl, wEnemyMons + (SERIAL_PREAMBLE_BYTE - 1)
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
-	ld a, wEnemyMonOT & $ff
+	ld a, wEnemyMonOT % $100
 	ld [wUnusedCF8D], a
 	ld a, wEnemyMonOT / $100
 	ld [wUnusedCF8D + 1], a
@@ -268,7 +268,7 @@ CableClub_DoBattleOrTradeAgain:
 	cp LINK_STATE_START_BATTLE
 	ld a, LINK_STATE_TRADING
 	ld [wLinkState], a
-	jr nz, .asm_55a0
+	jr nz, .trading
 	ld a, LINK_STATE_BATTLING
 	ld [wLinkState], a
 	ld a, OPP_SONY1
@@ -288,7 +288,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [wLetterPrintingDelayFlags], a
 	predef HealParty
 	jp ReturnToCableClubRoom
-.asm_55a0
+.trading
 	ld c, BANK(Music_GameCorner)
 	ld a, MUSIC_GAME_CORNER
 	call PlayMusic
@@ -446,7 +446,6 @@ TradeCenter_SelectMon:
 	ld a, [wEnemyPartyCount]
 	dec a
 	cp b
-	; continue
 	jr nc, .notPastLastEnemyMon
 ; when switching to the enemy mon menu, if the menu selection would be past the last enemy mon, select the last enemy mon
 	ld [wCurrentMenuItem], a
@@ -851,7 +850,6 @@ TradeCenter_Trade:
 .usingExternalClock
 	predef ExternalClockTradeAnim
 .tradeCompleted
-; continue
 	callab TryEvolvingMon
 	call ClearScreen
 	call LoadTrainerInfoTextBoxTiles
@@ -973,10 +971,10 @@ CableClub_TextBoxBorder:
 ; c = width
 CableClub_DrawHorizontalLine:
 	ld d, c
-.drawHorizontalLineLoop
+.loop
 	ld [hli], a
 	dec d
-	jr nz, .drawHorizontalLineLoop
+	jr nz, .loop
 	ret
 
 LoadTrainerInfoTextBoxTiles:

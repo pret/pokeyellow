@@ -31,7 +31,7 @@ DisplayTitleScreen:
 	call DisableLCD
 	call LoadFontTilePatterns
 ; todo: fix hl pointers
-	ld hl, NintendoCopyrightLogoGraphics ; 4:4c48
+	ld hl, NintendoCopyrightLogoGraphics
 	ld de, vTitleLogo + $600
 	ld bc, $50
 	ld a, BANK(NintendoCopyrightLogoGraphics)
@@ -91,7 +91,7 @@ DisplayTitleScreen:
 	call .ScrollTitleScreenPokemonLogo
 	jr .bouncePokemonLogoLoop
 
-.TitleScreenPokemonLogoYScrolls ; 4228 (1:4228)
+.TitleScreenPokemonLogoYScrolls:
 ; Controls the bouncing effect of the Pokemon logo on the title screen
 	db -4,16  ; y scroll amount, number of times to scroll
 	db 3,4
@@ -102,7 +102,7 @@ DisplayTitleScreen:
 	db -1,2
 	db 0      ; terminate list with 0
 
-.ScrollTitleScreenPokemonLogo ; 4237 (1:4237)
+.ScrollTitleScreenPokemonLogo:
 ; Scrolls the Pokemon logo on the title screen to create the bouncing effect
 ; Scrolls d pixels e times
 	call DelayFrame

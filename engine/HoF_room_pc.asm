@@ -39,18 +39,18 @@ HallOfFamePC:
 	jp Credits
 
 FadeInCreditsText:
-	ld a, $1
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ld hl, HoFGBPalettes
 	ld b, 4
-.asm_f0f91
+.loop
 	ld a, [hli]
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
 	ld c, 5
 	call DelayFrames
 	dec b
-	jr nz, .asm_f0f91
+	jr nz, .loop
 	ret
 
 HoFGBPalettes:
@@ -76,7 +76,7 @@ DisplayCreditsMon:
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
 	ld hl, vBGMap0
 	call CreditsCopyTileMapToVRAM
-	ld a, %11111100
+	ld a, %11111100 ; make the mon a black silhouette
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
 	ld hl, rLCDC
@@ -100,14 +100,13 @@ DisplayCreditsMon:
 	ret
 
 ScrollCreditsMonLeft:
-.asm_f0fff
 	ld a, b
 	ld [hSCX], a
 	add 8
 	ld b, a
 	call DelayFrame
 	dec c
-	jr nz, .asm_f0fff
+	jr nz, ScrollCreditsMonLeft
 	ret
 
 GetNextCreditsMon:
@@ -129,10 +128,10 @@ INCLUDE "data/credit_mons.asm"
 
 CreditsCopyTileMapToVRAM:
 	ld a, l
-	ld [$ffbc], a
+	ld [H_AUTOBGTRANSFERDEST], a
 	ld a, h
-	ld [$ffbd], a
-	ld a, $1
+	ld [H_AUTOBGTRANSFERDEST + 1], a
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	jp Delay3
 
@@ -154,24 +153,24 @@ CreditsLoadFont:
 	ret
 
 ZeroMemory:
-.asm_f1071
+; zero bc bytes at hl
 	ld [hl], 0
 	inc hl
 	inc hl
 	dec bc
 	ld a, b
 	or c
-	jr nz, .asm_f1071
+	jr nz, ZeroMemory
 	ret
 
 FillFourRowsWithBlack:
-	ld bc, 4 * SCREEN_WIDTH
+	ld bc, SCREEN_WIDTH * 4
 	ld a, $7e
 	jp FillMemory
 
 FillMiddleOfScreenWithWhite:
 	coord hl, 0, 4
-	ld bc, 10 * SCREEN_WIDTH
+	ld bc, SCREEN_WIDTH * 10
 	ld a, " "
 	jp FillMemory
 
@@ -193,19 +192,19 @@ FillHalfOfScreenWithWhite:
 	ld b, 10
 	ld c, 10
 	ld a, " "
-.asm_f10a6
+.loop
 	push bc
 	push hl
-.asm_f10a8
+.innerLoop
 	ld [hli], a
 	dec c
-	jr nz, .asm_f10a8
+	jr nz, .innerLoop
 	pop hl
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_f10a6
+	jr nz, .loop
 	ret
 
 Credits: ; Roll credits
@@ -322,4 +321,3 @@ INCLUDE "text/credits_text.asm"
 TheEndGfx: ; 7473e (1d:473e) (7473f on blue)
 	INCBIN "gfx/theend.interleave.2bpp"
 TheEndGfxEnd:
-

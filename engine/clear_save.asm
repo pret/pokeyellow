@@ -1,4 +1,4 @@
-DoClearSaveDialogue: ; DoClearSaveDialogue:
+DoClearSaveDialogue:
 	call ClearScreen
 	call RunDefaultPaletteCommand
 	call LoadFontTilePatterns

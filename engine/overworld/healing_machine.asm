@@ -1,5 +1,5 @@
 AnimateHealingMachine:
-	ld de, PokeCenterFlashingMonitorAndHealBall ; $44b7
+	ld de, PokeCenterFlashingMonitorAndHealBall
 	ld hl, vChars0 + $7c0
 	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), $03 ; loads one too many tiles
 	call CopyVideoData
@@ -11,23 +11,23 @@ AnimateHealingMachine:
 	ld a, [rOBP1]
 	push af
 	ld a, $e0
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP1
 	ld hl, wOAMBuffer + $84
-	ld de, PokeCenterOAMData ; $44d7
+	ld de, PokeCenterOAMData
 	call CopyHealingMachineOAM
 	ld a, 4
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
 .waitLoop
 	ld a, [wAudioFadeOutControl]
-	and a
-	jr nz, .waitLoop
-	ld a, [wPartyCount] ; wPartyCount
+	and a ; is fade-out finished?
+	jr nz, .waitLoop ; if not, check again
+	ld a, [wPartyCount]
 	ld b, a
 .partyLoop
 	call CopyHealingMachineOAM
-	ld a, $9e ; (SFX_02_4a - SFX_Headers_02) / 3
+	ld a, SFX_HEALING_MACHINE
 	call PlaySound
 	ld c, 30
 	call DelayFrames
@@ -38,22 +38,22 @@ AnimateHealingMachine:
 	ld [wAudioSavedROMBank], a
 	jr nz, .next
 	call StopAllMusic
-	ld a, $2 ; BANK(Music_PkmnHealed)
+	ld a, BANK(Music_PkmnHealed)
 	ld [wAudioROMBank], a
 .next
-	ld a, $e8 ; MUSIC_PKMN_HEALED
+	ld a, MUSIC_PKMN_HEALED
 	ld [wNewSoundID], a
 	call PlaySound
 	ld d, $28
 	call FlashSprite8Times
 .waitLoop2
 	ld a, [wChannelSoundIDs]
-	cp $e8 ; MUSIC_PKMN_HEALED
-	jr z, .waitLoop2
+	cp MUSIC_PKMN_HEALED ; is the healed music still playing?
+	jr z, .waitLoop2 ; if so, check gain
 	ld c, 32
 	call DelayFrames
 	pop af
-	ld [rOBP1], a ; $ff49
+	ld [rOBP1], a
 	call UpdateGBCPal_OBP1
 	pop hl
 	pop af

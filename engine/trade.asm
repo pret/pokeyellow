@@ -253,7 +253,7 @@ Trade_ShowPlayerMon:
 	ld [hSCX], a
 	dec a
 	dec a
-	and a ; useless since flags are updated with dec a
+	and a
 	jr nz, .slideScreenLoop
 	call Trade_Delay80
 	ld a, TRADE_BALL_POOF_ANIM

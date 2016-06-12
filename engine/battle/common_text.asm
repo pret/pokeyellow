@@ -1,5 +1,5 @@
 PrintBeginningBattleText:
-	ld a, [wIsInBattle] ; W_ISINBATTLE
+	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle
 	ld a, [wCurMap]
@@ -80,7 +80,7 @@ PrintBeginningBattleText:
 	ld [wFrequencyModifier], a
 	ld a, $80
 	ld [wTempoModifier], a
-	ld a, $e9 ; (SFX_08_77 - SFX_Headers_08) / 3
+	ld a, SFX_SILPH_SCOPE
 	call PlaySound
 	jp WaitForSoundToFinish
 .done
