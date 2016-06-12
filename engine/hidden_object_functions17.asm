@@ -423,7 +423,6 @@ GymTrashCans:
 	db 2,  9, 13, -1, -1 ; 12
 	db 3, 10, 12, 14, -1 ; 13
 	db 2, 11, 13, -1, -1 ; 14
-; 5dec8
 
 VermilionGymTrashSuccessText1:
 	TX_FAR _VermilionGymTrashSuccessText1

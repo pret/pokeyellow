@@ -282,7 +282,7 @@ PlayAnimation:
 .nextAnimationCommand
 	pop hl
 	jr .animationLoop
-.AnimationOver ; 417B
+.AnimationOver
 	ret
 
 LoadSubanimation:
@@ -3202,7 +3202,7 @@ TossBallAnimation:
 ; sequence of animations that make up the Poké Ball toss
 	db POOF_ANIM, HIDEPIC_ANIM, SHAKE_ANIM, POOF_ANIM, SHOWPIC_ANIM
 
-.BlockBall ; 79ff6 (1e:5ff6)
+.BlockBall
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a
 	call PlayAnimation

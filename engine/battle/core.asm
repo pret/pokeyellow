@@ -4834,7 +4834,6 @@ UnusedHighCriticalMoves:
 	db CRABHAMMER
 	db SLASH
 	db $FF
-; 3e023
 
 ; determines if attack is a critical hit
 ; azure heights claims "the fastest pokémon (who are, not coincidentally,

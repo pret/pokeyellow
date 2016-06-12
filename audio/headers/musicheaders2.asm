@@ -32,5 +32,3 @@ Music_DefeatedGymLeader::
 	dbw ( $80 | CH0 ), Music_DefeatedGymLeader_Ch1
 	dbw CH1, Music_DefeatedGymLeader_Ch2
 	dbw CH2, Music_DefeatedGymLeader_Ch3
-
-; 202fd
