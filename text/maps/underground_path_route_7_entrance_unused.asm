@@ -17,14 +17,17 @@ _UGPathRoute7EntranceUnusedText_5d778::
 _UGPathRoute7EntranceUnusedText_5d77d::
 	text "You're here to"
 	line "shop in CELADON?"
+
 	para "Just step outside"
 	line "and head west!"
 	done
+
 _UGPathRoute7EntranceUnusedText_5d782::
 	text "The UNDERGROUND"
 	line "PATH goes beneath"
 	cont "SAFFRON and leads"
 	cont "to LAVENDER."
+
 	para "If you're heading"
 	line "to CERULEAN, go"
 	cont "to the building"

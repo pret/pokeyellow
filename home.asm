@@ -154,7 +154,7 @@ Start::
 	xor a
 	jr .ok
 .gbc
-	ld a, $1
+	ld a, 1
 .ok
 	ld [hGBC], a
 	jp Init
@@ -300,7 +300,7 @@ DrawHPBar::
 ; OUTPUT:
 ; [wcf91] = pokemon ID
 ; wLoadedMon = base address of pokemon data
-; W_MONHDEXNUM = base address of base stats
+; wMonHeader = base address of base stats
 LoadMonData::
 	jpab LoadMonData_
 
@@ -648,11 +648,11 @@ GetMonHeader::
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a, [wd11e]
 	dec a
-	ld bc, 28
+	ld bc, MonBaseStatsEnd - MonBaseStats
 	ld hl, BaseStats
 	call AddNTimes
 	ld de, wMonHeader
-	ld bc, 28
+	ld bc, MonBaseStatsEnd - MonBaseStats
 	call CopyData
 	jr .done
 .specialID
@@ -1064,21 +1064,20 @@ ResetPlayerSpriteData::
 ResetPlayerSpriteData_ClearSpriteData::
 	ld bc, $10
 	xor a
-	call FillMemory ; XXX why replaced with call + ret?
+	call FillMemory
 	ret
-	;jp FillMemory
 
 FadeOutAudio::
 	ld a, [wAudioFadeOutControl]
-	and a
-	jr nz, .asm_27d3
+	and a ; currently fading out audio?
+	jr nz, .fadingOut
 	ld a, [wd72c]
 	bit 1, a
 	ret nz
 	ld a, $77
 	ld [rNR50], a
 	ret
-.asm_27d3
+.fadingOut
 	ld a, [wAudioFadeOutCounter]
 	and a
 	jr z, .counterReachedZero
@@ -1089,8 +1088,8 @@ FadeOutAudio::
 	ld a, [wAudioFadeOutCounterReloadValue]
 	ld [wAudioFadeOutCounter], a
 	ld a, [rNR50]
-	and a
-	jr z, .asm_27fa
+	and a ; has the volume reached 0?
+	jr z, .fadeOutComplete
 	ld b, a
 	and $f
 	dec a
@@ -1103,7 +1102,7 @@ FadeOutAudio::
 	or c
 	ld [rNR50], a
 	ret
-.asm_27fa
+.fadeOutComplete
 	ld a, [wAudioFadeOutControl]
 	ld b, a
 	xor a
@@ -1143,7 +1142,7 @@ DisplayTextID::
 	ld [wSpriteIndex], a
 	and a
 	jp z, DisplayStartMenu
-	cp TEXT_PIKACHU_ANIM ; new yellow asm
+	cp TEXT_PIKACHU_ANIM
 	jp z, DisplayPikachuEmotion
 	cp TEXT_SAFARI_GAME_OVER
 	jp z, DisplaySafariGameOverText
@@ -1204,7 +1203,7 @@ DisplayTextID::
 	callba VendingMachineMenu ; jump banks to vending machine routine
 	jr AfterDisplayingTextID
 .notVendingMachine
-	cp $f7   ; slot machine
+	cp $f7   ; prize menu
 	jp z, FuncTX_GameCornerPrizeMenu
 	cp $f6   ; cable connection NPC in Pokemon Center
 	jr nz, .notSpecialCase
@@ -1269,7 +1268,7 @@ DisplayPokemartDialogue::
 	inc hl
 	call LoadItemList
 	ld a, PRICEDITEMLISTMENU
-	ld [wListMenuID], a ; selects between subtypes of menus
+	ld [wListMenuID], a
 	homecall DisplayPokemartDialogue_
 	jp AfterDisplayingTextID
 
@@ -1393,9 +1392,9 @@ AddAmountSoldToMoney::
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; redraw money text box
-	ld a, $b2 ; SFX_PURCHASE
-	call PlaySoundWaitForCurrent ; play sound
-	jp WaitForSoundToFinish ; wait until sound is done playing
+	ld a, SFX_PURCHASE
+	call PlaySoundWaitForCurrent
+	jp WaitForSoundToFinish
 
 ; function to remove an item (in varying quantities) from the player's bag or PC box
 ; INPUT:
@@ -1432,7 +1431,7 @@ DisplayListMenuID::
 	ld a, $01 ; hardcoded bank
 	jr .bankswitch
 .specialBattleType ; Old Man battle
-	ld a, $f ; BANK(DisplayBattleMenu)
+	ld a, BANK(DisplayBattleMenu)
 .bankswitch
 	call BankswitchHome
 	ld hl, wd730
@@ -1793,7 +1792,7 @@ PrintListMenuEntries::
 	ld a, [wListMenuID]
 	and a
 	jr z, .pokemonPCMenu
-	cp $01
+	cp MOVESLISTMENU
 	jr z, .movesMenu
 .itemMenu
 	call GetItemName
@@ -1946,7 +1945,7 @@ GetMonName::
 	push hl
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, BANK(MonsterNames) ; 3a
+	ld a, BANK(MonsterNames)
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ld a, [wd11e]
@@ -2206,6 +2205,7 @@ IsKeyItem::
 ; function to draw various text boxes
 ; INPUT:
 ; [wTextBoxID] = text box ID
+; b, c = y, x cursor position (TWO_OPTION_MENU only)
 DisplayTextBoxID::
 	homecall_sf DisplayTextBoxID_
 	ret
@@ -3209,12 +3209,13 @@ YesNoChoicePokeCenter::
 	lb bc, 8, 12
 	jr DisplayYesNoChoice
 
-Func_361d::
+WideYesNoChoice:: ; unused
 	call SaveScreenTilesToBuffer1
 	ld a, WIDE_YES_NO_MENU
 	ld [wTwoOptionMenuID], a
 	coord hl, 12, 7
 	lb bc, 8, 13
+
 DisplayYesNoChoice::
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
@@ -3352,7 +3353,7 @@ SaveScreenTilesToBuffer2::
 
 LoadScreenTilesFromBuffer2::
 	call LoadScreenTilesFromBuffer2DisableBGTransfer
-	ld a, $1
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
@@ -3378,7 +3379,7 @@ LoadScreenTilesFromBuffer1::
 	coord de, 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	call CopyData
-	ld a, $1
+	ld a, 1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	ret
 
@@ -3515,9 +3516,9 @@ GetItemPrice::
 	ld a, [wListMenuID]
 	cp MOVESLISTMENU
 	ld a, BANK(ItemPrices)
-	jr nz, .asm_37e0
+	jr nz, .ok
 	ld a, $f ; hardcoded Bank
-.asm_37e0
+.ok
 	call BankswitchCommon
 	ld hl, wItemPrices
 	ld a, [hli]
@@ -3527,10 +3528,10 @@ GetItemPrice::
 	cp HM_01
 	jr nc, .getTMPrice
 	ld bc, $3
-.asm_37f3
+.loop
 	add hl, bc
 	dec a
-	jr nz, .asm_37f3
+	jr nz, .loop
 	dec hl
 	ld a, [hld]
 	ld [hItemPrice + 2], a
@@ -3538,10 +3539,10 @@ GetItemPrice::
 	ld [hItemPrice + 1], a
 	ld a, [hl]
 	ld [hItemPrice], a
-	jr .asm_380b
+	jr .done
 .getTMPrice
 	callbs GetMachinePrice
-.asm_380b
+.done
 	ld de, hItemPrice
 	pop af
 	call BankswitchCommon
@@ -3656,7 +3657,7 @@ ManualTextScroll::
 	jr z, .inLinkBattle
 	call WaitForTextScrollButtonPress
 	call WaitForSoundToFinish
-	ld a, $90 ; SFX_PRESS_AB
+	ld a, SFX_PRESS_AB
 	jp PlaySound
 .inLinkBattle
 	ld c, 65
@@ -4076,7 +4077,7 @@ HandleMenuInputPokemonSelection::
 	ld a, [wPartyMenuAnimMonEnabled]
 	and a ; is it a pokemon selection menu?
 	jr z, .getJoypadState
-	callba AnimatePartyMon ; shake mini sprite of selected pokemon (1c:578c)
+	callba AnimatePartyMon ; shake mini sprite of selected pokemon
 .getJoypadState
 	pop hl
 	call JoypadLowSensitivity
@@ -4156,8 +4157,8 @@ HandleMenuInputPokemonSelection::
 	bit 5, [hl]
 	pop hl
 	jr nz, .skipPlayingSound
-	ld a, $90 ; SFX_PRESS_AB
-	call PlaySound ; play sound
+	ld a, SFX_PRESS_AB
+	call PlaySound
 .skipPlayingSound
 	pop af
 	ld [H_DOWNARROWBLINKCNT2], a

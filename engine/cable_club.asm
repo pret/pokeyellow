@@ -907,9 +907,9 @@ CableClub_Run:
 	call CableClub_DoBattleOrTrade
 	ld hl, Club_GFX
 	ld a, h
-	ld [wTilesetGFXPtr + 1], a
+	ld [wTilesetGfxPtr + 1], a
 	ld a, l
-	ld [wTilesetGFXPtr], a
+	ld [wTilesetGfxPtr], a
 	ld a, Bank(Club_GFX)
 	ld [wTilesetBank], a
 	ld hl, Club_Coll

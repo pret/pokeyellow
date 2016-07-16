@@ -58,7 +58,7 @@ AnimateHallOfFame:
 	ld c, 80
 	call DelayFrames
 	coord hl, 2, 13
-	lb bc, $3, $e
+	lb bc, 3, 14
 	call TextBoxBorder
 	coord hl, 4, 15
 	ld de, HallOfFameText

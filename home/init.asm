@@ -3,6 +3,8 @@ SoftReset::
 	call GBPalWhiteOut
 	ld c, 32
 	call DelayFrames
+	; fallthrough
+
 Init::
 ;  Program init.
 
