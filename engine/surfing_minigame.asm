@@ -75,7 +75,7 @@ SurfingPikachuLoop:
 	ld a, $3c
 	ld [wCurrentAnimatedObjectOAMBufferOffset], a
 	call RunObjectAnimations
-	call Func_f8848
+	call SurfingMinigame_MoveClouds
 	call .DelayFrame
 	call SurfingMinigame_UpdateMusicTempo
 	jr .loop
@@ -119,10 +119,10 @@ SurfingMinigame_UpdateMusicTempo:
 	cp [hl]
 	ret nz
 
-	; de = ([wc5e3] & 0x3f) * 2
-	ld a, [wc5e3]
+	; de = ([wSurfingMinigamePikachuSpeed] & 0x3f) * 2
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld e, a
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	and $3
 	ld d, a
 	sla e
@@ -237,9 +237,9 @@ SurfingPikachuMinigame_LoadGFXAndLayout:
 	ld a, rSCY - $ff00
 	ld [hLCDCPointer], a
 	ld a, $40
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	xor a
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	xor a
 	ld [wSurfingMinigamePikachuHP], a
 	ld a, $60
@@ -423,12 +423,12 @@ SurfingMinigame_RunGame:
 	call Random
 	ld [wc5d5], a
 	call SurfingMinigame_UpdateLYOverrides
-	call Func_f88ae
-	call Func_f886b
-	call Func_f8cb0
-	call Func_f844c
+	call SurfingMinigame_SetPikachuHeight
+	call SurfingMinigame_ReadBGMapBuffer
+	call SurfingMinigame_ScrollAndGenerateBGMap
+	call SurfingMinigame_UpdatePikachuDistance
 	call SurfingMinigame_Deduct1HP
-	call Func_f88fd
+	call SurfingMinigame_DrawHP
 	ret
 
 .asm_f82e8
@@ -469,8 +469,8 @@ Func_f8324:
 	xor a
 	ld [wc5d5], a
 	call SurfingMinigame_UpdateLYOverrides
-	call Func_f88ae
-	call Func_f886b
+	call SurfingMinigame_SetPikachuHeight
+	call SurfingMinigame_ReadBGMapBuffer
 	call Func_f8c97
 	call SurfingMinigame_ResetMusicTempo
 	ret
@@ -496,8 +496,8 @@ Func_f835c:
 	and a
 	jr z, .asm_f837b
 	call SurfingMinigame_UpdateLYOverrides
-	call Func_f88ae
-	call Func_f886b
+	call SurfingMinigame_SetPikachuHeight
+	call SurfingMinigame_ReadBGMapBuffer
 	ld a, [hSCX]
 	dec a
 	dec a
@@ -506,13 +506,13 @@ Func_f835c:
 	ld [hSCX], a
 	ld a, $e0
 	ld [wSurfingMinigameXOffset], a
-	call Func_f8cc7
+	call SurfingMinigame_GenerateBGMap
 	ret
 
 .asm_f837b
 	xor a
-	ld [wc5e3], a
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld hl, wSurfingMinigameRoutineNumber
 	inc [hl]
 	ld a, $5
@@ -608,9 +608,9 @@ SurfingMinigame_ExitOnPressA:
 
 SurfingMinigame_GameOver:
 	call SurfingMinigame_UpdateLYOverrides
-	call Func_f88ae
-	call Func_f886b
-	call Func_f8cb0
+	call SurfingMinigame_SetPikachuHeight
+	call SurfingMinigame_ReadBGMapBuffer
+	call SurfingMinigame_ScrollAndGenerateBGMap
 	call SurfingMinigame_ResetMusicTempo
 	ld hl, wc631
 	ld a, [hl]
@@ -640,14 +640,14 @@ SurfingMinigame_RunDelayTimer:
 	scf
 	ret
 
-Func_f844c:
+SurfingMinigame_UpdatePikachuDistance:
 	ld a, [wc5e5 + 1]
 	ld h, a
 	ld a, [wc5e5 + 2]
 	ld l, a
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld e, a
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	ld d, a
 	add hl, de
 	ld a, h
@@ -695,7 +695,7 @@ Func_f848d:
 	call Func_f871e
 	jr c, .splash
 	call Func_f8742
-	call Func_f86b8
+	call SurfingMinigame_SpeedUpPikachu
 	ret
 
 .splash
@@ -722,8 +722,8 @@ Func_f848d:
 
 .asm_f84d2
 	xor a
-	ld [wc5e3], a
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld a, $4
 	ld [wc5d2], a
 	call Func_f8742
@@ -1003,11 +1003,11 @@ SurfingMinigame_TileInteraction:
 	jr .action_0
 
 .action_1
-	call Subtract128Fromwc5e3
+	call Subtract128FromwSurfingMinigamePikachuSpeed
 	jr .action_3
 
 .action_2
-	call Subtract64Fromwc5e3
+	call Subtract64FromwSurfingMinigamePikachuSpeed
 .action_3
 	xor a
 	ld [wChannelSoundIDs + CH7], a
@@ -1018,73 +1018,73 @@ SurfingMinigame_TileInteraction:
 
 .action_0
 	ld a, $40
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	xor a
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	scf
 	ret
 
-Func_f86b8:
-	ld a, [wc5e3 + 1]
+SurfingMinigame_SpeedUpPikachu:
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	cp $2
 	ret nc
 	ld h, a
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
 	ld de, $2
 	add hl, de
 	ld a, h
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld a, l
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
-Subtract64Fromwc5e3:
-	ld a, [wc5e3 + 1]
+Subtract64FromwSurfingMinigamePikachuSpeed:
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	and a
 	jr nz, .go
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	cp $40
 	jr nc, .go
 	xor a
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
 .go
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	ld h, a
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
 	ld de, -$40
 	add hl, de
 	ld a, h
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld a, l
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
-Subtract128Fromwc5e3:
-	ld a, [wc5e3 + 1]
+Subtract128FromwSurfingMinigamePikachuSpeed:
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	and a
 	jr nz, .go
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	cp $80
 	jr nc, .go
 	xor a
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
 .go
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	ld h, a
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
 	ld de, -$80
 	add hl, de
 	ld a, h
-	ld [wc5e3 + 1], a
+	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld a, l
-	ld [wc5e3], a
+	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
 Func_f871e:
@@ -1181,9 +1181,9 @@ Func_f8778:
 	ret
 
 Func_f87a8:
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	ld h, a
 	add hl, hl
 	add hl, hl
@@ -1301,13 +1301,13 @@ SurfingMinigameAnimatedObjectFn_IntroAnimationPikachu:
 	call MaskCurrentAnimatedObjectStruct
 	ret
 
-Func_f8848:
+SurfingMinigame_MoveClouds:
 	ld a, [wc635]
 	ld e, a
 	ld d, $0
-	ld a, [wc5e3]
+	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
-	ld a, [wc5e3 + 1]
+	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	ld h, a
 	add hl, de
 	ld a, l
@@ -1326,7 +1326,7 @@ Func_f8848:
 	jr nz, .loop
 	ret
 
-Func_f886b:
+SurfingMinigame_ReadBGMapBuffer:
 	ld a, [wSurfingMinigameBGMapReadBuffer] ; ???
 	ld a, [hSCX]
 	add $48
@@ -1369,7 +1369,7 @@ Func_f886b:
 	ld [H_VBCOPYSIZE], a
 	ret
 
-Func_f88ae:
+SurfingMinigame_SetPikachuHeight:
 	ld a, [hSCX]
 	and $8
 	jr nz, .asm_f88b9
@@ -1428,7 +1428,7 @@ SurfingMinigame_Deduct1HP:
 	scf
 	ret
 
-Func_f88fd:
+SurfingMinigame_DrawHP:
 	ld de, wSurfingMinigamePikachuHP + 1
 	ld hl, wOAMBuffer + 0 * 4 + 2
 	ld a, [de]
@@ -1863,9 +1863,9 @@ Func_f8c97:
 	ld [wSurfingMinigameSCX], a
 	ld a, h
 	ld [hSCX], a
-	jr Func_f8cc7
+	jr SurfingMinigame_GenerateBGMap
 
-Func_f8cb0:
+SurfingMinigame_ScrollAndGenerateBGMap:
 	ld a, $a0
 	ld [wSurfingMinigameXOffset], a
 	ld a, [hSCX]
@@ -1878,7 +1878,7 @@ Func_f8cb0:
 	ld [wSurfingMinigameSCX], a
 	ld a, h
 	ld [hSCX], a
-Func_f8cc7:
+SurfingMinigame_GenerateBGMap:
 	ld hl, wSurfingMinigameSCX + 1
 	ld a, [hSCX]
 	cp [hl]
