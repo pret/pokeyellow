@@ -1003,11 +1003,11 @@ SurfingMinigame_TileInteraction:
 	jr .action_0
 
 .action_1
-	call Subtract128FromwSurfingMinigamePikachuSpeed
+	call SufingMinigame_ReduceSpeedBy128
 	jr .action_3
 
 .action_2
-	call Subtract64FromwSurfingMinigamePikachuSpeed
+	call SufingMinigame_ReduceSpeedBy64
 .action_3
 	xor a
 	ld [wChannelSoundIDs + CH7], a
@@ -1039,7 +1039,7 @@ SurfingMinigame_SpeedUpPikachu:
 	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
-Subtract64FromwSurfingMinigamePikachuSpeed:
+SufingMinigame_ReduceSpeedBy64:
 	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	and a
 	jr nz, .go
@@ -1063,7 +1063,7 @@ Subtract64FromwSurfingMinigamePikachuSpeed:
 	ld [wSurfingMinigamePikachuSpeed], a
 	ret
 
-Subtract128FromwSurfingMinigamePikachuSpeed:
+SufingMinigame_ReduceSpeedBy128:
 	ld a, [wSurfingMinigamePikachuSpeed + 1]
 	and a
 	jr nz, .go
@@ -1097,7 +1097,7 @@ Func_f871e:
 	ld a, [wSurfingMinigameBGMapReadBuffer]
 	cp $14
 	jr nz, .asm_f8740
-	call Func_f87a8
+	call SufingMinigame_GetSpeedDividedBy32
 	cp $a
 	jr c, .asm_f8740
 	ld [wc5ec], a
@@ -1180,7 +1180,7 @@ Func_f8778:
 	ld [wc5df], a
 	ret
 
-Func_f87a8:
+SufingMinigame_GetSpeedDividedBy32:
 	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
 	ld a, [wSurfingMinigamePikachuSpeed + 1]
