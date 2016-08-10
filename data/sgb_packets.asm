@@ -52,124 +52,109 @@ DATA_SND: MACRO
 ENDM
 
 BlkPacket_WholeScreen:
-	db $21
-	db $1,$3,$0,$0,$0,$13,$11,$0
-	db $0,$0,$0,$0,$0,$0,$0
+	ATTR_BLK 1
+	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,17
+	ds 8
+
 BlkPacket_Battle:
-	db $22
-	db $5,$7,$a,$0,$c,$13,$11,$3,$5,$1
-	db $0,$a,$3,$3,$0,$a,$7,$13,$a
-	db $3,$a,$0,$4,$8,$b,$3,$f,$b
-	db $0,$13,$6
+	ATTR_BLK 5
+	ATTR_BLK_DATA %111, 2,2,0, 00,12, 19,17 ; message box: pal 2
+	ATTR_BLK_DATA %011, 1,1,0, 01,00, 10,03 ; enemy HP bar: pal 1
+	ATTR_BLK_DATA %011, 0,0,0, 10,07, 19,10 ; player HP bar: pal 0
+	ATTR_BLK_DATA %011, 2,2,0, 00,04, 08,11 ; player mon: pal 2
+	ATTR_BLK_DATA %011, 3,3,0, 11,00, 19,06 ; enemy mon : pal 3
+
 BlkPacket_StatusScreen:
-	db $21
-	db $1,$7,$5,$1,$0
-	db $7,$6,$0,$0,$0,$0,$0,$0,$0
-	db $0
+	ATTR_BLK 1
+	ATTR_BLK_DATA %111, 1,1,0, 01,00, 07,06 ; mon: pal 1, HP bar: pal 0
+	ds 8
+
 BlkPacket_Pokedex:
-	db $21
-	db $1,$7,$5,$1,$1,$8,$8
-	db $0,$0,$0,$0,$0,$0,$0,$0
+	ATTR_BLK 1
+	ATTR_BLK_DATA %111, 1,1,0, 01,01, 08,08 ; mon: pal 1, everything else: pal 0
+	ds 8
+
 BlkPacket_Slots:
-	db $22
-	db $5,$3,$5,$0,$0,$13,$b,$3,$a
-	db $0,$4,$13,$9,$2,$f,$0,$6,$13
-	db $7,$3,$0,$4,$4,$f,$9,$3,$0
-	db $0,$c,$13,$11
+	ATTR_BLK 5
+	ATTR_BLK_DATA %011, 1,1,0, 00,00, 19,11 ; "3" rows and top of screen: pal 1
+	ATTR_BLK_DATA %011, 2,2,0, 00,04, 19,09 ; "2" rows: pal 2
+	ATTR_BLK_DATA %010, 3,3,0, 00,06, 19,07 ; "1" row: pal 3
+	ATTR_BLK_DATA %011, 0,0,0, 04,04, 15,09 ; slot reels: pal 0
+	ATTR_BLK_DATA %011, 0,0,0, 00,12, 19,17 ; message box: pal 0
+
 BlkPacket_Titlescreen:
-	db $22
-	db $3,$3,$0,$0
-	db $0,$13,$7,$3,$a,$0,$8,$13,$11
-	db $2,$0,$9,$8,$a,$8,$0,$0,$0
-	db $0,$0,$0,$0,$0,$0,$0,$0,$0
-BlkPacket_NidorinoIntro ; 726a1 (1c:66a1)
-	db $22
-	db $3,$3,$5,$0,$0,$13,$3,$3
-	db $0,$0,$4,$13,$d,$3,$5,$0,$e
-	db $13,$11,$0,$0,$0,$0,$0,$0,$0
-	db $0,$0,$0,$0,$0
+	ATTR_BLK 3
+	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,07
+	ATTR_BLK_DATA %011, 2,2,0, 00,08, 19,17
+	ATTR_BLK_DATA %010, 0,0,0, 09,08, 10,08
+	ds 12
+
+BlkPacket_NidorinoIntro:
+	ATTR_BLK 3
+	ATTR_BLK_DATA %011, 1,1,0, 00,00, 19,03 ; upper black bar: pal 1
+	ATTR_BLK_DATA %011, 0,0,0, 00,04, 19,13 ; letterbox: pal 0
+	ATTR_BLK_DATA %011, 1,1,0, 00,14, 19,17 ; lower black bar: pal 1
+	ds 12
+
 BlkPacket_PartyMenu:
-	db $23
-	db $7,$6,$10
-	db $1,$0,$2,$c,$2,$0,$5,$1,$b
-	db $1,$2,$0,$5,$3,$b,$3,$2,$0
-	db $5,$5,$b,$5,$2,$0,$5,$7,$b
-	db $7,$2,$0,$5,$9,$b,$9,$2,$0
-	db $5,$b,$b,$b,$0,$0,$0,$0
+	ATTR_BLK 7
+	ATTR_BLK_DATA %110, 0,0,1, 01,00, 02,12 ; mon sprites: pal 0, everything else: pal 1
+	ATTR_BLK_DATA %010, 0,0,0, 05,01, 11,01 ; HP bar 0: pal set dynamically
+	ATTR_BLK_DATA %010, 0,0,0, 05,03, 11,03 ; HP bar 1: pal set dynamically
+	ATTR_BLK_DATA %010, 0,0,0, 05,05, 11,05 ; HP bar 2: pal set dynamically
+	ATTR_BLK_DATA %010, 0,0,0, 05,07, 11,07 ; HP bar 3: pal set dynamically
+	ATTR_BLK_DATA %010, 0,0,0, 05,09, 11,09 ; HP bar 4: pal set dynamically
+	ATTR_BLK_DATA %010, 0,0,0, 05,11, 11,11 ; HP bar 5: pal set dynamically
+	ds 4
+
 BlkPacket_TrainerCard:
-	db $24
-	db $a,$2,$0,$3,$c,$4,$d,$2,$5
-	db $7,$c,$8,$d,$2,$f,$b,$c,$c
-	db $d,$2,$a,$10,$b,$11,$c,$2,$5
-	db $e,$d,$f,$d,$2,$f,$10,$d,$11
-	db $d,$2,$a,$3,$f,$4,$10,$2,$f
-	db $7,$f,$8,$10,$2,$a,$b,$f,$c
-	db $10,$2,$5,$f,$f,$10,$10,$0,$0
+	ATTR_BLK 10
+	ATTR_BLK_DATA %010, 0,0,0, 03,12, 04,13
+	ATTR_BLK_DATA %010, 1,1,0, 07,12, 08,13
+	ATTR_BLK_DATA %010, 3,3,0, 11,12, 12,13
+	ATTR_BLK_DATA %010, 2,2,0, 16,11, 17,12
+	ATTR_BLK_DATA %010, 1,1,0, 14,13, 15,13
+	ATTR_BLK_DATA %010, 3,3,0, 16,13, 17,13
+	ATTR_BLK_DATA %010, 2,2,0, 03,15, 04,16
+	ATTR_BLK_DATA %010, 3,3,0, 07,15, 08,16
+	ATTR_BLK_DATA %010, 2,2,0, 11,15, 12,16
+	ATTR_BLK_DATA %010, 1,1,0, 15,15, 16,16
+	ds 2
+
 BlkPacket_GameFreakIntro:
-	db $22
-	db $3,$7,$5,$5,$b,$7,$d,$2
-	db $a,$8,$b,$9,$d,$3,$f,$c,$b
-	db $e,$d,$0,$0,$0,$0,$0,$0,$0
-	db $0,$0,$0,$0,$0
+	ATTR_BLK 3
+	ATTR_BLK_DATA %111, 1,1,0, 05,11, 07,13 ; falling stars (left): pal 1, GameFreak logo: pal 0
+	ATTR_BLK_DATA %010, 2,2,0, 08,11, 09,13 ; falling stars (middle): pal 2
+	ATTR_BLK_DATA %011, 3,3,0, 12,11, 14,13 ; falling stars (right): pal 3
+	ds 12
+
 UnknownPacket_72751:
-	db $21,$1,$7,$5
-	db $4,$0,$f,$5,$0,$0,$0,$0,$0
-	db $0,$0,$0
+	ATTR_BLK 1
+	ATTR_BLK_DATA %111, 1,1,0, 04,00, 15,05
+	ds 8
 
-PalPacket_Empty:
-	PAL_SET 0, 0, 0, 0
+PalPacket_Empty:          PAL_SET 0, 0, 0, 0
+PalPacket_PartyMenu:      PAL_SET PAL_MEWMON, PAL_GREENBAR, PAL_YELLOWBAR, PAL_REDBAR
+PalPacket_Black:          PAL_SET PAL_BLACK, PAL_BLACK, PAL_BLACK, PAL_BLACK
+PalPacket_TownMap:        PAL_SET PAL_TOWNMAP, 0, 0, 0
+PalPacket_Pokedex:        PAL_SET PAL_BROWNMON, 0, 0, 0
+PalPacket_Slots:          PAL_SET PAL_SLOTS1, PAL_SLOTS2, PAL_SLOTS3, PAL_SLOTS4
+PalPacket_Titlescreen:    PAL_SET PAL_LOGO2, PAL_LOGO1, PAL_MEWMON, PAL_PURPLEMON
+PalPacket_TrainerCard:    PAL_SET PAL_MEWMON, PAL_BADGE, PAL_REDMON, PAL_YELLOWMON
+PalPacket_Generic:        PAL_SET PAL_MEWMON, 0, 0, 0
+PalPacket_NidorinoIntro:  PAL_SET PAL_PURPLEMON, PAL_BLACK, 0, 0
+PalPacket_GameFreakIntro: PAL_SET PAL_GAMEFREAK, PAL_REDMON, PAL_VIRIDIAN, PAL_BLUEMON
+UnknownPalPacket_72811:   PAL_SET PAL_25, PAL_25, PAL_25, PAL_25
+UnknownPalPacket_72821:   PAL_SET PAL_25, PAL_27, PAL_25, PAL_25
 
-PalPacket_PartyMenu:
-	PAL_SET PAL_MEWMON, PAL_GREENBAR, PAL_YELLOWBAR, PAL_REDBAR
+PalTrnPacket:  PAL_TRN
+MltReq1Packet: MLT_REQ 1
+MltReq2Packet: MLT_REQ 2
+ChrTrnPacket:  CHR_TRN 0, 0
+PctTrnPacket:  PCT_TRN
 
-PalPacket_Black:
-	PAL_SET PAL_BLACK, PAL_BLACK, PAL_BLACK, PAL_BLACK
-
-PalPacket_TownMap:
-	PAL_SET PAL_TOWNMAP, 0, 0, 0
-
-PalPacket_Pokedex:
-	PAL_SET PAL_BROWNMON, 0, 0, 0
-
-PalPacket_Slots:
-	PAL_SET PAL_SLOTS1, PAL_SLOTS2, PAL_SLOTS3, PAL_SLOTS4
-
-PalPacket_Titlescreen:
-	PAL_SET PAL_LOGO2, PAL_LOGO1, PAL_MEWMON, PAL_PURPLEMON
-
-PalPacket_TrainerCard:
-	PAL_SET PAL_MEWMON, PAL_BADGE, PAL_REDMON, PAL_YELLOWMON
-
-PalPacket_Generic:
-	PAL_SET PAL_MEWMON, 0, 0, 0
-
-PalPacket_NidorinoIntro:
-	PAL_SET PAL_PURPLEMON, PAL_BLACK, 0, 0
-
-PalPacket_GameFreakIntro:
-	PAL_SET PAL_GAMEFREAK, PAL_REDMON, PAL_VIRIDIAN, PAL_BLUEMON
-
-UnknownPalPacket_72811:
-	db $51,$25,$0,$25,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
-
-UnknownPalPacket_72821:
-	db $51,$25,$0,$27,$0,$25,$0,$25,$0,$0,$0,$0,$0,$0,$0,$0
-
-PalTrnPacket:
-	PAL_TRN
-MltReq1Packet:
-	MLT_REQ 1
-MltReq2Packet:
-	MLT_REQ 2
-ChrTrnPacket:
-	CHR_TRN 0, 0
-PctTrnPacket:
-	PCT_TRN
-
-MaskEnFreezePacket:
-	MASK_EN 1
-MaskEnCancelPacket:
-	MASK_EN 0
+MaskEnFreezePacket: MASK_EN 1
+MaskEnCancelPacket: MASK_EN 0
 
 ; These are DATA_SND packets containing SNES code.
 ; This set of packets is found in several Japanese SGB-compatible titles.
