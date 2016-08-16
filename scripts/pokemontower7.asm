@@ -269,7 +269,7 @@ PokemonTower7Text4:
 	ld [wPlayerMovingDirection], a
 	ld a, $0
 	ld [wEmotionBubbleSpriteIndex], a
-	ld a, $0
+	ld a, EXCLAMATION_BUBBLE
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	ld c, 20

@@ -797,7 +797,7 @@ OaksLabText_1c9a7:
 OaksLabScript_1c9ac:
 	ld a, $1
 	ld [wEmotionBubbleSpriteIndex], a
-	xor a
+	xor a ; EXCLAMATION_BUBBLE
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	ld a, $8

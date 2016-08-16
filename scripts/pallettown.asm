@@ -260,8 +260,8 @@ OakAppearsText:
 	ld [wPlayerMovingDirection], a
 	ld a, 0
 	ld [wEmotionBubbleSpriteIndex], a ; player's sprite
-	ld a, 0
-	ld [wWhichEmotionBubble], a ; EXCLAMATION_BUBBLE
+	ld a, EXCLAMATION_BUBBLE
+	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	jp TextScriptEnd
 

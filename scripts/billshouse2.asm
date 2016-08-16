@@ -117,7 +117,7 @@ Func_f24d5:
 	call ApplyPikachuMovementData
 	ld a, $f ; pikachu
 	ld [wEmotionBubbleSpriteIndex], a
-	ld a, $1
+	ld a, QUESTION_BUBBLE
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	call DisablePikachuFollowingPlayer

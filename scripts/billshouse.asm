@@ -171,7 +171,7 @@ BillsHouseScript5:
 	call ApplyPikachuMovementData
 	ld a, $f
 	ld [wEmotionBubbleSpriteIndex], a
-	ld a, $0
+	ld a, EXCLAMATION_BUBBLE
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	callab InitializePikachuTextID
