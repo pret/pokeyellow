@@ -443,7 +443,7 @@ wc5e1:: ; c5e1
 	ds 1
 wc5e2:: ; c5e2
 	ds 1
-wc5e3:: ; c5e3
+wSurfingMinigamePikachuSpeed:: ; c5e3
 	ds 2 ; little-endian
 wc5e5:: ; c5e5
 	ds 3 ; big-endian
