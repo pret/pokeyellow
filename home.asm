@@ -258,7 +258,7 @@ DrawHPBar::
 	and a
 	jr nz, .fill
 
-	; If c iz nonzero, draw a pixel anyway.
+	; If c is nonzero, draw a pixel anyway.
 	ld a, c
 	and a
 	jr z, .done
