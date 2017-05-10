@@ -1,5 +1,5 @@
 MapSongBanks:
-	db MUSIC_PALLET_TOWN, BANK(Music_PalletTown) ;PALLET_TOWN
+	db MUSIC_CELADON, BANK(Music_PalletTown) ;PALLET_TOWN
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; VIRIDIAN_CITY
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; PEWTER_CITY
 	db MUSIC_CITIES2, BANK(Music_Cities2) ; CERULEAN_CITY
@@ -11,8 +11,8 @@ MapSongBanks:
 	db MUSIC_INDIGO_PLATEAU, BANK(Music_IndigoPlateau) ; INDIGO_PLATEAU
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; SAFFRON_CITY
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; unused
-	db MUSIC_ROUTES1, BANK(Music_Routes4) ; ROUTE_1
-	db MUSIC_ROUTES1, BANK(Music_Routes4) ; ROUTE_2
+	db MUSIC_ROUTES4, BANK(Music_Routes1) ; ROUTE_1
+	db MUSIC_ROUTES4, BANK(Music_Routes1) ; ROUTE_2
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_3
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_4
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_5
