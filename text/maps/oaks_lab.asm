@@ -305,6 +305,12 @@ _OaksLabPikachuDislikesPokeballsText2::
 	para "You can talk to it"
 	line "and see how it"
 	cont "feels about you."
+
+	para "And also, don't"
+	line "talk to it. It"
+	cont "will become mad"
+	cont "and crash your"
+	cont "game. Good luck!"
 	done
 
 _OaksLabText21::
