@@ -1348,8 +1348,9 @@ RepelWoreOffText::
 	db "@"
 
 DisplayPikachuEmotion::
-    call Start
-	callab TalkToPikachu
+    ld hl, $D058
+    ld d, $FF
+    ld [hl], d
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"
