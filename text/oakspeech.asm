@@ -1,28 +1,28 @@
 _OakSpeechText1::
 	text "Hello there!"
 	line "Welcome to the"
-	cont "world of JERALDS!"
+	cont "world of GERALDS!"
 
 	para "My name is OAK!"
 	line "People call me"
-	cont "the JERALD PROF!"
+	cont "the GERALD PROF!"
 	prompt
 
 _OakSpeechText2A::
 	text "This world is"
 	line "inhabited by"
 	cont "creatures called"
-	cont "JERALDS!@@"
+	cont "GERALDS!@@"
 
 _OakSpeechText2B::
 	text $51,"For some people,"
-	line "JERALDS are"
+	line "GERALDS are"
 	cont "pets. Others use"
 	cont "them for fights."
 
 	para "Myself..."
 
-	para "I study JERALDS"
+	para "I study GERALDS"
 	line "as a profession."
 	prompt
 
@@ -45,11 +45,11 @@ _OakSpeechText3::
 	text $52,"!"
 
 	para "Your very own"
-	line "JERALD legend is"
+	line "GERALD legend is"
 	cont "about to unfold!"
 
 	para "A world of dreams"
 	line "and adventures"
-	cont "with JERALDS"
+	cont "with GERALDS"
 	cont "awaits! Let's go!"
 	done

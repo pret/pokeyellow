@@ -8,8 +8,6 @@
 *.exe
 
 # roms
-*.gbc
-*.gb
 
 # rgbds extras
 *.sym
