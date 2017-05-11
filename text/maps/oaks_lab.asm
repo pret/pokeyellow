@@ -306,11 +306,11 @@ _OaksLabPikachuDislikesPokeballsText2::
 	line "and see how it"
 	cont "feels about you."
 
-	para "And also, don't"
-	line "talk to it. It"
-	cont "will become mad"
-	cont "and crash your"
-	cont "game. Good luck!"
+	para "Actually, don't"
+	line "talk to it. I will"
+	cont "have to battle you"
+	cont "for confidential"
+	cont "reasons."
 	done
 
 _OaksLabText21::

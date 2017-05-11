@@ -1349,7 +1349,7 @@ RepelWoreOffText::
 
 DisplayPikachuEmotion::
     ld hl, $D058
-    ld d, $FF
+    ld d, $E2
     ld [hl], d
 	jp CloseTextDisplay
 
