@@ -293,7 +293,7 @@ _OaksLabPikachuDislikesPokeballsText2::
 
 	para "It's odd, but it"
 	line "appears that your"
-	cont "GERLAD dislikes"
+	cont "GERALD dislikes"
 	cont "# BALLs."
 
 	para "You should just"

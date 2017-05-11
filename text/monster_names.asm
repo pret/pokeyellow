@@ -82,7 +82,7 @@ MonsterNames:
 	db "MISSINGNO."
 	db "VULPIX@@@@"
 	db "NINETALES@"
-	db "GERLAD@@@@"
+	db "GERALD@@@@"
 	db "RAICHU@@@@"
 	db "MISSINGNO."
 	db "MISSINGNO."
