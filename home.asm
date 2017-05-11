@@ -1348,6 +1348,7 @@ RepelWoreOffText::
 	db "@"
 
 DisplayPikachuEmotion::
+    call Start
 	callab TalkToPikachu
 	jp CloseTextDisplay
 
