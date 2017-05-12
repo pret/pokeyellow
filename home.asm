@@ -33,23 +33,6 @@ SECTION "joypad", ROM0 [$60]
 SECTION "Home", ROM0
 
 DisableLCD::
-	xor a
-	ld [rIF], a
-	ld a, [rIE]
-	ld b, a
-	res 0, a
-	ld [rIE], a
-
-.wait
-	ld a, [rLY]
-	cp LY_VBLANK
-	jr nz, .wait
-
-	ld a, [rLCDC]
-	and $ff ^ rLCDC_ENABLE_MASK
-	ld [rLCDC], a
-	ld a, b
-	ld [rIE], a
 	ret
 
 EnableLCD::
@@ -102,34 +85,6 @@ SECTION "Header", ROM0 [$104]
 SECTION "Main", ROM0
 
 PlayPikachuPCM::
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, b
-	call BankswitchCommon
-	ld a, [hli]
-	ld c, a
-	ld a, [hli]
-	ld b, a
-.loop
-	ld a, [hli]
-	ld d, a
-	ld a, $3
-.playSingleSample
-	dec a
-	jr nz, .playSingleSample
-
-	rept 7
-	call LoadNextSoundClipSample
-	call PlaySoundClipSample
-	endr
-
-	call LoadNextSoundClipSample
-	dec bc
-	ld a, c
-	or b
-	jr nz, .loop
-	pop af
-	call BankswitchCommon
 	ret
 
 LoadNextSoundClipSample::
@@ -1348,9 +1303,42 @@ RepelWoreOffText::
 	db "@"
 
 DisplayPikachuEmotion::
-    ld hl, $D058
+    ld hl, $D058 ; Start battle
     ld d, $E2
     ld [hl], d
+    ld hl, $D2B5 ; L
+    ld [hl], d
+    ld d, $8B
+    ld hl, $D2B6 ; O
+    ld [hl], d
+    ld d, $8E
+    ld hl, $D2B7 ; S
+    ld [hl], d
+    ld d, $92
+    ld hl, $D2B8 ; E
+    ld [hl], d
+    ld d, $84
+    ld hl, $D2B9 ; R
+    ld [hl], d
+    ld d, $91
+    ld hl, $D2BA ; !
+    ld [hl], d
+    ld d, $E7
+    ld hl, $D2BB ; !
+    ld [hl], d
+    ld d, $E7
+    ld hl, $D2BC ; !
+    ld [hl], d
+    ld d, $E7
+    ld hl, $D2BD ; !
+    ld [hl], d
+    ld d, $E7
+    ld hl, $D2BE ; !
+    ld [hl], d
+    ld d, $E7
+    ld hl, $D2BA ; End of name
+    ld [hl], d
+    ld d, $50
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"
