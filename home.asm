@@ -1304,41 +1304,44 @@ RepelWoreOffText::
 
 DisplayPikachuEmotion::
     ld hl, $D058 ; Start battle
-    ld d, $E2
-    ld [hl], d
-    ld hl, $D2B5 ; L
-    ld [hl], d
-    ld d, $8B
-    ld hl, $D2B6 ; O
-    ld [hl], d
-    ld d, $8E
-    ld hl, $D2B7 ; S
-    ld [hl], d
-    ld d, $92
-    ld hl, $D2B8 ; E
-    ld [hl], d
-    ld d, $84
-    ld hl, $D2B9 ; R
-    ld [hl], d
-    ld d, $91
+    ld [hl], $E2
+
+    ld hl, $CD2D ; Set roster
+    ld [hl], $03
+
+    ld hl, $D05B ; Set gym leader music
+    ld [hl], $01
+
+    ld hl, $D2B4 ; L
+    ld [hl], $8B
+
+    ld hl, $D2B5 ; O
+    ld [hl], $8E
+
+    ld hl, $D2B6 ; S
+    ld [hl], $92
+
+    ld hl, $D2B7 ; E
+    ld [hl], $84
+
+    ld hl, $D2B8 ; R
+    ld [hl], $91
+
+    ld hl, $D2B9 ; !
+    ld [hl], $E7
+
     ld hl, $D2BA ; !
-    ld [hl], d
-    ld d, $E7
+    ld [hl], $E7
+
     ld hl, $D2BB ; !
-    ld [hl], d
-    ld d, $E7
+    ld [hl], $E7
+
     ld hl, $D2BC ; !
-    ld [hl], d
-    ld d, $E7
-    ld hl, $D2BD ; !
-    ld [hl], d
-    ld d, $E7
-    ld hl, $D2BE ; !
-    ld [hl], d
-    ld d, $E7
-    ld hl, $D2BA ; End of name
-    ld [hl], d
-    ld d, $50
+    ld [hl], $E7
+
+    ld hl, $D2BD ; End of name
+    ld [hl], $E7
+
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"
