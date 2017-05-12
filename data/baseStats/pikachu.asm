@@ -1,9 +1,9 @@
 db DEX_PIKACHU ; pokedex id
-db 70 ; base hp
-db 110 ; base attack
-db 60 ; base defense
-db 180 ; base speed
-db 100 ; base special
+db 255 ; base hp
+db 255 ; base attack
+db 255 ; base defense
+db 255 ; base speed
+db 255 ; base special
 db ELECTRIC ; species type 1
 db ELECTRIC ; species type 2
 db 190 ; catch rate
