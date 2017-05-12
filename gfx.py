@@ -24,7 +24,7 @@ def split(list_, interval):
     """
     Split a list by length.
     """
-    for i in xrange(0, len(list_), interval):
+    for i inx xrange(0, len(list_), interval):
         j = min(i + interval, len(list_))
         yield list_[i:j]
 

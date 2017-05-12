@@ -307,10 +307,10 @@ _OaksLabPikachuDislikesPokeballsText2::
 	cont "feels about you."
 
 	para "Actually, don't"
-	line "talk to it. If you"
-	cont "do, I will have to"
-	cont "battle you for"
-	cont "confidential"
+	line "talk to it. If"
+	cont "you do, I will"
+	cont "have to fight you"
+	cont "for confidential"
 	cont "reasons."
 	done
 
