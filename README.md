@@ -13,8 +13,10 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 * Disassembly of [**Pokémon Red/Blue**][pokered]
 * Disassembly of [**Pokémon Crystal**][pokecrystal]
+* Discord: [**pret**][Discord]
 * irc: **irc.freenode.net** [**#pret**][irc]
 
 [pokered]: https://github.com/iimarckus/pokered
 [pokecrystal]: https://github.com/kanzure/pokecrystal
+[Discord]: https://discord.gg/cJxDDVP
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
