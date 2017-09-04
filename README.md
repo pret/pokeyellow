@@ -13,10 +13,14 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 * Disassembly of [**Pokémon Red/Blue**][pokered]
 * Disassembly of [**Pokémon Crystal**][pokecrystal]
+* Disassembly of [**Pokémon Pinball**][pokepinball]
+* Disassembly of [**Pokémon TCG**][poketcg]
 * Discord: [**pret**][Discord]
 * irc: **irc.freenode.net** [**#pret**][irc]
 
 [pokered]: https://github.com/iimarckus/pokered
 [pokecrystal]: https://github.com/kanzure/pokecrystal
+[pokepinball]: https://github.com/pret/pokepinball
+[poketcg]: https://github.com/pret/poketcg
 [Discord]: https://discord.gg/cJxDDVP
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
