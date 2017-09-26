@@ -514,6 +514,8 @@ wc6ed:: ; c6ed
 wPrinterChecksum:: ; c6ee
 	dw
 
+UNION
+
 wPrinterSerialReceived:: ; c6f0
 	ds 1
 wPrinterStatusReceived:: ; c6f1
@@ -533,13 +535,16 @@ wLYOverridesEnd::
 wLYOverridesBuffer:: ; c800
 	ds $100
 wLYOverridesBufferEnd:: ; c900
-	ds wPrinterSerialReceived - @
+
+NEXTU
 
 wPrinterSendDataSource1:: ; c6f0
 ; two 20-tile buffers
 	ds $140
 wPrinterSendDataSource2::
 	ds $140
+ENDU
+
 wPrinterSendDataSource1End:: ; c970
 
 wPrinterHandshake:: ; c970
@@ -2849,6 +2854,8 @@ wPikachuMovementFlags:: ; d44c
 ; bit 7 - signal end of command
 	ds 1
 
+UNION
+
 wCurPikaMovementData:: ; d44d
 wCurPikaMovementParam1:: ds 1 ; d44d
 wCurPikaMovementFunc1:: ds 1 ; d44e
@@ -2864,8 +2871,8 @@ wPikachuStepTimer:: ds 1 ; d457
 wPikachuStepSubtimer:: ds 1 ; d458
 	ds 5
 wCurPikaMovementDataEnd:: ; d45e
-	ds wCurPikaMovementData - @
 
+NEXTU
 
 wPikaPicAnimPointer:: dw ; d44d
 wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
@@ -2886,6 +2893,7 @@ wCurPikaPicAnimObjectFrameTimer:: db ; d45b
 wCurPikaPicAnimObjectEnd:: ; d45d
 
 	ds 18
+ENDU
 
 wPikachuHappiness:: ds 1 ; d46f
 wPikachuMood:: ds 1 ; d470
@@ -3493,10 +3501,12 @@ wSerialEnemyDataBlock:: ; d892
 wEnemyPartyCount:: ds 1     ; d89b
 wEnemyPartyMons::  ds PARTY_LENGTH + 1 ; d89c
 
+UNION
+
 wWaterRate:: db ; d8a3
 wWaterMons:: db ; d8a4
 
-	ds wWaterRate - @
+NEXTU
 
 wEnemyMons:: ; d8a3
 wEnemyMon1:: party_struct wEnemyMon1
@@ -3509,6 +3519,7 @@ wEnemyMon6:: party_struct wEnemyMon6
 wEnemyMonOT::    ds NAME_LENGTH * PARTY_LENGTH ; d9ab
 wEnemyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH ; d9ed
 
+ENDU
 
 wTrainerHeaderPtr:: ; da2f
 	ds 2
