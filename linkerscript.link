@@ -1,0 +1,236 @@
+ROM0
+  ORG $61
+  "Home"
+  ORG $150
+  "Main"
+
+ROMX $1
+  "bank01"
+
+ROMX $2
+  "Sound Effect Headers 1" ; AUDIO_1
+  "Music Headers 1"
+  "Sound Effects 1"
+  "Audio Engine 1"
+  "Music 1"
+
+ROMX $3
+  "bank03"
+
+ROMX $4
+  "Graphics"
+  "NPC Sprites 1"
+
+ROMX $5
+  "NPC Sprites 2"
+
+ROMX $6
+  "bank06"
+
+ROMX $7
+  "bank07"
+
+ROMX $8
+  "Sound Effect Headers 2" ; AUDIO_2
+  "Music Headers 2"
+  "Sound Effects 2"
+  "Audio Engine 2"
+  "Music 2"
+
+ROMX $9
+  "Pics 1"
+
+ROMX $A
+  "Pics 2"
+
+ROMX $B
+  "Pics 3"
+
+ROMX $C
+  "Pics 4"
+
+ROMX $D
+  "Pics 5"
+
+ROMX $E
+  "bank0E"
+
+ROMX $F
+  "bank0F"
+
+ROMX $10
+  "bank10"
+
+ROMX $11
+  "bank11"
+
+ROMX $12
+  "bank12"
+
+ROMX $13
+  "bank13"
+
+ROMX $14
+  "bank14"
+
+ROMX $15
+  "bank15"
+
+ROMX $16
+  "bank16"
+
+ROMX $17
+  "bank17"
+
+ROMX $18
+  "bank18"
+
+ROMX $19
+  "bank19"
+
+ROMX $1A
+  "bank1A"
+
+ROMX $1B
+  "bank1B"
+
+ROMX $1C
+  "bank1C"
+
+ROMX $1D
+  "bank1D"
+
+ROMX $1E
+  "bank1E"
+
+ROMX $1F
+  "Sound Effect Headers 3" ; AUDIO_3
+  "Music Headers 3"
+  "Sound Effects 3"
+  "Audio Engine 3"
+  "Music 3"
+
+ROMX $20
+  "Sound Effect Headers 4" ; AUDIO_3
+  "Music Headers 4"
+  "Sound Effects 4"
+  "Audio Engine 4"
+  "Music 4"
+
+ROMX $21
+  "Pikachu Cries 1"
+
+ROMX $22
+  "Pikachu Cries 2"
+
+ROMX $23
+  "Pikachu Cries 3"
+
+ROMX $24
+  "Pikachu Cries 4"
+
+ROMX $25
+  "Pikachu Cries 5"
+
+ROMX $26
+  "Text 1"
+
+ROMX $27
+  "Text 2"
+
+ROMX $28
+  "Text 3"
+
+ROMX $29
+  "Text 4"
+
+ROMX $2A
+  "Text 5"
+
+ROMX $2B
+  "Text 6"
+
+ROMX $2C
+  "Text 7"
+
+ROMX $2D
+  "Text 8"
+
+ROMX $2E
+  "Pokedex Text"
+
+ROMX $2f
+  "Move Names"
+;  "bank2f"
+
+ROMX $30
+  "bank30"
+
+ROMX $31
+  "Pikachu Cries 6"
+
+ROMX $32
+  "Pikachu Cries 7"
+
+ROMX $33
+  "Pikachu Cries 8"
+
+ROMX $34
+  "Pikachu Cries 9"
+
+ROMX $35
+  "Pikachu Cries 10"
+
+ROMX $36
+  "Pikachu Cries 11"
+
+ROMX $37
+  "Pikachu Cries 12"
+
+ROMX $38
+  "Pikachu Cries 13"
+
+ROMX $39
+  "bank39"
+
+ROMX $3A
+  "bank3A"
+
+; ROMX $3B
+;   "bank3B"
+
+ROMX $3C
+  "bank3C"
+
+ROMX $3D
+  "bank3D"
+
+ROMX $3E
+  "bank3E"
+
+ROMX $3F
+  "bank3F"
+
+WRAM0
+  "WRAM Bank 0"
+
+WRAMX 1
+  "WRAM Bank 1"
+;  ORG $df00
+;  "Stack"
+
+; WRAMX 5
+;   "WRAMBank5"
+
+SRAM 0
+  "Sprite Buffers"
+
+SRAM 1
+  "Save Data"
+
+SRAM 2
+  "Saved Boxes 1"
+
+SRAM 3
+  "Saved Boxes 2"
+
