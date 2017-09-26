@@ -3593,9 +3593,9 @@ wLastOBP1:: ds 1 ; def3
 wdef5:: ds 1 ; def4
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE ; def5
 
-SECTION "Stack", WRAMX[$dfff], BANK[1]
+SECTION "Stack", WRAMX[$df15], BANK[1]
+	ds $ea
 wStack:: ; dfff
-	ds -$100
 
 
 INCLUDE "sram.asm"
