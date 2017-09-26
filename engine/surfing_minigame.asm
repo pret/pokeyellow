@@ -384,7 +384,7 @@ RunSurfingMinigameRoutine:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw SurfingMinigameRoutine_SpawnPikachu ; 0
@@ -672,7 +672,7 @@ SurfingMinigameAnimatedObjectFn_Pikachu
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 Jumptable_f847f:
 	dw Func_f848d
@@ -1976,7 +1976,7 @@ SurfingMinigame_GetWaveDataPointers:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 Jumptable_f8d53:
 	dw SurfingMinigameWaveFunction_NoWave ; 00

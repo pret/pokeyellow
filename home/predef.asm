@@ -23,7 +23,7 @@ Predef::
 
 	ld de, .done
 	push de
-	jp [hl]
+	jp hl
 .done
 
 	pop af

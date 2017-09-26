@@ -4592,7 +4592,7 @@ JumpTable::
 	ld l, a
 	ld de, .returnAddress
 	push de
-	jp [hl]
+	jp hl
 .returnAddress
 	pop bc
 	pop de
@@ -4776,7 +4776,7 @@ Bankswitch::
 	ld [MBC1RomBank], a
 	ret
 JumpToAddress::
-	jp [hl]
+	jp hl
 
 SwitchSRAMBankAndLatchClockData::
 	push af

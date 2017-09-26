@@ -121,7 +121,7 @@ ExecutePikachuMovementCommand:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 GetCoordsForPikachuShadow:
 	ld hl, wPlayerSpriteImageIdx - wPlayerSpriteStateData1
@@ -487,7 +487,7 @@ UpdatePikachuPosition:
 	ld l, a
 	pop de
 	ld a, d
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw .Down

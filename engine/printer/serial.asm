@@ -28,7 +28,7 @@ PrinterTransmissionJumptable:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw Printer_InitSerial ; 00
@@ -448,7 +448,7 @@ PrinterSerial_:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw .Nop
