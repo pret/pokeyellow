@@ -240,7 +240,7 @@ PrinterDebug_DoFunction:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw Func_ea623
@@ -705,7 +705,7 @@ PrinterDebug_PrepOAMForPrinting:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .Jumptable:
 	dw .nop
@@ -823,7 +823,7 @@ PrinterDebug_PrepOAMForPrinting:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .PalJumptable:
 	dw .Pal0
@@ -865,7 +865,7 @@ PrinterDebug_PrepOAMForPrinting:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 .PalFunJumptable:
 	dw .zero_zero

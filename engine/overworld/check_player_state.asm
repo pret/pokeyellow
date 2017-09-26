@@ -105,7 +105,7 @@ IsPlayerFacingEdgeOfMap:
 	ld c, a
 	ld de, .returnaddress
 	push de
-	jp [hl]
+	jp hl
 .returnaddress
 	pop bc
 	pop de

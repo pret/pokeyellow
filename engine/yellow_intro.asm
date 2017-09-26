@@ -98,7 +98,7 @@ Func_f98fc:
 	ld a, [wYellowIntroCurrentScene]
 	ld hl, Jumptable_f9906
 	call Func_fa06e
-	jp [hl]
+	jp hl
 
 Jumptable_f9906:
 	dw YellowIntroScene0 ; running pika 1
@@ -985,7 +985,7 @@ Func_fa02b:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]
+	jp hl
 
 Jumptable_fa03b:
 	dw Func_fa03f
