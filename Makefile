@@ -44,7 +44,7 @@ $(objs): %.o: %.asm $$(%_dep)
 opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
 
 $(rom): $(objs)
-	rgblink -n $*.sym -l linkerscript.link -o $@ $^
+	rgblink -n $*.sym -l pokeyellow.link -o $@ $^
 	rgbfix $(opts) $@
 	sort $(rom:.gbc=.sym) -o $(rom:.gbc=.sym)
 
