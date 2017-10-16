@@ -1,5 +1,5 @@
 BeachHouseScript:
-	call $3c29
+	call EnableAutoTextBoxDrawing
 	ret
 
 BeachHouseTextPointers:
