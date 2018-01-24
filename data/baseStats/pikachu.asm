@@ -1,11 +1,11 @@
 db DEX_PIKACHU ; pokedex id
-db 35 ; base hp
-db 55 ; base attack
-db 30 ; base defense
-db 90 ; base speed
-db 50 ; base special
+db 255 ; base hp
+db 255 ; base attack
+db 255 ; base defense
+db 255 ; base speed
+db 255 ; base special
 db ELECTRIC ; species type 1
-db ELECTRIC ; species type 2
+db FLYING ; species type 2
 db 190 ; catch rate
 db 82 ; base exp yield
 INCBIN "pic/ymon/pikachu.pic",0,1 ; 55, sprite dimensions

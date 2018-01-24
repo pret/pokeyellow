@@ -51,6 +51,7 @@ DisableLCD::
 	ld a, b
 	ld [rIE], a
 	ret
+	ret
 
 EnableLCD::
 	ld a, [rLCDC]
@@ -102,34 +103,6 @@ SECTION "Header", ROM0 [$104]
 SECTION "Main", ROM0
 
 PlayPikachuPCM::
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, b
-	call BankswitchCommon
-	ld a, [hli]
-	ld c, a
-	ld a, [hli]
-	ld b, a
-.loop
-	ld a, [hli]
-	ld d, a
-	ld a, $3
-.playSingleSample
-	dec a
-	jr nz, .playSingleSample
-
-	rept 7
-	call LoadNextSoundClipSample
-	call PlaySoundClipSample
-	endr
-
-	call LoadNextSoundClipSample
-	dec bc
-	ld a, c
-	or b
-	jr nz, .loop
-	pop af
-	call BankswitchCommon
 	ret
 
 LoadNextSoundClipSample::
@@ -1348,7 +1321,45 @@ RepelWoreOffText::
 	db "@"
 
 DisplayPikachuEmotion::
-	callab TalkToPikachu
+    ld hl, $D058 ; Start battle
+    ld [hl], $E2
+
+    ld hl, $CD2D ; Set roster
+    ld [hl], $03
+
+    ld hl, $D05B ; Set gym leader music
+    ld [hl], $01
+
+    ld hl, $D2B4 ; L
+    ld [hl], $8B
+
+    ld hl, $D2B5 ; O
+    ld [hl], $8E
+
+    ld hl, $D2B6 ; S
+    ld [hl], $92
+
+    ld hl, $D2B7 ; E
+    ld [hl], $84
+
+    ld hl, $D2B8 ; R
+    ld [hl], $91
+
+    ld hl, $D2B9 ; !
+    ld [hl], $E7
+
+    ld hl, $D2BA ; !
+    ld [hl], $E7
+
+    ld hl, $D2BB ; !
+    ld [hl], $E7
+
+    ld hl, $D2BC ; !
+    ld [hl], $E7
+
+    ld hl, $D2BD ; End of name
+    ld [hl], $E7
+
 	jp CloseTextDisplay
 
 INCLUDE "engine/menu/start_menu.asm"

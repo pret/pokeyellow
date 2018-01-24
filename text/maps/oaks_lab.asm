@@ -293,7 +293,7 @@ _OaksLabPikachuDislikesPokeballsText2::
 
 	para "It's odd, but it"
 	line "appears that your"
-	cont "PIKACHU dislikes"
+	cont "GERALD dislikes"
 	cont "# BALLs."
 
 	para "You should just"
@@ -305,6 +305,13 @@ _OaksLabPikachuDislikesPokeballsText2::
 	para "You can talk to it"
 	line "and see how it"
 	cont "feels about you."
+
+	para "Actually, don't"
+	line "talk to it. If"
+	cont "you do, I will"
+	cont "have to fight you"
+	cont "for confidential"
+	cont "reasons."
 	done
 
 _OaksLabText21::

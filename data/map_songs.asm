@@ -11,8 +11,8 @@ MapSongBanks:
 	db MUSIC_INDIGO_PLATEAU, BANK(Music_IndigoPlateau) ; INDIGO_PLATEAU
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; SAFFRON_CITY
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; unused
-	db MUSIC_ROUTES1, BANK(Music_Routes1) ; ROUTE_1
-	db MUSIC_ROUTES1, BANK(Music_Routes1) ; ROUTE_2
+	db MUSIC_ROUTES4, BANK(Music_Routes1) ; ROUTE_1
+	db MUSIC_ROUTES4, BANK(Music_Routes1) ; ROUTE_2
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_3
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_4
 	db MUSIC_ROUTES3, BANK(Music_Routes3) ; ROUTE_5
