@@ -5,8 +5,9 @@
 	git clone https://github.com/bentley/rgbds
 	sudo make -C rgbds install
 
-	git clone --recursive https://github.com/pret/pokeyellow
+	git clone https://github.com/pret/pokeyellow
 	cd pokeyellow
+	git submodule update --init
 
 To build **pokeyellow.gbc**:
 
@@ -22,8 +23,9 @@ In **Terminal**, run:
 	git clone https://github.com/bentley/rgbds
 	sudo make -C rgbds install
 
-	git clone --recursive https://github.com/pret/pokeyellow
+	git clone https://github.com/pret/pokeyellow
 	cd pokeyellow
+	git submodule update --init
 
 Then run (in the shell):
 
@@ -41,8 +43,9 @@ Extract the archive and put `rgbasm.exe`, `rgblink.exe` and `rgbfix.exe` in `C:\
 
 In the **Cygwin terminal**:
 
-	git clone --recursive https://github.com/pret/pokeyellow
+	git clone https://github.com/pret/pokeyellow
 	cd pokeyellow
+	git submodule update --init
 
 Then run (in the Cygwin terminal):
 
