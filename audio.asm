@@ -377,6 +377,7 @@ INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
 
 SECTION "Sound Effects 4", ROMX, BANK[AUDIO_4]
+
 INCLUDE "audio/sfx/snare1_4.asm"
 INCLUDE "audio/sfx/snare2_4.asm"
 INCLUDE "audio/sfx/snare3_4.asm"
@@ -746,322 +747,219 @@ INCLUDE "audio/music/credits.asm"
 INCLUDE "audio/music/yellowintro.asm"
 
 SECTION "Music 4", ROMX, BANK[AUDIO_4]
+
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
 INCLUDE "audio/music/meetjessiejames.asm"
 
 INCBIN "audio/unknown_832b9.bin"
 
-SECTION "Pikachu Cries 1",ROMX,BANK[PCM_1]
-PikachuCry1::
-	dw (PikachuCry1_End - PikachuCry1) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_1.pcm"
-PikachuCry1_End:
 
-	db $77  ; unused
-	; Game Freak might have made a slight error, because all of
-	; the pcm data has one trailing byte that is never processed.
+pcm: MACRO
+	dw .End - .Start
+.Start:
+\1
+.End:
+ENDM
+
+SECTION "Pikachu Cries 1", ROMX, BANK[PCM_1]
+
+PikachuCry1::
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_1.pcm"
+	db $77 ; unused
+	; All of the pcm data has one trailing byte that is never processed.
 
 PikachuCry2::
-	dw (PikachuCry2_End - PikachuCry2) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_2.pcm"
-PikachuCry2_End:
-
-	db $77  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_2.pcm"
+	db $77 ; unused
 
 PikachuCry3::
-	dw (PikachuCry3_End - PikachuCry3) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_3.pcm"
-PikachuCry3_End:
-
-	db $03  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_3.pcm"
+	db $03 ; unused
 
 PikachuCry4::
-	dw (PikachuCry4_End - PikachuCry4) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_4.pcm"
-PikachuCry4_End:
-
-	db $e0  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_4.pcm"
+	db $e0 ; unused
 
 
-SECTION "Pikachu Cries 2",ROMX,BANK[PCM_2]
+SECTION "Pikachu Cries 2", ROMX, BANK[PCM_2]
+
 PikachuCry5::
-	dw (PikachuCry5_End - PikachuCry5) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_5.pcm"
-PikachuCry5_End:
-
-	db $77  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_5.pcm"
+	db $77 ; unused
 
 PikachuCry6::
-	dw (PikachuCry6_End - PikachuCry6) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_6.pcm"
-PikachuCry6_End:
-
-	db $77  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_6.pcm"
+	db $77 ; unused
 
 PikachuCry7::
-	dw (PikachuCry7_End - PikachuCry7) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_7.pcm"
-PikachuCry7_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_7.pcm"
+	db $ff ; unused
 
 
-SECTION "Pikachu Cries 3",ROMX,BANK[PCM_3]
+SECTION "Pikachu Cries 3", ROMX, BANK[PCM_3]
+
 PikachuCry8::
-	dw (PikachuCry8_End - PikachuCry8) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_8.pcm"
-PikachuCry8_End:
-
-	db $f7  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_8.pcm"
+	db $f7 ; unused
 
 PikachuCry9::
-	dw (PikachuCry9_End - PikachuCry9) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_9.pcm"
-PikachuCry9_End:
-
-	db $f3  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_9.pcm"
+	db $f3 ; unused
 
 PikachuCry10::
-	dw (PikachuCry10_End - PikachuCry10) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_10.pcm"
-PikachuCry10_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_10.pcm"
+	db $ff ; unused
 
 
-SECTION "Pikachu Cries 4",ROMX,BANK[PCM_4]
+SECTION "Pikachu Cries 4", ROMX, BANK[PCM_4]
+
 PikachuCry11::
-	dw (PikachuCry11_End - PikachuCry11) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_11.pcm"
-PikachuCry11_End:
-
-	db $77  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_11.pcm"
+	db $77 ; unused
 
 PikachuCry12::
-	dw (PikachuCry12_End - PikachuCry12) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_12.pcm"
-PikachuCry12_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_12.pcm"
+	db $ff ; unused
 
 PikachuCry13::
-	dw (PikachuCry13_End - PikachuCry13) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_13.pcm"
-PikachuCry13_End:
-
-	db $f0  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_13.pcm"
+	db $f0 ; unused
 
 
-SECTION "Pikachu Cries 5",ROMX,BANK[PCM_5]
+SECTION "Pikachu Cries 5", ROMX, BANK[PCM_5]
+
 PikachuCry14::
-	dw (PikachuCry14_End - PikachuCry14) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_14.pcm"
-PikachuCry14_End:
-
-	db $fc  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_14.pcm"
+	db $fc ; unused
 
 PikachuCry15::
-	dw (PikachuCry15_End - PikachuCry15) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_15.pcm"
-PikachuCry15_End:
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_15.pcm"
+	db $77 ; unused
 
-	db $77  ; unused
+SECTION "Pikachu Cries 6", ROMX, BANK[PCM_6]
 
-SECTION "Pikachu Cries 6",ROMX,BANK[PCM_6]
 PikachuCry16::
-	dw (PikachuCry16_End - PikachuCry16) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_16.pcm"
-PikachuCry16_End:
-
-	db $e7  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_16.pcm"
+	db $e7 ; unused
 
 PikachuCry18::
-	dw (PikachuCry18_End - PikachuCry18) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_18.pcm"
-PikachuCry18_End:
-
-	db $00  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_18.pcm"
+	db $00 ; unused
 
 PikachuCry22::
-	dw (PikachuCry22_End - PikachuCry22) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_22.pcm"
-PikachuCry22_End:
-
-	db $7e  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_22.pcm"
+	db $7e ; unused
 
 
-SECTION "Pikachu Cries 7",ROMX,BANK[PCM_7]
+SECTION "Pikachu Cries 7", ROMX, BANK[PCM_7]
+
 PikachuCry20::
-	dw (PikachuCry20_End - PikachuCry20) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_20.pcm"
-PikachuCry20_End:
-
-	db $07  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_20.pcm"
+	db $07 ; unused
 
 PikachuCry21::
-	dw (PikachuCry21_End - PikachuCry21) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_21.pcm"
-PikachuCry21_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_21.pcm"
+	db $ff ; unused
 
 
-SECTION "Pikachu Cries 8",ROMX,BANK[PCM_8]
+SECTION "Pikachu Cries 8", ROMX, BANK[PCM_8]
+
 PikachuCry19::
-	dw (PikachuCry19_End - PikachuCry19) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_19.pcm"
-PikachuCry19_End:
-
-	db $06  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_19.pcm"
+	db $06 ; unused
 
 PikachuCry24::
-	dw (PikachuCry24_End - PikachuCry24) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_24.pcm"
-PikachuCry24_End:
-
-	db $e0  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_24.pcm"
+	db $e0 ; unused
 
 PikachuCry26::
-	dw (PikachuCry26_End - PikachuCry26) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_26.pcm"
-PikachuCry26_End:
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_26.pcm"
 
+SECTION "Pikachu Cries 9", ROMX, BANK[PCM_9]
 
-SECTION "Pikachu Cries 9",ROMX,BANK[PCM_9]
 PikachuCry17::
-	dw (PikachuCry17_End - PikachuCry17) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_17.pcm"
-PikachuCry17_End:
-
-	db $00  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_17.pcm"
+	db $00 ; unused
 
 PikachuCry23::
-	dw (PikachuCry23_End - PikachuCry23) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_23.pcm"
-PikachuCry23_End:
-
-	db $00  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_23.pcm"
+	db $00 ; unused
 
 PikachuCry25::
-	dw (PikachuCry25_End - PikachuCry25) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_25.pcm"
-PikachuCry25_End:
-
-	db $03  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_25.pcm"
+	db $03 ; unused
 
 
-SECTION "Pikachu Cries 10",ROMX,BANK[PCM_10]
+SECTION "Pikachu Cries 10", ROMX, BANK[PCM_10]
+
 PikachuCry27::
-	dw (PikachuCry27_End - PikachuCry27) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_27.pcm"
-PikachuCry27_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_27.pcm"
+	db $ff ; unused
 
 PikachuCry28::
-	dw (PikachuCry28_End - PikachuCry28) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_28.pcm"
-PikachuCry28_End:
-
-	db $1b  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_28.pcm"
+	db $1b ; unused
 
 PikachuCry29::
-	dw (PikachuCry29_End - PikachuCry29) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_29.pcm"
-PikachuCry29_End:
-
-	db $87  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_29.pcm"
+	db $87 ; unused
 
 PikachuCry30::
-	dw (PikachuCry30_End - PikachuCry30) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_30.pcm"
-PikachuCry30_End:
-
-	db $00  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_30.pcm"
+	db $00 ; unused
 
 PikachuCry31::
-	dw (PikachuCry31_End - PikachuCry31) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_31.pcm"
-PikachuCry31_End:
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_31.pcm"
 
+SECTION "Pikachu Cries 11", ROMX, BANK[PCM_11]
 
-SECTION "Pikachu Cries 11",ROMX,BANK[PCM_11]
 PikachuCry32::
-	dw (PikachuCry32_End - PikachuCry32) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_32.pcm"
-PikachuCry32_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_32.pcm"
+	db $ff ; unused
 
 PikachuCry33::
-	dw (PikachuCry33_End - PikachuCry33) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_33.pcm"
-PikachuCry33_End:
-
-	db $1f  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_33.pcm"
+	db $1f ; unused
 
 PikachuCry34::
-	dw (PikachuCry34_End - PikachuCry34) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_34.pcm"
-PikachuCry34_End:
-
-	db $01  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_34.pcm"
+	db $01 ; unused
 
 PikachuCry41::
-	dw (PikachuCry41_End - PikachuCry41) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_41.pcm"
-PikachuCry41_End:
-
-	db $9b  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_41.pcm"
+	db $9b ; unused
 
 
-SECTION "Pikachu Cries 12",ROMX,BANK[PCM_12]
+SECTION "Pikachu Cries 12", ROMX, BANK[PCM_12]
+
 PikachuCry35::
-	dw (PikachuCry35_End - PikachuCry35) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_35.pcm"
-PikachuCry35_End:
-
-	db $00  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_35.pcm"
+	db $00 ; unused
 
 PikachuCry36::
-	dw (PikachuCry36_End - PikachuCry36) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_36.pcm"
-PikachuCry36_End:
-
-	db $01  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_36.pcm"
+	db $01 ; unused
 
 PikachuCry39::
-	dw (PikachuCry39_End - PikachuCry39) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_39.pcm"
-PikachuCry39_End:
-
-	db $0f  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_39.pcm"
+	db $0f ; unused
 
 
-SECTION "Pikachu Cries 13",ROMX,BANK[PCM_13]
+SECTION "Pikachu Cries 13", ROMX, BANK[PCM_13]
+
 PikachuCry37::
-	dw (PikachuCry37_End - PikachuCry37) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_37.pcm"
-PikachuCry37_End:
-
-	db $3f  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_37.pcm"
+	db $3f ; unused
 
 PikachuCry38::
-	dw (PikachuCry38_End - PikachuCry38) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_38.pcm"
-PikachuCry38_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_38.pcm"
+	db $ff ; unused
 
 PikachuCry40::
-	dw (PikachuCry40_End - PikachuCry40) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_40.pcm"
-PikachuCry40_End:
-
-	db $ff  ; unused
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_40.pcm"
+	db $ff ; unused
 
 PikachuCry42::
-	dw (PikachuCry42_End - PikachuCry42) - 2 ; length of pcm data
-	INCBIN "audio/pikachu_cries/pikachu_cry_42.pcm"
-PikachuCry42_End:
+	pcm INCBIN "audio/pikachu_cries/pikachu_cry_42.pcm"
+	db $00 ; unused
