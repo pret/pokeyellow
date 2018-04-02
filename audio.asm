@@ -436,11 +436,11 @@ PlayBattleMusic::
 	ld [wLowHealthAlarm], a
 	call StopAllMusic
 	call DelayFrame
-	ld c, $8 ; BANK(Music_GymLeaderBattle)
+	ld c, BANK(Music_GymLeaderBattle)
 	ld a, [wGymLeaderNo]
 	and a
 	jr z, .notGymLeaderBattle
-	ld a, $ea ; MUSIC_GYM_LEADER_BATTLE
+	ld a, MUSIC_GYM_LEADER_BATTLE
 	jr .playSong
 .notGymLeaderBattle
 	ld a, [wCurOpponent]
@@ -450,16 +450,16 @@ PlayBattleMusic::
 	jr z, .finalBattle
 	cp OPP_LANCE
 	jr nz, .normalTrainerBattle
-	ld a, $ea ; MUSIC_GYM_LEADER_BATTLE ; lance also plays gym leader theme
+	ld a, MUSIC_GYM_LEADER_BATTLE ; lance also plays gym leader theme
 	jr .playSong
 .normalTrainerBattle
-	ld a, $ed ; MUSIC_TRAINER_BATTLE
+	ld a, MUSIC_TRAINER_BATTLE
 	jr .playSong
 .finalBattle
-	ld a, $f3 ; MUSIC_FINAL_BATTLE
+	ld a, MUSIC_FINAL_BATTLE
 	jr .playSong
 .wildBattle
-	ld a, $f0 ; MUSIC_WILD_BATTLE
+	ld a, MUSIC_WILD_BATTLE
 .playSong
 	jp PlayMusic
 
@@ -515,7 +515,7 @@ Music_Cities1AlternateTempo::
 	ld c, 100
 	call DelayFrames ; wait for the fade-out to finish
 	ld c, BANK(Music_Cities1)
-	ld a, $c3 ; MUSIC_CITIES1
+	ld a, MUSIC_CITIES1
 	call PlayMusic
 	ld hl, wChannelCommandPointers
 	ld de, Music_Cities1_branch_aa6f
