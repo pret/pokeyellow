@@ -1,22 +1,11 @@
 INCLUDE "charmap.asm"
 INCLUDE "constants/text_constants.asm"
-TEXT_1  EQU $26
-TEXT_2  EQU TEXT_1 + 1
-TEXT_3  EQU TEXT_2 + 1
-TEXT_4  EQU TEXT_3 + 1
-TEXT_5  EQU TEXT_4 + 1
-TEXT_6  EQU TEXT_5 + 1
-TEXT_7  EQU TEXT_6 + 1
-TEXT_8  EQU TEXT_7 + 1
-
-POKEDEX_TEXT EQU TEXT_8 + 1
-MOVE_NAMES   EQU POKEDEX_TEXT + 1
 
 INCLUDE "macros.asm"
 INCLUDE "hram.asm"
 
 
-SECTION "Text 1", ROMX, BANK[TEXT_1]
+SECTION "Text 1", ROMX
 
 _CardKeySuccessText1::
 	text "Bingo!@@"
@@ -199,7 +188,7 @@ INCLUDE "text/maps/silph_co_9f.asm"
 INCLUDE "text/maps/silph_co_10f.asm"
 
 
-SECTION "Text 2", ROMX, BANK[TEXT_2]
+SECTION "Text 2", ROMX
 
 INCLUDE "text/maps/silph_co_11f.asm"
 INCLUDE "text/maps/mansion_2f.asm"
@@ -1529,7 +1518,7 @@ _HookedMonAttackedText::
 	prompt
 
 
-SECTION "Text 3", ROMX, BANK[TEXT_3]
+SECTION "Text 3", ROMX
 
 _EnemyAppearedText::
 	TX_RAM wEnemyMonNick
@@ -2141,7 +2130,7 @@ INCLUDE "text/maps/route_8.asm"
 INCLUDE "text/maps/route_9_1.asm"
 
 
-SECTION "Text 4", ROMX, BANK[TEXT_4]
+SECTION "Text 4", ROMX
 
 INCLUDE "text/maps/route_9_2.asm"
 INCLUDE "text/maps/route_10.asm"
@@ -2218,7 +2207,7 @@ _StoppedEvolvingText::
 	prompt
 
 
-SECTION "Text 5", ROMX, BANK[TEXT_5]
+SECTION "Text 5", ROMX
 
 _IsEvolvingText::
 	text "What? @"
@@ -2518,7 +2507,7 @@ INCLUDE "text/maps/cerulean_mart.asm"
 INCLUDE "text/maps/cerulean_badge_house_1.asm"
 
 
-SECTION "Text 6", ROMX, BANK[TEXT_6]
+SECTION "Text 6", ROMX
 
 INCLUDE "text/maps/cerulean_badge_house_2.asm"
 INCLUDE "text/maps/lavender_pokecenter.asm"
@@ -2567,7 +2556,7 @@ INCLUDE "text/maps/celadon_gym.asm"
 INCLUDE "text/maps/celadon_game_corner_1.asm"
 
 
-SECTION "Text 7", ROMX, BANK[TEXT_7]
+SECTION "Text 7", ROMX
 
 INCLUDE "text/maps/celadon_game_corner_2.asm"
 INCLUDE "text/maps/celadon_dept_store_5f.asm"
@@ -2817,7 +2806,7 @@ _CableClubNPCPleaseApplyHereHaveToSaveText::
 	done
 
 
-SECTION "Text 8", ROMX, BANK[TEXT_8]
+SECTION "Text 8", ROMX
 
 _CableClubNPCPleaseWaitText::
 	text "Please wait.@@"
@@ -3383,11 +3372,11 @@ _UsedCutText::
 	prompt
 
 
-SECTION "Pokedex Text", ROMX, BANK[POKEDEX_TEXT]
+SECTION "Pokedex Text", ROMX
 
 INCLUDE "text/pokedex.asm"
 
 
-SECTION "Move Names", ROMX, BANK[MOVE_NAMES]
+SECTION "Move Names", ROMX
 
 INCLUDE "text/move_names.asm"
