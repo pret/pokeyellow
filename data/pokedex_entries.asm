@@ -218,7 +218,7 @@ VenusaurDexEntry:
 
 CharmanderDexEntry:
 	db "LIZARD@"
-	db 2,
+	db 2,0
 	dw 190
 	TX_FAR _CharmanderDexEntry
 	db "@"
@@ -260,7 +260,7 @@ BlastoiseDexEntry:
 
 CaterpieDexEntry:
 	db "WORM@"
-	db 1,
+	db 1,0
 	dw 60
 	TX_FAR _CaterpieDexEntry
 	db "@"
@@ -281,14 +281,14 @@ ButterfreeDexEntry:
 
 WeedleDexEntry:
 	db "HAIRY BUG@"
-	db 1,
+	db 1,0
 	dw 70
 	TX_FAR _WeedleDexEntry
 	db "@"
 
 KakunaDexEntry:
 	db "COCOON@"
-	db 2,
+	db 2,0
 	dw 220
 	TX_FAR _KakunaDexEntry
 	db "@"
@@ -302,7 +302,7 @@ BeedrillDexEntry:
 
 PidgeyDexEntry:
 	db "TINY BIRD@"
-	db 1,
+	db 1,0
 	dw 40
 	TX_FAR _PidgeyDexEntry
 	db "@"
@@ -323,7 +323,7 @@ PidgeotDexEntry:
 
 RattataDexEntry:
 	db "RAT@"
-	db 1,
+	db 1,0
 	dw 80
 	TX_FAR _RattataDexEntry
 	db "@"
@@ -337,7 +337,7 @@ RaticateDexEntry:
 
 SpearowDexEntry:
 	db "TINY BIRD@"
-	db 1,
+	db 1,0
 	dw 40
 	TX_FAR _SpearowDexEntry
 	db "@"
@@ -379,7 +379,7 @@ RaichuDexEntry:
 
 SandshrewDexEntry:
 	db "MOUSE@"
-	db 2,
+	db 2,0
 	dw 260
 	TX_FAR _SandshrewDexEntry
 	db "@"
@@ -435,7 +435,7 @@ NidokingDexEntry:
 
 ClefairyDexEntry:
 	db "FAIRY@"
-	db 2,
+	db 2,0
 	dw 170
 	TX_FAR _ClefairyDexEntry
 	db "@"
@@ -449,7 +449,7 @@ ClefableDexEntry:
 
 VulpixDexEntry:
 	db "FOX@"
-	db 2,
+	db 2,0
 	dw 220
 	TX_FAR _VulpixDexEntry
 	db "@"
@@ -512,7 +512,7 @@ VileplumeDexEntry:
 
 ParasDexEntry:
 	db "MUSHROOM@"
-	db 1,
+	db 1,0
 	dw 120
 	TX_FAR _ParasDexEntry
 	db "@"
@@ -540,7 +540,7 @@ VenomothDexEntry:
 
 DiglettDexEntry:
 	db "MOLE@"
-	db ,8
+	db 0,8
 	dw 20
 	TX_FAR _DiglettDexEntry
 	db "@"
@@ -610,7 +610,7 @@ ArcanineDexEntry:
 
 PoliwagDexEntry:
 	db "TADPOLE@"
-	db 2,
+	db 2,0
 	dw 270
 	TX_FAR _PoliwagDexEntry
 	db "@"
@@ -757,7 +757,7 @@ SlowbroDexEntry:
 
 MagnemiteDexEntry:
 	db "MAGNET@"
-	db 1,
+	db 1,0
 	dw 130
 	TX_FAR _MagnemiteDexEntry
 	db "@"
@@ -820,7 +820,7 @@ MukDexEntry:
 
 ShellderDexEntry:
 	db "BIVALVE@"
-	db 1,
+	db 1,0
 	dw 90
 	TX_FAR _ShellderDexEntry
 	db "@"
@@ -953,7 +953,7 @@ LickitungDexEntry:
 
 KoffingDexEntry:
 	db "POISON GAS@"
-	db 2,
+	db 2,0
 	dw 20
 	TX_FAR _KoffingDexEntry
 	db "@"
@@ -1016,7 +1016,7 @@ SeadraDexEntry:
 
 GoldeenDexEntry:
 	db "GOLDFISH@"
-	db 2,
+	db 2,0
 	dw 330
 	TX_FAR _GoldeenDexEntry
 	db "@"
@@ -1114,14 +1114,14 @@ LaprasDexEntry:
 
 DittoDexEntry:
 	db "TRANSFORM@"
-	db 1,
+	db 1,0
 	dw 90
 	TX_FAR _DittoDexEntry
 	db "@"
 
 EeveeDexEntry:
 	db "EVOLUTION@"
-	db 1,
+	db 1,0
 	dw 140
 	TX_FAR _EeveeDexEntry
 	db "@"
