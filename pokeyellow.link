@@ -111,7 +111,7 @@ ROMX $1F
   "Music 3"
 
 ROMX $20
-  "Sound Effect Headers 4" ; AUDIO_3
+  "Sound Effect Headers 4" ; AUDIO_4
   "Music Headers 4"
   "Sound Effects 4"
   "Audio Engine 4"
@@ -161,7 +161,8 @@ ROMX $2E
 
 ROMX $2f
   "Move Names"
-;  "bank2f"
+  ORG $5000
+  "bank2f"
 
 ROMX $30
   "bank30"

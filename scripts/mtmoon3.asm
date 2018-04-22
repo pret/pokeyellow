@@ -493,7 +493,8 @@ MtMoon3Text1:
 	TX_ASM
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
 	jr z, .asm_4a02f
-	and $81 ; CheckEitherEventSetReuseA EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+	; CheckEitherEventSetReuseA EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
+	and (1 << (EVENT_GOT_DOME_FOSSIL % 8)) | (1 << (EVENT_GOT_HELIX_FOSSIL % 8))
 	jr nz, .asm_4a057
 	ld hl, MtMoon3Text_4a116
 	call PrintText

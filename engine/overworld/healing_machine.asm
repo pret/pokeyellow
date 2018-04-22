@@ -34,7 +34,7 @@ AnimateHealingMachine:
 	dec b
 	jr nz, .partyLoop
 	ld a, [wAudioROMBank]
-	cp $1f
+	cp BANK(AudioEngine3)
 	ld [wAudioSavedROMBank], a
 	jr nz, .next
 	call StopAllMusic

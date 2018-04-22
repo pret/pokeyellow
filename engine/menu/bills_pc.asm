@@ -594,5 +594,5 @@ JustAMomentText::
 	tx_pre_jump OpenBillsPCText
 
 OpenBillsPCText::
-	db $FD ; FuncTX_BillsPC
+	TX_BILLS_PC
 

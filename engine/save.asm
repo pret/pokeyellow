@@ -158,7 +158,7 @@ SaveSAV:
 	call PrintText
 	ld c,10
 	call DelayFrames
-	ld a, $b6 ; SFX_SAVE
+	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	ld c,30

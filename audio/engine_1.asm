@@ -1053,7 +1053,7 @@ Audio1_IsCry:
 
 Audio1_96c3:
 	ld a, [wAudioROMBank]
-	cp AUDIO_2
+	cp BANK(AudioEngine2)
 	jr nz, .asm_96dc
 	ld a, [wChannelSoundIDs + CH7]
 	ld b, a
