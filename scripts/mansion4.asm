@@ -44,7 +44,7 @@ Mansion4Script_523cf:
 	ret
 
 Mansion4Script_Switches:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	xor a

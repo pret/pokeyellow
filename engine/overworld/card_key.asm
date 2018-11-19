@@ -89,7 +89,7 @@ GetCoordsInFrontOfPlayer:
 	ld d, a
 	ld a, [wXCoord]
 	ld e, a
-	ld a, [wPlayerFacingDirection] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
 	and a
 	jr nz, .notFacingDown
 ; facing down

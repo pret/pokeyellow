@@ -235,7 +235,7 @@ PokemonTower7Script11:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	ld a, SPRITE_FACING_UP
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, LAVENDER_HOUSE_1
 	ld [hWarpDestinationMap], a
 	ld a, $1

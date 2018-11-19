@@ -57,7 +57,7 @@ BillsHouseScript1:
 BillsHouseScript2:
 	ld a, $ff
 	ld [wJoyIgnore], a
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	ld de, MovementData_1e79c
 	jr nz, .notDown
@@ -99,7 +99,7 @@ BillsHouseScript3:
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_1e13e
 	ld hl, PikachuMovementData_1e14d
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_1e133
 	ld hl, PikachuMovementData_1e152
@@ -211,7 +211,7 @@ BillsHouseScript7:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld de, RLE_1e219
@@ -235,7 +235,7 @@ BillsHouseScript8:
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $2
 	ld [H_SPRITEINDEX], a
 	ld a, SPRITE_FACING_DOWN

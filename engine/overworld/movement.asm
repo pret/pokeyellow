@@ -53,7 +53,7 @@ UpdatePlayerSprite:
 	ld a, SPRITE_FACING_RIGHT
 	jr .next
 .next
-	ld [wPlayerFacingDirection], a ; facing direction
+	ld [wSpritePlayerStateData1FacingDirection], a ; facing direction
 	ld a, [wFontLoaded]
 	bit 0, a
 	jr z, .moving
@@ -89,7 +89,7 @@ UpdatePlayerSprite:
 Func_4e32:
 	ld a, [wSpriteStateData1 + 8]
 	ld b, a
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	add b
 	ld [wSpriteStateData1 + 2], a
 	ret

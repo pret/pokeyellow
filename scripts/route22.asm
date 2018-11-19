@@ -153,7 +153,7 @@ Route22Script2:
 	ld a, $1
 	ld [wRivalStarter], a
 .asm_50fc9
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .notDown
 	ld a, SPRITE_FACING_UP

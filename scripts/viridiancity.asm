@@ -54,7 +54,7 @@ ViridianCityScript_1905b:
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld [wJoyIgnore], a
 	ld [hJoyHeld], a
 	ld a, $6
@@ -161,7 +161,7 @@ ViridianCityScript_1914d:
 	ld a, D_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld [wJoyIgnore], a
 	ret
 
@@ -180,7 +180,7 @@ ViridianCityScript_19162:
 	ld [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, $8
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $8
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID

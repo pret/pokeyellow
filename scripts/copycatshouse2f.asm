@@ -82,7 +82,7 @@ CopycatsHouse2FText6:
 
 CopycatsHouse2FText7:
 	TX_ASM
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ld hl, CopycatsHouse2FText_5cd1c
 	jr nz, .notUp

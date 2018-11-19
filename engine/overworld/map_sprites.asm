@@ -64,7 +64,7 @@ LoadSpriteSetFromMapHeader:
 	call FillMemory
 	ld a, SPRITE_PIKACHU ; load Pikachu separately
 	ld [wSpriteSet], a
-	ld hl, wSprite01SpriteStateData1
+	ld hl, wSprite01StateData1
 	ld a, 14
 .storeVRAMSlotsLoop
 	push af
@@ -86,7 +86,7 @@ LoadSpriteSetFromMapHeader:
 	ld b, 9
 	call CheckIfPictureIDAlreadyLoaded
 .continue
-	ld de, wSprite02SpriteStateData1 - wSprite01SpriteStateData1
+	ld de, wSprite02StateData1 - wSprite01StateData1
 	add hl, de
 	pop af
 	dec a
@@ -251,11 +251,11 @@ ReadSpriteSheetData:
 
 Func_14150:
 	ld a, $1
-	ld [wPlayerSpriteImageBaseOffset], a ; vram slot for player
+	ld [wSpritePlayerStateData2ImageBaseOffset], a ; vram slot for player
 	ld a, $2
-	ld [wPikachuSpriteImageBaseOffset], a ; vram slot for Pikachu
+	ld [wSpritePikachuStateData2ImageBaseOffset], a ; vram slot for Pikachu
 	ld a, $e
-	ld hl, wSprite01SpriteStateData1
+	ld hl, wSprite01StateData1
 .loop
 	ld [hVRAMSlot], a ; store current sprite set slot as a counter
 	ld a, [hl] ; $c1x0 (picture ID)
@@ -263,12 +263,12 @@ Func_14150:
 	jr z, .spriteUnused
 	call Func_14179
 	push hl
-	ld de, (wPlayerSpriteImageBaseOffset) - (wSpriteStateData1) ; $10e
+	ld de, (wSpritePlayerStateData2ImageBaseOffset) - (wSpriteStateData1) ; $10e
 	add hl, de ; get $c2xe (sprite image base offset)
 	ld [hl], a ; write offset
 	pop hl
 .spriteUnused
-	ld de, wSprite02SpriteStateData1 - wSprite01SpriteStateData1
+	ld de, wSprite02StateData1 - wSprite01StateData1
 	add hl, de
 	ld a, [hVRAMSlot]
 	dec a

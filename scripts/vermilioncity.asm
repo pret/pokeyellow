@@ -53,7 +53,7 @@ VermilionCityScriptPointers:
 	dw VermilionCityScript4
 
 VermilionCityScript0:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .asm_198de
 	ld hl, CoordsData_19823
@@ -176,7 +176,7 @@ VermilionCityText3:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .asm_198f6
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_RIGHT
 	jr z, .asm_198c8
 	ld hl, VermilionCityCoords1

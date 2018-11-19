@@ -2,7 +2,7 @@ Func_1510::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 7, [hl]
-	ld hl, wPikachuSpriteImageIdx ; pikachu data?
+	ld hl, wSpritePikachuStateData1ImageIndex ; pikachu data?
 	ld [hl], $ff
 	pop hl
 	ret
@@ -25,7 +25,7 @@ DisablePikachuOverworldSpriteDrawing::
 	push hl
 	ld hl, wPikachuOverworldStateFlags
 	set 3, [hl]
-	ld hl, wPikachuSpriteImageIdx ; pikachu data?
+	ld hl, wSpritePikachuStateData1ImageIndex ; pikachu data?
 	ld [hl], $ff
 	pop hl
 	ret

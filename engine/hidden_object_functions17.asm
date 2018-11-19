@@ -14,7 +14,7 @@ RedBedroomPCText:
 	TX_PLAYERS_PC
 
 Route15GateLeftBinoculars:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing

@@ -464,13 +464,13 @@ OaksLabScript16:
 	ret nz
 	xor a
 .asm_1c707
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ret
 
 OaksLabScript17:
 ; Pikachu comes out
 	ld a, SPRITE_FACING_UP
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $2
 	ld [wPikachuSpawnState], a
 	callba SchedulePikachuSpawnForAfterText

@@ -26,13 +26,13 @@ ApplyPikachuMovementData_::
 	push de
 	push bc
 
-	ld hl, wPlayerSpriteStateData1
-	ld de, wPikachuSpriteStateData1
+	ld hl, wSpritePlayerStateData1
+	ld de, wSpritePikachuStateData1
 	ld c, $10
 	call .SwapBytes
 
-	ld hl, wPlayerSpriteStateData2
-	ld de, wPikachuSpriteStateData2
+	ld hl, wSpritePlayerStateData2
+	ld de, wSpritePikachuStateData2
 	ld c, $10
 	call .SwapBytes
 
@@ -91,10 +91,10 @@ ExecutePikachuMovementCommand:
 	ld [wPikachuMovementFlags], a
 	ld [wPikachuStepTimer], a
 	ld [wPikachuStepSubtimer], a
-	ld a, [wPlayerGrassPriority]
+	ld a, [wSpritePlayerStateData2GrassPriority]
 	push af
 .loop
-	ld bc, wPlayerSpriteStateData1 ; Currently holds Pikachu's sprite state data
+	ld bc, wSpritePlayerStateData1 ; Currently holds Pikachu's sprite state data
 	ld a, [wCurPikaMovementFunc1]
 	ld hl, PikaMovementFunc1Jumptable
 	call .JumpTable
@@ -109,7 +109,7 @@ ExecutePikachuMovementCommand:
 	bit 7, [hl]
 	jr z, .loop
 	pop af
-	ld [wPlayerGrassPriority], a
+	ld [wSpritePlayerStateData2GrassPriority], a
 	scf
 	ret
 
@@ -124,7 +124,7 @@ ExecutePikachuMovementCommand:
 	jp hl
 
 GetCoordsForPikachuShadow:
-	ld hl, wPlayerSpriteImageIdx - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1ImageIndex - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [wCurPikaMovementSpriteImageIdx]
 	ld [hl], a
@@ -132,20 +132,20 @@ GetCoordsForPikachuShadow:
 	ld d, a
 	ld a, [wPikachuMovementYOffset]
 	add d
-	ld hl, wPlayerYPixels - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1YPixels - wSpritePlayerStateData1
 	add hl, bc
 	ld [hl], a
 	ld a, [wPikaSpriteX]
 	ld d, a
 	ld a, [wPikachuMovementXOffset]
 	add d
-	ld hl, wPlayerXPixels - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1XPixels - wSpritePlayerStateData1
 	add hl, bc
 	ld [hl], a
 	ld hl, wPikachuMovementFlags
 	bit 6, [hl]
 	ret z
-	ld hl, wPlayerGrassPriority - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData2GrassPriority - wSpritePlayerStateData1
 	add hl, bc
 	ld [hl], 0
 	ret
@@ -272,11 +272,11 @@ PikaMovementFunc1_EndCommand_:
 	ret
 
 PikaMovementFunc1_LoadPikachuCurrentPosition:
-	ld hl, wPlayerYPixels - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1YPixels - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	ld [wPikaSpriteY], a
-	ld hl, wPlayerXPixels - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1XPixels - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	ld [wPikaSpriteX], a
@@ -577,7 +577,7 @@ PikaMovement_SetSpawnShadow:
 	ret
 
 PikaMovementFunc2_ResetFrameCounterAndFaceCurrent:
-	ld hl, wPlayerIntraAnimFrameCounter - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1IntraAnimFrameCounter - wSpritePlayerStateData1
 	add hl, bc
 	xor a
 	ld [hli], a
@@ -615,7 +615,7 @@ PikaMovementFunc2_UpdateSpriteImageIdxWithPreviousImageIdxDirection:
 	or d
 	ld d, a
 PikaMovementFunc2_UpdateSpriteImageIdx:
-	ld hl, wPlayerAnimFrameCounter - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1AnimFrameCounter - wSpritePlayerStateData1
 	add hl, bc
 	call CheckPikachuStepTimer2 ; does not preserve hl
 	jr nz, .skip
@@ -712,7 +712,7 @@ Data_fd731End:
 
 PikaMovementFunc2_Timer:
 	push hl
-	ld hl, wPlayerIntraAnimFrameCounter - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1IntraAnimFrameCounter - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	inc a
@@ -730,7 +730,7 @@ PikaMovementFunc2_Timer:
 
 PikaMovementFunc2_GetImageBaseOffset:
 	push hl
-	ld hl, wPlayerSpriteImageBaseOffset - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData2ImageBaseOffset - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	dec a
@@ -740,7 +740,7 @@ PikaMovementFunc2_GetImageBaseOffset:
 
 PikaMovementFunc2_GetSpriteImageIdxDirection:
 	push hl
-	ld hl, wPlayerSpriteImageIdx - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1ImageIndex - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	and $c
@@ -749,7 +749,7 @@ PikaMovementFunc2_GetSpriteImageIdxDirection:
 
 GetPikachuFacing:
 	push hl
-	ld hl, wPlayerFacingDirection - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1FacingDirection - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	and $c
@@ -758,7 +758,7 @@ GetPikachuFacing:
 
 SetPikachuFacing:
 	push hl
-	ld hl, wPlayerFacingDirection - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData1FacingDirection - wSpritePlayerStateData1
 	add hl, bc
 	add a
 	add a
@@ -842,7 +842,7 @@ ApplyPikachuStepVector:
 	inc hl
 	ld e, [hl]
 	pop bc
-	ld hl, wPlayerMapY - wPlayerSpriteStateData1
+	ld hl, wSpritePlayerStateData2MapY - wSpritePlayerStateData1
 	add hl, bc
 	ld a, [hl]
 	add e

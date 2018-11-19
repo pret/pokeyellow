@@ -14,7 +14,7 @@ dex    EQUS "db $5f, $50" ; End a Pokedex entry.
 percent EQUS "* $ff / 100"
 
 lb: MACRO ; r, hi, lo
-	ld \1, (\2) << 8 + ((\3) & $ff)
+	ld \1, ((\2) & $ff) << 8 + ((\3) & $ff)
 	ENDM
 
 SHADE_BLACK EQU %11

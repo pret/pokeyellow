@@ -174,9 +174,9 @@ StarterPikachuEmotionCommand_9:
 	ret
 
 StarterPikachuEmotionCommand_turnawayfromplayer:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	xor $4
-	ld [wPikachuFacingDirection], a
+	ld [wSpritePikachuStateData1FacingDirection], a
 	ret
 	
 DeletedFunction_fcffb:
@@ -370,9 +370,9 @@ PikachuWalksToNurseJoy:
 	ret
 
 .GetMovementData:
-	ld a, [wPikachuMapY]
+	ld a, [wSpritePikachuStateData2MapY]
 	ld e, a
-	ld a, [wPikachuMapX]
+	ld a, [wSpritePikachuStateData2MapX]
 	ld d, a
 	ld a, [wYCoord]
 	add 4

@@ -47,7 +47,7 @@ Route11GateUpstairsText_494a3:
 
 Route11GateUpstairsText3:
 	TX_ASM
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	jp nz, GateUpstairsScript_PrintIfFacingUp
 	CheckEvent EVENT_BEAT_ROUTE12_SNORLAX

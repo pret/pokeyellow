@@ -174,7 +174,7 @@ PalletTownScript5:
 
 PalletTownScript6:
 	xor a
-	ld [wPlayerFacingDirection], a
+	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, $1
 	ld [wSpriteIndex], a
 	xor a

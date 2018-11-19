@@ -116,7 +116,7 @@ GameOverText:
 	db "@"
 
 PrintCinnabarQuiz:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing
@@ -367,7 +367,7 @@ MagazinesText:
 
 BillsHousePC:
 	call EnableAutoTextBoxDrawing
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	CheckEvent EVENT_LEFT_BILLS_HOUSE_AFTER_HELPING
@@ -498,7 +498,7 @@ BillsHousePokemonListText2:
 	db "@"
 
 DisplayOakLabEmailText:
-	ld a, [wPlayerFacingDirection]
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz
 	call EnableAutoTextBoxDrawing
