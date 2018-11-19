@@ -850,17 +850,17 @@ enum_set: macro
 __enum__ = \1
 endm
 
-ANIM_OBJ_INDEX           EQUS "AnimatedObject0Index - AnimatedObject0"
-ANIM_OBJ_FRAME_SET       EQUS "AnimatedObject0FramesetID - AnimatedObject0"
-ANIM_OBJ_CALLBACK        EQUS "AnimatedObject0AnimSeqID - AnimatedObject0"
-ANIM_OBJ_TILE            EQUS "AnimatedObject0TileID - AnimatedObject0"
-ANIM_OBJ_X_COORD         EQUS "AnimatedObject0XCoord - AnimatedObject0"
-ANIM_OBJ_Y_COORD         EQUS "AnimatedObject0YCoord - AnimatedObject0"
-ANIM_OBJ_X_OFFSET        EQUS "AnimatedObject0XOffset - AnimatedObject0"
-ANIM_OBJ_Y_OFFSET        EQUS "AnimatedObject0YOffset - AnimatedObject0"
-ANIM_OBJ_DURATION        EQUS "AnimatedObject0Duration - AnimatedObject0"
-ANIM_OBJ_DURATION_OFFSET EQUS "AnimatedObject0DurationOffset - AnimatedObject0"
-ANIM_OBJ_FRAME_IDX       EQUS "AnimatedObject0FrameIndex - AnimatedObject0"
+ANIM_OBJ_INDEX           EQUS "wAnimatedObject0Index - wAnimatedObject0"
+ANIM_OBJ_FRAME_SET       EQUS "wAnimatedObject0FramesetID - wAnimatedObject0"
+ANIM_OBJ_CALLBACK        EQUS "wAnimatedObject0AnimSeqID - wAnimatedObject0"
+ANIM_OBJ_TILE            EQUS "wAnimatedObject0TileID - wAnimatedObject0"
+ANIM_OBJ_X_COORD         EQUS "wAnimatedObject0XCoord - wAnimatedObject0"
+ANIM_OBJ_Y_COORD         EQUS "wAnimatedObject0YCoord - wAnimatedObject0"
+ANIM_OBJ_X_OFFSET        EQUS "wAnimatedObject0XOffset - wAnimatedObject0"
+ANIM_OBJ_Y_OFFSET        EQUS "wAnimatedObject0YOffset - wAnimatedObject0"
+ANIM_OBJ_DURATION        EQUS "wAnimatedObject0Duration - wAnimatedObject0"
+ANIM_OBJ_DURATION_OFFSET EQUS "wAnimatedObject0DurationOffset - wAnimatedObject0"
+ANIM_OBJ_FRAME_IDX       EQUS "wAnimatedObject0FrameIndex - wAnimatedObject0"
 ANIM_OBJ_FIELD_B EQU $b
 ANIM_OBJ_FIELD_C EQU $c
 ANIM_OBJ_FIELD_D EQU $d

@@ -344,7 +344,6 @@ wAnimatedObjectStartTileOffsets::
 	ds 10 * 2
 wAnimatedObjectDataStructs:: ; c51c
 animated_object: macro
-\1::
 \1Index::          db ; 0
 \1FramesetID::     db ; 1
 \1AnimSeqID::      db ; 2
@@ -360,29 +359,29 @@ animated_object: macro
 \1End::
 	endm
 
-	animated_object AnimatedObject0
-	animated_object AnimatedObject1
-	animated_object AnimatedObject2
-	animated_object AnimatedObject3
-	animated_object AnimatedObject4
-	animated_object AnimatedObject5
-	animated_object AnimatedObject6
-	animated_object AnimatedObject7
-	animated_object AnimatedObject8
-	animated_object AnimatedObject9
+wAnimatedObject0:: animated_object wAnimatedObject0
+wAnimatedObject1:: animated_object wAnimatedObject1
+wAnimatedObject2:: animated_object wAnimatedObject2
+wAnimatedObject3:: animated_object wAnimatedObject3
+wAnimatedObject4:: animated_object wAnimatedObject4
+wAnimatedObject5:: animated_object wAnimatedObject5
+wAnimatedObject6:: animated_object wAnimatedObject6
+wAnimatedObject7:: animated_object wAnimatedObject7
+wAnimatedObject8:: animated_object wAnimatedObject8
+wAnimatedObject9:: animated_object wAnimatedObject9
 
 wNumLoadedAnimatedObjects:: ; c5bc
 	ds 1
 wCurrentAnimatedObjectOAMBufferOffset:: ; c5bd
 	ds 3
 wAnimatedObjectSpawnStateDataPointer:: ; c5c0
-	dw
+	ds 2
 wAnimatedObjectFramesDataPointer:: ; c5c2
-	dw
+	ds 2
 wAnimatedObjectJumptablePointer:: ; c5c4
-	dw
+	ds 2
 wAnimatedObjectOAMDataPointer:: ; c5c6
-	dw
+	ds 2
 wCurAnimatedObjectOAMAttributes:: ; c5c8
 	ds 1
 wCurrentAnimatedObjectVTileOffset:: ; c5c9
