@@ -2,31 +2,31 @@ INCLUDE "charmap.asm"
 INCLUDE "constants.asm"
 
 
-SECTION "Sound Effect Headers 1", ROMX
+SECTION "Sound Effect Headers 1", ROMX ; BANK $2
 INCLUDE "audio/headers/sfxheaders1.asm"
 
-SECTION "Sound Effect Headers 2", ROMX
+SECTION "Sound Effect Headers 2", ROMX ; BANK $8
 INCLUDE "audio/headers/sfxheaders2.asm"
 
-SECTION "Sound Effect Headers 3", ROMX
+SECTION "Sound Effect Headers 3", ROMX ; BANK $1f
 INCLUDE "audio/headers/sfxheaders3.asm"
 
-SECTION "Sound Effect Headers 4", ROMX
+SECTION "Sound Effect Headers 4", ROMX ; BANK $20
 INCLUDE "audio/headers/sfxheaders4.asm"
 
-SECTION "Music Headers 1", ROMX
+SECTION "Music Headers 1", ROMX ; BANK $2
 INCLUDE "audio/headers/musicheaders1.asm"
 
-SECTION "Music Headers 2", ROMX
+SECTION "Music Headers 2", ROMX ; BANK $8
 INCLUDE "audio/headers/musicheaders2.asm"
 
-SECTION "Music Headers 3", ROMX
+SECTION "Music Headers 3", ROMX ; BANK $1f
 INCLUDE "audio/headers/musicheaders3.asm"
 
-SECTION "Music Headers 4", ROMX
+SECTION "Music Headers 4", ROMX ; BANK $20
 INCLUDE "audio/headers/musicheaders4.asm"
 
-SECTION "Sound Effects 1", ROMX
+SECTION "Sound Effects 1", ROMX ; BANK $2
 
 INCLUDE "audio/sfx/snare1_1.asm"
 INCLUDE "audio/sfx/snare2_1.asm"
@@ -122,7 +122,7 @@ INCLUDE "audio/sfx/cry20_1.asm"
 INCLUDE "audio/sfx/cry21_1.asm"
 INCLUDE "audio/sfx/cry22_1.asm"
 
-SECTION "Sound Effects 2", ROMX
+SECTION "Sound Effects 2", ROMX ; BANK $8
 
 INCLUDE "audio/sfx/snare1_2.asm"
 INCLUDE "audio/sfx/snare2_2.asm"
@@ -143,7 +143,7 @@ INCLUDE "audio/sfx/triangle3_2.asm"
 INCLUDE "audio/sfx/muted_snare2_2.asm"
 INCLUDE "audio/sfx/muted_snare3_2.asm"
 INCLUDE "audio/sfx/muted_snare4_2.asm"
-;Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
+; Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
 INCLUDE "audio/sfx/press_ab_2.asm"
 INCLUDE "audio/sfx/start_menu_2.asm"
 INCLUDE "audio/sfx/tink_2.asm"
@@ -244,9 +244,9 @@ INCLUDE "audio/sfx/cry1f_2.asm"
 INCLUDE "audio/sfx/cry20_2.asm"
 INCLUDE "audio/sfx/cry21_2.asm"
 INCLUDE "audio/sfx/cry22_2.asm"
-;Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
+; Audio2_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
-SECTION "Sound Effects 3", ROMX
+SECTION "Sound Effects 3", ROMX ; BANK $1f
 
 INCLUDE "audio/sfx/snare1_3.asm"
 INCLUDE "audio/sfx/snare2_3.asm"
@@ -267,7 +267,7 @@ INCLUDE "audio/sfx/triangle3_3.asm"
 INCLUDE "audio/sfx/muted_snare2_3.asm"
 INCLUDE "audio/sfx/muted_snare3_3.asm"
 INCLUDE "audio/sfx/muted_snare4_3.asm"
-;Audio3_WavePointers: INCLUDE "audio/wave_instruments.asm"
+; Audio3_WavePointers: INCLUDE "audio/wave_instruments.asm"
 INCLUDE "audio/sfx/start_menu_3.asm"
 INCLUDE "audio/sfx/cut_3.asm"
 INCLUDE "audio/sfx/go_inside_3.asm"
@@ -350,7 +350,7 @@ INCLUDE "audio/sfx/cry20_3.asm"
 INCLUDE "audio/sfx/cry21_3.asm"
 INCLUDE "audio/sfx/cry22_3.asm"
 
-SECTION "Sound Effects 4", ROMX
+SECTION "Sound Effects 4", ROMX ; BANK $20
 
 INCLUDE "audio/sfx/snare1_4.asm"
 INCLUDE "audio/sfx/snare2_4.asm"
@@ -426,7 +426,7 @@ INCLUDE "audio/sfx/unknown_80e91.asm"
 INCLUDE "audio/sfx/get_item2_4.asm"
 
 
-SECTION "Audio Engine 1", ROMX
+SECTION "Audio Engine 1", ROMX ; BANK $2
 
 AudioEngine1::
 
@@ -521,7 +521,7 @@ Music_Cities1AlternateTempo::
 	ld de, Music_Cities1_branch_aa6f
 	jp Audio1_OverwriteChannelPointer
 
-SECTION "Audio Engine 2", ROMX
+SECTION "Audio Engine 2", ROMX ; BANK $8
 
 AudioEngine2::
 
@@ -606,7 +606,7 @@ INCLUDE "engine/menu/bills_pc.asm"
 INCLUDE "audio/engine_2.asm"
 
 
-SECTION "Audio Engine 3", ROMX
+SECTION "Audio Engine 3", ROMX ; BANK $1f
 
 AudioEngine3::
 
@@ -648,7 +648,7 @@ OwnedMonValues:
 INCLUDE "audio/engine_3.asm"
 
 
-SECTION "Audio Engine 4", ROMX
+SECTION "Audio Engine 4", ROMX ; BANK $20
 
 SurfingPikachu1Graphics1::  INCBIN "gfx/surfing_pikachu_1a.2bpp"
 SurfingPikachu1Graphics2::  INCBIN "gfx/surfing_pikachu_1b.2bpp"
@@ -657,7 +657,7 @@ SurfingPikachu1Graphics3::  INCBIN "gfx/surfing_pikachu_1c.t5.2bpp"
 INCLUDE "audio/engine_4.asm"
 
 
-SECTION "Music 1", ROMX
+SECTION "Music 1", ROMX ; BANK $2
 
 Audio1_WavePointers: INCLUDE "audio/wave_instruments.asm"
 
@@ -688,7 +688,7 @@ INCLUDE "audio/music/gym.asm"
 INCLUDE "audio/music/pokecenter.asm"
 
 
-SECTION "Music 2", ROMX
+SECTION "Music 2", ROMX ; BANK $8
 
 INCLUDE "audio/sfx/unused2_2.asm"
 INCLUDE "audio/music/gymleaderbattle.asm"
@@ -703,7 +703,7 @@ INCLUDE "audio/music/defeatedwildmon.asm"
 INCLUDE "audio/music/defeatedgymleader.asm"
 
 
-SECTION "Music 3", ROMX
+SECTION "Music 3", ROMX ; BANK $1f
 
 INCLUDE "audio/music/bikeriding.asm"
 INCLUDE "audio/music/dungeon1.asm"
@@ -730,7 +730,7 @@ INCLUDE "audio/music/credits.asm"
 INCLUDE "audio/music/yellowintro.asm"
 
 
-SECTION "Music 4", ROMX
+SECTION "Music 4", ROMX ; BANK $20
 
 INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
@@ -738,6 +738,6 @@ INCLUDE "audio/music/meetjessiejames.asm"
 
 INCBIN "audio/unknown_832b9.bin"
 
-
+; cries are in a different banks
 INCLUDE "audio/pikachu_cries.asm"
 

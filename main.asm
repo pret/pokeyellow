@@ -98,7 +98,7 @@ INCLUDE "engine/hp_bar.asm"
 INCLUDE "engine/hidden_object_functions3.asm"
 
 
-SECTION "Graphics", ROMX
+SECTION "Graphics", ROMX ; BANK $04
 
 PokemonLogoJapanGraphics:       INCBIN "gfx/pokemon_logo_japan.2bpp"
 FontGraphics:                   INCBIN "gfx/font.1bpp"
@@ -134,7 +134,7 @@ INCLUDE "engine/menu/start_sub_menus.asm"
 INCLUDE "engine/items/tms.asm"
 
 
-SECTION "NPC Sprites 1", ROMX
+SECTION "NPC Sprites 1", ROMX ; BANK $04
 
 OakAideSprite:         INCBIN "gfx/sprites/oak_aide.2bpp"
 RockerSprite:          INCBIN "gfx/sprites/rocker.2bpp"
@@ -172,7 +172,7 @@ INCLUDE "engine/battle/moveEffects/conversion_effect.asm"
 INCLUDE "engine/battle/moveEffects/haze_effect.asm"
 
 
-SECTION "NPC Sprites 2", ROMX
+SECTION "NPC Sprites 2", ROMX ; BANK $05
 
 INCLUDE "engine/load_pokedex_tiles.asm"
 INCLUDE "engine/overworld/map_sprites.asm"
@@ -468,7 +468,7 @@ INCLUDE "engine/menu/oaks_pc.asm"
 INCLUDE "engine/hidden_object_functions7.asm"
 
 
-SECTION "Pics 1", ROMX
+SECTION "Pics 1", ROMX ; BANK $09
 
 RhydonPicFront:      INCBIN "pic/ymon/rhydon.pic"
 RhydonPicBack:       INCBIN "pic/monback/rhydonb.pic"
@@ -535,7 +535,7 @@ INCLUDE "engine/battle/print_type.asm"
 INCLUDE "engine/battle/save_trainer_name.asm"
 
 
-SECTION "Pics 2", ROMX
+SECTION "Pics 2", ROMX ; BANK $0A
 
 GrowlithePicFront:   INCBIN "pic/ymon/growlithe.pic"
 GrowlithePicBack:    INCBIN "pic/monback/growlitheb.pic"
@@ -606,7 +606,7 @@ INCLUDE "engine/predefsA.asm"
 INCLUDE "engine/battle/moveEffects/leech_seed_effect.asm"
 
 
-SECTION "Pics 3", ROMX
+SECTION "Pics 3", ROMX ; BANK $0B
 
 ArticunoPicFront:    INCBIN "pic/ymon/articuno.pic"
 ArticunoPicBack:     INCBIN "pic/monback/articunob.pic"
@@ -693,7 +693,7 @@ INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/game_corner_slots2.asm"
 
 
-SECTION "Pics 4", ROMX
+SECTION "Pics 4", ROMX ; BANK $0C
 
 DodrioPicFront:       INCBIN "pic/ymon/dodrio.pic"
 DodrioPicBack:        INCBIN "pic/monback/dodriob.pic"
@@ -755,7 +755,7 @@ StarmiePicFront:      INCBIN "pic/ymon/starmie.pic"
 StarmiePicBack:       INCBIN "pic/monback/starmieb.pic"
 
 
-SECTION "Pics 5", ROMX
+SECTION "Pics 5", ROMX ; BANK $0D
 
 BulbasaurPicFront:    INCBIN "pic/ymon/bulbasaur.pic"
 BulbasaurPicBack:     INCBIN "pic/monback/bulbasaurb.pic"
@@ -2118,6 +2118,8 @@ SurfingPikachu3GraphicsEnd:
 INCLUDE "engine/unknown_ea3ea.asm"
 
 INCLUDE "engine/overworld/npc_movement_2.asm"
+
+; bank $3b is empty
 
 SECTION "bank3C", ROMX
 

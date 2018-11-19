@@ -205,7 +205,7 @@ wc0f3:: ds 1
 wc0f4:: ds 1
 wc0f5:: ds 11
 
-SECTION "Sprite State Data", WRAM0[$c100]
+SECTION "Sprite State Data", WRAM0
 
 wSpriteDataStart::
 
@@ -317,7 +317,7 @@ wSpritePikachuStateData2::  spritestatedata2 wSpritePikachuStateData2
 wSpriteDataEnd::
 
 
-SECTION "OAM Buffer", WRAM0[$c300]
+SECTION "OAM Buffer", WRAM0
 
 wOAMBuffer:: ; c300
 ; buffer for OAM data. Copied to OAM by DMA
@@ -1863,7 +1863,7 @@ wEnemyMonDefense::   dw
 wEnemyMonSpeed::     dw
 wEnemyMonSpecial::   dw
 wEnemyMonPP::        ds 3 ; NUM_MOVES - 1
-SECTION "WRAM Bank 1", WRAMX, BANK[1]
+SECTION "WRAM Bank 1", WRAMX
                      ds 1 ; NUM_MOVES - 3
 
 wEnemyMonBaseStats:: ds 5
@@ -3586,8 +3586,7 @@ wLastOBP1:: ds 1 ; def3
 wdef5:: ds 1 ; def4
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE ; def5
 
-SECTION "Stack", WRAMX[$df15], BANK[1]
-	ds $ea
+SECTION "Stack", WRAMX
 wStack:: ; dfff
 
 

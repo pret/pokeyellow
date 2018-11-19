@@ -5,7 +5,7 @@ INCLUDE "macros.asm"
 INCLUDE "hram.asm"
 
 
-SECTION "Text 1", ROMX
+SECTION "Text 1", ROMX ; BANK $26
 
 _CardKeySuccessText1::
 	text "Bingo!@@"
@@ -188,7 +188,7 @@ INCLUDE "text/maps/silph_co_9f.asm"
 INCLUDE "text/maps/silph_co_10f.asm"
 
 
-SECTION "Text 2", ROMX
+SECTION "Text 2", ROMX ; BANK $27
 
 INCLUDE "text/maps/silph_co_11f.asm"
 INCLUDE "text/maps/mansion_2f.asm"
@@ -1518,7 +1518,7 @@ _HookedMonAttackedText::
 	prompt
 
 
-SECTION "Text 3", ROMX
+SECTION "Text 3", ROMX ; BANK $28
 
 _EnemyAppearedText::
 	TX_RAM wEnemyMonNick
@@ -2130,7 +2130,7 @@ INCLUDE "text/maps/route_8.asm"
 INCLUDE "text/maps/route_9_1.asm"
 
 
-SECTION "Text 4", ROMX
+SECTION "Text 4", ROMX ; BANK $29
 
 INCLUDE "text/maps/route_9_2.asm"
 INCLUDE "text/maps/route_10.asm"
@@ -2207,7 +2207,7 @@ _StoppedEvolvingText::
 	prompt
 
 
-SECTION "Text 5", ROMX
+SECTION "Text 5", ROMX ; BANK $2a
 
 _IsEvolvingText::
 	text "What? @"
@@ -2507,7 +2507,7 @@ INCLUDE "text/maps/cerulean_mart.asm"
 INCLUDE "text/maps/cerulean_badge_house_1.asm"
 
 
-SECTION "Text 6", ROMX
+SECTION "Text 6", ROMX ; BANK $2b
 
 INCLUDE "text/maps/cerulean_badge_house_2.asm"
 INCLUDE "text/maps/lavender_pokecenter.asm"
@@ -2556,7 +2556,7 @@ INCLUDE "text/maps/celadon_gym.asm"
 INCLUDE "text/maps/celadon_game_corner_1.asm"
 
 
-SECTION "Text 7", ROMX
+SECTION "Text 7", ROMX ; BANK $2c
 
 INCLUDE "text/maps/celadon_game_corner_2.asm"
 INCLUDE "text/maps/celadon_dept_store_5f.asm"
@@ -2806,7 +2806,7 @@ _CableClubNPCPleaseApplyHereHaveToSaveText::
 	done
 
 
-SECTION "Text 8", ROMX
+SECTION "Text 8", ROMX ; BANK $2d
 
 _CableClubNPCPleaseWaitText::
 	text "Please wait.@@"
@@ -3372,11 +3372,11 @@ _UsedCutText::
 	prompt
 
 
-SECTION "Pokedex Text", ROMX
+SECTION "Pokedex Text", ROMX ; BANK $2e
 
 INCLUDE "text/pokedex.asm"
 
 
-SECTION "Move Names", ROMX
+SECTION "Move Names", ROMX ; BANK $2f
 
 INCLUDE "text/move_names.asm"
