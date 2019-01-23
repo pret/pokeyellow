@@ -91,6 +91,12 @@ GetBattleTransitionID_WildOrTrainer:
 	ret
 
 GetBattleTransitionID_CompareLevels:
+; no error handling to check if you have a Pokemon yet
+; this causes bugs with the transition in the Oak Pikachu catch
+; wPartyMon1HP reads from wRivalName+6
+; this causes the faster transition to be manipulable either by
+; using a default rival name or
+; setting and then deleting 6 characters in a custom Rival name
 	ld hl, wPartyMon1HP
 .faintedLoop
 	ld a, [hli]
