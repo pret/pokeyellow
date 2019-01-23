@@ -1,6 +1,4 @@
 DisplayOptionMenu_:
-; executes each menu option's update function via GetOptionPointer, but the joypad isn't cleared until the ret back to optionMenuLoop
-; this results in the options each being shifted left or right if the respective button is pressed along with A while opening options
 	call InitOptions
 .optionMenuLoop
 	call JoypadLowSensitivity
@@ -424,7 +422,7 @@ InitOptions:
 	call GetOptionPointer ; updates the next option
 	pop bc
 	ld hl, wOptionsCursorLocation
-	inc [hl] ; moves the options cursor
+	inc [hl] ; moves the cursor for the highlighted option
 	dec c
 	jr nz, .loop
 	xor a
