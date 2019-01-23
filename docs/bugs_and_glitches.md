@@ -25,8 +25,9 @@ The bug also exists in pokegold and pokecrystal.
 **Fix:** Update [engine/menu/options.asm](/engine/menu/options.asm)
 
 ```diff
- DisplayOptionMenu_:
- +  call JoypadLowSensitivity
+  DisplayOptionMenu_:
++
++   call JoypadLowSensitivity
     call InitOptions
 ```
 
