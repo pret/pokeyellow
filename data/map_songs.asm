@@ -225,9 +225,9 @@ MapSongBanks:
 	db MUSIC_SAFARI_ZONE, BANK(Music_SafariZone) ; SafariZoneRestHouse2
 	db MUSIC_SAFARI_ZONE, BANK(Music_SafariZone) ; SafariZoneRestHouse3
 	db MUSIC_SAFARI_ZONE, BANK(Music_SafariZone) ; SafariZoneRestHouse4
-	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; UnknownDungeon2
-	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; UnknownDungeon3
-	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; UnknownDungeon1
+	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; CeruleanCave2
+	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; CeruleanCave3
+	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; CeruleanCave1
 	db MUSIC_CITIES2, BANK(Music_Cities2) ; NameRater
 	db MUSIC_CITIES1, BANK(Music_Cities1) ; CeruleanHouse2
 	db MUSIC_CINNABAR, BANK(Music_Cinnabar)

@@ -226,9 +226,9 @@ MapHeaderBanks::
 	db BANK(SafariZoneRestHouse2_h)
 	db BANK(SafariZoneRestHouse3_h)
 	db BANK(SafariZoneRestHouse4_h)
-	db BANK(UnknownDungeon2_h)
-	db BANK(UnknownDungeon3_h)
-	db BANK(UnknownDungeon1_h)
+	db BANK(CeruleanCave2_h)
+	db BANK(CeruleanCave3_h)
+	db BANK(CeruleanCave1_h)
 	db BANK(NameRater_h)
 	db BANK(CeruleanHouse2_h)
 	db $01 ; unused

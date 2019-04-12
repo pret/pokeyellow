@@ -1,7 +1,7 @@
-UnknownDungeon2Script:
+CeruleanCave1Script:
 	jp EnableAutoTextBoxDrawing
 
-UnknownDungeon2TextPointers:
+CeruleanCave1TextPointers:
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText

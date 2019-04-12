@@ -6,8 +6,8 @@ HiddenObjectMaps:
 	dbw MANSION_3,              Mansion3HiddenObjects
 	dbw MANSION_4,              Mansion4HiddenObjects
 	dbw SAFARI_ZONE_WEST,       SafariZoneWestHiddenObjects
-	dbw UNKNOWN_DUNGEON_2,      UnknownDungeon2HiddenObjects
-	dbw UNKNOWN_DUNGEON_3,      UnknownDungeon3HiddenObjects
+	dbw CERULEAN_CAVE_2,        CeruleanCave2HiddenObjects
+	dbw CERULEAN_CAVE_3,        CeruleanCave3HiddenObjects
 	dbw UNUSED_MAP_6F,          UnusedMap6FHiddenObjects
 	dbw SEAFOAM_ISLANDS_3,      SeafoamIslands3HiddenObjects
 	dbw SEAFOAM_ISLANDS_4,      SeafoamIslands4HiddenObjects
@@ -58,7 +58,7 @@ HiddenObjectMaps:
 	dbw CERULEAN_POKECENTER,    CeruleanPokecenterHiddenObjects
 	dbw CERULEAN_GYM,           CeruleanGymHiddenObjects
 	dbw BIKE_SHOP,              BikeShopHiddenObjects
-	dbw UNKNOWN_DUNGEON_1,      UnknownDungeon1HiddenObjects
+	dbw CERULEAN_CAVE_1,        CeruleanCave1HiddenObjects
 	dbw LAVENDER_POKECENTER,    LavenderPokecenterHiddenObjects
 	dbw POKEMONTOWER_5,         Pokemontower5HiddenObjects
 	dbw LAVENDER_HOUSE_1,       LavenderHouse1HiddenObjects
@@ -119,11 +119,11 @@ SafariZoneWestHiddenObjects:
 	hidden_object   5,   6, REVIVE, HiddenItems
 	db $ff
 
-UnknownDungeon2HiddenObjects:
+CeruleanCave2HiddenObjects:
 	hidden_object  13,  16, PP_UP, HiddenItems
 	db $ff
 
-UnknownDungeon3HiddenObjects:
+CeruleanCave3HiddenObjects:
 	hidden_object  14,   8, PP_UP, HiddenItems
 	db $ff
 
@@ -372,7 +372,7 @@ BikeShopHiddenObjects:
 	hidden_object   5,   1, $d0, PrintNewBikeText
 	db $ff
 
-UnknownDungeon1HiddenObjects:
+CeruleanCave1HiddenObjects:
 	hidden_object   7,  18, PP_UP, HiddenItems
 	db $ff
 

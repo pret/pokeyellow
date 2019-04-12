@@ -345,10 +345,10 @@ MapHS34:
 MapHS3F: ; bulbasaur adoption house
 	db CERULEAN_HOUSE_1, $02, Show
 MapHSE4:
-	db UNKNOWN_DUNGEON_1, $01, Show
-	db UNKNOWN_DUNGEON_1, $02, Show
-	db UNKNOWN_DUNGEON_1, $03, Show
-	db UNKNOWN_DUNGEON_1, $04, Show
+	db CERULEAN_CAVE_1, $01, Show
+	db CERULEAN_CAVE_1, $02, Show
+	db CERULEAN_CAVE_1, $03, Show
+	db CERULEAN_CAVE_1, $04, Show
 MapHS8F:
 	db POKEMONTOWER_2, $01, Show
 MapHS90:
@@ -550,16 +550,16 @@ MapHSDB:
 MapHSDC:
 	db SAFARI_ZONE_CENTER, $01, Show
 MapHSE2:
-	db UNKNOWN_DUNGEON_2, $01, Show
-	db UNKNOWN_DUNGEON_2, $02, Show
-	db UNKNOWN_DUNGEON_2, $03, Show
-	db UNKNOWN_DUNGEON_2, $04, Show
+	db CERULEAN_CAVE_2, $01, Show
+	db CERULEAN_CAVE_2, $02, Show
+	db CERULEAN_CAVE_2, $03, Show
+	db CERULEAN_CAVE_2, $04, Show
 MapHSE3:
-	db UNKNOWN_DUNGEON_3, $01, Show
-	db UNKNOWN_DUNGEON_3, $02, Show
-	db UNKNOWN_DUNGEON_3, $03, Show
-	db UNKNOWN_DUNGEON_3, $04, Show
-	db UNKNOWN_DUNGEON_3, $05, Show
+	db CERULEAN_CAVE_3, $01, Show
+	db CERULEAN_CAVE_3, $02, Show
+	db CERULEAN_CAVE_3, $03, Show
+	db CERULEAN_CAVE_3, $04, Show
+	db CERULEAN_CAVE_3, $05, Show
 MapHS6C:
 	db VICTORY_ROAD_1, $03, Show
 	db VICTORY_ROAD_1, $04, Show

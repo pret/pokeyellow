@@ -2,7 +2,7 @@ PrintSafariZoneSteps:
 	ld a, [wCurMap]
 	cp SAFARI_ZONE_EAST
 	ret c
-	cp UNKNOWN_DUNGEON_2
+	cp CERULEAN_CAVE_2
 	ret nc
 	coord hl, 0, 0
 	lb bc, 3, 7

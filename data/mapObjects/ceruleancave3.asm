@@ -1,8 +1,8 @@
-UnknownDungeon3Object:
+CeruleanCave3Object:
 	db $7d ; border block
 
 	db $1 ; warps
-	db $6, $3, $8, UNKNOWN_DUNGEON_1
+	db $6, $3, $8, CERULEAN_CAVE_1
 
 	db $0 ; signs
 
@@ -14,4 +14,4 @@ UnknownDungeon3Object:
 	object SPRITE_BALL, $f, $3, STAY, NONE, $5, MAX_ELIXER
 
 	; warp-to
-	EVENT_DISP UNKNOWN_DUNGEON_3_WIDTH, $6, $3 ; UNKNOWN_DUNGEON_1
+	EVENT_DISP CERULEAN_CAVE_3_WIDTH, $6, $3 ; CERULEAN_CAVE_1

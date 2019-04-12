@@ -44,7 +44,7 @@ Music_IntroBattle::
 	dbw CH1, Music_YellowIntro_Ch2
 	dbw CH2, Music_YellowIntro_Ch3
 
-; Power Plant, Unknown Dungeon, Rocket HQ
+; Power Plant, Cerulean Cave, Rocket HQ
 Music_Dungeon1::
 	dbw ( $C0 | CH0 ), Music_Dungeon1_Ch1
 	dbw CH1, Music_Dungeon1_Ch2

@@ -3208,7 +3208,7 @@ wBrunoCurScript:: ; d64d
 	ds 1
 wAgathaCurScript:: ; d64e
 	ds 1
-wUnknownDungeon3CurScript:: ; d64f
+wCeruleanCave3CurScript:: ; d64f
 	ds 1
 wVictoryRoad1CurScript:: ; d650
 	ds 1

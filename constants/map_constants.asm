@@ -231,9 +231,9 @@ ENDM
 	mapconst SAFARI_ZONE_REST_HOUSE_2,    4,  4 ; $DF
 	mapconst SAFARI_ZONE_REST_HOUSE_3,    4,  4 ; $E0
 	mapconst SAFARI_ZONE_REST_HOUSE_4,    4,  4 ; $E1
-	mapconst UNKNOWN_DUNGEON_2,           9, 15 ; $E2
-	mapconst UNKNOWN_DUNGEON_3,           9, 15 ; $E3
-	mapconst UNKNOWN_DUNGEON_1,           9, 15 ; $E4
+	mapconst CERULEAN_CAVE_2,             9, 15 ; $E2
+	mapconst CERULEAN_CAVE_3,             9, 15 ; $E3
+	mapconst CERULEAN_CAVE_1,             9, 15 ; $E4
 	mapconst NAME_RATERS_HOUSE,           4,  4 ; $E5
 	mapconst CERULEAN_HOUSE_2,            4,  4 ; $E6
 	mapconst UNUSED_MAP_E7,               0,  0 ; $E7

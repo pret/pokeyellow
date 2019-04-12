@@ -13,7 +13,7 @@
 	const HS_CERULEAN_RIVAL               ; 06
 	const HS_CERULEAN_ROCKET              ; 07
 	const HS_CERULEAN_GUARD_1             ; 08
-	const HS_UNKNOWN_DUNGEON_GUY          ; 09
+	const HS_CERULEAN_CAVE_GUY            ; 09
 	const HS_CERULEAN_GUARD_2             ; 0A
 	const HS_SAFFRON_CITY_1               ; 0B
 	const HS_SAFFRON_CITY_2               ; 0C
@@ -57,10 +57,10 @@
 	const HS_VIRIDIAN_GYM_ITEM            ; 32
 	const HS_OLD_AMBER                    ; 33
 	const HS_CERULEAN_BULBASAUR           ; 34
-	const HS_UNKNOWN_DUNGEON_1_ITEM_1     ; 35
-	const HS_UNKNOWN_DUNGEON_1_ITEM_2     ; 36
-	const HS_UNKNOWN_DUNGEON_1_ITEM_3     ; 37
-	const HS_UNKNOWN_DUNGEON_1_ITEM_4     ; 38
+	const HS_CERULEAN_CAVE_1_ITEM_1       ; 35
+	const HS_CERULEAN_CAVE_1_ITEM_2       ; 36
+	const HS_CERULEAN_CAVE_1_ITEM_3       ; 37
+	const HS_CERULEAN_CAVE_1_ITEM_4       ; 38
 	const HS_POKEMONTOWER_2_RIVAL         ; 39
 	const HS_POKEMONTOWER_3_ITEM          ; 3A
 	const HS_POKEMONTOWER_4_ITEM_1        ; 3B
@@ -215,15 +215,15 @@
 	const HS_SAFARI_ZONE_WEST_ITEM_3      ; D0
 	const HS_SAFARI_ZONE_WEST_ITEM_4      ; D1
 	const HS_SAFARI_ZONE_CENTER_ITEM      ; D2
-	const HS_UNKNOWN_DUNGEON_2_ITEM_1     ; D3
-	const HS_UNKNOWN_DUNGEON_2_ITEM_2     ; D4
-	const HS_UNKNOWN_DUNGEON_2_ITEM_3     ; D5
-	const HS_UNKNOWN_DUNGEON_2_ITEM_4     ; D6
+	const HS_CERULEAN_CAVE_2_ITEM_1       ; D3
+	const HS_CERULEAN_CAVE_2_ITEM_2       ; D4
+	const HS_CERULEAN_CAVE_2_ITEM_3       ; D5
+	const HS_CERULEAN_CAVE_2_ITEM_4       ; D6
 	const HS_MEWTWO                       ; D7
-	const HS_UNKNOWN_DUNGEON_3_ITEM_1     ; D8
-	const HS_UNKNOWN_DUNGEON_3_ITEM_2     ; D9
-	const HS_UNKNOWN_DUNGEON_3_ITEM_3     ; DA
-	const HS_UNKNOWN_DUNGEON_3_ITEM_4     ; DB
+	const HS_CERULEAN_CAVE_3_ITEM_1       ; D8
+	const HS_CERULEAN_CAVE_3_ITEM_2       ; D9
+	const HS_CERULEAN_CAVE_3_ITEM_3       ; DA
+	const HS_CERULEAN_CAVE_3_ITEM_4       ; DB
 	const HS_VICTORY_ROAD_1_ITEM_1        ; DC
 	const HS_VICTORY_ROAD_1_ITEM_2        ; DD
 	const HS_CHAMPIONS_ROOM_OAK           ; DE

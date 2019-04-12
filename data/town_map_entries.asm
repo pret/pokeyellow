@@ -92,7 +92,7 @@ InternalMapEntries:
 	IMAP SILPH_CO_8F,               $A,$5,SilphCoName
 	IMAP MANSION_4,                 $2,$F,PokemonMansionName
 	IMAP SAFARI_ZONE_REST_HOUSE_4,  $8,$C,SafariZoneName
-	IMAP UNKNOWN_DUNGEON_1,         $9,$1,CeruleanCaveName
+	IMAP CERULEAN_CAVE_1,           $9,$1,CeruleanCaveName
 	IMAP NAME_RATERS_HOUSE,         $E,$5,LavenderTownName
 	IMAP CERULEAN_HOUSE_2,          $A,$2,CeruleanCityName
 	IMAP ROCK_TUNNEL_2,             $E,$3,RockTunnelName

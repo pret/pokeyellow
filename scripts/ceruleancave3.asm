@@ -1,10 +1,10 @@
-UnknownDungeon3Script:
+CeruleanCave3Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, UnknownDungeon3TrainerHeaders
+	ld hl, CeruleanCave3TrainerHeaders
 	ld de, .ScriptPointers
-	ld a, [wUnknownDungeon3CurScript]
+	ld a, [wCeruleanCave3CurScript]
 	call ExecuteCurMapScriptInTable
-	ld [wUnknownDungeon3CurScript], a
+	ld [wCeruleanCave3CurScript], a
 	ret
 
 .ScriptPointers:
@@ -12,14 +12,14 @@ UnknownDungeon3Script:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 
-UnknownDungeon3TextPointers:
+CeruleanCave3TextPointers:
 	dw MewtwoText
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText
 
-UnknownDungeon3TrainerHeaders:
+CeruleanCave3TrainerHeaders:
 MewtwoTrainerHeader:
 	dbEventFlagBit EVENT_BEAT_MEWTWO
 	db ($0 << 4) ; trainer's view range

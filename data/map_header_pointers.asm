@@ -226,9 +226,9 @@ MapHeaderPointers::
 	dw SafariZoneRestHouse2_h
 	dw SafariZoneRestHouse3_h
 	dw SafariZoneRestHouse4_h
-	dw UnknownDungeon2_h
-	dw UnknownDungeon3_h
-	dw UnknownDungeon1_h
+	dw CeruleanCave2_h
+	dw CeruleanCave3_h
+	dw CeruleanCave1_h
 	dw NameRater_h
 	dw CeruleanHouse2_h
 	dw Route16Gate_h ; unused
