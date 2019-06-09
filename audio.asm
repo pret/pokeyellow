@@ -652,7 +652,7 @@ SECTION "Audio Engine 4", ROMX ; BANK $20
 
 SurfingPikachu1Graphics1::  INCBIN "gfx/surfing_pikachu_1a.2bpp"
 SurfingPikachu1Graphics2::  INCBIN "gfx/surfing_pikachu_1b.2bpp"
-SurfingPikachu1Graphics3::  INCBIN "gfx/surfing_pikachu_1c.t5.2bpp"
+SurfingPikachu1Graphics3::  INCBIN "gfx/surfing_pikachu_1c.2bpp"
 
 INCLUDE "audio/engine_4.asm"
 

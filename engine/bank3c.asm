@@ -104,6 +104,7 @@ SetMapSpecificScriptFlagsOnMapReload:
 
 BeachHouse_GFX:
 	INCBIN "gfx/tilesets/beachhouse.2bpp"
+	ds 384
 
 BeachHouse_Block:
 	INCBIN "gfx/blocksets/beachhouse.bst"

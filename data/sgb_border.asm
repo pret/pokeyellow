@@ -84,4 +84,4 @@ BorderPalettes:
 	RGB 31, 31, 25
 
 SGBBorderGraphics:
-	INCBIN "gfx/pokemon_yellow.t6.2bpp"
+	INCBIN "gfx/pokemon_yellow.2bpp"
