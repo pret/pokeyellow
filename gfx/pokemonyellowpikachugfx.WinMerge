@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<paths>
+		<left>C:\Users\there\Downloads\pokeyellow-master\gfx\pikachu\</left>
+		<right>C:\Users\there\Downloads\pokeyellow-master-modifiedmakefile\gfx\pikachu\</right>
+		<filter>*.*</filter>
+		<subfolders>1</subfolders>
+		<left-readonly>0</left-readonly>
+		<right-readonly>0</right-readonly>
+	</paths>
+</project>
