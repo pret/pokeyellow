@@ -796,33 +796,6 @@ Func_f8545:
 	ld hl, ANIM_OBJ_Y_COORD
 	add hl, bc
 	ld [hl], a
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 	ret
 
 .asm_f8556

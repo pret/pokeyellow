@@ -434,7 +434,7 @@ OaksLabScript15:
 OaksLabScript16:
 	ld a, [wd730]
 	bit 0, a
-	jr nz, .asm_1c6ed
+	jr nz, .checkRivalPosition
 	ld a, $ff ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, HS_OAKS_LAB_RIVAL
@@ -445,25 +445,25 @@ OaksLabScript16:
 	ld [wOaksLabCurScript], a
 	ret
 
-.asm_1c6ed
+.checkRivalPosition
 	ld a, [wNPCNumScriptedSteps]
 	cp 5
-	jr nz, .asm_1c703
+	jr nz, .turnPlayerDown
 	ld a, [wXCoord]
 	cp 4
-	jr nz, .asm_1c6ff
+	jr nz, .turnPlayerLeft
 	ld a, SPRITE_FACING_RIGHT
-	jr .asm_1c707
+	jr .done
 
-.asm_1c6ff
+.turnPlayerLeft
 	ld a, SPRITE_FACING_LEFT
-	jr .asm_1c707
+	jr .done
 
-.asm_1c703
+.turnPlayerDown
 	cp 4
 	ret nz
 	xor a
-.asm_1c707
+.done
 	ld [wSpritePlayerStateData1FacingDirection], a
 	ret
 
@@ -631,20 +631,20 @@ OaksLabScript21:
 OaksLabScript22:
 	ret
 
-OaksLabScript_1c897:
+OaksLabScript_RemoveParcel:
 	ld hl, wBagItems
 	ld bc, 0
-.asm_1c89d
+.loop
 	ld a, [hli]
 	cp $ff
 	ret z
 	cp OAKS_PARCEL
-	jr z, .asm_1c8a9
+	jr z, .foundParcel
 	inc hl
 	inc c
-	jr .asm_1c89d
+	jr .loop
 
-.asm_1c8a9
+.foundParcel
 	ld hl, wNumBagItems
 	ld a, c
 	ld [wWhichPokemon], a
@@ -748,33 +748,33 @@ OaksLabTextPointers2:
 OaksLabText1:
 	TX_ASM
 	CheckEvent EVENT_FOLLOWED_OAK_INTO_LAB_2
-	jr nz, .asm_1c968
-	ld hl, OaksLabText_1c97d
+	jr nz, .beforeChooseMon
+	ld hl, OaksLabGaryText1
 	call PrintText
 	jr .asm_1c97a
 
-.asm_1c968
+.beforeChooseMon
 	CheckEventReuseA EVENT_GOT_STARTER
-	jr nz, .asm_1c974
-	ld hl, OaksLabText_1c982
+	jr nz, .afterChooseMon
+	ld hl, OaksLabText40
 	call PrintText
 	jr .asm_1c97a
 
-.asm_1c974
-	ld hl, OaksLabText_1c987
+.afterChooseMon
+	ld hl, OaksLabText41
 	call PrintText
 .asm_1c97a
 	jp TextScriptEnd
 
-OaksLabText_1c97d:
+OaksLabGaryText1:
 	TX_FAR _OaksLabGaryText1
 	db "@"
 
-OaksLabText_1c982:
+OaksLabText40:
 	TX_FAR _OaksLabText40
 	db "@"
 
-OaksLabText_1c987:
+OaksLabText41:
 	TX_FAR _OaksLabText41
 	db "@"
 
@@ -786,11 +786,11 @@ OaksLabText2:
 	jr nz, OaksLabScript_1c9ac
 	ld a, $0
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, OaksLabText_1c9a7
+	ld hl, OaksLabText39
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1c9a7:
+OaksLabText39:
 	TX_FAR _OaksLabText39
 	db "@"
 
@@ -859,15 +859,15 @@ OaksLabText3:
 	jr .asm_1ca6f
 
 .asm_1ca3a
-	ld hl, OaksLabText_1ca81
+	ld hl, OaksLabDeliverParcelText
 	call PrintText
-	call OaksLabScript_1c897
+	call OaksLabScript_RemoveParcel
 	ld a, $13
 	ld [wOaksLabCurScript], a
 	jr .asm_1ca6f
 
 .asm_1ca4a
-	ld hl, OaksLabText_1ca8b
+	ld hl, OaksLabAroundWorldText
 	call PrintText
 	jr .asm_1ca6f
 
@@ -876,12 +876,12 @@ OaksLabText3:
 	jr nz, .asm_1ca69
 	lb bc, POKE_BALL, 5
 	call GiveItem
-	ld hl, OaksLabText_1ca90
+	ld hl, OaksLabGivePokeballsText
 	call PrintText
 	jr .asm_1ca6f
 
 .asm_1ca69
-	ld hl, OaksLabText_1ca9a
+	ld hl, OaksLabPleaseVisitText
 	call PrintText
 .asm_1ca6f
 	jp TextScriptEnd
@@ -898,23 +898,23 @@ OaksLabText_1ca7c:
 	TX_FAR _OaksLabText_1d2fa
 	db "@"
 
-OaksLabText_1ca81:
+OaksLabDeliverParcelText:
 	TX_FAR _OaksLabDeliverParcelText1
 	TX_SFX_KEY_ITEM
 	TX_FAR _OaksLabDeliverParcelText2
 	db "@"
 
-OaksLabText_1ca8b:
+OaksLabAroundWorldText:
 	TX_FAR _OaksLabAroundWorldText
 	db "@"
 
-OaksLabText_1ca90:
+OaksLabGivePokeballsText:
 	TX_FAR _OaksLabGivePokeballsText1
 	TX_SFX_KEY_ITEM
 	TX_FAR _OaksLabGivePokeballsText2
 	db "@"
 
-OaksLabText_1ca9a:
+OaksLabPleaseVisitText:
 	TX_FAR _OaksLabPleaseVisitText
 	db "@"
 
@@ -949,76 +949,76 @@ OaksLabText_1cac2:
 
 OaksLabText13:
 	TX_ASM
-	ld hl, OaksLabText_1cad1
+	ld hl, OaksLabRivalWaitingText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cad1:
+OaksLabRivalWaitingText:
 	TX_FAR _OaksLabRivalWaitingText
 	db "@"
 
 OaksLabText14:
 	TX_ASM
-	ld hl, OaksLabText_1cae0
+	ld hl, OaksLabChooseMonText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cae0:
+OaksLabChooseMonText:
 	TX_FAR _OaksLabChooseMonText
 	db "@"
 
 OaksLabText15:
 	TX_ASM
-	ld hl, OaksLabText_1caef
+	ld hl, OaksLabRivalInterjectionText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1caef:
+OaksLabRivalInterjectionText:
 	TX_FAR _OaksLabRivalInterjectionText
 	db "@"
 
 OaksLabText16:
 	TX_ASM
-	ld hl, OaksLabText_1cafe
+	ld hl, OaksLabBePatientText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cafe:
+OaksLabBePatientText:
 	TX_FAR _OaksLabBePatientText
 	db "@"
 
 OaksLabText17:
 	TX_ASM
-	ld hl, OaksLabText_1cb25
+	ld hl, OaksLabRivalTakesText1
 	call PrintText
-	ld hl, OaksLabText_1cb2a
+	ld hl, OaksLabRivalTakesText2
 	call PrintText
-	ld hl, OaksLabText_1cb30
+	ld hl, OaksLabRivalTakesText3
 	call PrintText
-	ld hl, OaksLabText_1cb35
+	ld hl, OaksLabRivalTakesText4
 	call PrintText
-	ld hl, OaksLabText_1cb3a
+	ld hl, OaksLabRivalTakesText5
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cb25:
+OaksLabRivalTakesText1:
 	TX_FAR _OaksLabRivalTakesText1
 	db "@"
 
-OaksLabText_1cb2a:
+OaksLabRivalTakesText2:
 	TX_FAR _OaksLabRivalTakesText2
 	TX_SFX_KEY_ITEM
 	db "@"
 
-OaksLabText_1cb30:
+OaksLabRivalTakesText3:
 	TX_FAR _OaksLabRivalTakesText3
 	db "@"
 
-OaksLabText_1cb35:
+OaksLabRivalTakesText4:
 	TX_FAR _OaksLabRivalTakesText4
 	db "@"
 
-OaksLabText_1cb3a:
+OaksLabRivalTakesText5:
 	TX_FAR _OaksLabRivalTakesText5
 	db "@"
 
@@ -1030,9 +1030,9 @@ OaksLabText18:
 	call GetMonName
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, OaksLabText_1cb85
+	ld hl, OaksLabOakGivesText
 	call PrintText
-	ld hl, OaksLabText_1cb8a
+	ld hl, OaksLabRecievedText
 	call PrintText
 	xor a
 	ld [wMonDataLocation], a
@@ -1050,32 +1050,32 @@ OaksLabText18:
 	set 3, [hl]
 	jp TextScriptEnd
 
-OaksLabText_1cb85:
+OaksLabOakGivesText:
 	TX_FAR _OaksLabOakGivesText
 	db "@"
 
-OaksLabText_1cb8a:
+OaksLabRecievedText:
 	TX_FAR _OaksLabReceivedText
 	TX_SFX_KEY_ITEM
 	db "@"
 
 OaksLabText10:
 	TX_ASM
-	ld hl, OaksLabText_1cb9a
+	ld hl, OaksLabLeavingText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cb9a:
+OaksLabLeavingText:
 	TX_FAR _OaksLabLeavingText
 	db "@"
 
 OaksLabText11:
 	TX_ASM
-	ld hl, OaksLabText_1cba9
+	ld hl, OaksLabRivalChallengeText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cba9:
+OaksLabRivalChallengeText:
 	TX_FAR _OaksLabRivalChallengeText
 	db "@"
 
@@ -1089,11 +1089,11 @@ OaksLabRivalBeatYouText:
 
 OaksLabText12:
 	TX_ASM
-	ld hl, OaksLabText_1cbc2
+	ld hl, OaksLabRivalToughenUpText
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cbc2:
+OaksLabRivalToughenUpText:
 	TX_FAR _OaksLabRivalToughenUpText
 	db "@"
 
@@ -1101,21 +1101,21 @@ OaksLabText26:
 	TX_ASM
 	ldpikacry e, PikachuCry2
 	callab PlayPikachuSoundClip
-	ld hl, OaksLabText_1cbdb
+	ld hl, OaksLabPikachuDislikesPokeballsText1
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cbdb:
+OaksLabPikachuDislikesPokeballsText1:
 	TX_FAR _OaksLabPikachuDislikesPokeballsText1
 	db "@"
 
 OaksLabText27:
 	TX_ASM
-	ld hl, OaksLabText_1cbea
+	ld hl, OaksLabPikachuDislikesPokeballsText2
 	call PrintText
 	jp TextScriptEnd
 
-OaksLabText_1cbea:
+OaksLabPikachuDislikesPokeballsText2:
 	TX_FAR _OaksLabPikachuDislikesPokeballsText2
 	db "@"
 
