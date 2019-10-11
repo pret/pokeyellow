@@ -276,10 +276,10 @@ ENDM
 	music_const SFX_SHOOTING_STAR,      SFX_Shooting_Star
 
 	; AUDIO_4
-	music_const SFX_UNKNOWN_801B0_4,       SFX_801b0_4
-	music_const SFX_UNKNOWN_801B3_4,       SFX_801b3_4
-	music_const SFX_UNKNOWN_801B6_4,       SFX_801b6_4
-	music_const SFX_UNKNOWN_801B9_4,       SFX_801b9_4
+	music_const SFX_SURFING_ADD_POINTS,    SFX_Surfing_Add_Points
+	music_const SFX_SURFING_JUMP,          SFX_Surfing_Jump
+	music_const SFX_SURFING_FLIP,          SFX_Surfing_Flip
+	music_const SFX_SURFING_LAND,          SFX_Surfing_Land
 	music_const SFX_UNKNOWN_801BC_4,       SFX_801bc_4
-	music_const SFX_UNKNOWN_801BF_4,       SFX_801bf_4
+	music_const SFX_SURFING_CRASH,         SFX_Surfing_Crash
 	music_const SFX_GET_ITEM2_4_2, SFX_Get_Item2_4_2

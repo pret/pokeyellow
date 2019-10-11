@@ -270,23 +270,23 @@ SFX_Start_Menu_4::
 SFX_PressAB_4::
 	dbw CH7, SFX_80263_4_Ch7
 
-SFX_801b0_4::
-	dbw CH4, SFX_80250_4_Ch4
+SFX_Surfing_Add_Points::
+	dbw CH4, SFX_Surfing_Add_Points_Ch4
 
-SFX_801b3_4::
-	dbw CH7, SFX_8029f_4_Ch7
+SFX_Surfing_Jump::
+	dbw CH7, SFX_Surfing_Jump_Ch7
 
-SFX_801b6_4::
-	dbw CH4, SFX_802b5_4_Ch4
+SFX_Surfing_Flip::
+	dbw CH4, SFX_Surfing_Flip_Ch4
 
-SFX_801b9_4::
-	dbw CH7, SFX_802e1_4_Ch7
+SFX_Surfing_Land::
+	dbw CH7, SFX_Surfing_Land_Ch7
 
 SFX_801bc_4::
 	dbw CH4, SFX_802cc_4_Ch4
 
-SFX_801bf_4::
-	dbw CH7, SFX_802d7_4_Ch7
+SFX_Surfing_Crash::
+	dbw CH7, SFX_Surfing_Crash_Ch7
 
 SFX_Get_Item2_4_2::
 	dbw ( $80 | CH4 ), SFX_Get_Item2_4_2_Ch1

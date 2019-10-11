@@ -1,4 +1,4 @@
-SFX_80250_4_Ch4:
+SFX_Surfing_Add_Points_Ch4:
 	duty 2
 	unknownsfx0x20 0, 145, 192, 7
 	unknownsfx0x20 0, 129, 208, 7

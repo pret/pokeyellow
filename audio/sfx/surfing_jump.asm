@@ -1,4 +1,4 @@
-SFX_8029f_4_Ch7:
+SFX_Surfing_Jump_Ch7:
 	unknownnoise0x20 6, 241, 17
 	unknownnoise0x20 7, 242, 34
 	unknownnoise0x20 8, 243, 51
