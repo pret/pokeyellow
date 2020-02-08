@@ -430,28 +430,28 @@ TrainerAIPointers:
 	dbw 1,LanceAI ; lance
 
 JugglerAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AISwitchIfEnoughMons
 
 BlackbeltAI:
-	cp $20
+	cp 13 percent - 1
 	ret nc
 	jp AIUseXAttack
 
 GiovanniAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseGuardSpec
 
 CooltrainerMAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseXAttack
 
 CooltrainerFAI:
-	cp $40
-	ld a,$A
+	cp 25 percent + 1
+	ld a,10
 	call AICheckIfHPBelowFraction
 	jp c,AIUseHyperPotion
 	ld a,5
@@ -467,43 +467,43 @@ BrockAI:
 	jp AIUseFullHeal
 
 MistyAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseXDefend
 
 LtSurgeAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseXSpeed
 
 ErikaAI:
-	cp $80
+	cp 50 percent + 1
 	ret nc
-	ld a,$A
+	ld a,10
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
 
 KogaAI:
-	cp $20
+	cp 13 percent - 1
 	ret nc
 	jp AIUseXAttack
 
 BlaineAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
-	ld a,$A
+	ld a,10
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
 
 SabrinaAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseXDefend
 
 Sony2AI:
-	cp $20
+	cp 13 percent - 1
 	ret nc
 	ld a,5
 	call AICheckIfHPBelowFraction
@@ -511,7 +511,7 @@ Sony2AI:
 	jp AIUsePotion
 
 Sony3AI:
-	cp $20
+	cp 13 percent - 1
 	ret nc
 	ld a,5
 	call AICheckIfHPBelowFraction
@@ -519,7 +519,7 @@ Sony3AI:
 	jp AIUseFullRestore
 
 LoreleiAI:
-	cp $80
+	cp 50 percent + 1
 	ret nc
 	ld a,5
 	call AICheckIfHPBelowFraction
@@ -527,14 +527,14 @@ LoreleiAI:
 	jp AIUseSuperPotion
 
 BrunoAI:
-	cp $40
+	cp 25 percent + 1
 	ret nc
 	jp AIUseXDefend
 
 AgathaAI:
-	cp $14
+	cp 8 percent
 	jp c,AISwitchIfEnoughMons
-	cp $80
+	cp 50 percent + 1
 	ret nc
 	ld a,4
 	call AICheckIfHPBelowFraction
@@ -542,7 +542,7 @@ AgathaAI:
 	jp AIUseSuperPotion
 
 LanceAI:
-	cp $80
+	cp 50 percent + 1
 	ret nc
 	ld a,5
 	call AICheckIfHPBelowFraction
