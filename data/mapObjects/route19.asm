@@ -1,24 +1,23 @@
 Route19Object:
 	db $43 ; border block
 
-	db $1 ; warps
-	db $9, $5, $0, BEACH_HOUSE
+	db 1 ; warps
+	warp 5, 9, 0, BEACH_HOUSE
 
-	db $1 ; signs
-	db $b,$b,$b
+	db 1 ; signs
+	sign 11, 11, 11
 
-	db $a ; objects
-
-	object SPRITE_BLACK_HAIR_BOY_1, $09, $07, STAY, RIGHT,  $1, OPP_SWIMMER, $2
-	object SPRITE_BLACK_HAIR_BOY_1, $0c, $09, STAY, LEFT,   $2, OPP_SWIMMER, $3
-	object SPRITE_SWIMMER,          $0d, $19, STAY, LEFT,   $3, OPP_SWIMMER, $4
-	object SPRITE_SWIMMER,          $04, $1b, STAY, RIGHT,  $4, OPP_SWIMMER, $5
-	object SPRITE_SWIMMER,          $10, $1f, STAY, UP,     $5, OPP_SWIMMER, $6
-	object SPRITE_SWIMMER,          $09, $0d, STAY, DOWN,   $6, OPP_SWIMMER, $7
-	object SPRITE_SWIMMER,          $08, $2b, STAY, LEFT,   $7, OPP_BEAUTY,  $c
-	object SPRITE_SWIMMER,          $0b, $2b, STAY, RIGHT,  $8, OPP_BEAUTY,  $d
-	object SPRITE_SWIMMER,          $09, $2a, STAY, UP,     $9, OPP_SWIMMER, $8
-	object SPRITE_SWIMMER,          $0a, $2c, STAY, DOWN,   $a, OPP_BEAUTY,  $e
+	db 10 ; objects
+	object SPRITE_BLACK_HAIR_BOY_1, 9, 7, STAY, RIGHT, 1, OPP_SWIMMER, 2
+	object SPRITE_BLACK_HAIR_BOY_1, 12, 9, STAY, LEFT, 2, OPP_SWIMMER, 3
+	object SPRITE_SWIMMER, 13, 25, STAY, LEFT, 3, OPP_SWIMMER, 4
+	object SPRITE_SWIMMER, 4, 27, STAY, RIGHT, 4, OPP_SWIMMER, 5
+	object SPRITE_SWIMMER, 16, 31, STAY, UP, 5, OPP_SWIMMER, 6
+	object SPRITE_SWIMMER, 9, 13, STAY, DOWN, 6, OPP_SWIMMER, 7
+	object SPRITE_SWIMMER, 8, 43, STAY, LEFT, 7, OPP_BEAUTY, 12
+	object SPRITE_SWIMMER, 11, 43, STAY, RIGHT, 8, OPP_BEAUTY, 13
+	object SPRITE_SWIMMER, 9, 42, STAY, UP, 9, OPP_SWIMMER, 8
+	object SPRITE_SWIMMER, 10, 44, STAY, DOWN, 10, OPP_BEAUTY, 14
 
 	; warp-to
-	EVENT_DISP ROUTE_19_WIDTH, $9, $5 ; BEACH_HOUSE
+	warp_to 5, 9, ROUTE_19_WIDTH ; BEACH_HOUSE

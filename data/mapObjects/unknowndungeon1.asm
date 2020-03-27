@@ -1,20 +1,20 @@
 UnknownDungeon1Object:
 	db $7d ; border block
 
-	db $9 ; warps
-	db $11, $18, $6, $ff
-	db $11, $19, $6, $ff
-	db $1, $1b, $0, UNKNOWN_DUNGEON_2
-	db $7, $17, $1, UNKNOWN_DUNGEON_2
-	db $9, $12, $2, UNKNOWN_DUNGEON_2
-	db $1, $7, $3, UNKNOWN_DUNGEON_2
-	db $3, $1, $4, UNKNOWN_DUNGEON_2
-	db $b, $3, $5, UNKNOWN_DUNGEON_2
-	db $6, $0, $0, UNKNOWN_DUNGEON_3
+	db 9 ; warps
+	warp 24, 17, 6, -1
+	warp 25, 17, 6, -1
+	warp 27, 1, 0, UNKNOWN_DUNGEON_2
+	warp 23, 7, 1, UNKNOWN_DUNGEON_2
+	warp 18, 9, 2, UNKNOWN_DUNGEON_2
+	warp 7, 1, 3, UNKNOWN_DUNGEON_2
+	warp 1, 3, 4, UNKNOWN_DUNGEON_2
+	warp 3, 11, 5, UNKNOWN_DUNGEON_2
+	warp 0, 6, 0, UNKNOWN_DUNGEON_3
 
-	db $0 ; signs
+	db 0 ; signs
 
-	db $4 ; objects
+	db 4 ; objects
 	object SPRITE_BALL, $1d, $10, STAY, NONE, $1, RARE_CANDY
 	object SPRITE_BALL, $7, $b, STAY, NONE, $2, MAX_ELIXER
 	object SPRITE_BALL, $1d, $9, STAY, NONE, $3, MAX_REVIVE
