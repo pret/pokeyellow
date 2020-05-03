@@ -670,7 +670,7 @@ GetTileSpriteStandsOn:
 	ld c, a
 	ld b, $0
 	inc l
-	ld a, [hl]      ; c1x6: screen Y position
+	ld a, [hl]      ; c1x6: screen X position
 	srl a
 	srl a
 	srl a            ; screen X tile
