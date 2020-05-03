@@ -6,11 +6,11 @@ VermilionCityScript:
 	bit 6, [hl]
 	res 6, [hl]
 	push hl
-	call nz, VermilionCityScript_197cb
+	call nz, InitCityScript
 	pop hl
 	bit 5, [hl]
 	res 5, [hl]
-	call nz, VermilionCityScript_197c0
+	call nz, SetFirstLockTrashCanIndex
 	ld hl, VermilionCityScriptPointers
 	ld a, [wVermilionCityCurScript]
 	call JumpTable
@@ -25,7 +25,7 @@ VermilionCityScript_19869:
 	SetEventReuseHL EVENT_152
 	ret
 
-VermilionCityScript_197c0:
+SetFirstLockTrashCanIndex:
 	call Random
 	ld a, [hRandomAdd]
 	ld b, a
@@ -35,7 +35,7 @@ VermilionCityScript_197c0:
 	ld [wFirstLockTrashCanIndex], a
 	ret
 
-VermilionCityScript_197cb:
+InitCityScript:
 	CheckEventHL EVENT_SS_ANNE_LEFT
 	ret z
 	CheckEventReuseHL EVENT_WALKED_PAST_GUARD_AFTER_SS_ANNE_LEFT
@@ -55,10 +55,10 @@ VermilionCityScriptPointers:
 VermilionCityScript0:
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
-	jr nz, .asm_198de
-	ld hl, CoordsData_19823
+	jr nz, .return
+	ld hl, SSAnneTicketCheckCoords
 	call ArePlayerCoordsInArray
-	jr nc, .asm_198de
+	jr nc, .return
 	xor a
 	ld [hJoyHeld], a
 	ld [wcf0d], a
@@ -66,13 +66,13 @@ VermilionCityScript0:
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	CheckEvent EVENT_SS_ANNE_LEFT
-	jr nz, .asm_19810
+	jr nz, .shipHasDeparted
 	ld b, S_S_TICKET
 	predef GetQuantityOfItemInBag
 	ld a, b
 	and a
 	ret nz
-.asm_19810
+.shipHasDeparted
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
 	ld a, $1
@@ -82,15 +82,15 @@ VermilionCityScript0:
 	ld [wVermilionCityCurScript], a
 	ret
 
-.asm_198de
+.return
 	ret
 
-CoordsData_19823:
-	db $1e,$12
+SSAnneTicketCheckCoords:
+	db $1e,$12 ; y, x
 	db $ff
 
 VermilionCityScript4:
-	ld hl, CoordsData_19823
+	ld hl, SSAnneTicketCheckCoords
 	call ArePlayerCoordsInArray
 	ret c
 	ld a, $0
@@ -154,64 +154,64 @@ VermilionCityText1:
 VermilionCityText2:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
-	jr nz, .asm_1989e
-	ld hl, VermilionCityText_198a7
+	jr nz, .shipHasDeparted
+	ld hl, VermillionCityTextDidYouSee
 	call PrintText
-	jr .asm_198a4
-.asm_1989e
-	ld hl, VermilionCityText_198ac
+	jr .end
+.shipHasDeparted
+	ld hl, VermilionCityTextSSAnneDeparted
 	call PrintText
-.asm_198a4
+.end
 	jp TextScriptEnd
 
-VermilionCityText_198a7:
-	TX_FAR _VermilionCityText_198a7
+VermillionCityTextDidYouSee:
+	TX_FAR _VermillionCityTextDidYouSee
 	db "@"
 
-VermilionCityText_198ac:
-	TX_FAR _VermilionCityText_198ac
+VermilionCityTextSSAnneDeparted:
+	TX_FAR _VermilionCityTextSSAnneDeparted
 	db "@"
 
 VermilionCityText3:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
-	jr nz, .asm_198f6
+	jr nz, .shipHasDeparted
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_RIGHT
-	jr z, .asm_198c8
-	ld hl, VermilionCityCoords1
+	jr z, .greetPlayer
+	ld hl, .inFrontOfOrBehindGuardCoords
 	call ArePlayerCoordsInArray
-	jr nc, .asm_198d0
-.asm_198c8
+	jr nc, .greetPlayerAndCheckTicket
+.greetPlayer
 	ld hl, SSAnneWelcomeText4
 	call PrintText
-	jr .asm_198fc
-.asm_198d0
+	jr .end
+.greetPlayerAndCheckTicket
 	ld hl, SSAnneWelcomeText9
 	call PrintText
 	ld b, S_S_TICKET
 	predef GetQuantityOfItemInBag
 	ld a, b
 	and a
-	jr nz, .asm_198e9
+	jr nz, .playerHasTicket
 	ld hl, SSAnneNoTicketText
 	call PrintText
-	jr .asm_198fc
-.asm_198e9
+	jr .end
+.playerHasTicket
 	ld hl, SSAnneFlashedTicketText
 	call PrintText
 	ld a, $4
 	ld [wVermilionCityCurScript], a
-	jr .asm_198fc
-.asm_198f6
+	jr .end
+.shipHasDeparted
 	ld hl, SSAnneNotHereText
 	call PrintText
-.asm_198fc
+.end
 	jp TextScriptEnd
 
-VermilionCityCoords1:
-	db $1d,$13
-	db $1f,$13
+.inFrontOfOrBehindGuardCoords:
+	db $1d,$13 ; y, x of tile in front of guard
+	db $1f,$13 ; y, x of tile behind guard
 	db $ff
 
 SSAnneWelcomeText4:
