@@ -155,7 +155,7 @@ VermilionCityText2:
 	TX_ASM
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .shipHasDeparted
-	ld hl, VermillionCityTextDidYouSee
+	ld hl, VermilionCityTextDidYouSee
 	call PrintText
 	jr .end
 .shipHasDeparted
@@ -164,8 +164,8 @@ VermilionCityText2:
 .end
 	jp TextScriptEnd
 
-VermillionCityTextDidYouSee:
-	TX_FAR _VermillionCityTextDidYouSee
+VermilionCityTextDidYouSee:
+	TX_FAR _VermilionCityTextDidYouSee
 	db "@"
 
 VermilionCityTextSSAnneDeparted:
