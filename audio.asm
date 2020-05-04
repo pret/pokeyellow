@@ -1,7 +1,6 @@
 INCLUDE "charmap.asm"
 INCLUDE "constants.asm"
 
-
 SECTION "Sound Effect Headers 1", ROMX ; BANK $2
 INCLUDE "audio/headers/sfxheaders1.asm"
 
