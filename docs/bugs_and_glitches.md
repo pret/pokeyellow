@@ -29,7 +29,7 @@ The bug also exists in pokegold and pokecrystal.
   DisplayOptionMenu_:
 +
 +   call JoypadLowSensitivity
-    call InitOptions
+    call InitOptionsMenu
 ```
 
 ## Battle Transitions Fail to Account for Scripted Battles
