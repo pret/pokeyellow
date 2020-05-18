@@ -1,5 +1,5 @@
 DisplayOptionMenu_:
-	call InitOptions
+	call InitOptionsMenu
 .optionMenuLoop
 	call JoypadLowSensitivity
 	ld a, [hJoy5]
@@ -404,7 +404,7 @@ OptionsMenu_UpdateCursorPosition:
 	ld [hl], "▶"
 	ret
 
-InitOptions:
+InitOptionsMenu:
 	coord hl, 0, 0
 	lb bc, SCREEN_HEIGHT - 2, SCREEN_WIDTH - 2
 	call TextBoxBorder
