@@ -1,18 +1,19 @@
-SFX_Save_3_Ch1:
-	duty 2
-	unknownsfx0x20 3, 228, 0, 6
-	unknownsfx0x20 3, 228, 128, 6
-	unknownsfx0x20 3, 228, 192, 6
-	unknownsfx0x20 3, 228, 0, 7
-	unknownsfx0x20 15, 242, 224, 7
-	endchannel
+SFX_Save_3_Ch5:
+	duty_cycle 2
+	square_note 3, 14, 4, 1536
+	square_note 3, 14, 4, 1664
+	square_note 3, 14, 4, 1728
+	square_note 3, 14, 4, 1792
+	square_note 15, 15, 2, 2016
+	sound_ret
 
-SFX_Save_3_Ch2:
-	duty 2
-	unknownsfx0x20 3, 8, 0, 0
-	unknownsfx0x20 3, 196, 1, 6
-	unknownsfx0x20 3, 196, 129, 6
-	unknownsfx0x20 3, 196, 193, 6
-	unknownsfx0x20 3, 196, 1, 7
-	unknownsfx0x20 15, 210, 225, 7
-	endchannel
+
+SFX_Save_3_Ch6:
+	duty_cycle 2
+	square_note 3, 0, 8, 0
+	square_note 3, 12, 4, 1537
+	square_note 3, 12, 4, 1665
+	square_note 3, 12, 4, 1729
+	square_note 3, 12, 4, 1793
+	square_note 15, 13, 2, 2017
+	sound_ret

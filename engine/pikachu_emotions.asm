@@ -281,9 +281,9 @@ MapSpecificPikachuExpression:
 	ldpikaemotion a, PikachuEmotion28
 	jr c, .play_emotion
 	ld a, [wCurMap]
-	cp POKEMONTOWER_1
+	cp POKEMON_TOWER_1F
 	jr c, .notInLavenderTower
-	cp POKEMONTOWER_7 + 1
+	cp POKEMON_TOWER_7F + 1
 	ldpikaemotion a, PikachuEmotion22
 	jr c, .play_emotion
 .notInLavenderTower

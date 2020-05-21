@@ -1,10 +1,10 @@
-SFX_Vine_Whip_Ch1:
-	unknownnoise0x20 1, 194, 51
-	unknownnoise0x20 2, 242, 33
-	unknownnoise0x20 1, 226, 51
-	unknownnoise0x20 1, 194, 50
-	unknownnoise0x20 1, 146, 18
-	unknownnoise0x20 1, 178, 49
-	unknownnoise0x20 12, 145, 16
-	unknownnoise0x20 8, 242, 65
-	endchannel
+SFX_Vine_Whip_Ch8:
+	noise_note 1, 12, 2, 51
+	noise_note 2, 15, 2, 33
+	noise_note 1, 14, 2, 51
+	noise_note 1, 12, 2, 50
+	noise_note 1, 9, 2, 18
+	noise_note 1, 11, 2, 49
+	noise_note 12, 9, 1, 16
+	noise_note 8, 15, 2, 65
+	sound_ret

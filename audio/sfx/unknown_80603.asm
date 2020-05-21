@@ -1,22 +1,23 @@
-SFX_80603_4_Ch4:
-	dutycycle 165
-	unknownsfx0x20 4, 225, 0, 7
-	unknownsfx0x20 4, 242, 128, 7
-	unknownsfx0x20 2, 146, 64, 7
-	unknownsfx0x20 8, 225, 0, 6
-	endchannel
+SFX_Unknown_80603_Ch5:
+	duty_cycle_pattern 2, 2, 1, 1
+	square_note 4, 14, 1, 1792
+	square_note 4, 15, 2, 1920
+	square_note 2, 9, 2, 1856
+	square_note 8, 14, 1, 1536
+	sound_ret
 
-SFX_80616_4_Ch5:
-	dutycycle 10
-	unknownsfx0x20 4, 177, 225, 6
-	unknownsfx0x20 3, 194, 225, 6
-	unknownsfx0x20 3, 98, 129, 6
-	unknownsfx0x20 8, 177, 225, 5
-	endchannel
 
-SFX_80629_4_Ch7:
-	unknownnoise0x20 2, 97, 50
-	unknownnoise0x20 2, 97, 33
-	unknownnoise0x20 8, 97, 17
-	endchannel
+SFX_Unknown_80603_Ch6:
+	duty_cycle_pattern 0, 0, 2, 2
+	square_note 4, 11, 1, 1761
+	square_note 3, 12, 2, 1761
+	square_note 3, 6, 2, 1665
+	square_note 8, 11, 1, 1505
+	sound_ret
 
+
+SFX_Unknown_80603_Ch8:
+	noise_note 2, 6, 1, 50
+	noise_note 2, 6, 1, 33
+	noise_note 8, 6, 1, 17
+	sound_ret

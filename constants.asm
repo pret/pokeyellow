@@ -1,4 +1,5 @@
 INCLUDE "macros.asm"
+INCLUDE "charmap.asm"
 
 INCLUDE "hram.asm"
 INCLUDE "vram.asm"
@@ -28,6 +29,5 @@ INCLUDE "constants/music_constants.asm"
 INCLUDE "constants/tilesets.asm"
 INCLUDE "constants/starter_mons.asm"
 INCLUDE "constants/event_constants.asm"
-INCLUDE "constants/event_macros.asm"
 INCLUDE "constants/text_constants.asm"
 INCLUDE "constants/pikachu_emotion_constants.asm"

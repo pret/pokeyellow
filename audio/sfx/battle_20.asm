@@ -1,4 +1,4 @@
-SFX_Battle_20_Ch1:
-	unknownnoise0x20 12, 241, 84
-	unknownnoise0x20 8, 241, 100
-	endchannel
+SFX_Battle_20_Ch8:
+	noise_note 12, 15, 1, 84
+	noise_note 8, 15, 1, 100
+	sound_ret

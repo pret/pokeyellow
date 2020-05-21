@@ -1,9 +1,9 @@
-SFX_Healing_Machine_1_Ch1:
-	duty 2
-	unknownsfx0x10 44
-	unknownsfx0x20 4, 242, 0, 5
-	unknownsfx0x10 34
-	unknownsfx0x20 2, 241, 0, 5
-	unknownsfx0x10 8
-	unknownsfx0x20 1, 0, 0, 0
-	endchannel
+SFX_Healing_Machine_1_Ch5:
+	duty_cycle 2
+	pitch_sweep 2, -4
+	square_note 4, 15, 2, 1280
+	pitch_sweep 2, 2
+	square_note 2, 15, 1, 1280
+	pitch_sweep 0, 8
+	square_note 1, 0, 0, 0
+	sound_ret

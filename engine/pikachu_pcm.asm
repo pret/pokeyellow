@@ -77,10 +77,10 @@ PlayPikachuSoundClip::
 	and $bb
 	ld [rNR51], a
 	xor a
-	ld [wChannelSoundIDs+CH4], a
-	ld [wChannelSoundIDs+CH5], a
-	ld [wChannelSoundIDs+CH6], a
-	ld [wChannelSoundIDs+CH7], a
+	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + Ch6], a
+	ld [wChannelSoundIDs + Ch7], a
+	ld [wChannelSoundIDs + Ch8], a
 	ld a, [H_LOADEDROMBANK]
 	ei
 	ret

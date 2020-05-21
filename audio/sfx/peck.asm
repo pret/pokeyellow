@@ -1,3 +1,3 @@
-SFX_Peck_Ch1:
-	unknownnoise0x20 2, 161, 18
-	endchannel
+SFX_Peck_Ch8:
+	noise_note 2, 10, 1, 18
+	sound_ret

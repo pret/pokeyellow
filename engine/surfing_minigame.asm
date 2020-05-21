@@ -715,7 +715,7 @@ Func_f848d:
 	ld [wSurfingMinigameRadnessMeter], a
 	ld [wSurfingMinigameTrickFlags], a
 	xor a
-	ld [wChannelSoundIDs + CH7], a
+	ld [wChannelSoundIDs + Ch8], a
 	ld a, SFX_SURFING_JUMP
 	call PlaySound
 	ret
@@ -751,7 +751,7 @@ SurfingMinigame_ScoreCurrentWave:
 	ld a, $10
 	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	xor a
-	ld [wChannelSoundIDs + CH7], a
+	ld [wChannelSoundIDs + Ch8], a
 	ld a, SFX_SURFING_LAND
 	call PlaySound
 	ret
@@ -1010,7 +1010,7 @@ SurfingMinigame_TileInteraction:
 	call SufingMinigame_ReduceSpeedBy64
 .action_3
 	xor a
-	ld [wChannelSoundIDs + CH7], a
+	ld [wChannelSoundIDs + Ch8], a
 	ld a, SFX_SURFING_CRASH
 	call PlaySound
 	and a

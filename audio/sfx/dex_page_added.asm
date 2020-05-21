@@ -1,15 +1,15 @@
-SFX_Dex_Page_Added_Ch1:
-	duty 2
-	unknownsfx0x10 68
-	unknownsfx0x20 15, 240, 240, 4
-	unknownsfx0x10 23
-	unknownsfx0x20 15, 242, 80, 6
-	unknownsfx0x10 8
-	endchannel
+SFX_Dex_Page_Added_Ch5:
+	duty_cycle 2
+	pitch_sweep 4, 4
+	square_note 15, 15, 0, 1264
+	pitch_sweep 1, 7
+	square_note 15, 15, 2, 1616
+	pitch_sweep 0, 8
+	sound_ret
 
 
-SFX_Dex_Page_Added_Ch2:
-	duty 2
-	unknownsfx0x20 15, 146, 0, 6
-	unknownsfx0x20 15, 146, 130, 7
-	endchannel
+SFX_Dex_Page_Added_Ch6:
+	duty_cycle 2
+	square_note 15, 9, 2, 1536
+	square_note 15, 9, 2, 1922
+	sound_ret

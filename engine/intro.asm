@@ -1,6 +1,14 @@
-MOVE_GENGAR_RIGHT   EQU $00
-MOVE_GENGAR_LEFT    EQU $01
-MOVE_NIDORINO_RIGHT EQU $ff
+const_value = -1
+	const MOVE_NIDORINO_RIGHT
+	const MOVE_GENGAR_RIGHT
+	const MOVE_GENGAR_LEFT
+
+ANIMATION_END EQU 80
+
+const_value = 3
+	const GENGAR_INTRO_TILES1
+	const GENGAR_INTRO_TILES2
+	const GENGAR_INTRO_TILES3
 
 PlayIntro:
 	xor a
@@ -32,7 +40,7 @@ InitIntroNidorinoOAM:
 	ld [hli], a ; X
 	ld a, d
 	ld [hli], a ; tile
-	ld a, $80
+	ld a, OAM_BEHIND_BG
 	ld [hli], a ; attributes
 	inc d
 	dec c
@@ -47,7 +55,7 @@ InitIntroNidorinoOAM:
 
 IntroClearScreen:
 	ld hl, vBGMap1
-	ld bc, $240
+	ld bc, BG_MAP_WIDTH * SCREEN_HEIGHT
 	jr IntroClearCommon
 
 IntroClearMiddleOfScreen:
@@ -56,7 +64,7 @@ IntroClearMiddleOfScreen:
 	ld bc, SCREEN_WIDTH * 10
 
 IntroClearCommon:
-	ld [hl], $0
+	ld [hl], 0
 	inc hl
 	dec bc
 	ld a, b
@@ -65,7 +73,7 @@ IntroClearCommon:
 	ret
 
 IntroPlaceBlackTiles:
-	ld a, $1
+	ld a, 1
 .loop
 	ld [hli], a
 	dec c
@@ -80,7 +88,7 @@ PlayShootingStar:
 	ld b, SET_PAL_GAME_FREAK_INTRO
 	call RunPaletteCommand
 	callba LoadCopyrightAndTextBoxTiles
-	ld a, %11100100
+	ldPal a, BLACK, DARK_GRAY, LIGHT_GRAY, WHITE
 	ld [rBGP], a
 	call UpdateGBCPal_BGP
 	ld c, 180
@@ -138,10 +146,10 @@ IntroDrawBlackBars:
 	ld c, SCREEN_WIDTH * 4
 	call IntroPlaceBlackTiles
 	ld hl, vBGMap1
-	ld c, $80
+	ld c,  BG_MAP_WIDTH * 4
 	call IntroPlaceBlackTiles
-	ld hl, vBGMap1 + $1c0
-	ld c, $80
+	ld hl, vBGMap1 + BG_MAP_WIDTH * 14
+	ld c,  BG_MAP_WIDTH * 4
 	jp IntroPlaceBlackTiles
 
 EmptyFunc4:
@@ -150,5 +158,7 @@ EmptyFunc4:
 GameFreakIntro:
 	INCBIN "gfx/gamefreak_intro.2bpp"
 	INCBIN "gfx/gamefreak_logo.2bpp"
-	ds $10 ; blank tile
+	rept 16
+	db $00 ; blank tile
+	endr
 GameFreakIntroEnd:

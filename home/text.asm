@@ -1,5 +1,5 @@
 TextBoxBorder::
-; Draw a cxb text box at hl.
+; Draw a c×b text box at hl.
 
 	; top row
 	push hl
@@ -11,7 +11,7 @@ TextBoxBorder::
 	ld [hl], a
 	pop hl
 
-	ld de, 20
+	ld de, SCREEN_WIDTH
 	add hl, de
 
 	; middle rows
@@ -24,7 +24,7 @@ TextBoxBorder::
 	ld [hl], "│"
 	pop hl
 
-	ld de, 20
+	ld de, SCREEN_WIDTH
 	add hl, de
 	dec b
 	jr nz, .next
@@ -257,7 +257,7 @@ Char58:: ; prompt
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .ok
-	ld a, $EE
+	ld a, "▼"
 	Coorda 18, 16
 .ok
 	call ProtectedDelay3
@@ -275,7 +275,7 @@ Char58Text::
 
 Char51:: ; para
 	push de
-	ld a, $EE
+	ld a, "▼"
 	Coorda 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
@@ -297,7 +297,7 @@ Char49::
 
 .Char49
 	push de
-	ld a, $EE
+	ld a, "▼"
 	Coorda 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
@@ -313,7 +313,7 @@ Char49::
 	jp PlaceNextChar_inc
 
 Char4B::
-	ld a, $EE
+	ld a, "▼"
 	Coorda 18, 16
 	call ProtectedDelay3
 	push de
@@ -330,23 +330,27 @@ Char4C::
 	pop de
 	jp PlaceNextChar_inc
 
+; move both rows of text in the normal text box up one row
+; always called twice in a row
+; first time, copy the two rows of text to the "in between" rows that are usually emtpy
+; second time, copy the bottom row of text into the top row of text
 ScrollTextUpOneLine::
-	coord hl, 0, 14
-	coord de, 0, 13
-	ld b, 60
-.next
+	coord hl, 0, 14 ; top row of text
+	coord de, 0, 13 ; empty line above text
+	ld b, SCREEN_WIDTH * 3
+.copyText
 	ld a, [hli]
 	ld [de], a
 	inc de
 	dec b
-	jr nz, .next
+	jr nz, .copyText
 	coord hl, 1, 16
 	ld a, " "
 	ld b, SCREEN_WIDTH - 2
-.next2
+.clearText
 	ld [hli], a
 	dec b
-	jr nz, .next2
+	jr nz, .clearText
 
 	; wait five frames
 	ld b, 5
@@ -372,22 +376,22 @@ TextCommandProcessor::
 	xor e
 	ld [wLetterPrintingDelayFlags], a
 	ld a, c
-	ld [wTextDestinationTileAddrBuffer], a
+	ld [wTextDest], a
 	ld a, b
-	ld [wTextDestinationTileAddrBuffer + 1], a
+	ld [wTextDest + 1], a
 
 NextTextCommand::
 	ld a, [hli]
-	cp a, "@" ; terminator
+	cp "@" ; terminator
 	jr nz, .doTextCommand
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	ret
 .doTextCommand
 	push hl
-	cp a, $17
+	cp $17
 	jp z, TextCommand17
-	cp a, $0e
+	cp $0e
 	jp nc, TextCommand0B ; if a != 0x17 and a >= 0xE, go to command 0xB
 ; if a < 0xE, use a jump table
 	ld hl, TextCommandJumpTable
@@ -483,10 +487,10 @@ TextCommand02::
 TextCommand03::
 	pop hl
 	ld a, [hli]
-	ld [wTextDestinationTileAddrBuffer], a
+	ld [wTextDest], a
 	ld c, a
 	ld a, [hli]
-	ld [wTextDestinationTileAddrBuffer + 1], a
+	ld [wTextDest + 1], a
 	ld b, a
 	jp NextTextCommand
 
@@ -503,9 +507,9 @@ TextCommand05::
 ; (no arguments)
 TextCommand06::
 	ld a, [wLinkState]
-	cp a, LINK_STATE_BATTLING
+	cp LINK_STATE_BATTLING
 	jp z, TextCommand0D
-	ld a, $ee ; down arrow
+	ld a, "▼"
 	Coorda 18, 16 ; place down arrow in lower right corner of dialogue text box
 	push bc
 	call ManualTextScroll ; blink arrow and wait for A or B to be pressed
@@ -552,10 +556,10 @@ TextCommand09::
 	ld h, b
 	ld l, c
 	ld b, a
-	and a, $0f
+	and $0f
 	ld c, a
 	ld a, b
-	and a, $f0
+	and $f0
 	swap a
 	set BIT_LEFT_ALIGN, a
 	ld b, a
@@ -572,7 +576,7 @@ TextCommand0A::
 	push bc
 	call Joypad
 	ld a, [hJoyHeld]
-	and a, A_BUTTON | B_BUTTON
+	and A_BUTTON | B_BUTTON
 	jr nz, .skipDelay
 	ld c, 30
 	call DelayFrames
@@ -599,11 +603,11 @@ TextCommand0B::
 	inc hl
 	jr .loop
 .matchFound
-	cp a, $14
+	cp $14
 	jr z, .pokemonCry
-	cp a, $15
+	cp $15
 	jr z, .pokemonCry
-	cp a, $16
+	cp $16
 	jr z, .pokemonCry
 	ld a, [hl]
 	call PlaySound
@@ -644,13 +648,13 @@ TextCommand0C::
 	ld h, b
 	ld l, c
 .loop
-	ld a, $75 ; ellipsis
+	ld a, "…"
 	ld [hli], a
 	push de
 	call Joypad
 	pop de
 	ld a, [hJoyHeld] ; joypad state
-	and a, A_BUTTON | B_BUTTON
+	and A_BUTTON | B_BUTTON
 	jr nz, .skipDelay ; if so, skip the delay
 	ld c, 10
 	call DelayFrames

@@ -1,21 +1,21 @@
-SFX_Thunderbolt_Ch1:
-	dutycycle 43
-	unknownsfx0x20 3, 241, 240, 7
-	unknownsfx0x20 4, 242, 0, 2
-	loopchannel 8, SFX_Thunderbolt_Ch1
-	endchannel
+SFX_Battle_2F_Ch5:
+	duty_cycle_pattern 0, 2, 2, 3
+	square_note 3, 15, 1, 2032
+	square_note 4, 15, 2, 512
+	sound_loop 8, SFX_Battle_2F_Ch5
+	sound_ret
 
 
-SFX_Thunderbolt_Ch2:
-	dutycycle 179
-	unknownsfx0x20 4, 226, 2, 2
-	unknownsfx0x20 4, 225, 226, 7
-	loopchannel 9, SFX_Thunderbolt_Ch2
-	endchannel
+SFX_Battle_2F_Ch6:
+	duty_cycle_pattern 2, 3, 0, 3
+	square_note 4, 14, 2, 514
+	square_note 4, 14, 1, 2018
+	sound_loop 9, SFX_Battle_2F_Ch6
+	sound_ret
 
 
-SFX_Thunderbolt_Ch3:
-	unknownnoise0x20 4, 255, 67
-	unknownnoise0x20 4, 242, 68
-	loopchannel 9, SFX_Thunderbolt_Ch3
-	endchannel
+SFX_Battle_2F_Ch8:
+	noise_note 4, 15, -7, 67
+	noise_note 4, 15, 2, 68
+	sound_loop 9, SFX_Battle_2F_Ch8
+	sound_ret

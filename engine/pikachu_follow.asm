@@ -188,9 +188,9 @@ SetPikachuSpawnOutside::
 	jr z, .oaks_lab
 	cp ROUTE_22_GATE
 	jr z, .route_22_gate
-	cp MT_MOON_2
+	cp MT_MOON_B1F
 	jr z, .mt_moon_2
-	cp ROCK_TUNNEL_1
+	cp ROCK_TUNNEL_1F
 	jr z, .rock_tunnel_1
 	ld a, [wCurMap]
 	ld hl, Pointer_fc64b
@@ -235,7 +235,7 @@ SetPikachuSpawnOutside::
 	ret
 
 Pointer_fc64b::
-	db VICTORY_ROAD_2
+	db VICTORY_ROAD_2F
 	db ROUTE_7_GATE
 	db ROUTE_8_GATE
 	db ROUTE_16_GATE_1F
@@ -245,20 +245,20 @@ Pointer_fc64b::
 	db $ff
 
 Pointer_fc653::
-	db VIRIDIAN_FOREST_EXIT
-	db CERULEAN_HOUSE_2
-	db TRASHED_HOUSE
+	db VIRIDIAN_FOREST_NORTH_GATE
+	db CERULEAN_BADGE_HOUSE
+	db CERULEAN_TRASHED_HOUSE
 	db VERMILION_DOCK
-	db CELADON_MANSION_1
+	db CELADON_MANSION_1F
 	db ROUTE_2_GATE
-	db FUCHSIA_HOUSE_3
+	db FUCHSIA_GOOD_ROD_HOUSE
 	db $ff
 
 SetPikachuSpawnWarpPad::
 	ld a, [wCurMap]
-	cp VIRIDIAN_FOREST_EXIT
+	cp VIRIDIAN_FOREST_NORTH_GATE
 	jr z, .viridian_forest_exit
-	cp VIRIDIAN_FOREST_ENTRANCE
+	cp VIRIDIAN_FOREST_SOUTH_GATE
 	jr z, .viridian_forest_entrance
 	ld a, [wCurMap]
 	ld hl, Pointer_fc68e
@@ -290,16 +290,16 @@ SetPikachuSpawnWarpPad::
 
 Pointer_fc68e::
 	db VIRIDIAN_FOREST
-	db SAFARI_ZONE_REST_HOUSE_1
-	db SAFARI_ZONE_REST_HOUSE_2
-	db SAFARI_ZONE_REST_HOUSE_3
-	db SAFARI_ZONE_REST_HOUSE_4
+	db SAFARI_ZONE_CENTER_REST_HOUSE
+	db SAFARI_ZONE_WEST_REST_HOUSE
+	db SAFARI_ZONE_EAST_REST_HOUSE
+	db SAFARI_ZONE_NORTH_REST_HOUSE
 	db SAFARI_ZONE_SECRET_HOUSE
 	db SILPH_CO_ELEVATOR
 	db CELADON_MART_ELEVATOR
-	db CINNABAR_LAB_2
-	db CINNABAR_LAB_3
-	db CINNABAR_LAB_4
+	db CINNABAR_LAB_TRADE_ROOM
+	db CINNABAR_LAB_METRONOME_ROOM
+	db CINNABAR_LAB_FOSSIL_ROOM
 	db $ff
 
 SetPikachuSpawnBackOutside::

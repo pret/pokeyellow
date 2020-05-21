@@ -4,21 +4,22 @@ Audio3_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
 	cp $ff
-	jp z, Audio3_7d18e
-	cp $c2
-	jp z, Audio3_7d12d
-	jp c, Audio3_7d12d
+	jp z, .stopAllAudio
+	cp MAX_SFX_ID_3
+	jp z, .playSfx
+	jp c, .playSfx
 	cp $fd
-	jr z, .asm_7d127
-	jp nc, Audio3_7d12d
-.asm_7d127
-	call InitMusicVariables
-	jp Audio3_7d192
+	jr z, .playMusic
+	jp nc, .playSfx
 
-Audio3_7d12d:
+.playMusic
+	call InitMusicVariables
+	jp .playSoundCommon
+
+.playSfx
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -33,13 +34,13 @@ Audio3_7d12d:
 	rlca
 	rlca
 	ld c, a
-.asm_7d146
+.sfxChannelLoop
 	ld d, c
 	ld a, c
 	add a
 	add c
 	ld c, a
-	ld b, $0
+	ld b, 0
 	ld a, [wSfxHeaderPointer]
 	ld h, a
 	ld a, [wSfxHeaderPointer + 1]
@@ -48,48 +49,48 @@ Audio3_7d12d:
 	ld c, d
 	ld a, [hl]
 	and $f
-	ld e, a
-	ld d, $0
+	ld e, a ; software channel ID
+	ld d, 0
 	ld hl, wChannelSoundIDs
 	add hl, de
 	ld a, [hl]
 	and a
-	jr z, .asm_7d182
+	jr z, .playChannel
 	ld a, e
-	cp $7
-	jr nz, .asm_7d179
+	cp Ch8
+	jr nz, .notNoiseChannel
 	ld a, [wSoundID]
-	cp $14
-	jr nc, .asm_7d172
+	cp NOISE_INSTRUMENTS_END
+	jr nc, .notNoiseInstrument
 	ret
-.asm_7d172
+.notNoiseInstrument
 	ld a, [hl]
-	cp $14
-	jr z, .asm_7d182
-	jr c, .asm_7d182
-.asm_7d179
+	cp NOISE_INSTRUMENTS_END
+	jr z, .playChannel
+	jr c, .playChannel
+.notNoiseChannel
 	ld a, [wSoundID]
 	cp [hl]
-	jr z, .asm_7d182
-	jr c, .asm_7d182
+	jr z, .playChannel
+	jr c, .playChannel
 	ret
-.asm_7d182
+.playChannel
 	call InitSFXVariables
 	ld a, c
 	and a
-	jp z, Audio3_7d192
+	jp z, .playSoundCommon
 	dec c
-	jp .asm_7d146
+	jp .sfxChannelLoop
 
-Audio3_7d18e:
+.stopAllAudio
 	call StopAllAudio
 	ret
 
-Audio3_7d192:
+.playSoundCommon
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -109,26 +110,26 @@ Audio3_7d192:
 	ld b, c
 	inc b
 	inc de
-	ld c, $0
-.asm_7d1b4
+	ld c, 0
+.commandPointerLoop
 	cp c
-	jr z, .asm_7d1bc
+	jr z, .next
 	inc c
 	inc hl
 	inc hl
-	jr .asm_7d1b4
-.asm_7d1bc
+	jr .commandPointerLoop
+.next
 	push af
 	push hl
 	push bc
-	ld b, $0
+	ld b, 0
 	ld c, a
-	cp $3
-	jr c, .asm_7d1cc
+	cp Ch4
+	jr c, .skipSettingFlag
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 2, [hl]
-.asm_7d1cc
+	set BIT_NOISE_OR_SFX, [hl]
+.skipSettingFlag
 	pop bc
 	pop hl
 	ld a, [de] ; get channel pointer
@@ -140,7 +141,7 @@ Audio3_7d192:
 	pop af
 	push hl
 	push bc
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wChannelSoundIDs
 	add hl, bc
@@ -154,37 +155,37 @@ Audio3_7d192:
 	and a
 	ld a, [de]
 	inc de
-	jr nz, .asm_7d1b4
+	jr nz, .commandPointerLoop
 	ld a, [wSoundID]
-	cp $14
-	jr nc, .asm_7d1f5
-	jr .asm_7d21f
-.asm_7d1f5
+	cp CRY_SFX_START
+	jr nc, .maybeCry
+	jr .done
+.maybeCry
 	ld a, [wSoundID]
-	cp $86
-	jr z, .asm_7d21f
-	jr c, .asm_7d200
-	jr .asm_7d21f
-.asm_7d200
-	ld hl, wChannelSoundIDs + CH4
+	cp CRY_SFX_END
+	jr z, .done
+	jr c, .cry
+	jr .done
+.cry
+	ld hl, wChannelSoundIDs + Ch5
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wChannelCommandPointers + CH6 * 2 ; sfx noise channel pointer
-	ld de, Noise3_endchannel
+	ld hl, wChannelCommandPointers + Ch7 * 2 ; sfx wave channel pointer
+	ld de, Audio3_CryRet
 	ld [hl], e
 	inc hl
-	ld [hl], d ; overwrite pointer to point to endchannel
+	ld [hl], d ; overwrite pointer to point to sound_ret
 	ld a, [wSavedVolume]
 	and a
-	jr nz, .asm_7d21f
+	jr nz, .done
 	ld a, [rNR50]
 	ld [wSavedVolume], a
 	ld a, $77
-	ld [rNR50], a
-.asm_7d21f
+	ld [rNR50], a ; full volume
+.done
 	ret
 
-Noise3_endchannel:
-	endchannel
+Audio3_CryRet:
+	sound_ret

@@ -1,25 +1,25 @@
-SFX_Psybeam_Ch1:
-	dutycycle 161
-	unknownsfx0x20 10, 241, 64, 6
-	unknownsfx0x20 10, 243, 128, 6
-	unknownsfx0x20 10, 242, 32, 6
-	loopchannel 4, SFX_Psybeam_Ch1
-	unknownsfx0x20 10, 241, 64, 6
-	endchannel
+SFX_Psybeam_Ch5:
+	duty_cycle_pattern 2, 2, 0, 1
+	square_note 10, 15, 1, 1600
+	square_note 10, 15, 3, 1664
+	square_note 10, 15, 2, 1568
+	sound_loop 4, SFX_Psybeam_Ch5
+	square_note 10, 15, 1, 1600
+	sound_ret
 
 
-SFX_Psybeam_Ch2:
-	dutycycle 179
-	unknownsfx0x20 10, 243, 113, 5
-	unknownsfx0x20 7, 227, 49, 5
-	unknownsfx0x20 10, 241, 81, 5
-	loopchannel 4, SFX_Psybeam_Ch2
-	unknownsfx0x20 10, 241, 113, 5
-	endchannel
+SFX_Psybeam_Ch6:
+	duty_cycle_pattern 2, 3, 0, 3
+	square_note 10, 15, 3, 1393
+	square_note 7, 14, 3, 1329
+	square_note 10, 15, 1, 1361
+	sound_loop 4, SFX_Psybeam_Ch6
+	square_note 10, 15, 1, 1393
+	sound_ret
 
 
-SFX_Psybeam_Ch3:
-	unknownnoise0x20 2, 209, 74
-	unknownnoise0x20 2, 210, 42
-	loopchannel 21, SFX_Psybeam_Ch3
-	endchannel
+SFX_Psybeam_Ch8:
+	noise_note 2, 13, 1, 74
+	noise_note 2, 13, 2, 42
+	sound_loop 21, SFX_Psybeam_Ch8
+	sound_ret

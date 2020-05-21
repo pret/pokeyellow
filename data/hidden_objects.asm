@@ -1,85 +1,85 @@
 HiddenObjectMaps:
-	dbw SILPH_CO_11F,           SilphCo11FHiddenObjects
-	dbw SILPH_CO_5F,            SilphCo5FHiddenObjects
-	dbw SILPH_CO_9F,            SilphCo9FHiddenObjects
-	dbw MANSION_2,              Mansion2HiddenObjects
-	dbw MANSION_3,              Mansion3HiddenObjects
-	dbw MANSION_4,              Mansion4HiddenObjects
-	dbw SAFARI_ZONE_WEST,       SafariZoneWestHiddenObjects
-	dbw UNKNOWN_DUNGEON_2,      UnknownDungeon2HiddenObjects
-	dbw UNKNOWN_DUNGEON_3,      UnknownDungeon3HiddenObjects
-	dbw UNUSED_MAP_6F,          UnusedMap6FHiddenObjects
-	dbw SEAFOAM_ISLANDS_3,      SeafoamIslands3HiddenObjects
-	dbw SEAFOAM_ISLANDS_4,      SeafoamIslands4HiddenObjects
-	dbw SEAFOAM_ISLANDS_5,      SeafoamIslands5HiddenObjects
-	dbw VIRIDIAN_FOREST,        ViridianForestHiddenObjects
-	dbw MT_MOON_3,              MtMoon3HiddenObjects
-	dbw SS_ANNE_10,             SSAnne10HiddenObjects
-	dbw SS_ANNE_6,              SSAnne6HiddenObjects
-	dbw UNDERGROUND_PATH_NS,    UndergroundPathNsHiddenObjects
-	dbw UNDERGROUND_PATH_WE,    UndergroundPathWeHiddenObjects
-	dbw ROCKET_HIDEOUT_1,       RocketHideout1HiddenObjects
-	dbw ROCKET_HIDEOUT_3,       RocketHideout3HiddenObjects
-	dbw ROCKET_HIDEOUT_4,       RocketHideout4HiddenObjects
-	dbw ROUTE_10,               Route10HiddenObjects
-	dbw ROCK_TUNNEL_POKECENTER, RockTunnelPokecenterHiddenObjects
-	dbw POWER_PLANT,            PowerPlantHiddenObjects
-	dbw ROUTE_11,               Route11HiddenObjects
-	dbw ROUTE_12,               Route12HiddenObjects
-	dbw ROUTE_13,               Route13HiddenObjects
-	dbw ROUTE_15_GATE_2F,       Route15Gate2FHiddenObjects
-	dbw ROUTE_17,               Route17HiddenObjects
-	dbw ROUTE_23,               Route23HiddenObjects
-	dbw VICTORY_ROAD_2,         VictoryRoad2HiddenObjects
-	dbw ROUTE_25,               Route25HiddenObjects
-	dbw BILLS_HOUSE,            BillsHouseHiddenObjects
-	dbw ROUTE_4,                Route4HiddenObjects
-	dbw MT_MOON_POKECENTER,     MtMoonPokecenterHiddenObjects
-	dbw ROUTE_9,                Route9HiddenObjects
-	dbw TRADE_CENTER,           TradeCenterHiddenObjects
-	dbw COLOSSEUM,              ColosseumHiddenObjects
-	dbw INDIGO_PLATEAU,         IndigoPlateauHiddenObjects
-	dbw INDIGO_PLATEAU_LOBBY,   IndigoPlateauLobbyHiddenObjects
-	dbw COPYCATS_HOUSE_2F,      CopycatsHouse2FHiddenObjects
-	dbw FIGHTING_DOJO,          FightingDojoHiddenObjects
-	dbw SAFFRON_GYM,            SaffronGymHiddenObjects
-	dbw SAFFRON_POKECENTER,     SaffronPokecenterHiddenObjects
-	dbw REDS_HOUSE_2F,          RedsHouse2FHiddenObjects
-	dbw BLUES_HOUSE,            BluesHouseHiddenObjects
-	dbw OAKS_LAB,               OaksLabHiddenObjects
-	dbw VIRIDIAN_CITY,          ViridianCityHiddenObjects
-	dbw VIRIDIAN_POKECENTER,    ViridianPokecenterHiddenObjects
-	dbw VIRIDIAN_SCHOOL,        ViridianSchoolHiddenObjects
-	dbw VIRIDIAN_GYM,           ViridianGymHiddenObjects
-	dbw MUSEUM_1F,              Museum1FHiddenObjects
-	dbw PEWTER_GYM,             PewterGymHiddenObjects
-	dbw PEWTER_POKECENTER,      PewterPokecenterHiddenObjects
-	dbw CERULEAN_CITY,          CeruleanCityHiddenObjects
-	dbw CERULEAN_POKECENTER,    CeruleanPokecenterHiddenObjects
-	dbw CERULEAN_GYM,           CeruleanGymHiddenObjects
-	dbw BIKE_SHOP,              BikeShopHiddenObjects
-	dbw UNKNOWN_DUNGEON_1,      UnknownDungeon1HiddenObjects
-	dbw LAVENDER_POKECENTER,    LavenderPokecenterHiddenObjects
-	dbw POKEMONTOWER_5,         Pokemontower5HiddenObjects
-	dbw LAVENDER_HOUSE_1,       LavenderHouse1HiddenObjects
-	dbw VERMILION_CITY,         VermilionCityHiddenObjects
-	dbw VERMILION_POKECENTER,   VermilionPokecenterHiddenObjects
-	dbw POKEMON_FAN_CLUB,       PokemonFanClubHiddenObjects
-	dbw VERMILION_GYM,          VermilionGymHiddenObjects
-	dbw CELADON_CITY,           CeladonCityHiddenObjects
-	dbw CELADON_HOTEL,          CeladonHotelHiddenObjects
-	dbw CELADON_MANSION_2,      CeladonMansion2HiddenObjects
-	dbw CELADON_MANSION_5,      CeladonMansion5HiddenObjects
-	dbw CELADON_POKECENTER,     CeladonPokecenterHiddenObjects
-	dbw CELADON_GYM,            CeladonGymHiddenObjects
-	dbw GAME_CORNER,            GameCornerHiddenObjects
-	dbw FUCHSIA_POKECENTER,     FuchsiaPokecenterHiddenObjects
-	dbw SAFARI_ZONE_ENTRANCE,   SafariZoneEntranceHiddenObjects
-	dbw FUCHSIA_GYM,            FuchsiaGymHiddenObjects
-	dbw MANSION_1,              Mansion1HiddenObjects
-	dbw CINNABAR_GYM,           CinnabarGymHiddenObjects
-	dbw CINNABAR_LAB_4,         CinnabarLab4HiddenObjects
-	dbw CINNABAR_POKECENTER,    CinnabarPokecenterHiddenObjects
+	dbw SILPH_CO_11F,                 SilphCo11FHiddenObjects
+	dbw SILPH_CO_5F,                  SilphCo5FHiddenObjects
+	dbw SILPH_CO_9F,                  SilphCo9FHiddenObjects
+	dbw POKEMON_MANSION_2F,           Mansion2HiddenObjects
+	dbw POKEMON_MANSION_3F,           Mansion3HiddenObjects
+	dbw POKEMON_MANSION_B1F,          Mansion4HiddenObjects
+	dbw SAFARI_ZONE_WEST,             SafariZoneWestHiddenObjects
+	dbw CERULEAN_CAVE_2F,             CeruleanCave2HiddenObjects
+	dbw CERULEAN_CAVE_B1F,            CeruleanCave3HiddenObjects
+	dbw UNUSED_MAP_6F,                UnusedMap6FHiddenObjects
+	dbw SEAFOAM_ISLANDS_B2F,          SeafoamIslands3HiddenObjects
+	dbw SEAFOAM_ISLANDS_B3F,          SeafoamIslands4HiddenObjects
+	dbw SEAFOAM_ISLANDS_B4F,          SeafoamIslands5HiddenObjects
+	dbw VIRIDIAN_FOREST,              ViridianForestHiddenObjects
+	dbw MT_MOON_B2F,                  MtMoon3HiddenObjects
+	dbw SS_ANNE_B1F_ROOMS,            SSAnne10HiddenObjects
+	dbw SS_ANNE_KITCHEN,              SSAnne6HiddenObjects
+	dbw UNDERGROUND_PATH_NORTH_SOUTH, UndergroundPathNsHiddenObjects
+	dbw UNDERGROUND_PATH_WEST_EAST,   UndergroundPathWeHiddenObjects
+	dbw ROCKET_HIDEOUT_B1F,           RocketHideout1HiddenObjects
+	dbw ROCKET_HIDEOUT_B3F,           RocketHideout3HiddenObjects
+	dbw ROCKET_HIDEOUT_B4F,           RocketHideout4HiddenObjects
+	dbw ROUTE_10,                     Route10HiddenObjects
+	dbw ROCK_TUNNEL_POKECENTER,       RockTunnelPokecenterHiddenObjects
+	dbw POWER_PLANT,                  PowerPlantHiddenObjects
+	dbw ROUTE_11,                     Route11HiddenObjects
+	dbw ROUTE_12,                     Route12HiddenObjects
+	dbw ROUTE_13,                     Route13HiddenObjects
+	dbw ROUTE_15_GATE_2F,             Route15Gate2FHiddenObjects
+	dbw ROUTE_17,                     Route17HiddenObjects
+	dbw ROUTE_23,                     Route23HiddenObjects
+	dbw VICTORY_ROAD_2F,              VictoryRoad2HiddenObjects
+	dbw ROUTE_25,                     Route25HiddenObjects
+	dbw BILLS_HOUSE,                  BillsHouseHiddenObjects
+	dbw ROUTE_4,                      Route4HiddenObjects
+	dbw MT_MOON_POKECENTER,           MtMoonPokecenterHiddenObjects
+	dbw ROUTE_9,                      Route9HiddenObjects
+	dbw TRADE_CENTER,                 TradeCenterHiddenObjects
+	dbw COLOSSEUM,                    ColosseumHiddenObjects
+	dbw INDIGO_PLATEAU,               IndigoPlateauHiddenObjects
+	dbw INDIGO_PLATEAU_LOBBY,         IndigoPlateauLobbyHiddenObjects
+	dbw COPYCATS_HOUSE_2F,            CopycatsHouse2FHiddenObjects
+	dbw FIGHTING_DOJO,                FightingDojoHiddenObjects
+	dbw SAFFRON_GYM,                  SaffronGymHiddenObjects
+	dbw SAFFRON_POKECENTER,           SaffronPokecenterHiddenObjects
+	dbw REDS_HOUSE_2F,                RedsHouse2FHiddenObjects
+	dbw BLUES_HOUSE,                  BluesHouseHiddenObjects
+	dbw OAKS_LAB,                     OaksLabHiddenObjects
+	dbw VIRIDIAN_CITY,                ViridianCityHiddenObjects
+	dbw VIRIDIAN_POKECENTER,          ViridianPokecenterHiddenObjects
+	dbw VIRIDIAN_SCHOOL_HOUSE,        ViridianSchoolHiddenObjects
+	dbw VIRIDIAN_GYM,                 ViridianGymHiddenObjects
+	dbw MUSEUM_1F,                    Museum1FHiddenObjects
+	dbw PEWTER_GYM,                   PewterGymHiddenObjects
+	dbw PEWTER_POKECENTER,            PewterPokecenterHiddenObjects
+	dbw CERULEAN_CITY,                CeruleanCityHiddenObjects
+	dbw CERULEAN_POKECENTER,          CeruleanPokecenterHiddenObjects
+	dbw CERULEAN_GYM,                 CeruleanGymHiddenObjects
+	dbw BIKE_SHOP,                    BikeShopHiddenObjects
+	dbw CERULEAN_CAVE_1F,             CeruleanCave1HiddenObjects
+	dbw LAVENDER_POKECENTER,          LavenderPokecenterHiddenObjects
+	dbw POKEMON_TOWER_5F,             Pokemontower5HiddenObjects
+	dbw MR_FUJIS_HOUSE,               LavenderHouse1HiddenObjects
+	dbw VERMILION_CITY,               VermilionCityHiddenObjects
+	dbw VERMILION_POKECENTER,         VermilionPokecenterHiddenObjects
+	dbw POKEMON_FAN_CLUB,             PokemonFanClubHiddenObjects
+	dbw VERMILION_GYM,                VermilionGymHiddenObjects
+	dbw CELADON_CITY,                 CeladonCityHiddenObjects
+	dbw CELADON_HOTEL,                CeladonHotelHiddenObjects
+	dbw CELADON_MANSION_2F,           CeladonMansion2HiddenObjects
+	dbw CELADON_MANSION_ROOF_HOUSE,   CeladonMansion5HiddenObjects
+	dbw CELADON_POKECENTER,           CeladonPokecenterHiddenObjects
+	dbw CELADON_GYM,                  CeladonGymHiddenObjects
+	dbw GAME_CORNER,                  GameCornerHiddenObjects
+	dbw FUCHSIA_POKECENTER,           FuchsiaPokecenterHiddenObjects
+	dbw SAFARI_ZONE_GATE,             SafariZoneEntranceHiddenObjects
+	dbw FUCHSIA_GYM,                  FuchsiaGymHiddenObjects
+	dbw POKEMON_MANSION_1F,           Mansion1HiddenObjects
+	dbw CINNABAR_GYM,                 CinnabarGymHiddenObjects
+	dbw CINNABAR_LAB_FOSSIL_ROOM,     CinnabarLab4HiddenObjects
+	dbw CINNABAR_POKECENTER,          CinnabarPokecenterHiddenObjects
 	db $ff
 
 ; format: y-coord, x-coord, text id/item id, object routine
@@ -119,11 +119,11 @@ SafariZoneWestHiddenObjects:
 	hidden_object   5,   6, REVIVE, HiddenItems
 	db $ff
 
-UnknownDungeon2HiddenObjects:
+CeruleanCave2HiddenObjects:
 	hidden_object  13,  16, PP_UP, HiddenItems
 	db $ff
 
-UnknownDungeon3HiddenObjects:
+CeruleanCave3HiddenObjects:
 	hidden_object  14,   8, PP_UP, HiddenItems
 	db $ff
 
@@ -372,7 +372,7 @@ BikeShopHiddenObjects:
 	hidden_object   5,   1, $d0, PrintNewBikeText
 	db $ff
 
-UnknownDungeon1HiddenObjects:
+CeruleanCave1HiddenObjects:
 	hidden_object   7,  18, PP_UP, HiddenItems
 	db $ff
 

@@ -1,7 +1,7 @@
-SFX_Go_Outside_3_Ch1:
-	unknownnoise0x20 2, 241, 84
-	unknownnoise0x20 12, 113, 35
-	unknownnoise0x20 2, 177, 84
-	unknownnoise0x20 12, 97, 35
-	unknownnoise0x20 6, 65, 84
-	endchannel
+SFX_Go_Outside_3_Ch8:
+	noise_note 2, 15, 1, 84
+	noise_note 12, 7, 1, 35
+	noise_note 2, 11, 1, 84
+	noise_note 12, 6, 1, 35
+	noise_note 6, 4, 1, 84
+	sound_ret

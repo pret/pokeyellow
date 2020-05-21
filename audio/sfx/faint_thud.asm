@@ -1,11 +1,11 @@
-SFX_Faint_Thud_Ch1:
-	unknownsfx0x20 15, 209, 0, 2
-	unknownsfx0x10 8
-	endchannel
+SFX_Faint_Thud_Ch5:
+	square_note 15, 13, 1, 512
+	pitch_sweep 0, 8
+	sound_ret
 
 
-SFX_Faint_Thud_Ch2:
-	unknownnoise0x20 4, 245, 51
-	unknownnoise0x20 8, 244, 34
-	unknownnoise0x20 15, 242, 33
-	endchannel
+SFX_Faint_Thud_Ch8:
+	noise_note 4, 15, 5, 51
+	noise_note 8, 15, 4, 34
+	noise_note 15, 15, 2, 33
+	sound_ret

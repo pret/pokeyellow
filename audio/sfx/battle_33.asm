@@ -1,18 +1,18 @@
-SFX_Battle_33_Ch1:
-	duty 2
-	unknownsfx0x20 6, 241, 0, 5
-	unknownsfx0x20 6, 241, 128, 5
-	unknownsfx0x20 6, 241, 0, 6
-	unknownsfx0x20 6, 241, 128, 6
-	unknownsfx0x20 8, 241, 0, 7
-	endchannel
+SFX_Battle_33_Ch5:
+	duty_cycle 2
+	square_note 6, 15, 1, 1280
+	square_note 6, 15, 1, 1408
+	square_note 6, 15, 1, 1536
+	square_note 6, 15, 1, 1664
+	square_note 8, 15, 1, 1792
+	sound_ret
 
 
-SFX_Battle_33_Ch2:
-	duty 3
-	unknownsfx0x20 6, 225, 16, 5
-	unknownsfx0x20 6, 225, 144, 5
-	unknownsfx0x20 6, 225, 16, 6
-	unknownsfx0x20 6, 225, 144, 6
-	unknownsfx0x20 8, 225, 16, 7
-	endchannel
+SFX_Battle_33_Ch6:
+	duty_cycle 3
+	square_note 6, 14, 1, 1296
+	square_note 6, 14, 1, 1424
+	square_note 6, 14, 1, 1552
+	square_note 6, 14, 1, 1680
+	square_note 8, 14, 1, 1808
+	sound_ret

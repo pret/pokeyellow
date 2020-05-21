@@ -1,316 +1,316 @@
-Music_GBPrinter_Ch3:
+Music_GBPrinter_Ch3::
 	tempo 256
-	notetype 12, 1, 0
+	note_type 12, 1, 0
 	octave 4
-	B_ 6
+	note B_, 6
 	octave 5
-	C# 1
+	note C#, 1
 	rest 1
 	octave 4
-	B_ 6
+	note B_, 6
 	octave 5
-	C# 1
+	note C#, 1
 	rest 1
 	octave 4
-	B_ 1
-	rest 1
-	octave 5
-	E_ 1
-	rest 1
-	D# 1
-	rest 1
-	C# 1
-	rest 1
-	octave 4
-	B_ 1
-	rest 1
-	A_ 1
-	rest 1
-	G# 1
-	rest 1
-	F# 1
-	rest 1
-.loop:
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	E_ 1
-	rest 1
-	B_ 1
-	rest 1
-	F# 1
-	rest 1
-	A_ 1
-	rest 1
-	F# 1
-	rest 1
-	A_ 1
-	rest 1
-	F# 1
+	note B_, 1
 	rest 1
 	octave 5
-	C# 1
-	C_ 1
-	C# 1
+	note E_, 1
+	rest 1
+	note D#, 1
+	rest 1
+	note C#, 1
 	rest 1
 	octave 4
-	F# 1
+	note B_, 1
 	rest 1
-	E_ 1
+	note A_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
-	E_ 1
+	note F#, 1
 	rest 1
-	G# 1
+.loop
+	note E_, 1
 	rest 1
-	E_ 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note F#, 1
+	rest 1
+	note A_, 1
+	rest 1
+	note F#, 1
+	rest 1
+	note A_, 1
+	rest 1
+	note F#, 1
 	rest 1
 	octave 5
-	E_ 1
-	D# 1
-	E_ 1
+	note C#, 1
+	note C_, 1
+	note C#, 1
 	rest 1
 	octave 4
-	D# 1
+	note F#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	B_ 1
+	note G#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	B_ 1
+	note G#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	B_ 1
+	octave 5
+	note E_, 1
+	note D#, 1
+	note E_, 1
 	rest 1
-	E_ 1
+	octave 4
+	note D#, 1
 	rest 1
-	B_ 1
+	note E_, 1
 	rest 1
-	E_ 1
+	note B_, 1
 	rest 1
-	B_ 1
+	note E_, 1
 	rest 1
-	E_ 1
+	note B_, 1
 	rest 1
-	B_ 1
+	note E_, 1
 	rest 1
-	E_ 1
+	note B_, 1
 	rest 1
-	B_ 1
+	note E_, 1
 	rest 1
-	E_ 1
+	note B_, 1
 	rest 1
-	B_ 1
+	note E_, 1
 	rest 1
-	F# 1
+	note B_, 1
 	rest 1
-	A_ 1
+	note E_, 1
 	rest 1
-	F# 1
+	note B_, 1
 	rest 1
-	A_ 1
+	note E_, 1
 	rest 1
-	B_ 1
+	note B_, 1
 	rest 1
-	A_ 1
+	note E_, 1
 	rest 1
-	G# 1
+	note B_, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	E_ 1
+	note A_, 1
 	rest 1
-	B_ 1
+	note F#, 1
 	rest 1
-	E_ 1
+	note A_, 1
 	rest 1
-	B_ 1
+	note B_, 1
 	rest 1
-	E_ 1
+	note A_, 1
+	rest 1
+	note G#, 1
+	rest 1
+	note F#, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note B_, 1
+	rest 1
+	note E_, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	C# 1
+	note C#, 1
 	rest 1
-	D_ 1
+	note D_, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	F# 1
+	note F#, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	F# 1
+	note F#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	G# 1
+	note G#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	G# 1
+	note G#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	C# 1
+	note C#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	C# 1
+	note C#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	B_ 1
-	A# 1
-	B_ 1
+	note B_, 1
+	note A#, 1
+	note B_, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	C# 1
+	note C#, 1
 	rest 1
-	D_ 1
+	note D_, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	F# 1
+	note F#, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	F# 1
+	note F#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	G# 1
+	note G#, 1
 	rest 1
-	E_ 1
+	note E_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	G# 1
+	note G#, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	C# 1
+	note C#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	F# 1
+	note F#, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	B_ 1
+	note B_, 1
 	rest 1
-	B_ 1
+	note B_, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	A_ 1
+	note A_, 1
 	rest 1
-	G# 1
+	note G#, 1
 	rest 1
 	octave 3
-	B_ 1
+	note B_, 1
 	rest 1
 	octave 4
-	C# 1
+	note C#, 1
 	rest 1
-	D# 1
+	note D#, 1
 	rest 1
-	loopchannel 0, .loop
+	sound_loop 0, .loop

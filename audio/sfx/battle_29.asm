@@ -1,18 +1,18 @@
-SFX_Earthquake_Ch1:
-	dutycycle 201
-	unknownsfx0x20 11, 243, 32, 1
-	unknownsfx0x20 9, 211, 80, 1
-	loopchannel 5, SFX_Earthquake_Ch1
-	unknownsfx0x20 8, 227, 48, 1
-	unknownsfx0x20 15, 194, 16, 1
-	endchannel
+SFX_Battle_29_Ch5:
+	duty_cycle_pattern 3, 0, 2, 1
+	square_note 11, 15, 3, 288
+	square_note 9, 13, 3, 336
+	sound_loop 5, SFX_Battle_29_Ch5
+	square_note 8, 14, 3, 304
+	square_note 15, 12, 2, 272
+	sound_ret
 
 
-SFX_Earthquake_Ch2:
-	unknownnoise0x20 10, 243, 53
-	unknownnoise0x20 14, 246, 69
-	loopchannel 4, SFX_Earthquake_Ch2
-	unknownnoise0x20 12, 244, 188
-	unknownnoise0x20 12, 245, 156
-	unknownnoise0x20 15, 244, 172
-	endchannel
+SFX_Battle_29_Ch8:
+	noise_note 10, 15, 3, 53
+	noise_note 14, 15, 6, 69
+	sound_loop 4, SFX_Battle_29_Ch8
+	noise_note 12, 15, 4, 188
+	noise_note 12, 15, 5, 156
+	noise_note 15, 15, 4, 172
+	sound_ret

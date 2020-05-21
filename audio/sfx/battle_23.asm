@@ -1,7 +1,7 @@
-SFX_Battle_23_Ch1:
-	unknownnoise0x20 2, 242, 67
-	unknownnoise0x20 4, 181, 50
-	unknownnoise0x20 9, 134, 49
-	unknownnoise0x20 7, 100, 0
-	unknownnoise0x20 15, 242, 85
-	endchannel
+SFX_Battle_23_Ch8:
+	noise_note 2, 15, 2, 67
+	noise_note 4, 11, 5, 50
+	noise_note 9, 8, 6, 49
+	noise_note 7, 6, 4, 0
+	noise_note 15, 15, 2, 85
+	sound_ret

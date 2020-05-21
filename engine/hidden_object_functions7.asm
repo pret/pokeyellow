@@ -70,7 +70,7 @@ SafariZoneGameOver:
 	ld a, SFX_SAFARI_ZONE_PA
 	call PlayMusic
 .waitForMusicToPlay
-	ld a, [wChannelSoundIDs + CH4]
+	ld a, [wChannelSoundIDs + Ch5]
 	cp SFX_SAFARI_ZONE_PA
 	jr nz, .waitForMusicToPlay
 	ld a, TEXT_SAFARI_GAME_OVER
@@ -78,12 +78,12 @@ SafariZoneGameOver:
 	call DisplayTextID
 	xor a
 	ld [wPlayerMovingDirection], a
-	ld a, SAFARI_ZONE_ENTRANCE
+	ld a, SAFARI_ZONE_GATE
 	ld [hWarpDestinationMap], a
 	ld a, $3
 	ld [wDestinationWarpID], a
 	ld a, $5
-	ld [wSafariZoneEntranceCurScript], a
+	ld [wSafariZoneGateCurScript], a
 	SetEvent EVENT_SAFARI_GAME_OVER
 	ld a, 1
 	ld [wSafariZoneGameOver], a
@@ -247,9 +247,9 @@ CinnabarGymQuiz_1ea92:
 	ret
 
 CinnabarGymQuizCorrectText:
-	db $0b
+	TX_SFX_ITEM_1
 	TX_FAR _CinnabarGymQuizCorrectText
-	db $06
+	TX_BLINK
 	TX_ASM
 
 	ld a, [$ffe0]
@@ -417,7 +417,7 @@ BillsHouseMonitorText:
 
 BillsHouseInitiatedText:
 	TX_FAR _BillsHouseInitiatedText
-	db $06
+	TX_BLINK
 	TX_ASM
 	call StopAllMusic
 	ld c, 16

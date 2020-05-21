@@ -1,13 +1,13 @@
-SFX_Turn_On_PC_1_Ch1:
-	duty 2
-	unknownsfx0x20 15, 242, 192, 7
-	unknownsfx0x20 15, 0, 0, 0
-	unknownsfx0x20 3, 161, 128, 7
-	unknownsfx0x20 3, 161, 0, 7
-	unknownsfx0x20 3, 161, 64, 7
-	unknownsfx0x20 3, 161, 0, 7
-	unknownsfx0x20 3, 161, 128, 7
-	unknownsfx0x20 3, 161, 0, 7
-	unknownsfx0x20 3, 161, 192, 7
-	unknownsfx0x20 8, 161, 0, 7
-	endchannel
+SFX_Turn_On_PC_1_Ch5:
+	duty_cycle 2
+	square_note 15, 15, 2, 1984
+	square_note 15, 0, 0, 0
+	square_note 3, 10, 1, 1920
+	square_note 3, 10, 1, 1792
+	square_note 3, 10, 1, 1856
+	square_note 3, 10, 1, 1792
+	square_note 3, 10, 1, 1920
+	square_note 3, 10, 1, 1792
+	square_note 3, 10, 1, 1984
+	square_note 8, 10, 1, 1792
+	sound_ret

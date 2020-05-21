@@ -1,6 +1,6 @@
-SFX_Slots_Stop_Wheel_Ch1:
-	duty 2
-	unknownsfx0x20 1, 242, 160, 6
-	unknownsfx0x20 1, 242, 224, 6
-	unknownsfx0x20 8, 241, 0, 7
-	endchannel
+SFX_Slots_Stop_Wheel_Ch5:
+	duty_cycle 2
+	square_note 1, 15, 2, 1696
+	square_note 1, 15, 2, 1760
+	square_note 8, 15, 1, 1792
+	sound_ret

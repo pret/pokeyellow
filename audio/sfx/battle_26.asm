@@ -1,9 +1,9 @@
-SFX_Battle_26_Ch1:
-	unknownnoise0x20 10, 255, 80
-	unknownnoise0x20 15, 255, 81
-	unknownnoise0x20 8, 242, 81
-	unknownnoise0x20 6, 255, 82
-	unknownnoise0x20 6, 255, 83
-	unknownnoise0x20 8, 255, 84
-	unknownnoise0x20 15, 242, 84
-	endchannel
+SFX_Battle_26_Ch8:
+	noise_note 10, 15, -7, 80
+	noise_note 15, 15, -7, 81
+	noise_note 8, 15, 2, 81
+	noise_note 6, 15, -7, 82
+	noise_note 6, 15, -7, 83
+	noise_note 8, 15, -7, 84
+	noise_note 15, 15, 2, 84
+	sound_ret

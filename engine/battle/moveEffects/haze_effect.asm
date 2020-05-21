@@ -12,6 +12,7 @@ HazeEffect_:
 	ld hl, wEnemyMonUnmodifiedAttack
 	ld de, wEnemyMonAttack
 	call ResetStats
+; cure non-volatile status, but only for the target
 	ld hl, wEnemyMonStatus
 	ld de, wEnemySelectedMove
 	ld a, [H_WHOSETURN]
@@ -46,15 +47,14 @@ HazeEffect_:
 	jp PrintText
 
 CureVolatileStatuses:
-; only cures statuses of the Pokemon not using Haze
-	res Confused, [hl]
+	res CONFUSED, [hl]
 	inc hl ; BATTSTATUS2
 	ld a, [hl]
-	; clear UsingXAccuracy, ProtectedByMist, GettingPumped, and Seeded statuses
-	and $ff ^((1 << UsingXAccuracy) | (1 << ProtectedByMist) | (1 << GettingPumped) | (1 << Seeded))
+	; clear USING_X_ACCURACY, PROTECTED_BY_MIST, GETTING_PUMPED, and SEEDED statuses
+	and $ff ^((1 << USING_X_ACCURACY) | (1 << PROTECTED_BY_MIST) | (1 << GETTING_PUMPED) | (1 << SEEDED))
 	ld [hli], a ; BATTSTATUS3
 	ld a, [hl]
-	and %11110000 | (1 << Transformed) ; clear Bad Poison, Reflect and Light Screen statuses
+	and %11110000 | (1 << TRANSFORMED) ; clear Bad Poison, Reflect and Light Screen statuses
 	ld [hl], a
 	ret
 

@@ -1,38 +1,38 @@
 CeladonPrizeMenu:
-	ld b,COIN_CASE
+	ld b, COIN_CASE
 	call IsItemInBag
-	jr nz,.havingCoinCase
-	ld hl,RequireCoinCaseTextPtr
+	jr nz, .havingCoinCase
+	ld hl, RequireCoinCaseTextPtr
 	jp PrintText
 .havingCoinCase
-	ld hl,wd730
-	set 6,[hl] ; disable letter-printing delay
-	ld hl,ExchangeCoinsForPrizesTextPtr
+	ld hl, wd730
+	set 6, [hl] ; disable letter-printing delay
+	ld hl, ExchangeCoinsForPrizesTextPtr
 	call PrintText
 ; the following are the menu settings
 	xor a
-	ld [wCurrentMenuItem],a
-	ld [wLastMenuItem],a
-	ld a,A_BUTTON | B_BUTTON
-	ld [wMenuWatchedKeys],a
-	ld a,$03
-	ld [wMaxMenuItem],a
-	ld a,$04
-	ld [wTopMenuItemY],a
-	ld a,$01
-	ld [wTopMenuItemX],a
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
+	ld a, A_BUTTON | B_BUTTON
+	ld [wMenuWatchedKeys], a
+	ld a, $03
+	ld [wMaxMenuItem], a
+	ld a, $04
+	ld [wTopMenuItemY], a
+	ld a, $01
+	ld [wTopMenuItemX], a
 	call PrintPrizePrice
 	coord hl, 0, 2
 	lb bc, 8, 16
 	call TextBoxBorder
 	call GetPrizeMenuId
 	call UpdateSprites
-	ld hl,WhichPrizeTextPtr
+	ld hl, WhichPrizeTextPtr
 	call PrintText
 	call HandleMenuInput ; menu choice handler
-	bit 1,a ; keypress = B (Cancel)
+	bit 1, a ; keypress = B (Cancel)
 	jr nz, .noChoice
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	cp 3 ; "NO,THANKS" choice
 	jr z, .noChoice
 	call HandlePrizeChoice
@@ -43,7 +43,7 @@ CeladonPrizeMenu:
 
 RequireCoinCaseTextPtr:
 	TX_FAR _RequireCoinCaseText
-	db $0D
+	TX_WAIT
 	db "@"
 
 ExchangeCoinsForPrizesTextPtr:
@@ -131,11 +131,11 @@ GetPrizeMenuId:
 ; reg. c:
 ; [low nybble] number of bytes
 ; [bit 765 = %100] space-padding (not zero-padding)
-	ld c,(1 << 7 | 2)
+	ld c, (1 << 7 | 2)
 ; Function $15CD displays BCD value (same routine
 ; used by text-command $02)
 	call PrintBCDNumber
-	ld de,wPrize2Price
+	ld de, wPrize2Price
 	coord hl, 13, 7
 	ld c, (1 << 7 | 2)
 	call PrintBCDNumber
@@ -161,8 +161,8 @@ PrintPrizePrice:
 	ld de, .SixSpacesString
 	call PlaceString
 	coord hl, 13, 1
-	ld de,wPlayerCoins
-	ld c, (1 << 7 | 2)
+	ld de, wPlayerCoins
+	ld c, %10000010
 	call PrintBCDNumber
 	ret
 
@@ -173,7 +173,7 @@ PrintPrizePrice:
 	db "      @"
 
 LoadCoinsToSubtract:
-	ld a,[wWhichPrize]
+	ld a, [wWhichPrize]
 	add a
 	ld d, 0
 	ld e, a
@@ -204,7 +204,7 @@ HandlePrizeChoice:
 .getMonName
 	call GetMonName
 .givePrize
-	ld hl,SoYouWantPrizeTextPtr
+	ld hl, SoYouWantPrizeTextPtr
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem] ; yes/no answer (Y=0, N=1)
@@ -216,7 +216,7 @@ HandlePrizeChoice:
 	ld a, [wWhichPrizeWindow]
 	cp $02
 	jr nz, .giveMon
-	ld a,[wd11e]
+	ld a, [wd11e]
 	ld b, a
 	ld a, 1
 	ld c, a
@@ -224,20 +224,20 @@ HandlePrizeChoice:
 	jr nc, .bagFull
 	jr .subtractCoins
 .giveMon
-	ld a,[wd11e]
-	ld [wcf91],a
+	ld a, [wd11e]
+	ld [wcf91], a
 	push af
 	call GetPrizeMonLevel
-	ld c,a
+	ld c, a
 	pop af
-	ld b,a
+	ld b, a
 	call GivePokemon
 
 ; If either the party or box was full, wait after displaying message.
 	push af
-	ld a,[wAddedToParty]
+	ld a, [wAddedToParty]
 	and a
-	call z,WaitForTextScrollButtonPress
+	call z, WaitForTextScrollButtonPress
 	pop af
 
 ; If the mon couldn't be given to the player (because both the party and box
@@ -246,19 +246,19 @@ HandlePrizeChoice:
 
 .subtractCoins
 	call LoadCoinsToSubtract
-	ld hl,hCoins + 1
-	ld de,wPlayerCoins + 1
-	ld c,$02 ; how many bytes
+	ld hl, hCoins + 1
+	ld de, wPlayerCoins + 1
+	ld c, $02 ; how many bytes
 	predef SubBCDPredef
 	jp PrintPrizePrice
 .bagFull
-	ld hl,PrizeRoomBagIsFullTextPtr
+	ld hl, PrizeRoomBagIsFullTextPtr
 	jp PrintText
 .notEnoughCoins
-	ld hl,SorryNeedMoreCoinsText
+	ld hl, SorryNeedMoreCoinsText
 	jp PrintText
 .printOhFineThen
-	ld hl,OhFineThenTextPtr
+	ld hl, OhFineThenTextPtr
 	jp PrintText
 
 UnknownPrizeData:
@@ -267,7 +267,7 @@ UnknownPrizeData:
 
 HereYouGoTextPtr:
 	TX_FAR _HereYouGoText
-	db $0D
+	TX_WAIT
 	db "@"
 
 SoYouWantPrizeTextPtr:
@@ -276,17 +276,17 @@ SoYouWantPrizeTextPtr:
 
 SorryNeedMoreCoinsText:
 	TX_FAR _SorryNeedMoreCoinsText
-	db $0D
+	TX_WAIT
 	db "@"
 
 PrizeRoomBagIsFullTextPtr:
 	TX_FAR _OopsYouDontHaveEnoughRoomText
-	db $0D
+	TX_WAIT
 	db "@"
 
 OhFineThenTextPtr:
 	TX_FAR _OhFineThenText
-	db $0D ; wait keypress (A/B) without blink
+	TX_WAIT
 	db "@"
 
 GetPrizeMonLevel:

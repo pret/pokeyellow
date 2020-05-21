@@ -73,11 +73,11 @@ CheckForNoBikingMusicMap::
 	ld a, [wCurMap]
 	cp ROUTE_23
 	jr z, .found
-	cp VICTORY_ROAD_1
+	cp VICTORY_ROAD_1F
 	jr z, .found
-	cp VICTORY_ROAD_2
+	cp VICTORY_ROAD_2F
 	jr z, .found
-	cp VICTORY_ROAD_3
+	cp VICTORY_ROAD_3F
 	jr z, .found
 	cp INDIGO_PLATEAU
 	jr z, .found
@@ -140,10 +140,10 @@ PlayMusic::
 
 Func_2223::
 	xor a
-	ld [wChannelSoundIDs + CH4], a
-	ld [wChannelSoundIDs + CH5], a
-	ld [wChannelSoundIDs + CH6], a
-	ld [wChannelSoundIDs + CH7], a
+	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + Ch6], a
+	ld [wChannelSoundIDs + Ch7], a
+	ld [wChannelSoundIDs + Ch8], a
 	ld [rNR10], a
 	ret
 
@@ -160,10 +160,10 @@ PlaySound::
 	and a
 	jr z, .next
 	xor a
-	ld [wChannelSoundIDs + CH4], a
-	ld [wChannelSoundIDs + CH5], a
-	ld [wChannelSoundIDs + CH6], a
-	ld [wChannelSoundIDs + CH7], a
+	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + Ch6], a
+	ld [wChannelSoundIDs + Ch7], a
+	ld [wChannelSoundIDs + Ch8], a
 .next
 	ld a, [wAudioFadeOutControl]
 	and a ; has a fade-out length been specified?

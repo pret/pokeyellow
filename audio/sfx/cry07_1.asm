@@ -1,21 +1,21 @@
-SFX_Cry07_1_Ch1:
-	dutycycle 240
-	unknownsfx0x20 4, 243, 224, 6
-	unknownsfx0x20 15, 228, 64, 6
-	unknownsfx0x20 8, 193, 32, 6
-	endchannel
+SFX_Cry07_1_Ch5:
+	duty_cycle_pattern 3, 3, 0, 0
+	square_note 4, 15, 3, 1760
+	square_note 15, 14, 4, 1600
+	square_note 8, 12, 1, 1568
+	sound_ret
 
 
-SFX_Cry07_1_Ch2:
-	dutycycle 10
-	unknownsfx0x20 3, 195, 131, 6
-	unknownsfx0x20 14, 180, 2, 6
-	unknownsfx0x20 8, 161, 1, 6
-	endchannel
+SFX_Cry07_1_Ch6:
+	duty_cycle_pattern 0, 0, 2, 2
+	square_note 3, 12, 3, 1667
+	square_note 14, 11, 4, 1538
+	square_note 8, 10, 1, 1537
+	sound_ret
 
 
-SFX_Cry07_1_Ch3:
-	unknownnoise0x20 4, 211, 92
-	unknownnoise0x20 15, 230, 76
-	unknownnoise0x20 8, 177, 92
-	endchannel
+SFX_Cry07_1_Ch8:
+	noise_note 4, 13, 3, 92
+	noise_note 15, 14, 6, 76
+	noise_note 8, 11, 1, 92
+	sound_ret
