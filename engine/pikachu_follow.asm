@@ -182,7 +182,7 @@ CalculatePikachuFacingDirection::
 	ld [wSpritePikachuStateData1FacingDirection], a
 	ret
 
-CalculatePikachuSpawnState1::
+SetPikachuSpawnOutside::
 	ld a, [wCurMap]
 	cp OAKS_LAB
 	jr z, .oaks_lab
@@ -254,7 +254,7 @@ Pointer_fc653::
 	db FUCHSIA_HOUSE_3
 	db $ff
 
-CalculatePikachuSpawnState2::
+SetPikachuSpawnWarpPad::
 	ld a, [wCurMap]
 	cp VIRIDIAN_FOREST_EXIT
 	jr z, .viridian_forest_exit
@@ -302,7 +302,7 @@ Pointer_fc68e::
 	db CINNABAR_LAB_4
 	db $ff
 
-CalculatePikachuSpawnState3::
+SetPikachuSpawnBackOutside::
 	ld a, [wCurMap]
 	cp ROUTE_22_GATE
 	jr z, .asm_fc6a7

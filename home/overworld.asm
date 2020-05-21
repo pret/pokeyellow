@@ -473,7 +473,7 @@ WarpFound2::
 	ld [wMapPalOffset], a
 	call GBFadeOutToBlack
 .notRockTunnel
-	callab CalculatePikachuSpawnState1
+	callab SetPikachuSpawnOutside
 	call PlayMapChangeSound
 	jr .done
 
@@ -500,11 +500,11 @@ WarpFound2::
 	ld hl, wd736
 	res 0, [hl]
 	res 1, [hl]
-	callab CalculatePikachuSpawnState2
+	callab SetPikachuSpawnWarpPad
 	jr .done
 
 .goBackOutside
-	callab CalculatePikachuSpawnState3
+	callab SetPikachuSpawnBackOutside
 	ld a, [wLastMap]
 	ld [wCurMap], a
 	call PlayMapChangeSound

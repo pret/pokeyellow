@@ -1,16 +1,16 @@
 DisplayOptionMenu_:
-	call Func_41f06
+	call InitOptionsMenu
 .optionMenuLoop
 	call JoypadLowSensitivity
 	ld a, [hJoy5]
 	and START | B_BUTTON
 	jr nz, .exitOptionMenu
-	call Func_41eb7
-	jr c, .asm_41c86
-	call Func_41c95
+	call OptionsControl
+	jr c, .dpadDelay
+	call GetOptionPointer
 	jr c, .exitOptionMenu
-.asm_41c86
-	call Func_41ee9
+.dpadDelay
+	call OptionsMenu_UpdateCursorPosition
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
@@ -18,7 +18,7 @@ DisplayOptionMenu_:
 .exitOptionMenu
 	ret
 
-Func_41c95:
+GetOptionPointer:
 	ld a, [wOptionsCursorLocation]
 	ld e, a
 	ld d, $0
@@ -28,7 +28,7 @@ Func_41c95:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp hl
+	jp hl ; jump to the function for the current highlighted option
 
 OptionMenuJumpTable:
 	dw OptionsMenu_TextSpeed
@@ -41,7 +41,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_Cancel
 
 OptionsMenu_TextSpeed:
-	call Func_41d07
+	call GetTextSpeed
 	ld a, [hJoy5]
 	bit 4, a ; right
 	jr nz, .pressedRight
@@ -96,7 +96,7 @@ MidText:
 SlowText:
 	db "SLOW@"
 
-Func_41d07:
+GetTextSpeed:
 	ld a, [wOptions]
 	and $f
 	cp $5
@@ -348,7 +348,7 @@ OptionsMenu_Cancel:
 	scf
 	ret
 
-Func_41eb7:
+OptionsControl:
 	ld hl, wOptionsCursorLocation
 	ld a, [hJoy5]
 	cp D_DOWN
@@ -388,7 +388,7 @@ Func_41eb7:
 	scf
 	ret
 
-Func_41ee9:
+OptionsMenu_UpdateCursorPosition:
 	coord hl, 1, 1
 	ld de, SCREEN_WIDTH
 	ld c, 16
@@ -404,7 +404,7 @@ Func_41ee9:
 	ld [hl], "▶"
 	ret
 
-Func_41f06:
+InitOptionsMenu:
 	coord hl, 0, 0
 	lb bc, SCREEN_HEIGHT - 2, SCREEN_WIDTH - 2
 	call TextBoxBorder
@@ -416,13 +416,13 @@ Func_41f06:
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 5
+	ld c, 5 ; the number of options to loop through
 .loop
 	push bc
-	call Func_41c95
+	call GetOptionPointer ; updates the next option
 	pop bc
 	ld hl, wOptionsCursorLocation
-	inc [hl]
+	inc [hl] ; moves the cursor for the highlighted option
 	dec c
 	jr nz, .loop
 	xor a
