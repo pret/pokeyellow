@@ -1,6 +1,5 @@
-SFX_Surfing_Crash_Ch7:
-	unknownnoise0x20 2, 241, 50
-	unknownnoise0x20 2, 0, 0
-	unknownnoise0x20 4, 230, 33
-	endchannel
-
+SFX_Surfing_Crash_Ch8:
+	noise_note 2, 15, 1, 50
+	noise_note 2, 0, 0, 0
+	noise_note 4, 14, 6, 33
+	sound_ret

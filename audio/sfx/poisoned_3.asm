@@ -1,8 +1,8 @@
-SFX_Poisoned_3_Ch1:
-	duty 0
-	unknownsfx0x10 20
-	unknownsfx0x20 4, 242, 0, 6
-	loopchannel 4, SFX_Poisoned_3_Ch1
-	unknownsfx0x20 15, 243, 0, 6
-	unknownsfx0x10 8
-	endchannel
+SFX_Poisoned_3_Ch5:
+	duty_cycle 0
+	pitch_sweep 1, 4
+	square_note 4, 15, 2, 1536
+	sound_loop 4, SFX_Poisoned_3_Ch5
+	square_note 15, 15, 3, 1536
+	pitch_sweep 0, 8
+	sound_ret

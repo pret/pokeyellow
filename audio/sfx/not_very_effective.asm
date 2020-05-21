@@ -1,6 +1,6 @@
-SFX_Not_Very_Effective_Ch1:
-	unknownnoise0x20 4, 143, 85
-	unknownnoise0x20 2, 244, 68
-	unknownnoise0x20 8, 244, 34
-	unknownnoise0x20 15, 242, 33
-	endchannel
+SFX_Not_Very_Effective_Ch8:
+	noise_note 4, 8, -7, 85
+	noise_note 2, 15, 4, 68
+	noise_note 8, 15, 4, 34
+	noise_note 15, 15, 2, 33
+	sound_ret

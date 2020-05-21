@@ -7,7 +7,7 @@
 ; $C1X* and $C2X* are used to denote wSpriteStateData1-wSpriteStateData1 + $ff and wSpriteStateData2 + $00-wSpriteStateData2 + $ff sprite slot
 ; fields, respectively, within loops. The X is the loop index.
 ; If there is an inner loop, Y is the inner loop index, i.e. $C1Y* and $C2Y*
-; denote fields of the sprite slots interated over in the inner loop.
+; denote fields of the sprite slots iterated over in the inner loop.
 _InitMapSprites:
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
@@ -308,10 +308,10 @@ GetSplitMapSpriteSetID:
 	ret c
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.
-	cp a, $f8
+	cp $f8
 	jr z, .route20
 	ld hl, SplitMapSpriteSets
-	and a, $0f
+	and $0f
 	dec a
 	add a
 	add a
@@ -321,7 +321,7 @@ GetSplitMapSpriteSetID:
 	inc h
 .noCarry
 	ld a, [hli] ; determines whether the map is split East/West or North/South
-	cp a, $01
+	cp $01
 	ld a, [hli] ; position of dividing line
 	ld b, a
 	jr z, .eastWestDivide
@@ -344,15 +344,15 @@ GetSplitMapSpriteSetID:
 .route20
 	ld hl, wXCoord
 	ld a, [hl]
-	cp a, $2b
+	cp $2b
 	ld a, $01
 	ret c
 	ld a, [hl]
-	cp a, $3e
+	cp $3e
 	ld a, $0a
 	ret nc
 	ld a, [hl]
-	cp a, $37
+	cp $37
 	ld b, $08
 	jr nc, .next
 	ld b, $0d

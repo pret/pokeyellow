@@ -1,4 +1,4 @@
-SFX_Super_Effective_Ch1:
-	unknownnoise0x20 4, 241, 52
-	unknownnoise0x20 15, 242, 100
-	endchannel
+SFX_Super_Effective_Ch8:
+	noise_note 4, 15, 1, 52
+	noise_note 15, 15, 2, 100
+	sound_ret

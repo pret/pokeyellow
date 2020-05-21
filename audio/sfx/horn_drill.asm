@@ -1,6 +1,6 @@
-SFX_Horn_Drill_Ch1:
-	unknownnoise0x20 3, 146, 49
-	unknownnoise0x20 3, 178, 50
-	unknownnoise0x20 3, 194, 51
-	unknownnoise0x20 8, 241, 84
-	endchannel
+SFX_Horn_Drill_Ch8:
+	noise_note 3, 9, 2, 49
+	noise_note 3, 11, 2, 50
+	noise_note 3, 12, 2, 51
+	noise_note 8, 15, 1, 84
+	sound_ret

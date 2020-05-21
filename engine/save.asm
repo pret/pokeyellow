@@ -131,37 +131,37 @@ LoadSAVIgnoreBadCheckSum:
 
 SaveSAV:
 	callba PrintSaveScreenText
-	ld c,10
+	ld c, 10
 	call DelayFrames
-	ld hl,WouldYouLikeToSaveText
+	ld hl, WouldYouLikeToSaveText
 	call SaveSAVConfirm
 	and a   ;|0 = Yes|1 = No|
 	ret nz
-	ld c,10
+	ld c, 10
 	call DelayFrames
-	ld a,[wSaveFileStatus]
+	ld a, [wSaveFileStatus]
 	cp $1
-	jr z,.save
+	jr z, .save
 	call SAVCheckRandomID
-	jr z,.save
-	ld hl,OlderFileWillBeErasedText
+	jr z, .save
+	ld hl, OlderFileWillBeErasedText
 	call SaveSAVConfirm
 	and a
 	ret nz
 .save
 	call SaveSAVtoSRAM
-	ld hl,SavingText
+	ld hl, SavingText
 	call PrintText
-	ld c,128
+	ld c, 128
 	call DelayFrames
-	ld hl,GameSavedText
+	ld hl, GameSavedText
 	call PrintText
 	ld c,10
 	call DelayFrames
 	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld c,30
+	ld c, 30
 	call DelayFrames
 	ret
 
@@ -169,10 +169,10 @@ SaveSAVConfirm:
 	call PrintText
 	coord hl, 0, 7
 	lb bc, 8, 1
-	ld a,TWO_OPTION_MENU
-	ld [wTextBoxID],a
+	ld a, TWO_OPTION_MENU
+	ld [wTextBoxID], a
 	call DisplayTextBoxID ; yes/no menu
-	ld a,[wCurrentMenuItem]
+	ld a, [wCurrentMenuItem]
 	ret
 
 WouldYouLikeToSaveText:
@@ -587,23 +587,23 @@ SAVCheckRandomID:
 	ld hl, sPlayerName
 	ld bc, sMainDataCheckSum - sPlayerName
 	call SAVCheckSum
-	ld c,a
-	ld a,[sMainDataCheckSum]
+	ld c, a
+	ld a, [sMainDataCheckSum]
 	cp c
-	jr nz,.next
-	ld hl,sMainData + 98 ; player ID
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
-	ld a,[wPlayerID]
+	jr nz, .next
+	ld hl, sMainData + (wPlayerID - wMainDataStart) ; player ID
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wPlayerID]
 	cp l
-	jr nz,.next
-	ld a,[wPlayerID + 1]
+	jr nz, .next
+	ld a, [wPlayerID + 1]
 	cp h
 .next
-	ld a,$00
-	ld [MBC1SRamBankingMode],a
-	ld [MBC1SRamEnable],a
+	ld a, $00
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamEnable], a
 	ret
 
 SaveHallOfFameTeams:

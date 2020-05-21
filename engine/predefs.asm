@@ -88,7 +88,7 @@ PredefPointers::
 	dbw $03, CheckForHiddenObjectOrBookshelfOrCardKeyDoor ; home bank
 	dbw $03, GiveItem ; home bank
 
-	add_predef InvertBGPal_4Frames
+	add_predef ChangeBGPalColor0_4Frames
 	add_predef FindPathToPlayer
 	add_predef PredefShakeScreenVertically
 	add_predef CalcPositionOfPlayerRelativeToNPC

@@ -75,7 +75,7 @@ UnknownTerminator_f6794:
 
 GotMonText:
 	TX_FAR _GotMonText
-	db $0b
+	TX_SFX_ITEM_1
 	db "@"
 
 SetToBoxText:

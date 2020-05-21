@@ -792,7 +792,7 @@ PikaPicAnimCommand_thunderbolt:
 	call DelayFrame
 	ld a, [wAudioROMBank]
 	push af
-	ld a, BANK(SFX_Thunderbolt)
+	ld a, BANK(SFX_Battle_2F)
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	call .LoadAudio

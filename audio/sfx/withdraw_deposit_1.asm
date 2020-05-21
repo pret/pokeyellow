@@ -1,12 +1,12 @@
-SFX_Withdraw_Deposit_1_Ch1:
-	duty 1
-	unknownsfx0x10 58
-	unknownsfx0x20 4, 242, 0, 5
-	unknownsfx0x10 34
-	unknownsfx0x20 4, 226, 0, 5
-	unknownsfx0x10 58
-	unknownsfx0x20 4, 242, 0, 7
-	unknownsfx0x10 34
-	unknownsfx0x20 15, 226, 0, 7
-	unknownsfx0x10 8
-	endchannel
+SFX_Withdraw_Deposit_1_Ch5:
+	duty_cycle 1
+	pitch_sweep 3, -2
+	square_note 4, 15, 2, 1280
+	pitch_sweep 2, 2
+	square_note 4, 14, 2, 1280
+	pitch_sweep 3, -2
+	square_note 4, 15, 2, 1792
+	pitch_sweep 2, 2
+	square_note 15, 14, 2, 1792
+	pitch_sweep 0, 8
+	sound_ret

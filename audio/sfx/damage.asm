@@ -1,5 +1,5 @@
-SFX_Damage_Ch1:
-	unknownnoise0x20 2, 244, 68
-	unknownnoise0x20 2, 244, 20
-	unknownnoise0x20 15, 241, 50
-	endchannel
+SFX_Damage_Ch8:
+	noise_note 2, 15, 4, 68
+	noise_note 2, 15, 4, 20
+	noise_note 15, 15, 1, 50
+	sound_ret

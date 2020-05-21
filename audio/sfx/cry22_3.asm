@@ -1,24 +1,24 @@
-SFX_Cry22_3_Ch1:
-	dutycycle 17
-	unknownsfx0x20 2, 61, 129, 3
-	unknownsfx0x20 7, 245, 1, 6
-	unknownsfx0x20 1, 194, 129, 4
-	unknownsfx0x20 8, 145, 129, 3
-	endchannel
+SFX_Cry22_3_Ch5:
+	duty_cycle_pattern 0, 1, 0, 1
+	square_note 2, 3, -5, 897
+	square_note 7, 15, 5, 1537
+	square_note 1, 12, 2, 1153
+	square_note 8, 9, 1, 897
+	sound_ret
 
 
-SFX_Cry22_3_Ch2:
-	dutycycle 238
-	unknownsfx0x20 2, 62, 176, 5
-	unknownsfx0x20 7, 213, 93, 7
-	unknownsfx0x20 1, 178, 176, 6
-	unknownsfx0x20 8, 97, 176, 5
-	endchannel
+SFX_Cry22_3_Ch6:
+	duty_cycle_pattern 3, 2, 3, 2
+	square_note 2, 3, -6, 1456
+	square_note 7, 13, 5, 1885
+	square_note 1, 11, 2, 1712
+	square_note 8, 6, 1, 1456
+	sound_ret
 
 
-SFX_Cry22_3_Ch3:
-	unknownnoise0x20 2, 146, 73
-	unknownnoise0x20 7, 181, 41
-	unknownnoise0x20 1, 162, 57
-	unknownnoise0x20 8, 145, 73
-	endchannel
+SFX_Cry22_3_Ch8:
+	noise_note 2, 9, 2, 73
+	noise_note 7, 11, 5, 41
+	noise_note 1, 10, 2, 57
+	noise_note 8, 9, 1, 73
+	sound_ret

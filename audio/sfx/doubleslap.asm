@@ -1,4 +1,4 @@
-SFX_Doubleslap_Ch1:
-	unknownnoise0x20 8, 241, 50
-	unknownnoise0x20 8, 241, 51
-	endchannel
+SFX_Doubleslap_Ch8:
+	noise_note 8, 15, 1, 50
+	noise_note 8, 15, 1, 51
+	sound_ret

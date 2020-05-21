@@ -43,116 +43,116 @@ SetDefaultNames:
 OakSpeech:
 	call StopAllMusic ; stop music
 	ld a, BANK(Music_Routes2)
-	ld c,a
+	ld c, a
 	ld a, MUSIC_ROUTES2
 	call PlayMusic
 	call ClearScreen
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
 	predef InitPlayerData2
-	ld hl,wNumBoxItems
-	ld a,POTION
-	ld [wcf91],a
-	ld a,1
-	ld [wItemQuantity],a
+	ld hl, wNumBoxItems
+	ld a, POTION
+	ld [wcf91], a
+	ld a, 1
+	ld [wItemQuantity], a
 	call AddItemToInventory  ; give one potion
-	ld a,[wDefaultMap]
-	ld [wDestinationMap],a
+	ld a, [wDefaultMap]
+	ld [wDestinationMap], a
 	call SpecialWarpIn
 	xor a
-	ld [hTilesetType],a
-	ld a,[wd732]
-	bit 1,a ; possibly a debug mode bit
-	jp nz,.skipChoosingNames
-	ld de,ProfOakPic
+	ld [hTilesetType], a
+	ld a, [wd732]
+	bit 1, a ; possibly a debug mode bit
+	jp nz, .skipChoosingNames
+	ld de, ProfOakPic
 	lb bc, Bank(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
 	call FadeInIntroPic
-	ld hl,OakSpeechText1
+	ld hl, OakSpeechText1
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld a,PIKACHU
-	ld [wd0b5],a
-	ld [wcf91],a
+	ld a, PIKACHU
+	ld [wd0b5], a
+	ld [wcf91], a
 	call GetMonHeader
 	coord hl, 6, 4
 	call LoadFlippedFrontSpriteByMonIndex
 	call MovePicLeft
-	ld hl,OakSpeechText2
+	ld hl, OakSpeechText2
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,RedPicFront
+	ld de, RedPicFront
 	lb bc, Bank(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
 	call MovePicLeft
-	ld hl,IntroducePlayerText
+	ld hl, IntroducePlayerText
 	call PrintText
 	call ChoosePlayerName
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,Rival1Pic
+	ld de, Rival1Pic
 	lb bc, Bank(Rival1Pic), $00
 	call IntroDisplayPicCenteredOrUpperRight
 	call FadeInIntroPic
-	ld hl,IntroduceRivalText
+	ld hl, IntroduceRivalText
 	call PrintText
 	call ChooseRivalName
 .skipChoosingNames
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld de,RedPicFront
+	ld de, RedPicFront
 	lb bc, Bank(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
 	call GBFadeInFromWhite
-	ld a,[wd72d]
+	ld a, [wd72d]
 	and a
-	jr nz,.next
-	ld hl,OakSpeechText3
+	jr nz, .next
+	ld hl, OakSpeechText3
 	call PrintText
 .next
-	ld a,[H_LOADEDROMBANK]
+	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a,SFX_SHRINK
+	ld a, SFX_SHRINK
 	call PlaySound
 	pop af
 	call BankswitchCommon
-	ld c,4
+	ld c, 4
 	call DelayFrames
-	ld hl,vSprites
-	ld de,RedSprite
+	ld hl, vSprites
+	ld de, RedSprite
 	ld b, BANK(RedSprite)
 	ld c, $0C
 	call CopyVideoData
-	ld de,ShrinkPic1
+	ld de, ShrinkPic1
 	lb bc, BANK(ShrinkPic1), $00
 	call IntroDisplayPicCenteredOrUpperRight
-	ld c,4
+	ld c, 4
 	call DelayFrames
-	ld de,ShrinkPic2
+	ld de, ShrinkPic2
 	lb bc, BANK(ShrinkPic2), $00
 	call IntroDisplayPicCenteredOrUpperRight
 	call ResetPlayerSpriteData
-	ld a,[H_LOADEDROMBANK]
+	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(Music_PalletTown)
-	ld [wAudioROMBank],a
-	ld [wAudioSavedROMBank],a
+	ld [wAudioROMBank], a
+	ld [wAudioSavedROMBank], a
 	ld a, 10
-	ld [wAudioFadeOutControl],a
+	ld [wAudioFadeOutControl], a
 	call StopAllMusic ; stop music
 	pop af
 	call BankswitchCommon
-	ld c,20
+	ld c, 20
 	call DelayFrames
 	coord hl, 6, 5
 	lb bc, 7, 7
 	call ClearScreenArea
 	call LoadTextBoxTilePatterns
-	ld a,1
-	ld [wUpdateSpritesEnabled],a
-	ld c,50
+	ld a, 1
+	ld [wUpdateSpritesEnabled], a
+	ld c, 50
 	call DelayFrames
 	call GBFadeOutToWhite
 	call ClearScreen ; rip more tail-end optimizations
@@ -163,7 +163,7 @@ OakSpeechText1:
 	db "@"
 OakSpeechText2:
 	TX_FAR _OakSpeechText2A
-	db $14 ; play NIDORINA cry from TextCommandSounds
+	TX_CRY_NIDORINA
 	TX_FAR _OakSpeechText2B
 	db "@"
 IntroducePlayerText:
@@ -177,16 +177,16 @@ OakSpeechText3:
 	db "@"
 
 FadeInIntroPic:
-	ld hl,IntroFadePalettes
-	ld b,6
+	ld hl, IntroFadePalettes
+	ld b, 6
 .next
-	ld a,[hli]
-	ld [rBGP],a
+	ld a, [hli]
+	ld [rBGP], a
 	call UpdateGBCPal_BGP
-	ld c,10
+	ld c, 10
 	call DelayFrames
 	dec b
-	jr nz,.next
+	jr nz, .next
 	ret
 
 IntroFadePalettes:
@@ -198,20 +198,20 @@ IntroFadePalettes:
 	db %11100100
 
 MovePicLeft:
-	ld a,119
-	ld [rWX],a
+	ld a, 119
+	ld [rWX], a
 	call DelayFrame
 
-	ld a,%11100100
-	ld [rBGP],a
+	ld a, %11100100
+	ld [rBGP], a
 	call UpdateGBCPal_BGP
 .next
 	call DelayFrame
-	ld a,[rWX]
+	ld a, [rWX]
 	sub 8
 	cp $FF
 	ret z
-	ld [rWX],a
+	ld [rWX], a
 	jr .next
 
 DisplayPicCenteredOrUpperRight:
@@ -221,24 +221,24 @@ IntroDisplayPicCenteredOrUpperRight:
 ; de = address of compressed pic
 ; c: 0 = centred, non-zero = upper-right
 	push bc
-	ld a,b
+	ld a, b
 	call UncompressSpriteFromDE
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
-	ld hl,sSpriteBuffer1
-	ld de,sSpriteBuffer0
-	ld bc,$310
+	ld hl, sSpriteBuffer1
+	ld de, sSpriteBuffer0
+	ld bc, $310
 	call CopyData
 	call PrepareRTCDataAndDisableSRAM
-	ld de,vFrontPic
+	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
 	pop bc
-	ld a,c
+	ld a, c
 	and a
 	coord hl, 15, 1
-	jr nz,.next
+	jr nz, .next
 	coord hl, 6, 4
 .next
 	xor a
-	ld [hStartTileID],a
+	ld [hStartTileID], a
 	predef_jump CopyUncompressedPicToTilemap

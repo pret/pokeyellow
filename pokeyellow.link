@@ -50,7 +50,7 @@ ROM0
 
 ROMX $1
 	org $4000
-	"bank01"
+	"bank1"
 
 ROMX $2
 	org $4000
@@ -62,11 +62,11 @@ ROMX $2
 
 ROMX $3
 	org $4000
-	"bank03"
+	"bank3"
 
 ROMX $4
 	org $4000
-	"Graphics"
+	"Graphics (BANK 4)"
 	"NPC Sprites 1"
 
 ROMX $5
@@ -75,11 +75,11 @@ ROMX $5
 
 ROMX $6
 	org $4000
-	"bank06"
+	"bank6"
 
 ROMX $7
 	org $4000
-	"bank07"
+	"bank7"
 
 ROMX $8
 	org $4000
@@ -111,11 +111,11 @@ ROMX $D
 
 ROMX $E
 	org $4000
-	"bank0E"
+	"bankE"
 
 ROMX $F
 	org $4000
-	"bank0F"
+	"bankF"
 
 ROMX $10
 	org $4000

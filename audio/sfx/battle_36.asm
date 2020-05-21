@@ -1,47 +1,47 @@
-SFX_Battle_36_Ch1:
-	duty 0
-	unknownsfx0x20 2, 241, 128, 7
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 144, 7
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 160, 7
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 176, 7
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 192, 7
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 208, 7
+SFX_Battle_36_Ch5:
+	duty_cycle 0
+	square_note 2, 15, 1, 1920
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 1936
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 1952
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 1968
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 1984
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 2000
 
 SFX_Battle_36_branch_20930:
-	unknownsfx0x20 2, 241, 0, 7
-	unknownsfx0x20 2, 241, 224, 7
-	loopchannel 12, SFX_Battle_36_branch_20930
-	unknownsfx0x20 15, 241, 0, 7
-	endchannel
+	square_note 2, 15, 1, 1792
+	square_note 2, 15, 1, 2016
+	sound_loop 12, SFX_Battle_36_branch_20930
+	square_note 15, 15, 1, 1792
+	sound_ret
 
 
-SFX_Battle_36_Ch2:
-	dutycycle 179
-	unknownsfx0x20 2, 241, 129, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 145, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 161, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 177, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 193, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 209, 7
-	unknownsfx0x20 2, 241, 1, 7
-	unknownsfx0x20 2, 241, 225, 7
-	loopchannel 12, SFX_Battle_36_branch_20930
-	unknownsfx0x20 15, 241, 1, 7
-	endchannel
+SFX_Battle_36_Ch6:
+	duty_cycle_pattern 2, 3, 0, 3
+	square_note 2, 15, 1, 1921
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 1937
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 1953
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 1969
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 1985
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 2001
+	square_note 2, 15, 1, 1793
+	square_note 2, 15, 1, 2017
+	sound_loop 12, SFX_Battle_36_branch_20930
+	square_note 15, 15, 1, 1793
+	sound_ret
 
 
-SFX_Battle_36_Ch3:
-	unknownnoise0x20 1, 209, 73
-	unknownnoise0x20 1, 209, 41
-	loopchannel 26, SFX_Battle_36_Ch3
-	endchannel
+SFX_Battle_36_Ch8:
+	noise_note 1, 13, 1, 73
+	noise_note 1, 13, 1, 41
+	sound_loop 26, SFX_Battle_36_Ch8
+	sound_ret

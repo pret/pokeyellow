@@ -133,23 +133,23 @@ pikacry: MACRO
 	endm
 
 
-	enum_start
-	enum pikapic_nop_command
+	const_def
+	const pikapic_nop_command
 pikapic_nop: macro
 	db pikapic_nop_command
 	endm
 
-	enum pikapic_writebyte_command
+	const pikapic_writebyte_command
 pikapic_writebyte: macro
 	db pikapic_writebyte_command, \1
 	endm
 
-	enum pikapic_loadgfx_command
+	const pikapic_loadgfx_command
 pikapic_loadgfx: macro
 	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
 	endm
 
-	enum pikapic_animation_command
+	const pikapic_animation_command
 pikapic_animation: macro
 	; frameset pointer, starting vtile, y offset, x offset
 	db pikapic_animation_command
@@ -157,42 +157,42 @@ pikapic_animation: macro
 	db 0, \2, \3, \4
 	endm
 
-	enum pikapic_nop4_command
+	const pikapic_nop4_command
 pikapic_nop4: macro
 	db pikapic_nop4_command
 	endm
 
-	enum pikapic_nop5_command
+	const pikapic_nop5_command
 pikapic_nop5: macro
 	db pikapic_nop5_command
 	endm
 
-	enum pikapic_waitbgmapeleteobject_command
+	const pikapic_waitbgmapeleteobject_command
 pikapic_waitbgmapeleteobject: macro
 	db pikapic_waitbgmapeleteobject_command, \1
 	endm
 
-	enum pikapic_nop7_command
+	const pikapic_nop7_command
 pikapic_nop7: macro
 	db pikapic_nop7_command
 	endm
 
-	enum pikapic_nop8_command
+	const pikapic_nop8_command
 pikapic_nop8: macro
 	db pikapic_nop8_command
 	endm
 
-	enum pikapic_jump_command
+	const pikapic_jump_command
 pikapic_jump: macro ; 9
 	dbw pikapic_jump_command, \1
 	endm
 
-	enum pikapic_setduration_command
+	const pikapic_setduration_command
 pikapic_setduration: macro ; a
 	dbw pikapic_setduration_command, \1
 	endm
 
-	enum pikapic_cry_command
+	const pikapic_cry_command
 pikapic_cry: macro ; b
 	db pikapic_cry_command
 IF _NARG == 0
@@ -202,17 +202,17 @@ else
 	endc
 	endm
 
-	enum pikapic_thunderbolt_command
+	const pikapic_thunderbolt_command
 pikapic_thunderbolt: macro ; c
 	db pikapic_thunderbolt_command
 	endm
 
-	enum pikapic_waitbgmap_command
+	const pikapic_waitbgmap_command
 pikapic_waitbgmap: macro ; d
 	db pikapic_waitbgmap_command
 	endm
 
-	enum pikapic_ret_command
+	const pikapic_ret_command
 pikapic_ret: macro ; e
 	db pikapic_ret_command
 	endm

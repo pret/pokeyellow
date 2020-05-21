@@ -1,54 +1,7 @@
 INCLUDE "engine/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 
-ResetStatusAndHalveMoneyOnBlackout:
-; Reset player status on blackout.
-	xor a
-	ld [wd435], a
-	xor a ; gamefreak copypasting functions (double xor a)
-	ld [wBattleResult], a
-	ld [wWalkBikeSurfState], a
-	ld [wIsInBattle], a
-	ld [wMapPalOffset], a
-	ld [wNPCMovementScriptFunctionNum], a
-	ld [hJoyHeld], a
-	ld [wNPCMovementScriptPointerTableNum], a
-	ld [wFlags_0xcd60], a
-
-	ld [hMoney], a
-	ld [hMoney + 1], a
-	ld [hMoney + 2], a
-	call HasEnoughMoney
-	jr c, .lostmoney ; never happens
-
-	; Halve the player's money.
-	ld a, [wPlayerMoney]
-	ld [hMoney], a
-	ld a, [wPlayerMoney + 1]
-	ld [hMoney + 1], a
-	ld a, [wPlayerMoney + 2]
-	ld [hMoney + 2], a
-	xor a
-	ld [hDivideBCDDivisor], a
-	ld [hDivideBCDDivisor + 1], a
-	ld a, 2
-	ld [hDivideBCDDivisor + 2], a
-	predef DivideBCDPredef3
-	ld a, [hDivideBCDQuotient]
-	ld [wPlayerMoney], a
-	ld a, [hDivideBCDQuotient + 1]
-	ld [wPlayerMoney + 1], a
-	ld a, [hDivideBCDQuotient + 2]
-	ld [wPlayerMoney + 2], a
-
-.lostmoney
-	ld hl, wd732
-	set 2, [hl]
-	res 3, [hl]
-	set 6, [hl]
-	ld a, %11111111
-	ld [wJoyIgnore], a
-	predef_jump HealParty
+INCLUDE "engine/black_out.asm"
 
 SetMapSpecificScriptFlagsOnMapReload:
 	ld a, [wCurMap]
@@ -85,17 +38,17 @@ SetMapSpecificScriptFlagsOnMapReload:
 	db SILPH_CO_9F
 	db SILPH_CO_10F
 	db SILPH_CO_11F
-	db MANSION_2
-	db MANSION_3
-	db MANSION_4
-	db MANSION_1
+	db POKEMON_MANSION_2F
+	db POKEMON_MANSION_3F
+	db POKEMON_MANSION_B1F
+	db POKEMON_MANSION_1F
 	db CINNABAR_GYM
 	db GAME_CORNER
-	db ROCKET_HIDEOUT_1
-	db ROCKET_HIDEOUT_4
-	db VICTORY_ROAD_3
-	db VICTORY_ROAD_1
-	db VICTORY_ROAD_2
+	db ROCKET_HIDEOUT_B1F
+	db ROCKET_HIDEOUT_B4F
+	db VICTORY_ROAD_3F
+	db VICTORY_ROAD_1F
+	db VICTORY_ROAD_2F
 	db LANCES_ROOM
 	db LORELEIS_ROOM
 	db BRUNOS_ROOM
@@ -200,37 +153,37 @@ NurseChanseyText:
 	db "@"
 
 INCLUDE "engine/HoF_room_pc.asm"
-INCLUDE "scripts/viridiancity2.asm"
-INCLUDE "scripts/vermilioncity2.asm"
-INCLUDE "scripts/celadoncity2.asm"
-INCLUDE "scripts/route1_2.asm"
-INCLUDE "scripts/route22_2.asm"
-INCLUDE "scripts/redshouse1f2.asm"
-INCLUDE "scripts/oakslab2.asm"
-INCLUDE "scripts/school2.asm"
-INCLUDE "scripts/museum1f2.asm"
-INCLUDE "scripts/pewterpokecenter2.asm"
-INCLUDE "scripts/pokemontower2_2.asm"
-INCLUDE "scripts/celadonmart3_2.asm"
-INCLUDE "scripts/celadonmansion1_2.asm"
-INCLUDE "scripts/celadonmansion3_2.asm"
-INCLUDE "scripts/celadongamecorner2.asm"
-INCLUDE "scripts/celadondiner2.asm"
-INCLUDE "scripts/safarizoneentrance2.asm"
-INCLUDE "scripts/cinnabargym3.asm"
-INCLUDE "scripts/mtmoonpokecenter2.asm"
+INCLUDE "scripts/ViridianCity2.asm"
+INCLUDE "scripts/VermilionCity2.asm"
+INCLUDE "scripts/CeladonCity2.asm"
+INCLUDE "scripts/Route1_2.asm"
+INCLUDE "scripts/Route22_2.asm"
+INCLUDE "scripts/RedsHouse1F2.asm"
+INCLUDE "scripts/OaksLab2.asm"
+INCLUDE "scripts/ViridianSchoolHouse2.asm"
+INCLUDE "scripts/Museum1F2.asm"
+INCLUDE "scripts/PewterPokecenter2.asm"
+INCLUDE "scripts/PokemonTower2F_2.asm"
+INCLUDE "scripts/CeladonMart3F_2.asm"
+INCLUDE "scripts/CeladonMansion1F_2.asm"
+INCLUDE "scripts/CeladonMansion3F_2.asm"
+INCLUDE "scripts/GameCorner2.asm"
+INCLUDE "scripts/CeladonDiner2.asm"
+INCLUDE "scripts/SafariZoneGate2.asm"
+INCLUDE "scripts/CinnabarGym3.asm"
+INCLUDE "scripts/MtMoonPokecenter2.asm"
 
-INCLUDE "data/mapHeaders/beach_house.asm"
-INCLUDE "scripts/beach_house.asm"
-BeachHouseBlockdata:
-INCBIN "maps/beach_house.blk"
-INCLUDE "data/mapObjects/beach_house.asm"
+INCLUDE "data/mapHeaders/BeachHouse.asm"
+INCLUDE "scripts/BeachHouse.asm"
+BeachHouse_Blocks:
+INCBIN "maps/BeachHouse.blk"
+INCLUDE "data/mapObjects/BeachHouse.asm"
 
-INCLUDE "scripts/beach_house2.asm"
-INCLUDE "scripts/billshouse2.asm"
-INCLUDE "scripts/viridianforest2.asm"
-INCLUDE "scripts/ssanne9_2.asm"
-INCLUDE "scripts/silphco11_2.asm"
+INCLUDE "scripts/BeachHouse2.asm"
+INCLUDE "scripts/BillsHouse2.asm"
+INCLUDE "scripts/ViridianForest2.asm"
+INCLUDE "scripts/SSAnne2FRooms_2.asm"
+INCLUDE "scripts/SilphCo11F_2.asm"
 
 INCLUDE "engine/overworld/hidden_objects.asm"
 INCLUDE "engine/vermilion_gym_trash_cans.asm"

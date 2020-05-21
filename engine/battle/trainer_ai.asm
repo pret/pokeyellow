@@ -51,7 +51,7 @@ AIEnemyTrainerChooseMoves:
 	ld l, a
 	ld de, .nextMoveChoiceModification  ; set return address
 	push de
-	jp hl       ; execute modification function
+	jp hl         ; execute modification function
 .loopFindMinimumEntries ; all entries will be decremented sequentially until one of them is zero
 	ld hl, wBuffer  ; temp move selection array
 	ld de, wEnemyMonMoves  ; enemy moves
@@ -114,7 +114,7 @@ AIMoveChoiceModification1:
 	ld a, [wBattleMonStatus]
 	and a
 	ret z ; return if no status ailment on player's mon
-	ld hl, wBuffer - 1 ; temp move selection array (-1 byte offest)
+	ld hl, wBuffer - 1 ; temp move selection array (-1 byte offset)
 	ld de, wEnemyMonMoves ; enemy moves
 	ld b, NUM_MOVES + 1
 .nextMove
@@ -154,7 +154,7 @@ StatusAilmentMoveEffects:
 
 ; slightly encourage moves with specific effects.
 ; in particular, stat-modifying moves and other move effects
-; that fall in-bewteen
+; that fall in-between
 AIMoveChoiceModification2:
 	ld a, [wAILayer2Encouragement]
 	cp $1
@@ -212,7 +212,7 @@ AIMoveChoiceModification3:
 	cp $10
 	jr z, .nextMove
 	jr c, .notEffectiveMove
-	dec [hl] ; sligthly encourage this move
+	dec [hl] ; slightly encourage this move
 	jr .nextMove
 .notEffectiveMove ; discourages non-effective moves if better moves are available
 	push hl
@@ -253,7 +253,7 @@ AIMoveChoiceModification3:
 	pop hl
 	and a
 	jr z, .nextMove
-	inc [hl] ; sligthly discourage this move
+	inc [hl] ; slightly discourage this move
 	jr .nextMove
 AIMoveChoiceModification4:
 	ret
@@ -263,10 +263,10 @@ ReadMove:
 	push de
 	push bc
 	dec a
-	ld hl,Moves
-	ld bc,MoveEnd - Moves
+	ld hl, Moves
+	ld bc, MoveEnd - Moves
 	call AddNTimes
-	ld de,wEnemyMoveNum
+	ld de, wEnemyMoveNum
 	call CopyData
 	pop bc
 	pop de
@@ -337,40 +337,40 @@ INCLUDE "data/trainer_moves.asm"
 INCLUDE "data/trainer_parties.asm"
 
 TrainerAI:
-	ld a,[wIsInBattle]
+	ld a, [wIsInBattle]
 	dec a
 	jr z, .done ; if not a trainer, we're done here
-	ld a,[wLinkState]
+	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .done ; if in a link battle, we're done as well
 	ld a, [wEnemyBattleStatus1]
-	and 1 << ChargingUp | 1 << ThrashingAbout | 1 << StoringEnergy ; %10011
+	and 1 << CHARGING_UP | 1 << THRASHING_ABOUT | 1 << STORING_ENERGY ; %10011
 	jr nz, .done ; don't follow trainer ai if opponent is in a locked state
 	ld a, [wEnemyBattleStatus2]
-	and 1 << UsingRage ; %1000000
+	and 1 << USING_RAGE ; %1000000
 	jr nz, .done ; don't follow trainer ai if opponent is locked in rage
 	             ; note that this doesn't check for hyper beam recharge which can cause problems
 	ld a,[wTrainerClass] ; what trainer class is this?
 	dec a
-	ld c,a
-	ld b,0
-	ld hl,TrainerAIPointers
-	add hl,bc
-	add hl,bc
-	add hl,bc
-	ld a,[wAICount]
+	ld c, a
+	ld b, 0
+	ld hl, TrainerAIPointers
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wAICount]
 	and a
 	jr z, .done; if no AI uses left, we're done here
 	inc hl
 	inc a
-	jr nz,.getpointer
+	jr nz, .getpointer
 	dec hl
-	ld a,[hli]
-	ld [wAICount],a
+	ld a, [hli]
+	ld [wAICount], a
 .getpointer
-	ld a,[hli]
-	ld h,[hl]
-	ld l,a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
 	call Random
 	jp hl
 .done
@@ -451,17 +451,17 @@ CooltrainerMAI:
 
 CooltrainerFAI:
 	cp 25 percent + 1
-	ld a,10
+	ld a, 10
 	call AICheckIfHPBelowFraction
-	jp c,AIUseHyperPotion
-	ld a,5
+	jp c, AIUseHyperPotion
+	ld a, 5
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AISwitchIfEnoughMons
 
 BrockAI:
 ; if his active monster has a status condition, use a full heal
-	ld a,[wEnemyMonStatus]
+	ld a, [wEnemyMonStatus]
 	and a
 	ret z
 	jp AIUseFullHeal
@@ -479,7 +479,7 @@ LtSurgeAI:
 ErikaAI:
 	cp 50 percent + 1
 	ret nc
-	ld a,10
+	ld a, 10
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
@@ -492,7 +492,7 @@ KogaAI:
 BlaineAI:
 	cp 25 percent + 1
 	ret nc
-	ld a,10
+	ld a, 10
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
@@ -505,7 +505,7 @@ SabrinaAI:
 Sony2AI:
 	cp 13 percent - 1
 	ret nc
-	ld a,5
+	ld a, 5
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUsePotion
@@ -513,7 +513,7 @@ Sony2AI:
 Sony3AI:
 	cp 13 percent - 1
 	ret nc
-	ld a,5
+	ld a, 5
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseFullRestore
@@ -521,7 +521,7 @@ Sony3AI:
 LoreleiAI:
 	cp 50 percent + 1
 	ret nc
-	ld a,5
+	ld a, 5
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
@@ -533,10 +533,10 @@ BrunoAI:
 
 AgathaAI:
 	cp 8 percent
-	jp c,AISwitchIfEnoughMons
+	jp c, AISwitchIfEnoughMons
 	cp 50 percent + 1
 	ret nc
-	ld a,4
+	ld a, 4
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseSuperPotion
@@ -544,7 +544,7 @@ AgathaAI:
 LanceAI:
 	cp 50 percent + 1
 	ret nc
-	ld a,5
+	ld a, 5
 	call AICheckIfHPBelowFraction
 	ret nc
 	jp AIUseHyperPotion
@@ -556,133 +556,133 @@ GenericAI:
 ; end of individual trainer AI routines
 
 DecrementAICount:
-	ld hl,wAICount
+	ld hl, wAICount
 	dec [hl]
 	scf
 	ret
 
 AIPlayRestoringSFX:
-	ld a,SFX_HEAL_AILMENT
+	ld a, SFX_HEAL_AILMENT
 	jp PlaySoundWaitForCurrent
 
 AIUseFullRestore:
 	call AICureStatus
-	ld a,FULL_RESTORE
-	ld [wAIItem],a
-	ld de,wHPBarOldHP
-	ld hl,wEnemyMonHP + 1
-	ld a,[hld]
-	ld [de],a
+	ld a, FULL_RESTORE
+	ld [wAIItem], a
+	ld de, wHPBarOldHP
+	ld hl, wEnemyMonHP + 1
+	ld a, [hld]
+	ld [de], a
 	inc de
-	ld a,[hl]
-	ld [de],a
+	ld a, [hl]
+	ld [de], a
 	inc de
-	ld hl,wEnemyMonMaxHP + 1
-	ld a,[hld]
-	ld [de],a
+	ld hl, wEnemyMonMaxHP + 1
+	ld a, [hld]
+	ld [de], a
 	inc de
-	ld [wHPBarMaxHP],a
-	ld [wEnemyMonHP + 1],a
-	ld a,[hl]
-	ld [de],a
-	ld [wHPBarMaxHP+1],a
-	ld [wEnemyMonHP],a
+	ld [wHPBarMaxHP], a
+	ld [wEnemyMonHP + 1], a
+	ld a, [hl]
+	ld [de], a
+	ld [wHPBarMaxHP+1], a
+	ld [wEnemyMonHP], a
 	jr AIPrintItemUseAndUpdateHPBar
 
 AIUsePotion:
 ; enemy trainer heals his monster with a potion
-	ld a,POTION
-	ld b,20
+	ld a, POTION
+	ld b, 20
 	jr AIRecoverHP
 
 AIUseSuperPotion:
 ; enemy trainer heals his monster with a super potion
-	ld a,SUPER_POTION
-	ld b,50
+	ld a, SUPER_POTION
+	ld b, 50
 	jr AIRecoverHP
 
 AIUseHyperPotion:
 ; enemy trainer heals his monster with a hyper potion
-	ld a,HYPER_POTION
-	ld b,200
+	ld a, HYPER_POTION
+	ld b, 200
 	; fallthrough
 
 AIRecoverHP:
 ; heal b HP and print "trainer used $(a) on pokemon!"
-	ld [wAIItem],a
-	ld hl,wEnemyMonHP + 1
-	ld a,[hl]
-	ld [wHPBarOldHP],a
+	ld [wAIItem], a
+	ld hl, wEnemyMonHP + 1
+	ld a, [hl]
+	ld [wHPBarOldHP], a
 	add b
-	ld [hld],a
-	ld [wHPBarNewHP],a
-	ld a,[hl]
-	ld [wHPBarOldHP+1],a
-	ld [wHPBarNewHP+1],a
-	jr nc,.next
+	ld [hld], a
+	ld [wHPBarNewHP], a
+	ld a, [hl]
+	ld [wHPBarOldHP+1], a
+	ld [wHPBarNewHP+1], a
+	jr nc, .next
 	inc a
-	ld [hl],a
-	ld [wHPBarNewHP+1],a
+	ld [hl], a
+	ld [wHPBarNewHP+1], a
 .next
 	inc hl
-	ld a,[hld]
-	ld b,a
-	ld de,wEnemyMonMaxHP + 1
-	ld a,[de]
+	ld a, [hld]
+	ld b, a
+	ld de, wEnemyMonMaxHP + 1
+	ld a, [de]
 	dec de
-	ld [wHPBarMaxHP],a
+	ld [wHPBarMaxHP], a
 	sub b
-	ld a,[hli]
-	ld b,a
-	ld a,[de]
-	ld [wHPBarMaxHP+1],a
+	ld a, [hli]
+	ld b, a
+	ld a, [de]
+	ld [wHPBarMaxHP+1], a
 	sbc b
-	jr nc,AIPrintItemUseAndUpdateHPBar
+	jr nc, AIPrintItemUseAndUpdateHPBar
 	inc de
-	ld a,[de]
+	ld a, [de]
 	dec de
-	ld [hld],a
-	ld [wHPBarNewHP],a
-	ld a,[de]
-	ld [hl],a
-	ld [wHPBarNewHP+1],a
+	ld [hld], a
+	ld [wHPBarNewHP], a
+	ld a, [de]
+	ld [hl], a
+	ld [wHPBarNewHP+1], a
 	; fallthrough
 
 AIPrintItemUseAndUpdateHPBar:
 	call AIPrintItemUse_
 	coord hl, 2, 2
 	xor a
-	ld [wHPBarType],a
+	ld [wHPBarType], a
 	predef UpdateHPBar2
 	jp DecrementAICount
 
 AISwitchIfEnoughMons:
 ; enemy trainer switches if there are 3 or more unfainted mons in party
-	ld a,[wEnemyPartyCount]
-	ld c,a
-	ld hl,wEnemyMon1HP
+	ld a, [wEnemyPartyCount]
+	ld c, a
+	ld hl, wEnemyMon1HP
 
-	ld d,0 ; keep count of unfainted monsters
+	ld d, 0 ; keep count of unfainted monsters
 
 	; count how many monsters haven't fainted yet
 .loop
-	ld a,[hli]
-	ld b,a
-	ld a,[hld]
+	ld a, [hli]
+	ld b, a
+	ld a, [hld]
 	or b
-	jr z,.Fainted ; has monster fainted?
+	jr z, .Fainted ; has monster fainted?
 	inc d
 .Fainted
 	push bc
 	ld bc, wEnemyMon2 - wEnemyMon1
-	add hl,bc
+	add hl, bc
 	pop bc
 	dec c
-	jr nz,.loop
+	jr nz, .loop
 
-	ld a,d ; how many available monsters are there?
+	ld a, d ; how many available monsters are there?
 	cp 2 ; don't bother if only 1 or 2
-	jp nc,SwitchEnemyMon
+	jp nc, SwitchEnemyMon
 	and a
 	ret
 
@@ -690,14 +690,14 @@ SwitchEnemyMon:
 
 ; prepare to withdraw the active monster: copy hp, number, and status to roster
 
-	ld a,[wEnemyMonPartyPos]
-	ld hl,wEnemyMon1HP
-	ld bc,wEnemyMon2 - wEnemyMon1
+	ld a, [wEnemyMonPartyPos]
+	ld hl, wEnemyMon1HP
+	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
-	ld d,h
-	ld e,l
-	ld hl,wEnemyMonHP
-	ld bc,4
+	ld d, h
+	ld e, l
+	ld hl, wEnemyMonHP
+	ld bc, 4
 	call CopyData
 
 	ld hl, AIBattleWithdrawText
@@ -705,13 +705,13 @@ SwitchEnemyMon:
 
 	; This wFirstMonsNotOutYet variable is abused to prevent the player from
 	; switching in a new mon in response to this switch.
-	ld a,1
-	ld [wFirstMonsNotOutYet],a
+	ld a, 1
+	ld [wFirstMonsNotOutYet], a
 	callab EnemySendOut
 	xor a
-	ld [wFirstMonsNotOutYet],a
+	ld [wFirstMonsNotOutYet], a
 
-	ld a,[wLinkState]
+	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z
 	scf
@@ -724,120 +724,120 @@ AIBattleWithdrawText:
 AIUseFullHeal:
 	call AIPlayRestoringSFX
 	call AICureStatus
-	ld a,FULL_HEAL
+	ld a, FULL_HEAL
 	jp AIPrintItemUse
 
 AICureStatus:
 ; cures the status of enemy's active pokemon
-	ld a,[wEnemyMonPartyPos]
-	ld hl,wEnemyMon1Status
-	ld bc,wEnemyMon2 - wEnemyMon1
+	ld a, [wEnemyMonPartyPos]
+	ld hl, wEnemyMon1Status
+	ld bc, wEnemyMon2 - wEnemyMon1
 	call AddNTimes
 	xor a
-	ld [hl],a ; clear status in enemy team roster
-	ld [wEnemyMonStatus],a ; clear status of active enemy
-	ld hl,wEnemyBattleStatus3
-	res 0,[hl]
+	ld [hl], a ; clear status in enemy team roster
+	ld [wEnemyMonStatus], a ; clear status of active enemy
+	ld hl, wEnemyBattleStatus3
+	res 0, [hl]
 	ret
 
 AIUseXAccuracy: ; unused
 	call AIPlayRestoringSFX
-	ld hl,wEnemyBattleStatus2
-	set 0,[hl]
-	ld a,X_ACCURACY
+	ld hl, wEnemyBattleStatus2
+	set 0, [hl]
+	ld a, X_ACCURACY
 	jp AIPrintItemUse
 
 AIUseGuardSpec:
 	call AIPlayRestoringSFX
-	ld hl,wEnemyBattleStatus2
-	set 1,[hl]
-	ld a,GUARD_SPEC
+	ld hl, wEnemyBattleStatus2
+	set 1, [hl]
+	ld a, GUARD_SPEC
 	jp AIPrintItemUse
 
 AIUseDireHit: ; unused
 	call AIPlayRestoringSFX
-	ld hl,wEnemyBattleStatus2
-	set 2,[hl]
-	ld a,DIRE_HIT
+	ld hl, wEnemyBattleStatus2
+	set 2, [hl]
+	ld a, DIRE_HIT
 	jp AIPrintItemUse
 
 AICheckIfHPBelowFraction:
 ; return carry if enemy trainer's current HP is below 1 / a of the maximum
-	ld [H_DIVISOR],a
-	ld hl,wEnemyMonMaxHP
-	ld a,[hli]
-	ld [H_DIVIDEND],a
-	ld a,[hl]
-	ld [H_DIVIDEND + 1],a
-	ld b,2
+	ld [H_DIVISOR], a
+	ld hl, wEnemyMonMaxHP
+	ld a, [hli]
+	ld [H_DIVIDEND], a
+	ld a, [hl]
+	ld [H_DIVIDEND + 1], a
+	ld b, 2
 	call Divide
-	ld a,[H_QUOTIENT + 3]
-	ld c,a
-	ld a,[H_QUOTIENT + 2]
-	ld b,a
-	ld hl,wEnemyMonHP + 1
-	ld a,[hld]
-	ld e,a
-	ld a,[hl]
-	ld d,a
-	ld a,d
+	ld a, [H_QUOTIENT + 3]
+	ld c, a
+	ld a, [H_QUOTIENT + 2]
+	ld b, a
+	ld hl, wEnemyMonHP + 1
+	ld a, [hld]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	ld a, d
 	sub b
 	ret nz
-	ld a,e
+	ld a, e
 	sub c
 	ret
 
 AIUseXAttack:
-	ld b,$A
-	ld a,X_ATTACK
+	ld b, $A
+	ld a, X_ATTACK
 	jr AIIncreaseStat
 
 AIUseXDefend:
-	ld b,$B
-	ld a,X_DEFEND
+	ld b, $B
+	ld a, X_DEFEND
 	jr AIIncreaseStat
 
 AIUseXSpeed:
-	ld b,$C
-	ld a,X_SPEED
+	ld b, $C
+	ld a, X_SPEED
 	jr AIIncreaseStat
 
 AIUseXSpecial:
-	ld b,$D
-	ld a,X_SPECIAL
+	ld b, $D
+	ld a, X_SPECIAL
 	; fallthrough
 
 AIIncreaseStat:
-	ld [wAIItem],a
+	ld [wAIItem], a
 	push bc
 	call AIPrintItemUse_
 	pop bc
-	ld hl,wEnemyMoveEffect
-	ld a,[hld]
+	ld hl, wEnemyMoveEffect
+	ld a, [hld]
 	push af
-	ld a,[hl]
+	ld a, [hl]
 	push af
 	push hl
-	ld a,ANIM_AF
-	ld [hli],a
-	ld [hl],b
+	ld a, ANIM_AF
+	ld [hli], a
+	ld [hl], b
 	callab StatModifierUpEffect
 	pop hl
 	pop af
-	ld [hli],a
+	ld [hli], a
 	pop af
-	ld [hl],a
+	ld [hl], a
 	jp DecrementAICount
 
 AIPrintItemUse:
-	ld [wAIItem],a
+	ld [wAIItem], a
 	call AIPrintItemUse_
 	jp DecrementAICount
 
 AIPrintItemUse_:
 ; print "x used [wAIItem] on z!"
-	ld a,[wAIItem]
-	ld [wd11e],a
+	ld a, [wAIItem]
+	ld [wd11e], a
 	call GetItemName
 	ld hl, AIBattleUseItemText
 	jp PrintText

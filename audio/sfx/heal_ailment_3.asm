@@ -1,9 +1,9 @@
-SFX_Heal_Ailment_3_Ch1:
-	duty 2
-	unknownsfx0x10 20
-	unknownsfx0x20 4, 242, 0, 6
-	unknownsfx0x20 4, 242, 0, 6
-	unknownsfx0x10 23
-	unknownsfx0x20 15, 242, 0, 6
-	unknownsfx0x10 8
-	endchannel
+SFX_Heal_Ailment_3_Ch5:
+	duty_cycle 2
+	pitch_sweep 1, 4
+	square_note 4, 15, 2, 1536
+	square_note 4, 15, 2, 1536
+	pitch_sweep 1, 7
+	square_note 15, 15, 2, 1536
+	pitch_sweep 0, 8
+	sound_ret

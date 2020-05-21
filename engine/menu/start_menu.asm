@@ -53,7 +53,7 @@ RedisplayStartMenu_DoNotDrawStartMenu:
 	ld a, [wCurrentMenuItem]
 	ld [wBattleAndStartSavedMenuItem], a ; save current menu selection
 	ld a, b
-	and a, %00001010 ; was the Start button or B button pressed?
+	and %00001010 ; was the Start button or B button pressed?
 	jp nz, CloseStartMenu
 	call SaveScreenTilesToBuffer2 ; copy background from wTileMap to wTileMapBackup2
 	CheckEvent EVENT_GOT_POKEDEX
@@ -61,17 +61,17 @@ RedisplayStartMenu_DoNotDrawStartMenu:
 	jr nz, .displayMenuItem
 	inc a ; adjust position to account for missing pokedex menu item
 .displayMenuItem
-	cp a, 0
+	cp 0
 	jp z, StartMenu_Pokedex
-	cp a, 1
+	cp 1
 	jp z, StartMenu_Pokemon
-	cp a, 2
+	cp 2
 	jp z, StartMenu_Item
-	cp a, 3
+	cp 3
 	jp z, StartMenu_TrainerInfo
-	cp a, 4
+	cp 4
 	jp z, StartMenu_SaveReset
-	cp a, 5
+	cp 5
 	jp z, StartMenu_Option
 
 ; EXIT falls through to here

@@ -904,7 +904,7 @@ TextTerminator_f5a16:
 	db "@"
 
 TradeCenterText:
-	db "TRADE CENTER"
+	db   "TRADE CENTER"
 	next "COLOSSEUM"
 	next "COLOSSEUM2"
 	next "CANCEL@"

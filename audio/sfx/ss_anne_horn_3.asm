@@ -1,22 +1,22 @@
-SFX_SS_Anne_Horn_3_Ch1:
-	duty 2
-	unknownsfx0x20 15, 240, 0, 5
-	unknownsfx0x20 4, 0, 0, 0
-	unknownsfx0x20 15, 240, 0, 5
-	unknownsfx0x20 15, 240, 0, 5
-	unknownsfx0x20 15, 240, 0, 5
-	unknownsfx0x20 15, 240, 0, 5
-	unknownsfx0x20 15, 242, 0, 5
-	endchannel
+SFX_SS_Anne_Horn_3_Ch5:
+	duty_cycle 2
+	square_note 15, 15, 0, 1280
+	square_note 4, 0, 0, 0
+	square_note 15, 15, 0, 1280
+	square_note 15, 15, 0, 1280
+	square_note 15, 15, 0, 1280
+	square_note 15, 15, 0, 1280
+	square_note 15, 15, 2, 1280
+	sound_ret
 
 
-SFX_SS_Anne_Horn_3_Ch2:
-	duty 3
-	unknownsfx0x20 15, 240, 130, 4
-	unknownsfx0x20 4, 0, 0, 0
-	unknownsfx0x20 15, 240, 130, 4
-	unknownsfx0x20 15, 240, 130, 4
-	unknownsfx0x20 15, 240, 130, 4
-	unknownsfx0x20 15, 240, 130, 4
-	unknownsfx0x20 15, 242, 130, 4
-	endchannel
+SFX_SS_Anne_Horn_3_Ch6:
+	duty_cycle 3
+	square_note 15, 15, 0, 1154
+	square_note 4, 0, 0, 0
+	square_note 15, 15, 0, 1154
+	square_note 15, 15, 0, 1154
+	square_note 15, 15, 0, 1154
+	square_note 15, 15, 0, 1154
+	square_note 15, 15, 2, 1154
+	sound_ret

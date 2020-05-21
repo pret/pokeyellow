@@ -110,7 +110,7 @@ StatusScreen:
 	call DrawLineBox ; Draws the box around name, HP and status
 	ld de, -6
 	add hl, de
-	ld [hl], $f2 ; . after No ("." is a different one)
+	ld [hl], "⠄" ; . after No ("." is a different one)
 	dec hl
 	ld [hl], "№"
 	coord hl, 19, 9
@@ -228,10 +228,11 @@ Type2Text:
 	db "TYPE2/", $4e
 
 IDNoText:
-	db $73, "№", "/", $4e
+	db $73, "№/", $4e
 
 OTText:
-	db "OT/", $4e, "@"
+	db   "OT/"
+	next "@"
 
 StatusText:
 	db "STATUS/@"

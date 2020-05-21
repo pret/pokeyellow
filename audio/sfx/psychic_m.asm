@@ -1,32 +1,32 @@
-SFX_Psychic_M_Ch1:
-	duty 2
-	unknownsfx0x10 247
-	unknownsfx0x20 8, 196, 189, 7
-	unknownsfx0x20 8, 196, 190, 7
-	unknownsfx0x20 8, 196, 191, 7
-	unknownsfx0x20 8, 196, 192, 7
-	unknownsfx0x20 15, 196, 193, 7
-	unknownsfx0x20 15, 242, 192, 7
-	unknownsfx0x10 8
-	endchannel
+SFX_Psychic_M_Ch5:
+	duty_cycle 2
+	pitch_sweep 15, 7
+	square_note 8, 12, 4, 1981
+	square_note 8, 12, 4, 1982
+	square_note 8, 12, 4, 1983
+	square_note 8, 12, 4, 1984
+	square_note 15, 12, 4, 1985
+	square_note 15, 15, 2, 1984
+	pitch_sweep 0, 8
+	sound_ret
 
 
-SFX_Psychic_M_Ch2:
-	duty 2
-	unknownsfx0x20 8, 196, 112, 7
-	unknownsfx0x20 8, 196, 97, 7
-	unknownsfx0x20 8, 196, 98, 7
-	unknownsfx0x20 8, 196, 99, 7
-	unknownsfx0x20 15, 196, 100, 7
-	unknownsfx0x20 15, 242, 100, 7
-	endchannel
+SFX_Psychic_M_Ch6:
+	duty_cycle 2
+	square_note 8, 12, 4, 1904
+	square_note 8, 12, 4, 1889
+	square_note 8, 12, 4, 1890
+	square_note 8, 12, 4, 1891
+	square_note 15, 12, 4, 1892
+	square_note 15, 15, 2, 1892
+	sound_ret
 
 
-SFX_Psychic_M_Ch3:
-	unknownnoise0x20 15, 63, 20
-	unknownnoise0x20 15, 207, 19
-	unknownnoise0x20 15, 207, 18
-	unknownnoise0x20 15, 207, 17
-	unknownnoise0x20 15, 207, 16
-	unknownnoise0x20 15, 194, 16
-	endchannel
+SFX_Psychic_M_Ch8:
+	noise_note 15, 3, -7, 20
+	noise_note 15, 12, -7, 19
+	noise_note 15, 12, -7, 18
+	noise_note 15, 12, -7, 17
+	noise_note 15, 12, -7, 16
+	noise_note 15, 12, 2, 16
+	sound_ret

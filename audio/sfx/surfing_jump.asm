@@ -1,10 +1,9 @@
-SFX_Surfing_Jump_Ch7:
-	unknownnoise0x20 6, 241, 17
-	unknownnoise0x20 7, 242, 34
-	unknownnoise0x20 8, 243, 51
-	unknownnoise0x20 9, 244, 66
-	unknownnoise0x20 10, 245, 51
-	unknownnoise0x20 11, 246, 34
-	unknownnoise0x20 12, 247, 17
-	endchannel
-
+SFX_Surfing_Jump_Ch8:
+	noise_note 6, 15, 1, 17
+	noise_note 7, 15, 2, 34
+	noise_note 8, 15, 3, 51
+	noise_note 9, 15, 4, 66
+	noise_note 10, 15, 5, 51
+	noise_note 11, 15, 6, 34
+	noise_note 12, 15, 7, 17
+	sound_ret

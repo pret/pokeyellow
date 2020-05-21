@@ -1,4 +1,4 @@
-SFX_Start_Menu_2_Ch1:
-	unknownnoise0x20 1, 226, 51
-	unknownnoise0x20 8, 225, 34
-	endchannel
+SFX_Start_Menu_2_Ch8:
+	noise_note 1, 14, 2, 51
+	noise_note 8, 14, 1, 34
+	sound_ret

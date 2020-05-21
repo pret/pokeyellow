@@ -1,6 +1,6 @@
-SFX_Teleport_Exit2_1_Ch1:
-	duty 1
-	unknownsfx0x10 22
-	unknownsfx0x20 15, 210, 0, 5
-	unknownsfx0x10 8
-	endchannel
+SFX_Teleport_Exit2_1_Ch5:
+	duty_cycle 1
+	pitch_sweep 1, 6
+	square_note 15, 13, 2, 1280
+	pitch_sweep 0, 8
+	sound_ret

@@ -1,6 +1,5 @@
-SFX_Surfing_Land_Ch7:
-	unknownnoise0x20 3, 243, 102
-	unknownnoise0x20 3, 51, 83
-	unknownnoise0x20 7, 245, 81
-	endchannel
-
+SFX_Surfing_Land_Ch8:
+	noise_note 3, 15, 3, 102
+	noise_note 3, 3, 3, 83
+	noise_note 7, 15, 5, 81
+	sound_ret

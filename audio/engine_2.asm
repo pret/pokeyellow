@@ -1,22 +1,27 @@
+; The second of three duplicated sound engines.
+; This copy has a few differences relating to battle sound effects
+; and the low health alarm that plays in battle
+
 Audio2_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
 	cp $ff
-	jp z, Audio2_2193c
-	cp $e9
-	jp z, Audio2_218db
-	jp c, Audio2_218db
+	jp z, .stopAllAudio
+	cp MAX_SFX_ID_2
+	jp z, .playSfx
+	jp c, .playSfx
 	cp $fe
-	jr z, .asm_218d5
-	jp nc, Audio2_218db
-.asm_218d5
-	call InitMusicVariables
-	jp Audio2_21940
+	jr z, .playMusic
+	jp nc, .playSfx
 
-Audio2_218db:
+.playMusic
+	call InitMusicVariables
+	jp .playSoundCommon
+
+.playSfx
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -31,7 +36,7 @@ Audio2_218db:
 	rlca
 	rlca
 	ld c, a
-.asm_218f4
+.sfxChannelLoop
 	ld d, c
 	ld a, c
 	add a
@@ -46,48 +51,48 @@ Audio2_218db:
 	ld c, d
 	ld a, [hl]
 	and $f
-	ld e, a
-	ld d, $0
+	ld e, a ; software channel ID
+	ld d, 0
 	ld hl, wChannelSoundIDs
 	add hl, de
 	ld a, [hl]
 	and a
-	jr z, .asm_21930
+	jr z, .playChannel
 	ld a, e
-	cp $7
-	jr nz, .asm_21927
+	cp Ch8
+	jr nz, .notNoiseChannel
 	ld a, [wSoundID]
-	cp $14
-	jr nc, .asm_21920
+	cp NOISE_INSTRUMENTS_END
+	jr nc, .notNoiseInstrument
 	ret
-.asm_21920
+.notNoiseInstrument
 	ld a, [hl]
-	cp $14
-	jr z, .asm_21930
-	jr c, .asm_21930
-.asm_21927
+	cp NOISE_INSTRUMENTS_END
+	jr z, .playChannel
+	jr c, .playChannel
+.notNoiseChannel
 	ld a, [wSoundID]
 	cp [hl]
-	jr z, .asm_21930
-	jr c, .asm_21930
+	jr z, .playChannel
+	jr c, .playChannel
 	ret
-.asm_21930
+.playChannel
 	call InitSFXVariables
 	ld a, c
 	and a
-	jp z, Audio2_21940
+	jp z, .playSoundCommon
 	dec c
-	jp .asm_218f4
+	jp .sfxChannelLoop
 
-Audio2_2193c:
+.stopAllAudio
 	call StopAllAudio
 	ret
 
-Audio2_21940:
+.playSoundCommon
 	ld a, [wSoundID]
 	ld l, a
 	ld e, a
-	ld h, $0
+	ld h, 0
 	ld d, h
 	add hl, hl
 	add hl, de
@@ -107,26 +112,26 @@ Audio2_21940:
 	ld b, c
 	inc b
 	inc de
-	ld c, $0
-.asm_21962
+	ld c, 0
+.commandPointerLoop
 	cp c
-	jr z, .asm_2196a
+	jr z, .next
 	inc c
 	inc hl
 	inc hl
-	jr .asm_21962
-.asm_2196a
+	jr .commandPointerLoop
+.next
 	push af
 	push hl
 	push bc
-	ld b, $0
+	ld b, 0
 	ld c, a
-	cp $3
-	jr c, .asm_2197a
+	cp Ch4
+	jr c, .skipSettingFlag
 	ld hl, wChannelFlags1
 	add hl, bc
-	set 2, [hl]
-.asm_2197a
+	set BIT_NOISE_OR_SFX, [hl]
+.skipSettingFlag
 	pop bc
 	pop hl
 	ld a, [de] ; get channel pointer
@@ -138,7 +143,7 @@ Audio2_21940:
 	pop af
 	push hl
 	push bc
-	ld b, $0
+	ld b, 0
 	ld c, a
 	ld hl, wChannelSoundIDs
 	add hl, bc
@@ -152,52 +157,52 @@ Audio2_21940:
 	and a
 	ld a, [de]
 	inc de
-	jr nz, .asm_21962
+	jr nz, .commandPointerLoop
 	ld a, [wSoundID]
-	cp $14
-	jr nc, .asm_219a3
-	jr .asm_219cd
-.asm_219a3
+	cp CRY_SFX_START
+	jr nc, .maybeCry
+	jr .done
+.maybeCry
 	ld a, [wSoundID]
-	cp $86
-	jr z, .asm_219cd
-	jr c, .asm_219ae
-	jr .asm_219cd
-.asm_219ae
-	ld hl, wChannelSoundIDs + CH4
+	cp CRY_SFX_END
+	jr z, .done
+	jr c, .cry
+	jr .done
+.cry
+	ld hl, wChannelSoundIDs + Ch5
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wChannelCommandPointers + CH6 * 2 ; sfx noise channel pointer
-	ld de, Noise2_endchannel
+	ld hl, wChannelCommandPointers + Ch7 * 2 ; sfx wave channel pointer
+	ld de, Audio2_CryRet
 	ld [hl], e
 	inc hl
-	ld [hl], d ; overwrite pointer to point to endchannel
+	ld [hl], d ; overwrite pointer to point to sound_ret
 	ld a, [wSavedVolume]
 	and a
-	jr nz, .asm_219cd
+	jr nz, .done
 	ld a, [rNR50]
 	ld [wSavedVolume], a
 	ld a, $77
 	ld [rNR50], a
-.asm_219cd
+.done
 	ret
 
-Noise2_endchannel:
-	endchannel
+Audio2_CryRet:
+	sound_ret
 
 Music_PokeFluteInBattle::
 	; begin playing the "caught mon" sound effect
 	ld a, SFX_CAUGHT_MON
 	call PlaySoundWaitForCurrent
 	; then immediately overwrtie the channel pointers
-	ld hl, wChannelCommandPointers + CH4 * 2
-	ld de, SFX_08_PokeFlute_Ch1
+	ld hl, wChannelCommandPointers + Ch5 * 2
+	ld de, SFX_Pokeflute_Ch5
 	call Audio2_OverwriteChannelPointer
-	ld de, SFX_08_PokeFlute_Ch2
+	ld de, SFX_Pokeflute_Ch6
 	call Audio2_OverwriteChannelPointer
-	ld de, SFX_08_PokeFlute_Ch3
+	ld de, SFX_Pokeflute_Ch7
 
 Audio2_OverwriteChannelPointer:
 	ld a, e
@@ -206,7 +211,7 @@ Audio2_OverwriteChannelPointer:
 	ld [hli], a
 	ret
 
-INCLUDE "audio/sfx/pokeflute_ch1_ch2.asm"
+INCLUDE "audio/sfx/pokeflute_ch5_ch6.asm"
 
 Audio2_InitMusicVariables::
 	xor a
@@ -217,53 +222,53 @@ Audio2_InitMusicVariables::
 	ld [wSfxWaveInstrument], a
 	ld d, $8
 	ld hl, wChannelReturnAddresses
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelCommandPointers
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld d, $4
 	ld hl, wChannelSoundIDs
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelFlags1
-	call FillAudioRAM2
-	ld hl, wChannelDuties
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelDutyCycles
-	call FillAudioRAM2
+	call Audio2_FillMem
+	ld hl, wChannelDutyCyclePatterns
+	call Audio2_FillMem
 	ld hl, wChannelVibratoDelayCounters
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelVibratoExtents
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelVibratoRates
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelFrequencyLowBytes
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelVibratoDelayCounterReloadValues
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelFlags2
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendLengthModifiers
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendFrequencySteps
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendFrequencyStepsFractionalPart
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendCurrentFrequencyFractionalPart
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendCurrentFrequencyHighBytes
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendCurrentFrequencyLowBytes
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendTargetFrequencyHighBytes
-	call FillAudioRAM2
-	ld hl, wChannelPitchBendTargetFrequencyLowBytes
-	call FillAudioRAM2
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideLengthModifiers
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideFrequencySteps
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideFrequencyStepsFractionalPart
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideCurrentFrequencyFractionalPart
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideCurrentFrequencyHighBytes
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideCurrentFrequencyLowBytes
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideTargetFrequencyHighBytes
+	call Audio2_FillMem
+	ld hl, wChannelPitchSlideTargetFrequencyLowBytes
+	call Audio2_FillMem
 	ld a, $1
 	ld hl, wChannelLoopCounters
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelNoteDelayCounters
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld hl, wChannelNoteSpeeds
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld [wMusicTempo], a
 	ld a, $ff
 	ld [wStereoPanning], a
@@ -271,7 +276,7 @@ Audio2_InitMusicVariables::
 	ld [rNR50], a
 	ld a, $8
 	ld [rNR10], a
-	ld a, $0
+	ld a, 0
 	ld [rNR51], a
 	xor a
 	ld [rNR30], a
@@ -304,10 +309,10 @@ Audio2_InitSFXVariables::
 	ld hl, wChannelFlags1
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelDuties
+	ld hl, wChannelDutyCycles
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelDutyCycles
+	ld hl, wChannelDutyCyclePatterns
 	add hl, de
 	ld [hl], a
 	ld hl, wChannelVibratoDelayCounters
@@ -325,28 +330,28 @@ Audio2_InitSFXVariables::
 	ld hl, wChannelVibratoDelayCounterReloadValues
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendLengthModifiers
+	ld hl, wChannelPitchSlideLengthModifiers
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendFrequencySteps
+	ld hl, wChannelPitchSlideFrequencySteps
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendFrequencyStepsFractionalPart
+	ld hl, wChannelPitchSlideFrequencyStepsFractionalPart
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyFractionalPart
+	ld hl, wChannelPitchSlideCurrentFrequencyFractionalPart
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyHighBytes
+	ld hl, wChannelPitchSlideCurrentFrequencyHighBytes
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendCurrentFrequencyLowBytes
+	ld hl, wChannelPitchSlideCurrentFrequencyLowBytes
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendTargetFrequencyHighBytes
+	ld hl, wChannelPitchSlideTargetFrequencyHighBytes
 	add hl, de
 	ld [hl], a
-	ld hl, wChannelPitchBendTargetFrequencyLowBytes
+	ld hl, wChannelPitchSlideTargetFrequencyLowBytes
 	add hl, de
 	ld [hl], a
 	ld hl, wChannelFlags2
@@ -363,30 +368,30 @@ Audio2_InitSFXVariables::
 	add hl, de
 	ld [hl], a
 	ld a, e
-	cp $4
+	cp Ch5
 	ret nz
 	ld a, $8
-	ld [rNR10], a
+	ld [rNR10], a ; sweep off
 	ret
 
 Audio2_StopAllAudio::
 	ld a, $80
-	ld [rNR52], a
-	ld [rNR30], a
+	ld [rNR52], a ; sound hardware on
+	ld [rNR30], a ; wave playback on
 	xor a
-	ld [rNR51], a
-	ld [rNR32], a
+	ld [rNR51], a ; no sound output
+	ld [rNR32], a ; mute channel 3 (wave channel)
 	ld a, $8
-	ld [rNR10], a
-	ld [rNR12], a
-	ld [rNR22], a
-	ld [rNR42], a
+	ld [rNR10], a ; sweep off
+	ld [rNR12], a ; mute channel 1 (pulse channel 1)
+	ld [rNR22], a ; mute channel 2 (pulse channel 2)
+	ld [rNR42], a ; mute channel 4 (noise channel)
 	ld a, $40
-	ld [rNR14], a
+	ld [rNR14], a ; counter mode
 	ld [rNR24], a
 	ld [rNR44], a
 	ld a, $77
-	ld [rNR50], a
+	ld [rNR50], a ; full volume
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
@@ -397,18 +402,19 @@ Audio2_StopAllAudio::
 	ld [wSfxWaveInstrument], a
 	ld d, $b0
 	ld hl, wChannelCommandPointers
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld a, $1
 	ld d, $18
 	ld hl, wChannelNoteDelayCounters
-	call FillAudioRAM2
+	call Audio2_FillMem
 	ld [wMusicTempo], a
 	ld [wSfxTempo], a
 	ld a, $ff
 	ld [wStereoPanning], a
 	ret
 
-FillAudioRAM2:
+; fills d bytes at hl with a
+Audio2_FillMem
 	ld b, d
 .loop
 	ld [hli], a

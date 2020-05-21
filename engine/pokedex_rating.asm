@@ -42,7 +42,7 @@ DisplayDexRating:
 	inc de
 .copyRatingTextLoop
 	ld a, [hli]
-	cp a, "@"
+	cp "@"
 	jr z, .doneCopying
 	ld [de], a
 	inc de
@@ -86,7 +86,7 @@ DexRatingsTable:
 	dw DexRatingText_Own130To139
 	db 150
 	dw DexRatingText_Own140To149
-	db 152
+	db NUM_POKEMON + 1
 	dw DexRatingText_Own150To151
 
 DexRatingText_Own0To9:

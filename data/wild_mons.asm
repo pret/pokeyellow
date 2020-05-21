@@ -254,12 +254,12 @@ WildDataPointers:
 ; first part:  pokemon found in grass
 ; second part: pokemon found while surfing
 ; each part goes as follows:
-	; if first byte == 00, then
-		; no wild pokemon on this map
-	; if first byte != 00, then
-		; first byte is encounter rate
-		; followed by 20 bytes:
-		; level, species (ten times)
+    ; if first byte == 00, then
+        ; no wild pokemon on this map
+    ; if first byte != 00, then
+        ; first byte is encounter rate
+        ; followed by 20 bytes:
+        ; level, species (ten times)
 
 INCLUDE "data/wildPokemon/nomons.asm"
 INCLUDE "data/wildPokemon/route1.asm"
@@ -312,9 +312,9 @@ INCLUDE "data/wildPokemon/mansion2.asm"
 INCLUDE "data/wildPokemon/mansion3.asm"
 INCLUDE "data/wildPokemon/mansionb1.asm"
 INCLUDE "data/wildPokemon/route21.asm"
-INCLUDE "data/wildPokemon/unknowndungeon1.asm"
-INCLUDE "data/wildPokemon/unknowndungeon2.asm"
-INCLUDE "data/wildPokemon/unknowndungeonb1.asm"
+INCLUDE "data/wildPokemon/ceruleancave1.asm"
+INCLUDE "data/wildPokemon/ceruleancave2.asm"
+INCLUDE "data/wildPokemon/ceruleancaveb1.asm"
 INCLUDE "data/wildPokemon/powerplant.asm"
 INCLUDE "data/wildPokemon/route23.asm"
 INCLUDE "data/wildPokemon/victoryroad2.asm"

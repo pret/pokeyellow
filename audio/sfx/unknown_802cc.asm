@@ -1,5 +1,5 @@
-SFX_802cc_4_Ch4:
-	duty 2
-	unknownsfx0x20 3, 180, 192, 7
-	unknownsfx0x20 0, 161, 128, 7
-	endchannel
+SFX_Unknown_802cc_Ch5:
+	duty_cycle 2
+	square_note 3, 11, 4, 1984
+	square_note 0, 10, 1, 1920
+	sound_ret

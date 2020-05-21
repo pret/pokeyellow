@@ -554,11 +554,11 @@ TradeCenter_SelectMon:
 	ld a, " "
 	ld [hl], a
 .cancelMenuItem_Loop
-	ld a, $ed ; filled arrow cursor
+	ld a, "▶" ; filled arrow cursor
 	Coorda 1, 16
 .cancelMenuItem_JoypadLoop
 	call JoypadLowSensitivity
-	ld a, [$ffb5]
+	ld a, [hJoy5]
 	and a ; pressed anything?
 	jr z, .cancelMenuItem_JoypadLoop
 	bit 0, a ; A button pressed?
@@ -573,7 +573,7 @@ TradeCenter_SelectMon:
 	ld [wCurrentMenuItem], a
 	jp .playerMonMenu
 .cancelMenuItem_APressed
-	ld a, $ec ; unfilled arrow cursor
+	ld a, "▷" ; unfilled arrow cursor
 	Coorda 1, 16
 	ld a, $f
 	ld [wSerialExchangeNybbleSendData], a
@@ -595,7 +595,7 @@ ReturnToCableClubRoom:
 	dec a
 	ld [wDestinationWarpID], a
 	call LoadMapData
-	callba ClearVariablesAfterLoadingMapData
+	callba ClearVariablesOnEnterMap
 	pop hl
 	pop af
 	ld [hl], a
@@ -622,7 +622,7 @@ TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	coord hl, 1, 9
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
-	ld [hl], $ec ; cursor
+	ld [hl], "▷" ; cursor
 	ret
 
 TradeCenter_DisplayStats:
@@ -921,7 +921,7 @@ CableClub_Run:
 	ld [wGrassRate], a
 	inc a ; LINK_STATE_IN_CABLE_CLUB
 	ld [wLinkState], a
-	ld [$ffb5], a
+	ld [hJoy5], a
 	ld a, 10
 	ld [wAudioFadeOutControl], a
 	ld a, BANK(Music_Celadon)

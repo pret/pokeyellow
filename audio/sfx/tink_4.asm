@@ -1,8 +1,8 @@
-SFX_8028e_4_Ch4:
-	duty 2
-	unknownsfx0x10 58
-	unknownsfx0x20 4, 242, 0, 2
-	unknownsfx0x10 34
-	unknownsfx0x20 8, 226, 0, 2
-	unknownsfx0x10 8
-	endchannel
+SFX_Tink_4_Ch5:
+	duty_cycle 2
+	pitch_sweep 3, -2
+	square_note 4, 15, 2, 512
+	pitch_sweep 2, 2
+	square_note 8, 14, 2, 512
+	pitch_sweep 0, 8
+	sound_ret

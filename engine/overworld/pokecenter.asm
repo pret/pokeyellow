@@ -127,7 +127,7 @@ PokemonCenterWelcomeText:
 	db "@"
 
 ShallWeHealYourPokemonText:
-	db $a
+	TX_DELAY
 	TX_FAR _ShallWeHealYourPokemonText
 	db "@"
 
@@ -140,7 +140,7 @@ PokemonFightingFitText:
 	db "@"
 
 PokemonCenterFarewellText:
-	db $a
+	TX_DELAY
 	TX_FAR _PokemonCenterFarewellText
 	db "@"
 

@@ -1,5 +1,5 @@
-SFX_Intro_Raise_Ch1:
-	unknownnoise0x20 2, 111, 33
-	unknownnoise0x20 2, 175, 49
-	unknownnoise0x20 15, 242, 65
-	endchannel
+SFX_Intro_Raise_Ch8:
+	noise_note 2, 6, -7, 33
+	noise_note 2, 10, -7, 49
+	noise_note 15, 15, 2, 65
+	sound_ret

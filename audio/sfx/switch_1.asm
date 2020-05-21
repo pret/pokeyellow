@@ -1,8 +1,8 @@
-SFX_Switch_1_Ch1:
-	duty 2
-	unknownsfx0x20 4, 0, 0, 0
-	unknownsfx0x20 2, 241, 128, 6
-	unknownsfx0x20 1, 0, 0, 0
-	unknownsfx0x20 4, 241, 128, 7
-	unknownsfx0x20 4, 0, 0, 0
-	endchannel
+SFX_Switch_1_Ch5:
+	duty_cycle 2
+	square_note 4, 0, 0, 0
+	square_note 2, 15, 1, 1664
+	square_note 1, 0, 0, 0
+	square_note 4, 15, 1, 1920
+	square_note 4, 0, 0, 0
+	sound_ret

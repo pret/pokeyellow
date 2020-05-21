@@ -1,6 +1,6 @@
-SFX_Ledge_3_Ch1:
-	duty 2
-	unknownsfx0x10 149
-	unknownsfx0x20 15, 242, 0, 4
-	unknownsfx0x10 8
-	endchannel
+SFX_Ledge_3_Ch5:
+	duty_cycle 2
+	pitch_sweep 9, 5
+	square_note 15, 15, 2, 1024
+	pitch_sweep 0, 8
+	sound_ret

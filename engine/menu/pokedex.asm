@@ -260,7 +260,7 @@ Pokedex_DrawInterface:
 	ld [H_AUTOBGTRANSFERENABLED], a
 ; draw the horizontal line separating the seen and owned amounts from the menu
 	coord hl, 15, 6
-	ld a, $7a ; horizontal line tile
+	ld a, "─"
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
@@ -356,7 +356,7 @@ Pokedex_PlacePokemonList:
 	ld [wd11e], a
 	ld d, 7
 	ld a, [wDexMaxSeenMon]
-	cp a, 7
+	cp 7
 	jr nc, .printPokemonLoop
 	ld d, a
 	dec a
@@ -403,7 +403,7 @@ Pokedex_PlacePokemonList:
 	inc hl
 	call PlaceString
 	pop hl
-	ld bc, 2 * 20
+	ld bc, 2 * SCREEN_WIDTH
 	add hl, bc
 	pop de
 	pop af
@@ -475,7 +475,7 @@ ShowPokedexDataInternal:
 	ret
 
 HeightWeightText:
-	db "HT  ?", $60, "??", $61
+	db   "HT  ?", $60, "??", $61
 	next "WT   ???lb@"
 
 ; XXX does anything point to this?
@@ -556,7 +556,7 @@ DrawDexEntryOnScreen:
 	coord hl, 2, 8
 	ld a, "№"
 	ld [hli], a
-	ld a, $f2
+	ld a, "⠄"
 	ld [hli], a
 	ld de, wd11e
 	lb bc, LEADING_ZEROES | 1, 3
@@ -628,16 +628,16 @@ DrawDexEntryOnScreen:
 	call PrintNumber ; print weight
 	coord hl, 14, 8
 	ld a, [hDexWeight + 1]
-	sub a, 10
+	sub 10
 	ld a, [hDexWeight]
-	sbc a, 0
+	sbc 0
 	jr nc, .next
 	ld [hl], "0" ; if the weight is less than 10, put a 0 before the decimal point
 .next
 	inc hl
 	ld a, [hli]
 	ld [hld], a ; make space for the decimal point by moving the last digit forward one tile
-	ld [hl], $f2 ; decimal point tile
+	ld [hl], "⠄" ; decimal point tile
 	pop af
 	ld [hDexWeight + 1], a ; restore original value of [hDexWeight + 1]
 	pop af
@@ -729,7 +729,7 @@ PokedexToIndex:
 	ret
 
 IndexToPokedex:
-	; converts the indexédex number at wd11e to a Pokédex number
+	; converts the index number at wd11e to a Pokédex number
 	push bc
 	push hl
 	ld a, [wd11e]

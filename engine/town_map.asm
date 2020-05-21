@@ -191,7 +191,7 @@ LoadTownMap_Fly:
 	coord hl, 18, 0
 	ld [hl], "▶"
 	coord hl, 19, 0
-	ld [hl], $ee
+	ld [hl], "▼"
 	pop hl
 .inputLoop
 	push hl

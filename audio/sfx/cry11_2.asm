@@ -1,34 +1,34 @@
-SFX_Cry11_2_Ch1:
-	dutycycle 240
-	unknownsfx0x20 6, 247, 160, 7
-	unknownsfx0x20 8, 230, 164, 7
-	unknownsfx0x20 4, 214, 160, 7
-	unknownsfx0x20 15, 211, 32, 7
-	unknownsfx0x20 8, 195, 35, 7
-	unknownsfx0x20 2, 194, 40, 7
-	unknownsfx0x20 8, 177, 48, 7
-	endchannel
+SFX_Cry11_2_Ch5:
+	duty_cycle_pattern 3, 3, 0, 0
+	square_note 6, 15, 7, 1952
+	square_note 8, 14, 6, 1956
+	square_note 4, 13, 6, 1952
+	square_note 15, 13, 3, 1824
+	square_note 8, 12, 3, 1827
+	square_note 2, 12, 2, 1832
+	square_note 8, 11, 1, 1840
+	sound_ret
 
 
-SFX_Cry11_2_Ch2:
-	dutycycle 10
-	unknownsfx0x20 4, 8, 0, 0
-	unknownsfx0x20 6, 167, 65, 7
-	unknownsfx0x20 8, 134, 67, 7
-	unknownsfx0x20 4, 118, 65, 7
-	unknownsfx0x20 13, 131, 194, 6
-	unknownsfx0x20 7, 115, 193, 6
-	unknownsfx0x20 3, 130, 204, 6
-	unknownsfx0x20 8, 113, 216, 6
-	endchannel
+SFX_Cry11_2_Ch6:
+	duty_cycle_pattern 0, 0, 2, 2
+	square_note 4, 0, 8, 0
+	square_note 6, 10, 7, 1857
+	square_note 8, 8, 6, 1859
+	square_note 4, 7, 6, 1857
+	square_note 13, 8, 3, 1730
+	square_note 7, 7, 3, 1729
+	square_note 3, 8, 2, 1740
+	square_note 8, 7, 1, 1752
+	sound_ret
 
 
-SFX_Cry11_2_Ch3:
-	unknownnoise0x20 2, 242, 76
-	unknownnoise0x20 6, 230, 58
-	unknownnoise0x20 4, 215, 58
-	unknownnoise0x20 6, 214, 44
-	unknownnoise0x20 8, 229, 60
-	unknownnoise0x20 12, 210, 61
-	unknownnoise0x20 8, 209, 44
-	endchannel
+SFX_Cry11_2_Ch8:
+	noise_note 2, 15, 2, 76
+	noise_note 6, 14, 6, 58
+	noise_note 4, 13, 7, 58
+	noise_note 6, 13, 6, 44
+	noise_note 8, 14, 5, 60
+	noise_note 12, 13, 2, 61
+	noise_note 8, 13, 1, 44
+	sound_ret

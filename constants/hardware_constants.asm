@@ -22,14 +22,6 @@ JOYPAD   EQU 4
 
 LY_VBLANK EQU 145
 
-; OAM attribute flags
-OAM_PALETTE   EQU %111
-OAM_TILE_BANK EQU 3
-OAM_OBP_NUM   EQU 4 ; Non CGB Mode Only
-OAM_X_FLIP    EQU 5
-OAM_Y_FLIP    EQU 6
-OAM_PRIORITY  EQU 7 ; 0: OBJ above BG, 1: OBJ behind BG (colors 1-3)
-
 ; serial
 START_TRANSFER_EXTERNAL_CLOCK EQU $80
 START_TRANSFER_INTERNAL_CLOCK EQU $81
@@ -68,7 +60,7 @@ rNR34       EQU $ff1e ; Channel 3 Frequency's higher data (R/W)
 rNR41       EQU $ff20 ; Channel 4 Sound Length (R/W)
 rNR42       EQU $ff21 ; Channel 4 Volume Envelope (R/W)
 rNR43       EQU $ff22 ; Channel 4 Polynomial Counter (R/W)
-rNR44       EQU $ff23 ; Channel 4 Counter/consecutive; Inital (R/W)
+rNR44       EQU $ff23 ; Channel 4 Counter/consecutive; Initial (R/W)
 rNR50       EQU $ff24 ; Channel control / ON-OFF / Volume (R/W)
 rNR51       EQU $ff25 ; Selection of Sound output terminal (R/W)
 rNR52       EQU $ff26 ; Sound on/off

@@ -1,6 +1,6 @@
-SFX_Arrow_Tiles_3_Ch1:
-	duty 0
-	unknownsfx0x10 23
-	unknownsfx0x20 15, 210, 0, 7
-	unknownsfx0x10 8
-	endchannel
+SFX_Arrow_Tiles_3_Ch5:
+	duty_cycle 0
+	pitch_sweep 1, 7
+	square_note 15, 13, 2, 1792
+	pitch_sweep 0, 8
+	sound_ret

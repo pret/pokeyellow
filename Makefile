@@ -1,5 +1,5 @@
 PYTHON := python
-pcm      := $(PYTHON) tools/pokemontools/pcm.py pcm
+pcm    := $(PYTHON) tools/pokemontools/pcm.py pcm
 
 rom := pokeyellow.gbc
 
@@ -16,13 +16,14 @@ RGBFIX  ?= $(RGBDS)rgbfix
 RGBGFX  ?= $(RGBDS)rgbgfx
 RGBLINK ?= $(RGBDS)rgblink
 
+
 ### Build targets
 
 .SUFFIXES:
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all clean yellow tidy compare tools
+.PHONY: all yellow clean tidy compare tools
 
 all: $(rom)
 yellow: $(rom)
@@ -35,7 +36,6 @@ clean:
 	rm -f $(rom) $(objs) $(rom:.gbc=.sym)
 	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' -o -iname '*.pcm' \) -exec rm {} +
 	$(MAKE) clean -C tools/
-	
 
 tidy:
 	rm -f $(rom) $(objs) $(rom:.gbc=.sym)
@@ -43,13 +43,15 @@ tidy:
 
 tools:
 	$(MAKE) -C tools/
-	
+
+
 # Build tools when building the rom.
 # This has to happen before the rules are processed, since that's when scan_includes is run.
 ifeq (,$(filter clean tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 endif
-	
+
+
 %.asm: ;
 
 %.o: dep = $(shell tools/scan_includes $(@D)/$*.asm)
@@ -59,10 +61,11 @@ $(objs): %.o: %.asm $$(dep)
 opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
 
 $(rom): $(objs)
-		$(RGBLINK) -n pokeyellow.sym -l pokeyellow.link -o $@ $^
-		$(RGBFIX) $(opts) $@
-		sort $(rom:.gbc=.sym) -o $(rom:.gbc=.sym)
-	
+	$(RGBLINK) -n pokeyellow.sym -l pokeyellow.link -o $@ $^
+	$(RGBFIX) $(opts) $@
+	sort $(rom:.gbc=.sym) -o $(rom:.gbc=.sym)
+
+
 ### Misc file-specific graphics rules
 
 gfx/game_boy.2bpp: tools/gfx += --remove-duplicates
@@ -72,9 +75,11 @@ gfx/pokemon_yellow.2bpp: tools/gfx += --trim-whitespace
 gfx/surfing_pikachu_1c.2bpp: tools/gfx += --trim-whitespace
 gfx/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 gfx/surfing_pikachu_1.2bpp: tools/gfx += --trim-whitespace
+
+
 ### Catch-all graphics rules
 
-%.png:  ;
+%.png: ;
 
 %.2bpp: %.png
 	$(RGBGFX) $(rgbgfx) -o $@ $<
@@ -88,7 +93,7 @@ gfx/surfing_pikachu_1.2bpp: tools/gfx += --trim-whitespace
 
 %.pic:  %.2bpp
 	tools/pkmncompress $< $@
-	
+
 
 %.wav: ;
 %.pcm: %.wav   ; @$(pcm)  $<
