@@ -12,10 +12,10 @@ SFX_Battle_36_Ch5:
 	square_note 2, 15, 1, 1792
 	square_note 2, 15, 1, 2000
 
-SFX_Battle_36_branch_20930:
+SFX_Battle_36_branch_208e0:
 	square_note 2, 15, 1, 1792
 	square_note 2, 15, 1, 2016
-	sound_loop 12, SFX_Battle_36_branch_20930
+	sound_loop 12, SFX_Battle_36_branch_208e0
 	square_note 15, 15, 1, 1792
 	sound_ret
 
@@ -35,7 +35,7 @@ SFX_Battle_36_Ch6:
 	square_note 2, 15, 1, 2001
 	square_note 2, 15, 1, 1793
 	square_note 2, 15, 1, 2017
-	sound_loop 12, SFX_Battle_36_branch_20930
+	sound_loop 12, SFX_Battle_36_branch_208e0
 	square_note 15, 15, 1, 1793
 	sound_ret
 

@@ -752,7 +752,7 @@ SurfingMinigame_ScoreCurrentWave:
 	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	xor a
 	ld [wChannelSoundIDs + Ch8], a
-	ld a, SFX_SURFING_LAND
+	ld a, SFX_SURFING_CRASH
 	call PlaySound
 	ret
 
@@ -1011,7 +1011,7 @@ SurfingMinigame_TileInteraction:
 .action_3
 	xor a
 	ld [wChannelSoundIDs + Ch8], a
-	ld a, SFX_SURFING_CRASH
+	ld a, SFX_SURFING_LAND
 	call PlaySound
 	and a
 	ret
@@ -1559,7 +1559,7 @@ SurfingMinigame_AddRemainingHPToTotal:
 	pop bc
 	dec c
 	jr nz, .loop
-	ld a, SFX_SURFING_ADD_POINTS
+	ld a, SFX_PRESS_AB
 	call PlaySound
 	and a
 	ret
@@ -1621,7 +1621,7 @@ SurfingMinigame_AddRadnessToTotal:
 	pop bc
 	dec c
 	jr nz, .loop
-	ld a, SFX_SURFING_ADD_POINTS
+	ld a, SFX_PRESS_AB
 	call PlaySound
 	and a
 	ret

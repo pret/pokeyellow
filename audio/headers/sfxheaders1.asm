@@ -1,5 +1,5 @@
 SFX_Headers_1::
-	dbw -1, -1 ; padding
+	db $ff, $ff, $ff ; padding
 
 SFX_Noise_Instrument01_1::
 	audio_header SFX_Noise_Instrument01_1, Ch8

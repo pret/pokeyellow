@@ -167,18 +167,18 @@ ENDM
 	music_const SFX_CRY_23,             SFX_Cry23_1
 	music_const SFX_CRY_24,             SFX_Cry24_1
 	music_const SFX_CRY_25,             SFX_Cry25_1
-	music_const SFX_GET_ITEM_2,         SFX_Get_Item2_1
 
-	; AUDIO_1 AUDIO_2 AUDIO_3
+	music_const SFX_GET_ITEM_2,         SFX_Get_Item2_1
 	music_const SFX_TINK,               SFX_Tink_1
 	music_const SFX_HEAL_HP,            SFX_Heal_HP_1
 	music_const SFX_HEAL_AILMENT,       SFX_Heal_Ailment_1
 	music_const SFX_START_MENU,         SFX_Start_Menu_1
 	music_const SFX_PRESS_AB,           SFX_Press_AB_1
 
-	; AUDIO_1 AUDIO_3
+	; AUDIO_1 AUDIO_3 AUDIO_4
 	music_const SFX_GET_ITEM_1,         SFX_Get_Item1_1
 
+	; AUDIO_1 AUDIO_3
 	music_const SFX_POKEDEX_RATING,     SFX_Pokedex_Rating_1
 	music_const SFX_GET_KEY_ITEM,       SFX_Get_Key_Item_1
 	music_const SFX_POISONED,           SFX_Poisoned_1
@@ -285,10 +285,9 @@ ENDM
 	music_const SFX_SHOOTING_STAR,      SFX_Shooting_Star
 
 	; AUDIO_4
-	music_const SFX_SURFING_ADD_POINTS, SFX_Surfing_Add_Points
 	music_const SFX_SURFING_JUMP,       SFX_Surfing_Jump
 	music_const SFX_SURFING_FLIP,       SFX_Surfing_Flip
-	music_const SFX_SURFING_LAND,       SFX_Surfing_Land
-	music_const SFX_UNKNOWN_801BC_4,    SFX_801bc_4
 	music_const SFX_SURFING_CRASH,      SFX_Surfing_Crash
+	music_const SFX_UNKNOWN_802CC_4,    SFX_802cc_4
+	music_const SFX_SURFING_LAND,       SFX_Surfing_Land
 	music_const SFX_GET_ITEM2_4_2,      SFX_Get_Item2_4_2

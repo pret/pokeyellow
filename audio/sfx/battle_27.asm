@@ -2,9 +2,9 @@ SFX_Battle_27_Ch5:
 	duty_cycle 2
 	square_note 15, 3, -7, 1984
 
-SFX_Battle_27_branch_2062a:
+SFX_Battle_27_branch_205da:
 	square_note 15, 13, -7, 1984
-	sound_loop 4, SFX_Battle_27_branch_2062a
+	sound_loop 4, SFX_Battle_27_branch_205da
 	square_note 15, 13, 1, 1984
 	sound_ret
 
@@ -13,9 +13,9 @@ SFX_Battle_27_Ch6:
 	duty_cycle_pattern 2, 3, 0, 3
 	square_note 15, 2, -7, 1992
 
-SFX_Battle_27_branch_2063d:
+SFX_Battle_27_branch_205ed:
 	square_note 15, 12, -7, 1991
-	sound_loop 4, SFX_Battle_27_branch_2063d
+	sound_loop 4, SFX_Battle_27_branch_205ed
 	square_note 15, 12, 1, 1992
 	sound_ret
 
