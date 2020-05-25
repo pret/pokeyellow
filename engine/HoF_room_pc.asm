@@ -1,5 +1,5 @@
 HallOfFamePC:
-	callab FallingStarEnd
+	callab AnimateHallOfFame
 	call ClearScreen
 	ld c, 100
 	call DelayFrames
