@@ -1,13 +1,10 @@
 # Linux
 
-	sudo apt-get install make git gcc
+	sudo apt-get install make gcc bison git python
 
-	sudo apt-get install byacc flex pkg-config libpng-dev
 	git clone https://github.com/rednex/rgbds
-	cd rgbds
-	sudo make install
-	cd ..
-
+	sudo make -C rgbds install
+	
 	git clone https://github.com/pret/pokeyellow
 	cd pokeyellow
 
@@ -43,6 +40,7 @@ Run setup and leave the default settings. At "Select Packages", choose to instal
 - `git`
 - `gcc-core`
 - `python`
+- `gettext`
 
 Then download [**rgbds**](https://github.com/rednex/rgbds/releases/): the latest **win64.tar.gz** or **win32.tar.gz** release. Extract it and put all the `exe` and `dll` files individually in **C:\cygwin64\usr\local\bin**.
 
