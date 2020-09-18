@@ -154,8 +154,8 @@ HappinessChangeTable:
 	db  -3, -3, -5 ; Deposited
 	db  -1, -1, -1 ; Fainted in battle
 	db  -5, -5, -10 ; Fainted due to Poison outside of battle
-	db  -5, -5, -10 ; Unknown (d = 10)
-	db -10, -10, -20 ; Unknown (d = 11)
+	db  -5, -5, -10 ; Fainted to opponent at least 30 levels higher
+	db -10, -10, -20 ; Traded away
 
 PikachuMoods:
 	; Increase
