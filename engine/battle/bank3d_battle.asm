@@ -62,7 +62,7 @@ InitWildBattle:
 	callab LoadEnemyMonData
 	callab DoBattleTransitionAndInitBattleVariables
 	ld a, [wCurOpponent]
-	cp MAROWAK
+	cp RESTLESS_SOUL
 	jr z, .isGhost
 	callab IsGhostBattle
 	jr nz, .isNoGhost
