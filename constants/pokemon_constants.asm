@@ -192,3 +192,6 @@ const_value = 1
 	const VICTREEBEL   ; $BE
 
 NUM_POKEMON_INDEXES EQU const_value + -1
+
+; ghost Marowak in Pokémon Tower
+RESTLESS_SOUL EQU MAROWAK
