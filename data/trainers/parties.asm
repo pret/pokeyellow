@@ -272,14 +272,6 @@ BikerData:
 	db 33, WEEZING, 0
 	db 26, GRIMER, GRIMER, GRIMER, GRIMER, 0
 ; Route 17
-	; From https://www.smogon.com/smog/issue27/glitch:
-	; 0E:5FC2 is offset of the ending 0 for this first Biker on Route 17.
-	; BaseStats + (MonBaseStatsEnd - MonBaseStats) * (000 - 1) = $5FC2;
-	; that's the formula from GetMonHeader for the base stats of mon #000.
-	; (BaseStats = $43DE and BANK(BaseStats) = $0E.)
-	; Finally, PokedexOrder lists 0 as the dex ID for every MissingNo.
-	; The result is that this data gets interpreted as the base stats
-	; for MissingNo: 0, 33, MUK, 0, 29, VOLTORB, VOLTORB, 0, ..., 28, GRIMER, GRIMER.
 	db 28, WEEZING, KOFFING, WEEZING, 0
 	db 33, MUK, 0
 	db 29, VOLTORB, VOLTORB, 0
@@ -600,12 +592,12 @@ RocketData:
 ; Silph Co. 11F
 	db 25, RATTATA, RATTATA, ZUBAT, RATTATA, EKANS, 0
 	db 32, CUBONE, DROWZEE, MAROWAK, 0
-;JessieJamesData:
+; Jessie & James
 	db 14, EKANS, MEOWTH, KOFFING, 0
 	db 25, KOFFING, MEOWTH, EKANS, 0
 	db 27, MEOWTH, ARBOK, WEEZING, 0
 	db 31, WEEZING, ARBOK, MEOWTH, 0
-; unused JessieJames trainers
+; Unused
 	db 16, KOFFING, 0
 	db 27, KOFFING, 0
 	db 29, WEEZING, 0

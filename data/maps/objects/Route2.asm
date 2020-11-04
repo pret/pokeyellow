@@ -22,8 +22,7 @@ Route2_Object:
 
 	; unused
 	warp_to 2, 7, 4
-	dw      $c712
-	db      $9, $7
+	db $12, $c7, $9, $7
 	warp_to 2, 7, 4
 	warp_to 2, 7, 4
 	warp_to 2, 7, 4

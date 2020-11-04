@@ -1,4 +1,4 @@
-; The third of three duplicated sound engines.
+; The third of four partially duplicated sound engines.
 
 Audio3_PlaySound::
 	ld [wSoundID], a

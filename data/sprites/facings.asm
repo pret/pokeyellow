@@ -1,4 +1,5 @@
 SpriteFacingAndAnimationTable:
+; This table is used for overworld sprites $1-$9.
 	dw .StandingDown  ; facing down, walk animation frame 0
 	dw .WalkingDown   ; facing down, walk animation frame 1
 	dw .StandingDown  ; facing down, walk animation frame 2
@@ -35,97 +36,91 @@ SpriteFacingAndAnimationTable:
 	dw .StandingDown
 	dw .StandingDown
 ; special case
-	dw SpriteSpecialCase ; pikachu maybe?
+	dw .SpecialCase ; pikachu maybe?
+
+; Tables used as a reference to transform OAM data.
+
+; Format:
+;	db y, x, attributes, tile index
 
 .StandingDown:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $00, $00                                      ; top left
-	db $00, $08, $01, $00                                      ; top right
-	db $08, $00, $02, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $03, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $00, 0
+	db  0,  8, $01, 0
+	db  8,  0, $02, OAMFLAG_CANBEMASKED
+	db  8,  8, $03, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingDown:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $80, $00                                      ; top left
-	db $00, $08, $81, $00                                      ; top right
-	db $08, $00, $82, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $83, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $80, 0
+	db  0,  8, $81, 0
+	db  8,  0, $82, OAMFLAG_CANBEMASKED
+	db  8,  8, $83, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingDown2:
-	db $04
-; Sprite OAM Parameters
-	db $00, $08, $80, OAM_HFLIP                                           ; top left
-	db $00, $00, $81, OAM_HFLIP                                           ; top right
-	db $08, $08, $82, OAM_HFLIP | OAMFLAG_CANBEMASKED                     ; bottom left
-	db $08, $00, $83, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
+	db 4 ; #
+	db  0,  8, $80, OAM_HFLIP
+	db  0,  0, $81, OAM_HFLIP
+	db  8,  8, $82, OAM_HFLIP | OAMFLAG_CANBEMASKED
+	db  8,  0, $83, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .StandingUp:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $04, $00                                      ; top left
-	db $00, $08, $05, $00                                      ; top right
-	db $08, $00, $06, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $07, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $04, 0
+	db  0,  8, $05, 0
+	db  8,  0, $06, OAMFLAG_CANBEMASKED
+	db  8,  8, $07, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingUp:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $84, $00                                      ; top left
-	db $00, $08, $85, $00                                      ; top right
-	db $08, $00, $86, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $87, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $84, 0
+	db  0,  8, $85, 0
+	db  8,  0, $86, OAMFLAG_CANBEMASKED
+	db  8,  8, $87, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingUp2:
-	db $04
-; Sprite OAM Parameters
-	db $00, $08, $84, OAM_HFLIP                                           ; top left
-	db $00, $00, $85, OAM_HFLIP                                           ; top right
-	db $08, $08, $86, OAM_HFLIP | OAMFLAG_CANBEMASKED                     ; bottom left
-	db $08, $00, $87, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
+	db 4 ; #
+	db  0,  8, $84, OAM_HFLIP
+	db  0,  0, $85, OAM_HFLIP
+	db  8,  8, $86, OAM_HFLIP | OAMFLAG_CANBEMASKED
+	db  8,  0, $87, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .StandingLeft:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $08, $00                                      ; top left
-	db $00, $08, $09, $00                                      ; top right
-	db $08, $00, $0a, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $0b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $08, 0
+	db  0,  8, $09, 0
+	db  8,  0, $0a, OAMFLAG_CANBEMASKED
+	db  8,  8, $0b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingLeft:
-	db $04
-; Sprite OAM Parameters
-	db $00, $00, $88, $00                                      ; top left
-	db $00, $08, $89, $00                                      ; top right
-	db $08, $00, $8a, OAMFLAG_CANBEMASKED                      ; bottom left
-	db $08, $08, $8b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA  ; bottom right
+	db 4 ; #
+	db  0,  0, $88, 0
+	db  0,  8, $89, 0
+	db  8,  0, $8a, OAMFLAG_CANBEMASKED
+	db  8,  8, $8b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .StandingRight:
-	db $04
-; Sprite OAM Parameters
-	db $00, $08, $08, OAM_HFLIP                                           ; top left
-	db $00, $00, $09, OAM_HFLIP                                           ; top right
-	db $08, $08, $0a, OAM_HFLIP | OAMFLAG_CANBEMASKED                     ; bottom left
-	db $08, $00, $0b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
+	db 4 ; #
+	db  0,  8, $08, OAM_HFLIP
+	db  0,  0, $09, OAM_HFLIP
+	db  8,  8, $0a, OAM_HFLIP | OAMFLAG_CANBEMASKED
+	db  8,  0, $0b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
 .WalkingRight:
-	db $04
-; Sprite OAM Parameters
-	db $00, $08, $88, OAM_HFLIP                                           ; top left
-	db $00, $00, $89, OAM_HFLIP                                           ; top right
-	db $08, $08, $8a, OAM_HFLIP | OAMFLAG_CANBEMASKED                     ; bottom left
-	db $08, $00, $8b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA ; bottom right
+	db 4 ; #
+	db  0,  8, $88, OAM_HFLIP
+	db  0,  0, $89, OAM_HFLIP
+	db  8,  8, $8a, OAM_HFLIP | OAMFLAG_CANBEMASKED
+	db  8,  0, $8b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
 
-SpriteSpecialCase:
-	db $09
-; Sprite OAM Parameters
-	db -$4, -$4, $00, $00
-	db -$4, $04, $01, $00
-	db -$4, $0c, $00, OAM_HFLIP
-	db $04, -$4, $01, $00
-	db $04, $04, $02, $00
-	db $04, $0c, $01, $00
-	db $0c, -$4, $00, OAM_VFLIP | OAMFLAG_CANBEMASKED
-	db $0c, $04, $01, OAMFLAG_CANBEMASKED
-	db $0c, $0c, $00, OAM_VFLIP | OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+.SpecialCase:
+	db 9 ; #
+	db -4, -4, $00, 0
+	db -4,  4, $01, 0
+	db -4, 12, $00, OAM_HFLIP
+	db  4, -4, $01, 0
+	db  4,  4, $02, 0
+	db  4, 12, $01, 0
+	db 12, -4, $00, OAM_VFLIP | OAMFLAG_CANBEMASKED
+	db 12,  4, $01, OAMFLAG_CANBEMASKED
+	db 12, 12, $00, OAM_VFLIP | OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA

@@ -44,7 +44,7 @@ ROMX $2
 ROMX $3
 	"bank3"
 ROMX $4
-	"Font Graphics"
+	"bank4"
 	"NPC Sprites 1"
 	"Battle Engine 1"
 ROMX $5
@@ -57,7 +57,7 @@ ROMX $6
 	"Doors and Ledges"
 ROMX $7
 	"Maps 3"
-	"Pokémon Names"
+	"bank7"
 	"Maps 4"
 	"Hidden Objects 1"
 ROMX $8
@@ -83,7 +83,7 @@ ROMX $D
 	"Pics 5"
 	"Slot Machines"
 ROMX $E
-	"Battle Engine 7"
+	"Battle Engine 6"
 ROMX $F
 	"Battle Core"
 ROMX $10
@@ -104,13 +104,13 @@ ROMX $14
 	"Hidden Objects 2"
 ROMX $15
 	"Maps 11"
-	"Battle Engine 9"
+	"Battle Engine 7"
 	"Maps 12"
 	"Diploma"
 	"Trainer Sight"
 ROMX $16
 	"Maps 13"
-	"Battle Engine 10"
+	"bank16"
 	"Maps 14"
 	"Saffron Guards"
 ROMX $17
@@ -126,7 +126,7 @@ ROMX $18
 ROMX $19
 	"Tilesets 1"
 ROMX $1A
-	"Battle Engine 11"
+	"Version Graphics"
 	"Tilesets 2"
 ROMX $1B
 	"Tilesets 3"
@@ -184,7 +184,7 @@ ROMX $2E
 ROMX $2f
 	"Move Names"
 	org $5000
-	"bank2f"
+	"BG Map Attributes"
 ROMX $30
 	"bank30"
 ROMX $31
@@ -204,18 +204,27 @@ ROMX $37
 ROMX $38
 	"Pikachu Cries 13"
 ROMX $39
-	"bank39"
+	"Pikachu Graphics 1"
 ROMX $3A
 	"bank3A"
-; bank $3b is empty
+; bank $3B is empty
 ROMX $3C
-	"bank3C"
+	"Pikachu PCM"
+	"Tilesets 4"
+	"Try Pikachu Movement"
+	"Pikachu Graphics 2"
+	"Credits"
+	"Maps 22"
+	"Hidden Objects Core"
 ROMX $3D
-	"bank3D"
+	"Battle Engine 8"
+	"Pics 7"
+	"Battle Engine 9"
 ROMX $3E
-	"bank3E"
+	"Surfing Minigame"
 ROMX $3F
-	"bank3F"
+	"Overworld Pikachu"
+	"NPC Sprites 3"
 WRAM0
 	"WRAM"
 	org $c100

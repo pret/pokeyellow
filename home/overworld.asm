@@ -1801,7 +1801,7 @@ LoadMapHeader::
 	jr asm_0dbd
 
 Func_0db5:: ; XXX
-	farcall LoadUnusedBluesHouseMissableObjectData
+	farcall LoadMissableObjectData
 asm_0dbd:
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
@@ -2009,7 +2009,7 @@ ReloadMapAfterSurfingMinigame::
 	call ReloadMapSpriteTilePatterns
 	pop af
 	call BankswitchCommon
-	jr asm_0f4d
+	jr FinishReloadingMap
 
 ReloadMapAfterPrinter::
 	ldh a, [hLoadedROMBank]
@@ -2019,9 +2019,9 @@ ReloadMapAfterPrinter::
 	call LoadTileBlockMap
 	pop af
 	call BankswitchCommon
-asm_0f4d:
+FinishReloadingMap:
 	jpfar SetMapSpecificScriptFlagsOnMapReload
-	ret ; useless?
+	ret ; useless
 
 ResetMapVariables::
 	ld a, $98

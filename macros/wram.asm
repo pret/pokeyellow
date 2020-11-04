@@ -95,3 +95,23 @@ spritestatedata2: MACRO
 	ds 1
 \1End::
 ENDM
+
+animated_object: MACRO
+\1Index::          db ; 0
+\1FramesetID::     db ; 1
+\1AnimSeqID::      db ; 2
+\1TileID::         db ; 3
+\1XCoord::         db ; 4
+\1YCoord::         db ; 5
+\1XOffset::        db ; 6
+\1YOffset::        db ; 7
+\1Duration::       db ; 8
+\1DurationOffset:: db ; 9
+\1FrameIndex::     db ; a
+\1FieldB::         db ; b
+\1FieldC::         db ; c
+\1FieldD::         db ; d
+\1FieldE::         db ; e
+\1FieldF::         db ; f
+\1End::
+ENDM

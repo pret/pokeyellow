@@ -15,17 +15,13 @@ MarkTownVisitedAndLoadMissableObjects::
 	add hl, bc
 	ld a, [hli]                ; load missable objects pointer in hl
 	ld h, [hl]
-	; fall through
-
-; LoadMissableObjects:
-; seems to not exist in yellow (predef replaced with something near TryPushingBoulder)
 	ld l, a
 	push hl
 	ld a, l
-	sub MissableObjects & $ff ; calculate difference between out pointer and the base pointer
+	sub LOW(MissableObjects)   ; calculate difference between out pointer and the base pointer
 	ld l, a
 	ld a, h
-	sbc MissableObjects / $100
+	sbc HIGH(MissableObjects)
 	ld h, a
 	ld a, h
 	ldh [hDividend], a

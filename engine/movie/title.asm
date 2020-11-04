@@ -38,7 +38,7 @@ DisplayTitleScreen:
 	call FarCopyData
 	ld hl, NineTile
 	ld de, vTitleLogo tile $6e
-	ld bc, $10
+	ld bc, 1 tiles
 	ld a, BANK(NineTile)
 	call FarCopyData
 	ld hl, GamefreakLogoGraphics

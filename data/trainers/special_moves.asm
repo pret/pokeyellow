@@ -1,7 +1,7 @@
-; yellow has its own format.
-
-; entry = trainerclass, trainerid, moveset+, 0
-; moveset = partymon location, partymon's move, moveid
+; Yellow entry format:
+;	db trainerclass, trainerid
+;	repeat { db partymon location, partymon move, move id }
+;	db 0
 
 SpecialTrainerMoves:
 	db BUG_CATCHER, 15

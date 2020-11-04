@@ -13,12 +13,13 @@ Fixes are written in the `diff` format. If you've used Git before, this should l
 
 ## Contents
 
-- [Options Menu Code Fails to Clear Joypad State on Initialization](#options-menu-code-fails-to-clear-joypad-state-on-initialization)
-- [Battle Transitions Fail to Account for Scripted Battles](#battle-transitions-fail-to-account-for-scripted-battles)
-- [wPikachuFollowCommandBuffer can Overflow](#wpikachufollowcommandbuffer-can-overflow)
-- [Unexpected Counter Damage](#unexpected-counter-damage)
+- [Options menu code fails to clear joypad state on initialization](#options-menu-code-fails-to-clear-joypad-state-on-initialization)
+- [Battle transitions fail to account for scripted battles](#battle-transitions-fail-to-account-for-scripted-battles)
+- [`wPikachuFollowCommandBuffer` can overflow](#wpikachufollowcommandbuffer-can-overflow)
+- [Unexpected Counter damage](#unexpected-counter-damage)
 
-## Options Menu Code Fails to Clear Joypad State on Initialization
+
+## Options menu code fails to clear joypad state on initialization
 
 This bug (or feature!) results in all options being shifted left or right if the respective direction is pressed on the same frame the options menu is opened.
 The bug also exists in pokegold and pokecrystal.
@@ -32,7 +33,8 @@ The bug also exists in pokegold and pokecrystal.
     call InitOptionsMenu
 ```
 
-## Battle Transitions Fail to Account for Scripted Battles
+
+## Battle transitions fail to account for scripted battles
 
 When Oak Catches Pikachu in the Pallet Town cutscenes you don't yet have any Pokemon in Party.
 The Battle Transitions code has no error handling for this and reads wPartyMon1HP from wRivalName+6.
@@ -41,7 +43,8 @@ A similar series of bugs appears to exist in pokecrystal.
 
 **Fix:** TBD in [engine/battle/battle_transitions.asm#L93](/engine/battle/battle_transitions.asm#L93)
 
-## wPikachuFollowCommandBuffer can Overflow
+
+## `wPikachuFollowCommandBuffer` can overflow
 
 AppendPikachuFollowCommandToBuffer doesn't have any length checking for the buffer of Pikachu commands.
 This can be abused to write data into any address past d437, typically by putting pikachu to sleep in the Pewter Center with Jigglypuff.
@@ -49,9 +52,10 @@ While in this state, walking down writes 01, up 02, left 03, and right 04.
 This bug is generally known as "Pikawalk."
 A typical use for this would be to force the in game time to 255:59.
 
-**Fix:** TBD in [engine/pikachu_follow.asm#1165](/engine/pikachu_follow.asm#1165)
+**Fix:** TBD in [engine/pikachu/pikachu_follow.asm#1165](/engine/pikachu/pikachu_follow.asm#1165)
 
-## Unexpected Counter Damage
+
+## Unexpected Counter damage
 
 Counter simply doubles the value of wDamage which can hold the last value of damage dealt whether it was from you, your opponent, a switched out opponent, or a player in another battle.
 This is because wDamage is used for both the player's damage and opponent's damage, and is not cleared out between switching or battles.

@@ -260,23 +260,8 @@ wAnimatedObjectsData::
 
 wAnimatedObjectStartTileOffsets::
 	ds 10 * 2
-wAnimatedObjectDataStructs::
-animated_object: macro
-\1Index::          db ; 0
-\1FramesetID::     db ; 1
-\1AnimSeqID::      db ; 2
-\1TileID::         db ; 3
-\1XCoord::         db ; 4
-\1YCoord::         db ; 5
-\1XOffset::        db ; 6
-\1YOffset::        db ; 7
-\1Duration::       db ; 8
-\1DurationOffset:: db ; 9
-\1FrameIndex::     db ; a
-	ds 5
-\1End::
-	endm
 
+wAnimatedObjectDataStructs::
 wAnimatedObject0:: animated_object wAnimatedObject0
 wAnimatedObject1:: animated_object wAnimatedObject1
 wAnimatedObject2:: animated_object wAnimatedObject2
@@ -771,7 +756,7 @@ wPikaPicAnimObjectDataBuffer::
 wNumStepsToTake::
 ; used in Pallet Town scripted movement
 	ds 23
-wPikaPicAnimObjectDataBufferEnd:: ;ccb8
+wPikaPicAnimObjectDataBufferEnd::
 	ds 26
 
 wRLEByteCount::
@@ -3506,12 +3491,12 @@ wBoxMonNicksEnd::
 wBoxDataEnd::
 
 wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
-wGBCPal:: ds PAL_SIZE
+wGBCPal:: ds PALETTE_SIZE
 wLastBGP:: ds 1
 wLastOBP0:: ds 1
 wLastOBP1:: ds 1
 wdef5:: ds 1
-wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE
+wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 
 SECTION "Stack", WRAMX
 wStack::

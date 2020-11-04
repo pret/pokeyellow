@@ -128,7 +128,7 @@ ClearVram::
 
 
 StopAllSounds::
-	ld a, BANK(AudioEngine1)
+	ld a, BANK("Audio Engine 1")
 	ld [wAudioROMBank], a
 	ld [wAudioSavedROMBank], a
 	xor a

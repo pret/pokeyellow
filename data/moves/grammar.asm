@@ -1,6 +1,4 @@
 ExclamationPointMoveSets:
-; a grammar mistake was fixed (only concerning japanese)
-; BIDE is in category 3, moved from category 2
 ; set 0
 	db SWORDS_DANCE
 	db GROWTH
@@ -18,7 +16,7 @@ ExclamationPointMoveSets:
 	db TELEPORT
 	db MIMIC
 	db DOUBLE_TEAM
-	db BIDE
+	db BIDE ; corrected JP grammar: moved from set 1 in pokered
 	db BARRAGE
 	db 0 ; end set
 

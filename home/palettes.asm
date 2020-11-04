@@ -1,3 +1,6 @@
+InitMapSprites::
+	jpfar _InitMapSprites
+
 RestoreScreenTilesAndReloadTilePatterns::
 	call ClearSprites
 	ld a, $1

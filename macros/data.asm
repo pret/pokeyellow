@@ -78,3 +78,12 @@ dbbw: MACRO
 	db \1, \2
 	dw \3
 ENDM
+
+sine_wave: MACRO
+; \1: amplitude
+x = 0
+REPT $20
+	dw (sin(x) + (sin(x) & $ff)) >> 8 ; round up
+x = x + (\1) * $40000
+ENDR
+ENDM

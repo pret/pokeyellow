@@ -8,7 +8,6 @@
 	dw .wave5 ; used in the Lavender Town and Pokemon Tower themes
 	dw .wave5 ; unused
 	dw .wave5 ; unused
-;	dw .wave5 ; unused
 
 ; these are the definitions for the channel 3 instruments
 ; each instrument definition is made up of 32 points (nibbles) that form

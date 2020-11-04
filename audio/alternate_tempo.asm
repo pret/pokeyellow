@@ -23,18 +23,17 @@ Music_RivalAlternateTempo::
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld de, Music_MeetRival_branch_b119
-	jr asm_99ed
+	jr FinishAlternateRivalMusic
 
 ; applies both the alternate start and alternate tempo
 Music_RivalAlternateStartAndTempo::
 	call Music_RivalAlternateStart
 	ld de, Music_MeetRival_branch_b19b
-asm_99ed:
+FinishAlternateRivalMusic:
 	ld hl, wChannelCommandPointers
 	jp Audio1_OverwriteChannelPointer
 
-; XXX
-	ret
+	ret ; unused
 
 ; an alternate tempo for Cities1 which is used for the Hall of Fame room
 Music_Cities1AlternateTempo::

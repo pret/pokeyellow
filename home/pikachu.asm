@@ -56,7 +56,7 @@ SpawnPikachu::
 	dec a
 	swap a
 	ldh [hTilePlayerStandingOn], a
-	homecall SpawnPikachu_ ; 3f:46d5
+	homecall SpawnPikachu_
 	ret
 
 Pikachu_IsInArray::

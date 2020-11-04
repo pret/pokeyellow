@@ -1,3 +1,14 @@
+	const_def
+	const PRINTER_STATUS_BLANK
+	const PRINTER_STATUS_CHECKING_LINK
+	const PRINTER_STATUS_TRANSMITTING
+	const PRINTER_STATUS_PRINTING
+	const PRINTER_ERROR_1
+	const PRINTER_ERROR_2
+	const PRINTER_ERROR_3
+	const PRINTER_ERROR_4
+	const PRINTER_ERROR_WRONG_DEVICE
+
 StartTransmission_Send9Rows:
 	ld a, 9
 Printer_StartTransmission:
@@ -104,9 +115,9 @@ Printer_StartTransmittingTilemap:
 	ld hl, PrinterDataPacket3
 	call CopyPrinterDataHeader
 	call Printer_Convert2RowsTo2bpp
-	ld a, (wPrinterSendDataSource1End - wPrinterSendDataSource1) % $100
+	ld a, LOW(wPrinterSendDataSource1End - wPrinterSendDataSource1)
 	ld [wPrinterDataSize], a
-	ld a, (wPrinterSendDataSource1End - wPrinterSendDataSource1) / $100
+	ld a, HIGH(wPrinterSendDataSource1End - wPrinterSendDataSource1)
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinterChecksum
 	call Printer_Next

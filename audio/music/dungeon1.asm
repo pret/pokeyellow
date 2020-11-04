@@ -6,10 +6,8 @@ Music_Dungeon1_Ch1::
 	vibrato 10, 1, 4
 	note_type 12, 4, -5
 	rest 8
-	; stereo_panning %1110, %1101
 	octave 4
 	note F#, 8
-	; stereo_panning %1111, %1111
 
 Music_Dungeon1_branch_7dee5::
 	note_type 12, 11, 2

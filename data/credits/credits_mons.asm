@@ -15,6 +15,6 @@ CreditsMons:
 	db NIDOKING
 	db PARASECT
 
-rept 9
+REPT 9
 	db GENGAR
-endr
+ENDR

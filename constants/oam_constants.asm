@@ -15,18 +15,3 @@ OAM_OBP1      EQU 1 << OAM_OBP_NUM  ; OBJ palette 1
 OAM_HFLIP     EQU 1 << OAM_X_FLIP   ; horizontal flip
 OAM_VFLIP     EQU 1 << OAM_Y_FLIP   ; vertical flip
 OAM_BEHIND_BG EQU 1 << OAM_PRIORITY ; behind bg (except color 0)
-
-frame: MACRO
-	db \1
-x = \2
-REPT _NARG +- 2
-x = x | (\3 << 1)
-	shift
-endr
-	db x
-	endm
-
-delanim EQUS "db $fc"
-dorepeat EQUS "db $fd,"
-dorestart EQUS "db $fe"
-endanim EQUS "db $ff"

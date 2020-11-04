@@ -1,3 +1,14 @@
+FarPrintText::
+; print text b:hl at (1, 14)
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, b
+	call BankswitchCommon
+	call PrintText
+	pop af
+	call BankswitchCommon
+	ret
+
 PrintNumber::
 ; Print the c-digit, b-byte value at de.
 ; Allows 2 to 7 digits. For 1-digit numbers, add
