@@ -1,9 +1,9 @@
 INCLUDE "engine/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 
-INCLUDE "engine/black_out.asm"
+INCLUDE "engine/events/black_out.asm"
 
-SetMapSpecificScriptFlagsOnMapReload:
+SetMapSpecificScriptFlagsOnMapReload::
 	ld a, [wCurMap]
 	cp VERMILION_GYM ; ??? new thing about verm gym?
 	jr z, .verm_gym
@@ -65,7 +65,7 @@ BeachHouse_Block:
 Func_f0a54:
 	ret
 
-LoadUnusedBluesHouseMissableObjectData:
+LoadUnusedBluesHouseMissableObjectData::
 ; referenced in an unused function
 	ld hl, .MissableObjectsMaps
 .loop
@@ -112,7 +112,7 @@ TryApplyPikachuMovementData:
 	ret nz
 	push hl
 	push bc
-	callab GetPikachuFacingDirectionAndReturnToE
+	callfar GetPikachuFacingDirectionAndReturnToE
 	pop bc
 	pop hl
 	ld a, b
@@ -123,12 +123,12 @@ TryApplyPikachuMovementData:
 	push af
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	callab LoadPikachuShadowIntoVRAM
+	callfar LoadPikachuShadowIntoVRAM
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
 	call ApplyPikachuMovementData
-	callab RefreshPikachuFollow
+	callfar RefreshPikachuFollow
 	ret
 
 Pic_f0abf:
@@ -140,7 +140,7 @@ INCBIN "gfx/pikachu/unknown_f0cf4.pic"
 GFX_f0d82:
 INCBIN "gfx/pikachu/unknown_f0d82.2bpp"
 
-PokecenterChanseyText:
+PokecenterChanseyText::
 	ld hl, NurseChanseyText
 	call PrintText
 	ld a, CHANSEY
@@ -149,10 +149,10 @@ PokecenterChanseyText:
 	ret
 
 NurseChanseyText:
-	TX_FAR _NurseChanseyText
-	db "@"
+	text_far _NurseChanseyText
+	text_end
 
-INCLUDE "engine/HoF_room_pc.asm"
+INCLUDE "engine/movie/credits.asm"
 INCLUDE "scripts/ViridianCity2.asm"
 INCLUDE "scripts/VermilionCity2.asm"
 INCLUDE "scripts/CeladonCity2.asm"
@@ -173,11 +173,11 @@ INCLUDE "scripts/SafariZoneGate2.asm"
 INCLUDE "scripts/CinnabarGym3.asm"
 INCLUDE "scripts/MtMoonPokecenter2.asm"
 
-INCLUDE "data/mapHeaders/BeachHouse.asm"
+INCLUDE "data/maps/headers/BeachHouse.asm"
 INCLUDE "scripts/BeachHouse.asm"
 BeachHouse_Blocks:
 INCBIN "maps/BeachHouse.blk"
-INCLUDE "data/mapObjects/BeachHouse.asm"
+INCLUDE "data/maps/objects/BeachHouse.asm"
 
 INCLUDE "scripts/BeachHouse2.asm"
 INCLUDE "scripts/BillsHouse2.asm"

@@ -8,7 +8,7 @@
 ; fields, respectively, within loops. The X is the loop index.
 ; If there is an inner loop, Y is the inner loop index, i.e. $C1Y* and $C2Y*
 ; denote fields of the sprite slots iterated over in the inner loop.
-_InitMapSprites:
+_InitMapSprites::
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
 ; if the map is an inside map (i.e. mapID >= $25)
@@ -21,7 +21,7 @@ _InitMapSprites:
 ; sets carry if the map is a city or route, unsets carry if not
 InitOutsideMapSprites:
 	ld a, [wCurMap]
-	cp a, REDS_HOUSE_1F ; is the map a city or a route (map ID less than $25)?
+	cp FIRST_INDOOR_MAP ; is the map a city or a route?
 	ret nc ; if not, return
 	call GetSplitMapSpriteSetID
 ; if so, choose the appropriate one
@@ -68,7 +68,7 @@ LoadSpriteSetFromMapHeader:
 	ld a, 14
 .storeVRAMSlotsLoop
 	push af
-	ld a, [hl] ; $C1X0 (picture ID) (zero if sprite slot is not used)
+	ld a, [hl] ; [x#SPRITESTATEDATA1_PICTUREID] (zero if sprite slot is not used)
 	and a ; is the sprite slot used?
 	jr z, .continue ; if the sprite slot is not used
 	ld c, a
@@ -125,7 +125,7 @@ CheckForFourTileSprite:
 	cp SPRITE_PIKACHU       ; is this the Pikachu Sprite?
 	ret z                   ; return if yes
 
-	cp SPRITE_BALL          ; is this a four tile sprite?
+	cp FIRST_STILL_SPRITE   ; is this a four tile sprite?
 	jr nc, .notYellowSprite ; set carry if yes
 ; regular sprite
 	and a
@@ -138,7 +138,7 @@ CheckForFourTileSprite:
 LoadMapSpriteTilePatterns:
 	ld a, 0
 .loop
-	ld [hVRAMSlot], a
+	ldh [hVRAMSlot], a
 	cp 9
 	jr nc, .fourTileSprite
 	call LoadStillTilePattern
@@ -148,7 +148,7 @@ LoadMapSpriteTilePatterns:
 .fourTileSprite
 	call LoadStillTilePattern
 .continue
-	ld a, [hVRAMSlot]
+	ldh a, [hVRAMSlot]
 	inc a
 	cp 11
 	jr nz, .loop
@@ -157,12 +157,12 @@ LoadMapSpriteTilePatterns:
 ReloadWalkingTilePatterns:
 	xor a
 .loop
-	ld [hVRAMSlot], a
+	ldh [hVRAMSlot], a
 	cp 9
 	jr nc, .fourTileSprite
 	call LoadWalkingTilePattern
 .fourTileSprite
-	ld a, [hVRAMSlot]
+	ldh a, [hVRAMSlot]
 	inc a
 	cp 11
 	jr nz, .loop
@@ -192,7 +192,7 @@ LoadWalkingTilePattern:
 
 GetSpriteVRAMAddress:
 	push bc
-	ld a, [hVRAMSlot]
+	ldh a, [hVRAMSlot]
 	ld c, a
 	ld b, 0
 	ld hl, SpriteVRAMAddresses
@@ -220,7 +220,7 @@ SpriteVRAMAddresses:
 	dw vChars0 + $7c0 ; 4-tile sprites
 
 ReadSpriteSheetData:
-	ld a, [hVRAMSlot]
+	ldh a, [hVRAMSlot]
 	ld e, a
 	ld d, 0
 	ld hl, wSpriteSet
@@ -257,20 +257,20 @@ Func_14150:
 	ld a, $e
 	ld hl, wSprite01StateData1
 .loop
-	ld [hVRAMSlot], a ; store current sprite set slot as a counter
-	ld a, [hl] ; $c1x0 (picture ID)
+	ldh [hVRAMSlot], a ; store current sprite set slot as a counter
+	ld a, [hl] ; [x#SPRITESTATEDATA1_PICTUREID]
 	and a ; is the sprite unused?
 	jr z, .spriteUnused
 	call Func_14179
 	push hl
 	ld de, (wSpritePlayerStateData2ImageBaseOffset) - (wSpriteStateData1) ; $10e
-	add hl, de ; get $c2xe (sprite image base offset)
+	add hl, de ; [x#SPRITESTATEDATA2_IMAGEBASEOFFSET]
 	ld [hl], a ; write offset
 	pop hl
 .spriteUnused
 	ld de, wSprite02StateData1 - wSprite01StateData1
 	add hl, de
-	ld a, [hVRAMSlot]
+	ldh a, [hVRAMSlot]
 	dec a
 	jr nz, .loop
 	ret
@@ -364,4 +364,6 @@ GetSplitMapSpriteSetID:
 	ld a, $01
 	ret
 
-INCLUDE "data/sprite_sets.asm"
+INCLUDE "data/maps/sprite_sets.asm"
+
+INCLUDE "data/sprites/sprites.asm"

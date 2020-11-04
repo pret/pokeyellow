@@ -27,9 +27,9 @@ VermilionCity_Script:
 
 .setFirstLockTrashCanIndex
 	call Random
-	ld a, [hRandomAdd]
+	ldh a, [hRandomAdd]
 	ld b, a
-	ld a, [hRandomSub]
+	ldh a, [hRandomSub]
 	adc b
 	and $e
 	ld [wFirstLockTrashCanIndex], a
@@ -60,10 +60,10 @@ VermilionCityScript0:
 	call ArePlayerCoordsInArray
 	jr nc, .return
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wcf0d], a
 	ld a, $3
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .shipHasDeparted
@@ -86,8 +86,8 @@ VermilionCityScript0:
 	ret
 
 SSAnneTicketCheckCoords:
-	db $1e,$12 ; y, x
-	db $ff
+	dbmapcoord 18, 30
+	db -1 ; end
 
 VermilionCityScript4:
 	ld hl, SSAnneTicketCheckCoords
@@ -116,7 +116,7 @@ VermilionCityScript3:
 	ret nz
 	xor a
 	ld [wJoyIgnore], a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $0
 	ld [wVermilionCityCurScript], a
 	ret
@@ -148,11 +148,11 @@ VermilionCity_TextPointers:
 	dw VermilionCityText14
 
 VermilionCityText1:
-	TX_FAR _VermilionCityText1
-	db "@"
+	text_far _VermilionCityText1
+	text_end
 
 VermilionCityText2:
-	TX_ASM
+	text_asm
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .shipHasDeparted
 	ld hl, VermilionCityTextDidYouSee
@@ -165,15 +165,15 @@ VermilionCityText2:
 	jp TextScriptEnd
 
 VermilionCityTextDidYouSee:
-	TX_FAR _VermilionCityTextDidYouSee
-	db "@"
+	text_far _VermilionCityTextDidYouSee
+	text_end
 
 VermilionCityTextSSAnneDeparted:
-	TX_FAR _VermilionCityTextSSAnneDeparted
-	db "@"
+	text_far _VermilionCityTextSSAnneDeparted
+	text_end
 
 VermilionCityText3:
-	TX_ASM
+	text_asm
 	CheckEvent EVENT_SS_ANNE_LEFT
 	jr nz, .shipHasDeparted
 	ld a, [wSpritePlayerStateData1FacingDirection]
@@ -210,37 +210,37 @@ VermilionCityText3:
 	jp TextScriptEnd
 
 .inFrontOfOrBehindGuardCoords
-	db $1d,$13 ; y, x of tile in front of guard
-	db $1f,$13 ; y, x of tile behind guard
-	db $ff
+	dbmapcoord 19, 29 ; in front of guard
+	dbmapcoord 19, 31 ; behind guard
+	db -1 ; end
 
 SSAnneWelcomeText4:
-	TX_FAR _SSAnneWelcomeText4
-	db "@"
+	text_far _SSAnneWelcomeText4
+	text_end
 
 SSAnneWelcomeText9:
-	TX_FAR _SSAnneWelcomeText9
-	db "@"
+	text_far _SSAnneWelcomeText9
+	text_end
 
 SSAnneFlashedTicketText:
-	TX_FAR _SSAnneFlashedTicketText
-	db "@"
+	text_far _SSAnneFlashedTicketText
+	text_end
 
 SSAnneNoTicketText:
-	TX_FAR _SSAnneNoTicketText
-	db "@"
+	text_far _SSAnneNoTicketText
+	text_end
 
 SSAnneNotHereText:
-	TX_FAR _SSAnneNotHereText
-	db "@"
+	text_far _SSAnneNotHereText
+	text_end
 
 VermilionCityText4:
-	TX_FAR _VermilionCityText4
-	db "@"
+	text_far _VermilionCityText4
+	text_end
 
 VermilionCityText5:
-	TX_FAR _VermilionCityText5
-	TX_ASM
+	text_far _VermilionCityText5
+	text_asm
 	ld a, MACHOP
 	call PlayCry
 	call WaitForSoundToFinish
@@ -248,39 +248,39 @@ VermilionCityText5:
 	ret
 
 VermilionCityText15:
-	TX_FAR _VermilionCityText15
-	db "@"
+	text_far _VermilionCityText15
+	text_end
 
 VermilionCityText6:
-	TX_FAR _VermilionCityText6
-	db "@"
+	text_far _VermilionCityText6
+	text_end
 
 VermilionCityText8:
-	TX_ASM
-	callba Func_f1a8a
+	text_asm
+	farcall Func_f1a8a
 	jp TextScriptEnd
 
 VermilionCityText9:
-	TX_ASM
-	callba Func_f1a96
+	text_asm
+	farcall Func_f1a96
 	jp TextScriptEnd
 
 VermilionCityText12:
-	TX_ASM
-	callba Func_f1aa2
+	text_asm
+	farcall Func_f1aa2
 	jp TextScriptEnd
 
 VermilionCityText13:
-	TX_ASM
-	callba Func_f1aae
+	text_asm
+	farcall Func_f1aae
 	jp TextScriptEnd
 
 VermilionCityText14:
-	TX_ASM
-	callba Func_f1aba
+	text_asm
+	farcall Func_f1aba
 	jp TextScriptEnd
 
 VermilionCityText7:
-	TX_ASM
-	callba Func_f1a0f
+	text_asm
+	farcall Func_f1a0f
 	jp TextScriptEnd

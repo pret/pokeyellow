@@ -23,7 +23,7 @@ Fixes are written in the `diff` format. If you've used Git before, this should l
 This bug (or feature!) results in all options being shifted left or right if the respective direction is pressed on the same frame the options menu is opened.
 The bug also exists in pokegold and pokecrystal.
 
-**Fix:** Update [engine/menu/options.asm](/engine/menu/options.asm)
+**Fix:** Update [engine/menus/options.asm](/engine/menus/options.asm)
 
 ```diff
   DisplayOptionMenu_:

@@ -27,7 +27,7 @@ FanClubScript2:
 
 FanClubScript_59a39:
 	call Random
-	ld a, [hRandomAdd]
+	ldh a, [hRandomAdd]
 	cp 25
 	call c, FanClubScript_59a44
 	ret
@@ -36,7 +36,7 @@ FanClubScript_59a44:
 	ld a, [wd472]
 	bit 7, a
 	ret z
-	callab CheckPikachuFaintedOrStatused
+	callfar CheckPikachuFaintedOrStatused
 	ret c
 	ld a, $1
 	ld [wFanClubCurScript], a
@@ -55,7 +55,7 @@ FanClubScript_59a44:
 	ld [wSpriteStateData1 + 3 * $10 + 1], a ; Seel
 	xor a ; SPRITE_FACING_DOWN
 	ld [wSpriteStateData1 + 3 * $10 + 9], a
-	callab InitializePikachuTextID
+	callfar InitializePikachuTextID
 	call DisablePikachuFollowingPlayer
 	ret
 
@@ -78,7 +78,7 @@ PokemonFanClub_TextPointers:
 
 FanClubText1:
 ; clefairy fan
-	TX_ASM
+	text_asm
 	CheckEventHL EVENT_152
 	jr z, .asm_59aaf
 	ld hl, .yellowtext
@@ -101,20 +101,20 @@ FanClubText1:
 	jp TextScriptEnd
 
 .normaltext
-	TX_FAR PikachuFanText
-	db "@"
+	text_far PikachuFanText
+	text_end
 
 .bettertext
-	TX_FAR PikachuFanBetterText
-	db "@"
+	text_far PikachuFanBetterText
+	text_end
 
 .yellowtext
-	TX_FAR PikachuFanPrintText
-	db "@"
+	text_far PikachuFanPrintText
+	text_end
 
 FanClubText2:
 ; seel fan
-	TX_ASM
+	text_asm
 	CheckEventHL EVENT_152
 	jr z, .asm_59ae7
 	ld hl, .yellowtext
@@ -135,20 +135,20 @@ FanClubText2:
 	jp TextScriptEnd
 
 .normaltext
-	TX_FAR SeelFanText
-	db "@"
+	text_far SeelFanText
+	text_end
 
 .bettertext
-	TX_FAR SeelFanBetterText
-	db "@"
+	text_far SeelFanBetterText
+	text_end
 
 .yellowtext
-	TX_FAR SeelFanPrintText
-	db "@"
+	text_far SeelFanPrintText
+	text_end
 
 FanClubText3:
 ; pikachu
-	TX_ASM
+	text_asm
 	ld hl, .text
 	call PrintText
 	ld a, CLEFAIRY
@@ -157,12 +157,12 @@ FanClubText3:
 	jp TextScriptEnd
 
 .text
-	TX_FAR FanClubPikachuText
-	db "@"
+	text_far FanClubPikachuText
+	text_end
 
 FanClubText4:
 ; seel
-	TX_ASM
+	text_asm
 	ld hl, .text
 	call PrintText
 	ld a, SEEL
@@ -171,12 +171,12 @@ FanClubText4:
 	jp TextScriptEnd
 
 .text
-	TX_FAR FanClubSeelText
-	db "@"
+	text_far FanClubSeelText
+	text_end
 
 FanClubText5:
 ; chair
-	TX_ASM
+	text_asm
 	CheckEventHL EVENT_152
 	jr z, .check_bike_voucher
 	ld hl, Text_59c1f
@@ -190,33 +190,32 @@ FanClubText5:
 
 .check_bike_voucher
 	CheckEvent EVENT_GOT_BIKE_VOUCHER
-	jr nz, .got_bike_voucher_already
-	ld hl, Text_59bfc
+	jr nz, .nothingleft
+	ld hl, .meetchairtext
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .declined_story
-	ld hl, Text_59c01
+	jr nz, .nothanks
+
+	; tell the story
+	ld hl, .storytext
 	call PrintText
 	lb bc, BIKE_VOUCHER, 1
 	call GiveItem
-	jr nc, .no_room_for_voucher
-	ld hl, Text_59c06
+	jr nc, .bag_full
+	ld hl, .receivedvouchertext
 	call PrintText
 	SetEvent EVENT_GOT_BIKE_VOUCHER
 	jp TextScriptEnd
-
-.no_room_for_voucher
-	ld hl, Text_59c1a
+.bag_full
+	ld hl, .bagfulltext
 	jr .gbpals_print_text
-
-.declined_story
-	ld hl, Text_59c10
+.nothanks
+	ld hl, .nostorytext
 	jr .gbpals_print_text
-
-.got_bike_voucher_already
-	ld hl, Text_59c15
+.nothingleft
+	ld hl, .finaltext
 .gbpals_print_text
 	push hl
 	call LoadGBPal
@@ -244,7 +243,7 @@ FanClubText5:
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab PrintFanClubPortrait
+	callfar PrintFanClubPortrait
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
@@ -254,54 +253,54 @@ FanClubText5:
 	call Delay3
 	call GBPalNormal
 	ld hl, Text_59c2e
-	ld a, [hOaksAideResult]
+	ldh a, [hOaksAideResult]
 	and a
 	jr nz, .gbpals_print_text
 	ld hl, Text_59c29
 	jr .gbpals_print_text
 
-Text_59bfc:
-	TX_FAR FanClubMeetChairText
-	db "@"
+.meetchairtext
+	text_far FanClubMeetChairText
+	text_end
 
-Text_59c01:
-	TX_FAR FanClubChairStoryText
-	db "@"
+.storytext
+	text_far FanClubChairStoryText
+	text_end
 
-Text_59c06:
-	TX_FAR ReceivedBikeVoucherText
-	TX_SFX_KEY_ITEM
-	TX_FAR ExplainBikeVoucherText
-	db "@"
+.receivedvouchertext
+	text_far ReceivedBikeVoucherText
+	sound_get_key_item
+	text_far ExplainBikeVoucherText
+	text_end
 
-Text_59c10:
-	TX_FAR FanClubNoStoryText
-	db "@"
+.nostorytext
+	text_far FanClubNoStoryText
+	text_end
 
-Text_59c15:
-	TX_FAR FanClubChairFinalText
-	db "@"
+.finaltext
+	text_far FanClubChairFinalText
+	text_end
 
-Text_59c1a:
-	TX_FAR FanClubBagFullText
-	db "@"
+.bagfulltext
+	text_far FanClubBagFullText
+	text_end
 
 Text_59c1f:
-	TX_FAR FanClubChairPrintText1
-	db "@"
+	text_far FanClubChairPrintText1
+	text_end
 
 Text_59c24:
-	TX_FAR FanClubChairPrintText2
-	db "@"
+	text_far FanClubChairPrintText2
+	text_end
 
 Text_59c29:
-	TX_FAR FanClubChairPrintText3
-	db "@"
+	text_far FanClubChairPrintText3
+	text_end
 
 Text_59c2e:
-	TX_FAR FanClubChairPrintText4
-	db "@"
+	text_far FanClubChairPrintText4
+	text_end
 
 FanClubText6:
-	TX_FAR _FanClubText6
-	db "@"
+	text_far _FanClubText6
+	text_end

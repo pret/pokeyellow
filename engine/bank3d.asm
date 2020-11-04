@@ -4,7 +4,7 @@ INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 
 StarterPikachuBattleEntranceAnimation:
-	coord hl, 0, 5
+	hlcoord 0, 5
 	ld c, 0
 .loop1
 	inc c
@@ -60,14 +60,14 @@ ModifyPikachuHappiness::
 	cp PIKAHAPPY_WALKING
 	jr z, .checkanywhereinparty
 	push de
-	callab IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartymonStarterPikachu_Party
 	pop de
 	ret nc
 	jr .proceed
 
 .checkanywhereinparty
 	push de
-	callab IsStarterPikachuInOurParty
+	callfar IsStarterPikachuInOurParty
 	pop de
 	ret nc
 
@@ -172,9 +172,9 @@ PikachuMoods:
 	db $6c           ; Unknown (d = 10)
 	db $00           ; Unknown (d = 11)
 
-RedPicBack:       INCBIN "pic/trainer/redb.pic"
-OldManPic:	       INCBIN "pic/trainer/oldman.pic"
-ProfOakPicBack:   INCBIN "pic/ytrainer/prof.oakb.pic"
+RedPicBack:       INCBIN "gfx/player/redb.pic"
+OldManPic:	      INCBIN "gfx/battle/oldman.pic"
+ProfOakPicBack:   INCBIN "gfx/battle/prof.oakb.pic"
 
 LoadYellowTitleScreenGFX:
 	ld hl, PokemonLogoGraphics
@@ -200,35 +200,35 @@ LoadYellowTitleScreenGFX:
 	ret
 
 TitleScreen_PlacePokemonLogo:
-	coord hl, 2, 1
+	hlcoord 2, 1
 	ld de, TitleScreenPokemonLogoTilemap
 	lb bc, 7, 16
 	call Bank3D_CopyBox
 	ret
 
 TitleScreen_PlacePikaSpeechBubble:
-	coord hl, 6, 4
+	hlcoord 6, 4
 	ld de, TitleScreenPikaBubbleTilemap
 	lb bc, 4, 7
 	call Bank3D_CopyBox
-	coord hl, 9, 8
+	hlcoord 9, 8
 	ld [hl], $64
 	inc hl
 	ld [hl], $65
 	ret
 
 TitleScreen_PlacePikachu:
-	coord hl, 4, 8
+	hlcoord 4, 8
 	ld de, TitleScreenPikachuTilemap
 	lb bc, 9, 12
 	call Bank3D_CopyBox
-	coord hl, 16, 10
+	hlcoord 16, 10
 	ld [hl], $96
-	coord hl, 16, 11
+	hlcoord 16, 11
 	ld [hl], $9d
-	coord hl, 16, 12
+	hlcoord 16, 12
 	ld [hl], $a7
-	coord hl, 16, 13
+	hlcoord 16, 13
 	ld [hl], $b1
 	ld hl, TitleScreenPikachuEyesOAMData
 	ld de, wOAMBuffer
@@ -298,45 +298,45 @@ TitleScreenPikachuTilemap:
 	db $00, $b9, $ba, $8a, $8a, $8a, $8a, $8a, $8a, $bb, $bc, $00
 	db $00, $00, $bd, $8a, $8a, $8a, $8a, $8a, $8a, $be, $bf, $00
 
-PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
+PokemonLogoGraphics:	  INCBIN "gfx/title/pokemon_logo.2bpp"
 PokemonLogoGraphicsEnd:
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
 YellowLogoGraphicsEnd:
 
-INCLUDE "engine/menu/link_menu.asm"
+INCLUDE "engine/menus/link_menu.asm"
 
 HandleMenuInputDouble:
 	xor a
 	ld [wPartyMenuAnimMonEnabled], a
 
 HandleMenuInputPokemonSelectionDouble:
-	ld a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [hDownArrowBlinkCount1]
 	push af
-	ld a, [H_DOWNARROWBLINKCNT2]
+	ldh a, [hDownArrowBlinkCount2]
 	push af ; save existing values on stack
 	xor a
-	ld [H_DOWNARROWBLINKCNT1], a ; blinking down arrow timing value 1
+	ldh [hDownArrowBlinkCount1], a ; blinking down arrow timing value 1
 	ld a, $06
-	ld [H_DOWNARROWBLINKCNT2], a ; blinking down arrow timing value 2
+	ldh [hDownArrowBlinkCount2], a ; blinking down arrow timing value 2
 .loop1
 	xor a
 	ld [wAnimCounter], a ; counter for pokemon shaking animation
 	call .UpdateCursorTile
 	call JoypadLowSensitivity
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and a ; was a key pressed?
 	jr nz, .keyPressed
 	pop af
-	ld [H_DOWNARROWBLINKCNT2], a
+	ldh [hDownArrowBlinkCount2], a
 	pop af
-	ld [H_DOWNARROWBLINKCNT1], a ; restore previous values
+	ldh [hDownArrowBlinkCount1], a ; restore previous values
 	xor a
 	ld [wMenuWrappingEnabled], a ; disable menu wrapping
 	ret
 .keyPressed
 	xor a
 	ld [wCheckFor180DegreeTurn], a
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	ld b, a
 	bit 6, a ; pressed Up key?
 	jr z, .checkIfDownPressed
@@ -365,7 +365,7 @@ HandleMenuInputPokemonSelectionDouble:
 	and b ; does the menu care about any of the pressed keys?
 	jp z, .loop1
 .checkIfAButtonOrBButtonPressed
-	ld a, [hJoy5]
+	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
 	jr z, .skipPlayingSound
 .AButtonOrBButtonPressed
@@ -373,17 +373,17 @@ HandleMenuInputPokemonSelectionDouble:
 	call PlaySound ; play sound
 .skipPlayingSound
 	pop af
-	ld [H_DOWNARROWBLINKCNT2], a
+	ldh [hDownArrowBlinkCount2], a
 	pop af
-	ld [H_DOWNARROWBLINKCNT1], a ; restore previous values
-	ld a, [hJoy5]
+	ldh [hDownArrowBlinkCount1], a ; restore previous values
+	ldh a, [hJoy5]
 	ret
 
 .UpdateCursorTile:
 	ld a, [wTopMenuItemY]
 	and a
 	jr z, .asm_f5ac0
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH
 .loop
 	add hl, bc
@@ -439,11 +439,7 @@ INCLUDE "engine/overworld/field_move_messages.asm"
 
 INCLUDE "engine/items/inventory.asm"
 
-TrainerInfoTextBoxTileGraphics:	INCBIN "gfx/trainer_info.2bpp"
-TrainerInfoTextBoxTileGraphicsEnd:
-BlankLeaderNames:				INCBIN "gfx/blank_leader_names.2bpp"
-CircleTile:						INCBIN "gfx/circle_tile.2bpp"
-BadgeNumbersTileGraphics:		INCBIN "gfx/badge_numbers.2bpp"
+INCLUDE "gfx/trainer_card.asm"
 
 ReadSuperRodData:
 	ld a, [wCurMap]
@@ -485,11 +481,11 @@ GenerateRandomFishingEncounter:
 	ld d, [hl]
 	ret
 
-INCLUDE "data/super_rod.asm"
+INCLUDE "data/wild/super_rod.asm"
 INCLUDE "engine/battle/bank3d_battle.asm"
 INCLUDE "engine/items/tm_prices.asm"
-INCLUDE "engine/multiply_divide.asm"
-INCLUDE "engine/give_pokemon.asm"
+INCLUDE "engine/math/multiply_divide.asm"
+INCLUDE "engine/events/give_pokemon.asm"
 INCLUDE "engine/battle/get_trainer_name.asm"
-INCLUDE "engine/random.asm"
+INCLUDE "engine/math/random.asm"
 INCLUDE "engine/predefs.asm"

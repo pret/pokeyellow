@@ -33,7 +33,7 @@ PalletTownScript0:
 	SetEventReuseHL EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN
 .asm_18e40
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $ff
 	ld [wJoyIgnore], a
 	ld a, PLAYER_DIR_UP
@@ -41,7 +41,7 @@ PalletTownScript0:
 	call StopAllMusic
 	ld a, BANK(Music_MeetProfOak)
 	ld c, a
-	ld a, MUSIC_MEET_PROF_OAK
+	ld a, MUSIC_MEET_PROF_OAK ; "oak appears" music
 	call PlayMusic
 	SetEvent EVENT_OAK_APPEARED_IN_PALLET
 
@@ -56,7 +56,7 @@ PalletTownScript1:
 	xor a
 	ld [wcf0d], a
 	ld a, 1
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $FF
 	ld [wJoyIgnore], a
@@ -83,17 +83,17 @@ PalletTownScript2:
 	ld a, 0
 	ld [wYCoord], a
 	ld a, 1
-	ld [hNPCPlayerRelativePosPerspective], a
+	ldh [hNPCPlayerRelativePosPerspective], a
 	ld a, 1
 	swap a
-	ld [hNPCSpriteOffset], a
+	ldh [hNPCSpriteOffset], a
 	predef CalcPositionOfPlayerRelativeToNPC
 	ld hl, hNPCPlayerYDistance
 	dec [hl]
-	predef FindPathToPlayer ; load Oak’s movement into wNPCMovementDirections2
+	predef FindPathToPlayer ; load Oak's movement into wNPCMovementDirections2
 	ld de, wNPCMovementDirections2
 	ld a, 1 ; oak
-	ld [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 
 	; trigger the next script
@@ -114,7 +114,7 @@ PalletTownScript3:
 	ld a, SPRITE_FACING_UP
 	ld [wSpriteStateData1 + 1 * $10 + 9], a
 	ld a, 1
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	; oak faces the horizontally adjacent patch of grass to face pikachu
 	ld a, $FF
@@ -155,14 +155,14 @@ PalletTownScript5:
 	ld a, $2
 	ld [wcf0d], a
 	ld a, $1
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $2
 	ld [wSpriteStateData1 + 1 * $10 + 1], a
 	ld a, SPRITE_FACING_UP
 	ld [wSpriteStateData1 + 1 * $10 + 9], a
 	ld a, $8
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -181,7 +181,7 @@ PalletTownScript6:
 	ld [wNPCMovementScriptFunctionNum], a
 	ld a, $1
 	ld [wNPCMovementScriptPointerTableNum], a
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld [wNPCMovementScriptBank], a
 
 	; trigger the next script
@@ -231,7 +231,7 @@ PalletTown_TextPointers:
 	dw PalletTownText8
 
 PalletTownText1:
-	TX_ASM
+	text_asm
 	ld a, [wcf0d]
 	and a
 	jr nz, .next
@@ -252,8 +252,8 @@ PalletTownText1:
 	jp TextScriptEnd
 
 OakAppearsText:
-	TX_FAR _OakAppearsText
-	TX_ASM
+	text_far _OakAppearsText
+	text_asm
 	ld c, 10
 	call DelayFrames
 	ld a, PLAYER_DIR_DOWN
@@ -266,37 +266,37 @@ OakAppearsText:
 	jp TextScriptEnd
 
 OakWalksUpText:
-	TX_FAR _OakWalksUpText
-	db "@"
+	text_far _OakWalksUpText
+	text_end
 
 PalletTownText_19002:
-	TX_FAR _OakWhewText
-	db "@"
+	text_far _OakWhewText
+	text_end
 
 PalletTownText8: ; girl
-	TX_FAR _OakGrassText
-	db "@"
+	text_far _OakGrassText
+	text_end
 
 PalletTownText2: ; fat man
-	TX_FAR _PalletTownText2
-	db "@"
+	text_far _PalletTownText2
+	text_end
 
 PalletTownText3: ; sign by lab
-	TX_FAR _PalletTownText3
-	db "@"
+	text_far _PalletTownText3
+	text_end
 
 PalletTownText4: ; sign by fence
-	TX_FAR _PalletTownText4
-	db "@"
+	text_far _PalletTownText4
+	text_end
 
-PalletTownText5: ; sign by Red’s house
-	TX_FAR _PalletTownText5
-	db "@"
+PalletTownText5: ; sign by Red's house
+	text_far _PalletTownText5
+	text_end
 
-PalletTownText6: ; sign by Blue’s house
-	TX_FAR _PalletTownText6
-	db "@"
+PalletTownText6: ; sign by Blue's house
+	text_far _PalletTownText6
+	text_end
 
 PalletTownText7:
-	TX_FAR _PalletTownText7
-	db "@"
+	text_far _PalletTownText7
+	text_end

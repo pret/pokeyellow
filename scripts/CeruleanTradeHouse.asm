@@ -9,7 +9,7 @@ CeruleanTradeHouse_TextPointers:
 	dw CeruleanHouse1Text4
 
 CeruleanHouse1Text1:
-	TX_ASM
+	text_asm
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	CheckEvent EVENT_GOT_BULBASAUR_IN_CERULEAN
@@ -61,46 +61,46 @@ CeruleanHouse1Text1:
 	jp TextScriptEnd
 
 CeruleanHouse1Text_1cfc8:
-	TX_FAR MelanieText1
-	TX_WAIT
-	db "@"
+	text_far MelanieText1
+	text_waitbutton
+	text_end
 
 CeruleanHouse1Text_1cfce:
-	TX_FAR MelanieText2
-	db "@"
+	text_far MelanieText2
+	text_end
 
 CeruleanHouse1Text_1cfd3:
-	TX_FAR MelanieText3
-	TX_WAIT
-	db "@"
+	text_far MelanieText3
+	text_waitbutton
+	text_end
 
 CeruleanHouse1Text_1cfd9:
-	TX_FAR MelanieText4
-	TX_WAIT
-	db "@"
+	text_far MelanieText4
+	text_waitbutton
+	text_end
 
 CeruleanHouse1Text_1cfdf:
-	TX_FAR MelanieText5
-	TX_WAIT
-	db "@"
+	text_far MelanieText5
+	text_waitbutton
+	text_end
 
 CeruleanHouse1Text2:
-	TX_FAR MelanieBulbasaurText
-	TX_ASM
+	text_far MelanieBulbasaurText
+	text_asm
 	ld a, BULBASAUR
 	call PlayCry
 	jp TextScriptEnd
 
 CeruleanHouse1Text3:
-	TX_FAR MelanieOddishText
-	TX_ASM
+	text_far MelanieOddishText
+	text_asm
 	ld a, ODDISH
 	call PlayCry
 	jp TextScriptEnd
 
 CeruleanHouse1Text4:
-	TX_FAR MelanieSandshrewText
-	TX_ASM
+	text_far MelanieSandshrewText
+	text_asm
 	ld a, SANDSHREW
 	call PlayCry
 	jp TextScriptEnd

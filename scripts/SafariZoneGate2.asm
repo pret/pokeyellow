@@ -1,4 +1,4 @@
-Func_f1f77:
+Func_f1f77::
 	ld hl, .WelcomeText
 	call PrintText
 	ld a, MONEY_BOX
@@ -20,11 +20,11 @@ Func_f1f77:
 
 .has_positive_balance
 	xor a
-	ld [hMoney], a
+	ldh [hMoney], a
 	ld a, $5
-	ld [hMoney + 1], a
+	ldh [hMoney + 1], a
 	ld a, $0
-	ld [hMoney + 2], a
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
 	jr nc, .has_enough_money
 	ld hl, .NotEnoughMoneyText
@@ -81,24 +81,24 @@ Func_f1f77:
 	ret
 
 .WelcomeText
-	TX_FAR SafariZoneEntranceText_9e6e4
-	db "@"
+	text_far SafariZoneEntranceText_9e6e4
+	text_end
 
 .MakePaymentText
-	TX_FAR SafariZoneEntranceText_9e747
-	TX_SFX_ITEM_1
-	TX_FAR _SafariZoneEntranceText_75360
-	db "@"
+	text_far SafariZoneEntranceText_9e747
+	sound_get_item_1
+	text_far _SafariZoneEntranceText_75360
+	text_end
 
 .PleaseComeAgainText
-	TX_FAR _SafariZoneEntranceText_75365
-	db "@"
+	text_far _SafariZoneEntranceText_75365
+	text_end
 
 .NotEnoughMoneyText
-	TX_FAR _SafariZoneEntranceText_7536a
-	db "@"
+	text_far _SafariZoneEntranceText_7536a
+	text_end
 
-Func_f203e:
+Func_f203e::
 	ld hl, .FirstTimeQuestionText
 	call PrintText
 	call YesNoChoice
@@ -112,16 +112,16 @@ Func_f203e:
 	ret
 
 .FirstTimeQuestionText
-	TX_FAR _SafariZoneEntranceText_753e6
-	db "@"
+	text_far _SafariZoneEntranceText_753e6
+	text_end
 
 .ExplanationText
-	TX_FAR _SafariZoneEntranceText_753eb
-	db "@"
+	text_far _SafariZoneEntranceText_753eb
+	text_end
 
 .RegularText
-	TX_FAR _SafariZoneEntranceText_753f0
-	db "@"
+	text_far _SafariZoneEntranceText_753f0
+	text_end
 
 SafariZoneEntranceStartSimulatingJoypadStates:
 	push af
@@ -139,12 +139,12 @@ SafariZoneEntranceCalculateLowCostAdmission:
 	ld bc, $3
 	call CopyData
 	xor a
-	ld [hDivideBCDDivisor], a
-	ld [hDivideBCDDivisor + 1], a
+	ldh [hDivideBCDDivisor], a
+	ldh [hDivideBCDDivisor + 1], a
 	ld a, 23
-	ld [hDivideBCDDivisor + 2], a
+	ldh [hDivideBCDDivisor + 2], a
 	predef DivideBCDPredef3
-	ld a, [hDivideBCDQuotient + 2]
+	ldh a, [hDivideBCDQuotient + 2]
 	call SafariZoneEntranceConvertBCDtoNumber
 	push af
 	ld hl, wPlayerMoney
@@ -171,12 +171,12 @@ SafariZoneEntranceCalculateLowCostAdmission:
 	ret
 
 SafariZoneEntranceText_f20c4:
-	TX_FAR _SafariZoneLowCostText1
-	db "@"
+	text_far _SafariZoneLowCostText1
+	text_end
 
 SafariZoneEntranceText_f20c9:
-	TX_FAR _SafariZoneLowCostText2
-	db "@"
+	text_far _SafariZoneLowCostText2
+	text_end
 
 SafariZoneEntranceGetLowCostAdmissionText:
 	ld hl, wSafariSteps
@@ -207,10 +207,10 @@ SafariZoneEntranceGetLowCostAdmissionText:
 	ret
 
 SafariZoneEntranceText_f20f6:
-	TX_FAR _SafariZoneLowCostText3
-	TX_SFX_ITEM_1
-	TX_FAR _SafariZoneLowCostText4
-	db "@"
+	text_far _SafariZoneLowCostText3
+	sound_get_item_1
+	text_far _SafariZoneLowCostText4
+	text_end
 
 Pointers_f2100:
 	dw SafariZoneEntranceText_f210a
@@ -220,20 +220,20 @@ Pointers_f2100:
 	dw SafariZoneEntranceText_f2119
 
 SafariZoneEntranceText_f210a:
-	TX_FAR _SafariZoneLowCostText5
-	db "@"
+	text_far _SafariZoneLowCostText5
+	text_end
 
 SafariZoneEntranceText_f210f:
-	TX_FAR _SafariZoneLowCostText6
-	db "@"
+	text_far _SafariZoneLowCostText6
+	text_end
 
 SafariZoneEntranceText_f2114:
-	TX_FAR _SafariZoneLowCostText7
-	db "@"
+	text_far _SafariZoneLowCostText7
+	text_end
 
 SafariZoneEntranceText_f2119:
-	TX_FAR _SafariZoneLowCostText8
-	db "@"
+	text_far _SafariZoneLowCostText8
+	text_end
 
 SafariZoneEntranceConvertBCDtoNumber:
 	push hl

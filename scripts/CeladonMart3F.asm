@@ -21,55 +21,55 @@ CeladonMart3F_TextPointers:
 	dw CeladonMart3Text17
 
 CeladonMart3Text1:
-	TX_ASM
-	callab Func_f1e30
+	text_asm
+	callfar Func_f1e30
 	jp TextScriptEnd
 
 CeladonMart3Text2:
-	TX_FAR _CeladonMart3Text2
-	db "@"
+	text_far _CeladonMart3Text2
+	text_end
 
 CeladonMart3Text3:
-	TX_FAR _CeladonMart3Text3
-	db "@"
+	text_far _CeladonMart3Text3
+	text_end
 
 CeladonMart3Text4:
-	TX_FAR _CeladonMart3Text4
-	db "@"
+	text_far _CeladonMart3Text4
+	text_end
 
 CeladonMart3Text5:
-	TX_FAR _CeladonMart3Text5
-	db "@"
+	text_far _CeladonMart3Text5
+	text_end
 
-CeladonMart3Text12
+CeladonMart3Text12:
 CeladonMart3Text10:
 CeladonMart3Text8:
 CeladonMart3Text6:
-	TX_FAR _CeladonMart3Text6
-	db "@"
+	text_far _CeladonMart3Text6
+	text_end
 
 CeladonMart3Text7:
-	TX_FAR _CeladonMart3Text7
-	db "@"
+	text_far _CeladonMart3Text7
+	text_end
 
 CeladonMart3Text9:
-	TX_FAR _CeladonMart3Text9
-	db "@"
+	text_far _CeladonMart3Text9
+	text_end
 
 CeladonMart3Text11:
-	TX_FAR _CeladonMart3Text11
-	db "@"
+	text_far _CeladonMart3Text11
+	text_end
 
 CeladonMart3Text13:
-	TX_FAR _CeladonMart3Text13
-	db "@"
+	text_far _CeladonMart3Text13
+	text_end
 
 CeladonMart3Text14:
-	TX_FAR _CeladonMart3Text14
-	db "@"
+	text_far _CeladonMart3Text14
+	text_end
 
 CeladonMart3Text17:
 CeladonMart3Text16:
 CeladonMart3Text15:
-	TX_FAR _CeladonMart3Text15
-	db "@"
+	text_far _CeladonMart3Text15
+	text_end

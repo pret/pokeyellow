@@ -93,7 +93,7 @@ UpdateMusicCTimes::
 .loop
 	push bc
 	push hl
-	callba Audio1_UpdateMusic
+	farcall Audio1_UpdateMusic
 	pop hl
 	pop bc
 	dec c
@@ -144,11 +144,11 @@ Func_2223::
 	ld [wChannelSoundIDs + Ch6], a
 	ld [wChannelSoundIDs + Ch7], a
 	ld [wChannelSoundIDs + Ch8], a
-	ld [rNR10], a
+	ldh [rNR10], a
 	ret
 
 StopAllMusic::
-	ld a, $FF
+	ld a, SFX_STOP_ALL_MUSIC
 	ld [wNewSoundID], a
 ; plays music specified by a. If value is $ff, music is stopped
 PlaySound::
@@ -200,7 +200,7 @@ PlaySound::
 	ret
 
 GetNextMusicByte::
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [wAudioROMBank]
 	call BankswitchCommon
@@ -256,7 +256,7 @@ StopAllAudio::
 	ret
 
 DetermineAudioFunction::
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [wAudioROMBank]
 	call BankswitchCommon

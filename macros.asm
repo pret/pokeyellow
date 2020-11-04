@@ -1,8 +1,15 @@
-INCLUDE "macros/asm_macros.asm"
-INCLUDE "macros/data_macros.asm"
-INCLUDE "macros/text_macros.asm"
-INCLUDE "macros/audio_macros.asm"
-INCLUDE "macros/event_macros.asm"
+INCLUDE "macros/const.asm"
+INCLUDE "macros/predef.asm"
+INCLUDE "macros/farcall.asm"
+INCLUDE "macros/data.asm"
+INCLUDE "macros/code.asm"
+INCLUDE "macros/gfx.asm"
+INCLUDE "macros/coords.asm"
+
+INCLUDE "macros/scripts/audio.asm"
+INCLUDE "macros/scripts/maps.asm"
+INCLUDE "macros/scripts/events.asm"
+INCLUDE "macros/scripts/text.asm"
 
 SHADE_BLACK EQU %11
 SHADE_DARK  EQU %10
@@ -22,61 +29,61 @@ setpalOBP: MACRO
 ENDM
 
 homecall_jump: MACRO
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
 	pop af
 	jp BankswitchCommon
-	ENDM
+ENDM
 
 homecall_jump_sf: MACRO
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
 	pop bc
-	ld a,b
+	ld a, b
 	jp BankswitchCommon
-	ENDM
+ENDM
 
 homecall_sf: MACRO ; homecall but save flags by popping into bc instead of af
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
 	pop bc
-	ld a,b
+	ld a, b
 	call BankswitchCommon
-	ENDM
+ENDM
 
 switchbank: MACRO
 	ld a, BANK(\1)
 	call BankswitchCommon
-	ENDM
+ENDM
 
 callbs: MACRO
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
-	ENDM
+ENDM
 
 calladb_ModifyPikachuHappiness: MACRO
 	ld hl, ModifyPikachuHappiness
 	ld d, \1
 	ld b, BANK(ModifyPikachuHappiness)
 	call Bankswitch
-	ENDM
+ENDM
 
 callabd_ModifyPikachuHappiness: MACRO
 	ld hl, ModifyPikachuHappiness
 	ld b, BANK(ModifyPikachuHappiness)
 	ld d, \1
 	call Bankswitch
-	ENDM
+ENDM
 
 sine_wave: MACRO
 ; \1: amplitude

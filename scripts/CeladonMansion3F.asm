@@ -20,7 +20,7 @@ CeladonMansion3F_TextPointers:
 	dw GameFreakSignText
 
 ProgrammerText:
-	TX_ASM
+	text_asm
 	call CeladonMansion3_PokedexCount
 	cp 150
 	ld hl, CeladonMansion3Text_486f5
@@ -31,15 +31,15 @@ ProgrammerText:
 	jp TextScriptEnd
 
 CeladonMansion3Text_486f0:
-	TX_FAR _ProgrammerText
-	db "@"
+	text_far _ProgrammerText
+	text_end
 
 CeladonMansion3Text_486f5:
-	TX_FAR _ProgrammerText2
-	db "@"
+	text_far _ProgrammerText2
+	text_end
 
 GraphicArtistText:
-	TX_ASM
+	text_asm
 	call CeladonMansion3_PokedexCount
 	cp 150
 	jr nc, .completed
@@ -58,7 +58,7 @@ GraphicArtistText:
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab PrintDiploma
+	callfar PrintDiploma
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
@@ -68,7 +68,7 @@ GraphicArtistText:
 	call Delay3
 	call GBPalNormal
 	ld hl, CeladonMansion3Text_4876b
-	ld a, [$ffdb]
+	ldh a, [hCanceledPrinting]
 	and a
 	jr nz, .print
 	ld hl, CeladonMansion3Text_48766
@@ -81,27 +81,27 @@ GraphicArtistText:
 	jp TextScriptEnd
 
 CeladonMansion3Text_48757:
-	TX_FAR _GraphicArtistText
-	db "@"
+	text_far _GraphicArtistText
+	text_end
 
 CeladonMansion3Text_4875c:
-	TX_FAR _GraphicArtistText2
-	db "@"
+	text_far _GraphicArtistText2
+	text_end
 
 CeladonMansion3Text_48761:
-	TX_FAR _GraphicArtistText3
-	db "@"
+	text_far _GraphicArtistText3
+	text_end
 
 CeladonMansion3Text_48766:
-	TX_FAR _GraphicArtistText4
-	db "@"
+	text_far _GraphicArtistText4
+	text_end
 
 CeladonMansion3Text_4876b:
-	TX_FAR _GraphicArtistText5
-	db "@"
+	text_far _GraphicArtistText5
+	text_end
 
 WriterText:
-	TX_ASM
+	text_asm
 	call CeladonMansion3_PokedexCount
 	cp 150
 	ld hl, CeladonMansion3Text_48789
@@ -112,22 +112,22 @@ WriterText:
 	jp TextScriptEnd
 
 CeladonMansion3Text_48784:
-	TX_FAR _WriterText
-	db "@"
+	text_far _WriterText
+	text_end
 
 CeladonMansion3Text_48789:
-	TX_FAR _WriterText2
-	db "@"
+	text_far _WriterText2
+	text_end
 
 DirectorText:
-	TX_ASM
+	text_asm
 	call CeladonMansion3_PokedexCount
 	; check pokédex
-	cp 150
-	jr nc, .CompletedDex
-	ld hl, .GameDesigner
+	cp NUM_POKEMON - 1 ; discount Mew
+	jr nc, .completed_dex
+	ld hl, .GameDesignerText
 	jr .done
-.CompletedDex
+.completed_dex
 	ld hl, .CompletedDexText
 	call PrintText
 	call Delay3
@@ -138,39 +138,39 @@ DirectorText:
 	call PrintText
 	jp TextScriptEnd
 
-.GameDesigner
-	TX_FAR _GameDesignerText
-	db "@"
+.GameDesignerText:
+	text_far _GameDesignerText
+	text_end
 
-.CompletedDexText
-	TX_FAR _CompletedDexText
-	TX_BLINK
-	TX_ASM
-	callab DisplayDiploma
-	ld a, $1
+.CompletedDexText:
+	text_far _CompletedDexText
+	text_promptbutton
+	text_asm
+	callfar DisplayDiploma
+	ld a, TRUE
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	jp TextScriptEnd
 
 .UnlockedDiplomaPrinting
-	TX_FAR _CompletedDexText2
-	db "@"
+	text_far _CompletedDexText2
+	text_end
 
 GameFreakPCText1:
-	TX_ASM
-	callba Func_f1ef3
+	text_asm
+	farcall Func_f1ef3
 	jp TextScriptEnd
 
 GameFreakPCText2:
-	TX_ASM
-	callba Func_f1eff
+	text_asm
+	farcall Func_f1eff
 	jp TextScriptEnd
 
 GameFreakPCText3:
-	TX_ASM
-	callba Func_f1f0b
+	text_asm
+	farcall Func_f1f0b
 	jp TextScriptEnd
 
 GameFreakSignText:
-	TX_ASM
-	callba Func_f1f17
+	text_asm
+	farcall Func_f1f17
 	jp TextScriptEnd

@@ -8,15 +8,15 @@ ViridianSchoolHouse_TextPointers:
 	dw SchoolText3
 
 SchoolText1:
-	TX_FAR _SchoolText1
-	db "@"
+	text_far _SchoolText1
+	text_end
 
 SchoolText2:
-	TX_ASM
-	callba Func_f1c0f
+	text_asm
+	farcall Func_f1c0f
 	jp TextScriptEnd
 
 SchoolText3:
-	TX_ASM
-	callba Func_f1c03
+	text_asm
+	farcall Func_f1c03
 	jp TextScriptEnd

@@ -914,14 +914,14 @@ LoadPikachuShadowOAMData:
 	jr nz, .loop
 	ret
 
-LoadPikachuShadowIntoVRAM:
+LoadPikachuShadowIntoVRAM::
 	ld hl, vNPCSprites2 + $7f * $10
 	ld de, LedgeHoppingShadowGFX_3F
 	lb bc, BANK(LedgeHoppingShadowGFX_3F), (LedgeHoppingShadowGFX_3FEnd - LedgeHoppingShadowGFX_3F) / 8
 	jp CopyVideoDataDoubleAlternate
 
 LedgeHoppingShadowGFX_3F:
-INCBIN "gfx/ledge_hopping_shadow.1bpp"
+INCBIN "gfx/overworld/shadow.1bpp"
 LedgeHoppingShadowGFX_3FEnd:
 
 LoadPikachuBallIconIntoVRAM:
@@ -958,7 +958,7 @@ LoadPikachuSpriteIntoVRAM:
 	call CopyVideoDataAlternate
 	ld de, PikachuSprite + $c * $10
 	ld hl, vNPCSprites2 + $c * $10
-	ld a, [h_0xFFFC]
+	ldh a, [hFFFC]
 	and a
 	jr z, .load
 	ld de, PikachuSprite + $c * $10
@@ -1006,7 +1006,7 @@ Cosine_e: ; cosine?
 
 Sine_e: ; sine?
 	ld a, e
-asm_fd908
+asm_fd908:
 	and $3f
 	cp $20
 	jr nc, .asm_fd913

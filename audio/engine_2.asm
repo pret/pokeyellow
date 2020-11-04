@@ -5,7 +5,7 @@
 Audio2_PlaySound::
 	ld [wSoundID], a
 	ld a, [wSoundID]
-	cp $ff
+	cp SFX_STOP_ALL_MUSIC
 	jp z, .stopAllAudio
 	cp MAX_SFX_ID_2
 	jp z, .playSfx
@@ -182,34 +182,17 @@ Audio2_PlaySound::
 	ld a, [wSavedVolume]
 	and a
 	jr nz, .done
-	ld a, [rNR50]
+	ldh a, [rNR50]
 	ld [wSavedVolume], a
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 .done
 	ret
 
 Audio2_CryRet:
 	sound_ret
 
-Music_PokeFluteInBattle::
-	; begin playing the "caught mon" sound effect
-	ld a, SFX_CAUGHT_MON
-	call PlaySoundWaitForCurrent
-	; then immediately overwrtie the channel pointers
-	ld hl, wChannelCommandPointers + Ch5 * 2
-	ld de, SFX_Pokeflute_Ch5
-	call Audio2_OverwriteChannelPointer
-	ld de, SFX_Pokeflute_Ch6
-	call Audio2_OverwriteChannelPointer
-	ld de, SFX_Pokeflute_Ch7
-
-Audio2_OverwriteChannelPointer:
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-	ret
+INCLUDE "audio/poke_flute.asm"
 
 INCLUDE "audio/sfx/pokeflute_ch5_ch6.asm"
 
@@ -220,12 +203,12 @@ Audio2_InitMusicVariables::
 	ld [wMusicTempo + 1], a
 	ld [wMusicWaveInstrument], a
 	ld [wSfxWaveInstrument], a
-	ld d, $8
+	ld d, NUM_CHANNELS
 	ld hl, wChannelReturnAddresses
 	call Audio2_FillMem
 	ld hl, wChannelCommandPointers
 	call Audio2_FillMem
-	ld d, $4
+	ld d, NUM_MUSIC_CHANS
 	ld hl, wChannelSoundIDs
 	call Audio2_FillMem
 	ld hl, wChannelFlags1
@@ -273,17 +256,17 @@ Audio2_InitMusicVariables::
 	ld a, $ff
 	ld [wStereoPanning], a
 	xor a
-	ld [rNR50], a
+	ldh [rNR50], a
 	ld a, $8
-	ld [rNR10], a
+	ldh [rNR10], a
 	ld a, 0
-	ld [rNR51], a
+	ldh [rNR51], a
 	xor a
-	ld [rNR30], a
+	ldh [rNR30], a
 	ld a, $80
-	ld [rNR30], a
+	ldh [rNR30], a
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 	ret
 
 Audio2_InitSFXVariables::
@@ -371,27 +354,27 @@ Audio2_InitSFXVariables::
 	cp Ch5
 	ret nz
 	ld a, $8
-	ld [rNR10], a ; sweep off
+	ldh [rNR10], a ; sweep off
 	ret
 
 Audio2_StopAllAudio::
 	ld a, $80
-	ld [rNR52], a ; sound hardware on
-	ld [rNR30], a ; wave playback on
+	ldh [rNR52], a ; sound hardware on
+	ldh [rNR30], a ; wave playback on
 	xor a
-	ld [rNR51], a ; no sound output
-	ld [rNR32], a ; mute channel 3 (wave channel)
+	ldh [rNR51], a ; no sound output
+	ldh [rNR32], a ; mute channel 3 (wave channel)
 	ld a, $8
-	ld [rNR10], a ; sweep off
-	ld [rNR12], a ; mute channel 1 (pulse channel 1)
-	ld [rNR22], a ; mute channel 2 (pulse channel 2)
-	ld [rNR42], a ; mute channel 4 (noise channel)
+	ldh [rNR10], a ; sweep off
+	ldh [rNR12], a ; mute channel 1 (pulse channel 1)
+	ldh [rNR22], a ; mute channel 2 (pulse channel 2)
+	ldh [rNR42], a ; mute channel 4 (noise channel)
 	ld a, $40
-	ld [rNR14], a ; counter mode
-	ld [rNR24], a
-	ld [rNR44], a
+	ldh [rNR14], a ; counter mode
+	ldh [rNR24], a
+	ldh [rNR44], a
 	ld a, $77
-	ld [rNR50], a ; full volume
+	ldh [rNR50], a ; full volume
 	xor a
 	ld [wUnusedC000], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
@@ -414,7 +397,7 @@ Audio2_StopAllAudio::
 	ret
 
 ; fills d bytes at hl with a
-Audio2_FillMem
+Audio2_FillMem:
 	ld b, d
 .loop
 	ld [hli], a

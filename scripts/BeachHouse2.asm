@@ -4,7 +4,7 @@ Func_f23d0:
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wd730
 	set 6, [hl]
-	callab PrintSurfingMinigameHighScore
+	callfar PrintSurfingMinigameHighScore
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
@@ -14,7 +14,7 @@ Func_f23d0:
 	call Delay3
 	call GBPalNormal
 	ld hl, Text_f2412
-	ld a, [hOaksAideResult]
+	ldh a, [hOaksAideResult]
 	and a
 	jr nz, .asm_f2406
 	ld hl, Text_f240c
@@ -23,11 +23,11 @@ Func_f23d0:
 	jp TextScriptEnd
 
 Text_f240c:
-	TX_FAR _BeachHousePrinterText5
-	TX_WAIT
-	db "@"
+	text_far _BeachHousePrinterText5
+	text_waitbutton
+	text_end
 
 Text_f2412:
-	TX_FAR _BeachHousePrinterText6
-	TX_WAIT
-	db "@"
+	text_far _BeachHousePrinterText6
+	text_waitbutton
+	text_end

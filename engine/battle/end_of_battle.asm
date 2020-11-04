@@ -12,7 +12,7 @@ EndOfBattle:
 	call ClearScreen
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
-	callab DisplayLinkBattleVersusTextBox
+	callfar DisplayLinkBattleVersusTextBox
 	ld a, [wBattleResult]
 	cp $1
 	ld de, YouWinText
@@ -21,7 +21,7 @@ EndOfBattle:
 	jr z, .placeWinOrLoseString
 	ld de, DrawText
 .placeWinOrLoseString
-	coord hl, 6, 8
+	hlcoord 6, 8
 	call PlaceString
 	ld c, 200
 	call DelayFrames
@@ -46,7 +46,7 @@ EndOfBattle:
 	ld [wForceEvolution], a
 	predef EvolutionAfterBattle
 	ld d, $82
-	callab UpdatePikachuMoodAfterBattle
+	callfar UpdatePikachuMoodAfterBattle
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
@@ -88,5 +88,5 @@ DrawText:
 	db "  DRAW@"
 
 PickUpPayDayMoneyText:
-	TX_FAR _PickUpPayDayMoneyText
-	db "@"
+	text_far _PickUpPayDayMoneyText
+	text_end

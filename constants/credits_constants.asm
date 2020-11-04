@@ -1,3 +1,4 @@
+; CreditsTextPointers indexes (see data/credits/credits_text.asm)
 	const_def
 	const CRED_VERSION               ; 00
 	const CRED_TAJIRI                ; 01
@@ -86,10 +87,10 @@
 	const CRED_YOSHIMURA             ; 54
 	const CRED_YAMAZAKI              ; 55
 
-const_value SET $fa
-	const CRED_THE_END
-	const CRED_COPYRIGHT
-	const CRED_TEXT
-	const CRED_TEXT_FADE
-	const CRED_TEXT_MON
-	const CRED_TEXT_FADE_MON
+	const_def -1, -1
+	const CRED_TEXT_FADE_MON ; $FF
+	const CRED_TEXT_MON      ; $FE
+	const CRED_TEXT_FADE     ; $FD
+	const CRED_TEXT          ; $FC
+	const CRED_COPYRIGHT     ; $FB
+	const CRED_THE_END       ; $FA

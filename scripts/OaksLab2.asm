@@ -1,4 +1,4 @@
-Func_f1be0:
+Func_f1be0::
 	ld a, [wYCoord]
 	cp 3
 	jr z, .asm_f1bf0

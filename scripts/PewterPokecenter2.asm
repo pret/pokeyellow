@@ -1,20 +1,22 @@
-Func_f1d98:
+Func_f1d98::
 	ld hl, PewterPokecenterText_f1d9f
 	call PrintText
 	ret
 
 PewterPokecenterText_f1d9f:
-	TX_FAR _PewterPokecenterText3
-	db "@"
+	text_far _PewterPokecenterText3
+	text_end
 
-PewterJigglypuff:
-	ld a, $1
+PewterJigglypuff::
+	ld a, TRUE
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, .Text
+	ld hl, .JigglypuffText
 	call PrintText
+
 	call StopAllMusic
 	ld c, 32
 	call DelayFrames
+
 	ld hl, JigglypuffFacingDirections
 	ld de, wJigglypuffFacingDirections
 	ld bc, JigglypuffFacingDirectionsEnd - JigglypuffFacingDirections
@@ -27,15 +29,16 @@ PewterJigglypuff:
 	inc hl
 	jr nz, .findMatchingFacingDirectionLoop
 	dec hl
+
 	push hl
 	ld c, BANK(Music_JigglypuffSong)
 	ld a, MUSIC_JIGGLYPUFF_SONG
 	call PlayMusic
 	pop hl
-.loop
+
+.spinMovementLoop
 	ld a, [hl]
 	ld [wSprite03StateData1ImageIndex], a
-
 ; rotate the array
 	push hl
 	ld hl, wJigglypuffFacingDirections
@@ -45,15 +48,13 @@ PewterJigglypuff:
 	ld a, [wJigglypuffFacingDirections - 1]
 	ld [wJigglypuffFacingDirections + 3], a
 	pop hl
-
 	ld c, 24
 	call DelayFrames
-
 	ld a, [wChannelSoundIDs]
 	ld b, a
 	ld a, [wChannelSoundIDs + Ch2]
 	or b
-	jr nz, .loop
+	jr nz, .spinMovementLoop
 
 	ld c, 48
 	call DelayFrames
@@ -61,14 +62,14 @@ PewterJigglypuff:
 	ld a, [wd472]
 	bit 7, a
 	ret z
-	callab CheckPikachuFaintedOrStatused
+	callfar CheckPikachuFaintedOrStatused
 	ret c
 	call DisablePikachuFollowingPlayer
 	ret
 
-.Text
-	TX_FAR _PewterJigglypuffText
-	db "@"
+.JigglypuffText:
+	text_far _PewterJigglypuffText
+	text_end
 
 JigglypuffFacingDirections:
 	db $40 | SPRITE_FACING_DOWN

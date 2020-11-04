@@ -1,5 +1,5 @@
 CinnabarGymScript_753de:
-	callab Func_f2150
+	callfar Func_f2150
 	jp TextScriptEnd
 
 CinnabarGymScript_753e9:

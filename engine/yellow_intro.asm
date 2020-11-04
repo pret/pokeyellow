@@ -1,12 +1,12 @@
 PlayIntroScene:
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $f
-	ld [rIE], a
+	ldh [rIE], a
 	ld a, $8
-	ld [rSTAT], a
+	ldh [rSTAT], a
 	call InitYellowIntroGFXAndMusic
 	call DelayFrame
 .loop
@@ -14,7 +14,7 @@ PlayIntroScene:
 	bit 7, a
 	jr nz, .go_to_title_screen
 	call JoypadLowSensitivity
-	ld a, [hJoyPressed]
+	ldh a, [hJoyPressed]
 	and A_BUTTON | B_BUTTON | START
 	jr nz, .go_to_title_screen
 	call Func_f98fc
@@ -32,14 +32,14 @@ PlayIntroScene:
 .go_to_title_screen
 	call YellowIntro_BlankPalettes
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	call DelayFrame
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	call ClearObjectAnimationBuffers
 	ld hl, wTileMap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
@@ -47,12 +47,12 @@ PlayIntroScene:
 	call Bank3E_FillMemory
 	call YellowIntro_BlankOAMBuffer
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 Func_f98a2:
@@ -127,20 +127,20 @@ YellowIntro_NextScene:
 
 YellowIntroScene0:
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	lb de, $58, $58
 	ld a, $1
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
-	ld [hSCX], a
-	ld [hSCY], a
+	ldh [hSCX], a
+	ldh [hSCY], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld a, $e4
-	ld [rBGP], a
-	ld [rOBP0], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
 	ld a, $c4
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -161,7 +161,7 @@ YellowIntroScene2:
 	ld c, $8
 	call UpdateMusicCTimes
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	ld hl, vBGMap0
 	ld bc, $400
 	xor a
@@ -196,7 +196,7 @@ YellowIntroScene2_PlaceGraphic:
 	add $10
 	dec b
 	jr nz, .row
-	ld a, [hGBC]
+	ldh a, [hGBC]
 	and a
 	jr z, .dmg_sgb
 	; We can actually set palettes!
@@ -204,7 +204,7 @@ YellowIntroScene2_PlaceGraphic:
 	ld de, $20
 	ld b, $6
 	ld a, $1
-	ld [rVBK], a
+	ldh [rVBK], a
 .attr_row
 	ld c, $6
 	push hl
@@ -217,7 +217,7 @@ YellowIntroScene2_PlaceGraphic:
 	dec b
 	jr nz, .attr_row
 	xor a
-	ld [rVBK], a
+	ldh [rVBK], a
 .dmg_sgb
 	ret
 
@@ -260,11 +260,11 @@ YellowIntroFlyingSpeedBarData:
 YellowIntroScene3:
 	call YellowIntro_CheckFrameTimerDecrement
 	jr c, .expired
-	ld a, [hSCX]
+	ldh a, [hSCX]
 	cp $68
 	ret z
 	add $4
-	ld [hSCX], a
+	ldh [hSCX], a
 	ret
 
 .expired
@@ -276,7 +276,7 @@ YellowIntroScene4:
 	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
-	ld a, [hGBC]
+	ldh a, [hGBC]
 	and a
 	jr z, .dmg_sgb
 	; We can actually set palettes!
@@ -284,7 +284,7 @@ YellowIntroScene4:
 	ld de, $20
 	ld b, $6
 	ld a, $1
-	ld [rVBK], a
+	ldh [rVBK], a
 	xor a
 .attr_row
 	ld c, $6
@@ -298,10 +298,10 @@ YellowIntroScene4:
 	dec b
 	jr nz, .attr_row
 	xor a
-	ld [rVBK], a
+	ldh [rVBK], a
 .dmg_sgb
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	call Func_f9e5f
 	lb de, $58, $58
 	ld a, $2
@@ -324,7 +324,7 @@ YellowIntroScene6:
 	ld c, $5
 	call UpdateMusicCTimes
 	ld a, rSCY - $ff00
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	call YellowIntro_Copy8BitSineWave
 	ld hl, vBGMap0
 	ld bc, $60
@@ -385,7 +385,7 @@ YellowIntroScene8:
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	call Func_f9e5f
 	lb de, $58, $58
 	ld a, $3
@@ -408,7 +408,7 @@ YellowIntroScene10:
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	ld hl, vBGMap0
 	ld bc, $400
 	xor a
@@ -476,15 +476,15 @@ YellowIntroScene11:
 	ld hl, YellowIntroCloudGFX1
 	add hl, de
 	ld a, l
-	ld [H_VBCOPYSRC], a
+	ldh [hVBlankCopySource], a
 	ld a, h
-	ld [H_VBCOPYSRC + 1], a
+	ldh [hVBlankCopySource + 1], a
 	xor a
-	ld [H_VBCOPYDEST], a
+	ldh [hVBlankCopyDest], a
 	ld a, $96
-	ld [H_VBCOPYDEST + 1], a
+	ldh [hVBlankCopyDest + 1], a
 	ld a, $4
-	ld [H_VBCOPYSIZE], a
+	ldh [hVBlankCopySize], a
 	ret
 
 .expired
@@ -500,7 +500,7 @@ YellowIntroScene12:
 	ld c, $5
 	call UpdateMusicCTimes
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	ld hl, vBGMap0
 	ld bc, $80
 	ld a, $1
@@ -561,10 +561,10 @@ YellowIntroScene14:
 	ld de, YellowIntroPalSequence_f9dd6
 	call YellowIntro_LoadDMGPalAndIncrementCounter
 	jr c, .expired
-	ld [rBGP], a
-	ld [rOBP0], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
 	and $f0
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -577,24 +577,24 @@ YellowIntroScene14:
 	ld bc, $50
 	ld a, $1
 	call Bank3E_FillMemory
-	coord hl, 0, 4
+	hlcoord 0, 4
 	ld bc, CopyVideoDataAlternate
 	xor a
 	call Bank3E_FillMemory
-	coord hl, 0, 14
+	hlcoord 0, 14
 	ld bc, $50
 	ld a, $1
 	call Bank3E_FillMemory
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, $e4
-	ld [rOBP0], a
-	ld [rBGP], a
+	ldh [rOBP0], a
+	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	lb de, $58, $58
@@ -611,22 +611,22 @@ YellowIntroScene15:
 	ld a, [wYellowIntroSceneTimer]
 	and $3
 	ret nz
-	ld a, [rOBP0]
+	ldh a, [rOBP0]
 	xor $ff
-	ld [rOBP0], a
-	ld a, [rBGP]
+	ldh [rOBP0], a
+	ldh a, [rBGP]
 	xor $3
-	ld [rBGP], a
+	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	ret
 
 .expired
 	xor a
-	ld [hLCDCPointer], a
+	ldh [hLCDCPointer], a
 	ld a, $e4
-	ld [rBGP], a
-	ld [rOBP0], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call YellowIntro_NextScene
@@ -634,8 +634,8 @@ YellowIntroScene16:
 	ld de, YellowIntroPalSequence_f9e0a
 	call YellowIntro_LoadDMGPalAndIncrementCounter
 	jr c, .expired
-	ld [rOBP0], a
-	ld [rBGP], a
+	ldh [rOBP0], a
+	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	ret
@@ -743,9 +743,9 @@ Func_f9e5f:
 
 YellowIntro_BlankPalsDelay2AndDisableLCD:
 	xor a
-	ld [rBGP], a
-	ld [rOBP0], a
-	ld [rOBP1], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -756,19 +756,19 @@ YellowIntro_BlankPalsDelay2AndDisableLCD:
 
 Func_f9e9a:
 	ld e, a
-	callab YellowIntroPaletteAction
+	callfar YellowIntroPaletteAction
 	xor a
-	ld [hSCX], a
-	ld [hSCY], a
+	ldh [hSCX], a
+	ldh [hSCY], a
 	ld a, $90
-	ld [hWY], a
+	ldh [hWY], a
 	ld a, $e3
-	ld [rLCDC], a
+	ldh [rLCDC], a
 	ld a, $e4
-	ld [rBGP], a
-	ld [rOBP0], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
 	ld a, $e0
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -798,41 +798,41 @@ YellowIntro_Copy8BitSineWave:
 
 Request7TileTransferFromC810ToC710:
 	ld a, $10
-	ld [H_VBCOPYSRC], a
+	ldh [hVBlankCopySource], a
 	ld a, wLYOverridesBuffer / $100
-	ld [H_VBCOPYSRC + 1], a
+	ldh [hVBlankCopySource + 1], a
 	ld a, $10
-	ld [H_VBCOPYDEST], a
+	ldh [hVBlankCopyDest], a
 	ld a, wLYOverrides / $100
-	ld [H_VBCOPYDEST + 1], a
+	ldh [hVBlankCopyDest + 1], a
 	ld a, $7
-	ld [H_VBCOPYSIZE], a
+	ldh [hVBlankCopySize], a
 	ret
 
 InitYellowIntroGFXAndMusic:
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	ld [hSCX], a
-	ld [hSCY], a
-	ld [H_AUTOBGTRANSFERDEST], a
+	ldh [hAutoBGTransferEnabled], a
+	ldh [hSCX], a
+	ldh [hSCY], a
+	ldh [hAutoBGTransferDest], a
 	ld a, $98
-	ld [H_AUTOBGTRANSFERDEST + 1], a
+	ldh [hAutoBGTransferDest + 1], a
 	call YellowIntro_BlankTileMap
 	ld hl, wTileMap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, $1
 	call Bank3E_FillMemory
-	coord hl, 0, 4
+	hlcoord 0, 4
 	ld bc, CopyVideoDataAlternate
 	xor a
 	call Bank3E_FillMemory
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld de, $6b5a
 	ld hl, $8000
 	ld bc, $3eff
@@ -915,9 +915,9 @@ YellowIntro_BlankOAMBuffer:
 
 YellowIntro_BlankPalettes:
 	xor a
-	ld [rBGP], a
-	ld [rOBP0], a
-	ld [rOBP1], a
+	ldh [rBGP], a
+	ldh [rOBP0], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1

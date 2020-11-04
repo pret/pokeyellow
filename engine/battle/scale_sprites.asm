@@ -24,7 +24,7 @@ ScaleFirstThreeSpriteColumnsByTwo:
 .columnInnerLoop
 	push bc
 	ld a, [de]
-	ld bc, -(7*8)+1       ; $ffc9, scale lower nybble and seek to previous output column
+	ld bc, -(7*8)+1       ; -$37, scale lower nybble and seek to previous output column
 	call ScalePixelsByTwo
 	ld a, [de]
 	dec de
@@ -39,7 +39,7 @@ ScaleFirstThreeSpriteColumnsByTwo:
 	dec de
 	dec de
 	ld a, b
-	ld bc, -7*8 ; $ffc8, skip one output column (which has already been written along with the current one)
+	ld bc, -7*8 ; -$38, skip one output column (which has already been written along with the current one)
 	add hl, bc
 	ld b, a
 	dec b
@@ -48,16 +48,16 @@ ScaleFirstThreeSpriteColumnsByTwo:
 
 ScaleLastSpriteColumnByTwo:
 	ld a, 4*8 - 4 ; $1c, 4 tiles minus 4 unused rows
-	ld [H_SPRITEINTERLACECOUNTER], a
+	ldh [hSpriteInterlaceCounter], a
 	ld bc, -1
 .columnInnerLoop
 	ld a, [de]
 	dec de
 	swap a                    ; only high nybble contains information
 	call ScalePixelsByTwo
-	ld a, [H_SPRITEINTERLACECOUNTER]
+	ldh a, [hSpriteInterlaceCounter]
 	dec a
-	ld [H_SPRITEINTERLACECOUNTER], a
+	ldh [hSpriteInterlaceCounter], a
 	jr nz, .columnInnerLoop
 	dec de                    ; skip last 4 rows of new column
 	dec de
@@ -86,7 +86,19 @@ ScalePixelsByTwo:
 
 ; repeats each input bit twice
 DuplicateBitsTable:
-	db $00, $03, $0c, $0f
-	db $30, $33, $3c, $3f
-	db $c0, $c3, $cc, $cf
-	db $f0, $f3, $fc, $ff
+	db %00000000
+	db %00000011
+	db %00001100
+	db %00001111
+	db %00110000
+	db %00110011
+	db %00111100
+	db %00111111
+	db %11000000
+	db %11000011
+	db %11001100
+	db %11001111
+	db %11110000
+	db %11110011
+	db %11111100
+	db %11111111

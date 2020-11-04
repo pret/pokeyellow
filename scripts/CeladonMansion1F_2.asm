@@ -1,9 +1,9 @@
-Func_f1e70:
+Func_f1e70::
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, CeladonMansion1Text_f1e96
 	call PrintText
-	callab IsStarterPikachuInOurParty
+	callfar IsStarterPikachuInOurParty
 	ret nc
 	ld hl, CeladonMansionText_f1e9c
 	call PrintText
@@ -14,14 +14,14 @@ Func_f1e70:
 	ret
 
 CeladonMansion1Text_f1e96:
-	TX_FAR _CeladonMansion1Text2
-	TX_WAIT
-	db "@"
+	text_far _CeladonMansion1Text2
+	text_waitbutton
+	text_end
 
 CeladonMansionText_f1e9c:
-	TX_FAR _CeladonMansion1Text6
-	TX_BLINK
-	db "@"
+	text_far _CeladonMansion1Text6
+	text_promptbutton
+	text_end
 
 Func_f1ea2:
 	ld hl, PikachuHappinessThresholds_f1eb9
@@ -44,7 +44,7 @@ Func_f1ea2:
 	ld l, a
 	ret
 
-PikachuHappinessThresholds_f1eb9
+PikachuHappinessThresholds_f1eb9:
 	dw  51,      CeladonMansion1Text_f1ed5
 	dw 101,      CeladonMansion1Text_f1eda
 	dw 131,      CeladonMansion1Text_f1edf
@@ -54,25 +54,25 @@ PikachuHappinessThresholds_f1eb9
 	dbbw 0, $ff, CeladonMansion1Text_f1eee
 
 CeladonMansion1Text_f1ed5:
-	TX_FAR _CeladonMansion1Text7
-	db "@"
+	text_far _CeladonMansion1Text7
+	text_end
 
 CeladonMansion1Text_f1eda:
-	TX_FAR _CeladonMansion1Text8
-	db "@"
+	text_far _CeladonMansion1Text8
+	text_end
 
 CeladonMansion1Text_f1edf:
-	TX_FAR _CeladonMansion1Text9
-	db "@"
+	text_far _CeladonMansion1Text9
+	text_end
 
 CeladonMansion1Text_f1ee4:
-	TX_FAR _CeladonMansion1Text10
-	db "@"
+	text_far _CeladonMansion1Text10
+	text_end
 
 CeladonMansion1Text_f1ee9:
-	TX_FAR _CeladonMansion1Text11
-	db "@"
+	text_far _CeladonMansion1Text11
+	text_end
 
 CeladonMansion1Text_f1eee:
-	TX_FAR _CeladonMansion1Text12
-	db "@"
+	text_far _CeladonMansion1Text12
+	text_end

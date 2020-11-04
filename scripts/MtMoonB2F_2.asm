@@ -8,7 +8,7 @@ MtMoon3Script_4a325: ; pikachu-related function?
 
 	push hl
 	push bc
-	callab GetPikachuFacingDirectionAndReturnToE
+	callfar GetPikachuFacingDirectionAndReturnToE
 	pop bc
 	pop hl
 	ld a, b
@@ -20,7 +20,7 @@ MtMoon3Script_4a325: ; pikachu-related function?
 	push af
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	callab LoadPikachuShadowIntoVRAM
+	callfar LoadPikachuShadowIntoVRAM
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl

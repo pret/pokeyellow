@@ -10,21 +10,23 @@ CinnabarGymScript_75759:
 	bit 6, [hl]
 	res 6, [hl]
 	push hl
-	call nz, CinnabarGymScript_75772
+	call nz, .LoadNames
 	pop hl
 	bit 5, [hl]
 	res 5, [hl]
 	call nz, UpdateCinnabarGymGateTileBlocks
 	ResetEvent EVENT_2A7
 	ret
-CinnabarGymScript_75772:
-	ld hl, Gym7CityName
-	ld de, Gym7LeaderName
+
+.LoadNames:
+	ld hl, .CityName
+	ld de, .LeaderName
 	jp LoadGymLeaderAndCityName
 
-Gym7CityName:
+.CityName:
 	db "CINNABAR ISLAND@"
-Gym7LeaderName:
+
+.LeaderName:
 	db "BLAINE@"
 
 CinnabarGymScript_75792:
@@ -36,7 +38,7 @@ CinnabarGymScript_75792:
 	ret
 
 CinnabarGymScript_74f48:
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wTrainerHeaderFlagBit], a
 	ret
 
@@ -53,7 +55,7 @@ CinnabarGymScript0:
 	ld a, [wOpponentAfterWrongAnswer]
 	and a
 	ret z
-	ld [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	cp $4
 	jr nz, .asm_757c3
 	ld a, PLAYER_DIR_DOWN
@@ -80,7 +82,7 @@ CinnabarGymScript0:
 MovementData_757d7:
 	db NPC_MOVEMENT_LEFT
 	db NPC_MOVEMENT_UP
-	db $FF
+	db -1 ; end
 
 PikachuMovementData_74f97:
 	db $00
@@ -91,7 +93,7 @@ PikachuMovementData_74f97:
 
 MovementData_757da:
 	db NPC_MOVEMENT_LEFT
-	db $FF
+	db -1 ; end
 
 PikachuMovementData_74f9e:
 	db $00
@@ -106,7 +108,7 @@ CinnabarGymScript_74fa3:
 	ret z
 	push hl
 	push bc
-	callab GetPikachuFacingDirectionAndReturnToE
+	callfar GetPikachuFacingDirectionAndReturnToE
 	pop bc
 	pop hl
 	ld a, b
@@ -123,7 +125,7 @@ CinnabarGymScript1:
 	ld [wJoyIgnore], a
 	ld a, [wOpponentAfterWrongAnswer]
 	ld [wTrainerHeaderFlagBit], a
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 CinnabarGymScript2:
@@ -166,7 +168,7 @@ CinnabarGymScript2:
 
 CinnabarGymScript_75023:
 	ld a, [wTrainerHeaderFlagBit]
-	ld [$ffdb], a
+	ldh [hGymGateIndex], a
 	ld c, a
 	ld b, FLAG_SET
 	EventFlagAddress hl, EVENT_BEAT_CINNABAR_GYM_TRAINER_0
@@ -175,7 +177,7 @@ CinnabarGymScript_75023:
 
 CinnabarGymScript_75032:
 	ld a, [wTrainerHeaderFlagBit]
-	ld [$ffdb], a
+	ldh [hGymGateIndex], a
 	ld c, a
 	ld b, FLAG_TEST
 	EventFlagAddress hl, EVENT_BEAT_CINNABAR_GYM_TRAINER_0
@@ -201,26 +203,26 @@ CinnabarGymScript3:
 	ld [wJoyIgnore], a
 CinnabarGymScript3_75857:
 	ld a, $a
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_BLAINE
-	lb bc, TM_38, 1
+	lb bc, TM_FIRE_BLAST, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $b
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM38
 	jr .gymVictory
 .BagFull
 	ld a, $c
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
 	ld hl, wObtainedBadges
-	set 6, [hl]
+	set BIT_VOLCANOBADGE, [hl]
 	ld hl, wBeatGymFlags
-	set 6, [hl]
+	set BIT_VOLCANOBADGE, [hl]
 
 	; deactivate gym trainers
 	SetEventRange EVENT_BEAT_CINNABAR_GYM_TRAINER_0, EVENT_BEAT_CINNABAR_GYM_TRAINER_6
@@ -245,7 +247,7 @@ CinnabarGym_TextPointers:
 	dw TM38NoRoomText
 
 CinnabarGymScript_750c3:
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
@@ -265,7 +267,7 @@ CinnabarGymScript_750c3:
 	jp TextScriptEnd
 
 CinnabarGymText1:
-	TX_ASM
+	text_asm
 	CheckEvent EVENT_BEAT_BLAINE
 	jr z, .beginBattle
 	CheckEventReuseA EVENT_GOT_TM38
@@ -288,35 +290,35 @@ CinnabarGymText1:
 	jp CinnabarGymScript_750c3
 
 BlaineBattleText:
-	TX_FAR _BlaineBattleText
-	db "@"
+	text_far _BlaineBattleText
+	text_end
 
 BlaineEndBattleText:
-	TX_FAR _BlaineEndBattleText
-	TX_SFX_KEY_ITEM ; actually plays the second channel of SFX_BALL_POOF due to the wrong music bank being loaded
-	TX_WAIT
-	db "@"
+	text_far _BlaineEndBattleText
+	sound_get_key_item ; actually plays the second channel of SFX_BALL_POOF due to the wrong music bank being loaded
+	text_waitbutton
+	text_end
 
 BlaineFireBlastText:
-	TX_FAR _BlaineFireBlastText
-	db "@"
+	text_far _BlaineFireBlastText
+	text_end
 
 BlaineBadgeText:
-	TX_FAR _BlaineBadgeText
-	db "@"
+	text_far _BlaineBadgeText
+	text_end
 
 ReceivedTM38Text:
-	TX_FAR _ReceivedTM38Text
-	TX_SFX_ITEM_1
-	TX_FAR _TM38ExplanationText
-	db "@"
+	text_far _ReceivedTM38Text
+	sound_get_item_1
+	text_far _TM38ExplanationText
+	text_end
 
 TM38NoRoomText:
-	TX_FAR _TM38NoRoomText
-	db "@"
+	text_far _TM38NoRoomText
+	text_end
 
 CinnabarGymText2:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_0
 	jr nz, .asm_46bb4
@@ -332,19 +334,19 @@ CinnabarGymText2:
 	jp TextScriptEnd
 
 CinnabarGymText_7595f:
-	TX_FAR _CinnabarGymText_7595f
-	db "@"
+	text_far _CinnabarGymText_7595f
+	text_end
 
 CinnabarGymText_75964:
-	TX_FAR _CinnabarGymText_75964
-	db "@"
+	text_far _CinnabarGymText_75964
+	text_end
 
 CinnabarGymText_75969:
-	TX_FAR _CinnabarGymText_75969
-	db "@"
+	text_far _CinnabarGymText_75969
+	text_end
 
 CinnabarGymText3:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_1
 	jr nz, .asm_751a8
@@ -369,19 +371,19 @@ CinnabarGymText3:
 	jp TextScriptEnd
 
 CinnabarGymText_75994:
-	TX_FAR _CinnabarGymText_75994
-	db "@"
+	text_far _CinnabarGymText_75994
+	text_end
 
 CinnabarGymText_75999:
-	TX_FAR _CinnabarGymText_75999
-	db "@"
+	text_far _CinnabarGymText_75999
+	text_end
 
 CinnabarGymText_7599e:
-	TX_FAR _CinnabarGymText_7599e
-	db "@"
+	text_far _CinnabarGymText_7599e
+	text_end
 
 CinnabarGymText4:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_2
 	jr nz, .asm_751ee
@@ -405,19 +407,19 @@ CinnabarGymText4:
 	jp TextScriptEnd
 
 CinnabarGymText_759c9:
-	TX_FAR _CinnabarGymText_759c9
-	db "@"
+	text_far _CinnabarGymText_759c9
+	text_end
 
 CinnabarGymText_759ce:
-	TX_FAR _CinnabarGymText_759ce
-	db "@"
+	text_far _CinnabarGymText_759ce
+	text_end
 
 CinnabarGymText_759d3:
-	TX_FAR _CinnabarGymText_759d3
-	db "@"
+	text_far _CinnabarGymText_759d3
+	text_end
 
 CinnabarGymText5:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_3
 	jr nz, .asm_75234
@@ -441,19 +443,19 @@ CinnabarGymText5:
 	jp TextScriptEnd
 
 CinnabarGymText_759fe:
-	TX_FAR _CinnabarGymText_759fe
-	db "@"
+	text_far _CinnabarGymText_759fe
+	text_end
 
 CinnabarGymText_75a03:
-	TX_FAR _CinnabarGymText_75a03
-	db "@"
+	text_far _CinnabarGymText_75a03
+	text_end
 
 CinnabarGymText_75a08:
-	TX_FAR _CinnabarGymText_75a08
-	db "@"
+	text_far _CinnabarGymText_75a08
+	text_end
 
 CinnabarGymText6:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_4
 	jr nz, .asm_776b4
@@ -477,19 +479,19 @@ CinnabarGymText6:
 	jp TextScriptEnd
 
 CinnabarGymText_75a33:
-	TX_FAR _CinnabarGymText_75a33
-	db "@"
+	text_far _CinnabarGymText_75a33
+	text_end
 
 CinnabarGymText_75a38:
-	TX_FAR _CinnabarGymText_75a38
-	db "@"
+	text_far _CinnabarGymText_75a38
+	text_end
 
 CinnabarGymText_75a3d:
-	TX_FAR _CinnabarGymText_75a3d
-	db "@"
+	text_far _CinnabarGymText_75a3d
+	text_end
 
 CinnabarGymText7:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_5
 	jr nz, .asm_2f755
@@ -513,19 +515,19 @@ CinnabarGymText7:
 	jp TextScriptEnd
 
 CinnabarGymText_75a68:
-	TX_FAR _CinnabarGymText_75a68
-	db "@"
+	text_far _CinnabarGymText_75a68
+	text_end
 
 CinnabarGymText_75a6d:
-	TX_FAR _CinnabarGymText_75a6d
-	db "@"
+	text_far _CinnabarGymText_75a6d
+	text_end
 
 CinnabarGymText_75a72:
-	TX_FAR _CinnabarGymText_75a72
-	db "@"
+	text_far _CinnabarGymText_75a72
+	text_end
 
 CinnabarGymText8:
-	TX_ASM
+	text_asm
 	call CinnabarGymScript_74f48
 	CheckEvent EVENT_BEAT_CINNABAR_GYM_TRAINER_6
 	jr nz, .asm_d87be
@@ -549,18 +551,18 @@ CinnabarGymText8:
 	jp TextScriptEnd
 
 CinnabarGymText_75a9d:
-	TX_FAR _CinnabarGymText_75a9d
-	db "@"
+	text_far _CinnabarGymText_75a9d
+	text_end
 
 CinnabarGymText_75aa2:
-	TX_FAR _CinnabarGymText_75aa2
-	db "@"
+	text_far _CinnabarGymText_75aa2
+	text_end
 
 CinnabarGymText_75aa7:
-	TX_FAR _CinnabarGymText_75aa7
-	db "@"
+	text_far _CinnabarGymText_75aa7
+	text_end
 
 CinnabarGymText9:
-	TX_ASM
-	callab Func_f2133
+	text_asm
+	callfar Func_f2133
 	jp TextScriptEnd

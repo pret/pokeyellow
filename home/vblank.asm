@@ -5,24 +5,24 @@ VBlank::
 	push de
 	push hl
 
-	ld a, [rVBK] ; vram bank
+	ldh a, [rVBK] ; vram bank
 	push af
 	xor a
-	ld [rVBK], a ; reset vram bank to 0
+	ldh [rVBK], a ; reset vram bank to 0
 
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld [wVBlankSavedROMBank], a
 
-	ld a, [hSCX]
-	ld [rSCX], a
-	ld a, [hSCY]
-	ld [rSCY], a
+	ldh a, [hSCX]
+	ldh [rSCX], a
+	ldh a, [hSCY]
+	ldh [rSCY], a
 
 	ld a, [wDisableVBlankWYUpdate]
 	and a
 	jr nz, .ok
-	ld a, [hWY]
-	ld [rWY], a
+	ldh a, [hWY]
+	ldh [rWY], a
 .ok
 
 	call AutoBgMapTransfer
@@ -31,9 +31,9 @@ VBlank::
 	call VBlankCopy
 	call VBlankCopyDouble
 	call UpdateMovingBgTiles
-	call $ff80 ; hOAMDMA
+	call hDMARoutine
 	ld a, BANK(PrepareOAMData)
-	ld [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	call PrepareOAMData
 
@@ -43,18 +43,18 @@ VBlank::
 	call Random
 	call ReadJoypad
 
-	ld a, [H_VBLANKOCCURRED]
+	ldh a, [hVBlankOccurred]
 	and a
 	jr z, .skipZeroing
 	xor a
-	ld [H_VBLANKOCCURRED], a
+	ldh [hVBlankOccurred], a
 
 .skipZeroing
-	ld a, [H_FRAMECOUNTER]
+	ldh a, [hFrameCounter]
 	and a
 	jr z, .skipDec
 	dec a
-	ld [H_FRAMECOUNTER], a
+	ldh [hFrameCounter], a
 
 .skipDec
 	call FadeOutAudio
@@ -65,11 +65,11 @@ VBlank::
 	call SerialFunction
 
 	ld a, [wVBlankSavedROMBank]
-	ld [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 
 	pop af
-	ld [rVBK],a
+	ldh [rVBK], a
 
 	pop hl
 	pop de
@@ -85,10 +85,10 @@ DelayFrame::
 NOT_VBLANKED EQU 1
 
 	ld a, NOT_VBLANKED
-	ld [H_VBLANKOCCURRED], a
+	ldh [hVBlankOccurred], a
 .halt
 	halt
-	ld a, [H_VBLANKOCCURRED]
+	ldh a, [hVBlankOccurred]
 	and a
 	jr nz, .halt
 	ret

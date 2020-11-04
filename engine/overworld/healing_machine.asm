@@ -1,17 +1,17 @@
 AnimateHealingMachine:
 	ld de, PokeCenterFlashingMonitorAndHealBall
-	ld hl, vChars0 + $7c0
-	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), $03 ; loads one too many tiles
+	ld hl, vChars0 tile $7c
+	lb bc, BANK(PokeCenterFlashingMonitorAndHealBall), 3 ; should be 2
 	call CopyVideoData
 	ld hl, wUpdateSpritesEnabled
 	ld a, [hl]
 	push af
 	ld [hl], $ff
 	push hl
-	ld a, [rOBP1]
+	ldh a, [rOBP1]
 	push af
 	ld a, $e0
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_OBP1
 	ld hl, wOAMBuffer + $84
 	ld de, PokeCenterOAMData
@@ -53,7 +53,7 @@ AnimateHealingMachine:
 	ld c, 32
 	call DelayFrames
 	pop af
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_OBP1
 	pop hl
 	pop af
@@ -61,24 +61,26 @@ AnimateHealingMachine:
 	jp UpdateSprites
 
 PokeCenterFlashingMonitorAndHealBall:
-	INCBIN "gfx/pokecenter_ball.2bpp"
+	INCBIN "gfx/overworld/heal_machine.2bpp"
 
 PokeCenterOAMData:
-	db $24,$34,$7C,$14 ; heal machine monitor
-	db $2B,$30,$7D,$14 ; pokeballs 1-6
-	db $2B,$38,$7D,$34
-	db $30,$30,$7D,$14
-	db $30,$38,$7D,$34
-	db $35,$30,$7D,$14
-	db $35,$38,$7D,$34
+	; heal machine monitor
+	dbsprite  6,  4,  4,  4, $7c, OAM_OBP1 | %100
+	; poke balls 1-6
+	dbsprite  6,  5,  0,  3, $7d, OAM_OBP1 | %100
+	dbsprite  7,  5,  0,  3, $7d, OAM_OBP1 | OAM_HFLIP | %100
+	dbsprite  6,  6,  0,  0, $7d, OAM_OBP1 | %100
+	dbsprite  7,  6,  0,  0, $7d, OAM_OBP1 | OAM_HFLIP | %100
+	dbsprite  6,  6,  0,  5, $7d, OAM_OBP1 | %100
+	dbsprite  7,  6,  0,  5, $7d, OAM_OBP1 | OAM_HFLIP | %100
 
 ; d = value to xor with palette
 FlashSprite8Times:
 	ld b, 8
 .loop
-	ld a, [rOBP1]
+	ldh a, [rOBP1]
 	xor d
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_OBP1
 	ld c, 10
 	call DelayFrames
@@ -88,16 +90,9 @@ FlashSprite8Times:
 
 CopyHealingMachineOAM:
 ; copy one OAM entry and advance the pointers
+	REPT 4
 	ld a, [de]
 	inc de
 	ld [hli], a
-	ld a, [de]
-	inc de
-	ld [hli], a
-	ld a, [de]
-	inc de
-	ld [hli], a
-	ld a, [de]
-	inc de
-	ld [hli], a
+	ENDR
 	ret

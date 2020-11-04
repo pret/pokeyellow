@@ -1,4 +1,4 @@
-TryPushingBoulder:
+TryPushingBoulder::
 	ld a, [wd728]
 	bit 0, a ; using Strength?
 	ret z
@@ -8,15 +8,15 @@ Func_f0a7:
 	bit 1, a ; has boulder dust animation from previous push played yet?
 	ret nz
 	xor a
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call IsSpriteInFrontOfPlayer
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndexOrTextID]
 	ld [wBoulderSpriteIndex], a
 	and a
 	jp z, ResetBoulderPushFlags
-	ld hl, wSpriteStateData1 + 1
+	ld hl, wSpritePlayerStateData1MovementStatus
 	ld d, $0
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndexOrTextID]
 	swap a
 	ld e, a
 	add hl, de
@@ -29,16 +29,16 @@ Func_f0a7:
 	bit 6, [hl]
 	set 6, [hl] ; indicate that the player has tried pushing
 	ret z ; the player must try pushing twice before the boulder will move
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	and D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ret z
 	predef CheckForCollisionWhenPushingBoulder
 	ld a, [wTileInFrontOfBoulderAndBoulderCollisionResult]
 	and a ; was there a collision?
 	jp nz, ResetBoulderPushFlags
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	ld b, a
-	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	jr z, .pushBoulderUp
 	cp SPRITE_FACING_LEFT
@@ -73,28 +73,32 @@ Func_f0a7:
 	ret
 
 PushBoulderUpMovementData:
-	db NPC_MOVEMENT_UP,$FF
+	db NPC_MOVEMENT_UP
+	db -1 ; end
 
 PushBoulderDownMovementData:
-	db NPC_MOVEMENT_DOWN,$FF
+	db NPC_MOVEMENT_DOWN
+	db -1 ; end
 
 PushBoulderLeftMovementData:
-	db NPC_MOVEMENT_LEFT,$FF
+	db NPC_MOVEMENT_LEFT
+	db -1 ; end
 
 PushBoulderRightMovementData:
-	db NPC_MOVEMENT_RIGHT,$FF
+	db NPC_MOVEMENT_RIGHT
+	db -1 ; end
 
-DoBoulderDustAnimation:
+DoBoulderDustAnimation::
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	callab AnimateBoulderDust
+	callfar AnimateBoulderDust
 	call DiscardButtonPresses
 	ld [wJoyIgnore], a
 	call ResetBoulderPushFlags
 	set 7, [hl]
 	ld a, [wBoulderSpriteIndex]
-	ld [H_SPRITEINDEX], a
+	ldh [hSpriteIndex], a
 	call GetSpriteMovementByte2Pointer
 	ld [hl], $10
 	ld a, SFX_CUT

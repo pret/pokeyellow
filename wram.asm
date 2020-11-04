@@ -1,74 +1,20 @@
 INCLUDE "constants.asm"
 
-flag_array: MACRO
-	ds ((\1) + 7) / 8
-ENDM
-
-box_struct_length EQU 25 + NUM_MOVES * 2
-box_struct: MACRO
-\1Species::    db
-\1HP::         dw
-\1BoxLevel::   db
-\1Status::     db
-\1Type::
-\1Type1::      db
-\1Type2::      db
-\1CatchRate::  db
-\1Moves::      ds NUM_MOVES
-\1OTID::       dw
-\1Exp::        ds 3
-\1HPExp::      dw
-\1AttackExp::  dw
-\1DefenseExp:: dw
-\1SpeedExp::   dw
-\1SpecialExp:: dw
-\1DVs::        ds 2
-\1PP::         ds NUM_MOVES
-ENDM
-
-party_struct: MACRO
-	box_struct \1
-\1Level::      db
-\1Stats::
-\1MaxHP::      dw
-\1Attack::     dw
-\1Defense::    dw
-\1Speed::      dw
-\1Special::    dw
-ENDM
-
-battle_struct: MACRO
-\1Species::    db
-\1HP::         dw
-\1PartyPos::
-\1BoxLevel::   db
-\1Status::     db
-\1Type::
-\1Type1::      db
-\1Type2::      db
-\1CatchRate::  db
-\1Moves::      ds NUM_MOVES
-\1DVs::        ds 2
-\1Level::      db
-\1Stats::
-\1MaxHP::      dw
-\1Attack::     dw
-\1Defense::    dw
-\1Speed::      dw
-\1Special::    dw
-\1PP::         ds NUM_MOVES
-ENDM
+INCLUDE "macros/wram.asm"
 
 
-SECTION "WRAM Bank 0", WRAM0
+INCLUDE "vram.asm"
 
-wUnusedC000:: ; c000
+
+SECTION "WRAM", WRAM0
+
+wUnusedC000::
 	ds 1
 
-wSoundID:: ; c001
+wSoundID::
 	ds 1
 
-wMuteAudioAndPauseMusic:: ; c002
+wMuteAudioAndPauseMusic::
 ; bit 7: whether sound has been muted
 ; all bits: whether the effective is active
 ; Store 1 to activate effect (any value in the range [1, 127] works).
@@ -77,97 +23,97 @@ wMuteAudioAndPauseMusic:: ; c002
 ; Store 0 to resume music.
 	ds 1
 
-wDisableChannelOutputWhenSfxEnds:: ; c003
+wDisableChannelOutputWhenSfxEnds::
 	ds 1
 
-wStereoPanning:: ; c004
+wStereoPanning::
 	ds 1
 
-wSavedVolume:: ; c005
+wSavedVolume::
 	ds 1
 
-wChannelCommandPointers:: ; c006
+wChannelCommandPointers::
 	ds 16
 
-wChannelReturnAddresses:: ; c016
+wChannelReturnAddresses::
 	ds 16
 
-wChannelSoundIDs:: ; c026
+wChannelSoundIDs::
 	ds 8
 
-wChannelFlags1:: ; c02e
+wChannelFlags1::
 	ds 8
 
-wChannelFlags2:: ; c036
+wChannelFlags2::
 	ds 8
 
-wChannelDutyCycles:: ; c03e
+wChannelDutyCycles::
 	ds 8
 
-wChannelDutyCyclePatterns:: ; c046
+wChannelDutyCyclePatterns::
 	ds 8
 
-wChannelVibratoDelayCounters:: ; c04e
+wChannelVibratoDelayCounters::
 ; reloaded at the beginning of a note. counts down until the vibrato begins.
 	ds 8
 
-wChannelVibratoExtents:: ; c056
+wChannelVibratoExtents::
 	ds 8
 
-wChannelVibratoRates:: ; c05e
+wChannelVibratoRates::
 ; high nybble is rate (counter reload value) and low nybble is counter.
 ; time between applications of vibrato.
 	ds 8
 
-wChannelFrequencyLowBytes:: ; c066
+wChannelFrequencyLowBytes::
 	ds 8
 
-wChannelVibratoDelayCounterReloadValues:: ; c06e
+wChannelVibratoDelayCounterReloadValues::
 ; delay of the beginning of the vibrato from the start of the note
 	ds 8
 
-wChannelPitchSlideLengthModifiers:: ; c076
+wChannelPitchSlideLengthModifiers::
 	ds 8
 
-wChannelPitchSlideFrequencySteps:: ; c07e
+wChannelPitchSlideFrequencySteps::
 	ds 8
 
-wChannelPitchSlideFrequencyStepsFractionalPart:: ; c086
+wChannelPitchSlideFrequencyStepsFractionalPart::
 	ds 8
 
-wChannelPitchSlideCurrentFrequencyFractionalPart:: ; c08e
+wChannelPitchSlideCurrentFrequencyFractionalPart::
 	ds 8
 
-wChannelPitchSlideCurrentFrequencyHighBytes:: ; c096
+wChannelPitchSlideCurrentFrequencyHighBytes::
 	ds 8
 
-wChannelPitchSlideCurrentFrequencyLowBytes:: ; c09e
+wChannelPitchSlideCurrentFrequencyLowBytes::
 	ds 8
 
-wChannelPitchSlideTargetFrequencyHighBytes:: ; c0a6
+wChannelPitchSlideTargetFrequencyHighBytes::
 	ds 8
 
-wChannelPitchSlideTargetFrequencyLowBytes:: ; c0ae
+wChannelPitchSlideTargetFrequencyLowBytes::
 	ds 8
 
-wChannelNoteDelayCounters:: ; c0b6
+wChannelNoteDelayCounters::
 ; Note delays are stored as 16-bit fixed-point numbers where the integer part
 ; is 8 bits and the fractional part is 8 bits.
 	ds 8
 
-wChannelLoopCounters:: ; c0be
+wChannelLoopCounters::
 	ds 8
 
-wChannelNoteSpeeds:: ; c0c6
+wChannelNoteSpeeds::
 	ds 8
 
-wChannelNoteDelayCountersFractionalPart:: ; c0ce
+wChannelNoteDelayCountersFractionalPart::
 	ds 8
 
-wChannelOctaves:: ; c0d6
+wChannelOctaves::
 	ds 8
 
-wChannelVolumes:: ; c0de
+wChannelVolumes::
 ; also includes fade for hardware channels that support it
 	ds 8
 
@@ -177,28 +123,28 @@ wMusicWaveInstrument::
 wSfxWaveInstrument::
 	ds 1
 
-wMusicTempo:: ; c0e8
+wMusicTempo::
 	ds 2
 
-wSfxTempo:: ; c0ea
+wSfxTempo::
 	ds 2
 
-wSfxHeaderPointer:: ; c0ec
+wSfxHeaderPointer::
 	ds 2
 
-wNewSoundID:: ; c0ee
+wNewSoundID::
 	ds 1
 
-wAudioROMBank:: ; c0ef
+wAudioROMBank::
 	ds 1
 
-wAudioSavedROMBank:: ; c0f0
+wAudioSavedROMBank::
 	ds 1
 
-wFrequencyModifier:: ; c0f1
+wFrequencyModifier::
 	ds 1
 
-wTempoModifier:: ; c0f2
+wTempoModifier::
 	ds 1
 
 wc0f3:: ds 1
@@ -209,129 +155,101 @@ SECTION "Sprite State Data", WRAM0
 
 wSpriteDataStart::
 
-wSpriteStateData1:: ; c100
+wSpriteStateData1::
 ; data for all sprites on the current map
 ; holds info for 16 sprites with $10 bytes each
 ; player sprite is always sprite 0
-; C1x0: picture ID (fixed, loaded at map init)
-; C1x1: movement status (0: uninitialized, 1: ready, 2: delayed, 3: moving)
-; C1x2: sprite image index (changed on update, $ff if off screen, includes facing direction, progress in walking animation and a sprite-specific offset)
-; C1x3: Y screen position delta (-1,0 or 1; added to c1x4 on each walking animation update)
-; C1x4: Y screen position (in pixels, always 4 pixels above grid which makes sprites appear to be in the center of a tile)
-; C1x5: X screen position delta (-1,0 or 1; added to c1x6 on each walking animation update)
-; C1x6: X screen position (in pixels, snaps to grid if not currently walking)
-; C1x7: intra-animation-frame counter (counting upwards to 4 until c1x8 is incremented)
-; C1x8: animation frame counter (increased every 4 updates, hold four states (totalling to 16 walking frames)
-; C1x9: facing direction (0: down, 4: up, 8: left, $c: right)
-; C1xA
-; C1xB
-; C1xC
-; C1xD
-; C1xE
-; C1xF
-spritestatedata1: MACRO
-\1PictureID:: db
-\1MovementStatus:: db
-\1ImageIndex:: db
-\1YStepVector:: db
-\1YPixels:: db
-\1XStepVector:: db
-\1XPixels:: db
-\1IntraAnimFrameCounter:: db
-\1AnimFrameCounter:: db
-\1FacingDirection:: db
-	ds 6
-\1End::
-endm
-
-wSpritePlayerStateData1::   spritestatedata1 wSpritePlayerStateData1
-wSprite01StateData1::       spritestatedata1 wSprite01StateData1
-wSprite02StateData1::       spritestatedata1 wSprite02StateData1
-wSprite03StateData1::       spritestatedata1 wSprite03StateData1
-wSprite04StateData1::       spritestatedata1 wSprite04StateData1
-wSprite05StateData1::       spritestatedata1 wSprite05StateData1
-wSprite06StateData1::       spritestatedata1 wSprite06StateData1
-wSprite07StateData1::       spritestatedata1 wSprite07StateData1
-wSprite08StateData1::       spritestatedata1 wSprite08StateData1
-wSprite09StateData1::       spritestatedata1 wSprite09StateData1
-wSprite10StateData1::       spritestatedata1 wSprite10StateData1
-wSprite11StateData1::       spritestatedata1 wSprite11StateData1
-wSprite12StateData1::       spritestatedata1 wSprite12StateData1
-wSprite13StateData1::       spritestatedata1 wSprite13StateData1
-wSprite14StateData1::       spritestatedata1 wSprite14StateData1
+; struct fields:
+; - 0: picture ID (fixed, loaded at map init)
+; - 1: movement status (0: uninitialized, 1: ready, 2: delayed, 3: moving)
+; - 2: sprite image index (changed on update, $ff if off screen, includes facing direction, progress in walking animation and a sprite-specific offset)
+; - 3: Y screen position delta (-1,0 or 1; added to Y pixels on each walking animation update)
+; - 4: Y screen position (in pixels, always 4 pixels above grid which makes sprites appear to be in the center of a tile)
+; - 5: X screen position delta (-1,0 or 1; added to field X pixels on each walking animation update)
+; - 6: X screen position (in pixels, snaps to grid if not currently walking)
+; - 7: intra-animation-frame counter (counting upwards to 4 until animation frame counter is incremented)
+; - 8: animation frame counter (increased every 4 updates, hold four states (totalling to 16 walking frames)
+; - 9: facing direction ($0: down, $4: up, $8: left, $c: right)
+; - A: adjusted Y coordinate
+; - B: adjusted X coordinate
+; - C: direction of collision
+; - D
+; - E
+; - F
+wSpritePlayerStateData1::  spritestatedata1 wSpritePlayerStateData1
+wSprite01StateData1::      spritestatedata1 wSprite01StateData1
+wSprite02StateData1::      spritestatedata1 wSprite02StateData1
+wSprite03StateData1::      spritestatedata1 wSprite03StateData1
+wSprite04StateData1::      spritestatedata1 wSprite04StateData1
+wSprite05StateData1::      spritestatedata1 wSprite05StateData1
+wSprite06StateData1::      spritestatedata1 wSprite06StateData1
+wSprite07StateData1::      spritestatedata1 wSprite07StateData1
+wSprite08StateData1::      spritestatedata1 wSprite08StateData1
+wSprite09StateData1::      spritestatedata1 wSprite09StateData1
+wSprite10StateData1::      spritestatedata1 wSprite10StateData1
+wSprite11StateData1::      spritestatedata1 wSprite11StateData1
+wSprite12StateData1::      spritestatedata1 wSprite12StateData1
+wSprite13StateData1::      spritestatedata1 wSprite13StateData1
+wSprite14StateData1::      spritestatedata1 wSprite14StateData1
 wSpritePikachuStateData1::  spritestatedata1 wSpritePikachuStateData1
 
-wSpriteStateData2:: ; c200
+wSpriteStateData2::
 ; more data for all sprites on the current map
 ; holds info for 16 sprites with $10 bytes each
 ; player sprite is always sprite 0
-; C2x0: walk animation counter (counting from $10 backwards when moving)
-; C2x1:
-; C2x2: Y displacement (initialized at 8, supposed to keep moving sprites from moving too far, but bugged)
-; C2x3: X displacement (initialized at 8, supposed to keep moving sprites from moving too far, but bugged)
-; C2x4: Y position (in 2x2 tile grid steps, topmost 2x2 tile has value 4)
-; C2x5: X position (in 2x2 tile grid steps, leftmost 2x2 tile has value 4)
-; C2x6: movement byte 1 (determines whether a sprite can move, $ff:not moving, $fe:random movements, others unknown)
-; C2x7: (?) (set to $80 when in grass, else $0; may be used to draw grass above the sprite)
-; C2x8: delay until next movement (counted downwards, status (c1x1) is set to ready if reached 0)
-; C2x9
-; C2xA
-; C2xB
-; C2xC
-; C2xD
-; C2xE: sprite image base offset (in video ram, player always has value 1, used to compute c1x2)
-; C2xF
-spritestatedata2: MACRO
-\1WalkAnimationCounter:: db
-	ds 1
-\1YDisplacement:: db
-\1XDisplacement:: db
-\1MapY:: db
-\1MapX:: db
-\1MovementByte1:: db
-\1GrassPriority:: db
-\1MovementDelay:: db
-	ds 5
-\1ImageBaseOffset:: db
-	ds 1
-\1End::
-endm
-
-wSpritePlayerStateData2::   spritestatedata2 wSpritePlayerStateData2
-wSprite01StateData2::       spritestatedata2 wSprite01StateData2
-wSprite02StateData2::       spritestatedata2 wSprite02StateData2
-wSprite03StateData2::       spritestatedata2 wSprite03StateData2
-wSprite04StateData2::       spritestatedata2 wSprite04StateData2
-wSprite05StateData2::       spritestatedata2 wSprite05StateData2
-wSprite06StateData2::       spritestatedata2 wSprite06StateData2
-wSprite07StateData2::       spritestatedata2 wSprite07StateData2
-wSprite08StateData2::       spritestatedata2 wSprite08StateData2
-wSprite09StateData2::       spritestatedata2 wSprite09StateData2
-wSprite10StateData2::       spritestatedata2 wSprite10StateData2
-wSprite11StateData2::       spritestatedata2 wSprite11StateData2
-wSprite12StateData2::       spritestatedata2 wSprite12StateData2
-wSprite13StateData2::       spritestatedata2 wSprite13StateData2
-wSprite14StateData2::       spritestatedata2 wSprite14StateData2
+; struct fields:
+; - 0: walk animation counter (counting from $10 backwards when moving)
+; - 1:
+; - 2: Y displacement (initialized at 8, supposed to keep moving sprites from moving too far, but bugged)
+; - 3: X displacement (initialized at 8, supposed to keep moving sprites from moving too far, but bugged)
+; - 4: Y position (in 2x2 tile grid steps, topmost 2x2 tile has value 4)
+; - 5: X position (in 2x2 tile grid steps, leftmost 2x2 tile has value 4)
+; - 6: movement byte 1 (determines whether a sprite can move, $ff:not moving, $fe:random movements, others unknown)
+; - 7: (?) (set to $80 when in grass, else $0; may be used to draw grass above the sprite)
+; - 8: delay until next movement (counted downwards, movement status is set to ready if reached 0)
+; - 9: original facing direction (backed up by DisplayTextIDInit, restored by CloseTextDisplay)
+; - A
+; - B
+; - C
+; - D: picture ID
+; - E: sprite image base offset (in video ram, player always has value 1, used to compute sprite image index)
+; - F
+wSpritePlayerStateData2::  spritestatedata2 wSpritePlayerStateData2
+wSprite01StateData2::      spritestatedata2 wSprite01StateData2
+wSprite02StateData2::      spritestatedata2 wSprite02StateData2
+wSprite03StateData2::      spritestatedata2 wSprite03StateData2
+wSprite04StateData2::      spritestatedata2 wSprite04StateData2
+wSprite05StateData2::      spritestatedata2 wSprite05StateData2
+wSprite06StateData2::      spritestatedata2 wSprite06StateData2
+wSprite07StateData2::      spritestatedata2 wSprite07StateData2
+wSprite08StateData2::      spritestatedata2 wSprite08StateData2
+wSprite09StateData2::      spritestatedata2 wSprite09StateData2
+wSprite10StateData2::      spritestatedata2 wSprite10StateData2
+wSprite11StateData2::      spritestatedata2 wSprite11StateData2
+wSprite12StateData2::      spritestatedata2 wSprite12StateData2
+wSprite13StateData2::      spritestatedata2 wSprite13StateData2
+wSprite14StateData2::      spritestatedata2 wSprite14StateData2
 wSpritePikachuStateData2::  spritestatedata2 wSpritePikachuStateData2
+
 
 wSpriteDataEnd::
 
 
 SECTION "OAM Buffer", WRAM0
 
-wOAMBuffer:: ; c300
+wOAMBuffer::
 ; buffer for OAM data. Copied to OAM by DMA
 	ds 4 * 40
 wOAMBufferEnd::
 
-wTileMap:: ; c3a0
+wTileMap::
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
 
-wSerialPartyMonsPatchList:: ; c508
+wSerialPartyMonsPatchList::
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
 
-wTileMapBackup:: ; c508
+wTileMapBackup::
 ; buffer for temporarily saving and restoring current screen's tiles
 ; (e.g. if menus are drawn on top)
 ;	ds 20 * 18
@@ -342,7 +260,7 @@ wAnimatedObjectsData::
 
 wAnimatedObjectStartTileOffsets::
 	ds 10 * 2
-wAnimatedObjectDataStructs:: ; c51c
+wAnimatedObjectDataStructs::
 animated_object: macro
 \1Index::          db ; 0
 \1FramesetID::     db ; 1
@@ -370,250 +288,250 @@ wAnimatedObject7:: animated_object wAnimatedObject7
 wAnimatedObject8:: animated_object wAnimatedObject8
 wAnimatedObject9:: animated_object wAnimatedObject9
 
-wNumLoadedAnimatedObjects:: ; c5bc
+wNumLoadedAnimatedObjects::
 	ds 1
-wCurrentAnimatedObjectOAMBufferOffset:: ; c5bd
+wCurrentAnimatedObjectOAMBufferOffset::
 	ds 3
-wAnimatedObjectSpawnStateDataPointer:: ; c5c0
+wAnimatedObjectSpawnStateDataPointer::
 	ds 2
-wAnimatedObjectFramesDataPointer:: ; c5c2
+wAnimatedObjectFramesDataPointer::
 	ds 2
-wAnimatedObjectJumptablePointer:: ; c5c4
+wAnimatedObjectJumptablePointer::
 	ds 2
-wAnimatedObjectOAMDataPointer:: ; c5c6
+wAnimatedObjectOAMDataPointer::
 	ds 2
-wCurAnimatedObjectOAMAttributes:: ; c5c8
+wCurAnimatedObjectOAMAttributes::
 	ds 1
-wCurrentAnimatedObjectVTileOffset:: ; c5c9
+wCurrentAnimatedObjectVTileOffset::
 	ds 1
-wCurrentAnimatedObjectXCoord:: ; c5ca
+wCurrentAnimatedObjectXCoord::
 	ds 1
-wCurrentAnimatedObjectYCoord:: ; c5cb
+wCurrentAnimatedObjectYCoord::
 	ds 1
-wCurrentAnimatedObjectXOffset:: ; c5cc
+wCurrentAnimatedObjectXOffset::
 	ds 1
-wCurrentAnimatedObjectYOffset:: ; c5cd
+wCurrentAnimatedObjectYOffset::
 	ds 1
-wAnimatedObjectGlobalYOffset:: ; c5ce
+wAnimatedObjectGlobalYOffset::
 	ds 1
-wAnimatedObjectGlobalXOffset:: ; c5cf
+wAnimatedObjectGlobalXOffset::
 	ds 1
 wAnimatedObjectsDataEnd::
 
-wSerialEnemyMonsPatchList:: ; c5d0
+wSerialEnemyMonsPatchList::
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
 
 ; Surfing Minigame
-wSurfingMinigameData:: ; c5d0
+wSurfingMinigameData::
 	ds 1
-wSurfingMinigameRoutineNumber:: ; c5d1
+wSurfingMinigameRoutineNumber::
 	ds 1
-wc5d2:: ; c5d2
+wc5d2::
 	ds 1
-wSurfingMinigameWaveFunctionNumber:: ; c5d3
+wSurfingMinigameWaveFunctionNumber::
 	ds 2
-wc5d5:: ; c5d5
+wc5d5::
 	ds 1
-wSurfingMinigamePikachuHP:: ; c5d6
+wSurfingMinigamePikachuHP::
 	ds 2 ; little-endian BCD
-wc5d8:: ; c5d8 unused?
+wc5d8:: ; unused?
 	ds 1
-wSurfingMinigameRadnessMeter:: ; c5d9
+wSurfingMinigameRadnessMeter::
 ; number of consecutive tricks
 	ds 1
-wSurfingMinigameRadnessScore:: ; c5da
+wSurfingMinigameRadnessScore::
 	ds 2 ; little-endian BCD
-wSurfingMinigameTotalScore:: ; c5dc
+wSurfingMinigameTotalScore::
 	ds 2 ; little-endian BCD
-wc5de:: ; c5de
+wc5de::
 	ds 1
-wc5df:: ; c5df
+wc5df::
 	ds 1
-wc5e0:: ; c5e0
+wc5e0::
 	ds 1
-wc5e1:: ; c5e1
+wc5e1::
 	ds 1
-wc5e2:: ; c5e2
+wc5e2::
 	ds 1
-wSurfingMinigamePikachuSpeed:: ; c5e3
+wSurfingMinigamePikachuSpeed::
 	ds 2 ; little-endian
-wc5e5:: ; c5e5
+wc5e5::
 	ds 3 ; big-endian
-wSurfingMinigameWaveHeightBuffer:: ; c5e8
+wSurfingMinigameWaveHeightBuffer::
 	ds 2
-wSurfingMinigamePikachuObjectHeight:: ; c5ea
+wSurfingMinigamePikachuObjectHeight::
 	ds 1
-wc5eb:: ; c5eb
+wc5eb::
 	ds 1
-wc5ec:: ; c5ec
+wc5ec::
 	ds 1
-wc5ed:: ; c5ed
+wc5ed::
 	ds 1
-wc5ee:: ; c5ee
+wc5ee::
 	ds 1
-wSurfingMinigameBGMapReadBuffer:: ; c5ef
+wSurfingMinigameBGMapReadBuffer::
 	ds 16
 
 	ds 24
-wSurfingMinigameSCX:: ; c617
+wSurfingMinigameSCX::
 	ds 3
-wSurfingMinigameWaveHeight:: ; c61a
+wSurfingMinigameWaveHeight::
 	ds SCREEN_WIDTH
-wSurfingMinigameXOffset:: ; c62e
+wSurfingMinigameXOffset::
 	ds 1
-wSurfingMinigameTrickFlags:: ; c62f
+wSurfingMinigameTrickFlags::
 	ds 1
-wc630:: ; c630
+wc630::
 	ds 1
-wc631:: ; c631
+wc631::
 	ds 1
-wSurfingMinigameRoutineDelay:: ; c632
+wSurfingMinigameRoutineDelay::
 	ds 1
-wSurfingMinigameIntroAnimationFinished:: ; c633
+wSurfingMinigameIntroAnimationFinished::
 	ds 1
 
-wYellowIntroCurrentScene:: ; c634
-wc634:: ; c634
+wYellowIntroCurrentScene::
+wc634::
 	ds 1
-wYellowIntroSceneTimer:: ; c635
-wc635:: ; c635
+wYellowIntroSceneTimer::
+wc635::
 	ds 1
-wYellowIntroAnimatedObjectStructPointer:: ; c636
+wYellowIntroAnimatedObjectStructPointer::
 	ds 1
-wSurfingMinigameDataEnd:: ; c637
+wSurfingMinigameDataEnd::
 
 	ds 177
 
-wTempPic:: ; c6e8
-wPrinterData:: ; c6e8
-wOverworldMap:: ; c6e8
+wTempPic::
+wPrinterData::
+wOverworldMap::
 	; ds 1300
-wPrinterSendState:: ; c6e8
+wPrinterSendState::
 	ds 1
-wPrinterRowIndex:: ; c6e9
+wPrinterRowIndex::
 	ds 1
 
 ; Printer data header
-wPrinterDataHeader:: ; c6ea
-wc6ea:: ; c6ea
+wPrinterDataHeader::
+wc6ea::
 	ds 1
-wc6eb:: ; c6eb
+wc6eb::
 	ds 1
-wc6ec:: ; c6ec
+wc6ec::
 	ds 1
-wc6ed:: ; c6ed
+wc6ed::
 	ds 1
-wPrinterChecksum:: ; c6ee
+wPrinterChecksum::
 	dw
 
 UNION
 
-wPrinterSerialReceived:: ; c6f0
+wPrinterSerialReceived::
 	ds 1
-wPrinterStatusReceived:: ; c6f1
+wPrinterStatusReceived::
 ; bit 7: set if error 1 (battery low)
 ; bit 6: set if error 4 (too hot or cold)
 ; bit 5: set if error 3 (paper jammed or empty)
 ; if this and the previous byte are both $ff: error 2 (connection error)
 	ds 1
 
-wc6f2:: ; c6f2
+wc6f2::
 	ds 1
-wc6f3:: ; c6f3
+wc6f3::
 	ds 13
-wLYOverrides:: ; c700
+wLYOverrides::
 	ds $100
 wLYOverridesEnd::
-wLYOverridesBuffer:: ; c800
+wLYOverridesBuffer::
 	ds $100
-wLYOverridesBufferEnd:: ; c900
+wLYOverridesBufferEnd::
 
 NEXTU
 
-wPrinterSendDataSource1:: ; c6f0
+wPrinterSendDataSource1::
 ; two 20-tile buffers
 	ds $140
 wPrinterSendDataSource2::
 	ds $140
 ENDU
 
-wPrinterSendDataSource1End:: ; c970
+wPrinterSendDataSource1End::
 
-wPrinterHandshake:: ; c970
+wPrinterHandshake::
 	ds 1
-wPrinterStatusFlags:: ; c971
+wPrinterStatusFlags::
 	ds 1
-wHandshakeFrameDelay:: ; c972
+wHandshakeFrameDelay::
 	ds 1
-wPrinterSerialFrameDelay:: ; c973
+wPrinterSerialFrameDelay::
 	ds 1
-wPrinterSendByteOffset:: ; c974
+wPrinterSendByteOffset::
 	dw
-wPrinterDataSize:: ; c976
+wPrinterDataSize::
 	dw
-wPrinterTileBuffer:: ; c978
+wPrinterTileBuffer::
 	ds SCREEN_HEIGHT * SCREEN_WIDTH
-wPrinterStatusIndicator:: ; cae0
+wPrinterStatusIndicator::
 	ds 2
-wcae2:: ; cae2
+wcae2::
 	ds 1
-wPrinterSettingsTempCopy:: ; cae3
+wPrinterSettingsTempCopy::
 	ds 17
-wPrinterQueueLength:: ; caf4
+wPrinterQueueLength::
 	ds 1
-wPrinterDataEnd:: ; caf5
+wPrinterDataEnd::
 
-wPrinterPokedexEntryTextPointer:: ; caf5
+wPrinterPokedexEntryTextPointer::
 	dw
 	ds 2
-wPrinterPokedexMonIsOwned:: ; caf9
+wPrinterPokedexMonIsOwned::
 	ds 227
 
-wcbdc:: ; cbdc
+wcbdc::
 	ds 14
 
-wcbea:: ; cbea
+wcbea::
 	ds 2
 
-wcbec:: ; cbec
+wcbec::
 	ds 16
 
 wOverworldMapEnd::
 
-wRedrawRowOrColumnSrcTiles:: ; cbfc
+wRedrawRowOrColumnSrcTiles::
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
 	ds SCREEN_WIDTH * 2
 
 ; coordinates of the position of the cursor for the top menu item (id 0)
-wTopMenuItemY:: ; cc24
+wTopMenuItemY::
 	ds 1
-wTopMenuItemX:: ; cc25
+wTopMenuItemX::
 	ds 1
 
-wCurrentMenuItem:: ; cc26
+wCurrentMenuItem::
 ; the id of the currently selected menu item
 ; the top item has id 0, the one below that has id 1, etc.
 ; note that the "top item" means the top item currently visible on the screen
 ; add this value to [wListScrollOffset] to get the item's position within the list
 	ds 1
 
-wTileBehindCursor:: ; cc27
+wTileBehindCursor::
 ; the tile that was behind the menu cursor's current location
 	ds 1
 
-wMaxMenuItem:: ; cc28
+wMaxMenuItem::
 ; id of the bottom menu item
 	ds 1
 
-wMenuWatchedKeys:: ; cc29
+wMenuWatchedKeys::
 ; bit mask of keys that the menu will respond to
 	ds 1
 
-wLastMenuItem:: ; cc2a
+wLastMenuItem::
 ; id of previously selected menu item
 	ds 1
 
-wPartyAndBillsPCSavedMenuItem:: ; cc2b
+wPartyAndBillsPCSavedMenuItem::
 ; It is mainly used by the party menu to remember the cursor position while the
 ; menu isn't active.
 ; It is also used to remember the cursor position of mon lists (for the
@@ -622,105 +540,105 @@ wPartyAndBillsPCSavedMenuItem:: ; cc2b
 ; you return to the main Bill's PC menu.
 	ds 1
 
-wBagSavedMenuItem:: ; cc2c
+wBagSavedMenuItem::
 ; It is used by the bag list to remember the cursor position while the menu
 ; isn't active.
 	ds 1
 
-wBattleAndStartSavedMenuItem:: ; cc2d
+wBattleAndStartSavedMenuItem::
 ; It is used by the start menu to remember the cursor position while the menu
 ; isn't active.
 ; The battle menu uses it so that the cursor position doesn't get lost when
 ; a sub-menu is shown. It's reset at the start of each battle.
 	ds 1
 
-wPlayerMoveListIndex:: ; cc2e
+wPlayerMoveListIndex::
 	ds 1
 
-wPlayerMonNumber:: ; cc2f
+wPlayerMonNumber::
 ; index in party of currently battling mon
 	ds 1
 
-wMenuCursorLocation:: ; cc30
+wMenuCursorLocation::
 ; the address of the menu cursor's current location within wTileMap
 	ds 2
 
 	ds 2
 
-wMenuJoypadPollCount:: ; cc34
+wMenuJoypadPollCount::
 ; how many times should HandleMenuInput poll the joypad state before it returns?
 	ds 1
 
-wMenuItemToSwap:: ; cc35
+wMenuItemToSwap::
 ; id of menu item selected for swapping (counts from 1) (0 means that no menu item has been selected for swapping)
 	ds 1
 
-wListScrollOffset:: ; cc36
+wListScrollOffset::
 ; offset of the current top menu item from the beginning of the list
 ; keeps track of what section of the list is on screen
 	ds 1
 
-wMenuWatchMovingOutOfBounds:: ; cc37
+wMenuWatchMovingOutOfBounds::
 ; If non-zero, then when wrapping is disabled and the player tries to go past
 ; the top or bottom of the menu, return from HandleMenuInput. This is useful for
 ; menus that have too many items to display at once on the screen because it
 ; allows the caller to scroll the entire menu up or down when this happens.
 	ds 1
 
-wTradeCenterPointerTableIndex:: ; cc38
+wTradeCenterPointerTableIndex::
 	ds 1
 
 	ds 1
 
-wTextDest:: ; cc3a
+wTextDest::
 ; destination pointer for text output
 ; this variable is written to, but is never read from
 	ds 2
 
-wDoNotWaitForButtonPressAfterDisplayingText:: ; cc3c
+wDoNotWaitForButtonPressAfterDisplayingText::
 ; if non-zero, skip waiting for a button press after displaying text in DisplayTextID
 	ds 1
 
-wSerialSyncAndExchangeNybbleReceiveData:: ; cc3d
+wSerialSyncAndExchangeNybbleReceiveData::
 ; the final received nybble is stored here by Serial_SyncAndExchangeNybble
 
-wSerialExchangeNybbleTempReceiveData:: ; cc3d
+wSerialExchangeNybbleTempReceiveData::
 ; temporary nybble used by Serial_ExchangeNybble
 
-wLinkMenuSelectionReceiveBuffer:: ; cc3d
+wLinkMenuSelectionReceiveBuffer::
 ; two byte buffer
 ; the received menu selection is stored twice
 	ds 1
 
-wSerialExchangeNybbleReceiveData:: ; cc3e
+wSerialExchangeNybbleReceiveData::
 ; the final received nybble is stored here by Serial_ExchangeNybble
 	ds 1
 
 	ds 3
 
-wSerialExchangeNybbleSendData:: ; cc42
+wSerialExchangeNybbleSendData::
 ; this nybble is sent when using Serial_SyncAndExchangeNybble or Serial_ExchangeNybble
 
-wLinkMenuSelectionSendBuffer:: ; cc42
+wLinkMenuSelectionSendBuffer::
 ; two byte buffer
 ; the menu selection byte is stored twice before sending
 
 	ds 5
 
-wLinkTimeoutCounter:: ; cc47
+wLinkTimeoutCounter::
 ; 1 byte
 
-wUnknownSerialCounter:: ; cc47
+wUnknownSerialCounter::
 ; 2 bytes
 
-wEnteringCableClub:: ; cc47
+wEnteringCableClub::
 	ds 2
 
-wWhichTradeMonSelectionMenu:: ; cc49
+wWhichTradeMonSelectionMenu::
 ; $00 = player mons
 ; $01 = enemy mons
 
-wMonDataLocation:: ; cc49
+wMonDataLocation::
 ; 0 = player's party
 ; 1 = enemy party
 ; 2 = current box
@@ -732,112 +650,112 @@ wMonDataLocation:: ; cc49
 ; If the entire value is 0, then the player is allowed to name the mon.
 	ds 1
 
-wMenuWrappingEnabled:: ; cc4a
+wMenuWrappingEnabled::
 ; set to 1 if you can go from the bottom to the top or top to bottom of a menu
 ; set to 0 if you can't go past the top or bottom of the menu
 	ds 1
 
-wCheckFor180DegreeTurn:: ; cc4b
+wCheckFor180DegreeTurn::
 ; whether to check for 180-degree turn (0 = don't, 1 = do)
 	ds 1
 
 	ds 1
 
-wMissableObjectIndex:: ; cc4d
+wMissableObjectIndex::
 	ds 1
 
-wPredefID:: ; cc4e
+wPredefID::
 	ds 1
-wPredefRegisters:: ; cc4f
+wPredefRegisters::
 	ds 6
 
-wTrainerHeaderFlagBit:: ; cc55
+wTrainerHeaderFlagBit::
 	ds 1
 
 	ds 1
 
-wNPCMovementScriptPointerTableNum:: ; cc57
+wNPCMovementScriptPointerTableNum::
 ; which NPC movement script pointer is being used
 ; 0 if an NPC movement script is not running
 	ds 1
 
-wNPCMovementScriptBank:: ; cc58
+wNPCMovementScriptBank::
 ; ROM bank of current NPC movement script
 	ds 1
 
 	ds 2
 
-wUnusedCC5B:: ; cc5b
+wUnusedCC5B::
 
-wVermilionDockTileMapBuffer:: ; cc5b
+wVermilionDockTileMapBuffer::
 ; 180 bytes
 
-wOaksAideRewardItemName:: ; cc5b
+wOaksAideRewardItemName::
 
-wDexRatingNumMonsSeen:: ; cc5b
+wDexRatingNumMonsSeen::
 
-wFilteredBagItems:: ; cc5b
+wFilteredBagItems::
 ; List of bag items that has been filtered to a certain type of items,
 ; such as drinks or fossils.
 
-wElevatorWarpMaps:: ; cc5b
+wElevatorWarpMaps::
 
-wMonPartySpritesSavedOAM:: ; cc5b
+wMonPartySpritesSavedOAM::
 ; Saved copy of OAM for the first frame of the animation to make it easy to
 ; flip back from the second frame.
 ; $60 bytes
 
-wTrainerCardBlkPacket:: ; cc5b
+wTrainerCardBlkPacket::
 ; $40 bytes
 
-wSlotMachineSevenAndBarModeChance:: ; cc5b
+wSlotMachineSevenAndBarModeChance::
 ; If a random number greater than this value is generated, then the player is
 ; allowed to have three 7 symbols or bar symbols line up.
 ; So, this value is actually the chance of NOT entering that mode.
 ; If the slot is lucky, it equals 250, giving a 5/256 (~2%) chance.
 ; Otherwise, it equals 253, giving a 2/256 (~0.8%) chance.
 
-wHallOfFame:: ; cc5b
-wBoostExpByExpAll:: ; cc5b
-wAnimationType:: ; cc5b
+wHallOfFame::
+wBoostExpByExpAll::
+wAnimationType::
 ; values between 0-6. Shake screen horizontally, shake screen vertically, blink Pokemon...
 
-wNPCMovementDirections:: ; cc5b
+wNPCMovementDirections::
 
-wPikaPicUsedGFXCount:: ; cc5b
+wPikaPicUsedGFXCount::
 	ds 1
 
-wPikaPicUsedGFX:: ; cc5c
-wDexRatingNumMonsOwned:: ; cc5c
+wPikaPicUsedGFX::
+wDexRatingNumMonsOwned::
 	ds 1
 
 
-wDexRatingText:: ; cc5d
-wTrainerCardBadgeAttributes:: ; cc5d
+wDexRatingText::
+wTrainerCardBadgeAttributes::
 	ds 1
 
-wSlotMachineSavedROMBank:: ; cc5e
+wSlotMachineSavedROMBank::
 ; ROM back to return to when the player is done with the slot machine
 	ds 1
 
 	ds 13
-wPikaPicUsedGFXEnd:: ; cc6c
+wPikaPicUsedGFXEnd::
 	ds 13
 
-wAnimPalette:: ; cc79
+wAnimPalette::
 	ds 1
 
 	ds 29
 
-wNPCMovementDirections2:: ; cc97
+wNPCMovementDirections2::
 
-wPikaPicAnimObjectDataBufferSize:: ; cc97
+wPikaPicAnimObjectDataBufferSize::
 
-wSwitchPartyMonTempBuffer:: ; cc97
+wSwitchPartyMonTempBuffer::
 ; temporary buffer when swapping party mon data
 	ds 1
 
-wPikaPicAnimObjectDataBuffer:: ; cc98
+wPikaPicAnimObjectDataBuffer::
 ; 4 structs each of length 8
 ; 	0: buffer index
 ; 	1: script index
@@ -850,157 +768,157 @@ wPikaPicAnimObjectDataBuffer:: ; cc98
 
 	ds 9
 
-wNumStepsToTake:: ; cca1
+wNumStepsToTake::
 ; used in Pallet Town scripted movement
 	ds 23
 wPikaPicAnimObjectDataBufferEnd:: ;ccb8
 	ds 26
 
-wRLEByteCount:: ; ccd2
+wRLEByteCount::
 	ds 1
 
-wAddedToParty:: ; ccd3
+wAddedToParty::
 ; 0 = not added
 ; 1 = added
 
-wSimulatedJoypadStatesEnd:: ; ccd3
+wSimulatedJoypadStatesEnd::
 ; this is the end of the joypad states
 ; the list starts above this address and extends downwards in memory until here
 ; overloaded with below labels
 
-wParentMenuItem:: ; ccd3
+wParentMenuItem::
 
-wCanEvolveFlags:: ; ccd3
+wCanEvolveFlags::
 ; 1 flag for each party member indicating whether it can evolve
 ; The purpose of these flags is to track which mons levelled up during the
 ; current battle at the end of the battle when evolution occurs.
 ; Other methods of evolution simply set it by calling TryEvolvingMon.
 	ds 1
 
-wForceEvolution:: ; ccd4
+wForceEvolution::
 	ds 1
 
-; if [ccd5] != 1, the second AI layer is not applied
-wAILayer2Encouragement:: ; ccd5
+; if [wAILayer2Encouragement] != 1, the second AI layer is not applied
+wAILayer2Encouragement::
 	ds 1
 	ds 1
 
 ; current HP of player and enemy substitutes
-wPlayerSubstituteHP:: ; ccd7
+wPlayerSubstituteHP::
 	ds 1
-wEnemySubstituteHP:: ; ccd8
+wEnemySubstituteHP::
 	ds 1
 
-wTestBattlePlayerSelectedMove:: ; ccd9
+wTestBattlePlayerSelectedMove::
 ; The player's selected move during a test battle.
 ; InitBattleVariables sets it to the move Pound.
 	ds 1
 
 	ds 1
 
-wMoveMenuType:: ; ccdb
+wMoveMenuType::
 ; 0=regular, 1=mimic, 2=above message box (relearn, heal pp..)
 	ds 1
 
-wPlayerSelectedMove:: ; ccdc
+wPlayerSelectedMove::
 	ds 1
-wEnemySelectedMove:: ; ccdd
-	ds 1
-
-wLinkBattleRandomNumberListIndex:: ; ccde
+wEnemySelectedMove::
 	ds 1
 
-wAICount:: ; ccdf
+wLinkBattleRandomNumberListIndex::
+	ds 1
+
+wAICount::
 ; number of times remaining that AI action can occur
 	ds 1
 
 	ds 2
 
-wEnemyMoveListIndex:: ; cce2
+wEnemyMoveListIndex::
 	ds 1
 
-wLastSwitchInEnemyMonHP:: ; cce3
+wLastSwitchInEnemyMonHP::
 ; The enemy mon's HP when it was switched in or when the current player mon
 ; was switched in, which was more recent.
 ; It's used to determine the message to print when switching out the player mon.
 	ds 2
 
-wTotalPayDayMoney:: ; cce5
+wTotalPayDayMoney::
 ; total amount of money made using Pay Day during the current battle
 	ds 3
 
-wSafariEscapeFactor:: ; cce8
+wSafariEscapeFactor::
 	ds 1
-wSafariBaitFactor:: ; cce9
+wSafariBaitFactor::
 	ds 1;
 
 	ds 1
 
-wTransformedEnemyMonOriginalDVs:: ; cceb
+wTransformedEnemyMonOriginalDVs::
 	ds 2
 
-wMonIsDisobedient:: ds 1 ; cced
+wMonIsDisobedient:: ds 1
 
-wPlayerDisabledMoveNumber:: ds 1 ; ccee
-wEnemyDisabledMoveNumber:: ds 1 ; ccef
+wPlayerDisabledMoveNumber:: ds 1
+wEnemyDisabledMoveNumber:: ds 1
 
-wInHandlePlayerMonFainted:: ; ccf0
+wInHandlePlayerMonFainted::
 ; When running in the scope of HandlePlayerMonFainted, it equals 1.
 ; When running in the scope of HandleEnemyMonFainted, it equals 0.
 	ds 1
 
-wPlayerUsedMove:: ds 1 ; ccf1
-wEnemyUsedMove:: ds 1 ; ccf2
+wPlayerUsedMove:: ds 1
+wEnemyUsedMove:: ds 1
 
-wEnemyMonMinimized:: ds 1 ; ccf3
+wEnemyMonMinimized:: ds 1
 
-wMoveDidntMiss:: ds 1 ; ccf4
+wMoveDidntMiss:: ds 1
 
-wPartyFoughtCurrentEnemyFlags:: ; ccf5
+wPartyFoughtCurrentEnemyFlags::
 ; flags that indicate which party members have fought the current enemy mon
 	flag_array 6
 
-wLowHealthAlarmDisabled:: ; ccf6
+wLowHealthAlarmDisabled::
 ; Whether the low health alarm has been disabled due to the player winning the
 ; battle.
 	ds 1
 
-wPlayerMonMinimized:: ; ccf7
+wPlayerMonMinimized::
 	ds 1
 
 	ds 13
 
-wLuckySlotHiddenObjectIndex:: ; cd05
+wLuckySlotHiddenObjectIndex::
 
-wEnemyNumHits:: ; cd05
+wEnemyNumHits::
 ; number of hits by enemy in attacks like Double Slap, etc.
 
-wEnemyBideAccumulatedDamage:: ; cd05
+wEnemyBideAccumulatedDamage::
 ; the amount of damage accumulated by the enemy while biding (2 bytes)
 
 	ds 10
 
-wInGameTradeGiveMonSpecies:: ; cd0f
+wInGameTradeGiveMonSpecies::
 
-wPlayerMonUnmodifiedLevel:: ; cd0f
+wPlayerMonUnmodifiedLevel::
 	ds 1
 
-wInGameTradeTextPointerTablePointer:: ; cd10
+wInGameTradeTextPointerTablePointer::
 
-wPlayerMonUnmodifiedMaxHP:: ; cd10
+wPlayerMonUnmodifiedMaxHP::
 	ds 2
 
-wInGameTradeTextPointerTableIndex:: ; cd12
+wInGameTradeTextPointerTableIndex::
 
-wPlayerMonUnmodifiedAttack:: ; cd12
+wPlayerMonUnmodifiedAttack::
 	ds 1
-wInGameTradeGiveMonName:: ; cd13
+wInGameTradeGiveMonName::
 	ds 1
-wPlayerMonUnmodifiedDefense:: ; cd14
+wPlayerMonUnmodifiedDefense::
 	ds 2
-wPlayerMonUnmodifiedSpeed:: ; cd16
+wPlayerMonUnmodifiedSpeed::
 	ds 2
-wPlayerMonUnmodifiedSpecial:: ; cd18
+wPlayerMonUnmodifiedSpecial::
 	ds 2
 
 ; stat modifiers for the player's current pokemon
@@ -1008,44 +926,44 @@ wPlayerMonUnmodifiedSpecial:: ; cd18
 ; 7 is normal
 
 wPlayerMonStatMods::
-wPlayerMonAttackMod:: ; cd1a
+wPlayerMonAttackMod::
 	ds 1
-wPlayerMonDefenseMod:: ; cd1b
+wPlayerMonDefenseMod::
 	ds 1
-wPlayerMonSpeedMod:: ; cd1c
+wPlayerMonSpeedMod::
 	ds 1
-wPlayerMonSpecialMod:: ; cd1d
+wPlayerMonSpecialMod::
 	ds 1
 
-wInGameTradeReceiveMonName:: ; cd1e
+wInGameTradeReceiveMonName::
 
-wPlayerMonAccuracyMod:: ; cd1e
+wPlayerMonAccuracyMod::
 	ds 1
-wPlayerMonEvasionMod:: ; cd1f
+wPlayerMonEvasionMod::
 	ds 1
 
 	ds 3
 
-wEnemyMonUnmodifiedLevel:: ; cd23
+wEnemyMonUnmodifiedLevel::
 	ds 1
-wEnemyMonUnmodifiedMaxHP:: ; cd24
+wEnemyMonUnmodifiedMaxHP::
 	ds 2
-wEnemyMonUnmodifiedAttack:: ; cd26
+wEnemyMonUnmodifiedAttack::
 	ds 2
-wEnemyMonUnmodifiedDefense:: ; cd28
+wEnemyMonUnmodifiedDefense::
 	ds 1
 
-wInGameTradeMonNick:: ; cd29
+wInGameTradeMonNick::
 	ds 1
 
-wEnemyMonUnmodifiedSpeed:: ; cd2a
+wEnemyMonUnmodifiedSpeed::
 	ds 2
-wEnemyMonUnmodifiedSpecial:: ; cd2c
+wEnemyMonUnmodifiedSpecial::
 	ds 1
 
-wEngagedTrainerClass:: ; cd2d
+wEngagedTrainerClass::
 	ds 1
-wEngagedTrainerSet:: ; cd2e
+wEngagedTrainerSet::
 ;	ds 1
 
 ; stat modifiers for the enemy's current pokemon
@@ -1053,328 +971,328 @@ wEngagedTrainerSet:: ; cd2e
 ; 7 is normal
 
 wEnemyMonStatMods::
-wEnemyMonAttackMod:: ; cd2e
+wEnemyMonAttackMod::
 	ds 1
-wEnemyMonDefenseMod:: ; cd2f
+wEnemyMonDefenseMod::
 	ds 1
-wEnemyMonSpeedMod:: ; cd30
+wEnemyMonSpeedMod::
 	ds 1
-wEnemyMonSpecialMod:: ; cd31
+wEnemyMonSpecialMod::
 	ds 1
-wEnemyMonAccuracyMod:: ; cd32
+wEnemyMonAccuracyMod::
 	ds 1
-wEnemyMonEvasionMod:: ; cd33
+wEnemyMonEvasionMod::
 	ds 1
 
-wInGameTradeReceiveMonSpecies:: ; cd34
+wInGameTradeReceiveMonSpecies::
 	ds 1
 
 	ds 2
 
-wNPCMovementDirections2Index:: ; cd37
+wNPCMovementDirections2Index::
 
-wUnusedCD37:: ; cd37
+wUnusedCD37::
 
-wFilteredBagItemsCount:: ; cd37
+wFilteredBagItemsCount::
 ; number of items in wFilteredBagItems list
 	ds 1
 
-wSimulatedJoypadStatesIndex:: ; cd38
+wSimulatedJoypadStatesIndex::
 ; the next simulated joypad state is at wSimulatedJoypadStatesEnd plus this value minus 1
 ; 0 if the joypad state is not being simulated
 	ds 1
 
-wWastedByteCD39:: ; cd39
+wWastedByteCD39::
 ; written to but nothing ever reads it
 	ds 1
 
-wWastedByteCD3A:: ; cd3a
+wWastedByteCD3A::
 ; written to but nothing ever reads it
 	ds 1
 
-wOverrideSimulatedJoypadStatesMask:: ; cd3b
+wOverrideSimulatedJoypadStatesMask::
 ; mask indicating which real button presses can override simulated ones
 ; XXX is it ever not 0?
 	ds 1
 
 	ds 1
 
-wFallingObjectsMovementData:: ; cd3d
+wFallingObjectsMovementData::
 ; up to 20 bytes (one byte for each falling object)
 
-wSavedY:: ; cd3d
+wSavedY::
 
-wTempSCX:: ; cd3d
+wTempSCX::
 
-wBattleTransitionCircleScreenQuadrantY:: ; cd3d
+wBattleTransitionCircleScreenQuadrantY::
 ; 0 = upper half (Y < 9)
 ; 1 = lower half (Y >= 9)
 
-wBattleTransitionCopyTilesOffset:: ; cd3d
+wBattleTransitionCopyTilesOffset::
 ; 2 bytes
 ; after 1 row/column has been copied, the offset to the next one to copy from
 
-wInwardSpiralUpdateScreenCounter:: ; cd3d
+wInwardSpiralUpdateScreenCounter::
 ; counts down from 7 so that every time 7 more tiles of the spiral have been
 ; placed, the tile map buffer is copied to VRAM so that progress is visible
 
-wHoFTeamIndex:: ; cd3d
+wHoFTeamIndex::
 
-wSSAnneSmokeDriftAmount:: ; cd3d
+wSSAnneSmokeDriftAmount::
 ; multiplied by 16 to get the number of times to go right by 2 pixels
 
-wRivalStarterTemp:: ; cd3d
+wRivalStarterTemp::
 
-wBoxMonCounts:: ; cd3d
+wBoxMonCounts::
 ; 12 bytes
 ; array of the number of mons in each box
 
-wDexMaxSeenMon:: ; cd3d
+wDexMaxSeenMon::
 
-wPPRestoreItem:: ; cd3d
+wPPRestoreItem::
 
-wWereAnyMonsAsleep:: ; cd3d
+wWereAnyMonsAsleep::
 
-wCanPlaySlots:: ; cd3d
+wCanPlaySlots::
 
-wNumShakes:: ; cd3d
+wNumShakes::
 
-wDayCareStartLevel:: ; cd3d
+wDayCareStartLevel::
 ; the level of the mon at the time it entered day care
 
-wWhichBadge:: ; cd3d
+wWhichBadge::
 
-wPriceTemp:: ; cd3d
+wPriceTemp::
 ; 3-byte BCD number
 
-wTitleScreenScene:: ; cd3d
+wTitleScreenScene::
 
-wPlayerCharacterOAMTile:: ; cd3d
+wPlayerCharacterOAMTile::
 
-wMoveDownSmallStarsOAMCount:: ; cd3d
+wMoveDownSmallStarsOAMCount::
 ; the number of small stars OAM entries to move down
 
-wChargeMoveNum:: ; cd3d
+wChargeMoveNum::
 
-wCoordIndex:: ; cd3d
+wCoordIndex::
 
-wOptionsTextSpeedCursorX:: ; cd3d
+wOptionsTextSpeedCursorX::
 
-wOptionsCursorLocation:: ; cd3d
+wOptionsCursorLocation::
 
-wTrainerInfoTextBoxWidthPlus1:: ; cd3d
+wTrainerInfoTextBoxWidthPlus1::
 
-wSwappedMenuItem:: ; cd3d
+wSwappedMenuItem::
 
-wHoFMonSpecies:: ; cd3d
+wHoFMonSpecies::
 
-wFieldMoves:: ; cd3d
+wFieldMoves::
 ; 4 bytes
 ; the current mon's field moves
 
-wBadgeNumberTile:: ; cd3d
+wBadgeNumberTile::
 ; tile ID of the badge number being drawn
 
-wRodResponse:: ; cd3d
+wRodResponse::
 ; 0 = no bite
 ; 1 = bite
 ; 2 = no fish on map
 
-wWhichTownMapLocation:: ; cd3d
+wWhichTownMapLocation::
 
-wStoppingWhichSlotMachineWheel:: ; cd3d
+wStoppingWhichSlotMachineWheel::
 ; which wheel the player is trying to stop
 ; 0 = none, 1 = wheel 1, 2 = wheel 2, 3 or greater = wheel 3
 
-wTradedPlayerMonSpecies:: ; cd3d
+wTradedPlayerMonSpecies::
 
-wTradingWhichPlayerMon:: ; cd3d
+wTradingWhichPlayerMon::
 
-wChangeBoxSavedMapTextPointer:: ; cd3d
+wChangeBoxSavedMapTextPointer::
 
-wFlyAnimUsingCoordList:: ; cd3d
+wFlyAnimUsingCoordList::
 
-wPlayerSpinInPlaceAnimFrameDelay:: ; cd3d
+wPlayerSpinInPlaceAnimFrameDelay::
 
-wPlayerSpinWhileMovingUpOrDownAnimDeltaY:: ; cd3d
+wPlayerSpinWhileMovingUpOrDownAnimDeltaY::
 
-wBoxNumString:: ; cd3d
+wBoxNumString::
 
-wHiddenObjectFunctionArgument:: ; cd3d
+wHiddenObjectFunctionArgument::
 
-wWhichTrade:: ; cd3d
+wWhichTrade::
 ; which entry from TradeMons to select
 
-wTrainerSpriteOffset:: ; cd3d
+wTrainerSpriteOffset::
 
-wUnusedCD3D:: ; cd3d
+wUnusedCD3D::
 	ds 1
 
-wTitleScreenTimer:: ; cd3e
+wTitleScreenTimer::
 
-wHUDPokeballGfxOffsetX:: ; cd3e
+wHUDPokeballGfxOffsetX::
 ; difference in X between the next ball and the current one
 
-wBattleTransitionCircleScreenQuadrantX:: ; cd3e
+wBattleTransitionCircleScreenQuadrantX::
 ; 0 = left half (X < 10)
 ; 1 = right half (X >= 10)
 
-wSSAnneSmokeX:: ; cd3e
+wSSAnneSmokeX::
 
-wRivalStarterBallSpriteIndex:: ; cd3e
+wRivalStarterBallSpriteIndex::
 
-wDayCareNumLevelsGrown:: ; cd3e
+wDayCareNumLevelsGrown::
 
-wOptionsBattleAnimCursorX:: ; cd3e
+wOptionsBattleAnimCursorX::
 
-wTrainerInfoTextBoxWidth:: ; cd3e
+wTrainerInfoTextBoxWidth::
 
-wHoFPartyMonIndex:: ; cd3e
+wHoFPartyMonIndex::
 
-wNumCreditsMonsDisplayed:: ; cd3e
+wNumCreditsMonsDisplayed::
 ; the number of credits mons that have been displayed so far
 
-wBadgeNameTile:: ; cd3e
+wBadgeNameTile::
 ; first tile ID of the name being drawn
 
-wFlyLocationsList:: ; cd3e
-; 11 bytes plus $ff sentinel values at each end
+wFlyLocationsList::
+; NUM_CITY_MAPS bytes plus $ff sentinel values at each end
 
-wSlotMachineWheel1Offset:: ; cd3e
+wSlotMachineWheel1Offset::
 
-wTradedEnemyMonSpecies:: ; cd3e
+wTradedEnemyMonSpecies::
 
-wTradingWhichEnemyMon:: ; cd3e
+wTradingWhichEnemyMon::
 
-wFlyAnimCounter:: ; cd3e
+wFlyAnimCounter::
 
-wPlayerSpinInPlaceAnimFrameDelayDelta:: ; cd3e
+wPlayerSpinInPlaceAnimFrameDelayDelta::
 
-wPlayerSpinWhileMovingUpOrDownAnimMaxY:: ; cd3e
+wPlayerSpinWhileMovingUpOrDownAnimMaxY::
 
-wHiddenObjectFunctionRomBank:: ; cd3e
+wHiddenObjectFunctionRomBank::
 
-wTrainerEngageDistance:: ; cd3e
+wTrainerEngageDistance::
 
-wJigglypuffFacingDirections2:: ; cd3e
+wJigglypuffFacingDirections2::
 	ds 1
 
-wHUDGraphicsTiles:: ; cd3f
+wHUDGraphicsTiles::
 ; 3 bytes
 
-wDayCareTotalCost:: ; cd3f
+wDayCareTotalCost::
 ; 2-byte BCD number
 
-wJigglypuffFacingDirections:: ; cd3f
+wJigglypuffFacingDirections::
 
-wOptionsBattleStyleCursorX:: ; cd3f
+wOptionsBattleStyleCursorX::
 
-wTrainerInfoTextBoxNextRowOffset:: ; cd3f
+wTrainerInfoTextBoxNextRowOffset::
 
-wHoFMonLevel:: ; cd3f
+wHoFMonLevel::
 
-wBadgeOrFaceTiles:: ; cd3f
+wBadgeOrFaceTiles::
 ; 8 bytes
 ; a list of the first tile IDs of each badge or face (depending on whether the
 ; badge is owned) to be drawn on the trainer screen
 
-wSlotMachineWheel2Offset:: ; cd3f
+wSlotMachineWheel2Offset::
 
-wNameOfPlayerMonToBeTraded:: ; cd3f
+wNameOfPlayerMonToBeTraded::
 
-wFlyAnimBirdSpriteImageIndex:: ; cd3f
+wFlyAnimBirdSpriteImageIndex::
 
-wPlayerSpinInPlaceAnimFrameDelayEndValue:: ; cd3f
+wPlayerSpinInPlaceAnimFrameDelayEndValue::
 
-wPlayerSpinWhileMovingUpOrDownAnimFrameDelay:: ; cd3f
+wPlayerSpinWhileMovingUpOrDownAnimFrameDelay::
 
-wHiddenObjectIndex:: ; cd3f
+wHiddenObjectIndex::
 
-wTrainerFacingDirection:: ; cd3f
+wTrainerFacingDirection::
 
 	ds 1
 
-wHoFMonOrPlayer:: ; cd40
+wHoFMonOrPlayer::
 ; show mon or show player?
 ; 0 = mon
 ; 1 = player
 
-wSlotMachineWheel3Offset:: ; cd40
+wSlotMachineWheel3Offset::
 
-wPlayerSpinInPlaceAnimSoundID:: ; cd40
+wPlayerSpinInPlaceAnimSoundID::
 
-wHiddenObjectY:: ; cd40
+wHiddenObjectY::
 
-wTrainerScreenY:: ; cd40
+wTrainerScreenY::
 
-wUnusedCD40:: ; cd40
+wOptionsCancelCursorX::
 	ds 1
 
-wDayCarePerLevelCost:: ; cd41
-; 2-byte BCD number (always set to $0100)
+wDayCarePerLevelCost::
+; 2-byte BCD number (always set to $100)
 
-wHoFTeamIndex2:: ; cd41
+wHoFTeamIndex2::
 
-wHiddenItemOrCoinsIndex:: ; cd41
+wHiddenItemOrCoinsIndex::
 
-wTradedPlayerMonOT:: ; cd41
+wTradedPlayerMonOT::
 
-wHiddenObjectX:: ; cd41
+wHiddenObjectX::
 
-wSlotMachineWinningSymbol:: ; cd41
+wSlotMachineWinningSymbol::
 ; the OAM tile number of the upper left corner of the winning symbol minus 2
 
-wNumFieldMoves:: ; cd41
+wNumFieldMoves::
 
-wSlotMachineWheel1BottomTile:: ; cd41
+wSlotMachineWheel1BottomTile::
 
-wTrainerScreenX:: ; cd41
+wTrainerScreenX::
 	ds 1
 ; a lot of the uses for these values use more than the said address
 
-wHoFTeamNo:: ; cd42
+wHoFTeamNo::
 
-wSlotMachineWheel1MiddleTile:: ; cd42
+wSlotMachineWheel1MiddleTile::
 
-wFieldMovesLeftmostXCoord:: ; cd42
+wFieldMovesLeftmostXCoord::
 
-wcd42:: ; cd42
+wcd42::
 	ds 1
 
-wLastFieldMoveID:: ; cd43
+wLastFieldMoveID::
 ; unused
 
-wSlotMachineWheel1TopTile:: ; cd43
+wSlotMachineWheel1TopTile::
 	ds 1
 
-wSlotMachineWheel2BottomTile:: ; cd44
+wSlotMachineWheel2BottomTile::
 	ds 1
 
-wSlotMachineWheel2MiddleTile:: ; cd45
+wSlotMachineWheel2MiddleTile::
 	ds 1
 
-wTempCoins1:: ; cd46
+wTempCoins1::
 ; 2 bytes
 ; temporary variable used to add payout amount to the player's coins
 
-wSlotMachineWheel2TopTile:: ; cd46
+wSlotMachineWheel2TopTile::
 	ds 1
 
-wBattleTransitionSpiralDirection:: ; cd47
+wBattleTransitionSpiralDirection::
 ; 0 = outward, 1 = inward
 
-wSlotMachineWheel3BottomTile:: ; cd47
+wSlotMachineWheel3BottomTile::
 	ds 1
 
-wSlotMachineWheel3MiddleTile:: ; cd48
+wSlotMachineWheel3MiddleTile::
 
-wFacingDirectionList:: ; cd48
-; 4 bytes (also, the byte before the start of the list (cd47) is used a temp
-;          variable when the list is rotated)
+wFacingDirectionList::
+; 4 bytes (also, the byte before the start of the list (wSlotMachineWheel3BottomTile)
+;          is used a temp variable when the list is rotated)
 ; used when spinning the player's sprite
 	ds 1
 
-wSlotMachineWheel3TopTile:: ; cd49
+wSlotMachineWheel3TopTile::
 
 wTempObtainedBadgesBooleans::
 ; 8 bytes
@@ -1382,85 +1300,85 @@ wTempObtainedBadgesBooleans::
 ; one byte for each badge; 0 = not obtained, 1 = obtained
 	ds 1
 
-wTempCoins2:: ; cd4a
+wTempCoins2::
 ; 2 bytes
 ; temporary variable used to subtract the bet amount from the player's coins
 
-wPayoutCoins:: ; cd4a
+wPayoutCoins::
 ; 2 bytes
 	ds 2
 
-wTradedPlayerMonOTID:: ; cd4c
+wTradedPlayerMonOTID::
 
-wSlotMachineFlags:: ; cd4c
+wSlotMachineFlags::
 ; These flags are set randomly and control when the wheels stop.
 ; bit 6: allow the player to win in general
 ; bit 7: allow the player to win with 7 or bar (plus the effect of bit 6)
 	ds 1
 
-wSlotMachineWheel1SlipCounter:: ; cd4d
+wSlotMachineWheel1SlipCounter::
 ; wheel 1 can "slip" while this is non-zero
 
-wCutTile:: ; cd4d
+wCutTile::
 ; $3d = tree tile
 ; $52 = grass tile
 	ds 1
 
-wSlotMachineWheel2SlipCounter:: ; cd4e
+wSlotMachineWheel2SlipCounter::
 ; wheel 2 can "slip" while this is non-zero
 
-wTradedEnemyMonOT:: ; cd4e
+wTradedEnemyMonOT::
 	ds 1
 
-wSavedPlayerScreenY:: ; cd4f
+wSavedPlayerScreenY::
 
-wSlotMachineRerollCounter:: ; cd4f
+wSlotMachineRerollCounter::
 ; The remaining number of times wheel 3 will roll down a symbol until a match is
 ; found, when winning is enabled. It's initialized to 4 each bet.
 
-wEmotionBubbleSpriteIndex:: ; cd4f
+wEmotionBubbleSpriteIndex::
 ; the index of the sprite the emotion bubble is to be displayed above
 	ds 1
 
-wWhichEmotionBubble:: ; cd50
+wWhichEmotionBubble::
 
-wSlotMachineBet:: ; cd50
+wSlotMachineBet::
 ; how many coins the player bet on the slot machine (1 to 3)
 
-wSavedPlayerFacingDirection:: ; cd50
+wSavedPlayerFacingDirection::
 
-wWhichAnimationOffsets:: ; cd50
+wWhichAnimationOffsets::
 ; 0 = cut animation, 1 = boulder dust animation
 	ds 9
 
-wTradedEnemyMonOTID:: ; cd59
+wTradedEnemyMonOTID::
 	ds 2
 
-wStandingOnWarpPadOrHole:: ; cd5b
+wStandingOnWarpPadOrHole::
 ; 0 = neither
 ; 1 = warp pad
 ; 2 = hole
 
-wOAMBaseTile:: ; cd5b
+wOAMBaseTile::
 
-wGymTrashCanIndex:: ; cd5b
+wGymTrashCanIndex::
 	ds 1
 
-wSymmetricSpriteOAMAttributes:: ; cd5c
+wSymmetricSpriteOAMAttributes::
 	ds 1
 
-wMonPartySpriteSpecies:: ; cd5d
+wMonPartySpriteSpecies::
 	ds 1
 
-wLeftGBMonSpecies:: ; cd5e
+wLeftGBMonSpecies::
 ; in the trade animation, the mon that leaves the left gameboy
 	ds 1
 
-wRightGBMonSpecies:: ; cd5f
+wRightGBMonSpecies::
 ; in the trade animation, the mon that leaves the right gameboy
 	ds 1
 
-wFlags_0xcd60:: ; cd60
+wFlags_0xcd60::
 ; bit 0: is player engaged by trainer (to avoid being engaged by multiple trainers simultaneously)
 ; bit 1: boulder dust animation (from using Strength) pending
 ; bit 3: using generic PC
@@ -1470,7 +1388,7 @@ wFlags_0xcd60:: ; cd60
 
 	ds 9
 
-wActionResultOrTookBattleTurn:: ; cd6a
+wActionResultOrTookBattleTurn::
 ; This has overlapping related uses.
 ; When the player tries to use an item or use certain field moves, 0 is stored
 ; when the attempt fails and 1 is stored when the attempt succeeds.
@@ -1482,16 +1400,16 @@ wActionResultOrTookBattleTurn:: ; cd6a
 ; and the player is not allowed to make a move and the two uses are compatible.
 	ds 1
 
-wJoyIgnore:: ; cd6b
+wJoyIgnore::
 ; Set buttons are ignored.
 	ds 1
 
-wDownscaledMonSize:: ; cd6c
+wDownscaledMonSize::
 ; size of downscaled mon pic used in pokeball entering/exiting animation
 ; $00 = 5×5
 ; $01 = 3×3
 
-wNumMovesMinusOne:: ; cd6c
+wNumMovesMinusOne::
 ; FormatMovesString stores the number of moves minus one here
 	ds 1
 
@@ -1499,13 +1417,13 @@ UNION
 
 wcd6d:: ds 4 ; buffer for various data
 
-wStatusScreenCurrentPP:: ; cd71
+wStatusScreenCurrentPP::
 ; temp variable used to print a move's current PP on the status screen
 	ds 1
 
 	ds 6
 
-wNormalMaxPPList:: ; cd78
+wNormalMaxPPList::
 ; list of normal max PP (without PP up) values
 	ds 9
 
@@ -1516,268 +1434,268 @@ wEvosMoves:: ds MAX_EVOLUTIONS * EVOLUTION_SIZE + 1
 
 ENDU
 
-wSerialOtherGameboyRandomNumberListBlock:: ; cd81
+wSerialOtherGameboyRandomNumberListBlock::
 ; buffer for transferring the random number list generated by the other gameboy
 
-wTileMapBackup2:: ; cd81
+wTileMapBackup2::
 ; second buffer for temporarily saving and restoring current screen's tiles (e.g. if menus are drawn on top)
 	ds 20 * 18
 
-wNamingScreenNameLength:: ; cee9
+wNamingScreenNameLength::
 
-wEvoOldSpecies:: ; cee9
+wEvoOldSpecies::
 
-wBuffer:: ; cee9
+wBuffer::
 ; Temporary storage area of 30 bytes.
 
-wTownMapCoords:: ; cee9
+wTownMapCoords::
 ; lower nybble is x, upper nybble is y
 
-wLearningMovesFromDayCare:: ; cee9
+wLearningMovesFromDayCare::
 ; whether WriteMonMoves is being used to make a mon learn moves from day care
 ; non-zero if so
 
-wChangeMonPicEnemyTurnSpecies:: ; cee9
+wChangeMonPicEnemyTurnSpecies::
 
-wHPBarMaxHP:: ; cee9
+wHPBarMaxHP::
 	ds 1
 
-wNamingScreenSubmitName:: ; ceea
+wNamingScreenSubmitName::
 ; non-zero when the player has chosen to submit the name
 
-wChangeMonPicPlayerTurnSpecies:: ; ceea
+wChangeMonPicPlayerTurnSpecies::
 
-wEvoNewSpecies:: ; ceea
+wEvoNewSpecies::
 	ds 1
 
-wAlphabetCase:: ; ceeb
+wAlphabetCase::
 ; 0 = upper case
 ; 1 = lower case
 
-wEvoMonTileOffset:: ; ceeb
+wEvoMonTileOffset::
 
-wHPBarOldHP:: ; ceeb
+wHPBarOldHP::
 	ds 1
 
-wEvoCancelled:: ; ceec
+wEvoCancelled::
 	ds 1
 
-wNamingScreenLetter:: ; ceed
+wNamingScreenLetter::
 
-wHPBarNewHP:: ; ceed
+wHPBarNewHP::
 	ds 2
-wHPBarDelta:: ; ceef
+wHPBarDelta::
 	ds 1
 
-wHPBarTempHP:: ; cef0
+wHPBarTempHP::
 	ds 2
 
 	ds 11
 
-wHPBarHPDifference:: ; cefd
+wHPBarHPDifference::
 	ds 1
 	ds 7
 
-wAIItem:: ; cf05
+wAIItem::
 ; the item that the AI used
 	ds 1
 
-wUsedItemOnWhichPokemon:: ; cf06
+wUsedItemOnWhichPokemon::
 	ds 1
 
-wAnimSoundID:: ; cf07
+wAnimSoundID::
 ; sound ID during battle animations
 	ds 1
 
-wBankswitchHomeSavedROMBank:: ; cf08
+wBankswitchHomeSavedROMBank::
 ; used as a storage value for the bank to return to after a BankswitchHome (bankswitch in homebank)
 	ds 1
 
-wBankswitchHomeTemp:: ; cf09
+wBankswitchHomeTemp::
 ; used as a temp storage value for the bank to switch to
 	ds 1
 
-wBoughtOrSoldItemInMart:: ; cf0a
+wBoughtOrSoldItemInMart::
 ; 0 = nothing bought or sold in pokemart
 ; 1 = bought or sold something in pokemart
 ; this value is not used for anything
 	ds 1
 
-wBattleResult:: ; cf0b
+wBattleResult::
 ; $00 - win
 ; $01 - lose
 ; $02 - draw
 	ds 1
 
-wAutoTextBoxDrawingControl:: ; cf0c
+wAutoTextBoxDrawingControl::
 ; bit 0: if set, DisplayTextID automatically draws a text box
 	ds 1
 
 wcf0d:: ds 1 ; used with some overworld scripts (not exactly sure what it's used for)
 
-wTilePlayerStandingOn:: ; cf0e
+wTilePlayerStandingOn::
 ; used in CheckForTilePairCollisions2 to store the tile the player is on
 	ds 1
 
-wNPCNumScriptedSteps:: ds 1 ; cf0f
+wNPCNumScriptedSteps:: ds 1
 
-wNPCMovementScriptFunctionNum:: ; cf10
+wNPCMovementScriptFunctionNum::
 ; which script function within the pointer table indicated by
 ; wNPCMovementScriptPointerTableNum
 	ds 1
 
-wTextPredefFlag:: ; cf11
+wTextPredefFlag::
 ; bit 0: set when printing a text predef so that DisplayTextID doesn't switch
 ;        to the current map's bank
 	ds 1
 
-wPredefParentBank:: ; cf12
+wPredefParentBank::
 	ds 1
 
-wSpriteIndex:: ds 1 ; cf13
+wSpriteIndex:: ds 1
 
-wCurSpriteMovement2:: ; cf14
+wCurSpriteMovement2::
 ; movement byte 2 of current sprite
 	ds 1
 
 	ds 2
 
-wNPCMovementScriptSpriteOffset:: ; cf17
+wNPCMovementScriptSpriteOffset::
 ; sprite offset of sprite being controlled by NPC movement script
 	ds 1
 
-wScriptedNPCWalkCounter:: ; cf18
+wScriptedNPCWalkCounter::
 	ds 1
 
 	ds 1
 
-wOnSGB:: ; cf1a
+wOnSGB::
 ; if running on SGB, it's 1, else it's 0
 	ds 1
 
-wDefaultPaletteCommand:: ; cf1b
+wDefaultPaletteCommand::
 	ds 1
 
-wPlayerHPBarColor:: ; cf1c
+wPlayerHPBarColor::
 
-wWholeScreenPaletteMonSpecies:: ; cf1c
+wWholeScreenPaletteMonSpecies::
 ; species of the mon whose palette is used for the whole screen
 	ds 1
 
-wEnemyHPBarColor:: ; cf1d
+wEnemyHPBarColor::
 	ds 1
 
 ; 0: green
 ; 1: yellow
 ; 2: red
-wPartyMenuHPBarColors:: ; cf1e
+wPartyMenuHPBarColors::
 	ds 6
 
-wStatusScreenHPBarColor:: ; cf25
+wStatusScreenHPBarColor::
 	ds 1
 
 	ds 7
 
-wCopyingSGBTileData:: ; cf2d
+wCopyingSGBTileData::
 
-wWhichPartyMenuHPBar:: ; cf2d
+wWhichPartyMenuHPBar::
 
-wPalPacket:: ; cf2d
+wPalPacket::
 	ds 1
 
-wPartyMenuBlkPacket:: ; cf2e
+wPartyMenuBlkPacket::
 ; $30 bytes
 	ds 9
-wPartyHPBarAttributes:: ; cf36
+wPartyHPBarAttributes::
 	ds 20
 
-wExpAmountGained:: ; cf4a
+wExpAmountGained::
 ; 2-byte big-endian number
 ; the total amount of exp a mon gained
 
 wcf4b:: ds 2 ; storage buffer for various strings
 
-wGainBoostedExp:: ; cf4c
+wGainBoostedExp::
 	ds 1
 
 	ds 17
 
-wGymCityName:: ; cf5e
+wGymCityName::
 	ds 17
 
-wGymLeaderName:: ; cf6f
+wGymLeaderName::
 	ds NAME_LENGTH
 
-wItemList:: ; cf7a
+wItemList::
 	ds 16
 
-wListPointer:: ; cf8a
+wListPointer::
 	ds 2
 
-wUnusedCF8D:: ; cf8c
+wUnusedCF8D::
 ; 2 bytes
 ; used to store pointers, but never read
 	ds 2
 
-wItemPrices:: ; cf8e
+wItemPrices::
 	ds 2
 
-wcf91:: ds 1 ; used with a lot of things (too much to list here) ; cf90
+wcf91:: ds 1 ; used with a lot of things (too much to list here)
 
-wWhichPokemon:: ; cf91
+wWhichPokemon::
 ; which pokemon you selected
 	ds 1
 
-wPrintItemPrices:: ; cf92
+wPrintItemPrices::
 ; if non-zero, then print item prices when displaying lists
 	ds 1
 
-wHPBarType:: ; cf93
+wHPBarType::
 ; type of HP bar
 ; $00 = enemy HUD in battle
 ; $01 = player HUD in battle / status screen
 ; $02 = party menu
 
-wListMenuID:: ; cf93
+wListMenuID::
 ; ID used by DisplayListMenuID
 	ds 1
 
-wRemoveMonFromBox:: ; cf94
+wRemoveMonFromBox::
 ; if non-zero, RemovePokemon will remove the mon from the current box,
 ; else it will remove the mon from the party
 
-wMoveMonType:: ; cf94
+wMoveMonType::
 ; 0 = move from box to party
 ; 1 = move from party to box
 ; 2 = move from daycare to party
 ; 3 = move from party to daycare
 	ds 1
 
-wItemQuantity:: ; cf95
+wItemQuantity::
 	ds 1
 
-wMaxItemQuantity:: ; cf96
+wMaxItemQuantity::
 	ds 1
 
 ; LoadMonData copies mon data here
-wLoadedMon:: party_struct wLoadedMon ; cf97
+wLoadedMon:: party_struct wLoadedMon
 
-wFontLoaded:: ; cfc3
+wFontLoaded::
 ; bit 0: The space in VRAM that is used to store walk animation tile patterns
 ;        for the player and NPCs is in use for font tile patterns.
 ;        This means that NPC movement must be disabled.
 ; The other bits are unused.
 	ds 1
 
-wWalkCounter:: ; cfc4
+wWalkCounter::
 ; walk animation counter
 	ds 1
 
-wTileInFrontOfPlayer:: ; cfc5
+wTileInFrontOfPlayer::
 ; background tile number in front of the player (either 1 or 2 steps ahead)
 	ds 1
 
-wAudioFadeOutControl:: ; cfc6
+wAudioFadeOutControl::
 ; The desired fade counter reload value is stored here prior to calling
 ; PlaySound in order to cause the current music to fade out before the new
 ; music begins playing. Storing 0 causes no fade out to occur and the new music
@@ -1789,13 +1707,13 @@ wAudioFadeOutControl:: ; cfc6
 ; audio, it zeroes this variable and starts playing the sound ID stored in it.
 	ds 1
 
-wAudioFadeOutCounterReloadValue:: ; cfc7
+wAudioFadeOutCounterReloadValue::
 	ds 1
 
-wAudioFadeOutCounter:: ; cfc8
+wAudioFadeOutCounter::
 	ds 1
 
-wLastMusicSoundID:: ; cfc9
+wLastMusicSoundID::
 ; This is used to determine whether the default music is already playing when
 ; attempting to play the default music (in order to avoid restarting the same
 ; music) and whether the music has already been stopped when attempting to
@@ -1807,47 +1725,47 @@ wLastMusicSoundID:: ; cfc9
 ; the music).
 	ds 1
 
-wUpdateSpritesEnabled:: ; cfca
+wUpdateSpritesEnabled::
 ; $00 = causes sprites to be hidden and the value to change to $ff
 ; $01 = enabled
 ; $ff = disabled
 ; other values aren't used
 	ds 1
 
-wEnemyMoveNum:: ; cfcb
+wEnemyMoveNum::
 	ds 1
-wEnemyMoveEffect:: ; cfcc
+wEnemyMoveEffect::
 	ds 1
-wEnemyMovePower:: ; cfcd
+wEnemyMovePower::
 	ds 1
-wEnemyMoveType:: ; cfce
+wEnemyMoveType::
 	ds 1
-wEnemyMoveAccuracy:: ; cfcf
+wEnemyMoveAccuracy::
 	ds 1
-wEnemyMoveMaxPP:: ; cfd0
+wEnemyMoveMaxPP::
 	ds 1
-wPlayerMoveNum:: ; cfd1
+wPlayerMoveNum::
 	ds 1
-wPlayerMoveEffect:: ; cfd2
+wPlayerMoveEffect::
 	ds 1
-wPlayerMovePower:: ; cfd3
+wPlayerMovePower::
 	ds 1
-wPlayerMoveType:: ; cfd4
+wPlayerMoveType::
 	ds 1
-wPlayerMoveAccuracy:: ; cfd5
+wPlayerMoveAccuracy::
 	ds 1
-wPlayerMoveMaxPP:: ; cfd6
-	ds 1
-
-
-wEnemyMonSpecies2:: ; cfd7
-	ds 1
-wBattleMonSpecies2:: ; cfd8
+wPlayerMoveMaxPP::
 	ds 1
 
-wEnemyMonNick:: ds NAME_LENGTH ; cfd9
 
-wEnemyMon:: ; cfe4
+wEnemyMonSpecies2::
+	ds 1
+wBattleMonSpecies2::
+	ds 1
+
+wEnemyMonNick:: ds NAME_LENGTH
+
+wEnemyMon::
 ; The wEnemyMon struct reaches past 0xcfff,
 ; the end of wram bank 0 on cgb.
 ; This has no significance on dmg, where wram
@@ -1883,64 +1801,64 @@ wEnemyMonBaseStats:: ds 5
 wEnemyMonActualCatchRate:: ds 1
 wEnemyMonBaseExp:: ds 1
 
-wBattleMonNick:: ds NAME_LENGTH ; d008
-wBattleMon:: battle_struct wBattleMon ; d013
+wBattleMonNick:: ds NAME_LENGTH
+wBattleMon:: battle_struct wBattleMon
 
 
-wTrainerClass:: ; d030
+wTrainerClass::
 	ds 1
 
 	ds 1
 
-wTrainerPicPointer:: ; d032
+wTrainerPicPointer::
 	ds 2
 	ds 1
 
-wTempMoveNameBuffer:: ; d035
+wTempMoveNameBuffer::
 
-wLearnMoveMonName:: ; d035
+wLearnMoveMonName::
 ; The name of the mon that is learning a move.
 	ds 16
 
-wTrainerBaseMoney:: ; d045
+wTrainerBaseMoney::
 ; 2-byte BCD number
 ; money received after battle = base money × level of highest-level enemy mon
 	ds 2
 
-wMissableObjectCounter:: ; d047
+wMissableObjectCounter::
 	ds 1
 
 	ds 1
 
-wTrainerName:: ; d049
+wTrainerName::
 ; 13 bytes for the letters of the opposing trainer
 ; the name is terminated with $50 with possible
 ; unused trailing letters
 	ds 13
 
-wIsInBattle:: ; d056
+wIsInBattle::
 ; lost battle, this is -1
 ; no battle, this is 0
 ; wild battle, this is 1
 ; trainer battle, this is 2
 	ds 1
 
-wPartyGainExpFlags:: ; d057
+wPartyGainExpFlags::
 ; flags that indicate which party members should be be given exp when GainExperience is called
 	flag_array 6
 
-wCurOpponent:: ; d058
+wCurOpponent::
 ; in a wild battle, this is the species of pokemon
 ; in a trainer battle, this is the trainer class + OPP_ID_OFFSET
 	ds 1
 
-wBattleType:: ; d059
+wBattleType::
 ; in normal battle, this is 0
 ; in old man battle, this is 1
 ; in safari battle, this is 2
 	ds 1
 
-wDamageMultipliers:: ; d05a
+wDamageMultipliers::
 ; bits 0-6: Effectiveness
    ;  $0 = immune
    ;  $5 = not very effective
@@ -1949,34 +1867,34 @@ wDamageMultipliers:: ; d05a
 ; bit 7: STAB
 	ds 1
 
-wLoneAttackNo:: ; d05b
+wLoneAttackNo::
 ; which entry in LoneAttacks to use
-wGymLeaderNo:: ; d05b
+wGymLeaderNo::
 ; it's actually the same thing as ^
 	ds 1
-wTrainerNo:: ; d05c
+wTrainerNo::
 ; which instance of [youngster, lass, etc] is this?
 	ds 1
 
-wCriticalHitOrOHKO:: ; d05d
+wCriticalHitOrOHKO::
 ; $00 = normal attack
 ; $01 = critical hit
 ; $02 = successful OHKO
 ; $ff = failed OHKO
 	ds 1
 
-wMoveMissed:: ; d05e
+wMoveMissed::
 	ds 1
 
-wPlayerStatsToDouble:: ; d05f
+wPlayerStatsToDouble::
 ; always 0
 	ds 1
 
-wPlayerStatsToHalve:: ; d060
+wPlayerStatsToHalve::
 ; always 0
 	ds 1
 
-wPlayerBattleStatus1:: ; d061
+wPlayerBattleStatus1::
 ; bit 0 - bide
 ; bit 1 - thrash / petal dance
 ; bit 2 - attacking multiple times (e.g. double kick)
@@ -1987,7 +1905,7 @@ wPlayerBattleStatus1:: ; d061
 ; bit 7 - confusion
 	ds 1
 
-wPlayerBattleStatus2:: ; d062
+wPlayerBattleStatus2::
 ; bit 0 - X Accuracy effect
 ; bit 1 - protected by "mist"
 ; bit 2 - focus energy effect
@@ -1997,104 +1915,104 @@ wPlayerBattleStatus2:: ; d062
 ; bit 7 - leech seeded
 	ds 1
 
-wPlayerBattleStatus3:: ; d063
+wPlayerBattleStatus3::
 ; bit 0 - toxic
 ; bit 1 - light screen
 ; bit 2 - reflect
 ; bit 3 - transformed
 	ds 1
 
-wEnemyStatsToDouble:: ; d064
+wEnemyStatsToDouble::
 ; always 0
 	ds 1
 
-wEnemyStatsToHalve:: ; d065
+wEnemyStatsToHalve::
 ; always 0
 	ds 1
 
-wEnemyBattleStatus1:: ; d066
+wEnemyBattleStatus1::
 	ds 1
-wEnemyBattleStatus2:: ; d067
+wEnemyBattleStatus2::
 	ds 1
-wEnemyBattleStatus3:: ; d068
+wEnemyBattleStatus3::
 	ds 1
 
-wPlayerNumAttacksLeft:: ; d069
+wPlayerNumAttacksLeft::
 ; when the player is attacking multiple times, the number of attacks left
 	ds 1
 
-wPlayerConfusedCounter:: ; d06a
+wPlayerConfusedCounter::
 	ds 1
 
-wPlayerToxicCounter:: ; d06b
+wPlayerToxicCounter::
 	ds 1
-wPlayerDisabledMove:: ; d06c
+wPlayerDisabledMove::
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
 	ds 1
 
 	ds 1
 
-wEnemyNumAttacksLeft:: ; d06e
+wEnemyNumAttacksLeft::
 ; when the enemy is attacking multiple times, the number of attacks left
 	ds 1
 
-wEnemyConfusedCounter:: ; d06f
+wEnemyConfusedCounter::
 	ds 1
 
-wEnemyToxicCounter:: ; d070
+wEnemyToxicCounter::
 	ds 1
-wEnemyDisabledMove:: ; d071
+wEnemyDisabledMove::
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
 	ds 1
 
 	ds 1
 
-wPlayerNumHits:: ; d073
+wPlayerNumHits::
 ; number of hits by player in attacks like Double Slap, etc.
 
-wPlayerBideAccumulatedDamage:: ; d073
+wPlayerBideAccumulatedDamage::
 ; the amount of damage accumulated by the player while biding (2 bytes)
 
-wUnknownSerialCounter2:: ; d073
+wUnknownSerialCounter2::
 ; 2 bytes
 
 	ds 4
 
-wEscapedFromBattle:: ; d077
+wEscapedFromBattle::
 ; non-zero when an item or move that allows escape from battle was used
 	ds 1
 
-wAmountMoneyWon:: ; d078
+wAmountMoneyWon::
 ; 3-byte BCD number
 
-wObjectToHide:: ; d078
+wObjectToHide::
 	ds 1
 
-wObjectToShow:: ; d079
+wObjectToShow::
 	ds 1
 
 	ds 1
 
-wDefaultMap:: ; d07b
+wDefaultMap::
 ; the map you will start at when the debug bit is set
 
-wMenuItemOffset:: ; d07b
+wMenuItemOffset::
 
-wAnimationID:: ; d07b
+wAnimationID::
 ; ID number of the current battle animation
 	ds 1
 
-wNamingScreenType:: ; d07c
+wNamingScreenType::
 
-wPartyMenuTypeOrMessageID:: ; d07c
+wPartyMenuTypeOrMessageID::
 
-wTempTilesetNumTiles:: ; d07c
+wTempTilesetNumTiles::
 ; temporary storage for the number of tiles in a tileset
 	ds 1
 
-wSavedListScrollOffset:: ; d07d
+wSavedListScrollOffset::
 ; used by the pokemart code to save the existing value of wListScrollOffset
 ; so that it can be restored when the player is done with the pokemart NPC
 	ds 1
@@ -2102,71 +2020,71 @@ wSavedListScrollOffset:: ; d07d
 	ds 2
 
 ; base coordinates of frame block
-wBaseCoordX:: ; d080
+wBaseCoordX::
 	ds 1
-wBaseCoordY:: ; d081
+wBaseCoordY::
 	ds 1
 
 ; low health alarm counter/enable
 ; high bit = enable, others = timer to cycle frequencies
-wLowHealthAlarm:: ds 1 ; d082
+wLowHealthAlarm:: ds 1
 
-wFBTileCounter:: ; d083
+wFBTileCounter::
 ; counts how many tiles of the current frame block have been drawn
 	ds 1
 
-wMovingBGTilesCounter2:: ; d084
+wMovingBGTilesCounter2::
 	ds 1
 
-wSubAnimFrameDelay:: ; d085
+wSubAnimFrameDelay::
 ; duration of each frame of the current subanimation in terms of screen refreshes
 	ds 1
-wSubAnimCounter:: ; d086
+wSubAnimCounter::
 ; counts the number of subentries left in the current subanimation
 	ds 1
 
-wSaveFileStatus:: ; d087
+wSaveFileStatus::
 ; 1 = no save file or save file is corrupted
 ; 2 = save file exists and no corruption has been detected
 	ds 1
 
-wNumFBTiles:: ; d088
+wNumFBTiles::
 ; number of tiles in current battle animation frame block
 	ds 1
 
-wFlashScreenLongCounter:: ; d089
+wFlashScreenLongCounter::
 
-wSpiralBallsBaseY:: ; d089
+wSpiralBallsBaseY::
 
-wFallingObjectMovementByte:: ; d089
+wFallingObjectMovementByte::
 ; bits 0-6: index into FallingObjects_DeltaXs array (0 - 8)
 ; bit 7: direction; 0 = right, 1 = left
 
-wNumShootingBalls:: ; d089
+wNumShootingBalls::
 
-wTradedMonMovingRight:: ; d089
+wTradedMonMovingRight::
 ; $01 if mon is moving from left gameboy to right gameboy; $00 if vice versa
 
-wOptionsInitialized:: ; d089
+wOptionsInitialized::
 
-wNewSlotMachineBallTile:: ; d089
+wNewSlotMachineBallTile::
 
-wCoordAdjustmentAmount:: ; d089
+wCoordAdjustmentAmount::
 ; how much to add to the X/Y coord
 
-wUnusedD08A:: ; d089
+wUnusedD08A::
 	ds 1
 
-wSpiralBallsBaseX:: ; d08a
+wSpiralBallsBaseX::
 
-wNumFallingObjects:: ; d08a
+wNumFallingObjects::
 
-wSlideMonDelay:: ; d08a
+wSlideMonDelay::
 
-wAnimCounter:: ; d08a
+wAnimCounter::
 ; generic counter variable for various animations
 
-wSubAnimTransform:: ; d08a
+wSubAnimTransform::
 ; controls what transformations are applied to the subanimation
 ; 01: flip horizontally and vertically
 ; 02: flip horizontally and translate downwards 40 pixels
@@ -2174,52 +2092,52 @@ wSubAnimTransform:: ; d08a
 ; 04: reverse the subanimation
 	ds 1
 
-wEndBattleWinTextPointer:: ; d08b
+wEndBattleWinTextPointer::
 	ds 2
 
-wEndBattleLoseTextPointer:: ; d08d
+wEndBattleLoseTextPointer::
 	ds 2
 
 	ds 2
 
-wEndBattleTextRomBank:: ; d091
+wEndBattleTextRomBank::
 	ds 1
 
 	ds 1
 
-wSubAnimAddrPtr:: ; d093
+wSubAnimAddrPtr::
 ; the address _of the address_ of the current subanimation entry
 	ds 2
 
-wSlotMachineAllowMatchesCounter:: ; d095
+wSlotMachineAllowMatchesCounter::
 ; If non-zero, the allow matches flag is always set.
 ; There is a 1/256 (~0.4%) chance that this value will be set to 60, which is
 ; the only way it can increase. Winning certain payout amounts will decrement it
 ; or zero it.
 
-wSubAnimSubEntryAddr:: ; d095
+wSubAnimSubEntryAddr::
 ; the address of the current subentry of the current subanimation
 	ds 2
 
 	ds 2
 
-wOutwardSpiralTileMapPointer:: ; d099
+wOutwardSpiralTileMapPointer::
 	ds 1
 
-wPartyMenuAnimMonEnabled:: ; d09a
+wPartyMenuAnimMonEnabled::
 
-wTownMapSpriteBlinkingEnabled:: ; d09a
+wTownMapSpriteBlinkingEnabled::
 ; non-zero when enabled. causes nest locations to blink on and off.
 ; the town selection cursor will blink regardless of what this value is
 
-wUnusedD09B:: ; d09a
+wUnusedD09B::
 	ds 1
 
-wFBDestAddr:: ; d09b
+wFBDestAddr::
 ; current destination address in OAM for frame blocks (big endian)
 	ds 2
 
-wFBMode:: ; d09d
+wFBMode::
 ; controls how the frame blocks are put together to form frames
 ; specifically, after finishing drawing the frame block, the frame block's mode determines what happens
 ; 00: clean OAM buffer and delay
@@ -2228,172 +2146,172 @@ wFBMode:: ; d09d
 ; 04: delay, without cleaning OAM buffer, and do not advance [wFBDestAddr], so that the next frame block will overwrite this one
 	ds 1
 
-wLinkCableAnimBulgeToggle:: ; d09e
+wLinkCableAnimBulgeToggle::
 ; 0 = small
 ; 1 = big
 
-wIntroNidorinoBaseTile:: ; d09e
+wIntroNidorinoBaseTile::
 
-wOutwardSpiralCurrentDirection:: ; d09e
+wOutwardSpiralCurrentDirection::
 
-wDropletTile:: ; d09e
+wDropletTile::
 
-wNewTileBlockID:: ; d09e
+wNewTileBlockID::
 
-wWhichBattleAnimTileset:: ; d09e
+wWhichBattleAnimTileset::
 
-wSquishMonCurrentDirection:: ; d09e
+wSquishMonCurrentDirection::
 ; 0 = left
 ; 1 = right
 
-wSlideMonUpBottomRowLeftTile:: ; d09e
+wSlideMonUpBottomRowLeftTile::
 ; the tile ID of the leftmost tile in the bottom row in AnimationSlideMonUp_
 	ds 1
 
-wDisableVBlankWYUpdate:: ds 1 ; if non-zero, don't update WY during V-blank ; d09f
+wDisableVBlankWYUpdate:: ds 1 ; if non-zero, don't update WY during V-blank
 
-wSpriteCurPosX:: ; d0a0
+wSpriteCurPosX::
 	ds 1
-wSpriteCurPosY:: ; d0a1
+wSpriteCurPosY::
 	ds 1
-wSpriteWidth:: ; d0a2
+wSpriteWidth::
 	ds 1
-wSpriteHeight:: ; d0a3
+wSpriteHeight::
 	ds 1
-wSpriteInputCurByte:: ; d0a4
+wSpriteInputCurByte::
 ; current input byte
 	ds 1
-wSpriteInputBitCounter:: ; d0a5
+wSpriteInputBitCounter::
 ; bit offset of last read input bit
 	ds 1
 
-wSpriteOutputBitOffset:: ; d0a6; determines where in the output byte the two bits are placed. Each byte contains four columns (2bpp data)
+wSpriteOutputBitOffset:: ; determines where in the output byte the two bits are placed. Each byte contains four columns (2bpp data)
 ; 3 -> XX000000   1st column
 ; 2 -> 00XX0000   2nd column
 ; 1 -> 0000XX00   3rd column
 ; 0 -> 000000XX   4th column
 	ds 1
 
-wSpriteLoadFlags:: ; d0a7
-; bit 0 determines used buffer (0 -> $a188, 1 -> $a310)
+wSpriteLoadFlags::
+; bit 0 determines used buffer (0 -> sSpriteBuffer1, 1 -> sSpriteBuffer2)
 ; bit 1 loading last sprite chunk? (there are at most 2 chunks per load operation)
 	ds 1
-wSpriteUnpackMode:: ; d0a8
+wSpriteUnpackMode::
 	ds 1
-wSpriteFlipped:: ; d0a9
+wSpriteFlipped::
 	ds 1
 
-wSpriteInputPtr:: ; d0aa
+wSpriteInputPtr::
 ; pointer to next input byte
 	ds 2
-wSpriteOutputPtr:: ; d0ac
+wSpriteOutputPtr::
 ; pointer to current output byte
 	ds 2
-wSpriteOutputPtrCached:: ; d0ae
+wSpriteOutputPtrCached::
 ; used to revert pointer for different bit offsets
 	ds 2
-wSpriteDecodeTable0Ptr:: ; d0b0
+wSpriteDecodeTable0Ptr::
 ; pointer to differential decoding table (assuming initial value 0)
 	ds 2
-wSpriteDecodeTable1Ptr:: ; d0b2
+wSpriteDecodeTable1Ptr::
 ; pointer to differential decoding table (assuming initial value 1)
 	ds 2
 
-wd0b5:: ds 1 ; used as a temp storage area for Pokemon Species, and other Pokemon/Battle related things ; d0b4
+wd0b5:: ds 1 ; used as a temp storage area for Pokemon Species, and other Pokemon/Battle related things
 
-wNameListType:: ; d0b5
+wNameListType::
 	ds 1
 
-wPredefBank:: ; d0b6
+wPredefBank::
 	ds 1
 
-wMonHeader:: ; d0b7
+wMonHeader::
 
-wMonHIndex:: ; d0b7
+wMonHIndex::
 ; In the ROM base stats data structure, this is the dex number, but it is
 ; overwritten with the internal index number after the header is copied to WRAM.
 	ds 1
 
-wMonHBaseStats:: ; d0b8
-wMonHBaseHP:: ; d0b8
+wMonHBaseStats::
+wMonHBaseHP::
 	ds 1
-wMonHBaseAttack:: ; d0b9
+wMonHBaseAttack::
 	ds 1
-wMonHBaseDefense:: ; d0ba
+wMonHBaseDefense::
 	ds 1
-wMonHBaseSpeed:: ; d0bb
+wMonHBaseSpeed::
 	ds 1
-wMonHBaseSpecial:: ; d0bc
-	ds 1
-
-wMonHTypes:: ; d0bd
-wMonHType1:: ; d0bd
-	ds 1
-wMonHType2:: ; d0be
+wMonHBaseSpecial::
 	ds 1
 
-wMonHCatchRate:: ; d0bf
+wMonHTypes::
+wMonHType1::
 	ds 1
-wMonHBaseEXP:: ; d0c0
+wMonHType2::
 	ds 1
-wMonHSpriteDim:: ; d0c1
+
+wMonHCatchRate::
 	ds 1
-wMonHFrontSprite:: ; d0c2
+wMonHBaseEXP::
+	ds 1
+wMonHSpriteDim::
+	ds 1
+wMonHFrontSprite::
 	ds 2
-wMonHBackSprite:: ; d0c4
+wMonHBackSprite::
 	ds 2
 
-wMonHMoves:: ; d0c6
+wMonHMoves::
 	ds 4
 
-wMonHGrowthRate:: ; d0ca
+wMonHGrowthRate::
 	ds 1
 
-wMonHLearnset:: ; d0cb
+wMonHLearnset::
 ; bit field
 	flag_array 50 + 5
 	ds 1
 
-wSavedTilesetType:: ; d0d3
+wSavedTilesetType::
 ; saved at the start of a battle and then written back at the end of the battle
 	ds 1
 
 	ds 2
 
-wDamage:: ; d0d6
+wDamage::
 	ds 2
 
 	ds 2
 
-wRepelRemainingSteps:: ; d0da
+wRepelRemainingSteps::
 	ds 1
 
-wMoves:: ; d0db
+wMoves::
 ; list of moves for FormatMovesString
 	ds 4
 
-wMoveNum:: ; d0df
+wMoveNum::
 	ds 1
 
-wMovesString:: ; d0e0
+wMovesString::
 	ds 56
 
-wUnusedD119:: ; d118
+wUnusedD119::
 	ds 1
 
-wWalkBikeSurfStateCopy:: ; d119
+wWalkBikeSurfStateCopy::
 ; wWalkBikeSurfState is sometimes copied here, but it doesn't seem to be used for anything
 	ds 1
 
-wInitListType:: ; d11a
+wInitListType::
 ; the type of list for InitList to init
 	ds 1
 
-wCapturedMonSpecies:: ; d11b
+wCapturedMonSpecies::
 ; 0 if no mon was captured
 	ds 1
 
-wFirstMonsNotOutYet:: ; d11c
+wFirstMonsNotOutYet::
 ; Non-zero when the first player mon and enemy mon haven't been sent out yet.
 ; It prevents the game from asking if the player wants to choose another mon
 ; when the enemy sends out their first mon and suppresses the "no will to fight"
@@ -2401,78 +2319,78 @@ wFirstMonsNotOutYet:: ; d11c
 ; which will be the first mon sent out.
 	ds 1
 
-wPokeBallCaptureCalcTemp:: ; d11e
+wPokeBallCaptureCalcTemp::
 
 ; lower nybble: number of shakes
 ; upper nybble: number of animations to play
-wPokeBallAnimData:: ; d11d
+wPokeBallAnimData::
 
-wUsingPPUp:: ; d11d
+wUsingPPUp::
 
-wMaxPP:: ; d11d
+wMaxPP::
 
 ; 0 for player, non-zero for enemy
-wCalculateWhoseStats:: ; d11d
+wCalculateWhoseStats::
 
-wTypeEffectiveness:: ; d11d
+wTypeEffectiveness::
 
-wMoveType:: ; d11d
+wMoveType::
 
-wNumSetBits:: ; d11d
+wNumSetBits::
 
 wd11e:: ds 1 ; used as a Pokemon and Item storage value. Also used as an output value for CountSetBits
 
-wForcePlayerToChooseMon:: ; d11e
+wForcePlayerToChooseMon::
 ; When this value is non-zero, the player isn't allowed to exit the party menu
 ; by pressing B and not choosing a mon.
 	ds 1
 
-wNumRunAttempts:: ; d11f
+wNumRunAttempts::
 ; number of times the player has tried to run from battle
 	ds 1
 
-wEvolutionOccurred:: ; d120
+wEvolutionOccurred::
 	ds 1
 
-wVBlankSavedROMBank:: ; d121
+wVBlankSavedROMBank::
 	ds 1
 
-wFarCopyDataSavedROMBank:: ; d122
+wFarCopyDataSavedROMBank::
 	ds 1
 
-wIsKeyItem:: ; d123
+wIsKeyItem::
 	ds 1
 
-wTextBoxID:: ; d124
+wTextBoxID::
 	ds 1
 
-wCurrentMapScriptFlags:: ds 1 ; not exactly sure what this is used for, but it seems to be used as a multipurpose temp flag value ; d125
+wCurrentMapScriptFlags:: ds 1 ; not exactly sure what this is used for, but it seems to be used as a multipurpose temp flag value
 
-wCurEnemyLVL:: ; d126
+wCurEnemyLVL::
 	ds 1
 
-wItemListPointer:: ; d127
+wItemListPointer::
 ; pointer to list of items terminated by $FF
 	ds 2
 
-wListCount:: ; d129
+wListCount::
 ; number of entries in a list
 	ds 1
 
-wLinkState:: ; d12a
+wLinkState::
 	ds 1
 
-wTwoOptionMenuID:: ; d12b
+wTwoOptionMenuID::
 	ds 1
 
-wChosenMenuItem:: ; d12c
+wChosenMenuItem::
 ; the id of the menu item the player ultimately chose
 
-wOutOfBattleBlackout:: ; d12c
+wOutOfBattleBlackout::
 ; non-zero when the whole party has fainted due to out-of-battle poison damage
 	ds 1
 
-wMenuExitMethod:: ; d12d
+wMenuExitMethod::
 ; the way the user exited a menu
 ; for list menus and the buy/sell/quit menu:
 ; $01 = the user pressed A to choose a menu item
@@ -2482,148 +2400,148 @@ wMenuExitMethod:: ; d12d
 ; $02 = the user pressed B or pressed A with the second menu item selected
 	ds 1
 
-wDungeonWarpDataEntrySize:: ; d12e
+wDungeonWarpDataEntrySize::
 ; the size is always 6, so they didn't need a variable in RAM for this
 
-wWhichPewterGuy:: ; d12e
+wWhichPewterGuy::
 ; 0 = museum guy
 ; 1 = gym guy
 
-wWhichPrizeWindow:: ; d12e
+wWhichPrizeWindow::
 ; there are 3 windows, from 0 to 2
 
-wGymGateTileBlock:: ; d12e
+wGymGateTileBlock::
 ; a horizontal or vertical gate block
 	ds 1
 
-wSavedSpriteScreenY:: ; d12f
+wSavedSpriteScreenY::
 	ds 1
 
-wSavedSpriteScreenX:: ; d130
+wSavedSpriteScreenX::
 	ds 1
 
-wSavedSpriteMapY:: ; d131
+wSavedSpriteMapY::
 	ds 1
 
-wSavedSpriteMapX:: ; d132
+wSavedSpriteMapX::
 	ds 1
 
 	ds 5
 
-wWhichPrize:: ; d138
+wWhichPrize::
 	ds 1
 
-wIgnoreInputCounter:: ; d139
+wIgnoreInputCounter::
 ; counts downward each frame
 ; when it hits 0, bit 5 (ignore input bit) of wd730 is reset
 	ds 1
 
-wStepCounter:: ; d13a
+wStepCounter::
 ; counts down once every step
 	ds 1
 
-wNumberOfNoRandomBattleStepsLeft:: ; d13b
+wNumberOfNoRandomBattleStepsLeft::
 ; after a battle, you have at least 3 steps before a random battle can occur
 	ds 1
 
-wPrize1:: ; d13c
+wPrize1::
 	ds 1
-wPrize2:: ; d13d
+wPrize2::
 	ds 1
-wPrize3:: ; d13e
-	ds 1
-
+wPrize3::
 	ds 1
 
-wSerialRandomNumberListBlock:: ; d140
+	ds 1
+
+wSerialRandomNumberListBlock::
 ; the first 7 bytes are the preamble
 
-wPrize1Price:: ; d140
+wPrize1Price::
 	ds 2
 
-wPrize2Price:: ; d142
+wPrize2Price::
 	ds 2
 
-wPrize3Price:: ; d144
+wPrize3Price::
 	ds 2
 
 	ds 1
 
-wLinkBattleRandomNumberList:: ; d147
+wLinkBattleRandomNumberList::
 ; shared list of 9 random numbers, indexed by wLinkBattleRandomNumberListIndex
 	ds 10
 
-wSerialPlayerDataBlock:: ; d151
+wSerialPlayerDataBlock::
 ; the first 6 bytes are the preamble
 
-wPseudoItemID:: ; d151
+wPseudoItemID::
 ; When a real item is being used, this is 0.
 ; When a move is acting as an item, this is the ID of the item it's acting as.
 ; For example, out-of-battle Dig is executed using a fake Escape Rope item. In
 ; that case, this would be ESCAPE_ROPE.
 	ds 1
 
-wUnusedD153:: ; d152
+wUnusedD153::
 	ds 1
 
 	ds 2
 
-wEvoStoneItemID:: ; d155
+wEvoStoneItemID::
 	ds 1
 
-wSavedNPCMovementDirections2Index:: ; d156
+wSavedNPCMovementDirections2Index::
 	ds 1
 
-wPlayerName:: ; d157
+wPlayerName::
 	ds NAME_LENGTH
 
 
 wPartyDataStart::
 
-wPartyCount::   ds 1 ; d162
-wPartySpecies:: ds PARTY_LENGTH ; d163
-wPartyEnd::     ds 1 ; d169
+wPartyCount::   ds 1
+wPartySpecies:: ds PARTY_LENGTH
+wPartyEnd::     ds 1
 
 wPartyMons::
-wPartyMon1:: party_struct wPartyMon1 ; d16a
-wPartyMon2:: party_struct wPartyMon2 ; d196
-wPartyMon3:: party_struct wPartyMon3 ; d1c2
-wPartyMon4:: party_struct wPartyMon4 ; d1ee
-wPartyMon5:: party_struct wPartyMon5 ; d21a
-wPartyMon6:: party_struct wPartyMon6 ; d246
+wPartyMon1:: party_struct wPartyMon1
+wPartyMon2:: party_struct wPartyMon2
+wPartyMon3:: party_struct wPartyMon3
+wPartyMon4:: party_struct wPartyMon4
+wPartyMon5:: party_struct wPartyMon5
+wPartyMon6:: party_struct wPartyMon6
 
-wPartyMonOT::    ds NAME_LENGTH * PARTY_LENGTH ; d272
-wPartyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH ; d2b4
-
+wPartyMonOT::    ds NAME_LENGTH * PARTY_LENGTH
+wPartyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH
 wPartyMonNicksEnd::
+
 wPartyDataEnd::
 
 
 wMainDataStart::
 
-wPokedexOwned:: ; d2f5
+wPokedexOwned::
 	flag_array NUM_POKEMON
 wPokedexOwnedEnd::
 
-wPokedexSeen:: ; d309
+wPokedexSeen::
 	flag_array NUM_POKEMON
 wPokedexSeenEnd::
 
 
-wNumBagItems:: ; d31c
+wNumBagItems::
 	ds 1
-wBagItems:: ; d31d
+wBagItems::
 ; item, quantity
 	ds BAG_ITEM_CAPACITY * 2
 	ds 1 ; end
 
-wPlayerMoney:: ; d346
+wPlayerMoney::
 	ds 3 ; BCD
 
-wRivalName:: ; d349
+wRivalName::
 	ds NAME_LENGTH
 
-wOptions:: ; d354
+wOptions::
 ; bit 7 = battle animation
 ; 0: On
 ; 1: Off
@@ -2636,287 +2554,287 @@ wOptions:: ; d354
 ; 5: Slow
 	ds 1
 
-wObtainedBadges:: ; d355
+wObtainedBadges::
 	flag_array 8
 
 	ds 1
 
-wLetterPrintingDelayFlags:: ; d357
+wLetterPrintingDelayFlags::
 ; bit 0: If 0, limit the delay to 1 frame. Note that this has no effect if
 ;        the delay has been disabled entirely through bit 1 of this variable
 ;        or bit 6 of wd730.
 ; bit 1: If 0, no delay.
 	ds 1
 
-wPlayerID:: ; d358
+wPlayerID::
 	ds 2
 
-wMapMusicSoundID:: ; d35a
+wMapMusicSoundID::
 	ds 1
 
-wMapMusicROMBank:: ; d35b
+wMapMusicROMBank::
 	ds 1
 
-wMapPalOffset:: ; d35c
+wMapPalOffset::
 ; offset subtracted from FadePal4 to get the background and object palettes for the current map
 ; normally, it is 0. it is 6 when Flash is needed, causing FadePal2 to be used instead of FadePal4
 	ds 1
 
-wCurMap:: ; d35d
+wCurMap::
 	ds 1
 
-wCurrentTileBlockMapViewPointer:: ; d35e
+wCurrentTileBlockMapViewPointer::
 ; pointer to the upper left corner of the current view in the tile block map
 	ds 2
 
-wYCoord:: ; d360
-; player’s position on the current map
+wYCoord::
+; player's position on the current map
 	ds 1
 
-wXCoord:: ; d361
+wXCoord::
 	ds 1
 
-wYBlockCoord:: ; d362
+wYBlockCoord::
 ; player's y position (by block)
 	ds 1
 
-wXBlockCoord:: ; d363
+wXBlockCoord::
 	ds 1
 
-wLastMap:: ; d364
+wLastMap::
 	ds 1
 
-wUnusedD366:: ; d365
+wUnusedD366::
 	ds 1
 
-wCurMapTileset:: ; d366
+wCurMapTileset::
 	ds 1
 
-wCurMapHeight:: ; d367
+wCurMapHeight::
 ; blocks
 	ds 1
 
-wCurMapWidth:: ; d368
+wCurMapWidth::
 ; blocks
 	ds 1
 
-wMapDataPtr:: ; d369
+wMapDataPtr::
 	ds 2
 
-wMapTextPtr:: ; d36b
+wMapTextPtr::
 	ds 2
 
-wMapScriptPtr:: ; d36d
+wMapScriptPtr::
 	ds 2
 
-wMapConnections:: ; d36f
+wMapConnections::
 ; connection byte
 	ds 1
 
-wMapConn1Ptr:: ; d370
+wMapConn1Ptr::
 	ds 1
 
-wNorthConnectionStripSrc:: ; d371
+wNorthConnectionStripSrc::
 	ds 2
 
-wNorthConnectionStripDest:: ; d373
+wNorthConnectionStripDest::
 	ds 2
 
-wNorthConnectionStripWidth:: ; d375
+wNorthConnectionStripWidth::
 	ds 1
 
-wNorthConnectedMapWidth:: ; d376
+wNorthConnectedMapWidth::
 	ds 1
 
-wNorthConnectedMapYAlignment:: ; d377
+wNorthConnectedMapYAlignment::
 	ds 1
 
-wNorthConnectedMapXAlignment:: ; d378
+wNorthConnectedMapXAlignment::
 	ds 1
 
-wNorthConnectedMapViewPointer:: ; d379
+wNorthConnectedMapViewPointer::
 	ds 2
 
-wMapConn2Ptr:: ; d37b
+wMapConn2Ptr::
 	ds 1
 
-wSouthConnectionStripSrc:: ; d37c
+wSouthConnectionStripSrc::
 	ds 2
 
-wSouthConnectionStripDest:: ; d37e
+wSouthConnectionStripDest::
 	ds 2
 
-wSouthConnectionStripWidth:: ; d380
+wSouthConnectionStripWidth::
 	ds 1
 
-wSouthConnectedMapWidth:: ; d381
+wSouthConnectedMapWidth::
 	ds 1
 
-wSouthConnectedMapYAlignment:: ; d382
+wSouthConnectedMapYAlignment::
 	ds 1
 
-wSouthConnectedMapXAlignment:: ; d383
+wSouthConnectedMapXAlignment::
 	ds 1
 
-wSouthConnectedMapViewPointer:: ; d384
+wSouthConnectedMapViewPointer::
 	ds 2
 
-wMapConn3Ptr:: ; d386
+wMapConn3Ptr::
 	ds 1
 
-wWestConnectionStripSrc:: ; d387
+wWestConnectionStripSrc::
 	ds 2
 
-wWestConnectionStripDest:: ; d389
+wWestConnectionStripDest::
 	ds 2
 
-wWestConnectionStripHeight:: ; d38b
+wWestConnectionStripHeight::
 	ds 1
 
-wWestConnectedMapWidth:: ; d38c
+wWestConnectedMapWidth::
 	ds 1
 
-wWestConnectedMapYAlignment:: ; d38d
+wWestConnectedMapYAlignment::
 	ds 1
 
-wWestConnectedMapXAlignment:: ; d38e
+wWestConnectedMapXAlignment::
 	ds 1
 
-wWestConnectedMapViewPointer:: ; d38f
+wWestConnectedMapViewPointer::
 	ds 2
 
-wMapConn4Ptr:: ; d391
+wMapConn4Ptr::
 	ds 1
 
-wEastConnectionStripSrc:: ; d392
+wEastConnectionStripSrc::
 	ds 2
 
-wEastConnectionStripDest:: ; d394
+wEastConnectionStripDest::
 	ds 2
 
-wEastConnectionStripHeight:: ; d396
+wEastConnectionStripHeight::
 	ds 1
 
-wEastConnectedMapWidth:: ; d397
+wEastConnectedMapWidth::
 	ds 1
 
-wEastConnectedMapYAlignment:: ; d398
+wEastConnectedMapYAlignment::
 	ds 1
 
-wEastConnectedMapXAlignment:: ; d399
+wEastConnectedMapXAlignment::
 	ds 1
 
-wEastConnectedMapViewPointer:: ; d39a
+wEastConnectedMapViewPointer::
 	ds 2
 
-wSpriteSet:: ; d39c
+wSpriteSet::
 ; sprite set for the current map (11 sprite picture ID's)
 	ds 11
 
-wSpriteSetID:: ; d3a7
+wSpriteSetID::
 ; sprite set ID for the current map
 	ds 1
 
-wObjectDataPointerTemp:: ; d3a8
+wObjectDataPointerTemp::
 	ds 2
 
 	ds 2
 
-wMapBackgroundTile:: ; d3ac
+wMapBackgroundTile::
 ; the tile shown outside the boundaries of the map
 	ds 1
 
-wNumberOfWarps:: ; d3ad
+wNumberOfWarps::
 ; number of warps in current map
 	ds 1
 
-wWarpEntries:: ; d3ae
+wWarpEntries::
 ; current map warp entries
 	ds 128
 
-wDestinationWarpID:: ; d42e
+wDestinationWarpID::
 ; if $ff, the player's coordinates are not updated when entering the map
 	ds 1
 
-wPikachuOverworldStateFlags:: ds 1 ; d42f
-wPikachuSpawnState:: ds 1 ; d430
-wd432:: ds 1 ; d431
-wd433:: ds 1 ; d432
-wd434:: ds 1 ; d433
-wd435:: ds 1 ; d434
-wd436:: ds 1 ; d435
-wPikachuFollowCommandBufferSize:: ds 1 ; d436
-wPikachuFollowCommandBuffer:: ds 16 ; d437
+wPikachuOverworldStateFlags:: ds 1
+wPikachuSpawnState:: ds 1
+wd432:: ds 1
+wd433:: ds 1
+wd434:: ds 1
+wd435:: ds 1
+wd436:: ds 1
+wPikachuFollowCommandBufferSize:: ds 1
+wPikachuFollowCommandBuffer:: ds 16
 
-wExpressionNumber:: ; d447
+wExpressionNumber::
 	ds 1
-wPikaPicAnimNumber:: ; d448
+wPikaPicAnimNumber::
 	ds 1
 	
-wPikachuMovementScriptBank:: ds 1  ; d449
-wPikachuMovementScriptAddress:: dw ; d44a
-wPikachuMovementFlags:: ; d44c
+wPikachuMovementScriptBank:: ds 1 
+wPikachuMovementScriptAddress:: dw
+wPikachuMovementFlags::
 ; bit 6 - spawn shadow
 ; bit 7 - signal end of command
 	ds 1
 
 UNION
 
-wCurPikaMovementData:: ; d44d
-wCurPikaMovementParam1:: ds 1 ; d44d
-wCurPikaMovementFunc1:: ds 1 ; d44e
-wCurPikaMovementParam2:: ds 1 ; d44f
-wCurPikaMovementFunc2:: ds 1 ; d450
-wd451:: ds 1 ; d451
-wCurPikaMovementSpriteImageIdx:: ds 1 ; d452
-wPikaSpriteX:: ds 1 ; d453
-wPikaSpriteY:: ds 1 ; d454
-wPikachuMovementXOffset:: ds 1 ; d455
-wPikachuMovementYOffset:: ds 1 ; d456
-wPikachuStepTimer:: ds 1 ; d457
-wPikachuStepSubtimer:: ds 1 ; d458
+wCurPikaMovementData::
+wCurPikaMovementParam1:: ds 1
+wCurPikaMovementFunc1:: ds 1
+wCurPikaMovementParam2:: ds 1
+wCurPikaMovementFunc2:: ds 1
+wd451:: ds 1
+wCurPikaMovementSpriteImageIdx:: ds 1
+wPikaSpriteX:: ds 1
+wPikaSpriteY:: ds 1
+wPikachuMovementXOffset:: ds 1
+wPikachuMovementYOffset:: ds 1
+wPikachuStepTimer:: ds 1
+wPikachuStepSubtimer:: ds 1
 	ds 5
-wCurPikaMovementDataEnd:: ; d45e
+wCurPikaMovementDataEnd::
 
 NEXTU
 
-wPikaPicAnimPointer:: dw ; d44d
-wPikaPicAnimPointerSetupFinished:: ds 1 ; d44f
-wPikaPicAnimCurGraphicID:: ds 1 ; d450
-wPikaPicAnimTimer:: ds 2 ; d451
-wPikaPicAnimDelay:: ds 1 ; d453
-wPikaPicPikaDrawStartX:: ds 1 ; d454
-wPikaPicPikaDrawStartY:: ds 1 ; d455
+wPikaPicAnimPointer:: dw
+wPikaPicAnimPointerSetupFinished:: ds 1
+wPikaPicAnimCurGraphicID:: ds 1
+wPikaPicAnimTimer:: ds 2
+wPikaPicAnimDelay:: ds 1
+wPikaPicPikaDrawStartX:: ds 1
+wPikaPicPikaDrawStartY:: ds 1
 
-wCurPikaPicAnimObject:: ; d456
-wCurPikaPicAnimObjectVTileOffset:: db ; d456
-wCurPikaPicAnimObjectXOffset:: db ; d457
-wCurPikaPicAnimObjectYOffset:: db ; d458
-wCurPikaPicAnimObjectScriptIdx:: db ; d459
-wCurPikaPicAnimObjectFrameIdx:: db ; d45a
-wCurPikaPicAnimObjectFrameTimer:: db ; d45b
+wCurPikaPicAnimObject::
+wCurPikaPicAnimObjectVTileOffset:: db
+wCurPikaPicAnimObjectXOffset:: db
+wCurPikaPicAnimObjectYOffset:: db
+wCurPikaPicAnimObjectScriptIdx:: db
+wCurPikaPicAnimObjectFrameIdx:: db
+wCurPikaPicAnimObjectFrameTimer:: db
 	ds 1
-wCurPikaPicAnimObjectEnd:: ; d45d
+wCurPikaPicAnimObjectEnd::
 
 	ds 18
 ENDU
 
-wPikachuHappiness:: ds 1 ; d46f
-wPikachuMood:: ds 1 ; d470
-wd472:: ds 1 ; d471
-wd473:: ds 1 ; d472
+wPikachuHappiness:: ds 1
+wPikachuMood:: ds 1
+wd472:: ds 1
+wd473:: ds 1
 
 	ds 1
 
-wd475:: ds 1 ; d474
+wd475:: ds 1
 
 	ds 4
 
-wd47a:: ds 1 ; d479
+wd47a:: ds 1
 
 	ds 24
 	
-wd492:: ds 1 ; d492
+wd492:: ds 1
 	
 	ds 1
 	
@@ -2924,359 +2842,359 @@ wSurfingMinigameHiScore:: ds 2 ; 4-digit BCD little-endian
 	ds 1
 
 wPrinterSettings:: ds 1
-wUnknownSerialFlag_d499:: ds 1 ; d498
-wPrinterConnectionOpen:: ds 1 ; d499
-wPrinterOpcode:: ds 1 ; d49a
-wd49c:: ds 1 ; d49b
+wUnknownSerialFlag_d499:: ds 1
+wPrinterConnectionOpen:: ds 1
+wPrinterOpcode:: ds 1
+wd49c:: ds 1
 
 	ds 19
 
-wNumSigns:: ; d4af
+wNumSigns::
 ; number of signs in the current map (up to 16)
 	ds 1
 
-wSignCoords:: ; d4b0
+wSignCoords::
 ; 2 bytes each
 ; Y, X
 	ds 32
 
-wSignTextIDs:: ; d4d0
+wSignTextIDs::
 	ds 16
 
-wNumSprites:: ; d4e0
+wNumSprites::
 ; number of sprites on the current map
 	ds 1
 
 ; these two variables track the X and Y offset in blocks from the last special warp used
 ; they don't seem to be used for anything
-wYOffsetSinceLastSpecialWarp:: ; d4e1
+wYOffsetSinceLastSpecialWarp::
 	ds 1
-wXOffsetSinceLastSpecialWarp:: ; d4e2
+wXOffsetSinceLastSpecialWarp::
 	ds 1
 
-wMapSpriteData:: ; d4e3
+wMapSpriteData::
 ; two bytes per sprite (movement byte 2, text ID)
 	ds 32
 
-wMapSpriteExtraData:: ; d503
+wMapSpriteExtraData::
 ; two bytes per sprite (trainer class/item ID, trainer set ID)
 	ds 32
 
-wCurrentMapHeight2:: ; d523
+wCurrentMapHeight2::
 ; map height in 2x2 meta-tiles
 	ds 1
 
-wCurrentMapWidth2:: ; d524
+wCurrentMapWidth2::
 ; map width in 2x2 meta-tiles
 	ds 1
 
-wMapViewVRAMPointer:: ; d525
+wMapViewVRAMPointer::
 ; the address of the upper left corner of the visible portion of the BG tile map in VRAM
 	ds 2
 
 ; In the comments for the player direction variables below, "moving" refers to
 ; both walking and changing facing direction without taking a step.
 
-wPlayerMovingDirection:: ; d527
+wPlayerMovingDirection::
 ; if the player is moving, the current direction
 ; if the player is not moving, zero
 ; map scripts write to this in order to change the player's facing direction
 	ds 1
 
-wPlayerLastStopDirection:: ; d528
+wPlayerLastStopDirection::
 ; the direction in which the player was moving before the player last stopped
 	ds 1
 
-wPlayerDirection:: ; d529
+wPlayerDirection::
 ; if the player is moving, the current direction
 ; if the player is not moving, the last the direction in which the player moved
 	ds 1
 
-wTilesetBank:: ; d52a
+wTilesetBank::
 	ds 1
 
-wTilesetBlocksPtr:: ; d52b
+wTilesetBlocksPtr::
 ; maps blocks (4x4 tiles) to tiles
 	ds 2
 
-wTilesetGfxPtr:: ; d52d
+wTilesetGfxPtr::
 	ds 2
 
-wTilesetCollisionPtr:: ; d52f
+wTilesetCollisionPtr::
 ; list of all walkable tiles
 	ds 2
 
-wTilesetTalkingOverTiles:: ; d531
+wTilesetTalkingOverTiles::
 	ds 3
 
-wGrassTile:: ; d534
+wGrassTile::
 	ds 1
 
 	ds 4
 
-wNumBoxItems:: ; d539
+wNumBoxItems::
 	ds 1
-wBoxItems:: ; d53a
+wBoxItems::
 ; item, quantity
 	ds PC_ITEM_CAPACITY * 2
 	ds 1 ; end
 
-wCurrentBoxNum:: ; d59f
+wCurrentBoxNum::
 ; bits 0-6: box number
 ; bit 7: whether the player has changed boxes before
 	ds 2
 
-wNumHoFTeams:: ; d5a1
+wNumHoFTeams::
 ; number of HOF teams
 	ds 1
 
-wUnusedD5A3:: ; d5a2
+wUnusedD5A3::
 	ds 1
 
-wPlayerCoins:: ; d5a3
+wPlayerCoins::
 	ds 2 ; BCD
 
-wMissableObjectFlags:: ; d5a5
+wMissableObjectFlags::
 ; bit array of missable objects. set = removed
 	ds 32
-wMissableObjectFlagsEnd:: ; d5c5
+wMissableObjectFlagsEnd::
 
 	ds 7
 
-wd5cd:: ds 1 ; temp copy of c1x2 (sprite facing/anim) ; d5cc
+wd5cd:: ds 1 ; temp copy of SPRITESTATEDATA1_IMAGEINDEX (used for sprite facing/anim)
 
-wMissableObjectList:: ; d5cd
+wMissableObjectList::
 ; each entry consists of 2 bytes
 ; * the sprite ID (depending on the current map)
 ; * the missable object index (global, used for wMissableObjectFlags)
 ; terminated with $FF
 	ds 17 * 2
 
-wGameProgressFlags:: ; d5e9
+wGameProgressFlags::
 ; $c8 bytes
-wOaksLabCurScript:: ; d5e9
+wOaksLabCurScript::
 	ds 1
-wPalletTownCurScript:: ; d5f0
+wPalletTownCurScript::
 	ds 1
 	ds 1
-wBluesHouseCurScript:: ; d5f2
+wBluesHouseCurScript::
 	ds 1
-wViridianCityCurScript:: ; d5f3
+wViridianCityCurScript::
 	ds 1
 	ds 2
-wPewterCityCurScript:: ; d5f6
+wPewterCityCurScript::
 	ds 1
-wRoute3CurScript:: ; d5f7
+wRoute3CurScript::
 	ds 1
-wRoute4CurScript:: ; d5f8
+wRoute4CurScript::
 	ds 1
-wFanClubCurScript:: ; d5f9
+wFanClubCurScript::
 	ds 1
-wViridianGymCurScript:: ; d5fa
+wViridianGymCurScript::
 	ds 1
-wPewterGymCurScript:: ; d5fb
+wPewterGymCurScript::
 	ds 1
-wCeruleanGymCurScript:: ; d5fc
+wCeruleanGymCurScript::
 	ds 1
-wVermilionGymCurScript:: ; d5fd
+wVermilionGymCurScript::
 	ds 1
-wCeladonGymCurScript:: ; d5fe
+wCeladonGymCurScript::
 	ds 1
-wRoute6CurScript:: ; d5ff
+wRoute6CurScript::
 	ds 1
-wRoute8CurScript:: ; d600
+wRoute8CurScript::
 	ds 1
-wRoute24CurScript:: ; d601
+wRoute24CurScript::
 	ds 1
-wRoute25CurScript:: ; d602
+wRoute25CurScript::
 	ds 1
-wRoute9CurScript:: ; d603
+wRoute9CurScript::
 	ds 1
-wRoute10CurScript:: ; d604
+wRoute10CurScript::
 	ds 1
-wMtMoon1FCurScript:: ; d605
+wMtMoon1FCurScript::
 	ds 1
-wMtMoonB2FCurScript:: ; d606
+wMtMoonB2FCurScript::
 	ds 1
-wSSAnne1FRoomsCurScript:: ; d607
+wSSAnne1FRoomsCurScript::
 	ds 1
-wSSAnne2FRoomsCurScript:: ; d608
+wSSAnne2FRoomsCurScript::
 	ds 1
-wRoute22CurScript:: ; d609
+wRoute22CurScript::
 	ds 1
 	ds 1
-wRedsHouse2FCurScript:: ; d60b
+wRedsHouse2FCurScript::
 	ds 1
-wViridianMartCurScript:: ; d60c
+wViridianMartCurScript::
 	ds 1
-wRoute22GateCurScript:: ; d60d
+wRoute22GateCurScript::
 	ds 1
-wCeruleanCityCurScript:: ; d60e
+wCeruleanCityCurScript::
 	ds 1
 	ds 7
-wSSAnneBowCurScript:: ; d616
+wSSAnneBowCurScript::
 	ds 1
-wViridianForestCurScript:: ; d617
+wViridianForestCurScript::
 	ds 1
-wMuseum1FCurScript:: ; d618
+wMuseum1FCurScript::
 	ds 1
-wRoute13CurScript:: ; d619
+wRoute13CurScript::
 	ds 1
-wRoute14CurScript:: ; d61a
+wRoute14CurScript::
 	ds 1
-wRoute17CurScript:: ; d61b
+wRoute17CurScript::
 	ds 1
-wRoute19CurScript:: ; d61c
+wRoute19CurScript::
 	ds 1
-wRoute21CurScript:: ; d61d
+wRoute21CurScript::
 	ds 1
-wSafariZoneGateCurScript:: ; d61e
+wSafariZoneGateCurScript::
 	ds 1
-wRockTunnelB1FCurScript:: ; d61f
+wRockTunnelB1FCurScript::
 	ds 1
-wRockTunnel1FCurScript:: ; d620
+wRockTunnel1FCurScript::
 	ds 1
 	ds 1
-wRoute11CurScript:: ; d622
+wRoute11CurScript::
 	ds 1
-wRoute12CurScript:: ; d623
+wRoute12CurScript::
 	ds 1
-wRoute15CurScript:: ; d624
+wRoute15CurScript::
 	ds 1
-wRoute16CurScript:: ; d625
+wRoute16CurScript::
 	ds 1
-wRoute18CurScript:: ; d626
+wRoute18CurScript::
 	ds 1
-wRoute20CurScript:: ; d627
+wRoute20CurScript::
 	ds 1
-wSSAnneB1FRoomsCurScript:: ; d628
+wSSAnneB1FRoomsCurScript::
 	ds 1
-wVermilionCityCurScript:: ; d629
+wVermilionCityCurScript::
 	ds 1
-wPokemonTower2FCurScript:: ; d62a
+wPokemonTower2FCurScript::
 	ds 1
-wPokemonTower3FCurScript:: ; d62b
+wPokemonTower3FCurScript::
 	ds 1
-wPokemonTower4FCurScript:: ; d62c
+wPokemonTower4FCurScript::
 	ds 1
-wPokemonTower5FCurScript:: ; d62d
+wPokemonTower5FCurScript::
 	ds 1
-wPokemonTower6FCurScript:: ; d62e
+wPokemonTower6FCurScript::
 	ds 1
-wPokemonTower7FCurScript:: ; d62f
+wPokemonTower7FCurScript::
 	ds 1
-wRocketHideoutB1FCurScript:: ; d630
+wRocketHideoutB1FCurScript::
 	ds 1
-wRocketHideoutB2FCurScript:: ; d631
+wRocketHideoutB2FCurScript::
 	ds 1
-wRocketHideoutB3FCurScript:: ; d632
+wRocketHideoutB3FCurScript::
 	ds 1
-wRocketHideoutB4FCurScript:: ; d633
+wRocketHideoutB4FCurScript::
 	ds 2
-wRoute6GateCurScript:: ; d635
+wRoute6GateCurScript::
 	ds 1
-wRoute8GateCurScript:: ; d636
+wRoute8GateCurScript::
 	ds 2
-wCinnabarIslandCurScript:: ; d638
+wCinnabarIslandCurScript::
 	ds 1
-wPokemonMansion1FCurScript:: ; d639
+wPokemonMansion1FCurScript::
 	ds 2
-wPokemonMansion2FCurScript:: ; d63b
+wPokemonMansion2FCurScript::
 	ds 1
-wPokemonMansion3FCurScript:: ; d63c
+wPokemonMansion3FCurScript::
 	ds 1
-wPokemonMansionB1FCurScript:: ; d63d
+wPokemonMansionB1FCurScript::
 	ds 1
-wVictoryRoad2FCurScript:: ; d63e
+wVictoryRoad2FCurScript::
 	ds 1
-wVictoryRoad3FCurScript:: ; d63f
+wVictoryRoad3FCurScript::
 	ds 1
-wCeladonCityCurScript:: ; d640
+wCeladonCityCurScript::
 	ds 1
-wFightingDojoCurScript:: ; d641
+wFightingDojoCurScript::
 	ds 1
-wSilphCo2FCurScript:: ; d642
+wSilphCo2FCurScript::
 	ds 1
-wSilphCo3FCurScript:: ; d643
+wSilphCo3FCurScript::
 	ds 1
-wSilphCo4FCurScript:: ; d644
+wSilphCo4FCurScript::
 	ds 1
-wSilphCo5FCurScript:: ; d645
+wSilphCo5FCurScript::
 	ds 1
-wSilphCo6FCurScript:: ; d646
+wSilphCo6FCurScript::
 	ds 1
-wSilphCo7FCurScript:: ; d647
+wSilphCo7FCurScript::
 	ds 1
-wSilphCo8FCurScript:: ; d648
+wSilphCo8FCurScript::
 	ds 1
-wSilphCo9FCurScript:: ; d649
+wSilphCo9FCurScript::
 	ds 1
-wHallOfFameCurScript:: ; d64a
+wHallOfFameCurScript::
 	ds 1
-wChampionsRoomCurScript:: ; d64b
+wChampionsRoomCurScript::
 	ds 1
-wLoreleisRoomCurScript:: ; d64c
+wLoreleisRoomCurScript::
 	ds 1
-wBrunosRoomCurScript:: ; d64d
+wBrunosRoomCurScript::
 	ds 1
-wAgathasRoomCurScript:: ; d64e
+wAgathasRoomCurScript::
 	ds 1
-wCeruleanCaveB1FCurScript:: ; d64f
+wCeruleanCaveB1FCurScript::
 	ds 1
-wVictoryRoad1FCurScript:: ; d650
+wVictoryRoad1FCurScript::
 	ds 1
 	ds 1
-wLancesRoomCurScript:: ; d652
+wLancesRoomCurScript::
 	ds 1
 	ds 4
-wSilphCo10FCurScript:: ; d657
+wSilphCo10FCurScript::
 	ds 1
-wSilphCo11FCurScript:: ; d658
-	ds 1
-	ds 1
-wFuchsiaGymCurScript:: ; d65a
-	ds 1
-wSaffronGymCurScript:: ; d65b
+wSilphCo11FCurScript::
 	ds 1
 	ds 1
-wCinnabarGymCurScript:: ; d65d
+wFuchsiaGymCurScript::
 	ds 1
-wGameCornerCurScript:: ; d65e
+wSaffronGymCurScript::
 	ds 1
-wRoute16Gate1FCurScript:: ; d65f
 	ds 1
-wBillsHouseCurScript:: ; d660
+wCinnabarGymCurScript::
 	ds 1
-wRoute5GateCurScript:: ; d661
+wGameCornerCurScript::
 	ds 1
-wPowerPlantCurScript:: ; d662
-wRoute7GateCurScript:: ; d662
+wRoute16Gate1FCurScript::
+	ds 1
+wBillsHouseCurScript::
+	ds 1
+wRoute5GateCurScript::
+	ds 1
+wPowerPlantCurScript::
+wRoute7GateCurScript::
 ; overload
 	ds 1
 	ds 1
-wSSAnne2FCurScript:: ; d664
+wSSAnne2FCurScript::
 	ds 1
-wSeafoamIslandsB3FCurScript:: ; d665
+wSeafoamIslandsB3FCurScript::
 	ds 1
-wRoute23CurScript:: ; d666
+wRoute23CurScript::
 	ds 1
-wSeafoamIslandsB4FCurScript:: ; d667
+wSeafoamIslandsB4FCurScript::
 	ds 1
-wRoute18Gate1FCurScript:: ; d668
+wRoute18Gate1FCurScript::
 	ds 1
 
 	ds 78
-wGameProgressFlagsEnd:: ; d6b7
+wGameProgressFlagsEnd::
 
 	ds 56
 
-wObtainedHiddenItemsFlags:: ; d6ef
+wObtainedHiddenItemsFlags::
 	ds 14
 
-wObtainedHiddenCoinsFlags:: ; d6fd
+wObtainedHiddenCoinsFlags::
 	ds 2
 
-wWalkBikeSurfState:: ; d6ff
+wWalkBikeSurfState::
 ; $00 = walking
 ; $01 = biking
 ; $02 = surfing
@@ -3284,71 +3202,71 @@ wWalkBikeSurfState:: ; d6ff
 
 	ds 10
 
-wTownVisitedFlag:: ; d70a
-	flag_array 13
+wTownVisitedFlag::
+	flag_array NUM_CITY_MAPS
 
-wSafariSteps:: ; d70c
+wSafariSteps::
 ; starts at 502
 	ds 2
 
-wFossilItem:: ; d70e
+wFossilItem::
 ; item given to cinnabar lab
 	ds 1
 
-wFossilMon:: ; d70f
+wFossilMon::
 ; mon that will result from the item
 	ds 1
 
 	ds 2
 
-wEnemyMonOrTrainerClass:: ; d712
+wEnemyMonOrTrainerClass::
 ; trainer classes start at OPP_ID_OFFSET
 	ds 1
 
-wPlayerJumpingYScreenCoordsIndex:: ; d713
+wPlayerJumpingYScreenCoordsIndex::
 	ds 1
 
-wRivalStarter:: ; d714
+wRivalStarter::
 	ds 1
 
 	ds 1
 
-wPlayerStarter:: ; d716
+wPlayerStarter::
 	ds 1
 
-wBoulderSpriteIndex:: ; d717
+wBoulderSpriteIndex::
 ; sprite index of the boulder the player is trying to push
 	ds 1
 
-wLastBlackoutMap:: ; d718
+wLastBlackoutMap::
 	ds 1
 
-wDestinationMap:: ; d719
+wDestinationMap::
 ; destination map (for certain types of special warps, not ordinary walking)
 	ds 1
 
-wUnusedD71B:: ; d71a
+wUnusedD71B::
 	ds 1
 
-wTileInFrontOfBoulderAndBoulderCollisionResult:: ; d71b
+wTileInFrontOfBoulderAndBoulderCollisionResult::
 ; used to store the tile in front of the boulder when trying to push a boulder
 ; also used to store the result of the collision check ($ff for a collision and $00 for no collision)
 	ds 1
 
-wDungeonWarpDestinationMap:: ; d71c
+wDungeonWarpDestinationMap::
 ; destination map for dungeon warps
 	ds 1
 
-wWhichDungeonWarp:: ; d71d
+wWhichDungeonWarp::
 ; which dungeon warp within the source map was used
 	ds 1
 
-wUnusedD71F:: ; d71e
+wUnusedD71F::
 	ds 1
 
 	ds 8
 
-wd728:: ; d727
+wd728::
 ; bit 0: using Strength outside of battle
 ; bit 1: set by IsSurfingAllowed when surfing's allowed, but the caller resets it after checking the result
 ; bit 3: received Old Rod
@@ -3360,19 +3278,19 @@ wd728:: ; d727
 
 	ds 1
 
-wBeatGymFlags:: ; d729
+wBeatGymFlags::
 ; redundant because it matches wObtainedBadges
 ; used to determine whether to show name on statue and in two NPC text scripts
 	ds 1
 
 	ds 1
 
-wd72c:: ; d72b
+wd72c::
 ; bit 0: if not set, the 3 minimum steps between random battles have passed
 ; bit 1: prevent audio fade out
 	ds 1
 
-wd72d:: ; d72c
+wd72d::
 ; This variable is used for temporary flags and as the destination map when
 ; warping to the Trade Center or Colosseum.
 ; bit 0: sprite facing directions have been initialised in the Trade Center
@@ -3385,7 +3303,7 @@ wd72d:: ; d72c
 ; battles anyway).
 	ds 1
 
-wd72e:: ; d72d
+wd72e::
 ; bit 0: the player has received Lapras in the Silph Co. building
 ; bit 1: set in various places, but doesn't appear to have an effect
 ; bit 2: the player has healed pokemon at a pokemon center at least once
@@ -3398,7 +3316,7 @@ wd72e:: ; d72d
 
 	ds 1
 
-wd730:: ; d72f
+wd730::
 ; bit 0: NPC sprite being moved by script
 ; bit 5: ignore joypad input
 ; bit 6: print text with no delay between each letter
@@ -3407,13 +3325,19 @@ wd730:: ; d72f
 
 	ds 1
 
-wd732:: ; d731
+wd732::
 ; bit 0: play time being counted
-; bit 1: remnant of debug mode? not set by the game code.
-; if it is set
+; bit 1: remnant of debug mode; only set by the debug build.
+; if it is set:
 ; 1. skips most of Prof. Oak's speech, and uses NINTEN as the player's name and SONY as the rival's name
 ; 2. does not have the player start in floor two of the player's house (instead sending them to [wLastMap])
 ; 3. allows wild battles to be avoided by holding down B
+; furthermore, in the debug build:
+; 4. allows trainers to be avoided by holding down B
+; 5. skips Safari Zone step counter by holding down B
+; 6. skips the NPC who blocks Route 3 before beating Brock by holding down B
+; 7. skips Cerulean City rival battle by holding down B
+; 8. skips Pokémon Tower rival battle by holding down B
 ; bit 2: the target warp is a fly warp (bit 3 set or blacked out) or a dungeon warp (bit 4 set)
 ; bit 3: used warp pad, escape rope, dig, teleport, or fly, so the target warp is a "fly warp"
 ; bit 4: jumped into hole (Pokemon Mansion, Seafoam Islands, Victory Road) or went down waterfall (Seafoam Islands), so the target warp is a "dungeon warp"
@@ -3421,7 +3345,7 @@ wd732:: ; d731
 ; bit 6: map destination is [wLastBlackoutMap] (usually the last used pokemon center, but could be the player's house)
 	ds 1
 
-wFlags_D733:: ; d732
+wFlags_D733::
 ; bit 0: running a test battle
 ; bit 1: prevent music from changing when entering new map
 ; bit 2: skip the joypad check in CheckWarpsNoCollision (used for the forced warp down the waterfall in the Seafoam Islands)
@@ -3430,15 +3354,15 @@ wFlags_D733:: ; d732
 ; bit 7: used fly out of battle
 	ds 1
 
-wBeatLorelei:: ; d733
+wBeatLorelei::
 ; bit 1: set when you beat Lorelei and reset in Indigo Plateau lobby
 ; the game uses this to tell when Elite 4 events need to be reset
 	ds 1
 
-wd735:: ; d734
+wd735::
 	ds 1
 
-wd736:: ; d735
+wd736::
 ; bit 0: check if the player is standing on a door and make him walk down a step if so
 ; bit 1: the player is currently stepping down from a door
 ; bit 2: standing on a warp
@@ -3446,73 +3370,64 @@ wd736:: ; d735
 ; bit 7: player sprite spinning due to spin tiles (Rocket hideout / Viridian Gym)
 	ds 1
 
-wCompletedInGameTradeFlags:: ; d736
+wCompletedInGameTradeFlags::
 	ds 2
 
 	ds 2
 
-wWarpedFromWhichWarp:: ; d73a
+wWarpedFromWhichWarp::
 	ds 1
 
-wWarpedFromWhichMap:: ; d73b
-	ds 1
-
-	ds 2
-
-wCardKeyDoorY:: ; d73e
-	ds 1
-
-wCardKeyDoorX:: ; d73f
+wWarpedFromWhichMap::
 	ds 1
 
 	ds 2
 
-wFirstLockTrashCanIndex:: ; d742
+wCardKeyDoorY::
 	ds 1
 
-wSecondLockTrashCanIndex:: ; d744
+wCardKeyDoorX::
 	ds 1
 
 	ds 2
 
-wEventFlags:: ; d746
-; below here are mostly in game flags
+wFirstLockTrashCanIndex::
+	ds 1
 
-; d74b
-; bit 0: Prof. Oak has lead the player to the north end of his lab
-; bit 1: Prof. Oak has asked the player to choose a pokemon
-; bit 2: the player and the rival have received their pokemon
-; bit 3: the player has battled the rival in Oak's lab
-; bit 4: Prof. Oak has given the player 5 pokeballs
-; bit 5: received pokedex
-	flag_array NUM_EVENT_FLAGS
+wSecondLockTrashCanIndex::
+	ds 1
 
-wLinkEnemyTrainerName:: ; d886
+	ds 2
+
+wEventFlags::
+	flag_array NUM_EVENTS
+
+wLinkEnemyTrainerName::
 ; linked game's trainer name
 
-wGrassRate:: ; d886
+wGrassRate::
 	ds 1
 
-wGrassMons:: ; d887
+wGrassMons::
 ;	ds 20
 
 	ds 11
 ; Overload wGrassMons
-wSerialEnemyDataBlock:: ; d892
+wSerialEnemyDataBlock::
 	ds 9
 
-wEnemyPartyCount:: ds 1     ; d89b
-wEnemyPartyMons::  ds PARTY_LENGTH + 1 ; d89c
+wEnemyPartyCount:: ds 1    
+wEnemyPartyMons::  ds PARTY_LENGTH + 1
 
 ; Overload enemy party data
 UNION
 
-wWaterRate:: db ; d8a3
-wWaterMons:: db ; d8a4
+wWaterRate:: db
+wWaterMons:: db
 
 NEXTU
 
-wEnemyMons:: ; d8a3
+wEnemyMons::
 wEnemyMon1:: party_struct wEnemyMon1
 wEnemyMon2:: party_struct wEnemyMon2
 wEnemyMon3:: party_struct wEnemyMon3
@@ -3520,86 +3435,88 @@ wEnemyMon4:: party_struct wEnemyMon4
 wEnemyMon5:: party_struct wEnemyMon5
 wEnemyMon6:: party_struct wEnemyMon6
 
-wEnemyMonOT::    ds NAME_LENGTH * PARTY_LENGTH ; d9ab
-wEnemyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH ; d9ed
+wEnemyMonOT::    ds NAME_LENGTH * PARTY_LENGTH
+wEnemyMonNicks:: ds NAME_LENGTH * PARTY_LENGTH
 
 ENDU
 
 
-wTrainerHeaderPtr:: ; da2f
+wTrainerHeaderPtr::
 	ds 2
 
 	ds 6
 
-wOpponentAfterWrongAnswer:: ; da37
+wOpponentAfterWrongAnswer::
 ; the trainer the player must face after getting a wrong answer in the Cinnabar
 ; gym quiz
 
-wUnusedDA38:: ; da37
+wUnusedDA38::
 	ds 1
 
-wCurMapScript:: ; da38
+wCurMapScript::
 ; index of current map script, mostly used as index for function pointer array
 ; mostly copied from map-specific map script pointer and written back later
 	ds 1
 
 	ds 7
 
-wPlayTimeHours:: ; da40
+wPlayTimeHours::
 	ds 1
-wPlayTimeMaxed:: ; da41
+wPlayTimeMaxed::
 	ds 1
-wPlayTimeMinutes:: ; da42
+wPlayTimeMinutes::
 	ds 1
-wPlayTimeSeconds:: ; da43
+wPlayTimeSeconds::
 	ds 1
-wPlayTimeFrames:: ; da44
-	ds 1
-
-wSafariZoneGameOver:: ; da45
+wPlayTimeFrames::
 	ds 1
 
-wNumSafariBalls:: ; da46
+wSafariZoneGameOver::
+	ds 1
+
+wNumSafariBalls::
 	ds 1
 
 
-wDayCareInUse:: ; da47
+wDayCareInUse::
 ; 0 if no pokemon is in the daycare
 ; 1 if pokemon is in the daycare
 	ds 1
 
-wDayCareMonName:: ds NAME_LENGTH ; da48
-wDayCareMonOT::   ds NAME_LENGTH ; da53
+wDayCareMonName:: ds NAME_LENGTH
+wDayCareMonOT::   ds NAME_LENGTH
 
-wDayCareMon:: box_struct wDayCareMon ; da5e
+wDayCareMon:: box_struct wDayCareMon
 
 wMainDataEnd::
 
 
 wBoxDataStart::
 
-wNumInBox::  ds 1 ; da7f
-wBoxSpecies:: ds MONS_PER_BOX + 1 ; da80
+wNumInBox::  ds 1
+wBoxSpecies:: ds MONS_PER_BOX + 1
 
 wBoxMons::
-wBoxMon1:: box_struct wBoxMon1 ; da95
-wBoxMon2:: ds box_struct_length * (MONS_PER_BOX + -1) ; dab6
+wBoxMon1:: box_struct wBoxMon1
+wBoxMon2:: ds BOX_STRUCT_LENGTH * (MONS_PER_BOX - 1)
 
-wBoxMonOT::    ds NAME_LENGTH * MONS_PER_BOX ; dd29
-wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX ; de05
-wBoxMonNicksEnd:: ; dee1
+wBoxMonOT::    ds NAME_LENGTH * MONS_PER_BOX
+wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX
+wBoxMonNicksEnd::
 wBoxDataEnd::
 
-wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2 ; dee1
-wGBCPal:: ds PAL_SIZE ; dee9
-wLastBGP:: ds 1 ; def1
-wLastOBP0:: ds 1 ; def2
-wLastOBP1:: ds 1 ; def3
-wdef5:: ds 1 ; def4
-wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE ; def5
+wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
+wGBCPal:: ds PAL_SIZE
+wLastBGP:: ds 1
+wLastOBP0:: ds 1
+wLastOBP1:: ds 1
+wdef5:: ds 1
+wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE
 
 SECTION "Stack", WRAMX
-wStack:: ; dfff
+wStack::
 
 
 INCLUDE "sram.asm"
+
+INCLUDE "hram.asm"

@@ -10,22 +10,22 @@ CeladonDiner_TextPointers:
 	dw CeladonDinerText5
 
 CeladonDinerText1:
-	TX_FAR _CeladonDinerText1
-	db "@"
+	text_far _CeladonDinerText1
+	text_end
 
 CeladonDinerText2:
-	TX_FAR _CeladonDinerText2
-	db "@"
+	text_far _CeladonDinerText2
+	text_end
 
 CeladonDinerText3:
-	TX_FAR _CeladonDinerText3
-	db "@"
+	text_far _CeladonDinerText3
+	text_end
 
 CeladonDinerText4:
-	TX_FAR _CeladonDinerText4
-	db "@"
+	text_far _CeladonDinerText4
+	text_end
 
 CeladonDinerText5:
-	TX_ASM
-	callab Func_f1f31
+	text_asm
+	callfar Func_f1f31
 	jp TextScriptEnd

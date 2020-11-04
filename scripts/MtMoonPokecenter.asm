@@ -12,29 +12,29 @@ MtMoonPokecenter_TextPointers:
 	dw MtMoonPokecenterText7
 
 MtMoonHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 MtMoonPokecenterText2:
-	TX_FAR _MtMoonPokecenterText1
-	db "@"
+	text_far _MtMoonPokecenterText1
+	text_end
 
 MtMoonPokecenterText3:
-	TX_FAR _MtMoonPokecenterText3
-	db "@"
+	text_far _MtMoonPokecenterText3
+	text_end
 
 MagikarpSalesmanText:
-	TX_ASM
-	callab MagikarpSalesman
+	text_asm
+	callfar MagikarpSalesman
 	jp TextScriptEnd
 
 MtMoonPokecenterText5:
-	TX_FAR _MtMoonPokecenterText5
-	db "@"
+	text_far _MtMoonPokecenterText5
+	text_end
 
 MtMoonTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 MtMoonPokecenterText7:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

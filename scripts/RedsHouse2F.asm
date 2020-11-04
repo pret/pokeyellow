@@ -20,4 +20,5 @@ RedsHouse2FScript4:
 	ret
 
 RedsHouse2F_TextPointers:
-	db "@"
+
+	text_end ; unused

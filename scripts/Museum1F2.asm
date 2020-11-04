@@ -1,9 +1,9 @@
-Func_f1c1b:
+Func_f1c1b::
 	ld a, [wYCoord]
-	cp $4
+	cp 4
 	jr nz, .asm_f1c2c
 	ld a, [wXCoord]
-	cp $d
+	cp 13
 	jp z, .asm_f1cde
 	jr .asm_f1c48
 
@@ -11,7 +11,7 @@ Func_f1c1b:
 	cp $3
 	jr nz, .asm_f1c38
 	ld a, [wXCoord]
-	cp a, $c
+	cp 12
 	jp z, .asm_f1cde
 .asm_f1c38
 	CheckEvent EVENT_BOUGHT_MUSEUM_TICKET
@@ -33,7 +33,7 @@ Func_f1c1b:
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld hl, Museum1FText_f1d02
 	call PrintText
 	call YesNoChoice
@@ -41,10 +41,10 @@ Func_f1c1b:
 	and a
 	jr nz, .asm_f1cbf
 	xor a
-	ld [hMoney], a
-	ld [hMoney + 1], a
+	ldh [hMoney], a
+	ldh [hMoney + 1], a
 	ld a, $50
-	ld [hMoney + 2], a
+	ldh [hMoney + 2], a
 	call HasEnoughMoney
 	jr nc, .asm_f1c89
 	ld hl, Museum1FText_f1d0c
@@ -106,106 +106,104 @@ Func_f1c1b:
 	ret
 
 Museum1FText_f1cfd:
-	TX_FAR _Museum1FText_5c21a
-	db "@"
+	text_far _Museum1FText_5c21a
+	text_end
 
 Museum1FText_f1d02:
-	TX_FAR _Museum1FText_5c21f
-	db "@"
+	text_far _Museum1FText_5c21f
+	text_end
 
 Museum1FText_f1d07:
-	TX_FAR _Museum1FText_5c224
-	db "@"
+	text_far _Museum1FText_5c224
+	text_end
 
 Museum1FText_f1d0c:
-	TX_FAR _Museum1FText_5c229
-	db "@"
+	text_far _Museum1FText_5c229
+	text_end
 
 Museum1FText_f1d11:
-	TX_FAR _Museum1FText_5c22e
-	db "@"
+	text_far _Museum1FText_5c22e
+	text_end
 
 Museum1FText_f1d16:
-	TX_FAR _Museum1FText_5c233
-	db "@"
+	text_far _Museum1FText_5c233
+	text_end
 
 Museum1FText_f1d1b:
-	TX_FAR _Museum1FText_5c238
-	db "@"
+	text_far _Museum1FText_5c238
+	text_end
 
 Museum1FText_f1d20:
-	TX_FAR _Museum1FText_5c23d
-	db "@"
+	text_far _Museum1FText_5c23d
+	text_end
 
 Museum1FText_f1d25:
-	TX_FAR _Museum1FText_5c242
-	db "@"
+	text_far _Museum1FText_5c242
+	text_end
 
-Func_f1d2a:
+Func_f1d2a::
 	ld hl, Museum1FText_f1d31
 	call PrintText
 	ret
 
 Museum1FText_f1d31:
-	TX_FAR _Museum1FText_5c251
-	db "@"
+	text_far _Museum1FText_5c251
+	text_end
 
-Func_f1d36:
+Func_f1d36::
 	CheckEvent EVENT_GOT_OLD_AMBER
-	jr nz, .asm_f1d64
-	ld hl, Museum1FText_f1d6b
+	jr nz, .got_item
+	ld hl, Museum1FText_5c28e
 	call PrintText
 	lb bc, OLD_AMBER, 1
 	call GiveItem
-	jr nc, .asm_f1d5f
+	jr nc, .bag_full
 	SetEvent EVENT_GOT_OLD_AMBER
 	ld a, HS_OLD_AMBER
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	ld hl, Museum1FText_f1d70
-	jr .asm_f1d67
-
-.asm_f1d5f
-	ld hl, Museum1FText_f1d7b
-	jr .asm_f1d67
-
-.asm_f1d64
-	ld hl, Museum1FText_f1d76
-.asm_f1d67
+	ld hl, ReceivedOldAmberText
+	jr .done
+.bag_full
+	ld hl, Museum1FText_5c29e
+	jr .done
+.got_item
+	ld hl, Museum1FText_5c299
+.done
 	call PrintText
 	ret
 
-Museum1FText_f1d6b:
-	TX_FAR _Museum1FText_5c28e
-	db "@"
+Museum1FText_5c28e:
+	text_far _Museum1FText_5c28e
+	text_end
 
-Museum1FText_f1d70:
-	TX_FAR _ReceivedOldAmberText
-	TX_SFX_ITEM_1
-	db "@"
+ReceivedOldAmberText:
+	text_far _ReceivedOldAmberText
+	sound_get_item_1
+	text_end
 
-Museum1FText_f1d76:
-	TX_FAR _Museum1FText_5c299
-	db "@"
+Museum1FText_5c299:
+	text_far _Museum1FText_5c299
+	text_end
 
-Museum1FText_f1d7b:
-	TX_FAR _Museum1FText_5c29e
-	db "@"
+Museum1FText_5c29e:
+	text_far _Museum1FText_5c29e
+	text_end
 
-Func_f1d80:
+Func_f1d80::
 	ld hl, Museum1FText_f1d87
 	call PrintText
 	ret
 
 Museum1FText_f1d87:
-	TX_FAR _Museum1FText_5c2ad
-	db "@"
+	text_far _Museum1FText_5c2ad
+	text_end
 
-Func_f1d8c:
+Func_f1d8c::
 	ld hl, Museum1FText_f1d93
 	call PrintText
 	ret
 
 Museum1FText_f1d93:
-	TX_FAR _Museum1FText_5c2bc
-	db "@"
+	text_far _Museum1FText_5c2bc
+	text_end

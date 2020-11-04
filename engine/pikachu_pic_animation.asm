@@ -88,10 +88,10 @@ PikaPicAnimationScriptPointerLookupTable:
 	dpikapic PikaPicAnimScript20
 
 StarterPikachuEmotionCommand_pikapic:
-	ld a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	push af
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld a, [de]
 	ld [wPikaPicAnimNumber], a
 	inc de
@@ -99,12 +99,12 @@ StarterPikachuEmotionCommand_pikapic:
 	call .RunPikapic
 	pop de
 	pop af
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ret
 
 .RunPikapic:
 	call PlacePikapicTextBoxBorder
-	callab LoadOverworldPikachuFrontpicPalettes
+	callfar LoadOverworldPikachuFrontpicPalettes
 	call ResetPikaPicAnimBuffer
 	call LoadCurrentPikaPicAnimScriptPointer
 	call ExecutePikaPicAnimScript
@@ -135,14 +135,14 @@ ResetPikaPicAnimBuffer:
 
 PlacePikapicTextBoxBorder:
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	coord hl, 6, 5
+	ldh [hAutoBGTransferEnabled], a
+	hlcoord 6, 5
 	lb bc, 5, 5
 	call TextBoxBorder
 	call Delay3
 	call UpdateSprites
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	ret
 
@@ -202,13 +202,13 @@ endm
 ExecutePikaPicAnimScript:
 .loop
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call RunPikaPicAnimSetupScript
 	call DummyFunction_fdad5
 	call AnimateCurrentPikaPicAnimFrame
 	call DummyFunction_fdad5
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PikaPicAnimTimerAndJoypad
 	and a
 	jr z, .loop
@@ -220,7 +220,7 @@ PikaPicAnimTimerAndJoypad:
 	and a
 	ret nz
 	call JoypadLowSensitivity
-	ld a, [hJoyPressed]
+	ldh a, [hJoyPressed]
 	and A_BUTTON | B_BUTTON
 	ret
 
@@ -460,7 +460,7 @@ LoadCurPikaPicObjectTilemap:
 	ld b, a
 	ld a, [wPikaPicPikaDrawStartY]
 	add b
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
 	ld a, [wCurPikaPicAnimObjectXOffset] ; X offset
@@ -611,14 +611,14 @@ PikaPicAnimCommand_loadgfx:
 	push af
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	ld a, [H_AUTOBGTRANSFERENABLED]
+	ldh a, [hAutoBGTransferEnabled]
 	push af
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	ld a, [hTilesetType]
+	ldh [hAutoBGTransferEnabled], a
+	ldh a, [hTilesetType]
 	push af
 	xor a
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	call GetPikaPicAnimByte
 	ld [wPikaPicAnimCurGraphicID], a
 	ld a, [wPikaPicAnimCurGraphicID]
@@ -633,9 +633,9 @@ PikaPicAnimCommand_loadgfx:
 	call DecompressRequestPikaPicAnimGFX
 .done
 	pop af
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	pop af
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ret
@@ -783,7 +783,7 @@ PikaPicAnimCommand_cry:
 	cp $ff
 	ret z
 	ld e, a
-	callab PlayPikachuSoundClip
+	callfar PlayPikachuSoundClip
 	ret
 
 PikaPicAnimCommand_thunderbolt:
@@ -843,7 +843,7 @@ PikaPicAnimCommand_thunderbolt:
 
 .UpdatePal:
 	ld a, b
-	ld [rBGP], a
+	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call DelayFrames
 	ret

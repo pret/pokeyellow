@@ -11,7 +11,7 @@ BeachHouse_TextPointers:
 	dw BeachHouseSign4Text
 
 SurfinDudeText:
-	TX_ASM
+	text_asm
 	ld a, [wd472]
 	bit 6, a
 	jr nz, .next
@@ -35,7 +35,7 @@ SurfinDudeText:
 	jr nz, .asm_f226b
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	callba SurfingPikachuMinigame
+	farcall SurfingPikachuMinigame
 	ld hl, wd492
 	set 1, [hl]
 	jr .done
@@ -46,20 +46,20 @@ SurfinDudeText:
 	jp TextScriptEnd
 
 .SurfinDudeText1
-	TX_FAR _SurfinDudeText1
-	db "@"
+	text_far _SurfinDudeText1
+	text_end
 .SurfinDudeText2
-	TX_FAR _SurfinDudeText2
-	db "@"
+	text_far _SurfinDudeText2
+	text_end
 .SurfinDudeText3
-	TX_FAR _SurfinDudeText3
-	db "@"
+	text_far _SurfinDudeText3
+	text_end
 .SurfinDudeText4
-	TX_FAR _SurfinDudeText4
-	db "@"
+	text_far _SurfinDudeText4
+	text_end
 
 BeachHousePikachuText:
-	TX_ASM
+	text_asm
 	ld hl, .BeachHousePikachuText
 	call PrintText
 	ld a, PIKACHU
@@ -68,11 +68,11 @@ BeachHousePikachuText:
 	jp TextScriptEnd
 
 .BeachHousePikachuText
-	TX_FAR _BeachHousePikachuText
-	db "@"
+	text_far _BeachHousePikachuText
+	text_end
 
 BeachHouseSign1Text:
-	TX_ASM
+	text_asm
 	ld hl, .BeachHouseSign1Text2
 	ld a, [wd472]
 	bit 6, a
@@ -83,14 +83,14 @@ BeachHouseSign1Text:
 	jp TextScriptEnd
 
 .BeachHouseSign1Text1
-	TX_FAR _BeachHouseSign1Text1
-	db "@"
+	text_far _BeachHouseSign1Text1
+	text_end
 .BeachHouseSign1Text2
-	TX_FAR _BeachHouseSign1Text2
-	db "@"
+	text_far _BeachHouseSign1Text2
+	text_end
 
 BeachHouseSign2Text:
-	TX_ASM
+	text_asm
 	ld hl, .BeachHouseSign2Text2
 	ld a, [wd472]
 	bit 6, a
@@ -101,14 +101,14 @@ BeachHouseSign2Text:
 	jp TextScriptEnd
 
 .BeachHouseSign2Text1
-	TX_FAR _BeachHouseSign2Text1
-	db "@"
+	text_far _BeachHouseSign2Text1
+	text_end
 .BeachHouseSign2Text2
-	TX_FAR _BeachHouseSign2Text2
-	db "@"
+	text_far _BeachHouseSign2Text2
+	text_end
 
 BeachHouseSign3Text:
-	TX_ASM
+	text_asm
 	ld hl, .BeachHouseSign3Text2
 	ld a, [wd472]
 	bit 6, a
@@ -119,14 +119,14 @@ BeachHouseSign3Text:
 	jp TextScriptEnd
 
 .BeachHouseSign3Text1
-	TX_FAR _BeachHouseSign3Text1
-	db "@"
+	text_far _BeachHouseSign3Text1
+	text_end
 .BeachHouseSign3Text2
-	TX_FAR _BeachHouseSign3Text2
-	db "@"
+	text_far _BeachHouseSign3Text2
+	text_end
 
 BeachHouseSign4Text:
-	TX_ASM
+	text_asm
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, [wd472]
@@ -158,7 +158,7 @@ BeachHouseSign4Text:
 	set 6, [hl]
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	callab Printer_PrepareSurfingMinigameHighScoreTileMap
+	callfar Printer_PrepareSurfingMinigameHighScoreTileMap
 	call WaitForTextScrollButtonPress
 	ld hl, wd730
 	res 6, [hl]
@@ -178,14 +178,16 @@ BeachHouseSign4Text:
 	jp TextScriptEnd
 
 .BeachHousePrinterText1
-	TX_FAR _BeachHousePrinterText1
-	db $d, "@"
+	text_far _BeachHousePrinterText1
+	text_waitbutton
+	text_end
 .BeachHousePrinterText2
-	TX_FAR _BeachHousePrinterText2
-	db $d, "@"
+	text_far _BeachHousePrinterText2
+	text_waitbutton
+	text_end
 .BeachHousePrinterText3
-	TX_FAR _BeachHousePrinterText3
-	db "@"
+	text_far _BeachHousePrinterText3
+	text_end
 .BeachHousePrinterText4
-	TX_FAR _BeachHousePrinterText4
-	db "@"
+	text_far _BeachHousePrinterText4
+	text_end

@@ -10,20 +10,20 @@ CeruleanPokecenter_TextPointers:
 	dw CeruleanPokecenterText5
 
 CeruleanTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 CeruleanHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 CeruleanPokecenterText2:
-	TX_FAR _CeruleanPokecenterText2
-	db "@"
+	text_far _CeruleanPokecenterText2
+	text_end
 
 CeruleanPokecenterText3:
-	TX_FAR _CeruleanPokecenterText3
-	db "@"
+	text_far _CeruleanPokecenterText3
+	text_end
 
 CeruleanPokecenterText5:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

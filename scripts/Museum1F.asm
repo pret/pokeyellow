@@ -1,5 +1,5 @@
 Museum1F_Script:
-	ld a, $1
+	ld a, TRUE
 	ld [wAutoTextBoxDrawingControl], a
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -14,19 +14,19 @@ Museum1F_ScriptPointers:
 
 Museum1FScript0:
 	ld a, [wYCoord]
-	cp $4
+	cp 4
 	ret nz
 	ld a, [wXCoord]
-	cp $9
+	cp 9
 	jr z, .asm_5c120
 	ld a, [wXCoord]
-	cp $a
+	cp 10
 	ret nz
 .asm_5c120
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $1
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
 Museum1FScript1:
@@ -40,26 +40,26 @@ Museum1F_TextPointers:
 	dw Museum1FText5
 
 Museum1FText1:
-	TX_ASM
-	callba Func_f1c1b
+	text_asm
+	farcall Func_f1c1b
 	jp TextScriptEnd
 
 Museum1FText2:
-	TX_ASM
-	callba Func_f1d2a
+	text_asm
+	farcall Func_f1d2a
 	jp TextScriptEnd
 
 Museum1FText3:
-	TX_ASM
-	callba Func_f1d36
+	text_asm
+	farcall Func_f1d36
 	jp TextScriptEnd
 
 Museum1FText4:
-	TX_ASM
-	callba Func_f1d80
+	text_asm
+	farcall Func_f1d80
 	jp TextScriptEnd
 
 Museum1FText5:
-	TX_ASM
-	callba Func_f1d8c
+	text_asm
+	farcall Func_f1d8c
 	jp TextScriptEnd

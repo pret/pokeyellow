@@ -1,3 +1,5 @@
+CIRCLE_TILE_ID EQU $10
+
 _DisplayDiploma:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
@@ -6,51 +8,51 @@ _DisplayDiploma:
 	lb bc, BANK(SurfingPikachu3Graphics), (SurfingPikachu3GraphicsEnd - SurfingPikachu3Graphics) / $10
 	call CopyVideoData
 
-	coord hl, 0, 0
+	hlcoord 0, 0
 	call Func_e9bdf
 
-	coord hl, 0, 0
+	hlcoord 0, 0
 	call Func_e9beb
 
-	coord hl, 19, 0
+	hlcoord 19, 0
 	call Func_e9beb
 
 	ld a, $00
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld [hl], a
-	coord hl, 19, 0
+	hlcoord 19, 0
 	ld [hl], a
 
 	ld de, String_e9a73
-	coord hl, 5, 2
+	hlcoord 5, 2
 	call PlaceString
 
 	ld de, String_e9a7d
-	coord hl, 3, 4
+	hlcoord 3, 4
 	call PlaceString
 
 	ld de, wPlayerName
-	coord hl, 10, 4
+	hlcoord 10, 4
 	call PlaceString
 
 	ld de, String_e9a84
-	coord hl, 2, 6
+	hlcoord 2, 6
 	call PlaceString
 
 	ld de, String_e9ac8
-	coord hl, 9, 16
+	hlcoord 9, 16
 	call PlaceString
 
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	ld a, $01
-	ld [$ffba], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call GBPalNormal
 	ret
 
 String_e9a73:
-	db $10, "Diploma", $10, "@"
+	db CIRCLE_TILE_ID, "Diploma", CIRCLE_TILE_ID, "@"
 
 String_e9a7d:
 	db "Player@"
@@ -67,29 +69,29 @@ String_e9ac8:
 
 Func_e9ad3:
 	call ClearScreen
-	coord hl, 0, 17
+	hlcoord 0, 17
 	call Func_e9bdf
-	coord hl, 0, 0
+	hlcoord 0, 0
 	call Func_e9beb
-	coord hl, 19, 0
+	hlcoord 19, 0
 	call Func_e9beb
 	ld a, $00
-	coord hl, 0, 17
+	hlcoord 0, 17
 	ld [hl], a
-	coord hl, 19, 17
+	hlcoord 19, 17
 	ld [hl], a
 	ld de, Tilemap_e9b3e
-	coord hl, 6, 2
+	hlcoord 6, 2
 	lb bc, 10, 12
 	call Diploma_Surfing_CopyBox
 	ld de, Tilemap_e9bb6
-	coord hl, 5, 13
+	hlcoord 5, 13
 	lb bc, 1, 11
 	call Diploma_Surfing_CopyBox
 	ld de, String_e9bd5
-	coord hl, 2, 15
+	hlcoord 2, 15
 	call PlaceString
-	coord hl, 12, 15
+	hlcoord 12, 15
 	ld de, wPlayTimeHours
 	lb bc, $40 | 1, 3
 	call PrintNumber
@@ -102,7 +104,7 @@ Func_e9ad3:
 	cp 151
 	ret nz
 	ld de, TileMap_e9bc1
-	coord hl, 2, 0
+	hlcoord 2, 0
 	lb bc, 4, 5
 	call Diploma_Surfing_CopyBox
 	ret

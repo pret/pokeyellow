@@ -1,4 +1,4 @@
-Func_f2133:
+Func_f2133::
 	CheckEvent EVENT_BEAT_BLAINE
 	jr nz, .asm_627d9
 	ld hl, CinnabarGymText_75ac2
@@ -10,14 +10,14 @@ Func_f2133:
 	ret
 
 CinnabarGymText_75ac2:
-	TX_FAR _CinnabarGymText_75ac2
-	db "@"
+	text_far _CinnabarGymText_75ac2
+	text_end
 
 CinnabarGymText_75ac7:
-	TX_FAR _CinnabarGymText_75ac7
-	db "@"
+	text_far _CinnabarGymText_75ac7
+	text_end
 
-Func_f2150:
+Func_f2150::
 	ld hl, TextPointers_f215d
 	ld d, 0
 	add hl, de
@@ -36,29 +36,29 @@ TextPointers_f215d:
 	dw CinnabarGymText_f2182
 
 CinnabarGymText_f2169:
-	TX_FAR _CinnabarGymText_1
-	db "@"
+	text_far _CinnabarGymText_1
+	text_end
 
 CinnabarGymText_f216e:
-	TX_FAR _CinnabarGymText_2
-	db "@"
+	text_far _CinnabarGymText_2
+	text_end
 
 CinnabarGymText_f2173:
-	TX_FAR _CinnabarGymText_3
-	db "@"
+	text_far _CinnabarGymText_3
+	text_end
 
 CinnabarGymText_f2178:
-	TX_FAR _CinnabarGymText_4
-	db "@"
+	text_far _CinnabarGymText_4
+	text_end
 
 CinnabarGymText_f217d:
-	TX_FAR _CinnabarGymText_5
-	db "@"
+	text_far _CinnabarGymText_5
+	text_end
 
 CinnabarGymText_f2182:
-	TX_FAR _CinnabarGymText_6
-	db "@"
+	text_far _CinnabarGymText_6
+	text_end
 
 CinnabarGymText_f2187:
-	TX_FAR _CinnabarGymText_7 ; unused
-	db "@"
+	text_far _CinnabarGymText_7 ; unused
+	text_end

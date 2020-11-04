@@ -10,20 +10,20 @@ ViridianPokecenter_TextPointers:
 	dw ViridianPokeCenterText5
 
 ViridianHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 ViridianPokeCenterText2:
-	TX_FAR _ViridianPokeCenterText2
-	db "@"
+	text_far _ViridianPokeCenterText2
+	text_end
 
 ViridianPokeCenterText3:
-	TX_FAR _ViridianPokeCenterText3
-	db "@"
+	text_far _ViridianPokeCenterText3
+	text_end
 
 ViridianTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 ViridianPokeCenterText5:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

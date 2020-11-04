@@ -1,9 +1,12 @@
+HIDE EQU $11
+SHOW EQU $15
+
+; MissableObjects indexes (see data/maps/hide_show_data.asm)
 ; this is a list of the sprites that can be enabled/disabled during the game
 ; there may be unused sprites, but these will remain unmarked until
 ; the disassembly is complete
 
 	const_def
-
 	const HS_PALLET_TOWN_OAK               ; 00
 	const HS_LYING_OLD_MAN                 ; 01
 	const HS_OLD_MAN_1                     ; 02

@@ -1,4 +1,4 @@
-Func_f1a0f:
+Func_f1a0f::
 	CheckEvent EVENT_GOT_SQUIRTLE_FROM_OFFICER_JENNY
 	jr nz, .asm_f1a69
 	ld a, [wBeatGymFlags]
@@ -45,67 +45,67 @@ Func_f1a0f:
 	ret
 
 OfficerJennyText1:
-	TX_FAR _OfficerJennyText1
-	db "@"
+	text_far _OfficerJennyText1
+	text_end
 
 OfficerJennyText2:
-	TX_FAR _OfficerJennyText2
-	db "@"
+	text_far _OfficerJennyText2
+	text_end
 
 OfficerJennyText3:
-	TX_FAR _OfficerJennyText3
-	db $d
-	db "@"
+	text_far _OfficerJennyText3
+	text_waitbutton
+	text_end
 
 OfficerJennyText4:
-	TX_FAR _OfficerJennyText4
-	db "@"
+	text_far _OfficerJennyText4
+	text_end
 
 OfficerJennyText5:
-	TX_FAR _OfficerJennyText5
-	db "@"
+	text_far _OfficerJennyText5
+	text_end
 
-Func_f1a8a:
+Func_f1a8a::
 	ld hl, VermilionCityText_f1a91
 	call PrintText
 	ret
 
 VermilionCityText_f1a91:
-	TX_FAR _VermilionCityText8
-	db "@"
+	text_far _VermilionCityText8
+	text_end
 
-Func_f1a96:
+Func_f1a96::
 	ld hl, VermilionCityText_f1a9d
 	call PrintText
 	ret
 
 VermilionCityText_f1a9d:
-	TX_FAR _VermilionCityText9
-	db "@"
+	text_far _VermilionCityText9
+	text_end
 
-Func_f1aa2:
+Func_f1aa2::
 	ld hl, VermilionCityText_f1aa9
 	call PrintText
 	ret
 
 VermilionCityText_f1aa9:
-	TX_FAR _VermilionCityText12
-	db "@"
+	text_far _VermilionCityText12
+	text_end
 
-Func_f1aae:
+Func_f1aae::
 	ld hl, VermilionCityText_f1ab5
 	call PrintText
 	ret
 
 VermilionCityText_f1ab5:
-	TX_FAR _VermilionCityText13
-	db "@"
+	text_far _VermilionCityText13
+	text_end
 
-Func_f1aba:
+Func_f1aba::
 	ld hl, VermilionCityText_f1ac1
 	call PrintText
 	ret
 
 VermilionCityText_f1ac1:
-	TX_FAR _VermilionCityText14
-	db "@"
+	text_far _VermilionCityText14
+	text_end

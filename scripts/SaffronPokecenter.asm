@@ -10,20 +10,20 @@ SaffronPokecenter_TextPointers:
 	dw SaffronPokecenterText5
 
 SaffronHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 SaffronPokecenterText2:
-	TX_FAR _SaffronPokecenterText2
-	db "@"
+	text_far _SaffronPokecenterText2
+	text_end
 
 SaffronPokecenterText3:
-	TX_FAR _SaffronPokecenterText3
-	db "@"
+	text_far _SaffronPokecenterText3
+	text_end
 
 SaffronTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 SaffronPokecenterText5:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

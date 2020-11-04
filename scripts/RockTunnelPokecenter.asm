@@ -10,20 +10,20 @@ RockTunnelPokecenter_TextPointers:
 	dw RockTunnelPokecenterText5
 
 RockTunnelHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 RockTunnelPokecenterText2:
-	TX_FAR _RockTunnelPokecenterText2
-	db "@"
+	text_far _RockTunnelPokecenterText2
+	text_end
 
 RockTunnelPokecenterText3:
-	TX_FAR _RockTunnelPokecenterText3
-	db "@"
+	text_far _RockTunnelPokecenterText3
+	text_end
 
 RockTunnelTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 RockTunnelPokecenterText5:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

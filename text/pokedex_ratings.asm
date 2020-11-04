@@ -3,10 +3,10 @@ _DexCompletionText::
 	line "letion is:"
 
 	para "@"
-	TX_NUM hDexRatingNumMonsSeen, 1, 3
+	text_decimal hDexRatingNumMonsSeen, 1, 3
 	text " #MON seen"
 	line "@"
-	TX_NUM hDexRatingNumMonsOwned, 1, 3
+	text_decimal hDexRatingNumMonsOwned, 1, 3
 	text " #MON owned"
 
 	para "PROF.OAK's"

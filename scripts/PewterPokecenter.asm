@@ -14,26 +14,26 @@ PewterPokecenter_TextPointers:
 	dw PewterPokecenterText6
 
 PewterHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 PewterPokecenterText2:
-	TX_FAR _PewterPokecenterText2
-	db "@"
+	text_far _PewterPokecenterText2
+	text_end
 
 PewterJigglypuffText:
-	TX_ASM
-	callba PewterJigglypuff
+	text_asm
+	farcall PewterJigglypuff
 	jp TextScriptEnd
 
 PewterTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 PewterPokecenterText5:
-	TX_ASM
-	callba Func_f1d98
+	text_asm
+	farcall Func_f1d98
 	jp TextScriptEnd
 
 PewterPokecenterText6:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

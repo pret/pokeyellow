@@ -1,4 +1,4 @@
-Func_f2418:
+Func_f2418::
 	ld hl, BillsHouseText_f243b
 	call PrintText
 	call YesNoChoice
@@ -18,18 +18,18 @@ Func_f2418:
 	jr .asm_f2427
 
 BillsHouseText_f243b:
-	TX_FAR _BillsHouseText_1e865
-	db "@"
+	text_far _BillsHouseText_1e865
+	text_end
 
 BillsHouseText_f2440:
-	TX_FAR _BillsHouseText_1e86a
-	db "@"
+	text_far _BillsHouseText_1e86a
+	text_end
 
 BillsHouseText_f2445:
-	TX_FAR _BillsHouseText_1e86f
-	db "@"
+	text_far _BillsHouseText_1e86f
+	text_end
 
-Func_f244a:
+Func_f244a::
 	CheckEvent EVENT_GOT_SS_TICKET
 	jr nz, .asm_f247e
 	ld hl, BillsHouseText_f248c
@@ -57,31 +57,31 @@ Func_f244a:
 	ret
 
 BillsHouseText_f248c:
-	TX_FAR _BillThankYouText
-	db "@"
+	text_far _BillThankYouText
+	text_end
 
 BillsHouseText_f2491:
-	TX_FAR _SSTicketReceivedText
-	TX_SFX_KEY_ITEM
-	TX_BLINK
-	db "@"
+	text_far _SSTicketReceivedText
+	sound_get_key_item
+	text_promptbutton
+	text_end
 
 BillsHouseText_f2498:
-	TX_FAR _SSTicketNoRoomText
-	db "@"
+	text_far _SSTicketNoRoomText
+	text_end
 
 BillsHouseText_f249d:
-	TX_FAR _BillsHouseText_1e8cb
-	db "@"
+	text_far _BillsHouseText_1e8cb
+	text_end
 
-Func_f24a2:
+Func_f24a2::
 	ld hl, BillsHouseText_f24a9
 	call PrintText
 	ret
 
 BillsHouseText_f24a9:
-	TX_FAR _BillsHouseText_1e8da
-	db "@"
+	text_far _BillsHouseText_1e8da
+	text_end
 
 Func_f24ae:
 	ld a, [wCurMap]
@@ -106,7 +106,7 @@ Func_f24ae:
 	ld e, $ff
 	ret
 
-Func_f24d5:
+Func_f24d5::
 	ld a, $ff
 	ld [wJoyIgnore], a
 	xor a
@@ -121,7 +121,7 @@ Func_f24d5:
 	ld [wWhichEmotionBubble], a
 	predef EmotionBubble
 	call DisablePikachuFollowingPlayer
-	callab InitializePikachuTextID
+	callfar InitializePikachuTextID
 	ret
 
 Data_f2505:
@@ -132,7 +132,7 @@ Data_f2505:
 	db $1e
 	db $3f
 
-Func_f250b:
+Func_f250b::
 	ld hl, Data_f251c
 	ld b, SPRITE_FACING_UP
 	call TryApplyPikachuMovementData

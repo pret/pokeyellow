@@ -1,47 +1,47 @@
-Func_f2528:
+Func_f2528::
 	ld hl, Text_f252f
 	call PrintText
 	ret
 
 Text_f252f:
-	TX_FAR _ViridianForestText9
-	db "@"
+	text_far _ViridianForestText9
+	text_end
 
-Func_f2534:
+Func_f2534::
 	ld hl, Text_f253b
 	call PrintText
 	ret
 
 Text_f253b:
-	TX_FAR _ViridianForestText10
-	db "@"
+	text_far _ViridianForestText10
+	text_end
 
-Func_f2540:
+Func_f2540::
 	ld hl, Text_f254a
 	call PrintText
 	ret
 
 Text_f254a:
-	TX_FAR _ViridianForestText11
-	db "@"
+	text_far _ViridianForestText11
+	text_end
 
-Func_f254c:
+Func_f254c::
 	ld hl, Text_f2553
 	call PrintText
 	ret
 
 Text_f2553:
-	TX_FAR _ViridianForestText12
-	db "@"
+	text_far _ViridianForestText12
+	text_end
 
-Func_f2558:
+Func_f2558::
 	ld hl, Text_f255f
 	call PrintText
 	ret
 
 Text_f255f:
-	TX_FAR _ViridianForestText13
-	db "@"
+	text_far _ViridianForestText13
+	text_end
 
 Func_f2564:
 	ld hl, ViridianForestText_f256b
@@ -49,5 +49,5 @@ Func_f2564:
 	ret
 
 ViridianForestText_f256b:
-	TX_FAR _ViridianForestText14
-	db "@"
+	text_far _ViridianForestText14
+	text_end

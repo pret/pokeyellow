@@ -10,20 +10,20 @@ CeladonPokecenter_TextPointers:
 	dw CeladonPokecenterText5
 
 CeladonTradeNurseText:
-	TX_CABLE_CLUB_RECEPTIONIST
+	script_cable_club_receptionist
 
 CeladonHealNurseText:
-	TX_POKECENTER_NURSE
+	script_pokecenter_nurse
 
 CeladonPokecenterText2:
-	TX_FAR _CeladonPokecenterText2
-	db "@"
+	text_far _CeladonPokecenterText2
+	text_end
 
 CeladonPokecenterText3:
-	TX_FAR _CeladonPokecenterText3
-	db "@"
+	text_far _CeladonPokecenterText3
+	text_end
 
 CeladonPokecenterText5:
-	TX_ASM
-	callab PokecenterChanseyText
+	text_asm
+	callfar PokecenterChanseyText
 	jp TextScriptEnd

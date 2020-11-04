@@ -54,7 +54,7 @@ Yellow_SampleSecondTrashCan:
 	call AddNTimes
 	call AddNTimes ; ????
 	ld a, [hli]
-	ld [hGymTrashCanRandNumMask], a
+	ldh [hGymTrashCanRandNumMask], a
 	ld e, a
 	push hl
 	call TrashCanRandom

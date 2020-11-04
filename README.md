@@ -1,26 +1,29 @@
-# Pokémon Yellow
+# Pokémon Yellow [![Build Status][travis-badge]][travis]
 
 This is a disassembly of Pokémon Yellow.
 
-It builds the following rom:
+It builds the following ROM:
 
-* Pokemon Yellow (UE) [C][!].gbc  `md5: d9290db87b1f0a23b89f99ee4469e34b`
+- Pokemon Yellow (UE) [C][!].gbc  `sha1: cc7d03262ebfaf2f06772c1a480c7d9d5f4a38e1`
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 
 ## See also
 
-* Disassembly of [**Pokémon Red/Blue**][pokered]
-* Disassembly of [**Pokémon Gold**][pokegold]
-* Disassembly of [**Pokémon Crystal**][pokecrystal]
-* Disassembly of [**Pokémon Pinball**][pokepinball]
-* Disassembly of [**Pokémon TCG**][poketcg]
-* Disassembly of [**Pokémon Ruby**][pokeruby]
-* Disassembly of [**Pokémon Fire Red**][pokefirered]
-* Disassembly of [**Pokémon Emerald**][pokeemerald]
-* Discord: [**pret**][Discord]
-* irc: **irc.freenode.net** [**#pret**][irc]
+- **Discord:** [pret][discord]
+- **IRC:** [freenode#pret][irc]
+
+Other disassembly projects:
+
+- [**Pokémon Red/Blue**][pokered]
+- [**Pokémon Gold/Silver**][pokegold]
+- [**Pokémon Crystal**][pokecrystal]
+- [**Pokémon Pinball**][pokepinball]
+- [**Pokémon TCG**][poketcg]
+- [**Pokémon Ruby**][pokeruby]
+- [**Pokémon FireRed**][pokefirered]
+- [**Pokémon Emerald**][pokeemerald]
 
 [pokered]: https://github.com/pret/pokered
 [pokegold]: https://github.com/pret/pokegold
@@ -30,5 +33,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 [pokeruby]: https://github.com/pret/pokeruby
 [pokefirered]: https://github.com/pret/pokefirered
 [pokeemerald]: https://github.com/pret/pokeemerald
-[Discord]: https://discord.gg/d5dubZ3
+[discord]: https://discord.gg/d5dubZ3
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
+[travis]: https://travis-ci.org/pret/pokeyellow
+[travis-badge]: https://travis-ci.org/pret/pokeyellow.svg?branch=master

@@ -1,19 +1,19 @@
-IsPlayerTalkingToPikachu:
+IsPlayerTalkingToPikachu::
 	ld a, [wd436]
 	and a
 	ret z
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndexOrTextID]
 	cp $f
 	ret nz
 	call InitializePikachuTextID
 	xor a
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	ld [wd436], a
 	ret
 	
-InitializePikachuTextID:
-	ld a, $d4 ; display 
-	ld [hSpriteIndexOrTextID], a
+InitializePikachuTextID::
+	ld a, TEXT_PIKACHU_ANIM ; display 
+	ldh [hSpriteIndexOrTextID], a
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, $1
@@ -92,7 +92,7 @@ StarterPikachuEmotionCommand_pcm:
 PlayPikachuSoundClip_:
 	cp $ff
 	ret z
-	callab PlayPikachuSoundClip
+	callfar PlayPikachuSoundClip
 	ret
 	
 StarterPikachuEmotionCommand_emote:
@@ -190,7 +190,7 @@ PlaySpecificPikachuEmotion:
 	ld a, e
 	jr load_expression
 
-TalkToPikachu:
+TalkToPikachu::
 	call MapSpecificPikachuExpression
 	jr c, load_expression
 	call GetPikaPicAnimationScriptIndex
@@ -267,7 +267,7 @@ MapSpecificPikachuExpression:
 	jr .check_pikachu_status
 
 .notPewterPokecenter
-	callab Func_f24ae
+	callfar Func_f24ae
 	ld a, e
 	cp $ff
 	jr nz, .play_emotion
@@ -277,7 +277,7 @@ MapSpecificPikachuExpression:
 	call IsPlayerPikachuAsleepInParty
 	ldpikaemotion a, PikachuEmotion11
 	jr c, .play_emotion
-	callab CheckPikachuFaintedOrStatused ; same bank
+	callfar CheckPikachuFaintedOrStatused ; same bank
 	ldpikaemotion a, PikachuEmotion28
 	jr c, .play_emotion
 	ld a, [wCurMap]
@@ -327,7 +327,7 @@ IsPlayerPikachuAsleepInParty:
 	jr z, .done
 	cp PIKACHU
 	jr nz, .curMonNotStarterPikachu
-	callab IsThisPartymonStarterPikachu
+	callfar IsThisPartymonStarterPikachu
 	jr nc, .curMonNotStarterPikachu
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Status
@@ -358,7 +358,7 @@ INCLUDE "data/pikachu_emotions.asm"
 
 PikachuWalksToNurseJoy:
 	ld a, $40
-	ld [h_0xFFFC], a
+	ldh [hFFFC], a
 	call LoadPikachuSpriteIntoVRAM
 	call .GetMovementData
 	and a
@@ -366,7 +366,7 @@ PikachuWalksToNurseJoy:
 	call ApplyPikachuMovementData
 .skip
 	xor a
-	ld [h_0xFFFC], a
+	ldh [hFFFC], a
 	ret
 
 .GetMovementData:

@@ -8,12 +8,12 @@ Predef::
 
 	; A hack for LoadDestinationWarpPosition.
 	; See LoadTilesetHeader (predef $19).
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld [wPredefParentBank], a
 
 	push af
 	ld a, BANK(GetPredefPointer)
-	ld [H_LOADEDROMBANK], a
+	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 
 	call GetPredefPointer

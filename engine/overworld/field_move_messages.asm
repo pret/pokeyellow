@@ -7,16 +7,16 @@ PrintStrengthTxt:
 	jp PrintText
 
 UsedStrengthText:
-	TX_FAR _UsedStrengthText
-	TX_ASM
+	text_far _UsedStrengthText
+	text_asm
 	ld a, [wcf91]
 	call PlayCry
 	call Delay3
 	jp TextScriptEnd
 
 CanMoveBouldersText:
-	TX_FAR _CanMoveBouldersText
-	db "@"
+	text_far _CanMoveBouldersText
+	text_end
 
 IsSurfingAllowed:
 ; Returns whether surfing is allowed in bit 1 of wd728.
@@ -32,7 +32,7 @@ IsSurfingAllowed:
 	ret nz
 	CheckBothEventsSet EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE
 	ret z
-	ld hl, CoordsData_f5b64
+	ld hl, CoordsData_cdf7
 	call ArePlayerCoordsInArray
 	ret nc
 	ld hl, wd728
@@ -45,13 +45,14 @@ IsSurfingAllowed:
 	ld hl, CyclingIsFunText
 	jp PrintText
 
-CoordsData_f5b64:
-	db $0B,$07,$FF
+CoordsData_cdf7:
+	dbmapcoord  7, 11
+	db -1 ; end
 
 CurrentTooFastText:
-	TX_FAR _CurrentTooFastText
-	db "@"
+	text_far _CurrentTooFastText
+	text_end
 
 CyclingIsFunText:
-	TX_FAR _CyclingIsFunText
-	db "@"
+	text_far _CyclingIsFunText
+	text_end

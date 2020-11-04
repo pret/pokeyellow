@@ -16,16 +16,16 @@ PrintPokedexEntry:
 	push af
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Printer_GetDexEntryRegisters
 	call Printer_StartTransmission
 	ld a, [wPrinterPokedexMonIsOwned]
@@ -40,10 +40,10 @@ PrintPokedexEntry:
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call ClearScreen
-	callab Pokedex_DrawInterface
-	callab Pokedex_PlacePokemonList
+	callfar Pokedex_DrawInterface
+	callfar Pokedex_PlacePokemonList
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call .TryPrintPage
 	jr c, .finish_printing
 	ld a, [wPrinterPokedexMonIsOwned]
@@ -56,7 +56,7 @@ PrintPokedexEntry:
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Printer_PrepareDexEntryForPrinting
 	ld a, $7
 	call Printer_StartTransmission
@@ -65,16 +65,16 @@ PrintPokedexEntry:
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call .TryPrintPage
 .finish_printing
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	pop af
@@ -105,7 +105,7 @@ PrintPokedexEntry:
 	ret
 
 Printer_GetDexEntryRegisters:
-	callab DrawDexEntryOnScreen
+	callfar DrawDexEntryOnScreen
 	ld a, l
 	ld [wPrinterPokedexEntryTextPointer], a
 	ld a, h
@@ -125,20 +125,20 @@ Printer_GetDexEntryRegisters:
 
 Printer_PrepareDexEntryForPrinting:
 	call ClearScreen
-	callab Pokedex_PrepareDexEntryForPrinting
+	callfar Pokedex_PrepareDexEntryForPrinting
 	ret
 
 PrintSurfingMinigameHighScore:
 	xor a
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	call Printer_PrepareSurfingMinigameHighScoreTileMap
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
@@ -163,24 +163,24 @@ PrintSurfingMinigameHighScore:
 	ld [wPrinterOpcode], a
 	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
 
-PrintDiploma:
+PrintDiploma::
 	xor a
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	call _DisplayDiploma
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	call StartTransmission_Send9Rows
 	ld a, $10
 	ld [wcae2], a
@@ -194,7 +194,7 @@ PrintDiploma:
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Func_e9ad3
 	call StartTransmission_Send9Rows
 	ld a, $3
@@ -208,9 +208,9 @@ PrintDiploma:
 	ld [wPrinterOpcode], a
 	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
@@ -246,17 +246,17 @@ PrintPCBox::
 	push af
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	call SaveScreenTilesToBuffer1
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage1
 	call StartTransmission_Send9Rows
 	ld a, $10
@@ -271,7 +271,7 @@ PrintPCBox::
 	ld c, 12
 	call DelayFrames
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage2
 	call StartTransmission_Send9Rows
 	ld a, $0
@@ -286,7 +286,7 @@ PrintPCBox::
 	ld c, 12
 	call DelayFrames
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage3
 	call StartTransmission_Send9Rows
 	ld a, $0
@@ -301,7 +301,7 @@ PrintPCBox::
 	ld c, 12
 	call DelayFrames
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage4
 	call StartTransmission_Send9Rows
 	ld a, $3
@@ -314,9 +314,9 @@ PrintPCBox::
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	pop af
@@ -352,20 +352,20 @@ Func_e8dfb:
 	ret
 
 String_e8e1f:
-	TX_FAR _NoPokemonText
-	db "@"
+	text_far _NoPokemonText
+	text_end
 
-PrintFanClubPortrait:
+PrintFanClubPortrait::
 	xor a
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	call Printer_PlayPrinterMusic
 	call Printer_GetMonStats
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
@@ -390,9 +390,9 @@ PrintFanClubPortrait:
 	ld [wPrinterOpcode], a
 	call Printer_CopyTileMapFromPrinterTileBuffer
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	call ReloadMapAfterPrinter
 	call Printer_PlayMapMusic
 	ret
@@ -403,17 +403,17 @@ PrinterDebug:
 	push de
 	push hl
 	call StopAllMusic
-	ld a, [rIE]
+	ldh a, [rIE]
 	push af
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	ld a, $9
-	ld [rIE], a
+	ldh [rIE], a
 	call StartTransmission_Send9Rows
 	ld a, $13
 	ld [wcae2], a
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call PrinterDebug_LoadGFX
 .loop
@@ -434,9 +434,9 @@ PrinterDebug:
 	xor a
 	call FillMemory
 	xor a
-	ld [rIF], a
+	ldh [rIF], a
 	pop af
-	ld [rIE], a
+	ldh [rIE], a
 	pop hl
 	pop de
 	pop bc
@@ -444,7 +444,7 @@ PrinterDebug:
 	ret
 
 Printer_CheckPressingB:
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	and B_BUTTON
 	jr nz, .quit
 	and a
@@ -461,43 +461,43 @@ Printer_CheckPressingB:
 	ld a, $16
 	ld [wPrinterOpcode], a
 	ld a, $88
-	ld [rSB], a
+	ldh [rSB], a
 	ld a, $1
-	ld [rSC], a
+	ldh [rSC], a
 	ld a, $81
-	ld [rSC], a
+	ldh [rSC], a
 .wait_send_cancel
 	ld a, [wPrinterOpcode]
 	and a
 	jr nz, .wait_send_cancel
 .already_done
 	ld a, $1
-	ld [hCanceledPrinting], a
+	ldh [hCanceledPrinting], a
 	scf
 	ret
 
 Printer_CopyTileMapToPrinterTileBuffer:
-	coord hl, 0, 0
-	coord de, 0, 0, wPrinterTileBuffer
+	hlcoord 0, 0
+	decoord 0, 0, wPrinterTileBuffer
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
 Printer_CopyTileMapFromPrinterTileBuffer:
-	coord hl, 0, 0, wPrinterTileBuffer
-	coord de, 0, 0
+	hlcoord 0, 0, wPrinterTileBuffer
+	decoord 0, 0
 	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
 	call CopyData
 	ret
 
 Printer_ResetJoypadHRAM:
 	xor a
-	ld [hJoyLast], a
-	ld [hJoyReleased], a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
-	ld [hJoy5], a
-	ld [hJoy6], a
+	ldh [hJoyLast], a
+	ldh [hJoyReleased], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
+	ldh [hJoy5], a
+	ldh [hJoy6], a
 	ret
 
 Printer_PlayPrinterMusic:
@@ -568,8 +568,8 @@ GBPrinter_UpdateStatusMessage:
 	ret z
 	push af
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
-	coord hl, 0, 5
+	ldh [hAutoBGTransferEnabled], a
+	hlcoord 0, 5
 	lb bc, 10, 18
 	call TextBoxBorder
 	pop af
@@ -581,13 +581,13 @@ GBPrinter_UpdateStatusMessage:
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	coord hl, 1, 7
+	hlcoord 1, 7
 	call PlaceString
-	coord hl, 2, 15
+	hlcoord 2, 15
 	ld de, .PressBToCancel
 	call PlaceString
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	xor a
 	ld [wPrinterStatusIndicator], a
 	ret
@@ -648,39 +648,39 @@ Printer_PrepareSurfingMinigameHighScoreTileMap:
 	ld hl, vChars2
 	lb bc, BANK(SurfingPikachu2Graphics), (SurfingPikachu2GraphicsEnd - SurfingPikachu2Graphics) / $10
 	call CopyVideoData
-	coord hl, 0, 0
+	hlcoord 0, 0
 	call .PlaceRowAlternatingTiles
-	coord hl, 0, 17
+	hlcoord 0, 17
 	call .PlaceRowAlternatingTiles
-	coord hl, 0, 0
+	hlcoord 0, 0
 	call .PlaceColumnAlternatingTiles
-	coord hl, 19, 0
+	hlcoord 19, 0
 	call .PlaceColumnAlternatingTiles
 	ld a, $4
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld [hl], a
-	coord hl, 0, 17
+	hlcoord 0, 17
 	ld [hl], a
-	coord hl, 19, 0
+	hlcoord 19, 0
 	ld [hl], a
-	coord hl, 19, 17
+	hlcoord 19, 17
 	ld [hl], a
 	ld de, .Tilemap1
-	coord hl, 10, 8
+	hlcoord 10, 8
 	lb bc, 3, 8
 	call Diploma_Surfing_CopyBox
 	ld de, .Tilemap2
-	coord hl, 2, 11
+	hlcoord 2, 11
 	lb bc, 6, 16
 	call Diploma_Surfing_CopyBox
 	ld de, .PikachusBeachString
-	coord hl, 3, 2
+	hlcoord 3, 2
 	call PlaceString
 	ld de, .HiScoreString
-	coord hl, 9, 4
+	hlcoord 9, 4
 	call PlaceString
 	ld de, .PointsString
-	coord hl, 12, 6
+	hlcoord 12, 6
 	call PlaceString
 	ld de, wPlayerName
 	ld hl, wPlayerName
@@ -696,14 +696,14 @@ Printer_PrepareSurfingMinigameHighScoreTileMap:
 	xor a
 .got_name_length
 	ld c, a
-	coord hl, 2, 4
+	hlcoord 2, 4
 	add hl, bc
 	call PlaceString
 	call CopySurfingMinigameScore
 	ld b, 8
 	call RunPaletteCommand
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call GBPalNormal
 	ret
@@ -771,7 +771,7 @@ Diploma_Surfing_CopyBox:
 
 CopySurfingMinigameScore:
 	ld de, wSurfingMinigameHiScore + 1
-	coord hl, 7, 6
+	hlcoord 7, 6
 	ld a, [de]
 	call .BCDConvertScore
 	ld a, [de]
@@ -796,19 +796,19 @@ PrintPCBox_DrawPage1:
 	ld [wBoxNumString], a
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld bc, 11 * SCREEN_WIDTH
 	ld a, " "
 	call FillMemory
 	call PrintPCBox_DrawLeftAndRightBorders
 	call PrintPCBox_DrawTopBorder
-	coord hl, 4, 4
+	hlcoord 4, 4
 	ld de, .PokemonListString
 	call PlaceString
-	coord hl, 7, 6
+	hlcoord 7, 6
 	ld de, .BoxString
 	call PlaceString
-	coord hl, 11, 6
+	hlcoord 11, 6
 	ld a, [wCurrentBoxNum]
 	and $7f
 	cp 9
@@ -823,7 +823,7 @@ PrintPCBox_DrawPage1:
 	add "1"
 .placed_box_number
 	ld [hl], a
-	coord hl, 4, 9
+	hlcoord 4, 9
 	ld de, wBoxSpecies
 	ld c, $3
 	call PrintPCBox_PlaceBoxMonInfo
@@ -839,7 +839,7 @@ PrintPCBox_DrawPage2:
 	ld a, [wBoxDataStart]
 	cp 4
 	ret c
-	coord hl, 4, 0
+	hlcoord 4, 0
 	ld de, wBoxSpecies + 3
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -852,7 +852,7 @@ PrintPCBox_DrawPage3:
 	ld a, [wBoxDataStart]
 	cp 10
 	ret c
-	coord hl, 4, 0
+	hlcoord 4, 0
 	ld de, wBoxSpecies + 9
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -862,16 +862,16 @@ PrintPCBox_DrawPage4:
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
-	coord hl, 0, 15
+	hlcoord 0, 15
 	call PrintPCBox_DrawBottomBorderAtHL
-	coord hl, 0, 16
+	hlcoord 0, 16
 	ld bc, 2 * SCREEN_WIDTH
 	ld a, " "
 	call FillMemory
 	ld a, [wBoxDataStart]
 	cp 16
 	ret c
-	coord hl, 4, 0
+	hlcoord 4, 0
 	ld de, wBoxSpecies + 15
 	ld c, 5
 	call PrintPCBox_PlaceBoxMonInfo
@@ -933,7 +933,7 @@ PrintPCBox_PlaceBoxMonInfo:
 	ret
 
 PrintPCBox_DrawTopBorder:
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld a, $79
 	ld [hli], a
 	ld a, $7a
@@ -947,7 +947,7 @@ PrintPCBox_DrawTopBorder:
 	ret
 
 PrintPCBox_DrawLeftAndRightBorders:
-	coord hl, 0, 0
+	hlcoord 0, 0
 	ld de, SCREEN_WIDTH - 1
 	ld c, SCREEN_HEIGHT
 .loop
@@ -961,7 +961,7 @@ PrintPCBox_DrawLeftAndRightBorders:
 	ret
 
 PrintPCBox_DrawBottomBorder:
-	coord hl, 0, 17
+	hlcoord 0, 17
 PrintPCBox_DrawBottomBorderAtHL:
 	ld a, $7d
 	ld [hli], a
@@ -976,10 +976,10 @@ PrintPCBox_DrawBottomBorderAtHL:
 	ret
 
 PrintPCBox_PlaceHorizontalLines:
-	coord hl, 4, 0
+	hlcoord 4, 0
 	ld c, 6
 	call .PlaceHorizontalLine
-	coord hl, 6, 1
+	hlcoord 6, 1
 	ld c, 6
 .PlaceHorizontalLine:
 .loop

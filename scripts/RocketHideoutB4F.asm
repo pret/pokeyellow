@@ -48,7 +48,7 @@ RocketHideout4Script3:
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
 	ld a, $a
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
 	ld a, HS_ROCKET_HIDEOUT_B4F_GIOVANNI
@@ -89,7 +89,7 @@ RocketHideout4Script_455a5:
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
 .asm_455c2
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $fc
 	ld [wJoyIgnore], a
 	call StopAllMusic
@@ -103,7 +103,7 @@ RocketHideout4Script_455a5:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, $b
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -132,7 +132,7 @@ RocketHideout4Script4:
 	ld de, RocketHideout4JessieJamesMovementData_45606
 .asm_45617
 	ld a, $2
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call MoveSprite
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -166,7 +166,7 @@ RocketHideout4Script7:
 	ld de, RocketHideout4JessieJamesMovementData_45605
 .asm_4565f
 	ld a, $3
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call MoveSprite
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -194,7 +194,7 @@ RocketHideout4Script9:
 .asm_45697
 	call Delay3
 	ld a, $c
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 RocketHideout4Script10:
 	ld hl, wd72d
@@ -208,7 +208,7 @@ RocketHideout4Script10:
 	ld a, $2b
 	ld [wTrainerNo], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	SetEvent EVENT_6A0
 	ld a, $b
@@ -232,7 +232,7 @@ RocketHideout4Script11:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, $d
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -264,7 +264,7 @@ RocketHideout4Script12:
 RocketHideout4Script13:
 	call PlayDefaultMusic
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
 	ld a, $0
@@ -299,22 +299,16 @@ RocketHideoutB4F_TextPointers:
 	dw RocketHideout4Text12
 
 RocketHideout4TrainerHeader0:
-	dbEventFlagBit EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_2
-	db ($1 << 4)
-	dwEventFlagAddress EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_2
-	dw RocketHideout4Trainer0BeforeText
-	dw RocketHideout4Trainer0AfterText
-	dw RocketHideout4Trainer0EndBattleText
-	dw RocketHideout4Trainer0EndBattleText
-	db $ff
+	trainer EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_2, 1, RocketHideout4Trainer0BeforeText, RocketHideout4Trainer0EndBattleText, RocketHideout4Trainer0AfterText
+	db -1 ; end
 
 RocketHideout4Text1:
 RocketHideout4Text2:
-	db "@"
+	text_end
 
 RocketHideout4Text10:
-	TX_FAR _RocketHideoutJessieJamesText1
-	TX_ASM
+	text_far _RocketHideoutJessieJamesText1
+	text_asm
 	ld c, 10
 	call DelayFrames
 	ld a, $8
@@ -329,22 +323,22 @@ RocketHideout4Text10:
 	jp TextScriptEnd
 
 RocketHideout4Text11:
-	TX_FAR _RocketHideoutJessieJamesText2
-	db "@"
+	text_far _RocketHideoutJessieJamesText2
+	text_end
 
 RocketHideout4JessieJamesEndBattleText:
-	TX_FAR _RocketHideoutJessieJamesText3
-	db "@"
+	text_far _RocketHideoutJessieJamesText3
+	text_end
 
 RocketHideout4Text12:
-	TX_FAR _RocketHideoutJessieJamesText4
-	TX_ASM
+	text_far _RocketHideoutJessieJamesText4
+	text_asm
 	ld c, 64
 	call DelayFrames
 	jp TextScriptEnd
 
 RocketHideout4Text0:
-	TX_ASM
+	text_asm
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
 	jp nz, .asm_457fb
 	ld hl, RocketHideout4Text_45804
@@ -355,12 +349,12 @@ RocketHideout4Text0:
 	ld hl, RocketHideout4Text_45809
 	ld de, RocketHideout4Text_45809
 	call SaveEndBattleTextPointers
-	ld a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $3
 	ld [wRocketHideoutB4FCurScript], a
 	ld [wCurMapScript], a
@@ -373,31 +367,31 @@ RocketHideout4Text0:
 	jp TextScriptEnd
 
 RocketHideout4Text_45804:
-	TX_FAR _RocketHideout4Text_4557a
-	db "@"
+	text_far _RocketHideout4Text_4557a
+	text_end
 
 RocketHideout4Text_45809:
-	TX_FAR _RocketHideout4Text_4557f
-	db "@"
+	text_far _RocketHideout4Text_4557f
+	text_end
 
 RocketHideout4Text9:
-	TX_FAR _RocketHideout4Text_45584
-	db "@"
+	text_far _RocketHideout4Text_45584
+	text_end
 
 RocketHideout4Text3:
-	TX_ASM
+	text_asm
 	ld hl, RocketHideout4TrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 RocketHideout4Trainer0BeforeText:
-	TX_FAR _RocketHideout4BattleText4
-	db "@"
+	text_far _RocketHideout4BattleText4
+	text_end
 
 RocketHideout4Trainer0EndBattleText:
-	TX_FAR _RocketHideout4EndBattleText4
-	TX_BLINK
-	TX_ASM
+	text_far _RocketHideout4EndBattleText4
+	text_promptbutton
+	text_asm
 	SetEvent EVENT_ROCKET_DROPPED_LIFT_KEY
 	ld a, HS_ROCKET_HIDEOUT_B4F_ITEM_5
 	ld [wMissableObjectIndex], a
@@ -405,11 +399,11 @@ RocketHideout4Trainer0EndBattleText:
 	jp TextScriptEnd
 
 RocketHideout4Trainer0AfterText:
-	TX_ASM
+	text_asm
 	ld hl, RocketHideout4Text_45844
 	call PrintText
 	jp TextScriptEnd
 
 RocketHideout4Text_45844:
-	TX_FAR _RocketHideout4Text_455ec
-	db "@"
+	text_far _RocketHideout4Text_455ec
+	text_end

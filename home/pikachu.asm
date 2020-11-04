@@ -55,7 +55,7 @@ SpawnPikachu::
 	ld a, [hl]
 	dec a
 	swap a
-	ld [hTilePlayerStandingOn], a
+	ldh [hTilePlayerStandingOn], a
 	homecall SpawnPikachu_ ; 3f:46d5
 	ret
 
@@ -83,7 +83,7 @@ Pikachu_IsInArray::
 GetPikachuMovementScriptByte::
 	push hl
 	push bc
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	push af
 	ld a, [wPikachuMovementScriptBank]
 	call BankswitchCommon
@@ -105,7 +105,7 @@ GetPikachuMovementScriptByte::
 	ret
 
 ApplyPikachuMovementData::
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld b, a
 	push af
 	callbs ApplyPikachuMovementData_

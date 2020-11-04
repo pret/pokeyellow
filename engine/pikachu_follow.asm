@@ -457,7 +457,7 @@ Func_fc76a:
 	call Func_fc82e
 	jr c, .skip
 	push bc
-	callab InitializeSpriteScreenPosition
+	callfar InitializeSpriteScreenPosition
 	pop bc
 .skip
 	ld hl, wSpritePikachuStateData1MovementStatus - wSpritePikachuStateData1
@@ -472,7 +472,7 @@ Func_fc76a:
 Func_fc793:
 	call RefreshPikachuFollow
 	push bc
-	callab InitializeSpriteScreenPosition
+	callfar InitializeSpriteScreenPosition
 	pop bc
 	ld hl, wSpritePikachuStateData1ImageIndex - wSpritePikachuStateData1
 	add hl, bc
@@ -583,7 +583,7 @@ Func_fc842:
 	ld hl, $0
 	push af
 	call Random
-	ld a, [hRandomAdd]
+	ldh a, [hRandomAdd]
 	and %11
 	ld e, a
 	ld d, $0
@@ -1107,7 +1107,7 @@ IsPikachuRightNextToPlayer:
 	xor a
 	ret
 
-GetPikachuFacingDirectionAndReturnToE:
+GetPikachuFacingDirectionAndReturnToE::
 	call GetPikachuFacingDirection
 	ld e, a
 	ret
@@ -1475,7 +1475,7 @@ AreThereAtLeastTwoStepsInPikachuFollowCommandBuffer:
 
 WillPikachuSpawnOnTheScreen:
 	ld h, wSpriteStateData2 / $100
-	ld a, [H_CURRENTSPRITEOFFSET] ; If we're here, this can only be $f0
+	ldh a, [hCurrentSpriteOffset] ; If we're here, this can only be $f0
 	add wSpritePikachuStateData2MapY - wSpritePikachuStateData2
 	ld l, a
 	ld b, [hl]
@@ -1516,7 +1516,7 @@ WillPikachuSpawnOnTheScreen:
 	jr c, .on_screen
 .not_on_screen
 	ld h, wSpriteStateData1 / $100
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add wSpritePikachuStateData1ImageIndex - wSpritePikachuStateData1
 	ld l, a
 	ld [hl], $ff
@@ -1525,7 +1525,7 @@ WillPikachuSpawnOnTheScreen:
 
 .on_screen
 	ld h, wSpriteStateData2 / $100
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add wSpritePikachuStateData2GrassPriority - wSpritePikachuStateData2
 	ld l, a
 	ld a, [wGrassTile]
@@ -1541,7 +1541,7 @@ WillPikachuSpawnOnTheScreen:
 
 .GetNPCCurrentTile:
 	ld h, wSpriteStateData1 / $100
-	ld a, [H_CURRENTSPRITEOFFSET]
+	ldh a, [hCurrentSpriteOffset]
 	add wSpritePikachuStateData1YPixels - wSpritePikachuStateData1
 	ld l, a
 	ld a, [hli]

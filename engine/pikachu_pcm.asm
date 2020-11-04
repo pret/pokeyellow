@@ -23,12 +23,12 @@ PlayPikachuSoundClip::
 	push bc
 	push hl
 	ld a, $80
-	ld [rNR52], a
+	ldh [rNR52], a
 	ld a, $77
-	ld [rNR50], a
+	ldh [rNR50], a
 	xor a
-	ld [rNR30], a
-	ld hl, $ff30 ; wave data
+	ldh [rNR30], a
+	ld hl, rWave_0 ; wave data
 	ld de, wRedrawRowOrColumnSrcTiles
 .saveWaveDataLoop
 	ld a, [hl]
@@ -40,18 +40,18 @@ PlayPikachuSoundClip::
 	cp $40 ; end of wave data
 	jr nz, .saveWaveDataLoop
 	ld a, $80
-	ld [rNR30], a
-	ld a, [rNR51]
+	ldh [rNR30], a
+	ldh a, [rNR51]
 	or $44
-	ld [rNR51], a
+	ldh [rNR51], a
 	ld a, $ff
-	ld [rNR31], a
+	ldh [rNR31], a
 	ld a, $20
-	ld [rNR32], a
+	ldh [rNR32], a
 	ld a, $ff
-	ld [rNR33], a
+	ldh [rNR33], a
 	ld a, $87
-	ld [rNR34], a
+	ldh [rNR34], a
 	pop hl
 	pop bc
 	call PlayPikachuPCM
@@ -59,10 +59,10 @@ PlayPikachuSoundClip::
 	ld [wc0f3], a
 	ld [wc0f4], a
 	ld a, $80
-	ld [rNR52], a
+	ldh [rNR52], a
 	xor a
-	ld [rNR30], a
-	ld hl, $ff30
+	ldh [rNR30], a
+	ld hl, rWave_0
 	ld de, wRedrawRowOrColumnSrcTiles
 .reloadWaveDataLoop
 	ld a, [de]
@@ -72,20 +72,20 @@ PlayPikachuSoundClip::
 	cp $40 ; end of wave data
 	jr nz, .reloadWaveDataLoop
 	ld a, $80
-	ld [rNR30], a
-	ld a, [rNR51]
+	ldh [rNR30], a
+	ldh a, [rNR51]
 	and $bb
-	ld [rNR51], a
+	ldh [rNR51], a
 	xor a
 	ld [wChannelSoundIDs + Ch5], a
 	ld [wChannelSoundIDs + Ch6], a
 	ld [wChannelSoundIDs + Ch7], a
 	ld [wChannelSoundIDs + Ch8], a
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ei
 	ret
 
-PikachuCriesPointerTable:
+PikachuCriesPointerTable::
 ; format:
 ; db bank
 ; dw pointer to cry

@@ -2,34 +2,34 @@ ReadJoypad_::
 ; Poll joypad input.
 ; Unlike the hardware register, button
 ; presses are indicated by a set bit.
-	ld a, [hDisableJoypadPolling]
+	ldh a, [hDisableJoypadPolling]
 	and a
 	ret nz
 
 	ld a, 1 << 5 ; select direction keys
 	;ld c, 0
 
-	ld [rJOYP], a
-	ld a, [rJOYP]
-	ld a, [rJOYP]
+	ldh [rJOYP], a
+	ldh a, [rJOYP]
+	ldh a, [rJOYP]
 	cpl
 	and %1111
 	swap a
 	ld b, a
 
 	ld a, 1 << 4 ; select button keys
-	ld [rJOYP], a
-	rept 6
-	ld a, [rJOYP]
-	endr
+	ldh [rJOYP], a
+	REPT 6
+	ldh a, [rJOYP]
+	ENDR
 	cpl
 	and %1111
 	or b
 
-	ld [hJoyInput], a
+	ldh [hJoyInput], a
 
 	ld a, 1 << 4 + 1 << 5 ; deselect keys
-	ld [rJOYP], a
+	ldh [rJOYP], a
 	ret
 
 
@@ -37,30 +37,30 @@ _Joypad::
 ; hJoyReleased: (hJoyLast ^ hJoyInput) & hJoyLast
 ; hJoyPressed:  (hJoyLast ^ hJoyInput) & hJoyInput
 
-	ld a, [hJoyInput]
-	ld b,a
+	ldh a, [hJoyInput]
+	ld b, a
 	and $4F
 	cp A_BUTTON + B_BUTTON + SELECT + START ; soft reset
 	jp z, TrySoftReset
 
-	ld a, [hJoyLast]
+	ldh a, [hJoyLast]
 	ld e, a
 	xor b
 	ld d, a
 	and e
-	ld [hJoyReleased], a
+	ldh [hJoyReleased], a
 	ld a, d
 	and b
-	ld [hJoyPressed], a
+	ldh [hJoyPressed], a
 	ld a, b
-	ld [hJoyLast], a
+	ldh [hJoyLast], a
 
 	ld a, [wd730]
 	bit 5, a
 	jr nz, DiscardButtonPresses
 
-	ld a, [hJoyLast]
-	ld [hJoyHeld], a
+	ldh a, [hJoyLast]
+	ldh [hJoyHeld], a
 
 	ld a, [wJoyIgnore]
 	and a
@@ -68,19 +68,19 @@ _Joypad::
 
 	cpl
 	ld b, a
-	ld a, [hJoyHeld]
+	ldh a, [hJoyHeld]
 	and b
-	ld [hJoyHeld], a
-	ld a, [hJoyPressed]
+	ldh [hJoyHeld], a
+	ldh a, [hJoyPressed]
 	and b
-	ld [hJoyPressed], a
+	ldh [hJoyPressed], a
 	ret
 
 DiscardButtonPresses:
 	xor a
-	ld [hJoyHeld], a
-	ld [hJoyPressed], a
-	ld [hJoyReleased], a
+	ldh [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyReleased], a
 	ret
 
 TrySoftReset:
@@ -88,7 +88,7 @@ TrySoftReset:
 
 	; deselect (redundant)
 	ld a, $30
-	ld [rJOYP], a
+	ldh [rJOYP], a
 
 	ld hl, hSoftReset
 	dec [hl]

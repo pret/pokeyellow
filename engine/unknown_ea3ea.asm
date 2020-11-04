@@ -13,7 +13,7 @@ Printer_GetMonStats:
 	call CopyVideoDataDouble
 
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	xor a
 	ld [wWhichTradeMonSelectionMenu], a
 	call LoadMonData
@@ -22,22 +22,22 @@ Printer_GetMonStats:
 	lb bc, 16, 18
 	call TextBoxBorder
 
-	coord hl, 0, 12
+	hlcoord 0, 12
 	lb bc, 4, 18
 	call TextBoxBorder
 
-	coord hl, 3, 10
+	hlcoord 3, 10
 	call PrintLevelFull
 
-	coord hl, 2, 10
+	hlcoord 2, 10
 	ld a, $6e
 	ld [hli], a
 	ld [hl], " "
 
-	coord hl, 2, 11
-	ld [hl], "′"
+	hlcoord 2, 11
+	ld [hl], "’"
 
-	coord hl, 4, 11
+	hlcoord 4, 11
 	ld de, wLoadedMonMaxHP
 	lb bc, 2, 3
 	call PrintNumber
@@ -47,15 +47,15 @@ Printer_GetMonStats:
 	ld [wd0b5], a
 	ld hl, wPartyMonNicks
 	call .GetNamePointer
-	coord hl, 8, 2
+	hlcoord 8, 2
 	call PlaceString
 
 	call GetMonName
-	coord hl, 9, 3
+	hlcoord 9, 3
 	call PlaceString
 
 	predef IndexToPokedex
-	coord hl, 2, 8
+	hlcoord 2, 8
 	ld [hl], "№"
 	inc hl
 	ld [hl], $f2
@@ -64,35 +64,35 @@ Printer_GetMonStats:
 	lb bc, $80 | 1, 3
 	call PrintNumber
 
-	coord hl, 8, 4
+	hlcoord 8, 4
 	ld de, .OT
 	call PlaceString
 
 	ld hl, wPartyMonOT
 	call .GetNamePointer
-	coord hl, 9, 5
+	hlcoord 9, 5
 	call PlaceString
 
-	coord hl, 9, 6
+	hlcoord 9, 6
 	ld de, .IDNo
 	call PlaceString
 
-	coord hl, 13, 6
+	hlcoord 13, 6
 	ld de, wLoadedMonOTID
 	lb bc, $80 | 2, 5
 	call PrintNumber
 
-	coord hl, 9, 8
+	hlcoord 9, 8
 	ld de, .Stats
-	ld a, [hFlags_0xFFFA]
+	ldh a, [hFlagsFFFA]
 	set 2, a
-	ld [hFlags_0xFFFA], a
+	ldh [hFlagsFFFA], a
 	call PlaceString
-	ld a, [hFlags_0xFFFA]
+	ldh a, [hFlagsFFFA]
 	res 2, a
-	ld [hFlags_0xFFFA], a
+	ldh [hFlagsFFFA], a
 
-	coord hl, 16, 8
+	hlcoord 16, 8
 	ld de, wLoadedMonAttack
 	ld a, 4
 .loop
@@ -113,19 +113,19 @@ Printer_GetMonStats:
 	dec a
 	jr nz, .loop
 
-	coord hl, 1, 13
+	hlcoord 1, 13
 	ld a, [wLoadedMonMoves]
 	call .PlaceMoveName
 
-	coord hl, 1, 14
+	hlcoord 1, 14
 	ld a, [wLoadedMonMoves + 1]
 	call .PlaceMoveName
 
-	coord hl, 1, 15
+	hlcoord 1, 15
 	ld a, [wLoadedMonMoves + 2]
 	call .PlaceMoveName
 
-	coord hl, 1, 16
+	hlcoord 1, 16
 	ld a, [wLoadedMonMoves + 3]
 	call .PlaceMoveName
 
@@ -133,10 +133,10 @@ Printer_GetMonStats:
 	call RunPaletteCommand
 
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	call GBPalNormal
-	coord hl, 1, 1
+	hlcoord 1, 1
 	call LoadFlippedFrontSpriteByMonIndex
 	ret
 
@@ -468,11 +468,11 @@ Func_ea74c:
 	ld [wPrinterSendByteOffset], a
 	ld [wPrinterSendByteOffset + 1], a
 	ld a, $88
-	ld [rSB], a
+	ldh [rSB], a
 	ld a, $1
-	ld [rSC], a
+	ldh [rSC], a
 	ld a, $81
-	ld [rSC], a
+	ldh [rSC], a
 	ret
 
 Func_ea76b:
@@ -832,25 +832,25 @@ PrinterDebug_PrepOAMForPrinting:
 	dw .Pal3
 
 .Pal0:
-	ld a, [rOBP0]
+	ldh a, [rOBP0]
 	and $3
 	ret
 
 .Pal2:
-	ld a, [rOBP0]
+	ldh a, [rOBP0]
 	and $c
 	srl a
 	srl a
 	ret
 
 .Pal1:
-	ld a, [rOBP0]
+	ldh a, [rOBP0]
 	and $30
 	swap a
 	ret
 
 .Pal3:
-	ld a, [rOBP0]
+	ldh a, [rOBP0]
 	and $c0
 	rlca
 	rlca

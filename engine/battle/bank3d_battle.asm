@@ -1,27 +1,28 @@
-InitBattle:
+InitBattle::
 	ld a, [wCurOpponent]
 	and a
-	jr z, asm_f6003
+	jr z, DetermineWildOpponent
 
 InitOpponent:
 	ld a, [wCurOpponent]
 	ld [wcf91], a
 	ld [wEnemyMonSpecies2], a
-	jr asm_f601d
-asm_f6003:
+	jr InitBattleCommon
+
+DetermineWildOpponent:
 	ld a, [wd732]
 	bit 1, a
-	jr z, .asm_f600f
-	ld a, [hJoyHeld]
+	jr z, .asm_3ef2f
+	ldh a, [hJoyHeld]
 	bit 1, a ; B button pressed?
 	ret nz
-.asm_f600f
+.asm_3ef2f
 	ld a, [wNumberOfNoRandomBattleStepsLeft]
 	and a
 	ret nz
-	callab TryDoWildEncounter
+	callfar TryDoWildEncounter
 	ret nz
-asm_f601d:
+InitBattleCommon:
 	ld a, [wMapPalOffset]
 	push af
 	ld hl, wLetterPrintingDelayFlags
@@ -34,37 +35,37 @@ asm_f601d:
 	jp c, InitWildBattle
 	ld [wTrainerClass], a
 	call GetTrainerInformation
-	callab ReadTrainer
-	callab DoBattleTransitionAndInitBattleVariables
+	callfar ReadTrainer
+	callfar DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
 	xor a
 	ld [wEnemyMonSpecies2], a
-	ld [$ffe1], a
+	ldh [hStartTileID], a
 	dec a
 	ld [wAICount], a
-	coord hl, 12, 0
+	hlcoord 12, 0
 	predef CopyUncompressedPicToTilemap
 	ld a, $ff
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
 	ld [wIsInBattle], a
 
-	; Is this a major story battle?
-	ld a,[wLoneAttackNo]
+; Is this a major story battle?
+	ld a, [wLoneAttackNo]
 	and a
-	jp z,InitBattle_Common
+	jp z, _InitBattleCommon
 	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
-	jp InitBattle_Common
+	jp _InitBattleCommon
 
 InitWildBattle:
 	ld a, $1
 	ld [wIsInBattle], a
-	callab LoadEnemyMonData
-	callab DoBattleTransitionAndInitBattleVariables
+	callfar LoadEnemyMonData
+	callfar DoBattleTransitionAndInitBattleVariables
 	ld a, [wCurOpponent]
 	cp RESTLESS_SOUL
 	jr z, .isGhost
-	callab IsGhostBattle
+	callfar IsGhostBattle
 	jr nz, .isNoGhost
 .isGhost
 	ld hl, wMonHSpriteDim
@@ -101,49 +102,49 @@ InitWildBattle:
 .spriteLoaded
 	xor a
 	ld [wTrainerClass], a
-	ld [$ffe1], a
-	coord hl, 12, 0
+	ldh [hStartTileID], a
+	hlcoord 12, 0
 	predef CopyUncompressedPicToTilemap
 
 ; common code that executes after init battle code specific to trainer or wild battles
-InitBattle_Common:
-	ld b, $0
+_InitBattleCommon:
+	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
-	callab SlidePlayerAndEnemySilhouettesOnScreen
+	callfar SlidePlayerAndEnemySilhouettesOnScreen
 	xor a
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	ld hl, .emptyString
 	call PrintText
 	call SaveScreenTilesToBuffer1
 	call ClearScreen
 	ld a, $98
-	ld [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	ld a, $1
-	ld [H_AUTOBGTRANSFERENABLED], a
+	ldh [hAutoBGTransferEnabled], a
 	call Delay3
 	ld a, $9c
-	ld [$ffbd], a
+	ldh [hAutoBGTransferDest + 1], a
 	call LoadScreenTilesFromBuffer1
-	coord hl, 9, 7
-	ld bc, $50a
+	hlcoord 9, 7
+	lb bc, 5, 10
 	call ClearScreenArea
-	coord hl, 1, 0
-	ld bc, $40a
+	hlcoord 1, 0
+	lb bc, 4, 10
 	call ClearScreenArea
 	call ClearSprites
 	ld a, [wIsInBattle]
 	dec a ; is it a wild battle?
 	ld hl, DrawEnemyHUDAndHPBar
-	ld b,BANK(DrawEnemyHUDAndHPBar)
+	ld b, BANK(DrawEnemyHUDAndHPBar)
 	call z, Bankswitch ; draw enemy HUD and HP bar if it's a wild battle
-	callab StartBattle
-	callab EndOfBattle
+	callfar StartBattle
+	callfar EndOfBattle
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	pop af
 	ld [wMapPalOffset], a
 	ld a, [wSavedTilesetType]
-	ld [hTilesetType], a
+	ldh [hTilesetType], a
 	scf
 	ret
 .emptyString
@@ -157,9 +158,9 @@ _LoadTrainerPic:
 	ld d, a ; de contains pointer to trainer pic
 	ld a, [wLinkState]
 	and a
-	ld a, Bank(TrainerPics) ; this is where all the trainer pics are (not counting Red's)
+	ld a, BANK(TrainerPics) ; this is where all the trainer pics are (not counting Red's)
 	jr z, .loadSprite
-	ld a, Bank(RedPicFront)
+	ld a, BANK(RedPicFront)
 .loadSprite
 	call UncompressSpriteFromDE
 	ld de, vFrontPic
@@ -172,8 +173,8 @@ LoadMonBackPic:
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
 	ld [wcf91], a
-	coord hl, 1, 5
-	ld bc,$708
+	hlcoord 1, 5
+	lb bc, 7, 8
 	call ClearScreenArea
 	ld hl,  wMonHBackSprite - wMonHeader
 	call UncompressMonSprite
@@ -183,7 +184,7 @@ LoadMonBackPic:
 	ld hl, vSprites
 	ld de, vBackPic
 	ld c, (2*SPRITEBUFFERSIZE)/16 ; count of 16-byte chunks to be copied
-	ld a, [H_LOADEDROMBANK]
+	ldh a, [hLoadedROMBank]
 	ld b, a
 	jp CopyVideoData
 
@@ -192,8 +193,8 @@ AnimateSendingOutMon:
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ld a, [$ffe1]
-	ld [H_DOWNARROWBLINKCNT1], a
+	ldh a, [hStartTileID]
+	ldh [hDownArrowBlinkCount1], a
 	ld b, $4c
 	ld a, [wIsInBattle]
 	and a
@@ -223,7 +224,7 @@ AnimateSendingOutMon:
 	ld bc, -123
 .asm_f61f2
 	add hl, bc
-	ld a, [H_DOWNARROWBLINKCNT1]
+	ldh a, [hDownArrowBlinkCount1]
 	add $31
 	jr CopyUncompressedPicToHL
 
@@ -232,8 +233,8 @@ CopyUncompressedPicToTilemap:
 	ld h, a
 	ld a, [wPredefRegisters + 1]
 	ld l, a
-	ld a, [$ffe1]
-CopyUncompressedPicToHL:
+	ldh a, [hStartTileID]
+CopyUncompressedPicToHL::
 	ld bc, $707
 	ld de, $14
 	push af
@@ -281,11 +282,11 @@ CopyUncompressedPicToHL:
 	ret
 
 INCLUDE "engine/battle/init_battle_variables.asm"
-INCLUDE "engine/battle/moveEffects/focus_energy_effect.asm"
-INCLUDE "engine/battle/moveEffects/heal_effect.asm"
-INCLUDE "engine/battle/moveEffects/transform_effect.asm"
-INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"
-INCLUDE "engine/battle/moveEffects/mist_effect.asm"
-INCLUDE "engine/battle/moveEffects/one_hit_ko_effect.asm"
-INCLUDE "engine/battle/moveEffects/pay_day_effect.asm"
-INCLUDE "engine/battle/moveEffects/paralyze_effect.asm"
+INCLUDE "engine/battle/move_effects/focus_energy.asm"
+INCLUDE "engine/battle/move_effects/heal.asm"
+INCLUDE "engine/battle/move_effects/transform.asm"
+INCLUDE "engine/battle/move_effects/reflect_light_screen.asm"
+INCLUDE "engine/battle/move_effects/mist.asm"
+INCLUDE "engine/battle/move_effects/one_hit_ko.asm"
+INCLUDE "engine/battle/move_effects/pay_day.asm"
+INCLUDE "engine/battle/move_effects/paralyze.asm"

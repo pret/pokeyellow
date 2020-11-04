@@ -1,14 +1,14 @@
-Func_f1b73:
+Func_f1b73::
 	ld a, [wd72e]
-	bit 3, a
-	jp nz, MomHealPokemon ; if player has received a Pokémon from Oak, heal team
+	bit 3, a ; received a Pokémon from Oak?
+	jp nz, MomHealPokemon
 	ld hl, MomWakeUpText
 	call PrintText
 	ret
 
 MomWakeUpText:
-	TX_FAR _MomWakeUpText
-	db "@"
+	text_far _MomWakeUpText
+	text_end
 
 MomHealPokemon:
 	ld hl, MomHealText1
@@ -19,10 +19,10 @@ MomHealPokemon:
 	ld a, MUSIC_PKMN_HEALED
 	ld [wNewSoundID], a
 	call PlaySound
-.loop
+.next
 	ld a, [wChannelSoundIDs]
 	cp MUSIC_PKMN_HEALED
-	jr z, .loop
+	jr z, .next
 	ld a, [wMapMusicSoundID]
 	ld [wNewSoundID], a
 	call PlaySound
@@ -32,27 +32,27 @@ MomHealPokemon:
 	ret
 
 MomHealText1:
-	TX_FAR _MomHealText1
-	db "@"
+	text_far _MomHealText1
+	text_end
 MomHealText2:
-	TX_FAR _MomHealText2
-	db "@"
+	text_far _MomHealText2
+	text_end
 
-Func_f1bc4:
+Func_f1bc4::
 	ld hl, TVWrongSideText
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
-	jp nz, .notUp
+	jp nz, .got_text
 	ld hl, StandByMeText
-.notUp
+.got_text
 	call PrintText
 	ret
 
 StandByMeText:
-	TX_FAR _StandByMeText
-	db "@"
+	text_far _StandByMeText
+	text_end
 
 TVWrongSideText:
-	TX_FAR _TVWrongSideText
-	db "@"
+	text_far _TVWrongSideText
+	text_end
 

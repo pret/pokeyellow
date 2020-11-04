@@ -19,12 +19,12 @@ SafariZoneGate_ScriptPointers:
 	call ArePlayerCoordsInArray
 	ret nc
 	ld a, $3
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, SPRITE_FACING_RIGHT
 	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, [wCoordIndex]
@@ -44,20 +44,20 @@ SafariZoneGate_ScriptPointers:
 	ret
 
 .CoordsData_75221:
-	db $02, $03
-	db $02, $04
-	db $FF
+	dbmapcoord  3,  2
+	dbmapcoord  4,  2
+	db -1 ; end
 
 .SafariZoneEntranceScript1
 	call SafariZoneEntranceScript_752b4
 	ret nz
 .SafariZoneEntranceScript2
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	call UpdateSprites
 	ld a, $4
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $ff
 	ld [wJoyIgnore], a
@@ -82,7 +82,7 @@ SafariZoneGate_ScriptPointers:
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $6
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
 	ld [wNumSafariBalls], a
@@ -96,7 +96,7 @@ SafariZoneGate_ScriptPointers:
 	jr .asm_75286
 .asm_7527f
 	ld a, $5
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .asm_75286
 	ret
@@ -142,17 +142,17 @@ SafariZoneGate_TextPointers:
 	dw .SafariZoneEntranceText6
 
 .SafariZoneEntranceText1
-	TX_FAR _SafariZoneEntranceText1
-	db "@"
+	text_far _SafariZoneEntranceText1
+	text_end
 
 .SafariZoneEntranceText4
-	TX_ASM
-	callab Func_f1f77
+	text_asm
+	callfar Func_f1f77
 	jp TextScriptEnd
 
 .SafariZoneEntranceText5
-	TX_FAR SafariZoneEntranceText_9e814
-	TX_ASM
+	text_far SafariZoneEntranceText_9e814
+	text_asm
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
@@ -184,18 +184,18 @@ SafariZoneGate_TextPointers:
 	jp TextScriptEnd
 
 .SafariZoneEntranceText_753bb
-	TX_FAR _SafariZoneEntranceText_753bb
-	db "@"
+	text_far _SafariZoneEntranceText_753bb
+	text_end
 
 .SafariZoneEntranceText_753c0
-	TX_FAR _SafariZoneEntranceText_753c0
-	db "@"
+	text_far _SafariZoneEntranceText_753c0
+	text_end
 
 .SafariZoneEntranceText6
-	TX_FAR _SafariZoneEntranceText_753c5
-	db "@"
+	text_far _SafariZoneEntranceText_753c5
+	text_end
 
 .SafariZoneEntranceText2
-	TX_ASM
-	callab Func_f203e
+	text_asm
+	callfar Func_f203e
 	jp TextScriptEnd

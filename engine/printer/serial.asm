@@ -7,8 +7,8 @@ Printer_StartTransmission:
 	xor a
 	call Printer_FillMemory
 	xor a
-	ld [rSB], a
-	ld [rSC], a
+	ldh [rSB], a
+	ldh [rSC], a
 	ld [wPrinterOpcode], a
 	ld hl, wPrinterConnectionOpen
 	set 0, [hl]
@@ -269,11 +269,11 @@ Printer_PrepareToSend:
 	ld a, $1
 	ld [wPrinterOpcode], a
 	ld a, $88
-	ld [rSB], a
+	ldh [rSB], a
 	ld a, $1
-	ld [rSC], a
+	ldh [rSC], a
 	ld a, $81
-	ld [rSC], a
+	ldh [rSC], a
 	ret
 
 CopyPrinterDataHeader:
@@ -438,7 +438,7 @@ PrinterDataPacket6: ; unused
 	db 15, 0, $00, 0
 	dw 15
 
-PrinterSerial_:
+PrinterSerial_::
 	ld a, [wPrinterOpcode]
 	ld e, a
 	ld d, 0
@@ -573,7 +573,7 @@ PrinterSerial_:
 	ret
 
 .Receive1:
-	ld a, [rSB]
+	ldh a, [rSB]
 	ld [wPrinterHandshake], a
 	ld a, $0
 	call .SendByte
@@ -581,7 +581,7 @@ PrinterSerial_:
 	ret
 
 .Receive2:
-	ld a, [rSB]
+	ldh a, [rSB]
 	ld [wPrinterStatusFlags], a
 	xor a
 	ld [wPrinterOpcode], a
@@ -606,15 +606,15 @@ PrinterSerial_:
 	ret
 
 .SendByte:
-	ld [rSB], a
+	ldh [rSB], a
 	ld a, $1
-	ld [rSC], a
+	ldh [rSC], a
 	ld a, $81
-	ld [rSC], a
+	ldh [rSC], a
 	ret
 
 .Receive2_:
-	ld a, [rSB]
+	ldh a, [rSB]
 	ld [wPrinterStatusFlags], a
 	xor a
 	ld [wPrinterOpcode], a

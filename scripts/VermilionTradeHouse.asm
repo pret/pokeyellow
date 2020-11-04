@@ -5,5 +5,5 @@ VermilionTradeHouse_TextPointers:
 	dw VermilionHouse3Text1
 
 VermilionHouse3Text1:
-	TX_FAR TeachingHMsText
-	db "@"
+	text_far TeachingHMsText
+	text_end

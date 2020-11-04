@@ -1,11 +1,11 @@
 ; if a hidden object was found, stores $00 in [hDidntFindAnyHiddenObject], else stores $ff
-CheckForHiddenObject:
+CheckForHiddenObject::
 	ld hl, hItemAlreadyFound
 	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
+	ld [hli], a ; [hItemAlreadyFound]
+	ld [hli], a ; [hSavedMapTextPtr]
+	ld [hli], a ; [hSavedMapTextPtr + 1]
+	ld [hl], a  ; [hDidntFindAnyHiddenObject]
 	ld hl, HiddenObjectMaps
 	ld de, 3
 	ld a, [wCurMap]
@@ -32,7 +32,7 @@ CheckForHiddenObject:
 	ld [wHiddenObjectX], a
 	ld c, a
 	call CheckIfCoordsInFrontOfPlayerMatch
-	ld a, [hCoordsInFrontOfPlayerMatch]
+	ldh a, [hCoordsInFrontOfPlayerMatch]
 	and a
 	jr z, .foundMatchingObject
 	inc hl
@@ -55,13 +55,13 @@ CheckForHiddenObject:
 	ret
 .noMatch
 	ld a, $ff
-	ld [hDidntFindAnyHiddenObject], a
+	ldh [hDidntFindAnyHiddenObject], a
 	ret
 
 ; checks if the coordinates in front of the player's sprite match Y in b and X in c
 ; [hCoordsInFrontOfPlayerMatch] = $00 if they match, $ff if they don't match
 CheckIfCoordsInFrontOfPlayerMatch:
-	ld a, [wSpritePlayerStateData1FacingDirection] ; player's sprite facing direction
+	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	jr z, .facingUp
 	cp SPRITE_FACING_LEFT
@@ -101,7 +101,7 @@ CheckIfCoordsInFrontOfPlayerMatch:
 .didNotMatch
 	ld a, $ff
 .done
-	ld [hCoordsInFrontOfPlayerMatch], a
+	ldh [hCoordsInFrontOfPlayerMatch], a
 	ret
 
-INCLUDE "data/hidden_objects.asm"
+INCLUDE "data/events/hidden_objects.asm"

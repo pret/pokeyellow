@@ -1,10 +1,10 @@
-TrackPlayTime:
+TrackPlayTime::
 	call CountDownIgnoreInputBitReset
 	ld hl, wd47a
 	bit 0, [hl]
 	jr nz, .maxIGT
-	ld a,[wd732]
-	bit 0,a
+	ld a, [wd732]
+	bit 0, a
 	ret z
 	ld a, [wPlayTimeMaxed]
 	and a
@@ -66,6 +66,6 @@ CountDownIgnoreInputBitReset:
 	ld [wd730], a
 	ret z
 	xor a
-	ld [hJoyPressed], a
-	ld [hJoyHeld], a
+	ldh [hJoyPressed], a
+	ldh [hJoyHeld], a
 	ret

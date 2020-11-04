@@ -1,59 +1,33 @@
-# precompiled python
-*.pyc
-
-# compiled object file
+# compiled objects
 *.o
 
-# no binaries
-*.exe
+# compiled graphics
+*.1bpp
+*.2bpp
+*.pic
 
-# roms
+# compiled roms
 *.gbc
 *.gb
 
 # rgbds extras
+*.map
 *.sym
 
-# converted image data
-*.2bpp
-*.1bpp
-*.pic
+# tool binaries
+*.exe
+
+# precompiled python
+*.pyc
+*$py.class
 
 # converted audio data
 *.pcm
 
-# swap files for vim
-.*.swp
-
-# no data from extras/
-*.json
-
-# for any of the poor souls with save game files in their working directory
+# save game files
 *.sgm
 *.sav
-*.sys
-
-# lol bgb
-*.sn1
-*.sn2
-*.sn3
-*.sn4
-*.sn5
-*.sn6
-*.sn7
-*.sn8
-*.sn9
-*.sn0
-
-# replace.sh
-replace.sh
-
-# leftover txt files from diff
-*.txt
-
-# for vim configuration
-# url: http://www.vim.org/scripts/script.php?script_id=441
-.lvimrc
-
-# extras is a submodule, don't include
-extras/
+*.rtc
+*.sn*
+*.sa*
+*.sg1

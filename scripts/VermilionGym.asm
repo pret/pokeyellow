@@ -3,7 +3,7 @@ VermilionGym_Script:
 	bit 5, [hl]
 	res 5, [hl]
 	push hl
-	call nz, VermilionGymLoadName
+	call nz, .LoadNames
 	pop hl
 	bit 6, [hl]
 	res 6, [hl]
@@ -16,15 +16,15 @@ VermilionGym_Script:
 	ld [wVermilionGymCurScript], a
 	ret
 
-VermilionGymLoadName:
-	ld hl, Gym3CityName
-	ld de, Gym3LeaderName
+.LoadNames:
+	ld hl, .CityName
+	ld de, .LeaderName
 	jp LoadGymLeaderAndCityName
 
-Gym3CityName:
+.CityName:
 	db "VERMILION CITY@"
 
-Gym3LeaderName:
+.LeaderName:
 	db "LT.SURGE@"
 
 VermilionGymSetDoorTile:
@@ -63,26 +63,26 @@ VermilionGymLTSurgePostBattle:
 
 VermilionGymReceiveTM24:
 	ld a, $6
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_LT_SURGE
-	lb bc, TM_24, 1
+	lb bc, TM_THUNDERBOLT, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, $7
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM24
 	jr .gymVictory
 .BagFull
 	ld a, $8
-	ld [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
 	ld hl, wObtainedBadges
-	set 2, [hl]
+	set BIT_THUNDERBADGE, [hl]
 	ld hl, wBeatGymFlags
-	set 2, [hl]
+	set BIT_THUNDERBADGE, [hl]
 
 	; deactivate gym trainers
 	SetEventRange EVENT_BEAT_VERMILION_GYM_TRAINER_0, EVENT_BEAT_VERMILION_GYM_TRAINER_2
@@ -100,36 +100,15 @@ VermilionGym_TextPointers:
 	dw TM24NoRoomText
 
 VermilionGymTrainerHeader0:
-	dbEventFlagBit EVENT_BEAT_VERMILION_GYM_TRAINER_0
-	db ($3 << 4) ; trainer's view range
-	dwEventFlagAddress EVENT_BEAT_VERMILION_GYM_TRAINER_0
-	dw VermilionGymBattleText1 ; TextBeforeBattle
-	dw VermilionGymAfterBattleText1 ; TextAfterBattle
-	dw VermilionGymEndBattleText1 ; TextEndBattle
-	dw VermilionGymEndBattleText1 ; TextEndBattle
-
+	trainer EVENT_BEAT_VERMILION_GYM_TRAINER_0, 3, VermilionGymBattleText1, VermilionGymEndBattleText1, VermilionGymAfterBattleText1
 VermilionGymTrainerHeader1:
-	dbEventFlagBit EVENT_BEAT_VERMILION_GYM_TRAINER_1
-	db ($2 << 4) ; trainer's view range
-	dwEventFlagAddress EVENT_BEAT_VERMILION_GYM_TRAINER_1
-	dw VermilionGymBattleText2 ; TextBeforeBattle
-	dw VermilionGymAfterBattleText2 ; TextAfterBattle
-	dw VermilionGymEndBattleText2 ; TextEndBattle
-	dw VermilionGymEndBattleText2 ; TextEndBattle
-
+	trainer EVENT_BEAT_VERMILION_GYM_TRAINER_1, 2, VermilionGymBattleText2, VermilionGymEndBattleText2, VermilionGymAfterBattleText2
 VermilionGymTrainerHeader2:
-	dbEventFlagBit EVENT_BEAT_VERMILION_GYM_TRAINER_2
-	db ($3 << 4) ; trainer's view range
-	dwEventFlagAddress EVENT_BEAT_VERMILION_GYM_TRAINER_2
-	dw VermilionGymBattleText3 ; TextBeforeBattle
-	dw VermilionGymAfterBattleText3 ; TextAfterBattle
-	dw VermilionGymEndBattleText3 ; TextEndBattle
-	dw VermilionGymEndBattleText3 ; TextEndBattle
-
-	db $ff
+	trainer EVENT_BEAT_VERMILION_GYM_TRAINER_2, 3, VermilionGymBattleText3, VermilionGymEndBattleText3, VermilionGymAfterBattleText3
+	db -1 ; end
 
 LTSurgeText:
-	TX_ASM
+	text_asm
 	CheckEvent EVENT_BEAT_LT_SURGE
 	jr z, .beforeBeat
 	CheckEventReuseA EVENT_GOT_TM24
@@ -150,14 +129,14 @@ LTSurgeText:
 	ld hl, ReceivedThunderbadgeText
 	ld de, ReceivedThunderbadgeText
 	call SaveEndBattleTextPointers
-	ld a, [H_SPRITEINDEX]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
 	ld a, $3
 	ld [wGymLeaderNo], a
 	xor a
-	ld [hJoyHeld], a
+	ldh [hJoyHeld], a
 	ld a, $3 ; set script index to LT Surge post-battle script
 	ld [wVermilionGymCurScript], a
 	ld [wCurMapScript], a
@@ -165,89 +144,89 @@ LTSurgeText:
 	jp TextScriptEnd
 
 LTSurgePreBattleText:
-	TX_FAR _LTSurgePreBattleText
-	db "@"
+	text_far _LTSurgePreBattleText
+	text_end
 
 LTSurgePostBattleAdviceText:
-	TX_FAR _LTSurgePostBattleAdviceText
-	db "@"
+	text_far _LTSurgePostBattleAdviceText
+	text_end
 
 LTSurgeThunderbadgeInfoText:
-	TX_FAR _LTSurgeThunderbadgeInfoText
-	db "@"
+	text_far _LTSurgeThunderbadgeInfoText
+	text_end
 
 ReceivedTM24Text:
-	TX_FAR _ReceivedTM24Text
-	TX_SFX_KEY_ITEM
-	TX_FAR _TM24ExplanationText
-	db "@"
+	text_far _ReceivedTM24Text
+	sound_get_key_item
+	text_far _TM24ExplanationText
+	text_end
 
 TM24NoRoomText:
-	TX_FAR _TM24NoRoomText
-	db "@"
+	text_far _TM24NoRoomText
+	text_end
 
 ReceivedThunderbadgeText:
-	TX_FAR _ReceivedThunderbadgeText
-	db "@"
+	text_far _ReceivedThunderbadgeText
+	text_end
 
 VermilionGymTrainerText1:
-	TX_ASM
+	text_asm
 	ld hl, VermilionGymTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VermilionGymBattleText1:
-	TX_FAR _VermilionGymBattleText1
-	db "@"
+	text_far _VermilionGymBattleText1
+	text_end
 
 VermilionGymEndBattleText1:
-	TX_FAR _VermilionGymEndBattleText1
-	db "@"
+	text_far _VermilionGymEndBattleText1
+	text_end
 
 VermilionGymAfterBattleText1:
-	TX_FAR _VermilionGymAfterBattleText1
-	db "@"
+	text_far _VermilionGymAfterBattleText1
+	text_end
 
 VermilionGymTrainerText2:
-	TX_ASM
+	text_asm
 	ld hl, VermilionGymTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VermilionGymBattleText2:
-	TX_FAR _VermilionGymBattleText2
-	db "@"
+	text_far _VermilionGymBattleText2
+	text_end
 
 VermilionGymEndBattleText2:
-	TX_FAR _VermilionGymEndBattleText2
-	db "@"
+	text_far _VermilionGymEndBattleText2
+	text_end
 
 VermilionGymAfterBattleText2:
-	TX_FAR _VermilionGymAfterBattleText2
-	db "@"
+	text_far _VermilionGymAfterBattleText2
+	text_end
 
 VermilionGymTrainerText3:
-	TX_ASM
+	text_asm
 	ld hl, VermilionGymTrainerHeader2
 	call TalkToTrainer
 	jp TextScriptEnd
 
 VermilionGymBattleText3:
-	TX_FAR _VermilionGymBattleText3
-	db "@"
+	text_far _VermilionGymBattleText3
+	text_end
 
 VermilionGymEndBattleText3:
-	TX_FAR _VermilionGymEndBattleText3
-	db "@"
+	text_far _VermilionGymEndBattleText3
+	text_end
 
 VermilionGymAfterBattleText3:
-	TX_FAR _VermilionGymAfterBattleText3
-	db "@"
+	text_far _VermilionGymAfterBattleText3
+	text_end
 
 VermilionGymFanText:
-	TX_ASM
+	text_asm
 	ld a, [wBeatGymFlags]
-	bit 2, a
+	bit BIT_THUNDERBADGE, a
 	jr nz, .afterBeat
 	ld hl, VermilionGymFanPreBattleText
 	call PrintText
@@ -259,9 +238,9 @@ VermilionGymFanText:
 	jp TextScriptEnd
 
 VermilionGymFanPreBattleText:
-	TX_FAR _VermilionGymFanPreBattleText
-	db "@"
+	text_far _VermilionGymFanPreBattleText
+	text_end
 
 VermilionGymFanPostBattleText:
-	TX_FAR _VermilionGymFanPostBattleText
-	db "@"
+	text_far _VermilionGymFanPostBattleText
+	text_end

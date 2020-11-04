@@ -1,4 +1,4 @@
-Func_f1f23:
+Func_f1f23::
 	ld hl, PikachuMovementData_f1f2c
 	ld b, SPRITE_FACING_DOWN
 	call TryApplyPikachuMovementData

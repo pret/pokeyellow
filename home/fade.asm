@@ -11,11 +11,11 @@ LoadGBPal::
 	dec h
 .ok
 	ld a, [hli]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [hli]
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, [hli]
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -32,11 +32,11 @@ GBFadeOutToWhite::
 
 GBFadeIncCommon:
 	ld a, [hli]
-	ld [rBGP], a
+	ldh [rBGP], a
 	ld a, [hli]
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, [hli]
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
@@ -57,11 +57,11 @@ GBFadeInFromWhite::
 
 GBFadeDecCommon:
 	ld a, [hld]
-	ld [rOBP1], a
+	ldh [rOBP1], a
 	ld a, [hld]
-	ld [rOBP0], a
+	ldh [rOBP0], a
 	ld a, [hld]
-	ld [rBGP], a
+	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
