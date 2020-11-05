@@ -108,7 +108,9 @@ ApplyPikachuMovementData::
 	ldh a, [hLoadedROMBank]
 	ld b, a
 	push af
-	callbs ApplyPikachuMovementData_
+	ld a, BANK(ApplyPikachuMovementData_)
+	call BankswitchCommon
+	call ApplyPikachuMovementData_
 	pop af
 	call BankswitchCommon
 	ret

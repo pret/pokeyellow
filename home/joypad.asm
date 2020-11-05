@@ -1,5 +1,5 @@
 Joypad::
-	homecall_jump _Joypad
+	homejp _Joypad
 
 ReadJoypad::
-	homecall_jump ReadJoypad_
+	homejp ReadJoypad_

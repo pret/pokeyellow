@@ -5,7 +5,6 @@ DrawHPBar::
 
 	push hl
 	push de
-	;push bc
 
 	; Left
 	ld a, $71 ; "HP:"
@@ -61,7 +60,6 @@ DrawHPBar::
 	add e
 	ld [hl], a
 .done
-	;pop bc
 	pop de
 	pop hl
 	ret
@@ -124,7 +122,8 @@ LoadFrontSpriteByMonIndex::
 	pop hl
 	ldh a, [hLoadedROMBank]
 	push af
-	switchbank CopyUncompressedPicToHL
+	ld a, BANK(CopyUncompressedPicToHL)
+	call BankswitchCommon
 	xor a
 	ldh [hStartTileID], a
 	call CopyUncompressedPicToHL
@@ -355,7 +354,7 @@ PrintStatusCondition::
 	ret
 
 PrintStatusConditionNotFainted::
-	homecall_jump_sf PrintStatusAilment
+	homejp_sf PrintStatusAilment
 
 ; function to print pokemon level, leaving off the ":L" if the level is at least 100
 ; INPUT:
@@ -404,7 +403,8 @@ GetwMoves::
 GetMonHeader::
 	ldh a, [hLoadedROMBank]
 	push af
-	switchbank BaseStats
+	ld a, BANK(BaseStats)
+	call BankswitchCommon
 	push bc
 	push de
 	push hl
@@ -423,8 +423,6 @@ GetMonHeader::
 	ld b, $77 ; size of Aerodactyl fossil sprite
 	cp FOSSIL_AERODACTYL ; Aerodactyl fossil
 	jr z, .specialID
-	;cp MEW
-	;jr z, .mew
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a, [wd11e]
 	dec a

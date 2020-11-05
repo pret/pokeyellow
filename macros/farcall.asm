@@ -32,24 +32,13 @@ homecall: MACRO
 	call BankswitchCommon
 ENDM
 
-homecall_jump: MACRO
+homejp: MACRO
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
 	pop af
-	jp BankswitchCommon
-ENDM
-
-homecall_jump_sf: MACRO
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(\1)
-	call BankswitchCommon
-	call \1
-	pop bc
-	ld a, b
 	jp BankswitchCommon
 ENDM
 
@@ -64,15 +53,15 @@ homecall_sf: MACRO ; homecall but save flags by popping into bc instead of af
 	call BankswitchCommon
 ENDM
 
-switchbank: MACRO
-	ld a, BANK(\1)
-	call BankswitchCommon
-ENDM
-
-callbs: MACRO
+homejp_sf: MACRO ; homejp but save flags by popping into bc instead of af
+	ldh a, [hLoadedROMBank]
+	push af
 	ld a, BANK(\1)
 	call BankswitchCommon
 	call \1
+	pop bc
+	ld a, b
+	jp BankswitchCommon
 ENDM
 
 calladb_ModifyPikachuHappiness: MACRO

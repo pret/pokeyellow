@@ -83,7 +83,7 @@ PlayShootingStar:
 	ld b, SET_PAL_GAME_FREAK_INTRO
 	call RunPaletteCommand
 	farcall LoadCopyrightAndTextBoxTiles
-	ldPal a, BLACK, DARK_GRAY, LIGHT_GRAY, WHITE
+	ldpal a, SHADE_BLACK, SHADE_DARK, SHADE_LIGHT, SHADE_WHITE
 	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	ld c, 180

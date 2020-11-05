@@ -57,7 +57,7 @@ DrawFrameBlock:
 	inc hl
 	inc de
 	ld a, [hli]
-	add a, $31 ; base tile ID for battle animations
+	add $31 ; base tile ID for battle animations
 	ld [de], a ; store tile ID
 	inc de
 	ld a, [hli]
@@ -91,7 +91,7 @@ DrawFrameBlock:
 	inc hl
 	inc de
 	ld a, [hli]
-	add a, $31 ; base tile ID for battle animations
+	add $31 ; base tile ID for battle animations
 	ld [de], a ; store tile ID
 	inc de
 ; toggle horizontal and vertical flip
@@ -99,10 +99,10 @@ DrawFrameBlock:
 	and a
 	ld b, OAM_VFLIP | OAM_HFLIP
 	jr z, .storeFlags1
-	cp a, OAM_HFLIP
+	cp OAM_HFLIP
 	ld b, OAM_VFLIP
 	jr z, .storeFlags1
-	cp a, OAM_VFLIP
+	cp OAM_VFLIP
 	ld b, OAM_HFLIP
 	jr z, .storeFlags1
 	ld b, 0

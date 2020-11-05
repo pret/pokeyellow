@@ -625,7 +625,7 @@ PikaPicAnimCommand_loadgfx:
 	ld a, [wPikaPicAnimCurGraphicID]
 	call LoadPikaPicAnimGFXHeader
 	ld a, c
-	cp a, $ff
+	cp $ff
 	jr z, .compressed
 	call RequestPikaPicAnimGFX
 	jr .done

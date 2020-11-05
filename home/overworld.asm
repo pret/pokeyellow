@@ -743,7 +743,8 @@ HandleBlackOut::
 	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
-	switchbank SpecialWarpIn ; also Bank(SpecialEnterMap)
+	ld a, BANK(SpecialWarpIn) ; also BANK(SpecialEnterMap)
+	call BankswitchCommon
 	callfar ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
 	call PlayDefaultMusicFadeOutCurrent
@@ -770,7 +771,9 @@ HandleFlyWarpOrDungeonWarp::
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
 	call Func_07c4
-	callbs SpecialWarpIn
+	ld a, BANK(SpecialWarpIn)
+	call BankswitchCommon
+	call SpecialWarpIn
 	jp SpecialEnterMap
 
 LeaveMapAnim::
@@ -1439,9 +1442,7 @@ AdvancePlayerSprite::
 	push af
 	ld a, $FF
 	ld [wUpdateSpritesEnabled], a
-	ld hl, _AdvancePlayerSprite
-	ld b, BANK(_AdvancePlayerSprite)
-	call Bankswitch
+	callfar _AdvancePlayerSprite
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ret
@@ -1914,7 +1915,8 @@ asm_0dbd:
 	ld b, $00
 	ldh a, [hLoadedROMBank]
 	push af
-	switchbank MapSongBanks
+	ld a, BANK(MapSongBanks)
+	call BankswitchCommon
 	ld hl, MapSongBanks
 	add hl, bc
 	add hl, bc
@@ -2041,16 +2043,16 @@ CopyMapViewToVRAM::
 	ld de, vBGMap0
 CopyMapViewToVRAM2:
 	ld hl, wTileMap
-	ld b, 18
+	ld b, SCREEN_HEIGHT
 .vramCopyLoop
-	ld c, 20
+	ld c, SCREEN_WIDTH
 .vramCopyInnerLoop
 	ld a, [hli]
 	ld [de], a
 	inc e
 	dec c
 	jr nz, .vramCopyInnerLoop
-	ld a, 32 - 20 ; total vram map width in tiles - screen width in tiles
+	ld a, BG_MAP_WIDTH - SCREEN_WIDTH
 	add e
 	ld e, a
 	jr nc, .noCarry
@@ -2068,11 +2070,11 @@ SwitchToMapRomBank::
 	ld c, a
 	ld b, $00
 	ld a, BANK(MapHeaderBanks)
-	call BankswitchHome ; switch to ROM bank 3F
+	call BankswitchHome
 	ld hl, MapHeaderBanks
 	add hl, bc
 	ld a, [hl]
-	ldh [hMapROMBank], a ; save map ROM bank
+	ldh [hMapROMBank], a
 	call BankswitchBack
 	ldh a, [hMapROMBank]
 	call BankswitchCommon
@@ -2083,7 +2085,8 @@ SwitchToMapRomBank::
 GetMapHeaderPointer::
 	ldh a, [hLoadedROMBank]
 	push af
-	switchbank MapHeaderPointers
+	ld a, BANK(MapHeaderPointers)
+	call BankswitchCommon
 	push de
 	ld a, [wCurMap]
 	ld e, a
@@ -2114,7 +2117,7 @@ ResetUsingStrengthOutOfBattleBit:
 
 ForceBikeOrSurf::
 	ld b, BANK(RedSprite)
-	ld hl, LoadPlayerSpriteGraphics
+	ld hl, LoadPlayerSpriteGraphics ; in bank 0
 	call Bankswitch
 	jp PlayDefaultMusic ; update map/player state?
 

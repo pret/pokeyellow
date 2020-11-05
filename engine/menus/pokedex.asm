@@ -205,9 +205,9 @@ HandlePokedexListMenu:
 	jr z, .checkIfRightPressed
 .downPressed ; scroll down one row
 	ld a, [wDexMaxSeenMon]
-	cp a, 7
+	cp 7
 	jp c, .loop ; can't if the list is shorter than 7
-	sub a, 7
+	sub 7
 	ld b, a
 	ld a, [wListScrollOffset]
 	cp b
@@ -221,12 +221,12 @@ HandlePokedexListMenu:
 	jr z, .checkIfLeftPressed
 .rightPressed ; scroll down 7 rows
 	ld a, [wDexMaxSeenMon]
-	cp a, 7
+	cp 7
 	jp c, .loop ; can't if the list is shorter than 7
-	sub a, 6
+	sub 6
 	ld b, a
 	ld a, [wListScrollOffset]
-	add a, 7
+	add 7
 	ld [wListScrollOffset], a
 	cp b
 	jp c, .loop
@@ -240,7 +240,7 @@ HandlePokedexListMenu:
 	jr z, .buttonAPressed
 .leftPressed
 	ld a, [wListScrollOffset]
-	sub a, 7
+	sub 7
 	ld [wListScrollOffset], a
 	jp nc, .loop
 	xor a
@@ -324,7 +324,7 @@ DrawPokedexVerticalLine:
 .loop
 	ld [hl], a
 	add hl, de
-	xor a, 1 ; toggle between vertical line tile and box tile
+	xor 1 ; toggle between vertical line tile and box tile
 	dec c
 	jr nz, .loop
 	ret
@@ -459,7 +459,7 @@ ShowPokedexDataInternal:
 .waitForButtonPress
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
-	and a, A_BUTTON | B_BUTTON
+	and A_BUTTON | B_BUTTON
 	jr z, .waitForButtonPress
 	pop af
 	ldh [hTilesetType], a

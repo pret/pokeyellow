@@ -36,7 +36,7 @@ AddItemToInventory_::
 	inc hl
 .loop
 	ld a, [hl]
-	cp a, $ff ; is it the end of the table?
+	cp $ff ; is it the end of the table?
 	jr nz, .notAtEndOfInventory
 .addNewItem ; add an item not yet in the inventory
 	pop hl

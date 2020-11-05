@@ -18,10 +18,6 @@ UncompressMonSprite::
 ; $99 ≤ index,       bank $D
 	ld a, [wcf91] ; XXX name for this ram location
 	ld b, a
-	;cp MEW
-	;ld a, BANK(MewPicFront)
-	;jr z, .GotBank
-	;ld a, b
 	cp FOSSIL_KABUTOPS
 	ld a, BANK(FossilKabutopsPic)
 	jr z, .GotBank

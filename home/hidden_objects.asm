@@ -9,7 +9,9 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
 	bit 0, a ; A button
 	jr z, .nothingFound
 ; A button is pressed
-	callbs CheckForHiddenObject
+	ld a, BANK(CheckForHiddenObject)
+	call BankswitchCommon
+	call CheckForHiddenObject
 	ldh a, [hDidntFindAnyHiddenObject]
 	and a
 	jr nz, .hiddenObjectNotFound

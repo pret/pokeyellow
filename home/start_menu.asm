@@ -1,5 +1,6 @@
 DisplayStartMenu::
-	switchbank StartMenu_Pokedex ; also bank for other functions
+	ld a, BANK(StartMenu_Pokedex) ; also bank for other functions
+	call BankswitchCommon
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a
 	ld a, SFX_START_MENU
