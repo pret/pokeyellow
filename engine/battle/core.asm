@@ -1765,7 +1765,7 @@ SendOutMon:
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	or [hl] ; is enemy mon HP zero?
-	jp z, .skipDrawingEnemyHUDAndHPBar; if HP is zero, skip drawing the HUD and HP bar
+	jp z, .skipDrawingEnemyHUDAndHPBar ; if HP is zero, skip drawing the HUD and HP bar
 	call DrawEnemyHUDAndHPBar
 .skipDrawingEnemyHUDAndHPBar
 	call DrawPlayerHUDAndHPBar
@@ -2096,16 +2096,17 @@ DisplayBattleMenu::
 	jp .handleBattleMenuInput
 ; the following happens for the old man tutorial and prof. oak pikachu battle
 .doSimulatedMenuInput
+	; Temporarily save the player name in wGrassRate,
+	; which is supposed to get overwritten when entering a
+	; map with wild Pokémon.
+	; In Red/Blue, due to an oversight, the data may not get
+	; overwritten (on Cinnabar and Route 21) and the infamous
+	; Missingno. glitch can show up.
+	; However, this has been fixed in Yellow.
 	ld hl, wPlayerName
 	ld de, wGrassRate
 	ld bc, NAME_LENGTH
-	call CopyData  ; temporarily save the player name in unused space,
-	               ; which is supposed to get overwritten when entering a
-	               ; map with wild Pokémon.
-				   ; In Red/Blue, due to an oversight, the data
-	               ; may not get overwritten (cinnabar) and the infamous
-	               ; Missingno. glitch can show up. However,
-				   ; this has been fixed in yellow
+	call CopyData
 	ld hl, .oldManName
 	ld a, [wBattleType]
 	dec a
@@ -2310,9 +2311,9 @@ BagWasSelected:
 	jr DisplayBagMenu
 
 SimulatedInputBattleItemList:
-	db 1 ; # of items
+	db 1 ; # items
 	db POKE_BALL, 1
-	db $ff
+	db -1 ; end
 
 DisplayPlayerBag:
 	; get the pointer to player's bag when in a normal battle
@@ -4258,7 +4259,7 @@ CheckForDisobedience:
 	call GetCurrentMove
 .canUseMove
 	ld a, $1
-	and a; clear Z flag
+	and a ; clear Z flag
 	ret
 .cannotUseMove
 	xor a ; set Z flag
@@ -4731,7 +4732,7 @@ JumpToOHKOMoveEffect:
 INCLUDE "data/battle/unused_critical_hit_moves.asm"
 
 ; determines if attack is a critical hit
-; azure heights claims "the fastest pokémon (who are, not coincidentally,
+; Azure Heights claims "the fastest pokémon (who are, not coincidentally,
 ; among the most popular) tend to CH about 20 to 25% of the time."
 CriticalHitTest:
 	xor a
@@ -5442,26 +5443,32 @@ AdjustDamageForMoveType:
 .done
 	ret
 
+; function to tell how effective the type of an enemy attack is on the player's current pokemon
+; this doesn't take into account the effects that dual types can have
+; (e.g. 4x weakness / resistance, weaknesses and resistances canceling)
+; the result is stored in [wTypeEffectiveness]
+; ($05 is not very effective, $10 is neutral, $14 is super effective)
+; as far is can tell, this is only used once in some AI code to help decide which move to use
 AIGetTypeEffectiveness:
 	ld a, [wEnemyMoveType]
-	ld d, a                 ; d = type of enemy move
+	ld d, a                    ; d = type of enemy move
 	ld hl, wBattleMonType
-	ld b, [hl]              ; b = type 1 of player's pokemon
+	ld b, [hl]                 ; b = type 1 of player's pokemon
 	inc hl
-	ld c, [hl]              ; c = type 2 of player's pokemon
+	ld c, [hl]                 ; c = type 2 of player's pokemon
 	ld a, $10
-	ld [wd11e], a           ; initialize [wd11e] to neutral effectiveness
+	ld [wTypeEffectiveness], a ; initialize to neutral effectiveness
 	ld hl, TypeEffects
 .loop
 	ld a, [hli]
 	cp $ff
 	ret z
-	cp d                   ; match the type of the move
+	cp d                      ; match the type of the move
 	jr nz, .nextTypePair1
 	ld a, [hli]
-	cp b                   ; match with type 1 of pokemon
+	cp b                      ; match with type 1 of pokemon
 	jr z, .done
-	cp c                   ; or match with type 2 of pokemon
+	cp c                      ; or match with type 2 of pokemon
 	jr z, .done
 	jr .nextTypePair2
 .nextTypePair1
@@ -5469,8 +5476,8 @@ AIGetTypeEffectiveness:
 .nextTypePair2
 	inc hl
 	jr .loop
-
 .done
+	; 40% chance for Lorelei's Dewgong to ignore type effectiveness?
 	ld a, [wTrainerClass]
 	cp LORELEI
 	jr nz, .ok
@@ -5481,9 +5488,8 @@ AIGetTypeEffectiveness:
 	cp $66 ; 40 percent
 	ret c
 .ok
-
 	ld a, [hl]
-	ld [wd11e], a           ; store damage multiplier
+	ld [wTypeEffectiveness], a ; store damage multiplier
 	ret
 
 INCLUDE "data/types/type_matchups.asm"

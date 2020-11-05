@@ -160,7 +160,7 @@ DrawFrameBlock:
 .afterDrawingTiles
 	ld a, [wFBMode]
 	cp FRAMEBLOCKMODE_02
-	jr z, .advanceFrameBlockDestAddr; skip delay and don't clean OAM buffer
+	jr z, .advanceFrameBlockDestAddr ; skip delay and don't clean OAM buffer
 	ld a, [wSubAnimFrameDelay]
 	ld c, a
 	call DelayFrames

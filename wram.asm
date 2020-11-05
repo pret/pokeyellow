@@ -151,6 +151,7 @@ wc0f3:: ds 1
 wc0f4:: ds 1
 wc0f5:: ds 11
 
+
 SECTION "Sprite State Data", WRAM0
 
 wSpriteDataStart::
@@ -191,7 +192,7 @@ wSprite11StateData1::      spritestatedata1 wSprite11StateData1
 wSprite12StateData1::      spritestatedata1 wSprite12StateData1
 wSprite13StateData1::      spritestatedata1 wSprite13StateData1
 wSprite14StateData1::      spritestatedata1 wSprite14StateData1
-wSpritePikachuStateData1::  spritestatedata1 wSpritePikachuStateData1
+wSpritePikachuStateData1:: spritestatedata1 wSpritePikachuStateData1
 
 wSpriteStateData2::
 ; more data for all sprites on the current map
@@ -229,7 +230,7 @@ wSprite11StateData2::      spritestatedata2 wSprite11StateData2
 wSprite12StateData2::      spritestatedata2 wSprite12StateData2
 wSprite13StateData2::      spritestatedata2 wSprite13StateData2
 wSprite14StateData2::      spritestatedata2 wSprite14StateData2
-wSpritePikachuStateData2::  spritestatedata2 wSpritePikachuStateData2
+wSpritePikachuStateData2:: spritestatedata2 wSpritePikachuStateData2
 
 
 wSpriteDataEnd::
@@ -244,16 +245,24 @@ wOAMBufferEnd::
 
 wTileMap::
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
-	ds SCREEN_HEIGHT * SCREEN_WIDTH
+	ds SCREEN_WIDTH * SCREEN_HEIGHT
 
-wSerialPartyMonsPatchList::
-; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
-
+UNION
 wTileMapBackup::
 ; buffer for temporarily saving and restoring current screen's tiles
 ; (e.g. if menus are drawn on top)
-;	ds 20 * 18
+	ds SCREEN_WIDTH * SCREEN_HEIGHT
 
+NEXTU
+wSerialPartyMonsPatchList::
+; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
+	ds 200
+
+wSerialEnemyMonsPatchList::
+; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
+	ds 200
+
+NEXTU
 wAnimatedObjectsData::
 ; Used by functions in BANK 3E
 ; This looks similar to the address structure for Gen 2 OAM animations.
@@ -303,10 +312,7 @@ wAnimatedObjectGlobalXOffset::
 	ds 1
 wAnimatedObjectsDataEnd::
 
-wSerialEnemyMonsPatchList::
-; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
-
-; Surfing Minigame
+; Surfing minigame
 wSurfingMinigameData::
 	ds 1
 wSurfingMinigameRoutineNumber::
@@ -356,7 +362,6 @@ wc5ee::
 	ds 1
 wSurfingMinigameBGMapReadBuffer::
 	ds 16
-
 	ds 24
 wSurfingMinigameSCX::
 	ds 3
@@ -375,6 +380,7 @@ wSurfingMinigameRoutineDelay::
 wSurfingMinigameIntroAnimationFinished::
 	ds 1
 
+; Yellow intro
 wYellowIntroCurrentScene::
 wc634::
 	ds 1
@@ -384,13 +390,21 @@ wc635::
 wYellowIntroAnimatedObjectStructPointer::
 	ds 1
 wSurfingMinigameDataEnd::
+ENDU
 
-	ds 177
+	ds 80
 
-wTempPic::
-wPrinterData::
+UNION
 wOverworldMap::
-	; ds 1300
+	ds 1300
+wOverworldMapEnd::
+
+NEXTU
+wTempPic::
+	ds 7 * 7 tiles
+
+NEXTU
+wPrinterData::
 wPrinterSendState::
 	ds 1
 wPrinterRowIndex::
@@ -480,8 +494,7 @@ wcbea::
 
 wcbec::
 	ds 16
-
-wOverworldMapEnd::
+ENDU
 
 wRedrawRowOrColumnSrcTiles::
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
@@ -617,6 +630,7 @@ wUnknownSerialCounter::
 ; 2 bytes
 
 wEnteringCableClub::
+; 1 byte
 	ds 2
 
 wWhichTradeMonSelectionMenu::
@@ -705,15 +719,12 @@ wBoostExpByExpAll::
 wAnimationType::
 ; values between 0-6. Shake screen horizontally, shake screen vertically, blink Pokemon...
 
+UNION
 wNPCMovementDirections::
-
-wPikaPicUsedGFXCount::
 	ds 1
 
-wPikaPicUsedGFX::
 wDexRatingNumMonsOwned::
 	ds 1
-
 
 wDexRatingText::
 wTrainerCardBadgeAttributes::
@@ -723,21 +734,42 @@ wSlotMachineSavedROMBank::
 ; ROM back to return to when the player is done with the slot machine
 	ds 1
 
-	ds 13
-wPikaPicUsedGFXEnd::
-	ds 13
+	ds 26
 
 wAnimPalette::
 	ds 1
 
 	ds 29
 
+NEXTU
+wPikaPicUsedGFXCount::
+	ds 1
+
+wPikaPicUsedGFX::
+	ds 16
+wPikaPicUsedGFXEnd::
+
+	ds 43
+ENDU
+
+UNION
 wNPCMovementDirections2::
+	ds 10
 
-wPikaPicAnimObjectDataBufferSize::
-
+NEXTU
 wSwitchPartyMonTempBuffer::
 ; temporary buffer when swapping party mon data
+	ds 49
+
+NEXTU
+	ds 10
+
+wNumStepsToTake::
+; used in Pallet Town scripted movement
+	ds 1
+
+NEXTU
+wPikaPicAnimObjectDataBufferSize::
 	ds 1
 
 wPikaPicAnimObjectDataBuffer::
@@ -750,14 +782,11 @@ wPikaPicAnimObjectDataBuffer::
 ; 	5: x offset
 ; 	6: y offset
 ; 	7: unused
-
-	ds 9
-
-wNumStepsToTake::
-; used in Pallet Town scripted movement
-	ds 23
+	ds 4 * 8
 wPikaPicAnimObjectDataBufferEnd::
-	ds 26
+ENDU
+
+	ds 10
 
 wRLEByteCount::
 	ds 1
@@ -835,7 +864,7 @@ wTotalPayDayMoney::
 wSafariEscapeFactor::
 	ds 1
 wSafariBaitFactor::
-	ds 1;
+	ds 1
 
 	ds 1
 
@@ -1194,7 +1223,6 @@ wPlayerSpinWhileMovingUpOrDownAnimFrameDelay::
 wHiddenObjectIndex::
 
 wTrainerFacingDirection::
-
 	ds 1
 
 wHoFMonOrPlayer::
@@ -1240,8 +1268,6 @@ wHoFTeamNo::
 wSlotMachineWheel1MiddleTile::
 
 wFieldMovesLeftmostXCoord::
-
-wcd42::
 	ds 1
 
 wLastFieldMoveID::
@@ -1591,14 +1617,19 @@ wPalPacket::
 wPartyMenuBlkPacket::
 ; $30 bytes
 	ds 9
+
 wPartyHPBarAttributes::
-	ds 20
+	ds 6
+
+	ds 14
 
 wExpAmountGained::
 ; 2-byte big-endian number
 ; the total amount of exp a mon gained
 
-wcf4b:: ds 2 ; storage buffer for various strings
+wcf4b::
+; storage buffer for various strings
+	ds 2
 
 wGainBoostedExp::
 	ds 1
@@ -1779,7 +1810,11 @@ wEnemyMonDefense::   dw
 wEnemyMonSpeed::     dw
 wEnemyMonSpecial::   dw
 wEnemyMonPP::        ds 3 ; NUM_MOVES - 1
+
+
 SECTION "WRAM Bank 1", WRAMX
+
+; continuing wEnemyMon from the previous section
                      ds 1 ; NUM_MOVES - 3
 
 wEnemyMonBaseStats:: ds 5
@@ -1931,6 +1966,7 @@ wPlayerConfusedCounter::
 
 wPlayerToxicCounter::
 	ds 1
+
 wPlayerDisabledMove::
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
@@ -1947,6 +1983,7 @@ wEnemyConfusedCounter::
 
 wEnemyToxicCounter::
 	ds 1
+
 wEnemyDisabledMove::
 ; high nibble: which move is disabled (1-4)
 ; low nibble: disable turns left
@@ -2247,7 +2284,7 @@ wMonHBackSprite::
 	ds 2
 
 wMonHMoves::
-	ds 4
+	ds NUM_MOVES
 
 wMonHGrowthRate::
 	ds 1
@@ -2764,7 +2801,6 @@ wPikachuMovementFlags::
 	ds 1
 
 UNION
-
 wCurPikaMovementData::
 wCurPikaMovementParam1:: ds 1
 wCurPikaMovementFunc1:: ds 1
@@ -2782,7 +2818,6 @@ wPikachuStepSubtimer:: ds 1
 wCurPikaMovementDataEnd::
 
 NEXTU
-
 wPikaPicAnimPointer:: dw
 wPikaPicAnimPointerSetupFinished:: ds 1
 wPikaPicAnimCurGraphicID:: ds 1
@@ -3344,7 +3379,6 @@ wBeatLorelei::
 ; the game uses this to tell when Elite 4 events need to be reset
 	ds 1
 
-wd735::
 	ds 1
 
 wd736::
@@ -3488,6 +3522,7 @@ wBoxMon2:: ds BOX_STRUCT_LENGTH * (MONS_PER_BOX - 1)
 wBoxMonOT::    ds NAME_LENGTH * MONS_PER_BOX
 wBoxMonNicks:: ds NAME_LENGTH * MONS_PER_BOX
 wBoxMonNicksEnd::
+
 wBoxDataEnd::
 
 wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
@@ -3498,7 +3533,9 @@ wLastOBP1:: ds 1
 wdef5:: ds 1
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 
+
 SECTION "Stack", WRAMX
+
 wStack::
 
 

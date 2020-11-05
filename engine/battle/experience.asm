@@ -43,7 +43,7 @@ GainExperience:
 	inc de
 	jr .nextBaseStat
 .maxStatExp ; if the upper byte also overflowed, then we have hit the max stat exp
-	dec a ; a is 0 from previous check
+	dec a ; ld a, $ff; a is 0 from previous check
 	ld [de], a
 	inc de
 	ld [de], a
@@ -234,15 +234,15 @@ GainExperience:
 	xor a ; battle mon
 	ld [wCalculateWhoseStats], a
 	ld hl, CalculateModifiedStats
-	call Bankswitch15ToF
+	call CallBattleCore
 	ld hl, ApplyBurnAndParalysisPenaltiesToPlayer
-	call Bankswitch15ToF
+	call CallBattleCore
 	ld hl, ApplyBadgeStatBoosts
-	call Bankswitch15ToF
+	call CallBattleCore
 	ld hl, DrawPlayerHUDAndHPBar
-	call Bankswitch15ToF
+	call CallBattleCore
 	ld hl, PrintEmptyString
-	call Bankswitch15ToF
+	call CallBattleCore
 	call SaveScreenTilesToBuffer1
 .printGrewLevelText
 	callabd_ModifyPikachuHappiness PIKAHAPPY_LEVELUP
@@ -345,7 +345,7 @@ BoostExp:
 	ldh [hQuotient + 2], a
 	ret
 
-Bankswitch15ToF:
+CallBattleCore:
 	ld b, BANK(BattleCore)
 	jp Bankswitch
 

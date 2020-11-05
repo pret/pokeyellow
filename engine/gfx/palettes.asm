@@ -19,7 +19,7 @@ _RunPaletteCommand:
 	push de
 	jp hl
 
-SetPal_Black:
+SetPal_BattleBlack:
 	ld hl, PalPacket_Black
 	ld de, BlkPacket_Battle
 	ret
@@ -30,7 +30,6 @@ SetPal_Battle:
 	ld de, wPalPacket
 	ld bc, $10
 	call CopyData
-	;ld a, [wPlayerBattleStatus3]
 	ld hl, wBattleMonSpecies
 	ld a, [hl]
 	and a
@@ -42,7 +41,6 @@ SetPal_Battle:
 .asm_71ef9
 	call DeterminePaletteID
 	ld b, a
-	;ld a, [wEnemyBattleStatus3]
 	ld hl, wEnemyMonSpecies2
 	call DeterminePaletteID
 	ld c, a
@@ -118,7 +116,7 @@ SetPal_Slots:
 	ld de, BlkPacket_Slots
 	ret
 
-SetPal_Titlescreen:
+SetPal_TitleScreen:
 	ld hl, PalPacket_Titlescreen
 	ld de, BlkPacket_Titlescreen
 	ret
@@ -267,13 +265,13 @@ SendUnknownPalPacket_72064::
 
 SetPalFunctions:
 ; entries correspond to SET_PAL_* constants
-	dw SetPal_Black
+	dw SetPal_BattleBlack
 	dw SetPal_Battle
 	dw SetPal_TownMap
 	dw SetPal_StatusScreen
 	dw SetPal_Pokedex
 	dw SetPal_Slots
-	dw SetPal_Titlescreen
+	dw SetPal_TitleScreen
 	dw SetPal_NidorinoIntro
 	dw SetPal_Generic
 	dw SetPal_Overworld

@@ -247,7 +247,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn1
 	cp FREEZE_SIDE_EFFECT
 	jr z, .freeze1
-; .paralyze
+; .paralyze1
 	ld a, 1 << PAR
 	ld [wEnemyMonStatus], a
 	call QuarterSpeedDueToParalysis ; quarter speed of affected mon
@@ -309,6 +309,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn2
 	cp FREEZE_SIDE_EFFECT
 	jr z, .freeze2
+; .paralyze2
 	ld a, 1 << PAR
 	ld [wBattleMonStatus], a
 	call QuarterSpeedDueToParalysis
