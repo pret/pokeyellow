@@ -386,7 +386,7 @@ ItemUseBall:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
-	
+
 ; Determine Status2.
 ; no status ailment:     Status2 = 0
 ; Burn/Paralysis/Poison: Status2 = 5

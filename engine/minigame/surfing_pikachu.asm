@@ -1689,7 +1689,7 @@ SurfingMinigame_WriteTotal:
 
 .Total:
 	db $2b,$2c,$25,$28,$2d ; Total
-	
+
 DidPlayerGetAHighScore:
 	ld hl, wSurfingMinigameHiScore + 1
 	ld a, [wSurfingMinigameTotalScore + 1]

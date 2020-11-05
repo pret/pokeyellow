@@ -254,7 +254,7 @@ CopyrightTextString:
 TitleScreen_PlayPikachuPCM:
 	callfar PlayPikachuSoundClip
 	ret
-	
+
 DoTitleScreenFunction:
 	call .CheckTimer
 	ld a, [wTitleScreenScene]
@@ -268,7 +268,7 @@ DoTitleScreenFunction:
 	ld l, a
 	jp hl
 
-	
+
 .Jumptable:
 	dw .Nop
 	dw .BlinkHalf
@@ -282,13 +282,13 @@ DoTitleScreenFunction:
 	dw .BlinkWait
 	dw .BlinkOpen
 	dw .GoBackToStart
-	
+
 .GoBackToStart:
 	xor a
 	ld [wTitleScreenScene], a
 .Nop
 	ret
-	
+
 .BlinkOpen:
 	ld e, 0
 	jr .LoadBlinkFrame
@@ -316,7 +316,7 @@ DoTitleScreenFunction:
 	ld hl, wTitleScreenScene
 	inc [hl]
 	ret
-	
+
 .CheckTimer:
 	ld hl, wTitleScreenTimer
 	ld a, [hl]

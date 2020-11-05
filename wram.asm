@@ -2755,8 +2755,8 @@ wExpressionNumber::
 	ds 1
 wPikaPicAnimNumber::
 	ds 1
-	
-wPikachuMovementScriptBank:: ds 1 
+
+wPikachuMovementScriptBank:: ds 1
 wPikachuMovementScriptAddress:: dw
 wPikachuMovementFlags::
 ; bit 6 - spawn shadow
@@ -2818,11 +2818,11 @@ wd475:: ds 1
 wd47a:: ds 1
 
 	ds 24
-	
+
 wd492:: ds 1
-	
+
 	ds 1
-	
+
 wSurfingMinigameHiScore:: ds 2 ; 4-digit BCD little-endian
 	ds 1
 
@@ -3401,7 +3401,7 @@ wGrassMons::
 wSerialEnemyDataBlock::
 	ds 9
 
-wEnemyPartyCount:: ds 1    
+wEnemyPartyCount:: ds 1
 wEnemyPartyMons::  ds PARTY_LENGTH + 1
 
 ; Overload enemy party data
