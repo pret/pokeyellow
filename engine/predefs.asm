@@ -1,8 +1,8 @@
 GetPredefPointer::
- ; Store the contents of the register
- ; pairs (hl, de, bc) at wPredefRegisters.
- ; Then put the bank and address of predef
- ; wPredefID in [wPredefBank] and hl.
+; Store the contents of the register
+; pairs (hl, de, bc) at wPredefRegisters.
+; Then put the bank and address of predef
+; wPredefID in [wPredefBank] and hl.
 
 	ld a, h
 	ld [wPredefRegisters], a

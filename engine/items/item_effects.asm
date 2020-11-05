@@ -3092,7 +3092,7 @@ SendNewMonToBox:
 	ld a, [wcf91]
 	cp KADABRA
 	jr nz, .notKadabra
-	ld a, $60 ; twistedspoon in gsc
+	ld a, TWISTEDSPOON_GSC
 	ld [wBoxMon1CatchRate], a
 .notKadabra
 	ret

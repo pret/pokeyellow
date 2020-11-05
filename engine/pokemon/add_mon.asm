@@ -172,10 +172,10 @@ _AddPartyMon::
 	ld [de], a
 	ld a, [wcf91]
 	cp KADABRA
-	jr nz, .skipGivingTwistedSpoon
-	ld a, $60 ; twistedspoon in gen 2
+	jr nz, .notKadabra
+	ld a, TWISTEDSPOON_GSC
 	ld [de], a
-.skipGivingTwistedSpoon
+.notKadabra
 	ld hl, wMonHMoves
 	ld a, [hli]
 	inc de

@@ -1327,7 +1327,7 @@ BattleAnimWriteOAMEntry:
 ; Y coordinate = e (increased by 8 each call, before the write to OAM)
 ; X coordinate = [wBaseCoordX]
 ; tile = d
-; attributes = variable (dependant on coords)
+; attributes = variable (depending on coords)
 	ld a, $1
 	ld [wdef5], a
 	ld a, e
@@ -1402,7 +1402,7 @@ AdjustOAMBlockYPos2:
 	ret
 
 AnimationBlinkEnemyMon:
-	; Make the enemy mon's sprite blink on and off for a second or two
+; Make the enemy mon's sprite blink on and off for a second or two
 	ld hl, AnimationBlinkMon
 	jp CallWithTurnFlipped
 
@@ -1880,7 +1880,7 @@ _AnimationSlideMonOff:
 	jr nz, .slideLoop
 	ret
 
-; Since mon pic tile numbers go from top to bottom, left to right in order, 
+; Since mon pic tile numbers go from top to bottom, left to right in order,
 ; adding the height of the mon pic in tiles to a tile number gives the tile
 ; number of the tile one column to the right (and thus subtracting the height
 ; gives the reverse). If the next tile would be past the edge of the pic, the 2
@@ -2246,7 +2246,7 @@ ClearMonPicFromTileMap:
 	ret
 
 ; puts the tile map destination address of a mon sprite in hl, given the row count in b
-; The usual row count is 7, but it may be smaller when sliding a mon sprite in/out, 
+; The usual row count is 7, but it may be smaller when sliding a mon sprite in/out,
 ; in order to show only a portion of the mon sprite.
 GetMonSpriteTileMapPointerFromRowCount:
 	push de

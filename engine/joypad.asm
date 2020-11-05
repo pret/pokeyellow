@@ -7,7 +7,6 @@ ReadJoypad_::
 	ret nz
 
 	ld a, 1 << 5 ; select direction keys
-	;ld c, 0
 
 	ldh [rJOYP], a
 	ldh a, [rJOYP]
@@ -19,9 +18,9 @@ ReadJoypad_::
 
 	ld a, 1 << 4 ; select button keys
 	ldh [rJOYP], a
-	REPT 6
+REPT 6
 	ldh a, [rJOYP]
-	ENDR
+ENDR
 	cpl
 	and %1111
 	or b
@@ -32,14 +31,13 @@ ReadJoypad_::
 	ldh [rJOYP], a
 	ret
 
-
 _Joypad::
 ; hJoyReleased: (hJoyLast ^ hJoyInput) & hJoyLast
 ; hJoyPressed:  (hJoyLast ^ hJoyInput) & hJoyInput
 
 	ldh a, [hJoyInput]
 	ld b, a
-	and $4F
+	and A_BUTTON + B_BUTTON + SELECT + START + D_UP
 	cp A_BUTTON + B_BUTTON + SELECT + START ; soft reset
 	jp z, TrySoftReset
 

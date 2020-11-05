@@ -152,7 +152,7 @@ LoadTownMap_Fly::
 	call LoadFontTilePatterns
 	ld de, BirdSprite
 	ld b, BANK(BirdSprite)
-	ld c, $c
+	ld c, 12
 	ld hl, vSprites tile $04
 	call CopyVideoData
 	ld de, TownMapUpArrow
