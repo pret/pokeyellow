@@ -6462,7 +6462,7 @@ SwapPlayerAndEnemyLevels:
 ; (for use when scrolling the player sprite and enemy's silhouettes on screen)
 LoadPlayerBackPic:
 	ld a, [wBattleType]
-	ld de, OldManPic
+	ld de, OldManPicBack
 	cp BATTLE_TYPE_OLD_MAN ; is it the old man tutorial?
 	jr z, .next
 	ld de, ProfOakPicBack

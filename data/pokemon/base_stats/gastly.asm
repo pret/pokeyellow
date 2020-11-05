@@ -7,7 +7,7 @@
 	db 190 ; catch rate
 	db 95 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/gastly.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/gastly.pic", 0, 1 ; sprite dimensions
 	dw GastlyPicFront, GastlyPicBack
 
 	db LICK, CONFUSE_RAY, NIGHT_SHADE, NO_MOVE ; level 1 learnset

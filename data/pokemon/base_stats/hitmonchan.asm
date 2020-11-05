@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 140 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/hitmonchan.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/hitmonchan.pic", 0, 1 ; sprite dimensions
 	dw HitmonchanPicFront, HitmonchanPicBack
 
 	db COMET_PUNCH, AGILITY, NO_MOVE, NO_MOVE ; level 1 learnset

@@ -7,7 +7,7 @@
 	db 75 ; catch rate
 	db 122 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/raichu.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/raichu.pic", 0, 1 ; sprite dimensions
 	dw RaichuPicFront, RaichuPicBack
 
 	db THUNDERSHOCK, GROWL, THUNDER_WAVE, NO_MOVE ; level 1 learnset

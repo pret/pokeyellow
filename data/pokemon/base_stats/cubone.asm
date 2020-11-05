@@ -7,7 +7,7 @@
 	db 190 ; catch rate
 	db 87 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/cubone.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/cubone.pic", 0, 1 ; sprite dimensions
 	dw CubonePicFront, CubonePicBack
 
 	db GROWL, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset

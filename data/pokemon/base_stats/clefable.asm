@@ -7,7 +7,7 @@
 	db 25 ; catch rate
 	db 129 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/clefable.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/clefable.pic", 0, 1 ; sprite dimensions
 	dw ClefablePicFront, ClefablePicBack
 
 	db SING, DOUBLESLAP, MINIMIZE, METRONOME ; level 1 learnset

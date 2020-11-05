@@ -7,7 +7,7 @@
 	db 90 ; catch rate
 	db 116 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/raticate.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/raticate.pic", 0, 1 ; sprite dimensions
 	dw RaticatePicFront, RaticatePicBack
 
 	db TACKLE, TAIL_WHIP, QUICK_ATTACK, NO_MOVE ; level 1 learnset

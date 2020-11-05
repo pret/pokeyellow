@@ -7,7 +7,7 @@
 	db 60 ; catch rate
 	db 205 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/tentacruel.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/tentacruel.pic", 0, 1 ; sprite dimensions
 	dw TentacruelPicFront, TentacruelPicBack
 
 	db ACID, SUPERSONIC, WRAP, NO_MOVE ; level 1 learnset

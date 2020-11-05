@@ -7,7 +7,7 @@
 	db 75 ; catch rate
 	db 149 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/primeape.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/primeape.pic", 0, 1 ; sprite dimensions
 	dw PrimeapePicFront, PrimeapePicBack
 
 	db SCRATCH, LEER, LOW_KICK, KARATE_CHOP ; level 1 learnset

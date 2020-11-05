@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 219 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/lapras.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/lapras.pic", 0, 1 ; sprite dimensions
 	dw LaprasPicFront, LaprasPicBack
 
 	db WATER_GUN, GROWL, NO_MOVE, NO_MOVE ; level 1 learnset

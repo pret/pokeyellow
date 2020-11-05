@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 210 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/blastoise.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/blastoise.pic", 0, 1 ; sprite dimensions
 	dw BlastoisePicFront, BlastoisePicBack
 
 	db TACKLE, TAIL_WHIP, BUBBLE, WATER_GUN ; level 1 learnset

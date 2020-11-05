@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 197 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/jolteon.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/jolteon.pic", 0, 1 ; sprite dimensions
 	dw JolteonPicFront, JolteonPicBack
 
 	db TACKLE, TAIL_WHIP, QUICK_ATTACK, THUNDERSHOCK ; level 1 learnset

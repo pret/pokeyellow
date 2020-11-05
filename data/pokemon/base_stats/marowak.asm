@@ -7,7 +7,7 @@
 	db 75 ; catch rate
 	db 124 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/marowak.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/marowak.pic", 0, 1 ; sprite dimensions
 	dw MarowakPicFront, MarowakPicBack
 
 	db BONE_CLUB, TAIL_WHIP, NO_MOVE, NO_MOVE ; level 1 learnset

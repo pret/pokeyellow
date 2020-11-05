@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 201 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/kabutops.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/kabutops.pic", 0, 1 ; sprite dimensions
 	dw KabutopsPicFront, KabutopsPicBack
 
 	db SCRATCH, HARDEN, ABSORB, NO_MOVE ; level 1 learnset

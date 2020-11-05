@@ -7,7 +7,7 @@
 	db 75 ; catch rate
 	db 176 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/dewgong.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/dewgong.pic", 0, 1 ; sprite dimensions
 	dw DewgongPicFront, DewgongPicBack
 
 	db HEADBUTT, GROWL, AURORA_BEAM, NO_MOVE ; level 1 learnset

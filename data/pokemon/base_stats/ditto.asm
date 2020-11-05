@@ -7,7 +7,7 @@
 	db 35 ; catch rate
 	db 61 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/ditto.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/ditto.pic", 0, 1 ; sprite dimensions
 	dw DittoPicFront, DittoPicBack
 
 	db TRANSFORM, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset

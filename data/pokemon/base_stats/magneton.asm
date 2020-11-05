@@ -7,7 +7,7 @@
 	db 60 ; catch rate
 	db 161 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/magneton.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/magneton.pic", 0, 1 ; sprite dimensions
 	dw MagnetonPicFront, MagnetonPicBack
 
 	db TACKLE, SONICBOOM, THUNDERSHOCK, NO_MOVE ; level 1 learnset

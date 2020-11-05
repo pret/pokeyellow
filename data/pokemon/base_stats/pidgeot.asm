@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 172 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/pidgeot.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/pidgeot.pic", 0, 1 ; sprite dimensions
 	dw PidgeotPicFront, PidgeotPicBack
 
 	db GUST, SAND_ATTACK, QUICK_ATTACK, NO_MOVE ; level 1 learnset

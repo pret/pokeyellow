@@ -7,7 +7,7 @@
 	db 50 ; catch rate
 	db 109 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/wigglytuff.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/wigglytuff.pic", 0, 1 ; sprite dimensions
 	dw WigglytuffPicFront, WigglytuffPicBack
 
 	db SING, DISABLE, DEFENSE_CURL, DOUBLESLAP ; level 1 learnset

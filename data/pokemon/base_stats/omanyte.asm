@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 120 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/omanyte.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/omanyte.pic", 0, 1 ; sprite dimensions
 	dw OmanytePicFront, OmanytePicBack
 
 	db WATER_GUN, WITHDRAW, NO_MOVE, NO_MOVE ; level 1 learnset

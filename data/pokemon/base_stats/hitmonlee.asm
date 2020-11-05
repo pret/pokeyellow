@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 139 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/hitmonlee.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/hitmonlee.pic", 0, 1 ; sprite dimensions
 	dw HitmonleePicFront, HitmonleePicBack
 
 	db DOUBLE_KICK, MEDITATE, NO_MOVE, NO_MOVE ; level 1 learnset

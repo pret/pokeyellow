@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 190 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/gengar.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/gengar.pic", 0, 1 ; sprite dimensions
 	dw GengarPicFront, GengarPicBack
 
 	db LICK, CONFUSE_RAY, NIGHT_SHADE, NO_MOVE ; level 1 learnset

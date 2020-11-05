@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 141 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/ivysaur.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/ivysaur.pic", 0, 1 ; sprite dimensions
 	dw IvysaurPicFront, IvysaurPicBack
 
 	db TACKLE, GROWL, LEECH_SEED, NO_MOVE ; level 1 learnset

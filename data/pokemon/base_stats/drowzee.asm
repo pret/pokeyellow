@@ -7,7 +7,7 @@
 	db 190 ; catch rate
 	db 102 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/drowzee.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/drowzee.pic", 0, 1 ; sprite dimensions
 	dw DrowzeePicFront, DrowzeePicBack
 
 	db POUND, HYPNOSIS, NO_MOVE, NO_MOVE ; level 1 learnset
