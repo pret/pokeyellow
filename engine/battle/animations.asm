@@ -579,16 +579,16 @@ Func_78e98:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
-	ld h, vBGMap0 / $100
+	ld h, HIGH(vBGMap0)
 	call WriteLowerByteOfBGMapAndEnableBGTransfer
 	call Delay3
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call LoadScreenTilesFromBuffer2
-	ld h, vBGMap1 / $100
+	ld h, HIGH(vBGMap1)
 
 WriteLowerByteOfBGMapAndEnableBGTransfer:
-	ld l, vBGMap0 & $ff
+	ld l, LOW(vBGMap0)
 	call BattleAnimCopyTileMapToVRAM
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a

@@ -1,4 +1,4 @@
-; The second of three duplicated sound engines.
+; The second of four partially duplicated sound engines.
 ; This copy has a few differences relating to battle sound effects
 ; and the low health alarm that plays in battle
 

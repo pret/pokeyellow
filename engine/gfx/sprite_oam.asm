@@ -153,7 +153,7 @@ PrepareOAMData::
 	cp c
 	ret nc
 	ld l, a
-	ld h, wOAMBuffer / $100
+	ld h, HIGH(wOAMBuffer)
 	ld a, c
 	ld de, $4 ; entry size
 	ld b, $a0

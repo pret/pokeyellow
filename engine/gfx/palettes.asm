@@ -752,7 +752,7 @@ index = 0
 		ld a, [hli]
 		inc hl
 
-		IF index < (NUM_ACTIVE_PALS + -1)
+		IF index < NUM_ACTIVE_PALS - 1
 			push hl
 		ENDC
 
@@ -823,7 +823,7 @@ DMGPalToGBCPal::
 	ld [wLastOBP1], a
 .convert
 color_index = 0
-	REPT NUM_COLORS
+	REPT NUM_PAL_COLORS
 		ld b, a
 		and %11
 		call .GetColorAddress
@@ -832,7 +832,7 @@ color_index = 0
 		ld a, [hl]
 		ld [wGBCPal + color_index * 2 + 1], a
 
-		IF color_index < (NUM_COLORS + -1)
+		IF color_index < NUM_PAL_COLORS - 1
 			ld a, b
 			rrca
 			rrca
@@ -863,14 +863,14 @@ TransferCurBGPData::
 	ldh a, [rLCDC]
 	and rLCDC_ENABLE_MASK
 	jr nz, .lcdEnabled
-	rept NUM_COLORS
-	call TransferPalColorLCDDisabled
-	endr
+	REPT NUM_PAL_COLORS
+		call TransferPalColorLCDDisabled
+	ENDR
 	jr .done
 .lcdEnabled
-	rept NUM_COLORS
-	call TransferPalColorLCDEnabled
-	endr
+	REPT NUM_PAL_COLORS
+		call TransferPalColorLCDEnabled
+	ENDR
 .done
 	pop de
 	ret
@@ -887,7 +887,7 @@ BufferBGPPal::
 	ld de, wBGPPalsBuffer
 	add hl, de
 	ld de, wGBCPal
-	ld c, PAL_SIZE
+	ld c, PALETTE_SIZE
 .loop
 	ld a, [de]
 	ld [hli], a
@@ -918,7 +918,7 @@ TransferBGPPals::
 	ldh [rBGPI], a
 	ld de, rBGPD
 	ld hl, wBGPPalsBuffer
-	ld c, 4 * PAL_SIZE
+	ld c, 4 * PALETTE_SIZE
 .loop
 	ld a, [hli]
 	ld [de], a
@@ -939,14 +939,14 @@ TransferCurOBPData:
 	ldh a, [rLCDC]
 	and rLCDC_ENABLE_MASK
 	jr nz, .lcdEnabled
-	rept NUM_COLORS
-	call TransferPalColorLCDDisabled
-	endr
+	REPT NUM_PAL_COLORS
+		call TransferPalColorLCDDisabled
+	ENDR
 	jr .done
 .lcdEnabled
-	rept NUM_COLORS
-	call TransferPalColorLCDEnabled
-	endr
+	REPT NUM_PAL_COLORS
+		call TransferPalColorLCDEnabled
+	ENDR
 .done
 	pop de
 	ret

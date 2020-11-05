@@ -6,6 +6,9 @@
 *.2bpp
 *.pic
 
+# compiled audio
+*.pcm
+
 # compiled roms
 *.gbc
 *.gb
@@ -20,9 +23,6 @@
 # precompiled python
 *.pyc
 *$py.class
-
-# converted audio data
-*.pcm
 
 # save game files
 *.sgm

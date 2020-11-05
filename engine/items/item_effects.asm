@@ -1037,7 +1037,7 @@ ItemUseMedicine:
 	push hl
 	push de
 	push bc
-	callfar Func_2fd6a
+	callfar RespawnOverworldPikachu
 	pop bc
 	pop de
 	pop hl
@@ -1542,7 +1542,7 @@ ItemUseMedicine:
 	push af
 	ld a, [wUsedItemOnWhichPokemon]
 	ld [wWhichPokemon], a
-	callfar Func_2fd6a ; evolve pokemon, if appropriate
+	callfar RespawnOverworldPikachu ; evolve pokemon, if appropriate
 	pop af
 	ld [wWhichPokemon], a
 

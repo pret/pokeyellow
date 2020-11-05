@@ -7,7 +7,7 @@ LCDC::
 	; [C700 + [rLY]] --> [FF00 + [hLCDCPointer]]
 	ldh a, [rLY]
 	ld l, a
-	ld h, wLYOverrides / $100
+	ld h, HIGH(wLYOverrides)
 	ld h, [hl] ; h != not part of pointer
 	ldh a, [hLCDCPointer]
 	ld l, a

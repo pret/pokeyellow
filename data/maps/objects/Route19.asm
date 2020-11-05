@@ -2,7 +2,7 @@ Route19_Object:
 	db $43 ; border block
 
 	def_warps
-	warp  5,  9, 0, BEACH_HOUSE
+	warp  5,  9, 0, SUMMER_BEACH_HOUSE
 
 	def_signs
 	sign 11, 11, 11

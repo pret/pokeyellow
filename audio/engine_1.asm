@@ -1,4 +1,4 @@
-; The first of three duplicated sound engines.
+; The first of four partially duplicated sound engines.
 
 Audio1_UpdateMusic::
 	ld c, Ch1
@@ -1064,7 +1064,7 @@ Audio1_IsCry:
 
 Audio1_96c3:
 	ld a, [wAudioROMBank]
-	cp BANK(AudioEngine2)
+	cp BANK("Audio Engine 2")
 	jr nz, .asm_96dc
 	ld a, [wChannelSoundIDs + Ch8]
 	ld b, a

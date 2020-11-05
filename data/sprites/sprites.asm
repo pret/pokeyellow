@@ -36,7 +36,7 @@ SpriteSheetPointerTable:
 	overworld_sprite MiddleAgedWomanSprite, 12  ; SPRITE_MIDDLE_AGED_WOMAN
 	overworld_sprite BrunetteGirlSprite, 12     ; SPRITE_BRUNETTE_GIRL
 	overworld_sprite LanceSprite, 12            ; SPRITE_LANCE
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_SCIENTIST
+	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_1
 	overworld_sprite ScientistSprite, 12        ; SPRITE_SCIENTIST
 	overworld_sprite RockerSprite, 12           ; SPRITE_ROCKER
 	overworld_sprite SwimmerSprite, 12          ; SPRITE_SWIMMER
@@ -55,11 +55,11 @@ SpriteSheetPointerTable:
 	overworld_sprite FisherSprite, 12           ; SPRITE_FISHER
 	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
 	overworld_sprite GuardSprite, 12            ; SPRITE_GUARD
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_GUARD
+	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_2
 	overworld_sprite MomSprite, 12              ; SPRITE_MOM
 	overworld_sprite BaldingGuySprite, 12       ; SPRITE_BALDING_GUY
 	overworld_sprite LittleBoySprite, 12        ; SPRITE_LITTLE_BOY
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_GAMEBOY_KID
+	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_3
 	overworld_sprite GameboyKidSprite, 12       ; SPRITE_GAMEBOY_KID
 	overworld_sprite FairySprite, 12            ; SPRITE_FAIRY
 	overworld_sprite AgathaSprite, 12           ; SPRITE_AGATHA

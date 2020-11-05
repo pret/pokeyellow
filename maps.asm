@@ -1224,3 +1224,38 @@ INCLUDE "data/maps/headers/AgathasRoom.asm"
 INCLUDE "scripts/AgathasRoom.asm"
 INCLUDE "data/maps/objects/AgathasRoom.asm"
 AgathasRoom_Blocks: INCBIN "maps/AgathasRoom.blk"
+
+
+SECTION "Maps 22", ROMX
+
+INCLUDE "scripts/ViridianCity2.asm"
+INCLUDE "scripts/VermilionCity2.asm"
+INCLUDE "scripts/CeladonCity2.asm"
+INCLUDE "scripts/Route1_2.asm"
+INCLUDE "scripts/Route22_2.asm"
+INCLUDE "scripts/RedsHouse1F2.asm"
+INCLUDE "scripts/OaksLab2.asm"
+INCLUDE "scripts/ViridianSchoolHouse2.asm"
+INCLUDE "scripts/Museum1F2.asm"
+INCLUDE "scripts/PewterPokecenter2.asm"
+INCLUDE "scripts/PokemonTower2F_2.asm"
+INCLUDE "scripts/CeladonMart3F_2.asm"
+INCLUDE "scripts/CeladonMansion1F_2.asm"
+INCLUDE "scripts/CeladonMansion3F_2.asm"
+INCLUDE "scripts/GameCorner2.asm"
+INCLUDE "scripts/CeladonDiner2.asm"
+INCLUDE "scripts/SafariZoneGate2.asm"
+INCLUDE "scripts/CinnabarGym3.asm"
+INCLUDE "scripts/MtMoonPokecenter2.asm"
+
+INCLUDE "data/maps/headers/SummerBeachHouse.asm"
+INCLUDE "scripts/SummerBeachHouse.asm"
+SummerBeachHouse_Blocks:
+INCBIN "maps/SummerBeachHouse.blk"
+INCLUDE "data/maps/objects/SummerBeachHouse.asm"
+INCLUDE "scripts/SummerBeachHouse2.asm"
+
+INCLUDE "scripts/BillsHouse2.asm"
+INCLUDE "scripts/ViridianForest2.asm"
+INCLUDE "scripts/SSAnne2FRooms_2.asm"
+INCLUDE "scripts/SilphCo11F_2.asm"

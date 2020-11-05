@@ -25,4 +25,4 @@
 	const CLUB         ; 21
 	const FACILITY     ; 22
 	const PLATEAU      ; 23
-	const BEACH_HOUSE_TILESET ; 24
+	const BEACH_HOUSE  ; 24

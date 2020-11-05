@@ -1,6 +1,3 @@
-PYTHON := python
-pcm    := $(PYTHON) tools/pokemontools/pcm.py pcm
-
 rom := pokeyellow.gbc
 
 rom_obj := \
@@ -11,6 +8,7 @@ maps.o \
 text.o \
 wram.o \
 gfx/pics.o \
+gfx/pikachu.o \
 gfx/sprites.o \
 gfx/tilesets.o
 
@@ -29,6 +27,9 @@ RGBFIX  ?= $(RGBDS)rgbfix
 RGBGFX  ?= $(RGBDS)rgbgfx
 RGBLINK ?= $(RGBDS)rgblink
 
+PYTHON := python
+pcm    := $(PYTHON) tools/pokemontools/pcm.py pcm
+
 
 ### Build targets
 
@@ -42,7 +43,8 @@ all: $(rom)
 yellow: $(rom)
 
 clean: tidy
-	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' -o -iname '*.pcm' \) -delete
+	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
+	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
 
 tidy:
 	rm -f $(rom) $(rom_obj) $(rom:.gbc=.map) $(rom:.gbc=.sym) rgbdscheck.o
@@ -105,11 +107,14 @@ gfx/slots/slots_1.2bpp: tools/gfx += --trim-whitespace
 gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 gfx/tilesets/reds_house.2bpp: tools/gfx += --preserve=0x48
 
+gfx/title/pokemon_logo.2bpp: tools/gfx += --trim-whitespace
+
 gfx/trade/game_boy.2bpp: tools/gfx += --remove-duplicates
 
 gfx/sgb/border.2bpp: tools/gfx += --trim-whitespace
-gfx/surfing_pikachu_1c.2bpp: tools/gfx += --trim-whitespace
-gfx/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
+
+gfx/surfing_pikachu/surfing_pikachu_1c.2bpp: tools/gfx += --trim-whitespace
+gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 
 
 ### Catch-all graphics rules
@@ -130,5 +135,9 @@ gfx/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 	tools/pkmncompress $< $@
 
 
+### Catch-all audio rules
+
 %.wav: ;
-%.pcm: %.wav   ; @$(pcm)  $<
+
+%.pcm: %.wav
+	@$(pcm) $<

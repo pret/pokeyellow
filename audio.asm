@@ -433,8 +433,6 @@ INCLUDE "audio/sfx/get_item2_4.asm"
 
 SECTION "Audio Engine 1", ROMX
 
-AudioEngine1::
-
 INCLUDE "audio/play_battle_music.asm"
 INCLUDE "audio/engine_1.asm"
 INCLUDE "audio/alternate_tempo.asm"
@@ -447,14 +445,10 @@ INCLUDE "audio/low_health_alarm.asm"
 
 SECTION "Audio Engine 2", ROMX
 
-AudioEngine2::
-
 INCLUDE "audio/engine_2.asm"
 
 
 SECTION "Audio Engine 3", ROMX
-
-AudioEngine3::
 
 INCLUDE "audio/pokedex_rating_sfx.asm"
 INCLUDE "audio/engine_3.asm"
@@ -462,10 +456,7 @@ INCLUDE "audio/engine_3.asm"
 
 SECTION "Audio Engine 4", ROMX
 
-SurfingPikachu1Graphics1::  INCBIN "gfx/surfing_pikachu_1a.2bpp"
-SurfingPikachu1Graphics2::  INCBIN "gfx/surfing_pikachu_1b.2bpp"
-SurfingPikachu1Graphics3::  INCBIN "gfx/surfing_pikachu_1c.2bpp"
-
+INCLUDE "gfx/surfing_pikachu.asm"
 INCLUDE "audio/engine_4.asm"
 
 
@@ -550,5 +541,6 @@ INCLUDE "audio/music/meetjessiejames.asm"
 
 INCBIN "audio/unknown_832b9.bin"
 
-; cries are in different banks
+
+; Pikachu cries are in different banks
 INCLUDE "audio/pikachu_cries.asm"

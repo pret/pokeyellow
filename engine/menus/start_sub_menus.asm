@@ -324,10 +324,11 @@ StartMenu_Item::
 	call PrintText
 	jr .exitMenu
 .notInCableClubRoom
+	; store item bag pointer in wListPointer (for DisplayListMenuID)
 	ld hl, wListPointer
-	ld [hl], wNumBagItems & $ff
+	ld [hl], LOW(wNumBagItems)
 	inc hl
-	ld [hl], wNumBagItems / $100 ; store item bag pointer in wListPointer (for DisplayListMenuID)
+	ld [hl], HIGH(wNumBagItems)
 	xor a
 	ld [wPrintItemPrices], a
 	ld a, ITEMLISTMENU

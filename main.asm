@@ -70,10 +70,9 @@ INCLUDE "engine/events/hidden_objects/town_map.asm"
 INCLUDE "engine/events/hidden_objects/pokemon_stuff.asm"
 
 
-SECTION "Font Graphics", ROMX
+SECTION "bank4", ROMX
 
 INCLUDE "gfx/font.asm"
-
 INCLUDE "engine/pokemon/status_screen.asm"
 INCLUDE "engine/menus/party_menu.asm"
 INCLUDE "gfx/player.asm"
@@ -97,6 +96,7 @@ INCLUDE "engine/overworld/map_sprites.asm"
 
 
 SECTION "Battle Engine 2", ROMX
+
 INCLUDE "engine/battle/move_effects/substitute.asm"
 INCLUDE "engine/menus/pc.asm"
 
@@ -108,7 +108,7 @@ INCLUDE "engine/overworld/doors.asm"
 INCLUDE "engine/overworld/ledges.asm"
 
 
-SECTION "Pokémon Names", ROMX
+SECTION "bank7", ROMX
 
 INCLUDE "engine/movie/oak_speech/clear_save.asm"
 INCLUDE "engine/events/elevator.asm"
@@ -147,26 +147,19 @@ SECTION "Battle Engine 5", ROMX
 
 INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
-
-Func_2fd6a:
-	callfar IsThisPartymonStarterPikachu_Party
-	ret nc
-	ld a, $3
-	ld [wPikachuSpawnState], a
-	ret
-
+INCLUDE "engine/pikachu/respawn_overworld_pikachu.asm"
 INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/slots/game_corner_slots2.asm"
 
 
 SECTION "Slot Machines", ROMX
 
-INCLUDE "engine/movie/title2.asm"
+INCLUDE "engine/movie/title_rb.asm"
 INCLUDE "engine/slots/slot_machine.asm"
 INCLUDE "engine/slots/game_corner_slots.asm"
 
 
-SECTION "Battle Engine 7", ROMX
+SECTION "Battle Engine 6", ROMX
 
 INCLUDE "data/moves/moves.asm"
 INCLUDE "data/pokemon/base_stats.asm"
@@ -212,7 +205,7 @@ INCLUDE "engine/events/hidden_objects/fighting_dojo.asm"
 INCLUDE "engine/events/hidden_objects/indigo_plateau_hq.asm"
 
 
-SECTION "Battle Engine 9", ROMX
+SECTION "Battle Engine 7", ROMX
 
 INCLUDE "engine/battle/experience.asm"
 
@@ -227,7 +220,7 @@ SECTION "Trainer Sight", ROMX
 INCLUDE "engine/overworld/trainer_sight.asm"
 
 
-SECTION "Battle Engine 10", ROMX
+SECTION "bank16", ROMX
 
 INCLUDE "engine/pokemon/experience.asm"
 INCLUDE "engine/pokemon/status_ailments.asm"
@@ -270,7 +263,7 @@ INCLUDE "engine/events/hidden_objects/blues_room.asm"
 INCLUDE "engine/events/hidden_objects/pokecenter_pc.asm"
 
 
-SECTION "Battle Engine 11", ROMX
+SECTION "Version Graphics", ROMX
 
 INCLUDE "gfx/version.asm"
 
@@ -312,172 +305,112 @@ SECTION "bank1E", ROMX
 INCLUDE "engine/battle/animations.asm"
 INCLUDE "engine/overworld/cut2.asm"
 INCLUDE "engine/overworld/dust_smoke.asm"
-
 INCLUDE "gfx/fishing.asm"
 INCLUDE "data/moves/animations.asm"
 INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
 
 
-SECTION "bank2f", ROMX
+SECTION "BG Map Attributes", ROMX
 
-INCLUDE "engine/bg_map_attributes.asm"
+INCLUDE "engine/gfx/bg_map_attributes.asm"
 
 
 SECTION "bank30", ROMX
 
 ; This whole bank is garbage data.
-INCBIN "engine/bank30.bin"
-
-
-SECTION "bank39", ROMX
-
-Pic_e4000:
-INCBIN "gfx/pikachu/unknown_e4000.pic"
-GFX_e40cc:
-INCBIN "gfx/pikachu/unknown_e40cc.2bpp"
-Pic_e411c:
-INCBIN "gfx/pikachu/unknown_e411c.pic"
-GFX_e41d2:
-INCBIN "gfx/pikachu/unknown_e41d2.2bpp"
-Pic_e4272:
-INCBIN "gfx/pikachu/unknown_e4272.pic"
-GFX_e4323:
-INCBIN "gfx/pikachu/unknown_e4323.2bpp"
-Pic_e4383:
-INCBIN "gfx/pikachu/unknown_e4383.pic"
-GFX_e444b:
-INCBIN "gfx/pikachu/unknown_e444b.2bpp"
-Pic_e458b:
-INCBIN "gfx/pikachu/unknown_e458b.pic"
-GFX_e463b:
-INCBIN "gfx/pikachu/unknown_e463b.2bpp"
-Pic_e467b:
-INCBIN "gfx/pikachu/unknown_e467b.pic"
-GFX_e472e:
-INCBIN "gfx/pikachu/unknown_e472e.2bpp"
-Pic_e476e:
-INCBIN "gfx/pikachu/unknown_e476e.pic"
-GFX_e4841:
-INCBIN "gfx/pikachu/unknown_e4841.2bpp"
-Pic_e49d1:
-INCBIN "gfx/pikachu/unknown_e49d1.pic"
-GFX_e4a99:
-INCBIN "gfx/pikachu/unknown_e4a99.2bpp"
-Pic_e4b39:
-INCBIN "gfx/pikachu/unknown_e4b39.pic"
-GFX_e4bde:
-INCBIN "gfx/pikachu/unknown_e4bde.2bpp"
-Pic_e4c3e:
-INCBIN "gfx/pikachu/unknown_e4c3e.pic"
-GFX_e4ce0:
-INCBIN "gfx/pikachu/unknown_e4ce0.2bpp"
-GFX_e4e70:
-INCBIN "gfx/pikachu/unknown_e4e70.2bpp"
-Pic_e5000:
-INCBIN "gfx/pikachu/unknown_e5000.pic"
-GFX_e50af:
-INCBIN "gfx/pikachu/unknown_e50af.2bpp"
-Pic_e523f:
-INCBIN "gfx/pikachu/unknown_e523f.pic"
-GFX_e52fe:
-INCBIN "gfx/pikachu/unknown_e52fe.2bpp"
-Pic_e548e:
-INCBIN "gfx/pikachu/unknown_e548e.pic"
-GFX_e5541:
-INCBIN "gfx/pikachu/unknown_e5541.2bpp"
-Pic_e56d1:
-INCBIN "gfx/pikachu/unknown_e56d1.pic"
-GFX_e5794:
-INCBIN "gfx/pikachu/unknown_e5794.2bpp"
-Pic_e5924:
-INCBIN "gfx/pikachu/unknown_e5924.pic"
-GFX_e59ed:
-INCBIN "gfx/pikachu/unknown_e59ed.2bpp"
-Pic_e5b7d:
-INCBIN "gfx/pikachu/unknown_e5b7d.pic"
-GFX_e5c4d:
-INCBIN "gfx/pikachu/unknown_e5c4d.2bpp"
-Pic_e5ddd:
-INCBIN "gfx/pikachu/unknown_e5ddd.pic"
-GFX_e5e90:
-INCBIN "gfx/pikachu/unknown_e5e90.2bpp"
-GFX_e6020:
-INCBIN "gfx/pikachu/unknown_e6020.2bpp"
-GFX_e61b0:
-INCBIN "gfx/pikachu/unknown_e61b0.2bpp"
-Pic_e6340:
-INCBIN "gfx/pikachu/unknown_e6340.pic"
-GFX_e63f7:
-INCBIN "gfx/pikachu/unknown_e63f7.2bpp"
-Pic_e6587:
-INCBIN "gfx/pikachu/unknown_e6587.pic"
-GFX_e6646:
-INCBIN "gfx/pikachu/unknown_e6646.2bpp"
-Pic_e67d6:
-INCBIN "gfx/pikachu/unknown_e67d6.pic"
-GFX_e682f:
-INCBIN "gfx/pikachu/unknown_e682f.2bpp"
-GFX_e69bf:
-INCBIN "gfx/pikachu/unknown_e69bf.2bpp"
-GFX_e6b4f:
-INCBIN "gfx/pikachu/unknown_e6b4f.2bpp"
-GFX_e6cdf:
-INCBIN "gfx/pikachu/unknown_e6cdf.2bpp"
-GFX_e6e6f:
-INCBIN "gfx/pikachu/unknown_e6e6f.2bpp"
-GFX_e6fff:
-INCBIN "gfx/pikachu/unknown_e6fff.2bpp"
-GFX_e718f:
-INCBIN "gfx/pikachu/unknown_e718f.2bpp"
-GFX_e731f:
-INCBIN "gfx/pikachu/unknown_e731f.2bpp"
-GFX_e74af:
-INCBIN "gfx/pikachu/unknown_e74af.2bpp"
-GFX_e763f:
-INCBIN "gfx/pikachu/unknown_e763f.2bpp"
-Pic_e77cf:
-INCBIN "gfx/pikachu/unknown_e77cf.pic"
-GFX_e7863:
-INCBIN "gfx/pikachu/unknown_e7863.2bpp"
-GFX_e79f3:
-INCBIN "gfx/pikachu/unknown_e79f3.2bpp"
-GFX_e7b83:
-INCBIN "gfx/pikachu/unknown_e7b83.2bpp"
-GFX_e7d13:
-INCBIN "gfx/pikachu/unknown_e7d13.2bpp"
+INCBIN "garbage/bank30.bin"
 
 
 SECTION "bank3A", ROMX
 
 INCLUDE "data/pokemon/names.asm"
 INCLUDE "engine/overworld/is_player_just_outside_map.asm"
-INCLUDE "engine/printer.asm"
-INCLUDE "engine/diploma_3a.asm"
-
-SurfingPikachu3Graphics:  INCBIN "gfx/surfing_pikachu_3.2bpp"
-SurfingPikachu3GraphicsEnd:
-
-INCLUDE "engine/unknown_ea3ea.asm"
+INCLUDE "engine/printer/serial.asm"
+INCLUDE "engine/printer/printer.asm"
+INCLUDE "engine/events/diploma2.asm"
+INCLUDE "engine/printer/printer2.asm"
 INCLUDE "engine/overworld/npc_movement_2.asm"
 
-; bank $3b is empty
 
-SECTION "bank3C", ROMX
+SECTION "Pikachu PCM", ROMX
 
-INCLUDE "engine/bank3c.asm"
-
-
-SECTION "bank3D", ROMX
-
-INCLUDE "engine/bank3d.asm"
+INCLUDE "engine/pikachu/pikachu_pcm.asm"
+INCLUDE "engine/overworld/advance_player_sprite.asm"
+INCLUDE "engine/events/black_out.asm"
+INCLUDE "engine/overworld/specific_script_flags.asm"
 
 
-SECTION "bank3E", ROMX
+SECTION "Try Pikachu Movement", ROMX
 
-INCLUDE "engine/bank3e.asm"
+INCLUDE "engine/overworld/unused_load_missable_object_data.asm"
+INCLUDE "engine/events/try_pikachu_movement.asm"
 
 
-SECTION "bank3F", ROMX
+SECTION "Credits", ROMX
 
-INCLUDE "engine/bank3f.asm"
+INCLUDE "engine/events/pokecenter_chansey.asm"
+INCLUDE "engine/movie/credits.asm"
+
+
+SECTION "Hidden Objects Core", ROMX
+
+INCLUDE "engine/overworld/hidden_objects.asm"
+INCLUDE "engine/events/hidden_objects/vermilion_gym_trash2.asm"
+
+
+SECTION "Battle Engine 8", ROMX
+
+INCLUDE "engine/battle/common_text.asm"
+INCLUDE "engine/battle/link_battle_versus_text.asm"
+INCLUDE "engine/battle/unused_stats_functions.asm"
+INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
+INCLUDE "engine/battle/pikachu_entrance_anim.asm"
+INCLUDE "engine/battle/decrement_pp.asm"
+INCLUDE "engine/events/pikachu_happiness.asm"
+
+
+SECTION "Battle Engine 9", ROMX
+
+INCLUDE "engine/movie/title_yellow.asm"
+INCLUDE "engine/menus/link_menu.asm"
+INCLUDE "engine/menus/unused_input.asm"
+INCLUDE "engine/overworld/field_move_messages.asm"
+INCLUDE "engine/items/inventory.asm"
+INCLUDE "gfx/trainer_card.asm"
+INCLUDE "engine/items/super_rod.asm"
+INCLUDE "engine/battle/init_battle.asm"
+INCLUDE "engine/battle/init_battle_variables.asm"
+INCLUDE "engine/battle/move_effects/focus_energy.asm"
+INCLUDE "engine/battle/move_effects/heal.asm"
+INCLUDE "engine/battle/move_effects/transform.asm"
+INCLUDE "engine/battle/move_effects/reflect_light_screen.asm"
+INCLUDE "engine/battle/move_effects/mist.asm"
+INCLUDE "engine/battle/move_effects/one_hit_ko.asm"
+INCLUDE "engine/battle/move_effects/pay_day.asm"
+INCLUDE "engine/battle/move_effects/paralyze.asm"
+INCLUDE "engine/items/tm_prices.asm"
+INCLUDE "engine/math/multiply_divide.asm"
+INCLUDE "engine/events/give_pokemon.asm"
+INCLUDE "engine/battle/get_trainer_name.asm"
+INCLUDE "engine/math/random.asm"
+INCLUDE "engine/predefs.asm"
+
+
+SECTION "Surfing Minigame", ROMX
+
+INCLUDE "engine/minigame/surfing_pikachu.asm"
+INCLUDE "engine/movie/intro_yellow.asm"
+INCLUDE "engine/gfx/animated_objects.asm"
+
+
+SECTION "Overworld Pikachu", ROMX
+
+INCLUDE "data/maps/songs.asm"
+INCLUDE "data/maps/map_header_pointers.asm"
+INCLUDE "data/maps/map_header_banks.asm"
+INCLUDE "engine/pikachu/pikachu_follow.asm"
+INCLUDE "engine/pikachu/pikachu_status.asm"
+INCLUDE "engine/pikachu/pikachu_emotions.asm"
+INCLUDE "engine/pikachu/pikachu_movement.asm"
+INCLUDE "engine/pikachu/pikachu_pic_animation.asm"

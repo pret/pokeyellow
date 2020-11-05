@@ -1,5 +1,0 @@
-INCLUDE "engine/surfing_minigame.asm"
-INCLUDE "engine/yellow_intro.asm"
-INCLUDE "data/animated_objects_3e_2.asm"
-YellowIntroGraphics:  INCBIN "gfx/yellow_intro.2bpp"
-INCLUDE "engine/animated_objects_3e.asm"

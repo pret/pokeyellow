@@ -571,11 +571,8 @@ SeafoamIslandsB4FHS:
 	db SEAFOAM_ISLANDS_B4F, $01, HIDE
 	db SEAFOAM_ISLANDS_B4F, $02, HIDE
 	db SEAFOAM_ISLANDS_B4F, $03, SHOW
-
-BluesHouseHSCopy:
-; doesn't seem to be referenced
+BluesHouseHSCopy: ; unreferenced
 	db BLUES_HOUSE, $01, SHOW
 	db BLUES_HOUSE, $02, HIDE
 	db BLUES_HOUSE, $03, SHOW
-
-	db $FF, $01, SHOW
+	db $FF, $01, SHOW ; end
