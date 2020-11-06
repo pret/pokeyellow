@@ -23,14 +23,14 @@ ReflectLightScreenEffect_:
 .playAnim
 	push hl
 	ld hl, PlayCurrentMoveAnimation
-	call Bankswitch3DtoF
+	call EffectCallBattleCore
 	pop hl
 	jp PrintText
 .moveFailed
 	ld c, 50
 	call DelayFrames
 	ld hl, PrintButItFailedText_
-	jp Bankswitch3DtoF
+	jp EffectCallBattleCore
 
 LightScreenProtectedText:
 	text_far _LightScreenProtectedText
@@ -40,6 +40,6 @@ ReflectGainedArmorText:
 	text_far _ReflectGainedArmorText
 	text_end
 
-Bankswitch3DtoF:
+EffectCallBattleCore:
 	ld b, BANK(BattleCore)
 	jp Bankswitch

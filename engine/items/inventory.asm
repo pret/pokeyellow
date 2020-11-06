@@ -34,9 +34,9 @@ AddItemToInventory_::
 	cp b ; does the current item in the table match the item being added?
 	jp z, .increaseItemQuantity ; if so, increase the item's quantity
 	inc hl
-.loop
+.addAnotherStackOfItem
 	ld a, [hl]
-	cp a, $ff ; is it the end of the table?
+	cp $ff ; is it the end of the table?
 	jr nz, .notAtEndOfInventory
 .addNewItem ; add an item not yet in the inventory
 	pop hl
@@ -74,7 +74,7 @@ AddItemToInventory_::
 ; if so, store 99 in the current slot and store the rest in a new slot
 	ld a, 99
 	ld [hli], a
-	jp .loop
+	jp .addAnotherStackOfItem
 .increaseItemQuantityFailed
 	pop hl
 	and a

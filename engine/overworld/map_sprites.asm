@@ -304,7 +304,7 @@ GetSplitMapSpriteSetID:
 	ld hl, MapSpriteSets
 	add hl, de
 	ld a, [hl] ; a = spriteSetID
-	cp a, $f0 ; does the map have 2 sprite sets?
+	cp $f0 ; does the map have 2 sprite sets?
 	ret c
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.

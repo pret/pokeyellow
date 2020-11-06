@@ -219,7 +219,7 @@ _IsTilePassable::
 	ld l, a ; hl now points to passable tiles
 .loop
 	ld a, [hli]
-	cp a, $ff
+	cp $ff
 	jr z, .tileNotPassable
 	cp c
 	jr nz, .loop

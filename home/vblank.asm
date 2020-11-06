@@ -59,8 +59,12 @@ VBlank::
 .skipDec
 	call FadeOutAudio
 
-	callbs Music_DoLowHealthAlarm
-	callbs Audio1_UpdateMusic
+	ld a, BANK(Music_DoLowHealthAlarm)
+	call BankswitchCommon
+	call Music_DoLowHealthAlarm
+	ld a, BANK(Audio1_UpdateMusic)
+	call BankswitchCommon
+	call Audio1_UpdateMusic
 
 	call SerialFunction
 

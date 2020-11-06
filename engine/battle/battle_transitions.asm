@@ -355,7 +355,7 @@ BattleTransition_FlashScreenPalettes:
 
 ; used for low level trainer dungeon battles
 BattleTransition_Shrink:
-	ld c, 9
+	ld c, SCREEN_HEIGHT / 2
 .loop
 	push bc
 	xor a
@@ -389,7 +389,7 @@ BattleTransition_Shrink:
 
 ; used for high level trainer dungeon battles
 BattleTransition_Split:
-	ld c, 9
+	ld c, SCREEN_HEIGHT / 2
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 .loop

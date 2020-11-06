@@ -31,7 +31,9 @@ GetItemPrice::
 	ldh [hItemPrice], a
 	jr .done
 .getTMPrice
-	callbs GetMachinePrice
+	ld a, BANK(GetMachinePrice)
+	call BankswitchCommon
+	call GetMachinePrice
 .done
 	ld de, hItemPrice
 	pop af

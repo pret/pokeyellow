@@ -386,7 +386,7 @@ ItemUseBall:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
-	
+
 ; Determine Status2.
 ; no status ailment:     Status2 = 0
 ; Burn/Paralysis/Poison: Status2 = 5
@@ -3092,7 +3092,7 @@ SendNewMonToBox:
 	ld a, [wcf91]
 	cp KADABRA
 	jr nz, .notKadabra
-	ld a, $60 ; twistedspoon in gsc
+	ld a, TWISTEDSPOON_GSC
 	ld [wBoxMon1CatchRate], a
 .notKadabra
 	ret

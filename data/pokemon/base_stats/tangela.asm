@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 166 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/tangela.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/tangela.pic", 0, 1 ; sprite dimensions
 	dw TangelaPicFront, TangelaPicBack
 
 	db CONSTRICT, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
@@ -15,8 +15,8 @@
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,  \
-	     DOUBLE_TEAM,  BIDE,         SKULL_BASH,   REST,         SUBSTITUTE,  \
+	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,        \
+	     DOUBLE_TEAM,  BIDE,         SKULL_BASH,   REST,         SUBSTITUTE,   \
 	     CUT
 	; end
 

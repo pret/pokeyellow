@@ -8,7 +8,7 @@ SetMapSpecificScriptFlagsOnMapReload::
 	ld a, [hli]
 	cp c
 	jr z, .in_list
-	cp a, $ff
+	cp $ff
 	jr nz, .search_loop
 	ret
 

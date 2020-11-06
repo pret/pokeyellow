@@ -4,7 +4,8 @@ UpdateSprites::
 	ret nz
 	ldh a, [hLoadedROMBank]
 	push af
-	switchbank _UpdateSprites
+	ld a, BANK(_UpdateSprites)
+	call BankswitchCommon
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	call _UpdateSprites

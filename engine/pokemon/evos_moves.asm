@@ -452,40 +452,7 @@ Func_3b0a2:
 	scf
 	ret
 
-Pointer_3b0ee:
-	db NIDOKING
-	db IVYSAUR
-	db EXEGGUTOR
-	db GENGAR
-	db NIDOQUEEN
-	db ARCANINE
-	db GYARADOS
-	db BLASTOISE
-	db GOLEM
-	db DRAGONITE
-	db NINETALES
-	db DRAGONAIR
-	db KABUTOPS
-	db OMASTAR
-	db JIGGLYPUFF
-	db FLAREON
-	db JOLTEON
-	db VAPOREON
-	db BEEDRILL
-	db BUTTERFREE
-	db MACHAMP
-	db CLOYSTER
-	db CLEFABLE
-	db ALAKAZAM
-	db STARMIE
-	db VENUSAUR
-	db TENTACRUEL
-	db CHARMELEON
-	db WARTORTLE
-	db CHARIZARD
-	db VILEPLUME
-	db VICTREEBEL
-	db $ff
+INCLUDE "data/pokemon/unknown_list.asm"
 
 Func_3b10f:
 	ld c, $0

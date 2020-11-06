@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 184 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/vileplume.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/vileplume.pic", 0, 1 ; sprite dimensions
 	dw VileplumePicFront, VileplumePicBack
 
 	db STUN_SPORE, SLEEP_POWDER, ACID, PETAL_DANCE ; level 1 learnset
@@ -15,8 +15,8 @@
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,  \
-	     DOUBLE_TEAM,  REFLECT,      BIDE,         REST,         SUBSTITUTE,  \
+	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,        \
+	     DOUBLE_TEAM,  REFLECT,      BIDE,         REST,         SUBSTITUTE,   \
 	     CUT
 	; end
 

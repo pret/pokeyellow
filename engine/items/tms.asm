@@ -11,7 +11,7 @@ CanLearnTM:
 	ld hl, TechnicalMachines
 .findTMloop
 	ld a, [hli]
-	cp $ff ; reached terminator?
+	cp -1 ; reached terminator?
 	jr z, .done
 	cp b
 	jr z, .TMfoundLoop

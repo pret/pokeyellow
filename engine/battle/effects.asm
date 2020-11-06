@@ -231,7 +231,7 @@ FreezeBurnParalyzeEffect:
 	ld b, $1a ; 0x1A/0x100 or 26/256 = 10.2%~ chance
 	jr .next1
 .asm_3f2c7
-	cp a, PARALYZE_SIDE_EFFECT1 + 1 ; 10% status effects are 04, 05, 06 so 07 will set carry for those
+	cp PARALYZE_SIDE_EFFECT1 + 1 ; 10% status effects are 04, 05, 06 so 07 will set carry for those
 	ld b, $1a ; 0x1A/0x100 or 26/256 = 10.2%~ chance
 	jr c, .next1 ; branch ahead if this is a 10% chance effect..
 	ld b, $4d ; else use 0x4D/0x100 or 77/256 = 30.1%~ chance
@@ -247,7 +247,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn1
 	cp FREEZE_SIDE_EFFECT
 	jr z, .freeze1
-; .paralyze
+; .paralyze1
 	ld a, 1 << PAR
 	ld [wEnemyMonStatus], a
 	call QuarterSpeedDueToParalysis ; quarter speed of affected mon
@@ -293,7 +293,7 @@ FreezeBurnParalyzeEffect:
 	ld b, $1a ; 0x1A/0x100 or 26/256 = 10.2%~ chance
 	jr .next2
 .asm_3f341
-	cp a, PARALYZE_SIDE_EFFECT1 + 1
+	cp PARALYZE_SIDE_EFFECT1 + 1
 	ld b, $1a
 	jr c, .next2
 	ld b, $4d
@@ -309,6 +309,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn2
 	cp FREEZE_SIDE_EFFECT
 	jr z, .freeze2
+; .paralyze2
 	ld a, 1 << PAR
 	ld [wBattleMonStatus], a
 	call QuarterSpeedDueToParalysis

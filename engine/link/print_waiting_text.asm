@@ -3,12 +3,13 @@ PrintWaitingText::
 	lb bc, 1, 11
 	ld a, [wIsInBattle]
 	and a
-	jr z, .asm_4b9a
+	jr z, .trade
+; battle
 	call TextBoxBorder
-	jr .asm_4b9d
-.asm_4b9a
+	jr .border_done
+.trade
 	call CableClub_TextBoxBorder
-.asm_4b9d
+.border_done
 	hlcoord 4, 11
 	ld de, WaitingText
 	call PlaceString

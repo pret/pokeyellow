@@ -41,17 +41,12 @@ DisplayTextID::
 .spriteHandling
 ; get the text ID of the sprite
 	push hl
-	;push de
-	;push bc
-	;farcall UpdateSpriteFacingOffsetAndDelayMovement ; update the graphics of the sprite the player is talking to (to face the right direction)
-	;pop bc
-	;pop de
 	ld hl, wMapSpriteData ; NPC text entries
 	ldh a, [hSpriteIndexOrTextID]
 	dec a
 	add a
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	inc hl
 	ld a, [hl] ; a = text ID of the sprite
@@ -60,7 +55,7 @@ DisplayTextID::
 ; look up the address of the text in the map's text entries
 	dec a
 	ld e, a
-	ld d, $0
+	ld d, 0
 	add hl, de
 	add hl, de
 	ld a, [hli]

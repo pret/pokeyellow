@@ -295,10 +295,10 @@ TrainerAI:
 	cp LINK_STATE_BATTLING
 	jr z, .done ; if in a link battle, we're done as well
 	ld a, [wEnemyBattleStatus1]
-	and 1 << CHARGING_UP | 1 << THRASHING_ABOUT | 1 << STORING_ENERGY ; %10011
+	and 1 << CHARGING_UP | 1 << THRASHING_ABOUT | 1 << STORING_ENERGY
 	jr nz, .done ; don't follow trainer ai if opponent is in a locked state
 	ld a, [wEnemyBattleStatus2]
-	and 1 << USING_RAGE ; %1000000
+	and 1 << USING_RAGE
 	jr nz, .done ; don't follow trainer ai if opponent is locked in rage
 	             ; note that this doesn't check for hyper beam recharge which can cause problems
 	ld a, [wTrainerClass] ; what trainer class is this?
@@ -311,7 +311,7 @@ TrainerAI:
 	add hl, bc
 	ld a, [wAICount]
 	and a
-	jr z, .done; if no AI uses left, we're done here
+	jr z, .done ; if no AI uses left, we're done here
 	inc hl
 	inc a
 	jr nz, .getpointer

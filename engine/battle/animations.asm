@@ -57,7 +57,7 @@ DrawFrameBlock:
 	inc hl
 	inc de
 	ld a, [hli]
-	add a, $31 ; base tile ID for battle animations
+	add $31 ; base tile ID for battle animations
 	ld [de], a ; store tile ID
 	inc de
 	ld a, [hli]
@@ -91,7 +91,7 @@ DrawFrameBlock:
 	inc hl
 	inc de
 	ld a, [hli]
-	add a, $31 ; base tile ID for battle animations
+	add $31 ; base tile ID for battle animations
 	ld [de], a ; store tile ID
 	inc de
 ; toggle horizontal and vertical flip
@@ -99,10 +99,10 @@ DrawFrameBlock:
 	and a
 	ld b, OAM_VFLIP | OAM_HFLIP
 	jr z, .storeFlags1
-	cp a, OAM_HFLIP
+	cp OAM_HFLIP
 	ld b, OAM_VFLIP
 	jr z, .storeFlags1
-	cp a, OAM_VFLIP
+	cp OAM_VFLIP
 	ld b, OAM_HFLIP
 	jr z, .storeFlags1
 	ld b, 0
@@ -160,7 +160,7 @@ DrawFrameBlock:
 .afterDrawingTiles
 	ld a, [wFBMode]
 	cp FRAMEBLOCKMODE_02
-	jr z, .advanceFrameBlockDestAddr; skip delay and don't clean OAM buffer
+	jr z, .advanceFrameBlockDestAddr ; skip delay and don't clean OAM buffer
 	ld a, [wSubAnimFrameDelay]
 	ld c, a
 	call DelayFrames
@@ -1327,7 +1327,7 @@ BattleAnimWriteOAMEntry:
 ; Y coordinate = e (increased by 8 each call, before the write to OAM)
 ; X coordinate = [wBaseCoordX]
 ; tile = d
-; attributes = variable (dependant on coords)
+; attributes = variable (depending on coords)
 	ld a, $1
 	ld [wdef5], a
 	ld a, e
@@ -1402,7 +1402,7 @@ AdjustOAMBlockYPos2:
 	ret
 
 AnimationBlinkEnemyMon:
-	; Make the enemy mon's sprite blink on and off for a second or two
+; Make the enemy mon's sprite blink on and off for a second or two
 	ld hl, AnimationBlinkMon
 	jp CallWithTurnFlipped
 
@@ -1880,7 +1880,7 @@ _AnimationSlideMonOff:
 	jr nz, .slideLoop
 	ret
 
-; Since mon pic tile numbers go from top to bottom, left to right in order, 
+; Since mon pic tile numbers go from top to bottom, left to right in order,
 ; adding the height of the mon pic in tiles to a tile number gives the tile
 ; number of the tile one column to the right (and thus subtracting the height
 ; gives the reverse). If the next tile would be past the edge of the pic, the 2
@@ -2246,7 +2246,7 @@ ClearMonPicFromTileMap:
 	ret
 
 ; puts the tile map destination address of a mon sprite in hl, given the row count in b
-; The usual row count is 7, but it may be smaller when sliding a mon sprite in/out, 
+; The usual row count is 7, but it may be smaller when sliding a mon sprite in/out,
 ; in order to show only a portion of the mon sprite.
 GetMonSpriteTileMapPointerFromRowCount:
 	push de

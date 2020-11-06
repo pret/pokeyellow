@@ -8,8 +8,7 @@ PrintCardKeyText:
 	ret z
 	cp b
 	jr nz, .silphCoMapListLoop
-; does not check for tile in front of player. This might be buggy
-	;predef GetTileAndCoordsInFrontOfPlayer
+; does not check for tile in front of player. This might be buggy.
 	ld a, [wTileInFrontOfPlayer]
 	cp $18
 	jr z, .cardKeyDoorInFrontOfPlayer

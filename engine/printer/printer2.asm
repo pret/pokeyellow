@@ -356,7 +356,7 @@ Func_ea6af:
 	ld hl, wPrinterSerialFrameDelay
 	inc [hl]
 	ld a, [hl]
-	cp a, $6
+	cp $6
 	ret c
 	xor a
 	ld [hl], a
@@ -381,17 +381,17 @@ Func_ea6d2:
 	call Func_ea742
 	ret c
 	ld a, [wPrinterHandshake]
-	cp a, $ff
+	cp $ff
 	jr nz, .asm_ea6e4
 	ld a, [wPrinterStatusFlags]
-	cp a, $ff
+	cp $ff
 	jr z, .asm_ea6fb
 .asm_ea6e4
 	ld a, [wPrinterHandshake]
-	cp a, $81
+	cp $81
 	jr nz, .asm_ea6fb
 	ld a, [wPrinterStatusFlags]
-	cp a, $0
+	cp $0
 	jr nz, .asm_ea6fb
 	ld hl, wPrinterConnectionOpen
 	set 1, [hl]

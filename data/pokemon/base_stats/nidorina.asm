@@ -7,7 +7,7 @@
 	db 120 ; catch rate
 	db 117 ; base exp
 
-	INCBIN "gfx/pokemon/front_yellow/nidorina.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/nidorina.pic", 0, 1 ; sprite dimensions
 	dw NidorinaPicFront, NidorinaPicBack
 
 	db GROWL, TACKLE, SCRATCH, NO_MOVE ; level 1 learnset
@@ -15,8 +15,8 @@
 
 	; tm/hm learnset
 	tmhm TOXIC,        HORN_DRILL,   BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     RAGE,  \
-	     THUNDERBOLT,  THUNDER,      MIMIC,        DOUBLE_TEAM,  REFLECT,  \
+	     BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     RAGE,         \
+	     THUNDERBOLT,  THUNDER,      MIMIC,        DOUBLE_TEAM,  REFLECT,      \
 	     BIDE,         SKULL_BASH,   REST,         SUBSTITUTE
 	; end
 

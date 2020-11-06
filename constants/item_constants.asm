@@ -223,3 +223,6 @@ assert NUM_TMS == const_value - TM01, "NUM_TMS ({d:NUM_TMS}) does not match the 
 ; These fit in 7 bytes, with one unused bit left over.
 __tmhm_value__ = NUM_TMS + NUM_HMS + 1
 UNUSED_TMNUM EQU __tmhm_value__
+
+; used for Time Capsule held item compatibility
+TWISTEDSPOON_GSC EQU $60
