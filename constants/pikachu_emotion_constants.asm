@@ -141,12 +141,14 @@ ENDM
 
 	const pikapic_writebyte_command
 pikapic_writebyte: MACRO
-	db pikapic_writebyte_command, \1
+	db pikapic_writebyte_command
+	db \1
 ENDM
 
 	const pikapic_loadgfx_command
 pikapic_loadgfx: MACRO
-	db pikapic_loadgfx_command, (\1_id - PikaPicAnimGFXHeaders) / 4
+	db pikapic_loadgfx_command
+	db (\1_id - PikaPicAnimGFXHeaders) / 4
 ENDM
 
 	const pikapic_animation_command
@@ -169,7 +171,8 @@ ENDM
 
 	const pikapic_waitbgmapeleteobject_command
 pikapic_waitbgmapeleteobject: MACRO
-	db pikapic_waitbgmapeleteobject_command, \1
+	db pikapic_waitbgmapeleteobject_command
+	db \1
 ENDM
 
 	const pikapic_nop7_command
@@ -184,12 +187,14 @@ ENDM
 
 	const pikapic_jump_command
 pikapic_jump: MACRO ; 9
-	dbw pikapic_jump_command, \1
+	db pikapic_jump_command
+	dw \1
 ENDM
 
 	const pikapic_setduration_command
 pikapic_setduration: MACRO ; a
-	dbw pikapic_setduration_command, \1
+	db pikapic_setduration_command
+	dw \1
 ENDM
 
 	const pikapic_cry_command
