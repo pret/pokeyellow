@@ -29,7 +29,6 @@ Route25Script_515e1:
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	jr .asm_5165c
-
 .asm_51638
 	CheckEventAfterBranchReuseHL EVENT_GOT_SS_TICKET, EVENT_MET_BILL_2
 	jr z, .asm_5165c

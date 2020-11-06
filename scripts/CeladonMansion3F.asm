@@ -22,7 +22,7 @@ CeladonMansion3F_TextPointers:
 ProgrammerText:
 	text_asm
 	call CeladonMansion3_PokedexCount
-	cp 150
+	cp NUM_POKEMON - 1 ; discount Mew
 	ld hl, CeladonMansion3Text_486f5
 	jr nc, .print
 	ld hl, CeladonMansion3Text_486f0
@@ -41,7 +41,7 @@ CeladonMansion3Text_486f5:
 GraphicArtistText:
 	text_asm
 	call CeladonMansion3_PokedexCount
-	cp 150
+	cp NUM_POKEMON - 1 ; discount Mew
 	jr nc, .completed
 	ld hl, CeladonMansion3Text_48757
 	jr .print
@@ -103,7 +103,7 @@ CeladonMansion3Text_4876b:
 WriterText:
 	text_asm
 	call CeladonMansion3_PokedexCount
-	cp 150
+	cp NUM_POKEMON - 1 ; discount Mew
 	ld hl, CeladonMansion3Text_48789
 	jr nc, .print
 	ld hl, CeladonMansion3Text_48784
@@ -122,7 +122,6 @@ CeladonMansion3Text_48789:
 DirectorText:
 	text_asm
 	call CeladonMansion3_PokedexCount
-	; check pokédex
 	cp NUM_POKEMON - 1 ; discount Mew
 	jr nc, .completed_dex
 	ld hl, .GameDesignerText

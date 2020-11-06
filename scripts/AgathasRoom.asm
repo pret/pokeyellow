@@ -20,7 +20,6 @@ AgathaShowOrHideExitBlock:
 	jp .setExitBlock
 .blockExitToNextRoom
 	ld a, $3b
-
 .setExitBlock
 	ld [wNewTileBlockID], a
 	lb bc, 0, 2

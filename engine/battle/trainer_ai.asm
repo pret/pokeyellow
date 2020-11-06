@@ -403,7 +403,7 @@ SabrinaAI:
 	ret nc
 	jp AIUseXDefend
 
-Sony2AI:
+Rival2AI:
 	cp 13 percent - 1
 	ret nc
 	ld a, 5
@@ -411,7 +411,7 @@ Sony2AI:
 	ret nc
 	jp AIUsePotion
 
-Sony3AI:
+Rival3AI:
 	cp 13 percent - 1
 	ret nc
 	ld a, 5

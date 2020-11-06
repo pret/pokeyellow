@@ -179,7 +179,7 @@ PalletTownScript6:
 	ld [wSpriteIndex], a
 	xor a
 	ld [wNPCMovementScriptFunctionNum], a
-	ld a, $1
+	ld a, 1
 	ld [wNPCMovementScriptPointerTableNum], a
 	ldh a, [hLoadedROMBank]
 	ld [wNPCMovementScriptBank], a
@@ -191,7 +191,7 @@ PalletTownScript6:
 
 PalletTownScript7:
 	ld a, [wNPCMovementScriptPointerTableNum]
-	and a
+	and a ; is the movement script over?
 	ret nz
 
 	; trigger the next script
@@ -201,10 +201,9 @@ PalletTownScript7:
 
 PalletTownScript8:
 	CheckEvent EVENT_DAISY_WALKING
-	jr nz, .asm_18f9e
-	and $3 ; (EVENT_GOT_TOWN_MAP | EVENT_ENTERED_BLUES_HOUSE)
-	cp $3
-	jr nz, .asm_18f9e
+	jr nz, .next
+	CheckBothEventsSet EVENT_GOT_TOWN_MAP, EVENT_ENTERED_BLUES_HOUSE, 1
+	jr nz, .next
 	SetEvent EVENT_DAISY_WALKING
 	ld a, HS_DAISY_SITTING
 	ld [wMissableObjectIndex], a
@@ -212,8 +211,7 @@ PalletTownScript8:
 	ld a, HS_DAISY_WALKING
 	ld [wMissableObjectIndex], a
 	predef_jump ShowObject
-
-.asm_18f9e
+.next
 	CheckEvent EVENT_GOT_POKEBALLS_FROM_OAK
 	ret z
 	SetEvent EVENT_PALLET_AFTER_GETTING_POKEBALLS_2

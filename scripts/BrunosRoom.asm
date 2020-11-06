@@ -20,7 +20,6 @@ BrunoShowOrHideExitBlock:
 	jp .setExitBlock
 .blockExitToNextRoom
 	ld a, $24
-
 .setExitBlock
 	ld [wNewTileBlockID], a
 	lb bc, 0, 2

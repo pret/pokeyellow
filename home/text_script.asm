@@ -200,7 +200,7 @@ DisplayPlayerBlackedOutText::
 	ld [wNumSafariBalls], a
 	ld [wSafariSteps], a
 	ld [wSafariSteps + 1], a
-	EventFlagAddressa EVENT_IN_SAFARI_ZONE
+	EventFlagAddressA EVENT_IN_SAFARI_ZONE
 	ld [wcf0d], a
 	ld [wSafariZoneGateCurScript], a
 .didnotblackoutinsafari

@@ -649,4 +649,3 @@ MtMoon3EndBattleText5:
 MtMoon3AfterBattleText5:
 	text_far _MtMoon3AfterBattleText5
 	text_end
-

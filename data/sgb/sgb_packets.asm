@@ -86,9 +86,9 @@ BlkPacket_Slots:
 
 BlkPacket_Titlescreen:
 	ATTR_BLK 3
-	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,07
-	ATTR_BLK_DATA %011, 2,2,0, 00,08, 19,17
-	ATTR_BLK_DATA %010, 0,0,0, 09,08, 10,08
+	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,07 ; pokemon logo, version text: pal 0
+	ATTR_BLK_DATA %011, 2,2,0, 00,08, 19,17 ; pikachu, copyright text: pal 2
+	ATTR_BLK_DATA %010, 0,0,0, 09,08, 10,08 ; pika bubble: pal 0
 	ds 12, 0
 
 BlkPacket_NidorinoIntro:
@@ -111,16 +111,16 @@ BlkPacket_PartyMenu:
 
 BlkPacket_TrainerCard:
 	ATTR_BLK 10
-	ATTR_BLK_DATA %010, 0,0,0, 03,12, 04,13
-	ATTR_BLK_DATA %010, 1,1,0, 07,12, 08,13
-	ATTR_BLK_DATA %010, 3,3,0, 11,12, 12,13
-	ATTR_BLK_DATA %010, 2,2,0, 16,11, 17,12
-	ATTR_BLK_DATA %010, 1,1,0, 14,13, 15,13
-	ATTR_BLK_DATA %010, 3,3,0, 16,13, 17,13
-	ATTR_BLK_DATA %010, 2,2,0, 03,15, 04,16
-	ATTR_BLK_DATA %010, 3,3,0, 07,15, 08,16
-	ATTR_BLK_DATA %010, 2,2,0, 11,15, 12,16
-	ATTR_BLK_DATA %010, 1,1,0, 15,15, 16,16
+	ATTR_BLK_DATA %010, 0,0,0, 03,12, 04,13 ; Boulder Badge
+	ATTR_BLK_DATA %010, 1,1,0, 07,12, 08,13 ; Cascade Badge
+	ATTR_BLK_DATA %010, 3,3,0, 11,12, 12,13 ; Thunder Badge
+	ATTR_BLK_DATA %010, 2,2,0, 16,11, 17,12 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 1,1,0, 14,13, 15,13 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 3,3,0, 16,13, 17,13 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 2,2,0, 03,15, 04,16 ; Soul Badge
+	ATTR_BLK_DATA %010, 3,3,0, 07,15, 08,16 ; Marsh Badge
+	ATTR_BLK_DATA %010, 2,2,0, 11,15, 12,16 ; Volcano Badge
+	ATTR_BLK_DATA %010, 1,1,0, 15,15, 16,16 ; Earth Badge
 	ds 2, 0
 
 BlkPacket_GameFreakIntro:
@@ -181,7 +181,7 @@ DataSnd_728b1:
 	db  $E0                 ; cpx #$8c (1)
 
 DataSnd_728c1:
-	DATA_SND $847, $0, 11 ; 728c1 (1c:68c1)
+	DATA_SND $847, $0, 11
 	db  $C4                 ; cmp #$c4 (2)
 	db  $D0, $16            ; bne +$16
 	db  $A5                 ; lda dp
@@ -191,7 +191,7 @@ DataSnd_728c1:
 	db  $A2, $28            ; ldx #$28
 
 DataSnd_728d1:
-	DATA_SND $83c, $0, 11 ; 728d1 (1c:68d1)
+	DATA_SND $83c, $0, 11
 	db  $F0, $12            ; beq +$12
 	db  $A5                 ; lda dp
 	db  $C9, $C9            ; cmp #$c9

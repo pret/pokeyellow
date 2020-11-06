@@ -1,4 +1,4 @@
-CeruleanTradeHouse_Object:
+CeruleanMelaniesHouse_Object:
 	db $a ; border block
 
 	def_warps
@@ -13,4 +13,4 @@ CeruleanTradeHouse_Object:
 	object SPRITE_ODDISH, 1, 4, STAY, NONE, 3 ; person
 	object SPRITE_SANDSHREW, 5, 3, STAY, LEFT, 4 ; person
 
-	def_warps_to CERULEAN_TRADE_HOUSE
+	def_warps_to CERULEAN_MELANIES_HOUSE

@@ -202,7 +202,6 @@ PewterGymText3:
 	call PrintText
 .asm_5c512
 	jp TextScriptEnd
-
 .asm_5c3fa
 	ld hl, PewterGymText_5c41c
 	call PrintText

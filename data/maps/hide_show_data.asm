@@ -65,7 +65,7 @@ MapHSPointers:
 	dw NoHS
 	dw MtMoonB2FHS
 	dw NoHS
-	dw CeruleanTradeHouseHS
+	dw CeruleanMelaniesHouseHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -330,8 +330,8 @@ ViridianGymHS:
 	db VIRIDIAN_GYM, $0B, SHOW
 Museum1FHS:
 	db MUSEUM_1F, $05, SHOW
-CeruleanTradeHouseHS: ; bulbasaur adoption house
-	db CERULEAN_TRADE_HOUSE, $02, SHOW
+CeruleanMelaniesHouseHS:
+	db CERULEAN_MELANIES_HOUSE, $02, SHOW
 CeruleanCaveHS:
 	db CERULEAN_CAVE_1F, $01, SHOW
 	db CERULEAN_CAVE_1F, $02, SHOW

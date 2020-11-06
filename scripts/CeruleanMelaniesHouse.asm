@@ -1,8 +1,8 @@
-CeruleanTradeHouse_Script:
+CeruleanMelaniesHouse_Script:
 	call EnableAutoTextBoxDrawing
 	ret
 
-CeruleanTradeHouse_TextPointers:
+CeruleanMelaniesHouse_TextPointers:
 	dw CeruleanHouse1Text1
 	dw CeruleanHouse1Text2
 	dw CeruleanHouse1Text3

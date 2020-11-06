@@ -62,15 +62,15 @@ event_byte = ((\2) / 8)
 ENDM
 
 
-EventFlagAddressa: MACRO
+EventFlagAddressA: MACRO
 event_byte = ((\1) / 8)
 	ld [wEventFlags + event_byte], a
-	ENDM
+ENDM
 
-aEventFlagAddress: MACRO
+AEventFlagAddress: MACRO
 event_byte = ((\1) / 8)
 	ld a, [wEventFlags + event_byte]
-	ENDM
+ENDM
 
 ;\1 = event index
 CheckEventHL: MACRO
@@ -156,7 +156,7 @@ event_byte = ((\1) / 8)
 
 	bit (\1) % 8, [hl]
 	set (\1) % 8, [hl]
-	ENDM
+ENDM
 
 CheckAndResetEventReuseHL: MACRO
 	IF event_byte != ((\1) / 8)
@@ -166,7 +166,7 @@ event_byte = ((\1) / 8)
 
 	bit (\1) % 8, [hl]
 	res (\1) % 8, [hl]
-	ENDM
+ENDM
 
 
 ;\1 = event index
@@ -519,7 +519,7 @@ event_byte = ((\1) / 8)
 			pop bc
 		ENDC
 	ENDC
-	ENDM
+ENDM
 
 ; for handling fixed event bits when events are inserted/removed
 ;\1 = event index

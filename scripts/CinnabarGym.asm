@@ -134,7 +134,7 @@ CinnabarGymScript2:
 	cp $ff
 	jp z, CinnabarGymScript_75792
 	ld a, [wTrainerHeaderFlagBit]
-	sub 2
+	sub $2
 	ld c, a
 	ld b, FLAG_TEST
 	EventFlagAddress hl, EVENT_CINNABAR_GYM_GATE0_UNLOCKED

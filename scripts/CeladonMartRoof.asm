@@ -72,7 +72,7 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 	ld hl, wd730
 	res 6, [hl]
 	call HandleMenuInput
-	bit BIT_B_BUTTON, a ; pressed b
+	bit BIT_B_BUTTON, a
 	ret nz
 	ld hl, wFilteredBagItems
 	ld a, [wCurrentMenuItem]

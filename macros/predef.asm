@@ -30,7 +30,3 @@ ENDM
 db_tx_pre: MACRO
 	db (\1_id - TextPredefs) / 2 + 1
 ENDM
-
-predef_const: MACRO
-	const \1PredefID
-ENDM

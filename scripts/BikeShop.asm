@@ -14,7 +14,6 @@ BikeShopText1:
 	ld hl, BikeShopText_1d82f
 	call PrintText
 	jp .Done
-
 .asm_260d4
 	ld b, BIKE_VOUCHER
 	call IsItemInBag
@@ -31,12 +30,10 @@ BikeShopText1:
 	ld hl, BikeShopText_1d824
 	call PrintText
 	jr .Done
-
 .BagFull
 	ld hl, BikeShopText_1d834
 	call PrintText
 	jr .Done
-
 .asm_41190
 	ld hl, BikeShopText_1d810
 	call PrintText

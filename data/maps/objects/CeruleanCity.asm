@@ -3,7 +3,7 @@ CeruleanCity_Object:
 
 	def_warps
 	warp 27, 11, 0, CERULEAN_TRASHED_HOUSE
-	warp 13, 15, 0, CERULEAN_TRADE_HOUSE
+	warp 13, 15, 0, CERULEAN_MELANIES_HOUSE
 	warp 19, 17, 0, CERULEAN_POKECENTER
 	warp 30, 19, 0, CERULEAN_GYM
 	warp 13, 25, 0, BIKE_SHOP

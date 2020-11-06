@@ -63,7 +63,7 @@ MapHeaderBanks::
 	db BANK(MtMoonB1F_h)
 	db BANK(MtMoonB2F_h)
 	db BANK(CeruleanTrashedHouse_h)
-	db BANK(CeruleanTradeHouse_h)
+	db BANK(CeruleanMelaniesHouse_h)
 	db BANK(CeruleanPokecenter_h)
 	db BANK(CeruleanGym_h)
 	db BANK(BikeShop_h)

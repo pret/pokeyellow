@@ -201,13 +201,13 @@ OaksLabScript7:
 OaksLabScript8:
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
-	ld de, .SonyPushesPlayerAwayFromEeveeBall
+	ld de, .RivalPushesPlayerAwayFromEeveeBall
 	call MoveSprite
 	ld a, $9
 	ld [wOaksLabCurScript], a
 	ret
 
-.SonyPushesPlayerAwayFromEeveeBall
+.RivalPushesPlayerAwayFromEeveeBall
 	db $00
 	db $07
 	db $07
@@ -593,7 +593,7 @@ OaksLabScript20:
 	ld b, 0
 	ld c, a
 	ld hl, wNPCMovementDirections2
-	xor a
+	xor a ; NPC_MOVEMENT_DOWN
 	call FillMemory
 	ld [hl], $ff
 	call StopAllMusic
@@ -641,7 +641,6 @@ OaksLabScript_RemoveParcel:
 	inc hl
 	inc c
 	jr .loop
-
 .foundParcel
 	ld hl, wNumBagItems
 	ld a, c
@@ -664,7 +663,6 @@ OaksLabScript_1c8b9:
 	ld a, $30
 	ld b, 11
 	jr .asm_1c8f6
-
 .asm_1c8d3
 	cp 1
 	jr nz, .asm_1c8e2
@@ -673,7 +671,6 @@ OaksLabScript_1c8b9:
 	ld a, $30
 	ld b, 9
 	jr .asm_1c8f6
-
 .asm_1c8e2
 	ld a, $3
 	ld [wNPCMovementDirections2Index], a
@@ -683,7 +680,6 @@ OaksLabScript_1c8b9:
 	jr nz, .asm_1c8f4
 	ld a, $40
 	jr .asm_1c8f6
-
 .asm_1c8f4
 	ld a, $20
 .asm_1c8f6
@@ -817,7 +813,6 @@ OaksLabText3:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	predef DisplayDexRating
 	jp .asm_1ca6f
-
 .asm_1c9ec
 	ld b, POKE_BALL
 	call IsItemInBag
@@ -840,12 +835,10 @@ OaksLabText3:
 	ld hl, OaksLabText_1ca72
 	call PrintText
 	jr .asm_1ca6f
-
 .asm_1ca23
 	ld hl, OaksLabText_1ca77
 	call PrintText
 	jr .asm_1ca6f
-
 .asm_1ca2b
 	ld b, OAKS_PARCEL
 	call IsItemInBag
@@ -853,7 +846,6 @@ OaksLabText3:
 	ld hl, OaksLabText_1ca7c
 	call PrintText
 	jr .asm_1ca6f
-
 .asm_1ca3a
 	ld hl, OaksLabDeliverParcelText
 	call PrintText
@@ -861,12 +853,10 @@ OaksLabText3:
 	ld a, $13
 	ld [wOaksLabCurScript], a
 	jr .asm_1ca6f
-
 .asm_1ca4a
 	ld hl, OaksLabAroundWorldText
 	call PrintText
 	jr .asm_1ca6f
-
 .asm_1ca52
 	CheckAndSetEvent EVENT_GOT_POKEBALLS_FROM_OAK
 	jr nz, .asm_1ca69
@@ -875,7 +865,6 @@ OaksLabText3:
 	ld hl, OaksLabGivePokeballsText
 	call PrintText
 	jr .asm_1ca6f
-
 .asm_1ca69
 	ld hl, OaksLabPleaseVisitText
 	call PrintText

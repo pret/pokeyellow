@@ -96,7 +96,7 @@ Route2TradeHouse_Blocks:
 SaffronPidgeyHouse_Blocks:
 VermilionPidgeyHouse_Blocks:
 LavenderCuboneHouse_Blocks:
-CeruleanTradeHouse_Blocks:
+CeruleanMelaniesHouse_Blocks:
 PewterNidoranHouse_Blocks:
 PewterSpeechHouse_Blocks:
 ViridianNicknameHouse_Blocks: INCBIN "maps/ViridianNicknameHouse.blk"
@@ -146,9 +146,9 @@ INCLUDE "data/maps/headers/CeruleanTrashedHouse.asm"
 INCLUDE "scripts/CeruleanTrashedHouse.asm"
 INCLUDE "data/maps/objects/CeruleanTrashedHouse.asm"
 
-INCLUDE "data/maps/headers/CeruleanTradeHouse.asm"
-INCLUDE "scripts/CeruleanTradeHouse.asm"
-INCLUDE "data/maps/objects/CeruleanTradeHouse.asm"
+INCLUDE "data/maps/headers/CeruleanMelaniesHouse.asm"
+INCLUDE "scripts/CeruleanMelaniesHouse.asm"
+INCLUDE "data/maps/objects/CeruleanMelaniesHouse.asm"
 
 INCLUDE "data/maps/headers/BikeShop.asm"
 INCLUDE "scripts/BikeShop.asm"
