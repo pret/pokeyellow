@@ -52,28 +52,26 @@ uint8_t *wav2pcm(uint8_t *wavdata, size_t wavsize, size_t *pcmsize) {
 			return NULL;
 		}
 
+		// require 22050 Hz 8-bit PCM WAV audio
 		if (chunkid == CHUNKID('f', 'm', 't', ' ')) {
 			int32_t audio_format = get_uint16le(wavdata, wavsize, i);
 			if (audio_format != 1) {
 				fputs("WAV data is not PCM format\n", stderr);
 				return NULL;
 			}
-
 			int32_t num_channels = get_uint16le(wavdata, wavsize, i+2);
 			if (num_channels != 1) {
 				fputs("WAV data is not mono\n", stderr);
 				return NULL;
 			}
-
 			int64_t sample_rate = get_uint32le(wavdata, wavsize, i+4);
 			if (sample_rate != 22050) {
 				fputs("WAV data is not 22050 Hz\n", stderr);
 				return NULL;
 			}
-
 			int32_t bits_per_sample = get_uint16le(wavdata, wavsize, i+14);
 			if (bits_per_sample != 8) {
-				fputs("WAV data is not 8-bit samples\n", stderr);
+				fputs("WAV data is not 8-bit\n", stderr);
 				return NULL;
 			}
 		}
@@ -106,8 +104,7 @@ uint8_t *wav2pcm(uint8_t *wavdata, size_t wavsize, size_t *pcmsize) {
 	return pcmdata;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		fprintf(stderr, "Usage: %s infile.wav outfile.pcm\n", argv[0]);
 		return EXIT_FAILURE;
