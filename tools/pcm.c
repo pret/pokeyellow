@@ -65,6 +65,12 @@ uint8_t *wav2pcm(uint8_t *wavdata, size_t wavsize, size_t *pcmsize) {
 				return NULL;
 			}
 
+			int64_t sample_rate = get_uint32le(wavdata, wavsize, i+4);
+			if (sample_rate != 22050) {
+				fputs("WAV data is not 22050 Hz\n", stderr);
+				return NULL;
+			}
+
 			int32_t bits_per_sample = get_uint16le(wavdata, wavsize, i+14);
 			if (bits_per_sample != 8) {
 				fputs("WAV data is not 8-bit samples\n", stderr);
