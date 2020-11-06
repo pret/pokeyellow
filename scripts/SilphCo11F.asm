@@ -141,9 +141,9 @@ MovementData_62216:
 SilphCo11Script_621ff:
 	ld [wPlayerMovingDirection], a
 	ld a, b
-	ld [wSpriteStateData1 + 3 * $10 + 9], a
+	ld [wSprite03StateData1FacingDirection], a
 	ld a, $2
-	ld [wSpriteStateData1 + 3 * $10 + 1], a
+	ld [wSprite03StateData1MovementStatus], a
 	ret
 
 SilphCo11Script3:
@@ -324,8 +324,8 @@ SilphCo11Script6:
 	ret nz
 SilphCo11Script7:
 	ld a, $2
-	ld [wSpriteStateData1 + 4 * $10 + 1], a
-	ld hl, wSpriteStateData1 + 4 * $10 + 9
+	ld [wSprite04StateData1MovementStatus], a
+	ld hl, wSprite04StateData1FacingDirection
 	ld [hl], SPRITE_FACING_RIGHT
 	CheckEitherEventSet EVENT_780, EVENT_781
 	and a
@@ -364,8 +364,8 @@ SilphCo11Script9:
 	ld [wJoyIgnore], a
 SilphCo11Script10:
 	ld a, $2
-	ld [wSpriteStateData1 + 6 * $10 + 1], a
-	ld hl, wSpriteStateData1 + 6 * $10 + 9
+	ld [wSprite06StateData1MovementStatus], a
+	ld hl, wSprite06StateData1FacingDirection
 	ld [hl], SPRITE_FACING_UP
 	CheckEitherEventSet EVENT_780, EVENT_781
 	and a
@@ -401,11 +401,11 @@ SilphCo11Script12:
 	cp $ff
 	jp z, SilphCo11Script_62185
 	ld a, $2
-	ld [wSpriteStateData1 + 4 * $10 + 1], a
-	ld [wSpriteStateData1 + 6 * $10 + 1], a
+	ld [wSprite04StateData1MovementStatus], a
+	ld [wSprite06StateData1MovementStatus], a
 	xor a
-	ld [wSpriteStateData1 + 4 * $10 + 9], a
-	ld [wSpriteStateData1 + 6 * $10 + 9], a
+	ld [wSprite04StateData1FacingDirection], a
+	ld [wSprite06StateData1FacingDirection], a
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $1

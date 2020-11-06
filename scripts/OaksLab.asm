@@ -141,9 +141,9 @@ OaksLabScript5:
 	call DisplayTextID
 	call Delay3
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	ld a, $f
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -387,9 +387,9 @@ OaksLabScript14:
 	ld [wSpriteIndex], a
 	call SetSpritePosition1
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	xor a
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	predef HealParty
 	SetEvent EVENT_BATTLED_RIVAL_IN_OAKS_LAB
 	ld a, $f

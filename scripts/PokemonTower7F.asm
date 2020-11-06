@@ -98,14 +98,14 @@ PokemonTower7Script2:
 	ret nz
 PokemonTower7Script3:
 	ld a, $0
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60dba
 	ld a, $c
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 .asm_60dba
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 PokemonTower7Script4:
 	ld de, PokemonTower7MovementData_60d7a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
@@ -128,13 +128,13 @@ PokemonTower7Script5:
 	ret nz
 PokemonTower7Script6:
 	ld a, $2
-	ld [wSpriteStateData1 + $2 * $10 + $1], a
+	ld [wSprite02StateData1MovementStatus], a
 	ld a, $8
-	ld [wSpriteStateData1 + $2 * $10 + $9], a
+	ld [wSprite02StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60dff
 	ld a, $0
-	ld [wSpriteStateData1 + $2 * $10 + $9], a
+	ld [wSprite02StateData1FacingDirection], a
 .asm_60dff
 	call Delay3
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
@@ -167,11 +167,11 @@ PokemonTower7Script8:
 	cp $ff
 	jp z, PokemonTower7Script_60d01
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
-	ld [wSpriteStateData1 + 2 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
+	ld [wSprite02StateData1MovementStatus], a
 	xor a
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
+	ld [wSprite02StateData1FacingDirection], a
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $1

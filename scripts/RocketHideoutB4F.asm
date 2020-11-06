@@ -148,13 +148,13 @@ RocketHideout4Script5:
 	ret nz
 RocketHideout4Script6:
 	ld a, $2
-	ld [wSpriteStateData1 + 2 * $10 + 1], a
+	ld [wSprite02StateData1MovementStatus], a
 	ld a, SPRITE_FACING_LEFT
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
+	ld [wSprite02StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
 	jr z, .asm_4564a
 	ld a, SPRITE_FACING_DOWN
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
+	ld [wSprite02StateData1FacingDirection], a
 .asm_4564a
 	call Delay3
 	ld a, $fc
@@ -184,13 +184,13 @@ RocketHideout4Script8:
 	ld [wJoyIgnore], a
 RocketHideout4Script9:
 	ld a, $2
-	ld [wSpriteStateData1 + 3 * $10 + 1], a
+	ld [wSprite03StateData1MovementStatus], a
 	ld a, SPRITE_FACING_DOWN
-	ld [wSpriteStateData1 + 3 * $10 + 9], a
+	ld [wSprite03StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
 	jr z, .asm_45697
 	ld a, SPRITE_FACING_RIGHT
-	ld [wSpriteStateData1 + 3 * $10 + 9], a
+	ld [wSprite03StateData1FacingDirection], a
 .asm_45697
 	call Delay3
 	ld a, $c
@@ -222,11 +222,11 @@ RocketHideout4Script11:
 	cp $ff
 	jp z, RocketHideout4Script_45510
 	ld a, $2
-	ld [wSpriteStateData1 + 2 * $10 + 1], a
-	ld [wSpriteStateData1 + 3 * $10 + 1], a
+	ld [wSprite02StateData1MovementStatus], a
+	ld [wSprite03StateData1MovementStatus], a
 	xor a
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
-	ld [wSpriteStateData1 + 3 * $10 + 9], a
+	ld [wSprite02StateData1FacingDirection], a
+	ld [wSprite03StateData1FacingDirection], a
 	ld a, $fc
 	ld [wJoyIgnore], a
 	ld a, $1

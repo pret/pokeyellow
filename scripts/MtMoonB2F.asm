@@ -289,9 +289,9 @@ MtMoon3Script7:
 	ret nz
 MtMoon3Script8:
 	ld a, $2
-	ld [wSpriteStateData1 + 2 * $10 + 1], a
+	ld [wSprite02StateData1MovementStatus], a
 	ld a, SPRITE_FACING_DOWN
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
+	ld [wSprite02StateData1FacingDirection], a
 MtMoon3Script9:
 	ld a, $6
 	ldh [hSpriteIndex], a
@@ -311,9 +311,9 @@ MtMoon3Script10:
 	ret nz
 MtMoon3Script11:
 	ld a, $2
-	ld [wSpriteStateData1 + 6 * $10 + 1], a
+	ld [wSprite06StateData1MovementStatus], a
 	ld a, SPRITE_FACING_LEFT
-	ld [wSpriteStateData1 + 6 * $10 + 9], a
+	ld [wSprite06StateData1FacingDirection], a
 	call Delay3
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
@@ -346,11 +346,11 @@ MtMoon3Script13:
 	cp $ff
 	jp z, MtMoon3Script_49cd7
 	ld a, $2
-	ld [wSpriteStateData1 + 2 * $10 + 1], a
-	ld [wSpriteStateData1 + 6 * $10 + 1], a
+	ld [wSprite02StateData1MovementStatus], a
+	ld [wSprite06StateData1MovementStatus], a
 	xor a
-	ld [wSpriteStateData1 + 2 * $10 + 9], a
-	ld [wSpriteStateData1 + 6 * $10 + 9], a
+	ld [wSprite02StateData1FacingDirection], a
+	ld [wSprite06StateData1FacingDirection], a
 	ld a, $FF ^ (A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $1

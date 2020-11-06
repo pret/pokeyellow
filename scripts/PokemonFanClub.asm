@@ -52,9 +52,9 @@ FanClubScript_59a44:
 	ld hl, PikachuMovementScript_59a8c
 	call ApplyPikachuMovementData
 	ld a, $2
-	ld [wSpriteStateData1 + 3 * $10 + 1], a ; Seel
+	ld [wSprite03StateData1MovementStatus], a ; Seel
 	xor a ; SPRITE_FACING_DOWN
-	ld [wSpriteStateData1 + 3 * $10 + 9], a
+	ld [wSprite03StateData1FacingDirection], a
 	callfar InitializePikachuTextID
 	call DisablePikachuFollowingPlayer
 	ret

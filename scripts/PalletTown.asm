@@ -60,20 +60,20 @@ PalletTownScript1:
 	call DisplayTextID
 	ld a, $FF
 	ld [wJoyIgnore], a
-	ld hl, wSpriteStateData2 + 1 * $10 + 4
-	ld a, $8
-	ld [hli], a
-	ld a, $e
-	ld [hl], a
+	ld hl, wSprite01StateData2MapY
+	ld a, 8
+	ld [hli], a ; SPRITESTATEDATA2_MAPY
+	ld a, 14
+	ld [hl], a ; SPRITESTATEDATA2_MAPX
 	ld a, HS_PALLET_TOWN_OAK
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 
 	; trigger the next script
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	ld a, 2
 	ld [wPalletTownCurScript], a
 	ret
@@ -110,9 +110,9 @@ PalletTownScript3:
 	ld a, 1
 	ld [wcf0d], a
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	ld a, 1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -120,13 +120,13 @@ PalletTownScript3:
 	ld a, $FF
 	ld [wJoyIgnore], a
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	CheckEvent EVENT_PLAYER_AT_RIGHT_EXIT_TO_PALLET_TOWN
 	ld a, SPRITE_FACING_RIGHT
 	jr z, .asm_18f01
 	ld a, SPRITE_FACING_LEFT
 .asm_18f01
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 
 	; trigger the next script
 	ld a, 4
@@ -158,9 +158,9 @@ PalletTownScript5:
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $2
-	ld [wSpriteStateData1 + 1 * $10 + 1], a
+	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	ld a, $8
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

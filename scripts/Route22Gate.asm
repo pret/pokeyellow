@@ -24,7 +24,7 @@ Route22GateScript0:
 	xor a
 	ldh [hJoyHeld], a
 	ld a, SPRITE_FACING_LEFT
-	ld [wSpriteStateData1 + 1 * $10 + 9], a
+	ld [wSprite01StateData1FacingDirection], a
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

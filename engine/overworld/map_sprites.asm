@@ -4,10 +4,10 @@
 ; This is also called after displaying text because loading
 ; text tile patterns overwrites half of the sprite tile pattern data.
 ; Note on notation:
-; $C1X* and $C2X* are used to denote wSpriteStateData1-wSpriteStateData1 + $ff and wSpriteStateData2 + $00-wSpriteStateData2 + $ff sprite slot
-; fields, respectively, within loops. The X is the loop index.
-; If there is an inner loop, Y is the inner loop index, i.e. $C1Y* and $C2Y*
-; denote fields of the sprite slots iterated over in the inner loop.
+; x#SPRITESTATEDATA1_* and x#SPRITESTATEDATA2_* are used to denote wSpriteStateData1 and
+; wSpriteStateData2 sprite slot, respectively, within loops. The X is the loop index.
+; If there is an inner loop, Y is the inner loop index, i.e. y#SPRITESTATEDATA1_* and
+; y#SPRITESTATEDATA2_* denote fields of the sprite slots iterated over in the inner loop.
 _InitMapSprites::
 	call InitOutsideMapSprites
 	ret c ; return if the map is an outside map (already handled by above call)
