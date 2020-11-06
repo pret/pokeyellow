@@ -27,9 +27,6 @@ RGBFIX  ?= $(RGBDS)rgbfix
 RGBGFX  ?= $(RGBDS)rgbgfx
 RGBLINK ?= $(RGBDS)rgblink
 
-PYTHON := python
-pcm    := $(PYTHON) tools/pokemontools/pcm.py pcm
-
 
 ### Build targets
 
@@ -140,4 +137,4 @@ gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 %.wav: ;
 
 %.pcm: %.wav
-	@$(pcm) $<
+	tools/pcm $< $@

@@ -3,7 +3,7 @@
 CC := gcc
 CFLAGS := -O3 -std=c99 -Wall -Wextra
 
-tools := scan_includes gfx pkmncompress
+tools := scan_includes gfx pkmncompress pcm
 
 all: $(tools)
 	@:
