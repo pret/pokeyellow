@@ -65,14 +65,14 @@ PokeCenterFlashingMonitorAndHealBall:
 
 PokeCenterOAMData:
 	; heal machine monitor
-	dbsprite  6,  4,  4,  4, $7c, OAM_OBP1 | %100
+	dbsprite  6,  4,  4,  4, $7c, OAM_OBP1 | OAM_HIGH_PALS
 	; poke balls 1-6
-	dbsprite  6,  5,  0,  3, $7d, OAM_OBP1 | %100
-	dbsprite  7,  5,  0,  3, $7d, OAM_OBP1 | OAM_HFLIP | %100
-	dbsprite  6,  6,  0,  0, $7d, OAM_OBP1 | %100
-	dbsprite  7,  6,  0,  0, $7d, OAM_OBP1 | OAM_HFLIP | %100
-	dbsprite  6,  6,  0,  5, $7d, OAM_OBP1 | %100
-	dbsprite  7,  6,  0,  5, $7d, OAM_OBP1 | OAM_HFLIP | %100
+	dbsprite  6,  5,  0,  3, $7d, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite  7,  5,  0,  3, $7d, OAM_OBP1 | OAM_HIGH_PALS | OAM_HFLIP
+	dbsprite  6,  6,  0,  0, $7d, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite  7,  6,  0,  0, $7d, OAM_OBP1 | OAM_HIGH_PALS | OAM_HFLIP
+	dbsprite  6,  6,  0,  5, $7d, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite  7,  6,  0,  5, $7d, OAM_OBP1 | OAM_HIGH_PALS | OAM_HFLIP
 
 ; d = value to xor with palette
 FlashSprite8Times:

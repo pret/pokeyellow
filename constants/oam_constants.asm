@@ -11,6 +11,7 @@ OAM_Y_FLIP    EQU 6
 OAM_PRIORITY  EQU 7 ; 0: OBJ above BG, 1: OBJ behind BG (colors 1-3)
 
 ; OAM attribute masks
+OAM_HIGH_PALS EQU 1 << 2            ; palettes %100-%111 are OBP1
 OAM_OBP1      EQU 1 << OAM_OBP_NUM  ; OBJ palette 1
 OAM_HFLIP     EQU 1 << OAM_X_FLIP   ; horizontal flip
 OAM_VFLIP     EQU 1 << OAM_Y_FLIP   ; vertical flip

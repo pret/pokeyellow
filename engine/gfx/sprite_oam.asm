@@ -119,9 +119,9 @@ PrepareOAMData::
 	or [hl]
 .skipPriority
 	and $f0
-	bit 4, a ; OBP0 or OBP1
+	bit OAM_OBP_NUM, a
 	jr z, .spriteusesOBP0
-	or %100 ; palettes 4-7 are OBP1
+	or OAM_HIGH_PALS
 .spriteusesOBP0
 	ld [de], a
 	inc hl

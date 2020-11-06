@@ -124,8 +124,8 @@ WriteCutOrBoulderDustAnimationOAMBlock:
 	jp WriteOAMBlock
 
 CutOrBoulderDustAnimationTilesAndAttributes:
-	dbsprite  2, -1,  4,  4, $fd, OAM_OBP1 | %100
-	dbsprite  2, -1,  4,  6, $ff, OAM_OBP1 | %100
+	dbsprite  2, -1,  4,  4, $fd, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite  2, -1,  4,  6, $ff, OAM_OBP1 | OAM_HIGH_PALS
 
 GetCutOrBoulderDustAnimationOffsets:
 	ld hl, wSpritePlayerStateData1YPixels

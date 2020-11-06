@@ -248,10 +248,10 @@ GameFreakLogoOAMData:
 GameFreakLogoOAMDataEnd:
 
 GameFreakShootingStarOAMData:
-	dbsprite 20,  0,  0,  0, $a0, OAM_OBP1 | %100
-	dbsprite 21,  0,  0,  0, $a0, OAM_OBP1 | OAM_HFLIP | %100
-	dbsprite 20,  1,  0,  0, $a1, OAM_OBP1 | %100
-	dbsprite 21,  1,  0,  0, $a1, OAM_OBP1 | OAM_HFLIP | %100
+	dbsprite 20,  0,  0,  0, $a0, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite 21,  0,  0,  0, $a0, OAM_OBP1 | OAM_HIGH_PALS | OAM_HFLIP
+	dbsprite 20,  1,  0,  0, $a1, OAM_OBP1 | OAM_HIGH_PALS
+	dbsprite 21,  1,  0,  0, $a1, OAM_OBP1 | OAM_HIGH_PALS | OAM_HFLIP
 GameFreakShootingStarOAMDataEnd:
 
 FallingStar:
