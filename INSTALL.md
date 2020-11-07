@@ -39,7 +39,6 @@ Run setup and leave the default settings. At the "**Select Packages**" step, cho
 - `make`
 - `git`
 - `gcc-core`
-- `python`
 
 Double click on the text that says "**Skip**" next to each package to select the most recent version to install.
 
@@ -82,7 +81,7 @@ Open **Terminal** and enter the following commands, depending on which distro yo
 To install the software required for **pokeyellow**:
 
 ```bash
-sudo apt-get install make gcc git python
+sudo apt-get install make gcc git
 ```
 
 Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) to build **rgbds 0.4.1** from source.
@@ -92,7 +91,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) 
 To install the software required for **pokeyellow**:
 
 ```bash
-sudo zypper install make gcc git python
+sudo zypper install make gcc git
 ```
 
 Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) to build **rgbds 0.4.1** from source.
@@ -102,7 +101,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) 
 To install the software required for **pokeyellow**:
 
 ```bash
-sudo pacman -S make gcc git python
+sudo pacman -S make gcc git
 ```
 
 Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/arch) for Arch Linux to install **rgbds 0.4.1**.
@@ -133,7 +132,6 @@ If your distro is not listed here, try to find the required software in its repo
 - `gcc` (or `clang`)
 - `git`
 - `rgbds`
-- `python`
 
 If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/source) to build **rgbds 0.4.1** from source.
 
