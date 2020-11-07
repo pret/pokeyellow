@@ -73,6 +73,10 @@ MtMoonB2F_ScriptPointers:
 	dw MtMoon3Script15
 
 MtMoon3Script0:
+IF DEF(_DEBUG)
+	call DebugPressedOrHeldB
+	ret nz
+ENDC
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
 	call z, MtMoon3Script_49d28
 	CheckEvent EVENT_BEAT_MT_MOON_3_TRAINER_0

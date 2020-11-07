@@ -27,6 +27,10 @@ PokemonTower7F_ScriptPointers:
 	dw PokemonTower7Script11
 
 PokemonTower7Script0:
+IF DEF(_DEBUG)
+	call DebugPressedOrHeldB
+	ret nz
+ENDC
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
 	call z, PokemonTower7Script_60d2a
 	ret

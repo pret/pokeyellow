@@ -164,7 +164,11 @@ DisplayTitleScreen:
 	ldh a, [hJoyHeld]
 	cp D_UP | SELECT | B_BUTTON
 	jr z, .go_to_main_menu
+IF DEF(_DEBUG)
+	and A_BUTTON | SELECT | START
+ELSE
 	and A_BUTTON | START
+ENDC
 	jr nz, .go_to_main_menu
 	call DoTitleScreenFunction
 	jr .titleScreenLoop
@@ -194,7 +198,7 @@ IF DEF(_DEBUG)
 	ld a, b
 	bit BIT_SELECT, a
 	jp z, MainMenu
-	callfar Func_fe66e
+	callfar DebugMenu
 	jp hl
 ELSE
 	jp MainMenu

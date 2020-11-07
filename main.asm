@@ -311,15 +311,27 @@ INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
 
 
+SECTION "BG Map Attributes (Debug)", ROMX
+
+IF DEF(_DEBUG)
+    INCLUDE "engine/gfx/bg_map_attributes.asm"
+ENDC
+
+
 SECTION "BG Map Attributes", ROMX
 
-INCLUDE "engine/gfx/bg_map_attributes.asm"
+INCLUDE "data/cgb/bg_map_attributes.asm"
+IF !DEF(_DEBUG)
+    INCLUDE "engine/gfx/bg_map_attributes.asm"
+ENDC
 
 
 SECTION "bank30", ROMX
 
 ; This whole bank is garbage data.
-INCBIN "garbage/bank30.bin"
+IF !DEF(_DEBUG)
+    INCBIN "garbage/bank30.bin"
+ENDC
 
 
 SECTION "bank3A", ROMX
@@ -414,3 +426,4 @@ INCLUDE "engine/pikachu/pikachu_status.asm"
 INCLUDE "engine/pikachu/pikachu_emotions.asm"
 INCLUDE "engine/pikachu/pikachu_movement.asm"
 INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
+INCLUDE "engine/debug/debug_menu.asm"

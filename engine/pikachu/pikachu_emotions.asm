@@ -164,7 +164,34 @@ StarterPikachuEmotionCommand_subcmd:
 	dw PikachuBillsHouseCheck
 
 StarterPikachuEmotionCommand_nop2:
+IF DEF(_DEBUG)
+	push hl
+	ld hl, wd732
+	bit 1, [hl]
+	pop hl
+	ret z
+	push de
+	ld d, a
+	ld a, [wCurMap]
+	cp REDS_HOUSE_2F
+	ld a, d
+	pop de
+	ret nz
+	push de
+	call Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3
+	call LoadFontTilePatterns
+	ld hl, ExpressionText
+	call PrintText
+	call Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3
+	pop de
 	ret
+
+ExpressionText:
+	text_far _ExpressionText
+	text_end
+ELSE
+	ret
+ENDC
 
 StarterPikachuEmotionCommand_9:
 	push de
@@ -184,7 +211,35 @@ DeletedFunction_fcffb:
 REPT 5
 	nop
 ENDR
+IF DEF(_DEBUG)
+	push hl
+	ld hl, wd732
+	bit 1, [hl]
+	pop hl
+	ret z
+	push de
+	ld d, a
+	ld a, [wCurMap]
+	cp REDS_HOUSE_2F
+	ld a, d
+	pop de
+	ret nz
+	ld a, [wExpressionNumber]
+	inc a
+	cp (PikachuEmotion33_id - PikachuEmotionTable) / 2
+	jr c, .valid
+	ldpikaemotion a, PikachuEmotion1
+.valid
+	ld [wExpressionNumber], a
 	ret
+
+HallOfFamePCForever:
+	callfar HallOfFamePC
+	call WaitForTextScrollButtonPress
+	jr HallOfFamePCForever
+ELSE
+	ret
+ENDC
 
 PlaySpecificPikachuEmotion:
 	ld a, e

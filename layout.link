@@ -183,6 +183,7 @@ ROMX $2E
 	"Pokédex Text"
 ROMX $2f
 	"Move Names"
+	"BG Map Attributes (Debug)"
 	org $5000
 	"BG Map Attributes"
 ROMX $30
