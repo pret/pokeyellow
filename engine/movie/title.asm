@@ -190,7 +190,15 @@ DisplayTitleScreen:
 	and D_UP | SELECT | B_BUTTON
 	cp D_UP | SELECT | B_BUTTON
 	jp z, .doClearSaveDialogue
+IF DEF(_DEBUG)
+	ld a, b
+	bit BIT_SELECT, a
+	jp z, MainMenu
+	callfar Func_fe66e
+	jp hl
+ELSE
 	jp MainMenu
+ENDC
 
 .asm_42f0
 ; unreferenced

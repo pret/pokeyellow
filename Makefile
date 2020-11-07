@@ -1,4 +1,4 @@
-rom := pokeyellow.gbc
+roms := pokeyellow.gbc pokeyellow_debug.gbc
 
 rom_obj := \
 audio.o \
@@ -11,6 +11,9 @@ gfx/pics.o \
 gfx/pikachu.o \
 gfx/sprites.o \
 gfx/tilesets.o
+
+pokeyellow_obj       := $(rom_obj)
+pokeyellow_debug_obj := $(rom_obj:.o=_debug.o)
 
 
 ### Build tools
@@ -34,20 +37,21 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all yellow clean tidy compare tools
+.PHONY: all yellow yellow_debug clean tidy compare tools
 
-all: $(rom)
-yellow: $(rom)
+all: $(roms)
+yellow:       pokeyellow.gbc
+yellow_debug: pokeyellow_debug.gbc
 
 clean: tidy
 	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
 	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
 
 tidy:
-	rm -f $(rom) $(rom_obj) $(rom:.gbc=.map) $(rom:.gbc=.sym) rgbdscheck.o
+	rm -f $(roms) $(pokeyellow_obj) $(pokeyellow_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
 
-compare: $(rom)
+compare: $(roms)
 	@$(SHA1) -c roms.sha1
 
 tools:
@@ -59,6 +63,8 @@ RGBASMFLAGS = -h -L -Weverything
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
 endif
+
+$(pokeyellow_debug_obj): RGBASMFLAGS += -D _DEBUG
 
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -78,18 +84,23 @@ ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 
 # Dependencies for objects
-$(foreach obj, $(rom_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
+$(foreach obj, $(pokeyellow_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
+$(foreach obj, $(pokeyellow_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=.asm))))
 
 endif
 
 
 %.asm: ;
 
+
+pokeyellow_pad       = 0x00
+pokeyellow_debug_pad = 0xff
+
 opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
 
-$(rom): $(rom_obj) layout.link
-	$(RGBLINK) -m $(rom:.gbc=.map) -n $(rom:.gbc=.sym) -l layout.link -o $@ $(filter %.o,$^)
-	$(RGBFIX) $(opts) $@
+%.gbc: $$(%_obj) layout.link
+	$(RGBLINK) -p $($*_pad) -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
+	$(RGBFIX) -p $($*_pad) $(opts) $@
 
 
 ### Misc file-specific graphics rules

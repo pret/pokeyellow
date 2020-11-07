@@ -49,4 +49,12 @@ EndNPCMovementScript::
 	farjp _EndNPCMovementScript
 
 DebugPressedOrHeldB::
+IF DEF(_DEBUG)
+	ldh a, [hJoyHeld]
+	bit BIT_B_BUTTON, a
+	ret nz
+	ldh a, [hJoyPressed]
+	bit BIT_B_BUTTON, a
+	ret
+ENDC
 	ret

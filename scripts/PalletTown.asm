@@ -271,30 +271,45 @@ PalletTownText_19002:
 	text_far _OakWhewText
 	text_end
 
-PalletTownText8: ; girl
+PalletTownText8:
 	text_far _OakGrassText
 	text_end
 
-PalletTownText2: ; fat man
+PalletTownText2: ; girl
 	text_far _PalletTownText2
 	text_end
 
-PalletTownText3: ; sign by lab
+PalletTownText3: ; fat man
 	text_far _PalletTownText3
 	text_end
 
-PalletTownText4: ; sign by fence
+PalletTownText4: ; sign by lab
 	text_far _PalletTownText4
 	text_end
 
-PalletTownText5: ; sign by Red's house
+PalletTownText5: ; sign by fence
+IF DEF(_DEBUG)
+	text_asm
+	ld a, 239
+	inc a
+	ld [wWhichPewterGuy], a
+	ld hl, PalletTownText_502b
+	call PrintText
+	jp TextScriptEnd
+
+PalletTownText_502b:
+	text_decimal wWhichPewterGuy, 1, 3
+	text "bit"
+	done
+ELSE
 	text_far _PalletTownText5
 	text_end
+ENDC
 
-PalletTownText6: ; sign by Blue's house
+PalletTownText6: ; sign by Red's house
 	text_far _PalletTownText6
 	text_end
 
-PalletTownText7:
+PalletTownText7: ; sign by Blue's house
 	text_far _PalletTownText7
 	text_end
