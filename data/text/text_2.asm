@@ -17,7 +17,7 @@ _AIBattleUseItemText::
 	text "!"
 	prompt
 
-_BoxFullTest::
+_BoxFullDebugText::
 	text "The BOX is full!"
 	done
 

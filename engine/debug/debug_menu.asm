@@ -1428,7 +1428,7 @@ Func_ff1b3:
 	ret
 
 Text_ff1b4:
-	text_far _BoxFullTest
+	text_far _BoxFullDebugText
 	text_end
 
 Func_ff1b9:
