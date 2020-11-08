@@ -80,7 +80,7 @@ IF DEF(_DEBUG)
 	ld a, 1
 	ld [hli], a
 	ld a, NUM_POKEMON
-	ld [hli], a ; ???
+	ld [hli], a ; hl = wUnknownDebugByte
 	ld a, PIKACHU
 	ld [hl], a ; hl = wPlayerStarter
 
