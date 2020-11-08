@@ -850,6 +850,3 @@ PikaPicAnimCommand_thunderbolt:
 	ret
 
 INCLUDE "data/pikachu/pikachu_pic_animation.asm"
-
-Func_fe66e:
-	ret

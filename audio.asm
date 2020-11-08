@@ -539,7 +539,9 @@ INCLUDE "audio/music/surfingpikachu.asm"
 INCLUDE "audio/music/yellowunusedsong.asm"
 INCLUDE "audio/music/meetjessiejames.asm"
 
-INCBIN "garbage/bank20.bin"
+IF !DEF(_DEBUG)
+    INCBIN "garbage/bank20.bin"
+ENDC
 
 
 ; Pikachu cries are in different banks

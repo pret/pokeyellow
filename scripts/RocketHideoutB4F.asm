@@ -69,6 +69,10 @@ RocketHideout4Script3:
 	ret
 
 RocketHideout4Script0:
+IF DEF(_DEBUG)
+	call DebugPressedOrHeldB
+	ret nz
+ENDC
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
 	call z, RocketHideout4Script_455a5
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_2

@@ -1,5 +1,3 @@
-INCLUDE "data/cgb/bg_map_attributes.asm"
-
 LoadBGMapAttributes::
 	ld hl, BGMapAttributesPointers
 	ld a, c ; c = which packet

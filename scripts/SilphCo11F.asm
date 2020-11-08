@@ -97,6 +97,10 @@ SilphCo11F_ScriptPointers:
 	dw SilphCo11Script14
 
 SilphCo11Script0:
+IF DEF(_DEBUG)
+	call DebugPressedOrHeldB
+	ret nz
+ENDC
 	CheckEvent EVENT_BEAT_SILPH_CO_11F_TRAINER_0
 	call z, SilphCo11Script_6229c
 	CheckEvent EVENT_782
