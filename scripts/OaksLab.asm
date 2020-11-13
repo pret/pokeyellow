@@ -226,7 +226,7 @@ OaksLabScript9:
 	ld a, SPRITE_FACING_UP
 	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
-	ld a, 1
+	ld a, RIVAL_STARTER_JOLTEON
 	ld [wRivalStarter], a
 	ld a, EEVEE
 	ld [wd11e], a
@@ -371,10 +371,10 @@ OaksLabScript14:
 	; Otherwise, it will evolve into Vaporeon.
 	ld a, [wBattleResult]
 	and a
-	ld b, $3
-	jr nz, .asm_1c660
-	ld b, $2
-.asm_1c660
+	ld b, RIVAL_STARTER_VAPOREON
+	jr nz, .got_rival_starter
+	ld b, RIVAL_STARTER_FLAREON
+.got_rival_starter
 	ld a, b
 	ld [wRivalStarter], a
 
@@ -1009,7 +1009,7 @@ OaksLabRivalTakesText5:
 
 OaksLabText18:
 	text_asm
-	ld a, PIKACHU
+	ld a, STARTER_PIKACHU
 	ld [wPlayerStarter], a
 	ld [wd11e], a
 	call GetMonName
@@ -1023,7 +1023,7 @@ OaksLabText18:
 	ld [wMonDataLocation], a
 	ld a, 5
 	ld [wCurEnemyLVL], a
-	ld a, PIKACHU
+	ld a, STARTER_PIKACHU
 	ld [wd11e], a
 	ld [wcf91], a
 	call AddPartyMon

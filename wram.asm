@@ -1055,8 +1055,6 @@ wHoFTeamIndex::
 wSSAnneSmokeDriftAmount::
 ; multiplied by 16 to get the number of times to go right by 2 pixels
 
-wRivalStarterTemp::
-
 wBoxMonCounts::
 ; 12 bytes
 ; array of the number of mons in each box
@@ -1152,8 +1150,6 @@ wBattleTransitionCircleScreenQuadrantX::
 ; 1 = right half (X >= 10)
 
 wSSAnneSmokeX::
-
-wRivalStarterBallSpriteIndex::
 
 wDayCareNumLevelsGrown::
 

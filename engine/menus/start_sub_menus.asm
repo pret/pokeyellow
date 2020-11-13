@@ -169,7 +169,7 @@ StartMenu_Pokemon::
 	res 1, [hl]
 	jp z, .loop
 	ld a, [wcf91]
-	cp PIKACHU ; is this surfing pikachu?
+	cp STARTER_PIKACHU
 	jr z, .surfingPikachu
 	ld a, $1
 	jr .continue

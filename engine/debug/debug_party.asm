@@ -17,7 +17,7 @@ DebugTeam:
 	db SNORLAX, 80
 	db PERSIAN, 80
 	db JIGGLYPUFF, 15
-	db PIKACHU, 5
+	db STARTER_PIKACHU, 5
 	db -1 ; end
 
 DebugStart:
@@ -75,13 +75,13 @@ IF DEF(_DEBUG)
 	call DebugSetPokedexEntries
 	SetEvent EVENT_GOT_POKEDEX
 
-	; Player chose Pikachu.
+	; Rival chose Jolteon.
 	ld hl, wRivalStarter
-	ld a, 1
+	ld a, RIVAL_STARTER_JOLTEON
 	ld [hli], a
 	ld a, NUM_POKEMON
 	ld [hli], a ; hl = wUnknownDebugByte
-	ld a, PIKACHU
+	ld a, STARTER_PIKACHU
 	ld [hl], a ; hl = wPlayerStarter
 
 	; Give max money.

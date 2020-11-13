@@ -148,11 +148,11 @@ Route22Script2:
 	cp $ff
 	jp z, Route22Script_50ece
 	ld a, [wRivalStarter]
-	cp 2
-	jr nz, .asm_50fc9
-	ld a, $1
+	cp RIVAL_STARTER_FLAREON
+	jr nz, .keep_rival_starter
+	ld a, RIVAL_STARTER_JOLTEON
 	ld [wRivalStarter], a
-.asm_50fc9
+.keep_rival_starter
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
 	jr nz, .notDown

@@ -23,7 +23,7 @@ TrainerDataPointers:
 	dw TamerData
 	dw BirdKeeperData
 	dw BlackbeltData
-	dw Green1Data
+	dw Rival1Data
 	dw ProfOakData
 	dw ChiefData
 	dw ScientistData
@@ -40,8 +40,8 @@ TrainerDataPointers:
 	dw BlaineData
 	dw SabrinaData
 	dw GentlemanData
-	dw Green2Data
-	dw Green3Data
+	dw Rival2Data
+	dw Rival3Data
 	dw LoreleiData
 	dw ChannelerData
 	dw AgathaData
@@ -479,7 +479,7 @@ BlackbeltData:
 ; Victory Road 2F
 	db 43, MACHOKE, MACHOP, MACHOKE, 0
 
-Green1Data:
+Rival1Data:
 	db 5, EEVEE, 0
 ; Route 22
 	db $FF, 9, SPEAROW, 8, EEVEE, 0
@@ -671,7 +671,7 @@ GentlemanData:
 ; SS Anne 2F Rooms
 	db 17, GROWLITHE, PONYTA, 0
 
-Green2Data:
+Rival2Data:
 ; SS Anne 2F
 	db $FF, 19, SPEAROW, 16, RATTATA, 18, SANDSHREW, 20, EEVEE, 0
 ; Pokémon Tower 2F
@@ -687,7 +687,7 @@ Green2Data:
 	db $FF, 47, SANDSLASH, 45, EXEGGCUTE, 45, CLOYSTER, 47, MAGNETON, 50, KADABRA, 53, FLAREON, 0
 	db $FF, 47, SANDSLASH, 45, EXEGGCUTE, 45, MAGNETON, 47, NINETALES, 50, KADABRA, 53, VAPOREON, 0
 
-Green3Data:
+Rival3Data:
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, CLOYSTER, 63, NINETALES, 65, JOLTEON, 0
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, MAGNETON, 63, CLOYSTER, 65, FLAREON, 0
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, NINETALES, 63, MAGNETON, 65, VAPOREON, 0
