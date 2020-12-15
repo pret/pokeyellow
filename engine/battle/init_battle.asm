@@ -143,8 +143,8 @@ _InitBattleCommon:
 	ld [wLetterPrintingDelayFlags], a
 	pop af
 	ld [wMapPalOffset], a
-	ld a, [wSavedTilesetType]
-	ldh [hTilesetType], a
+	ld a, [wSavedTileAnimations]
+	ldh [hTileAnimations], a
 	scf
 	ret
 .emptyString

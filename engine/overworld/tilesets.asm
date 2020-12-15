@@ -14,7 +14,7 @@ LoadTilesetHeader:
 	ld bc, $b
 	call CopyData
 	ld a, [hl]
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	xor a
 	ldh [hMovingBGTilesCounter1], a
 	pop hl

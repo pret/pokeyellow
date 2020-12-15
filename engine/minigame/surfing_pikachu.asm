@@ -3,10 +3,10 @@ SurfingPikachuMinigame::
 	call DelayFrame
 	call DelayFrame
 	call DelayFrame
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	ld a, $ff
@@ -56,7 +56,7 @@ SurfingPikachuMinigame::
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ret
 
 SurfingPikachuLoop:

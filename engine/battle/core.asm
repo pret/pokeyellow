@@ -51,7 +51,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	ldh [hWY], a
 	ldh [rWY], a
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ldh [hSCY], a
 	dec a
 	ld [wUpdateSpritesEnabled], a
@@ -2088,23 +2088,24 @@ DisplayBattleMenu::
 .menuselected
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
+ ; handle menu input if it's not the old man tutorial or prof. oak pikachu battle
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_OLD_MAN
-	jr z, .doSimulatedMenuInput ; simulate menu input if it's the old man or prof. oak pikachu battle
+	jr z, .doSimulatedMenuInput
 	cp BATTLE_TYPE_PIKACHU
 	jr z, .doSimulatedMenuInput
 	jp .handleBattleMenuInput
 ; the following happens for the old man tutorial and prof. oak pikachu battle
 .doSimulatedMenuInput
-	; Temporarily save the player name in wGrassRate,
-	; which is supposed to get overwritten when entering a
-	; map with wild Pokémon.
-	; In Red/Blue, due to an oversight, the data may not get
-	; overwritten (on Cinnabar and Route 21) and the infamous
-	; Missingno. glitch can show up.
+	; Temporarily save the player name in wLinkEnemyTrainerName.
+	; Since wLinkEnemyTrainerName == wGrassRate, this affects wild encounters.
+	; The wGrassRate byte and following wGrassMons buffer are supposed
+	; to get overwritten when entering a map with wild Pokémon,
+	; but an oversight prevents this in Cinnabar and Route 21,
+	; so the infamous MissingNo. glitch can show up.
 	; However, this has been fixed in Yellow.
 	ld hl, wPlayerName
-	ld de, wGrassRate
+	ld de, wLinkEnemyTrainerName
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, .oldManName
@@ -6454,7 +6455,7 @@ DoBattleTransitionAndInitBattleVariables:
 	ldh [hAutoBGTransferEnabled], a
 	ldh [hWY], a
 	ldh [rWY], a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld hl, wPlayerStatsToDouble
 	ld [hli], a
 	ld [hli], a

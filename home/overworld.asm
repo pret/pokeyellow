@@ -802,7 +802,7 @@ LoadPlayerSpriteGraphics::
 	dec a
 	jr z, .ridingBike
 
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	and a
 	jr nz, .determineGraphics
 	jr .startWalking

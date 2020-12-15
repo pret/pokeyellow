@@ -12,7 +12,7 @@ EvolveTradeMon:
 ; this is only called after battle
 ; it is supposed to do level up evolutions, though there is a bug that allows item evolutions to occur
 EvolutionAfterBattle:
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
 	ld [wEvolutionOccurred], a
@@ -250,7 +250,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	pop bc
 	pop hl
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld a, [wLinkState]
 	cp LINK_STATE_TRADING
 	ret z

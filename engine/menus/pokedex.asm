@@ -162,10 +162,10 @@ HandlePokedexSideMenu:
 	jr .exitSideMenu
 
 .chosePrint
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld a, [wd11e]
 	ld [wcf91], a
 	callfar PrintPokedexEntry
@@ -173,7 +173,7 @@ HandlePokedexSideMenu:
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	ld b, $3
 	jr .exitSideMenu
 
@@ -442,10 +442,10 @@ ShowPokedexDataInternal:
 	set 1, [hl]
 	ld a, $33 ; 3/7 volume
 	ldh [rNR50], a
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call GBPalWhiteOut ; zero all palettes
 	ld a, [wd11e] ; pokemon ID
 	ld [wcf91], a
@@ -462,7 +462,7 @@ ShowPokedexDataInternal:
 	and A_BUTTON | B_BUTTON
 	jr z, .waitForButtonPress
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call GBPalWhiteOut
 	call ClearScreen
 	call RunDefaultPaletteCommand

@@ -616,10 +616,10 @@ PikaPicAnimCommand_loadgfx:
 	push af
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	ldh a, [hTilesetType]
+	ldh a, [hTileAnimations]
 	push af
 	xor a
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	call GetPikaPicAnimByte
 	ld [wPikaPicAnimCurGraphicID], a
 	ld a, [wPikaPicAnimCurGraphicID]
@@ -634,7 +634,7 @@ PikaPicAnimCommand_loadgfx:
 	call DecompressRequestPikaPicAnimGFX
 .done
 	pop af
-	ldh [hTilesetType], a
+	ldh [hTileAnimations], a
 	pop af
 	ldh [hAutoBGTransferEnabled], a
 	pop af
