@@ -870,13 +870,13 @@ Func_fed01:
 	jp Func_fe7ca
 
 Text_fed12:
-	db   "けんしろう@"
+	db   "けんしろう@" ; "KENSHIROU@"
 
 Text_fed18:
-	db   "テスト ファイト@"
+	db   "テスト ファイト@" ; "FIGHT TEST@"
 
 Text_fed21:
-	db   "№．  なまえ    レべル@"
+	db   "№．  なまえ    レべル@" ; "№．  NAME  LEVEL@"
 
 Text_fed30:
 	db   "１．▶０００ ーーーーー  ０００"
@@ -893,13 +893,13 @@ Text_feda2:
 	db   "ーーーーー@"
 
 Text_feda8:
-	db   "ワイルドモンスター@"
+	db   "ワイルドモンスター@" ; "WILD #MON@"
 
 Text_fedb2:
-	db   "ディーラー    @"
+	db   "ディーラー    @" ; "TRAINER      @"
 
 Text_fedbc:
-	db   "№．  なまえ        レべル"
+	db   "№．  なまえ        レべル" ; "№．  NAME     LABEL"
 	next ""
 Text_fedcf:
 	db   "０００ ーーーーーーーーーー ０００@"
