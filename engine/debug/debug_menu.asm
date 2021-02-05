@@ -870,7 +870,7 @@ Func_fed01:
 	jp Func_fe7ca
 
 Text_fed12:
-	db   "けんしろう@" ;"KENSHIROU@"?
+	db   "けんしろう@" ; "KENSHIROU@"
 
 Text_fed18:
 	db   "テスト ファイト@" ; "FIGHT TEST@"
