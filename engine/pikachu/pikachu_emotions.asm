@@ -414,7 +414,7 @@ INCLUDE "data/pikachu/pikachu_emotions.asm"
 
 PikachuWalksToNurseJoy:
 	ld a, $40
-	ldh [hFFFC], a
+	ldh [hPikachuSpriteVRAMOffset], a
 	call LoadPikachuSpriteIntoVRAM
 	call .GetMovementData
 	and a
@@ -422,7 +422,7 @@ PikachuWalksToNurseJoy:
 	call ApplyPikachuMovementData
 .skip
 	xor a
-	ldh [hFFFC], a
+	ldh [hPikachuSpriteVRAMOffset], a
 	ret
 
 .GetMovementData:

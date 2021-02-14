@@ -139,7 +139,7 @@ PlaceMenuCursor::
 	jr z, .checkForArrow1
 	ld bc, 40
 	push af
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	bit 1, a ; is the menu double spaced?
 	jr z, .doubleSpaced1
 	ld bc, 20
@@ -163,7 +163,7 @@ PlaceMenuCursor::
 	jr z, .checkForArrow2
 	ld bc, 40
 	push af
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	bit 1, a ; is the menu double spaced?
 	jr z, .doubleSpaced2
 	ld bc, 20

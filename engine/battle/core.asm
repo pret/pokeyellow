@@ -2579,13 +2579,13 @@ MoveSelectionMenu:
 
 .writemoves
 	ld de, wMovesString
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	set 2, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 	call PlaceString
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	res 2, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 	ret
 
 .regularmenu
@@ -2700,10 +2700,10 @@ SelectMenuItem:
 	call AddNTimes
 	ld [hl], "▷"
 .select
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	bit BIT_D_UP, a
 	jp nz, SelectMenuItem_CursorUp

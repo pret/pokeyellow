@@ -214,7 +214,7 @@ UpdateHPBar_PrintHPNumber:
 	ld [wHPBarTempHP], a
 	push hl
 	ld de, $15
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	bit 0, a
 	jr z, .next
 	ld de, $9

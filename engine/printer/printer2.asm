@@ -84,13 +84,13 @@ Printer_GetMonStats:
 
 	hlcoord 9, 8
 	ld de, .Stats
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	set 2, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 	call PlaceString
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	res 2, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 
 	hlcoord 16, 8
 	ld de, wLoadedMonAttack

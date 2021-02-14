@@ -342,10 +342,10 @@ ChangeBox::
 	call z, EmptyAllSRAMBoxes ; if so, empty all boxes in SRAM
 	call DisplayChangeBoxMenu
 	call UpdateSprites
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	bit 1, a ; pressed b
 	ret nz
@@ -429,12 +429,12 @@ DisplayChangeBoxMenu:
 	hlcoord 11, 0
 	lb bc, 12, 7
 	call TextBoxBorder
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	set 2, [hl]
 	ld de, BoxNames
 	hlcoord 13, 1
 	call PlaceString
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	res 2, [hl]
 	ld a, [wCurrentBoxNum]
 	and $7f

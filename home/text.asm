@@ -62,7 +62,7 @@ PlaceNextChar::
 	cp "<NEXT>"
 	jr nz, .NotNext
 	ld bc, 2 * SCREEN_WIDTH
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	bit 2, a
 	jr z, .ok
 	ld bc, SCREEN_WIDTH
@@ -239,7 +239,7 @@ Paragraph::
 	jp NextChar
 
 PageChar::
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	bit 3, a
 	jr z, .pageChar
 	ld a, "<NEXT>"

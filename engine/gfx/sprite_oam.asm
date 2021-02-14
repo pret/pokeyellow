@@ -106,7 +106,7 @@ PrepareOAMData::
 	cp $80
 	jr c, .asm_4a1c
 	ld b, a
-	ldh a, [hFFFC]
+	ldh a, [hPikachuSpriteVRAMOffset]
 	add b
 .asm_4a1c
 	ld [de], a ; tile id

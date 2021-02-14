@@ -676,13 +676,13 @@ Pokedex_PrepareDexEntryForPrinting:
 	ld a, [wPrinterPokedexEntryTextPointer + 1]
 	ld h, a
 	bccoord 1, 1
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	set 3, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 	call Pokedex_PrintFlavorTextAtBC
-	ldh a, [hFlagsFFFA]
+	ldh a, [hUILayoutFlags]
 	res 3, a
-	ldh [hFlagsFFFA], a
+	ldh [hUILayoutFlags], a
 	ret
 
 ; draws a line of tiles

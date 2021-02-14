@@ -346,10 +346,10 @@ TradeCenter_SelectMon:
 	ld a, 1
 	ld [wTopMenuItemX], a
 .enemyMonMenu_HandleInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	and a
 	jp z, .getNewInput
@@ -411,10 +411,10 @@ TradeCenter_SelectMon:
 	lb bc, 6, 1
 	call ClearScreenArea
 .playerMonMenu_HandleInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	set 1, [hl]
 	call HandleMenuInput
-	ld hl, hFlagsFFFA
+	ld hl, hUILayoutFlags
 	res 1, [hl]
 	and a ; was anything pressed?
 	jr nz, .playerMonMenu_SomethingPressed
