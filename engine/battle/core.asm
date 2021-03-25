@@ -1674,7 +1674,7 @@ LoadBattleMonFromParty:
 	ld bc, wPartyMon1DVs - wPartyMon1OTID
 	add hl, bc
 	ld de, wBattleMonDVs
-	ld bc, NUM_DVS
+	ld bc, wPartyMon1PP - wPartyMon1DVs
 	call CopyData
 	ld de, wBattleMonPP
 	ld bc, NUM_MOVES
@@ -1718,7 +1718,7 @@ LoadEnemyMonFromParty:
 	ld bc, wEnemyMon1DVs - wEnemyMon1OTID
 	add hl, bc
 	ld de, wEnemyMonDVs
-	ld bc, NUM_DVS
+	ld bc, wEnemyMon1PP - wEnemyMon1DVs
 	call CopyData
 	ld de, wEnemyMonPP
 	ld bc, NUM_MOVES
@@ -5270,7 +5270,7 @@ ReloadMoveData:
 	ld [wd11e], a
 	dec a
 	ld hl, Moves
-	ld bc, MoveEnd - Moves
+	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)
 	call FarCopyData ; copy the move's stats
@@ -5302,7 +5302,7 @@ MetronomePickMove:
 	call BattleRandom
 	and a
 	jr z, .pickMoveLoop
-	cp NUM_ATTACKS + 1 ; max normal move number + 1 (this is Struggle's move number)
+	cp NUM_ATTACKS ; max move number (including Struggle)
 	jr nc, .pickMoveLoop
 	cp METRONOME
 	jr z, .pickMoveLoop
@@ -6257,7 +6257,7 @@ GetCurrentMove:
 	ld [wd0b5], a
 	dec a
 	ld hl, Moves
-	ld bc, MoveEnd - Moves
+	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld a, BANK(Moves)
 	call FarCopyData

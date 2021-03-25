@@ -1,5 +1,5 @@
 TowerMons6:
-	db 15 ; grass encounter rate
+	def_grass_wildmons 15 ; encounter rate
 	db 22, GASTLY
 	db 23, GASTLY
 	db 24, GASTLY
@@ -10,5 +10,7 @@ TowerMons6:
 	db 27, GASTLY
 	db 22, HAUNTER
 	db 27, HAUNTER
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

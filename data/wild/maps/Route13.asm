@@ -1,5 +1,5 @@
 Route13Mons:
-	db 15 ; grass encounter rate
+	def_grass_wildmons 15 ; encounter rate
 	db 25, ODDISH
 	db 25, BELLSPROUT
 	db 28, PIDGEOTTO
@@ -10,8 +10,9 @@ Route13Mons:
 	db 29, WEEPINBELL
 	db 26, FARFETCHD
 	db 31, FARFETCHD
+	end_grass_wildmons
 
-	db 3 ; water encounter rate
+	def_water_wildmons 3 ; encounter rate
 	db 15, SLOWPOKE
 	db 15, SLOWPOKE
 	db 15, SLOWPOKE
@@ -22,3 +23,4 @@ Route13Mons:
 	db 15, SLOWPOKE
 	db 15, SLOWBRO
 	db 20, SLOWBRO
+	end_water_wildmons

@@ -75,3 +75,4 @@ SET_PAL_DEFAULT EQU $ff
 	const PAL_25        ; $25
 	const PAL_26        ; $26
 	const PAL_27        ; $27
+NUM_SGB_PALS EQU const_value

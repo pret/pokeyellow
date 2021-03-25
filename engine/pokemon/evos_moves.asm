@@ -166,7 +166,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wd11e]
 	dec a
 	ld hl, BaseStats
-	ld bc, MonBaseStatsEnd - MonBaseStats
+	ld bc, BASE_DATA_SIZE
 	call AddNTimes
 	ld de, wMonHeader
 	call CopyData
@@ -584,7 +584,7 @@ WriteMonMoves:
 	push hl
 	dec a
 	ld hl, Moves
-	ld bc, MoveEnd - Moves
+	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld de, wBuffer
 	ld a, BANK(Moves)

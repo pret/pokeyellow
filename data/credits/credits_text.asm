@@ -1,5 +1,6 @@
 CreditsTextPointers:
 ; entries correspond to CRED_* constants
+	table_width 2, CreditsTextPointers
 	dw CreditsText_Version
 	dw CreditsText_Tajiri
 	dw CreditsText_Oota
@@ -86,6 +87,7 @@ CreditsTextPointers:
 	dw CreditsText_Nakamichi
 	dw CreditsText_Yoshimura
 	dw CreditsText_Yamazaki
+	assert_table_length NUM_CRED_STRINGS
 
 CreditsText_Version:
 	db -6, "YELLOW VERSION"

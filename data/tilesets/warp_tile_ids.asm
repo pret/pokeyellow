@@ -1,4 +1,5 @@
 WarpTileIDPointers:
+	table_width 2, WarpTileIDPointers
 	dw .OverworldWarpTileIDs
 	dw .RedsHouse1WarpTileIDs
 	dw .MartWarpTileIDs
@@ -24,6 +25,7 @@ WarpTileIDPointers:
 	dw .FacilityWarpTileIDs
 	dw .PlateauWarpTileIDs
 	dw .BeachHouseWarpTileIDs
+	assert_table_length NUM_TILESETS
 
 warp_tiles: MACRO
 REPT _NARG

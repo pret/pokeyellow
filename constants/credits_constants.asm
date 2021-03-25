@@ -86,6 +86,7 @@
 	const CRED_NAKAMICHI             ; 53
 	const CRED_YOSHIMURA             ; 54
 	const CRED_YAMAZAKI              ; 55
+NUM_CRED_STRINGS EQU const_value
 
 	const_def -1, -1
 	const CRED_TEXT_FADE_MON ; $FF

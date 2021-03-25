@@ -1,5 +1,5 @@
 ZoneMons2:
-	db 30 ; grass encounter rate
+	def_grass_wildmons 30 ; encounter rate
 	db 36, NIDORAN_M
 	db 14, NIDORAN_F
 	db 20, EXEGGCUTE
@@ -10,5 +10,7 @@ ZoneMons2:
 	db 33, KANGASKHAN
 	db 25, SCYTHER
 	db 15, PINSIR
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

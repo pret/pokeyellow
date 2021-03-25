@@ -1,5 +1,5 @@
 IslandMonsB3:
-	db 10 ; grass encounter rate
+	def_grass_wildmons 10 ; encounter rate
 	db 27, GOLBAT
 	db 36, ZUBAT
 	db 29, KRABBY
@@ -10,8 +10,9 @@ IslandMonsB3:
 	db 30, SEEL
 	db 28, DEWGONG
 	db 32, DEWGONG
+	end_grass_wildmons
 
-	db 5 ; water encounter rate
+	def_water_wildmons 5 ; encounter rate
 	db 25, TENTACOOL
 	db 30, TENTACOOL
 	db 20, TENTACOOL
@@ -22,3 +23,4 @@ IslandMonsB3:
 	db 30, STARYU
 	db 30, STARYU
 	db 30, STARYU
+	end_water_wildmons

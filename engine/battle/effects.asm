@@ -776,7 +776,7 @@ FellText:
 	text_end
 
 PrintStatText:
-	ld hl, StatsTextStrings
+	ld hl, StatModTextStrings
 	ld c, "@"
 .findStatName_outer
 	dec b
@@ -791,7 +791,7 @@ PrintStatText:
 	ld bc, $a
 	jp CopyData
 
-INCLUDE "data/battle/stat_names.asm"
+INCLUDE "data/battle/stat_mod_names.asm"
 
 INCLUDE "data/battle/stat_modifiers.asm"
 

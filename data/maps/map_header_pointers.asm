@@ -1,5 +1,6 @@
 ; see also MapHeaderBanks
 MapHeaderPointers::
+	table_width 2, MapHeaderPointers
 	dw PalletTown_h
 	dw ViridianCity_h
 	dw PewterCity_h
@@ -247,5 +248,6 @@ MapHeaderPointers::
 	dw SilphCo2F_h ; UNUSED_MAP_F4
 	dw LoreleisRoom_h
 	dw BrunosRoom_h
-	dw AgathasRoom_h ;247
+	dw AgathasRoom_h
 	dw SummerBeachHouse_h
+	assert_table_length NUM_MAPS

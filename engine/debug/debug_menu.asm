@@ -1048,7 +1048,7 @@ Func_feeef:
 	ld [wd11e], a
 	ld hl, BaseStats + 15
 	dec a
-	ld bc, MonBaseStatsEnd - MonBaseStats
+	ld bc, BASE_DATA_SIZE
 	call AddNTimes
 	ld de, wMoves
 	ld bc, NUM_MOVES
@@ -1122,7 +1122,7 @@ Func_fef92:
 	ld a, [de]
 	inc a
 	ld [de], a
-	cp NUM_ATTACKS + 1
+	cp NUM_ATTACKS
 	jr c, Func_fef68
 	ld a, 1
 	ld [de], a
@@ -1133,7 +1133,7 @@ Func_fef9e:
 	dec a
 	ld [de], a
 	jr nz, Func_fef68
-	ld a, NUM_ATTACKS
+	ld a, NUM_ATTACKS - 1
 	ld [de], a
 	jr Func_fef68
 

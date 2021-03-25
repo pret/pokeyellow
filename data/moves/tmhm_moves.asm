@@ -2,6 +2,7 @@
 ; define constants for the item IDs and for the corresponding move values.
 
 TechnicalMachines:
+	table_width 1, TechnicalMachines
 
 n = 1
 REPT NUM_TMS
@@ -14,6 +15,7 @@ ENDC
 PURGE MOVE_FOR_TM
 n = n + 1
 ENDR
+	assert_table_length NUM_TMS
 
 n = 1
 REPT NUM_HMS
@@ -26,5 +28,6 @@ ENDC
 PURGE MOVE_FOR_HM
 n = n + 1
 ENDR
+	assert_table_length NUM_TM_HM
 
 	db -1 ; end

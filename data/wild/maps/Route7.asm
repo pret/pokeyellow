@@ -1,5 +1,5 @@
 Route7Mons:
-	db 15 ; grass encounter rate
+	def_grass_wildmons 15 ; encounter rate
 	db 20, PIDGEY
 	db 22, PIDGEY
 	db 20, RATTATA
@@ -10,5 +10,7 @@ Route7Mons:
 	db 19, JIGGLYPUFF
 	db 24, JIGGLYPUFF
 	db 24, JIGGLYPUFF
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

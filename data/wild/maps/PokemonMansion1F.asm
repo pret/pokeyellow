@@ -1,5 +1,5 @@
 MansionMons1:
-	db 10 ; grass encounter rate
+	def_grass_wildmons 10 ; encounter rate
 	db 34, RATTATA
 	db 34, RATICATE
 	db 23, GRIMER
@@ -10,5 +10,7 @@ MansionMons1:
 	db 26, GRIMER
 	db 34, GROWLITHE
 	db 38, GROWLITHE
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

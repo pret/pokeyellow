@@ -1,5 +1,5 @@
 DungeonMons1:
-	db 10 ; grass encounter rate
+	def_grass_wildmons 10 ; encounter rate
 	db 50, GOLBAT
 	db 55, GOLBAT
 	db 45, GRAVELER
@@ -10,5 +10,7 @@ DungeonMons1:
 	db 54, PARASECT
 	db 55, DITTO
 	db 60, DITTO
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

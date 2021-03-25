@@ -2,6 +2,7 @@
 
 MapHSPointers:
 ; entries correspond to map ids
+	table_width 2, MapHSPointers
 	dw PalletTownHS
 	dw ViridianCityHS
 	dw PewterCityHS
@@ -251,6 +252,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS ; beach house
+	assert_table_length NUM_MAPS
 	dw -1 ; end
 
 NoHS:
@@ -258,6 +260,7 @@ NoHS:
 
 MissableObjects:
 ; entries correspond to HS_* constants (see constants/hide_show_constants)
+	table_width 3, MissableObjects
 ; format: map id, object id, HIDE/SHOW
 
 PalletTownHS:
@@ -576,3 +579,4 @@ BluesHouseHSCopy: ; unreferenced
 	db BLUES_HOUSE, $02, HIDE
 	db BLUES_HOUSE, $03, SHOW
 	db $FF, $01, SHOW ; end
+	assert_table_length NUM_HS_OBJECTS + 1

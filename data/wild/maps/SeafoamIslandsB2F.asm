@@ -1,5 +1,5 @@
 IslandMonsB2:
-	db 10 ; grass encounter rate
+	def_grass_wildmons 10 ; encounter rate
 	db 27, ZUBAT
 	db 27, KRABBY
 	db 36, ZUBAT
@@ -10,5 +10,7 @@ IslandMonsB2:
 	db 36, GOLBAT
 	db 31, SLOWPOKE
 	db 31, SLOWBRO
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

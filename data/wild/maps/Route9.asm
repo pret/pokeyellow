@@ -1,5 +1,5 @@
 Route9Mons:
-	db 15 ; grass encounter rate
+	def_grass_wildmons 15 ; encounter rate
 	db 16, NIDORAN_M
 	db 16, NIDORAN_F
 	db 18, RATTATA
@@ -10,5 +10,7 @@ Route9Mons:
 	db 18, NIDORINA
 	db 20, RATICATE
 	db 19, FEAROW
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons

@@ -1,5 +1,6 @@
 TradeMons:
 ; entries correspond to TRADE_FOR_* constants
+	table_width 3 + NAME_LENGTH, TradeMons
 	; give mon, get mon, dialog id, nickname
 	db LICKITUNG,  DUGTRIO,  TRADE_DIALOGSET_CASUAL, "GURIO@@@@@@"
 	db CLEFAIRY,   MR_MIME,  TRADE_DIALOGSET_CASUAL, "MILES@@@@@@"
@@ -11,3 +12,4 @@ TradeMons:
 	db GOLDUCK,    RHYDON,   TRADE_DIALOGSET_POLITE, "BUFFY@@@@@@"
 	db GROWLITHE,  DEWGONG,  TRADE_DIALOGSET_HAPPY,  "CEZANNE@@@@"
 	db CUBONE,     MACHOKE,  TRADE_DIALOGSET_HAPPY,  "RICKY@@@@@@"
+	assert_table_length NUM_NPC_TRADES

@@ -1,5 +1,5 @@
 Route3Mons:
-	db 20 ; grass encounter rate
+	def_grass_wildmons 20 ; encounter rate
 	db  8, SPEAROW
 	db  9, SPEAROW
 	db  9, MANKEY
@@ -10,5 +10,7 @@ Route3Mons:
 	db 12, RATTATA
 	db 11, SPEAROW
 	db 12, SPEAROW
+	end_grass_wildmons
 
-	db 0 ; water encounter rate
+	def_water_wildmons 0 ; encounter rate
+	end_water_wildmons
