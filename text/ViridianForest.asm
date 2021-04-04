@@ -3,12 +3,12 @@ _ViridianForestText1::
 	line "some friends!"
 
 	para "They're out for"
-	line "#MON fights!"
+	line "POKéMON fights!"
 	done
 
 _ViridianForestBattleText1::
 	text "Hey! You have"
-	line "#MON! Come on!"
+	line "POKéMON! Come on!"
 	cont "Let's battle 'em!"
 	done
 
@@ -26,13 +26,13 @@ _ViridianFrstAfterBattleText1::
 _ViridianForestBattleText2::
 	text "Yo! You can't jam"
 	line "out if you're a"
-	cont "#MON trainer!"
+	cont "POKéMON trainer!"
 	done
 
 _ViridianForestEndBattleText2::
 	text "Huh?"
 	line "I ran out of"
-	cont "#MON!"
+	cont "POKéMON!"
 	prompt
 
 _ViridianFrstAfterBattleText2::
@@ -97,9 +97,9 @@ _ViridianForestAfterBattleTextSamurai::
 	done
 
 _ViridianForestText8::
-	text "I ran out of #"
+	text "I ran out of POKé"
 	line "BALLs to catch"
-	cont "#MON with!"
+	cont "POKéMON with!"
 
 	para "You should carry"
 	line "extras!"
@@ -117,7 +117,7 @@ _ViridianForestText9::
 _ViridianForestText10::
 	text "For poison, use"
 	line "ANTIDOTE! Get it"
-	cont "at #MON MARTs!"
+	cont "at POKéMON MARTs!"
 	done
 
 _ViridianForestText11::
@@ -125,7 +125,7 @@ _ViridianForestText11::
 
 	para "Contact PROF.OAK"
 	line "via PC to get"
-	cont "your #DEX"
+	cont "your POKéDEX"
 	cont "evaluated!"
 	done
 
@@ -133,16 +133,16 @@ _ViridianForestText12::
 	text "TRAINER TIPS"
 
 	para "No stealing of"
-	line "#MON from"
+	line "POKéMON from"
 	cont "other trainers!"
 	cont "Catch only wild"
-	cont "#MON!"
+	cont "POKéMON!"
 	done
 
 _ViridianForestText13::
 	text "TRAINER TIPS"
 
-	para "Weaken #MON"
+	para "Weaken POKéMON"
 	line "before attempting"
 	cont "capture!"
 

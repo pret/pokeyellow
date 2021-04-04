@@ -1,5 +1,5 @@
 _CeruleanHouse2Text_74e77::
-	text "#MON BADGEs"
+	text "POKéMON BADGEs"
 	line "are owned only by"
 	cont "skilled trainers."
 
@@ -25,7 +25,7 @@ _CeruleanHouse2Text_74e81::
 
 _CeruleanHouse2Text_74e96::
 	text "The ATTACK of all"
-	line "#MON increases"
+	line "POKéMON increases"
 	cont "a little bit."
 
 	para "It also lets you"
@@ -34,7 +34,7 @@ _CeruleanHouse2Text_74e96::
 	prompt
 
 _CeruleanHouse2Text_74e9b::
-	text "#MON up to L30"
+	text "POKéMON up to L30"
 	line "will obey you."
 
 	para "Any higher, they"
@@ -47,7 +47,7 @@ _CeruleanHouse2Text_74e9b::
 
 _CeruleanHouse2Text_74ea0::
 	text "The SPEED of all"
-	line "#MON increases"
+	line "POKéMON increases"
 	cont "a little bit."
 
 	para "It also lets you"
@@ -56,7 +56,7 @@ _CeruleanHouse2Text_74ea0::
 	prompt
 
 _CeruleanHouse2Text_74ea5::
-	text "#MON up to L50"
+	text "POKéMON up to L50"
 	line "will obey you."
 
 	para "Any higher, they"

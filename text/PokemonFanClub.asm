@@ -13,7 +13,7 @@ PikachuFanBetterText::
 PikachuFanPrintText::
 	text "Our CHAIRMAN's new"
 	line "hobby is taking"
-	cont "#MON photos."
+	cont "POKéMON photos."
 
 	para "He gave me a nice"
 	line "PRINT of my cute"
@@ -52,21 +52,21 @@ FanClubSeelText::
 
 FanClubMeetChairText::
 	text "I chair the"
-	line "#MON Fan Club!"
+	line "POKéMON Fan Club!"
 
 	para "I have more than"
-	line "100 #MON. I"
+	line "100 POKéMON. I"
 	cont "love them all!"
 
 	para "I'm very fussy"
 	line "when it comes to"
-	cont "#MON!"
+	cont "POKéMON!"
 
 	para "So..."
 
 	para "Did you come to"
 	line "hear me brag"
-	cont "about my #MON?"
+	cont "about my POKéMON?"
 	done
 
 FanClubChairStoryText::
@@ -133,7 +133,7 @@ FanClubChairFinalText::
 
 	para "Did you come see"
 	line "me about my"
-	cont "#MON again?"
+	cont "POKéMON again?"
 
 	para "No? Too bad!"
 	done
@@ -146,7 +146,7 @@ FanClubBagFullText::
 FanClubChairPrintText1::
 	text "Hi there, <PLAYER>!"
 	line "Have you seen my"
-	cont "#MON photos?"
+	cont "POKéMON photos?"
 
 	para "I have them framed"
 	line "up on that wall."
@@ -155,7 +155,7 @@ FanClubChairPrintText1::
 
 	para "Would you like me"
 	line "to take a photo"
-	cont "of your #MON?"
+	cont "of your POKéMON?"
 	done
 
 FanClubChairPrintText2::
@@ -175,5 +175,5 @@ FanClubChairPrintText4::
 _FanClubText6::
 	text "Our CHAIRMAN is"
 	line "very vocal about"
-	cont "#MON."
+	cont "POKéMON."
 	done

@@ -1,6 +1,6 @@
 MelanieText1::
 	text "I take care of"
-	line "injured #MON."
+	line "injured POKéMON."
 
 	para "I nursed this"
 	line "BULBASAUR back to"

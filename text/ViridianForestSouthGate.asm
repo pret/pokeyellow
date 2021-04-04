@@ -8,7 +8,7 @@ _ViridianForestEntranceText1::
 _ViridianForestEntranceText2::
 	text "You have to roam"
 	line "far to get new"
-	cont "kinds of #MON."
+	cont "kinds of POKéMON."
 
 	para "Look for other"
 	line "types outside of"

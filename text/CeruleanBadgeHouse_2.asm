@@ -1,6 +1,6 @@
 _CeruleanHouse2Text_74eaa::
 	text "The DEFENSE of all"
-	line "#MON increases"
+	line "POKéMON increases"
 	cont "a little bit."
 
 	para "It also lets you"
@@ -9,7 +9,7 @@ _CeruleanHouse2Text_74eaa::
 	prompt
 
 _CeruleanHouse2Text_74eaf::
-	text "#MON up to L70"
+	text "POKéMON up to L70"
 	line "will obey you."
 
 	para "Any higher, they"
@@ -17,12 +17,12 @@ _CeruleanHouse2Text_74eaf::
 	prompt
 
 _CeruleanHouse2Text_74eb4::
-	text "Your #MON's"
+	text "Your POKéMON's"
 	line "SPECIAL abilities"
 	cont "increase a bit."
 	prompt
 
 _CeruleanHouse2Text_74eb9::
-	text "All #MON will"
+	text "All POKéMON will"
 	line "obey you!"
 	prompt

@@ -4,7 +4,7 @@ _CeladonMart4Text2::
 	cont "in CERULEAN CITY."
 
 	para "It's got to be a"
-	line "# DOLL. They"
+	line "POKé DOLL. They"
 	cont "are trendy!"
 	done
 
@@ -13,9 +13,9 @@ _CeladonMart4Text3::
 	line "useful."
 
 	para "You can run from"
-	line "wild #MON by"
+	line "wild POKéMON by"
 	cont "distracting them"
-	cont "with a # DOLL!"
+	cont "with a POKé DOLL!"
 	done
 
 _CeladonMart4Text4::

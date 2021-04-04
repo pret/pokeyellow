@@ -9,10 +9,10 @@ _PewterPokecenterText2::
 	done
 
 _PewterPokecenterText3::
-	text "#MON CENTERS"
+	text "POKéMON CENTERS"
 	line "are wonderful!"
 
-	para "They heal #MON"
+	para "They heal POKéMON"
 	line "completely."
 
 	para "Even conditions"

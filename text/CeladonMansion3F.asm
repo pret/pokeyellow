@@ -10,7 +10,7 @@ _ProgrammerText2::
 	para "What a surprise!"
 	line "I never expected"
 	cont "anyone to fill a"
-	cont "#DEX."
+	cont "POKéDEX."
 	done
 
 _GraphicArtistText::
@@ -24,7 +24,7 @@ _GraphicArtistText2::
 	line "artist!"
 
 	para "Wow, you finished"
-	line "your #DEX!"
+	line "your POKéDEX!"
 	cont "Want me to PRINT"
 	cont "out a DIPLOMA"
 	cont "as proof?"
@@ -61,7 +61,7 @@ _WriterText2::
 
 	para "It's great you"
 	line "caught all the"
-	cont "#MON! Thanks!"
+	cont "POKéMON! Thanks!"
 	done
 
 _GameDesignerText::
@@ -71,7 +71,7 @@ _GameDesignerText::
 	line "designer!"
 
 	para "Filling up your"
-	line "#DEX is tough,"
+	line "POKéDEX is tough,"
 	cont "but don't quit!"
 
 	para "When you finish,"
@@ -81,7 +81,7 @@ _GameDesignerText::
 _CompletedDexText::
 	text "Wow! Excellent!"
 	line "You completed"
-	cont "your #DEX!"
+	cont "your POKéDEX!"
 	cont "Congratulations!"
 	cont "...@"
 	text_end

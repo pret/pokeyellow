@@ -27,7 +27,7 @@ _KogaAfterBattleText::
 
 _KogaExplainToxicText::
 	text "When afflicted by"
-	line "TOXIC, #MON"
+	line "TOXIC, POKéMON"
 	cont "suffer more and"
 	cont "more as battle"
 	cont "progresses!"
@@ -40,7 +40,7 @@ _FuchsiaGymText9::
 	text "Now that you have"
 	line "the SOULBADGE,"
 	cont "the DEFENSE of"
-	cont "your #MON"
+	cont "your POKéMON"
 	cont "increases!"
 
 	para "It also lets you"
@@ -76,7 +76,7 @@ _TM06NoRoomText::
 _FuchsiaGymBattleText1::
 	text "Strength isn't"
 	line "the key for"
-	cont "#MON!"
+	cont "POKéMON!"
 
 	para "It's strategy!"
 

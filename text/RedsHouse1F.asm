@@ -12,7 +12,7 @@ _MomWakeUpText::
 _MomHealText1::
 	text "MOM: <PLAYER>, if"
 	line "you drive your"
-	cont "#MON too hard,"
+	cont "POKéMON too hard,"
 	cont "they'll dislike"
 	cont "you."
 
@@ -23,7 +23,7 @@ _MomHealText1::
 _MomHealText2::
 	text "MOM: Oh good!"
 	line "You and your"
-	cont "#MON are"
+	cont "POKéMON are"
 	cont "looking great!"
 	cont "Take care now!"
 	done

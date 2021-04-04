@@ -31,7 +31,7 @@ _DaisyUseMapText::
 
 _BluesHouseDaisyWalkingText::
 	text "Spending time"
-	line "with your #MON"
+	line "with your POKéMON"
 	cont "makes them more"
 	cont "friendly to you."
 	done

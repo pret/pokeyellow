@@ -55,7 +55,7 @@ _SummerBeachHouseSign2Text1::
 
 _SummerBeachHouseSign2Text2::
 	text "SUMMER BEACH HOUSE"
-	line "#MON welcome!"
+	line "POKéMON welcome!"
 	done
 
 _SummerBeachHouseSign3Text1::

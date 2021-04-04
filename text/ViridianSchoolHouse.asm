@@ -5,7 +5,7 @@ _SchoolText1::
 	done
 
 _SchoolText3::
-	text "Sis says #MON"
+	text "Sis says POKéMON"
 	line "will become tame"
 	cont "if you treat them"
 	cont "nicely."

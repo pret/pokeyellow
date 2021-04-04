@@ -30,7 +30,7 @@ _Route24Text_51526::
 
 	para "We're a group"
 	line "dedicated to evil"
-	cont "using #MON!"
+	cont "using POKéMON!"
 
 	para "Want to join?"
 
@@ -159,7 +159,7 @@ _Route24AfterBattleText6::
 
 _Route24DamianText1::
 	text "I'm not good at"
-	line "raising #MON."
+	line "raising POKéMON."
 
 	para "I should release"
 	line "my CHARMANDER"

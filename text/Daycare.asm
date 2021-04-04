@@ -2,11 +2,11 @@ _DayCareIntroText::
 	text "I run a DAYCARE."
 	line "Would you like me"
 	cont "to raise one of"
-	cont "your #MON?"
+	cont "your POKéMON?"
 	done
 
 _DayCareWhichMonText::
-	text "Which #MON"
+	text "Which POKéMON"
 	line "should I raise?"
 	prompt
 
@@ -42,7 +42,7 @@ _DayCareOweMoneyText::
 	text_bcd wDayCareTotalCost, 2 | LEADING_ZEROES | LEFT_ALIGN
 	text_start
 	line "for the return"
-	cont "of this #MON."
+	cont "of this POKéMON."
 	done
 
 _DayCareGotMonBackText::
@@ -72,23 +72,23 @@ _DayCareComeAgainText::
 
 _DayCareNoRoomForMonText::
 	text "You have no room"
-	line "for this #MON!"
+	line "for this POKéMON!"
 	done
 
 _DayCareOnlyHaveOneMonText::
 	text "You only have one"
-	line "#MON with you."
+	line "POKéMON with you."
 	done
 
 _DayCareCantAcceptMonWithHMText::
 	text "I can't accept a"
-	line "#MON that"
+	line "POKéMON that"
 	cont "knows an HM move."
 	done
 
 _DayCareHeresYourMonText::
 	text "Thank you! Here's"
-	line "your #MON!"
+	line "your POKéMON!"
 	prompt
 
 _DayCareNotEnoughMoneyText::

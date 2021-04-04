@@ -18,7 +18,7 @@ _CeladonMansion1Text5::
 	done
 
 _CeladonMansion1Text2::
-	text "My dear #MON"
+	text "My dear POKéMON"
 	line "keep me company."
 
 	para "MEOWTH even brings"
@@ -45,7 +45,7 @@ _CeladonMansion1Text8::
 
 _CeladonMansion1Text9::
 	text "You must be happy"
-	line "to have a #MON"
+	line "to have a POKéMON"
 	cont "that cute."
 	done
 

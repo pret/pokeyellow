@@ -147,7 +147,7 @@ CreditsText_Nakamura:
 CreditsText_Yuda:
 	db -6, "MASAMITSU YUDA@"
 CreditsText_Pokemon:
-	db -3, "#MON@"
+	db -3, "POKéMON@"
 CreditsText_Director:
 	db -3, "DIRECTOR@"
 CreditsText_Programmers:

@@ -1,6 +1,6 @@
 _Route9BattleText9::
 	text "Go, my super bug"
-	line "#MON!"
+	line "POKéMON!"
 	done
 
 _Route9EndBattleText9::
@@ -10,7 +10,7 @@ _Route9EndBattleText9::
 
 _Route9AfterBattleText9::
 	text "If you don't like"
-	line "bug #MON, you"
+	line "bug POKéMON, you"
 	cont "bug me!"
 	done
 

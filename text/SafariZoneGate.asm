@@ -26,7 +26,7 @@ _SafariZoneEntranceText_753c5::
 SafariZoneEntranceText_9e6e4::
 	text "For just ¥500,"
 	line "you can catch all"
-	cont "the #MON you"
+	cont "the POKéMON you"
 	cont "want in the park!"
 
 	para "Would you like to"
@@ -40,7 +40,7 @@ SafariZoneEntranceText_9e747::
 	line "please!"
 
 	para "We only use a"
-	line "special # BALL"
+	line "special POKé BALL"
 	cont "here."
 
 	para "<PLAYER> received"
@@ -77,7 +77,7 @@ _SafariZoneEntranceText_753eb::
 
 	para "Each zone has"
 	line "different kinds"
-	cont "of #MON. Use"
+	cont "of POKéMON. Use"
 	cont "SAFARI BALLs to"
 	cont "catch them!"
 
@@ -88,9 +88,9 @@ _SafariZoneEntranceText_753eb::
 
 	para "Before you go,"
 	line "open an unused"
-	cont "#MON BOX so"
+	cont "POKéMON BOX so"
 	cont "there's room for"
-	cont "new #MON!"
+	cont "new POKéMON!"
 	done
 
 _SafariZoneEntranceText_753f0::

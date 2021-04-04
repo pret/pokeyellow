@@ -893,7 +893,7 @@ Text_feda2:
 	db   "ーーーーー@"
 
 Text_feda8:
-	db   "ワイルドモンスター@" ; "WILD #MON@"
+	db   "ワイルドモンスター@" ; "WILD POKéMON@"
 
 Text_fedb2:
 	db   "ディーラー    @" ; "TRAINER      @"

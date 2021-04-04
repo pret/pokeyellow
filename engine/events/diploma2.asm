@@ -62,7 +62,7 @@ String_e9a84:
 	next "diploma certifies"
 	next "that you have"
 	next "completed your"
-	next "#DEX.@"
+	next "POKéDEX.@"
 
 String_e9ac8:
 	db "GAME FREAK@"

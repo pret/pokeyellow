@@ -563,7 +563,7 @@ Text_f5791::
 	next "Rules@"
 
 Text_f579c::
-	db "# Cup"
+	db "POKé Cup"
 	next "Pika Cup"
 	next "Petit Cup"
 	next "CANCEL@"

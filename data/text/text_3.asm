@@ -89,26 +89,26 @@ _SleepingPikachuText1::
 	prompt
 
 _PartyMenuNormalText::
-	text "Choose a #MON."
+	text "Choose a POKéMON."
 	done
 
 _PartyMenuItemUseText::
 	text "Use item on which"
-	line "#MON?"
+	line "POKéMON?"
 	done
 
 _PartyMenuBattleText::
 	text "Bring out which"
-	line "#MON?"
+	line "POKéMON?"
 	done
 
 _PartyMenuUseTMText::
 	text "Teach to which"
-	line "#MON?"
+	line "POKéMON?"
 	done
 
 _PartyMenuSwapMonText::
-	text "Move #MON"
+	text "Move POKéMON"
 	line "where?"
 	done
 
@@ -179,7 +179,7 @@ _AccessedBillsPCText::
 	text "Accessed BILL's"
 	line "PC."
 
-	para "Accessed #MON"
+	para "Accessed POKéMON"
 	line "Storage System."
 	prompt
 
@@ -187,7 +187,7 @@ _AccessedSomeonesPCText::
 	text "Accessed someone's"
 	line "PC."
 
-	para "Accessed #MON"
+	para "Accessed POKéMON"
 	line "Storage System."
 	prompt
 
@@ -269,7 +269,7 @@ _TossHowManyText::
 	done
 
 _AccessedHoFPCText::
-	text "Accessed #MON"
+	text "Accessed POKéMON"
 	line "LEAGUE's site."
 
 	para "Accessed the HALL"
@@ -291,7 +291,7 @@ _WhatText::
 
 _DepositWhichMonText::
 	text "Deposit which"
-	line "#MON?"
+	line "POKéMON?"
 	done
 
 _MonWasStoredText::
@@ -304,12 +304,12 @@ _MonWasStoredText::
 
 _CantDepositLastMonText::
 	text "You can't deposit"
-	line "the last #MON!"
+	line "the last POKéMON!"
 	prompt
 
 _BoxFullText::
 	text "Oops! This Box is"
-	line "full of #MON."
+	line "full of POKéMON."
 	prompt
 
 _MonIsTakenOutText::
@@ -323,14 +323,14 @@ _MonIsTakenOutText::
 
 _NoMonText::
 	text "What? There are"
-	line "no #MON here!"
+	line "no POKéMON here!"
 	prompt
 
 _CantTakeMonText::
 	text "You can't take"
-	line "any more #MON."
+	line "any more POKéMON."
 
-	para "Deposit #MON"
+	para "Deposit POKéMON"
 	line "first."
 	prompt
 
@@ -342,7 +342,7 @@ _PikachuUnhappyText::
 
 _ReleaseWhichMonText::
 	text "Release which"
-	line "#MON?"
+	line "POKéMON?"
 	done
 
 _OnceReleasedText::
@@ -406,7 +406,7 @@ _OhFineThenText::
 
 _GetDexRatedText::
 	text "Want to get your"
-	line "#DEX rated?"
+	line "POKéDEX rated?"
 	done
 
 _ClosedOaksPCText::
@@ -418,7 +418,7 @@ _AccessedOaksPCText::
 	text "Accessed PROF."
 	line "OAK's PC."
 
-	para "Accessed #DEX"
+	para "Accessed POKéDEX"
 	line "Rating System."
 	prompt
 
@@ -437,29 +437,29 @@ _NotEnoughMemoryText::
 _OakSpeechText1::
 	text "Hello there!"
 	line "Welcome to the"
-	cont "world of #MON!"
+	cont "world of POKéMON!"
 
 	para "My name is OAK!"
 	line "People call me"
-	cont "the #MON PROF!"
+	cont "the POKéMON PROF!"
 	prompt
 
 _OakSpeechText2A::
 	text "This world is"
 	line "inhabited by"
 	cont "creatures called"
-	cont "#MON!@"
+	cont "POKéMON!@"
 	text_end
 
 _OakSpeechText2B::
 	text $51,"For some people,"
-	line "#MON are"
+	line "POKéMON are"
 	cont "pets. Others use"
 	cont "them for fights."
 
 	para "Myself..."
 
-	para "I study #MON"
+	para "I study POKéMON"
 	line "as a profession."
 	prompt
 
@@ -482,12 +482,12 @@ _OakSpeechText3::
 	text "<PLAYER>!"
 
 	para "Your very own"
-	line "#MON legend is"
+	line "POKéMON legend is"
 	cont "about to unfold!"
 
 	para "A world of dreams"
 	line "and adventures"
-	cont "with #MON"
+	cont "with POKéMON"
 	cont "awaits! Let's go!"
 	done
 
@@ -520,7 +520,7 @@ _WillBeTradedText::
 	done
 
 _Colosseum3MonsText::
-	text "You need 3 #MON"
+	text "You need 3 POKéMON"
 	line "to fight!"
 	prompt
 
@@ -530,17 +530,17 @@ _ColosseumMewText::
 	prompt
 
 _ColosseumDifferentMonsText::
-	text "Your #MON must"
+	text "Your POKéMON must"
 	line "all be different!"
 	prompt
 
 _ColosseumMaxL55Text::
-	text "No #MON can"
+	text "No POKéMON can"
 	line "exceed L55!"
 	prompt
 
 _ColosseumMinL50Text::
-	text "All #MON must"
+	text "All POKéMON must"
 	line "be at least L50!"
 	prompt
 
@@ -550,12 +550,12 @@ _ColosseumTotalL155Text::
 	prompt
 
 _ColosseumMaxL30Text::
-	text "No #MON can"
+	text "No POKéMON can"
 	line "exceed L30!"
 	prompt
 
 _ColosseumMinL25Text::
-	text "All #MON must"
+	text "All POKéMON must"
 	line "be at least L25!"
 	prompt
 
@@ -565,12 +565,12 @@ _ColosseumTotalL80Text::
 	prompt
 
 _ColosseumMaxL20Text::
-	text "No #MON can"
+	text "No POKéMON can"
 	line "exceed L20!"
 	prompt
 
 _ColosseumMinL15Text::
-	text "All #MON must"
+	text "All POKéMON must"
 	line "be at least L15!"
 	prompt
 
@@ -594,7 +594,7 @@ _ColosseumWeightText::
 _ColosseumEvolvedText::
 	text_ram wcd6d
 	text " is an"
-	line "evolved #MON!"
+	line "evolved POKéMON!"
 	prompt
 
 _ColosseumIneligibleText::
@@ -633,5 +633,5 @@ _ContCharText::
 
 _NoPokemonText::
 	text "There are no"
-	line "#MON here!"
+	line "POKéMON here!"
 	prompt

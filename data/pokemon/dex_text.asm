@@ -41,7 +41,7 @@ _CharmanderDexEntry::
 _CharmeleonDexEntry::
 	text "Tough fights could"
 	next "excite this"
-	next "#MON. When"
+	next "POKéMON. When"
 
 	page "excited, it may"
 	next "blow out bluish-"
@@ -70,7 +70,7 @@ _SquirtleDexEntry::
 
 _WartortleDexEntry::
 	text "When tapped, this"
-	next "#MON will pull"
+	next "POKéMON will pull"
 	next "in its head, but"
 
 	page "its tail will"
@@ -159,7 +159,7 @@ _PidgeyDexEntry::
 	dex
 
 _PidgeottoDexEntry::
-	text "This #MON is"
+	text "This POKéMON is"
 	next "full of vitality."
 	next "It constantly"
 
@@ -169,7 +169,7 @@ _PidgeottoDexEntry::
 	dex
 
 _PidgeotDexEntry::
-	text "This #MON flies"
+	text "This POKéMON flies"
 	next "at Mach 2 speed,"
 	next "seeking prey."
 
@@ -209,7 +209,7 @@ _SpearowDexEntry::
 	dex
 
 _FearowDexEntry::
-	text "A #MON that"
+	text "A POKéMON that"
 	next "dates back many"
 	next "years. If it"
 
@@ -280,7 +280,7 @@ _SandslashDexEntry::
 
 _NidoranFDexEntry::
 	text "A mild-mannered"
-	next "#MON that does"
+	next "POKéMON that does"
 	next "not like to"
 
 	page "fight. Beware, its"
@@ -301,7 +301,7 @@ _NidorinaDexEntry::
 _NidoqueenDexEntry::
 	text "Tough scales cover"
 	next "the sturdy body"
-	next "of this #MON."
+	next "of this POKéMON."
 
 	page "It appears that"
 	next "the scales grow"
@@ -375,7 +375,7 @@ _NinetalesDexEntry::
 
 	page "were united and"
 	next "reincarnated as"
-	next "this #MON"
+	next "this POKéMON"
 	dex
 
 _JigglypuffDexEntry::
@@ -549,7 +549,7 @@ _GolduckDexEntry::
 	dex
 
 _MankeyDexEntry::
-	text "An agile #MON"
+	text "An agile POKéMON"
 	next "that lives in"
 	next "trees. It angers"
 
@@ -569,7 +569,7 @@ _PrimeapeDexEntry::
 	dex
 
 _GrowlitheDexEntry::
-	text "A #MON with a"
+	text "A POKéMON with a"
 	next "friendly nature."
 	next "However, it will"
 
@@ -579,7 +579,7 @@ _GrowlitheDexEntry::
 	dex
 
 _ArcanineDexEntry::
-	text "A legendary #-"
+	text "A legendary POKé-"
 	next "MON in China."
 	next "Many people are"
 
@@ -631,7 +631,7 @@ _AbraDexEntry::
 _KadabraDexEntry::
 	text "Many odd things"
 	next "happen if this"
-	next "#MON is close"
+	next "POKéMON is close"
 
 	page "by. For example,"
 	next "it makes clocks"
@@ -639,13 +639,13 @@ _KadabraDexEntry::
 	dex
 
 _AlakazamDexEntry::
-	text "A #MON that can"
+	text "A POKéMON that can"
 	next "memorize anything."
 	next "It never forgets"
 
 	page "what it learns--"
 	next "that's why this"
-	next "#MON is smart"
+	next "POKéMON is smart"
 	dex
 
 _MachopDexEntry::
@@ -664,7 +664,7 @@ _MachokeDexEntry::
 	next "back its energy."
 
 	page "Without it, this"
-	next "#MON would be"
+	next "POKéMON would be"
 	next "unstoppable"
 	dex
 
@@ -673,7 +673,7 @@ _MachampDexEntry::
 	next "move mountains."
 	next "Using all four"
 
-	page "arms, this #MON"
+	page "arms, this POKéMON"
 	next "fires off awesome"
 	next "punches"
 	dex
@@ -833,7 +833,7 @@ _DoduoDexEntry::
 	next "make flying dif-"
 	next "ficult. Instead,"
 
-	page "this #MON runs"
+	page "this POKéMON runs"
 	next "at high speed on"
 	next "developed legs"
 	dex
@@ -991,7 +991,7 @@ _KinglerDexEntry::
 _VoltorbDexEntry::
 	text "It is said to"
 	next "camouflage itself"
-	next "as a # BALL. It"
+	next "as a POKé BALL. It"
 
 	page "will self-destruct"
 	next "with very little"
@@ -1040,7 +1040,7 @@ _CuboneDexEntry::
 
 _MarowakDexEntry::
 	text "Small and weak,"
-	next "this #MON is"
+	next "this POKéMON is"
 	next "adept with its"
 
 	page "bone club. It has"
@@ -1098,7 +1098,7 @@ _WeezingDexEntry::
 	dex
 
 _RhyhornDexEntry::
-	text "A #MON with a"
+	text "A POKéMON with a"
 	next "one-track mind."
 	next "Once it charges, "
 
@@ -1119,12 +1119,12 @@ _RhydonDexEntry::
 
 _ChanseyDexEntry::
 	text "A gentle and kind-"
-	next "hearted #MON"
+	next "hearted POKéMON"
 	next "that shares its"
 
 	page "nutritious eggs"
 	next "if it sees an"
-	next "injured #MON"
+	next "injured POKéMON"
 	dex
 
 _TangelaDexEntry::
@@ -1242,7 +1242,7 @@ _ElectabuzzDexEntry::
 	next "outage occurs, it"
 	next "is certain that"
 
-	page "this #MON has"
+	page "this POKéMON has"
 	next "eaten electricity"
 	next "at a power plant"
 	dex
@@ -1268,7 +1268,7 @@ _PinsirDexEntry::
 	dex
 
 _TaurosDexEntry::
-	text "A rowdy #MON"
+	text "A rowdy POKéMON"
 	next "with a lot of"
 	next "stamina. Once"
 
@@ -1338,7 +1338,7 @@ _VaporeonDexEntry::
 	dex
 
 _JolteonDexEntry::
-	text "A sensitive #-"
+	text "A sensitive POKé-"
 	next "MON that easily"
 	next "becomes sad or"
 
@@ -1358,7 +1358,7 @@ _FlareonDexEntry::
 	dex
 
 _PorygonDexEntry::
-	text "The only #MON"
+	text "The only POKéMON"
 	next "people anticipate"
 	next "can fly into"
 
@@ -1368,7 +1368,7 @@ _PorygonDexEntry::
 	dex
 
 _OmanyteDexEntry::
-	text "An ancient #MON"
+	text "An ancient POKéMON"
 	next "that was recovered"
 	next "from a fossil. It"
 
@@ -1388,7 +1388,7 @@ _OmastarDexEntry::
 	dex
 
 _KabutoDexEntry::
-	text "A #MON that was"
+	text "A POKéMON that was"
 	next "recovered from a"
 	next "fossil. It uses"
 
@@ -1408,7 +1408,7 @@ _KabutopsDexEntry::
 	dex
 
 _AerodactylDexEntry::
-	text "A savage #MON"
+	text "A savage POKéMON"
 	next "that died out in"
 	next "ancient times. It"
 
@@ -1429,7 +1429,7 @@ _SnorlaxDexEntry::
 
 _ArticunoDexEntry::
 	text "A legendary bird"
-	next "#MON. It"
+	next "POKéMON. It"
 	next "freezes water"
 
 	page "that is contained"
@@ -1439,7 +1439,7 @@ _ArticunoDexEntry::
 
 _ZapdosDexEntry::
 	text "This legendary"
-	next "bird #MON is"
+	next "bird POKéMON is"
 	next "said to appear"
 
 	page "when the sky turns"
@@ -1449,7 +1449,7 @@ _ZapdosDexEntry::
 
 _MoltresDexEntry::
 	text "A legendary bird"
-	next "#MON. As it"
+	next "POKéMON. As it"
 	next "flaps its flaming"
 
 	page "wings, even the"
@@ -1460,7 +1460,7 @@ _MoltresDexEntry::
 _DratiniDexEntry::
 	text "The existence of"
 	next "this mythical"
-	next "#MON was only"
+	next "POKéMON was only"
 
 	page "recently confirmed"
 	next "by a fisherman"
@@ -1479,7 +1479,7 @@ _DragonairDexEntry::
 
 _DragoniteDexEntry::
 	text "It is said that"
-	next "this #MON lives"
+	next "this POKéMON lives"
 	next "somewhere in the"
 
 	page "sea and that it"
@@ -1502,7 +1502,7 @@ _MewDexEntry::
 	next "through a micro-"
 	next "scope, this"
 
-	page "#MON's short,"
+	page "POKéMON's short,"
 	next "fine, delicate"
 	next "hair can be seen"
 	dex

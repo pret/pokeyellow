@@ -1,7 +1,7 @@
 _ViridianCityText_19219::
 	text "First, you need"
 	line "to weaken the"
-	cont "target #MON."
+	cont "target POKéMON."
 	done
 
 _ViridianCityText_1920a::
@@ -16,10 +16,10 @@ _ViridianCityText_1920a::
 	line "so rude to you!"
 
 	para "I see you're using"
-	line "a #DEX."
+	line "a POKéDEX."
 
 	para "I'll show you how"
-	line "to catch #MON"
+	line "to catch POKéMON"
 	cont "as my apology."
 	done
 
@@ -29,25 +29,25 @@ _OldManTextAfterBattle::
 	cont "my touch."
 
 	para "I've run out of"
-	line "# BALLs too."
+	line "POKé BALLs too."
 
 	para "I have to get some"
-	line "at #MON MART."
+	line "at POKéMON MART."
 	done
 
 _ViridianCityText1::
-	text "Those # BALLs"
+	text "Those POKé BALLs"
 	line "at your waist!"
-	cont "You have #MON!"
+	cont "You have POKéMON!"
 
 	para "It's great that"
 	line "you can carry and"
-	cont "use #MON any-"
+	cont "use POKéMON any-"
 	cont "time, anywhere!"
 	done
 
 _ViridianCityText_19122::
-	text "This #MON GYM"
+	text "This POKéMON GYM"
 	line "is always closed."
 
 	para "I wonder who the"
@@ -63,7 +63,7 @@ _ViridianCityText_1914d::
 	text "You want to know"
 	line "about the 2 kinds"
 	cont "of caterpillar"
-	cont "#MON?"
+	cont "POKéMON?"
 	done
 
 _ViridianCityText_19152::
@@ -138,7 +138,7 @@ _TM42NoRoomText::
 _OldManAgainText1::
 	text "Hmm? You want me"
 	line "to show you how"
-	cont "to catch #MON"
+	cont "to catch POKéMON"
 	cont "again?"
 	done
 
@@ -161,7 +161,7 @@ _ViridianCityText8::
 _ViridianCityText9::
 	text "TRAINER TIPS"
 
-	para "Catch #MON"
+	para "Catch POKéMON"
 	line "and expand your"
 	cont "collection!"
 
@@ -174,19 +174,19 @@ _ViridianCityText10::
 	text "TRAINER TIPS"
 
 	para "The battle moves"
-	line "of #MON are"
+	line "of POKéMON are"
 	cont "limited by their"
 	cont "POWER POINTs, PP."
 
 	para "To replenish PP,"
 	line "rest your tired"
-	cont "#MON at a"
-	cont "#MON CENTER!"
+	cont "POKéMON at a"
+	cont "POKéMON CENTER!"
 	done
 
 _ViridianCityText13::
 	text "VIRIDIAN CITY"
-	line "#MON GYM"
+	line "POKéMON GYM"
 	done
 
 _ViridianCityText14::
