@@ -295,4 +295,3 @@ DetermineAudioFunction::
 	pop af
 	call BankswitchCommon
 	ret
-

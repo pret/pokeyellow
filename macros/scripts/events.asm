@@ -529,4 +529,3 @@ AdjustEventBit: MACRO
 		add ((\1) % 8) - (\2)
 	ENDC
 ENDM
-

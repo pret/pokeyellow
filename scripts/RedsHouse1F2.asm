@@ -55,4 +55,3 @@ StandByMeText:
 TVWrongSideText:
 	text_far _TVWrongSideText
 	text_end
-

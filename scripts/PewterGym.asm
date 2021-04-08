@@ -230,4 +230,3 @@ PewterGymText_5c529:
 PewterGymText_5c41c:
 	text_far _PewterGymGuyText
 	text_end
-
