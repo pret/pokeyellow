@@ -1,6 +1,6 @@
 Route24_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, Route24TrainerHeader0
+	ld hl, Route24TrainerHeaders
 	ld de, Route24_ScriptPointers
 	ld a, [wRoute24CurScript]
 	call ExecuteCurMapScriptInTable
@@ -87,6 +87,8 @@ Route24_TextPointers:
 	dw PickUpItemText
 	dw Route24Text8
 
+Route24TrainerHeaders:
+	def_trainers 2
 Route24TrainerHeader0:
 	trainer EVENT_BEAT_ROUTE_24_TRAINER_0, 4, Route24BattleText1, Route24EndBattleText1, Route24AfterBattleText1
 Route24TrainerHeader1:

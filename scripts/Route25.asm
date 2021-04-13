@@ -1,6 +1,6 @@
 Route25_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, Route25TrainerHeader0
+	ld hl, Route25TrainerHeaders
 	ld de, Route25_ScriptPointers
 	ld a, [wRoute25CurScript]
 	call ExecuteCurMapScriptInTable
@@ -63,6 +63,8 @@ Route25_TextPointers:
 	dw PickUpItemText
 	dw Route25Text11
 
+Route25TrainerHeaders:
+	def_trainers
 Route25TrainerHeader0:
 	trainer EVENT_BEAT_ROUTE_25_TRAINER_0, 2, Route25BattleText1, Route25EndBattleText1, Route25AfterBattleText1
 Route25TrainerHeader1:
@@ -78,9 +80,9 @@ Route25TrainerHeader5:
 Route25TrainerHeader6:
 	trainer EVENT_BEAT_ROUTE_25_TRAINER_6, 3, Route25BattleText7, Route25EndBattleText7, Route25AfterBattleText7
 Route25TrainerHeader7:
-	trainer EVENT_BEAT_ROUTE_25_TRAINER_7, 1, 2, Route25BattleText8, Route25EndBattleText8, Route25AfterBattleText8
+	trainer EVENT_BEAT_ROUTE_25_TRAINER_7, 2, Route25BattleText8, Route25EndBattleText8, Route25AfterBattleText8
 Route25TrainerHeader8:
-	trainer EVENT_BEAT_ROUTE_25_TRAINER_8, 1, 2, Route25BattleText9, Route25EndBattleText9, Route25AfterBattleText9
+	trainer EVENT_BEAT_ROUTE_25_TRAINER_8, 2, Route25BattleText9, Route25EndBattleText9, Route25AfterBattleText9
 	db -1 ; end
 
 Route25Text1:

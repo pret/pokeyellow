@@ -1,6 +1,6 @@
 CeruleanCaveB1F_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, MewtwoTrainerHeader
+	ld hl, CeruleanCaveB1FTrainerHeaders
 	ld de, CeruleanCaveB1F_ScriptPointers
 	ld a, [wCeruleanCaveB1FCurScript]
 	call ExecuteCurMapScriptInTable
@@ -19,6 +19,8 @@ CeruleanCaveB1F_TextPointers:
 	dw PickUpItemText
 	dw PickUpItemText
 
+CeruleanCaveB1FTrainerHeaders:
+	def_trainers
 MewtwoTrainerHeader:
 	trainer EVENT_BEAT_MEWTWO, 0, MewtwoBattleText, MewtwoBattleText, MewtwoBattleText
 	db -1 ; end

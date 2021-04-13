@@ -1,6 +1,6 @@
 SSAnne2FRooms_Script:
 	call DisableAutoTextBoxDrawing
-	ld hl, SSAnne9TrainerHeader0
+	ld hl, SSAnne9TrainerHeaders
 	ld de, SSAnne2FRooms_ScriptPointers
 	ld a, [wSSAnne2FRoomsCurScript]
 	call ExecuteCurMapScriptInTable
@@ -27,6 +27,8 @@ SSAnne2FRooms_TextPointers:
 	dw SSAnne9Text12
 	dw SSAnne9Text13
 
+SSAnne9TrainerHeaders:
+	def_trainers
 SSAnne9TrainerHeader0:
 	trainer EVENT_BEAT_SS_ANNE_9_TRAINER_0, 2, SSAnne9BattleText1, SSAnne9EndBattleText1, SSAnne9AfterBattleText1
 SSAnne9TrainerHeader1:
