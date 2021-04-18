@@ -2740,7 +2740,7 @@ SurfingPikachu_Sine: ; sine
 	ret
 
 .SineWave:
-	sine_wave $100
+	sine_table 32
 
 SurfingPikachuSpawnStateDataPointer:
 	db $00, $00, $00 ; 0

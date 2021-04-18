@@ -69,11 +69,11 @@ dbbw: MACRO
 	dw \3
 ENDM
 
-sine_wave: MACRO
-; \1: amplitude
+sine_table: MACRO
+; \1 samples of sin(x) from x=0 to x<32768 (pi radians)
 x = 0
-REPT $20
+REPT \1
 	dw (sin(x) + (sin(x) & $ff)) >> 8 ; round up
-x = x + (\1) * $40000
+x = x + DIV(32768, \1) ; a circle has 65536 "degrees"
 ENDR
 ENDM

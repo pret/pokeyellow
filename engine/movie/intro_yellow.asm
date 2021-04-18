@@ -1077,7 +1077,7 @@ Func_fa08e:
 	ret
 
 Unkn_fa0aa:
-	sine_wave $100
+	sine_table 32
 
 INCLUDE "data/sprite_anims/intro_frames.asm"
 INCLUDE "data/sprite_anims/intro_oam.asm"

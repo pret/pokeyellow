@@ -1045,4 +1045,4 @@ GetSine:
 	ret
 
 SineWave_3f:
-	sine_wave $100
+	sine_table 32
