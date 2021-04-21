@@ -3,7 +3,7 @@ MINOR EQU 5
 PATCH EQU 0
 
 wrong_rgbds: MACRO
-	fail "pokered requires rgbds v0.5.0 or newer."
+	fail "pokeyellow requires rgbds v0.5.0 or newer."
 ENDM
 
 IF !DEF(__RGBDS_MAJOR__) || !DEF(__RGBDS_MINOR__) || !DEF(__RGBDS_PATCH__)
