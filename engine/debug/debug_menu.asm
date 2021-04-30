@@ -119,7 +119,7 @@ TestBattle:
 	ld [wGrassMons + 1], a
 	ld b, a
 	ld c, a
-	ld hl, wEnemyPartyMons
+	ld hl, wEnemyPartySpecies
 	call Func_fe809
 	ld hl, wPartyCount
 	call Func_fe809
@@ -310,7 +310,7 @@ Func_fe8d9:
 Func_fe8e2:
 	ld a, [wWhichPokemon]
 	push de
-	ld de, wEnemyPartyMons
+	ld de, wEnemyPartySpecies
 	add e
 	ld e, a
 	jr nc, .asm_fe8ee
@@ -399,7 +399,7 @@ Func_fe964:
 .asm_fe96f
 	ld a, [hl]
 	ld b, a
-	ld hl, wEnemyPartyMons
+	ld hl, wEnemyPartySpecies
 	ld a, [wWhichPokemon]
 	add l
 	ld l, a
@@ -842,7 +842,7 @@ Func_fec9b:
 	lb bc, LEADING_ZEROES | 1, 3
 	call PrintNumber
 	ld a, [wWhichPokemon]
-	ld de, wEnemyPartyMons
+	ld de, wEnemyPartySpecies
 	add e
 	ld e, a
 	jr nc, .asm_fecee
@@ -919,7 +919,7 @@ Data_feded:
 	db -1 ; end
 
 Func_fedfe:
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	cp 30
 	jp nc, Func_ff1ad
 	call ClearScreen
@@ -1445,7 +1445,7 @@ Func_ff1b9:
 	ld hl, Text_ff28f
 	call PrintText
 	callfar EmptyAllSRAMBoxes
-	ld hl, wNumInBox
+	ld hl, wBoxCount
 	xor a
 	ld [hli], a
 	dec a
@@ -1553,7 +1553,7 @@ Func_ff295:
 	call Func_ff2d1
 	ld e, l
 	ld d, h
-	ld hl, wNumInBox
+	ld hl, wBoxCount
 	call Func_ff2f3
 	pop de
 	ld a, d
@@ -1561,7 +1561,7 @@ Func_ff295:
 	ld [wCurrentBoxNum], a
 	push de
 	call Func_ff2d1
-	ld de, wNumInBox
+	ld de, wBoxCount
 	call Func_ff2f3
 	ld a, [wLetterPrintingDelayFlags]
 	push af

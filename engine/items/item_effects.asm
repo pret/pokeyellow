@@ -122,7 +122,7 @@ ItemUseBall:
 	ld a, [wPartyCount] ; is party full?
 	cp PARTY_LENGTH
 	jr nz, .canUseBall
-	ld a, [wNumInBox] ; is box full?
+	ld a, [wBoxCount] ; is box full?
 	cp MONS_PER_BOX
 	jp z, BoxFullCannotThrowBall
 
@@ -2921,7 +2921,7 @@ IsKeyItem_::
 INCLUDE "data/items/key_items.asm"
 
 SendNewMonToBox:
-	ld de, wNumInBox
+	ld de, wBoxCount
 	ld a, [de]
 	inc a
 	ld [de], a
@@ -2940,7 +2940,7 @@ SendNewMonToBox:
 	call GetMonHeader
 	ld hl, wBoxMonOT
 	ld bc, NAME_LENGTH
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	jr z, .asm_e732
 	dec a
@@ -2951,7 +2951,7 @@ SendNewMonToBox:
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	ld b, a
 .asm_e71f
@@ -2972,7 +2972,7 @@ SendNewMonToBox:
 	ld de, wBoxMonOT
 	ld bc, NAME_LENGTH
 	call CopyData
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	jr z, .asm_e76e
 	ld hl, wBoxMonNicks
@@ -2985,7 +2985,7 @@ SendNewMonToBox:
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	ld b, a
 .asm_e75b
@@ -3006,7 +3006,7 @@ SendNewMonToBox:
 	ld a, NAME_MON_SCREEN
 	ld [wNamingScreenType], a
 	predef AskName
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	jr z, .asm_e7ab
 	ld hl, wBoxMons
@@ -3019,7 +3019,7 @@ SendNewMonToBox:
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 	dec a
 	ld b, a
 .asm_e798

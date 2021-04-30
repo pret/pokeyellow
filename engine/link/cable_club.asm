@@ -655,7 +655,7 @@ TradeCenter_DrawPartyLists:
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
 	hlcoord 2, 9
-	ld de, wEnemyPartyMons
+	ld de, wEnemyPartySpecies
 	; fall through
 
 TradeCenter_PrintPartyListNames:
@@ -707,7 +707,7 @@ TradeCenter_Trade:
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wTradingWhichEnemyMon]
-	ld hl, wEnemyPartyMons
+	ld hl, wEnemyPartySpecies
 	ld c, a
 	ld b, 0
 	add hl, bc
@@ -803,7 +803,7 @@ TradeCenter_Trade:
 	ld a, [wTradingWhichEnemyMon]
 	ld c, a
 	ld [wWhichPokemon], a
-	ld hl, wEnemyPartyMons
+	ld hl, wEnemyPartySpecies
 	ld d, 0
 	ld e, a
 	add hl, de
@@ -823,7 +823,7 @@ TradeCenter_Trade:
 	ld a, $1
 	ld [wForceEvolution], a
 	ld a, [wTradingWhichEnemyMon]
-	ld hl, wEnemyPartyMons
+	ld hl, wEnemyPartySpecies
 	ld b, 0
 	ld c, a
 	add hl, bc

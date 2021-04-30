@@ -354,7 +354,7 @@ _MoveMon::
 	ld hl, wDayCareMon
 	jr z, .findMonDataSrc
 	; else it's PARTY_TO_BOX
-	ld hl, wNumInBox
+	ld hl, wBoxCount
 	ld a, [hl]
 	cp MONS_PER_BOX
 	jr nz, .partyOrBoxNotFull
@@ -391,7 +391,7 @@ _MoveMon::
 	; if it's PARTY_TO_BOX
 	ld hl, wBoxMons
 	ld bc, wBoxMon2 - wBoxMon1 ; $21
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 .addMonOffset
 	dec a
 	call AddNTimes
@@ -441,7 +441,7 @@ _MoveMon::
 	ld a, [wPartyCount]
 	jr nz, .addOToffset
 	ld hl, wBoxMonOT
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 .addOToffset
 	dec a
 	call SkipFixedLengthTextEntries
@@ -472,7 +472,7 @@ _MoveMon::
 	ld a, [wPartyCount]
 	jr nz, .addNickOffset
 	ld hl, wBoxMonNicks
-	ld a, [wNumInBox]
+	ld a, [wBoxCount]
 .addNickOffset
 	dec a
 	call SkipFixedLengthTextEntries
