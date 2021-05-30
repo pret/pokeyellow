@@ -332,7 +332,8 @@ IF _NARG == 2
 	db \1  ; size (-1 if compressed)
 	dba \2 ; pointer
 ELSE
-	dbbw \1, \2, \3 ; size, bank, address
+	db \1 ; size
+	dbw \2, \3 ; bank, address
 ENDC
 ENDM
 

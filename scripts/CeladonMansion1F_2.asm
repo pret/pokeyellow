@@ -45,13 +45,13 @@ Func_f1ea2:
 	ret
 
 PikachuHappinessThresholds_f1eb9:
-	dw  51,      CeladonMansion1Text_f1ed5
-	dw 101,      CeladonMansion1Text_f1eda
-	dw 131,      CeladonMansion1Text_f1edf
-	dw 161,      CeladonMansion1Text_f1ee4
-	dw 201,      CeladonMansion1Text_f1ee9
-	dw 255,      CeladonMansion1Text_f1eee
-	dbbw 0, $ff, CeladonMansion1Text_f1eee
+	dw   51, CeladonMansion1Text_f1ed5
+	dw  101, CeladonMansion1Text_f1eda
+	dw  131, CeladonMansion1Text_f1edf
+	dw  161, CeladonMansion1Text_f1ee4
+	dw  201, CeladonMansion1Text_f1ee9
+	dw  255, CeladonMansion1Text_f1eee
+	dw -256, CeladonMansion1Text_f1eee
 
 CeladonMansion1Text_f1ed5:
 	text_far _CeladonMansion1Text7

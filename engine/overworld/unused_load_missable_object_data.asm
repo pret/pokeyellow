@@ -28,8 +28,14 @@ LoadMissableObjectData::
 	call CopyData
 	ret
 
+missable_object_map: MACRO
+	db \1
+	db \3 - \2
+	dw \2
+ENDM
+
 .MissableObjectsMaps:
-	dbbw BLUES_HOUSE, .BluesHouseEnd - .BluesHouse, .BluesHouse
+	missable_object_map BLUES_HOUSE, .BluesHouse, .BluesHouseEnd
 	db -1 ; end
 
 .BluesHouse:
