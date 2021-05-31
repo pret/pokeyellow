@@ -105,7 +105,7 @@ DisplayTownMap:
 	ld [wWhichTownMapLocation], a
 	jp .townMapLoop
 
-.asm_70f87
+Func_70f87: ; unreferenced
 	ldh a, [hJoy5]
 	and D_DOWN | D_UP
 	ret z

@@ -8,6 +8,7 @@ ENDM
 
 Tilesets:
 	table_width 12, Tilesets
+	; name, 3 counter tiles, grass tile, animations
 	tileset Overworld,    -1, -1, -1, $52, TILEANIM_WATER_FLOWER
 	tileset RedsHouse1,   -1, -1, -1,  -1, TILEANIM_NONE
 	tileset Mart,        $18,$19,$1E,  -1, TILEANIM_NONE

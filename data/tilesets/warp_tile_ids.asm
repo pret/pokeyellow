@@ -92,7 +92,7 @@ ENDM
 	; fallthrough
 .ShipPortWarpTileIDs:
 .ClubWarpTileIDs:
-	warp_tiles
+	warp_tiles ; end
 
 .BeachHouseWarpTileIDs:
 	warp_tiles ; end

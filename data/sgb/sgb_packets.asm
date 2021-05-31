@@ -159,6 +159,7 @@ PctTrnPacket:  PCT_TRN
 MaskEnFreezePacket: MASK_EN 1
 MaskEnCancelPacket: MASK_EN 0
 
+
 ; These are DATA_SND packets containing SNES code.
 ; This set of packets is found in several Japanese SGB-compatible titles.
 ; It appears to be part of NCL's SGB devkit.
