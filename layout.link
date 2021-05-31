@@ -227,13 +227,19 @@ ROMX $3F
 	"Overworld Pikachu"
 	"NPC Sprites 3"
 WRAM0
-	"WRAM"
+	"Audio RAM"
 	org $c100
 	"Sprite State Data"
 	org $c300
 	"OAM Buffer"
+	"Tilemap"
+	"Overworld Map"
+	"WRAM"
 WRAMX $1
 	"WRAM Bank 1"
+	"Party Data"
+	"Main Data"
+	"Current Box Data"
 	org $df15
 	"Stack"
 VRAM $0

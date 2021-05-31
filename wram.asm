@@ -6,7 +6,7 @@ INCLUDE "macros/wram.asm"
 INCLUDE "vram.asm"
 
 
-SECTION "WRAM", WRAM0
+SECTION "Audio RAM", WRAM0
 
 wUnusedC000:: db
 
@@ -157,6 +157,9 @@ wOAMBufferSprite{02d:n}:: sprite_oam_struct wOAMBufferSprite{02d:n}
 ENDR
 wOAMBufferEnd::
 
+
+SECTION "Tilemap", WRAM0
+
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
 wTileMap:: ds SCREEN_WIDTH * SCREEN_HEIGHT
 
@@ -266,6 +269,9 @@ ENDU
 
 	ds 80
 
+
+SECTION "Overworld Map", WRAM0
+
 UNION
 wOverworldMap:: ds 1300
 wOverworldMapEnd::
@@ -345,6 +351,9 @@ wcbea:: dw
 wcbec::
 	ds 16
 ENDU
+
+
+SECTION "WRAM", WRAM0
 
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
 wRedrawRowOrColumnSrcTiles:: ds SCREEN_WIDTH * 2
@@ -1865,6 +1874,8 @@ wSavedNPCMovementDirections2Index:: db
 wPlayerName:: ds NAME_LENGTH
 
 
+SECTION "Party Data", WRAMX
+
 wPartyDataStart::
 
 wPartyCount:: db
@@ -1891,6 +1902,8 @@ wPartyMonNicksEnd::
 
 wPartyDataEnd::
 
+
+SECTION "Main Data", WRAMX
 
 wMainDataStart::
 
@@ -2547,6 +2560,8 @@ wDayCareMon:: box_struct wDayCareMon
 
 wMainDataEnd::
 
+
+SECTION "Current Box Data", WRAMX
 
 wBoxDataStart::
 
