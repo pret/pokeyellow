@@ -6491,6 +6491,8 @@ LoadPlayerBackPic:
 	ld de, RedPicBack
 .next
 	ld a, BANK(RedPicBack)
+	ASSERT BANK(RedPicBack) == BANK(OldManPicBack)
+	ASSERT BANK(RedPicBack) == BANK(ProfOakPicBack)
 	call UncompressSpriteFromDE
 	predef ScaleSpriteByTwo
 	ld hl, wOAMBuffer

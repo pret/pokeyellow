@@ -61,19 +61,19 @@ battle_struct: MACRO
 ENDM
 
 spritestatedata1: MACRO
-\1PictureID:: db
-\1MovementStatus:: db
-\1ImageIndex:: db
-\1YStepVector:: db
-\1YPixels:: db
-\1XStepVector:: db
-\1XPixels:: db
+\1PictureID::             db
+\1MovementStatus::        db
+\1ImageIndex::            db
+\1YStepVector::           db
+\1YPixels::               db
+\1XStepVector::           db
+\1XPixels::               db
 \1IntraAnimFrameCounter:: db
-\1AnimFrameCounter:: db
-\1FacingDirection:: db
-\1YAdjusted:: db
-\1XAdjusted:: db
-\1CollisionData:: db
+\1AnimFrameCounter::      db
+\1FacingDirection::       db
+\1YAdjusted::             db
+\1XAdjusted::             db
+\1CollisionData::         db
 	ds 3
 \1End::
 ENDM
@@ -81,37 +81,44 @@ ENDM
 spritestatedata2: MACRO
 \1WalkAnimationCounter:: db
 	ds 1
-\1YDisplacement:: db
-\1XDisplacement:: db
-\1MapY:: db
-\1MapX:: db
-\1MovementByte1:: db
-\1GrassPriority:: db
-\1MovementDelay:: db
-\1OrigFacingDirection:: db
+\1YDisplacement::        db
+\1XDisplacement::        db
+\1MapY::                 db
+\1MapX::                 db
+\1MovementByte1::        db
+\1GrassPriority::        db
+\1MovementDelay::        db
+\1OrigFacingDirection::  db
 	ds 3
-\1PictureID:: db
-\1ImageBaseOffset:: db
+\1PictureID::            db
+\1ImageBaseOffset::      db
 	ds 1
 \1End::
 ENDM
 
+sprite_oam_struct: MACRO
+\1YCoord::     db
+\1XCoord::     db
+\1TileID::     db
+\1Attributes:: db
+ENDM
+
 animated_object: MACRO
-\1Index::          db ; 0
-\1FramesetID::     db ; 1
-\1AnimSeqID::      db ; 2
-\1TileID::         db ; 3
-\1XCoord::         db ; 4
-\1YCoord::         db ; 5
-\1XOffset::        db ; 6
-\1YOffset::        db ; 7
-\1Duration::       db ; 8
-\1DurationOffset:: db ; 9
-\1FrameIndex::     db ; a
-\1FieldB::         db ; b
-\1FieldC::         db ; c
-\1FieldD::         db ; d
-\1FieldE::         db ; e
-\1FieldF::         db ; f
+\1Index::          db
+\1FramesetID::     db
+\1AnimSeqID::      db
+\1TileID::         db
+\1XCoord::         db
+\1YCoord::         db
+\1XOffset::        db
+\1YOffset::        db
+\1Duration::       db
+\1DurationOffset:: db
+\1FrameIndex::     db
+\1FieldB::         db
+\1FieldC::         db
+\1FieldD::         db
+\1FieldE::         db
+\1FieldF::         db
 \1End::
 ENDM

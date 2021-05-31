@@ -234,7 +234,7 @@ WRAM0
 	"OAM Buffer"
 WRAMX $1
 	"WRAM Bank 1"
-	org $dfff
+	org $df15
 	"Stack"
 VRAM $0
 	"VRAM"
