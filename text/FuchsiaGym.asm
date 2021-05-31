@@ -16,7 +16,7 @@ _KogaBeforeBattleText::
 	cont "techniques!"
 	done
 
-_KogaAfterBattleText::
+_ReceivedSoulBadgeText::
 	text "Humph!"
 	line "You have proven"
 	cont "your worth!"
@@ -25,7 +25,7 @@ _KogaAfterBattleText::
 	line "SOULBADGE!"
 	prompt
 
-_KogaExplainToxicText::
+_KogaPostBattleAdviceText::
 	text "When afflicted by"
 	line "TOXIC, #MON"
 	cont "suffer more and"
@@ -36,7 +36,7 @@ _KogaExplainToxicText::
 	line "terrorize foes!"
 	done
 
-_FuchsiaGymText9::
+_KogaSoulBadgeInfoText::
 	text "Now that you have"
 	line "the SOULBADGE,"
 	cont "the DEFENSE of"
@@ -197,7 +197,7 @@ _FuchsiaGymAfterBattleText6::
 	cont "choose?"
 	done
 
-_FuchsiaGymText_7564e::
+_FuchsiaGymGuidePreBattleText::
 	text "Yo! Champ in"
 	line "making!"
 
@@ -214,7 +214,7 @@ _FuchsiaGymText_7564e::
 	cont "to reach him!"
 	done
 
-_FuchsiaGymText_75653::
+_FuchsiaGymGuidePostBattleText::
 	text "It's amazing how"
 	line "ninja can terrify"
 	cont "even now!"

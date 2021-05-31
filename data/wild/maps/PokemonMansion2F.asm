@@ -1,4 +1,4 @@
-MansionMons2:
+PokemonMansion2FWildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 37, RATTATA
 	db 37, RATICATE

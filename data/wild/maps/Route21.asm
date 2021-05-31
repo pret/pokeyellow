@@ -1,4 +1,4 @@
-Route21Mons:
+Route21WildMons:
 	def_grass_wildmons 25 ; encounter rate
 	db 15, PIDGEY
 	db 13, RATTATA

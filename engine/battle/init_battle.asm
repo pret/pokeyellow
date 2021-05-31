@@ -188,95 +188,96 @@ LoadMonBackPic:
 	ld b, a
 	jp CopyVideoData
 
+; animates the mon "growing" out of the pokeball
 AnimateSendingOutMon:
-	ld a, [wPredefRegisters]
+	ld a, [wPredefHL]
 	ld h, a
-	ld a, [wPredefRegisters + 1]
+	ld a, [wPredefHL + 1]
 	ld l, a
 	ldh a, [hStartTileID]
-	ldh [hDownArrowBlinkCount1], a
+	ldh [hBaseTileID], a
 	ld b, $4c
 	ld a, [wIsInBattle]
 	and a
-	jr z, .asm_f61ef
+	jr z, .notInBattle
 	add b
 	ld [hl], a
 	call Delay3
-	ld bc, -41
+	ld bc, -(SCREEN_WIDTH * 2 + 1)
 	add hl, bc
-	ld a, $1
-	ld [wNumMovesMinusOne], a
-	ld bc, $303
+	ld a, 1
+	ld [wDownscaledMonSize], a
+	lb bc, 3, 3
 	predef CopyDownscaledMonTiles
-	ld c, $4
+	ld c, 4
 	call DelayFrames
-	ld bc, -41
+	ld bc, -(SCREEN_WIDTH * 2 + 1)
 	add hl, bc
 	xor a
-	ld [wNumMovesMinusOne], a
-	ld bc, $505
+	ld [wDownscaledMonSize], a
+	lb bc, 5, 5
 	predef CopyDownscaledMonTiles
-	ld c, $5
+	ld c, 5
 	call DelayFrames
-	ld bc, -41
-	jr .asm_f61f2
-.asm_f61ef
-	ld bc, -123
-.asm_f61f2
+	ld bc, -(SCREEN_WIDTH * 2 + 1)
+	jr .next
+.notInBattle
+	ld bc, -(SCREEN_WIDTH * 6 + 3)
+.next
 	add hl, bc
-	ldh a, [hDownArrowBlinkCount1]
+	ldh a, [hBaseTileID]
 	add $31
 	jr CopyUncompressedPicToHL
 
 CopyUncompressedPicToTilemap:
-	ld a, [wPredefRegisters]
+	ld a, [wPredefHL]
 	ld h, a
-	ld a, [wPredefRegisters + 1]
+	ld a, [wPredefHL + 1]
 	ld l, a
 	ldh a, [hStartTileID]
 CopyUncompressedPicToHL::
-	ld bc, $707
-	ld de, $14
+	lb bc, 7, 7
+	ld de, SCREEN_WIDTH
 	push af
 	ld a, [wSpriteFlipped]
 	and a
-	jr nz, .asm_f6220
+	jr nz, .flipped
 	pop af
-.asm_f6211
+.loop
 	push bc
 	push hl
-.asm_f6213
+.innerLoop
 	ld [hl], a
 	add hl, de
 	inc a
 	dec c
-	jr nz, .asm_f6213
+	jr nz, .innerLoop
 	pop hl
 	inc hl
 	pop bc
 	dec b
-	jr nz, .asm_f6211
+	jr nz, .loop
 	ret
 
-.asm_f6220
+.flipped
 	push bc
-	ld b, $0
+	ld b, 0
 	dec c
 	add hl, bc
 	pop bc
 	pop af
-.asm_f6227
+.flippedLoop
 	push bc
 	push hl
-.asm_f6229
+.flippedInnerLoop
 	ld [hl], a
 	add hl, de
 	inc a
 	dec c
-	jr nz, .asm_f6229
+	jr nz, .flippedInnerLoop
 	pop hl
 	dec hl
 	pop bc
 	dec b
-	jr nz, .asm_f6227
+	jr nz, .flippedLoop
 	ret

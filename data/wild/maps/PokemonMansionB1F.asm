@@ -1,4 +1,4 @@
-MansionMonsB1:
+PokemonMansionB1FWildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 35, GRIMER
 	db 38, GRIMER

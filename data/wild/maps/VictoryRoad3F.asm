@@ -1,4 +1,4 @@
-PlateauMons3:
+VictoryRoad3FWildMons:
 	def_grass_wildmons 15 ; encounter rate
 	db 36, GEODUDE
 	db 44, GOLBAT

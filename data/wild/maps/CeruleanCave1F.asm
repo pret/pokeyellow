@@ -1,4 +1,4 @@
-DungeonMons1:
+CeruleanCave1FWildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 50, GOLBAT
 	db 55, GOLBAT

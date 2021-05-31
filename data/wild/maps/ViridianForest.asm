@@ -1,4 +1,4 @@
-ForestMons:
+ViridianForestWildMons:
 	def_grass_wildmons 25 ; encounter rate
 	db  3, CATERPIE
 	db  4, METAPOD

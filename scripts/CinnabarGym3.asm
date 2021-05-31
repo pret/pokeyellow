@@ -1,20 +1,20 @@
 Func_f2133::
 	CheckEvent EVENT_BEAT_BLAINE
-	jr nz, .asm_627d9
-	ld hl, CinnabarGymText_75ac2
-	jr .asm_0b11d
-.asm_627d9
-	ld hl, CinnabarGymText_75ac7
-.asm_0b11d
+	jr nz, .afterBeat
+	ld hl, CinnabarGymGuidePreBattleText
+	jr .done
+.afterBeat
+	ld hl, CinnabarGymGuidePostBattleText
+.done
 	call PrintText
 	ret
 
-CinnabarGymText_75ac2:
-	text_far _CinnabarGymText_75ac2
+CinnabarGymGuidePreBattleText:
+	text_far _CinnabarGymGuidePreBattleText
 	text_end
 
-CinnabarGymText_75ac7:
-	text_far _CinnabarGymText_75ac7
+CinnabarGymGuidePostBattleText:
+	text_far _CinnabarGymGuidePostBattleText
 	text_end
 
 Func_f2150::

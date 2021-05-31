@@ -32,7 +32,7 @@ _LTSurgePostBattleAdviceText::
 	cont "type #MON!"
 	done
 
-_LTSurgeThunderbadgeInfoText::
+_LTSurgeThunderBadgeInfoText::
 	text "The THUNDERBADGE"
 	line "cranks up your"
 	cont "#MON's SPEED!"
@@ -67,7 +67,7 @@ _TM24NoRoomText::
 	line "in your pack!"
 	done
 
-_ReceivedThunderbadgeText::
+_ReceivedThunderBadgeText::
 	text "Whoa!"
 
 	para "You're the real"
@@ -135,7 +135,7 @@ _VermilionGymAfterBattleText3::
 	cont "next to it!"
 	done
 
-_VermilionGymFanPreBattleText::
+_VermilionGymGuidePreBattleText::
 	text "Yo! Champ in"
 	line "making!"
 
@@ -161,7 +161,7 @@ _VermilionGymFanPreBattleText::
 	cont "get to him!"
 	done
 
-_VermilionGymFanPostBattleText::
+_VermilionGymGuidePostBattleText::
 	text "Whew! That match"
 	line "was electric!"
 	done

@@ -1,4 +1,4 @@
-MoonMonsB2:
+MtMoonB2FWildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 10, ZUBAT
 	db 11, GEODUDE

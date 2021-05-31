@@ -1,4 +1,4 @@
-Route12Mons:
+Route12WildMons:
 	def_grass_wildmons 15 ; encounter rate
 	db 25, ODDISH
 	db 25, BELLSPROUT

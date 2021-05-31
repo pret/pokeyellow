@@ -1,4 +1,4 @@
-ZoneMonsCenter:
+SafariZoneCenterWildMons:
 	def_grass_wildmons 30 ; encounter rate
 	db 14, NIDORAN_M
 	db 36, NIDORAN_F

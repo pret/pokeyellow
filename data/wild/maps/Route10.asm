@@ -1,4 +1,4 @@
-Route10Mons:
+Route10WildMons:
 	def_grass_wildmons 15 ; encounter rate
 	db 16, MAGNEMITE
 	db 18, RATTATA

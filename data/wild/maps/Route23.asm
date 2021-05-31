@@ -1,4 +1,4 @@
-Route23Mons:
+Route23WildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 41, NIDORINO
 	db 41, NIDORINA

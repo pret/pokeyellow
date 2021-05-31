@@ -1,4 +1,4 @@
-IslandMonsB4:
+SeafoamIslandsB4FWildMons:
 	def_grass_wildmons 10 ; encounter rate
 	db 36, GOLBAT
 	db 36, ZUBAT

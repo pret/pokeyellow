@@ -103,6 +103,17 @@ sprite_oam_struct: MACRO
 \1Attributes:: db
 ENDM
 
+map_connection_struct: MACRO
+\1ConnectedMap::            db
+\1ConnectionStripSrc::      dw
+\1ConnectionStripDest::     dw
+\1ConnectionStripLength::   db
+\1ConnectedMapWidth::       db
+\1ConnectedMapYAlignment::  db
+\1ConnectedMapXAlignment::  db
+\1ConnectedMapViewPointer:: dw
+ENDM
+
 animated_object: MACRO
 \1Index::          db
 \1FramesetID::     db

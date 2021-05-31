@@ -1,4 +1,4 @@
-_PewterGymText_5c49e::
+_BrockPreBattleText::
 	text "I'm BROCK!"
 	line "I'm PEWTER's GYM"
 	cont "LEADER!"
@@ -17,7 +17,7 @@ _PewterGymText_5c49e::
 	cont "me your best!"
 	done
 
-_PewterGymText_5c4a3::
+_BrockPostBattleAdviceText::
 	text "There are all"
 	line "kinds of trainers"
 	cont "in the world!"
@@ -38,7 +38,7 @@ _PewterGymText_5c4a3::
 	cont "your abilities!"
 	done
 
-_TM34PreReceiveText::
+_BeforeReceivedTM34Text::
 	text "Wait! Take this"
 	line "with you!"
 	done
@@ -77,7 +77,7 @@ _TM34NoRoomText::
 	line "room for this!"
 	done
 
-_PewterGymText_5c4bc::
+_ReceivedBoulderBadgeText::
 	text "I took"
 	line "you for granted."
 
@@ -89,7 +89,7 @@ _PewterGymText_5c4bc::
 	line "the BOULDERBADGE!@"
 	text_end
 
-_PewterGymText_5c4c1::
+_BrockBoulerBadgeInfoText::
 	text_start
 
 	para "That's an official"
@@ -128,7 +128,7 @@ _PewterGymAfterBattleText1::
 	cont "as BROCK!"
 	done
 
-_PewterGymText_5c515::
+_PewterGymGuidePreAdviceText::
 	text "Hiya! I can tell"
 	line "you have what it"
 	cont "takes to become a"
@@ -142,12 +142,12 @@ _PewterGymText_5c515::
 	line "to the top!"
 	done
 
-_PewterGymText_5c51a::
+_PewterGymGuideBeginAdviceText::
 	text "All right! Let's"
 	line "get happening!"
 	prompt
 
-_PewterGymText_5c51f::
+_PewterGymGuideAdviceText::
 	text "The 1st #MON"
 	line "out in a match is"
 	cont "at the top of the"
@@ -165,7 +165,7 @@ _PewterGymText_5c524::
 	cont "get happening!"
 	prompt
 
-_PewterGymText_5c529::
+_PewterGymGuidePostBattleText::
 	text "Just as I thought!"
 	line "You're #MON"
 	cont "champ material!"

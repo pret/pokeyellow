@@ -1,4 +1,4 @@
-Route8Mons:
+Route8WildMons:
 	def_grass_wildmons 15 ; encounter rate
 	db 20, PIDGEY
 	db 22, PIDGEY
