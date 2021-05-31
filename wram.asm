@@ -1322,41 +1322,7 @@ wBattleMonSpecies2:: db
 
 wEnemyMonNick:: ds NAME_LENGTH
 
-wEnemyMon::
-; The wEnemyMon struct reaches past 0xcfff,
-; the end of wram bank 0 on cgb.
-; This has no significance on dmg, where wram
-; isn't banked (c000-dfff is contiguous).
-; However, recent versions of rgbds have replaced
-; dmg-style wram with cgb wram banks.
-
-; Until this is fixed, this struct will have
-; to be declared manually.
-
-wEnemyMonSpecies::   db
-wEnemyMonHP::        dw
-wEnemyMonPartyPos::
-wEnemyMonBoxLevel::  db
-wEnemyMonStatus::    db
-wEnemyMonType::
-wEnemyMonType1::     db
-wEnemyMonType2::     db
-wEnemyMonCatchRate_NotReferenced:: db
-wEnemyMonMoves::     ds NUM_MOVES
-wEnemyMonDVs::       ds 2
-wEnemyMonLevel::     db
-wEnemyMonMaxHP::     dw
-wEnemyMonAttack::    dw
-wEnemyMonDefense::   dw
-wEnemyMonSpeed::     dw
-wEnemyMonSpecial::   dw
-wEnemyMonPP::        ds 3 ; NUM_MOVES - 1
-
-
-SECTION "WRAM Bank 1", WRAMX
-
-; continuing wEnemyMon from the previous section
-                     ds 1 ; NUM_MOVES - 3
+wEnemyMon:: battle_struct wEnemyMon
 
 wEnemyMonBaseStats:: ds NUM_STATS
 wEnemyMonActualCatchRate:: db
@@ -1877,7 +1843,7 @@ wSavedNPCMovementDirections2Index:: db
 wPlayerName:: ds NAME_LENGTH
 
 
-SECTION "Party Data", WRAMX
+SECTION "Party Data", WRAM0
 
 wPartyDataStart::
 
@@ -1906,7 +1872,7 @@ wPartyMonNicksEnd::
 wPartyDataEnd::
 
 
-SECTION "Main Data", WRAMX
+SECTION "Main Data", WRAM0
 
 wMainDataStart::
 
@@ -2555,7 +2521,7 @@ wDayCareMon:: box_struct wDayCareMon
 wMainDataEnd::
 
 
-SECTION "Current Box Data", WRAMX
+SECTION "Current Box Data", WRAM0
 
 wBoxDataStart::
 
@@ -2584,7 +2550,7 @@ wBoxMonNicksEnd::
 wBoxDataEnd::
 
 
-SECTION "GBC Palette Data", WRAMX
+SECTION "GBC Palette Data", WRAM0
 
 wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
 wGBCPal:: ds PALETTE_SIZE
@@ -2595,7 +2561,7 @@ wdef5:: db
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 
 
-SECTION "Stack", WRAMX
+SECTION "Stack", WRAM0
 
 ; the stack grows downward
 	ds $eb - 1

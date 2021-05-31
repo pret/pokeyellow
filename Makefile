@@ -99,7 +99,7 @@ pokeyellow_debug_pad = 0xff
 opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
 
 %.gbc: $$(%_obj) layout.link
-	$(RGBLINK) -p $($*_pad) -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
+	$(RGBLINK) -p $($*_pad) -w -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
 	$(RGBFIX) -p $($*_pad) $(opts) $@
 
 

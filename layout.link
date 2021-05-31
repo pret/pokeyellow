@@ -235,8 +235,6 @@ WRAM0
 	"Tilemap"
 	"Overworld Map"
 	"WRAM"
-WRAMX $1
-	"WRAM Bank 1"
 	"Party Data"
 	"Main Data"
 	"Current Box Data"
