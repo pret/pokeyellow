@@ -240,6 +240,7 @@ WRAMX $1
 	"Party Data"
 	"Main Data"
 	"Current Box Data"
+	"GBC Palette Data"
 	org $df15
 	"Stack"
 VRAM $0

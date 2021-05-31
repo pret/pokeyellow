@@ -57,7 +57,7 @@ PlayPikachuSoundClip::
 	call PlayPikachuPCM
 	xor a
 	ld [wc0f3], a
-	ld [wc0f4], a
+	ld [wc0f3 + 1], a
 	ld a, $80
 	ldh [rNR52], a
 	xor a

@@ -487,8 +487,8 @@ Func_f8324:
 	xor a
 	ldh [hLCDCPointer], a
 	ld [wSurfingMinigameSCX], a
-	ld [wSurfingMinigameSCX + 1], a
-	ld [wSurfingMinigameSCX + 2], a
+	ld [wSurfingMinigameSCX2], a
+	ld [wSurfingMinigameSCXHi], a
 	ret
 
 Func_f835c:
@@ -1879,13 +1879,13 @@ SurfingMinigame_ScrollAndGenerateBGMap:
 	ld a, h
 	ldh [hSCX], a
 SurfingMinigame_GenerateBGMap:
-	ld hl, wSurfingMinigameSCX + 1
+	ld hl, wSurfingMinigameSCX2
 	ldh a, [hSCX]
 	cp [hl]
 	ret z
 	ld [hl], a
 	and $f0
-	ld hl, wSurfingMinigameSCX + 2
+	ld hl, wSurfingMinigameSCXHi
 	cp [hl]
 	ret z
 	ld [hl], a

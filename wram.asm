@@ -76,9 +76,9 @@ wAudioSavedROMBank:: db
 wFrequencyModifier:: db
 wTempoModifier:: db
 
-wc0f3:: ds 1
-wc0f4:: ds 1
-wc0f5:: ds 11
+wc0f3:: dw
+
+	ds 11
 
 
 SECTION "Sprite State Data", WRAM0
@@ -176,24 +176,16 @@ wSerialPartyMonsPatchList:: ds 200
 wSerialEnemyMonsPatchList:: ds 200
 
 NEXTU
+; this looks similar to the address structure for Gen 2 OAM animations.
 wAnimatedObjectsData::
-; Used by functions in BANK 3E
-; This looks similar to the address structure for Gen 2 OAM animations.
 
-wAnimatedObjectStartTileOffsets::
-	ds 10 * 2
+wAnimatedObjectStartTileOffsets:: ds 10 * 2
 
 wAnimatedObjectDataStructs::
-wAnimatedObject0:: animated_object wAnimatedObject0
-wAnimatedObject1:: animated_object wAnimatedObject1
-wAnimatedObject2:: animated_object wAnimatedObject2
-wAnimatedObject3:: animated_object wAnimatedObject3
-wAnimatedObject4:: animated_object wAnimatedObject4
-wAnimatedObject5:: animated_object wAnimatedObject5
-wAnimatedObject6:: animated_object wAnimatedObject6
-wAnimatedObject7:: animated_object wAnimatedObject7
-wAnimatedObject8:: animated_object wAnimatedObject8
-wAnimatedObject9:: animated_object wAnimatedObject9
+; wAnimatedObject0 - wAnimatedObject9
+FOR n, 10
+wAnimatedObject{d:n}:: animated_object wAnimatedObject{d:n}
+ENDR
 
 wNumLoadedAnimatedObjects:: db
 wCurrentAnimatedObjectOAMBufferOffset::
@@ -202,6 +194,7 @@ wAnimatedObjectSpawnStateDataPointer:: dw
 wAnimatedObjectFramesDataPointer:: dw
 wAnimatedObjectJumptablePointer:: dw
 wAnimatedObjectOAMDataPointer:: dw
+
 wCurAnimatedObjectOAMAttributes:: db
 wCurrentAnimatedObjectVTileOffset:: db
 wCurrentAnimatedObjectXCoord:: db
@@ -210,6 +203,7 @@ wCurrentAnimatedObjectXOffset:: db
 wCurrentAnimatedObjectYOffset:: db
 wAnimatedObjectGlobalYOffset:: db
 wAnimatedObjectGlobalXOffset:: db
+
 wAnimatedObjectsDataEnd::
 
 ; Surfing minigame
@@ -218,39 +212,31 @@ wSurfingMinigameRoutineNumber:: db
 wc5d2:: db
 wSurfingMinigameWaveFunctionNumber:: dw
 wc5d5:: db
-wSurfingMinigamePikachuHP::
-	ds 2 ; little-endian BCD
-wc5d8:: ; unused?
-	ds 1
-wSurfingMinigameRadnessMeter::
+wSurfingMinigamePikachuHP:: dw ; little-endian BCD
+wc5d8:: db ; unused?
 ; number of consecutive tricks
-	ds 1
-wSurfingMinigameRadnessScore::
-	ds 2 ; little-endian BCD
-wSurfingMinigameTotalScore::
-	ds 2 ; little-endian BCD
+wSurfingMinigameRadnessMeter:: db
+wSurfingMinigameRadnessScore:: dw ; little-endian BCD
+wSurfingMinigameTotalScore:: dw ; little-endian BCD
 wc5de:: db
 wc5df:: db
 wc5e0:: db
 wc5e1:: db
 wc5e2:: db
-wSurfingMinigamePikachuSpeed::
-	ds 2 ; little-endian
-wc5e5::
-	ds 3 ; big-endian
+wSurfingMinigamePikachuSpeed:: dw ; little-endian
+wc5e5:: ds 3 ; big-endian
 wSurfingMinigameWaveHeightBuffer:: dw
 wSurfingMinigamePikachuObjectHeight:: db
 wc5eb:: db
 wc5ec:: db
 wc5ed:: db
 wc5ee:: db
-wSurfingMinigameBGMapReadBuffer::
-	ds 16
+wSurfingMinigameBGMapReadBuffer:: ds 1 tiles
 	ds 24
-wSurfingMinigameSCX::
-	ds 3
-wSurfingMinigameWaveHeight::
-	ds SCREEN_WIDTH
+wSurfingMinigameSCX:: db
+wSurfingMinigameSCX2:: db
+wSurfingMinigameSCXHi:: db
+wSurfingMinigameWaveHeight:: ds SCREEN_WIDTH
 wSurfingMinigameXOffset:: db
 wSurfingMinigameTrickFlags:: db
 wc630:: db
@@ -293,32 +279,24 @@ wc6ed:: db
 wPrinterChecksum:: dw
 
 UNION
-
 wPrinterSerialReceived:: db
-wPrinterStatusReceived::
 ; bit 7: set if error 1 (battery low)
 ; bit 6: set if error 4 (too hot or cold)
 ; bit 5: set if error 3 (paper jammed or empty)
 ; if this and the previous byte are both $ff: error 2 (connection error)
-	ds 1
+wPrinterStatusReceived:: db
 
 wc6f2:: db
-wc6f3::
-	ds 13
-wLYOverrides::
-	ds $100
+wc6f3:: db
+	ds 12
+wLYOverrides:: ds $100
 wLYOverridesEnd::
-wLYOverridesBuffer::
-	ds $100
+wLYOverridesBuffer:: ds $100
 wLYOverridesBufferEnd::
 
 NEXTU
-
-wPrinterSendDataSource1::
-; two 20-tile buffers
-	ds $140
-wPrinterSendDataSource2::
-	ds $140
+wPrinterSendDataSource1:: ds 20 tiles
+wPrinterSendDataSource2:: ds 20 tiles
 ENDU
 
 wPrinterSendDataSource1End::
@@ -329,27 +307,25 @@ wHandshakeFrameDelay:: db
 wPrinterSerialFrameDelay:: db
 wPrinterSendByteOffset:: dw
 wPrinterDataSize:: dw
-wPrinterTileBuffer::
-	ds SCREEN_HEIGHT * SCREEN_WIDTH
+wPrinterTileBuffer:: ds SCREEN_HEIGHT * SCREEN_WIDTH
 wPrinterStatusIndicator:: dw
 wcae2:: db
-wPrinterSettingsTempCopy::
-	ds 17
+wPrinterSettingsTempCopy:: db
+	ds 16
 wPrinterQueueLength:: db
 wPrinterDataEnd::
 
 wPrinterPokedexEntryTextPointer:: dw
 	ds 2
-wPrinterPokedexMonIsOwned::
-	ds 227
-
-wcbdc::
+wPrinterPokedexMonIsOwned:: db
+	ds 226
+UNION
+wcbdc:: ds 1 tiles
+NEXTU
 	ds 14
-
 wcbea:: dw
-
-wcbec::
-	ds 16
+ENDU
+wcbec:: ds 1 tiles
 ENDU
 
 
@@ -551,9 +527,7 @@ wAnimPalette:: db
 
 NEXTU
 wPikaPicUsedGFXCount:: db
-
-wPikaPicUsedGFX::
-	ds 16
+wPikaPicUsedGFX:: ds $10
 wPikaPicUsedGFXEnd::
 
 	ds 43
@@ -573,14 +547,14 @@ wPikaPicAnimObjectDataBufferSize:: db
 
 wPikaPicAnimObjectDataBuffer::
 ; 4 structs each of length 8
-; 	0: buffer index
-; 	1: script index
-;   2: frame index
-; 	3: frame timer
-; 	4: vtile offset
-; 	5: x offset
-; 	6: y offset
-; 	7: unused
+;     0: buffer index
+;     1: script index
+;     2: frame index
+;     3: frame timer
+;     4: vtile offset
+;     5: x offset
+;     6: y offset
+;     7: unused
 	ds 4 * 8
 wPikaPicAnimObjectDataBufferEnd::
 ENDU
@@ -1227,7 +1201,7 @@ wPartyMenuBlkPacket:: ; ds $30
 
 	ds 9
 
-wPartyHPBarAttributes:: ds 6
+wPartyHPBarAttributes:: ds PARTY_LENGTH
 
 	ds 14
 
@@ -2035,51 +2009,50 @@ wWarpEntries:: ds 32 * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
-wPikachuOverworldStateFlags:: ds 1
-wPikachuSpawnState:: ds 1
-wd432:: ds 1
-wd433:: ds 1
-wd434:: ds 1
-wd435:: ds 1
-wd436:: ds 1
-wPikachuFollowCommandBufferSize:: ds 1
+wPikachuOverworldStateFlags:: db
+wPikachuSpawnState:: db
+wd432:: db
+wd433:: db
+wd434:: db
+wd435:: db
+wd436:: db
+wPikachuFollowCommandBufferSize:: db
 wPikachuFollowCommandBuffer:: ds 16
 
 wExpressionNumber:: db
 wPikaPicAnimNumber:: db
 
-wPikachuMovementScriptBank:: ds 1
+wPikachuMovementScriptBank:: db
 wPikachuMovementScriptAddress:: dw
-wPikachuMovementFlags::
 ; bit 6 - spawn shadow
 ; bit 7 - signal end of command
-	ds 1
+wPikachuMovementFlags:: db
 
 UNION
 wCurPikaMovementData::
-wCurPikaMovementParam1:: ds 1
-wCurPikaMovementFunc1:: ds 1
-wCurPikaMovementParam2:: ds 1
-wCurPikaMovementFunc2:: ds 1
-wd451:: ds 1
-wCurPikaMovementSpriteImageIdx:: ds 1
-wPikaSpriteX:: ds 1
-wPikaSpriteY:: ds 1
-wPikachuMovementXOffset:: ds 1
-wPikachuMovementYOffset:: ds 1
-wPikachuStepTimer:: ds 1
-wPikachuStepSubtimer:: ds 1
+wCurPikaMovementParam1:: db
+wCurPikaMovementFunc1:: db
+wCurPikaMovementParam2:: db
+wCurPikaMovementFunc2:: db
+wd451:: db
+wCurPikaMovementSpriteImageIdx:: db
+wPikaSpriteX:: db
+wPikaSpriteY:: db
+wPikachuMovementXOffset:: db
+wPikachuMovementYOffset:: db
+wPikachuStepTimer:: db
+wPikachuStepSubtimer:: db
 	ds 5
 wCurPikaMovementDataEnd::
 
 NEXTU
 wPikaPicAnimPointer:: dw
-wPikaPicAnimPointerSetupFinished:: ds 1
-wPikaPicAnimCurGraphicID:: ds 1
-wPikaPicAnimTimer:: ds 2
-wPikaPicAnimDelay:: ds 1
-wPikaPicPikaDrawStartX:: ds 1
-wPikaPicPikaDrawStartY:: ds 1
+wPikaPicAnimPointerSetupFinished:: db
+wPikaPicAnimCurGraphicID:: db
+wPikaPicAnimTimer:: dw
+wPikaPicAnimDelay:: db
+wPikaPicPikaDrawStartX:: db
+wPikaPicPikaDrawStartY:: db
 
 wCurPikaPicAnimObject::
 wCurPikaPicAnimObjectVTileOffset:: db
@@ -2094,33 +2067,24 @@ wCurPikaPicAnimObjectEnd::
 	ds 18
 ENDU
 
-wPikachuHappiness:: ds 1
-wPikachuMood:: ds 1
-wd472:: ds 1
-wd473:: ds 1
-
+wPikachuHappiness:: db
+wPikachuMood:: db
+wd472:: db
+wd473:: db
 	ds 1
-
-wd475:: ds 1
-
+wd475:: db
 	ds 4
-
-wd47a:: ds 1
-
+wd47a:: db
 	ds 24
-
-wd492:: ds 1
-
+wd492:: db
 	ds 1
-
-wSurfingMinigameHiScore:: ds 2 ; 4-digit BCD little-endian
+wSurfingMinigameHiScore:: dw ; little-endian BCD
 	ds 1
-
-wPrinterSettings:: ds 1
-wUnknownSerialFlag_d499:: ds 1
-wPrinterConnectionOpen:: ds 1
-wPrinterOpcode:: ds 1
-wd49c:: ds 1
+wPrinterSettings:: db
+wUnknownSerialFlag_d499:: db
+wPrinterConnectionOpen:: db
+wPrinterOpcode:: db
+wd49c:: db
 
 	ds 19
 
@@ -2363,10 +2327,11 @@ wPlayerJumpingYScreenCoordsIndex:: db
 wRivalStarter:: db
 
 IF DEF(_DEBUG)
-; This byte gets set to NUM_POKEMON by DebugStart.
-wUnknownDebugByte::
-ENDC
+; this byte gets set to NUM_POKEMON by DebugStart
+wUnknownDebugByte:: db
+ELSE
 	ds 1
+ENDC
 
 wPlayerStarter:: db
 
@@ -2618,12 +2583,15 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+
+SECTION "GBC Palette Data", WRAMX
+
 wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
 wGBCPal:: ds PALETTE_SIZE
-wLastBGP:: ds 1
-wLastOBP0:: ds 1
-wLastOBP1:: ds 1
-wdef5:: ds 1
+wLastBGP:: db
+wLastOBP0:: db
+wLastOBP1:: db
+wdef5:: db
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 
 
