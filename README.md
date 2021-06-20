@@ -1,4 +1,4 @@
-# Pokémon Yellow [![Build Status][travis-badge]][travis]
+# Pokémon Yellow [![Build Status][ci-badge]][ci]
 
 This is a disassembly of Pokémon Yellow.
 
@@ -36,5 +36,5 @@ Other disassembly projects:
 [pokeemerald]: https://github.com/pret/pokeemerald
 [discord]: https://discord.gg/d5dubZ3
 [irc]: https://kiwiirc.com/client/irc.freenode.net/?#pret
-[travis]: https://travis-ci.org/pret/pokeyellow
-[travis-badge]: https://travis-ci.org/pret/pokeyellow.svg?branch=master
+[ci]: https://github.com/pret/pokeyellow/actions
+[ci-badge]: https://github.com/pret/pokeyellow/actions/workflows/main.yml/badge.svg
