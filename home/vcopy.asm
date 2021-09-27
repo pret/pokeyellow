@@ -347,7 +347,7 @@ UpdateMovingBgTiles::
 
 	ldh a, [hTileAnimations]
 	and a
-	ret z ; no animations if indoors (or if a menu set this to 0)
+	ret z
 
 	ldh a, [rLY]
 	cp $90 ; check if not in vblank period??? (maybe if vblank is too long)
@@ -390,7 +390,7 @@ UpdateMovingBgTiles::
 	ldh a, [hTileAnimations]
 	rrca
 	ret nc
-; if in a cave, no flower animations
+
 	xor a
 	ldh [hMovingBGTilesCounter1], a
 	ret

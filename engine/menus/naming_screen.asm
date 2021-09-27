@@ -38,7 +38,7 @@ AskName:
 	pop hl
 	pop af
 	ld [wUpdateSpritesEnabled], a
-	ld a, [wcf4b]
+	ld a, [wStringBuffer]
 	cp "@"
 	ret nz
 .declinedNickname
@@ -62,7 +62,7 @@ DisplayNameRaterScreen::
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
-	ld a, [wcf4b]
+	ld a, [wStringBuffer]
 	cp "@"
 	jr z, .playerCancelled
 	ld hl, wPartyMonNicks
@@ -107,7 +107,7 @@ DisplayNamingScreen:
 	ld a, 7
 	ld [wMaxMenuItem], a
 	ld a, "@"
-	ld [wcf4b], a
+	ld [wStringBuffer], a
 	xor a
 	ld hl, wNamingScreenSubmitName
 	ld [hli], a
@@ -155,7 +155,7 @@ DisplayNamingScreen:
 
 .submitNickname
 	pop de
-	ld hl, wcf4b
+	ld hl, wStringBuffer
 	ld bc, NAME_LENGTH
 	call CopyData
 	call GBPalWhiteOutWithDelay3
@@ -389,7 +389,7 @@ PrintNicknameAndUnderscores:
 	lb bc, 1, 10
 	call ClearScreenArea
 	hlcoord 10, 2
-	ld de, wcf4b
+	ld de, wStringBuffer
 	call PlaceString
 	hlcoord 10, 3
 	ld a, [wNamingScreenType]
@@ -451,9 +451,9 @@ DakutensAndHandakutens:
 
 INCLUDE "data/text/dakutens.asm"
 
-; calculates the length of the string at wcf4b and stores it in c
+; calculates the length of the string at wStringBuffer and stores it in c
 CalcStringLength:
-	ld hl, wcf4b
+	ld hl, wStringBuffer
 	ld c, $0
 .loop
 	ld a, [hl]

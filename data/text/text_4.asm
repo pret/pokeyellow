@@ -37,7 +37,7 @@ _ChooseABoxText::
 	text_end
 
 _EvolvedText::
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " evolved"
 	done
 
@@ -50,7 +50,7 @@ _IntoText::
 
 _StoppedEvolvingText::
 	text "Huh? @"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text_start
 	line "stopped evolving!"
 	prompt

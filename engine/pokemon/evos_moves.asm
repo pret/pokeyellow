@@ -119,7 +119,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	ld hl, IsEvolvingText
 	call PrintText
 	ld c, 50
@@ -273,7 +273,7 @@ RenameEvolvedMon:
 	pop af
 	ld [wd0b5], a
 	ld hl, wcd6d
-	ld de, wcf4b
+	ld de, wStringBuffer
 .compareNamesLoop
 	ld a, [de]
 	inc de
@@ -359,7 +359,7 @@ LearnMoveFromLevelUp:
 	ld [wMoveNum], a
 	ld [wd11e], a
 	call GetMoveName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	predef LearnMove
 	ld a, b
 	and a

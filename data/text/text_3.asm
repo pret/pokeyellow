@@ -295,7 +295,7 @@ _DepositWhichMonText::
 	done
 
 _MonWasStoredText::
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " was"
 	line "stored in Box @"
 	text_ram wBoxNumString
@@ -313,11 +313,11 @@ _BoxFullText::
 	prompt
 
 _MonIsTakenOutText::
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " is"
 	line "taken out."
 	cont "Got @"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text "."
 	prompt
 
@@ -348,19 +348,17 @@ _ReleaseWhichMonText::
 _OnceReleasedText::
 	text "Once released,"
 	line "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " is"
 	cont "gone forever. OK?"
 	done
 
 _MonWasReleasedText::
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " was"
 	line "released outside."
 	cont "Bye @"
-
-_CF4BExclamationText::
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text "!"
 	prompt
 

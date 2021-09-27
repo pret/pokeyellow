@@ -1,16 +1,16 @@
 CeruleanMelaniesHouse_Object:
 	db $a ; border block
 
-	def_warps
-	warp  2,  7, 1, LAST_MAP
-	warp  3,  7, 1, LAST_MAP
+	def_warp_events
+	warp_event  2,  7, LAST_MAP, 1
+	warp_event  3,  7, LAST_MAP, 1
 
-	def_signs
+	def_bg_events
 
-	def_objects
-	object SPRITE_GIRL, 3, 1, STAY, DOWN, 1 ; person
-	object SPRITE_BULBASAUR, 4, 1, STAY, DOWN, 2 ; person
-	object SPRITE_ODDISH, 1, 4, STAY, NONE, 3 ; person
-	object SPRITE_SANDSHREW, 5, 3, STAY, LEFT, 4 ; person
+	def_object_events
+	object_event 3, 1, SPRITE_GIRL, STAY, DOWN, 1 ; person
+	object_event 4, 1, SPRITE_BULBASAUR, STAY, DOWN, 2 ; person
+	object_event 1, 4, SPRITE_ODDISH, STAY, NONE, 3 ; person
+	object_event 5, 3, SPRITE_SANDSHREW, STAY, LEFT, 4 ; person
 
 	def_warps_to CERULEAN_MELANIES_HOUSE

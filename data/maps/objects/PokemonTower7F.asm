@@ -1,14 +1,14 @@
 PokemonTower7F_Object:
 	db $1 ; border block
 
-	def_warps
-	warp  9, 16, 1, POKEMON_TOWER_6F
+	def_warp_events
+	warp_event  9, 16, POKEMON_TOWER_6F, 1
 
-	def_signs
+	def_bg_events
 
-	def_objects
-	object SPRITE_JESSIE, 10, 8, STAY, DOWN, 1
-	object SPRITE_JAMES, 11, 8, STAY, DOWN, 2
-	object SPRITE_MR_FUJI, 10, 3, STAY, DOWN, 3
+	def_object_events
+	object_event 10, 8, SPRITE_JESSIE, STAY, DOWN, 1
+	object_event 11, 8, SPRITE_JAMES, STAY, DOWN, 2
+	object_event 10, 3, SPRITE_MR_FUJI, STAY, DOWN, 3
 
 	def_warps_to POKEMON_TOWER_7F

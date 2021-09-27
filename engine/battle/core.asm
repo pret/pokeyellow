@@ -2344,7 +2344,7 @@ UseBagItem:
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetItemName
-	call CopyStringToCF4B ; copy name
+	call CopyToStringBuffer
 	xor a
 	ld [wPseudoItemID], a
 	call UseItem
@@ -3506,7 +3506,7 @@ CheckPlayerStatusConditions:
 
 .HeldInPlaceCheck
 	ld a, [wEnemyBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; is enemy using a mult-turn move like wrap?
+	bit USING_TRAPPING_MOVE, a ; is enemy using a multi-turn move like wrap?
 	jp z, .FlinchedCheck
 	ld hl, CantMoveText
 	call PrintText
@@ -3713,7 +3713,7 @@ CheckPlayerStatusConditions:
 	ld a, RAGE
 	ld [wd11e], a
 	call GetMoveName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	xor a
 	ld [wPlayerMoveEffect], a
 	ld hl, PlayerCanExecuteMove
@@ -3915,7 +3915,7 @@ PrintMoveName:
 	ret
 
 _PrintMoveName:
-	text_far _CF4BText
+	text_far _MoveNameText
 	text_asm
 	ld hl, ExclamationPointPointerTable
 	ld a, [wd11e] ; exclamation point num
@@ -5277,7 +5277,7 @@ ReloadMoveData:
 	call IncrementMovePP
 ; the follow two function calls are used to reload the move name
 	call GetMoveName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	ld a, $01
 	and a
 	ret
@@ -5789,7 +5789,7 @@ EnemyCanExecuteChargingMove:
 	ld [wNameListType], a
 	call GetName
 	ld de, wcd6d
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 EnemyCanExecuteMove:
 	xor a
 	ld [wMonIsDisobedient], a
@@ -6226,7 +6226,7 @@ CheckEnemyStatusConditions:
 	ld a, RAGE
 	ld [wd11e], a
 	call GetMoveName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	xor a
 	ld [wEnemyMoveEffect], a
 	ld hl, EnemyCanExecuteMove
@@ -6268,7 +6268,7 @@ GetCurrentMove:
 	ld [wNameListType], a
 	call GetName
 	ld de, wcd6d
-	jp CopyStringToCF4B
+	jp CopyToStringBuffer
 
 LoadEnemyMonData:
 	ld a, [wLinkState]
