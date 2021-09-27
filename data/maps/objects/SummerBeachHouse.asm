@@ -12,7 +12,7 @@ SummerBeachHouse_Object:
 	bg_event 13,  1, 6
 
 	def_object_events
-	object_event 2, 3, SPRITE_FISHING_GURU, STAY, DOWN, 1 ; surfin' dude
-	object_event 5, 3, SPRITE_PIKACHU, WALK, 1, 2 ; pikachu
+	object_event  2,  3, SPRITE_FISHING_GURU, STAY, DOWN, 1 ; surfin' dude
+	object_event  5,  3, SPRITE_PIKACHU, WALK, 1, 2 ; pikachu
 
 	def_warps_to SUMMER_BEACH_HOUSE
