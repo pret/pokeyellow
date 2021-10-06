@@ -2,7 +2,7 @@ Route19_Object:
 	db $43 ; border block
 
 	def_warp_events
-	warp_event  5,  9, SUMMER_BEACH_HOUSE, 0
+	warp_event  5,  9, SUMMER_BEACH_HOUSE, 1
 
 	def_bg_events
 	bg_event 11, 11, 11 ; Route19Text11
