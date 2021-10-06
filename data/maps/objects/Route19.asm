@@ -5,7 +5,7 @@ Route19_Object:
 	warp_event  5,  9, SUMMER_BEACH_HOUSE, 0
 
 	def_bg_events
-	bg_event 11, 11, 11
+	bg_event 11, 11, 11 ; Route19Text11
 
 	def_object_events
 	object_event  9,  7, SPRITE_COOLTRAINER_M, STAY, RIGHT, 1, OPP_SWIMMER, 2
