@@ -218,3 +218,4 @@ UNUSED_TMNUM EQU __tmhm_value__
 
 ; used for Time Capsule held item compatibility
 TWISTEDSPOON_GSC EQU $60
+LIGHT_BALL_GSC   EQU $a3
