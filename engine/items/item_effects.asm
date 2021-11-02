@@ -934,14 +934,14 @@ ItemUseMedicine:
 	ld [wd0b5], a
 	pop af
 	push af
-	cp $28
-	jr nc, .asm_d906
+	cp CALCIUM + 1
+	jr nc, .noHappinessBoost
 	push hl
 	push de
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDITEM
 	pop de
 	pop hl
-.asm_d906
+.noHappinessBoost
 	pop af
 	ld [wcf91], a
 	pop af
