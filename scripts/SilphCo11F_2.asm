@@ -1,4 +1,4 @@
-PerformSaffronCityHideShow::
+SaffronCityHideRocketsShowCitizens::
 	ld hl, SaffronCityRockets
 .hideLoop
 	ld a, [hli]
