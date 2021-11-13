@@ -51,9 +51,9 @@ OptionsMenu_TextSpeed:
 .pressedRight
 	ld a, c
 	cp $2
-	jr c, .asm_41cca
+	jr c, .Increase
 	ld c, $ff
-.asm_41cca
+.Increase
 	inc c
 	ld a, e
 	jr .Save
