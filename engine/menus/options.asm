@@ -56,7 +56,7 @@ OptionsMenu_TextSpeed:
 .asm_41cca
 	inc c
 	ld a, e
-	jr .asm_41cd6
+	jr .Save
 .pressedLeft
 	ld a, c
 	and a
@@ -65,7 +65,7 @@ OptionsMenu_TextSpeed:
 .asm_41cd4
 	dec c
 	ld a, d
-.asm_41cd6
+.Save
 	ld b, a
 	ld a, [wOptions]
 	and $f0
