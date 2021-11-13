@@ -47,7 +47,7 @@ OptionsMenu_TextSpeed:
 	jr nz, .pressedRight
 	bit 5, a
 	jr nz, .pressedLeft
-	jr .asm_41ce0
+	jr .NonePressed
 .pressedRight
 	ld a, c
 	cp $2
@@ -71,7 +71,7 @@ OptionsMenu_TextSpeed:
 	and $f0
 	or b
 	ld [wOptions], a
-.asm_41ce0
+.NonePressed
 	ld b, $0
 	ld hl, TextSpeedStringsPointerTable
 	add hl, bc
