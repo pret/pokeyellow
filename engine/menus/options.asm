@@ -60,9 +60,9 @@ OptionsMenu_TextSpeed:
 .pressedLeft
 	ld a, c
 	and a
-	jr nz, .asm_41cd4
+	jr nz, .Decrease
 	ld c, $3
-.asm_41cd4
+.Decrease
 	dec c
 	ld a, d
 .Save
