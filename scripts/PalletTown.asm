@@ -51,7 +51,7 @@ PalletTownScript0:
 	ret
 
 PalletTownScript1:
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
 	ld [wcf0d], a
@@ -105,7 +105,7 @@ PalletTownScript3:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, 1
 	ld [wcf0d], a
@@ -135,7 +135,7 @@ PalletTownScript3:
 
 PalletTownScript4:
 	; start the pikachu battle
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
 	ld [wListScrollOffset], a

@@ -24,7 +24,7 @@ REPT _NARG
 	IF DEF(\1_TMNUM)
 n = (\1_TMNUM - 1) / 8
 i = (\1_TMNUM - 1) % 8
-_tm{d:n} = _tm{d:n} | (1 << i)
+_tm{d:n} |= 1 << i
 	ELSE
 		FAIL "\1 is not a TM or HM move"
 	ENDC
@@ -39,17 +39,9 @@ ENDM
 
 ; Constant data (db, dw, dl) macros
 
-dn: MACRO ; nybbles
-	db (\1 << 4 | \2)
-ENDM
-
 dbw: MACRO
 	db \1
 	dw \2
-ENDM
-
-dba: MACRO
-	dbw BANK(\1), \1
 ENDM
 
 dwb: MACRO
@@ -57,8 +49,25 @@ dwb: MACRO
 	db \2
 ENDM
 
-dab: MACRO
+dn: MACRO ; nybbles
+REPT _NARG / 2
+	db ((\1) << 4) | (\2)
+	SHIFT 2
+ENDR
+ENDM
+
+dba: MACRO ; dbw bank, address
+REPT _NARG
+	dbw BANK(\1), \1
+	SHIFT
+ENDR
+ENDM
+
+dab: MACRO ; dwb address, bank
+REPT _NARG
 	dwb \1, BANK(\1)
+	SHIFT
+ENDR
 ENDM
 
 sine_table: MACRO
@@ -66,6 +75,6 @@ sine_table: MACRO
 x = 0
 REPT \1
 	dw (sin(x) + (sin(x) & $ff)) >> 8 ; round up
-x = x + DIV(32768, \1) ; a circle has 65536 "degrees"
+x += DIV(32768, \1) ; a circle has 65536 "degrees"
 ENDR
 ENDM

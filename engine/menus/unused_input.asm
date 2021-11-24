@@ -31,7 +31,7 @@ HandleMenuInputPokemonSelectionDuplicate: ; unreferenced
 	ld [wCheckFor180DegreeTurn], a
 	ldh a, [hJoy5]
 	ld b, a
-	bit 6, a ; pressed Up key?
+	bit BIT_D_UP, a
 	jr z, .checkIfDownPressed
 .upPressed
 	ld a, [wCurrentMenuItem] ; selected menu item

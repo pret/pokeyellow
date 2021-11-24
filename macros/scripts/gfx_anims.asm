@@ -5,7 +5,7 @@ frame: MACRO
 x = \2
 IF _NARG > 2
 REPT _NARG - 2
-x = x | (\3 << 1)
+x |= \3 << 1
 	shift
 ENDR
 ENDC

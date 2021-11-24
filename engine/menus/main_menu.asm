@@ -64,7 +64,7 @@ MainMenu:
 	ld a, [wSaveFileStatus]
 	ld [wMaxMenuItem], a
 	call HandleMenuInput
-	bit 1, a ; pressed B?
+	bit BIT_B_BUTTON, a
 	jp nz, DisplayTitleScreen ; if so, go back to the title screen
 	ld c, 20
 	call DelayFrames
@@ -97,9 +97,9 @@ MainMenu:
 	ldh [hJoyHeld], a
 	call Joypad
 	ldh a, [hJoyHeld]
-	bit 0, a
+	bit BIT_A_BUTTON, a
 	jr nz, .pressedA
-	bit 1, a
+	bit BIT_B_BUTTON, a
 	jp nz, .mainMenuLoop ; pressed B
 	jr .inputLoop
 .pressedA

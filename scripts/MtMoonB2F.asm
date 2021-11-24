@@ -234,7 +234,7 @@ MtMoon3Script_49e15:
 	call PlayMusic
 	xor a
 	ldh [hJoyHeld], a
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, HS_MT_MOON_B2F_JESSIE
 	call MtMoon3Script_49f84
@@ -319,7 +319,7 @@ MtMoon3Script11:
 	ld a, SPRITE_FACING_LEFT
 	ld [wSprite06StateData1FacingDirection], a
 	call Delay3
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $d
 	ldh [hSpriteIndexOrTextID], a
@@ -355,7 +355,7 @@ MtMoon3Script13:
 	xor a
 	ld [wSprite02StateData1FacingDirection], a
 	ld [wSprite06StateData1FacingDirection], a
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

@@ -740,9 +740,7 @@ InitGBCPalettes:
 
 	inc hl
 
-index = 0
-
-	REPT NUM_ACTIVE_PALS
+	FOR index, NUM_ACTIVE_PALS
 		IF index > 0
 			pop hl
 		ENDC
@@ -774,8 +772,6 @@ index = 0
 		call DMGPalToGBCPal
 		ld a, index + 4
 		call TransferCurOBPData
-
-index = index + 1
 	ENDR
 
 	ret
@@ -820,8 +816,7 @@ DMGPalToGBCPal::
 	ldh a, [rOBP1]
 	ld [wLastOBP1], a
 .convert
-color_index = 0
-	REPT NUM_PAL_COLORS
+	FOR color_index, NUM_PAL_COLORS
 		ld b, a
 		and %11
 		call .GetColorAddress
@@ -835,8 +830,6 @@ color_index = 0
 			rrca
 			rrca
 		ENDC
-
-color_index = color_index + 1
 	ENDR
 	ret
 
@@ -980,9 +973,7 @@ _UpdateGBCPal_BGP_CheckDMG::
 ; fall through
 
 _UpdateGBCPal_BGP::
-index = 0
-
-	REPT NUM_ACTIVE_PALS
+	FOR index, NUM_ACTIVE_PALS
 		ld a, [wGBCBasePalPointers + index * 2]
 		ld e, a
 		ld a, [wGBCBasePalPointers + index * 2 + 1]
@@ -991,17 +982,13 @@ index = 0
 		call DMGPalToGBCPal
 		ld a, index
 		call BufferBGPPal
-
-index = index + 1
 	ENDR
 
 	call TransferBGPPals
 	ret
 
 _UpdateGBCPal_OBP::
-index = 0
-
-	REPT NUM_ACTIVE_PALS
+	FOR index, NUM_ACTIVE_PALS
 		ld a, [wGBCBasePalPointers + index * 2]
 		ld e, a
 		ld a, [wGBCBasePalPointers + index * 2 + 1]
@@ -1022,8 +1009,6 @@ index = 0
 		ENDC
 
 		call TransferCurOBPData
-
-index = index + 1
 	ENDR
 
 	ret

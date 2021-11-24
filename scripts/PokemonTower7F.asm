@@ -54,7 +54,7 @@ PokemonTower7Script_60d2a:
 	call PlayMusic
 	xor a
 	ldh [hJoyHeld], a
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, HS_POKEMON_TOWER_7F_JESSIE
 	call PokemonTower7Script_60eaf
@@ -141,7 +141,7 @@ PokemonTower7Script6:
 	ld [wSprite02StateData1FacingDirection], a
 .asm_60dff
 	call Delay3
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $5
 	ldh [hSpriteIndexOrTextID], a
@@ -176,7 +176,7 @@ PokemonTower7Script8:
 	xor a
 	ld [wSprite01StateData1FacingDirection], a
 	ld [wSprite02StateData1FacingDirection], a
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

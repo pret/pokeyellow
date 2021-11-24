@@ -10,7 +10,7 @@ ViridianCityText_f18c2:
 Func_f18c7::
 	ld hl, ViridianCityText_19127
 	ld a, [wObtainedBadges]
-	cp $ff ^ (1 << BIT_EARTHBADGE)
+	cp ~(1 << BIT_EARTHBADGE)
 	jr z, .done
 	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
 	jr nz, .done

@@ -33,7 +33,7 @@ ViridianCityScript_1905b:
 	CheckEvent EVENT_VIRIDIAN_GYM_OPEN
 	ret nz
 	ld a, [wObtainedBadges]
-	cp $ff ^ (1 << BIT_EARTHBADGE)
+	cp ~(1 << BIT_EARTHBADGE)
 	jr nz, .gym_closed
 	SetEvent EVENT_VIRIDIAN_GYM_OPEN
 	ret

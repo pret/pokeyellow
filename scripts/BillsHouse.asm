@@ -212,7 +212,7 @@ BillsHouseScript7:
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
 	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld de, RLE_1e219
 	ld hl, wSimulatedJoypadStatesEnd

@@ -231,7 +231,7 @@ OaksLabScript9:
 	ld a, EEVEE
 	ld [wd11e], a
 	call GetMonName
-	ld a, $FF ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, $11
 	ldh [hSpriteIndexOrTextID], a
@@ -378,7 +378,7 @@ OaksLabScript14:
 	ld a, b
 	ld [wRivalStarter], a
 
-	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
@@ -435,7 +435,7 @@ OaksLabScript16:
 	ld a, [wd730]
 	bit 0, a
 	jr nz, .checkRivalPosition
-	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, HS_OAKS_LAB_RIVAL
 	ld [wMissableObjectIndex], a
@@ -539,7 +539,7 @@ OaksLabScript20:
 	ret nz
 	call EnableAutoTextBoxDrawing
 	call PlayDefaultMusic
-	ld a, $ff ^ (A_BUTTON | B_BUTTON)
+	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	call OaksLabScript_1c78e
 	ld a, $14

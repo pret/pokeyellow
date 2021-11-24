@@ -353,7 +353,7 @@ TradeCenter_SelectMon:
 	res 1, [hl]
 	and a
 	jp z, .getNewInput
-	bit 0, a ; A button pressed?
+	bit BIT_A_BUTTON, a
 	jr z, .enemyMonMenu_ANotPressed
 ; if A button pressed
 	ld a, [wMaxMenuItem]
@@ -372,7 +372,7 @@ TradeCenter_SelectMon:
 	call TradeCenter_DisplayStats
 	jp .getNewInput
 .enemyMonMenu_ANotPressed
-	bit 5, a ; Left pressed?
+	bit BIT_D_LEFT, a
 	jr z, .enemyMonMenu_LeftNotPressed
 ; if Left pressed, switch back to the player mon menu
 	xor a ; player mon menu
@@ -392,7 +392,7 @@ TradeCenter_SelectMon:
 	ld [wCurrentMenuItem], a
 	jr .playerMonMenu
 .enemyMonMenu_LeftNotPressed
-	bit 7, a ; Down pressed?
+	bit BIT_D_DOWN, a
 	jp z, .getNewInput
 	jp .selectedCancelMenuItem ; jump if Down pressed
 .playerMonMenu
@@ -420,7 +420,7 @@ TradeCenter_SelectMon:
 	jr nz, .playerMonMenu_SomethingPressed
 	jp .getNewInput
 .playerMonMenu_SomethingPressed
-	bit 0, a ; A button pressed?
+	bit BIT_A_BUTTON, a
 	jr z, .playerMonMenu_ANotPressed
 	jp .chosePlayerMon ; jump if A button pressed
 ; unreachable code
@@ -430,7 +430,7 @@ TradeCenter_SelectMon:
 	call TradeCenter_DisplayStats
 	jp .getNewInput
 .playerMonMenu_ANotPressed
-	bit 4, a ; Right pressed?
+	bit BIT_D_RIGHT, a
 	jr z, .playerMonMenu_RightNotPressed
 ; if Right pressed, switch to the enemy mon menu
 	ld a, $1 ; enemy mon menu
@@ -452,7 +452,7 @@ TradeCenter_SelectMon:
 .notPastLastEnemyMon
 	jp .enemyMonMenu
 .playerMonMenu_RightNotPressed
-	bit 7, a ; Down pressed?
+	bit BIT_D_DOWN, a
 	jr z, .getNewInput
 	jp .selectedCancelMenuItem ; jump if Down pressed
 .getNewInput
@@ -495,7 +495,7 @@ TradeCenter_SelectMon:
 	call HandleMenuInput
 	bit 4, a ; Right pressed?
 	jr nz, .selectTradeMenuItem
-	bit 1, a ; B button pressed?
+	bit BIT_B_BUTTON, a
 	jr z, .displayPlayerMonStats
 .cancelPlayerMonChoice
 	pop af
@@ -510,9 +510,9 @@ TradeCenter_SelectMon:
 	ld a, 11
 	ld [wTopMenuItemX], a
 	call HandleMenuInput
-	bit 5, a ; Left pressed?
+	bit BIT_D_LEFT, a
 	jr nz, .selectStatsMenuItem
-	bit 1, a ; B button pressed?
+	bit BIT_B_BUTTON, a
 	jr nz, .cancelPlayerMonChoice
 	jr .choseTrade
 .displayPlayerMonStats
@@ -561,9 +561,9 @@ TradeCenter_SelectMon:
 	ldh a, [hJoy5]
 	and a ; pressed anything?
 	jr z, .cancelMenuItem_JoypadLoop
-	bit 0, a ; A button pressed?
+	bit BIT_A_BUTTON, a
 	jr nz, .cancelMenuItem_APressed
-	bit 6, a ; Up pressed?
+	bit BIT_D_UP, a
 	jr z, .cancelMenuItem_JoypadLoop
 ; if Up pressed
 	ld a, " "
