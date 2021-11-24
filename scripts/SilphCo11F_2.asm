@@ -1,28 +1,28 @@
-Func_f25a0::
-	ld hl, MissableObjects_f25ce
-.asm_f25a3
+SaffronCityHideRocketsShowCitizens::
+	ld hl, SaffronCityRockets
+.hideLoop
 	ld a, [hli]
-	cp $ff
-	jr z, .asm_f25b4
+	cp $ff ; have we run out of rockets to hide?
+	jr z, .showCitizens ; if so, start showing the citizens
 	push hl
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	pop hl
-	jr .asm_f25a3
+	jr .hideLoop
 
-.asm_f25b4
-	ld hl, MissableObjects_f25c7
-.asm_f25b7
+.showCitizens
+	ld hl, SaffronCityCitizens
+.showLoop
 	ld a, [hli]
-	cp $ff
-	ret z
+	cp $ff ; have we run out of citizens to show?
+	ret z ; if so, we're done here
 	push hl
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	pop hl
-	jr .asm_f25b7
+	jr .showLoop
 
-MissableObjects_f25c7:
+SaffronCityCitizens:
 	db HS_SAFFRON_CITY_8
 	db HS_SAFFRON_CITY_9
 	db HS_SAFFRON_CITY_A
@@ -31,7 +31,7 @@ MissableObjects_f25c7:
 	db HS_SAFFRON_CITY_D
 	db $FF
 
-MissableObjects_f25ce:
+SaffronCityRockets:
 	db HS_SAFFRON_CITY_1
 	db HS_SAFFRON_CITY_2
 	db HS_SAFFRON_CITY_3
