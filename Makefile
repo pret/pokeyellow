@@ -48,7 +48,7 @@ clean: tidy
 	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
 
 tidy:
-	rm -f $(roms) $(pokeyellow_obj) $(pokeyellow_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
+	$(RM) $(roms) $(pokeyellow_obj) $(pokeyellow_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
 
 compare: $(roms)
