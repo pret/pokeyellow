@@ -1,0 +1,533 @@
+;Format Sample
+;[xxxx]			;User-defined Name (Max:31 chars)
+;Mode = 1		;1:Fixcode; 2:Fixvalue; 3:Mask; 4:Palette; 5:Double Frame Buffer
+;Type = 0		;0:Begin 1:End
+;Index = 0		;Index
+;Address = x1F8000	;ROM Address
+;MemAddress = x2000	;RAM Address
+;Fixcode = 0		;Mode1: Fixed Rom Code; Mode2: Fixed Value
+;DelayFrame = 0		;Delay Frame
+;FadeFrame = 0		;Fade Frame 0:Off
+;DarkEnable0 = 0	;0:Off, 1:On (for Normal Mode)
+;ReduceEnable0 = 0	;0:Off, 1:On (for Normal Mode)
+;MotionBEnable0 = 0	;0:Off, 1:Black Fade, 2:, 3:Frame Blend (for Normal Mode)
+;Dark0 = 10		;0~10 (for Normal Mode)
+;ReduceColorR0 = 0	;0~31 (for Normal Mode)
+;ReduceColorG0 = 0	;0~31 (for Normal Mode)
+;ReduceColorB0 = 0	;0~31 (for Normal Mode)
+;MotionBlur0 = 31	;0~31 (for Normal Mode)
+;DarkEnable1 = 0	;0:Off, 1:On (for Green Mode)
+;ReduceEnable1 = 0	;0:Off, 1:On (for Green Mode)
+;MotionBEnable1 = 0	;0:Off, 1:Black Fade, 2:, 3:Frame Blend (for Green Mode)
+;Dark1 = 10		;0~10 (for Green Mode)
+;ReduceColorR1 = 0	;0~31 (for Green Mode)
+;ReduceColorG1 = 0	;0~31 (for Green Mode)
+;ReduceColorB1 = 0	;0~31 (for Green Mode)
+;MotionBlur1 = 31	;0~31 (for Green Mode)
+;PaletteX = c31,31,31	;X:0~15, cR,G,B (0~31)
+[SaveLimit]
+Mode = 12
+Type = 1
+Index = {hex sGameData}
+Address = {hex sGameDataEnd}
+
+;[Fix_print]
+;Mode = 1
+;Address = 0x40130
+;Fixcode = a3: 00 00 00
+
+[disable_print]
+Mode = 1
+Address = {hex @+1}
+Fixcode = {PATCH +1}
+
+;[Fix pokemon]
+;Mode = 2
+;Address = 0x1551
+;Type = 3
+
+[MiniGame]
+Mode = 1
+Address = 0xF222F
+Fixcode = 0x7F
+
+[MiniGame-HighScorePC]
+Mode = 1
+Address = 0xF2303
+Fixcode = 0x7F
+
+[send_send_buf2]
+Mode = 2
+Address = 0x20DB
+Type = 29
+
+[send_send_buf2_ret]
+Mode = 2
+Address = 0x211E
+Type = 30
+
+[send_byt2]
+Mode = 2
+Address = 0x3D7AA
+Type = 31
+
+[send_byt2_ret]
+Mode = 2
+Address = 0x3D7B9
+Type = 32
+
+[send_dummy]
+Mode = 2
+Address = 0x3D7C4
+Type = 33
+
+[send_dummy_end]
+Mode = 2
+Address = 0x3D7CF
+Type = 34
+
+[FIGHT]
+Mode = 1
+Address = 0x3D7BA
+Fixcode = 0x1A
+
+[FIGHT2]
+Mode = 1
+Address = 0x3D7C5
+Fixcode = 0x1A
+
+[Network10]
+Mode = 1
+Address = 0x2103
+Fixcode = 0x1A
+
+[Network11]
+Mode = 1
+Address = 0x210E
+Fixcode = 0x1A
+
+[Network424]
+Mode = 2
+Address = 0x5481
+Type = 4
+
+[Network200]
+Mode = 2
+Address = 0x5490
+Type = 4
+
+;[RND_HACK]
+;Mode = 1
+;Address = 0x3E70
+;Fixcode = a10: 3E 3D 00 00 00 00 00 00 00 00 
+
+;[PLAY_HACK]
+;Mode = 2
+;Address = 0x2238
+;Type = 5
+
+
+;[PLAY_MUTE]
+;Mode = 1
+;Address = 0x150
+;Fixcode = 0xC9
+
+[PLAY_MUTE]
+Mode = 1
+Address = 0xF0039
+Fixcode = 0x00
+
+[PLAY_HACK]
+Mode = 2
+Address = 0x150
+Type = 6
+
+[PLAY_NEW]
+Mode = 2
+Address = 0xF0000
+Type = 21
+
+[Network_RECHECK]
+Mode = 2
+Address = 0x70DB
+Type = 7
+
+[Network_STOP]
+Mode = 2
+Address = 0xF595A
+Type = 8
+
+[Network_END]
+Mode = 2
+Address = 0xF5962
+Type = 9
+
+[Network_RESET]
+Mode = 2
+Address = 0x722D4
+Type = 10
+
+[linkCable fake begin]
+Mode = 2
+Address = 0x7077
+Type = 16
+
+[linkCable fake end]
+Mode = 2
+Address = 0x70D8
+Type = 17  
+  
+[linkCable block input]
+Mode = 2
+Address = 0x70BA
+Type = 18
+
+;[save game start]
+;Mode = 2
+;Address = 0x5A84
+;Type = 19
+
+[save game end]
+Mode = 2
+Address = 0x5AC0
+Type = 20
+
+[Change_MSG]
+Mode = 1
+Address = 0xB4010
+Fixcode = a20: 8F AB A4 A0 B2 A4 7F A2 AE AC A4 7F A0 A6 A0 A8 AD E7 57 00
+
+[fight_ret]
+Mode = 1
+Address = 0x3f044
+Fixcode = 0xC9
+
+[fight_ret_c]
+Mode = 2
+Address = 0x3f044
+Type = 98
+
+;Mem Write: pc32 = 0xf992d addr = 0xc634 value = 0xe
+;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x1
+[FPA 031801 Begin1]       
+Mode = 3                   
+Type = 0                   
+Address = 0xf992e         
+MotionBEnable0 = 3         
+MotionBlur0 = 28     
+ConditionType = 0                    
+ConditionValueA = a2: 34 c6    
+ConditionValueB = a2: 00 00      
+ConditionValueC = a2: 0e 00      
+
+;34 6F 26 00
+;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x33   
+[FPA 031801 End1]                
+Mode = 3                         
+Type = 1                         
+Address = 0xf9e51                
+ConditionType = 0                
+ConditionValueA = a4: 34 c6 35 c6     
+ConditionValueB = a4: 00 00 00 00     
+ConditionValueC = a4: 0e 00 33 00     
+                      
+
+
+
+;rsm095822 
+;Mem Write: pc32 = 0xf9d8b addr = 0xc635 value = 0x28  
+;30                                                                   
+[FPA 031801 Begin2]                                                                         
+Mode = 3                                                                                
+Type = 0                                                                                
+Address = 0xf9d8b                                                                    
+MotionBEnable0 = 3                                                                      
+MotionBlur0 = 4                                                                        
+ConditionType = 0                                                                    
+ConditionValueA = a2: 34 c6                                                          
+ConditionValueB = a2: 00 00                                                          
+ConditionValueC = a2: 0f 00  
+
+                              
+[FPA 031801 End2]             
+Mode = 3                      
+Type = 1                      
+Address = 0xF9e4b 
+ConditionType = 0                             
+ConditionValueA = a2: 34 c6         
+ConditionValueB = a2: 00 00         
+ConditionValueC = a2: 0f 00 
+
+;222222aaaaaaaaaaaaaaaa: pc32 = 0xf984b addr = 0xffb3 value = 0x0               
+;000f984bh: F0 B3 E6 0B                                        
+[FPA 031801 End3]                                                         
+Mode = 3                                                                  
+Type = 1                                                                  
+Address = 0xf986e                                                         
+ConditionType = 11                                                        
+ConditionValueA = a6: 34 c6 00 00 34 c6                                   
+ConditionValueB = a6: 00 00 11 00 00 00                                   
+ConditionValueC = a6: 0e 00 00 00 0f 00                                   
+                                                                          
+
+; The effect_no decide which animation will be played.                        
+; So we use it as a condition value.  The address of effect_no is 0xd076      
+; a7 c0 3e 05 ea                                                              
+;	and	a                                A7                                     
+;	ret	nz                               C0                                     
+;                                                                             
+;	ld	a,5                              3E 05                                  
+;	ld	(anime_buf),a                    EA                                     
+;                                                                             
+;	                                                                            
+;effect_select_rdy:                                                           
+;	ld	(effect_no),a          						                                      
+;                                                                             
+;	call	put_wait                                                              
+;                                                                             
+;	ld	a,B_EFFECT_SELECT                                                       
+
+
+
+;rsm002551    
+;Mem Write: pc32 = 0x781c5 addr = 0xd086 value = 0x3      
+;17 --13     
+;No151 Mega Punch            
+[FPA 001 Begin]                       
+Mode = 3                              
+Type = 0                              
+Address = 0x781c5                     
+MotionBEnable0 = 3                    
+MotionBlur0 = 11                       
+ConditionType = 11                     
+ConditionValueA = a36: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0             
+ConditionValueB = a36: 00 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00          
+ConditionValueC = a36: 8c 00 84 00 86 00 80 00 8f 00 05 00 00 00 84 00 97 00 8f 00 8b 00 05 00 00 00 92 00 84 00 8b 00 85 00 05 00          
+                                      
+[FPA 001 End]                         
+Mode = 3                              
+Type = 1                              
+Address = 0x7813a                 
+ConditionType = 0                     
+ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0          
+ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00          
+ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8f 00 05 00   
+
+;rsm103725   
+;Mem Write: pc32 = 0x781c5 addr = 0xd086 value = 0x3  
+;No117  Guillotine                 
+[FPA 002 Begin]                       
+Mode = 3                              
+Type = 0                              
+Address = 0x781c3                     
+MotionBEnable0 = 3                    
+MotionBlur0 = 7                       
+ConditionType = 0                     
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0           
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00           
+ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00           
+                                      
+[FPA 002 End]                         
+Mode = 3                              
+Type = 1                              
+Address = 0x781b1               
+ConditionType = 0                     
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0           
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00           
+ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00      
+
+
+;rsm142438   
+;17 --13 
+;No150 Mega Kick                        
+[FPA 003 Begin]                       
+Mode = 3                              
+Type = 0                              
+Address = 0x781c2                     
+MotionBEnable0 = 3                    
+MotionBlur0 = 10                      
+ConditionType = 0                     
+ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0         
+ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00         
+ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00         
+                                      
+[FPA 003 End]                         
+Mode = 3                              
+Type = 1                              
+Address = 0x781b2               
+ConditionType = 0                     
+ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0            
+ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00            
+ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00    
+
+;rsm154217   blizzard   
+;No131                     
+[FPA 004 Begin]                           
+Mode = 3                                  
+Type = 0                                  
+Address = 0x781c8                         
+MotionBEnable0 = 3                        
+MotionBlur0 = 11                         
+ConditionType = 0                         
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                 
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00                 
+ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00                 
+                                          
+[FPA 004 End]                             
+Mode = 3                                  
+Type = 1                                  
+Address = 0x781b4                        
+ConditionType = 0                         
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
+ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00          
+
+
+
+;rsm163638       bubblebeam 
+;No123                    
+[FPA 005 Begin]                       
+Mode = 3                              
+Type = 0                              
+Address = 0x781c1                     
+MotionBEnable0 = 3                    
+MotionBlur0 = 15                       
+ConditionType = 0                     
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0         
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00         
+ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00         
+                                      
+[FPA 005 End]                         
+Mode = 3                              
+Type = 1                              
+Address = 0x78139              
+ConditionType = 0                     
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
+ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00    
+
+;Mem Write: pc32 = 0xc2 addr = 0xcfd1 value = 0x3f
+;Pallte Write: pc32 =00078e79 00000048 e4         
+;No116            hyper beam                    
+[FPA 006 Begin]                            
+Mode = 3                                   
+Type = 0                                   
+Address = 0x78e79                       
+MotionBEnable0 = 3                         
+MotionBlur0 = 6                            
+ConditionType = 0                          
+ConditionValueA = a8: 4a cf 4b cf 4c cf 7b d0           
+ConditionValueB = a8: 00 00 00 00 00 00 00 00                
+ConditionValueC = a8: 87 00 98 00 8f 00 3f 00   
+
+;rsm112921       thunderbolt   
+;15 -- 13  
+;No57 thunderbolt                
+[FPA 007 Begin]                                
+Mode = 3                                       
+Type = 0                                       
+Address = 0x781c9                              
+MotionBEnable0 = 3                             
+MotionBlur0 = 13 
+ConditionType = 0                              
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00                    
+ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00                    
+                                              
+[FPA 007 End]                                  
+Mode = 3                                       
+Type = 1                                       
+Address = 0x781ac 
+ConditionType = 0                  
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0  
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00  
+ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00  
+;
+;rsm130806      haze   
+;No40 haze                   
+[FPA 008 Begin]                         
+Mode = 3                                
+Type = 0                                
+Address = 0x78e7d                       
+MotionBEnable0 = 3                      
+MotionBlur0 = 28                         
+ConditionType = 0                       
+ConditionValueA =  a10: 4a cf 4b cf 4c cf 4d cf 7b d0            
+ConditionValueB =  a10: 00 00 00 00 00 00 00 00 00 00            
+ConditionValueC =  a10: 87 00 80 00 99 00 84 00 72 00            
+                                        
+[FPA 008 End]                           
+Mode = 3                                
+Type = 1                                
+Address = 0x78dcd                      
+ConditionType = 11                       
+ConditionValueA = a20: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 7b d0          
+ConditionValueB = a20: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00     
+ConditionValueC = a20: 87 00 80 00 99 00 84 00 72 00 00 00 87 00 98 00 8f 00 3f 00 
+
+
+;rsm131656       reflect  
+;No159                  
+[FPA 009 Begin]                           
+Mode = 3                                  
+Type = 0                                  
+Address = 0x781cd                         
+MotionBEnable0 = 3                        
+MotionBlur0 = 6                           
+ConditionType = 0                         
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00               
+ConditionValueC = a10: 91 00 84 00 85 00 8b 00 73 00               
+                                          
+[FPA 009 End]                             
+Mode = 3                                  
+Type = 1                                  
+Address = 0x78dc6                         
+ConditionType = 0                         
+ConditionValueA =  a10: 4a cf 4b cf 4c cf 4d cf 7b d0       
+ConditionValueB =  a10: 00 00 00 00 00 00 00 00 00 00       
+ConditionValueC =  a10: 91 00 84 00 85 00 8b 00 73 00  
+
+;rsm132935       selfdestruct  
+;No56                  
+[FPA 010 Begin]                        
+Mode = 3                               
+Type = 0                               
+Address = 0x781d4                     
+MotionBEnable0 = 3                     
+MotionBlur0 = 11                        
+ConditionType = 0                      
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0               
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00              
+ConditionValueC = a10: 92 00 84 00 8b 00 85 00 78 00              
+                                        
+[FPA 010 End]                          
+Mode = 3                               
+Type = 1                               
+Address = 0x78df6                      
+ConditionType = 11                      
+ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0         
+ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00       
+ConditionValueC = a22: 92 00 84 00 8b 00 85 00 05 00 00 00 92 00 84 00 8b 00 85 00 78 00      
+
+;rsm013740       explosion  
+;No76               
+[FPA 011 Begin]                       
+Mode = 3                              
+Type = 0                              
+Address = 0x781fb                    
+MotionBEnable0 = 3                    
+MotionBlur0 = 11                      
+ConditionType = 0                     
+ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0            
+ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00            
+ConditionValueC = a10: 84 00 97 00 8f 00 8b 00 99 00            
+                                      
+[FPA 011 End]                         
+Mode = 3                              
+Type = 1                              
+Address = 0x781ae            
+ConditionType = 11                     
+ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0             
+ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00            
+ConditionValueC = a22: 84 00 97 00 8f 00 8b 00 05 00 00 00 84 00 97 00 8f 00 8b 00 99 00      

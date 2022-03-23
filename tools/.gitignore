@@ -1,4 +1,5 @@
-scan_includes
 gfx
-pkmncompress
+make_patch
 pcm
+pkmncompress
+scan_includes

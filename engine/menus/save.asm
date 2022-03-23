@@ -35,6 +35,9 @@ LoadSAV0:
 	call EnableSRAMAndLatchClockData
 	ld a, $1
 	ld [MBC1SRamBank], a
+; This vc_hook does not have to be in any particular location.
+; It is defined here because it refers to the same labels as the two lines below.
+	vc_hook SaveLimit
 	ld hl, sPlayerName ; hero name located in SRAM
 	ld bc, sMainDataCheckSum - sPlayerName ; but here checks the full SAV
 	call SAVCheckSum
