@@ -794,9 +794,11 @@ LinkMenu:
 	call Delay3
 	callfar CloseLinkConnection
 	ld hl, ColosseumCanceledText
+	vc_hook Network_STOP
 	call PrintText
 	ld hl, wd72e
 	res 6, [hl]
+	vc_hook Network_END
 	ret
 
 .asm_f5963

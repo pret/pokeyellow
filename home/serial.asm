@@ -233,6 +233,7 @@ Serial_PrintWaitingTextAndSyncAndExchangeNybble::
 	jp LoadScreenTilesFromBuffer1
 
 Serial_SyncAndExchangeNybble::
+	vc_hook send_send_buf2
 	ld a, $ff
 	ld [wSerialExchangeNybbleReceiveData], a
 .loop1
@@ -256,13 +257,25 @@ Serial_SyncAndExchangeNybble::
 	ld a, [wSerialExchangeNybbleReceiveData]
 	inc a
 	jr z, .loop1
+	vc_patch Network10
+IF DEF(_YELLOW_VC)
+	ld b, 26
+ELSE
 	ld b, 10
+ENDC
+	vc_patch_end
 .loop2
 	call DelayFrame
 	call Serial_ExchangeNybble
 	dec b
 	jr nz, .loop2
+	vc_patch Network11
+IF DEF(_YELLOW_VC)
+	ld b, 26
+ELSE
 	ld b, 10
+ENDC
+	vc_patch_end
 .loop3
 	call DelayFrame
 	call Serial_SendZeroByte
@@ -270,6 +283,7 @@ Serial_SyncAndExchangeNybble::
 	jr nz, .loop3
 	ld a, [wSerialExchangeNybbleReceiveData]
 	ld [wSerialSyncAndExchangeNybbleReceiveData], a
+	vc_hook send_send_buf2_ret
 	ret
 
 Serial_ExchangeNybble::

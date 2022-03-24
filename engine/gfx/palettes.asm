@@ -657,6 +657,7 @@ CheckSGB:
 SendMltReq1Packet:
 	ld hl, MltReq1Packet
 	call SendSGBPacket
+	vc_hook Network_RESET
 	jp Wait7000
 
 CopyGfxToSuperNintendoVRAM:

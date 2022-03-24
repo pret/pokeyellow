@@ -48,72 +48,72 @@ Fixcode = {PATCH +1}
 
 [MiniGame]
 Mode = 1
-Address = 0xF222F
-Fixcode = 0x7F
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
-[MiniGame-HighScorePC]
+[MiniGame-HighScorePC@MiniGameHighScorePC]
 Mode = 1
-Address = 0xF2303
-Fixcode = 0x7F
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [send_send_buf2]
 Mode = 2
-Address = 0x20DB
+Address = {HEX @}
 Type = 29
 
 [send_send_buf2_ret]
 Mode = 2
-Address = 0x211E
+Address = {HEX @}
 Type = 30
 
 [send_byt2]
 Mode = 2
-Address = 0x3D7AA
+Address = {HEX @+5}
 Type = 31
 
 [send_byt2_ret]
 Mode = 2
-Address = 0x3D7B9
+Address = {HEX @}
 Type = 32
 
 [send_dummy]
 Mode = 2
-Address = 0x3D7C4
+Address = {HEX @}
 Type = 33
 
 [send_dummy_end]
 Mode = 2
-Address = 0x3D7CF
+Address = {HEX @}
 Type = 34
 
 [FIGHT]
 Mode = 1
-Address = 0x3D7BA
-Fixcode = 0x1A
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [FIGHT2]
 Mode = 1
-Address = 0x3D7C5
-Fixcode = 0x1A
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [Network10]
 Mode = 1
-Address = 0x2103
-Fixcode = 0x1A
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [Network11]
 Mode = 1
-Address = 0x210E
-Fixcode = 0x1A
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [Network424]
 Mode = 2
-Address = 0x5481
+Address = {HEX @}
 Type = 4
 
 [Network200]
 Mode = 2
-Address = 0x5490
+Address = {HEX @}
 Type = 4
 
 ;[RND_HACK]
@@ -134,52 +134,52 @@ Type = 4
 
 [PLAY_MUTE]
 Mode = 1
-Address = 0xF0039
-Fixcode = 0x00
+Address = {HEX @+1}
+Fixcode = {PATCH +1}
 
 [PLAY_HACK]
 Mode = 2
-Address = 0x150
+Address = {HEX @}
 Type = 6
 
 [PLAY_NEW]
 Mode = 2
-Address = 0xF0000
+Address = {HEX @}
 Type = 21
 
 [Network_RECHECK]
 Mode = 2
-Address = 0x70DB
+Address = {HEX @}
 Type = 7
 
 [Network_STOP]
 Mode = 2
-Address = 0xF595A
+Address = {HEX @}
 Type = 8
 
 [Network_END]
 Mode = 2
-Address = 0xF5962
+Address = {HEX @}
 Type = 9
 
 [Network_RESET]
 Mode = 2
-Address = 0x722D4
+Address = {HEX @}
 Type = 10
 
 [linkCable fake begin]
 Mode = 2
-Address = 0x7077
+Address = {HEX @}
 Type = 16
 
 [linkCable fake end]
 Mode = 2
-Address = 0x70D8
+Address = {HEX @}
 Type = 17  
   
 [linkCable block input]
 Mode = 2
-Address = 0x70BA
+Address = {HEX @+5}
 Type = 18
 
 ;[save game start]
@@ -189,22 +189,22 @@ Type = 18
 
 [save game end]
 Mode = 2
-Address = 0x5AC0
+Address = {HEX @}
 Type = 20
 
 [Change_MSG]
 Mode = 1
-Address = 0xB4010
-Fixcode = a20: 8F AB A4 A0 B2 A4 7F A2 AE AC A4 7F A0 A6 A0 A8 AD E7 57 00
+Address = {HEX @+1}
+Fixcode = {PATCH_ +1 20}
 
 [fight_ret]
 Mode = 1
-Address = 0x3f044
-Fixcode = 0xC9
+Address = {hex @}
+Fixcode = {PATCH}
 
 [fight_ret_c]
 Mode = 2
-Address = 0x3f044
+Address = {hex @}
 Type = 98
 
 ;Mem Write: pc32 = 0xf992d addr = 0xc634 value = 0xe
@@ -212,24 +212,24 @@ Type = 98
 [FPA 031801 Begin1]       
 Mode = 3                   
 Type = 0                   
-Address = 0xf992e         
+Address = {hex @}         
 MotionBEnable0 = 3         
 MotionBlur0 = 28     
 ConditionType = 0                    
-ConditionValueA = a2: 34 c6    
-ConditionValueB = a2: 00 00      
-ConditionValueC = a2: 0e 00      
+ConditionValueA = {dws_ wYellowIntroCurrentScene}    
+ConditionValueB = {dws_ ==                      }      
+ConditionValueC = {dws_ YellowIntroScene14val   }      
 
 ;34 6F 26 00
 ;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x33   
 [FPA 031801 End1]                
 Mode = 3                         
 Type = 1                         
-Address = 0xf9e51                
+Address = {hex @}                
 ConditionType = 0                
-ConditionValueA = a4: 34 c6 35 c6     
-ConditionValueB = a4: 00 00 00 00     
-ConditionValueC = a4: 0e 00 33 00     
+ConditionValueA = {dws_ wYellowIntroCurrentScene wYellowIntroSceneTimer}     
+ConditionValueB = {dws_ ==                       ==                    }     
+ConditionValueC = {dws_ YellowIntroScene14val    0x33                  }     
                       
 
 
@@ -240,13 +240,13 @@ ConditionValueC = a4: 0e 00 33 00
 [FPA 031801 Begin2]                                                                         
 Mode = 3                                                                                
 Type = 0                                                                                
-Address = 0xf9d8b                                                                    
+Address = {hex @}                                                                    
 MotionBEnable0 = 3                                                                      
 MotionBlur0 = 4                                                                        
 ConditionType = 0                                                                    
-ConditionValueA = a2: 34 c6                                                          
-ConditionValueB = a2: 00 00                                                          
-ConditionValueC = a2: 0f 00  
+ConditionValueA = {dws_ wYellowIntroCurrentScene}                                                          
+ConditionValueB = {dws_ ==                      }                                                          
+ConditionValueC = {dws_ YellowIntroScene15val   }  
 
                               
 [FPA 031801 End2]             
@@ -254,20 +254,20 @@ Mode = 3
 Type = 1                      
 Address = 0xF9e4b 
 ConditionType = 0                             
-ConditionValueA = a2: 34 c6         
-ConditionValueB = a2: 00 00         
-ConditionValueC = a2: 0f 00 
+ConditionValueA = {dws_ wYellowIntroCurrentScene}         
+ConditionValueB = {dws_ ==                      }         
+ConditionValueC = {dws_ YellowIntroScene15val   } 
 
 ;222222aaaaaaaaaaaaaaaa: pc32 = 0xf984b addr = 0xffb3 value = 0x0               
 ;000f984bh: F0 B3 E6 0B                                        
 [FPA 031801 End3]                                                         
 Mode = 3                                                                  
 Type = 1                                                                  
-Address = 0xf986e                                                         
+Address = {hex @}                                                         
 ConditionType = 11                                                        
-ConditionValueA = a6: 34 c6 00 00 34 c6                                   
-ConditionValueB = a6: 00 00 11 00 00 00                                   
-ConditionValueC = a6: 0e 00 00 00 0f 00                                   
+ConditionValueA = {dws_ wYellowIntroCurrentScene 00 wYellowIntroCurrentScene}                                   
+ConditionValueB = {dws_ ==                       || ==                      }                                   
+ConditionValueC = {dws_ YellowIntroScene14val    00 YellowIntroScene15val   }                                   
                                                                           
 
 ; The effect_no decide which animation will be played.                        
