@@ -38,20 +38,20 @@ LoadSAV0:
 ; This vc_hook does not have to be in any particular location.
 ; It is defined here because it refers to the same labels as the two lines below.
 	vc_hook SaveLimit
-	ld hl, sPlayerName ; hero name located in SRAM
-	ld bc, sMainDataCheckSum - sPlayerName ; but here checks the full SAV
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld c, a
-	ld a, [sMainDataCheckSum] ; SAV's checksum
+	ld a, [sMainDataCheckSum]
 	cp c
 	jp z, .checkSumsMatched
 
 ; If the computed checksum didn't match the saved on, try again.
-	ld hl, sPlayerName
-	ld bc, sMainDataCheckSum - sPlayerName
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld c, a
-	ld a, [sMainDataCheckSum] ; SAV's checksum
+	ld a, [sMainDataCheckSum]
 	cp c
 	jp nz, SAVBadCheckSum
 
@@ -83,11 +83,11 @@ LoadSAV1:
 	call EnableSRAMAndLatchClockData
 	ld a, $1
 	ld [MBC1SRamBank], a
-	ld hl, sPlayerName ; hero name located in SRAM
-	ld bc, sMainDataCheckSum - sPlayerName  ; but here checks the full SAV
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld c, a
-	ld a, [sMainDataCheckSum] ; SAV's checksum
+	ld a, [sMainDataCheckSum]
 	cp c
 	jr nz, SAVBadCheckSum
 	ld hl, sCurBoxData
@@ -101,11 +101,11 @@ LoadSAV2:
 	call EnableSRAMAndLatchClockData
 	ld a, $1
 	ld [MBC1SRamBank], a
-	ld hl, sPlayerName ; hero name located in SRAM
-	ld bc, sMainDataCheckSum - sPlayerName  ; but here checks the full SAV
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld c, a
-	ld a, [sMainDataCheckSum] ; SAV's checksum
+	ld a, [sMainDataCheckSum]
 	cp c
 	jp nz, SAVBadCheckSum
 	ld hl, sPartyData
@@ -216,8 +216,8 @@ SaveSAVtoSRAM0:
 	call CopyData
 	ldh a, [hTileAnimations]
 	ld [sTileAnimations], a
-	ld hl, sPlayerName
-	ld bc, sMainDataCheckSum - sPlayerName
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
 	call DisableSRAMAndPrepareClockData
@@ -232,8 +232,8 @@ SaveSAVtoSRAM1:
 	ld de, sCurBoxData
 	ld bc, wBoxDataEnd - wBoxDataStart
 	call CopyData
-	ld hl, sPlayerName
-	ld bc, sMainDataCheckSum - sPlayerName
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
 	call DisableSRAMAndPrepareClockData
@@ -258,8 +258,8 @@ SaveSAVtoSRAM2:
 	inc de
 	ld a, [hl]
 	ld [de], a
-	ld hl, sPlayerName
-	ld bc, sMainDataCheckSum - sPlayerName
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
 	call DisableSRAMAndPrepareClockData
@@ -587,8 +587,8 @@ SAVCheckRandomID:
 	ld a, [sPlayerName]
 	and a
 	jr z, .next
-	ld hl, sPlayerName
-	ld bc, sMainDataCheckSum - sPlayerName
+	ld hl, sGameData
+	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld c, a
 	ld a, [sMainDataCheckSum]
