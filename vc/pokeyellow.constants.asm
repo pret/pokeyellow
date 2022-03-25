@@ -8,9 +8,21 @@ x = \1
 ENDM
 
 ; [FPA 031801 Begin1]
-YellowIntroScene14val = $e
-	vc_const YellowIntroScene14val
+YellowIntroScene14_Index = $e
+	vc_const YellowIntroScene14_Index
 
 ; [FPA 031801 Begin2]
-YellowIntroScene15val = $f
-	vc_const YellowIntroScene15val
+YellowIntroScene15_Index = $f
+	vc_const YellowIntroScene15_Index
+
+; [FPA 001 Begin]
+	vc_const "M"
+	vc_const "E"
+	vc_const "G"
+	vc_const "A"
+	vc_const "P"
+	vc_const "X"
+	vc_const "L"
+	vc_const "S"
+	vc_const "F"
+	vc_const MEGA_PUNCH

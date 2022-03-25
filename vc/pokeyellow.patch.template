@@ -218,7 +218,7 @@ MotionBlur0 = 28
 ConditionType = 0                    
 ConditionValueA = {dws_ wYellowIntroCurrentScene}    
 ConditionValueB = {dws_ ==                      }      
-ConditionValueC = {dws_ YellowIntroScene14val   }      
+ConditionValueC = {dws_ YellowIntroScene14_Index}      
 
 ;34 6F 26 00
 ;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x33   
@@ -229,7 +229,7 @@ Address = {hex @}
 ConditionType = 0                
 ConditionValueA = {dws_ wYellowIntroCurrentScene wYellowIntroSceneTimer}     
 ConditionValueB = {dws_ ==                       ==                    }     
-ConditionValueC = {dws_ YellowIntroScene14val    0x33                  }     
+ConditionValueC = {dws_ YellowIntroScene14_Index 0x33                  }     
                       
 
 
@@ -246,7 +246,7 @@ MotionBlur0 = 4
 ConditionType = 0                                                                    
 ConditionValueA = {dws_ wYellowIntroCurrentScene}                                                          
 ConditionValueB = {dws_ ==                      }                                                          
-ConditionValueC = {dws_ YellowIntroScene15val   }  
+ConditionValueC = {dws_ YellowIntroScene15_Index}  
 
                               
 [FPA 031801 End2]             
@@ -256,7 +256,7 @@ Address = 0xF9e4b
 ConditionType = 0                             
 ConditionValueA = {dws_ wYellowIntroCurrentScene}         
 ConditionValueB = {dws_ ==                      }         
-ConditionValueC = {dws_ YellowIntroScene15val   } 
+ConditionValueC = {dws_ YellowIntroScene15_Index} 
 
 ;222222aaaaaaaaaaaaaaaa: pc32 = 0xf984b addr = 0xffb3 value = 0x0               
 ;000f984bh: F0 B3 E6 0B                                        
@@ -267,7 +267,7 @@ Address = {hex @}
 ConditionType = 11                                                        
 ConditionValueA = {dws_ wYellowIntroCurrentScene 00 wYellowIntroCurrentScene}                                   
 ConditionValueB = {dws_ ==                       || ==                      }                                   
-ConditionValueC = {dws_ YellowIntroScene14val    00 YellowIntroScene15val   }                                   
+ConditionValueC = {dws_ YellowIntroScene14_Index 00 YellowIntroScene15_Index}                                   
                                                                           
 
 ; The effect_no decide which animation will be played.                        
@@ -296,18 +296,18 @@ ConditionValueC = {dws_ YellowIntroScene14val    00 YellowIntroScene15val   }
 [FPA 001 Begin]                       
 Mode = 3                              
 Type = 0                              
-Address = 0x781c5                     
+Address = {hex @}                     
 MotionBEnable0 = 3                    
 MotionBlur0 = 11                       
 ConditionType = 11                     
-ConditionValueA = a36: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0             
-ConditionValueB = a36: 00 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00          
-ConditionValueC = a36: 8c 00 84 00 86 00 80 00 8f 00 05 00 00 00 84 00 97 00 8f 00 8b 00 05 00 00 00 92 00 84 00 8b 00 85 00 05 00          
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
+ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==           || ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }          
+ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "P"             MEGA_PUNCH   00 "E"           "X"             "P"             "L"             MEGA_PUNCH   00 "S"           "E"             "L"             "F"             MEGA_PUNCH  }          
                                       
 [FPA 001 End]                         
 Mode = 3                              
 Type = 1                              
-Address = 0x7813a                 
+Address = {hex @}                 
 ConditionType = 0                     
 ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0          
 ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00          
@@ -319,7 +319,7 @@ ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8f 00 05 00
 [FPA 002 Begin]                       
 Mode = 3                              
 Type = 0                              
-Address = 0x781c3                     
+Address = {hex @}                     
 MotionBEnable0 = 3                    
 MotionBlur0 = 7                       
 ConditionType = 0                     
@@ -330,7 +330,7 @@ ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00
 [FPA 002 End]                         
 Mode = 3                              
 Type = 1                              
-Address = 0x781b1               
+Address = {hex @}               
 ConditionType = 0                     
 ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0           
 ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00           
@@ -343,7 +343,7 @@ ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00
 [FPA 003 Begin]                       
 Mode = 3                              
 Type = 0                              
-Address = 0x781c2                     
+Address = {hex @}                     
 MotionBEnable0 = 3                    
 MotionBlur0 = 10                      
 ConditionType = 0                     
@@ -354,7 +354,7 @@ ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00
 [FPA 003 End]                         
 Mode = 3                              
 Type = 1                              
-Address = 0x781b2               
+Address = {hex @}               
 ConditionType = 0                     
 ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0            
 ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00            
@@ -365,7 +365,7 @@ ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00
 [FPA 004 Begin]                           
 Mode = 3                                  
 Type = 0                                  
-Address = 0x781c8                         
+Address = {hex @}                         
 MotionBEnable0 = 3                        
 MotionBlur0 = 11                         
 ConditionType = 0                         
@@ -376,7 +376,7 @@ ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00
 [FPA 004 End]                             
 Mode = 3                                  
 Type = 1                                  
-Address = 0x781b4                        
+Address = {hex @}                        
 ConditionType = 0                         
 ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
 ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
@@ -389,7 +389,7 @@ ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00
 [FPA 005 Begin]                       
 Mode = 3                              
 Type = 0                              
-Address = 0x781c1                     
+Address = {hex @}                     
 MotionBEnable0 = 3                    
 MotionBlur0 = 15                       
 ConditionType = 0                     
@@ -400,7 +400,7 @@ ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00
 [FPA 005 End]                         
 Mode = 3                              
 Type = 1                              
-Address = 0x78139              
+Address = {hex @}              
 ConditionType = 0                     
 ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
 ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
@@ -412,7 +412,7 @@ ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00
 [FPA 006 Begin]                            
 Mode = 3                                   
 Type = 0                                   
-Address = 0x78e79                       
+Address = {hex @}                       
 MotionBEnable0 = 3                         
 MotionBlur0 = 6                            
 ConditionType = 0                          
@@ -426,7 +426,7 @@ ConditionValueC = a8: 87 00 98 00 8f 00 3f 00
 [FPA 007 Begin]                                
 Mode = 3                                       
 Type = 0                                       
-Address = 0x781c9                              
+Address = {hex @}                              
 MotionBEnable0 = 3                             
 MotionBlur0 = 13 
 ConditionType = 0                              
@@ -437,7 +437,7 @@ ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00
 [FPA 007 End]                                  
 Mode = 3                                       
 Type = 1                                       
-Address = 0x781ac 
+Address = {hex @} 
 ConditionType = 0                  
 ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0  
 ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00  
@@ -448,7 +448,7 @@ ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00
 [FPA 008 Begin]                         
 Mode = 3                                
 Type = 0                                
-Address = 0x78e7d                       
+Address = {hex @}                       
 MotionBEnable0 = 3                      
 MotionBlur0 = 28                         
 ConditionType = 0                       
@@ -459,7 +459,7 @@ ConditionValueC =  a10: 87 00 80 00 99 00 84 00 72 00
 [FPA 008 End]                           
 Mode = 3                                
 Type = 1                                
-Address = 0x78dcd                      
+Address = {hex @}                      
 ConditionType = 11                       
 ConditionValueA = a20: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 7b d0          
 ConditionValueB = a20: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00     
@@ -471,7 +471,7 @@ ConditionValueC = a20: 87 00 80 00 99 00 84 00 72 00 00 00 87 00 98 00 8f 00 3f 
 [FPA 009 Begin]                           
 Mode = 3                                  
 Type = 0                                  
-Address = 0x781cd                         
+Address = {hex @}                         
 MotionBEnable0 = 3                        
 MotionBlur0 = 6                           
 ConditionType = 0                         
@@ -482,7 +482,7 @@ ConditionValueC = a10: 91 00 84 00 85 00 8b 00 73 00
 [FPA 009 End]                             
 Mode = 3                                  
 Type = 1                                  
-Address = 0x78dc6                         
+Address = {hex @}                         
 ConditionType = 0                         
 ConditionValueA =  a10: 4a cf 4b cf 4c cf 4d cf 7b d0       
 ConditionValueB =  a10: 00 00 00 00 00 00 00 00 00 00       
@@ -493,7 +493,7 @@ ConditionValueC =  a10: 91 00 84 00 85 00 8b 00 73 00
 [FPA 010 Begin]                        
 Mode = 3                               
 Type = 0                               
-Address = 0x781d4                     
+Address = {hex @}                     
 MotionBEnable0 = 3                     
 MotionBlur0 = 11                        
 ConditionType = 0                      
@@ -504,7 +504,7 @@ ConditionValueC = a10: 92 00 84 00 8b 00 85 00 78 00
 [FPA 010 End]                          
 Mode = 3                               
 Type = 1                               
-Address = 0x78df6                      
+Address = {hex @}                      
 ConditionType = 11                      
 ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0         
 ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00       
@@ -515,7 +515,7 @@ ConditionValueC = a22: 92 00 84 00 8b 00 85 00 05 00 00 00 92 00 84 00 8b 00 85 
 [FPA 011 Begin]                       
 Mode = 3                              
 Type = 0                              
-Address = 0x781fb                    
+Address = {hex @}                    
 MotionBEnable0 = 3                    
 MotionBlur0 = 11                      
 ConditionType = 0                     
@@ -526,7 +526,7 @@ ConditionValueC = a10: 84 00 97 00 8f 00 8b 00 99 00
 [FPA 011 End]                         
 Mode = 3                              
 Type = 1                              
-Address = 0x781ae            
+Address = {hex @}            
 ConditionType = 11                     
 ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0             
 ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00            
