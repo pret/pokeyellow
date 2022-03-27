@@ -7,14 +7,6 @@ x = \1
 	PRINTLN "00:{04x:x} \1" ; same format as rgblink's .sym file
 ENDM
 
-; [FPA 031801 Begin1]
-YellowIntroScene14_Index = $e
-	vc_const YellowIntroScene14_Index
-
-; [FPA 031801 Begin2]
-YellowIntroScene15_Index = $f
-	vc_const YellowIntroScene15_Index
-
 ; [FPA 001 Begin]
 	vc_const "M"
 	vc_const "E"
