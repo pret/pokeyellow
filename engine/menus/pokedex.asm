@@ -111,7 +111,13 @@ HandlePokedexSideMenu:
 	dec a
 	jr z, .choseArea
 	dec a
+	vc_patch disable_print
+IF DEF (_YELLOW_VC)
+	jr z, .handleMenuInput
+ELSE
 	jr z, .chosePrint
+ENDC
+	vc_patch_end
 .choseQuit
 	ld b, 1
 .exitSideMenu

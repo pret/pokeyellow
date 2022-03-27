@@ -301,7 +301,7 @@ PikaPicAnimBGFrames_33:
 	pikaframeend
 
 PikaPicAnimBGFrames_34:
-    pikaframedelay                 12
+	pikaframedelay                 12
 	pikaframe PikaAnimTilemap_9,   12
 	pikaframedelay                 12
 	pikaframe PikaAnimTilemap_9,  100

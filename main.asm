@@ -314,7 +314,7 @@ INCLUDE "data/battle_anims/frame_blocks.asm"
 SECTION "BG Map Attributes (Debug)", ROMX
 
 IF DEF(_DEBUG)
-    INCLUDE "engine/gfx/bg_map_attributes.asm"
+	INCLUDE "engine/gfx/bg_map_attributes.asm"
 ENDC
 
 
@@ -322,7 +322,7 @@ SECTION "BG Map Attributes", ROMX
 
 INCLUDE "data/cgb/bg_map_attributes.asm"
 IF !DEF(_DEBUG)
-    INCLUDE "engine/gfx/bg_map_attributes.asm"
+	INCLUDE "engine/gfx/bg_map_attributes.asm"
 ENDC
 
 
@@ -330,7 +330,7 @@ SECTION "bank30", ROMX
 
 ; This whole bank is garbage data.
 IF !DEF(_DEBUG)
-    INCBIN "garbage/bank30.bin"
+	INCBIN "garbage/bank30.bin"
 ENDC
 
 

@@ -13,7 +13,13 @@ SummerBeachHouse_TextPointers:
 SurfinDudeText:
 	text_asm
 	ld a, [wd472]
+	vc_patch MiniGame
+IF DEF (_YELLOW_VC)
+	bit 7, a
+ELSE
 	bit 6, a
+ENDC
+	vc_patch_end
 	jr nz, .next
 	ld hl, .SurfinDudeText4
 	call PrintText
@@ -130,7 +136,13 @@ SummerBeachHouseSign4Text:
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, [wd472]
+	vc_patch MiniGameHighScorePC
+IF DEF(_YELLOW_VC)
+	bit 7, a
+ELSE
 	bit 6, a
+ENDC
+	vc_patch_end
 	jr z, .asm_f2369
 
 	ld hl, wd492

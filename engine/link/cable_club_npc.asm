@@ -30,6 +30,7 @@ CableClubNPC::
 	xor a
 	ldh [hSerialReceiveData], a
 	ld a, START_TRANSFER_EXTERNAL_CLOCK
+	vc_hook linkCable_fake_begin
 	ldh [rSC], a
 	ld a, [wLinkTimeoutCounter]
 	dec a
@@ -57,6 +58,7 @@ CableClubNPC::
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .choseNo
+	vc_hook linkCable_block_input
 	callfar SaveSAVtoSRAM
 	call WaitForSoundToFinish
 	ld a, SFX_SAVE
@@ -70,7 +72,9 @@ CableClubNPC::
 	ld [hl], a
 	ldh [hSerialReceivedNewData], a
 	ld [wSerialExchangeNybbleSendData], a
+	vc_hook linkCable_fake_end
 	call Serial_SyncAndExchangeNybble
+	vc_hook Network_RECHECK
 	ld hl, wUnknownSerialCounter
 	ld a, [hli]
 	inc a

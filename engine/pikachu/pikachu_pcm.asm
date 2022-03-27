@@ -1,4 +1,5 @@
 PlayPikachuSoundClip::
+	vc_hook PLAY_NEW
 	ld a, e
 	ld e, a
 	ld d, $0
@@ -39,7 +40,13 @@ PlayPikachuSoundClip::
 	ld a, l
 	cp $40 ; end of wave data
 	jr nz, .saveWaveDataLoop
+	vc_patch PLAY_MUTE
+IF DEF(_YELLOW_VC)
+	ld a, 0
+ELSE
 	ld a, $80
+ENDC
+	vc_patch_end
 	ldh [rNR30], a
 	ldh a, [rNR51]
 	or $44

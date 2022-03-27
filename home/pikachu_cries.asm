@@ -1,4 +1,5 @@
 PlayPikachuPCM::
+	vc_hook PLAY_HACK
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, b

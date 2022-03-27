@@ -203,7 +203,9 @@ PlayAnimation:
 	ld h, [hl]
 	ld l, a
 .animationLoop
+	vc_hook FPA_005_End
 	ld a, [hli]
+	vc_hook FPA_001_End
 	cp -1
 	jr z, .AnimationOver
 	cp FIRST_SE_ID ; is this subanimation or a special effect?
@@ -277,12 +279,17 @@ PlayAnimation:
 	call LoadSubanimation
 	call PlaySubanimation
 	pop af
+	vc_hook FPA_007_End
 	ldh [rOBP0], a
+	vc_hook FPA_011_End
 	call UpdateGBCPal_OBP0
 .nextAnimationCommand
+	vc_hook FPA_002_End
 	pop hl
+	vc_hook FPA_003_End
 	jr .animationLoop
 .AnimationOver
+	vc_hook FPA_004_End
 	ret
 
 LoadSubanimation:
@@ -294,18 +301,26 @@ LoadSubanimation:
 	ld e, a
 	ld a, [hl]
 	ld d, a ; de = address of subanimation
+	vc_hook FPA_005_Begin
 	ld a, [de]
+	vc_hook FPA_003_Begin
 	ld b, a
+	vc_hook FPA_002_Begin
 	and %00011111
+	vc_hook FPA_001_Begin
 	ld [wSubAnimCounter], a ; number of frame blocks
+	vc_hook FPA_004_Begin
 	ld a, b
+	vc_hook FPA_007_Begin
 	and %11100000
 	cp SUBANIMTYPE_ENEMY << 5
+	vc_hook FPA_009_Begin
 	jr nz, .isNotType5
 .isType5
 	call GetSubanimationTransform2
 	jr .saveTransformation
 .isNotType5
+	vc_hook FPA_010_Begin
 	call GetSubanimationTransform1
 .saveTransformation
 ; place the upper 3 bits of a into bits 0-2 of a before storing
@@ -336,6 +351,7 @@ LoadSubanimation:
 ; sets the transform to SUBANIMTYPE_NORMAL if it's the player's turn
 ; sets the transform to the subanimation type if it's the enemy's turn
 GetSubanimationTransform1:
+	vc_hook FPA_011_Begin
 	ld b, a
 	ldh a, [hWhoseTurn]
 	and a
@@ -428,10 +444,12 @@ MoveAnimation:
 	ld c, 30
 	call DelayFrames
 .next4
+	vc_hook FPA_009_End
 	call PlayApplyingAttackAnimation ; shake the screen or flash the pic in and out (to show damage)
 .animationFinished
 	call WaitForSoundToFinish
 	xor a
+	vc_hook FPA_008_End
 	ld [wSubAnimSubEntryAddr], a
 	ld [wUnusedD09B], a
 	ld [wSubAnimTransform], a
@@ -469,6 +487,7 @@ ShareMoveAnimations:
 PlayApplyingAttackAnimation:
 ; Generic animation that shows after the move's individual animation
 ; Different animation depending on whether the move has an additional effect and on whose turn it is
+	vc_hook FPA_010_End
 	ld a, [wAnimationType]
 	and a
 	ret z
@@ -558,8 +577,10 @@ SetAnimationPalette:
 	ld b, $f0
 .next
 	ld a, b
+	vc_hook FPA_006_Begin
 	ldh [rOBP0], a
 	ld a, $6c
+	vc_hook FPA_008_Begin
 	ldh [rOBP1], a
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1

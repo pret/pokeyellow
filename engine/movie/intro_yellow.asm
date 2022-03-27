@@ -30,6 +30,7 @@ PlayIntroScene:
 	jr .loop
 
 .go_to_title_screen
+	vc_hook FPA_031801_End3
 	call YellowIntro_BlankPalettes
 	xor a
 	ldh [hLCDCPointer], a
@@ -123,6 +124,7 @@ Jumptable_f9906:
 YellowIntro_NextScene:
 	ld hl, wYellowIntroCurrentScene
 	inc [hl]
+	vc_hook FPA_031801_Begin1
 	ret
 
 YellowIntroScene0:
@@ -601,6 +603,7 @@ YellowIntroScene14:
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	call YellowIntro_NextScene
 	ld a, $28
+	vc_hook FPA_031801_Begin2
 	ld [wYellowIntroSceneTimer], a
 	ret
 
@@ -705,12 +708,14 @@ YellowIntro_CheckFrameTimerDecrement:
 	ret
 
 .asm_f9e4b
+	vc_hook FPA_031801_End2
 	scf
 	ret
 
 YellowIntro_LoadDMGPalAndIncrementCounter:
 	ld hl, wYellowIntroSceneTimer
 	ld a, [hl]
+	vc_hook FPA_031801_End1
 	inc [hl]
 	ld l, a
 	ld h, $0
