@@ -309,9 +309,9 @@ Mode = 3
 Type = 1                              
 Address = {hex @}                 
 ConditionType = 0                     
-ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0          
-ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00          
-ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8f 00 05 00   
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID}          
+ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==          }          
+ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "P"             MEGA_PUNCH  }   
 
 ;rsm103725   
 ;Mem Write: pc32 = 0x781c5 addr = 0xd086 value = 0x3  
@@ -323,18 +323,18 @@ Address = {hex @}
 MotionBEnable0 = 3                    
 MotionBlur0 = 7                       
 ConditionType = 0                     
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0           
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00           
-ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00           
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}           
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }           
+ConditionValueC = {dws_ "G"           "U"             "I"             "L"             GUILLOTINE  }           
                                       
 [FPA 002 End]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}               
 ConditionType = 0                     
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0           
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00           
-ConditionValueC = a10: 86 00 94 00 88 00 8b 00 0c 00      
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}           
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }           
+ConditionValueC = {dws_ "G"           "U"             "I"             "L"             GUILLOTINE  }      
 
 
 ;rsm142438   
@@ -347,18 +347,18 @@ Address = {hex @}
 MotionBEnable0 = 3                    
 MotionBlur0 = 10                      
 ConditionType = 0                     
-ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0         
-ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00         
-ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00         
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID}         
+ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==          }         
+ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "K"             MEGA_KICK   }         
                                       
 [FPA 003 End]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}               
 ConditionType = 0                     
-ConditionValueA = a12: 4a cf 4b cf 4c cf 4d cf 4f cf 7b d0            
-ConditionValueB = a12: 00 00 00 00 00 00 00 00 00 00 00 00            
-ConditionValueC = a12: 8c 00 84 00 86 00 80 00 8a 00 19 00    
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID}            
+ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==          }            
+ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "K"             MEGA_KICK   }    
 
 ;rsm154217   blizzard   
 ;No131                     
@@ -369,18 +369,18 @@ Address = {hex @}
 MotionBEnable0 = 3                        
 MotionBlur0 = 11                         
 ConditionType = 0                         
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                 
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00                 
-ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00                 
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}                 
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }                 
+ConditionValueC = {dws_ "B"           "L"             "I"             "Z"             BLIZZARD    }                 
                                           
 [FPA 004 End]                             
 Mode = 3                                  
 Type = 1                                  
 Address = {hex @}                        
 ConditionType = 0                         
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
-ConditionValueC = a10: 81 00 8b 00 88 00 99 00 3b 00          
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}          
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }          
+ConditionValueC = {dws_ "B"           "L"             "I"             "Z"             BLIZZARD    }          
 
 
 
@@ -393,18 +393,18 @@ Address = {hex @}
 MotionBEnable0 = 3                    
 MotionBlur0 = 15                       
 ConditionType = 0                     
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0         
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00         
-ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00         
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}         
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }         
+ConditionValueC = {dws_ "B"           "U"             "B"             "B"             BUBBLEBEAM  }         
                                       
 [FPA 005 End]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}              
 ConditionType = 0                     
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0          
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00          
-ConditionValueC = a10: 81 00 94 00 81 00 81 00 3d 00    
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}          
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }          
+ConditionValueC = {dws_ "B"           "U"             "B"             "B"             BUBBLEBEAM  }    
 
 ;Mem Write: pc32 = 0xc2 addr = 0xcfd1 value = 0x3f
 ;Pallte Write: pc32 =00078e79 00000048 e4         
@@ -416,9 +416,9 @@ Address = {hex @}
 MotionBEnable0 = 3                         
 MotionBlur0 = 6                            
 ConditionType = 0                          
-ConditionValueA = a8: 4a cf 4b cf 4c cf 7b d0           
-ConditionValueB = a8: 00 00 00 00 00 00 00 00                
-ConditionValueC = a8: 87 00 98 00 8f 00 3f 00   
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wAnimationID}           
+ConditionValueB = {dws_ ==            ==              ==              ==          }                
+ConditionValueC = {dws_ "H"           "Y"             "P"             HYPER_BEAM  }   
 
 ;rsm112921       thunderbolt   
 ;15 -- 13  
@@ -430,18 +430,18 @@ Address = {hex @}
 MotionBEnable0 = 3                             
 MotionBlur0 = 13 
 ConditionType = 0                              
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00                    
-ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00                    
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}                
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }                    
+ConditionValueC = {dws_ "T"           "H"             "U"             "N"             THUNDERBOLT }                    
                                               
 [FPA 007 End]                                  
 Mode = 3                                       
 Type = 1                                       
 Address = {hex @} 
 ConditionType = 0                  
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0  
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00  
-ConditionValueC = a10: 93 00 87 00 94 00 8d 00 55 00  
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}  
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }  
+ConditionValueC = {dws_ "T"           "H"             "U"             "N"             THUNDERBOLT }  
 ;
 ;rsm130806      haze   
 ;No40 haze                   
@@ -452,18 +452,18 @@ Address = {hex @}
 MotionBEnable0 = 3                      
 MotionBlur0 = 28                         
 ConditionType = 0                       
-ConditionValueA =  a10: 4a cf 4b cf 4c cf 4d cf 7b d0            
-ConditionValueB =  a10: 00 00 00 00 00 00 00 00 00 00            
-ConditionValueC =  a10: 87 00 80 00 99 00 84 00 72 00            
+ConditionValueA =  {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}            
+ConditionValueB =  {dws_ ==            ==              ==              ==              ==          }            
+ConditionValueC =  {dws_ "H"           "A"             "Z"             "E"             HAZE        }            
                                         
 [FPA 008 End]                           
 Mode = 3                                
 Type = 1                                
 Address = {hex @}                      
 ConditionType = 11                       
-ConditionValueA = a20: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 7b d0          
-ConditionValueB = a20: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00     
-ConditionValueC = a20: 87 00 80 00 99 00 84 00 72 00 00 00 87 00 98 00 8f 00 3f 00 
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wAnimationID}          
+ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==          }     
+ConditionValueC = {dws_ "H"           "A"             "Z"             "E"             HAZE         00 "H"           "Y"             "P"             HYPER_BEAM  } 
 
 
 ;rsm131656       reflect  
@@ -475,18 +475,18 @@ Address = {hex @}
 MotionBEnable0 = 3                        
 MotionBlur0 = 6                           
 ConditionType = 0                         
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0                
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00               
-ConditionValueC = a10: 91 00 84 00 85 00 8b 00 73 00               
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}                
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }               
+ConditionValueC = {dws_ "R"           "E"             "F"             "L"             REFLECT     }               
                                           
 [FPA 009 End]                             
 Mode = 3                                  
 Type = 1                                  
 Address = {hex @}                         
 ConditionType = 0                         
-ConditionValueA =  a10: 4a cf 4b cf 4c cf 4d cf 7b d0       
-ConditionValueB =  a10: 00 00 00 00 00 00 00 00 00 00       
-ConditionValueC =  a10: 91 00 84 00 85 00 8b 00 73 00  
+ConditionValueA =  {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}       
+ConditionValueB =  {dws_ ==            ==              ==              ==              ==          }       
+ConditionValueC =  {dws_ "R"           "E"             "F"             "L"             REFLECT     }  
 
 ;rsm132935       selfdestruct  
 ;No56                  
@@ -497,18 +497,18 @@ Address = {hex @}
 MotionBEnable0 = 3                     
 MotionBlur0 = 11                        
 ConditionType = 0                      
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0               
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00              
-ConditionValueC = a10: 92 00 84 00 8b 00 85 00 78 00              
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}               
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }              
+ConditionValueC = {dws_ "S"           "E"             "L"             "F"             SELFDESTRUCT}              
                                         
 [FPA 010 End]                          
 Mode = 3                               
 Type = 1                               
 Address = {hex @}                      
 ConditionType = 11                      
-ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0         
-ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00       
-ConditionValueC = a22: 92 00 84 00 8b 00 85 00 05 00 00 00 92 00 84 00 8b 00 85 00 78 00      
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}         
+ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }       
+ConditionValueC = {dws_ "S"           "E"             "L"             "F"             MEGA_PUNCH   00 "S"           "E"             "L"             "F"             SELFDESTRUCT}      
 
 ;rsm013740       explosion  
 ;No76               
@@ -519,15 +519,15 @@ Address = {hex @}
 MotionBEnable0 = 3                    
 MotionBlur0 = 11                      
 ConditionType = 0                     
-ConditionValueA = a10: 4a cf 4b cf 4c cf 4d cf 7b d0            
-ConditionValueB = a10: 00 00 00 00 00 00 00 00 00 00            
-ConditionValueC = a10: 84 00 97 00 8f 00 8b 00 99 00            
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}            
+ConditionValueB = {dws_ ==            ==              ==              ==              ==          }            
+ConditionValueC = {dws_ "E"           "X"             "P"             "L"             EXPLOSION   }            
                                       
 [FPA 011 End]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}            
 ConditionType = 11                     
-ConditionValueA = a22: 4a cf 4b cf 4c cf 4d cf 7b d0 00 00 4a cf 4b cf 4c cf 4d cf 7b d0             
-ConditionValueB = a22: 00 00 00 00 00 00 00 00 00 00 11 00 00 00 00 00 00 00 00 00 00 00            
-ConditionValueC = a22: 84 00 97 00 8f 00 8b 00 05 00 00 00 84 00 97 00 8f 00 8b 00 99 00      
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
+ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }            
+ConditionValueC = {dws_ "E"           "X"             "P"             "L"             MEGA_PUNCH   00 "E"           "X"             "P"             "L"             EXPLOSION   }      
