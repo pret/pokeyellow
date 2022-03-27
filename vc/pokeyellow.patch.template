@@ -265,9 +265,9 @@ Mode = 3
 Type = 1                                                                  
 Address = {hex @}                                                         
 ConditionType = 11                                                        
-ConditionValueA = {dws_ wYellowIntroCurrentScene 00 wYellowIntroCurrentScene}                                   
-ConditionValueB = {dws_ ==                       || ==                      }                                   
-ConditionValueC = {dws_ YellowIntroScene14_Index 00 YellowIntroScene15_Index}                                   
+ConditionValueA = {dws_ wYellowIntroCurrentScene  00  wYellowIntroCurrentScene}                                   
+ConditionValueB = {dws_ ==                        ||  ==                      }                                   
+ConditionValueC = {dws_ YellowIntroScene14_Index  00  YellowIntroScene15_Index}                                   
                                                                           
 
 ; The effect_no decide which animation will be played.                        
@@ -300,9 +300,9 @@ Address = {hex @}
 MotionBEnable0 = 3                    
 MotionBlur0 = 11                       
 ConditionType = 11                     
-ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
-ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==           || ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }          
-ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "P"             MEGA_PUNCH   00 "E"           "X"             "P"             "L"             MEGA_PUNCH   00 "S"           "E"             "L"             "F"             MEGA_PUNCH  }          
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wStringBuffer+5 wAnimationID  00  wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID  00  wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
+ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==            ||  ==            ==              ==              ==              ==            ||  ==            ==              ==              ==              ==          }          
+ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "P"             MEGA_PUNCH    00  "E"           "X"             "P"             "L"             MEGA_PUNCH    00  "S"           "E"             "L"             "F"             MEGA_PUNCH  }          
                                       
 [FPA 001 End]                         
 Mode = 3                              
@@ -461,9 +461,9 @@ Mode = 3
 Type = 1                                
 Address = {hex @}                      
 ConditionType = 11                       
-ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wAnimationID}          
-ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==          }     
-ConditionValueC = {dws_ "H"           "A"             "Z"             "E"             HAZE         00 "H"           "Y"             "P"             HYPER_BEAM  } 
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID  00  wStringBuffer wStringBuffer+1 wStringBuffer+2 wAnimationID}          
+ConditionValueB = {dws_ ==            ==              ==              ==              ==            ||  ==            ==              ==              ==          }     
+ConditionValueC = {dws_ "H"           "A"             "Z"             "E"             HAZE          00  "H"           "Y"             "P"             HYPER_BEAM  } 
 
 
 ;rsm131656       reflect  
@@ -506,9 +506,9 @@ Mode = 3
 Type = 1                               
 Address = {hex @}                      
 ConditionType = 11                      
-ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}         
-ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }       
-ConditionValueC = {dws_ "S"           "E"             "L"             "F"             MEGA_PUNCH   00 "S"           "E"             "L"             "F"             SELFDESTRUCT}      
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID  00  wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}         
+ConditionValueB = {dws_ ==            ==              ==              ==              ==            ||  ==            ==              ==              ==              ==          }       
+ConditionValueC = {dws_ "S"           "E"             "L"             "F"             MEGA_PUNCH    00  "S"           "E"             "L"             "F"             SELFDESTRUCT}      
 
 ;rsm013740       explosion  
 ;No76               
@@ -528,6 +528,6 @@ Mode = 3
 Type = 1                              
 Address = {hex @}            
 ConditionType = 11                     
-ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID 00 wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
-ConditionValueB = {dws_ ==            ==              ==              ==              ==           || ==            ==              ==              ==              ==          }            
-ConditionValueC = {dws_ "E"           "X"             "P"             "L"             MEGA_PUNCH   00 "E"           "X"             "P"             "L"             EXPLOSION   }      
+ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID  00  wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuffer+3 wAnimationID}             
+ConditionValueB = {dws_ ==            ==              ==              ==              ==            ||  ==            ==              ==              ==              ==          }            
+ConditionValueC = {dws_ "E"           "X"             "P"             "L"             MEGA_PUNCH    00  "E"           "X"             "P"             "L"             EXPLOSION   }      
