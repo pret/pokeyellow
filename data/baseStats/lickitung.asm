@@ -1,20 +1,20 @@
 db DEX_LICKITUNG ; pokedex id
-db 90 ; base hp
-db 55 ; base attack
-db 75 ; base defense
-db 30 ; base speed
-db 60 ; base special
+db 100 ; base hp
+db 90 ; base attack
+db 100 ; base defense
+db 50 ; base speed
+db 80 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
-db 45 ; catch rate
+db 255 ; catch rate
 db 127 ; base exp yield
 INCBIN "pic/ymon/lickitung.pic",0,1 ; 77, sprite dimensions
 dw LickitungPicFront
 dw LickitungPicBack
 ; attacks known at lvl 0
+db LICK
 db WRAP
-db SUPERSONIC
-db 0
+db BODY_SLAM
 db 0
 db 0 ; growth rate
 ; learnset

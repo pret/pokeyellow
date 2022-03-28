@@ -39,7 +39,7 @@ AttackAnimationPointers:
 	dw DoubleEdgeAnim
 	dw TailWhipAnim
 	dw PoisonStingAnim
-	dw TwineedleAnim
+	dw XScissorAnim
 	dw PinMissileAnim
 	dw LeerAnim
 	dw BiteAnim
@@ -69,7 +69,7 @@ AttackAnimationPointers:
 	dw CounterAnim
 	dw SeismicTossAnim
 	dw StrengthAnim
-	dw AbsorbAnim
+	dw GigaDrainAnim
 	dw MegaDrainAnim
 	dw LeechSeedAnim
 	dw GrowthAnim
@@ -412,9 +412,8 @@ PoisonStingAnim:
 	db $06,$27,$00
 	db $FF
 
-TwineedleAnim:
-	db $05,$28,$01
-	db $05,$28,$01
+XScissorAnim:
+	db $06,$A2,$0F
 	db $FF
 
 PinMissileAnim:
@@ -582,10 +581,12 @@ StrengthAnim:
 	db $46,$06,$04
 	db $FF
 
-AbsorbAnim:
-	db SE_LIGHT_SCREEN_PALETTE, $46
+GigaDrainAnim:
+	db SE_LIGHT_SCREEN_PALETTE, $47
+	db SE_DARK_SCREEN_FLASH, $FF
 	db $06,$FF,$21
 	db $06,$FF,$22
+	db SE_DARK_SCREEN_FLASH, $FF
 	db SE_RESET_SCREEN_PALETTE, $FF
 	db $FF
 

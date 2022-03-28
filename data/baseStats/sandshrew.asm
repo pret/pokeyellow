@@ -2,7 +2,7 @@ db DEX_SANDSHREW ; pokedex id
 db 50 ; base hp
 db 75 ; base attack
 db 85 ; base defense
-db 40 ; base speed
+db 80 ; base speed
 db 30 ; base special
 db GROUND ; species type 1
 db GROUND ; species type 2
@@ -12,8 +12,8 @@ INCBIN "pic/ymon/sandshrew.pic",0,1 ; 55, sprite dimensions
 dw SandshrewPicFront
 dw SandshrewPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db 0
+db SLASH
+db SAND_ATTACK
 db 0
 db 0
 db 0 ; growth rate

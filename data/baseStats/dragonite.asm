@@ -6,14 +6,14 @@ db 80 ; base speed
 db 100 ; base special
 db DRAGON ; species type 1
 db FLYING ; species type 2
-db 9 ; catch rate
+db 1 ; catch rate
 db 218 ; base exp yield
 INCBIN "pic/ymon/dragonite.pic",0,1 ; 77, sprite dimensions
 dw DragonitePicFront
 dw DragonitePicBack
 ; attacks known at lvl 0
 db WRAP
-db LEER
+db BLIZZARD
 db THUNDER_WAVE
 db AGILITY
 db 5 ; growth rate

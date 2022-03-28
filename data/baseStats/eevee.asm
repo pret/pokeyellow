@@ -6,15 +6,15 @@ db 55 ; base speed
 db 65 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
-db 45 ; catch rate
+db 5 ; catch rate
 db 92 ; base exp yield
 INCBIN "pic/ymon/eevee.pic",0,1 ; 55, sprite dimensions
 dw EeveePicFront
 dw EeveePicBack
 ; attacks known at lvl 0
-db TACKLE
-db TAIL_WHIP
-db 0
+db QUICK_ATTACK
+db SAND_ATTACK
+db BODY_SLAM
 db 0
 db 0 ; growth rate
 ; learnset

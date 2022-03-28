@@ -1,6 +1,6 @@
 db DEX_CHARIZARD ; pokedex id
 db 78 ; base hp
-db 84 ; base attack
+db 85 ; base attack
 db 78 ; base defense
 db 100 ; base speed
 db 85 ; base special
@@ -12,10 +12,10 @@ INCBIN "pic/ymon/charizard.pic",0,1 ; 77, sprite dimensions
 dw CharizardPicFront
 dw CharizardPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db GROWL
-db EMBER
-db LEER
+db FLAMETHROWER
+db SKY_ATTACK
+db BODY_SLAM
+db EARTHQUAKE
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,3,5,6,8

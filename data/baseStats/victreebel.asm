@@ -12,10 +12,10 @@ INCBIN "pic/ymon/victreebel.pic",0,1 ; 77, sprite dimensions
 dw VictreebelPicFront
 dw VictreebelPicBack
 ; attacks known at lvl 0
-db SLEEP_POWDER
 db STUN_SPORE
-db ACID
 db RAZOR_LEAF
+db BODY_SLAM
+db LOVELY_KISS
 db 3 ; growth rate
 ; learnset
 	tmlearn 3,6,8

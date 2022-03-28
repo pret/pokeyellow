@@ -13,9 +13,9 @@ INCBIN "pic/ymon/bulbasaur.pic",0,1 ; 55, sprite dimensions
 dw BulbasaurPicFront
 dw BulbasaurPicBack
 ; attacks known at lvl 0
+db VINE_WHIP
 db TACKLE
-db GROWL
-db 0
+db TOXIC
 db 0
 db 3 ; growth rate
 ; learnset

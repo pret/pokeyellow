@@ -6,13 +6,13 @@ db 80 ; base speed
 db 100 ; base special
 db GHOST ; species type 1
 db POISON ; species type 2
-db 190 ; catch rate
+db 40 ; catch rate
 db 95 ; base exp yield
 INCBIN "pic/ymon/gastly.pic",0,1 ; 77, sprite dimensions
 dw GastlyPicFront
 dw GastlyPicBack
 ; attacks known at lvl 0
-db LICK
+db HYPNOSIS
 db CONFUSE_RAY
 db NIGHT_SHADE
 db 0

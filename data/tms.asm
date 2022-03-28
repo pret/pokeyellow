@@ -19,7 +19,7 @@ TechnicalMachines:
 	db COUNTER
 	db SEISMIC_TOSS
 	db RAGE
-	db MEGA_DRAIN
+	db GIGA_DRAIN
 	db SOLARBEAM
 	db DRAGON_RAGE
 	db THUNDERBOLT

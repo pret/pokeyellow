@@ -6,15 +6,15 @@ db 20 ; base speed
 db 25 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
-db 170 ; catch rate
+db 255 ; catch rate
 db 76 ; base exp yield
 INCBIN "pic/ymon/jigglypuff.pic",0,1 ; 55, sprite dimensions
 dw JigglypuffPicFront
 dw JigglypuffPicBack
 ; attacks known at lvl 0
 db SING
-db 0
-db 0
+db DOUBLE_EDGE
+db REST
 db 0
 db 4 ; growth rate
 ; learnset

@@ -6,16 +6,16 @@ db 70 ; base speed
 db 95 ; base special
 db WATER ; species type 1
 db ICE ; species type 2
-db 75 ; catch rate
+db 30 ; catch rate
 db 176 ; base exp yield
 INCBIN "pic/ymon/dewgong.pic",0,1 ; 66, sprite dimensions
 dw DewgongPicFront
 dw DewgongPicBack
 ; attacks known at lvl 0
-db HEADBUTT
-db GROWL
-db AURORA_BEAM
-db 0
+db BODY_SLAM
+db ICE_BEAM
+db WATERFALL
+db HORN_DRILL
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,7,8

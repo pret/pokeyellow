@@ -6,13 +6,13 @@ db 81 ; base speed
 db 100 ; base special
 db WATER ; species type 1
 db FLYING ; species type 2
-db 45 ; catch rate
+db 1 ; catch rate
 db 214 ; base exp yield
 INCBIN "pic/ymon/gyarados.pic",0,1 ; 77, sprite dimensions
 dw GyaradosPicFront
 dw GyaradosPicBack
 ; attacks known at lvl 0
-db TACKLE
+db DRAGON_RAGE
 db 0
 db 0
 db 0

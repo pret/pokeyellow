@@ -12,8 +12,8 @@ INCBIN "pic/ymon/lapras.pic",0,1 ; 77, sprite dimensions
 dw LaprasPicFront
 dw LaprasPicBack
 ; attacks known at lvl 0
-db WATER_GUN
-db GROWL
+db SURF
+db DRAGON_RAGE
 db 0
 db 0
 db 5 ; growth rate

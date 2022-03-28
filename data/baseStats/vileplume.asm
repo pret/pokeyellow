@@ -1,21 +1,21 @@
 db DEX_VILEPLUME ; pokedex id
-db 75 ; base hp
+db 95 ; base hp
 db 80 ; base attack
 db 85 ; base defense
-db 50 ; base speed
-db 100 ; base special
+db 75 ; base speed
+db 110 ; base special
 db GRASS ; species type 1
 db POISON ; species type 2
-db 45 ; catch rate
+db 110 ; catch rate
 db 184 ; base exp yield
 INCBIN "pic/ymon/vileplume.pic",0,1 ; 77, sprite dimensions
 dw VileplumePicFront
 dw VileplumePicBack
 ; attacks known at lvl 0
-db STUN_SPORE
+db GIGA_DRAIN
 db SLEEP_POWDER
-db ACID
-db PETAL_DANCE
+db 0
+db 0
 db 3 ; growth rate
 ; learnset
 	tmlearn 3,6,8

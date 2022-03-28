@@ -6,14 +6,14 @@ db 70 ; base speed
 db 70 ; base special
 db DRAGON ; species type 1
 db DRAGON ; species type 2
-db 27 ; catch rate
+db 20 ; catch rate
 db 144 ; base exp yield
 INCBIN "pic/ymon/dragonair.pic",0,1 ; 66, sprite dimensions
 dw DragonairPicFront
 dw DragonairPicBack
 ; attacks known at lvl 0
+db DRAGON_RAGE
 db WRAP
-db LEER
 db THUNDER_WAVE
 db 0
 db 5 ; growth rate

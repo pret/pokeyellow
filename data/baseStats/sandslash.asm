@@ -2,18 +2,18 @@ db DEX_SANDSLASH ; pokedex id
 db 75 ; base hp
 db 100 ; base attack
 db 110 ; base defense
-db 65 ; base speed
+db 100 ; base speed
 db 55 ; base special
 db GROUND ; species type 1
 db GROUND ; species type 2
-db 90 ; catch rate
+db 120 ; catch rate
 db 163 ; base exp yield
 INCBIN "pic/ymon/sandslash.pic",0,1 ; 66, sprite dimensions
 dw SandslashPicFront
 dw SandslashPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db SAND_ATTACK
+db DIG
+db SLASH
 db 0
 db 0
 db 0 ; growth rate

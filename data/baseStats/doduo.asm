@@ -6,15 +6,15 @@ db 75 ; base speed
 db 35 ; base special
 db NORMAL ; species type 1
 db FLYING ; species type 2
-db 190 ; catch rate
+db 210 ; catch rate
 db 96 ; base exp yield
 INCBIN "pic/ymon/doduo.pic",0,1 ; 55, sprite dimensions
 dw DoduoPicFront
 dw DoduoPicBack
 ; attacks known at lvl 0
 db PECK
-db 0
-db 0
+db TAKE_DOWN
+db DOUBLE_KICK
 db 0
 db 0 ; growth rate
 ; learnset

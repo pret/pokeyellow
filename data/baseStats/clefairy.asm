@@ -6,14 +6,14 @@ db 35 ; base speed
 db 60 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
-db 150 ; catch rate
+db 255 ; catch rate
 db 68 ; base exp yield
 INCBIN "pic/ymon/clefairy.pic",0,1 ; 55, sprite dimensions
 dw ClefairyPicFront
 dw ClefairyPicBack
 ; attacks known at lvl 0
-db POUND
-db GROWL
+db SING
+db METRONOME
 db 0
 db 0
 db 4 ; growth rate

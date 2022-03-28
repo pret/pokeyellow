@@ -6,14 +6,14 @@ db 70 ; base speed
 db 35 ; base special
 db FIGHTING ; species type 1
 db FIGHTING ; species type 2
-db 190 ; catch rate
+db 255 ; catch rate
 db 74 ; base exp yield
 INCBIN "pic/ymon/mankey.pic",0,1 ; 55, sprite dimensions
 dw MankeyPicFront
 dw MankeyPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db LEER
+db KARATE_CHOP
+db HEADBUTT
 db 0
 db 0
 db 0 ; growth rate

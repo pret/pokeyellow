@@ -6,16 +6,16 @@ db 95 ; base speed
 db 80 ; base special
 db FIRE ; species type 1
 db FIRE ; species type 2
-db 75 ; catch rate
+db 30 ; catch rate
 db 213 ; base exp yield
 INCBIN "pic/ymon/arcanine.pic",0,1 ; 77, sprite dimensions
 dw ArcaninePicFront
 dw ArcaninePicBack
 ; attacks known at lvl 0
-db ROAR
-db EMBER
-db LEER
-db TAKE_DOWN
+db FIRE_BLAST
+db BODY_SLAM
+db DIG
+db DRAGON_RAGE
 db 5 ; growth rate
 ; learnset
 	tmlearn 6,8

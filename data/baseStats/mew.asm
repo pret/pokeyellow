@@ -6,7 +6,7 @@ db 100 ; base speed
 db 100 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
-db 45 ; catch rate
+db 1 ; catch rate
 db 64 ; base exp yield
 INCBIN "pic/ymon/mew.pic",0,1 ; 55, sprite dimensions
 dw MewPicFront

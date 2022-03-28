@@ -6,15 +6,15 @@ db 76 ; base speed
 db 35 ; base special
 db FIGHTING ; species type 1
 db FIGHTING ; species type 2
-db 45 ; catch rate
+db 255 ; catch rate
 db 140 ; base exp yield
 INCBIN "pic/ymon/hitmonchan.pic",0,1 ; 66, sprite dimensions
 dw HitmonchanPicFront
 dw HitmonchanPicBack
 ; attacks known at lvl 0
-db COMET_PUNCH
-db AGILITY
-db 0
+db SUBMISSION
+db BODY_SLAM
+db SEISMIC_TOSS
 db 0
 db 0 ; growth rate
 ; learnset
@@ -23,6 +23,6 @@ db 0 ; growth rate
 	tmlearn 17,18,19,20
 	tmlearn 31,32
 	tmlearn 34,35,39,40
-	tmlearn 44
+	tmlearn 44,48
 	tmlearn 50,54
 db 0 ; padding

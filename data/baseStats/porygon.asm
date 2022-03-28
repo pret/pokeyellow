@@ -1,21 +1,21 @@
 db DEX_PORYGON ; pokedex id
-db 65 ; base hp
-db 60 ; base attack
-db 70 ; base defense
-db 40 ; base speed
-db 75 ; base special
+db 85 ; base hp
+db 80 ; base attack
+db 90 ; base defense
+db 60 ; base speed
+db 105 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
-db 45 ; catch rate
+db 180 ; catch rate
 db 130 ; base exp yield
 INCBIN "pic/ymon/porygon.pic",0,1 ; 66, sprite dimensions
 dw PorygonPicFront
 dw PorygonPicBack
 ; attacks known at lvl 0
-db TACKLE
+db TRI_ATTACK
 db SHARPEN
 db CONVERSION
-db 0
+db PSYBEAM
 db 0 ; growth rate
 ; learnset
 	tmlearn 6

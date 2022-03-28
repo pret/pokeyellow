@@ -3,17 +3,17 @@ db 70 ; base hp
 db 80 ; base attack
 db 50 ; base defense
 db 35 ; base speed
-db 35 ; base special
+db 50 ; base special
 db FIGHTING ; species type 1
 db FIGHTING ; species type 2
-db 180 ; catch rate
+db 255 ; catch rate
 db 88 ; base exp yield
 INCBIN "pic/ymon/machop.pic",0,1 ; 55, sprite dimensions
 dw MachopPicFront
 dw MachopPicBack
 ; attacks known at lvl 0
 db KARATE_CHOP
-db 0
+db LOW_KICK
 db 0
 db 0
 db 3 ; growth rate

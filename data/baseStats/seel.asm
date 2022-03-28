@@ -6,16 +6,16 @@ db 45 ; base speed
 db 70 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
-db 190 ; catch rate
+db 255 ; catch rate
 db 100 ; base exp yield
 INCBIN "pic/ymon/seel.pic",0,1 ; 66, sprite dimensions
 dw SeelPicFront
 dw SeelPicBack
 ; attacks known at lvl 0
+db AURORA_BEAM
 db HEADBUTT
-db 0
-db 0
-db 0
+db BUBBLEBEAM
+db REST
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,7,8

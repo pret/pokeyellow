@@ -2,20 +2,20 @@ db DEX_MEWTWO ; pokedex id
 db 106 ; base hp
 db 110 ; base attack
 db 90 ; base defense
-db 130 ; base speed
+db 140 ; base speed
 db 154 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
-db 3 ; catch rate
+db 1 ; catch rate
 db 220 ; base exp yield
 INCBIN "pic/ymon/mewtwo.pic",0,1 ; 77, sprite dimensions
 dw MewtwoPicFront
 dw MewtwoPicBack
 ; attacks known at lvl 0
-db CONFUSION
-db DISABLE
-db SWIFT
+db ICE_BEAM
+db BODY_SLAM
 db PSYCHIC_M
+db RECOVER
 db 5 ; growth rate
 ; learnset
 	tmlearn 1,5,6,8

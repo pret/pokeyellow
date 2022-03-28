@@ -6,15 +6,15 @@ db 40 ; base speed
 db 45 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
-db 190 ; catch rate
+db 110 ; catch rate
 db 97 ; base exp yield
 INCBIN "pic/ymon/shellder.pic",0,1 ; 55, sprite dimensions
 dw ShellderPicFront
 dw ShellderPicBack
 ; attacks known at lvl 0
-db TACKLE
-db WITHDRAW
-db 0
+db EXPLOSION
+db CLAMP
+db AURORA_BEAM
 db 0
 db 5 ; growth rate
 ; learnset

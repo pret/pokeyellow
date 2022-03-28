@@ -12,8 +12,8 @@ INCBIN "pic/ymon/poliwag.pic",0,1 ; 55, sprite dimensions
 dw PoliwagPicFront
 dw PoliwagPicBack
 ; attacks known at lvl 0
-db BUBBLE
-db 0
+db BUBBLEBEAM
+db HYPNOSIS
 db 0
 db 0
 db 3 ; growth rate

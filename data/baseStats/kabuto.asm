@@ -6,15 +6,15 @@ db 55 ; base speed
 db 45 ; base special
 db ROCK ; species type 1
 db WATER ; species type 2
-db 45 ; catch rate
+db 3 ; catch rate
 db 119 ; base exp yield
 INCBIN "pic/ymon/kabuto.pic",0,1 ; 55, sprite dimensions
 dw KabutoPicFront
 dw KabutoPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db HARDEN
-db 0
+db WATERFALL
+db BLIZZARD
+db SLASH
 db 0
 db 0 ; growth rate
 ; learnset

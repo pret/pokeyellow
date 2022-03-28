@@ -6,16 +6,16 @@ db 40 ; base speed
 db 45 ; base special
 db GROUND ; species type 1
 db ROCK ; species type 2
-db 60 ; catch rate
+db 1 ; catch rate
 db 204 ; base exp yield
 INCBIN "pic/ymon/rhydon.pic",0,1 ; 77, sprite dimensions
 dw RhydonPicFront
 dw RhydonPicBack
 ; attacks known at lvl 0
-db HORN_ATTACK
-db STOMP
-db TAIL_WHIP
-db FURY_ATTACK
+db EARTHQUAKE
+db BODY_SLAM
+db HYPER_BEAM
+db ROCK_SLIDE
 db 5 ; growth rate
 ; learnset
 	tmlearn 1,5,6,7,8

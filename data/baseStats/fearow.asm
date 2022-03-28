@@ -6,15 +6,15 @@ db 100 ; base speed
 db 61 ; base special
 db NORMAL ; species type 1
 db FLYING ; species type 2
-db 90 ; catch rate
+db 160 ; catch rate
 db 162 ; base exp yield
 INCBIN "pic/ymon/fearow.pic",0,1 ; 77, sprite dimensions
 dw FearowPicFront
 dw FearowPicBack
 ; attacks known at lvl 0
-db PECK
-db GROWL
-db LEER
+db DRILL_PECK
+db HYPER_BEAM
+db RAZOR_WIND
 db 0
 db 0 ; growth rate
 ; learnset

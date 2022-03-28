@@ -6,16 +6,16 @@ db 55 ; base speed
 db 115 ; base special
 db ROCK ; species type 1
 db WATER ; species type 2
-db 45 ; catch rate
+db 1 ; catch rate
 db 199 ; base exp yield
 INCBIN "pic/ymon/omastar.pic",0,1 ; 66, sprite dimensions
 dw OmastarPicFront
 dw OmastarPicBack
 ; attacks known at lvl 0
-db WATER_GUN
-db WITHDRAW
-db HORN_ATTACK
-db 0
+db HYDRO_PUMP
+db BLIZZARD
+db BODY_SLAM
+db SEISMIC_TOSS
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,7,8

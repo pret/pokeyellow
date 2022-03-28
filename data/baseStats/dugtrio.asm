@@ -6,16 +6,16 @@ db 120 ; base speed
 db 70 ; base special
 db GROUND ; species type 1
 db GROUND ; species type 2
-db 50 ; catch rate
+db 1 ; catch rate
 db 153 ; base exp yield
 INCBIN "pic/ymon/dugtrio.pic",0,1 ; 66, sprite dimensions
 dw DugtrioPicFront
 dw DugtrioPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db GROWL
+db BODY_SLAM
+db SAND_ATTACK
 db DIG
-db 0
+db FISSURE
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,8

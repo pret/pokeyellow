@@ -6,16 +6,16 @@ db 55 ; base speed
 db 125 ; base special
 db GRASS ; species type 1
 db PSYCHIC ; species type 2
-db 45 ; catch rate
+db 1 ; catch rate
 db 212 ; base exp yield
 INCBIN "pic/ymon/exeggutor.pic",0,1 ; 77, sprite dimensions
 dw ExeggutorPicFront
 dw ExeggutorPicBack
 ; attacks known at lvl 0
-db BARRAGE
-db HYPNOSIS
-db 0
-db 0
+db SLEEP_POWDER
+db PSYCHIC
+db GIGA_DRAIN
+db EXPLOSION
 db 5 ; growth rate
 ; learnset
 	tmlearn 6

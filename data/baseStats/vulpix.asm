@@ -6,14 +6,14 @@ db 65 ; base speed
 db 65 ; base special
 db FIRE ; species type 1
 db FIRE ; species type 2
-db 190 ; catch rate
+db 255 ; catch rate
 db 63 ; base exp yield
 INCBIN "pic/ymon/vulpix.pic",0,1 ; 66, sprite dimensions
 dw VulpixPicFront
 dw VulpixPicBack
 ; attacks known at lvl 0
 db EMBER
-db TAIL_WHIP
+db CONFUSE_RAY
 db 0
 db 0
 db 0 ; growth rate

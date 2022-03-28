@@ -6,16 +6,16 @@ db 120 ; base speed
 db 135 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
-db 50 ; catch rate
+db 1 ; catch rate
 db 186 ; base exp yield
 INCBIN "pic/ymon/alakazam.pic",0,1 ; 77, sprite dimensions
 dw AlakazamPicFront
 dw AlakazamPicBack
 ; attacks known at lvl 0
-db TELEPORT
-db KINESIS
-db 0
-db 0
+db THUNDER_WAVE
+db PSYCHIC_M
+db SEISMIC_TOSS
+db RECOVER
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,6,8

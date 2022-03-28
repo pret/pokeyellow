@@ -2,7 +2,7 @@ db DEX_POLIWRATH ; pokedex id
 db 90 ; base hp
 db 85 ; base attack
 db 95 ; base defense
-db 70 ; base speed
+db 95 ; base speed
 db 70 ; base special
 db WATER ; species type 1
 db FIGHTING ; species type 2
@@ -12,10 +12,10 @@ INCBIN "pic/ymon/poliwrath.pic",0,1 ; 77, sprite dimensions
 dw PoliwrathPicFront
 dw PoliwrathPicBack
 ; attacks known at lvl 0
-db HYPNOSIS
-db WATER_GUN
-db DOUBLESLAP
-db BODY_SLAM
+db WATERFALL
+db ICE_BEAM
+db EARTHQUAKE
+db LOVELY_KISS
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,6,8

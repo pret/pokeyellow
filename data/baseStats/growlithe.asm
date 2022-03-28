@@ -6,15 +6,15 @@ db 60 ; base speed
 db 50 ; base special
 db FIRE ; species type 1
 db FIRE ; species type 2
-db 190 ; catch rate
+db 255 ; catch rate
 db 91 ; base exp yield
 INCBIN "pic/ymon/growlithe.pic",0,1 ; 55, sprite dimensions
 dw GrowlithePicFront
 dw GrowlithePicBack
 ; attacks known at lvl 0
 db BITE
-db ROAR
-db 0
+db TAKE_DOWN
+db EMBER
 db 0
 db 5 ; growth rate
 ; learnset

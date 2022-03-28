@@ -6,16 +6,16 @@ db 95 ; base speed
 db 115 ; base special
 db GHOST ; species type 1
 db POISON ; species type 2
-db 90 ; catch rate
+db 1 ; catch rate
 db 126 ; base exp yield
 INCBIN "pic/ymon/haunter.pic",0,1 ; 66, sprite dimensions
 dw HaunterPicFront
 dw HaunterPicBack
 ; attacks known at lvl 0
-db LICK
+db HYPNOSIS
 db CONFUSE_RAY
 db NIGHT_SHADE
-db 0
+db PSYBEAM
 db 3 ; growth rate
 ; learnset
 	tmlearn 6

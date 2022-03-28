@@ -1,21 +1,21 @@
 db DEX_PARASECT ; pokedex id
-db 60 ; base hp
-db 95 ; base attack
-db 80 ; base defense
-db 30 ; base speed
-db 80 ; base special
+db 95 ; base hp
+db 100 ; base attack
+db 100 ; base defense
+db 70 ; base speed
+db 90 ; base special
 db BUG ; species type 1
 db GRASS ; species type 2
-db 75 ; catch rate
+db 200 ; catch rate
 db 128 ; base exp yield
 INCBIN "pic/ymon/parasect.pic",0,1 ; 77, sprite dimensions
 dw ParasectPicFront
 dw ParasectPicBack
 ; attacks known at lvl 0
-db SCRATCH
+db HEADBUTT
+db MEGA_DRAIN
 db STUN_SPORE
-db LEECH_LIFE
-db 0
+db SPORE
 db 0 ; growth rate
 ; learnset
 	tmlearn 3,6,8

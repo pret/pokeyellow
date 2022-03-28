@@ -6,15 +6,15 @@ db 100 ; base speed
 db 125 ; base special
 db ELECTRIC ; species type 1
 db FLYING ; species type 2
-db 3 ; catch rate
+db 1 ; catch rate
 db 216 ; base exp yield
 INCBIN "pic/ymon/zapdos.pic",0,1 ; 77, sprite dimensions
 dw ZapdosPicFront
 dw ZapdosPicBack
 ; attacks known at lvl 0
-db THUNDERSHOCK
+db THUNDER_WAVE
 db DRILL_PECK
-db 0
+db AGILITY
 db 0
 db 5 ; growth rate
 ; learnset

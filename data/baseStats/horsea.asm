@@ -6,15 +6,15 @@ db 60 ; base speed
 db 70 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
-db 225 ; catch rate
+db 255 ; catch rate
 db 83 ; base exp yield
 INCBIN "pic/ymon/horsea.pic",0,1 ; 55, sprite dimensions
 dw HorseaPicFront
 dw HorseaPicBack
 ; attacks known at lvl 0
-db BUBBLE
-db 0
-db 0
+db TOXIC
+db BUBBLEBEAM
+db SMOKESCREEN
 db 0
 db 0 ; growth rate
 ; learnset

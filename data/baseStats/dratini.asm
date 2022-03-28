@@ -6,15 +6,15 @@ db 50 ; base speed
 db 50 ; base special
 db DRAGON ; species type 1
 db DRAGON ; species type 2
-db 45 ; catch rate
+db 35 ; catch rate
 db 67 ; base exp yield
 INCBIN "pic/ymon/dratini.pic",0,1 ; 55, sprite dimensions
 dw DratiniPicFront
 dw DratiniPicBack
 ; attacks known at lvl 0
 db WRAP
-db LEER
-db 0
+db THUNDER_WAVE
+db DRAGON_RAGE
 db 0
 db 5 ; growth rate
 ; learnset

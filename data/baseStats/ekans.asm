@@ -13,7 +13,7 @@ dw EkansPicFront
 dw EkansPicBack
 ; attacks known at lvl 0
 db WRAP
-db LEER
+db GLARE
 db 0
 db 0
 db 0 ; growth rate

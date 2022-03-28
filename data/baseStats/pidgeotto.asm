@@ -6,15 +6,15 @@ db 71 ; base speed
 db 50 ; base special
 db NORMAL ; species type 1
 db FLYING ; species type 2
-db 120 ; catch rate
+db 255 ; catch rate
 db 113 ; base exp yield
 INCBIN "pic/ymon/pidgeotto.pic",0,1 ; 66, sprite dimensions
 dw PidgeottoPicFront
 dw PidgeottoPicBack
 ; attacks known at lvl 0
-db GUST
+db WING_ATTACK
 db SAND_ATTACK
-db 0
+db QUICK_ATTACK
 db 0
 db 3 ; growth rate
 ; learnset

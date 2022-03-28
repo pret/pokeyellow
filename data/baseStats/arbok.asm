@@ -6,15 +6,15 @@ db 80 ; base speed
 db 65 ; base special
 db POISON ; species type 1
 db POISON ; species type 2
-db 90 ; catch rate
+db 10 ; catch rate
 db 147 ; base exp yield
 INCBIN "pic/ymon/arbok.pic",0,1 ; 77, sprite dimensions
 dw ArbokPicFront
 dw ArbokPicBack
 ; attacks known at lvl 0
 db WRAP
-db LEER
-db POISON_STING
+db GLARE
+db 0
 db 0
 db 0 ; growth rate
 ; learnset

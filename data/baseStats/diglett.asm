@@ -12,8 +12,8 @@ INCBIN "pic/ymon/diglett.pic",0,1 ; 55, sprite dimensions
 dw DiglettPicFront
 dw DiglettPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db 0
+db SAND_ATTACK
+db SLASH
 db 0
 db 0
 db 0 ; growth rate

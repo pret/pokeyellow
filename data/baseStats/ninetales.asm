@@ -6,16 +6,16 @@ db 100 ; base speed
 db 100 ; base special
 db FIRE ; species type 1
 db FIRE ; species type 2
-db 75 ; catch rate
+db 66 ; catch rate
 db 178 ; base exp yield
 INCBIN "pic/ymon/ninetales.pic",0,1 ; 77, sprite dimensions
 dw NinetalesPicFront
 dw NinetalesPicBack
 ; attacks known at lvl 0
-db EMBER
-db TAIL_WHIP
-db QUICK_ATTACK
-db ROAR
+db TOXIC
+db FLAMETHROWER
+db FIRE_SPIN
+db BODY_SLAM
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,8

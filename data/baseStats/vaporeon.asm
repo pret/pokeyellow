@@ -1,7 +1,7 @@
 db DEX_VAPOREON ; pokedex id
 db 130 ; base hp
 db 65 ; base attack
-db 60 ; base defense
+db 90 ; base defense
 db 65 ; base speed
 db 110 ; base special
 db WATER ; species type 1
@@ -12,10 +12,10 @@ INCBIN "pic/ymon/vaporeon.pic",0,1 ; 66, sprite dimensions
 dw VaporeonPicFront
 dw VaporeonPicBack
 ; attacks known at lvl 0
-db TACKLE
-db TAIL_WHIP
-db QUICK_ATTACK
-db WATER_GUN
+db ICE_BEAM
+db WATERFALL
+db SAND_ATTACK
+db BODY_SLAM
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,8

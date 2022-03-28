@@ -12,8 +12,8 @@ INCBIN "pic/ymon/seadra.pic",0,1 ; 66, sprite dimensions
 dw SeadraPicFront
 dw SeadraPicBack
 ; attacks known at lvl 0
-db BUBBLE
-db SMOKESCREEN
+db DRAGON_RAGE
+db 0
 db 0
 db 0
 db 0 ; growth rate

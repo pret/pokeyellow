@@ -6,15 +6,15 @@ db 90 ; base speed
 db 105 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
-db 200 ; catch rate
+db 1 ; catch rate
 db 73 ; base exp yield
 INCBIN "pic/ymon/abra.pic",0,1 ; 55, sprite dimensions
 dw AbraPicFront
 dw AbraPicBack
 ; attacks known at lvl 0
+db CONFUSION
+db KINESIS
 db TELEPORT
-db 0
-db 0
 db 0
 db 3 ; growth rate
 ; learnset

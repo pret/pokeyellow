@@ -6,16 +6,16 @@ db 115 ; base speed
 db 100 ; base special
 db WATER ; species type 1
 db PSYCHIC ; species type 2
-db 60 ; catch rate
+db 1 ; catch rate
 db 207 ; base exp yield
 INCBIN "pic/ymon/starmie.pic",0,1 ; 66, sprite dimensions
 dw StarmiePicFront
 dw StarmiePicBack
 ; attacks known at lvl 0
-db TACKLE
-db WATER_GUN
-db HARDEN
-db 0
+db THUNDER_WAVE
+db BLIZZARD
+db THUNDERBOLT
+db RECOVER
 db 5 ; growth rate
 ; learnset
 	tmlearn 6

@@ -12,8 +12,8 @@ INCBIN "pic/ymon/rattata.pic",0,1 ; 55, sprite dimensions
 dw RattataPicFront
 dw RattataPicBack
 ; attacks known at lvl 0
-db TACKLE
-db TAIL_WHIP
+db QUICK_ATTACK
+db 0
 db 0
 db 0
 db 0 ; growth rate

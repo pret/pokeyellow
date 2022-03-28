@@ -12,9 +12,9 @@ INCBIN "pic/ymon/oddish.pic",0,1 ; 55, sprite dimensions
 dw OddishPicFront
 dw OddishPicBack
 ; attacks known at lvl 0
-db ABSORB
-db 0
-db 0
+db TOXIC
+db ACID
+db MEGA_DRAIN
 db 0
 db 3 ; growth rate
 ; learnset

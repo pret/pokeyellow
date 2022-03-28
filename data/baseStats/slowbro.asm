@@ -6,15 +6,15 @@ db 30 ; base speed
 db 80 ; base special
 db WATER ; species type 1
 db PSYCHIC ; species type 2
-db 75 ; catch rate
+db 1 ; catch rate
 db 164 ; base exp yield
 INCBIN "pic/ymon/slowbro.pic",0,1 ; 77, sprite dimensions
 dw SlowbroPicFront
 dw SlowbroPicBack
 ; attacks known at lvl 0
 db CONFUSION
-db DISABLE
-db HEADBUTT
+db WATERFALL
+db THUNDER_WAVE
 db 0
 db 0 ; growth rate
 ; learnset

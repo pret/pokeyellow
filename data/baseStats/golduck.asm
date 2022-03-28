@@ -5,17 +5,17 @@ db 78 ; base defense
 db 85 ; base speed
 db 80 ; base special
 db WATER ; species type 1
-db WATER ; species type 2
-db 75 ; catch rate
+db PSYCHIC ; species type 2
+db 155 ; catch rate
 db 174 ; base exp yield
 INCBIN "pic/ymon/golduck.pic",0,1 ; 77, sprite dimensions
 dw GolduckPicFront
 dw GolduckPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db TAIL_WHIP
-db DISABLE
-db 0
+db WATERFALL
+db PSYCHIC_M
+db BODY_SLAM
+db HYPNOSIS
 db 0 ; growth rate
 ; learnset
 	tmlearn 1,5,6,8

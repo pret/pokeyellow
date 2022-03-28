@@ -609,7 +609,7 @@ HandlePoisonBurnLeechSeed:
 	ld [H_WHOSETURN], a
 	xor a
 	ld [wAnimationType], a
-	ld a, ABSORB
+	ld a, GIGA_DRAIN
 	call PlayMoveAnimation ; play leech seed animation (from opposing mon)
 	pop af
 	ld [H_WHOSETURN], a
@@ -4072,8 +4072,8 @@ ExclamationPointMoveSets:
 	db $00
 	db POUND, SCRATCH, VICEGRIP, WING_ATTACK, FLY, BIND, SLAM, HORN_ATTACK, BODY_SLAM
 	db WRAP, THRASH, TAIL_WHIP, LEER, BITE, GROWL, ROAR, SING, PECK, COUNTER
-	db STRENGTH, ABSORB, STRING_SHOT, EARTHQUAKE, FISSURE, DIG, TOXIC, SCREECH, HARDEN
-	db MINIMIZE, WITHDRAW, DEFENSE_CURL, METRONOME, LICK, CLAMP, CONSTRICT, POISON_GAS
+	db STRENGTH, GIGA_DRAIN, STRING_SHOT, EARTHQUAKE, FISSURE, DIG, TOXIC, SCREECH, HARDEN
+	db MINIMIZE, WITHDRAW, DEFENSE_CURL, METRONOME, LICK, CLAMP, CONSTRICT, SLUDGE_BOMB
 	db LEECH_LIFE, BUBBLE, FLASH, SPLASH, ACID_ARMOR, FURY_SWIPES, REST, SHARPEN, SLASH, SUBSTITUTE
 	db $00
 	db $FF ; terminator
@@ -5018,11 +5018,10 @@ ApplyAttackToEnemyPokemon:
 	jr z, .storeDamage
 	cp NIGHT_SHADE
 	jr z, .storeDamage
+	cp DRAGON_RAGE
+	jr z, .storeDamage
 	ld b, SONICBOOM_DAMAGE ; 20
 	cp SONICBOOM
-	jr z, .storeDamage
-	ld b, DRAGON_RAGE_DAMAGE ; 40
-	cp DRAGON_RAGE
 	jr z, .storeDamage
 ; Psywave
 	ld a, [hl]
@@ -5137,11 +5136,10 @@ ApplyAttackToPlayerPokemon:
 	jr z, .storeDamage
 	cp NIGHT_SHADE
 	jr z, .storeDamage
+	cp DRAGON_RAGE
+	jr z, .storeDamage
 	ld b, SONICBOOM_DAMAGE
 	cp SONICBOOM
-	jr z, .storeDamage
-	ld b, DRAGON_RAGE_DAMAGE
-	cp DRAGON_RAGE
 	jr z, .storeDamage
 ; Psywave
 	ld a, [hl]
@@ -6379,8 +6377,8 @@ LoadEnemyMonData:
 	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 ; fixed DVs for trainer mon
-	ld a, $98
-	ld b, $88
+	ld a, $FF
+	ld b, $FF
 	jr z, .storeDVs
 ; random DVs for wild mon
 	call BattleRandom
@@ -8086,7 +8084,7 @@ TwoToFiveAttacksEffect:
 	ld a, [hl]
 	cp TWINEEDLE_EFFECT
 	jr z, .twineedle
-	cp ATTACK_TWICE_EFFECT
+	cp TWO_TO_FIVE_ATTACKS_EFFECT
 	ld a, $2 ; number of hits it's always 2 for ATTACK_TWICE_EFFECT
 	jr z, .saveNumberOfHits
 ; for TWO_TO_FIVE_ATTACKS_EFFECT 3/8 chance for 2 and 3 hits, and 1/8 chance for 4 and 5 hits
@@ -8105,7 +8103,7 @@ TwoToFiveAttacksEffect:
 	ld [bc], a
 	ret
 .twineedle
-	ld a, POISON_SIDE_EFFECT1
+	ld a, POISON_SIDE_EFFECT2
 	ld [hl], a ; set Twineedle's effect to poison effect
 	jr .saveNumberOfHits
 

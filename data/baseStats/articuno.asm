@@ -1,21 +1,21 @@
 db DEX_ARTICUNO ; pokedex id
-db 90 ; base hp
+db 105 ; base hp
 db 85 ; base attack
 db 100 ; base defense
 db 85 ; base speed
 db 125 ; base special
 db ICE ; species type 1
 db FLYING ; species type 2
-db 3 ; catch rate
+db 1 ; catch rate
 db 215 ; base exp yield
 INCBIN "pic/ymon/articuno.pic",0,1 ; 77, sprite dimensions
 dw ArticunoPicFront
 dw ArticunoPicBack
 ; attacks known at lvl 0
-db PECK
-db ICE_BEAM
-db 0
-db 0
+db SKY_ATTACK
+db BLIZZARD
+db REST
+db AGILITY
 db 5 ; growth rate
 ; learnset
 	tmlearn 2,4,6

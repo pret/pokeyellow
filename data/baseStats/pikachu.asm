@@ -6,15 +6,15 @@ db 90 ; base speed
 db 50 ; base special
 db ELECTRIC ; species type 1
 db ELECTRIC ; species type 2
-db 190 ; catch rate
+db 255 ; catch rate
 db 82 ; base exp yield
 INCBIN "pic/ymon/pikachu.pic",0,1 ; 55, sprite dimensions
 dw PikachuPicFront
 dw PikachuPicBack
 ; attacks known at lvl 0
 db THUNDERSHOCK
-db GROWL
-db 0
+db QUICK_ATTACK
+db THUNDER_WAVE
 db 0
 db 0 ; growth rate
 ; learnset
@@ -24,5 +24,5 @@ db 0 ; growth rate
 	tmlearn 25,31,32
 	tmlearn 33,34,39,40
 	tmlearn 44,45
-	tmlearn 50,55
+	tmlearn 50,53,55
 db 0 ; padding
