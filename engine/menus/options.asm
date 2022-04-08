@@ -47,31 +47,31 @@ OptionsMenu_TextSpeed:
 	jr nz, .pressedRight
 	bit 5, a
 	jr nz, .pressedLeft
-	jr .asm_41ce0
+	jr .nonePressed
 .pressedRight
 	ld a, c
 	cp $2
-	jr c, .asm_41cca
+	jr c, .increase
 	ld c, $ff
-.asm_41cca
+.increase
 	inc c
 	ld a, e
-	jr .asm_41cd6
+	jr .save
 .pressedLeft
 	ld a, c
 	and a
-	jr nz, .asm_41cd4
+	jr nz, .decrease
 	ld c, $3
-.asm_41cd4
+.decrease
 	dec c
 	ld a, d
-.asm_41cd6
+.save
 	ld b, a
 	ld a, [wOptions]
 	and $f0
 	or b
 	ld [wOptions], a
-.asm_41ce0
+.nonePressed
 	ld b, $0
 	ld hl, TextSpeedStringsPointerTable
 	add hl, bc
