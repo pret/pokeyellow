@@ -47,31 +47,31 @@ OptionsMenu_TextSpeed:
 	jr nz, .pressedRight
 	bit 5, a
 	jr nz, .pressedLeft
-	jr .NonePressed
+	jr .nonePressed
 .pressedRight
 	ld a, c
 	cp $2
-	jr c, .Increase
+	jr c, .increase
 	ld c, $ff
-.Increase
+.increase
 	inc c
 	ld a, e
-	jr .Save
+	jr .save
 .pressedLeft
 	ld a, c
 	and a
-	jr nz, .Decrease
+	jr nz, .decrease
 	ld c, $3
-.Decrease
+.decrease
 	dec c
 	ld a, d
-.Save
+.save
 	ld b, a
 	ld a, [wOptions]
 	and $f0
 	or b
 	ld [wOptions], a
-.NonePressed
+.nonePressed
 	ld b, $0
 	ld hl, TextSpeedStringsPointerTable
 	add hl, bc
