@@ -41,7 +41,7 @@ ExclamationPointMoveSets:
 	db PECK
 	db COUNTER
 	db STRENGTH
-	db ABSORB
+	db GIGA_DRAIN
 	db STRING_SHOT
 	db EARTHQUAKE
 	db FISSURE
@@ -56,7 +56,7 @@ ExclamationPointMoveSets:
 	db LICK
 	db CLAMP
 	db CONSTRICT
-	db POISON_GAS
+	db SLUDGE_BOMB
 	db LEECH_LIFE
 	db BUBBLE
 	db FLASH

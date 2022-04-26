@@ -40,7 +40,7 @@ AttackAnimationPointers:
 	dw DoubleEdgeAnim
 	dw TailWhipAnim
 	dw PoisonStingAnim
-	dw TwineedleAnim
+	dw XScissorAnim
 	dw PinMissileAnim
 	dw LeerAnim
 	dw BiteAnim
@@ -70,7 +70,7 @@ AttackAnimationPointers:
 	dw CounterAnim
 	dw SeismicTossAnim
 	dw StrengthAnim
-	dw AbsorbAnim
+	dw GigaDrainAnim
 	dw MegaDrainAnim
 	dw LeechSeedAnim
 	dw GrowthAnim
@@ -138,7 +138,7 @@ AttackAnimationPointers:
 	dw HiJumpKickAnim
 	dw GlareAnim
 	dw DreamEaterAnim
-	dw PoisonGasAnim
+	dw SludgeBombAnim
 	dw BarrageAnim
 	dw LeechLifeAnim
 	dw LovelyKissAnim
@@ -428,10 +428,10 @@ PoisonStingAnim:
 	battle_anim POISON_STING, SUBANIM_00, 0, 6
 	db -1 ; end
 
-TwineedleAnim:
-	battle_anim TWINEEDLE, SUBANIM_01, 0, 5
-	battle_anim TWINEEDLE, SUBANIM_01, 0, 5
+XScissorAnim:
+	battle_anim SLASH, SUBANIM_0F, 0, 6
 	db -1 ; end
+
 
 PinMissileAnim:
 	battle_anim PIN_MISSILE, SUBANIM_01, 0, 3
@@ -598,10 +598,12 @@ StrengthAnim:
 	battle_anim FIRE_PUNCH, SUBANIM_04, 1, 6
 	db -1 ; end
 
-AbsorbAnim:
-	battle_anim ABSORB, SE_LIGHT_SCREEN_PALETTE
+GigaDrainAnim:
+	battle_anim MEGA_DRAIN, SE_LIGHT_SCREEN_PALETTE
+	battle_anim NO_MOVE, SE_DARK_SCREEN_FLASH
 	battle_anim NO_MOVE, SUBANIM_21, 0, 6
 	battle_anim NO_MOVE, SUBANIM_22, 0, 6
+	battle_anim NO_MOVE, SE_DARK_SCREEN_FLASH
 	battle_anim NO_MOVE, SE_RESET_SCREEN_PALETTE
 	db -1 ; end
 
@@ -997,8 +999,9 @@ DreamEaterAnim:
 	battle_anim NO_MOVE, SE_RESET_SCREEN_PALETTE
 	db -1 ; end
 
-PoisonGasAnim:
-	battle_anim POISON_GAS, SUBANIM_19, 1, 6
+SludgeBombAnim:
+	battle_anim SLUDGE, SUBANIM_13, 1, 6
+	battle_anim SLUDGE, SUBANIM_14, 1, 6
 	db -1 ; end
 
 BarrageAnim:
