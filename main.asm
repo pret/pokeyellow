@@ -325,6 +325,11 @@ IF !DEF(_DEBUG)
 	INCLUDE "engine/gfx/bg_map_attributes.asm"
 ENDC
 
+SECTION "bank2D",ROMX,BANK[$2D]	;joenote - This is a known empty bank. Going to start moving stuff here
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;this is a bunch of custom functions and stuff, so leave it all together in the same bank
+INCLUDE "engine/battle/func_ai.asm"
 
 SECTION "bank30", ROMX
 

@@ -69,8 +69,8 @@ SLP EQU %111 ; sleep counter
 MAX_STAT_VALUE EQU 999
 
 ; trainer dvs
-ATKDEFDV_TRAINER EQU $98
-SPDSPCDV_TRAINER EQU $88
+ATKDEFDV_TRAINER EQU $FF
+SPDSPCDV_TRAINER EQU $FF
 
 ; wPlayerBattleStatus1 or wEnemyBattleStatus1 bit flags
 	const_def

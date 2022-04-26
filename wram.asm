@@ -518,6 +518,7 @@ wDexRatingNumMonsSeen:: db
 wDexRatingNumMonsOwned:: db
 wDexRatingText:: db
 
+wAILastMovePower:: ds 1
 NEXTU
 ; If a random number greater than this value is generated, then the player is
 ; allowed to have three 7 symbols or bar symbols line up.
@@ -575,6 +576,7 @@ wCanEvolveFlags:: db
 
 wForceEvolution:: db
 
+
 ; if [wAILayer2Encouragement] != 1, the second AI layer is not applied
 wAILayer2Encouragement:: db
 
@@ -583,6 +585,7 @@ wAILayer2Encouragement:: db
 ; current HP of player and enemy substitutes
 wPlayerSubstituteHP:: db
 wEnemySubstituteHP:: db
+
 
 ; The player's selected move during a test battle.
 ; InitBattleVariables sets it to the move Pound.
@@ -963,8 +966,11 @@ wBadgeOrFaceTiles:: ds NUM_BADGES + 1
 wTempObtainedBadgesBooleans:: ds NUM_BADGES
 
 NEXTU
-wUnusedCD3D:: db
 ; the number of credits mons that have been displayed so far
+wUnusedCD3D:: db
+
+wAIPartyMonScores:: db
+
 wNumCreditsMonsDisplayed:: db
 
 NEXTU
