@@ -28,7 +28,7 @@ LoadMissableObjectData::
 	call CopyData
 	ret
 
-missable_object_map: MACRO
+MACRO missable_object_map
 	db \1
 	db \3 - \2
 	dw \2

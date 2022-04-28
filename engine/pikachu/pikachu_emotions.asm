@@ -256,8 +256,8 @@ load_expression:
 	call DoStarterPikachuEmotions
 	ret
 
-pikaemotion_def: MACRO
-\1_id:
+MACRO pikaemotion_def
+	\1_id:
 	dw \1
 ENDM
 

@@ -65,12 +65,12 @@ DisplayTextID::
 
 ; check first byte of text for special cases
 
-dict2: MACRO
+MACRO dict2
 	cp \1
 	jr nz, .not\@
 	\2
 	jr AfterDisplayingTextID
-.not\@
+	.not\@
 ENDM
 
 	dict  TX_SCRIPT_MART,                    DisplayPokemartDialogue

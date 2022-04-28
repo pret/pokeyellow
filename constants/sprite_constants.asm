@@ -72,7 +72,7 @@
 	const SPRITE_CHANSEY                 ; $44
 	const SPRITE_JESSIE                  ; $45
 	const SPRITE_JAMES                   ; $46
-FIRST_STILL_SPRITE EQU const_value
+DEF FIRST_STILL_SPRITE EQU const_value
 	const SPRITE_POKE_BALL               ; $47
 	const SPRITE_FOSSIL                  ; $48
 	const SPRITE_BOULDER                 ; $49
@@ -85,4 +85,4 @@ FIRST_STILL_SPRITE EQU const_value
 	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $50
 	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $51
 	const SPRITE_GAMBLER_ASLEEP          ; $52
-NUM_SPRITES EQU const_value - 1
+DEF NUM_SPRITES EQU const_value - 1

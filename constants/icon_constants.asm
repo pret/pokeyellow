@@ -13,6 +13,6 @@
 	const ICON_QUADRUPED ; $9
 	const ICON_PIKACHU   ; $A
 
-ICON_TRADEBUBBLE EQU $e
+DEF ICON_TRADEBUBBLE EQU $e
 
-ICONOFFSET EQU $40 ; difference between alternating icon frames' tile IDs
+DEF ICONOFFSET EQU $40 ; difference between alternating icon frames' tile IDs

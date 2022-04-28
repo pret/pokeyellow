@@ -163,8 +163,8 @@ LoadCurrentPikaPicAnimScriptPointer:
 	call UpdatePikaPicAnimPointer
 	ret
 
-pikapic_def: MACRO
-\1_id:
+MACRO pikapic_def
+	\1_id:
 	dw \1
 ENDM
 

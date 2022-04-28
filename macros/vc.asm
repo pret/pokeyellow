@@ -1,27 +1,27 @@
-vc_hook: MACRO
-IF DEF(_YELLOW_VC)
-.VC_\1::
-ENDC
+MACRO vc_hook
+	IF DEF(_YELLOW_VC)
+		.VC_\1::
+	ENDC
 ENDM
 
-vc_patch: MACRO
-IF DEF(_YELLOW_VC)
-	ASSERT !DEF(CURRENT_VC_PATCH), "Already started a vc_patch"
-CURRENT_VC_PATCH EQUS "\1"
-.VC_{CURRENT_VC_PATCH}::
-ENDC
+MACRO vc_patch
+	IF DEF(_YELLOW_VC)
+		ASSERT !DEF(CURRENT_VC_PATCH), "Already started a vc_patch"
+		DEF CURRENT_VC_PATCH EQUS "\1"
+		.VC_{CURRENT_VC_PATCH}::
+	ENDC
 ENDM
 
-vc_patch_end: MACRO
-IF DEF(_YELLOW_VC)
-	ASSERT DEF(CURRENT_VC_PATCH), "No vc_patch started"
-.VC_{CURRENT_VC_PATCH}_End::
-	PURGE CURRENT_VC_PATCH
-ENDC
+MACRO vc_patch_end
+	IF DEF(_YELLOW_VC)
+		ASSERT DEF(CURRENT_VC_PATCH), "No vc_patch started"
+		.VC_{CURRENT_VC_PATCH}_End::
+		PURGE CURRENT_VC_PATCH
+	ENDC
 ENDM
 
-vc_assert: MACRO
-IF DEF(_YELLOW_VC)
-	ASSERT \#
-ENDC
+MACRO vc_assert
+	IF DEF(_YELLOW_VC)
+		ASSERT \#
+	ENDC
 ENDM

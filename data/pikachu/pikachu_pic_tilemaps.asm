@@ -1,5 +1,5 @@
-pikatilemap_def: MACRO
-\1_id:
+MACRO pikatilemap_def
+	\1_id:
 	dw \1
 ENDM
 

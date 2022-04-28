@@ -1,5 +1,5 @@
-pikaanim_def: MACRO
-\1_id:
+MACRO pikaanim_def
+	\1_id:
 	dw \1
 ENDM
 
@@ -41,12 +41,12 @@ PikaPicAnimBGFramesPointers:
 	pikaanim_def PikaPicAnimBGFrames_34 ; 22
 	pikaanim_def PikaPicAnimBGFrames_35 ; 23
 
-pikaframe: MACRO
+MACRO pikaframe
 	db (\1_id - PikaPicTilemapPointers) / 2, \2
 ENDM
 
-pikaframedelay EQUS "db 0,"
-pikaframeend EQUS "db $e0"
+DEF pikaframedelay EQUS "db 0,"
+DEF pikaframeend EQUS "db $e0"
 
 PikaPicAnimBGFrames_0:
 PikaPicAnimBGFrames_1:
