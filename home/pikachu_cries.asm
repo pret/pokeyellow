@@ -1,5 +1,5 @@
 PlayPikachuPCM::
-	vc_hook PLAY_HACK
+	vc_hook Unknown_PlayPikachuPCM
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, b

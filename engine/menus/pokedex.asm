@@ -111,7 +111,7 @@ HandlePokedexSideMenu:
 	dec a
 	jr z, .choseArea
 	dec a
-	vc_patch disable_print
+	vc_patch Forbid_printing_Pokedex
 IF DEF (_YELLOW_VC)
 	jr z, .handleMenuInput
 ELSE

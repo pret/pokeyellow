@@ -13,7 +13,7 @@ SummerBeachHouse_TextPointers:
 SurfinDudeText:
 	text_asm
 	ld a, [wd472]
-	vc_patch MiniGame
+	vc_patch Bypass_need_Pikachu_with_Surf_for_minigame
 IF DEF (_YELLOW_VC)
 	bit 7, a
 ELSE
@@ -136,7 +136,7 @@ SummerBeachHouseSign4Text:
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, [wd472]
-	vc_patch MiniGameHighScorePC
+	vc_patch Bypass_need_Pikachu_with_Surf_for_high_score
 IF DEF(_YELLOW_VC)
 	bit 7, a
 ELSE
