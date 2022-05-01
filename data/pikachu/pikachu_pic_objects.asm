@@ -1,5 +1,5 @@
 MACRO pikaanim_def
-	\1_id:
+\1_id:
 	dw \1
 ENDM
 

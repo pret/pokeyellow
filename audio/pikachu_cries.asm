@@ -1,9 +1,9 @@
 MACRO pcm
 ; All of the pcm data has one trailing byte that is never processed.
 	dw .End - .Start - 1
-	.Start
+.Start
 	\1
-	.End
+.End
 ENDM
 
 

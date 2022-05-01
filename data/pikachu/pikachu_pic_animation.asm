@@ -328,7 +328,7 @@ PikaPicAnimScript28:
 
 MACRO pikapicanimgfx
 	IF _NARG == 2
-		\2_id::
+	\2_id::
 		db \1  ; size (-1 if compressed)
 		dba \2 ; pointer
 	ELSE

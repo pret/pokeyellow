@@ -58,7 +58,7 @@ TradeAnimCommon:
 	ret
 
 MACRO addtradefunc
-	\1TradeFunc::
+\1TradeFunc::
 	dw \1
 ENDM
 

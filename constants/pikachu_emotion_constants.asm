@@ -116,7 +116,7 @@ MACRO pikaemotion_dummy3
 ENDM
 
 MACRO pikacry_def
-	\1_id::
+\1_id::
 	dba \1
 ENDM
 
