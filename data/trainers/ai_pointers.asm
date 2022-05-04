@@ -34,8 +34,8 @@ TrainerAIPointers:
 	dbw 255, GenericAI
 	dbw 255, BrockAI ; giovanni
 	dbw 255, GenericAI
-	dbw 255, GenericAI
-	dbw 255, GenericAI
+	dbw 255, BrockAI ;cooltrainerm
+	dbw 255, BrockAI ;cooltrainerf
 	dbw 255, BrockAI ; bruno
 	dbw 255, BrockAI ; brock
 	dbw 255, BrockAI ; misty
