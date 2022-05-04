@@ -1047,7 +1047,7 @@ ReadMoveForAIscoring:
 	dec d
 	ld a, d
 	ld hl, Moves
-	ld bc, Moves - move
+	ld bc, 1
 	call AddNTimes
 	inc hl	
 	inc hl ;point to move power
