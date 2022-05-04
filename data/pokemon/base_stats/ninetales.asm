@@ -4,13 +4,13 @@
 	;   hp  atk  def  spd  spc
 
 	db FIRE, FIRE ; type
-	db 75 ; catch rate
+	db 1 ; catch rate
 	db 178 ; base exp
 
 	INCBIN "gfx/pokemon/front/ninetales.pic", 0, 1 ; sprite dimensions
 	dw NinetalesPicFront, NinetalesPicBack
 
-	db EMBER, TAIL_WHIP, QUICK_ATTACK, ROAR ; level 1 learnset
+	db TOXIC, FLAMETHROWER, BODY_SLAM, FIRE_SPIN ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

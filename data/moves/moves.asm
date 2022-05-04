@@ -33,7 +33,7 @@ Moves:
 	move SLAM,         NO_ADDITIONAL_EFFECT,        70, NORMAL,       100, 20
 	move VINE_WHIP,    NO_ADDITIONAL_EFFECT,        35, GRASS,        100, 10
 	move STOMP,        FLINCH_SIDE_EFFECT2,         65, NORMAL,       100, 20
-	move DOUBLE_KICK,  ATTACK_TWICE_EFFECT,         30, FIGHTING,     100, 30
+	move DOUBLE_KICK,  ATTACK_TWICE_EFFECT,         45, FIGHTING,     100, 30
 	move MEGA_KICK,    NO_ADDITIONAL_EFFECT,       120, NORMAL,        75,  5
 	move JUMP_KICK,    JUMP_KICK_EFFECT,            70, FIGHTING,      95, 25
 	move ROLLING_KICK, FLINCH_SIDE_EFFECT2,         60, FIGHTING,      85, 15
@@ -68,7 +68,7 @@ Moves:
 	move HYDRO_PUMP,   NO_ADDITIONAL_EFFECT,       120, WATER,         85,  8
 	move SURF,         NO_ADDITIONAL_EFFECT,        95, WATER,        100, 15
 	move ICE_BEAM,     FREEZE_SIDE_EFFECT,          95, ICE,          100, 10
-	move BLIZZARD,     FREEZE_SIDE_EFFECT,         120, ICE,           90,  8
+	move BLIZZARD,     FREEZE_SIDE_EFFECT,         120, ICE,           85,  8
 	move PSYBEAM,      CONFUSION_SIDE_EFFECT,       65, PSYCHIC_TYPE, 100, 20
 	move BUBBLEBEAM,   SPEED_DOWN_SIDE_EFFECT,      65, WATER,        100, 20
 	move AURORA_BEAM,  ATTACK_DOWN_SIDE_EFFECT,     65, ICE,          100, 20
@@ -92,11 +92,11 @@ Moves:
 	move PETAL_DANCE,  DRAIN_HP_EFFECT,			   120, GRASS,        100,  5
 	move STRING_SHOT,  SPEED_DOWN1_EFFECT,           0, BUG,           95, 40
 	move DRAGON_RAGE,  SPECIAL_DAMAGE_EFFECT,        1, DRAGON,       100, 10
-	move FIRE_SPIN,    TRAPPING_EFFECT,             15, FIRE,          70, 15
+	move FIRE_SPIN,    TRAPPING_EFFECT,             15, FIRE,          85, 15
 	move THUNDERSHOCK, PARALYZE_SIDE_EFFECT1,       40, ELECTRIC,     100, 30
 	move THUNDERBOLT,  PARALYZE_SIDE_EFFECT1,       95, ELECTRIC,     100, 15
 	move THUNDER_WAVE, PARALYZE_EFFECT,              0, ELECTRIC,     100, 20
-	move THUNDER,      PARALYZE_SIDE_EFFECT1,      120, ELECTRIC,      70, 10
+	move THUNDER,      PARALYZE_SIDE_EFFECT1,      120, ELECTRIC,      85,  8
 	move ROCK_THROW,   NO_ADDITIONAL_EFFECT,        50, ROCK,          65, 15
 	move EARTHQUAKE,   NO_ADDITIONAL_EFFECT,       100, GROUND,       100, 10
 	move FISSURE,      OHKO_EFFECT,                  1, GROUND,        30,  1
@@ -137,7 +137,7 @@ Moves:
 	move BONE_CLUB,    FLINCH_SIDE_EFFECT1,         65, GROUND,        85, 20
 	move FIRE_BLAST,   BURN_SIDE_EFFECT2,          120, FIRE,          85,  8
 	move WATERFALL,    NO_ADDITIONAL_EFFECT,        80, WATER,        100, 15
-	move CLAMP,        TRAPPING_EFFECT,             35, WATER,         75, 10
+	move CLAMP,        TRAPPING_EFFECT,             35, WATER,         85, 10
 	move SWIFT,        SWIFT_EFFECT,                60, NORMAL,       100, 20
 	move SKULL_BASH,   DEFENSE_UP1_EFFECT,		    50, NORMAL,       100,  5
 	move SPIKE_CANNON, TWO_TO_FIVE_ATTACKS_EFFECT,  20, NORMAL,       100, 15

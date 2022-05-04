@@ -4,13 +4,13 @@
 	;   hp  atk  def  spd  spc
 
 	db DRAGON, DRAGON ; type
-	db 45 ; catch rate
+	db 35 ; catch rate
 	db 67 ; base exp
 
 	INCBIN "gfx/pokemon/front/dratini.pic", 0, 1 ; sprite dimensions
 	dw DratiniPicFront, DratiniPicBack
 
-	db WRAP, LEER, NO_MOVE, NO_MOVE ; level 1 learnset
+	db DRAGON_RAGE, WRAP, THUNDER_WAVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

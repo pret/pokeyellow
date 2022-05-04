@@ -4,13 +4,13 @@
 	;   hp  atk  def  spd  spc
 
 	db ROCK, WATER ; type
-	db 45 ; catch rate
+	db 3 ; catch rate
 	db 120 ; base exp
 
 	INCBIN "gfx/pokemon/front/omanyte.pic", 0, 1 ; sprite dimensions
 	dw OmanytePicFront, OmanytePicBack
 
-	db WATER_GUN, WITHDRAW, NO_MOVE, NO_MOVE ; level 1 learnset
+	db WATERFALL, BLIZZARD, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

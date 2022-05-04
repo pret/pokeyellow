@@ -4,18 +4,18 @@
 	;   hp  atk  def  spd  spc
 
 	db WATER, POISON ; type
-	db 190 ; catch rate
+	db 100 ; catch rate
 	db 105 ; base exp
 
 	INCBIN "gfx/pokemon/front/tentacool.pic", 0, 1 ; sprite dimensions
 	dw TentacoolPicFront, TentacoolPicBack
 
-	db ACID, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db BUBBLEBEAM, SUPERSONIC, MEGA_DRAIN, WRAP ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  BUBBLEBEAM,   \
-	     WATER_GUN,    ICE_BEAM,     BLIZZARD,     RAGE,         MEGA_DRAIN,   \
+	     WATER_GUN,    ICE_BEAM,     BLIZZARD,     RAGE,         GIGA_DRAIN,   \
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   CUT,          SURF
 	; end

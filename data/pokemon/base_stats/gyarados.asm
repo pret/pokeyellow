@@ -4,13 +4,13 @@
 	;   hp  atk  def  spd  spc
 
 	db WATER, FLYING ; type
-	db 45 ; catch rate
+	db 1 ; catch rate
 	db 214 ; base exp
 
 	INCBIN "gfx/pokemon/front/gyarados.pic", 0, 1 ; sprite dimensions
 	dw GyaradosPicFront, GyaradosPicBack
 
-	db TACKLE, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db DRAGON_RAGE, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

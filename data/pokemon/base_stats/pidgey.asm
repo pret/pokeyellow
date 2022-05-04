@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/pidgey.pic", 0, 1 ; sprite dimensions
 	dw PidgeyPicFront, PidgeyPicBack
 
-	db GUST, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db WING_ATTACK, SAND_ATTACK, QUICK_ATTACK, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

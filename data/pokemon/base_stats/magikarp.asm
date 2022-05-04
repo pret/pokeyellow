@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/magikarp.pic", 0, 1 ; sprite dimensions
 	dw MagikarpPicFront, MagikarpPicBack
 
-	db SPLASH, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db SPLASH, BUBBLE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

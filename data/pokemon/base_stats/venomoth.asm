@@ -1,6 +1,6 @@
 	db DEX_VENOMOTH ; pokedex id
 
-	db  70,  65,  60,  90,  90
+	db  70, 85,  60, 100, 100
 	;   hp  atk  def  spd  spc
 
 	db BUG, POISON ; type
@@ -10,12 +10,12 @@
 	INCBIN "gfx/pokemon/front/venomoth.pic", 0, 1 ; sprite dimensions
 	dw VenomothPicFront, VenomothPicBack
 
-	db TACKLE, DISABLE, SUPERSONIC, CONFUSION ; level 1 learnset
+	db STUN_SPORE, PSYCHIC_M, SLEEP_POWDER, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
 	tmhm RAZOR_WIND,   WHIRLWIND,    TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    PSYCHIC_M,    \
+	     HYPER_BEAM,   RAGE,         GIGA_DRAIN,   SOLARBEAM,    PSYCHIC_M,    \
 	     TELEPORT,     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         \
 	     SWIFT,        REST,         PSYWAVE,      SUBSTITUTE,   FLASH
 	; end
