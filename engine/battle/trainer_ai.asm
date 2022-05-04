@@ -1005,7 +1005,7 @@ AIMoveChoiceModification5:
 	jr z, .heal_explode	;proceed as normal if player is not in fly/dig
 	call StrCmpSpeed	;do a speed compare
 	jp c, .heavydiscourage	;a set carry bit means the ai 'mon is faster, so heavily discourage
-	
+
 .heal_explode
 	ld a, 1	;
 	call AICheckIfHPBelowFraction
@@ -1126,6 +1126,24 @@ TrainerAI:
 	add hl, bc
 	add hl, bc
 	add hl, bc
+	ld a, [wAICount]
+	and a
+	jr z, .done ; if no AI uses left, we're done here
+	inc hl
+	inc a
+	jr nz, .getpointer
+	dec hl
+	ld a, [hli]
+	ld [wAICount], a
+.getpointer
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Random
+	jp hl
+.done
+	and a
+	ret
 
 CheckandResetSwitchBit:	
 	ld a, [wUnusedC000]
