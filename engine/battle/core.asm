@@ -5318,12 +5318,67 @@ MetronomePickMove:
 	call BattleRandom
 	and a
 	jr z, .pickMoveLoop
-	cp NUM_ATTACKS ; max move number (including Struggle)
+	cp NUM_ATTACKS - 1 ; max move number (excluding struggle)
 	jr nc, .pickMoveLoop
 	cp METRONOME
 	jr z, .pickMoveLoop
+	cp TELEPORT
+	jr z, .pickMoveLoop
+	cp WHIRLWIND
+	jr z, .pickMoveLoop
+	cp ROAR
+	jr z, .pickMoveLoop
+	cp ROCK_THROW
+	jr z, .pickMoveLoop
+	cp POISON_GAS
+	jr z, .pickMoveLoop
+	cp BUBBLE
+	jr z, .pickMoveLoop
+	cp SPLASH
+	jr z, .pickMoveLoop
+	cp LICK
+	jr z, .pickMoveLoop
+	cp SMOG
+	jr z, .pickMoveLoop
+	cp PECK
+	jr z, .pickMoveLoop
+	cp EMBER
+	jr z, .pickMoveLoop
+	cp WATER_GUN
+	jr z, .pickMoveLoop
+	cp POISON_STING
+	jr z, .pickMoveLoop
+	cp TACKLE
+	jr z, .pickMoveLoop
+	cp VINE_WHIP
+	jr z, .pickMoveLoop
+	cp RAGE
+	jr z, .pickMoveLoop
+	cp SCRATCH
+	jr z, .pickMoveLoop
+	cp VICEGRIP
+	jr z, .pickMoveLoop
+	cp DOUBLESLAP
+	jr z, .pickMoveLoop
+	cp FURY_ATTACK
+	jr z, .pickMoveLoop
+	cp ACID
+	jr z, .pickMoveLoop
+	cp SPIKE_CANNON
+	jr z, .pickMoveLoop
+	cp THUNDERSHOCK
+	jr z, .pickMoveLoop
+	cp CUT
+	jr z, .pickMoveLoop
+	cp GUST
+	jr z, .pickMoveLoop
+	cp WING_ATTACK
+	jr z, .pickMoveLoop
+	cp BARRAGE
+	jr z, .pickMoveLoop
+	cp FURY_SWIPES
 	ld [hl], a
-	jr ReloadMoveData
+	jp ReloadMoveData
 
 ; this function increments the current move's PP
 ; it's used to prevent moves that run another move within the same turn
