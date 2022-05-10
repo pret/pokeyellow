@@ -4,13 +4,13 @@
 	;   hp  atk  def  spd  spc
 
 	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
-	db 100 ; catch rate
+	db 1 ; catch rate
 	db 145 ; base exp
 
 	INCBIN "gfx/pokemon/front/kadabra.pic", 0, 1 ; sprite dimensions
 	dw KadabraPicFront, KadabraPicBack
 
-	db TELEPORT, KINESIS, NO_MOVE, NO_MOVE ; level 1 learnset
+	db KINESIS, PSYBEAM, SEISMIC_TOSS, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

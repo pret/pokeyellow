@@ -1,6 +1,6 @@
 	db DEX_KRABBY ; pokedex id
 
-	db  30, 105,  90,  50,  25
+	db  30, 105,  90,  70,  45
 	;   hp  atk  def  spd  spc
 
 	db WATER, WATER ; type
@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/krabby.pic", 0, 1 ; sprite dimensions
 	dw KrabbyPicFront, KrabbyPicBack
 
-	db BUBBLE, LEER, NO_MOVE, NO_MOVE ; level 1 learnset
+	db CRABHAMMER, VICEGRIP, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

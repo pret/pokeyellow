@@ -27,7 +27,7 @@ FIRST_SE_ID EQU const_value
 	const SE_SHOOT_BALLS_UPWARD        ; $ED used in Teleport/Sky Attack
 	const SE_SQUISH_MON_PIC            ; $EE used in Teleport/Sky Attack
 	const SE_HIDE_MON_PIC              ; $EF
-	const SE_LIGHT_SCREEN_PALETTE      ; $F0 used in Mist/Double Edge/Absorb/etc.
+	const SE_LIGHT_SCREEN_PALETTE      ; $F0 used in Mist/Double Edge/Giga Drain/etc.
 	const SE_RESET_MON_POSITION        ; $F1 used in Tackle/Body Slam/etc.
 	const SE_MOVE_MON_HORIZONTALLY     ; $F2 used in Tackle/Body Slam/etc.
 	const SE_BLINK_MON                 ; $F3 used in Recover

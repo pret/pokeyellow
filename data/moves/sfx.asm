@@ -41,7 +41,7 @@ MoveSoundTable:
 	db SFX_SUPER_EFFECTIVE,    $20, $c0 ; DOUBLE_EDGE
 	db SFX_BATTLE_21,          $00, $80 ; TAIL_WHIP
 	db SFX_BATTLE_1B,          $00, $80 ; POISON_STING
-	db SFX_BATTLE_1B,          $20, $c0 ; TWINEEDLE
+	db SFX_BATTLE_1B,          $20, $c0 ; X_SCISSOR
 	db SFX_BATTLE_19,          $00, $80 ; PIN_MISSILE
 	db SFX_BATTLE_31,          $ff, $40 ; LEER
 	db SFX_BATTLE_1E,          $00, $80 ; BITE
@@ -71,7 +71,7 @@ MoveSoundTable:
 	db SFX_SUPER_EFFECTIVE,    $00, $e0 ; COUNTER
 	db SFX_BATTLE_26,          $01, $60 ; SEISMIC_TOSS
 	db SFX_BATTLE_26,          $20, $40 ; STRENGTH
-	db SFX_BATTLE_24,          $00, $80 ; ABSORB
+	db SFX_BATTLE_24,          $00, $80 ; GIGA_DRAIN
 	db SFX_BATTLE_24,          $40, $c0 ; MEGA_DRAIN
 	db SFX_BATTLE_1B,          $03, $60 ; LEECH_SEED
 	db SFX_BATTLE_25,          $11, $e0 ; GROWTH
@@ -139,7 +139,7 @@ MoveSoundTable:
 	db SFX_BATTLE_17,          $01, $e0 ; HI_JUMP_KICK
 	db SFX_NOT_VERY_EFFECTIVE, $09, $ff ; GLARE
 	db SFX_BATTLE_35,          $42, $01 ; DREAM_EATER
-	db SFX_BATTLE_1C,          $00, $ff ; POISON_GAS
+	db SFX_BATTLE_1C,          $00, $ff ; SLUDGE_BOMB
 	db SFX_BATTLE_32,          $08, $e0 ; BARRAGE
 	db SFX_BATTLE_24,          $00, $80 ; LEECH_LIFE
 	db SFX_BATTLE_09,          $88, $10 ; LOVELY_KISS

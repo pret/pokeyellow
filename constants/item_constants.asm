@@ -177,7 +177,7 @@ TM01 EQU const_value
 	add_tm COUNTER      ; $DA
 	add_tm SEISMIC_TOSS ; $DB
 	add_tm RAGE         ; $DC
-	add_tm MEGA_DRAIN   ; $DD
+	add_tm GIGA_DRAIN   ; $DD
 	add_tm SOLARBEAM    ; $DE
 	add_tm DRAGON_RAGE  ; $DF
 	add_tm THUNDERBOLT  ; $E0
