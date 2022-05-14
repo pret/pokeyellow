@@ -5318,7 +5318,7 @@ MetronomePickMove:
 	jr z, .pickMoveLoop
 	cp ROCK_THROW
 	jr z, .pickMoveLoop
-	cp POISON_GAS
+	cp TOXIC
 	jr z, .pickMoveLoop
 	cp BUBBLE
 	jr z, .pickMoveLoop
