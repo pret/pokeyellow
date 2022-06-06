@@ -25,7 +25,7 @@
 ;ReduceColorB1 = 0	;0~31 (for Green Mode)
 ;MotionBlur1 = 31	;0~31 (for Green Mode)
 ;PaletteX = c31,31,31	;X:0~15, cR,G,B (0~31)
-[SaveLimit]
+[SaveLimit@Unknown_save_limit]
 Mode = 12
 Type = 1
 Index = {hex sGameData}
@@ -36,7 +36,7 @@ Address = {hex sGameDataEnd}
 ;Address = 0x40130
 ;Fixcode = a3: 00 00 00
 
-[disable_print]
+[disable_print@Forbid_printing_Pokedex]
 Mode = 1
 Address = {hex @+1}
 Fixcode = {PATCH +1}
@@ -46,72 +46,72 @@ Fixcode = {PATCH +1}
 ;Address = 0x1551
 ;Type = 3
 
-[MiniGame]
+[MiniGame@Bypass_need_Pikachu_with_Surf_for_minigame]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[MiniGame-HighScorePC@MiniGameHighScorePC]
+[MiniGame-HighScorePC@Bypass_need_Pikachu_with_Surf_for_high_score]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[send_send_buf2]
+[send_send_buf2@Wireless_WaitLinkTransfer]
 Mode = 2
 Address = {HEX @}
 Type = 29
 
-[send_send_buf2_ret]
+[send_send_buf2_ret@Wireless_WaitLinkTransfer_ret]
 Mode = 2
 Address = {HEX @}
 Type = 30
 
-[send_byt2]
+[send_byt2@Wireless_start_exchange]
 Mode = 2
 Address = {HEX @+5}
 Type = 31
 
-[send_byt2_ret]
+[send_byt2_ret@Wireless_end_exchange]
 Mode = 2
 Address = {HEX @}
 Type = 32
 
-[send_dummy]
+[send_dummy@Wireless_start_send_zero_bytes]
 Mode = 2
 Address = {HEX @}
 Type = 33
 
-[send_dummy_end]
+[send_dummy_end@Wireless_end_send_zero_bytes]
 Mode = 2
 Address = {HEX @}
 Type = 34
 
-[FIGHT]
+[FIGHT@Wireless_net_delay_1]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[FIGHT2]
+[FIGHT2@Wireless_net_delay_2]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[Network10]
+[Network10@Wireless_net_delay_3]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[Network11]
+[Network11@Wireless_net_delay_4]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[Network424]
+[Network424@Wireless_ExchangeBytes_1]
 Mode = 2
 Address = {HEX @}
 Type = 4
 
-[Network200]
+[Network200@Wireless_ExchangeBytes_2]
 Mode = 2
 Address = {HEX @}
 Type = 4
@@ -132,52 +132,52 @@ Type = 4
 ;Address = 0x150
 ;Fixcode = 0xC9
 
-[PLAY_MUTE]
+[PLAY_MUTE@Unknown_PlayPikachuSoundClip_end]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH +1}
 
-[PLAY_HACK]
+[PLAY_HACK@Unknown_PlayPikachuPCM]
 Mode = 2
 Address = {HEX @}
 Type = 6
 
-[PLAY_NEW]
+[PLAY_NEW@Unknown_PlayPikachuSoundClip_start]
 Mode = 2
 Address = {HEX @}
 Type = 21
 
-[Network_RECHECK]
+[Network_RECHECK@Wireless_net_recheck]
 Mode = 2
 Address = {HEX @}
 Type = 7
 
-[Network_STOP]
+[Network_STOP@Wireless_net_stop]
 Mode = 2
 Address = {HEX @}
 Type = 8
 
-[Network_END]
+[Network_END@Wireless_net_end]
 Mode = 2
 Address = {HEX @}
 Type = 9
 
-[Network_RESET]
+[Network_RESET@Unknown_network_reset]
 Mode = 2
 Address = {HEX @}
 Type = 10
 
-[linkCable fake begin]
+[linkCable fake begin@Link_fake_connection_status]
 Mode = 2
 Address = {HEX @}
 Type = 16
 
-[linkCable fake end]
+[linkCable fake end@Wireless_prompt]
 Mode = 2
 Address = {HEX @}
 Type = 17  
   
-[linkCable block input]
+[linkCable block input@Wireless_TryQuickSave_block_input]
 Mode = 2
 Address = {HEX @+5}
 Type = 18
@@ -187,29 +187,29 @@ Type = 18
 ;Address = 0x5A84
 ;Type = 19
 
-[save game end]
+[save game end@Trade_save_game_end]
 Mode = 2
 Address = {HEX @}
 Type = 20
 
-[Change_MSG]
+[Change_MSG@Change_link_closed_inactivity_message]
 Mode = 1
 Address = {HEX @+1}
 Fixcode = {PATCH_ +1 20}
 
-[fight_ret]
+[fight_ret@BattleRandom_ret]
 Mode = 1
 Address = {hex @}
 Fixcode = {PATCH}
 
-[fight_ret_c]
+[fight_ret_c@Unknown_BattleRandom_ret_c]
 Mode = 2
 Address = {hex @}
 Type = 98
 
 ;Mem Write: pc32 = 0xf992d addr = 0xc634 value = 0xe
 ;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x1
-[FPA 031801 Begin1]       
+[FPA 031801 Begin1@Reduce_intro_scene_flashing_0E]       
 Mode = 3                   
 Type = 0                   
 Address = {hex @}         
@@ -222,7 +222,7 @@ ConditionValueC = {dws_ 0x0e                    }
 
 ;34 6F 26 00
 ;Mem Write: pc32 = 0xf9e51 addr = 0xc635 value = 0x33   
-[FPA 031801 End1]                
+[FPA 031801 End1@Stop_reducing_intro_scene_flashing_0E]                
 Mode = 3                         
 Type = 1                         
 Address = {hex @}                
@@ -237,7 +237,7 @@ ConditionValueC = {dws_ 0x0e                     0x33                  }
 ;rsm095822 
 ;Mem Write: pc32 = 0xf9d8b addr = 0xc635 value = 0x28  
 ;30                                                                   
-[FPA 031801 Begin2]                                                                         
+[FPA 031801 Begin2@Reduce_intro_scene_flashing_0F]                                                                         
 Mode = 3                                                                                
 Type = 0                                                                                
 Address = {hex @}                                                                    
@@ -249,7 +249,7 @@ ConditionValueB = {dws_ ==                      }
 ConditionValueC = {dws_ 0x0f                    }  
 
                               
-[FPA 031801 End2]             
+[FPA 031801 End2@Stop_reducing_intro_scene_flashing_0F]             
 Mode = 3                      
 Type = 1                      
 Address = 0xF9e4b 
@@ -260,7 +260,7 @@ ConditionValueC = {dws_ 0x0f                    }
 
 ;222222aaaaaaaaaaaaaaaa: pc32 = 0xf984b addr = 0xffb3 value = 0x0               
 ;000f984bh: F0 B3 E6 0B                                        
-[FPA 031801 End3]                                                         
+[FPA 031801 End3@Stop_Reducing_intro_scene_flashing]                                                         
 Mode = 3                                                                  
 Type = 1                                                                  
 Address = {hex @}                                                         
@@ -293,7 +293,7 @@ ConditionValueC = {dws_ 0x0e                      00  0x0f                    }
 ;Mem Write: pc32 = 0x781c5 addr = 0xd086 value = 0x3      
 ;17 --13     
 ;No151 Mega Punch            
-[FPA 001 Begin]                       
+[FPA 001 Begin@Reduce_move_anim_flashing_Mega_Punch_Explosion_Self_Destruct]                       
 Mode = 3                              
 Type = 0                              
 Address = {hex @}                     
@@ -304,7 +304,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==            ||  ==            ==              ==              ==              ==            ||  ==            ==              ==              ==              ==          }          
 ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "P"             MEGA_PUNCH    00  "E"           "X"             "P"             "L"             MEGA_PUNCH    00  "S"           "E"             "L"             "F"             MEGA_PUNCH  }          
                                       
-[FPA 001 End]                         
+[FPA 001 End@Stop_reducing_move_anim_flashing_Mega_Punch]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}                 
@@ -316,7 +316,7 @@ ConditionValueC = {dws_ "M"           "E"             "G"             "A"       
 ;rsm103725   
 ;Mem Write: pc32 = 0x781c5 addr = 0xd086 value = 0x3  
 ;No117  Guillotine                 
-[FPA 002 Begin]                       
+[FPA 002 Begin@Reduce_move_anim_flashing_Guillotine]                       
 Mode = 3                              
 Type = 0                              
 Address = {hex @}                     
@@ -327,7 +327,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }           
 ConditionValueC = {dws_ "G"           "U"             "I"             "L"             GUILLOTINE  }           
                                       
-[FPA 002 End]                         
+[FPA 002 End@Stop_reducing_move_anim_flashing_Guillotine]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}               
@@ -340,7 +340,7 @@ ConditionValueC = {dws_ "G"           "U"             "I"             "L"       
 ;rsm142438   
 ;17 --13 
 ;No150 Mega Kick                        
-[FPA 003 Begin]                       
+[FPA 003 Begin@Reduce_move_anim_flashing_Mega_Kick]                       
 Mode = 3                              
 Type = 0                              
 Address = {hex @}                     
@@ -351,7 +351,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==              ==          }         
 ConditionValueC = {dws_ "M"           "E"             "G"             "A"             "K"             MEGA_KICK   }         
                                       
-[FPA 003 End]                         
+[FPA 003 End@Stop_reducing_move_anim_flashing_Mega_Kick]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}               
@@ -362,7 +362,7 @@ ConditionValueC = {dws_ "M"           "E"             "G"             "A"       
 
 ;rsm154217   blizzard   
 ;No131                     
-[FPA 004 Begin]                           
+[FPA 004 Begin@Reduce_move_anim_flashing_Blizzard]                           
 Mode = 3                                  
 Type = 0                                  
 Address = {hex @}                         
@@ -373,7 +373,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }                 
 ConditionValueC = {dws_ "B"           "L"             "I"             "Z"             BLIZZARD    }                 
                                           
-[FPA 004 End]                             
+[FPA 004 End@Stop_reducing_move_anim_flashing_Blizzard]                             
 Mode = 3                                  
 Type = 1                                  
 Address = {hex @}                        
@@ -386,7 +386,7 @@ ConditionValueC = {dws_ "B"           "L"             "I"             "Z"       
 
 ;rsm163638       bubblebeam 
 ;No123                    
-[FPA 005 Begin]                       
+[FPA 005 Begin@Reduce_move_anim_flashing_Bubblebeam]                       
 Mode = 3                              
 Type = 0                              
 Address = {hex @}                     
@@ -397,7 +397,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }         
 ConditionValueC = {dws_ "B"           "U"             "B"             "B"             BUBBLEBEAM  }         
                                       
-[FPA 005 End]                         
+[FPA 005 End@Stop_reducing_move_anim_flashing_Bubblebeam]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}              
@@ -409,7 +409,7 @@ ConditionValueC = {dws_ "B"           "U"             "B"             "B"       
 ;Mem Write: pc32 = 0xc2 addr = 0xcfd1 value = 0x3f
 ;Pallte Write: pc32 =00078e79 00000048 e4         
 ;No116            hyper beam                    
-[FPA 006 Begin]                            
+[FPA 006 Begin@Reduce_move_anim_flashing_Hyper_Beam]                            
 Mode = 3                                   
 Type = 0                                   
 Address = {hex @}                       
@@ -423,7 +423,7 @@ ConditionValueC = {dws_ "H"           "Y"             "P"             HYPER_BEAM
 ;rsm112921       thunderbolt   
 ;15 -- 13  
 ;No57 thunderbolt                
-[FPA 007 Begin]                                
+[FPA 007 Begin@Reduce_move_anim_flashing_Thunderbolt]                                
 Mode = 3                                       
 Type = 0                                       
 Address = {hex @}                              
@@ -434,7 +434,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }                    
 ConditionValueC = {dws_ "T"           "H"             "U"             "N"             THUNDERBOLT }                    
                                               
-[FPA 007 End]                                  
+[FPA 007 End@Stop_reducing_move_anim_flashing_Thunderbolt]                                  
 Mode = 3                                       
 Type = 1                                       
 Address = {hex @} 
@@ -445,7 +445,7 @@ ConditionValueC = {dws_ "T"           "H"             "U"             "N"       
 ;
 ;rsm130806      haze   
 ;No40 haze                   
-[FPA 008 Begin]                         
+[FPA 008 Begin@Reduce_move_anim_flashing_Haze]                         
 Mode = 3                                
 Type = 0                                
 Address = {hex @}                       
@@ -456,7 +456,7 @@ ConditionValueA =  {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBu
 ConditionValueB =  {dws_ ==            ==              ==              ==              ==          }            
 ConditionValueC =  {dws_ "H"           "A"             "Z"             "E"             HAZE        }            
                                         
-[FPA 008 End]                           
+[FPA 008 End@Stop_reducing_move_anim_flashing_Haze_Hyper_Beam]                           
 Mode = 3                                
 Type = 1                                
 Address = {hex @}                      
@@ -468,7 +468,7 @@ ConditionValueC = {dws_ "H"           "A"             "Z"             "E"       
 
 ;rsm131656       reflect  
 ;No159                  
-[FPA 009 Begin]                           
+[FPA 009 Begin@Reduce_move_anim_flashing_Reflect]                           
 Mode = 3                                  
 Type = 0                                  
 Address = {hex @}                         
@@ -479,7 +479,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }               
 ConditionValueC = {dws_ "R"           "E"             "F"             "L"             REFLECT     }               
                                           
-[FPA 009 End]                             
+[FPA 009 End@Stop_reducing_move_anim_flashing_Reflect]                             
 Mode = 3                                  
 Type = 1                                  
 Address = {hex @}                         
@@ -490,7 +490,7 @@ ConditionValueC =  {dws_ "R"           "E"             "F"             "L"      
 
 ;rsm132935       selfdestruct  
 ;No56                  
-[FPA 010 Begin]                        
+[FPA 010 Begin@Reduce_move_anim_flashing_Self_Destruct]                        
 Mode = 3                               
 Type = 0                               
 Address = {hex @}                     
@@ -501,7 +501,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }              
 ConditionValueC = {dws_ "S"           "E"             "L"             "F"             SELFDESTRUCT}              
                                         
-[FPA 010 End]                          
+[FPA 010 End@Stop_reducing_move_anim_flashing_Self_Destruct]                          
 Mode = 3                               
 Type = 1                               
 Address = {hex @}                      
@@ -512,7 +512,7 @@ ConditionValueC = {dws_ "S"           "E"             "L"             "F"       
 
 ;rsm013740       explosion  
 ;No76               
-[FPA 011 Begin]                       
+[FPA 011 Begin@Reduce_move_anim_flashing_Explosion]                       
 Mode = 3                              
 Type = 0                              
 Address = {hex @}                    
@@ -523,7 +523,7 @@ ConditionValueA = {dws_ wStringBuffer wStringBuffer+1 wStringBuffer+2 wStringBuf
 ConditionValueB = {dws_ ==            ==              ==              ==              ==          }            
 ConditionValueC = {dws_ "E"           "X"             "P"             "L"             EXPLOSION   }            
                                       
-[FPA 011 End]                         
+[FPA 011 End@Stop_reducing_move_anim_flashing_Explosion]                         
 Mode = 3                              
 Type = 1                              
 Address = {hex @}            

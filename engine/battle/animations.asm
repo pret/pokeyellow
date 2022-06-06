@@ -203,9 +203,9 @@ PlayAnimation:
 	ld h, [hl]
 	ld l, a
 .animationLoop
-	vc_hook FPA_005_End
+	vc_hook Stop_reducing_move_anim_flashing_Bubblebeam
 	ld a, [hli]
-	vc_hook FPA_001_End
+	vc_hook Stop_reducing_move_anim_flashing_Mega_Punch
 	cp -1
 	jr z, .AnimationOver
 	cp FIRST_SE_ID ; is this subanimation or a special effect?
@@ -279,17 +279,17 @@ PlayAnimation:
 	call LoadSubanimation
 	call PlaySubanimation
 	pop af
-	vc_hook FPA_007_End
+	vc_hook Stop_reducing_move_anim_flashing_Thunderbolt
 	ldh [rOBP0], a
-	vc_hook FPA_011_End
+	vc_hook Stop_reducing_move_anim_flashing_Explosion
 	call UpdateGBCPal_OBP0
 .nextAnimationCommand
-	vc_hook FPA_002_End
+	vc_hook Stop_reducing_move_anim_flashing_Guillotine
 	pop hl
-	vc_hook FPA_003_End
+	vc_hook Stop_reducing_move_anim_flashing_Mega_Kick
 	jr .animationLoop
 .AnimationOver
-	vc_hook FPA_004_End
+	vc_hook Stop_reducing_move_anim_flashing_Blizzard
 	ret
 
 LoadSubanimation:
@@ -301,26 +301,26 @@ LoadSubanimation:
 	ld e, a
 	ld a, [hl]
 	ld d, a ; de = address of subanimation
-	vc_hook FPA_005_Begin
+	vc_hook Reduce_move_anim_flashing_Bubblebeam
 	ld a, [de]
-	vc_hook FPA_003_Begin
+	vc_hook Reduce_move_anim_flashing_Mega_Kick
 	ld b, a
-	vc_hook FPA_002_Begin
+	vc_hook Reduce_move_anim_flashing_Guillotine
 	and %00011111
-	vc_hook FPA_001_Begin
+	vc_hook Reduce_move_anim_flashing_Mega_Punch_Explosion_Self_Destruct
 	ld [wSubAnimCounter], a ; number of frame blocks
-	vc_hook FPA_004_Begin
+	vc_hook Reduce_move_anim_flashing_Blizzard
 	ld a, b
-	vc_hook FPA_007_Begin
+	vc_hook Reduce_move_anim_flashing_Thunderbolt
 	and %11100000
 	cp SUBANIMTYPE_ENEMY << 5
-	vc_hook FPA_009_Begin
+	vc_hook Reduce_move_anim_flashing_Reflect
 	jr nz, .isNotType5
 .isType5
 	call GetSubanimationTransform2
 	jr .saveTransformation
 .isNotType5
-	vc_hook FPA_010_Begin
+	vc_hook Reduce_move_anim_flashing_Self_Destruct
 	call GetSubanimationTransform1
 .saveTransformation
 ; place the upper 3 bits of a into bits 0-2 of a before storing
@@ -351,7 +351,7 @@ LoadSubanimation:
 ; sets the transform to SUBANIMTYPE_NORMAL if it's the player's turn
 ; sets the transform to the subanimation type if it's the enemy's turn
 GetSubanimationTransform1:
-	vc_hook FPA_011_Begin
+	vc_hook Reduce_move_anim_flashing_Explosion
 	ld b, a
 	ldh a, [hWhoseTurn]
 	and a
@@ -444,12 +444,12 @@ MoveAnimation:
 	ld c, 30
 	call DelayFrames
 .next4
-	vc_hook FPA_009_End
+	vc_hook Stop_reducing_move_anim_flashing_Reflect
 	call PlayApplyingAttackAnimation ; shake the screen or flash the pic in and out (to show damage)
 .animationFinished
 	call WaitForSoundToFinish
 	xor a
-	vc_hook FPA_008_End
+	vc_hook Stop_reducing_move_anim_flashing_Haze_Hyper_Beam
 	ld [wSubAnimSubEntryAddr], a
 	ld [wUnusedD09B], a
 	ld [wSubAnimTransform], a
@@ -487,7 +487,7 @@ ShareMoveAnimations:
 PlayApplyingAttackAnimation:
 ; Generic animation that shows after the move's individual animation
 ; Different animation depending on whether the move has an additional effect and on whose turn it is
-	vc_hook FPA_010_End
+	vc_hook Stop_reducing_move_anim_flashing_Self_Destruct
 	ld a, [wAnimationType]
 	and a
 	ret z
@@ -577,10 +577,10 @@ SetAnimationPalette:
 	ld b, $f0
 .next
 	ld a, b
-	vc_hook FPA_006_Begin
+	vc_hook Reduce_move_anim_flashing_Hyper_Beam
 	ldh [rOBP0], a
 	ld a, $6c
-	vc_hook FPA_008_Begin
+	vc_hook Reduce_move_anim_flashing_Haze
 	ldh [rOBP1], a
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
