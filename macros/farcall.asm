@@ -1,28 +1,28 @@
-farcall: MACRO
+MACRO farcall
 	ld b, BANK(\1)
 	ld hl, \1
 	call Bankswitch
 ENDM
 
-callfar: MACRO
+MACRO callfar
 	ld hl, \1
 	ld b, BANK(\1)
 	call Bankswitch
 ENDM
 
-farjp: MACRO
+MACRO farjp
 	ld b, BANK(\1)
 	ld hl, \1
 	jp Bankswitch
 ENDM
 
-jpfar: MACRO
+MACRO jpfar
 	ld hl, \1
 	ld b, BANK(\1)
 	jp Bankswitch
 ENDM
 
-homecall: MACRO
+MACRO homecall
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
@@ -32,7 +32,7 @@ homecall: MACRO
 	call BankswitchCommon
 ENDM
 
-homejp: MACRO
+MACRO homejp
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
@@ -42,7 +42,7 @@ homejp: MACRO
 	jp BankswitchCommon
 ENDM
 
-homecall_sf: MACRO ; homecall but save flags by popping into bc instead of af
+MACRO homecall_sf ; homecall but save flags by popping into bc instead of af
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
@@ -53,7 +53,7 @@ homecall_sf: MACRO ; homecall but save flags by popping into bc instead of af
 	call BankswitchCommon
 ENDM
 
-homejp_sf: MACRO ; homejp but save flags by popping into bc instead of af
+MACRO homejp_sf ; homejp but save flags by popping into bc instead of af
 	ldh a, [hLoadedROMBank]
 	push af
 	ld a, BANK(\1)
@@ -64,14 +64,14 @@ homejp_sf: MACRO ; homejp but save flags by popping into bc instead of af
 	jp BankswitchCommon
 ENDM
 
-calladb_ModifyPikachuHappiness: MACRO
+MACRO calladb_ModifyPikachuHappiness
 	ld hl, ModifyPikachuHappiness
 	ld d, \1
 	ld b, BANK(ModifyPikachuHappiness)
 	call Bankswitch
 ENDM
 
-callabd_ModifyPikachuHappiness: MACRO
+MACRO callabd_ModifyPikachuHappiness
 	ld hl, ModifyPikachuHappiness
 	ld b, BANK(ModifyPikachuHappiness)
 	ld d, \1

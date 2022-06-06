@@ -1,4 +1,4 @@
-CIRCLE_TILE_ID EQU $10
+DEF CIRCLE_TILE_ID EQU $10
 
 _DisplayDiploma:
 	call GBPalWhiteOutWithDelay3
