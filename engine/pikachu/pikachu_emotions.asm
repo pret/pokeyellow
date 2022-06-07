@@ -390,7 +390,7 @@ IsPlayerPikachuAsleepInParty:
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	ld a, [hl]
-	and SLP
+	and SLP_MASK
 	jr z, .done
 	jr .curMonSleepingPikachu
 
