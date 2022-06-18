@@ -9,8 +9,8 @@ rom_obj := \
 	home.o \
 	main.o \
 	maps.o \
+	ram.o \
 	text.o \
-	wram.o \
 	gfx/pics.o \
 	gfx/pikachu.o \
 	gfx/sprites.o \
