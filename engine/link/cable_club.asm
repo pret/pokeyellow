@@ -130,14 +130,14 @@ CableClub_DoBattleOrTradeAgain:
 	ld hl, wSerialPlayerDataBlock
 	ld de, wSerialEnemyDataBlock
 	ld bc, $1a8
-	vc_hook Wireless_ExchangeBytes_1
+	vc_hook Wireless_ExchangeBytes_party_structs
 	call Serial_ExchangeBytes
 	ld a, SERIAL_NO_DATA_BYTE
 	ld [de], a
 	ld hl, wSerialPartyMonsPatchList
 	ld de, wSerialEnemyMonsPatchList
 	ld bc, $c8
-	vc_hook Wireless_ExchangeBytes_2
+	vc_hook Wireless_ExchangeBytes_patch_lists
 	call Serial_ExchangeBytes
 	ld a, (1 << SERIAL) | (1 << TIMER) | (1 << VBLANK)
 	ldh [rIE], a
