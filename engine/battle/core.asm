@@ -108,7 +108,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 ; instead, the enemy pic is part of the background and uses the scroll register, while the player's head is a sprite and is slid by changing its X coordinates in a loop
 SlidePlayerHeadLeft:
 	push bc
-	ld hl, wOAMBuffer + $01
+	ld hl, wShadowOAM + $01
 	ld c, $15 ; number of OAM entries
 	ld de, $4 ; size of OAM entry
 .loop
@@ -6511,7 +6511,7 @@ LoadPlayerBackPic:
 	ASSERT BANK(RedPicBack) == BANK(ProfOakPicBack)
 	call UncompressSpriteFromDE
 	predef ScaleSpriteByTwo
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	xor a
 	ldh [hOAMTile], a ; initial tile number
 	ld b, $7 ; 7 columns

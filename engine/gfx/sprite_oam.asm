@@ -1,6 +1,6 @@
 PrepareOAMData::
 ; Determine OAM data for currently visible
-; sprites and write it to wOAMBuffer.
+; sprites and write it to wShadowOAM.
 ; Yellow code has been changed to use registers more efficiently
 ; as well as tweaking the code to show gbc palettes
 
@@ -83,7 +83,7 @@ PrepareOAMData::
 	ldh a, [hOAMBufferOffset]
 
 	ld e, a
-	ld d, HIGH(wOAMBuffer)
+	ld d, HIGH(wShadowOAM)
 
 .tileLoop
 	ld a, [hli]
@@ -153,7 +153,7 @@ PrepareOAMData::
 	cp c
 	ret nc
 	ld l, a
-	ld h, HIGH(wOAMBuffer)
+	ld h, HIGH(wShadowOAM)
 	ld a, c
 	ld de, $4 ; entry size
 	ld b, $a0

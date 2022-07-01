@@ -57,42 +57,42 @@ PlayIntroScene:
 	ret
 
 Func_f98a2:
-	ld a, [wOAMBuffer + 8 * 4 + 3]
+	ld a, [wShadowOAM + 8 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 8 * 4 + 3], a
-	ld a, [wOAMBuffer + 14 * 4 + 3]
+	ld [wShadowOAM + 8 * 4 + 3], a
+	ld a, [wShadowOAM + 14 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 14 * 4 + 3], a
-	ld a, [wOAMBuffer + 16 * 4 + 3]
+	ld [wShadowOAM + 14 * 4 + 3], a
+	ld a, [wShadowOAM + 16 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 16 * 4 + 3], a
-	ld a, [wOAMBuffer + 18 * 4 + 3]
+	ld [wShadowOAM + 16 * 4 + 3], a
+	ld a, [wShadowOAM + 18 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 18 * 4 + 3], a
-	ld a, [wOAMBuffer + 19 * 4 + 3]
+	ld [wShadowOAM + 18 * 4 + 3], a
+	ld a, [wShadowOAM + 19 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 19 * 4 + 3], a
+	ld [wShadowOAM + 19 * 4 + 3], a
 	ret
 
 Func_f98cb:
-	ld a, [wOAMBuffer + 18 * 4 + 3]
+	ld a, [wShadowOAM + 18 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 18 * 4 + 3], a
-	ld a, [wOAMBuffer + 19 * 4 + 3]
+	ld [wShadowOAM + 18 * 4 + 3], a
+	ld a, [wShadowOAM + 19 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 19 * 4 + 3], a
-	ld a, [wOAMBuffer + 20 * 4 + 3]
+	ld [wShadowOAM + 19 * 4 + 3], a
+	ld a, [wShadowOAM + 20 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 20 * 4 + 3], a
-	ld a, [wOAMBuffer + 25 * 4 + 3]
+	ld [wShadowOAM + 20 * 4 + 3], a
+	ld a, [wShadowOAM + 25 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 25 * 4 + 3], a
-	ld a, [wOAMBuffer + 26 * 4 + 3]
+	ld [wShadowOAM + 25 * 4 + 3], a
+	ld a, [wShadowOAM + 26 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 26 * 4 + 3], a
-	ld a, [wOAMBuffer + 28 * 4 + 3]
+	ld [wShadowOAM + 26 * 4 + 3], a
+	ld a, [wShadowOAM + 28 * 4 + 3]
 	or $1
-	ld [wOAMBuffer + 28 * 4 + 3], a
+	ld [wShadowOAM + 28 * 4 + 3], a
 	ret
 
 Func_f98fc:
@@ -911,8 +911,8 @@ Bank3E_FillMemory:
 	ret
 
 YellowIntro_BlankOAMBuffer:
-	ld hl, wOAMBuffer
-	ld bc, wOAMBufferEnd - wOAMBuffer
+	ld hl, wShadowOAM
+	ld bc, wShadowOAMEnd - wShadowOAM
 	xor a
 	call Bank3E_FillMemory
 	ret

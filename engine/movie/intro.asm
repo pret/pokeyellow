@@ -20,7 +20,7 @@ PlayIntro:
 	ret
 
 InitIntroNidorinoOAM:
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld d, 0
 .loop
 	push bc

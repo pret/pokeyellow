@@ -190,7 +190,7 @@ PrinterDebug_LoadGFX:
 	lb bc, BANK(GFX_ea597), (GFX_ea597End - GFX_ea597) / 16
 	call CopyVideoData
 
-	ld hl, wOAMBuffer + 32 * 4
+	ld hl, wShadowOAM + 32 * 4
 	ld a, $8
 	ld c, $8
 .loop
@@ -212,7 +212,7 @@ INCBIN "gfx/printer/01.2bpp"
 GFX_ea597End:
 
 PrinterDebug_ConvertStatusFlagsToTiles:
-	ld hl, wOAMBuffer + 32 * 4 + 2
+	ld hl, wShadowOAM + 32 * 4 + 2
 	ld de, 4
 	ld a, [wPrinterStatusFlags]
 	ld c, 8
@@ -610,7 +610,7 @@ PrinterDebug_PrepOAMForPrinting:
 	ld bc, $20
 	xor a
 	call FillMemory
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld c, $28
 .master_loop
 	push bc

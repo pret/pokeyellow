@@ -53,7 +53,7 @@ TitleScreen_PlacePikachu:
 	hlcoord 16, 13
 	ld [hl], $b1
 	ld hl, TitleScreenPikachuEyesOAMData
-	ld de, wOAMBuffer
+	ld de, wShadowOAM
 	ld bc, $20
 	call CopyData
 	ret
