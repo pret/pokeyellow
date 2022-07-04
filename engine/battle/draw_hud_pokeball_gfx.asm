@@ -191,7 +191,7 @@ SetupPlayerAndEnemyPokeballs:
 	ld [hl], $68
 	ld a, $1
 	ld [wdef5], a
-	ld hl, wShadowOAM + $18
+	ld hl, wShadowOAMSprite06
 	jp WritePokeballOAMData
 
 ; four tiles: pokeball, black pokeball (status ailment), crossed out pokeball (fainted) and pokeball slot (no mon)
