@@ -117,6 +117,6 @@ GetTitleBallY:
 	pop de
 	and a
 	ret z
-	ld [wShadowOAMSprite10], a
+	ld [wShadowOAMSprite10YCoord], a
 	inc e
 	ret

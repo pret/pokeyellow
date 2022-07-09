@@ -215,14 +215,14 @@ LeaveMapThroughHoleAnim:
 	ld a, [wShadowOAMSprite01TileID]
 	ld [wShadowOAMSprite03TileID], a
 	ld a, $a0
-	ld [wShadowOAMSprite00], a
-	ld [wShadowOAMSprite01], a
+	ld [wShadowOAMSprite00YCoord], a
+	ld [wShadowOAMSprite01YCoord], a
 	ld c, 2
 	call DelayFrames
 	; hide upper half of player's sprite
 	ld a, $a0
-	ld [wShadowOAMSprite02], a
-	ld [wShadowOAMSprite03], a
+	ld [wShadowOAMSprite02YCoord], a
+	ld [wShadowOAMSprite03YCoord], a
 	call GBFadeOutToWhite
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a ; enable UpdateSprites
@@ -432,7 +432,7 @@ FishingAnim:
 	cp SPRITE_FACING_UP
 	jr nz, .skipHidingFishingRod
 	ld a, $a0
-	ld [wShadowOAMSprite39], a
+	ld [wShadowOAMSprite39YCoord], a
 
 .skipHidingFishingRod
 	ld hl, wEmotionBubbleSpriteIndex
@@ -446,7 +446,7 @@ FishingAnim:
 	cp SPRITE_FACING_UP
 	jr nz, .skipUnhidingFishingRod
 	ld a, $44
-	ld [wShadowOAMSprite39], a
+	ld [wShadowOAMSprite39YCoord], a
 
 .skipUnhidingFishingRod
 	ld hl, ItsABiteText
