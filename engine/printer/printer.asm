@@ -416,7 +416,7 @@ PrinterDebug:
 	xor a
 	ld [wPrinterConnectionOpen], a
 	ld [wPrinterOpcode], a
-	ld hl, wOAMBuffer + 32 * 4
+	ld hl, wShadowOAMSprite32
 	ld bc, 8 * 4
 	xor a
 	call FillMemory

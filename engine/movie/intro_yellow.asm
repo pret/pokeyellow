@@ -57,42 +57,42 @@ PlayIntroScene:
 	ret
 
 Func_f98a2:
-	ld a, [wOAMBuffer + 8 * 4 + 3]
+	ld a, [wShadowOAMSprite08Attributes]
 	or $1
-	ld [wOAMBuffer + 8 * 4 + 3], a
-	ld a, [wOAMBuffer + 14 * 4 + 3]
+	ld [wShadowOAMSprite08Attributes], a
+	ld a, [wShadowOAMSprite14Attributes]
 	or $1
-	ld [wOAMBuffer + 14 * 4 + 3], a
-	ld a, [wOAMBuffer + 16 * 4 + 3]
+	ld [wShadowOAMSprite14Attributes], a
+	ld a, [wShadowOAMSprite16Attributes]
 	or $1
-	ld [wOAMBuffer + 16 * 4 + 3], a
-	ld a, [wOAMBuffer + 18 * 4 + 3]
+	ld [wShadowOAMSprite16Attributes], a
+	ld a, [wShadowOAMSprite18Attributes]
 	or $1
-	ld [wOAMBuffer + 18 * 4 + 3], a
-	ld a, [wOAMBuffer + 19 * 4 + 3]
+	ld [wShadowOAMSprite18Attributes], a
+	ld a, [wShadowOAMSprite19Attributes]
 	or $1
-	ld [wOAMBuffer + 19 * 4 + 3], a
+	ld [wShadowOAMSprite19Attributes], a
 	ret
 
 Func_f98cb:
-	ld a, [wOAMBuffer + 18 * 4 + 3]
+	ld a, [wShadowOAMSprite18Attributes]
 	or $1
-	ld [wOAMBuffer + 18 * 4 + 3], a
-	ld a, [wOAMBuffer + 19 * 4 + 3]
+	ld [wShadowOAMSprite18Attributes], a
+	ld a, [wShadowOAMSprite19Attributes]
 	or $1
-	ld [wOAMBuffer + 19 * 4 + 3], a
-	ld a, [wOAMBuffer + 20 * 4 + 3]
+	ld [wShadowOAMSprite19Attributes], a
+	ld a, [wShadowOAMSprite20Attributes]
 	or $1
-	ld [wOAMBuffer + 20 * 4 + 3], a
-	ld a, [wOAMBuffer + 25 * 4 + 3]
+	ld [wShadowOAMSprite20Attributes], a
+	ld a, [wShadowOAMSprite25Attributes]
 	or $1
-	ld [wOAMBuffer + 25 * 4 + 3], a
-	ld a, [wOAMBuffer + 26 * 4 + 3]
+	ld [wShadowOAMSprite25Attributes], a
+	ld a, [wShadowOAMSprite26Attributes]
 	or $1
-	ld [wOAMBuffer + 26 * 4 + 3], a
-	ld a, [wOAMBuffer + 28 * 4 + 3]
+	ld [wShadowOAMSprite26Attributes], a
+	ld a, [wShadowOAMSprite28Attributes]
 	or $1
-	ld [wOAMBuffer + 28 * 4 + 3], a
+	ld [wShadowOAMSprite28Attributes], a
 	ret
 
 Func_f98fc:
@@ -911,8 +911,8 @@ Bank3E_FillMemory:
 	ret
 
 YellowIntro_BlankOAMBuffer:
-	ld hl, wOAMBuffer
-	ld bc, wOAMBufferEnd - wOAMBuffer
+	ld hl, wShadowOAM
+	ld bc, wShadowOAMEnd - wShadowOAM
 	xor a
 	call Bank3E_FillMemory
 	ret

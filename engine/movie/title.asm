@@ -312,7 +312,7 @@ DoTitleScreenFunction:
 .BlinkClosed:
 	ld e, 8
 .LoadBlinkFrame:
-	ld hl, wOAMBuffer + 2
+	ld hl, wShadowOAMSprite00TileID
 	ld c, 8
 .loop
 	ld a, [hl]

@@ -28,10 +28,10 @@ RunObjectAnimations:
 	jr nz, .loop
 	ld a, [wCurrentAnimatedObjectOAMBufferOffset]
 	ld l, a
-	ld h, HIGH(wOAMBuffer)
+	ld h, HIGH(wShadowOAM)
 .deinit_unused_oam_loop
 	ld a, l
-	cp LOW(wOAMBufferEnd)
+	cp LOW(wShadowOAMEnd)
 	jr nc, .quit
 	xor a
 	ld [hli], a
@@ -158,7 +158,7 @@ UpdateCurrentAnimatedObjectFrame:
 	push bc
 	ld a, [wCurrentAnimatedObjectOAMBufferOffset]
 	ld e, a
-	ld d, HIGH(wOAMBuffer)
+	ld d, HIGH(wShadowOAM)
 	ld a, [hli]
 	ld c, a
 .loop
@@ -205,7 +205,7 @@ UpdateCurrentAnimatedObjectFrame:
 	inc de
 	ld a, e
 	ld [wCurrentAnimatedObjectOAMBufferOffset], a
-	cp LOW(wOAMBufferEnd)
+	cp LOW(wShadowOAMEnd)
 	jr nc, .oam_is_full
 	dec c
 	jr nz, .loop

@@ -657,7 +657,7 @@ SurfingMinigame_UpdatePikachuDistance:
 	ret nc
 	ld hl, wc5e5
 	inc [hl]
-	ld hl, wOAMBuffer + 4 * 4 + 1
+	ld hl, wShadowOAMSprite04XCoord
 	dec [hl]
 	dec [hl]
 	ret
@@ -1313,7 +1313,7 @@ SurfingMinigame_MoveClouds:
 	ld a, l
 	ld [wc635], a
 	ld d, h
-	ld hl, wOAMBuffer + 5 * 4 + 1
+	ld hl, wShadowOAMSprite05XCoord
 	ld e, $9
 .loop
 	ld a, [hl]
@@ -1430,10 +1430,10 @@ SurfingMinigame_Deduct1HP:
 
 SurfingMinigame_DrawHP:
 	ld de, wSurfingMinigamePikachuHP + 1
-	ld hl, wOAMBuffer + 0 * 4 + 2
+	ld hl, wShadowOAMSprite00TileID
 	ld a, [de]
 	call .PlaceBCDNumber
-	ld hl, wOAMBuffer + 2 * 4 + 2
+	ld hl, wShadowOAMSprite02TileID
 	ld a, [de]
 .PlaceBCDNumber:
 	ld c, a
@@ -1461,7 +1461,7 @@ SurfingMinigame_DrawResultsScreen:
 	ld bc, .BeachTilemapEnd - .BeachTilemap
 	call CopyData
 	call .PlaceTextbox
-	ld hl, wOAMBuffer + 5 * 4 + 1
+	ld hl, wShadowOAMSprite05XCoord
 	ld bc, 9 * 4
 	xor a
 	call FillMemory

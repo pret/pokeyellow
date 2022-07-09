@@ -318,7 +318,7 @@ Trade_AnimateBallEnteringLinkCable:
 	xor $1
 	ld [wLinkCableAnimBulgeToggle], a
 	add $7e
-	ld hl, wOAMBuffer + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, 4
 	ld c, e
 .cycleLinkCableBulgeTile
@@ -603,7 +603,7 @@ Trade_AnimCircledMon:
 	xor $3c ; make link cable flash
 	ldh [rBGP], a
 	call UpdateGBCPal_BGP
-	ld hl, wOAMBuffer + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, $4
 	ld c, $14
 .loop
@@ -623,7 +623,7 @@ Trade_WriteCircledMonOAM:
 	call Trade_WriteCircleOAM
 
 Trade_AddOffsetsToOAMCoords:
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld c, $14 ; SCREEN_WIDTH?
 .loop
 	ld a, [wBaseCoordY]

@@ -867,7 +867,7 @@ LoadPikachuShadowOAMData:
 	push de
 	push hl
 
-	ld bc, wOAMBuffer + 4 * 36
+	ld bc, wShadowOAMSprite36
 	ld a, [wPikaSpriteY]
 	ld e, a
 	ld a, [wPikaSpriteX]
