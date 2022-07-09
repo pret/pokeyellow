@@ -57,42 +57,42 @@ PlayIntroScene:
 	ret
 
 Func_f98a2:
-	ld a, [wShadowOAM + 8 * 4 + 3]
+	ld a, [wShadowOAMSprite08Attributes]
 	or $1
-	ld [wShadowOAM + 8 * 4 + 3], a
-	ld a, [wShadowOAM + 14 * 4 + 3]
+	ld [wShadowOAMSprite08Attributes], a
+	ld a, [wShadowOAMSprite14Attributes]
 	or $1
-	ld [wShadowOAM + 14 * 4 + 3], a
-	ld a, [wShadowOAM + 16 * 4 + 3]
+	ld [wShadowOAMSprite14Attributes], a
+	ld a, [wShadowOAMSprite16Attributes]
 	or $1
-	ld [wShadowOAM + 16 * 4 + 3], a
-	ld a, [wShadowOAM + 18 * 4 + 3]
+	ld [wShadowOAMSprite16Attributes], a
+	ld a, [wShadowOAMSprite18Attributes]
 	or $1
-	ld [wShadowOAM + 18 * 4 + 3], a
-	ld a, [wShadowOAM + 19 * 4 + 3]
+	ld [wShadowOAMSprite18Attributes], a
+	ld a, [wShadowOAMSprite19Attributes]
 	or $1
-	ld [wShadowOAM + 19 * 4 + 3], a
+	ld [wShadowOAMSprite19Attributes], a
 	ret
 
 Func_f98cb:
-	ld a, [wShadowOAM + 18 * 4 + 3]
+	ld a, [wShadowOAMSprite18Attributes]
 	or $1
-	ld [wShadowOAM + 18 * 4 + 3], a
-	ld a, [wShadowOAM + 19 * 4 + 3]
+	ld [wShadowOAMSprite18Attributes], a
+	ld a, [wShadowOAMSprite19Attributes]
 	or $1
-	ld [wShadowOAM + 19 * 4 + 3], a
-	ld a, [wShadowOAM + 20 * 4 + 3]
+	ld [wShadowOAMSprite19Attributes], a
+	ld a, [wShadowOAMSprite20Attributes]
 	or $1
-	ld [wShadowOAM + 20 * 4 + 3], a
-	ld a, [wShadowOAM + 25 * 4 + 3]
+	ld [wShadowOAMSprite20Attributes], a
+	ld a, [wShadowOAMSprite25Attributes]
 	or $1
-	ld [wShadowOAM + 25 * 4 + 3], a
-	ld a, [wShadowOAM + 26 * 4 + 3]
+	ld [wShadowOAMSprite25Attributes], a
+	ld a, [wShadowOAMSprite26Attributes]
 	or $1
-	ld [wShadowOAM + 26 * 4 + 3], a
-	ld a, [wShadowOAM + 28 * 4 + 3]
+	ld [wShadowOAMSprite26Attributes], a
+	ld a, [wShadowOAMSprite28Attributes]
 	or $1
-	ld [wShadowOAM + 28 * 4 + 3], a
+	ld [wShadowOAMSprite28Attributes], a
 	ret
 
 Func_f98fc:

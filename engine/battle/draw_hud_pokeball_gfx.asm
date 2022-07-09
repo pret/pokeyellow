@@ -45,7 +45,7 @@ SetupEnemyPartyPokeballs:
 	ld [wHUDPokeballGfxOffsetX], a
 	ld a, $1
 	ld [wdef5], a
-	ld hl, wShadowOAM + PARTY_LENGTH * 4
+	ld hl, wShadowOAMSprite06
 	jp WritePokeballOAMData
 
 SetupPokeballs:

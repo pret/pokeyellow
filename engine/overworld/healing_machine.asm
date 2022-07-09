@@ -13,7 +13,7 @@ AnimateHealingMachine:
 	ld a, $e0
 	ldh [rOBP1], a
 	call UpdateGBCPal_OBP1
-	ld hl, wShadowOAM + $84
+	ld hl, wShadowOAMSprite33
 	ld de, PokeCenterOAMData
 	call CopyHealingMachineOAM
 	ld a, 4

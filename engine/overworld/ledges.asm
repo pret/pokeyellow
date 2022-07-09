@@ -62,12 +62,12 @@ LoadHoppingShadowOAM:
 	lb bc, BANK(LedgeHoppingShadow), (LedgeHoppingShadowEnd - LedgeHoppingShadow) / $8
 	call CopyVideoDataDouble
 	ld hl, LedgeHoppingShadowOAM
-	ld de, wShadowOAM + 36 * 4
+	ld de, wShadowOAMSprite36
 	ld bc, LedgeHoppingShadowOAMEnd - LedgeHoppingShadowOAM
 	call CopyData
 	ld a, $a0
-	ld [wShadowOAM + 38 * 4], a
-	ld [wShadowOAM + 39 * 4], a
+	ld [wShadowOAMSprite38], a
+	ld [wShadowOAMSprite39], a
 	ret
 
 LedgeHoppingShadow:

@@ -318,7 +318,7 @@ Trade_AnimateBallEnteringLinkCable:
 	xor $1
 	ld [wLinkCableAnimBulgeToggle], a
 	add $7e
-	ld hl, wShadowOAM + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, 4
 	ld c, e
 .cycleLinkCableBulgeTile
@@ -603,7 +603,7 @@ Trade_AnimCircledMon:
 	xor $3c ; make link cable flash
 	ldh [rBGP], a
 	call UpdateGBCPal_BGP
-	ld hl, wShadowOAM + $02
+	ld hl, wShadowOAMSprite00TileID
 	ld de, $4
 	ld c, $14
 .loop
