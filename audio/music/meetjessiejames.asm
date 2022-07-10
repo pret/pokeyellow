@@ -17,8 +17,7 @@ Music_MeetJessieJames_Ch1::
 	note_type 12, 11, 6
 	note D#, 12
 	note C_, 4
-
-Music_MeetJessieJames_branch_83187::
+.mainloop:
 	note_type 12, 11, 2
 	octave 4
 	note D_, 16
@@ -74,8 +73,7 @@ Music_MeetJessieJames_branch_83187::
 	note B_, 2
 	note_type 12, 11, 4
 	note A#, 4
-	sound_loop 0, Music_MeetJessieJames_branch_83187
-
+	sound_loop 0, .mainloop
 
 Music_MeetJessieJames_Ch2::
 	duty_cycle 3
@@ -96,8 +94,7 @@ Music_MeetJessieJames_Ch2::
 	note A_, 12
 	octave 4
 	note C#, 4
-
-Music_MeetJessieJames_branch_831df::
+.mainloop:
 	note_type 12, 12, 2
 	octave 3
 	note C#, 1
@@ -161,8 +158,7 @@ Music_MeetJessieJames_branch_831df::
 	note F_, 4
 	note_type 12, 12, 5
 	note D#, 8
-	sound_loop 0, Music_MeetJessieJames_branch_831df
-
+	sound_loop 0, .mainloop
 
 Music_MeetJessieJames_Ch3::
 	note_type 12, 1, 0
@@ -175,8 +171,7 @@ Music_MeetJessieJames_Ch3::
 	octave 4
 	note C_, 2
 	note D#, 2
-
-Music_MeetJessieJames_branch_83235::
+.mainloop:
 	note D_, 1
 	rest 1
 	note A_, 1
@@ -305,4 +300,4 @@ Music_MeetJessieJames_branch_83235::
 	rest 1
 	note E_, 1
 	rest 1
-	sound_loop 0, Music_MeetJessieJames_branch_83235
+	sound_loop 0, .mainloop

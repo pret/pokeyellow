@@ -34,8 +34,7 @@ Music_SurfingPikachu_Ch1::
 	note G#, 4
 	note G#, 4
 	note G#, 2
-
-Music_SurfingPikachu_branch_82d1a::
+.mainloop:
 	note_type 12, 11, 3
 	octave 3
 	note G#, 4
@@ -159,8 +158,7 @@ Music_SurfingPikachu_branch_82d1a::
 	note D#, 1
 	note E_, 8
 	duty_cycle 3
-	sound_loop 0, Music_SurfingPikachu_branch_82d1a
-
+	sound_loop 0, .mainloop
 
 Music_SurfingPikachu_Ch2::
 	duty_cycle 3
@@ -216,8 +214,7 @@ Music_SurfingPikachu_Ch2::
 	note B_, 4
 	note B_, 4
 	note B_, 2
-
-Music_SurfingPikachu_branch_82de0::
+.mainloop:
 	note_type 12, 12, 6
 	octave 4
 	note E_, 4
@@ -309,8 +306,7 @@ Music_SurfingPikachu_branch_82de0::
 	note B_, 1
 	octave 4
 	note C#, 1
-	sound_loop 0, Music_SurfingPikachu_branch_82de0
-
+	sound_loop 0, .mainloop
 
 Music_SurfingPikachu_Ch3::
 	note_type 12, 1, 0
@@ -403,8 +399,7 @@ Music_SurfingPikachu_Ch3::
 	rest 1
 	note D#, 1
 	rest 1
-
-Music_SurfingPikachu_branch_82ea0::
+.mainloop:
 	note E_, 1
 	rest 1
 	note B_, 1
@@ -687,4 +682,4 @@ Music_SurfingPikachu_branch_82ea0::
 	rest 1
 	note D#, 1
 	rest 1
-	sound_loop 0, Music_SurfingPikachu_branch_82ea0
+	sound_loop 0, .mainloop

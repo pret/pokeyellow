@@ -4,11 +4,11 @@ Music_RivalAlternateStart::
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld hl, wChannelCommandPointers
-	ld de, Music_MeetRival_branch_b1a2
+	ld de, Music_MeetRival_Ch1_AlternateStart
 	call Audio1_OverwriteChannelPointer
-	ld de, Music_MeetRival_branch_b21d
+	ld de, Music_MeetRival_Ch2_AlternateStart
 	call Audio1_OverwriteChannelPointer
-	ld de, Music_MeetRival_branch_b2b5
+	ld de, Music_MeetRival_Ch3_AlternateStart
 
 Audio1_OverwriteChannelPointer:
 	ld a, e
@@ -22,13 +22,13 @@ Music_RivalAlternateTempo::
 	ld c, BANK(Music_MeetRival)
 	ld a, MUSIC_MEET_RIVAL
 	call PlayMusic
-	ld de, Music_MeetRival_branch_b119
+	ld de, Music_MeetRival_Ch1_AlternateTempo
 	jr FinishAlternateRivalMusic
 
 ; applies both the alternate start and alternate tempo
 Music_RivalAlternateStartAndTempo::
 	call Music_RivalAlternateStart
-	ld de, Music_MeetRival_branch_b19b
+	ld de, Music_MeetRival_Ch1_AlternateStartAndTempo
 FinishAlternateRivalMusic:
 	ld hl, wChannelCommandPointers
 	jp Audio1_OverwriteChannelPointer
@@ -48,5 +48,5 @@ Music_Cities1AlternateTempo::
 	ld a, MUSIC_CITIES1
 	call PlayMusic
 	ld hl, wChannelCommandPointers
-	ld de, Music_Cities1_branch_aa6f
+	ld de, Music_Cities1_Ch1_AlternateTempo
 	jp Audio1_OverwriteChannelPointer

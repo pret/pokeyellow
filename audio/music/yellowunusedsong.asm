@@ -24,8 +24,7 @@ Music_YellowUnusedSong_Ch1::
 	note A_, 6
 	note G_, 6
 	note A_, 12
-
-Music_YellowUnusedSong_branch_82fde::
+.mainloop:
 	note A_, 6
 	note A_, 2
 	note A_, 2
@@ -72,8 +71,7 @@ Music_YellowUnusedSong_branch_82fde::
 	note A_, 6
 	note G_, 6
 	note A_, 12
-	sound_loop 0, Music_YellowUnusedSong_branch_82fde
-
+	sound_loop 0, .mainloop
 
 Music_YellowUnusedSong_Ch2::
 	duty_cycle 2
@@ -100,8 +98,7 @@ Music_YellowUnusedSong_Ch2::
 	note D_, 6
 	note A#, 6
 	note A_, 12
-
-Music_YellowUnusedSong_branch_8302a::
+.mainloop:
 	note D_, 6
 	note D_, 2
 	note D_, 2
@@ -158,8 +155,7 @@ Music_YellowUnusedSong_branch_8302a::
 	note D_, 6
 	note A#, 6
 	note A_, 12
-	sound_loop 0, Music_YellowUnusedSong_branch_8302a
-
+	sound_loop 0, .mainloop
 
 Music_YellowUnusedSong_Ch3::
 	note_type 12, 1, 0
@@ -172,8 +168,7 @@ Music_YellowUnusedSong_Ch3::
 	note D#, 8
 	note G_, 8
 	note A#, 8
-
-Music_YellowUnusedSong_branch_83075::
+.mainloop:
 	note A_, 8
 	note A#, 8
 	note G_, 8
@@ -199,8 +194,7 @@ Music_YellowUnusedSong_branch_83075::
 	note D#, 8
 	note G_, 8
 	note A#, 8
-	sound_loop 0, Music_YellowUnusedSong_branch_83075
-
+	sound_loop 0, .mainloop
 
 Music_YellowUnusedSong_Ch4::
 	drum_speed 12
@@ -230,8 +224,7 @@ Music_YellowUnusedSong_Ch4::
 	drum_note 3, 2
 	drum_note 3, 4
 	drum_note 3, 4
-
-Music_YellowUnusedSong_branch_830c3::
+.mainloop:
 	drum_note 3, 4
 	drum_speed 8
 	drum_note 3, 2
@@ -323,4 +316,4 @@ Music_YellowUnusedSong_branch_830c3::
 	drum_note 3, 2
 	drum_note 3, 4
 	drum_note 3, 4
-	sound_loop 0, Music_YellowUnusedSong_branch_830c3
+	sound_loop 0, .mainloop
