@@ -103,10 +103,10 @@ IsPlayerFacingEdgeOfMap::
 	ld b, a
 	ld a, [wXCoord]
 	ld c, a
-	ld de, .returnaddress
+	ld de, .return
 	push de
 	jp hl
-.returnaddress
+.return
 	pop bc
 	pop de
 	pop hl

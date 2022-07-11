@@ -597,14 +597,14 @@ PrepareSuperNintendoVRAMTransfer:
 .packetPointers
 ; Only the first packet is needed.
 	dw MaskEnFreezePacket
-	dw DataSnd_728a1
-	dw DataSnd_728b1
-	dw DataSnd_728c1
-	dw DataSnd_728d1
-	dw DataSnd_728e1
-	dw DataSnd_728f1
-	dw DataSnd_72901
-	dw DataSnd_72911
+	dw DataSndPacket1
+	dw DataSndPacket2
+	dw DataSndPacket3
+	dw DataSndPacket4
+	dw DataSndPacket5
+	dw DataSndPacket6
+	dw DataSndPacket7
+	dw DataSndPacket8
 
 CheckSGB:
 ; Returns whether the game is running on an SGB in carry.

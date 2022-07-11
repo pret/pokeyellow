@@ -2929,7 +2929,7 @@ SendNewMonToBox:
 	ld a, [wcf91]
 	ld [wd0b5], a
 	ld c, a
-.asm_e6f5
+.loop
 	inc de
 	ld a, [de]
 	ld b, a
@@ -2937,13 +2937,13 @@ SendNewMonToBox:
 	ld c, b
 	ld [de], a
 	cp $ff
-	jr nz, .asm_e6f5
+	jr nz, .loop
 	call GetMonHeader
 	ld hl, wBoxMonOT
 	ld bc, NAME_LENGTH
 	ld a, [wBoxCount]
 	dec a
-	jr z, .asm_e732
+	jr z, .skip
 	dec a
 	call AddNTimes
 	push hl
@@ -2955,7 +2955,7 @@ SendNewMonToBox:
 	ld a, [wBoxCount]
 	dec a
 	ld b, a
-.asm_e71f
+.loop2
 	push bc
 	push hl
 	ld bc, NAME_LENGTH
@@ -2967,15 +2967,15 @@ SendNewMonToBox:
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_e71f
-.asm_e732
+	jr nz, .loop2
+.skip
 	ld hl, wPlayerName
 	ld de, wBoxMonOT
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wBoxCount]
 	dec a
-	jr z, .asm_e76e
+	jr z, .skip2
 	ld hl, wBoxMonNicks
 	ld bc, NAME_LENGTH
 	dec a
@@ -2989,7 +2989,7 @@ SendNewMonToBox:
 	ld a, [wBoxCount]
 	dec a
 	ld b, a
-.asm_e75b
+.loop3
 	push bc
 	push hl
 	ld bc, NAME_LENGTH
@@ -3001,15 +3001,15 @@ SendNewMonToBox:
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_e75b
-.asm_e76e
+	jr nz, .loop3
+.skip2
 	ld hl, wBoxMonNicks
 	ld a, NAME_MON_SCREEN
 	ld [wNamingScreenType], a
 	predef AskName
 	ld a, [wBoxCount]
 	dec a
-	jr z, .asm_e7ab
+	jr z, .skip3
 	ld hl, wBoxMons
 	ld bc, wBoxMon2 - wBoxMon1
 	dec a
@@ -3023,7 +3023,7 @@ SendNewMonToBox:
 	ld a, [wBoxCount]
 	dec a
 	ld b, a
-.asm_e798
+.loop4
 	push bc
 	push hl
 	ld bc, wBoxMon2 - wBoxMon1
@@ -3035,8 +3035,8 @@ SendNewMonToBox:
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .asm_e798
-.asm_e7ab
+	jr nz, .loop4
+.skip3
 	ld a, [wEnemyMonLevel]
 	ld [wEnemyMonBoxLevel], a
 	ld hl, wEnemyMon
@@ -3066,11 +3066,11 @@ SendNewMonToBox:
 	inc de
 	xor a
 	ld b, NUM_STATS * 2
-.asm_e7e3
+.loop5
 	ld [de], a
 	inc de
 	dec b
-	jr nz, .asm_e7e3
+	jr nz, .loop5
 	ld hl, wEnemyMonDVs
 	ld a, [hli]
 	ld [de], a
@@ -3079,12 +3079,12 @@ SendNewMonToBox:
 	ld [de], a
 	ld hl, wEnemyMonPP
 	ld b, NUM_MOVES
-.asm_e7f5
+.loop6
 	ld a, [hli]
 	inc de
 	ld [de], a
 	dec b
-	jr nz, .asm_e7f5
+	jr nz, .loop6
 	ld a, [wcf91]
 	cp KADABRA
 	jr nz, .notKadabra
