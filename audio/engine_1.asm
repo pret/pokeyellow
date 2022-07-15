@@ -982,7 +982,7 @@ Audio1_ApplyWavePatternAndFrequency:
 Audio1_SetSfxTempo:
 	call Audio1_IsCry
 	jr c, .isCry
-	call Audio1_96c3
+	call Audio1_IsBattleSFX
 	jr nc, .notCry
 .isCry
 	ld d, 0
@@ -1005,7 +1005,7 @@ Audio1_SetSfxTempo:
 Audio1_ApplyFrequencyModifier:
 	call Audio1_IsCry
 	jr c, .isCry
-	call Audio1_96c3
+	call Audio1_IsBattleSFX
 	ret nc
 .isCry
 ; if playing a cry, add the cry's frequency modifier
@@ -1062,23 +1062,24 @@ Audio1_IsCry:
 	scf
 	ret
 
-Audio1_96c3:
+Audio1_IsBattleSFX:
+	; Returns whether the currently playing audio is a battle sfx in carry.
 	ld a, [wAudioROMBank]
 	cp BANK("Audio Engine 2")
-	jr nz, .asm_96dc
+	jr nz, .no
 	ld a, [wChannelSoundIDs + Ch8]
 	ld b, a
 	ld a, [wChannelSoundIDs + Ch5]
 	or b
-	cp $9d
-	jr c, .asm_96dc
-	cp $ea
-	jr z, .asm_96de
-	jr c, .asm_96de
-.asm_96dc
+	cp BATTLE_SFX_START
+	jr c, .no
+	cp BATTLE_SFX_END
+	jr z, .yes
+	jr c, .yes
+.no
 	and a
 	ret
-.asm_96de
+.yes
 	scf
 	ret
 
