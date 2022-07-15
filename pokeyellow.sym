@@ -2344,9 +2344,9 @@
 02:56b8 Audio1_IsCry.next
 02:56be Audio1_IsCry.no
 02:56c1 Audio1_IsCry.yes
-02:56c3 Audio1_96c3
-02:56dc Audio1_96c3.asm_96dc
-02:56de Audio1_96c3.asm_96de
+02:56c3 Audio1_IsBattleSFX
+02:56dc Audio1_IsBattleSFX.no
+02:56de Audio1_IsBattleSFX.yes
 02:56e0 Audio1_ApplyPitchSlide
 02:5727 Audio1_ApplyPitchSlide.frequencyDecreasing
 02:575a Audio1_ApplyPitchSlide.applyUpdatedFrequency
