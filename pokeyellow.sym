@@ -2386,7 +2386,7 @@
 02:5961 Audio1_CryRet
 02:5962 Audio1_HWChannelBaseAddresses
 02:596a Audio1_HWChannelDisableMasks
-02:5972 Audio1_9972
+02:5972 Audio1_ApplyMonoStereo
 02:5985 Audio1_HWChannelEnableMasks
 02:59a5 Audio1_Pitches
 02:59a5 Audio1_Pitches._table_width_u9372
