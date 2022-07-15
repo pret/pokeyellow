@@ -852,7 +852,7 @@ Audio1_note_pitch:
 
 Audio1_EnableChannelOutput:
 	ld b, 0
-	call Audio1_9972
+	call Audio1_ApplyMonoStereo
 	add hl, bc
 	ldh a, [rNR51]
 	or [hl] ; set this channel's bits
@@ -872,7 +872,7 @@ Audio1_EnableChannelOutput:
 ; If this is the SFX noise channel or a music channel whose corresponding
 ; SFX channel is off, apply stereo panning.
 	ld a, [wStereoPanning]
-	call Audio1_9972
+	call Audio1_ApplyMonoStereo
 	add hl, bc
 	and [hl]
 	ld d, a
@@ -1063,7 +1063,7 @@ Audio1_IsCry:
 	ret
 
 Audio1_IsBattleSFX:
-	; Returns whether the currently playing audio is a battle sfx in carry.
+; Returns whether the currently playing audio is a battle sfx in carry.
 	ld a, [wAudioROMBank]
 	cp BANK("Audio Engine 2")
 	jr nz, .no
@@ -1564,7 +1564,7 @@ Audio1_HWChannelDisableMasks:
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 0-3
 	db HW_CH1_DISABLE_MASK, HW_CH2_DISABLE_MASK, HW_CH3_DISABLE_MASK, HW_CH4_DISABLE_MASK ; channels 4-7
 
-Audio1_9972:
+Audio1_ApplyMonoStereo:
 	push af
 	push bc
 	ld a, [wOptions]
@@ -1579,14 +1579,21 @@ Audio1_9972:
 	ret
 
 Audio1_HWChannelEnableMasks:
+	; mono
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 0-3
 	db HW_CH1_ENABLE_MASK, HW_CH2_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 4-7
-	db $01,$20,$44,$88
-	db $11,$22,$44,$88
-	db $01,$20,$04,$80
-	db $01,$20,$04,$80
-	db $01,$02,$40,$80
-	db $01,$02,$40,$80
+
+	; earphone 1
+	db HW_CH1_RIGHT_ENABLE_MASK, HW_CH2_LEFT_ENABLE_MASK, HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 0-3
+	db HW_CH1_ENABLE_MASK,       HW_CH2_ENABLE_MASK,      HW_CH3_ENABLE_MASK, HW_CH4_ENABLE_MASK ; channels 4-7
+
+	; earphone 2
+	db HW_CH1_RIGHT_ENABLE_MASK, HW_CH2_LEFT_ENABLE_MASK, HW_CH3_RIGHT_ENABLE_MASK, HW_CH4_LEFT_ENABLE_MASK ; channels 0-3
+	db HW_CH1_RIGHT_ENABLE_MASK, HW_CH2_LEFT_ENABLE_MASK, HW_CH3_RIGHT_ENABLE_MASK, HW_CH4_LEFT_ENABLE_MASK ; channels 4-7
+
+	; earphone 3
+	db HW_CH1_RIGHT_ENABLE_MASK, HW_CH2_RIGHT_ENABLE_MASK, HW_CH3_LEFT_ENABLE_MASK, HW_CH4_LEFT_ENABLE_MASK ; channels 0-3
+	db HW_CH1_RIGHT_ENABLE_MASK, HW_CH2_RIGHT_ENABLE_MASK, HW_CH3_LEFT_ENABLE_MASK, HW_CH4_LEFT_ENABLE_MASK ; channels 4-7
 
 Audio1_Pitches:
 INCLUDE "audio/notes.asm"
