@@ -101,6 +101,7 @@ BugCatcherData:
 ; Route 9
 	db 19, BEEDRILL, BEEDRILL, 0
 	db 20, CATERPIE, WEEDLE, VENONAT, 0
+; Viridian Forest
 	db 8, CATERPIE, METAPOD, 0
 
 LassData:
@@ -131,6 +132,7 @@ LassData:
 ; Celadon Gym
 	db 23, BELLSPROUT, WEEPINBELL, 0
 	db 23, ODDISH, GLOOM, 0
+; Viridian Forest
 	db 6, NIDORAN_F, NIDORAN_M, 0
 
 SailorData:
