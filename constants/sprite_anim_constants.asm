@@ -1,4 +1,4 @@
-; animated_object struct members (see macros/wram.asm)
+; animated_object struct members (see macros/ram.asm)
 DEF ANIM_OBJ_INDEX           EQUS "wAnimatedObject0Index - wAnimatedObject0"
 DEF ANIM_OBJ_FRAME_SET       EQUS "wAnimatedObject0FramesetID - wAnimatedObject0"
 DEF ANIM_OBJ_CALLBACK        EQUS "wAnimatedObject0AnimSeqID - wAnimatedObject0"
