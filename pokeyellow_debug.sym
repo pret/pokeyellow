@@ -2395,7 +2395,7 @@
 02:5972 Audio1_ApplyMonoStereo
 02:5985 Audio1_HWChannelEnableMasks
 02:59a5 Audio1_Pitches
-02:59a5 Audio1_Pitches._table_width_u9372
+02:59a5 Audio1_Pitches._table_width_u19448
 02:59bd Music_RivalAlternateStart
 02:59d6 Audio1_OverwriteChannelPointer
 02:59db Music_RivalAlternateTempo
@@ -2673,7 +2673,7 @@
 03:4279 WarpTileIDPointers.ClubWarpTileIDs
 03:427a WarpTileIDPointers.BeachHouseWarpTileIDs
 03:427b PrintSafariZoneSteps
-03:42b8 PrintSafariZoneSteps.numSafariBallsTwoDigits
+03:42b8 PrintSafariZoneSteps.tenOrMore
 03:42c4 SafariSteps
 03:42c9 SafariBallText
 03:42d1 GetTileAndCoordsInFrontOfPlayer
@@ -2716,7 +2716,7 @@
 03:44ea Func_c4c7.asm_c4ea
 03:44ef Func_c4c7.asm_c4ef
 03:44f4 LoadTilesetHeader
-03:4531 LoadTilesetHeader.notDungeonTileset
+03:4531 LoadTilesetHeader.dungeon
 03:454b LoadTilesetHeader.done
 03:454c DungeonTilesets
 03:4558 Tilesets
@@ -3340,12 +3340,11 @@
 03:7098 MissableObjectFlagAction.read
 03:709c MissableObjectFlagAction.done
 03:70a1 TryPushingBoulder
-03:70a7 Func_f0a7
-03:70fd Func_f0a7.pushBoulderDown
-03:7105 Func_f0a7.pushBoulderUp
-03:710d Func_f0a7.pushBoulderLeft
-03:7115 Func_f0a7.pushBoulderRight
-03:711b Func_f0a7.done
+03:70fd TryPushingBoulder.pushBoulderDown
+03:7105 TryPushingBoulder.pushBoulderUp
+03:710d TryPushingBoulder.pushBoulderLeft
+03:7115 TryPushingBoulder.pushBoulderRight
+03:711b TryPushingBoulder.done
 03:7129 PushBoulderUpMovementData
 03:712b PushBoulderDownMovementData
 03:712d PushBoulderLeftMovementData
@@ -3481,7 +3480,7 @@
 03:7974 UpdateHPBar_CalcHPDifference.oldHPGreater
 03:797b UpdateHPBar_CalcHPDifference.testLowerByte
 03:7985 UpdateHPBar_PrintHPNumber
-03:79a6 UpdateHPBar_PrintHPNumber.next
+03:79a6 UpdateHPBar_PrintHPNumber.hpBelowBar
 03:79bb UpdateHPBar_PrintHPNumber.done
 03:79be UpdateHPBar_CalcOldNewHPBarPixels
 03:79de PrintBookshelfText
@@ -6267,7 +6266,6 @@
 0e:6d78 TradingAnimationGraphics2
 0e:6d78 TradingAnimationGraphicsEnd
 0e:6db8 TryEvolvingMon
-0e:6db8 EvolveTradeMon
 0e:6db8 TradingAnimationGraphics2End
 0e:6dc6 EvolutionAfterBattle
 0e:6dd8 Evolution_PartyMonLoop
@@ -17859,10 +17857,10 @@
 3a:59eb PrintPCBox_PlaceHorizontalLines.loop
 3a:59fd PrintPCBox_PlaceHorizontalLines.HorizontalLineString
 3a:5a08 _DisplayDiploma
-3a:5a73 String_e9a73
-3a:5a7d String_e9a7d
-3a:5a84 String_e9a84
-3a:5ac8 String_e9ac8
+3a:5a73 DiplomaText
+3a:5a7d DiplomaPlayer
+3a:5a84 DiplomaCongrats
+3a:5ac8 DiplomaGameFreak
 3a:5ad3 Func_e9ad3
 3a:5b3e Tilemap_e9b3e
 3a:5bb6 Tilemap_e9bb6
@@ -18794,7 +18792,7 @@
 3d:5855 LinkMenu.waitForInputLoop
 3d:586b LinkMenu.asm_f586b
 3d:5874 LinkMenu.exchangeMenuSelectionLoop
-3d:588b LinkMenu.asm_f5c7d
+3d:588b LinkMenu.checkEnemyMenuSelection
 3d:5899 LinkMenu.enemyPressedAOrB
 3d:58a6 LinkMenu.useEnemyMenuSelection
 3d:58b4 LinkMenu.doneChoosingMenuSelection
@@ -18877,7 +18875,7 @@
 3d:5ff2 InitBattle
 3d:5ff8 InitOpponent
 3d:6003 DetermineWildOpponent
-3d:600f DetermineWildOpponent.asm_3ef2f
+3d:600f DetermineWildOpponent.notDebug
 3d:601d InitBattleCommon
 3d:607c InitWildBattle
 3d:60a2 InitWildBattle.isGhost
