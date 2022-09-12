@@ -1,4 +1,3 @@
-
 PrinterSerial::
 	homecall PrinterSerial_
 	ret

@@ -690,13 +690,13 @@ LinkMenu:
 	ld b, a
 	and $f0
 	cp $d0
-	jr z, .asm_f5c7d
+	jr z, .checkEnemyMenuSelection
 	ld a, [wLinkMenuSelectionReceiveBuffer + 1]
 	ld b, a
 	and $f0
 	cp $d0
 	jr nz, .exchangeMenuSelectionLoop
-.asm_f5c7d
+.checkEnemyMenuSelection
 	ld a, b
 	and $c ; did the enemy press A or B?
 	jr nz, .enemyPressedAOrB
@@ -720,7 +720,7 @@ LinkMenu:
 	ld a, b
 	ld [wLinkMenuSelectionSendBuffer], a
 	and $3
-	ld [wCurrentMenuItem], a ; wCurrentMenuItem
+	ld [wCurrentMenuItem], a
 .doneChoosingMenuSelection
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK

@@ -411,12 +411,12 @@ MainInBattleLoop:
 	cp USING_INTERNAL_CLOCK
 	jr z, .invertOutcome
 	call BattleRandom
-	cp $80
+	cp 50 percent + 1
 	jr c, .playerMovesFirst
 	jr .enemyMovesFirst
 .invertOutcome
 	call BattleRandom
-	cp $80
+	cp 50 percent + 1
 	jr c, .enemyMovesFirst
 	jr .playerMovesFirst
 .enemyMovesFirst
@@ -791,7 +791,7 @@ FaintEnemyPokemon:
 	ld a, SFX_FAINT_FALL
 	call PlaySoundWaitForCurrent
 .sfxwait
-	ld a, [wChannelSoundIDs + Ch5]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp SFX_FAINT_FALL
 	jr z, .sfxwait
 	ld a, SFX_FAINT_THUD
@@ -875,7 +875,7 @@ EndLowHealthAlarm:
 ; the low health alarm and prevents it from reactivating until the next battle.
 	xor a
 	ld [wLowHealthAlarm], a ; turn off low health alarm
-	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + CHAN5], a
 	inc a
 	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
 	ret
@@ -1358,7 +1358,7 @@ EnemySendOutFirstMon:
 	ld [wWhichPokemon], a
 	jr .next3
 .next
-	ld b, $FF
+	ld b, $ff
 .next2
 	inc b
 	ld a, [wEnemyMonPartyPos]
@@ -1411,7 +1411,7 @@ EnemySendOutFirstMon:
 	cp LINK_STATE_BATTLING
 	jr z, .next4
 	ld a, [wOptions]
-	bit 6, a
+	bit BIT_BATTLE_SHIFT, a
 	jr nz, .next4
 	ld hl, TrainerAboutToUseText
 	call PrintText
@@ -1939,7 +1939,7 @@ DrawPlayerHUDAndHPBar:
 	ld [hl], $0
 	ret z
 	xor a
-	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + CHAN5], a
 	ret
 .setLowHealthAlarm
 	ld hl, wLowHealthAlarm
@@ -2174,7 +2174,7 @@ DisplayBattleMenu::
 	ld [hli], a ; wMaxMenuItem
 	ld [hl], D_RIGHT | A_BUTTON ; wMenuWatchedKeys
 	call HandleMenuInput
-	bit 4, a ; check if right was pressed
+	bit BIT_D_RIGHT, a
 	jr nz, .rightColumn
 	jr .AButtonPressed ; the A button was pressed
 .rightColumn ; put cursor in right column of menu
@@ -2455,7 +2455,7 @@ PartyMenuOrRockOrRun:
 	xor a
 	ld [hl], a ; wLastMenuItem
 	call HandleMenuInput
-	bit 1, a ; was A pressed?
+	bit BIT_B_BUTTON, a
 	jr nz, .partyMonDeselected ; if B was pressed, jump
 ; A was pressed
 	call PlaceUnfilledArrowMenuCursor
@@ -3131,19 +3131,19 @@ SelectEnemyMove:
 .chooseRandomMove
 	push hl
 	call BattleRandom
-	ld b, $1
-	cp $3f ; select move 1, [0,3e] (63/256 chance)
+	ld b, 1 ; 25% chance to select move 1
+	cp 25 percent
 	jr c, .moveChosen
 	inc hl
-	inc b
-	cp $7f ; select move 2, [3f,7e] (64/256 chance)
+	inc b ; 25% chance to select move 2
+	cp 50 percent
 	jr c, .moveChosen
 	inc hl
-	inc b
-	cp $be ; select move 3, [7f,bd] (63/256 chance)
+	inc b ; 25% chance to select move 3
+	cp 75 percent - 1
 	jr c, .moveChosen
 	inc hl
-	inc b ; select move 4, [be,ff] (66/256 chance)
+	inc b ; 25% chance to select move 4
 .moveChosen
 	ld a, b
 	dec a
@@ -3583,7 +3583,7 @@ CheckPlayerStatusConditions:
 	ld a, CONF_ANIM - 1
 	call PlayMoveAnimation
 	call BattleRandom
-	cp $80 ; 50% chance to hurt itself
+	cp 50 percent + 1 ; chance to hurt itself
 	jr c, .TriedToUseDisabledMoveCheck
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
@@ -4792,7 +4792,7 @@ CriticalHitTest:
 	dec hl
 	ld c, [hl]                   ; read move id
 	ld a, [de]
-	bit GETTING_PUMPED, a         ; test for focus energy
+	bit GETTING_PUMPED, a        ; test for focus energy
 	jr nz, .focusEnergyUsed      ; bug: using focus energy causes a shift to the right instead of left,
 	                             ; resulting in 1/4 the usual crit chance
 	sla b                        ; (effective (base speed/2)*2)
@@ -5548,10 +5548,10 @@ MoveHitTest:
 .swiftCheck
 	ld a, [de]
 	cp SWIFT_EFFECT
-	ret z ; Swift never misses (interestingly, Azure Heights lists this is a myth, but it appears to be true)
+	ret z ; Swift never misses (this was fixed from the Japanese versions)
 	call CheckTargetSubstitute ; substitute check (note that this overwrites a)
 	jr z, .checkForDigOrFlyStatus
-; This code is buggy. It's supposed to prevent HP draining moves from working on substitutes.
+; The fix for Swift broke this code. It's supposed to prevent HP draining moves from working on Substitutes.
 ; Since CheckTargetSubstitute overwrites a with either $00 or $01, it never works.
 	cp DRAIN_HP_EFFECT
 	jp z, .moveMissed
@@ -6129,7 +6129,7 @@ CheckEnemyStatusConditions:
 	bit PAR, [hl]
 	jr z, .checkIfUsingBide
 	call BattleRandom
-	cp $3f ; 25% to be fully paralysed
+	cp 25 percent ; chance to be fully paralysed
 	jr nc, .checkIfUsingBide
 	ld hl, FullyParalyzedText
 	call PrintText

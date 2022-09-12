@@ -123,9 +123,9 @@ MainMenu:
 	jp SpecialEnterMap
 
 InitOptions:
-	ld a, 1 ; no delay
+	ld a, TEXT_DELAY_FAST
 	ld [wLetterPrintingDelayFlags], a
-	ld a, 3 ; medium speed
+	ld a, TEXT_DELAY_MEDIUM
 	ld [wOptions], a
 	ld a, 64 ; audio?
 	ld [wPrinterSettings], a

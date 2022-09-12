@@ -2,8 +2,6 @@ TryPushingBoulder::
 	ld a, [wd728]
 	bit 0, a ; using Strength?
 	ret z
-Func_f0a7:
-; where LoadMissableObjects predef points to now
 	ld a, [wFlags_0xcd60]
 	bit 1, a ; has boulder dust animation from previous push played yet?
 	ret nz

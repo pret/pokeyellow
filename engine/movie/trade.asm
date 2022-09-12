@@ -624,7 +624,7 @@ Trade_WriteCircledMonOAM:
 
 Trade_AddOffsetsToOAMCoords:
 	ld hl, wShadowOAM
-	ld c, $14 ; SCREEN_WIDTH?
+	ld c, $14
 .loop
 	ld a, [wBaseCoordY]
 	add [hl]

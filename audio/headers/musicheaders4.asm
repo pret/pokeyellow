@@ -1,11 +1,22 @@
 Music_SurfingPikachu::
-	audio_header Music_SurfingPikachu, Ch1, Ch2, Ch3
+	channel_count 3
+	channel 1, Music_SurfingPikachu_Ch1
+	channel 2, Music_SurfingPikachu_Ch2
+	channel 3, Music_SurfingPikachu_Ch3
 
 Music_MeetJessieJames::
-	audio_header Music_MeetJessieJames, Ch1, Ch2, Ch3
+	channel_count 3
+	channel 1, Music_MeetJessieJames_Ch1
+	channel 2, Music_MeetJessieJames_Ch2
+	channel 3, Music_MeetJessieJames_Ch3
 
 Music_YellowUnusedSong::
-	audio_header Music_YellowUnusedSong, Ch1, Ch2, Ch3, Ch4
+	channel_count 4
+	channel 1, Music_YellowUnusedSong_Ch1
+	channel 2, Music_YellowUnusedSong_Ch2
+	channel 3, Music_YellowUnusedSong_Ch3
+	channel 4, Music_YellowUnusedSong_Ch4
 
 Music_GBPrinter::
-	audio_header Music_GBPrinter, Ch3
+	channel_count 1
+	channel 3, Music_GBPrinter_Ch3

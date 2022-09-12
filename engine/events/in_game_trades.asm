@@ -244,7 +244,7 @@ InGameTrade_CheckForTradeEvo:
 	ld [wForceEvolution], a
 	ld a, LINK_STATE_TRADING
 	ld [wLinkState], a
-	callfar EvolveTradeMon
+	callfar TryEvolvingMon
 	xor a ; LINK_STATE_NONE
 	ld [wLinkState], a
 	jp PlayDefaultMusic

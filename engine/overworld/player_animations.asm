@@ -14,7 +14,6 @@ EnterMapAnim::
 	ld hl, wd732
 	bit 4, [hl] ; used dungeon warp?
 	pop hl
-	;res 4, [hl]
 	jr nz, .dungeonWarpAnimation
 	call PlayerSpinWhileMovingDown
 	ld a, SFX_TELEPORT_ENTER_2

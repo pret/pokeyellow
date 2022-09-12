@@ -1,6 +1,5 @@
 ; try to evolve the mon in [wWhichPokemon]
 TryEvolvingMon:
-EvolveTradeMon:
 	ld hl, wCanEvolveFlags
 	xor a
 	ld [hl], a

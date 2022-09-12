@@ -100,7 +100,7 @@ HandlePokedexSideMenu:
 	ldh [hJoy7], a
 .handleMenuInput
 	call HandleMenuInput
-	bit 1, a ; was the B button pressed?
+	bit BIT_B_BUTTON, a
 	ld b, 2
 	jr nz, .buttonBPressed
 	ld a, [wCurrentMenuItem]

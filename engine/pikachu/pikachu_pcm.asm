@@ -84,10 +84,10 @@ ENDC
 	and $bb
 	ldh [rNR51], a
 	xor a
-	ld [wChannelSoundIDs + Ch5], a
-	ld [wChannelSoundIDs + Ch6], a
-	ld [wChannelSoundIDs + Ch7], a
-	ld [wChannelSoundIDs + Ch8], a
+	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannelSoundIDs + CHAN6], a
+	ld [wChannelSoundIDs + CHAN7], a
+	ld [wChannelSoundIDs + CHAN8], a
 	ldh a, [hLoadedROMBank]
 	ei
 	ret

@@ -1257,7 +1257,7 @@ CollisionCheckOnLand::
 	call CheckTilePassable
 	jr nc, .noCollision
 .collision
-	ld a, [wChannelSoundIDs + Ch5]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp SFX_COLLISION ; check if collision sound is already playing
 	jr z, .setCarry
 	ld a, SFX_COLLISION
@@ -1686,7 +1686,7 @@ CollisionCheckOnWater::
 	call IsTilePassable
 	jr nc, .stopSurfing
 .collision
-	ld a, [wChannelSoundIDs + Ch5]
+	ld a, [wChannelSoundIDs + CHAN5]
 	cp SFX_COLLISION ; check if collision sound is already playing
 	jr z, .setCarry
 	ld a, SFX_COLLISION

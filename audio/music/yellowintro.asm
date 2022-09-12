@@ -99,7 +99,6 @@ Music_YellowIntro_Ch1::
 	note B_, 16
 	sound_ret
 
-
 Music_YellowIntro_Ch2::
 	duty_cycle 2
 	vibrato 6, 1, 5
@@ -201,7 +200,6 @@ Music_YellowIntro_Ch2::
 	note_type 12, 12, 2
 	note E_, 16
 	sound_ret
-
 
 Music_YellowIntro_Ch3::
 	note_type 12, 1, 0

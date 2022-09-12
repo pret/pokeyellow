@@ -26,13 +26,13 @@ LoadTilesetHeader:
 	call IsInArray
 	pop de
 	pop hl
-	jr c, .notDungeonTileset
+	jr c, .dungeon
 	ld a, [wCurMapTileset]
 	ld b, a
 	ldh a, [hPreviousTileset]
 	cp b
 	jr z, .done
-.notDungeonTileset
+.dungeon
 	ld a, [wDestinationWarpID]
 	cp $ff
 	jr z, .done

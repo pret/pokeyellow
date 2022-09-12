@@ -240,11 +240,11 @@ PrintSafariZoneSteps::
 	call PlaceString
 	ld a, [wNumSafariBalls]
 	cp 10
-	jr nc, .numSafariBallsTwoDigits
+	jr nc, .tenOrMore
 	hlcoord 5, 3
 	ld a, " "
 	ld [hl], a
-.numSafariBallsTwoDigits
+.tenOrMore
 	hlcoord 6, 3
 	ld de, wNumSafariBalls
 	lb bc, 1, 2

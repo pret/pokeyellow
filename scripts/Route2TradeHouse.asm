@@ -11,7 +11,7 @@ Route2HouseText1:
 
 Route2HouseText2:
 	text_asm
-	ld a, TRADE_FOR_MARCEL
+	ld a, TRADE_FOR_MILES
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 	jp TextScriptEnd

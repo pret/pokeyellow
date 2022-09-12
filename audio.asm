@@ -462,7 +462,8 @@ INCLUDE "audio/engine_4.asm"
 
 SECTION "Music 1", ROMX
 
-Audio1_WavePointers: INCLUDE "audio/wave_instruments.asm"
+Audio1_WavePointers:
+INCLUDE "audio/wave_samples.asm"
 
 INCLUDE "audio/music/pkmnhealed.asm"
 INCLUDE "audio/music/routes1.asm"

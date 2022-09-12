@@ -23,11 +23,11 @@ _DisplayDiploma:
 	hlcoord 19, 0
 	ld [hl], a
 
-	ld de, String_e9a73
+	ld de, DiplomaText
 	hlcoord 5, 2
 	call PlaceString
 
-	ld de, String_e9a7d
+	ld de, DiplomaPlayer
 	hlcoord 3, 4
 	call PlaceString
 
@@ -35,11 +35,11 @@ _DisplayDiploma:
 	hlcoord 10, 4
 	call PlaceString
 
-	ld de, String_e9a84
+	ld de, DiplomaCongrats
 	hlcoord 2, 6
 	call PlaceString
 
-	ld de, String_e9ac8
+	ld de, DiplomaGameFreak
 	hlcoord 9, 16
 	call PlaceString
 
@@ -51,20 +51,20 @@ _DisplayDiploma:
 	call GBPalNormal
 	ret
 
-String_e9a73:
+DiplomaText:
 	db CIRCLE_TILE_ID, "Diploma", CIRCLE_TILE_ID, "@"
 
-String_e9a7d:
+DiplomaPlayer:
 	db "Player@"
 
-String_e9a84:
+DiplomaCongrats:
 	db   "Congrats! This"
 	next "diploma certifies"
 	next "that you have"
 	next "completed your"
 	next "#DEX.@"
 
-String_e9ac8:
+DiplomaGameFreak:
 	db "GAME FREAK@"
 
 Func_e9ad3:

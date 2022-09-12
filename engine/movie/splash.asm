@@ -7,7 +7,7 @@ LoadShootingStarGraphics:
 	call UpdateGBCPal_OBP1
 	ld de, AnimationTileset2 tile 3 ; star tile (top left quadrant)
 	ld hl, vChars1 tile $20
-	lb bc, BANK(AnimationTileset2), $01
+	lb bc, BANK(AnimationTileset2), 1
 	call CopyVideoData
 	ld de, AnimationTileset2 tile 19 ; star tile (bottom left quadrant)
 	ld hl, vChars1 tile $21

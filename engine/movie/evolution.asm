@@ -8,7 +8,7 @@ EvolveMon:
 	push af
 	xor a
 	ld [wLowHealthAlarm], a
-	ld [wChannelSoundIDs + Ch5], a
+	ld [wChannelSoundIDs + CHAN5], a
 	call StopAllMusic
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
