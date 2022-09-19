@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-A library for use with compressed monster and trainer pics in pokered.
+A library for use with compressed monster and trainer pics in pokeyellow.
 """
 from __future__ import absolute_import
 from __future__ import division
@@ -26,7 +26,7 @@ def bitflip(x, n):
 
 class Decompressor:
     """
-    pokered pic decompression.
+    pokeyellow pic decompression.
 
     Ported to python 2.7 from the python 3 code at https://github.com/magical/pokemon-sprites-rby.
     """
@@ -228,7 +228,7 @@ def bytes_to_bits(bytelist):
 
 class Compressor:
     """
-    pokered pic compression.
+    pokeyellow pic compression.
 
     Adapted from stag019's C compressor.
     """
