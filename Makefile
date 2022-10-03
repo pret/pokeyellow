@@ -81,7 +81,7 @@ tools:
 	$(MAKE) -C tools/
 
 
-RGBASMFLAGS = -h -L -Weverything -Wnumeric-string=2 -Wtruncation=1
+RGBASMFLAGS = -hL -Q8 -P includes.asm -Weverything -Wnumeric-string=2 -Wtruncation=1
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
@@ -100,7 +100,7 @@ rgbdscheck.o: rgbdscheck.asm
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way.
 define DEP
-$1: $2 $$(shell tools/scan_includes $2) | rgbdscheck.o
+$1: $2 $$(shell tools/scan_includes $2) | includes.asm rgbdscheck.o
 	$$(RGBASM) $$(RGBASMFLAGS) -o $$@ $$<
 endef
 
@@ -116,8 +116,8 @@ $(foreach obj, $(pokeyellow_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=
 $(foreach obj, $(pokeyellow_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))))
 
 # Dependencies for VC files that need to run scan_includes
-%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) | rgbdscheck.o
-	$(RGBASM) $< > $@
+%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) | includes.asm rgbdscheck.o
+	$(RGBASM) $(RGBASMFLAGS) $< > $@
 
 endif
 
@@ -138,8 +138,8 @@ opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
 
 ### Misc file-specific graphics rules
 
-gfx/battle/attack_anim_1.2bpp: tools/gfx += --trim-whitespace
-gfx/battle/attack_anim_2.2bpp: tools/gfx += --trim-whitespace
+gfx/battle/move_anim_0.2bpp: tools/gfx += --trim-whitespace
+gfx/battle/move_anim_1.2bpp: tools/gfx += --trim-whitespace
 
 gfx/credits/the_end.2bpp: tools/gfx += --interleave --png=$<
 

@@ -275,7 +275,7 @@ PlayAnimation:
 	ld a, [wAnimPalette]
 	ldh [rOBP0], a
 	call UpdateGBCPal_OBP0
-	call LoadAnimationTileset
+	call LoadMoveAnimationTiles
 	call LoadSubanimation
 	call PlaySubanimation
 	pop af
@@ -372,11 +372,11 @@ GetSubanimationTransform2:
 	ret
 
 ; loads tile patterns for battle animations
-LoadAnimationTileset:
+LoadMoveAnimationTiles:
 	ld a, [wWhichBattleAnimTileset]
 	add a
 	add a
-	ld hl, AnimationTilesetPointers
+	ld hl, MoveAnimationTilesPointers
 	ld e, a
 	ld d, 0
 	add hl, de
@@ -387,7 +387,7 @@ LoadAnimationTileset:
 	ld a, [hl]
 	ld d, a ; de = address of tileset
 	ld hl, vSprites tile $31
-	ld b, BANK(AnimationTileset1) ; ROM bank
+	ld b, BANK(MoveAnimationTiles0) ; ROM bank
 	ld a, [wTempTilesetNumTiles]
 	ld c, a ; number of tiles
 	jp CopyVideoData ; load tileset
@@ -398,17 +398,18 @@ MACRO anim_tileset
 	db -1 ; padding
 ENDM
 
-AnimationTilesetPointers:
+MoveAnimationTilesPointers:
 	; number of tiles, gfx pointer
-	anim_tileset 79, AnimationTileset1
-	anim_tileset 79, AnimationTileset2
-	anim_tileset 64, AnimationTileset1
+	anim_tileset 79, MoveAnimationTiles0
+	anim_tileset 79, MoveAnimationTiles1
+	anim_tileset 64, MoveAnimationTiles2
 
-AnimationTileset1:
-	INCBIN "gfx/battle/attack_anim_1.2bpp"
+MoveAnimationTiles0:
+MoveAnimationTiles2:
+	INCBIN "gfx/battle/move_anim_0.2bpp"
 
-AnimationTileset2:
-	INCBIN "gfx/battle/attack_anim_2.2bpp"
+MoveAnimationTiles1:
+	INCBIN "gfx/battle/move_anim_1.2bpp"
 
 SlotMachineTiles2:
 	INCBIN "gfx/slots/slots_2.2bpp"
@@ -1158,7 +1159,7 @@ AnimationWaterDropletsEverywhere:
 ; in Surf/Mist/Toxic.
 	xor a
 	ld [wWhichBattleAnimTileset], a
-	call LoadAnimationTileset
+	call LoadMoveAnimationTiles
 	ld d, 32
 	ld a, -16
 	ld [wBaseCoordX], a
@@ -1720,7 +1721,7 @@ _AnimationShootBallsUpward:
 	push bc
 	xor a
 	ld [wWhichBattleAnimTileset], a
-	call LoadAnimationTileset
+	call LoadMoveAnimationTiles
 	pop bc
 	ld d, $7a ; ball tile
 	ld hl, wShadowOAM
@@ -2234,7 +2235,7 @@ InitMultipleObjectsOAM:
 	push bc
 	push de
 	ld [wWhichBattleAnimTileset], a
-	call LoadAnimationTileset
+	call LoadMoveAnimationTiles
 	pop de
 	pop bc
 	xor a

@@ -1,6 +1,4 @@
-INCLUDE "constants.asm"
-
-; These are all the asm constants needed to make the blue_vc patch.
+; These are all the asm constants needed to make the yellow_vc patch.
 
 MACRO vc_const
 	DEF x = \1
