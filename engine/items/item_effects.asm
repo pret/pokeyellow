@@ -3119,13 +3119,6 @@ IsNextTileShoreOrWater::
 
 INCLUDE "data/tilesets/water_tilesets.asm"
 
-; shore tiles
-ShoreTiles:
-	db $48, $32
-WaterTile:
-	db $14
-	db $ff ; terminator
-
 ; reloads map view and processes sprite data
 ; for items that cause the overworld to be displayed
 ItemUseReloadOverworldData:
