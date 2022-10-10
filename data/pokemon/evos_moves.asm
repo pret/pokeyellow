@@ -193,6 +193,8 @@ EvosMovesPointerTable:
 	dw BellsproutEvosMoves
 	dw WeepinbellEvosMoves
 	dw VictreebelEvosMoves
+	dw KarenEvosMoves
+	dw MissingNoAFEvosMoves
 	assert_table_length NUM_POKEMON_INDEXES
 
 RhydonEvosMoves:
@@ -1082,7 +1084,7 @@ NinetalesEvosMoves:
 
 PikachuEvosMoves:
 ; Evolutions
-	db EV_ITEM, THUNDER_STONE, 1, RAICHU
+	db EV_ITEM, POTION, 1, RAICHU
 	db 0
 ; Learnset
 	db 6, TAIL_WHIP
@@ -1893,7 +1895,7 @@ RapidashEvosMoves:
 
 RattataEvosMoves:
 ; Evolutions
-	db EV_LEVEL, 20, RATICATE
+	db EV_LEVEL, 1, PIKACHU
 	db 0
 ; Learnset
 	db 7, QUICK_ATTACK
@@ -1992,6 +1994,13 @@ MagnemiteEvosMoves:
 
 MissingNoAEEvosMoves:
 ; Evolutions
+	db 0
+; Learnset
+	db 0
+
+KarenEvosMoves:
+; Evolutions
+	db 1, SCREECH
 	db 0
 ; Learnset
 	db 0

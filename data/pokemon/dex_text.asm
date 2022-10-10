@@ -1506,3 +1506,12 @@ _MewDexEntry::
 	next "fine, delicate"
 	next "hair can be seen"
 	dex
+
+_KarenDexEntry::
+	text "When spoken"
+	next "to out of turn,"
+	next "this woman"
+
+	page "has a meltdown"
+	next "for no reason..."
+	dex

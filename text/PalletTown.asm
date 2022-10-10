@@ -60,7 +60,7 @@ _PalletTownText5::
 	done
 
 _PalletTownText6::
-	text "<PLAYER>'s house "
+	text "SUCK MY DICK "
 	done
 
 _PalletTownText7::

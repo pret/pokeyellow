@@ -264,7 +264,7 @@ PidgeotPicFront::      INCBIN "gfx/pokemon/front/pidgeot.pic"
 PidgeotPicBack::       INCBIN "gfx/pokemon/back/pidgeotb.pic"
 StarmiePicFront::      INCBIN "gfx/pokemon/front/starmie.pic"
 StarmiePicBack::       INCBIN "gfx/pokemon/back/starmieb.pic"
-
+KarenPicFront::        INCBIN "gfx/pokemon/front/karen.pic"
 
 SECTION "Pics 5", ROMX
 
@@ -322,6 +322,7 @@ WeepinbellPicFront::   INCBIN "gfx/pokemon/front/weepinbell.pic"
 WeepinbellPicBack::    INCBIN "gfx/pokemon/back/weepinbellb.pic"
 VictreebelPicFront::   INCBIN "gfx/pokemon/front/victreebel.pic"
 VictreebelPicBack::    INCBIN "gfx/pokemon/back/victreebelb.pic"
+KarenPicBack::         INCBIN "gfx/pokemon/back/karenb.pic"
 
 
 SECTION "Pics 6", ROMX

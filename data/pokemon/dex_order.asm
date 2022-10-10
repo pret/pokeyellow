@@ -190,4 +190,6 @@ PokedexOrder:
 	db DEX_BELLSPROUT
 	db DEX_WEEPINBELL
 	db DEX_VICTREEBEL
+	db DEX_KAREN
+	db 0 ; MISSINGNO.
 	assert_table_length NUM_POKEMON_INDEXES

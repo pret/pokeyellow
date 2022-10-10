@@ -190,4 +190,6 @@ MonsterNames::
 	db "BELLSPROUT"
 	db "WEEPINBELL"
 	db "VICTREEBEL"
+	db "KAREN@@@@@"
+	db "MISSINGNO."
 	assert_table_length NUM_POKEMON_INDEXES

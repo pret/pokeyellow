@@ -152,4 +152,5 @@ MonsterPalettes:
 	db PAL_BROWNMON  ; DRAGONITE
 	db PAL_MEWMON    ; MEWTWO
 	db PAL_MEWMON    ; MEW
+	db PAL_MEWMON    ; KAREN
 	assert_table_length NUM_POKEMON + 1
