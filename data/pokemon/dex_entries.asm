@@ -1257,7 +1257,7 @@ MewDexEntry:
 	text_end
 
 KarenDexEntry:
-	db "BIG CUNT@"
+	db "BIG FANNY@"
 	db 99, 6
 	dw 999
 	text_far _KarenDexEntry
