@@ -193,8 +193,8 @@ EvosMovesPointerTable:
 	dw BellsproutEvosMoves
 	dw WeepinbellEvosMoves
 	dw VictreebelEvosMoves
-	dw KarenEvosMoves
 	dw MissingNoAFEvosMoves
+	dw KarenEvosMoves
 	assert_table_length NUM_POKEMON_INDEXES
 
 RhydonEvosMoves:
