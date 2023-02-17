@@ -77,6 +77,7 @@ YoungsterData:
 	db 18, NIDORAN_M, NIDORINO, 0
 ; Unused
 	db 17, SPEAROW, RATTATA, RATTATA, SPEAROW, 0
+; Route 9
 	db 24, SANDSHREW, 0
 
 BugCatcherData:
@@ -155,13 +156,14 @@ JrTrainerMData:
 	db 14, RATTATA, EKANS, 0
 ; Route 24
 	db 18, MANKEY, 0
-; Route 6
+; Unused
 	db 20, SQUIRTLE, 0
+; Route 6
 	db 16, SPEAROW, RATICATE, 0
 ; Unused
 	db 18, DIGLETT, DIGLETT, SANDSHREW, 0
-; Route 9
 	db 21, GROWLITHE, CHARMANDER, 0
+; Route 9
 	db 19, RATTATA, DIGLETT, EKANS, SANDSHREW, 0
 ; Route 12
 	db 29, NIDORAN_M, NIDORINO, 0
@@ -170,8 +172,9 @@ JrTrainerMData:
 JrTrainerFData:
 ; Cerulean Gym
 	db 19, GOLDEEN, 0
-; Route 6
+; Unused
 	db 16, ODDISH, BELLSPROUT, 0
+; Route 6
 	db 16, PIDGEY, PIDGEY, PIDGEY, 0
 ; Unused
 	db 22, BULBASAUR, 0
@@ -204,6 +207,7 @@ JrTrainerFData:
 	db 29, BELLSPROUT, ODDISH, TANGELA, 0
 ; Route 20
 	db 30, TENTACOOL, HORSEA, SEEL, 0
+; Route 6
 	db 20, CUBONE, 0
 
 PokemaniacData:
@@ -482,6 +486,7 @@ BlackbeltData:
 	db 43, MACHOKE, MACHOP, MACHOKE, 0
 
 Rival1Data:
+; Oak's Lab
 	db 5, EEVEE, 0
 ; Route 22
 	db $FF, 9, SPEAROW, 8, EEVEE, 0
@@ -537,6 +542,7 @@ RocketData:
 	db 13, RATTATA, ZUBAT, 0
 	db 11, SANDSHREW, RATTATA, ZUBAT, 0
 	db 12, ZUBAT, EKANS, 0
+; Unused
 	db 16, RATICATE, 0
 ; Cerulean City
 	db 17, MACHOP, DROWZEE, 0
@@ -555,15 +561,15 @@ RocketData:
 ; Rocket Hideout B3F
 	db 20, RATTATA, RATICATE, DROWZEE, 0
 	db 21, MACHOP, MACHOP, 0
-; Rocket Hideout B4F
+; Unused
 	db 23, SANDSHREW, EKANS, SANDSLASH, 0
 	db 23, EKANS, SANDSHREW, ARBOK, 0
+; Rocket Hideout B4F
 	db 21, KOFFING, ZUBAT, 0
-; Pokémon Tower 7F
+; Unused
 	db 25, ZUBAT, ZUBAT, GOLBAT, 0
 	db 26, KOFFING, DROWZEE, 0
 	db 23, ZUBAT, RATTATA, RATICATE, ZUBAT, 0
-; Unused
 	db 26, DROWZEE, KOFFING, 0
 ; Silph Co. 2F
 	db 29, CUBONE, ZUBAT, 0
@@ -593,12 +599,13 @@ RocketData:
 	db 33, MACHOKE, 0
 ; Silph Co. 11F
 	db 25, RATTATA, RATTATA, ZUBAT, RATTATA, EKANS, 0
+; Unused
 	db 32, CUBONE, DROWZEE, MAROWAK, 0
 ; Jessie & James
-	db 14, EKANS, MEOWTH, KOFFING, 0
-	db 25, KOFFING, MEOWTH, EKANS, 0
-	db 27, MEOWTH, ARBOK, WEEZING, 0
-	db 31, WEEZING, ARBOK, MEOWTH, 0
+	db 14, EKANS, MEOWTH, KOFFING, 0 ; Mt. Moon B2F
+	db 25, KOFFING, MEOWTH, EKANS, 0 ; Rocket Hideout B4F
+	db 27, MEOWTH, ARBOK, WEEZING, 0 ; Pokémon Tower 7F
+	db 31, WEEZING, ARBOK, MEOWTH, 0 ; Silph Co. 11F
 ; Unused
 	db 16, KOFFING, 0
 	db 27, KOFFING, 0
@@ -690,6 +697,7 @@ Rival2Data:
 	db $FF, 47, SANDSLASH, 45, EXEGGCUTE, 45, MAGNETON, 47, NINETALES, 50, KADABRA, 53, VAPOREON, 0
 
 Rival3Data:
+; Champions Room
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, CLOYSTER, 63, NINETALES, 65, JOLTEON, 0
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, MAGNETON, 63, CLOYSTER, 65, FLAREON, 0
 	db $FF, 61, SANDSLASH, 59, ALAKAZAM, 61, EXEGGUTOR, 61, NINETALES, 63, MAGNETON, 65, VAPOREON, 0
