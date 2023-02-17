@@ -167,6 +167,7 @@ JrTrainerMData:
 	db 19, RATTATA, DIGLETT, EKANS, SANDSHREW, 0
 ; Route 12
 	db 29, NIDORAN_M, NIDORINO, 0
+; Route 6
 	db 16, WEEPINBELL, 0
 
 JrTrainerFData:
