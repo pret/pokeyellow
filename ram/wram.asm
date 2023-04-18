@@ -2590,7 +2590,7 @@ wGBCPal:: ds PALETTE_SIZE
 wLastBGP:: db
 wLastOBP0:: db
 wLastOBP1:: db
-wdef5:: db
+wdef4:: db
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 
 
