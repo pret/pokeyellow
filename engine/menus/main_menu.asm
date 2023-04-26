@@ -147,6 +147,7 @@ NotEnoughMemoryText:
 StartNewGame:
 	ld hl, wd732
 	res 1, [hl]
+	; fallthrough
 StartNewGameDebug:
 	call OakSpeech
 	ld a, $8
