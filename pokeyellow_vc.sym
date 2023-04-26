@@ -1200,7 +1200,7 @@
 01:4139 PrintSafariZoneBattleText.done
 01:4141 SafariZoneEatingText
 01:4146 SafariZoneAngryText
-01:414b SetDefaultNamesBeforeTitlescreen
+01:414b PrepareTitleScreen
 01:4171 DisplayTitleScreen
 01:4213 DisplayTitleScreen.bouncePokemonLogoLoop
 01:4221 DisplayTitleScreen.skipPlayingSound
@@ -1236,9 +1236,9 @@
 01:43d9 DoTitleScreenFunction.BlinkWait
 01:43de DoTitleScreenFunction.CheckTimer
 01:43ed DoTitleScreenFunction.restart
-01:43f3 CopyFixedLengthText
-01:43f9 NintenText
-01:4400 SonyText
+01:43f3 CopyDebugName
+01:43f9 DebugNewGamePlayerName
+01:4400 DebugNewGameRivalName
 01:4405 IncrementResetCounter
 01:4416 IncrementResetCounter.doReset
 01:4418 FillSpriteBuffer0WithAA
@@ -1550,7 +1550,7 @@
 01:5dfb CheckForPlayerNameInSRAM
 01:5e0d CheckForPlayerNameInSRAM.loop
 01:5e1e CheckForPlayerNameInSRAM.found
-01:5e27 SetDefaultNames
+01:5e27 PrepareOakSpeech
 01:5e85 OakSpeech
 01:5f2a OakSpeech.skipChoosingNames
 01:5f48 OakSpeech.next
@@ -13757,7 +13757,7 @@
 1e:68f5 ConfusedPlayerAnim
 1e:68fc ConfusedEnemyAnim
 1e:6903 BallBlockAnim
-1e:6907 FaintAnim
+1e:6907 SlideDownAnim
 1e:690a ShakeScreenAnim
 1e:690d ThrowRockAnim
 1e:6911 ThrowBaitAnim

@@ -1193,7 +1193,7 @@
 01:4139 PrintSafariZoneBattleText.done
 01:4141 SafariZoneEatingText
 01:4146 SafariZoneAngryText
-01:414b SetDefaultNamesBeforeTitlescreen
+01:414b PrepareTitleScreen
 01:4171 DisplayTitleScreen
 01:4213 DisplayTitleScreen.bouncePokemonLogoLoop
 01:4221 DisplayTitleScreen.skipPlayingSound
@@ -1229,9 +1229,9 @@
 01:43e5 DoTitleScreenFunction.BlinkWait
 01:43ea DoTitleScreenFunction.CheckTimer
 01:43f9 DoTitleScreenFunction.restart
-01:43ff CopyFixedLengthText
-01:4405 NintenText
-01:440c SonyText
+01:43ff CopyDebugName
+01:4405 DebugNewGamePlayerName
+01:440c DebugNewGameRivalName
 01:4411 IncrementResetCounter
 01:4422 IncrementResetCounter.doReset
 01:4424 FillSpriteBuffer0WithAA
@@ -1540,7 +1540,7 @@
 01:5e07 CheckForPlayerNameInSRAM
 01:5e19 CheckForPlayerNameInSRAM.loop
 01:5e2a CheckForPlayerNameInSRAM.found
-01:5e33 SetDefaultNames
+01:5e33 PrepareOakSpeech
 01:5e91 OakSpeech
 01:5f36 OakSpeech.skipChoosingNames
 01:5f54 OakSpeech.next
@@ -13714,7 +13714,7 @@
 1e:68f5 ConfusedPlayerAnim
 1e:68fc ConfusedEnemyAnim
 1e:6903 BallBlockAnim
-1e:6907 FaintAnim
+1e:6907 SlideDownAnim
 1e:690a ShakeScreenAnim
 1e:690d ThrowRockAnim
 1e:6911 ThrowBaitAnim
@@ -20429,8 +20429,8 @@
 3f:66ba GFX_f0d82_id
 3f:66be PikachuSprite_id
 3f:66c2 DebugMenu
-3f:6739 DebugPlayerName
-3f:673d DebugRivalName
+3f:6739 DebugBattlePlayerName
+3f:673d DebugBattleRivalName
 3f:6744 DebugMenuOptions
 3f:6750 TestBattle
 3f:6764 TestBattle.loop
