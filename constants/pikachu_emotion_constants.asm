@@ -128,10 +128,6 @@ MACRO ldpikacry
 	ld \1, (\2_id - PikachuCriesPointerTable) / 3
 ENDM
 
-MACRO pikacry
-	ldpikacry a, \1
-ENDM
-
 
 	const_def
 	const pikapic_nop_command
