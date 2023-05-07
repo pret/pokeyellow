@@ -57,10 +57,8 @@ class Decompressor:
 
         self.size = self.sizex * self.sizey
 
-        self.ramorder = self._readbit()
-
-        r1 = self.ramorder
-        r2 = self.ramorder ^ 1
+        r1 = self._readbit()
+        r2 = r2 ^ 1
 
         self._fillram(rams[r1])
         mode = self._readbit()
