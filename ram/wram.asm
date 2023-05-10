@@ -1929,7 +1929,12 @@ wRivalName:: ds NAME_LENGTH
 ; bit 6 = battle style
 ; 0: Shift
 ; 1: Set
-; bits 0-3 = text speed (number of frames to delay after printing a letter)
+; bits 5-4 = sound
+;	00: Mono
+;	01: Earphone1
+;	10: Earphone2
+;	11: Earphone3
+; bits 2-0 = text speed (number of frames to delay after printing a letter)
 ; 1: Fast
 ; 3: Medium
 ; 5: Slow
