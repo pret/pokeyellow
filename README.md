@@ -15,32 +15,34 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 - [**Wiki**][wiki] (includes [tutorials][tutorials])
 - [**Symbols**][symbols]
-- **Discord:** [pret][discord]
-- **IRC:** [libera#pret][irc]
 
-Other disassembly projects:
+Other disassembly and/or decompilation projects:
+* [**Pokémon Red and Blue**](https://github.com/pret/pokered)
+* [**Pokémon Gold and Silver (Space World '97 demo)**](https://github.com/pret/pokegold-spaceworld)
+* [**Pokémon Trading Card Game**](https://github.com/pret/poketcg)
+* [**Pokémon Pinball**](https://github.com/pret/pokepinball)
+* [**Pokémon Stadium**](https://github.com/pret/pokestadium)
+* [**Pokémon Gold and Silver**](https://github.com/pret/pokegold)
+* [**Pokémon Crystal**](https://github.com/pret/pokecrystal)
+* [**Pokémon Ruby and Sapphire**](https://github.com/pret/pokeruby)
+* [**Pokémon Pinball: Ruby & Sapphire**](https://github.com/pret/pokepinballrs)
+* [**Pokémon FireRed and LeafGreen**](https://github.com/pret/pokefirered)
+* [**Pokémon Emerald**](https://github.com/pret/pokeemerald)
+* [**Pokémon Mystery Dungeon: Red Rescue Team**](https://github.com/pret/pmd-red)
+* [**Pokémon Diamond and Pearl**](https://github.com/pret/pokediamond)
+* [**Pokémon Platinum**](https://github.com/pret/pokeplatinum) 
+* [**Pokémon HeartGold and SoulSilver**](https://github.com/pret/pokeheartgold)
+* [**Pokémon Mystery Dungeon: Explorers of Sky**](https://github.com/pret/pmd-sky)
 
-- [**Pokémon Red/Blue**][pokered]
-- [**Pokémon Gold/Silver**][pokegold]
-- [**Pokémon Crystal**][pokecrystal]
-- [**Pokémon Pinball**][pokepinball]
-- [**Pokémon TCG**][poketcg]
-- [**Pokémon Ruby**][pokeruby]
-- [**Pokémon FireRed**][pokefirered]
-- [**Pokémon Emerald**][pokeemerald]
+## Contacts
 
-[pokered]: https://github.com/pret/pokered
-[pokegold]: https://github.com/pret/pokegold
-[pokecrystal]: https://github.com/pret/pokecrystal
-[pokepinball]: https://github.com/pret/pokepinball
-[poketcg]: https://github.com/pret/poketcg
-[pokeruby]: https://github.com/pret/pokeruby
-[pokefirered]: https://github.com/pret/pokefirered
-[pokeemerald]: https://github.com/pret/pokeemerald
+You can find us on:
+
+* [Discord (PRET, #pokered)](https://discord.gg/d5dubZ3)
+* [IRC](https://web.libera.chat/?#pret)
+
 [wiki]: https://github.com/pret/pokeyellow/wiki
 [tutorials]: https://github.com/pret/pokeyellow/wiki/Tutorials
 [symbols]: https://github.com/pret/pokeyellow/tree/symbols
-[discord]: https://discord.gg/d5dubZ3
-[irc]: https://web.libera.chat/?#pret
 [ci]: https://github.com/pret/pokeyellow/actions
 [ci-badge]: https://github.com/pret/pokeyellow/actions/workflows/main.yml/badge.svg
