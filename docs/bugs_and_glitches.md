@@ -2,6 +2,8 @@
 
 These are sections of the original Pokémon Yellow game code that clearly do not work as intended or only work in limited circumstances.
 
+Many of the [documented fixes for Red](https://github.com/pret/pokered/wiki/%5BARCHIVED%5D-Bugs-and-Glitches#using-the-pok%C3%A9doll-on-the-ghost-marowak-can-allow-you-to-sequence-break) also apply to this codebase, the fixes called out here will attempt to be distinct to Yellow and in some cases Gen 2 where Yellow specific parts were reused.
+
 Fixes are written in the `diff` format. If you've used Git before, this should look familiar:
 
 ```diff
@@ -16,7 +18,6 @@ Fixes are written in the `diff` format. If you've used Git before, this should l
 - [Options menu code fails to clear joypad state on initialization](#options-menu-code-fails-to-clear-joypad-state-on-initialization)
 - [Battle transitions fail to account for scripted battles](#battle-transitions-fail-to-account-for-scripted-battles)
 - [`wPikachuFollowCommandBuffer` can overflow](#wpikachufollowcommandbuffer-can-overflow)
-- [Unexpected Counter damage](#unexpected-counter-damage)
 
 
 ## Options menu code fails to clear joypad state on initialization
@@ -61,11 +62,3 @@ This bug is generally known as "Pikawalk."
 A typical use for this would be to force the in game time to 255:59.
 
 **Fix:** TBD in [engine/pikachu/pikachu_follow.asm#1165](/engine/pikachu/pikachu_follow.asm#1165)
-
-
-## Unexpected Counter damage
-
-Counter simply doubles the value of wDamage which can hold the last value of damage dealt whether it was from you, your opponent, a switched out opponent, or a player in another battle.
-This is because wDamage is used for both the player's damage and opponent's damage, and is not cleared out between switching or battles.
-
-**Fix:** TBD in [engine/battle/core.asm#L4960](/engine/battle/core.asm#L4960)
