@@ -41,7 +41,15 @@ The Battle Transitions code has no error handling for this and reads wPartyMon1H
 This means you can manipulate this first transition to be faster by choosing a default rival name or writing and deleting 6 characters in a custom rival name.
 A similar series of bugs appears to exist in pokecrystal.
 
-**Fix:** TBD in [engine/battle/battle_transitions.asm#L93](/engine/battle/battle_transitions.asm#L93)
+**Fix:** Update [engine/battle/battle_transitions.asm#L93](/engine/battle/battle_transitions.asm#L93)
+
+```diff
+GetBattleTransitionID_CompareLevels:
++   ld a, [wPartyCount]
++   cp 0
++   jr z, .highLevelEnemy
+    ld hl, wPartyMon1HP
+```
 
 
 ## `wPikachuFollowCommandBuffer` can overflow
