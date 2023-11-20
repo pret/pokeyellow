@@ -1,4 +1,4 @@
-_CeruleanHouse2Text_74eaa::
+_CeruleanBadgeHouseSoulBadgeText::
 	text "The DEFENSE of all"
 	line "#MON increases"
 	cont "a little bit."
@@ -8,7 +8,7 @@ _CeruleanHouse2Text_74eaa::
 	cont "of battle."
 	prompt
 
-_CeruleanHouse2Text_74eaf::
+_CeruleanBadgeHouseMarshBadgeText::
 	text "#MON up to L70"
 	line "will obey you."
 
@@ -16,13 +16,13 @@ _CeruleanHouse2Text_74eaf::
 	line "become unruly!"
 	prompt
 
-_CeruleanHouse2Text_74eb4::
+_CeruleanBadgeHouseVolcanoBadgeText::
 	text "Your #MON's"
 	line "SPECIAL abilities"
 	cont "increase a bit."
 	prompt
 
-_CeruleanHouse2Text_74eb9::
+_CeruleanBadgeHouseEarthBadgeText::
 	text "All #MON will"
 	line "obey you!"
 	prompt

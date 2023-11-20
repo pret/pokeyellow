@@ -1,37 +1,36 @@
-SaffronCityHideRocketsShowCitizens::
-	ld hl, SaffronCityRockets
-.hideLoop
+SilphCo11FTeamRocketLeavesScript::
+	ld hl, .HideMissableObjectIDs
+.hide_loop
 	ld a, [hli]
-	cp $ff ; have we run out of rockets to hide?
-	jr z, .showCitizens ; if so, start showing the citizens
+	cp $ff
+	jr z, .done_hiding
 	push hl
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	pop hl
-	jr .hideLoop
-
-.showCitizens
-	ld hl, SaffronCityCitizens
-.showLoop
+	jr .hide_loop
+.done_hiding
+	ld hl, .ShowMissableObjectIDs
+.show_loop
 	ld a, [hli]
-	cp $ff ; have we run out of citizens to show?
-	ret z ; if so, we're done here
+	cp -1
+	ret z
 	push hl
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	pop hl
-	jr .showLoop
+	jr .show_loop
 
-SaffronCityCitizens:
+.ShowMissableObjectIDs:
 	db HS_SAFFRON_CITY_8
 	db HS_SAFFRON_CITY_9
 	db HS_SAFFRON_CITY_A
 	db HS_SAFFRON_CITY_B
 	db HS_SAFFRON_CITY_C
 	db HS_SAFFRON_CITY_D
-	db $FF
+	db -1 ; end
 
-SaffronCityRockets:
+.HideMissableObjectIDs:
 	db HS_SAFFRON_CITY_1
 	db HS_SAFFRON_CITY_2
 	db HS_SAFFRON_CITY_3
@@ -73,4 +72,4 @@ SaffronCityRockets:
 	db HS_SILPH_CO_11F_JAMES
 	db HS_SILPH_CO_11F_2
 	db HS_SILPH_CO_11F_JESSIE
-	db $ff
+	db -1 ; end

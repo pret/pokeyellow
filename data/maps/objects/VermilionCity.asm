@@ -1,3 +1,12 @@
+	object_const_def
+	const_export VERMILIONCITY_BEAUTY
+	const_export VERMILIONCITY_GAMBLER1
+	const_export VERMILIONCITY_SAILOR1
+	const_export VERMILIONCITY_GAMBLER2
+	const_export VERMILIONCITY_MACHOP
+	const_export VERMILIONCITY_SAILOR2
+	const_export VERMILIONCITY_OFFICER_JENNY
+
 VermilionCity_Object:
 	db $43 ; border block
 
@@ -13,21 +22,21 @@ VermilionCity_Object:
 	warp_event  7,  3, VERMILION_OLD_ROD_HOUSE, 1
 
 	def_bg_events
-	bg_event 27,  3, 8 ; VermilionCityText7
-	bg_event 37, 13, 9 ; VermilionCityText8
-	bg_event 24, 13, 10 ; MartSignText
-	bg_event 12,  3, 11 ; PokeCenterSignText
-	bg_event  7, 13, 12 ; VermilionCityText11
-	bg_event  7, 19, 13 ; VermilionCityText12
-	bg_event 29, 15, 14 ; VermilionCityText13
+	bg_event 27,  3, TEXT_VERMILIONCITY_SIGN
+	bg_event 37, 13, TEXT_VERMILIONCITY_NOTICE_SIGN
+	bg_event 24, 13, TEXT_VERMILIONCITY_MART_SIGN
+	bg_event 12,  3, TEXT_VERMILIONCITY_POKECENTER_SIGN
+	bg_event  7, 13, TEXT_VERMILIONCITY_POKEMON_FAN_CLUB_SIGN
+	bg_event  7, 19, TEXT_VERMILIONCITY_GYM_SIGN
+	bg_event 29, 15, TEXT_VERMILIONCITY_HARBOR_SIGN
 
 	def_object_events
-	object_event 19,  7, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, 1 ; person
-	object_event 14,  6, SPRITE_GAMBLER, STAY, NONE, 2 ; person
-	object_event 19, 30, SPRITE_SAILOR, STAY, UP, 3 ; person
-	object_event 30,  7, SPRITE_GAMBLER, STAY, NONE, 4 ; person
-	object_event 29,  9, SPRITE_MONSTER, WALK, UP_DOWN, 5 ; person
-	object_event 25, 27, SPRITE_SAILOR, WALK, LEFT_RIGHT, 6 ; person
-	object_event 19, 15, SPRITE_OFFICER_JENNY, STAY, NONE, 7 ; person
+	object_event 19,  7, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, TEXT_VERMILIONCITY_BEAUTY
+	object_event 14,  6, SPRITE_GAMBLER, STAY, NONE, TEXT_VERMILIONCITY_GAMBLER1
+	object_event 19, 30, SPRITE_SAILOR, STAY, UP, TEXT_VERMILIONCITY_SAILOR1
+	object_event 30,  7, SPRITE_GAMBLER, STAY, NONE, TEXT_VERMILIONCITY_GAMBLER2
+	object_event 29,  9, SPRITE_MONSTER, WALK, UP_DOWN, TEXT_VERMILIONCITY_MACHOP
+	object_event 25, 27, SPRITE_SAILOR, WALK, LEFT_RIGHT, TEXT_VERMILIONCITY_SAILOR2
+	object_event 19, 15, SPRITE_OFFICER_JENNY, STAY, NONE, TEXT_VERMILIONCITY_OFFICER_JENNY
 
 	def_warps_to VERMILION_CITY

@@ -1,10 +1,10 @@
-Func_f1f23::
-	ld hl, PikachuMovementData_f1f2c
+GameCornerPikachuMovementScript::
+	ld hl, GameCornerPikachuMovementData
 	ld b, SPRITE_FACING_DOWN
 	call TryApplyPikachuMovementData
 	ret
 
-PikachuMovementData_f1f2c:
+GameCornerPikachuMovementData:
 	db $00
 	db $20
 	db $1e

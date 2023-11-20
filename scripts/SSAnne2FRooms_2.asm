@@ -1,35 +1,35 @@
-Func_f2570::
-	ld hl, SSAnne9Text_f2577
+SSAnne2FRoomsPrintGentleman5Text::
+	ld hl, .text
 	call PrintText
 	ret
 
-SSAnne9Text_f2577:
-	text_far _SSAnne9Text_61c1f
+.text
+	text_far _SSAnne2FRoomsGentleman5Text
 	text_end
 
-Func_f257c::
-	ld hl, SSAnne9Text_f2583
+SSAnne2FRoomsPrintLittleBoyText::
+	ld hl, .text
 	call PrintText
 	ret
 
-SSAnne9Text_f2583:
-	text_far _SSAnne9Text_61c2e
+.text
+	text_far _SSAnne2FRoomsLittleBoyText
 	text_end
 
-Func_f2588::
-	ld hl, SSAnne9Text_f258f
+SSAnne2FRoomsPrintBrunetteGirlText::
+	ld hl, .text
 	call PrintText
 	ret
 
-SSAnne9Text_f258f:
-	text_far _SSAnne9Text_61c3d
+.text
+	text_far _SSAnne2FRoomsBrunetteGirlText
 	text_end
 
-Func_f2594::
-	ld hl, SSAnne9Text_f259b
+SSAnne2FRoomsPrintBeautyText::
+	ld hl, .text
 	call PrintText
 	ret
 
-SSAnne9Text_f259b:
-	text_far _SSAnne9Text_61c4c
+.text
+	text_far _SSAnne2FRoomsBeautyText
 	text_end

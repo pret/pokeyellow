@@ -1,4 +1,4 @@
-Func_f1f77::
+SafariZoneGatePrintSafariZoneWorker1WouldYouLikeToJoinText::
 	ld hl, .WelcomeText
 	call PrintText
 	ld a, MONEY_BOX
@@ -7,7 +7,7 @@ Func_f1f77::
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jp nz, .declined
+	jp nz, .PleaseComeAgain
 	ld hl, wPlayerMoney
 	ld a, [hli]
 	or [hl]
@@ -15,32 +15,32 @@ Func_f1f77::
 	or [hl]
 	jr nz, .has_positive_balance
 	call SafariZoneEntranceGetLowCostAdmissionText
-	jr c, .deny_entry
+	jr c, .CantPayWalkDown
 	jr .poor_mans_discount
 
 .has_positive_balance
 	xor a
 	ldh [hMoney], a
-	ld a, $5
+	ld a, $05
 	ldh [hMoney + 1], a
-	ld a, $0
+	ld a, $00
 	ldh [hMoney + 2], a
 	call HasEnoughMoney
-	jr nc, .has_enough_money
+	jr nc, .success
 	ld hl, .NotEnoughMoneyText
 	call PrintText
 	call SafariZoneEntranceCalculateLowCostAdmission
-	jr c, .deny_entry
+	jr c, .CantPayWalkDown
 	jr .poor_mans_discount
 
-.has_enough_money
+.success
 	xor a
-	ld [wPriceTemp + 0], a
-	ld a, $5
+	ld [wPriceTemp], a
+	ld a, $05
 	ld [wPriceTemp + 1], a
-	ld a, $0
+	ld a, $00
 	ld [wPriceTemp + 2], a
-	ld hl, wTrainerInfoTextBoxNextRowOffset
+	ld hl, wPriceTemp + 2
 	ld de, wPlayerMoney + 2
 	ld c, 3
 	predef SubBCDPredef
@@ -62,73 +62,74 @@ Func_f1f77::
 	ld [wSafariSteps + 1], a
 	ld a, D_UP
 	ld c, 3
-	call SafariZoneEntranceStartSimulatingJoypadStates
+	call SafariZoneEntranceAutoWalk2
 	SetEvent EVENT_IN_SAFARI_ZONE
 	ResetEventReuseHL EVENT_SAFARI_GAME_OVER
-	ld a, $3
+	ld a, SCRIPT_SAFARIZONEGATE_PLAYER_MOVING
 	ld [wSafariZoneGateCurScript], a
-	jr .asm_f2024
-.declined:
+	jr .done
+
+.PleaseComeAgain
 	ld hl, .PleaseComeAgainText
 	call PrintText
-.deny_entry
+.CantPayWalkDown
 	ld a, D_DOWN
 	ld c, 1
-	call SafariZoneEntranceStartSimulatingJoypadStates
-	ld a, $4
+	call SafariZoneEntranceAutoWalk2
+	ld a, SCRIPT_SAFARIZONEGATE_PLAYER_MOVING_DOWN
 	ld [wSafariZoneGateCurScript], a
-.asm_f2024
+.done
 	ret
 
 .WelcomeText
-	text_far SafariZoneEntranceText_9e6e4
+	text_far _SafariZoneGateSafariZoneWorker1WouldYouLikeToJoinText
 	text_end
 
 .MakePaymentText
-	text_far SafariZoneEntranceText_9e747
+	text_far _SafariZoneGateSafariZoneWorker1ThatllBe500PleaseText
 	sound_get_item_1
-	text_far _SafariZoneEntranceText_75360
+	text_far _SafariZoneGateSafariZoneWorker1CallYouOnThePAText
 	text_end
 
 .PleaseComeAgainText
-	text_far _SafariZoneEntranceText_75365
+	text_far _SafariZoneGateSafariZoneWorker1PleaseComeAgainText
 	text_end
 
 .NotEnoughMoneyText
-	text_far _SafariZoneEntranceText_7536a
+	text_far _SafariZoneGateSafariZoneWorker1NotEnoughMoneyText
 	text_end
 
-Func_f203e::
-	ld hl, .FirstTimeQuestionText
+SafariZoneGatePrintSafariZoneWorker2Text::
+	ld hl, .FirstTimeHereText
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	ld hl, .RegularText
-	jr nz, .Explanation
-	ld hl, .ExplanationText
-.Explanation
+	ld hl, .YoureARegularHereText
+	jr nz, .print_text
+	ld hl, .SafariZoneExplanationText
+.print_text
 	call PrintText
 	ret
 
-.FirstTimeQuestionText
-	text_far _SafariZoneEntranceText_753e6
+.FirstTimeHereText
+	text_far _SafariZoneGateSafariZoneWorker2FirstTimeHereText
 	text_end
 
-.ExplanationText
-	text_far _SafariZoneEntranceText_753eb
+.SafariZoneExplanationText
+	text_far _SafariZoneGateSafariZoneWorker2SafariZoneExplanationText
 	text_end
 
-.RegularText
-	text_far _SafariZoneEntranceText_753f0
+.YoureARegularHereText
+	text_far _SafariZoneGateSafariZoneWorker2YoureARegularHereText
 	text_end
 
-SafariZoneEntranceStartSimulatingJoypadStates:
+SafariZoneEntranceAutoWalk2:
 	push af
-	ld b, $0
+	ld b, 0
 	ld a, c
 	ld [wSimulatedJoypadStatesIndex], a
-	ld hl, wParentMenuItem
+	ld hl, wSimulatedJoypadStatesEnd
 	pop af
 	call FillMemory
 	jp StartSimulatingJoypadStates

@@ -44,10 +44,10 @@ DisplayTitleScreen:
 	ld bc, 1 tiles
 	ld a, BANK(NineTile)
 	call FarCopyData
-	ld hl, GamefreakLogoGraphics
+	ld hl, GameFreakLogoGraphics
 	ld de, vTitleLogo tile $65
 	ld bc, 9 tiles
-	ld a, BANK(GamefreakLogoGraphics)
+	ld a, BANK(GameFreakLogoGraphics)
 	call FarCopyData
 	callfar LoadYellowTitleScreenGFX
 	ld hl, vBGMap0

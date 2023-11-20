@@ -1,4 +1,4 @@
-Func_f1a0f::
+VermilionCityPrintOfficerJennyText::
 	CheckEvent EVENT_GOT_SQUIRTLE_FROM_OFFICER_JENNY
 	jr nz, .asm_f1a69
 	ld a, [wBeatGymFlags]
@@ -65,47 +65,47 @@ OfficerJennyText5:
 	text_far _OfficerJennyText5
 	text_end
 
-Func_f1a8a::
-	ld hl, VermilionCityText_f1a91
+VermilionCityPrintSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-VermilionCityText_f1a91:
-	text_far _VermilionCityText8
+.text
+	text_far _VermilionCitySignText
 	text_end
 
-Func_f1a96::
-	ld hl, VermilionCityText_f1a9d
+VermilionCityPrintNoticeSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-VermilionCityText_f1a9d:
-	text_far _VermilionCityText9
+.text
+	text_far _VermilionCityNoticeSignText
 	text_end
 
-Func_f1aa2::
-	ld hl, VermilionCityText_f1aa9
+VermilionCityPrintPokemonFanClubSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-VermilionCityText_f1aa9:
-	text_far _VermilionCityText12
+.text
+	text_far _VermilionCityPokemonFanClubSignText
 	text_end
 
-Func_f1aae::
-	ld hl, VermilionCityText_f1ab5
+VermilionCityPrintGymSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-VermilionCityText_f1ab5:
-	text_far _VermilionCityText13
+.text
+	text_far _VermilionCityGymSignText
 	text_end
 
-Func_f1aba::
-	ld hl, VermilionCityText_f1ac1
+VermilionCityPrintHarborSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-VermilionCityText_f1ac1:
-	text_far _VermilionCityText14
+.text
+	text_far _VermilionCityHarborSignText
 	text_end

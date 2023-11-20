@@ -1,6 +1,5 @@
-; not IshiharaTeam
-SetDebugTeam:
-	ld de, DebugTeam
+SetDebugNewGameParty: ; unreferenced except in _DEBUG
+	ld de, DebugNewGameParty
 .loop
 	ld a, [de]
 	cp -1
@@ -13,20 +12,20 @@ SetDebugTeam:
 	call AddPartyMon
 	jr .loop
 
-DebugTeam:
+DebugNewGameParty: ; unreferenced except in _DEBUG
 	db SNORLAX, 80
 	db PERSIAN, 80
 	db JIGGLYPUFF, 15
 	db STARTER_PIKACHU, 5
 	db -1 ; end
 
-DebugStart:
+PrepareNewGameDebug: ; dummy except in _DEBUG
 IF DEF(_DEBUG)
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 
 	; Fly anywhere.
-	dec a ; $ff
+	dec a ; $ff (all bits)
 	ld [wTownVisitedFlag], a
 	ld [wTownVisitedFlag + 1], a
 
@@ -34,7 +33,7 @@ IF DEF(_DEBUG)
 	ld a, ~(1 << BIT_EARTHBADGE)
 	ld [wObtainedBadges], a
 
-	call SetDebugTeam
+	call SetDebugNewGameParty
 
 	; Pikachu gets Surf.
 	ld a, SURF

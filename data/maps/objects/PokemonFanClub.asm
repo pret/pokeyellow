@@ -1,3 +1,11 @@
+	object_const_def
+	const_export POKEMONFANCLUB_CLEFAIRY_FAN
+	const_export POKEMONFANCLUB_SEEL_FAN
+	const_export POKEMONFANCLUB_CLEFAIRY
+	const_export POKEMONFANCLUB_SEEL
+	const_export POKEMONFANCLUB_CHAIRMAN
+	const_export POKEMONFANCLUB_RECEPTIONIST
+
 PokemonFanClub_Object:
 	db $d ; border block
 
@@ -8,11 +16,11 @@ PokemonFanClub_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  6,  3, SPRITE_FISHER, STAY, LEFT, 1 ; person
-	object_event  1,  3, SPRITE_GIRL, STAY, RIGHT, 2 ; person
-	object_event  6,  4, SPRITE_CLEFAIRY, STAY, LEFT, 3 ; person
-	object_event  1,  4, SPRITE_SEEL, STAY, RIGHT, 4 ; person
-	object_event  3,  1, SPRITE_GENTLEMAN, STAY, DOWN, 5 ; person
-	object_event  5,  1, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 6 ; person
+	object_event  6,  3, SPRITE_FISHER, STAY, LEFT, TEXT_POKEMONFANCLUB_CLEFAIRY_FAN
+	object_event  1,  3, SPRITE_GIRL, STAY, RIGHT, TEXT_POKEMONFANCLUB_SEEL_FAN
+	object_event  6,  4, SPRITE_CLEFAIRY, STAY, LEFT, TEXT_POKEMONFANCLUB_CLEFAIRY
+	object_event  1,  4, SPRITE_SEEL, STAY, RIGHT, TEXT_POKEMONFANCLUB_SEEL
+	object_event  3,  1, SPRITE_GENTLEMAN, STAY, DOWN, TEXT_POKEMONFANCLUB_CHAIRMAN
+	object_event  5,  1, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, TEXT_POKEMONFANCLUB_RECEPTIONIST
 
 	def_warps_to POKEMON_FAN_CLUB

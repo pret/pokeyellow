@@ -1,14 +1,14 @@
-_ViridianMartText1::
+_ViridianMartClerkSayHiToOakText::
 	text "Okay! Say hi to"
 	line "PROF.OAK for me!"
 	done
 
-_ViridianMartText4::
+_ViridianMartClerkYouCameFromPalletTownText::
 	text "Hey! You came from"
 	line "PALLET TOWN?"
 	done
 
-ViridianMartParcelQuestText::
+_ViridianMartClerkParcelQuestText::
 	text "You know PROF."
 	line "OAK, right?"
 
@@ -20,13 +20,13 @@ ViridianMartParcelQuestText::
 	line "OAK's PARCEL!@"
 	text_end
 
-_ViridianMartText2::
+_ViridianMartYoungsterText::
 	text "This shop sells a"
 	line "lot of PARLYZ"
 	cont "HEALs."
 	done
 
-_ViridianMartText3::
+_ViridianMartCooltrainerMText::
 	text "The shop finally"
 	line "has some POTIONs"
 	cont "in stock."

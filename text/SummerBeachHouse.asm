@@ -1,4 +1,4 @@
-_SurfinDudeText1::
+_SummerBeachHouseSurfinDudeText1::
 	text "Whoa!"
 
 	para "Your PIKACHU knows"
@@ -12,16 +12,16 @@ _SurfinDudeText1::
 	para "Give it a go?"
 	done
 
-_SurfinDudeText2::
+_SummerBeachHouseSurfinDudeText2::
 	text "Come SURF anytime,"
 	line "my friend!"
 	done
 
-_SurfinDudeText3::
+_SummerBeachHouseSurfinDudeText3::
 	text "Wanna go SURF?"
 	done
 
-_SurfinDudeText4::
+_SummerBeachHouseSurfinDudeText4::
 	text "Dogs and burgers"
 	line "on special today!"
 	done
@@ -30,7 +30,7 @@ _SummerBeachHousePikachuText::
 	text "PIKACHU: Pikaa"
 	done
 
-_SummerBeachHouseSign1Text1::
+_SummerBeachHousePoster1Text1::
 	text "SURFIN' DUDE's"
 	line "scribbles..."
 
@@ -39,12 +39,12 @@ _SummerBeachHouseSign1Text1::
 	cont "hit the groove!"
 	done
 
-_SummerBeachHouseSign1Text2::
+_SummerBeachHousePoster1Text2::
 	text "30 years of waves!"
 	line "SURFIN' DUDE"
 	done
 
-_SummerBeachHouseSign2Text1::
+_SummerBeachHousePoster2Text1::
 	text "SURFING TIP 1!"
 
 	para "After flips, line"
@@ -53,12 +53,12 @@ _SummerBeachHouseSign2Text1::
 	cont "effect!"
 	done
 
-_SummerBeachHouseSign2Text2::
+_SummerBeachHousePoster2Text2::
 	text "SUMMER BEACH HOUSE"
 	line "#MON welcome!"
 	done
 
-_SummerBeachHouseSign3Text1::
+_SummerBeachHousePoster3Text1::
 	text "SURFING TIP 2!"
 
 	para "Pulling flips in"
@@ -66,7 +66,7 @@ _SummerBeachHouseSign3Text1::
 	cont "rad!"
 	done
 
-_SummerBeachHouseSign3Text2::
+_SummerBeachHousePoster3Text2::
 	text "The sea unites"
 	line "all in surfdom!"
 	done

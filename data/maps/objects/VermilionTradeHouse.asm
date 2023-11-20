@@ -1,3 +1,6 @@
+	object_const_def
+	const_export VERMILIONTRADEHOUSE_GENTLEMAN
+
 VermilionTradeHouse_Object:
 	db $a ; border block
 
@@ -8,6 +11,6 @@ VermilionTradeHouse_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  5, SPRITE_GENTLEMAN, STAY, UP, 1 ; person
+	object_event  3,  5, SPRITE_GENTLEMAN, STAY, UP, TEXT_VERMILIONTRADEHOUSE_GENTLEMAN
 
 	def_warps_to VERMILION_TRADE_HOUSE

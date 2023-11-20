@@ -2,8 +2,9 @@ VermilionTradeHouse_Script:
 	jp EnableAutoTextBoxDrawing
 
 VermilionTradeHouse_TextPointers:
-	dw VermilionHouse3Text1
+	def_text_pointers
+	dw_const VermilionTradeHouseGentlemanText, TEXT_VERMILIONTRADEHOUSE_GENTLEMAN
 
-VermilionHouse3Text1:
+VermilionTradeHouseGentlemanText:
 	text_far TeachingHMsText
 	text_end

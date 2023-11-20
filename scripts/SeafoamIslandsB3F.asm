@@ -3,35 +3,35 @@ SeafoamIslandsB3F_Script:
 	ld hl, wFlags_0xcd60
 	bit 7, [hl]
 	res 7, [hl]
-	jr z, .asm_465dc
+	jr z, .noBoulderWasPushed
 	ld hl, Seafoam4HolesCoords
 	call CheckBoulderCoords
 	ret nc
 	EventFlagAddress hl, EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE
 	ld a, [wCoordIndex]
 	cp $1
-	jr nz, .asm_465b8
+	jr nz, .boulder2FellDownHole
 	SetEventReuseHL EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE
 	ld a, HS_SEAFOAM_ISLANDS_B3F_BOULDER_1
 	ld [wObjectToHide], a
 	ld a, HS_SEAFOAM_ISLANDS_B4F_BOULDER_1
 	ld [wObjectToShow], a
-	jr .asm_465c4
-.asm_465b8
+	jr .hideAndShowBoulderObjects
+.boulder2FellDownHole
 	SetEventAfterBranchReuseHL EVENT_SEAFOAM4_BOULDER2_DOWN_HOLE, EVENT_SEAFOAM4_BOULDER1_DOWN_HOLE
 	ld a, HS_SEAFOAM_ISLANDS_B3F_BOULDER_2
 	ld [wObjectToHide], a
 	ld a, HS_SEAFOAM_ISLANDS_B4F_BOULDER_2
 	ld [wObjectToShow], a
-.asm_465c4
+.hideAndShowBoulderObjects
 	ld a, [wObjectToHide]
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	ld a, [wObjectToShow]
 	ld [wMissableObjectIndex], a
 	predef ShowObject
-	jr .asm_465ed
-.asm_465dc
+	jr .runCurrentMapScript
+.noBoulderWasPushed
 	ld a, SEAFOAM_ISLANDS_B4F
 	ld [wDungeonWarpDestinationMap], a
 	ld hl, Seafoam4HolesCoords
@@ -39,7 +39,7 @@ SeafoamIslandsB3F_Script:
 	ld a, [wd732]
 	bit 4, a
 	ret nz
-.asm_465ed
+.runCurrentMapScript
 	ld hl, SeafoamIslandsB3F_ScriptPointers
 	ld a, [wSeafoamIslandsB3FCurScript]
 	jp CallFunctionInTable
@@ -50,12 +50,14 @@ Seafoam4HolesCoords:
 	db -1 ; end
 
 SeafoamIslandsB3F_ScriptPointers:
-	dw SeafoamIslands4Script0
-	dw SeafoamIslands4Script1
-	dw SeafoamIslands4Script2
-	dw SeafoamIslands4Script3
+	def_script_pointers
+	dw_const SeafoamIslandsB3FDefaultScript,       SCRIPT_SEAFOAMISLANDSB3F_DEFAULT
+	dw_const SeafoamIslandsB3FObjectMoving1Script, SCRIPT_SEAFOAMISLANDSB3F_OBJECT_MOVING1
+	dw_const SeafoamIslandsB3FMoveObjectScript,    SCRIPT_SEAFOAMISLANDSB3F_MOVE_OBJECT
+	dw_const SeafoamIslandsB3FObjectMoving2Script, SCRIPT_SEAFOAMISLANDSB3F_OBJECT_MOVING2
+	EXPORT SCRIPT_SEAFOAMISLANDSB3F_MOVE_OBJECT ; used by engine/overworld/player_state.asm
 
-SeafoamIslands4Script0:
+SeafoamIslandsB3FDefaultScript:
 	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	ret z
 	ld a, [wYCoord]
@@ -65,45 +67,45 @@ SeafoamIslands4Script0:
 	cp 15
 	ret nz
 	ld hl, wSimulatedJoypadStatesEnd
-	ld de, RLEMovement46632
+	ld de, RLEList_ForcedSurfingStrongCurrentNearSteps
 	call DecodeRLEList
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
 	ld hl, wFlags_D733
 	set 2, [hl]
-	ld a, $1
+	ld a, SCRIPT_SEAFOAMISLANDSB3F_OBJECT_MOVING1
 	ld [wSeafoamIslandsB3FCurScript], a
 	ret
 
-RLEMovement46632:
+RLEList_ForcedSurfingStrongCurrentNearSteps:
 	db D_DOWN, 6
 	db D_RIGHT, 5
 	db D_DOWN, 3
 	db -1 ; end
 
-SeafoamIslands4Script1:
+SeafoamIslandsB3FObjectMoving1Script:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
-	ld a, $0
+	ld a, SCRIPT_SEAFOAMISLANDSB3F_DEFAULT
 	ld [wSeafoamIslandsB3FCurScript], a
 	ret
 
-SeafoamIslands4Script2:
+SeafoamIslandsB3FMoveObjectScript:
 	CheckBothEventsSet EVENT_SEAFOAM3_BOULDER1_DOWN_HOLE, EVENT_SEAFOAM3_BOULDER2_DOWN_HOLE
 	ret z
 	ld a, [wXCoord]
 	cp 18
-	jr z, .asm_4665e
+	jr z, .playerFellThroughHoleLeft
 	cp 19
-	ld a, $0
-	jr nz, .asm_4667b
-	ld de, RLEData_4667f
-	jr .asm_46661
-.asm_4665e
-	ld de, RLEData_46688
-.asm_46661
+	ld a, SCRIPT_SEAFOAMISLANDSB3F_DEFAULT
+	jr nz, .playerNotInStrongCurrent
+	ld de, .RLEList_StrongCurrentNearRightBoulder
+	jr .forceSurfMovement
+.playerFellThroughHoleLeft
+	ld de, .RLEList_StrongCurrentNearLeftBoulder
+.forceSurfMovement
 	ld hl, wSimulatedJoypadStatesEnd
 	call DecodeRLEList
 	dec a
@@ -114,36 +116,37 @@ SeafoamIslands4Script2:
 	set 7, [hl]
 	ld hl, wFlags_D733
 	set 2, [hl]
-	ld a, $3
-.asm_4667b
+	ld a, SCRIPT_SEAFOAMISLANDSB3F_OBJECT_MOVING2
+.playerNotInStrongCurrent
 	ld [wSeafoamIslandsB3FCurScript], a
 	ret
 
-RLEData_4667f:
+.RLEList_StrongCurrentNearRightBoulder:
 	db D_DOWN, 6
 	db D_RIGHT, 2
 	db D_DOWN, 4
 	db D_LEFT, 1
 	db -1 ; end
 
-RLEData_46688:
+.RLEList_StrongCurrentNearLeftBoulder:
 	db D_DOWN, 6
 	db D_RIGHT, 2
 	db D_DOWN, 4
 	db -1 ; end
 
-SeafoamIslands4Script3:
+SeafoamIslandsB3FObjectMoving2Script:
 	ld a, [wSimulatedJoypadStatesIndex]
 	and a
 	ret nz
-	ld a, $0
+	ld a, SCRIPT_SEAFOAMISLANDSB3F_DEFAULT
 	ld [wSeafoamIslandsB3FCurScript], a
 	ret
 
 SeafoamIslandsB3F_TextPointers:
-	dw BoulderText
-	dw BoulderText
-	dw BoulderText
-	dw BoulderText
-	dw BoulderText
-	dw BoulderText
+	def_text_pointers
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER1
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER2
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER3
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER4
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER5
+	dw_const BoulderText, TEXT_SEAFOAMISLANDSB3F_BOULDER6

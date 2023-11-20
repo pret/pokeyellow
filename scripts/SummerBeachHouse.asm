@@ -3,14 +3,15 @@ SummerBeachHouse_Script:
 	ret
 
 SummerBeachHouse_TextPointers:
-	dw SurfinDudeText
-	dw SummerBeachHousePikachuText
-	dw SummerBeachHouseSign1Text
-	dw SummerBeachHouseSign2Text
-	dw SummerBeachHouseSign3Text
-	dw SummerBeachHouseSign4Text
+	def_text_pointers
+	dw_const SummerBeachHouseSurfinDudeText, TEXT_SUMMERBEACHHOUSE_SURFINDUDE
+	dw_const SummerBeachHousePikachuText,    TEXT_SUMMERBEACHHOUSE_PIKACHU
+	dw_const SummerBeachHousePoster1Text,    TEXT_SUMMERBEACHHOUSE_POSTER1
+	dw_const SummerBeachHousePoster2Text,    TEXT_SUMMERBEACHHOUSE_POSTER2
+	dw_const SummerBeachHousePoster3Text,    TEXT_SUMMERBEACHHOUSE_POSTER3
+	dw_const SummerBeachHousePrinterText,    TEXT_SUMMERBEACHHOUSE_PRINTER
 
-SurfinDudeText:
+SummerBeachHouseSurfinDudeText:
 	text_asm
 	ld a, [wd472]
 	vc_patch Bypass_need_Pikachu_with_Surf_for_minigame
@@ -52,16 +53,16 @@ ENDC
 	jp TextScriptEnd
 
 .SurfinDudeText1
-	text_far _SurfinDudeText1
+	text_far _SummerBeachHouseSurfinDudeText1
 	text_end
 .SurfinDudeText2
-	text_far _SurfinDudeText2
+	text_far _SummerBeachHouseSurfinDudeText2
 	text_end
 .SurfinDudeText3
-	text_far _SurfinDudeText3
+	text_far _SummerBeachHouseSurfinDudeText3
 	text_end
 .SurfinDudeText4
-	text_far _SurfinDudeText4
+	text_far _SummerBeachHouseSurfinDudeText4
 	text_end
 
 SummerBeachHousePikachuText:
@@ -77,61 +78,61 @@ SummerBeachHousePikachuText:
 	text_far _SummerBeachHousePikachuText
 	text_end
 
-SummerBeachHouseSign1Text:
+SummerBeachHousePoster1Text:
 	text_asm
-	ld hl, .SummerBeachHouseSign1Text2
+	ld hl, .SummerBeachHousePoster1Text2
 	ld a, [wd472]
 	bit 6, a
 	jr z, .next
-	ld hl, .SummerBeachHouseSign1Text1
+	ld hl, .SummerBeachHousePoster1Text1
 .next
 	call PrintText
 	jp TextScriptEnd
 
-.SummerBeachHouseSign1Text1
-	text_far _SummerBeachHouseSign1Text1
+.SummerBeachHousePoster1Text1
+	text_far _SummerBeachHousePoster1Text1
 	text_end
-.SummerBeachHouseSign1Text2
-	text_far _SummerBeachHouseSign1Text2
+.SummerBeachHousePoster1Text2
+	text_far _SummerBeachHousePoster1Text2
 	text_end
 
-SummerBeachHouseSign2Text:
+SummerBeachHousePoster2Text:
 	text_asm
-	ld hl, .SummerBeachHouseSign2Text2
+	ld hl, .SummerBeachHousePoster2Text2
 	ld a, [wd472]
 	bit 6, a
 	jr z, .next
-	ld hl, .SummerBeachHouseSign2Text1
+	ld hl, .SummerBeachHousePoster2Text1
 .next
 	call PrintText
 	jp TextScriptEnd
 
-.SummerBeachHouseSign2Text1
-	text_far _SummerBeachHouseSign2Text1
+.SummerBeachHousePoster2Text1
+	text_far _SummerBeachHousePoster2Text1
 	text_end
-.SummerBeachHouseSign2Text2
-	text_far _SummerBeachHouseSign2Text2
+.SummerBeachHousePoster2Text2
+	text_far _SummerBeachHousePoster2Text2
 	text_end
 
-SummerBeachHouseSign3Text:
+SummerBeachHousePoster3Text:
 	text_asm
-	ld hl, .SummerBeachHouseSign3Text2
+	ld hl, .SummerBeachHousePoster3Text2
 	ld a, [wd472]
 	bit 6, a
 	jr z, .next
-	ld hl, .SummerBeachHouseSign3Text1
+	ld hl, .SummerBeachHousePoster3Text1
 .next
 	call PrintText
 	jp TextScriptEnd
 
-.SummerBeachHouseSign3Text1
-	text_far _SummerBeachHouseSign3Text1
+.SummerBeachHousePoster3Text1
+	text_far _SummerBeachHousePoster3Text1
 	text_end
-.SummerBeachHouseSign3Text2
-	text_far _SummerBeachHouseSign3Text2
+.SummerBeachHousePoster3Text2
+	text_far _SummerBeachHousePoster3Text2
 	text_end
 
-SummerBeachHouseSign4Text:
+SummerBeachHousePrinterText:
 	text_asm
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

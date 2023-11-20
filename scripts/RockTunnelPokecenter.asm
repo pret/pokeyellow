@@ -3,27 +3,28 @@ RockTunnelPokecenter_Script:
 	jp EnableAutoTextBoxDrawing
 
 RockTunnelPokecenter_TextPointers:
-	dw RockTunnelHealNurseText
-	dw RockTunnelPokecenterText2
-	dw RockTunnelPokecenterText3
-	dw RockTunnelTradeNurseText
-	dw RockTunnelPokecenterText5
+	def_text_pointers
+	dw_const RockTunnelPokecenterNurseText,            TEXT_ROCKTUNNELPOKECENTER_NURSE
+	dw_const RockTunnelPokecenterGentlemanText,        TEXT_ROCKTUNNELPOKECENTER_GENTLEMAN
+	dw_const RockTunnelPokecenterFisherText,           TEXT_ROCKTUNNELPOKECENTER_FISHER
+	dw_const RockTunnelPokecenterLinkReceptionistText, TEXT_ROCKTUNNELPOKECENTER_LINK_RECEPTIONIST
+	dw_const RockTunnelPokecenterChanseyText,          TEXT_ROCKTUNNELPOKECENTER_CHANSEY
 
-RockTunnelHealNurseText:
+RockTunnelPokecenterNurseText:
 	script_pokecenter_nurse
 
-RockTunnelPokecenterText2:
-	text_far _RockTunnelPokecenterText2
+RockTunnelPokecenterGentlemanText:
+	text_far _RockTunnelPokecenterGentlemanText
 	text_end
 
-RockTunnelPokecenterText3:
-	text_far _RockTunnelPokecenterText3
+RockTunnelPokecenterFisherText:
+	text_far _RockTunnelPokecenterFisherText
 	text_end
 
-RockTunnelTradeNurseText:
+RockTunnelPokecenterLinkReceptionistText:
 	script_cable_club_receptionist
 
-RockTunnelPokecenterText5:
+RockTunnelPokecenterChanseyText:
 	text_asm
 	callfar PokecenterChanseyText
 	jp TextScriptEnd

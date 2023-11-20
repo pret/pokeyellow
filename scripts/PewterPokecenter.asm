@@ -6,34 +6,35 @@ PewterPokecenter_Script:
 	ret
 
 PewterPokecenter_TextPointers:
-	dw PewterHealNurseText
-	dw PewterPokecenterText2
-	dw PewterJigglypuffText
-	dw PewterTradeNurseText
-	dw PewterPokecenterText5
-	dw PewterPokecenterText6
+	def_text_pointers
+	dw_const PewterPokecenterNurseText,            TEXT_PEWTERPOKECENTER_NURSE
+	dw_const PewterPokecenterGentlemanText,        TEXT_PEWTERPOKECENTER_GENTLEMAN
+	dw_const PewterPokecenterJigglypuffText,       TEXT_PEWTERPOKECENTER_JIGGLYPUFF
+	dw_const PewterPokecenterLinkReceptionistText, TEXT_PEWTERPOKECENTER_LINK_RECEPTIONIST
+	dw_const PewterPokecenterCooltrainerFText,     TEXT_PEWTERPOKECENTER_COOLTRAINER_F
+	dw_const PewterPokecenterChanseyText,          TEXT_PEWTERPOKECENTER_CHANSEY
 
-PewterHealNurseText:
+PewterPokecenterNurseText:
 	script_pokecenter_nurse
 
-PewterPokecenterText2:
-	text_far _PewterPokecenterText2
+PewterPokecenterGentlemanText:
+	text_far _PewterPokecenterGentlemanText
 	text_end
 
-PewterJigglypuffText:
+PewterPokecenterJigglypuffText:
 	text_asm
 	farcall PewterJigglypuff
 	jp TextScriptEnd
 
-PewterTradeNurseText:
+PewterPokecenterLinkReceptionistText:
 	script_cable_club_receptionist
 
-PewterPokecenterText5:
+PewterPokecenterCooltrainerFText:
 	text_asm
-	farcall Func_f1d98
+	farcall PewterPokecenterPrintCooltrainerFText
 	jp TextScriptEnd
 
-PewterPokecenterText6:
+PewterPokecenterChanseyText:
 	text_asm
 	callfar PokecenterChanseyText
 	jp TextScriptEnd

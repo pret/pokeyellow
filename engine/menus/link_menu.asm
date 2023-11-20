@@ -775,10 +775,10 @@ LinkMenu:
 	ld c, 50
 	call DelayFrames
 	ld hl, wd732
-	res 1, [hl]
+	res BIT_DEBUG_MODE, [hl]
 	ld a, [wDefaultMap]
 	ld [wDestinationMap], a
-	callfar SpecialWarpIn
+	callfar PrepareForSpecialWarp
 	ld c, 20
 	call DelayFrames
 	xor a

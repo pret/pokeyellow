@@ -1,14 +1,13 @@
-Func_f1b27::
+Route22PrintRival1Text::
 	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
-	jr z, .asm_5118b
+	jr z, .before_battle
 	ld hl, Route22RivalAfterBattleText1
 	call PrintText
-	jr .asm_51191
-
-.asm_5118b
+	jr .text_script_end
+.before_battle
 	ld hl, Route22RivalBeforeBattleText1
 	call PrintText
-.asm_51191
+.text_script_end
 	ret
 
 Route22RivalBeforeBattleText1:
@@ -19,17 +18,16 @@ Route22RivalAfterBattleText1:
 	text_far _Route22RivalAfterBattleText1
 	text_end
 
-Func_f1b47::
+Route22PrintRival2Text::
 	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_2ND_BATTLE
-	jr z, .asm_511a4
+	jr z, .before_battle
 	ld hl, Route22RivalAfterBattleText2
 	call PrintText
-	jr .asm_511aa
-
-.asm_511a4
+	jr .text_script_end
+.before_battle
 	ld hl, Route22RivalBeforeBattleText2
 	call PrintText
-.asm_511aa
+.text_script_end
 	ret
 
 Route22RivalBeforeBattleText2:
@@ -40,11 +38,11 @@ Route22RivalAfterBattleText2:
 	text_far _Route22RivalAfterBattleText2
 	text_end
 
-Func_f1b67::
-	ld hl, Route22FrontGateText_3c
+Route22PrintPokemonLeagueSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-Route22FrontGateText_3c:
-	text_far _Route22FrontGateText
+.text
+	text_far _Route22PokemonLeagueSignText
 	text_end

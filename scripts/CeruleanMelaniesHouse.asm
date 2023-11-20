@@ -3,12 +3,13 @@ CeruleanMelaniesHouse_Script:
 	ret
 
 CeruleanMelaniesHouse_TextPointers:
-	dw CeruleanHouse1Text1
-	dw CeruleanHouse1Text2
-	dw CeruleanHouse1Text3
-	dw CeruleanHouse1Text4
+	def_text_pointers
+	dw_const CeruleanMelanieHouseMelanieText, TEXT_CERULEANMELANIESHOUSE_MELANIE
+	dw_const CeruleanMelanieHouseBulbasaurText, TEXT_CERULEANMELANIESHOUSE_BULBASAUR
+	dw_const CeruleanMelanieHouseOddishText, TEXT_CERULEANMELANIESHOUSE_ODDISH
+	dw_const CeruleanMelanieHouseSandshrewText, TEXT_CERULEANMELANIESHOUSE_SANDSHREW
 
-CeruleanHouse1Text1:
+CeruleanMelanieHouseMelanieText:
 	text_asm
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -84,21 +85,21 @@ CeruleanHouse1Text_1cfdf:
 	text_waitbutton
 	text_end
 
-CeruleanHouse1Text2:
+CeruleanMelanieHouseBulbasaurText:
 	text_far MelanieBulbasaurText
 	text_asm
 	ld a, BULBASAUR
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanHouse1Text3:
+CeruleanMelanieHouseOddishText:
 	text_far MelanieOddishText
 	text_asm
 	ld a, ODDISH
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanHouse1Text4:
+CeruleanMelanieHouseSandshrewText:
 	text_far MelanieSandshrewText
 	text_asm
 	ld a, SANDSHREW

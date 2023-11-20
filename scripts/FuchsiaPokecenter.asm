@@ -3,27 +3,28 @@ FuchsiaPokecenter_Script:
 	jp EnableAutoTextBoxDrawing
 
 FuchsiaPokecenter_TextPointers:
-	dw FuchsiaHealNurseText
-	dw FuchsiaPokecenterText2
-	dw FuchsiaPokecenterText3
-	dw FuchsiaTradeNurseText
-	dw FuchsiaPokecenterText5
+	def_text_pointers
+	dw_const FuchsiaPokecenterNurseText,            TEXT_FUCHSIAPOKECENTER_NURSE
+	dw_const FuchsiaPokecenterRockerText,           TEXT_FUCHSIAPOKECENTER_ROCKER
+	dw_const FuchsiaPokecenterCooltrainerFText,     TEXT_FUCHSIAPOKECENTER_COOLTRAINER_F
+	dw_const FuchsiaPokecenterLinkReceptionistText, TEXT_FUCHSIAPOKECENTER_LINK_RECEPTIONIST
+	dw_const FuchsiaPokecenterChanseyText,          TEXT_FUCHSIAPOKECENTER_CHANSEY
 
-FuchsiaHealNurseText:
+FuchsiaPokecenterNurseText:
 	script_pokecenter_nurse
 
-FuchsiaPokecenterText2:
-	text_far _FuchsiaPokecenterText1
+FuchsiaPokecenterRockerText:
+	text_far _FuchsiaPokecenterRockerText
 	text_end
 
-FuchsiaPokecenterText3:
-	text_far _FuchsiaPokecenterText3
+FuchsiaPokecenterCooltrainerFText:
+	text_far _FuchsiaPokecenterCooltrainerFText
 	text_end
 
-FuchsiaTradeNurseText:
+FuchsiaPokecenterLinkReceptionistText:
 	script_cable_club_receptionist
 
-FuchsiaPokecenterText5:
+FuchsiaPokecenterChanseyText:
 	text_asm
 	callfar PokecenterChanseyText
 	jp TextScriptEnd

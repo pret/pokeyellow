@@ -1,45 +1,46 @@
 PokemonFanClub_Script:
 	call EnableAutoTextBoxDrawing
 	ld hl, PokemonFanClub_ScriptPointers
-	ld a, [wFanClubCurScript]
+	ld a, [wPokemonFanClubCurScript]
 	call CallFunctionInTable
 	ret
 
 PokemonFanClub_ScriptPointers:
-	dw FanClubScript1
-	dw FanClubScript2
+	def_script_pointers
+	dw_const PokemonFanClubScript0, SCRIPT_POKEMONFANCLUB_SCRIPT0
+	dw_const PokemonFanClubScript1, SCRIPT_POKEMONFANCLUB_SCRIPT1
 
-FanClubScript1:
+PokemonFanClubScript0:
 	ld hl, wd492
 	bit 7, [hl]
-	call z, FanClubScript_59a44
+	call z, PokemonFanClubScript_59a44
 	ld hl, wd492
 	set 7, [hl]
 	ret
 
-FanClubScript2:
+PokemonFanClubScript1:
 	ld hl, wd492
 	bit 7, [hl]
-	call z, FanClubScript_59a39
+	call z, PokemonFanClubScript_59a39
 	ld hl, wd492
 	set 7, [hl]
 	ret
 
-FanClubScript_59a39:
+PokemonFanClubScript_59a39:
 	call Random
 	ldh a, [hRandomAdd]
 	cp 25
-	call c, FanClubScript_59a44
+	call c, PokemonFanClubScript_59a44
 	ret
 
-FanClubScript_59a44:
+PokemonFanClubScript_59a44:
 	ld a, [wd472]
 	bit 7, a
 	ret z
 	callfar CheckPikachuFaintedOrStatused
 	ret c
-	ld a, $1
-	ld [wFanClubCurScript], a
+	ld a, SCRIPT_POKEMONFANCLUB_SCRIPT1
+	ld [wPokemonFanClubCurScript], a
 	xor a
 	ld [wPlayerMovingDirection], a
 	call UpdateSprites
@@ -49,17 +50,17 @@ FanClubScript_59a44:
 	ld a, $f ; Pikachu
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
-	ld hl, PikachuMovementScript_59a8c
+	ld hl, PokemonFanClubPikachuMovementData
 	call ApplyPikachuMovementData
-	ld a, $2
-	ld [wSprite03StateData1MovementStatus], a ; Seel
+	ld a, $2 ; Seel
+	ld [wSprite03StateData1MovementStatus], a
 	xor a ; SPRITE_FACING_DOWN
 	ld [wSprite03StateData1FacingDirection], a
 	callfar InitializePikachuTextID
 	call DisablePikachuFollowingPlayer
 	ret
 
-PikachuMovementScript_59a8c:
+PokemonFanClubPikachuMovementData:
 	db $00
 	db $26
 	db $20
@@ -69,17 +70,17 @@ PikachuMovementScript_59a8c:
 	db $3f
 
 PokemonFanClub_TextPointers:
-	dw FanClubText1
-	dw FanClubText2
-	dw FanClubText3
-	dw FanClubText4
-	dw FanClubText5
-	dw FanClubText6
+	def_text_pointers
+	dw_const PokemonFanClubClefairyFanText,  TEXT_POKEMONFANCLUB_CLEFAIRY_FAN
+	dw_const PokemonFanClubSeelFanText,      TEXT_POKEMONFANCLUB_SEEL_FAN
+	dw_const PokemonFanClubClefairyText,     TEXT_POKEMONFANCLUB_CLEFAIRY
+	dw_const PokemonFanClubSeelText,         TEXT_POKEMONFANCLUB_SEEL
+	dw_const PokemonFanClubChairmanText,     TEXT_POKEMONFANCLUB_CHAIRMAN
+	dw_const PokemonFanClubReceptionistText, TEXT_POKEMONFANCLUB_RECEPTIONIST
 
-FanClubText1:
-; clefairy fan
+PokemonFanClubClefairyFanText:
 	text_asm
-	CheckEventHL EVENT_152
+	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
 	jr z, .asm_59aaf
 	ld hl, .yellowtext
 	call PrintText
@@ -92,7 +93,6 @@ FanClubText1:
 	ld hl, .normaltext
 	call PrintText
 	jr .done
-
 .mineisbetter
 	ResetEventReuseHL EVENT_PIKACHU_FAN_BOAST
 	ld hl, .bettertext
@@ -101,25 +101,25 @@ FanClubText1:
 	jp TextScriptEnd
 
 .normaltext
-	text_far PikachuFanText
+	text_far _PokemonFanClubClefairyFanNormalText
 	text_end
 
 .bettertext
-	text_far PikachuFanBetterText
+	text_far _PokemonFanClubClefairyFanBetterText
 	text_end
 
 .yellowtext
-	text_far PikachuFanPrintText
+	text_far _PokemonFanClubClefairyFanText
 	text_end
 
-FanClubText2:
-; seel fan
+PokemonFanClubSeelFanText:
 	text_asm
-	CheckEventHL EVENT_152
+	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
 	jr z, .asm_59ae7
 	ld hl, .yellowtext
 	call PrintText
 	jr .done
+
 .asm_59ae7
 	CheckEventReuseHL EVENT_SEEL_FAN_BOAST
 	jr nz, .mineisbetter
@@ -135,49 +135,46 @@ FanClubText2:
 	jp TextScriptEnd
 
 .normaltext
-	text_far SeelFanText
+	text_far _PokemonFanClubSeelFanNormalText
 	text_end
 
 .bettertext
-	text_far SeelFanBetterText
+	text_far _PokemonFanClubSeelFanBetterText
 	text_end
 
 .yellowtext
-	text_far SeelFanPrintText
+	text_far _PokemonFanClubSeelFanText
 	text_end
 
-FanClubText3:
-; pikachu
+PokemonFanClubClefairyText:
 	text_asm
-	ld hl, .text
+	ld hl, .Text
 	call PrintText
 	ld a, CLEFAIRY
 	call PlayCry
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
-.text
-	text_far FanClubPikachuText
+.Text
+	text_far _PokemonFanClubClefairyText
 	text_end
 
-FanClubText4:
-; seel
+PokemonFanClubSeelText:
 	text_asm
-	ld hl, .text
+	ld hl, .Text
 	call PrintText
 	ld a, SEEL
 	call PlayCry
 	call WaitForSoundToFinish
 	jp TextScriptEnd
 
-.text
-	text_far FanClubSeelText
+.Text
+	text_far _PokemonFanClubSeelText
 	text_end
 
-FanClubText5:
-; chair
+PokemonFanClubChairmanText:
 	text_asm
-	CheckEventHL EVENT_152
+	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
 	jr z, .check_bike_voucher
 	ld hl, Text_59c1f
 	call PrintText
@@ -191,7 +188,7 @@ FanClubText5:
 .check_bike_voucher
 	CheckEvent EVENT_GOT_BIKE_VOUCHER
 	jr nz, .nothingleft
-	ld hl, .meetchairtext
+	ld hl, .IntroText
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
@@ -199,23 +196,23 @@ FanClubText5:
 	jr nz, .nothanks
 
 	; tell the story
-	ld hl, .storytext
+	ld hl, .StoryText
 	call PrintText
 	lb bc, BIKE_VOUCHER, 1
 	call GiveItem
 	jr nc, .bag_full
-	ld hl, .receivedvouchertext
+	ld hl, .BikeVoucherText
 	call PrintText
 	SetEvent EVENT_GOT_BIKE_VOUCHER
 	jp TextScriptEnd
 .bag_full
-	ld hl, .bagfulltext
+	ld hl, .BagFullText
 	jr .gbpals_print_text
 .nothanks
-	ld hl, .nostorytext
+	ld hl, .NoStoryText
 	jr .gbpals_print_text
 .nothingleft
-	ld hl, .finaltext
+	ld hl, .FinalText
 .gbpals_print_text
 	push hl
 	call LoadGBPal
@@ -259,30 +256,30 @@ FanClubText5:
 	ld hl, Text_59c29
 	jr .gbpals_print_text
 
-.meetchairtext
-	text_far FanClubMeetChairText
+.IntroText:
+	text_far _PokemonFanClubChairmanIntroText
 	text_end
 
-.storytext
-	text_far FanClubChairStoryText
+.StoryText:
+	text_far _PokemonFanClubChairmanStoryText
 	text_end
 
-.receivedvouchertext
-	text_far ReceivedBikeVoucherText
+.BikeVoucherText:
+	text_far _PokemonFanClubReceivedBikeVoucherText
 	sound_get_key_item
-	text_far ExplainBikeVoucherText
+	text_far _PokemonFanClubExplainBikeVoucherText
 	text_end
 
-.nostorytext
-	text_far FanClubNoStoryText
+.NoStoryText:
+	text_far _PokemonFanClubNoStoryText
 	text_end
 
-.finaltext
-	text_far FanClubChairFinalText
+.FinalText:
+	text_far _PokemonFanClubChairFinalText
 	text_end
 
-.bagfulltext
-	text_far FanClubBagFullText
+.BagFullText:
+	text_far _PokemonFanClubBagFullText
 	text_end
 
 Text_59c1f:
@@ -301,6 +298,6 @@ Text_59c2e:
 	text_far FanClubChairPrintText4
 	text_end
 
-FanClubText6:
-	text_far _FanClubText6
+PokemonFanClubReceptionistText:
+	text_far _PokemonFanClubReceptionistText
 	text_end

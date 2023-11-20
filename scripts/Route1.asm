@@ -3,21 +3,22 @@ Route1_Script:
 	ret
 
 Route1_TextPointers:
-	dw Route1Text1
-	dw Route1Text2
-	dw Route1Text3
+	def_text_pointers
+	dw_const Route1Youngster1Text, TEXT_ROUTE1_YOUNGSTER1
+	dw_const Route1Youngster2Text, TEXT_ROUTE1_YOUNGSTER2
+	dw_const Route1SignText,       TEXT_ROUTE1_SIGN
 
-Route1Text1:
+Route1Youngster1Text:
 	text_asm
-	farcall Func_f1ad2
+	farcall Route1PrintYoungster1Text
 	jp TextScriptEnd
 
-Route1Text2:
+Route1Youngster2Text:
 	text_asm
-	farcall Func_f1b0f
+	farcall Route1PrintYoungster2Text
 	jp TextScriptEnd
 
-Route1Text3:
+Route1SignText:
 	text_asm
-	farcall Func_f1b1b
+	farcall Route1PrintSignText
 	jp TextScriptEnd

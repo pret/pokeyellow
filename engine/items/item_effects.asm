@@ -171,7 +171,7 @@ ItemUseBall:
 	jp nz, .captured
 	ld a, $1
 	ld [wCapturedMonSpecies], a
-	CheckEvent EVENT_02F
+	CheckEvent EVENT_INITIAL_CATCH_TRAINING
 	ld b, $63
 	jp nz, .setAnimData
 	jp .captured
@@ -1295,7 +1295,7 @@ ItemUseMedicine:
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
 .calculateHPBarCoords
-	ld hl, wShadowOAMSprite36
+	hlcoord 4, -1
 	ld bc, 2 * SCREEN_WIDTH
 	inc d
 .calculateHPBarCoordsLoop
@@ -1650,7 +1650,7 @@ ItemUseEscapeRope:
 	ResetEvent EVENT_IN_SAFARI_ZONE
 	xor a
 	ld [wNumSafariBalls], a
-	ld [wSafariZoneGateCurScript], a
+	ld [wSafariZoneGateCurScript], a ; SCRIPT_SAFARIZONEGATE_DEFAULT
 	inc a
 	ld [wEscapedFromBattle], a
 	ld [wActionResultOrTookBattleTurn], a ; item used

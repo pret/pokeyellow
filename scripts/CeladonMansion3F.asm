@@ -10,16 +10,17 @@ CeladonMansion3_PokedexCount:
 	ret
 
 CeladonMansion3F_TextPointers:
-	dw ProgrammerText
-	dw GraphicArtistText
-	dw WriterText
-	dw DirectorText
-	dw GameFreakPCText1
-	dw GameFreakPCText2
-	dw GameFreakPCText3
-	dw GameFreakSignText
+	def_text_pointers
+	dw_const CeladonMansion3FProgrammerText,     TEXT_CELADONMANSION3F_PROGRAMMER
+	dw_const CeladonMansion3FGraphicArtistText,  TEXT_CELADONMANSION3F_GRAPHIC_ARTIST
+	dw_const CeladonMansion3FWriterText,         TEXT_CELADONMANSION3F_WRITER
+	dw_const CeladonMansion3FGameDesignerText,   TEXT_CELADONMANSION3F_GAME_DESIGNER
+	dw_const CeladonMansion3FGameProgramPCText,  TEXT_CELADONMANSION3F_GAME_PROGRAM_PC
+	dw_const CeladonMansion3FPlayingGamePCText,  TEXT_CELADONMANSION3F_PLAYING_GAME_PC
+	dw_const CeladonMansion3FGameScriptPCText,   TEXT_CELADONMANSION3F_GAME_SCRIPT_PC
+	dw_const CeladonMansion3FDevRoomSignText,    TEXT_CELADONMANSION3F_DEV_ROOM_SIGN
 
-ProgrammerText:
+CeladonMansion3FProgrammerText:
 	text_asm
 	call CeladonMansion3_PokedexCount
 	cp NUM_POKEMON - 1 ; discount Mew
@@ -31,23 +32,23 @@ ProgrammerText:
 	jp TextScriptEnd
 
 CeladonMansion3Text_486f0:
-	text_far _ProgrammerText
+	text_far _CeladonMansion3FProgrammerText
 	text_end
 
 CeladonMansion3Text_486f5:
-	text_far _ProgrammerText2
+	text_far _CeladonMansion3FProgrammerText2
 	text_end
 
-GraphicArtistText:
+CeladonMansion3FGraphicArtistText:
 	text_asm
 	call CeladonMansion3_PokedexCount
 	cp NUM_POKEMON - 1 ; discount Mew
 	jr nc, .completed
-	ld hl, CeladonMansion3Text_48757
+	ld hl, .Text1
 	jr .print
 
 .completed
-	ld hl, CeladonMansion3Text_4875c
+	ld hl, .Text2
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
@@ -67,64 +68,64 @@ GraphicArtistText:
 	call LoadScreenTilesFromBuffer2
 	call Delay3
 	call GBPalNormal
-	ld hl, CeladonMansion3Text_4876b
+	ld hl, .Text5
 	ldh a, [hCanceledPrinting]
 	and a
 	jr nz, .print
-	ld hl, CeladonMansion3Text_48766
+	ld hl, .Text4
 	jr .print
 
 .declined_print
-	ld hl, CeladonMansion3Text_48761
+	ld hl, .Text3
 .print
 	call PrintText
 	jp TextScriptEnd
 
-CeladonMansion3Text_48757:
-	text_far _GraphicArtistText
+.Text1:
+	text_far _CeladonMansion3FGraphicArtistText
 	text_end
 
-CeladonMansion3Text_4875c:
-	text_far _GraphicArtistText2
+.Text2:
+	text_far _CeladonMansion3FGraphicArtistText2
 	text_end
 
-CeladonMansion3Text_48761:
-	text_far _GraphicArtistText3
+.Text3:
+	text_far _CeladonMansion3FGraphicArtistText3
 	text_end
 
-CeladonMansion3Text_48766:
-	text_far _GraphicArtistText4
+.Text4:
+	text_far _CeladonMansion3FGraphicArtistText4
 	text_end
 
-CeladonMansion3Text_4876b:
-	text_far _GraphicArtistText5
+.Text5:
+	text_far _CeladonMansion3FGraphicArtistText5
 	text_end
 
-WriterText:
+CeladonMansion3FWriterText:
 	text_asm
 	call CeladonMansion3_PokedexCount
 	cp NUM_POKEMON - 1 ; discount Mew
-	ld hl, CeladonMansion3Text_48789
+	ld hl, .Text2
 	jr nc, .print
-	ld hl, CeladonMansion3Text_48784
+	ld hl, .Text1
 .print
 	call PrintText
 	jp TextScriptEnd
 
-CeladonMansion3Text_48784:
-	text_far _WriterText
+.Text1:
+	text_far _CeladonMansion3FWriterText
 	text_end
 
-CeladonMansion3Text_48789:
-	text_far _WriterText2
+.Text2:
+	text_far _CeladonMansion3FWriterText2
 	text_end
 
-DirectorText:
+CeladonMansion3FGameDesignerText:
 	text_asm
 	call CeladonMansion3_PokedexCount
 	cp NUM_POKEMON - 1 ; discount Mew
 	jr nc, .completed_dex
-	ld hl, .GameDesignerText
+	ld hl, .Text
 	jr .done
 .completed_dex
 	ld hl, .CompletedDexText
@@ -137,12 +138,12 @@ DirectorText:
 	call PrintText
 	jp TextScriptEnd
 
-.GameDesignerText:
-	text_far _GameDesignerText
+.Text:
+	text_far _CeladonMansion3FGameDesignerText
 	text_end
 
 .CompletedDexText:
-	text_far _CompletedDexText
+	text_far _CeladonMansion3FGameDesignerCompletedDexText
 	text_promptbutton
 	text_asm
 	callfar DisplayDiploma
@@ -151,25 +152,25 @@ DirectorText:
 	jp TextScriptEnd
 
 .UnlockedDiplomaPrinting
-	text_far _CompletedDexText2
+	text_far _CeladonMansion3FGameDesignerCompletedDexText2
 	text_end
 
-GameFreakPCText1:
+CeladonMansion3FGameProgramPCText:
 	text_asm
-	farcall Func_f1ef3
+	farcall CeladonMansion3FPrintGameProgramPCText
 	jp TextScriptEnd
 
-GameFreakPCText2:
+CeladonMansion3FPlayingGamePCText:
 	text_asm
-	farcall Func_f1eff
+	farcall CeladonMansion3FPrintPlayingGamePCText
 	jp TextScriptEnd
 
-GameFreakPCText3:
+CeladonMansion3FGameScriptPCText:
 	text_asm
-	farcall Func_f1f0b
+	farcall CeladonMansion3FPrintGameScriptPCText
 	jp TextScriptEnd
 
-GameFreakSignText:
+CeladonMansion3FDevRoomSignText:
 	text_asm
-	farcall Func_f1f17
+	farcall CeladonMansion3FPrintDevRoomSignText
 	jp TextScriptEnd

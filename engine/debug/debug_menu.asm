@@ -56,7 +56,7 @@ IF DEF(_DEBUG)
 
 	; DEBUG
 	ld hl, wd732
-	set 1, [hl]
+	set BIT_DEBUG_MODE, [hl]
 	ld hl, StartNewGameDebug
 	ret
 
@@ -70,12 +70,11 @@ DebugMenuOptions:
 	db   "FIGHT"
 	next "DEBUG@"
 
-TestBattle:
+TestBattle: ; unreferenced except in _DEBUG
 	ld a, 1
 	ldh [hJoy7], a
 
-	; Don't mess around
-	; with obedience.
+	; Don't mess around with obedience.
 	ld a, 1 << BIT_EARTHBADGE
 	ld [wObtainedBadges], a
 

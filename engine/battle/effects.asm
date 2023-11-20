@@ -128,7 +128,7 @@ PoisonEffect:
 	ret nc
 .inflictPoison
 	dec hl
-	set 3, [hl] ; mon is now poisoned
+	set PSN, [hl]
 	push de
 	dec de
 	ldh a, [hWhoseTurn]

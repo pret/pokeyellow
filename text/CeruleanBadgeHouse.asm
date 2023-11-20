@@ -1,4 +1,4 @@
-_CeruleanHouse2Text_74e77::
+_CeruleanBadgeHouseMiddleAgedManText::
 	text "#MON BADGEs"
 	line "are owned only by"
 	cont "skilled trainers."
@@ -10,7 +10,7 @@ _CeruleanHouse2Text_74e77::
 	line "amazing secrets!"
 	prompt
 
-_CeruleanHouse2Text_74e7c::
+_CeruleanBadgeHouseMiddleAgedManWhichBadgeText::
 	text "Now then..."
 
 	para "Which of the 8"
@@ -18,12 +18,12 @@ _CeruleanHouse2Text_74e7c::
 	cont "describe?"
 	done
 
-_CeruleanHouse2Text_74e81::
+_CeruleanBadgeHouseMiddleAgedManVisitAnyTimeText::
 	text "Come visit me any-"
 	line "time you wish."
 	done
 
-_CeruleanHouse2Text_74e96::
+_CeruleanBadgeHouseBoulderBadgeText::
 	text "The ATTACK of all"
 	line "#MON increases"
 	cont "a little bit."
@@ -33,7 +33,7 @@ _CeruleanHouse2Text_74e96::
 	cont "time you desire."
 	prompt
 
-_CeruleanHouse2Text_74e9b::
+_CeruleanBadgeHouseCascadeBadgeText::
 	text "#MON up to L30"
 	line "will obey you."
 
@@ -45,7 +45,7 @@ _CeruleanHouse2Text_74e9b::
 	cont "of battle."
 	prompt
 
-_CeruleanHouse2Text_74ea0::
+_CeruleanBadgeHouseThunderBadgeText::
 	text "The SPEED of all"
 	line "#MON increases"
 	cont "a little bit."
@@ -55,7 +55,7 @@ _CeruleanHouse2Text_74ea0::
 	cont "of battle."
 	prompt
 
-_CeruleanHouse2Text_74ea5::
+_CeruleanBadgeHouseRainbowBadgeText::
 	text "#MON up to L50"
 	line "will obey you."
 

@@ -1,16 +1,16 @@
-PikachuFanText::
+_PokemonFanClubClefairyFanNormalText::
 	text "Won't you admire"
 	line "my CLEFAIRY's"
 	cont "adorable tail?"
 	done
 
-PikachuFanBetterText::
+_PokemonFanClubClefairyFanBetterText::
 	text "Humph! My CLEFAIRY"
 	line "is twice as cute"
 	cont "as that one!"
 	done
 
-PikachuFanPrintText::
+_PokemonFanClubClefairyFanText::
 	text "Our CHAIRMAN's new"
 	line "hobby is taking"
 	cont "#MON photos."
@@ -20,7 +20,7 @@ PikachuFanPrintText::
 	cont "CLEFAIRY."
 	done
 
-SeelFanText::
+_PokemonFanClubSeelFanNormalText::
 	text "I just love my"
 	line "SEEL!"
 
@@ -28,29 +28,29 @@ SeelFanText::
 	line "hug it!"
 	done
 
-SeelFanBetterText::
+_PokemonFanClubSeelFanBetterText::
 	text "Oh dear!"
 
 	para "My SEEL is far"
 	line "more attractive!"
 	done
 
-SeelFanPrintText::
+_PokemonFanClubSeelFanText::
 	text "I'm going to hook"
 	line "up the cable to"
 	cont "get a photo PRINT"
 	cont "of my SEEL!"
 	done
 
-FanClubPikachuText::
+_PokemonFanClubClefairyText::
 	text "CLEFAIRY: Pippii!"
 	done
 
-FanClubSeelText::
+_PokemonFanClubSeelText::
 	text "SEEL: Kyuoo!"
 	done
 
-FanClubMeetChairText::
+_PokemonFanClubChairmanIntroText::
 	text "I chair the"
 	line "#MON Fan Club!"
 
@@ -69,7 +69,7 @@ FanClubMeetChairText::
 	cont "about my #MON?"
 	done
 
-FanClubChairStoryText::
+_PokemonFanClubChairmanStoryText::
 	text "Good!"
 	line "Then listen up!"
 
@@ -99,15 +99,16 @@ FanClubChairStoryText::
 	cont "you to have this!"
 	prompt
 
-ReceivedBikeVoucherText::
+_PokemonFanClubReceivedBikeVoucherText::
 	text "<PLAYER> received"
 	line "a @"
 	text_ram wStringBuffer
 	text "!@"
 	text_end
 
-ExplainBikeVoucherText::
+_PokemonFanClubExplainBikeVoucherText::
 	text_start
+
 	para "Exchange that for"
 	line "a BICYCLE!"
 
@@ -122,13 +123,13 @@ ExplainBikeVoucherText::
 	line "cycling!"
 	done
 
-FanClubNoStoryText::
+_PokemonFanClubNoStoryText::
 	text "Oh. Come back"
 	line "when you want to"
 	cont "hear my story!"
 	done
 
-FanClubChairFinalText::
+_PokemonFanClubChairFinalText::
 	text "Hello, <PLAYER>!"
 
 	para "Did you come see"
@@ -138,7 +139,7 @@ FanClubChairFinalText::
 	para "No? Too bad!"
 	done
 
-FanClubBagFullText::
+_PokemonFanClubBagFullText::
 	text "Make room for"
 	line "this!"
 	done
@@ -172,7 +173,7 @@ FanClubChairPrintText4::
 	line "PRINT this now."
 	done
 
-_FanClubText6::
+_PokemonFanClubReceptionistText::
 	text "Our CHAIRMAN is"
 	line "very vocal about"
 	cont "#MON."

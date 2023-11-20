@@ -1,20 +1,20 @@
-Func_f2133::
+CinnabarGymPrintGymGuideText::
 	CheckEvent EVENT_BEAT_BLAINE
 	jr nz, .afterBeat
-	ld hl, CinnabarGymGuidePreBattleText
+	ld hl, .ChampInMakingText
 	jr .done
 .afterBeat
-	ld hl, CinnabarGymGuidePostBattleText
+	ld hl, .BeatBlaineText
 .done
 	call PrintText
 	ret
 
-CinnabarGymGuidePreBattleText:
-	text_far _CinnabarGymGuidePreBattleText
+.ChampInMakingText:
+	text_far _CinnabarGymGymGuideChampInMakingText
 	text_end
 
-CinnabarGymGuidePostBattleText:
-	text_far _CinnabarGymGuidePostBattleText
+.BeatBlaineText:
+	text_far _CinnabarGymGymGuideBeatBlaineText
 	text_end
 
 Func_f2150::

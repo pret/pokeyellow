@@ -1,35 +1,35 @@
-Func_f1ef3::
-	ld hl, CeladonMansion3Text_f1efa
+CeladonMansion3FPrintGameProgramPCText::
+	ld hl, .text
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1efa:
-	text_far _CeladonMansion3Text5
+.text
+	text_far _CeladonMansion3FGameProgramPCText
 	text_end
 
-Func_f1eff::
-	ld hl, CeladonMansion3Text_f1f06
+CeladonMansion3FPrintPlayingGamePCText::
+	ld hl, .text
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f06:
-	text_far _CeladonMansion3Text6
+.text
+	text_far _CeladonMansion3FPlayingGamePCText
 	text_end
 
-Func_f1f0b::
-	ld hl, CeladonMansion3Text_f1f12
+CeladonMansion3FPrintGameScriptPCText::
+	ld hl, .text
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f12:
-	text_far _CeladonMansion3Text7
+.text
+	text_far _CeladonMansion3FGameScriptPCText
 	text_end
 
-Func_f1f17::
-	ld hl, CeladonMansion3Text_f1f1e
+CeladonMansion3FPrintDevRoomSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-CeladonMansion3Text_f1f1e:
-	text_far _CeladonMansion3Text8
+.text
+	text_far _CeladonMansion3FDevRoomSignText
 	text_end

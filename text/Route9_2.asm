@@ -1,20 +1,20 @@
-_Route9BattleText9::
+_Route9Youngster2BattleText::
 	text "Go, my super bug"
 	line "#MON!"
 	done
 
-_Route9EndBattleText9::
+_Route9Youngster2EndBattleText::
 	text "My"
 	line "bugs..."
 	prompt
 
-_Route9AfterBattleText9::
+_Route9Youngster2AfterBattleText::
 	text "If you don't like"
 	line "bug #MON, you"
 	cont "bug me!"
 	done
 
-_Route9Text11::
+_Route9SignText::
 	text "ROUTE 9"
 	line "CERULEAN CITY-"
 	cont "ROCK TUNNEL"

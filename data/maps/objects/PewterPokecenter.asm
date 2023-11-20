@@ -1,3 +1,11 @@
+	object_const_def
+	const_export PEWTERPOKECENTER_NURSE
+	const_export PEWTERPOKECENTER_GENTLEMAN
+	const_export PEWTERPOKECENTER_JIGGLYPUFF
+	const_export PEWTERPOKECENTER_LINK_RECEPTIONIST
+	const_export PEWTERPOKECENTER_COOLTRAINER_F
+	const_export PEWTERPOKECENTER_CHANSEY
+
 PewterPokecenter_Object:
 	db $0 ; border block
 
@@ -8,11 +16,11 @@ PewterPokecenter_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, 1 ; person
-	object_event 11,  7, SPRITE_GENTLEMAN, STAY, LEFT, 2 ; person
-	object_event  1,  3, SPRITE_JIGGLYPUFF, STAY, DOWN, 3 ; person
-	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 4 ; person
-	object_event  4,  3, SPRITE_COOLTRAINER_F, STAY, UP, 5 ; person
-	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, 6 ; person
+	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, TEXT_PEWTERPOKECENTER_NURSE
+	object_event 11,  7, SPRITE_GENTLEMAN, STAY, LEFT, TEXT_PEWTERPOKECENTER_GENTLEMAN
+	object_event  1,  3, SPRITE_JIGGLYPUFF, STAY, DOWN, TEXT_PEWTERPOKECENTER_JIGGLYPUFF
+	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, TEXT_PEWTERPOKECENTER_LINK_RECEPTIONIST
+	object_event  4,  3, SPRITE_COOLTRAINER_F, STAY, UP, TEXT_PEWTERPOKECENTER_COOLTRAINER_F
+	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, TEXT_PEWTERPOKECENTER_CHANSEY
 
 	def_warps_to PEWTER_POKECENTER

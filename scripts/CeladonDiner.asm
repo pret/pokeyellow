@@ -3,29 +3,30 @@ CeladonDiner_Script:
 	ret
 
 CeladonDiner_TextPointers:
-	dw CeladonDinerText1
-	dw CeladonDinerText2
-	dw CeladonDinerText3
-	dw CeladonDinerText4
-	dw CeladonDinerText5
+	def_text_pointers
+	dw_const CeladonDinerCookText,            TEXT_CELADONDINER_COOK
+	dw_const CeladonDinerMiddleAgedWomanText, TEXT_CELADONDINER_MIDDLE_AGED_WOMAN
+	dw_const CeladonDinerMiddleAgedManText,   TEXT_CELADONDINER_MIDDLE_AGED_MAN
+	dw_const CeladonDinerFisherText,          TEXT_CELADONDINER_FISHER
+	dw_const CeladonDinerGymGuideText,        TEXT_CELADONDINER_GYM_GUIDE
 
-CeladonDinerText1:
-	text_far _CeladonDinerText1
+CeladonDinerCookText:
+	text_far _CeladonDinerCookText
 	text_end
 
-CeladonDinerText2:
-	text_far _CeladonDinerText2
+CeladonDinerMiddleAgedWomanText:
+	text_far _CeladonDinerMiddleAgedWomanText
 	text_end
 
-CeladonDinerText3:
-	text_far _CeladonDinerText3
+CeladonDinerMiddleAgedManText:
+	text_far _CeladonDinerMiddleAgedManText
 	text_end
 
-CeladonDinerText4:
-	text_far _CeladonDinerText4
+CeladonDinerFisherText:
+	text_far _CeladonDinerFisherText
 	text_end
 
-CeladonDinerText5:
+CeladonDinerGymGuideText:
 	text_asm
-	callfar Func_f1f31
+	callfar CeladonDinerPrintGymGuideText
 	jp TextScriptEnd

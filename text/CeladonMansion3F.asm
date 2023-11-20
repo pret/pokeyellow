@@ -1,9 +1,9 @@
-_ProgrammerText::
+_CeladonMansion3FProgrammerText::
 	text "Me? I'm the"
 	line "programmer!"
 	done
 
-_ProgrammerText2::
+_CeladonMansion3FProgrammerText2::
 	text "Me? I'm the"
 	line "programmer!"
 
@@ -13,13 +13,13 @@ _ProgrammerText2::
 	cont "#DEX."
 	done
 
-_GraphicArtistText::
+_CeladonMansion3FGraphicArtistText::
 	text "I'm the graphic"
 	line "artist!"
 	cont "I drew you!"
 	done
 
-_GraphicArtistText2::
+_CeladonMansion3FGraphicArtistText2::
 	text "I'm the graphic"
 	line "artist!"
 
@@ -30,22 +30,22 @@ _GraphicArtistText2::
 	cont "as proof?"
 	done
 
-_GraphicArtistText3::
+_CeladonMansion3FGraphicArtistText3::
 	text "Just tell me if"
 	line "you want to PRINT"
 	cont "out a DIPLOMA."
 	done
 
-_GraphicArtistText4::
+_CeladonMansion3FGraphicArtistText4::
 	text "All done!"
 	done
 
-_GraphicArtistText5::
+_CeladonMansion3FGraphicArtistText5::
 	text "OK, let's not"
 	line "PRINT."
 	done
 
-_WriterText::
+_CeladonMansion3FWriterText::
 	text "I wrote the story!"
 	line "Isn't ERIKA cute?"
 
@@ -56,7 +56,7 @@ _WriterText::
 	line "I like her!"
 	done
 
-_WriterText2::
+_CeladonMansion3FWriterText2::
 	text "I wrote the story!"
 
 	para "It's great you"
@@ -64,7 +64,7 @@ _WriterText2::
 	cont "#MON! Thanks!"
 	done
 
-_GameDesignerText::
+_CeladonMansion3FGameDesignerText::
 	text "Is that right?"
 
 	para "I'm the game"
@@ -78,7 +78,7 @@ _GameDesignerText::
 	line "come tell me!"
 	done
 
-_CompletedDexText::
+_CeladonMansion3FGameDesignerCompletedDexText::
 	text "Wow! Excellent!"
 	line "You completed"
 	cont "your #DEX!"
@@ -86,33 +86,33 @@ _CompletedDexText::
 	cont "...@"
 	text_end
 
-_CompletedDexText2::
+_CeladonMansion3FGameDesignerCompletedDexText2::
 	text "Go show off your"
 	line "DIPLOMA to"
 	cont "the development"
 	cont "crew."
 	done
 
-_CeladonMansion3Text5::
+_CeladonMansion3FGameProgramPCText::
 	text "It's the game"
 	line "program! Messing"
 	cont "with it could bug"
 	cont "out the game!"
 	done
 
-_CeladonMansion3Text6::
+_CeladonMansion3FPlayingGamePCText::
 	text "Someone's playing"
 	line "a game instead of"
 	cont "working!"
 	done
 
-_CeladonMansion3Text7::
+_CeladonMansion3FGameScriptPCText::
 	text "It's the script!"
 	line "Better not look"
 	cont "at the ending!"
 	done
 
-_CeladonMansion3Text8::
+_CeladonMansion3FDevRoomSignText::
 	text "GAME FREAK"
 	line "Development Room"
 	done

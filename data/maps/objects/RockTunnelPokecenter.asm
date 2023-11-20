@@ -1,3 +1,10 @@
+	object_const_def
+	const_export ROCKTUNNELPOKECENTER_NURSE
+	const_export ROCKTUNNELPOKECENTER_GENTLEMAN
+	const_export ROCKTUNNELPOKECENTER_FISHER
+	const_export ROCKTUNNELPOKECENTER_LINK_RECEPTIONIST
+	const_export ROCKTUNNELPOKECENTER_CHANSEY
+
 RockTunnelPokecenter_Object:
 	db $0 ; border block
 
@@ -8,10 +15,10 @@ RockTunnelPokecenter_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, 1 ; person
-	object_event  7,  3, SPRITE_GENTLEMAN, STAY, DOWN, 2 ; person
-	object_event  2,  5, SPRITE_FISHER, STAY, NONE, 3 ; person
-	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 4 ; person
-	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, 5 ; person
+	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, TEXT_ROCKTUNNELPOKECENTER_NURSE
+	object_event  7,  3, SPRITE_GENTLEMAN, STAY, DOWN, TEXT_ROCKTUNNELPOKECENTER_GENTLEMAN
+	object_event  2,  5, SPRITE_FISHER, STAY, NONE, TEXT_ROCKTUNNELPOKECENTER_FISHER
+	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, TEXT_ROCKTUNNELPOKECENTER_LINK_RECEPTIONIST
+	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, TEXT_ROCKTUNNELPOKECENTER_CHANSEY
 
 	def_warps_to ROCK_TUNNEL_POKECENTER

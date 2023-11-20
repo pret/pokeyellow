@@ -1,7 +1,7 @@
 MagikarpSalesman::
 	CheckEvent EVENT_BOUGHT_MAGIKARP, 1
 	jp c, .alreadyBoughtMagikarp
-	ld hl, .Text1
+	ld hl, .IGotADealText
 	call PrintText
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
@@ -10,7 +10,6 @@ MagikarpSalesman::
 	ld a, [wCurrentMenuItem]
 	and a
 	jp nz, .choseNo
-	; $000500
 	xor a
 	ldh [hMoney], a
 	ldh [hMoney + 2], a
@@ -24,7 +23,6 @@ MagikarpSalesman::
 	lb bc, MAGIKARP, 5
 	call GivePokemon
 	jr nc, .done
-	; $000500
 	xor a
 	ld [wPriceTemp], a
 	ld [wPriceTemp + 2], a
@@ -40,27 +38,27 @@ MagikarpSalesman::
 	SetEvent EVENT_BOUGHT_MAGIKARP
 	jr .done
 .choseNo
-	ld hl, .RefuseText
+	ld hl, .NoText
 	jr .printText
 .alreadyBoughtMagikarp
-	ld hl, .Text2
+	ld hl, .NoRefundsText
 .printText
 	call PrintText
 .done
 	ret
 
-.Text1
-	text_far _MagikarpSalesmanText1
+.IGotADealText
+	text_far _MtMoonPokecenterMagikarpSalesmanIGotADealText
 	text_end
 
-.RefuseText
-	text_far _MagikarpSalesmanNoText
+.NoText
+	text_far _MtMoonPokecenterMagikarpSalesmanNoText
 	text_end
 
 .NoMoneyText
-	text_far _MagikarpSalesmanNoMoneyText
+	text_far _MtMoonPokecenterMagikarpSalesmanNoMoneyText
 	text_end
 
-.Text2
-	text_far _MagikarpSalesmanText2
+.NoRefundsText
+	text_far _MtMoonPokecenterMagikarpSalesmanNoRefundsText
 	text_end

@@ -1,4 +1,4 @@
-MtMoon3Script_4a325: ; pikachu-related function?
+MtMoonB2FScript_ApplyPikachuMovementData:
 	ld a, [wd472]
 	bit 7, a
 	ret z

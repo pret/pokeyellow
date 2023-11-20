@@ -1,3 +1,16 @@
+	object_const_def
+	const_export GAMECORNER_BEAUTY1
+	const_export GAMECORNER_CLERK
+	const_export GAMECORNER_MIDDLE_AGED_MAN1
+	const_export GAMECORNER_BEAUTY2
+	const_export GAMECORNER_FISHING_GURU1
+	const_export GAMECORNER_MIDDLE_AGED_WOMAN
+	const_export GAMECORNER_GYM_GUIDE
+	const_export GAMECORNER_GAMBLER
+	const_export GAMECORNER_MIDDLE_AGED_MAN2
+	const_export GAMECORNER_FISHING_GURU2
+	const_export GAMECORNER_ROCKET
+
 GameCorner_Object:
 	db $f ; border block
 
@@ -7,19 +20,19 @@ GameCorner_Object:
 	warp_event 17,  4, ROCKET_HIDEOUT_B1F, 2
 
 	def_bg_events
-	bg_event  9,  4, 12 ; CeladonGameCornerText12
+	bg_event  9,  4, TEXT_GAMECORNER_POSTER
 
 	def_object_events
-	object_event  2,  6, SPRITE_BEAUTY, STAY, DOWN, 1 ; person
-	object_event  5,  6, SPRITE_CLERK, STAY, DOWN, 2 ; person
-	object_event  2, 10, SPRITE_MIDDLE_AGED_MAN, STAY, LEFT, 3 ; person
-	object_event  2, 13, SPRITE_BEAUTY, STAY, LEFT, 4 ; person
-	object_event  5, 11, SPRITE_FISHING_GURU, STAY, RIGHT, 5 ; person
-	object_event  8, 11, SPRITE_MIDDLE_AGED_WOMAN, STAY, LEFT, 6 ; person
-	object_event  8, 14, SPRITE_GYM_GUIDE, STAY, LEFT, 7 ; person
-	object_event 11, 15, SPRITE_GAMBLER, STAY, RIGHT, 8 ; person
-	object_event 14, 11, SPRITE_MIDDLE_AGED_MAN, STAY, LEFT, 9 ; person
-	object_event 17, 13, SPRITE_FISHING_GURU, STAY, RIGHT, 10 ; person
-	object_event  9,  5, SPRITE_ROCKET, STAY, UP, 11, OPP_ROCKET, 7
+	object_event  2,  6, SPRITE_BEAUTY, STAY, DOWN, TEXT_GAMECORNER_BEAUTY1
+	object_event  5,  6, SPRITE_CLERK, STAY, DOWN, TEXT_GAMECORNER_CLERK
+	object_event  2, 10, SPRITE_MIDDLE_AGED_MAN, STAY, LEFT, TEXT_GAMECORNER_MIDDLE_AGED_MAN1
+	object_event  2, 13, SPRITE_BEAUTY, STAY, LEFT, TEXT_GAMECORNER_BEAUTY2
+	object_event  5, 11, SPRITE_FISHING_GURU, STAY, RIGHT, TEXT_GAMECORNER_FISHING_GURU1
+	object_event  8, 11, SPRITE_MIDDLE_AGED_WOMAN, STAY, LEFT, TEXT_GAMECORNER_MIDDLE_AGED_WOMAN
+	object_event  8, 14, SPRITE_GYM_GUIDE, STAY, LEFT, TEXT_GAMECORNER_GYM_GUIDE
+	object_event 11, 15, SPRITE_GAMBLER, STAY, RIGHT, TEXT_GAMECORNER_GAMBLER
+	object_event 14, 11, SPRITE_MIDDLE_AGED_MAN, STAY, LEFT, TEXT_GAMECORNER_MIDDLE_AGED_MAN2
+	object_event 17, 13, SPRITE_FISHING_GURU, STAY, RIGHT, TEXT_GAMECORNER_FISHING_GURU2
+	object_event  9,  5, SPRITE_ROCKET, STAY, UP, TEXT_GAMECORNER_ROCKET, OPP_ROCKET, 7
 
 	def_warps_to GAME_CORNER

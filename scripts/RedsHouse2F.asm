@@ -6,19 +6,17 @@ RedsHouse2F_Script:
 	ret
 
 RedsHouse2F_ScriptPointers:
-	dw RedsHouse2FScript0
-	dw RedsHouse2FScript1
-	dw RedsHouse2FScript2
-	dw RedsHouse2FScript3
-	dw RedsHouse2FScript4
+	def_script_pointers
+	dw_const RedsHouse2FDefaultScript, SCRIPT_REDSHOUSE2F_DEFAULT0
+	dw_const RedsHouse2FDefaultScript, SCRIPT_REDSHOUSE2F_DEFAULT1
+	dw_const RedsHouse2FDefaultScript, SCRIPT_REDSHOUSE2F_DEFAULT2
+	dw_const RedsHouse2FDefaultScript, SCRIPT_REDSHOUSE2F_DEFAULT3
+	dw_const RedsHouse2FDefaultScript, SCRIPT_REDSHOUSE2F_DEFAULT4
 
-RedsHouse2FScript0:
-RedsHouse2FScript1:
-RedsHouse2FScript2:
-RedsHouse2FScript3:
-RedsHouse2FScript4:
+RedsHouse2FDefaultScript:
 	ret
 
 RedsHouse2F_TextPointers:
+	def_text_pointers
 
 	text_end ; unused

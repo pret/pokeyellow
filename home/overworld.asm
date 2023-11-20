@@ -1,6 +1,6 @@
 EnterMap::
 ; Load a new map.
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	call LoadMapData
 	farcall ClearVariablesOnEnterMap
@@ -108,7 +108,7 @@ OverworldLoopLessDelay::
 	bit 0, a
 	jr nz, .checkForOpponent
 	lda_coord 8, 9
-	ld [wTilePlayerStandingOn], a ; unused?
+	ld [wTilePlayerStandingOn], a ; checked when using Surf for forbidden tile pairs
 	call DisplayTextID ; display either the start menu or the NPC/sign text
 	ld a, [wEnteringCableClub]
 	and a
@@ -743,10 +743,10 @@ HandleBlackOut::
 	call StopMusic
 	ld hl, wd72e
 	res 5, [hl]
-	ld a, BANK(SpecialWarpIn) ; also BANK(SpecialEnterMap)
+	ld a, BANK(PrepareForSpecialWarp) ; also BANK(SpecialEnterMap)
 	call BankswitchCommon
 	callfar ResetStatusAndHalveMoneyOnBlackout
-	call SpecialWarpIn
+	call PrepareForSpecialWarp
 	call PlayDefaultMusicFadeOutCurrent
 	jp SpecialEnterMap
 
@@ -771,9 +771,9 @@ HandleFlyWarpOrDungeonWarp::
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
 	call Func_07c4
-	ld a, BANK(SpecialWarpIn)
+	ld a, BANK(PrepareForSpecialWarp)
 	call BankswitchCommon
-	call SpecialWarpIn
+	call PrepareForSpecialWarp
 	jp SpecialEnterMap
 
 LeaveMapAnim::
@@ -892,9 +892,9 @@ LoadTileBlockMap::
 	add hl, bc
 	ld c, MAP_BORDER
 	add hl, bc ; this puts us past the (west) border
-	ld a, [wMapDataPtr] ; tile map pointer
+	ld a, [wCurMapDataPtr] ; tile map pointer
 	ld e, a
-	ld a, [wMapDataPtr + 1]
+	ld a, [wCurMapDataPtr + 1]
 	ld d, a ; de = tile map pointer
 	ld a, [wCurMapHeight]
 	ld b, a
@@ -1732,7 +1732,7 @@ RunMapScript::
 	call RunNPCMovementScript
 	ld a, [wCurMap] ; current map number
 	call SwitchToMapRomBank ; change to the ROM bank the map's data is in
-	ld hl, wMapScriptPtr
+	ld hl, wCurMapScriptPtr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -1816,9 +1816,8 @@ asm_0dbd:
 	bit 7, b
 	ret nz
 	call GetMapHeaderPointer
-; copy the first 10 bytes (the fixed area) of the map data to D367-D370
-	ld de, wCurMapTileset
-	ld c, $0a
+	ld de, wCurMapHeader
+	ld c, wCurMapHeaderEnd - wCurMapHeader
 .copyFixedHeaderLoop
 	ld a, [hli]
 	ld [de], a
@@ -1832,25 +1831,25 @@ asm_0dbd:
 	ld [wWestConnectedMap], a
 	ld [wEastConnectedMap], a
 ; copy connection data (if any) to WRAM
-	ld a, [wMapConnections]
+	ld a, [wCurMapConnections]
 	ld b, a
 .checkNorth
-	bit 3, b
+	bit NORTH_F, b
 	jr z, .checkSouth
 	ld de, wNorthConnectionHeader
 	call CopyMapConnectionHeader
 .checkSouth
-	bit 2, b
+	bit SOUTH_F, b
 	jr z, .checkWest
 	ld de, wSouthConnectionHeader
 	call CopyMapConnectionHeader
 .checkWest
-	bit 1, b
+	bit WEST_F, b
 	jr z, .checkEast
 	ld de, wWestConnectionHeader
 	call CopyMapConnectionHeader
 .checkEast
-	bit 0, b
+	bit EAST_F, b
 	jr z, .getObjectDataPointer
 	ld de, wEastConnectionHeader
 	call CopyMapConnectionHeader

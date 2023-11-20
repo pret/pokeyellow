@@ -3,15 +3,16 @@ RedsHouse1F_Script:
 	ret
 
 RedsHouse1F_TextPointers:
-	dw RedsHouse1FMomText
-	dw RedsHouse1FTVText
+	def_text_pointers
+	dw_const RedsHouse1FMomText, TEXT_REDSHOUSE1F_MOM
+	dw_const RedsHouse1FTVText,  TEXT_REDSHOUSE1F_TV
 
 RedsHouse1FMomText:
 	text_asm
-	callfar Func_f1b73
+	callfar RedsHouse1FPrintMomText
 	jp TextScriptEnd
 
 RedsHouse1FTVText:
 	text_asm
-	callfar Func_f1bc4
+	callfar RedsHouse1FPrintTVText
 	jp TextScriptEnd

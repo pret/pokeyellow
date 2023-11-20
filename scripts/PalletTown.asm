@@ -9,18 +9,19 @@ PalletTown_Script:
 	jp CallFunctionInTable
 
 PalletTown_ScriptPointers:
-	dw PalletTownScript0
-	dw PalletTownScript1
-	dw PalletTownScript2
-	dw PalletTownScript3
-	dw PalletTownScript4
-	dw PalletTownScript5
-	dw PalletTownScript6
-	dw PalletTownScript7
-	dw PalletTownScript8
-	dw PalletTownScript9
+	def_script_pointers
+	dw_const PalletTownDefaultScript,              SCRIPT_PALLETTOWN_DEFAULT
+	dw_const PalletTownOakHeyWaitScript,           SCRIPT_PALLETTOWN_OAK_HEY_WAIT
+	dw_const PalletTownOakWalksToPlayerScript,     SCRIPT_PALLETTOWN_OAK_WALKS_TO_PLAYER
+	dw_const PalletTownOakGreetsPlayerScript,      SCRIPT_PALLETTOWN_OAK_GREETS_PLAYER
+	dw_const PalletTownPikachuBattleScript,        SCRIPT_PALLETTOWN_PIKACHU_BATTLE
+	dw_const PalletTownAfterPikachuBattleScript,   SCRIPT_PALLETTOWN_AFTER_PIKACHU_BATTLE
+	dw_const PalletTownOakNotSafeComeWithMeScript, SCRIPT_PALLETTOWN_OAK_NOT_SAFE_COME_WITH_ME
+	dw_const PalletTownPlayerFollowsOakScript,     SCRIPT_PALLETTOWN_PLAYER_FOLLOWS_OAK
+	dw_const PalletTownDaisyScript,                SCRIPT_PALLETTOWN_DAISY
+	dw_const PalletTownNoopScript,                 SCRIPT_PALLETTOWN_NOOP
 
-PalletTownScript0:
+PalletTownDefaultScript:
 	CheckEvent EVENT_FOLLOWED_OAK_INTO_LAB
 	ret nz
 	ld a, [wYCoord]
@@ -34,7 +35,7 @@ PalletTownScript0:
 .asm_18e40
 	xor a
 	ldh [hJoyHeld], a
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
@@ -46,19 +47,19 @@ PalletTownScript0:
 	SetEvent EVENT_OAK_APPEARED_IN_PALLET
 
 	; trigger the next script
-	ld a, 1
+	ld a, SCRIPT_PALLETTOWN_OAK_HEY_WAIT
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript1:
+PalletTownOakHeyWaitScript:
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
 	ld [wcf0d], a
-	ld a, 1
+	ld a, TEXT_PALLETTOWN_OAK
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $FF
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld hl, wSprite01StateData2MapY
 	ld a, 8
@@ -68,17 +69,17 @@ PalletTownScript1:
 	ld a, HS_PALLET_TOWN_OAK
 	ld [wMissableObjectIndex], a
 	predef ShowObject
-
-	; trigger the next script
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
 	ld [wSprite01StateData1FacingDirection], a
-	ld a, 2
+
+	; trigger the next script
+	ld a, SCRIPT_PALLETTOWN_OAK_WALKS_TO_PLAYER
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript2:
+PalletTownOakWalksToPlayerScript:
 	call Delay3
 	ld a, 0
 	ld [wYCoord], a
@@ -92,16 +93,16 @@ PalletTownScript2:
 	dec [hl]
 	predef FindPathToPlayer ; load Oak's movement into wNPCMovementDirections2
 	ld de, wNPCMovementDirections2
-	ld a, 1 ; oak
+	ld a, PALLETTOWN_OAK
 	ldh [hSpriteIndex], a
 	call MoveSprite
 
 	; trigger the next script
-	ld a, 3
+	ld a, SCRIPT_PALLETTOWN_OAK_GREETS_PLAYER
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript3:
+PalletTownOakGreetsPlayerScript:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
@@ -113,11 +114,11 @@ PalletTownScript3:
 	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
 	ld [wSprite01StateData1FacingDirection], a
-	ld a, 1
+	ld a, TEXT_PALLETTOWN_OAK
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	; oak faces the horizontally adjacent patch of grass to face pikachu
-	ld a, $FF
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
@@ -129,11 +130,11 @@ PalletTownScript3:
 	ld [wSprite01StateData1FacingDirection], a
 
 	; trigger the next script
-	ld a, 4
+	ld a, SCRIPT_PALLETTOWN_PIKACHU_BATTLE
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript4:
+PalletTownPikachuBattleScript:
 	; start the pikachu battle
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
@@ -147,35 +148,35 @@ PalletTownScript4:
 	ld [wCurEnemyLVL], a
 
 	; trigger the next script
-	ld a, 5
+	ld a, SCRIPT_PALLETTOWN_AFTER_PIKACHU_BATTLE
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript5:
+PalletTownAfterPikachuBattleScript:
 	ld a, $2
 	ld [wcf0d], a
-	ld a, $1
+	ld a, TEXT_PALLETTOWN_OAK
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
 	ld [wSprite01StateData1FacingDirection], a
-	ld a, $8
+	ld a, TEXT_PALLETTOWN_OAK_COME_WITH_ME
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 
 	; trigger the next script
-	ld a, 6
+	ld a, SCRIPT_PALLETTOWN_OAK_NOT_SAFE_COME_WITH_ME
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript6:
+PalletTownOakNotSafeComeWithMeScript:
 	xor a
 	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, $1
+	ld a, PALLETTOWN_OAK
 	ld [wSpriteIndex], a
 	xor a
 	ld [wNPCMovementScriptFunctionNum], a
@@ -185,21 +186,21 @@ PalletTownScript6:
 	ld [wNPCMovementScriptBank], a
 
 	; trigger the next script
-	ld a, 7
+	ld a, SCRIPT_PALLETTOWN_PLAYER_FOLLOWS_OAK
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript7:
+PalletTownPlayerFollowsOakScript:
 	ld a, [wNPCMovementScriptPointerTableNum]
 	and a ; is the movement script over?
 	ret nz
 
 	; trigger the next script
-	ld a, 8
+	ld a, SCRIPT_PALLETTOWN_DAISY
 	ld [wPalletTownCurScript], a
 	ret
 
-PalletTownScript8:
+PalletTownDaisyScript:
 	CheckEvent EVENT_DAISY_WALKING
 	jr nz, .next
 	CheckBothEventsSet EVENT_GOT_TOWN_MAP, EVENT_ENTERED_BLUES_HOUSE, 1
@@ -215,42 +216,42 @@ PalletTownScript8:
 	CheckEvent EVENT_GOT_POKEBALLS_FROM_OAK
 	ret z
 	SetEvent EVENT_PALLET_AFTER_GETTING_POKEBALLS_2
-PalletTownScript9:
+PalletTownNoopScript:
 	ret
 
 PalletTown_TextPointers:
-	dw PalletTownText1
-	dw PalletTownText2
-	dw PalletTownText3
-	dw PalletTownText4
-	dw PalletTownText5
-	dw PalletTownText6
-	dw PalletTownText7
-	dw PalletTownText8
+	def_text_pointers
+	dw_const PalletTownOakText,              TEXT_PALLETTOWN_OAK
+	dw_const PalletTownGirlText,             TEXT_PALLETTOWN_GIRL
+	dw_const PalletTownFisherText,           TEXT_PALLETTOWN_FISHER
+	dw_const PalletTownOaksLabSignText,      TEXT_PALLETTOWN_OAKSLAB_SIGN
+	dw_const PalletTownSignText,             TEXT_PALLETTOWN_SIGN
+	dw_const PalletTownPlayersHouseSignText, TEXT_PALLETTOWN_PLAYERSHOUSE_SIGN
+	dw_const PalletTownRivalsHouseSignText,  TEXT_PALLETTOWN_RIVALSHOUSE_SIGN
+	dw_const PalletTownOakComeWithMe,        TEXT_PALLETTOWN_OAK_COME_WITH_ME
 
-PalletTownText1:
+PalletTownOakText:
 	text_asm
 	ld a, [wcf0d]
 	and a
 	jr nz, .next
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, OakAppearsText
+	ld hl, .HeyWaitDontGoOutText
 	jr .done
 .next
 	dec a
-	jr nz, .asm_18fd3
-	ld hl, OakWalksUpText
+	jr nz, .whew
+	ld hl, .ThatWasCloseText
 	jr .done
-
-.asm_18fd3
-	ld hl, PalletTownText_19002
+.whew
+	ld hl, .WhewText
 .done
 	call PrintText
 	jp TextScriptEnd
 
-OakAppearsText:
-	text_far _OakAppearsText
+.HeyWaitDontGoOutText:
+	text_far _PalletTownOakHeyWaitDontGoOutText
 	text_asm
 	ld c, 10
 	call DelayFrames
@@ -263,53 +264,53 @@ OakAppearsText:
 	predef EmotionBubble
 	jp TextScriptEnd
 
-OakWalksUpText:
-	text_far _OakWalksUpText
+.ThatWasCloseText:
+	text_far _PalletTownOakThatWasCloseText
 	text_end
 
-PalletTownText_19002:
-	text_far _OakWhewText
+.WhewText:
+	text_far _PalletTownOakWhewText
 	text_end
 
-PalletTownText8:
-	text_far _OakGrassText
+PalletTownOakComeWithMe:
+	text_far _PalletTownOakComeWithMe
 	text_end
 
-PalletTownText2: ; girl
-	text_far _PalletTownText2
+PalletTownGirlText:
+	text_far _PalletTownGirlText
 	text_end
 
-PalletTownText3: ; fat man
-	text_far _PalletTownText3
+PalletTownFisherText:
+	text_far _PalletTownFisherText
 	text_end
 
-PalletTownText4: ; sign by lab
-	text_far _PalletTownText4
+PalletTownOaksLabSignText:
+	text_far _PalletTownOaksLabSignText
 	text_end
 
-PalletTownText5: ; sign by fence
+PalletTownSignText:
 IF DEF(_DEBUG)
 	text_asm
 	ld a, 239
 	inc a
 	ld [wWhichPewterGuy], a
-	ld hl, PalletTownText_502b
+	ld hl, .Text
 	call PrintText
 	jp TextScriptEnd
 
-PalletTownText_502b:
+.Text:
 	text_decimal wWhichPewterGuy, 1, 3
 	text "bit"
 	done
 ELSE
-	text_far _PalletTownText5
+	text_far _PalletTownSignText
 	text_end
 ENDC
 
-PalletTownText6: ; sign by Red's house
-	text_far _PalletTownText6
+PalletTownPlayersHouseSignText:
+	text_far _PalletTownPlayersHouseSignText
 	text_end
 
-PalletTownText7: ; sign by Blue's house
-	text_far _PalletTownText7
+PalletTownRivalsHouseSignText:
+	text_far _PalletTownRivalsHouseSignText
 	text_end

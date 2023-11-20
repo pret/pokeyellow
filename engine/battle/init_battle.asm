@@ -11,12 +11,12 @@ InitOpponent:
 
 DetermineWildOpponent:
 	ld a, [wd732]
-	bit 1, a
-	jr z, .notDebug
+	bit BIT_DEBUG_MODE, a
+	jr z, .notDebugMode
 	ldh a, [hJoyHeld]
-	bit BIT_B_BUTTON, a
+	bit BIT_B_BUTTON, a ; disable wild encounters
 	ret nz
-.notDebug
+.notDebugMode
 	ld a, [wNumberOfNoRandomBattleStepsLeft]
 	and a
 	ret nz

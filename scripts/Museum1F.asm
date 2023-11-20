@@ -9,57 +9,59 @@ Museum1F_Script:
 	ret
 
 Museum1F_ScriptPointers:
-	dw Museum1FScript0
-	dw Museum1FScript1
+	def_script_pointers
+	dw_const Museum1FDefaultScript, SCRIPT_MUSEUM1F_DEFAULT
+	dw_const Museum1FNoopScript,    SCRIPT_MUSEUM1F_NOOP
 
-Museum1FScript0:
+Museum1FDefaultScript:
 	ld a, [wYCoord]
 	cp 4
 	ret nz
 	ld a, [wXCoord]
 	cp 9
-	jr z, .asm_5c120
+	jr z, .continue
 	ld a, [wXCoord]
 	cp 10
 	ret nz
-.asm_5c120
+.continue
 	xor a
 	ldh [hJoyHeld], a
-	ld a, $1
+	ld a, TEXT_MUSEUM1F_SCIENTIST1
 	ldh [hSpriteIndexOrTextID], a
 	jp DisplayTextID
 
-Museum1FScript1:
+Museum1FNoopScript:
 	ret
 
 Museum1F_TextPointers:
-	dw Museum1FText1
-	dw Museum1FText2
-	dw Museum1FText3
-	dw Museum1FText4
-	dw Museum1FText5
+	def_text_pointers
+	dw_const Museum1FScientist1Text, TEXT_MUSEUM1F_SCIENTIST1
+	dw_const Museum1FGamblerText,    TEXT_MUSEUM1F_GAMBLER
+	dw_const Museum1FScientist2Text, TEXT_MUSEUM1F_SCIENTIST2
+	dw_const Museum1FScientist3Text, TEXT_MUSEUM1F_SCIENTIST3
+	dw_const Museum1FOldAmberText,   TEXT_MUSEUM1F_OLD_AMBER
 
-Museum1FText1:
+Museum1FScientist1Text:
 	text_asm
-	farcall Func_f1c1b
+	farcall Museum1FPrintScientist1Text
 	jp TextScriptEnd
 
-Museum1FText2:
+Museum1FGamblerText:
 	text_asm
-	farcall Func_f1d2a
+	farcall Museum1FPrintGamblerText
 	jp TextScriptEnd
 
-Museum1FText3:
+Museum1FScientist2Text:
 	text_asm
-	farcall Func_f1d36
+	farcall Museum1FPrintScientist2Text
 	jp TextScriptEnd
 
-Museum1FText4:
+Museum1FScientist3Text:
 	text_asm
-	farcall Func_f1d80
+	farcall Museum1FPrintScientist3Text
 	jp TextScriptEnd
 
-Museum1FText5:
+Museum1FOldAmberText:
 	text_asm
-	farcall Func_f1d8c
+	farcall Museum1FPrintOldAmberText
 	jp TextScriptEnd

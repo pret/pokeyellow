@@ -3,22 +3,23 @@ CeladonMansion1F_Script:
 	ret
 
 CeladonMansion1F_TextPointers:
-	dw CeladonMansion1Text1
-	dw CeladonMansion1Text2
-	dw CeladonMansion1Text3
-	dw CeladonMansion1Text4
-	dw CeladonMansion1Text5
+	def_text_pointers
+	dw_const CeladonMansion1FMeowthText,            TEXT_CELADONMANSION1F_MEOWTH
+	dw_const CeladonMansion1FGrannyText,            TEXT_CELADONMANSION1F_GRANNY
+	dw_const CeladonMansion1FClefairyText,          TEXT_CELADONMANSION1F_CLEFAIRY
+	dw_const CeladonMansion1FNidoranFText,          TEXT_CELADONMANSION1F_NIDORANF
+	dw_const CeladonMansion1FManagersSuiteSignText, TEXT_CELADONMANSION1F_MANAGERS_SUITE_SIGN
 
-CeladonMansion1Text1:
-	text_far _CeladonMansion1Text1
+CeladonMansion1FMeowthText:
+	text_far _CeladonMansion1FMeowthText
 	text_asm
 	ld a, MEOWTH
 	call PlayCry
 	jp TextScriptEnd
 
-CeladonMansion1Text2:
+CeladonMansion1FGrannyText:
 	text_asm
-	farcall Func_f1e70
+	farcall CeladonMansion1FPrintGrannyText
 	ld a, [wPikachuHappiness]
 	cp 251
 	jr c, .asm_485d9
@@ -29,20 +30,20 @@ CeladonMansion1Text2:
 .asm_485d9
 	jp TextScriptEnd
 
-CeladonMansion1Text3:
-	text_far _CeladonMansion1Text3
+CeladonMansion1FClefairyText:
+	text_far _CeladonMansion1FClefairyText
 	text_asm
 	ld a, CLEFAIRY
 	call PlayCry
 	jp TextScriptEnd
 
-CeladonMansion1Text4:
-	text_far _CeladonMansion1Text4
+CeladonMansion1FNidoranFText:
+	text_far _CeladonMansion1FNidoranFText
 	text_asm
 	ld a, NIDORAN_F
 	call PlayCry
 	jp TextScriptEnd
 
-CeladonMansion1Text5:
-	text_far _CeladonMansion1Text5
+CeladonMansion1FManagersSuiteSignText:
+	text_far _CeladonMansion1FManagersSuiteSignText
 	text_end

@@ -7,16 +7,17 @@ BillsHouse_Script:
 	ret
 
 BillsHouse_ScriptPointers:
-	dw BillsHouseScript0
-	dw BillsHouseScript1
-	dw BillsHouseScript2
-	dw BillsHouseScript3
-	dw BillsHouseScript4
-	dw BillsHouseScript5
-	dw BillsHouseScript6
-	dw BillsHouseScript7
-	dw BillsHouseScript8
-	dw BillsHouseScript9
+	def_script_pointers
+	dw_const BillsHouseScript0, SCRIPT_BILLSHOUSE_SCRIPT0
+	dw_const BillsHouseScript1, SCRIPT_BILLSHOUSE_SCRIPT1
+	dw_const BillsHouseScript2, SCRIPT_BILLSHOUSE_SCRIPT2
+	dw_const BillsHouseScript3, SCRIPT_BILLSHOUSE_SCRIPT3
+	dw_const BillsHouseScript4, SCRIPT_BILLSHOUSE_SCRIPT4
+	dw_const BillsHouseScript5, SCRIPT_BILLSHOUSE_SCRIPT5
+	dw_const BillsHouseScript6, SCRIPT_BILLSHOUSE_SCRIPT6
+	dw_const BillsHouseScript7, SCRIPT_BILLSHOUSE_SCRIPT7
+	dw_const BillsHouseScript8, SCRIPT_BILLSHOUSE_SCRIPT8
+	dw_const BillsHouseScript9, SCRIPT_BILLSHOUSE_SCRIPT9
 
 BillsHouseScript_1e09e:
 	ld hl, wd492
@@ -28,11 +29,11 @@ BillsHouseScript_1e09e:
 	jr .asm_1e0b3
 
 .asm_1e0af
-	ld a, $0
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT0
 	jr .asm_1e0b5
 
 .asm_1e0b3
-	ld a, $9
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT9
 .asm_1e0b5
 	ld [wBillsHouseCurScript], a
 	ret
@@ -47,7 +48,7 @@ BillsHouseScript0:
 .asm_1e0d2
 	xor a
 	ld [wJoyIgnore], a
-	ld a, $1
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT1
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -55,7 +56,7 @@ BillsHouseScript1:
 	ret
 
 BillsHouseScript2:
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a ; cp SPRITE_FACING_DOWN
@@ -67,10 +68,10 @@ BillsHouseScript2:
 .asm_1e0f8
 	ld de, MovementData_1e7a0
 .notDown
-	ld a, $1
+	ld a, BILLSHOUSE_BILL_POKEMON
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, $3
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT3
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -110,7 +111,7 @@ BillsHouseScript3:
 	xor a
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BILL_SAID_USE_CELL_SEPARATOR
-	ld a, $4
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT4
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -134,14 +135,14 @@ PikachuMovementData_1e152:
 BillsHouseScript4:
 	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret z
-	ld a, $fc
+	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, $5
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT5
 	ld [wBillsHouseCurScript], a
 	ret
 
 BillsHouseScript5:
-	ld a, $2
+	ld a, BILLSHOUSE_BILL1
 	ld [wSpriteIndex], a
 	ld a, $c
 	ldh [hSpriteScreenYCoord], a
@@ -162,7 +163,7 @@ BillsHouseScript5:
 	jr z, .asm_1e1c6
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_1e1c6
-	ld a, $2
+	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
 	ld a, SPRITE_FACING_DOWN
 	ldh [hSpriteFacingDirection], a
@@ -176,11 +177,11 @@ BillsHouseScript5:
 	predef EmotionBubble
 	callfar InitializePikachuTextID
 .asm_1e1c6
-	ld a, $2
+	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
 	ld de, MovementData_1e807
 	call MoveSprite
-	ld a, $6
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT6
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -203,7 +204,7 @@ BillsHouseScript6:
 	ret nz
 	SetEvent EVENT_MET_BILL_2 ; this event seems redundant
 	SetEvent EVENT_MET_BILL
-	ld a, $7
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT7
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -220,7 +221,7 @@ BillsHouseScript7:
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
 	call StartSimulatingJoypadStates
-	ld a, $8
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT8
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -236,17 +237,17 @@ BillsHouseScript8:
 	ld [wPlayerMovingDirection], a
 	ld a, SPRITE_FACING_UP
 	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, $2
+	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
 	ld a, SPRITE_FACING_DOWN
 	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	xor a
 	ld [wJoyIgnore], a
-	ld a, $2
+	ld a, TEXT_BILLSHOUSE_BILL_SS_TICKET
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $9
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT9
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -254,26 +255,27 @@ BillsHouseScript9:
 	ret
 
 BillsHouse_TextPointers:
-	dw BillsHouseText1
-	dw BillsHouseText2
-	dw BillsHouseText3
-	dw BillsHouseText4
+	def_text_pointers
+	dw_const BillsHouseBillPokemonText,               TEXT_BILLSHOUSE_BILL_POKEMON
+	dw_const BillsHouseBillSSTicketText,              TEXT_BILLSHOUSE_BILL_SS_TICKET
+	dw_const BillsHouseBillCheckOutMyRarePokemonText, TEXT_BILLSHOUSE_BILL_CHECK_OUT_MY_RARE_POKEMON
+	dw_const BillsHouseBillDontLeaveText,             TEXT_BILLSHOUSE_BILL_DONT_LEAVE
 
-BillsHouseText4:
-	text_far _BillsHouseDontLeaveText
+BillsHouseBillDontLeaveText:
+	text_far _BillsHouseBillDontLeaveText
 	text_end
 
-BillsHouseText1:
+BillsHouseBillPokemonText:
 	text_asm
-	farcall Func_f2418
+	farcall BillsHousePrintBillPokemonText
 	jp TextScriptEnd
 
-BillsHouseText2:
+BillsHouseBillSSTicketText:
 	text_asm
-	farcall Func_f244a
+	farcall BillsHousePrintBillSSTicketText
 	jp TextScriptEnd
 
-BillsHouseText3:
+BillsHouseBillCheckOutMyRarePokemonText:
 	text_asm
-	farcall Func_f24a2
+	farcall BillsHousePrintBillCheckOutMyRarePokemonText
 	jp TextScriptEnd

@@ -1,26 +1,26 @@
-Func_f1be0::
+OaksLabPikachuMovementScript::
 	ld a, [wYCoord]
 	cp 3
-	jr z, .asm_f1bf0
+	jr z, .movement2
 	ld b, SPRITE_FACING_DOWN
-	ld hl, Data_f1bf9
+	ld hl, OaksLabPikachuMovementData1
 	call TryApplyPikachuMovementData
 	ret
 
-.asm_f1bf0
+.movement2
 	ld b, SPRITE_FACING_LEFT
-	ld hl, Data_f1bfe
+	ld hl, OaksLabPikachuMovementData2
 	call TryApplyPikachuMovementData
 	ret
 
-Data_f1bf9:
+OaksLabPikachuMovementData1:
 	db $00
 	db $1f
 	db $1e
 	db $38
 	db $3f
 
-Data_f1bfe:
+OaksLabPikachuMovementData2:
 	db $00
 	db $1d
 	db $20

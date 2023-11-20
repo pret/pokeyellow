@@ -1,53 +1,53 @@
-Func_f1ad2::
+Route1PrintYoungster1Text::
 	CheckAndSetEvent EVENT_GOT_POTION_SAMPLE
 	jr nz, .got_item
-	ld hl, Route1ViridianMartSampleText
+	ld hl, .MartSampleText
 	call PrintText
 	lb bc, POTION, 1
 	call GiveItem
 	jr nc, .bag_full
-	ld hl, Route1Text_1cae8
+	ld hl, .GotPotionText
 	jr .done
 .bag_full
-	ld hl, Route1Text_1caf3
+	ld hl, .NoRoomText
 	jr .done
 .got_item
-	ld hl, Route1Text_1caee
+	ld hl, .AlsoGotPokeballsText
 .done
 	call PrintText
 	ret
 
-Route1ViridianMartSampleText:
-	text_far _Route1ViridianMartSampleText
+.MartSampleText:
+	text_far _Route1Youngster1MartSampleText
 	text_end
 
-Route1Text_1cae8:
-	text_far _Route1Text_1cae8
+.GotPotionText:
+	text_far _Route1Youngster1GotPotionText
 	sound_get_item_1
 	text_end
 
-Route1Text_1caee:
-	text_far _Route1Text_1caee
+.AlsoGotPokeballsText:
+	text_far _Route1Youngster1AlsoGotPokeballsText
 	text_end
 
-Route1Text_1caf3:
-	text_far _Route1Text_1caf3
+.NoRoomText:
+	text_far _Route1Youngster1NoRoomText
 	text_end
 
-Func_f1b0f::
-	ld hl, Route1Text_f1b16
+Route1PrintYoungster2Text::
+	ld hl, .text
 	call PrintText
 	ret
 
-Route1Text_f1b16:
-	text_far _Route1Text2
+.text
+	text_far _Route1Youngster2Text
 	text_end
 
-Func_f1b1b::
-	ld hl, Route1Text_f1b22
+Route1PrintSignText::
+	ld hl, .text
 	call PrintText
 	ret
 
-Route1Text_f1b22:
-	text_far _Route1Text3
+.text
+	text_far _Route1SignText
 	text_end

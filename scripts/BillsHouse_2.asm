@@ -1,43 +1,42 @@
-Func_f2418::
-	ld hl, BillsHouseText_f243b
+BillsHousePrintBillPokemonText::
+	ld hl, .ImNotAPokemonText
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_f2433
-.asm_f2427
-	ld hl, BillsHouseText_f2440
+	jr nz, .answered_no
+.use_machine
+	ld hl, .UseSeparationSystemText
 	call PrintText
-	ld a, $2
+	ld a, SCRIPT_BILLSHOUSE_SCRIPT2
 	ld [wBillsHouseCurScript], a
 	ret
-
-.asm_f2433
-	ld hl, BillsHouseText_f2445
+.answered_no
+	ld hl, .NoYouGottaHelpText
 	call PrintText
-	jr .asm_f2427
+	jr .use_machine
 
-BillsHouseText_f243b:
-	text_far _BillsHouseText_1e865
+.ImNotAPokemonText:
+	text_far _BillsHouseBillImNotAPokemonText
 	text_end
 
-BillsHouseText_f2440:
-	text_far _BillsHouseText_1e86a
+.UseSeparationSystemText:
+	text_far _BillsHouseBillUseSeparationSystemText
 	text_end
 
-BillsHouseText_f2445:
-	text_far _BillsHouseText_1e86f
+.NoYouGottaHelpText:
+	text_far _BillsHouseBillNoYouGottaHelpText
 	text_end
 
-Func_f244a::
+BillsHousePrintBillSSTicketText::
 	CheckEvent EVENT_GOT_SS_TICKET
-	jr nz, .asm_f247e
-	ld hl, BillsHouseText_f248c
+	jr nz, .got_ss_ticket
+	ld hl, .ThankYouText
 	call PrintText
 	lb bc, S_S_TICKET, 1
 	call GiveItem
-	jr nc, .asm_f2485
-	ld hl, BillsHouseText_f2491
+	jr nc, .bag_full
+	ld hl, .SSTicketReceivedText
 	call PrintText
 	SetEvent EVENT_GOT_SS_TICKET
 	ld a, HS_CERULEAN_GUARD_1
@@ -46,41 +45,40 @@ Func_f244a::
 	ld a, HS_CERULEAN_GUARD_2
 	ld [wMissableObjectIndex], a
 	predef HideObject
-.asm_f247e
-	ld hl, BillsHouseText_f249d
+.got_ss_ticket
+	ld hl, .WhyDontYouGoInsteadOfMeText
+	call PrintText
+	ret
+.bag_full
+	ld hl, .SSTicketNoRoomText
 	call PrintText
 	ret
 
-.asm_f2485
-	ld hl, BillsHouseText_f2498
-	call PrintText
-	ret
-
-BillsHouseText_f248c:
-	text_far _BillThankYouText
+.ThankYouText:
+	text_far _BillsHouseBillThankYouText
 	text_end
 
-BillsHouseText_f2491:
+.SSTicketReceivedText:
 	text_far _SSTicketReceivedText
 	sound_get_key_item
 	text_promptbutton
 	text_end
 
-BillsHouseText_f2498:
+.SSTicketNoRoomText:
 	text_far _SSTicketNoRoomText
 	text_end
 
-BillsHouseText_f249d:
-	text_far _BillsHouseText_1e8cb
+.WhyDontYouGoInsteadOfMeText:
+	text_far _BillsHouseBillWhyDontYouGoInsteadOfMeText
 	text_end
 
-Func_f24a2::
-	ld hl, BillsHouseText_f24a9
+BillsHousePrintBillCheckOutMyRarePokemonText::
+	ld hl, .text
 	call PrintText
 	ret
 
-BillsHouseText_f24a9:
-	text_far _BillsHouseText_1e8da
+.text
+	text_far _BillsHouseBillCheckOutMyRarePokemonText
 	text_end
 
 Func_f24ae::
@@ -90,16 +88,16 @@ Func_f24ae::
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_f24d2
 	ld a, [wBillsHouseCurScript]
-	cp $5
-	ld e, $1b
+	cp SCRIPT_BILLSHOUSE_SCRIPT5
+	ldpikaemotion e, PikachuEmotion27
 	ret z
-	cp $0
-	ld e, $17
+	cp SCRIPT_BILLSHOUSE_SCRIPT0
+	ldpikaemotion e, PikachuEmotion23
 	ret z
 	CheckEventHL EVENT_MET_BILL_2
-	ld e, $20
+	ldpikaemotion e, PikachuEmotion32
 	ret z
-	ld e, $1f
+	ldpikaemotion e, PikachuEmotion31
 	ret
 
 .asm_f24d2
@@ -107,7 +105,7 @@ Func_f24ae::
 	ret
 
 Func_f24d5::
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	xor a
 	ld [wPlayerMovingDirection], a

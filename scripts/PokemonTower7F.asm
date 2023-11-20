@@ -5,37 +5,38 @@ PokemonTower7F_Script:
 	call CallFunctionInTable
 	ret
 
-PokemonTower7Script_60d01:
+PokemonTower7FSetDefaultScript:
 	xor a
 	ld [wJoyIgnore], a
-PokemonTower7Script_60d05:
+PokemonTower7FSetScript:
 	ld [wPokemonTower7FCurScript], a
 	ret
 
 PokemonTower7F_ScriptPointers:
-	dw PokemonTower7Script0
-	dw PokemonTower7Script1
-	dw PokemonTower7Script2
-	dw PokemonTower7Script3
-	dw PokemonTower7Script4
-	dw PokemonTower7Script5
-	dw PokemonTower7Script6
-	dw PokemonTower7Script7
-	dw PokemonTower7Script8
-	dw PokemonTower7Script9
-	dw PokemonTower7Script10
-	dw PokemonTower7Script11
+	def_script_pointers
+	dw_const PokemonTower7FScript0,                 SCRIPT_POKEMONTOWER7F_SCRIPT0
+	dw_const PokemonTower7FScript1,                 SCRIPT_POKEMONTOWER7F_SCRIPT1
+	dw_const PokemonTower7FScript2,                 SCRIPT_POKEMONTOWER7F_SCRIPT2
+	dw_const PokemonTower7FScript3,                 SCRIPT_POKEMONTOWER7F_SCRIPT3
+	dw_const PokemonTower7FScript4,                 SCRIPT_POKEMONTOWER7F_SCRIPT4
+	dw_const PokemonTower7FScript5,                 SCRIPT_POKEMONTOWER7F_SCRIPT5
+	dw_const PokemonTower7FScript6,                 SCRIPT_POKEMONTOWER7F_SCRIPT6
+	dw_const PokemonTower7FScript7,                 SCRIPT_POKEMONTOWER7F_SCRIPT7
+	dw_const PokemonTower7FScript8,                 SCRIPT_POKEMONTOWER7F_SCRIPT8
+	dw_const PokemonTower7FScript9,                 SCRIPT_POKEMONTOWER7F_SCRIPT9
+	dw_const PokemonTower7FScript10,                SCRIPT_POKEMONTOWER7F_SCRIPT10
+	dw_const PokemonTower7FWarpToMrFujiHouseScript, SCRIPT_POKEMONTOWER7F_WARP_TO_MR_FUJI_HOUSE
 
-PokemonTower7Script0:
+PokemonTower7FScript0:
 IF DEF(_DEBUG)
 	call DebugPressedOrHeldB
 	ret nz
 ENDC
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
-	call z, PokemonTower7Script_60d2a
+	call z, PokemonTower7FScript_60d2a
 	ret
 
-PokemonTower7Script_60d2a:
+PokemonTower7FScript_60d2a:
 	ld a, [wYCoord]
 	cp $c
 	ret nz
@@ -57,101 +58,102 @@ PokemonTower7Script_60d2a:
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, HS_POKEMON_TOWER_7F_JESSIE
-	call PokemonTower7Script_60eaf
+	call PokemonTower7FScript_ShowObject
 	ld a, HS_POKEMON_TOWER_7F_JAMES
-	call PokemonTower7Script_60eaf
+	call PokemonTower7FScript_ShowObject
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld a, $4
+	ld a, TEXT_POKEMONTOWER7F_TEXT4
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, $1
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT1
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7MovementData_60d7a:
+PokemonTower7FMovementData_60d7a:
 	db $4
-PokemonTower7MovementData_60d7b:
+PokemonTower7FMovementData_60d7b:
 	db $4
 	db $4
 	db $4
 	db $FF
 
-PokemonTower7Script1:
-	ld de, PokemonTower7MovementData_60d7b
+PokemonTower7FScript1:
+	ld de, PokemonTower7FMovementData_60d7b
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60d8c
-	ld de, PokemonTower7MovementData_60d7a
+	ld de, PokemonTower7FMovementData_60d7a
 .asm_60d8c
-	ld a, $1
+	ld a, POKEMONTOWER7F_JESSIE
 	ldh [hSpriteIndexOrTextID], a
 	call MoveSprite
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, $2
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT2
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7Script2:
-	ld a, $ff
+PokemonTower7FScript2:
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-PokemonTower7Script3:
-	ld a, $0
+PokemonTower7FScript3:
+	ld a, SPRITE_FACING_DOWN
 	ld [wSprite01StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60dba
-	ld a, $c
+	ld a, SPRITE_FACING_RIGHT
 	ld [wSprite01StateData1FacingDirection], a
 .asm_60dba
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
-PokemonTower7Script4:
-	ld de, PokemonTower7MovementData_60d7a
+PokemonTower7FScript4:
+	ld de, PokemonTower7FMovementData_60d7a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60dcc
-	ld de, PokemonTower7MovementData_60d7b
+	ld de, PokemonTower7FMovementData_60d7b
 .asm_60dcc
-	ld a, $2
+	ld a, POKEMONTOWER7F_JAMES
 	ldh [hSpriteIndexOrTextID], a
 	call MoveSprite
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, $5
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT5
+	call PokemonTower7FSetScript
 	ret
-PokemonTower7Script5:
-	ld a, $ff
+
+PokemonTower7FScript5:
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-PokemonTower7Script6:
+PokemonTower7FScript6:
 	ld a, $2
 	ld [wSprite02StateData1MovementStatus], a
-	ld a, $8
+	ld a, SPRITE_FACING_LEFT
 	ld [wSprite02StateData1FacingDirection], a
 	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
 	jr z, .asm_60dff
-	ld a, $0
+	ld a, SPRITE_FACING_DOWN
 	ld [wSprite02StateData1FacingDirection], a
 .asm_60dff
 	call Delay3
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
-	ld a, $5
+	ld a, TEXT_POKEMONTOWER7F_TEXT5
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-PokemonTower7Script7:
+PokemonTower7FScript7:
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, PokemonTower7JessieJamesEndBattleText
-	ld de, PokemonTower7JessieJamesEndBattleText
+	ld hl, PokemonTower7FJessieJamesEndBattleText
+	ld de, PokemonTower7FJessieJamesEndBattleText
 	call SaveEndBattleTextPointers
 	ld a, OPP_ROCKET
 	ld [wCurOpponent], a
@@ -160,16 +162,16 @@ PokemonTower7Script7:
 	xor a
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
-	ld a, $8
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT8
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7Script8:
-	ld a, $ff
+PokemonTower7FScript8:
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, [wIsInBattle]
 	cp $ff
-	jp z, PokemonTower7Script_60d01
+	jp z, PokemonTower7FSetDefaultScript
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
 	ld [wSprite02StateData1MovementStatus], a
@@ -180,7 +182,7 @@ PokemonTower7Script8:
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld a, $6
+	ld a, TEXT_POKEMONTOWER7F_TEXT6
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	xor a
@@ -189,51 +191,51 @@ PokemonTower7Script8:
 	ld c, BANK(Music_MeetJessieJames)
 	ld a, MUSIC_MEET_JESSIE_JAMES
 	call PlayMusic
-	ld a, $ff
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, $9
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT9
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7Script9:
-	ld a, $ff
+PokemonTower7FScript9:
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
 	ld a, HS_POKEMON_TOWER_7F_JESSIE
-	call PokemonTower7Script_60ebe
+	call PokemonTower7FScript_HideObject
 	ld a, HS_POKEMON_TOWER_7F_JAMES
-	call PokemonTower7Script_60ebe
+	call PokemonTower7FScript_HideObject
 	call UpdateSprites
 	call Delay3
 	call GBFadeInFromBlack
-	ld a, $a
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT10
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7Script10:
+PokemonTower7FScript10:
 	call PlayDefaultMusic
 	xor a
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
-	ld a, $0
-	call PokemonTower7Script_60d05
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT0
+	call PokemonTower7FSetScript
 	ret
 
-PokemonTower7Script_60eaf:
+PokemonTower7FScript_ShowObject:
 	ld [wMissableObjectIndex], a
 	predef ShowObject
 	call UpdateSprites
 	call Delay3
 	ret
 
-PokemonTower7Script_60ebe:
+PokemonTower7FScript_HideObject:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	ret
 
-PokemonTower7Script11:
-	ld a, $ff
+PokemonTower7FWarpToMrFujiHouseScript:
+	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, HS_POKEMON_TOWER_7F_MR_FUJI
 	ld [wMissableObjectIndex], a
@@ -248,23 +250,23 @@ PokemonTower7Script11:
 	ld [wLastMap], a
 	ld hl, wd72d
 	set 3, [hl]
-	ld a, $0
+	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT0
 	ld [wPokemonTower7FCurScript], a
 	ret
 
 PokemonTower7F_TextPointers:
-	dw PokemonTower7Text1
-	dw PokemonTower7Text2
-	dw PokemonTower7Text3
-	dw PokemonTower7Text4
-	dw PokemonTower7Text5
-	dw PokemonTower7Text6
+	def_text_pointers
+	dw_const PokemonTower7FJessieJamesText, TEXT_POKEMONTOWER7F_JESSIE
+	dw_const PokemonTower7FJessieJamesText, TEXT_POKEMONTOWER7F_JAMES
+	dw_const PokemonTower7FMrFujiText,      TEXT_POKEMONTOWER7F_MR_FUJI
+	dw_const PokemonTower7FText4,           TEXT_POKEMONTOWER7F_TEXT4
+	dw_const PokemonTower7FText5,           TEXT_POKEMONTOWER7F_TEXT5
+	dw_const PokemonTower7FText6,           TEXT_POKEMONTOWER7F_TEXT6
 
-PokemonTower7Text1:
-PokemonTower7Text2:
+PokemonTower7FJessieJamesText:
 	text_end
 
-PokemonTower7Text4:
+PokemonTower7FText4:
 	text_far _PokemonTowerJessieJamesText1
 	text_asm
 	ld c, 10
@@ -280,24 +282,24 @@ PokemonTower7Text4:
 	call DelayFrames
 	jp TextScriptEnd
 
-PokemonTower7Text5:
+PokemonTower7FText5:
 	text_far _PokemonTowerJessieJamesText2
 	text_end
 
-PokemonTower7JessieJamesEndBattleText:
+PokemonTower7FJessieJamesEndBattleText:
 	text_far _PokemonTowerJessieJamesText3
 	text_end
 
-PokemonTower7Text6:
+PokemonTower7FText6:
 	text_far _PokemonTowerJessieJamesText4
 	text_asm
 	ld c, 64
 	call DelayFrames
 	jp TextScriptEnd
 
-PokemonTower7Text3:
+PokemonTower7FMrFujiText:
 	text_asm
-	ld hl, PokemonTower7Text_60f75
+	ld hl, .RescueText
 	call PrintText
 	SetEvent EVENT_RESCUED_MR_FUJI
 	SetEvent EVENT_RESCUED_MR_FUJI_2
@@ -310,10 +312,10 @@ PokemonTower7Text3:
 	ld a, HS_SAFFRON_CITY_F
 	ld [wMissableObjectIndex], a
 	predef ShowObject
-	ld a, $b
+	ld a, SCRIPT_POKEMONTOWER7F_WARP_TO_MR_FUJI_HOUSE
 	ld [wPokemonTower7FCurScript], a
 	jp TextScriptEnd
 
-PokemonTower7Text_60f75:
-	text_far _TowerRescueFujiText
+.RescueText:
+	text_far _PokemonTower7FMrFujiRescueText
 	text_end

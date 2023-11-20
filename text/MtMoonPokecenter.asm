@@ -1,4 +1,4 @@
-_MtMoonPokecenterText1::
+_MtMoonPokecenterYoungsterText::
 	text "I've 6 # BALLs"
 	line "set in my belt."
 
@@ -6,7 +6,7 @@ _MtMoonPokecenterText1::
 	line "carry 6 #MON."
 	done
 
-_MtMoonPokecenterText3::
+_MtMoonPokecenterGentlemanText::
 	text "TEAM ROCKET"
 	line "attacks CERULEAN"
 	cont "citizens..."
@@ -16,11 +16,11 @@ _MtMoonPokecenterText3::
 	cont "news!"
 	done
 
-_MtMoonPokecenterText5::
+_MtMoonPokecenterClipboardText::
 	text_start
 	done
 
-_MagikarpSalesmanText1::
+_MtMoonPokecenterMagikarpSalesmanIGotADealText::
 	text "MAN: Hello, there!"
 	line "Have I got a deal"
 	cont "just for you!"
@@ -31,18 +31,18 @@ _MagikarpSalesmanText1::
 	cont "What do you say?"
 	done
 
-_MagikarpSalesmanNoText::
+_MtMoonPokecenterMagikarpSalesmanNoText::
 	text "No? I'm only"
 	line "doing this as a"
 	cont "favor to you!"
 	done
 
-_MagikarpSalesmanNoMoneyText::
+_MtMoonPokecenterMagikarpSalesmanNoMoneyText::
 	text "You'll need more"
 	line "money than that!"
 	done
 
-_MagikarpSalesmanText2::
+_MtMoonPokecenterMagikarpSalesmanNoRefundsText::
 	text "MAN: Well, I don't"
 	line "give refunds!"
 	done

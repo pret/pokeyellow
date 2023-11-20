@@ -3,20 +3,21 @@ ViridianSchoolHouse_Script:
 	ret
 
 ViridianSchoolHouse_TextPointers:
-	dw SchoolText1
-	dw SchoolText2
-	dw SchoolText3
+	def_text_pointers
+	dw_const ViridianSchoolHouseBrunetteGirlText, TEXT_VIRIDIANSCHOOLHOUSE_BRUNETTE_GIRL
+	dw_const ViridianSchoolHouseCooltrainerFText, TEXT_VIRIDIANSCHOOLHOUSE_COOLTRAINER_F
+	dw_const ViridianSchoolHouseLittleGirlText,   TEXT_VIRIDIANSCHOOLHOUSE_LITTLE_GIRL
 
-SchoolText1:
-	text_far _SchoolText1
+ViridianSchoolHouseBrunetteGirlText:
+	text_far _ViridianSchoolHouseBrunetteGirlText
 	text_end
 
-SchoolText2:
+ViridianSchoolHouseCooltrainerFText:
 	text_asm
-	farcall Func_f1c0f
+	farcall ViridianSchoolHousePrintCooltrainerFText
 	jp TextScriptEnd
 
-SchoolText3:
+ViridianSchoolHouseLittleGirlText:
 	text_asm
-	farcall Func_f1c03
+	farcall ViridianSchoolHousePrintLittleGirlText
 	jp TextScriptEnd

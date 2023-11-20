@@ -24,7 +24,7 @@ _PokemonTowerJessieJamesText4::
 	cont "off again!@"
 	text_end
 
-_TowerRescueFujiText::
+_PokemonTower7FMrFujiRescueText::
 	text "MR.FUJI: Heh? You"
 	line "came to save me?"
 

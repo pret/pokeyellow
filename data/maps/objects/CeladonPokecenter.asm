@@ -1,3 +1,9 @@
+	object_const_def
+	const_export CELADONPOKECENTER_NURSE
+	const_export CELADONPOKECENTER_GENTLEMAN
+	const_export CELADONPOKECENTER_BEAUTY
+	const_export CELADONPOKECENTER_LINK_RECEPTIONIST
+
 CeladonPokecenter_Object:
 	db $0 ; border block
 
@@ -8,10 +14,10 @@ CeladonPokecenter_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, 1 ; person
-	object_event  7,  3, SPRITE_GENTLEMAN, STAY, DOWN, 2 ; person
-	object_event 10,  5, SPRITE_BEAUTY, WALK, ANY_DIR, 3 ; person
-	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 4 ; person
-	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, 5 ; person
+	object_event  3,  1, SPRITE_NURSE, STAY, DOWN, TEXT_CELADONPOKECENTER_NURSE
+	object_event  7,  3, SPRITE_GENTLEMAN, STAY, DOWN, TEXT_CELADONPOKECENTER_GENTLEMAN
+	object_event 10,  5, SPRITE_BEAUTY, WALK, ANY_DIR, TEXT_CELADONPOKECENTER_BEAUTY
+	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, TEXT_CELADONPOKECENTER_LINK_RECEPTIONIST
+	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, TEXT_CELADONPOKECENTER_CHANSEY
 
 	def_warps_to CELADON_POKECENTER

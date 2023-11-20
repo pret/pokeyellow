@@ -1,4 +1,4 @@
-_PewterPokecenterText2::
+_PewterPokecenterGentlemanText::
 	text "What!?"
 
 	para "TEAM ROCKET is"
@@ -21,7 +21,7 @@ _PewterPokecenterText3::
 	cont "are cured."
 	done
 
-_PewterJigglypuffText::
+_PewterPokecenterJigglypuffText::
 	text "JIGGLYPUFF: Puu"
 	line "pupuu!"
 	done

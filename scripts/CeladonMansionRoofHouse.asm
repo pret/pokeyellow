@@ -3,14 +3,15 @@ CeladonMansionRoofHouse_Script:
 	ret
 
 CeladonMansionRoofHouse_TextPointers:
-	dw CeladonMansion5Text1
-	dw CeladonMansion5Text2
+	def_text_pointers
+	dw_const CeladonMansionRoofHouseHikerText,         TEXT_CELADONMANSION_ROOF_HOUSE_HIKER
+	dw_const CeladonMansionRoofHouseEeveePokeballText, TEXT_CELADONMANSION_ROOF_HOUSE_EEVEE_POKEBALL
 
-CeladonMansion5Text1:
-	text_far _CeladonMansion5Text1
+CeladonMansionRoofHouseHikerText:
+	text_far _CeladonMansionRoofHouseHikerText
 	text_end
 
-CeladonMansion5Text2:
+CeladonMansionRoofHouseEeveePokeballText:
 	text_asm
 	lb bc, EEVEE, 25
 	call GivePokemon
