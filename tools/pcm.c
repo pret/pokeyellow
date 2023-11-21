@@ -1,9 +1,33 @@
 #define PROGRAM_NAME "pcm"
-#define USAGE_OPTS "infile.wav outfile.pcm"
+#define USAGE_OPTS "[-d|--decompress] [-h|--help] infile.wav outfile.pcm"
 
 #include "common.h"
 
 #define CHUNKID(b1, b2, b3, b4) (uint32_t)((uint32_t)(b1) | ((uint32_t)(b2) << 8) | ((uint32_t)(b3) << 16) | ((uint32_t)(b4) << 24))
+
+#define LE16(n) (uint8_t)((n) & 0xff), (uint8_t)(((n) & 0xff00) >> 8)
+#define LE32(n) (uint8_t)((n) & 0xff), (uint8_t)(((n) & 0xff00) >> 8), \
+		(uint8_t)(((n) & 0xff0000) >> 16), (uint8_t)(((n) & 0xff000000) >> 24)
+
+void parse_args(int argc, char *argv[], bool *decompress) {
+	struct option long_options[] = {
+		{"decompress", no_argument, 0, 'd'},
+		{"help", no_argument, 0, 'h'},
+		{0}
+	};
+	for (int opt; (opt = getopt_long(argc, argv, "dh", long_options)) != -1;) {
+		switch (opt) {
+		case 'd':
+			*decompress = true;
+			break;
+		case 'h':
+			usage_exit(0);
+			break;
+		default:
+			usage_exit(1);
+		}
+	}
+}
 
 int32_t get_uint16le(uint8_t *data, long size, long i) {
 	return i + 2 < size ? (int32_t)data[i] | ((int32_t)data[i + 1] << 8) : -1;
@@ -82,18 +106,53 @@ uint8_t *wav2pcm(uint8_t *wavdata, long wavsize, size_t *pcmsize) {
 	return pcmdata;
 }
 
+uint8_t *pcm2wav(uint8_t *pcmdata, long pcmsize, size_t *wavsize) {
+	size_t num_samples = pcmsize * 8;
+	*wavsize = 44 + num_samples;
+	uint8_t *wavdata = xmalloc(*wavsize);
+
+	uint8_t header[44] = {
+		'R', 'I', 'F', 'F', // chunk ID "RIFF"
+		LE32(*wavsize - 8), // chunk size
+		'W', 'A', 'V', 'E', // format "WAVE"
+		'f', 'm', 't', ' ', // subchunk ID "fmt "
+		LE32(16),           // subchunk size
+		LE16(1),            // audio format
+		LE16(1),            // num channels
+		LE32(22050),        // sample rate
+		LE32(22050),        // byte rate
+		LE16(1),            // block align
+		LE16(8),            // bits per sample
+		'd', 'a', 't', 'a', // subchunk ID "data"
+		LE32(num_samples)   // subchunk size
+	};
+	memcpy(wavdata, header, sizeof(header));
+
+	for (size_t i = 0; i < num_samples; i++) {
+		uint8_t bit = pcmdata[i / 8] & (1 << (7 - i % 8));
+		wavdata[sizeof(header) + i] = bit ? 0xff : 0x00;
+	}
+
+	return wavdata;
+}
+
 int main(int argc, char *argv[]) {
-	if (argc != 3) {
+	bool decompress = false;
+	parse_args(argc, argv, &decompress);
+
+	argc -= optind;
+	argv += optind;
+	if (argc != 2) {
 		usage_exit(1);
 	}
 
-	long wavsize;
-	uint8_t *wavdata = read_u8(argv[1], &wavsize);
-	size_t pcmsize;
-	uint8_t *pcmdata = wav2pcm(wavdata, wavsize, &pcmsize);
-	write_u8(argv[2], pcmdata, pcmsize);
+	long in_size;
+	uint8_t *in_data = read_u8(argv[0], &in_size);
+	size_t out_size;
+	uint8_t *out_data = (decompress ? pcm2wav : wav2pcm)(in_data, in_size, &out_size);
+	write_u8(argv[1], out_data, out_size);
 
-	free(wavdata);
-	free(pcmdata);
+	free(in_data);
+	free(out_data);
 	return 0;
 }
