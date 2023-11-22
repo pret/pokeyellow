@@ -253,13 +253,13 @@ SetPal_TrainerCard:
 	ld de, wTrainerCardBlkPacket
 	ret
 
-SendUnknownPalPacket_7205d::
-	ld hl, UnknownPalPacket_72811
+SetPal_PikachusBeach::
+	ld hl, PalPacket_PikachusBeach
 	ld de, BlkPacket_WholeScreen
 	ret
 
-SendUnknownPalPacket_72064::
-	ld hl, UnknownPalPacket_72821
+SetPal_PikachusBeachTitle::
+	ld hl, PalPacket_PikachusBeachTitle
 	ld de, UnknownPacket_72751
 	ret
 
@@ -279,8 +279,8 @@ SetPalFunctions:
 	dw SetPal_PokemonWholeScreen
 	dw SetPal_GameFreakIntro
 	dw SetPal_TrainerCard
-	dw SendUnknownPalPacket_7205d
-	dw SendUnknownPalPacket_72064
+	dw SetPal_PikachusBeach
+	dw SetPal_PikachusBeachTitle
 
 ; The length of the blk data of each badge on the Trainer Card.
 ; The Rainbow Badge has 3 entries because of its many colors.
@@ -323,7 +323,7 @@ YellowIntroPaletteAction::
 	jp InitGBCPalettes
 
 .asm_720bd
-	ld hl, UnknownPalPacket_72811
+	ld hl, PalPacket_PikachusBeach
 	ldh a, [hGBC]
 	and a
 	jp z, SendSGBPacket
@@ -351,7 +351,7 @@ LoadOverworldPikachuFrontpicPalettes::
 	ld hl, wPartyMenuBlkPacket
 	ld [hl], a
 	ld hl, wPartyMenuBlkPacket + 2
-	ld a, $26
+	ld a, PAL_PIKACHU_PORTRAIT
 	ld [hl], a
 	ld hl, wPalPacket
 	ldh a, [hGBC]

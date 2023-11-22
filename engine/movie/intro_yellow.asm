@@ -847,7 +847,7 @@ InitYellowIntroGFXAndMusic:
 	call CopyVideoData
 	call ClearObjectAnimationBuffers
 	call LoadYellowIntroObjectAnimationDataPointers
-	ld b, $8
+	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	xor a
 	ld hl, wYellowIntroCurrentScene

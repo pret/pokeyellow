@@ -1026,7 +1026,7 @@ _NoMovesLeftText::
 _MultiHitText::
 	text "Hit the enemy"
 	line "@"
-	text_decimal wPlayerNumHits,1,1
+	text_decimal wPlayerNumHits, 1, 1
 	text " times!"
 	prompt
 

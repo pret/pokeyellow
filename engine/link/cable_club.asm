@@ -277,7 +277,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld [wCurOpponent], a
 	call ClearScreen
 	call Delay3
-	ld b, $9
+	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 	ld hl, wOptions
 	res 7, [hl]
@@ -316,7 +316,7 @@ CallCurrentTradeCenterFunction:
 TradeCenter_SelectMon:
 	call ClearScreen
 	call Delay3
-	ld b, $9
+	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists
@@ -633,7 +633,7 @@ TradeCenter_DisplayStats:
 	predef StatusScreen
 	predef StatusScreen2
 	call Delay3
-	ld b, $9
+	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 	call GBPalNormal
 	call LoadTrainerInfoTextBoxTiles
@@ -859,7 +859,7 @@ TradeCenter_Trade:
 	ld c, 40
 	call DelayFrames
 	call Delay3
-	ld b, $9
+	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 	hlcoord 0, 12
 	lb bc, 4, 18

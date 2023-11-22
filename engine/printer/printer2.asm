@@ -129,7 +129,7 @@ Printer_GetMonStats:
 	ld a, [wLoadedMonMoves + 3]
 	call .PlaceMoveName
 
-	ld b, $4 ; SET_PAL_STATUS_SCREEN
+	ld b, SET_PAL_POKEDEX
 	call RunPaletteCommand
 
 	ld a, $1
