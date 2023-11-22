@@ -116,7 +116,7 @@ SilphCo11FScript_621c5:
 	call ArePlayerCoordsInArray
 	jp nc, CheckFightingMapTrainers
 	ld a, [wCoordIndex]
-	ld [wcf0d], a
+	ld [wSavedCoordIndex], a
 	xor a
 	ldh [hJoyHeld], a
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
@@ -156,8 +156,8 @@ SilphCo11FGiovanniAfterBattleScript:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SilphCo11FResetCurScript
-	ld a, [wcf0d]
-	cp $1
+	ld a, [wSavedCoordIndex]
+	cp 1 ; index of second, upper-right entry in SilphCo11FDefaultScript.PlayerCoordsArray
 	jr z, .face_player_up
 	ld a, PLAYER_DIR_LEFT
 	ld b, SPRITE_FACING_RIGHT
@@ -189,8 +189,8 @@ SilphCo11FGiovanniStartBattleScript:
 	ld a, SILPHCO11F_GIOVANNI
 	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
-	ld a, [wcf0d]
-	cp $1
+	ld a, [wSavedCoordIndex]
+	cp 1 ; index of second, upper-right entry in SilphCo11FDefaultScript.PlayerCoordsArray
 	jr z, .face_player_up
 	ld a, PLAYER_DIR_LEFT
 	ld b, SPRITE_FACING_RIGHT

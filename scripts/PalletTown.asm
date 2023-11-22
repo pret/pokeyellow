@@ -55,7 +55,7 @@ PalletTownOakHeyWaitScript:
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	xor a
-	ld [wcf0d], a
+	ld [wOakWalkedToPlayer], a
 	ld a, TEXT_PALLETTOWN_OAK
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -109,7 +109,7 @@ PalletTownOakGreetsPlayerScript:
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, 1
-	ld [wcf0d], a
+	ld [wOakWalkedToPlayer], a
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
@@ -153,8 +153,8 @@ PalletTownPikachuBattleScript:
 	ret
 
 PalletTownAfterPikachuBattleScript:
-	ld a, $2
-	ld [wcf0d], a
+	ld a, 2
+	ld [wOakWalkedToPlayer], a
 	ld a, TEXT_PALLETTOWN_OAK
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -232,7 +232,7 @@ PalletTown_TextPointers:
 
 PalletTownOakText:
 	text_asm
-	ld a, [wcf0d]
+	ld a, [wOakWalkedToPlayer]
 	and a
 	jr nz, .next
 	ld a, 1

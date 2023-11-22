@@ -25,7 +25,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
 .hiddenObjectNotFound
 	predef GetTileAndCoordsInFrontOfPlayer
 	farcall PrintBookshelfText
-	ldh a, [hFFDB]
+	ldh a, [hInteractedWithBookshelf]
 	and a
 	jr z, .done
 .nothingFound

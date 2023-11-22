@@ -30,7 +30,7 @@ PrepareOAMData::
 	inc e
 	inc e
 	ld a, [de] ; [x#SPRITESTATEDATA1_IMAGEINDEX]
-	ld [wd5cd], a
+	ld [wSavedSpriteImageIndex], a
 	cp $ff ; off-screen (don't draw)
 	jr nz, .visible
 
@@ -79,7 +79,7 @@ PrepareOAMData::
 	jr nc, .asm_4a41
 .hidden
 	call Func_4a7b
-	ld [wd5cd], a
+	ld [wSavedSpriteImageIndex], a
 	ldh a, [hOAMBufferOffset]
 
 	ld e, a
@@ -101,7 +101,7 @@ PrepareOAMData::
 	ld [de], a
 	inc hl
 	inc e
-	ld a, [wd5cd]
+	ld a, [wSavedSpriteImageIndex]
 	add [hl]
 	cp $80
 	jr c, .asm_4a1c
@@ -188,7 +188,7 @@ GetSpriteScreenXY:
 
 Func_4a7b:
 	push bc
-	ld a, [wd5cd]            ; temp copy of [x#SPRITESTATEDATA1_IMAGEINDEX]
+	ld a, [wSavedSpriteImageIndex]
 	swap a                   ; high nybble determines sprite used (0 is always player sprite, next are some npcs)
 	and $f
 

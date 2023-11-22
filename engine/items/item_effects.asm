@@ -771,7 +771,7 @@ ItemUseSurfboard:
 	ld a, b
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wWastedByteCD39], a
+	ld [wUnusedCD39], a
 	inc a
 	ld [wSimulatedJoypadStatesIndex], a
 	ret
@@ -873,7 +873,7 @@ Func_d85d:
 	jr z, .cannotEvolveWithUsedStone
 	inc hl
 	inc hl
-	cp EV_ITEM
+	cp EVOLVE_ITEM
 	jr nz, .loop
 	dec hl
 	dec hl
