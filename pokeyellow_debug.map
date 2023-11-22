@@ -12555,8 +12555,8 @@ ROMX bank #28:
 	         $604c = SetPal_TrainerCard.haveBadge
 	         $604d = SetPal_TrainerCard.skipBadgeDataLoop
 	         $6051 = SetPal_TrainerCard.nextBadge
-	         $605d = SendUnknownPalPacket_7205d
-	         $6064 = SendUnknownPalPacket_72064
+	         $605d = SetPal_PikachusBeach
+	         $6064 = SetPal_PikachusBeachTitle
 	         $606b = SetPalFunctions
 	         $608b = BadgeBlkDataLengths
 	         $6093 = DeterminePaletteID
@@ -12664,8 +12664,8 @@ ROMX bank #28:
 	         $67e1 = PalPacket_Generic
 	         $67f1 = PalPacket_NidorinoIntro
 	         $6801 = PalPacket_GameFreakIntro
-	         $6811 = UnknownPalPacket_72811
-	         $6821 = UnknownPalPacket_72821
+	         $6811 = PalPacket_PikachusBeach
+	         $6821 = PalPacket_PikachusBeachTitle
 	         $6831 = PalTrnPacket
 	         $6841 = MltReq1Packet
 	         $6851 = MltReq2Packet

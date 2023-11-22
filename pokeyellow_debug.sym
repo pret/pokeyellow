@@ -12356,8 +12356,8 @@
 1c:604c SetPal_TrainerCard.haveBadge
 1c:604d SetPal_TrainerCard.skipBadgeDataLoop
 1c:6051 SetPal_TrainerCard.nextBadge
-1c:605d SendUnknownPalPacket_7205d
-1c:6064 SendUnknownPalPacket_72064
+1c:605d SetPal_PikachusBeach
+1c:6064 SetPal_PikachusBeachTitle
 1c:606b SetPalFunctions
 1c:608b BadgeBlkDataLengths
 1c:6093 DeterminePaletteID
@@ -12465,8 +12465,8 @@
 1c:67e1 PalPacket_Generic
 1c:67f1 PalPacket_NidorinoIntro
 1c:6801 PalPacket_GameFreakIntro
-1c:6811 UnknownPalPacket_72811
-1c:6821 UnknownPalPacket_72821
+1c:6811 PalPacket_PikachusBeach
+1c:6821 PalPacket_PikachusBeachTitle
 1c:6831 PalTrnPacket
 1c:6841 MltReq1Packet
 1c:6851 MltReq2Packet
