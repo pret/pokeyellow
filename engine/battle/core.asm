@@ -6555,14 +6555,14 @@ LoadPlayerBackPic:
 	ld de, vBackPic
 	call InterlaceMergeSpriteBuffers
 	ld a, $0
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	ld hl, vSprites
 	ld de, sSpriteBuffer1
 	ldh a, [hLoadedROMBank]
 	ld b, a
 	ld c, 7 * 7
 	call CopyVideoData
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	ld a, $31
 	ldh [hStartTileID], a
 	hlcoord 1, 5

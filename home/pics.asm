@@ -89,7 +89,7 @@ LoadUncompressedSpriteData::
 	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
 	ldh [hSpriteOffset], a
 	ld a, $0
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	ld hl, sSpriteBuffer0
 	call ZeroSpriteBuffer   ; zero buffer 0
 	ld de, sSpriteBuffer1
@@ -100,7 +100,7 @@ LoadUncompressedSpriteData::
 	ld de, sSpriteBuffer2
 	ld hl, sSpriteBuffer1
 	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	pop de
 	jp InterlaceMergeSpriteBuffers
 
@@ -148,7 +148,7 @@ ZeroSpriteBuffer::
 ; de: output address
 InterlaceMergeSpriteBuffers::
 	ld a, $0
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	push de
 	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
 	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
@@ -191,4 +191,4 @@ InterlaceMergeSpriteBuffers::
 	ldh a, [hLoadedROMBank]
 	ld b, a
 	call CopyVideoData
-	jp PrepareRTCDataAndDisableSRAM
+	jp CloseSRAM

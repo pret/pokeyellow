@@ -200,13 +200,13 @@ HoFLoadPlayerPics:
 	ld de, RedPicFront
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
-	ld a, $0
-	call SwitchSRAMBankAndLatchClockData
+	ld a, SRAM_DISABLE
+	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
 	ld bc, $310
 	call CopyData
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
 	ld de, RedPicBack
