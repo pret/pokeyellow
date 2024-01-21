@@ -33,7 +33,7 @@ FileDataDestroyedText:
 
 LoadSAV0:
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 ; This vc_hook does not have to be in any particular location.
 ; It is defined here because it refers to the same labels as the two lines below.
@@ -81,7 +81,7 @@ LoadSAV0:
 
 LoadSAV1:
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld hl, sGameData
 	ld bc, sGameDataEnd - sGameData
@@ -99,7 +99,7 @@ LoadSAV1:
 
 LoadSAV2:
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld hl, sGameData
 	ld bc, sGameDataEnd - sGameData
@@ -196,7 +196,7 @@ OlderFileWillBeErasedText:
 
 SaveSAVtoSRAM0:
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld hl, wPlayerName
 	ld de, sPlayerName
@@ -226,7 +226,7 @@ SaveSAVtoSRAM0:
 SaveSAVtoSRAM1:
 ; stored pokémon
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld hl, wBoxDataStart
 	ld de, sCurBoxData
@@ -241,7 +241,7 @@ SaveSAVtoSRAM1:
 
 SaveSAVtoSRAM2:
 	call EnableSRAM
-	ld a, $1
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld hl, wPartyDataStart
 	ld de, sPartyData
@@ -501,10 +501,10 @@ EmptyAllSRAMBoxes:
 ; marks all boxes in SRAM as empty (initialisation for the first time the
 ; player changes the box)
 	call EnableSRAM
-	ld a, 2
+	ld a, BANK("Saved Boxes 1")
 	ld [MBC1SRamBank], a
 	call EmptySRAMBoxesInBank
-	ld a, 3
+	ld a, BANK("Saved Boxes 2")
 	ld [MBC1SRamBank], a
 	call EmptySRAMBoxesInBank
 	call DisableSRAM
@@ -542,10 +542,10 @@ GetMonCountsForAllBoxes:
 	ld hl, wBoxMonCounts
 	push hl
 	call EnableSRAM
-	ld a, $2
+	ld a, BANK("Saved Boxes 1")
 	ld [MBC1SRamBank], a
 	call GetMonCountsForBoxesInBank
-	ld a, $3
+	ld a, BANK("Saved Boxes 2")
 	ld [MBC1SRamBank], a
 	call GetMonCountsForBoxesInBank
 	call DisableSRAM
@@ -582,7 +582,7 @@ SAVCheckRandomID:
 ; and the two random numbers generated at game beginning
 ; (which are stored at wPlayerID)s
 	call EnableSRAM
-	ld a, $01
+	ld a, BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld a, [sPlayerName]
 	and a

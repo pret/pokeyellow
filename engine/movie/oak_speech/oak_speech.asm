@@ -231,7 +231,7 @@ IntroDisplayPicCenteredOrUpperRight:
 	push bc
 	ld a, b
 	call UncompressSpriteFromDE
-	ld a, $0
+	ld a, SRAM_DISABLE
 	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
