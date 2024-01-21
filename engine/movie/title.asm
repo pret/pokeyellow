@@ -378,10 +378,10 @@ IncrementResetCounter:
 
 FillSpriteBuffer0WithAA:
 	xor a
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	ld hl, sSpriteBuffer0
 	ld bc, $20
 	ld a, $aa
 	call FillMemory
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	ret

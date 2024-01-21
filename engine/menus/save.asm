@@ -32,7 +32,7 @@ FileDataDestroyedText:
 	text_end
 
 LoadSAV0:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 ; This vc_hook does not have to be in any particular location.
@@ -80,7 +80,7 @@ LoadSAV0:
 	jp SAVGoodChecksum
 
 LoadSAV1:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 	ld hl, sGameData
@@ -98,7 +98,7 @@ LoadSAV1:
 	jp SAVGoodChecksum
 
 LoadSAV2:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 	ld hl, sGameData
@@ -123,7 +123,7 @@ SAVBadCheckSum:
 	scf
 
 SAVGoodChecksum:
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 LoadSAVIgnoreBadCheckSum:
@@ -195,7 +195,7 @@ OlderFileWillBeErasedText:
 	text_end
 
 SaveSAVtoSRAM0:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 	ld hl, wPlayerName
@@ -220,12 +220,12 @@ SaveSAVtoSRAM0:
 	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 SaveSAVtoSRAM1:
 ; stored pokémon
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 	ld hl, wBoxDataStart
@@ -236,11 +236,11 @@ SaveSAVtoSRAM1:
 	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 SaveSAVtoSRAM2:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $1
 	ld [MBC1SRamBank], a
 	ld hl, wPartyDataStart
@@ -262,7 +262,7 @@ SaveSAVtoSRAM2:
 	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
 	ld [sMainDataCheckSum], a
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 SaveSAVtoSRAM::
@@ -386,7 +386,7 @@ WhenYouChangeBoxText:
 CopyBoxToOrFromSRAM:
 ; copy an entire box from hl to de with b as the SRAM bank
 	push hl
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, b
 	ld [MBC1SRamBank], a
 	ld bc, wBoxDataEnd - wBoxDataStart
@@ -404,7 +404,7 @@ CopyBoxToOrFromSRAM:
 	call SAVCheckSum
 	ld [sBank2AllBoxesChecksum], a ; sBank3AllBoxesChecksum
 	call CalcIndividualBoxCheckSums
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 DisplayChangeBoxMenu:
@@ -500,14 +500,14 @@ BoxNoText:
 EmptyAllSRAMBoxes:
 ; marks all boxes in SRAM as empty (initialisation for the first time the
 ; player changes the box)
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, 2
 	ld [MBC1SRamBank], a
 	call EmptySRAMBoxesInBank
 	ld a, 3
 	ld [MBC1SRamBank], a
 	call EmptySRAMBoxesInBank
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 EmptySRAMBoxesInBank:
@@ -541,14 +541,14 @@ EmptySRAMBox:
 GetMonCountsForAllBoxes:
 	ld hl, wBoxMonCounts
 	push hl
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $2
 	ld [MBC1SRamBank], a
 	call GetMonCountsForBoxesInBank
 	ld a, $3
 	ld [MBC1SRamBank], a
 	call GetMonCountsForBoxesInBank
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	pop hl
 
 ; copy the count for the current box from WRAM
@@ -581,7 +581,7 @@ SAVCheckRandomID:
 ; checks if Sav file is the same by checking player's name 1st letter
 ; and the two random numbers generated at game beginning
 ; (which are stored at wPlayerID)s
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $01
 	ld [MBC1SRamBank], a
 	ld a, [sPlayerName]
@@ -645,15 +645,15 @@ LoadHallOfFameTeams:
 	; fallthrough
 
 HallOfFame_Copy:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	xor a
 	ld [MBC1SRamBank], a
 	call CopyData
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 ClearSAV:
-	call EnableSRAMAndLatchClockData
+	call EnableSRAM
 	ld a, $4
 .loop
 	dec a
@@ -661,7 +661,7 @@ ClearSAV:
 	call PadSRAM_FF
 	pop af
 	jr nz, .loop
-	call DisableSRAMAndPrepareClockData
+	call DisableSRAM
 	ret
 
 PadSRAM_FF:
@@ -671,14 +671,14 @@ PadSRAM_FF:
 	ld a, $ff
 	jp FillMemory
 
-EnableSRAMAndLatchClockData:
-	ld a, $1
+EnableSRAM:
+	ld a, SRAM_BANKING_MODE
 	ld [MBC1SRamBankingMode], a
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
 	ret
 
-DisableSRAMAndPrepareClockData:
+DisableSRAM:
 	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
