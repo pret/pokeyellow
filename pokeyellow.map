@@ -1,3 +1,10 @@
+SUMMARY:
+	ROM0: 16363 bytes used / 21 free
+	ROMX: 855001 bytes used / 177191 free in 63 banks
+	SRAM: 25122 bytes used / 7646 free in 4 banks
+	WRAM0: 8192 bytes used / 0 free
+	HRAM: 127 bytes used / 0 free
+
 ROM0 bank #0:
 	SECTION: $0000 (0 bytes) ["NULL"]
 	         $0000 = NULL
@@ -1291,7 +1298,7 @@ ROMX bank #1:
 	         $4a92 = WriteDMACodeToHRAM
 	         $4a99 = WriteDMACodeToHRAM.copy
 	         $4aa0 = DMARoutine
-	         $4aaa = DMARoutineEnd
+	         $4aaa = DMARoutine.End
 	         $4aaa = _IsTilePassable
 	         $4ab0 = _IsTilePassable.loop
 	         $4aba = _IsTilePassable.tileNotPassable
@@ -3148,22 +3155,22 @@ ROMX bank #3:
 	         $5ea7 = CardKeyTable1
 	         $5ed0 = CardKeyTable2
 	         $5ef9 = CardKeyTable3
-	         $5f02 = ItemUsePokedoll
+	         $5f02 = ItemUsePokeDoll
 	         $5f11 = ItemUseGuardSpec
 	         $5f38 = ItemUseSuperRepel
 	         $5f3d = ItemUseMaxRepel
 	         $5f42 = ItemUseDireHit
 	         $5f69 = ItemUseXStat
 	         $5f78 = ItemUseXStat.inBattle
-	         $5fbd = ItemUsePokeflute
-	         $5fe8 = ItemUsePokeflute.notRoute12
-	         $6007 = ItemUsePokeflute.notRoute16
-	         $602e = ItemUsePokeflute.noSnorlaxOrPikachuToWakeUp
-	         $6034 = ItemUsePokeflute.inBattle
-	         $604c = ItemUsePokeflute.skipWakingUpEnemyParty
-	         $6063 = ItemUsePokeflute.asm_e063
-	         $6088 = ItemUsePokeflute.musicWaitLoop
-	         $608e = ItemUsePokeflute.skipMusic
+	         $5fbd = ItemUsePokeFlute
+	         $5fe8 = ItemUsePokeFlute.notRoute12
+	         $6007 = ItemUsePokeFlute.notRoute16
+	         $602e = ItemUsePokeFlute.noSnorlaxOrPikachuToWakeUp
+	         $6034 = ItemUsePokeFlute.inBattle
+	         $604c = ItemUsePokeFlute.skipWakingUpEnemyParty
+	         $6063 = ItemUsePokeFlute.asm_e063
+	         $6088 = ItemUsePokeFlute.musicWaitLoop
+	         $608e = ItemUsePokeFlute.skipMusic
 	         $6094 = WakeUpEntireParty
 	         $6099 = WakeUpEntireParty.loop
 	         $60a4 = WakeUpEntireParty.notAsleep
@@ -13718,7 +13725,7 @@ ROMX bank #30:
 	         $6450 = JumpKickAnim
 	         $6454 = RollingKickAnim
 	         $645a = SandAttackAnim
-	         $645e = HeadButtAnim
+	         $645e = HeadbuttAnim
 	         $6462 = HornAttackAnim
 	         $6469 = FuryAttackAnim
 	         $6470 = HornDrillAnim
@@ -23795,10 +23802,3 @@ HRAM bank #0:
 	         $fffc = hPikachuSpriteVRAMOffset
 	         $fffe = hGBC
 	TOTAL EMPTY: $0000 bytes
-
-SUMMARY:
-	ROM0: 16363 bytes used / 21 free
-	ROMX: 855001 bytes used / 177191 free in 63 banks
-	SRAM: 25122 bytes used / 7646 free in 4 banks
-	WRAM0: 8192 bytes used / 0 free
-	HRAM: 127 bytes used / 0 free
