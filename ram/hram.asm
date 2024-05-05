@@ -173,7 +173,7 @@ hMoney:: ds 3 ; BCD number
 NEXTU
 ; some code zeroes this for no reason when writing a coin amount
 hUnusedCoinsByte:: db
-hCoins:: ds 2 ; BCD number
+hCoins:: dw ; BCD number
 ENDU
 
 hDivideBCDDivisor::
@@ -407,3 +407,5 @@ hPikachuSpriteVRAMOffset:: db
 
 ; 0 if DMG, != 0 if GBC
 hGBC:: db
+
+ENDSECTION

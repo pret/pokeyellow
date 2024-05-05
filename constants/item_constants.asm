@@ -52,13 +52,13 @@ DEF SAFARI_ROCK EQU CASCADEBADGE ; overload
 	const DOME_FOSSIL   ; $29
 	const HELIX_FOSSIL  ; $2A
 	const SECRET_KEY    ; $2B
-	const ITEM_2C       ; $2C
+	const ITEM_2C       ; $2C ; unused
 	const BIKE_VOUCHER  ; $2D
 	const X_ACCURACY    ; $2E
 	const LEAF_STONE    ; $2F
 	const CARD_KEY      ; $30
 	const NUGGET        ; $31
-	const ITEM_32       ; $32
+	const ITEM_32       ; $32 ; unused
 	const POKE_DOLL     ; $33
 	const FULL_HEAL     ; $34
 	const REVIVE        ; $35
@@ -215,6 +215,9 @@ DEF NUM_TM_HM EQU NUM_TMS + NUM_HMS
 ; These fit in 7 bytes, with one unused bit left over.
 DEF __tmhm_value__ = NUM_TM_HM + 1
 DEF UNUSED_TMNUM EQU __tmhm_value__
+
+DEF MAX_HIDDEN_ITEMS EQU 112
+DEF MAX_HIDDEN_COINS EQU 16
 
 ; used for Time Capsule held item compatibility
 DEF TWISTEDSPOON_GSC EQU $60

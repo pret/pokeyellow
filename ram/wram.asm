@@ -1977,7 +1977,7 @@ wUnusedD366:: db
 
 wCurMapHeader::
 wCurMapTileset:: db
-wCurMapHeight:: db 
+wCurMapHeight:: db
 wCurMapWidth:: db
 wCurMapDataPtr:: dw
 wCurMapTextPtr:: dw
@@ -2162,7 +2162,7 @@ wNumHoFTeams:: db
 
 wUnusedD5A3:: db
 
-wPlayerCoins:: ds 2 ; BCD
+wPlayerCoins:: dw ; BCD
 
 ; bit array of missable objects. set = removed
 wMissableObjectFlags:: flag_array $100
@@ -2300,9 +2300,9 @@ wGameProgressFlagsEnd::
 
 	ds 56
 
-wObtainedHiddenItemsFlags:: flag_array 112
+wObtainedHiddenItemsFlags:: flag_array MAX_HIDDEN_ITEMS
 
-wObtainedHiddenCoinsFlags:: flag_array 16
+wObtainedHiddenCoinsFlags:: flag_array MAX_HIDDEN_COINS
 
 ; $00 = walking
 ; $01 = biking
@@ -2594,3 +2594,5 @@ SECTION "Stack", WRAM0
 ; the stack grows downward
 	ds $eb - 1
 wStack:: db
+
+ENDSECTION
