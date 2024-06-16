@@ -276,13 +276,11 @@ DisplayOptionMenu:
 	ret
 
 CheckForPlayerNameInSRAM:
-; Check if the player name data in SRAM has a string terminator character
-; (indicating that a name may have been saved there) and return whether it does
-; in carry.
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
-	ld a, $1
+	ld a, SRAM_BANKING_MODE
 	ld [MBC1SRamBankingMode], a
+	assert SRAM_BANKING_MODE == BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName
@@ -292,7 +290,6 @@ CheckForPlayerNameInSRAM:
 	jr z, .found
 	dec b
 	jr nz, .loop
-; not found
 	xor a
 	ld [MBC1SRamEnable], a
 	ld [MBC1SRamBankingMode], a

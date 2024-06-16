@@ -604,7 +604,7 @@ SAVCheckRandomID:
 	ld a, [wPlayerID + 1]
 	cp h
 .next
-	ld a, $00
+	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
 	ret
