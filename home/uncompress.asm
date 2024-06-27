@@ -7,9 +7,9 @@ UncompressSpriteData::
 	ld a, b
 	call BankswitchCommon
 	ld a, $0
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	call _UncompressSpriteData
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	pop af
 	call BankswitchCommon
 	ret

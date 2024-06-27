@@ -666,12 +666,12 @@ DecompressRequestPikaPicAnimGFX:
 	ld a, b
 	call UncompressSpriteFromDE
 	ld a, BANK(sSpriteBuffer1)
-	call SwitchSRAMBankAndLatchClockData
+	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
 	ld bc, SPRITEBUFFERSIZE * 2
 	call CopyData
-	call PrepareRTCDataAndDisableSRAM
+	call CloseSRAM
 	ld a, [wPikaPicAnimCurGraphicID]
 	call LookUpTileOffsetForCurrentPikaPicAnimGFX
 	call GetPikaPicVRAMAddressForNewGFX

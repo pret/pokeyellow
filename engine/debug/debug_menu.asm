@@ -1601,7 +1601,7 @@ Data_ff2eb:
 
 Func_ff2f3:
 	push hl
-	call Func_ff316
+	call DebugEnableSRAM
 	ld a, b
 	ld [MBC1SRamBank], a
 	ld bc, sBox2 - sBox1
@@ -1615,18 +1615,18 @@ Func_ff2f3:
 	ld bc, sBox5 - sBox1 + 1
 	call Func_ff32a
 	ld [sBox5], a
-	call Func_ff321
+	call DebugDisableSRAM
 	ret
 
-Func_ff316:
-	ld a, 1
+DebugEnableSRAM: ; duplicate of EnableSRAM
+	ld a, SRAM_BANKING_MODE
 	ld [MBC1SRamBankingMode], a
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
 	ret
 
-Func_ff321:
-	ld a, 0
+DebugDisableSRAM: ; duplicate of DisableSRAM
+	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
 	ret

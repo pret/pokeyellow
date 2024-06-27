@@ -20,9 +20,9 @@ Bankswitch::
 JumpToAddress::
 	jp hl
 
-SwitchSRAMBankAndLatchClockData::
+OpenSRAM::
 	push af
-	ld a, $1
+	ld a, SRAM_BANKING_MODE
 	ld [MBC1SRamBankingMode], a
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
@@ -30,9 +30,9 @@ SwitchSRAMBankAndLatchClockData::
 	ld [MBC1SRamBank], a
 	ret
 
-PrepareRTCDataAndDisableSRAM::
+CloseSRAM::
 	push af
-	ld a, $0
+	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
 	pop af
