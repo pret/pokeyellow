@@ -1093,8 +1093,8 @@
 00:3e7e BankswitchCommon
 00:3e84 Bankswitch
 00:3e98 JumpToAddress
-00:3e99 SwitchSRAMBankAndLatchClockData
-00:3ea9 PrepareRTCDataAndDisableSRAM
+00:3e99 OpenSRAM
+00:3ea9 CloseSRAM
 00:3eb4 Predef
 00:3ed2 Predef.done
 00:3ed7 GetPredefRegisters
@@ -12533,8 +12533,8 @@
 1c:7e80 ClearSAV
 1c:7e85 ClearSAV.loop
 1c:7e91 PadSRAM_FF
-1c:7e9f EnableSRAMAndLatchClockData
-1c:7eaa DisableSRAMAndPrepareClockData
+1c:7e9f EnableSRAM
+1c:7eaa DisableSRAM
 1d:4000 CopycatsHouse1F_Blocks
 1d:4010 PewterMart_Blocks
 1d:4010 CinnabarMart_Blocks

@@ -1118,8 +1118,8 @@ ROM0 bank #0:
 	         $3e7e = BankswitchCommon
 	         $3e84 = Bankswitch
 	         $3e98 = JumpToAddress
-	         $3e99 = SwitchSRAMBankAndLatchClockData
-	         $3ea9 = PrepareRTCDataAndDisableSRAM
+	         $3e99 = OpenSRAM
+	         $3ea9 = CloseSRAM
 	         $3eb4 = Predef
 	         $3ed2 = Predef.done
 	         $3ed7 = GetPredefRegisters
@@ -12739,8 +12739,8 @@ ROMX bank #28:
 	         $7e80 = ClearSAV
 	         $7e85 = ClearSAV.loop
 	         $7e91 = PadSRAM_FF
-	         $7e9f = EnableSRAMAndLatchClockData
-	         $7eaa = DisableSRAMAndPrepareClockData
+	         $7e9f = EnableSRAM
+	         $7eaa = DisableSRAM
 	EMPTY: $7eb3-$7fff ($014d bytes)
 	TOTAL EMPTY: $014d bytes
 

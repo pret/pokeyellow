@@ -1094,8 +1094,8 @@
 00:3e8d BankswitchCommon
 00:3e93 Bankswitch
 00:3ea7 JumpToAddress
-00:3ea8 SwitchSRAMBankAndLatchClockData
-00:3eb8 PrepareRTCDataAndDisableSRAM
+00:3ea8 OpenSRAM
+00:3eb8 CloseSRAM
 00:3ec3 Predef
 00:3ee1 Predef.done
 00:3ee6 GetPredefRegisters
@@ -12541,8 +12541,8 @@
 1c:7e80 ClearSAV
 1c:7e85 ClearSAV.loop
 1c:7e91 PadSRAM_FF
-1c:7e9f EnableSRAMAndLatchClockData
-1c:7eaa DisableSRAMAndPrepareClockData
+1c:7e9f EnableSRAM
+1c:7eaa DisableSRAM
 1d:4000 CopycatsHouse1F_Blocks
 1d:4010 PewterMart_Blocks
 1d:4010 CinnabarMart_Blocks
@@ -20519,8 +20519,8 @@
 3f:72e2 Func_ff2d1.asm_ff2e2
 3f:72eb Data_ff2eb
 3f:72f3 Func_ff2f3
-3f:7316 Func_ff316
-3f:7321 Func_ff321
+3f:7316 DebugEnableSRAM
+3f:7321 DebugDisableSRAM
 3f:732a Func_ff32a
 3f:732c Func_ff32a.asm_ff32c
 3f:7337 OfficerJennySprite

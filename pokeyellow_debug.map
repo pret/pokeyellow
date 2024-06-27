@@ -1119,8 +1119,8 @@ ROM0 bank #0:
 	         $3e8d = BankswitchCommon
 	         $3e93 = Bankswitch
 	         $3ea7 = JumpToAddress
-	         $3ea8 = SwitchSRAMBankAndLatchClockData
-	         $3eb8 = PrepareRTCDataAndDisableSRAM
+	         $3ea8 = OpenSRAM
+	         $3eb8 = CloseSRAM
 	         $3ec3 = Predef
 	         $3ee1 = Predef.done
 	         $3ee6 = GetPredefRegisters
@@ -12747,8 +12747,8 @@ ROMX bank #28:
 	         $7e80 = ClearSAV
 	         $7e85 = ClearSAV.loop
 	         $7e91 = PadSRAM_FF
-	         $7e9f = EnableSRAMAndLatchClockData
-	         $7eaa = DisableSRAMAndPrepareClockData
+	         $7e9f = EnableSRAM
+	         $7eaa = DisableSRAM
 	EMPTY: $7eb3-$7fff ($014d bytes)
 	TOTAL EMPTY: $014d bytes
 
@@ -20920,8 +20920,8 @@ ROMX bank #63:
 	         $72e2 = Func_ff2d1.asm_ff2e2
 	         $72eb = Data_ff2eb
 	         $72f3 = Func_ff2f3
-	         $7316 = Func_ff316
-	         $7321 = Func_ff321
+	         $7316 = DebugEnableSRAM
+	         $7321 = DebugDisableSRAM
 	         $732a = Func_ff32a
 	         $732c = Func_ff32a.asm_ff32c
 	SECTION: $7337-$7f36 ($0c00 bytes) ["NPC Sprites 3"]
