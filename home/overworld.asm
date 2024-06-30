@@ -770,7 +770,7 @@ HandleFlyWarpOrDungeonWarp::
 	set 2, [hl] ; fly warp or dungeon warp
 	res 5, [hl] ; forced to ride bike
 	call LeaveMapAnim
-	call Func_07c4
+	call StopBikeSurf
 	ld a, BANK(PrepareForSpecialWarp)
 	call BankswitchCommon
 	call PrepareForSpecialWarp
@@ -779,14 +779,14 @@ HandleFlyWarpOrDungeonWarp::
 LeaveMapAnim::
 	farjp _LeaveMapAnim
 
-Func_07c4::
+StopBikeSurf:
 	ld a, [wWalkBikeSurfState]
 	and a
 	ret z
 	xor a
 	ld [wWalkBikeSurfState], a
 	ld hl, wd732
-	bit 4, [hl]
+	bit BIT_JUMPED_INTO_HOLE, [hl]
 	ret z
 	call PlayDefaultMusic
 	ret
