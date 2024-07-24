@@ -74,7 +74,7 @@ IF DEF(_DEBUG)
 	call DebugPressedOrHeldB
 	ret nz
 ENDC
-	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
+	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_JESSIE_JAMES
 	call z, RocketHideoutB4FScript_455a5
 	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_2
 	call z, CheckFightingMapTrainers
@@ -84,14 +84,14 @@ RocketHideoutB4FScript_455a5:
 	ld a, [wYCoord]
 	cp $e
 	ret nz
-	ResetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	ResetEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	ld a, [wXCoord]
 	cp $18
 	jr z, .asm_455c2
 	ld a, [wXCoord]
 	cp $19
 	ret nz
-	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	SetEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 .asm_455c2
 	xor a
 	ldh [hJoyHeld], a
@@ -132,7 +132,7 @@ RocketHideoutB4FJessieJamesMovementData_45606:
 
 RocketHideoutB4FScript4:
 	ld de, RocketHideoutB4FJessieJamesMovementData_45605
-	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	CheckEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_45617
 	ld de, RocketHideoutB4FJessieJamesMovementData_45606
 .asm_45617
@@ -156,7 +156,7 @@ RocketHideoutB4FScript6:
 	ld [wSprite02StateData1MovementStatus], a
 	ld a, SPRITE_FACING_LEFT
 	ld [wSprite02StateData1FacingDirection], a
-	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	CheckEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_4564a
 	ld a, SPRITE_FACING_DOWN
 	ld [wSprite02StateData1FacingDirection], a
@@ -166,7 +166,7 @@ RocketHideoutB4FScript6:
 	ld [wJoyIgnore], a
 RocketHideoutB4FScript7:
 	ld de, RocketHideoutB4FJessieJamesMovementData_45606
-	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	CheckEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_4565f
 	ld de, RocketHideoutB4FJessieJamesMovementData_45605
 .asm_4565f
@@ -192,7 +192,7 @@ RocketHideoutB4FScript9:
 	ld [wSprite03StateData1MovementStatus], a
 	ld a, SPRITE_FACING_DOWN
 	ld [wSprite03StateData1FacingDirection], a
-	CheckEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1
+	CheckEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_45697
 	ld a, SPRITE_FACING_RIGHT
 	ld [wSprite03StateData1FacingDirection], a
@@ -271,7 +271,7 @@ RocketHideoutB4FScript13:
 	xor a
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
-	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0
+	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_4_JESSIE_JAMES
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_DEFAULT
 	call RocketHideoutB4FSetScript
 	ret

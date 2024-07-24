@@ -32,7 +32,7 @@ IF DEF(_DEBUG)
 	call DebugPressedOrHeldB
 	ret nz
 ENDC
-	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
+	CheckEvent EVENT_BEAT_POKEMONTOWER_7_JESSIE_JAMES
 	call z, PokemonTower7FScript_60d2a
 	ret
 
@@ -40,14 +40,14 @@ PokemonTower7FScript_60d2a:
 	ld a, [wYCoord]
 	cp $c
 	ret nz
-	ResetEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	ResetEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	ld a, [wXCoord]
 	cp $a
 	jr z, .asm_60d47
 	ld a, [wXCoord] ; why?
 	cp $b
 	ret nz
-	SetEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	SetEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 .asm_60d47
 	call StopAllMusic
 	ld c, BANK(Music_MeetJessieJames)
@@ -82,7 +82,7 @@ PokemonTower7FMovementData_60d7b:
 
 PokemonTower7FScript1:
 	ld de, PokemonTower7FMovementData_60d7b
-	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	CheckEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_60d8c
 	ld de, PokemonTower7FMovementData_60d7a
 .asm_60d8c
@@ -104,7 +104,7 @@ PokemonTower7FScript2:
 PokemonTower7FScript3:
 	ld a, SPRITE_FACING_DOWN
 	ld [wSprite01StateData1FacingDirection], a
-	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	CheckEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_60dba
 	ld a, SPRITE_FACING_RIGHT
 	ld [wSprite01StateData1FacingDirection], a
@@ -113,7 +113,7 @@ PokemonTower7FScript3:
 	ld [wSprite01StateData1MovementStatus], a
 PokemonTower7FScript4:
 	ld de, PokemonTower7FMovementData_60d7a
-	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	CheckEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_60dcc
 	ld de, PokemonTower7FMovementData_60d7b
 .asm_60dcc
@@ -137,7 +137,7 @@ PokemonTower7FScript6:
 	ld [wSprite02StateData1MovementStatus], a
 	ld a, SPRITE_FACING_LEFT
 	ld [wSprite02StateData1FacingDirection], a
-	CheckEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_1
+	CheckEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	jr z, .asm_60dff
 	ld a, SPRITE_FACING_DOWN
 	ld [wSprite02StateData1FacingDirection], a
@@ -217,7 +217,7 @@ PokemonTower7FScript10:
 	xor a
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
-	SetEvent EVENT_BEAT_POKEMONTOWER_7_TRAINER_0
+	SetEvent EVENT_BEAT_POKEMONTOWER_7_JESSIE_JAMES
 	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT0
 	call PokemonTower7FSetScript
 	ret

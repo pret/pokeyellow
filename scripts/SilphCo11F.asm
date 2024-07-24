@@ -103,7 +103,7 @@ IF DEF(_DEBUG)
 	call DebugPressedOrHeldB
 	ret nz
 ENDC
-	CheckEvent EVENT_BEAT_SILPH_CO_11F_TRAINER_0
+	CheckEvent EVENT_BEAT_SILPH_CO_11F_JESSIE_JAMES
 	call z, SilphCo11FScript_6229c
 	CheckEvent EVENT_782
 	ret nz
@@ -452,7 +452,7 @@ SilphCo11FScript14:
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
 	ResetEvent EVENT_782
-	SetEventReuseHL EVENT_BEAT_SILPH_CO_11F_TRAINER_0
+	SetEventReuseHL EVENT_BEAT_SILPH_CO_11F_JESSIE_JAMES
 	ld a, SCRIPT_SILPHCO11F_DEFAULT
 	call SilphCo11FSetCurScript
 	ret
@@ -485,7 +485,7 @@ SilphCo11F_TextPointers:
 SilphCo11TrainerHeaders:
 	def_trainers 5
 SilphCo11TrainerHeader0:
-	trainer EVENT_BEAT_SILPH_CO_11F_TRAINER_1, 3, SilphCo11FRocketBattleText, SilphCo11FRocketEndBattleText, SilphCo11FRocketAfterBattleText
+	trainer EVENT_BEAT_SILPH_CO_11F_TRAINER_0, 3, SilphCo11FRocketBattleText, SilphCo11FRocketEndBattleText, SilphCo11FRocketAfterBattleText
 	db -1 ; end
 
 SilphCo11FJessieJamesText:

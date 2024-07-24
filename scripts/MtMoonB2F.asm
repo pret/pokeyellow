@@ -80,7 +80,7 @@ IF DEF(_DEBUG)
 ENDC
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
 	call z, MtMoonB2FScript_49d28
-	CheckEvent EVENT_BEAT_MT_MOON_3_TRAINER_0
+	CheckEvent EVENT_BEAT_MT_MOON_3_JESSIE_JAMES
 	call z, MtMoonB2FScript_49e15
 	ret
 
@@ -395,7 +395,7 @@ MtMoonB2FScript15:
 	xor a
 	ldh [hJoyHeld], a
 	ld [wJoyIgnore], a
-	SetEvent EVENT_BEAT_MT_MOON_3_TRAINER_0
+	SetEvent EVENT_BEAT_MT_MOON_3_JESSIE_JAMES
 	ResetEventReuseHL EVENT_57E
 	ld a, SCRIPT_MTMOONB2F_DEFAULT
 	call MtMoonB2FSetScript
@@ -433,11 +433,11 @@ MtMoonB2F_TextPointers:
 MtMoon3TrainerHeaders:
 	def_trainers 3
 MtMoon3TrainerHeader0:
-	trainer EVENT_BEAT_MT_MOON_3_TRAINER_1, 4, MtMoonB2FRocket2BattleText, MtMoonB2FRocket2EndBattleText, MtMoonB2FRocket2AfterBattleText
+	trainer EVENT_BEAT_MT_MOON_3_TRAINER_0, 4, MtMoonB2FRocket2BattleText, MtMoonB2FRocket2EndBattleText, MtMoonB2FRocket2AfterBattleText
 MtMoon3TrainerHeader1:
-	trainer EVENT_BEAT_MT_MOON_3_TRAINER_2, 4, MtMoonB2FRocket3BattleText, MtMoonB2FRocket3EndBattleText, MtMoonB2FRocket3AfterBattleText
+	trainer EVENT_BEAT_MT_MOON_3_TRAINER_1, 4, MtMoonB2FRocket3BattleText, MtMoonB2FRocket3EndBattleText, MtMoonB2FRocket3AfterBattleText
 MtMoon3TrainerHeader2:
-	trainer EVENT_BEAT_MT_MOON_3_TRAINER_3, 4, MtMoonB2FRocket4BattleText, MtMoonB2FRocket4EndBattleText, MtMoonB2FRocket4AfterBattleText
+	trainer EVENT_BEAT_MT_MOON_3_TRAINER_2, 4, MtMoonB2FRocket4BattleText, MtMoonB2FRocket4EndBattleText, MtMoonB2FRocket4AfterBattleText
 	db -1 ; end
 
 MtMoonB2FJessieJamesText:
