@@ -1,12 +1,12 @@
 DisplayElevatorFloorMenu:
-	ld hl, wd730
+	ld hl, wStatusFlags5
 	ld a, [hl]
 	push af
-	set 6, [hl]
+	set BIT_NO_TEXT_DELAY, [hl]
 	ld hl, WhichFloorText
 	call PrintText
 	pop af
-	ld [wd730], a
+	ld [wStatusFlags5], a
 	ld hl, wItemList
 	ld a, l
 	ld [wListPointer], a
@@ -26,7 +26,7 @@ DisplayElevatorFloorMenu:
 	ld [wListScrollOffset], a
 	ret c
 	ld hl, wCurrentMapScriptFlags
-	set 7, [hl]
+	set BIT_CUR_MAP_USED_ELEVATOR, [hl]
 	ld hl, wElevatorWarpMaps
 	ld a, [wWhichPokemon]
 	add a

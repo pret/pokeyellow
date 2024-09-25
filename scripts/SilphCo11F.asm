@@ -10,8 +10,8 @@ SilphCo11F_Script:
 
 SilphCo11FGateCallbackScript:
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	ret z
 	ld hl, SilphCo11GateCoords
 	call SilphCo11F_SetCardKeyDoorYScript
@@ -122,7 +122,7 @@ SilphCo11FScript_621c5:
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, TEXT_SILPHCO11F_GIOVANNI
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, SILPHCO11F_GIOVANNI
 	ldh [hSpriteIndex], a
@@ -170,7 +170,7 @@ SilphCo11FGiovanniAfterBattleScript:
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, TEXT_SILPHCO11F_GIOVANNI_YOU_RUINED_OUR_PLANS
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
 	farcall SilphCo11FTeamRocketLeavesScript
@@ -183,8 +183,8 @@ SilphCo11FGiovanniAfterBattleScript:
 	jp SilphCo11FSetCurScript
 
 SilphCo11FGiovanniStartBattleScript:
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, SILPHCO11F_GIOVANNI
 	ldh [hSpriteIndex], a
@@ -203,9 +203,9 @@ SilphCo11FGiovanniStartBattleScript:
 	call Delay3
 	xor a
 	ld [wJoyIgnore], a
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, SilphCo10FGiovanniILostAgainText
 	ld de, SilphCo10FGiovanniILostAgainText
 	call SaveEndBattleTextPointers
@@ -245,7 +245,7 @@ SilphCo11FScript_6229c:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_SILPHCO11F_TEXT8
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -314,7 +314,7 @@ SilphCo11FScript5:
 	ld de, SilphCo11FMovementData_6230b
 .asm_6232d
 	ld a, SILPHCO11F_JAMES
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -325,8 +325,8 @@ SilphCo11FScript5:
 SilphCo11FScript6:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 SilphCo11FScript7:
 	ld a, $2
@@ -352,7 +352,7 @@ SilphCo11FScript8:
 	ld de, SilphCo11FMovementData_62311
 .asm_6237b
 	ld a, SILPHCO11F_JESSIE
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -363,8 +363,8 @@ SilphCo11FScript8:
 SilphCo11FScript9:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -380,12 +380,12 @@ SilphCo11FScript10:
 .asm_623b1
 	call Delay3
 	ld a, TEXT_SILPHCO11F_TEXT9
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 SilphCo11FScript11:
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, SilphCo11FText_624c2
 	ld de, SilphCo11FText_624c2
 	call SaveEndBattleTextPointers
@@ -417,7 +417,7 @@ SilphCo11FScript12:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_SILPHCO11F_TEXT10
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

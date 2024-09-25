@@ -10,8 +10,8 @@ LancesRoom_Script:
 
 LanceShowOrHideEntranceBlocks:
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	ret z
 	CheckEvent EVENT_LANCES_ROOM_LOCK_DOOR
 	jr nz, .closeEntrance
@@ -63,7 +63,7 @@ LancesRoomDefaultScript:
 	cp $3  ; Is player standing next to Lance's sprite?
 	jr nc, .notStandingNextToLance
 	ld a, TEXT_LANCESROOM_LANCE
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	jp DisplayTextID
 .notStandingNextToLance
 	cp $5  ; Is player standing on the entrance staircase?
@@ -71,7 +71,7 @@ LancesRoomDefaultScript:
 	CheckAndSetEvent EVENT_LANCES_ROOM_LOCK_DOOR
 	ret nz
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 	ld a, SFX_GO_INSIDE
 	call PlaySound
 	jp LanceShowOrHideEntranceBlocks
@@ -90,7 +90,7 @@ LancesRoomLanceEndBattleScript:
 	cp $ff
 	jp z, ResetLanceScript
 	ld a, TEXT_LANCESROOM_LANCE
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	jp DisplayTextID
 
 WalkToLance:

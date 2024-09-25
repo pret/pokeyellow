@@ -27,7 +27,7 @@ InitOutsideMapSprites:
 ; if so, choose the appropriate one
 	ld b, a ; b = spriteSetID
 	ld a, [wFontLoaded]
-	bit 0, a ; reloading upper half of tile patterns after displaying text?
+	bit BIT_FONT_LOADED, a ; reloading upper half of tile patterns after displaying text?
 	jr nz, .loadSpriteSet ; if so, forcibly reload the sprite set
 	ld a, [wSpriteSetID]
 	cp b ; has the sprite set ID changed?
@@ -170,7 +170,7 @@ ReloadWalkingTilePatterns:
 
 LoadStillTilePattern:
 	ld a, [wFontLoaded]
-	bit 0, a ; reloading upper half of tile patterns after displaying text?
+	bit BIT_FONT_LOADED, a ; reloading upper half of tile patterns after displaying text?
 	ret nz ; if so, skip loading data into the lower half
 	call ReadSpriteSheetData
 	ret nc
@@ -186,7 +186,7 @@ LoadWalkingTilePattern:
 	ld d, h
 	ld e, l
 	call GetSpriteVRAMAddress
-	set 3, h ; add $80 tiles to hl
+	set 3, h ; add $800 ($80 tiles) to hl (1 << 3 == $8)
 	call CopyVideoDataAlternate
 	ret
 

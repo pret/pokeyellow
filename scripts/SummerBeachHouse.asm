@@ -167,14 +167,14 @@ ENDC
 	and a
 	jp z, Func_f23d0
 	call SaveScreenTilesToBuffer2
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	xor a
 	ld [wUpdateSpritesEnabled], a
 	callfar Printer_PrepareSurfingMinigameHighScoreTileMap
 	call WaitForTextScrollButtonPress
-	ld hl, wd730
-	res 6, [hl]
+	ld hl, wStatusFlags5
+	res BIT_NO_TEXT_DELAY, [hl]
 	call GBPalWhiteOutWithDelay3
 	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns

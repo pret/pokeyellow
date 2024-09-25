@@ -28,12 +28,12 @@ Route16DefaultScript:
 	ResetEventReuseHL EVENT_FIGHT_ROUTE16_SNORLAX
 	jp z, CheckFightingMapTrainers
 	ld a, TEXT_ROUTE16_SNORLAX_WOKE_UP
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, SNORLAX
 	ld [wCurOpponent], a
 	ld a, 30
-	ld [wCurEnemyLVL], a
+	ld [wCurEnemyLevel], a
 	ld a, HS_ROUTE_16_SNORLAX
 	ld [wMissableObjectIndex], a
 	predef HideObject
@@ -52,7 +52,7 @@ Route16SnorlaxPostBattleScript:
 	cp $2
 	jr z, .caught
 	ld a, TEXT_ROUTE16_SNORLAX_RETURNED_TO_MOUNTAINS
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 .caught
 	SetEvent EVENT_BEAT_ROUTE16_SNORLAX

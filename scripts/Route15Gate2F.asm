@@ -14,9 +14,9 @@ Route15Gate2FOaksAideText:
 	ldh [hOaksAideRequirement], a
 	ld a, EXP_ALL
 	ldh [hOaksAideRewardItem], a
-	ld [wd11e], a
+	ld [wNamedObjectIndex], a
 	call GetItemName
-	ld hl, wcd6d
+	ld hl, wNameBuffer
 	ld de, wOaksAideRewardItemName
 	ld bc, ITEM_NAME_LENGTH
 	call CopyData

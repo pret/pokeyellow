@@ -11,8 +11,8 @@ BrunosRoom_Script:
 BrunoShowOrHideExitBlock:
 ; Blocks or clears the exit to the next room.
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	ret z
 	CheckEvent EVENT_BEAT_BRUNOS_ROOM_TRAINER_0
 	jr z, .blockExitToNextRoom
@@ -75,7 +75,7 @@ BrunosRoomDefaultScript:
 	jr z, BrunoScriptWalkIntoRoom
 .stopPlayerFromLeaving
 	ld a, TEXT_BRUNOSROOM_BRUNO_DONT_RUN_AWAY
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID  ; "Don't run away!"
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -111,7 +111,7 @@ BrunosRoomBrunoEndBattleScript:
 	cp $ff
 	jp z, ResetBrunoScript
 	ld a, TEXT_BRUNOSROOM_BRUNO
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	jp DisplayTextID
 
 BrunosRoom_TextPointers:

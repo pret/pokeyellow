@@ -58,7 +58,7 @@ DaycareGentlemanText:
 	call RemovePokemon
 	pop af
 	jr c, .depositedPikachuIntoDayCare
-	ld a, [wcf91]
+	ld a, [wCurPartySpecies]
 	call PlayCry
 	jr .asm_562e3
 
@@ -179,7 +179,7 @@ DaycareGentlemanText:
 	ld [wMoveMonType], a
 	call MoveMon
 	ld a, [wDayCareMonSpecies]
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	ld a, [wPartyCount]
 	dec a
 	push af
@@ -213,7 +213,7 @@ DaycareGentlemanText:
 	ld [wWhichPokemon], a
 	callfar IsThisPartymonStarterPikachu
 	jr c, .withdrewPikachuFromDayCare
-	ld a, [wcf91]
+	ld a, [wCurPartySpecies]
 	call PlayCry
 	jr .asm_56430
 

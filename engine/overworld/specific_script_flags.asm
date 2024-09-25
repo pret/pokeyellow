@@ -14,12 +14,12 @@ SetMapSpecificScriptFlagsOnMapReload::
 
 .vermilion_gym
 	ld hl, wCurrentMapScriptFlags
-	set 6, [hl]
+	set BIT_CUR_MAP_LOADED_2, [hl]
 	ret
 
 .in_list
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 	ret
 
 INCLUDE "data/maps/bit_5_maps.asm"

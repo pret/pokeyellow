@@ -10,8 +10,8 @@ PokemonMansionB1F_Script:
 
 MansionB1FCheckReplaceSwitchDoorBlocks:
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	ret z
 	CheckEvent EVENT_MANSION_SWITCH_ON
 	jr nz, .switchTurnedOn
@@ -50,7 +50,7 @@ Mansion4Script_Switches::
 	xor a
 	ldh [hJoyHeld], a
 	ld a, TEXT_POKEMONMANSIONB1F_SWITCH
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	jp DisplayTextID
 
 PokemonMansionB1F_ScriptPointers:

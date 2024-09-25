@@ -1,3 +1,8 @@
+; wSpriteLoadFlags bits, streamed from compressed sprite data
+	const_def
+	const BIT_USE_SPRITE_BUFFER_2 ; 0
+	const BIT_LAST_SPRITE_CHUNK   ; 1
+
 ; bankswitches and runs _UncompressSpriteData
 ; bank is given in a, sprite input stream is pointed to in wSpriteInputPtr
 UncompressSpriteData::
@@ -44,24 +49,24 @@ _UncompressSpriteData::
 	add a
 	ld [wSpriteWidth], a
 	call ReadNextInputBit
-	ld [wSpriteLoadFlags], a ; initialite bit1 to 0 and bit0 to the first input bit
+	ld [wSpriteLoadFlags], a ; initialize bit1 to 0 and bit0 to the first input bit
                              ; this will load two chunks of data to sSpriteBuffer1 and sSpriteBuffer2
                              ; bit 0 decides in which one the first chunk is placed
 	; fall through
 
-; uncompresses a chunk from the sprite input data stream (pointed to at wd0da) into sSpriteBuffer1 or sSpriteBuffer2
+; uncompresses a chunk from the sprite input data stream (pointed to by wSpriteInputPtr) into sSpriteBuffer1 or sSpriteBuffer2
 ; each chunk is a 1bpp sprite. A 2bpp sprite consist of two chunks which are merged afterwards
 ; note that this is an endless loop which is terminated during a call to MoveToNextBufferPosition by manipulating the stack
 UncompressSpriteDataLoop::
 	ld hl, sSpriteBuffer1
 	ld a, [wSpriteLoadFlags]
-	bit 0, a
+	bit BIT_USE_SPRITE_BUFFER_2, a
 	jr z, .useSpriteBuffer1    ; check which buffer to use
 	ld hl, sSpriteBuffer2
 .useSpriteBuffer1
 	call StoreSpriteOutputPointer
 	ld a, [wSpriteLoadFlags]
-	bit 1, a
+	bit BIT_LAST_SPRITE_CHUNK, a
 	jr z, .startDecompression  ; check if last iteration
 	call ReadNextInputBit      ; if last chunk, read 1-2 bit unpacking mode
 	and a
@@ -193,10 +198,10 @@ MoveToNextBufferPosition::
 	xor a
 	ld [wSpriteCurPosX], a
 	ld a, [wSpriteLoadFlags]
-	bit 1, a
+	bit BIT_LAST_SPRITE_CHUNK, a
 	jr nz, .done            ; test if there is one more sprite to go
-	xor $1
-	set 1, a
+	xor 1 << BIT_USE_SPRITE_BUFFER_2
+	set BIT_LAST_SPRITE_CHUNK, a
 	ld [wSpriteLoadFlags], a
 	jp UncompressSpriteDataLoop
 .done
@@ -537,7 +542,7 @@ ReverseNybble::
 ; resets sprite buffer pointers to buffer 1 and 2, depending on wSpriteLoadFlags
 ResetSpriteBufferPointers::
 	ld a, [wSpriteLoadFlags]
-	bit 0, a
+	bit BIT_USE_SPRITE_BUFFER_2, a
 	jr nz, .buffer2Selected
 	ld de, sSpriteBuffer1
 	ld hl, sSpriteBuffer2

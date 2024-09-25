@@ -7,13 +7,13 @@ CinnabarGym_Script:
 
 CinnabarGymSetMapAndTiles:
 	ld hl, wCurrentMapScriptFlags
-	bit 6, [hl]
-	res 6, [hl]
+	bit BIT_CUR_MAP_LOADED_2, [hl]
+	res BIT_CUR_MAP_LOADED_2, [hl]
 	push hl
 	call nz, .LoadNames
 	pop hl
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	call nz, UpdateCinnabarGymGateTileBlocks
 	ResetEvent EVENT_2A7
 	ret
@@ -38,7 +38,7 @@ CinnabarGymResetScripts:
 	ret
 
 CinnabarGymSetTrainerHeader:
-	ldh a, [hSpriteIndexOrTextID]
+	ldh a, [hTextID]
 	ld [wTrainerHeaderFlagBit], a
 	ret
 
@@ -119,14 +119,14 @@ CinnabarGymScript_74fa3:
 	ret
 
 CinnabarGymGetOpponentTextScript:
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	xor a
 	ld [wJoyIgnore], a
 	ld a, [wOpponentAfterWrongAnswer]
 	ld [wTrainerHeaderFlagBit], a
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	jp DisplayTextID
 
 CinnabarGymOpenGateScript:
@@ -205,20 +205,20 @@ CinnabarGymBlainePostBattleScript:
 ; fallthrough
 CinnabarGymReceiveTM38:
 	ld a, TEXT_CINNABARGYM_BLAINE_VOLCANO_BADGE_INFO
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_BLAINE
 	lb bc, TM_FIRE_BLAST, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, TEXT_CINNABARGYM_BLAINE_RECEIVED_TM38
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM38
 	jr .gymVictory
 .BagFull
 	ld a, TEXT_CINNABARGYM_BLAINE_TM38_NO_ROOM
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 .gymVictory
 	ld hl, wObtainedBadges
@@ -230,7 +230,7 @@ CinnabarGymReceiveTM38:
 	SetEventRange EVENT_BEAT_CINNABAR_GYM_TRAINER_0, EVENT_BEAT_CINNABAR_GYM_TRAINER_6
 
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 
 	jp CinnabarGymResetScripts
 
@@ -250,13 +250,13 @@ CinnabarGym_TextPointers:
 	dw_const CinnabarGymBlaineTM38NoRoomText,       TEXT_CINNABARGYM_BLAINE_TM38_NO_ROOM
 
 CinnabarGymStartBattleScript:
-	ldh a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld a, [wSpriteIndex]
 	cp CINNABARGYM_BLAINE
 	jr z, .blaine

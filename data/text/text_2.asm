@@ -10,7 +10,7 @@ _AIBattleUseItemText::
 	text_ram wTrainerName
 	text_start
 	line "used @"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text_start
 	cont "on @"
 	text_ram wEnemyMonNick
@@ -45,7 +45,7 @@ _TradeSendsText::
 	text_ram wLinkEnemyTrainerName
 	text " sends"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "."
 	done
 
@@ -56,7 +56,7 @@ _TradeWavesFarewellText::
 	done
 
 _TradeTransferredText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " is"
 	line "transferred."
 	done
@@ -64,7 +64,7 @@ _TradeTransferredText::
 _TradeTakeCareText::
 	text "Take good care of"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "."
 	done
 
@@ -72,7 +72,7 @@ _TradeWillTradeText::
 	text_ram wLinkEnemyTrainerName
 	text " will"
 	line "trade @"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text_start
 	done
 
@@ -796,7 +796,7 @@ _VermilionGymTrashFailText::
 _FoundHiddenItemText::
 	text "<PLAYER> found"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "!@"
 	text_end
 
@@ -1119,7 +1119,7 @@ _CantMoveText::
 _MoveIsDisabledText::
 	text "<USER>'s"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " is"
 	cont "disabled!"
 	prompt
@@ -1254,7 +1254,7 @@ _HitXTimesText::
 	prompt
 
 _GainedText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " gained"
 	line "@"
 	text_end
@@ -1275,10 +1275,10 @@ _ExpPointsText::
 	prompt
 
 _GrewLevelText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " grew"
 	line "to level @"
-	text_decimal wCurEnemyLVL, 1, 3
+	text_decimal wCurEnemyLevel, 1, 3
 	text "!@"
 	text_end
 

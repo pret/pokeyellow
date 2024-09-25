@@ -49,7 +49,7 @@ RocketHideoutB4FBeatGiovanniScript:
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
 	ld a, TEXT_ROCKETHIDEOUTB4F_GIOVANNI_HOPE_WE_MEET_AGAIN
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
 	ld a, HS_ROCKET_HIDEOUT_B4F_GIOVANNI
@@ -63,7 +63,7 @@ RocketHideoutB4FBeatGiovanniScript:
 	xor a
 	ld [wJoyIgnore], a
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_DEFAULT
 	ld [wRocketHideoutB4FCurScript], a
 	ld [wCurMapScript], a
@@ -108,7 +108,7 @@ RocketHideoutB4FScript_455a5:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_ROCKETHIDEOUTB4F_TEXT11
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -137,7 +137,7 @@ RocketHideoutB4FScript4:
 	ld de, RocketHideoutB4FJessieJamesMovementData_45606
 .asm_45617
 	ld a, ROCKETHIDEOUTB4F_JAMES
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -148,8 +148,8 @@ RocketHideoutB4FScript4:
 RocketHideoutB4FScript5:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 RocketHideoutB4FScript6:
 	ld a, $2
@@ -171,7 +171,7 @@ RocketHideoutB4FScript7:
 	ld de, RocketHideoutB4FJessieJamesMovementData_45605
 .asm_4565f
 	ld a, ROCKETHIDEOUTB4F_JESSIE
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndex], a
 	call MoveSprite
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -182,8 +182,8 @@ RocketHideoutB4FScript7:
 RocketHideoutB4FScript8:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -199,12 +199,12 @@ RocketHideoutB4FScript9:
 .asm_45697
 	call Delay3
 	ld a, TEXT_ROCKETHIDEOUTB4F_TEXT12
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 RocketHideoutB4FScript10:
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, RocketHideoutB4FJessieJamesEndBattleText
 	ld de, RocketHideoutB4FJessieJamesEndBattleText
 	call SaveEndBattleTextPointers
@@ -237,7 +237,7 @@ RocketHideoutB4FScript11:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_ROCKETHIDEOUTB4F_TEXT13
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -350,9 +350,9 @@ RocketHideoutB4FGiovanniText:
 	jp nz, .beat_giovanni
 	ld hl, .ImpressedYouGotHereText
 	call PrintText
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, .WhatCannotBeText
 	ld de, .WhatCannotBeText
 	call SaveEndBattleTextPointers

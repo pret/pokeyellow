@@ -10,12 +10,12 @@ MtMoonB2F_Script:
 	ld hl, MtMoonB2FFossilAreaCoords
 	call ArePlayerCoordsInArray
 	jr nc, .enable_battles
-	ld hl, wd72e
-	set 4, [hl]
+	ld hl, wStatusFlags4
+	set BIT_NO_BATTLES, [hl]
 	ret
 .enable_battles
-	ld hl, wd72e
-	res 4, [hl]
+	ld hl, wStatusFlags4
+	res BIT_NO_BATTLES, [hl]
 	ret
 
 MtMoonB2FFossilAreaCoords:
@@ -96,7 +96,7 @@ MtMoonB2FScript_49d28:
 	xor a
 	ldh [hJoyHeld], a
 	ld a, TEXT_MTMOONB2F_SUPER_NERD
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ret
 
@@ -197,15 +197,15 @@ MovementData_49ddd:
 	db -1 ; end
 
 MtMoonB2FSuperNerdTakesOtherFossilScript:
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_MTMOONB2F_SUPER_NERD_THEN_THIS_IS_MINE
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	CheckEvent EVENT_GOT_HELIX_FOSSIL
 	jr z, .asm_49e1d
@@ -244,7 +244,7 @@ MtMoonB2FScript_49e15:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_MTMOONB2F_TEXT12
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -289,8 +289,8 @@ MtMoonB2FScript6:
 MtMoonB2FScript7:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 MtMoonB2FScript8:
 	ld a, $2
@@ -311,8 +311,8 @@ MtMoonB2FScript9:
 MtMoonB2FScript10:
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 MtMoonB2FScript11:
 	ld a, $2
@@ -323,12 +323,12 @@ MtMoonB2FScript11:
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
 	ld a, TEXT_MTMOONB2F_TEXT13
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 MtMoonB2FScript12:
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, MtMoonB2FJessieJamesEndBattleText
 	ld de, MtMoonB2FJessieJamesEndBattleText
 	call SaveEndBattleTextPointers
@@ -361,7 +361,7 @@ MtMoonB2FScript13:
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, TEXT_MTMOONB2F_TEXT14
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -487,9 +487,9 @@ MtMoonB2FSuperNerdText:
 .beat_super_nerd
 	ld hl, MtMoonB2FSuperNerdTheyreBothMineText
 	call PrintText
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, MtMoonB2FSuperNerdOkIllShareText
 	ld de, MtMoonB2FSuperNerdOkIllShareText
 	call SaveEndBattleTextPointers

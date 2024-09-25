@@ -5,12 +5,12 @@ InitBattle::
 
 InitOpponent:
 	ld a, [wCurOpponent]
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	ld [wEnemyMonSpecies2], a
 	jr InitBattleCommon
 
 DetermineWildOpponent:
-	ld a, [wd732]
+	ld a, [wStatusFlags6]
 	bit BIT_DEBUG_MODE, a
 	jr z, .notDebugMode
 	ldh a, [hJoyHeld]
@@ -28,7 +28,7 @@ InitBattleCommon:
 	ld hl, wLetterPrintingDelayFlags
 	ld a, [hl]
 	push af
-	res 1, [hl]
+	res BIT_TEXT_DELAY, [hl] ; no delay
 	call InitBattleVariables
 	ld a, [wEnemyMonSpecies2]
 	sub OPP_ID_OFFSET
@@ -87,14 +87,14 @@ InitWildBattle:
 	ld a, "T"
 	ld [hli], a
 	ld [hl], "@"
-	ld a, [wcf91]
+	ld a, [wCurPartySpecies]
 	push af
 	ld a, MON_GHOST
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	ld de, vFrontPic
 	call LoadMonFrontSprite ; load ghost sprite
 	pop af
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	jr .spriteLoaded
 .isNoGhost
 	ld de, vFrontPic
@@ -171,7 +171,7 @@ LoadMonBackPic:
 ; Assumes the monster's attributes have
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	hlcoord 1, 5
 	lb bc, 7, 8
 	call ClearScreenArea

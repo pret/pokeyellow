@@ -1,6 +1,5 @@
 LoadSAV:
-;(if carry -> write
-;"the file data is destroyed")
+; if carry, write "the file data is destroyed"
 	call ClearScreen
 	call LoadFontTilePatterns
 	call LoadTextBoxTilePatterns
@@ -13,15 +12,15 @@ LoadSAV:
 	ld a, $2 ; good checksum
 	jr .goodsum
 .badsum
-	ld hl, wd730
+	ld hl, wStatusFlags5
 	push hl
-	set 6, [hl]
+	set BIT_NO_TEXT_DELAY, [hl]
 	ld hl, FileDataDestroyedText
 	call PrintText
 	ld c, 100
 	call DelayFrames
 	pop hl
-	res 6, [hl]
+	res BIT_NO_TEXT_DELAY, [hl]
 	ld a, $1 ; bad checksum
 .goodsum
 	ld [wSaveFileStatus], a
@@ -65,7 +64,7 @@ LoadSAV0:
 	ld bc, wMainDataEnd - wMainDataStart
 	call CopyData
 	ld hl, wCurMapTileset
-	set 7, [hl]
+	set BIT_NO_PREVIOUS_MAP, [hl]
 	ld hl, sSpriteData
 	ld de, wSpriteDataStart
 	ld bc, wSpriteDataEnd - wSpriteDataStart
@@ -341,15 +340,15 @@ ChangeBox::
 	and a
 	ret nz ; return if No was chosen
 	ld hl, wCurrentBoxNum
-	bit 7, [hl] ; is it the first time player is changing the box?
+	bit BIT_HAS_CHANGED_BOXES, [hl] ; is it the first time player is changing the box?
 	call z, EmptyAllSRAMBoxes ; if so, empty all boxes in SRAM
 	call DisplayChangeBoxMenu
 	call UpdateSprites
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set BIT_DOUBLE_SPACED_MENU, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res BIT_DOUBLE_SPACED_MENU, [hl]
 	bit BIT_B_BUTTON, a
 	ret nz
 	ld a, $b6
@@ -361,7 +360,7 @@ ChangeBox::
 	ld hl, wBoxDataStart
 	call CopyBoxToOrFromSRAM ; copy old box from WRAM to SRAM
 	ld a, [wCurrentMenuItem]
-	set 7, a
+	set BIT_HAS_CHANGED_BOXES, a
 	ld [wCurrentBoxNum], a
 	call GetBoxSRAMLocation
 	ld de, wBoxDataStart
@@ -433,12 +432,12 @@ DisplayChangeBoxMenu:
 	lb bc, 12, 7
 	call TextBoxBorder
 	ld hl, hUILayoutFlags
-	set 2, [hl]
+	set BIT_SINGLE_SPACED_LINES, [hl]
 	ld de, BoxNames
 	hlcoord 13, 1
 	call PlaceString
 	ld hl, hUILayoutFlags
-	res 2, [hl]
+	res BIT_SINGLE_SPACED_LINES, [hl]
 	ld a, [wCurrentBoxNum]
 	and $7f
 	cp 9

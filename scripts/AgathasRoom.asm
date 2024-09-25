@@ -11,8 +11,8 @@ AgathasRoom_Script:
 AgathaShowOrHideExitBlock:
 ; Blocks or clears the exit to the next room.
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	ret z
 	CheckEvent EVENT_BEAT_AGATHAS_ROOM_TRAINER_0
 	jr z, .blockExitToNextRoom
@@ -75,7 +75,7 @@ AgathasRoomDefaultScript:
 	jr z, AgathaScriptWalkIntoRoom
 .stopPlayerFromLeaving
 	ld a, TEXT_AGATHASROOM_AGATHA_DONT_RUN_AWAY
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, D_UP
 	ld [wSimulatedJoypadStatesEnd], a
@@ -111,7 +111,7 @@ AgathasRoomAgathaEndBattleScript:
 	cp $ff
 	jp z, ResetAgathaScript
 	ld a, TEXT_AGATHASROOM_AGATHA
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, SCRIPT_CHAMPIONSROOM_PLAYER_ENTERS
 	ld [wChampionsRoomCurScript], a

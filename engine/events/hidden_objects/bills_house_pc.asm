@@ -80,8 +80,8 @@ BillsHousePokemonList::
 	ld a, 1
 	ld [wTopMenuItemX], a
 .billsPokemonLoop
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	hlcoord 0, 0
 	lb bc, 10, 9
 	call TextBoxBorder
@@ -110,8 +110,8 @@ BillsHousePokemonList::
 	call LoadScreenTilesFromBuffer2
 	jr .billsPokemonLoop
 .cancel
-	ld hl, wd730
-	res 6, [hl]
+	ld hl, wStatusFlags5
+	res BIT_NO_TEXT_DELAY, [hl]
 	call LoadScreenTilesFromBuffer2
 	jp TextScriptEnd
 

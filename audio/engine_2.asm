@@ -198,7 +198,7 @@ INCLUDE "audio/sfx/pokeflute_ch5_ch6.asm"
 
 Audio2_InitMusicVariables::
 	xor a
-	ld [wUnusedC000], a
+	ld [wUnusedMusicByte], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
 	ld [wMusicTempo + 1], a
 	ld [wMusicWaveInstrument], a
@@ -376,7 +376,7 @@ Audio2_StopAllAudio::
 	ld a, $77
 	ldh [rNR50], a ; full volume
 	xor a
-	ld [wUnusedC000], a
+	ld [wUnusedMusicByte], a
 	ld [wDisableChannelOutputWhenSfxEnds], a
 	ld [wMuteAudioAndPauseMusic], a
 	ld [wMusicTempo + 1], a

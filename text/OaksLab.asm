@@ -246,7 +246,7 @@ _OaksLabOakGivesText::
 _OaksLabReceivedText::
 	text "<PLAYER> received"
 	line "a @"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "!@"
 	text_end
 

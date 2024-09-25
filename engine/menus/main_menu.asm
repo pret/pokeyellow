@@ -21,14 +21,14 @@ MainMenu:
 	ld [hli], a
 	ld [hl], a
 	ld [wDefaultMap], a
-	ld hl, wd72e
-	res 6, [hl]
+	ld hl, wStatusFlags4
+	res BIT_LINK_CONNECTED, [hl]
 	call ClearScreen
 	call RunDefaultPaletteCommand
 	call LoadTextBoxTilePatterns
 	call LoadFontTilePatterns
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	ld a, [wSaveFileStatus]
 	cp 1
 	jr z, .noSaveFile
@@ -48,8 +48,8 @@ MainMenu:
 	ld de, NewGameText
 	call PlaceString
 .next2
-	ld hl, wd730
-	res 6, [hl]
+	ld hl, wStatusFlags5
+	res BIT_NO_TEXT_DELAY, [hl]
 	call UpdateSprites
 	xor a
 	ld [wCurrentMenuItem], a
@@ -83,13 +83,13 @@ MainMenu:
 	cp 1
 	jp z, StartNewGame
 	call DisplayOptionMenu
-	ld a, 1
+	ld a, TRUE
 	ld [wOptionsInitialized], a
 	jp .mainMenuLoop
 .choseContinue
 	call DisplayContinueGameInfo
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 .inputLoop
 	xor a
 	ldh [hJoyPressed], a
@@ -100,7 +100,7 @@ MainMenu:
 	bit BIT_A_BUTTON, a
 	jr nz, .pressedA
 	bit BIT_B_BUTTON, a
-	jp nz, .mainMenuLoop ; pressed B
+	jp nz, .mainMenuLoop
 	jr .inputLoop
 .pressedA
 	call GBPalWhiteOutWithDelay3
@@ -112,18 +112,18 @@ MainMenu:
 	ld a, [wNumHoFTeams]
 	and a
 	jp z, SpecialEnterMap
-	ld a, [wCurMap] ; map ID
+	ld a, [wCurMap]
 	cp HALL_OF_FAME
 	jp nz, SpecialEnterMap
 	xor a
 	ld [wDestinationMap], a
-	ld hl, wd732
-	set 2, [hl] ; fly warp or dungeon warp
+	ld hl, wStatusFlags6
+	set BIT_FLY_OR_DUNGEON_WARP, [hl]
 	call PrepareForSpecialWarp
 	jp SpecialEnterMap
 
 InitOptions:
-	ld a, TEXT_DELAY_FAST
+	ld a, 1 << BIT_FAST_TEXT_DELAY
 	ld [wLetterPrintingDelayFlags], a
 	ld a, TEXT_DELAY_MEDIUM
 	ld [wOptions], a
@@ -145,11 +145,9 @@ NotEnoughMemoryText:
 	text_end
 
 StartNewGame:
-	ld hl, wd732
-	; Ensure debug mode is not used when
-	; starting a regular new game.
-	; Debug mode persists in saved games for
-	; both debug and non-debug builds, and is
+	ld hl, wStatusFlags6
+	; Ensure debug mode is not used when starting a regular new game.
+	; Debug mode persists in saved games for both debug and non-debug builds, and is
 	; only reset here by the main menu.
 	res BIT_DEBUG_MODE, [hl]
 	; fallthrough
@@ -166,9 +164,9 @@ SpecialEnterMap::
 	ldh [hJoyPressed], a
 	ldh [hJoyHeld], a
 	ldh [hJoy5], a
-	ld [wd72d], a
-	ld hl, wd732
-	set 0, [hl] ; count play time
+	ld [wCableClubDestinationMap], a
+	ld hl, wStatusFlags6
+	set BIT_GAME_TIMER_COUNTING, [hl]
 	call ResetPlayerSpriteData
 	ld c, 20
 	call DelayFrames

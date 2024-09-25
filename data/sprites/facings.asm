@@ -47,71 +47,71 @@ SpriteFacingAndAnimationTable:
 	db 4 ; #
 	db  0,  0, $00, 0
 	db  0,  8, $01, 0
-	db  8,  0, $02, OAMFLAG_CANBEMASKED
-	db  8,  8, $03, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $02, UNDER_GRASS
+	db  8,  8, $03, UNDER_GRASS | FACING_END
 
 .WalkingDown:
 	db 4 ; #
 	db  0,  0, $80, 0
 	db  0,  8, $81, 0
-	db  8,  0, $82, OAMFLAG_CANBEMASKED
-	db  8,  8, $83, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $82, UNDER_GRASS
+	db  8,  8, $83, UNDER_GRASS | FACING_END
 
 .WalkingDown2:
 	db 4 ; #
 	db  0,  8, $80, OAM_HFLIP
 	db  0,  0, $81, OAM_HFLIP
-	db  8,  8, $82, OAM_HFLIP | OAMFLAG_CANBEMASKED
-	db  8,  0, $83, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  8, $82, OAM_HFLIP | UNDER_GRASS
+	db  8,  0, $83, OAM_HFLIP | UNDER_GRASS | FACING_END
 
 .StandingUp:
 	db 4 ; #
 	db  0,  0, $04, 0
 	db  0,  8, $05, 0
-	db  8,  0, $06, OAMFLAG_CANBEMASKED
-	db  8,  8, $07, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $06, UNDER_GRASS
+	db  8,  8, $07, UNDER_GRASS | FACING_END
 
 .WalkingUp:
 	db 4 ; #
 	db  0,  0, $84, 0
 	db  0,  8, $85, 0
-	db  8,  0, $86, OAMFLAG_CANBEMASKED
-	db  8,  8, $87, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $86, UNDER_GRASS
+	db  8,  8, $87, UNDER_GRASS | FACING_END
 
 .WalkingUp2:
 	db 4 ; #
 	db  0,  8, $84, OAM_HFLIP
 	db  0,  0, $85, OAM_HFLIP
-	db  8,  8, $86, OAM_HFLIP | OAMFLAG_CANBEMASKED
-	db  8,  0, $87, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  8, $86, OAM_HFLIP | UNDER_GRASS
+	db  8,  0, $87, OAM_HFLIP | UNDER_GRASS | FACING_END
 
 .StandingLeft:
 	db 4 ; #
 	db  0,  0, $08, 0
 	db  0,  8, $09, 0
-	db  8,  0, $0a, OAMFLAG_CANBEMASKED
-	db  8,  8, $0b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $0a, UNDER_GRASS
+	db  8,  8, $0b, UNDER_GRASS | FACING_END
 
 .WalkingLeft:
 	db 4 ; #
 	db  0,  0, $88, 0
 	db  0,  8, $89, 0
-	db  8,  0, $8a, OAMFLAG_CANBEMASKED
-	db  8,  8, $8b, OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  0, $8a, UNDER_GRASS
+	db  8,  8, $8b, UNDER_GRASS | FACING_END
 
 .StandingRight:
 	db 4 ; #
 	db  0,  8, $08, OAM_HFLIP
 	db  0,  0, $09, OAM_HFLIP
-	db  8,  8, $0a, OAM_HFLIP | OAMFLAG_CANBEMASKED
-	db  8,  0, $0b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  8, $0a, OAM_HFLIP | UNDER_GRASS
+	db  8,  0, $0b, OAM_HFLIP | UNDER_GRASS | FACING_END
 
 .WalkingRight:
 	db 4 ; #
 	db  0,  8, $88, OAM_HFLIP
 	db  0,  0, $89, OAM_HFLIP
-	db  8,  8, $8a, OAM_HFLIP | OAMFLAG_CANBEMASKED
-	db  8,  0, $8b, OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db  8,  8, $8a, OAM_HFLIP | UNDER_GRASS
+	db  8,  0, $8b, OAM_HFLIP | UNDER_GRASS | FACING_END
 
 .SpecialCase:
 	db 9 ; #
@@ -121,6 +121,6 @@ SpriteFacingAndAnimationTable:
 	db  4, -4, $01, 0
 	db  4,  4, $02, 0
 	db  4, 12, $01, 0
-	db 12, -4, $00, OAM_VFLIP | OAMFLAG_CANBEMASKED
-	db 12,  4, $01, OAMFLAG_CANBEMASKED
-	db 12, 12, $00, OAM_VFLIP | OAM_HFLIP | OAMFLAG_CANBEMASKED | OAMFLAG_ENDOFDATA
+	db 12, -4, $00, OAM_VFLIP | UNDER_GRASS
+	db 12,  4, $01, UNDER_GRASS
+	db 12, 12, $00, OAM_VFLIP | OAM_HFLIP | UNDER_GRASS | FACING_END

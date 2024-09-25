@@ -873,7 +873,7 @@ PrintPCBox_PlaceBoxMonInfo:
 	ld a, [de]
 	cp $ff
 	jr z, .done
-	ld [wd11e], a
+	ld [wPokedexNum], a
 	push bc
 	push hl
 	push de

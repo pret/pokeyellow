@@ -204,7 +204,7 @@ ExplodeEffect:
 FreezeBurnParalyzeEffect:
 	xor a
 	ld [wAnimationType], a
-	call CheckTargetSubstitute ; test bit 4 of d063/d068 flags [target has substitute flag]
+	call CheckTargetSubstitute
 	ret nz ; return if they have a substitute, can't effect them
 	ldh a, [hWhoseTurn]
 	and a
@@ -848,7 +848,7 @@ SwitchAndTeleportEffect:
 	ld a, [wIsInBattle]
 	dec a
 	jr nz, .notWildBattle1
-	ld a, [wCurEnemyLVL]
+	ld a, [wCurEnemyLevel]
 	ld b, a
 	ld a, [wBattleMonLevel]
 	cp b ; is the player's level greater than the enemy's level?
@@ -892,7 +892,7 @@ SwitchAndTeleportEffect:
 	jr nz, .notWildBattle2
 	ld a, [wBattleMonLevel]
 	ld b, a
-	ld a, [wCurEnemyLVL]
+	ld a, [wCurEnemyLevel]
 	cp b
 	jr nc, .enemyMoveWasSuccessful
 	add b
@@ -1318,7 +1318,7 @@ MimicEffect:
 	add hl, bc
 	ld a, d
 	ld [hl], a
-	ld [wd11e], a
+	ld [wNamedObjectIndex], a
 	call GetMoveName
 	call PlayCurrentMoveAnimation
 	ld hl, MimicLearnedMoveText
@@ -1365,7 +1365,7 @@ DisableEffect:
 	pop hl
 	and a
 	jr z, .pickMoveToDisable ; loop until a non-00 move slot is found
-	ld [wd11e], a ; store move number
+	ld [wNamedObjectIndex], a ; store move number
 	push hl
 	ldh a, [hWhoseTurn]
 	and a
@@ -1410,7 +1410,7 @@ DisableEffect:
 	jr nz, .printDisableText
 	inc hl ; wEnemyDisabledMoveNumber
 .printDisableText
-	ld a, [wd11e] ; move number
+	ld a, [wNamedObjectIndex] ; move number
 	ld [hl], a
 	call GetMoveName
 	ld hl, MoveWasDisabledText

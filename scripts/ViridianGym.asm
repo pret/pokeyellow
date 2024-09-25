@@ -41,8 +41,8 @@ ViridianGymDefaultScript:
 	cp $ff
 	jp z, CheckFightingMapTrainers
 	call StartSimulatingJoypadStates
-	ld hl, wd736
-	set 7, [hl]
+	ld hl, wMovementFlags
+	set BIT_SPINNING, [hl]
 	ld a, SFX_ARROW_TILES
 	call PlaySound
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
@@ -120,8 +120,8 @@ ViridianGymPlayerSpinningScript:
 	jr nz, .ViridianGymLoadSpinnerArrow
 	xor a
 	ld [wJoyIgnore], a
-	ld hl, wd736
-	res 7, [hl]
+	ld hl, wMovementFlags
+	res BIT_SPINNING, [hl]
 	ld a, SCRIPT_VIRIDIANGYM_DEFAULT
 	ld [wCurMapScript], a
 	ret
@@ -137,20 +137,20 @@ ViridianGymGiovanniPostBattle:
 ; fallthrough
 ViridianGymReceiveTM27:
 	ld a, TEXT_VIRIDIANGYM_GIOVANNI_EARTH_BADGE_INFO
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
 	lb bc, TM_FISSURE, 1
 	call GiveItem
 	jr nc, .bag_full
 	ld a, TEXT_VIRIDIANGYM_GIOVANNI_RECEIVED_TM27
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM27
 	jr .gym_victory
 .bag_full
 	ld a, TEXT_VIRIDIANGYM_GIOVANNI_TM27_NO_ROOM
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 .gym_victory
 	ld hl, wObtainedBadges
@@ -229,9 +229,9 @@ ViridianGymGiovanniText:
 .beforeBeat
 	ld hl, .PreBattleText
 	call PrintText
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, .ReceivedEarthBadgeText
 	ld de, .ReceivedEarthBadgeText
 	call SaveEndBattleTextPointers

@@ -2,18 +2,18 @@ IsPlayerTalkingToPikachu::
 	ld a, [wd436]
 	and a
 	ret z
-	ldh a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndex]
 	cp $f
 	ret nz
 	call InitializePikachuTextID
 	xor a
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hSpriteIndex], a
 	ld [wd436], a
 	ret
 
 InitializePikachuTextID::
 	ld a, TEXT_PIKACHU_ANIM ; display
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	xor a
 	ld [wPlayerMovingDirection], a
 	ld a, $1
@@ -166,8 +166,8 @@ StarterPikachuEmotionCommand_subcmd:
 StarterPikachuEmotionCommand_nop2:
 IF DEF(_DEBUG)
 	push hl
-	ld hl, wd732
-	bit 1, [hl]
+	ld hl, wStatusFlags6
+	bit BIT_DEBUG_MODE, [hl]
 	pop hl
 	ret z
 	push de
@@ -213,8 +213,8 @@ REPT 5
 ENDR
 IF DEF(_DEBUG)
 	push hl
-	ld hl, wd732
-	bit 1, [hl]
+	ld hl, wStatusFlags6
+	bit BIT_DEBUG_MODE, [hl]
 	pop hl
 	ret z
 	push de

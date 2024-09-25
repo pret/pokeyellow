@@ -113,7 +113,7 @@ _PartyMenuSwapMonText::
 	done
 
 _PotionText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text_start
 	line "recovered by @"
 	text_decimal wHPBarHPDifference, 2, 3
@@ -121,52 +121,52 @@ _PotionText::
 	done
 
 _AntidoteText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " was"
 	line "cured of poison!"
 	done
 
 _ParlyzHealText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "'s"
 	line "rid of paralysis!"
 	done
 
 _BurnHealText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "'s"
 	line "burn was healed!"
 	done
 
 _IceHealText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " was"
 	line "defrosted!"
 	done
 
 _AwakeningText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text_start
 	line "woke up!"
 	done
 
 _FullHealText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "'s"
 	line "health returned!"
 	done
 
 _ReviveText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text_start
 	line "is revitalized!"
 	done
 
 _RareCandyText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " grew"
 	line "to level @"
-	text_decimal wCurEnemyLVL, 1, 3
+	text_decimal wCurEnemyLevel, 1, 3
 	text "!@"
 	text_end
 
@@ -218,7 +218,7 @@ _DepositHowManyText::
 	done
 
 _ItemWasStoredText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " was"
 	line "stored via PC."
 	prompt
@@ -245,7 +245,7 @@ _WithdrawHowManyText::
 _WithdrewItemText::
 	text "Withdrew"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "."
 	prompt
 
@@ -335,7 +335,7 @@ _CantTakeMonText::
 	prompt
 
 _PikachuUnhappyText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " looks"
 	line "unhappy about it!"
 	prompt
@@ -384,7 +384,7 @@ _HereYouGoText::
 _SoYouWantPrizeText::
 	text "So, you want"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "?"
 	done
 
@@ -493,7 +493,7 @@ _DoYouWantToNicknameText::
 	text "Do you want to"
 	line "give a nickname"
 	cont "to @"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "?"
 	done
 
@@ -512,7 +512,7 @@ _WillBeTradedText::
 	text_ram wNameOfPlayerMonToBeTraded
 	text " and"
 	line "@"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " will"
 	cont "be traded."
 	done
@@ -578,19 +578,19 @@ _ColosseumTotalL50Text::
 	prompt
 
 _ColosseumHeightText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " is over"
 	line "6’8” tall!"
 	prompt
 
 _ColosseumWeightText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " weighs"
 	line "over 44 pounds!"
 	prompt
 
 _ColosseumEvolvedText::
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text " is an"
 	line "evolved #MON!"
 	prompt
@@ -621,7 +621,7 @@ _ColosseumVersionText::
 	prompt
 
 _TextIDErrorText::
-	text_decimal hSpriteIndexOrTextID, 1, 2
+	text_decimal hTextID, 1, 2
 	text " error."
 	done
 

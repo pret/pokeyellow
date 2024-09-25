@@ -1,8 +1,8 @@
 PKMNLeaguePC:
 	ld hl, AccessedHoFPCText
 	call PrintText
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	push hl
 	ld a, [wUpdateSpritesEnabled]
 	push af
@@ -44,7 +44,7 @@ PKMNLeaguePC:
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	pop hl
-	res 6, [hl]
+	res BIT_NO_TEXT_DELAY, [hl]
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call RunDefaultPaletteCommand
@@ -57,7 +57,7 @@ LeaguePCShowTeam:
 	call LeaguePCShowMon
 	call WaitForTextScrollButtonPress
 	ldh a, [hJoyHeld]
-	bit 1, a
+	bit BIT_B_BUTTON, a
 	jr nz, .exit
 	ld hl, wHallOfFame + HOF_MON
 	ld de, wHallOfFame
@@ -83,13 +83,13 @@ LeaguePCShowMon:
 	ld hl, wHallOfFame
 	ld a, [hli]
 	ld [wHoFMonSpecies], a
-	ld [wcf91], a
-	ld [wd0b5], a
+	ld [wCurPartySpecies], a
+	ld [wCurSpecies], a
 	ld [wBattleMonSpecies2], a
 	ld [wWholeScreenPaletteMonSpecies], a
 	ld a, [hli]
 	ld [wHoFMonLevel], a
-	ld de, wcd6d
+	ld de, wNameBuffer
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld b, SET_PAL_POKEMON_WHOLE_SCREEN

@@ -44,7 +44,7 @@ _EvolvedText::
 _IntoText::
 	text_start
 	line "into @"
-	text_ram wcd6d
+	text_ram wNameBuffer
 	text "!"
 	done
 

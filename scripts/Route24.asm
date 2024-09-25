@@ -31,7 +31,7 @@ Route24DefaultScript:
 	xor a
 	ldh [hJoyHeld], a
 	ld a, TEXT_ROUTE24_COOLTRAINER_M1
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	CheckAndResetEvent EVENT_NUGGET_REWARD_AVAILABLE
 	ret z
@@ -68,7 +68,7 @@ Route24AfterRocketBattleScript:
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROUTE24_ROCKET
 	ld a, TEXT_ROUTE24_COOLTRAINER_M1
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ld [wJoyIgnore], a
@@ -120,13 +120,13 @@ Route24CooltrainerM1Text:
 	call PrintText
 	ld hl, .JoinTeamRocketText
 	call PrintText
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, .DefeatedText
 	ld de, .DefeatedText
 	call SaveEndBattleTextPointers
-	ldh a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
@@ -293,8 +293,8 @@ Route24CooltrainerM4Text:
 	and a
 	jr nz, .asm_515d0
 	ld a, CHARMANDER
-	ld [wd11e], a
-	ld [wcf91], a
+	ld [wNamedObjectIndex], a
+	ld [wCurPartySpecies], a
 	call GetMonName
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a

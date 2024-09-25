@@ -1,11 +1,11 @@
 VictoryRoad2F_Script:
 	ld hl, wCurrentMapScriptFlags
-	bit 6, [hl]
-	res 6, [hl]
+	bit BIT_CUR_MAP_LOADED_2, [hl]
+	res BIT_CUR_MAP_LOADED_2, [hl]
 	call nz, VictoryRoad2FResetBoulderEventScript
 	ld hl, wCurrentMapScriptFlags
-	bit 5, [hl]
-	res 5, [hl]
+	bit BIT_CUR_MAP_LOADED_1, [hl]
+	res BIT_CUR_MAP_LOADED_1, [hl]
 	call nz, VictoryRoad2FCheckBoulderEventScript
 	call EnableAutoTextBoxDrawing
 	ld hl, VictoryRoad2TrainerHeaders
@@ -27,7 +27,7 @@ VictoryRoad2FCheckBoulderEventScript:
 	call VictoryRoad2FReplaceTileBlockScript
 	pop af
 .not_on_switch
-	bit 7, a
+	CheckEventReuseA EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH2
 	ret z
 	ld a, $1d
 	lb bc, 7, 11
@@ -46,7 +46,7 @@ VictoryRoad2FDefaultScript:
 	ld hl, .SwitchCoords
 	call CheckBoulderCoords
 	jp nc, CheckFightingMapTrainers
-	ldh a, [hSpriteIndexOrTextID]
+	ldh a, [hSpriteIndex]
 	cp $f
 	jp z, CheckFightingMapTrainers
 	EventFlagAddress hl, EVENT_VICTORY_ROAD_2_BOULDER_ON_SWITCH1
@@ -63,7 +63,7 @@ VictoryRoad2FDefaultScript:
 	ret nz
 .set_script_flag
 	ld hl, wCurrentMapScriptFlags
-	set 5, [hl]
+	set BIT_CUR_MAP_LOADED_1, [hl]
 	ret
 
 .SwitchCoords:

@@ -49,8 +49,8 @@ BikeShopClerkText:
 	ld [wTopMenuItemY], a
 	ld a, $1
 	ld [wTopMenuItemX], a
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	hlcoord 0, 0
 	lb bc, 4, 15
 	call TextBoxBorder
@@ -64,8 +64,8 @@ BikeShopClerkText:
 	ld hl, BikeShopClerkDoYouLikeItText
 	call PrintText
 	; This fixes the bike shop instatext glitch
-	ld hl, wd730
-	res 6, [hl]
+	ld hl, wStatusFlags5
+	res BIT_NO_TEXT_DELAY, [hl]
 	call HandleMenuInput
 	bit BIT_B_BUTTON, a
 	jr nz, .cancel

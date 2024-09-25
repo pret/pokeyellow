@@ -1,12 +1,13 @@
 ApplyOutOfBattlePoisonDamage:
-	ld a, [wd730]
-	add a
+	ld a, [wStatusFlags5]
+	assert BIT_SCRIPTED_MOVEMENT_STATE == 7
+	add a ; overflows scripted movement state bit into carry flag
 	jp c, .noBlackOut ; no black out if joypad states are being simulated
 	ld a, [wd492]
 	bit 7, a
 	jp nz, .noBlackOut
-	ld a, [wd72e]
-	bit 6, a
+	ld a, [wStatusFlags4]
+	bit BIT_LINK_CONNECTED, a
 	jp nz, .noBlackOut
 	ld a, [wPartyCount]
 	and a
@@ -50,7 +51,7 @@ ApplyOutOfBattlePoisonDamage:
 	inc hl
 	ld [hl], a
 	ld a, [de]
-	ld [wd11e], a
+	ld [wPokedexNum], a
 	push de
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
@@ -59,7 +60,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld [wJoyIgnore], a
 	call EnableAutoTextBoxDrawing
 	ld a, TEXT_MON_FAINTED
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	callfar IsThisPartymonStarterPikachu_Party
 	jr nc, .curMonNotPlayerPikachu
@@ -112,10 +113,10 @@ ApplyOutOfBattlePoisonDamage:
 	jr nz, .noBlackOut
 	call EnableAutoTextBoxDrawing
 	ld a, TEXT_BLACKED_OUT
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
-	ld hl, wd72e
-	set 5, [hl]
+	ld hl, wStatusFlags4
+	set BIT_BATTLE_OVER_OR_BLACKOUT, [hl]
 	ld a, $ff
 	jr .done
 .noBlackOut

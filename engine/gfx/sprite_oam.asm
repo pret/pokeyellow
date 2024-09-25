@@ -113,7 +113,7 @@ PrepareOAMData::
 	inc hl
 	inc e
 	ld a, [hl]
-	bit 1, a ; is the tile allowed to set the sprite priority bit?
+	bit BIT_SPRITE_UNDER_GRASS, a
 	jr z, .skipPriority
 	ldh a, [hSpritePriority]
 	or [hl]
@@ -139,8 +139,8 @@ PrepareOAMData::
 
 	; Clear unused OAM.
 .asm_4a41
-	ld a, [wd736]
-	bit 6, a ; jumping down ledge or fishing animation?
+	ld a, [wMovementFlags]
+	bit BIT_LEDGE_OR_FISHING, a
 	ld c, $a0
 	jr z, .clear
 

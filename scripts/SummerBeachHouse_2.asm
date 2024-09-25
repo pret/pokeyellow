@@ -2,11 +2,11 @@ Func_f23d0:
 	call SaveScreenTilesToBuffer2
 	xor a
 	ld [wUpdateSpritesEnabled], a
-	ld hl, wd730
-	set 6, [hl]
+	ld hl, wStatusFlags5
+	set BIT_NO_TEXT_DELAY, [hl]
 	callfar PrintSurfingMinigameHighScore
-	ld hl, wd730
-	res 6, [hl]
+	ld hl, wStatusFlags5
+	res BIT_NO_TEXT_DELAY, [hl]
 	call GBPalWhiteOutWithDelay3
 	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns

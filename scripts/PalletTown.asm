@@ -57,7 +57,7 @@ PalletTownOakHeyWaitScript:
 	xor a
 	ld [wOakWalkedToPlayer], a
 	ld a, TEXT_PALLETTOWN_OAK
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
@@ -103,8 +103,8 @@ PalletTownOakWalksToPlayerScript:
 	ret
 
 PalletTownOakGreetsPlayerScript:
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, ~(A_BUTTON | B_BUTTON)
 	ld [wJoyIgnore], a
@@ -115,7 +115,7 @@ PalletTownOakGreetsPlayerScript:
 	ld a, SPRITE_FACING_UP
 	ld [wSprite01StateData1FacingDirection], a
 	ld a, TEXT_PALLETTOWN_OAK
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	; oak faces the horizontally adjacent patch of grass to face pikachu
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
@@ -145,7 +145,7 @@ PalletTownPikachuBattleScript:
 	ld a, STARTER_PIKACHU
 	ld [wCurOpponent], a
 	ld a, 5
-	ld [wCurEnemyLVL], a
+	ld [wCurEnemyLevel], a
 
 	; trigger the next script
 	ld a, SCRIPT_PALLETTOWN_AFTER_PIKACHU_BATTLE
@@ -156,14 +156,14 @@ PalletTownAfterPikachuBattleScript:
 	ld a, 2
 	ld [wOakWalkedToPlayer], a
 	ld a, TEXT_PALLETTOWN_OAK
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
 	ld a, SPRITE_FACING_UP
 	ld [wSprite01StateData1FacingDirection], a
 	ld a, TEXT_PALLETTOWN_OAK_COME_WITH_ME
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a

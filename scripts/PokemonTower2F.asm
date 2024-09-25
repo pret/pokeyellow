@@ -49,7 +49,7 @@ ENDC
 	ldh [hSpriteFacingDirection], a
 	call SetSpriteFacingDirectionAndDelay
 	ld a, TEXT_POKEMONTOWER2F_RIVAL
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	xor a
 	ldh [hJoyHeld], a
@@ -69,7 +69,7 @@ PokemonTower2FDefeatedRivalScript:
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_POKEMON_TOWER_RIVAL
 	ld a, TEXT_POKEMONTOWER2F_RIVAL
-	ldh [hSpriteIndexOrTextID], a
+	ldh [hTextID], a
 	call DisplayTextID
 	ld de, PokemonTower2FRivalDownThenRightMovement
 	CheckEvent EVENT_POKEMON_TOWER_RIVAL_ON_LEFT
@@ -110,8 +110,8 @@ PokemonTower2FRivalDownThenRightMovement:
 	db -1 ; end
 
 PokemonTower2FRivalExitsScript:
-	ld a, [wd730]
-	bit 0, a
+	ld a, [wStatusFlags5]
+	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	ld a, HS_POKEMON_TOWER_2F_RIVAL
 	ld [wMissableObjectIndex], a
@@ -139,9 +139,9 @@ PokemonTower2FRivalText:
 .do_battle
 	ld hl, .WhatBringsYouHereText
 	call PrintText
-	ld hl, wd72d
-	set 6, [hl]
-	set 7, [hl]
+	ld hl, wStatusFlags3
+	set BIT_TALKED_TO_TRAINER, [hl]
+	set BIT_PRINT_END_BATTLE_TEXT, [hl]
 	ld hl, .DefeatedText
 	ld de, .VictoryText
 	call SaveEndBattleTextPointers

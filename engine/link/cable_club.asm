@@ -256,9 +256,9 @@ CableClub_DoBattleOrTradeAgain:
 	dec c
 	jr nz, .unpatchEnemyMonsLoop
 	ld a, LOW(wEnemyMonOT)
-	ld [wUnusedCF8D], a
+	ld [wUnusedNamePointer], a
 	ld a, HIGH(wEnemyMonOT)
-	ld [wUnusedCF8D + 1], a
+	ld [wUnusedNamePointer + 1], a
 	xor a
 	ld [wTradeCenterPointerTableIndex], a
 	call StopAllMusic
@@ -280,7 +280,7 @@ CableClub_DoBattleOrTradeAgain:
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 	ld hl, wOptions
-	res 7, [hl]
+	res BIT_BATTLE_ANIMATION, [hl]
 	ld a, [wLetterPrintingDelayFlags]
 	push af
 	xor a
@@ -349,10 +349,10 @@ TradeCenter_SelectMon:
 	ld [wTopMenuItemX], a
 .enemyMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set BIT_DOUBLE_SPACED_MENU, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res BIT_DOUBLE_SPACED_MENU, [hl]
 	and a
 	jp z, .getNewInput
 	bit BIT_A_BUTTON, a
@@ -414,10 +414,10 @@ TradeCenter_SelectMon:
 	call ClearScreenArea
 .playerMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set BIT_DOUBLE_SPACED_MENU, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res BIT_DOUBLE_SPACED_MENU, [hl]
 	and a ; was anything pressed?
 	jr nz, .playerMonMenu_SomethingPressed
 	jp .getNewInput
@@ -495,7 +495,7 @@ TradeCenter_SelectMon:
 	ld a, 1
 	ld [wTopMenuItemX], a
 	call HandleMenuInput
-	bit 4, a ; Right pressed?
+	bit BIT_D_RIGHT, a
 	jr nz, .selectTradeMenuItem
 	bit BIT_B_BUTTON, a
 	jr z, .displayPlayerMonStats
@@ -591,9 +591,9 @@ ReturnToCableClubRoom:
 	ld a, [hl]
 	push af
 	push hl
-	res 0, [hl]
+	res BIT_FONT_LOADED, [hl]
 	xor a
-	ld [wd72d], a
+	ld [wStatusFlags3], a ; clears BIT_INIT_TRADE_CENTER_FACING
 	dec a
 	ld [wDestinationWarpID], a
 	call LoadMapData
@@ -666,7 +666,7 @@ TradeCenter_PrintPartyListNames:
 	ld a, [de]
 	cp $ff
 	ret z
-	ld [wd11e], a
+	ld [wNamedObjectIndex], a
 	push bc
 	push hl
 	push de
@@ -702,9 +702,9 @@ TradeCenter_Trade:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-	ld [wd11e], a
+	ld [wNamedObjectIndex], a
 	call GetMonName
-	ld hl, wcd6d
+	ld hl, wNameBuffer
 	ld de, wNameOfPlayerMonToBeTraded
 	ld bc, NAME_LENGTH
 	call CopyData
@@ -714,7 +714,7 @@ TradeCenter_Trade:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-	ld [wd11e], a
+	ld [wNamedObjectIndex], a
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
@@ -810,7 +810,7 @@ TradeCenter_Trade:
 	ld e, a
 	add hl, de
 	ld a, [hl]
-	ld [wcf91], a
+	ld [wCurPartySpecies], a
 	ld hl, wEnemyMons
 	ld a, c
 	ld bc, wEnemyMon2 - wEnemyMon1
@@ -843,7 +843,7 @@ TradeCenter_Trade:
 	call ClearScreen
 	call LoadHpBarAndStatusTilePatterns
 	xor a
-	ld [wUnusedCC5B], a
+	ld [wUnusedFlag], a
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	jr z, .usingExternalClock
