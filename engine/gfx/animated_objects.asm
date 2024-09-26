@@ -227,7 +227,7 @@ GetCurrentAnimatedObjectTileYCoordinate:
 	push hl
 	ld a, [hl]
 	ld hl, wCurAnimatedObjectOAMAttributes
-	bit 6, [hl]
+	bit OAM_Y_FLIP, [hl]
 	jr z, .no_flip
 	add $8
 	xor $ff
@@ -240,7 +240,7 @@ GetCurrentAnimatedObjectTileXCoordinate:
 	push hl
 	ld a, [hl]
 	ld hl, wCurAnimatedObjectOAMAttributes
-	bit 5, [hl]
+	bit OAM_X_FLIP, [hl]
 	jr z, .no_flip
 	add $8
 	xor $ff
@@ -254,14 +254,14 @@ SetCurrentAnimatedObjectOAMAttributes:
 	ld b, a
 	ld a, [hl]
 	xor b
-	and $e0
+	and OAM_HFLIP | OAM_VFLIP | OAM_BEHIND_BG
 	ld b, a
 	ld a, [hl]
-	and $10
+	and OAM_OBP1
 	or b
-	bit 4, a
+	bit OAM_OBP_NUM, a
 	ret z
-	or $4
+	or OAM_HIGH_PALS
 	ret
 
 GetCurrentAnimatedObjectOAMDataPointer:

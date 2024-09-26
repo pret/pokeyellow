@@ -244,7 +244,7 @@ Paragraph::
 
 PageChar::
 	ldh a, [hUILayoutFlags]
-	bit 3, a
+	bit BIT_PAGE_CHAR_IS_NEXT, a
 	jr z, .pageChar
 	ld a, "<NEXT>"
 	jp PlaceNextChar.NotTerminator
