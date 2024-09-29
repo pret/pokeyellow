@@ -1233,7 +1233,7 @@ CollisionCheckOnLand::
 	ldh [hTextID], a
 	call IsSpriteInFrontOfPlayer ; check for sprite collisions again? when does the above check fail to detect a sprite collision?
 	jr nc, .asm_0a5c
-	res 7, [hl]
+	res BIT_FACE_PLAYER, [hl]
 	ldh a, [hTextID]
 	and a ; was there a sprite collision?
 	jr z, .asm_0a5c

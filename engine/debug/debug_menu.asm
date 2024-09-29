@@ -1558,7 +1558,7 @@ Func_ff295:
 	call Func_ff2f3
 	pop de
 	ld a, d
-	set 7, a
+	set BIT_HAS_CHANGED_BOXES, a
 	ld [wCurrentBoxNum], a
 	push de
 	call Func_ff2d1
@@ -1566,7 +1566,7 @@ Func_ff295:
 	call Func_ff2f3
 	ld a, [wLetterPrintingDelayFlags]
 	push af
-	ld a, 1
+	ld a, 1 << BIT_FAST_TEXT_DELAY
 	ld [wLetterPrintingDelayFlags], a
 	callfar SaveSAVtoSRAM
 	pop af

@@ -683,11 +683,11 @@ Pokedex_PrepareDexEntryForPrinting:
 	ld h, a
 	bccoord 1, 1
 	ldh a, [hUILayoutFlags]
-	set 3, a
+	set BIT_PAGE_CHAR_IS_NEXT, a
 	ldh [hUILayoutFlags], a
 	call Pokedex_PrintFlavorTextAtBC
 	ldh a, [hUILayoutFlags]
-	res 3, a
+	res BIT_PAGE_CHAR_IS_NEXT, a
 	ldh [hUILayoutFlags], a
 	ret
 
