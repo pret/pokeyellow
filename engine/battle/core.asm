@@ -2820,6 +2820,9 @@ SelectMenuItem_CursorDown:
 	jp SelectMenuItem
 
 Func_3d4f5:
+IF DEF(_DEBUG)
+	ASSERT BIT_START == BIT_TRAINER_BATTLE
+ENDC
 	bit BIT_TRAINER_BATTLE, a
 	ld a, $0
 	jr nz, .asm_3d4fd
