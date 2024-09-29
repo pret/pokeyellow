@@ -34,7 +34,7 @@ PokemonFanClubScript_59a39:
 	ret
 
 PokemonFanClubScript_59a44:
-	ld a, [wd472]
+	ld a, [wd471]
 	bit 7, a
 	ret z
 	callfar CheckPikachuFaintedOrStatused

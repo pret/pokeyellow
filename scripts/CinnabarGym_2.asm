@@ -4,7 +4,7 @@ CinnabarGymScript_753de:
 
 CinnabarGymScript_753e9:
 	push hl
-	ld hl, wd475
+	ld hl, wd474
 	bit 7, [hl]
 	res 7, [hl]
 	pop hl
@@ -12,7 +12,7 @@ CinnabarGymScript_753e9:
 
 CinnabarGymScript_753f3:
 	push hl
-	ld hl, wd475
+	ld hl, wd474
 	bit 7, [hl]
 	pop hl
 	ret

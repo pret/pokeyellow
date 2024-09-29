@@ -73,7 +73,7 @@ ModifyPikachuHappiness::
 	jr c, .decreased
 	cp b
 	jr nc, .done
-	ld a, [wd49c]
+	ld a, [wd49b]
 	and a
 	jr nz, .done
 	jr .update_mood

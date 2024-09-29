@@ -176,7 +176,7 @@ StartMenu_Pokemon::
 .surfingPikachu
 	ld a, $2
 .continue
-	ld [wd473], a
+	ld [wd472], a
 	ld a, SURFBOARD
 	ld [wCurItem], a
 	ld [wPseudoItemID], a
@@ -188,7 +188,7 @@ StartMenu_Pokemon::
 	jp .goBackToMap
 .reloadNormalSprite
 	xor a
-	ld [wd473], a
+	ld [wd472], a
 	jp .loop
 .strength
 	bit BIT_RAINBOWBADGE, a

@@ -277,7 +277,7 @@ DetectCollisionBetweenSprites:
 	and $f0 ; collision with pikachu?
 	jr nz, .asm_4cd9
 	xor a
-	ld [wd434], a
+	ld [wd433], a
 	ldh a, [hCollidingSpriteOffset]
 	cp $f
 	jr nz, .asm_4cd9
@@ -352,7 +352,7 @@ Func_4d0a:
 .asm_4d19
 	ld a, c
 	and b
-	ld [wd434], a
+	ld [wd433], a
 	ld a, c
 	inc l
 	inc l

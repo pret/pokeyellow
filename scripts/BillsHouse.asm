@@ -39,7 +39,7 @@ BillsHouseScript_1e09e:
 	ret
 
 BillsHouseScript0:
-	ld a, [wd472]
+	ld a, [wd471]
 	bit 7, a
 	jr z, .asm_1e0d2
 	callfar CheckPikachuFaintedOrStatused
@@ -158,7 +158,7 @@ BillsHouseScript5:
 	predef ShowObject
 	ld c, 8
 	call DelayFrames
-	ld hl, wd472
+	ld hl, wd471
 	bit 7, [hl]
 	jr z, .asm_1e1c6
 	call CheckPikachuFollowingPlayer

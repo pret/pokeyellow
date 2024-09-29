@@ -562,7 +562,7 @@ ItemUseBall:
 
 .skipShowingPokedexData
 	ld a, $1
-	ld [wd49c], a
+	ld [wd49b], a
 	ld a, $85
 	ld [wPikachuMood], a
 	ld a, [wPartyCount]
@@ -819,7 +819,7 @@ ItemUseEvoStone:
 	ld hl, RefusingText
 	call PrintText
 	ld a, $4
-	ld [wd49c], a
+	ld [wd49b], a
 	ld a, $82
 	ld [wPikachuMood], a
 	jr .canceledItemUse
@@ -2124,7 +2124,7 @@ FishingInit:
 	ld a, SFX_HEAL_AILMENT
 	call PlaySound
 	ld a, $2
-	ld [wd49c], a
+	ld [wd49b], a
 	ld a, $81
 	ld [wPikachuMood], a
 	ld c, 80
@@ -2507,7 +2507,7 @@ ItemUseTMHM:
 	jr nz, .notTeachingThunderboltOrThunderToPikachu
 .teachingThunderboltOrThunderToPlayerPikachu
 	ld a, $5
-	ld [wd49c], a
+	ld [wd49b], a
 	ld a, $85
 	ld [wPikachuMood], a
 .notTeachingThunderboltOrThunderToPikachu

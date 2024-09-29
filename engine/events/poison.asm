@@ -148,5 +148,5 @@ Func_c4c7:
 	ret nz
 .asm_c4ef
 	xor a
-	ld [wd49c], a
+	ld [wd49b], a
 	ret

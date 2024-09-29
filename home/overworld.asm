@@ -93,7 +93,7 @@ OverworldLoopLessDelay::
 	and a
 	jp z, OverworldLoop ; jump if a hidden object or bookshelf was found, but not if a card key door was found
 	xor a
-	ld [wd436], a ; new yellow address
+	ld [wd435], a ; new yellow address
 	call IsSpriteOrSignInFrontOfPlayer
 	call Func_0ffe
 	ldh a, [hTextID]
@@ -127,7 +127,7 @@ OverworldLoopLessDelay::
 	ld hl, wMiscFlags
 	res BIT_TURNING, [hl]
 	xor a
-	ld [wd435], a
+	ld [wd434], a
 	ld a, 1
 	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerMovingDirection] ; the direction that was pressed last time
@@ -186,7 +186,7 @@ OverworldLoopLessDelay::
 	cp b
 	jr z, .noDirectionChange
 	ld a, $8
-	ld [wd435], a
+	ld [wd434], a
 ; unlike in red/blue, yellow does not have the 180 degrees odd code
 	ld hl, wMiscFlags
 	set BIT_TURNING, [hl]
@@ -239,7 +239,7 @@ OverworldLoopLessDelay::
 	ld hl, wMiscFlags
 	res BIT_TURNING, [hl]
 	xor a
-	ld [wd435], a
+	ld [wd434], a
 	call DoBikeSpeedup
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
@@ -1169,7 +1169,7 @@ IsSpriteInFrontOfPlayer2::
 	cp $f
 	jr nz, .dontwritetowd436
 	ld a, $FF
-	ld [wd436], a
+	ld [wd435], a
 .dontwritetowd436
 	scf
 	ret
@@ -1245,7 +1245,7 @@ CollisionCheckOnLand::
 	ldh a, [hJoyHeld]
 	and $2
 	jr nz, .asm_0a5c
-	ld hl, wd435
+	ld hl, wd434
 	ld a, [hl]
 	and a
 	jr z, .asm_0a5c
@@ -1746,13 +1746,13 @@ RunMapScript::
 LoadWalkingPlayerSpriteGraphics::
 ; new sprite copy stuff
 	xor a
-	ld [wd473], a
+	ld [wd472], a
 	ld b, BANK(RedSprite)
 	ld de, RedSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics2::
-	ld a, [wd473]
+	ld a, [wd472]
 	and a
 	jr z, .asm_0d75
 	dec a
@@ -1760,7 +1760,7 @@ LoadSurfingPlayerSpriteGraphics2::
 	dec a
 	jr z, .asm_0d7c
 .asm_0d75
-	ld a, [wd472]
+	ld a, [wd471]
 	bit 6, a
 	jr z, LoadSurfingPlayerSpriteGraphics
 .asm_0d7c
