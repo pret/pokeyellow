@@ -3344,7 +3344,7 @@ ROMX bank #3:
 	         $6ec4 = InitCutAnimOAM.loop
 	         $6ecc = LoadCutGrassAnimationTilePattern
 	         $6ed5 = WriteCutOrBoulderDustAnimationOAMBlock
-	         $6ee0 = CutOrBoulderDustAnimationTilesAndAttributes
+	         $6ee0 = WriteCutOrBoulderDustAnimationOAMBlock.OAMBlock
 	         $6ee8 = GetCutOrBoulderDustAnimationOffsets
 	         $6f04 = GetCutOrBoulderDustAnimationOffsets.next
 	         $6f0f = CutAnimationOffsets
@@ -7652,7 +7652,7 @@ ROMX bank #16:
 	         $516f = EmotionBubble
 	         $51a7 = EmotionBubble.next
 	         $51aa = EmotionBubble.loop
-	         $51dd = EmotionBubblesOAM
+	         $51dd = EmotionBubblesOAMBlock
 	         $51e5 = EmotionBubbles
 	         $51e5 = ShockEmote
 	         $5225 = QuestionEmote
@@ -7704,7 +7704,7 @@ ROMX bank #16:
 	         $55f4 = Trade_AnimateBallEnteringLinkCable.moveBallInsideLinkCableLoop
 	         $560d = Trade_AnimateBallEnteringLinkCable.cycleLinkCableBulgeTile
 	         $5625 = Trade_AnimateBallEnteringLinkCable.ballSpriteReachedEdgeOfScreen
-	         $563b = Trade_BallInsideLinkCableOAM
+	         $563b = Trade_BallInsideLinkCableOAMBlock
 	         $5643 = Trade_ShowEnemyMon
 	         $5682 = Trade_AnimLeftToRight
 	         $56d5 = Trade_AnimRightToLeft
@@ -7729,13 +7729,13 @@ ROMX bank #16:
 	         $584b = Trade_AnimMonMoveVertical.movingLeft
 	         $5854 = Trade_AnimMonMoveVertical.doAnim
 	         $585e = Trade_AnimMonMoveVertical.loop
-	         $586d = Trade_WriteCircleOAM
-	         $5873 = Trade_WriteCircleOAM.loop
-	         $5889 = Trade_CircleOAMPointers
-	         $5899 = Trade_CircleOAM0
-	         $58a1 = Trade_CircleOAM1
-	         $58a9 = Trade_CircleOAM2
-	         $58b1 = Trade_CircleOAM3
+	         $586d = Trade_WriteCircleOAMBlock
+	         $5873 = Trade_WriteCircleOAMBlock.loop
+	         $5889 = Trade_CircleOAMBlocks
+	         $5899 = Trade_CircleOAMBlocks.OAMBlock0
+	         $58a1 = Trade_CircleOAMBlocks.OAMBlock1
+	         $58a9 = Trade_CircleOAMBlocks.OAMBlock2
+	         $58b1 = Trade_CircleOAMBlocks.OAMBlock3
 	         $58b9 = Trade_LoadMonSprite
 	         $58dd = Trade_ShowClearedWindow
 	         $58f4 = Trade_SlideTextBoxOffScreen
@@ -18299,9 +18299,9 @@ ROMX bank #58:
 	         $69f0 = Data_ea9f0
 	         $69f6 = Data_ea9f6
 	         $69fc = Data_ea9fc
-	         $6a02 = FreezeEnemyTrainerSprite
-	         $6a0f = FreezeEnemyTrainerSprite.loop
-	         $6a18 = FreezeEnemyTrainerSprite.notRival
+	         $6a02 = SetEnemyTrainerToStayAndFaceAnyDirection
+	         $6a0f = SetEnemyTrainerToStayAndFaceAnyDirection.loop
+	         $6a18 = SetEnemyTrainerToStayAndFaceAnyDirection.notRival
 	         $6a20 = RivalIDs
 	EMPTY: $6a24-$7fff ($15dc bytes)
 	TOTAL EMPTY: $15dc bytes
@@ -22841,6 +22841,7 @@ WRAM0 bank #0:
 	         $d349 = wRivalName
 	         $d354 = wOptions
 	         $d355 = wObtainedBadges
+	         $d356 = wUnusedObtainedBadges
 	         $d357 = wLetterPrintingDelayFlags
 	         $d358 = wPlayerID
 	         $d35a = wMapMusicSoundID
