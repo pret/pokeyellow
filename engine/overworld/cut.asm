@@ -120,12 +120,15 @@ LoadCutGrassAnimationTilePattern:
 WriteCutOrBoulderDustAnimationOAMBlock:
 	call GetCutOrBoulderDustAnimationOffsets
 	ld a, $9
-	ld de, CutOrBoulderDustAnimationTilesAndAttributes
+	ld de, .OAMBlock
 	jp WriteOAMBlock
 
-CutOrBoulderDustAnimationTilesAndAttributes:
-	dbsprite  2, -1,  4,  4, $fd, OAM_OBP1 | OAM_HIGH_PALS
-	dbsprite  2, -1,  4,  6, $ff, OAM_OBP1 | OAM_HIGH_PALS
+.OAMBlock:
+; tile ID, attributes
+	db $fc, OAM_OBP1 | OAM_HIGH_PALS
+	db $fd, OAM_OBP1 | OAM_HIGH_PALS
+	db $fe, OAM_OBP1 | OAM_HIGH_PALS
+	db $ff, OAM_OBP1 | OAM_HIGH_PALS
 
 GetCutOrBoulderDustAnimationOffsets:
 	ld hl, wSpritePlayerStateData1YPixels
