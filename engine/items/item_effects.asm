@@ -482,14 +482,9 @@ ItemUseBall:
 
 	push hl
 
-; If the Pokémon is transformed, the Pokémon is assumed to be a Ditto.
-; This is a bug because a wild Pokémon could have used Transform via
-; Mirror Move even though the only wild Pokémon that knows Transform is Ditto.
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
 	jr z, .notTransformed
-	ld a, DITTO
-	ld [wEnemyMonSpecies2], a
 	jr .skip6
 
 .notTransformed
@@ -1008,7 +1003,10 @@ ItemUseMedicine:
 	ld de, wBattleMonStats
 	ld bc, NUM_STATS * 2
 	call CopyData ; copy party stats to in-battle stat data
-	predef DoubleOrHalveSelectedStats
+	xor a 
+	ld [wCalculateWhoseStats], a 
+	callfar CalculateModifiedStats
+	callfar ApplyBadgeStatBoosts
 	jp .doneHealing
 
 .healHP
@@ -2321,10 +2319,7 @@ ItemUsePPRestore:
 
 .fullyRestorePP
 	ld a, [hl] ; move PP
-; Note that this code has a bug. It doesn't mask out the upper two bits, which
-; are used to count how many PP Ups have been used on the move. So, Max Ethers
-; and Max Elixirs will not be detected as having no effect on a move with full
-; PP if the move has had any PP Ups used on it.
+	and %00111111 ; lower 6 bits store current PP
 	cp b ; does current PP equal max PP?
 	ret z
 	jr .storeNewAmount
