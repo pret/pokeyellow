@@ -9,7 +9,7 @@ TryEvolvingMon:
 	call Evolution_FlagAction
 
 ; this is only called after battle
-; it is supposed to do level up evolutions, though there is a bug that allows item evolutions to occur
+; it does level up evolutions, though there was a bug in red/blue that allows item evolutions to occur which is patched here
 EvolutionAfterBattle:
 	ldh a, [hTileAnimations]
 	push af
