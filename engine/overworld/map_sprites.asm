@@ -59,7 +59,7 @@ LoadSpriteSetFromMapHeader:
 ; (since the Red sprite always has the first VRAM tile pattern slot and the
 ; Pikachu sprite reserves the second slot) is the VRAM tile pattern slot.
 	ld hl, wSpriteSet
-	ld bc, (wSpriteSetID - wSpriteSet)
+	ld bc, wSpriteSetID - wSpriteSet
 	xor a
 	call FillMemory
 	ld a, SPRITE_PIKACHU ; load Pikachu separately

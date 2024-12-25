@@ -180,7 +180,7 @@ SetPal_Overworld:
 	ld [wDefaultPaletteCommand], a
 	ret
 .PokemonTowerOrAgatha
-	ld a, PAL_GREYMON - 1
+	ld a, PAL_GRAYMON - 1
 	jr .town
 .caveOrBruno
 	ld a, PAL_CAVE - 1
@@ -189,7 +189,7 @@ SetPal_Overworld:
 	xor a
 	jr .town
 .trade_center_colosseum
-	ld a, PAL_GREYMON - 1
+	ld a, PAL_GRAYMON - 1
 	jr .town
 
 ; used when a Pokemon is the only thing on the screen
@@ -423,7 +423,7 @@ GetPal_Pikachu::
 	ret
 
 .PokemonTowerOrAgatha
-	ld a, PAL_GREYMON - 1
+	ld a, PAL_GRAYMON - 1
 	jr .town
 
 .caveOrBruno
@@ -435,7 +435,7 @@ GetPal_Pikachu::
 	jr .town
 
 .battleOrTradeCenter
-	ld a, PAL_GREYMON - 1
+	ld a, PAL_GRAYMON - 1
 	jr .town
 
 InitPartyMenuBlkPacket:

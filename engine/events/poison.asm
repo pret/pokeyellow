@@ -22,7 +22,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld de, wPartySpecies
 .applyDamageLoop
 	ld a, [hl]
-	and (1 << PSN)
+	and 1 << PSN
 	jr z, .nextMon2 ; not poisoned
 	dec hl
 	dec hl
@@ -92,7 +92,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld e, 0
 .countPoisonedLoop
 	ld a, [hl]
-	and (1 << PSN)
+	and 1 << PSN
 	or e
 	ld e, a
 	ld bc, wPartyMon2 - wPartyMon1
@@ -103,7 +103,7 @@ ApplyOutOfBattlePoisonDamage:
 	and a ; are any party members poisoned?
 	jr z, .skipPoisonEffectAndSound
 	ld b, $2
-	predef ChangeBGPalColor0_4Frames ; change BG white to dark grey for 4 frames
+	predef ChangeBGPalColor0_4Frames ; change BG white to dark gray for 4 frames
 	ld a, SFX_POISONED
 	call PlaySound
 .skipPoisonEffectAndSound

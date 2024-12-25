@@ -119,7 +119,7 @@ CableClub_DoBattleOrTradeAgain:
 .skipSendingTwoZeroBytes
 	call Delay3
 	call StopAllMusic
-	ld a, (1 << SERIAL)
+	ld a, 1 << SERIAL
 	ldh [rIE], a
 	ld hl, wSerialRandomNumberListBlock
 	ld de, wSerialOtherGameboyRandomNumberListBlock

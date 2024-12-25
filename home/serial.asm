@@ -121,7 +121,7 @@ Serial_ExchangeByte::
 .doNotIncrementUnknownCounter
 	ldh a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	cp (1 << SERIAL)
+	cp 1 << SERIAL
 	jr nz, .loop
 	ld a, [wUnknownSerialCounter2]
 	dec a
@@ -143,7 +143,7 @@ Serial_ExchangeByte::
 	ldh [hSerialReceivedNewData], a
 	ldh a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	sub (1 << SERIAL)
+	sub 1 << SERIAL
 	jr nz, .skipReloadingUnknownCounter2
 	ld [wUnknownSerialCounter2], a
 	ld a, $50
@@ -169,7 +169,7 @@ Serial_ExchangeByte::
 .done
 	ldh a, [rIE]
 	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	cp (1 << SERIAL)
+	cp 1 << SERIAL
 	ld a, SERIAL_NO_DATA_BYTE
 	ret z
 	ld a, [hl]
