@@ -124,7 +124,7 @@ AlignSpriteDataCentered::
 	dec c
 	jr nz, .columnInnerLoop
 	pop hl
-	ld bc, 7*8    ; 7 tiles
+	ld bc, 7 * 8  ; 7 tiles
 	add hl, bc    ; advance one full column
 	pop af
 	dec a
@@ -153,7 +153,7 @@ InterlaceMergeSpriteBuffers::
 	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
 	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
 	ld bc, sSpriteBuffer0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
-	ld a, SPRITEBUFFERSIZE/2 ; $c4
+	ld a, SPRITEBUFFERSIZE / 2 ; $c4
 	ldh [hSpriteInterlaceCounter], a
 .interlaceLoop
 	ld a, [de]
@@ -175,7 +175,7 @@ InterlaceMergeSpriteBuffers::
 	ld a, [wSpriteFlipped]
 	and a
 	jr z, .notFlipped
-	ld bc, 2*SPRITEBUFFERSIZE
+	ld bc, 2 * SPRITEBUFFERSIZE
 	ld hl, sSpriteBuffer1
 .swapLoop
 	swap [hl]    ; if flipped swap nybbles in all bytes
@@ -187,7 +187,7 @@ InterlaceMergeSpriteBuffers::
 .notFlipped
 	pop hl
 	ld de, sSpriteBuffer1
-	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
+	ld c, (2 * SPRITEBUFFERSIZE) / 16 ; $31, number of 16 byte chunks to be copied
 	ldh a, [hLoadedROMBank]
 	ld b, a
 	call CopyVideoData
