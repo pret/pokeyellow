@@ -130,7 +130,7 @@ pokeyellow_pad       = 0x00
 pokeyellow_debug_pad = 0xff
 pokeyellow_vc_pad    = 0x00
 
-opts = -cjsv -k 01 -l 0x33 -m 0x1b -p 0 -r 03 -t "POKEMON YELLOW"
+opts = -cjsv -k 01 -l 0x33 -m MBC5+RAM+BATTERY -p 0 -r 03 -t "POKEMON YELLOW"
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -w -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
