@@ -90,7 +90,7 @@ endif
 $(pokeyellow_debug_obj): RGBASMFLAGS += -D _DEBUG
 $(pokeyellow_vc_obj):    RGBASMFLAGS += -D _YELLOW_VC
 
-%.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
+%.patch: %_vc.gbc %.gbc vc/%.patch.template
 	tools/make_patch $*_vc.sym $^ $@
 
 rgbdscheck.o: rgbdscheck.asm
@@ -115,10 +115,6 @@ endef
 $(foreach obj, $(pokeyellow_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
 $(foreach obj, $(pokeyellow_debug_obj), $(eval $(call DEP,$(obj),$(obj:_debug.o=.asm))))
 $(foreach obj, $(pokeyellow_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))))
-
-# Dependencies for VC files that need to run scan_includes
-%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) $(preinclude_deps) | rgbdscheck.o
-	$(RGBASM) $(RGBASMFLAGS) $< > $@
 
 endif
 
