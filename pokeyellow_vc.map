@@ -6,7 +6,7 @@ SUMMARY:
 	HRAM: 127 bytes used / 0 free
 
 ROM0 bank #0:
-	SECTION: $0000 (0 bytes) ["NULL"]
+	SECTION: $0000 ($0000 bytes) ["NULL"]
 	         $0000 = NULL
 	SECTION: $0000-$0007 ($0008 bytes) ["rst0"]
 	SECTION: $0008-$000f ($0008 bytes) ["rst8"]
@@ -17819,7 +17819,7 @@ ROMX bank #46:
 ROMX bank #47:
 	SECTION: $4000-$460e ($060f bytes) ["Move Names"]
 	         $4000 = MoveNames
-	SECTION: $460f (0 bytes) ["BG Map Attributes (Debug)"]
+	SECTION: $460f ($0000 bytes) ["BG Map Attributes (Debug)"]
 	EMPTY: $460f-$4fff ($09f1 bytes)
 	SECTION: $5000-$7584 ($2585 bytes) ["BG Map Attributes"]
 	         $5000 = BGMapAttributes_Unknown1
@@ -21959,11 +21959,11 @@ WRAM0 bank #0:
 	         $cc5b = wMonPartySpritesSavedOAM
 	         $cc5b = wElevatorWarpMaps
 	         $cc5b = wVermilionDockTileMapBuffer
-	         $cc5b = wSlotMachineSevenAndBarModeChance
 	         $cc5b = wOaksAideRewardItemName
 	         $cc5b = wHallOfFame
 	         $cc5b = wDexRatingNumMonsSeen
 	         $cc5b = wPikaPicUsedGFXCount
+	         $cc5b = wSlotMachineSevenAndBarModeChance
 	         $cc5b = wUnusedFlag
 	         $cc5b = wFilteredBagItems
 	         $cc5c = wPikaPicUsedGFX
@@ -22187,8 +22187,8 @@ WRAM0 bank #0:
 	         $cd50 = wWhichEmotionBubble
 	         $cd59 = wTradedEnemyMonOTID
 	         $cd5b = wGymTrashCanIndex
-	         $cd5b = wOAMBaseTile
 	         $cd5b = wStandingOnWarpPadOrHole
+	         $cd5b = wOAMBaseTile
 	         $cd5c = wSymmetricSpriteOAMAttributes
 	         $cd5d = wMonPartySpriteSpecies
 	         $cd5e = wLeftGBMonSpecies
