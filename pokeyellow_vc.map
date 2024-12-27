@@ -21367,9 +21367,9 @@ WRAM0 bank #0:
 	         $c2b9 = wSprite11StateData2OrigFacingDirection
 	         $c2bd = wSprite11StateData2PictureID
 	         $c2be = wSprite11StateData2ImageBaseOffset
+	         $c2c0 = wSprite12StateData2WalkAnimationCounter
 	         $c2c0 = wSprite12StateData2
 	         $c2c0 = wSprite11StateData2End
-	         $c2c0 = wSprite12StateData2WalkAnimationCounter
 	         $c2c2 = wSprite12StateData2YDisplacement
 	         $c2c3 = wSprite12StateData2XDisplacement
 	         $c2c4 = wSprite12StateData2MapY
@@ -21380,8 +21380,8 @@ WRAM0 bank #0:
 	         $c2c9 = wSprite12StateData2OrigFacingDirection
 	         $c2cd = wSprite12StateData2PictureID
 	         $c2ce = wSprite12StateData2ImageBaseOffset
-	         $c2d0 = wSprite13StateData2
 	         $c2d0 = wSprite13StateData2WalkAnimationCounter
+	         $c2d0 = wSprite13StateData2
 	         $c2d0 = wSprite12StateData2End
 	         $c2d2 = wSprite13StateData2YDisplacement
 	         $c2d3 = wSprite13StateData2XDisplacement
