@@ -3,7 +3,7 @@ MACRO hidden_item
 ENDM
 
 HiddenItemCoords:
-	table_width 3, HiddenItemCoords
+	table_width 3
 	; map id, x, y
 	hidden_item SILPH_CO_5F,                   12,   3
 	hidden_item SILPH_CO_9F,                    2,  15

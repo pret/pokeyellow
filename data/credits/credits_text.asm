@@ -1,6 +1,6 @@
 CreditsTextPointers:
 ; entries correspond to CRED_* constants
-	table_width 2, CreditsTextPointers
+	table_width 2
 	dw CreditsText_Version
 	dw CreditsText_Tajiri
 	dw CreditsText_Oota
