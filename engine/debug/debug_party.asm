@@ -53,7 +53,7 @@ IF DEF(_DEBUG)
 
 	; Get some debug items.
 	ld hl, wNumBagItems
-	ld de, DebugItemsList
+	ld de, DebugNewGameItemsList
 .items_loop
 	ld a, [de]
 	cp -1
@@ -76,12 +76,13 @@ IF DEF(_DEBUG)
 
 	; Rival chose Jolteon.
 	ld hl, wRivalStarter
+	ASSERT wRivalStarter + 2 == wPlayerStarter
 	ld a, RIVAL_STARTER_JOLTEON
 	ld [hli], a
 	ld a, NUM_POKEMON
 	ld [hli], a ; hl = wUnknownDebugByte
 	ld a, STARTER_PIKACHU
-	ld [hl], a ; hl = wPlayerStarter
+	ld [hl], a
 
 	; Give max money.
 	ld hl, wPlayerMoney
@@ -102,7 +103,7 @@ DebugSetPokedexEntries:
 	ld [hl], %01111111
 	ret
 
-DebugItemsList:
+DebugNewGameItemsList:
 	db MASTER_BALL, 99
 	db TOWN_MAP, 1
 	db BICYCLE, 1
@@ -119,7 +120,7 @@ DebugItemsList:
 	db PP_UP, 99
 	db -1 ; end
 
-DebugUnusedList:
+DebugUnusedList: ; unreferenced
 	db OLD_AMBER, 1
 	db DOME_FOSSIL, 1
 	db HELIX_FOSSIL, 1

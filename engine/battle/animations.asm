@@ -274,7 +274,7 @@ PlayAnimation:
 	push af
 	ld a, [wAnimPalette]
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 	call LoadMoveAnimationTiles
 	call LoadSubanimation
 	call PlaySubanimation
@@ -282,7 +282,7 @@ PlayAnimation:
 	vc_hook Stop_reducing_move_anim_flashing_Thunderbolt
 	ldh [rOBP0], a
 	vc_hook Stop_reducing_move_anim_flashing_Explosion
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 .nextAnimationCommand
 	vc_hook Stop_reducing_move_anim_flashing_Guillotine
 	pop hl
@@ -583,8 +583,8 @@ SetAnimationPalette:
 	ld a, $6c
 	vc_hook Reduce_move_anim_flashing_Haze
 	ldh [rOBP1], a
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 .notSGB
 	ld a, $e4
@@ -592,8 +592,8 @@ SetAnimationPalette:
 	ldh [rOBP0], a
 	ld a, $6c
 	ldh [rOBP1], a
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 Func_78e98:
@@ -729,7 +729,7 @@ DoBallTossSpecialEffects:
 	ldh a, [rOBP0]
 	xor %00111100 ; complement colors 1 and 2
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 .skipFlashingEffect
 	ld a, [wSubAnimCounter]
 	cp 11 ; is it the beginning of the subanimation?
@@ -1019,7 +1019,7 @@ AnimationFlashScreenLong:
 	cp 1
 	jr z, .endOfPalettes
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	call FlashScreenLongDelay
 	jr .innerLoop
 .endOfPalettes
@@ -1082,17 +1082,17 @@ AnimationFlashScreen:
 	push af ; save initial palette
 	ld a, %00011011 ; 0, 1, 2, 3 (inverted colors)
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ld c, 2
 	call DelayFrames
 	xor a ; white out background
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ld c, 2
 	call DelayFrames
 	pop af
 	ldh [rBGP], a ; restore initial palette
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ret
 
 AnimationDarkScreenPalette:
@@ -1138,7 +1138,7 @@ SetAnimationBGPalette:
 	ld a, c
 .next
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ret
 
 	ld b, $5
@@ -2019,7 +2019,7 @@ AnimationSubstitute:
 ; Changes the pokemon's sprite to the mini sprite
 	ld hl, wTempPic
 	xor a
-	ld bc, $310
+	ld bc, 7 * 7 tiles
 	call FillMemory
 	ldh a, [hWhoseTurn]
 	and a
@@ -2282,7 +2282,7 @@ GetMonSpriteTileMapPointerFromRowCount:
 	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .enemyTurn
-	ld a, 20 * 5 + 1
+	ld a, 5 * SCREEN_WIDTH + 1
 	jr .next
 .enemyTurn
 	ld a, 12
@@ -2295,7 +2295,7 @@ GetMonSpriteTileMapPointerFromRowCount:
 	sub b
 	and a
 	jr z, .done
-	ld de, 20
+	ld de, SCREEN_WIDTH
 .loop
 	add hl, de
 	dec a
@@ -2349,8 +2349,7 @@ AnimCopyRowRight:
 	jr nz, AnimCopyRowRight
 	ret
 
-; get the sound of the move id in b
-GetMoveSoundB:
+GetIntroMoveSound: ; unreferenced
 	ld a, b
 	call GetMoveSound
 	ld b, a
@@ -2456,7 +2455,7 @@ CopyTileIDs:
 	dec c
 	jr nz, .columnLoop
 	pop hl
-	ld bc, 20
+	ld bc, SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
@@ -2473,7 +2472,7 @@ AnimationLeavesFalling:
 ; in Razor Leaf's animation.
 	ld a, [wAnimPalette]
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 	ld d, $37 ; leaf tile
 	ld a, 3 ; number of leaves
 	ld [wNumFallingObjects], a
@@ -2678,12 +2677,12 @@ AnimationShakeEnemyHUD:
 	call BattleAnimCopyTileMapToVRAM
 
 ; update BGMap attributes
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	ld c, 13
 	farcall LoadBGMapAttributes
-.notGBC
+.notCGB
 
 ; Move the window so that the row below the enemy HUD (in BG map 0) lines up
 ; with the top row of the window on the screen. This makes it so that the window
@@ -2719,12 +2718,12 @@ AnimationShakeEnemyHUD:
 	ld hl, vBGMap1
 	call BattleAnimCopyTileMapToVRAM
 ; update BGMap attributes
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
-	jr z, .notGBC2
+	jr z, .notCGB2
 	ld c, 11
 	farcall LoadBGMapAttributes
-.notGBC2
+.notCGB2
 	xor a
 	ldh [hWY], a
 	call SaveScreenTilesToBuffer1

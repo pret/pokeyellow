@@ -5,7 +5,7 @@ UnknownText_2812:: ; unreferenced
 ; this function is used to display sign messages, sprite dialog, etc.
 ; INPUT: [hSpriteIndex] = sprite ID or [hTextID] = text ID
 DisplayTextID::
-	assert hSpriteIndex == hTextID ; these are at the same memory location
+	ASSERT hSpriteIndex == hTextID ; these are at the same memory location
 	ldh a, [hLoadedROMBank]
 	push af
 	farcall DisplayTextIDInit ; initialization

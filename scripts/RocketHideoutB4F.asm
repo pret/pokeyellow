@@ -391,11 +391,11 @@ RocketHideoutB4FRocketText:
 	jp TextScriptEnd
 
 RocketHideoutB4FRocketBattleText:
-	text_far _RocketHideoutB4FRocket2BattleText
+	text_far _RocketHideoutB4FRocketBattleText
 	text_end
 
 RocketHideoutB4FRocketEndBattleText:
-	text_far _RocketHideoutB4FRocket2EndBattleText
+	text_far _RocketHideoutB4FRocketEndBattleText
 	text_promptbutton
 	text_asm
 	SetEvent EVENT_ROCKET_DROPPED_LIFT_KEY
@@ -411,5 +411,5 @@ RocketHideoutB4FRocketAfterBattleText:
 	jp TextScriptEnd
 
 .Text:
-	text_far _RocketHideoutB4FRocket2AfterBattleText
+	text_far _RocketHideoutB4FRocketAfterBattleText
 	text_end

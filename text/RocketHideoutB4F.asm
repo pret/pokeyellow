@@ -51,17 +51,17 @@ _RocketHideoutB4FGiovanniHopeWeMeetAgainText::
 	line "again..."
 	done
 
-_RocketHideoutB4FRocket2BattleText::
+_RocketHideoutB4FRocketBattleText::
 	text "The elevator"
 	line "doesn't work? Who"
 	cont "has the LIFT KEY?"
 	done
 
-_RocketHideoutB4FRocket2EndBattleText::
+_RocketHideoutB4FRocketEndBattleText::
 	text "No!"
 	prompt
 
-_RocketHideoutB4FRocket2AfterBattleText::
+_RocketHideoutB4FRocketAfterBattleText::
 	text "Oh no! I dropped"
 	line "the LIFT KEY!"
 	done

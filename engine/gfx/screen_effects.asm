@@ -4,13 +4,13 @@ ChangeBGPalColor0_4Frames:
 	ldh a, [rBGP]
 	xor $ff
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ld c, 4
 	call DelayFrames
 	ldh a, [rBGP]
 	xor $ff
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ret
 
 PredefShakeScreenVertically:

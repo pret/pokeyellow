@@ -782,9 +782,9 @@ Func_fec10:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	hlcoord 0, 0
 	lb bc, 1, 18
 	call TextBoxBorder

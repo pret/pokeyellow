@@ -143,9 +143,9 @@ YellowIntroScene0:
 	ldh [rOBP0], a
 	ld a, $c4
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ld a, 130
 	ld [wYellowIntroSceneTimer], a
 	call YellowIntro_NextScene
@@ -198,7 +198,7 @@ YellowIntroScene2_PlaceGraphic:
 	add $10
 	dec b
 	jr nz, .row
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
 	jr z, .dmg_sgb
 	; We can actually set palettes!
@@ -278,7 +278,7 @@ YellowIntroScene4:
 	call YellowIntro_BlankPalsDelay2AndDisableLCD
 	ld c, $5
 	call UpdateMusicCTimes
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
 	jr z, .dmg_sgb
 	; We can actually set palettes!
@@ -566,9 +566,9 @@ YellowIntroScene14:
 	ldh [rOBP0], a
 	and $f0
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 .expired
@@ -596,8 +596,8 @@ YellowIntroScene14:
 	ld a, $e4
 	ldh [rOBP0], a
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
 	lb de, $58, $58
 	ld a, $7
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
@@ -619,8 +619,8 @@ YellowIntroScene15:
 	ldh a, [rBGP]
 	xor $3
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
 	ret
 
 .expired
@@ -629,8 +629,8 @@ YellowIntroScene15:
 	ld a, $e4
 	ldh [rBGP], a
 	ldh [rOBP0], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
 	call YellowIntro_NextScene
 YellowIntroScene16:
 	ld de, YellowIntroPalSequence_f9e0a
@@ -638,8 +638,8 @@ YellowIntroScene16:
 	jr c, .expired
 	ldh [rOBP0], a
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
 	ret
 
 .expired
@@ -750,9 +750,9 @@ YellowIntro_BlankPalsDelay2AndDisableLCD:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	call DelayFrame
 	call DelayFrame
 	call DisableLCD
@@ -773,9 +773,9 @@ Func_f9e9a:
 	ldh [rOBP0], a
 	ld a, $e0
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 YellowIntro_Copy8BitSineWave:
@@ -922,9 +922,9 @@ YellowIntro_BlankPalettes:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 YellowIntro_AnimatedObjectSpawnStateData:

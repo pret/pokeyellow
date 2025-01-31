@@ -29,9 +29,9 @@ SurfingPikachuMinigame::
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	call ClearObjectAnimationBuffers
 	call ClearSprites
 	xor a
@@ -257,8 +257,8 @@ SurfingPikachuMinigame_LoadGFXAndLayout:
 	ldh [rOBP0], a
 	ld a, $e0
 	ldh [rOBP1], a
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 SurfingPikachuMinigame_SetBGPals:
@@ -267,13 +267,13 @@ SurfingPikachuMinigame_SetBGPals:
 	jr nz, .sgb
 	ld a, $d0
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ret
 
 .sgb
 	ld a, $e4
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ret
 
 Func_f81ff:
@@ -2376,8 +2376,8 @@ SurfingPikachuMinigameIntro:
 	ldh [rOBP0], a
 	ld a, $e0
 	ldh [rOBP1], a
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	call DelayFrame
 	ld a, MUSIC_SURFING_PIKACHU
 	ld c, BANK(Music_SurfingPikachu)
@@ -2518,9 +2518,9 @@ SurfingPikachuMinigame_BlankPals:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 SurfingPikachuMinigame_NormalPals:
@@ -2529,9 +2529,9 @@ SurfingPikachuMinigame_NormalPals:
 	ldh [rOBP0], a
 	ld a, $e0
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call UpdateCGBPal_BGP
+	call UpdateCGBPal_OBP0
+	call UpdateCGBPal_OBP1
 	ret
 
 SurfingPikachu_ClearTileMap:

@@ -1,7 +1,7 @@
 PromptUserToPlaySlots:
 	call SaveScreenTilesToBuffer2
 	ld a, BANK(DisplayTextIDInit)
-	assert BANK(DisplayTextIDInit) == 1 << BIT_NO_AUTO_TEXT_BOX
+	ASSERT BANK(DisplayTextIDInit) == 1 << BIT_NO_AUTO_TEXT_BOX
 	ld [wAutoTextBoxDrawingControl], a ; 1 << BIT_NO_AUTO_TEXT_BOX
 	ld b, a ; BANK(DisplayTextIDInit)
 	ld hl, DisplayTextIDInit
@@ -28,7 +28,7 @@ PromptUserToPlaySlots:
 	call GBPalNormal
 	ld a, $e4
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 	ld hl, wStatusFlags5
 	set BIT_NO_TEXT_DELAY, [hl]
 	xor a
@@ -299,8 +299,8 @@ SlotMachine_StopWheel1Early:
 	cp HIGH(SLOTSCHERRY)
 	jr nz, .stopWheel
 	ret
-; It looks like this was intended to make the wheel stop when a 7 symbol was
-; visible, but it has a bug and so the wheel stops randomly.
+; Bug: This looks intended to make the wheel stop when a
+; 7 symbol was visible, but instead the wheel stops randomly.
 .sevenAndBarMode
 	ld c, $3
 .loop
@@ -459,7 +459,7 @@ SlotMachine_CheckForMatches:
 	ldh a, [rBGP]
 	xor $40
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	ld c, 5
 	call DelayFrames
 	dec b
@@ -476,7 +476,7 @@ SlotMachine_CheckForMatches:
 	call SlotMachine_PrintPayoutCoins
 	ld a, $e4
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 	jp .done
 
 SymbolLinedUpSlotMachineText:
@@ -702,7 +702,7 @@ SlotMachine_PayCoinsToPlayer:
 	ldh a, [rOBP0]
 	xor $40 ; make the slot wheel symbols flash
 	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	call UpdateCGBPal_OBP0
 	ld a, 5
 .skip1
 	ld [wAnimCounter], a

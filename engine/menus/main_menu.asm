@@ -278,7 +278,7 @@ CheckForPlayerNameInSRAM:
 	ld [MBC1SRamEnable], a
 	ld a, SRAM_BANKING_MODE
 	ld [MBC1SRamBankingMode], a
-	assert SRAM_BANKING_MODE == BANK("Save Data")
+	ASSERT SRAM_BANKING_MODE == BANK("Save Data")
 	ld [MBC1SRamBank], a
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName

@@ -845,7 +845,7 @@ PikaPicAnimCommand_thunderbolt:
 .UpdatePal:
 	ld a, b
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call UpdateCGBPal_BGP
 	call DelayFrames
 	ret
 

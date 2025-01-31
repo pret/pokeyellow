@@ -1,8 +1,8 @@
-UpdateGBCPal_BGP::
+UpdateCGBPal_BGP::
 	push af
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	push bc
 	push de
 	push hl
@@ -11,20 +11,20 @@ UpdateGBCPal_BGP::
 	ld a, [wLastBGP]
 	cp b
 	jr z, .noChangeInBGP
-	farcall _UpdateGBCPal_BGP
+	farcall _UpdateCGBPal_BGP
 .noChangeInBGP
 	pop hl
 	pop de
 	pop bc
-.notGBC
+.notCGB
 	pop af
 	ret
 
-UpdateGBCPal_OBP0::
+UpdateCGBPal_OBP0::
 	push af
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	push bc
 	push de
 	push hl
@@ -33,23 +33,23 @@ UpdateGBCPal_OBP0::
 	ld a, [wLastOBP0]
 	cp b
 	jr z, .noChangeInOBP0
-	ld b, BANK(_UpdateGBCPal_OBP)
-	ld hl, _UpdateGBCPal_OBP
+	ld b, BANK(_UpdateCGBPal_OBP)
+	ld hl, _UpdateCGBPal_OBP
 	ld c, CONVERT_OBP0
 	call Bankswitch
 .noChangeInOBP0
 	pop hl
 	pop de
 	pop bc
-.notGBC
+.notCGB
 	pop af
 	ret
 
-UpdateGBCPal_OBP1::
+UpdateCGBPal_OBP1::
 	push af
-	ldh a, [hGBC]
+	ldh a, [hOnCGB]
 	and a
-	jr z, .notGBC
+	jr z, .notCGB
 	push bc
 	push de
 	push hl
@@ -58,15 +58,15 @@ UpdateGBCPal_OBP1::
 	ld a, [wLastOBP1]
 	cp b
 	jr z, .noChangeInOBP1
-	ld b, BANK(_UpdateGBCPal_OBP)
-	ld hl, _UpdateGBCPal_OBP
+	ld b, BANK(_UpdateCGBPal_OBP)
+	ld hl, _UpdateCGBPal_OBP
 	ld c, CONVERT_OBP1
 	call Bankswitch
 .noChangeInOBP1
 	pop hl
 	pop de
 	pop bc
-.notGBC
+.notCGB
 	pop af
 	ret
 
