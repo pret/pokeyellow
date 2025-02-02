@@ -118,7 +118,7 @@ ReadTrainer:
 .loopSkipTrainer
 ; skip current trainer entry
 	ld a, [hli]
-	and a
+	and a ; trainer entry terminator is 0, so putting NO_MOVE in SpecialTrainerMoves causes issues
 	jr nz, .loopSkipTrainer
 	jr .loopAdditionalMoveData
 .FinishUp
