@@ -252,7 +252,7 @@ ConditionValueC = {dws_ 0x0f                    }
 [FPA 031801 End2@Stop_reducing_intro_scene_flashing_0F]             
 Mode = 3                      
 Type = 1                      
-Address = 0xF9e4b 
+Address = {Hex @} 
 ConditionType = 0                             
 ConditionValueA = {dws_ wYellowIntroCurrentScene}         
 ConditionValueB = {dws_ ==                      }         
