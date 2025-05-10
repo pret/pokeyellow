@@ -869,7 +869,7 @@
 00:3453 IsSurfingPikachuInParty.hasSurf
 00:345b IsSurfingPikachuInParty.noSurf
 00:345c IsSurfingPikachuInParty.notPikachu
-00:3467 Func_3467
+00:3467 IsSurfingPikachuInParty.checkForStarter
 00:347d DisplayPokedex
 00:3488 SetSpriteFacingDirectionAndDelay
 00:3490 SetSpriteFacingDirection

@@ -895,7 +895,7 @@ ROM0 bank #0:
 	         $3462 = IsSurfingPikachuInParty.hasSurf
 	         $346a = IsSurfingPikachuInParty.noSurf
 	         $346b = IsSurfingPikachuInParty.notPikachu
-	         $3476 = Func_3467
+	         $3476 = IsSurfingPikachuInParty.checkForStarter
 	         $348c = DisplayPokedex
 	         $3497 = SetSpriteFacingDirectionAndDelay
 	         $349f = SetSpriteFacingDirection
