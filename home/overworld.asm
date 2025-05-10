@@ -769,7 +769,7 @@ HandleFlyWarpOrDungeonWarp::
 	set BIT_FLY_OR_DUNGEON_WARP, [hl]
 	res BIT_ALWAYS_ON_BIKE, [hl]
 	call LeaveMapAnim
-	call Func_07c4
+	call StopBikeSurf
 	ld a, BANK(PrepareForSpecialWarp)
 	call BankswitchCommon
 	call PrepareForSpecialWarp
@@ -778,7 +778,7 @@ HandleFlyWarpOrDungeonWarp::
 LeaveMapAnim::
 	farjp _LeaveMapAnim
 
-Func_07c4::
+StopBikeSurf:
 	ld a, [wWalkBikeSurfState]
 	and a
 	ret z
