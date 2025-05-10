@@ -71,8 +71,9 @@ IsItemInBag::
 	ret
 
 IsSurfingPikachuInParty::
-; set bit 6 of wd471 if true
-; also calls Func_3467, which is a bankswitch to IsStarterPikachuInOurParty
+; set bit 6 of wd471 if any Pikachu with Surf is in party
+; set bit 7 of wd471 if starter Pikachu is in party (with or without Surf)
+; also performs a bankswitch to IsStarterPikachuInOurParty
 	ld a, [wd471]
 	and $3f
 	ld [wd471], a
@@ -109,10 +110,10 @@ IsSurfingPikachuInParty::
 	add hl, de
 	dec c
 	jr nz, .loop
-	call Func_3467
+	call .checkForStarter
 	ret
 
-Func_3467::
+.checkForStarter
 	push hl
 	push bc
 	callfar IsStarterPikachuInOurParty
