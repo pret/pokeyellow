@@ -4,8 +4,11 @@ TradeMons:
 	; give mon, get mon, dialog id, nickname
 	; The two instances of TRADE_DIALOGSET_EVOLUTION are a leftover
 	; from the Japanese Blue trades, which used species that evolve.
-	; Japanese Red and Green used TRADE_DIALOGSET_CASUAL, and had
-	; the same species as English Red and Blue.
+	; TRADE_DIALOGSET_EVOLUTION did not refer to evolution in Japanese
+	; Red/Green. Japanese Blue changed _AfterTrade2Text to say your Pokémon
+	; "went and evolved" and also changed the trades to match. English
+	; Red/Blue uses the original JP Red/Green trades but with the JP Blue
+	; post-trade text.
 	db LICKITUNG,  DUGTRIO,  TRADE_DIALOGSET_CASUAL,    "GURIO@@@@@@"
 	db CLEFAIRY,   MR_MIME,  TRADE_DIALOGSET_CASUAL,    "MILES@@@@@@"
 	db BUTTERFREE, BEEDRILL, TRADE_DIALOGSET_HAPPY,     "STINGER@@@@" ; unused
