@@ -126,7 +126,7 @@ ROM0 bank #0:
 	         $078b = StopMusic.wait
 	         $0794 = HandleFlyWarpOrDungeonWarp
 	         $07bc = LeaveMapAnim
-	         $07c4 = Func_07c4
+	         $07c4 = StopBikeSurf
 	         $07d7 = LoadPlayerSpriteGraphics
 	         $07e4 = LoadPlayerSpriteGraphics.ridingBike
 	         $07e9 = LoadPlayerSpriteGraphics.startWalking

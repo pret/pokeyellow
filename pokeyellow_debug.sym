@@ -101,7 +101,7 @@
 00:078b StopMusic.wait
 00:0794 HandleFlyWarpOrDungeonWarp
 00:07bc LeaveMapAnim
-00:07c4 Func_07c4
+00:07c4 StopBikeSurf
 00:07d7 LoadPlayerSpriteGraphics
 00:07e4 LoadPlayerSpriteGraphics.ridingBike
 00:07e9 LoadPlayerSpriteGraphics.startWalking
