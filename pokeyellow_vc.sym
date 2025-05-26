@@ -17984,8 +17984,8 @@
 3c:4038 PlayPikachuSoundClip.VC_Unknown_PlayPikachuSoundClip_end
 3c:403a PlayPikachuSoundClip.VC_Unknown_PlayPikachuSoundClip_end_End
 3c:406b PlayPikachuSoundClip.reloadWaveDataLoop
-3c:408e PikachuCriesPointerTable
 3c:408e PikachuCry1_id
+3c:408e PikachuCriesPointerTable
 3c:4091 PikachuCry2_id
 3c:4094 PikachuCry3_id
 3c:4097 PikachuCry4_id

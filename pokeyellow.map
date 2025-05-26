@@ -18306,8 +18306,8 @@ ROMX bank #60:
 	         $4019 = PlayPikachuSoundClip.done_delay
 	         $402d = PlayPikachuSoundClip.saveWaveDataLoop
 	         $406b = PlayPikachuSoundClip.reloadWaveDataLoop
-	         $408e = PikachuCriesPointerTable
 	         $408e = PikachuCry1_id
+	         $408e = PikachuCriesPointerTable
 	         $4091 = PikachuCry2_id
 	         $4094 = PikachuCry3_id
 	         $4097 = PikachuCry4_id

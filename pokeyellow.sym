@@ -17929,8 +17929,8 @@
 3c:4019 PlayPikachuSoundClip.done_delay
 3c:402d PlayPikachuSoundClip.saveWaveDataLoop
 3c:406b PlayPikachuSoundClip.reloadWaveDataLoop
-3c:408e PikachuCriesPointerTable
 3c:408e PikachuCry1_id
+3c:408e PikachuCriesPointerTable
 3c:4091 PikachuCry2_id
 3c:4094 PikachuCry3_id
 3c:4097 PikachuCry4_id
