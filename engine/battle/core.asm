@@ -1055,7 +1055,7 @@ RemoveFaintedPlayerMon:
 	ld [wWhichPokemon], a
 	callfar IsThisPartymonStarterPikachu_Party
 	jr nc, .notPlayerPikachu
-	ld e, $3
+	ldpikacry e, PikachuCry4
 	callfar PlayPikachuSoundClip
 	jr .printText
 .notPlayerPikachu
@@ -1810,9 +1810,9 @@ SendOutMon:
 	ldh [hAutoBGTransferEnabled], a
 	callfar StarterPikachuBattleEntranceAnimation
 	callfar IsPlayerPikachuAsleepInParty
-	ld e, $24
+	ldpikacry e, PikachuCry37
 	jr c, .asm_3cd81
-	ld e, $a
+	ldpikacry e, PikachuCry11
 .asm_3cd81
 	callfar PlayPikachuSoundClip
 	jr .done

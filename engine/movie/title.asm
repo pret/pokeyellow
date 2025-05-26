@@ -35,7 +35,6 @@ DisplayTitleScreen:
 	call ClearScreen
 	call DisableLCD
 	call LoadFontTilePatterns
-; todo: fix hl pointers
 	ld hl, NintendoCopyrightLogoGraphics
 	ld de, vTitleLogo tile $60
 	ld bc, 5 tiles
@@ -140,12 +139,11 @@ DisplayTitleScreen:
 	ld a, SFX_INTRO_WHOOSH
 	call PlaySound
 
-; scroll game version in from the right
 	callfar TitleScreen_PlacePikaSpeechBubble
 	ld a, SCREEN_HEIGHT_PX
 	ldh [hWY], a
 	call Delay3
-	ld e, 0
+	ldpikacry e, PikachuCry1
 	call TitleScreen_PlayPikachuPCM
 	call WaitForSoundToFinish
 	call StopAllMusic
@@ -179,7 +177,7 @@ ENDC
 	jr .titleScreenLoop
 
 .go_to_main_menu
-	ld e, $a
+	ldpikacry e, PikachuCry11
 	call TitleScreen_PlayPikachuPCM
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
@@ -218,9 +216,9 @@ ENDC
 ; unreferenced
 	ld a, [wTitleScreenScene + 4]
 	inc a
-	cp $2a
+	cp NUM_PIKA_CRIES
 	jr c, .asm_4305
-	ld a, $f
+	ldpikacry a, PikachuCry16
 .asm_4305
 	ld [wTitleScreenScene + 4], a
 	ld e, a

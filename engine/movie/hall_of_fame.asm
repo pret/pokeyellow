@@ -158,7 +158,7 @@ HoFDisplayAndRecordMonInfo:
 	ld [wWhichPokemon], a
 	callfar IsThisPartymonStarterPikachu_Party
 	jr nc, .asm_70336
-	ld e, $22
+	ldpikacry e, PikachuCry35
 	callfar PlayPikachuSoundClip
 	jr .asm_7033c
 .asm_70336
