@@ -1654,7 +1654,7 @@ ROMX bank #1:
 	         $63fc = DisplayNamingScreen.pressedStart
 	         $6402 = DisplayNamingScreen.pressedA
 	         $6410 = DisplayNamingScreen.didNotPressED
-	         $641e = DisplayNamingScreen.didNotPressCaseSwtich
+	         $641e = DisplayNamingScreen.didNotPressCaseSwitch
 	         $644b = DisplayNamingScreen.checkMonNameLength
 	         $6450 = DisplayNamingScreen.checkNameLength
 	         $6453 = DisplayNamingScreen.dakutensAndHandakutens
@@ -9059,7 +9059,7 @@ ROMX bank #18:
 	TOTAL EMPTY: $1ac0 bytes
 
 ROMX bank #19:
-	SECTION: $4000-$7e78 ($3e79 bytes) ["Pics 6"]
+	SECTION: $4000-$7e78 ($3e79 bytes) ["Trainer Pics"]
 	         $4000 = YoungsterPic
 	         $40c6 = BugCatcherPic
 	         $4200 = LassPic
@@ -9085,8 +9085,8 @@ ROMX bank #19:
 	         $5e76 = BlackbeltPic
 	         $6049 = Rival1Pic
 	         $613a = ProfOakPic
-	         $6258 = ScientistPic
 	         $6258 = ChiefPic
+	         $6258 = ScientistPic
 	         $6399 = GiovanniPic
 	         $647a = RocketPic
 	         $6610 = CooltrainerMPic
@@ -11472,7 +11472,7 @@ ROMX bank #23:
 	         $5ec8 = GymTrashCans
 	         $5f13 = VermilionGymTrashSuccessText1
 	         $5f26 = VermilionGymTrashSuccessText2
-	         $5f2b = VermilionGymTrashSuccesPlaySfx
+	         $5f2b = VermilionGymTrashSuccessPlaySfx
 	         $5f3a = VermilionGymTrashSuccessText3
 	         $5f4d = VermilionGymTrashFailText
 	EMPTY: $5f60-$7fff ($20a0 bytes)
@@ -12075,8 +12075,8 @@ ROMX bank #26:
 	SECTION: $4040-$7fef ($3fb0 bytes) ["Tilesets 2"]
 	         $4040 = Dojo_GFX
 	         $4040 = Gym_GFX
-	         $4640 = Gym_Block
 	         $4640 = Dojo_Block
+	         $4640 = Gym_Block
 	         $4d80 = Mart_GFX
 	         $4d80 = Pokecenter_GFX
 	         $5380 = Pokecenter_Block
@@ -12084,9 +12084,9 @@ ROMX bank #26:
 	         $5600 = Gate_GFX
 	         $5600 = Museum_GFX
 	         $5600 = ForestGate_GFX
+	         $5bf0 = ForestGate_Block
 	         $5bf0 = Gate_Block
 	         $5bf0 = Museum_Block
-	         $5bf0 = ForestGate_Block
 	         $63f0 = Forest_GFX
 	         $69f0 = Forest_Block
 	         $71f0 = Facility_GFX
@@ -20795,12 +20795,12 @@ VRAM bank #0:
 	         $8000 = vChars0
 	         $8000 = vSprites
 	         $8000 = vNPCSprites
-	         $8800 = vTitleLogo
 	         $8800 = vFont
+	         $8800 = vTitleLogo
 	         $8800 = vChars1
 	         $8800 = vNPCSprites2
-	         $9000 = vChars2
 	         $9000 = vFrontPic
+	         $9000 = vChars2
 	         $9000 = vTileset
 	         $9310 = vBackPic
 	         $9310 = vTitleLogo2
@@ -20826,8 +20826,8 @@ SRAM bank #1:
 	         $af2c = sPartyData
 	         $b0c0 = sCurBoxData
 	         $b522 = sTileAnimations
-	         $b523 = sMainDataCheckSum
 	         $b523 = sGameDataEnd
+	         $b523 = sMainDataCheckSum
 	EMPTY: $b524-$bfff ($0adc bytes)
 	TOTAL EMPTY: $0adc bytes
 
@@ -20904,9 +20904,9 @@ WRAM0 bank #0:
 	         $c0f3 = wc0f3
 	SECTION: $c100-$c2ff ($0200 bytes) ["Sprite State Data"]
 	         $c100 = wSpriteStateData1
-	         $c100 = wSpriteDataStart
-	         $c100 = wSpritePlayerStateData1
 	         $c100 = wSpritePlayerStateData1PictureID
+	         $c100 = wSpritePlayerStateData1
+	         $c100 = wSpriteDataStart
 	         $c101 = wSpritePlayerStateData1MovementStatus
 	         $c102 = wSpritePlayerStateData1ImageIndex
 	         $c103 = wSpritePlayerStateData1YStepVector
@@ -20919,8 +20919,8 @@ WRAM0 bank #0:
 	         $c10a = wSpritePlayerStateData1YAdjusted
 	         $c10b = wSpritePlayerStateData1XAdjusted
 	         $c10c = wSpritePlayerStateData1CollisionData
-	         $c110 = wSpritePlayerStateData1End
 	         $c110 = wSprite01StateData1PictureID
+	         $c110 = wSpritePlayerStateData1End
 	         $c110 = wSprite01StateData1
 	         $c111 = wSprite01StateData1MovementStatus
 	         $c112 = wSprite01StateData1ImageIndex
@@ -20934,9 +20934,9 @@ WRAM0 bank #0:
 	         $c11a = wSprite01StateData1YAdjusted
 	         $c11b = wSprite01StateData1XAdjusted
 	         $c11c = wSprite01StateData1CollisionData
-	         $c120 = wSprite01StateData1End
 	         $c120 = wSprite02StateData1PictureID
 	         $c120 = wSprite02StateData1
+	         $c120 = wSprite01StateData1End
 	         $c121 = wSprite02StateData1MovementStatus
 	         $c122 = wSprite02StateData1ImageIndex
 	         $c123 = wSprite02StateData1YStepVector
@@ -20949,8 +20949,8 @@ WRAM0 bank #0:
 	         $c12a = wSprite02StateData1YAdjusted
 	         $c12b = wSprite02StateData1XAdjusted
 	         $c12c = wSprite02StateData1CollisionData
-	         $c130 = wSprite02StateData1End
 	         $c130 = wSprite03StateData1
+	         $c130 = wSprite02StateData1End
 	         $c130 = wSprite03StateData1PictureID
 	         $c131 = wSprite03StateData1MovementStatus
 	         $c132 = wSprite03StateData1ImageIndex
@@ -20964,9 +20964,9 @@ WRAM0 bank #0:
 	         $c13a = wSprite03StateData1YAdjusted
 	         $c13b = wSprite03StateData1XAdjusted
 	         $c13c = wSprite03StateData1CollisionData
+	         $c140 = wSprite04StateData1
 	         $c140 = wSprite04StateData1PictureID
 	         $c140 = wSprite03StateData1End
-	         $c140 = wSprite04StateData1
 	         $c141 = wSprite04StateData1MovementStatus
 	         $c142 = wSprite04StateData1ImageIndex
 	         $c143 = wSprite04StateData1YStepVector
@@ -20994,9 +20994,9 @@ WRAM0 bank #0:
 	         $c15a = wSprite05StateData1YAdjusted
 	         $c15b = wSprite05StateData1XAdjusted
 	         $c15c = wSprite05StateData1CollisionData
+	         $c160 = wSprite06StateData1
 	         $c160 = wSprite05StateData1End
 	         $c160 = wSprite06StateData1PictureID
-	         $c160 = wSprite06StateData1
 	         $c161 = wSprite06StateData1MovementStatus
 	         $c162 = wSprite06StateData1ImageIndex
 	         $c163 = wSprite06StateData1YStepVector
@@ -21009,8 +21009,8 @@ WRAM0 bank #0:
 	         $c16a = wSprite06StateData1YAdjusted
 	         $c16b = wSprite06StateData1XAdjusted
 	         $c16c = wSprite06StateData1CollisionData
-	         $c170 = wSprite06StateData1End
 	         $c170 = wSprite07StateData1PictureID
+	         $c170 = wSprite06StateData1End
 	         $c170 = wSprite07StateData1
 	         $c171 = wSprite07StateData1MovementStatus
 	         $c172 = wSprite07StateData1ImageIndex
@@ -21024,9 +21024,9 @@ WRAM0 bank #0:
 	         $c17a = wSprite07StateData1YAdjusted
 	         $c17b = wSprite07StateData1XAdjusted
 	         $c17c = wSprite07StateData1CollisionData
-	         $c180 = wSprite07StateData1End
-	         $c180 = wSprite08StateData1
 	         $c180 = wSprite08StateData1PictureID
+	         $c180 = wSprite08StateData1
+	         $c180 = wSprite07StateData1End
 	         $c181 = wSprite08StateData1MovementStatus
 	         $c182 = wSprite08StateData1ImageIndex
 	         $c183 = wSprite08StateData1YStepVector
@@ -21040,8 +21040,8 @@ WRAM0 bank #0:
 	         $c18b = wSprite08StateData1XAdjusted
 	         $c18c = wSprite08StateData1CollisionData
 	         $c190 = wSprite09StateData1PictureID
-	         $c190 = wSprite08StateData1End
 	         $c190 = wSprite09StateData1
+	         $c190 = wSprite08StateData1End
 	         $c191 = wSprite09StateData1MovementStatus
 	         $c192 = wSprite09StateData1ImageIndex
 	         $c193 = wSprite09StateData1YStepVector
@@ -21054,9 +21054,9 @@ WRAM0 bank #0:
 	         $c19a = wSprite09StateData1YAdjusted
 	         $c19b = wSprite09StateData1XAdjusted
 	         $c19c = wSprite09StateData1CollisionData
-	         $c1a0 = wSprite09StateData1End
-	         $c1a0 = wSprite10StateData1
 	         $c1a0 = wSprite10StateData1PictureID
+	         $c1a0 = wSprite10StateData1
+	         $c1a0 = wSprite09StateData1End
 	         $c1a1 = wSprite10StateData1MovementStatus
 	         $c1a2 = wSprite10StateData1ImageIndex
 	         $c1a3 = wSprite10StateData1YStepVector
@@ -21099,9 +21099,9 @@ WRAM0 bank #0:
 	         $c1ca = wSprite12StateData1YAdjusted
 	         $c1cb = wSprite12StateData1XAdjusted
 	         $c1cc = wSprite12StateData1CollisionData
-	         $c1d0 = wSprite12StateData1End
-	         $c1d0 = wSprite13StateData1
 	         $c1d0 = wSprite13StateData1PictureID
+	         $c1d0 = wSprite13StateData1
+	         $c1d0 = wSprite12StateData1End
 	         $c1d1 = wSprite13StateData1MovementStatus
 	         $c1d2 = wSprite13StateData1ImageIndex
 	         $c1d3 = wSprite13StateData1YStepVector
@@ -21114,8 +21114,8 @@ WRAM0 bank #0:
 	         $c1da = wSprite13StateData1YAdjusted
 	         $c1db = wSprite13StateData1XAdjusted
 	         $c1dc = wSprite13StateData1CollisionData
-	         $c1e0 = wSprite14StateData1
 	         $c1e0 = wSprite14StateData1PictureID
+	         $c1e0 = wSprite14StateData1
 	         $c1e0 = wSprite13StateData1End
 	         $c1e1 = wSprite14StateData1MovementStatus
 	         $c1e2 = wSprite14StateData1ImageIndex
@@ -21130,8 +21130,8 @@ WRAM0 bank #0:
 	         $c1eb = wSprite14StateData1XAdjusted
 	         $c1ec = wSprite14StateData1CollisionData
 	         $c1f0 = wSpritePikachuStateData1PictureID
-	         $c1f0 = wSprite14StateData1End
 	         $c1f0 = wSpritePikachuStateData1
+	         $c1f0 = wSprite14StateData1End
 	         $c1f1 = wSpritePikachuStateData1MovementStatus
 	         $c1f2 = wSpritePikachuStateData1ImageIndex
 	         $c1f3 = wSpritePikachuStateData1YStepVector
@@ -21145,9 +21145,9 @@ WRAM0 bank #0:
 	         $c1fb = wSpritePikachuStateData1XAdjusted
 	         $c1fc = wSpritePikachuStateData1CollisionData
 	         $c200 = wSpriteStateData2
-	         $c200 = wSpritePikachuStateData1End
 	         $c200 = wSpritePlayerStateData2WalkAnimationCounter
 	         $c200 = wSpritePlayerStateData2
+	         $c200 = wSpritePikachuStateData1End
 	         $c202 = wSpritePlayerStateData2YDisplacement
 	         $c203 = wSpritePlayerStateData2XDisplacement
 	         $c204 = wSpritePlayerStateData2MapY
@@ -21158,9 +21158,9 @@ WRAM0 bank #0:
 	         $c209 = wSpritePlayerStateData2OrigFacingDirection
 	         $c20d = wSpritePlayerStateData2PictureID
 	         $c20e = wSpritePlayerStateData2ImageBaseOffset
+	         $c210 = wSprite01StateData2
 	         $c210 = wSpritePlayerStateData2End
 	         $c210 = wSprite01StateData2WalkAnimationCounter
-	         $c210 = wSprite01StateData2
 	         $c212 = wSprite01StateData2YDisplacement
 	         $c213 = wSprite01StateData2XDisplacement
 	         $c214 = wSprite01StateData2MapY
@@ -21172,8 +21172,8 @@ WRAM0 bank #0:
 	         $c21d = wSprite01StateData2PictureID
 	         $c21e = wSprite01StateData2ImageBaseOffset
 	         $c220 = wSprite02StateData2WalkAnimationCounter
-	         $c220 = wSprite01StateData2End
 	         $c220 = wSprite02StateData2
+	         $c220 = wSprite01StateData2End
 	         $c222 = wSprite02StateData2YDisplacement
 	         $c223 = wSprite02StateData2XDisplacement
 	         $c224 = wSprite02StateData2MapY
@@ -21185,8 +21185,8 @@ WRAM0 bank #0:
 	         $c22d = wSprite02StateData2PictureID
 	         $c22e = wSprite02StateData2ImageBaseOffset
 	         $c230 = wSprite03StateData2
-	         $c230 = wSprite03StateData2WalkAnimationCounter
 	         $c230 = wSprite02StateData2End
+	         $c230 = wSprite03StateData2WalkAnimationCounter
 	         $c232 = wSprite03StateData2YDisplacement
 	         $c233 = wSprite03StateData2XDisplacement
 	         $c234 = wSprite03StateData2MapY
@@ -21210,9 +21210,9 @@ WRAM0 bank #0:
 	         $c249 = wSprite04StateData2OrigFacingDirection
 	         $c24d = wSprite04StateData2PictureID
 	         $c24e = wSprite04StateData2ImageBaseOffset
-	         $c250 = wSprite04StateData2End
 	         $c250 = wSprite05StateData2WalkAnimationCounter
 	         $c250 = wSprite05StateData2
+	         $c250 = wSprite04StateData2End
 	         $c252 = wSprite05StateData2YDisplacement
 	         $c253 = wSprite05StateData2XDisplacement
 	         $c254 = wSprite05StateData2MapY
@@ -21223,9 +21223,9 @@ WRAM0 bank #0:
 	         $c259 = wSprite05StateData2OrigFacingDirection
 	         $c25d = wSprite05StateData2PictureID
 	         $c25e = wSprite05StateData2ImageBaseOffset
-	         $c260 = wSprite06StateData2
-	         $c260 = wSprite05StateData2End
 	         $c260 = wSprite06StateData2WalkAnimationCounter
+	         $c260 = wSprite05StateData2End
+	         $c260 = wSprite06StateData2
 	         $c262 = wSprite06StateData2YDisplacement
 	         $c263 = wSprite06StateData2XDisplacement
 	         $c264 = wSprite06StateData2MapY
@@ -21236,8 +21236,8 @@ WRAM0 bank #0:
 	         $c269 = wSprite06StateData2OrigFacingDirection
 	         $c26d = wSprite06StateData2PictureID
 	         $c26e = wSprite06StateData2ImageBaseOffset
-	         $c270 = wSprite06StateData2End
 	         $c270 = wSprite07StateData2
+	         $c270 = wSprite06StateData2End
 	         $c270 = wSprite07StateData2WalkAnimationCounter
 	         $c272 = wSprite07StateData2YDisplacement
 	         $c273 = wSprite07StateData2XDisplacement
@@ -21249,9 +21249,9 @@ WRAM0 bank #0:
 	         $c279 = wSprite07StateData2OrigFacingDirection
 	         $c27d = wSprite07StateData2PictureID
 	         $c27e = wSprite07StateData2ImageBaseOffset
-	         $c280 = wSprite07StateData2End
-	         $c280 = wSprite08StateData2
 	         $c280 = wSprite08StateData2WalkAnimationCounter
+	         $c280 = wSprite08StateData2
+	         $c280 = wSprite07StateData2End
 	         $c282 = wSprite08StateData2YDisplacement
 	         $c283 = wSprite08StateData2XDisplacement
 	         $c284 = wSprite08StateData2MapY
@@ -21262,9 +21262,9 @@ WRAM0 bank #0:
 	         $c289 = wSprite08StateData2OrigFacingDirection
 	         $c28d = wSprite08StateData2PictureID
 	         $c28e = wSprite08StateData2ImageBaseOffset
+	         $c290 = wSprite09StateData2WalkAnimationCounter
 	         $c290 = wSprite09StateData2
 	         $c290 = wSprite08StateData2End
-	         $c290 = wSprite09StateData2WalkAnimationCounter
 	         $c292 = wSprite09StateData2YDisplacement
 	         $c293 = wSprite09StateData2XDisplacement
 	         $c294 = wSprite09StateData2MapY
@@ -21275,9 +21275,9 @@ WRAM0 bank #0:
 	         $c299 = wSprite09StateData2OrigFacingDirection
 	         $c29d = wSprite09StateData2PictureID
 	         $c29e = wSprite09StateData2ImageBaseOffset
-	         $c2a0 = wSprite10StateData2WalkAnimationCounter
-	         $c2a0 = wSprite09StateData2End
 	         $c2a0 = wSprite10StateData2
+	         $c2a0 = wSprite09StateData2End
+	         $c2a0 = wSprite10StateData2WalkAnimationCounter
 	         $c2a2 = wSprite10StateData2YDisplacement
 	         $c2a3 = wSprite10StateData2XDisplacement
 	         $c2a4 = wSprite10StateData2MapY
@@ -21288,9 +21288,9 @@ WRAM0 bank #0:
 	         $c2a9 = wSprite10StateData2OrigFacingDirection
 	         $c2ad = wSprite10StateData2PictureID
 	         $c2ae = wSprite10StateData2ImageBaseOffset
+	         $c2b0 = wSprite11StateData2WalkAnimationCounter
 	         $c2b0 = wSprite11StateData2
 	         $c2b0 = wSprite10StateData2End
-	         $c2b0 = wSprite11StateData2WalkAnimationCounter
 	         $c2b2 = wSprite11StateData2YDisplacement
 	         $c2b3 = wSprite11StateData2XDisplacement
 	         $c2b4 = wSprite11StateData2MapY
@@ -21302,8 +21302,8 @@ WRAM0 bank #0:
 	         $c2bd = wSprite11StateData2PictureID
 	         $c2be = wSprite11StateData2ImageBaseOffset
 	         $c2c0 = wSprite12StateData2
-	         $c2c0 = wSprite11StateData2End
 	         $c2c0 = wSprite12StateData2WalkAnimationCounter
+	         $c2c0 = wSprite11StateData2End
 	         $c2c2 = wSprite12StateData2YDisplacement
 	         $c2c3 = wSprite12StateData2XDisplacement
 	         $c2c4 = wSprite12StateData2MapY
@@ -21341,8 +21341,8 @@ WRAM0 bank #0:
 	         $c2ed = wSprite14StateData2PictureID
 	         $c2ee = wSprite14StateData2ImageBaseOffset
 	         $c2f0 = wSpritePikachuStateData2WalkAnimationCounter
-	         $c2f0 = wSpritePikachuStateData2
 	         $c2f0 = wSprite14StateData2End
+	         $c2f0 = wSpritePikachuStateData2
 	         $c2f2 = wSpritePikachuStateData2YDisplacement
 	         $c2f3 = wSpritePikachuStateData2XDisplacement
 	         $c2f4 = wSpritePikachuStateData2MapY
@@ -21362,8 +21362,8 @@ WRAM0 bank #0:
 	         $c301 = wShadowOAMSprite00XCoord
 	         $c302 = wShadowOAMSprite00TileID
 	         $c303 = wShadowOAMSprite00Attributes
-	         $c304 = wShadowOAMSprite01YCoord
 	         $c304 = wShadowOAMSprite01
+	         $c304 = wShadowOAMSprite01YCoord
 	         $c305 = wShadowOAMSprite01XCoord
 	         $c306 = wShadowOAMSprite01TileID
 	         $c307 = wShadowOAMSprite01Attributes
@@ -21407,8 +21407,8 @@ WRAM0 bank #0:
 	         $c325 = wShadowOAMSprite09XCoord
 	         $c326 = wShadowOAMSprite09TileID
 	         $c327 = wShadowOAMSprite09Attributes
-	         $c328 = wShadowOAMSprite10
 	         $c328 = wShadowOAMSprite10YCoord
+	         $c328 = wShadowOAMSprite10
 	         $c329 = wShadowOAMSprite10XCoord
 	         $c32a = wShadowOAMSprite10TileID
 	         $c32b = wShadowOAMSprite10Attributes
@@ -21517,8 +21517,8 @@ WRAM0 bank #0:
 	         $c37d = wShadowOAMSprite31XCoord
 	         $c37e = wShadowOAMSprite31TileID
 	         $c37f = wShadowOAMSprite31Attributes
-	         $c380 = wShadowOAMSprite32YCoord
 	         $c380 = wShadowOAMSprite32
+	         $c380 = wShadowOAMSprite32YCoord
 	         $c381 = wShadowOAMSprite32XCoord
 	         $c382 = wShadowOAMSprite32TileID
 	         $c383 = wShadowOAMSprite32Attributes
@@ -21609,8 +21609,8 @@ WRAM0 bank #0:
 	         $c521 = wAnimatedObject0YCoord
 	         $c522 = wAnimatedObject0XOffset
 	         $c522 = wShadowOAMBackupSprite06TileID
-	         $c523 = wShadowOAMBackupSprite06Attributes
 	         $c523 = wAnimatedObject0YOffset
+	         $c523 = wShadowOAMBackupSprite06Attributes
 	         $c524 = wAnimatedObject0Duration
 	         $c524 = wShadowOAMBackupSprite07
 	         $c524 = wShadowOAMBackupSprite07YCoord
@@ -21632,17 +21632,17 @@ WRAM0 bank #0:
 	         $c52c = wAnimatedObject1
 	         $c52c = wAnimatedObject0End
 	         $c52c = wShadowOAMBackupSprite09
-	         $c52c = wAnimatedObject1Index
 	         $c52c = wShadowOAMBackupSprite09YCoord
-	         $c52d = wShadowOAMBackupSprite09XCoord
+	         $c52c = wAnimatedObject1Index
 	         $c52d = wAnimatedObject1FramesetID
+	         $c52d = wShadowOAMBackupSprite09XCoord
 	         $c52e = wShadowOAMBackupSprite09TileID
 	         $c52e = wAnimatedObject1AnimSeqID
 	         $c52f = wShadowOAMBackupSprite09Attributes
 	         $c52f = wAnimatedObject1TileID
+	         $c530 = wShadowOAMBackupSprite10
 	         $c530 = wAnimatedObject1XCoord
 	         $c530 = wShadowOAMBackupSprite10YCoord
-	         $c530 = wShadowOAMBackupSprite10
 	         $c531 = wShadowOAMBackupSprite10XCoord
 	         $c531 = wAnimatedObject1YCoord
 	         $c532 = wAnimatedObject1XOffset
@@ -21670,8 +21670,8 @@ WRAM0 bank #0:
 	         $c53c = wAnimatedObject2
 	         $c53c = wShadowOAMBackupSprite13YCoord
 	         $c53c = wShadowOAMBackupSprite13
-	         $c53c = wAnimatedObject2Index
 	         $c53c = wAnimatedObject1End
+	         $c53c = wAnimatedObject2Index
 	         $c53d = wAnimatedObject2FramesetID
 	         $c53d = wShadowOAMBackupSprite13XCoord
 	         $c53e = wAnimatedObject2AnimSeqID
@@ -21687,8 +21687,8 @@ WRAM0 bank #0:
 	         $c542 = wShadowOAMBackupSprite14TileID
 	         $c543 = wShadowOAMBackupSprite14Attributes
 	         $c543 = wAnimatedObject2YOffset
-	         $c544 = wAnimatedObject2Duration
 	         $c544 = wShadowOAMBackupSprite15
+	         $c544 = wAnimatedObject2Duration
 	         $c544 = wShadowOAMBackupSprite15YCoord
 	         $c545 = wAnimatedObject2DurationOffset
 	         $c545 = wShadowOAMBackupSprite15XCoord
@@ -21741,8 +21741,8 @@ WRAM0 bank #0:
 	         $c559 = wShadowOAMBackupSprite20XCoord
 	         $c55a = wShadowOAMBackupSprite20TileID
 	         $c55a = wAnimatedObject3FieldE
-	         $c55b = wAnimatedObject3FieldF
 	         $c55b = wShadowOAMBackupSprite20Attributes
+	         $c55b = wAnimatedObject3FieldF
 	         $c55c = wAnimatedObject4
 	         $c55c = wAnimatedObject3End
 	         $c55c = wShadowOAMBackupSprite21YCoord
@@ -21763,8 +21763,8 @@ WRAM0 bank #0:
 	         $c562 = wAnimatedObject4XOffset
 	         $c563 = wShadowOAMBackupSprite22Attributes
 	         $c563 = wAnimatedObject4YOffset
-	         $c564 = wShadowOAMBackupSprite23
 	         $c564 = wAnimatedObject4Duration
+	         $c564 = wShadowOAMBackupSprite23
 	         $c564 = wShadowOAMBackupSprite23YCoord
 	         $c565 = wAnimatedObject4DurationOffset
 	         $c565 = wShadowOAMBackupSprite23XCoord
@@ -21779,8 +21779,8 @@ WRAM0 bank #0:
 	         $c569 = wAnimatedObject4FieldD
 	         $c56a = wShadowOAMBackupSprite24TileID
 	         $c56a = wAnimatedObject4FieldE
-	         $c56b = wAnimatedObject4FieldF
 	         $c56b = wShadowOAMBackupSprite24Attributes
+	         $c56b = wAnimatedObject4FieldF
 	         $c56c = wAnimatedObject4End
 	         $c56c = wShadowOAMBackupSprite25
 	         $c56c = wAnimatedObject5
@@ -21795,10 +21795,10 @@ WRAM0 bank #0:
 	         $c570 = wShadowOAMBackupSprite26YCoord
 	         $c570 = wShadowOAMBackupSprite26
 	         $c570 = wAnimatedObject5XCoord
-	         $c571 = wAnimatedObject5YCoord
 	         $c571 = wShadowOAMBackupSprite26XCoord
-	         $c572 = wAnimatedObject5XOffset
+	         $c571 = wAnimatedObject5YCoord
 	         $c572 = wShadowOAMBackupSprite26TileID
+	         $c572 = wAnimatedObject5XOffset
 	         $c573 = wAnimatedObject5YOffset
 	         $c573 = wShadowOAMBackupSprite26Attributes
 	         $c574 = wAnimatedObject5Duration
@@ -21815,8 +21815,8 @@ WRAM0 bank #0:
 	         $c578 = wShadowOAMBackupSprite28
 	         $c579 = wShadowOAMBackupSprite28XCoord
 	         $c579 = wAnimatedObject5FieldD
-	         $c57a = wAnimatedObject5FieldE
 	         $c57a = wShadowOAMBackupSprite28TileID
+	         $c57a = wAnimatedObject5FieldE
 	         $c57b = wAnimatedObject5FieldF
 	         $c57b = wShadowOAMBackupSprite28Attributes
 	         $c57c = wAnimatedObject6Index
@@ -21862,8 +21862,8 @@ WRAM0 bank #0:
 	         $c58c = wAnimatedObject6End
 	         $c58c = wShadowOAMBackupSprite33YCoord
 	         $c58c = wShadowOAMBackupSprite33
-	         $c58d = wAnimatedObject7FramesetID
 	         $c58d = wShadowOAMBackupSprite33XCoord
+	         $c58d = wAnimatedObject7FramesetID
 	         $c58e = wAnimatedObject7AnimSeqID
 	         $c58e = wShadowOAMBackupSprite33TileID
 	         $c58f = wAnimatedObject7TileID
@@ -21877,8 +21877,8 @@ WRAM0 bank #0:
 	         $c592 = wShadowOAMBackupSprite34TileID
 	         $c593 = wShadowOAMBackupSprite34Attributes
 	         $c593 = wAnimatedObject7YOffset
-	         $c594 = wAnimatedObject7Duration
 	         $c594 = wShadowOAMBackupSprite35
+	         $c594 = wAnimatedObject7Duration
 	         $c594 = wShadowOAMBackupSprite35YCoord
 	         $c595 = wShadowOAMBackupSprite35XCoord
 	         $c595 = wAnimatedObject7DurationOffset
@@ -21896,10 +21896,10 @@ WRAM0 bank #0:
 	         $c59b = wAnimatedObject7FieldF
 	         $c59b = wShadowOAMBackupSprite36Attributes
 	         $c59c = wAnimatedObject7End
+	         $c59c = wAnimatedObject8
 	         $c59c = wAnimatedObject8Index
 	         $c59c = wShadowOAMBackupSprite37YCoord
 	         $c59c = wShadowOAMBackupSprite37
-	         $c59c = wAnimatedObject8
 	         $c59d = wAnimatedObject8FramesetID
 	         $c59d = wShadowOAMBackupSprite37XCoord
 	         $c59e = wAnimatedObject8AnimSeqID
@@ -21929,9 +21929,9 @@ WRAM0 bank #0:
 	         $c5a9 = wAnimatedObject8FieldD
 	         $c5aa = wAnimatedObject8FieldE
 	         $c5ab = wAnimatedObject8FieldF
-	         $c5ac = wAnimatedObject9Index
 	         $c5ac = wAnimatedObject9
 	         $c5ac = wAnimatedObject8End
+	         $c5ac = wAnimatedObject9Index
 	         $c5ad = wAnimatedObject9FramesetID
 	         $c5ae = wAnimatedObject9AnimSeqID
 	         $c5af = wAnimatedObject9TileID
@@ -21962,9 +21962,9 @@ WRAM0 bank #0:
 	         $c5cd = wCurrentAnimatedObjectYOffset
 	         $c5ce = wAnimatedObjectGlobalYOffset
 	         $c5cf = wAnimatedObjectGlobalXOffset
+	         $c5d0 = wSurfingMinigameData
 	         $c5d0 = wAnimatedObjectsDataEnd
 	         $c5d0 = wSerialEnemyMonsPatchList
-	         $c5d0 = wSurfingMinigameData
 	         $c5d1 = wSurfingMinigameRoutineNumber
 	         $c5d2 = wc5d2
 	         $c5d3 = wSurfingMinigameWaveFunctionNumber
@@ -22007,11 +22007,11 @@ WRAM0 bank #0:
 	SECTION: $c6e8-$cbfb ($0514 bytes) ["Overworld Map"]
 	         $c6e8 = wPrinterData
 	         $c6e8 = wTempPic
-	         $c6e8 = wPrinterSendState
 	         $c6e8 = wOverworldMap
+	         $c6e8 = wPrinterSendState
 	         $c6e9 = wPrinterRowIndex
-	         $c6ea = wc6ea
 	         $c6ea = wPrinterDataHeader
+	         $c6ea = wc6ea
 	         $c6eb = wc6eb
 	         $c6ec = wc6ec
 	         $c6ed = wc6ed
@@ -22073,8 +22073,8 @@ WRAM0 bank #0:
 	         $cc3e = wSerialExchangeNybbleReceiveData
 	         $cc42 = wSerialExchangeNybbleSendData
 	         $cc42 = wLinkMenuSelectionSendBuffer
-	         $cc47 = wUnknownSerialCounter
 	         $cc47 = wLinkTimeoutCounter
+	         $cc47 = wUnknownSerialCounter
 	         $cc47 = wEnteringCableClub
 	         $cc49 = wWhichTradeMonSelectionMenu
 	         $cc49 = wMonDataLocation
@@ -22095,10 +22095,10 @@ WRAM0 bank #0:
 	         $cc5b = wMonPartySpritesSavedOAM
 	         $cc5b = wElevatorWarpMaps
 	         $cc5b = wVermilionDockTileMapBuffer
-	         $cc5b = wOaksAideRewardItemName
 	         $cc5b = wHallOfFame
-	         $cc5b = wDexRatingNumMonsSeen
 	         $cc5b = wPikaPicUsedGFXCount
+	         $cc5b = wOaksAideRewardItemName
+	         $cc5b = wDexRatingNumMonsSeen
 	         $cc5b = wSlotMachineSevenAndBarModeChance
 	         $cc5b = wUnusedFlag
 	         $cc5b = wFilteredBagItems
@@ -22151,10 +22151,10 @@ WRAM0 bank #0:
 	         $cd05 = wLuckySlotHiddenObjectIndex
 	         $cd05 = wEnemyNumHits
 	         $cd05 = wEnemyBideAccumulatedDamage
-	         $cd0f = wPlayerMonUnmodifiedLevel
 	         $cd0f = wVermilionDockTileMapBufferEnd
-	         $cd0f = wMiscBattleDataEnd
+	         $cd0f = wPlayerMonUnmodifiedLevel
 	         $cd0f = wInGameTradeGiveMonSpecies
+	         $cd0f = wMiscBattleDataEnd
 	         $cd10 = wPlayerMonUnmodifiedMaxHP
 	         $cd10 = wInGameTradeTextPointerTablePointer
 	         $cd12 = wPlayerMonUnmodifiedAttack
@@ -22203,7 +22203,7 @@ WRAM0 bank #0:
 	         $cd3d = wNumShakes
 	         $cd3d = wPPRestoreItem
 	         $cd3d = wDexMaxSeenMon
-	         $cd3d = wSavedY
+	         $cd3d = wWhichTrade
 	         $cd3d = wChangeBoxSavedMapTextPointer
 	         $cd3d = wBadgeNumberTile
 	         $cd3d = wOptionsTextSpeedCursorX
@@ -22224,18 +22224,18 @@ WRAM0 bank #0:
 	         $cd3d = wPriceTemp
 	         $cd3d = wTitleMonSpecies
 	         $cd3d = wPlayerSpinWhileMovingUpOrDownAnimDeltaY
-	         $cd3d = wFieldMoves
-	         $cd3d = wPlayerCharacterOAMTile
-	         $cd3d = wCoordIndex
-	         $cd3d = wFlyAnimUsingCoordList
 	         $cd3d = wTempSCX
 	         $cd3d = wUnusedCreditsByte
-	         $cd3d = wBoxMonCounts
-	         $cd3d = wHoFTeamIndex
-	         $cd3d = wWhichTrade
-	         $cd3d = wDayCareStartLevel
 	         $cd3d = wMoveDownSmallStarsOAMCount
 	         $cd3d = wStoppingWhichSlotMachineWheel
+	         $cd3d = wFlyAnimUsingCoordList
+	         $cd3d = wFieldMoves
+	         $cd3d = wCoordIndex
+	         $cd3d = wHoFTeamIndex
+	         $cd3d = wDayCareStartLevel
+	         $cd3d = wBoxMonCounts
+	         $cd3d = wSavedY
+	         $cd3d = wPlayerCharacterOAMTile
 	         $cd3d = wWereAnyMonsAsleep
 	         $cd3d = wFallingObjectsMovementData
 	         $cd3d = wTrainerSpriteOffset
@@ -22257,8 +22257,8 @@ WRAM0 bank #0:
 	         $cd3e = wBattleTransitionCircleScreenQuadrantX
 	         $cd3e = wTradingWhichEnemyMon
 	         $cd3e = wTradedEnemyMonSpecies
-	         $cd3e = wBadgeNameTile
 	         $cd3e = wRivalStarterBallSpriteIndex
+	         $cd3e = wBadgeNameTile
 	         $cd3e = wHoFPartyMonIndex
 	         $cd3e = wOptionsBattleAnimCursorX
 	         $cd3e = wTitleScreenTimer
@@ -22270,27 +22270,27 @@ WRAM0 bank #0:
 	         $cd3f = wFlyAnimBirdSpriteImageIndex
 	         $cd3f = wNameOfPlayerMonToBeTraded
 	         $cd3f = wPlayerSpinWhileMovingUpOrDownAnimFrameDelay
-	         $cd3f = wDayCareTotalCost
 	         $cd3f = wHoFMonLevel
+	         $cd3f = wDayCareTotalCost
 	         $cd3f = wTrainerFacingDirection
 	         $cd3f = wHiddenObjectIndex
-	         $cd3f = wHUDGraphicsTiles
 	         $cd3f = wOptionsBattleStyleCursorX
+	         $cd3f = wHUDGraphicsTiles
 	         $cd40 = wOptionsCancelCursorX
 	         $cd40 = wTrainerScreenY
+	         $cd40 = wSlotMachineWheel3Offset
 	         $cd40 = wPlayerSpinInPlaceAnimSoundID
 	         $cd40 = wHiddenObjectY
-	         $cd40 = wSlotMachineWheel3Offset
 	         $cd40 = wHoFMonOrPlayer
 	         $cd41 = wHiddenItemOrCoinsIndex
 	         $cd41 = wSlotMachineWheel1BottomTile
 	         $cd41 = wSlotMachineWinningSymbol
 	         $cd41 = wHoFTeamIndex2
 	         $cd41 = wNumFieldMoves
+	         $cd41 = wDayCarePerLevelCost
 	         $cd41 = wTradedPlayerMonOT
 	         $cd41 = wHiddenObjectX
 	         $cd41 = wTrainerScreenX
-	         $cd41 = wDayCarePerLevelCost
 	         $cd42 = wSlotMachineWheel1MiddleTile
 	         $cd42 = wHoFTeamNo
 	         $cd42 = wFieldMovesLeftmostXCoord
@@ -22332,8 +22332,8 @@ WRAM0 bank #0:
 	         $cd60 = wMiscFlags
 	         $cd6a = wActionResultOrTookBattleTurn
 	         $cd6b = wJoyIgnore
-	         $cd6c = wNumMovesMinusOne
 	         $cd6c = wDownscaledMonSize
+	         $cd6c = wNumMovesMinusOne
 	         $cd6d = wNameBuffer
 	         $cd6d = wMoveData
 	         $cd6d = wPayDayMoney
@@ -22355,8 +22355,8 @@ WRAM0 bank #0:
 	         $ceea = wEvoNewSpecies
 	         $ceea = wNamingScreenSubmitName
 	         $ceeb = wAlphabetCase
-	         $ceeb = wHPBarOldHP
 	         $ceeb = wEvoMonTileOffset
+	         $ceeb = wHPBarOldHP
 	         $ceec = wEvoCancelled
 	         $ceed = wHPBarNewHP
 	         $ceed = wNamingScreenLetter
@@ -22571,8 +22571,8 @@ WRAM0 bank #0:
 	         $d089 = wFlashScreenLongCounter
 	         $d089 = wSpiralBallsBaseY
 	         $d089 = wFallingObjectMovementByte
-	         $d089 = wTradedMonMovingRight
 	         $d089 = wOptionsInitialized
+	         $d089 = wTradedMonMovingRight
 	         $d089 = wNewSlotMachineBallTile
 	         $d089 = wUnusedWaterDropletsByte
 	         $d08a = wNumFallingObjects
@@ -22660,8 +22660,8 @@ WRAM0 bank #0:
 	         $d11d = wUsingPPUp
 	         $d11d = wMoveGrammar
 	         $d11d = wTempTMHM
-	         $d11d = wTypeEffectiveness
 	         $d11d = wNumSetBits
+	         $d11d = wTypeEffectiveness
 	         $d11d = wNamedObjectIndex
 	         $d11d = wCalculateWhoseStats
 	         $d11e = wForcePlayerToChooseMon
@@ -22768,8 +22768,8 @@ WRAM0 bank #0:
 	         $d1c3 = wPartyMon3HP
 	         $d1c5 = wPartyMon3BoxLevel
 	         $d1c6 = wPartyMon3Status
-	         $d1c7 = wPartyMon3Type1
 	         $d1c7 = wPartyMon3Type
+	         $d1c7 = wPartyMon3Type1
 	         $d1c8 = wPartyMon3Type2
 	         $d1c9 = wPartyMon3CatchRate
 	         $d1ca = wPartyMon3Moves
@@ -22783,8 +22783,8 @@ WRAM0 bank #0:
 	         $d1dd = wPartyMon3DVs
 	         $d1df = wPartyMon3PP
 	         $d1e3 = wPartyMon3Level
-	         $d1e4 = wPartyMon3Stats
 	         $d1e4 = wPartyMon3MaxHP
+	         $d1e4 = wPartyMon3Stats
 	         $d1e6 = wPartyMon3Attack
 	         $d1e8 = wPartyMon3Defense
 	         $d1ea = wPartyMon3Speed
@@ -22841,8 +22841,8 @@ WRAM0 bank #0:
 	         $d240 = wPartyMon5Defense
 	         $d242 = wPartyMon5Speed
 	         $d244 = wPartyMon5Special
-	         $d246 = wPartyMon6Species
 	         $d246 = wPartyMon6
+	         $d246 = wPartyMon6Species
 	         $d247 = wPartyMon6HP
 	         $d249 = wPartyMon6BoxLevel
 	         $d24a = wPartyMon6Status
@@ -22976,8 +22976,8 @@ WRAM0 bank #0:
 	         $d44a = wPikachuMovementScriptAddress
 	         $d44c = wPikachuMovementFlags
 	         $d44d = wCurPikaMovementData
-	         $d44d = wCurPikaMovementParam1
 	         $d44d = wPikaPicAnimPointer
+	         $d44d = wCurPikaMovementParam1
 	         $d44e = wCurPikaMovementFunc1
 	         $d44f = wPikaPicAnimPointerSetupFinished
 	         $d44f = wCurPikaMovementParam2
@@ -23300,8 +23300,8 @@ WRAM0 bank #0:
 	         $d94d = wEnemyMon4Defense
 	         $d94f = wEnemyMon4Speed
 	         $d951 = wEnemyMon4Special
-	         $d953 = wEnemyMon5Species
 	         $d953 = wEnemyMon5
+	         $d953 = wEnemyMon5Species
 	         $d954 = wEnemyMon5HP
 	         $d956 = wEnemyMon5BoxLevel
 	         $d957 = wEnemyMon5Status
@@ -23331,8 +23331,8 @@ WRAM0 bank #0:
 	         $d980 = wEnemyMon6HP
 	         $d982 = wEnemyMon6BoxLevel
 	         $d983 = wEnemyMon6Status
-	         $d984 = wEnemyMon6Type1
 	         $d984 = wEnemyMon6Type
+	         $d984 = wEnemyMon6Type1
 	         $d985 = wEnemyMon6Type2
 	         $d986 = wEnemyMon6CatchRate
 	         $d987 = wEnemyMon6Moves
@@ -23447,8 +23447,8 @@ WRAM0 bank #0:
 	         $dad8 = wBoxMon3HP
 	         $dada = wBoxMon3BoxLevel
 	         $dadb = wBoxMon3Status
-	         $dadc = wBoxMon3Type1
 	         $dadc = wBoxMon3Type
+	         $dadc = wBoxMon3Type1
 	         $dadd = wBoxMon3Type2
 	         $dade = wBoxMon3CatchRate
 	         $dadf = wBoxMon3Moves
@@ -23480,8 +23480,8 @@ WRAM0 bank #0:
 	         $db11 = wBoxMon4SpecialExp
 	         $db13 = wBoxMon4DVs
 	         $db15 = wBoxMon4PP
-	         $db19 = wBoxMon5Species
 	         $db19 = wBoxMon5
+	         $db19 = wBoxMon5Species
 	         $db1a = wBoxMon5HP
 	         $db1c = wBoxMon5BoxLevel
 	         $db1d = wBoxMon5Status
@@ -23713,8 +23713,8 @@ WRAM0 bank #0:
 	         $dca6 = wBoxMon17HP
 	         $dca8 = wBoxMon17BoxLevel
 	         $dca9 = wBoxMon17Status
-	         $dcaa = wBoxMon17Type1
 	         $dcaa = wBoxMon17Type
+	         $dcaa = wBoxMon17Type1
 	         $dcab = wBoxMon17Type2
 	         $dcac = wBoxMon17CatchRate
 	         $dcad = wBoxMon17Moves
@@ -23746,8 +23746,8 @@ WRAM0 bank #0:
 	         $dcdf = wBoxMon18SpecialExp
 	         $dce1 = wBoxMon18DVs
 	         $dce3 = wBoxMon18PP
-	         $dce7 = wBoxMon19
 	         $dce7 = wBoxMon19Species
+	         $dce7 = wBoxMon19
 	         $dce8 = wBoxMon19HP
 	         $dcea = wBoxMon19BoxLevel
 	         $dceb = wBoxMon19Status
@@ -23857,8 +23857,8 @@ HRAM bank #0:
 	         $ff8b = hOAMTile
 	         $ff8b = hBaseTileID
 	         $ff8b = hDownArrowBlinkCount1
-	         $ff8b = hItemPrice
 	         $ff8b = hEastWestConnectedMapWidth
+	         $ff8b = hItemPrice
 	         $ff8b = hDexWeight
 	         $ff8b = hSpriteInterlaceCounter
 	         $ff8b = hRLEByteValue
@@ -23866,9 +23866,9 @@ HRAM bank #0:
 	         $ff8c = hMapWidth
 	         $ff8c = hSpriteHeight
 	         $ff8c = hPartyMonIndex
+	         $ff8c = hSlidingRegionSize
 	         $ff8c = hSpriteIndex
 	         $ff8c = hTextID
-	         $ff8c = hSlidingRegionSize
 	         $ff8c = hDownArrowBlinkCount2
 	         $ff8d = hLoadSpriteTemp1
 	         $ff8d = hVRAMSlot
@@ -23893,13 +23893,13 @@ HRAM bank #0:
 	         $ff94 = hSpritePriority
 	         $ff95 = hSwapItemID
 	         $ff95 = hNPCPlayerYDistance
-	         $ff95 = hNPCSpriteOffset
 	         $ff95 = hDividend
 	         $ff95 = hSignCoordPointer
 	         $ff95 = hPastLeadingZeros
 	         $ff95 = hQuotient
-	         $ff95 = hNPCMovementDirections2Index
 	         $ff95 = hProduct
+	         $ff95 = hNPCMovementDirections2Index
+	         $ff95 = hNPCSpriteOffset
 	         $ff95 = hSwapTemp
 	         $ff96 = hMutateWY
 	         $ff96 = hSwapItemQuantity
@@ -23977,17 +23977,17 @@ HRAM bank #0:
 	         $ffdb = hVendingMachineItem
 	         $ffdb = hPlayerFacing
 	         $ffdb = hDexRatingNumMonsSeen
+	         $ffdb = hOaksAideResult
 	         $ffdb = hMissableObjectIndex
 	         $ffdb = hOaksAideRequirement
-	         $ffdb = hOaksAideResult
 	         $ffdc = hDexRatingNumMonsOwned
 	         $ffdc = hVendingMachinePrice
 	         $ffdc = hPlayerYCoord
 	         $ffdc = hOaksAideRewardItem
-	         $ffdc = hItemToRemoveIndex
 	         $ffdc = hGymGateAnswer
-	         $ffdd = hPlayerXCoord
+	         $ffdc = hItemToRemoveIndex
 	         $ffdd = hOaksAideNumMonsOwned
+	         $ffdd = hPlayerXCoord
 	         $ffe0 = hUnlockedSilphCoDoors
 	         $ffe0 = hBackupGymGateIndex
 	         $ffe1 = hStartTileID
@@ -24000,8 +24000,8 @@ HRAM bank #0:
 	         $ffe9 = hSpriteVRAMSlotAndFacing
 	         $ffea = hSpriteAnimFrameCounter
 	         $ffea = hCoordsInFrontOfPlayerMatch
-	         $ffeb = hSpriteScreenYCoord
 	         $ffeb = hItemAlreadyFound
+	         $ffeb = hSpriteScreenYCoord
 	         $ffec = hSpriteScreenXCoord
 	         $ffec = hSavedMapTextPtr
 	         $ffed = hSpriteMapYCoord
