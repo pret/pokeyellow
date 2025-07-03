@@ -45,7 +45,7 @@ RocketHideoutB4FBeatGiovanniScript:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, RocketHideoutB4FResetScripts
-	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
 	ld a, TEXT_ROCKETHIDEOUTB4F_GIOVANNI_HOPE_WE_MEET_AGAIN
@@ -95,7 +95,7 @@ RocketHideoutB4FScript_455a5:
 .asm_455c2
 	xor a
 	ldh [hJoyHeld], a
-	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call StopAllMusic
 	ld c, BANK(Music_MeetJessieJames)
@@ -112,7 +112,7 @@ RocketHideoutB4FScript_455a5:
 	call DisplayTextID
 	xor a
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, HS_ROCKET_HIDEOUT_B4F_JAMES
 	call RocketHideoutB4FScript_ShowObject
@@ -139,14 +139,14 @@ RocketHideoutB4FScript4:
 	ld a, ROCKETHIDEOUTB4F_JAMES
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_SCRIPT5
 	call RocketHideoutB4FSetScript
 	ret
 
 RocketHideoutB4FScript5:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
@@ -162,7 +162,7 @@ RocketHideoutB4FScript6:
 	ld [wSprite02StateData1FacingDirection], a
 .asm_4564a
 	call Delay3
-	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 RocketHideoutB4FScript7:
 	ld de, RocketHideoutB4FJessieJamesMovementData_45606
@@ -173,19 +173,19 @@ RocketHideoutB4FScript7:
 	ld a, ROCKETHIDEOUTB4F_JESSIE
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_SCRIPT8
 	call RocketHideoutB4FSetScript
 	ret
 
 RocketHideoutB4FScript8:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
-	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 RocketHideoutB4FScript9:
 	ld a, $2
@@ -221,7 +221,7 @@ RocketHideoutB4FScript10:
 	ret
 
 RocketHideoutB4FScript11:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wIsInBattle]
 	cp $ff
@@ -232,7 +232,7 @@ RocketHideoutB4FScript11:
 	xor a
 	ld [wSprite02StateData1FacingDirection], a
 	ld [wSprite03StateData1FacingDirection], a
-	ld a, SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -245,14 +245,14 @@ RocketHideoutB4FScript11:
 	ld c, BANK(Music_MeetJessieJames)
 	ld a, MUSIC_MEET_JESSIE_JAMES
 	call PlayMusic
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_SCRIPT12
 	call RocketHideoutB4FSetScript
 	ret
 
 RocketHideoutB4FScript12:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
 	ld a, HS_ROCKET_HIDEOUT_B4F_JAMES

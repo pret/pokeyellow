@@ -14,7 +14,7 @@ Predef::
 	push af
 	ld a, BANK(GetPredefPointer)
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 
 	call GetPredefPointer
 

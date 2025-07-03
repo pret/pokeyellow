@@ -667,14 +667,14 @@ LinkMenu:
 	ld a, 3
 	ld [hli], a
 	ASSERT wMaxMenuItem + 1 == wMenuWatchedKeys
-	ASSERT 2 == B_BUTTON
+	ASSERT 2 == PAD_B
 	ld [hli], a
 	ASSERT wMenuWatchedKeys + 1 == wLastMenuItem
 	xor a
 	ld [hl], a
 .waitForInputLoop
 	call HandleMenuInput
-	and A_BUTTON | B_BUTTON
+	and PAD_A | PAD_B
 	add a
 	add a
 	ld b, a
@@ -733,7 +733,7 @@ LinkMenu:
 	jr nz, .skipStartingTransfer
 	call DelayFrame
 	call DelayFrame
-	ld a, START_TRANSFER_INTERNAL_CLOCK
+	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 .skipStartingTransfer
 	ld b, " "
@@ -741,7 +741,7 @@ LinkMenu:
 	ld d, " "
 	ld e, "▷"
 	ld a, [wLinkMenuSelectionSendBuffer]
-	and B_BUTTON << 2 ; was B button pressed?
+	and PAD_B << 2 ; was B button pressed?
 	jr nz, .updateCursorPosition
 ; A button was pressed
 	ld a, [wCurrentMenuItem]
@@ -762,7 +762,7 @@ LinkMenu:
 	call Func_f59ec
 	call LoadScreenTilesFromBuffer1
 	ld a, [wLinkMenuSelectionSendBuffer]
-	and B_BUTTON << 2 ; was B button pressed?
+	and PAD_B << 2 ; was B button pressed?
 	jr nz, .choseCancel ; cancel if B pressed
 	ld a, [wCurrentMenuItem]
 	cp $2

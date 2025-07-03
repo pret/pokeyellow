@@ -39,7 +39,7 @@ HandleLedges::
 	ldh a, [hJoyHeld]
 	and e
 	ret z
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld hl, wMovementFlags
 	set BIT_LEDGE_OR_FISHING, [hl]
@@ -76,5 +76,5 @@ LedgeHoppingShadowEnd:
 
 LedgeHoppingShadowOAM:
 	dbsprite  9, 11,  0,  0, $ff, 0
-	dbsprite 10, 11,  0,  0, $ff, OAM_HFLIP
+	dbsprite 10, 11,  0,  0, $ff, OAM_XFLIP
 LedgeHoppingShadowOAMEnd:

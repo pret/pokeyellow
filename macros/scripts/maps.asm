@@ -72,6 +72,12 @@ ENDM
 
 ;\1 source map
 MACRO def_warps_to
+	ASSERT {_NUM_WARP_EVENTS} <= MAX_WARP_EVENTS, \
+		"Too many warp_events (above {d:MAX_WARP_EVENTS})!"
+	ASSERT {_NUM_BG_EVENTS} <= MAX_BG_EVENTS, \
+		"Too many bg_events (above {d:MAX_BG_EVENTS})!"
+	ASSERT {_NUM_OBJECT_EVENTS} <= MAX_OBJECT_EVENTS, \
+		"Too many object_events (above {d:MAX_OBJECT_EVENTS})!"
 	; text ID values are significant (see DisplayTextID in home/text_scripts.asm)
 	FOR n, {_NUM_BG_EVENTS}
 		ASSERT {_BG_EVENT_{d:n}_TEXT_ID} > {_NUM_OBJECT_EVENTS}, \

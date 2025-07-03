@@ -98,7 +98,7 @@ AfterDisplayingTextID::
 HoldTextDisplayOpen::
 	call Joypad
 	ldh a, [hJoyHeld]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jr nz, HoldTextDisplayOpen
 
 CloseTextDisplay::

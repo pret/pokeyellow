@@ -156,7 +156,7 @@ DoBuySellQuitMenu:
 	ld a, BUY_SELL_QUIT_MENU_TEMPLATE
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld a, A_BUTTON | B_BUTTON
+	ld a, PAD_A | PAD_B
 	ld [wMenuWatchedKeys], a
 	ld a, $2
 	ld [wMaxMenuItem], a
@@ -173,9 +173,9 @@ DoBuySellQuitMenu:
 	ld [wStatusFlags5], a
 	call HandleMenuInput
 	call PlaceUnfilledArrowMenuCursor
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jr nz, .pressedA
-	bit BIT_B_BUTTON, a ; always true since only A/B are watched
+	bit B_PAD_B, a ; always true since only A/B are watched
 	jr z, .pressedA
 	ld a, CANCELLED_MENU
 	ld [wMenuExitMethod], a
@@ -213,7 +213,7 @@ DisplayTwoOptionMenu:
 	ld [wChosenMenuItem], a
 	ld [wMenuExitMethod], a
 
-	ld a, A_BUTTON | B_BUTTON
+	ld a, PAD_A | PAD_B
 	ld [wMenuWatchedKeys], a
 	ld a, $1
 	ld [wMaxMenuItem], a
@@ -282,7 +282,7 @@ DisplayTwoOptionMenu:
 	res BIT_NO_TEXT_DELAY, [hl]
 	call HandleMenuInput
 	pop hl
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jr nz, .choseSecondMenuItem ; automatically choose the second option if B is pressed
 .pressedAButton
 	ld a, [wCurrentMenuItem]

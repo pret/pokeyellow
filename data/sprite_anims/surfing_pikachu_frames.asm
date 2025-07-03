@@ -68,38 +68,38 @@ Unkn_f945e:
 	dorestart
 
 Unkn_f9463:
-	frame $01, 8, OAM_HFLIP, OAM_VFLIP
-	frame $02, 8, OAM_HFLIP, OAM_VFLIP
+	frame $01, 8, OAM_XFLIP, OAM_YFLIP
+	frame $02, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f9468:
-	frame $03, 8, OAM_HFLIP, OAM_VFLIP
-	frame $04, 8, OAM_HFLIP, OAM_VFLIP
+	frame $03, 8, OAM_XFLIP, OAM_YFLIP
+	frame $04, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f946d:
-	frame $05, 8, OAM_HFLIP, OAM_VFLIP
-	frame $06, 8, OAM_HFLIP, OAM_VFLIP
+	frame $05, 8, OAM_XFLIP, OAM_YFLIP
+	frame $06, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f9472:
-	frame $07, 8, OAM_HFLIP, OAM_VFLIP
-	frame $08, 8, OAM_HFLIP, OAM_VFLIP
+	frame $07, 8, OAM_XFLIP, OAM_YFLIP
+	frame $08, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f9477:
-	frame $09, 8, OAM_HFLIP, OAM_VFLIP
-	frame $0a, 8, OAM_HFLIP, OAM_VFLIP
+	frame $09, 8, OAM_XFLIP, OAM_YFLIP
+	frame $0a, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f947c:
-	frame $0b, 8, OAM_HFLIP, OAM_VFLIP
-	frame $0c, 8, OAM_HFLIP, OAM_VFLIP
+	frame $0b, 8, OAM_XFLIP, OAM_YFLIP
+	frame $0c, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f9481:
-	frame $0d, 8, OAM_HFLIP, OAM_VFLIP
-	frame $0e, 8, OAM_HFLIP, OAM_VFLIP
+	frame $0d, 8, OAM_XFLIP, OAM_YFLIP
+	frame $0e, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
 Unkn_f9486:

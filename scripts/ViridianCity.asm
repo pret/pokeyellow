@@ -51,7 +51,7 @@ ViridianCityCheckGymOpenScript:
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, D_DOWN
+	ld a, PAD_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
 	ld [wSpritePlayerStateData1FacingDirection], a
@@ -158,7 +158,7 @@ ViridianCityMovePlayerDownScript:
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, D_DOWN
+	ld a, PAD_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
 	ld [wSpritePlayerStateData1FacingDirection], a
@@ -184,7 +184,7 @@ ViridianCityCheckWaitingOldMan:
 	ld a, TEXT_VIRIDIANCITY_OLD_MAN2
 	ldh [hTextID], a
 	call DisplayTextID
-	ld a, D_UP | D_DOWN | D_LEFT | D_RIGHT | START | SELECT
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ret
 
@@ -192,7 +192,7 @@ ViridianCityOldManInitialCatchTrainingScript:
 	call ViridianCityOldManStartCatchTrainingScript.SetupSprite
 	call ViridianCityOldManStartCatchTrainingScript.SetupBattle
 	SetEvent EVENT_INITIAL_CATCH_TRAINING
-	ld a, D_UP | D_DOWN | D_LEFT | D_RIGHT | START | SELECT
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_VIRIDIANCITY_OLD_MAN_END_INITIAL_CATCH_TRAINING
 	ld [wViridianCityCurScript], a
@@ -203,7 +203,7 @@ ViridianCityOldManEndInitialCatchTrainingScript:
 	call UpdateSprites
 	call Delay3
 	SetEvent EVENT_COMPLETED_CATCH_TRAINING
-	ld a, D_UP | D_DOWN | D_LEFT | D_RIGHT | START | SELECT
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, TEXT_VIRIDIANCITY_OLD_MAN2
 	ldh [hTextID], a

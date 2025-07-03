@@ -105,7 +105,7 @@ Func_f24ae::
 	ret
 
 Func_f24d5::
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	xor a
 	ld [wPlayerMovingDirection], a

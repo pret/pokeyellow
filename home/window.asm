@@ -50,9 +50,9 @@ HandleMenuInput_::
 	ld [wCheckFor180DegreeTurn], a
 	ldh a, [hJoy5]
 	ld b, a
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jr nz, .checkOtherKeys
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jr z, .checkIfDownPressed
 .upPressed
 	ld a, [wCurrentMenuItem] ; selected menu item
@@ -70,7 +70,7 @@ HandleMenuInput_::
 	ld [wCurrentMenuItem], a ; wrap to the bottom of the menu
 	jr .checkOtherKeys
 .checkIfDownPressed
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jr z, .checkOtherKeys
 .downPressed
 	ld a, [wCurrentMenuItem]
@@ -93,7 +93,7 @@ HandleMenuInput_::
 	jp z, .loop1
 .checkIfAButtonOrBButtonPressed
 	ldh a, [hJoy5]
-	and A_BUTTON | B_BUTTON
+	and PAD_A | PAD_B
 	jr z, .skipPlayingSound
 .AButtonOrBButtonPressed
 	push hl

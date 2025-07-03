@@ -144,7 +144,7 @@ Func_2223::
 	ld [wChannelSoundIDs + CHAN6], a
 	ld [wChannelSoundIDs + CHAN7], a
 	ld [wChannelSoundIDs + CHAN8], a
-	ldh [rNR10], a
+	ldh [rAUD1SWEEP], a
 	ret
 
 StopAllMusic::

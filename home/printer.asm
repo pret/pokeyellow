@@ -22,7 +22,7 @@ SerialFunction::
 	ldh [rSB], a
 	ld a, $1
 	ldh [rSC], a
-	ld a, START_TRANSFER_INTERNAL_CLOCK
+	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 	ret
 

@@ -14,7 +14,7 @@ DetermineWildOpponent:
 	bit BIT_DEBUG_MODE, a
 	jr z, .notDebugMode
 	ldh a, [hJoyHeld]
-	bit BIT_B_BUTTON, a ; disable wild encounters
+	bit B_PAD_B, a ; disable wild encounters
 	ret nz
 .notDebugMode
 	ld a, [wNumberOfNoRandomBattleStepsLeft]
@@ -157,7 +157,7 @@ _LoadTrainerPic:
 	ld d, a ; de contains pointer to trainer pic
 	ld a, [wLinkState]
 	and a
-	ld a, BANK("Pics 6") ; this is where all the trainer pics are (not counting Red's)
+	ld a, BANK("Trainer Pics")
 	jr z, .loadSprite
 	ld a, BANK(RedPicFront)
 .loadSprite

@@ -1,6 +1,6 @@
 BankswitchCommon::
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	ret
 
 Bankswitch::
@@ -10,30 +10,30 @@ Bankswitch::
 	push af
 	ld a, b
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	call JumpToAddress
 	pop bc
 	ld a, b
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	ret
 JumpToAddress::
 	jp hl
 
 OpenSRAM::
 	push af
-	ld a, SRAM_BANKING_MODE
-	ld [MBC1SRamBankingMode], a
-	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
+	ld a, BMODE_ADVANCED
+	ld [rBMODE], a
+	ld a, RAMG_SRAM_ENABLE
+	ld [rRAMG], a
 	pop af
-	ld [MBC1SRamBank], a
+	ld [rRAMB], a
 	ret
 
 CloseSRAM::
 	push af
-	ld a, SRAM_DISABLE
-	ld [MBC1SRamBankingMode], a
-	ld [MBC1SRamEnable], a
+	ld a, 0
+	ld [rBMODE], a
+	ld [rRAMG], a
 	pop af
 	ret

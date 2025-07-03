@@ -883,7 +883,7 @@ LoadPikachuShadowOAMData:
 .OAMData:
 	db 2
 	db $0c, $00, $ff, 0
-	db $0c, $08, $ff, 1 << OAM_X_FLIP
+	db $0c, $08, $ff, OAM_XFLIP
 
 .LoadOAMData:
 	ld a, e

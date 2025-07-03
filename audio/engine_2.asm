@@ -182,10 +182,10 @@ Audio2_PlaySound::
 	ld a, [wSavedVolume]
 	and a
 	jr nz, .done
-	ldh a, [rNR50]
+	ldh a, [rAUDVOL]
 	ld [wSavedVolume], a
 	ld a, $77
-	ldh [rNR50], a
+	ldh [rAUDVOL], a
 .done
 	ret
 
@@ -256,17 +256,17 @@ Audio2_InitMusicVariables::
 	ld a, $ff
 	ld [wStereoPanning], a
 	xor a
-	ldh [rNR50], a
-	ld a, $8
-	ldh [rNR10], a
+	ldh [rAUDVOL], a
+	ld a, AUD1SWEEP_DOWN
+	ldh [rAUD1SWEEP], a
 	ld a, 0
-	ldh [rNR51], a
+	ldh [rAUDTERM], a
 	xor a
-	ldh [rNR30], a
-	ld a, $80
-	ldh [rNR30], a
+	ldh [rAUD3ENA], a
+	ld a, AUD3ENA_ON
+	ldh [rAUD3ENA], a
 	ld a, $77
-	ldh [rNR50], a
+	ldh [rAUDVOL], a
 	ret
 
 Audio2_InitSFXVariables::
@@ -353,28 +353,28 @@ Audio2_InitSFXVariables::
 	ld a, e
 	cp CHAN5
 	ret nz
-	ld a, $8
-	ldh [rNR10], a ; sweep off
+	ld a, AUD1SWEEP_DOWN
+	ldh [rAUD1SWEEP], a ; sweep off
 	ret
 
 Audio2_StopAllAudio::
-	ld a, $80
-	ldh [rNR52], a ; sound hardware on
-	ldh [rNR30], a ; wave playback on
+	ld a, AUDENA_ON
+	ldh [rAUDENA], a ; sound hardware on
+	ldh [rAUD3ENA], a ; wave playback on
 	xor a
-	ldh [rNR51], a ; no sound output
-	ldh [rNR32], a ; mute channel 3 (wave channel)
-	ld a, $8
-	ldh [rNR10], a ; sweep off
-	ldh [rNR12], a ; mute channel 1 (pulse channel 1)
-	ldh [rNR22], a ; mute channel 2 (pulse channel 2)
-	ldh [rNR42], a ; mute channel 4 (noise channel)
-	ld a, $40
-	ldh [rNR14], a ; counter mode
-	ldh [rNR24], a
-	ldh [rNR44], a
+	ldh [rAUDTERM], a ; no sound output
+	ldh [rAUD3LEVEL], a ; mute channel 3 (wave channel)
+	ld a, AUD1SWEEP_DOWN
+	ldh [rAUD1SWEEP], a ; sweep off
+	ldh [rAUD1ENV], a ; mute channel 1 (pulse channel 1)
+	ldh [rAUD2ENV], a ; mute channel 2 (pulse channel 2)
+	ldh [rAUD4ENV], a ; mute channel 4 (noise channel)
+	ld a, AUD1HIGH_LENGTH_ON
+	ldh [rAUD1HIGH], a ; counter mode
+	ldh [rAUD2HIGH], a
+	ldh [rAUD4GO], a
 	ld a, $77
-	ldh [rNR50], a ; full volume
+	ldh [rAUDVOL], a ; full volume
 	xor a
 	ld [wUnusedMusicByte], a
 	ld [wDisableChannelOutputWhenSfxEnds], a

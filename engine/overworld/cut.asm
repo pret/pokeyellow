@@ -125,10 +125,10 @@ WriteCutOrBoulderDustAnimationOAMBlock:
 
 .OAMBlock:
 ; tile ID, attributes
-	db $fc, OAM_OBP1 | OAM_HIGH_PALS
-	db $fd, OAM_OBP1 | OAM_HIGH_PALS
-	db $fe, OAM_OBP1 | OAM_HIGH_PALS
-	db $ff, OAM_OBP1 | OAM_HIGH_PALS
+	db $fc, OAM_PAL1 | OAM_HIGH_PALS
+	db $fd, OAM_PAL1 | OAM_HIGH_PALS
+	db $fe, OAM_PAL1 | OAM_HIGH_PALS
+	db $ff, OAM_PAL1 | OAM_HIGH_PALS
 
 GetCutOrBoulderDustAnimationOffsets:
 	ld hl, wSpritePlayerStateData1YPixels

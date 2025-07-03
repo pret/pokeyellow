@@ -35,7 +35,7 @@ LoadNextSoundClipSample::
 	and $80
 	srl a
 	srl a
-	ldh [rNR32], a
+	ldh [rAUD3LEVEL], a
 	sla d
 	ret
 

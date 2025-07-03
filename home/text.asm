@@ -285,7 +285,7 @@ _ContTextNoPause::
 
 ; move both rows of text in the normal text box up one row
 ; always called twice in a row
-; first time, copy the two rows of text to the "in between" rows that are usually emtpy
+; first time, copy the two rows of text to the "in between" rows that are usually empty
 ; second time, copy the bottom row of text into the top row of text
 ScrollTextUpOneLine::
 	hlcoord 0, 14 ; top row of text
@@ -501,7 +501,7 @@ TextCommand_PAUSE::
 	push bc
 	call Joypad
 	ldh a, [hJoyHeld]
-	and A_BUTTON | B_BUTTON
+	and PAD_A | PAD_B
 	jr nz, .done
 	ld c, 30 ; half a second
 	call DelayFrames
@@ -577,7 +577,7 @@ TextCommand_DOTS::
 	call Joypad
 	pop de
 	ldh a, [hJoyHeld] ; joypad state
-	and A_BUTTON | B_BUTTON
+	and PAD_A | PAD_B
 	jr nz, .next ; if so, skip the delay
 	ld c, 10
 	call DelayFrames
@@ -611,7 +611,7 @@ TextCommand_FAR::
 	ld a, [hli]
 
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 
 	push hl
 	ld l, e
@@ -621,7 +621,7 @@ TextCommand_FAR::
 
 	pop af
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	jp NextTextCommand
 
 TextCommandJumpTable::

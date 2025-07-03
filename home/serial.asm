@@ -17,7 +17,7 @@ Serial::
 	cp USING_INTERNAL_CLOCK
 	jr z, .done
 ; using external clock
-	ld a, START_TRANSFER_EXTERNAL_CLOCK
+	ld a, SC_START | SC_EXTERNAL
 	ldh [rSC], a
 	jr .done
 .connectionNotYetEstablished
@@ -35,7 +35,7 @@ Serial::
 	ldh a, [rDIV]
 	bit 7, a ; wait until rDIV has incremented from $3 to $80 or more
 	jr nz, .waitLoop
-	ld a, START_TRANSFER_EXTERNAL_CLOCK
+	ld a, SC_START | SC_EXTERNAL
 	ldh [rSC], a
 	jr .done
 .usingInternalClock
@@ -95,7 +95,7 @@ Serial_ExchangeByte::
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	jr nz, .loop
-	ld a, START_TRANSFER_INTERNAL_CLOCK
+	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 .loop
 	ldh a, [hSerialReceivedNewData]
@@ -120,8 +120,8 @@ Serial_ExchangeByte::
 	jp SetUnknownCounterToFFFF
 .doNotIncrementUnknownCounter
 	ldh a, [rIE]
-	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	cp 1 << SERIAL
+	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
+	cp IE_SERIAL
 	jr nz, .loop
 	ld a, [wUnknownSerialCounter2]
 	dec a
@@ -142,8 +142,8 @@ Serial_ExchangeByte::
 	xor a
 	ldh [hSerialReceivedNewData], a
 	ldh a, [rIE]
-	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	sub 1 << SERIAL
+	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
+	sub IE_SERIAL
 	jr nz, .skipReloadingUnknownCounter2
 	ld [wUnknownSerialCounter2], a
 	ld a, $50
@@ -168,8 +168,8 @@ Serial_ExchangeByte::
 	jr z, SetUnknownCounterToFFFF
 .done
 	ldh a, [rIE]
-	and (1 << SERIAL) | (1 << TIMER) | (1 << LCD_STAT) | (1 << VBLANK)
-	cp 1 << SERIAL
+	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
+	cp IE_SERIAL
 	ld a, SERIAL_NO_DATA_BYTE
 	ret z
 	ld a, [hl]
@@ -294,7 +294,7 @@ Serial_ExchangeNybble::
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	jr nz, .doExchange
-	ld a, START_TRANSFER_INTERNAL_CLOCK
+	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 .doExchange
 	ldh a, [hSerialReceiveData]
@@ -315,7 +315,7 @@ Serial_SendZeroByte::
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	ret nz
-	ld a, START_TRANSFER_INTERNAL_CLOCK
+	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 	ret
 
@@ -324,7 +324,7 @@ Serial_TryEstablishingExternallyClockedConnection::
 	ldh [rSB], a
 	xor a
 	ldh [hSerialReceiveData], a
-	ld a, START_TRANSFER_EXTERNAL_CLOCK
+	ld a, SC_START | SC_EXTERNAL
 	ldh [rSC], a
 	ret
 

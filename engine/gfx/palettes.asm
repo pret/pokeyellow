@@ -226,7 +226,7 @@ SetPal_TrainerCard:
 	srl a
 	push af
 	jr c, .haveBadge
-; The player doens't have the badge, so zero the badge's blk data.
+; The player doesn't have the badge, so zero the badge's blk data.
 	push bc
 	ld a, [de]
 	ld c, a
@@ -723,7 +723,7 @@ SendSGBPackets:
 	pop hl
 	call InitCGBPalettes
 	ldh a, [rLCDC]
-	and 1 << rLCDC_ENABLE
+	and LCDC_ON
 	ret z
 	call Delay3
 	ret
@@ -853,7 +853,7 @@ TransferCurBGPData::
 	ld hl, wCGBPal
 	ld b, %10 ; mask for non-V-blank/non-H-blank STAT mode
 	ldh a, [rLCDC]
-	and 1 << rLCDC_ENABLE
+	and LCDC_ON
 	jr nz, .lcdEnabled
 	REPT NUM_PAL_COLORS
 		call TransferPalColorLCDDisabled
@@ -892,7 +892,7 @@ BufferBGPPal::
 TransferBGPPals::
 ; Transfer the buffered BG palettes.
 	ldh a, [rLCDC]
-	and 1 << rLCDC_ENABLE
+	and LCDC_ON
 	jr z, .lcdDisabled
 	di
 .waitLoop
@@ -929,7 +929,7 @@ TransferCurOBPData:
 	ld hl, wCGBPal
 	ld b, %10 ; mask for non-V-blank/non-H-blank STAT mode
 	ldh a, [rLCDC]
-	and 1 << rLCDC_ENABLE
+	and LCDC_ON
 	jr nz, .lcdEnabled
 	REPT NUM_PAL_COLORS
 		call TransferPalColorLCDDisabled

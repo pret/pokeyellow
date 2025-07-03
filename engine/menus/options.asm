@@ -3,7 +3,7 @@ DisplayOptionMenu_:
 .optionMenuLoop
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
-	and START | B_BUTTON
+	and PAD_START | PAD_B
 	jr nz, .exitOptionMenu
 	call OptionsControl
 	jr c, .dpadDelay
@@ -43,9 +43,9 @@ OptionMenuJumpTable:
 OptionsMenu_TextSpeed:
 	call GetTextSpeed
 	ldh a, [hJoy5]
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jr nz, .pressedRight
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .nonePressed
 .pressedRight
@@ -118,7 +118,7 @@ GetTextSpeed:
 
 OptionsMenu_BattleAnimations:
 	ldh a, [hJoy5]
-	and D_RIGHT | D_LEFT
+	and PAD_LEFT | PAD_RIGHT
 	jr nz, .asm_41d33
 	ld a, [wOptions]
 	and $80 ; mask other bits
@@ -153,7 +153,7 @@ AnimationOffText:
 
 OptionsMenu_BattleStyle:
 	ldh a, [hJoy5]
-	and D_LEFT | D_RIGHT
+	and PAD_LEFT | PAD_RIGHT
 	jr nz, .asm_41d6b
 	ld a, [wOptions]
 	and $40 ; mask other bits
@@ -193,9 +193,9 @@ OptionsMenu_SpeakerSettings:
 	swap a
 	ld c, a
 	ldh a, [hJoy5]
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jr nz, .pressedRight
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .asm_41dca
 .pressedRight
@@ -212,7 +212,7 @@ OptionsMenu_SpeakerSettings:
 	swap a
 	ld b, a
 	xor a
-	ldh [rNR51], a
+	ldh [rAUDTERM], a
 	ld a, [wOptions]
 	and $cf
 	or b
@@ -248,9 +248,9 @@ Earphone3SoundText:
 OptionsMenu_GBPrinterBrightness:
 	call Func_41e7b
 	ldh a, [hJoy5]
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jr nz, .pressedRight
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .asm_41e32
 .pressedRight
@@ -340,7 +340,7 @@ OptionsMenu_Dummy:
 
 OptionsMenu_Cancel:
 	ldh a, [hJoy5]
-	and A_BUTTON
+	and PAD_A
 	jr nz, .pressedCancel
 	and a
 	ret
@@ -351,9 +351,9 @@ OptionsMenu_Cancel:
 OptionsControl:
 	ld hl, wOptionsCursorLocation
 	ldh a, [hJoy5]
-	cp D_DOWN
+	cp PAD_DOWN
 	jr z, .pressedDown
-	cp D_UP
+	cp PAD_UP
 	jr z, .pressedUp
 	and a
 	ret

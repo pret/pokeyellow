@@ -34,7 +34,7 @@ VBlank::
 	call hDMARoutine
 	ld a, BANK(PrepareOAMData)
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	call PrepareOAMData
 
 	; VBlank-sensitive operations end.
@@ -70,7 +70,7 @@ VBlank::
 
 	ld a, [wVBlankSavedROMBank]
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 
 	pop af
 	ldh [rVBK], a

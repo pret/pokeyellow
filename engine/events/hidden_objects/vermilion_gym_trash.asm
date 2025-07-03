@@ -107,7 +107,7 @@ VermilionGymTrashSuccessText2::
 	text_end
 
 ; unused
-VermilionGymTrashSuccesPlaySfx:
+VermilionGymTrashSuccessPlaySfx:
 	text_asm
 	call WaitForSoundToFinish
 	ld a, SFX_SWITCH

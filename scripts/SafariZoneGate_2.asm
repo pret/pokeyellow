@@ -60,7 +60,7 @@ SafariZoneGatePrintSafariZoneWorker1WouldYouLikeToJoinText::
 	ld [wSafariSteps], a
 	ld a, l
 	ld [wSafariSteps + 1], a
-	ld a, D_UP
+	ld a, PAD_UP
 	ld c, 3
 	call SafariZoneEntranceAutoWalk2
 	SetEvent EVENT_IN_SAFARI_ZONE
@@ -73,7 +73,7 @@ SafariZoneGatePrintSafariZoneWorker1WouldYouLikeToJoinText::
 	ld hl, .PleaseComeAgainText
 	call PrintText
 .CantPayWalkDown
-	ld a, D_DOWN
+	ld a, PAD_DOWN
 	ld c, 1
 	call SafariZoneEntranceAutoWalk2
 	ld a, SCRIPT_SAFARIZONEGATE_PLAYER_MOVING_DOWN

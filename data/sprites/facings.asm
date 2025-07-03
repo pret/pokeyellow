@@ -59,10 +59,10 @@ SpriteFacingAndAnimationTable:
 
 .WalkingDown2:
 	db 4 ; #
-	db  0,  8, $80, OAM_HFLIP
-	db  0,  0, $81, OAM_HFLIP
-	db  8,  8, $82, OAM_HFLIP | UNDER_GRASS
-	db  8,  0, $83, OAM_HFLIP | UNDER_GRASS | FACING_END
+	db  0,  8, $80, OAM_XFLIP
+	db  0,  0, $81, OAM_XFLIP
+	db  8,  8, $82, OAM_XFLIP | UNDER_GRASS
+	db  8,  0, $83, OAM_XFLIP | UNDER_GRASS | FACING_END
 
 .StandingUp:
 	db 4 ; #
@@ -80,10 +80,10 @@ SpriteFacingAndAnimationTable:
 
 .WalkingUp2:
 	db 4 ; #
-	db  0,  8, $84, OAM_HFLIP
-	db  0,  0, $85, OAM_HFLIP
-	db  8,  8, $86, OAM_HFLIP | UNDER_GRASS
-	db  8,  0, $87, OAM_HFLIP | UNDER_GRASS | FACING_END
+	db  0,  8, $84, OAM_XFLIP
+	db  0,  0, $85, OAM_XFLIP
+	db  8,  8, $86, OAM_XFLIP | UNDER_GRASS
+	db  8,  0, $87, OAM_XFLIP | UNDER_GRASS | FACING_END
 
 .StandingLeft:
 	db 4 ; #
@@ -101,26 +101,26 @@ SpriteFacingAndAnimationTable:
 
 .StandingRight:
 	db 4 ; #
-	db  0,  8, $08, OAM_HFLIP
-	db  0,  0, $09, OAM_HFLIP
-	db  8,  8, $0a, OAM_HFLIP | UNDER_GRASS
-	db  8,  0, $0b, OAM_HFLIP | UNDER_GRASS | FACING_END
+	db  0,  8, $08, OAM_XFLIP
+	db  0,  0, $09, OAM_XFLIP
+	db  8,  8, $0a, OAM_XFLIP | UNDER_GRASS
+	db  8,  0, $0b, OAM_XFLIP | UNDER_GRASS | FACING_END
 
 .WalkingRight:
 	db 4 ; #
-	db  0,  8, $88, OAM_HFLIP
-	db  0,  0, $89, OAM_HFLIP
-	db  8,  8, $8a, OAM_HFLIP | UNDER_GRASS
-	db  8,  0, $8b, OAM_HFLIP | UNDER_GRASS | FACING_END
+	db  0,  8, $88, OAM_XFLIP
+	db  0,  0, $89, OAM_XFLIP
+	db  8,  8, $8a, OAM_XFLIP | UNDER_GRASS
+	db  8,  0, $8b, OAM_XFLIP | UNDER_GRASS | FACING_END
 
 .SpecialCase:
 	db 9 ; #
 	db -4, -4, $00, 0
 	db -4,  4, $01, 0
-	db -4, 12, $00, OAM_HFLIP
+	db -4, 12, $00, OAM_XFLIP
 	db  4, -4, $01, 0
 	db  4,  4, $02, 0
 	db  4, 12, $01, 0
-	db 12, -4, $00, OAM_VFLIP | UNDER_GRASS
+	db 12, -4, $00, OAM_YFLIP | UNDER_GRASS
 	db 12,  4, $01, UNDER_GRASS
-	db 12, 12, $00, OAM_VFLIP | OAM_HFLIP | UNDER_GRASS | FACING_END
+	db 12, 12, $00, OAM_YFLIP | OAM_XFLIP | UNDER_GRASS | FACING_END

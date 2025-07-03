@@ -53,10 +53,10 @@ DebugPressedOrHeldB:: ; dummy except in _DEBUG
 ; Safari Game step counter, and some NPC scripts.
 IF DEF(_DEBUG)
 	ldh a, [hJoyHeld]
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	ret nz
 	ldh a, [hJoyPressed]
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	ret
 ENDC
 	ret

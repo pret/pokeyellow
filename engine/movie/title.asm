@@ -165,12 +165,12 @@ DisplayTitleScreen:
 	call DelayFrame
 	call JoypadLowSensitivity
 	ldh a, [hJoyHeld]
-	cp D_UP | SELECT | B_BUTTON
+	cp PAD_UP | PAD_SELECT | PAD_B
 	jr z, .go_to_main_menu
 IF DEF(_DEBUG)
-	and A_BUTTON | SELECT | START
+	and PAD_A | PAD_SELECT | PAD_START
 ELSE
-	and A_BUTTON | START
+	and PAD_A | PAD_START
 ENDC
 	jr nz, .go_to_main_menu
 	call DoTitleScreenFunction
@@ -194,12 +194,12 @@ ENDC
 	call LoadGBPal
 	ldh a, [hJoyHeld]
 	ld b, a
-	and D_UP | SELECT | B_BUTTON
-	cp D_UP | SELECT | B_BUTTON
+	and PAD_UP | PAD_SELECT | PAD_B
+	cp PAD_UP | PAD_SELECT | PAD_B
 	jp z, .doClearSaveDialogue
 IF DEF(_DEBUG)
 	ld a, b
-	bit BIT_SELECT, a
+	bit B_PAD_SELECT, a
 	jp z, MainMenu
 	callfar DebugMenu
 	jp hl

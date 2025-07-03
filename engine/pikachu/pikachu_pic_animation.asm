@@ -222,7 +222,7 @@ PikaPicAnimTimerAndJoypad:
 	ret nz
 	call JoypadLowSensitivity
 	ldh a, [hJoyPressed]
-	and A_BUTTON | B_BUTTON
+	and PAD_A | PAD_B
 	ret
 
 CheckPikaPicAnimTimer:

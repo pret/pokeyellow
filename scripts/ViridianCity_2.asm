@@ -75,7 +75,7 @@ ViridianCityPrintOldManSleepyText::
 	call StartSimulatingJoypadStates
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
-	ld a, D_DOWN
+	ld a, PAD_DOWN
 	ld [wSimulatedJoypadStatesEnd], a
 	ld a, SCRIPT_VIRIDIANCITY_PLAYER_MOVING_DOWN
 	ld [wViridianCityCurScript], a

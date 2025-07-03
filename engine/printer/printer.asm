@@ -432,7 +432,7 @@ PrinterDebug:
 
 Printer_CheckPressingB:
 	ldh a, [hJoyHeld]
-	and B_BUTTON
+	and PAD_B
 	jr nz, .quit
 	and a
 	ret

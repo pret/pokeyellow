@@ -59,12 +59,12 @@ MainMenu:
 	ld [wTopMenuItemX], a
 	inc a
 	ld [wTopMenuItemY], a
-	ld a, A_BUTTON | B_BUTTON | START
+	ld a, PAD_A | PAD_B | PAD_START
 	ld [wMenuWatchedKeys], a
 	ld a, [wSaveFileStatus]
 	ld [wMaxMenuItem], a
 	call HandleMenuInput
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, DisplayTitleScreen ; if so, go back to the title screen
 	ld c, 20
 	call DelayFrames
@@ -97,9 +97,9 @@ MainMenu:
 	ldh [hJoyHeld], a
 	call Joypad
 	ldh a, [hJoyHeld]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jr nz, .pressedA
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, .mainMenuLoop
 	jr .inputLoop
 .pressedA
@@ -274,12 +274,12 @@ DisplayOptionMenu:
 	ret
 
 CheckForPlayerNameInSRAM:
-	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
-	ld a, SRAM_BANKING_MODE
-	ld [MBC1SRamBankingMode], a
-	ASSERT SRAM_BANKING_MODE == BANK("Save Data")
-	ld [MBC1SRamBank], a
+	ld a, RAMG_SRAM_ENABLE
+	ld [rRAMG], a
+	ld a, BMODE_ADVANCED
+	ld [rBMODE], a
+	ASSERT BMODE_ADVANCED == BANK("Save Data")
+	ld [rRAMB], a
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName
 .loop
@@ -289,13 +289,13 @@ CheckForPlayerNameInSRAM:
 	dec b
 	jr nz, .loop
 	xor a
-	ld [MBC1SRamEnable], a
-	ld [MBC1SRamBankingMode], a
+	ld [rRAMG], a
+	ld [rBMODE], a
 	and a
 	ret
 .found
 	xor a
-	ld [MBC1SRamEnable], a
-	ld [MBC1SRamBankingMode], a
+	ld [rRAMG], a
+	ld [rBMODE], a
 	scf
 	ret

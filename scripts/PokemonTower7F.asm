@@ -55,7 +55,7 @@ PokemonTower7FScript_60d2a:
 	call PlayMusic
 	xor a
 	ldh [hJoyHeld], a
-	ld a, ~(A_BUTTON | B_BUTTON)
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, HS_POKEMON_TOWER_7F_JESSIE
 	call PokemonTower7FScript_ShowObject
@@ -66,7 +66,7 @@ PokemonTower7FScript_60d2a:
 	ld a, TEXT_POKEMONTOWER7F_TEXT4
 	ldh [hTextID], a
 	call DisplayTextID
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT1
 	call PokemonTower7FSetScript
@@ -89,14 +89,14 @@ PokemonTower7FScript1:
 	ld a, POKEMONTOWER7F_JESSIE
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT2
 	call PokemonTower7FSetScript
 	ret
 
 PokemonTower7FScript2:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
@@ -120,14 +120,14 @@ PokemonTower7FScript4:
 	ld a, POKEMONTOWER7F_JAMES
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT5
 	call PokemonTower7FSetScript
 	ret
 
 PokemonTower7FScript5:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
@@ -143,7 +143,7 @@ PokemonTower7FScript6:
 	ld [wSprite02StateData1FacingDirection], a
 .asm_60dff
 	call Delay3
-	ld a, ~(A_BUTTON | B_BUTTON)
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, TEXT_POKEMONTOWER7F_TEXT5
 	ldh [hTextID], a
@@ -167,7 +167,7 @@ PokemonTower7FScript7:
 	ret
 
 PokemonTower7FScript8:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wIsInBattle]
 	cp $ff
@@ -178,7 +178,7 @@ PokemonTower7FScript8:
 	xor a
 	ld [wSprite01StateData1FacingDirection], a
 	ld [wSprite02StateData1FacingDirection], a
-	ld a, ~(A_BUTTON | B_BUTTON)
+	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -191,14 +191,14 @@ PokemonTower7FScript8:
 	ld c, BANK(Music_MeetJessieJames)
 	ld a, MUSIC_MEET_JESSIE_JAMES
 	call PlayMusic
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, SCRIPT_POKEMONTOWER7F_SCRIPT9
 	call PokemonTower7FSetScript
 	ret
 
 PokemonTower7FScript9:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
 	ld a, HS_POKEMON_TOWER_7F_JESSIE
@@ -235,7 +235,7 @@ PokemonTower7FScript_HideObject:
 	ret
 
 PokemonTower7FWarpToMrFujiHouseScript:
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, HS_POKEMON_TOWER_7F_MR_FUJI
 	ld [wMissableObjectIndex], a

@@ -30,7 +30,7 @@ IF DEF(_DEBUG)
 	ld a, TEXT_DELAY_MEDIUM
 	ld [wOptions], a
 
-	ld a, A_BUTTON | B_BUTTON | START
+	ld a, PAD_A | PAD_B | PAD_START
 	ld [wMenuWatchedKeys], a
 	xor a
 	ld [wMenuJoypadPollCount], a
@@ -46,7 +46,7 @@ IF DEF(_DEBUG)
 	ld [wMenuWatchMovingOutOfBounds], a
 
 	call HandleMenuInput
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	ld hl, DisplayTitleScreen
 	ret nz
 
@@ -149,19 +149,19 @@ Func_fe7db:
 	pop de
 	pop bc
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_fe812
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_fe850
-	bit BIT_SELECT, a
+	bit B_PAD_SELECT, a
 	jp nz, DebugMenu
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_fe97f
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jp nz, Func_fe8a1
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fe85d
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_fe880
 	jr Func_fe7db
 
@@ -286,17 +286,17 @@ Func_fe8b0:
 	pop de
 	pop bc
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_fe8d9
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_fe902
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_fe97f
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jp nz, Func_fe7ca
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fe912
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_fe93b
 	jr Func_fe8b0
 
@@ -543,11 +543,11 @@ Func_fea85:
 	call JoypadLowSensitivity
 	pop bc
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_fea9d
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_fec10
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_feae4
 	jr Func_fea85
 
@@ -594,15 +594,15 @@ Func_feaf1:
 	call JoypadLowSensitivity
 	pop bc
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_feb13
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_feb82
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_fec10
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jp nz, Func_febba
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fea78
 	jr Func_feaf1
 
@@ -704,15 +704,15 @@ Func_febc4:
 	call JoypadLowSensitivity
 	pop bc
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_febe6
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_fec01
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_fec10
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jp nz, Func_feae4
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fea78
 	jr Func_febc4
 
@@ -948,11 +948,11 @@ Func_fee23:
 	call DelayFrame
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_fee49
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_fee56
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_fee96
 	jr .asm_fee30
 
@@ -1007,15 +1007,15 @@ Func_fee96:
 	call JoypadLowSensitivity
 	ld hl, wCurEnemyLevel
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_feed1
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_feedb
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_ff12c
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fee23
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_fef60
 	jr .asm_feeab
 
@@ -1107,15 +1107,15 @@ Func_fef68:
 	pop bc
 	pop de
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_fef92
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_fef9e
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_ff12c
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_fefa8
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_fefb5
 	jr .asm_fef6b
 
@@ -1239,15 +1239,15 @@ Func_ff043:
 	pop bc
 	pop de
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_ff06d
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_ff072
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_ff12c
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jp nz, Func_ff077
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jp nz, Func_ff08f
 	jr .asm_ff046
 
@@ -1469,11 +1469,11 @@ Func_ff1e7:
 	call DelayFrame
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp nz, Func_ff21b
-	bit BIT_B_BUTTON, a
+	bit B_PAD_B, a
 	jp nz, Func_ff227
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jp nz, Func_ff236
 	jr Func_ff1e7
 
@@ -1603,7 +1603,7 @@ Func_ff2f3:
 	push hl
 	call DebugEnableSRAM
 	ld a, b
-	ld [MBC1SRamBank], a
+	ld [rRAMB], a
 	ld bc, sBox2 - sBox1
 	call CopyData
 	pop hl
@@ -1619,16 +1619,16 @@ Func_ff2f3:
 	ret
 
 DebugEnableSRAM: ; duplicate of EnableSRAM
-	ld a, SRAM_BANKING_MODE
-	ld [MBC1SRamBankingMode], a
-	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
+	ld a, BMODE_ADVANCED
+	ld [rBMODE], a
+	ld a, RAMG_SRAM_ENABLE
+	ld [rRAMG], a
 	ret
 
 DebugDisableSRAM: ; duplicate of DisableSRAM
-	ld a, SRAM_DISABLE
-	ld [MBC1SRamBankingMode], a
-	ld [MBC1SRamEnable], a
+	ld a, 0
+	ld [rBMODE], a
+	ld [rRAMG], a
 	ret
 
 Func_ff32a:

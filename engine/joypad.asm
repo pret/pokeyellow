@@ -37,8 +37,8 @@ _Joypad::
 
 	ldh a, [hJoyInput]
 	ld b, a
-	and A_BUTTON + B_BUTTON + SELECT + START + D_UP
-	cp A_BUTTON + B_BUTTON + SELECT + START ; soft reset
+	and PAD_BUTTONS | PAD_UP
+	cp PAD_BUTTONS ; soft reset
 	jp z, TrySoftReset
 
 	ldh a, [hJoyLast]

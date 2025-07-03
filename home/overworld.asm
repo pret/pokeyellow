@@ -1,6 +1,6 @@
 EnterMap::
 ; Load a new map.
-	ld a, A_BUTTON | B_BUTTON | SELECT | START | D_RIGHT | D_LEFT | D_UP | D_DOWN
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call LoadMapData
 	farcall ClearVariablesOnEnterMap
@@ -73,14 +73,14 @@ OverworldLoopLessDelay::
 .notSimulating
 	ldh a, [hJoyPressed]
 .checkIfStartIsPressed
-	bit BIT_START, a
+	bit B_PAD_START, a
 	jr z, .startButtonNotPressed
 ; if START is pressed
 	xor a ; TEXT_START_MENU
 	ldh [hTextID], a
 	jp .displayDialogue
 .startButtonNotPressed
-	bit BIT_A_BUTTON, a
+	bit B_PAD_A, a
 	jp z, .checkIfDownButtonIsPressed
 ; if A is pressed
 	ld a, [wStatusFlags5]
@@ -142,7 +142,7 @@ OverworldLoopLessDelay::
 
 .checkIfDownButtonIsPressed
 	ldh a, [hJoyHeld] ; current joypad state
-	bit BIT_D_DOWN, a
+	bit B_PAD_DOWN, a
 	jr z, .checkIfUpButtonIsPressed
 	ld a, 1
 	ld [wSpritePlayerStateData1YStepVector], a
@@ -150,7 +150,7 @@ OverworldLoopLessDelay::
 	jr .handleDirectionButtonPress
 
 .checkIfUpButtonIsPressed
-	bit BIT_D_UP, a
+	bit B_PAD_UP, a
 	jr z, .checkIfLeftButtonIsPressed
 	ld a, -1
 	ld [wSpritePlayerStateData1YStepVector], a
@@ -158,7 +158,7 @@ OverworldLoopLessDelay::
 	jr .handleDirectionButtonPress
 
 .checkIfLeftButtonIsPressed
-	bit BIT_D_LEFT, a
+	bit B_PAD_LEFT, a
 	jr z, .checkIfRightButtonIsPressed
 	ld a, -1
 	ld [wSpritePlayerStateData1XStepVector], a
@@ -166,7 +166,7 @@ OverworldLoopLessDelay::
 	jr .handleDirectionButtonPress
 
 .checkIfRightButtonIsPressed
-	bit BIT_D_RIGHT, a
+	bit B_PAD_RIGHT, a
 	jr z, .noDirectionButtonsPressed
 	ld a, 1
 	ld [wSpritePlayerStateData1XStepVector], a
@@ -350,7 +350,7 @@ DoBikeSpeedup::
 	cp ROUTE_17 ; Cycling Road
 	jr nz, .goFaster
 	ldh a, [hJoyHeld]
-	and D_UP | D_LEFT | D_RIGHT
+	and PAD_UP | PAD_LEFT | PAD_RIGHT
 	ret nz
 .goFaster
 	call AdvancePlayerSprite
@@ -401,7 +401,7 @@ CheckWarpsNoCollisionLoop::
 	pop bc
 	pop de
 	ldh a, [hJoyHeld]
-	and D_DOWN | D_UP | D_LEFT | D_RIGHT
+	and PAD_CTRL_PAD
 	jr z, CheckWarpsNoCollisionRetry2 ; if directional buttons aren't being pressed, do not pass through the warp
 	jr WarpFound1
 
@@ -1598,9 +1598,9 @@ ForceBikeDown::
 	cp ROUTE_17 ; Cycling Road
 	ret nz
 	ldh a, [hJoyHeld]
-	and D_DOWN | D_UP | D_LEFT | D_RIGHT | B_BUTTON | A_BUTTON
+	and PAD_CTRL_PAD | PAD_B | PAD_A
 	ret nz
-	ld a, D_DOWN
+	ld a, PAD_DOWN
 	ldh [hJoyHeld], a ; on the cycling road, if there isn't a trainer and the player isn't pressing buttons, simulate a down press
 	ret
 
@@ -2048,7 +2048,7 @@ CopyMapViewToVRAM2:
 	inc e
 	dec c
 	jr nz, .vramCopyInnerLoop
-	ld a, BG_MAP_WIDTH - SCREEN_WIDTH
+	ld a, TILEMAP_WIDTH - SCREEN_WIDTH
 	add e
 	ld e, a
 	jr nc, .noCarry
@@ -2284,14 +2284,14 @@ CheckForUserInterruption::
 	pop bc
 
 	ldh a, [hJoyHeld]
-	cp D_UP + SELECT + B_BUTTON
+	cp PAD_UP + PAD_SELECT + PAD_B
 	jr z, .input
 
 	ldh a, [hJoy5]
 IF DEF(_DEBUG)
-	and START | SELECT | A_BUTTON
+	and PAD_START | PAD_SELECT | PAD_A
 ELSE
-	and START | A_BUTTON
+	and PAD_START | PAD_A
 ENDC
 	jr nz, .input
 
@@ -2314,7 +2314,7 @@ LoadDestinationWarpPosition::
 	push af
 	ld a, [wPredefParentBank]
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	ld a, b
 	add a
 	add a
@@ -2326,5 +2326,5 @@ LoadDestinationWarpPosition::
 	call CopyData
 	pop af
 	ldh [hLoadedROMBank], a
-	ld [MBC1RomBank], a
+	ld [rROMB], a
 	ret
