@@ -466,14 +466,14 @@ Printer_CheckPressingB:
 Printer_CopyTileMapToPrinterTileBuffer:
 	hlcoord 0, 0
 	decoord 0, 0, wPrinterTileBuffer
-	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
+	ld bc, SCREEN_AREA
 	call CopyData
 	ret
 
 Printer_CopyTileMapFromPrinterTileBuffer:
 	hlcoord 0, 0, wPrinterTileBuffer
 	decoord 0, 0
-	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
+	ld bc, SCREEN_AREA
 	call CopyData
 	ret
 

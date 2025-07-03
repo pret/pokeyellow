@@ -1453,7 +1453,7 @@ SurfingMinigame_DrawHP:
 
 SurfingMinigame_DrawResultsScreen:
 	ld hl, wTileMap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	xor a
 	call FillMemory
 	ld hl, .BeachTilemap
@@ -2396,7 +2396,7 @@ SurfingPikachuMinigameIntro:
 
 DrawSurfingPikachuMinigameIntroBackground:
 	ld hl, wTileMap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	ld a, $ff
 	call FillMemory
 	ld hl, Tilemap_f90bc
@@ -2536,7 +2536,7 @@ SurfingPikachuMinigame_NormalPals:
 
 SurfingPikachu_ClearTileMap:
 	ld hl, wTileMap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	xor a
 	call FillMemory
 	ret
