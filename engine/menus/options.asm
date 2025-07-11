@@ -156,13 +156,13 @@ OptionsMenu_BattleStyle:
 	and PAD_LEFT | PAD_RIGHT
 	jr nz, .buttonPressed
 	ld a, [wOptions]
-	and $40 ; mask other bits
-	jr .noButtonPressed
+	and 1 << BIT_BATTLE_SHIFT
+	jr .done
 .buttonPressed
 	ld a, [wOptions]
-	xor $40
+	and 1 << BIT_BATTLE_SHIFT
 	ld [wOptions], a
-.noButtonPressed
+.done
 	ld bc, $0
 	sla a
 	sla a
