@@ -160,7 +160,7 @@ OptionsMenu_BattleStyle:
 	jr .done
 .buttonPressed
 	ld a, [wOptions]
-	and 1 << BIT_BATTLE_SHIFT
+	xor 1 << BIT_BATTLE_SHIFT
 	ld [wOptions], a
 .done
 	ld bc, $0
