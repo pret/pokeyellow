@@ -1,8 +1,8 @@
-_PokemonTowerJessieJamesText1::
+_PokemonTower7FJessieJamesSpottedText::
 	text "Stop right there!@"
 	text_end
 
-_PokemonTowerJessieJamesText2::
+_PokemonTower7FJessieJamesPreBattleText::
 	text "Grampa here wanted"
 	line "to complain, so"
 	cont "we're setting him"
@@ -13,12 +13,12 @@ _PokemonTowerJessieJamesText2::
 	cont "prepare to fight!"
 	done
 
-_PokemonTowerJessieJamesText3::
+_PokemonTower7FJessieJamesEndBattleText::
 	text "You"
 	line "will regret this!"
 	prompt
 
-_PokemonTowerJessieJamesText4::
+_PokemonTower7FJessieJamesPostBattleText::
 	text "Looks like TEAM"
 	line "ROCKET's blasting"
 	cont "off again!@"

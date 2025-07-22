@@ -1,8 +1,8 @@
-_MtMoonJessieJamesText1::
+_MtMoonB2FJessieJamesSpottedText::
 	text "Stop right there!@"
 	text_end
 
-_MtMoonJessieJamesText2::
+_MtMoonB2FJessieJamesPreBattleText::
 	text "That fossil is"
 	line "TEAM ROCKET's!"
 
@@ -10,12 +10,12 @@ _MtMoonJessieJamesText2::
 	line "prepare to fight!"
 	done
 
-_MtMoonJessieJamesText3::
+_MtMoonB2FJessieJamesEndBattleText::
 	text "A"
 	line "brat beat us?"
 	prompt
 
-_MtMoonJessieJamesText4::
+_MtMoonB2FJessieJamesPostBattleText::
 	text "TEAM ROCKET, blast"
 	line "off at the speed"
 	cont "of light!@"
