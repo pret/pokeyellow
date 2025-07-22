@@ -1,10 +1,3 @@
-; monochrome palette color ids
-	const_def
-	const SHADE_WHITE ; %00
-	const SHADE_LIGHT ; %01
-	const SHADE_DARK  ; %10
-	const SHADE_BLACK ; %11
-
 DEF NUM_ACTIVE_PALS EQU 4
 
 ; pal/blk packets
