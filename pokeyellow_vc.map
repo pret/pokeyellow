@@ -6907,8 +6907,8 @@ ROMX bank #15:
 	         $57b9 = LinkBattleExchangeData.VC_Wireless_end_exchange
 	         $57bb = LinkBattleExchangeData.syncLoop2
 	         $57bb = LinkBattleExchangeData.VC_Wireless_net_delay_1_End
-	         $57c4 = LinkBattleExchangeData.VC_Wireless_net_delay_2
 	         $57c4 = LinkBattleExchangeData.VC_Wireless_start_send_zero_bytes
+	         $57c4 = LinkBattleExchangeData.VC_Wireless_net_delay_2
 	         $57c6 = LinkBattleExchangeData.syncLoop3
 	         $57c6 = LinkBattleExchangeData.VC_Wireless_net_delay_2_End
 	         $57cf = LinkBattleExchangeData.VC_Wireless_end_send_zero_bytes
@@ -12079,10 +12079,10 @@ ROMX bank #25:
 	SECTION: $4000-$7fff ($4000 bytes) ["Tilesets 1"]
 	         $4000 = Overworld_GFX
 	         $4600 = Overworld_Block
-	         $4e00 = RedsHouse2_GFX
 	         $4e00 = RedsHouse1_GFX
-	         $5290 = RedsHouse2_Block
+	         $4e00 = RedsHouse2_GFX
 	         $5290 = RedsHouse1_Block
+	         $5290 = RedsHouse2_Block
 	         $53c0 = House_GFX
 	         $59a0 = House_Block
 	         $5bd0 = Mansion_GFX
@@ -12100,20 +12100,20 @@ ROMX bank #26:
 	         $4000 = Version_GFX
 	         $4040 = Version_GFXEnd
 	SECTION: $4040-$7fef ($3fb0 bytes) ["Tilesets 2"]
-	         $4040 = Gym_GFX
 	         $4040 = Dojo_GFX
-	         $4640 = Gym_Block
+	         $4040 = Gym_GFX
 	         $4640 = Dojo_Block
-	         $4d80 = Pokecenter_GFX
+	         $4640 = Gym_Block
 	         $4d80 = Mart_GFX
-	         $5380 = Mart_Block
+	         $4d80 = Pokecenter_GFX
 	         $5380 = Pokecenter_Block
-	         $5600 = ForestGate_GFX
-	         $5600 = Museum_GFX
+	         $5380 = Mart_Block
 	         $5600 = Gate_GFX
-	         $5bf0 = Museum_Block
-	         $5bf0 = Gate_Block
+	         $5600 = Museum_GFX
+	         $5600 = ForestGate_GFX
 	         $5bf0 = ForestGate_Block
+	         $5bf0 = Gate_Block
+	         $5bf0 = Museum_Block
 	         $63f0 = Forest_GFX
 	         $69f0 = Forest_Block
 	         $71f0 = Facility_GFX
@@ -21724,9 +21724,9 @@ WRAM0 bank #0:
 	         $c536 = wShadowOAMBackupSprite11TileID
 	         $c537 = wShadowOAMBackupSprite11Attributes
 	         $c537 = wAnimatedObject1FieldB
+	         $c538 = wShadowOAMBackupSprite12YCoord
 	         $c538 = wShadowOAMBackupSprite12
 	         $c538 = wAnimatedObject1FieldC
-	         $c538 = wShadowOAMBackupSprite12YCoord
 	         $c539 = wAnimatedObject1FieldD
 	         $c539 = wShadowOAMBackupSprite12XCoord
 	         $c53a = wAnimatedObject1FieldE
@@ -21800,9 +21800,9 @@ WRAM0 bank #0:
 	         $c556 = wShadowOAMBackupSprite19TileID
 	         $c557 = wShadowOAMBackupSprite19Attributes
 	         $c557 = wAnimatedObject3FieldB
+	         $c558 = wAnimatedObject3FieldC
 	         $c558 = wShadowOAMBackupSprite20YCoord
 	         $c558 = wShadowOAMBackupSprite20
-	         $c558 = wAnimatedObject3FieldC
 	         $c559 = wAnimatedObject3FieldD
 	         $c559 = wShadowOAMBackupSprite20XCoord
 	         $c55a = wShadowOAMBackupSprite20TileID
@@ -21952,9 +21952,9 @@ WRAM0 bank #0:
 	         $c596 = wAnimatedObject7FrameIndex
 	         $c597 = wShadowOAMBackupSprite35Attributes
 	         $c597 = wAnimatedObject7FieldB
-	         $c598 = wShadowOAMBackupSprite36
 	         $c598 = wAnimatedObject7FieldC
 	         $c598 = wShadowOAMBackupSprite36YCoord
+	         $c598 = wShadowOAMBackupSprite36
 	         $c599 = wAnimatedObject7FieldD
 	         $c599 = wShadowOAMBackupSprite36XCoord
 	         $c59a = wShadowOAMBackupSprite36TileID
@@ -22296,8 +22296,8 @@ WRAM0 bank #0:
 	         $cd3d = wStoppingWhichSlotMachineWheel
 	         $cd3d = wFlyAnimUsingCoordList
 	         $cd3d = wFieldMoves
-	         $cd3d = wCoordIndex
 	         $cd3d = wHoFTeamIndex
+	         $cd3d = wCoordIndex
 	         $cd3d = wDayCareStartLevel
 	         $cd3d = wBoxMonCounts
 	         $cd3d = wSavedY
@@ -23962,10 +23962,10 @@ HRAM bank #0:
 	         $ff95 = hDividend
 	         $ff95 = hSignCoordPointer
 	         $ff95 = hPastLeadingZeros
-	         $ff95 = hQuotient
 	         $ff95 = hProduct
 	         $ff95 = hNPCMovementDirections2Index
 	         $ff95 = hNPCSpriteOffset
+	         $ff95 = hQuotient
 	         $ff95 = hSwapTemp
 	         $ff96 = hMutateWY
 	         $ff96 = hSwapItemQuantity

@@ -20904,9 +20904,9 @@ WRAM0 bank #0:
 	         $c0f3 = wc0f3
 	SECTION: $c100-$c2ff ($0200 bytes) ["Sprite State Data"]
 	         $c100 = wSpriteStateData1
-	         $c100 = wSpritePlayerStateData1PictureID
-	         $c100 = wSpritePlayerStateData1
 	         $c100 = wSpriteDataStart
+	         $c100 = wSpritePlayerStateData1
+	         $c100 = wSpritePlayerStateData1PictureID
 	         $c101 = wSpritePlayerStateData1MovementStatus
 	         $c102 = wSpritePlayerStateData1ImageIndex
 	         $c103 = wSpritePlayerStateData1YStepVector
@@ -21658,9 +21658,9 @@ WRAM0 bank #0:
 	         $c536 = wShadowOAMBackupSprite11TileID
 	         $c537 = wShadowOAMBackupSprite11Attributes
 	         $c537 = wAnimatedObject1FieldB
+	         $c538 = wShadowOAMBackupSprite12YCoord
 	         $c538 = wShadowOAMBackupSprite12
 	         $c538 = wAnimatedObject1FieldC
-	         $c538 = wShadowOAMBackupSprite12YCoord
 	         $c539 = wAnimatedObject1FieldD
 	         $c539 = wShadowOAMBackupSprite12XCoord
 	         $c53a = wAnimatedObject1FieldE
@@ -21734,9 +21734,9 @@ WRAM0 bank #0:
 	         $c556 = wShadowOAMBackupSprite19TileID
 	         $c557 = wShadowOAMBackupSprite19Attributes
 	         $c557 = wAnimatedObject3FieldB
+	         $c558 = wAnimatedObject3FieldC
 	         $c558 = wShadowOAMBackupSprite20YCoord
 	         $c558 = wShadowOAMBackupSprite20
-	         $c558 = wAnimatedObject3FieldC
 	         $c559 = wAnimatedObject3FieldD
 	         $c559 = wShadowOAMBackupSprite20XCoord
 	         $c55a = wShadowOAMBackupSprite20TileID
@@ -22230,8 +22230,8 @@ WRAM0 bank #0:
 	         $cd3d = wStoppingWhichSlotMachineWheel
 	         $cd3d = wFlyAnimUsingCoordList
 	         $cd3d = wFieldMoves
-	         $cd3d = wCoordIndex
 	         $cd3d = wHoFTeamIndex
+	         $cd3d = wCoordIndex
 	         $cd3d = wDayCareStartLevel
 	         $cd3d = wBoxMonCounts
 	         $cd3d = wSavedY
@@ -23896,10 +23896,10 @@ HRAM bank #0:
 	         $ff95 = hDividend
 	         $ff95 = hSignCoordPointer
 	         $ff95 = hPastLeadingZeros
-	         $ff95 = hQuotient
 	         $ff95 = hProduct
 	         $ff95 = hNPCMovementDirections2Index
 	         $ff95 = hNPCSpriteOffset
+	         $ff95 = hQuotient
 	         $ff95 = hSwapTemp
 	         $ff96 = hMutateWY
 	         $ff96 = hSwapItemQuantity
