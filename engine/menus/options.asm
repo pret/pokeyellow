@@ -1,3 +1,14 @@
+; OptionMenuJumpTable indexes
+	const_def
+	const OPT_TEXT_SPEED   ; 0
+	const OPT_BATTLE_ANIMS ; 1
+	const OPT_BATTLE_STYLE ; 2
+	const OPT_SOUND        ; 3
+	const OPT_PRINTER      ; 4
+	const_skip 2
+	const OPT_CANCEL       ; 7
+DEF NUM_OPTIONS EQU const_value ; 8
+
 DisplayOptionMenu_:
 	call InitOptionsMenu
 .optionMenuLoop
@@ -40,6 +51,12 @@ OptionMenuJumpTable:
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
 
+	const_def
+	const OPT_TEXT_SPEED_FAST ; 0
+	const OPT_TEXT_SPEED_MID  ; 1
+	const OPT_TEXT_SPEED_SLOW ; 2
+DEF NUM_TEXT_SPEED_OPTS EQU const_value ; 3
+
 OptionsMenu_TextSpeed:
 	call GetTextSpeed
 	ldh a, [hJoy5]
@@ -48,32 +65,36 @@ OptionsMenu_TextSpeed:
 	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .nonePressed
+
 .pressedRight
 	ld a, c
-	cp TEXT_DELAY_INDEX_SLOW
-	jr c, .notSlow
+	cp NUM_TEXT_SPEED_OPTS - 1
+	jr c, .increase
 	ld c, -1
-.notSlow
+.increase
 	inc c
 	ld a, e
 	jr .save
+
 .pressedLeft
 	ld a, c
-	and a ; cp TEXT_DELAY_INDEX_FAST
-	jr nz, .notFast
-	ld c, TEXT_DELAY_INDEX_SLOW + 1
-.notFast
+	and a
+	jr nz, .decrease
+	ld c, NUM_TEXT_SPEED_OPTS
+.decrease
 	dec c
 	ld a, d
+
 .save
 	ld b, a
 	ld a, [wOptions]
 	and ~TEXT_DELAY_MASK
 	or b
 	ld [wOptions], a
+
 .nonePressed
 	ld b, 0
-	ld hl, TextSpeedStringsPointerTable
+	ld hl, .Strings
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
@@ -84,20 +105,18 @@ OptionsMenu_TextSpeed:
 	and a ; clear carry flag
 	ret
 
-TextSpeedStringsPointerTable:
-	dw FastText
-	dw MidText
-	dw SlowText
+.Strings:
+; entries correspond to OPT_TEXT_SPEED_* constants
+	dw .Fast
+	dw .Mid
+	dw .Slow
 
-FastText:
-	db "FAST@"
-MidText:
-	db "MID @"
-SlowText:
-	db "SLOW@"
+.Fast: db "FAST@"
+.Mid:  db "MID @"
+.Slow: db "SLOW@"
 
 ; Loads the value of the current selection in c
-; Loads the text delay value of the options 
+; Loads the text delay value of the options
 ; to the left in d and to the right in e
 GetTextSpeed:
 	ld a, [wOptions]
@@ -106,15 +125,17 @@ GetTextSpeed:
 	jr z, .slowTextOption
 	cp TEXT_DELAY_FAST
 	jr z, .fastTextOption
-	ld c, TEXT_DELAY_INDEX_MEDIUM
+	ld c, OPT_TEXT_SPEED_MID
 	lb de, TEXT_DELAY_FAST, TEXT_DELAY_SLOW
 	ret
+
 .slowTextOption
-	ld c, TEXT_DELAY_INDEX_SLOW
+	ld c, OPT_TEXT_SPEED_SLOW
 	lb de, TEXT_DELAY_MEDIUM, TEXT_DELAY_FAST
 	ret
+
 .fastTextOption
-	ld c, TEXT_DELAY_INDEX_FAST
+	ld c, OPT_TEXT_SPEED_FAST
 	lb de, TEXT_DELAY_SLOW, TEXT_DELAY_MEDIUM
 	ret
 
@@ -125,15 +146,17 @@ OptionsMenu_BattleAnimations:
 	ld a, [wOptions]
 	and 1 << BIT_BATTLE_ANIMATION
 	jr .nothingPressed
+
 .buttonPressed
 	ld a, [wOptions]
 	xor 1 << BIT_BATTLE_ANIMATION
 	ld [wOptions], a
+
 .nothingPressed
 	ld bc, 0
 	sla a
 	rl c
-	ld hl, AnimationOptionStringsPointerTable
+	ld hl, .Strings
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
@@ -144,14 +167,12 @@ OptionsMenu_BattleAnimations:
 	and a ; clear carry flag
 	ret
 
-AnimationOptionStringsPointerTable:
-	dw AnimationOnText
-	dw AnimationOffText
+.Strings:
+	dw .On
+	dw .Off
 
-AnimationOnText:
-	db "ON @"
-AnimationOffText:
-	db "OFF@"
+.On:  db "ON @"
+.Off: db "OFF@"
 
 OptionsMenu_BattleStyle:
 	ldh a, [hJoy5]
@@ -160,16 +181,18 @@ OptionsMenu_BattleStyle:
 	ld a, [wOptions]
 	and 1 << BIT_BATTLE_SHIFT
 	jr .nothingPressed
+
 .buttonPressed
 	ld a, [wOptions]
 	xor 1 << BIT_BATTLE_SHIFT
 	ld [wOptions], a
+
 .nothingPressed
 	ld bc, 0
 	sla a
 	sla a
 	rl c
-	ld hl, BattleStyleOptionStringsPointerTable
+	ld hl, .Strings
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
@@ -180,18 +203,16 @@ OptionsMenu_BattleStyle:
 	and a ; clear carry flag
 	ret
 
-BattleStyleOptionStringsPointerTable:
-	dw BattleStyleShiftText
-	dw BattleStyleSetText
+.Strings:
+	dw .Shift
+	dw .Set
 
-BattleStyleShiftText:
-	db "SHIFT@"
-BattleStyleSetText:
-	db "SET  @"
+.Shift: db "SHIFT@"
+.Set:   db "SET  @"
 
 OptionsMenu_SpeakerSettings:
 	ld a, [wOptions]
-	and SOUND_MASK 
+	and SOUND_MASK
 	swap a ; move sound option bits (4–5) into bits 0–1
 	ld c, a
 	ldh a, [hJoy5]
@@ -200,16 +221,19 @@ OptionsMenu_SpeakerSettings:
 	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .nothingPressed
+
 .pressedRight
 	ld a, c
 	inc a
-	and %11
-	jr .updateAudioOption
+	and SOUND_MASK >> 4
+	jr .save
+
 .pressedLeft
 	ld a, c
 	dec a
-	and %11
-.updateAudioOption
+	and SOUND_MASK >> 4
+
+.save
 	ld c, a
 	swap a
 	ld b, a
@@ -219,9 +243,10 @@ OptionsMenu_SpeakerSettings:
 	and ~SOUND_MASK
 	or b
 	ld [wOptions], a
+
 .nothingPressed
 	ld b, 0
-	ld hl, SpeakerOptionStringsPointerTable
+	ld hl, .Strings
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
@@ -232,20 +257,24 @@ OptionsMenu_SpeakerSettings:
 	and a ; clear carry flag
 	ret
 
-SpeakerOptionStringsPointerTable:
-	dw MonoSoundText
-	dw Earphone1SoundText
-	dw Earphone2SoundText
-	dw Earphone3SoundText
+.Strings:
+	dw .Mono
+	dw .Earphone1
+	dw .Earphone2
+	dw .Earphone3
 
-MonoSoundText:
-	db "MONO     @"
-Earphone1SoundText:
-	db "EARPHONE1@"
-Earphone2SoundText:
-	db "EARPHONE2@"
-Earphone3SoundText:
-	db "EARPHONE3@"
+.Mono:      db "MONO     @"
+.Earphone1: db "EARPHONE1@"
+.Earphone2: db "EARPHONE2@"
+.Earphone3: db "EARPHONE3@"
+
+	const_def
+	const OPT_PRINTER_LIGHTEST ; 0
+	const OPT_PRINTER_LIGHTER  ; 1
+	const OPT_PRINTER_NORMAL   ; 2
+	const OPT_PRINTER_DARKER   ; 3
+	const OPT_PRINTER_DARKEST  ; 4
+DEF NUM_PRINTER_OPTS EQU const_value ; 5
 
 OptionsMenu_GBPrinterBrightness:
 	call GetGBPrinterBrightness
@@ -255,29 +284,33 @@ OptionsMenu_GBPrinterBrightness:
 	bit B_PAD_LEFT, a
 	jr nz, .pressedLeft
 	jr .nothingPressed
+
 .pressedRight
 	ld a, c
-	cp PRINTER_INDEX_DARKEST
-	jr c, .notDarkest
+	cp NUM_PRINTER_OPTS - 1
+	jr c, .increase
 	ld c, -1
-.notDarkest
+.increase
 	inc c
 	ld a, e
-	jr .storeSetting
+	jr .save
+
 .pressedLeft
 	ld a, c
-	and a ; cp PRINTER_INDEX_LIGHTEST
-	jr nz, .notLightest
-	ld c, PRINTER_INDEX_DARKEST + 1
-.notLightest
+	and a
+	jr nz, .decrease
+	ld c, NUM_PRINTER_OPTS
+.decrease
 	dec c
 	ld a, d
-.storeSetting
+
+.save
 	ld b, a
 	ld [wPrinterSettings], a
+
 .nothingPressed
 	ld b, 0
-	ld hl, GBPrinterOptionStringsPointerTable
+	ld hl, .Strings
 	add hl, bc
 	add hl, bc
 	ld e, [hl]
@@ -288,30 +321,25 @@ OptionsMenu_GBPrinterBrightness:
 	and a ; clear carry flag
 	ret
 
-GBPrinterOptionStringsPointerTable:
-	dw LightestPrintText
-	dw LighterPrintText
-	dw NormalPrintText
-	dw DarkerPrintText
-	dw DarkestPrintText
+.Strings:
+	dw .Lightest
+	dw .Lighter
+	dw .Normal
+	dw .Darker
+	dw .Darkest
 
-LightestPrintText:
-	db "LIGHTEST@"
-LighterPrintText:
-	db "LIGHTER @"
-NormalPrintText:
-	db "NORMAL  @"
-DarkerPrintText:
-	db "DARKER  @"
-DarkestPrintText:
-	db "DARKEST @"
+.Lightest: db "LIGHTEST@"
+.Lighter:  db "LIGHTER @"
+.Normal:   db "NORMAL  @"
+.Darker:   db "DARKER  @"
+.Darkest:  db "DARKEST @"
 
 ; Loads the value of the current selection in c
-; Loads the brightness value of the options 
+; Loads the brightness value of the options
 ; to the left in d and to the right in e
 GetGBPrinterBrightness:
 	ld a, [wPrinterSettings]
-	and a ; cp PRINTER_BRIGHTNESS_LIGHTEST 
+	and a ; cp PRINTER_BRIGHTNESS_LIGHTEST
 	jr z, .setLightest
 	cp PRINTER_BRIGHTNESS_LIGHTER
 	jr z, .setLighter
@@ -319,23 +347,27 @@ GetGBPrinterBrightness:
 	jr z, .setDarker
 	cp PRINTER_BRIGHTNESS_DARKEST
 	jr z, .setDarkest
-	ld c, PRINTER_INDEX_NORMAL
+	ld c, OPT_PRINTER_NORMAL
 	lb de, PRINTER_BRIGHTNESS_LIGHTER, PRINTER_BRIGHTNESS_DARKER
 	ret
+
 .setLightest
-	ld c, PRINTER_INDEX_LIGHTEST
+	ld c, OPT_PRINTER_LIGHTEST
 	lb de, PRINTER_BRIGHTNESS_DARKEST, PRINTER_BRIGHTNESS_LIGHTER
 	ret
+
 .setLighter
-	ld c, PRINTER_INDEX_LIGHTER
+	ld c, OPT_PRINTER_LIGHTER
 	lb de, PRINTER_BRIGHTNESS_LIGHTEST, PRINTER_BRIGHTNESS_NORMAL
 	ret
+
 .setDarker
-	ld c, PRINTER_INDEX_DARKER
+	ld c, OPT_PRINTER_DARKER
 	lb de, PRINTER_BRIGHTNESS_NORMAL, PRINTER_BRIGHTNESS_DARKEST
 	ret
+
 .setDarkest
-	ld c, PRINTER_INDEX_DARKEST
+	ld c, OPT_PRINTER_DARKEST
 	lb de, PRINTER_BRIGHTNESS_DARKER, PRINTER_BRIGHTNESS_LIGHTEST
 	ret
 
@@ -349,6 +381,7 @@ OptionsMenu_Cancel:
 	jr nz, .pressedCancel
 	and a ; clear carry flag
 	ret
+
 .pressedCancel
 	scf
 	ret
@@ -362,33 +395,35 @@ OptionsControl:
 	jr z, .pressedUp
 	and a ; clear carry flag
 	ret
+
 .pressedDown
 	ld a, [hl]
-	cp OPTIONS_CURSOR_CANCEL
-	jr nz, .doNotWrapAround
-	ld [hl], OPTIONS_CURSOR_TEXT_SPEED
+	cp NUM_OPTIONS - 1
+	jr nz, .doNotWrap
+	ld [hl], 0
 	scf
 	ret
-.doNotWrapAround
-	cp OPTIONS_CURSOR_PRINT
-	jr c, .regularIncrement
-	ld [hl], OPTIONS_CURSOR_CANCEL - 1
-.regularIncrement
+.doNotWrap
+	cp OPT_PRINTER ; skip the next two dummy options
+	jr c, .increase
+	ld [hl], OPT_CANCEL - 1 ; Cancel is after Print
+.increase
 	inc [hl]
 	scf
 	ret
+
 .pressedUp
 	ld a, [hl]
-	cp OPTIONS_CURSOR_CANCEL
-	jr nz, .doNotMoveCursorToPrintOption
-	ld [hl], OPTIONS_CURSOR_PRINT
+	cp OPT_CANCEL ; skip the previous two dummy options
+	jr nz, .doNotSkip
+	ld [hl], OPT_PRINTER ; Print is before Cancel
 	scf
 	ret
-.doNotMoveCursorToPrintOption
-	and a ; cp OPTIONS_CURSOR_TEXT_SPEED
-	jr nz, .regularDecrement
-	ld [hl], OPTIONS_CURSOR_CANCEL + 1
-.regularDecrement
+.doNotSkip
+	and a
+	jr nz, .decrease
+	ld [hl], NUM_OPTIONS
+.decrease
 	dec [hl]
 	scf
 	ret
