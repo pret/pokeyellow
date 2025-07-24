@@ -116,7 +116,6 @@ ReadTrainer:
 	ld [hl], a
 	jr .writeAdditionalMoveDataLoop
 .loopSkipTrainer
-; skip current trainer entry
 	ld a, [hli]
 	and a
 	jr nz, .loopSkipTrainer
