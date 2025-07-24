@@ -127,11 +127,11 @@ UpdateNPCSprite:
 	bit BIT_FONT_LOADED, a
 	jp nz, notYetMoving
 	ld a, b
-	cp $2
+	cp MOVEMENTSTATUS_DELAY
 	jp z, UpdateSpriteMovementDelay  ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] == 2
-	cp $3
+	cp MOVEMENTSTATUS_ANIM
 	jp z, UpdateSpriteInWalkingAnimation  ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] == 3
-	cp $4
+	cp MOVEMENTSTATUS_POS
 	jp z, UpdateSpriteScreenPosition
 	ld a, [wWalkCounter]
 	and a
@@ -172,7 +172,7 @@ UpdateNPCSprite:
 	cp WALK
 	jr nz, .notWalk
 ; current NPC movement data is WALK ($fe). this seems buggy
-	ld [hl], $1     ; set movement byte 1 to $1
+	ld [hl], MOVEMENTSTATUS_READY ; set movement byte 1 to $1
 	ld de, wNPCMovementDirections
 	call LoadDEPlusA ; a = [wNPCMovementDirections + $fe] (?)
 .notWalk
@@ -269,7 +269,7 @@ TryWalking:
 	ld [hl], $10        ; [x#SPRITESTATEDATA2_WALKANIMATIONCOUNTER] = 16
 	dec h
 	inc l
-	ld [hl], $3         ; x#SPRITESTATEDATA1_MOVEMENTSTATUS
+	ld [hl], MOVEMENTSTATUS_ANIM ; x#SPRITESTATEDATA1_MOVEMENTSTATUS
 	jp UpdateSpriteImage
 
 ; update the walking animation parameters for a sprite that is currently walking
@@ -305,7 +305,7 @@ UpdateSpriteInWalkingAnimation:
 	inc a
 	ld l, a
 	dec h
-	ld [hl], $1                      ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 1 (movement status ready)
+	ld [hl], MOVEMENTSTATUS_READY    ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 1 (movement status ready)
 	ret
 .initNextMovementCounter
 	call Random
@@ -321,7 +321,7 @@ UpdateSpriteInWalkingAnimation:
 	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
-	ld [hl], $2                      ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 2 (movement status)
+	ld [hl], MOVEMENTSTATUS_DELAY    ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 2 (movement status)
 	inc l
 	inc l
 	xor a
@@ -353,7 +353,7 @@ UpdateSpriteMovementDelay:
 	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
-	ld [hl], $1             ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 1 (mark as ready to move)
+	ld [hl], MOVEMENTSTATUS_READY ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 1 (mark as ready to move)
 notYetMoving:
 	ld h, HIGH(wSpriteStateData1)
 	ldh a, [hCurrentSpriteOffset]
@@ -396,7 +396,7 @@ MakeNPCFacePlayer:
 	jr notYetMoving
 
 InitializeSpriteStatus:
-	ld [hl], $1   ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = ready
+	ld [hl], MOVEMENTSTATUS_READY ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = ready
 	inc l
 	ld [hl], $ff  ; [x#SPRITESTATEDATA1_IMAGEINDEX] = invisible/off screen
 	inc h ; HIGH(wSpriteStateData2)
@@ -646,7 +646,7 @@ CanWalkOntoTile:
 	ldh a, [hCurrentSpriteOffset]
 	inc a
 	ld l, a
-	ld [hl], $2        ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 2 (delayed)
+	ld [hl], MOVEMENTSTATUS_DELAY ; [x#SPRITESTATEDATA1_MOVEMENTSTATUS] = 2 (delayed)
 	inc l
 	inc l
 	xor a
@@ -933,10 +933,10 @@ FastMovement:
 	call AdvanceSpriteMapPosition
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
-	ld [hl], $8
+	ld [hl], $8 ; Animation counter
 	dec h
 	inc l
-	ld [hl], $4
+	ld [hl], MOVEMENTSTATUS_POS 
 	call UpdateSpriteImage
 	scf
 	ret
@@ -945,10 +945,10 @@ FastMovement:
 	call SetSpriteDirectionAndStepVectors
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
-	ld [hl], $8
+	ld [hl], $8 ; Animation counter
 	dec h
 	inc l
-	ld [hl], $3
+	ld [hl], MOVEMENTSTATUS_ANIM
 	call UpdateSpriteImage
 	scf
 	ret
@@ -958,10 +958,10 @@ FastMovement:
 	call AdvanceSpriteMapPosition
 	ldh a, [hCurrentSpriteOffset]
 	ld l, a
-	ld [hl], $8
+	ld [hl], $8 ; Animation counter
 	dec h
 	inc l
-	ld [hl], $3
+	ld [hl], MOVEMENTSTATUS_ANIM
 	call UpdateSpriteImage
 	scf
 	ret
