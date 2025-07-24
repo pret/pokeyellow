@@ -6217,7 +6217,7 @@ ROMX bank #14:
 	         $5c11 = ReadTrainer.AddAdditionalMoveData
 	         $5c1c = ReadTrainer.loopAdditionalMoveData
 	         $5c2a = ReadTrainer.writeAdditionalMoveDataLoop
-	         $5c46 = ReadTrainer.asm_39c46
+	         $5c46 = ReadTrainer.loopSkipTrainer
 	         $5c4c = ReadTrainer.FinishUp
 	         $5c59 = ReadTrainer.LastLoop
 	         $5c6b = SpecialTrainerMoves
