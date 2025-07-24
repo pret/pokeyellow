@@ -89,10 +89,10 @@ ReadTrainer:
 	ld a, [hli]
 	cp $ff
 	jr z, .FinishUp
-	cp b ; is it the correct Trainer Class?
+	cp b
 	jr nz, .loopSkipTrainer
 	ld a, [hli]
-	cp c ; is it the correct Trainer No?
+	cp c
 	jr nz, .loopSkipTrainer
 	ld d, h
 	ld e, l
@@ -118,7 +118,7 @@ ReadTrainer:
 .loopSkipTrainer
 ; skip current trainer entry
 	ld a, [hli]
-	and a ; trainer entry terminator is 0, so putting NO_MOVE in SpecialTrainerMoves causes issues
+	and a
 	jr nz, .loopSkipTrainer
 	jr .loopAdditionalMoveData
 .FinishUp
