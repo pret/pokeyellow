@@ -90,10 +90,10 @@ ReadTrainer:
 	cp $ff
 	jr z, .FinishUp
 	cp b
-	jr nz, .asm_39c46
+	jr nz, .loopSkipTrainer
 	ld a, [hli]
 	cp c
-	jr nz, .asm_39c46
+	jr nz, .loopSkipTrainer
 	ld d, h
 	ld e, l
 .writeAdditionalMoveDataLoop
@@ -115,10 +115,10 @@ ReadTrainer:
 	inc de
 	ld [hl], a
 	jr .writeAdditionalMoveDataLoop
-.asm_39c46
+.loopSkipTrainer
 	ld a, [hli]
 	and a
-	jr nz, .asm_39c46
+	jr nz, .loopSkipTrainer
 	jr .loopAdditionalMoveData
 .FinishUp
 ; clear wAmountMoneyWon addresses
