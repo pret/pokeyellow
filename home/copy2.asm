@@ -5,7 +5,7 @@ IsTilePassable::
 
 FarCopyDataDouble::
 ; Expand bc bytes of 1bpp image data
-; from a:de to 2bpp data at hl.
+; from a:hl to 2bpp data at de.
 	ld [wFarCopyDataSavedROMBank], a
 	ldh a, [hLoadedROMBank]
 	push af
