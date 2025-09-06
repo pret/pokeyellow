@@ -18534,7 +18534,7 @@ ROMX bank #60:
 	         $5565 = CreditsText_Oota2
 	         $5573 = CreditsText_Yoshikawa
 	         $5583 = CreditsText_Oota23
-	         $5593 = CreditsText_Matsumita
+	         $5593 = CreditsText_Matsumiya
 	         $55a8 = CreditsText_Seya
 	         $55b7 = CreditsText_Yoshida
 	         $55c9 = CreditsText_Sekine
