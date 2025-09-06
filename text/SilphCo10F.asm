@@ -41,12 +41,14 @@ _SilphCo10FScientistAfterBattleText::
 	cont "Then go on home!"
 	done
 
-_SilphCoJessieJamesText1::
+; Floor 11 text follows
+
+_SilphCo11FJessieJamesText::
 	text "Hold it right"
 	line "there, brat!@"
 	text_end
 
-_SilphCoJessieJamesText2::
+_SilphCo11FJessieJamesPreBattleText::
 	text "Our BOSS is in a"
 	line "meeting!"
 
@@ -54,12 +56,12 @@ _SilphCoJessieJamesText2::
 	line "disturb him!"
 	done
 
-_SilphCoJessieJamesText3::
+_SilphCo11FJessieJamesEndBattleText::
 	text "Like"
 	line "always..."
 	prompt
 
-_SilphCoJessieJamesText4::
+_SilphCo11FJessieJamesPostBattleText::
 	text "TEAM ROCKET, blast"
 	line "off at the speed"
 	cont "of light!"

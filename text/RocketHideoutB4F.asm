@@ -1,9 +1,9 @@
-_RocketHideoutJessieJamesText1::
+_RocketHideoutJessieJamesSpottedText::
 	text "Not another step,"
 	line "brat!@"
 	text_end
 
-_RocketHideoutJessieJamesText2::
+_RocketHideoutB4FJesseJamesPreBattleText::
 	text "How dare you"
 	line "humiliate us at"
 	cont "MT.MOON!"
@@ -12,12 +12,12 @@ _RocketHideoutJessieJamesText2::
 	line "you brat!"
 	done
 
-_RocketHideoutJessieJamesText3::
+_RocketHideoutB4FJessieJamesEndBattleText::
 	text "Such"
 	line "a dreadful twerp!"
 	prompt
 
-_RocketHideoutJessieJamesText4::
+_RocketHideoutB4FJesseJamesPostBattleText::
 	text "Looks like TEAM"
 	line "ROCKET's blasting"
 	cont "off again!@"

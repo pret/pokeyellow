@@ -40,6 +40,12 @@ DEF SPRITESTATEDATA2_LENGTH EQU const_value
 
 DEF NUM_SPRITESTATEDATA_STRUCTS EQU 16
 
+    const_def 1
+    const MOVEMENTSTATUS_READY   ; 1
+    const MOVEMENTSTATUS_DELAY   ; 2
+    const MOVEMENTSTATUS_ANIM    ; 3
+    const MOVEMENTSTATUS_POS     ; 4
+
 	const_def 6
 	const BIT_TRAINER ; 6
 	const BIT_ITEM    ; 7
