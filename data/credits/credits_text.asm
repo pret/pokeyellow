@@ -49,7 +49,7 @@ CreditsTextPointers:
 	dw CreditsText_Yoshikawa
 	dw CreditsText_Oota23
 	dw CreditsText_Yoshida
-	dw CreditsText_Matsumita
+	dw CreditsText_Matsumiya
 	dw CreditsText_Seya
 	dw CreditsText_Sekine
 	dw CreditsText_Shimamura
@@ -186,7 +186,7 @@ CreditsText_Yoshikawa:
 	db -6, "RENA YOSHIKAWA@"
 CreditsText_Oota23:
 	db -6, "TOMOMICHI OOTA@"
-CreditsText_Matsumita:
+CreditsText_Matsumiya:
 	db -8, "TOSHINOBU MATSUMIYA@"
 CreditsText_Seya:
 	db -5, "NOBUHIRO SEYA@"

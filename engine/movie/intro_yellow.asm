@@ -458,9 +458,9 @@ YellowIntroScene10:
 	jr nz, .fill_row
 	ret
 
-Unkn_f9b6e: INCBIN "gfx/intro/unknown_f9b6e.map"
-Unkn_f9be6: INCBIN "gfx/intro/unknown_f9be6.map"
-Unkn_f9bf2: INCBIN "gfx/intro/unknown_f9bf2.map"
+Unkn_f9b6e: INCBIN "gfx/intro/unknown_f9b6e.tilemap"
+Unkn_f9be6: INCBIN "gfx/intro/unknown_f9be6.tilemap"
+Unkn_f9bf2: INCBIN "gfx/intro/unknown_f9bf2.tilemap"
 
 YellowIntroScene11:
 	call YellowIntro_CheckFrameTimerDecrement

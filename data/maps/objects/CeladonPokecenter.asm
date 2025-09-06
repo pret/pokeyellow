@@ -3,6 +3,7 @@
 	const_export CELADONPOKECENTER_GENTLEMAN
 	const_export CELADONPOKECENTER_BEAUTY
 	const_export CELADONPOKECENTER_LINK_RECEPTIONIST
+	const_export CELADONPOKECENTER_CHANSEY
 
 CeladonPokecenter_Object:
 	db $0 ; border block
