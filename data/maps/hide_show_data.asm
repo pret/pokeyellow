@@ -256,7 +256,7 @@ MapHSPointers:
 	dw -1 ; end
 
 NoHS:
-	db $FF, $FF, $FF
+	db -1, -1, -1 ; end
 
 MissableObjects:
 ; entries correspond to HS_* constants (see constants/hide_show_constants)
@@ -578,5 +578,5 @@ BluesHouseHSCopy: ; unreferenced
 	db BLUES_HOUSE, BLUESHOUSE_DAISY1,   SHOW
 	db BLUES_HOUSE, BLUESHOUSE_DAISY2,   HIDE
 	db BLUES_HOUSE, BLUESHOUSE_TOWN_MAP, SHOW
-	db $FF, $01, SHOW ; end
-	assert_table_length NUM_HS_OBJECTS + 1
+	assert_table_length NUM_HS_OBJECTS
+	db -1, 1, SHOW ; end

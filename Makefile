@@ -119,9 +119,6 @@ $(foreach obj, $(pokeyellow_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))
 endif
 
 
-%.asm: ;
-
-
 pokeyellow_pad       = 0x00
 pokeyellow_debug_pad = 0xff
 pokeyellow_vc_pad    = 0x00
@@ -157,8 +154,6 @@ gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 
 ### Catch-all graphics rules
 
-%.png: ;
-
 %.2bpp: %.png
 	$(RGBGFX) --colors dmg=e4 $(rgbgfx) -o $@ $<
 	$(if $(tools/gfx),\
@@ -175,7 +170,18 @@ gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 
 ### Catch-all audio rules
 
-%.wav: ;
-
 %.pcm: %.wav
 	tools/pcm $< $@
+
+
+### File extensions that are never generated and should be manually created
+
+%.asm: ;
+%.inc: ;
+%.png: ;
+%.pal: ;
+%.bin: ;
+%.blk: ;
+%.bst: ;
+%.rle: ;
+%.wav: ;

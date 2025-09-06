@@ -67,7 +67,7 @@ CableClubNPC::
 	and a
 	jr nz, .choseNo
 	vc_hook Wireless_TryQuickSave_block_input
-	callfar SaveSAVtoSRAM
+	callfar SaveGameData
 	call WaitForSoundToFinish
 	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent

@@ -21,6 +21,7 @@ MACRO tmhm
 	ENDR
 	; set bits of bytes
 	REPT _NARG
+		ASSERT FATAL, STRFIND("\1", " ") == -1, "Invalid move: \1"
 		IF DEF(\1_TMNUM)
 			DEF n = (\1_TMNUM - 1) / 8
 			DEF i = (\1_TMNUM - 1) % 8
@@ -81,9 +82,21 @@ MACRO dab ; dwb address, bank
 	ENDR
 ENDM
 
+MACRO dname
+	IF _NARG == 2
+		DEF n = \2
+	ELSE
+		DEF n = NAME_LENGTH - 1
+	ENDC
+	ASSERT STRFIND(\1, "@") == -1, "String terminator \"@\" in name: \1"
+	ASSERT CHARLEN(\1) <= n, "Name longer than {d:n} characters: \1"
+	db \1
+	ds n - CHARLEN(\1), "@"
+ENDM
+
 MACRO sine_table
 ; \1 samples of sin(x) from x=0 to x<0.5 turns (pi radians)
-	for x, \1
+	FOR x, \1
 		dw sin(x * 0.5 / (\1))
-	endr
+	ENDR
 ENDM

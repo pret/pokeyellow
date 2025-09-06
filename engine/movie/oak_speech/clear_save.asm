@@ -19,7 +19,7 @@ DoClearSaveDialogue:
 	ld a, [wCurrentMenuItem]
 	and a
 	jp z, Init
-	farcall ClearSAV
+	farcall ClearAllSRAMBanks
 	jp Init
 
 ClearSaveDataText:

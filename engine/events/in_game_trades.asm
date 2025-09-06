@@ -259,7 +259,7 @@ InGameTrade_CheckForTradeEvo:
 	jp PlayDefaultMusic
 
 InGameTrade_TrainerString:
-	db "<TRAINER>@@@@@@@@@@"
+	dname "<TRAINER>", NAME_LENGTH
 
 InGameTradeTextPointers:
 ; entries correspond to TRADE_DIALOGSET_* constants

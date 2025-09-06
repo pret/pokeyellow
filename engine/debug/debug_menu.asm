@@ -1568,7 +1568,7 @@ Func_ff295:
 	push af
 	ld a, 1 << BIT_FAST_TEXT_DELAY
 	ld [wLetterPrintingDelayFlags], a
-	callfar SaveSAVtoSRAM
+	callfar SaveGameData
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	pop de
