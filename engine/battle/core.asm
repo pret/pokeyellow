@@ -1076,10 +1076,10 @@ RemoveFaintedPlayerMon:
 	cp 30 ; is the enemy 30 levels greater than us?
 	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
 .regularFaint
-	callabd_ModifyPikachuHappiness PIKAHAPPY_FAINTED
+	farcall_ModifyPikachuHappiness PIKAHAPPY_FAINTED
 	ret
 .carelessTrainer
-	callabd_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
+	farcall_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
 	ret
 
 PlayerMonFaintedText:

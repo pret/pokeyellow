@@ -244,7 +244,7 @@ BillsPCDeposit:
 	ld a, [wCurPartySpecies]
 	call PlayCry
 .asm_215cf
-	callabd_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
+	farcall_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon

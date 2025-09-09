@@ -938,7 +938,7 @@ ItemUseMedicine:
 	jr nc, .noHappinessBoost
 	push hl
 	push de
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDITEM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDITEM
 	pop de
 	pop hl
 .noHappinessBoost
@@ -1537,7 +1537,7 @@ ItemUseMedicine:
 
 	xor a
 	ld [wForceEvolution], a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_LEVELUP
+	farcall_ModifyPikachuHappiness PIKAHAPPY_LEVELUP
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wUsedItemOnWhichPokemon]
@@ -1691,7 +1691,7 @@ ItemUseXAccuracy:
 	jp z, ItemUseNotTime
 	ld hl, wPlayerBattleStatus2
 	set USING_X_ACCURACY, [hl] ; X Accuracy bit
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	jp PrintItemUseTextAndRemoveItem
 
 ; This function is bugged and never works. It always jumps to ItemUseNotTime.
@@ -1769,7 +1769,7 @@ ItemUseGuardSpec:
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 
@@ -1794,7 +1794,7 @@ ItemUseDireHit:
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 
@@ -1834,7 +1834,7 @@ ItemUseXStat:
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDXITEM
 	pop af
 	ld [wWhichPokemon], a
 
@@ -2497,7 +2497,7 @@ ItemUseTMHM:
 	push af
 	ld a, d
 	ld [wWhichPokemon], a
-	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
+	farcall_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
 	callfar IsThisPartyMonStarterPikachu
 	jr nc, .notTeachingThunderboltOrThunderToPikachu
 	ld a, [wCurItem]

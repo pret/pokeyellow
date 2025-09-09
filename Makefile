@@ -137,6 +137,8 @@ gfx/battle/move_anim_1.2bpp: tools/gfx += --trim-whitespace
 
 gfx/credits/the_end.2bpp: tools/gfx += --interleave --png=$<
 
+gfx/diploma/diploma.2bpp: tools/gfx += --trim-whitespace
+
 gfx/slots/slots_1.2bpp: tools/gfx += --trim-whitespace
 
 gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
@@ -147,8 +149,6 @@ gfx/title/pokemon_logo.2bpp: tools/gfx += --trim-whitespace
 gfx/trade/game_boy.2bpp: tools/gfx += --remove-duplicates
 
 gfx/sgb/border.2bpp: tools/gfx += --trim-whitespace
-
-gfx/diploma/diploma.2bpp: tools/gfx += --trim-whitespace
 
 gfx/surfing_pikachu/surfing_pikachu_1c.2bpp: tools/gfx += --trim-whitespace
 
