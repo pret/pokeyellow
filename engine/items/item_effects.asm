@@ -809,7 +809,7 @@ ItemUseEvoStone:
 	ld [wCurPartySpecies], a
 	call Func_d85d
 	jr nc, .noEffect
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .notPlayerPikachu
 	ldpikacry e, PikachuCry28
 	callfar PlayPikachuSoundClip
@@ -2498,7 +2498,7 @@ ItemUseTMHM:
 	ld a, d
 	ld [wWhichPokemon], a
 	callabd_ModifyPikachuHappiness PIKAHAPPY_USEDTMHM
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .notTeachingThunderboltOrThunderToPikachu
 	ld a, [wCurItem]
 	cp TM_THUNDERBOLT ; are we teaching thunderbolt to the player pikachu?

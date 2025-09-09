@@ -358,7 +358,7 @@ ChangeBox::
 	res BIT_DOUBLE_SPACED_MENU, [hl]
 	bit B_PAD_B, a
 	ret nz
-	ld a, $b6
+	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	call GetBoxSRAMLocation

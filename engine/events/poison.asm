@@ -62,7 +62,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld a, TEXT_MON_FAINTED
 	ldh [hTextID], a
 	call DisplayTextID
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .curMonNotPlayerPikachu
 	ldpikacry e, PikachuCry4
 	callfar PlayPikachuSoundClip
@@ -132,7 +132,7 @@ Func_c4c7:
 	call Random
 	and $1
 	jr z, .asm_c4de
-	calladb_ModifyPikachuHappiness $6
+	calladb_ModifyPikachuHappiness PIKAHAPPY_WALKING
 .asm_c4de
 	ld hl, wPikachuMood
 	ld a, [hl]

@@ -193,7 +193,7 @@ LoadTownMap_Fly::
 	ld c, 15
 	call DelayFrames
 	hlcoord 18, 0
-	ld [hl], "▶"
+	ld [hl], "▲"
 	hlcoord 19, 0
 	ld [hl], "▼"
 	pop hl

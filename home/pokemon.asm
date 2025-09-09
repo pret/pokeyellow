@@ -258,7 +258,7 @@ HandlePartyMenuInput::
 	jr nz, .asm_1258
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_1258
 	call CheckPikachuFollowingPlayer
 	jr nz, .asm_128f

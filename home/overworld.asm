@@ -127,7 +127,7 @@ OverworldLoopLessDelay::
 	ld hl, wMiscFlags
 	res BIT_TURNING, [hl]
 	xor a
-	ld [wd434], a
+	ld [wPikachuCollisionCounter], a
 	ld a, 1
 	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerMovingDirection] ; the direction that was pressed last time
@@ -170,7 +170,7 @@ OverworldLoopLessDelay::
 	jr z, .noDirectionButtonsPressed
 	ld a, 1
 	ld [wSpritePlayerStateData1XStepVector], a
-	ld a, 1
+	ld a, PLAYER_DIR_RIGHT
 
 .handleDirectionButtonPress
 	ld [wPlayerDirection], a ; new direction
@@ -185,8 +185,8 @@ OverworldLoopLessDelay::
 	ld a, [wPlayerLastStopDirection] ; old direction
 	cp b
 	jr z, .noDirectionChange
-	ld a, $8
-	ld [wd434], a
+	ld a, 8
+	ld [wPikachuCollisionCounter], a
 ; unlike in red/blue, yellow does not have the 180 degrees odd code
 	ld hl, wMiscFlags
 	set BIT_TURNING, [hl]
@@ -239,7 +239,7 @@ OverworldLoopLessDelay::
 	ld hl, wMiscFlags
 	res BIT_TURNING, [hl]
 	xor a
-	ld [wd434], a
+	ld [wPikachuCollisionCounter], a
 	call DoBikeSpeedup
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
@@ -1166,7 +1166,7 @@ IsSpriteInFrontOfPlayer2::
 	ld a, e
 	ldh [hSpriteIndex], a
 	ldh a, [hSpriteIndex] ; possible useless read because a already has the value of the read address
-	cp $f
+	cp PIKACHU_SPRITE_INDEX
 	jr nz, .dontwritetowd436
 	ld a, $FF
 	ld [wd435], a
@@ -1232,26 +1232,25 @@ CollisionCheckOnLand::
 	xor a
 	ldh [hTextID], a
 	call IsSpriteInFrontOfPlayer ; check for sprite collisions again? when does the above check fail to detect a sprite collision?
-	jr nc, .asm_0a5c
+	jr nc, .noSpriteCollision
 	res BIT_FACE_PLAYER, [hl]
 	ldh a, [hTextID]
 	and a ; was there a sprite collision?
-	jr z, .asm_0a5c
-; if no sprite collision
-	cp $f
+	jr z, .noSpriteCollision
+	cp PIKACHU_SPRITE_INDEX
 	jr nz, .collision
 	call CheckPikachuFollowingPlayer
 	jr nz, .collision
 	ldh a, [hJoyHeld]
-	and $2
-	jr nz, .asm_0a5c
-	ld hl, wd434
+	and PAD_B
+	jr nz, .noSpriteCollision
+	ld hl, wPikachuCollisionCounter
 	ld a, [hl]
 	and a
-	jr z, .asm_0a5c
+	jr z, .noSpriteCollision
 	dec [hl]
 	jr nz, .collision
-.asm_0a5c
+.noSpriteCollision
 	ld hl, TilePairCollisionsLand
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision

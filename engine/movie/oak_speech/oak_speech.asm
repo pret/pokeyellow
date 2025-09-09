@@ -49,7 +49,7 @@ PrepareOakSpeech:
 	ret
 
 OakSpeech:
-	call StopAllMusic ; stop music
+	call StopAllMusic
 	ld a, BANK(Music_Routes2)
 	ld c, a
 	ld a, MUSIC_ROUTES2
@@ -231,11 +231,11 @@ IntroDisplayPicCenteredOrUpperRight:
 	push bc
 	ld a, b
 	call UncompressSpriteFromDE
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
-	ld bc, $310
+	ld bc, 2 * SPRITEBUFFERSIZE
 	call CopyData
 	call CloseSRAM
 	ld de, vFrontPic
