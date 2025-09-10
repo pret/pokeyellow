@@ -32,7 +32,7 @@ RedrawPartyMenu_::
 	call PlaceString ; print the pokemon's name
 	ldh a, [hPartyMonIndex]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .regularMon
 	call CheckPikachuFollowingPlayer
 	jr z, .regularMon

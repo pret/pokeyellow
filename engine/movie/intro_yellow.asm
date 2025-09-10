@@ -575,15 +575,15 @@ YellowIntroScene14:
 	call MaskAllAnimatedObjectStructs
 	call YellowIntro_BlankOAMBuffer
 	ld hl, wTileMap
-	ld bc, $50
+	ld bc, SCREEN_WIDTH * 4
 	ld a, $1
 	call Bank3E_FillMemory
 	hlcoord 0, 4
-	ld bc, CopyVideoDataAlternate
+	ld bc, SCREEN_WIDTH * 10
 	xor a
 	call Bank3E_FillMemory
 	hlcoord 0, 14
-	ld bc, $50
+	ld bc, SCREEN_WIDTH * 4
 	ld a, $1
 	call Bank3E_FillMemory
 	ld a, $1
@@ -827,7 +827,7 @@ InitYellowIntroGFXAndMusic:
 	ld a, $1
 	call Bank3E_FillMemory
 	hlcoord 0, 4
-	ld bc, CopyVideoDataAlternate
+	ld bc, SCREEN_WIDTH * 10
 	xor a
 	call Bank3E_FillMemory
 	ld a, $1

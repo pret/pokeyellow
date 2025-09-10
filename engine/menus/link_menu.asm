@@ -5,19 +5,19 @@ Func_f531b::
 	ld [wBuffer], a
 	xor a
 	ld [wUnknownSerialFlag_d499], a
-	coord hl, 0, 0
+	hlcoord 0, 0
 	lb bc, 4, 5
 	call TextBoxBorder
 	ld de, Text_f5791
-	coord hl, 1, 2
+	hlcoord 1, 2
 	call PlaceString
-	coord hl, 8, 0
+	hlcoord 8, 0
 	lb bc, 8, 10
 	call TextBoxBorder
-	coord hl, 10, 2
+	hlcoord 10, 2
 	ld de, Text_f579c
 	call PlaceString
-	coord hl, 0, 10
+	hlcoord 0, 10
 	lb bc, 6, 18
 	call TextBoxBorder
 	call UpdateSprites
@@ -513,7 +513,7 @@ asm_f56ad::
 Func_f56bd::
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	coord hl, 1, 11
+	hlcoord 1, 11
 	lb bc, 6, 18
 	call ClearScreenArea
 	ld a, [wCurrentMenuItem]
@@ -530,7 +530,7 @@ Func_f56bd::
 	ld l, a
 	ld d, h
 	ld e, l
-	coord hl, 1, 12
+	hlcoord 1, 12
 	call PlaceString
 .asm_f56e6
 	call Delay3

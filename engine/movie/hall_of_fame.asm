@@ -156,7 +156,7 @@ HoFDisplayAndRecordMonInfo:
 	call HoFDisplayMonInfo
 	ld a, [wHoFPartyMonIndex]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_70336
 	ldpikacry e, PikachuCry35
 	callfar PlayPikachuSoundClip
@@ -200,11 +200,11 @@ HoFLoadPlayerPics:
 	ld de, RedPicFront
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
-	ld bc, $310
+	ld bc, 2 * SPRITEBUFFERSIZE
 	call CopyData
 	call CloseSRAM
 	ld de, vFrontPic

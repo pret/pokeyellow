@@ -51,7 +51,7 @@ DaycareGentlemanText:
 	ld a, PARTY_TO_DAYCARE
 	ld [wMoveMonType], a
 	call MoveMon
-	callfar IsThisPartymonStarterPikachu
+	callfar IsThisPartyMonStarterPikachu
 	push af
 	xor a
 	ld [wRemoveMonFromBox], a
@@ -211,7 +211,7 @@ DaycareGentlemanText:
 	ld a, [wPartyCount]
 	dec a
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu
+	callfar IsThisPartyMonStarterPikachu
 	jr c, .withdrewPikachuFromDayCare
 	ld a, [wCurPartySpecies]
 	call PlayCry

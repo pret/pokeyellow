@@ -31,7 +31,7 @@ VictoryRoad1FDefaultScript:
 	call CheckBoulderCoords
 	jp nc, CheckFightingMapTrainers
 	ldh a, [hSpriteIndex]
-	cp $f
+	cp PIKACHU_SPRITE_INDEX
 	jp z, CheckFightingMapTrainers
 	ld hl, wCurrentMapScriptFlags
 	set BIT_CUR_MAP_LOADED_1, [hl]

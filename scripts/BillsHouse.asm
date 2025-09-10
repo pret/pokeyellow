@@ -42,7 +42,7 @@ BillsHouseScript0:
 	ld a, [wd471]
 	bit 7, a
 	jr z, .asm_1e0d2
-	callfar CheckPikachuFaintedOrStatused
+	callfar CheckPikachuStatusCondition
 	jr c, .asm_1e0d2
 	callfar Func_f24d5
 .asm_1e0d2

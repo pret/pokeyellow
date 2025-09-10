@@ -364,7 +364,7 @@ LearnMoveFromLevelUp:
 	ld a, b
 	and a
 	jr z, .done
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .done
 	ld a, [wMoveNum]
 	cp THUNDERBOLT

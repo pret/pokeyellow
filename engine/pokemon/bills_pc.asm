@@ -225,7 +225,7 @@ BillsPCDeposit:
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_215ad
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_215ad
@@ -235,7 +235,7 @@ BillsPCDeposit:
 .asm_215ad
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_215c9
 	ldpikacry e, PikachuCry28
 	callfar PlayPikachuSoundClip
@@ -244,7 +244,7 @@ BillsPCDeposit:
 	ld a, [wCurPartySpecies]
 	call PlayCry
 .asm_215cf
-	callabd_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
+	farcall_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon
@@ -298,7 +298,7 @@ BillsPCWithdraw:
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
-	callfar IsThisPartymonStarterPikachu_Box
+	callfar IsThisBoxMonStarterPikachu
 	jr nc, .asm_21660
 	ldpikacry e, PikachuCry35
 	callfar PlayPikachuSoundClip
@@ -329,7 +329,7 @@ BillsPCRelease:
 	ld hl, wBoxCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Box
+	callfar IsThisBoxMonStarterPikachu
 	jr c, .asm_216cb
 	ld hl, OnceReleasedText
 	call PrintText

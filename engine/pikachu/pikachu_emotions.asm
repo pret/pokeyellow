@@ -3,7 +3,7 @@ IsPlayerTalkingToPikachu::
 	and a
 	ret z
 	ldh a, [hSpriteIndex]
-	cp $f
+	cp PIKACHU_SPRITE_INDEX
 	ret nz
 	call InitializePikachuTextID
 	xor a
@@ -111,7 +111,7 @@ StarterPikachuEmotionCommand_emote:
 
 ShowPikachuEmoteBubble:
 	ld [wWhichEmotionBubble], a
-	ld a, $f ; Pikachu
+	ld a, PIKACHU_SPRITE_INDEX
 	ld [wEmotionBubbleSpriteIndex], a
 	predef EmotionBubble
 	ret
@@ -333,7 +333,7 @@ MapSpecificPikachuExpression:
 	call IsPlayerPikachuAsleepInParty
 	ldpikaemotion a, PikachuEmotion11
 	jr c, .play_emotion
-	callfar CheckPikachuFaintedOrStatused ; same bank
+	callfar CheckPikachuStatusCondition ; same bank
 	ldpikaemotion a, PikachuEmotion28
 	jr c, .play_emotion
 	ld a, [wCurMap]
@@ -383,7 +383,7 @@ IsPlayerPikachuAsleepInParty:
 	jr z, .done
 	cp STARTER_PIKACHU
 	jr nz, .curMonNotStarterPikachu
-	callfar IsThisPartymonStarterPikachu
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .curMonNotStarterPikachu
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1Status

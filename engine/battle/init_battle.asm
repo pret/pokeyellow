@@ -54,7 +54,7 @@ InitBattleCommon:
 	ld a, [wLoneAttackNo]
 	and a
 	jp z, _InitBattleCommon
-	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
+	farcall_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
 	jp _InitBattleCommon
 
 InitWildBattle:

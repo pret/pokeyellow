@@ -1,4 +1,4 @@
-IsStarterPikachuInOurParty::
+IsStarterPikachuAliveInOurParty::
 	ld hl, wPartySpecies
 	ld de, wPartyMon1OTID
 	ld bc, wPartyMonOT
@@ -20,10 +20,11 @@ IsStarterPikachuInOurParty::
 	ld a, [wPlayerID+1]
 	cp [hl]
 	jr nz, .curMonNotPlayerPikachu
+
 	push de
 	push bc
 	ld hl, wPlayerName
-	ld d, $6 ; possible player length - 1
+	ld d, NAME_LENGTH_JP
 .nameCompareLoop
 	dec d
 	jr z, .sameOT
@@ -34,6 +35,7 @@ IsStarterPikachuInOurParty::
 	jr z, .nameCompareLoop
 	pop bc
 	pop de
+
 .curMonNotPlayerPikachu
 	ld hl, wPartyMon2 - wPartyMon1
 	add hl, de
@@ -50,11 +52,11 @@ IsStarterPikachuInOurParty::
 	pop de
 	ld h, d
 	ld l, e
-	ld bc, -NAME_LENGTH
+	ld bc, wPartyMon1HP - wPartyMon1OTID
 	add hl, bc
 	ld a, [hli]
 	or [hl]
-	jr z, .noPlayerPikachu ; XXX how is this determined?
+	jr z, .noPlayerPikachu ; fainted Starter Pikachu
 	pop hl
 	scf
 	ret
@@ -64,18 +66,17 @@ IsStarterPikachuInOurParty::
 	and a
 	ret
 
-IsThisPartymonStarterPikachu_Box::
+IsThisBoxMonStarterPikachu::
 	ld hl, wBoxMon1
 	ld bc, wBoxMon2 - wBoxMon1
 	ld de, wBoxMonOT
-	jr asm_fce21
+	jr IsThisMonStarterPikachu
 
-IsThisPartymonStarterPikachu_Party::
-IsThisPartymonStarterPikachu::
+IsThisPartyMonStarterPikachu::
 	ld hl, wPartyMon1
 	ld bc, wPartyMon2 - wPartyMon1
 	ld de, wPartyMonOT
-asm_fce21:
+IsThisMonStarterPikachu:
 	ld a, [wWhichPokemon]
 	call AddNTimes
 	ld a, [hl]
@@ -96,7 +97,7 @@ asm_fce21:
 	ld bc, NAME_LENGTH
 	call AddNTimes
 	ld de, wPlayerName
-	ld b, $6
+	ld b, NAME_LENGTH_JP
 .loop
 	dec b
 	jr z, .isPlayerPikachu
@@ -117,7 +118,7 @@ UpdatePikachuMoodAfterBattle::
 ; because d is always $82 at this function, it serves to
 ; ensure Pikachu's mood is at least 130 after battle
 	push de
-	call IsStarterPikachuInOurParty
+	call IsStarterPikachuAliveInOurParty
 	pop de
 	ret nc
 	ld a, d
@@ -136,8 +137,9 @@ UpdatePikachuMoodAfterBattle::
 	ld [wPikachuMood], a
 	ret
 
-CheckPikachuFaintedOrStatused::
-; function to test if Pikachu is alive?
+CheckPikachuStatusCondition::
+; set carry flag if Starter Pikachu has a status condition
+; also return d = 0 if fainted, but no function uses it
 	xor a
 	ld [wWhichPokemon], a
 	ld hl, wPartyCount
@@ -145,9 +147,9 @@ CheckPikachuFaintedOrStatused::
 	inc hl
 	ld a, [hl]
 	cp $ff
-	jr z, .dead_or_not_in_party
+	jr z, .noAilment
 	push hl
-	call IsThisPartymonStarterPikachu_Party
+	call IsThisPartyMonStarterPikachu
 	pop hl
 	jr nc, .next
 	ld a, [wWhichPokemon]
@@ -161,8 +163,8 @@ CheckPikachuFaintedOrStatused::
 	inc hl
 	ld a, [hl] ; status
 	and a
-	jr nz, .alive
-	jr .dead_or_not_in_party
+	jr nz, .hasAilment
+	jr .noAilment
 
 .next
 	ld a, [wWhichPokemon]
@@ -170,15 +172,15 @@ CheckPikachuFaintedOrStatused::
 	ld [wWhichPokemon], a
 	jr .loop
 
-.alive
+.hasAilment
 	scf
 	ret
 
-.dead_or_not_in_party
+.noAilment
 	and a
 	ret
 
-IsSurfingPikachuInThePlayersParty::
+IsSurfingStarterPikachuInParty::
 	ld hl, wPartySpecies
 	ld de, wPartyMon1Moves
 	ld bc, wPartyMonOT
@@ -223,7 +225,7 @@ IsSurfingPikachuInThePlayersParty::
 	push de
 	push bc
 	ld hl, wPlayerName
-	ld d, $6
+	ld d, NAME_LENGTH_JP
 .nameCompareLoop
 	dec d
 	jr z, .foundSurfingPlayerPikachu

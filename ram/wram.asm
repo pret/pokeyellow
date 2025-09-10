@@ -2004,7 +2004,7 @@ wPikachuSpawnState:: db
 wd431:: db
 wd432:: db
 wd433:: db
-wd434:: db
+wPikachuCollisionCounter:: db
 wd435:: db
 wPikachuFollowCommandBufferSize:: db
 wPikachuFollowCommandBuffer:: ds 16
