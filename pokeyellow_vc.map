@@ -14947,10 +14947,11 @@ ROMX bank #32:
 	         $4ec8 = SFX_Get_Item2_4_Ch5
 	         $4ee7 = SFX_Get_Item2_4_Ch6
 	         $4eff = SFX_Get_Item2_4_Ch7
-	SECTION: $4f14-$6ce7 ($1dd4 bytes) ["Audio Engine 4"]
+	SECTION: $4f14-$6bd3 ($1cc0 bytes) ["Surfing Pikachu Graphics"]
 	         $4f14 = SurfingPikachu1Graphics1
 	         $5324 = SurfingPikachu1Graphics2
 	         $6324 = SurfingPikachu1Graphics3
+	SECTION: $6bd4-$6ce7 ($0114 bytes) ["Audio Engine 4"]
 	         $6bd4 = Audio4_PlaySound
 	         $6bee = Audio4_PlaySound.playMusic
 	         $6bf4 = Audio4_PlaySound.playSfx
