@@ -14,6 +14,7 @@ rom_obj := \
 	gfx/pics.o \
 	gfx/pikachu.o \
 	gfx/sprites.o \
+	gfx/surfing_pikachu.o \
 	gfx/tilesets.o
 
 pokeyellow_obj       := $(rom_obj)
