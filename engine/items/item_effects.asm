@@ -2441,7 +2441,7 @@ ItemUseTMHM:
 .chooseMon
 	ld hl, wStringBuffer
 	ld de, wTempMoveNameBuffer
-	ld bc, 14
+	ld bc, ITEM_NAME_LENGTH + 1
 	call CopyData ; save the move name because DisplayPartyMenu will overwrite it
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
@@ -2451,7 +2451,7 @@ ItemUseTMHM:
 	push af
 	ld hl, wTempMoveNameBuffer
 	ld de, wStringBuffer
-	ld bc, 14
+	ld bc, ITEM_NAME_LENGTH + 1
 	call CopyData
 	pop af
 	jr nc, .checkIfAbleToLearnMove

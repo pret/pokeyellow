@@ -675,7 +675,7 @@ Printer_PrepareSurfingMinigameHighScoreTileMap::
 .find_end_of_name
 	ld a, [hli]
 	inc c
-	cp "@"
+	cp '@'
 	jr nz, .find_end_of_name
 	ld a, 8
 	sub c
@@ -778,7 +778,7 @@ PrintPCBox_DrawPage1:
 	call PrintPCBox_PlaceHorizontalLines
 	hlcoord 0, 0
 	ld bc, 11 * SCREEN_WIDTH
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	call PrintPCBox_DrawLeftAndRightBorders
 	call PrintPCBox_DrawTopBorder
@@ -794,13 +794,13 @@ PrintPCBox_DrawPage1:
 	cp 9
 	jr c, .less_than_9
 	sub 9
-	ld [hl], "1"
+	ld [hl], '1'
 	inc hl
-	add "0"
+	add '0'
 	jr .placed_box_number
 
 .less_than_9
-	add "1"
+	add '1'
 .placed_box_number
 	ld [hl], a
 	hlcoord 4, 9
@@ -846,7 +846,7 @@ PrintPCBox_DrawPage4:
 	call PrintPCBox_DrawBottomBorderAtHL
 	hlcoord 0, 16
 	ld bc, 2 * SCREEN_WIDTH
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	ld a, [wBoxDataStart]
 	cp 16
@@ -872,14 +872,14 @@ PrintPCBox_PlaceBoxMonInfo:
 	push de
 	push hl
 	ld bc, 12
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	pop hl
 	push hl
 	ld de, SCREEN_WIDTH
 	add hl, de
 	ld bc, 12
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	pop hl
 	push hl
@@ -896,7 +896,7 @@ PrintPCBox_PlaceBoxMonInfo:
 	pop hl
 	ld bc, SCREEN_WIDTH + 1
 	add hl, bc
-	ld [hl], " " ; blank tile instead of "/" separator in Yellow
+	ld [hl], ' ' ; blank tile instead of "/" separator in Yellow
 	inc hl
 	call PlaceString
 	ld hl, wBoxNumString

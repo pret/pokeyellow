@@ -53,7 +53,7 @@ DisplayTitleScreen:
 	callfar LoadYellowTitleScreenGFX
 	ld hl, vBGMap0
 	ld bc, (vBGMap1 tile $40) - vBGMap0
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	callfar TitleScreen_PlacePokemonLogo
 	call FillSpriteBuffer0WithAA

@@ -221,7 +221,7 @@ UpdateHPBar_PrintHPNumber:
 .hpBelowBar
 	add hl, de
 	push hl
-	ld a, " "
+	ld a, ' '
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
