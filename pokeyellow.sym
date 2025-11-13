@@ -363,8 +363,8 @@
 00:1679 FillMemory.loop
 00:1681 GetFarByte
 00:1692 ClearScreenArea
-00:1697 ClearScreenArea.y
-00:1699 ClearScreenArea.x
+00:1697 ClearScreenArea.loopRows
+00:1699 ClearScreenArea.loopTiles
 00:16a4 CopyScreenTileBufferToVRAM
 00:16ca CopyScreenTileBufferToVRAM.setup
 00:16dd ClearScreen
@@ -21908,6 +21908,7 @@
 00:cd71 wStatusScreenCurrentPP
 00:cd73 wPPUpCountAndMaxPP
 00:cd78 wNormalMaxPPList
+00:cd7a wEvoDataBufferEnd
 00:cd81 wSerialOtherGameboyRandomNumberListBlock
 00:cd81 wTileMapBackup2
 00:cee9 wBuffer
