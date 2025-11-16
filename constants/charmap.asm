@@ -68,6 +68,7 @@
 
 	;charmap "Ю",	     $80 ; $26-$-28, cant because of how it is loaded in order in main_menu.asm $60 down to $ff
 							 ; I have to create a new tile in cyrillic
+							 ; testing 
 
 ; Actual characters (from gfx/font/font_battle_extra.png)
 
