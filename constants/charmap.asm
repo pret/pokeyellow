@@ -1,4 +1,7 @@
 ; $00-$17 are TX_* constants (see macros/scripts/text.asm)
+; hexadecimal prefix is $ and binary prefix is %
+; "charmap" functionality used only in VRAM memory area $8000-$97FF???
+; memory location address???
 
 ; Control characters (see home/text.asm)
 
@@ -44,6 +47,7 @@
 	charmap "<COLON>",   $6d ; colon with tinier dots than ":"
 	charmap "ぃ",         $6e ; hiragana small i, unused
 	charmap "ぅ",         $6f ; hiragana small u, unused
+
 	charmap "‘",         $70 ; opening single quote
 	charmap "’",         $71 ; closing single quote
 	charmap "“",         $72 ; opening quote
@@ -61,6 +65,9 @@
 	charmap "└",         $7d
 	charmap "┘",         $7e
 	charmap " ",         $7f
+
+	;charmap "Ю",	     $80 ; $26-$-28, cant because of how it is loaded in order in main_menu.asm $60 down to $ff
+							 ; I have to create a new tile in cyrillic
 
 ; Actual characters (from gfx/font/font_battle_extra.png)
 
@@ -88,9 +95,11 @@
 	charmap "<ED>",      $f0 ; gfx/font/ED.1bpp
 
 ; Actual characters (from gfx/font/font.png)
+; https://gbdev.io/pandocs/CGB_Registers.html#ff4f--vbk-cgb-mode-only-vram-bank
+; under "Unlocking CGB functions"
 
-	charmap "A",         $80
-	charmap "B",         $81
+	charmap "A",         $80 ; Address $8000-800F???
+	charmap "B",         $81 ; Address $8010-801F???
 	charmap "C",         $82
 	charmap "D",         $83
 	charmap "E",         $84
@@ -99,7 +108,7 @@
 	charmap "H",         $87
 	charmap "I",         $88
 	charmap "J",         $89
-	charmap "K",         $8a
+	charmap "K",         $8a ; Address $80A0-80AF????
 	charmap "L",         $8b
 	charmap "M",         $8c
 	charmap "N",         $8d
@@ -157,6 +166,16 @@
 	charmap "'t",        $be
 	charmap "'v",        $bf
 
+	; I can add cyrillic characters
+	; $c0
+	; https://learn.sparkfun.com/tutorials/hexadecimal/all
+	; https://gbdev.io/gb-asm-tutorial/part1/bin_and_hex.html
+	; I will need to add new tile for cyrillic characters
+
+	charmap "Б", 		 $c0
+	charmap "б", 		 $c1
+
+
 	charmap "'",         $e0
 	charmap "<PK>",      $e1
 	charmap "<MN>",      $e2
@@ -195,6 +214,8 @@
 	charmap "8",         $fe
 	charmap "9",         $ff
 
+	charmap "Ю",	     $54
+	; https://rgbds.gbdev.io/docs/v0.5.1/gbz80.7#127
 
 ; Japanese kana, for those bits of text that were not translated to English
 

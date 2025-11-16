@@ -1,6 +1,7 @@
 #ifndef GUARD_COMMON_H
 #define GUARD_COMMON_H
 
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -103,6 +104,7 @@ uint8_t *read_u8(const char *filename, long *size) {
 	FILE *f = xfopen(filename, 'r');
 	*size = xfsize(filename, f);
 	uint8_t *data = xmalloc(*size);
+	//unsigned char *data = xmalloc(*size);
 	xfread(data, *size, filename, f);
 	fclose(f);
 	return data;
@@ -113,10 +115,11 @@ void write_u8(const char *filename, uint8_t *data, size_t size) {
 	xfwrite(data, size, filename, f);
 	fclose(f);
 }
-
+// read png file...FONTS?
 uint32_t read_png_width(const char *filename) {
 	FILE *f = xfopen(filename, 'r');
 	uint8_t header[16] = {0};
+	// unsigned char header[16] = {0};
 	xfread(header, sizeof(header), filename, f);
 	static uint8_t expected_header[16] = {
 		0x89, 'P', 'N', 'G', '\r', '\n', 0x1A, '\n', // signature
@@ -128,6 +131,7 @@ uint32_t read_png_width(const char *filename) {
 		error_exit("Not a valid PNG file: \"%s\"\n", filename);
 	}
 	uint8_t bytes[4] = {0};
+	// unsigned char bytes[4] = {0};
 	xfread(bytes, sizeof(bytes), filename, f);
 	fclose(f);
 	return (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];

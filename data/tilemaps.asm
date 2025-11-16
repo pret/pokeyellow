@@ -13,7 +13,7 @@ TileIDListPointerTable:
 	tile_ids GengarIntroTiles1,      7,  7
 	tile_ids GengarIntroTiles2,      7,  7
 	tile_ids GengarIntroTiles3,      7,  7
-	tile_ids GameBoyTiles,           6,  8
+	tile_ids GameBoyTiles,           6,  8 ; $6 to $8?
 	tile_ids LinkCableTiles,        12,  3
 	assert_table_length NUM_TILEMAPS
 

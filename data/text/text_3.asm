@@ -433,9 +433,9 @@ _NotEnoughMemoryText::
 	done
 
 _OakSpeechText1::
-	text "Hello there!"
-	line "Welcome to the"
-	cont "world of #MON!"
+	text "Ю"; Ю ヂ $60=bold A Sain baina yy! Сайн байна уу! Hello there!
+	line "Pokyemon yertontsod" ; Pokyemon yertontsod  Покемон ертөнцөд  Welcome to the 
+	cont "tavtai moril!" ; tavtai moril! тавтай морил! world of #MON!
 
 	para "My name is OAK!"
 	line "People call me"

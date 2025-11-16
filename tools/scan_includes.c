@@ -38,7 +38,9 @@ void scan_file(const char *filename, bool strict) {
 
 	long size = xfsize(filename, f);
 	char *contents = xmalloc(size + 1);
+	//unsigned char *contents = xmalloc(size + 1);
 	xfread((uint8_t *)contents, size, filename, f);
+	//xfread((unsigned char *)contents, size, filename, f);
 	fclose(f);
 	contents[size] = '\0';
 
