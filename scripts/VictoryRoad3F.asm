@@ -38,7 +38,7 @@ VictoryRoad3FDefaultScript:
 	cp $1
 	jr nz, .handle_hole
 	ldh a, [hSpriteIndex]
-	cp $f ; Pikachu
+	cp PIKACHU_SPRITE_INDEX
 	jp z, .check_switch_hole
 	ld hl, wCurrentMapScriptFlags
 	set BIT_CUR_MAP_LOADED_1, [hl]

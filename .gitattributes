@@ -6,6 +6,7 @@
 *.asm text
 
 # Denote all files that are truly binary and should not be modified.
+*.bin binary
 *.png binary
 *.2bpp binary
 *.1bpp binary
