@@ -127,9 +127,10 @@ SetPal_Generic:
 	ld de, BlkPacket_WholeScreen
 	ret
 
-SetPal_NidorinoIntro:
-	ld hl, PalPacket_NidorinoIntro
-	ld de, BlkPacket_NidorinoIntro
+; used for splash screen and the Pikachu intro scenes surfing and flying
+SetPal_PikachuIntro:
+	ld hl, PalPacket_PikachuIntro
+	ld de, BlkPacket_PikachuIntro
 	ret
 
 SetPal_GameFreakIntro:
@@ -272,7 +273,7 @@ SetPalFunctions:
 	dw SetPal_Pokedex
 	dw SetPal_Slots
 	dw SetPal_TitleScreen
-	dw SetPal_NidorinoIntro
+	dw SetPal_PikachuIntro
 	dw SetPal_Generic
 	dw SetPal_Overworld
 	dw SetPal_PartyMenu
@@ -1054,7 +1055,7 @@ palPacketPointers:
 	dw BlkPacket_Pokedex
 	dw BlkPacket_Slots
 	dw BlkPacket_Titlescreen
-	dw BlkPacket_NidorinoIntro
+	dw BlkPacket_PikachuIntro
 	dw wPartyMenuBlkPacket
 	dw wTrainerCardBlkPacket
 	dw BlkPacket_GameFreakIntro
