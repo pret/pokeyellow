@@ -109,7 +109,7 @@ BGMapAttributesPointers:
 	dw BGMapAttributes_GameFreakIntro
 	dw BGMapAttributes_TrainerCard
 	dw BGMapAttributes_PartyMenu
-	dw BGMapAttributes_NidorinoIntro
+	dw BGMapAttributes_PikachuIntro
 	dw BGMapAttributes_TitleScreen
 	dw BGMapAttributes_Slots
 	dw BGMapAttributes_Pokedex
