@@ -48,7 +48,7 @@
 	const CRED_YOSHIKAWA             ; 2d
 	const CRED_OOTA23                ; 2e
 	const CRED_YOSHIDA               ; 2f
-	const CRED_MATSUMITA             ; 30
+	const CRED_MATSUMIYA             ; 30
 	const CRED_SEYA                  ; 31
 	const CRED_SEKINE                ; 32
 	const CRED_SHIMAMURA             ; 33

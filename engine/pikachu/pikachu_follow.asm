@@ -6,7 +6,7 @@ ShouldPikachuSpawn::
 	ld a, [wPikachuOverworldStateFlags]
 	bit 7, a
 	jr nz, .hide
-	call IsStarterPikachuInOurParty
+	call IsStarterPikachuAliveInOurParty
 	jr nc, .hide
 	ld a, [wWalkBikeSurfState]
 	and a
@@ -1375,7 +1375,7 @@ Func_fcc92:
 	ld a, $ff
 .asm_fcca8
 	ld d, [hl]
-	ldd [hl], a
+	ld [hld], a
 	ld a, d
 	dec e
 	jr nz, .asm_fcca8

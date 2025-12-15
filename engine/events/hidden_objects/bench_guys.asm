@@ -17,6 +17,11 @@ PrintBenchGuyText:
 	ld b, a
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp b
+
+	; bug: an 'inc hl' instruction is needed before looping back.
+	; Due to Yellow's new Pokecenter layout, it's now impossible to talk to a
+	; bench guy from above. The bug is still present but will not be triggered
+	; in a regular play.
 	jr nz, .loop ; player isn't facing the bench guy
 	ld a, [hl]
 	jp PrintPredefTextID

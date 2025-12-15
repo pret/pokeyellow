@@ -1,10 +1,10 @@
-MACRO vc_hook
+MACRO? vc_hook
 	IF DEF(_YELLOW_VC)
 	.VC_\1::
 	ENDC
 ENDM
 
-MACRO vc_patch
+MACRO? vc_patch
 	IF DEF(_YELLOW_VC)
 		ASSERT !DEF(CURRENT_VC_PATCH), "Already started a vc_patch"
 		DEF CURRENT_VC_PATCH EQUS "\1"
@@ -12,7 +12,7 @@ MACRO vc_patch
 	ENDC
 ENDM
 
-MACRO vc_patch_end
+MACRO? vc_patch_end
 	IF DEF(_YELLOW_VC)
 		ASSERT DEF(CURRENT_VC_PATCH), "No vc_patch started"
 	.VC_{CURRENT_VC_PATCH}_End::
@@ -20,7 +20,7 @@ MACRO vc_patch_end
 	ENDC
 ENDM
 
-MACRO vc_assert
+MACRO? vc_assert
 	IF DEF(_YELLOW_VC)
 		ASSERT \#
 	ENDC

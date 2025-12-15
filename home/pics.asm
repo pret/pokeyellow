@@ -9,7 +9,6 @@ UncompressMonSprite::
 	ld a, [hl]
 	ld [wSpriteInputPtr+1], a
 ; define (by index number) the bank that a pokemon's image is in
-; index = MEW:             bank $1
 ; index = FOSSIL_KABUTOPS: bank $B
 ;       index < $1F:       bank $9 ("Pics 1")
 ; $1F ≤ index < $4A:       bank $A ("Pics 2")
@@ -88,7 +87,7 @@ LoadUncompressedSpriteData::
 	add a
 	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
 	ldh [hSpriteOffset], a
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	ld hl, sSpriteBuffer0
 	call ZeroSpriteBuffer   ; zero buffer 0
@@ -147,7 +146,7 @@ ZeroSpriteBuffer::
 ; in the resulting sprite, the rows of the two source sprites are interlaced
 ; de: output address
 InterlaceMergeSpriteBuffers::
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	push de
 	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2

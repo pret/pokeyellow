@@ -2,7 +2,7 @@
 ; assumes that input sprite chunks are 4x4 tiles, and the rightmost and bottommost 4 pixels will be ignored
 ; resulting in a 7*7 tile output sprite chunk
 ScaleSpriteByTwo:
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	call .ScaleSpriteByTwo
 	call CloseSRAM

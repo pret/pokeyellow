@@ -148,17 +148,17 @@ BillsPCMenu:
 	lb bc, 2, 9
 	call TextBoxBorder
 	ld a, [wCurrentBoxNum]
-	and $7f
+	and BOX_NUM_MASK
 	cp 9
 	jr c, .singleDigitBoxNum
 ; two digit box num
 	sub 9
 	hlcoord 17, 16
-	ld [hl], "1"
-	add "0"
+	ld [hl], '1'
+	add '0'
 	jr .next
 .singleDigitBoxNum
-	add "1"
+	add '1'
 .next
 	ldcoord_a 18, 16
 	hlcoord 10, 16
@@ -225,7 +225,7 @@ BillsPCDeposit:
 	ld hl, wPartyCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_215ad
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_215ad
@@ -235,7 +235,7 @@ BillsPCDeposit:
 .asm_215ad
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .asm_215c9
 	ldpikacry e, PikachuCry28
 	callfar PlayPikachuSoundClip
@@ -244,7 +244,7 @@ BillsPCDeposit:
 	ld a, [wCurPartySpecies]
 	call PlayCry
 .asm_215cf
-	callabd_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
+	farcall_ModifyPikachuHappiness PIKAHAPPY_DEPOSITED
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon
@@ -254,19 +254,19 @@ BillsPCDeposit:
 	call WaitForSoundToFinish
 	ld hl, wBoxNumString
 	ld a, [wCurrentBoxNum]
-	and $7f
+	and BOX_NUM_MASK
 	cp 9
 	jr c, .singleDigitBoxNum
 	sub 9
-	ld [hl], "1"
+	ld [hl], '1'
 	inc hl
-	add "0"
+	add '0'
 	jr .next
 .singleDigitBoxNum
-	add "1"
+	add '1'
 .next
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], '@'
 	ld hl, MonWasStoredText
 	call PrintText
 	jp BillsPCMenu
@@ -298,7 +298,7 @@ BillsPCWithdraw:
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
-	callfar IsThisPartymonStarterPikachu_Box
+	callfar IsThisBoxMonStarterPikachu
 	jr nc, .asm_21660
 	ldpikacry e, PikachuCry35
 	callfar PlayPikachuSoundClip
@@ -329,7 +329,7 @@ BillsPCRelease:
 	ld hl, wBoxCount
 	call DisplayMonListMenu
 	jp c, BillsPCMenu
-	callfar IsThisPartymonStarterPikachu_Box
+	callfar IsThisBoxMonStarterPikachu
 	jr c, .asm_216cb
 	ld hl, OnceReleasedText
 	call PrintText
@@ -582,6 +582,7 @@ JustAMomentText::
 	text_far _JustAMomentText
 	text_end
 
+UnusedOpenBillsPC: ; unreferenced
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	cp SPRITE_FACING_UP
 	ret nz

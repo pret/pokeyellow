@@ -74,7 +74,7 @@ GetName::
 	ld e, l
 .nextChar
 	ld a, [hli]
-	cp "@"
+	cp '@'
 	jr nz, .nextChar
 	inc c
 	ld a, b

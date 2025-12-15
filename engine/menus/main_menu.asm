@@ -8,7 +8,7 @@ MainMenu:
 	call CheckForPlayerNameInSRAM
 	jr nc, .mainMenuLoop
 
-	predef LoadSAV
+	predef TryLoadSaveFile
 
 .mainMenuLoop
 	ld c, 20
@@ -278,13 +278,13 @@ CheckForPlayerNameInSRAM:
 	ld [rRAMG], a
 	ld a, BMODE_ADVANCED
 	ld [rBMODE], a
-	ASSERT BMODE_ADVANCED == BANK("Save Data")
+	ASSERT BANK(sPlayerName) == BMODE_ADVANCED
 	ld [rRAMB], a
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName
 .loop
 	ld a, [hli]
-	cp "@"
+	cp '@'
 	jr z, .found
 	dec b
 	jr nz, .loop

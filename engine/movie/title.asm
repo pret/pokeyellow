@@ -53,7 +53,7 @@ DisplayTitleScreen:
 	callfar LoadYellowTitleScreenGFX
 	ld hl, vBGMap0
 	ld bc, (vBGMap1 tile $40) - vBGMap0
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	callfar TitleScreen_PlacePokemonLogo
 	call FillSpriteBuffer0WithAA
@@ -240,7 +240,6 @@ ENDC
 .doClearSaveDialogue
 	farjp DoClearSaveDialogue
 
-
 TitleScreenCopyTileMapToVRAM:
 	ldh [hAutoBGTransferDest + 1], a
 	jp Delay3
@@ -282,7 +281,6 @@ DoTitleScreenFunction:
 	ld h, [hl]
 	ld l, a
 	jp hl
-
 
 .Jumptable:
 	dw .Nop

@@ -25,7 +25,7 @@ DisplayPokemonCenterDialogue_::
 	and a
 	jp nz, .declinedHealing ; if the player chose No
 	call SetLastBlackoutMap
-	callfar IsStarterPikachuInOurParty
+	callfar IsStarterPikachuAliveInOurParty
 	jr nc, .notHealingPlayerPikachu
 	call CheckPikachuFollowingPlayer
 	jr nz, .notHealingPlayerPikachu
@@ -41,7 +41,7 @@ DisplayPokemonCenterDialogue_::
 	call CheckPikachuFollowingPlayer
 	jr nz, .playerPikachuNotOnScreen
 	call DisablePikachuOverworldSpriteDrawing
-	callfar IsStarterPikachuInOurParty
+	callfar IsStarterPikachuAliveInOurParty
 	call c, Func_6eaa
 .playerPikachuNotOnScreen
 	lb bc, 1, 8
@@ -60,7 +60,7 @@ DisplayPokemonCenterDialogue_::
 	call PlaySound
 	call CheckPikachuFollowingPlayer
 	jr nz, .doNotReturnPikachu
-	callfar IsStarterPikachuInOurParty
+	callfar IsStarterPikachuAliveInOurParty
 	call c, Func_6eaa
 	ld a, $5
 	ld [wPikachuSpawnState], a
@@ -70,7 +70,7 @@ DisplayPokemonCenterDialogue_::
 	call Func_6ebb
 	ld hl, PokemonFightingFitText
 	call PrintText
-	callfar IsStarterPikachuInOurParty
+	callfar IsStarterPikachuAliveInOurParty
 	jr nc, .notInParty
 	lb bc, 15, 0
 	call Func_6ebb

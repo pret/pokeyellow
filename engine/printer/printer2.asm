@@ -32,10 +32,10 @@ Printer_GetMonStats:
 	hlcoord 2, 10
 	ld a, $6e
 	ld [hli], a
-	ld [hl], " "
+	ld [hl], ' '
 
 	hlcoord 2, 11
-	ld [hl], "’"
+	ld [hl], '’'
 
 	hlcoord 4, 11
 	ld de, wLoadedMonMaxHP
@@ -56,7 +56,7 @@ Printer_GetMonStats:
 
 	predef IndexToPokedex
 	hlcoord 2, 8
-	ld [hl], "№"
+	ld [hl], '№'
 	inc hl
 	ld [hl], $f2
 	inc hl

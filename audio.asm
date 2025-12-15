@@ -453,7 +453,6 @@ INCLUDE "audio/engine_3.asm"
 
 SECTION "Audio Engine 4", ROMX
 
-INCLUDE "gfx/surfing_pikachu.asm"
 INCLUDE "audio/engine_4.asm"
 
 

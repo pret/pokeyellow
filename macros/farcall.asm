@@ -64,14 +64,14 @@ MACRO homejp_sf ; homejp but save flags by popping into bc instead of af
 	jp BankswitchCommon
 ENDM
 
-MACRO calladb_ModifyPikachuHappiness
+MACRO callfar_ModifyPikachuHappiness
 	ld hl, ModifyPikachuHappiness
 	ld d, \1
 	ld b, BANK(ModifyPikachuHappiness)
 	call Bankswitch
 ENDM
 
-MACRO callabd_ModifyPikachuHappiness
+MACRO farcall_ModifyPikachuHappiness
 	ld hl, ModifyPikachuHappiness
 	ld b, BANK(ModifyPikachuHappiness)
 	ld d, \1

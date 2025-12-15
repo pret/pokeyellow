@@ -6,7 +6,7 @@ DisplayDiploma::
 	ld [wUpdateSpritesEnabled], a
 	ld hl, wStatusFlags5
 	set BIT_NO_TEXT_DELAY, [hl]
-	callfar _DisplayDiploma
+	callfar DisplayDiplomaTop
 	call WaitForTextScrollButtonPress
 	ld hl, wStatusFlags5
 	res BIT_NO_TEXT_DELAY, [hl]

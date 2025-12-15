@@ -3,7 +3,7 @@ CeladonMansion1FPrintGrannyText::
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, CeladonMansion1Text_f1e96
 	call PrintText
-	callfar IsStarterPikachuInOurParty
+	callfar IsStarterPikachuAliveInOurParty
 	ret nc
 	ld hl, CeladonMansionText_f1e9c
 	call PrintText

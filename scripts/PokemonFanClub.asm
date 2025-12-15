@@ -37,7 +37,7 @@ PokemonFanClubScript_59a44:
 	ld a, [wd471]
 	bit 7, a
 	ret z
-	callfar CheckPikachuFaintedOrStatused
+	callfar CheckPikachuStatusCondition
 	ret c
 	ld a, SCRIPT_POKEMONFANCLUB_SCRIPT1
 	ld [wPokemonFanClubCurScript], a

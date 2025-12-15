@@ -131,11 +131,11 @@ Func_fe7ca:
 	push hl
 	push bc
 	dec hl
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	ld bc, 11
 	add hl, bc
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	push de
 	pop de
@@ -232,13 +232,13 @@ Func_fe85d:
 	ld [wWhichPokemon], a
 	dec de
 	dec hl
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	push bc
 	ld bc, hMovingBGTilesCounter1
 	add hl, bc
 	pop bc
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	inc hl
 	push hl
@@ -254,11 +254,11 @@ Func_fe880:
 	ld [wWhichPokemon], a
 	inc de
 	dec hl
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	ld bc, SCREEN_WIDTH * 2
 	add hl, bc
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	inc hl
 	push hl
@@ -270,11 +270,11 @@ Func_fe8a1:
 	push hl
 	push bc
 	dec hl
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	ld bc, 11
 	add hl, bc
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	pop bc
 	pop hl
@@ -352,7 +352,7 @@ Func_fe912:
 	push hl
 	ld bc, 10
 	add hl, bc
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	pop hl
 	ld bc, hMovingBGTilesCounter1
@@ -360,7 +360,7 @@ Func_fe912:
 	push hl
 	ld bc, 10
 	add hl, bc
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	call Func_fe964
 	pop hl
@@ -376,7 +376,7 @@ Func_fe93b:
 	push hl
 	ld bc, 10
 	add hl, bc
-	ld a, " "
+	ld a, ' '
 	ld [hl], a
 	pop hl
 	ld bc, SCREEN_WIDTH * 2
@@ -384,7 +384,7 @@ Func_fe93b:
 	push hl
 	ld bc, 10
 	add hl, bc
-	ld a, "▶"
+	ld a, '▶'
 	ld [hl], a
 	call Func_fe964
 	pop hl
@@ -532,10 +532,10 @@ Func_fe97f:
 	pop bc
 	; fallthrough
 Func_fea78:
-	ld a, " "
+	ld a, ' '
 	ldcoord_a 0, 8
 	ldcoord_a 15, 8
-	ld a, "▶"
+	ld a, '▶'
 	ldcoord_a 0, 4
 	; fallthrough
 Func_fea85:
@@ -566,7 +566,7 @@ Func_fea9d:
 	jr nz, .asm_feace
 	ld a, 2
 	ld [wIsInBattle], a
-	ld a, " "
+	ld a, ' '
 	ldcoord_a 4, 3
 	hlcoord 1, 4
 	ld de, Text_fedb2
@@ -575,7 +575,7 @@ Func_fea9d:
 .asm_feace
 	ld a, 1
 	ld [wIsInBattle], a
-	ld a, " "
+	ld a, ' '
 	ldcoord_a 1, 3
 	hlcoord 1, 4
 	ld de, Text_feda8
@@ -583,9 +583,9 @@ Func_fea9d:
 	jp Func_fea85
 
 Func_feae4:
-	ld a, "▶"
+	ld a, '▶'
 	ldcoord_a 0, 8
-	ld a, " "
+	ld a, ' '
 	ldcoord_a 15, 8
 	ldcoord_a 0, 4
 	; fallthrough
@@ -694,9 +694,9 @@ Func_feb82:
 	jp Func_feb64
 
 Func_febba:
-	ld a, " "
+	ld a, ' '
 	ldcoord_a 0, 8
-	ld a, "▶"
+	ld a, '▶'
 	ldcoord_a 15, 8
 	; fallthrough
 Func_febc4:
@@ -940,9 +940,9 @@ Func_fedfe:
 	; fallthrough
 Func_fee23:
 	hlcoord 0, 3
-	ld [hl], " "
+	ld [hl], ' '
 	hlcoord 0, 1
-	ld [hl], "▶"
+	ld [hl], '▶'
 	call Func_fee60
 .asm_fee30
 	call DelayFrame
@@ -995,11 +995,11 @@ Func_fee60:
 
 Func_fee96:
 	hlcoord 0, 1
-	ld [hl], " "
+	ld [hl], ' '
 	hlcoord 0, 3
-	ld [hl], "▶"
+	ld [hl], '▶'
 	hlcoord 0, 5
-	ld [hl], " "
+	ld [hl], ' '
 	call Func_feee2
 	call Func_feeef
 .asm_feeab
@@ -1173,13 +1173,13 @@ Func_fefc5:
 	pop de
 	pop hl
 	push hl
-	ld [hl], "▶"
+	ld [hl], '▶'
 	ld bc, hMovingBGTilesCounter1
 	add hl, bc
-	ld [hl], " "
+	ld [hl], ' '
 	ld bc, SCREEN_WIDTH * 4
 	add hl, bc
-	ld [hl], " "
+	ld [hl], ' '
 	pop hl
 	inc hl
 	ld a, [de]
@@ -1218,7 +1218,7 @@ Func_ff006:
 	callfar Func_3b079
 	pop hl
 	jr c, .asm_ff036
-	ld [hl], "×"
+	ld [hl], '×'
 .asm_ff036
 	pop af
 	ld [wCurPartySpecies], a
@@ -1296,13 +1296,13 @@ Func_ff09e:
 	push de
 	push bc
 	push hl
-	ld [hl], "▶"
+	ld [hl], '▶'
 	ld bc, hMovingBGTilesCounter1
 	add hl, bc
-	ld [hl], " "
+	ld [hl], ' '
 	ld bc, SCREEN_WIDTH * 4
 	add hl, bc
-	ld [hl], " "
+	ld [hl], ' '
 	pop hl
 	inc hl
 	ld a, [de]
@@ -1454,13 +1454,13 @@ Func_ff1b9:
 	; fallthrough
 Func_ff1e7:
 	hlcoord 2, 13
-	ld [hl], "ﾞ"
+	ld [hl], 'ﾞ'
 	hlcoord 1, 14
-	ld [hl], "レ"
+	ld [hl], 'レ'
 	inc hl
-	ld [hl], "へ"
+	ld [hl], 'へ'
 	inc hl
-	ld [hl], "ル"
+	ld [hl], 'ル'
 	inc hl
 	inc hl
 	ld de, wCurEnemyLevel
@@ -1568,7 +1568,7 @@ Func_ff295:
 	push af
 	ld a, 1 << BIT_FAST_TEXT_DELAY
 	ld [wLetterPrintingDelayFlags], a
-	callfar SaveSAVtoSRAM
+	callfar SaveGameData
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	pop de

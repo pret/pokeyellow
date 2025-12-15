@@ -5,19 +5,19 @@ Func_f531b::
 	ld [wBuffer], a
 	xor a
 	ld [wUnknownSerialFlag_d499], a
-	coord hl, 0, 0
+	hlcoord 0, 0
 	lb bc, 4, 5
 	call TextBoxBorder
 	ld de, Text_f5791
-	coord hl, 1, 2
+	hlcoord 1, 2
 	call PlaceString
-	coord hl, 8, 0
+	hlcoord 8, 0
 	lb bc, 8, 10
 	call TextBoxBorder
-	coord hl, 10, 2
+	hlcoord 10, 2
 	ld de, Text_f579c
 	call PlaceString
-	coord hl, 0, 10
+	hlcoord 0, 10
 	lb bc, 6, 18
 	call TextBoxBorder
 	call UpdateSprites
@@ -109,10 +109,10 @@ Func_f531b::
 	call Serial_SendZeroByte
 	dec b
 	jr nz, .loop
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, ' '
+	ld c, ' '
+	ld d, ' '
+	ld e, '▷'
 	ld a, [wLinkMenuSelectionSendBuffer]
 	bit 3, a
 	jr nz, .asm_f541a
@@ -358,7 +358,7 @@ PetitCup::
 	ld hl, wNameBuffer
 .loop2
 	ld a, [hli]
-	cp "@"
+	cp '@'
 	jr nz, .loop2
 	ld a, [hli]
 	cp $7
@@ -513,7 +513,7 @@ asm_f56ad::
 Func_f56bd::
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	coord hl, 1, 11
+	hlcoord 1, 11
 	lb bc, 6, 18
 	call ClearScreenArea
 	ld a, [wCurrentMenuItem]
@@ -530,7 +530,7 @@ Func_f56bd::
 	ld l, a
 	ld d, h
 	ld e, l
-	coord hl, 1, 12
+	hlcoord 1, 12
 	call PlaceString
 .asm_f56e6
 	call Delay3
@@ -736,10 +736,10 @@ LinkMenu:
 	ld a, SC_START | SC_INTERNAL
 	ldh [rSC], a
 .skipStartingTransfer
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, ' '
+	ld c, ' '
+	ld d, ' '
+	ld e, '▷'
 	ld a, [wLinkMenuSelectionSendBuffer]
 	and PAD_B << 2 ; was B button pressed?
 	jr nz, .updateCursorPosition
@@ -811,10 +811,10 @@ LinkMenu:
 	ld a, [wNamedObjectIndex]
 	and a
 	jr nz, .asm_f5974
-	ld b, " "
-	ld c, " "
-	ld d, "▷"
-	ld e, " "
+	ld b, ' '
+	ld c, ' '
+	ld d, '▷'
+	ld e, ' '
 	call Func_f59ec
 .asm_f5974
 	xor a
@@ -856,10 +856,10 @@ LinkMenu:
 	ld a, [wNamedObjectIndex]
 	and a
 	jr z, .asm_f59cd
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, ' '
+	ld c, ' '
+	ld d, ' '
+	ld e, '▷'
 	call Func_f59ec
 	jp .choseCancel
 
@@ -869,10 +869,10 @@ LinkMenu:
 	jp .choseCancel
 
 .asm_f59d6
-	ld b, " "
-	ld c, " "
-	ld d, "▷"
-	ld e, " "
+	ld b, ' '
+	ld c, ' '
+	ld d, '▷'
+	ld e, ' '
 	call Func_f59ec
 	call Func_f531b
 	jp c, .choseCancel

@@ -62,7 +62,7 @@ PewterJigglypuff::
 	ld a, [wd471]
 	bit 7, a
 	ret z
-	callfar CheckPikachuFaintedOrStatused
+	callfar CheckPikachuStatusCondition
 	ret c
 	call DisablePikachuFollowingPlayer
 	ret

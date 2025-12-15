@@ -458,9 +458,9 @@ YellowIntroScene10:
 	jr nz, .fill_row
 	ret
 
-Unkn_f9b6e: INCBIN "gfx/intro/unknown_f9b6e.map"
-Unkn_f9be6: INCBIN "gfx/intro/unknown_f9be6.map"
-Unkn_f9bf2: INCBIN "gfx/intro/unknown_f9bf2.map"
+Unkn_f9b6e: INCBIN "gfx/intro/unknown_f9b6e.tilemap"
+Unkn_f9be6: INCBIN "gfx/intro/unknown_f9be6.tilemap"
+Unkn_f9bf2: INCBIN "gfx/intro/unknown_f9bf2.tilemap"
 
 YellowIntroScene11:
 	call YellowIntro_CheckFrameTimerDecrement
@@ -575,15 +575,15 @@ YellowIntroScene14:
 	call MaskAllAnimatedObjectStructs
 	call YellowIntro_BlankOAMBuffer
 	ld hl, wTileMap
-	ld bc, $50
+	ld bc, SCREEN_WIDTH * 4
 	ld a, $1
 	call Bank3E_FillMemory
 	hlcoord 0, 4
-	ld bc, CopyVideoDataAlternate
+	ld bc, SCREEN_WIDTH * 10
 	xor a
 	call Bank3E_FillMemory
 	hlcoord 0, 14
-	ld bc, $50
+	ld bc, SCREEN_WIDTH * 4
 	ld a, $1
 	call Bank3E_FillMemory
 	ld a, $1
@@ -827,7 +827,7 @@ InitYellowIntroGFXAndMusic:
 	ld a, $1
 	call Bank3E_FillMemory
 	hlcoord 0, 4
-	ld bc, CopyVideoDataAlternate
+	ld bc, SCREEN_WIDTH * 10
 	xor a
 	call Bank3E_FillMemory
 	ld a, $1

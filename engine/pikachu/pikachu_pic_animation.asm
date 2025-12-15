@@ -665,7 +665,7 @@ DecompressRequestPikaPicAnimGFX:
 	jr c, .failed
 	ld a, b
 	call UncompressSpriteFromDE
-	ld a, BANK(sSpriteBuffer1)
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0

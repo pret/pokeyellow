@@ -20,7 +20,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	ld hl, vBGMap0
 	ld bc, TILEMAP_AREA
 .clearBackgroundLoop
-	ld a, " "
+	ld a, ' '
 	ld [hli], a
 	dec bc
 	ld a, b
@@ -1053,7 +1053,7 @@ RemoveFaintedPlayerMon:
 
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .notPlayerPikachu
 	ldpikacry e, PikachuCry4
 	callfar PlayPikachuSoundClip
@@ -1076,10 +1076,10 @@ RemoveFaintedPlayerMon:
 	cp 30 ; is the enemy 30 levels greater than us?
 	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
 .regularFaint
-	callabd_ModifyPikachuHappiness PIKAHAPPY_FAINTED
+	farcall_ModifyPikachuHappiness PIKAHAPPY_FAINTED
 	ret
 .carelessTrainer
-	callabd_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
+	farcall_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
 	ret
 
 PlayerMonFaintedText:
@@ -1794,7 +1794,7 @@ SendOutMon:
 	call RunPaletteCommand
 	ld hl, wEnemyBattleStatus1
 	res USING_TRAPPING_MOVE, [hl]
-	callfar IsThisPartymonStarterPikachu
+	callfar IsThisPartyMonStarterPikachu
 	jr c, .starterPikachu
 	ld a, $1
 	ldh [hWhoseTurn], a
@@ -1829,7 +1829,7 @@ AnimateRetreatingPlayerMon:
 	push af
 	ld a, [wPlayerMonNumber]
 	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu
+	callfar IsThisPartyMonStarterPikachu
 	pop bc
 	ld a, b
 	ld [wWhichPokemon], a
@@ -1869,7 +1869,8 @@ AnimateRetreatingPlayerMon:
 	call ClearScreenArea
 	ret
 
-; reads player's current mon's HP into wBattleMonHP
+; Copies player's current pokemon's current HP and status into the party
+; struct data so it stays after battle or switching
 ReadPlayerMonCurHPAndStatus:
 	ld a, [wPlayerMonNumber]
 	ld hl, wPartyMon1HP
@@ -2058,11 +2059,11 @@ CenterMonName:
 .loop
 	inc de
 	ld a, [de]
-	cp "@"
+	cp '@'
 	jr z, .done
 	inc de
 	ld a, [de]
-	cp "@"
+	cp '@'
 	jr z, .done
 	dec hl
 	dec b
@@ -2119,15 +2120,15 @@ DisplayBattleMenu::
 	call CopyData
 ; the following simulates the keystrokes by drawing menus on screen
 	hlcoord 9, 14
-	ld [hl], "▶"
+	ld [hl], '▶'
 	ld c, 20
 	call DelayFrames
-	ld [hl], " "
+	ld [hl], ' '
 	hlcoord 9, 16
-	ld [hl], "▶"
+	ld [hl], '▶'
 	ld c, 20
 	call DelayFrames
-	ld [hl], "▷"
+	ld [hl], '▷'
 	ld a, $2 ; select the "ITEM" menu
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
@@ -2147,7 +2148,7 @@ DisplayBattleMenu::
 .leftColumn ; put cursor in left column of menu
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
-	ld a, " "
+	ld a, ' '
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
 	ldcoord_a 15, 14 ; clear upper cursor position in right column
@@ -2180,7 +2181,7 @@ DisplayBattleMenu::
 .rightColumn ; put cursor in right column of menu
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
-	ld a, " "
+	ld a, ' '
 	jr z, .safariRightColumn
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
 	ldcoord_a 9, 14 ; clear upper cursor position in left column
@@ -2431,7 +2432,7 @@ PartyMenuOrRockOrRun:
 .partyMonDeselected
 	hlcoord 11, 11
 	ld bc, 6 * SCREEN_WIDTH + 9
-	ld a, " "
+	ld a, ' '
 	call FillMemory
 	xor a ; NORMAL_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
@@ -2599,9 +2600,9 @@ MoveSelectionMenu:
 	   ; so it is necessary to put the di ei block to not cause tearing
 	call TextBoxBorder
 	hlcoord 4, 12
-	ld [hl], "─"
+	ld [hl], '─'
 	hlcoord 10, 12
-	ld [hl], "┘"
+	ld [hl], '┘'
 	ei
 	hlcoord 6, 13
 	call .writemoves
@@ -2703,7 +2704,7 @@ SelectMenuItem:
 	dec a
 	ld bc, SCREEN_WIDTH
 	call AddNTimes
-	ld [hl], "▷"
+	ld [hl], '▷'
 .select
 	ld hl, hUILayoutFlags
 	set BIT_DOUBLE_SPACED_MENU, [hl]
@@ -3056,9 +3057,9 @@ PrintMenuItem:
 	ld de, TypeText
 	call PlaceString
 	hlcoord 7, 11
-	ld [hl], "/"
+	ld [hl], '/'
 	hlcoord 5, 9
-	ld [hl], "/"
+	ld [hl], '/'
 	hlcoord 5, 11
 	ld de, wBattleMenuCurrentPP
 	lb bc, 1, 2
@@ -3308,30 +3309,30 @@ PlayerCalcMoveDamage:
 	jp c, .moveHitTest ; SetDamageEffects moves (e.g. Seismic Toss and Super Fang) skip damage calculation
 	call CriticalHitTest
 	call HandleCounterMove
-	jr z, handleIfPlayerMoveMissed
+	jr z, HandleIfPlayerMoveMissed
 	call GetDamageVarsForPlayerAttack
 	call CalculateDamage
-	jp z, playerCheckIfFlyOrChargeEffect ; for moves with 0 BP, skip any further damage calculation and, for now, skip MoveHitTest
+	jp z, PlayerCheckIfFlyOrChargeEffect ; for moves with 0 BP, skip any further damage calculation and, for now, skip MoveHitTest
 	               ; for these moves, accuracy tests will only occur if they are called as part of the effect itself
 	call AdjustDamageForMoveType
 	call RandomizeDamage
 .moveHitTest
 	call MoveHitTest
-handleIfPlayerMoveMissed:
+HandleIfPlayerMoveMissed:
 	ld a, [wMoveMissed]
 	and a
-	jr z, getPlayerAnimationType
+	jr z, GetPlayerAnimationType
 	ld a, [wPlayerMoveEffect]
 	sub EXPLODE_EFFECT
-	jr z, playPlayerMoveAnimation ; don't play any animation if the move missed, unless it was EXPLODE_EFFECT
-	jr playerCheckIfFlyOrChargeEffect
-getPlayerAnimationType:
+	jr z, PlayPlayerMoveAnimation ; don't play any animation if the move missed, unless it was EXPLODE_EFFECT
+	jr PlayerCheckIfFlyOrChargeEffect
+GetPlayerAnimationType:
 	ld a, [wPlayerMoveEffect]
 	and a
 	ld a, ANIMATIONTYPE_BLINK_ENEMY_MON_SPRITE ; move has no effect other than dealing damage
-	jr z, playPlayerMoveAnimation
+	jr z, PlayPlayerMoveAnimation
 	ld a, ANIMATIONTYPE_SHAKE_SCREEN_HORIZONTALLY_LIGHT ; move has effect
-playPlayerMoveAnimation:
+PlayPlayerMoveAnimation:
 	push af
 	ld a, [wPlayerBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a
@@ -3350,7 +3351,7 @@ playPlayerMoveAnimation:
 	ld b, BANK(ReshowSubstituteAnim)
 	call nz, Bankswitch
 	jr MirrorMoveCheck
-playerCheckIfFlyOrChargeEffect:
+PlayerCheckIfFlyOrChargeEffect:
 	ld c, 30
 	call DelayFrames
 	ld a, [wPlayerMoveEffect]
@@ -3417,7 +3418,7 @@ MirrorMoveCheck:
 	ld a, [wPlayerNumAttacksLeft]
 	dec a
 	ld [wPlayerNumAttacksLeft], a
-	jp nz, getPlayerAnimationType ; for multi-hit moves, apply attack until PlayerNumAttacksLeft hits 0 or the enemy faints.
+	jp nz, GetPlayerAnimationType ; for multi-hit moves, apply attack until PlayerNumAttacksLeft hits 0 or the enemy faints.
 	                             ; damage calculation and accuracy tests only happen for the first hit
 	res ATTACKING_MULTIPLE_TIMES, [hl] ; clear attacking multiple times status when all attacks are over
 	ld hl, MultiHitText
@@ -3694,7 +3695,7 @@ CheckPlayerStatusConditions:
 	ld [hl], a
 	ld a, BIDE
 	ld [wPlayerMoveNum], a
-	ld hl, handleIfPlayerMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
+	ld hl, HandleIfPlayerMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
 	jp .returnToHL
 
 .ThrashingAboutCheck
@@ -3728,7 +3729,7 @@ CheckPlayerStatusConditions:
 	ld a, [wPlayerNumAttacksLeft]
 	dec a ; did multi-turn move end?
 	ld [wPlayerNumAttacksLeft], a
-	ld hl, getPlayerAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
+	ld hl, GetPlayerAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
 	                ; DecrementPP and MoveHitTest
 	jp nz, .returnToHL
 	jp .returnToHL
@@ -4330,7 +4331,7 @@ IgnoredOrdersText:
 GetDamageVarsForPlayerAttack:
 	xor a
 	ld hl, wDamage ; damage to eventually inflict, initialise to zero
-	ldi [hl], a
+	ld [hli], a
 	ld [hl], a
 	ld hl, wPlayerMovePower
 	ld a, [hli]
@@ -4636,8 +4637,8 @@ CalculateDamage:
 
 	xor a
 	ld hl, hDividend
-	ldi [hl], a
-	ldi [hl], a
+	ld [hli], a
+	ld [hli], a
 	ld [hl], a
 
 ; Multiply level by 2
@@ -4650,11 +4651,11 @@ CalculateDamage:
 	pop af
 .nc
 	inc hl
-	ldi [hl], a
+	ld [hli], a
 
 ; Divide by 5
 	ld a, 5
-	ldd [hl], a
+	ld [hld], a
 	push bc
 	ld b, 4
 	call Divide
@@ -4893,7 +4894,7 @@ HandleCounterMove:
 ; if it did damage, double it
 	ld a, [hl]
 	add a
-	ldd [hl], a
+	ld [hld], a
 	ld a, [hl]
 	adc a
 	ld [hl], a
@@ -5244,7 +5245,7 @@ HandleBuildingRage:
 	call StatModifierUpEffect ; stat modifier raising function
 	pop hl
 	xor a
-	ldd [hl], a ; null move effect
+	ld [hld], a ; null move effect
 	ld a, RAGE
 	ld [hl], a ; restore the target pokemon's move number to Rage
 	ldh a, [hWhoseTurn]
@@ -5749,7 +5750,7 @@ RandomizeDamage:
 .loop
 	call BattleRandom
 	rrca
-	cp 217
+	cp 85 percent + 1
 	jr c, .loop
 	ldh [hMultiplier], a
 	call Multiply ; multiply damage by the random number, which is in the range [217, 255]
@@ -5842,7 +5843,7 @@ EnemyCalcMoveDamage:
 	jp c, EnemyMoveHitTest
 	call CriticalHitTest
 	call HandleCounterMove
-	jr z, handleIfEnemyMoveMissed
+	jr z, HandleIfEnemyMoveMissed
 	call SwapPlayerAndEnemyLevels
 	call GetDamageVarsForEnemyAttack
 	call SwapPlayerAndEnemyLevels
@@ -5853,13 +5854,13 @@ EnemyCalcMoveDamage:
 
 EnemyMoveHitTest:
 	call MoveHitTest
-handleIfEnemyMoveMissed:
+HandleIfEnemyMoveMissed:
 	ld a, [wMoveMissed]
 	and a
 	jr z, .moveDidNotMiss
 	ld a, [wEnemyMoveEffect]
 	cp EXPLODE_EFFECT
-	jr z, handleExplosionMiss
+	jr z, HandleExplosionMiss
 	jr EnemyCheckIfFlyOrChargeEffect
 .moveDidNotMiss
 	call SwapPlayerAndEnemyLevels
@@ -5868,13 +5869,13 @@ GetEnemyAnimationType:
 	ld a, [wEnemyMoveEffect]
 	and a
 	ld a, ANIMATIONTYPE_SHAKE_SCREEN_VERTICALLY
-	jr z, playEnemyMoveAnimation
+	jr z, PlayEnemyMoveAnimation
 	ld a, ANIMATIONTYPE_SHAKE_SCREEN_HORIZONTALLY_HEAVY
-	jr playEnemyMoveAnimation
-handleExplosionMiss:
+	jr PlayEnemyMoveAnimation
+HandleExplosionMiss:
 	call SwapPlayerAndEnemyLevels
 	xor a
-playEnemyMoveAnimation:
+PlayEnemyMoveAnimation:
 	push af
 	ld a, [wEnemyBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a ; does mon have a substitute?
@@ -6213,7 +6214,7 @@ CheckEnemyStatusConditions:
 	ld a, BIDE
 	ld [wEnemyMoveNum], a
 	call SwapPlayerAndEnemyLevels
-	ld hl, handleIfEnemyMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
+	ld hl, HandleIfEnemyMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
 	jp .enemyReturnToHL
 .checkIfThrashingAbout
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
@@ -6560,7 +6561,7 @@ LoadPlayerBackPic:
 	jr nz, .loop
 	ld de, vBackPic
 	call InterlaceMergeSpriteBuffers
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	ld hl, vSprites
 	ld de, sSpriteBuffer1

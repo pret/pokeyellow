@@ -11,7 +11,7 @@ UncompressSpriteData::
 	push af
 	ld a, b
 	call BankswitchCommon
-	ld a, $0
+	ld a, BANK("Sprite Buffers")
 	call OpenSRAM
 	call _UncompressSpriteData
 	call CloseSRAM

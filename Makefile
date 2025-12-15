@@ -14,6 +14,7 @@ rom_obj := \
 	gfx/pics.o \
 	gfx/pikachu.o \
 	gfx/sprites.o \
+	gfx/surfing_pikachu.o \
 	gfx/tilesets.o
 
 pokeyellow_obj       := $(rom_obj)
@@ -34,6 +35,11 @@ RGBASM  ?= $(RGBDS)rgbasm
 RGBFIX  ?= $(RGBDS)rgbfix
 RGBGFX  ?= $(RGBDS)rgbgfx
 RGBLINK ?= $(RGBDS)rgblink
+
+RGBASMFLAGS  ?= -Weverything -Wtruncation=1
+RGBLINKFLAGS ?= -Weverything -Wtruncation=1
+RGBFIXFLAGS  ?= -Weverything
+RGBGFXFLAGS  ?= -Weverything
 
 
 ### Build targets
@@ -81,7 +87,7 @@ tools:
 	$(MAKE) -C tools/
 
 
-RGBASMFLAGS = -Q8 -P includes.asm -Weverything -Wtruncation=1
+RGBASMFLAGS += -Q8 -P includes.asm
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
@@ -119,18 +125,19 @@ $(foreach obj, $(pokeyellow_vc_obj), $(eval $(call DEP,$(obj),$(obj:_vc.o=.asm))
 endif
 
 
-%.asm: ;
+RGBLINKFLAGS += -d
+pokeyellow.gbc:       RGBLINKFLAGS += -p 0x00
+pokeyellow_debug.gbc: RGBLINKFLAGS += -p 0xff
+pokeyellow_vc.gbc:    RGBLINKFLAGS += -p 0x00
 
-
-pokeyellow_pad       = 0x00
-pokeyellow_debug_pad = 0xff
-pokeyellow_vc_pad    = 0x00
-
-opts = -cjsv -k 01 -l 0x33 -m MBC5+RAM+BATTERY -p 0 -r 03 -t "POKEMON YELLOW"
+RGBFIXFLAGS += -cjsv -k 01 -l 0x33 -m MBC5+RAM+BATTERY -r 03 -t "POKEMON YELLOW"
+pokeyellow.gbc:       RGBFIXFLAGS += -p 0x00
+pokeyellow_debug.gbc: RGBFIXFLAGS += -p 0xff
+pokeyellow_vc.gbc:    RGBFIXFLAGS += -p 0x00
 
 %.gbc: $$(%_obj) layout.link
-	$(RGBLINK) -p $($*_pad) -w -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
-	$(RGBFIX) -p $($*_pad) $(opts) $@
+	$(RGBLINK) $(RGBLINKFLAGS) -l layout.link -m $*.map -n $*.sym -o $@ $(filter %.o,$^)
+	$(RGBFIX) $(RGBFIXFLAGS) $@
 
 
 ### Misc file-specific graphics rules
@@ -139,6 +146,8 @@ gfx/battle/move_anim_0.2bpp: tools/gfx += --trim-whitespace
 gfx/battle/move_anim_1.2bpp: tools/gfx += --trim-whitespace
 
 gfx/credits/the_end.2bpp: tools/gfx += --interleave --png=$<
+
+gfx/diploma/diploma.2bpp: tools/gfx += --trim-whitespace
 
 gfx/slots/slots_1.2bpp: tools/gfx += --trim-whitespace
 
@@ -152,20 +161,17 @@ gfx/trade/game_boy.2bpp: tools/gfx += --remove-duplicates
 gfx/sgb/border.2bpp: tools/gfx += --trim-whitespace
 
 gfx/surfing_pikachu/surfing_pikachu_1c.2bpp: tools/gfx += --trim-whitespace
-gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 
 
 ### Catch-all graphics rules
 
-%.png: ;
-
 %.2bpp: %.png
-	$(RGBGFX) --colors dmg=e4 $(rgbgfx) -o $@ $<
+	$(RGBGFX) --colors dmg $(RGBGFXFLAGS) -o $@ $<
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) -o $@ $@ || $$($(RM) $@ && false))
 
 %.1bpp: %.png
-	$(RGBGFX) --colors dmg=e4 $(rgbgfx) --depth 1 -o $@ $<
+	$(RGBGFX) --colors dmg $(RGBGFXFLAGS) --depth 1 -o $@ $<
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) --depth 1 -o $@ $@ || $$($(RM) $@ && false))
 
@@ -175,7 +181,18 @@ gfx/surfing_pikachu/surfing_pikachu_3.2bpp: tools/gfx += --trim-whitespace
 
 ### Catch-all audio rules
 
-%.wav: ;
-
 %.pcm: %.wav
 	tools/pcm $< $@
+
+
+### File extensions that are never generated and should be manually created
+
+%.asm: ;
+%.inc: ;
+%.png: ;
+%.pal: ;
+%.bin: ;
+%.blk: ;
+%.bst: ;
+%.rle: ;
+%.wav: ;

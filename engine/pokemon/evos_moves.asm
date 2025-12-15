@@ -280,7 +280,7 @@ RenameEvolvedMon:
 	cp [hl]
 	inc hl
 	ret nz
-	cp "@"
+	cp '@'
 	jr nz, .compareNamesLoop
 	ld a, [wWhichPokemon]
 	ld bc, NAME_LENGTH
@@ -364,7 +364,7 @@ LearnMoveFromLevelUp:
 	ld a, b
 	and a
 	jr z, .done
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	jr nc, .done
 	ld a, [wMoveNum]
 	cp THUNDERBOLT

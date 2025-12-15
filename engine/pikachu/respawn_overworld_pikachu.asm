@@ -1,5 +1,5 @@
 RespawnOverworldPikachu:
-	callfar IsThisPartymonStarterPikachu_Party
+	callfar IsThisPartyMonStarterPikachu
 	ret nc
 	ld a, $3
 	ld [wPikachuSpawnState], a
