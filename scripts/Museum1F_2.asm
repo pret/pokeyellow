@@ -152,8 +152,8 @@ Museum1FPrintScientist2Text::
 	call GiveItem
 	jr nc, .bag_full
 	SetEvent EVENT_GOT_OLD_AMBER
-	ld a, HS_OLD_AMBER
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OLD_AMBER
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ld hl, .ReceivedOldAmberText
 	jr .done

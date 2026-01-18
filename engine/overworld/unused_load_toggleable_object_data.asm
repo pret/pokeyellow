@@ -1,9 +1,9 @@
 Func_f0a54: ; unreferenced
 	ret
 
-LoadMissableObjectData::
+LoadToggleableObjectData::
 ; farcalled by an unreferenced function
-	ld hl, .MissableObjectsMaps
+	ld hl, .ToggleableObjectsMaps
 .loop
 	ld a, [hli]
 	cp -1
@@ -24,23 +24,23 @@ LoadMissableObjectData::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, wMissableObjectList
+	ld de, wToggleableObjectList
 	call CopyData
 	ret
 
-MACRO missable_object_map
+MACRO toggleable_object_map
 	db \1
 	db \3 - \2
 	dw \2
 ENDM
 
-.MissableObjectsMaps:
-	missable_object_map BLUES_HOUSE, .BluesHouse, .BluesHouseEnd
+.ToggleableObjectsMaps:
+	toggleable_object_map BLUES_HOUSE, .BluesHouse, .BluesHouseEnd
 	db -1 ; end
 
 .BluesHouse:
-	db 1, HS_DAISY_SITTING_COPY
-	db 2, HS_DAISY_WALKING_COPY
-	db 3, HS_TOWN_MAP_COPY
+	db 1, TOGGLE_DAISY_SITTING_COPY
+	db 2, TOGGLE_DAISY_WALKING_COPY
+	db 3, TOGGLE_TOWN_MAP_COPY
 	db -1 ; end
 .BluesHouseEnd:

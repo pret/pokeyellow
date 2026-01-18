@@ -14,7 +14,7 @@ OaksLab_ScriptPointers:
 	def_script_pointers
 	dw_const OaksLabDefaultScript,                   SCRIPT_OAKSLAB_DEFAULT
 	dw_const OaksLabOakEntersLabScript,              SCRIPT_OAKSLAB_OAK_ENTERS_LAB
-	dw_const OaksLabHideShowOaksScript,              SCRIPT_OAKSLAB_HIDE_SHOW_OAKS
+	dw_const OaksLabToggleOaksScript,                SCRIPT_OAKSLAB_TOGGLE_OAKS
 	dw_const OaksLabPlayerEntersLabScript,           SCRIPT_OAKSLAB_PLAYER_ENTERS_LAB
 	dw_const OaksLabFollowedOakScript,               SCRIPT_OAKSLAB_FOLLOWED_OAK
 	dw_const OaksLabOakChooseMonSpeechScript,        SCRIPT_OAKSLAB_OAK_CHOOSE_MON_SPEECH
@@ -42,8 +42,8 @@ OaksLabDefaultScript:
 	ld a, [wNPCMovementScriptFunctionNum]
 	and a
 	ret nz
-	ld a, HS_OAKS_LAB_OAK_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_OAK_2
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld hl, wStatusFlags4
 	res BIT_NO_BATTLES, [hl]
@@ -58,7 +58,7 @@ OaksLabOakEntersLabScript:
 	ld de, OakEntryMovement
 	call MoveSprite
 
-	ld a, SCRIPT_OAKSLAB_HIDE_SHOW_OAKS
+	ld a, SCRIPT_OAKSLAB_TOGGLE_OAKS
 	ld [wOaksLabCurScript], a
 	ret
 
@@ -68,15 +68,15 @@ OakEntryMovement:
 	db NPC_MOVEMENT_UP
 	db -1 ; end
 
-OaksLabHideShowOaksScript:
+OaksLabToggleOaksScript:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
-	ld a, HS_OAKS_LAB_OAK_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_OAK_2
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_OAKS_LAB_OAK_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_OAK_1
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 
 	ld a, SCRIPT_OAKSLAB_PLAYER_ENTERS_LAB
@@ -219,8 +219,8 @@ OaksLabRivalTakesPokeballScript:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	jr nz, .asm_1c564
-	ld a, HS_STARTER_BALL_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_STARTER_BALL_1
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ld a, OAKSLAB_RIVAL
 	ldh [hSpriteIndex], a
@@ -441,8 +441,8 @@ OaksLabPlayerWatchRivalExitScript:
 	jr nz, .checkRivalPosition
 	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
-	ld a, HS_OAKS_LAB_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	call PlayDefaultMusic
 	ld a, SCRIPT_OAKSLAB_PIKACHU_ESCAPES_POKEBALL
@@ -505,8 +505,8 @@ OaksLabRivalArrivesAtOaksRequestScript:
 	call DisplayTextID
 	callfar OaksLabPikachuMovementScript
 	call OaksLabCalcRivalMovementScript
-	ld a, HS_OAKS_LAB_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld a, [wNPCMovementDirections2Index]
 	ld [wSavedNPCMovementDirections2Index], a
@@ -565,11 +565,11 @@ OaksLabOakGivesPokedexScript:
 	ldh [hTextID], a
 	call DisplayTextID
 	call Delay3
-	ld a, HS_POKEDEX_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_POKEDEX_1
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_POKEDEX_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_POKEDEX_2
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	call OaksLabRivalFaceUpOakFaceDownScript
 	ld a, TEXT_OAKSLAB_OAK_THAT_WAS_MY_DREAM
@@ -588,11 +588,11 @@ OaksLabOakGivesPokedexScript:
 	ld a, SCRIPT_VIRIDIANCITY_AFTER_POKEDEX
 	ld [wViridianCityCurScript], a
 	SetEvent EVENT_OAK_GOT_PARCEL
-	ld a, HS_LYING_OLD_MAN
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_LYING_OLD_MAN
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_OLD_MAN_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OLD_MAN_2
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld a, [wSavedNPCMovementDirections2Index]
 	ld b, 0
@@ -617,14 +617,14 @@ OaksLabRivalLeavesWithPokedexScript:
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
 	call PlayDefaultMusic
-	ld a, HS_OAKS_LAB_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OAKS_LAB_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_1ST_ROUTE22_RIVAL_BATTLE
 	ResetEventReuseHL EVENT_2ND_ROUTE22_RIVAL_BATTLE
 	SetEventReuseHL EVENT_ROUTE22_RIVAL_WANTS_BATTLE
-	ld a, HS_ROUTE_22_RIVAL_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_ROUTE_22_RIVAL_1
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	xor a
 	ld [wJoyIgnore], a

@@ -18,9 +18,9 @@ RocketHideoutB4FSetScript:
 	ret
 
 RocketHideoutB4FScript_HideJessieJames:
-	ld a, HS_ROCKET_HIDEOUT_B4F_JAMES
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JAMES
 	call RocketHideoutB4FScript_HideObject
-	ld a, HS_ROCKET_HIDEOUT_B4F_JESSIE
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JESSIE
 	call RocketHideoutB4FScript_HideObject
 	ret
 
@@ -52,11 +52,11 @@ RocketHideoutB4FBeatGiovanniScript:
 	ldh [hTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
-	ld a, HS_ROCKET_HIDEOUT_B4F_GIOVANNI
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_GIOVANNI
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_ROCKET_HIDEOUT_B4F_ITEM_4
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_ITEM_4
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	call UpdateSprites
 	call GBFadeInFromBlack
@@ -114,9 +114,9 @@ RocketHideoutB4FScript_455a5:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
-	ld a, HS_ROCKET_HIDEOUT_B4F_JAMES
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JAMES
 	call RocketHideoutB4FScript_ShowObject
-	ld a, HS_ROCKET_HIDEOUT_B4F_JESSIE
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JESSIE
 	call RocketHideoutB4FScript_ShowObject
 	ld a, SCRIPT_ROCKETHIDEOUTB4F_SCRIPT4
 	call RocketHideoutB4FSetScript
@@ -255,9 +255,9 @@ RocketHideoutB4FScript12:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
-	ld a, HS_ROCKET_HIDEOUT_B4F_JAMES
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JAMES
 	call RocketHideoutB4FScript_HideObject
-	ld a, HS_ROCKET_HIDEOUT_B4F_JESSIE
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_JESSIE
 	call RocketHideoutB4FScript_HideObject
 	call UpdateSprites
 	call Delay3
@@ -277,14 +277,14 @@ RocketHideoutB4FScript13:
 	ret
 
 RocketHideoutB4FScript_ShowObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	call UpdateSprites
 	call Delay3
 	ret
 
 RocketHideoutB4FScript_HideObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ret
 
@@ -399,8 +399,8 @@ RocketHideoutB4FRocketEndBattleText:
 	text_promptbutton
 	text_asm
 	SetEvent EVENT_ROCKET_DROPPED_LIFT_KEY
-	ld a, HS_ROCKET_HIDEOUT_B4F_ITEM_5
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_ROCKET_HIDEOUT_B4F_ITEM_5
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	jp TextScriptEnd
 

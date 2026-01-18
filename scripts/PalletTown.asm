@@ -66,8 +66,8 @@ PalletTownOakHeyWaitScript:
 	ld [hli], a ; SPRITESTATEDATA2_MAPY
 	ld a, 14
 	ld [hl], a ; SPRITESTATEDATA2_MAPX
-	ld a, HS_PALLET_TOWN_OAK
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_PALLET_TOWN_OAK
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld a, $2
 	ld [wSprite01StateData1MovementStatus], a
@@ -206,11 +206,11 @@ PalletTownDaisyScript:
 	CheckBothEventsSet EVENT_GOT_TOWN_MAP, EVENT_ENTERED_BLUES_HOUSE, 1
 	jr nz, .next
 	SetEvent EVENT_DAISY_WALKING
-	ld a, HS_DAISY_SITTING
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_DAISY_SITTING
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_DAISY_WALKING
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_DAISY_WALKING
+	ld [wToggleableObjectIndex], a
 	predef_jump ShowObject
 .next
 	CheckEvent EVENT_GOT_POKEBALLS_FROM_OAK

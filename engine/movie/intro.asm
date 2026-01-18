@@ -158,5 +158,5 @@ LoadPresentsGraphic: ; unreferenced
 GameFreakIntro:
 	INCBIN "gfx/splash/gamefreak_presents.2bpp"
 	INCBIN "gfx/splash/gamefreak_logo.2bpp"
-	ds 16, $00 ; blank tile
+	ds TILE_SIZE, $00 ; blank tile
 GameFreakIntroEnd:

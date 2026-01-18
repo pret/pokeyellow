@@ -94,8 +94,8 @@ BillsHouseScript3:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
-	ld a, HS_BILL_POKEMON
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_BILL_POKEMON
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	call CheckPikachuFollowingPlayer
 	jr z, .asm_1e13e
@@ -153,8 +153,8 @@ BillsHouseScript5:
 	ld a, 5
 	ldh [hSpriteMapXCoord], a
 	call SetSpritePosition1
-	ld a, HS_BILL_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_BILL_1
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld c, 8
 	call DelayFrames
@@ -179,13 +179,13 @@ BillsHouseScript5:
 .asm_1e1c6
 	ld a, BILLSHOUSE_BILL1
 	ldh [hSpriteIndex], a
-	ld de, MovementData_1e807
+	ld de, .BillExitMachineMovement
 	call MoveSprite
 	ld a, SCRIPT_BILLSHOUSE_SCRIPT6
 	ld [wBillsHouseCurScript], a
 	ret
 
-MovementData_1e807:
+.BillExitMachineMovement:
 	db NPC_MOVEMENT_DOWN
 	db NPC_MOVEMENT_RIGHT
 	db NPC_MOVEMENT_RIGHT

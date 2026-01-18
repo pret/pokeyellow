@@ -3,7 +3,7 @@ _AdvancePlayerSprite::
 	ld b, a
 	ld a, [wSpritePlayerStateData1XStepVector]
 	ld c, a
-	ld hl, wWalkCounter ; walking animation counter
+	ld hl, wWalkCounter
 	dec [hl]
 	jr nz, .afterUpdateMapCoords
 ; if it's the end of the animation, update the player's map coordinates
@@ -16,7 +16,7 @@ _AdvancePlayerSprite::
 	add c
 	ld [wXCoord], a
 .afterUpdateMapCoords
-	ld a, [wWalkCounter] ; walking animation counter
+	ld a, [wWalkCounter]
 	cp $07
 	jp nz, .scrollBackgroundAndSprites
 ; if this is the first iteration of the animation

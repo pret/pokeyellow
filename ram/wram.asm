@@ -272,7 +272,7 @@ wOverworldMap:: ds 1300
 wOverworldMapEnd::
 
 NEXTU
-wTempPic:: ds 7 * 7 tiles
+wTempPic:: ds PIC_SIZE tiles
 
 NEXTU
 wPrinterData::
@@ -467,7 +467,7 @@ wCheckFor180DegreeTurn:: db
 
 	ds 1
 
-wMissableObjectIndex:: db
+wToggleableObjectIndex:: db
 
 wPredefID:: db
 wPredefHL:: dw
@@ -506,7 +506,7 @@ wFilteredBagItems:: ds 4
 NEXTU
 ; Saved copy of OAM for the first frame of the animation to make it easy to
 ; flip back from the second frame.
-wMonPartySpritesSavedOAM:: ds $60
+wMonPartySpritesSavedOAM:: ds OBJ_SIZE * 4 * PARTY_LENGTH
 
 NEXTU
 wTrainerCardBlkPacket:: ds $40
@@ -533,7 +533,7 @@ wSlotMachineSevenAndBarModeChance:: db
 ; ROM back to return to when the player is done with the slot machine
 wSlotMachineSavedROMBank:: db
 	ds 166
-wLuckySlotHiddenObjectIndex:: db
+wLuckySlotHiddenEventIndex:: db
 
 NEXTU
 ; values between 0-6. Shake screen horizontally, shake screen vertically, blink Pokemon...
@@ -544,7 +544,7 @@ wAnimPalette:: db
 NEXTU
 	ds 60
 ; temporary buffer when swapping party mon data
-wSwitchPartyMonTempBuffer:: ds 44 ; party_struct size
+wSwitchPartyMonTempBuffer:: ds PARTYMON_STRUCT_LENGTH
 
 NEXTU
 	ds 120
@@ -857,7 +857,11 @@ NEXTU
 	ds 1
 ; difference in X between the next ball and the current one
 wHUDPokeballGfxOffsetX:: db
-wHUDGraphicsTiles:: ds 3
+wHUDGraphicsTiles::
+wHUDUnusedTopTile:: db
+wHUDCornerTile:: db
+wHUDTriangleTile:: db
+wHUDGraphicsTilesEnd::
 
 NEXTU
 ; the level of the mon at the time it entered day care
@@ -909,12 +913,12 @@ wTempCoins1:: dw
 wTempCoins2:: dw
 
 NEXTU
-wHiddenObjectFunctionArgument:: db
-wHiddenObjectFunctionRomBank:: db
-wHiddenObjectIndex:: db
-wHiddenObjectY:: db
+wHiddenEventFunctionArgument:: db
+wHiddenEventFunctionRomBank:: db
+wHiddenEventIndex:: db
+wHiddenEventY:: db
 wHiddenItemOrCoinsIndex::
-wHiddenObjectX:: db
+wHiddenEventX:: db
 
 NEXTU
 wPlayerSpinInPlaceAnimFrameDelay:: db
@@ -1254,7 +1258,7 @@ NEXTU
 wPartyHPBarAttributes:: ds PARTY_LENGTH
 ENDU
 
-wGymCityName:: ds 17
+wGymCityName:: ds GYM_CITY_LENGTH
 
 wGymLeaderName:: ds NAME_LENGTH
 
@@ -1383,7 +1387,7 @@ wTrainerPicPointer:: dw
 	ds 1
 
 UNION
-wTempMoveNameBuffer:: ds ITEM_NAME_LENGTH + 1
+wTempMoveNameBuffer:: ds MOVE_NAME_LENGTH
 
 NEXTU
 ; The name of the mon that is learning a move.
@@ -1395,7 +1399,7 @@ ENDU
 ; money received after battle = base money × level of last enemy mon
 wTrainerBaseMoney:: dw ; BCD
 
-wMissableObjectCounter:: db
+wToggleableObjectCounter:: db
 
 	ds 1
 
@@ -1445,6 +1449,7 @@ wCriticalHitOrOHKO:: db
 
 wMoveMissed:: db
 
+wBattleStatusData::
 ; always 0
 wPlayerStatsToDouble:: db
 ; always 0
@@ -1502,6 +1507,7 @@ wPlayerNumHits:: db
 ENDU
 
 	ds 2
+wBattleStatusDataEnd::
 
 ; non-zero when an item or move that allows escape from battle was used
 wEscapedFromBattle:: db
@@ -1731,7 +1737,8 @@ wMoves:: ds NUM_MOVES
 
 wMoveNum:: db
 
-wMovesString:: ds 56
+; concatenated move name list where intermediate '@' are replaced with '<NEXT>'
+wMovesString:: ds NUM_MOVES * MOVE_NAME_LENGTH
 
 wUnusedCurMapTilesetCopy:: db
 
@@ -1981,7 +1988,7 @@ wWestConnectionHeader::  map_connection_struct wWest
 wEastConnectionHeader::  map_connection_struct wEast
 
 ; sprite set for the current map (11 sprite picture ID's)
-wSpriteSet:: ds 11
+wSpriteSet:: ds SPRITE_SET_LENGTH
 ; sprite set ID for the current map
 wSpriteSetID:: db
 
@@ -2154,9 +2161,9 @@ wUnusedMapVariable:: db
 
 wPlayerCoins:: dw ; BCD
 
-; bit array of missable objects. set = removed
-wMissableObjectFlags:: flag_array $100
-wMissableObjectFlagsEnd::
+; bit array of toggleable objects; bit set = toggled off
+wToggleableObjectFlags:: flag_array $100
+wToggleableObjectFlagsEnd::
 
 	ds 7
 
@@ -2165,9 +2172,9 @@ wSavedSpriteImageIndex:: db
 
 ; each entry consists of 2 bytes
 ; * the sprite ID (depending on the current map)
-; * the missable object index (global, used for wMissableObjectFlags)
+; * the toggleable object index (global, used for wToggleableObjectFlags)
 ; terminated with $FF
-wMissableObjectList:: ds 16 * 2 + 1
+wToggleableObjectList:: ds 16 * 2 + 1
 
 	ds 1
 

@@ -190,7 +190,7 @@ CheckCoords::
 	ld hl, wCoordIndex
 	inc [hl]
 	pop hl
-.compareYCoord
+; compare Y coord
 	cp b
 	jr z, .compareXCoord
 	inc hl
@@ -199,7 +199,7 @@ CheckCoords::
 	ld a, [hli]
 	cp c
 	jr nz, .loop
-.inArray
+; in array
 	scf
 	ret
 .notInArray

@@ -125,6 +125,9 @@ OakSpeech:
 	ld a, SFX_SHRINK
 	call PlaySound
 	pop af
+; bug: switching ROM Bank should not happen outside of Home Bank
+; This code does nothing, as PlaySound does all necessary Bank switch
+; It looks like a leftover from an early development stage
 	call BankswitchCommon
 	ld c, 4
 	call DelayFrames
@@ -151,6 +154,7 @@ OakSpeech:
 	ld [wAudioFadeOutControl], a
 	call StopAllMusic
 	pop af
+; bug: switching ROM Bank should not happen outside of Home Bank
 	call BankswitchCommon
 	ld c, 20
 	call DelayFrames
@@ -163,23 +167,27 @@ OakSpeech:
 	ld c, 50
 	call DelayFrames
 	call GBFadeOutToWhite
-	call ClearScreen ; rip more tail-end optimizations
+	call ClearScreen
 	ret
 
 OakSpeechText1:
 	text_far _OakSpeechText1
 	text_end
+
 OakSpeechText2:
 	text_far _OakSpeechText2A
 	sound_cry_pikachu
 	text_far _OakSpeechText2B
 	text_end
+
 IntroducePlayerText:
 	text_far _IntroducePlayerText
 	text_end
+
 IntroduceRivalText:
 	text_far _IntroduceRivalText
 	text_end
+
 OakSpeechText3:
 	text_far _OakSpeechText3
 	text_end

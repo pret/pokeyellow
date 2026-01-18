@@ -57,9 +57,9 @@ PokemonTower7FScript_60d2a:
 	ldh [hJoyHeld], a
 	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
-	ld a, HS_POKEMON_TOWER_7F_JESSIE
+	ld a, TOGGLE_POKEMON_TOWER_7F_JESSIE
 	call PokemonTower7FScript_ShowObject
-	ld a, HS_POKEMON_TOWER_7F_JAMES
+	ld a, TOGGLE_POKEMON_TOWER_7F_JAMES
 	call PokemonTower7FScript_ShowObject
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -201,9 +201,9 @@ PokemonTower7FScript9:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
-	ld a, HS_POKEMON_TOWER_7F_JESSIE
+	ld a, TOGGLE_POKEMON_TOWER_7F_JESSIE
 	call PokemonTower7FScript_HideObject
-	ld a, HS_POKEMON_TOWER_7F_JAMES
+	ld a, TOGGLE_POKEMON_TOWER_7F_JAMES
 	call PokemonTower7FScript_HideObject
 	call UpdateSprites
 	call Delay3
@@ -223,22 +223,22 @@ PokemonTower7FScript10:
 	ret
 
 PokemonTower7FScript_ShowObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	call UpdateSprites
 	call Delay3
 	ret
 
 PokemonTower7FScript_HideObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ret
 
 PokemonTower7FWarpToMrFujiHouseScript:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
-	ld a, HS_POKEMON_TOWER_7F_MR_FUJI
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_POKEMON_TOWER_7F_MR_FUJI
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ld a, SPRITE_FACING_UP
 	ld [wSpritePlayerStateData1FacingDirection], a
@@ -303,14 +303,14 @@ PokemonTower7FMrFujiText:
 	call PrintText
 	SetEvent EVENT_RESCUED_MR_FUJI
 	SetEvent EVENT_RESCUED_MR_FUJI_2
-	ld a, HS_MR_FUJIS_HOUSE_MR_FUJI
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_MR_FUJIS_HOUSE_MR_FUJI
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
-	ld a, HS_SAFFRON_CITY_E
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_SAFFRON_CITY_E
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_SAFFRON_CITY_F
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_SAFFRON_CITY_F
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld a, SCRIPT_POKEMONTOWER7F_WARP_TO_MR_FUJI_HOUSE
 	ld [wPokemonTower7FCurScript], a

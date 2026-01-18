@@ -78,7 +78,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld a, [de]
 	inc a
 	jr z, .applyDamageLoopDone
-	ld bc, wPartyMon2 - wPartyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	add hl, bc
 	push hl
 	ld hl, wWhichPokemon
@@ -95,7 +95,7 @@ ApplyOutOfBattlePoisonDamage:
 	and 1 << PSN
 	or e
 	ld e, a
-	ld bc, wPartyMon2 - wPartyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	add hl, bc
 	dec d
 	jr nz, .countPoisonedLoop

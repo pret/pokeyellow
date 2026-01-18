@@ -213,13 +213,13 @@ LeaveMapThroughHoleAnim:
 	ld [wShadowOAMSprite02TileID], a
 	ld a, [wShadowOAMSprite01TileID]
 	ld [wShadowOAMSprite03TileID], a
-	ld a, $a0
+	ld a, SCREEN_HEIGHT_PX + OAM_Y_OFS
 	ld [wShadowOAMSprite00YCoord], a
 	ld [wShadowOAMSprite01YCoord], a
 	ld c, 2
 	call DelayFrames
 	; hide upper half of player's sprite
-	ld a, $a0
+	ld a, SCREEN_HEIGHT_PX + OAM_Y_OFS
 	ld [wShadowOAMSprite02YCoord], a
 	ld [wShadowOAMSprite03YCoord], a
 	call GBFadeOutToWhite
@@ -270,7 +270,7 @@ InitFacingDirectionList:
 	ld [wSavedPlayerScreenY], a
 	ld hl, PlayerSpinningFacingOrder
 	ld de, wFacingDirectionList
-	ld bc, 4
+	ld bc, OBJ_SIZE
 	call CopyData
 	ld a, [wSpritePlayerStateData1ImageIndex] ; (image index is locked to standing images)
 	ld hl, wFacingDirectionList
@@ -294,7 +294,7 @@ SpinPlayerSprite:
 	push hl
 	ld hl, wFacingDirectionList
 	ld de, wFacingDirectionList - 1
-	ld bc, 4
+	ld bc, OBJ_SIZE
 	call CopyData
 	ld a, [wFacingDirectionList - 1]
 	ld [wFacingDirectionList + 3], a
@@ -400,7 +400,7 @@ FishingAnim:
 	ld hl, FishingRodOAM
 	add hl, bc
 	ld de, wShadowOAMSprite39
-	ld bc, $4
+	ld bc, OBJ_SIZE
 	call CopyData
 	ld c, 100
 	call DelayFrames
@@ -430,7 +430,7 @@ FishingAnim:
 	ld a, [wSpritePlayerStateData1ImageIndex] ; (image index is locked to standing images)
 	cp SPRITE_FACING_UP
 	jr nz, .skipHidingFishingRod
-	ld a, $a0
+	ld a, SCREEN_HEIGHT_PX + OAM_Y_OFS
 	ld [wShadowOAMSprite39YCoord], a
 
 .skipHidingFishingRod

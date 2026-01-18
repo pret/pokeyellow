@@ -8,8 +8,8 @@ CeruleanCityClearScripts:
 	xor a ; SCRIPT_CERULEANCITY_DEFAULT
 	ld [wJoyIgnore], a
 	ld [wCeruleanCityCurScript], a
-	ld a, HS_CERULEAN_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_CERULEAN_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef_jump HideObject
 
 CeruleanCity_ScriptPointers:
@@ -88,8 +88,8 @@ ENDC
 	call GetPointerWithinSpriteStateData2
 	ld [hl], 25
 .playerOnRightSideOfBridge
-	ld a, HS_CERULEAN_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_CERULEAN_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	ld de, CeruleanCityMovement1
 	ld a, CERULEANCITY_RIVAL
@@ -203,8 +203,8 @@ CeruleanCityRivalCleanupScript:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
-	ld a, HS_CERULEAN_RIVAL
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_CERULEAN_RIVAL
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a

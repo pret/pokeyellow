@@ -141,12 +141,12 @@ PrepareOAMData::
 .asm_4a41
 	ld a, [wMovementFlags]
 	bit BIT_LEDGE_OR_FISHING, a
-	ld c, $a0
+	ld c, LOW(wShadowOAMEnd)
 	jr z, .clear
 
 ; Don't clear the last 4 entries because they are used for the shadow in the
 ; jumping down ledge animation and the rod in the fishing animation.
-	ld c, $90
+	ld c, LOW(wShadowOAMSprite36)
 
 .clear
 	ldh a, [hOAMBufferOffset]

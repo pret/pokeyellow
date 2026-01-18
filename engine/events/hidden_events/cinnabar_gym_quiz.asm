@@ -11,7 +11,7 @@ CinnabarGymQuiz::
 	ld [wOpponentAfterWrongAnswer], a
 	ld hl, wd474
 	res 7, [hl]
-	ld a, [wHiddenObjectFunctionArgument]
+	ld a, [wHiddenEventFunctionArgument]
 	push af
 	and $f
 	ldh [hGymGateIndex], a
