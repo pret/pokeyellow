@@ -100,7 +100,14 @@ CinnabarLabFossilRoomScientist1Text:
 
 CinnabarLabFossilRoomScientist2Text:
 	text_asm
+	ld a, [wUnusedObtainedBadges]
+	bit BIT_NUZLOPTIONS_ALL_151_POKEMON, a
+	jr z, .standard
+	ld a, TRADE_FOR_MEW
+	jr .doTrade
+.standard
 	ld a, TRADE_FOR_STICKY
+.doTrade
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 	jp TextScriptEnd

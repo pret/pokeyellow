@@ -323,3 +323,51 @@ INCLUDE "data/wild/maps/VictoryRoad2F.asm"
 INCLUDE "data/wild/maps/VictoryRoad3F.asm"
 INCLUDE "data/wild/maps/VictoryRoad1F.asm"
 INCLUDE "data/wild/maps/DiglettsCave.asm"
+
+; All151 alternate wild data — used when BIT_NUZLOPTIONS_ALL_151_POKEMON is set
+INCLUDE "data/wild/maps/ViridianForest_All151.asm"
+INCLUDE "data/wild/maps/Route4_All151.asm"
+INCLUDE "data/wild/maps/Route5_All151.asm"
+INCLUDE "data/wild/maps/Route6_All151.asm"
+INCLUDE "data/wild/maps/Route7_All151.asm"
+INCLUDE "data/wild/maps/Route8_All151.asm"
+INCLUDE "data/wild/maps/Route10_All151.asm"
+INCLUDE "data/wild/maps/Route11_All151.asm"
+INCLUDE "data/wild/maps/Route21_All151.asm"
+INCLUDE "data/wild/maps/PowerPlant_All151.asm"
+INCLUDE "data/wild/maps/PokemonMansion1F_All151.asm"
+INCLUDE "data/wild/maps/PokemonMansion2F_All151.asm"
+INCLUDE "data/wild/maps/PokemonMansion3F_All151.asm"
+INCLUDE "data/wild/maps/PokemonMansionB1F_All151.asm"
+
+; Patch table: map_id (1 byte), alternate wild data pointer (2 bytes), $FF = end
+WildDataPatchTable_All151:
+	db VIRIDIAN_FOREST
+	dw ViridianForestWildMons_All151
+	db ROUTE_4
+	dw Route4WildMons_All151
+	db ROUTE_5
+	dw Route5WildMons_All151
+	db ROUTE_6
+	dw Route6WildMons_All151
+	db ROUTE_7
+	dw Route7WildMons_All151
+	db ROUTE_8
+	dw Route8WildMons_All151
+	db ROUTE_10
+	dw Route10WildMons_All151
+	db ROUTE_11
+	dw Route11WildMons_All151
+	db ROUTE_21
+	dw Route21WildMons_All151
+	db POWER_PLANT
+	dw PowerPlantWildMons_All151
+	db POKEMON_MANSION_1F
+	dw PokemonMansion1FWildMons_All151
+	db POKEMON_MANSION_2F
+	dw PokemonMansion2FWildMons_All151
+	db POKEMON_MANSION_3F
+	dw PokemonMansion3FWildMons_All151
+	db POKEMON_MANSION_B1F
+	dw PokemonMansionB1FWildMons_All151
+	db $ff

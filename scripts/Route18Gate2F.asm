@@ -9,7 +9,14 @@ Route18Gate2F_TextPointers:
 
 Route18Gate2FCookText:
 	text_asm
+	ld a, [wUnusedObtainedBadges]
+	bit BIT_NUZLOPTIONS_ALL_151_POKEMON, a
+	jr z, .standard
+	ld a, TRADE_FOR_HARRY
+	jr .doTrade
+.standard
 	ld a, TRADE_FOR_SPIKE
+.doTrade
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 	jp TextScriptEnd

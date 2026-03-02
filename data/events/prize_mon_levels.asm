@@ -6,3 +6,8 @@ PrizeMonLevelDictionary:
 	db SCYTHER,    30
 	db PINSIR,     30
 	db PORYGON,    26
+
+	; All151 Vendor 1 levels
+	db EEVEE,      25
+	db SLOWPOKE,   15
+	db CLEFAIRY,   15

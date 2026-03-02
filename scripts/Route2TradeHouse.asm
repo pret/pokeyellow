@@ -12,7 +12,14 @@ Route2TradeHouseScientistText:
 
 Route2TradeHouseGameboyKidText:
 	text_asm
+	ld a, [wUnusedObtainedBadges]
+	bit BIT_NUZLOPTIONS_ALL_151_POKEMON, a
+	jr z, .standard
+	ld a, TRADE_FOR_JACKIE
+	jr .doTrade
+.standard
 	ld a, TRADE_FOR_MILES
+.doTrade
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 	jp TextScriptEnd

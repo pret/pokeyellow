@@ -35,6 +35,13 @@ DEF SLOTS_SOMEONESKEYS EQU $ff
 	const TRADE_FOR_BUFFY
 	const TRADE_FOR_CEZANNE
 	const TRADE_FOR_RICKY
+	; All151 trades — active when BIT_NUZLOPTIONS_ALL_151_POKEMON is set
+	const TRADE_FOR_BRUCE   ; SEEL → HITMONLEE    (Route 11)
+	const TRADE_FOR_JACKIE  ; ELECTABUZZ → HITMONCHAN (Route 2)
+	const TRADE_FOR_HARRY   ; TANGELA → KADABRA → ALAKAZAM (Route 18)
+	const TRADE_FOR_ROCKY   ; RHYDON → GRAVELER → GOLEM (Cinnabar Lab)
+	const TRADE_FOR_TOSHIO  ; DEWGONG → HAUNTER → GENGAR (Cinnabar Lab)
+	const TRADE_FOR_MEW     ; LICKITUNG → MEW (Cinnabar Lab Fossil Room)
 DEF NUM_NPC_TRADES EQU const_value
 
 ; in game trade dialog sets

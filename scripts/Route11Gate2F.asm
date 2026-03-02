@@ -10,7 +10,14 @@ Route11Gate2F_TextPointers:
 
 Route11Gate2FYoungsterText:
 	text_asm
+	ld a, [wUnusedObtainedBadges]
+	bit BIT_NUZLOPTIONS_ALL_151_POKEMON, a
+	jr z, .standard
+	ld a, TRADE_FOR_BRUCE
+	jr .doTrade
+.standard
 	ld a, TRADE_FOR_GURIO
+.doTrade
 	ld [wWhichTrade], a
 	predef DoInGameTradeDialogue
 Route11Gate2FScriptEnd:
