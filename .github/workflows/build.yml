@@ -9,25 +9,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y make gcc git build-essential
+          sudo apt-get install -y make gcc git build-essential libpng-dev
 
       - name: Install RGBDS Compiler
         run: |
           git clone https://github.com/gbdev/rgbds.git
           cd rgbds
+          # Checkout a stable release compatible with older decomps
+          git checkout v0.5.2
           make
           sudo make install
           cd ..
 
+      - name: Pre-build Repository Tools
+        run: |
+          # This builds the asset and text tools included in pokeyellow
+          make -C tools/
+
       - name: Build Pokémon Yellow ROM
         run: |
+          # 'make' compiles the assembly code into the final GBC file
           make
 
       - name: Upload Finished GBC ROM
         uses: actions/upload-artifact@v4
         with:
           name: pokeyellow-rom
-          path: pokeyellow.gbc
+          path: |
+            pokeyellow.gbc
+            pokeyellow.sym
