@@ -12,28 +12,42 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y make gcc git build-essential libpng-dev
+          sudo apt-get install -y make gcc git build-essential libpng-dev yacc bison
 
-      - name: Install RGBDS Compiler
+      - name: Automatically Install Correct RGBDS Compiler
         run: |
+          # This reads the game's configuration to see exactly which RGBDS version it wants
+          if [ -f rgbds.env ]; then
+            source rgbds.env
+          elif [ -f Makefile ]; then
+            sed -i 's/MIN_RGBDS_VERSION ?=/MIN_RGBDS_VERSION =/g' Makefile
+          fi
+          
+          # If no specific version is flagged, we use the stable v0.7.0 standard
+          RGBDS_VERSION=${RGBDS_VERSION:-v0.7.0}
+          
           git clone https://github.com/gbdev/rgbds.git
           cd rgbds
-          # Checkout a stable release compatible with older decomps
-          git checkout v0.5.2
+          git checkout $RGBDS_VERSION
           make
           sudo make install
           cd ..
 
       - name: Pre-build Repository Tools
         run: |
-          # This builds the asset and text tools included in pokeyellow
           make -C tools/
 
       - name: Build Pokémon Yellow ROM
         run: |
-          # 'make' compiles the assembly code into the final GBC file
           make
-
+          
+      - name: Upload Finished GBC ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: pokeyellow-rom
+          path: |
+            *.gbc
+            *.sym
       - name: Upload Finished GBC ROM
         uses: actions/upload-artifact@v4
         with:
