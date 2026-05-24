@@ -3114,7 +3114,7 @@ SendNewMonToBox:
 
 ; checks if the tile in front of the player is a shore or water tile
 ; used for surfing and fishing
-; unsets carry if it is, sets carry if not
+; sets carry if it is, unsets carry if not
 IsNextTileShoreOrWater::
 	ld a, [wCurMapTileset]
 	ld hl, WaterTilesets
@@ -3124,15 +3124,15 @@ IsNextTileShoreOrWater::
 	ld hl, WaterTile
 	ld a, [wCurMapTileset]
 	cp SHIP_PORT ; Vermilion Dock tileset
-	jr z, .skipShoreTiles ; if it's the Vermilion Dock tileset
-	cp GYM ; eastern shore tile in Safari Zone
 	jr z, .skipShoreTiles
-	cp DOJO ; usual eastern shore tile
+	cp GYM
+	jr z, .skipShoreTiles
+	cp DOJO
 	jr z, .skipShoreTiles
 	ld hl, ShoreTiles
 .skipShoreTiles
 	ld a, [wTileInFrontOfPlayer]
-	ld de, $1
+	ld de, 1
 	call IsInArray
 	ret
 
