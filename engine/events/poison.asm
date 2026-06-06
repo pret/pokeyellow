@@ -13,7 +13,7 @@ ApplyOutOfBattlePoisonDamage:
 	and a
 	jp z, .noBlackOut
 	call IncrementDayCareMonExp
-	call Func_c4c7
+	call UpdatePikachuHappinessAndMood
 	ld a, [wStepCounter]
 	and $3 ; is the counter a multiple of 4?
 	jp nz, .skipPoisonEffectAndSound ; only apply poison damage every fourth step
@@ -125,28 +125,28 @@ ApplyOutOfBattlePoisonDamage:
 	ld [wOutOfBattleBlackout], a
 	ret
 
-Func_c4c7:
+UpdatePikachuHappinessAndMood:
 	ld a, [wStepCounter]
 	and a
-	jr nz, .asm_c4de
+	jr nz, .doNotUpdateHappiness
 	call Random
 	and $1
-	jr z, .asm_c4de
-	callfar_ModifyPikachuHappiness PIKAHAPPY_WALKING
-.asm_c4de
+	jr z, .doNotUpdateHappiness
+	calladb_ModifyPikachuHappiness $6
+.doNotUpdateHappiness
 	ld hl, wPikachuMood
 	ld a, [hl]
 	cp $80
-	jr z, .asm_c4ef
-	jr c, .asm_c4ea
+	jr z, .done
+	jr c, .increaseHappiness
 	dec a
 	dec a
-.asm_c4ea
+.increaseHappiness
 	inc a
 	ld [hl], a
 	cp $80
 	ret nz
-.asm_c4ef
+.done
 	xor a
-	ld [wd49b], a
+	ld [wd49c], a
 	ret
