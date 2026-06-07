@@ -2723,10 +2723,10 @@ ROMX bank #3:
 	         $44a6 = ApplyOutOfBattlePoisonDamage.skipPoisonEffectAndSound
 	         $44c2 = ApplyOutOfBattlePoisonDamage.noBlackOut
 	         $44c3 = ApplyOutOfBattlePoisonDamage.done
-	         $44c7 = Func_c4c7
-	         $44de = Func_c4c7.asm_c4de
-	         $44ea = Func_c4c7.asm_c4ea
-	         $44ef = Func_c4c7.asm_c4ef
+	         $44c7 = UpdatePikachuHappinessAndMood
+	         $44de = UpdatePikachuHappinessAndMood.noWalkingHappinessIncrease
+	         $44ea = UpdatePikachuHappinessAndMood.increaseMood
+	         $44ef = UpdatePikachuHappinessAndMood.update_wd49b
 	         $44f4 = LoadTilesetHeader
 	         $4531 = LoadTilesetHeader.dungeon
 	         $454b = LoadTilesetHeader.done

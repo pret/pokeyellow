@@ -2686,10 +2686,10 @@
 03:44a6 ApplyOutOfBattlePoisonDamage.skipPoisonEffectAndSound
 03:44c2 ApplyOutOfBattlePoisonDamage.noBlackOut
 03:44c3 ApplyOutOfBattlePoisonDamage.done
-03:44c7 Func_c4c7
-03:44de Func_c4c7.asm_c4de
-03:44ea Func_c4c7.asm_c4ea
-03:44ef Func_c4c7.asm_c4ef
+03:44c7 UpdatePikachuHappinessAndMood
+03:44de UpdatePikachuHappinessAndMood.noWalkingHappinessIncrease
+03:44ea UpdatePikachuHappinessAndMood.increaseMood
+03:44ef UpdatePikachuHappinessAndMood.update_wd49b
 03:44f4 LoadTilesetHeader
 03:4531 LoadTilesetHeader.dungeon
 03:454b LoadTilesetHeader.done
