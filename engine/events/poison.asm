@@ -125,32 +125,32 @@ ApplyOutOfBattlePoisonDamage:
 	ld [wOutOfBattleBlackout], a
 	ret
 
-; this function is called at every step
-; every 256 steps, there's a 50% chance for happiness to increase
-; every step, mood converge by 1 unit towards the central value of 128:
-; if it's lower than 128 it increases by 1, if it's higher, it decreases
 UpdatePikachuHappinessAndMood:
 	ld a, [wStepCounter]
-	and a
-	jr nz, .doNotUpdateHappiness ; not step number 0, let's handle the mood
+	and a ; is the counter nonzero?
+	jr nz, .doNotUpdateHappiness ; only handle Pikachu's mood every 256 steps
 	call Random
-	and $1 ; 50% chance to increase happiness
-	jr z, .doNotUpdateHappiness
-	callfar_ModifyPikachuHappiness PIKAHAPPY_WALKING ; increase happiness
-.doNotUpdateHappiness
+	and 1 ; 50% chance to increase happiness
+	jr z, .noWalkingHappinessIncrease
+	callfar_ModifyPikachuHappiness PIKAHAPPY_WALKING
+.noWalkingHappinessIncrease
+; every step, mood converges by 1 unit towards the central value of 128:
+; if it's lower than 128 it increases by 1, if it's higher, it decreases
 	ld hl, wPikachuMood
 	ld a, [hl]
-	cp $80 ; = 128, mid value
-	jr z, .done ; mood doesn't need to be modified
-	jr c, .increaseMood ; carry means mood < 128, must be increased by 1
+	cp 128 ; central value
+	jr z, .update_wd49b ; mood == 128, don't modify it
+	jr c, .increaseMood ; mood < 128, must increase by 1
+	; mood > 128, must decrease by 1 (so decrease by 2 and then increase by 1)
 	dec a
-	dec a ; decreased by 2 and then increased by 1
+	dec a
 .increaseMood
 	inc a
 	ld [hl], a
-	cp $80
+; if the mood has reached its "stable" central value, do not update wd49b
+	cp 128
 	ret nz
-.done
+.update_wd49b
 	xor a
-	ld [wd49b], a ; variable used in other mood-related function, to keep track if the mood was "stable"
+	ld [wd49b], a ; variable used in other mood-related functions, to keep track if the mood was "stable"
 	ret
