@@ -128,7 +128,7 @@ ApplyOutOfBattlePoisonDamage:
 UpdatePikachuHappinessAndMood:
 	ld a, [wStepCounter]
 	and a ; is the counter nonzero?
-	jr nz, .doNotUpdateHappiness ; only handle Pikachu's mood every 256 steps
+	jr nz, .noWalkingHappinessIncrease ; only increase Pikachu's happiness every 256 steps
 	call Random
 	and 1 ; 50% chance to increase happiness
 	jr z, .noWalkingHappinessIncrease
