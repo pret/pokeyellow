@@ -65,6 +65,17 @@ A DPMI host must be available — the DJGPP stub accepts any DPMI 0.9 host:
 
 **Run in 86Box:** Configure a 386 or 486 machine; no special settings needed.
 
+**Controls:**
+
+| Key | GB button |
+|-----|-----------|
+| Arrow keys | D-pad |
+| X | A |
+| Z | B |
+| Enter | Start |
+| Right Shift / Tab | Select |
+| Esc | Quit to DOS |
+
 ---
 
 ## Hard Conventions

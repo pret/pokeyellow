@@ -19,7 +19,12 @@ stays cross-referenceable against pret as documentation.
 
 ## Current Phase
 
-**Phase 0: Bootstrapping** — See [TODO.md](TODO.md) for open items.
+**Phase 1: Core Infrastructure** — See [TODO.md](TODO.md) for open items.
+Phase 0 (bootstrapping) is complete: `make compare` verifies the reference
+ROM with rgbds 1.0.1, and the DOS skeleton (mode 13h, 60 Hz PIT, DPMI memory)
+is verified in DOSBox-X. Done so far in Phase 1: BG tile decoder + tilemap
+renderer with SCX/SCY scrolling (`src/ppu/ppu.asm`), keyboard → joypad ISR
+(`src/input/joypad.asm`). Next: window layer, OAM sprites, save system.
 
 ---
 
@@ -41,6 +46,10 @@ dos_port/
     timing.asm             ← PIT 60 Hz, tick ISR, vblank sync
   src/util/
     fill_memory.asm        ← first translated routine (FillMemory)
+  src/ppu/
+    ppu.asm                ← software PPU: BG tile decoder + tilemap renderer
+  src/input/
+    joypad.asm             ← INT 9h keyboard ISR → GB joypad state
   Makefile
   link.ld                  ← DJGPP linker script
 docs/
@@ -104,6 +113,12 @@ Other verified DPMI gotchas:
 - A hardware ISR must load DS via `mov ds, [cs:isr_ds]` (CS base = DS base
   under DJGPP); don't assume SS holds the flat selector on ISR entry
 - Restore the PIT divisor and original IRQ0 vector before exit (`pit_restore`)
+- **`[EBP + disp]` addressing defaults to the SS segment**, and the go32
+  loader (verified under HDPMI32) gives us an SS whose base does NOT match
+  DS — so every EBP-relative GB memory access silently read/wrote the wrong
+  linear memory until `setup_flat_access` was taught to normalize SS to the
+  DS selector (with an ESP rebase of `ss_base - ds_base` in the same
+  instruction pair). Symptom when broken: renderer reads all zeros, no crash.
 
 ### Video
 - VGA Mode 13h (320×200, 256 colors)

@@ -68,6 +68,15 @@ test_palette:
 ; Note: port 0x3C9 write order is R, G, B — so ramp 0 is actually red.
 ; Cosmetic only; this palette exists just to verify the DAC.
 
+; DMG shade palette: entries 0–3, written after the ramps so the BG
+; renderer's shade indices (0 = lightest … 3 = darkest) look like a real
+; Game Boy. 6-bit RGB. Full 256-entry game palette layout is Phase 5.
+dmg_palette:
+    db 56, 62, 52       ; shade 0 — pale green-white
+    db 34, 48, 28       ; shade 1 — light green
+    db 13, 26, 21       ; shade 2 — dark green
+    db  2,  6,  8       ; shade 3 — near-black green
+
 ; ---------------------------------------------------------------------------
 ; Code
 ; ---------------------------------------------------------------------------
@@ -105,6 +114,18 @@ video_init:
     lodsb
     out dx, al
     loop .pal_loop
+
+    ; Overwrite entries 0–3 with the DMG shade palette (BG renderer output)
+    mov dx, 0x3C8
+    xor al, al
+    out dx, al
+    mov dx, 0x3C9
+    mov esi, dmg_palette
+    mov ecx, 4 * 3
+.dmg_loop:
+    lodsb
+    out dx, al
+    loop .dmg_loop
 
     call draw_test_pattern
 
