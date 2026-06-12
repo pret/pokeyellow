@@ -28,6 +28,9 @@ dos_port/pokeyellow_dos.exe
 # DOS save files
 *.dsv
 
+# Claude Code session data
+.claude/
+
 # precompiled python
 *.pyc
 *$py.class
