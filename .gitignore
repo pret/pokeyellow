@@ -18,8 +18,18 @@
 *.map
 *.sym
 
-# tool binaries
+# tool binaries (pret)
 *.exe
+
+# DOS port build artifacts
+dos_port/**/*.o
+dos_port/pokeyellow_dos.exe
+
+# DOS save files
+*.dsv
+
+# Claude Code session data
+.claude/
 
 # precompiled python
 *.pyc
