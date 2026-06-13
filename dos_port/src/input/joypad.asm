@@ -294,6 +294,14 @@ joypad_update:
 .no_btn:
     mov [ebp + IO_JOYP], al
 
+    ; Build hJoyHeld in GB joypad byte format (active HIGH):
+    ;   bit 7=Down  6=Up  5=Left  4=Right  (pad_dpad shifted up by 4)
+    ;   bit 3=Start 2=Select 1=B  0=A      (pad_buttons as-is, same bit order)
+    movzx eax, byte [pad_dpad]   ; bits 3=Down,2=Up,1=Left,0=Right
+    shl al, 4                    ; → bits 7=Down,6=Up,5=Left,4=Right
+    or  al, [pad_buttons]        ; merge A/B/Select/Start in low nibble
+    mov [ebp + H_JOY_HELD], al
+
     pop ebx
     pop eax
     ret

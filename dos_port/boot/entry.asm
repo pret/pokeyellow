@@ -25,22 +25,11 @@ GB_TOTAL_SIZE   equ GB_BACKBUF + GB_BACKBUF_SIZE    ; 0x17A00 (96768 bytes)
 ; External symbols from other boot modules
 ; ---------------------------------------------------------------------------
 extern video_init        ; boot/video.asm
-extern present           ; boot/video.asm — 2× blit back buffer → VGA
 extern pit_init          ; boot/timing.asm
 extern pit_restore       ; boot/timing.asm
-extern wait_vblank       ; boot/timing.asm
-extern wait_pit_tick     ; boot/timing.asm
-extern render_bg         ; src/ppu/ppu.asm — BG layer → back buffer
 extern joypad_init       ; src/input/joypad.asm
 extern joypad_restore    ; src/input/joypad.asm
-extern joypad_update     ; src/input/joypad.asm — compose IO_JOYP shadow
-extern pad_dpad          ; src/input/joypad.asm — D-pad held state
-extern pad_quit          ; src/input/joypad.asm — Esc pressed
 extern Init              ; src/init/init.asm — power-on init
-extern LoadFontTilePatterns     ; src/gfx/load_font.asm — 1bpp font → vFont ($8800)
-extern LoadTextBoxTilePatterns  ; src/gfx/load_font.asm — 2bpp box tiles → vChars2+$60
-extern PlaceString              ; src/text/text.asm — render string into tile buffer
-extern text_engine_init         ; src/text/text.asm — write <DONE> sentinel to GB mem
 
 ; ---------------------------------------------------------------------------
 ; Exported symbols
@@ -48,6 +37,7 @@ extern text_engine_init         ; src/text/text.asm — write <DONE> sentinel to
 global start
 global ds_base           ; linear base address of our DS selector
 global bug_fix_level     ; runtime BUG_FIX_LEVEL (0/1/2), set from command line
+global cleanup           ; called by frame.asm when pad_quit is set
 
 ; ---------------------------------------------------------------------------
 ; BSS (zeroed by the stub before start)
@@ -69,22 +59,6 @@ align 4
 arg_fixall:   db '/FIXALL',  0
 arg_fixcrit:  db '/FIXCRIT', 0
 
-; Phase 2 demo strings in pret charmap codes.
-; 'A'=$80 … 'Z'=$99, ' '=$7F, '@'=$50 terminator.
-; "POKEMON YELLOW"
-demo_str1:
-    db 0x8F,0x8E,0x8A,0x84,0x8C,0x8E,0x8D,0x7F   ; P O K E M O N _
-    db 0x98,0x84,0x8B,0x8B,0x8E,0x96,0x50         ; Y E L L O W @
-; "DOS PORT"
-demo_str2:
-    db 0x83,0x8E,0x92,0x7F,0x8F,0x8E,0x91,0x93,0x50 ; D O S _ P O R T @
-demo_str1_len equ demo_str2 - demo_str1
-demo_str2_len equ $ - demo_str2
-
-; PlaceString reads its source through EBP, so strings must live in GB space.
-; Stage them at this WRAM0 offset (safely past audio scratch at $C0xx).
-DEMO_STR_WRAM   equ GB_WRAM0 + 0x100
-
 ; ---------------------------------------------------------------------------
 ; Code
 ; ---------------------------------------------------------------------------
@@ -104,27 +78,12 @@ start:
     xor eax, eax
     rep stosd
 
-    call Init                   ; Phase 2: clear memory, reset I/O shadows to DMG
-    call LoadFontTilePatterns   ; expand 1bpp font → vFont ($8800)
-    call LoadTextBoxTilePatterns ; copy 2bpp box/extra tiles → vChars2+$60 ($9600)
-    call text_engine_init       ; write <DONE> sentinel bytes in GB memory
-    call build_demo_text        ; PlaceString two lines into the tile buffer
-    call video_init         ; set VGA mode 13h, draw test pattern
-    call pit_init           ; reprogram PIT to ~60 Hz, install tick ISR
-    call joypad_init        ; hook IRQ 1 (keyboard) → GB joypad state
+    call video_init          ; set VGA mode 13h
+    call pit_init            ; reprogram PIT to ~60 Hz, install tick ISR
+    call joypad_init         ; hook IRQ 1 (keyboard) → GB joypad state
 
-.frame_loop:
-    call wait_vblank        ; sync to VGA vertical retrace (port 0x3DA bit 3)
-    call wait_pit_tick      ; wait for the PIT ISR tick flag
-    call joypad_update      ; compose IO_JOYP shadow from key state
-    call update_demo        ; demo: arrows scroll SCX/SCY
-    call present_text_map   ; copy tile buffer → BG tilemap (mimics VBlank xfer)
-    call render_bg          ; BG layer → back buffer
-    call present            ; 2× blit back buffer → VGA
-
-    cmp byte [pad_quit], 0  ; Esc pressed?
-    je .frame_loop
-
+    call Init                ; power-on init → title screen (runs game loop)
+    ; Execution reaches here only if Init returns without exiting via pad_quit.
     call cleanup
     mov ax, 0x4C00
     int 0x21
@@ -343,73 +302,3 @@ cleanup:
     pop eax
     ret
 
-; ---------------------------------------------------------------------------
-; build_demo_text — stage strings in WRAM and PlaceString into tile buffer.
-; Init has already cleared the buffer to blank space ($7F), so only glyphs
-; need writing.
-; ---------------------------------------------------------------------------
-build_demo_text:
-    pushad
-
-    ; Copy both strings into emulated WRAM so PlaceString can read via EBP
-    mov esi, demo_str1
-    lea edi, [ebp + DEMO_STR_WRAM]
-    mov ecx, demo_str1_len + demo_str2_len
-    rep movsb
-
-    ; "POKEMON YELLOW" at coord (3, 4): W_TILEMAP + 4*20 + 3
-    mov edx, DEMO_STR_WRAM
-    mov esi, W_TILEMAP + 4 * 20 + 3
-    call PlaceString
-
-    ; "DOS PORT" at coord (6, 7): W_TILEMAP + 7*20 + 6
-    mov edx, DEMO_STR_WRAM + demo_str1_len
-    mov esi, W_TILEMAP + 7 * 20 + 6
-    call PlaceString
-
-    popad
-    ret
-
-; ---------------------------------------------------------------------------
-; present_text_map — copy the 20×18 tile buffer (wTileMap) into BG tilemap 0.
-; Runs every frame so any live edits to the buffer show immediately.
-; ---------------------------------------------------------------------------
-present_text_map:
-    pushad
-    lea esi, [ebp + W_TILEMAP]
-    lea edi, [ebp + GB_TILEMAP0]
-    mov edx, SCREEN_TILES_H
-.row:
-    mov ecx, SCREEN_TILES_W
-    rep movsb
-    add edi, TILEMAP_W - SCREEN_TILES_W
-    dec edx
-    jnz .row
-    popad
-    ret
-
-; ---------------------------------------------------------------------------
-; update_demo — held arrow keys scroll the BG by 1 px/frame
-; ---------------------------------------------------------------------------
-update_demo:
-    push eax
-
-    mov al, [pad_dpad]
-    test al, 1 << 0
-    jz .chk_left
-    inc byte [ebp + IO_SCX]
-.chk_left:
-    test al, 1 << 1
-    jz .chk_up
-    dec byte [ebp + IO_SCX]
-.chk_up:
-    test al, 1 << 2
-    jz .chk_down
-    dec byte [ebp + IO_SCY]
-.chk_down:
-    test al, 1 << 3
-    jz .done
-    inc byte [ebp + IO_SCY]
-.done:
-    pop eax
-    ret

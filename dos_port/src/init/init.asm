@@ -37,6 +37,7 @@ extern FillMemory
 extern DisableLCD
 extern ClearBgMap
 extern ClearSprites
+extern PrepareTitleScreen
 
 global Init
 global ClearVram
@@ -133,8 +134,7 @@ Init:
     call ClearSprites
     mov byte [ebp + IO_LCDC], LCDC_DEFAULT_VAL
 
-    ; jp PrepareTitleScreen — ; TODO: title screen (Phase 2). Return for now.
-    ret
+    jmp PrepareTitleScreen   ; tail call — runs title screen, never returns normally
 
 ; ---------------------------------------------------------------------------
 ; ClearVram — zero all of VRAM ($8000, $2000 bytes).

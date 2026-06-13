@@ -100,6 +100,34 @@ H_JOY_HELD               equ 0xFFB4     ; hJoyHeld    — buttons currently held
 W_PLAYER_NAME            equ 0xD158     ; wPlayerName — 11 bytes, '@'-terminated
 W_RIVAL_NAME             equ 0xD34A     ; wRivalName  — 11 bytes, '@'-terminated
 
+; Tile-map save/restore buffers (SCREEN_AREA = 360 bytes each).
+; wTileMapBackup  = wTileMap + SCREEN_AREA = $C3A0 + $168 = $C508 (UNION, verified from structure).
+; wTileMapBackup2 — TODO: verify from pokeyellow.sym; using placeholder $D300.
+W_TILEMAP_BACKUP         equ 0xC508     ; wTileMapBackup (360 bytes)
+W_TILEMAP_BACKUP2        equ 0xD300     ; wTileMapBackup2 (360 bytes) — TODO: verify vs. sym
+
+; Title-screen state variables.
+; wTitleScreenScene/Timer are inside a WRAM UNION.
+; TODO: verify all addresses below from pokeyellow.sym; using placeholders in WRAM1.
+W_TITLE_SCREEN_SCENE     equ 0xD200     ; wTitleScreenScene (1 byte)
+W_TITLE_SCREEN_TIMER     equ 0xD201     ; wTitleScreenTimer (1 byte)
+; wTitleScreenScene+2/3 = 16-bit inactivity counter; +4 = Pikachu cry index
+; We reserve 5 bytes: W_TITLE_SCREEN_SCENE through +4.
+
+; Status and audio variables — TODO: verify from pokeyellow.sym.
+W_LETTER_PRINTING_DELAY  equ 0xD202     ; wLetterPrintingDelayFlags
+W_STATUS_FLAGS_6         equ 0xD203     ; wStatusFlags6
+W_STATUS_FLAGS_7         equ 0xD204     ; wStatusFlags7
+W_ELITE4_FLAGS           equ 0xD205     ; wElite4Flags
+W_AUDIO_ROM_BANK         equ 0xD206     ; wAudioROMBank
+W_AUDIO_SAVED_ROM_BANK   equ 0xD207     ; wAudioSavedROMBank
+W_NEW_SOUND_ID           equ 0xD208     ; wNewSoundID
+W_UNUSED_FLAG            equ 0xD209     ; wUnusedFlag
+W_AUDIO_FADE_OUT         equ 0xD20A     ; wAudioFadeOutControl
+
+; Screen-area size constant (used by save/restore functions).
+SCREEN_AREA              equ SCREEN_TILES_W * SCREEN_TILES_H  ; 20 * 18 = 360
+
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port
 ; (interrupts are handled by the PIT ISR and input handler directly).

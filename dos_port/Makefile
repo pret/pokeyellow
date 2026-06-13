@@ -43,7 +43,8 @@ GAME_SRCS := \
     src/video/frame.asm \
     src/gfx/sprites.asm \
     src/gfx/load_font.asm \
-    src/text/text.asm
+    src/text/text.asm \
+    src/movie/title.asm
 
 ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS) $(GAME_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
