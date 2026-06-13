@@ -15,6 +15,14 @@
 ; PPU Mode 3 (Drawing). CGB has a second bank (GB_VRAM1 below).
 GB_VRAM0        equ 0x8000
 
+; VRAM tile-data sub-regions (pret labels vChars0/1/2). Each is 128 tiles.
+; The font is loaded to vFont ($8800); in $8800-signed addressing (LCDC_DEFAULT)
+; tile index C ('A'=$80) -> $9000 + sext8(C)*16 = $8800 + (C-$80)*16 = vFont.
+; So char codes index tiles directly — a string drops straight into a tilemap.
+GB_VCHARS0      equ 0x8000     ; vChars0  — sprite/overworld tiles
+GB_VFONT        equ 0x8800     ; vFont / vChars1 — text font (char $80 = 'A')
+GB_VCHARS2      equ 0x9000     ; vChars2 / vTileset — tileset, box graphics
+
 ; BG tilemap 0 — $9800–$9BFF (1 KB)
 ; 32x32 tile indices; each byte is an index into the tile data.
 ; Matches TILEMAP0 (0x9800) in constants/hardware.inc.
@@ -27,6 +35,14 @@ GB_TILEMAP1     equ 0x9C00
 ; WRAM bank 0 — $C000–$CFFF (4 KB)
 ; Always available. General-purpose work RAM.
 GB_WRAM0        equ 0xC000
+
+; Named WRAM symbols (subset needed by translated routines).
+; Offsets from pokeyellow.sym (bank 00).
+W_SHADOW_OAM        equ 0xC300     ; wShadowOAM — 40 sprites × 4 bytes
+W_SHADOW_OAM_END    equ 0xC3A0
+W_SHADOW_OAM_SIZE   equ 0xA0       ; 160 bytes
+W_TILEMAP           equ 0xC3A0     ; wTileMap — 20×18 screen tile buffer
+W_TILEMAP_SIZE      equ 360        ; SCREEN_W_TILES * SCREEN_H_TILES
 
 ; WRAM bank 1 — $D000–$DFFF (4 KB)
 ; On CGB: banks 1–7 are switchable via rWBK ($FF70).
@@ -57,6 +73,23 @@ hf_shadow       equ 0xFF7E
 ; High RAM; used by the game for fast-access variables (see ram/hram.asm).
 GB_HRAM         equ 0xFF80
 GB_HRAM_SIZE    equ 127
+
+; Named HRAM variables (subset needed by translated routines).
+; Offsets from pokeyellow.sym (bank 00).
+H_SOFT_RESET             equ 0xFF8A     ; hSoftReset
+H_SERIAL_CONN_STATUS     equ 0xFFAA     ; hSerialConnectionStatus
+H_SCX                    equ 0xFFAE     ; hSCX — shadow of rSCX
+H_SCY                    equ 0xFFAF     ; hSCY — shadow of rSCY
+H_WY                     equ 0xFFB0     ; hWY  — shadow of rWY
+H_LOADED_ROM_BANK        equ 0xFFB8     ; hLoadedROMBank
+H_AUTO_BG_TRANSFER_EN    equ 0xFFBA     ; hAutoBGTransferEnabled
+H_AUTO_BG_TRANSFER_DEST  equ 0xFFBC     ; hAutoBGTransferDest (2 bytes, lo/hi)
+H_FRAME_COUNTER          equ 0xFFD5     ; hFrameCounter
+H_VBLANK_OCCURRED        equ 0xFFD6     ; hVBlankOccurred
+H_TILE_ANIMATIONS        equ 0xFFD7     ; hTileAnimations
+H_UI_LAYOUT_FLAGS        equ 0xFFFA     ; hUILayoutFlags
+
+BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
 
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port

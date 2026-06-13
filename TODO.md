@@ -57,14 +57,27 @@ Prioritized task list. Check off items as they complete; add new items with phas
 
 ## Phase 2: Game Loop
 
-- [ ] Translate `home/init.asm` (Init, ClearVram, StopAllSounds)
-- [ ] Translate title screen logic
+- [x] Translate `home/init.asm` (Init, ClearVram, StopAllSounds, GBPalNormal)
+      — src/init/init.asm. HW/subsystem steps (OAM DMA, ROM banking, LoadSGB,
+      PlayIntro, audio, title screen) marked TODO and skipped to stay linkable.
+- [x] Supporting home routines:
+      CopyData/FarCopyData (src/util/copy_data.asm),
+      DisableLCD/EnableLCD/ClearBgMap/FillBgMap (src/video/lcd_control.asm),
+      DelayFrame/DelayFrames (src/video/frame.asm),
+      ClearSprites/HideSprites (src/gfx/sprites.asm)
+- [x] Text engine: LoadFontTilePatterns (src/gfx/load_font.asm, 1bpp→2bpp),
+      PlaceString / TextBoxBorder (src/text/text.asm). Font art embedded from
+      gfx/font/font.png via tools/gen_font_inc.py → assets/font_1bpp.inc.
+      (verified 2026-06-13 in DOSBox-X: "POKEMON YELLOW" / "DOS PORT" rendered
+       in the real game font — see docs/testing.md)
+- [ ] Text engine: dictionary control codes (<PLAYER>, <PARA>, <CONT>, …),
+      PrintText / dialogue-box flow, TextBoxGraphics tile loading
+- [ ] Translate title screen logic (PrepareTitleScreen)
 - [ ] Translate overworld engine
 - [ ] Translate player movement
 - [ ] Translate NPC movement / collision
 - [ ] Translate random encounter trigger
 - [ ] Translate battle engine (UI rendering pass first)
-- [ ] Translate text engine (font rendering, dialogue boxes)
 
 ---
 

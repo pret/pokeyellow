@@ -12,7 +12,7 @@
 NASM    := nasm
 LD      := i386-pc-msdosdjgpp-ld
 
-NASMFLAGS := -f coff -I include/
+NASMFLAGS := -f coff -I include/ -I .
 
 # Bug fix level (0=none, 1=critical, 2=all). Override: make BUG_FIX_LEVEL=1
 BUG_FIX_LEVEL ?= 0
@@ -29,13 +29,23 @@ BOOT_SRCS := \
     boot/timing.asm
 
 UTIL_SRCS := \
-    src/util/fill_memory.asm
+    src/util/fill_memory.asm \
+    src/util/copy_data.asm
 
 HAL_SRCS := \
     src/ppu/ppu.asm \
     src/input/joypad.asm
 
-ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS)
+# Phase 2: game-loop core
+GAME_SRCS := \
+    src/init/init.asm \
+    src/video/lcd_control.asm \
+    src/video/frame.asm \
+    src/gfx/sprites.asm \
+    src/gfx/load_font.asm \
+    src/text/text.asm
+
+ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS) $(GAME_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
 
 # ---------------------------------------------------------------------------

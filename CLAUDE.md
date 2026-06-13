@@ -19,12 +19,19 @@ stays cross-referenceable against pret as documentation.
 
 ## Current Phase
 
-**Phase 1: Core Infrastructure** — See [TODO.md](TODO.md) for open items.
-Phase 0 (bootstrapping) is complete: `make compare` verifies the reference
-ROM with rgbds 1.0.1, and the DOS skeleton (mode 13h, 60 Hz PIT, DPMI memory)
-is verified in DOSBox-X. Done so far in Phase 1: BG tile decoder + tilemap
-renderer with SCX/SCY scrolling (`src/ppu/ppu.asm`), keyboard → joypad ISR
-(`src/input/joypad.asm`). Next: window layer, OAM sprites, save system.
+**Phase 2: Game Loop** — See [TODO.md](TODO.md) for open items.
+Phase 1 delivered the BG tile decoder + tilemap renderer with SCX/SCY scrolling
+(`src/ppu/ppu.asm`) and the keyboard → joypad ISR (`src/input/joypad.asm`);
+window layer, OAM sprites, and the save system remain open there.
+
+Phase 2 so far: `Init`/`ClearVram`/`StopAllSounds` (`src/init/init.asm`),
+supporting home routines (`src/util/copy_data.asm`, `src/video/lcd_control.asm`,
+`src/video/frame.asm`, `src/gfx/sprites.asm`), and a text/font engine
+(`src/gfx/load_font.asm` 1bpp→2bpp expansion from `gfx/font/font.png`,
+`src/text/text.asm` PlaceString/TextBoxBorder). The boot path runs Init →
+load font → PlaceString → BG transfer → render, drawing "POKEMON YELLOW" and
+"DOS PORT" in the real game font (verified in DOSBox-X; see `docs/testing.md`).
+Next: text control-code dictionary, PrintText/dialogue flow, title screen.
 
 ---
 
