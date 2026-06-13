@@ -37,8 +37,10 @@ extern joypad_update     ; src/input/joypad.asm — compose IO_JOYP shadow
 extern pad_dpad          ; src/input/joypad.asm — D-pad held state
 extern pad_quit          ; src/input/joypad.asm — Esc pressed
 extern Init              ; src/init/init.asm — power-on init
-extern LoadFontTilePatterns ; src/gfx/load_font.asm — font → vFont ($8800)
-extern PlaceString       ; src/text/text.asm — render string into tile buffer
+extern LoadFontTilePatterns     ; src/gfx/load_font.asm — 1bpp font → vFont ($8800)
+extern LoadTextBoxTilePatterns  ; src/gfx/load_font.asm — 2bpp box tiles → vChars2+$60
+extern PlaceString              ; src/text/text.asm — render string into tile buffer
+extern text_engine_init         ; src/text/text.asm — write <DONE> sentinel to GB mem
 
 ; ---------------------------------------------------------------------------
 ; Exported symbols
@@ -102,9 +104,11 @@ start:
     xor eax, eax
     rep stosd
 
-    call Init               ; Phase 2: clear memory, reset I/O shadows to DMG
-    call LoadFontTilePatterns ; expand 1bpp font into vFont ($8800)
-    call build_demo_text    ; PlaceString two lines into the tile buffer
+    call Init                   ; Phase 2: clear memory, reset I/O shadows to DMG
+    call LoadFontTilePatterns   ; expand 1bpp font → vFont ($8800)
+    call LoadTextBoxTilePatterns ; copy 2bpp box/extra tiles → vChars2+$60 ($9600)
+    call text_engine_init       ; write <DONE> sentinel bytes in GB memory
+    call build_demo_text        ; PlaceString two lines into the tile buffer
     call video_init         ; set VGA mode 13h, draw test pattern
     call pit_init           ; reprogram PIT to ~60 Hz, install tick ISR
     call joypad_init        ; hook IRQ 1 (keyboard) → GB joypad state

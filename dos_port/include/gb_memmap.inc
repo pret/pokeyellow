@@ -91,6 +91,15 @@ H_UI_LAYOUT_FLAGS        equ 0xFFFA     ; hUILayoutFlags
 
 BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
 
+; Joypad HRAM ($FFB1-$FFB7) — order confirmed by hram.asm + H_SCX=$FFAE anchor
+H_JOY_PRESSED            equ 0xFFB3     ; hJoyPressed — buttons just pressed this frame
+H_JOY_HELD               equ 0xFFB4     ; hJoyHeld    — buttons currently held
+
+; Named WRAM symbols (beyond the text-engine subset)
+; Addresses from pokeyellow.sym layout (TODO: verify when ROM build is available).
+W_PLAYER_NAME            equ 0xD158     ; wPlayerName — 11 bytes, '@'-terminated
+W_RIVAL_NAME             equ 0xD34A     ; wRivalName  — 11 bytes, '@'-terminated
+
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port
 ; (interrupts are handled by the PIT ISR and input handler directly).

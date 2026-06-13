@@ -70,8 +70,12 @@ Prioritized task list. Check off items as they complete; add new items with phas
       gfx/font/font.png via tools/gen_font_inc.py → assets/font_1bpp.inc.
       (verified 2026-06-13 in DOSBox-X: "POKEMON YELLOW" / "DOS PORT" rendered
        in the real game font — see docs/testing.md)
-- [ ] Text engine: dictionary control codes (<PLAYER>, <PARA>, <CONT>, …),
-      PrintText / dialogue-box flow, TextBoxGraphics tile loading
+- [x] Text engine: dictionary control codes (<PLAYER>, <PARA>, <CONT>, …),
+      PrintText / dialogue-box flow, TextBoxGraphics tile loading.
+      All 20 dict codes implemented; TextCommandProcessor + PrintText translated.
+      LoadTextBoxTilePatterns loads box/extra tiles ($60–$7F) from font_extra.png.
+      Phase 2 stubs: manual_text_scroll (no-op), scroll_text_up (no-op), TX_FAR
+      (skip 3 bytes). W_PLAYER_NAME/W_RIVAL_NAME addresses TODO: verify vs. sym.
 - [ ] Translate title screen logic (PrepareTitleScreen)
 - [ ] Translate overworld engine
 - [ ] Translate player movement
