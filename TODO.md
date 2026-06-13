@@ -22,7 +22,9 @@ Prioritized task list. Check off items as they complete; add new items with phas
 - [x] `docs/translation_log.md` — FillMemory entry
 - [x] `tools/saveconv.py` — stub only (see Phase 5)
 - [x] `tools/colorize.py` — stub only (see Phase 5)
-- [ ] **Verify**: `make compare` succeeds with rgbds 1.0.1 (needs rgbds installed)
+- [x] **Verify**: `make compare` succeeds with rgbds 1.0.1
+      (verified 2026-06-12: pokeyellow.gbc, pokeyellow_debug.gbc, and
+       pokeyellow.patch all check OK against the reference SHA1s)
 - [x] **Verify**: `make -C dos_port` produces `pokeyellow_dos.exe` without warnings
 - [x] **Verify**: `pokeyellow_dos.exe` shows test pattern + tick counter in DOSBox
       (verified 2026-06-12 in DOSBox-X 2024.03.01 with HDPMI32 as the DPMI host:
@@ -33,13 +35,20 @@ Prioritized task list. Check off items as they complete; add new items with phas
 
 ## Phase 1: Core Infrastructure
 
-- [ ] Allocate GB memory block (EBP setup in entry.asm — currently placeholder)
-- [ ] PPU: tile decoder (2bpp GB tiles → 8bpp indexed pixels)
-- [ ] PPU: background tilemap renderer (SCX/SCY, wrapping)
+- [x] Allocate GB memory block (EBP setup in entry.asm; now exercised by the
+      PPU — required the SS=DS normalization fix in setup_flat_access, see
+      CLAUDE.md "DPMI gotchas")
+- [x] PPU: tile decoder (2bpp GB tiles → 8bpp indexed pixels) — src/ppu/ppu.asm
+- [x] PPU: background tilemap renderer (SCX/SCY, wrapping, both LCDC tile
+      data modes, both tilemaps, BGP shade mapping)
+      (verified 2026-06-12 in DOSBox-X: demo tileset renders, arrow keys
+       scroll with wrap in both axes, sub-tile fine offsets correct)
 - [ ] PPU: OAM sprite renderer (40 sprites, 8×8 and 8×16, X priority)
 - [ ] PPU: window layer renderer
 - [ ] PPU: CGB attribute handling (palette, VRAM bank, flip bits)
-- [ ] Joypad: INT 9h handler → write `[EBP + IO_JOYP]`
+- [x] Joypad: INT 9h handler → write `[EBP + IO_JOYP]` — src/input/joypad.asm
+      (arrows/X/Z/Enter/RShift/Tab mapped; Esc = host quit; rJOYP select-bit
+       protocol in joypad_update; IRQ1 vector restored on exit — verified)
 - [ ] Save system: DOS file I/O replacing SRAM; define `.dsv` format
 - [ ] Categorize all bugs in `docs/bugs_and_glitches.md` into critical/cosmetic/glitch
 - [ ] `/FIXCRIT` runtime parsing wired to BUG_FIX_LEVEL

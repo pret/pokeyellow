@@ -31,7 +31,11 @@ BOOT_SRCS := \
 UTIL_SRCS := \
     src/util/fill_memory.asm
 
-ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS)
+HAL_SRCS := \
+    src/ppu/ppu.asm \
+    src/input/joypad.asm
+
+ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
 
 # ---------------------------------------------------------------------------
