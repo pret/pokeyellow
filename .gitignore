@@ -20,10 +20,15 @@
 
 # tool binaries (pret)
 *.exe
+*.EXE
 
-# DOS port build artifacts
+# DOS port build artifacts and test helpers
 dos_port/**/*.o
 dos_port/pokeyellow_dos.exe
+dos_port/PKMN.EXE
+dos_port/CWSDPMI.EXE
+dos_port/CWSDPMI.SWP
+*.SWP
 
 # DOS save files
 *.dsv

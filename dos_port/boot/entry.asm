@@ -26,7 +26,6 @@ GB_TOTAL_SIZE   equ GB_BACKBUF + GB_BACKBUF_SIZE    ; 0x17A00 (96768 bytes)
 ; ---------------------------------------------------------------------------
 extern video_init        ; boot/video.asm
 extern present           ; boot/video.asm — 2× blit back buffer → VGA
-extern draw_tick_band    ; boot/video.asm — visible PIT tick indicator
 extern pit_init          ; boot/timing.asm
 extern pit_restore       ; boot/timing.asm
 extern wait_vblank       ; boot/timing.asm
@@ -118,7 +117,6 @@ start:
     call present_text_map   ; copy tile buffer → BG tilemap (mimics VBlank xfer)
     call render_bg          ; BG layer → back buffer
     call present            ; 2× blit back buffer → VGA
-    call draw_tick_band     ; visible tick counter: top band cycles color at 60 Hz
 
     cmp byte [pad_quit], 0  ; Esc pressed?
     je .frame_loop
