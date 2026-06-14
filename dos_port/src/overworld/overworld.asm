@@ -38,6 +38,7 @@ extern EnableLCD
 extern DelayFrame
 extern LoadTextBoxTilePatterns
 extern GBPalNormal
+extern g_player_marker_on
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -51,6 +52,8 @@ global DrawTileBlock
 global LoadCurrentMapView
 global CopyMapViewToVRAM
 global OverworldLoop
+global AdvancePlayerSprite
+global RedrawRowOrColumn       ; called from frame.asm DelayFrame (VBlank pipeline)
 
 ; ---------------------------------------------------------------------------
 ; Map and tileset constants
@@ -89,13 +92,71 @@ EnterMap:
     ; fall through to OverworldLoop
 
 ; ---------------------------------------------------------------------------
-; OverworldLoop — minimal frame loop. Runs indefinitely (Phase 2 stub).
-; Pret ref: home/overworld.asm:OverworldLoop (DelayFrame + joypad only)
+; OverworldLoop — player-movement frame loop.
+; Pret ref: home/overworld.asm:OverworldLoop / OverworldLoopLessDelay (the
+; movement-relevant subset; no menus, warps, NPCs, battles, or scripts yet).
+;
+; Cadence matches the original: two DelayFrame calls per iteration, then one
+; AdvancePlayerSprite (2 px scroll) — so a 16 px step takes ~16 frames.
+;
+; State machine:
+;   - mid-walk (wWalkCounter != 0): keep advancing the sprite.
+;   - idle: read held D-pad; on a press, set the step vector + facing, run the
+;     land collision check, and (if passable) start an 8-frame walk.
 ; ---------------------------------------------------------------------------
 OverworldLoop:
+    call UpdatePlayerOAM                      ; refresh the player sprite for the facing
     call DelayFrame
-    ; TODO: joypad → player movement (Phase 2 next step)
-    ; TODO: UpdateSprites, CollisionCheckOnLand, StepCountCheck (Phase 2)
+.lessDelay:                                  ; OverworldLoopLessDelay
+    call DelayFrame
+
+    cmp byte [ebp + W_WALK_COUNTER], 0
+    jne .moveAhead                           ; still mid-step → keep walking
+
+    ; --- idle: clear step vectors, then sample the held D-pad ---
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    movzx eax, byte [ebp + H_JOY_HELD]
+
+    test al, PAD_DOWN
+    jz .checkUp
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 1
+    mov dl, PLAYER_DIR_DOWN
+    mov dh, SPRITE_FACING_DOWN
+    jmp .handleDirection
+.checkUp:
+    test al, PAD_UP
+    jz .checkLeft
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0xFF   ; -1
+    mov dl, PLAYER_DIR_UP
+    mov dh, SPRITE_FACING_UP
+    jmp .handleDirection
+.checkLeft:
+    test al, PAD_LEFT
+    jz .checkRight
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0xFF   ; -1
+    mov dl, PLAYER_DIR_LEFT
+    mov dh, SPRITE_FACING_LEFT
+    jmp .handleDirection
+.checkRight:
+    test al, PAD_RIGHT
+    jz OverworldLoop                          ; nothing held → idle
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 1
+    mov dl, PLAYER_DIR_RIGHT
+    mov dh, SPRITE_FACING_RIGHT
+
+.handleDirection:
+    mov [ebp + W_PLAYER_DIRECTION],        dl
+    mov [ebp + W_PLAYER_MOVING_DIRECTION], dl
+    mov [ebp + W_SPRITE_PLAYER_FACING_DIR], dh
+
+    call CollisionCheckOnLand                 ; CF = 1 → blocked (face that way, don't move)
+    jc OverworldLoop
+
+    mov byte [ebp + W_WALK_COUNTER], 8        ; begin an 8-frame step
+
+.moveAhead:
+    call AdvancePlayerSprite
     jmp OverworldLoop
 
 ; ---------------------------------------------------------------------------
@@ -118,9 +179,10 @@ SetupPalletTown:
     mov word [ebp + W_CUR_MAP_DATA_PTR], OW_MAP_GBADDR
 
     ; --- Tileset pointers ---
-    mov byte  [ebp + W_TILESET_BANK],       TILESET_BANK_FLAT
-    mov word  [ebp + W_TILESET_GFX_PTR],    OW_GFX_GBADDR
-    mov word  [ebp + W_TILESET_BLOCKS_PTR], OW_BLOCKS_GBADDR
+    mov byte  [ebp + W_TILESET_BANK],         TILESET_BANK_FLAT
+    mov word  [ebp + W_TILESET_GFX_PTR],      OW_GFX_GBADDR
+    mov word  [ebp + W_TILESET_BLOCKS_PTR],   OW_BLOCKS_GBADDR
+    mov word  [ebp + W_TILESET_COLLISION_PTR], OW_COLL_GBADDR
 
     ; --- Map object data (normally read from PalletTown_Object by LoadMapHeader) ---
     mov byte [ebp + W_MAP_BACKGROUND_TILE], PALLET_TOWN_BORDER_BLOCK
@@ -139,6 +201,27 @@ SetupPalletTown:
     mov byte [ebp + W_Y_BLOCK_COORD], 0
     mov byte [ebp + W_X_BLOCK_COORD], 0
 
+    ; Player map tile coords (only used by warp/connection logic, not rendering).
+    ; Start in the middle of Pallet Town so a stroll stays inside the map border.
+    mov byte [ebp + W_Y_COORD], 8
+    mov byte [ebp + W_X_COORD], 8
+
+    ; Face down, standing still (no in-progress walk).
+    mov byte [ebp + W_SPRITE_PLAYER_FACING_DIR],   SPRITE_FACING_DOWN
+    mov byte [ebp + W_PLAYER_DIRECTION],           0
+    mov byte [ebp + W_PLAYER_MOVING_DIRECTION],    0
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    mov byte [ebp + W_WALK_COUNTER],               0
+
+    ; The overworld scrolls via RedrawRowOrColumn, not the auto-BG transfer
+    ; (which would fight it by re-blitting wTileMap to $9800 every frame).
+    mov byte [ebp + H_AUTO_BG_TRANSFER_EN],        0
+
+    ; The real player OAM sprite now renders (UpdatePlayerOAM); keep the legacy
+    ; placeholder marker off.
+    mov byte [g_player_marker_on], 0
+
     ; --- Copy overworld.2bpp to ROM window at OW_GFX_GBADDR ---
     mov esi, overworld_gfx
     lea edi, [ebp + OW_GFX_GBADDR]
@@ -155,6 +238,12 @@ SetupPalletTown:
     mov esi, pallet_town_blk
     lea edi, [ebp + OW_MAP_GBADDR]
     mov ecx, PALLET_TOWN_BLK_SIZE
+    rep movsb
+
+    ; --- Copy Overworld_Coll passable-tile list to ROM window at OW_COLL_GBADDR ---
+    mov esi, overworld_coll
+    lea edi, [ebp + OW_COLL_GBADDR]
+    mov ecx, OVERWORLD_COLL_SIZE
     rep movsb
 
     pop ecx
@@ -185,9 +274,39 @@ LoadMapData:
     mov byte [ebp + W_UPDATE_SPRITES_ENABLED], 1
     call EnableLCD
     call GBPalNormal
+    call LoadPlayerSpriteGraphics       ; scaffold: player tiles → OBJ VRAM, hide OAM
     ; RunPaletteCommand(SET_PAL_OVERWORLD) — ; TODO-HW: palette (Phase 5)
-    ; LoadPlayerSpriteGraphics — ; TODO: sprite engine (Phase 2)
     ; UpdateMusic / PlayDefaultMusicFadeOutCurrent — ; TODO-HW: audio (Phase 3)
+    ret
+
+; ---------------------------------------------------------------------------
+; LoadPlayerSpriteGraphics — Phase 2 scaffold (NOT a faithful translation).
+; Copies the Red overworld sprite (24 tiles) into the OBJ tile area at
+; GB_VCHARS0 ($8000) and clears OAM so no stale entries render. The real engine
+; (InitMapSprites / sprite VRAM slot allocation / Pikachu) comes later.
+; ---------------------------------------------------------------------------
+LoadPlayerSpriteGraphics:
+    push eax
+    push ecx
+    push esi
+    push edi
+
+    ; --- player sprite tiles → OBJ VRAM ($8000) ---
+    mov esi, player_sprite
+    lea edi, [ebp + GB_VCHARS0]
+    mov ecx, PLAYER_SPRITE_SIZE
+    rep movsb
+
+    ; --- hide all 40 OAM entries (Y = 0 → off the top of the screen) ---
+    lea edi, [ebp + GB_OAM]
+    xor eax, eax
+    mov ecx, GB_OAM_SIZE
+    rep stosb
+
+    pop edi
+    pop esi
+    pop ecx
+    pop eax
     ret
 
 ; ---------------------------------------------------------------------------
@@ -518,6 +637,598 @@ CopyMapViewToVRAM2:
     ret
 
 ; ---------------------------------------------------------------------------
+; AdvancePlayerSprite — faithful translation.
+; Pret ref: home/overworld.asm:AdvancePlayerSprite +
+;           engine/overworld/advance_player_sprite.asm:_AdvancePlayerSprite
+;
+; Runs once per advanced frame of a walk. Decrements wWalkCounter; on the first
+; frame (counter == 7) it slides wMapViewVRAMPointer by 2 tiles, advances the
+; tile-block-map pointer when a block boundary is crossed, rebuilds the map view,
+; and schedules the newly exposed row/column for VBlank redraw. Every frame it
+; scrolls the BG by 2 px (hSCX/hSCY) in the direction of motion.
+;
+; Phase 2 omissions vs. pret: the sprite-shift loop (no OAM yet), wUpdateSprites
+; save/restore, IsSpinning, and the Pikachu overworld-state flag.
+;
+; b (SM83) = wSpritePlayerStateData1YStepVector → kept in BL  (+1 / -1 / 0)
+; c (SM83) = wSpritePlayerStateData1XStepVector → kept in CL  (+1 / -1 / 0)
+; ---------------------------------------------------------------------------
+AdvancePlayerSprite:
+    push eax
+    push ebx
+    push ecx
+    push edx
+
+    mov bl, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]    ; BL = b (Y step)
+    mov cl, [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]    ; CL = c (X step)
+
+    dec byte [ebp + W_WALK_COUNTER]
+    jnz .afterUpdateMapCoords
+    ; end of animation → commit the player's map coordinates
+    mov al, [ebp + W_Y_COORD]
+    add al, bl
+    mov [ebp + W_Y_COORD], al
+    mov al, [ebp + W_X_COORD]
+    add al, cl
+    mov [ebp + W_X_COORD], al
+.afterUpdateMapCoords:
+    cmp byte [ebp + W_WALK_COUNTER], 7
+    jne .scroll                                       ; only the first frame slides the view
+
+    ; --- first frame: slide wMapViewVRAMPointer by 2 tiles in the move dir ---
+    cmp cl, 0x01
+    jne .checkWest
+    ; moving east: low = (low+2 & $1f) | (low & $e0)
+    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
+    mov dl, al
+    and al, 0xE0
+    mov dh, al
+    mov al, dl
+    add al, 0x02
+    and al, 0x1F
+    or  al, dh
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
+    jmp .adjustXCoordWithinBlock
+.checkWest:
+    cmp cl, 0xFF
+    jne .checkSouth
+    ; moving west: low = (low-2 & $1f) | (low & $e0)
+    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
+    mov dl, al
+    and al, 0xE0
+    mov dh, al
+    mov al, dl
+    sub al, 0x02
+    and al, 0x1F
+    or  al, dh
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
+    jmp .adjustXCoordWithinBlock
+.checkSouth:
+    cmp bl, 0x01
+    jne .checkNorth
+    ; moving south: 16-bit pointer += $40, wrap high byte into $98xx
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
+    add al, 0x40
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
+    jnc .adjustXCoordWithinBlock
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    inc al
+    and al, 0x03
+    or  al, 0x98
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER + 1], al
+    jmp .adjustXCoordWithinBlock
+.checkNorth:
+    cmp bl, 0xFF
+    jne .adjustXCoordWithinBlock
+    ; moving north: 16-bit pointer -= $40, wrap high byte into $98xx
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
+    sub al, 0x40
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
+    jnc .adjustXCoordWithinBlock
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    dec al
+    and al, 0x03
+    or  al, 0x98
+    mov [ebp + W_MAP_VIEW_VRAM_POINTER + 1], al
+
+.adjustXCoordWithinBlock:
+    mov al, [ebp + W_X_BLOCK_COORD]
+    add al, cl
+    mov [ebp + W_X_BLOCK_COORD], al
+    cmp al, 0x02
+    jne .checkForMoveToWestBlock
+    ; crossed into the block to the east
+    mov byte [ebp + W_X_BLOCK_COORD], 0
+    inc byte [ebp + W_X_OFFSET_SINCE_LAST_SPECIAL_WARP]
+    call MoveTileBlockMapPointerEast
+    jmp .updateMapView
+.checkForMoveToWestBlock:
+    cmp al, 0xFF
+    jne .adjustYCoordWithinBlock
+    ; crossed into the block to the west
+    mov byte [ebp + W_X_BLOCK_COORD], 1
+    dec byte [ebp + W_X_OFFSET_SINCE_LAST_SPECIAL_WARP]
+    call MoveTileBlockMapPointerWest
+    jmp .updateMapView
+.adjustYCoordWithinBlock:
+    mov al, [ebp + W_Y_BLOCK_COORD]
+    add al, bl
+    mov [ebp + W_Y_BLOCK_COORD], al
+    cmp al, 0x02
+    jne .checkForMoveToNorthBlock
+    ; crossed into the block to the south
+    mov byte [ebp + W_Y_BLOCK_COORD], 0
+    inc byte [ebp + W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP]
+    mov al, [ebp + W_CUR_MAP_WIDTH]
+    call MoveTileBlockMapPointerSouth
+    jmp .updateMapView
+.checkForMoveToNorthBlock:
+    cmp al, 0xFF
+    jne .updateMapView
+    ; crossed into the block to the north
+    mov byte [ebp + W_Y_BLOCK_COORD], 1
+    dec byte [ebp + W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP]
+    mov al, [ebp + W_CUR_MAP_WIDTH]
+    call MoveTileBlockMapPointerNorth
+
+.updateMapView:
+    call LoadCurrentMapView
+    ; schedule the freshly exposed edge for redraw, based on move direction
+    mov al, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
+    cmp al, 0x01
+    jne .schedNorth
+    call ScheduleSouthRowRedraw
+    jmp .scroll
+.schedNorth:
+    cmp al, 0xFF
+    jne .schedEast
+    call ScheduleNorthRowRedraw
+    jmp .scroll
+.schedEast:
+    mov al, [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
+    cmp al, 0x01
+    jne .schedWest
+    call ScheduleEastColumnRedraw
+    jmp .scroll
+.schedWest:
+    cmp al, 0xFF
+    jne .scroll
+    call ScheduleWestColumnRedraw
+
+.scroll:
+    ; hSCY += 2*Yvec ; hSCX += 2*Xvec  (sprite-shift loop omitted — no OAM yet)
+    mov al, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
+    add al, al
+    add [ebp + H_SCY], al
+    mov al, [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
+    add al, al
+    add [ebp + H_SCX], al
+
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; MoveTileBlockMapPointer{East,West,South,North} — faithful translations.
+; Pret ref: engine/overworld/advance_player_sprite.asm
+;
+; Move wCurrentTileBlockMapViewPointer (the upper-left corner of the visible
+; block-map region) by one block in the given direction. South/North take the
+; row stride (wCurMapWidth + 2*MAP_BORDER) in AL on entry.
+; All registers except the pointer are preserved.
+; ---------------------------------------------------------------------------
+MoveTileBlockMapPointerEast:
+    push eax
+    mov al, [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    add al, 0x01
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], al
+    jnc .done
+    inc byte [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR + 1]
+.done:
+    pop eax
+    ret
+
+MoveTileBlockMapPointerWest:
+    push eax
+    mov al, [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    sub al, 0x01
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], al
+    jnc .done
+    dec byte [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR + 1]
+.done:
+    pop eax
+    ret
+
+MoveTileBlockMapPointerSouth:            ; AL = wCurMapWidth
+    push eax
+    push ebx
+    add al, MAP_BORDER * 2                ; AL = row stride
+    movzx ebx, al
+    mov al, [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    add al, bl
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], al
+    jnc .done
+    inc byte [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR + 1]
+.done:
+    pop ebx
+    pop eax
+    ret
+
+MoveTileBlockMapPointerNorth:            ; AL = wCurMapWidth
+    push eax
+    push ebx
+    add al, MAP_BORDER * 2                ; AL = row stride
+    movzx ebx, al
+    mov al, [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    sub al, bl
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], al
+    jnc .done
+    dec byte [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR + 1]
+.done:
+    pop ebx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; Schedule{North,South}RowRedraw / Schedule{East,West}ColumnRedraw — faithful.
+; Pret ref: home/overworld.asm
+;
+; Copy the exposed 2-tile-deep row (or 2-tile-wide column) from wTileMap into
+; wRedrawRowOrColumnSrcTiles, compute its VRAM destination from
+; wMapViewVRAMPointer, and arm hRedrawRowOrColumnMode for the next VBlank.
+; All registers preserved.
+; ---------------------------------------------------------------------------
+ScheduleNorthRowRedraw:
+    push eax
+    push esi
+    push edi
+    push ecx
+    mov esi, W_TILEMAP                              ; hlcoord 0, 0
+    call CopyToRedrawRowOrColumnSrcTiles
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
+    mov [ebp + H_REDRAW_ROW_COL_DEST], al
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
+    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_ROW
+    pop ecx
+    pop edi
+    pop esi
+    pop eax
+    ret
+
+ScheduleSouthRowRedraw:
+    push eax
+    push ebx
+    push esi
+    push edi
+    push ecx
+    mov esi, W_TILEMAP + 16 * SCREEN_WIDTH          ; hlcoord 0, 16
+    call CopyToRedrawRowOrColumnSrcTiles
+    ; dest = wMapViewVRAMPointer + $200, high byte wrapped into $98xx
+    movzx ebx, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
+    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    shl eax, 8
+    or  ebx, eax
+    add ebx, 0x200
+    mov al, bh
+    and al, 0x03
+    or  al, 0x98
+    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
+    mov [ebp + H_REDRAW_ROW_COL_DEST], bl
+    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_ROW
+    pop ecx
+    pop edi
+    pop esi
+    pop ebx
+    pop eax
+    ret
+
+ScheduleEastColumnRedraw:
+    push eax
+    push ebx
+    push esi
+    push edi
+    push ecx
+    mov esi, W_TILEMAP + 18                         ; hlcoord 18, 0
+    call ScheduleColumnRedrawHelper
+    ; dest low = (low & $e0) | ((low + 18) & $1f)
+    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
+    mov bl, al
+    and bl, 0xE0
+    add al, 18
+    and al, 0x1F
+    or  al, bl
+    mov [ebp + H_REDRAW_ROW_COL_DEST], al
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
+    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_COL
+    pop ecx
+    pop edi
+    pop esi
+    pop ebx
+    pop eax
+    ret
+
+ScheduleWestColumnRedraw:
+    push eax
+    push esi
+    push edi
+    push ecx
+    mov esi, W_TILEMAP                              ; hlcoord 0, 0
+    call ScheduleColumnRedrawHelper
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
+    mov [ebp + H_REDRAW_ROW_COL_DEST], al
+    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
+    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
+    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_COL
+    pop ecx
+    pop edi
+    pop esi
+    pop eax
+    ret
+
+; CopyToRedrawRowOrColumnSrcTiles — copy 2*SCREEN_WIDTH tiles from [ESI] in
+; wTileMap to wRedrawRowOrColumnSrcTiles. Clobbers EAX, ESI, EDI, ECX.
+CopyToRedrawRowOrColumnSrcTiles:
+    mov edi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
+    mov ecx, 2 * SCREEN_WIDTH
+.loop:
+    mov al, [ebp + esi]
+    mov [ebp + edi], al
+    inc esi
+    inc edi
+    dec ecx
+    jnz .loop
+    ret
+
+; ScheduleColumnRedrawHelper — copy a 2-tile-wide, SCREEN_HEIGHT-tall column
+; starting at [ESI] in wTileMap to wRedrawRowOrColumnSrcTiles (2 bytes/row,
+; advancing one full screen row each iteration). Clobbers EAX, ESI, EDI, ECX.
+ScheduleColumnRedrawHelper:
+    mov edi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
+    mov ecx, SCREEN_HEIGHT
+.loop:
+    mov al, [ebp + esi]
+    mov [ebp + edi], al
+    inc edi
+    mov al, [ebp + esi + 1]
+    mov [ebp + edi], al
+    inc edi
+    add esi, SCREEN_WIDTH
+    dec ecx
+    jnz .loop
+    ret
+
+; ---------------------------------------------------------------------------
+; RedrawRowOrColumn — faithful translation.
+; Pret ref: home/vcopy.asm:RedrawRowOrColumn
+;
+; Runs in the per-frame (VBlank) pipeline. If a redraw is armed
+; (hRedrawRowOrColumnMode), copies the staged 2-row band or 2-column strip from
+; wRedrawRowOrColumnSrcTiles into VRAM at hRedrawRowOrColumnDest, wrapping inside
+; the 32×32 / 1 KB tilemap exactly as the GB does. All registers preserved.
+; ---------------------------------------------------------------------------
+RedrawRowOrColumn:
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+
+    movzx eax, byte [ebp + H_REDRAW_ROW_COL_MODE]
+    test al, al
+    jz .done
+    mov bl, al
+    mov byte [ebp + H_REDRAW_ROW_COL_MODE], 0
+    dec bl
+    jnz .redrawRow
+
+.redrawColumn:
+    mov esi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
+    movzx edi, byte [ebp + H_REDRAW_ROW_COL_DEST]
+    movzx eax, byte [ebp + H_REDRAW_ROW_COL_DEST + 1]
+    shl eax, 8
+    or  edi, eax                                   ; EDI = GB VRAM dest address
+    mov ecx, SCREEN_HEIGHT
+.colLoop:
+    mov al, [ebp + esi]
+    inc esi
+    mov [ebp + edi], al
+    inc edi
+    mov al, [ebp + esi]
+    inc esi
+    mov [ebp + edi], al
+    ; advance to the same column on the next VRAM row (+32), wrap within the
+    ; 1 KB tilemap ($9800-$9BFF): addr = (addr + 31) & $3FF | $9800
+    add edi, TILEMAP_WIDTH - 1
+    and edi, 0x03FF
+    or  edi, GB_TILEMAP0
+    dec ecx
+    jnz .colLoop
+    jmp .done
+
+.redrawRow:
+    mov esi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
+    movzx edi, byte [ebp + H_REDRAW_ROW_COL_DEST]
+    movzx eax, byte [ebp + H_REDRAW_ROW_COL_DEST + 1]
+    shl eax, 8
+    or  edi, eax                                   ; EDI = GB VRAM dest address
+    call .drawHalf                                 ; upper half (SCREEN_WIDTH tiles)
+    ; next VRAM row: add TILEMAP_WIDTH to the low byte only (matches GB, no carry)
+    mov eax, edi
+    and eax, 0xFF
+    add eax, TILEMAP_WIDTH
+    and eax, 0xFF
+    and edi, 0xFFFFFF00
+    or  edi, eax
+    call .drawHalf                                 ; lower half
+    jmp .done
+
+; .drawHalf — write SCREEN_WIDTH tiles from [ESI] to VRAM [EDI], wrapping the
+; column within the 32-tile VRAM row (low 5 bits of the low byte). ESI advances
+; by SCREEN_WIDTH; EDI ends on the same VRAM row. Clobbers EAX, ECX, EDX.
+.drawHalf:
+    mov ecx, SCREEN_WIDTH / 2
+.halfLoop:
+    mov al, [ebp + esi]
+    inc esi
+    mov [ebp + edi], al
+    inc edi
+    mov al, [ebp + esi]
+    inc esi
+    mov [ebp + edi], al
+    ; e = ((e + 1) & $1f) | (e & $e0)   (EDI low byte already inc'd once above)
+    mov eax, edi
+    and eax, 0xFF
+    mov edx, eax
+    inc edx
+    and edx, 0x1F
+    and eax, 0xE0
+    or  eax, edx
+    and edi, 0xFFFFFF00
+    or  edi, eax
+    dec ecx
+    jnz .halfLoop
+    ret
+
+.done:
+    pop edi
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; CollisionCheckOnLand — simplified translation.
+; Pret ref: home/overworld.asm:CollisionCheckOnLand (tile-passability path only;
+; no sprite collisions, ledges, tile-pair collisions, or simulated input yet).
+;
+; Out: CF = 1 if the tile the player faces is impassable (movement blocked).
+; ---------------------------------------------------------------------------
+CollisionCheckOnLand:
+    push eax
+    push ecx
+    push esi
+    call GetTileInFrontOfPlayer                    ; CL = tile in front
+    call IsTilePassable                            ; CF = 1 if not passable
+    pop esi
+    pop ecx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; GetTileInFrontOfPlayer — simplified translation.
+; Pret ref: engine/overworld/player_state.asm:_GetTileAndCoordsInFrontOfPlayer
+;
+; Reads the tile the player faces from wTileMap at the fixed screen coordinate
+; pret uses for each facing (the player is always centered). Stores it in
+; wTileInFrontOfPlayer and returns it in CL.
+; ---------------------------------------------------------------------------
+GetTileInFrontOfPlayer:
+    mov al, [ebp + W_SPRITE_PLAYER_FACING_DIR]
+    cmp al, SPRITE_FACING_DOWN
+    jne .notDown
+    mov esi, W_TILEMAP + 11 * SCREEN_WIDTH + 8      ; lda_coord 8, 11
+    jmp .read
+.notDown:
+    cmp al, SPRITE_FACING_UP
+    jne .notUp
+    mov esi, W_TILEMAP + 7 * SCREEN_WIDTH + 8       ; lda_coord 8, 7
+    jmp .read
+.notUp:
+    cmp al, SPRITE_FACING_LEFT
+    jne .notLeft
+    mov esi, W_TILEMAP + 9 * SCREEN_WIDTH + 6       ; lda_coord 6, 9
+    jmp .read
+.notLeft:
+    mov esi, W_TILEMAP + 9 * SCREEN_WIDTH + 10      ; lda_coord 10, 9 (facing right)
+.read:
+    movzx ecx, byte [ebp + esi]
+    mov [ebp + W_TILE_IN_FRONT_OF_PLAYER], cl
+    ret
+
+; ---------------------------------------------------------------------------
+; IsTilePassable — faithful translation.
+; Pret ref: engine/gfx/sprite_oam.asm:_IsTilePassable
+;
+; In:  CL = tile ID. Scans the $FF-terminated passable-tile list pointed to by
+;      wTilesetCollisionPtr.
+; Out: CF = 0 if CL is in the list (passable), CF = 1 otherwise.
+; Clobbers AL, ESI.
+; ---------------------------------------------------------------------------
+IsTilePassable:
+    movzx esi, word [ebp + W_TILESET_COLLISION_PTR]
+.loop:
+    mov al, [ebp + esi]
+    inc esi
+    cmp al, 0xFF
+    je  .notPassable
+    cmp al, cl
+    jne .loop
+    clc
+    ret
+.notPassable:
+    stc
+    ret
+
+; ---------------------------------------------------------------------------
+; UpdatePlayerOAM — Phase 2 scaffold (NOT a faithful translation of
+; PrepareOAMData). Writes the player's four 8×8 OAM entries to $FE00 for the
+; current facing, composing the 16×16 standing pose from tiles 0–11 of the Red
+; sprite. The player is camera-locked at screen center; the BG scrolls under it.
+;
+; Pret refs for the layout: engine/gfx/sprite_oam.asm:PrepareOAMData (OAM byte
+; order Y, X, tile, attr) and data/sprites/facings.asm (the standing poses).
+; Walk-frame leg animation and NPC sprites are deferred (needs the $80+ walking
+; tiles and the VRAM-slot/sprite-state engine).
+; ---------------------------------------------------------------------------
+PLAYER_SCREEN_X equ 64                       ; top-left of the 16×16 player, px
+PLAYER_SCREEN_Y equ 64
+
+UpdatePlayerOAM:
+    push eax
+    push ecx
+    push edx
+    push esi
+    push edi
+
+    ; Select the 4-entry pose block for the current facing (0,4,8,12 → 0..3).
+    movzx eax, byte [ebp + W_SPRITE_PLAYER_FACING_DIR]
+    shr eax, 2
+    shl eax, 4                               ; 16 bytes per pose (4 entries × 4)
+    lea esi, [player_oam_table + eax]
+
+    lea edi, [ebp + GB_OAM]                  ; OAM entry 0
+    mov ecx, 4
+.entry:
+    movzx edx, byte [esi + 0]                ; Y offset within the 16×16
+    add edx, PLAYER_SCREEN_Y + OAM_Y_OFS
+    mov [edi + 0], dl
+    movzx edx, byte [esi + 1]                ; X offset
+    add edx, PLAYER_SCREEN_X + OAM_X_OFS
+    mov [edi + 1], dl
+    mov dl, [esi + 2]                        ; tile id
+    mov [edi + 2], dl
+    mov dl, [esi + 3]                        ; attributes
+    mov [edi + 3], dl
+    add esi, 4
+    add edi, 4
+    dec ecx
+    jnz .entry
+
+    pop edi
+    pop esi
+    pop edx
+    pop ecx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
 ; Embedded overworld asset data (Phase 2 scaffold).
 ; gen_overworld_assets.py regenerates these from source binaries.
 ; ---------------------------------------------------------------------------
@@ -527,3 +1238,34 @@ section .rodata
 %include "assets/overworld_gfx.inc"
 %include "assets/overworld_blocks.inc"
 %include "assets/pallet_town_blk.inc"
+%include "assets/overworld_coll.inc"
+%include "assets/player_sprite.inc"
+
+; ---------------------------------------------------------------------------
+; player_oam_table — four 8×8 OAM entries per facing (UpdatePlayerOAM).
+; Each entry: db Yoffset, Xoffset, tileID, attributes. Derived from the standing
+; poses in data/sprites/facings.asm (pret's internal UNDER_GRASS/FACING_END
+; markers drop out — they aren't OAM hardware bits and the player isn't in grass).
+; Facing order matches SPRITE_FACING_* >> 2: down(0), up(1), left(2), right(3).
+; ---------------------------------------------------------------------------
+player_oam_table:
+    ; facing down — tiles 0-3
+    db 0, 0, 0, 0
+    db 0, 8, 1, 0
+    db 8, 0, 2, 0
+    db 8, 8, 3, 0
+    ; facing up — tiles 4-7
+    db 0, 0, 4, 0
+    db 0, 8, 5, 0
+    db 8, 0, 6, 0
+    db 8, 8, 7, 0
+    ; facing left — tiles 8-11
+    db 0, 0,  8, 0
+    db 0, 8,  9, 0
+    db 8, 0, 10, 0
+    db 8, 8, 11, 0
+    ; facing right — tiles 8-11, X-flipped (left pose mirrored)
+    db 0, 8,  8, OAM_XFLIP
+    db 0, 0,  9, OAM_XFLIP
+    db 8, 8, 10, OAM_XFLIP
+    db 8, 0, 11, OAM_XFLIP

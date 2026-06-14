@@ -22,10 +22,13 @@ bits 32
 extern wait_vblank
 extern wait_pit_tick
 extern render_bg
+extern render_sprites
+extern draw_player_marker
 extern present
 extern joypad_update
 extern pad_quit
 extern cleanup
+extern RedrawRowOrColumn
 
 global DelayFrame
 global DelayFrames
@@ -37,8 +40,8 @@ section .text
 ; DelayFrame — sync to 60 Hz, run full per-frame pipeline.
 ;
 ; Mirrors what the GB VBlank ISR does:
-;   commit shadow registers → auto-BG transfer → joypad update
-;   → BG render → blit → check host-quit
+;   commit shadow registers → auto-BG transfer → redraw exposed row/col
+;   → joypad update → BG render → blit → check host-quit
 ;
 ; Out: all registers preserved. May call cleanup+exit if Esc was pressed.
 ; ---------------------------------------------------------------------------
@@ -48,8 +51,11 @@ DelayFrame:
     call wait_pit_tick
     call commit_shadow_regs
     call do_bg_transfer
+    call RedrawRowOrColumn      ; redraw the row/col exposed by walking (GB VBlank order)
     call joypad_update
     call render_bg
+    call render_sprites         ; composite OAM sprites over the BG
+    call draw_player_marker     ; legacy placeholder (no-op unless explicitly enabled)
     call present
     cmp byte [pad_quit], 0
     je .done
