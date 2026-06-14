@@ -2733,7 +2733,7 @@ ROMX bank #3:
 	         $44c7 = UpdatePikachuHappinessAndMood
 	         $44de = UpdatePikachuHappinessAndMood.noWalkingHappinessIncrease
 	         $44ea = UpdatePikachuHappinessAndMood.increaseMood
-	         $44ef = UpdatePikachuHappinessAndMood.update_wd49b
+	         $44ef = UpdatePikachuHappinessAndMood.clearEmotionModifier
 	         $44f4 = LoadTilesetHeader
 	         $4531 = LoadTilesetHeader.dungeon
 	         $454b = LoadTilesetHeader.done
@@ -23027,7 +23027,7 @@ WRAM0 bank #0:
 	         $d498 = wUnknownSerialFlag_d499
 	         $d499 = wPrinterConnectionOpen
 	         $d49a = wPrinterOpcode
-	         $d49b = wd49b
+	         $d49b = wPikachuEmotionModifier
 	         $d4af = wNumSigns
 	         $d4b0 = wSignCoords
 	         $d4d0 = wSignTextIDs

@@ -2682,7 +2682,7 @@
 03:44c7 UpdatePikachuHappinessAndMood
 03:44de UpdatePikachuHappinessAndMood.noWalkingHappinessIncrease
 03:44ea UpdatePikachuHappinessAndMood.increaseMood
-03:44ef UpdatePikachuHappinessAndMood.update_wd49b
+03:44ef UpdatePikachuHappinessAndMood.clearEmotionModifier
 03:44f4 LoadTilesetHeader
 03:4531 LoadTilesetHeader.dungeon
 03:454b LoadTilesetHeader.done
@@ -22670,7 +22670,7 @@
 00:d498 wUnknownSerialFlag_d499
 00:d499 wPrinterConnectionOpen
 00:d49a wPrinterOpcode
-00:d49b wd49b
+00:d49b wPikachuEmotionModifier
 00:d4af wNumSigns
 00:d4b0 wSignCoords
 00:d4d0 wSignTextIDs
