@@ -139,7 +139,7 @@ UpdatePikachuHappinessAndMood:
 	ld hl, wPikachuMood
 	ld a, [hl]
 	cp 128 ; central value
-	jr z, .update_wd49b ; mood == 128, don't modify it
+	jr z, .clearEmotionModifier ; mood == 128, don't modify it
 	jr c, .increaseMood ; mood < 128, must increase by 1
 	; mood > 128, must decrease by 1 (so decrease by 2 and then increase by 1)
 	dec a
@@ -147,10 +147,10 @@ UpdatePikachuHappinessAndMood:
 .increaseMood
 	inc a
 	ld [hl], a
-; if the mood has reached its "stable" central value, do not update wd49b
+; if the mood has reached its "stable" central value, do not update the emotion modifier
 	cp 128
 	ret nz
-.update_wd49b
+.clearEmotionModifier
 	xor a
-	ld [wd49b], a ; variable used in other mood-related functions, to keep track if the mood was "stable"
+	ld [wPikachuEmotionModifier], a ; variable used in other mood-related functions, to keep track if the mood was "stable"
 	ret

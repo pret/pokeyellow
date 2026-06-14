@@ -2083,7 +2083,7 @@ wPrinterSettings:: db
 wUnknownSerialFlag_d499:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
-wd49b:: db
+wPikachuEmotionModifier:: db
 
 	ds 19
 
