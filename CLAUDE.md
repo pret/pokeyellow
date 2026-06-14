@@ -28,10 +28,13 @@ Phase 2 so far: `Init`/`ClearVram`/`StopAllSounds` (`src/init/init.asm`),
 supporting home routines (`src/util/copy_data.asm`, `src/video/lcd_control.asm`,
 `src/video/frame.asm`, `src/gfx/sprites.asm`), and a text/font engine
 (`src/gfx/load_font.asm` 1bpp→2bpp expansion from `gfx/font/font.png`,
-`src/text/text.asm` PlaceString/TextBoxBorder). The boot path runs Init →
-load font → PlaceString → BG transfer → render, drawing "POKEMON YELLOW" and
-"DOS PORT" in the real game font (verified in DOSBox-X; see `docs/testing.md`).
-Next: text control-code dictionary, PrintText/dialogue flow, title screen.
+`src/text/text.asm` PlaceString/TextBoxBorder). The title screen
+(`src/movie/title.asm`) and the overworld map loader/renderer
+(`src/overworld/overworld.asm`) both render correctly in DOSBox-X: the title
+shows "Pokémon Yellow Version", and `SKIP_TITLE=1` boots straight into a fully
+drawn Pallet Town (Oak's Lab, tree border, sign) in the DMG-green palette.
+Next: player movement in `OverworldLoop` (joypad → SCX/SCY + map pointer),
+then OAM sprites and the window layer (Phase 1 open items).
 
 ---
 
@@ -82,6 +85,19 @@ tools/
 - Linker: `i386-pc-msdosdjgpp-ld` from `binutils-djgpp` package
 - Build: `nasm -f coff` → `i386-pc-msdosdjgpp-ld`
 - Entry point: `start` (not `_start`)
+
+**Linker sections (critical, verified):** `link.ld` must explicitly map every
+input section into a *loaded* output section (`.text`/`.data`). The
+coff-go32-exe stub loads only the `.text`/`.data`/`.bss` extents it records;
+any **orphan section** ld places elsewhere is given a VMA but its bytes never
+reach memory, so symbols in it **read back as zero at runtime with no fault**.
+This bit us hard: the overworld assets were in `section .rodata`, which had no
+output rule, so `overworld_gfx`/`overworld_blocks`/`pallet_town_blk` were all
+zero in memory → Pallet Town rendered all-white. `.rodata` is now folded into
+`.data` in `link.ld`. Rule of thumb: put embedded data in `.data` (as the font
+and title assets do), and if you ever add a new section name, add it to
+`link.ld` first. Symptom of a broken/orphan section: a `rep movsb` from a
+rodata label copies zeros while immediate `mov [ebp+x], imm` writes work fine.
 
 ### Register Mapping (SM83 → x86)
 
@@ -183,16 +199,68 @@ For intentional glitches that are user-exploitable features:
 
 ## Build Commands
 
+Output EXE is **`dos_port/PKMN.EXE`** — DOS 8.3 name required for DOSBox-X `-c` invocation.
+
 ```sh
 # Reference ROM (requires rgbds 1.0.1)
 make compare
 
-# DOS port
+# DOS port (canonical; scripts below are wrappers)
 make -C dos_port
+
+# Convenience scripts (from repo root or dos_port/)
+dos_port/build.sh                  # build (passes args to make)
+dos_port/run.sh                    # build + launch in DOSBox-X
 
 # Single file assembly check
 nasm -f coff -o /dev/null dos_port/src/util/fill_memory.asm
 ```
+
+DOSBox-X config (`~/.config/dosbox-x/dosbox-x-2026.06.02.conf`) is set to:
+- `machine = vgaonly` (Mode 13h plain VGA — required)
+- `cputype = 386_prefetch`
+- `memory io optimization 1 = false` (VGA writes broken if true)
+
+---
+
+## Debugging (inspecting emulated GB memory)
+
+The screen is a software PPU render: many distinct bugs collapse to the same
+"all-white" / "all-garbage" picture, so **do not debug by staring at
+screenshots and toggling tiles** — that loop ate two sessions on the `.rodata`
+bug. Get ground truth from memory instead.
+
+### Memory dump to a host file (primary, automatable)
+
+`src/debug/debug_dump.asm` exfiltrates chosen windows of emulated GB memory to
+`DUMP.BIN` (the dos_port dir / DOSBox C:), with **no PPU/palette/blit
+confound** — the literal bytes at `[EBP + addr]`. It writes the file via DPMI
+"Simulate Real Mode Interrupt" (INT 31h/0300h) into a conventional DOS buffer
+(plain `int 21h` pointer args are NOT auto-translated under CWSDPMI), then
+exits. Edit the `windows:` table to pick addresses.
+
+```sh
+make clean && make SKIP_TITLE=1 DEBUG_DUMP=1
+dosbox-x -defaultdir "$PWD" -c 'mount c "'"$PWD"'"' -c c: -c PKMN.EXE -c exit
+# then hexdump DUMP.BIN on the host (9 × 64-byte windows, in table order)
+```
+
+This is how the `.rodata` bug was localized: header vars and the `rep stosb`
+border-fill were correct in the dump, but the whole `$4000`-asset window and
+`$9000` tileset were zero — pointing at the asset load, not the map logic.
+
+### DOSBox-X interactive debugger (secondary)
+
+DOSBox-X (2026.06.02, SDL1) can also be built/run with the heavy debugger
+(`Alt+Pause`; `MEMDUMPBIN <lin> <len>` writes a file). Linear address of a GB
+offset = `[ds_base] + EBP + offset`; both are runtime values, so the file-dump
+route above is usually faster than chasing them in the debugger.
+
+### Visual capture
+
+`./test_render.sh [out.png]` does a clean `SKIP_TITLE=1` build, launches
+DOSBox-X, waits, screenshots (spectacle → import fallback), and force-kills.
+Good for confirming a final render once the data is known-correct.
 
 ---
 
@@ -220,6 +288,17 @@ All key reference documents are also mirrored locally in `docs/references/pandoc
 5. Emit `; BUG(level):` for any known bug (check `docs/bugs_and_glitches.md`).
 6. Add an entry to `docs/translation_log.md`.
 7. Verify assembly: `nasm -f coff -o /dev/null <file>`.
+
+---
+
+## Package / System Install Policy
+
+**All local package installs require explicit user permission before running**, even in
+auto mode, for security reasons. This includes `apt`, `pacman`, `pip`, `npm -g`, and
+any other package manager that modifies the system or user environment.
+
+Exception: if Claude is running inside a self-contained web container / VM where it owns
+the environment, installs may proceed without prompting.
 
 ---
 

@@ -18,9 +18,20 @@ NASMFLAGS := -f coff -I include/ -I .
 BUG_FIX_LEVEL ?= 0
 NASMFLAGS += -D BUG_FIX_LEVEL=$(BUG_FIX_LEVEL)
 
+# Test flag: skip title screen, go straight to overworld. make SKIP_TITLE=1
+ifdef SKIP_TITLE
+NASMFLAGS += -D SKIP_TITLE
+endif
+
+# Debug flag: dump GB memory windows to DUMP.BIN then exit. make DEBUG_DUMP=1
+# (implies SKIP_TITLE path reaching the overworld). See src/debug/debug_dump.asm.
+ifdef DEBUG_DUMP
+NASMFLAGS += -D DEBUG_DUMP
+endif
+
 LDFLAGS := -T link.ld
 
-TARGET  := pokeyellow_dos.exe
+TARGET  := PKMN.EXE
 
 # Source files
 BOOT_SRCS := \
@@ -44,7 +55,13 @@ GAME_SRCS := \
     src/gfx/sprites.asm \
     src/gfx/load_font.asm \
     src/text/text.asm \
-    src/movie/title.asm
+    src/movie/title.asm \
+    src/overworld/overworld.asm
+
+# Debug-only sources (linked only when the corresponding flag is set)
+ifdef DEBUG_DUMP
+GAME_SRCS += src/debug/debug_dump.asm
+endif
 
 ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS) $(GAME_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
@@ -53,7 +70,21 @@ ALL_OBJS := $(ALL_SRCS:.asm=.o)
 # Targets
 # ---------------------------------------------------------------------------
 
-.PHONY: all clean check
+.PHONY: all clean check assets
+.DEFAULT_GOAL := all
+
+# Generate overworld asset includes from binary sources.
+# Requires overworld.2bpp, which is built by 'make' in the repo root.
+assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc:
+	python3 ../tools/gen_overworld_assets.py
+
+# Overworld object depends on generated assets
+src/overworld/overworld.o: \
+    assets/overworld_gfx.inc \
+    assets/overworld_blocks.inc \
+    assets/pallet_town_blk.inc
+
+assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc
 
 all: $(TARGET)
 

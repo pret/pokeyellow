@@ -38,6 +38,9 @@ extern DisableLCD
 extern ClearBgMap
 extern ClearSprites
 extern PrepareTitleScreen
+%ifdef SKIP_TITLE
+extern EnterMap
+%endif
 
 global Init
 global ClearVram
@@ -134,7 +137,11 @@ Init:
     call ClearSprites
     mov byte [ebp + IO_LCDC], LCDC_DEFAULT_VAL
 
+%ifdef SKIP_TITLE
+    jmp EnterMap             ; test build: skip title screen, go straight to overworld
+%else
     jmp PrepareTitleScreen   ; tail call — runs title screen, never returns normally
+%endif
 
 ; ---------------------------------------------------------------------------
 ; ClearVram — zero all of VRAM ($8000, $2000 bytes).

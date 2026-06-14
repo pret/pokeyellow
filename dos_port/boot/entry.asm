@@ -121,6 +121,13 @@ setup_flat_access:
     int 0x31
     jc  .fail
 
+    ; Alias ES to DS — rep movsb / rep stosb writes go to ES:EDI.
+    ; If ES is a separate LDT entry it still has the original small limit;
+    ; rep movsb to the GB allocation (above the original segment top) would
+    ; then write to the wrong linear address silently instead of faulting.
+    mov ax, ds
+    mov es, ax
+
     ; Raise SS limit (harmless if SS == DS)
     mov ax, 0x0008
     mov bx, ss

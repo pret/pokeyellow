@@ -75,8 +75,12 @@ GB_HRAM         equ 0xFF80
 GB_HRAM_SIZE    equ 127
 
 ; Named HRAM variables (subset needed by translated routines).
-; Offsets from pokeyellow.sym (bank 00).
+; All offsets verified from pokeyellow.sym (bank 00).
 H_SOFT_RESET             equ 0xFF8A     ; hSoftReset
+; 0xFF8B is a UNION of hMapStride / hNorthSouthConnectionStripWidth / hEastWestConnectedMapWidth
+H_MAP_STRIDE             equ 0xFF8B     ; hMapStride (= map block row stride = width + 2*MAP_BORDER)
+; 0xFF8C is a UNION of hMapWidth / hNorthSouthConnectedMapWidth
+H_MAP_WIDTH              equ 0xFF8C     ; hMapWidth (= wCurMapWidth, stored for row-copy inner loop)
 H_SERIAL_CONN_STATUS     equ 0xFFAA     ; hSerialConnectionStatus
 H_SCX                    equ 0xFFAE     ; hSCX — shadow of rSCX
 H_SCY                    equ 0xFFAF     ; hSCY — shadow of rSCY
@@ -84,9 +88,12 @@ H_WY                     equ 0xFFB0     ; hWY  — shadow of rWY
 H_LOADED_ROM_BANK        equ 0xFFB8     ; hLoadedROMBank
 H_AUTO_BG_TRANSFER_EN    equ 0xFFBA     ; hAutoBGTransferEnabled
 H_AUTO_BG_TRANSFER_DEST  equ 0xFFBC     ; hAutoBGTransferDest (2 bytes, lo/hi)
+H_REDRAW_MAP_VIEW_ROW_OFFSET equ 0xFFBE ; hRedrawMapViewRowOffset
 H_FRAME_COUNTER          equ 0xFFD5     ; hFrameCounter
 H_VBLANK_OCCURRED        equ 0xFFD6     ; hVBlankOccurred
 H_TILE_ANIMATIONS        equ 0xFFD7     ; hTileAnimations
+H_REDRAW_ROW_COL_MODE    equ 0xFFD0     ; hRedrawRowOrColumnMode
+H_REDRAW_ROW_COL_DEST    equ 0xFFD1     ; hRedrawRowOrColumnDest
 H_UI_LAYOUT_FLAGS        equ 0xFFFA     ; hUILayoutFlags
 
 BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
@@ -95,38 +102,125 @@ BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
 H_JOY_PRESSED            equ 0xFFB3     ; hJoyPressed — buttons just pressed this frame
 H_JOY_HELD               equ 0xFFB4     ; hJoyHeld    — buttons currently held
 
-; Named WRAM symbols (beyond the text-engine subset)
-; Addresses from pokeyellow.sym layout (TODO: verify when ROM build is available).
-W_PLAYER_NAME            equ 0xD158     ; wPlayerName — 11 bytes, '@'-terminated
-W_RIVAL_NAME             equ 0xD34A     ; wRivalName  — 11 bytes, '@'-terminated
+; Named WRAM symbols — all addresses verified from pokeyellow.sym.
 
-; Tile-map save/restore buffers (SCREEN_AREA = 360 bytes each).
-; wTileMapBackup  = wTileMap + SCREEN_AREA = $C3A0 + $168 = $C508 (UNION, verified from structure).
-; wTileMapBackup2 — TODO: verify from pokeyellow.sym; using placeholder $D300.
-W_TILEMAP_BACKUP         equ 0xC508     ; wTileMapBackup (360 bytes)
-W_TILEMAP_BACKUP2        equ 0xD300     ; wTileMapBackup2 (360 bytes) — TODO: verify vs. sym
+; Audio/sound (low WRAM0 — $C0EE+)
+W_NEW_SOUND_ID               equ 0xC0EE ; wNewSoundID
+W_AUDIO_ROM_BANK             equ 0xC0EF ; wAudioROMBank
+W_AUDIO_SAVED_ROM_BANK       equ 0xC0F0 ; wAudioSavedROMBank
 
-; Title-screen state variables.
-; wTitleScreenScene/Timer are inside a WRAM UNION.
-; TODO: verify all addresses below from pokeyellow.sym; using placeholders in WRAM1.
-W_TITLE_SCREEN_SCENE     equ 0xD200     ; wTitleScreenScene (1 byte)
-W_TITLE_SCREEN_TIMER     equ 0xD201     ; wTitleScreenTimer (1 byte)
-; wTitleScreenScene+2/3 = 16-bit inactivity counter; +4 = Pikachu cry index
-; We reserve 5 bytes: W_TITLE_SCREEN_SCENE through +4.
+; Misc WRAM ($CC–$CFC range)
+W_UNUSED_FLAG                equ 0xCC5B ; wUnusedFlag
 
-; Status and audio variables — TODO: verify from pokeyellow.sym.
-W_LETTER_PRINTING_DELAY  equ 0xD202     ; wLetterPrintingDelayFlags
-W_STATUS_FLAGS_6         equ 0xD203     ; wStatusFlags6
-W_STATUS_FLAGS_7         equ 0xD204     ; wStatusFlags7
-W_ELITE4_FLAGS           equ 0xD205     ; wElite4Flags
-W_AUDIO_ROM_BANK         equ 0xD206     ; wAudioROMBank
-W_AUDIO_SAVED_ROM_BANK   equ 0xD207     ; wAudioSavedROMBank
-W_NEW_SOUND_ID           equ 0xD208     ; wNewSoundID
-W_UNUSED_FLAG            equ 0xD209     ; wUnusedFlag
-W_AUDIO_FADE_OUT         equ 0xD20A     ; wAudioFadeOutControl
+; Title-screen state ($CD3D)
+W_TITLE_SCREEN_SCENE         equ 0xCD3D ; wTitleScreenScene (byte; +1 = timer)
+W_TITLE_SCREEN_TIMER         equ 0xCD3E ; wTitleScreenTimer
+
+; Name buffers (WRAM1) — sym-verified
+W_PLAYER_NAME                equ 0xD157 ; wPlayerName — 11 bytes, '@'-terminated
+W_RIVAL_NAME                 equ 0xD349 ; wRivalName  — 11 bytes, '@'-terminated
+
+; Tile-map save/restore buffers (360 bytes each) — sym-verified
+W_TILEMAP_BACKUP             equ 0xC508 ; wTileMapBackup (= wSurroundingTiles, see below)
+W_TILEMAP_BACKUP2            equ 0xCD81 ; wTileMapBackup2
+
+; Overworld surrounding-tiles buffer (alias for wTileMapBackup)
+; 24×20 = 480 bytes; DrawTileBlock writes here before crop to wTileMap.
+W_SURROUNDING_TILES          equ 0xC508 ; wSurroundingTiles = wTileMapBackup
+
+; Overworld map block buffer ($C6E8–$CBFC = 1300 bytes)
+W_OVERWORLD_MAP              equ 0xC6E8 ; wOverworldMap
+W_OVERWORLD_MAP_SIZE         equ 0x514  ; wOverworldMapEnd − wOverworldMap (1300 bytes)
+
+; Walk/sprite state
+W_WALK_COUNTER               equ 0xCFC4 ; wWalkCounter
+W_AUDIO_FADE_OUT             equ 0xCFC6 ; wAudioFadeOutControl
+W_UPDATE_SPRITES_ENABLED     equ 0xCFCA ; wUpdateSpritesEnabled
+
+; Map-tileset copies
+W_UNUSED_CUR_MAP_TILESET_COPY equ 0xD118 ; wUnusedCurMapTilesetCopy
+W_WALK_BIKE_SURF_STATE_COPY  equ 0xD119 ; wWalkBikeSurfStateCopy
+
+; Current-map script flags
+W_CURRENT_MAP_SCRIPT_FLAGS   equ 0xD125 ; wCurrentMapScriptFlags
+
+; Letter-printing delay flags (text engine)
+W_LETTER_PRINTING_DELAY      equ 0xD357 ; wLetterPrintingDelayFlags
+
+; Current map identity
+W_CUR_MAP                    equ 0xD35D ; wCurMap (1 byte)
+W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR equ 0xD35E ; wCurrentTileBlockMapViewPointer (2 bytes)
+W_Y_BLOCK_COORD              equ 0xD362 ; wYBlockCoord
+W_X_BLOCK_COORD              equ 0xD363 ; wXBlockCoord
+
+; Fixed map header (wCurMapHeader = wCurMapTileset at $D366)
+W_CUR_MAP_TILESET            equ 0xD366 ; wCurMapTileset (= wCurMapHeader first byte)
+W_CUR_MAP_HEIGHT             equ 0xD367 ; wCurMapHeight
+W_CUR_MAP_WIDTH              equ 0xD368 ; wCurMapWidth
+W_CUR_MAP_DATA_PTR           equ 0xD369 ; wCurMapDataPtr (2 bytes, LE)
+W_CUR_MAP_CONNECTIONS        equ 0xD36F ; wCurMapConnections (NORTH|SOUTH|WEST|EAST bits)
+
+; Connection-strip headers (each 11 bytes: map, strip-src, strip-dst, length, map-width, Y-align, X-align, view-ptr)
+W_NORTH_CONNECTED_MAP        equ 0xD370 ; wNorthConnectedMap ($FF = none)
+W_SOUTH_CONNECTED_MAP        equ 0xD37B ; wSouthConnectedMap
+W_WEST_CONNECTED_MAP         equ 0xD386 ; wWestConnectedMap
+W_EAST_CONNECTED_MAP         equ 0xD391 ; wEastConnectedMap
+
+; Sprite/object data
+W_SPRITE_SET_ID              equ 0xD3A7 ; wSpriteSetID
+W_OBJECT_DATA_PTR_TEMP       equ 0xD3A8 ; wObjectDataPointerTemp (2 bytes)
+
+; Map object header (follows connections in object data)
+W_MAP_BACKGROUND_TILE        equ 0xD3AC ; wMapBackgroundTile (border block ID for wOverworldMap)
+W_NUMBER_OF_WARPS            equ 0xD3AD ; wNumberOfWarps
+W_WARP_ENTRIES               equ 0xD3AE ; wWarpEntries
+
+; Map-view VRAM pointer and player facing
+W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (2 bytes, LE; normally $9800)
+W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection
+
+; Active tileset pointers (set from tileset header by LoadMapHeader)
+W_TILESET_BANK               equ 0xD52A ; wTilesetBank
+W_TILESET_BLOCKS_PTR         equ 0xD52B ; wTilesetBlocksPtr (2 bytes, LE)
+W_TILESET_GFX_PTR            equ 0xD52D ; wTilesetGfxPtr   (2 bytes, LE)
+
+; Walk/bike/surf state
+W_WALK_BIKE_SURF_STATE       equ 0xD6FF ; wWalkBikeSurfState
+
+; Status flags (game-state bitfields)
+W_STATUS_FLAGS_1             equ 0xD727 ; wStatusFlags1
+W_STATUS_FLAGS_2             equ 0xD72B ; wStatusFlags2
+W_STATUS_FLAGS_3             equ 0xD72C ; wStatusFlags3
+W_STATUS_FLAGS_4             equ 0xD72D ; wStatusFlags4
+W_STATUS_FLAGS_5             equ 0xD72F ; wStatusFlags5
+W_STATUS_FLAGS_6             equ 0xD731 ; wStatusFlags6
+W_STATUS_FLAGS_7             equ 0xD732 ; wStatusFlags7
+W_ELITE4_FLAGS               equ 0xD733 ; wElite4Flags
 
 ; Screen-area size constant (used by save/restore functions).
 SCREEN_AREA              equ SCREEN_TILES_W * SCREEN_TILES_H  ; 20 * 18 = 360
+
+; pret-compatible name aliases (hardware.inc uses SCREEN_WIDTH/HEIGHT, TILEMAP_WIDTH)
+SCREEN_WIDTH             equ SCREEN_TILES_W                   ; 20
+SCREEN_HEIGHT            equ SCREEN_TILES_H                   ; 18
+TILEMAP_WIDTH            equ TILEMAP_W                        ; 32
+
+; Overworld map geometry (constants/gfx_constants.asm + map_data_constants.asm)
+BLOCK_WIDTH              equ 4           ; tiles per map block, X
+BLOCK_HEIGHT             equ 4           ; tiles per map block, Y
+SCREEN_BLOCK_WIDTH       equ 6           ; blocks visible per screen row
+SCREEN_BLOCK_HEIGHT      equ 5           ; blocks visible per screen column
+SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 24 tiles wide
+SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 20 tiles tall
+MAP_BORDER               equ 3           ; block-unit border around map in wOverworldMap
+
+; ROM-window area for embedded overworld assets (Phase 2 scaffold)
+; The unused ROM bank-switch window ($4000–$7FFF) is repurposed to hold asset data
+; that faithful routines (LoadTilesetTilePatternData, DrawTileBlock, LoadTileBlockMap)
+; read via wTilesetGfxPtr / wTilesetBlocksPtr / wCurMapDataPtr pointers.
+OW_GFX_GBADDR            equ 0x4000     ; overworld tileset 2bpp → vTileset ($9000)
+OW_BLOCKS_GBADDR         equ 0x4600     ; overworld blockset (.bst, 128 blocks × 16 tile-IDs)
+OW_MAP_GBADDR            equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
 
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port

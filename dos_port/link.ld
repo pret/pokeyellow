@@ -27,6 +27,16 @@ SECTIONS
     .data ALIGN(0x200) : {
         *(.data)
         *(.data.*)
+        /* Read-only data MUST be mapped into a loaded output section.
+         * NASM `section .rodata` (e.g. the overworld assets in
+         * src/overworld/overworld.asm) is otherwise an orphan section: ld
+         * gives it a VMA but the coff-go32-exe stub only loads the .text/
+         * .data/.bss extents, so the bytes never reach memory and the asset
+         * symbols read back as zero at runtime. Verified via DUMP.BIN: the
+         * $4000-$4FFF asset window was all-zero until .rodata was folded in
+         * here. Keep this even if no source currently uses .rodata. */
+        *(.rodata)
+        *(.rodata.*)
         . = ALIGN(0x200);
     }
 

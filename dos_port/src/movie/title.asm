@@ -47,6 +47,7 @@ extern DelayFrames
 extern Delay3
 extern GBPalNormal
 extern Init
+extern EnterMap
 
 ; ---------------------------------------------------------------------------
 ; Globals
@@ -375,8 +376,8 @@ DisplayTitleScreen:
     cmp al, PAD_UP | PAD_SELECT | PAD_B
     je  .doClearSaveDialogue
 
-    ; jp MainMenu — ; TODO: main menu (next Phase 2 task). Reset for now.
-    jmp Init
+    ; jp MainMenu → EnterMap (Phase 2: load Pallet Town directly)
+    jmp EnterMap
 
 .doClearSaveDialogue:
     ; DoClearSaveDialogue — ; TODO: save clear screen (Phase 5). Reset for now.

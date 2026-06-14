@@ -72,10 +72,10 @@ test_palette:
 ; renderer's shade indices (0 = lightest … 3 = darkest) look like a real
 ; Game Boy. 6-bit RGB. Full 256-entry game palette layout is Phase 5.
 dmg_palette:
-    db 56, 62, 52       ; shade 0 — pale green-white
-    db 34, 48, 28       ; shade 1 — light green
-    db 13, 26, 21       ; shade 2 — dark green
-    db  2,  6,  8       ; shade 3 — near-black green
+    db 38, 47,  3       ; shade 0 — lightest  (#9bbc0f DMG green, 6-bit)
+    db 34, 43,  3       ; shade 1 — light     (#8bac0f)
+    db 12, 24, 12       ; shade 2 — dark      (#306230)
+    db  3, 14,  3       ; shade 3 — darkest   (#0f380f)
 
 ; ---------------------------------------------------------------------------
 ; Code

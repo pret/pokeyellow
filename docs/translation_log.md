@@ -228,6 +228,44 @@ corrupt flat pointers).
 
 **Phase stubs:** Audio (PlaySound, StopAllMusic, PCM), CGB palette (RunPaletteCommand,
 UpdateCGBPal_OBP0), SRAM (FillSpriteBuffer0WithAA), OAM renderer (sprite eye blink
-writes are correct but invisible until Phase 1 OAM pass), MainMenu (resets to Init).
+writes are correct but invisible until Phase 1 OAM pass), MainMenu (→ EnterMap Phase 2).
+
+---
+
+## Overworld Engine (Phase 2)
+
+- **Sources:** `home/overworld.asm` — ResetMapVariables, CopyMapViewToVRAM, DrawTileBlock,
+  LoadCurrentMapView, LoadTilesetTilePatternData, LoadTileBlockMap, LoadScreenRelatedData,
+  LoadMapData; Phase 2 scaffold: EnterMap/SetupPalletTown/OverworldLoop
+- **Translated:** `dos_port/src/overworld/overworld.asm`
+- **Date:** 2026-06-13
+- **H-flag:** Not involved — all pure data movement.
+- **Bug tags:** None.
+
+### Key decisions
+
+**Asset layout in ROM window ($4000–$4EFF):** The original reads tileset GFX,
+blockset, and map data from ROM banks via FarCopyData. In the flat model, Phase 2
+embeds these as NASM `.rodata` and copies them to `[EBP + $4000]` at map load.
+`wTilesetGfxPtr = $4000`, `wTilesetBlocksPtr = $4600`, `wCurMapDataPtr = $4E00`.
+Faithful routines index off these 16-bit pointers unchanged.
+
+**Tileset addressing:** `vTileset = $9000` (sym-confirmed). LCDC bit 4 = 0
+(signed mode). Tile IDs 0–93 map to $9000 + id×16. Font at $8800 coexists
+(IDs $80–$FF, negative signed). `LoadTilesetTilePatternData` copies $600 bytes;
+the trimmed .2bpp (1504 B) uses the remaining 32 bytes as DPMI-zeroed blanks.
+
+**DrawTileBlock:** SM83 `swap a` / mask to compute `blockID × 16` replaced with
+`shl eax, 4` — semantically identical, cleaner.
+
+**Connection strips:** Phase 2 sets all connected maps to $FF; strip-load code
+is translated but skipped. TODOs in place for player movement phase.
+
+**WRAM address corrections (2026-06-13):** gb_memmap.inc updated with all
+sym-verified addresses. Key corrections: `wPlayerName` ($D158→$D157),
+`wRivalName` ($D34A→$D349), `wTileMapBackup2` ($D300→$CD81),
+`wTitleScreenScene` ($D200→$CD3D), and ~8 audio/status variables relocated
+from placeholder $D20x range to their true WRAM0 addresses. Title screen
+unaffected (zeroed wrong WRAM before; correct zeroing now, same visual result).
 
 *Add new entries below as routines are translated.*
