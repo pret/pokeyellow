@@ -39,10 +39,35 @@ def write_inc(dst: Path, label: str, data: bytes, comment: str = ""):
     print(f"  wrote {dst} ({size} bytes)")
 
 
+def parse_coll_list(coll_src: Path, label: str) -> bytes:
+    """Extract one `<label>_Coll:: coll_tiles ...` row from collision_tile_ids.asm.
+
+    The pret macro emits the listed tile IDs followed by a $FF terminator, so the
+    returned bytes are the passable-tile list IsTilePassable scans (ending in $FF).
+    Labels may stack (several share one coll_tiles line); we take the first
+    coll_tiles line at or after the requested label.
+    """
+    want = f"{label}_Coll::"
+    lines = coll_src.read_text().splitlines()
+    seen = False
+    for line in lines:
+        s = line.strip()
+        if s.startswith(want):
+            seen = True
+        if seen and "coll_tiles" in s:
+            args = s.split("coll_tiles", 1)[1]
+            ids = [int(tok.strip().replace("$", "0x"), 16)
+                   for tok in args.split(",") if tok.strip()]
+            return bytes(ids) + b"\xff"
+    raise SystemExit(f"ERROR: {want} not found in {coll_src}")
+
+
 def main():
     gfx_src    = ROOT / "gfx" / "tilesets" / "overworld.2bpp"
     blocks_src = ROOT / "gfx" / "blocksets" / "overworld.bst"
     map_src    = ROOT / "maps" / "PalletTown.blk"
+    coll_src   = ROOT / "data" / "tilesets" / "collision_tile_ids.asm"
+    player_src = ROOT / "gfx" / "sprites" / "red.2bpp"
 
     if not gfx_src.exists():
         print(f"ERROR: {gfx_src} not found.", file=sys.stderr)
@@ -68,6 +93,19 @@ def main():
         "pallet_town_blk",
         map_src.read_bytes(),
         "Pallet Town block map: 10×9 = 90 block IDs → [EBP+OW_MAP_GBADDR].",
+    )
+    write_inc(
+        ASSETS / "overworld_coll.inc",
+        "overworld_coll",
+        parse_coll_list(coll_src, "Overworld"),
+        "Overworld tileset passable-tile list ($FF-terminated) → [EBP+OW_COLL_GBADDR].",
+    )
+    write_inc(
+        ASSETS / "player_sprite.inc",
+        "player_sprite",
+        player_src.read_bytes(),
+        "Red overworld sprite 2bpp (24 tiles; 0-11 = standing down/up/side) "
+        "→ [EBP+GB_VCHARS0] ($8000, OBJ tile area).",
     )
     print("done.")
 

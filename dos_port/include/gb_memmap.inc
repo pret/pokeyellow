@@ -36,6 +36,12 @@ GB_TILEMAP1     equ 0x9C00
 ; Always available. General-purpose work RAM.
 GB_WRAM0        equ 0xC000
 
+; Player sprite state (wSpritePlayerStateData1*, $C100 block) — sym-verified.
+; Step vectors are signed bytes (+1/-1/0) read each frame by AdvancePlayerSprite.
+W_SPRITE_PLAYER_Y_STEP_VECTOR equ 0xC103 ; wSpritePlayerStateData1YStepVector
+W_SPRITE_PLAYER_X_STEP_VECTOR equ 0xC105 ; wSpritePlayerStateData1XStepVector
+W_SPRITE_PLAYER_FACING_DIR    equ 0xC109 ; wSpritePlayerStateData1FacingDirection (SPRITE_FACING_*)
+
 ; Named WRAM symbols (subset needed by translated routines).
 ; Offsets from pokeyellow.sym (bank 00).
 W_SHADOW_OAM        equ 0xC300     ; wShadowOAM — 40 sprites × 4 bytes
@@ -132,8 +138,13 @@ W_SURROUNDING_TILES          equ 0xC508 ; wSurroundingTiles = wTileMapBackup
 W_OVERWORLD_MAP              equ 0xC6E8 ; wOverworldMap
 W_OVERWORLD_MAP_SIZE         equ 0x514  ; wOverworldMapEnd − wOverworldMap (1300 bytes)
 
+; Overworld redraw scratch — staging buffer for the row/column that
+; RedrawRowOrColumn copies into VRAM during the per-frame (VBlank) pipeline.
+W_REDRAW_ROW_OR_COLUMN_SRC_TILES equ 0xCBFC ; wRedrawRowOrColumnSrcTiles
+
 ; Walk/sprite state
 W_WALK_COUNTER               equ 0xCFC4 ; wWalkCounter
+W_TILE_IN_FRONT_OF_PLAYER    equ 0xCFC5 ; wTileInFrontOfPlayer (collision check result)
 W_AUDIO_FADE_OUT             equ 0xCFC6 ; wAudioFadeOutControl
 W_UPDATE_SPRITES_ENABLED     equ 0xCFCA ; wUpdateSpritesEnabled
 
@@ -150,6 +161,8 @@ W_LETTER_PRINTING_DELAY      equ 0xD357 ; wLetterPrintingDelayFlags
 ; Current map identity
 W_CUR_MAP                    equ 0xD35D ; wCurMap (1 byte)
 W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR equ 0xD35E ; wCurrentTileBlockMapViewPointer (2 bytes)
+W_Y_COORD                    equ 0xD360 ; wYCoord (player map Y, in tiles)
+W_X_COORD                    equ 0xD361 ; wXCoord (player map X, in tiles)
 W_Y_BLOCK_COORD              equ 0xD362 ; wYBlockCoord
 W_X_BLOCK_COORD              equ 0xD363 ; wXBlockCoord
 
@@ -175,14 +188,21 @@ W_MAP_BACKGROUND_TILE        equ 0xD3AC ; wMapBackgroundTile (border block ID fo
 W_NUMBER_OF_WARPS            equ 0xD3AD ; wNumberOfWarps
 W_WARP_ENTRIES               equ 0xD3AE ; wWarpEntries
 
+; Special-warp step offsets (incremented as the block-map pointer crosses
+; block boundaries; faithful bookkeeping, not yet consumed by warp logic).
+W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E1 ; wYOffsetSinceLastSpecialWarp
+W_X_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E2 ; wXOffsetSinceLastSpecialWarp
+
 ; Map-view VRAM pointer and player facing
 W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (2 bytes, LE; normally $9800)
-W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection
+W_PLAYER_MOVING_DIRECTION    equ 0xD527 ; wPlayerMovingDirection (PLAYER_DIR_*)
+W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection (PLAYER_DIR_*)
 
 ; Active tileset pointers (set from tileset header by LoadMapHeader)
 W_TILESET_BANK               equ 0xD52A ; wTilesetBank
 W_TILESET_BLOCKS_PTR         equ 0xD52B ; wTilesetBlocksPtr (2 bytes, LE)
 W_TILESET_GFX_PTR            equ 0xD52D ; wTilesetGfxPtr   (2 bytes, LE)
+W_TILESET_COLLISION_PTR      equ 0xD52F ; wTilesetCollisionPtr (2 bytes, LE; passable-tile list)
 
 ; Walk/bike/surf state
 W_WALK_BIKE_SURF_STATE       equ 0xD6FF ; wWalkBikeSurfState
@@ -214,6 +234,38 @@ SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 24 tiles wide
 SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 20 tiles tall
 MAP_BORDER               equ 3           ; block-unit border around map in wOverworldMap
 
+; Player movement direction bits (constants/sprite_data_constants.asm wPlayerDirection)
+PLAYER_DIR_RIGHT         equ 1
+PLAYER_DIR_LEFT          equ 2
+PLAYER_DIR_DOWN          equ 4
+PLAYER_DIR_UP            equ 8
+
+; Sprite facing direction values (constants/sprite_data_constants.asm SPRITE_FACING_*)
+SPRITE_FACING_DOWN       equ 0x00
+SPRITE_FACING_UP         equ 0x04
+SPRITE_FACING_LEFT       equ 0x08
+SPRITE_FACING_RIGHT      equ 0x0C
+
+; hJoyHeld bit positions (constants/hardware.inc B_PAD_*; active-high in hJoyHeld)
+PAD_RIGHT                equ 1 << 4      ; B_PAD_RIGHT = 4
+PAD_LEFT                 equ 1 << 5      ; B_PAD_LEFT  = 5
+PAD_UP                   equ 1 << 6      ; B_PAD_UP    = 6
+PAD_DOWN                 equ 1 << 7      ; B_PAD_DOWN  = 7
+
+; RedrawRowOrColumn modes (constants/gfx_constants.asm)
+REDRAW_COL               equ 1
+REDRAW_ROW               equ 2
+
+; LCDC bits the OBJ renderer reads (constants/hardware.inc)
+LCDCF_OBJ_ON             equ 1 << 1      ; B_LCDC_OBJS  = 1 (sprites enabled)
+LCDCF_OBJ_SIZE           equ 1 << 2      ; B_LCDC_OBJ_SIZE = 2 (0 = 8×8, 1 = 8×16)
+
+; OAM attribute byte bits (constants/hardware.inc)
+OAM_PRIO                 equ 1 << 7      ; OBJ drawn below BG colors 1-3
+OAM_YFLIP                equ 1 << 6
+OAM_XFLIP                equ 1 << 5
+OAM_PAL1                 equ 1 << 4      ; DMG: 0 = OBP0, 1 = OBP1
+
 ; ROM-window area for embedded overworld assets (Phase 2 scaffold)
 ; The unused ROM bank-switch window ($4000–$7FFF) is repurposed to hold asset data
 ; that faithful routines (LoadTilesetTilePatternData, DrawTileBlock, LoadTileBlockMap)
@@ -221,6 +273,7 @@ MAP_BORDER               equ 3           ; block-unit border around map in wOver
 OW_GFX_GBADDR            equ 0x4000     ; overworld tileset 2bpp → vTileset ($9000)
 OW_BLOCKS_GBADDR         equ 0x4600     ; overworld blockset (.bst, 128 blocks × 16 tile-IDs)
 OW_MAP_GBADDR            equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
+OW_COLL_GBADDR           equ 0x4F00     ; Overworld_Coll passable-tile list ($FF-terminated)
 
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port
