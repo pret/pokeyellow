@@ -38,11 +38,38 @@ LCDC_TILEDATA_BIT equ 4        ; rLCDC bit 4: tile data addressing mode
 ; Exported symbols
 ; ---------------------------------------------------------------------------
 global render_bg
+global render_sprites
+global draw_player_marker
+global g_player_marker_on
+
+; Player placeholder marker — the player sprite is always at the fixed screen
+; center (pret keeps the camera locked on the player and scrolls the BG). Until
+; the OAM sprite renderer lands (Phase 1 open item), draw a simple two-tone box
+; there so it's obvious where "you" are. Tile (8,8): 16×16 px at (64,64).
+PLAYER_MARKER_X    equ 64
+PLAYER_MARKER_Y    equ 64
+PLAYER_MARKER_SIZE equ 16
+PLAYER_MARKER_SHADE equ 3       ; darkest DMG shade for the outline/body
+PLAYER_MARKER_INNER equ 0       ; lightest shade for the inner square
 
 ; ---------------------------------------------------------------------------
 ; BSS
 ; ---------------------------------------------------------------------------
 section .bss
+align 4
+g_player_marker_on: resb 1 ; nonzero → draw_player_marker paints the placeholder
+align 4
+obp_tab:     resb 8        ; OBP0 shades in [0..3], OBP1 shades in [4..7]
+spr_oam_ptr: resd 1        ; GB-relative offset of the current OAM entry
+spr_count:   resd 1        ; OAM entries left to process
+spr_sx:      resd 1        ; sprite left screen X (signed)
+spr_sy:      resd 1        ; sprite top screen Y (signed)
+spr_tilebase: resd 1       ; GB-relative address of the sprite's tile data
+spr_attr:    resd 1        ; OAM attribute byte
+spr_row:     resd 1        ; current sprite row 0..7
+spr_rowbase: resd 1        ; GB-relative back-buffer offset of the current row
+spr_lo:      resb 1        ; low bitplane of the current tile row
+spr_hi:      resb 1        ; high bitplane of the current tile row
 align 4
 row_buf:    resb 256       ; one decoded 256-px virtual BG row (shade 0–3)
 bgp_tab:    resb 4         ; BGP unpacked: bgp_tab[color] = shade
@@ -201,4 +228,209 @@ decode_row:
     inc esi
     cmp esi, TILEMAP_W
     jb .tile_loop
+    ret
+
+; ---------------------------------------------------------------------------
+; render_sprites — composite the 40 OAM sprites over the back buffer.
+;
+; Emulates DMG OBJ rendering (8×8 mode, LCDC_OBJ_8): for each visible sprite,
+; blit its 8×8 tile from the OBJ tile area ($8000, unsigned addressing) honoring
+; X/Y flip, the OBP0/OBP1 palette, color-0 transparency, and the BG-priority bit
+; (attr bit 7 → draw only over BG shade 0; correct under the standard BGP=$E4).
+; Reads OAM from $FE00. Call after render_bg, before present.
+;
+; Simplifications vs. hardware: sprites are drawn in reverse OAM order so a lower
+; index ends up on top (handles the index tiebreak, not the smaller-X-wins rule),
+; and the 10-sprites-per-scanline limit is not enforced. 8×16 OBJ size (LCDC
+; bit 2) is not handled — Pokémon overworld/menus use 8×8.
+;
+; In:  EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+render_sprites:
+    pushad
+    test byte [ebp + IO_LCDC], LCDCF_OBJ_ON
+    jz .done
+
+    ; Unpack OBP0 → obp_tab[0..3], OBP1 → obp_tab[4..7].
+    movzx eax, byte [ebp + IO_OBP0]
+    xor edx, edx
+.unpack0:
+    mov ebx, eax
+    and ebx, 3
+    mov [obp_tab + edx], bl
+    shr eax, 2
+    inc edx
+    cmp edx, 4
+    jb .unpack0
+    movzx eax, byte [ebp + IO_OBP1]
+.unpack1:
+    mov ebx, eax
+    and ebx, 3
+    mov [obp_tab + edx], bl
+    shr eax, 2
+    inc edx
+    cmp edx, 8
+    jb .unpack1
+
+    mov dword [spr_oam_ptr], GB_OAM + (OAM_COUNT - 1) * OAM_ENTRY_SIZE
+    mov dword [spr_count], OAM_COUNT
+
+.spriteLoop:
+    mov esi, [spr_oam_ptr]
+    movzx eax, byte [ebp + esi]          ; Y (screen Y + 16)
+    sub eax, OAM_Y_OFS
+    mov [spr_sy], eax
+    movzx eax, byte [ebp + esi + 1]      ; X (screen X + 8)
+    sub eax, OAM_X_OFS
+    mov [spr_sx], eax
+    movzx eax, byte [ebp + esi + 2]      ; tile id
+    shl eax, 4
+    add eax, GB_VCHARS0
+    mov [spr_tilebase], eax
+    movzx eax, byte [ebp + esi + 3]      ; attributes
+    mov [spr_attr], eax
+
+    ; Cull sprites that fall entirely off-screen.
+    mov eax, [spr_sy]
+    cmp eax, SCREEN_H
+    jge .nextSprite                      ; top at/below bottom edge
+    add eax, 7
+    js  .nextSprite                      ; bottom row above top edge
+    mov eax, [spr_sx]
+    cmp eax, SCREEN_W
+    jge .nextSprite
+    add eax, 7
+    js  .nextSprite
+
+    mov dword [spr_row], 0
+.rowLoop:
+    mov eax, [spr_sy]
+    add eax, [spr_row]                   ; py
+    js  .rowNext                         ; row above the screen
+    cmp eax, SCREEN_H
+    jge .rowNext
+    imul ecx, eax, SCREEN_W
+    add ecx, GB_BACKBUF
+    mov [spr_rowbase], ecx
+
+    ; srcrow = yflip ? 7 - row : row
+    mov edx, [spr_row]
+    test byte [spr_attr], OAM_YFLIP
+    jz .noYFlip
+    mov edx, 7
+    sub edx, [spr_row]
+.noYFlip:
+    mov eax, [spr_tilebase]
+    lea eax, [eax + edx * 2]
+    mov dl, [ebp + eax]
+    mov [spr_lo], dl
+    mov dl, [ebp + eax + 1]
+    mov [spr_hi], dl
+
+    xor esi, esi                         ; col = 0..7
+.colLoop:
+    ; bit index = xflip ? col : 7 - col
+    mov ecx, esi
+    test byte [spr_attr], OAM_XFLIP
+    jnz .haveBit
+    mov ecx, 7
+    sub ecx, esi
+.haveBit:
+    movzx eax, byte [spr_lo]
+    shr eax, cl
+    and eax, 1
+    movzx ebx, byte [spr_hi]
+    shr ebx, cl
+    and ebx, 1
+    lea eax, [eax + ebx * 2]             ; color 0..3
+    test eax, eax
+    jz .colNext                          ; color 0 = transparent
+
+    ; shade = obp_tab[(pal1 ? 4 : 0) + color]
+    mov ebx, eax
+    test byte [spr_attr], OAM_PAL1
+    jz .pal0
+    add ebx, 4
+.pal0:
+    movzx ebx, byte [obp_tab + ebx]
+
+    mov eax, [spr_sx]
+    add eax, esi                         ; px
+    js  .colNext
+    cmp eax, SCREEN_W
+    jge .colNext
+    mov ecx, [spr_rowbase]
+    add ecx, eax                         ; back-buffer offset (GB-relative)
+    test byte [spr_attr], OAM_PRIO
+    jz .writePx
+    cmp byte [ebp + ecx], 0              ; behind BG: only over BG shade 0
+    jne .colNext
+.writePx:
+    mov [ebp + ecx], bl
+.colNext:
+    inc esi
+    cmp esi, 8
+    jb .colLoop
+
+.rowNext:
+    inc dword [spr_row]
+    cmp dword [spr_row], 8
+    jb .rowLoop
+
+.nextSprite:
+    sub dword [spr_oam_ptr], OAM_ENTRY_SIZE
+    dec dword [spr_count]
+    jnz .spriteLoop
+
+.done:
+    popad
+    ret
+
+; ---------------------------------------------------------------------------
+; draw_player_marker — paint the player placeholder into the back buffer.
+;
+; No-op unless g_player_marker_on is set (so it only shows in the overworld,
+; not the title screen). Draws a PLAYER_MARKER_SIZE square of the darkest shade
+; with a half-size lighter square inset, centered on the fixed player screen
+; position. Call after render_bg, before present.
+;
+; In:  EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+draw_player_marker:
+    cmp byte [g_player_marker_on], 0
+    jz .ret
+    pushad
+
+    ; Outer square: PLAYER_MARKER_SIZE × PLAYER_MARKER_SIZE of the body shade.
+    mov edx, PLAYER_MARKER_Y
+    mov ecx, PLAYER_MARKER_SIZE                  ; rows remaining
+.outer_row:
+    imul edi, edx, SCREEN_W
+    lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X]
+    push ecx
+    mov ecx, PLAYER_MARKER_SIZE
+    mov al, PLAYER_MARKER_SHADE
+    rep stosb
+    pop ecx
+    inc edx
+    dec ecx
+    jnz .outer_row
+
+    ; Inner square: half size, inset by a quarter, in the lighter shade.
+    mov edx, PLAYER_MARKER_Y + PLAYER_MARKER_SIZE / 4
+    mov ecx, PLAYER_MARKER_SIZE / 2
+.inner_row:
+    imul edi, edx, SCREEN_W
+    lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X + PLAYER_MARKER_SIZE / 4]
+    push ecx
+    mov ecx, PLAYER_MARKER_SIZE / 2
+    mov al, PLAYER_MARKER_INNER
+    rep stosb
+    pop ecx
+    inc edx
+    dec ecx
+    jnz .inner_row
+
+    popad
+.ret:
     ret
