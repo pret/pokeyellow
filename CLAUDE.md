@@ -33,8 +33,18 @@ supporting home routines (`src/util/copy_data.asm`, `src/video/lcd_control.asm`,
 (`src/overworld/overworld.asm`) both render correctly in DOSBox-X: the title
 shows "Pokémon Yellow Version", and `SKIP_TITLE=1` boots straight into a fully
 drawn Pallet Town (Oak's Lab, tree border, sign) in the DMG-green palette.
-Next: player movement in `OverworldLoop` (joypad → SCX/SCY + map pointer),
-then OAM sprites and the window layer (Phase 1 open items).
+Player movement now works: `OverworldLoop` reads the joypad and walks the
+player in all four directions, scrolling the map smoothly via the faithful
+`AdvancePlayerSprite` (sliding `wMapViewVRAMPointer` + per-frame
+`RedrawRowOrColumn` edge redraw, hooked into `DelayFrame`) with land collision
+against the embedded `Overworld_Coll` passable-tile list.
+The OAM sprite renderer (`src/ppu/ppu.asm:render_sprites`) is in: 8×8 DMG OBJ
+emulation (X/Y flip, OBP0/OBP1, color-0 transparency, BG-priority bit), reading
+`$FE00` and compositing after `render_bg`. The Red player sprite renders
+camera-locked at screen center and faces the walk direction (scaffold
+`LoadPlayerSpriteGraphics`/`UpdatePlayerOAM` in `overworld.asm`; walk-frame leg
+animation and NPCs still deferred). Next: window layer, NPC movement / sprite
+engine, then the random-encounter trigger.
 
 ---
 
@@ -147,7 +157,11 @@ Other verified DPMI gotchas:
 - VGA Mode 13h (320×200, 256 colors)
 - GB framebuffer: 160×144 at `[EBP + GB_BACKBUF]`
 - 2× nearest-neighbor blit to `0xA0000`, centered (28-row letterbox top/bottom)
-- Palette: 256-entry VGA (6-bit RGB via ports 0x3C8/0x3C9); layout TBD Phase 5
+- Palette: 256-entry VGA (6-bit RGB via ports 0x3C8/0x3C9); layout TBD Phase 5.
+  The current 4-shade DMG-green ramp (`dmg_palette` in `boot/video.asm`) is a
+  **debug placeholder** — do not treat it as final. Phase 5 will translate the
+  original **GBC** colors into the VGA palette (Yellow is CGB-enhanced; pull
+  from the CGB palette data, not an expanded DMG ramp).
 
 ### Timing
 - PIT channel 0: divisor 19886, mode 3 → ~60 Hz

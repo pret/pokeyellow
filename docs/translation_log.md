@@ -268,4 +268,102 @@ sym-verified addresses. Key corrections: `wPlayerName` ($D158→$D157),
 from placeholder $D20x range to their true WRAM0 addresses. Title screen
 unaffected (zeroed wrong WRAM before; correct zeroing now, same visual result).
 
+---
+
+## Player movement — `src/overworld/overworld.asm` (2026-06-14)
+
+Translated the movement-relevant subset of `home/overworld.asm:OverworldLoop` /
+`OverworldLoopLessDelay` plus the helpers from
+`engine/overworld/advance_player_sprite.asm`, `home/vcopy.asm:RedrawRowOrColumn`,
+and the collision path (`CollisionCheckOnLand` → `_GetTileAndCoordsInFrontOfPlayer`
+→ `_IsTilePassable`).
+
+### Routines
+
+- **OverworldLoop / OverworldLoopLessDelay** — joypad state machine. Two
+  `DelayFrame`s per iteration (matches the original ~16-frame/step cadence). Idle:
+  sample `hJoyHeld`, set the X/Y step vector + facing + `wPlayerDirection`,
+  collision-check, and arm `wWalkCounter = 8`. Mid-step: `AdvancePlayerSprite`.
+- **AdvancePlayerSprite** (`_AdvancePlayerSprite`) — on the first step frame
+  (counter == 7) slides `wMapViewVRAMPointer` by 2 tiles, crosses a block via
+  `MoveTileBlockMapPointer{East,West,South,North}`, rebuilds the view with
+  `LoadCurrentMapView`, and schedules the exposed edge. Every frame scrolls
+  `hSCX`/`hSCY` by ±2 px.
+- **RedrawRowOrColumn** + **Schedule{North,South}RowRedraw** /
+  **Schedule{East,West}ColumnRedraw** + helpers — the sliding-window VRAM update.
+  `RedrawRowOrColumn` is exported and called from `frame.asm:DelayFrame` (the GB
+  VBlank-order slot), so only the 2 freshly exposed rows/cols are rewritten per
+  step while `hSCX`/`hSCY` grow unbounded (renderer wraps the 32×32 VRAM at 256 px).
+- **CollisionCheckOnLand / GetTileInFrontOfPlayer / IsTilePassable** — land
+  passability only. `GetTileInFrontOfPlayer` reads `wTileMap` at the fixed
+  per-facing screen coords; `IsTilePassable` scans the `$FF`-terminated list at
+  `wTilesetCollisionPtr`.
+
+### Key decisions
+
+- **Auto-BG transfer off in the overworld:** `H_AUTO_BG_TRANSFER_EN = 0` in
+  `SetupPalletTown`. Otherwise `do_bg_transfer` re-blits `wTileMap` to `$9800`
+  every frame and fights `RedrawRowOrColumn` (matches the original, which disables
+  auto-transfer while walking).
+- **Collision data embedded:** `gen_overworld_assets.py` now parses
+  `data/tilesets/collision_tile_ids.asm` for `Overworld_Coll` →
+  `assets/overworld_coll.inc`, copied to ROM window `OW_COLL_GBADDR` ($4F00);
+  `wTilesetCollisionPtr` points there.
+- **Player marker placeholder:** `draw_player_marker` (ppu.asm) paints a 16×16
+  two-tone box at the fixed player screen center, gated by `g_player_marker_on`
+  (set in the overworld, off on the title). Stands in until the OAM sprite
+  renderer (Phase 1 open item) lands.
+- **32-bit gotcha:** `dil`/`sil` byte registers do not exist outside long mode;
+  low-byte-of-EDI arithmetic uses `mov eax, edi` / `and eax, 0xFF` instead.
+
+### Phase 2 omissions vs. pret
+
+OAM sprite-shift loop, `IsSpinning`, ledges, tile-pair collisions, sprite
+collisions, warps, `CheckMapConnections`, NPCs, battles, and scripted movement.
+
+### Verification
+
+Built `SKIP_TITLE=1`; verified in DOSBox-X and user-confirmed: walking in all
+four directions scrolls Pallet Town smoothly with correct tiles at the newly
+exposed edges, trees/buildings block movement, and the placeholder marker tracks
+the screen center.
+
+---
+
+## OAM sprite renderer + player sprite — `src/ppu/ppu.asm`, `src/overworld/overworld.asm` (2026-06-14)
+
+HAL renderer (not a pret translation) plus an overworld scaffold to drive it.
+
+### Routines
+
+- **render_sprites** (ppu.asm) — DMG OBJ emulation in 8×8 mode. Reads the 40 OAM
+  entries at `$FE00` (Y, X, tile, attr), blits each 8×8 tile from the OBJ tile
+  area (`$8000`, unsigned), honoring X/Y flip, OBP0/OBP1 (color 0 = transparent),
+  and the BG-priority bit (attr bit 7 → draw only over back-buffer shade 0, which
+  equals BG color 0 under the standard `BGP=$E4`). Called from
+  `frame.asm:DelayFrame` right after `render_bg`.
+- **LoadPlayerSpriteGraphics** (overworld.asm, scaffold) — copies the 24-tile Red
+  sprite (`gfx/sprites/red.2bpp`, embedded via `gen_overworld_assets.py` →
+  `assets/player_sprite.inc`) to `$8000` and zeroes OAM. Called from `LoadMapData`
+  where pret calls the real `LoadPlayerSpriteGraphics`.
+- **UpdatePlayerOAM** (overworld.asm, scaffold) — writes the player's four OAM
+  entries each frame for the current facing, composing the 16×16 standing pose
+  from tiles 0–11 via `player_oam_table` (derived from `data/sprites/facings.asm`).
+  Player is camera-locked at screen pixel (64,64); the BG scrolls under it.
+
+### Key decisions / gotchas
+
+- **OAM byte order** is Y, X, tile, attr (verified against `PrepareOAMData`'s read
+  sequence — the "attributes, tile index" comment in `facings.asm` is mislabeled).
+- DMG sprite priority is simplified to **reverse-OAM-order draw** (lower index on
+  top) — honors the index tiebreak but not the smaller-X-wins rule; no
+  10-per-scanline limit; 8×16 OBJ size unhandled (overworld/menus use 8×8).
+- The earlier `draw_player_marker` placeholder is now disabled
+  (`g_player_marker_on = 0`) but kept as a gated fallback.
+
+### Verification
+
+`SKIP_TITLE=1`: the Red player sprite renders camera-locked at screen center over
+Pallet Town and faces the direction of movement.
+
 *Add new entries below as routines are translated.*
