@@ -94,6 +94,21 @@ def main():
         map_src.read_bytes(),
         "Pallet Town block map: 10×9 = 90 block IDs → [EBP+OW_MAP_GBADDR].",
     )
+    # Connected maps' block data (for map-connection border strips).
+    write_inc(
+        ASSETS / "route1_blk.inc",
+        "route1_blk",
+        (ROOT / "maps" / "Route1.blk").read_bytes(),
+        "Route 1 block map: 10×18 = 180 block IDs → [EBP+OW_ROUTE1_BLK_GBADDR]. "
+        "North connection of Pallet Town.",
+    )
+    write_inc(
+        ASSETS / "route21_blk.inc",
+        "route21_blk",
+        (ROOT / "maps" / "Route21.blk").read_bytes(),
+        "Route 21 block map: 10×45 = 450 block IDs → [EBP+OW_ROUTE21_BLK_GBADDR]. "
+        "South connection of Pallet Town.",
+    )
     write_inc(
         ASSETS / "overworld_coll.inc",
         "overworld_coll",

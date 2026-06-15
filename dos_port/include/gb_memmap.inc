@@ -87,18 +87,20 @@ STAY                                   equ 0xFF  ; stationary
 W_SHADOW_OAM        equ 0xC300     ; wShadowOAM — 40 sprites × 4 bytes
 W_SHADOW_OAM_END    equ 0xC3A0
 W_SHADOW_OAM_SIZE   equ 0xA0       ; 160 bytes
-W_TILEMAP           equ 0xC3A0     ; wTileMap — 20×18 screen tile buffer
-W_TILEMAP_SIZE      equ 360        ; SCREEN_W_TILES * SCREEN_H_TILES
+W_TILEMAP           equ 0xC3A0     ; wTileMap — 40×25 screen tile buffer
+W_TILEMAP_SIZE      equ 1000       ; SCREEN_TILES_W * SCREEN_TILES_H
 
 ; WRAM bank 1 — $D000–$DFFF (4 KB)
 ; On CGB: banks 1–7 are switchable via rWBK ($FF70).
 ; For now, bank 1 is the only one allocated here. CGB banking TBD.
 GB_WRAM1        equ 0xD000
 
-; Echo RAM region — $E000–$FDFF (mirrors $C000–$DDFF)
-; The pret source avoids using Echo RAM; not allocated here.
-; If a translated routine reads/writes $E000+, redirect to $C000+.
-; GB_ECHO        equ 0xE000  ; not allocated — redirect to GB_WRAM0
+; Echo RAM region — $E000–$FDFF
+; The pret source never addresses this range, so we use it for expanded
+; DOS-port-only buffers (wSurroundingTiles, wOverworldMap, redraw scratch,
+; wTileMapBackup2) that grew beyond their original WRAM0/1 slots.
+; All addresses are within the DPMI allocation (EBP + 0xE000 is valid).
+GB_ECHO             equ 0xE000
 
 ; OAM — $FE00–$FE9F (160 bytes = 40 sprites × 4 bytes each)
 ; Format per sprite: Y, X, tile ID, flags. See constants/hardware.inc OAM constants.
@@ -176,21 +178,28 @@ W_TITLE_SCREEN_TIMER         equ 0xCD3E ; wTitleScreenTimer
 W_PLAYER_NAME                equ 0xD157 ; wPlayerName — 11 bytes, '@'-terminated
 W_RIVAL_NAME                 equ 0xD349 ; wRivalName  — 11 bytes, '@'-terminated
 
-; Tile-map save/restore buffers (360 bytes each) — sym-verified
-W_TILEMAP_BACKUP             equ 0xC508 ; wTileMapBackup (= wSurroundingTiles, see below)
-W_TILEMAP_BACKUP2            equ 0xCD81 ; wTileMapBackup2
+; Tile-map save/restore buffers — relocated to echo RAM ($E000+) to avoid
+; overlapping pret WRAM1 symbols.  All via constants; no hardcoded addresses
+; in translated code.
+; Layout in echo RAM ($E000–$EECB, all within the DPMI allocation):
+;   $E000  wSurroundingTiles / wTileMapBackup   1408 B ($580) → $E57F
+;   $E580  wOverworldMap                        1300 B ($514) → $EA93
+;   $EA94  wRedrawRowOrColumnSrcTiles             80 B ($50)  → $EAE3
+;   $EAE4  wTileMapBackup2                      1000 B ($3E8) → $EECB
+W_TILEMAP_BACKUP             equ 0xE000 ; wTileMapBackup (= wSurroundingTiles, see below)
+W_TILEMAP_BACKUP2            equ 0xEAE4 ; wTileMapBackup2 (1000 B)
 
 ; Overworld surrounding-tiles buffer (alias for wTileMapBackup)
-; 24×20 = 480 bytes; DrawTileBlock writes here before crop to wTileMap.
-W_SURROUNDING_TILES          equ 0xC508 ; wSurroundingTiles = wTileMapBackup
+; 44×32 = 1408 bytes; DrawTileBlock writes here before crop to wTileMap.
+W_SURROUNDING_TILES          equ 0xE000 ; wSurroundingTiles = wTileMapBackup
 
-; Overworld map block buffer ($C6E8–$CBFC = 1300 bytes)
-W_OVERWORLD_MAP              equ 0xC6E8 ; wOverworldMap
+; Overworld map block buffer (1300 bytes)
+W_OVERWORLD_MAP              equ 0xE580 ; wOverworldMap
 W_OVERWORLD_MAP_SIZE         equ 0x514  ; wOverworldMapEnd − wOverworldMap (1300 bytes)
 
 ; Overworld redraw scratch — staging buffer for the row/column that
 ; RedrawRowOrColumn copies into VRAM during the per-frame (VBlank) pipeline.
-W_REDRAW_ROW_OR_COLUMN_SRC_TILES equ 0xCBFC ; wRedrawRowOrColumnSrcTiles
+W_REDRAW_ROW_OR_COLUMN_SRC_TILES equ 0xEA94 ; wRedrawRowOrColumnSrcTiles (80 B)
 
 ; Walk/sprite state
 W_FONT_LOADED                equ 0xCFC3 ; wFontLoaded (bit BIT_FONT_LOADED set while text font is in VRAM)
@@ -274,20 +283,20 @@ W_STATUS_FLAGS_7             equ 0xD732 ; wStatusFlags7
 W_ELITE4_FLAGS               equ 0xD733 ; wElite4Flags
 
 ; Screen-area size constant (used by save/restore functions).
-SCREEN_AREA              equ SCREEN_TILES_W * SCREEN_TILES_H  ; 20 * 18 = 360
+SCREEN_AREA              equ SCREEN_TILES_W * SCREEN_TILES_H  ; 40 * 25 = 1000
 
 ; pret-compatible name aliases (hardware.inc uses SCREEN_WIDTH/HEIGHT, TILEMAP_WIDTH)
-SCREEN_WIDTH             equ SCREEN_TILES_W                   ; 20
-SCREEN_HEIGHT            equ SCREEN_TILES_H                   ; 18
+SCREEN_WIDTH             equ SCREEN_TILES_W                   ; 40
+SCREEN_HEIGHT            equ SCREEN_TILES_H                   ; 25
 TILEMAP_WIDTH            equ TILEMAP_W                        ; 32
 
 ; Overworld map geometry (constants/gfx_constants.asm + map_data_constants.asm)
 BLOCK_WIDTH              equ 4           ; tiles per map block, X
 BLOCK_HEIGHT             equ 4           ; tiles per map block, Y
-SCREEN_BLOCK_WIDTH       equ 6           ; blocks visible per screen row
-SCREEN_BLOCK_HEIGHT      equ 5           ; blocks visible per screen column
-SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 24 tiles wide
-SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 20 tiles tall
+SCREEN_BLOCK_WIDTH       equ 11          ; blocks visible per screen row (ceil(40/4)+1)
+SCREEN_BLOCK_HEIGHT      equ 8           ; blocks visible per screen column (ceil(25/4)+1)
+SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 44 tiles wide
+SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 32 tiles tall
 MAP_BORDER               equ 3           ; block-unit border around map in wOverworldMap
 
 ; Player movement direction bits (constants/sprite_data_constants.asm wPlayerDirection)
@@ -349,6 +358,20 @@ OW_GFX_GBADDR            equ 0x4000     ; overworld tileset 2bpp → vTileset ($
 OW_BLOCKS_GBADDR         equ 0x4600     ; overworld blockset (.bst, 128 blocks × 16 tile-IDs)
 OW_MAP_GBADDR            equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
 OW_COLL_GBADDR           equ 0x4F00     ; Overworld_Coll passable-tile list ($FF-terminated)
+; Connected-map block data (map-connection border strips). Free ROM-window space
+; above the Pallet Town assets; the connection-strip src pointers index into these.
+OW_ROUTE1_BLK_GBADDR     equ 0x5000     ; Route1.blk  (10×18 = 180 block IDs) — Pallet Town north
+OW_ROUTE21_BLK_GBADDR    equ 0x5200     ; Route21.blk (10×45 = 450 block IDs) — Pallet Town south
+
+; Connection-strip header field offsets (added to W_{NORTH,SOUTH,WEST,EAST}_CONNECTED_MAP;
+; struct is 11 bytes — see map_connection_struct in macros/ram.asm).
+CONN_STRIP_SRC           equ 1          ; ConnectionStripSrc  (dw) — src in connected map's blocks
+CONN_STRIP_DEST          equ 3          ; ConnectionStripDest (dw) — dest in wOverworldMap border
+CONN_STRIP_LENGTH        equ 5          ; ConnectionStripLength (db)
+CONN_MAP_WIDTH           equ 6          ; ConnectedMapWidth (db)
+CONN_Y_ALIGN             equ 7          ; ConnectedMapYAlignment (db)
+CONN_X_ALIGN             equ 8          ; ConnectedMapXAlignment (db)
+CONN_VIEW_PTR            equ 9          ; ConnectedMapViewPointer (dw)
 
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port
@@ -361,11 +384,11 @@ GB_IE           equ 0xFFFF
 GB_VRAM1        equ 0x10000
 GB_VRAM1_SIZE   equ 0x2000     ; 8 KB
 
-; Back buffer — 160x144 pixels, 8bpp (one byte per pixel, palette index)
-; Placed just after VRAM bank 1. The renderer writes here; present() blits to VGA.
-; Size: 160 * 144 = 23040 bytes
+; Back buffer — 320×200 pixels, 8bpp (one byte per pixel, palette index)
+; Placed just after VRAM bank 1. The tile-blitter writes here; present() copies to VGA.
+; Size: 320 * 200 = 64000 bytes
 GB_BACKBUF      equ 0x12000
-GB_BACKBUF_SIZE equ 23040      ; 160 * 144
+GB_BACKBUF_SIZE equ 64000      ; RENDER_W * RENDER_H
 
 ; ---------------------------------------------------------------------------
 ; I/O register shadow offsets (EBP + IO_* = emulated register byte)
@@ -419,11 +442,19 @@ TILE_WIDTH      equ 8
 TILE_HEIGHT     equ 8
 TILE_SIZE       equ 16         ; 2 bits/pixel × 8×8 = 16 bytes per tile
 
-; Screen dimensions (from constants/hardware.inc SCREEN_* constants)
-SCREEN_W        equ 160        ; pixels
-SCREEN_H        equ 144        ; pixels
-SCREEN_TILES_W  equ 20         ; tiles (160/8)
-SCREEN_TILES_H  equ 18         ; tiles (144/8)
+; Logical GB screen dimensions (game-code uses these for tile addressing).
+; NOTE: SCREEN_W/H are logical pixel dimensions; RENDER_W/H are the actual
+; back-buffer/VGA dimensions (320×200 native, no scaling).
+SCREEN_W        equ 160        ; logical pixels (kept for game-logic comparisons)
+SCREEN_H        equ 144        ; logical pixels
+SCREEN_TILES_W  equ 40         ; viewport width in tiles (= RENDER_W / TILE_WIDTH)
+SCREEN_TILES_H  equ 25         ; viewport height in tiles (= RENDER_H / TILE_HEIGHT)
+
+; Native render dimensions (back buffer and VGA output)
+RENDER_W        equ 320        ; back buffer / VGA width in pixels
+RENDER_H        equ 200        ; back buffer / VGA height in pixels
+RENDER_TILES_W  equ 40         ; RENDER_W / TILE_WIDTH
+RENDER_TILES_H  equ 25         ; RENDER_H / TILE_HEIGHT
 
 ; Tilemap dimensions
 TILEMAP_W       equ 32         ; tiles (256/8)
@@ -441,15 +472,7 @@ VGA_W           equ 320
 VGA_H           equ 200
 VGA_FRAMEBUF    equ 0xA0000    ; linear address of VGA framebuffer (flat DS)
 
-; 2x blit letterbox: (200 - 144*2) / 2 = (200 - 288) / 2 => negative, so clip
-; With 2x scale: GB 160x144 -> 320x288, which is taller than 200.
-; Crop: show rows 0..199 of the 288-row scaled image (clips bottom 88 rows = 44 GB rows).
-; Alternatively, scale to fit width: 320/160 = 2x; crop height to 200/2 = 100 GB rows.
-; Decision: render all 144 GB rows, blit 2x but only display top 200 pixels.
-; The bottom 88 pixels (44 GB rows) are off-screen — this is acceptable for now.
-; TODO: revisit with a 1.5x or letterbox strategy in Phase 5.
-VGA_BLIT_SCALE  equ 2
-VGA_BLIT_XOFS   equ 0          ; centered: (320 - 160*2) / 2 = 0
-VGA_BLIT_YOFS   equ 0          ; no letterbox (see note above)
+; Tile-blitter writes directly to a 320×200 back buffer; present() is a
+; straight rep movsd of 16,000 dwords.  No scaling, no letterbox.
 
 %endif ; GB_MEMMAP_INC
