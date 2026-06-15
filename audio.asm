@@ -537,7 +537,7 @@ INCLUDE "audio/music/yellowunusedsong.asm"
 INCLUDE "audio/music/meetjessiejames.asm"
 
 IF !DEF(_DEBUG)
-	INCBIN "garbage/bank20.bin"
+	INCBIN "garbage/bank20.2bpp", 185
 ENDC
 
 
