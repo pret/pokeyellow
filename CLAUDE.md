@@ -57,6 +57,25 @@ vChars1 with the font, as on the GB). NPC slots are wired but inert (picture ID
 VRAM-slot allocation / `DetectCollisionBetweenSprites`), the window layer, then
 the random-encounter trigger.
 
+`render_bg` (`src/ppu/ppu.asm`) is a **scanline renderer over a decoded-tile
+cache**: the whole BG/window tile-data region ($8000-$97FF, 384 tiles) is
+pre-decoded 2bpp→8bpp into `tile_cache` (24 KB, BGP baked in) once and only
+re-decoded when VRAM tile data or BGP changes (`g_tilecache_dirty` /
+BGP-compare). Per output scanline it then assembles 41 tiles by *copying*
+decoded rows into a line buffer and copies 320 px from the `SCX & 7` fine
+offset, so both axes scroll pixel-smooth with no per-pixel bit decode in the hot
+path. **Any new routine that writes VRAM tile data must set
+`g_tilecache_dirty`** (the existing VRAM loaders already do).
+
+**Temporary scaffold — `DrawTileBlock` out-of-range block clamp:** the extended
+40×25-tile viewport draws a larger area than the original 20×18, so the camera
+can reach into uninitialized `wOverworldMap` padding and read block IDs past the
+embedded blockset. `DrawTileBlock` (`src/overworld/overworld.asm`) currently
+clamps such IDs to block 0 to avoid painting garbage. This is a stopgap: the
+plan is to **extend the map data** so those regions hold real blocks (no blank
+area), after which the clamp is dead code and should be deleted. See TODO.md
+(Phase 2).
+
 ---
 
 ## Repo Layout
@@ -87,6 +106,7 @@ docs/
   register_map.md          ← SM83 → x86 register mapping (living doc)
   translation_log.md       ← per-routine translation notes
   glitch_safety.md         ← glitch sandbox guidance
+  386_optimization_strategy.md ← Guide for fast and faithful 386 assembly optimizations
   references/
     README.md              ← reference link index
     pandocs/               ← downloaded Pan Docs markdown pages

@@ -425,4 +425,172 @@ the four StandingDown entries `($4c,$48,$00) ($4c,$50,$01) ($54,$48,$02)
 standing tiles present at `$8000`, distinct walking tiles at `$8800`. Default and
 `SKIP_TITLE=1` builds link clean.
 
+---
+
+## BG scanline rewrite + DrawTileBlock clamp — `src/ppu/ppu.asm`, `src/overworld/overworld.asm` (2026-06-15)
+
+- **Sources:** HAL renderer (`render_bg`, not a pret translation); `DrawTileBlock`
+  (`home/overworld.asm`).
+- **H-flag:** Not involved.
+- **Bug tags:** None (fixes to our own port code, not pret bugs).
+
+### render_bg — pixel-smooth scrolling
+
+Replaced the tile-blitter (each tile written to a fixed `tile_col*8` / `tile_row*8`
+slot) with a **scanline renderer**. Per output scanline: compute
+`world_y = (y + SCY) & 0xFF`, derive the tilemap row + `(world_y & 7)*2` source-row
+offset, decode 41 tiles (40 visible + 1 for the sub-tile shift) into a virtual line
+buffer (`bg_scanline_buf`), then `rep movsb` 320 px starting at `bg_fine_x = SCX & 7`
+into the back buffer.
+
+- **Why:** the blitter applied neither `SCX & 7` (horizontal scroll only moved on
+  8-px boundaries) nor a per-scanline tilemap-row fetch (its single-tile 8-row
+  decode overflowed into the next *VRAM* tile, not the next *tilemap* row). Both
+  axes are now pixel-smooth.
+- **Cost:** ~200×41 tile-row decodes/frame vs. the blitter's 1000 tile decodes —
+  more work, traded for correctness. (Note: this runs counter to the perf goal of
+  the open "VGA-native renderer" refactor in TODO.md Phase 2; revisit there.)
+- `stosb`/`rep movsb` to/from the flat `.bss` line buffer mirror `decode_win_row` /
+  `render_window` (ES base == DS base after `setup_flat_access`).
+
+### DrawTileBlock — out-of-range block clamp (TEMPORARY)
+
+Added a clamp: if `wTilesetBlocksPtr + blockID*16` lands past the embedded blockset
+(`OW_BLOCKS_GBADDR + OVERWORLD_BLOCKS_SIZE`), substitute block 0.
+
+- **Why:** the extended 40×25-tile viewport draws a larger area than the original
+  20×18, so the camera can reach into uninitialized `wOverworldMap` padding and
+  hand `DrawTileBlock` a block ID past the 128-block embedded blockset; the read
+  then walks off the blockset and paints garbage. No GB equivalent (there the
+  blockset fills a bank and map data is bounded by the loader).
+- **Temporary:** this is a stopgap. The plan is to **extend the map data** so those
+  regions hold real blocks (no blank area from the extended draw), after which the
+  clamp is dead code and should be deleted. Tracked in TODO.md (Phase 2) and noted
+  in CLAUDE.md + a code comment at the clamp site.
+
+### render_window — bottom-of-screen garbage fix (2026-06-15)
+
+Symptom: red/green vertical lines at the bottom-right of the overworld (pixel
+values >3, indexing the leftover `test_palette` ramps). Two compounding causes:
+
+- `LCDC_DEFAULT_VAL = 0xE3` enables the window (bit 5) — the real Pokémon value.
+  The game parks it at `WY=144` to hide it on the 144-px GB screen, but our
+  viewport is 200 px, so rows 144–199 rendered the parked (uninitialized) window.
+  **Fix:** bound the window scanline loop at `SCREEN_H` (144), not `RENDER_H`
+  (200), preserving the GB park semantics. (A textbox for the full 200-px viewport
+  is future window-layer work.)
+- The `wx_adj ≥ 0` copy path lacked a length clamp (the left-clip path has one) and
+  copied up to `RENDER_W` (320) bytes from the 256-byte `row_buf`, spilling into
+  adjacent BSS. **Fix:** clamp the copy to 256.
+
+Verified 2026-06-15 in DOSBox-X: initial render clean; single-step scroll in all
+four directions clean. See docs/session_handoff.md for the remaining open items
+(render speed, map connections, facing-down collision ±1-vs-±2).
+
+### render_bg — decoded-tile cache optimization (2026-06-15)
+
+`render_bg` previously bit-decoded 41 tiles × 200 scanlines (2bpp→8bpp via a
+`shl`/`rcl` loop) **every frame** — ~65k px/frame of per-pixel decode, the
+overworld's hot path. Replaced with a **pre-decoded tile cache**:
+
+- `tile_cache` (BSS, 384 tiles × 64 B = 24 KB) holds the whole BG/window
+  tile-data region ($8000-$97FF) decoded to 8bpp, BGP shade baked in.
+- `rebuild_tile_cache` decodes all 384 tiles in one linear pass and records the
+  BGP used. `render_bg` calls it only when `g_tilecache_dirty` is set **or**
+  `IO_BGP` changed since the last build — so a static, scrolling map reuses the
+  cache and does ~zero decode work. The per-tile inner loop is now two 4-byte
+  `mov`-pair copies (`tile_cache → bg_scanline_buf`); the `SCX & 7` scanline
+  buffer + 320 px copy for smooth horizontal scroll is unchanged.
+- `g_tilecache_dirty` lives in `.data` initialized to 1 (first frame builds the
+  cache) and is set by every VRAM tile-data writer: `LoadFontTilePatterns`,
+  `LoadTextBoxTilePatterns`, `LoadYellowTitleScreenGFX`,
+  `LoadTilesetTilePatternData`, `LoadPlayerSpriteGraphics`,
+  `SetupPalletTownNPCs`, `ClearVram`. BGP/palette changes are auto-detected.
+
+Faithful to behavior (cache is a pure decode of the same VRAM + BGP the
+per-pixel path read). Follows docs/386_optimization_strategy.md (cache decode
+out of the hot loop, 32-bit moves, scaled-index addressing). Verified
+pixel-identical to the pre-optimization Pallet Town render (SKIP_TITLE
+screenshot, 2026-06-15). **Invariant for future work:** any new routine that
+writes VRAM tile data must set `g_tilecache_dirty`.
+
+### Renderer — raw color indices + DAC palette (Tier 2 step 1, 2026-06-15)
+
+The PPU renderer no longer bakes BGP/OBP shades into framebuffer pixels. It writes
+**raw GB color indices** and the VGA DAC maps them: BG/window color 0-3 → DAC 0-3,
+sprite OBP0 → 4+color (DAC 4-7), OBP1 → 8+color (DAC 8-11). New `commit_palette`
+(boot/video.asm) programs DAC 0-11 from BGP/OBP0/OBP1 (consecutive regs
+$FF47-49) using `dmg_palette`, skipping when unchanged; called per frame in
+`DelayFrame` after `commit_shadow_regs`. Dropped `bgp_tab`/`obp_tab`/
+`g_tilecache_bgp` and the BGP-driven tile-cache rebuild — `tile_cache` now holds
+raw color and depends only on `g_tilecache_dirty`. A palette fade/flash is now a
+DAC reprogram, not a tile re-decode (cheaper + more faithful). Byte-identical
+output at the normal BGP/OBP (identity) mapping; verified via `./test_render.sh`
+(BG + player/NPC sprites correct). **Invariant:** code that writes the back buffer
+directly must use the raw-index convention, not shade values. Part of the Tier 2
+plan (docs/render_tier2_plan.md); progress tracked in docs/render_opt_handoff.md.
+
+### render_bg — direct-to-backbuffer assembly (Tier 2 step 2, 2026-06-15)
+
+Removed the redundant per-scanline copy. `render_bg` previously decoded 41 tiles
+into `bg_scanline_buf` then `rep movsb`-copied 320 px into the back buffer at the
+`SCX&7` offset; now it assembles each scanline **directly into the back buffer**
+in one pass (~192 KB → ~128 KB frame traffic). The fine offset is handled by
+writing each tile at `dest_pos = tile_col*8 - fine_x` with per-tile left/right
+clipping (`bg_row_ptr` = row start): tile 0 left-clips `fine_x` px, the last tile
+right-clips to remaining room; `fine_x=0` → 40 full tiles, `fine_x>0` → tiles 0
+and 40 partial = exactly 320 px. Kept the back buffer + `present` (window/sprite
+compositing stays in fast RAM; avoids slow VGA reads for sprite BG-priority).
+Removed BSS `bg_scanline_buf` and dead `bg_fine_y2`; added `bg_row_ptr`. Verified
+pixel-correct (sub-tile fine offset intact) via `./test_render.sh`.
+
+### render_bg — offscreen surface mirror + viewport blit (Tier 2 step 3, 2026-06-15)
+
+`render_bg` no longer resolves tiles per scanline. A `bg_surface` (256×256 chunky
+raw-color, BSS) mirrors the *decoded* BG tilemap torus; each frame the renderer
+(1) diffs the live VRAM tilemap against `bg_tilemap_shadow` and re-decodes only
+changed tiles into the surface (`sync_surface_diff` → `surf_decode_tile`), with a
+full `rebuild_surface_full` on `g_tilecache_dirty` or a tilemap-base switch, then
+(2) blits a 320×200 window at `(SCX,SCY)` with 256-px torus wrap (1–2 `rep movsb`
+per row). Eliminates the per-frame per-tile addressing and the 40-into-32 fold;
+sampling matches the old renderer (BG pixel (x,y) = surface ((SCX+x)&255,
+(SCY+y)&255)). **Decoupled** — we mirror by VRAM tilemap *address*, so the
+faithful sliding-window scroll + `RedrawRowOrColumn` edge redraw need no changes
+(their tilemap writes show up in the diff). `tile_cache` kept as the decoded
+tile-data source the surface copies from. New BSS: `bg_surface` (64 KB),
+`bg_tilemap_shadow` (1 KB), `surf_last_base`; removed the per-scanline scratch.
+Verified: clean-boot render matches known-good Pallet Town; user-driven scrolling
+renders clean aligned tiles with no stale strips/seams (only the pre-existing
+missing-connector junk remains). Completes the Tier 2 render-opt quest
+(docs/render_opt_handoff.md).
+
+### LoadTileBlockMap connection strips + Load{NS,EW}ConnectionsTileMap (2026-06-15)
+
+Un-stubbed the map-connection logic in `LoadTileBlockMap` and translated
+`LoadNorthSouthConnectionsTileMap` / `LoadEastWestConnectionsTileMap` (pret:
+home/overworld.asm). For each connected direction (≠ $FF) the strip header
+(src/dest/length/connected-map-width) is loaded and the connected map's edge is
+copied into the wOverworldMap border: N/S copies MAP_BORDER rows × strip-width,
+E/W copies strip-length rows × MAP_BORDER cols; src advances by the connected map
+width, dest by the wOverworldMap stride (wCurMapWidth + 2·MAP_BORDER).
+`SwitchToMapRomBank` is a no-op (flat model); 16-bit pointer math becomes plain
+32-bit `add` on the GB-offset registers. The hNorthSouthConnectionStripWidth /
+connected-map-width HRAM reuse H_MAP_STRIDE/H_MAP_WIDTH (faithful unions).
+
+Scaffold wiring (SetupPalletTown, NOT a faithful LoadMapHeader): Pallet Town
+connects north→Route1, south→Route21. Route1.blk (10×18) / Route21.blk (10×45)
+are embedded (tools/gen_overworld_assets.py → assets/route1_blk.inc,
+route21_blk.inc) and copied to OW_ROUTE1_BLK_GBADDR ($5000) /
+OW_ROUTE21_BLK_GBADDR ($5200). The connection-struct field values (strip
+src/dest, length, width, Y/X-align, view-ptr) were precomputed from the pret
+`connection` macro (macros/scripts/maps.asm) for offset-0 connections and set as
+constants. Connection-struct field offsets added to gb_memmap.inc (CONN_*).
+
+Dump-verified (2026-06-15): wOverworldMap north border rows 0-2 cols 3-12 ==
+Route 1 rows 15-17; south border rows 12-14 cols 3-12 == Route 21 rows 0-2;
+connection structs at $D370/$D37B match the computed bytes. Boot render
+unchanged (strips are off-screen until you walk to the edge). **Scope:** this is
+strip *loading* only — the map-*transition* trigger (crossing into the connected
+map) is a separate follow-on; the DrawTileBlock clamp stays (E/W + past-map-end).
+
 *Add new entries below as routines are translated.*

@@ -106,6 +106,86 @@ Prioritized task list. Check off items as they complete; add new items with phas
        in all four directions scrolls Pallet Town smoothly with correct tiles at
        the newly exposed edges; trees/buildings collide. Omitted vs pret: OAM
        sprite shift, ledges, tile-pair collisions, warps, NPCs, battles, scripts.)
+- [ ] **MAJOR REFACTOR: VGA-native renderer (40×25 viewport, 320×200 native output)**
+      Plan: `/home/beowulf-linux/.claude/plans/greedy-roaming-toucan.md`
+      
+      Current 160×144 → 2× blit wasteful: 144-pass scanline decode is expensive on 386
+      (550k cycles/frame), and the bottom 44 GB rows are silently clipped. Replace with:
+      - Tile-blitter PPU: 40×25 = 1,000 tile passes per frame (not 4,608 scanline
+        tile-strip decodes); single direct write to 320×200 back buffer.
+      - WRAM expansion: wTileMap 360→1,000 B, wSurroundingTiles 480→1,408 B;
+        all addresses via constants (no hardcoded offsets).
+      - Sprite pre-scale at build time (2bpp 8×8 → 8bpp 16×16): 65 KB static table,
+        zero per-frame decode cost.
+      - `present()` simplifies to `rep movsd` (16k dwords, ~1 ms on 386).
+      
+      Scope: 8 implementation steps across ppu.asm, video.asm, gb_memmap.inc,
+      overworld.asm, movement.asm, sprite_oam.asm, gen_spr_tiles.py. Multi-session task.
+      
+      Awaiting: first session to start with Step 1 (geometry constants).
+      
+- [ ] **Extend map data to cover the extended-draw region, then remove the
+      `DrawTileBlock` out-of-range block clamp.** The 40×25-tile viewport draws
+      a larger area than the original 20×18, so the camera can reach into
+      uninitialized `wOverworldMap` padding and read block IDs past the embedded
+      blockset. A temporary clamp (block ID → 0 when out of range) in
+      `DrawTileBlock` (src/overworld/overworld.asm) stops the garbage. The real
+      fix is to extend the maps so those regions hold real blocks (no blank
+      area); once done, delete the clamp — it becomes dead code.
+- [ ] **BUG — collision: facing DOWN lets the player penetrate 1 tile into
+      objects** (signs, building roofs/fronts) when approached from the top.
+      Confirmed NOT a graphical artifact (user, 2026-06-15). Root cause:
+      `GetTileInFrontOfPlayer` (src/overworld/overworld.asm) checks the tile **±1**
+      from the player-center tile (20,12), but the player moves in 16px / 2-tile
+      steps, so it must check **±2** — matching pret
+      `_GetTileAndCoordsInFrontOfPlayer` (engine/overworld/player_state.asm):
+      down=`lda_coord 8,11`, up=`8,7`, left=`6,9`, right=`10,9` (all ±2 from
+      center 8,9). Proposed fix: down (20,13)→(20,14), up (20,11)→(20,10),
+      left (19,12)→(18,12), right (21,12)→(22,12); then verify all four
+      directions in DOSBox-X (down stops short of objects; up/left/right don't
+      become over-restrictive).
+- [x] **PERF — heavily optimize render_bg** (2026-06-15). The per-pixel
+      2bpp→8bpp decode is no longer in the hot path: a 24 KB decoded-tile cache
+      (`tile_cache`, 384 tiles × 64 B, BGP baked in) pre-decodes $8000-$97FF
+      once, rebuilt by `rebuild_tile_cache` only when `g_tilecache_dirty` is set
+      (by VRAM-tile loaders) or BGP changed. `render_bg` assembles scanlines by
+      copying cached rows. Verified pixel-identical. See translation_log.md /
+      session_handoff.md. **Invariant:** new VRAM-tile-data writers must set
+      `g_tilecache_dirty`. Larger win still open (folds into the VGA-native
+      refactor below): pre-render the map torus to an offscreen 8bpp surface and
+      blit a SCX/SCY-offset viewport, updating only the RedrawRowOrColumn edge —
+      eliminates nearly all per-frame tile work.
+- [ ] **NEEDS FIXED — red strip / out-of-range pixel values.** A red strip
+      appears on screen that is NOT background data: under the current lazy
+      "pea-soup green" palette the BG can only render raw colors 0–3 (all green)
+      and sprites 4–11 (also green), and `commit_palette` only initializes DAC
+      entries 0–11. A red strip therefore means some renderer path writes pixel
+      values ≥12, which index the leftover boot `test_palette` ramps (12–63 =
+      red). Distinct from the missing-map-connector junk (that's a separate
+      item). Investigate writers that could emit ≥12 into the back buffer:
+      `render_window`/`row_buf` edge handling, `render_sprites` with garbage
+      OAM/tile/attr in uninitialized slots, or any direct back-buffer write.
+      Belt-and-suspenders fix: also initialize DAC entries 12–255 to a safe
+      color (or black) in `video_init` so out-of-range values don't show as
+      garish red and are easier to spot/triage. (Reported 2026-06-15.)
+- [x] **Map connections: un-stub the LoadTileBlockMap N/S/W/E connection
+      strips** (2026-06-15). `LoadNorthSouthConnectionsTileMap` /
+      `LoadEastWestConnectionsTileMap` are translated and wired in; the N/S/W/E
+      connection-strip headers are loaded. Pallet Town now connects north→Route1,
+      south→Route21 (block data embedded at OW_ROUTE1/21_BLK_GBADDR; structs set
+      in SetupPalletTown). Dump-verified: the wOverworldMap N border = Route 1's
+      bottom 3 rows, S border = Route 21's top 3 rows. So the border now shows
+      real adjacent terrain instead of the background-block wall.
+- [ ] **Map transition across a connection — faithful LoadMapHeader** (next up).
+      Decision (2026-06-15): build the real ROM map-header infrastructure (not a
+      hardcoded dispatcher) so Pallet Town ↔ Route 1 ↔ Route 21 become walkable.
+      **Full plan + format spec + phased steps + the pointer-relocation challenge
+      are in docs/loadmapheader_handoff.md** — start there. Involves: embed +
+      relocate map headers/object data + a MapHeaderPointers table; translate
+      LoadMapHeader / LoadTilesetHeader / CopyMapConnectionHeader / CheckMapConnections;
+      wire the post-step connection check into OverworldLoop; retire the
+      SetupPalletTown scaffold. Renderer needs no changes (surface mirror is
+      decoupled). DrawTileBlock clamp stays (E/W + past-map-end).
 - [ ] Translate NPC movement / collision
 - [ ] Translate random encounter trigger
 - [ ] Translate battle engine (UI rendering pass first)

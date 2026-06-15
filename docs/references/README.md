@@ -57,6 +57,12 @@ used as the source of truth for `dos_port/include/gb_memmap.inc`.
   - Hardware interrupt hooking FAQ: https://delorie.com/djgpp/v2faq/faq18_9.html
   - Hardware interrupt subtleties: https://www.delorie.com/djgpp/v2faq/faq18_11.html
 
+### x86 / 386 Instruction Set
+
+- **Intel 80386 Programmer's Reference Manual**:
+  https://pdos.csail.mit.edu/6.828/2005/readings/i386/toc.htm
+  The definitive reference for 386 protected mode, instruction set, and architecture.
+
 ### Interrupt Reference
 
 - **Ralf Brown's Interrupt List**:
