@@ -36,11 +36,51 @@ GB_TILEMAP1     equ 0x9C00
 ; Always available. General-purpose work RAM.
 GB_WRAM0        equ 0xC000
 
-; Player sprite state (wSpritePlayerStateData1*, $C100 block) — sym-verified.
+; Sprite state data — 16 slots × $10 bytes each, two parallel arrays.
+; wSpriteStateData1 ($C100) and wSpriteStateData2 ($C200) — sym-verified.
+; The high byte of a pointer in one array +1 reaches the other (the engine
+; relies on this; in the flat model we use the explicit base constants).
+W_SPRITE_STATE_DATA_1         equ 0xC100 ; wSpriteStateData1 (slot 0 = player)
+W_SPRITE_STATE_DATA_2         equ 0xC200 ; wSpriteStateData2
+SPRITESTATEDATA_STRUCT_SIZE   equ 0x10
+NUM_SPRITE_SLOTS              equ 16
+
+; Player slot (slot 0) field aliases — data1 ($C10x).
 ; Step vectors are signed bytes (+1/-1/0) read each frame by AdvancePlayerSprite.
+W_SPRITE_PLAYER_PICTURE_ID    equ 0xC100 ; wSpritePlayerStateData1PictureID (0 = slot unused)
+W_SPRITE_PLAYER_IMAGE_INDEX   equ 0xC102 ; wSpritePlayerStateData1ImageIndex (facing+anim, $ff=hidden)
 W_SPRITE_PLAYER_Y_STEP_VECTOR equ 0xC103 ; wSpritePlayerStateData1YStepVector
+W_SPRITE_PLAYER_Y_PIXELS      equ 0xC104 ; wSpritePlayerStateData1YPixels (fixed screen Y, $3c)
 W_SPRITE_PLAYER_X_STEP_VECTOR equ 0xC105 ; wSpritePlayerStateData1XStepVector
+W_SPRITE_PLAYER_X_PIXELS      equ 0xC106 ; wSpritePlayerStateData1XPixels (fixed screen X, $40)
+W_SPRITE_PLAYER_INTRA_ANIM    equ 0xC107 ; wSpritePlayerStateData1IntraAnimFrameCounter
+W_SPRITE_PLAYER_ANIM_FRAME    equ 0xC108 ; wSpritePlayerStateData1AnimFrameCounter
 W_SPRITE_PLAYER_FACING_DIR    equ 0xC109 ; wSpritePlayerStateData1FacingDirection (SPRITE_FACING_*)
+; Player slot fields — data2 ($C20x).
+W_SPRITE_PLAYER_WALK_ANIM_COUNTER equ 0xC200 ; wSpritePlayerStateData2WalkAnimationCounter
+W_SPRITE_PLAYER_GRASS_PRIORITY    equ 0xC207 ; wSpritePlayerStateData2GrassPriority ($80 = under grass)
+W_SPRITE_PLAYER_IMAGE_BASE_OFFSET equ 0xC20E ; wSpritePlayerStateData2ImageBaseOffset (player = 1)
+
+; Sprite-engine struct field offsets (within a $10-byte slot).
+SPRITESTATEDATA1_PICTUREID            equ 0x0
+SPRITESTATEDATA1_MOVEMENTSTATUS       equ 0x1   ; 0=uninit, 1=ready, 2=delayed, 3=walking
+SPRITESTATEDATA1_IMAGEINDEX           equ 0x2
+SPRITESTATEDATA1_YPIXELS              equ 0x4
+SPRITESTATEDATA1_XPIXELS              equ 0x6
+SPRITESTATEDATA1_INTRAANIMFRAMECOUNTER equ 0x7
+SPRITESTATEDATA1_ANIMFRAMECOUNTER     equ 0x8
+SPRITESTATEDATA1_FACINGDIRECTION      equ 0x9
+SPRITESTATEDATA2_YDISPLACEMENT        equ 0x2   ; Y displacement (init 8)
+SPRITESTATEDATA2_XDISPLACEMENT        equ 0x3   ; X displacement (init 8)
+SPRITESTATEDATA2_MAPY                 equ 0x4   ; map Y position (metatile units, origin+4)
+SPRITESTATEDATA2_MAPX                 equ 0x5   ; map X position (metatile units, origin+4)
+SPRITESTATEDATA2_MOVEMENTBYTE1        equ 0x6   ; $ff=STAY, $fe=WALK(random), <$fe=scripted
+SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7
+SPRITESTATEDATA2_IMAGEBASEOFFSET      equ 0xE
+
+; NPC movement-byte sentinel values (constants/map_object_constants.asm)
+WALK                                   equ 0xFE  ; random movement
+STAY                                   equ 0xFF  ; stationary
 
 ; Named WRAM symbols (subset needed by translated routines).
 ; Offsets from pokeyellow.sym (bank 00).
@@ -108,6 +148,16 @@ BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
 H_JOY_PRESSED            equ 0xFFB3     ; hJoyPressed — buttons just pressed this frame
 H_JOY_HELD               equ 0xFFB4     ; hJoyHeld    — buttons currently held
 
+; Sprite-engine HRAM temporaries (PrepareOAMData / _UpdateSprites) — sym-verified.
+H_SPRITE_OFFSET2             equ 0xFF8F ; hSpriteOffset2 (current slot offset in PrepareOAMData loop)
+H_OAM_BUFFER_OFFSET          equ 0xFF90 ; hOAMBufferOffset (write cursor into wShadowOAM)
+H_SPRITE_SCREEN_X            equ 0xFF91 ; hSpriteScreenX
+H_SPRITE_SCREEN_Y            equ 0xFF92 ; hSpriteScreenY
+H_TILE_PLAYER_STANDING_ON    equ 0xFF93 ; hTilePlayerStandingOn
+H_SPRITE_PRIORITY            equ 0xFF94 ; hSpritePriority (BG-priority bit for current sprite)
+H_CURRENT_SPRITE_OFFSET      equ 0xFFDA ; hCurrentSpriteOffset (_UpdateSprites loop index)
+H_PIKACHU_SPRITE_VRAM_OFFSET equ 0xFFFC ; hPikachuSpriteVRAMOffset (added to tile id $80+; 0 for now)
+
 ; Named WRAM symbols — all addresses verified from pokeyellow.sym.
 
 ; Audio/sound (low WRAM0 — $C0EE+)
@@ -143,10 +193,16 @@ W_OVERWORLD_MAP_SIZE         equ 0x514  ; wOverworldMapEnd − wOverworldMap (13
 W_REDRAW_ROW_OR_COLUMN_SRC_TILES equ 0xCBFC ; wRedrawRowOrColumnSrcTiles
 
 ; Walk/sprite state
+W_FONT_LOADED                equ 0xCFC3 ; wFontLoaded (bit BIT_FONT_LOADED set while text font is in VRAM)
 W_WALK_COUNTER               equ 0xCFC4 ; wWalkCounter
 W_TILE_IN_FRONT_OF_PLAYER    equ 0xCFC5 ; wTileInFrontOfPlayer (collision check result)
 W_AUDIO_FADE_OUT             equ 0xCFC6 ; wAudioFadeOutControl
 W_UPDATE_SPRITES_ENABLED     equ 0xCFCA ; wUpdateSpritesEnabled
+
+; Sprite-engine scratch WRAM — sym-verified.
+W_GRASS_TILE                 equ 0xD534 ; wGrassTile (tile ID treated as tall grass; $ff = none)
+W_SAVED_SPRITE_IMAGE_INDEX   equ 0xD5CC ; wSavedSpriteImageIndex (PrepareOAMData scratch / VRAM base tile)
+W_MOVEMENT_FLAGS             equ 0xD735 ; wMovementFlags (BIT_SPINNING / BIT_LEDGE_OR_FISHING)
 
 ; Map-tileset copies
 W_UNUSED_CUR_MAP_TILESET_COPY equ 0xD118 ; wUnusedCurMapTilesetCopy
@@ -265,6 +321,25 @@ OAM_PRIO                 equ 1 << 7      ; OBJ drawn below BG colors 1-3
 OAM_YFLIP                equ 1 << 6
 OAM_XFLIP                equ 1 << 5
 OAM_PAL1                 equ 1 << 4      ; DMG: 0 = OBP0, 1 = OBP1
+B_OAM_PAL1               equ 4           ; bit position of the OBP select bit
+
+; SpriteFacingAndAnimationTable attribute markers (constants/oam_constants.asm).
+; These are engine-internal bits in the facing tables, NOT hardware OAM bits.
+BIT_SPRITE_UNDER_GRASS   equ 1           ; tile drawn with BG priority when in grass
+UNDER_GRASS              equ 1 << BIT_SPRITE_UNDER_GRASS  ; $02
+FACING_END               equ 1 << 0      ; $01 — last OAM entry of a facing block
+; CGB: OAM palette numbers %100-%111 select OBP1 (constants/oam_constants.asm).
+OAM_HIGH_PALS            equ 1 << 2      ; $04
+
+; Player/sprite logic constants.
+MAP_TILESET_SIZE         equ 0x60        ; tile IDs >= $60 are text-box tiles, not map tiles
+BIT_FONT_LOADED          equ 0           ; wFontLoaded bit 0
+BIT_SPINNING             equ 7           ; wMovementFlags (constants/ram_constants.asm)
+BIT_LEDGE_OR_FISHING     equ 6           ; wMovementFlags (constants/ram_constants.asm)
+PLAYER_DIR_BIT_RIGHT     equ 0
+PLAYER_DIR_BIT_LEFT      equ 1
+PLAYER_DIR_BIT_DOWN      equ 2
+PLAYER_DIR_BIT_UP        equ 3
 
 ; ROM-window area for embedded overworld assets (Phase 2 scaffold)
 ; The unused ROM bank-switch window ($4000–$7FFF) is repurposed to hold asset data

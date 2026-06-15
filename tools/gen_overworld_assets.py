@@ -107,6 +107,24 @@ def main():
         "Red overworld sprite 2bpp (24 tiles; 0-11 = standing down/up/side) "
         "→ [EBP+GB_VCHARS0] ($8000, OBJ tile area).",
     )
+
+    # NPC still tiles: first 192 bytes (12 tiles) of each sprite sheet.
+    # imageBaseOffset N places tiles at (N-1)*12 in OBJ VRAM (byte addr $8000+(N-1)*12*16).
+    for label, fname, base_offset in [
+        ("npc_girl_still",   "girl",   3),   # imageBaseOffset 3 → tiles $18-$23 → $8180
+        ("npc_fisher_still", "fisher", 4),   # imageBaseOffset 4 → tiles $24-$2F → $8240
+        ("npc_oak_still",    "oak",    5),   # imageBaseOffset 5 → tiles $30-$3B → $8300
+    ]:
+        src = ROOT / "gfx" / "sprites" / f"{fname}.2bpp"
+        tile_base = (base_offset - 1) * 12
+        write_inc(
+            ASSETS / f"{label}.inc",
+            label,
+            src.read_bytes()[:192],
+            f"{fname} NPC still tiles (12 tiles, imageBaseOffset {base_offset}) "
+            f"→ [EBP+GB_VCHARS0+0x{tile_base:02X}*16] (${0x8000 + tile_base * 16:04X}).",
+        )
+
     print("done.")
 
 
