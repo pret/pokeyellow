@@ -53,10 +53,12 @@ GAME_SRCS := \
     src/video/lcd_control.asm \
     src/video/frame.asm \
     src/gfx/sprites.asm \
+    src/gfx/sprite_oam.asm \
     src/gfx/load_font.asm \
     src/text/text.asm \
     src/movie/title.asm \
-    src/overworld/overworld.asm
+    src/overworld/overworld.asm \
+    src/overworld/movement.asm
 
 # Debug-only sources (linked only when the corresponding flag is set)
 ifdef DEBUG_DUMP

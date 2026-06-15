@@ -22,6 +22,7 @@ bits 32
 extern wait_vblank
 extern wait_pit_tick
 extern render_bg
+extern render_window
 extern render_sprites
 extern draw_player_marker
 extern present
@@ -29,6 +30,7 @@ extern joypad_update
 extern pad_quit
 extern cleanup
 extern RedrawRowOrColumn
+extern PrepareOAMData
 
 global DelayFrame
 global DelayFrames
@@ -52,9 +54,11 @@ DelayFrame:
     call commit_shadow_regs
     call do_bg_transfer
     call RedrawRowOrColumn      ; redraw the row/col exposed by walking (GB VBlank order)
+    call update_oam             ; PrepareOAMData → shadow OAM, then DMA to OAM
     call joypad_update
     call render_bg
-    call render_sprites         ; composite OAM sprites over the BG
+    call render_window          ; composite window layer over BG (before sprites)
+    call render_sprites         ; composite OAM sprites over BG+window
     call draw_player_marker     ; legacy placeholder (no-op unless explicitly enabled)
     call present
     cmp byte [pad_quit], 0
@@ -64,6 +68,27 @@ DelayFrame:
     int 0x21
 .done:
     popad
+    ret
+
+; ---------------------------------------------------------------------------
+; update_oam — build shadow OAM (PrepareOAMData) and DMA it into OAM ($FE00).
+;
+; Mirrors the GB VBlank ISR steps PrepareOAMData + hDMARoutine. Gated on
+; wUpdateSpritesEnabled so non-gameplay screens (e.g. the title, which writes
+; its own shadow OAM) are not force-copied into OAM until the overworld enables
+; sprite updates. In: EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+update_oam:
+    cmp byte [ebp + W_UPDATE_SPRITES_ENABLED], 1
+    jne .done
+    call PrepareOAMData
+    pushad
+    lea esi, [ebp + W_SHADOW_OAM]
+    lea edi, [ebp + GB_OAM]
+    mov ecx, W_SHADOW_OAM_SIZE
+    rep movsb
+    popad
+.done:
     ret
 
 ; ---------------------------------------------------------------------------

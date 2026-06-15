@@ -14,9 +14,19 @@
 ;                               UpdateMusic — ; TODO-HW tags below)
 ;
 ; Phase 2 scaffold (not a faithful translation):
-;   SetupPalletTown  — hardcoded Pallet Town map-header variables + asset copy to ROM window
-;   EnterMap         — scaffold entry from title screen
-;   OverworldLoop    — minimal frame loop (DelayFrame + joypad; no movement yet)
+;   SetupPalletTown      — hardcoded Pallet Town map-header variables + asset copy to
+;                           ROM window; initializes player sprite-state slot (slot 0)
+;   SetupPalletTownNPCs  — loads NPC still tiles to VRAM and inits slots 1-3 with
+;                           visible scaffold positions (canonical InitMapSprites later)
+;   EnterMap             — scaffold entry from title screen
+;   OverworldLoop        — player-movement frame loop: UpdateSprites (facing + walk
+;                           animation), AdvancePlayerSprite scroll, land collision
+;   LoadPlayerSpriteGraphics — loads Red's standing tiles to $8000 and walking
+;                           tiles to $8800 (the VRAM layout the sprite engine indexes)
+;
+; The player now renders through the real sprite engine: UpdateSprites
+; (src/overworld/movement.asm) drives the per-slot image index, and PrepareOAMData
+; (src/gfx/sprite_oam.asm, run in the DelayFrame pipeline) builds shadow OAM from it.
 ;
 ; Asset layout in ROM window (EBP + $4000–$4FFF):
 ;   $4000 : overworld.2bpp  (94 tiles, 1504 bytes)  → wTilesetGfxPtr
@@ -39,6 +49,8 @@ extern DelayFrame
 extern LoadTextBoxTilePatterns
 extern GBPalNormal
 extern g_player_marker_on
+extern UpdateSprites
+extern ClearSprites
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -105,7 +117,7 @@ EnterMap:
 ;     land collision check, and (if passable) start an 8-frame walk.
 ; ---------------------------------------------------------------------------
 OverworldLoop:
-    call UpdatePlayerOAM                      ; refresh the player sprite for the facing
+    call UpdateSprites                         ; advance player facing + walk animation
     call DelayFrame
 .lessDelay:                                  ; OverworldLoopLessDelay
     call DelayFrame
@@ -140,7 +152,7 @@ OverworldLoop:
     jmp .handleDirection
 .checkRight:
     test al, PAD_RIGHT
-    jz OverworldLoop                          ; nothing held → idle
+    jz .noDirection                          ; nothing held → idle (stop animating)
     mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 1
     mov dl, PLAYER_DIR_RIGHT
     mov dh, SPRITE_FACING_RIGHT
@@ -154,6 +166,14 @@ OverworldLoop:
     jc OverworldLoop
 
     mov byte [ebp + W_WALK_COUNTER], 8        ; begin an 8-frame step
+
+.noDirection:
+    ; No direction held while standing: zero wPlayerMovingDirection so
+    ; UpdatePlayerSprite takes its standing path and stops the walk animation.
+    ; (Faithful to home/overworld.asm:.noDirectionButtonsPressed, which zeroes
+    ; the moving direction; wPlayerDirection keeps the last facing.)
+    mov byte [ebp + W_PLAYER_MOVING_DIRECTION], 0
+    jmp OverworldLoop
 
 .moveAhead:
     call AdvancePlayerSprite
@@ -214,12 +234,31 @@ SetupPalletTown:
     mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
     mov byte [ebp + W_WALK_COUNTER],               0
 
+    ; --- Player sprite-state slot (slot 0), per home/reset_player_sprite.asm ---
+    ; The sprite engine (UpdateSprites + PrepareOAMData) drives the player OAM
+    ; from this state, so it must be initialized for slot 0 to be drawn.
+    mov byte [ebp + W_SPRITE_PLAYER_PICTURE_ID],      1   ; non-zero → slot in use
+    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_BASE_OFFSET], 1 ; player VRAM slot
+    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x3C ; fixed screen Y
+    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0x40 ; fixed screen X
+    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_INDEX],     SPRITE_FACING_DOWN ; facing down, frame 0
+    mov byte [ebp + W_SPRITE_PLAYER_INTRA_ANIM],      0
+    mov byte [ebp + W_SPRITE_PLAYER_ANIM_FRAME],      0
+    mov byte [ebp + W_SPRITE_PLAYER_WALK_ANIM_COUNTER], 0
+    mov byte [ebp + W_SPRITE_PLAYER_GRASS_PRIORITY],  0
+
+    ; Sprite-engine scratch state: no grass tile match, no font in VRAM, no
+    ; movement flags (spinning / ledge) so the standard walk path runs.
+    mov byte [ebp + W_GRASS_TILE],    0xFF              ; no tile counts as grass
+    mov byte [ebp + W_FONT_LOADED],   0
+    mov byte [ebp + W_MOVEMENT_FLAGS], 0
+
     ; The overworld scrolls via RedrawRowOrColumn, not the auto-BG transfer
     ; (which would fight it by re-blitting wTileMap to $9800 every frame).
     mov byte [ebp + H_AUTO_BG_TRANSFER_EN],        0
 
-    ; The real player OAM sprite now renders (UpdatePlayerOAM); keep the legacy
-    ; placeholder marker off.
+    ; The real player OAM sprite now renders via the sprite engine
+    ; (UpdateSprites + PrepareOAMData); keep the legacy placeholder marker off.
     mov byte [g_player_marker_on], 0
 
     ; --- Copy overworld.2bpp to ROM window at OW_GFX_GBADDR ---
@@ -275,38 +314,120 @@ LoadMapData:
     call EnableLCD
     call GBPalNormal
     call LoadPlayerSpriteGraphics       ; scaffold: player tiles → OBJ VRAM, hide OAM
+    call SetupPalletTownNPCs            ; scaffold: NPC still tiles + slot init
     ; RunPaletteCommand(SET_PAL_OVERWORLD) — ; TODO-HW: palette (Phase 5)
     ; UpdateMusic / PlayDefaultMusicFadeOutCurrent — ; TODO-HW: audio (Phase 3)
     ret
 
 ; ---------------------------------------------------------------------------
-; LoadPlayerSpriteGraphics — Phase 2 scaffold (NOT a faithful translation).
-; Copies the Red overworld sprite (24 tiles) into the OBJ tile area at
-; GB_VCHARS0 ($8000) and clears OAM so no stale entries render. The real engine
-; (InitMapSprites / sprite VRAM slot allocation / Pikachu) comes later.
+; LoadPlayerSpriteGraphics — Phase 2 scaffold (player-only sprite VRAM load).
+; Lays out the 24-tile Red overworld sprite the way the engine indexes it:
+;   tiles 0-11  (standing/turn poses) → OBJ tiles $00-$0B at GB_VCHARS0 ($8000)
+;   tiles 12-23 (walking poses)       → OBJ tiles $80-$8B at GB_VFONT  ($8800)
+; The walking tiles share VRAM with the text font (vChars1); the GB does the
+; same and reloads sprite/font tiles when switching between map and text, which
+; is why UpdatePlayerSprite hides the player when a text box is in front of it.
+; The real engine (InitMapSprites / VRAM-slot allocation / Pikachu) comes later.
 ; ---------------------------------------------------------------------------
+PLAYER_STANDING_TILES equ 12               ; tiles 0-11
+PLAYER_TILE_BYTES     equ PLAYER_STANDING_TILES * TILE_SIZE  ; 192 bytes
+
 LoadPlayerSpriteGraphics:
     push eax
     push ecx
     push esi
     push edi
 
-    ; --- player sprite tiles → OBJ VRAM ($8000) ---
+    ; --- standing tiles (0-11) → OBJ tiles $00-$0B at $8000 ---
     mov esi, player_sprite
     lea edi, [ebp + GB_VCHARS0]
-    mov ecx, PLAYER_SPRITE_SIZE
+    mov ecx, PLAYER_TILE_BYTES
     rep movsb
 
-    ; --- hide all 40 OAM entries (Y = 0 → off the top of the screen) ---
-    lea edi, [ebp + GB_OAM]
-    xor eax, eax
-    mov ecx, GB_OAM_SIZE
-    rep stosb
+    ; --- walking tiles (12-23) → OBJ tiles $80-$8B at $8800 (vChars1) ---
+    mov esi, player_sprite + PLAYER_TILE_BYTES
+    lea edi, [ebp + GB_VFONT]
+    mov ecx, PLAYER_TILE_BYTES
+    rep movsb
+
+    ; clear shadow OAM (PrepareOAMData fills it; nothing stale before then)
+    call ClearSprites
 
     pop edi
     pop esi
     pop ecx
     pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; SetupPalletTownNPCs — Phase 2 scaffold: load NPC still tiles + init slots 1-3.
+; NOT a faithful translation. Replaces InitMapSprites (to be ported later).
+;
+; VRAM layout (imageBaseOffset N → tile base (N-1)*12 in OBJ tile space):
+;   Slot 1 Girl   imageBaseOffset 3 → tiles $18-$23 at GB_VCHARS0+$180 ($8180)
+;   Slot 2 Fisher imageBaseOffset 4 → tiles $24-$2F at GB_VCHARS0+$240 ($8240)
+;   Slot 3 Oak    imageBaseOffset 5 → tiles $30-$3B at GB_VCHARS0+$300 ($8300)
+;
+; Scaffold positions (player wYCoord=wXCoord=8 at startup; all on-screen):
+;   Girl   MAPY=10 MAPX=10  screen≈(32, 28)
+;   Fisher MAPY=12 MAPX=14  screen≈(96, 60)
+;   Oak    MAPY=14 MAPX=11  screen≈(48, 92)
+; (screen Y = (MAPY-8)*16-4, screen X = (MAPX-8)*16)
+;
+; MOVEMENTSTATUS is set to 0 so UpdateNonPlayerSprite runs InitializeSpriteStatus
+; on the first overworld frame to set screen positions from MAPY/MAPX.
+; ---------------------------------------------------------------------------
+SetupPalletTownNPCs:
+    push esi
+    push edi
+    push ecx
+
+    ; --- VRAM: still tiles for each NPC (192 bytes = 12 tiles each) ---
+    mov esi, npc_girl_still
+    lea edi, [ebp + GB_VCHARS0 + 0x18 * 16]   ; tile $18 = $8180
+    mov ecx, 192
+    rep movsb
+
+    mov esi, npc_fisher_still
+    lea edi, [ebp + GB_VCHARS0 + 0x24 * 16]   ; tile $24 = $8240
+    mov ecx, 192
+    rep movsb
+
+    mov esi, npc_oak_still
+    lea edi, [ebp + GB_VCHARS0 + 0x30 * 16]   ; tile $30 = $8300
+    mov ecx, 192
+    rep movsb
+
+    ; --- Slot 1: Girl (imageBaseOffset 3, MAPY=10, MAPX=10) ---
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_PICTUREID],      1
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MAPY],           10
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MAPX],           10
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 3
+
+    ; --- Slot 2: Fisher (imageBaseOffset 4, MAPY=12, MAPX=14) ---
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_PICTUREID],      1
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MAPY],           12
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MAPX],           14
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 4
+
+    ; --- Slot 3: Oak (imageBaseOffset 5, MAPY=14, MAPX=11) ---
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_PICTUREID],      1
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
+    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MAPY],           14
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MAPX],           11
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
+    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 5
+
+    pop ecx
+    pop edi
+    pop esi
     ret
 
 ; ---------------------------------------------------------------------------
@@ -647,8 +768,8 @@ CopyMapViewToVRAM2:
 ; and schedules the newly exposed row/column for VBlank redraw. Every frame it
 ; scrolls the BG by 2 px (hSCX/hSCY) in the direction of motion.
 ;
-; Phase 2 omissions vs. pret: the sprite-shift loop (no OAM yet), wUpdateSprites
-; save/restore, IsSpinning, and the Pikachu overworld-state flag.
+; Phase 2 omissions vs. pret: wUpdateSprites save/restore, IsSpinning, and the
+; Pikachu overworld-state flag.
 ;
 ; b (SM83) = wSpritePlayerStateData1YStepVector → kept in BL  (+1 / -1 / 0)
 ; c (SM83) = wSpritePlayerStateData1XStepVector → kept in CL  (+1 / -1 / 0)
@@ -796,7 +917,28 @@ AdvancePlayerSprite:
     call ScheduleWestColumnRedraw
 
 .scroll:
-    ; hSCY += 2*Yvec ; hSCX += 2*Xvec  (sprite-shift loop omitted — no OAM yet)
+    ; Sprite-shift loop: slide each NPC's screen position by 2*step pixels to
+    ; keep them world-anchored while the BG scrolls under the player.
+    ; Pret ref: engine/overworld/advance_player_sprite.asm lines 162-192.
+    push esi
+    mov bl, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
+    add bl, bl                                          ; BL = 2 * Ystep (+2/-2/0)
+    mov cl, [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
+    add cl, cl                                          ; CL = 2 * Xstep
+    mov esi, W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_YPIXELS  ; slot 1 YPixels
+    mov edx, 15                                         ; 15 NPC/Pikachu slots
+.spriteShift:
+    mov al, [ebp + esi]
+    sub al, bl
+    mov [ebp + esi], al                                 ; YPixels -= 2*Ystep
+    mov al, [ebp + esi + 2]                             ; XPixels is YPIXELS+2 in data1
+    sub al, cl
+    mov [ebp + esi + 2], al                             ; XPixels -= 2*Xstep
+    add esi, 0x10                                       ; next slot
+    dec edx
+    jnz .spriteShift
+    pop esi
+    ; hSCY += 2*Yvec ; hSCX += 2*Xvec
     mov al, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
     add al, al
     add [ebp + H_SCY], al
@@ -1177,58 +1319,6 @@ IsTilePassable:
     ret
 
 ; ---------------------------------------------------------------------------
-; UpdatePlayerOAM — Phase 2 scaffold (NOT a faithful translation of
-; PrepareOAMData). Writes the player's four 8×8 OAM entries to $FE00 for the
-; current facing, composing the 16×16 standing pose from tiles 0–11 of the Red
-; sprite. The player is camera-locked at screen center; the BG scrolls under it.
-;
-; Pret refs for the layout: engine/gfx/sprite_oam.asm:PrepareOAMData (OAM byte
-; order Y, X, tile, attr) and data/sprites/facings.asm (the standing poses).
-; Walk-frame leg animation and NPC sprites are deferred (needs the $80+ walking
-; tiles and the VRAM-slot/sprite-state engine).
-; ---------------------------------------------------------------------------
-PLAYER_SCREEN_X equ 64                       ; top-left of the 16×16 player, px
-PLAYER_SCREEN_Y equ 64
-
-UpdatePlayerOAM:
-    push eax
-    push ecx
-    push edx
-    push esi
-    push edi
-
-    ; Select the 4-entry pose block for the current facing (0,4,8,12 → 0..3).
-    movzx eax, byte [ebp + W_SPRITE_PLAYER_FACING_DIR]
-    shr eax, 2
-    shl eax, 4                               ; 16 bytes per pose (4 entries × 4)
-    lea esi, [player_oam_table + eax]
-
-    lea edi, [ebp + GB_OAM]                  ; OAM entry 0
-    mov ecx, 4
-.entry:
-    movzx edx, byte [esi + 0]                ; Y offset within the 16×16
-    add edx, PLAYER_SCREEN_Y + OAM_Y_OFS
-    mov [edi + 0], dl
-    movzx edx, byte [esi + 1]                ; X offset
-    add edx, PLAYER_SCREEN_X + OAM_X_OFS
-    mov [edi + 1], dl
-    mov dl, [esi + 2]                        ; tile id
-    mov [edi + 2], dl
-    mov dl, [esi + 3]                        ; attributes
-    mov [edi + 3], dl
-    add esi, 4
-    add edi, 4
-    dec ecx
-    jnz .entry
-
-    pop edi
-    pop esi
-    pop edx
-    pop ecx
-    pop eax
-    ret
-
-; ---------------------------------------------------------------------------
 ; Embedded overworld asset data (Phase 2 scaffold).
 ; gen_overworld_assets.py regenerates these from source binaries.
 ; ---------------------------------------------------------------------------
@@ -1240,32 +1330,6 @@ section .rodata
 %include "assets/pallet_town_blk.inc"
 %include "assets/overworld_coll.inc"
 %include "assets/player_sprite.inc"
-
-; ---------------------------------------------------------------------------
-; player_oam_table — four 8×8 OAM entries per facing (UpdatePlayerOAM).
-; Each entry: db Yoffset, Xoffset, tileID, attributes. Derived from the standing
-; poses in data/sprites/facings.asm (pret's internal UNDER_GRASS/FACING_END
-; markers drop out — they aren't OAM hardware bits and the player isn't in grass).
-; Facing order matches SPRITE_FACING_* >> 2: down(0), up(1), left(2), right(3).
-; ---------------------------------------------------------------------------
-player_oam_table:
-    ; facing down — tiles 0-3
-    db 0, 0, 0, 0
-    db 0, 8, 1, 0
-    db 8, 0, 2, 0
-    db 8, 8, 3, 0
-    ; facing up — tiles 4-7
-    db 0, 0, 4, 0
-    db 0, 8, 5, 0
-    db 8, 0, 6, 0
-    db 8, 8, 7, 0
-    ; facing left — tiles 8-11
-    db 0, 0,  8, 0
-    db 0, 8,  9, 0
-    db 8, 0, 10, 0
-    db 8, 8, 11, 0
-    ; facing right — tiles 8-11, X-flipped (left pose mirrored)
-    db 0, 8,  8, OAM_XFLIP
-    db 0, 0,  9, OAM_XFLIP
-    db 8, 8, 10, OAM_XFLIP
-    db 8, 0, 11, OAM_XFLIP
+%include "assets/npc_girl_still.inc"
+%include "assets/npc_fisher_still.inc"
+%include "assets/npc_oak_still.inc"
