@@ -33,11 +33,14 @@ bits 32
 
 LCDC_BG_MAP_BIT   equ 3        ; rLCDC bit 3: BG tilemap select
 LCDC_TILEDATA_BIT equ 4        ; rLCDC bit 4: tile data addressing mode
+LCDC_WIN_EN_BIT   equ 5        ; rLCDC bit 5: window enable
+LCDC_WIN_MAP_BIT  equ 6        ; rLCDC bit 6: window tilemap select (0=$9800, 1=$9C00)
 
 ; ---------------------------------------------------------------------------
 ; Exported symbols
 ; ---------------------------------------------------------------------------
 global render_bg
+global render_window
 global render_sprites
 global draw_player_marker
 global g_player_marker_on
@@ -71,12 +74,13 @@ spr_rowbase: resd 1        ; GB-relative back-buffer offset of the current row
 spr_lo:      resb 1        ; low bitplane of the current tile row
 spr_hi:      resb 1        ; high bitplane of the current tile row
 align 4
-row_buf:    resb 256       ; one decoded 256-px virtual BG row (shade 0–3)
+row_buf:    resb 256       ; one decoded 256-px virtual BG/window row (shade 0–3)
 bgp_tab:    resb 4         ; BGP unpacked: bgp_tab[color] = shade
 cur_y:      resd 1         ; current screen row (0–143)
 map_row:    resd 1         ; EBP-relative offset of current tilemap row
 fine_y2:    resd 1         ; (sy & 7) * 2 — byte offset of the tile row pair
 tiledata_mode: resd 1      ; 1 = $8000 unsigned, 0 = $8800 signed
+win_line_ctr: resd 1       ; WLY — window internal line counter (resets each frame)
 
 ; ---------------------------------------------------------------------------
 ; Code
@@ -381,6 +385,143 @@ render_sprites:
     sub dword [spr_oam_ptr], OAM_ENTRY_SIZE
     dec dword [spr_count]
     jnz .spriteLoop
+
+.done:
+    popad
+    ret
+
+; ---------------------------------------------------------------------------
+; render_window — composite the GB window layer over the back buffer.
+;
+; The window is a non-scrolling BG-like plane that overlays the main BG from
+; screen position (WX-7, WY) downward. It is enabled by LCDC bit 5 (and the
+; BG/Window master enable, LCDC bit 0). LCDC bit 6 selects its tilemap
+; ($9800 vs $9C00). Tile data addressing follows LCDC bit 4, identical to the
+; BG. BGP applies — the window is fully opaque (color 0 is NOT transparent).
+;
+; WLY — window internal line counter:
+;   WLY starts at 0 each frame and increments once for every scanline on which
+;   the window is drawn (cur_y >= WY). It is NOT the same as LY. WLY is what
+;   indexes the window tilemap row, so if the window becomes visible only at
+;   screen row 72, the first window tilemap row (WLY=0) maps there — not row 9.
+;   This prevents visual drift when the window starts mid-frame. The implementation
+;   stores WLY in win_line_ctr (BSS) and increments it after each active scanline.
+;
+; Call after render_bg and before render_sprites.
+; In:  EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+render_window:
+    pushad
+
+    ; Exit if LCDC bit 5 (window enable) is clear.
+    test byte [ebp + IO_LCDC], 1 << LCDC_WIN_EN_BIT
+    jz .done
+    ; GLITCH: LCDC bit 0 is the DMG BG+Window master enable — if clear, both
+    ; the BG and window are disabled (screen shows BGP color 0 only on DMG).
+    test byte [ebp + IO_LCDC], 1
+    jz .done
+
+    ; Unpack BGP → bgp_tab. Window uses the same DMG palette as the BG.
+    movzx eax, byte [ebp + IO_BGP]
+    xor ecx, ecx
+.bgp_unpack:
+    mov ebx, eax
+    and ebx, 3
+    mov [bgp_tab + ecx], bl
+    shr eax, 2
+    inc ecx
+    cmp ecx, 4
+    jb .bgp_unpack
+
+    ; Cache tile data addressing mode (shared LCDC bit 4).
+    movzx eax, byte [ebp + IO_LCDC]
+    shr eax, LCDC_TILEDATA_BIT
+    and eax, 1
+    mov [tiledata_mode], eax
+
+    ; Reset WLY for this frame.
+    mov dword [win_line_ctr], 0
+
+    movzx ebx, byte [ebp + IO_WY]     ; EBX = WY (window top edge, screen-Y units)
+
+    mov dword [cur_y], 0
+
+.scanline_loop:
+    ; Skip scanlines above the window's vertical trigger.
+    mov eax, [cur_y]
+    cmp eax, ebx                       ; cur_y < WY?
+    jb .next_scanline
+
+    ; ── Set map_row + fine_y2 from WLY, then decode the window tile row ────
+
+    ; fine_y2 = (WLY & 7) * 2
+    mov edx, [win_line_ctr]
+    mov ecx, edx
+    and ecx, 7
+    shl ecx, 1
+    mov [fine_y2], ecx
+
+    ; map_row = window_tilemap_base + (WLY >> 3) * 32
+    shr edx, 3
+    shl edx, 5
+    test byte [ebp + IO_LCDC], 1 << LCDC_WIN_MAP_BIT
+    jz .winmap0
+    add edx, GB_TILEMAP1
+    jmp .winmap_done
+.winmap0:
+    add edx, GB_TILEMAP0
+.winmap_done:
+    mov [map_row], edx
+
+    ; Decode the 32 window tiles into row_buf (reuses the BG decoder).
+    call decode_row
+
+    ; ── Copy visible window pixels into the back buffer ─────────────────────
+
+    ; wx_adj = WX - 7: signed screen X of the window's left column.
+    ; WX=7 → left-edge flush; WX>7 → window inset; WX<7 → left-clipped.
+    movzx edx, byte [ebp + IO_WX]
+    sub edx, 7                         ; EDX = wx_adj (signed)
+
+    ; EDI = start of this back-buffer row.
+    mov eax, [cur_y]
+    imul eax, SCREEN_W
+    lea edi, [ebp + GB_BACKBUF + eax]
+
+    test edx, edx
+    js .win_left_clip
+
+    ; wx_adj >= 0: copy row_buf[0..] → backbuf[wx_adj..159].
+    cmp edx, SCREEN_W
+    jge .win_inc_ctr                   ; window entirely off the right edge
+    lea esi, [row_buf]
+    mov ecx, SCREEN_W
+    sub ecx, edx                       ; pixels to copy
+    add edi, edx                       ; advance dest to screen_x_start
+    rep movsb
+    jmp .win_inc_ctr
+
+.win_left_clip:
+    ; wx_adj < 0: skip the first -wx_adj pixels of row_buf, copy into backbuf[0..].
+    neg edx                            ; EDX = number of leading columns to clip
+    lea esi, [row_buf + edx]
+    mov ecx, SCREEN_W
+    mov eax, 256
+    sub eax, edx                       ; bytes remaining in row_buf after the clip
+    cmp ecx, eax
+    jbe .do_left_copy
+    mov ecx, eax                       ; clamp — never read past row_buf end
+.do_left_copy:
+    rep movsb
+
+.win_inc_ctr:
+    ; WLY increments on every scanline where cur_y >= WY (the window is active).
+    inc dword [win_line_ctr]
+
+.next_scanline:
+    inc dword [cur_y]
+    cmp dword [cur_y], SCREEN_H
+    jb .scanline_loop
 
 .done:
     popad
