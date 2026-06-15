@@ -366,4 +366,63 @@ HAL renderer (not a pret translation) plus an overworld scaffold to drive it.
 `SKIP_TITLE=1`: the Red player sprite renders camera-locked at screen center over
 Pallet Town and faces the direction of movement.
 
+---
+
+## Sprite engine — `src/gfx/sprite_oam.asm`, `src/overworld/movement.asm` (2026-06-15)
+
+Replaced the `UpdatePlayerOAM` / `player_oam_table` scaffold with a faithful
+translation of the Yellow sprite engine, so the player renders through the real
+shadow-OAM pipeline driven by `wSpriteStateData1/2` (slots 0–15). NPC slots are
+inert (picture ID 0) but the loop, priority, and tile logic are the real engine,
+so NPCs render the moment a map fills their slots.
+
+### Routines
+
+- **PrepareOAMData** (sprite_oam.asm) — faithful translation of
+  `engine/gfx/sprite_oam.asm:PrepareOAMData` (Yellow). Iterates the 16 sprite
+  slots; for each visible sprite (picture ID ≠ 0, image index ≠ `$ff`) it indexes
+  `SpriteFacingAndAnimationTable` by `imageIndex & $f`, reads `Y/X` from the slot,
+  and writes the pose's OAM entries into `wShadowOAM` (`$C300`). Handles the
+  under-grass BG-priority bit, OBP0/OBP1 → CGB high-palette mapping, the `$80+`
+  tile → Pikachu-VRAM-offset path, the OAM-overflow guard, and clearing unused
+  entries to `Y=$a0`. Plus `GetSpriteScreenXY` and `Func_4a7b` (VRAM base tile).
+  The full `SpriteFacingAndAnimationTable` + facing data is embedded (a `dd` table
+  of absolute label addresses, indexed `*4`, vs pret's `dw` of GB addresses).
+- **UpdateSprites / _UpdateSprites / UpdatePlayerSprite** (movement.asm) — faithful
+  translation of the player path of `home/update_sprites.asm` +
+  `engine/overworld/sprite_collisions.asm:_UpdateSprites` +
+  `engine/overworld/movement.asm:UpdatePlayerSprite` (with `Func_4e32`,
+  `Func_5274`). Sets the player's facing from `wPlayerMovingDirection`, advances
+  the walk-animation counters (intra-anim → anim-frame every 4 ticks), recomputes
+  the image index (`facing + animFrame`), and sets grass priority. Called once per
+  `OverworldLoop` iteration.
+- **frame.asm:update_oam** — runs `PrepareOAMData` then DMA-copies `wShadowOAM` →
+  OAM (`$FE00`) each `DelayFrame`, gated on `wUpdateSpritesEnabled` (mirrors the GB
+  VBlank `PrepareOAMData` + `hDMARoutine`; gating keeps the title screen's own
+  shadow-OAM writes from being force-copied).
+- **LoadPlayerSpriteGraphics** (overworld.asm) — now loads Red's standing tiles
+  (0–11) to `$8000` (OBJ `$00–$0B`) and walking tiles (12–23) to `$8800`
+  (OBJ `$80–$8B`), the layout the engine indexes; walking tiles time-share vChars1
+  with the text font exactly as on the GB.
+
+### Key decisions / gotchas
+
+- **Stub boundaries:** `DetectCollisionBetweenSprites` (no NPCs to collide) and
+  `UpdateNonPlayerSprite` (NPC engine) are no-ops; the spinning-tile path is inert
+  (`wMovementFlags` stays 0). All marked `; TODO`.
+- **32-bit register trap:** `sil`/`dil` are not byte-addressable without REX, so
+  slot-offset byte stores go through `al` (mov eax, esi / mov [..], al).
+- **Player screen position** is the original's fixed `YPixels=$3c`, `XPixels=$40`
+  (slightly above geometric center), per `home/reset_player_sprite.asm`.
+
+### Verification
+
+`SKIP_TITLE=1 DEBUG_DUMP=1` with a one-shot `UpdateSprites`+`PrepareOAMData` before
+the dump: `wSpritePlayerStateData1` = pictureID 1 / imageIndex 0 / Y `$3c` / X
+`$40` / facing 0; `wSpriteStateData2` imageBaseOffset 1; shadow OAM slot 0 holds
+the four StandingDown entries `($4c,$48,$00) ($4c,$50,$01) ($54,$48,$02)
+($54,$50,$03)` (attrs masked to 0, not in grass) and entry 4 = `$a0` (hidden);
+standing tiles present at `$8000`, distinct walking tiles at `$8800`. Default and
+`SKIP_TITLE=1` builds link clean.
+
 *Add new entries below as routines are translated.*

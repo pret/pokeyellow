@@ -50,6 +50,16 @@ Prioritized task list. Check off items as they complete; add new items with phas
        direction. REMAINING: 8×16 OBJ size, the 10-sprites-per-scanline limit,
        and true smaller-X-wins priority — currently reverse-OAM-order draw, which
        only honors the index tiebreak.)
+- [x] Sprite engine: faithful PrepareOAMData + UpdateSprites (replaces the
+      UpdatePlayerOAM scaffold) — src/gfx/sprite_oam.asm, src/overworld/movement.asm.
+      Player now renders via the real shadow-OAM pipeline driven by
+      wSpriteStateData1/2: UpdateSprites advances facing + walk-frame animation,
+      PrepareOAMData (run in the DelayFrame pipeline, DMA-copied to $FE00) builds
+      shadow OAM with under-grass priority, OBP mapping, and the $80+ tile path.
+      Walking tiles loaded to $8800 so the legs animate. NPC slots are inert but
+      wired (picture ID 0). Verified 2026-06-15 via DEBUG_DUMP. REMAINING for the
+      sprite engine: NPC slots (InitMapSprites / sprite sets / VRAM-slot alloc),
+      DetectCollisionBetweenSprites, and the spinning/ledge paths.
 - [ ] PPU: window layer renderer
 - [ ] PPU: CGB attribute handling (palette, VRAM bank, flip bits)
 - [x] Joypad: INT 9h handler → write `[EBP + IO_JOYP]` — src/input/joypad.asm
@@ -174,7 +184,7 @@ Prioritized task list. Check off items as they complete; add new items with phas
 
 ## Deferred / Open Questions
 
-- [ ] Test target: specify DOSBox, 86Box, or real hardware configuration
+- [x] Test target: specify DOSBox, 86Box, or real hardware configuration: DOSBOX-X is the default test platform
 - [ ] Linker: verify `cwsdstub` is not needed separately (confirmed: built into `i386-pc-msdosdjgpp-ld`)
 - [ ] CGB VRAM bank 1 bank-switching emulation (currently placeholder at `GB_VRAM1`)
 - [ ] Network transport decision (IPX vs serial vs TCP)

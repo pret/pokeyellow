@@ -40,11 +40,22 @@ player in all four directions, scrolling the map smoothly via the faithful
 against the embedded `Overworld_Coll` passable-tile list.
 The OAM sprite renderer (`src/ppu/ppu.asm:render_sprites`) is in: 8×8 DMG OBJ
 emulation (X/Y flip, OBP0/OBP1, color-0 transparency, BG-priority bit), reading
-`$FE00` and compositing after `render_bg`. The Red player sprite renders
-camera-locked at screen center and faces the walk direction (scaffold
-`LoadPlayerSpriteGraphics`/`UpdatePlayerOAM` in `overworld.asm`; walk-frame leg
-animation and NPCs still deferred). Next: window layer, NPC movement / sprite
-engine, then the random-encounter trigger.
+`$FE00` and compositing after `render_bg`.
+
+The `UpdatePlayerOAM` scaffold has been replaced by the **faithful sprite
+engine**: `PrepareOAMData` (`src/gfx/sprite_oam.asm`) builds shadow OAM from the
+16-slot `wSpriteStateData1/2` arrays (facing/animation table, under-grass
+priority, OBP→CGB palette mapping, `$80+` tile path), and `UpdateSprites`
+(`src/overworld/movement.asm`, with `UpdatePlayerSprite`/`Func_4e32`/`Func_5274`)
+advances the player's facing and walk-frame leg animation each `OverworldLoop`
+iteration. `frame.asm:update_oam` runs `PrepareOAMData` and DMA-copies shadow OAM
+→ `$FE00` in the `DelayFrame` pipeline (gated on `wUpdateSpritesEnabled`).
+`LoadPlayerSpriteGraphics` loads Red's standing tiles to `$8000` and walking
+tiles to `$8800` (the VRAM layout the engine indexes; walking tiles time-share
+vChars1 with the font, as on the GB). NPC slots are wired but inert (picture ID
+0). Next: the NPC half of the sprite engine (`InitMapSprites` / sprite sets /
+VRAM-slot allocation / `DetectCollisionBetweenSprites`), the window layer, then
+the random-encounter trigger.
 
 ---
 
