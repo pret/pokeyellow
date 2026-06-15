@@ -21,6 +21,7 @@ bits 32
 
 global LoadFontTilePatterns
 global LoadTextBoxTilePatterns
+extern g_tilecache_dirty
 
 section .data
 align 4
@@ -35,6 +36,7 @@ section .text
 ; Out: all registers preserved.
 ; ---------------------------------------------------------------------------
 LoadFontTilePatterns:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     push eax
     push ecx
     push esi
@@ -68,6 +70,7 @@ LoadFontTilePatterns:
 ; Out: all registers preserved.
 ; ---------------------------------------------------------------------------
 LoadTextBoxTilePatterns:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     push eax
     push ecx
     push esi

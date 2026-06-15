@@ -1,4 +1,4 @@
-; video.asm — VGA mode 13h initialisation, test pattern, and 2× blit.
+; video.asm — VGA mode 13h initialisation, test pattern, and frame present.
 ;
 ; Mode 13h: 320×200, 256 indexed colors, linear framebuffer at 0xA0000.
 ; Under DPMI, INT 10h is reflected to the real-mode BIOS automatically.
@@ -8,9 +8,8 @@
 ; This requires the 4 GB DS limit set by setup_flat_access (entry.asm) —
 ; the offset wraps modulo 2^32 and lands on linear 0xA0000.
 ;
-; 2× blit strategy: GB back buffer is 160×144. At 2× that is 320×288, taller
-; than the 200-line screen. We blit the first 100 GB rows (= 200 VGA rows).
-; The bottom 44 GB rows are clipped. Revisit in Phase 5 (letterbox option).
+; present() copies the 320×200 tile-blitter back buffer to VGA via rep movsd.
+; No scaling, no letterbox — the back buffer matches VGA dimensions exactly.
 ;
 ; Build: nasm -f coff -I include/ -o video.o video.asm
 
@@ -26,8 +25,9 @@ extern tick_count        ; timing.asm — incremented at ~60 Hz by the PIT ISR
 ; Exported symbols
 ; ---------------------------------------------------------------------------
 global video_init
-global present           ; 2× blit: GB back buffer → VGA framebuffer
+global present           ; copy 320×200 back buffer → VGA framebuffer
 global draw_tick_band    ; visible PIT tick indicator (top screen band)
+global commit_palette    ; map BGP/OBP0/OBP1 → DAC entries 0-11 (raw-index render)
 
 ; ---------------------------------------------------------------------------
 ; BSS
@@ -76,6 +76,12 @@ dmg_palette:
     db 34, 43,  3       ; shade 1 — light     (#8bac0f)
     db 12, 24, 12       ; shade 2 — dark      (#306230)
     db  3, 14,  3       ; shade 3 — darkest   (#0f380f)
+
+; Last BGP/OBP0/OBP1 committed to the DAC. Init to 0xFF so the first
+; commit_palette call always reprograms (no valid GB palette reads as 0xFFFFFF).
+align 4
+pal_shadow:
+    db 0xFF, 0xFF, 0xFF
 
 ; ---------------------------------------------------------------------------
 ; Code
@@ -191,60 +197,96 @@ draw_tick_band:
     ret
 
 ; ---------------------------------------------------------------------------
-; present — 2× nearest-neighbor blit from GB back buffer to VGA framebuffer
+; commit_palette — map GB BGP/OBP0/OBP1 → VGA DAC entries 0-11.
 ;
-; Reads:  [EBP + GB_BACKBUF] — 160×144 8bpp pixels
-; Writes: [vga_base] — 320×200 8bpp
+; The PPU renderer writes RAW GB color indices into the back buffer:
+;   BG/window color 0-3 → DAC 0-3
+;   OBP0 sprite color   → DAC 4-7
+;   OBP1 sprite color   → DAC 8-11
+; This routine programs those 12 DAC entries from dmg_palette using the current
+; GB palette registers, so a BGP/OBP fade/flash is just a DAC reprogram — no
+; tile re-decode. DAC entry (base + c) = dmg_palette[(reg >> 2c) & 3].
 ;
-; For each of the first 100 GB rows, write 2 VGA rows with each pixel doubled.
-; EBP must be valid (set by alloc_gb_memory before the frame loop).
+; Skipped when BGP/OBP0/OBP1 are unchanged since the last commit (pal_shadow).
+; Called once per frame from DelayFrame (after wait_vblank). IO_BGP/OBP0/OBP1
+; are three consecutive GB registers ($FF47-$FF49).
+;
+; In: EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+commit_palette:
+    pushad
+
+    ; Skip if the three palette registers are unchanged.
+    mov al, [ebp + IO_BGP]
+    cmp al, [pal_shadow]
+    jne .reprogram
+    mov al, [ebp + IO_OBP0]
+    cmp al, [pal_shadow + 1]
+    jne .reprogram
+    mov al, [ebp + IO_OBP1]
+    cmp al, [pal_shadow + 2]
+    je .done
+
+.reprogram:
+    mov al, [ebp + IO_BGP]
+    mov [pal_shadow], al
+    mov al, [ebp + IO_OBP0]
+    mov [pal_shadow + 1], al
+    mov al, [ebp + IO_OBP1]
+    mov [pal_shadow + 2], al
+
+    ; DAC write index = 0 (auto-increments after each RGB triple).
+    mov dx, 0x3C8
+    xor al, al
+    out dx, al
+    mov dx, 0x3C9                  ; DAC data port
+
+    lea esi, [ebp + IO_BGP]        ; 3 consecutive regs: BGP, OBP0, OBP1
+    mov ebx, 3                     ; palette register count
+.reg_loop:
+    movzx ebp, byte [esi]          ; reg value (EBP free — saved by pushad)
+    inc esi
+    mov ecx, 4                     ; 4 colors per palette
+.color_loop:
+    mov eax, ebp
+    and eax, 3                     ; shade index 0-3 for this color
+    lea edi, [dmg_palette + eax*2]
+    add edi, eax                   ; edi = dmg_palette + 3*shade
+    mov al, [edi]                  ; R
+    out dx, al
+    mov al, [edi + 1]              ; G
+    out dx, al
+    mov al, [edi + 2]              ; B
+    out dx, al
+    shr ebp, 2
+    dec ecx
+    jnz .color_loop
+    dec ebx
+    jnz .reg_loop
+
+.done:
+    popad
+    ret
+
+; ---------------------------------------------------------------------------
+; present — copy 320×200 back buffer to VGA framebuffer
+;
+; Reads:  [EBP + GB_BACKBUF] — 320×200 8bpp pixels (raw-index PPU output)
+; Writes: [vga_base] — VGA linear framebuffer (Mode 13h)
+;
+; Single rep movsd of 16,000 dwords.  No scaling, no letterbox.
 ; ---------------------------------------------------------------------------
 present:
-    push eax
     push ecx
     push esi
     push edi
 
     lea esi, [ebp + GB_BACKBUF]
     mov edi, [vga_base]
-
-    mov ecx, 100                ; 100 GB rows → 200 VGA rows
-
-.blit_row:
-    ; VGA row 2N: 160 GB pixels, each written twice
-    push esi
-    push ecx
-    mov ecx, SCREEN_W
-.row1_px:
-    mov al, [esi]
-    inc esi
-    mov [edi],     al
-    mov [edi + 1], al
-    add edi, 2
-    dec ecx
-    jnz .row1_px
-    pop ecx
-    pop esi                     ; rewind ESI to start of this GB row
-
-    ; VGA row 2N+1: same GB row again (row doubling)
-    push ecx
-    mov ecx, SCREEN_W
-.row2_px:
-    mov al, [esi]
-    inc esi
-    mov [edi],     al
-    mov [edi + 1], al
-    add edi, 2
-    dec ecx
-    jnz .row2_px
-    pop ecx
-    ; ESI now points at the next GB row; EDI at the next VGA row pair
-
-    dec ecx
-    jnz .blit_row
+    mov ecx, RENDER_W * RENDER_H / 4      ; 16,000 dwords
+    rep movsd
 
     pop edi
     pop esi
     pop ecx
-    pop eax
     ret

@@ -21,6 +21,7 @@ bits 32
 
 extern wait_vblank
 extern wait_pit_tick
+extern commit_palette
 extern render_bg
 extern render_window
 extern render_sprites
@@ -52,6 +53,7 @@ DelayFrame:
     call wait_vblank
     call wait_pit_tick
     call commit_shadow_regs
+    call commit_palette         ; map BGP/OBP0/OBP1 → DAC (raw-index render)
     call do_bg_transfer
     call RedrawRowOrColumn      ; redraw the row/col exposed by walking (GB VBlank order)
     call update_oam             ; PrepareOAMData → shadow OAM, then DMA to OAM

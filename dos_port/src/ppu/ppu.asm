@@ -1,6 +1,6 @@
-; ppu.asm — software PPU: BG tile decoder and tilemap renderer.
+; ppu.asm — software PPU: scanline BG renderer + OAM compositor.
 ;
-; Renders the 160×144 background layer into the back buffer at
+; Renders the 40×25 tile viewport directly into the 320×200 back buffer at
 ; [EBP + GB_BACKBUF], honoring the I/O register shadows:
 ;
 ;   IO_LCDC bit 3 — BG tilemap select   (0 = $9800, 1 = $9C00)
@@ -9,20 +9,21 @@
 ;   IO_SCX/IO_SCY — background scroll (wraps at 256 px)
 ;   IO_BGP        — DMG palette: 4 × 2-bit shade, bits 1-0 = color 0
 ;
-; STRATEGY (row buffer): for each of the 144 screen rows, decode the full
-; 256-pixel virtual BG row (32 tiles) into row_buf, then copy 160 bytes
-; starting at SCX. The wrap at x=256 becomes at most two straight copies —
-; no per-pixel masking in the hot path.
+; STRATEGY (scanline + decoded tile cache): the whole BG/window tile-data
+; region ($8000-$97FF, 384 tiles) is pre-decoded from 2bpp to 8bpp once into
+; tile_cache (BGP shade baked in), and re-decoded only when VRAM tile data or
+; BGP changes (g_tilecache_dirty / BGP compare). render_bg then builds each
+; output scanline by COPYING decoded tile rows (8 bytes/tile) into
+; bg_scanline_buf and copying 320 px from the (SCX & 7) fine offset — no
+; per-pixel bit decoding in the hot path. Both axes scroll pixel-smooth; the GB
+; tilemap wraps at (SCX/8 + col) & 31 and (y + SCY) >> 3 & 31.
 ;
-; 2bpp tile format (see docs/references/pandocs/Tile_Data.md): each tile row
-; is 2 bytes — byte 0 = low bitplane, byte 1 = high bitplane, bit 7 = leftmost
-; pixel. color = (hi_bit << 1) | lo_bit.
+; 2bpp tile format: each tile row is 2 bytes — byte 0 = low bitplane,
+; byte 1 = high bitplane, bit 7 = leftmost pixel.
+; color = (hi_bit << 1) | lo_bit.
 ;
 ; This is HAL code, not a pret translation — the SM83 register mapping does
-; not apply here. EBP is still the GB memory base and must not be touched.
-;
-; TODO (Phase 1, later): window layer, OAM sprites, CGB attributes (VRAM
-; bank 1 tile fetch, palette/flip bits from the $9800 mirror in bank 1).
+; not apply here. EBP is the GB memory base.
 ;
 ; Build: nasm -f coff -I include/ -o ppu.o ppu.asm
 
@@ -44,6 +45,7 @@ global render_window
 global render_sprites
 global draw_player_marker
 global g_player_marker_on
+global g_tilecache_dirty
 
 ; Player placeholder marker — the player sprite is always at the fixed screen
 ; center (pret keeps the camera locked on the player and scrolls the BG). Until
@@ -55,14 +57,32 @@ PLAYER_MARKER_SIZE equ 16
 PLAYER_MARKER_SHADE equ 3       ; darkest DMG shade for the outline/body
 PLAYER_MARKER_INNER equ 0       ; lightest shade for the inner square
 
+; Decoded tile cache: the BG/window tile-data region $8000-$97FF is 0x1800
+; bytes = 384 tiles of 16 bytes. Each is pre-decoded once to 8bpp (64 bytes)
+; so render_bg copies rows instead of bit-decoding per pixel every frame.
+; Stores the RAW 2-bit GB color (0-3), NOT a BGP-mapped shade — the VGA DAC
+; does palette mapping (see commit_palette in video.asm), so the cache depends
+; only on VRAM tile data and is rebuilt only on g_tilecache_dirty (a palette
+; change is just a DAC reprogram, no rebuild).
+TILE_CACHE_TILES  equ 384
+TILE_CACHE_SIZE   equ TILE_CACHE_TILES * 64
+
+; ---------------------------------------------------------------------------
+; DATA (initialized — must start "dirty" so the first frame builds the cache)
+; ---------------------------------------------------------------------------
+section .data
+align 4
+g_tilecache_dirty: db 1     ; nonzero → render_bg rebuilds tile_cache this frame
+
 ; ---------------------------------------------------------------------------
 ; BSS
 ; ---------------------------------------------------------------------------
 section .bss
 align 4
+tile_cache:  resb TILE_CACHE_SIZE  ; 384 × 64 = 24 KB of decoded raw-color tile rows
+align 4
 g_player_marker_on: resb 1 ; nonzero → draw_player_marker paints the placeholder
 align 4
-obp_tab:     resb 8        ; OBP0 shades in [0..3], OBP1 shades in [4..7]
 spr_oam_ptr: resd 1        ; GB-relative offset of the current OAM entry
 spr_count:   resd 1        ; OAM entries left to process
 spr_sx:      resd 1        ; sprite left screen X (signed)
@@ -74,13 +94,24 @@ spr_rowbase: resd 1        ; GB-relative back-buffer offset of the current row
 spr_lo:      resb 1        ; low bitplane of the current tile row
 spr_hi:      resb 1        ; high bitplane of the current tile row
 align 4
-row_buf:    resb 256       ; one decoded 256-px virtual BG/window row (shade 0–3)
-bgp_tab:    resb 4         ; BGP unpacked: bgp_tab[color] = shade
-cur_y:      resd 1         ; current screen row (0–143)
-map_row:    resd 1         ; EBP-relative offset of current tilemap row
-fine_y2:    resd 1         ; (sy & 7) * 2 — byte offset of the tile row pair
-tiledata_mode: resd 1      ; 1 = $8000 unsigned, 0 = $8800 signed
-win_line_ctr: resd 1       ; WLY — window internal line counter (resets each frame)
+; Shared BG/window frame constants (written once per frame)
+tiledata_mode:   resd 1    ; 1 = $8000 unsigned, 0 = $8800 signed
+; render_bg surface-mirror state
+bg_tilemap_base: resd 1    ; BG tilemap base addr ($9800 or $9C00)
+bg_scy:          resd 1    ; SCY shadow
+bg_scx:          resd 1    ; SCX shadow
+surf_last_base:  resd 1    ; tilemap base the surface was last (re)built for (0 = none)
+align 4
+; bg_surface: 256×256 chunky raw-color mirror of the decoded BG tilemap torus.
+; bg_tilemap_shadow: last-seen 32×32 VRAM tilemap, for the per-frame diff.
+bg_surface:        resb 256 * 256
+bg_tilemap_shadow: resb 32 * 32
+align 4
+; render_window row buffer and scanline state
+row_buf:         resb 256  ; decoded 256-px virtual window row (shade 0–3)
+win_map_row:     resd 1    ; EBP-relative offset of current window tilemap row
+win_fine_y2:     resd 1    ; (WLY & 7) * 2
+win_line_ctr:    resd 1    ; WLY — window internal line counter (resets each frame)
 
 ; ---------------------------------------------------------------------------
 ; Code
@@ -88,150 +119,234 @@ win_line_ctr: resd 1       ; WLY — window internal line counter (resets each f
 section .text
 
 ; ---------------------------------------------------------------------------
-; render_bg — render the full 160×144 BG layer into [EBP + GB_BACKBUF]
+; render_bg — blit the BG plane from a decoded offscreen surface (Tier 2 step 3).
 ;
-; In:  EBP = GB memory base (reads VRAM, tilemaps, IO shadows through it)
-; Out: back buffer filled with shade indices 0–3. All registers preserved.
+; Instead of re-resolving 41 tiles × 200 scanlines from the VRAM tilemap every
+; frame, we keep bg_surface: a 256×256 chunky raw-color mirror of the decoded
+; BG tilemap torus (32×32 tiles, each tile decoded to 8×8 raw-color pixels).
+;
+; Per frame we SYNC the surface to the live VRAM tilemap, then BLIT a 320×200
+; window from it at (SCX,SCY) with 256-px torus wrap on both axes:
+;   - Sync is cheap: diff the VRAM tilemap against bg_tilemap_shadow and
+;     re-decode only the changed tiles (while walking that is just the edge
+;     strip RedrawRowOrColumn wrote). On a tile-data change (g_tilecache_dirty)
+;     or a BG-tilemap-base switch, rebuild the whole surface.
+;   - The blit has NO per-tile addressing and no 40-into-32 fold — it is a plain
+;     windowed copy. This eliminates the per-frame tile-resolution work.
+;
+; Sampling matches the old renderer exactly: BG pixel (x,y) = surface pixel
+; ((SCX+x)&255, (SCY+y)&255). LCDC bit 3 selects the tilemap, bit 4 the tile
+; data addressing. Surface holds raw color (0-3); the DAC maps it (commit_palette).
+;
+; In:  EBP = GB memory base. Out: back buffer filled. All registers preserved.
 ; ---------------------------------------------------------------------------
 render_bg:
     pushad
 
-    ; Unpack BGP into bgp_tab: shade for color c = (BGP >> c*2) & 3
-    movzx eax, byte [ebp + IO_BGP]
-    mov ecx, 4
-    xor edx, edx
-.bgp_loop:
-    mov ebx, eax
-    and ebx, 3
-    mov [bgp_tab + edx], bl
-    shr eax, 2
-    inc edx
-    loop .bgp_loop
-
-    ; Cache tile data mode (LCDC bit 4)
+    ; Tile-data addressing mode (LCDC bit 4): 1 = $8000 unsigned, 0 = $8800 signed
     movzx eax, byte [ebp + IO_LCDC]
     shr eax, LCDC_TILEDATA_BIT
     and eax, 1
     mov [tiledata_mode], eax
 
-    mov dword [cur_y], 0
+    ; BG tilemap base (LCDC bit 3)
+    test byte [ebp + IO_LCDC], 1 << LCDC_BG_MAP_BIT
+    jnz .use_tilemap1
+    mov dword [bg_tilemap_base], GB_TILEMAP0
+    jmp .tilemap_ok
+.use_tilemap1:
+    mov dword [bg_tilemap_base], GB_TILEMAP1
+.tilemap_ok:
 
-.row_loop:
-    ; sy = (cur_y + SCY) & 0xFF
-    mov eax, [cur_y]
-    movzx edx, byte [ebp + IO_SCY]
+    ; ---- sync bg_surface to the VRAM tilemap ----
+    ; Full rebuild if tile data changed (cache stale) or the tilemap base
+    ; switched; otherwise just re-decode the tiles that differ from the shadow.
+    cmp byte [g_tilecache_dirty], 0
+    jne .full_rebuild
+    mov eax, [bg_tilemap_base]
+    cmp eax, [surf_last_base]
+    jne .full_rebuild
+    call sync_surface_diff
+    jmp .blit
+.full_rebuild:
+    call rebuild_tile_cache             ; refresh decoded tile data (clears dirty)
+    call rebuild_surface_full           ; decode all 1024 tilemap entries + shadow
+    mov eax, [bg_tilemap_base]
+    mov [surf_last_base], eax
+
+.blit:
+    ; ---- blit a 320×200 window from bg_surface at (SCX,SCY), torus-wrapped ----
+    movzx eax, byte [ebp + IO_SCY]
+    mov [bg_scy], eax
+    movzx eax, byte [ebp + IO_SCX]
+    mov [bg_scx], eax
+
+    xor edx, edx                        ; EDX = screen y (preserved across rep)
+.blit_row:
+    mov eax, [bg_scy]
     add eax, edx
     and eax, 0xFF
-
-    ; fine_y2 = (sy & 7) * 2
-    mov edx, eax
-    and edx, 7
-    add edx, edx
-    mov [fine_y2], edx
-
-    ; map_row = tilemap_base + (sy >> 3) * 32
-    shr eax, 3
-    shl eax, 5
-    test byte [ebp + IO_LCDC], 1 << LCDC_BG_MAP_BIT
-    jz .map0
-    add eax, GB_TILEMAP1
-    jmp .map_done
-.map0:
-    add eax, GB_TILEMAP0
-.map_done:
-    mov [map_row], eax
-
-    call decode_row             ; fill row_buf from the 32 tiles of this row
-
-    ; Copy 160 px from row_buf starting at SCX into the back buffer row,
-    ; splitting at the 256-px wrap if needed.
-    mov eax, [cur_y]
-    imul edi, eax, SCREEN_W
-    lea edi, [ebp + GB_BACKBUF + edi]   ; EDI = back buffer row
-
-    movzx esi, byte [ebp + IO_SCX]      ; ESI = start offset in row_buf
-    mov ecx, 256
-    sub ecx, esi                        ; bytes until wrap
-    cmp ecx, SCREEN_W
-    jbe .split_copy
-
-    ; No wrap: single 160-byte copy
-    lea esi, [row_buf + esi]
-    mov ecx, SCREEN_W
+    shl eax, 8                          ; EAX = src row byte offset (row * 256)
+    mov ecx, [bg_scx]                   ; ECX = src_x (0..255)
+    mov edi, edx
+    imul edi, RENDER_W
+    lea edi, [ebp + GB_BACKBUF + edi]   ; EDI = back-buffer row start
+    mov ebx, 256
+    sub ebx, ecx                        ; EBX = 256 - src_x (bytes until wrap)
+    mov esi, bg_surface
+    add esi, eax                        ; surface row start
+    add esi, ecx                        ; + src_x → first-chunk source
+    cmp ebx, RENDER_W
+    jae .one_chunk
+    ; window straddles the 256-px seam: copy EBX bytes, then the rest from col 0
+    mov ecx, ebx
     rep movsb
-    jmp .row_done
-
-.split_copy:
-    ; First segment: row_buf[SCX .. 255], then wrap to row_buf[0 ..]
-    lea esi, [row_buf + esi]
-    mov edx, SCREEN_W
-    sub edx, ecx                        ; EDX = remainder after the wrap
+    mov esi, bg_surface
+    add esi, eax                        ; surface row start (col 0)
+    mov ecx, RENDER_W
+    sub ecx, ebx
     rep movsb
-    mov esi, row_buf
-    mov ecx, edx
+    jmp .blit_next
+.one_chunk:
+    mov ecx, RENDER_W
     rep movsb
-
-.row_done:
-    inc dword [cur_y]
-    cmp dword [cur_y], SCREEN_H
-    jb .row_loop
+.blit_next:
+    inc edx
+    cmp edx, RENDER_H
+    jb .blit_row
 
     popad
     ret
 
 ; ---------------------------------------------------------------------------
-; decode_row — decode the 32 tiles of the current tilemap row into row_buf
+; surf_decode_tile — decode one tilemap entry into bg_surface.
 ;
-; In:  [map_row]  = EBP-relative offset of the tilemap row (32 tile IDs)
-;      [fine_y2]  = (sy & 7) * 2
-;      [tiledata_mode], [bgp_tab] already set up
-;      EBP = GB memory base
-; Clobbers: EAX, EBX, ECX, EDX, ESI, EDI
+; In:  AL  = tile_id, EBX = tilemap index (0..1023), [tiledata_mode] set.
+; Out: EBX preserved. Clobbers EAX, ECX, EDX, ESI, EDI.
+;
+; Resolves the tile_id to a tile_cache slot (signed/unsigned per mode) and copies
+; its 8 decoded rows into the surface at torus tile (EBX&31, EBX>>5): surface
+; offset = (EBX>>5)*8*256 + (EBX&31)*8, dest stride 256, src stride 8.
 ; ---------------------------------------------------------------------------
-decode_row:
-    mov edi, row_buf
-    xor esi, esi                ; ESI = tile column 0–31
-
-.tile_loop:
-    ; Fetch tile ID from the tilemap
-    mov eax, [map_row]
-    add eax, esi
-    movzx eax, byte [ebp + eax]
-
-    ; Resolve tile data address per LCDC bit 4
+surf_decode_tile:
     cmp dword [tiledata_mode], 0
-    jne .unsigned_mode
-    ; $8800 signed mode: addr = $9000 + sext8(id) * 16
+    jne .uns
     movsx eax, al
     shl eax, 4
     add eax, 0x9000
-    jmp .addr_done
-.unsigned_mode:
-    ; $8000 unsigned mode: addr = $8000 + id * 16
+    jmp .ok
+.uns:
+    movzx eax, al
     shl eax, 4
-    add eax, GB_VRAM0
-.addr_done:
-    add eax, [fine_y2]
+    add eax, GB_VCHARS0
+.ok:
+    sub eax, GB_VCHARS0
+    shl eax, 2                          ; EAX = tile_cache byte offset (row 0)
+    lea esi, [tile_cache + eax]         ; ESI = src
 
-    ; Fetch the bitplane pair for this tile row
-    mov bl, [ebp + eax]         ; BL = low bitplane
-    mov bh, [ebp + eax + 1]     ; BH = high bitplane
+    mov edx, ebx
+    shr edx, 5                          ; trow
+    imul edx, 8 * 256                   ; trow * 2048
+    mov ecx, ebx
+    and ecx, 31
+    shl ecx, 3                          ; tcol * 8
+    add edx, ecx
+    lea edi, [bg_surface + edx]         ; EDI = dest (surface tile top-left)
 
-    ; Decode 8 pixels, bit 7 (leftmost) first
+    mov ecx, 8                          ; 8 tile rows
+.row:
+    mov eax, [esi]
+    mov [edi], eax
+    mov eax, [esi + 4]
+    mov [edi + 4], eax
+    add esi, 8
+    add edi, 256
+    dec ecx
+    jnz .row
+    ret
+
+; ---------------------------------------------------------------------------
+; rebuild_surface_full — decode all 1024 BG tilemap entries into bg_surface and
+; refresh bg_tilemap_shadow. Called on tile-data change or tilemap-base switch.
+; In: EBP = GB base, [bg_tilemap_base]/[tiledata_mode] set. Regs preserved.
+; ---------------------------------------------------------------------------
+rebuild_surface_full:
+    pushad
+    xor ebx, ebx                        ; tilemap index 0..1023
+.loop:
+    mov eax, [bg_tilemap_base]
+    add eax, ebx
+    movzx eax, byte [ebp + eax]         ; AL = tile_id
+    mov [bg_tilemap_shadow + ebx], al
+    call surf_decode_tile               ; AL, EBX
+    inc ebx
+    cmp ebx, 32 * 32
+    jb .loop
+    popad
+    ret
+
+; ---------------------------------------------------------------------------
+; sync_surface_diff — re-decode only the tilemap entries that changed since the
+; last frame (compared against bg_tilemap_shadow). Cheap: while scrolling this is
+; just the edge row/column RedrawRowOrColumn wrote. (Byte compare; could be
+; dword-batched later, but the diff cost is already negligible vs the old
+; per-scanline tile resolution.)
+; In: EBP = GB base, [bg_tilemap_base]/[tiledata_mode] set. Regs preserved.
+; ---------------------------------------------------------------------------
+sync_surface_diff:
+    pushad
+    xor ebx, ebx
+.loop:
+    mov eax, [bg_tilemap_base]
+    add eax, ebx
+    mov al, [ebp + eax]                 ; current tile_id
+    cmp al, [bg_tilemap_shadow + ebx]
+    je .next
+    mov [bg_tilemap_shadow + ebx], al
+    call surf_decode_tile               ; AL, EBX
+.next:
+    inc ebx
+    cmp ebx, 32 * 32
+    jb .loop
+    popad
+    ret
+
+; ---------------------------------------------------------------------------
+; rebuild_tile_cache — decode the 384 BG/window tiles ($8000-$97FF) to 8bpp.
+;
+; Each 16-byte 2bpp tile becomes 64 bytes (8×8) of RAW color (0-3) in
+; tile_cache, laid out linearly (tile i at offset i*64). render_bg then copies
+; decoded rows instead of bit-decoding per pixel. Both source (VRAM) and dest
+; (cache) are contiguous, so a single source pointer / dest pointer suffice.
+; No BGP is applied here — the VGA DAC maps color→shade (commit_palette).
+;
+; Clears g_tilecache_dirty. In: EBP = GB memory base. All registers preserved.
+; ---------------------------------------------------------------------------
+rebuild_tile_cache:
+    pushad
+
+    mov esi, GB_VCHARS0                ; GB offset of the first tile-data byte
+    mov edi, tile_cache
+    mov edx, TILE_CACHE_TILES * 8      ; total tile rows (8 per tile)
+.row_loop:
+    mov bl, [ebp + esi]               ; low bitplane
+    mov bh, [ebp + esi + 1]           ; high bitplane
+    add esi, 2
     mov ecx, 8
 .px_loop:
     xor eax, eax
-    shl bh, 1                   ; high bit → CF
-    rcl al, 1                   ; AL = hi_bit
+    shl bh, 1
+    rcl al, 1
     shl bl, 1
-    rcl al, 1                   ; AL = (hi << 1) | lo
-    mov al, [bgp_tab + eax]     ; apply BGP: color → shade
-    stosb
-    loop .px_loop
+    rcl al, 1
+    stosb                             ; tile_cache[..] = raw color 0-3 (ES:[EDI])
+    dec ecx
+    jnz .px_loop
+    dec edx
+    jnz .row_loop
 
-    inc esi
-    cmp esi, TILEMAP_W
-    jb .tile_loop
+    mov byte [g_tilecache_dirty], 0
+    popad
     ret
 
 ; ---------------------------------------------------------------------------
@@ -255,26 +370,9 @@ render_sprites:
     test byte [ebp + IO_LCDC], LCDCF_OBJ_ON
     jz .done
 
-    ; Unpack OBP0 → obp_tab[0..3], OBP1 → obp_tab[4..7].
-    movzx eax, byte [ebp + IO_OBP0]
-    xor edx, edx
-.unpack0:
-    mov ebx, eax
-    and ebx, 3
-    mov [obp_tab + edx], bl
-    shr eax, 2
-    inc edx
-    cmp edx, 4
-    jb .unpack0
-    movzx eax, byte [ebp + IO_OBP1]
-.unpack1:
-    mov ebx, eax
-    and ebx, 3
-    mov [obp_tab + edx], bl
-    shr eax, 2
-    inc edx
-    cmp edx, 8
-    jb .unpack1
+    ; No OBP unpack: sprite pixels are written as raw palette-indexed values
+    ; (4 + color for OBP0, 8 + color for OBP1). commit_palette (video.asm) sets
+    ; DAC entries 4-7 / 8-11 to the OBP0/OBP1-mapped DMG shades.
 
     mov dword [spr_oam_ptr], GB_OAM + (OAM_COUNT - 1) * OAM_ENTRY_SIZE
     mov dword [spr_count], OAM_COUNT
@@ -296,12 +394,12 @@ render_sprites:
 
     ; Cull sprites that fall entirely off-screen.
     mov eax, [spr_sy]
-    cmp eax, SCREEN_H
+    cmp eax, RENDER_H
     jge .nextSprite                      ; top at/below bottom edge
     add eax, 7
     js  .nextSprite                      ; bottom row above top edge
     mov eax, [spr_sx]
-    cmp eax, SCREEN_W
+    cmp eax, RENDER_W
     jge .nextSprite
     add eax, 7
     js  .nextSprite
@@ -311,9 +409,9 @@ render_sprites:
     mov eax, [spr_sy]
     add eax, [spr_row]                   ; py
     js  .rowNext                         ; row above the screen
-    cmp eax, SCREEN_H
+    cmp eax, RENDER_H
     jge .rowNext
-    imul ecx, eax, SCREEN_W
+    imul ecx, eax, RENDER_W
     add ecx, GB_BACKBUF
     mov [spr_rowbase], ecx
 
@@ -350,24 +448,24 @@ render_sprites:
     test eax, eax
     jz .colNext                          ; color 0 = transparent
 
-    ; shade = obp_tab[(pal1 ? 4 : 0) + color]
-    mov ebx, eax
+    ; pixel = palette base + color: OBP0 → 4+color, OBP1 → 8+color. The DAC
+    ; (commit_palette) maps 4-7 / 8-11 to the OBP0/OBP1-mapped DMG shades.
+    lea ebx, [eax + 4]
     test byte [spr_attr], OAM_PAL1
     jz .pal0
-    add ebx, 4
+    lea ebx, [eax + 8]
 .pal0:
-    movzx ebx, byte [obp_tab + ebx]
 
     mov eax, [spr_sx]
     add eax, esi                         ; px
     js  .colNext
-    cmp eax, SCREEN_W
+    cmp eax, RENDER_W
     jge .colNext
     mov ecx, [spr_rowbase]
     add ecx, eax                         ; back-buffer offset (GB-relative)
     test byte [spr_attr], OAM_PRIO
     jz .writePx
-    cmp byte [ebp + ecx], 0              ; behind BG: only over BG shade 0
+    cmp byte [ebp + ecx], 0              ; behind BG: only over BG color 0
     jne .colNext
 .writePx:
     mov [ebp + ecx], bl
@@ -421,17 +519,8 @@ render_window:
     test byte [ebp + IO_LCDC], 1
     jz .done
 
-    ; Unpack BGP → bgp_tab. Window uses the same DMG palette as the BG.
-    movzx eax, byte [ebp + IO_BGP]
-    xor ecx, ecx
-.bgp_unpack:
-    mov ebx, eax
-    and ebx, 3
-    mov [bgp_tab + ecx], bl
-    shr eax, 2
-    inc ecx
-    cmp ecx, 4
-    jb .bgp_unpack
+    ; No BGP unpack: the window writes raw color (0-3) like the BG; the DAC
+    ; (commit_palette) maps it via BGP — the window shares the BG palette.
 
     ; Cache tile data addressing mode (shared LCDC bit 4).
     movzx eax, byte [ebp + IO_LCDC]
@@ -444,22 +533,21 @@ render_window:
 
     movzx ebx, byte [ebp + IO_WY]     ; EBX = WY (window top edge, screen-Y units)
 
-    mov dword [cur_y], 0
+    xor ecx, ecx                       ; cur_y = 0
 
 .scanline_loop:
     ; Skip scanlines above the window's vertical trigger.
-    mov eax, [cur_y]
-    cmp eax, ebx                       ; cur_y < WY?
+    cmp ecx, ebx                       ; cur_y < WY?
     jb .next_scanline
 
-    ; ── Set map_row + fine_y2 from WLY, then decode the window tile row ────
+    ; ── Decode one window tile row (32 tiles) into row_buf ──────────────────
 
     ; fine_y2 = (WLY & 7) * 2
     mov edx, [win_line_ctr]
-    mov ecx, edx
-    and ecx, 7
-    shl ecx, 1
-    mov [fine_y2], ecx
+    mov eax, edx
+    and eax, 7
+    shl eax, 1
+    mov [win_fine_y2], eax
 
     ; map_row = window_tilemap_base + (WLY >> 3) * 32
     shr edx, 3
@@ -471,41 +559,49 @@ render_window:
 .winmap0:
     add edx, GB_TILEMAP0
 .winmap_done:
-    mov [map_row], edx
+    mov [win_map_row], edx
 
-    ; Decode the 32 window tiles into row_buf (reuses the BG decoder).
-    call decode_row
+    push ecx                            ; save scanline counter — decode_win_row clobbers ECX
+    call decode_win_row                ; fill row_buf[0..255] from the 32 window tiles
+    pop ecx                            ; restore scanline counter
 
     ; ── Copy visible window pixels into the back buffer ─────────────────────
 
     ; wx_adj = WX - 7: signed screen X of the window's left column.
-    ; WX=7 → left-edge flush; WX>7 → window inset; WX<7 → left-clipped.
     movzx edx, byte [ebp + IO_WX]
     sub edx, 7                         ; EDX = wx_adj (signed)
 
     ; EDI = start of this back-buffer row.
-    mov eax, [cur_y]
-    imul eax, SCREEN_W
-    lea edi, [ebp + GB_BACKBUF + eax]
+    push ecx
+    imul ecx, ecx, RENDER_W
+    lea edi, [ebp + GB_BACKBUF + ecx]
+    pop ecx
 
     test edx, edx
     js .win_left_clip
 
-    ; wx_adj >= 0: copy row_buf[0..] → backbuf[wx_adj..159].
-    cmp edx, SCREEN_W
+    ; wx_adj >= 0: copy row_buf[0..] → backbuf[wx_adj..RENDER_W-1].
+    cmp edx, RENDER_W
     jge .win_inc_ctr                   ; window entirely off the right edge
     lea esi, [row_buf]
-    mov ecx, SCREEN_W
-    sub ecx, edx                       ; pixels to copy
+    push ecx
+    mov ecx, RENDER_W
+    sub ecx, edx                       ; pixels to reach the right edge
+    cmp ecx, 256
+    jbe .do_right_copy
+    mov ecx, 256                       ; clamp — row_buf holds only 256 decoded px
+.do_right_copy:                        ; (32 tiles); never read past it into BSS
     add edi, edx                       ; advance dest to screen_x_start
     rep movsb
+    pop ecx
     jmp .win_inc_ctr
 
 .win_left_clip:
     ; wx_adj < 0: skip the first -wx_adj pixels of row_buf, copy into backbuf[0..].
     neg edx                            ; EDX = number of leading columns to clip
     lea esi, [row_buf + edx]
-    mov ecx, SCREEN_W
+    push ecx
+    mov ecx, RENDER_W
     mov eax, 256
     sub eax, edx                       ; bytes remaining in row_buf after the clip
     cmp ecx, eax
@@ -513,18 +609,72 @@ render_window:
     mov ecx, eax                       ; clamp — never read past row_buf end
 .do_left_copy:
     rep movsb
+    pop ecx
 
 .win_inc_ctr:
-    ; WLY increments on every scanline where cur_y >= WY (the window is active).
     inc dword [win_line_ctr]
 
 .next_scanline:
-    inc dword [cur_y]
-    cmp dword [cur_y], SCREEN_H
+    inc ecx
+    ; Bound at SCREEN_H (144), the GB logical screen height — NOT RENDER_H (200).
+    ; Pokémon parks the window at WY=144 to hide it on the 144-px GB screen; our
+    ; taller 320×200 viewport would otherwise paint the parked (uninitialized)
+    ; window over rows 144–199. Limiting the window to the GB-logical area keeps
+    ; the park semantics. (A textbox for the full 200-px viewport is future
+    ; window-layer work — see TODO.md.)
+    cmp ecx, SCREEN_H
     jb .scanline_loop
 
 .done:
     popad
+    ret
+
+; ---------------------------------------------------------------------------
+; decode_win_row — decode the 32 window tiles of the current row into row_buf
+;
+; In:  [win_map_row] = GB tilemap row base address
+;      [win_fine_y2] = (WLY & 7) * 2
+;      [tiledata_mode] set by render_window preamble. Stores raw color 0-3.
+; Clobbers: EAX, EBX, ECX, EDX, ESI, EDI
+; ---------------------------------------------------------------------------
+decode_win_row:
+    mov edi, row_buf
+    xor esi, esi                       ; tile column 0..31
+
+.wrow_tile:
+    mov eax, [win_map_row]
+    add eax, esi
+    movzx eax, byte [ebp + eax]       ; tile_id
+
+    cmp dword [tiledata_mode], 0
+    jne .wrow_unsigned
+    movsx eax, al
+    shl eax, 4
+    add eax, 0x9000
+    jmp .wrow_addr_ok
+.wrow_unsigned:
+    shl eax, 4
+    add eax, GB_VRAM0
+.wrow_addr_ok:
+    add eax, [win_fine_y2]
+
+    mov bl, [ebp + eax]
+    mov bh, [ebp + eax + 1]
+
+    mov ecx, 8
+.wrow_px:
+    xor eax, eax
+    shl bh, 1
+    rcl al, 1
+    shl bl, 1
+    rcl al, 1
+    stosb                              ; raw color 0-3 (DAC maps via BGP)
+    dec ecx
+    jnz .wrow_px
+
+    inc esi
+    cmp esi, TILEMAP_W
+    jb .wrow_tile
     ret
 
 ; ---------------------------------------------------------------------------
@@ -546,7 +696,7 @@ draw_player_marker:
     mov edx, PLAYER_MARKER_Y
     mov ecx, PLAYER_MARKER_SIZE                  ; rows remaining
 .outer_row:
-    imul edi, edx, SCREEN_W
+    imul edi, edx, RENDER_W
     lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X]
     push ecx
     mov ecx, PLAYER_MARKER_SIZE
@@ -561,7 +711,7 @@ draw_player_marker:
     mov edx, PLAYER_MARKER_Y + PLAYER_MARKER_SIZE / 4
     mov ecx, PLAYER_MARKER_SIZE / 2
 .inner_row:
-    imul edi, edx, SCREEN_W
+    imul edi, edx, RENDER_W
     lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X + PLAYER_MARKER_SIZE / 4]
     push ecx
     mov ecx, PLAYER_MARKER_SIZE / 2
