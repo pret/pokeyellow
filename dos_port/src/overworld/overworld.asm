@@ -51,6 +51,7 @@ extern GBPalNormal
 extern g_player_marker_on
 extern UpdateSprites
 extern ClearSprites
+extern g_tilecache_dirty
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -85,6 +86,38 @@ PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + MAP_BORDER * (PALLET_TOWN_WIDT
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
 MAP_NO_CONNECTION           equ 0xFF
+
+; Pallet Town map connections (computed from the pret `connection` macro for the
+; north=Route1 / south=Route21 connections, both at offset 0). See
+; macros/scripts/maps.asm:connection. Route1 = 10×18, Route21 = 10×45.
+MAP_ID_ROUTE_1              equ 0x0C
+MAP_ID_ROUTE_21             equ 0x20
+CONNECTION_NORTH           equ 1 << 3   ; wCurMapConnections bits (EAST=1,WEST=2,SOUTH=4,NORTH=8)
+CONNECTION_SOUTH           equ 1 << 2
+
+; north (Route1): _blk = ROUTE1_W*(ROUTE1_H-3) = 10*15 = 150; _map = 3;
+;   _len = min(CUR_W+3, ROUTE1_W) = 10; _y = ROUTE1_H*2-1 = 35; _x = 0;
+;   _win = (ROUTE1_W+6)*ROUTE1_H + 1 = 16*18+1 = 289
+NORTH_STRIP_SRC            equ OW_ROUTE1_BLK_GBADDR + 150
+NORTH_STRIP_DEST           equ W_OVERWORLD_MAP + 3
+NORTH_STRIP_LENGTH         equ 10
+NORTH_CONN_MAP_WIDTH       equ 10
+NORTH_Y_ALIGN              equ 35
+NORTH_X_ALIGN              equ 0
+NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 289
+
+; south (Route21): _blk = 0; _map = (CUR_W+6)*(CUR_H+3)+3 = 16*12+3 = 195;
+;   _len = min(CUR_W+3, ROUTE21_W) = 10; _y = 0; _x = 0; _win = ROUTE21_W+7 = 17
+SOUTH_STRIP_SRC            equ OW_ROUTE21_BLK_GBADDR + 0
+SOUTH_STRIP_DEST           equ W_OVERWORLD_MAP + 195
+SOUTH_STRIP_LENGTH         equ 10
+SOUTH_CONN_MAP_WIDTH       equ 10
+SOUTH_Y_ALIGN              equ 0
+SOUTH_X_ALIGN              equ 0
+SOUTH_VIEW_PTR             equ W_OVERWORLD_MAP + 17
+
+ROUTE1_BLK_GB_SIZE         equ 180        ; 10×18
+ROUTE21_BLK_GB_SIZE        equ 450        ; 10×45
 
 section .text
 
@@ -208,9 +241,30 @@ SetupPalletTown:
     mov byte [ebp + W_MAP_BACKGROUND_TILE], PALLET_TOWN_BORDER_BLOCK
     mov byte [ebp + W_NUMBER_OF_WARPS],     0
 
-    ; --- Disable all connected maps ($FF = none) ---
-    mov byte [ebp + W_NORTH_CONNECTED_MAP], MAP_NO_CONNECTION
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP], MAP_NO_CONNECTION
+    ; --- Map connections: Pallet Town connects north→Route1, south→Route21 ---
+    mov byte [ebp + W_CUR_MAP_CONNECTIONS], CONNECTION_NORTH | CONNECTION_SOUTH
+
+    ; North connection strip header (Route 1)
+    mov byte [ebp + W_NORTH_CONNECTED_MAP],                     MAP_ID_ROUTE_1
+    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_SRC],    NORTH_STRIP_SRC
+    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_DEST],   NORTH_STRIP_DEST
+    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_LENGTH], NORTH_STRIP_LENGTH
+    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_MAP_WIDTH],    NORTH_CONN_MAP_WIDTH
+    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_Y_ALIGN],      NORTH_Y_ALIGN
+    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_X_ALIGN],      NORTH_X_ALIGN
+    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_VIEW_PTR],     NORTH_VIEW_PTR
+
+    ; South connection strip header (Route 21)
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP],                     MAP_ID_ROUTE_21
+    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_SRC],    SOUTH_STRIP_SRC
+    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_DEST],   SOUTH_STRIP_DEST
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_LENGTH], SOUTH_STRIP_LENGTH
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_MAP_WIDTH],    SOUTH_CONN_MAP_WIDTH
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_Y_ALIGN],      SOUTH_Y_ALIGN
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_X_ALIGN],      SOUTH_X_ALIGN
+    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_VIEW_PTR],     SOUTH_VIEW_PTR
+
+    ; West / East: no connection.
     mov byte [ebp + W_WEST_CONNECTED_MAP],  MAP_NO_CONNECTION
     mov byte [ebp + W_EAST_CONNECTED_MAP],  MAP_NO_CONNECTION
 
@@ -239,8 +293,8 @@ SetupPalletTown:
     ; from this state, so it must be initialized for slot 0 to be drawn.
     mov byte [ebp + W_SPRITE_PLAYER_PICTURE_ID],      1   ; non-zero → slot in use
     mov byte [ebp + W_SPRITE_PLAYER_IMAGE_BASE_OFFSET], 1 ; player VRAM slot
-    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x3C ; fixed screen Y
-    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0x40 ; fixed screen X
+    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x60 ; fixed screen Y (96 = center of 200)
+    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0xA0 ; fixed screen X (160 = center of 320)
     mov byte [ebp + W_SPRITE_PLAYER_IMAGE_INDEX],     SPRITE_FACING_DOWN ; facing down, frame 0
     mov byte [ebp + W_SPRITE_PLAYER_INTRA_ANIM],      0
     mov byte [ebp + W_SPRITE_PLAYER_ANIM_FRAME],      0
@@ -283,6 +337,18 @@ SetupPalletTown:
     mov esi, overworld_coll
     lea edi, [ebp + OW_COLL_GBADDR]
     mov ecx, OVERWORLD_COLL_SIZE
+    rep movsb
+
+    ; --- Copy connected-map block data (Route 1 north, Route 21 south) ---
+    ; The connection-strip src pointers (NORTH/SOUTH_STRIP_SRC) index into these.
+    mov esi, route1_blk
+    lea edi, [ebp + OW_ROUTE1_BLK_GBADDR]
+    mov ecx, ROUTE1_BLK_SIZE
+    rep movsb
+
+    mov esi, route21_blk
+    lea edi, [ebp + OW_ROUTE21_BLK_GBADDR]
+    mov ecx, ROUTE21_BLK_SIZE
     rep movsb
 
     pop ecx
@@ -333,6 +399,7 @@ PLAYER_STANDING_TILES equ 12               ; tiles 0-11
 PLAYER_TILE_BYTES     equ PLAYER_STANDING_TILES * TILE_SIZE  ; 192 bytes
 
 LoadPlayerSpriteGraphics:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     push eax
     push ecx
     push esi
@@ -378,6 +445,7 @@ LoadPlayerSpriteGraphics:
 ; on the first overworld frame to set screen positions from MAPY/MAPX.
 ; ---------------------------------------------------------------------------
 SetupPalletTownNPCs:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     push esi
     push edi
     push ecx
@@ -467,6 +535,7 @@ LoadScreenRelatedData:
 ; In the flat model wTilesetBank (FarCopyData bank arg) is ignored.
 ; ---------------------------------------------------------------------------
 LoadTilesetTilePatternData:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     ; ESI = wTilesetGfxPtr (16-bit GB address, LE word)
     movzx esi, word [ebp + W_TILESET_GFX_PTR]    ; ESI = HL = 0x4000
     mov edx, GB_VCHARS2                            ; EDX = DE = 0x9000 (vTileset)
@@ -535,33 +604,132 @@ LoadTileBlockMap:
     dec bh
     jnz .row_loop
 
-    ; --- Connection strips (all $FF = none for Phase 2; faithful structure kept) ---
+    ; --- Connection strips: copy each connected map's edge into the wOverworldMap
+    ;     border. SwitchToMapRomBank is a no-op in the flat model. The strip src
+    ;     pointers (CONN_STRIP_SRC) index into the connected maps' block data
+    ;     loaded at OW_ROUTE*_BLK_GBADDR. hNorthSouthConnectionStripWidth and the
+    ;     connected-map width reuse H_MAP_STRIDE/H_MAP_WIDTH (they are HRAM unions).
 
 .north_connection:
     cmp byte [ebp + W_NORTH_CONNECTED_MAP], MAP_NO_CONNECTION
     je  .south_connection
-    ; TODO: SwitchToMapRomBank + LoadNorthSouthConnectionsTileMap (Phase 2 movement)
+    movzx esi, word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_SRC]   ; HL = strip src
+    movzx edx, word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_DEST]  ; DE = strip dest
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_LENGTH]
+    mov [ebp + H_MAP_STRIDE], al                                     ; hNSConnectionStripWidth
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_MAP_WIDTH]
+    mov [ebp + H_MAP_WIDTH], al                                      ; hNSConnectedMapWidth
+    call LoadNorthSouthConnectionsTileMap
 
 .south_connection:
     cmp byte [ebp + W_SOUTH_CONNECTED_MAP], MAP_NO_CONNECTION
     je  .west_connection
-    ; TODO: SwitchToMapRomBank + LoadNorthSouthConnectionsTileMap (Phase 2 movement)
+    movzx esi, word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_SRC]
+    movzx edx, word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_DEST]
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_LENGTH]
+    mov [ebp + H_MAP_STRIDE], al
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_MAP_WIDTH]
+    mov [ebp + H_MAP_WIDTH], al
+    call LoadNorthSouthConnectionsTileMap
 
 .west_connection:
     cmp byte [ebp + W_WEST_CONNECTED_MAP], MAP_NO_CONNECTION
     je  .east_connection
-    ; TODO: SwitchToMapRomBank + LoadEastWestConnectionsTileMap (Phase 2 movement)
+    movzx esi, word [ebp + W_WEST_CONNECTED_MAP + CONN_STRIP_SRC]
+    movzx edx, word [ebp + W_WEST_CONNECTED_MAP + CONN_STRIP_DEST]
+    movzx ebx, byte [ebp + W_WEST_CONNECTED_MAP + CONN_STRIP_LENGTH] ; B = row count
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_MAP_WIDTH]
+    mov [ebp + H_MAP_WIDTH], al                                      ; hEWConnectedMapWidth
+    call LoadEastWestConnectionsTileMap
 
 .east_connection:
     cmp byte [ebp + W_EAST_CONNECTED_MAP], MAP_NO_CONNECTION
     je  .done
-    ; TODO: SwitchToMapRomBank + LoadEastWestConnectionsTileMap (Phase 2 movement)
+    movzx esi, word [ebp + W_EAST_CONNECTED_MAP + CONN_STRIP_SRC]
+    movzx edx, word [ebp + W_EAST_CONNECTED_MAP + CONN_STRIP_DEST]
+    movzx ebx, byte [ebp + W_EAST_CONNECTED_MAP + CONN_STRIP_LENGTH]
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_MAP_WIDTH]
+    mov [ebp + H_MAP_WIDTH], al
+    call LoadEastWestConnectionsTileMap
 
 .done:
     pop ecx
     pop ebx
     pop edi
     pop esi
+    ret
+
+; ---------------------------------------------------------------------------
+; LoadNorthSouthConnectionsTileMap — faithful translation.
+; Pret ref: home/overworld.asm:LoadNorthSouthConnectionsTileMap
+;
+; Copies MAP_BORDER (3) rows of the connected map's edge into the wOverworldMap
+; border. Each row copies hNorthSouthConnectionStripWidth (=H_MAP_STRIDE) bytes;
+; src advances by hNorthSouthConnectedMapWidth (=H_MAP_WIDTH), dest by the
+; wOverworldMap stride (wCurMapWidth + 2*MAP_BORDER).
+;
+; In:  ESI = HL = strip src, EDX = DE = strip dest, [H_MAP_STRIDE] = strip width,
+;      [H_MAP_WIDTH] = connected-map width. EBP = GB base.
+; Clobbers: EAX, EBX, ECX, ESI, EDX.
+; ---------------------------------------------------------------------------
+LoadNorthSouthConnectionsTileMap:
+    mov ecx, MAP_BORDER                  ; C = 3 rows
+.row:
+    push esi
+    push edx
+    movzx ebx, byte [ebp + H_MAP_STRIDE] ; B = strip width
+.inner:
+    mov al, [ebp + esi]
+    mov [ebp + edx], al
+    inc esi
+    inc edx
+    dec bl
+    jnz .inner
+    pop edx
+    pop esi
+    movzx eax, byte [ebp + H_MAP_WIDTH]  ; src += connected-map width
+    add esi, eax
+    movzx eax, byte [ebp + W_CUR_MAP_WIDTH]
+    add eax, MAP_BORDER * 2
+    add edx, eax                         ; dest += wOverworldMap stride
+    dec ecx
+    jnz .row
+    ret
+
+; ---------------------------------------------------------------------------
+; LoadEastWestConnectionsTileMap — faithful translation.
+; Pret ref: home/overworld.asm:LoadEastWestConnectionsTileMap
+;
+; Copies MAP_BORDER (3) columns of the connected map's edge into the
+; wOverworldMap border, for B (strip length) rows. Each row copies 3 bytes; src
+; advances by hEastWestConnectedMapWidth (=H_MAP_WIDTH), dest by the wOverworldMap
+; stride. (Pallet Town has no E/W connection, but kept faithful for completeness.)
+;
+; In:  ESI = HL = strip src, EDX = DE = strip dest, BL = row count,
+;      [H_MAP_WIDTH] = connected-map width. EBP = GB base.
+; Clobbers: EAX, EBX(bl=counter), ECX, ESI, EDX.
+; ---------------------------------------------------------------------------
+LoadEastWestConnectionsTileMap:
+.row:
+    push esi
+    push edx
+    mov ecx, MAP_BORDER                  ; 3 columns
+.inner:
+    mov al, [ebp + esi]
+    mov [ebp + edx], al
+    inc esi
+    inc edx
+    dec ecx
+    jnz .inner
+    pop edx
+    pop esi
+    movzx eax, byte [ebp + H_MAP_WIDTH]  ; src += connected-map width
+    add esi, eax
+    movzx eax, byte [ebp + W_CUR_MAP_WIDTH]
+    add eax, MAP_BORDER * 2
+    add edx, eax                         ; dest += wOverworldMap stride
+    dec bl
+    jnz .row
     ret
 
 ; ---------------------------------------------------------------------------
@@ -585,6 +753,19 @@ DrawTileBlock:
     movzx eax, bl                                  ; EAX = blockID (C in SM83)
     shl eax, 4                                     ; EAX = blockID * 16
     add edx, eax                                   ; EDX = pointer into blockset
+
+    ; TEMPORARY (no GB equivalent — remove once map data is extended): clamp
+    ; out-of-range block IDs to block 0 (the black/border tile). The extended
+    ; 40×25-tile draw can pull the camera viewport into uninitialized
+    ; wOverworldMap padding, handing us a block ID past the embedded blockset;
+    ; without this the tile read walks off the blockset and paints garbage. This
+    ; is a stopgap: the plan is to extend the map data so those regions hold real
+    ; blocks (no blank area exists), at which point this clamp is dead code and
+    ; should be deleted. See TODO.md (Phase 2) and CLAUDE.md.
+    cmp edx, OW_BLOCKS_GBADDR + OVERWORLD_BLOCKS_SIZE
+    jb  .block_in_range
+    mov edx, OW_BLOCKS_GBADDR
+.block_in_range:
 
     mov cl, BLOCK_HEIGHT                           ; CL = 4 (row count)
 
@@ -700,10 +881,10 @@ LoadCurrentMapView:
     ; decoord 0,0 → wTileMap = W_TILEMAP
     mov edx, W_TILEMAP                             ; EDX = DE = wTileMap dest ptr
 
-    mov bh, SCREEN_HEIGHT                          ; BH = B = 18 (row count)
+    mov bh, SCREEN_HEIGHT                          ; BH = B = 25 (row count)
 
 .copy_row_loop:
-    mov bl, SCREEN_WIDTH                           ; BL = C = 20 (col count)
+    mov bl, SCREEN_WIDTH                           ; BL = C = 40 (col count)
 
 .copy_col_loop:
     mov al, byte [ebp + esi]
@@ -714,7 +895,7 @@ LoadCurrentMapView:
     jnz .copy_col_loop
 
     ; Skip SURROUNDING_WIDTH - SCREEN_WIDTH = 4 bytes to reach next row in wSurroundingTiles
-    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; = 24 - 20 = 4
+    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; = 44 - 40 = 4
     dec bh
     jnz .copy_row_loop
 
@@ -730,29 +911,45 @@ LoadCurrentMapView:
 ; CopyMapViewToVRAM — faithful translation.
 ; Pret ref: home/overworld.asm:CopyMapViewToVRAM / CopyMapViewToVRAM2
 ;
-; Copies wTileMap (SCREEN_HEIGHT×SCREEN_WIDTH) to vBGMap0 (GB_TILEMAP0),
-; with a stride of TILEMAP_WIDTH (32) in the destination.
+; Copies wTileMap (SCREEN_TILES_H×SCREEN_TILES_W = 25×40) to vBGMap0.
+; Each 40-tile row is split: first 32 tiles fill a VRAM row, remaining 8
+; wrap to columns 0-7 of the same VRAM row (handled by the tile-blitter's
+; (SCX/8+col)&31 modular addressing).
 ; ---------------------------------------------------------------------------
 CopyMapViewToVRAM:
     mov edx, GB_TILEMAP0                           ; DE = vBGMap0 = $9800
 
 CopyMapViewToVRAM2:
+    ; Copy wTileMap (SCREEN_TILES_H × SCREEN_TILES_W = 25 × 40) to VRAM
+    ; tilemap (32 tiles wide).  Each 40-tile wTileMap row is split: first 32
+    ; tiles fill one VRAM row, then the remaining 8 wrap to columns 0-7 of the
+    ; same VRAM row (so the tile-blitter's (SCX/8+col)&31 address sees them).
     mov esi, W_TILEMAP                             ; HL = wTileMap
-    mov bh, SCREEN_HEIGHT                          ; B = 18
+    mov bh, SCREEN_TILES_H                         ; B = 25 rows
 
 .vram_row_loop:
-    mov bl, SCREEN_WIDTH                           ; C = 20
-
-.vram_col_loop:
+    ; First TILEMAP_WIDTH (32) tiles → full VRAM row
+    mov bl, TILEMAP_WIDTH                          ; C = 32
+.vram_col1:
     mov al, byte [ebp + esi]
     mov byte [ebp + edx], al
     inc esi
     inc edx
     dec bl
-    jnz .vram_col_loop
+    jnz .vram_col1
+    ; Rewind VRAM to start of this row; write remaining 8 tiles (they wrap)
+    sub edx, TILEMAP_WIDTH
+    mov bl, SCREEN_TILES_W - TILEMAP_WIDTH         ; C = 8
+.vram_col2:
+    mov al, byte [ebp + esi]
+    mov byte [ebp + edx], al
+    inc esi
+    inc edx
+    dec bl
+    jnz .vram_col2
+    ; Advance VRAM to start of next row
+    add edx, TILEMAP_WIDTH - (SCREEN_TILES_W - TILEMAP_WIDTH)  ; = 32-8 = 24
 
-    ; Skip TILEMAP_WIDTH - SCREEN_WIDTH = 12 bytes to reach next row in VRAM
-    add edx, TILEMAP_WIDTH - SCREEN_WIDTH          ; = 12
     dec bh
     jnz .vram_row_loop
     ret
@@ -1046,14 +1243,14 @@ ScheduleSouthRowRedraw:
     push esi
     push edi
     push ecx
-    mov esi, W_TILEMAP + 16 * SCREEN_WIDTH          ; hlcoord 0, 16
+    mov esi, W_TILEMAP + 23 * SCREEN_TILES_W        ; hlcoord 0, 23 (second-to-last tile row)
     call CopyToRedrawRowOrColumnSrcTiles
-    ; dest = wMapViewVRAMPointer + $200, high byte wrapped into $98xx
+    ; dest = wMapViewVRAMPointer + (SCREEN_TILES_H-2)*32 = +$2E0, wrapped into $98xx
     movzx ebx, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
     movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
     shl eax, 8
     or  ebx, eax
-    add ebx, 0x200
+    add ebx, (SCREEN_TILES_H - 2) * TILEMAP_WIDTH     ; = 23*32 = $2E0
     mov al, bh
     and al, 0x03
     or  al, 0x98
@@ -1073,13 +1270,13 @@ ScheduleEastColumnRedraw:
     push esi
     push edi
     push ecx
-    mov esi, W_TILEMAP + 18                         ; hlcoord 18, 0
+    mov esi, W_TILEMAP + 38                         ; hlcoord 38, 0 (SCREEN_TILES_W - 2)
     call ScheduleColumnRedrawHelper
-    ; dest low = (low & $e0) | ((low + 18) & $1f)
+    ; dest low = (low & $e0) | ((low + 38) & $1f)
     movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
     mov bl, al
     and bl, 0xE0
-    add al, 18
+    add al, 38
     and al, 0x1F
     or  al, bl
     mov [ebp + H_REDRAW_ROW_COL_DEST], al
@@ -1275,20 +1472,20 @@ GetTileInFrontOfPlayer:
     mov al, [ebp + W_SPRITE_PLAYER_FACING_DIR]
     cmp al, SPRITE_FACING_DOWN
     jne .notDown
-    mov esi, W_TILEMAP + 11 * SCREEN_WIDTH + 8      ; lda_coord 8, 11
+    mov esi, W_TILEMAP + 13 * SCREEN_TILES_W + 20   ; lda_coord 20, 13
     jmp .read
 .notDown:
     cmp al, SPRITE_FACING_UP
     jne .notUp
-    mov esi, W_TILEMAP + 7 * SCREEN_WIDTH + 8       ; lda_coord 8, 7
+    mov esi, W_TILEMAP + 11 * SCREEN_TILES_W + 20   ; lda_coord 20, 11
     jmp .read
 .notUp:
     cmp al, SPRITE_FACING_LEFT
     jne .notLeft
-    mov esi, W_TILEMAP + 9 * SCREEN_WIDTH + 6       ; lda_coord 6, 9
+    mov esi, W_TILEMAP + 12 * SCREEN_TILES_W + 19   ; lda_coord 19, 12
     jmp .read
 .notLeft:
-    mov esi, W_TILEMAP + 9 * SCREEN_WIDTH + 10      ; lda_coord 10, 9 (facing right)
+    mov esi, W_TILEMAP + 12 * SCREEN_TILES_W + 21   ; lda_coord 21, 12 (facing right)
 .read:
     movzx ecx, byte [ebp + esi]
     mov [ebp + W_TILE_IN_FRONT_OF_PLAYER], cl
@@ -1328,6 +1525,8 @@ section .rodata
 %include "assets/overworld_gfx.inc"
 %include "assets/overworld_blocks.inc"
 %include "assets/pallet_town_blk.inc"
+%include "assets/route1_blk.inc"
+%include "assets/route21_blk.inc"
 %include "assets/overworld_coll.inc"
 %include "assets/player_sprite.inc"
 %include "assets/npc_girl_still.inc"

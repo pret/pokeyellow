@@ -46,6 +46,7 @@ global Init
 global ClearVram
 global StopAllSounds
 global GBPalNormal
+extern g_tilecache_dirty
 
 section .text
 
@@ -147,6 +148,7 @@ Init:
 ; ClearVram — zero all of VRAM ($8000, $2000 bytes).
 ; ---------------------------------------------------------------------------
 ClearVram:
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
     mov esi, GB_VRAM0
     mov bx,  VRAM_SIZE & 0xFFFF
     xor al,  al

@@ -48,6 +48,7 @@ extern Delay3
 extern GBPalNormal
 extern Init
 extern EnterMap
+extern g_tilecache_dirty
 
 ; ---------------------------------------------------------------------------
 ; Globals
@@ -525,6 +526,7 @@ LoadScreenTilesFromBuffer2:
 ; ---------------------------------------------------------------------------
 LoadYellowTitleScreenGFX:
     pushad
+    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
 
     ; Pokemon logo → vChars2 ($9000), 128 tiles
     lea esi, [pokemon_logo_2bpp]
