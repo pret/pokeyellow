@@ -85,8 +85,8 @@ TILESET_BANK_FLAT           equ 0x01   ; ignored in flat model (TODO-HW: ROM ban
 
 ; wCurrentTileBlockMapViewPointer for Pallet Town at block origin (0,0):
 ;   wOverworldMap + MAP_BORDER * stride + MAP_BORDER
-;   stride = PALLET_TOWN_WIDTH + 2*MAP_BORDER = 10 + 6 = 16
-;   = 0xC6E8 + 3*16 + 3 = 0xC6E8 + 51 = 0xC71B
+;   stride = PALLET_TOWN_WIDTH + 2*MAP_BORDER = 10 + 12 = 22
+;   = 0xC6E8 + 6*22 + 6 = 0xC6E8 + 138 = 0xC772
 PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + MAP_BORDER * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + MAP_BORDER
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
@@ -100,11 +100,11 @@ MAP_ID_ROUTE_21             equ 0x20
 CONNECTION_NORTH           equ 1 << 3   ; wCurMapConnections bits (EAST=1,WEST=2,SOUTH=4,NORTH=8)
 CONNECTION_SOUTH           equ 1 << 2
 
-; north (Route1): _blk = ROUTE1_W*(ROUTE1_H-3) = 10*15 = 150; _map = 3;
+; north (Route1): _blk = ROUTE1_W*(ROUTE1_H-3) = 10*15 = 150; _map = MAP_BORDER = 6;
 ;   _len = min(CUR_W+3, ROUTE1_W) = 10; _y = ROUTE1_H*2-1 = 35; _x = 0;
-;   _win = (ROUTE1_W+6)*ROUTE1_H + 1 = 16*18+1 = 289
+;   _win = (ROUTE1_W+12)*ROUTE1_H + 1 = 22*18+1 = 397
 NORTH_STRIP_SRC            equ OW_ROUTE1_BLK_GBADDR + 150
-NORTH_STRIP_DEST           equ W_OVERWORLD_MAP + 3
+NORTH_STRIP_DEST           equ W_OVERWORLD_MAP + 6
 NORTH_STRIP_LENGTH         equ 10
 NORTH_CONN_MAP_WIDTH       equ 10
 NORTH_Y_ALIGN              equ 35
@@ -114,17 +114,17 @@ NORTH_X_ALIGN              equ 0
 ; and loaded into the connection header by LoadMapHeader. This equ is no longer
 ; read at runtime (SetupPalletTown, which used it, was removed). Kept only as a
 ; reference value; edit gen_map_headers.py / map_headers.inc to change behavior.
-NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 273   ; (conn_width+6)*(conn_height-1)+1
+NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 397   ; (conn_width+12)*(conn_height-1)+1
 
-; south (Route21): _blk = 0; _map = (CUR_W+6)*(CUR_H+3)+3 = 16*12+3 = 195;
-;   _len = min(CUR_W+3, ROUTE21_W) = 10; _y = 0; _x = 0; _win = ROUTE21_W+7 = 17
+; south (Route21): _blk = 0; _map = (CUR_W+12)*(CUR_H+6)+6 = 22*15+6 = 336;
+;   _len = min(CUR_W+3, ROUTE21_W) = 10; _y = 0; _x = 0; _win = ROUTE21_W+13 = 23
 SOUTH_STRIP_SRC            equ OW_ROUTE21_BLK_GBADDR + 0
-SOUTH_STRIP_DEST           equ W_OVERWORLD_MAP + 195
+SOUTH_STRIP_DEST           equ W_OVERWORLD_MAP + 336
 SOUTH_STRIP_LENGTH         equ 10
 SOUTH_CONN_MAP_WIDTH       equ 10
 SOUTH_Y_ALIGN              equ 0
 SOUTH_X_ALIGN              equ 0
-SOUTH_VIEW_PTR             equ W_OVERWORLD_MAP + 17
+SOUTH_VIEW_PTR             equ W_OVERWORLD_MAP + 23
 
 ROUTE1_BLK_GB_SIZE         equ 180        ; 10×18
 ROUTE21_BLK_GB_SIZE        equ 450        ; 10×45

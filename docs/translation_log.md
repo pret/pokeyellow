@@ -593,4 +593,17 @@ unchanged (strips are off-screen until you walk to the edge). **Scope:** this is
 strip *loading* only — the map-*transition* trigger (crossing into the connected
 map) is a separate follow-on; the DrawTileBlock clamp stays (E/W + past-map-end).
 
+## Native-width BG renderer (Stage A)
+
+- **Sources:** `dos_port/src/ppu/ppu.asm`, `dos_port/src/overworld/overworld.asm`
+- **Date:** 2026-06-16
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Summary
+
+Rewrote `render_bg` to naturally decode `wSurroundingTiles` (44x32) into a native 352x256 surface, eliminating the 256px GB VRAM torus wrap and duplicated columns.
+Smooth fine-scroll is now applied natively via offset to the viewport blit using `+ signed(H_SCX/H_SCY)`.
+Removed dead VRAM-ring scroll routines (`CopyMapViewToVRAM`, `FillExtraVRAMRows`, `RedrawRowOrColumn`) and simplified `AdvancePlayerSprite`.
+
 *Add new entries below as routines are translated.*
