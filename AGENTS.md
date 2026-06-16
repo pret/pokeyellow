@@ -34,3 +34,14 @@
 - **Settings**: `effort: low`
 - **Objective**: Write clear, descriptive, and concrete git commit messages based on the final approved diffs from the `Architect_DOS_Judge`.
 - **Handoff**: Execute the final `git commit` to document and merge the completed feature into the repository.
+
+---
+
+## Swarm Rules & Safeguards
+
+To prevent context collapse, merge conflicts, and runaway recursion, all agents must adhere to the following operational rules:
+
+1. **Sub-Agent Caps & Recursion**: `Code_Worker`, `Graphics_Sound_Programmer`, and `Commit_Writer` are "leaf nodes" and MUST NOT be granted sub-agent creation tools. Managers (`Port_Manager`, `Graphics_Sound_Manager`) are capped at spawning a maximum of 3 concurrent workers.
+2. **Preventing Parallel Overwrites**: Managers must not dispatch multiple workers to edit the same file simultaneously. Parallelization must occur exclusively at the file level. If a single file requires extensive work, a single worker must be assigned and fed a sequential queue of tickets.
+3. **Context Starvation Prevention**: Managers must act as compilers for the lower-level execution models (e.g. Flash). Tasks dispatched to workers must include explicit, granular instructions (e.g., exact GB memory map offsets to use, register assignments, constants) rather than vague translation requests.
+4. **Testing Integrity**: Managers must independently verify that the code compiles by running `make check` locally before preparing the diff for the DOS Judge. Managers must not rely solely on the worker's word that a test passed.
