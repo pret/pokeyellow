@@ -280,6 +280,8 @@ DOSBox-X config (`~/.config/dosbox-x/dosbox-x-2026.06.02.conf`) is set to:
 - `cputype = 386_prefetch`
 - `memory io optimization 1 = false` (VGA writes broken if true)
 
+**Note:** All testing and debugging must occur on **DOSBox-X**, not standard DOSBox. Standard DOSBox lacks the accuracy and debugger features required for this port.
+
 ---
 
 ## Debugging (inspecting emulated GB memory)
@@ -292,7 +294,7 @@ bug. Get ground truth from memory instead.
 ### Memory dump to a host file (primary, automatable)
 
 `src/debug/debug_dump.asm` exfiltrates chosen windows of emulated GB memory to
-`DUMP.BIN` (the dos_port dir / DOSBox C:), with **no PPU/palette/blit
+`DUMP.BIN` (the dos_port dir / DOSBox-X C:), with **no PPU/palette/blit
 confound** — the literal bytes at `[EBP + addr]`. It writes the file via DPMI
 "Simulate Real Mode Interrupt" (INT 31h/0300h) into a conventional DOS buffer
 (plain `int 21h` pointer args are NOT auto-translated under CWSDPMI), then
