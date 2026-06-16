@@ -24,6 +24,7 @@ bits 32
 extern ds_base
 
 global DebugDumpMemory
+global DumpBackbuffer
 
 ; Each window is WIN_SIZE bytes copied from [EBP + window_offset].
 ; The host-side layout is simply these windows concatenated in table order.
@@ -45,6 +46,7 @@ section .data
 align 4
 
 fname: db "DUMP.BIN", 0
+fbname: db "FRAME.BIN", 0
 
 ; GB-address start of each 64-byte dump window. Host hexdump offsets:
 ;   0x000  0x4600  overworld blockset (block 0..3)         — asset copy check
@@ -163,6 +165,78 @@ DebugDumpMemory:
     mov dx, [dos_sel]
     int 0x31
 
+.exit:
+    mov ax, 0x4C00
+    int 0x21
+
+; ---------------------------------------------------------------------------
+; DumpBackbuffer — write the full GB_BACKBUF (RENDER_W*RENDER_H = 64000 raw
+; palette-indexed bytes) to FRAME.BIN, then exit. Lets the host render the exact
+; pixels the software PPU produced under DOSBox-X (no compositor screenshot).
+; Allocates a single 64 KB+ conventional buffer so the data goes out in one write.
+; In: EBP = GB memory base. Never returns.
+; ---------------------------------------------------------------------------
+DumpBackbuffer:
+    ; --- Allocate a conventional DOS buffer big enough for 0x10 + 64000 bytes ---
+    ; 0x10 + 64000 = 64016 bytes -> 4001 paragraphs; round up to 0x1001 (4097).
+    mov ax, 0x0100
+    mov bx, 0x1001
+    int 0x31
+    jc .exit
+    mov [dos_seg], ax
+    mov [dos_sel], dx
+    movzx eax, ax
+    shl eax, 4
+    sub eax, [ds_base]
+    mov [dos_flat], eax
+
+    ; --- Stage filename at offset 0 ---
+    mov esi, fbname
+    mov edi, [dos_flat]
+    mov ecx, 10                    ; "FRAME.BIN" + NUL
+    rep movsb
+
+    ; --- Copy backbuffer directly to buffer offset 0x10 ---
+    lea esi, [ebp + GB_BACKBUF]
+    mov edi, [dos_flat]
+    add edi, 0x10
+    mov ecx, GB_BACKBUF_SIZE
+    rep movsb
+
+    ; --- Create FRAME.BIN ---
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x3C00
+    mov dword [rmcs + RMCS_EDX], 0
+    mov ax, [dos_seg]
+    mov [rmcs + RMCS_DS], ax
+    call sim_int21
+    test byte [rmcs + RMCS_FLAGS], 1
+    jnz .free
+    mov ax, [rmcs + RMCS_EAX]
+    mov [file_handle], ax
+
+    ; --- Write 64000 bytes ---
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x4000
+    movzx eax, word [file_handle]
+    mov [rmcs + RMCS_EBX], eax
+    mov dword [rmcs + RMCS_ECX], GB_BACKBUF_SIZE
+    mov dword [rmcs + RMCS_EDX], 0x10
+    mov ax, [dos_seg]
+    mov [rmcs + RMCS_DS], ax
+    call sim_int21
+
+    ; --- Close ---
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x3E00
+    movzx eax, word [file_handle]
+    mov [rmcs + RMCS_EBX], eax
+    call sim_int21
+
+.free:
+    mov ax, 0x0101
+    mov dx, [dos_sel]
+    int 0x31
 .exit:
     mov ax, 0x4C00
     int 0x21

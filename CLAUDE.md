@@ -67,14 +67,28 @@ offset, so both axes scroll pixel-smooth with no per-pixel bit decode in the hot
 path. **Any new routine that writes VRAM tile data must set
 `g_tilecache_dirty`** (the existing VRAM loaders already do).
 
-**Temporary scaffold — `DrawTileBlock` out-of-range block clamp:** the extended
-40×25-tile viewport draws a larger area than the original 20×18, so the camera
-can reach into uninitialized `wOverworldMap` padding and read block IDs past the
-embedded blockset. `DrawTileBlock` (`src/overworld/overworld.asm`) currently
-clamps such IDs to block 0 to avoid painting garbage. This is a stopgap: the
-plan is to **extend the map data** so those regions hold real blocks (no blank
-area), after which the clamp is dead code and should be deleted. See TODO.md
-(Phase 2).
+**Temporary scaffold — two out-of-map clamps (`src/overworld/overworld.asm`):**
+the extended 40×25-tile viewport draws a larger area than the original 20×18 and
+the player is pinned at screen-center, so a player-centered camera near a map
+edge reaches past the populated `wOverworldMap` data. Two complementary stopgaps
+keep that from painting garbage:
+1. **Block-ID clamp** in `DrawTileBlock`: a block ID past the embedded blockset
+   is clamped to block 0.
+2. **Block-map address clamp** in `LoadCurrentMapView`: `wOverworldMap` ($E580)
+   sits directly above `wSurroundingTiles` ($E000) in WRAM, so a view pointer
+   that reaches above the map's top border reads *tile* IDs from the surrounding
+   buffer and decodes them as *block* IDs → a garbage band (seen at map edges and
+   the instant a connection is crossed). Any read outside
+   `[wOverworldMap, wOverworldMapEnd)` instead yields the map's border block
+   (`wMapBackgroundTile`), so the out-of-map area renders as clean dummy tiles
+   matching the in-bounds border.
+
+Both are stopgaps: the real fix is to **extend the map data** so those regions
+hold real blocks (no blank area), after which both clamps are dead code and
+should be deleted. The address clamp removes the garbage *now* (verified via
+`FRAME.BIN` for baseline / north-transition / walk-to-edge); it does **not** yet
+give editable map cells for that extended area — that still needs the map-data
+extension (enlarged border / bigger block grid). See TODO.md (Phase 2).
 
 ---
 
@@ -301,11 +315,31 @@ DOSBox-X (2026.06.02, SDL1) can also be built/run with the heavy debugger
 offset = `[ds_base] + EBP + offset`; both are runtime values, so the file-dump
 route above is usually faster than chasing them in the debugger.
 
+### Back-buffer dump to PNG (preferred over screenshots)
+
+`src/debug/debug_dump.asm:DumpBackbuffer` writes the full software-PPU back
+buffer (`GB_BACKBUF`, 320×200 = 64000 raw palette-indexed bytes) to `FRAME.BIN`,
+then exits — the **exact pixels DOSBox-X rendered**, with no compositor in the
+loop (host Wayland/XWayland screenshot tools are unreliable across displays).
+Render `FRAME.BIN` on the host with `tools/render_frame.py FRAME.BIN out.png`
+(values 0–3 = DMG shades, 4–11 = sprite pixels), then view the PNG.
+Driven by deterministic, input-free `%ifdef` harnesses in `EnterMap`:
+`DEBUG_TRANSITION` (force a north crossing; add `DEBUG_BASELINE=1` — both via the
+Makefile — for pristine Pallet Town) and `DEBUG_WALK_NORTH` (drive the real
+movement primitives north `DEBUG_WALK_STEPS` steps, dumping at the crossing).
+Typical loop: `make clean && make SKIP_TITLE=1 DEBUG_TRANSITION=1` →
+`dosbox-x -defaultdir "$PWD" -c 'mount c "'"$PWD"'"' -c c: -c PKMN.EXE -c exit` →
+`python3 ../tools/render_frame.py FRAME.BIN /tmp/f.png`. This is how the
+2026-06-15 viewport diagnosis and the 2026-06-16 out-of-map clamp fix were made
+(see docs/loadmapheader_handoff.md). Prefer this to screenshots for ground truth.
+
 ### Visual capture
 
 `./test_render.sh [out.png]` does a clean `SKIP_TITLE=1` build, launches
 DOSBox-X, waits, screenshots (spectacle → import fallback), and force-kills.
-Good for confirming a final render once the data is known-correct.
+Good for confirming a final render once the data is known-correct. Note: under a
+Wayland session the compositor screenshot may grab the wrong window — the
+`FRAME.BIN` route above is more reliable.
 
 ---
 

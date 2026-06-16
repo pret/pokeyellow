@@ -29,6 +29,31 @@ ifdef DEBUG_DUMP
 NASMFLAGS += -D DEBUG_DUMP
 endif
 
+# Debug flag: force a north map transition (Pallet Town -> Route 1) at boot so the
+# post-crossing render can be screenshotted without keyboard input. make DEBUG_TRANSITION=1
+ifdef DEBUG_TRANSITION
+NASMFLAGS += -D DEBUG_TRANSITION
+endif
+
+# Sub-flag of DEBUG_TRANSITION: skip the CheckMapConnections crossing so the
+# DEBUG_TRANSITION reload path dumps a pristine (non-transitioned) current map.
+# Use to capture a baseline frame for comparison. make DEBUG_TRANSITION=1 DEBUG_BASELINE=1
+ifdef DEBUG_BASELINE
+NASMFLAGS += -D DEBUG_BASELINE
+endif
+
+# Debug flag: simulate a northward walk to the map edge then dump FRAME.BIN, to
+# inspect where the transition triggers relative to the visible edge.
+# make DEBUG_WALK_NORTH=1 (optionally DEBUG_WALK_STEPS=N via NASM define).
+ifdef DEBUG_WALK_NORTH
+NASMFLAGS += -D DEBUG_WALK_NORTH
+endif
+
+# Number of north steps for DEBUG_WALK_NORTH (default 8 in overworld.asm).
+ifdef DEBUG_WALK_STEPS
+NASMFLAGS += -D DEBUG_WALK_STEPS=$(DEBUG_WALK_STEPS)
+endif
+
 LDFLAGS := -T link.ld
 
 TARGET  := PKMN.EXE
@@ -60,8 +85,18 @@ GAME_SRCS := \
     src/overworld/overworld.asm \
     src/overworld/movement.asm
 
-# Debug-only sources (linked only when the corresponding flag is set)
+# Debug-only sources (linked only when the corresponding flag is set).
+# Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.
 ifdef DEBUG_DUMP
+NEED_DEBUG_DUMP := 1
+endif
+ifdef DEBUG_TRANSITION
+NEED_DEBUG_DUMP := 1
+endif
+ifdef DEBUG_WALK_NORTH
+NEED_DEBUG_DUMP := 1
+endif
+ifdef NEED_DEBUG_DUMP
 GAME_SRCS += src/debug/debug_dump.asm
 endif
 

@@ -124,14 +124,23 @@ Prioritized task list. Check off items as they complete; add new items with phas
       
       Awaiting: first session to start with Step 1 (geometry constants).
       
-- [ ] **Extend map data to cover the extended-draw region, then remove the
-      `DrawTileBlock` out-of-range block clamp.** The 40×25-tile viewport draws
-      a larger area than the original 20×18, so the camera can reach into
-      uninitialized `wOverworldMap` padding and read block IDs past the embedded
-      blockset. A temporary clamp (block ID → 0 when out of range) in
-      `DrawTileBlock` (src/overworld/overworld.asm) stops the garbage. The real
-      fix is to extend the maps so those regions hold real blocks (no blank
-      area); once done, delete the clamp — it becomes dead code.
+- [ ] **Extend map data to cover the extended-draw region, then remove the two
+      out-of-map clamps.** The 40×25-tile viewport draws a larger area than the
+      original 20×18 and the player is screen-centered, so the camera can reach
+      past the populated `wOverworldMap` data near map edges. Two temporary
+      clamps in `src/overworld/overworld.asm` stop the garbage:
+      (1) `DrawTileBlock` clamps a block ID past the blockset → block 0;
+      (2) `LoadCurrentMapView` (added 2026-06-16) substitutes `wMapBackgroundTile`
+      for any block-map read outside `[wOverworldMap, wOverworldMapEnd)` — these
+      reads otherwise fall into `wSurroundingTiles` ($E000, directly below
+      `wOverworldMap` at $E580) and decode tile IDs as block IDs.
+      The address clamp removes the garbage now (dummy/border tiles in the
+      out-of-map area) but does NOT create editable cells there. The real fix is
+      to extend the maps so those regions hold real blocks: enlarge `MAP_BORDER`
+      / the block grid and regenerate `assets/map_headers.inc` with per-direction
+      `_win`/`_y`/`_x` re-tuned for the larger border (the formulas in
+      `tools/gen_map_headers.py` are hand-tuned per direction — re-verify each
+      empirically with the FRAME.BIN loop). Once done, delete both clamps.
 - [ ] **BUG — collision: facing DOWN lets the player penetrate 1 tile into
       objects** (signs, building roofs/fronts) when approached from the top.
       Confirmed NOT a graphical artifact (user, 2026-06-15). Root cause:

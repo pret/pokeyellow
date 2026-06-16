@@ -55,6 +55,11 @@ extern g_tilecache_dirty
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
+%ifdef DEBUG_TRANSITION
+extern DumpBackbuffer
+%elifdef DEBUG_WALK_NORTH
+extern DumpBackbuffer
+%endif
 
 global EnterMap
 global ResetMapVariables
@@ -104,7 +109,12 @@ NORTH_STRIP_LENGTH         equ 10
 NORTH_CONN_MAP_WIDTH       equ 10
 NORTH_Y_ALIGN              equ 35
 NORTH_X_ALIGN              equ 0
-NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 289
+; NOTE: DEAD CODE. The live north view pointer is the one emitted into
+; assets/map_headers.inc by tools/gen_map_headers.py (currently 0xE691 = base+273)
+; and loaded into the connection header by LoadMapHeader. This equ is no longer
+; read at runtime (SetupPalletTown, which used it, was removed). Kept only as a
+; reference value; edit gen_map_headers.py / map_headers.inc to change behavior.
+NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 273   ; (conn_width+6)*(conn_height-1)+1
 
 ; south (Route21): _blk = 0; _map = (CUR_W+6)*(CUR_H+3)+3 = 16*12+3 = 195;
 ;   _len = min(CUR_W+3, ROUTE21_W) = 10; _y = 0; _x = 0; _win = ROUTE21_W+7 = 17
@@ -129,10 +139,73 @@ section .text
 ; Pret ref: home/overworld.asm:EnterMap (simplified; no fly/warp logic yet)
 ; ---------------------------------------------------------------------------
 EnterMap:
-    call SetupPalletTown
+    call LoadOverworldAssets
+    call SetupPlayerSprite
     call LoadMapData
 %ifdef DEBUG_DUMP
     call DebugDumpMemory     ; dump GB memory to DUMP.BIN, then exit (debug only)
+%endif
+%ifdef DEBUG_WALK_NORTH
+    ; Walk-simulation harness: drive the REAL movement primitives north for
+    ; DEBUG_WALK_STEPS steps (default 8: wYCoord 8 -> 0, the north edge), then
+    ; dump the frame. Reveals where the player is VISUALLY when it reaches the
+    ; map edge / when CheckMapConnections fires — i.e. whether the transition
+    ; triggers at an appropriate point. Collision is skipped so the walk is
+    ; unconditional. If a crossing fires mid-walk, we dump immediately.
+%ifndef DEBUG_WALK_STEPS
+%define DEBUG_WALK_STEPS 8
+%endif
+    mov ecx, DEBUG_WALK_STEPS
+.wn_step:
+    push ecx
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0xFF   ; -1 (north)
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    mov byte [ebp + W_PLAYER_DIRECTION],        PLAYER_DIR_UP
+    mov byte [ebp + W_PLAYER_MOVING_DIRECTION], PLAYER_DIR_UP
+    mov byte [ebp + W_SPRITE_PLAYER_FACING_DIR], SPRITE_FACING_UP
+    mov byte [ebp + W_WALK_COUNTER], 8
+.wn_frames:
+    call UpdateSprites
+    call AdvancePlayerSprite
+    jc .wn_crossed                ; CF=1 → CheckMapConnections fired this step
+    call DelayFrame
+    cmp byte [ebp + W_WALK_COUNTER], 0
+    jne .wn_frames
+    pop ecx
+    dec ecx
+    jnz .wn_step
+    call DumpBackbuffer           ; reached edge without crossing — dump it
+.wn_crossed:
+    pop ecx                       ; (balance stack; ecx unused after)
+    call DumpBackbuffer           ; dump the frame at the moment of crossing
+%endif
+%ifdef DEBUG_TRANSITION
+    ; Deterministic transition test: simulate stepping off the north edge of
+    ; Pallet Town (wYCoord wraps to 255), run the real CheckMapConnections, then
+    ; the same reload .mapTransition does. Lets us screenshot the post-crossing
+    ; render of Route 1's bottom without keyboard input.
+%ifndef DEBUG_BASELINE
+    mov byte [ebp + W_X_COORD], 8
+    mov byte [ebp + W_Y_COORD], 255
+    call CheckMapConnections                  ; sets W_CUR_MAP + view ptr for Route 1
+%endif
+    mov byte [ebp + W_WALK_COUNTER], 0
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    mov byte [ebp + H_SCY], 0
+    mov byte [ebp + H_SCX], 0
+    mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
+    call LoadMapHeader
+    call LoadTileBlockMap
+    call LoadCurrentMapView
+    call CopyMapViewToVRAM
+    call FillExtraVRAMRows
+    ; Render a few frames so GB_BACKBUF holds the post-transition image, then
+    ; exfiltrate the exact rendered pixels to FRAME.BIN for host inspection.
+    call DelayFrame
+    call DelayFrame
+    call DelayFrame
+    call DumpBackbuffer        ; writes FRAME.BIN then exits (never returns)
 %endif
     ; fall through to OverworldLoop
 
@@ -210,110 +283,42 @@ OverworldLoop:
 
 .moveAhead:
     call AdvancePlayerSprite
+    jc .mapTransition                         ; CF=1 means a map connection was crossed
     jmp OverworldLoop
 
+.mapTransition:
+    ; A connection was crossed — reload everything for the new map.
+    mov byte [ebp + W_WALK_COUNTER], 0
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+
+    ; Reset scroll and VRAM pointer. During the walk, H_SCY/H_SCX accumulated
+    ; 2 px/frame (e.g. −144 px over 9 north steps). CopyMapViewToVRAM always
+    ; writes to GB_TILEMAP0 ($9800), so the PPU must start reading from row 0
+    ; (SCY=0). W_MAP_VIEW_VRAM_POINTER must also reset so RedrawRowOrColumn
+    ; uses the correct base address on subsequent frames.
+    mov byte [ebp + H_SCY], 0
+    mov byte [ebp + H_SCX], 0
+    mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
+
+    call LoadMapHeader
+    call LoadTileBlockMap
+    call LoadCurrentMapView
+    call CopyMapViewToVRAM
+    call FillExtraVRAMRows      ; pre-fill VRAM rows 25-31 to avoid stale tile flicker
+
+    jmp OverworldLoop.lessDelay
+
 ; ---------------------------------------------------------------------------
-; SetupPalletTown — Phase 2 scaffold. NOT a faithful translation.
-; Hardcodes Pallet Town map-header WRAM variables and copies asset binaries
-; from .rodata into the ROM-window area of GB memory (EBP+$4000–$4EFF).
 ; ---------------------------------------------------------------------------
-SetupPalletTown:
+; LoadOverworldAssets — Phase 2 scaffold.
+; Copies the generated map headers and overworld assets from .rodata into the
+; ROM-window area of GB memory (EBP+$4000–$54FF).
+; ---------------------------------------------------------------------------
+LoadOverworldAssets:
     push esi
     push edi
     push ecx
-
-    ; --- Set map identity ---
-    mov byte [ebp + W_CUR_MAP],          MAP_ID_PALLET_TOWN
-    mov byte [ebp + W_CUR_MAP_TILESET],  TILESET_OVERWORLD
-    mov byte [ebp + W_CUR_MAP_HEIGHT],   PALLET_TOWN_HEIGHT
-    mov byte [ebp + W_CUR_MAP_WIDTH],    PALLET_TOWN_WIDTH
-
-    ; wCurMapDataPtr = OW_MAP_GBADDR ($4E00) — pointer into ROM window
-    mov word [ebp + W_CUR_MAP_DATA_PTR], OW_MAP_GBADDR
-
-    ; --- Tileset pointers ---
-    mov byte  [ebp + W_TILESET_BANK],         TILESET_BANK_FLAT
-    mov word  [ebp + W_TILESET_GFX_PTR],      OW_GFX_GBADDR
-    mov word  [ebp + W_TILESET_BLOCKS_PTR],   OW_BLOCKS_GBADDR
-    mov word  [ebp + W_TILESET_COLLISION_PTR], OW_COLL_GBADDR
-
-    ; --- Map object data (normally read from PalletTown_Object by LoadMapHeader) ---
-    mov byte [ebp + W_MAP_BACKGROUND_TILE], PALLET_TOWN_BORDER_BLOCK
-    mov byte [ebp + W_NUMBER_OF_WARPS],     0
-
-    ; --- Map connections: Pallet Town connects north→Route1, south→Route21 ---
-    mov byte [ebp + W_CUR_MAP_CONNECTIONS], CONNECTION_NORTH | CONNECTION_SOUTH
-
-    ; North connection strip header (Route 1)
-    mov byte [ebp + W_NORTH_CONNECTED_MAP],                     MAP_ID_ROUTE_1
-    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_SRC],    NORTH_STRIP_SRC
-    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_DEST],   NORTH_STRIP_DEST
-    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_STRIP_LENGTH], NORTH_STRIP_LENGTH
-    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_MAP_WIDTH],    NORTH_CONN_MAP_WIDTH
-    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_Y_ALIGN],      NORTH_Y_ALIGN
-    mov byte [ebp + W_NORTH_CONNECTED_MAP + CONN_X_ALIGN],      NORTH_X_ALIGN
-    mov word [ebp + W_NORTH_CONNECTED_MAP + CONN_VIEW_PTR],     NORTH_VIEW_PTR
-
-    ; South connection strip header (Route 21)
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP],                     MAP_ID_ROUTE_21
-    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_SRC],    SOUTH_STRIP_SRC
-    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_DEST],   SOUTH_STRIP_DEST
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_STRIP_LENGTH], SOUTH_STRIP_LENGTH
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_MAP_WIDTH],    SOUTH_CONN_MAP_WIDTH
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_Y_ALIGN],      SOUTH_Y_ALIGN
-    mov byte [ebp + W_SOUTH_CONNECTED_MAP + CONN_X_ALIGN],      SOUTH_X_ALIGN
-    mov word [ebp + W_SOUTH_CONNECTED_MAP + CONN_VIEW_PTR],     SOUTH_VIEW_PTR
-
-    ; West / East: no connection.
-    mov byte [ebp + W_WEST_CONNECTED_MAP],  MAP_NO_CONNECTION
-    mov byte [ebp + W_EAST_CONNECTED_MAP],  MAP_NO_CONNECTION
-
-    ; wCurrentTileBlockMapViewPointer = block (0,0) of Pallet Town in wOverworldMap
-    mov word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], PALLET_TOWN_VIEW_PTR
-
-    ; Player starts at block (0,0) — WRAM1 is not zeroed by Init, so must initialize
-    mov byte [ebp + W_Y_BLOCK_COORD], 0
-    mov byte [ebp + W_X_BLOCK_COORD], 0
-
-    ; Player map tile coords (only used by warp/connection logic, not rendering).
-    ; Start in the middle of Pallet Town so a stroll stays inside the map border.
-    mov byte [ebp + W_Y_COORD], 8
-    mov byte [ebp + W_X_COORD], 8
-
-    ; Face down, standing still (no in-progress walk).
-    mov byte [ebp + W_SPRITE_PLAYER_FACING_DIR],   SPRITE_FACING_DOWN
-    mov byte [ebp + W_PLAYER_DIRECTION],           0
-    mov byte [ebp + W_PLAYER_MOVING_DIRECTION],    0
-    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
-    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
-    mov byte [ebp + W_WALK_COUNTER],               0
-
-    ; --- Player sprite-state slot (slot 0), per home/reset_player_sprite.asm ---
-    ; The sprite engine (UpdateSprites + PrepareOAMData) drives the player OAM
-    ; from this state, so it must be initialized for slot 0 to be drawn.
-    mov byte [ebp + W_SPRITE_PLAYER_PICTURE_ID],      1   ; non-zero → slot in use
-    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_BASE_OFFSET], 1 ; player VRAM slot
-    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x60 ; fixed screen Y (96 = center of 200)
-    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0xA0 ; fixed screen X (160 = center of 320)
-    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_INDEX],     SPRITE_FACING_DOWN ; facing down, frame 0
-    mov byte [ebp + W_SPRITE_PLAYER_INTRA_ANIM],      0
-    mov byte [ebp + W_SPRITE_PLAYER_ANIM_FRAME],      0
-    mov byte [ebp + W_SPRITE_PLAYER_WALK_ANIM_COUNTER], 0
-    mov byte [ebp + W_SPRITE_PLAYER_GRASS_PRIORITY],  0
-
-    ; Sprite-engine scratch state: no grass tile match, no font in VRAM, no
-    ; movement flags (spinning / ledge) so the standard walk path runs.
-    mov byte [ebp + W_GRASS_TILE],    0xFF              ; no tile counts as grass
-    mov byte [ebp + W_FONT_LOADED],   0
-    mov byte [ebp + W_MOVEMENT_FLAGS], 0
-
-    ; The overworld scrolls via RedrawRowOrColumn, not the auto-BG transfer
-    ; (which would fight it by re-blitting wTileMap to $9800 every frame).
-    mov byte [ebp + H_AUTO_BG_TRANSFER_EN],        0
-
-    ; The real player OAM sprite now renders via the sprite engine
-    ; (UpdateSprites + PrepareOAMData); keep the legacy placeholder marker off.
-    mov byte [g_player_marker_on], 0
 
     ; --- Copy overworld.2bpp to ROM window at OW_GFX_GBADDR ---
     mov esi, overworld_gfx
@@ -327,20 +332,12 @@ SetupPalletTown:
     mov ecx, OVERWORLD_BLOCKS_SIZE
     rep movsb
 
-    ; --- Copy PalletTown.blk to ROM window at OW_MAP_GBADDR ---
+    ; --- Copy map block data to ROM window ---
     mov esi, pallet_town_blk
-    lea edi, [ebp + OW_MAP_GBADDR]
+    lea edi, [ebp + OW_PALLET_BLK_GBADDR]
     mov ecx, PALLET_TOWN_BLK_SIZE
     rep movsb
 
-    ; --- Copy Overworld_Coll passable-tile list to ROM window at OW_COLL_GBADDR ---
-    mov esi, overworld_coll
-    lea edi, [ebp + OW_COLL_GBADDR]
-    mov ecx, OVERWORLD_COLL_SIZE
-    rep movsb
-
-    ; --- Copy connected-map block data (Route 1 north, Route 21 south) ---
-    ; The connection-strip src pointers (NORTH/SOUTH_STRIP_SRC) index into these.
     mov esi, route1_blk
     lea edi, [ebp + OW_ROUTE1_BLK_GBADDR]
     mov ecx, ROUTE1_BLK_SIZE
@@ -351,27 +348,71 @@ SetupPalletTown:
     mov ecx, ROUTE21_BLK_SIZE
     rep movsb
 
+    ; --- Copy Overworld_Coll passable-tile list to ROM window at OW_COLL_GBADDR ---
+    mov esi, overworld_coll
+    lea edi, [ebp + OW_COLL_GBADDR]
+    mov ecx, OVERWORLD_COLL_SIZE
+    rep movsb
+
+    ; --- Copy map_headers.inc data to ROM window ---
+    mov esi, map_headers_data
+    lea edi, [ebp + OW_TILESET_HDR_GBADDR] ; Starts at tileset header
+    mov ecx, MAP_HEADERS_DATA_SIZE
+    rep movsb
+
     pop ecx
     pop edi
     pop esi
     ret
 
 ; ---------------------------------------------------------------------------
+; SetupPlayerSprite — Phase 2 scaffold.
+; Initializes the player sprite WRAM variables and starting map. W_CUR_MAP
+; must be set here so LoadMapHeader knows which map to load.
+; ---------------------------------------------------------------------------
+SetupPlayerSprite:
+    mov byte [ebp + W_CUR_MAP], MAP_ID_PALLET_TOWN
+    mov byte [ebp + W_Y_COORD], 8
+    mov byte [ebp + W_X_COORD], 8
+    mov byte [ebp + W_Y_BLOCK_COORD], 0
+    mov byte [ebp + W_X_BLOCK_COORD], 0
+    mov word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], PALLET_TOWN_VIEW_PTR
+
+    ; Face down, standing still (no in-progress walk).
+    mov byte [ebp + W_SPRITE_PLAYER_FACING_DIR],   SPRITE_FACING_DOWN
+    mov byte [ebp + W_PLAYER_DIRECTION],           0
+    mov byte [ebp + W_PLAYER_MOVING_DIRECTION],    0
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    mov byte [ebp + W_WALK_COUNTER],               0
+
+    mov byte [ebp + W_SPRITE_PLAYER_PICTURE_ID],      1   ; non-zero → slot in use
+    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_BASE_OFFSET], 1 ; player VRAM slot
+    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x60 ; fixed screen Y (96 = center of 200)
+    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0xA0 ; fixed screen X (160 = center of 320)
+    mov byte [ebp + W_SPRITE_PLAYER_IMAGE_INDEX],     SPRITE_FACING_DOWN
+    mov byte [ebp + W_SPRITE_PLAYER_INTRA_ANIM],      0
+    mov byte [ebp + W_SPRITE_PLAYER_ANIM_FRAME],      0
+    mov byte [ebp + W_SPRITE_PLAYER_WALK_ANIM_COUNTER], 0
+    mov byte [ebp + W_SPRITE_PLAYER_GRASS_PRIORITY],  0
+
+    mov byte [ebp + W_GRASS_TILE],    0xFF
+    mov byte [ebp + W_FONT_LOADED],   0
+    mov byte [ebp + W_MOVEMENT_FLAGS], 0
+
+    mov byte [ebp + H_AUTO_BG_TRANSFER_EN],        0
+    mov byte [g_player_marker_on], 0
+    ret
+
+; ---------------------------------------------------------------------------
 ; LoadMapData — faithful translation.
 ; Pret ref: home/overworld.asm:LoadMapData
-;
-; Stubs (; TODO-HW or Phase 2 next):
-;   LoadMapHeader    — replaced by SetupPalletTown scaffold
-;   InitMapSprites   — ; TODO: sprite engine (Phase 2)
-;   RunPaletteCommand(SET_PAL_OVERWORLD) — ; TODO-HW: palette (Phase 5)
-;   LoadPlayerSpriteGraphics — ; TODO: sprite engine (Phase 2)
-;   UpdateMusic6Times / PlayDefaultMusicFadeOutCurrent — ; TODO-HW: audio (Phase 3)
 ; ---------------------------------------------------------------------------
 LoadMapData:
     call DisableLCD
     call ResetMapVariables
     call LoadTextBoxTilePatterns
-    ; LoadMapHeader — setup done by SetupPalletTown scaffold; skip here.
+    call LoadMapHeader
     ; TODO: InitMapSprites — ; TODO: sprite engine (Phase 2)
     call LoadScreenRelatedData
     call CopyMapViewToVRAM
@@ -838,7 +879,24 @@ LoadCurrentMapView:
     push edx                                       ; push de
     push esi                                       ; push hl
 
+    ; STOPGAP (no GB equivalent — remove once map data is extended): the 40×25
+    ; viewport is larger than the GB's 20×18, so a player-centered camera near a
+    ; map edge reaches past wOverworldMap. wOverworldMap ($E580) sits directly
+    ; above wSurroundingTiles ($E000) in WRAM, so reads above its top border land
+    ; in the tile buffer and decode tile IDs as block IDs → a garbage band. Any
+    ; read outside [wOverworldMap, wOverworldMapEnd) instead yields the map's
+    ; border block, so the extended/out-of-map area renders as clean dummy tiles
+    ; (matching the in-bounds border) rather than garbage. See CLAUDE.md / TODO.md:
+    ; the real fix is to extend map data to fill the larger viewport.
+    cmp edx, W_OVERWORLD_MAP
+    jb  .oobBlock
+    cmp edx, W_OVERWORLD_MAP + W_OVERWORLD_MAP_SIZE
+    jae .oobBlock
     movzx eax, byte [ebp + edx]                   ; A = block ID from wOverworldMap
+    jmp .haveBlock
+.oobBlock:
+    movzx eax, byte [ebp + W_MAP_BACKGROUND_TILE] ; dummy = map border block
+.haveBlock:
     mov bl, al                                     ; BL = block ID arg to DrawTileBlock (C)
     call DrawTileBlock                             ; writes 4×4 tiles to [EBP+ESI..]
                                                    ; ECX preserved by DrawTileBlock
@@ -916,6 +974,54 @@ LoadCurrentMapView:
 ; wrap to columns 0-7 of the same VRAM row (handled by the tile-blitter's
 ; (SCX/8+col)&31 modular addressing).
 ; ---------------------------------------------------------------------------
+; ---------------------------------------------------------------------------
+; FillExtraVRAMRows — fill VRAM rows 25-31 with wTileMap row 0.
+;
+; CopyMapViewToVRAM writes only 25 rows (SCREEN_TILES_H). VRAM rows 25-31 then
+; hold stale data from the previous map. On the first scroll step after a map
+; transition, H_SCY decreases to 254 and render_bg reads VRAM row 31 — which
+; still shows old tiles. Filling rows 25-31 with the top screen row (a neutral
+; Route-tileset pattern) prevents that flicker until RedrawRowOrColumn fixes the
+; ring normally.
+; ---------------------------------------------------------------------------
+FillExtraVRAMRows:
+    push ebx
+    push esi
+    push edx
+
+    mov edx, GB_TILEMAP0 + SCREEN_TILES_H * TILEMAP_WIDTH  ; VRAM row 25 ($9B20)
+    mov bh, 32 - SCREEN_TILES_H                            ; 7 extra rows
+
+.fer_row:
+    mov esi, W_TILEMAP      ; always re-read from wTileMap row 0
+    mov bl, TILEMAP_WIDTH   ; 32 tiles
+.fer_c1:
+    mov al, byte [ebp + esi]
+    mov byte [ebp + edx], al
+    inc esi
+    inc edx
+    dec bl
+    jnz .fer_c1
+    ; wrap last 8 tiles back to start of this VRAM row
+    sub edx, TILEMAP_WIDTH
+    mov bl, SCREEN_TILES_W - TILEMAP_WIDTH  ; 8 tiles
+.fer_c2:
+    mov al, byte [ebp + esi]
+    mov byte [ebp + edx], al
+    inc esi
+    inc edx
+    dec bl
+    jnz .fer_c2
+    add edx, TILEMAP_WIDTH - (SCREEN_TILES_W - TILEMAP_WIDTH)  ; advance to next row
+
+    dec bh
+    jnz .fer_row
+
+    pop edx
+    pop esi
+    pop ebx
+    ret
+
 CopyMapViewToVRAM:
     mov edx, GB_TILEMAP0                           ; DE = vBGMap0 = $9800
 
@@ -989,6 +1095,8 @@ AdvancePlayerSprite:
     mov al, [ebp + W_X_COORD]
     add al, cl
     mov [ebp + W_X_COORD], al
+    call CheckMapConnections
+    jc .transitionExit                         ; CF=1 → map changed, abort frame
 .afterUpdateMapCoords:
     cmp byte [ebp + W_WALK_COUNTER], 7
     jne .scroll                                       ; only the first frame slides the view
@@ -1147,6 +1255,16 @@ AdvancePlayerSprite:
     pop ecx
     pop ebx
     pop eax
+    clc                                        ; CF=0 → no transition
+    ret
+
+.transitionExit:
+    ; CheckMapConnections set CF=1 → propagate up to caller
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+    stc                                        ; CF=1 → transition occurred
     ret
 
 ; ---------------------------------------------------------------------------
@@ -1516,6 +1634,305 @@ IsTilePassable:
     ret
 
 ; ---------------------------------------------------------------------------
+; LoadMapHeader — faithful translation.
+; Pret ref: home/overworld.asm:LoadMapHeader
+; ---------------------------------------------------------------------------
+LoadMapHeader:
+    push eax
+    push ebx
+    push ecx
+    push esi
+    push edi
+    
+    ; W_CUR_MAP_HEADER is a 10-byte buffer: tileset(1), h(1), w(1), blkptr(2), txtptr(2), scrptr(2), conn(1)
+    movzx eax, byte [ebp + W_CUR_MAP]
+    add eax, eax ; * 2 (MapHeaderPointers table is 2 bytes per entry)
+    mov esi, MapHeaderPointers
+    movzx ebx, word [esi + eax]
+    add ebx, ebp ; EBX = address of map header in flat space (rom window)
+    
+    ; Copy 10 bytes to W_CUR_MAP_HEADER
+    mov esi, ebx
+    lea edi, [ebp + W_CUR_MAP_HEADER]
+    mov ecx, W_CUR_MAP_HEADER_SIZE
+    rep movsb
+    
+    ; Initialize all 4 connected maps to $FF (disabled) before loading actual values.
+    ; Faithful to pret: home/overworld.asm line 1820-1825.
+    ; Without this, stale connection data from the previous map persists.
+    mov byte [ebp + W_NORTH_CONNECTED_MAP], MAP_NO_CONNECTION
+    mov byte [ebp + W_SOUTH_CONNECTED_MAP], MAP_NO_CONNECTION
+    mov byte [ebp + W_WEST_CONNECTED_MAP],  MAP_NO_CONNECTION
+    mov byte [ebp + W_EAST_CONNECTED_MAP],  MAP_NO_CONNECTION
+    
+    ; ESI now points past the 10-byte header. Check connections bitmask.
+    mov al, [ebp + W_CUR_MAP_CONNECTIONS]
+    test al, CONNECTION_NORTH
+    jz .noNorth
+    mov edi, W_NORTH_CONNECTED_MAP
+    call CopyMapConnectionHeader
+.noNorth:
+    mov al, [ebp + W_CUR_MAP_CONNECTIONS]
+    test al, CONNECTION_SOUTH
+    jz .noSouth
+    mov edi, W_SOUTH_CONNECTED_MAP
+    call CopyMapConnectionHeader
+.noSouth:
+    mov al, [ebp + W_CUR_MAP_CONNECTIONS]
+    test al, CONNECTION_WEST
+    jz .noWest
+    mov edi, W_WEST_CONNECTED_MAP
+    call CopyMapConnectionHeader
+.noWest:
+    mov al, [ebp + W_CUR_MAP_CONNECTIONS]
+    test al, CONNECTION_EAST
+    jz .noEast
+    mov edi, W_EAST_CONNECTED_MAP
+    call CopyMapConnectionHeader
+.noEast:
+
+    ; ESI now points to object_data_ptr
+    movzx eax, word [esi]
+    add eax, ebp ; EAX = object data flat address
+    
+    ; Read border block
+    mov bl, [eax]
+    mov [ebp + W_MAP_BACKGROUND_TILE], bl
+    inc eax
+    
+    ; Skip warps
+    mov bl, [eax]
+    mov [ebp + W_NUMBER_OF_WARPS], bl
+    inc eax
+    movzx ebx, bl
+    shl ebx, 2 ; * 4 bytes per warp
+    add eax, ebx
+    
+    ; Skip signs
+    mov bl, [eax]
+    mov [ebp + W_NUM_SIGNS], bl
+    inc eax
+    movzx ebx, bl
+    lea ebx, [ebx + ebx * 2] ; * 3 bytes per sign
+    add eax, ebx
+    
+    ; Save object data pointer temp
+    sub eax, ebp
+    mov [ebp + W_OBJECT_DATA_PTR_TEMP], ax
+    
+    call LoadTilesetHeader
+    
+    pop edi
+    pop esi
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+CopyMapConnectionHeader:
+    push ecx
+    push edi
+    add edi, ebp
+    mov ecx, CONN_HEADER_SIZE
+    rep movsb
+    pop edi
+    pop ecx
+    ret
+
+; ---------------------------------------------------------------------------
+; LoadTilesetHeader — faithful translation.
+; Pret ref: home/overworld.asm:LoadTilesetHeader (or engine/overworld/tilesets.asm)
+; ---------------------------------------------------------------------------
+LoadTilesetHeader:
+    push eax
+    push esi
+    push edi
+    push ecx
+    
+    ; We only have 1 tileset for now: OVERWORLD, located at OW_TILESET_HDR_GBADDR
+    ; In the future we'll use wCurMapTileset as an index.
+    lea esi, [ebp + OW_TILESET_HDR_GBADDR]
+    
+    lea edi, [ebp + W_TILESET_BANK]
+    mov ecx, W_TILESET_HEADER_COPY_SIZE ; 11 bytes
+    rep movsb
+    
+    ; 12th byte is hTileAnimations
+    mov al, [esi]
+    mov [ebp + H_TILE_ANIMATIONS], al
+    
+    pop ecx
+    pop edi
+    pop esi
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; CheckMapConnections — faithful translation.
+; Pret ref: home/overworld.asm:CheckMapConnections
+; ---------------------------------------------------------------------------
+CheckMapConnections:
+    push ebx
+    push edx
+
+    ; Edge thresholds
+    mov al, [ebp + W_CUR_MAP_HEIGHT]
+    add al, al
+    mov [ebp + W_CURRENT_MAP_HEIGHT_2], al
+    mov al, [ebp + W_CUR_MAP_WIDTH]
+    add al, al
+    mov [ebp + W_CURRENT_MAP_WIDTH_2], al
+
+    ; East connection check
+    mov al, [ebp + W_X_COORD]
+    cmp al, [ebp + W_CURRENT_MAP_WIDTH_2]
+    jne .checkWest
+    mov al, [ebp + W_EAST_CONNECTED_MAP]
+    cmp al, MAP_NO_CONNECTION
+    je .checkWest
+    mov ebx, W_EAST_CONNECTED_MAP
+    
+    mov [ebp + W_CUR_MAP], al
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_X_ALIGN]
+    mov [ebp + W_X_COORD], al
+    mov al, [ebp + W_Y_COORD]
+    mov cl, al
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_Y_ALIGN]
+    add cl, al
+    mov [ebp + W_Y_COORD], cl
+    
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_VIEW_PTR]
+    mov dl, al
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_VIEW_PTR + 1]
+    mov dh, al
+    
+    shr cl, 1
+    jz .savePointer2
+    
+.pointerAdjustmentLoop2:
+    mov al, [ebp + W_EAST_CONNECTED_MAP + CONN_MAP_WIDTH]
+    add al, MAP_BORDER * 2
+    movzx eax, al
+    add edx, eax
+    dec cl
+    jnz .pointerAdjustmentLoop2
+.savePointer2:
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], dx
+    jmp .loadNewMap
+
+.checkWest:
+    mov al, [ebp + W_X_COORD]
+    cmp al, 255
+    jne .checkSouth
+    mov al, [ebp + W_WEST_CONNECTED_MAP]
+    cmp al, MAP_NO_CONNECTION
+    je .checkSouth
+    mov ebx, W_WEST_CONNECTED_MAP
+    
+    mov [ebp + W_CUR_MAP], al
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_X_ALIGN]
+    mov [ebp + W_X_COORD], al
+    mov al, [ebp + W_Y_COORD]
+    mov cl, al
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_Y_ALIGN]
+    add cl, al
+    mov [ebp + W_Y_COORD], cl
+    
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_VIEW_PTR]
+    mov dl, al
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_VIEW_PTR + 1]
+    mov dh, al
+    
+    shr cl, 1
+    jz .savePointer1
+    
+.pointerAdjustmentLoop1:
+    mov al, [ebp + W_WEST_CONNECTED_MAP + CONN_MAP_WIDTH]
+    add al, MAP_BORDER * 2
+    movzx eax, al
+    add edx, eax
+    dec cl
+    jnz .pointerAdjustmentLoop1
+.savePointer1:
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], dx
+    jmp .loadNewMap
+
+.checkSouth:
+    mov al, [ebp + W_Y_COORD]
+    cmp al, [ebp + W_CURRENT_MAP_HEIGHT_2]
+    jne .checkNorth
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP]
+    cmp al, MAP_NO_CONNECTION
+    je .checkNorth
+    mov ebx, W_SOUTH_CONNECTED_MAP
+    
+    mov [ebp + W_CUR_MAP], al
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_Y_ALIGN]
+    mov [ebp + W_Y_COORD], al
+    mov al, [ebp + W_X_COORD]
+    mov cl, al
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_X_ALIGN]
+    add cl, al
+    mov [ebp + W_X_COORD], cl
+    
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_VIEW_PTR]
+    mov dl, al
+    mov al, [ebp + W_SOUTH_CONNECTED_MAP + CONN_VIEW_PTR + 1]
+    mov dh, al
+    
+    shr cl, 1
+    jz .savePointer4
+    movzx ecx, cl
+    add edx, ecx
+.savePointer4:
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], dx
+    jmp .loadNewMap
+
+.checkNorth:
+    mov al, [ebp + W_Y_COORD]
+    cmp al, 255
+    jne .done
+    mov al, [ebp + W_NORTH_CONNECTED_MAP]
+    cmp al, MAP_NO_CONNECTION
+    je .done
+    mov ebx, W_NORTH_CONNECTED_MAP
+    
+    mov [ebp + W_CUR_MAP], al
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_Y_ALIGN]
+    mov [ebp + W_Y_COORD], al
+    mov al, [ebp + W_X_COORD]
+    mov cl, al
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_X_ALIGN]
+    add cl, al
+    mov [ebp + W_X_COORD], cl
+    
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_VIEW_PTR]
+    mov dl, al
+    mov al, [ebp + W_NORTH_CONNECTED_MAP + CONN_VIEW_PTR + 1]
+    mov dh, al
+    
+    shr cl, 1
+    jz .savePointer3
+    movzx ecx, cl
+    add edx, ecx
+.savePointer3:
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], dx
+    jmp .loadNewMap
+
+.done:
+    pop edx
+    pop ebx
+    clc                                        ; CF=0 → no transition
+    ret
+
+.loadNewMap:
+    ; A connection was crossed. Return CF=1 to signal the caller.
+    pop edx
+    pop ebx
+    stc                                        ; CF=1 → transition occurred
+    ret
+
+; ---------------------------------------------------------------------------
 ; Embedded overworld asset data (Phase 2 scaffold).
 ; gen_overworld_assets.py regenerates these from source binaries.
 ; ---------------------------------------------------------------------------
@@ -1532,3 +1949,4 @@ section .rodata
 %include "assets/npc_girl_still.inc"
 %include "assets/npc_fisher_still.inc"
 %include "assets/npc_oak_still.inc"
+%include "assets/map_headers.inc"

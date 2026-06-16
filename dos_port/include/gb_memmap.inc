@@ -125,8 +125,9 @@ GB_HRAM_SIZE    equ 127
 ; Named HRAM variables (subset needed by translated routines).
 ; All offsets verified from pokeyellow.sym (bank 00).
 H_SOFT_RESET             equ 0xFF8A     ; hSoftReset
-; 0xFF8B is a UNION of hMapStride / hNorthSouthConnectionStripWidth / hEastWestConnectedMapWidth
+; 0xFF8B is a UNION of hMapStride / hNorthSouthConnectionStripWidth / hPreviousTileset
 H_MAP_STRIDE             equ 0xFF8B     ; hMapStride (= map block row stride = width + 2*MAP_BORDER)
+H_PREVIOUS_TILESET       equ 0xFF8B     ; hPreviousTileset (HRAM union with hMapStride)
 ; 0xFF8C is a UNION of hMapWidth / hNorthSouthConnectedMapWidth
 H_MAP_WIDTH              equ 0xFF8C     ; hMapWidth (= wCurMapWidth, stored for row-copy inner loop)
 H_SERIAL_CONN_STATUS     equ 0xFFAA     ; hSerialConnectionStatus
@@ -230,13 +231,21 @@ W_Y_COORD                    equ 0xD360 ; wYCoord (player map Y, in tiles)
 W_X_COORD                    equ 0xD361 ; wXCoord (player map X, in tiles)
 W_Y_BLOCK_COORD              equ 0xD362 ; wYBlockCoord
 W_X_BLOCK_COORD              equ 0xD363 ; wXBlockCoord
+W_LAST_MAP                   equ 0xD364 ; wLastMap
 
 ; Fixed map header (wCurMapHeader = wCurMapTileset at $D366)
+; This is a contiguous 10-byte region that LoadMapHeader copies into from the ROM header.
+; Layout: tileset(1) + height(1) + width(1) + dataptr(2) + textptr(2) + scriptptr(2) + connections(1)
+W_CUR_MAP_HEADER             equ 0xD366 ; wCurMapHeader (start of fixed header copy target)
 W_CUR_MAP_TILESET            equ 0xD366 ; wCurMapTileset (= wCurMapHeader first byte)
 W_CUR_MAP_HEIGHT             equ 0xD367 ; wCurMapHeight
 W_CUR_MAP_WIDTH              equ 0xD368 ; wCurMapWidth
 W_CUR_MAP_DATA_PTR           equ 0xD369 ; wCurMapDataPtr (2 bytes, LE)
+W_CUR_MAP_TEXT_PTR           equ 0xD36B ; wCurMapTextPtr (2 bytes, LE)
+W_CUR_MAP_SCRIPT_PTR         equ 0xD36D ; wCurMapScriptPtr (2 bytes, LE)
 W_CUR_MAP_CONNECTIONS        equ 0xD36F ; wCurMapConnections (NORTH|SOUTH|WEST|EAST bits)
+W_CUR_MAP_HEADER_END         equ 0xD370 ; wCurMapHeaderEnd (byte after connections)
+W_CUR_MAP_HEADER_SIZE        equ W_CUR_MAP_HEADER_END - W_CUR_MAP_HEADER  ; = 10 bytes
 
 ; Connection-strip headers (each 11 bytes: map, strip-src, strip-dst, length, map-width, Y-align, X-align, view-ptr)
 W_NORTH_CONNECTED_MAP        equ 0xD370 ; wNorthConnectedMap ($FF = none)
@@ -251,23 +260,45 @@ W_OBJECT_DATA_PTR_TEMP       equ 0xD3A8 ; wObjectDataPointerTemp (2 bytes)
 ; Map object header (follows connections in object data)
 W_MAP_BACKGROUND_TILE        equ 0xD3AC ; wMapBackgroundTile (border block ID for wOverworldMap)
 W_NUMBER_OF_WARPS            equ 0xD3AD ; wNumberOfWarps
-W_WARP_ENTRIES               equ 0xD3AE ; wWarpEntries
+W_WARP_ENTRIES               equ 0xD3AE ; wWarpEntries (MAX_WARP_EVENTS * 4 bytes max)
+W_DESTINATION_WARP_ID        equ 0xD42E ; wDestinationWarpID ($FF = don't update coords)
+
+; Sign/BG event data
+W_NUM_SIGNS                  equ 0xD4AF ; wNumSigns
+W_SIGN_COORDS                equ 0xD4B0 ; wSignCoords (MAX_BG_EVENTS * 2 bytes: Y, X pairs)
+W_SIGN_TEXT_IDS              equ 0xD4D0 ; wSignTextIDs (MAX_BG_EVENTS bytes)
+
+MAX_WARP_EVENTS              equ 32
+MAX_BG_EVENTS                equ 16
+MAX_OBJECT_EVENTS            equ 16
 
 ; Special-warp step offsets (incremented as the block-map pointer crosses
 ; block boundaries; faithful bookkeeping, not yet consumed by warp logic).
 W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E1 ; wYOffsetSinceLastSpecialWarp
 W_X_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E2 ; wXOffsetSinceLastSpecialWarp
 
+; Edge detection thresholds (height*2 / width*2) — used by CheckMapConnections
+W_CURRENT_MAP_HEIGHT_2       equ 0xD523 ; wCurrentMapHeight2 = wCurMapHeight * 2
+W_CURRENT_MAP_WIDTH_2        equ 0xD524 ; wCurrentMapWidth2 = wCurMapWidth * 2
+
 ; Map-view VRAM pointer and player facing
 W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (2 bytes, LE; normally $9800)
 W_PLAYER_MOVING_DIRECTION    equ 0xD527 ; wPlayerMovingDirection (PLAYER_DIR_*)
 W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection (PLAYER_DIR_*)
 
-; Active tileset pointers (set from tileset header by LoadMapHeader)
-W_TILESET_BANK               equ 0xD52A ; wTilesetBank
+; Active tileset WRAM (set from tileset header by LoadTilesetHeader)
+; LoadTilesetHeader copies 11 bytes here from the tileset header table,
+; then reads the 12th byte (animations) to hTileAnimations.
+W_TILESET_BANK               equ 0xD52A ; wTilesetBank (1 byte)
 W_TILESET_BLOCKS_PTR         equ 0xD52B ; wTilesetBlocksPtr (2 bytes, LE)
 W_TILESET_GFX_PTR            equ 0xD52D ; wTilesetGfxPtr   (2 bytes, LE)
 W_TILESET_COLLISION_PTR      equ 0xD52F ; wTilesetCollisionPtr (2 bytes, LE; passable-tile list)
+W_TILESET_TALKING_OVER_TILES equ 0xD531 ; wTilesetTalkingOverTiles (3 bytes: counter tiles)
+W_TILESET_GRASS_TILE         equ 0xD534 ; (overlaps wGrassTile — handled by LoadTilesetHeader)
+; NOTE: wTilesetGrassTile ($D534) is the same address as wGrassTile.
+; LoadTilesetHeader copies it as part of the 11-byte block.
+W_TILESET_HEADER_COPY_SIZE   equ 11     ; bytes copied from tileset header to wTilesetBank
+W_TILESET_HEADER_FULL_SIZE   equ 12     ; full tileset header entry size (11 + animations)
 
 ; Walk/bike/surf state
 W_WALK_BIKE_SURF_STATE       equ 0xD6FF ; wWalkBikeSurfState
@@ -350,18 +381,24 @@ PLAYER_DIR_BIT_LEFT      equ 1
 PLAYER_DIR_BIT_DOWN      equ 2
 PLAYER_DIR_BIT_UP        equ 3
 
-; ROM-window area for embedded overworld assets (Phase 2 scaffold)
+; ROM-window area for embedded overworld assets.
 ; The unused ROM bank-switch window ($4000–$7FFF) is repurposed to hold asset data
-; that faithful routines (LoadTilesetTilePatternData, DrawTileBlock, LoadTileBlockMap)
-; read via wTilesetGfxPtr / wTilesetBlocksPtr / wCurMapDataPtr pointers.
+; that faithful routines (LoadTilesetTilePatternData, DrawTileBlock, LoadTileBlockMap,
+; LoadMapHeader, LoadTilesetHeader) read via pointers stored in WRAM.
 OW_GFX_GBADDR            equ 0x4000     ; overworld tileset 2bpp → vTileset ($9000)
 OW_BLOCKS_GBADDR         equ 0x4600     ; overworld blockset (.bst, 128 blocks × 16 tile-IDs)
-OW_MAP_GBADDR            equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
+OW_PALLET_BLK_GBADDR     equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
+OW_MAP_GBADDR            equ OW_PALLET_BLK_GBADDR ; legacy alias (Phase 2 scaffold)
 OW_COLL_GBADDR           equ 0x4F00     ; Overworld_Coll passable-tile list ($FF-terminated)
-; Connected-map block data (map-connection border strips). Free ROM-window space
-; above the Pallet Town assets; the connection-strip src pointers index into these.
-OW_ROUTE1_BLK_GBADDR     equ 0x5000     ; Route1.blk  (10×18 = 180 block IDs) — Pallet Town north
-OW_ROUTE21_BLK_GBADDR    equ 0x5200     ; Route21.blk (10×45 = 450 block IDs) — Pallet Town south
+; Map block data for each map. Connection strip src pointers index into these.
+OW_ROUTE1_BLK_GBADDR     equ 0x5000     ; Route1.blk  (10×18 = 180 block IDs)
+OW_ROUTE21_BLK_GBADDR    equ 0x5200     ; Route21.blk (10×45 = 450 block IDs)
+; Map headers, tileset header, and object data — generated by gen_map_headers.py.
+; Loaded to ROM window at boot; LoadMapHeader reads from [EBP + these addresses].
+OW_TILESET_HDR_GBADDR    equ 0x5400     ; OVERWORLD tileset header (12 bytes)
+OW_MAP_HEADERS_GBADDR    equ 0x540C     ; base for map header + object data blobs
+; Per-map header addresses are defined in assets/map_headers.inc as
+; OW_MAP_HDR_PALLET_TOWN, OW_MAP_HDR_ROUTE_1, etc.
 
 ; Connection-strip header field offsets (added to W_{NORTH,SOUTH,WEST,EAST}_CONNECTED_MAP;
 ; struct is 11 bytes — see map_connection_struct in macros/ram.asm).
@@ -372,6 +409,19 @@ CONN_MAP_WIDTH           equ 6          ; ConnectedMapWidth (db)
 CONN_Y_ALIGN             equ 7          ; ConnectedMapYAlignment (db)
 CONN_X_ALIGN             equ 8          ; ConnectedMapXAlignment (db)
 CONN_VIEW_PTR            equ 9          ; ConnectedMapViewPointer (dw)
+CONN_HEADER_SIZE         equ 11         ; total connection header struct size
+
+; Connection direction bits (constants/map_data_constants.asm)
+CONNECTION_NORTH         equ 1 << 3     ; bit 3 = $08
+CONNECTION_SOUTH         equ 1 << 2     ; bit 2 = $04
+CONNECTION_WEST          equ 1 << 1     ; bit 1 = $02
+CONNECTION_EAST          equ 1 << 0     ; bit 0 = $01
+
+; Map IDs (constants/map_constants.asm — subset for implemented maps)
+MAP_ID_PALLET_TOWN       equ 0x00
+MAP_ID_ROUTE_1            equ 0x0C
+MAP_ID_ROUTE_21           equ 0x20
+MAP_NO_CONNECTION         equ 0xFF       ; sentinel: no connected map in this direction
 
 ; IE register shadow — $FFFF (1 byte)
 ; Emulated Interrupt Enable register. Not functionally used by the DOS port
