@@ -30,7 +30,6 @@ extern present
 extern joypad_update
 extern pad_quit
 extern cleanup
-extern RedrawRowOrColumn
 extern PrepareOAMData
 
 global DelayFrame
@@ -55,7 +54,6 @@ DelayFrame:
     call commit_shadow_regs
     call commit_palette         ; map BGP/OBP0/OBP1 → DAC (raw-index render)
     call do_bg_transfer
-    call RedrawRowOrColumn      ; redraw the row/col exposed by walking (GB VBlank order)
     call update_oam             ; PrepareOAMData → shadow OAM, then DMA to OAM
     call joypad_update
     call render_bg
@@ -116,6 +114,10 @@ commit_shadow_regs:
 ; so the dest is always 256-byte aligned). Copies 20 bytes per screen row,
 ; skips the 12-byte padding to the next 32-wide tilemap row, and wraps at
 ; the 1 KB boundary so destinations like $9B00 (row 24) work correctly.
+;
+; (Stage A Note: Gated on H_AUTO_BG_TRANSFER_EN, which the overworld sets to 0.
+; Inert in the overworld now that the native renderer drops the torus, but kept
+; because text/menu code may use it later.)
 ;
 ; In: EBP = GB memory base. All registers preserved.
 ; ---------------------------------------------------------------------------

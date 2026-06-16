@@ -80,9 +80,9 @@ g_tilecache_dirty: db 1     ; nonzero → render_bg rebuilds tile_cache this fra
 section .bss
 align 4
 tile_cache:  resb TILE_CACHE_SIZE  ; 384 × 64 = 24 KB of decoded raw-color tile rows
-align 4
+alignb 4
 g_player_marker_on: resb 1 ; nonzero → draw_player_marker paints the placeholder
-align 4
+alignb 4
 spr_oam_ptr: resd 1        ; GB-relative offset of the current OAM entry
 spr_count:   resd 1        ; OAM entries left to process
 spr_sx:      resd 1        ; sprite left screen X (signed)
@@ -93,20 +93,17 @@ spr_row:     resd 1        ; current sprite row 0..7
 spr_rowbase: resd 1        ; GB-relative back-buffer offset of the current row
 spr_lo:      resb 1        ; low bitplane of the current tile row
 spr_hi:      resb 1        ; high bitplane of the current tile row
-align 4
+alignb 4
 ; Shared BG/window frame constants (written once per frame)
 tiledata_mode:   resd 1    ; 1 = $8000 unsigned, 0 = $8800 signed
 ; render_bg surface-mirror state
 bg_tilemap_base: resd 1    ; BG tilemap base addr ($9800 or $9C00)
 bg_scy:          resd 1    ; SCY shadow
 bg_scx:          resd 1    ; SCX shadow
-surf_last_base:  resd 1    ; tilemap base the surface was last (re)built for (0 = none)
-align 4
-; bg_surface: 256×256 chunky raw-color mirror of the decoded BG tilemap torus.
-; bg_tilemap_shadow: last-seen 32×32 VRAM tilemap, for the per-frame diff.
-bg_surface:        resb 256 * 256
-bg_tilemap_shadow: resb 32 * 32
-align 4
+
+; bg_surface: 352×256 raw-color mirror of wSurroundingTiles.
+bg_surface:        resb 352 * 256
+alignb 4
 ; render_window row buffer and scanline state
 row_buf:         resb 256  ; decoded 256-px virtual window row (shade 0–3)
 win_map_row:     resd 1    ; EBP-relative offset of current window tilemap row
@@ -122,23 +119,8 @@ section .text
 ; render_bg — blit the BG plane from a decoded offscreen surface (Tier 2 step 3).
 ;
 ; Instead of re-resolving 41 tiles × 200 scanlines from the VRAM tilemap every
-; frame, we keep bg_surface: a 256×256 chunky raw-color mirror of the decoded
-; BG tilemap torus (32×32 tiles, each tile decoded to 8×8 raw-color pixels).
-;
-; Per frame we SYNC the surface to the live VRAM tilemap, then BLIT a 320×200
-; window from it at (SCX,SCY) with 256-px torus wrap on both axes:
-;   - Sync is cheap: diff the VRAM tilemap against bg_tilemap_shadow and
-;     re-decode only the changed tiles (while walking that is just the edge
-;     strip RedrawRowOrColumn wrote). On a tile-data change (g_tilecache_dirty)
-;     or a BG-tilemap-base switch, rebuild the whole surface.
-;   - The blit has NO per-tile addressing and no 40-into-32 fold — it is a plain
-;     windowed copy. This eliminates the per-frame tile-resolution work.
-;
-; Sampling matches the old renderer exactly: BG pixel (x,y) = surface pixel
-; ((SCX+x)&255, (SCY+y)&255). LCDC bit 3 selects the tilemap, bit 4 the tile
-; data addressing. Surface holds raw color (0-3); the DAC maps it (commit_palette).
-;
-; In:  EBP = GB memory base. Out: back buffer filled. All registers preserved.
+; frame, we decode wSurroundingTiles (44x32 tiles) into bg_surface (352x256)
+; every frame, then blit a 320x200 window at the calculated offset.
 ; ---------------------------------------------------------------------------
 render_bg:
     pushad
@@ -149,165 +131,106 @@ render_bg:
     and eax, 1
     mov [tiledata_mode], eax
 
-    ; BG tilemap base (LCDC bit 3)
-    test byte [ebp + IO_LCDC], 1 << LCDC_BG_MAP_BIT
-    jnz .use_tilemap1
-    mov dword [bg_tilemap_base], GB_TILEMAP0
-    jmp .tilemap_ok
-.use_tilemap1:
-    mov dword [bg_tilemap_base], GB_TILEMAP1
-.tilemap_ok:
-
-    ; ---- sync bg_surface to the VRAM tilemap ----
-    ; Full rebuild if tile data changed (cache stale) or the tilemap base
-    ; switched; otherwise just re-decode the tiles that differ from the shadow.
+    ; sync tile cache if needed
     cmp byte [g_tilecache_dirty], 0
-    jne .full_rebuild
-    mov eax, [bg_tilemap_base]
-    cmp eax, [surf_last_base]
-    jne .full_rebuild
-    call sync_surface_diff
-    jmp .blit
-.full_rebuild:
-    call rebuild_tile_cache             ; refresh decoded tile data (clears dirty)
-    call rebuild_surface_full           ; decode all 1024 tilemap entries + shadow
-    mov eax, [bg_tilemap_base]
-    mov [surf_last_base], eax
+    je .cache_ok
+    call rebuild_tile_cache
+.cache_ok:
 
-.blit:
-    ; ---- blit a 320×200 window from bg_surface at (SCX,SCY), torus-wrapped ----
-    movzx eax, byte [ebp + IO_SCY]
-    mov [bg_scy], eax
-    movzx eax, byte [ebp + IO_SCX]
-    mov [bg_scx], eax
-
-    xor edx, edx                        ; EDX = screen y (preserved across rep)
-.blit_row:
-    mov eax, [bg_scy]
-    add eax, edx
-    and eax, 0xFF
-    shl eax, 8                          ; EAX = src row byte offset (row * 256)
-    mov ecx, [bg_scx]                   ; ECX = src_x (0..255)
-    mov edi, edx
-    imul edi, RENDER_W
-    lea edi, [ebp + GB_BACKBUF + edi]   ; EDI = back-buffer row start
-    mov ebx, 256
-    sub ebx, ecx                        ; EBX = 256 - src_x (bytes until wrap)
-    mov esi, bg_surface
-    add esi, eax                        ; surface row start
-    add esi, ecx                        ; + src_x → first-chunk source
-    cmp ebx, RENDER_W
-    jae .one_chunk
-    ; window straddles the 256-px seam: copy EBX bytes, then the rest from col 0
-    mov ecx, ebx
-    rep movsb
-    mov esi, bg_surface
-    add esi, eax                        ; surface row start (col 0)
-    mov ecx, RENDER_W
-    sub ecx, ebx
-    rep movsb
-    jmp .blit_next
-.one_chunk:
-    mov ecx, RENDER_W
-    rep movsb
-.blit_next:
-    inc edx
-    cmp edx, RENDER_H
-    jb .blit_row
-
-    popad
-    ret
-
-; ---------------------------------------------------------------------------
-; surf_decode_tile — decode one tilemap entry into bg_surface.
-;
-; In:  AL  = tile_id, EBX = tilemap index (0..1023), [tiledata_mode] set.
-; Out: EBX preserved. Clobbers EAX, ECX, EDX, ESI, EDI.
-;
-; Resolves the tile_id to a tile_cache slot (signed/unsigned per mode) and copies
-; its 8 decoded rows into the surface at torus tile (EBX&31, EBX>>5): surface
-; offset = (EBX>>5)*8*256 + (EBX&31)*8, dest stride 256, src stride 8.
-; ---------------------------------------------------------------------------
-surf_decode_tile:
+    ; ---- decode wSurroundingTiles (44x32) into bg_surface (352x256) ----
+    xor ebx, ebx       ; EBX = tile index 0..1407 (44 * 32)
+.decode_loop:
+    mov al, [ebp + W_SURROUNDING_TILES + ebx]
+    
+    ; get tile cache offset into ESI
     cmp dword [tiledata_mode], 0
     jne .uns
     movsx eax, al
     shl eax, 4
     add eax, 0x9000
-    jmp .ok
+    jmp .mode_ok
 .uns:
     movzx eax, al
     shl eax, 4
     add eax, GB_VCHARS0
-.ok:
+.mode_ok:
     sub eax, GB_VCHARS0
-    shl eax, 2                          ; EAX = tile_cache byte offset (row 0)
-    lea esi, [tile_cache + eax]         ; ESI = src
+    shl eax, 2
+    lea esi, [tile_cache + eax]
 
-    mov edx, ebx
-    shr edx, 5                          ; trow
-    imul edx, 8 * 256                   ; trow * 2048
-    mov ecx, ebx
-    and ecx, 31
-    shl ecx, 3                          ; tcol * 8
-    add edx, ecx
-    lea edi, [bg_surface + edx]         ; EDI = dest (surface tile top-left)
-
-    mov ecx, 8                          ; 8 tile rows
-.row:
+    ; calculate destination in bg_surface
+    ; row = EBX / 44, col = EBX % 44
+    mov eax, ebx
+    mov ecx, 44
+    xor edx, edx
+    div ecx
+    ; EAX = row, EDX = col
+    
+    ; dest offset = row * 8 * 352 + col * 8
+    imul eax, eax, 8 * 352
+    lea edi, [bg_surface + eax + edx * 8]
+    
+    ; copy 8 rows
+    mov ecx, 8
+.row_copy:
     mov eax, [esi]
     mov [edi], eax
     mov eax, [esi + 4]
     mov [edi + 4], eax
     add esi, 8
-    add edi, 256
+    add edi, 352
     dec ecx
-    jnz .row
-    ret
+    jnz .row_copy
 
-; ---------------------------------------------------------------------------
-; rebuild_surface_full — decode all 1024 BG tilemap entries into bg_surface and
-; refresh bg_tilemap_shadow. Called on tile-data change or tilemap-base switch.
-; In: EBP = GB base, [bg_tilemap_base]/[tiledata_mode] set. Regs preserved.
-; ---------------------------------------------------------------------------
-rebuild_surface_full:
-    pushad
-    xor ebx, ebx                        ; tilemap index 0..1023
-.loop:
-    mov eax, [bg_tilemap_base]
-    add eax, ebx
-    movzx eax, byte [ebp + eax]         ; AL = tile_id
-    mov [bg_tilemap_shadow + ebx], al
-    call surf_decode_tile               ; AL, EBX
     inc ebx
-    cmp ebx, 32 * 32
-    jb .loop
-    popad
-    ret
+    cmp ebx, 44 * 32
+    jb .decode_loop
 
-; ---------------------------------------------------------------------------
-; sync_surface_diff — re-decode only the tilemap entries that changed since the
-; last frame (compared against bg_tilemap_shadow). Cheap: while scrolling this is
-; just the edge row/column RedrawRowOrColumn wrote. (Byte compare; could be
-; dword-batched later, but the diff cost is already negligible vs the old
-; per-scanline tile resolution.)
-; In: EBP = GB base, [bg_tilemap_base]/[tiledata_mode] set. Regs preserved.
-; ---------------------------------------------------------------------------
-sync_surface_diff:
-    pushad
-    xor ebx, ebx
-.loop:
-    mov eax, [bg_tilemap_base]
-    add eax, ebx
-    mov al, [ebp + eax]                 ; current tile_id
-    cmp al, [bg_tilemap_shadow + ebx]
-    je .next
-    mov [bg_tilemap_shadow + ebx], al
-    call surf_decode_tile               ; AL, EBX
-.next:
-    inc ebx
-    cmp ebx, 32 * 32
-    jb .loop
+    ; ---- blit a 320x200 window from bg_surface ----
+    ; Calculate baseX = (2 - wXBlockCoord*2) * 8
+    mov al, [ebp + W_X_BLOCK_COORD]
+    movzx eax, al
+    shl eax, 1
+    mov ecx, 2
+    sub ecx, eax
+    shl ecx, 3
+    movsx eax, byte [ebp + H_SCX]
+    add ecx, eax
+    mov [bg_scx], ecx    ; Xoff
+
+    ; Calculate baseY = (2 - wYBlockCoord*2) * 8
+    mov al, [ebp + W_Y_BLOCK_COORD]
+    movzx eax, al
+    shl eax, 1
+    mov ecx, 2
+    sub ecx, eax
+    shl ecx, 3
+    movsx eax, byte [ebp + H_SCY]
+    add ecx, eax
+    mov [bg_scy], ecx    ; Yoff
+
+    ; blit 320x200 from bg_surface at (Xoff, Yoff)
+    xor edx, edx   ; screen y
+.blit_row:
+    mov eax, [bg_scy]
+    add eax, edx
+    imul eax, eax, 352
+    mov ecx, [bg_scx]
+    add eax, ecx
+    lea esi, [bg_surface + eax]
+    
+    mov edi, edx
+    imul edi, RENDER_W
+    lea edi, [ebp + GB_BACKBUF + edi]
+
+    ; 320 bytes = 80 dwords
+    mov ecx, RENDER_W / 4
+    rep movsd
+
+    inc edx
+    cmp edx, RENDER_H
+    jb .blit_row
+
     popad
     ret
 

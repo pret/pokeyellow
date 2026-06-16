@@ -282,7 +282,7 @@ W_CURRENT_MAP_HEIGHT_2       equ 0xD523 ; wCurrentMapHeight2 = wCurMapHeight * 2
 W_CURRENT_MAP_WIDTH_2        equ 0xD524 ; wCurrentMapWidth2 = wCurMapWidth * 2
 
 ; Map-view VRAM pointer and player facing
-W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (2 bytes, LE; normally $9800)
+W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (Stage A Note: dropped/unused after native renderer)
 W_PLAYER_MOVING_DIRECTION    equ 0xD527 ; wPlayerMovingDirection (PLAYER_DIR_*)
 W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection (PLAYER_DIR_*)
 

@@ -71,7 +71,7 @@ global LoadCurrentMapView
 global CopyMapViewToVRAM
 global OverworldLoop
 global AdvancePlayerSprite
-global RedrawRowOrColumn       ; called from frame.asm DelayFrame (VBlank pipeline)
+global AdvancePlayerSprite
 
 ; ---------------------------------------------------------------------------
 ; Map and tileset constants
@@ -198,8 +198,6 @@ EnterMap:
     call LoadMapHeader
     call LoadTileBlockMap
     call LoadCurrentMapView
-    call CopyMapViewToVRAM
-    call FillExtraVRAMRows
     ; Render a few frames so GB_BACKBUF holds the post-transition image, then
     ; exfiltrate the exact rendered pixels to FRAME.BIN for host inspection.
     call DelayFrame
@@ -304,8 +302,6 @@ OverworldLoop:
     call LoadMapHeader
     call LoadTileBlockMap
     call LoadCurrentMapView
-    call CopyMapViewToVRAM
-    call FillExtraVRAMRows      ; pre-fill VRAM rows 25-31 to avoid stale tile flicker
 
     jmp OverworldLoop.lessDelay
 
@@ -415,7 +411,7 @@ LoadMapData:
     call LoadMapHeader
     ; TODO: InitMapSprites — ; TODO: sprite engine (Phase 2)
     call LoadScreenRelatedData
-    call CopyMapViewToVRAM
+    call LoadScreenRelatedData
 
     mov byte [ebp + W_UPDATE_SPRITES_ENABLED], 1
     call EnableLCD
@@ -546,8 +542,6 @@ SetupPalletTownNPCs:
 ; Sets wMapViewVRAMPointer = vBGMap0 ($9800), zeroes SCX/SCY and walk state.
 ; ---------------------------------------------------------------------------
 ResetMapVariables:
-    ; wMapViewVRAMPointer = $9800 (little-endian word: lo=0x00, hi=0x98)
-    mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
     xor al, al
     mov byte [ebp + H_SCY],                       al
     mov byte [ebp + H_SCX],                       al
@@ -974,93 +968,6 @@ LoadCurrentMapView:
 ; wrap to columns 0-7 of the same VRAM row (handled by the tile-blitter's
 ; (SCX/8+col)&31 modular addressing).
 ; ---------------------------------------------------------------------------
-; ---------------------------------------------------------------------------
-; FillExtraVRAMRows — fill VRAM rows 25-31 with wTileMap row 0.
-;
-; CopyMapViewToVRAM writes only 25 rows (SCREEN_TILES_H). VRAM rows 25-31 then
-; hold stale data from the previous map. On the first scroll step after a map
-; transition, H_SCY decreases to 254 and render_bg reads VRAM row 31 — which
-; still shows old tiles. Filling rows 25-31 with the top screen row (a neutral
-; Route-tileset pattern) prevents that flicker until RedrawRowOrColumn fixes the
-; ring normally.
-; ---------------------------------------------------------------------------
-FillExtraVRAMRows:
-    push ebx
-    push esi
-    push edx
-
-    mov edx, GB_TILEMAP0 + SCREEN_TILES_H * TILEMAP_WIDTH  ; VRAM row 25 ($9B20)
-    mov bh, 32 - SCREEN_TILES_H                            ; 7 extra rows
-
-.fer_row:
-    mov esi, W_TILEMAP      ; always re-read from wTileMap row 0
-    mov bl, TILEMAP_WIDTH   ; 32 tiles
-.fer_c1:
-    mov al, byte [ebp + esi]
-    mov byte [ebp + edx], al
-    inc esi
-    inc edx
-    dec bl
-    jnz .fer_c1
-    ; wrap last 8 tiles back to start of this VRAM row
-    sub edx, TILEMAP_WIDTH
-    mov bl, SCREEN_TILES_W - TILEMAP_WIDTH  ; 8 tiles
-.fer_c2:
-    mov al, byte [ebp + esi]
-    mov byte [ebp + edx], al
-    inc esi
-    inc edx
-    dec bl
-    jnz .fer_c2
-    add edx, TILEMAP_WIDTH - (SCREEN_TILES_W - TILEMAP_WIDTH)  ; advance to next row
-
-    dec bh
-    jnz .fer_row
-
-    pop edx
-    pop esi
-    pop ebx
-    ret
-
-CopyMapViewToVRAM:
-    mov edx, GB_TILEMAP0                           ; DE = vBGMap0 = $9800
-
-CopyMapViewToVRAM2:
-    ; Copy wTileMap (SCREEN_TILES_H × SCREEN_TILES_W = 25 × 40) to VRAM
-    ; tilemap (32 tiles wide).  Each 40-tile wTileMap row is split: first 32
-    ; tiles fill one VRAM row, then the remaining 8 wrap to columns 0-7 of the
-    ; same VRAM row (so the tile-blitter's (SCX/8+col)&31 address sees them).
-    mov esi, W_TILEMAP                             ; HL = wTileMap
-    mov bh, SCREEN_TILES_H                         ; B = 25 rows
-
-.vram_row_loop:
-    ; First TILEMAP_WIDTH (32) tiles → full VRAM row
-    mov bl, TILEMAP_WIDTH                          ; C = 32
-.vram_col1:
-    mov al, byte [ebp + esi]
-    mov byte [ebp + edx], al
-    inc esi
-    inc edx
-    dec bl
-    jnz .vram_col1
-    ; Rewind VRAM to start of this row; write remaining 8 tiles (they wrap)
-    sub edx, TILEMAP_WIDTH
-    mov bl, SCREEN_TILES_W - TILEMAP_WIDTH         ; C = 8
-.vram_col2:
-    mov al, byte [ebp + esi]
-    mov byte [ebp + edx], al
-    inc esi
-    inc edx
-    dec bl
-    jnz .vram_col2
-    ; Advance VRAM to start of next row
-    add edx, TILEMAP_WIDTH - (SCREEN_TILES_W - TILEMAP_WIDTH)  ; = 32-8 = 24
-
-    dec bh
-    jnz .vram_row_loop
-    ret
-
-; ---------------------------------------------------------------------------
 ; AdvancePlayerSprite — faithful translation.
 ; Pret ref: home/overworld.asm:AdvancePlayerSprite +
 ;           engine/overworld/advance_player_sprite.asm:_AdvancePlayerSprite
@@ -1101,61 +1008,7 @@ AdvancePlayerSprite:
     cmp byte [ebp + W_WALK_COUNTER], 7
     jne .scroll                                       ; only the first frame slides the view
 
-    ; --- first frame: slide wMapViewVRAMPointer by 2 tiles in the move dir ---
-    cmp cl, 0x01
-    jne .checkWest
-    ; moving east: low = (low+2 & $1f) | (low & $e0)
-    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
-    mov dl, al
-    and al, 0xE0
-    mov dh, al
-    mov al, dl
-    add al, 0x02
-    and al, 0x1F
-    or  al, dh
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
     jmp .adjustXCoordWithinBlock
-.checkWest:
-    cmp cl, 0xFF
-    jne .checkSouth
-    ; moving west: low = (low-2 & $1f) | (low & $e0)
-    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
-    mov dl, al
-    and al, 0xE0
-    mov dh, al
-    mov al, dl
-    sub al, 0x02
-    and al, 0x1F
-    or  al, dh
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
-    jmp .adjustXCoordWithinBlock
-.checkSouth:
-    cmp bl, 0x01
-    jne .checkNorth
-    ; moving south: 16-bit pointer += $40, wrap high byte into $98xx
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
-    add al, 0x40
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
-    jnc .adjustXCoordWithinBlock
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    inc al
-    and al, 0x03
-    or  al, 0x98
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER + 1], al
-    jmp .adjustXCoordWithinBlock
-.checkNorth:
-    cmp bl, 0xFF
-    jne .adjustXCoordWithinBlock
-    ; moving north: 16-bit pointer -= $40, wrap high byte into $98xx
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
-    sub al, 0x40
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER], al
-    jnc .adjustXCoordWithinBlock
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    dec al
-    and al, 0x03
-    or  al, 0x98
-    mov [ebp + W_MAP_VIEW_VRAM_POINTER + 1], al
 
 .adjustXCoordWithinBlock:
     mov al, [ebp + W_X_BLOCK_COORD]
@@ -1199,27 +1052,6 @@ AdvancePlayerSprite:
 
 .updateMapView:
     call LoadCurrentMapView
-    ; schedule the freshly exposed edge for redraw, based on move direction
-    mov al, [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
-    cmp al, 0x01
-    jne .schedNorth
-    call ScheduleSouthRowRedraw
-    jmp .scroll
-.schedNorth:
-    cmp al, 0xFF
-    jne .schedEast
-    call ScheduleNorthRowRedraw
-    jmp .scroll
-.schedEast:
-    mov al, [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
-    cmp al, 0x01
-    jne .schedWest
-    call ScheduleEastColumnRedraw
-    jmp .scroll
-.schedWest:
-    cmp al, 0xFF
-    jne .scroll
-    call ScheduleWestColumnRedraw
 
 .scroll:
     ; Sprite-shift loop: slide each NPC's screen position by 2*step pixels to
@@ -1324,238 +1156,6 @@ MoveTileBlockMapPointerNorth:            ; AL = wCurMapWidth
     jnc .done
     dec byte [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR + 1]
 .done:
-    pop ebx
-    pop eax
-    ret
-
-; ---------------------------------------------------------------------------
-; Schedule{North,South}RowRedraw / Schedule{East,West}ColumnRedraw — faithful.
-; Pret ref: home/overworld.asm
-;
-; Copy the exposed 2-tile-deep row (or 2-tile-wide column) from wTileMap into
-; wRedrawRowOrColumnSrcTiles, compute its VRAM destination from
-; wMapViewVRAMPointer, and arm hRedrawRowOrColumnMode for the next VBlank.
-; All registers preserved.
-; ---------------------------------------------------------------------------
-ScheduleNorthRowRedraw:
-    push eax
-    push esi
-    push edi
-    push ecx
-    mov esi, W_TILEMAP                              ; hlcoord 0, 0
-    call CopyToRedrawRowOrColumnSrcTiles
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
-    mov [ebp + H_REDRAW_ROW_COL_DEST], al
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
-    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_ROW
-    pop ecx
-    pop edi
-    pop esi
-    pop eax
-    ret
-
-ScheduleSouthRowRedraw:
-    push eax
-    push ebx
-    push esi
-    push edi
-    push ecx
-    mov esi, W_TILEMAP + 23 * SCREEN_TILES_W        ; hlcoord 0, 23 (second-to-last tile row)
-    call CopyToRedrawRowOrColumnSrcTiles
-    ; dest = wMapViewVRAMPointer + (SCREEN_TILES_H-2)*32 = +$2E0, wrapped into $98xx
-    movzx ebx, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
-    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    shl eax, 8
-    or  ebx, eax
-    add ebx, (SCREEN_TILES_H - 2) * TILEMAP_WIDTH     ; = 23*32 = $2E0
-    mov al, bh
-    and al, 0x03
-    or  al, 0x98
-    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
-    mov [ebp + H_REDRAW_ROW_COL_DEST], bl
-    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_ROW
-    pop ecx
-    pop edi
-    pop esi
-    pop ebx
-    pop eax
-    ret
-
-ScheduleEastColumnRedraw:
-    push eax
-    push ebx
-    push esi
-    push edi
-    push ecx
-    mov esi, W_TILEMAP + 38                         ; hlcoord 38, 0 (SCREEN_TILES_W - 2)
-    call ScheduleColumnRedrawHelper
-    ; dest low = (low & $e0) | ((low + 38) & $1f)
-    movzx eax, byte [ebp + W_MAP_VIEW_VRAM_POINTER]
-    mov bl, al
-    and bl, 0xE0
-    add al, 38
-    and al, 0x1F
-    or  al, bl
-    mov [ebp + H_REDRAW_ROW_COL_DEST], al
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
-    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_COL
-    pop ecx
-    pop edi
-    pop esi
-    pop ebx
-    pop eax
-    ret
-
-ScheduleWestColumnRedraw:
-    push eax
-    push esi
-    push edi
-    push ecx
-    mov esi, W_TILEMAP                              ; hlcoord 0, 0
-    call ScheduleColumnRedrawHelper
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER]
-    mov [ebp + H_REDRAW_ROW_COL_DEST], al
-    mov al, [ebp + W_MAP_VIEW_VRAM_POINTER + 1]
-    mov [ebp + H_REDRAW_ROW_COL_DEST + 1], al
-    mov byte [ebp + H_REDRAW_ROW_COL_MODE], REDRAW_COL
-    pop ecx
-    pop edi
-    pop esi
-    pop eax
-    ret
-
-; CopyToRedrawRowOrColumnSrcTiles — copy 2*SCREEN_WIDTH tiles from [ESI] in
-; wTileMap to wRedrawRowOrColumnSrcTiles. Clobbers EAX, ESI, EDI, ECX.
-CopyToRedrawRowOrColumnSrcTiles:
-    mov edi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
-    mov ecx, 2 * SCREEN_WIDTH
-.loop:
-    mov al, [ebp + esi]
-    mov [ebp + edi], al
-    inc esi
-    inc edi
-    dec ecx
-    jnz .loop
-    ret
-
-; ScheduleColumnRedrawHelper — copy a 2-tile-wide, SCREEN_HEIGHT-tall column
-; starting at [ESI] in wTileMap to wRedrawRowOrColumnSrcTiles (2 bytes/row,
-; advancing one full screen row each iteration). Clobbers EAX, ESI, EDI, ECX.
-ScheduleColumnRedrawHelper:
-    mov edi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
-    mov ecx, SCREEN_HEIGHT
-.loop:
-    mov al, [ebp + esi]
-    mov [ebp + edi], al
-    inc edi
-    mov al, [ebp + esi + 1]
-    mov [ebp + edi], al
-    inc edi
-    add esi, SCREEN_WIDTH
-    dec ecx
-    jnz .loop
-    ret
-
-; ---------------------------------------------------------------------------
-; RedrawRowOrColumn — faithful translation.
-; Pret ref: home/vcopy.asm:RedrawRowOrColumn
-;
-; Runs in the per-frame (VBlank) pipeline. If a redraw is armed
-; (hRedrawRowOrColumnMode), copies the staged 2-row band or 2-column strip from
-; wRedrawRowOrColumnSrcTiles into VRAM at hRedrawRowOrColumnDest, wrapping inside
-; the 32×32 / 1 KB tilemap exactly as the GB does. All registers preserved.
-; ---------------------------------------------------------------------------
-RedrawRowOrColumn:
-    push eax
-    push ebx
-    push ecx
-    push edx
-    push esi
-    push edi
-
-    movzx eax, byte [ebp + H_REDRAW_ROW_COL_MODE]
-    test al, al
-    jz .done
-    mov bl, al
-    mov byte [ebp + H_REDRAW_ROW_COL_MODE], 0
-    dec bl
-    jnz .redrawRow
-
-.redrawColumn:
-    mov esi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
-    movzx edi, byte [ebp + H_REDRAW_ROW_COL_DEST]
-    movzx eax, byte [ebp + H_REDRAW_ROW_COL_DEST + 1]
-    shl eax, 8
-    or  edi, eax                                   ; EDI = GB VRAM dest address
-    mov ecx, SCREEN_HEIGHT
-.colLoop:
-    mov al, [ebp + esi]
-    inc esi
-    mov [ebp + edi], al
-    inc edi
-    mov al, [ebp + esi]
-    inc esi
-    mov [ebp + edi], al
-    ; advance to the same column on the next VRAM row (+32), wrap within the
-    ; 1 KB tilemap ($9800-$9BFF): addr = (addr + 31) & $3FF | $9800
-    add edi, TILEMAP_WIDTH - 1
-    and edi, 0x03FF
-    or  edi, GB_TILEMAP0
-    dec ecx
-    jnz .colLoop
-    jmp .done
-
-.redrawRow:
-    mov esi, W_REDRAW_ROW_OR_COLUMN_SRC_TILES
-    movzx edi, byte [ebp + H_REDRAW_ROW_COL_DEST]
-    movzx eax, byte [ebp + H_REDRAW_ROW_COL_DEST + 1]
-    shl eax, 8
-    or  edi, eax                                   ; EDI = GB VRAM dest address
-    call .drawHalf                                 ; upper half (SCREEN_WIDTH tiles)
-    ; next VRAM row: add TILEMAP_WIDTH to the low byte only (matches GB, no carry)
-    mov eax, edi
-    and eax, 0xFF
-    add eax, TILEMAP_WIDTH
-    and eax, 0xFF
-    and edi, 0xFFFFFF00
-    or  edi, eax
-    call .drawHalf                                 ; lower half
-    jmp .done
-
-; .drawHalf — write SCREEN_WIDTH tiles from [ESI] to VRAM [EDI], wrapping the
-; column within the 32-tile VRAM row (low 5 bits of the low byte). ESI advances
-; by SCREEN_WIDTH; EDI ends on the same VRAM row. Clobbers EAX, ECX, EDX.
-.drawHalf:
-    mov ecx, SCREEN_WIDTH / 2
-.halfLoop:
-    mov al, [ebp + esi]
-    inc esi
-    mov [ebp + edi], al
-    inc edi
-    mov al, [ebp + esi]
-    inc esi
-    mov [ebp + edi], al
-    ; e = ((e + 1) & $1f) | (e & $e0)   (EDI low byte already inc'd once above)
-    mov eax, edi
-    and eax, 0xFF
-    mov edx, eax
-    inc edx
-    and edx, 0x1F
-    and eax, 0xE0
-    or  eax, edx
-    and edi, 0xFFFFFF00
-    or  edi, eax
-    dec ecx
-    jnz .halfLoop
-    ret
-
-.done:
-    pop edi
-    pop esi
-    pop edx
-    pop ecx
     pop ebx
     pop eax
     ret
