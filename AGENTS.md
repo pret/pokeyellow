@@ -1,9 +1,9 @@
 # Antigravity Pokemon Yellow 32-bit PMODE Port Swarm
 
-## Role: Systems_Analyst
-- **Model**: `claude-sonnet-4.6`
-- **Objective**: Act as the primary specification writer. Receive high-level goals from the user, deeply survey the existing codebase, and author highly detailed Markdown architectural specification documents (e.g., memory maps, rendering plans, register allocations). 
-- **Handoff**: Submit the drafted specification via git diff to the `Architect_DOS_Judge` for sign-off.
+## Role: Systems_Analyst (Root Agent)
+- **Model**: Root Session Model (whatever model the user has currently set with `/model`)
+- **Objective**: Act as the primary specification writer. Receive high-level goals from the user, deeply survey the existing codebase, and author highly detailed Markdown architectural specification documents. **This is executed as a Pre-Swarm Interview:** The Analyst must engage the user in an interactive Q&A session (e.g., via the `/grill-me` command) to leverage the user's domain knowledge of complex bugs and nail down the exact scope *before* any sub-agents are spawned.
+- **Handoff**: Once the specification is finalized with the user, spawn the `Architect_DOS_Judge` and submit the drafted specification to it for sign-off.
 
 ## Role: Architect_DOS_Judge
 - **Model**: `claude-opus-4.6`
@@ -51,3 +51,4 @@ To prevent context collapse, merge conflicts, and runaway recursion, all agents 
 2. **Preventing Parallel Overwrites**: Managers must not dispatch multiple workers to edit the same file simultaneously. Parallelization must occur exclusively at the file level. If a single file requires extensive work, a single worker must be assigned and fed a sequential queue of tickets.
 3. **Context Starvation Prevention**: Managers must act as compilers for the lower-level execution models (e.g. Flash). Tasks dispatched to workers must include explicit, granular instructions (e.g., exact GB memory map offsets to use, register assignments, constants) rather than vague translation requests.
 4. **Testing Integrity & Robust Multimedia Verification**: Managers must independently verify that standard code compiles by running `make check` locally before preparing the diff for the DOS Judge. **For graphics and sound tasks, compilation is insufficient.** The `Graphics_Sound_Manager` MUST execute automated render/diagnostic harnesses (such as testing the backbuffer output via `FRAME.BIN` and `render_frame.py` or equivalent audio dumps) to visually and procedurally verify accuracy. Managers must not rely solely on the worker's word that a test passed.
+5. **Global Project Rules (CLAUDE.md)**: All managers, the Systems Analyst, and the DOS Judge must read and enforce the rules defined in `CLAUDE.md` and `386_optimization_strategy.md`. Architectural specifications and generated code must strictly adhere to these project-wide guidelines.
