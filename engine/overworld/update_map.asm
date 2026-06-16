@@ -6,14 +6,18 @@ ReplaceTileBlock:
 	call GetPredefRegisters
 	ld hl, wOverworldMap
 	ld a, [wCurMapWidth]
-	add $6
+	add MAP_BORDER * 2
 	ld e, a
 	ld d, $0
+	push af
+	ld a, MAP_BORDER
+.addBorderLoop
 	add hl, de
+	dec a
+	jr nz, .addBorderLoop
+	ld e, MAP_BORDER
 	add hl, de
-	add hl, de
-	ld e, $3
-	add hl, de
+	pop af
 	ld e, a
 	ld a, b
 	and a

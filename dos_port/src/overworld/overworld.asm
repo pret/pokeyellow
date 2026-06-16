@@ -83,11 +83,10 @@ PALLET_TOWN_HEIGHT          equ 9
 PALLET_TOWN_BORDER_BLOCK    equ 0x0B   ; border block from PalletTown_Object
 TILESET_BANK_FLAT           equ 0x01   ; ignored in flat model (TODO-HW: ROM banking)
 
-; wCurrentTileBlockMapViewPointer for Pallet Town at block origin (0,0):
-;   wOverworldMap + MAP_BORDER * stride + MAP_BORDER
+; wCurrentTileBlockMapViewPointer for Pallet Town centered on player at (8,8) tiles:
+;   wOverworldMap + (MAP_BORDER - 2) * stride + (MAP_BORDER - 2)
 ;   stride = PALLET_TOWN_WIDTH + 2*MAP_BORDER = 10 + 12 = 22
-;   = 0xC6E8 + 6*22 + 6 = 0xC6E8 + 138 = 0xC772
-PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + MAP_BORDER * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + MAP_BORDER
+PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER - 2) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 2)
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
 MAP_NO_CONNECTION           equ 0xFF

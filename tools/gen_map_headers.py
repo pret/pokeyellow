@@ -30,7 +30,7 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
         # adds 2 tile rows → tile 12 → block 3).  So view_start = player_wOW_row
         # − 3, which is one stride less than pret's formula.
         view_start_row = conn_height + BORDER - 4
-        view_start_col = BORDER - 2
+        view_start_col = BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = conn_height * 2 - 1
         _x = offset * -2
@@ -40,8 +40,8 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
     elif direction == "SOUTH":
         _blk = _src
         _map = (cur_width + 2 * BORDER) * (cur_height + BORDER) + _tgt
-        view_start_row = BORDER - 2
-        view_start_col = BORDER - 2
+        view_start_row = BORDER - 4
+        view_start_col = BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = 0
         _x = offset * -2
@@ -51,8 +51,8 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
     elif direction == "WEST":
         _blk = conn_width * _src + conn_width - BORDER
         _map = (cur_width + 2 * BORDER) * _tgt
-        view_start_row = BORDER - 2
-        view_start_col = conn_width + BORDER - 3
+        view_start_row = BORDER - 4
+        view_start_col = conn_width + BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = offset * -2
         _x = conn_width * 2 - 1
@@ -62,8 +62,8 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
     elif direction == "EAST":
         _blk = conn_width * _src
         _map = (cur_width + 2 * BORDER) * _tgt + cur_width + BORDER
-        view_start_row = BORDER - 2
-        view_start_col = BORDER - 2
+        view_start_row = BORDER - 4
+        view_start_col = BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = offset * -2
         _x = 0
@@ -110,7 +110,7 @@ def main():
     ])
     
     # Map definitions
-    W_OVERWORLD_MAP = 0xE580
+    W_OVERWORLD_MAP = 0xE600
     
     maps = {
         "PALLET_TOWN": {"id": 0x00, "width": 10, "height": 9, "blk_addr": 0x4E00, "border": 0x0B, "warps": 3, "signs": 4, "sprites": 3},

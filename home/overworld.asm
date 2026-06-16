@@ -885,10 +885,13 @@ LoadTileBlockMap::
 	ldh [hMapStride], a ; map width + border
 	ld b, 0
 	ld c, a
-; make space for north border (next 3 lines)
+	push af
+	ld a, MAP_BORDER
+.northBorderLoop
 	add hl, bc
-	add hl, bc
-	add hl, bc
+	dec a
+	jr nz, .northBorderLoop
+	pop af
 	ld c, MAP_BORDER
 	add hl, bc ; this puts us past the (west) border
 	ld a, [wCurMapDataPtr] ; tile map pointer

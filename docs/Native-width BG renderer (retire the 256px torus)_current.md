@@ -1,4 +1,4 @@
-# Plan: Native-width BG renderer (retire the 256px torus), then border + connections
+# Plan: Native-width BG renderer (Stage A Complete), border + connections (Stage B Current)
 
 ## Context
 
@@ -29,12 +29,12 @@ map and transitions place the player correctly.
 **Decisions locked with the user:**
 - Architecture: **native oversized surface + plain pixel-offset blit** (no torus).
 - Scope: renderer **and** border **and** connections, executed as 3 sequential,
-  independently-verifiable stages; **Stage A detailed here**, B/C specced.
+  independently-verifiable stages; **Stage A is complete**, B is current, C is specced.
 - Scroll: **per-pixel smooth** (preserve the 2px/frame glide).
 
 ---
 
-## Stage A — Native-width BG renderer (execute now)
+## Stage A — Native-width BG renderer (COMPLETED 2026-06-16)
 
 ### Key insight that makes this clean
 `LoadCurrentMapView` (`src/overworld/overworld.asm`) already maintains
@@ -49,10 +49,10 @@ The native renderer mirrors **`wSurroundingTiles` (352×256 px)** and blits a
 with **no wrap**. This removes the 40-into-32 fold entirely.
 
 ### New renderer (`src/ppu/ppu.asm`)
-- [ ] **Replace `bg_surface`** (`resb 256*256`) with a native surface
+- [x] **Replace `bg_surface`** (`resb 256*256`) with a native surface
    `resb 352*256` (`SURROUNDING_WIDTH*8` × `SURROUNDING_HEIGHT*8` = 88 KB BSS in
    the program image, not the GB alloc — fine).
-- [ ] **Rewrite `render_bg`** to:
+- [x] **Rewrite `render_bg`** to:
    - Decode `wSurroundingTiles` (44×32 tile IDs) → native surface using the
      existing `tile_cache` (keep `rebuild_tile_cache` and `g_tilecache_dirty`
      unchanged; OBJ tiles still need the cache). Reuse the per-tile decode body
@@ -68,7 +68,7 @@ with **no wrap**. This removes the 40-into-32 fold entirely.
      386+). The shadow/diff optimization (`sync_surface_diff`/`bg_tilemap_shadow`)
      can return later keyed on `wSurroundingTiles` instead of VRAM; not needed
      for correctness. Drop `surf_last_base`/torus-base logic.
-- [ ] **Blit offset (the smooth-scroll math).** The window's top-left within the
+- [x] **Blit offset (the smooth-scroll math).** The window's top-left within the
    surface = the 2-tile margin minus the partial scroll already consumed:
    - Coarse: `wSurroundingTiles` is built so the 40×25 view begins at
      surface tile `(2,2)` only when `wXBlockCoord/wYBlockCoord == 0`; when a
@@ -88,15 +88,15 @@ with **no wrap**. This removes the 40-into-32 fold entirely.
 
 ### Retire the GB-VRAM BG scroll pipeline
 These exist only to feed the torus; with the native surface they are dead:
-- [ ] `CopyMapViewToVRAM` / `CopyMapViewToVRAM2` (`overworld.asm`) — BG path.
-- [ ] `FillExtraVRAMRows` (`overworld.asm`) — stale-row hack; delete.
-- [ ] `RedrawRowOrColumn` + `Schedule{North,South}RowRedraw` /
+- [x] `CopyMapViewToVRAM` / `CopyMapViewToVRAM2` (`overworld.asm`) — BG path.
+- [x] `FillExtraVRAMRows` (`overworld.asm`) — stale-row hack; delete.
+- [x] `RedrawRowOrColumn` + `Schedule{North,South}RowRedraw` /
   `Schedule{East,West}ColumnRedraw` + `CopyToRedrawRowOrColumnSrcTiles`
   (`overworld.asm`) and its `DelayFrame` call site (`frame.asm:58`).
-- [ ] `wMapViewVRAMPointer` slide block in `AdvancePlayerSprite` (`overworld.asm`
+- [x] `wMapViewVRAMPointer` slide block in `AdvancePlayerSprite` (`overworld.asm`
   ~1087–1141, the `.checkWest/.checkSouth/.checkNorth` `&0x03|0x98` ring math)
   and its resets (`ResetMapVariables`, `.mapTransition`, DEBUG harness).
-- [ ] `do_bg_transfer` BG copy in `frame.asm` is gated on `H_AUTO_BG_TRANSFER_EN`,
+- [x] `do_bg_transfer` BG copy in `frame.asm` is gated on `H_AUTO_BG_TRANSFER_EN`,
   which the overworld sets to 0 (`overworld.asm:403`); leave the routine for
   now (text/menu may use it later) but it is inert in the overworld.
 
@@ -134,38 +134,39 @@ dosbox-x -defaultdir "$PWD" -c 'mount c "'"$PWD"'"' -c c: -c PKMN.EXE -c exit
 python3 ../tools/render_frame.py FRAME.BIN /tmp/f.png
 ```
 Checks:
-- [ ] **Wrap gone:** re-run the cols-256–319-vs-0–63 comparison (the script in the
+- [x] **Wrap gone:** re-run the cols-256–319-vs-0–63 comparison (the script in the
    2026-06-16 session); expect it to now diverge like a normal control
    (~40–50% different), proving 40 distinct columns.
-- [ ] **No top-row garbage** at `DEBUG_WALK_STEPS=1,2,3` (the reproducer).
-- [ ] **Baseline unchanged:** `DEBUG_TRANSITION=1 DEBUG_BASELINE=1` still renders
+- [x] **No top-row garbage** at `DEBUG_WALK_STEPS=1,2,3` (the reproducer).
+- [x] **Baseline unchanged:** `DEBUG_TRANSITION=1 DEBUG_BASELINE=1` still renders
    clean Pallet Town.
-- [ ] **Smoothness:** capture mid-step (odd `DEBUG_WALK_STEPS`) shows a 2px-offset
+- [x] **Smoothness:** capture mid-step (odd `DEBUG_WALK_STEPS`) shows a 2px-offset
    glide, not a tile snap. Calibrate the `Xoff/Yoff` sign here.
-- [ ] **Interactive:** `make SKIP_TITLE=1`, launch DOSBox-X, walk all four
+- [x] **Interactive:** `make SKIP_TITLE=1`, launch DOSBox-X, walk all four
    directions and across the north transition; confirm coherent scroll + edges
    (edges may still show border-block fill until Stage B — that's expected).
 
 ---
 
-## Stage B — Enlarge MAP_BORDER so the centered viewport never reads past the map (SPEC)
+## Stage B — Enlarge MAP_BORDER so the centered viewport never reads past the map (CURRENT)
 
 **Problem:** player is pinned at screen tile (20,12) = block (5,3). The 40×25
 viewport spans 10×6.25 blocks, so centering needs ~5 blocks left/right and ~3
 up/down of real data around the player. `MAP_BORDER=3` is too small near edges →
 the out-of-map clamp paints border tiles (clean, but not real map).
 
-**Approach (to detail next session):**
-- [ ] Raise `MAP_BORDER` (`include/gb_memmap.inc`) from 3 to **~6** (covers the
-  5-block half-width + margin). Verify `wOverworldMap` still fits `0x514` bytes:
-  worst case Route21 (w10,h45) at border 6 → stride 22 × 57 rows = 1254 < 1300 ✓.
-- [ ] `SCREEN_BLOCK_WIDTH/HEIGHT` and `SURROUNDING_WIDTH/HEIGHT` already cover the
-  viewport; re-confirm they still bound the surface after the border change.
-- [ ] `LoadTileBlockMap` and the `PALLET_TOWN_VIEW_PTR` start use
-  `MAP_BORDER`/`stride` symbolically — should follow automatically; audit the
-  few hardcoded `MAP_BORDER*2`/`+6` sites.
-- [ ] The out-of-map clamp stays as a safety net; with a big enough border it should
-  stop firing in normal play (confirm via a debug counter or capture).
+**Approach / Execution Plan (File-by-file):**
+
+1. `dos_port/include/gb_memmap.inc`:
+   - [ ] Change `MAP_BORDER` from `3` to `6` to cover the 5-block half-width + margin of our wider 40x25 viewport.
+   - [ ] Change `W_OVERWORLD_MAP_SIZE` from `0x514` (1300 bytes) to `0x800` (2048 bytes). This guarantees that the largest maps in the game (e.g., Route 17 at 72 blocks high) will perfectly fit within the buffer when padded with `MAP_BORDER = 6` (which requires 1848 bytes).
+   - [ ] Delete `W_REDRAW_ROW_OR_COLUMN_SRC_TILES` (80 bytes) entirely, as its corresponding logic was ripped out in Stage A.
+   - [ ] Shift `W_TILEMAP_BACKUP2` down to `0xED80` (which is `0xE580` + `0x800`) to safely accommodate the expanded `wOverworldMap` buffer.
+
+2. `dos_port/src/overworld/overworld.asm`:
+   - [ ] `SCREEN_BLOCK_WIDTH/HEIGHT` and `SURROUNDING_WIDTH/HEIGHT` are decoupled from `MAP_BORDER` and remain unchanged.
+   - [ ] The codebase already leverages `MAP_BORDER * 2` symbolically (e.g., `add al, MAP_BORDER * 2`). Merely audit and update the hardcoded math inside the comments (e.g., change `10 + 6 = 16` to `10 + 12 = 22`). Note: Stage C will programmatically fix the `gen_map_headers.py` math.
+   - [ ] Keep the out-of-map clamp in `DrawTileBlock` strictly as a safety net.
 
 - [ ] **Verify:** baseline + walk-to-edge in all four directions show **real map data**
 to the screen edge (no border-block band) via the FRAME.BIN loop.

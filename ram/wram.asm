@@ -268,7 +268,7 @@ ENDU
 SECTION "Overworld Map", WRAM0
 
 UNION
-wOverworldMap:: ds 1300
+wOverworldMap:: ds 2048
 wOverworldMapEnd::
 
 NEXTU

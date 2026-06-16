@@ -34,10 +34,9 @@ supporting home routines (`src/util/copy_data.asm`, `src/video/lcd_control.asm`,
 shows "Pokémon Yellow Version", and `SKIP_TITLE=1` boots straight into a fully
 drawn Pallet Town (Oak's Lab, tree border, sign) in the DMG-green palette.
 Player movement now works: `OverworldLoop` reads the joypad and walks the
-player in all four directions, scrolling the map smoothly via the faithful
-`AdvancePlayerSprite` (sliding `wMapViewVRAMPointer` + per-frame
-`RedrawRowOrColumn` edge redraw, hooked into `DelayFrame`) with land collision
-against the embedded `Overworld_Coll` passable-tile list.
+player in all four directions, scrolling the map smoothly via
+`AdvancePlayerSprite` (which now relies purely on `LoadCurrentMapView` without
+VRAM sliding) with land collision against the embedded `Overworld_Coll` passable-tile list.
 The OAM sprite renderer (`src/ppu/ppu.asm:render_sprites`) is in: 8×8 DMG OBJ
 emulation (X/Y flip, OBP0/OBP1, color-0 transparency, BG-priority bit), reading
 `$FE00` and compositing after `render_bg`.
@@ -57,15 +56,13 @@ vChars1 with the font, as on the GB). NPC slots are wired but inert (picture ID
 VRAM-slot allocation / `DetectCollisionBetweenSprites`), the window layer, then
 the random-encounter trigger.
 
-`render_bg` (`src/ppu/ppu.asm`) is a **scanline renderer over a decoded-tile
-cache**: the whole BG/window tile-data region ($8000-$97FF, 384 tiles) is
-pre-decoded 2bpp→8bpp into `tile_cache` (24 KB, BGP baked in) once and only
-re-decoded when VRAM tile data or BGP changes (`g_tilecache_dirty` /
-BGP-compare). Per output scanline it then assembles 41 tiles by *copying*
-decoded rows into a line buffer and copies 320 px from the `SCX & 7` fine
-offset, so both axes scroll pixel-smooth with no per-pixel bit decode in the hot
-path. **Any new routine that writes VRAM tile data must set
-`g_tilecache_dirty`** (the existing VRAM loaders already do).
+`render_bg` (`src/ppu/ppu.asm`) is a **native-width surface renderer**: it decodes
+`wSurroundingTiles` (44×32 tile IDs) into a 352×256 pixel surface using the existing
+`tile_cache` (2bpp→8bpp decoded tiles). It then blits a 320×200 window at a signed
+pixel offset `(Xoff, Yoff)` derived from the coarse block alignment and the fine
+`H_SCX`/`H_SCY` values, providing smooth per-pixel scrolling without wrap artifacts.
+The old 256×256 VRAM torus emulation and related `RedrawRowOrColumn` rings are gone.
+**Any new routine that writes VRAM tile data must set `g_tilecache_dirty`**.
 
 **Temporary scaffold — two out-of-map clamps (`src/overworld/overworld.asm`):**
 the extended 40×25-tile viewport draws a larger area than the original 20×18 and

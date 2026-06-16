@@ -197,24 +197,49 @@ render_bg:
     xor edx, edx
     div ecx
     ; EAX = view_block_y, EDX = view_block_x
+    mov ebx, eax   ; save view_block_y in EBX
     
-    ; Xoff = 16 + (MAP_BORDER - view_block_x) * 32 + H_SCX_signed
-    mov ecx, MAP_BORDER
-    sub ecx, edx
-    shl ecx, 5
-    add ecx, 16
-    movsx edx, byte [ebp + H_SCX]
-    add ecx, edx
-    mov [bg_scx], ecx
+    ; Xoff = (MAP_BORDER*32 + wXCoord*16 - view_block_x*32) - 160 + walk_offset_x
+    mov eax, MAP_BORDER
+    sub eax, edx             ; eax = MAP_BORDER - view_block_x
+    shl eax, 5               ; * 32
+    movzx ecx, byte [ebp + W_X_COORD]
+    shl ecx, 4               ; * 16
+    add eax, ecx
+    sub eax, 160
     
-    ; Yoff = 16 + (MAP_BORDER - view_block_y) * 32 + H_SCY_signed
-    mov ecx, MAP_BORDER
-    sub ecx, eax
-    shl ecx, 5
-    add ecx, 16
-    movsx edx, byte [ebp + H_SCY]
-    add ecx, edx
-    mov [bg_scy], ecx
+    ; walk_offset_x = X_STEP_VECTOR * (8 - wWalkCounter) * 2
+    movzx ecx, byte [ebp + W_WALK_COUNTER]
+    push ebx
+    mov ebx, 8
+    sub ebx, ecx             ; ebx = 8 - walk_counter
+    shl ebx, 1               ; ebx = (8 - walk_counter) * 2
+    movsx ecx, byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
+    imul ecx, ebx            ; ecx = step_vector * offset
+    add eax, ecx
+    pop ebx
+    mov [bg_scx], eax
+    
+    ; Yoff = (MAP_BORDER*32 + wYCoord*16 - view_block_y*32) - 96 + walk_offset_y
+    mov eax, MAP_BORDER
+    sub eax, ebx             ; eax = MAP_BORDER - view_block_y
+    shl eax, 5               ; * 32
+    movzx ecx, byte [ebp + W_Y_COORD]
+    shl ecx, 4               ; * 16
+    add eax, ecx
+    sub eax, 96
+    
+    ; walk_offset_y = Y_STEP_VECTOR * (8 - wWalkCounter) * 2
+    movzx ecx, byte [ebp + W_WALK_COUNTER]
+    push ebx
+    mov ebx, 8
+    sub ebx, ecx             ; ebx = 8 - walk_counter
+    shl ebx, 1               ; ebx = (8 - walk_counter) * 2
+    movsx ecx, byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
+    imul ecx, ebx            ; ecx = step_vector * offset
+    add eax, ecx
+    pop ebx
+    mov [bg_scy], eax
 
     ; blit 320x200 from bg_surface at (Xoff, Yoff)
     xor edx, edx   ; screen y
