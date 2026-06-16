@@ -183,18 +183,18 @@ W_RIVAL_NAME                 equ 0xD349 ; wRivalName  — 11 bytes, '@'-terminat
 ; overlapping pret WRAM1 symbols.  All via constants; no hardcoded addresses
 ; in translated code.
 ; Layout in echo RAM ($E000–$F167, all within the DPMI allocation):
-;   $E000  wSurroundingTiles / wTileMapBackup   1408 B ($580) → $E57F
-;   $E580  wOverworldMap                        2048 B ($800) → $ED7F
-;   $ED80  wTileMapBackup2                      1000 B ($3E8) → $F167
+;   $E000  wSurroundingTiles / wTileMapBackup   1536 B ($600) → $E5FF
+;   $E600  wOverworldMap                        2048 B ($800) → $EDFF
+;   $EE00  wTileMapBackup2                      1000 B ($3E8) → $F1E7
 W_TILEMAP_BACKUP             equ 0xE000 ; wTileMapBackup (= wSurroundingTiles, see below)
-W_TILEMAP_BACKUP2            equ 0xED80 ; wTileMapBackup2 (1000 B)
+W_TILEMAP_BACKUP2            equ 0xEE00 ; wTileMapBackup2 (1000 B)
 
 ; Overworld surrounding-tiles buffer (alias for wTileMapBackup)
-; 44×32 = 1408 bytes; DrawTileBlock writes here before crop to wTileMap.
+; 48×32 = 1536 bytes; DrawTileBlock writes here before crop to wTileMap.
 W_SURROUNDING_TILES          equ 0xE000 ; wSurroundingTiles = wTileMapBackup
 
 ; Overworld map block buffer (2048 bytes)
-W_OVERWORLD_MAP              equ 0xE580 ; wOverworldMap
+W_OVERWORLD_MAP              equ 0xE600 ; wOverworldMap
 W_OVERWORLD_MAP_SIZE         equ 0x800  ; wOverworldMapEnd − wOverworldMap (2048 bytes)
 
 ; Walk/sprite state
@@ -319,9 +319,9 @@ TILEMAP_WIDTH            equ TILEMAP_W                        ; 32
 ; Overworld map geometry (constants/gfx_constants.asm + map_data_constants.asm)
 BLOCK_WIDTH              equ 4           ; tiles per map block, X
 BLOCK_HEIGHT             equ 4           ; tiles per map block, Y
-SCREEN_BLOCK_WIDTH       equ 11          ; blocks visible per screen row (ceil(40/4)+1)
-SCREEN_BLOCK_HEIGHT      equ 8           ; blocks visible per screen column (ceil(25/4)+1)
-SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 44 tiles wide
+SCREEN_BLOCK_WIDTH       equ 12          ; blocks visible per screen row
+SCREEN_BLOCK_HEIGHT      equ 8           ; blocks visible per screen column
+SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 48 tiles wide
 SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 32 tiles tall
 MAP_BORDER               equ 6           ; block-unit border around map in wOverworldMap
 

@@ -101,8 +101,8 @@ bg_tilemap_base: resd 1    ; BG tilemap base addr ($9800 or $9C00)
 bg_scy:          resd 1    ; SCY shadow
 bg_scx:          resd 1    ; SCX shadow
 
-; bg_surface: 352×256 raw-color mirror of wSurroundingTiles.
-bg_surface:        resb 352 * 256
+; bg_surface: 384×256 raw-color mirror of wSurroundingTiles.
+bg_surface:        resb 384 * 256
 alignb 4
 ; render_window row buffer and scanline state
 row_buf:         resb 256  ; decoded 256-px virtual window row (shade 0–3)
@@ -118,8 +118,8 @@ section .text
 ; ---------------------------------------------------------------------------
 ; render_bg — blit the BG plane from a decoded offscreen surface (Tier 2 step 3).
 ;
-; Instead of re-resolving 41 tiles × 200 scanlines from the VRAM tilemap every
-; frame, we decode wSurroundingTiles (44x32 tiles) into bg_surface (352x256)
+; Instead of re-resolving 48 tiles × 200 scanlines from the VRAM tilemap every
+; frame, we decode wSurroundingTiles (48x32 tiles) into bg_surface (384x256)
 ; every frame, then blit a 320x200 window at the calculated offset.
 ; ---------------------------------------------------------------------------
 render_bg:
@@ -137,8 +137,8 @@ render_bg:
     call rebuild_tile_cache
 .cache_ok:
 
-    ; ---- decode wSurroundingTiles (44x32) into bg_surface (352x256) ----
-    xor ebx, ebx       ; EBX = tile index 0..1407 (44 * 32)
+    ; ---- decode wSurroundingTiles (48x32) into bg_surface (384x256) ----
+    xor ebx, ebx       ; EBX = tile index 0..1535 (48 * 32)
 .decode_loop:
     mov al, [ebp + W_SURROUNDING_TILES + ebx]
     
@@ -158,16 +158,16 @@ render_bg:
     shl eax, 2
     lea esi, [tile_cache + eax]
 
-    ; calculate destination in bg_surface
-    ; row = EBX / 44, col = EBX % 44
+    ; Calculate destination in bg_surface
+    ; row = EBX / 48, col = EBX % 48
     mov eax, ebx
-    mov ecx, 44
+    mov ecx, 48
     xor edx, edx
     div ecx
     ; EAX = row, EDX = col
     
-    ; dest offset = row * 8 * 352 + col * 8
-    imul eax, eax, 8 * 352
+    ; dest offset = row * 8 * 384 + col * 8
+    imul eax, eax, 8 * 384
     lea edi, [bg_surface + eax + edx * 8]
     
     ; copy 8 rows
@@ -178,43 +178,50 @@ render_bg:
     mov eax, [esi + 4]
     mov [edi + 4], eax
     add esi, 8
-    add edi, 352
+    add edi, 384
     dec ecx
     jnz .row_copy
 
     inc ebx
-    cmp ebx, 44 * 32
+    cmp ebx, 48 * 32
     jb .decode_loop
 
     ; ---- blit a 320x200 window from bg_surface ----
-    ; Calculate baseX = (2 - wXBlockCoord*2) * 8
-    mov al, [ebp + W_X_BLOCK_COORD]
-    movzx eax, al
-    shl eax, 1
-    mov ecx, 2
+    ; The view pointer (wCurrentTileBlockMapViewPointer) identifies the top-left
+    ; block of wSurroundingTiles. We subtract it from the map origin (MAP_BORDER)
+    ; to find the world block coordinate of bg_surface.
+    movzx ecx, byte [ebp + W_CUR_MAP_WIDTH]
+    add ecx, MAP_BORDER * 2
+    movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    sub eax, W_OVERWORLD_MAP
+    xor edx, edx
+    div ecx
+    ; EAX = view_block_y, EDX = view_block_x
+    
+    ; Xoff = 16 + (MAP_BORDER - view_block_x) * 32 + H_SCX_signed
+    mov ecx, MAP_BORDER
+    sub ecx, edx
+    shl ecx, 5
+    add ecx, 16
+    movsx edx, byte [ebp + H_SCX]
+    add ecx, edx
+    mov [bg_scx], ecx
+    
+    ; Yoff = 16 + (MAP_BORDER - view_block_y) * 32 + H_SCY_signed
+    mov ecx, MAP_BORDER
     sub ecx, eax
-    shl ecx, 3
-    movsx eax, byte [ebp + H_SCX]
-    add ecx, eax
-    mov [bg_scx], ecx    ; Xoff
-
-    ; Calculate baseY = (2 - wYBlockCoord*2) * 8
-    mov al, [ebp + W_Y_BLOCK_COORD]
-    movzx eax, al
-    shl eax, 1
-    mov ecx, 2
-    sub ecx, eax
-    shl ecx, 3
-    movsx eax, byte [ebp + H_SCY]
-    add ecx, eax
-    mov [bg_scy], ecx    ; Yoff
+    shl ecx, 5
+    add ecx, 16
+    movsx edx, byte [ebp + H_SCY]
+    add ecx, edx
+    mov [bg_scy], ecx
 
     ; blit 320x200 from bg_surface at (Xoff, Yoff)
     xor edx, edx   ; screen y
 .blit_row:
     mov eax, [bg_scy]
     add eax, edx
-    imul eax, eax, 352
+    imul eax, eax, 384
     mov ecx, [bg_scx]
     add eax, ecx
     lea esi, [bg_surface + eax]
