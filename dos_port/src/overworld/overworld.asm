@@ -383,8 +383,8 @@ SetupPlayerSprite:
 
     mov byte [ebp + W_SPRITE_PLAYER_PICTURE_ID],      1   ; non-zero → slot in use
     mov byte [ebp + W_SPRITE_PLAYER_IMAGE_BASE_OFFSET], 1 ; player VRAM slot
-    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x60 ; fixed screen Y (96 = center of 200)
-    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0xA0 ; fixed screen X (160 = center of 320)
+    mov byte [ebp + W_SPRITE_PLAYER_Y_PIXELS],        0x3C ; fixed screen Y ($3C = GB center 72 - 12)
+    mov byte [ebp + W_SPRITE_PLAYER_X_PIXELS],        0x40 ; fixed screen X ($40 = GB center 80 - 16)
     mov byte [ebp + W_SPRITE_PLAYER_IMAGE_INDEX],     SPRITE_FACING_DOWN
     mov byte [ebp + W_SPRITE_PLAYER_INTRA_ANIM],      0
     mov byte [ebp + W_SPRITE_PLAYER_ANIM_FRAME],      0

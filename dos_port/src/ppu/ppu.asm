@@ -427,14 +427,14 @@ render_sprites:
     movzx eax, byte [ebp + esi]          ; Y (screen Y + 16)
     sub eax, OAM_Y_OFS
     movsx eax, al                        ; sign-extend relative Y coordinate
-    add eax, 28                          ; y' = y + 28
+    add eax, 36                          ; y' = y + 36 (60 -> 96)
     add eax, [sprite_shift_y]            ; apply camera clamp shift
     mov [spr_sy], eax
 
     movzx eax, byte [ebp + esi + 1]      ; X (screen X + 8)
     sub eax, OAM_X_OFS                   ; eax = screen X
     movsx eax, al                        ; sign-extend relative X coordinate
-    add eax, 80                          ; x' = x + 80
+    add eax, 96                          ; x' = x + 96 (64 -> 160)
     add eax, [sprite_shift_x]            ; apply camera clamp shift
     mov [spr_sx], eax
     movzx eax, byte [ebp + esi + 2]      ; tile id
