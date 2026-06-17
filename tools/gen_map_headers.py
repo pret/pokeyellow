@@ -113,9 +113,9 @@ def main():
     W_OVERWORLD_MAP = 0xE600
     
     maps = {
-        "PALLET_TOWN": {"id": 0x00, "width": 10, "height": 9, "blk_addr": 0x4E00, "border": 0x0B, "warps": 3, "signs": 4, "sprites": 3},
-        "ROUTE_1":     {"id": 0x0C, "width": 10, "height": 18, "blk_addr": 0x5000, "border": 0x0B, "warps": 0, "signs": 1, "sprites": 2},
-        "ROUTE_21":    {"id": 0x20, "width": 10, "height": 45, "blk_addr": 0x5200, "border": 0x43, "warps": 0, "signs": 0, "sprites": 9},
+        "PALLET_TOWN": {"id": 0x00, "width": 10, "height": 9, "blk_addr": 0x4E00, "border": 0x0B, "warps": 3, "signs": 4, "sprites": 0},
+        "ROUTE_1":     {"id": 0x0C, "width": 10, "height": 18, "blk_addr": 0x5000, "border": 0x0B, "warps": 0, "signs": 1, "sprites": 0},
+        "ROUTE_21":    {"id": 0x20, "width": 10, "height": 45, "blk_addr": 0x5200, "border": 0x43, "warps": 0, "signs": 0, "sprites": 0},
     }
     
     # connections: map -> list of (direction, target_name, offset)

@@ -416,7 +416,6 @@ LoadMapData:
     call EnableLCD
     call GBPalNormal
     call LoadPlayerSpriteGraphics       ; scaffold: player tiles → OBJ VRAM, hide OAM
-    call SetupPalletTownNPCs            ; scaffold: NPC still tiles + slot init
     ; RunPaletteCommand(SET_PAL_OVERWORLD) — ; TODO-HW: palette (Phase 5)
     ; UpdateMusic / PlayDefaultMusicFadeOutCurrent — ; TODO-HW: audio (Phase 3)
     ret
@@ -462,76 +461,6 @@ LoadPlayerSpriteGraphics:
     pop eax
     ret
 
-; ---------------------------------------------------------------------------
-; SetupPalletTownNPCs — Phase 2 scaffold: load NPC still tiles + init slots 1-3.
-; NOT a faithful translation. Replaces InitMapSprites (to be ported later).
-;
-; VRAM layout (imageBaseOffset N → tile base (N-1)*12 in OBJ tile space):
-;   Slot 1 Girl   imageBaseOffset 3 → tiles $18-$23 at GB_VCHARS0+$180 ($8180)
-;   Slot 2 Fisher imageBaseOffset 4 → tiles $24-$2F at GB_VCHARS0+$240 ($8240)
-;   Slot 3 Oak    imageBaseOffset 5 → tiles $30-$3B at GB_VCHARS0+$300 ($8300)
-;
-; Scaffold positions (player wYCoord=wXCoord=8 at startup; all on-screen):
-;   Girl   MAPY=10 MAPX=10  screen≈(32, 28)
-;   Fisher MAPY=12 MAPX=14  screen≈(96, 60)
-;   Oak    MAPY=14 MAPX=11  screen≈(48, 92)
-; (screen Y = (MAPY-8)*16-4, screen X = (MAPX-8)*16)
-;
-; MOVEMENTSTATUS is set to 0 so UpdateNonPlayerSprite runs InitializeSpriteStatus
-; on the first overworld frame to set screen positions from MAPY/MAPX.
-; ---------------------------------------------------------------------------
-SetupPalletTownNPCs:
-    mov byte [g_tilecache_dirty], 1     ; VRAM tile data changes → rebuild decode cache
-    push esi
-    push edi
-    push ecx
-
-    ; --- VRAM: still tiles for each NPC (192 bytes = 12 tiles each) ---
-    mov esi, npc_girl_still
-    lea edi, [ebp + GB_VCHARS0 + 0x18 * 16]   ; tile $18 = $8180
-    mov ecx, 192
-    rep movsb
-
-    mov esi, npc_fisher_still
-    lea edi, [ebp + GB_VCHARS0 + 0x24 * 16]   ; tile $24 = $8240
-    mov ecx, 192
-    rep movsb
-
-    mov esi, npc_oak_still
-    lea edi, [ebp + GB_VCHARS0 + 0x30 * 16]   ; tile $30 = $8300
-    mov ecx, 192
-    rep movsb
-
-    ; --- Slot 1: Girl (imageBaseOffset 3, MAPY=10, MAPX=10) ---
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_PICTUREID],      1
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x10 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MAPY],           10
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MAPX],           10
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x10 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 3
-
-    ; --- Slot 2: Fisher (imageBaseOffset 4, MAPY=12, MAPX=14) ---
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_PICTUREID],      1
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x20 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MAPY],           12
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MAPX],           14
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x20 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 4
-
-    ; --- Slot 3: Oak (imageBaseOffset 5, MAPY=14, MAPX=11) ---
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_PICTUREID],      1
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_MOVEMENTSTATUS], 0
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x30 + SPRITESTATEDATA1_FACINGDIRECTION], SPRITE_FACING_DOWN
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MAPY],           14
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MAPX],           11
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_MOVEMENTBYTE1],  STAY
-    mov byte [ebp + W_SPRITE_STATE_DATA_2 + 0x30 + SPRITESTATEDATA2_IMAGEBASEOFFSET], 5
-
-    pop ecx
-    pop edi
-    pop esi
     ret
 
 ; ---------------------------------------------------------------------------
