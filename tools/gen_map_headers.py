@@ -29,7 +29,7 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
         # tile row 10) at wSurroundingTiles block row 3 from view_start (Y_BC=1
         # adds 2 tile rows → tile 12 → block 3).  So view_start = player_wOW_row
         # − 3, which is one stride less than pret's formula.
-        view_start_row = conn_height + BORDER - 4
+        view_start_row = conn_height + BORDER - 5
         view_start_col = BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = conn_height * 2 - 1
@@ -52,7 +52,7 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
         _blk = conn_width * _src + conn_width - BORDER
         _map = (cur_width + 2 * BORDER) * _tgt
         view_start_row = BORDER - 4
-        view_start_col = conn_width + BORDER - 6
+        view_start_col = conn_width + BORDER - 7
         _win = view_start_row * stride + view_start_col
         _y = offset * -2
         _x = conn_width * 2 - 1
