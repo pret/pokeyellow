@@ -1,0 +1,1311 @@
+     1                                  ; ppu.asm — software PPU: scanline BG renderer + OAM compositor.
+     2                                  ;
+     3                                  ; Renders the 40×25 tile viewport directly into the 320×200 back buffer at
+     4                                  ; [EBP + GB_BACKBUF], honoring the I/O register shadows:
+     5                                  ;
+     6                                  ;   IO_LCDC bit 3 — BG tilemap select   (0 = $9800, 1 = $9C00)
+     7                                  ;   IO_LCDC bit 4 — tile data addressing (1 = $8000 unsigned,
+     8                                  ;                                          0 = $8800 signed, base $9000)
+     9                                  ;   IO_SCX/IO_SCY — background scroll (wraps at 256 px)
+    10                                  ;   IO_BGP        — DMG palette: 4 × 2-bit shade, bits 1-0 = color 0
+    11                                  ;
+    12                                  ; STRATEGY (scanline + decoded tile cache): the whole BG/window tile-data
+    13                                  ; region ($8000-$97FF, 384 tiles) is pre-decoded from 2bpp to 8bpp once into
+    14                                  ; tile_cache (BGP shade baked in), and re-decoded only when VRAM tile data or
+    15                                  ; BGP changes (g_tilecache_dirty / BGP compare). render_bg then builds each
+    16                                  ; output scanline by COPYING decoded tile rows (8 bytes/tile) into
+    17                                  ; bg_scanline_buf and copying 320 px from the (SCX & 7) fine offset — no
+    18                                  ; per-pixel bit decoding in the hot path. Both axes scroll pixel-smooth; the GB
+    19                                  ; tilemap wraps at (SCX/8 + col) & 31 and (y + SCY) >> 3 & 31.
+    20                                  ;
+    21                                  ; 2bpp tile format: each tile row is 2 bytes — byte 0 = low bitplane,
+    22                                  ; byte 1 = high bitplane, bit 7 = leftmost pixel.
+    23                                  ; color = (hi_bit << 1) | lo_bit.
+    24                                  ;
+    25                                  ; This is HAL code, not a pret translation — the SM83 register mapping does
+    26                                  ; not apply here. EBP is the GB memory base.
+    27                                  ;
+    28                                  ; Build: nasm -f coff -I include/ -o ppu.o ppu.asm
+    29                                  
+    30                                  bits 32
+    31                                  
+    32                                  %include "gb_memmap.inc"
+     1                              <1> ; gb_memmap.inc — EBP-relative offsets for the emulated Game Boy address space.
+     2                              <1> ; Source of truth: constants/hardware.inc and the GB memory map specification.
+     3                              <1> ; All offsets are relative to EBP (the base of the 72 KB DPMI allocation).
+     4                              <1> ; See docs/references/pandocs/Memory_Map.md for the authoritative address table.
+     5                              <1> 
+     6                              <1> %ifndef GB_MEMMAP_INC
+     7                              <1> %define GB_MEMMAP_INC
+     8                              <1> 
+     9                              <1> ; ---------------------------------------------------------------------------
+    10                              <1> ; GB address space regions (EBP + offset)
+    11                              <1> ; ---------------------------------------------------------------------------
+    12                              <1> 
+    13                              <1> ; VRAM bank 0 — $8000–$9FFF (8 KB)
+    14                              <1> ; Contains tile data (chars) and BG tilemaps. Accessible by CPU except during
+    15                              <1> ; PPU Mode 3 (Drawing). CGB has a second bank (GB_VRAM1 below).
+    16                              <1> GB_VRAM0        equ 0x8000
+    17                              <1> 
+    18                              <1> ; VRAM tile-data sub-regions (pret labels vChars0/1/2). Each is 128 tiles.
+    19                              <1> ; The font is loaded to vFont ($8800); in $8800-signed addressing (LCDC_DEFAULT)
+    20                              <1> ; tile index C ('A'=$80) -> $9000 + sext8(C)*16 = $8800 + (C-$80)*16 = vFont.
+    21                              <1> ; So char codes index tiles directly — a string drops straight into a tilemap.
+    22                              <1> GB_VCHARS0      equ 0x8000     ; vChars0  — sprite/overworld tiles
+    23                              <1> GB_VFONT        equ 0x8800     ; vFont / vChars1 — text font (char $80 = 'A')
+    24                              <1> GB_VCHARS2      equ 0x9000     ; vChars2 / vTileset — tileset, box graphics
+    25                              <1> 
+    26                              <1> ; BG tilemap 0 — $9800–$9BFF (1 KB)
+    27                              <1> ; 32x32 tile indices; each byte is an index into the tile data.
+    28                              <1> ; Matches TILEMAP0 (0x9800) in constants/hardware.inc.
+    29                              <1> GB_TILEMAP0     equ 0x9800
+    30                              <1> 
+    31                              <1> ; BG tilemap 1 — $9C00–$9FFF (1 KB)
+    32                              <1> ; Matches TILEMAP1 (0x9C00) in constants/hardware.inc.
+    33                              <1> GB_TILEMAP1     equ 0x9C00
+    34                              <1> 
+    35                              <1> ; WRAM bank 0 — $C000–$CFFF (4 KB)
+    36                              <1> ; Always available. General-purpose work RAM.
+    37                              <1> GB_WRAM0        equ 0xC000
+    38                              <1> 
+    39                              <1> ; Sprite state data — 16 slots × $10 bytes each, two parallel arrays.
+    40                              <1> ; wSpriteStateData1 ($C100) and wSpriteStateData2 ($C200) — sym-verified.
+    41                              <1> ; The high byte of a pointer in one array +1 reaches the other (the engine
+    42                              <1> ; relies on this; in the flat model we use the explicit base constants).
+    43                              <1> W_SPRITE_STATE_DATA_1         equ 0xC100 ; wSpriteStateData1 (slot 0 = player)
+    44                              <1> W_SPRITE_STATE_DATA_2         equ 0xC200 ; wSpriteStateData2
+    45                              <1> SPRITESTATEDATA_STRUCT_SIZE   equ 0x10
+    46                              <1> NUM_SPRITE_SLOTS              equ 16
+    47                              <1> 
+    48                              <1> ; Player slot (slot 0) field aliases — data1 ($C10x).
+    49                              <1> ; Step vectors are signed bytes (+1/-1/0) read each frame by AdvancePlayerSprite.
+    50                              <1> W_SPRITE_PLAYER_PICTURE_ID    equ 0xC100 ; wSpritePlayerStateData1PictureID (0 = slot unused)
+    51                              <1> W_SPRITE_PLAYER_IMAGE_INDEX   equ 0xC102 ; wSpritePlayerStateData1ImageIndex (facing+anim, $ff=hidden)
+    52                              <1> W_SPRITE_PLAYER_Y_STEP_VECTOR equ 0xC103 ; wSpritePlayerStateData1YStepVector
+    53                              <1> W_SPRITE_PLAYER_Y_PIXELS      equ 0xC104 ; wSpritePlayerStateData1YPixels (fixed screen Y, $3c)
+    54                              <1> W_SPRITE_PLAYER_X_STEP_VECTOR equ 0xC105 ; wSpritePlayerStateData1XStepVector
+    55                              <1> W_SPRITE_PLAYER_X_PIXELS      equ 0xC106 ; wSpritePlayerStateData1XPixels (fixed screen X, $40)
+    56                              <1> W_SPRITE_PLAYER_INTRA_ANIM    equ 0xC107 ; wSpritePlayerStateData1IntraAnimFrameCounter
+    57                              <1> W_SPRITE_PLAYER_ANIM_FRAME    equ 0xC108 ; wSpritePlayerStateData1AnimFrameCounter
+    58                              <1> W_SPRITE_PLAYER_FACING_DIR    equ 0xC109 ; wSpritePlayerStateData1FacingDirection (SPRITE_FACING_*)
+    59                              <1> ; Player slot fields — data2 ($C20x).
+    60                              <1> W_SPRITE_PLAYER_WALK_ANIM_COUNTER equ 0xC200 ; wSpritePlayerStateData2WalkAnimationCounter
+    61                              <1> W_SPRITE_PLAYER_GRASS_PRIORITY    equ 0xC207 ; wSpritePlayerStateData2GrassPriority ($80 = under grass)
+    62                              <1> W_SPRITE_PLAYER_IMAGE_BASE_OFFSET equ 0xC20E ; wSpritePlayerStateData2ImageBaseOffset (player = 1)
+    63                              <1> 
+    64                              <1> ; Sprite-engine struct field offsets (within a $10-byte slot).
+    65                              <1> SPRITESTATEDATA1_PICTUREID            equ 0x0
+    66                              <1> SPRITESTATEDATA1_MOVEMENTSTATUS       equ 0x1   ; 0=uninit, 1=ready, 2=delayed, 3=walking
+    67                              <1> SPRITESTATEDATA1_IMAGEINDEX           equ 0x2
+    68                              <1> SPRITESTATEDATA1_YPIXELS              equ 0x4
+    69                              <1> SPRITESTATEDATA1_XPIXELS              equ 0x6
+    70                              <1> SPRITESTATEDATA1_INTRAANIMFRAMECOUNTER equ 0x7
+    71                              <1> SPRITESTATEDATA1_ANIMFRAMECOUNTER     equ 0x8
+    72                              <1> SPRITESTATEDATA1_FACINGDIRECTION      equ 0x9
+    73                              <1> SPRITESTATEDATA2_YDISPLACEMENT        equ 0x2   ; Y displacement (init 8)
+    74                              <1> SPRITESTATEDATA2_XDISPLACEMENT        equ 0x3   ; X displacement (init 8)
+    75                              <1> SPRITESTATEDATA2_MAPY                 equ 0x4   ; map Y position (metatile units, origin+4)
+    76                              <1> SPRITESTATEDATA2_MAPX                 equ 0x5   ; map X position (metatile units, origin+4)
+    77                              <1> SPRITESTATEDATA2_MOVEMENTBYTE1        equ 0x6   ; $ff=STAY, $fe=WALK(random), <$fe=scripted
+    78                              <1> SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7
+    79                              <1> SPRITESTATEDATA2_IMAGEBASEOFFSET      equ 0xE
+    80                              <1> 
+    81                              <1> ; NPC movement-byte sentinel values (constants/map_object_constants.asm)
+    82                              <1> WALK                                   equ 0xFE  ; random movement
+    83                              <1> STAY                                   equ 0xFF  ; stationary
+    84                              <1> 
+    85                              <1> ; Named WRAM symbols (subset needed by translated routines).
+    86                              <1> ; Offsets from pokeyellow.sym (bank 00).
+    87                              <1> W_SHADOW_OAM        equ 0xC300     ; wShadowOAM — 40 sprites × 4 bytes
+    88                              <1> W_SHADOW_OAM_END    equ 0xC3A0
+    89                              <1> W_SHADOW_OAM_SIZE   equ 0xA0       ; 160 bytes
+    90                              <1> W_TILEMAP           equ 0xC3A0     ; wTileMap — 40×25 screen tile buffer
+    91                              <1> W_TILEMAP_SIZE      equ 1000       ; SCREEN_TILES_W * SCREEN_TILES_H
+    92                              <1> 
+    93                              <1> ; WRAM bank 1 — $D000–$DFFF (4 KB)
+    94                              <1> ; On CGB: banks 1–7 are switchable via rWBK ($FF70).
+    95                              <1> ; For now, bank 1 is the only one allocated here. CGB banking TBD.
+    96                              <1> GB_WRAM1        equ 0xD000
+    97                              <1> 
+    98                              <1> ; Echo RAM region — $E000–$FDFF
+    99                              <1> ; The pret source never addresses this range, so we use it for expanded
+   100                              <1> ; DOS-port-only buffers (wSurroundingTiles, wOverworldMap, redraw scratch,
+   101                              <1> ; wTileMapBackup2) that grew beyond their original WRAM0/1 slots.
+   102                              <1> ; All addresses are within the DPMI allocation (EBP + 0xE000 is valid).
+   103                              <1> GB_ECHO             equ 0xE000
+   104                              <1> 
+   105                              <1> ; OAM — $FE00–$FE9F (160 bytes = 40 sprites × 4 bytes each)
+   106                              <1> ; Format per sprite: Y, X, tile ID, flags. See constants/hardware.inc OAM constants.
+   107                              <1> GB_OAM          equ 0xFE00
+   108                              <1> GB_OAM_SIZE     equ 160        ; 40 * 4
+   109                              <1> 
+   110                              <1> ; I/O register shadow area — $FF00–$FF7F (128 bytes)
+   111                              <1> ; Holds emulated values of GB I/O registers. Written by game logic;
+   112                              <1> ; read by the software renderer and input handler.
+   113                              <1> GB_IO           equ 0xFF00
+   114                              <1> 
+   115                              <1> ; H-flag shadow — placed at $FF7E (unused by original GB, within our IO block)
+   116                              <1> ; Lazy H-flag storage for DAA/CPL/etc. Only valid immediately before those instructions.
+   117                              <1> ; See docs/register_map.md for the H-flag protocol.
+   118                              <1> hf_shadow       equ 0xFF7E
+   119                              <1> 
+   120                              <1> ; HRAM — $FF80–$FFFE (127 bytes)
+   121                              <1> ; High RAM; used by the game for fast-access variables (see ram/hram.asm).
+   122                              <1> GB_HRAM         equ 0xFF80
+   123                              <1> GB_HRAM_SIZE    equ 127
+   124                              <1> 
+   125                              <1> ; Named HRAM variables (subset needed by translated routines).
+   126                              <1> ; All offsets verified from pokeyellow.sym (bank 00).
+   127                              <1> H_SOFT_RESET             equ 0xFF8A     ; hSoftReset
+   128                              <1> ; 0xFF8B is a UNION of hMapStride / hNorthSouthConnectionStripWidth / hPreviousTileset
+   129                              <1> H_MAP_STRIDE             equ 0xFF8B     ; hMapStride (= map block row stride = width + 2*MAP_BORDER)
+   130                              <1> H_PREVIOUS_TILESET       equ 0xFF8B     ; hPreviousTileset (HRAM union with hMapStride)
+   131                              <1> ; 0xFF8C is a UNION of hMapWidth / hNorthSouthConnectedMapWidth
+   132                              <1> H_MAP_WIDTH              equ 0xFF8C     ; hMapWidth (= wCurMapWidth, stored for row-copy inner loop)
+   133                              <1> H_SERIAL_CONN_STATUS     equ 0xFFAA     ; hSerialConnectionStatus
+   134                              <1> H_SCX                    equ 0xFFAE     ; hSCX — shadow of rSCX
+   135                              <1> H_SCY                    equ 0xFFAF     ; hSCY — shadow of rSCY
+   136                              <1> H_WY                     equ 0xFFB0     ; hWY  — shadow of rWY
+   137                              <1> H_LOADED_ROM_BANK        equ 0xFFB8     ; hLoadedROMBank
+   138                              <1> H_AUTO_BG_TRANSFER_EN    equ 0xFFBA     ; hAutoBGTransferEnabled
+   139                              <1> H_AUTO_BG_TRANSFER_DEST  equ 0xFFBC     ; hAutoBGTransferDest (2 bytes, lo/hi)
+   140                              <1> H_REDRAW_MAP_VIEW_ROW_OFFSET equ 0xFFBE ; hRedrawMapViewRowOffset
+   141                              <1> H_FRAME_COUNTER          equ 0xFFD5     ; hFrameCounter
+   142                              <1> H_VBLANK_OCCURRED        equ 0xFFD6     ; hVBlankOccurred
+   143                              <1> H_TILE_ANIMATIONS        equ 0xFFD7     ; hTileAnimations
+   144                              <1> H_REDRAW_ROW_COL_MODE    equ 0xFFD0     ; hRedrawRowOrColumnMode
+   145                              <1> H_REDRAW_ROW_COL_DEST    equ 0xFFD1     ; hRedrawRowOrColumnDest
+   146                              <1> H_UI_LAYOUT_FLAGS        equ 0xFFFA     ; hUILayoutFlags
+   147                              <1> 
+   148                              <1> BIT_SINGLE_SPACED_LINES  equ 2          ; hUILayoutFlags bit (gfx_constants.asm)
+   149                              <1> 
+   150                              <1> ; Joypad HRAM ($FFB1-$FFB7) — order confirmed by hram.asm + H_SCX=$FFAE anchor
+   151                              <1> H_JOY_PRESSED            equ 0xFFB3     ; hJoyPressed — buttons just pressed this frame
+   152                              <1> H_JOY_HELD               equ 0xFFB4     ; hJoyHeld    — buttons currently held
+   153                              <1> 
+   154                              <1> ; Sprite-engine HRAM temporaries (PrepareOAMData / _UpdateSprites) — sym-verified.
+   155                              <1> H_SPRITE_OFFSET2             equ 0xFF8F ; hSpriteOffset2 (current slot offset in PrepareOAMData loop)
+   156                              <1> H_OAM_BUFFER_OFFSET          equ 0xFF90 ; hOAMBufferOffset (write cursor into wShadowOAM)
+   157                              <1> H_SPRITE_SCREEN_X            equ 0xFF91 ; hSpriteScreenX
+   158                              <1> H_SPRITE_SCREEN_Y            equ 0xFF92 ; hSpriteScreenY
+   159                              <1> H_TILE_PLAYER_STANDING_ON    equ 0xFF93 ; hTilePlayerStandingOn
+   160                              <1> H_SPRITE_PRIORITY            equ 0xFF94 ; hSpritePriority (BG-priority bit for current sprite)
+   161                              <1> H_CURRENT_SPRITE_OFFSET      equ 0xFFDA ; hCurrentSpriteOffset (_UpdateSprites loop index)
+   162                              <1> H_PIKACHU_SPRITE_VRAM_OFFSET equ 0xFFFC ; hPikachuSpriteVRAMOffset (added to tile id $80+; 0 for now)
+   163                              <1> 
+   164                              <1> ; Named WRAM symbols — all addresses verified from pokeyellow.sym.
+   165                              <1> 
+   166                              <1> ; Audio/sound (low WRAM0 — $C0EE+)
+   167                              <1> W_NEW_SOUND_ID               equ 0xC0EE ; wNewSoundID
+   168                              <1> W_AUDIO_ROM_BANK             equ 0xC0EF ; wAudioROMBank
+   169                              <1> W_AUDIO_SAVED_ROM_BANK       equ 0xC0F0 ; wAudioSavedROMBank
+   170                              <1> 
+   171                              <1> ; Misc WRAM ($CC–$CFC range)
+   172                              <1> W_UNUSED_FLAG                equ 0xCC5B ; wUnusedFlag
+   173                              <1> 
+   174                              <1> ; Title-screen state ($CD3D)
+   175                              <1> W_TITLE_SCREEN_SCENE         equ 0xCD3D ; wTitleScreenScene (byte; +1 = timer)
+   176                              <1> W_TITLE_SCREEN_TIMER         equ 0xCD3E ; wTitleScreenTimer
+   177                              <1> 
+   178                              <1> ; Name buffers (WRAM1) — sym-verified
+   179                              <1> W_PLAYER_NAME                equ 0xD157 ; wPlayerName — 11 bytes, '@'-terminated
+   180                              <1> W_RIVAL_NAME                 equ 0xD349 ; wRivalName  — 11 bytes, '@'-terminated
+   181                              <1> 
+   182                              <1> ; Tile-map save/restore buffers — relocated to echo RAM ($E000+) to avoid
+   183                              <1> ; overlapping pret WRAM1 symbols.  All via constants; no hardcoded addresses
+   184                              <1> ; in translated code.
+   185                              <1> ; Layout in echo RAM ($E000–$F167, all within the DPMI allocation):
+   186                              <1> ;   $E000  wSurroundingTiles / wTileMapBackup   1536 B ($600) → $E5FF
+   187                              <1> ;   $E600  wOverworldMap                        2048 B ($800) → $EDFF
+   188                              <1> ;   $EE00  wTileMapBackup2                      1000 B ($3E8) → $F1E7
+   189                              <1> W_TILEMAP_BACKUP             equ 0xE000 ; wTileMapBackup (= wSurroundingTiles, see below)
+   190                              <1> W_TILEMAP_BACKUP2            equ 0xEE00 ; wTileMapBackup2 (1000 B)
+   191                              <1> 
+   192                              <1> ; Overworld surrounding-tiles buffer (alias for wTileMapBackup)
+   193                              <1> ; 48×32 = 1536 bytes; DrawTileBlock writes here before crop to wTileMap.
+   194                              <1> W_SURROUNDING_TILES          equ 0xE000 ; wSurroundingTiles = wTileMapBackup
+   195                              <1> 
+   196                              <1> ; Overworld map block buffer (2048 bytes)
+   197                              <1> W_OVERWORLD_MAP              equ 0xE600 ; wOverworldMap
+   198                              <1> W_OVERWORLD_MAP_SIZE         equ 0x800  ; wOverworldMapEnd − wOverworldMap (2048 bytes)
+   199                              <1> 
+   200                              <1> ; Walk/sprite state
+   201                              <1> W_FONT_LOADED                equ 0xCFC3 ; wFontLoaded (bit BIT_FONT_LOADED set while text font is in VRAM)
+   202                              <1> W_WALK_COUNTER               equ 0xCFC4 ; wWalkCounter
+   203                              <1> W_TILE_IN_FRONT_OF_PLAYER    equ 0xCFC5 ; wTileInFrontOfPlayer (collision check result)
+   204                              <1> W_AUDIO_FADE_OUT             equ 0xCFC6 ; wAudioFadeOutControl
+   205                              <1> W_UPDATE_SPRITES_ENABLED     equ 0xCFCA ; wUpdateSpritesEnabled
+   206                              <1> 
+   207                              <1> ; Sprite-engine scratch WRAM — sym-verified.
+   208                              <1> W_GRASS_TILE                 equ 0xD534 ; wGrassTile (tile ID treated as tall grass; $ff = none)
+   209                              <1> W_SAVED_SPRITE_IMAGE_INDEX   equ 0xD5CC ; wSavedSpriteImageIndex (PrepareOAMData scratch / VRAM base tile)
+   210                              <1> W_MOVEMENT_FLAGS             equ 0xD735 ; wMovementFlags (BIT_SPINNING / BIT_LEDGE_OR_FISHING)
+   211                              <1> 
+   212                              <1> ; Map-tileset copies
+   213                              <1> W_UNUSED_CUR_MAP_TILESET_COPY equ 0xD118 ; wUnusedCurMapTilesetCopy
+   214                              <1> W_WALK_BIKE_SURF_STATE_COPY  equ 0xD119 ; wWalkBikeSurfStateCopy
+   215                              <1> 
+   216                              <1> ; Current-map script flags
+   217                              <1> W_CURRENT_MAP_SCRIPT_FLAGS   equ 0xD125 ; wCurrentMapScriptFlags
+   218                              <1> 
+   219                              <1> ; Letter-printing delay flags (text engine)
+   220                              <1> W_LETTER_PRINTING_DELAY      equ 0xD357 ; wLetterPrintingDelayFlags
+   221                              <1> 
+   222                              <1> ; Current map identity
+   223                              <1> W_CUR_MAP                    equ 0xD35D ; wCurMap (1 byte)
+   224                              <1> W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR equ 0xD35E ; wCurrentTileBlockMapViewPointer (2 bytes)
+   225                              <1> W_Y_COORD                    equ 0xD360 ; wYCoord (player map Y, in tiles)
+   226                              <1> W_X_COORD                    equ 0xD361 ; wXCoord (player map X, in tiles)
+   227                              <1> W_Y_BLOCK_COORD              equ 0xD362 ; wYBlockCoord
+   228                              <1> W_X_BLOCK_COORD              equ 0xD363 ; wXBlockCoord
+   229                              <1> W_LAST_MAP                   equ 0xD364 ; wLastMap
+   230                              <1> 
+   231                              <1> ; Fixed map header (wCurMapHeader = wCurMapTileset at $D366)
+   232                              <1> ; This is a contiguous 10-byte region that LoadMapHeader copies into from the ROM header.
+   233                              <1> ; Layout: tileset(1) + height(1) + width(1) + dataptr(2) + textptr(2) + scriptptr(2) + connections(1)
+   234                              <1> W_CUR_MAP_HEADER             equ 0xD366 ; wCurMapHeader (start of fixed header copy target)
+   235                              <1> W_CUR_MAP_TILESET            equ 0xD366 ; wCurMapTileset (= wCurMapHeader first byte)
+   236                              <1> W_CUR_MAP_HEIGHT             equ 0xD367 ; wCurMapHeight
+   237                              <1> W_CUR_MAP_WIDTH              equ 0xD368 ; wCurMapWidth
+   238                              <1> W_CUR_MAP_DATA_PTR           equ 0xD369 ; wCurMapDataPtr (2 bytes, LE)
+   239                              <1> W_CUR_MAP_TEXT_PTR           equ 0xD36B ; wCurMapTextPtr (2 bytes, LE)
+   240                              <1> W_CUR_MAP_SCRIPT_PTR         equ 0xD36D ; wCurMapScriptPtr (2 bytes, LE)
+   241                              <1> W_CUR_MAP_CONNECTIONS        equ 0xD36F ; wCurMapConnections (NORTH|SOUTH|WEST|EAST bits)
+   242                              <1> W_CUR_MAP_HEADER_END         equ 0xD370 ; wCurMapHeaderEnd (byte after connections)
+   243                              <1> W_CUR_MAP_HEADER_SIZE        equ W_CUR_MAP_HEADER_END - W_CUR_MAP_HEADER  ; = 10 bytes
+   244                              <1> 
+   245                              <1> ; Connection-strip headers (each 11 bytes: map, strip-src, strip-dst, length, map-width, Y-align, X-align, view-ptr)
+   246                              <1> W_NORTH_CONNECTED_MAP        equ 0xD370 ; wNorthConnectedMap ($FF = none)
+   247                              <1> W_SOUTH_CONNECTED_MAP        equ 0xD37B ; wSouthConnectedMap
+   248                              <1> W_WEST_CONNECTED_MAP         equ 0xD386 ; wWestConnectedMap
+   249                              <1> W_EAST_CONNECTED_MAP         equ 0xD391 ; wEastConnectedMap
+   250                              <1> 
+   251                              <1> ; Sprite/object data
+   252                              <1> W_SPRITE_SET_ID              equ 0xD3A7 ; wSpriteSetID
+   253                              <1> W_OBJECT_DATA_PTR_TEMP       equ 0xD3A8 ; wObjectDataPointerTemp (2 bytes)
+   254                              <1> 
+   255                              <1> ; Map object header (follows connections in object data)
+   256                              <1> W_MAP_BACKGROUND_TILE        equ 0xD3AC ; wMapBackgroundTile (border block ID for wOverworldMap)
+   257                              <1> W_NUMBER_OF_WARPS            equ 0xD3AD ; wNumberOfWarps
+   258                              <1> W_WARP_ENTRIES               equ 0xD3AE ; wWarpEntries (MAX_WARP_EVENTS * 4 bytes max)
+   259                              <1> W_DESTINATION_WARP_ID        equ 0xD42E ; wDestinationWarpID ($FF = don't update coords)
+   260                              <1> 
+   261                              <1> ; Sign/BG event data
+   262                              <1> W_NUM_SIGNS                  equ 0xD4AF ; wNumSigns
+   263                              <1> W_SIGN_COORDS                equ 0xD4B0 ; wSignCoords (MAX_BG_EVENTS * 2 bytes: Y, X pairs)
+   264                              <1> W_SIGN_TEXT_IDS              equ 0xD4D0 ; wSignTextIDs (MAX_BG_EVENTS bytes)
+   265                              <1> 
+   266                              <1> MAX_WARP_EVENTS              equ 32
+   267                              <1> MAX_BG_EVENTS                equ 16
+   268                              <1> MAX_OBJECT_EVENTS            equ 16
+   269                              <1> 
+   270                              <1> ; Special-warp step offsets (incremented as the block-map pointer crosses
+   271                              <1> ; block boundaries; faithful bookkeeping, not yet consumed by warp logic).
+   272                              <1> W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E1 ; wYOffsetSinceLastSpecialWarp
+   273                              <1> W_X_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E2 ; wXOffsetSinceLastSpecialWarp
+   274                              <1> 
+   275                              <1> ; Edge detection thresholds (height*2 / width*2) — used by CheckMapConnections
+   276                              <1> W_CURRENT_MAP_HEIGHT_2       equ 0xD523 ; wCurrentMapHeight2 = wCurMapHeight * 2
+   277                              <1> W_CURRENT_MAP_WIDTH_2        equ 0xD524 ; wCurrentMapWidth2 = wCurMapWidth * 2
+   278                              <1> 
+   279                              <1> ; Map-view VRAM pointer and player facing
+   280                              <1> W_MAP_VIEW_VRAM_POINTER      equ 0xD525 ; wMapViewVRAMPointer (Stage A Note: dropped/unused after native renderer)
+   281                              <1> W_PLAYER_MOVING_DIRECTION    equ 0xD527 ; wPlayerMovingDirection (PLAYER_DIR_*)
+   282                              <1> W_PLAYER_DIRECTION           equ 0xD529 ; wPlayerDirection (PLAYER_DIR_*)
+   283                              <1> 
+   284                              <1> ; Active tileset WRAM (set from tileset header by LoadTilesetHeader)
+   285                              <1> ; LoadTilesetHeader copies 11 bytes here from the tileset header table,
+   286                              <1> ; then reads the 12th byte (animations) to hTileAnimations.
+   287                              <1> W_TILESET_BANK               equ 0xD52A ; wTilesetBank (1 byte)
+   288                              <1> W_TILESET_BLOCKS_PTR         equ 0xD52B ; wTilesetBlocksPtr (2 bytes, LE)
+   289                              <1> W_TILESET_GFX_PTR            equ 0xD52D ; wTilesetGfxPtr   (2 bytes, LE)
+   290                              <1> W_TILESET_COLLISION_PTR      equ 0xD52F ; wTilesetCollisionPtr (2 bytes, LE; passable-tile list)
+   291                              <1> W_TILESET_TALKING_OVER_TILES equ 0xD531 ; wTilesetTalkingOverTiles (3 bytes: counter tiles)
+   292                              <1> W_TILESET_GRASS_TILE         equ 0xD534 ; (overlaps wGrassTile — handled by LoadTilesetHeader)
+   293                              <1> ; NOTE: wTilesetGrassTile ($D534) is the same address as wGrassTile.
+   294                              <1> ; LoadTilesetHeader copies it as part of the 11-byte block.
+   295                              <1> W_TILESET_HEADER_COPY_SIZE   equ 11     ; bytes copied from tileset header to wTilesetBank
+   296                              <1> W_TILESET_HEADER_FULL_SIZE   equ 12     ; full tileset header entry size (11 + animations)
+   297                              <1> 
+   298                              <1> ; Walk/bike/surf state
+   299                              <1> W_WALK_BIKE_SURF_STATE       equ 0xD6FF ; wWalkBikeSurfState
+   300                              <1> 
+   301                              <1> ; Status flags (game-state bitfields)
+   302                              <1> W_STATUS_FLAGS_1             equ 0xD727 ; wStatusFlags1
+   303                              <1> W_STATUS_FLAGS_2             equ 0xD72B ; wStatusFlags2
+   304                              <1> W_STATUS_FLAGS_3             equ 0xD72C ; wStatusFlags3
+   305                              <1> W_STATUS_FLAGS_4             equ 0xD72D ; wStatusFlags4
+   306                              <1> W_STATUS_FLAGS_5             equ 0xD72F ; wStatusFlags5
+   307                              <1> W_STATUS_FLAGS_6             equ 0xD731 ; wStatusFlags6
+   308                              <1> W_STATUS_FLAGS_7             equ 0xD732 ; wStatusFlags7
+   309                              <1> W_ELITE4_FLAGS               equ 0xD733 ; wElite4Flags
+   310                              <1> 
+   311                              <1> ; Screen-area size constant (used by save/restore functions).
+   312                              <1> SCREEN_AREA              equ SCREEN_TILES_W * SCREEN_TILES_H  ; 40 * 25 = 1000
+   313                              <1> 
+   314                              <1> ; pret-compatible name aliases (hardware.inc uses SCREEN_WIDTH/HEIGHT, TILEMAP_WIDTH)
+   315                              <1> SCREEN_WIDTH             equ SCREEN_TILES_W                   ; 40
+   316                              <1> SCREEN_HEIGHT            equ SCREEN_TILES_H                   ; 25
+   317                              <1> TILEMAP_WIDTH            equ TILEMAP_W                        ; 32
+   318                              <1> 
+   319                              <1> ; Overworld map geometry (constants/gfx_constants.asm + map_data_constants.asm)
+   320                              <1> BLOCK_WIDTH              equ 4           ; tiles per map block, X
+   321                              <1> BLOCK_HEIGHT             equ 4           ; tiles per map block, Y
+   322                              <1> SCREEN_BLOCK_WIDTH       equ 12          ; blocks visible per screen row
+   323                              <1> SCREEN_BLOCK_HEIGHT      equ 8           ; blocks visible per screen column
+   324                              <1> SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 48 tiles wide
+   325                              <1> SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 32 tiles tall
+   326                              <1> MAP_BORDER               equ 6           ; block-unit border around map in wOverworldMap
+   327                              <1> 
+   328                              <1> ; Player movement direction bits (constants/sprite_data_constants.asm wPlayerDirection)
+   329                              <1> PLAYER_DIR_RIGHT         equ 1
+   330                              <1> PLAYER_DIR_LEFT          equ 2
+   331                              <1> PLAYER_DIR_DOWN          equ 4
+   332                              <1> PLAYER_DIR_UP            equ 8
+   333                              <1> 
+   334                              <1> ; Sprite facing direction values (constants/sprite_data_constants.asm SPRITE_FACING_*)
+   335                              <1> SPRITE_FACING_DOWN       equ 0x00
+   336                              <1> SPRITE_FACING_UP         equ 0x04
+   337                              <1> SPRITE_FACING_LEFT       equ 0x08
+   338                              <1> SPRITE_FACING_RIGHT      equ 0x0C
+   339                              <1> 
+   340                              <1> ; hJoyHeld bit positions (constants/hardware.inc B_PAD_*; active-high in hJoyHeld)
+   341                              <1> PAD_RIGHT                equ 1 << 4      ; B_PAD_RIGHT = 4
+   342                              <1> PAD_LEFT                 equ 1 << 5      ; B_PAD_LEFT  = 5
+   343                              <1> PAD_UP                   equ 1 << 6      ; B_PAD_UP    = 6
+   344                              <1> PAD_DOWN                 equ 1 << 7      ; B_PAD_DOWN  = 7
+   345                              <1> 
+   346                              <1> ; RedrawRowOrColumn modes (constants/gfx_constants.asm)
+   347                              <1> REDRAW_COL               equ 1
+   348                              <1> REDRAW_ROW               equ 2
+   349                              <1> 
+   350                              <1> ; LCDC bits the OBJ renderer reads (constants/hardware.inc)
+   351                              <1> LCDCF_OBJ_ON             equ 1 << 1      ; B_LCDC_OBJS  = 1 (sprites enabled)
+   352                              <1> LCDCF_OBJ_SIZE           equ 1 << 2      ; B_LCDC_OBJ_SIZE = 2 (0 = 8×8, 1 = 8×16)
+   353                              <1> 
+   354                              <1> ; OAM attribute byte bits (constants/hardware.inc)
+   355                              <1> OAM_PRIO                 equ 1 << 7      ; OBJ drawn below BG colors 1-3
+   356                              <1> OAM_YFLIP                equ 1 << 6
+   357                              <1> OAM_XFLIP                equ 1 << 5
+   358                              <1> OAM_PAL1                 equ 1 << 4      ; DMG: 0 = OBP0, 1 = OBP1
+   359                              <1> B_OAM_PAL1               equ 4           ; bit position of the OBP select bit
+   360                              <1> 
+   361                              <1> ; SpriteFacingAndAnimationTable attribute markers (constants/oam_constants.asm).
+   362                              <1> ; These are engine-internal bits in the facing tables, NOT hardware OAM bits.
+   363                              <1> BIT_SPRITE_UNDER_GRASS   equ 1           ; tile drawn with BG priority when in grass
+   364                              <1> UNDER_GRASS              equ 1 << BIT_SPRITE_UNDER_GRASS  ; $02
+   365                              <1> FACING_END               equ 1 << 0      ; $01 — last OAM entry of a facing block
+   366                              <1> ; CGB: OAM palette numbers %100-%111 select OBP1 (constants/oam_constants.asm).
+   367                              <1> OAM_HIGH_PALS            equ 1 << 2      ; $04
+   368                              <1> 
+   369                              <1> ; Player/sprite logic constants.
+   370                              <1> MAP_TILESET_SIZE         equ 0x60        ; tile IDs >= $60 are text-box tiles, not map tiles
+   371                              <1> BIT_FONT_LOADED          equ 0           ; wFontLoaded bit 0
+   372                              <1> BIT_SPINNING             equ 7           ; wMovementFlags (constants/ram_constants.asm)
+   373                              <1> BIT_LEDGE_OR_FISHING     equ 6           ; wMovementFlags (constants/ram_constants.asm)
+   374                              <1> PLAYER_DIR_BIT_RIGHT     equ 0
+   375                              <1> PLAYER_DIR_BIT_LEFT      equ 1
+   376                              <1> PLAYER_DIR_BIT_DOWN      equ 2
+   377                              <1> PLAYER_DIR_BIT_UP        equ 3
+   378                              <1> 
+   379                              <1> ; ROM-window area for embedded overworld assets.
+   380                              <1> ; The unused ROM bank-switch window ($4000–$7FFF) is repurposed to hold asset data
+   381                              <1> ; that faithful routines (LoadTilesetTilePatternData, DrawTileBlock, LoadTileBlockMap,
+   382                              <1> ; LoadMapHeader, LoadTilesetHeader) read via pointers stored in WRAM.
+   383                              <1> OW_GFX_GBADDR            equ 0x4000     ; overworld tileset 2bpp → vTileset ($9000)
+   384                              <1> OW_BLOCKS_GBADDR         equ 0x4600     ; overworld blockset (.bst, 128 blocks × 16 tile-IDs)
+   385                              <1> OW_PALLET_BLK_GBADDR     equ 0x4E00     ; PalletTown.blk (10×9 = 90 block IDs)
+   386                              <1> OW_MAP_GBADDR            equ OW_PALLET_BLK_GBADDR ; legacy alias (Phase 2 scaffold)
+   387                              <1> OW_COLL_GBADDR           equ 0x4F00     ; Overworld_Coll passable-tile list ($FF-terminated)
+   388                              <1> ; Map block data for each map. Connection strip src pointers index into these.
+   389                              <1> OW_ROUTE1_BLK_GBADDR     equ 0x5000     ; Route1.blk  (10×18 = 180 block IDs)
+   390                              <1> OW_ROUTE21_BLK_GBADDR    equ 0x5200     ; Route21.blk (10×45 = 450 block IDs)
+   391                              <1> ; Map headers, tileset header, and object data — generated by gen_map_headers.py.
+   392                              <1> ; Loaded to ROM window at boot; LoadMapHeader reads from [EBP + these addresses].
+   393                              <1> OW_TILESET_HDR_GBADDR    equ 0x5400     ; OVERWORLD tileset header (12 bytes)
+   394                              <1> OW_MAP_HEADERS_GBADDR    equ 0x540C     ; base for map header + object data blobs
+   395                              <1> ; Per-map header addresses are defined in assets/map_headers.inc as
+   396                              <1> ; OW_MAP_HDR_PALLET_TOWN, OW_MAP_HDR_ROUTE_1, etc.
+   397                              <1> 
+   398                              <1> ; Connection-strip header field offsets (added to W_{NORTH,SOUTH,WEST,EAST}_CONNECTED_MAP;
+   399                              <1> ; struct is 11 bytes — see map_connection_struct in macros/ram.asm).
+   400                              <1> CONN_STRIP_SRC           equ 1          ; ConnectionStripSrc  (dw) — src in connected map's blocks
+   401                              <1> CONN_STRIP_DEST          equ 3          ; ConnectionStripDest (dw) — dest in wOverworldMap border
+   402                              <1> CONN_STRIP_LENGTH        equ 5          ; ConnectionStripLength (db)
+   403                              <1> CONN_MAP_WIDTH           equ 6          ; ConnectedMapWidth (db)
+   404                              <1> CONN_Y_ALIGN             equ 7          ; ConnectedMapYAlignment (db)
+   405                              <1> CONN_X_ALIGN             equ 8          ; ConnectedMapXAlignment (db)
+   406                              <1> CONN_VIEW_PTR            equ 9          ; ConnectedMapViewPointer (dw)
+   407                              <1> CONN_HEADER_SIZE         equ 11         ; total connection header struct size
+   408                              <1> 
+   409                              <1> ; Connection direction bits (constants/map_data_constants.asm)
+   410                              <1> CONNECTION_NORTH         equ 1 << 3     ; bit 3 = $08
+   411                              <1> CONNECTION_SOUTH         equ 1 << 2     ; bit 2 = $04
+   412                              <1> CONNECTION_WEST          equ 1 << 1     ; bit 1 = $02
+   413                              <1> CONNECTION_EAST          equ 1 << 0     ; bit 0 = $01
+   414                              <1> 
+   415                              <1> ; Map IDs (constants/map_constants.asm — subset for implemented maps)
+   416                              <1> MAP_ID_PALLET_TOWN       equ 0x00
+   417                              <1> MAP_ID_ROUTE_1            equ 0x0C
+   418                              <1> MAP_ID_ROUTE_21           equ 0x20
+   419                              <1> MAP_NO_CONNECTION         equ 0xFF       ; sentinel: no connected map in this direction
+   420                              <1> 
+   421                              <1> ; IE register shadow — $FFFF (1 byte)
+   422                              <1> ; Emulated Interrupt Enable register. Not functionally used by the DOS port
+   423                              <1> ; (interrupts are handled by the PIT ISR and input handler directly).
+   424                              <1> GB_IE           equ 0xFFFF
+   425                              <1> 
+   426                              <1> ; VRAM bank 1 (CGB only) — placed at offset $10000 (past the 64 KB GB window)
+   427                              <1> ; The allocation in entry.asm requests 72 KB (0x12000) to cover this.
+   428                              <1> ; CGB tile attribute data and extra tile graphics live here.
+   429                              <1> GB_VRAM1        equ 0x10000
+   430                              <1> GB_VRAM1_SIZE   equ 0x2000     ; 8 KB
+   431                              <1> 
+   432                              <1> ; Back buffer — 320×200 pixels, 8bpp (one byte per pixel, palette index)
+   433                              <1> ; Placed just after VRAM bank 1. The tile-blitter writes here; present() copies to VGA.
+   434                              <1> ; Size: 320 * 200 = 64000 bytes
+   435                              <1> GB_BACKBUF      equ 0x12000
+   436                              <1> GB_BACKBUF_SIZE equ 64000      ; RENDER_W * RENDER_H
+   437                              <1> 
+   438                              <1> ; ---------------------------------------------------------------------------
+   439                              <1> ; I/O register shadow offsets (EBP + IO_* = emulated register byte)
+   440                              <1> ; Named to match constants/hardware.inc for cross-reference.
+   441                              <1> ; ---------------------------------------------------------------------------
+   442                              <1> 
+   443                              <1> ; Joypad ($FF00) — read-only from game; written by our INT 9h handler
+   444                              <1> IO_JOYP         equ 0xFF00     ; rJOYP
+   445                              <1> 
+   446                              <1> ; Serial ($FF01/$FF02) — isolated; network HAL not yet implemented
+   447                              <1> IO_SB           equ 0xFF01     ; rSB  — TODO-HW: network HAL (Phase 4)
+   448                              <1> IO_SC           equ 0xFF02     ; rSC  — TODO-HW: network HAL (Phase 4)
+   449                              <1> 
+   450                              <1> ; Divider / Timer — not translated; PIT-based main loop handles timing
+   451                              <1> IO_DIV          equ 0xFF04     ; rDIV  — not emulated (read returns 0)
+   452                              <1> IO_TIMA         equ 0xFF05     ; rTIMA — TODO-HW: not emulated
+   453                              <1> IO_TMA          equ 0xFF06     ; rTMA  — TODO-HW: not emulated
+   454                              <1> IO_TAC          equ 0xFF07     ; rTAC  — TODO-HW: not emulated
+   455                              <1> 
+   456                              <1> ; Audio ($FF10–$FF26) — not yet implemented
+   457                              <1> IO_APU_BASE     equ 0xFF10     ; rAUD1SWEEP — TODO-HW: audio HAL (Phase 3)
+   458                              <1> 
+   459                              <1> ; LCD Control ($FF40) — read by software renderer
+   460                              <1> IO_LCDC         equ 0xFF40     ; rLCDC — TODO-HW: renderer reads this
+   461                              <1> IO_STAT         equ 0xFF41     ; rSTAT — TODO-HW: renderer writes mode bits
+   462                              <1> IO_SCY          equ 0xFF42     ; rSCY  — TODO-HW: renderer
+   463                              <1> IO_SCX          equ 0xFF43     ; rSCX  — TODO-HW: renderer
+   464                              <1> IO_LY           equ 0xFF44     ; rLY   — TODO-HW: renderer emulates scanline counter
+   465                              <1> IO_LYC          equ 0xFF45     ; rLYC  — TODO-HW: renderer
+   466                              <1> IO_DMA          equ 0xFF46     ; rDMA  — TODO-HW: OAM DMA (software emulated)
+   467                              <1> IO_BGP          equ 0xFF47     ; rBGP  — DMG palette mapping
+   468                              <1> IO_OBP0         equ 0xFF48     ; rOBP0 — DMG sprite palette 0
+   469                              <1> IO_OBP1         equ 0xFF49     ; rOBP1 — DMG sprite palette 1
+   470                              <1> IO_WY           equ 0xFF4A     ; rWY   — TODO-HW: renderer
+   471                              <1> IO_WX           equ 0xFF4B     ; rWX   — TODO-HW: renderer
+   472                              <1> 
+   473                              <1> ; CGB registers — palette, VRAM bank, WRAM bank, HDMA
+   474                              <1> IO_VBK          equ 0xFF4F     ; rVBK  — VRAM bank select (CGB)
+   475                              <1> IO_BGPI         equ 0xFF68     ; rBGPI — BG palette index (CGB)
+   476                              <1> IO_BGPD         equ 0xFF69     ; rBGPD — BG palette data (CGB)
+   477                              <1> IO_OBPI         equ 0xFF6A     ; rOBPI — OBJ palette index (CGB)
+   478                              <1> IO_OBPD         equ 0xFF6B     ; rOBPD — OBJ palette data (CGB)
+   479                              <1> IO_WBK          equ 0xFF70     ; rWBK  — WRAM bank select (CGB)
+   480                              <1> 
+   481                              <1> ; ---------------------------------------------------------------------------
+   482                              <1> ; Derived geometry constants (for PPU and renderer use)
+   483                              <1> ; ---------------------------------------------------------------------------
+   484                              <1> 
+   485                              <1> ; Tile dimensions (from constants/hardware.inc)
+   486                              <1> TILE_WIDTH      equ 8
+   487                              <1> TILE_HEIGHT     equ 8
+   488                              <1> TILE_SIZE       equ 16         ; 2 bits/pixel × 8×8 = 16 bytes per tile
+   489                              <1> 
+   490                              <1> ; Logical GB screen dimensions (game-code uses these for tile addressing).
+   491                              <1> ; NOTE: SCREEN_W/H are logical pixel dimensions; RENDER_W/H are the actual
+   492                              <1> ; back-buffer/VGA dimensions (320×200 native, no scaling).
+   493                              <1> SCREEN_W        equ 160        ; logical pixels (kept for game-logic comparisons)
+   494                              <1> SCREEN_H        equ 144        ; logical pixels
+   495                              <1> SCREEN_TILES_W  equ 40         ; viewport width in tiles (= RENDER_W / TILE_WIDTH)
+   496                              <1> SCREEN_TILES_H  equ 25         ; viewport height in tiles (= RENDER_H / TILE_HEIGHT)
+   497                              <1> 
+   498                              <1> ; Native render dimensions (back buffer and VGA output)
+   499                              <1> RENDER_W        equ 320        ; back buffer / VGA width in pixels
+   500                              <1> RENDER_H        equ 200        ; back buffer / VGA height in pixels
+   501                              <1> RENDER_TILES_W  equ 40         ; RENDER_W / TILE_WIDTH
+   502                              <1> RENDER_TILES_H  equ 25         ; RENDER_H / TILE_HEIGHT
+   503                              <1> 
+   504                              <1> ; Tilemap dimensions
+   505                              <1> TILEMAP_W       equ 32         ; tiles (256/8)
+   506                              <1> TILEMAP_H       equ 32         ; tiles (256/8)
+   507                              <1> TILEMAP_AREA    equ 1024       ; 32*32 bytes
+   508                              <1> 
+   509                              <1> ; OAM entry layout (from constants/hardware.inc OAMA_* offsets)
+   510                              <1> OAM_Y_OFS       equ 16         ; subtract to get real screen Y
+   511                              <1> OAM_X_OFS      equ 8          ; subtract to get real screen X
+   512                              <1> OAM_ENTRY_SIZE  equ 4          ; bytes per sprite entry
+   513                              <1> OAM_COUNT       equ 40
+   514                              <1> 
+   515                              <1> ; VGA output geometry (Mode 13h, 320x200)
+   516                              <1> VGA_W           equ 320
+   517                              <1> VGA_H           equ 200
+   518                              <1> VGA_FRAMEBUF    equ 0xA0000    ; linear address of VGA framebuffer (flat DS)
+   519                              <1> 
+   520                              <1> ; Tile-blitter writes directly to a 320×200 back buffer; present() is a
+   521                              <1> ; straight rep movsd of 16,000 dwords.  No scaling, no letterbox.
+   522                              <1> 
+   523                              <1> %endif ; GB_MEMMAP_INC
+    33                                  %include "gb_macros.inc"
+     1                              <1> ; gb_macros.inc — Translation macros and bug-fix level definitions.
+     2                              <1> ; Include after gb_memmap.inc in every translated source file.
+     3                              <1> 
+     4                              <1> %ifndef GB_MACROS_INC
+     5                              <1> %define GB_MACROS_INC
+     6                              <1> 
+     7                              <1> ; ---------------------------------------------------------------------------
+     8                              <1> ; Bug fix level
+     9                              <1> ; 0 = original behavior (all glitches active) — default
+    10                              <1> ; 1 = fix critical bugs only (buffer overflows, OOB writes, save corruption, ACE)
+    11                              <1> ; 2 = fix all documented bugs (cosmetic, behavioral, critical)
+    12                              <1> ;
+    13                              <1> ; Set at build time via Makefile: nasm -D BUG_FIX_LEVEL=1 ...
+    14                              <1> ; Set at runtime: entry.asm parses /FIXCRIT (level 1) and /FIXALL (level 2)
+    15                              <1> ; and writes the value to [bug_fix_level] in BSS, which runtime-conditional
+    16                              <1> ; code reads. The compile-time define gates code that cannot be conditional at
+    17                              <1> ; runtime (e.g. code size / alignment-sensitive paths).
+    18                              <1> ; ---------------------------------------------------------------------------
+    19                              <1> %ifndef BUG_FIX_LEVEL
+    20                              <1>   %define BUG_FIX_LEVEL 0
+    21                              <1> %endif
+    22                              <1> 
+    23                              <1> ; ---------------------------------------------------------------------------
+    24                              <1> ; Translation comment conventions
+    25                              <1> ;
+    26                              <1> ; BUG(critical): <description>
+    27                              <1> ;   A bug that can cause buffer overflows, OOB writes, save corruption, or
+    28                              <1> ;   arbitrary code execution. Fixed when BUG_FIX_LEVEL >= 1 (/FIXCRIT).
+    29                              <1> ;   Template:
+    30                              <1> ;     ; BUG(critical): <what goes wrong>
+    31                              <1> ;     ; pret ref: <source file>:<label>, docs/bugs_and_glitches.md#L<line>
+    32                              <1> ;     %if BUG_FIX_LEVEL >= 1
+    33                              <1> ;       ; ... fixed implementation
+    34                              <1> ;     %else
+    35                              <1> ;       ; ... original (buggy) behavior
+    36                              <1> ;     %endif
+    37                              <1> ;
+    38                              <1> ; BUG(cosmetic): <description>
+    39                              <1> ;   A minor behavioral or visual bug that does not threaten save data or
+    40                              <1> ;   system stability. Fixed when BUG_FIX_LEVEL >= 2 (/FIXALL).
+    41                              <1> ;   Same template as above but %if BUG_FIX_LEVEL >= 2.
+    42                              <1> ;
+    43                              <1> ; GLITCH: <name> — <description>
+    44                              <1> ;   An intentional glitch that users may exploit (MissingNo, item dup, etc.).
+    45                              <1> ;   Safety tag: "safe under DPMI" or "unsafe on bare HW if ACE reachable".
+    46                              <1> ;   These are never fixed by any flag — they are preserved behavior.
+    47                              <1> ;   Example:
+    48                              <1> ;     ; GLITCH: MissingNo encounter — reads past end of species table
+    49                              <1> ;     ; Safety: safe under DPMI (bounded to emulated WRAM)
+    50                              <1> ;
+    51                              <1> ; TODO-HW: <description>
+    52                              <1> ;   A GB hardware I/O access that has not yet been translated.
+    53                              <1> ;   The original code is preserved as a comment; a stub (nop or ret) is emitted.
+    54                              <1> ;   Example:
+    55                              <1> ;     ; TODO-HW: write to rLCDC ($FF40) to enable/disable LCD
+    56                              <1> ;     ;   original: ld [rLCDC], a
+    57                              <1> ;     ;   pending: software renderer reads [EBP + IO_LCDC] to determine render state
+    58                              <1> ; ---------------------------------------------------------------------------
+    59                              <1> 
+    60                              <1> ; ---------------------------------------------------------------------------
+    61                              <1> ; Convenience macros for GB memory access via EBP
+    62                              <1> ; ---------------------------------------------------------------------------
+    63                              <1> 
+    64                              <1> ; Load byte from GB address in ESI into AL
+    65                              <1> %macro GB_LD_A_HL 0
+    66                              <1>     mov al, [ebp + esi]
+    67                              <1> %endmacro
+    68                              <1> 
+    69                              <1> ; Store AL to GB address in ESI
+    70                              <1> %macro GB_LD_HL_A 0
+    71                              <1>     mov [ebp + esi], al
+    72                              <1> %endmacro
+    73                              <1> 
+    74                              <1> ; Load byte from GB address in ESI into AL, post-increment ESI (hli)
+    75                              <1> %macro GB_LD_A_HLI 0
+    76                              <1>     mov al, [ebp + esi]
+    77                              <1>     inc esi
+    78                              <1> %endmacro
+    79                              <1> 
+    80                              <1> ; Store AL to GB address in ESI, post-increment ESI (hli)
+    81                              <1> %macro GB_LD_HLI_A 0
+    82                              <1>     mov [ebp + esi], al
+    83                              <1>     inc esi
+    84                              <1> %endmacro
+    85                              <1> 
+    86                              <1> ; Load byte from GB address in ESI into AL, post-decrement ESI (hld)
+    87                              <1> %macro GB_LD_A_HLD 0
+    88                              <1>     mov al, [ebp + esi]
+    89                              <1>     dec esi
+    90                              <1> %endmacro
+    91                              <1> 
+    92                              <1> ; Load byte from HRAM offset (ldh a, [offset]) — offset is $FF00-relative
+    93                              <1> %macro GB_LDH_A 1
+    94                              <1>     mov al, [ebp + GB_IO + (%1 & 0x7F)]
+    95                              <1> %endmacro
+    96                              <1> 
+    97                              <1> ; Store AL to HRAM offset (ldh [offset], a)
+    98                              <1> %macro GB_LDH 1
+    99                              <1>     mov [ebp + GB_IO + (%1 & 0x7F)], al
+   100                              <1> %endmacro
+   101                              <1> 
+   102                              <1> %endif ; GB_MACROS_INC
+    34                                  
+    35                                  LCDC_BG_MAP_BIT   equ 3        ; rLCDC bit 3: BG tilemap select
+    36                                  LCDC_TILEDATA_BIT equ 4        ; rLCDC bit 4: tile data addressing mode
+    37                                  LCDC_WIN_EN_BIT   equ 5        ; rLCDC bit 5: window enable
+    38                                  LCDC_WIN_MAP_BIT  equ 6        ; rLCDC bit 6: window tilemap select (0=$9800, 1=$9C00)
+    39                                  
+    40                                  ; ---------------------------------------------------------------------------
+    41                                  ; Exported symbols
+    42                                  ; ---------------------------------------------------------------------------
+    43                                  global render_bg
+    44                                  global render_window
+    45                                  global render_sprites
+    46                                  global draw_player_marker
+    47                                  global g_player_marker_on
+    48                                  global g_tilecache_dirty
+    49                                  
+    50                                  ; Player placeholder marker — the player sprite is always at the fixed screen
+    51                                  ; center (pret keeps the camera locked on the player and scrolls the BG). Until
+    52                                  ; the OAM sprite renderer lands (Phase 1 open item), draw a simple two-tone box
+    53                                  ; there so it's obvious where "you" are. Tile (8,8): 16×16 px at (64,64).
+    54                                  PLAYER_MARKER_X    equ 64
+    55                                  PLAYER_MARKER_Y    equ 64
+    56                                  PLAYER_MARKER_SIZE equ 16
+    57                                  PLAYER_MARKER_SHADE equ 3       ; darkest DMG shade for the outline/body
+    58                                  PLAYER_MARKER_INNER equ 0       ; lightest shade for the inner square
+    59                                  
+    60                                  ; Decoded tile cache: the BG/window tile-data region $8000-$97FF is 0x1800
+    61                                  ; bytes = 384 tiles of 16 bytes. Each is pre-decoded once to 8bpp (64 bytes)
+    62                                  ; so render_bg copies rows instead of bit-decoding per pixel every frame.
+    63                                  ; Stores the RAW 2-bit GB color (0-3), NOT a BGP-mapped shade — the VGA DAC
+    64                                  ; does palette mapping (see commit_palette in video.asm), so the cache depends
+    65                                  ; only on VRAM tile data and is rebuilt only on g_tilecache_dirty (a palette
+    66                                  ; change is just a DAC reprogram, no rebuild).
+    67                                  TILE_CACHE_TILES  equ 384
+    68                                  TILE_CACHE_SIZE   equ TILE_CACHE_TILES * 64
+    69                                  
+    70                                  ; ---------------------------------------------------------------------------
+    71                                  ; DATA (initialized — must start "dirty" so the first frame builds the cache)
+    72                                  ; ---------------------------------------------------------------------------
+    73                                  section .data
+    74                                  align 4
+    75 00000000 01                      g_tilecache_dirty: db 1     ; nonzero → render_bg rebuilds tile_cache this frame
+    76                                  
+    77                                  ; ---------------------------------------------------------------------------
+    78                                  ; BSS
+    79                                  ; ---------------------------------------------------------------------------
+    80                                  section .bss
+    81                                  align 4
+    82 00000000 <res 6000h>             tile_cache:  resb TILE_CACHE_SIZE  ; 384 × 64 = 24 KB of decoded raw-color tile rows
+    83                                  alignb 4
+    84 00006000 ??                      g_player_marker_on: resb 1 ; nonzero → draw_player_marker paints the placeholder
+    85 00006001 ??????                  alignb 4
+    86 00006004 ????????                spr_oam_ptr: resd 1        ; GB-relative offset of the current OAM entry
+    87 00006008 ????????                spr_count:   resd 1        ; OAM entries left to process
+    88 0000600C ????????                spr_sx:      resd 1        ; sprite left screen X (signed)
+    89 00006010 ????????                spr_sy:      resd 1        ; sprite top screen Y (signed)
+    90 00006014 ????????                spr_tilebase: resd 1       ; GB-relative address of the sprite's tile data
+    91 00006018 ????????                spr_attr:    resd 1        ; OAM attribute byte
+    92 0000601C ????????                spr_row:     resd 1        ; current sprite row 0..7
+    93 00006020 ????????                spr_rowbase: resd 1        ; GB-relative back-buffer offset of the current row
+    94 00006024 ??                      spr_lo:      resb 1        ; low bitplane of the current tile row
+    95 00006025 ??                      spr_hi:      resb 1        ; high bitplane of the current tile row
+    96 00006026 ????                    alignb 4
+    97                                  ; Shared BG/window frame constants (written once per frame)
+    98 00006028 ????????                tiledata_mode:   resd 1    ; 1 = $8000 unsigned, 0 = $8800 signed
+    99                                  ; render_bg surface-mirror state
+   100 0000602C ????????                bg_tilemap_base: resd 1    ; BG tilemap base addr ($9800 or $9C00)
+   101 00006030 ????????                bg_scy:          resd 1    ; SCY shadow
+   102 00006034 ????????                bg_scx:          resd 1    ; SCX shadow
+   103                                  
+   104                                  ; bg_surface: 384×256 raw-color mirror of wSurroundingTiles.
+   105 00006038 <res 18000h>            bg_surface:        resb 384 * 256
+   106                                  alignb 4
+   107                                  ; render_window row buffer and scanline state
+   108 0001E038 <res 100h>              row_buf:         resb 256  ; decoded 256-px virtual window row (shade 0–3)
+   109 0001E138 ????????                win_map_row:     resd 1    ; EBP-relative offset of current window tilemap row
+   110 0001E13C ????????                win_fine_y2:     resd 1    ; (WLY & 7) * 2
+   111 0001E140 ????????                win_line_ctr:    resd 1    ; WLY — window internal line counter (resets each frame)
+   112                                  
+   113                                  ; ---------------------------------------------------------------------------
+   114                                  ; Code
+   115                                  ; ---------------------------------------------------------------------------
+   116                                  section .text
+   117                                  
+   118                                  ; ---------------------------------------------------------------------------
+   119                                  ; render_bg — blit the BG plane from a decoded offscreen surface (Tier 2 step 3).
+   120                                  ;
+   121                                  ; Instead of re-resolving 48 tiles × 200 scanlines from the VRAM tilemap every
+   122                                  ; frame, we decode wSurroundingTiles (48x32 tiles) into bg_surface (384x256)
+   123                                  ; every frame, then blit a 320x200 window at the calculated offset.
+   124                                  ; ---------------------------------------------------------------------------
+   125                                  render_bg:
+   126 00000000 60                          pushad
+   127                                  
+   128                                      ; Tile-data addressing mode (LCDC bit 4): 1 = $8000 unsigned, 0 = $8800 signed
+   129 00000001 0FB68540FF0000              movzx eax, byte [ebp + IO_LCDC]
+   130 00000008 C1E804                      shr eax, LCDC_TILEDATA_BIT
+   131 0000000B 83E001                      and eax, 1
+   132 0000000E A3[28600000]                mov [tiledata_mode], eax
+   133                                  
+   134                                      ; sync tile cache if needed
+   135 00000013 803D[00000000]00            cmp byte [g_tilecache_dirty], 0
+   136 0000001A 7405                        je .cache_ok
+   137 0000001C E848010000                  call rebuild_tile_cache
+   138                                  .cache_ok:
+   139                                  
+   140                                      ; ---- decode wSurroundingTiles (48x32) into bg_surface (384x256) ----
+   141 00000021 31DB                        xor ebx, ebx       ; EBX = tile index 0..1535 (48 * 32)
+   142                                  .decode_loop:
+   143 00000023 8A841D00E00000              mov al, [ebp + W_SURROUNDING_TILES + ebx]
+   144                                      
+   145                                      ; get tile cache offset into ESI
+   146 0000002A 833D[28600000]00            cmp dword [tiledata_mode], 0
+   147 00000031 750D                        jne .uns
+   148 00000033 0FBEC0                      movsx eax, al
+   149 00000036 C1E004                      shl eax, 4
+   150 00000039 0500900000                  add eax, 0x9000
+   151 0000003E EB0B                        jmp .mode_ok
+   152                                  .uns:
+   153 00000040 0FB6C0                      movzx eax, al
+   154 00000043 C1E004                      shl eax, 4
+   155 00000046 0500800000                  add eax, GB_VCHARS0
+   156                                  .mode_ok:
+   157 0000004B 2D00800000                  sub eax, GB_VCHARS0
+   158 00000050 C1E002                      shl eax, 2
+   159 00000053 8DB0[00000000]              lea esi, [tile_cache + eax]
+   160                                  
+   161                                      ; Calculate destination in bg_surface
+   162                                      ; row = EBX / 48, col = EBX % 48
+   163 00000059 89D8                        mov eax, ebx
+   164 0000005B B930000000                  mov ecx, 48
+   165 00000060 31D2                        xor edx, edx
+   166 00000062 F7F1                        div ecx
+   167                                      ; EAX = row, EDX = col
+   168                                      
+   169                                      ; dest offset = row * 8 * 384 + col * 8
+   170 00000064 69C0000C0000                imul eax, eax, 8 * 384
+   171 0000006A 8DBCD0[38600000]            lea edi, [bg_surface + eax + edx * 8]
+   172                                      
+   173                                      ; copy 8 rows
+   174 00000071 B908000000                  mov ecx, 8
+   175                                  .row_copy:
+   176 00000076 8B06                        mov eax, [esi]
+   177 00000078 8907                        mov [edi], eax
+   178 0000007A 8B4604                      mov eax, [esi + 4]
+   179 0000007D 894704                      mov [edi + 4], eax
+   180 00000080 83C608                      add esi, 8
+   181 00000083 81C780010000                add edi, 384
+   182 00000089 49                          dec ecx
+   183 0000008A 75EA                        jnz .row_copy
+   184                                  
+   185 0000008C 43                          inc ebx
+   186 0000008D 81FB00060000                cmp ebx, 48 * 32
+   187 00000093 728E                        jb .decode_loop
+   188                                  
+   189                                      ; ---- blit a 320x200 window from bg_surface ----
+   190                                      ; The view pointer (wCurrentTileBlockMapViewPointer) identifies the top-left
+   191                                      ; block of wSurroundingTiles. We subtract it from the map origin (MAP_BORDER)
+   192                                      ; to find the world block coordinate of bg_surface.
+   193 00000095 0FB68D68D30000              movzx ecx, byte [ebp + W_CUR_MAP_WIDTH]
+   194 0000009C 83C10C                      add ecx, MAP_BORDER * 2
+   195 0000009F 0FB7855ED30000              movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+   196 000000A6 2D00E60000                  sub eax, W_OVERWORLD_MAP
+   197 000000AB 31D2                        xor edx, edx
+   198 000000AD F7F1                        div ecx
+   199                                      ; EAX = view_block_y, EDX = view_block_x
+   200 000000AF 89C3                        mov ebx, eax   ; save view_block_y in EBX
+   201                                      
+   202                                      ; Xoff = (MAP_BORDER*32 + wXCoord*16 - view_block_x*32) - 160 + walk_offset_x
+   203 000000B1 B806000000                  mov eax, MAP_BORDER
+   204 000000B6 29D0                        sub eax, edx             ; eax = MAP_BORDER - view_block_x
+   205 000000B8 C1E005                      shl eax, 5               ; * 32
+   206 000000BB 0FB68D61D30000              movzx ecx, byte [ebp + W_X_COORD]
+   207 000000C2 C1E104                      shl ecx, 4               ; * 16
+   208 000000C5 01C8                        add eax, ecx
+   209 000000C7 2DA0000000                  sub eax, 160
+   210                                      
+   211                                      ; walk_offset_x = X_STEP_VECTOR * (8 - wWalkCounter) * 2
+   212 000000CC 0FB68DC4CF0000              movzx ecx, byte [ebp + W_WALK_COUNTER]
+   213 000000D3 53                          push ebx
+   214 000000D4 BB08000000                  mov ebx, 8
+   215 000000D9 29CB                        sub ebx, ecx             ; ebx = 8 - walk_counter
+   216 000000DB D1E3                        shl ebx, 1               ; ebx = (8 - walk_counter) * 2
+   217 000000DD 0FBE8D05C10000              movsx ecx, byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR]
+   218 000000E4 0FAFCB                      imul ecx, ebx            ; ecx = step_vector * offset
+   219 000000E7 01C8                        add eax, ecx
+   220 000000E9 5B                          pop ebx
+   221 000000EA A3[34600000]                mov [bg_scx], eax
+   222                                      
+   223                                      ; Yoff = (MAP_BORDER*32 + wYCoord*16 - view_block_y*32) - 96 + walk_offset_y
+   224 000000EF B806000000                  mov eax, MAP_BORDER
+   225 000000F4 29D8                        sub eax, ebx             ; eax = MAP_BORDER - view_block_y
+   226 000000F6 C1E005                      shl eax, 5               ; * 32
+   227 000000F9 0FB68D60D30000              movzx ecx, byte [ebp + W_Y_COORD]
+   228 00000100 C1E104                      shl ecx, 4               ; * 16
+   229 00000103 01C8                        add eax, ecx
+   230 00000105 83E860                      sub eax, 96
+   231                                      
+   232                                      ; walk_offset_y = Y_STEP_VECTOR * (8 - wWalkCounter) * 2
+   233 00000108 0FB68DC4CF0000              movzx ecx, byte [ebp + W_WALK_COUNTER]
+   234 0000010F 53                          push ebx
+   235 00000110 BB08000000                  mov ebx, 8
+   236 00000115 29CB                        sub ebx, ecx             ; ebx = 8 - walk_counter
+   237 00000117 D1E3                        shl ebx, 1               ; ebx = (8 - walk_counter) * 2
+   238 00000119 0FBE8D03C10000              movsx ecx, byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR]
+   239 00000120 0FAFCB                      imul ecx, ebx            ; ecx = step_vector * offset
+   240 00000123 01C8                        add eax, ecx
+   241 00000125 5B                          pop ebx
+   242 00000126 A3[30600000]                mov [bg_scy], eax
+   243                                  
+   244                                      ; blit 320x200 from bg_surface at (Xoff, Yoff)
+   245 0000012B 31D2                        xor edx, edx   ; screen y
+   246                                  .blit_row:
+   247 0000012D A1[30600000]                mov eax, [bg_scy]
+   248 00000132 01D0                        add eax, edx
+   249 00000134 69C080010000                imul eax, eax, 384
+   250 0000013A 8B0D[34600000]              mov ecx, [bg_scx]
+   251 00000140 01C8                        add eax, ecx
+   252 00000142 8DB0[38600000]              lea esi, [bg_surface + eax]
+   253                                      
+   254 00000148 89D7                        mov edi, edx
+   255 0000014A 69FF40010000                imul edi, RENDER_W
+   256 00000150 8DBC3D00200100              lea edi, [ebp + GB_BACKBUF + edi]
+   257                                  
+   258                                      ; 320 bytes = 80 dwords
+   259 00000157 B950000000                  mov ecx, RENDER_W / 4
+   260 0000015C F3A5                        rep movsd
+   261                                  
+   262 0000015E 42                          inc edx
+   263 0000015F 81FAC8000000                cmp edx, RENDER_H
+   264 00000165 72C6                        jb .blit_row
+   265                                  
+   266 00000167 61                          popad
+   267 00000168 C3                          ret
+   268                                  
+   269                                  ; ---------------------------------------------------------------------------
+   270                                  ; rebuild_tile_cache — decode the 384 BG/window tiles ($8000-$97FF) to 8bpp.
+   271                                  ;
+   272                                  ; Each 16-byte 2bpp tile becomes 64 bytes (8×8) of RAW color (0-3) in
+   273                                  ; tile_cache, laid out linearly (tile i at offset i*64). render_bg then copies
+   274                                  ; decoded rows instead of bit-decoding per pixel. Both source (VRAM) and dest
+   275                                  ; (cache) are contiguous, so a single source pointer / dest pointer suffice.
+   276                                  ; No BGP is applied here — the VGA DAC maps color→shade (commit_palette).
+   277                                  ;
+   278                                  ; Clears g_tilecache_dirty. In: EBP = GB memory base. All registers preserved.
+   279                                  ; ---------------------------------------------------------------------------
+   280                                  rebuild_tile_cache:
+   281 00000169 60                          pushad
+   282                                  
+   283 0000016A BE00800000                  mov esi, GB_VCHARS0                ; GB offset of the first tile-data byte
+   284 0000016F BF[00000000]                mov edi, tile_cache
+   285 00000174 BA000C0000                  mov edx, TILE_CACHE_TILES * 8      ; total tile rows (8 per tile)
+   286                                  .row_loop:
+   287 00000179 8A5C3500                    mov bl, [ebp + esi]               ; low bitplane
+   288 0000017D 8A7C3501                    mov bh, [ebp + esi + 1]           ; high bitplane
+   289 00000181 83C602                      add esi, 2
+   290 00000184 B908000000                  mov ecx, 8
+   291                                  .px_loop:
+   292 00000189 31C0                        xor eax, eax
+   293 0000018B D0E7                        shl bh, 1
+   294 0000018D D0D0                        rcl al, 1
+   295 0000018F D0E3                        shl bl, 1
+   296 00000191 D0D0                        rcl al, 1
+   297 00000193 AA                          stosb                             ; tile_cache[..] = raw color 0-3 (ES:[EDI])
+   298 00000194 49                          dec ecx
+   299 00000195 75F2                        jnz .px_loop
+   300 00000197 4A                          dec edx
+   301 00000198 75DF                        jnz .row_loop
+   302                                  
+   303 0000019A C605[00000000]00            mov byte [g_tilecache_dirty], 0
+   304 000001A1 61                          popad
+   305 000001A2 C3                          ret
+   306                                  
+   307                                  ; ---------------------------------------------------------------------------
+   308                                  ; render_sprites — composite the 40 OAM sprites over the back buffer.
+   309                                  ;
+   310                                  ; Emulates DMG OBJ rendering (8×8 mode, LCDC_OBJ_8): for each visible sprite,
+   311                                  ; blit its 8×8 tile from the OBJ tile area ($8000, unsigned addressing) honoring
+   312                                  ; X/Y flip, the OBP0/OBP1 palette, color-0 transparency, and the BG-priority bit
+   313                                  ; (attr bit 7 → draw only over BG shade 0; correct under the standard BGP=$E4).
+   314                                  ; Reads OAM from $FE00. Call after render_bg, before present.
+   315                                  ;
+   316                                  ; Simplifications vs. hardware: sprites are drawn in reverse OAM order so a lower
+   317                                  ; index ends up on top (handles the index tiebreak, not the smaller-X-wins rule),
+   318                                  ; and the 10-sprites-per-scanline limit is not enforced. 8×16 OBJ size (LCDC
+   319                                  ; bit 2) is not handled — Pokémon overworld/menus use 8×8.
+   320                                  ;
+   321                                  ; In:  EBP = GB memory base. All registers preserved.
+   322                                  ; ---------------------------------------------------------------------------
+   323                                  render_sprites:
+   324 000001A3 60                          pushad
+   325 000001A4 F68540FF000002              test byte [ebp + IO_LCDC], LCDCF_OBJ_ON
+   326 000001AB 0F848A010000                jz .done
+   327                                  
+   328                                      ; No OBP unpack: sprite pixels are written as raw palette-indexed values
+   329                                      ; (4 + color for OBP0, 8 + color for OBP1). commit_palette (video.asm) sets
+   330                                      ; DAC entries 4-7 / 8-11 to the OBP0/OBP1-mapped DMG shades.
+   331                                  
+   332 000001B1 C705[04600000]9CFE-         mov dword [spr_oam_ptr], GB_OAM + (OAM_COUNT - 1) * OAM_ENTRY_SIZE
+   332 000001B9 0000               
+   333 000001BB C705[08600000]2800-         mov dword [spr_count], OAM_COUNT
+   333 000001C3 0000               
+   334                                  
+   335                                  .spriteLoop:
+   336 000001C5 8B35[04600000]              mov esi, [spr_oam_ptr]
+   337 000001CB 0FB6443500                  movzx eax, byte [ebp + esi]          ; Y (screen Y + 16)
+   338 000001D0 83E810                      sub eax, OAM_Y_OFS
+   339 000001D3 A3[10600000]                mov [spr_sy], eax
+   340 000001D8 0FB6443501                  movzx eax, byte [ebp + esi + 1]      ; X (screen X + 8)
+   341 000001DD 83E808                      sub eax, OAM_X_OFS
+   342 000001E0 A3[0C600000]                mov [spr_sx], eax
+   343 000001E5 0FB6443502                  movzx eax, byte [ebp + esi + 2]      ; tile id
+   344 000001EA C1E004                      shl eax, 4
+   345 000001ED 0500800000                  add eax, GB_VCHARS0
+   346 000001F2 A3[14600000]                mov [spr_tilebase], eax
+   347 000001F7 0FB6443503                  movzx eax, byte [ebp + esi + 3]      ; attributes
+   348 000001FC A3[18600000]                mov [spr_attr], eax
+   349                                  
+   350                                      ; Cull sprites that fall entirely off-screen.
+   351 00000201 A1[10600000]                mov eax, [spr_sy]
+   352 00000206 3DC8000000                  cmp eax, RENDER_H
+   353 0000020B 0F8D17010000                jge .nextSprite                      ; top at/below bottom edge
+   354 00000211 83C007                      add eax, 7
+   355 00000214 0F880E010000                js  .nextSprite                      ; bottom row above top edge
+   356 0000021A A1[0C600000]                mov eax, [spr_sx]
+   357 0000021F 3D40010000                  cmp eax, RENDER_W
+   358 00000224 0F8DFE000000                jge .nextSprite
+   359 0000022A 83C007                      add eax, 7
+   360 0000022D 0F88F5000000                js  .nextSprite
+   361                                  
+   362 00000233 C705[1C600000]0000-         mov dword [spr_row], 0
+   362 0000023B 0000               
+   363                                  .rowLoop:
+   364 0000023D A1[10600000]                mov eax, [spr_sy]
+   365 00000242 0305[1C600000]              add eax, [spr_row]                   ; py
+   366 00000248 0F88C7000000                js  .rowNext                         ; row above the screen
+   367 0000024E 3DC8000000                  cmp eax, RENDER_H
+   368 00000253 0F8DBC000000                jge .rowNext
+   369 00000259 69C840010000                imul ecx, eax, RENDER_W
+   370 0000025F 81C100200100                add ecx, GB_BACKBUF
+   371 00000265 890D[20600000]              mov [spr_rowbase], ecx
+   372                                  
+   373                                      ; srcrow = yflip ? 7 - row : row
+   374 0000026B 8B15[1C600000]              mov edx, [spr_row]
+   375 00000271 F605[18600000]40            test byte [spr_attr], OAM_YFLIP
+   376 00000278 740B                        jz .noYFlip
+   377 0000027A BA07000000                  mov edx, 7
+   378 0000027F 2B15[1C600000]              sub edx, [spr_row]
+   379                                  .noYFlip:
+   380 00000285 A1[14600000]                mov eax, [spr_tilebase]
+   381 0000028A 8D0450                      lea eax, [eax + edx * 2]
+   382 0000028D 8A540500                    mov dl, [ebp + eax]
+   383 00000291 8815[24600000]              mov [spr_lo], dl
+   384 00000297 8A540501                    mov dl, [ebp + eax + 1]
+   385 0000029B 8815[25600000]              mov [spr_hi], dl
+   386                                  
+   387 000002A1 31F6                        xor esi, esi                         ; col = 0..7
+   388                                  .colLoop:
+   389                                      ; bit index = xflip ? col : 7 - col
+   390 000002A3 89F1                        mov ecx, esi
+   391 000002A5 F605[18600000]20            test byte [spr_attr], OAM_XFLIP
+   392 000002AC 7507                        jnz .haveBit
+   393 000002AE B907000000                  mov ecx, 7
+   394 000002B3 29F1                        sub ecx, esi
+   395                                  .haveBit:
+   396 000002B5 0FB605[24600000]            movzx eax, byte [spr_lo]
+   397 000002BC D3E8                        shr eax, cl
+   398 000002BE 83E001                      and eax, 1
+   399 000002C1 0FB61D[25600000]            movzx ebx, byte [spr_hi]
+   400 000002C8 D3EB                        shr ebx, cl
+   401 000002CA 83E301                      and ebx, 1
+   402 000002CD 8D0458                      lea eax, [eax + ebx * 2]             ; color 0..3
+   403 000002D0 85C0                        test eax, eax
+   404 000002D2 743B                        jz .colNext                          ; color 0 = transparent
+   405                                  
+   406                                      ; pixel = palette base + color: OBP0 → 4+color, OBP1 → 8+color. The DAC
+   407                                      ; (commit_palette) maps 4-7 / 8-11 to the OBP0/OBP1-mapped DMG shades.
+   408 000002D4 8D5804                      lea ebx, [eax + 4]
+   409 000002D7 F605[18600000]10            test byte [spr_attr], OAM_PAL1
+   410 000002DE 7403                        jz .pal0
+   411 000002E0 8D5808                      lea ebx, [eax + 8]
+   412                                  .pal0:
+   413                                  
+   414 000002E3 A1[0C600000]                mov eax, [spr_sx]
+   415 000002E8 01F0                        add eax, esi                         ; px
+   416 000002EA 7823                        js  .colNext
+   417 000002EC 3D40010000                  cmp eax, RENDER_W
+   418 000002F1 7D1C                        jge .colNext
+   419 000002F3 8B0D[20600000]              mov ecx, [spr_rowbase]
+   420 000002F9 01C1                        add ecx, eax                         ; back-buffer offset (GB-relative)
+   421 000002FB F605[18600000]80            test byte [spr_attr], OAM_PRIO
+   422 00000302 7407                        jz .writePx
+   423 00000304 807C0D0000                  cmp byte [ebp + ecx], 0              ; behind BG: only over BG color 0
+   424 00000309 7504                        jne .colNext
+   425                                  .writePx:
+   426 0000030B 885C0D00                    mov [ebp + ecx], bl
+   427                                  .colNext:
+   428 0000030F 46                          inc esi
+   429 00000310 83FE08                      cmp esi, 8
+   430 00000313 728E                        jb .colLoop
+   431                                  
+   432                                  .rowNext:
+   433 00000315 FF05[1C600000]              inc dword [spr_row]
+   434 0000031B 833D[1C600000]08            cmp dword [spr_row], 8
+   435 00000322 0F8215FFFFFF                jb .rowLoop
+   436                                  
+   437                                  .nextSprite:
+   438 00000328 832D[04600000]04            sub dword [spr_oam_ptr], OAM_ENTRY_SIZE
+   439 0000032F FF0D[08600000]              dec dword [spr_count]
+   440 00000335 0F858AFEFFFF                jnz .spriteLoop
+   441                                  
+   442                                  .done:
+   443 0000033B 61                          popad
+   444 0000033C C3                          ret
+   445                                  
+   446                                  ; ---------------------------------------------------------------------------
+   447                                  ; render_window — composite the GB window layer over the back buffer.
+   448                                  ;
+   449                                  ; The window is a non-scrolling BG-like plane that overlays the main BG from
+   450                                  ; screen position (WX-7, WY) downward. It is enabled by LCDC bit 5 (and the
+   451                                  ; BG/Window master enable, LCDC bit 0). LCDC bit 6 selects its tilemap
+   452                                  ; ($9800 vs $9C00). Tile data addressing follows LCDC bit 4, identical to the
+   453                                  ; BG. BGP applies — the window is fully opaque (color 0 is NOT transparent).
+   454                                  ;
+   455                                  ; WLY — window internal line counter:
+   456                                  ;   WLY starts at 0 each frame and increments once for every scanline on which
+   457                                  ;   the window is drawn (cur_y >= WY). It is NOT the same as LY. WLY is what
+   458                                  ;   indexes the window tilemap row, so if the window becomes visible only at
+   459                                  ;   screen row 72, the first window tilemap row (WLY=0) maps there — not row 9.
+   460                                  ;   This prevents visual drift when the window starts mid-frame. The implementation
+   461                                  ;   stores WLY in win_line_ctr (BSS) and increments it after each active scanline.
+   462                                  ;
+   463                                  ; Call after render_bg and before render_sprites.
+   464                                  ; In:  EBP = GB memory base. All registers preserved.
+   465                                  ; ---------------------------------------------------------------------------
+   466                                  render_window:
+   467 0000033D 60                          pushad
+   468                                  
+   469                                      ; Exit if LCDC bit 5 (window enable) is clear.
+   470 0000033E F68540FF000020              test byte [ebp + IO_LCDC], 1 << LCDC_WIN_EN_BIT
+   471 00000345 0F84EE000000                jz .done
+   472                                      ; GLITCH: LCDC bit 0 is the DMG BG+Window master enable — if clear, both
+   473                                      ; the BG and window are disabled (screen shows BGP color 0 only on DMG).
+   474 0000034B F68540FF000001              test byte [ebp + IO_LCDC], 1
+   475 00000352 0F84E1000000                jz .done
+   476                                  
+   477                                      ; No BGP unpack: the window writes raw color (0-3) like the BG; the DAC
+   478                                      ; (commit_palette) maps it via BGP — the window shares the BG palette.
+   479                                  
+   480                                      ; Cache tile data addressing mode (shared LCDC bit 4).
+   481 00000358 0FB68540FF0000              movzx eax, byte [ebp + IO_LCDC]
+   482 0000035F C1E804                      shr eax, LCDC_TILEDATA_BIT
+   483 00000362 83E001                      and eax, 1
+   484 00000365 A3[28600000]                mov [tiledata_mode], eax
+   485                                  
+   486                                      ; Reset WLY for this frame.
+   487 0000036A C705[40E10100]0000-         mov dword [win_line_ctr], 0
+   487 00000372 0000               
+   488                                  
+   489 00000374 0FB69D4AFF0000              movzx ebx, byte [ebp + IO_WY]     ; EBX = WY (window top edge, screen-Y units)
+   490                                  
+   491 0000037B 31C9                        xor ecx, ecx                       ; cur_y = 0
+   492                                  
+   493                                  .scanline_loop:
+   494                                      ; Skip scanlines above the window's vertical trigger.
+   495 0000037D 39D9                        cmp ecx, ebx                       ; cur_y < WY?
+   496 0000037F 0F82A7000000                jb .next_scanline
+   497                                  
+   498                                      ; ── Decode one window tile row (32 tiles) into row_buf ──────────────────
+   499                                  
+   500                                      ; fine_y2 = (WLY & 7) * 2
+   501 00000385 8B15[40E10100]              mov edx, [win_line_ctr]
+   502 0000038B 89D0                        mov eax, edx
+   503 0000038D 83E007                      and eax, 7
+   504 00000390 D1E0                        shl eax, 1
+   505 00000392 A3[3CE10100]                mov [win_fine_y2], eax
+   506                                  
+   507                                      ; map_row = window_tilemap_base + (WLY >> 3) * 32
+   508 00000397 C1EA03                      shr edx, 3
+   509 0000039A C1E205                      shl edx, 5
+   510 0000039D F68540FF000040              test byte [ebp + IO_LCDC], 1 << LCDC_WIN_MAP_BIT
+   511 000003A4 7408                        jz .winmap0
+   512 000003A6 81C2009C0000                add edx, GB_TILEMAP1
+   513 000003AC EB06                        jmp .winmap_done
+   514                                  .winmap0:
+   515 000003AE 81C200980000                add edx, GB_TILEMAP0
+   516                                  .winmap_done:
+   517 000003B4 8915[38E10100]              mov [win_map_row], edx
+   518                                  
+   519 000003BA 51                          push ecx                            ; save scanline counter — decode_win_row clobbers ECX
+   520 000003BB E87B000000                  call decode_win_row                ; fill row_buf[0..255] from the 32 window tiles
+   521 000003C0 59                          pop ecx                            ; restore scanline counter
+   522                                  
+   523                                      ; ── Copy visible window pixels into the back buffer ─────────────────────
+   524                                  
+   525                                      ; wx_adj = WX - 7: signed screen X of the window's left column.
+   526 000003C1 0FB6954BFF0000              movzx edx, byte [ebp + IO_WX]
+   527 000003C8 83EA07                      sub edx, 7                         ; EDX = wx_adj (signed)
+   528                                  
+   529                                      ; EDI = start of this back-buffer row.
+   530 000003CB 51                          push ecx
+   531 000003CC 69C940010000                imul ecx, ecx, RENDER_W
+   532 000003D2 8DBC0D00200100              lea edi, [ebp + GB_BACKBUF + ecx]
+   533 000003D9 59                          pop ecx
+   534                                  
+   535 000003DA 85D2                        test edx, edx
+   536 000003DC 782A                        js .win_left_clip
+   537                                  
+   538                                      ; wx_adj >= 0: copy row_buf[0..] → backbuf[wx_adj..RENDER_W-1].
+   539 000003DE 81FA40010000                cmp edx, RENDER_W
+   540 000003E4 7D40                        jge .win_inc_ctr                   ; window entirely off the right edge
+   541 000003E6 8D35[38E00100]              lea esi, [row_buf]
+   542 000003EC 51                          push ecx
+   543 000003ED B940010000                  mov ecx, RENDER_W
+   544 000003F2 29D1                        sub ecx, edx                       ; pixels to reach the right edge
+   545 000003F4 81F900010000                cmp ecx, 256
+   546 000003FA 7605                        jbe .do_right_copy
+   547 000003FC B900010000                  mov ecx, 256                       ; clamp — row_buf holds only 256 decoded px
+   548                                  .do_right_copy:                        ; (32 tiles); never read past it into BSS
+   549 00000401 01D7                        add edi, edx                       ; advance dest to screen_x_start
+   550 00000403 F3A4                        rep movsb
+   551 00000405 59                          pop ecx
+   552 00000406 EB1E                        jmp .win_inc_ctr
+   553                                  
+   554                                  .win_left_clip:
+   555                                      ; wx_adj < 0: skip the first -wx_adj pixels of row_buf, copy into backbuf[0..].
+   556 00000408 F7DA                        neg edx                            ; EDX = number of leading columns to clip
+   557 0000040A 8DB2[38E00100]              lea esi, [row_buf + edx]
+   558 00000410 51                          push ecx
+   559 00000411 B940010000                  mov ecx, RENDER_W
+   560 00000416 B800010000                  mov eax, 256
+   561 0000041B 29D0                        sub eax, edx                       ; bytes remaining in row_buf after the clip
+   562 0000041D 39C1                        cmp ecx, eax
+   563 0000041F 7602                        jbe .do_left_copy
+   564 00000421 89C1                        mov ecx, eax                       ; clamp — never read past row_buf end
+   565                                  .do_left_copy:
+   566 00000423 F3A4                        rep movsb
+   567 00000425 59                          pop ecx
+   568                                  
+   569                                  .win_inc_ctr:
+   570 00000426 FF05[40E10100]              inc dword [win_line_ctr]
+   571                                  
+   572                                  .next_scanline:
+   573 0000042C 41                          inc ecx
+   574                                      ; Bound at SCREEN_H (144), the GB logical screen height — NOT RENDER_H (200).
+   575                                      ; Pokémon parks the window at WY=144 to hide it on the 144-px GB screen; our
+   576                                      ; taller 320×200 viewport would otherwise paint the parked (uninitialized)
+   577                                      ; window over rows 144–199. Limiting the window to the GB-logical area keeps
+   578                                      ; the park semantics. (A textbox for the full 200-px viewport is future
+   579                                      ; window-layer work — see TODO.md.)
+   580 0000042D 81F990000000                cmp ecx, SCREEN_H
+   581 00000433 0F8244FFFFFF                jb .scanline_loop
+   582                                  
+   583                                  .done:
+   584 00000439 61                          popad
+   585 0000043A C3                          ret
+   586                                  
+   587                                  ; ---------------------------------------------------------------------------
+   588                                  ; decode_win_row — decode the 32 window tiles of the current row into row_buf
+   589                                  ;
+   590                                  ; In:  [win_map_row] = GB tilemap row base address
+   591                                  ;      [win_fine_y2] = (WLY & 7) * 2
+   592                                  ;      [tiledata_mode] set by render_window preamble. Stores raw color 0-3.
+   593                                  ; Clobbers: EAX, EBX, ECX, EDX, ESI, EDI
+   594                                  ; ---------------------------------------------------------------------------
+   595                                  decode_win_row:
+   596 0000043B BF[38E00100]                mov edi, row_buf
+   597 00000440 31F6                        xor esi, esi                       ; tile column 0..31
+   598                                  
+   599                                  .wrow_tile:
+   600 00000442 A1[38E10100]                mov eax, [win_map_row]
+   601 00000447 01F0                        add eax, esi
+   602 00000449 0FB6440500                  movzx eax, byte [ebp + eax]       ; tile_id
+   603                                  
+   604 0000044E 833D[28600000]00            cmp dword [tiledata_mode], 0
+   605 00000455 750D                        jne .wrow_unsigned
+   606 00000457 0FBEC0                      movsx eax, al
+   607 0000045A C1E004                      shl eax, 4
+   608 0000045D 0500900000                  add eax, 0x9000
+   609 00000462 EB08                        jmp .wrow_addr_ok
+   610                                  .wrow_unsigned:
+   611 00000464 C1E004                      shl eax, 4
+   612 00000467 0500800000                  add eax, GB_VRAM0
+   613                                  .wrow_addr_ok:
+   614 0000046C 0305[3CE10100]              add eax, [win_fine_y2]
+   615                                  
+   616 00000472 8A5C0500                    mov bl, [ebp + eax]
+   617 00000476 8A7C0501                    mov bh, [ebp + eax + 1]
+   618                                  
+   619 0000047A B908000000                  mov ecx, 8
+   620                                  .wrow_px:
+   621 0000047F 31C0                        xor eax, eax
+   622 00000481 D0E7                        shl bh, 1
+   623 00000483 D0D0                        rcl al, 1
+   624 00000485 D0E3                        shl bl, 1
+   625 00000487 D0D0                        rcl al, 1
+   626 00000489 AA                          stosb                              ; raw color 0-3 (DAC maps via BGP)
+   627 0000048A 49                          dec ecx
+   628 0000048B 75F2                        jnz .wrow_px
+   629                                  
+   630 0000048D 46                          inc esi
+   631 0000048E 83FE20                      cmp esi, TILEMAP_W
+   632 00000491 72AF                        jb .wrow_tile
+   633 00000493 C3                          ret
+   634                                  
+   635                                  ; ---------------------------------------------------------------------------
+   636                                  ; draw_player_marker — paint the player placeholder into the back buffer.
+   637                                  ;
+   638                                  ; No-op unless g_player_marker_on is set (so it only shows in the overworld,
+   639                                  ; not the title screen). Draws a PLAYER_MARKER_SIZE square of the darkest shade
+   640                                  ; with a half-size lighter square inset, centered on the fixed player screen
+   641                                  ; position. Call after render_bg, before present.
+   642                                  ;
+   643                                  ; In:  EBP = GB memory base. All registers preserved.
+   644                                  ; ---------------------------------------------------------------------------
+   645                                  draw_player_marker:
+   646 00000494 803D[00600000]00            cmp byte [g_player_marker_on], 0
+   647 0000049B 744E                        jz .ret
+   648 0000049D 60                          pushad
+   649                                  
+   650                                      ; Outer square: PLAYER_MARKER_SIZE × PLAYER_MARKER_SIZE of the body shade.
+   651 0000049E BA40000000                  mov edx, PLAYER_MARKER_Y
+   652 000004A3 B910000000                  mov ecx, PLAYER_MARKER_SIZE                  ; rows remaining
+   653                                  .outer_row:
+   654 000004A8 69FA40010000                imul edi, edx, RENDER_W
+   655 000004AE 8DBC3D40200100              lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X]
+   656 000004B5 51                          push ecx
+   657 000004B6 B910000000                  mov ecx, PLAYER_MARKER_SIZE
+   658 000004BB B003                        mov al, PLAYER_MARKER_SHADE
+   659 000004BD F3AA                        rep stosb
+   660 000004BF 59                          pop ecx
+   661 000004C0 42                          inc edx
+   662 000004C1 49                          dec ecx
+   663 000004C2 75E4                        jnz .outer_row
+   664                                  
+   665                                      ; Inner square: half size, inset by a quarter, in the lighter shade.
+   666 000004C4 BA44000000                  mov edx, PLAYER_MARKER_Y + PLAYER_MARKER_SIZE / 4
+   667 000004C9 B908000000                  mov ecx, PLAYER_MARKER_SIZE / 2
+   668                                  .inner_row:
+   669 000004CE 69FA40010000                imul edi, edx, RENDER_W
+   670 000004D4 8DBC3D44200100              lea edi, [ebp + GB_BACKBUF + edi + PLAYER_MARKER_X + PLAYER_MARKER_SIZE / 4]
+   671 000004DB 51                          push ecx
+   672 000004DC B908000000                  mov ecx, PLAYER_MARKER_SIZE / 2
+   673 000004E1 B000                        mov al, PLAYER_MARKER_INNER
+   674 000004E3 F3AA                        rep stosb
+   675 000004E5 59                          pop ecx
+   676 000004E6 42                          inc edx
+   677 000004E7 49                          dec ecx
+   678 000004E8 75E4                        jnz .inner_row
+   679                                  
+   680 000004EA 61                          popad
+   681                                  .ret:
+   682 000004EB C3                          ret

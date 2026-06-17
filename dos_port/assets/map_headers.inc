@@ -28,7 +28,7 @@ map_header_PALLET_TOWN:
     db 10 ; strip length
     db 10 ; connected map width
     db 35, 0 ; Y, X align
-    dw 0xE7B8 ; view ptr
+    dw 0xE7B9 ; view ptr
     ; SOUTH connection to ROUTE_21
     db 0x20 ; map id
     dw 0x5200 ; strip src
@@ -36,7 +36,7 @@ map_header_PALLET_TOWN:
     db 10 ; strip length
     db 10 ; connected map width
     db 0, 0 ; Y, X align
-    dw 0xE62C ; view ptr
+    dw 0xE62D ; view ptr
     dw 0x542E ; object_data_ptr
 map_object_PALLET_TOWN:
     db 0x0B ; border block
@@ -61,7 +61,7 @@ map_header_ROUTE_1:
     db 10 ; strip length
     db 10 ; connected map width
     db 0, 0 ; Y, X align
-    dw 0xE62C ; view ptr
+    dw 0xE62D ; view ptr
     dw 0x5461 ; object_data_ptr
 map_object_ROUTE_1:
     db 0x0B ; border block
@@ -85,7 +85,7 @@ map_header_ROUTE_21:
     db 10 ; strip length
     db 10 ; connected map width
     db 17, 0 ; Y, X align
-    dw 0xE6F2 ; view ptr
+    dw 0xE6F3 ; view ptr
     dw 0x547F ; object_data_ptr
 map_object_ROUTE_21:
     db 0x43 ; border block

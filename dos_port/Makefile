@@ -12,7 +12,7 @@
 NASM    := nasm
 LD      := i386-pc-msdosdjgpp-ld
 
-NASMFLAGS := -f coff -I include/ -I .
+NASMFLAGS := -f coff -I include/ -I . -O0
 
 # Bug fix level (0=none, 1=critical, 2=all). Override: make BUG_FIX_LEVEL=1
 BUG_FIX_LEVEL ?= 0
@@ -126,7 +126,7 @@ assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_
 all: $(TARGET)
 
 $(TARGET): $(ALL_OBJS) link.ld
-	$(LD) $(LDFLAGS) $(ALL_OBJS) -o $@
+	$(LD) $(LDFLAGS) -Map=pkmn.map $(ALL_OBJS) -o $@
 	@echo "Built: $@"
 
 %.o: %.asm

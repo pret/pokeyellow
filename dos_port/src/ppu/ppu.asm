@@ -100,6 +100,8 @@ tiledata_mode:   resd 1    ; 1 = $8000 unsigned, 0 = $8800 signed
 bg_tilemap_base: resd 1    ; BG tilemap base addr ($9800 or $9C00)
 bg_scy:          resd 1    ; SCY shadow
 bg_scx:          resd 1    ; SCX shadow
+sprite_shift_x:  resd 1    ; Dynamic X shift for sprites to align with DOS camera
+sprite_shift_y:  resd 1    ; Dynamic Y shift for sprites
 
 ; bg_surface: 384×256 raw-color mirror of wSurroundingTiles.
 bg_surface:        resb 384 * 256
@@ -140,7 +142,30 @@ render_bg:
     ; ---- decode wSurroundingTiles (48x32) into bg_surface (384x256) ----
     xor ebx, ebx       ; EBX = tile index 0..1535 (48 * 32)
 .decode_loop:
+    movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    test eax, eax
+    jz .decode_vram
+
     mov al, [ebp + W_SURROUNDING_TILES + ebx]
+    jmp .got_tile
+
+.decode_vram:
+    mov eax, ebx
+    mov ecx, 48
+    xor edx, edx
+    div ecx
+    and edx, 31
+    shl eax, 5
+    add eax, edx
+    mov ecx, GB_TILEMAP0
+    test byte [ebp + IO_LCDC], 1 << 3
+    jz .read_vram
+    mov ecx, GB_TILEMAP1
+.read_vram:
+    add eax, ecx
+    mov al, [ebp + eax]
+
+.got_tile:
     
     ; get tile cache offset into ESI
     cmp dword [tiledata_mode], 0
@@ -187,12 +212,16 @@ render_bg:
     jb .decode_loop
 
     ; ---- blit a 320x200 window from bg_surface ----
+    ; Check if we are actually in the overworld (view pointer != 0)
+    movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    test eax, eax
+    jz .not_overworld
+
     ; The view pointer (wCurrentTileBlockMapViewPointer) identifies the top-left
     ; block of wSurroundingTiles. We subtract it from the map origin (MAP_BORDER)
     ; to find the world block coordinate of bg_surface.
     movzx ecx, byte [ebp + W_CUR_MAP_WIDTH]
     add ecx, MAP_BORDER * 2
-    movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
     sub eax, W_OVERWORLD_MAP
     xor edx, edx
     div ecx
@@ -208,8 +237,10 @@ render_bg:
     add eax, ecx
     sub eax, 160
     
-    ; walk_offset_x = X_STEP_VECTOR * (8 - wWalkCounter) * 2
+    ; walk_offset_x = X_STEP_VECTOR * (8 - wWalkCounter) * 2 (only if walking)
     movzx ecx, byte [ebp + W_WALK_COUNTER]
+    test ecx, ecx
+    jz .no_walk_x
     push ebx
     mov ebx, 8
     sub ebx, ecx             ; ebx = 8 - walk_counter
@@ -218,7 +249,26 @@ render_bg:
     imul ecx, ebx            ; ecx = step_vector * offset
     add eax, ecx
     pop ebx
+.no_walk_x:
+    
+    ; EAX is now Original_Xoff
+    mov [sprite_shift_x], eax
+    
+    ; Clamp X to 0..64 to stay within bg_surface
+    test eax, eax
+    jns .x_min_ok
+    xor eax, eax
+.x_min_ok:
+    cmp eax, 64
+    jle .x_max_ok
+    mov eax, 64
+.x_max_ok:
     mov [bg_scx], eax
+    
+    ; Shift_X = GB_Screen_Abs_X - bg_scx
+    mov eax, [sprite_shift_x]
+    sub eax, [bg_scx]
+    mov [sprite_shift_x], eax
     
     ; Yoff = (MAP_BORDER*32 + wYCoord*16 - view_block_y*32) - 96 + walk_offset_y
     mov eax, MAP_BORDER
@@ -229,8 +279,10 @@ render_bg:
     add eax, ecx
     sub eax, 96
     
-    ; walk_offset_y = Y_STEP_VECTOR * (8 - wWalkCounter) * 2
+    ; walk_offset_y = Y_STEP_VECTOR * (8 - wWalkCounter) * 2 (only if walking)
     movzx ecx, byte [ebp + W_WALK_COUNTER]
+    test ecx, ecx
+    jz .no_walk_y
     push ebx
     mov ebx, 8
     sub ebx, ecx             ; ebx = 8 - walk_counter
@@ -239,13 +291,51 @@ render_bg:
     imul ecx, ebx            ; ecx = step_vector * offset
     add eax, ecx
     pop ebx
+.no_walk_y:
+    
+    ; EAX is now Original_Yoff
+    mov [sprite_shift_y], eax
+    
+    ; Clamp Y to 0..56 to stay within bg_surface
+    test eax, eax
+    jns .y_min_ok
+    xor eax, eax
+.y_min_ok:
+    cmp eax, 56
+    jle .y_max_ok
+    mov eax, 56
+.y_max_ok:
     mov [bg_scy], eax
+    
+    ; Shift_Y = GB_Screen_Abs_Y - bg_scy
+    mov eax, [sprite_shift_y]
+    sub eax, [bg_scy]
+    mov [sprite_shift_y], eax
+    
+    jmp .do_blit
+
+.not_overworld:
+    movzx ecx, byte [ebp + IO_SCX]
+    mov dword [bg_scx], ecx
+    mov dword [sprite_shift_x], 0
+    movzx ecx, byte [ebp + IO_SCY]
+    mov dword [bg_scy], ecx
+    mov dword [sprite_shift_y], 0
+
+.do_blit:
 
     ; blit 320x200 from bg_surface at (Xoff, Yoff)
     xor edx, edx   ; screen y
 .blit_row:
     mov eax, [bg_scy]
     add eax, edx
+    
+    movzx ecx, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
+    test ecx, ecx
+    jnz .no_y_wrap
+    and eax, 255
+.no_y_wrap:
+
     imul eax, eax, 384
     mov ecx, [bg_scx]
     add eax, ecx
@@ -336,9 +426,16 @@ render_sprites:
     mov esi, [spr_oam_ptr]
     movzx eax, byte [ebp + esi]          ; Y (screen Y + 16)
     sub eax, OAM_Y_OFS
+    movsx eax, al                        ; sign-extend relative Y coordinate
+    add eax, 20                          ; center on 200 height screen (72 + 20 = 92)
+    add eax, [sprite_shift_y]            ; apply camera clamp shift
     mov [spr_sy], eax
+
     movzx eax, byte [ebp + esi + 1]      ; X (screen X + 8)
-    sub eax, OAM_X_OFS
+    sub eax, OAM_X_OFS                   ; eax = screen X
+    movsx eax, al                        ; sign-extend relative X coordinate
+    add eax, 72                          ; center on 320 width screen (80 + 72 = 152)
+    add eax, [sprite_shift_x]            ; apply camera clamp shift
     mov [spr_sx], eax
     movzx eax, byte [ebp + esi + 2]      ; tile id
     shl eax, 4

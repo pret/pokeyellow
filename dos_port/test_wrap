@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+import sys
+
+with open("FRAME.BIN", "rb") as f:
+    data = f.read()
+
+diff_count = 0
+total_count = 64 * 200
+
+for y in range(200):
+    for x in range(64):
+        p1 = data[y * 320 + x]
+        p2 = data[y * 320 + (256 + x)]
+        if p1 != p2:
+            diff_count += 1
+
+print(f"Diff: {diff_count} / {total_count} = {diff_count / total_count * 100:.2f}%")
