@@ -256,10 +256,10 @@ GetTileSpriteStandsOn:
     movsx ebx, al
     sar ebx, 3                           ; EBX = screenXtile (signed)
     
-    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 17 * 40 + 24
+    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 9 * 40 + 16
     imul ecx, ecx, SCREEN_WIDTH
     add ebx, ecx
-    add ebx, W_TILEMAP + 17 * SCREEN_WIDTH + 24
+    add ebx, W_TILEMAP + 9 * SCREEN_WIDTH + 16
     ret
 
 ; ---------------------------------------------------------------------------
@@ -298,8 +298,8 @@ UpdatePlayerSprite:
     jmp .disable
 
 .checkTextBox:
-    ; lower-left BG tile the sprite stands on (coord 24,16); >= $60 → text box
-    mov al, [ebp + W_TILEMAP + 16 * SCREEN_TILES_W + 24]
+    ; lower-left BG tile the sprite stands on (coord 24,17); >= $60 → text box
+    mov al, [ebp + W_TILEMAP + 17 * SCREEN_TILES_W + 24]
     mov [ebp + H_TILE_PLAYER_STANDING_ON], al
     cmp al, MAP_TILESET_SIZE
     jb .lowerLeftIsMapTile
