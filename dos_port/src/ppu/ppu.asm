@@ -103,8 +103,8 @@ bg_scx:          resd 1    ; SCX shadow
 sprite_shift_x:  resd 1    ; Dynamic X shift for sprites to align with DOS camera
 sprite_shift_y:  resd 1    ; Dynamic Y shift for sprites
 
-; bg_surface: 384×256 raw-color mirror of wSurroundingTiles.
-bg_surface:        resb 384 * 256
+; bg_surface: 384×288 raw-color mirror of wSurroundingTiles.
+bg_surface:        resb 384 * 288
 alignb 4
 ; render_window row buffer and scanline state
 row_buf:         resb 256  ; decoded 256-px virtual window row (shade 0–3)
@@ -121,7 +121,7 @@ section .text
 ; render_bg — blit the BG plane from a decoded offscreen surface (Tier 2 step 3).
 ;
 ; Instead of re-resolving 48 tiles × 200 scanlines from the VRAM tilemap every
-; frame, we decode wSurroundingTiles (48x32 tiles) into bg_surface (384x256)
+; frame, we decode wSurroundingTiles (48x36 tiles) into bg_surface (384x288)
 ; every frame, then blit a 320x200 window at the calculated offset.
 ; ---------------------------------------------------------------------------
 render_bg:
@@ -139,8 +139,8 @@ render_bg:
     call rebuild_tile_cache
 .cache_ok:
 
-    ; ---- decode wSurroundingTiles (48x32) into bg_surface (384x256) ----
-    xor ebx, ebx       ; EBX = tile index 0..1535 (48 * 32)
+    ; ---- decode wSurroundingTiles (48x36) into bg_surface (384x288) ----
+    xor ebx, ebx       ; EBX = tile index 0..1727 (48 * 36)
 .decode_loop:
     movzx eax, word [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR]
     test eax, eax
@@ -208,7 +208,7 @@ render_bg:
     jnz .row_copy
 
     inc ebx
-    cmp ebx, 48 * 32
+    cmp ebx, 48 * 36
     jb .decode_loop
 
     ; ---- blit a 320x200 window from bg_surface ----
@@ -296,14 +296,14 @@ render_bg:
     ; EAX is now Original_Yoff
     mov [sprite_shift_y], eax
     
-    ; Clamp Y to 0..56 to stay within bg_surface
+    ; Clamp Y to 0..88 to stay within bg_surface
     test eax, eax
     jns .y_min_ok
     xor eax, eax
 .y_min_ok:
-    cmp eax, 56
+    cmp eax, 88
     jle .y_max_ok
-    mov eax, 56
+    mov eax, 88
 .y_max_ok:
     mov [bg_scy], eax
     

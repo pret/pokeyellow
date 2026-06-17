@@ -110,7 +110,7 @@ def main():
     ])
     
     # Map definitions
-    W_OVERWORLD_MAP = 0xE600
+    W_OVERWORLD_MAP = 0xE800
     
     maps = {
         "PALLET_TOWN": {"id": 0x00, "width": 10, "height": 9, "blk_addr": 0x4E00, "border": 0x0B, "warps": 3, "signs": 4, "sprites": 0},

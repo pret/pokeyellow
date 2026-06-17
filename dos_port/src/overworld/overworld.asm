@@ -971,7 +971,7 @@ AdvancePlayerSprite:
     jmp .updateMapView
 .checkForMoveToNorthBlock:
     cmp al, 0xFF
-    jne .updateMapView
+    jne .scroll
     ; crossed into the block to the north
     mov byte [ebp + W_Y_BLOCK_COORD], 1
     dec byte [ebp + W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP]
@@ -1455,6 +1455,14 @@ CheckMapConnections:
 
 .loadNewMap:
     ; A connection was crossed. Return CF=1 to signal the caller.
+    ; First, synchronize block coordinates with the new tile coordinates.
+    mov al, [ebp + W_X_COORD]
+    and al, 1
+    mov [ebp + W_X_BLOCK_COORD], al
+    mov al, [ebp + W_Y_COORD]
+    and al, 1
+    mov [ebp + W_Y_BLOCK_COORD], al
+
     pop edx
     pop ebx
     stc                                        ; CF=1 → transition occurred
