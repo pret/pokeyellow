@@ -85,8 +85,8 @@ TILESET_BANK_FLAT           equ 0x01   ; ignored in flat model (TODO-HW: ROM ban
 
 ; wCurrentTileBlockMapViewPointer for Pallet Town centered on player at (8,8) tiles:
 ;   wOverworldMap + (MAP_BORDER - 2) * stride + (MAP_BORDER - 2)
-;   stride = PALLET_TOWN_WIDTH + 2*MAP_BORDER = 10 + 12 = 22
-PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 1)
+; (wXCoord=8 → wXCoord/2=4 → view_block_x = MAP_BORDER - 6 + 4 = MAP_BORDER - 2)
+PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 2)
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
 MAP_NO_CONNECTION           equ 0xFF
