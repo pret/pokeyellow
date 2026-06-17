@@ -79,7 +79,7 @@ CHAR_DEXEND     equ 0x5F   ; <DEXEND>  prints "."
 
 CHAR_FIRST_GLYPH equ 0x60  ; first renderable character
 
-SCREEN_W_TILES  equ 20     ; SCREEN_WIDTH in tile units
+SCREEN_W_TILES  equ 40     ; SCREEN_WIDTH in tile units (DOS port uses 40-wide W_TILEMAP)
 
 ; Message box geometry (data/text_boxes.asm: MESSAGE_BOX entry = 0,12,19,17)
 ; Top-left coord(0,12), lower-right coord(19,17): width=20, height=6,

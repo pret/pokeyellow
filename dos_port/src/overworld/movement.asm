@@ -244,18 +244,22 @@ CheckSpriteAvailability:
 ; In: ESI = slot byte offset. Out: EBX = W_TILEMAP-relative offset. Clobbers AL, ECX, EBX.
 ; ---------------------------------------------------------------------------
 GetTileSpriteStandsOn:
+    ; Y tile
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YPIXELS]
     add al, 4
     and al, 0xF8
-    shr al, 1                            ; AL = c = screenYtile * 4
-    movzx ecx, al
+    movsx ecx, al
+    sar ecx, 3                           ; ECX = screenYtile (signed)
+    
+    ; X tile
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XPIXELS]
-    shr al, 3                            ; screen X tile
-    add al, SCREEN_WIDTH                 ; e = screenXtile + SCREEN_TILES_W
-    movzx ebx, al
-    imul ecx, ecx, 10                    ; ECX = 10*c  (= SCREEN_TILES_W / 4)
-    add ebx, ecx                         ; EBX = e + 5*c
-    add ebx, W_TILEMAP
+    movsx ebx, al
+    sar ebx, 3                           ; EBX = screenXtile (signed)
+    
+    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 17 * 40 + 24
+    imul ecx, ecx, SCREEN_WIDTH
+    add ebx, ecx
+    add ebx, W_TILEMAP + 17 * SCREEN_WIDTH + 24
     ret
 
 ; ---------------------------------------------------------------------------
@@ -294,8 +298,8 @@ UpdatePlayerSprite:
     jmp .disable
 
 .checkTextBox:
-    ; lower-left BG tile the sprite stands on (coord 20,12); >= $60 → text box
-    mov al, [ebp + W_TILEMAP + 12 * SCREEN_TILES_W + 20]
+    ; lower-left BG tile the sprite stands on (coord 24,16); >= $60 → text box
+    mov al, [ebp + W_TILEMAP + 16 * SCREEN_TILES_W + 24]
     mov [ebp + H_TILE_PLAYER_STANDING_ON], al
     cmp al, MAP_TILESET_SIZE
     jb .lowerLeftIsMapTile

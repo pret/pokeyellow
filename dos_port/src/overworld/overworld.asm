@@ -1118,20 +1118,20 @@ GetTileInFrontOfPlayer:
     mov al, [ebp + W_SPRITE_PLAYER_FACING_DIR]
     cmp al, SPRITE_FACING_DOWN
     jne .notDown
-    mov esi, W_TILEMAP + 13 * SCREEN_TILES_W + 20   ; lda_coord 20, 13
+    mov esi, W_TILEMAP + 17 * SCREEN_TILES_W + 24   ; lda_coord 24, 17
     jmp .read
 .notDown:
     cmp al, SPRITE_FACING_UP
     jne .notUp
-    mov esi, W_TILEMAP + 11 * SCREEN_TILES_W + 20   ; lda_coord 20, 11
+    mov esi, W_TILEMAP + 15 * SCREEN_TILES_W + 24   ; lda_coord 24, 15
     jmp .read
 .notUp:
     cmp al, SPRITE_FACING_LEFT
     jne .notLeft
-    mov esi, W_TILEMAP + 12 * SCREEN_TILES_W + 19   ; lda_coord 19, 12
+    mov esi, W_TILEMAP + 16 * SCREEN_TILES_W + 23   ; lda_coord 23, 16
     jmp .read
 .notLeft:
-    mov esi, W_TILEMAP + 12 * SCREEN_TILES_W + 21   ; lda_coord 21, 12 (facing right)
+    mov esi, W_TILEMAP + 16 * SCREEN_TILES_W + 25   ; lda_coord 25, 16 (facing right)
 .read:
     movzx ecx, byte [ebp + esi]
     mov [ebp + W_TILE_IN_FRONT_OF_PLAYER], cl
