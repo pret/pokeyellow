@@ -1216,7 +1216,8 @@ SignLoop::
 ; function to check if the player will jump down a ledge and check if the tile ahead is passable (when not surfing)
 ; sets the carry flag if there is a collision, and unsets it if there isn't a collision
 CollisionCheckOnLand::
-	ld a, [wMovementFlags]
+    and a ; clear carry flag
+    ret
 	bit BIT_LEDGE_OR_FISHING, a
 	jr nz, .noCollision
 ; if not jumping a ledge
@@ -1663,7 +1664,8 @@ GetSimulatedInput::
 ; sets carry if there is a collision and clears carry otherwise
 ; This function had a bug in Red/Blue, but it was fixed in Yellow.
 CollisionCheckOnWater::
-	ld a, [wStatusFlags5]
+    and a ; clear carry flag
+    ret
 	bit BIT_SCRIPTED_MOVEMENT_STATE, a
 	jp nz, .noCollision ; return and clear carry if button presses are being simulated
 	ld a, [wPlayerDirection] ; the direction that the player is trying to go in

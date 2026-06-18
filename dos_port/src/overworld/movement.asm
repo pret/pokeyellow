@@ -244,20 +244,21 @@ CheckSpriteAvailability:
 ; In: ESI = slot byte offset. Out: EBX = W_TILEMAP-relative offset. Clobbers AL, ECX, EBX.
 ; ---------------------------------------------------------------------------
 GetTileSpriteStandsOn:
-    ; DOS W_TILEMAP is exactly the 40x25 screen.
-    ; Game Boy screen Y=8 maps to DOS screen Y=13 (bottom-left) -> offset = +5
+    ; DOS W_TILEMAP is shifted by 4 tiles (X and Y) relative to the screen.
+    ; Player is at screen (20, 12). In W_TILEMAP this is (24, 16).
+    ; Game Boy screen Y=8 maps to W_TILEMAP Y=17 (bottom-left) -> offset = +9
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YPIXELS]
     add al, 4
     and al, 0xF8
     movsx ecx, al
     sar ecx, 3                           ; ECX = Game Boy screenYtile
-    add ecx, 5                           ; ECX = DOS screenYtile
+    add ecx, 9                           ; ECX = W_TILEMAP Y
     
-    ; Game Boy screen X=8 maps to DOS screen X=20 -> offset = +12
+    ; Game Boy screen X=8 maps to W_TILEMAP X=24 -> offset = +16
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XPIXELS]
     movsx ebx, al
     sar ebx, 3                           ; EBX = Game Boy screenXtile
-    add ebx, 12                          ; EBX = DOS screenXtile
+    add ebx, 16                          ; EBX = W_TILEMAP X
     
     ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile
     imul ecx, ecx, SCREEN_WIDTH
@@ -301,8 +302,8 @@ UpdatePlayerSprite:
     jmp .disable
 
 .checkTextBox:
-    ; lower-left BG tile the sprite stands on (coord 20,13); >= $60 → text box
-    mov al, [ebp + W_TILEMAP + 13 * SCREEN_TILES_W + 20]
+    ; lower-left BG tile the sprite stands on (coord 24,17); >= $60 → text box
+    mov al, [ebp + W_TILEMAP + 17 * SCREEN_TILES_W + 24]
     mov [ebp + H_TILE_PLAYER_STANDING_ON], al
     cmp al, MAP_TILESET_SIZE
     jb .lowerLeftIsMapTile
