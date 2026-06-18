@@ -327,7 +327,7 @@ SECTION "bank30", ROMX
 
 ; This whole bank is garbage data.
 IF !DEF(_DEBUG)
-	INCBIN "garbage/bank30.bin"
+	INCBIN "garbage/bank30.2bpp"
 ENDC
 
 
