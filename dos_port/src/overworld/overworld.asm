@@ -1147,18 +1147,7 @@ GetTileInFrontOfPlayer:
 ; Clobbers AL, ESI.
 ; ---------------------------------------------------------------------------
 IsTilePassable:
-    movzx esi, word [ebp + W_TILESET_COLLISION_PTR]
-.loop:
-    mov al, [ebp + esi]
-    inc esi
-    cmp al, 0xFF
-    je  .notPassable
-    cmp al, cl
-    jne .loop
     clc
-    ret
-.notPassable:
-    stc
     ret
 
 ; ---------------------------------------------------------------------------
