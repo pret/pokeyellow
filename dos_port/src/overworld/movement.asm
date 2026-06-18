@@ -244,22 +244,25 @@ CheckSpriteAvailability:
 ; In: ESI = slot byte offset. Out: EBX = W_TILEMAP-relative offset. Clobbers AL, ECX, EBX.
 ; ---------------------------------------------------------------------------
 GetTileSpriteStandsOn:
-    ; Y tile
+    ; DOS W_TILEMAP is exactly the 40x25 screen.
+    ; Game Boy screen Y=8 maps to DOS screen Y=13 (bottom-left) -> offset = +5
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YPIXELS]
     add al, 4
     and al, 0xF8
     movsx ecx, al
-    sar ecx, 3                           ; ECX = screenYtile (signed)
+    sar ecx, 3                           ; ECX = Game Boy screenYtile
+    add ecx, 5                           ; ECX = DOS screenYtile
     
-    ; X tile
+    ; Game Boy screen X=8 maps to DOS screen X=20 -> offset = +12
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XPIXELS]
     movsx ebx, al
-    sar ebx, 3                           ; EBX = screenXtile (signed)
+    sar ebx, 3                           ; EBX = Game Boy screenXtile
+    add ebx, 12                          ; EBX = DOS screenXtile
     
-    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 5 * 40 + 12 (Y=13, X=20)
+    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile
     imul ecx, ecx, SCREEN_WIDTH
     add ebx, ecx
-    add ebx, W_TILEMAP + 5 * SCREEN_WIDTH + 12
+    add ebx, W_TILEMAP
     ret
 
 ; ---------------------------------------------------------------------------

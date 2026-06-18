@@ -195,7 +195,7 @@ W_SURROUNDING_TILES          equ 0xE000 ; wSurroundingTiles = wTileMapBackup
 
 ; Overworld map block buffer (2048 bytes)
 W_OVERWORLD_MAP              equ 0xE800 ; wOverworldMap
-W_OVERWORLD_MAP_SIZE         equ 0x1000 ; 4096 bytes to fit MAP_BORDER=10
+W_OVERWORLD_MAP_SIZE         equ 0x800  ; wOverworldMapEnd − wOverworldMap (2048 bytes)
 
 ; Walk/sprite state
 W_FONT_LOADED                equ 0xCFC3 ; wFontLoaded (bit BIT_FONT_LOADED set while text font is in VRAM)
@@ -323,7 +323,7 @@ SCREEN_BLOCK_WIDTH       equ 12          ; blocks visible per screen row
 SCREEN_BLOCK_HEIGHT      equ 9           ; blocks visible per screen column
 SURROUNDING_WIDTH        equ SCREEN_BLOCK_WIDTH  * BLOCK_WIDTH   ; 48 tiles wide
 SURROUNDING_HEIGHT       equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT  ; 36 tiles tall
-MAP_BORDER               equ 10           ; block-unit border around map in wOverworldMap
+MAP_BORDER               equ 6           ; block-unit border around map in wOverworldMap
 
 ; Player movement direction bits (constants/sprite_data_constants.asm wPlayerDirection)
 PLAYER_DIR_RIGHT         equ 1
