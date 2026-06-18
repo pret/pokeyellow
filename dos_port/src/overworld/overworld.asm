@@ -86,7 +86,7 @@ TILESET_BANK_FLAT           equ 0x01   ; ignored in flat model (TODO-HW: ROM ban
 ; wCurrentTileBlockMapViewPointer for Pallet Town centered on player at (8,8) tiles:
 ;   wOverworldMap + (MAP_BORDER - 2) * stride + (MAP_BORDER - 2)
 ; (wXCoord=8 → wXCoord/2=4 → view_block_x = MAP_BORDER - 6 + 4 = MAP_BORDER - 2)
-PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 2)
+PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 5)
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
 MAP_NO_CONNECTION           equ 0xFF
@@ -971,7 +971,7 @@ AdvancePlayerSprite:
     jmp .updateMapView
 .checkForMoveToNorthBlock:
     cmp al, 0xFF
-    jne .scroll
+    jne .updateMapView
     ; crossed into the block to the north
     mov byte [ebp + W_Y_BLOCK_COORD], 1
     dec byte [ebp + W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP]
@@ -1118,20 +1118,20 @@ GetTileInFrontOfPlayer:
     mov al, [ebp + W_SPRITE_PLAYER_FACING_DIR]
     cmp al, SPRITE_FACING_DOWN
     jne .notDown
-    mov esi, W_TILEMAP + 19 * SCREEN_TILES_W + 24   ; lda_coord 24, 19
+    mov esi, W_TILEMAP + 15 * SCREEN_TILES_W + 20   ; lda_coord 20, 15
     jmp .read
 .notDown:
     cmp al, SPRITE_FACING_UP
     jne .notUp
-    mov esi, W_TILEMAP + 15 * SCREEN_TILES_W + 24   ; lda_coord 24, 15
+    mov esi, W_TILEMAP + 11 * SCREEN_TILES_W + 20   ; lda_coord 20, 11
     jmp .read
 .notUp:
     cmp al, SPRITE_FACING_LEFT
     jne .notLeft
-    mov esi, W_TILEMAP + 17 * SCREEN_TILES_W + 22   ; lda_coord 22, 17
+    mov esi, W_TILEMAP + 13 * SCREEN_TILES_W + 18   ; lda_coord 18, 13
     jmp .read
 .notLeft:
-    mov esi, W_TILEMAP + 17 * SCREEN_TILES_W + 26   ; lda_coord 26, 17 (facing right)
+    mov esi, W_TILEMAP + 13 * SCREEN_TILES_W + 22   ; lda_coord 22, 13 (facing right)
 .read:
     movzx ecx, byte [ebp + esi]
     mov [ebp + W_TILE_IN_FRONT_OF_PLAYER], cl
