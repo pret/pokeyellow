@@ -256,10 +256,10 @@ GetTileSpriteStandsOn:
     movsx ebx, al
     sar ebx, 3                           ; EBX = screenXtile (signed)
     
-    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 9 * 40 + 16
+    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile + 8 * 40 + 16
     imul ecx, ecx, SCREEN_WIDTH
     add ebx, ecx
-    add ebx, W_TILEMAP + 9 * SCREEN_WIDTH + 16
+    add ebx, W_TILEMAP + 8 * SCREEN_WIDTH + 16
     ret
 
 ; ---------------------------------------------------------------------------
