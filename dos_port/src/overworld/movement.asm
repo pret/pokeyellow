@@ -403,11 +403,256 @@ Func_5274:
     ret
 
 ; ---------------------------------------------------------------------------
-; DetectCollisionBetweenSprites — TODO: sprite-sprite collision (Phase 2 next).
-; Pret ref: engine/overworld/sprite_collisions.asm. Stub: with only the player
-; slot populated there is nothing to collide with. Clears the player's
-; collision-direction byte to keep downstream logic well-defined.
+; SetSpriteCollisionValues
+; Pret ref: engine/overworld/sprite_collisions.asm:SetSpriteCollisionValues
+; In:  AL = step vector (0x00=standing, 0x01=moving+, 0xFF=moving-)
+; Out: BL = pixel bias (0x00 or 0xFF); CL = nibble bias (0x00, 0x07, or 0x09)
+; Clobbers: AL, BL, CL
+; ---------------------------------------------------------------------------
+SetSpriteCollisionValues:
+    test al, al
+    jz   .zero
+    mov  cl, 9
+    cmp  al, 0xFF
+    je   .setbl            ; step=-1 → BL=0xFF, CL=9
+    mov  cl, 7
+    xor  al, al            ; step=+1 → BL=0, CL=7
+.setbl:
+    mov  bl, al
+    ret
+.zero:
+    xor  bl, bl
+    xor  cl, cl
+    ret
+
+; ---------------------------------------------------------------------------
+; DetectCollisionBetweenSprites
+; Pret ref: engine/overworld/sprite_collisions.asm:DetectCollisionBetweenSprites
+; Reads H_CURRENT_SPRITE_OFFSET to identify sprite i (current slot). Loops all
+; 16 slots j, writing YADJUSTED/XADJUSTED/COLLISIONDATA/COLLISIONBITMAP into
+; sprite i's SPRITESTATEDATA1. No-op when all NPC PictureIDs are 0 (every j
+; exits at the "slot unused" check), so this is safe to call before NPCs exist.
+; All registers clobbered; caller (UpdateSprites) wraps with pushad/popad.
 ; ---------------------------------------------------------------------------
 DetectCollisionBetweenSprites:
-    mov byte [ebp + W_SPRITE_STATE_DATA_1 + 0x0C], 0  ; player slot collision dir
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+    sub  esp, 12        ; [esp+0]=adj_dist, [esp+4]=thr_i_y, [esp+8]=thr_i_x
+
+    ; ESI = base of sprite i's data1
+    movzx esi, byte [ebp + H_CURRENT_SPRITE_OFFSET]
+    add   esi, W_SPRITE_STATE_DATA_1
+
+    ; Return early if slot i is unused
+    mov   al, byte [ebp + esi + SPRITESTATEDATA1_PICTUREID]
+    test  al, al
+    jz    .done
+
+    ; Compute i.YAdj = (YPixels+4+B)&0xF0 | C
+    movzx eax, byte [ebp + esi + SPRITESTATEDATA1_YSTEPVECTOR]
+    call  SetSpriteCollisionValues
+    movzx eax, byte [ebp + esi + SPRITESTATEDATA1_YPIXELS]
+    add   al, 4
+    add   al, bl
+    and   al, 0xF0
+    or    al, cl
+    mov   byte [ebp + esi + SPRITESTATEDATA1_YADJUSTED], al
+
+    ; Compute i.XAdj = (XPixels+B)&0xF0 | C
+    movzx eax, byte [ebp + esi + SPRITESTATEDATA1_XSTEPVECTOR]
+    call  SetSpriteCollisionValues
+    movzx eax, byte [ebp + esi + SPRITESTATEDATA1_XPIXELS]
+    add   al, bl
+    and   al, 0xF0
+    or    al, cl
+    mov   byte [ebp + esi + SPRITESTATEDATA1_XADJUSTED], al
+
+    ; Clear COLLISIONDATA and the three bytes that follow (0x0C–0x0F)
+    mov  dword [ebp + esi + SPRITESTATEDATA1_COLLISIONDATA], 0
+
+    xor  edx, edx           ; DL=j=0; DH=direction accumulator (reset each j)
+
+.loop_j:
+    xor  dh, dh
+
+    ; EDI = base of sprite j's data1  (j * 0x10 + W_SPRITE_STATE_DATA_1)
+    movzx edi, dl
+    shl   edi, 4
+    add   edi, W_SPRITE_STATE_DATA_1
+
+    ; Skip if j == i
+    cmp   edi, esi
+    je    .next_j
+
+    ; Skip if j's slot is unused
+    mov   al, byte [ebp + edi + SPRITESTATEDATA1_PICTUREID]
+    test  al, al
+    jz    .next_j
+
+    ; Skip if j is offscreen (IMAGEINDEX == 0xFF)
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_IMAGEINDEX]
+    cmp   al, 0xFF
+    je    .next_j
+
+    ; --- Y axis ---
+    ; Compute j.YAdj = (j.YPixels+4+B)&0xF0 | C
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_YSTEPVECTOR]
+    call  SetSpriteCollisionValues
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_YPIXELS]
+    add   al, 4
+    add   al, bl
+    and   al, 0xF0
+    or    al, cl               ; AL = j.YAdj
+
+    ; |j.YAdj - i.YAdj|; CF = (j.YAdj < i.YAdj) preserved through negate
+    sub   al, byte [ebp + esi + SPRITESTATEDATA1_YADJUSTED]
+    jnc   .y_pos
+    not   al
+    inc   al                   ; abs(); x86 inc/not don't touch CF
+.y_pos:
+    ; Accumulate Y direction into DH[1:0].
+    ; SM83: push af; rl c; pop af; ccf; rl c — x86 equivalent via setc/shl/or:
+    ; DH[1]=CF (i.Y>j.Y → 1), DH[0]=!CF (j.Y>=i.Y → 1).
+    setc  ch
+    shl   dh, 1
+    or    dh, ch
+    shl   dh, 1
+    xor   ch, 1
+    or    dh, ch               ; DH[1:0] = CF_y : !CF_y
+
+    ; threshold_i_y: low nibble of i.YAdj == 0 → 7, else 9
+    mov   ch, byte [ebp + esi + SPRITESTATEDATA1_YADJUSTED]
+    and   ch, 0x0F
+    mov   bl, 7
+    jz    .tiy_done
+    mov   bl, 9
+.tiy_done:
+    sub   al, bl               ; AL = |diffY| - thr_i_y
+    mov   byte [esp + 0], al   ; adj_dist = |diffY| - thr_i_y
+    mov   byte [esp + 4], bl   ; save thr_i_y for direction axis selection
+    jc    .check_x             ; |diffY| < thr_i_y: Y axis clear, check X
+
+    ; Check j's Y threshold (j's step vector determines 7 or 9)
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_YSTEPVECTOR]
+    test  al, al
+    mov   bl, 7
+    jz    .tjy_done
+    mov   bl, 9
+.tjy_done:
+    mov   al, byte [esp + 0]   ; adj_dist
+    sub   al, bl
+    jz    .check_x             ; exactly 0: border collision, still check X
+    jnc   .next_j              ; > 0: too far apart
+
+.check_x:
+    ; --- X axis ---
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_XSTEPVECTOR]
+    call  SetSpriteCollisionValues
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_XPIXELS]
+    add   al, bl
+    and   al, 0xF0
+    or    al, cl               ; AL = j.XAdj
+
+    sub   al, byte [ebp + esi + SPRITESTATEDATA1_XADJUSTED]
+    jnc   .x_pos
+    not   al
+    inc   al
+.x_pos:
+    setc  ch
+    shl   dh, 1
+    or    dh, ch
+    shl   dh, 1
+    xor   ch, 1
+    or    dh, ch               ; DH[3:2] = CF_x : !CF_x
+
+    mov   ch, byte [ebp + esi + SPRITESTATEDATA1_XADJUSTED]
+    and   ch, 0x0F
+    mov   bl, 7
+    jz    .tix_done
+    mov   bl, 9
+.tix_done:
+    sub   al, bl
+    mov   byte [esp + 0], al
+    mov   byte [esp + 8], bl   ; save thr_i_x
+    jc    .collision
+
+    movzx eax, byte [ebp + edi + SPRITESTATEDATA1_XSTEPVECTOR]
+    test  al, al
+    mov   bl, 7
+    jz    .tjx_done
+    mov   bl, 9
+.tjx_done:
+    mov   al, byte [esp + 0]
+    sub   al, bl
+    jz    .collision
+    jnc   .next_j
+
+.collision:
+    ; --- Pikachu special case: i==player (slot 0) AND j==pikachu (slot 15) ---
+    cmp   esi, W_SPRITE_STATE_DATA_1
+    jne   .standard_col
+    mov   byte [ebp + W_D433], 0
+    cmp   dl, 15
+    jne   .standard_col
+    ; Pikachu path: set wd433, skip COLLISIONDATA update
+    mov   al, byte [esp + 8]   ; thr_i_x
+    mov   bl, byte [esp + 4]   ; thr_i_y
+    cmp   bl, al               ; thr_i_y vs thr_i_x
+    jc    .pika_ybits
+    mov   bl, 0x0C             ; thr_i_y >= thr_i_x: select DH[3:2] = X direction
+    jmp   .pika_apply
+.pika_ybits:
+    mov   bl, 0x03             ; thr_i_y < thr_i_x:  select DH[1:0] = Y direction
+.pika_apply:
+    mov   al, dh
+    and   al, bl
+    mov   byte [ebp + W_D433], al
+    jmp   .update_bitmap
+
+.standard_col:
+    ; Select direction bits from DH based on which axis threshold is larger.
+    ; Larger threshold → that axis drives the collision direction.
+    mov   al, byte [esp + 4]   ; thr_i_y
+    mov   bl, byte [esp + 8]   ; thr_i_x
+    cmp   al, bl
+    jc    .use_ybits
+    mov   bl, 0x0C             ; thr_i_y >= thr_i_x → X bits DH[3:2]
+    jmp   .apply_col
+.use_ybits:
+    mov   bl, 0x03             ; thr_i_y < thr_i_x  → Y bits DH[1:0]
+.apply_col:
+    mov   al, dh
+    and   al, bl
+    or    al, byte [ebp + esi + SPRITESTATEDATA1_COLLISIONDATA]
+    mov   byte [ebp + esi + SPRITESTATEDATA1_COLLISIONDATA], al
+
+.update_bitmap:
+    ; Set bit j in the 16-bit collision bitmap at [0x0E:0x0F] (MSB:LSB).
+    ; Slots 0–7 → bit in LO byte (0x0F); slots 8–15 → bit in HI byte (0x0E).
+    mov   cl, dl
+    and   cl, 0x07
+    mov   al, 1
+    shl   al, cl               ; AL = 1 << (j & 7)
+    test  dl, 0x08
+    jnz   .bit_hi
+    or    byte [ebp + esi + SPRITESTATEDATA1_COLLISIONBITMAP_LO], al
+    jmp   .next_j
+.bit_hi:
+    or    byte [ebp + esi + SPRITESTATEDATA1_COLLISIONBITMAP_HI], al
+
+.next_j:
+    inc   dl
+    cmp   dl, 16
+    jl    .loop_j
+
+.done:
+    add   esp, 12
+    pop   edi
+    pop   esi
+    pop   edx
+    pop   ecx
+    pop   ebx
     ret

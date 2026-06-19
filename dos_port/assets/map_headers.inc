@@ -46,14 +46,357 @@ map_object_PALLET_TOWN:
     times 12 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_ROUTE_1 equ 0x544A
+OW_MAP_HDR_VIRIDIAN_CITY equ 0x544A
+map_header_VIRIDIAN_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x1000 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0E ; connections
+    ; NORTH connection to ROUTE_2
+    db 0x0D ; map id
+    dw 0x1C12 ; strip src
+    dw 0xE80B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 71, -10 ; Y, X align
+    dw 0xEB2E ; view ptr
+    ; SOUTH connection to ROUTE_1
+    db 0x0C ; map id
+    dw 0x5000 ; strip src
+    dw 0xEB0B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, -10 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_22
+    db 0x21 ; map id
+    dw 0x31FB ; strip src
+    dw 0xE940 ; strip dest
+    db 9 ; strip length
+    db 20 ; connected map width
+    db -8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    dw 0x5477 ; object_data_ptr
+map_object_VIRIDIAN_CITY:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_PEWTER_CITY equ 0x547B
+map_header_PEWTER_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x1168 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x05 ; connections
+    ; SOUTH connection to ROUTE_2
+    db 0x0D ; map id
+    dw 0x1AE6 ; strip src
+    dw 0xEB0B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, -10 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; EAST connection to ROUTE_3
+    db 0x0E ; map id
+    dw 0x1C4E ; strip src
+    dw 0xE95A ; strip dest
+    db 9 ; strip length
+    db 35 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE85E ; view ptr
+    dw 0x549D ; object_data_ptr
+map_object_PEWTER_CITY:
+    db 0x0A ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_CERULEAN_CITY equ 0x54A1
+map_header_CERULEAN_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x12D0 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0F ; connections
+    ; NORTH connection to ROUTE_24
+    db 0x23 ; map id
+    dw 0x3319 ; strip src
+    dw 0xE80B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 35, -10 ; Y, X align
+    dw 0xE9A2 ; view ptr
+    ; SOUTH connection to ROUTE_5
+    db 0x10 ; map id
+    dw 0x1F1E ; strip src
+    dw 0xEB0B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, -10 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_4
+    db 0x0F ; map id
+    dw 0x1DB0 ; strip src
+    dw 0xE940 ; strip dest
+    db 9 ; strip length
+    db 45 ; connected map width
+    db -8, 89 ; Y, X align
+    dw 0xE89E ; view ptr
+    ; EAST connection to ROUTE_9
+    db 0x14 ; map id
+    dw 0x21EE ; strip src
+    dw 0xE95A ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x54D9 ; object_data_ptr
+map_object_CERULEAN_CITY:
+    db 0x0A ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_LAVENDER_TOWN equ 0x54DD
+map_header_LAVENDER_TOWN:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 10 ; height, width
+    dw 0x1438 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0E ; connections
+    ; NORTH connection to ROUTE_10
+    db 0x15 ; map id
+    dw 0x2428 ; strip src
+    dw 0xE806 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 71, 0 ; Y, X align
+    dw 0xEB2E ; view ptr
+    ; SOUTH connection to ROUTE_12
+    db 0x17 ; map id
+    dw 0x2572 ; strip src
+    dw 0xE950 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_8
+    db 0x13 ; map id
+    dw 0x20F8 ; strip src
+    dw 0xE884 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db 0, 59 ; Y, X align
+    dw 0xE871 ; view ptr
+    dw 0x550A ; object_data_ptr
+map_object_LAVENDER_TOWN:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_VERMILION_CITY equ 0x550E
+map_header_VERMILION_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x1492 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x09 ; connections
+    ; NORTH connection to ROUTE_6
+    db 0x11 ; map id
+    dw 0x204A ; strip src
+    dw 0xE80B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 35, -10 ; Y, X align
+    dw 0xE9A2 ; view ptr
+    ; EAST connection to ROUTE_11
+    db 0x16 ; map id
+    dw 0x2464 ; strip src
+    dw 0xE95A ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x5530 ; object_data_ptr
+map_object_VERMILION_CITY:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_CELADON_CITY equ 0x5534
+map_header_CELADON_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 25 ; height, width
+    dw 0x15FA ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to ROUTE_16
+    db 0x1B ; map id
+    dw 0x2AC6 ; strip src
+    dw 0xE972 ; strip dest
+    db 9 ; strip length
+    db 20 ; connected map width
+    db -8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    ; EAST connection to ROUTE_7
+    db 0x12 ; map id
+    dw 0x2086 ; strip src
+    dw 0xE991 ; strip dest
+    db 9 ; strip length
+    db 10 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x5556 ; object_data_ptr
+map_object_CELADON_CITY:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_FUCHSIA_CITY equ 0x555A
+map_header_FUCHSIA_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x17BC ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x07 ; connections
+    ; SOUTH connection to ROUTE_19
+    db 0x1E ; map id
+    dw 0x2F1D ; strip src
+    dw 0xEB0B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, -10 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_18
+    db 0x1D ; map id
+    dw 0x2E4F ; strip src
+    dw 0xE940 ; strip dest
+    db 9 ; strip length
+    db 25 ; connected map width
+    db -8, 49 ; Y, X align
+    dw 0xE862 ; view ptr
+    ; EAST connection to ROUTE_15
+    db 0x1A ; map id
+    dw 0x29AA ; strip src
+    dw 0xE95A ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x5587 ; object_data_ptr
+map_object_FUCHSIA_CITY:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_CINNABAR_ISLAND equ 0x558B
+map_header_CINNABAR_ISLAND:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 10 ; height, width
+    dw 0x1924 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x09 ; connections
+    ; NORTH connection to ROUTE_21
+    db 0x20 ; map id
+    dw 0x5386 ; strip src
+    dw 0xE806 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 89, 0 ; Y, X align
+    dw 0xEBF4 ; view ptr
+    ; EAST connection to ROUTE_20
+    db 0x1F ; map id
+    dw 0x302B ; strip src
+    dw 0xE894 ; strip dest
+    db 9 ; strip length
+    db 50 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE87C ; view ptr
+    dw 0x55AD ; object_data_ptr
+map_object_CINNABAR_ISLAND:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_SAFFRON_CITY equ 0x55B1
+map_header_SAFFRON_CITY:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 20 ; height, width
+    dw 0x197E ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0F ; connections
+    ; NORTH connection to ROUTE_5
+    db 0x10 ; map id
+    dw 0x1F96 ; strip src
+    dw 0xE80B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 35, -10 ; Y, X align
+    dw 0xE9A2 ; view ptr
+    ; SOUTH connection to ROUTE_6
+    db 0x11 ; map id
+    dw 0x1FD2 ; strip src
+    dw 0xEB0B ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, -10 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_7
+    db 0x12 ; map id
+    dw 0x208A ; strip src
+    dw 0xE940 ; strip dest
+    db 9 ; strip length
+    db 10 ; connected map width
+    db -8, 19 ; Y, X align
+    dw 0xE835 ; view ptr
+    ; EAST connection to ROUTE_8
+    db 0x13 ; map id
+    dw 0x20E0 ; strip src
+    dw 0xE95A ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -8, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x55E9 ; object_data_ptr
+map_object_SAFFRON_CITY:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_1 equ 0x55ED
 map_header_ROUTE_1:
     db 0x00 ; tileset OVERWORLD
     db 18, 10 ; height, width
     dw 0x5000 ; blocks_ptr
     dw 0x0000 ; text_ptr
     dw 0x0000 ; script_ptr
-    db 0x04 ; connections
+    db 0x0C ; connections
+    ; NORTH connection to VIRIDIAN_CITY
+    db 0x01 ; map id
+    dw 0x10F0 ; strip src
+    dw 0xE80B ; strip dest
+    db 11 ; strip length
+    db 20 ; connected map width
+    db 35, -10 ; Y, X align
+    dw 0xEA60 ; view ptr
     ; SOUTH connection to PALLET_TOWN
     db 0x00 ; map id
     dw 0x4E00 ; strip src
@@ -62,7 +405,7 @@ map_header_ROUTE_1:
     db 10 ; connected map width
     db 0, 0 ; Y, X align
     dw 0xE82C ; view ptr
-    dw 0x5461 ; object_data_ptr
+    dw 0x560F ; object_data_ptr
 map_object_ROUTE_1:
     db 0x0B ; border block
     db 0 ; warp count
@@ -70,14 +413,611 @@ map_object_ROUTE_1:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_ROUTE_21 equ 0x5468
+OW_MAP_HDR_ROUTE_2 equ 0x5616
+map_header_ROUTE_2:
+    db 0x00 ; tileset OVERWORLD
+    db 36, 10 ; height, width
+    dw 0x1AE6 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0C ; connections
+    ; NORTH connection to PEWTER_CITY
+    db 0x02 ; map id
+    dw 0x1257 ; strip src
+    dw 0xE800 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 35, 10 ; Y, X align
+    dw 0xEA60 ; view ptr
+    ; SOUTH connection to VIRIDIAN_CITY
+    db 0x01 ; map id
+    dw 0x0FFF ; strip src
+    dw 0xEB9C ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 0, 10 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x5638 ; object_data_ptr
+map_object_ROUTE_2:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_3 equ 0x563C
+map_header_ROUTE_3:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 35 ; height, width
+    dw 0x1C4E ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0A ; connections
+    ; NORTH connection to ROUTE_4
+    db 0x0F ; map id
+    dw 0x1E10 ; strip src
+    dw 0xE81F ; strip dest
+    db 16 ; strip length
+    db 45 ; connected map width
+    db 17, -50 ; Y, X align
+    dw 0xEA3A ; view ptr
+    ; WEST connection to PEWTER_CITY
+    db 0x02 ; map id
+    dw 0x1176 ; strip src
+    dw 0xE85E ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    dw 0x565E ; object_data_ptr
+map_object_ROUTE_3:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_4 equ 0x5662
+map_header_ROUTE_4:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 45 ; height, width
+    dw 0x1D89 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x05 ; connections
+    ; SOUTH connection to ROUTE_3
+    db 0x0E ; map id
+    dw 0x1C61 ; strip src
+    dw 0xEB57 ; strip dest
+    db 16 ; strip length
+    db 35 ; connected map width
+    db 0, 50 ; Y, X align
+    dw 0xE85E ; view ptr
+    ; EAST connection to CERULEAN_CITY
+    db 0x03 ; map id
+    dw 0x12D0 ; strip src
+    dw 0xE8A5 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 0 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x5684 ; object_data_ptr
+map_object_ROUTE_4:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_5 equ 0x5688
+map_header_ROUTE_5:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 10 ; height, width
+    dw 0x1F1E ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0C ; connections
+    ; NORTH connection to CERULEAN_CITY
+    db 0x03 ; map id
+    dw 0x13BF ; strip src
+    dw 0xE800 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 35, 10 ; Y, X align
+    dw 0xEA60 ; view ptr
+    ; SOUTH connection to SAFFRON_CITY
+    db 0x0A ; map id
+    dw 0x197D ; strip src
+    dw 0xEA10 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 0, 10 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x56AA ; object_data_ptr
+map_object_ROUTE_5:
+    db 0x0A ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_6 equ 0x56AE
+map_header_ROUTE_6:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 10 ; height, width
+    dw 0x1FD2 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0C ; connections
+    ; NORTH connection to SAFFRON_CITY
+    db 0x0A ; map id
+    dw 0x1A6D ; strip src
+    dw 0xE800 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 35, 10 ; Y, X align
+    dw 0xEA60 ; view ptr
+    ; SOUTH connection to VERMILION_CITY
+    db 0x05 ; map id
+    dw 0x1491 ; strip src
+    dw 0xEA10 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 0, 10 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x56D0 ; object_data_ptr
+map_object_ROUTE_6:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_7 equ 0x56D4
+map_header_ROUTE_7:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 10 ; height, width
+    dw 0x2086 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to CELADON_CITY
+    db 0x06 ; map id
+    dw 0x160D ; strip src
+    dw 0xE82C ; strip dest
+    db 18 ; strip length
+    db 25 ; connected map width
+    db 8, 49 ; Y, X align
+    dw 0xE862 ; view ptr
+    ; EAST connection to SAFFRON_CITY
+    db 0x0A ; map id
+    dw 0x197E ; strip src
+    dw 0xE83C ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 0 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x56F6 ; object_data_ptr
+map_object_ROUTE_7:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_8 equ 0x56FA
+map_header_ROUTE_8:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x20E0 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to SAFFRON_CITY
+    db 0x0A ; map id
+    dw 0x198C ; strip src
+    dw 0xE854 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    ; EAST connection to LAVENDER_TOWN
+    db 0x04 ; map id
+    dw 0x1438 ; strip src
+    dw 0xE920 ; strip dest
+    db 9 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x571C ; object_data_ptr
+map_object_ROUTE_8:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_9 equ 0x5720
+map_header_ROUTE_9:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x21EE ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to CERULEAN_CITY
+    db 0x03 ; map id
+    dw 0x12DE ; strip src
+    dw 0xE854 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    ; EAST connection to ROUTE_10
+    db 0x15 ; map id
+    dw 0x22FC ; strip src
+    dw 0xE920 ; strip dest
+    db 15 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x5742 ; object_data_ptr
+map_object_ROUTE_9:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_10 equ 0x5746
+map_header_ROUTE_10:
+    db 0x00 ; tileset OVERWORLD
+    db 36, 10 ; height, width
+    dw 0x22FC ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x06 ; connections
+    ; SOUTH connection to LAVENDER_TOWN
+    db 0x04 ; map id
+    dw 0x1438 ; strip src
+    dw 0xEBA2 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; WEST connection to ROUTE_9
+    db 0x14 ; map id
+    dw 0x2206 ; strip src
+    dw 0xE884 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db 0, 59 ; Y, X align
+    dw 0xE871 ; view ptr
+    dw 0x5768 ; object_data_ptr
+map_object_ROUTE_10:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_11 equ 0x576C
+map_header_ROUTE_11:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x2464 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to VERMILION_CITY
+    db 0x05 ; map id
+    dw 0x14A0 ; strip src
+    dw 0xE854 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    ; EAST connection to ROUTE_12
+    db 0x17 ; map id
+    dw 0x2644 ; strip src
+    dw 0xE824 ; strip dest
+    db 21 ; strip length
+    db 10 ; connected map width
+    db 54, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x578E ; object_data_ptr
+map_object_ROUTE_11:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_12 equ 0x5792
+map_header_ROUTE_12:
+    db 0x00 ; tileset OVERWORLD
+    db 54, 10 ; height, width
+    dw 0x2572 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0E ; connections
+    ; NORTH connection to LAVENDER_TOWN
+    db 0x04 ; map id
+    dw 0x1456 ; strip src
+    dw 0xE806 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 17, 0 ; Y, X align
+    dw 0xE8DC ; view ptr
+    ; SOUTH connection to ROUTE_13
+    db 0x18 ; map id
+    dw 0x279C ; strip src
+    dw 0xED28 ; strip dest
+    db 16 ; strip length
+    db 30 ; connected map width
+    db 0, 40 ; Y, X align
+    dw 0xE854 ; view ptr
+    ; WEST connection to ROUTE_11
+    db 0x16 ; map id
+    dw 0x247C ; strip src
+    dw 0xEAD6 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -54, 59 ; Y, X align
+    dw 0xE871 ; view ptr
+    dw 0x57BF ; object_data_ptr
+map_object_ROUTE_12:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_13 equ 0x57C3
+map_header_ROUTE_13:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x278E ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0A ; connections
+    ; NORTH connection to ROUTE_12
+    db 0x17 ; map id
+    dw 0x2752 ; strip src
+    dw 0xE81A ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 107, -40 ; Y, X align
+    dw 0xECBA ; view ptr
+    ; WEST connection to ROUTE_14
+    db 0x19 ; map id
+    dw 0x28A0 ; strip src
+    dw 0xE8FC ; strip dest
+    db 15 ; strip length
+    db 10 ; connected map width
+    db 0, 19 ; Y, X align
+    dw 0xE835 ; view ptr
+    dw 0x57E5 ; object_data_ptr
+map_object_ROUTE_13:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_14 equ 0x57E9
+map_header_ROUTE_14:
+    db 0x00 ; tileset OVERWORLD
+    db 27, 10 ; height, width
+    dw 0x289C ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to ROUTE_15
+    db 0x1A ; map id
+    dw 0x29C2 ; strip src
+    dw 0xEA10 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db -36, 59 ; Y, X align
+    dw 0xE871 ; view ptr
+    ; EAST connection to ROUTE_13
+    db 0x18 ; map id
+    dw 0x278E ; strip src
+    dw 0xE894 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x580B ; object_data_ptr
+map_object_ROUTE_14:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_15 equ 0x580F
+map_header_ROUTE_15:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x29AA ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to FUCHSIA_CITY
+    db 0x07 ; map id
+    dw 0x17CA ; strip src
+    dw 0xE854 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 39 ; Y, X align
+    dw 0xE853 ; view ptr
+    ; EAST connection to ROUTE_14
+    db 0x19 ; map id
+    dw 0x2914 ; strip src
+    dw 0xE824 ; strip dest
+    db 15 ; strip length
+    db 10 ; connected map width
+    db 36, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x5831 ; object_data_ptr
+map_object_ROUTE_15:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_16 equ 0x5835
+map_header_ROUTE_16:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 20 ; height, width
+    dw 0x2AB8 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x05 ; connections
+    ; SOUTH connection to ROUTE_17
+    db 0x1C ; map id
+    dw 0x2B6C ; strip src
+    dw 0xE9E6 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    ; EAST connection to CELADON_CITY
+    db 0x06 ; map id
+    dw 0x15FA ; strip src
+    dw 0xE85A ; strip dest
+    db 18 ; strip length
+    db 25 ; connected map width
+    db 8, 0 ; Y, X align
+    dw 0xE84A ; view ptr
+    dw 0x5857 ; object_data_ptr
+map_object_ROUTE_16:
+    db 0x0F ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_17 equ 0x585B
+map_header_ROUTE_17:
+    db 0x00 ; tileset OVERWORLD
+    db 72, 10 ; height, width
+    dw 0x2B6C ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0C ; connections
+    ; NORTH connection to ROUTE_16
+    db 0x1B ; map id
+    dw 0x2AF4 ; strip src
+    dw 0xE806 ; strip dest
+    db 16 ; strip length
+    db 20 ; connected map width
+    db 17, 0 ; Y, X align
+    dw 0xE940 ; view ptr
+    ; SOUTH connection to ROUTE_18
+    db 0x1D ; map id
+    dw 0x2E3C ; strip src
+    dw 0xEEBA ; strip dest
+    db 16 ; strip length
+    db 25 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE84A ; view ptr
+    dw 0x587D ; object_data_ptr
+map_object_ROUTE_17:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_18 equ 0x5881
+map_header_ROUTE_18:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 25 ; height, width
+    dw 0x2E3C ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x09 ; connections
+    ; NORTH connection to ROUTE_17
+    db 0x1C ; map id
+    dw 0x2E00 ; strip src
+    dw 0xE806 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 143, 0 ; Y, X align
+    dw 0xEE46 ; view ptr
+    ; EAST connection to FUCHSIA_CITY
+    db 0x07 ; map id
+    dw 0x17BC ; strip src
+    dw 0xE869 ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 0 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x58A3 ; object_data_ptr
+map_object_ROUTE_18:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_19 equ 0x58A7
+map_header_ROUTE_19:
+    db 0x00 ; tileset OVERWORLD
+    db 27, 10 ; height, width
+    dw 0x2F1D ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x0A ; connections
+    ; NORTH connection to FUCHSIA_CITY
+    db 0x07 ; map id
+    dw 0x18AB ; strip src
+    dw 0xE800 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 35, 10 ; Y, X align
+    dw 0xEA60 ; view ptr
+    ; WEST connection to ROUTE_20
+    db 0x1F ; map id
+    dw 0x3057 ; strip src
+    dw 0xEA10 ; strip dest
+    db 9 ; strip length
+    db 50 ; connected map width
+    db -36, 99 ; Y, X align
+    dw 0xE8AD ; view ptr
+    dw 0x58C9 ; object_data_ptr
+map_object_ROUTE_19:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_20 equ 0x58CD
+map_header_ROUTE_20:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 50 ; height, width
+    dw 0x302B ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x03 ; connections
+    ; WEST connection to CINNABAR_ISLAND
+    db 0x08 ; map id
+    dw 0x1928 ; strip src
+    dw 0xE974 ; strip dest
+    db 9 ; strip length
+    db 10 ; connected map width
+    db 0, 19 ; Y, X align
+    dw 0xE835 ; view ptr
+    ; EAST connection to ROUTE_19
+    db 0x1E ; map id
+    dw 0x2F95 ; strip src
+    dw 0xE838 ; strip dest
+    db 15 ; strip length
+    db 10 ; connected map width
+    db 36, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x58EF ; object_data_ptr
+map_object_ROUTE_20:
+    db 0x43 ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_21 equ 0x58F3
 map_header_ROUTE_21:
     db 0x00 ; tileset OVERWORLD
     db 45, 10 ; height, width
     dw 0x5200 ; blocks_ptr
     dw 0x0000 ; text_ptr
     dw 0x0000 ; script_ptr
-    db 0x08 ; connections
+    db 0x0C ; connections
     ; NORTH connection to PALLET_TOWN
     db 0x00 ; map id
     dw 0x4E1E ; strip src
@@ -86,47 +1026,136 @@ map_header_ROUTE_21:
     db 10 ; connected map width
     db 17, 0 ; Y, X align
     dw 0xE8DC ; view ptr
-    dw 0x547F ; object_data_ptr
+    ; SOUTH connection to CINNABAR_ISLAND
+    db 0x08 ; map id
+    dw 0x1924 ; strip src
+    dw 0xEC68 ; strip dest
+    db 10 ; strip length
+    db 10 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE82C ; view ptr
+    dw 0x5915 ; object_data_ptr
 map_object_ROUTE_21:
     db 0x43 ; border block
     db 0 ; warp count
     db 0 ; sign count
     db 0 ; sprite count
 
+OW_MAP_HDR_ROUTE_22 equ 0x5919
+map_header_ROUTE_22:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 20 ; height, width
+    dw 0x31ED ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x01 ; connections
+    ; EAST connection to VIRIDIAN_CITY
+    db 0x01 ; map id
+    dw 0x1000 ; strip src
+    dw 0xE85A ; strip dest
+    db 18 ; strip length
+    db 20 ; connected map width
+    db 8, 0 ; Y, X align
+    dw 0xE840 ; view ptr
+    dw 0x5930 ; object_data_ptr
+map_object_ROUTE_22:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_24 equ 0x5934
+map_header_ROUTE_24:
+    db 0x00 ; tileset OVERWORLD
+    db 18, 10 ; height, width
+    dw 0x32A1 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x05 ; connections
+    ; SOUTH connection to CERULEAN_CITY
+    db 0x03 ; map id
+    dw 0x12CF ; strip src
+    dw 0xEA10 ; strip dest
+    db 21 ; strip length
+    db 20 ; connected map width
+    db 0, 10 ; Y, X align
+    dw 0xE840 ; view ptr
+    ; EAST connection to ROUTE_25
+    db 0x24 ; map id
+    dw 0x3355 ; strip src
+    dw 0xE894 ; strip dest
+    db 9 ; strip length
+    db 30 ; connected map width
+    db 0, 0 ; Y, X align
+    dw 0xE854 ; view ptr
+    dw 0x5956 ; object_data_ptr
+map_object_ROUTE_24:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
+OW_MAP_HDR_ROUTE_25 equ 0x595A
+map_header_ROUTE_25:
+    db 0x00 ; tileset OVERWORLD
+    db 9, 30 ; height, width
+    dw 0x3355 ; blocks_ptr
+    dw 0x0000 ; text_ptr
+    dw 0x0000 ; script_ptr
+    db 0x02 ; connections
+    ; WEST connection to ROUTE_24
+    db 0x23 ; map id
+    dw 0x32A5 ; strip src
+    dw 0xE8FC ; strip dest
+    db 15 ; strip length
+    db 10 ; connected map width
+    db 0, 19 ; Y, X align
+    dw 0xE835 ; view ptr
+    dw 0x5971 ; object_data_ptr
+map_object_ROUTE_25:
+    db 0x2C ; border block
+    db 0 ; warp count
+    db 0 ; sign count
+    db 0 ; sprite count
+
 MapHeaderPointers:
     dw OW_MAP_HDR_PALLET_TOWN
-    dw 0x0000 ; map 1 unimplemented
-    dw 0x0000 ; map 2 unimplemented
-    dw 0x0000 ; map 3 unimplemented
-    dw 0x0000 ; map 4 unimplemented
-    dw 0x0000 ; map 5 unimplemented
-    dw 0x0000 ; map 6 unimplemented
-    dw 0x0000 ; map 7 unimplemented
-    dw 0x0000 ; map 8 unimplemented
+    dw OW_MAP_HDR_VIRIDIAN_CITY
+    dw OW_MAP_HDR_PEWTER_CITY
+    dw OW_MAP_HDR_CERULEAN_CITY
+    dw OW_MAP_HDR_LAVENDER_TOWN
+    dw OW_MAP_HDR_VERMILION_CITY
+    dw OW_MAP_HDR_CELADON_CITY
+    dw OW_MAP_HDR_FUCHSIA_CITY
+    dw OW_MAP_HDR_CINNABAR_ISLAND
     dw 0x0000 ; map 9 unimplemented
-    dw 0x0000 ; map 10 unimplemented
+    dw OW_MAP_HDR_SAFFRON_CITY
     dw 0x0000 ; map 11 unimplemented
     dw OW_MAP_HDR_ROUTE_1
-    dw 0x0000 ; map 13 unimplemented
-    dw 0x0000 ; map 14 unimplemented
-    dw 0x0000 ; map 15 unimplemented
-    dw 0x0000 ; map 16 unimplemented
-    dw 0x0000 ; map 17 unimplemented
-    dw 0x0000 ; map 18 unimplemented
-    dw 0x0000 ; map 19 unimplemented
-    dw 0x0000 ; map 20 unimplemented
-    dw 0x0000 ; map 21 unimplemented
-    dw 0x0000 ; map 22 unimplemented
-    dw 0x0000 ; map 23 unimplemented
-    dw 0x0000 ; map 24 unimplemented
-    dw 0x0000 ; map 25 unimplemented
-    dw 0x0000 ; map 26 unimplemented
-    dw 0x0000 ; map 27 unimplemented
-    dw 0x0000 ; map 28 unimplemented
-    dw 0x0000 ; map 29 unimplemented
-    dw 0x0000 ; map 30 unimplemented
-    dw 0x0000 ; map 31 unimplemented
+    dw OW_MAP_HDR_ROUTE_2
+    dw OW_MAP_HDR_ROUTE_3
+    dw OW_MAP_HDR_ROUTE_4
+    dw OW_MAP_HDR_ROUTE_5
+    dw OW_MAP_HDR_ROUTE_6
+    dw OW_MAP_HDR_ROUTE_7
+    dw OW_MAP_HDR_ROUTE_8
+    dw OW_MAP_HDR_ROUTE_9
+    dw OW_MAP_HDR_ROUTE_10
+    dw OW_MAP_HDR_ROUTE_11
+    dw OW_MAP_HDR_ROUTE_12
+    dw OW_MAP_HDR_ROUTE_13
+    dw OW_MAP_HDR_ROUTE_14
+    dw OW_MAP_HDR_ROUTE_15
+    dw OW_MAP_HDR_ROUTE_16
+    dw OW_MAP_HDR_ROUTE_17
+    dw OW_MAP_HDR_ROUTE_18
+    dw OW_MAP_HDR_ROUTE_19
+    dw OW_MAP_HDR_ROUTE_20
     dw OW_MAP_HDR_ROUTE_21
+    dw OW_MAP_HDR_ROUTE_22
+    dw 0x0000 ; map 34 unimplemented
+    dw OW_MAP_HDR_ROUTE_24
+    dw OW_MAP_HDR_ROUTE_25
 
 MAP_HEADERS_DATA_SIZE equ $ - map_headers_data
 

@@ -109,6 +109,49 @@ def main():
         "Route 21 block map: 10×45 = 450 block IDs → [EBP+OW_ROUTE21_BLK_GBADDR]. "
         "South connection of Pallet Town.",
     )
+
+    # All remaining OVERWORLD-tileset maps (packed at 0x1000–0x3FFF in EBP space).
+    extra_maps = [
+        ("viridian_city_blk",   "ViridianCity",   "20×18=360",  "OW_VIRIDIAN_CITY_BLK_GBADDR"),
+        ("pewter_city_blk",     "PewterCity",     "20×18=360",  "OW_PEWTER_CITY_BLK_GBADDR"),
+        ("cerulean_city_blk",   "CeruleanCity",   "20×18=360",  "OW_CERULEAN_CITY_BLK_GBADDR"),
+        ("lavender_town_blk",   "LavenderTown",   "10×9=90",    "OW_LAVENDER_TOWN_BLK_GBADDR"),
+        ("vermilion_city_blk",  "VermilionCity",  "20×18=360",  "OW_VERMILION_CITY_BLK_GBADDR"),
+        ("celadon_city_blk",    "CeladonCity",    "25×18=450",  "OW_CELADON_CITY_BLK_GBADDR"),
+        ("fuchsia_city_blk",    "FuchsiaCity",    "20×18=360",  "OW_FUCHSIA_CITY_BLK_GBADDR"),
+        ("cinnabar_island_blk", "CinnabarIsland", "10×9=90",    "OW_CINNABAR_ISLAND_BLK_GBADDR"),
+        ("saffron_city_blk",    "SaffronCity",    "20×18=360",  "OW_SAFFRON_CITY_BLK_GBADDR"),
+        ("route2_blk",          "Route2",         "10×36=360",  "OW_ROUTE_2_BLK_GBADDR"),
+        ("route3_blk",          "Route3",         "35×9=315",   "OW_ROUTE_3_BLK_GBADDR"),
+        ("route4_blk",          "Route4",         "45×9=405",   "OW_ROUTE_4_BLK_GBADDR"),
+        ("route5_blk",          "Route5",         "10×18=180",  "OW_ROUTE_5_BLK_GBADDR"),
+        ("route6_blk",          "Route6",         "10×18=180",  "OW_ROUTE_6_BLK_GBADDR"),
+        ("route7_blk",          "Route7",         "10×9=90",    "OW_ROUTE_7_BLK_GBADDR"),
+        ("route8_blk",          "Route8",         "30×9=270",   "OW_ROUTE_8_BLK_GBADDR"),
+        ("route9_blk",          "Route9",         "30×9=270",   "OW_ROUTE_9_BLK_GBADDR"),
+        ("route10_blk",         "Route10",        "10×36=360",  "OW_ROUTE_10_BLK_GBADDR"),
+        ("route11_blk",         "Route11",        "30×9=270",   "OW_ROUTE_11_BLK_GBADDR"),
+        ("route12_blk",         "Route12",        "10×54=540",  "OW_ROUTE_12_BLK_GBADDR"),
+        ("route13_blk",         "Route13",        "30×9=270",   "OW_ROUTE_13_BLK_GBADDR"),
+        ("route14_blk",         "Route14",        "10×27=270",  "OW_ROUTE_14_BLK_GBADDR"),
+        ("route15_blk",         "Route15",        "30×9=270",   "OW_ROUTE_15_BLK_GBADDR"),
+        ("route16_blk",         "Route16",        "20×9=180",   "OW_ROUTE_16_BLK_GBADDR"),
+        ("route17_blk",         "Route17",        "10×72=720",  "OW_ROUTE_17_BLK_GBADDR"),
+        ("route18_blk",         "Route18",        "25×9=225",   "OW_ROUTE_18_BLK_GBADDR"),
+        ("route19_blk",         "Route19",        "10×27=270",  "OW_ROUTE_19_BLK_GBADDR"),
+        ("route20_blk",         "Route20",        "50×9=450",   "OW_ROUTE_20_BLK_GBADDR"),
+        ("route22_blk",         "Route22",        "20×9=180",   "OW_ROUTE_22_BLK_GBADDR"),
+        ("route24_blk",         "Route24",        "10×18=180",  "OW_ROUTE_24_BLK_GBADDR"),
+        ("route25_blk",         "Route25",        "30×9=270",   "OW_ROUTE_25_BLK_GBADDR"),
+    ]
+    for label, fname, dims, addr_const in extra_maps:
+        src = ROOT / "maps" / f"{fname}.blk"
+        write_inc(
+            ASSETS / f"{label}.inc",
+            label,
+            src.read_bytes(),
+            f"{fname}.blk ({dims} block IDs) → [EBP+{addr_const}].",
+        )
     write_inc(
         ASSETS / "overworld_coll.inc",
         "overworld_coll",

@@ -350,6 +350,162 @@ LoadOverworldAssets:
     mov ecx, ROUTE21_BLK_SIZE
     rep movsb
 
+    ; --- Copy all remaining OVERWORLD-tileset map block data ---
+    mov esi, viridian_city_blk
+    lea edi, [ebp + OW_VIRIDIAN_CITY_BLK_GBADDR]
+    mov ecx, VIRIDIAN_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, pewter_city_blk
+    lea edi, [ebp + OW_PEWTER_CITY_BLK_GBADDR]
+    mov ecx, PEWTER_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, cerulean_city_blk
+    lea edi, [ebp + OW_CERULEAN_CITY_BLK_GBADDR]
+    mov ecx, CERULEAN_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, lavender_town_blk
+    lea edi, [ebp + OW_LAVENDER_TOWN_BLK_GBADDR]
+    mov ecx, LAVENDER_TOWN_BLK_SIZE
+    rep movsb
+
+    mov esi, vermilion_city_blk
+    lea edi, [ebp + OW_VERMILION_CITY_BLK_GBADDR]
+    mov ecx, VERMILION_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, celadon_city_blk
+    lea edi, [ebp + OW_CELADON_CITY_BLK_GBADDR]
+    mov ecx, CELADON_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, fuchsia_city_blk
+    lea edi, [ebp + OW_FUCHSIA_CITY_BLK_GBADDR]
+    mov ecx, FUCHSIA_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, cinnabar_island_blk
+    lea edi, [ebp + OW_CINNABAR_ISLAND_BLK_GBADDR]
+    mov ecx, CINNABAR_ISLAND_BLK_SIZE
+    rep movsb
+
+    mov esi, saffron_city_blk
+    lea edi, [ebp + OW_SAFFRON_CITY_BLK_GBADDR]
+    mov ecx, SAFFRON_CITY_BLK_SIZE
+    rep movsb
+
+    mov esi, route2_blk
+    lea edi, [ebp + OW_ROUTE_2_BLK_GBADDR]
+    mov ecx, ROUTE2_BLK_SIZE
+    rep movsb
+
+    mov esi, route3_blk
+    lea edi, [ebp + OW_ROUTE_3_BLK_GBADDR]
+    mov ecx, ROUTE3_BLK_SIZE
+    rep movsb
+
+    mov esi, route4_blk
+    lea edi, [ebp + OW_ROUTE_4_BLK_GBADDR]
+    mov ecx, ROUTE4_BLK_SIZE
+    rep movsb
+
+    mov esi, route5_blk
+    lea edi, [ebp + OW_ROUTE_5_BLK_GBADDR]
+    mov ecx, ROUTE5_BLK_SIZE
+    rep movsb
+
+    mov esi, route6_blk
+    lea edi, [ebp + OW_ROUTE_6_BLK_GBADDR]
+    mov ecx, ROUTE6_BLK_SIZE
+    rep movsb
+
+    mov esi, route7_blk
+    lea edi, [ebp + OW_ROUTE_7_BLK_GBADDR]
+    mov ecx, ROUTE7_BLK_SIZE
+    rep movsb
+
+    mov esi, route8_blk
+    lea edi, [ebp + OW_ROUTE_8_BLK_GBADDR]
+    mov ecx, ROUTE8_BLK_SIZE
+    rep movsb
+
+    mov esi, route9_blk
+    lea edi, [ebp + OW_ROUTE_9_BLK_GBADDR]
+    mov ecx, ROUTE9_BLK_SIZE
+    rep movsb
+
+    mov esi, route10_blk
+    lea edi, [ebp + OW_ROUTE_10_BLK_GBADDR]
+    mov ecx, ROUTE10_BLK_SIZE
+    rep movsb
+
+    mov esi, route11_blk
+    lea edi, [ebp + OW_ROUTE_11_BLK_GBADDR]
+    mov ecx, ROUTE11_BLK_SIZE
+    rep movsb
+
+    mov esi, route12_blk
+    lea edi, [ebp + OW_ROUTE_12_BLK_GBADDR]
+    mov ecx, ROUTE12_BLK_SIZE
+    rep movsb
+
+    mov esi, route13_blk
+    lea edi, [ebp + OW_ROUTE_13_BLK_GBADDR]
+    mov ecx, ROUTE13_BLK_SIZE
+    rep movsb
+
+    mov esi, route14_blk
+    lea edi, [ebp + OW_ROUTE_14_BLK_GBADDR]
+    mov ecx, ROUTE14_BLK_SIZE
+    rep movsb
+
+    mov esi, route15_blk
+    lea edi, [ebp + OW_ROUTE_15_BLK_GBADDR]
+    mov ecx, ROUTE15_BLK_SIZE
+    rep movsb
+
+    mov esi, route16_blk
+    lea edi, [ebp + OW_ROUTE_16_BLK_GBADDR]
+    mov ecx, ROUTE16_BLK_SIZE
+    rep movsb
+
+    mov esi, route17_blk
+    lea edi, [ebp + OW_ROUTE_17_BLK_GBADDR]
+    mov ecx, ROUTE17_BLK_SIZE
+    rep movsb
+
+    mov esi, route18_blk
+    lea edi, [ebp + OW_ROUTE_18_BLK_GBADDR]
+    mov ecx, ROUTE18_BLK_SIZE
+    rep movsb
+
+    mov esi, route19_blk
+    lea edi, [ebp + OW_ROUTE_19_BLK_GBADDR]
+    mov ecx, ROUTE19_BLK_SIZE
+    rep movsb
+
+    mov esi, route20_blk
+    lea edi, [ebp + OW_ROUTE_20_BLK_GBADDR]
+    mov ecx, ROUTE20_BLK_SIZE
+    rep movsb
+
+    mov esi, route22_blk
+    lea edi, [ebp + OW_ROUTE_22_BLK_GBADDR]
+    mov ecx, ROUTE22_BLK_SIZE
+    rep movsb
+
+    mov esi, route24_blk
+    lea edi, [ebp + OW_ROUTE_24_BLK_GBADDR]
+    mov ecx, ROUTE24_BLK_SIZE
+    rep movsb
+
+    mov esi, route25_blk
+    lea edi, [ebp + OW_ROUTE_25_BLK_GBADDR]
+    mov ecx, ROUTE25_BLK_SIZE
+    rep movsb
+
     ; --- Copy Overworld_Coll passable-tile list to ROM window at OW_COLL_GBADDR ---
     mov esi, overworld_coll
     lea edi, [ebp + OW_COLL_GBADDR]
@@ -1515,6 +1671,37 @@ section .rodata
 %include "assets/pallet_town_blk.inc"
 %include "assets/route1_blk.inc"
 %include "assets/route21_blk.inc"
+%include "assets/viridian_city_blk.inc"
+%include "assets/pewter_city_blk.inc"
+%include "assets/cerulean_city_blk.inc"
+%include "assets/lavender_town_blk.inc"
+%include "assets/vermilion_city_blk.inc"
+%include "assets/celadon_city_blk.inc"
+%include "assets/fuchsia_city_blk.inc"
+%include "assets/cinnabar_island_blk.inc"
+%include "assets/saffron_city_blk.inc"
+%include "assets/route2_blk.inc"
+%include "assets/route3_blk.inc"
+%include "assets/route4_blk.inc"
+%include "assets/route5_blk.inc"
+%include "assets/route6_blk.inc"
+%include "assets/route7_blk.inc"
+%include "assets/route8_blk.inc"
+%include "assets/route9_blk.inc"
+%include "assets/route10_blk.inc"
+%include "assets/route11_blk.inc"
+%include "assets/route12_blk.inc"
+%include "assets/route13_blk.inc"
+%include "assets/route14_blk.inc"
+%include "assets/route15_blk.inc"
+%include "assets/route16_blk.inc"
+%include "assets/route17_blk.inc"
+%include "assets/route18_blk.inc"
+%include "assets/route19_blk.inc"
+%include "assets/route20_blk.inc"
+%include "assets/route22_blk.inc"
+%include "assets/route24_blk.inc"
+%include "assets/route25_blk.inc"
 %include "assets/overworld_coll.inc"
 %include "assets/player_sprite.inc"
 %include "assets/npc_girl_still.inc"
