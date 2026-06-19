@@ -149,23 +149,29 @@ Prioritized task list. Check off items as they complete; add new items with phas
       constants to `gb_memmap.inc` and updating all five read sites.  Also fixed
       `gen_map_headers.py` NORTH (−4 → −5) and WEST (−6 → −7) view-pointer
       formulas which had the same off-by-one due to YBC=1/XBC=1 row/col skipping.
-- [ ] **BUG — holding a direction lets the player walk ~1 tile into an impassable
-      block before being stopped.**  Root cause: for SOUTH and EAST movement,
-      `wYBlockCoord`/`wXBlockCoord` goes 0→1 on the first sub-step without
-      triggering `LoadCurrentMapView` (view only updates on the 1→2 crossing).
-      The collision check at `W_WALK_COUNTER=0` reads the stale `wTileMap`, which
-      still reflects the pre-sub-step view — so it checks the last tile of the
-      player's CURRENT block instead of the first tile of the NEXT block.  For
-      NORTH and WEST the block-coord underflows (0→FF) on the first sub-step,
-      which IS a crossing and immediately updates the view, so those directions
-      are unaffected.  Fix: in `GetTileInFrontOfPlayer` (overworld.asm ~line 1131),
-      add the sub-block byte-offset to the wTileMap address:
-        Down:  `row = PLAYER_STANDING_ROW + W_Y_BLOCK_COORD*2 + 2`
-        Right: `col = PLAYER_STANDING_COL + W_X_BLOCK_COORD*2 + 2`
-      (Up and Left don't need adjustment — view is always current for those.)
-      Note: the original GB has the same stale-view window but standard map blocks
-      are 4 tiles deep so collision is always caught on the second sub-step.  Our
-      port may have thinner collision geometry in some spots causing visible bleed.
+- [x] **BUG — holding a direction lets the player walk through impassable tiles
+      (signs, ledges, bushes) as long as they are ≤4 tiles deep.**  Root cause:
+      `AdvancePlayerSprite` updates the block-coord and calls `LoadCurrentMapView`
+      only when the new coord value is exactly `0x02` (south/east crossing) or
+      `0xFF` (north/west crossing).  Each direction has ONE non-crossing sub-step:
+        SOUTH YBC 0→1 | NORTH YBC 1→0 | EAST XBC 0→1 | WEST XBC 1→0
+      On these steps `wTileMap` is left stale.  At `W_WALK_COUNTER=0` the
+      subsequent collision check calls `GetTileInFrontOfPlayer`, which reads the
+      stale `wTileMap` at a compile-time-constant offset — in all four directions
+      that offset maps to the player's *own* current tile in `wSurroundingTiles`,
+      which is always passable.  Result: every other step in every direction
+      bypasses collision entirely, allowing penetration up to one full block (4
+      tiles).  Objects one block deep with passable lower rows (signs, ledges) can
+      be traversed completely.  Prior analysis incorrectly claimed NORTH/WEST were
+      unaffected because "0→FF is a crossing": it confused which sub-step is the
+      crossing one — NORTH 0→FF *is* a crossing and *does* call LCV (correct), but
+      NORTH 1→0 is NOT a crossing and does NOT call LCV (buggy).
+      **Fixed** (2026-06-19): added `call LoadCurrentMapView` at the top of
+      `CollisionCheckOnLand` (overworld.asm).  YBC/XBC and the view pointer are
+      always mutually consistent at `W_WALK_COUNTER=0` (updated atomically in
+      `AdvancePlayerSprite`), so calling LCV here always produces the correct
+      `wTileMap` regardless of direction.  Cost: ~2700 bytes of memory writes once
+      per 8 frames while a direction is held — negligible on a 386.
 - [ ] **BUG — rapid direction change can bypass or falsely trigger collision.**
       Tapping a new direction during the last frames of a walk step can flip
       `W_SPRITE_PLAYER_FACING_DIR` before the walk counter reaches 0, so the next

@@ -758,8 +758,8 @@ DrawTileBlock:
     mov al, byte [ebp + edx]
     mov byte [ebp + esi], al
     inc edx
-    ; Advance ESI to start of next tile row: +21 = SURROUNDING_WIDTH - (BLOCK_WIDTH-1)
-    add esi, SURROUNDING_WIDTH - BLOCK_WIDTH + 1   ; = 24 - 3 = 21
+    ; Advance ESI to start of next tile row: +45 = SURROUNDING_WIDTH - (BLOCK_WIDTH-1)
+    add esi, SURROUNDING_WIDTH - BLOCK_WIDTH + 1   ; = 48 - 4 + 1 = 45
     pop ecx
     dec cl
     jnz .draw_row
@@ -881,8 +881,8 @@ LoadCurrentMapView:
     dec bl
     jnz .copy_col_loop
 
-    ; Skip SURROUNDING_WIDTH - SCREEN_WIDTH = 4 bytes to reach next row in wSurroundingTiles
-    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; = 44 - 40 = 4
+    ; Skip SURROUNDING_WIDTH - SCREEN_WIDTH = 8 bytes to reach next row in wSurroundingTiles
+    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; = 48 - 40 = 8
     dec bh
     jnz .copy_row_loop
 
@@ -1106,6 +1106,7 @@ CollisionCheckOnLand:
     push eax
     push ecx
     push esi
+    call LoadCurrentMapView                        ; refresh wTileMap for current YBC/XBC before check
     call GetTileInFrontOfPlayer                    ; CL = tile in front
     call IsTilePassable                            ; CF = 1 if not passable
     pop esi
