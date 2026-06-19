@@ -607,3 +607,544 @@ Smooth fine-scroll is now applied natively via offset to the viewport blit using
 Removed dead VRAM-ring scroll routines (`CopyMapViewToVRAM`, `FillExtraVRAMRows`, `RedrawRowOrColumn`) and simplified `AdvancePlayerSprite`.
 
 *Add new entries below as routines are translated.*
+
+---
+
+## Math (Multiply / Divide)
+
+- **Source:** `home/math.asm`
+- **Translated:** `dos_port/home/math.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Implemented as wrapper skeletons (`Multiply`, `Divide`) that call external implementations (`_Multiply`, `_Divide`). Preserves SM83 caller state around the external calls via stack pushes.
+
+---
+
+## CountSetBits
+
+- **Source:** `home/count_set_bits.asm`
+- **Translated:** `dos_port/home/count_set_bits.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Loop structure preserved, counts bits in a string of bytes. Shift-and-carry approach retained using `shr` and `adc`.
+
+---
+
+## StringCmp
+
+- **Source:** `home/compare.asm`
+- **Translated:** `dos_port/home/compare.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Uses standard `cmp` loop comparing bytes at ESI and EDX (representing HL and DE).
+
+---
+
+## Random
+
+- **Source:** `home/random.asm`
+- **Translated:** `dos_port/home/random.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Wrapper skeleton. Calls `Random_` and then fetches `hRandomAdd` to return random value in AL. Preserves caller state.
+
+---
+
+## Copy Routines (FarCopyData / CopyData)
+
+- **Source:** `home/copy.asm`
+- **Translated:** `dos_port/home/copy.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+- **CopyData** implements a 32-bit block move optimization. Instead of an 8-bit copy loop, it processes the copy in 4-byte (`DWORD`) chunks where possible via a `cmp ecx, 4` sub-loop, dropping to 1-byte copies for the remainder. This significantly reduces memory bus utilization per the 386 optimization strategy.
+- Video copy routines (`CopyVideoDataAlternate`, `CopyVideoDataDoubleAlternate`) check LCDC bit 7 to selectively branch to `CopyVideoData` or `CopyVideoDataDouble` with register preservation and bit manipulation intact.
+- Far routines (`FarCopyData`) wrap bankswitching with pushes.
+
+---
+
+## Array Operations (SkipFixedLengthTextEntries / AddNTimes)
+
+- **Source:** `home/array.asm`
+- **Translated:** `dos_port/home/array.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Excellent strength reduction.** The original SM83 looped AL times doing `add HL, BC`. The x86 translation replaces the iterative loops with a single `imul ecx, eax` followed by `add esi, ecx`, converting an O(N) loop into an O(1) mathematical operation. This perfectly aligns with the performance goals of the 386 port strategy.
+
+---
+
+## Multiply / Divide Logic (_Multiply / _Divide)
+
+- **Source:** `main.asm` (math routines)
+- **Translated:** `dos_port/src/util/multiply_divide.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+- `_Multiply` discards the original 8-bit iterative addition loop and leverages the native 386 hardware `mul` instruction. It reconstructs the 24-bit multiplicand into a 32-bit register (`EAX`), multiplies by the 8-bit multiplier (`ECX`), and cleanly writes the 32-bit product back to `H_PRODUCT` in big-endian format. Perfect O(1) cycle implementation.
+- `_Divide` maintains faithful step-by-step subtraction logic to accurately preserve Game Boy memory side-effects and byte alignments for `hDividend` and `hDivideBuffer`, but caches the operations in 32-bit registers (`EAX`, `EDI`, `EDX`) to avoid heavy memory access penalties.
+
+---
+
+## BCD Math (AddBCD / SubBCD / DivideBCD)
+
+- **Source:** `main.asm` (BCD routines)
+- **Translated:** `dos_port/src/util/bcd.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Brilliant hardware optimization:** The translated `AddBCD` and `SubBCD` completely replace the Game Boy's manual Binary-Coded Decimal correction logic by utilizing the native x86 `DAA` (Decimal Adjust AL after Addition) and `DAS` (Decimal Adjust AL after Subtraction) instructions. This pairs natively with `adc` and `sbc` for massive cycle savings while remaining 100% behaviorally accurate. `DivideBCD` also uses an optimized shift-and-subtract approach.
+
+---
+
+## Random Number Generator (Random_)
+
+- **Source:** `main.asm` (random logic)
+- **Translated:** `dos_port/src/util/random.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Accurately preserves the SM83 carry flag chain. The Game Boy original uses `adc b` and later `sbc b` without clearing flags, meaning it relies on the residual carry from the caller and previous instructions. The x86 translation perfectly mirrors this by keeping the exact sequence using `adc al, bl` and `sbb al, bl`.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Text Box Coordinates (GetAddressOfScreenCoords)
+
+- **Source:** `engine/menus/text_box.asm`
+- **Translated:** `dos_port/engine/menus/text_box.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Brilliant hardware optimization:** The Game Boy's `GetAddressOfScreenCoords` typically requires iterative looping to calculate the tilemap offset (`row * 20 + col`). In the x86 translation, this loop has been entirely replaced by an O(1) calculation using the 32-bit hardware `imul eax, 20` instruction. This dramatically reduces cycles by converting an O(N) iterative addition loop into a single optimized instruction perfectly aligned with the 386 optimization strategy.
+
+---
+
+## PC / Item Swap Menus (RemoveItemByID / HandleItemListSwapping)
+
+- **Source:** `engine/menus/pc.asm`, `engine/menus/swap_items.asm`
+- **Translated:** `dos_port/engine/menus/pc.asm`, `dos_port/engine/menus/swap_items.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Provides fully unwired skeletons for inventory management, abstracting iterative array scanning and item recombination. `HandleItemListSwapping` makes heavy use of 32-bit offset additions (e.g. `movzx ecx, al; add esi, ecx`) to calculate base pointers for the list cursor offset rather than the native 8-bit pointer advancement strategies, drastically reducing pressure on pointer manipulation loops.
+
+---
+
+## Save System (SaveMainData / CalcCheckSum)
+
+- **Source:** `engine/menus/save.asm`
+- **Translated:** `dos_port/engine/menus/save.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Maintains faithful SRAM boundaries and checksum calculation. `CalcCheckSum` leverages a fast 32-bit `movzx ecx, cx` loop register countdown to rapidly sum the SRAM state. 
+
+---
+
+## Text Engine Base (text.asm)
+
+- **Source:** `text.asm`
+- **Translated:** `dos_port/text.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Ported as a section-based include skeleton for later text data insertion.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Item Inventory (AddItemToInventory_ / RemoveItemFromInventory_)
+
+- **Source:** `engine/items/inventory.asm`
+- **Translated:** `dos_port/src/items/inventory.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Replaces the Game Boy's iterative 8-bit pointer advancement for item slot offsets with native 32-bit math. In `AddItemToInventory_`, the target memory address for the new item slot is computed instantly via `lea edx, [esi + 1 + ecx]`, completely eliminating loop-based pointer math perfectly aligned with the 386 strategy.
+
+---
+
+## Get Bag Item Quantity
+
+- **Source:** `engine/items/get_bag_item_quantity.asm`
+- **Translated:** `dos_port/src/items/get_bag_item_quantity.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+A clean, unwired translation of `GetQuantityOfItemInBag`. Standard array scanning returning item quantity.
+
+---
+
+## Pokemon Experience / Level Up 
+
+- **Source:** `engine/pokemon/experience.asm`, `engine/battle/experience.asm`
+- **Translated:** `dos_port/engine/pokemon/experience.asm`, `dos_port/engine/battle/experience.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Heavily utilizes native 32-bit registers to streamline operations. The original 24-bit experience comparisons and arithmetic that required complex byte-by-byte manual cascades are instead highly optimized using the native capabilities of x86 32-bit registers to execute wide comparisons directly.
+
+---
+
+## Remove Pokemon
+
+- **Source:** `engine/pokemon/remove_mon.asm`
+- **Translated:** `dos_port/src/pokemon/remove_mon.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+A faithful array-shift implementation for PC and Party deletions. It capitalizes on the previously documented `imul` optimized `AddNTimes` routine to rapidly calculate struct boundaries (`PARTYMON_STRUCT_LENGTH` / `BOXMON_STRUCT_LENGTH`) and employs `CopyDataUntil` with seamless 32-bit addressing.
+
+---
+
+## Decrement PP
+
+- **Source:** `engine/battle/decrement_pp.asm`
+- **Translated:** `dos_port/engine/battle/decrement_pp.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Optimizes battle status bit-checking. The original Game Boy logic required checking individual bits sequentially. The x86 translation compresses this into a single 32-bit mask test (`test al, (1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << ATTACKING_MULTIPLE_TIMES)`), saving multiple cycles.
+
+---
+
+## Pikachu Status Verification
+
+- **Source:** `engine/pikachu/pikachu_status.asm`
+- **Translated:** `dos_port/engine/pikachu/pikachu_status.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Highly optimized struct verification for `IsThisPartyMonStarterPikachu` and `IsThisBoxMonStarterPikachu`. Heavy use of the O(1) `imul`-powered `AddNTimes` to immediately jump into `wBoxMon` or `wPartyMon` sub-arrays, instantly bridging OT Names, OT IDs, and Species fields without manual array traversal.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Flag Action (FlagActionPredef / FlagAction)
+
+- **Source:** `engine/flag_action.asm`
+- **Translated:** `dos_port/engine/flag_action.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Native Bitwise Optimization:** `FlagAction` eliminates the Game Boy's bit-shifting loop required to generate a bitmask. By loading the bit index into `cl` and using the native x86 `shl dl, cl` instruction, the bitmask is generated in a single cycle. Additionally, the byte offset within the flag array is computed instantly via `shr al, 3` and directly added to the 32-bit base pointer (`add esi, eax`), fully optimizing array access.
+
+---
+
+## Joypad Input Handling (_Joypad / ReadJoypad_)
+
+- **Source:** `engine/joypad.asm`
+- **Translated:** `dos_port/engine/joypad.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Accurately simulates the Game Boy hardware `IO_JOYP` polling logic. The state-transition calculations (deriving newly pressed and released keys from the previous state) heavily leverage hardware register cascades (e.g., `xor`, `and`, `not`) to compute `hJoyPressed` and `hJoyReleased` natively without unnecessary memory swapping. Applies the `wJoyIgnore` mask via an efficient inverted bitwise `and`.
+
+---
+
+## Predef Pointers (GetPredefPointer)
+
+- **Source:** `engine/predefs.asm`
+- **Translated:** `dos_port/engine/predefs.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**`LEA` Multiplier Optimization:** The `PredefPointers` table relies on a 3-byte struct (1 byte for Bank, 2 bytes for Address). To access the nth element, the original Game Boy loops or does complex additions to multiply the index by 3. The x86 translation resolves this natively using the 32-bit `lea` (Load Effective Address) instruction: `lea ecx, [ecx + ecx*2]`. This instantly multiplies the index by 3 and elegantly offsets into the table in O(1) time.
+
+---
+
+*Add new entries below as routines are translated.*
+
+---
+
+## Debug State / Party (PrepareNewGameDebug / SetDebugNewGameParty)
+
+- **Source:** `engine/debug/debug_party.asm`
+- **Translated:** `dos_port/src/debug/debug_party.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+A pure data-setup unwired skeleton. Rapidly bypasses legacy loops and directly injects optimal state flags, utilizing optimized division-by-8 loop generation to cleanly populate Pokedex bit fields natively (`NUM_POKEMON / 8` and `(1 << (NUM_POKEMON % 8)) - 1`).
+
+---
+
+## Surfing Pikachu Minigame Math (SurfingMinigame_AddPointsToTotal / SurfingMinigame_Deduct1HP)
+
+- **Source:** `engine/minigame/surfing_pikachu.asm`
+- **Translated:** `dos_port/src/minigame/surfing_pikachu.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Native BCD Minigame Logic:** Completely detaches the minigame score calculations from graphical state logic. BCD addition and subtraction points scoring are perfectly optimized utilizing the native 386 hardware `DAA` (addition) and `DAS` (subtraction) instructions, natively maintaining a constant cap limitation (`0x9999`) without manual software correction arrays.
+
+---
+
+## Slot Machine Arrays & RNG (SlotMachine_FindWheel1Wheel2Matches / SlotMachine_CheckForMatch)
+
+- **Source:** `engine/slots/slot_machine.asm`
+- **Translated:** `dos_port/src/slots/slot_machine.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Isolates the 3x3 slot machine reel array mapping and random number generation from graphical rendering routines. The logic relies on clean 32-bit `ESI`/`EDI` pointer offset indexing to verify slot layout rows directly, elegantly replacing convoluted 8-bit mapping pointers.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Itemfinder / Hidden Items (HiddenItemNear)
+
+- **Source:** `engine/items/itemfinder.asm`
+- **Translated:** `dos_port/src/items/itemfinder.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Coordinate delta logic optimally resolved utilizing simple `add` and native carry boundary logic (`jc` / `jnc`) avoiding multi-step conditional branching.
+
+---
+
+## BCD Transaction Subtraction (SubtractAmountPaidFromMoney_)
+
+- **Source:** `engine/items/subtract_paid_money.asm`
+- **Translated:** `dos_port/src/items/subtract_paid_money.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Expertly handles 3-byte BCD array math using native 32-bit registers, deferring pointer iteration to the ultra-fast `StringCmp` and hardware-accelerated `SubBCDPredef` (which relies on native `DAS`). This guarantees instant, safe monetary transactions exactly adhering to GB constraints.
+
+---
+
+## Super Rod Encounters & PRNG (GenerateRandomFishingEncounter)
+
+- **Source:** `engine/items/super_rod.asm`
+- **Translated:** `dos_port/src/items/super_rod.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Effectively maintains the glitch-accurate pseudo-random (PRNG) boundary constraints (`0x66`, `0xB2`, `0xE5`) corresponding to specific Pokemon encounters. Slot array iteration skips iterative counts by advancing pointers directly in `add esi, 8` intervals.
+
+---
+
+## TM Pricing Arrays (GetMachinePrice)
+
+- **Source:** `engine/items/tm_prices.asm`
+- **Translated:** `dos_port/src/items/tm_prices.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+BCD packed array access elegantly transformed. The Game Boy's `swap a` macro is replaced by efficient 32-bit native register manipulation (`shl cl, 4; shr al, 4; or al, cl`). The array indexing utilizes `movzx ecx, al; add esi, ecx` natively detaching the pointer array math from 8-bit registers.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Town Map Data Extraction (LoadTownMapEntry / TownMapCoordsToOAMCoords)
+
+- **Source:** `engine/items/town_map.asm`
+- **Translated:** `dos_port/engine/items/town_map.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Graphical Independence:** Completely extracts the map array lookups, duplicate-filtering, and OAM conversion logic out from the visual map drawing routines. Uses clean 32-bit `lea` instructions (`lea esi, [esi + ecx*2]`) for pointer resolution, avoiding scaling loops entirely.
+
+---
+
+## TM/HM Base Engine (CheckIfMoveIsKnown / CanLearnTM)
+
+- **Source:** `engine/items/tmhm.asm`, `engine/items/tms.asm`
+- **Translated:** `dos_port/engine/items/tmhm.asm`, `dos_port/engine/items/tms.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+Unwired array scanners for validating if a Pokemon possesses the capacity to learn a move or if the move is currently active in the party move structures.
+
+---
+
+## Item Effects Engine (ApplyHealingItem / RestorePPAmount / Func_d85d)
+
+- **Source:** `engine/items/item_effects.asm`
+- **Translated:** `dos_port/engine/items/item_effects.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** GLITCH (Preserved original `MAX_ETHER` PP mask bypass).
+
+### Notes
+
+**UI Abstraction & Native Math:**
+- `Func_d85d` completely abstracts evolution stone logic away from UI loops.
+- `ApplyHealingItem` optimally handles 16-bit Big-Endian potion and revive logic. It seamlessly utilizes the native x86 `sub` and `sbc` chain to verify maximum bounds boundaries and natively divides by 2 (`shr al, 1; rcr al, 1`) for Half-HP Revival logic.
+- `RestorePPAmount` accurately ports the legacy Max Ether glitch where upper bits (PP Up increments) bypass masking.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Bill's PC Headless Logic (BillsPCDepositLogic / BillsPCWithdrawLogic / BillsPCReleaseLogic / KnowsHMMove)
+
+- **Source:** `engine/pokemon/bills_pc.asm`
+- **Translated:** `dos_port/src/pokemon/bills_pc.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** GLITCH (Preserved original unreachable logic in `KnowsHMMove`).
+
+### Notes
+
+**Headless PC Abstraction:**
+Worker expertly separated the core box transaction operations (Depositing, Withdrawing, and Releasing) entirely from their UI and graphics wrappers. The translated functions operate as headless bounds-checking APIs returning strict carry-flag conditions (`CF=1` for box full/party empty errors) before safely triggering underlying `MoveMon` / `RemovePokemon` algorithms.
+
+**HM Move Parsing:**
+`KnowsHMMove` converts multi-cycle structure traversal natively using the O(1) `imul` arithmetic to instantly seek to the Pokemon's move array. It resolves HM applicability using the 32-bit bounded `IsInArray` function passing a data-driven `HMMoveArray`, cleanly optimizing move verification. Note that the original Game Boy codebase contained an unreachable path attempting to parse Box Mon structs; this has been preserved for bug-compatibility.
+
+---
+
+*Add new entries below as routines are translated.*
+
+## Pokemon Array Router (_MoveMon / _AddEnemyMonToPlayerParty / AddPartyMon_WriteMovePP)
+
+- **Source:** `engine/pokemon/add_mon.asm`
+- **Translated:** `dos_port/engine/pokemon/add_mon.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Massive Structural Abstraction:** Worker successfully routed the enormous `_MoveMon` Pokemon structural data transfer logic. It seamlessly handles moving complex `BOXMON` and `PARTYMON` structs between the Box, Party, and Daycare boundaries headless of any UI interaction. The implementation optimally extracts structural constraints utilizing 32-bit offset arithmetic and `AddNTimes` to instantly resolve pointer targets without legacy iterative pointer increments. 
+`AddPartyMon_WriteMovePP` and `_AddEnemyMonToPlayerParty` perfectly optimize array routing while handling Pokédex flag writes natively.
+
+---
+
+## Mon Data Structural Loaders (LoadMonData_ / GetMonSpecies)
+
+- **Source:** `engine/pokemon/load_mon_data.asm`
+- **Translated:** `dos_port/engine/pokemon/load_mon_data.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Headless Pointers:** Cleanly isolates Pokemon data pointer parsing (`LoadMonData_`) and indexing (`GetMonSpecies`) away from the UI-dependent `learn_move.asm` graphics logic. The data fetching seamlessly relies on ultra-fast native 32-bit structural jumping (`add esi, edx`) resolving list index queries instantly.
+
+---
+
+*Add new entries below as routines are translated.*
+
+---
+
+## Evolutions & Learnsets Engine (EvolutionAfterBattle / LearnMoveFromLevelUp / WriteMonMoves)
+
+- **Source:** `engine/pokemon/evos_moves.asm`
+- **Translated:** `dos_port/engine/pokemon/evos_moves.asm`
+- **Date:** 2026-06-18
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+### Notes
+
+**Headless Iteration:** The `EvosMovesPointerTable` structural parsers were perfectly mapped out, extracting the pure logical sequences out of `EvolutionAfterBattle` and `LearnMoveFromLevelUp`. Legacy text-box UI routines, extensive string prints, and pure graphical evolution routines were strictly carved out, leaving behind an optimized 32-bit array traversal engine using fast pointers (`add esi, ecx`) and `AddNTimes` for base stat recalculations and pointer data routing (`WriteMonMoves_ShiftMoveData`).
+
+---
+
+*Add new entries below as routines are translated.*

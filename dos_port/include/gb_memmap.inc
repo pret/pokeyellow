@@ -35,6 +35,74 @@ GB_TILEMAP1     equ 0x9C00
 ; WRAM bank 0 — $C000–$CFFF (4 KB)
 ; Always available. General-purpose work RAM.
 GB_WRAM0        equ 0xC000
+W_NUM_BAG_ITEMS        equ 0xD31C
+W_NUM_BOX_ITEMS        equ 0xD539
+W_CURRENT_MENU_ITEM      equ 0xCC26
+W_MAX_MENU_ITEM          equ 0xCC28
+W_BAG_SAVED_MENU_ITEM    equ 0xCC2C
+W_LIST_SCROLL_OFFSET     equ 0xCC36
+W_CUR_ITEM               equ 0xCF90
+W_WHICH_POKEMON          equ 0xCF91
+W_ITEM_QUANTITY          equ 0xCF95
+W_MAX_ITEM_QUANTITY      equ 0xCF96
+W_LOADED_MON_SPECIES     equ 0xCF97
+W_MON_DATA_LOCATION      equ 0xCC49
+W_CUR_PARTY_SPECIES      equ 0xCF90
+W_CUR_ENEMY_LEVEL        equ 0xD126
+W_TEXT_BOX_ID          equ 0xD124
+W_PARTY_MON1_MOVES       equ 0xD172
+W_PARTY_MON4_MOVES       equ 0xD1F6
+W_POKEDEX_OWNED          equ 0xD2F6
+W_POKEDEX_SEEN           equ 0xD309
+W_CUR_MAP              equ 0xD35D
+W_Y_COORD              equ 0xD360
+W_X_COORD              equ 0xD361
+W_PLAYER_MONEY           equ 0xD346
+W_OBTAINED_BADGES        equ 0xD355
+W_OBTAINED_HIDDEN_ITEMS_FLAGS equ 0xD6EF
+W_TOWN_VISITED_FLAG      equ 0xD70A
+W_RIVAL_STARTER          equ 0xD714
+W_EVENT_FLAGS            equ 0xD746
+W_SURFING_MINIGAME_PIKACHU_HP  equ 0xC5D6
+W_SURFING_MINIGAME_RADNESS_MTR equ 0xC5D9
+W_SURFING_MINIGAME_RADNESS_SCR equ 0xC5DA
+W_SURFING_MINIGAME_TOTAL_SCORE equ 0xC5DC
+W_SURFING_MINIGAME_TRICK_FLAGS equ 0xC62F
+W_SLOT_MACHINE_SEVEN_AND_BAR_MODE_CHANCE equ 0xCC5B
+W_SLOT_MACHINE_WHEEL1_OFFSET equ 0xCD3E
+W_SLOT_MACHINE_WHEEL2_OFFSET equ 0xCD3F
+W_SLOT_MACHINE_WHEEL3_OFFSET equ 0xCD40
+W_SLOT_MACHINE_WHEEL1_BOTTOM_TILE equ 0xCD41
+W_SLOT_MACHINE_WHEEL1_MIDDLE_TILE equ 0xCD42
+W_SLOT_MACHINE_WHEEL1_TOP_TILE equ 0xCD43
+W_SLOT_MACHINE_WHEEL2_BOTTOM_TILE equ 0xCD44
+W_SLOT_MACHINE_WHEEL2_MIDDLE_TILE equ 0xCD45
+W_SLOT_MACHINE_WHEEL2_TOP_TILE equ 0xCD46
+W_SLOT_MACHINE_WHEEL3_BOTTOM_TILE equ 0xCD47
+W_SLOT_MACHINE_WHEEL3_MIDDLE_TILE equ 0xCD48
+W_SLOT_MACHINE_WHEEL3_TOP_TILE equ 0xCD49
+W_SLOT_MACHINE_FLAGS equ 0xCD4C
+W_SLOT_MACHINE_WHEEL1_SLIP_COUNTER equ 0xCD4D
+W_SLOT_MACHINE_WHEEL2_SLIP_COUNTER equ 0xCD4E
+W_SLOT_MACHINE_ALLOW_MATCHES_COUNTER equ 0xD095
+W_LOADED_MON_EXP         equ 0xCFA5
+W_CUR_SPECIES            equ 0xD0B4
+W_MON_H_GROWTH_RATE      equ 0xD0CA
+W_REMOVE_MON_FROM_BOX  equ 0xCF94
+W_MOVE_MON_TYPE          equ 0xCF94
+W_PARTY_COUNT            equ 0xD162
+W_PARTY_MONS             equ 0xD16A
+W_PARTY_MON_OT           equ 0xD272
+W_PARTY_MON_NICKS        equ 0xD2B4
+W_PARTY_MON_NICKS_END    equ 0xD2F6
+W_BOX_COUNT              equ 0xDA7F
+W_BOX_MONS               equ 0xDA95
+W_BOX_MON1_MOVES         equ 0xDA9D
+W_BOX_MON_OT             equ 0xDD29
+W_BOX_MON_NICKS          equ 0xDE05
+W_BOX_MON_NICKS_END      equ 0xDEE1
+W_SAVED_LIST_SCROLL_OFFSET equ 0xD07D
+W_LIST_COUNT             equ 0xD129
 
 ; Sprite state data — 16 slots × $10 bytes each, two parallel arrays.
 ; wSpriteStateData1 ($C100) and wSpriteStateData2 ($C200) — sym-verified.
@@ -158,6 +226,23 @@ H_SPRITE_SCREEN_X            equ 0xFF91 ; hSpriteScreenX
 H_SPRITE_SCREEN_Y            equ 0xFF92 ; hSpriteScreenY
 H_TILE_PLAYER_STANDING_ON    equ 0xFF93 ; hTilePlayerStandingOn
 H_SPRITE_PRIORITY            equ 0xFF94 ; hSpritePriority (BG-priority bit for current sprite)
+H_PRODUCT                equ 0xFF95 ; hProduct (4 bytes)
+H_ITEM_PRICE           equ 0xFF8B
+H_MONEY                equ 0xFF9F
+H_EXPERIENCE             equ 0xFF96 ; (3 bytes, overlaps hProduct+1)
+H_MULTIPLICAND           equ 0xFF96 ; hMultiplicand (3 bytes, overlaps hProduct+1)
+H_MULTIPLIER             equ 0xFF99 ; hMultiplier (1 byte)
+H_DIVIDEND               equ 0xFF95 ; hDividend (4 bytes, overlaps hProduct)
+H_DIVISOR                equ 0xFF99 ; hDivisor (1 byte, overlaps hMultiplier)
+H_QUOTIENT               equ 0xFF95 ; hQuotient (4 bytes, overlaps hProduct)
+H_REMAINDER              equ 0xFF99 ; hRemainder (1 byte, overlaps hMultiplier)
+H_DIVIDE_BUFFER          equ 0xFF9A
+H_MONEY                  equ 0xFF9F
+H_DIVIDE_BCD_DIVISOR     equ 0xFFA2
+H_DIVIDE_BCD_QUOTIENT    equ 0xFFA2
+H_DIVIDE_BCD_BUFFER      equ 0xFFA5
+H_RANDOM_ADD             equ 0xFFD3
+H_RANDOM_SUB             equ 0xFFD4
 H_CURRENT_SPRITE_OFFSET      equ 0xFFDA ; hCurrentSpriteOffset (_UpdateSprites loop index)
 H_PIKACHU_SPRITE_VRAM_OFFSET equ 0xFFFC ; hPikachuSpriteVRAMOffset (added to tile id $80+; 0 for now)
 
@@ -494,6 +579,11 @@ SCREEN_W        equ 160        ; logical pixels (kept for game-logic comparisons
 SCREEN_H        equ 144        ; logical pixels
 SCREEN_TILES_W  equ 40         ; viewport width in tiles (= RENDER_W / TILE_WIDTH)
 SCREEN_TILES_H  equ 25         ; viewport height in tiles (= RENDER_H / TILE_HEIGHT)
+
+; Player standing tile in wTileMap — derived from render_sprites +36/+96 shift and
+; the Pallet Town view pointer (bg_scy=32, bg_scx=32 → sprite feet at bg_surface Y=143).
+PLAYER_STANDING_ROW equ 17     ; wTileMap row containing player's feet
+PLAYER_STANDING_COL equ 24     ; wTileMap col containing player's feet
 
 ; Native render dimensions (back buffer and VGA output)
 RENDER_W        equ 320        ; back buffer / VGA width in pixels

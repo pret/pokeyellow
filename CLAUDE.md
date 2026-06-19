@@ -71,14 +71,11 @@ edge reaches past the populated `wOverworldMap` data. Two complementary stopgaps
 keep that from painting garbage:
 1. **Block-ID clamp** in `DrawTileBlock`: a block ID past the embedded blockset
    is clamped to block 0.
-2. **Block-map address clamp** in `LoadCurrentMapView`: `wOverworldMap` ($E580)
-   sits directly above `wSurroundingTiles` ($E000) in WRAM, so a view pointer
-   that reaches above the map's top border reads *tile* IDs from the surrounding
-   buffer and decodes them as *block* IDs → a garbage band (seen at map edges and
-   the instant a connection is crossed). Any read outside
-   `[wOverworldMap, wOverworldMapEnd)` instead yields the map's border block
-   (`wMapBackgroundTile`), so the out-of-map area renders as clean dummy tiles
-   matching the in-bounds border.
+2. **Block-map address clamp** in `LoadCurrentMapView`: `wOverworldMap` ($E800,
+   2048 bytes) is separated from `wSurroundingTiles` ($E000, ~1728 bytes) by a
+   ~$140-byte gap. Any read outside `[wOverworldMap, wOverworldMapEnd)` yields
+   the map's border block (`wMapBackgroundTile`) instead of garbage, so the
+   out-of-map area renders as clean dummy tiles matching the in-bounds border.
 
 Both are stopgaps: the real fix is to **extend the map data** so those regions
 hold real blocks (no blank area), after which both clamps are dead code and

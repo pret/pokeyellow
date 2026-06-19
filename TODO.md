@@ -60,7 +60,10 @@ Prioritized task list. Check off items as they complete; add new items with phas
       wired (picture ID 0). Verified 2026-06-15 via DEBUG_DUMP. REMAINING for the
       sprite engine: NPC slots (InitMapSprites / sprite sets / VRAM-slot alloc),
       DetectCollisionBetweenSprites, and the spinning/ledge paths.
-- [ ] PPU: window layer renderer
+- [x] PPU: window layer renderer — `render_window` in `src/ppu/ppu.asm`; wired into
+      the `DelayFrame` pipeline (frame.asm: render_bg → render_window → render_sprites).
+      Handles WX/WY position, LCDC bits 5+0+6, WLY counter, left-clip and right-clip.
+      Verified present and correct in the codebase (2026-06-19).
 - [ ] PPU: CGB attribute handling (palette, VRAM bank, flip bits)
 - [x] Joypad: INT 9h handler → write `[EBP + IO_JOYP]` — src/input/joypad.asm
       (arrows/X/Z/Enter/RShift/Tab mapped; Esc = host quit; rJOYP select-bit
@@ -106,53 +109,73 @@ Prioritized task list. Check off items as they complete; add new items with phas
        in all four directions scrolls Pallet Town smoothly with correct tiles at
        the newly exposed edges; trees/buildings collide. Omitted vs pret: OAM
        sprite shift, ledges, tile-pair collisions, warps, NPCs, battles, scripts.)
-- [ ] **MAJOR REFACTOR: VGA-native renderer (40×25 viewport, 320×200 native output)**
-      Plan: `/home/beowulf-linux/.claude/plans/greedy-roaming-toucan.md`
-      
-      Current 160×144 → 2× blit wasteful: 144-pass scanline decode is expensive on 386
-      (550k cycles/frame), and the bottom 44 GB rows are silently clipped. Replace with:
-      - Tile-blitter PPU: 40×25 = 1,000 tile passes per frame (not 4,608 scanline
-        tile-strip decodes); single direct write to 320×200 back buffer.
-      - WRAM expansion: wTileMap 360→1,000 B, wSurroundingTiles 480→1,408 B;
-        all addresses via constants (no hardcoded offsets).
-      - Sprite pre-scale at build time (2bpp 8×8 → 8bpp 16×16): 65 KB static table,
-        zero per-frame decode cost.
-      - `present()` simplifies to `rep movsd` (16k dwords, ~1 ms on 386).
-      
-      Scope: 8 implementation steps across ppu.asm, video.asm, gb_memmap.inc,
-      overworld.asm, movement.asm, sprite_oam.asm, gen_spr_tiles.py. Multi-session task.
-      
-      Awaiting: first session to start with Step 1 (geometry constants).
+- [x] **MAJOR REFACTOR: VGA-native renderer (40×25 viewport, 320×200 native output)**
+      (2026-06-19: all core goals achieved piecemeal during Phase 2 development.)
+      - 40×25 tile viewport: `SCREEN_TILES_W=40`, `SCREEN_TILES_H=25` ✓
+      - wTileMap 1,000 B (`W_TILEMAP_SIZE=1000`) ✓
+      - wSurroundingTiles 1,728 B (48×36, larger than plan's 1,408) ✓
+      - Native 320×200 back buffer (`GB_BACKBUF_SIZE=64000`); no 2× scaling ✓
+      - `render_bg` uses `bg_surface` (384×288 offscreen mirror → 320×200 blit) ✓
+      - `present()` is `rep movsd` of 16,000 dwords ✓
+      - WRAM layout at different addresses than plan predicted ($E000/$E800
+        rather than $C788/$CD28) but all via `gb_memmap.inc` constants ✓
+      REMAINING: build-time sprite pre-scale table (65 KB static 16×16 decode,
+      zero per-frame cost) — pure perf optimization, not correctness. The
+      `greedy-roaming-toucan.md` plan file is now superseded.
       
 - [ ] **Extend map data to cover the extended-draw region, then remove the two
       out-of-map clamps.** The 40×25-tile viewport draws a larger area than the
       original 20×18 and the player is screen-centered, so the camera can reach
       past the populated `wOverworldMap` data near map edges. Two temporary
       clamps in `src/overworld/overworld.asm` stop the garbage:
-      (1) `DrawTileBlock` clamps a block ID past the blockset → block 0;
-      (2) `LoadCurrentMapView` (added 2026-06-16) substitutes `wMapBackgroundTile`
-      for any block-map read outside `[wOverworldMap, wOverworldMapEnd)` — these
-      reads otherwise fall into `wSurroundingTiles` ($E000, directly below
-      `wOverworldMap` at $E580) and decode tile IDs as block IDs.
-      The address clamp removes the garbage now (dummy/border tiles in the
-      out-of-map area) but does NOT create editable cells there. The real fix is
-      to extend the maps so those regions hold real blocks: enlarge `MAP_BORDER`
-      / the block grid and regenerate `assets/map_headers.inc` with per-direction
+      (1) `DrawTileBlock` (~line 727): clamps a block ID past the blockset → block 0;
+      (2) `LoadCurrentMapView` (~line 816): substitutes `wMapBackgroundTile`
+      for any block-map read outside `[wOverworldMap, wOverworldMapEnd)`.
+      Memory layout (current): `wSurroundingTiles` = $E000 (1728 bytes, ends ~$E6BF);
+      `wOverworldMap` = $E800 (2048 bytes, ends $F000). There is a ~$140-byte gap
+      between them, so out-of-range reads fall into that gap, not wSurroundingTiles
+      (the old description saying "directly below at $E580" was stale).
+      The clamp still prevents garbage correctly. The real fix is to extend the
+      maps so those regions hold real blocks: enlarge `MAP_BORDER` / the block
+      grid and regenerate `assets/map_headers.inc` with per-direction
       `_win`/`_y`/`_x` re-tuned for the larger border (the formulas in
       `tools/gen_map_headers.py` are hand-tuned per direction — re-verify each
       empirically with the FRAME.BIN loop). Once done, delete both clamps.
-- [ ] **BUG — collision: facing DOWN lets the player penetrate 1 tile into
-      objects** (signs, building roofs/fronts) when approached from the top.
-      Confirmed NOT a graphical artifact (user, 2026-06-15). Root cause:
-      `GetTileInFrontOfPlayer` (src/overworld/overworld.asm) checks the tile **±1**
-      from the player-center tile (20,12), but the player moves in 16px / 2-tile
-      steps, so it must check **±2** — matching pret
-      `_GetTileAndCoordsInFrontOfPlayer` (engine/overworld/player_state.asm):
-      down=`lda_coord 8,11`, up=`8,7`, left=`6,9`, right=`10,9` (all ±2 from
-      center 8,9). Proposed fix: down (20,13)→(20,14), up (20,11)→(20,10),
-      left (19,12)→(18,12), right (21,12)→(22,12); then verify all four
-      directions in DOSBox-X (down stops short of objects; up/left/right don't
-      become over-restrictive).
+- [x] **BUG — collision offsets wrong for DOS viewport** (fixed 2026-06-19).
+      `GetTileInFrontOfPlayer` and the standing-tile read in `UpdatePlayerSprite`
+      used pret's 20-wide-tilemap coordinates (row 9, col 8).  The DOS port centers
+      the player at row 17, col 24 in the 40-wide `wTileMap` (render_sprites +36/+96
+      shift; bg_scy=32).  Fixed by adding `PLAYER_STANDING_ROW=17` / `PLAYER_STANDING_COL=24`
+      constants to `gb_memmap.inc` and updating all five read sites.  Also fixed
+      `gen_map_headers.py` NORTH (−4 → −5) and WEST (−6 → −7) view-pointer
+      formulas which had the same off-by-one due to YBC=1/XBC=1 row/col skipping.
+- [ ] **BUG — holding a direction lets the player walk ~1 tile into an impassable
+      block before being stopped.**  Root cause: for SOUTH and EAST movement,
+      `wYBlockCoord`/`wXBlockCoord` goes 0→1 on the first sub-step without
+      triggering `LoadCurrentMapView` (view only updates on the 1→2 crossing).
+      The collision check at `W_WALK_COUNTER=0` reads the stale `wTileMap`, which
+      still reflects the pre-sub-step view — so it checks the last tile of the
+      player's CURRENT block instead of the first tile of the NEXT block.  For
+      NORTH and WEST the block-coord underflows (0→FF) on the first sub-step,
+      which IS a crossing and immediately updates the view, so those directions
+      are unaffected.  Fix: in `GetTileInFrontOfPlayer` (overworld.asm ~line 1131),
+      add the sub-block byte-offset to the wTileMap address:
+        Down:  `row = PLAYER_STANDING_ROW + W_Y_BLOCK_COORD*2 + 2`
+        Right: `col = PLAYER_STANDING_COL + W_X_BLOCK_COORD*2 + 2`
+      (Up and Left don't need adjustment — view is always current for those.)
+      Note: the original GB has the same stale-view window but standard map blocks
+      are 4 tiles deep so collision is always caught on the second sub-step.  Our
+      port may have thinner collision geometry in some spots causing visible bleed.
+- [ ] **BUG — rapid direction change can bypass or falsely trigger collision.**
+      Tapping a new direction during the last frames of a walk step can flip
+      `W_SPRITE_PLAYER_FACING_DIR` before the walk counter reaches 0, so the next
+      collision check fires against the new facing tile rather than the tile in the
+      direction of travel.  Root cause: `UpdateSprites` (called every frame) updates
+      the facing from the step vector, but the GB serializes this via its frame-locked
+      joypad latch.  Fix: latch the direction used for the collision check for the
+      duration of the current step (don't allow mid-step facing updates to influence
+      the next collision sample).  See `OverworldLoop:.handleDirection` TODO comment
+      in `src/overworld/overworld.asm`.  Defer until after Phase 2 NPC work.
 - [x] **PERF — heavily optimize render_bg** (2026-06-15). The per-pixel
       2bpp→8bpp decode is no longer in the hot path: a 24 KB decoded-tile cache
       (`tile_cache`, 384 tiles × 64 B, BGP baked in) pre-decodes $8000-$97FF
@@ -164,19 +187,13 @@ Prioritized task list. Check off items as they complete; add new items with phas
       refactor below): pre-render the map torus to an offscreen 8bpp surface and
       blit a SCX/SCY-offset viewport, updating only the RedrawRowOrColumn edge —
       eliminates nearly all per-frame tile work.
-- [ ] **NEEDS FIXED — red strip / out-of-range pixel values.** A red strip
-      appears on screen that is NOT background data: under the current lazy
-      "pea-soup green" palette the BG can only render raw colors 0–3 (all green)
-      and sprites 4–11 (also green), and `commit_palette` only initializes DAC
-      entries 0–11. A red strip therefore means some renderer path writes pixel
-      values ≥12, which index the leftover boot `test_palette` ramps (12–63 =
-      red). Distinct from the missing-map-connector junk (that's a separate
-      item). Investigate writers that could emit ≥12 into the back buffer:
-      `render_window`/`row_buf` edge handling, `render_sprites` with garbage
-      OAM/tile/attr in uninitialized slots, or any direct back-buffer write.
-      Belt-and-suspenders fix: also initialize DAC entries 12–255 to a safe
-      color (or black) in `video_init` so out-of-range values don't show as
-      garish red and are easier to spot/triage. (Reported 2026-06-15.)
+- [x] **Red strip / out-of-range pixel values** — resolved by the native-width
+      surface renderer rewrite (`render_bg` now fills all 320×200 back-buffer
+      pixels from `bg_surface` values 0–3 before `render_sprites` overwrites
+      sprite pixels with 4–11). No renderer path can write ≥12; confirmed absent
+      in `DEBUG_TRANSITION` and `DEBUG_BASELINE` FRAME.BIN dumps (2026-06-19).
+      If it resurfaces, investigate `render_window` row_buf edge handling or
+      uninitialized OAM ghost entries.
 - [x] **Map connections: un-stub the LoadTileBlockMap N/S/W/E connection
       strips** (2026-06-15). `LoadNorthSouthConnectionsTileMap` /
       `LoadEastWestConnectionsTileMap` are translated and wired in; the N/S/W/E
@@ -185,16 +202,16 @@ Prioritized task list. Check off items as they complete; add new items with phas
       in SetupPalletTown). Dump-verified: the wOverworldMap N border = Route 1's
       bottom 3 rows, S border = Route 21's top 3 rows. So the border now shows
       real adjacent terrain instead of the background-block wall.
-- [ ] **Map transition across a connection — faithful LoadMapHeader** (next up).
-      Decision (2026-06-15): build the real ROM map-header infrastructure (not a
-      hardcoded dispatcher) so Pallet Town ↔ Route 1 ↔ Route 21 become walkable.
-      **Full plan + format spec + phased steps + the pointer-relocation challenge
-      are in docs/loadmapheader_handoff.md** — start there. Involves: embed +
-      relocate map headers/object data + a MapHeaderPointers table; translate
-      LoadMapHeader / LoadTilesetHeader / CopyMapConnectionHeader / CheckMapConnections;
-      wire the post-step connection check into OverworldLoop; retire the
-      SetupPalletTown scaffold. Renderer needs no changes (surface mirror is
-      decoupled). DrawTileBlock clamp stays (E/W + past-map-end).
+- [x] **Map transition across a connection — faithful LoadMapHeader** (2026-06-19).
+      `LoadMapHeader` / `LoadTilesetHeader` / `CopyMapConnectionHeader` /
+      `CheckMapConnections` all translated and wired. `MapHeaderPointers` table
+      and connection structs generated by `tools/gen_map_headers.py` →
+      `assets/map_headers.inc`. `SetupPalletTown` scaffold retired; map loads via
+      `LoadMapData` → `LoadMapHeader` on enter and `.mapTransition` in
+      `AdvancePlayerSprite` on connection crossing. NORTH/WEST view-pointer
+      formulas corrected (−4→−5, −6→−7) for YBC=1/XBC=1 skip. Verified via
+      `DEBUG_TRANSITION` FRAME.BIN: player lands on Route 1 path at correct
+      screen position (2026-06-19).
 - [ ] Translate NPC movement / collision
 - [ ] Translate random encounter trigger
 - [ ] Translate battle engine (UI rendering pass first)

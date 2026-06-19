@@ -23,13 +23,12 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
     if direction == "NORTH":
         _blk = conn_width * (conn_height - BORDER) + _src
         _map = _tgt
-        # Subtract one block row vs pret: pret carries accumulated H_SCY into the
-        # new map, so its _win was designed for H_SCY≠0.  Our port resets H_SCY=0
-        # and calls CopyMapViewToVRAM, placing the player (OAM Y=96→screen Y=80,
-        # tile row 10) at wSurroundingTiles block row 3 from view_start (Y_BC=1
-        # adds 2 tile rows → tile 12 → block 3).  So view_start = player_wOW_row
-        # − 3, which is one stride less than pret's formula.
-        view_start_row = conn_height + BORDER - 4
+        # NORTH always enters with wYBlockCoord=1 (wYCoord=conn_height*2-1 is odd),
+        # so LoadCurrentMapView skips 2 tile rows from wSurroundingTiles.  Player
+        # must land at view block row 4 (wSurroundingTiles tile 16 → with YBC=1
+        # skip 2 → wTileMap row 16; feet at tile 19 → wTileMap row 17 = PLAYER_STANDING_ROW).
+        # player_wOW_row = BORDER + conn_height - 1; view_start = player_wOW_row - 4.
+        view_start_row = conn_height + BORDER - 5
         view_start_col = BORDER - 6
         _win = view_start_row * stride + view_start_col
         _y = conn_height * 2 - 1
@@ -52,7 +51,11 @@ def get_connection(direction, conn_map_id, offset, cur_width, cur_height, conn_w
         _blk = conn_width * _src + conn_width - BORDER
         _map = (cur_width + 2 * BORDER) * _tgt
         view_start_row = BORDER - 4
-        view_start_col = conn_width + BORDER - 6
+        # WEST always enters with wXBlockCoord=1 (wXCoord=conn_width*2-1 is odd),
+        # so LoadCurrentMapView skips 2 tile cols.  Player must land at view block
+        # col 6 (wSurroundingTiles col 24+2=26 → skip 2 → wTileMap col 24 = PLAYER_STANDING_COL).
+        # player_wOW_col = BORDER + conn_width - 1; view_start_col = player_wOW_col - 6.
+        view_start_col = conn_width + BORDER - 7
         _win = view_start_row * stride + view_start_col
         _y = offset * -2
         _x = conn_width * 2 - 1

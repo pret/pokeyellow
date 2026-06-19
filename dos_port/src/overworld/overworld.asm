@@ -83,9 +83,10 @@ PALLET_TOWN_HEIGHT          equ 9
 PALLET_TOWN_BORDER_BLOCK    equ 0x0B   ; border block from PalletTown_Object
 TILESET_BANK_FLAT           equ 0x01   ; ignored in flat model (TODO-HW: ROM banking)
 
-; wCurrentTileBlockMapViewPointer for Pallet Town centered on player at (8,8) tiles:
-;   wOverworldMap + (MAP_BORDER - 2) * stride + (MAP_BORDER - 2)
+; wCurrentTileBlockMapViewPointer for Pallet Town: view top-left at block (6, 4) so
+; player block (10, 10) sits at view offset (4, 6) → wSurroundingTiles (16, 24).
 ;   stride = PALLET_TOWN_WIDTH + 2*MAP_BORDER = 10 + 12 = 22
+;   = W_OVERWORLD_MAP + MAP_BORDER * 22 + (MAP_BORDER - 2) = W_OVERWORLD_MAP + 136
 PALLET_TOWN_VIEW_PTR        equ W_OVERWORLD_MAP + (MAP_BORDER) * (PALLET_TOWN_WIDTH + MAP_BORDER * 2) + (MAP_BORDER - 2)
 
 ; Number of connections in the Block/Connect strips (0xFF = none — disables strip loading)
@@ -265,6 +266,12 @@ OverworldLoop:
     mov [ebp + W_PLAYER_MOVING_DIRECTION], dl
     mov [ebp + W_SPRITE_PLAYER_FACING_DIR], dh
 
+    ; TODO: rapid direction changes can desync facing from collision.  UpdateSprites
+    ; (called every frame) may flip W_SPRITE_PLAYER_FACING_DIR mid-step via the step
+    ; vector, so the first collision check after a direction tap fires against the NEW
+    ; facing tile rather than the tile in the direction of completed travel.  The GB
+    ; serializes this via its frame-locked joypad latch; we need to latch the checked
+    ; direction for the duration of the step.  Low priority — defer to after Phase 2.
     call CollisionCheckOnLand                 ; CF = 1 → blocked (face that way, don't move)
     jc OverworldLoop
 
@@ -1115,23 +1122,32 @@ CollisionCheckOnLand:
 ; wTileInFrontOfPlayer and returns it in CL.
 ; ---------------------------------------------------------------------------
 GetTileInFrontOfPlayer:
+    ; Pret ref: engine/overworld/player_state.asm:_GetTileAndCoordsInFrontOfPlayer
+    ;   lda_coord c, r  = W_TILEMAP + r*20 + c  (pret 20-wide tilemap)
+    ; DOS tilemap is 40 wide; player standing tile = PLAYER_STANDING_ROW=17,
+    ; PLAYER_STANDING_COL=24. Fronts are ±2 rows/cols from the standing tile.
+    ;
+    ;   Down  (row+2, col+0) = (19, 24)
+    ;   Up    (row-2, col+0) = (15, 24)
+    ;   Left  (row+0, col-2) = (17, 22)
+    ;   Right (row+0, col+2) = (17, 26)
     mov al, [ebp + W_SPRITE_PLAYER_FACING_DIR]
     cmp al, SPRITE_FACING_DOWN
     jne .notDown
-    mov esi, W_TILEMAP + 17 * SCREEN_TILES_W + 24   ; lda_coord 24, 17
+    mov esi, W_TILEMAP + (PLAYER_STANDING_ROW + 2) * SCREEN_TILES_W + PLAYER_STANDING_COL
     jmp .read
 .notDown:
     cmp al, SPRITE_FACING_UP
     jne .notUp
-    mov esi, W_TILEMAP + 15 * SCREEN_TILES_W + 24   ; lda_coord 24, 15
+    mov esi, W_TILEMAP + (PLAYER_STANDING_ROW - 2) * SCREEN_TILES_W + PLAYER_STANDING_COL
     jmp .read
 .notUp:
     cmp al, SPRITE_FACING_LEFT
     jne .notLeft
-    mov esi, W_TILEMAP + 16 * SCREEN_TILES_W + 23   ; lda_coord 23, 16
+    mov esi, W_TILEMAP + PLAYER_STANDING_ROW * SCREEN_TILES_W + (PLAYER_STANDING_COL - 2)
     jmp .read
 .notLeft:
-    mov esi, W_TILEMAP + 16 * SCREEN_TILES_W + 25   ; lda_coord 25, 16 (facing right)
+    mov esi, W_TILEMAP + PLAYER_STANDING_ROW * SCREEN_TILES_W + (PLAYER_STANDING_COL + 2)
 .read:
     movzx ecx, byte [ebp + esi]
     mov [ebp + W_TILE_IN_FRONT_OF_PLAYER], cl
@@ -1142,12 +1158,41 @@ GetTileInFrontOfPlayer:
 ; Pret ref: engine/gfx/sprite_oam.asm:_IsTilePassable
 ;
 ; In:  CL = tile ID. Scans the $FF-terminated passable-tile list pointed to by
-;      wTilesetCollisionPtr.
+;      wTilesetCollisionPtr (GB pointer to list in ROM window at OW_COLL_GBADDR).
 ; Out: CF = 0 if CL is in the list (passable), CF = 1 otherwise.
 ; Clobbers AL, ESI.
+;
+; SM83 original:
+;   ld hl, wTilesetCollisionPtr  ; load the pointer-to-pointer
+;   ld a, [hli]
+;   ld h, [hl]
+;   ld l, a                       ; HL = *wTilesetCollisionPtr (the actual list address)
+;   .loop:
+;     ld a, [hli]
+;     cp $ff
+;     jr z, .tileNotPassable
+;     cp c                         ; c = tile to test
+;     jr nz, .loop
+;     xor a                        ; ZF=1 CF=0 → passable
+;     ret
+;   .tileNotPassable:
+;     scf                          ; CF=1 → not passable
+;     ret
 ; ---------------------------------------------------------------------------
 IsTilePassable:
-    clc
+    ; ESI = *wTilesetCollisionPtr (the flat GB address of the passable-tile list)
+    movzx esi, word [ebp + W_TILESET_COLLISION_PTR]
+.loop:
+    mov al, byte [ebp + esi]
+    inc esi
+    cmp al, 0xFF
+    je  .tileNotPassable            ; hit terminator → blocked
+    cmp al, cl
+    jne .loop                       ; not this tile → keep scanning
+    clc                             ; found in list → passable
+    ret
+.tileNotPassable:
+    stc                             ; not found → blocked
     ret
 
 ; ---------------------------------------------------------------------------

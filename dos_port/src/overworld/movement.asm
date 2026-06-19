@@ -302,8 +302,8 @@ UpdatePlayerSprite:
     jmp .disable
 
 .checkTextBox:
-    ; lower-left BG tile the sprite stands on (coord 24,17); >= $60 → text box
-    mov al, [ebp + W_TILEMAP + 17 * SCREEN_TILES_W + 24]
+    ; lower-left BG tile the sprite stands on; >= $60 → text box
+    mov al, [ebp + W_TILEMAP + PLAYER_STANDING_ROW * SCREEN_TILES_W + PLAYER_STANDING_COL]
     mov [ebp + H_TILE_PLAYER_STANDING_ON], al
     cmp al, MAP_TILESET_SIZE
     jb .lowerLeftIsMapTile
