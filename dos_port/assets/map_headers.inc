@@ -391,11 +391,11 @@ map_header_ROUTE_1:
     db 0x0C ; connections
     ; NORTH connection to VIRIDIAN_CITY
     db 0x01 ; map id
-    dw 0x10F0 ; strip src
-    dw 0xE80B ; strip dest
-    db 11 ; strip length
+    dw 0x10EF ; strip src
+    dw 0xE800 ; strip dest
+    db 21 ; strip length
     db 20 ; connected map width
-    db 35, -10 ; Y, X align
+    db 35, 10 ; Y, X align
     dw 0xEA60 ; view ptr
     ; SOUTH connection to PALLET_TOWN
     db 0x00 ; map id

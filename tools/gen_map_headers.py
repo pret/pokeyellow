@@ -184,7 +184,7 @@ def main():
                            ("SOUTH", "ROUTE_6",        5),
                            ("WEST",  "ROUTE_7",        4),
                            ("EAST",  "ROUTE_8",        4)],
-        "ROUTE_1":        [("NORTH", "VIRIDIAN_CITY",  5),
+        "ROUTE_1":        [("NORTH", "VIRIDIAN_CITY", -5),
                            ("SOUTH", "PALLET_TOWN",    0)],
         "ROUTE_2":        [("NORTH", "PEWTER_CITY",   -5),
                            ("SOUTH", "VIRIDIAN_CITY", -5)],
