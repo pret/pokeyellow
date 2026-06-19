@@ -9,11 +9,11 @@ Route25_Script:
 	ret
 
 Route25ToggleBillsScript:
-	ld hl, wd492
-	res 2, [hl]
-	res 3, [hl]
-	res 4, [hl]
-	res 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	res BIT_PIKACHU_MAP_2, [hl]
+	res BIT_PIKACHU_MAP_3, [hl]
+	res BIT_PIKACHU_MAP_4, [hl]
+	res BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	xor a
 	ld [wBillsHouseCurScript], a
 	ld hl, wCurrentMapScriptFlags
