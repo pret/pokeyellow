@@ -54,6 +54,14 @@ ifdef DEBUG_WALK_STEPS
 NASMFLAGS += -D DEBUG_WALK_STEPS=$(DEBUG_WALK_STEPS)
 endif
 
+# Debug noclip: press W in-game to toggle walk-through-walls (disables collision).
+# Useful for testing warps, map edges, and OOB behaviour without normal movement.
+# Does NOT imply SKIP_TITLE — works at any point in the game.
+# make SKIP_TITLE=1 DEBUG_NOCLIP=1
+ifdef DEBUG_NOCLIP
+NASMFLAGS += -D DEBUG_NOCLIP
+endif
+
 LDFLAGS := -T link.ld
 
 TARGET  := PKMN.EXE
@@ -64,9 +72,9 @@ BOOT_SRCS := \
     boot/video.asm \
     boot/timing.asm
 
-UTIL_SRCS := \
-    src/util/fill_memory.asm \
-    src/util/copy_data.asm
+HOME_SRCS := \
+    src/home/fill_memory.asm \
+    src/home/copy_data.asm
 
 HAL_SRCS := \
     src/ppu/ppu.asm \
@@ -83,36 +91,27 @@ GAME_SRCS := \
     src/text/text.asm \
     src/movie/title.asm \
     src/overworld/overworld.asm \
-    src/overworld/movement.asm \
-    src/engine/battle/get_trainer_name.asm \
-    src/engine/battle/misc.asm \
-    src/engine/battle/move_effects/conversion.asm \
-    src/engine/battle/move_effects/drain_hp.asm \
-    src/engine/battle/move_effects/focus_energy.asm \
-    src/engine/battle/move_effects/haze.asm \
-    src/engine/battle/move_effects/heal.asm \
-    src/engine/battle/move_effects/leech_seed.asm \
-    src/engine/battle/move_effects/mist.asm \
-    src/engine/battle/move_effects/one_hit_ko.asm \
-    src/engine/battle/move_effects/paralyze.asm \
-    src/engine/battle/move_effects/pay_day.asm
+    src/overworld/movement.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
-# Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.
+# Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
 ifdef DEBUG_DUMP
 NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D SKIP_TITLE
 endif
 ifdef DEBUG_TRANSITION
 NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D SKIP_TITLE
 endif
 ifdef DEBUG_WALK_NORTH
 NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D SKIP_TITLE
 endif
 ifdef NEED_DEBUG_DUMP
 GAME_SRCS += src/debug/debug_dump.asm
 endif
 
-ALL_SRCS := $(BOOT_SRCS) $(UTIL_SRCS) $(HAL_SRCS) $(GAME_SRCS)
+ALL_SRCS := $(BOOT_SRCS) $(HOME_SRCS) $(HAL_SRCS) $(GAME_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
 
 # ---------------------------------------------------------------------------
@@ -122,18 +121,25 @@ ALL_OBJS := $(ALL_SRCS:.asm=.o)
 .PHONY: all clean check assets
 .DEFAULT_GOAL := all
 
-# Generate overworld asset includes from binary sources.
-# Requires overworld.2bpp, which is built by 'make' in the repo root.
+# Generate all tileset gfx/blocks/coll + map blk inc files.
+# Requires gfx/tilesets/*.2bpp, built by 'make' in the repo root.
 assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc:
-	python3 ../tools/gen_overworld_assets.py
+	python3 ../tools/gen_all_assets.py
 
-# Overworld object depends on generated assets
+# Generate map headers blob, dispatch tables, and extra_includes.inc.
+assets/map_headers.inc assets/extra_includes.inc:
+	python3 ../tools/gen_map_headers.py
+
+# Overworld object depends on all generated assets
 src/overworld/overworld.o: \
     assets/overworld_gfx.inc \
     assets/overworld_blocks.inc \
-    assets/pallet_town_blk.inc
+    assets/pallet_town_blk.inc \
+    assets/map_headers.inc \
+    assets/extra_includes.inc
 
-assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc
+assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
+        assets/map_headers.inc assets/extra_includes.inc
 
 all: $(TARGET)
 

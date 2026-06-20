@@ -10,7 +10,7 @@ files — nothing more.
 ```
 Dispatch_Manager (gemini-3.1-pro, effort:high)   ← top-level coordinator
     ├── Code_Worker_1..5 (gemini-3.5-flash, effort:high)
-    ├── Integration_Agent (gemini-3.1-pro, effort:high)
+    ├── Integration_Agent (gemini-3.5-flash, effort:high)
     └── Docs_Commit_Agent (gemini-3.1-pro, effort:high)
 ```
 
@@ -113,7 +113,7 @@ Paste this rule into every worker ticket so it is impossible to miss.
 ---
 
 ## Role: Integration_Agent
-- **Model**: `gemini-3.1-pro`
+- **Model**: `gemini-3.5-flash`
 - **Settings**: `effort: high`
 - **Objective**: Place translated functions into the correct files so the build
   can see them. This means adding `%include` lines to the appropriate aggregator
@@ -136,6 +136,7 @@ Paste this rule into every worker ticket so it is impossible to miss.
   may be placed.
 - Do not delete scratch files; the Dispatch Manager owns them. They disappear
   naturally since the whole `dos_port/scratch/` directory is gitignored.
+- DO NOT WRITE PYTHON SCRIPTS TO EDIT FILES!!! YOU HAVE TOOLS FOR THIS!!!
 
 ### Integration checklist (per function)
 1. Run `dos_port/tools/work_queue pending-placement` to see what's ready.
@@ -157,7 +158,7 @@ Paste this rule into every worker ticket so it is impossible to miss.
 ---
 
 ## Role: Docs_Commit_Agent
-- **Model**: `gemini-3.1-pro`
+- **Model**: `gemini-3.5-flash`
 - **Settings**: `effort: high`
 - **Objective**: Maintain documentation and execute git commits.
   - Append a structured entry to `docs/translation_log.md` for every newly-placed
@@ -316,6 +317,7 @@ rendering, window layer, overworld map loading, battle animations, movie sequenc
 10. **Hardware escalation.** If a `simple` ticket hits a `$FF__` register or
     calls a graphics/audio routine, call `work_queue recategorize --category complex`
     then `work_queue fail`, and leave it for Claude.
+11. **Strict Command Invocation.** Whenever you execute a custom script, you MUST use the exact bare path (e.g. `dos_port/tools/work_queue`). NEVER prefix it with `./` or `/bin/bash` or `sh`. Do not vary this permutation under any circumstances.
 
 ---
 
@@ -332,3 +334,8 @@ dos_port/tools/work_queue list --category simple --status needs_translation --li
 dos_port/tools/work_queue list --category complex --status needs_translation --limit 20
 dos_port/tools/work_queue status
 ```
+
+---
+
+## Agent Invocation Workaround
+**IMPORTANT**: Due to issues with dynamic subagent registration, do not use `define_subagent` or attempt to invoke agents by their proper names (e.g. `Integration_Agent`). Instead, when you invoke any of the swarm agents (`Code_Worker`, `Integration_Agent`, `Docs_Commit_Agent`), you MUST use `TypeName: self` in your `invoke_subagent` call and supply the entire system prompt and ticket instructions directly in the `Prompt` field. This ensures the dispatch actually works.

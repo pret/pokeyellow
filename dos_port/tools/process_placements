@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+import os
+import json
+import subprocess
+
+def process():
+    result = subprocess.run(['./dos_port/tools/work_queue', 'pending-placement'], capture_output=True, text=True)
+    pending = json.loads(result.stdout).get('pending', [])
+
+    new_aggregators = set()
+
+    for item in pending:
+        source_file = item['source_file']
+        scratch_file = item['scratch_file']
+        name = item['name']
+        
+        aggregator_path = os.path.join('dos_port', 'src', source_file)
+        base_dir = os.path.splitext(aggregator_path)[0]
+        os.makedirs(base_dir, exist_ok=True)
+        target_path = os.path.join(base_dir, f"{name}.asm")
+        
+        with open(scratch_file, 'r') as f:
+            content = f.read()
+            
+        content = content.replace(
+            '; target      : (Integration Agent fills this in)',
+            f'; target      : {target_path}'
+        ).replace(
+            '; aggregator  : (Integration Agent fills this in)',
+            f'; aggregator  : {aggregator_path}'
+        )
+        
+        with open(target_path, 'w') as f:
+            f.write(content)
+            
+        include_line = f'%include "{target_path}"\n'
+        aggregator_exists = os.path.exists(aggregator_path)
+        
+        if aggregator_exists:
+            with open(aggregator_path, 'r') as f:
+                agg_content = f.read()
+        else:
+            agg_content = ''
+            new_aggregators.add(aggregator_path)
+            
+        if include_line not in agg_content:
+            with open(aggregator_path, 'a') as f:
+                f.write(include_line)
+
+        # verify nasm
+        nasm_res = subprocess.run(['nasm', '-f', 'coff', '-I', 'dos_port/include/', '-I', 'dos_port/', '-o', '/dev/null', aggregator_path])
+        if nasm_res.returncode != 0:
+            print(f"FAILED NASM for {aggregator_path}")
+            return
+            
+        place_res = subprocess.run(['./dos_port/tools/work_queue', 'place', '--id', str(item['id']), '--output', target_path])
+        print(f"Placed {item['id']}: {target_path}")
+
+    if new_aggregators:
+        print("NEW_AGGREGATORS_START")
+        for agg in new_aggregators:
+            print(agg)
+        print("NEW_AGGREGATORS_END")
+
+if __name__ == '__main__':
+    process()

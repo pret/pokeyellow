@@ -48,6 +48,9 @@ SC_ENTER        equ 0x1C
 SC_RSHIFT       equ 0x36
 SC_TAB          equ 0x0F
 SC_ESC          equ 0x01
+%ifdef DEBUG_NOCLIP
+SC_W            equ 0x11    ; noclip toggle key
+%endif
 
 ; GB joypad bit positions (match constants/hardware.inc rJOYP semantics)
 PAD_RIGHT_BIT   equ 0
@@ -71,6 +74,9 @@ global joypad_update
 global pad_dpad             ; byte: D-pad held state (1 = pressed)
 global pad_buttons          ; byte: button held state (1 = pressed)
 global pad_quit             ; byte: nonzero once Esc is pressed
+%ifdef DEBUG_NOCLIP
+global pad_noclip           ; byte: 1 = noclip active (W toggles)
+%endif
 
 ; ---------------------------------------------------------------------------
 ; BSS
@@ -83,6 +89,9 @@ pad_dpad:       resb 1
 pad_buttons:    resb 1
 pad_quit:       resb 1
 ext_pending:    resb 1      ; set when an E0 prefix byte was just received
+%ifdef DEBUG_NOCLIP
+pad_noclip:     resb 1      ; toggled by W key; 1 = collision disabled
+%endif
 
 ; ---------------------------------------------------------------------------
 ; Data — reachable from the ISR via CS override (CS base == DS base, DJGPP)
@@ -224,8 +233,17 @@ kbd_isr:
     mov al, 1 << PAD_SELECT_BIT
     jmp .apply_btn
 
-    ; --- Host quit ---
+    ; --- Host quit (and noclip toggle in debug builds) ---
 .chk_esc:
+%ifdef DEBUG_NOCLIP
+    cmp bl, SC_W
+    jne .not_noclip_key
+    test bh, bh
+    jnz .eoi                    ; toggle on key-press only, ignore release
+    xor byte [pad_noclip], 1
+    jmp .eoi
+.not_noclip_key:
+%endif
     cmp bl, SC_ESC
     jne .eoi
     test bh, bh

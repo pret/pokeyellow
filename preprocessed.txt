@@ -1,0 +1,1252 @@
+%line 16+1 dos_port/include/gb_memmap.inc
+GB_VRAM0 equ 0x8000
+
+
+
+
+
+GB_VCHARS0 equ 0x8000
+GB_VFONT equ 0x8800
+GB_VCHARS2 equ 0x9000
+
+
+
+
+GB_TILEMAP0 equ 0x9800
+
+
+
+GB_TILEMAP1 equ 0x9C00
+
+
+
+GB_WRAM0 equ 0xC000
+W_NUM_BAG_ITEMS equ 0xD31C
+W_NUM_BOX_ITEMS equ 0xD539
+W_CURRENT_MENU_ITEM equ 0xCC26
+W_MAX_MENU_ITEM equ 0xCC28
+W_BAG_SAVED_MENU_ITEM equ 0xCC2C
+W_LIST_SCROLL_OFFSET equ 0xCC36
+W_CUR_ITEM equ 0xCF90
+W_WHICH_POKEMON equ 0xCF91
+W_ITEM_QUANTITY equ 0xCF95
+W_MAX_ITEM_QUANTITY equ 0xCF96
+W_LOADED_MON_SPECIES equ 0xCF97
+W_MON_DATA_LOCATION equ 0xCC49
+W_CUR_PARTY_SPECIES equ 0xCF90
+W_CUR_ENEMY_LEVEL equ 0xD126
+W_TEXT_BOX_ID equ 0xD124
+W_PARTY_MON1_MOVES equ 0xD172
+W_PARTY_MON4_MOVES equ 0xD1F6
+W_POKEDEX_OWNED equ 0xD2F6
+W_POKEDEX_SEEN equ 0xD309
+W_CUR_MAP equ 0xD35D
+W_Y_COORD equ 0xD360
+W_X_COORD equ 0xD361
+W_PLAYER_MONEY equ 0xD346
+W_OBTAINED_BADGES equ 0xD355
+W_OBTAINED_HIDDEN_ITEMS_FLAGS equ 0xD6EF
+W_TOWN_VISITED_FLAG equ 0xD70A
+W_RIVAL_STARTER equ 0xD714
+W_EVENT_FLAGS equ 0xD746
+W_SURFING_MINIGAME_PIKACHU_HP equ 0xC5D6
+W_SURFING_MINIGAME_RADNESS_MTR equ 0xC5D9
+W_SURFING_MINIGAME_RADNESS_SCR equ 0xC5DA
+W_SURFING_MINIGAME_TOTAL_SCORE equ 0xC5DC
+W_SURFING_MINIGAME_TRICK_FLAGS equ 0xC62F
+W_SLOT_MACHINE_SEVEN_AND_BAR_MODE_CHANCE equ 0xCC5B
+W_SLOT_MACHINE_WHEEL1_OFFSET equ 0xCD3E
+W_SLOT_MACHINE_WHEEL2_OFFSET equ 0xCD3F
+W_SLOT_MACHINE_WHEEL3_OFFSET equ 0xCD40
+W_SLOT_MACHINE_WHEEL1_BOTTOM_TILE equ 0xCD41
+W_SLOT_MACHINE_WHEEL1_MIDDLE_TILE equ 0xCD42
+W_SLOT_MACHINE_WHEEL1_TOP_TILE equ 0xCD43
+W_SLOT_MACHINE_WHEEL2_BOTTOM_TILE equ 0xCD44
+W_SLOT_MACHINE_WHEEL2_MIDDLE_TILE equ 0xCD45
+W_SLOT_MACHINE_WHEEL2_TOP_TILE equ 0xCD46
+W_SLOT_MACHINE_WHEEL3_BOTTOM_TILE equ 0xCD47
+W_SLOT_MACHINE_WHEEL3_MIDDLE_TILE equ 0xCD48
+W_SLOT_MACHINE_WHEEL3_TOP_TILE equ 0xCD49
+W_SLOT_MACHINE_FLAGS equ 0xCD4C
+W_SLOT_MACHINE_WHEEL1_SLIP_COUNTER equ 0xCD4D
+W_SLOT_MACHINE_WHEEL2_SLIP_COUNTER equ 0xCD4E
+W_SLOT_MACHINE_ALLOW_MATCHES_COUNTER equ 0xD095
+W_LOADED_MON_EXP equ 0xCFA5
+W_CUR_SPECIES equ 0xD0B4
+W_MON_H_GROWTH_RATE equ 0xD0CA
+W_REMOVE_MON_FROM_BOX equ 0xCF94
+W_MOVE_MON_TYPE equ 0xCF94
+W_PARTY_COUNT equ 0xD162
+W_PARTY_MONS equ 0xD16A
+W_PARTY_MON_OT equ 0xD272
+W_PARTY_MON_NICKS equ 0xD2B4
+W_PARTY_MON_NICKS_END equ 0xD2F6
+W_BOX_COUNT equ 0xDA7F
+W_BOX_MONS equ 0xDA95
+W_BOX_MON1_MOVES equ 0xDA9D
+W_BOX_MON_OT equ 0xDD29
+W_BOX_MON_NICKS equ 0xDE05
+W_BOX_MON_NICKS_END equ 0xDEE1
+W_SAVED_LIST_SCROLL_OFFSET equ 0xD07D
+W_LIST_COUNT equ 0xD129
+
+
+
+
+
+W_SPRITE_STATE_DATA_1 equ 0xC100
+W_SPRITE_STATE_DATA_2 equ 0xC200
+SPRITESTATEDATA_STRUCT_SIZE equ 0x10
+NUM_SPRITE_SLOTS equ 16
+
+
+
+W_SPRITE_PLAYER_PICTURE_ID equ 0xC100
+W_SPRITE_PLAYER_IMAGE_INDEX equ 0xC102
+W_SPRITE_PLAYER_Y_STEP_VECTOR equ 0xC103
+W_SPRITE_PLAYER_Y_PIXELS equ 0xC104
+W_SPRITE_PLAYER_X_STEP_VECTOR equ 0xC105
+W_SPRITE_PLAYER_X_PIXELS equ 0xC106
+W_SPRITE_PLAYER_INTRA_ANIM equ 0xC107
+W_SPRITE_PLAYER_ANIM_FRAME equ 0xC108
+W_SPRITE_PLAYER_FACING_DIR equ 0xC109
+
+W_SPRITE_PLAYER_WALK_ANIM_COUNTER equ 0xC200
+W_SPRITE_PLAYER_GRASS_PRIORITY equ 0xC207
+W_SPRITE_PLAYER_IMAGE_BASE_OFFSET equ 0xC20E
+
+
+SPRITESTATEDATA1_PICTUREID equ 0x0
+SPRITESTATEDATA1_MOVEMENTSTATUS equ 0x1
+SPRITESTATEDATA1_IMAGEINDEX equ 0x2
+SPRITESTATEDATA1_YPIXELS equ 0x4
+SPRITESTATEDATA1_XPIXELS equ 0x6
+SPRITESTATEDATA1_INTRAANIMFRAMECOUNTER equ 0x7
+SPRITESTATEDATA1_ANIMFRAMECOUNTER equ 0x8
+SPRITESTATEDATA1_FACINGDIRECTION equ 0x9
+SPRITESTATEDATA1_YSTEPVECTOR equ 0x3
+SPRITESTATEDATA1_XSTEPVECTOR equ 0x5
+SPRITESTATEDATA1_YADJUSTED equ 0xA
+SPRITESTATEDATA1_XADJUSTED equ 0xB
+SPRITESTATEDATA1_COLLISIONDATA equ 0xC
+SPRITESTATEDATA1_COLLISIONBITMAP_HI equ 0xE
+SPRITESTATEDATA1_COLLISIONBITMAP_LO equ 0xF
+SPRITESTATEDATA2_YDISPLACEMENT equ 0x2
+SPRITESTATEDATA2_XDISPLACEMENT equ 0x3
+SPRITESTATEDATA2_MAPY equ 0x4
+SPRITESTATEDATA2_MAPX equ 0x5
+SPRITESTATEDATA2_MOVEMENTBYTE1 equ 0x6
+SPRITESTATEDATA2_GRASSPRIORITY equ 0x7
+SPRITESTATEDATA2_IMAGEBASEOFFSET equ 0xE
+
+
+WALK equ 0xFE
+STAY equ 0xFF
+
+
+
+W_SHADOW_OAM equ 0xC300
+W_SHADOW_OAM_END equ 0xC3A0
+W_SHADOW_OAM_SIZE equ 0xA0
+W_TILEMAP equ 0xC3A0
+W_TILEMAP_SIZE equ 1000
+
+
+
+
+GB_WRAM1 equ 0xD000
+
+
+
+
+
+
+GB_ECHO equ 0xE000
+
+
+
+GB_OAM equ 0xFE00
+GB_OAM_SIZE equ 160
+
+
+
+
+GB_IO equ 0xFF00
+
+
+
+
+hf_shadow equ 0xFF7E
+
+
+
+GB_HRAM equ 0xFF80
+GB_HRAM_SIZE equ 127
+
+
+
+H_SOFT_RESET equ 0xFF8A
+
+H_MAP_STRIDE equ 0xFF8B
+H_PREVIOUS_TILESET equ 0xFF8B
+
+H_MAP_WIDTH equ 0xFF8C
+H_SERIAL_CONN_STATUS equ 0xFFAA
+H_SCX equ 0xFFAE
+H_SCY equ 0xFFAF
+H_WY equ 0xFFB0
+H_LOADED_ROM_BANK equ 0xFFB8
+H_AUTO_BG_TRANSFER_EN equ 0xFFBA
+H_AUTO_BG_TRANSFER_DEST equ 0xFFBC
+H_REDRAW_MAP_VIEW_ROW_OFFSET equ 0xFFBE
+H_FRAME_COUNTER equ 0xFFD5
+H_VBLANK_OCCURRED equ 0xFFD6
+H_TILE_ANIMATIONS equ 0xFFD7
+H_REDRAW_ROW_COL_MODE equ 0xFFD0
+H_REDRAW_ROW_COL_DEST equ 0xFFD1
+H_UI_LAYOUT_FLAGS equ 0xFFFA
+
+BIT_SINGLE_SPACED_LINES equ 2
+
+
+H_JOY_PRESSED equ 0xFFB3
+H_JOY_HELD equ 0xFFB4
+
+
+H_SPRITE_OFFSET2 equ 0xFF8F
+H_OAM_BUFFER_OFFSET equ 0xFF90
+H_SPRITE_SCREEN_X equ 0xFF91
+H_SPRITE_SCREEN_Y equ 0xFF92
+H_TILE_PLAYER_STANDING_ON equ 0xFF93
+H_SPRITE_PRIORITY equ 0xFF94
+H_PRODUCT equ 0xFF95
+H_ITEM_PRICE equ 0xFF8B
+H_MONEY equ 0xFF9F
+H_EXPERIENCE equ 0xFF96
+H_MULTIPLICAND equ 0xFF96
+H_MULTIPLIER equ 0xFF99
+H_DIVIDEND equ 0xFF95
+H_DIVISOR equ 0xFF99
+H_QUOTIENT equ 0xFF95
+H_REMAINDER equ 0xFF99
+H_DIVIDE_BUFFER equ 0xFF9A
+H_MONEY equ 0xFF9F
+H_DIVIDE_BCD_DIVISOR equ 0xFFA2
+H_DIVIDE_BCD_QUOTIENT equ 0xFFA2
+H_DIVIDE_BCD_BUFFER equ 0xFFA5
+H_RANDOM_ADD equ 0xFFD3
+H_RANDOM_SUB equ 0xFFD4
+H_CURRENT_SPRITE_OFFSET equ 0xFFDA
+H_PIKACHU_SPRITE_VRAM_OFFSET equ 0xFFFC
+
+
+
+
+W_NEW_SOUND_ID equ 0xC0EE
+W_AUDIO_ROM_BANK equ 0xC0EF
+W_AUDIO_SAVED_ROM_BANK equ 0xC0F0
+
+
+W_UNUSED_FLAG equ 0xCC5B
+
+
+W_TITLE_SCREEN_SCENE equ 0xCD3D
+W_TITLE_SCREEN_TIMER equ 0xCD3E
+
+
+W_PLAYER_NAME equ 0xD157
+W_RIVAL_NAME equ 0xD349
+
+
+
+
+
+
+
+
+W_TILEMAP_BACKUP equ 0xE000
+W_TILEMAP_BACKUP2 equ 0xF000
+
+
+
+W_SURROUNDING_TILES equ 0xE000
+
+
+W_OVERWORLD_MAP equ 0xE800
+W_OVERWORLD_MAP_SIZE equ 0x800
+
+
+W_FONT_LOADED equ 0xCFC3
+W_WALK_COUNTER equ 0xCFC4
+W_TILE_IN_FRONT_OF_PLAYER equ 0xCFC5
+W_AUDIO_FADE_OUT equ 0xCFC6
+W_UPDATE_SPRITES_ENABLED equ 0xCFCA
+
+
+W_GRASS_TILE equ 0xD534
+W_SAVED_SPRITE_IMAGE_INDEX equ 0xD5CC
+W_MOVEMENT_FLAGS equ 0xD735
+
+
+W_UNUSED_CUR_MAP_TILESET_COPY equ 0xD118
+W_WALK_BIKE_SURF_STATE_COPY equ 0xD119
+
+
+W_CURRENT_MAP_SCRIPT_FLAGS equ 0xD125
+
+
+W_LETTER_PRINTING_DELAY equ 0xD357
+
+
+W_CUR_MAP equ 0xD35D
+W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR equ 0xD35E
+W_Y_COORD equ 0xD360
+W_X_COORD equ 0xD361
+W_Y_BLOCK_COORD equ 0xD362
+W_X_BLOCK_COORD equ 0xD363
+W_D433 equ 0xD433
+W_LAST_MAP equ 0xD364
+
+
+
+
+W_CUR_MAP_HEADER equ 0xD366
+W_CUR_MAP_TILESET equ 0xD366
+W_CUR_MAP_HEIGHT equ 0xD367
+W_CUR_MAP_WIDTH equ 0xD368
+W_CUR_MAP_DATA_PTR equ 0xD369
+W_CUR_MAP_TEXT_PTR equ 0xD36B
+W_CUR_MAP_SCRIPT_PTR equ 0xD36D
+W_CUR_MAP_CONNECTIONS equ 0xD36F
+W_CUR_MAP_HEADER_END equ 0xD370
+W_CUR_MAP_HEADER_SIZE equ W_CUR_MAP_HEADER_END - W_CUR_MAP_HEADER
+
+
+W_NORTH_CONNECTED_MAP equ 0xD370
+W_SOUTH_CONNECTED_MAP equ 0xD37B
+W_WEST_CONNECTED_MAP equ 0xD386
+W_EAST_CONNECTED_MAP equ 0xD391
+
+
+W_SPRITE_SET_ID equ 0xD3A7
+W_OBJECT_DATA_PTR_TEMP equ 0xD3A8
+
+
+W_MAP_BACKGROUND_TILE equ 0xD3AC
+W_NUMBER_OF_WARPS equ 0xD3AD
+W_WARP_ENTRIES equ 0xD3AE
+W_DESTINATION_WARP_ID equ 0xD42E
+
+
+W_NUM_SIGNS equ 0xD4AF
+W_SIGN_COORDS equ 0xD4B0
+W_SIGN_TEXT_IDS equ 0xD4D0
+
+MAX_WARP_EVENTS equ 32
+MAX_BG_EVENTS equ 16
+MAX_OBJECT_EVENTS equ 16
+
+
+
+W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E1
+W_X_OFFSET_SINCE_LAST_SPECIAL_WARP equ 0xD4E2
+
+
+W_CURRENT_MAP_HEIGHT_2 equ 0xD523
+W_CURRENT_MAP_WIDTH_2 equ 0xD524
+
+
+W_MAP_VIEW_VRAM_POINTER equ 0xD525
+W_PLAYER_MOVING_DIRECTION equ 0xD527
+W_PLAYER_DIRECTION equ 0xD529
+
+
+
+
+W_TILESET_BANK equ 0xD52A
+W_TILESET_BLOCKS_PTR equ 0xD52B
+W_TILESET_GFX_PTR equ 0xD52D
+W_TILESET_COLLISION_PTR equ 0xD52F
+W_TILESET_TALKING_OVER_TILES equ 0xD531
+W_TILESET_GRASS_TILE equ 0xD534
+
+
+W_TILESET_HEADER_COPY_SIZE equ 11
+W_TILESET_HEADER_FULL_SIZE equ 12
+
+
+W_WALK_BIKE_SURF_STATE equ 0xD6FF
+
+
+W_STATUS_FLAGS_1 equ 0xD727
+W_STATUS_FLAGS_2 equ 0xD72B
+W_STATUS_FLAGS_3 equ 0xD72C
+W_STATUS_FLAGS_4 equ 0xD72D
+W_STATUS_FLAGS_5 equ 0xD72F
+W_STATUS_FLAGS_6 equ 0xD731
+W_STATUS_FLAGS_7 equ 0xD732
+W_ELITE4_FLAGS equ 0xD733
+
+
+SCREEN_AREA equ SCREEN_TILES_W * SCREEN_TILES_H
+
+
+SCREEN_WIDTH equ SCREEN_TILES_W
+SCREEN_HEIGHT equ SCREEN_TILES_H
+TILEMAP_WIDTH equ TILEMAP_W
+
+
+BLOCK_WIDTH equ 4
+BLOCK_HEIGHT equ 4
+SCREEN_BLOCK_WIDTH equ 12
+SCREEN_BLOCK_HEIGHT equ 9
+SURROUNDING_WIDTH equ SCREEN_BLOCK_WIDTH * BLOCK_WIDTH
+SURROUNDING_HEIGHT equ SCREEN_BLOCK_HEIGHT * BLOCK_HEIGHT
+MAP_BORDER equ 6
+
+
+PLAYER_DIR_RIGHT equ 1
+PLAYER_DIR_LEFT equ 2
+PLAYER_DIR_DOWN equ 4
+PLAYER_DIR_UP equ 8
+
+
+SPRITE_FACING_DOWN equ 0x00
+SPRITE_FACING_UP equ 0x04
+SPRITE_FACING_LEFT equ 0x08
+SPRITE_FACING_RIGHT equ 0x0C
+
+
+PAD_RIGHT equ 1 << 4
+PAD_LEFT equ 1 << 5
+PAD_UP equ 1 << 6
+PAD_DOWN equ 1 << 7
+
+
+REDRAW_COL equ 1
+REDRAW_ROW equ 2
+
+
+LCDCF_OBJ_ON equ 1 << 1
+LCDCF_OBJ_SIZE equ 1 << 2
+
+
+OAM_PRIO equ 1 << 7
+OAM_YFLIP equ 1 << 6
+OAM_XFLIP equ 1 << 5
+OAM_PAL1 equ 1 << 4
+B_OAM_PAL1 equ 4
+
+
+
+BIT_SPRITE_UNDER_GRASS equ 1
+UNDER_GRASS equ 1 << BIT_SPRITE_UNDER_GRASS
+FACING_END equ 1 << 0
+
+OAM_HIGH_PALS equ 1 << 2
+
+
+MAP_TILESET_SIZE equ 0x60
+BIT_FONT_LOADED equ 0
+BIT_SPINNING equ 7
+BIT_LEDGE_OR_FISHING equ 6
+PLAYER_DIR_BIT_RIGHT equ 0
+PLAYER_DIR_BIT_LEFT equ 1
+PLAYER_DIR_BIT_DOWN equ 2
+PLAYER_DIR_BIT_UP equ 3
+
+
+
+
+
+OW_GFX_GBADDR equ 0x4000
+OW_BLOCKS_GBADDR equ 0x4600
+OW_PALLET_BLK_GBADDR equ 0x4E00
+OW_MAP_GBADDR equ OW_PALLET_BLK_GBADDR
+OW_COLL_GBADDR equ 0x4F00
+
+OW_ROUTE1_BLK_GBADDR equ 0x5000
+OW_ROUTE21_BLK_GBADDR equ 0x5200
+
+
+OW_TILESET_HDR_GBADDR equ 0x5400
+OW_MAP_HEADERS_GBADDR equ 0x540C
+
+
+
+
+OW_VIRIDIAN_CITY_BLK_GBADDR equ 0x1000
+OW_PEWTER_CITY_BLK_GBADDR equ 0x1168
+OW_CERULEAN_CITY_BLK_GBADDR equ 0x12D0
+OW_LAVENDER_TOWN_BLK_GBADDR equ 0x1438
+OW_VERMILION_CITY_BLK_GBADDR equ 0x1492
+OW_CELADON_CITY_BLK_GBADDR equ 0x15FA
+OW_FUCHSIA_CITY_BLK_GBADDR equ 0x17BC
+OW_CINNABAR_ISLAND_BLK_GBADDR equ 0x1924
+OW_SAFFRON_CITY_BLK_GBADDR equ 0x197E
+OW_ROUTE_2_BLK_GBADDR equ 0x1AE6
+OW_ROUTE_3_BLK_GBADDR equ 0x1C4E
+OW_ROUTE_4_BLK_GBADDR equ 0x1D89
+OW_ROUTE_5_BLK_GBADDR equ 0x1F1E
+OW_ROUTE_6_BLK_GBADDR equ 0x1FD2
+OW_ROUTE_7_BLK_GBADDR equ 0x2086
+OW_ROUTE_8_BLK_GBADDR equ 0x20E0
+OW_ROUTE_9_BLK_GBADDR equ 0x21EE
+OW_ROUTE_10_BLK_GBADDR equ 0x22FC
+OW_ROUTE_11_BLK_GBADDR equ 0x2464
+OW_ROUTE_12_BLK_GBADDR equ 0x2572
+OW_ROUTE_13_BLK_GBADDR equ 0x278E
+OW_ROUTE_14_BLK_GBADDR equ 0x289C
+OW_ROUTE_15_BLK_GBADDR equ 0x29AA
+OW_ROUTE_16_BLK_GBADDR equ 0x2AB8
+OW_ROUTE_17_BLK_GBADDR equ 0x2B6C
+OW_ROUTE_18_BLK_GBADDR equ 0x2E3C
+OW_ROUTE_19_BLK_GBADDR equ 0x2F1D
+OW_ROUTE_20_BLK_GBADDR equ 0x302B
+OW_ROUTE_22_BLK_GBADDR equ 0x31ED
+OW_ROUTE_24_BLK_GBADDR equ 0x32A1
+OW_ROUTE_25_BLK_GBADDR equ 0x3355
+
+
+
+CONN_STRIP_SRC equ 1
+CONN_STRIP_DEST equ 3
+CONN_STRIP_LENGTH equ 5
+CONN_MAP_WIDTH equ 6
+CONN_Y_ALIGN equ 7
+CONN_X_ALIGN equ 8
+CONN_VIEW_PTR equ 9
+CONN_HEADER_SIZE equ 11
+
+
+CONNECTION_NORTH equ 1 << 3
+CONNECTION_SOUTH equ 1 << 2
+CONNECTION_WEST equ 1 << 1
+CONNECTION_EAST equ 1 << 0
+
+
+MAP_ID_PALLET_TOWN equ 0x00
+MAP_ID_ROUTE_1 equ 0x0C
+MAP_ID_ROUTE_21 equ 0x20
+MAP_NO_CONNECTION equ 0xFF
+
+
+
+
+GB_IE equ 0xFFFF
+
+
+
+
+GB_VRAM1 equ 0x10000
+GB_VRAM1_SIZE equ 0x2000
+
+
+
+
+GB_BACKBUF equ 0x12000
+GB_BACKBUF_SIZE equ 64000
+
+
+
+
+
+
+
+IO_JOYP equ 0xFF00
+
+
+IO_SB equ 0xFF01
+IO_SC equ 0xFF02
+
+
+IO_DIV equ 0xFF04
+IO_TIMA equ 0xFF05
+IO_TMA equ 0xFF06
+IO_TAC equ 0xFF07
+
+
+IO_APU_BASE equ 0xFF10
+
+
+IO_LCDC equ 0xFF40
+IO_STAT equ 0xFF41
+IO_SCY equ 0xFF42
+IO_SCX equ 0xFF43
+IO_LY equ 0xFF44
+IO_LYC equ 0xFF45
+IO_DMA equ 0xFF46
+IO_BGP equ 0xFF47
+IO_OBP0 equ 0xFF48
+IO_OBP1 equ 0xFF49
+IO_WY equ 0xFF4A
+IO_WX equ 0xFF4B
+
+
+IO_VBK equ 0xFF4F
+IO_BGPI equ 0xFF68
+IO_BGPD equ 0xFF69
+IO_OBPI equ 0xFF6A
+IO_OBPD equ 0xFF6B
+IO_WBK equ 0xFF70
+
+
+
+
+
+
+TILE_WIDTH equ 8
+TILE_HEIGHT equ 8
+TILE_SIZE equ 16
+
+
+
+
+SCREEN_W equ 160
+SCREEN_H equ 144
+SCREEN_TILES_W equ 40
+SCREEN_TILES_H equ 25
+
+
+
+PLAYER_STANDING_ROW equ 17
+PLAYER_STANDING_COL equ 24
+
+
+RENDER_W equ 320
+RENDER_H equ 200
+RENDER_TILES_W equ 40
+RENDER_TILES_H equ 25
+
+
+TILEMAP_W equ 32
+TILEMAP_H equ 32
+TILEMAP_AREA equ 1024
+
+
+OAM_Y_OFS equ 16
+OAM_X_OFS equ 8
+OAM_ENTRY_SIZE equ 4
+OAM_COUNT equ 40
+
+
+VGA_W equ 320
+VGA_H equ 200
+VGA_FRAMEBUF equ 0xA0000
+
+
+
+
+%line 3+1 dos_port/src/engine/pokemon/evos_moves.asm
+[section .text]
+
+[global TryEvolvingMon]
+[global EvolutionAfterBattle]
+[global RenameEvolvedMon]
+[global CancelledEvolution]
+[global LearnMoveFromLevelUp]
+[global Func_3b079]
+[global Func_3b0a2]
+[global Func_3b10f]
+[global WriteMonMoves]
+[global WriteMonMoves_ShiftMoveData]
+[global Evolution_FlagAction]
+[global GetMonLearnset]
+
+TryEvolvingMon:
+ mov esi, wCanEvolveFlags
+ xor al, al
+ mov [ebp + esi], al
+ mov al, [ebp + wWhichPokemon]
+ mov cl, al
+ mov bh, FLAG_SET
+ call Evolution_FlagAction
+
+EvolutionAfterBattle:
+ mov al, [ebp + hTileAnimations]
+ push eax
+ xor al, al
+ mov [ebp + wEvolutionOccurred], al
+ dec al
+ mov [ebp + wWhichPokemon], al
+ push esi
+ push ebx
+ push edx
+ mov esi, wPartyCount
+ push esi
+
+.Evolution_PartyMonLoop:
+ mov esi, wWhichPokemon
+ inc byte [ebp + esi]
+ pop esi
+ inc esi
+ mov al, [ebp + esi]
+ cmp al, 0xFF
+ je .done
+ mov [ebp + wEvoOldSpecies], al
+ push esi
+ mov al, [ebp + wWhichPokemon]
+ mov cl, al
+ mov esi, wCanEvolveFlags
+ mov bh, FLAG_TEST
+ call Evolution_FlagAction
+ mov al, cl
+ test al, al
+ jz .Evolution_PartyMonLoop
+
+ mov al, [ebp + wEvoOldSpecies]
+ dec al
+ mov esi, EvosMovesPointerTable
+ movzx eax, al
+ shl eax, 1
+ add esi, eax
+ mov al, [esi]
+ inc esi
+ mov ah, [esi]
+ movzx esi, ax
+
+ push esi
+ mov al, [ebp + wCurPartySpecies]
+ push eax
+ xor al, al
+ mov [ebp + wMonDataLocation], al
+ call LoadMonData
+ pop eax
+ mov [ebp + wCurPartySpecies], al
+ pop esi
+
+.evoEntryLoop:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jz .Evolution_PartyMonLoop
+ mov bh, al
+ cmp al, EVOLVE_TRADE
+ je .checkTradeEvo
+ mov al, [ebp + wLinkState]
+ cmp al, LINK_STATE_TRADING
+ je .Evolution_PartyMonLoop
+ mov al, bh
+ cmp al, EVOLVE_ITEM
+ je .checkItemEvo
+ mov al, [ebp + wForceEvolution]
+ test al, al
+ jnz .Evolution_PartyMonLoop
+ mov al, bh
+ cmp al, EVOLVE_LEVEL
+ je .checkLevel
+
+.checkTradeEvo:
+ mov al, [ebp + wLinkState]
+ cmp al, LINK_STATE_TRADING
+ jne .nextEvoEntry1
+ mov al, [esi]
+ inc esi
+ mov bh, al
+ mov al, [ebp + wLoadedMonLevel]
+ cmp al, bh
+ jc .Evolution_PartyMonLoop
+ jmp .doEvolution
+
+.checkItemEvo:
+ mov al, [ebp + wIsInBattle]
+ test al, al
+ mov al, [esi]
+ inc esi
+ jnz .nextEvoEntry1
+ mov bh, al
+ mov al, [ebp + wCurItem]
+ cmp al, bh
+ jne .nextEvoEntry1
+.checkLevel:
+ mov al, [esi]
+ inc esi
+ mov bh, al
+ mov al, [ebp + wLoadedMonLevel]
+ cmp al, bh
+ jc .nextEvoEntry2
+
+.doEvolution:
+ mov [ebp + wCurEnemyLevel], al
+ mov al, 1
+ mov [ebp + wEvolutionOccurred], al
+ push esi
+ mov al, [esi]
+ mov [ebp + wEvoNewSpecies], al
+ mov al, [ebp + wWhichPokemon]
+ mov esi, wPartyMonNicks
+ call GetPartyMonName
+ call CopyToStringBuffer
+ mov cl, 50
+ call DelayFrames
+ xor al, al
+ mov [ebp + hAutoBGTransferEnabled], al
+ mov al, 1
+ mov [ebp + hAutoBGTransferEnabled], al
+ mov al, 0xFF
+ mov [ebp + wUpdateSpritesEnabled], al
+ call EvolveMon
+ jc CancelledEvolution
+ pop esi
+ mov al, [esi]
+ mov [ebp + wCurSpecies], al
+ mov [ebp + wLoadedMonSpecies], al
+ mov [ebp + wEvoNewSpecies], al
+ mov al, MONSTER_NAME
+ mov [ebp + wNameListType], al
+ mov al, BANK(MonsterNames)
+ mov [ebp + wPredefBank], al
+ call GetName
+ push esi
+ mov cl, 40
+ call DelayFrames
+ call RenameEvolvedMon
+
+ mov al, [ebp + wPokedexNum]
+ push eax
+ mov al, [ebp + wCurSpecies]
+ mov [ebp + wPokedexNum], al
+ call IndexToPokedex
+ mov al, [ebp + wPokedexNum]
+ dec al
+ mov esi, BaseStats
+ mov cx, BASE_DATA_SIZE
+ call AddNTimes
+ mov edi, wMonHeader
+ call CopyData
+ mov al, [ebp + wCurSpecies]
+ mov [ebp + wMonHIndex], al
+ pop eax
+ mov [ebp + wPokedexNum], al
+
+ mov esi, wLoadedMonHPExp - 1
+ mov edi, wLoadedMonStats
+ mov bh, 1
+ call CalcStats
+
+ mov al, [ebp + wWhichPokemon]
+ mov esi, wPartyMon1
+ mov cx, PARTYMON_STRUCT_LENGTH
+ call AddNTimes
+ mov edi, esi
+ push esi
+ push ebx
+ add esi, MON_MAXHP
+ mov al, [ebp + esi]
+ inc esi
+ mov bh, al
+ mov cl, [ebp + esi]
+ mov esi, wLoadedMonMaxHP + 1
+ mov al, [ebp + esi]
+ dec esi
+ sub al, cl
+ mov cl, al
+ mov al, [ebp + esi]
+ sbc al, bh
+ mov bh, al
+ mov esi, wLoadedMonHP + 1
+ mov al, [ebp + esi]
+ add al, cl
+ mov [ebp + esi], al
+ dec esi
+ mov al, [ebp + esi]
+ adc al, bh
+ mov [ebp + esi], al
+ dec esi
+ pop ebx
+ call CopyData
+
+ mov al, [ebp + wCurSpecies]
+ mov [ebp + wPokedexNum], al
+ xor al, al
+ mov [ebp + wMonDataLocation], al
+ call LearnMoveFromLevelUp
+ pop esi
+ call SetPartyMonTypes
+
+ mov al, [ebp + wIsInBattle]
+ test al, al
+
+ call IndexToPokedex
+ mov al, [ebp + wPokedexNum]
+ dec al
+ mov cl, al
+ mov bh, FLAG_SET
+ mov esi, wPokedexOwned
+ push ebx
+ call Evolution_FlagAction
+ pop ebx
+ mov esi, wPokedexSeen
+ call Evolution_FlagAction
+ pop edx
+ pop esi
+ mov al, [ebp + wLoadedMonSpecies]
+ mov [ebp + esi], al
+ push esi
+ mov esi, edx
+ jmp .nextEvoEntry2
+
+.nextEvoEntry1:
+ inc esi
+.nextEvoEntry2:
+ inc esi
+ jmp .evoEntryLoop
+
+.done:
+ pop edx
+ pop ebx
+ pop esi
+ pop eax
+ mov [ebp + hTileAnimations], al
+ mov al, [ebp + wLinkState]
+ cmp al, LINK_STATE_TRADING
+ je .return
+ mov al, [ebp + wIsInBattle]
+ test al, al
+ jnz .return
+ mov al, [ebp + wEvolutionOccurred]
+ test al, al
+.return:
+ ret
+
+RenameEvolvedMon:
+ mov al, [ebp + wCurSpecies]
+ push eax
+ mov al, [ebp + wMonHIndex]
+ mov [ebp + wNameListIndex], al
+ call GetName
+ pop eax
+ mov [ebp + wCurSpecies], al
+ mov esi, wNameBuffer
+ mov edi, wStringBuffer
+.compareNamesLoop:
+ mov al, [ebp + edi]
+ inc edi
+ cmp al, [ebp + esi]
+ inc esi
+ jne .return
+ cmp al, '@'
+ jne .compareNamesLoop
+ mov al, [ebp + wWhichPokemon]
+ mov cx, NAME_LENGTH
+ mov esi, wPartyMonNicks
+ call AddNTimes
+ push esi
+ call GetName
+ mov esi, wNameBuffer
+ pop edi
+ jmp CopyData
+.return:
+ ret
+
+CancelledEvolution:
+ pop esi
+ jmp EvolutionAfterBattle.Evolution_PartyMonLoop
+
+LearnMoveFromLevelUp:
+ mov al, [ebp + wPokedexNum]
+ mov [ebp + wCurPartySpecies], al
+ call GetMonLearnset
+.learnSetLoop:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jz .done
+ mov bh, al
+ mov al, [ebp + wCurEnemyLevel]
+ cmp al, bh
+ mov al, [esi]
+ inc esi
+ jne .learnSetLoop
+ mov dh, al
+ mov al, [ebp + wMonDataLocation]
+ test al, al
+ jnz .next
+ mov esi, wPartyMon1Moves
+ mov al, [ebp + wWhichPokemon]
+ mov cx, PARTYMON_STRUCT_LENGTH
+ call AddNTimes
+.next:
+ mov bh, NUM_MOVES
+.checkCurrentMovesLoop:
+ mov al, [ebp + esi]
+ inc esi
+ cmp al, dh
+ je .done
+ dec bh
+ jnz .checkCurrentMovesLoop
+ mov al, dh
+ mov [ebp + wMoveNum], al
+ mov [ebp + wNamedObjectIndex], al
+ call GetMoveName
+ call CopyToStringBuffer
+ call LearnMove
+ mov al, bh
+ test al, al
+ jz .done
+ call IsThisPartyMonStarterPikachu
+ jnc .done
+ mov al, [ebp + wMoveNum]
+ cmp al, THUNDERBOLT
+ je .foundThunderOrThunderbolt
+ cmp al, THUNDER
+ jne .done
+.foundThunderOrThunderbolt:
+ mov al, 5
+ mov [ebp + wPikachuEmotionModifier], al
+ mov al, 0x85
+ mov [ebp + wPikachuMood], al
+.done:
+ mov al, [ebp + wCurPartySpecies]
+ mov [ebp + wPokedexNum], al
+ ret
+
+Func_3b079:
+ mov al, [ebp + wCurPartySpecies]
+ push eax
+ call Func_3b0a2
+ jc .asm_3b09c
+
+ call Func_3b10f
+ jnc .asm_3b096
+
+ call Func_3b0a2
+ jc .asm_3b09c
+
+ call Func_3b10f
+ jnc .asm_3b096
+
+ call Func_3b0a2
+ jc .asm_3b09c
+.asm_3b096:
+ pop eax
+ mov [ebp + wCurPartySpecies], al
+ test al, al
+ clc
+ ret
+.asm_3b09c:
+ pop eax
+ mov [ebp + wCurPartySpecies], al
+ stc
+ ret
+
+Func_3b0a2:
+ mov al, [ebp + wTempTMHM]
+ mov [ebp + wMoveNum], al
+ call CanLearnTM
+ mov al, cl
+ test al, al
+ jnz .asm_3b0ec
+ mov esi, Pointer_3b0ee
+ mov al, [ebp + wCurPartySpecies]
+ mov edx, 1
+ call IsInArray
+ jc .asm_3b0d2
+ mov al, 0xFF
+ mov [ebp + wMonHGrowthRate], al
+ mov al, [ebp + wTempTMHM]
+ mov esi, wMonHMoves
+ mov edx, 1
+ call IsInArray
+ jc .asm_3b0ec
+.asm_3b0d2:
+ mov al, [ebp + wTempTMHM]
+ mov dh, al
+ call GetMonLearnset
+.loop:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jz .asm_3b0ea
+ mov bh, al
+ mov al, [ebp + wCurEnemyLevel]
+ cmp al, bh
+ jc .asm_3b0ea
+ mov al, [esi]
+ inc esi
+ cmp al, dh
+ je .asm_3b0ec
+ jmp .loop
+.asm_3b0ea:
+ test al, al
+ clc
+ ret
+.asm_3b0ec:
+ stc
+ ret
+
+Func_3b10f:
+ mov cl, 0
+.asm_3b111:
+ mov esi, EvosMovesPointerTable
+ mov bh, 0
+ movzx ecx, cl
+ add esi, ecx
+ add esi, ecx
+ mov al, [esi]
+ inc esi
+ mov ah, [esi]
+ movzx esi, ax
+.asm_3b11b:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jz .asm_3b130
+ cmp al, 2
+ jne .asm_3b124
+ inc esi
+.asm_3b124:
+ inc esi
+ mov al, [ebp + wCurPartySpecies]
+ cmp al, [esi]
+ je .asm_3b138
+ inc esi
+ mov al, [esi]
+ test al, al
+ jnz .asm_3b11b
+.asm_3b130:
+ inc cl
+ mov al, cl
+ cmp al, VICTREEBEL
+ jc .asm_3b111
+ test al, al
+ clc
+ ret
+.asm_3b138:
+ inc cl
+ mov al, cl
+ mov [ebp + wCurPartySpecies], al
+ stc
+ ret
+
+WriteMonMoves:
+ call GetPredefRegisters
+ push esi
+ push edx
+ push ebx
+ call GetMonLearnset
+ jmp .firstMove
+.nextMove:
+ pop edx
+.nextMove2:
+ inc esi
+.firstMove:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jz .done
+ mov bh, al
+ mov al, [ebp + wCurEnemyLevel]
+ cmp al, bh
+ jc .done
+ mov al, [ebp + wLearningMovesFromDayCare]
+ test al, al
+ jz .skipMinLevelCheck
+ mov al, [ebp + wDayCareStartLevel]
+ cmp al, bh
+ jnc .nextMove2
+
+.skipMinLevelCheck:
+ push edx
+ mov cl, NUM_MOVES
+.alreadyKnowsCheckLoop:
+ mov al, [ebp + edx]
+ inc edx
+ cmp al, [esi]
+ je .nextMove
+ dec cl
+ jnz .alreadyKnowsCheckLoop
+
+ pop edx
+ push edx
+ mov cl, NUM_MOVES
+.findEmptySlotLoop:
+ mov al, [ebp + edx]
+ test al, al
+ jz .writeMoveToSlot2
+ inc edx
+ dec cl
+ jnz .findEmptySlotLoop
+
+ pop edx
+ push edx
+ push esi
+ mov esi, edx
+ call WriteMonMoves_ShiftMoveData
+ mov al, [ebp + wLearningMovesFromDayCare]
+ test al, al
+ jz .writeMoveToSlot
+
+ push edx
+ mov cx, MON_PP - (MON_MOVES + 3)
+ add esi, ecx
+ mov edx, esi
+ call WriteMonMoves_ShiftMoveData
+ pop edx
+
+.writeMoveToSlot:
+ pop esi
+.writeMoveToSlot2:
+ mov al, [esi]
+ mov [ebp + edx], al
+ mov al, [ebp + wLearningMovesFromDayCare]
+ test al, al
+ jz .nextMove
+
+ push esi
+ mov al, [esi]
+ mov esi, MON_PP - MON_MOVES
+ add esi, edx
+ push esi
+ dec al
+ mov esi, Moves
+ mov cx, MOVE_LENGTH
+ call AddNTimes
+ mov edi, wBuffer
+ mov al, BANK(Moves)
+ call FarCopyData
+ mov al, [ebp + wBuffer + 5]
+ pop esi
+ mov [ebp + esi], al
+ pop esi
+ jmp .nextMove
+
+.done:
+ pop ebx
+ pop edx
+ pop esi
+ ret
+
+WriteMonMoves_ShiftMoveData:
+ mov cl, NUM_MOVES - 1
+.loop:
+ inc edx
+ mov al, [ebp + edx]
+ mov [ebp + esi], al
+ inc esi
+ dec cl
+ jnz .loop
+ ret
+
+Evolution_FlagAction:
+ jmp FlagActionPredef
+
+GetMonLearnset:
+ mov esi, EvosMovesPointerTable
+ mov bh, 0
+ mov al, [ebp + wCurPartySpecies]
+ dec al
+ mov cl, al
+ movzx ecx, cl
+ add esi, ecx
+ add esi, ecx
+ mov al, [esi]
+ inc esi
+ mov ah, [esi]
+ movzx esi, ax
+.skipEvolutionDataLoop:
+ mov al, [esi]
+ inc esi
+ test al, al
+ jnz .skipEvolutionDataLoop
+ ret

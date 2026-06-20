@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "command(grep)",
+      "command(grep_search)",
+      "command(nasm)",
+      "command(cat)",
+      "command(dos_port/tools/work_queue)",
+      "command(dos_port/tools/build_index)",
+      "command(make)",
+      "command(bash)",
+      "command(dos_port/tools/process_placements)",
+      "command(sed)",
+      "command(awk)",
+      "command(ls)",
+      "command(make compare)",
+      "command(git status)",
+      "command(git add)",
+      "command(git commit)",
+      "command(find)"
+    ]
+  }
+}

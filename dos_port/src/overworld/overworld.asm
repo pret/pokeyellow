@@ -60,6 +60,9 @@ extern DumpBackbuffer
 %elifdef DEBUG_WALK_NORTH
 extern DumpBackbuffer
 %endif
+%ifdef DEBUG_NOCLIP
+extern pad_noclip
+%endif
 
 global EnterMap
 global ResetMapVariables
@@ -262,33 +265,64 @@ OverworldLoop:
     mov dh, SPRITE_FACING_RIGHT
 
 .handleDirection:
-    mov [ebp + W_PLAYER_DIRECTION],        dl
-    mov [ebp + W_PLAYER_MOVING_DIRECTION], dl
+    ; Always commit the new direction/facing — this happens even on turn-only presses.
+    mov [ebp + W_PLAYER_DIRECTION],         dl
+    mov [ebp + W_PLAYER_MOVING_DIRECTION],  dl
     mov [ebp + W_SPRITE_PLAYER_FACING_DIR], dh
 
-    ; TODO: rapid direction changes can desync facing from collision.  UpdateSprites
-    ; (called every frame) may flip W_SPRITE_PLAYER_FACING_DIR mid-step via the step
-    ; vector, so the first collision check after a direction tap fires against the NEW
-    ; facing tile rather than the tile in the direction of completed travel.  The GB
-    ; serializes this via its frame-locked joypad latch; we need to latch the checked
-    ; direction for the duration of the step.  Low priority — defer to after Phase 2.
-    call CollisionCheckOnLand                 ; CF = 1 → blocked (face that way, don't move)
-    jc OverworldLoop
+    ; Turn delay (pret: wCheckFor180DegreeTurn / wPlayerLastStopDirection).
+    ; First press after idle with a NEW direction: update facing but don't walk.
+    ; Second press (same direction, or same as last-stop dir): walk normally.
+    cmp byte [ebp + W_CHECK_FOR_TURN], 0
+    je .walkStart                             ; already committed to walking direction
+    mov byte [ebp + W_CHECK_FOR_TURN], 0     ; consume the turn-check token
+    cmp dl, [ebp + W_PLAYER_LAST_STOP_DIRECTION]
+    jne OverworldLoop                         ; new direction → facing updated, no walk
 
+.walkStart:
+    call CollisionCheckOnLand                 ; CF=1 → blocked
+    jnc .startWalk
+
+    ; Blocked. If facing DOWN and currently on a warp tile, fire the exit warp.
+    ; Covers indoor exit warps: player presses south into the map border.
+    cmp dl, PLAYER_DIR_DOWN
+    jne OverworldLoop
+    call CheckWarpTile
+    jnc OverworldLoop
+    jmp .warpTransition
+
+.startWalk:
     mov byte [ebp + W_WALK_COUNTER], 8        ; begin an 8-frame step
+    jmp OverworldLoop
 
 .noDirection:
-    ; No direction held while standing: zero wPlayerMovingDirection so
-    ; UpdatePlayerSprite takes its standing path and stops the walk animation.
-    ; (Faithful to home/overworld.asm:.noDirectionButtonsPressed, which zeroes
-    ; the moving direction; wPlayerDirection keeps the last facing.)
+    ; Save the last-used moving direction so the next press can check for a turn.
+    ; (Pret: .noDirectionButtonsPressed — saves wPlayerMovingDirection to
+    ; wPlayerLastStopDirection, zeroes moving dir, sets wCheckFor180DegreeTurn=1.)
+    mov al, [ebp + W_PLAYER_MOVING_DIRECTION]
+    mov [ebp + W_PLAYER_LAST_STOP_DIRECTION], al
     mov byte [ebp + W_PLAYER_MOVING_DIRECTION], 0
+    mov byte [ebp + W_CHECK_FOR_TURN], 1
     jmp OverworldLoop
 
 .moveAhead:
     call AdvancePlayerSprite
     jc .mapTransition                         ; CF=1 means a map connection was crossed
-    jmp OverworldLoop
+    call CheckWarpTile
+    jnc OverworldLoop                         ; no warp tile → keep looping
+.warpTransition:
+    ; BL = resolved destination map; W_DESTINATION_WARP_ID = 0-based spawn warp index
+    mov al, [ebp + W_CUR_MAP]
+    mov [ebp + W_LAST_MAP], al
+    mov [ebp + W_CUR_MAP], bl
+    mov byte [ebp + W_WALK_COUNTER], 0
+    mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
+    mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
+    mov byte [ebp + H_SCY], 0
+    mov byte [ebp + H_SCX], 0
+    mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
+    call LoadWarpDestination
+    jmp OverworldLoop.lessDelay
 
 .mapTransition:
     ; A connection was crossed — reload everything for the new map.
@@ -504,6 +538,16 @@ LoadOverworldAssets:
     mov esi, route25_blk
     lea edi, [ebp + OW_ROUTE_25_BLK_GBADDR]
     mov ecx, ROUTE25_BLK_SIZE
+    rep movsb
+
+    mov esi, route23_blk
+    lea edi, [ebp + OW_ROUTE_23_BLK_GBADDR]
+    mov ecx, ROUTE23_BLK_SIZE
+    rep movsb
+
+    mov esi, indigo_plateau_blk
+    lea edi, [ebp + OW_INDIGO_PLATEAU_BLK_GBADDR]
+    mov ecx, INDIGO_PLATEAU_BLK_SIZE
     rep movsb
 
     ; --- Copy Overworld_Coll passable-tile list to ROM window at OW_COLL_GBADDR ---
@@ -1259,6 +1303,10 @@ MoveTileBlockMapPointerNorth:            ; AL = wCurMapWidth
 ; Out: CF = 1 if the tile the player faces is impassable (movement blocked).
 ; ---------------------------------------------------------------------------
 CollisionCheckOnLand:
+%ifdef DEBUG_NOCLIP
+    cmp byte [pad_noclip], 0
+    jne .passable                 ; noclip active: always passable
+%endif
     push eax
     push ecx
     push esi
@@ -1269,6 +1317,11 @@ CollisionCheckOnLand:
     pop ecx
     pop eax
     ret
+%ifdef DEBUG_NOCLIP
+.passable:
+    clc
+    ret
+%endif
 
 ; ---------------------------------------------------------------------------
 ; GetTileInFrontOfPlayer — simplified translation.
@@ -1419,13 +1472,16 @@ LoadMapHeader:
     mov [ebp + W_MAP_BACKGROUND_TILE], bl
     inc eax
     
-    ; Skip warps
+    ; Copy warps to W_WARP_ENTRIES
     mov bl, [eax]
     mov [ebp + W_NUMBER_OF_WARPS], bl
     inc eax
-    movzx ebx, bl
-    shl ebx, 2 ; * 4 bytes per warp
-    add eax, ebx
+    movzx ecx, bl
+    shl ecx, 2                          ; * 4 bytes per warp entry
+    mov esi, eax
+    lea edi, [ebp + W_WARP_ENTRIES]
+    rep movsb                           ; copy all warp entries to WRAM
+    mov eax, esi                        ; advance EAX past copied warp bytes
     
     ; Skip signs
     mov bl, [eax]
@@ -1459,30 +1515,188 @@ CopyMapConnectionHeader:
     ret
 
 ; ---------------------------------------------------------------------------
-; LoadTilesetHeader — faithful translation.
-; Pret ref: home/overworld.asm:LoadTilesetHeader (or engine/overworld/tilesets.asm)
+; LoadTilesetHeader — dynamic dispatch via W_CUR_MAP_TILESET.
+; Pret ref: home/overworld.asm:LoadTilesetHeader
+; Copies current tileset gfx/blocks/coll from .data section → fixed EBP slots,
+; then sets g_tilecache_dirty so render_bg rebuilds the decoded-tile cache.
 ; ---------------------------------------------------------------------------
 LoadTilesetHeader:
     push eax
+    push ebx
     push esi
     push edi
     push ecx
-    
-    ; We only have 1 tileset for now: OVERWORLD, located at OW_TILESET_HDR_GBADDR
-    ; In the future we'll use wCurMapTileset as an index.
-    lea esi, [ebp + OW_TILESET_HDR_GBADDR]
-    
-    lea edi, [ebp + W_TILESET_BANK]
-    mov ecx, W_TILESET_HEADER_COPY_SIZE ; 11 bytes
+
+    movzx eax, byte [ebp + W_CUR_MAP_TILESET]   ; tileset index 0-24
+
+    ; Copy tileset GFX to fixed EBP slot
+    mov esi, [TilesetGfxPtrs + eax*4]
+    lea edi, [ebp + OW_GFX_GBADDR]
+    mov ecx, [TilesetGfxSizes + eax*4]
     rep movsb
-    
-    ; 12th byte is hTileAnimations
-    mov al, [esi]
-    mov [ebp + H_TILE_ANIMATIONS], al
-    
+
+    ; Copy blockset to fixed EBP slot
+    mov esi, [TilesetBlocksPtrs + eax*4]
+    lea edi, [ebp + OW_BLOCKS_GBADDR]
+    mov ecx, [TilesetBlocksSizes + eax*4]
+    rep movsb
+
+    ; Copy collision list to fixed EBP slot (max 64 bytes, $FF-terminated)
+    mov esi, [TilesetCollPtrs + eax*4]
+    lea edi, [ebp + OW_COLL_GBADDR]
+    mov ecx, 64
+    rep movsb
+
+    ; Mark tile cache dirty — render_bg must rebuild decoded tiles
+    mov byte [g_tilecache_dirty], 1
+
+    ; Populate tileset header fields in WRAM (stub values; grass/anim tile TBD)
+    mov byte [ebp + W_TILESET_BANK], 0x01
+    mov word [ebp + W_TILESET_BLOCKS_PTR], OW_BLOCKS_GBADDR
+    mov word [ebp + W_TILESET_GFX_PTR],   OW_GFX_GBADDR
+    mov word [ebp + W_TILESET_COLLISION_PTR],  OW_COLL_GBADDR
+    mov byte [ebp + W_GRASS_TILE],   0xFF  ; no grass (overridden per-tileset later)
+    mov byte [ebp + H_TILE_ANIMATIONS], 0x00
+
     pop ecx
     pop edi
     pop esi
+    pop ebx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; CheckWarpTile — scan W_WARP_ENTRIES for a player coord match.
+; Returns CF=1 if a warp matches; BL = resolved destination map ID;
+; W_DESTINATION_WARP_ID = 0-based warp index in the destination map.
+; Returns CF=0 if no match.
+; Pret ref: home/overworld.asm:CheckForWarpTile (approach)
+; ---------------------------------------------------------------------------
+CheckWarpTile:
+    push eax
+    push ecx
+    push esi
+
+    movzx ecx, byte [ebp + W_NUMBER_OF_WARPS]
+    test ecx, ecx
+    jz .none
+    mov al, [ebp + W_Y_COORD]
+    mov ah, [ebp + W_X_COORD]
+    lea esi, [ebp + W_WARP_ENTRIES]
+.loop:
+    cmp al, [esi]               ; Y match?
+    jne .next
+    cmp ah, [esi+1]             ; X match?
+    jne .next
+    mov bl, [esi+2]             ; dest_warp_id (0-based index in dest map)
+    mov [ebp + W_DESTINATION_WARP_ID], bl
+    mov bl, [esi+3]             ; dest_map_id (0xFF = LAST_MAP)
+    cmp bl, 0xFF
+    jne .found
+    mov bl, [ebp + W_LAST_MAP]  ; resolve LAST_MAP to the previous map
+.found:
+    pop esi
+    pop ecx
+    pop eax
+    stc
+    ret
+.next:
+    add esi, 4
+    dec ecx
+    jnz .loop
+.none:
+    pop esi
+    pop ecx
+    pop eax
+    clc
+    ret
+
+; ---------------------------------------------------------------------------
+; LoadWarpDestination — load the destination map after a warp transition.
+; Preconditions: W_CUR_MAP = destination map ID already set by caller;
+;                W_DESTINATION_WARP_ID = 0-based index into that map's warp
+;                table, used to resolve the player spawn coords.
+; ---------------------------------------------------------------------------
+LoadWarpDestination:
+    push eax
+    push ebx
+    push ecx
+    push esi
+    push edi
+
+    ; Indoor maps use a shared EBP slot (INDOOR_BLK_GBADDR).  Copy this map's
+    ; .blk bytes there before calling LoadMapHeader, which reads blk_ptr=0x7600
+    ; from the header and stores it in W_CUR_MAP_DATA_PTR → LoadTileBlockMap
+    ; then reads the block layout from that address.
+    movzx eax, byte [ebp + W_CUR_MAP]
+    cmp eax, FIRST_INDOOR_MAP_ID
+    jb .outdoor
+    sub eax, FIRST_INDOOR_MAP_ID              ; 0-based table index
+    mov esi, [IndoorMapBlkPtrs + eax*4]       ; flat DS label for this map's .blk
+    lea edi, [ebp + INDOOR_BLK_GBADDR]
+    mov ecx, [IndoorMapBlkSizes + eax*4]      ; byte count
+    rep movsb
+.outdoor:
+    ; Load map header: copies fixed header to WRAM, copies warp entries to
+    ; W_WARP_ENTRIES, and calls LoadTilesetHeader (which swaps tileset data
+    ; into the fixed EBP ROM-window slots and sets g_tilecache_dirty).
+    call LoadMapHeader
+
+    ; After a tileset switch, copy GFX from OW_GFX_GBADDR → GB_VCHARS2 so
+    ; render_bg rebuilds the tile decode cache from the new tileset.
+    call LoadTilesetTilePatternData
+
+    ; Resolve spawn coords from the destination map's warp table.
+    ; W_DESTINATION_WARP_ID is the 0-based index set by CheckWarpTile.
+    movzx eax, byte [ebp + W_DESTINATION_WARP_ID]
+    shl eax, 2                                ; * 4 bytes per entry
+    lea esi, [ebp + W_WARP_ENTRIES]
+    add esi, eax
+    mov al, [esi]                             ; spawn Y tile
+    mov [ebp + W_Y_COORD], al
+    and al, 1
+    mov [ebp + W_Y_BLOCK_COORD], al
+    mov al, [esi+1]                           ; spawn X tile
+    mov [ebp + W_X_COORD], al
+    and al, 1
+    mov [ebp + W_X_BLOCK_COORD], al
+
+    ; Recompute W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR from the spawn coordinates.
+    ;   stride   = W_CUR_MAP_WIDTH + 2*MAP_BORDER
+    ;   view_row = block_y + MAP_BORDER - SCREEN_BLOCK_HEIGHT/2   (block_y = Y/2)
+    ;   view_col = block_x + MAP_BORDER - SCREEN_BLOCK_WIDTH/2    (block_x = X/2)
+    ;   ptr      = W_OVERWORLD_MAP + view_row * stride + view_col
+    movzx eax, byte [ebp + W_CUR_MAP_WIDTH]
+    add eax, MAP_BORDER * 2                   ; EAX = stride
+
+    movzx ebx, byte [ebp + W_Y_COORD]
+    shr ebx, 1                                ; EBX = block_y
+    add ebx, MAP_BORDER
+    sub ebx, SCREEN_BLOCK_HEIGHT / 2          ; EBX = view_row
+
+    movzx ecx, byte [ebp + W_X_COORD]
+    shr ecx, 1                                ; ECX = block_x
+    add ecx, MAP_BORDER
+    sub ecx, SCREEN_BLOCK_WIDTH / 2           ; ECX = view_col
+
+    imul eax, ebx                             ; EAX = view_row * stride
+    add eax, ecx                              ; + view_col
+    add eax, W_OVERWORLD_MAP                  ; + base = EBP-relative ptr
+    mov [ebp + W_CURRENT_TILE_BLOCK_MAP_VIEW_PTR], ax
+
+    call LoadTileBlockMap
+    call LoadCurrentMapView
+
+    ; Reset turn state: player spawns stopped, so the next press should turn
+    ; first rather than immediately walking (prevents accidental exit on entry).
+    mov byte [ebp + W_CHECK_FOR_TURN], 1
+    mov byte [ebp + W_PLAYER_LAST_STOP_DIRECTION], 0
+    mov byte [ebp + W_PLAYER_MOVING_DIRECTION], 0
+
+    pop edi
+    pop esi
+    pop ecx
+    pop ebx
     pop eax
     ret
 
@@ -1708,3 +1922,4 @@ section .rodata
 %include "assets/npc_fisher_still.inc"
 %include "assets/npc_oak_still.inc"
 %include "assets/map_headers.inc"
+%include "assets/extra_includes.inc"

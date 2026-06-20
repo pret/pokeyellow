@@ -30,6 +30,9 @@ dos_port/CWSDPMI.EXE
 dos_port/CWSDPMI.SWP
 *.SWP
 
+# DOS port assets
+dos_port/assets/
+
 # DOS save files
 *.dsv
 

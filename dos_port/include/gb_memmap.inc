@@ -289,6 +289,13 @@ W_SURROUNDING_TILES          equ 0xE000 ; wSurroundingTiles = wTileMapBackup
 W_OVERWORLD_MAP              equ 0xE800 ; wOverworldMap
 W_OVERWORLD_MAP_SIZE         equ 0x800  ; wOverworldMapEnd − wOverworldMap (2048 bytes)
 
+; Turn-delay state (pret: wCheckFor180DegreeTurn / wPlayerLastStopDirection)
+; W_CHECK_FOR_TURN=1 means "first direction press changes facing only; walk starts on hold".
+; Reset to 0 on the first press (so subsequent frames in same direction walk).
+; Restored to 1 when no direction is held (.noDirection path).
+W_CHECK_FOR_TURN             equ 0xCADD ; wCheckFor180DegreeTurn (1=check next press)
+W_PLAYER_LAST_STOP_DIRECTION equ 0xCFAE ; wPlayerLastStopDirection (dir held when player last stopped)
+
 ; Walk/sprite state
 W_FONT_LOADED                equ 0xCFC3 ; wFontLoaded (bit BIT_FONT_LOADED set while text font is in VRAM)
 W_WALK_COUNTER               equ 0xCFC4 ; wWalkCounter
@@ -520,6 +527,13 @@ OW_ROUTE_20_BLK_GBADDR        equ 0x302B  ; Route20.blk       (50×9  = 450 byte
 OW_ROUTE_22_BLK_GBADDR        equ 0x31ED  ; Route22.blk       (20×9  = 180 bytes)
 OW_ROUTE_24_BLK_GBADDR        equ 0x32A1  ; Route24.blk       (10×18 = 180 bytes)
 OW_ROUTE_25_BLK_GBADDR        equ 0x3355  ; Route25.blk       (30×9  = 270 bytes)
+OW_ROUTE_23_BLK_GBADDR        equ 0x3463  ; Route23.blk       (10×72 = 720 bytes)
+OW_INDIGO_PLATEAU_BLK_GBADDR  equ 0x36F3  ; IndigoPlateau.blk (10×9  = 90  bytes)
+; Shared slot for the currently-active indoor map's block data.
+; LoadWarpDestination copies the target map's blk to this address before calling LoadMapHeader.
+; Largest indoor map is ~540 bytes; slot ends well before VRAM at 0x8000.
+INDOOR_BLK_GBADDR             equ 0x7600  ; current indoor map blk (shared, dynamic)
+FIRST_INDOOR_MAP_ID           equ 0x25    ; REDS_HOUSE_1F — first map using INDOOR_BLK_GBADDR
 
 ; Connection-strip header field offsets (added to W_{NORTH,SOUTH,WEST,EAST}_CONNECTED_MAP;
 ; struct is 11 bytes — see map_connection_struct in macros/ram.asm).
