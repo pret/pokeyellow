@@ -141,6 +141,37 @@ Quick reference:
 
 ---
 
+## Pokémon Yellow Glitch Reference
+
+- **Glitch classification table** (all ~50 known glitches, by engine area, with BUG_FIX_LEVEL and ACE flags):
+  [`yellow_glitches.md`](yellow_glitches.md)
+
+### Locally Mirrored GlitchCity Wiki Pages
+
+Fetched via Playwright (2026-06-20). GlitchCity blocks automated HTTP clients but renders fine in a headless browser. Stored in `glitchcity/`.
+
+| Topic | File |
+|-------|------|
+| Pokémon Yellow overview | [glitchcity/yellow_main.md](glitchcity/yellow_main.md) |
+| **Predefined functions list** (predef call table — key for ACE guards) | [glitchcity/predefined_funcs.md](glitchcity/predefined_funcs.md) |
+| Off-screen Pikachu corruption (ACE path) | [glitchcity/pikachu_offscreen_real.md](glitchcity/pikachu_offscreen_real.md) |
+| SRAM glitch (partial-save ACE) | [glitchcity/sram_glitch.md](glitchcity/sram_glitch.md) |
+| Dry underflow / item underflow | [glitchcity/dry_underflow.md](glitchcity/dry_underflow.md) |
+| Expanded item pack | [glitchcity/expanded_item_pack.md](glitchcity/expanded_item_pack.md) |
+| ACE overview (Gen I) | [glitchcity/ace_overview.md](glitchcity/ace_overview.md) |
+| Trainer escape glitch | [glitchcity/trainer_escape.md](glitchcity/trainer_escape.md) |
+| Mew glitch | [glitchcity/mew_glitch.md](glitchcity/mew_glitch.md) |
+| Super Glitch | [glitchcity/super_glitch.md](glitchcity/super_glitch.md) |
+| LOL glitch (mart text pointer ACE) | [glitchcity/lol_glitch.md](glitchcity/lol_glitch.md) |
+| Old man glitch | [glitchcity/old_man_glitch.md](glitchcity/old_man_glitch.md) |
+| Glitch City RAM manipulation | [glitchcity/glitch_city_ram.md](glitchcity/glitch_city_ram.md) |
+| MissingNo. | [glitchcity/missingno.md](glitchcity/missingno.md) |
+| Guide: Inventory Underflow ACE (EN Yellow) | [glitchcity/inv_underflow_guide.md](glitchcity/inv_underflow_guide.md) |
+| Guide: SRAM Glitch ACE (EN Yellow) | [glitchcity/sram_ace_guide.md](glitchcity/sram_ace_guide.md) |
+| Guide: Safari Escape Underflow ACE | [glitchcity/safari_underflow_guide.md](glitchcity/safari_underflow_guide.md) |
+
+---
+
 ## rgbds (Reference ROM Toolchain)
 
 Required version: **rgbds 1.0.1** (see `.rgbds-version` file)
