@@ -83,7 +83,10 @@ GAME_SRCS := \
     src/text/text.asm \
     src/movie/title.asm \
     src/overworld/overworld.asm \
-    src/overworld/movement.asm
+    src/overworld/movement.asm \
+    src/engine/battle/get_trainer_name.asm \
+    src/engine/battle/misc.asm \
+    src/engine/battle/move_effects/conversion.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.

@@ -1147,4 +1147,64 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 
 ---
 
+## GetTrainerName_
+
+- **Source:** `engine/battle/get_trainer_name.asm:GetTrainerName_`
+- **Translated:** `dos_port/src/engine/battle/get_trainer_name/GetTrainerName_.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, DE→EDX, BC→BX, A→AL
+- **Notes:** W_RIVAL_NAME equ 0xD349 used; defined dummy constants for RIVAL1, etc.
+
+---
+
+## FormatMovesString
+
+- **Source:** `engine/battle/misc.asm:FormatMovesString`
+- **Translated:** `dos_port/src/engine/battle/misc/FormatMovesString.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI for move array and name buf, DE->EDX for out string, B->BH
+- **Notes:** used EDX for DE ptr; mapped '@' to 0x50, '<NEXT>' to 0x4E based on text.asm
+
+---
+
+## InitList
+
+- **Source:** `engine/battle/misc.asm:InitList`
+- **Translated:** `dos_port/src/engine/battle/misc/InitList.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** A->AL, BC->BX, DE->DX, HL->ESI
+- **Notes:** Used EAX to extract L and H from ESI. Used 32-bit relocations for externs to satisfy COFF.
+
+---
+
+## ConversionEffect_
+
+- **Source:** `engine/battle/move_effects/conversion.asm:ConversionEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/conversion/ConversionEffect_.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, DE→EDX, A→AL
+- **Notes:** removed Bankswitch logic, evaluated INVULNERABLE to 6
+
+---
+
+## CallBankF
+
+- **Source:** `engine/battle/move_effects/conversion.asm:CallBankF`
+- **Translated:** `dos_port/src/engine/battle/move_effects/conversion/CallBankF.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** B→BH
+- **Notes:** loaded BANK_PrintButItFailedText_ via EAX to avoid 8-bit relocation error
+
+---
+
 *Add new entries below as routines are translated.*
