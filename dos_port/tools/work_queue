@@ -279,8 +279,19 @@ def cmd_place(args):
     log_transition(cur, args.id, 'complete', 'complete', args.agent,
                    f'placed → {args.output}')
     con.commit()
+
+    # Delete the scratch file now that it has been placed in dos_port/src/.
+    deleted_scratch = None
+    if row['scratch_file']:
+        full_scratch = os.path.join(REPO_ROOT, row['scratch_file'])
+        try:
+            os.remove(full_scratch)
+            deleted_scratch = row['scratch_file']
+        except OSError:
+            pass  # already gone — not an error
+
     out({'id': args.id, 'name': row['name'],
-         'scratch_cleared': row['scratch_file'],
+         'scratch_deleted': deleted_scratch,
          'output_file': args.output})
     con.close()
 
