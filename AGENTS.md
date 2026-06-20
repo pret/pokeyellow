@@ -85,8 +85,23 @@ Each ticket must include:
 4. `gb_memmap.inc` constants used by this function, with hex values pre-resolved
 5. Any `; BUG()` / `; GLITCH:` annotations from `docs/bugs_and_glitches.md`
 6. The exact `nasm -f coff -o /dev/null <file>` command to verify assembly
+7. The correct include lines to paste at the top of the file (see below)
 
 Vague tickets are not acceptable. Workers are not smart enough to look things up.
+
+### Include path rule (copy into every ticket verbatim)
+NASM is invoked from the `dos_port/` directory with `-I include/ -I .`.
+Include paths must use the **short bare name only** — no directory prefix:
+
+```nasm
+%include "gb_memmap.inc"   ; correct
+%include "gb_macros.inc"   ; correct
+
+%include "dos_port/include/gb_memmap.inc"   ; WRONG — breaks the build
+%include "include/gb_memmap.inc"            ; WRONG — breaks the build
+```
+
+Paste this rule into every worker ticket so it is impossible to miss.
 
 ### Dispatch rules
 - Never assign two workers to the same output file simultaneously.
@@ -243,6 +258,9 @@ if it genuinely does not apply — the parser ignores unfilled placeholders.
 - Do not add `%include` lines or Makefile rules — that is Integration Agent's job.
 - `call` instructions inside the translated function are expected and correct.
   Do not add `call` to any *existing* file outside the scratch output.
+- `%include` lines must use bare filenames only: `%include "gb_memmap.inc"`.
+  Never write `%include "dos_port/include/gb_memmap.inc"` or any path prefix —
+  NASM is invoked from `dos_port/` with `-I include/` so the prefix breaks assembly.
 - If the function touches a hardware register (`$FF__`) not in the ticket, stop
   and report back immediately. Do not guess.
 
