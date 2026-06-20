@@ -4,6 +4,9 @@ work_queue — Agent skill for querying and updating the translation work queue.
 
 All output is JSON so agents can parse it without screen-scraping.
 
+** NEVER access translation.db with raw SQL. Use this tool exclusively. **
+Direct sqlite3 calls bypass the audit log and will use the wrong table name.
+
 Commands
 --------
   status                              Queue summary counts by category × status.
@@ -20,7 +23,11 @@ Commands
                                       it in the DB. Verifies the file exists first.
   place    --id ID --output PATH [--agent ID]
                                       Integration Agent records final dos_port/src/
-                                      placement and clears the scratch path.
+                                      placement and deletes the scratch file.
+  recategorize --id ID --category C [--agent ID] [--notes MSG]
+                                      Move a job to a different category (e.g.
+                                      simple→complex when HW I/O is discovered).
+                                      Resets status to needs_translation. Logged.
   unclaim  --id ID                    Return a claimed job to needs_translation.
   fail     --id ID [--notes MSG]      Return a job with a failure note.
   log      --id ID                    Full audit log for one function.
@@ -345,6 +352,36 @@ def cmd_translation_log_entry(args):
          'append_to': 'docs/translation_log.md'})
     con.close()
 
+def cmd_recategorize(args):
+    """Move a job to a different category and reset it to needs_translation."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute(
+        "SELECT id, status, name, category FROM functions WHERE id=?",
+        (args.id,)
+    ).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    if row['category'] == args.category:
+        err({'error': f'{row["name"]} is already category={args.category}'})
+    old_cat = row['category']
+    old_status = row['status']
+    note = args.notes or f'recategorized {old_cat}→{args.category}'
+    cur.execute("""
+        UPDATE functions
+        SET category=?, status='needs_translation', assigned_agent=NULL,
+            scratch_file=NULL, notes=?, updated_at=?
+        WHERE id=?
+    """, (args.category, note, now_utc(), args.id))
+    log_transition(cur, args.id, old_status, 'needs_translation', args.agent,
+                   f'recategorized {old_cat}→{args.category}: {note}')
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'old_category': old_cat, 'new_category': args.category,
+         'old_status': old_status, 'new_status': 'needs_translation',
+         'notes': note})
+    con.close()
+
 def cmd_unclaim(args):
     con = db()
     cur = con.cursor()
@@ -441,6 +478,13 @@ def main():
                    help='Repo-relative path of the placed file in dos_port/src/')
     p.add_argument('--agent')
 
+    p = sub.add_parser('recategorize',
+                       help='Move a job to a different category (resets to needs_translation)')
+    p.add_argument('--id',       type=int, required=True)
+    p.add_argument('--category', choices=['simple', 'complex'], required=True)
+    p.add_argument('--agent')
+    p.add_argument('--notes')
+
     sub.add_parser('pending-placement',
                    help='List complete jobs waiting for Integration Agent')
 
@@ -468,6 +512,7 @@ def main():
         'place':                   cmd_place,
         'pending-placement':       cmd_pending_placement,
         'translation-log-entry':   cmd_translation_log_entry,
+        'recategorize':            cmd_recategorize,
         'unclaim':                 cmd_unclaim,
         'fail':                    cmd_fail,
         'log':                     cmd_log,

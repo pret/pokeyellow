@@ -278,20 +278,26 @@ rendering, window layer, overworld map loading, battle animations, movie sequenc
    code. Translated functions calling each other is fine — the restriction is
    that live, tested code must not gain new edges into untested translations.
    That wiring happens in Claude Code sessions.
-3. **No parallel file edits.** Dispatch must not assign two workers to the same
+3. **No direct DB access.** Never run `sqlite3` or any raw SQL against
+   `translation.db`. The table is named `functions`, not `queue` — direct SQL
+   will silently target the wrong table or bypass the audit log entirely.
+   Every queue mutation must go through `dos_port/tools/work_queue`. The correct
+   command for escalating a misclassified job is:
+   `work_queue recategorize --id <ID> --category complex --notes "reason"`
+4. **No parallel file edits.** Dispatch must not assign two workers to the same
    output file. Parallelism is at the file level only.
-4. **Work queue is the source of truth.** Never mark complete outside
+5. **Work queue is the source of truth.** Never mark complete outside
    `work_queue complete`. Never place a function that is not `status=complete`.
-5. **Unverified = blocked.** Files with `status=unverified` require a Claude
+6. **Unverified = blocked.** Files with `status=unverified` require a Claude
    review before they can be placed. The swarm does not touch them.
-6. **No `git add -A`.** Stage only files changed by the current work unit.
-7. **No `--no-verify`.** Never skip pre-commit hooks.
-8. **Required reading is mandatory.** See the Required Reading table near the top
+7. **No `git add -A`.** Stage only files changed by the current work unit.
+8. **No `--no-verify`.** Never skip pre-commit hooks.
+9. **Required reading is mandatory.** See the Required Reading table near the top
    of this file. All five documents must be read before any NASM is written.
    Ignorance of a bug or glitch safety ruling is not an acceptable excuse.
-9. **Hardware escalation.** If a `simple` ticket hits a `$FF__` register or
-   calls a graphics/audio routine, call `work_queue fail` immediately and do
-   not attempt to translate it.
+10. **Hardware escalation.** If a `simple` ticket hits a `$FF__` register or
+    calls a graphics/audio routine, call `work_queue recategorize --category complex`
+    then `work_queue fail`, and leave it for Claude.
 
 ---
 
