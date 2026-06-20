@@ -2,3 +2,4 @@ DUMP.BIN
 FRAME.BIN
 *.o
 *.orig
+tools/translation.db

@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+"""
+build_index.py — Scan the pret/pokeyellow GB source (home/ and engine/) and
+build (or rebuild) the translation work-queue database at dos_port/tools/translation.db.
+
+Usage:
+    python3 dos_port/tools/build_index.py [--rebuild]
+
+--rebuild  Drop and recreate all tables before inserting. Without this flag,
+           only rows whose source_file is not already present are inserted,
+           so manually-set statuses survive a re-run.
+"""
+
+import argparse
+import os
+import re
+import sqlite3
+import sys
+from datetime import datetime, timezone
+
+# ── Repo root is two levels above this script ──────────────────────────────────
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT   = os.path.normpath(os.path.join(SCRIPT_DIR, '..', '..'))
+DB_PATH     = os.path.join(SCRIPT_DIR, 'translation.db')
+
+# ── Categorisation tables ───────────────────────────────────────────────────────
+# Paths are relative to REPO_ROOT. Order: first match wins (checked against the
+# full relative path of each .asm file using str.startswith / 'in' membership).
+
+# Files whose ENTIRE CONTENT is simple (no HW I/O, no gfx, no audio).
+SIMPLE_FILES = {
+    # home/ utility / data routines
+    'home/math.asm',
+    'home/compare.asm',
+    'home/copy.asm',
+    'home/copy2.asm',
+    'home/array.asm',
+    'home/array2.asm',
+    'home/count_set_bits.asm',
+    'home/random.asm',
+    'home/item.asm',
+    'home/item_price.asm',
+    'home/inventory.asm',
+    'home/money.asm',
+    'home/give.asm',
+    'home/move_mon.asm',
+    'home/pokemon.asm',
+    'home/names.asm',
+    'home/names2.asm',
+    'home/play_time.asm',
+    'home/hidden_events.asm',
+    'home/print_bcd.asm',
+    'home/print_num.asm',
+    # engine/flag / math
+    'engine/flag_action.asm',
+    'engine/math/bcd.asm',
+    'engine/math/multiply_divide.asm',
+    'engine/math/random.asm',
+    # engine/battle — pure-logic routines only
+    'engine/battle/decrement_pp.asm',
+    'engine/battle/experience.asm',
+    'engine/battle/misc.asm',
+    'engine/battle/trainer_ai.asm',
+    'engine/battle/unused_stats_functions.asm',
+    'engine/battle/wild_encounters.asm',
+    'engine/battle/safari_zone.asm',
+    'engine/battle/save_trainer_name.asm',
+    'engine/battle/read_trainer_party.asm',
+    'engine/battle/get_trainer_name.asm',
+    # engine/battle/move_effects — all pure stat manipulation
+    'engine/battle/move_effects/conversion.asm',
+    'engine/battle/move_effects/drain_hp.asm',
+    'engine/battle/move_effects/focus_energy.asm',
+    'engine/battle/move_effects/haze.asm',
+    'engine/battle/move_effects/heal.asm',
+    'engine/battle/move_effects/leech_seed.asm',
+    'engine/battle/move_effects/mist.asm',
+    'engine/battle/move_effects/one_hit_ko.asm',
+    'engine/battle/move_effects/paralyze.asm',
+    'engine/battle/move_effects/pay_day.asm',
+    'engine/battle/move_effects/recoil.asm',
+    'engine/battle/move_effects/reflect_light_screen.asm',
+    'engine/battle/move_effects/substitute.asm',
+    'engine/battle/move_effects/transform.asm',
+    # engine/items — data lookup / arithmetic only
+    'engine/items/get_bag_item_quantity.asm',
+    'engine/items/inventory.asm',
+    'engine/items/subtract_paid_money.asm',
+    'engine/items/tm_prices.asm',
+    'engine/items/tms.asm',
+    'engine/items/tmhm.asm',
+    # engine/pokemon — data / formula
+    'engine/pokemon/evos_moves.asm',
+    'engine/pokemon/experience.asm',
+    'engine/pokemon/set_types.asm',
+    'engine/pokemon/status_ailments.asm',
+    'engine/pokemon/add_mon.asm',
+    'engine/pokemon/remove_mon.asm',
+    'engine/pokemon/load_mon_data.asm',
+    # engine/overworld — geometry / flag checks only
+    'engine/overworld/wild_mons.asm',
+    'engine/overworld/daycare_exp.asm',
+    'engine/overworld/sprite_collisions.asm',
+    'engine/overworld/trainer_sight.asm',
+    'engine/overworld/is_player_just_outside_map.asm',
+    'engine/overworld/clear_variables.asm',
+    'engine/overworld/specific_script_flags.asm',
+    # engine/events — give/heal/flag events (no gfx)
+    'engine/events/give_pokemon.asm',
+    'engine/events/heal_party.asm',
+    'engine/events/card_key.asm',
+    # engine/debug
+    'engine/debug/debug_menu.asm',
+    'engine/debug/debug_party.asm',
+}
+
+# Directory prefixes whose every file is simple
+SIMPLE_PREFIXES = (
+    'engine/events/hidden_events/',
+)
+
+# ── Files whose translations are already in dos_port/src and were written by
+#    Claude (trusted, verified in DOSBox-X). Status = 'complete'.
+COMPLETE_MAP = {
+    # pret source path → dos_port output path
+    'home/joypad.asm':                       'dos_port/src/input/joypad.asm',
+    'home/load_font.asm':                    'dos_port/src/gfx/load_font.asm',
+    'home/copy.asm':                         'dos_port/src/util/copy_data.asm',
+    'home/init.asm':                         'dos_port/src/init/init.asm',
+    'engine/movie/title_yellow.asm':         'dos_port/src/movie/title.asm',
+    'engine/gfx/sprite_oam.asm':             'dos_port/src/gfx/sprite_oam.asm',
+    'engine/overworld/movement.asm':         'dos_port/src/overworld/movement.asm',
+}
+
+# ── Files that exist in dos_port/src but were AI-generated and are unverified.
+#    Status = 'unverified'. The integration agent must review before wiring.
+UNVERIFIED_MAP = {
+    'home/math.asm':                         'dos_port/src/home/math.asm',
+    'home/compare.asm':                      'dos_port/src/home/compare.asm',
+    'home/random.asm':                       'dos_port/src/home/random.asm',
+    'home/copy2.asm':                        'dos_port/src/home/copy.asm',
+    'home/array.asm':                        'dos_port/src/home/array.asm',
+    'home/count_set_bits.asm':               'dos_port/src/home/count_set_bits.asm',
+    'engine/math/bcd.asm':                   'dos_port/src/util/bcd.asm',
+    'engine/math/multiply_divide.asm':       'dos_port/src/util/multiply_divide.asm',
+    'engine/math/random.asm':                'dos_port/src/util/random.asm',
+    'engine/battle/decrement_pp.asm':        'dos_port/src/engine/battle/decrement_pp.asm',
+    'engine/battle/experience.asm':          'dos_port/src/engine/battle/experience.asm',
+    'engine/flag_action.asm':                'dos_port/src/engine/flag_action.asm',
+    'engine/items/get_bag_item_quantity.asm':'dos_port/src/items/get_bag_item_quantity.asm',
+    'engine/items/inventory.asm':            'dos_port/src/items/inventory.asm',
+    'engine/items/subtract_paid_money.asm':  'dos_port/src/items/subtract_paid_money.asm',
+    'engine/items/tm_prices.asm':            'dos_port/src/items/tm_prices.asm',
+    'engine/items/tms.asm':                  'dos_port/src/engine/items/tms.asm',
+    'engine/items/tmhm.asm':                 'dos_port/src/engine/items/tmhm.asm',
+    'engine/items/item_effects.asm':         'dos_port/src/engine/items/item_effects.asm',
+    'engine/items/itemfinder.asm':           'dos_port/src/items/itemfinder.asm',
+    'engine/items/super_rod.asm':            'dos_port/src/items/super_rod.asm',
+    'engine/items/town_map.asm':             'dos_port/src/engine/items/town_map.asm',
+    'engine/pokemon/evos_moves.asm':         'dos_port/src/engine/pokemon/evos_moves.asm',
+    'engine/pokemon/set_types.asm':          'dos_port/src/engine/pokemon/set_types.asm',
+    'engine/pokemon/status_ailments.asm':    'dos_port/src/engine/pokemon/status_ailments.asm',
+    'engine/pokemon/add_mon.asm':            'dos_port/src/engine/pokemon/add_mon.asm',
+    'engine/pokemon/remove_mon.asm':         'dos_port/src/pokemon/remove_mon.asm',
+    'engine/pokemon/load_mon_data.asm':      'dos_port/src/engine/pokemon/load_mon_data.asm',
+    'engine/pokemon/experience.asm':         'dos_port/src/pokemon/experience.asm',
+    'engine/pokemon/bills_pc.asm':           'dos_port/src/pokemon/bills_pc.asm',
+    'engine/menus/pc.asm':                   'dos_port/src/engine/menus/pc.asm',
+    'engine/menus/save.asm':                 'dos_port/src/engine/menus/save.asm',
+    'engine/menus/swap_items.asm':           'dos_port/src/engine/menus/swap_items.asm',
+    'engine/menus/text_box.asm':             'dos_port/src/engine/menus/text_box.asm',
+    'engine/pikachu/pikachu_status.asm':     'dos_port/src/engine/pikachu/pikachu_status.asm',
+    'engine/slots/slot_machine.asm':         'dos_port/src/slots/slot_machine.asm',
+    'engine/debug/debug_party.asm':          'dos_port/src/debug/debug_party.asm',
+    'engine/predefs.asm':                    'dos_port/src/engine/predefs.asm',
+}
+
+# ── Label extraction ────────────────────────────────────────────────────────────
+# Match non-local, non-numeric labels at column 0 in RGBDS source.
+LABEL_RE = re.compile(r'^([A-Za-z_][A-Za-z0-9_]*):{1,2}')
+
+def extract_labels(filepath):
+    labels = []
+    try:
+        with open(filepath, encoding='utf-8', errors='replace') as fh:
+            for line in fh:
+                m = LABEL_RE.match(line)
+                if m:
+                    labels.append(m.group(1))
+    except OSError:
+        pass
+    return labels
+
+# ── Schema ──────────────────────────────────────────────────────────────────────
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS functions (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    name          TEXT    NOT NULL,
+    source_file   TEXT    NOT NULL,
+    category      TEXT    NOT NULL CHECK(category IN ('simple','complex')),
+    status        TEXT    NOT NULL DEFAULT 'needs_translation'
+                          CHECK(status IN
+                              ('needs_translation','in_progress',
+                               'unverified','complete','skip')),
+    output_file   TEXT,
+    assigned_agent TEXT,
+    notes         TEXT,
+    created_at    TEXT    DEFAULT (datetime('now','utc')),
+    updated_at    TEXT    DEFAULT (datetime('now','utc'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_fn_status   ON functions(status);
+CREATE INDEX IF NOT EXISTS idx_fn_category ON functions(category);
+CREATE INDEX IF NOT EXISTS idx_fn_source   ON functions(source_file);
+
+CREATE TABLE IF NOT EXISTS translation_log (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    function_id INTEGER REFERENCES functions(id),
+    old_status  TEXT,
+    new_status  TEXT,
+    agent       TEXT,
+    notes       TEXT,
+    timestamp   TEXT DEFAULT (datetime('now','utc'))
+);
+"""
+
+def categorise(rel_path):
+    """Return 'simple' or 'complex' for a repo-relative .asm path."""
+    norm = rel_path.replace('\\', '/')
+    if norm in SIMPLE_FILES:
+        return 'simple'
+    for prefix in SIMPLE_PREFIXES:
+        if norm.startswith(prefix):
+            return 'simple'
+    return 'complex'
+
+def status_and_output(rel_path):
+    norm = rel_path.replace('\\', '/')
+    if norm in COMPLETE_MAP:
+        return 'complete', COMPLETE_MAP[norm]
+    if norm in UNVERIFIED_MAP:
+        return 'unverified', UNVERIFIED_MAP[norm]
+    return 'needs_translation', None
+
+def scan_source_files():
+    """Yield (rel_path, [label, ...]) for every .asm in home/ and engine/."""
+    for top in ('home', 'engine'):
+        top_dir = os.path.join(REPO_ROOT, top)
+        if not os.path.isdir(top_dir):
+            continue
+        for dirpath, _, filenames in os.walk(top_dir):
+            for fn in sorted(filenames):
+                if not fn.endswith('.asm'):
+                    continue
+                full = os.path.join(dirpath, fn)
+                rel  = os.path.relpath(full, REPO_ROOT).replace('\\', '/')
+                yield rel, extract_labels(full)
+
+def build(rebuild=False):
+    con = sqlite3.connect(DB_PATH)
+    cur = con.cursor()
+
+    if rebuild:
+        cur.executescript("DROP TABLE IF EXISTS translation_log; DROP TABLE IF EXISTS functions;")
+
+    cur.executescript(SCHEMA)
+
+    now = datetime.now(timezone.utc).isoformat()
+    inserted = skipped = 0
+
+    for rel_path, labels in scan_source_files():
+        cat              = categorise(rel_path)
+        status, out_file = status_and_output(rel_path)
+
+        # Skip files already in DB unless rebuilding
+        if not rebuild:
+            cur.execute("SELECT 1 FROM functions WHERE source_file=? LIMIT 1", (rel_path,))
+            if cur.fetchone():
+                skipped += 1
+                continue
+
+        if not labels:
+            # Index the file itself as a single entry so it isn't lost
+            labels = [os.path.splitext(os.path.basename(rel_path))[0]]
+
+        for label in labels:
+            cur.execute("""
+                INSERT INTO functions (name, source_file, category, status,
+                                       output_file, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (label, rel_path, cat, status, out_file, now, now))
+            inserted += 1
+
+    con.commit()
+    con.close()
+    print(f"Done. {inserted} rows inserted, {skipped} files skipped (already present).")
+    print(f"Database: {DB_PATH}")
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--rebuild', action='store_true',
+                    help='Drop and recreate tables before inserting')
+    args = ap.parse_args()
+    build(rebuild=args.rebuild)
+
+if __name__ == '__main__':
+    main()

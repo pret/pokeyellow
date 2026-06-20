@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+"""
+work_queue.py — Agent skill for querying and updating the translation work queue.
+
+All output is JSON so agents can parse it without screen-scraping.
+
+Commands
+--------
+  status                         Print queue summary counts by category × status.
+  list   [--category C] [--status S] [--limit N]
+                                 List matching functions.
+  claim  --agent ID [--count N] [--category C]
+                                 Atomically claim N jobs (default 1) for an agent.
+                                 Returns the claimed rows. Category defaults to 'simple'.
+  complete --id ID --output PATH [--agent ID]
+                                 Mark a function complete and record its output file.
+  unclaim  --id ID               Return a claimed job to needs_translation.
+  fail     --id ID [--notes MSG] Mark a job as needing_translation with a note
+                                 (use when a worker cannot handle it).
+  log      --id ID               Show the audit log for one function.
+
+Exit codes: 0 = success, 1 = error (details in JSON 'error' key).
+"""
+
+import argparse
+import json
+import os
+import sqlite3
+import sys
+from datetime import datetime, timezone
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH    = os.path.join(SCRIPT_DIR, 'translation.db')
+
+def db():
+    if not os.path.exists(DB_PATH):
+        err({'error': f'Database not found at {DB_PATH}. Run build_index.py first.'})
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    con.execute("PRAGMA journal_mode=WAL")
+    return con
+
+def now_utc():
+    return datetime.now(timezone.utc).isoformat()
+
+def out(obj):
+    print(json.dumps(obj, indent=2))
+
+def err(obj):
+    print(json.dumps(obj, indent=2), file=sys.stderr)
+    sys.exit(1)
+
+def log_transition(cur, function_id, old_status, new_status, agent=None, notes=None):
+    cur.execute("""
+        INSERT INTO translation_log (function_id, old_status, new_status, agent, notes, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (function_id, old_status, new_status, agent, notes, now_utc()))
+
+# ── sub-commands ────────────────────────────────────────────────────────────────
+
+def cmd_status(_args):
+    con = db()
+    rows = con.execute("""
+        SELECT category, status, COUNT(*) AS n
+        FROM functions
+        GROUP BY category, status
+        ORDER BY category, status
+    """).fetchall()
+    summary = {}
+    for r in rows:
+        summary.setdefault(r['category'], {})[r['status']] = r['n']
+    totals = con.execute("SELECT status, COUNT(*) AS n FROM functions GROUP BY status").fetchall()
+    out({'summary': summary,
+         'totals': {r['status']: r['n'] for r in totals},
+         'db': DB_PATH})
+    con.close()
+
+def cmd_list(args):
+    con = db()
+    clauses, params = [], []
+    if args.category:
+        clauses.append("category = ?"); params.append(args.category)
+    if args.status:
+        clauses.append("status = ?");   params.append(args.status)
+    where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+    limit = f"LIMIT {args.limit}" if args.limit else ""
+    rows  = con.execute(f"""
+        SELECT id, name, source_file, category, status, output_file, assigned_agent, notes
+        FROM functions {where} ORDER BY source_file, name {limit}
+    """, params).fetchall()
+    out({'count': len(rows), 'functions': [dict(r) for r in rows]})
+    con.close()
+
+def cmd_claim(args):
+    category = args.category or 'simple'
+    count    = args.count or 1
+    con      = db()
+    cur      = con.cursor()
+    # Use a transaction to avoid race conditions between parallel agents
+    cur.execute("BEGIN EXCLUSIVE")
+    rows = cur.execute("""
+        SELECT id, name, source_file, category, status, output_file, notes
+        FROM functions
+        WHERE category = ? AND status = 'needs_translation'
+        ORDER BY source_file, name
+        LIMIT ?
+    """, (category, count)).fetchall()
+
+    if not rows:
+        con.rollback(); con.close()
+        out({'claimed': [], 'message': f'No jobs available in category={category}'})
+        return
+
+    ids = [r['id'] for r in rows]
+    ts  = now_utc()
+    for fid in ids:
+        cur.execute("""
+            UPDATE functions SET status='in_progress', assigned_agent=?, updated_at=?
+            WHERE id=?
+        """, (args.agent, ts, fid))
+        log_transition(cur, fid, 'needs_translation', 'in_progress', args.agent)
+
+    con.commit()
+    out({'claimed': [dict(r) for r in rows],
+         'agent':   args.agent,
+         'count':   len(rows)})
+    con.close()
+
+def cmd_complete(args):
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    old = row['status']
+    ts  = now_utc()
+    cur.execute("""
+        UPDATE functions
+        SET status='complete', output_file=?, assigned_agent=?, updated_at=?
+        WHERE id=?
+    """, (args.output, args.agent, ts, args.id))
+    log_transition(cur, args.id, old, 'complete', args.agent,
+                   f'output: {args.output}')
+    con.commit()
+    out({'id': args.id, 'name': row['name'], 'old_status': old,
+         'new_status': 'complete', 'output_file': args.output})
+    con.close()
+
+def cmd_unclaim(args):
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name, assigned_agent FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    old = row['status']
+    cur.execute("""
+        UPDATE functions
+        SET status='needs_translation', assigned_agent=NULL, updated_at=?
+        WHERE id=?
+    """, (now_utc(), args.id))
+    log_transition(cur, args.id, old, 'needs_translation', row['assigned_agent'],
+                   'unclaimed / returned to queue')
+    con.commit()
+    out({'id': args.id, 'name': row['name'], 'returned_to_queue': True})
+    con.close()
+
+def cmd_fail(args):
+    """Return a job and attach a note explaining why it couldn't be done."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name, assigned_agent FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    old = row['status']
+    cur.execute("""
+        UPDATE functions
+        SET status='needs_translation', assigned_agent=NULL, notes=?, updated_at=?
+        WHERE id=?
+    """, (args.notes, now_utc(), args.id))
+    log_transition(cur, args.id, old, 'needs_translation', row['assigned_agent'],
+                   f'failed: {args.notes}')
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'returned_to_queue': True, 'notes': args.notes})
+    con.close()
+
+def cmd_log(args):
+    con = db()
+    fn  = con.execute("SELECT * FROM functions WHERE id=?", (args.id,)).fetchone()
+    if not fn:
+        err({'error': f'No function with id={args.id}'})
+    log = con.execute("""
+        SELECT old_status, new_status, agent, notes, timestamp
+        FROM translation_log WHERE function_id=? ORDER BY id
+    """, (args.id,)).fetchall()
+    out({'function': dict(fn), 'log': [dict(r) for r in log]})
+    con.close()
+
+# ── CLI wiring ──────────────────────────────────────────────────────────────────
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest='cmd', required=True)
+
+    sub.add_parser('status', help='Queue summary')
+
+    p = sub.add_parser('list', help='List functions')
+    p.add_argument('--category', choices=['simple', 'complex'])
+    p.add_argument('--status',
+                   choices=['needs_translation','in_progress','unverified','complete','skip'])
+    p.add_argument('--limit', type=int)
+
+    p = sub.add_parser('claim', help='Claim jobs for an agent')
+    p.add_argument('--agent',    required=True)
+    p.add_argument('--count',    type=int, default=1)
+    p.add_argument('--category', choices=['simple', 'complex'], default='simple')
+
+    p = sub.add_parser('complete', help='Mark a job complete')
+    p.add_argument('--id',     type=int, required=True)
+    p.add_argument('--output', required=True, dest='output',
+                   help='dos_port/src/... path of the translated file')
+    p.add_argument('--agent')
+
+    p = sub.add_parser('unclaim', help='Return a job to the queue')
+    p.add_argument('--id', type=int, required=True)
+
+    p = sub.add_parser('fail', help='Return a job with a failure note')
+    p.add_argument('--id',    type=int, required=True)
+    p.add_argument('--notes', default='worker could not complete')
+
+    p = sub.add_parser('log', help='Audit log for one function')
+    p.add_argument('--id', type=int, required=True)
+
+    args = ap.parse_args()
+    dispatch = {
+        'status':   cmd_status,
+        'list':     cmd_list,
+        'claim':    cmd_claim,
+        'complete': cmd_complete,
+        'unclaim':  cmd_unclaim,
+        'fail':     cmd_fail,
+        'log':      cmd_log,
+    }
+    dispatch[args.cmd](args)
+
+if __name__ == '__main__':
+    main()
