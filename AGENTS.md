@@ -21,6 +21,27 @@ reserved for Claude Code sessions where the user has direct control.
 
 ---
 
+## Required Reading (all agents that write or review NASM)
+
+Every agent that generates, reviews, or integrates NASM code **must** read these
+before doing any work. They are not optional background — violations will cause
+silent runtime bugs or corrupt glitch behaviour.
+
+| Document | Why it matters |
+|---|---|
+| `CLAUDE.md` | Register map, memory model, DPMI gotchas, build conventions |
+| `docs/register_map.md` | Canonical SM83→x86 register assignments |
+| `docs/386_optimization_strategy.md` | Instruction selection rules for 386 targets |
+| `docs/bugs_and_glitches.md` | Which SM83 bugs to preserve and at what fix level |
+| `docs/glitch_safety.md` | Which glitches are safe to emulate vs. dangerous under DPMI |
+
+Dispatch_Manager must read all five before writing any ticket.
+Code Workers must read all five before translating any function.
+Integration_Agent must read `CLAUDE.md` and `docs/register_map.md` before placing files.
+Docs_Commit_Agent must read `CLAUDE.md` for commit conventions.
+
+---
+
 ## Role: Dispatch_Manager
 - **Model**: `gemini-3.1-pro`
 - **Settings**: `effort: high`
@@ -201,14 +222,19 @@ if it genuinely does not apply — the parser ignores unfilled placeholders.
 
 ### Mandatory checklist
 1. Read the exact pret source label from the ticket. Read surrounding context.
-2. Run `dos_port/tools/work_queue manifest --id <ID>` and write the header to
+2. Check `docs/bugs_and_glitches.md` for any entry matching this function.
+   If found, apply the appropriate `; BUG(level):` block at the affected site.
+3. Check `docs/glitch_safety.md` — if the function is involved in a known
+   glitch, verify the glitch is safe to emulate under DPMI before translating.
+   Emit `; GLITCH: <name> — Safety: <verdict>` at the relevant site.
+4. Run `dos_port/tools/work_queue manifest --id <ID>` and write the header to
    `dos_port/scratch/<id>__<label>.asm`.
-3. Translate beneath the header using the register mapping from the ticket.
+5. Translate beneath the header using the register mapping from the ticket.
    Use `[EBP + constant]` for all GB memory. Emit `; TODO-HW:` for I/O hits.
-4. Apply `; BUG(level):` annotations if listed in the ticket.
-5. Run `nasm -f coff -o /dev/null dos_port/scratch/<id>__<label>.asm` — must
+6. Fill in the four WORKER NOTES fields in the header before finishing.
+7. Run `nasm -f coff -o /dev/null dos_port/scratch/<id>__<label>.asm` — must
    assemble clean.
-6. Return the scratch path and nasm stdout to Dispatch_Manager.
+8. Return the scratch path and nasm stdout to Dispatch_Manager.
 
 ### Hard limits
 - No spawning sub-agents.
@@ -260,9 +286,9 @@ rendering, window layer, overworld map loading, battle animations, movie sequenc
    review before they can be placed. The swarm does not touch them.
 6. **No `git add -A`.** Stage only files changed by the current work unit.
 7. **No `--no-verify`.** Never skip pre-commit hooks.
-8. **CLAUDE.md is law.** All agents must read it before generating any code.
-   `docs/386_optimization_strategy.md` and `docs/register_map.md` are required
-   reading for any agent writing NASM.
+8. **Required reading is mandatory.** See the Required Reading table near the top
+   of this file. All five documents must be read before any NASM is written.
+   Ignorance of a bug or glitch safety ruling is not an acceptable excuse.
 9. **Hardware escalation.** If a `simple` ticket hits a `$FF__` register or
    calls a graphics/audio routine, call `work_queue fail` immediately and do
    not attempt to translate it.
