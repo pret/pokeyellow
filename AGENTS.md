@@ -9,7 +9,7 @@ files — nothing more.
 
 ```
 Dispatch_Manager (gemini-3.1-pro, effort:high)   ← top-level coordinator
-    ├── Code_Worker_1..5 (gemini-2.5-flash, effort:high)
+    ├── Code_Worker_1..5 (gemini-3.5-flash, effort:high)
     ├── Integration_Agent (gemini-3.1-pro, effort:high)
     └── Docs_Commit_Agent (gemini-3.1-pro, effort:high)
 ```
@@ -152,7 +152,7 @@ committing.
 ---
 
 ## Role: Code_Worker (×5 instances)
-- **Model**: `gemini-2.5-flash`
+- **Model**: `gemini-3.5-flash`
 - **Settings**: `effort: high`
 - **Objective**: Translate one SM83 function to x86 NASM 32-bit protected mode
   per the ticket from Dispatch_Manager. One ticket per worker at a time.
