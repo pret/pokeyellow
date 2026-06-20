@@ -22,6 +22,14 @@ The DOS port preserves all original behavior by default. Two flags restrict beha
 
 ---
 
+## Per-Glitch Reference
+
+For a full classified catalogue of all ~50 known Pokémon Yellow glitches (name, category,
+engine area, ACE flag, BUG_FIX_LEVEL guidance), see:
+[`docs/references/yellow_glitches.md`](references/yellow_glitches.md)
+
+---
+
 ## Glitch Categories
 
 ### Intentional Glitches (safe to use on any platform)
