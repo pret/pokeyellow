@@ -124,10 +124,24 @@ Vague tickets are not acceptable. Workers are not smart enough to look things up
 - **Model**: `gemini-3.1-pro`
 - **Settings**: `effort: high`
 - **Objective**: Maintain documentation and execute git commits.
-  - Update `docs/translation_log.md` for every newly-placed translation.
+  - Append a structured entry to `docs/translation_log.md` for every newly-placed
+    translation, using the pre-formatted entry from the queue tool (see below).
   - Write a concise git commit message (see existing commit history for style).
   - Stage exactly the files changed — never `git add -A`.
   - Execute `git commit`. Does not push.
+
+### Writing translation log entries
+For each function Integration Agent just placed, run:
+
+```sh
+dos_port/tools/work_queue translation-log-entry --id <ID>
+```
+
+This returns JSON with an `entry` field: a ready-to-append Markdown block
+populated from the worker's notes (registers used, H-flag involvement, bug tags,
+free-text notes). Append the `entry` string verbatim to `docs/translation_log.md`.
+If a worker left notes blank, fill in what you can infer from the diff before
+committing.
 
 ### Commit message conventions
 - Subject ≤ 72 chars.
@@ -151,8 +165,9 @@ Get the pre-formatted manifest header by running:
 dos_port/tools/work_queue manifest --id <ID>
 ```
 
-Write that header verbatim at the top of the file, then append the translated
-NASM code beneath the `CODE BELOW` line. The header looks like:
+Write that header verbatim at the top of the file, **fill in the four WORKER
+NOTES fields**, then append the translated NASM code beneath the `CODE BELOW`
+line. The header looks like:
 
 ```nasm
 ; ╔══════════════════════════════════════════════════════════╗
@@ -166,6 +181,12 @@ NASM code beneath the `CODE BELOW` line. The header looks like:
 ; -----------------------------------------------------------
 ; target      : (Integration Agent fills this in)
 ; aggregator  : (Integration Agent fills this in)
+; -----------------------------------------------------------
+; WORKER NOTES — fill in before calling work_queue complete
+; registers   : HL→ESI for exp table ptr, A→AL, BC→BX for growth rate
+; hflag       : not involved
+; bug_tags    : none
+; notes       : used imul for exp formula; SM83 used 16-bit mul via DE pair
 ; ╔══════════════════════════════════════════════════════════╗
 ; ║  CODE BELOW — do not modify the header above            ║
 ; ╚══════════════════════════════════════════════════════════╝
@@ -173,6 +194,10 @@ NASM code beneath the `CODE BELOW` line. The header looks like:
 CalcExperience:
     ...
 ```
+
+`work_queue complete` automatically parses the four notes fields from the header
+and stores them in the DB. Leave a field as its placeholder text (in parentheses)
+if it genuinely does not apply — the parser ignores unfilled placeholders.
 
 ### Mandatory checklist
 1. Read the exact pret source label from the ticket. Read surrounding context.
