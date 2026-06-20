@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
 """
-work_queue.py — Agent skill for querying and updating the translation work queue.
+work_queue — Agent skill for querying and updating the translation work queue.
 
 All output is JSON so agents can parse it without screen-scraping.
 
 Commands
 --------
-  status                         Print queue summary counts by category × status.
+  status                              Queue summary counts by category × status.
   list   [--category C] [--status S] [--limit N]
-                                 List matching functions.
+                                      List matching functions.
   claim  --agent ID [--count N] [--category C]
-                                 Atomically claim N jobs (default 1) for an agent.
-                                 Returns the claimed rows. Category defaults to 'simple'.
-  complete --id ID --output PATH [--agent ID]
-                                 Mark a function complete and record its output file.
-  unclaim  --id ID               Return a claimed job to needs_translation.
-  fail     --id ID [--notes MSG] Mark a job as needing_translation with a note
-                                 (use when a worker cannot handle it).
-  log      --id ID               Show the audit log for one function.
+                                      Atomically claim N jobs (default 1).
+                                      Returns claimed rows + suggested scratch paths.
+  manifest --id ID                    Print the manifest header a worker must write
+                                      at the top of its scratch file.
+  complete --id ID --scratch PATH [--agent ID]
+                                      Mark a function complete; record scratch path
+                                      as the pending output for Integration Agent.
+  place    --id ID --output PATH [--agent ID]
+                                      Integration Agent calls this after moving the
+                                      scratch file into dos_port/src/. Records the
+                                      final output path and clears the scratch path.
+  unclaim  --id ID                    Return a claimed job to needs_translation.
+  fail     --id ID [--notes MSG]      Return a job with a failure note.
+  log      --id ID                    Audit log for one function.
+  pending-placement                   List complete jobs waiting for Integration Agent.
 
 Exit codes: 0 = success, 1 = error (details in JSON 'error' key).
 """
@@ -25,20 +32,35 @@ Exit codes: 0 = success, 1 = error (details in JSON 'error' key).
 import argparse
 import json
 import os
+import re
 import sqlite3
 import sys
 from datetime import datetime, timezone
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH    = os.path.join(SCRIPT_DIR, 'translation.db')
+SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT    = os.path.normpath(os.path.join(SCRIPT_DIR, '..', '..'))
+DB_PATH      = os.path.join(SCRIPT_DIR, 'translation.db')
+SCRATCH_DIR  = os.path.join(REPO_ROOT, 'dos_port', 'scratch')
 
 def db():
     if not os.path.exists(DB_PATH):
-        err({'error': f'Database not found at {DB_PATH}. Run build_index.py first.'})
+        err({'error': f'Database not found at {DB_PATH}. Run build_index first.'})
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA journal_mode=WAL")
+    _migrate(con)
     return con
+
+def _migrate(con):
+    """Add columns introduced after the initial schema without breaking old DBs."""
+    cols = {r[1] for r in con.execute("PRAGMA table_info(functions)")}
+    if 'scratch_file' not in cols:
+        con.execute("ALTER TABLE functions ADD COLUMN scratch_file TEXT")
+        con.commit()
+
+def scratch_path(fid, label):
+    safe = re.sub(r'[^A-Za-z0-9_]', '_', label)
+    return os.path.join(SCRATCH_DIR, f'{fid}__{safe}.asm')
 
 def now_utc():
     return datetime.now(timezone.utc).isoformat()
@@ -56,20 +78,43 @@ def log_transition(cur, function_id, old_status, new_status, agent=None, notes=N
         VALUES (?, ?, ?, ?, ?, ?)
     """, (function_id, old_status, new_status, agent, notes, now_utc()))
 
+def make_manifest(row):
+    """Return the manifest header string for a DB row."""
+    sp = scratch_path(row['id'], row['name'])
+    rel_scratch = os.path.relpath(sp, REPO_ROOT)
+    lines = [
+        '; ╔══════════════════════════════════════════════════════════╗',
+        '; ║              PKMNDOS TRANSLATION MANIFEST               ║',
+        '; ╚══════════════════════════════════════════════════════════╝',
+        f'; queue_id   : {row["id"]}',
+        f'; label      : {row["name"]}',
+        f'; source     : {row["source_file"]}',
+        f'; category   : {row["category"]}',
+        f'; scratch    : {rel_scratch}',
+        '; -----------------------------------------------------------',
+        '; target      : (Integration Agent fills this in)',
+        '; aggregator  : (Integration Agent fills this in)',
+        '; ╔══════════════════════════════════════════════════════════╗',
+        '; ║  CODE BELOW — do not modify the header above            ║',
+        '; ╚══════════════════════════════════════════════════════════╝',
+        '',
+    ]
+    return '\n'.join(lines)
+
 # ── sub-commands ────────────────────────────────────────────────────────────────
 
 def cmd_status(_args):
     con = db()
     rows = con.execute("""
         SELECT category, status, COUNT(*) AS n
-        FROM functions
-        GROUP BY category, status
-        ORDER BY category, status
+        FROM functions GROUP BY category, status ORDER BY category, status
     """).fetchall()
     summary = {}
     for r in rows:
         summary.setdefault(r['category'], {})[r['status']] = r['n']
-    totals = con.execute("SELECT status, COUNT(*) AS n FROM functions GROUP BY status").fetchall()
+    totals = con.execute(
+        "SELECT status, COUNT(*) AS n FROM functions GROUP BY status"
+    ).fetchall()
     out({'summary': summary,
          'totals': {r['status']: r['n'] for r in totals},
          'db': DB_PATH})
@@ -84,8 +129,9 @@ def cmd_list(args):
         clauses.append("status = ?");   params.append(args.status)
     where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
     limit = f"LIMIT {args.limit}" if args.limit else ""
-    rows  = con.execute(f"""
-        SELECT id, name, source_file, category, status, output_file, assigned_agent, notes
+    rows = con.execute(f"""
+        SELECT id, name, source_file, category, status,
+               scratch_file, output_file, assigned_agent, notes
         FROM functions {where} ORDER BY source_file, name {limit}
     """, params).fetchall()
     out({'count': len(rows), 'functions': [dict(r) for r in rows]})
@@ -96,10 +142,9 @@ def cmd_claim(args):
     count    = args.count or 1
     con      = db()
     cur      = con.cursor()
-    # Use a transaction to avoid race conditions between parallel agents
     cur.execute("BEGIN EXCLUSIVE")
     rows = cur.execute("""
-        SELECT id, name, source_file, category, status, output_file, notes
+        SELECT id, name, source_file, category, status, notes
         FROM functions
         WHERE category = ? AND status = 'needs_translation'
         ORDER BY source_file, name
@@ -111,40 +156,102 @@ def cmd_claim(args):
         out({'claimed': [], 'message': f'No jobs available in category={category}'})
         return
 
-    ids = [r['id'] for r in rows]
-    ts  = now_utc()
-    for fid in ids:
+    ts = now_utc()
+    claimed = []
+    for r in rows:
+        sp = scratch_path(r['id'], r['name'])
+        rel_sp = os.path.relpath(sp, REPO_ROOT)
         cur.execute("""
-            UPDATE functions SET status='in_progress', assigned_agent=?, updated_at=?
+            UPDATE functions
+            SET status='in_progress', assigned_agent=?, scratch_file=?, updated_at=?
             WHERE id=?
-        """, (args.agent, ts, fid))
-        log_transition(cur, fid, 'needs_translation', 'in_progress', args.agent)
+        """, (args.agent, rel_sp, ts, r['id']))
+        log_transition(cur, r['id'], 'needs_translation', 'in_progress', args.agent)
+        claimed.append({**dict(r), 'scratch_path': rel_sp,
+                        'manifest_cmd': f'dos_port/tools/work_queue manifest --id {r["id"]}'})
 
     con.commit()
-    out({'claimed': [dict(r) for r in rows],
-         'agent':   args.agent,
-         'count':   len(rows)})
+    out({'claimed': claimed, 'agent': args.agent, 'count': len(claimed),
+         'scratch_dir': os.path.relpath(SCRATCH_DIR, REPO_ROOT)})
+    con.close()
+
+def cmd_manifest(args):
+    con = db()
+    row = con.execute(
+        "SELECT id, name, source_file, category FROM functions WHERE id=?",
+        (args.id,)
+    ).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    sp      = scratch_path(row['id'], row['name'])
+    rel_sp  = os.path.relpath(sp, REPO_ROOT)
+    header  = make_manifest(row)
+    out({'id': row['id'], 'label': row['name'],
+         'source': row['source_file'],
+         'scratch_path': rel_sp,
+         'header': header})
     con.close()
 
 def cmd_complete(args):
+    """Worker calls this after writing the scratch file. Marks ready for Integration."""
     con = db()
     cur = con.cursor()
     row = cur.execute("SELECT id, status, name FROM functions WHERE id=?",
                       (args.id,)).fetchone()
     if not row:
         err({'error': f'No function with id={args.id}'})
+    # Verify scratch file actually exists
+    full_scratch = os.path.join(REPO_ROOT, args.scratch)
+    if not os.path.exists(full_scratch):
+        err({'error': f'Scratch file not found: {args.scratch}',
+             'hint': 'Worker must write the file before calling complete.'})
     old = row['status']
-    ts  = now_utc()
     cur.execute("""
         UPDATE functions
-        SET status='complete', output_file=?, assigned_agent=?, updated_at=?
+        SET status='complete', scratch_file=?, assigned_agent=?, updated_at=?
         WHERE id=?
-    """, (args.output, args.agent, ts, args.id))
+    """, (args.scratch, args.agent, now_utc(), args.id))
     log_transition(cur, args.id, old, 'complete', args.agent,
-                   f'output: {args.output}')
+                   f'scratch: {args.scratch}')
     con.commit()
     out({'id': args.id, 'name': row['name'], 'old_status': old,
-         'new_status': 'complete', 'output_file': args.output})
+         'new_status': 'complete', 'scratch_file': args.scratch,
+         'next_step': 'Integration Agent: run `place --id` after moving to dos_port/src/'})
+    con.close()
+
+def cmd_place(args):
+    """Integration Agent calls this after moving scratch → dos_port/src/."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name, scratch_file FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    if row['status'] != 'complete':
+        err({'error': f'Function {row["name"]} is not complete (status={row["status"]})',
+             'hint': 'Only complete functions can be placed.'})
+    cur.execute("""
+        UPDATE functions
+        SET output_file=?, scratch_file=NULL, assigned_agent=?, updated_at=?
+        WHERE id=?
+    """, (args.output, args.agent, now_utc(), args.id))
+    log_transition(cur, args.id, 'complete', 'complete', args.agent,
+                   f'placed → {args.output}')
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'scratch_cleared': row['scratch_file'],
+         'output_file': args.output})
+    con.close()
+
+def cmd_pending_placement(_args):
+    con = db()
+    rows = con.execute("""
+        SELECT id, name, source_file, category, scratch_file, assigned_agent
+        FROM functions
+        WHERE status = 'complete' AND output_file IS NULL
+        ORDER BY source_file, name
+    """).fetchall()
+    out({'count': len(rows), 'pending': [dict(r) for r in rows]})
     con.close()
 
 def cmd_unclaim(args):
@@ -157,17 +264,17 @@ def cmd_unclaim(args):
     old = row['status']
     cur.execute("""
         UPDATE functions
-        SET status='needs_translation', assigned_agent=NULL, updated_at=?
+        SET status='needs_translation', assigned_agent=NULL,
+            scratch_file=NULL, updated_at=?
         WHERE id=?
     """, (now_utc(), args.id))
-    log_transition(cur, args.id, old, 'needs_translation', row['assigned_agent'],
-                   'unclaimed / returned to queue')
+    log_transition(cur, args.id, old, 'needs_translation',
+                   row['assigned_agent'], 'unclaimed / returned to queue')
     con.commit()
     out({'id': args.id, 'name': row['name'], 'returned_to_queue': True})
     con.close()
 
 def cmd_fail(args):
-    """Return a job and attach a note explaining why it couldn't be done."""
     con = db()
     cur = con.cursor()
     row = cur.execute("SELECT id, status, name, assigned_agent FROM functions WHERE id=?",
@@ -177,11 +284,12 @@ def cmd_fail(args):
     old = row['status']
     cur.execute("""
         UPDATE functions
-        SET status='needs_translation', assigned_agent=NULL, notes=?, updated_at=?
+        SET status='needs_translation', assigned_agent=NULL,
+            scratch_file=NULL, notes=?, updated_at=?
         WHERE id=?
     """, (args.notes, now_utc(), args.id))
-    log_transition(cur, args.id, old, 'needs_translation', row['assigned_agent'],
-                   f'failed: {args.notes}')
+    log_transition(cur, args.id, old, 'needs_translation',
+                   row['assigned_agent'], f'failed: {args.notes}')
     con.commit()
     out({'id': args.id, 'name': row['name'],
          'returned_to_queue': True, 'notes': args.notes})
@@ -189,7 +297,7 @@ def cmd_fail(args):
 
 def cmd_log(args):
     con = db()
-    fn  = con.execute("SELECT * FROM functions WHERE id=?", (args.id,)).fetchone()
+    fn = con.execute("SELECT * FROM functions WHERE id=?", (args.id,)).fetchone()
     if not fn:
         err({'error': f'No function with id={args.id}'})
     log = con.execute("""
@@ -219,11 +327,25 @@ def main():
     p.add_argument('--count',    type=int, default=1)
     p.add_argument('--category', choices=['simple', 'complex'], default='simple')
 
-    p = sub.add_parser('complete', help='Mark a job complete')
-    p.add_argument('--id',     type=int, required=True)
-    p.add_argument('--output', required=True, dest='output',
-                   help='dos_port/src/... path of the translated file')
+    p = sub.add_parser('manifest', help='Print manifest header for a worker scratch file')
+    p.add_argument('--id', type=int, required=True)
+
+    p = sub.add_parser('complete',
+                       help='Worker marks job done; records scratch file path')
+    p.add_argument('--id',      type=int, required=True)
+    p.add_argument('--scratch', required=True,
+                   help='Repo-relative path to the scratch file (dos_port/scratch/…)')
     p.add_argument('--agent')
+
+    p = sub.add_parser('place',
+                       help='Integration Agent records final dos_port/src/ placement')
+    p.add_argument('--id',     type=int, required=True)
+    p.add_argument('--output', required=True,
+                   help='Repo-relative path of the placed file in dos_port/src/')
+    p.add_argument('--agent')
+
+    sub.add_parser('pending-placement',
+                   help='List complete jobs waiting for Integration Agent')
 
     p = sub.add_parser('unclaim', help='Return a job to the queue')
     p.add_argument('--id', type=int, required=True)
@@ -236,16 +358,18 @@ def main():
     p.add_argument('--id', type=int, required=True)
 
     args = ap.parse_args()
-    dispatch = {
-        'status':   cmd_status,
-        'list':     cmd_list,
-        'claim':    cmd_claim,
-        'complete': cmd_complete,
-        'unclaim':  cmd_unclaim,
-        'fail':     cmd_fail,
-        'log':      cmd_log,
-    }
-    dispatch[args.cmd](args)
+    {
+        'status':            cmd_status,
+        'list':              cmd_list,
+        'claim':             cmd_claim,
+        'manifest':          cmd_manifest,
+        'complete':          cmd_complete,
+        'place':             cmd_place,
+        'pending-placement': cmd_pending_placement,
+        'unclaim':           cmd_unclaim,
+        'fail':              cmd_fail,
+        'log':               cmd_log,
+    }[args.cmd](args)
 
 if __name__ == '__main__':
     main()

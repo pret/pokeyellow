@@ -36,12 +36,25 @@ Queue lives in `dos_port/tools/translation.db`. Use `dos_port/tools/work_queue`
 ```sh
 dos_port/tools/work_queue status
 dos_port/tools/work_queue claim --agent Dispatch_Manager --count 5 --category simple
-dos_port/tools/work_queue complete --id <ID> --output dos_port/src/<path> --agent Dispatch_Manager
 dos_port/tools/work_queue fail --id <ID> --notes "reason"
 dos_port/tools/work_queue list --category simple --status needs_translation --limit 20
+dos_port/tools/work_queue pending-placement   # jobs ready for Integration Agent
 ```
 
 See `dos_port/tools/work_queue --help` for the full reference.
+
+### Scratch pad
+Workers write their output to `dos_port/scratch/` — a fully untracked ephemeral
+directory (gitignored). Each file is named `<id>__<label>.asm` and must begin
+with a manifest header (see Code Worker section below). The Dispatch Manager
+verifies the scratch file assembles, then calls:
+
+```sh
+dos_port/tools/work_queue complete --id <ID> --scratch dos_port/scratch/<id>__<label>.asm --agent Dispatch_Manager
+```
+
+The Integration Agent picks up everything in `pending-placement`, moves each
+file into `dos_port/src/`, and calls `work_queue place` to record the final path.
 
 ### Ticket format (sent to each Code Worker)
 Each ticket must include:
@@ -81,15 +94,25 @@ Vague tickets are not acceptable. Workers are not smart enough to look things up
   to an aggregator or a rule to the Makefile.
 - Do not touch `unverified`-status files. Only `complete`-status translations
   may be placed.
+- Do not delete scratch files; the Dispatch Manager owns them. They disappear
+  naturally since the whole `dos_port/scratch/` directory is gitignored.
 
-### Integration checklist (per file)
-1. Confirm `status = 'complete'` in the work queue for the function.
-2. Identify the correct aggregator for the output file's subdirectory.
-3. Add the `%include` line. Confirm `nasm -f coff -o /dev/null <aggregator>` passes.
-4. If the output file is a new compilation unit, add a `$(OBJ)/name.o` rule to
-   the Makefile and add the object to the `OBJS` list.
-5. Run `make -C dos_port` — must pass clean with no new warnings.
-6. Hand the diff to `Docs_Commit_Agent`.
+### Integration checklist (per function)
+1. Run `dos_port/tools/work_queue pending-placement` to see what's ready.
+2. Read the manifest header at the top of the scratch file
+   (`dos_port/scratch/<id>__<label>.asm`) to determine the source origin.
+3. Decide the correct `dos_port/src/` destination (mirror the pret source tree
+   under `dos_port/src/`). Fill in the `target` and `aggregator` fields in the
+   header if helpful for the audit trail.
+4. Copy the file to its `dos_port/src/` destination. The scratch copy remains
+   until the swarm session ends.
+5. Add a `%include` line in the appropriate aggregator file.
+6. If the file is a new compilation unit, add a `$(OBJ)/name.o` rule to the
+   Makefile and append the object to `OBJS`.
+7. Run `nasm -f coff -o /dev/null <aggregator>` — must pass.
+8. Run `make -C dos_port` — must pass clean with no new warnings.
+9. Call `dos_port/tools/work_queue place --id <ID> --output dos_port/src/<path>`.
+10. Hand the diff to `Docs_Commit_Agent`.
 
 ---
 
@@ -116,19 +139,52 @@ Vague tickets are not acceptable. Workers are not smart enough to look things up
 - **Objective**: Translate one SM83 function to x86 NASM 32-bit protected mode
   per the ticket from Dispatch_Manager. One ticket per worker at a time.
 
+### Scratch file format
+Every worker output must go to `dos_port/scratch/<id>__<label>.asm`.
+Get the pre-formatted manifest header by running:
+
+```sh
+dos_port/tools/work_queue manifest --id <ID>
+```
+
+Write that header verbatim at the top of the file, then append the translated
+NASM code beneath the `CODE BELOW` line. The header looks like:
+
+```nasm
+; ╔══════════════════════════════════════════════════════════╗
+; ║              PKMNDOS TRANSLATION MANIFEST               ║
+; ╚══════════════════════════════════════════════════════════╝
+; queue_id   : 1234
+; label      : CalcExperience
+; source     : engine/battle/experience.asm
+; category   : simple
+; scratch    : dos_port/scratch/1234__CalcExperience.asm
+; -----------------------------------------------------------
+; target      : (Integration Agent fills this in)
+; aggregator  : (Integration Agent fills this in)
+; ╔══════════════════════════════════════════════════════════╗
+; ║  CODE BELOW — do not modify the header above            ║
+; ╚══════════════════════════════════════════════════════════╝
+
+CalcExperience:
+    ...
+```
+
 ### Mandatory checklist
-1. Read the exact pret source label from the ticket. Read surrounding context in
-   the file to understand what the function does.
-2. Translate using the register mapping from the ticket. Use `[EBP + constant]`
-   for all GB memory accesses. Emit `; TODO-HW:` for any I/O boundary hit.
-3. Apply `; BUG(level):` annotations if listed in the ticket.
-4. Run `nasm -f coff -o /dev/null <output_file>` — must assemble clean.
-5. Return the output file path and the nasm stdout to Dispatch_Manager.
+1. Read the exact pret source label from the ticket. Read surrounding context.
+2. Run `dos_port/tools/work_queue manifest --id <ID>` and write the header to
+   `dos_port/scratch/<id>__<label>.asm`.
+3. Translate beneath the header using the register mapping from the ticket.
+   Use `[EBP + constant]` for all GB memory. Emit `; TODO-HW:` for I/O hits.
+4. Apply `; BUG(level):` annotations if listed in the ticket.
+5. Run `nasm -f coff -o /dev/null dos_port/scratch/<id>__<label>.asm` — must
+   assemble clean.
+6. Return the scratch path and nasm stdout to Dispatch_Manager.
 
 ### Hard limits
 - No spawning sub-agents.
 - No touching graphics, VGA, OAM, VRAM, audio, or joypad code.
-- Create the output file only — do not modify any existing file.
+- Write only to `dos_port/scratch/` — do not modify any existing file.
 - Do not add `%include` lines, Makefile rules, or `call` instructions anywhere.
 - If the function touches a hardware register (`$FF__`) not in the ticket, stop
   and report back immediately. Do not guess.

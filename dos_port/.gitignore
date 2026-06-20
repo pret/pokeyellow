@@ -3,3 +3,4 @@ FRAME.BIN
 *.o
 *.orig
 tools/translation.db
+scratch/
