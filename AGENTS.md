@@ -86,12 +86,16 @@ Vague tickets are not acceptable. Workers are not smart enough to look things up
   the full scope of this role.
 
 ### What this agent MUST NOT do
-- **No callsite wiring.** Do not add `call FunctionName` anywhere in existing
-  engine code. Do not modify `OverworldLoop`, `EnterMap`, `DelayFrame`, or any
-  other active game-loop entry point. Callsite connections are done later in a
-  Claude Code session.
-- Do not modify any file that already has code in it beyond adding a `%include`
-  to an aggregator or a rule to the Makefile.
+- **No live-graph wiring.** Do not edit any function that is already reachable
+  from the running game loop (`OverworldLoop`, `EnterMap`, `DelayFrame`, and
+  everything they transitively call). Adding a `call NewFunction` inside one of
+  those would cause untested code to execute during normal gameplay.
+  That boundary is enforced in Claude Code sessions only.
+- Translated functions may freely call other translated functions — that is
+  expected and correct. The restriction is one-directional: live code must not
+  gain new calls into unwired code.
+- Do not modify any already-wired file beyond adding a `%include` to an
+  aggregator or a Makefile rule.
 - Do not touch `unverified`-status files. Only `complete`-status translations
   may be placed.
 - Do not delete scratch files; the Dispatch Manager owns them. They disappear
@@ -185,7 +189,9 @@ CalcExperience:
 - No spawning sub-agents.
 - No touching graphics, VGA, OAM, VRAM, audio, or joypad code.
 - Write only to `dos_port/scratch/` — do not modify any existing file.
-- Do not add `%include` lines, Makefile rules, or `call` instructions anywhere.
+- Do not add `%include` lines or Makefile rules — that is Integration Agent's job.
+- `call` instructions inside the translated function are expected and correct.
+  Do not add `call` to any *existing* file outside the scratch output.
 - If the function touches a hardware register (`$FF__`) not in the ticket, stop
   and report back immediately. Do not guess.
 
@@ -216,8 +222,11 @@ rendering, window layer, overworld map loading, battle animations, movie sequenc
 
 1. **No Claude in the loop.** The swarm does not spawn Claude agents. Claude
    operates independently via Claude Code.
-2. **Callsite wiring is forbidden.** No agent may add `call` instructions to
-   existing engine code. That work happens in Claude Code sessions.
+2. **Live-graph boundary is inviolable.** No agent may edit a function that is
+   already reachable from the running game loop to make it call newly-placed
+   code. Translated functions calling each other is fine — the restriction is
+   that live, tested code must not gain new edges into untested translations.
+   That wiring happens in Claude Code sessions.
 3. **No parallel file edits.** Dispatch must not assign two workers to the same
    output file. Parallelism is at the file level only.
 4. **Work queue is the source of truth.** Never mark complete outside
