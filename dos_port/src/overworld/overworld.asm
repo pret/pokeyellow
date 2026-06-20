@@ -224,6 +224,16 @@ EnterMap:
 ;     land collision check, and (if passable) start an 8-frame walk.
 ; ---------------------------------------------------------------------------
 OverworldLoop:
+    call RunNPCMovementScript                    ; door-exit auto-walk (BIT_STANDING_ON_DOOR path)
+    ; Count down wIgnoreInputCounter each frame — pret: CountDownIgnoreInputBitReset (home/play_time.asm)
+    cmp byte [ebp + W_IGNORE_INPUT_COUNTER], 0
+    je .joyCountDone
+    dec byte [ebp + W_IGNORE_INPUT_COUNTER]
+    jnz .joyCountDone
+    ; counter hit 0 → clear BIT_DISABLE_JOYPAD | BIT_UNKNOWN_5_2 | BIT_UNKNOWN_5_1
+    and byte [ebp + W_STATUS_FLAGS_5], ~((1 << BIT_DISABLE_JOYPAD) | (1 << 2) | (1 << 1))
+    mov byte [ebp + H_JOY_HELD], 0
+.joyCountDone:
     call UpdateSprites                         ; advance player facing + walk animation
     call DelayFrame
 .lessDelay:                                  ; OverworldLoopLessDelay
@@ -235,8 +245,21 @@ OverworldLoop:
     ; --- idle: clear step vectors, then sample the held D-pad ---
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
     mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
-    movzx eax, byte [ebp + H_JOY_HELD]
 
+    ; Simulated joypad state overrides real input (pret: AreInputsSimulated).
+    ; BIT_SCRIPTED_MOVEMENT_STATE is set by PlayerStepOutFromDoor for one idle frame.
+    movzx eax, byte [ebp + H_JOY_HELD]
+    test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    jz .checkJoyDisable
+    movzx eax, byte [ebp + W_SIMULATED_JOYPAD_STATES_END]
+    and byte [ebp + W_STATUS_FLAGS_5], ~(1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    jmp .checkPADDown
+
+.checkJoyDisable:
+    test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_DISABLE_JOYPAD)
+    jnz .noDirection                            ; input suppressed during warp-arrival window
+
+.checkPADDown:
     test al, PAD_DOWN
     jz .checkUp
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 1
@@ -270,6 +293,11 @@ OverworldLoop:
     mov [ebp + W_PLAYER_MOVING_DIRECTION],  dl
     mov [ebp + W_SPRITE_PLAYER_FACING_DIR], dh
 
+    ; pret: bit BIT_SCRIPTED_MOVEMENT_STATE, a / jr nz, .noDirectionChange
+    ; Scripted movement (door auto-walk) bypasses the 180° turn-delay entirely.
+    test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    jnz .walkStart
+
     ; Turn delay (pret: wCheckFor180DegreeTurn / wPlayerLastStopDirection).
     ; First press after idle with a NEW direction: update facing but don't walk.
     ; Second press (same direction, or same as last-stop dir): walk normally.
@@ -283,8 +311,13 @@ OverworldLoop:
     call CollisionCheckOnLand                 ; CF=1 → blocked
     jnc .startWalk
 
-    ; Blocked. If facing DOWN and currently on a warp tile, fire the exit warp.
-    ; Covers indoor exit warps: player presses south into the map border.
+    ; Blocked. Collision-exit path (pret: bit BIT_STANDING_ON_WARP / ExtraWarpCheck).
+    ; Suppress during BIT_EXITING_DOOR window (auto-walk PAD_DOWN after door arrival).
+    test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_EXITING_DOOR)
+    jnz OverworldLoop
+    ; Only attempt exit if player IS on a warp tile (pret: bit BIT_STANDING_ON_WARP guard).
+    test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_WARP)
+    jz OverworldLoop
     cmp dl, PLAYER_DIR_DOWN
     jne OverworldLoop
     call CheckWarpTile
@@ -293,7 +326,7 @@ OverworldLoop:
 
 .startWalk:
     mov byte [ebp + W_WALK_COUNTER], 8        ; begin an 8-frame step
-    jmp OverworldLoop
+    jmp .moveAhead                             ; pret: jr .moveAhead2 — advance immediately, no extra delay
 
 .noDirection:
     ; Save the last-used moving direction so the next press can check for a turn.
@@ -307,9 +340,28 @@ OverworldLoop:
 
 .moveAhead:
     call AdvancePlayerSprite
-    jc .mapTransition                         ; CF=1 means a map connection was crossed
+    jc .mapTransition
+    cmp byte [ebp + W_WALK_COUNTER], 0
+    jne OverworldLoop
+    ; Edge-detect: save previous BIT_STANDING_ON_WARP then clear it.
+    ; Mirrors pret: res BIT_STANDING_ON_WARP first, then set it if coords match.
+    test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_WARP)
+    setnz bh                                  ; BH=1 if player WAS on warp tile
+    and byte [ebp + W_MOVEMENT_FLAGS], ~(1 << BIT_STANDING_ON_WARP)
     call CheckWarpTile
-    jnc OverworldLoop                         ; no warp tile → keep looping
+    jnc OverworldLoop                         ; no match → bit cleared, loop
+    ; Coord matched: always set BIT_STANDING_ON_WARP so .walkStart collision-exit works
+    ; even when the player arrives laterally (and shouldn't warp immediately).
+    or byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_WARP)
+    ; Walk-on warp only fires for north/south movement (PLAYER_DIR_UP | PLAYER_DIR_DOWN).
+    ; Lateral (EAST/WEST) approach to a multi-tile mat sets the bit (above) but doesn't
+    ; fire, matching pret's IsPlayerFacingEdgeOfMap returning false for left/right.
+    test dl, (PLAYER_DIR_DOWN | PLAYER_DIR_UP)
+    jz OverworldLoop                          ; lateral → no fire
+    ; Fire only on non-warp→warp transition (BH=0).
+    ; warp→warp (BH=1): lateral mat side step, or first step after arrival.
+    test bh, bh
+    jnz OverworldLoop                         ; warp→warp → no fire
 .warpTransition:
     ; BL = resolved destination map; W_DESTINATION_WARP_ID = 0-based spawn warp index
     mov al, [ebp + W_CUR_MAP]
@@ -322,7 +374,14 @@ OverworldLoop:
     mov byte [ebp + H_SCX], 0
     mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
     call LoadWarpDestination
-    jmp OverworldLoop.lessDelay
+    ; pret: home/overworld.asm:515 (WarpFound2.indoorMaps) — clear BIT_EXITING_DOOR,
+    ; then set BIT_STANDING_ON_DOOR to trigger RunNPCMovementScript→PlayerStepOutFromDoor
+    ; on the next idle frame. PlayerStepOutFromDoor re-sets BIT_EXITING_DOOR only if the
+    ; arrival tile is a door tile; stair arrivals leave it clear.
+    and byte [ebp + W_MOVEMENT_FLAGS], ~(1 << BIT_EXITING_DOOR)
+    or byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_DOOR)
+    call IgnoreInputForHalfSecond
+    jmp OverworldLoop                          ; pret: jp EnterMap → OverworldLoop top; RunNPCMovementScript fires on first post-warp frame
 
 .mapTransition:
     ; A connection was crossed — reload everything for the new map.
@@ -1310,7 +1369,6 @@ CollisionCheckOnLand:
     push eax
     push ecx
     push esi
-    call LoadCurrentMapView                        ; refresh wTileMap for current YBC/XBC before check
     call GetTileInFrontOfPlayer                    ; CL = tile in front
     call IsTilePassable                            ; CF = 1 if not passable
     pop esi
@@ -1563,6 +1621,110 @@ LoadTilesetHeader:
     pop esi
     pop ebx
     pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; IgnoreInputForHalfSecond — suppress player input for ~30 frames after a warp.
+; Sets wIgnoreInputCounter=30 and BIT_DISABLE_JOYPAD in wStatusFlags5.
+; The countdown runs at the top of OverworldLoop; joypad is re-enabled when it
+; reaches 0. OverworldLoop's idle path skips direction reads while the bit is set.
+; Pret ref: home/overworld.asm:IgnoreInputForHalfSecond
+; ---------------------------------------------------------------------------
+IgnoreInputForHalfSecond:
+    mov byte [ebp + W_IGNORE_INPUT_COUNTER], 30
+    or byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_DISABLE_JOYPAD) | (1 << 2) | (1 << 1)
+    ret
+
+; ---------------------------------------------------------------------------
+; IsPlayerStandingOnDoorTile — check if the player's current tile is a door tile.
+; Returns CF=1 if yes, CF=0 otherwise (stair, ladder, or unknown tileset).
+; Reads W_CUR_MAP_TILESET, looks up DoorTileTable, then checks W_TILEMAP at
+; PLAYER_STANDING_ROW/COL (the tile directly under the player sprite).
+; All registers preserved.
+; Pret ref: engine/overworld/doors.asm:IsPlayerStandingOnDoorTile
+; ---------------------------------------------------------------------------
+IsPlayerStandingOnDoorTile:
+    push eax
+    push esi
+
+    movzx eax, byte [ebp + W_CUR_MAP_TILESET]
+    mov esi, DoorTileTable
+
+.search_tileset:
+    cmp byte [esi], 0xFF               ; end of table → tileset not listed
+    je .not_door
+    cmp byte [esi], al                 ; tileset match?
+    je .found_tileset
+    inc esi                            ; skip tileset byte, then scan past 0-terminated tile list
+.skip_tiles:
+    cmp byte [esi], 0
+    je .skip_done
+    inc esi
+    jmp .skip_tiles
+.skip_done:
+    inc esi                            ; skip the 0 terminator
+    jmp .search_tileset
+
+.found_tileset:
+    inc esi                            ; ESI now points at first tile ID for this tileset
+    movzx eax, byte [ebp + W_TILEMAP + PLAYER_STANDING_ROW * SCREEN_TILES_W + PLAYER_STANDING_COL]
+.check_tile:
+    cmp byte [esi], 0
+    je .not_door
+    cmp [esi], al
+    je .is_door
+    inc esi
+    jmp .check_tile
+
+.is_door:
+    pop esi
+    pop eax
+    stc
+    ret
+.not_door:
+    pop esi
+    pop eax
+    clc
+    ret
+
+; ---------------------------------------------------------------------------
+; PlayerStepOutFromDoor — force one auto-step south off a warp-arrival tile.
+; Called by RunNPCMovementScript when BIT_STANDING_ON_DOOR is detected.
+; Calls IsPlayerStandingOnDoorTile first: if not a door tile (stair/ladder),
+; clears the flags with no auto-walk. If on a door tile, sets BIT_EXITING_DOOR
+; (suppresses CheckWarpTile) and BIT_SCRIPTED_MOVEMENT_STATE (injects PAD_DOWN
+; into the idle-path direction logic for one frame so the normal movement code
+; runs the step). Pret ref: engine/overworld/auto_movement.asm:PlayerStepOutFromDoor
+; ---------------------------------------------------------------------------
+PlayerStepOutFromDoor:
+    call IsPlayerStandingOnDoorTile
+    jnc .notStandingOnDoor
+    ; Door tile — set up one forced south step to walk off the arrival warp tile.
+    or byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_EXITING_DOOR)
+    or byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    mov byte [ebp + W_SIMULATED_JOYPAD_STATES_END], PAD_DOWN
+    mov byte [ebp + W_SIMULATED_JOYPAD_STATES_INDEX], 1
+    ret
+.notStandingOnDoor:
+    ; Stair/ladder arrival — no auto-walk. Clear standing and exiting flags.
+    ; pret: engine/overworld/auto_movement.asm:PlayerStepOutFromDoor:.notStandingOnDoor
+    and byte [ebp + W_MOVEMENT_FLAGS], ~((1 << BIT_STANDING_ON_DOOR) | (1 << BIT_EXITING_DOOR))
+    and byte [ebp + W_STATUS_FLAGS_5], ~(1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    ret
+
+; ---------------------------------------------------------------------------
+; RunNPCMovementScript — dispatch door-exit auto-walk on warp arrival.
+; Checks BIT_STANDING_ON_DOOR (set by .warpTransition), clears it, and calls
+; PlayerStepOutFromDoor to inject one forced DOWN step and set BIT_EXITING_DOOR.
+; Phase 2: door path only. Full NPC movement script dispatch deferred to Phase 3.
+; Pret ref: home/npc_movement.asm:RunNPCMovementScript
+; ---------------------------------------------------------------------------
+RunNPCMovementScript:
+    test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_DOOR)
+    jz .done
+    and byte [ebp + W_MOVEMENT_FLAGS], ~(1 << BIT_STANDING_ON_DOOR)
+    call PlayerStepOutFromDoor
+.done:
     ret
 
 ; ---------------------------------------------------------------------------
@@ -1877,6 +2039,29 @@ CheckMapConnections:
 ; Embedded overworld asset data (Phase 2 scaffold).
 ; gen_overworld_assets.py regenerates these from source binaries.
 ; ---------------------------------------------------------------------------
+
+section .data
+
+; Door tile IDs per tileset — pret ref: data/tilesets/door_tile_ids.asm
+; Format: tileset_id, tile_id..., 0  (one entry per tileset); 0xFF = end table.
+; IsPlayerStandingOnDoorTile scans this to decide whether the arrival tile
+; after a warp is a building entrance/exit (needs auto-walk) or a stair/ladder (skip).
+DoorTileTable:
+    db  0, 0x1B, 0x58, 0       ; OVERWORLD
+    db  2, 0x5E, 0             ; MART
+    db  3, 0x3A, 0             ; FOREST
+    db  8, 0x54, 0             ; HOUSE
+    db  9, 0x3B, 0             ; FOREST_GATE
+    db 10, 0x3B, 0             ; MUSEUM
+    db 12, 0x3B, 0             ; GATE
+    db 13, 0x1E, 0             ; SHIP
+    db 16, 0x04, 0x15, 0       ; INTERIOR
+    db 18, 0x1C, 0x38, 0x1A, 0 ; LOBBY
+    db 19, 0x1A, 0x1C, 0x53, 0 ; MANSION
+    db 20, 0x34, 0             ; LAB
+    db 22, 0x43, 0x58, 0x1B, 0 ; FACILITY
+    db 23, 0x3B, 0x1B, 0       ; PLATEAU
+    db 0xFF                     ; end
 
 section .rodata
 

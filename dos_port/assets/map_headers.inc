@@ -2199,12 +2199,8 @@ map_header_REDS_HOUSE_2F:
     dw 0x5D3F ; object_data_ptr
 map_object_REDS_HOUSE_2F:
     db 0x0A ; border block
-    db 5 ; warp count
+    db 1 ; warp count (debug warps removed: pret IF DEF(_DEBUG) block)
     db 1, 7, 2, 0x25
-    db 2, 7, 3, 0x3D
-    db 3, 7, 0, 0xCB
-    db 4, 7, 0, 0x94
-    db 5, 7, 3, 0xEB
     db 0 ; sign count
     db 0 ; sprite count
 

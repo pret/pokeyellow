@@ -306,11 +306,28 @@ W_UPDATE_SPRITES_ENABLED     equ 0xCFCA ; wUpdateSpritesEnabled
 ; Sprite-engine scratch WRAM — sym-verified.
 W_GRASS_TILE                 equ 0xD534 ; wGrassTile (tile ID treated as tall grass; $ff = none)
 W_SAVED_SPRITE_IMAGE_INDEX   equ 0xD5CC ; wSavedSpriteImageIndex (PrepareOAMData scratch / VRAM base tile)
-W_MOVEMENT_FLAGS             equ 0xD735 ; wMovementFlags (BIT_SPINNING / BIT_LEDGE_OR_FISHING)
+W_MOVEMENT_FLAGS             equ 0xD735 ; wMovementFlags
+; Bit indices for W_MOVEMENT_FLAGS (pret: constants/ram_constants.asm)
+BIT_STANDING_ON_DOOR         equ 0     ; set by warp arrival; triggers auto-walk-off
+BIT_EXITING_DOOR             equ 1     ; set by PlayerStepOutFromDoor (door tile); suppresses collision-exit
+BIT_STANDING_ON_WARP         equ 2     ; edge-detect: 1 = player was on a warp tile last step
+; bits 3–5 unused in Yellow
+BIT_LEDGE_OR_FISHING         equ 6
+BIT_SPINNING                 equ 7
+
+; Bit indices for W_STATUS_FLAGS_5 (pret: constants/ram_constants.asm)
+BIT_DISABLE_JOYPAD           equ 5     ; input suppressed; CountDownIgnoreInputBitReset clears it
+BIT_SCRIPTED_MOVEMENT_STATE  equ 7     ; simulated joypad active (door exit / scripted walk)
 
 ; Map-tileset copies
 W_UNUSED_CUR_MAP_TILESET_COPY equ 0xD118 ; wUnusedCurMapTilesetCopy
 W_WALK_BIKE_SURF_STATE_COPY  equ 0xD119 ; wWalkBikeSurfStateCopy
+
+; Joypad/input control
+W_JOY_IGNORE                 equ 0xCCB7 ; wJoyIgnore — button mask; bits set suppress those inputs
+W_SIMULATED_JOYPAD_STATES_END equ 0xCC5B ; wSimulatedJoypadStatesEnd — PAD_* byte queued by scripts
+W_SIMULATED_JOYPAD_STATES_INDEX equ 0xCC84 ; wSimulatedJoypadStatesIndex — steps remaining (0=done)
+W_IGNORE_INPUT_COUNTER       equ 0xD139 ; wIgnoreInputCounter — counts down 30→0; clears BIT_DISABLE_JOYPAD
 
 ; Current-map script flags
 W_CURRENT_MAP_SCRIPT_FLAGS   equ 0xD125 ; wCurrentMapScriptFlags

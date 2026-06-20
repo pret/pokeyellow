@@ -610,6 +610,75 @@ Removed dead VRAM-ring scroll routines (`CopyMapViewToVRAM`, `FillExtraVRAMRows`
 
 ---
 
+## Movement delay + door-exit logic fixes — `src/overworld/overworld.asm` (2026-06-20)
+
+- **Sources:** `home/overworld.asm` (OverworldLoop / WarpFound2.done),
+  `engine/overworld/movement.asm` (UpdatePlayerSprite/.handleDirectionButtonPress),
+  `engine/overworld/auto_movement.asm` (PlayerStepOutFromDoor)
+- **Date:** 2026-06-20
+- **H-flag:** Not involved.
+- **Bug tags:** None (port correctness fixes, not pret bugs).
+
+### Bug 1 — Movement delay (`.startWalk` → `jmp OverworldLoop`)
+
+**Symptom:** holding any direction felt "discrete" — each step had a visible pause
+before the first pixel moved, making smooth scrolling feel sluggish.
+
+**Root cause:** after setting `wWalkCounter = 8`, the port jumped back to
+`OverworldLoop`, passing through another `UpdateSprites` + 2×`DelayFrame` (2 extra
+frames) before reaching the first `AdvancePlayerSprite`. In the original, `.noCollision`
+falls straight to `.moveAhead2` (AdvancePlayerSprite) in the same iteration:
+`ld a, 8 / ld [wWalkCounter], a / callfar Func_fcc08 / jr .moveAhead2`.
+
+**Fix:** `.startWalk` now jumps to `.moveAhead` (the port's equivalent of `.moveAhead2`)
+instead of `OverworldLoop`. First pixel movement happens in the same loop iteration as
+the step is armed, matching the original's 16-frame/step cadence exactly. This also
+fixes the door-exit step delay (same code path).
+
+### Bug 2 — Door-exit iteration skipped (`jmp OverworldLoop.lessDelay`)
+
+**Symptom:** after a warp arrival the player stood still for an extra loop iteration
+(2 frames) before the auto-walk fired.
+
+**Root cause:** `.warpTransition` jumped to `OverworldLoop.lessDelay`, skipping
+`RunNPCMovementScript` on the first post-warp iteration. In the original,
+`WarpFound2.done` calls `jp EnterMap` which falls into `OverworldLoop` (top), so
+`RunNPCMovementScript` → `PlayerStepOutFromDoor` fires on the very first frame.
+
+**Fix:** `.warpTransition` now jumps to `OverworldLoop` (top). Map state is fully
+loaded by `LoadWarpDestination` before the jump, so this is safe.
+
+### Bug 3 — Scripted movement didn't bypass 180° turn-delay
+
+**Root cause:** the port's `.handleDirection` applied the turn-delay check even during
+scripted movement (door auto-walk). The original has an explicit guard:
+`bit BIT_SCRIPTED_MOVEMENT_STATE / jr nz, .noDirectionChange`. The previous port
+worked around this by priming `wPlayerLastStopDirection = PLAYER_DIR_DOWN` in
+`PlayerStepOutFromDoor` — fragile and wrong.
+
+**Fix:** added `test BIT_SCRIPTED_MOVEMENT_STATE / jnz .walkStart` at the top of
+`.handleDirection`, before the turn-delay check. Removed the `wPlayerLastStopDirection`
+prime from `PlayerStepOutFromDoor`.
+
+### Cleanup — `LoadCurrentMapView` removed from `CollisionCheckOnLand`
+
+The previous session added `call LoadCurrentMapView` inside `CollisionCheckOnLand`,
+called on every direction press. `wTileMap` is always current at that point (built
+by `LoadWarpDestination` on map load, and by `AdvancePlayerSprite` on every
+block-boundary crossing), so the call was redundant every idle frame.
+
+### Also in this commit
+
+- **`gb_memmap.inc`:** added `BIT_STANDING_ON_DOOR`, `BIT_EXITING_DOOR`,
+  `BIT_STANDING_ON_WARP`, `BIT_DISABLE_JOYPAD`, `BIT_SCRIPTED_MOVEMENT_STATE`
+  constants; `W_JOY_IGNORE`, `W_SIMULATED_JOYPAD_STATES_END`,
+  `W_SIMULATED_JOYPAD_STATES_INDEX`, `W_IGNORE_INPUT_COUNTER` addresses.
+- **`assets/map_headers.inc`:** removed `IF DEF(_DEBUG)` debug warps from
+  `REDS_HOUSE_2F` (those 4 extra warp entries only exist in a debug build of the
+  original; the port is not a debug build).
+
+---
+
 ## Math (Multiply / Divide)
 
 - **Source:** `home/math.asm`
