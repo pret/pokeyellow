@@ -1,2 +1,4 @@
 DUMP.BIN
 FRAME.BIN
+*.o
+*.orig
