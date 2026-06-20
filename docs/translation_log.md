@@ -1466,3 +1466,52 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 - **Notes:** expanded text_far and text_end macros to manual db/dd
 
 ---
+
+
+## OneHitKOEffect_
+
+- **Source:** `engine/battle/move_effects/one_hit_ko.asm:OneHitKOEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/one_hit_ko.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** A->AL, HL->ESI, DE->EDI, B->BL
+- **Notes:** straight translation, basic branching and 16-bit cmp via 8-bit sub/sbb
+
+---
+
+## ParalyzeEffect_
+
+- **Source:** `engine/battle/move_effects/paralyze.asm:ParalyzeEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/paralyze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, DE→EDI, A→AL, BC→EBX
+- **Notes:** callfar -> call, jpfar -> jmp, ld c -> mov bl for DelayFrames
+
+---
+
+## PayDayEffect_
+
+- **Source:** `engine/battle/move_effects/pay_day.asm:PayDayEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/pay_day.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** A->AL, HL->ESI, DE->EDI, BC->EBX
+- **Notes:** used ebx/bl for B and C counts; rol al, 4 for swap a
+
+---
+
+## CoinsScatteredText
+
+- **Source:** `engine/battle/move_effects/pay_day.asm:CoinsScatteredText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/pay_day.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** not involved
+- **Notes:** macro expansion of text_far _CoinsScatteredText
+
+---

@@ -92,7 +92,10 @@ GAME_SRCS := \
     src/engine/battle/move_effects/haze.asm \
     src/engine/battle/move_effects/heal.asm \
     src/engine/battle/move_effects/leech_seed.asm \
-    src/engine/battle/move_effects/mist.asm
+    src/engine/battle/move_effects/mist.asm \
+    src/engine/battle/move_effects/one_hit_ko.asm \
+    src/engine/battle/move_effects/paralyze.asm \
+    src/engine/battle/move_effects/pay_day.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.
