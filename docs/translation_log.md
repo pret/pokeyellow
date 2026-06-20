@@ -1328,3 +1328,81 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 - **Notes:** Straightforward translation
 
 ---
+
+## ResetStats
+
+- **Source:** `engine/battle/move_effects/haze.asm:ResetStats`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+
+## StatusChangesEliminatedText
+
+- **Source:** `engine/battle/move_effects/haze.asm:StatusChangesEliminatedText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+
+## HealEffect_
+
+- **Source:** `engine/battle/move_effects/heal.asm:HealEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+
+## StartedSleepingEffect
+
+- **Source:** `engine/battle/move_effects/heal.asm:StartedSleepingEffect`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+
+## FellAsleepBecameHealthyText
+
+- **Source:** `engine/battle/move_effects/heal.asm:FellAsleepBecameHealthyText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+
+## RegainedHealthText
+
+- **Source:** `engine/battle/move_effects/heal.asm:RegainedHealthText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
