@@ -1208,3 +1208,63 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 ---
 
 *Add new entries below as routines are translated.*
+
+## ConvertedTypeText
+
+- **Source:** `engine/battle/move_effects/conversion.asm:ConvertedTypeText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/conversion.asm`
+- **Date:** 2026-06-20
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** Emitted as raw byte stream (0x17, dummy addr/bank, 0x50). COFF rejects 16-bit relocations, so dw 0 is used for the far pointer; TextCommandProcessor skips 3 bytes anyway.
+
+---
+
+## PrintButItFailedText
+
+- **Source:** `engine/battle/move_effects/conversion.asm:PrintButItFailedText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/conversion.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI
+- **Notes:** Flat memory model simplifies CallBankF to a simple jmp esi.
+
+---
+
+## DrainHPEffect_
+
+- **Source:** `engine/battle/move_effects/drain_hp.asm:DrainHPEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/drain_hp.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, BC→EBX, DE→EDX, A→AL
+- **Notes:** hlcoord converted to W_TILEMAP offsets.
+
+---
+
+## SuckedHealthText
+
+- **Source:** `engine/battle/move_effects/drain_hp.asm:SuckedHealthText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/drain_hp.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** Translated as text data block (TX_FAR skipped, TX_END).
+
+---
+
+## DreamWasEatenText
+
+- **Source:** `engine/battle/move_effects/drain_hp.asm:DreamWasEatenText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/drain_hp.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** Translated as text data block (TX_FAR skipped, TX_END).
+
+---

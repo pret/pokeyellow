@@ -65,7 +65,10 @@ ConversionEffect_:
     jmp PrintText
 
 ConvertedTypeText:
-    ret
+    db 0x17
+    dw 0
+    db 0
+    db 0x50
 
 PrintButItFailedText:
     jmp PrintButItFailedText_
