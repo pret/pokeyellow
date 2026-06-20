@@ -1369,6 +1369,11 @@ CollisionCheckOnLand:
     push eax
     push ecx
     push esi
+    ; wTileMap is a sub-block viewport into wSurroundingTiles, offset by W_Y_BLOCK_COORD /
+    ; W_X_BLOCK_COORD. AdvancePlayerSprite only calls LoadCurrentMapView on block-boundary
+    ; crossings, so the viewport can be stale within a block (YBC/XBC changed but wTileMap
+    ; not rebuilt). Rebuild here to apply the current sub-block offset before the tile read.
+    call LoadCurrentMapView
     call GetTileInFrontOfPlayer                    ; CL = tile in front
     call IsTilePassable                            ; CF = 1 if not passable
     pop esi

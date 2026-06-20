@@ -660,12 +660,19 @@ worked around this by priming `wPlayerLastStopDirection = PLAYER_DIR_DOWN` in
 `.handleDirection`, before the turn-delay check. Removed the `wPlayerLastStopDirection`
 prime from `PlayerStepOutFromDoor`.
 
-### Cleanup — `LoadCurrentMapView` removed from `CollisionCheckOnLand`
+### `LoadCurrentMapView` in `CollisionCheckOnLand` — why it's required
 
-The previous session added `call LoadCurrentMapView` inside `CollisionCheckOnLand`,
-called on every direction press. `wTileMap` is always current at that point (built
-by `LoadWarpDestination` on map load, and by `AdvancePlayerSprite` on every
-block-boundary crossing), so the call was redundant every idle frame.
+`LoadCurrentMapView` rebuilds `wSurroundingTiles` from the block map AND copies a
+sub-block-offset viewport into `wTileMap` based on `W_Y_BLOCK_COORD`/`W_X_BLOCK_COORD`.
+`AdvancePlayerSprite` only calls it on block-boundary crossings. Between crossings
+YBC/XBC can advance 0→1 without triggering a rebuild, leaving `wTileMap` at the
+previous sub-block viewport offset. `GetTileInFrontOfPlayer` then reads the wrong tile.
+
+Symptom: walking toward a 2×2 cluster of impassable tiles (route 1 bushes, building
+outer walls, ledges) sporadically passes through — at the half-block sub-step the
+tile read lands on the adjacent passable tile instead of the correct one. The call is
+retained in `CollisionCheckOnLand`. A future optimisation could split out just the
+viewport-copy step (lines 1114–1135) since `wSurroundingTiles` is already current.
 
 ### Also in this commit
 
