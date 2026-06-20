@@ -1406,3 +1406,63 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 
 ---
 
+
+## LeechSeedEffect_
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:LeechSeedEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, DE→EDI, A→AL, C→CL
+- **Notes:** used 1<<7 for SEEDED, 22 for GRASS type
+
+---
+
+## WasSeededText
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:WasSeededText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none (text data)
+- **Notes:** expanded text_far macro explicitly as requested
+
+---
+
+## EvadedAttackText
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:EvadedAttackText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** expanded text_far and text_end macros
+
+---
+
+## MistEffect_
+
+- **Source:** `engine/battle/move_effects/mist.asm:MistEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/mist.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI for status pointer, A→AL for turn
+- **Notes:** translated text_far and text_end to db 0x17, dd pointer, db 0x50
+
+---
+
+## ShroudedInMistText
+
+- **Source:** `engine/battle/move_effects/mist.asm:ShroudedInMistText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/mist.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none (data only)
+- **Notes:** expanded text_far and text_end macros to manual db/dd
+
+---

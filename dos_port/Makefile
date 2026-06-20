@@ -90,7 +90,9 @@ GAME_SRCS := \
     src/engine/battle/move_effects/drain_hp.asm \
     src/engine/battle/move_effects/focus_energy.asm \
     src/engine/battle/move_effects/haze.asm \
-    src/engine/battle/move_effects/heal.asm
+    src/engine/battle/move_effects/heal.asm \
+    src/engine/battle/move_effects/leech_seed.asm \
+    src/engine/battle/move_effects/mist.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.
