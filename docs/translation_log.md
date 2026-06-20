@@ -1268,3 +1268,63 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 - **Notes:** Translated as text data block (TX_FAR skipped, TX_END).
 
 ---
+
+## FocusEnergyEffect_
+
+- **Source:** `engine/battle/move_effects/focus_energy.asm:FocusEnergyEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/focus_energy.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI for status ptr, A→AL, C→CL
+- **Notes:** used bt/bts for GETTING_PUMPED, text macros commented out
+
+---
+
+## GettingPumpedText
+
+- **Source:** `engine/battle/move_effects/focus_energy.asm:GettingPumpedText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/focus_energy.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** Translated text macros to data bytes, used dd for 32-bit far pointer
+
+---
+
+## HazeEffect_
+
+- **Source:** `engine/battle/move_effects/haze.asm:HazeEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** A->AL, BC->BX, DE->EDX, HL->ESI
+- **Notes:** Translated all Haze functions. defined local constants. commented out text_far.
+
+---
+
+## CureVolatileStatuses
+
+- **Source:** `engine/battle/move_effects/haze.asm:CureVolatileStatuses`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, A→AL
+- **Notes:** Used AND with bitmasks for RES bit manipulation
+
+---
+
+## ResetStatMods
+
+- **Source:** `engine/battle/move_effects/haze.asm:ResetStatMods`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** A→AL, B→BH, HL→ESI
+- **Notes:** Straightforward translation
+
+---

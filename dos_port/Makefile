@@ -87,7 +87,9 @@ GAME_SRCS := \
     src/engine/battle/get_trainer_name.asm \
     src/engine/battle/misc.asm \
     src/engine/battle/move_effects/conversion.asm \
-    src/engine/battle/move_effects/drain_hp.asm
+    src/engine/battle/move_effects/drain_hp.asm \
+    src/engine/battle/move_effects/focus_energy.asm \
+    src/engine/battle/move_effects/haze.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Both DEBUG_DUMP and DEBUG_TRANSITION use debug_dump.asm; add it once if either set.
