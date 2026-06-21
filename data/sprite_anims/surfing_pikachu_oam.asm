@@ -1,182 +1,165 @@
 SurfingPikachuOAMData:
-	dbw $00, .Frame0
-	dbw $00, .Frame1
-	dbw $36, .Frame2
-	dbw $03, .Frame3
-	dbw $39, .Frame4
-	dbw $06, .Frame5
-	dbw $3c, .Frame6
-	dbw $09, .Frame7
-	dbw $60, .Frame8
-	dbw $0c, .Frame9
-	dbw $63, .Frame10
-	dbw $30, .Frame11
-	dbw $66, .Frame12
-	dbw $33, .Frame13
-	dbw $69, .Frame14
-	dbw $6c, .Frame15
-	dbw $9c, .Frame16
-	dbw $a0, .Frame17
-	dbw $a3, .Frame18
-	dbw $a7, .Frame19
-	dbw $a8, .Frame20
-	dbw $98, .Frame21
-	dbw $e0, .Frame22
-	dbw $e6, .Frame23
-	dbw $ca, .Frame24
-	dbw $a7, .Frame25
-	dbw $00, .Frame26
-	dbw $00, .Frame27
-	dbw $00, .Frame28
-	dbw $00, .Frame29
-	dbw $00, .Frame30
-	dbw $00, .Frame31
-	dbw $80, .Frame32
-	dbw $84, .Frame33
-	dbw $88, .Frame34
-	dbw $8c, .Frame35
+	dbw $00, .SingleTile ; referenced but unused
+	dbw $00, .SurfingPikachu
+	dbw $36, .SurfingPikachu
+	dbw $03, .SurfingPikachu
+	dbw $39, .SurfingPikachu
+	dbw $06, .SurfingPikachu
+	dbw $3c, .SurfingPikachu
+	dbw $09, .SurfingPikachu
+	dbw $60, .SurfingPikachu
+	dbw $0c, .SurfingPikachu
+	dbw $63, .SurfingPikachu
+	dbw $30, .SurfingPikachu
+	dbw $66, .SurfingPikachu
+	dbw $33, .SurfingPikachu
+	dbw $69, .SurfingPikachu
+	dbw $6c, .UnusedFrontPikachu
+	dbw $9c, .UnusedBackPikachu
+	dbw $a0, .ResultsPikachu
+	dbw $a3, .ResultsPikachu
+	dbw $a7, .SmallSplash
+	dbw $a8, .LargeSplash
+	dbw $98, .EmptySurfboard ; when Pikachu has fallen off
+	dbw $e0, .StartText
+	dbw $e6, .GoalText ; referenced but unused
+	dbw $ca, .OhNoText
+	dbw $a7, .WaterSpray
+	dbw $00, .Plus50Pts
+	dbw $00, .Plus150Pts
+	dbw $00, .Plus350Pts
+	dbw $00, .Plus750Pts
+	dbw $00, .Plus180Pts
+	dbw $00, .Plus500Pts
+	dbw $80, .IntroPikachu
+	dbw $84, .IntroPikachu
+	dbw $88, .IntroPikachu
+	dbw $8c, .IntroPikachu
 
-.Frame0:
+.SingleTile:
 	db 1
-	db $fc, $fc, $00, $00
+	db  -4,  -4, $00, 0
 
-.Frame1:
-.Frame2:
-.Frame3:
-.Frame4:
-.Frame5:
-.Frame6:
-.Frame7:
-.Frame8:
-.Frame9:
-.Frame10:
-.Frame11:
-.Frame12:
-.Frame13:
-.Frame14:
-.Frame15:
-.Frame16:
-.Frame17:
-.Frame18:
+.SurfingPikachu:
+.UnusedFrontPikachu:
+.UnusedBackPikachu:
+.ResultsPikachu:
 	db 9
-	db $f4, $f4, $00, $00
-	db $f4, $fc, $01, $00
-	db $f4, $04, $02, $00
-	db $fc, $f4, $10, $00
-	db $fc, $fc, $11, $00
-	db $fc, $04, $12, $00
-	db $04, $f4, $20, $00
-	db $04, $fc, $21, $00
-	db $04, $04, $22, $00
+	db -12, -12, $00, 0
+	db -12,  -4, $01, 0
+	db -12,   4, $02, 0
+	db  -4, -12, $10, 0
+	db  -4,  -4, $11, 0
+	db  -4,   4, $12, 0
+	db   4, -12, $20, 0
+	db   4,  -4, $21, 0
+	db   4,   4, $22, 0
 
-.Frame22:
-.Frame23:
-.Frame24:
+.StartText:
+.GoalText:
+.OhNoText:
 	db 12
-	db $f8, $e8, $00, $00
-	db $f8, $f0, $01, $00
-	db $f8, $f8, $02, $00
-	db $f8, $00, $03, $00
-	db $f8, $08, $04, $00
-	db $f8, $10, $05, $00
-	db $00, $e8, $10, $00
-	db $00, $f0, $11, $00
-	db $00, $f8, $12, $00
-	db $00, $00, $13, $00
-	db $00, $08, $14, $00
-	db $00, $10, $15, $00
+	db  -8, -24, $00, 0
+	db  -8, -16, $01, 0
+	db  -8,  -8, $02, 0
+	db  -8,   0, $03, 0
+	db  -8,   8, $04, 0
+	db  -8,  16, $05, 0
+	db   0, -24, $10, 0
+	db   0, -16, $11, 0
+	db   0,  -8, $12, 0
+	db   0,   0, $13, 0
+	db   0,   8, $14, 0
+	db   0,  16, $15, 0
 
-.Frame25:
+.WaterSpray:
 	db 3
-	db $fc, $0b, $00, $10
-	db $04, $03, $0f, $10
-	db $04, $0b, $10, $10
+	db  -4,  11, $00, OAM_PAL1
+	db   4,   3, $0f, OAM_PAL1
+	db   4,  11, $10, OAM_PAL1
 
-.Frame19:
+.SmallSplash:
 	db 6
-	db $fc, $f0, $00, $30
-	db $fc, $08, $00, $10
-	db $04, $f0, $10, $30
-	db $04, $f8, $0f, $30
-	db $04, $00, $0f, $10
-	db $04, $08, $10, $10
+	db  -4, -16, $00, OAM_PAL1 | OAM_XFLIP
+	db  -4,   8, $00, OAM_PAL1
+	db   4, -16, $10, OAM_PAL1 | OAM_XFLIP
+	db   4,  -8, $0f, OAM_PAL1 | OAM_XFLIP
+	db   4,   0, $0f, OAM_PAL1
+	db   4,   8, $10, OAM_PAL1
 
-.Frame20:
+.LargeSplash:
 	db 12
-	db $f4, $f0, $00, $10
-	db $f4, $f8, $01, $10
-	db $f4, $00, $01, $30
-	db $f4, $08, $00, $30
-	db $fc, $f0, $10, $10
-	db $fc, $f8, $11, $10
-	db $fc, $00, $11, $30
-	db $fc, $08, $10, $30
-	db $04, $f0, $20, $10
-	db $04, $f8, $21, $10
-	db $04, $00, $21, $30
-	db $04, $08, $20, $30
+	db -12, -16, $00, OAM_PAL1
+	db -12,  -8, $01, OAM_PAL1
+	db -12,   0, $01, OAM_PAL1 | OAM_XFLIP
+	db -12,   8, $00, OAM_PAL1 | OAM_XFLIP
+	db  -4, -16, $10, OAM_PAL1
+	db  -4,  -8, $11, OAM_PAL1
+	db  -4,   0, $11, OAM_PAL1 | OAM_XFLIP
+	db  -4,   8, $10, OAM_PAL1 | OAM_XFLIP
+	db   4, -16, $20, OAM_PAL1
+	db   4,  -8, $21, OAM_PAL1
+	db   4,   0, $21, OAM_PAL1 | OAM_XFLIP
+	db   4,   8, $20, OAM_PAL1 | OAM_XFLIP
 
-.Frame21:
+.EmptySurfboard:
 	db 3
-	db $04, $f4, $00, $00
-	db $04, $fc, $01, $00
-	db $04, $04, $02, $00
+	db   4, -12, $00, 0
+	db   4,  -4, $01, 0
+	db   4,   4, $02, 0
 
-.Frame26:
+.Plus50Pts:
 	db 3
-	db $fc, $f4, $bf, $00
-	db $fc, $fc, $d5, $00
-	db $fc, $04, $d0, $00
+	db  -4, -12, $bf, 0
+	db  -4,  -4, $d5, 0
+	db  -4,   4, $d0, 0
 
-.Frame27:
+.Plus150Pts:
 	db 4
-	db $fc, $f0, $bf, $00
-	db $fc, $f8, $d1, $00
-	db $fc, $00, $d5, $00
-	db $fc, $08, $d0, $00
+	db  -4, -16, $bf, 0
+	db  -4,  -8, $d1, 0
+	db  -4,   0, $d5, 0
+	db  -4,   8, $d0, 0
 
-.Frame28:
+.Plus350Pts:
 	db 4
-	db $fc, $f0, $bf, $00
-	db $fc, $f8, $d3, $00
-	db $fc, $00, $d5, $00
-	db $fc, $08, $d0, $00
+	db  -4, -16, $bf, 0
+	db  -4,  -8, $d3, 0
+	db  -4,   0, $d5, 0
+	db  -4,   8, $d0, 0
 
-.Frame29:
+.Plus750Pts:
 	db 4
-	db $fc, $f0, $bf, $00
-	db $fc, $f8, $d7, $00
-	db $fc, $00, $d5, $00
-	db $fc, $08, $d0, $00
+	db  -4, -16, $bf, 0
+	db  -4,  -8, $d7, 0
+	db  -4,   0, $d5, 0
+	db  -4,   8, $d0, 0
 
-.Frame30:
+.Plus180Pts:
 	db 4
-	db $fc, $f0, $bf, $00
-	db $fc, $f8, $d1, $00
-	db $fc, $00, $d8, $00
-	db $fc, $08, $d0, $00
+	db  -4, -16, $bf, 0
+	db  -4,  -8, $d1, 0
+	db  -4,   0, $d8, 0
+	db  -4,   8, $d0, 0
 
-.Frame31:
+.Plus500Pts:
 	db 4
-	db $fc, $f0, $bf, $00
-	db $fc, $f8, $d5, $00
-	db $fc, $00, $d0, $00
-	db $fc, $08, $d0, $00
+	db  -4, -16, $bf, 0
+	db  -4,  -8, $d5, 0
+	db  -4,   0, $d0, 0
+	db  -4,   8, $d0, 0
 
-.Frame32:
-.Frame33:
-.Frame34:
-.Frame35:
+.IntroPikachu:
 	db 12
-	db $f4, $f0, $03, $20
-	db $f4, $f8, $02, $20
-	db $f4, $00, $01, $20
-	db $f4, $08, $00, $20
-	db $fc, $f0, $13, $20
-	db $fc, $f8, $12, $20
-	db $fc, $00, $11, $20
-	db $fc, $08, $10, $20
-	db $04, $f0, $23, $20
-	db $04, $f8, $22, $20
-	db $04, $00, $21, $20
-	db $04, $08, $20, $20
+	db -12, -16, $03, OAM_XFLIP
+	db -12,  -8, $02, OAM_XFLIP
+	db -12,   0, $01, OAM_XFLIP
+	db -12,   8, $00, OAM_XFLIP
+	db  -4, -16, $13, OAM_XFLIP
+	db  -4,  -8, $12, OAM_XFLIP
+	db  -4,   0, $11, OAM_XFLIP
+	db  -4,   8, $10, OAM_XFLIP
+	db   4, -16, $23, OAM_XFLIP
+	db   4,  -8, $22, OAM_XFLIP
+	db   4,   0, $21, OAM_XFLIP
+	db   4,   8, $20, OAM_XFLIP
