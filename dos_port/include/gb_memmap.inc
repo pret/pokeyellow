@@ -309,7 +309,7 @@ W_SAVED_SPRITE_IMAGE_INDEX   equ 0xD5CC ; wSavedSpriteImageIndex (PrepareOAMData
 W_MOVEMENT_FLAGS             equ 0xD735 ; wMovementFlags
 ; Bit indices for W_MOVEMENT_FLAGS (pret: constants/ram_constants.asm)
 BIT_STANDING_ON_DOOR         equ 0     ; set by warp arrival; triggers auto-walk-off
-BIT_EXITING_DOOR             equ 1     ; set by PlayerStepOutFromDoor (door tile); suppresses collision-exit
+BIT_EXITING_DOOR             equ 1     ; set by PlayerStepOutFromDoor (door tile); player is auto-walking off door
 BIT_STANDING_ON_WARP         equ 2     ; edge-detect: 1 = player was on a warp tile last step
 ; bits 3–5 unused in Yellow
 BIT_LEDGE_OR_FISHING         equ 6

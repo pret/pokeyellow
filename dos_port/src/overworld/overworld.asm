@@ -252,8 +252,7 @@ OverworldLoop:
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
     jz .checkJoyDisable
     movzx eax, byte [ebp + W_SIMULATED_JOYPAD_STATES_END]
-    and byte [ebp + W_STATUS_FLAGS_5], ~(1 << BIT_SCRIPTED_MOVEMENT_STATE)
-    jmp .checkPADDown
+    jmp .checkPADDown                               ; flag cleared at .handleDirection after bypass
 
 .checkJoyDisable:
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_DISABLE_JOYPAD)
@@ -296,7 +295,10 @@ OverworldLoop:
     ; pret: bit BIT_SCRIPTED_MOVEMENT_STATE, a / jr nz, .noDirectionChange
     ; Scripted movement (door auto-walk) bypasses the 180° turn-delay entirely.
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
-    jnz .walkStart
+    jz .notScripted
+    and byte [ebp + W_STATUS_FLAGS_5], ~(1 << BIT_SCRIPTED_MOVEMENT_STATE)
+    jmp .walkStart
+.notScripted:
 
     ; Turn delay (pret: wCheckFor180DegreeTurn / wPlayerLastStopDirection).
     ; First press after idle with a NEW direction: update facing but don't walk.
@@ -312,10 +314,9 @@ OverworldLoop:
     jnc .startWalk
 
     ; Blocked. Collision-exit path (pret: bit BIT_STANDING_ON_WARP / ExtraWarpCheck).
-    ; Suppress during BIT_EXITING_DOOR window (auto-walk PAD_DOWN after door arrival).
-    test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_EXITING_DOOR)
-    jnz OverworldLoop
-    ; Only attempt exit if player IS on a warp tile (pret: bit BIT_STANDING_ON_WARP guard).
+    ; Only attempt exit if player IS on a warp tile (set at spawn by LoadWarpDestination
+    ; or after a step by .moveAhead). BIT_EXITING_DOOR is NOT checked here — pret does
+    ; not suppress collision-exit during the auto-walk window.
     test byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_WARP)
     jz OverworldLoop
     cmp dl, PLAYER_DIR_DOWN
@@ -364,8 +365,14 @@ OverworldLoop:
     jnz OverworldLoop                         ; warp→warp → no fire
 .warpTransition:
     ; BL = resolved destination map; W_DESTINATION_WARP_ID = 0-based spawn warp index
+    ; Only update W_LAST_MAP when leaving an outdoor map (mirrors pret CheckIfInOutsideMap).
+    ; Indoor→indoor and indoor→outdoor transitions must NOT overwrite W_LAST_MAP or the
+    ; 0xFF warp-destination resolver will return an indoor map instead of Pallet Town.
     mov al, [ebp + W_CUR_MAP]
+    cmp al, FIRST_INDOOR_MAP_ID
+    jae .skipLastMapUpdate
     mov [ebp + W_LAST_MAP], al
+.skipLastMapUpdate:
     mov [ebp + W_CUR_MAP], bl
     mov byte [ebp + W_WALK_COUNTER], 0
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
@@ -1697,9 +1704,9 @@ IsPlayerStandingOnDoorTile:
 ; Called by RunNPCMovementScript when BIT_STANDING_ON_DOOR is detected.
 ; Calls IsPlayerStandingOnDoorTile first: if not a door tile (stair/ladder),
 ; clears the flags with no auto-walk. If on a door tile, sets BIT_EXITING_DOOR
-; (suppresses CheckWarpTile) and BIT_SCRIPTED_MOVEMENT_STATE (injects PAD_DOWN
-; into the idle-path direction logic for one frame so the normal movement code
-; runs the step). Pret ref: engine/overworld/auto_movement.asm:PlayerStepOutFromDoor
+; (marks auto-walk in progress) and BIT_SCRIPTED_MOVEMENT_STATE (injects PAD_DOWN
+; into the idle-path direction logic; .handleDirection bypasses the turn-delay and
+; fires the collision-exit warp). Pret ref: engine/overworld/auto_movement.asm:PlayerStepOutFromDoor
 ; ---------------------------------------------------------------------------
 PlayerStepOutFromDoor:
     call IsPlayerStandingOnDoorTile
@@ -1853,6 +1860,19 @@ LoadWarpDestination:
 
     call LoadTileBlockMap
     call LoadCurrentMapView
+
+    ; Determine whether the spawn coords land on a warp tile and record it in
+    ; BIT_STANDING_ON_WARP. Required so the collision-exit path fires when the
+    ; scripted (or manual) south-step hits the building exit on the next idle frame.
+    ; Mirrors pret: IsPlayerStandingOnWarp called from EnterMap.
+    ; CheckWarpTile uses the W_WARP_ENTRIES now loaded for the destination map,
+    ; and overwrites BL with the resolved back-destination — safe since EBX is
+    ; caller-saved (pushed at the top of this routine).
+    and byte [ebp + W_MOVEMENT_FLAGS], ~(1 << BIT_STANDING_ON_WARP)
+    call CheckWarpTile
+    jnc .no_spawn_warp
+    or byte [ebp + W_MOVEMENT_FLAGS], (1 << BIT_STANDING_ON_WARP)
+.no_spawn_warp:
 
     ; Reset turn state: player spawns stopped, so the next press should turn
     ; first rather than immediately walking (prevents accidental exit on entry).

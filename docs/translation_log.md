@@ -1591,3 +1591,65 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 - **Notes:** macro expansion of text_far _CoinsScatteredText
 
 ---
+
+## OverworldLoop warp bug fixes
+
+- **Source:** `home/overworld.asm` (warp resolution logic)
+- **Translated:** `dos_port/src/overworld/overworld.asm`
+- **Date:** 2026-06-20
+- **H-flag:** not involved
+- **Bug tags:** none (regression fixes, not known original bugs)
+
+### Four bugs fixed in this session
+
+**Bug 1 — W_LAST_MAP unconditional update (multi-floor warp corruption)**
+
+`.warpTransition` always wrote `W_CUR_MAP → W_LAST_MAP` before switching to the
+destination map. Going 1F → 2F → 1F would set `W_LAST_MAP = Red's House 2F`; the
+next 0xFF warp resolution would then land the player in 2F instead of Pallet Town.
+Fix: only update `W_LAST_MAP` when the source map is outdoor (`W_CUR_MAP < FIRST_INDOOR_MAP_ID = 0x25`).
+This mirrors pret's `CheckIfInOutsideMap` guard in `WarpFound2`.
+
+**Bug 2 — BIT_STANDING_ON_WARP never set at spawn**
+
+`LoadWarpDestination` placed the player at spawn coords but never checked whether
+those coords match a warp entry in the destination map's `W_WARP_ENTRIES`. As a
+result, `BIT_STANDING_ON_WARP` was always 0 after a warp transition, making the
+collision-exit guard (`test BIT_STANDING_ON_WARP; jz OverworldLoop`) permanently
+skip door exits. Fix: after `LoadCurrentMapView`, call `CheckWarpTile` and set
+`BIT_STANDING_ON_WARP` if CF=1. Mirrors pret's `IsPlayerStandingOnWarp` called
+from `EnterMap`.
+
+**Bug 3 — BIT_EXITING_DOOR suppressed collision-exit (regression from 445c6a3a)**
+
+Commit 445c6a3a added `test BIT_EXITING_DOOR; jnz OverworldLoop` to the
+collision-exit path. Pret does NOT have this guard: `BIT_EXITING_DOOR` marks the
+auto-walk state, it does not suppress subsequent exit attempts. Combined with Bug 2
+(BIT_STANDING_ON_WARP=0 at spawn), all door exits via the collision path were
+completely broken — the player could not exit any building by pressing DOWN at the
+door. Fix: remove the `test BIT_EXITING_DOOR` guard entirely. The `BIT_STANDING_ON_WARP`
+guard is sufficient (it's only set when the player is actually on a warp tile).
+
+**Bug 4 — BIT_SCRIPTED_MOVEMENT_STATE bypass was dead code**
+
+`PlayerStepOutFromDoor` sets `BIT_SCRIPTED_MOVEMENT_STATE` to inject a scripted
+PAD_DOWN that should bypass the 180°-turn-delay and immediately fire the
+collision-exit. However, the flag was being CLEARED at the simulated-input dispatch
+point (before reaching `.handleDirection`) — so `.handleDirection`'s bypass check
+always saw 0. Fix: remove the early clear; instead, `.handleDirection` now clears
+the flag (after testing it), making the bypass live. Scripted movement now bypasses
+`W_CHECK_FOR_TURN` and goes straight to `.walkStart`, which hits the blocked wall
+and fires the collision-exit via the now-fixed path.
+
+### Combined effect
+
+After all four fixes: entering a building correctly sets `W_LAST_MAP` only if
+coming from outdoors; spawning at the door tile sets `BIT_STANDING_ON_WARP`;
+`PlayerStepOutFromDoor` injects a scripted south-step that fires `.walkStart →
+CollisionCheckOnLand → collision-exit → warp out` in one frame (bypassing
+both the turn-delay and the ignore-input window, which only blocks manual input).
+Stair transitions are unaffected: `IsPlayerStandingOnDoorTile` returns CF=0 for
+stair tiles, so `PlayerStepOutFromDoor` takes `.notStandingOnDoor`, clears
+`BIT_STANDING_ON_DOOR`, and no scripted step is injected.
+
+---
