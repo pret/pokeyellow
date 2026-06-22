@@ -7,6 +7,13 @@ All output is JSON so agents can parse it without screen-scraping.
 ** NEVER access translation.db with raw SQL. Use this tool exclusively. **
 Direct sqlite3 calls bypass the audit log and will use the wrong table name.
 
+Status pipeline
+---------------
+  needs_translation → in_progress → translated → [wired → verified]
+                                         ↑
+                                   (swarm terminal)
+  wired and verified are Claude Code session transitions only.
+
 Commands
 --------
   status                              Queue summary counts by category × status.
@@ -14,26 +21,25 @@ Commands
                                       List matching functions.
   claim  --agent ID [--count N] [--category C]
                                       Atomically claim N jobs (default 1).
-                                      Returns claimed rows + suggested scratch paths.
-  manifest --id ID                    Print the manifest header a worker must write
-                                      at the top of its scratch file.
+  manifest --id ID                    Print the manifest header a worker must write.
   complete --id ID --scratch PATH [--agent ID]
-                                      Mark a function complete. Parses the worker
-                                      notes block from the scratch file and stores
-                                      it in the DB. Verifies the file exists first.
+                                      Worker marks job translated. Scratch file must
+                                      exist and be different from the output path.
   place    --id ID --output PATH [--agent ID]
                                       Integration Agent records final dos_port/src/
                                       placement and deletes the scratch file.
+  reset    --id ID                    Return any function to needs_translation
+                                      (preserves category). Maintenance command.
+  wire     --id ID [--agent ID]       Claude Code: translated → wired.
+  verify   --id ID [--agent ID]       Claude Code: wired → verified.
   recategorize --id ID --category C [--agent ID] [--notes MSG]
-                                      Move a job to a different category (e.g.
-                                      simple→complex when HW I/O is discovered).
+                                      Move a job to a different category.
                                       Resets status to needs_translation. Logged.
   unclaim  --id ID                    Return a claimed job to needs_translation.
   fail     --id ID [--notes MSG]      Return a job with a failure note.
   log      --id ID                    Full audit log for one function.
-  pending-placement                   List complete jobs waiting for Integration Agent.
-  translation-log-entry --id ID       Emit a formatted docs/translation_log.md entry
-                                      for Docs_Commit_Agent to append to that file.
+  pending-placement                   List translated jobs waiting for Integration Agent.
+  translation-log-entry --id ID       Emit a formatted docs/translation_log.md entry.
 
 Exit codes: 0 = success, 1 = error (details in JSON 'error' key).
 """
@@ -46,12 +52,18 @@ import sqlite3
 import sys
 from datetime import datetime, timezone
 
-SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT    = os.path.normpath(os.path.join(SCRIPT_DIR, '..', '..'))
-DB_PATH      = os.path.join(SCRIPT_DIR, 'translation.db')
-SCRATCH_DIR  = os.path.join(REPO_ROOT, 'dos_port', 'scratch')
+SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT   = os.path.normpath(os.path.join(SCRIPT_DIR, '..', '..'))
+DB_PATH     = os.path.join(SCRIPT_DIR, 'translation.db')
+SCRATCH_DIR = os.path.join(REPO_ROOT, 'dos_port', 'scratch')
 
-# ── DB helpers ──────────────────────────────────────────────────────────────────
+ALL_STATUSES = [
+    'needs_translation', 'in_progress', 'translated', 'wired', 'verified', 'skip',
+    # legacy values kept so old rows survive migration
+    'complete', 'unverified',
+]
+
+# ── DB helpers ───────────────────────────────────────────────────────────────────
 
 def db():
     if not os.path.exists(DB_PATH):
@@ -68,6 +80,13 @@ def _migrate(con):
         con.execute("ALTER TABLE functions ADD COLUMN scratch_file TEXT")
     if 'translation_notes' not in cols:
         con.execute("ALTER TABLE functions ADD COLUMN translation_notes TEXT")
+    # Rename legacy statuses. Disable CHECK constraints temporarily because the
+    # old schema only allows 'complete'/'unverified'; new names are 'translated'
+    # and 'needs_translation'.
+    con.execute("PRAGMA ignore_check_constraints = ON")
+    con.execute("UPDATE functions SET status='translated'        WHERE status='complete'")
+    con.execute("UPDATE functions SET status='needs_translation' WHERE status='unverified'")
+    con.execute("PRAGMA ignore_check_constraints = OFF")
     con.commit()
 
 def scratch_path(fid, label):
@@ -94,7 +113,7 @@ def log_transition(cur, function_id, old_status, new_status, agent=None, notes=N
         VALUES (?, ?, ?, ?, ?, ?)
     """, (function_id, old_status, new_status, agent, notes, now_utc()))
 
-# ── Manifest / notes parsing ────────────────────────────────────────────────────
+# ── Manifest / notes parsing ─────────────────────────────────────────────────────
 
 def make_manifest(row):
     sp = scratch_path(row['id'], row['name'])
@@ -124,29 +143,25 @@ def make_manifest(row):
     ]
     return '\n'.join(lines)
 
-# Fields the worker fills in — parsed from the scratch file header.
 _WORKER_FIELDS = ('registers', 'hflag', 'bug_tags', 'notes')
 
 def parse_notes_from_scratch(path):
-    """Read the manifest header from a scratch file and return a dict of worker notes."""
     result = {f: '' for f in _WORKER_FIELDS}
     try:
         with open(path, encoding='utf-8', errors='replace') as fh:
             for line in fh:
-                # Stop at the CODE BELOW sentinel
                 if 'CODE BELOW' in line:
                     break
                 m = re.match(r';\s*(registers|hflag|bug_tags|notes)\s*:\s*(.*)', line)
                 if m:
                     key, val = m.group(1), m.group(2).strip()
-                    # Ignore unfilled placeholder values
                     if not (val.startswith('(') and val.endswith(')')):
                         result[key] = val
     except OSError:
         pass
     return result
 
-# ── sub-commands ────────────────────────────────────────────────────────────────
+# ── sub-commands ─────────────────────────────────────────────────────────────────
 
 def cmd_status(_args):
     con = db()
@@ -237,7 +252,7 @@ def cmd_manifest(args):
     con.close()
 
 def cmd_complete(args):
-    """Worker calls this after writing the scratch file."""
+    """Worker marks job translated; scratch file must exist and differ from output."""
     con = db()
     cur = con.cursor()
     row = cur.execute("SELECT id, status, name FROM functions WHERE id=?",
@@ -248,46 +263,57 @@ def cmd_complete(args):
     if not os.path.exists(full_scratch):
         err({'error': f'Scratch file not found: {args.scratch}',
              'hint': 'Worker must write the file before calling complete.'})
-    # Parse worker notes from the manifest header
     worker_notes = parse_notes_from_scratch(full_scratch)
     notes_json   = json.dumps(worker_notes)
     old = row['status']
     cur.execute("""
         UPDATE functions
-        SET status='complete', scratch_file=?, translation_notes=?,
+        SET status='translated', scratch_file=?, translation_notes=?,
             assigned_agent=?, updated_at=?
         WHERE id=?
     """, (args.scratch, notes_json, args.agent, now_utc(), args.id))
-    log_transition(cur, args.id, old, 'complete', args.agent,
+    log_transition(cur, args.id, old, 'translated', args.agent,
                    f'scratch: {args.scratch}')
     con.commit()
     out({'id': args.id, 'name': row['name'], 'old_status': old,
-         'new_status': 'complete', 'scratch_file': args.scratch,
+         'new_status': 'translated', 'scratch_file': args.scratch,
          'parsed_notes': worker_notes,
          'next_step': 'Integration Agent: run `place --id` after moving to dos_port/src/'})
     con.close()
 
 def cmd_place(args):
-    """Integration Agent calls this after moving scratch → dos_port/src/."""
+    """Integration Agent records placement. Guards against scratch == output."""
     con = db()
     cur = con.cursor()
     row = cur.execute("SELECT id, status, name, scratch_file FROM functions WHERE id=?",
                       (args.id,)).fetchone()
     if not row:
         err({'error': f'No function with id={args.id}'})
-    if row['status'] != 'complete':
-        err({'error': f'Function {row["name"]} is not complete (status={row["status"]})',
-             'hint': 'Only complete functions can be placed.'})
+    if row['status'] != 'translated':
+        err({'error': f'Function {row["name"]} is not translated (status={row["status"]})',
+             'hint': 'Only translated functions can be placed.'})
+
+    full_output = os.path.join(REPO_ROOT, args.output)
+    if row['scratch_file']:
+        full_scratch = os.path.join(REPO_ROOT, row['scratch_file'])
+        try:
+            if os.path.realpath(full_scratch) == os.path.realpath(full_output):
+                err({'error': 'scratch and output resolve to the same file — '
+                              'create a separate scratch file in dos_port/scratch/',
+                     'scratch': row['scratch_file'],
+                     'output': args.output})
+        except OSError:
+            pass
+
     cur.execute("""
         UPDATE functions
         SET output_file=?, scratch_file=NULL, assigned_agent=?, updated_at=?
         WHERE id=?
     """, (args.output, args.agent, now_utc(), args.id))
-    log_transition(cur, args.id, 'complete', 'complete', args.agent,
+    log_transition(cur, args.id, 'translated', 'translated', args.agent,
                    f'placed → {args.output}')
     con.commit()
 
-    # Delete the scratch file now that it has been placed in dos_port/src/.
     deleted_scratch = None
     if row['scratch_file']:
         full_scratch = os.path.join(REPO_ROOT, row['scratch_file'])
@@ -295,11 +321,75 @@ def cmd_place(args):
             os.remove(full_scratch)
             deleted_scratch = row['scratch_file']
         except OSError:
-            pass  # already gone — not an error
+            pass
 
     out({'id': args.id, 'name': row['name'],
          'scratch_deleted': deleted_scratch,
          'output_file': args.output})
+    con.close()
+
+def cmd_reset(args):
+    """Return any function to needs_translation, preserving category."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name, assigned_agent FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    old = row['status']
+    cur.execute("""
+        UPDATE functions
+        SET status='needs_translation', assigned_agent=NULL,
+            scratch_file=NULL, updated_at=?
+        WHERE id=?
+    """, (now_utc(), args.id))
+    log_transition(cur, args.id, old, 'needs_translation',
+                   row['assigned_agent'], 'reset by maintenance')
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'old_status': old, 'new_status': 'needs_translation'})
+    con.close()
+
+def cmd_wire(args):
+    """Claude Code session: translated → wired."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    if row['status'] != 'translated':
+        err({'error': f'{row["name"]} is not translated (status={row["status"]})',
+             'hint': 'Only translated functions can be wired.'})
+    cur.execute("""
+        UPDATE functions SET status='wired', assigned_agent=?, updated_at=?
+        WHERE id=?
+    """, (args.agent, now_utc(), args.id))
+    log_transition(cur, args.id, 'translated', 'wired', args.agent)
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'old_status': 'translated', 'new_status': 'wired'})
+    con.close()
+
+def cmd_verify(args):
+    """Claude Code session: wired → verified (confirmed working in DOSBox-X)."""
+    con = db()
+    cur = con.cursor()
+    row = cur.execute("SELECT id, status, name FROM functions WHERE id=?",
+                      (args.id,)).fetchone()
+    if not row:
+        err({'error': f'No function with id={args.id}'})
+    if row['status'] != 'wired':
+        err({'error': f'{row["name"]} is not wired (status={row["status"]})',
+             'hint': 'Only wired functions can be verified.'})
+    cur.execute("""
+        UPDATE functions SET status='verified', assigned_agent=?, updated_at=?
+        WHERE id=?
+    """, (args.agent, now_utc(), args.id))
+    log_transition(cur, args.id, 'wired', 'verified', args.agent)
+    con.commit()
+    out({'id': args.id, 'name': row['name'],
+         'old_status': 'wired', 'new_status': 'verified'})
     con.close()
 
 def cmd_pending_placement(_args):
@@ -307,14 +397,13 @@ def cmd_pending_placement(_args):
     rows = con.execute("""
         SELECT id, name, source_file, category, scratch_file, assigned_agent
         FROM functions
-        WHERE status = 'complete' AND output_file IS NULL
+        WHERE status = 'translated' AND output_file IS NULL
         ORDER BY source_file, name
     """).fetchall()
     out({'count': len(rows), 'pending': [dict(r) for r in rows]})
     con.close()
 
 def cmd_translation_log_entry(args):
-    """Emit a formatted docs/translation_log.md entry ready to append."""
     con = db()
     row = con.execute("SELECT * FROM functions WHERE id=?", (args.id,)).fetchone()
     if not row:
@@ -328,12 +417,12 @@ def cmd_translation_log_entry(args):
         except (json.JSONDecodeError, TypeError):
             notes = {}
 
-    source      = fn.get('source_file', '(unknown)')
-    output      = fn.get('output_file') or fn.get('scratch_file') or '(not yet placed)'
-    registers   = notes.get('registers') or '(not recorded)'
-    hflag       = notes.get('hflag')     or '(not recorded)'
-    bug_tags    = notes.get('bug_tags')  or 'none'
-    freenotes   = notes.get('notes')     or '(none)'
+    source    = fn.get('source_file', '(unknown)')
+    output    = fn.get('output_file') or fn.get('scratch_file') or '(not yet placed)'
+    registers = notes.get('registers') or '(not recorded)'
+    hflag     = notes.get('hflag')     or '(not recorded)'
+    bug_tags  = notes.get('bug_tags')  or 'none'
+    freenotes = notes.get('notes')     or '(none)'
 
     entry = f"""
 ## {fn['name']}
@@ -353,7 +442,6 @@ def cmd_translation_log_entry(args):
     con.close()
 
 def cmd_recategorize(args):
-    """Move a job to a different category and reset it to needs_translation."""
     con = db()
     cur = con.cursor()
     row = cur.execute(
@@ -364,7 +452,7 @@ def cmd_recategorize(args):
         err({'error': f'No function with id={args.id}'})
     if row['category'] == args.category:
         err({'error': f'{row["name"]} is already category={args.category}'})
-    old_cat = row['category']
+    old_cat    = row['category']
     old_status = row['status']
     note = args.notes or f'recategorized {old_cat}→{args.category}'
     cur.execute("""
@@ -441,7 +529,7 @@ def cmd_log(args):
     out({'function': fn_dict, 'log': [dict(r) for r in log]})
     con.close()
 
-# ── CLI wiring ──────────────────────────────────────────────────────────────────
+# ── CLI wiring ───────────────────────────────────────────────────────────────────
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
@@ -452,8 +540,7 @@ def main():
 
     p = sub.add_parser('list', help='List functions')
     p.add_argument('--category', choices=['simple', 'complex'])
-    p.add_argument('--status',
-                   choices=['needs_translation','in_progress','unverified','complete','skip'])
+    p.add_argument('--status', choices=ALL_STATUSES)
     p.add_argument('--limit', type=int)
 
     p = sub.add_parser('claim', help='Claim jobs for an agent')
@@ -465,10 +552,10 @@ def main():
     p.add_argument('--id', type=int, required=True)
 
     p = sub.add_parser('complete',
-                       help='Worker marks job done; parses notes from scratch file header')
+                       help='Worker marks job translated; parses notes from scratch file')
     p.add_argument('--id',      type=int, required=True)
     p.add_argument('--scratch', required=True,
-                   help='Repo-relative path to the scratch file (dos_port/scratch/…)')
+                   help='Repo-relative path to scratch file in dos_port/scratch/')
     p.add_argument('--agent')
 
     p = sub.add_parser('place',
@@ -476,6 +563,20 @@ def main():
     p.add_argument('--id',     type=int, required=True)
     p.add_argument('--output', required=True,
                    help='Repo-relative path of the placed file in dos_port/src/')
+    p.add_argument('--agent')
+
+    p = sub.add_parser('reset',
+                       help='Return any function to needs_translation (preserves category)')
+    p.add_argument('--id', type=int, required=True)
+
+    p = sub.add_parser('wire',
+                       help='Claude Code: mark function as wired into live game loop')
+    p.add_argument('--id', type=int, required=True)
+    p.add_argument('--agent')
+
+    p = sub.add_parser('verify',
+                       help='Claude Code: mark function as verified working in DOSBox-X')
+    p.add_argument('--id', type=int, required=True)
     p.add_argument('--agent')
 
     p = sub.add_parser('recategorize',
@@ -486,13 +587,13 @@ def main():
     p.add_argument('--notes')
 
     sub.add_parser('pending-placement',
-                   help='List complete jobs waiting for Integration Agent')
+                   help='List translated jobs waiting for Integration Agent')
 
     p = sub.add_parser('translation-log-entry',
                        help='Emit a formatted translation_log.md entry for Docs_Commit_Agent')
     p.add_argument('--id', type=int, required=True)
 
-    p = sub.add_parser('unclaim', help='Return a job to the queue')
+    p = sub.add_parser('unclaim', help='Return a claimed job to needs_translation')
     p.add_argument('--id', type=int, required=True)
 
     p = sub.add_parser('fail', help='Return a job with a failure note')
@@ -504,18 +605,21 @@ def main():
 
     args = ap.parse_args()
     {
-        'status':                  cmd_status,
-        'list':                    cmd_list,
-        'claim':                   cmd_claim,
-        'manifest':                cmd_manifest,
-        'complete':                cmd_complete,
-        'place':                   cmd_place,
-        'pending-placement':       cmd_pending_placement,
-        'translation-log-entry':   cmd_translation_log_entry,
-        'recategorize':            cmd_recategorize,
-        'unclaim':                 cmd_unclaim,
-        'fail':                    cmd_fail,
-        'log':                     cmd_log,
+        'status':                cmd_status,
+        'list':                  cmd_list,
+        'claim':                 cmd_claim,
+        'manifest':              cmd_manifest,
+        'complete':              cmd_complete,
+        'place':                 cmd_place,
+        'reset':                 cmd_reset,
+        'wire':                  cmd_wire,
+        'verify':                cmd_verify,
+        'pending-placement':     cmd_pending_placement,
+        'translation-log-entry': cmd_translation_log_entry,
+        'recategorize':          cmd_recategorize,
+        'unclaim':               cmd_unclaim,
+        'fail':                  cmd_fail,
+        'log':                   cmd_log,
     }[args.cmd](args)
 
 if __name__ == '__main__':

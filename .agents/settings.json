@@ -1,23 +1,24 @@
 {
+  "antigravity.security.reviewPolicy": "proceed-in-sandbox",
+  "enableTerminalSandbox": true,
+  "antigravity.security.strictMode": false,
   "permissions": {
     "allow": [
-      "command(grep)",
-      "command(grep_search)",
-      "command(nasm)",
-      "command(cat)",
-      "command(dos_port/tools/work_queue)",
-      "command(dos_port/tools/build_index)",
-      "command(make)",
-      "command(bash)",
-      "command(dos_port/tools/process_placements)",
-      "command(sed)",
-      "command(awk)",
-      "command(ls)",
-      "command(make compare)",
-      "command(git status)",
-      "command(git add)",
-      "command(git commit)",
-      "command(find)"
+      "command(*)",
+      "function(*)"
+    ],
+    "ask": [],
+    "deny": [
+      "command(dd *)",
+      "command(dd)",
+      "command(git push *)",
+      "command(git push)"
     ]
-  }
+  },
+  "sandbox.trustedBinaries": [
+    "nasm",
+    "make",
+    "dos_port/tools/work_queue",
+    "dos_port/tools/build_index"
+  ]
 }
