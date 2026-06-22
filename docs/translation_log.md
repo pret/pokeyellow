@@ -1653,3 +1653,44 @@ stair tiles, so `PlayerStepOutFromDoor` takes `.notStandingOnDoor`, clears
 `BIT_STANDING_ON_DOOR`, and no scripted step is injected.
 
 ---
+
+## gen_map_headers.py — IF DEF(_DEBUG) pointer desync bug (2026-06-22)
+
+**Not a translation bug — a tooling bug in the asset generator.**
+
+### What broke
+
+All indoor map warps to maps with ID > `0x26` (BLUES_HOUSE and beyond) were
+broken: entering those buildings loaded garbage header data (wrong tileset, wrong
+dimensions, wrong warp table). Outdoor→outdoor map transitions were fine.
+
+### Root cause
+
+In commit `445c6a3a`, the `REDS_HOUSE_2F` section of `dos_port/assets/map_headers.inc`
+was **hand-edited** to remove 4 `IF DEF(_DEBUG)` warp entries from the object
+data. However, the `MapHeaderPointers` table (hardcoded absolute addresses
+computed at generation time) was NOT updated. It was still generated assuming 5
+warps for REDS_HOUSE_2F (5 × 4 = 20 bytes of warp data). With only 1 warp in the
+blob (4 bytes), every pointer for maps after 0x26 pointed 16 bytes too far into
+the data blob.
+
+This was invisible locally because `make` sees the committed `.inc` as up to date
+and skips regeneration. A fresh clone + regenerate on another machine produced a
+consistent (5-warp) file and worked correctly — the discrepancy is what exposed it.
+
+### Fix
+
+`tools/gen_map_headers.py` now calls `strip_debug_blocks()` before parsing each
+object file. This strips `IF DEF(_DEBUG) ... ENDC` blocks (with nesting depth
+tracking) so the generator produces the same 1-warp layout as the hand-edit —
+but also recomputes all the `MapHeaderPointers` correctly. Regenerating the file
+closes the 16-byte gap.
+
+### Rule going forward
+
+**Never hand-edit generated files.** If content in `map_headers.inc` or any
+other `assets/*.inc` file needs to change, fix the **generator** and regenerate.
+The pointer tables are computed at generation time and cannot be partially updated.
+If you need to exclude RGBASM-conditional content, add a filter to the generator.
+
+---

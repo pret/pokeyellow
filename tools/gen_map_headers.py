@@ -267,6 +267,31 @@ def parse_all_headers():
     return const_to_label, label_tileset
 
 
+def strip_debug_blocks(text: str) -> str:
+    """Remove IF DEF(_DEBUG) ... ENDC conditional blocks from RGBASM source."""
+    out = []
+    depth = 0
+    debug_depth = None
+    for line in text.splitlines(keepends=True):
+        stripped = line.strip().upper()
+        if stripped.startswith("IF DEF(_DEBUG)"):
+            if debug_depth is None:
+                debug_depth = depth
+            depth += 1
+            continue
+        elif stripped == "IF" or stripped.startswith("IF "):
+            depth += 1
+        elif stripped == "ENDC":
+            if depth > 0:
+                depth -= 1
+            if debug_depth is not None and depth < debug_depth:
+                debug_depth = None
+            continue
+        if debug_depth is None:
+            out.append(line)
+    return "".join(out)
+
+
 def parse_object_file(label: str):
     """Parse objects/<label>.asm → (border_byte, warp_list, sign_count, sprite_count).
 
@@ -277,7 +302,7 @@ def parse_object_file(label: str):
     obj_file = MAP_OBJECTS_DIR / f"{label}.asm"
     if not obj_file.exists():
         return None
-    text = obj_file.read_text()
+    text = strip_debug_blocks(obj_file.read_text())
 
     # Border byte: "db $XX ; border block"
     border = 0
