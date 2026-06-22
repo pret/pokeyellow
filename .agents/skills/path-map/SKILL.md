@@ -1,3 +1,7 @@
+---
+name: path-map
+description: Correct/wrong path table for placing translated files.
+---
 # Skill: path-map
 
 Correct/wrong path table for placing translated files.

@@ -1,3 +1,7 @@
+---
+name: glitch-escalation
+description: When to stop and escalate instead of translating.
+---
 # Skill: glitch-escalation
 
 When to stop and escalate instead of translating.

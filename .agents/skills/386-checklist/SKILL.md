@@ -1,3 +1,7 @@
+---
+name: 386-checklist
+description: Fast instruction selection checklist for 386+ NASM translations.
+---
 # Skill: 386-checklist
 
 Fast instruction selection checklist for 386+ NASM translations.

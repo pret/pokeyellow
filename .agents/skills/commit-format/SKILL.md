@@ -1,3 +1,7 @@
+---
+name: commit-format
+description: Git commit message conventions for swarm-generated translations.
+---
 # Skill: commit-format
 
 Git commit message conventions for swarm-generated translations.

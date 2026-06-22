@@ -1,3 +1,7 @@
+---
+name: bug-check
+description: BUG_FIX_LEVEL convention for this port.
+---
 # Skill: bug-check
 
 BUG_FIX_LEVEL convention for this port.

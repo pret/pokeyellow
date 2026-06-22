@@ -1,3 +1,7 @@
+---
+name: register-map
+description: SM83 to x86 register mapping for this port.
+---
 # Skill: register-map
 
 SM83 → x86 register mapping for this port.
