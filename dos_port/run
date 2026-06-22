@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Launch PKMN.EXE in DOSBox-X.
-# dos_port/ is mounted as C: drive.
+# Launch PKMN.EXE in DOSBox-X using the repo config (dosbox-x.conf).
+# dos_port/ is mounted as C: via 'mount c .' in the config autoexec.
 set -e
 DOSPORT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec dosbox-x -defaultdir "$DOSPORT" -c "mount c \"$DOSPORT\"" -c "c:" -c "PKMN.EXE"
+exec dosbox-x -defaultdir "$DOSPORT" -conf "$DOSPORT/dosbox-x.conf"

@@ -146,13 +146,33 @@ nasm -f coff -o /dev/null dos_port/src/util/fill_memory.asm
 
 ## DOSBox-X Configuration
 
-Config file: `~/.config/dosbox-x/dosbox-x-2026.06.02.conf`
+The repo ships a tracked config at **`dos_port/dosbox-x.conf`**. The `dos_port/run`
+script loads it automatically via `dosbox-x -defaultdir <dos_port/> -conf dosbox-x.conf`.
+It overrides the user's system config only for the settings below; everything else
+(audio, window size, etc.) falls through to the system config.
 
-Required settings:
 ```ini
-machine = vgaonly          # Mode 13h plain VGA — other machines break rendering
-cputype = 386_prefetch
-memory io optimization 1 = false   # VGA writes broken if true
+[dosbox]
+machine                   = vgaonly        ; Mode 13h plain VGA — required
+
+[video]
+memory io optimization 1  = false          ; VGA writes broken if true
+
+[cpu]
+cputype                   = 386_prefetch
+cycles                    = fixed 23880    ; 386SX ~20 MHz baseline
+cycleup                   = 500
+cycledown                 = 500
+
+[autoexec]
+mount c .                                  ; . = -defaultdir (dos_port/)
+c:
+PKMN.EXE
+```
+
+To run manually without the script:
+```sh
+dosbox-x -defaultdir "$PWD/dos_port" -conf "$PWD/dos_port/dosbox-x.conf"
 ```
 
 Must use **DOSBox-X**, not standard DOSBox. Standard DOSBox lacks the debugger

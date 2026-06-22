@@ -278,10 +278,13 @@ dos_port/run                           # build + launch in DOSBox-X
 nasm -f coff -o /dev/null dos_port/src/util/fill_memory.asm
 ```
 
-DOSBox-X config (`~/.config/dosbox-x/dosbox-x-2026.06.02.conf`) is set to:
+DOSBox-X is driven by the tracked repo config **`dos_port/dosbox-x.conf`**, loaded
+automatically by `dos_port/run`. It overrides the user's system config for:
 - `machine = vgaonly` (Mode 13h plain VGA — required)
 - `cputype = 386_prefetch`
+- `cycles = fixed 23880` (386SX ~20 MHz baseline)
 - `memory io optimization 1 = false` (VGA writes broken if true)
+- `[autoexec]`: `mount c .` + launch `PKMN.EXE`
 
 **Note:** All testing and debugging must occur on **DOSBox-X**, not standard DOSBox. Standard DOSBox lacks the accuracy and debugger features required for this port.
 
