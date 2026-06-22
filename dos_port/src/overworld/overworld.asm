@@ -75,6 +75,10 @@ global CopyMapViewToVRAM
 global OverworldLoop
 global AdvancePlayerSprite
 global AdvancePlayerSprite
+global CheckWarpTile
+global LoadWarpDestination
+global PlayerStepOutFromDoor
+global IgnoreInputForHalfSecond
 
 ; ---------------------------------------------------------------------------
 ; Map and tileset constants

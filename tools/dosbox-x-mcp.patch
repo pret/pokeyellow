@@ -1,0 +1,431 @@
+diff --git a/src/debug/debug.cpp b/src/debug/debug.cpp
+index 44f9b4f..0bbc12e 100644
+--- a/src/debug/debug.cpp
++++ b/src/debug/debug.cpp
+@@ -32,6 +32,12 @@
+ #include <sstream>
+ using namespace std;
+ 
++/* MCP debug socket */
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <unistd.h>
++#include <pthread.h>
++
+ #include "debug.h"
+ #include "cross.h" //snprintf
+ #include "fpu.h"
+@@ -335,6 +341,23 @@ static bool debugging = false;
+ static bool debug_running = false;
+ static bool check_rescroll = false;
+ 
++/* MCP socket state */
++static pthread_mutex_t mcp_mutex      = PTHREAD_MUTEX_INITIALIZER;
++static pthread_cond_t  mcp_resp_cv    = PTHREAD_COND_INITIALIZER;
++static char            mcp_pending_cmd[256]; /* MAXCMDLEN=254, defined below */
++static bool            mcp_cmd_ready      = false;
++static bool            mcp_awaiting_break = false;
++static std::string     mcp_response_buf;
++static bool            mcp_response_ready = false;
++bool               mcp_capture_active = false;  /* extern in debug_gui.cpp */
++std::string        mcp_capture_buf;              /* extern in debug_gui.cpp */
++static int         mcp_client_fd = -1;
++volatile bool      mcp_break_pending = false;   /* set from socket thread, checked in Normal_Loop */
++static bool        mcp_headless = false;        /* true when running without ncurses (no TTY) */
++static Bitu        mcp_headless_loop(void);     /* forward decl — defined near mcp_start_server */
++static void            mcp_start_server(const char* path);
++static bool        mcp_socket_started = false;  /* guard: start once from DEBUG_Init */
++
+ static FPU_rec oldfpu;
+ static bool warn_dynamic = false;
+ 
+@@ -4070,11 +4093,31 @@ bool ParseCommand(char* str) {
+ 		DEBUG_ShowMsg("Page Up/Down              - Page up/down in the current window.\n");
+ 		DEBUG_ShowMsg("Home/End                  - Move to begin/end of the current window.\n");
+ 		DEBUG_ShowMsg("TAB/Shift+TAB             - Select next/prev window\n");
++		DEBUG_ShowMsg("REGJSON                   - Emit all x86 registers as a JSON object (MCP use).\n");
+ 		DEBUG_EndPagedContent();
+ 
+ 		return true;
+ 	}
+ 
++	/* MCP: emit registers as JSON for machine-readable consumption */
++	if (command == "REGJSON") {
++		char json[512];
++		snprintf(json, sizeof(json),
++			"{\"EAX\":\"%08X\",\"EBX\":\"%08X\",\"ECX\":\"%08X\",\"EDX\":\"%08X\","
++			"\"ESI\":\"%08X\",\"EDI\":\"%08X\",\"EBP\":\"%08X\",\"ESP\":\"%08X\","
++			"\"EIP\":\"%08X\",\"EFLAGS\":\"%08X\","
++			"\"CS\":\"%04X\",\"DS\":\"%04X\",\"ES\":\"%04X\",\"SS\":\"%04X\"}",
++			(unsigned)reg_eax, (unsigned)reg_ebx,
++			(unsigned)reg_ecx, (unsigned)reg_edx,
++			(unsigned)reg_esi, (unsigned)reg_edi,
++			(unsigned)reg_ebp, (unsigned)reg_esp,
++			(unsigned)reg_eip, (unsigned)reg_flags,
++			(unsigned)SegValue(cs), (unsigned)SegValue(ds),
++			(unsigned)SegValue(es), (unsigned)SegValue(ss));
++		DEBUG_ShowMsg("%s", json);
++		return true;
++	}
++
+ 	return false;
+ }
+ 
+@@ -4855,6 +4898,45 @@ Bitu DEBUG_Loop(void) {
+             DEBUG_RefreshPage(0);
+         }
+ 
++        /* MCP: process one queued socket command per loop iteration */
++        {
++            pthread_mutex_lock(&mcp_mutex);
++            bool has_cmd = mcp_cmd_ready;
++            pthread_mutex_unlock(&mcp_mutex);
++
++            if (has_cmd) {
++                pthread_mutex_lock(&mcp_mutex);
++                mcp_cmd_ready = false;
++                char cmd[MAXCMDLEN+2];
++                safe_strncpy(cmd, mcp_pending_cmd, MAXCMDLEN);
++                cmd[MAXCMDLEN] = '\0';
++                pthread_mutex_unlock(&mcp_mutex);
++
++                std::string scmd(cmd);
++                bool is_run = (scmd == "RUN" || scmd.substr(0,7) == "RUNWATC");
++
++                if (is_run) {
++                    pthread_mutex_lock(&mcp_mutex);
++                    mcp_awaiting_break = true;
++                    pthread_mutex_unlock(&mcp_mutex);
++                }
++
++                mcp_capture_buf.clear();
++                mcp_capture_active = true;
++                ParseCommand(cmd);
++                mcp_capture_active = false;
++
++                if (!is_run) {
++                    pthread_mutex_lock(&mcp_mutex);
++                    mcp_response_buf   = mcp_capture_buf + "\nEND\n";
++                    mcp_response_ready = true;
++                    pthread_cond_signal(&mcp_resp_cv);
++                    pthread_mutex_unlock(&mcp_mutex);
++                }
++                /* For RUN: response is sent from DEBUG_Enable_Handler when break hits */
++            }
++        }
++
+     	return DEBUG_CheckKeys();
+     }
+ }
+@@ -4930,6 +5012,38 @@ void DEBUG_Enable_Handler(bool pressed) {
+ 	    allow = false;
+ 
+     if (!allow) {
++        if (mcp_socket_started) {
++            /* Headless MCP mode: no TTY, no ncurses, but socket is active.
++             * Enter a minimal loop that processes MCP commands without ncurses. */
++            mcp_headless = true;
++            debugging = true;
++            debug_running = false;
++            CPU_CycleLeft += CPU_Cycles;
++            CPU_Cycles = 0;
++            logBuffSuppressConsole = true;
++            CBreakpoint::DeactivateBreakpoints();
++            DOSBOX_SetLoop(&mcp_headless_loop);
++            GFX_SetTitle(-1,-1,-1,false);
++            /* signal any RUN-waiting client that we hit a breakpoint */
++            {
++                pthread_mutex_lock(&mcp_mutex);
++                bool notify = mcp_awaiting_break;
++                pthread_mutex_unlock(&mcp_mutex);
++                if (notify) {
++                    char brkbuf[256];
++                    snprintf(brkbuf, sizeof(brkbuf),
++                        "BREAK\nEIP=%08X\nEBP=%08X\nEND\n",
++                        (unsigned)reg_eip, (unsigned)reg_ebp);
++                    pthread_mutex_lock(&mcp_mutex);
++                    mcp_awaiting_break = false;
++                    mcp_response_buf   = brkbuf;
++                    mcp_response_ready = true;
++                    pthread_cond_signal(&mcp_resp_cv);
++                    pthread_mutex_unlock(&mcp_mutex);
++                }
++            }
++            return;
++        }
+ # if defined(MACOSX)
+ 	    LOG_MSG("Debugger in Mac OS X is not available unless you start DOSBox-X from a terminal or from the Terminal application");
+ # else
+@@ -4969,6 +5083,27 @@ void DEBUG_Enable_Handler(bool pressed) {
+ 	//KEYBOARD_ClrBuffer();
+     GFX_SetTitle(-1,-1,-1,false);
+     runnormal = false;
++
++    /* MCP: if a RUN command is pending a break response, send it now */
++    {
++        pthread_mutex_lock(&mcp_mutex);
++        bool notify = mcp_awaiting_break;
++        pthread_mutex_unlock(&mcp_mutex);
++
++        if (notify) {
++            char brkbuf[256];
++            snprintf(brkbuf, sizeof(brkbuf),
++                "BREAK\nEIP=%08X\nEBP=%08X\nEND\n",
++                (unsigned)reg_eip, (unsigned)reg_ebp);
++            pthread_mutex_lock(&mcp_mutex);
++            mcp_awaiting_break = false;
++            mcp_response_buf   = brkbuf;
++            mcp_response_ready = true;
++            pthread_cond_signal(&mcp_resp_cv);
++            pthread_mutex_unlock(&mcp_mutex);
++        }
++    }
++
+     if (debugrunmode==1) {char command[] = "RUN"; ParseCommand(command);}
+     else if (debugrunmode==2) {char command[] = "RUNWATCH"; ParseCommand(command);}
+ }
+@@ -5742,6 +5877,162 @@ void DEBUG_ShutDown(Section * /*sec*/) {
+ 
+ Bitu debugCallback;
+ 
++/* ---------------------------------------------------------------------------
++ * MCP socket server — listens on a Unix domain socket, accepts one client at
++ * a time, and bridges newline-delimited debugger commands to/from the main
++ * thread via mcp_mutex / mcp_resp_cv.
++ * Protocol:
++ *   client → server: "COMMAND\n"
++ *   server → client: "<output lines>\nEND\n"
++ * RUN blocks until the next breakpoint; all others complete immediately.
++ * ---------------------------------------------------------------------------
++ */
++static void* mcp_server_thread(void* arg) {
++    char sock_path[256];
++    snprintf(sock_path, sizeof(sock_path), "%s", (const char*)arg);
++    free(arg);
++
++    int server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
++    if (server_fd < 0) {
++        LOG_MSG("MCP: socket() failed: %s", strerror(errno));
++        return nullptr;
++    }
++
++    unlink(sock_path);
++    struct sockaddr_un addr;
++    memset(&addr, 0, sizeof(addr));
++    addr.sun_family = AF_UNIX;
++    strncpy(addr.sun_path, sock_path, sizeof(addr.sun_path)-1);
++
++    if (bind(server_fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
++        LOG_MSG("MCP: bind(%s) failed: %s", sock_path, strerror(errno));
++        close(server_fd);
++        return nullptr;
++    }
++    listen(server_fd, 1);
++    LOG_MSG("MCP: debug socket listening at %s", sock_path);
++
++    while (true) {
++        int client_fd = accept(server_fd, nullptr, nullptr);
++        if (client_fd < 0) break;
++        mcp_client_fd = client_fd;
++
++        char linebuf[MAXCMDLEN+2];
++        int  lpos = 0;
++
++        while (true) {
++            char ch;
++            ssize_t n = recv(client_fd, &ch, 1, 0);
++            if (n <= 0) break;
++            if (ch == '\n' || lpos >= MAXCMDLEN) {
++                linebuf[lpos] = '\0';
++                lpos = 0;
++                if (linebuf[0] == '\0') continue;
++
++                /* BREAK: pause a running game by setting mcp_break_pending.
++                 * Normal_Loop (dosbox.cpp) checks this flag between CPU cycles
++                 * and calls DEBUG_EnableDebugger() when it's true.
++                 * We then wait for DEBUG_Enable_Handler to signal mcp_resp_cv. */
++                if (strcmp(linebuf, "BREAK") == 0) {
++                    pthread_mutex_lock(&mcp_mutex);
++                    mcp_awaiting_break = true;
++                    mcp_response_ready = false;
++                    pthread_mutex_unlock(&mcp_mutex);
++
++                    mcp_break_pending = true;  /* volatile: visible to main thread */
++
++                    pthread_mutex_lock(&mcp_mutex);
++                    while (!mcp_response_ready)
++                        pthread_cond_wait(&mcp_resp_cv, &mcp_mutex);
++                    std::string resp = mcp_response_buf;
++                    pthread_mutex_unlock(&mcp_mutex);
++                    send(client_fd, resp.c_str(), resp.size(), MSG_NOSIGNAL);
++                    continue;
++                }
++
++                /* post command to main thread */
++                pthread_mutex_lock(&mcp_mutex);
++                safe_strncpy(mcp_pending_cmd, linebuf, sizeof(mcp_pending_cmd));
++                mcp_pending_cmd[MAXCMDLEN] = '\0';
++                mcp_cmd_ready      = true;
++                mcp_response_ready = false;
++                pthread_mutex_unlock(&mcp_mutex);
++
++                /* wait for response (filled by main thread or break handler) */
++                pthread_mutex_lock(&mcp_mutex);
++                while (!mcp_response_ready)
++                    pthread_cond_wait(&mcp_resp_cv, &mcp_mutex);
++                std::string resp = mcp_response_buf;
++                pthread_mutex_unlock(&mcp_mutex);
++
++                send(client_fd, resp.c_str(), resp.size(), MSG_NOSIGNAL);
++            } else {
++                linebuf[lpos++] = ch;
++            }
++        }
++
++        mcp_client_fd = -1;
++        close(client_fd);
++    }
++    close(server_fd);
++    unlink(sock_path);
++    return nullptr;
++}
++
++/* Minimal debug loop for headless (no-TTY) MCP-only mode.
++ * Processes one queued command per tick without touching ncurses. */
++static Bitu mcp_headless_loop(void) {
++    GFX_Events();
++    SDL_Delay(1);
++
++    pthread_mutex_lock(&mcp_mutex);
++    if (!mcp_cmd_ready) {
++        pthread_mutex_unlock(&mcp_mutex);
++        return 0;
++    }
++    char cmd[256];
++    memcpy(cmd, mcp_pending_cmd, sizeof(cmd));
++    mcp_cmd_ready = false;
++    pthread_mutex_unlock(&mcp_mutex);
++
++    if (strcmp(cmd, "RUN") == 0) {
++        debugging = false;
++        mcp_headless = false;
++        pthread_mutex_lock(&mcp_mutex);
++        mcp_awaiting_break = true;
++        mcp_response_ready = false;
++        pthread_mutex_unlock(&mcp_mutex);
++        CBreakpoint::ActivateBreakpointsExceptAt(SegPhys(cs)+reg_eip);
++        DOSBOX_SetNormalLoop();
++        return 0;
++    }
++
++    mcp_capture_active = true;
++    mcp_capture_buf.clear();
++    char cmdcopy[256];
++    memcpy(cmdcopy, cmd, sizeof(cmd));
++    ParseCommand(cmdcopy);
++    mcp_capture_active = false;
++
++    pthread_mutex_lock(&mcp_mutex);
++    mcp_response_buf = mcp_capture_buf + "\nEND\n";
++    mcp_response_ready = true;
++    pthread_cond_signal(&mcp_resp_cv);
++    pthread_mutex_unlock(&mcp_mutex);
++    return 0;
++}
++
++static void mcp_start_server(const char* path) {
++    char* path_copy = (char*)malloc(strlen(path)+1);
++    if (!path_copy) return;
++    strcpy(path_copy, path);
++    pthread_t t;
++    if (pthread_create(&t, nullptr, mcp_server_thread, path_copy) == 0)
++        pthread_detach(t);
++    else
++        free(path_copy);
++}
++
+ void DEBUG_ReinitCallback(void) {
+     /* this is REQUIRED after loading a custom BIOS */
+ 	debugCallback=CALLBACK_Allocate();
+@@ -5759,6 +6050,18 @@ void DEBUG_Init() {
+ 
+ 	/* shutdown function */
+ 	AddExitFunction(AddExitFunctionFuncPair(DEBUG_ShutDown));
++
++    /* MCP: start socket server at init so it's ready before first debugger entry */
++    if (!mcp_socket_started) {
++        Section_prop* lsect = static_cast<Section_prop*>(control->GetSection("log"));
++        if (lsect) {
++            const char* sock_path = lsect->Get_string("mcp_socket");
++            if (sock_path && sock_path[0] != '\0') {
++                mcp_socket_started = true;
++                mcp_start_server(sock_path);
++            }
++        }
++    }
+ }
+ 
+ // DEBUGGING VAR STUFF
+diff --git a/src/debug/debug_gui.cpp b/src/debug/debug_gui.cpp
+index 859fe69..47ba78c 100644
+--- a/src/debug/debug_gui.cpp
++++ b/src/debug/debug_gui.cpp
+@@ -46,6 +46,10 @@ bool log_int21 = false;
+ bool log_fileio = false;
+ extern bool logging_con;
+ 
++/* MCP capture hook (defined in debug.cpp) */
++extern bool        mcp_capture_active;
++extern std::string mcp_capture_buf;
++
+ static bool has_LOG_Init = false;
+ static bool has_LOG_EarlyInit = false;
+ static bool do_LOG_stderr = false;
+@@ -817,6 +821,11 @@ void DEBUG_ShowMsg(char const* format,...) {
+     }
+ #endif
+ 
++    if (mcp_capture_active) {
++        mcp_capture_buf += buf;
++        mcp_capture_buf += '\n';
++    }
++
+     in_debug_showmsg = false;
+ }
+ 
+@@ -1041,4 +1050,7 @@ void LOG::SetupConfigSection(void) {
+ 	Pstring->Set_help("The run mode when the DOSBox-X Debugger starts.");
+ 	Pstring->Set_values(debuggerrunopt);
+ 	Pstring->SetBasic(true);
++
++	Pstring = sect->Add_string("mcp_socket",Property::Changeable::OnlyAtStart,"");
++	Pstring->Set_help("Unix socket path for MCP debugger control (empty = disabled). E.g. /tmp/dosbox-mcp.sock");
+ }
+diff --git a/src/dosbox.cpp b/src/dosbox.cpp
+index 038c24b..1f7cc4b 100644
+--- a/src/dosbox.cpp
++++ b/src/dosbox.cpp
+@@ -429,10 +429,23 @@ extern bool DOSBox_Paused(), isDBCSCP(), InitCodePage();
+ 
+ static Uint32 SDL_ticks_last = 0,SDL_ticks_next = 0;
+ 
++/* MCP: soft-break flag set by socket thread; checked between CPU cycles */
++extern volatile bool mcp_break_pending;
++extern Bitu DEBUG_EnableDebugger(void);
++
+ static Bitu Normal_Loop(void) {
+     bool saved_allow = dosbox_allow_nonrecursive_page_fault;
+     Bits ret;
+ 
++    /* MCP: if socket client requested a break, drop into the headless debugger.
++     * Return 0 so DOSBOX_RunMachine continues looping with the new loop handler
++     * (mcp_headless_loop) that DEBUG_Enable_Handler installs. */
++    if (GCC_UNLIKELY(mcp_break_pending)) {
++        mcp_break_pending = false;
++        DEBUG_EnableDebugger();
++        return 0;
++    }
++
+     if (!menu.hidecycles || menu.showrt) { /* sdlmain.cpp/render.cpp doesn't even maintain the frames count when hiding cycles! */
+         uint32_t ticksNew = GetTicks();
+         if (ticksNew >= Ticks) {

@@ -13,6 +13,8 @@
 *.gbc
 *.gb
 *.patch
+# MCP debugger patch is source-controlled (exception to *.patch above)
+!tools/dosbox-x-mcp.patch
 
 # rgbds extras
 *.map
@@ -35,6 +37,9 @@ dos_port/assets/
 
 # DOS save files
 *.dsv
+
+# MCP debugger: clone and binary are not committed (too large)
+tools/dosbox-x-mcp/
 
 # Claude Code session data
 .claude/
