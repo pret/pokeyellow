@@ -252,6 +252,8 @@ For intentional glitches that are user-exploitable features:
 
 ## Build Commands
 
+Full reference: **[docs/assembly.md](docs/assembly.md)** — build flags, asset flags, output files, warp format, DOSBox-X config.
+
 Output EXE is **`dos_port/PKMN.EXE`** — DOS 8.3 name required for DOSBox-X `-c` invocation.
 
 ```sh
@@ -260,10 +262,17 @@ make compare
 
 # DOS port (canonical; scripts below are wrappers)
 make -C dos_port
+make -C dos_port SKIP_TITLE=1          # skip title, boot straight to overworld
+make -C dos_port BUG_FIX_LEVEL=1       # 1=critical fixes, 2=all fixes
+
+# Asset regeneration (required after changing generator scripts or pret source)
+make -C dos_port assets                # strip IF DEF(_DEBUG) blocks (normal)
+make -C dos_port assets DEBUG_WARPS=1  # include debug warp entries
+# IMPORTANT: make uses timestamps — changing DEBUG_WARPS requires explicit 'make assets'
 
 # Convenience scripts (from repo root or dos_port/)
-dos_port/build.sh                  # build (passes args to make)
-dos_port/run.sh                    # build + launch in DOSBox-X
+dos_port/build                         # build (passes args to make)
+dos_port/run                           # build + launch in DOSBox-X
 
 # Single file assembly check
 nasm -f coff -o /dev/null dos_port/src/util/fill_memory.asm
@@ -275,6 +284,11 @@ DOSBox-X config (`~/.config/dosbox-x/dosbox-x-2026.06.02.conf`) is set to:
 - `memory io optimization 1 = false` (VGA writes broken if true)
 
 **Note:** All testing and debugging must occur on **DOSBox-X**, not standard DOSBox. Standard DOSBox lacks the accuracy and debugger features required for this port.
+
+**Never hand-edit generated `assets/*.inc` files.** Fix the generator and re-run
+`make assets`. The `MapHeaderPointers` table is computed at generation time — a
+partial edit desyncs pointer addresses from blob offsets and silently corrupts
+map loads (see `docs/translation_log.md` for the 2026-06-22 postmortem).
 
 ---
 
