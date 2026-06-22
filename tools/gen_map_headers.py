@@ -19,6 +19,7 @@ Emits:
 Run from repo root:
     python3 tools/gen_map_headers.py
 """
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -292,7 +293,7 @@ def strip_debug_blocks(text: str) -> str:
     return "".join(out)
 
 
-def parse_object_file(label: str):
+def parse_object_file(label: str, debug_warps: bool = False):
     """Parse objects/<label>.asm → (border_byte, warp_list, sign_count, sprite_count).
 
     warp_list = [(y, x, dest_map_byte), ...]  (ready to emit as db y, x, ...)
@@ -302,7 +303,8 @@ def parse_object_file(label: str):
     obj_file = MAP_OBJECTS_DIR / f"{label}.asm"
     if not obj_file.exists():
         return None
-    text = strip_debug_blocks(obj_file.read_text())
+    raw = obj_file.read_text()
+    text = raw if debug_warps else strip_debug_blocks(raw)
 
     # Border byte: "db $XX ; border block"
     border = 0
@@ -393,6 +395,12 @@ def get_connection(direction, conn_map_id, offset,
 # ---------------------------------------------------------------------------
 
 def main():
+    ap = argparse.ArgumentParser(description="Generate dos_port/assets/map_headers.inc")
+    ap.add_argument("--debug-warps", action="store_true",
+                    help="Include IF DEF(_DEBUG) warp entries (e.g. REDS_HOUSE_2F teleports)")
+    args = ap.parse_args()
+    debug_warps = args.debug_warps
+
     ASSETS.mkdir(parents=True, exist_ok=True)
     out_path = ASSETS / "map_headers.inc"
 
@@ -411,7 +419,7 @@ def main():
     label_objects = {}   # label → (border, warps, sign_count, sprite_count)
     for f in MAP_OBJECTS_DIR.glob("*.asm"):
         label = f.stem
-        result = parse_object_file(label)
+        result = parse_object_file(label, debug_warps=debug_warps)
         if result:
             label_objects[label] = result
 
@@ -434,7 +442,7 @@ def main():
             guessed = const_to_pascal(const)
             if (MAP_HEADERS_DIR / f"{guessed}.asm").exists():
                 # Found header file by name; parse it for tileset
-                result = parse_object_file(guessed)
+                result = parse_object_file(guessed, debug_warps=debug_warps)
                 if result:
                     label_objects[guessed] = result
                 # Read tileset from the header file

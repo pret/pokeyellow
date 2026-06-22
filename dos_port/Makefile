@@ -127,8 +127,15 @@ assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc:
 	python3 ../tools/gen_all_assets.py
 
 # Generate map headers blob, dispatch tables, and extra_includes.inc.
+# Pass DEBUG_WARPS=1 to include IF DEF(_DEBUG) warp entries (e.g. REDS_HOUSE_2F
+# debug teleport warps). Changing this flag requires 'make assets' to force-regen.
+GEN_MAP_HEADERS_FLAGS :=
+ifdef DEBUG_WARPS
+GEN_MAP_HEADERS_FLAGS += --debug-warps
+endif
+
 assets/map_headers.inc assets/extra_includes.inc:
-	python3 ../tools/gen_map_headers.py
+	python3 ../tools/gen_map_headers.py $(GEN_MAP_HEADERS_FLAGS)
 
 # Overworld object depends on all generated assets
 src/overworld/overworld.o: \
