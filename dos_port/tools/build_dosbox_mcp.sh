@@ -11,7 +11,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TOOLS_DIR="$SCRIPT_DIR"
 
 # Detect DOSBox-X version from system install
@@ -75,4 +75,4 @@ chmod +x "$FINAL_BIN"
 
 echo ""
 echo "Done. Binary: $FINAL_BIN"
-echo "Run: tools/run_with_mcp.sh"
+echo "Run: dos_port/tools/run_with_mcp.sh"

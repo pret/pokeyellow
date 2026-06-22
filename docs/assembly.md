@@ -11,7 +11,7 @@ with `dos_port/Makefile` and `dos_port/include/gb_memmap.inc`.
 |------|---------|---------|
 | `nasm` | `nasm` (apt) | Assembles `.asm` → `.o` (COFF format) |
 | `i386-pc-msdosdjgpp-ld` | `binutils-djgpp` (apt) | Links `.o` → DJGPP coff-go32-exe |
-| `python3` | system | Asset generators (`tools/`) |
+| `python3` | system | Asset generators (`dos_port/tools/`) |
 | `dosbox-x` | AUR / build from source | Testing (must be DOSBox-X, not DOSBox) |
 
 Install on Debian/Ubuntu:
@@ -81,7 +81,7 @@ Typical debug loop:
 ```sh
 make clean && make SKIP_TITLE=1 DEBUG_TRANSITION=1
 dosbox-x -defaultdir "$PWD" -c 'mount c "'"$PWD"'"' -c c: -c PKMN.EXE -c exit
-python3 ../tools/render_frame.py FRAME.BIN /tmp/f.png
+python3 tools/render_frame.py FRAME.BIN /tmp/f.png
 ```
 
 ---
@@ -106,8 +106,8 @@ Generators:
 
 | Script | Produces | Source data |
 |--------|----------|-------------|
-| `tools/gen_all_assets.py` | `overworld_gfx.inc`, `overworld_blocks.inc`, `pallet_town_blk.inc`, all `*_blk.inc` / `*_gfx.inc` / `*_blocks.inc` / `*_coll.inc` | `gfx/tilesets/*.2bpp`, `maps/*.blk` |
-| `tools/gen_map_headers.py` | `map_headers.inc`, `extra_includes.inc` | `constants/map_constants.asm`, `data/maps/headers/*.asm`, `data/maps/objects/*.asm` |
+| `dos_port/tools/gen_all_assets.py` | `overworld_gfx.inc`, `overworld_blocks.inc`, `pallet_town_blk.inc`, all `*_blk.inc` / `*_gfx.inc` / `*_blocks.inc` / `*_coll.inc` | `gfx/tilesets/*.2bpp`, `maps/*.blk` |
+| `dos_port/tools/gen_map_headers.py` | `map_headers.inc`, `extra_includes.inc` | `constants/map_constants.asm`, `data/maps/headers/*.asm`, `data/maps/objects/*.asm` |
 
 `gen_all_assets.py` requires the tilesets to have been rendered to `.2bpp` first
 (`make` at the repo root with rgbds 1.0.1 installed).
@@ -120,7 +120,7 @@ Generators:
 |------|----------|-------|
 | `PKMN.EXE` | `dos_port/` | DOS 8.3 name required for DOSBox-X `-c` invocation |
 | `pkmn.map` | `dos_port/` | Linker map — symbol addresses for debugging |
-| `FRAME.BIN` | `dos_port/` | Raw 320×200 palette-indexed back-buffer dump; render with `tools/render_frame.py` |
+| `FRAME.BIN` | `dos_port/` | Raw 320×200 palette-indexed back-buffer dump; render with `dos_port/tools/render_frame.py` |
 | `DUMP.BIN` | `dos_port/` | GB memory window dump from `debug_dump.asm` |
 
 ---

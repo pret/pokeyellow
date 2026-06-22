@@ -16,7 +16,7 @@ Run from the repo root: python3 tools/gen_title_gfx_inc.py
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 ASSETS = ROOT / "dos_port" / "assets"
 
 TILE_W, TILE_H = 8, 8

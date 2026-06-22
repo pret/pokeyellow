@@ -94,6 +94,7 @@ extension (enlarged border / bigger block grid). See TODO.md (Phase 2).
   home/                    ← core GB routines (translation source)
   ram/wram.asm, hram.asm   ← GB memory layout definitions
   docs/bugs_and_glitches.md  ← known bugs in the original (reference for BUG tags)
+  tools/                   ← pret's build tools (gfx.c, pkmncompress.c, etc.) — DO NOT EDIT
 dos_port/
   include/
     gb_memmap.inc          ← EBP-relative offsets for GB memory regions
@@ -108,9 +109,19 @@ dos_port/
     ppu.asm                ← software PPU: BG tile decoder + tilemap renderer
   src/input/
     joypad.asm             ← INT 9h keyboard ISR → GB joypad state
+  tools/
+    gen_all_assets.py      ← tileset/blockset/map .inc generator
+    gen_map_headers.py     ← map header blob + pointer table generator
+    render_frame.py        ← render FRAME.BIN back-buffer dump to PNG
+    colorize.py            ← palette tool (stub, Phase 5)
+    saveconv.py            ← GB .sav ↔ DOS .dsv converter (stub, Phase 5)
+    dosbox_mcp/            ← MCP server for live LLM-driven DOSBox-X debugging
+    dosbox-x-mcp/          ← MCP-patched DOSBox-X build (gitignored, built locally)
+  dosbox-x.conf            ← tracked DOSBox-X config (machine, cycles, autoexec)
   Makefile
   link.ld                  ← DJGPP linker script
 docs/
+  assembly.md              ← build flags, tools, dependencies (start here)
   register_map.md          ← SM83 → x86 register mapping (living doc)
   translation_log.md       ← per-routine translation notes
   glitch_safety.md         ← glitch sandbox guidance
@@ -118,9 +129,6 @@ docs/
   references/
     README.md              ← reference link index
     pandocs/               ← downloaded Pan Docs markdown pages
-tools/
-  colorize.py              ← palette tool (stub, Phase 5)
-  saveconv.py              ← GB .sav ↔ DOS .dsv converter (stub, Phase 5)
 ```
 
 ---
@@ -334,7 +342,7 @@ route above is usually faster than chasing them in the debugger.
 buffer (`GB_BACKBUF`, 320×200 = 64000 raw palette-indexed bytes) to `FRAME.BIN`,
 then exits — the **exact pixels DOSBox-X rendered**, with no compositor in the
 loop (host Wayland/XWayland screenshot tools are unreliable across displays).
-Render `FRAME.BIN` on the host with `tools/render_frame.py FRAME.BIN out.png`
+Render `FRAME.BIN` on the host with `dos_port/tools/render_frame.py FRAME.BIN out.png`
 (values 0–3 = DMG shades, 4–11 = sprite pixels), then view the PNG.
 Driven by deterministic, input-free `%ifdef` harnesses in `EnterMap`:
 `DEBUG_TRANSITION` (force a north crossing; add `DEBUG_BASELINE=1` — both via the
@@ -342,7 +350,7 @@ Makefile — for pristine Pallet Town) and `DEBUG_WALK_NORTH` (drive the real
 movement primitives north `DEBUG_WALK_STEPS` steps, dumping at the crossing).
 Typical loop: `make clean && make SKIP_TITLE=1 DEBUG_TRANSITION=1` →
 `dosbox-x -defaultdir "$PWD" -c 'mount c "'"$PWD"'"' -c c: -c PKMN.EXE -c exit` →
-`python3 ../tools/render_frame.py FRAME.BIN /tmp/f.png`. This is how the
+`python3 tools/render_frame.py FRAME.BIN /tmp/f.png`. This is how the
 2026-06-15 viewport diagnosis and the 2026-06-16 out-of-map clamp fix were made
 (see docs/loadmapheader_handoff.md). Prefer this to screenshots for ground truth.
 
@@ -398,4 +406,4 @@ the environment, installs may proceed without prompting.
 
 - GB `.sav`: raw 32 KB SRAM dump (MBC5+RAM+BATTERY)
 - DOS `.dsv`: `DOSV` magic + version byte + 2-byte checksum + 32 KB SRAM data
-- Converter: `tools/saveconv.py` (stub until Phase 5 when save format is stable)
+- Converter: `dos_port/tools/saveconv.py` (stub until Phase 5 when save format is stable)

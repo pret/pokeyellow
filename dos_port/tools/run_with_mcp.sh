@@ -17,14 +17,14 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-DOSPORT="${REPO_ROOT}/dos_port"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+DOSPORT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BINARY="${SCRIPT_DIR}/dosbox-x-mcp/dosbox-x"
 SOCK_PATH="/tmp/dosbox-mcp.sock"
 
 if [ ! -x "$BINARY" ]; then
     echo "ERROR: patched binary not found at $BINARY"
-    echo "Run: tools/build_dosbox_mcp.sh"
+    echo "Run: dos_port/tools/build_dosbox_mcp.sh"
     exit 1
 fi
 

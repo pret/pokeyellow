@@ -28,7 +28,7 @@ from typing import Optional
 
 # Allow running from repo root or tools/ dir
 _HERE = Path(__file__).parent
-_REPO = _HERE.parent.parent  # tools/dosbox_mcp → tools → repo root
+_REPO = _HERE.parent.parent.parent  # dos_port/tools/dosbox_mcp → dos_port/tools → dos_port → repo root
 
 sys.path.insert(0, str(_HERE))
 from symbol_map import SymbolMap
@@ -44,7 +44,7 @@ SOCK_PATH  = os.environ.get('DOSBOX_MCP_SOCKET', '/tmp/dosbox-mcp.sock')
 MAP_FILE   = os.environ.get('PKMN_MAP',    str(_REPO / 'dos_port' / 'pkmn.map'))
 MEMMAP_INC = os.environ.get('GB_MEMMAP_INC', str(_REPO / 'dos_port' / 'include' / 'gb_memmap.inc'))
 DUMP_DIR   = os.environ.get('DOSBOX_MCP_DIR', str(_REPO / 'dos_port'))
-RENDER_PY  = str(_REPO / 'tools' / 'render_frame.py')
+RENDER_PY  = str(_REPO / 'dos_port' / 'tools' / 'render_frame.py')
 
 # ---------------------------------------------------------------------------
 # Singletons

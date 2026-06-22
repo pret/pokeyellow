@@ -124,7 +124,7 @@ ALL_OBJS := $(ALL_SRCS:.asm=.o)
 # Generate all tileset gfx/blocks/coll + map blk inc files.
 # Requires gfx/tilesets/*.2bpp, built by 'make' in the repo root.
 assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc:
-	python3 ../tools/gen_all_assets.py
+	python3 tools/gen_all_assets.py
 
 # Generate map headers blob, dispatch tables, and extra_includes.inc.
 # Pass DEBUG_WARPS=1 to include IF DEF(_DEBUG) warp entries (e.g. REDS_HOUSE_2F
@@ -135,7 +135,7 @@ GEN_MAP_HEADERS_FLAGS += --debug-warps
 endif
 
 assets/map_headers.inc assets/extra_includes.inc:
-	python3 ../tools/gen_map_headers.py $(GEN_MAP_HEADERS_FLAGS)
+	python3 tools/gen_map_headers.py $(GEN_MAP_HEADERS_FLAGS)
 
 # Overworld object depends on all generated assets
 src/overworld/overworld.o: \

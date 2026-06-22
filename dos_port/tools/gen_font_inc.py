@@ -10,7 +10,7 @@ Run from the repo root: python3 tools/gen_font_inc.py
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 SRC_PNG = ROOT / "gfx" / "font" / "font.png"
 DST = ROOT / "dos_port" / "assets" / "font_1bpp.inc"
 

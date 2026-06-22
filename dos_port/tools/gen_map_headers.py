@@ -24,7 +24,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 ASSETS = ROOT / "dos_port" / "assets"
 MAP_HEADERS_DIR = ROOT / "data" / "maps" / "headers"
 MAP_OBJECTS_DIR = ROOT / "data" / "maps" / "objects"
