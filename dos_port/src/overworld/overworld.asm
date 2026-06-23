@@ -14,10 +14,6 @@
 ;                               UpdateMusic — ; TODO-HW tags below)
 ;
 ; Phase 2 scaffold (not a faithful translation):
-;   SetupPalletTown      — hardcoded Pallet Town map-header variables + asset copy to
-;                           ROM window; initializes player sprite-state slot (slot 0)
-;   SetupPalletTownNPCs  — loads NPC still tiles to VRAM and inits slots 1-3 with
-;                           visible scaffold positions (canonical InitMapSprites later)
 ;   EnterMap             — scaffold entry from title screen
 ;   OverworldLoop        — player-movement frame loop: UpdateSprites (facing + walk
 ;                           animation), AdvancePlayerSprite scroll, land collision
@@ -28,10 +24,13 @@
 ; (src/overworld/movement.asm) drives the per-slot image index, and PrepareOAMData
 ; (src/gfx/sprite_oam.asm, run in the DelayFrame pipeline) builds shadow OAM from it.
 ;
-; Asset layout in ROM window (EBP + $4000–$4FFF):
+; Asset layout in ROM window (EBP + $4000–$54FF and $1000+; see gb_memmap.inc):
 ;   $4000 : overworld.2bpp  (94 tiles, 1504 bytes)  → wTilesetGfxPtr
 ;   $4600 : overworld.bst   (128 blocks × 16 bytes) → wTilesetBlocksPtr
 ;   $4E00 : PalletTown.blk  (10×9 = 90 bytes)       → wCurMapDataPtr
+;   $4F00 : Overworld_Coll  (passable-tile list, $FF-terminated)
+;   $5000 : Route1.blk, $5200: Route21.blk, $5400: tileset header, $540C: map headers
+;   $1000+: city/route .blk files (ViridianCity, PewterCity, … — see OW_*_BLK_GBADDR)
 ;
 ; Build: nasm -f coff -I include/ -I . -o overworld.o src/overworld/overworld.asm
 
@@ -119,8 +118,8 @@ NORTH_X_ALIGN              equ 0
 ; NOTE: DEAD CODE. The live north view pointer is the one emitted into
 ; assets/map_headers.inc by tools/gen_map_headers.py (currently 0xE691 = base+273)
 ; and loaded into the connection header by LoadMapHeader. This equ is no longer
-; read at runtime (SetupPalletTown, which used it, was removed). Kept only as a
-; reference value; edit gen_map_headers.py / map_headers.inc to change behavior.
+; read at runtime. Kept only as a reference value; edit gen_map_headers.py /
+; map_headers.inc to change behavior.
 NORTH_VIEW_PTR             equ W_OVERWORLD_MAP + 397   ; (conn_width+12)*(conn_height-1)+1
 
 ; south (Route21): _blk = 0; _map = (CUR_W+12)*(CUR_H+6)+6 = 22*15+6 = 336;
