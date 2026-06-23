@@ -17,22 +17,24 @@ global FocusEnergyEffect_
 global GettingPumpedText
 
 FocusEnergyEffect_:
-	mov esi, wPlayerBattleStatus2
-	mov al, byte [ebp + hWhoseTurn]
-	test al, al
-	jz .notEnemy
-	mov esi, wEnemyBattleStatus2
+    mov esi, wPlayerBattleStatus2
+    mov al, [ebp + hWhoseTurn]
+    test al, al
+    jz .notEnemy
+    mov esi, wEnemyBattleStatus2
 .notEnemy:
-	bt dword [ebp + esi], GETTING_PUMPED
-	jc .alreadyUsing
-	bts dword [ebp + esi], GETTING_PUMPED
-	call PlayCurrentMoveAnimation
-	mov esi, GettingPumpedText
-	jmp PrintText
+    test byte [ebp + esi], 1 << GETTING_PUMPED
+    jnz .alreadyUsing
+    or byte [ebp + esi], 1 << GETTING_PUMPED
+    
+    call PlayCurrentMoveAnimation
+    mov esi, GettingPumpedText
+    jmp PrintText
+
 .alreadyUsing:
-	mov cl, 50
-	call DelayFrames
-	jmp PrintButItFailedText_
+    mov cl, 50
+    call DelayFrames
+    jmp PrintButItFailedText_
 
 GettingPumpedText:
     db 0x0A ; TX_PAUSE

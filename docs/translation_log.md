@@ -1718,3 +1718,87 @@ If you need to exclude RGBASM-conditional content, add a filter to the generator
 - **Notes:** straight translation; gb memory access via ebp+esi
 
 ---
+
+## FocusEnergyEffect_
+
+- **Source:** `engine/battle/move_effects/focus_energy.asm:FocusEnergyEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/focus_energy.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI for status ptr, A->AL for turn
+- **Notes:** used OR/TEST for GETTING_PUMPED, DelayFrames count in cl
+
+---
+
+## HazeEffect_
+
+- **Source:** `engine/battle/move_effects/haze.asm:HazeEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI, DE->EDX, A->AL, B->BH
+- **Notes:** used EDX for DE to support 32-bit flat EBP addressing
+
+---
+
+## ResetStats
+
+- **Source:** `engine/battle/move_effects/haze.asm:ResetStats`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI for source stat ptr, DE->EDI for dest stat ptr, B->BH for loop counter, A->AL
+- **Notes:** added NUM_STATS equ 7 to allow assembly; used EBP memory model
+
+---
+
+## StatusChangesEliminatedText
+
+- **Source:** `engine/battle/move_effects/haze.asm:StatusChangesEliminatedText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** text macro translation
+
+---
+
+## HealEffect_
+
+- **Source:** `engine/battle/move_effects/heal.asm:HealEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** BUG(cosmetic): most significant bytes comparison is ignored
+- **Registers:** HL→ESI, DE→EDI, A→AL, B→BH, C→BL
+- **Notes:** expanded hlcoord macro manually; translated predef UpdateHPBar2 as call UpdateHPBar2
+
+---
+
+## FellAsleepBecameHealthyText
+
+- **Source:** `engine/battle/move_effects/heal.asm:FellAsleepBecameHealthyText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-23
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** (none)
+
+---
+
+## RegainedHealthText
+
+- **Source:** `engine/battle/move_effects/heal.asm:RegainedHealthText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-23
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** Translated text macro using db byte constants (TX_FAR, TX_END) and dd for flat far pointer.
+
+---

@@ -57,14 +57,14 @@ HazeEffect_:
     ; cure non-volatile status, but only for the target
     mov esi, wEnemyMonStatus
     mov edx, wEnemySelectedMove
-    mov al, byte [ebp + hWhoseTurn]
-    and al, al
+    mov al, [ebp + hWhoseTurn]
+    test al, al
     jz .cureStatuses
     mov esi, wBattleMonStatus
     dec edx ; wPlayerSelectedMove
 
 .cureStatuses:
-    mov al, byte [ebp + esi]
+    mov al, [ebp + esi]
     mov byte [ebp + esi], 0
     and al, (1 << FRZ) | SLP_MASK
     jz .cureVolatileStatuses
@@ -73,12 +73,12 @@ HazeEffect_:
 
 .cureVolatileStatuses:
     xor al, al
-    mov byte [ebp + wPlayerDisabledMove], al
-    mov byte [ebp + wEnemyDisabledMove], al
+    mov [ebp + wPlayerDisabledMove], al
+    mov [ebp + wEnemyDisabledMove], al
     mov esi, wPlayerDisabledMoveNumber
-    mov byte [ebp + esi], al
+    mov [ebp + esi], al
     inc esi
-    mov byte [ebp + esi], al
+    mov [ebp + esi], al
     mov esi, wPlayerBattleStatus1
     call CureVolatileStatuses
     mov esi, wEnemyBattleStatus1
@@ -89,39 +89,22 @@ HazeEffect_:
     jmp PrintText
 
 CureVolatileStatuses:
-    ; res CONFUSED, [hl]
-    and byte [ebp + esi], ~((1 << 7)) & 0xFF ; CONFUSED = 7
-
-    ; inc hl ; BATTSTATUS2
-    inc esi
-
-    ; ld a, [hl]
+    and byte [ebp + esi], ~(1 << CONFUSED)
+    inc esi ; BATTSTATUS2
     mov al, [ebp + esi]
-
     ; clear USING_X_ACCURACY, PROTECTED_BY_MIST, GETTING_PUMPED, and SEEDED statuses
-    ; and ~((1 << USING_X_ACCURACY) | (1 << PROTECTED_BY_MIST) | (1 << GETTING_PUMPED) | (1 << SEEDED))
-    and al, ~((1 << 0) | (1 << 1) | (1 << 2) | (1 << 7)) & 0xFF
-
-    ; ld [hli], a ; BATTSTATUS3
-    mov [ebp + esi], al
+    and al, ~((1 << USING_X_ACCURACY) | (1 << PROTECTED_BY_MIST) | (1 << GETTING_PUMPED) | (1 << SEEDED))
+    mov [ebp + esi], al ; BATTSTATUS3
     inc esi
-
-    ; ld a, [hl]
     mov al, [ebp + esi]
-
-    ; and %11110000 | (1 << TRANSFORMED) ; clear Bad Poison, Reflect and Light Screen statuses
-    and al, 11110000b | (1 << 3) ; TRANSFORMED = 3
-
-    ; ld [hl], a
+    and al, 11110000b | (1 << TRANSFORMED) ; clear Bad Poison, Reflect and Light Screen statuses
     mov [ebp + esi], al
-
-    ; ret
     ret
 
 ResetStatMods:
     mov bh, NUM_STAT_MODS
 .loop:
-    mov byte [ebp + esi], al
+    mov [ebp + esi], al
     inc esi
     dec bh
     jnz .loop
@@ -130,9 +113,9 @@ ResetStatMods:
 ResetStats:
     mov bh, (NUM_STATS - 1) * 2 ; doesn't reset STAT_HEALTH
 .loop:
-    mov al, byte [ebp + esi]
+    mov al, [ebp + esi]
     inc esi
-    mov byte [ebp + edx], al
+    mov [ebp + edx], al
     inc edx
     dec bh
     jnz .loop
