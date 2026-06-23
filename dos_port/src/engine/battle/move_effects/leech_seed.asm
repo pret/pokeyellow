@@ -1,23 +1,25 @@
 %include "gb_memmap.inc"
 %include "gb_macros.inc"
+%include "gb_text.inc"
+
+GRASS equ 22
+SEEDED equ 7
 
 extern MoveHitTest
 extern PlayCurrentMoveAnimation
-extern DelayFrames
 extern PrintText
+extern DelayFrames
+extern _WasSeededText
+extern _EvadedAttackText
+
 extern wMoveMissed
 extern wEnemyBattleStatus2
 extern wEnemyMonType1
 extern hWhoseTurn
 extern wPlayerBattleStatus2
 extern wBattleMonType1
-extern _WasSeededText
-extern _EvadedAttackText
 
-section .text
 global LeechSeedEffect_
-global WasSeededText
-global EvadedAttackText
 
 LeechSeedEffect_:
 	call MoveHitTest
@@ -34,15 +36,15 @@ LeechSeedEffect_:
 .leechSeedEffect:
 ; miss if the target is grass-type or already seeded
 	mov al, [ebp + edi]
-	cmp al, 22 ; GRASS
+	cmp al, GRASS
 	jz .moveMissed
 	inc edi
 	mov al, [ebp + edi]
-	cmp al, 22 ; GRASS
+	cmp al, GRASS
 	jz .moveMissed
-	test byte [ebp + esi], 1 << 7 ; SEEDED is bit 7
+	test byte [ebp + esi], 1 << SEEDED
 	jnz .moveMissed
-	or byte [ebp + esi], 1 << 7
+	or byte [ebp + esi], 1 << SEEDED
 	call PlayCurrentMoveAnimation
 	mov esi, WasSeededText
 	jmp PrintText
@@ -53,13 +55,9 @@ LeechSeedEffect_:
 	jmp PrintText
 
 WasSeededText:
-    db 0x0A ; TX_PAUSE
-    db 0x17 ; TX_FAR
-    dd _WasSeededText
-    db 0x50 ; TX_END
+	text_far _WasSeededText
+	text_end
 
 EvadedAttackText:
-    db 0x0A ; TX_PAUSE
-    db 0x17 ; TX_FAR
-    dd _EvadedAttackText
-    db 0x50 ; TX_END
+	text_far _EvadedAttackText
+	text_end

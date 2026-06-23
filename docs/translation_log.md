@@ -1802,3 +1802,51 @@ If you need to exclude RGBASM-conditional content, add a filter to the generator
 - **Notes:** Translated text macro using db byte constants (TX_FAR, TX_END) and dd for flat far pointer.
 
 ---
+
+## StartedSleepingEffect
+
+- **Source:** `engine/battle/move_effects/heal.asm:StartedSleepingEffect`
+- **Translated:** `dos_port/src/engine/battle/move_effects/heal.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** Text macro converted to db 0x17, dd pointer, db 0x50
+
+---
+
+## LeechSeedEffect_
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:LeechSeedEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI, DE->EDI, A->AL, C->CL
+- **Notes:** Translated purely; EDI used for DE, CL for C.
+
+---
+
+## WasSeededText
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:WasSeededText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** explicit byte directives for text_far and text_end
+
+---
+
+## EvadedAttackText
+
+- **Source:** `engine/battle/move_effects/leech_seed.asm:EvadedAttackText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/leech_seed.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** Translated text_far and text_end macros into byte directives.
+
+---
