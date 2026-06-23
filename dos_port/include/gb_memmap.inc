@@ -149,8 +149,12 @@ SPRITESTATEDATA2_YDISPLACEMENT        equ 0x2   ; Y displacement (init 8)
 SPRITESTATEDATA2_XDISPLACEMENT        equ 0x3   ; X displacement (init 8)
 SPRITESTATEDATA2_MAPY                 equ 0x4   ; map Y position (metatile units, origin+4)
 SPRITESTATEDATA2_MAPX                 equ 0x5   ; map X position (metatile units, origin+4)
+SPRITESTATEDATA2_WALKANIMCOUNTER      equ 0x0   ; 8-frame countdown while walking (0=standing)
+SPRITESTATEDATA2_MOVEMENTDELAY        equ 0x1   ; frames until next random walk attempt
 SPRITESTATEDATA2_MOVEMENTBYTE1        equ 0x6   ; $ff=STAY, $fe=WALK(random), <$fe=scripted
-SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7
+SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7   ; $80=under grass (set by CheckSpriteAvailability)
+SPRITESTATEDATA2_MOVEMENTBYTE2        equ 0x8   ; dir constraint from map object (0x00/0x01/0x02/0xFF)
+SPRITESTATEDATA2_ISTRAINER            equ 0x9   ; 1 if trainer NPC, 0 otherwise
 SPRITESTATEDATA2_IMAGEBASEOFFSET      equ 0xE
 
 ; NPC movement-byte sentinel values (constants/map_object_constants.asm)
@@ -455,10 +459,18 @@ SPRITE_FACING_LEFT       equ 0x08
 SPRITE_FACING_RIGHT      equ 0x0C
 
 ; hJoyHeld bit positions (constants/hardware.inc B_PAD_*; active-high in hJoyHeld)
+PAD_A                    equ 1 << 0      ; B_BTN_A    = 0 (button byte low nibble)
+PAD_B                    equ 1 << 1      ; B_BTN_B    = 1
+PAD_SELECT               equ 1 << 2      ; B_BTN_SELECT = 2
+PAD_START                equ 1 << 3      ; B_BTN_START  = 3
 PAD_RIGHT                equ 1 << 4      ; B_PAD_RIGHT = 4
 PAD_LEFT                 equ 1 << 5      ; B_PAD_LEFT  = 5
 PAD_UP                   equ 1 << 6      ; B_PAD_UP    = 6
 PAD_DOWN                 equ 1 << 7      ; B_PAD_DOWN  = 7
+
+; Map object NPC flags (constants/map_object_constants.asm)
+TRAINER_FLAG             equ 0x40        ; 1 << BIT_TRAINER
+ITEM_FLAG                equ 0x80        ; 1 << BIT_ITEM
 
 ; RedrawRowOrColumn modes (constants/gfx_constants.asm)
 REDRAW_COL               equ 1

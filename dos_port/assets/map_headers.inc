@@ -597,254 +597,254 @@ IndoorMapBlkSizes:
 
 MapHeaderPointers:
     dw 0x540C   ; 0x00 PALLET_TOWN
-    dw 0x544A   ; 0x01 VIRIDIAN_CITY
-    dw 0x54A1   ; 0x02 PEWTER_CITY
-    dw 0x54F8   ; 0x03 CERULEAN_CITY
-    dw 0x556E   ; 0x04 LAVENDER_TOWN
-    dw 0x55C9   ; 0x05 VERMILION_CITY
-    dw 0x5628   ; 0x06 CELADON_CITY
-    dw 0x569D   ; 0x07 FUCHSIA_CITY
-    dw 0x571C   ; 0x08 CINNABAR_ISLAND
-    dw 0x5765   ; 0x09 INDIGO_PLATEAU
-    dw 0x577D   ; 0x0A SAFFRON_CITY
+    dw 0x545C   ; 0x01 VIRIDIAN_CITY
+    dw 0x54E3   ; 0x02 PEWTER_CITY
+    dw 0x5558   ; 0x03 CERULEAN_CITY
+    dw 0x5612   ; 0x04 LAVENDER_TOWN
+    dw 0x567F   ; 0x05 VERMILION_CITY
+    dw 0x5708   ; 0x06 CELADON_CITY
+    dw 0x57B3   ; 0x07 FUCHSIA_CITY
+    dw 0x586E   ; 0x08 CINNABAR_ISLAND
+    dw 0x58C3   ; 0x09 INDIGO_PLATEAU
+    dw 0x58DB   ; 0x0A SAFFRON_CITY
     dw 0x0000   ; 0x0B UNUSED_MAP_0B (stub/unused)
-    dw 0x57F7   ; 0x0C ROUTE_1
-    dw 0x5820   ; 0x0D ROUTE_2
-    dw 0x5868   ; 0x0E ROUTE_3
-    dw 0x5891   ; 0x0F ROUTE_4
-    dw 0x58CC   ; 0x10 ROUTE_5
-    dw 0x5909   ; 0x11 ROUTE_6
-    dw 0x5942   ; 0x12 ROUTE_7
-    dw 0x597F   ; 0x13 ROUTE_8
-    dw 0x59BC   ; 0x14 ROUTE_9
-    dw 0x59E5   ; 0x15 ROUTE_10
-    dw 0x5A27   ; 0x16 ROUTE_11
-    dw 0x5A64   ; 0x17 ROUTE_12
-    dw 0x5AAB   ; 0x18 ROUTE_13
-    dw 0x5ADA   ; 0x19 ROUTE_14
-    dw 0x5B03   ; 0x1A ROUTE_15
-    dw 0x5B3C   ; 0x1B ROUTE_16
-    dw 0x5B8C   ; 0x1C ROUTE_17
-    dw 0x5BC4   ; 0x1D ROUTE_18
-    dw 0x5C00   ; 0x1E ROUTE_19
-    dw 0x5C2D   ; 0x1F ROUTE_20
-    dw 0x5C61   ; 0x20 ROUTE_21
-    dw 0x5C87   ; 0x21 ROUTE_22
-    dw 0x5CA9   ; 0x22 ROUTE_23
-    dw 0x5CCC   ; 0x23 ROUTE_24
-    dw 0x5CF2   ; 0x24 ROUTE_25
-    dw 0x5D14   ; 0x25 REDS_HOUSE_1F
-    dw 0x5D33   ; 0x26 REDS_HOUSE_2F
-    dw 0x5D47   ; 0x27 BLUES_HOUSE
-    dw 0x5D5F   ; 0x28 OAKS_LAB
-    dw 0x5D77   ; 0x29 VIRIDIAN_POKECENTER
-    dw 0x5D8F   ; 0x2A VIRIDIAN_MART
-    dw 0x5DA7   ; 0x2B VIRIDIAN_SCHOOL_HOUSE
-    dw 0x5DBF   ; 0x2C VIRIDIAN_NICKNAME_HOUSE
-    dw 0x5DD7   ; 0x2D VIRIDIAN_GYM
-    dw 0x5DEF   ; 0x2E DIGLETTS_CAVE_ROUTE_2
-    dw 0x5E0B   ; 0x2F VIRIDIAN_FOREST_NORTH_GATE
-    dw 0x5E2B   ; 0x30 ROUTE_2_TRADE_HOUSE
-    dw 0x5E43   ; 0x31 ROUTE_2_GATE
-    dw 0x5E63   ; 0x32 VIRIDIAN_FOREST_SOUTH_GATE
-    dw 0x5E83   ; 0x33 VIRIDIAN_FOREST
-    dw 0x5EBD   ; 0x34 MUSEUM_1F
-    dw 0x5EE1   ; 0x35 MUSEUM_2F
-    dw 0x5EFB   ; 0x36 PEWTER_GYM
-    dw 0x5F13   ; 0x37 PEWTER_NIDORAN_HOUSE
-    dw 0x5F2B   ; 0x38 PEWTER_MART
-    dw 0x5F43   ; 0x39 PEWTER_SPEECH_HOUSE
-    dw 0x5F5B   ; 0x3A PEWTER_POKECENTER
-    dw 0x5F73   ; 0x3B MT_MOON_1F
-    dw 0x5F9A   ; 0x3C MT_MOON_B1F
-    dw 0x5FCA   ; 0x3D MT_MOON_B2F
-    dw 0x5FEA   ; 0x3E CERULEAN_TRASHED_HOUSE
-    dw 0x6009   ; 0x3F CERULEAN_MELANIES_HOUSE
-    dw 0x6021   ; 0x40 CERULEAN_POKECENTER
-    dw 0x6039   ; 0x41 CERULEAN_GYM
-    dw 0x6051   ; 0x42 BIKE_SHOP
-    dw 0x6069   ; 0x43 CERULEAN_MART
-    dw 0x6081   ; 0x44 MT_MOON_POKECENTER
+    dw 0x59A9   ; 0x0C ROUTE_1
+    dw 0x59DE   ; 0x0D ROUTE_2
+    dw 0x5A34   ; 0x0E ROUTE_3
+    dw 0x5AA3   ; 0x0F ROUTE_4
+    dw 0x5AF3   ; 0x10 ROUTE_5
+    dw 0x5B30   ; 0x11 ROUTE_6
+    dw 0x5B99   ; 0x12 ROUTE_7
+    dw 0x5BD6   ; 0x13 ROUTE_8
+    dw 0x5C5B   ; 0x14 ROUTE_9
+    dw 0x5CD3   ; 0x15 ROUTE_10
+    dw 0x5D45   ; 0x16 ROUTE_11
+    dw 0x5DD2   ; 0x17 ROUTE_12
+    dw 0x5E65   ; 0x18 ROUTE_13
+    dw 0x5EE4   ; 0x19 ROUTE_14
+    dw 0x5F5D   ; 0x1A ROUTE_15
+    dw 0x5FED   ; 0x1B ROUTE_16
+    dw 0x6073   ; 0x1C ROUTE_17
+    dw 0x60FB   ; 0x1D ROUTE_18
+    dw 0x614F   ; 0x1E ROUTE_19
+    dw 0x61CC   ; 0x1F ROUTE_20
+    dw 0x6250   ; 0x20 ROUTE_21
+    dw 0x62BE   ; 0x21 ROUTE_22
+    dw 0x62EC   ; 0x22 ROUTE_23
+    dw 0x6339   ; 0x23 ROUTE_24
+    dw 0x63A4   ; 0x24 ROUTE_25
+    dw 0x6415   ; 0x25 REDS_HOUSE_1F
+    dw 0x643A   ; 0x26 REDS_HOUSE_2F
+    dw 0x644E   ; 0x27 BLUES_HOUSE
+    dw 0x647B   ; 0x28 OAKS_LAB
+    dw 0x64CB   ; 0x29 VIRIDIAN_POKECENTER
+    dw 0x6501   ; 0x2A VIRIDIAN_MART
+    dw 0x652B   ; 0x2B VIRIDIAN_SCHOOL_HOUSE
+    dw 0x6555   ; 0x2C VIRIDIAN_NICKNAME_HOUSE
+    dw 0x6585   ; 0x2D VIRIDIAN_GYM
+    dw 0x65F2   ; 0x2E DIGLETTS_CAVE_ROUTE_2
+    dw 0x6614   ; 0x2F VIRIDIAN_FOREST_NORTH_GATE
+    dw 0x6640   ; 0x30 ROUTE_2_TRADE_HOUSE
+    dw 0x6664   ; 0x31 ROUTE_2_GATE
+    dw 0x6690   ; 0x32 VIRIDIAN_FOREST_SOUTH_GATE
+    dw 0x66BC   ; 0x33 VIRIDIAN_FOREST
+    dw 0x673F   ; 0x34 MUSEUM_1F
+    dw 0x6781   ; 0x35 MUSEUM_2F
+    dw 0x67B9   ; 0x36 PEWTER_GYM
+    dw 0x67E7   ; 0x37 PEWTER_NIDORAN_HOUSE
+    dw 0x6811   ; 0x38 PEWTER_MART
+    dw 0x683B   ; 0x39 PEWTER_SPEECH_HOUSE
+    dw 0x685F   ; 0x3A PEWTER_POKECENTER
+    dw 0x689B   ; 0x3B MT_MOON_1F
+    dw 0x6924   ; 0x3C MT_MOON_B1F
+    dw 0x6954   ; 0x3D MT_MOON_B2F
+    dw 0x69BA   ; 0x3E CERULEAN_TRASHED_HOUSE
+    dw 0x69E5   ; 0x3F CERULEAN_MELANIES_HOUSE
+    dw 0x6A15   ; 0x40 CERULEAN_POKECENTER
+    dw 0x6A4B   ; 0x41 CERULEAN_GYM
+    dw 0x6A81   ; 0x42 BIKE_SHOP
+    dw 0x6AAB   ; 0x43 CERULEAN_MART
+    dw 0x6AD5   ; 0x44 MT_MOON_POKECENTER
     dw 0x0000   ; 0x45 CERULEAN_TRASHED_HOUSE_COPY (stub/unused)
-    dw 0x6099   ; 0x46 ROUTE_5_GATE
-    dw 0x60B9   ; 0x47 UNDERGROUND_PATH_ROUTE_5
-    dw 0x60D5   ; 0x48 DAYCARE
-    dw 0x60ED   ; 0x49 ROUTE_6_GATE
-    dw 0x610D   ; 0x4A UNDERGROUND_PATH_ROUTE_6
+    dw 0x6B17   ; 0x46 ROUTE_5_GATE
+    dw 0x6B3D   ; 0x47 UNDERGROUND_PATH_ROUTE_5
+    dw 0x6B5F   ; 0x48 DAYCARE
+    dw 0x6B7D   ; 0x49 ROUTE_6_GATE
+    dw 0x6BA3   ; 0x4A UNDERGROUND_PATH_ROUTE_6
     dw 0x0000   ; 0x4B UNDERGROUND_PATH_ROUTE_6_COPY (stub/unused)
-    dw 0x6129   ; 0x4C ROUTE_7_GATE
-    dw 0x6149   ; 0x4D UNDERGROUND_PATH_ROUTE_7
-    dw 0x6165   ; 0x4E UNDERGROUND_PATH_ROUTE_7_COPY
-    dw 0x6181   ; 0x4F ROUTE_8_GATE
-    dw 0x61A1   ; 0x50 UNDERGROUND_PATH_ROUTE_8
-    dw 0x61BD   ; 0x51 ROCK_TUNNEL_POKECENTER
-    dw 0x61D5   ; 0x52 ROCK_TUNNEL_1F
-    dw 0x6208   ; 0x53 POWER_PLANT
-    dw 0x6224   ; 0x54 ROUTE_11_GATE_1F
-    dw 0x6248   ; 0x55 DIGLETTS_CAVE_ROUTE_11
-    dw 0x6264   ; 0x56 ROUTE_11_GATE_2F
-    dw 0x627E   ; 0x57 ROUTE_12_GATE_1F
-    dw 0x62A2   ; 0x58 BILLS_HOUSE
-    dw 0x62BA   ; 0x59 VERMILION_POKECENTER
-    dw 0x62D2   ; 0x5A POKEMON_FAN_CLUB
-    dw 0x62EA   ; 0x5B VERMILION_MART
-    dw 0x6302   ; 0x5C VERMILION_GYM
-    dw 0x631A   ; 0x5D VERMILION_PIDGEY_HOUSE
-    dw 0x6332   ; 0x5E VERMILION_DOCK
-    dw 0x634A   ; 0x5F SS_ANNE_1F
-    dw 0x6386   ; 0x60 SS_ANNE_2F
-    dw 0x63BA   ; 0x61 SS_ANNE_3F
-    dw 0x63D2   ; 0x62 SS_ANNE_B1F
-    dw 0x63FA   ; 0x63 SS_ANNE_BOW
-    dw 0x6412   ; 0x64 SS_ANNE_KITCHEN
-    dw 0x6426   ; 0x65 SS_ANNE_CAPTAINS_ROOM
-    dw 0x6440   ; 0x66 SS_ANNE_1F_ROOMS
-    dw 0x6468   ; 0x67 SS_ANNE_2F_ROOMS
-    dw 0x64A8   ; 0x68 SS_ANNE_B1F_ROOMS
+    dw 0x6BC5   ; 0x4C ROUTE_7_GATE
+    dw 0x6BEB   ; 0x4D UNDERGROUND_PATH_ROUTE_7
+    dw 0x6C0D   ; 0x4E UNDERGROUND_PATH_ROUTE_7_COPY
+    dw 0x6C35   ; 0x4F ROUTE_8_GATE
+    dw 0x6C5B   ; 0x50 UNDERGROUND_PATH_ROUTE_8
+    dw 0x6C7D   ; 0x51 ROCK_TUNNEL_POKECENTER
+    dw 0x6CB3   ; 0x52 ROCK_TUNNEL_1F
+    dw 0x6D1E   ; 0x53 POWER_PLANT
+    dw 0x6DA5   ; 0x54 ROUTE_11_GATE_1F
+    dw 0x6DCF   ; 0x55 DIGLETTS_CAVE_ROUTE_11
+    dw 0x6DF1   ; 0x56 ROUTE_11_GATE_2F
+    dw 0x6E17   ; 0x57 ROUTE_12_GATE_1F
+    dw 0x6E41   ; 0x58 BILLS_HOUSE
+    dw 0x6E6B   ; 0x59 VERMILION_POKECENTER
+    dw 0x6EA1   ; 0x5A POKEMON_FAN_CLUB
+    dw 0x6EDD   ; 0x5B VERMILION_MART
+    dw 0x6F07   ; 0x5C VERMILION_GYM
+    dw 0x6F45   ; 0x5D VERMILION_PIDGEY_HOUSE
+    dw 0x6F6F   ; 0x5E VERMILION_DOCK
+    dw 0x6F87   ; 0x5F SS_ANNE_1F
+    dw 0x6FCF   ; 0x60 SS_ANNE_2F
+    dw 0x7011   ; 0x61 SS_ANNE_3F
+    dw 0x702F   ; 0x62 SS_ANNE_B1F
+    dw 0x7057   ; 0x63 SS_ANNE_BOW
+    dw 0x7091   ; 0x64 SS_ANNE_KITCHEN
+    dw 0x70CF   ; 0x65 SS_ANNE_CAPTAINS_ROOM
+    dw 0x70EF   ; 0x66 SS_ANNE_1F_ROOMS
+    dw 0x7162   ; 0x67 SS_ANNE_2F_ROOMS
+    dw 0x71FA   ; 0x68 SS_ANNE_B1F_ROOMS
     dw 0x0000   ; 0x69 UNUSED_MAP_69 (stub/unused)
     dw 0x0000   ; 0x6A UNUSED_MAP_6A (stub/unused)
     dw 0x0000   ; 0x6B UNUSED_MAP_6B (stub/unused)
-    dw 0x64E0   ; 0x6C VICTORY_ROAD_1F
+    dw 0x7283   ; 0x6C VICTORY_ROAD_1F
     dw 0x0000   ; 0x6D UNUSED_MAP_6D (stub/unused)
     dw 0x0000   ; 0x6E UNUSED_MAP_6E (stub/unused)
     dw 0x0000   ; 0x6F UNUSED_MAP_6F (stub/unused)
     dw 0x0000   ; 0x70 UNUSED_MAP_70 (stub/unused)
-    dw 0x64FC   ; 0x71 LANCES_ROOM
+    dw 0x72CF   ; 0x71 LANCES_ROOM
     dw 0x0000   ; 0x72 UNUSED_MAP_72 (stub/unused)
     dw 0x0000   ; 0x73 UNUSED_MAP_73 (stub/unused)
     dw 0x0000   ; 0x74 UNUSED_MAP_74 (stub/unused)
     dw 0x0000   ; 0x75 UNUSED_MAP_75 (stub/unused)
-    dw 0x6518   ; 0x76 HALL_OF_FAME
-    dw 0x6530   ; 0x77 UNDERGROUND_PATH_NORTH_SOUTH
-    dw 0x6548   ; 0x78 CHAMPIONS_ROOM
-    dw 0x6568   ; 0x79 UNDERGROUND_PATH_WEST_EAST
-    dw 0x6580   ; 0x7A CELADON_MART_1F
-    dw 0x65AE   ; 0x7B CELADON_MART_2F
-    dw 0x65CD   ; 0x7C CELADON_MART_3F
-    dw 0x660D   ; 0x7D CELADON_MART_4F
-    dw 0x662C   ; 0x7E CELADON_MART_ROOF
-    dw 0x664C   ; 0x7F CELADON_MART_ELEVATOR
-    dw 0x6667   ; 0x80 CELADON_MANSION_1F
-    dw 0x668E   ; 0x81 CELADON_MANSION_2F
-    dw 0x66B1   ; 0x82 CELADON_MANSION_3F
-    dw 0x66DD   ; 0x83 CELADON_MANSION_ROOF
-    dw 0x66FC   ; 0x84 CELADON_MANSION_ROOF_HOUSE
-    dw 0x6714   ; 0x85 CELADON_POKECENTER
-    dw 0x672C   ; 0x86 CELADON_GYM
-    dw 0x6744   ; 0x87 GAME_CORNER
-    dw 0x6763   ; 0x88 CELADON_MART_5F
-    dw 0x6782   ; 0x89 GAME_CORNER_PRIZE_ROOM
-    dw 0x67A3   ; 0x8A CELADON_DINER
-    dw 0x67BB   ; 0x8B CELADON_CHIEF_HOUSE
-    dw 0x67D3   ; 0x8C CELADON_HOTEL
-    dw 0x67EB   ; 0x8D LAVENDER_POKECENTER
-    dw 0x6803   ; 0x8E POKEMON_TOWER_1F
-    dw 0x681F   ; 0x8F POKEMON_TOWER_2F
-    dw 0x6837   ; 0x90 POKEMON_TOWER_3F
-    dw 0x684F   ; 0x91 POKEMON_TOWER_4F
-    dw 0x6867   ; 0x92 POKEMON_TOWER_5F
-    dw 0x687F   ; 0x93 POKEMON_TOWER_6F
-    dw 0x6897   ; 0x94 POKEMON_TOWER_7F
-    dw 0x68AB   ; 0x95 MR_FUJIS_HOUSE
-    dw 0x68C3   ; 0x96 LAVENDER_MART
-    dw 0x68DB   ; 0x97 LAVENDER_CUBONE_HOUSE
-    dw 0x68F3   ; 0x98 FUCHSIA_MART
-    dw 0x690B   ; 0x99 FUCHSIA_BILLS_GRANDPAS_HOUSE
-    dw 0x6923   ; 0x9A FUCHSIA_POKECENTER
-    dw 0x693B   ; 0x9B WARDENS_HOUSE
-    dw 0x6959   ; 0x9C SAFARI_ZONE_GATE
-    dw 0x6979   ; 0x9D FUCHSIA_GYM
-    dw 0x6991   ; 0x9E FUCHSIA_MEETING_ROOM
-    dw 0x69A9   ; 0x9F SEAFOAM_ISLANDS_B1F
-    dw 0x69D5   ; 0xA0 SEAFOAM_ISLANDS_B2F
-    dw 0x6A01   ; 0xA1 SEAFOAM_ISLANDS_B3F
-    dw 0x6A2D   ; 0xA2 SEAFOAM_ISLANDS_B4F
-    dw 0x6A53   ; 0xA3 VERMILION_OLD_ROD_HOUSE
-    dw 0x6A6B   ; 0xA4 FUCHSIA_GOOD_ROD_HOUSE
-    dw 0x6A87   ; 0xA5 POKEMON_MANSION_1F
-    dw 0x6AB7   ; 0xA6 CINNABAR_GYM
-    dw 0x6ACF   ; 0xA7 CINNABAR_LAB
-    dw 0x6AFF   ; 0xA8 CINNABAR_LAB_TRADE_ROOM
-    dw 0x6B17   ; 0xA9 CINNABAR_LAB_METRONOME_ROOM
-    dw 0x6B38   ; 0xAA CINNABAR_LAB_FOSSIL_ROOM
-    dw 0x6B50   ; 0xAB CINNABAR_POKECENTER
-    dw 0x6B68   ; 0xAC CINNABAR_MART
+    dw 0x72F3   ; 0x76 HALL_OF_FAME
+    dw 0x7311   ; 0x77 UNDERGROUND_PATH_NORTH_SOUTH
+    dw 0x7329   ; 0x78 CHAMPIONS_ROOM
+    dw 0x7355   ; 0x79 UNDERGROUND_PATH_WEST_EAST
+    dw 0x736D   ; 0x7A CELADON_MART_1F
+    dw 0x73A1   ; 0x7B CELADON_MART_2F
+    dw 0x73D8   ; 0x7C CELADON_MART_3F
+    dw 0x7436   ; 0x7D CELADON_MART_4F
+    dw 0x7467   ; 0x7E CELADON_MART_ROOF
+    dw 0x7493   ; 0x7F CELADON_MART_ELEVATOR
+    dw 0x74AE   ; 0x80 CELADON_MANSION_1F
+    dw 0x74ED   ; 0x81 CELADON_MANSION_2F
+    dw 0x7510   ; 0x82 CELADON_MANSION_3F
+    dw 0x7554   ; 0x83 CELADON_MANSION_ROOF
+    dw 0x7573   ; 0x84 CELADON_MANSION_ROOF_HOUSE
+    dw 0x7597   ; 0x85 CELADON_POKECENTER
+    dw 0x75CD   ; 0x86 CELADON_GYM
+    dw 0x7625   ; 0x87 GAME_CORNER
+    dw 0x7688   ; 0x88 CELADON_MART_5F
+    dw 0x76BF   ; 0x89 GAME_CORNER_PRIZE_ROOM
+    dw 0x76EC   ; 0x8A CELADON_DINER
+    dw 0x7722   ; 0x8B CELADON_CHIEF_HOUSE
+    dw 0x774C   ; 0x8C CELADON_HOTEL
+    dw 0x7776   ; 0x8D LAVENDER_POKECENTER
+    dw 0x77AC   ; 0x8E POKEMON_TOWER_1F
+    dw 0x77E6   ; 0x8F POKEMON_TOWER_2F
+    dw 0x780A   ; 0x90 POKEMON_TOWER_3F
+    dw 0x7841   ; 0x91 POKEMON_TOWER_4F
+    dw 0x7886   ; 0x92 POKEMON_TOWER_5F
+    dw 0x78CB   ; 0x93 POKEMON_TOWER_6F
+    dw 0x7909   ; 0x94 POKEMON_TOWER_7F
+    dw 0x792F   ; 0x95 MR_FUJIS_HOUSE
+    dw 0x796B   ; 0x96 LAVENDER_MART
+    dw 0x7995   ; 0x97 LAVENDER_CUBONE_HOUSE
+    dw 0x79B9   ; 0x98 FUCHSIA_MART
+    dw 0x79E3   ; 0x99 FUCHSIA_BILLS_GRANDPAS_HOUSE
+    dw 0x7A0D   ; 0x9A FUCHSIA_POKECENTER
+    dw 0x7A43   ; 0x9B WARDENS_HOUSE
+    dw 0x7A74   ; 0x9C SAFARI_ZONE_GATE
+    dw 0x7AA0   ; 0x9D FUCHSIA_GYM
+    dw 0x7AF6   ; 0x9E FUCHSIA_MEETING_ROOM
+    dw 0x7B20   ; 0x9F SEAFOAM_ISLANDS_B1F
+    dw 0x7B58   ; 0xA0 SEAFOAM_ISLANDS_B2F
+    dw 0x7B90   ; 0xA1 SEAFOAM_ISLANDS_B3F
+    dw 0x7BE0   ; 0xA2 SEAFOAM_ISLANDS_B4F
+    dw 0x7C1A   ; 0xA3 VERMILION_OLD_ROD_HOUSE
+    dw 0x7C38   ; 0xA4 FUCHSIA_GOOD_ROD_HOUSE
+    dw 0x7C5A   ; 0xA5 POKEMON_MANSION_1F
+    dw 0x7CA0   ; 0xA6 CINNABAR_GYM
+    dw 0x7CFE   ; 0xA7 CINNABAR_LAB
+    dw 0x7D34   ; 0xA8 CINNABAR_LAB_TRADE_ROOM
+    dw 0x7D5E   ; 0xA9 CINNABAR_LAB_METRONOME_ROOM
+    dw 0x7D8B   ; 0xAA CINNABAR_LAB_FOSSIL_ROOM
+    dw 0x7DAF   ; 0xAB CINNABAR_POKECENTER
+    dw 0x7DE5   ; 0xAC CINNABAR_MART
     dw 0x0000   ; 0xAD CINNABAR_MART_COPY (stub/unused)
-    dw 0x6B80   ; 0xAE INDIGO_PLATEAU_LOBBY
-    dw 0x6B9C   ; 0xAF COPYCATS_HOUSE_1F
-    dw 0x6BB8   ; 0xB0 COPYCATS_HOUSE_2F
-    dw 0x6BD2   ; 0xB1 FIGHTING_DOJO
-    dw 0x6BEA   ; 0xB2 SAFFRON_GYM
-    dw 0x6C7A   ; 0xB3 SAFFRON_PIDGEY_HOUSE
-    dw 0x6C92   ; 0xB4 SAFFRON_MART
-    dw 0x6CAA   ; 0xB5 SILPH_CO_1F
-    dw 0x6CCE   ; 0xB6 SAFFRON_POKECENTER
-    dw 0x6CE6   ; 0xB7 MR_PSYCHICS_HOUSE
-    dw 0x6CFE   ; 0xB8 ROUTE_15_GATE_1F
-    dw 0x6D22   ; 0xB9 ROUTE_15_GATE_2F
-    dw 0x6D39   ; 0xBA ROUTE_16_GATE_1F
-    dw 0x6D6D   ; 0xBB ROUTE_16_GATE_2F
-    dw 0x6D87   ; 0xBC ROUTE_16_FLY_HOUSE
-    dw 0x6D9F   ; 0xBD ROUTE_12_SUPER_ROD_HOUSE
-    dw 0x6DB7   ; 0xBE ROUTE_18_GATE_1F
-    dw 0x6DDB   ; 0xBF ROUTE_18_GATE_2F
-    dw 0x6DF5   ; 0xC0 SEAFOAM_ISLANDS_1F
-    dw 0x6E21   ; 0xC1 ROUTE_22_GATE
-    dw 0x6E41   ; 0xC2 VICTORY_ROAD_2F
-    dw 0x6E6D   ; 0xC3 ROUTE_12_GATE_2F
-    dw 0x6E87   ; 0xC4 VERMILION_TRADE_HOUSE
-    dw 0x6E9F   ; 0xC5 DIGLETTS_CAVE
-    dw 0x6EB7   ; 0xC6 VICTORY_ROAD_3F
-    dw 0x6ED7   ; 0xC7 ROCKET_HIDEOUT_B1F
-    dw 0x6EFB   ; 0xC8 ROCKET_HIDEOUT_B2F
-    dw 0x6F1F   ; 0xC9 ROCKET_HIDEOUT_B3F
-    dw 0x6F37   ; 0xCA ROCKET_HIDEOUT_B4F
-    dw 0x6F53   ; 0xCB ROCKET_HIDEOUT_ELEVATOR
+    dw 0x7E0F   ; 0xAE INDIGO_PLATEAU_LOBBY
+    dw 0x7E4F   ; 0xAF COPYCATS_HOUSE_1F
+    dw 0x7E7D   ; 0xB0 COPYCATS_HOUSE_2F
+    dw 0x7EB5   ; 0xB1 FIGHTING_DOJO
+    dw 0x7F01   ; 0xB2 SAFFRON_GYM
+    dw 0x7FD7   ; 0xB3 SAFFRON_PIDGEY_HOUSE
+    dw 0x8007   ; 0xB4 SAFFRON_MART
+    dw 0x8031   ; 0xB5 SILPH_CO_1F
+    dw 0x805B   ; 0xB6 SAFFRON_POKECENTER
+    dw 0x8091   ; 0xB7 MR_PSYCHICS_HOUSE
+    dw 0x80AF   ; 0xB8 ROUTE_15_GATE_1F
+    dw 0x80D9   ; 0xB9 ROUTE_15_GATE_2F
+    dw 0x80F6   ; 0xBA ROUTE_16_GATE_1F
+    dw 0x8136   ; 0xBB ROUTE_16_GATE_2F
+    dw 0x815C   ; 0xBC ROUTE_16_FLY_HOUSE
+    dw 0x8180   ; 0xBD ROUTE_12_SUPER_ROD_HOUSE
+    dw 0x819E   ; 0xBE ROUTE_18_GATE_1F
+    dw 0x81C8   ; 0xBF ROUTE_18_GATE_2F
+    dw 0x81E8   ; 0xC0 SEAFOAM_ISLANDS_1F
+    dw 0x8220   ; 0xC1 ROUTE_22_GATE
+    dw 0x8246   ; 0xC2 VICTORY_ROAD_2F
+    dw 0x82D0   ; 0xC3 ROUTE_12_GATE_2F
+    dw 0x82F0   ; 0xC4 VERMILION_TRADE_HOUSE
+    dw 0x830E   ; 0xC5 DIGLETTS_CAVE
+    dw 0x8326   ; 0xC6 VICTORY_ROAD_3F
+    dw 0x838C   ; 0xC7 ROCKET_HIDEOUT_B1F
+    dw 0x83E6   ; 0xC8 ROCKET_HIDEOUT_B2F
+    dw 0x842E   ; 0xC9 ROCKET_HIDEOUT_B3F
+    dw 0x8464   ; 0xCA ROCKET_HIDEOUT_B4F
+    dw 0x84BF   ; 0xCB ROCKET_HIDEOUT_ELEVATOR
     dw 0x0000   ; 0xCC UNUSED_MAP_CC (stub/unused)
     dw 0x0000   ; 0xCD UNUSED_MAP_CD (stub/unused)
     dw 0x0000   ; 0xCE UNUSED_MAP_CE (stub/unused)
-    dw 0x6F6E   ; 0xCF SILPH_CO_2F
-    dw 0x6F9A   ; 0xD0 SILPH_CO_3F
-    dw 0x6FD2   ; 0xD1 SILPH_CO_4F
-    dw 0x6FFE   ; 0xD2 SILPH_CO_5F
-    dw 0x702A   ; 0xD3 SILPH_CO_6F
-    dw 0x704E   ; 0xD4 SILPH_CO_7F
-    dw 0x7076   ; 0xD5 SILPH_CO_8F
-    dw 0x70A2   ; 0xD6 POKEMON_MANSION_2F
-    dw 0x70C2   ; 0xD7 POKEMON_MANSION_3F
-    dw 0x70DE   ; 0xD8 POKEMON_MANSION_B1F
-    dw 0x70F2   ; 0xD9 SAFARI_ZONE_EAST
-    dw 0x711F   ; 0xDA SAFARI_ZONE_NORTH
-    dw 0x7162   ; 0xDB SAFARI_ZONE_WEST
-    dw 0x719E   ; 0xDC SAFARI_ZONE_CENTER
-    dw 0x71D8   ; 0xDD SAFARI_ZONE_CENTER_REST_HOUSE
-    dw 0x71F0   ; 0xDE SAFARI_ZONE_SECRET_HOUSE
-    dw 0x7208   ; 0xDF SAFARI_ZONE_WEST_REST_HOUSE
-    dw 0x7220   ; 0xE0 SAFARI_ZONE_EAST_REST_HOUSE
-    dw 0x7238   ; 0xE1 SAFARI_ZONE_NORTH_REST_HOUSE
-    dw 0x7250   ; 0xE2 CERULEAN_CAVE_2F
-    dw 0x7278   ; 0xE3 CERULEAN_CAVE_B1F
-    dw 0x728C   ; 0xE4 CERULEAN_CAVE_1F
-    dw 0x72C0   ; 0xE5 NAME_RATERS_HOUSE
-    dw 0x72D8   ; 0xE6 CERULEAN_BADGE_HOUSE
+    dw 0x84DA   ; 0xCF SILPH_CO_2F
+    dw 0x852C   ; 0xD0 SILPH_CO_3F
+    dw 0x8581   ; 0xD1 SILPH_CO_4F
+    dw 0x85E0   ; 0xD2 SILPH_CO_5F
+    dw 0x8659   ; 0xD3 SILPH_CO_6F
+    dw 0x86C1   ; 0xD4 SILPH_CO_7F
+    dw 0x8735   ; 0xD5 SILPH_CO_8F
+    dw 0x877F   ; 0xD6 POKEMON_MANSION_2F
+    dw 0x87BA   ; 0xD7 POKEMON_MANSION_3F
+    dw 0x87FA   ; 0xD8 POKEMON_MANSION_B1F
+    dw 0x8847   ; 0xD9 SAFARI_ZONE_EAST
+    dw 0x8890   ; 0xDA SAFARI_ZONE_NORTH
+    dw 0x88E1   ; 0xDB SAFARI_ZONE_WEST
+    dw 0x8939   ; 0xDC SAFARI_ZONE_CENTER
+    dw 0x897A   ; 0xDD SAFARI_ZONE_CENTER_REST_HOUSE
+    dw 0x899E   ; 0xDE SAFARI_ZONE_SECRET_HOUSE
+    dw 0x89BC   ; 0xDF SAFARI_ZONE_WEST_REST_HOUSE
+    dw 0x89E6   ; 0xE0 SAFARI_ZONE_EAST_REST_HOUSE
+    dw 0x8A10   ; 0xE1 SAFARI_ZONE_NORTH_REST_HOUSE
+    dw 0x8A3A   ; 0xE2 CERULEAN_CAVE_2F
+    dw 0x8A7E   ; 0xE3 CERULEAN_CAVE_B1F
+    dw 0x8AB6   ; 0xE4 CERULEAN_CAVE_1F
+    dw 0x8B06   ; 0xE5 NAME_RATERS_HOUSE
+    dw 0x8B24   ; 0xE6 CERULEAN_BADGE_HOUSE
     dw 0x0000   ; 0xE7 UNUSED_MAP_E7 (stub/unused)
-    dw 0x72F4   ; 0xE8 ROCK_TUNNEL_B1F
-    dw 0x7314   ; 0xE9 SILPH_CO_9F
-    dw 0x7338   ; 0xEA SILPH_CO_10F
-    dw 0x7360   ; 0xEB SILPH_CO_11F
-    dw 0x7380   ; 0xEC SILPH_CO_ELEVATOR
+    dw 0x8B46   ; 0xE8 ROCK_TUNNEL_B1F
+    dw 0x8BA6   ; 0xE9 SILPH_CO_9F
+    dw 0x8BE8   ; 0xEA SILPH_CO_10F
+    dw 0x8C3B   ; 0xEB SILPH_CO_11F
+    dw 0x8C83   ; 0xEC SILPH_CO_ELEVATOR
     dw 0x0000   ; 0xED UNUSED_MAP_ED (stub/unused)
     dw 0x0000   ; 0xEE UNUSED_MAP_EE (stub/unused)
-    dw 0x739B   ; 0xEF TRADE_CENTER
-    dw 0x73AB   ; 0xF0 COLOSSEUM
+    dw 0x8C9E   ; 0xEF TRADE_CENTER
+    dw 0x8CB4   ; 0xF0 COLOSSEUM
     dw 0x0000   ; 0xF1 UNUSED_MAP_F1 (stub/unused)
     dw 0x0000   ; 0xF2 UNUSED_MAP_F2 (stub/unused)
     dw 0x0000   ; 0xF3 UNUSED_MAP_F3 (stub/unused)
     dw 0x0000   ; 0xF4 UNUSED_MAP_F4 (stub/unused)
-    dw 0x73BB   ; 0xF5 LORELEIS_ROOM
-    dw 0x73DB   ; 0xF6 BRUNOS_ROOM
-    dw 0x73FB   ; 0xF7 AGATHAS_ROOM
-    dw 0x741B   ; 0xF8 SUMMER_BEACH_HOUSE
+    dw 0x8CCA   ; 0xF5 LORELEIS_ROOM
+    dw 0x8CF2   ; 0xF6 BRUNOS_ROOM
+    dw 0x8D1A   ; 0xF7 AGATHAS_ROOM
+    dw 0x8D42   ; 0xF8 SUMMER_BEACH_HOUSE
 
 map_headers_data:
 ; --- OVERWORLD tileset header (12 bytes, kept for layout compatibility) ---
@@ -892,8 +892,11 @@ map_object_PALLET_TOWN:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x03, 0x08, 0x0E, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x03 mapy=8 mapx=14
+    db 0x0D, 0x0C, 0x07, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x0D mapy=12 mapx=7
+    db 0x2F, 0x12, 0x0F, 0xFE, 0x00, 0x02  ; slot 3: npc sprite=0x2F mapy=18 mapx=15
 
-OW_MAP_HDR_VIRIDIAN_CITY equ 0x544A
+OW_MAP_HDR_VIRIDIAN_CITY equ 0x545C
 map_header_VIRIDIAN_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -925,7 +928,7 @@ map_header_VIRIDIAN_CITY:
     db 20     ; connected map width
     db -8, 39   ; Y, X align
     dw 0xE853      ; view ptr
-    dw 0x5477 ; object_data_ptr
+    dw 0x5489 ; object_data_ptr
 map_object_VIRIDIAN_CITY:
     db 0x0F ; border block
     db 5 ; warp count
@@ -937,8 +940,16 @@ map_object_VIRIDIAN_CITY:
     db 6 ; sign count
     times 18 db 0 ; sign stubs
     db 8 ; sprite count
+    db 0x04, 0x18, 0x11, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x04 mapy=24 mapx=17
+    db 0x0B, 0x0C, 0x22, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0B mapy=12 mapx=34
+    db 0x04, 0x1D, 0x22, 0xFE, 0x00, 0x02  ; slot 3: npc sprite=0x04 mapy=29 mapx=34
+    db 0x0D, 0x0D, 0x15, 0xFF, 0xD3, 0x03  ; slot 4: npc sprite=0x0D mapy=13 mapx=21
+    db 0x52, 0x0D, 0x16, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x52 mapy=13 mapx=22
+    db 0x2F, 0x1B, 0x0A, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x2F mapy=27 mapx=10
+    db 0x0B, 0x09, 0x15, 0xFE, 0x02, 0x06  ; slot 7: npc sprite=0x0B mapy=9 mapx=21
+    db 0x0B, 0x0D, 0x16, 0xFF, 0xFF, 0x07  ; slot 8: npc sprite=0x0B mapy=13 mapx=22
 
-OW_MAP_HDR_PEWTER_CITY equ 0x54A1
+OW_MAP_HDR_PEWTER_CITY equ 0x54E3
 map_header_PEWTER_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -962,7 +973,7 @@ map_header_PEWTER_CITY:
     db 35     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE85E      ; view ptr
-    dw 0x54C3 ; object_data_ptr
+    dw 0x5505 ; object_data_ptr
 map_object_PEWTER_CITY:
     db 0x0A ; border block
     db 7 ; warp count
@@ -976,8 +987,13 @@ map_object_PEWTER_CITY:
     db 7 ; sign count
     times 21 db 0 ; sign stubs
     db 5 ; sprite count
+    db 0x06, 0x13, 0x0C, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x06 mapy=19 mapx=12
+    db 0x07, 0x1D, 0x15, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x07 mapy=29 mapx=21
+    db 0x0C, 0x15, 0x1F, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x0C mapy=21 mapx=31
+    db 0x0C, 0x1D, 0x1E, 0xFE, 0x02, 0x03  ; slot 4: npc sprite=0x0C mapy=29 mapx=30
+    db 0x04, 0x14, 0x27, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x04 mapy=20 mapx=39
 
-OW_MAP_HDR_CERULEAN_CITY equ 0x54F8
+OW_MAP_HDR_CERULEAN_CITY equ 0x5558
 map_header_CERULEAN_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -1017,7 +1033,7 @@ map_header_CERULEAN_CITY:
     db 30     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x5530 ; object_data_ptr
+    dw 0x5590 ; object_data_ptr
 map_object_CERULEAN_CITY:
     db 0x0A ; border block
     db 10 ; warp count
@@ -1034,8 +1050,19 @@ map_object_CERULEAN_CITY:
     db 6 ; sign count
     times 18 db 0 ; sign stubs
     db 11 ; sprite count
+    db 0x02, 0x06, 0x18, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x02 mapy=6 mapx=24
+    db 0x18, 0x0C, 0x22, 0xFF, 0xFF, 0x41, 0x00, 0x05  ; slot 2: trainer sprite=0x18
+    db 0x07, 0x18, 0x23, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x07 mapy=24 mapx=35
+    db 0x0C, 0x16, 0x13, 0xFE, 0x01, 0x03  ; slot 4: npc sprite=0x0C mapy=22 mapx=19
+    db 0x0C, 0x19, 0x0D, 0xFE, 0x02, 0x04  ; slot 5: npc sprite=0x0C mapy=25 mapx=13
+    db 0x3E, 0x10, 0x20, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x3E mapy=16 mapx=32
+    db 0x06, 0x1E, 0x21, 0xFF, 0xD2, 0x06  ; slot 7: npc sprite=0x06 mapy=30 mapx=33
+    db 0x47, 0x1E, 0x20, 0xFF, 0xD0, 0x07  ; slot 8: npc sprite=0x47 mapy=30 mapx=32
+    db 0x06, 0x1F, 0x0D, 0xFE, 0x02, 0x08  ; slot 9: npc sprite=0x06 mapy=31 mapx=13
+    db 0x0C, 0x10, 0x08, 0xFF, 0xD0, 0x09  ; slot 10: npc sprite=0x0C mapy=16 mapx=8
+    db 0x3E, 0x10, 0x1F, 0xFF, 0xD0, 0x0A  ; slot 11: npc sprite=0x3E mapy=16 mapx=31
 
-OW_MAP_HDR_LAVENDER_TOWN equ 0x556E
+OW_MAP_HDR_LAVENDER_TOWN equ 0x5612
 map_header_LAVENDER_TOWN:
     db 0x00       ; tileset OVERWORLD
     db 9, 10  ; height, width
@@ -1067,7 +1094,7 @@ map_header_LAVENDER_TOWN:
     db 30     ; connected map width
     db 0, 59   ; Y, X align
     dw 0xE871      ; view ptr
-    dw 0x559B ; object_data_ptr
+    dw 0x563F ; object_data_ptr
 map_object_LAVENDER_TOWN:
     db 0x2C ; border block
     db 6 ; warp count
@@ -1080,8 +1107,11 @@ map_object_LAVENDER_TOWN:
     db 6 ; sign count
     times 18 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x08, 0x0D, 0x13, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x08 mapy=13 mapx=19
+    db 0x07, 0x0E, 0x0D, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x07 mapy=14 mapx=13
+    db 0x0C, 0x0B, 0x0C, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x0C mapy=11 mapx=12
 
-OW_MAP_HDR_VERMILION_CITY equ 0x55C9
+OW_MAP_HDR_VERMILION_CITY equ 0x567F
 map_header_VERMILION_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -1105,7 +1135,7 @@ map_header_VERMILION_CITY:
     db 30     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x55EB ; object_data_ptr
+    dw 0x56A1 ; object_data_ptr
 map_object_VERMILION_CITY:
     db 0x43 ; border block
     db 9 ; warp count
@@ -1121,8 +1151,15 @@ map_object_VERMILION_CITY:
     db 7 ; sign count
     times 21 db 0 ; sign stubs
     db 7 ; sprite count
+    db 0x06, 0x0B, 0x17, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x06 mapy=11 mapx=23
+    db 0x0B, 0x0A, 0x12, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0B mapy=10 mapx=18
+    db 0x13, 0x22, 0x17, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x13 mapy=34 mapx=23
+    db 0x0B, 0x0B, 0x22, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x0B mapy=11 mapx=34
+    db 0x05, 0x0D, 0x21, 0xFE, 0x01, 0x04  ; slot 5: npc sprite=0x05 mapy=13 mapx=33
+    db 0x13, 0x1F, 0x1D, 0xFE, 0x02, 0x05  ; slot 6: npc sprite=0x13 mapy=31 mapx=29
+    db 0x3E, 0x13, 0x17, 0xFF, 0xFF, 0x06  ; slot 7: npc sprite=0x3E mapy=19 mapx=23
 
-OW_MAP_HDR_CELADON_CITY equ 0x5628
+OW_MAP_HDR_CELADON_CITY equ 0x5708
 map_header_CELADON_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 25  ; height, width
@@ -1146,7 +1183,7 @@ map_header_CELADON_CITY:
     db 10     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x564A ; object_data_ptr
+    dw 0x572A ; object_data_ptr
 map_object_CELADON_CITY:
     db 0x0F ; border block
     db 13 ; warp count
@@ -1166,8 +1203,17 @@ map_object_CELADON_CITY:
     db 9 ; sign count
     times 27 db 0 ; sign stubs
     db 9 ; sprite count
+    db 0x08, 0x15, 0x0C, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x08 mapy=21 mapx=12
+    db 0x25, 0x20, 0x0F, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x25 mapy=32 mapx=15
+    db 0x0D, 0x17, 0x12, 0xFE, 0x01, 0x02  ; slot 3: npc sprite=0x0D mapy=23 mapx=18
+    db 0x25, 0x1A, 0x1D, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x25 mapy=26 mapx=29
+    db 0x25, 0x14, 0x1A, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x25 mapy=20 mapx=26
+    db 0x2F, 0x10, 0x24, 0xFF, 0xD2, 0x05  ; slot 6: npc sprite=0x2F mapy=16 mapx=36
+    db 0x05, 0x10, 0x22, 0xFF, 0xD3, 0x06  ; slot 7: npc sprite=0x05 mapy=16 mapx=34
+    db 0x18, 0x21, 0x24, 0xFE, 0x02, 0x07  ; slot 8: npc sprite=0x18 mapy=33 mapx=36
+    db 0x18, 0x12, 0x2E, 0xFE, 0x02, 0x08  ; slot 9: npc sprite=0x18 mapy=18 mapx=46
 
-OW_MAP_HDR_FUCHSIA_CITY equ 0x569D
+OW_MAP_HDR_FUCHSIA_CITY equ 0x57B3
 map_header_FUCHSIA_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -1199,7 +1245,7 @@ map_header_FUCHSIA_CITY:
     db 30     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x56CA ; object_data_ptr
+    dw 0x57E0 ; object_data_ptr
 map_object_FUCHSIA_CITY:
     db 0x0F ; border block
     db 9 ; warp count
@@ -1215,8 +1261,18 @@ map_object_FUCHSIA_CITY:
     db 14 ; sign count
     times 42 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x04, 0x10, 0x0E, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x04 mapy=16 mapx=14
+    db 0x0B, 0x15, 0x20, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x0B mapy=21 mapx=32
+    db 0x2F, 0x12, 0x22, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x2F mapy=18 mapx=34
+    db 0x04, 0x0C, 0x1C, 0xFF, 0xD1, 0x03  ; slot 4: npc sprite=0x04 mapy=12 mapx=28
+    db 0x44, 0x09, 0x23, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=9 mapx=35
+    db 0x47, 0x0A, 0x1D, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x47 mapy=10 mapx=29
+    db 0x05, 0x0A, 0x10, 0xFE, 0x02, 0x06  ; slot 7: npc sprite=0x05 mapy=10 mapx=16
+    db 0x05, 0x10, 0x22, 0xFE, 0x02, 0x07  ; slot 8: npc sprite=0x05 mapy=16 mapx=34
+    db 0x3C, 0x15, 0x0C, 0xFE, 0x00, 0x08  ; slot 9: npc sprite=0x3C mapy=21 mapx=12
+    db 0x48, 0x09, 0x0A, 0xFF, 0xFF, 0x09  ; slot 10: npc sprite=0x48 mapy=9 mapx=10
 
-OW_MAP_HDR_CINNABAR_ISLAND equ 0x571C
+OW_MAP_HDR_CINNABAR_ISLAND equ 0x586E
 map_header_CINNABAR_ISLAND:
     db 0x00       ; tileset OVERWORLD
     db 9, 10  ; height, width
@@ -1240,7 +1296,7 @@ map_header_CINNABAR_ISLAND:
     db 50     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE87C      ; view ptr
-    dw 0x573E ; object_data_ptr
+    dw 0x5890 ; object_data_ptr
 map_object_CINNABAR_ISLAND:
     db 0x43 ; border block
     db 5 ; warp count
@@ -1252,8 +1308,10 @@ map_object_CINNABAR_ISLAND:
     db 5 ; sign count
     times 15 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x0D, 0x09, 0x10, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x0D mapy=9 mapx=16
+    db 0x0B, 0x0A, 0x12, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0B mapy=10 mapx=18
 
-OW_MAP_HDR_INDIGO_PLATEAU equ 0x5765
+OW_MAP_HDR_INDIGO_PLATEAU equ 0x58C3
 map_header_INDIGO_PLATEAU:
     db 0x17       ; tileset PLATEAU
     db 9, 10  ; height, width
@@ -1261,7 +1319,7 @@ map_header_INDIGO_PLATEAU:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5771 ; object_data_ptr
+    dw 0x58CF ; object_data_ptr
 map_object_INDIGO_PLATEAU:
     db 0x0E ; border block
     db 2 ; warp count
@@ -1270,7 +1328,7 @@ map_object_INDIGO_PLATEAU:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_SAFFRON_CITY equ 0x577D
+OW_MAP_HDR_SAFFRON_CITY equ 0x58DB
 map_header_SAFFRON_CITY:
     db 0x00       ; tileset OVERWORLD
     db 18, 20  ; height, width
@@ -1310,7 +1368,7 @@ map_header_SAFFRON_CITY:
     db 30     ; connected map width
     db -8, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x57B5 ; object_data_ptr
+    dw 0x5913 ; object_data_ptr
 map_object_SAFFRON_CITY:
     db 0x0F ; border block
     db 8 ; warp count
@@ -1325,8 +1383,22 @@ map_object_SAFFRON_CITY:
     db 10 ; sign count
     times 30 db 0 ; sign stubs
     db 14 ; sprite count
+    db 0x18, 0x0A, 0x0B, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x18 mapy=10 mapx=11
+    db 0x18, 0x0C, 0x18, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x18 mapy=12 mapx=24
+    db 0x18, 0x08, 0x26, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x18 mapy=8 mapx=38
+    db 0x18, 0x10, 0x11, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x18 mapy=16 mapx=17
+    db 0x18, 0x1D, 0x0F, 0xFE, 0x02, 0x04  ; slot 5: npc sprite=0x18 mapy=29 mapx=15
+    db 0x18, 0x11, 0x24, 0xFE, 0x02, 0x05  ; slot 6: npc sprite=0x18 mapy=17 mapx=36
+    db 0x18, 0x22, 0x16, 0xFE, 0x02, 0x06  ; slot 7: npc sprite=0x18 mapy=34 mapx=22
+    db 0x20, 0x12, 0x0C, 0xFE, 0x00, 0x07  ; slot 8: npc sprite=0x20 mapy=18 mapx=12
+    db 0x2C, 0x1B, 0x1B, 0xFF, 0xFF, 0x08  ; slot 9: npc sprite=0x2C mapy=27 mapx=27
+    db 0x1B, 0x22, 0x15, 0xFE, 0x02, 0x09  ; slot 10: npc sprite=0x1B mapy=34 mapx=21
+    db 0x10, 0x10, 0x22, 0xFF, 0xD0, 0x0A  ; slot 11: npc sprite=0x10 mapy=16 mapx=34
+    db 0x09, 0x10, 0x23, 0xFF, 0xD0, 0x0B  ; slot 12: npc sprite=0x09 mapy=16 mapx=35
+    db 0x21, 0x0C, 0x16, 0xFF, 0xD1, 0x0C  ; slot 13: npc sprite=0x21 mapy=12 mapx=22
+    db 0x18, 0x1A, 0x16, 0xFF, 0xD0, 0x0D  ; slot 14: npc sprite=0x18 mapy=26 mapx=22
 
-OW_MAP_HDR_ROUTE_1 equ 0x57F7
+OW_MAP_HDR_ROUTE_1 equ 0x59A9
 map_header_ROUTE_1:
     db 0x00       ; tileset OVERWORLD
     db 18, 10  ; height, width
@@ -1350,15 +1422,17 @@ map_header_ROUTE_1:
     db 10     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x5819 ; object_data_ptr
+    dw 0x59CB ; object_data_ptr
 map_object_ROUTE_1:
     db 0x0B ; border block
     db 0 ; warp count
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x04, 0x1C, 0x09, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x04 mapy=28 mapx=9
+    db 0x04, 0x11, 0x13, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x04 mapy=17 mapx=19
 
-OW_MAP_HDR_ROUTE_2 equ 0x5820
+OW_MAP_HDR_ROUTE_2 equ 0x59DE
 map_header_ROUTE_2:
     db 0x00       ; tileset OVERWORLD
     db 36, 10  ; height, width
@@ -1382,7 +1456,7 @@ map_header_ROUTE_2:
     db 20     ; connected map width
     db 0, 10   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x5842 ; object_data_ptr
+    dw 0x5A00 ; object_data_ptr
 map_object_ROUTE_2:
     db 0x0F ; border block
     db 7 ; warp count
@@ -1396,8 +1470,10 @@ map_object_ROUTE_2:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x47, 0x3A, 0x11, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x31, 0x11, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_3 equ 0x5868
+OW_MAP_HDR_ROUTE_3 equ 0x5A34
 map_header_ROUTE_3:
     db 0x00       ; tileset OVERWORLD
     db 9, 35  ; height, width
@@ -1421,15 +1497,24 @@ map_header_ROUTE_3:
     db 20     ; connected map width
     db 8, 39   ; Y, X align
     dw 0xE853      ; view ptr
-    dw 0x588A ; object_data_ptr
+    dw 0x5A56 ; object_data_ptr
 map_object_ROUTE_3:
     db 0x2C ; border block
     db 0 ; warp count
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 9 ; sprite count
+    db 0x0C, 0x0F, 0x3D, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0C mapy=15 mapx=61
+    db 0x04, 0x0A, 0x0E, 0xFF, 0xD3, 0x41, 0x00, 0x04  ; slot 2: trainer sprite=0x04
+    db 0x04, 0x08, 0x12, 0xFF, 0xD0, 0x42, 0x00, 0x01  ; slot 3: trainer sprite=0x04
+    db 0x06, 0x0D, 0x14, 0xFF, 0xD2, 0x43, 0x00, 0x01  ; slot 4: trainer sprite=0x06
+    db 0x04, 0x09, 0x17, 0xFF, 0xD0, 0x44, 0x00, 0x05  ; slot 5: trainer sprite=0x04
+    db 0x06, 0x08, 0x1B, 0xFF, 0xD2, 0x45, 0x00, 0x02  ; slot 6: trainer sprite=0x06
+    db 0x04, 0x0D, 0x1A, 0xFF, 0xD2, 0x46, 0x00, 0x02  ; slot 7: trainer sprite=0x04
+    db 0x04, 0x0A, 0x1C, 0xFF, 0xD3, 0x47, 0x00, 0x06  ; slot 8: trainer sprite=0x04
+    db 0x06, 0x0E, 0x25, 0xFF, 0xD1, 0x48, 0x00, 0x03  ; slot 9: trainer sprite=0x06
 
-OW_MAP_HDR_ROUTE_4 equ 0x5891
+OW_MAP_HDR_ROUTE_4 equ 0x5AA3
 map_header_ROUTE_4:
     db 0x00       ; tileset OVERWORLD
     db 9, 45  ; height, width
@@ -1453,7 +1538,7 @@ map_header_ROUTE_4:
     db 20     ; connected map width
     db 8, 0   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x58B3 ; object_data_ptr
+    dw 0x5AC5 ; object_data_ptr
 map_object_ROUTE_4:
     db 0x2C ; border block
     db 3 ; warp count
@@ -1463,8 +1548,11 @@ map_object_ROUTE_4:
     db 3 ; sign count
     times 9 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x06, 0x0C, 0x0D, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x06 mapy=12 mapx=13
+    db 0x06, 0x07, 0x43, 0xFF, 0xD3, 0x41, 0x00, 0x04  ; slot 2: trainer sprite=0x06
+    db 0x47, 0x07, 0x3D, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_5 equ 0x58CC
+OW_MAP_HDR_ROUTE_5 equ 0x5AF3
 map_header_ROUTE_5:
     db 0x00       ; tileset OVERWORLD
     db 18, 10  ; height, width
@@ -1488,7 +1576,7 @@ map_header_ROUTE_5:
     db 20     ; connected map width
     db 0, 10   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x58EE ; object_data_ptr
+    dw 0x5B15 ; object_data_ptr
 map_object_ROUTE_5:
     db 0x0A ; border block
     db 5 ; warp count
@@ -1501,7 +1589,7 @@ map_object_ROUTE_5:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_ROUTE_6 equ 0x5909
+OW_MAP_HDR_ROUTE_6 equ 0x5B30
 map_header_ROUTE_6:
     db 0x00       ; tileset OVERWORLD
     db 18, 10  ; height, width
@@ -1525,7 +1613,7 @@ map_header_ROUTE_6:
     db 20     ; connected map width
     db 0, 10   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x592B ; object_data_ptr
+    dw 0x5B52 ; object_data_ptr
 map_object_ROUTE_6:
     db 0x0F ; border block
     db 4 ; warp count
@@ -1536,8 +1624,14 @@ map_object_ROUTE_6:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 6 ; sprite count
+    db 0x07, 0x19, 0x0E, 0xFF, 0xD3, 0x40, 0x00, 0x0A  ; slot 1: trainer sprite=0x07
+    db 0x06, 0x19, 0x0F, 0xFF, 0xD2, 0x41, 0x00, 0x19  ; slot 2: trainer sprite=0x06
+    db 0x04, 0x13, 0x04, 0xFF, 0xD3, 0x42, 0x00, 0x0A  ; slot 3: trainer sprite=0x04
+    db 0x07, 0x23, 0x0F, 0xFF, 0xD2, 0x43, 0x00, 0x05  ; slot 4: trainer sprite=0x07
+    db 0x06, 0x22, 0x0F, 0xFF, 0xD2, 0x44, 0x00, 0x03  ; slot 5: trainer sprite=0x06
+    db 0x04, 0x1E, 0x17, 0xFF, 0xD2, 0x45, 0x00, 0x0B  ; slot 6: trainer sprite=0x04
 
-OW_MAP_HDR_ROUTE_7 equ 0x5942
+OW_MAP_HDR_ROUTE_7 equ 0x5B99
 map_header_ROUTE_7:
     db 0x00       ; tileset OVERWORLD
     db 9, 10  ; height, width
@@ -1561,7 +1655,7 @@ map_header_ROUTE_7:
     db 20     ; connected map width
     db 8, 0   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x5964 ; object_data_ptr
+    dw 0x5BBB ; object_data_ptr
 map_object_ROUTE_7:
     db 0x0F ; border block
     db 5 ; warp count
@@ -1574,7 +1668,7 @@ map_object_ROUTE_7:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_ROUTE_8 equ 0x597F
+OW_MAP_HDR_ROUTE_8 equ 0x5BD6
 map_header_ROUTE_8:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -1598,7 +1692,7 @@ map_header_ROUTE_8:
     db 10     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x59A1 ; object_data_ptr
+    dw 0x5BF8 ; object_data_ptr
 map_object_ROUTE_8:
     db 0x2C ; border block
     db 5 ; warp count
@@ -1610,8 +1704,17 @@ map_object_ROUTE_8:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 9 ; sprite count
+    db 0x0C, 0x09, 0x0C, 0xFF, 0xD3, 0x40, 0x00, 0x03  ; slot 1: trainer sprite=0x0C
+    db 0x0B, 0x0D, 0x11, 0xFF, 0xD1, 0x41, 0x00, 0x05  ; slot 2: trainer sprite=0x0B
+    db 0x0C, 0x0A, 0x2E, 0xFF, 0xD1, 0x42, 0x00, 0x04  ; slot 3: trainer sprite=0x0C
+    db 0x06, 0x07, 0x1E, 0xFF, 0xD2, 0x43, 0x00, 0x0D  ; slot 4: trainer sprite=0x06
+    db 0x0C, 0x08, 0x1E, 0xFF, 0xD3, 0x44, 0x00, 0x05  ; slot 5: trainer sprite=0x0C
+    db 0x06, 0x09, 0x1E, 0xFF, 0xD2, 0x45, 0x00, 0x0E  ; slot 6: trainer sprite=0x06
+    db 0x06, 0x0A, 0x1E, 0xFF, 0xD3, 0x46, 0x00, 0x0F  ; slot 7: trainer sprite=0x06
+    db 0x0B, 0x11, 0x32, 0xFF, 0xD0, 0x47, 0x00, 0x07  ; slot 8: trainer sprite=0x0B
+    db 0x06, 0x10, 0x37, 0xFF, 0xD2, 0x48, 0x00, 0x10  ; slot 9: trainer sprite=0x06
 
-OW_MAP_HDR_ROUTE_9 equ 0x59BC
+OW_MAP_HDR_ROUTE_9 equ 0x5C5B
 map_header_ROUTE_9:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -1635,15 +1738,25 @@ map_header_ROUTE_9:
     db 10     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x59DE ; object_data_ptr
+    dw 0x5C7D ; object_data_ptr
 map_object_ROUTE_9:
     db 0x2C ; border block
     db 0 ; warp count
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x06, 0x0E, 0x11, 0xFF, 0xD2, 0x40, 0x00, 0x05  ; slot 1: trainer sprite=0x06
+    db 0x07, 0x0B, 0x1C, 0xFF, 0xD2, 0x41, 0x00, 0x0E  ; slot 2: trainer sprite=0x07
+    db 0x07, 0x0B, 0x23, 0xFF, 0xD3, 0x42, 0x00, 0x08  ; slot 3: trainer sprite=0x07
+    db 0x06, 0x0C, 0x34, 0xFF, 0xD3, 0x43, 0x00, 0x06  ; slot 4: trainer sprite=0x06
+    db 0x0E, 0x13, 0x14, 0xFF, 0xD2, 0x44, 0x00, 0x0B  ; slot 5: trainer sprite=0x0E
+    db 0x0E, 0x07, 0x2F, 0xFF, 0xD2, 0x45, 0x00, 0x06  ; slot 6: trainer sprite=0x0E
+    db 0x04, 0x06, 0x1A, 0xFF, 0xD0, 0x46, 0x00, 0x0D  ; slot 7: trainer sprite=0x04
+    db 0x0E, 0x13, 0x31, 0xFF, 0xD3, 0x47, 0x00, 0x05  ; slot 8: trainer sprite=0x0E
+    db 0x04, 0x0C, 0x2C, 0xFF, 0xD3, 0x48, 0x00, 0x0E  ; slot 9: trainer sprite=0x04
+    db 0x47, 0x13, 0x0E, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_10 equ 0x59E5
+OW_MAP_HDR_ROUTE_10 equ 0x5CD3
 map_header_ROUTE_10:
     db 0x00       ; tileset OVERWORLD
     db 36, 10  ; height, width
@@ -1667,7 +1780,7 @@ map_header_ROUTE_10:
     db 30     ; connected map width
     db 0, 59   ; Y, X align
     dw 0xE871      ; view ptr
-    dw 0x5A07 ; object_data_ptr
+    dw 0x5CF5 ; object_data_ptr
 map_object_ROUTE_10:
     db 0x2C ; border block
     db 4 ; warp count
@@ -1678,8 +1791,14 @@ map_object_ROUTE_10:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 6 ; sprite count
+    db 0x0C, 0x30, 0x0E, 0xFF, 0xD2, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x0C
+    db 0x0E, 0x3D, 0x07, 0xFF, 0xD1, 0x41, 0x00, 0x07  ; slot 2: trainer sprite=0x0E
+    db 0x0C, 0x44, 0x12, 0xFF, 0xD2, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x0C
+    db 0x06, 0x1D, 0x0B, 0xFF, 0xD2, 0x43, 0x00, 0x07  ; slot 4: trainer sprite=0x06
+    db 0x0E, 0x41, 0x07, 0xFF, 0xD0, 0x44, 0x00, 0x08  ; slot 5: trainer sprite=0x0E
+    db 0x06, 0x3A, 0x0B, 0xFF, 0xD0, 0x45, 0x00, 0x08  ; slot 6: trainer sprite=0x06
 
-OW_MAP_HDR_ROUTE_11 equ 0x5A27
+OW_MAP_HDR_ROUTE_11 equ 0x5D45
 map_header_ROUTE_11:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -1703,7 +1822,7 @@ map_header_ROUTE_11:
     db 10     ; connected map width
     db 54, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x5A49 ; object_data_ptr
+    dw 0x5D67 ; object_data_ptr
 map_object_ROUTE_11:
     db 0x0F ; border block
     db 5 ; warp count
@@ -1715,8 +1834,18 @@ map_object_ROUTE_11:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x0B, 0x12, 0x0E, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x0B
+    db 0x0B, 0x0D, 0x1E, 0xFF, 0xD0, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x0B
+    db 0x04, 0x09, 0x11, 0xFF, 0xD2, 0x42, 0x00, 0x09  ; slot 3: trainer sprite=0x04
+    db 0x0C, 0x0F, 0x28, 0xFF, 0xD0, 0x43, 0x00, 0x02  ; slot 4: trainer sprite=0x0C
+    db 0x04, 0x08, 0x1A, 0xFF, 0xD1, 0x44, 0x00, 0x0A  ; slot 5: trainer sprite=0x04
+    db 0x0B, 0x0B, 0x31, 0xFF, 0xD0, 0x45, 0x00, 0x03  ; slot 6: trainer sprite=0x0B
+    db 0x0B, 0x07, 0x25, 0xFF, 0xD1, 0x46, 0x00, 0x04  ; slot 7: trainer sprite=0x0B
+    db 0x04, 0x09, 0x2F, 0xFF, 0xD3, 0x47, 0x00, 0x0B  ; slot 8: trainer sprite=0x04
+    db 0x0C, 0x14, 0x31, 0xFF, 0xD2, 0x48, 0x00, 0x03  ; slot 9: trainer sprite=0x0C
+    db 0x04, 0x10, 0x1A, 0xFF, 0xD1, 0x49, 0x00, 0x0C  ; slot 10: trainer sprite=0x04
 
-OW_MAP_HDR_ROUTE_12 equ 0x5A64
+OW_MAP_HDR_ROUTE_12 equ 0x5DD2
 map_header_ROUTE_12:
     db 0x00       ; tileset OVERWORLD
     db 54, 10  ; height, width
@@ -1748,7 +1877,7 @@ map_header_ROUTE_12:
     db 30     ; connected map width
     db -54, 59   ; Y, X align
     dw 0xE871      ; view ptr
-    dw 0x5A91 ; object_data_ptr
+    dw 0x5DFF ; object_data_ptr
 map_object_ROUTE_12:
     db 0x43 ; border block
     db 4 ; warp count
@@ -1759,8 +1888,18 @@ map_object_ROUTE_12:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x4D, 0x42, 0x0E, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x4D mapy=66 mapx=14
+    db 0x2F, 0x23, 0x12, 0xFF, 0xD2, 0x41, 0x00, 0x03  ; slot 2: trainer sprite=0x2F
+    db 0x2F, 0x2B, 0x09, 0xFF, 0xD1, 0x42, 0x00, 0x04  ; slot 3: trainer sprite=0x2F
+    db 0x07, 0x60, 0x0F, 0xFF, 0xD2, 0x43, 0x00, 0x09  ; slot 4: trainer sprite=0x07
+    db 0x0C, 0x50, 0x12, 0xFF, 0xD1, 0x44, 0x00, 0x02  ; slot 5: trainer sprite=0x0C
+    db 0x2F, 0x2C, 0x10, 0xFF, 0xD2, 0x45, 0x00, 0x05  ; slot 6: trainer sprite=0x2F
+    db 0x2F, 0x38, 0x0D, 0xFF, 0xD3, 0x46, 0x00, 0x06  ; slot 7: trainer sprite=0x2F
+    db 0x2F, 0x5B, 0x0A, 0xFF, 0xD0, 0x47, 0x00, 0x0B  ; slot 8: trainer sprite=0x2F
+    db 0x47, 0x27, 0x12, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x5D, 0x09, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_13 equ 0x5AAB
+OW_MAP_HDR_ROUTE_13 equ 0x5E65
 map_header_ROUTE_13:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -1784,15 +1923,25 @@ map_header_ROUTE_13:
     db 10     ; connected map width
     db 0, 19   ; Y, X align
     dw 0xE835      ; view ptr
-    dw 0x5ACD ; object_data_ptr
+    dw 0x5E87 ; object_data_ptr
 map_object_ROUTE_13:
     db 0x43 ; border block
     db 0 ; warp count
     db 3 ; sign count
     times 9 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x07, 0x0E, 0x35, 0xFF, 0xD3, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x07
+    db 0x06, 0x0E, 0x34, 0xFF, 0xD0, 0x41, 0x00, 0x0C  ; slot 2: trainer sprite=0x06
+    db 0x06, 0x0D, 0x1F, 0xFF, 0xD0, 0x42, 0x00, 0x0D  ; slot 3: trainer sprite=0x06
+    db 0x06, 0x0E, 0x1B, 0xFF, 0xD2, 0x43, 0x00, 0x0E  ; slot 4: trainer sprite=0x06
+    db 0x06, 0x09, 0x36, 0xFF, 0xD0, 0x44, 0x00, 0x0F  ; slot 5: trainer sprite=0x06
+    db 0x07, 0x08, 0x10, 0xFF, 0xD3, 0x45, 0x00, 0x02  ; slot 6: trainer sprite=0x07
+    db 0x0F, 0x0A, 0x25, 0xFF, 0xD0, 0x46, 0x00, 0x04  ; slot 7: trainer sprite=0x0F
+    db 0x0F, 0x0A, 0x24, 0xFF, 0xD0, 0x47, 0x00, 0x05  ; slot 8: trainer sprite=0x0F
+    db 0x12, 0x0B, 0x0E, 0xFF, 0xD1, 0x48, 0x00, 0x01  ; slot 9: trainer sprite=0x12
+    db 0x07, 0x11, 0x0B, 0xFF, 0xD1, 0x49, 0x00, 0x03  ; slot 10: trainer sprite=0x07
 
-OW_MAP_HDR_ROUTE_14 equ 0x5ADA
+OW_MAP_HDR_ROUTE_14 equ 0x5EE4
 map_header_ROUTE_14:
     db 0x00       ; tileset OVERWORLD
     db 27, 10  ; height, width
@@ -1816,15 +1965,25 @@ map_header_ROUTE_14:
     db 30     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x5AFC ; object_data_ptr
+    dw 0x5F06 ; object_data_ptr
 map_object_ROUTE_14:
     db 0x43 ; border block
     db 0 ; warp count
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x07, 0x08, 0x08, 0xFF, 0xD0, 0x40, 0x00, 0x0E  ; slot 1: trainer sprite=0x07
+    db 0x07, 0x0A, 0x13, 0xFF, 0xD0, 0x41, 0x00, 0x0F  ; slot 2: trainer sprite=0x07
+    db 0x07, 0x0F, 0x10, 0xFF, 0xD0, 0x42, 0x00, 0x10  ; slot 3: trainer sprite=0x07
+    db 0x07, 0x13, 0x12, 0xFF, 0xD1, 0x43, 0x00, 0x11  ; slot 4: trainer sprite=0x07
+    db 0x07, 0x23, 0x13, 0xFF, 0xD2, 0x44, 0x00, 0x04  ; slot 5: trainer sprite=0x07
+    db 0x07, 0x35, 0x0A, 0xFF, 0xD1, 0x45, 0x00, 0x05  ; slot 6: trainer sprite=0x07
+    db 0x12, 0x2B, 0x09, 0xFF, 0xD0, 0x46, 0x00, 0x0D  ; slot 7: trainer sprite=0x12
+    db 0x12, 0x22, 0x08, 0xFF, 0xD3, 0x47, 0x00, 0x0E  ; slot 8: trainer sprite=0x12
+    db 0x12, 0x22, 0x13, 0xFF, 0xD2, 0x48, 0x00, 0x0F  ; slot 9: trainer sprite=0x12
+    db 0x12, 0x23, 0x08, 0xFF, 0xD3, 0x49, 0x00, 0x02  ; slot 10: trainer sprite=0x12
 
-OW_MAP_HDR_ROUTE_15 equ 0x5B03
+OW_MAP_HDR_ROUTE_15 equ 0x5F5D
 map_header_ROUTE_15:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -1848,7 +2007,7 @@ map_header_ROUTE_15:
     db 10     ; connected map width
     db 36, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x5B25 ; object_data_ptr
+    dw 0x5F7F ; object_data_ptr
 map_object_ROUTE_15:
     db 0x43 ; border block
     db 4 ; warp count
@@ -1859,8 +2018,19 @@ map_object_ROUTE_15:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 11 ; sprite count
+    db 0x06, 0x0F, 0x2D, 0xFF, 0xD0, 0x40, 0x00, 0x14  ; slot 1: trainer sprite=0x06
+    db 0x06, 0x0E, 0x39, 0xFF, 0xD2, 0x41, 0x00, 0x15  ; slot 2: trainer sprite=0x06
+    db 0x07, 0x11, 0x23, 0xFF, 0xD1, 0x42, 0x00, 0x06  ; slot 3: trainer sprite=0x07
+    db 0x07, 0x11, 0x27, 0xFF, 0xD1, 0x43, 0x00, 0x07  ; slot 4: trainer sprite=0x07
+    db 0x0F, 0x0F, 0x39, 0xFF, 0xD0, 0x44, 0x00, 0x09  ; slot 5: trainer sprite=0x0F
+    db 0x0F, 0x0E, 0x2D, 0xFF, 0xD3, 0x45, 0x00, 0x0A  ; slot 6: trainer sprite=0x0F
+    db 0x12, 0x0E, 0x34, 0xFF, 0xD0, 0x46, 0x00, 0x03  ; slot 7: trainer sprite=0x12
+    db 0x12, 0x0E, 0x32, 0xFF, 0xD0, 0x47, 0x00, 0x04  ; slot 8: trainer sprite=0x12
+    db 0x06, 0x09, 0x29, 0xFF, 0xD3, 0x48, 0x00, 0x16  ; slot 9: trainer sprite=0x06
+    db 0x06, 0x11, 0x16, 0xFF, 0xD1, 0x49, 0x00, 0x17  ; slot 10: trainer sprite=0x06
+    db 0x47, 0x09, 0x16, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_16 equ 0x5B3C
+OW_MAP_HDR_ROUTE_16 equ 0x5FED
 map_header_ROUTE_16:
     db 0x00       ; tileset OVERWORLD
     db 9, 20  ; height, width
@@ -1884,7 +2054,7 @@ map_header_ROUTE_16:
     db 25     ; connected map width
     db 8, 0   ; Y, X align
     dw 0xE84A      ; view ptr
-    dw 0x5B5E ; object_data_ptr
+    dw 0x600F ; object_data_ptr
 map_object_ROUTE_16:
     db 0x0F ; border block
     db 9 ; warp count
@@ -1900,8 +2070,15 @@ map_object_ROUTE_16:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 7 ; sprite count
+    db 0x12, 0x10, 0x15, 0xFF, 0xD2, 0x40, 0x00, 0x05  ; slot 1: trainer sprite=0x12
+    db 0x12, 0x11, 0x12, 0xFF, 0xD3, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x12
+    db 0x12, 0x10, 0x0F, 0xFF, 0xD1, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x12
+    db 0x12, 0x0F, 0x0D, 0xFF, 0xD2, 0x43, 0x00, 0x06  ; slot 4: trainer sprite=0x12
+    db 0x12, 0x0E, 0x0A, 0xFF, 0xD3, 0x44, 0x00, 0x03  ; slot 5: trainer sprite=0x12
+    db 0x12, 0x10, 0x07, 0xFF, 0xD3, 0x45, 0x00, 0x07  ; slot 6: trainer sprite=0x12
+    db 0x4D, 0x0E, 0x1E, 0xFF, 0xD0, 0x06  ; slot 7: npc sprite=0x4D mapy=14 mapx=30
 
-OW_MAP_HDR_ROUTE_17 equ 0x5B8C
+OW_MAP_HDR_ROUTE_17 equ 0x6073
 map_header_ROUTE_17:
     db 0x00       ; tileset OVERWORLD
     db 72, 10  ; height, width
@@ -1925,15 +2102,25 @@ map_header_ROUTE_17:
     db 25     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE84A      ; view ptr
-    dw 0x5BAE ; object_data_ptr
+    dw 0x6095 ; object_data_ptr
 map_object_ROUTE_17:
     db 0x43 ; border block
     db 0 ; warp count
     db 6 ; sign count
     times 18 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x12, 0x17, 0x10, 0xFF, 0xD2, 0x40, 0x00, 0x04  ; slot 1: trainer sprite=0x12
+    db 0x12, 0x14, 0x0F, 0xFF, 0xD3, 0x41, 0x00, 0x05  ; slot 2: trainer sprite=0x12
+    db 0x12, 0x16, 0x08, 0xFF, 0xD1, 0x42, 0x00, 0x08  ; slot 3: trainer sprite=0x12
+    db 0x12, 0x24, 0x0B, 0xFF, 0xD2, 0x43, 0x00, 0x09  ; slot 4: trainer sprite=0x12
+    db 0x12, 0x26, 0x12, 0xFF, 0xD3, 0x44, 0x00, 0x0A  ; slot 5: trainer sprite=0x12
+    db 0x12, 0x3E, 0x15, 0xFF, 0xD2, 0x45, 0x00, 0x06  ; slot 6: trainer sprite=0x12
+    db 0x12, 0x48, 0x06, 0xFF, 0xD3, 0x46, 0x00, 0x07  ; slot 7: trainer sprite=0x12
+    db 0x12, 0x66, 0x12, 0xFF, 0xD3, 0x47, 0x00, 0x08  ; slot 8: trainer sprite=0x12
+    db 0x12, 0x66, 0x09, 0xFF, 0xD2, 0x48, 0x00, 0x0B  ; slot 9: trainer sprite=0x12
+    db 0x12, 0x7A, 0x0E, 0xFF, 0xD0, 0x49, 0x00, 0x0C  ; slot 10: trainer sprite=0x12
 
-OW_MAP_HDR_ROUTE_18 equ 0x5BC4
+OW_MAP_HDR_ROUTE_18 equ 0x60FB
 map_header_ROUTE_18:
     db 0x00       ; tileset OVERWORLD
     db 9, 25  ; height, width
@@ -1957,7 +2144,7 @@ map_header_ROUTE_18:
     db 20     ; connected map width
     db 8, 0   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x5BE6 ; object_data_ptr
+    dw 0x611D ; object_data_ptr
 map_object_ROUTE_18:
     db 0x43 ; border block
     db 4 ; warp count
@@ -1968,8 +2155,11 @@ map_object_ROUTE_18:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x07, 0x0F, 0x28, 0xFF, 0xD3, 0x40, 0x00, 0x08  ; slot 1: trainer sprite=0x07
+    db 0x07, 0x13, 0x2C, 0xFF, 0xD2, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x07
+    db 0x07, 0x11, 0x2E, 0xFF, 0xD2, 0x42, 0x00, 0x0A  ; slot 3: trainer sprite=0x07
 
-OW_MAP_HDR_ROUTE_19 equ 0x5C00
+OW_MAP_HDR_ROUTE_19 equ 0x614F
 map_header_ROUTE_19:
     db 0x00       ; tileset OVERWORLD
     db 27, 10  ; height, width
@@ -1993,7 +2183,7 @@ map_header_ROUTE_19:
     db 50     ; connected map width
     db -36, 99   ; Y, X align
     dw 0xE8AD      ; view ptr
-    dw 0x5C22 ; object_data_ptr
+    dw 0x6171 ; object_data_ptr
 map_object_ROUTE_19:
     db 0x43 ; border block
     db 1 ; warp count
@@ -2001,8 +2191,18 @@ map_object_ROUTE_19:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x07, 0x0B, 0x0D, 0xFF, 0xD3, 0x40, 0x00, 0x02  ; slot 1: trainer sprite=0x07
+    db 0x07, 0x0D, 0x10, 0xFF, 0xD2, 0x41, 0x00, 0x03  ; slot 2: trainer sprite=0x07
+    db 0x22, 0x1D, 0x11, 0xFF, 0xD2, 0x42, 0x00, 0x04  ; slot 3: trainer sprite=0x22
+    db 0x22, 0x1F, 0x08, 0xFF, 0xD3, 0x43, 0x00, 0x05  ; slot 4: trainer sprite=0x22
+    db 0x22, 0x23, 0x14, 0xFF, 0xD1, 0x44, 0x00, 0x06  ; slot 5: trainer sprite=0x22
+    db 0x22, 0x11, 0x0D, 0xFF, 0xD0, 0x45, 0x00, 0x07  ; slot 6: trainer sprite=0x22
+    db 0x22, 0x2F, 0x0C, 0xFF, 0xD2, 0x46, 0x00, 0x0C  ; slot 7: trainer sprite=0x22
+    db 0x22, 0x2F, 0x0F, 0xFF, 0xD3, 0x47, 0x00, 0x0D  ; slot 8: trainer sprite=0x22
+    db 0x22, 0x2E, 0x0D, 0xFF, 0xD1, 0x48, 0x00, 0x08  ; slot 9: trainer sprite=0x22
+    db 0x22, 0x30, 0x0E, 0xFF, 0xD0, 0x49, 0x00, 0x0E  ; slot 10: trainer sprite=0x22
 
-OW_MAP_HDR_ROUTE_20 equ 0x5C2D
+OW_MAP_HDR_ROUTE_20 equ 0x61CC
 map_header_ROUTE_20:
     db 0x00       ; tileset OVERWORLD
     db 9, 50  ; height, width
@@ -2026,7 +2226,7 @@ map_header_ROUTE_20:
     db 10     ; connected map width
     db 36, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x5C4F ; object_data_ptr
+    dw 0x61EE ; object_data_ptr
 map_object_ROUTE_20:
     db 0x43 ; border block
     db 2 ; warp count
@@ -2035,8 +2235,18 @@ map_object_ROUTE_20:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x22, 0x0C, 0x5B, 0xFF, 0xD1, 0x40, 0x00, 0x09  ; slot 1: trainer sprite=0x22
+    db 0x22, 0x0F, 0x48, 0xFF, 0xD1, 0x41, 0x00, 0x0F  ; slot 2: trainer sprite=0x22
+    db 0x22, 0x0E, 0x31, 0xFF, 0xD0, 0x42, 0x00, 0x06  ; slot 3: trainer sprite=0x22
+    db 0x22, 0x12, 0x3B, 0xFF, 0xD3, 0x43, 0x00, 0x18  ; slot 4: trainer sprite=0x22
+    db 0x22, 0x11, 0x2A, 0xFF, 0xD0, 0x44, 0x00, 0x0A  ; slot 5: trainer sprite=0x22
+    db 0x22, 0x11, 0x5B, 0xFF, 0xD1, 0x45, 0x00, 0x0B  ; slot 6: trainer sprite=0x22
+    db 0x07, 0x0D, 0x26, 0xFF, 0xD1, 0x46, 0x00, 0x0B  ; slot 7: trainer sprite=0x07
+    db 0x22, 0x0B, 0x1D, 0xFF, 0xD1, 0x47, 0x00, 0x07  ; slot 8: trainer sprite=0x22
+    db 0x22, 0x10, 0x1C, 0xFF, 0xD0, 0x48, 0x00, 0x10  ; slot 9: trainer sprite=0x22
+    db 0x22, 0x0C, 0x13, 0xFF, 0xD1, 0x49, 0x00, 0x08  ; slot 10: trainer sprite=0x22
 
-OW_MAP_HDR_ROUTE_21 equ 0x5C61
+OW_MAP_HDR_ROUTE_21 equ 0x6250
 map_header_ROUTE_21:
     db 0x00       ; tileset OVERWORLD
     db 45, 10  ; height, width
@@ -2060,14 +2270,23 @@ map_header_ROUTE_21:
     db 10     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE82C      ; view ptr
-    dw 0x5C83 ; object_data_ptr
+    dw 0x6272 ; object_data_ptr
 map_object_ROUTE_21:
     db 0x43 ; border block
     db 0 ; warp count
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x2F, 0x1C, 0x08, 0xFF, 0xD2, 0x40, 0x00, 0x07  ; slot 1: trainer sprite=0x2F
+    db 0x2F, 0x1D, 0x0A, 0xFF, 0xD0, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x2F
+    db 0x22, 0x23, 0x0E, 0xFF, 0xD1, 0x42, 0x00, 0x0C  ; slot 3: trainer sprite=0x22
+    db 0x22, 0x22, 0x10, 0xFF, 0xD3, 0x43, 0x00, 0x09  ; slot 4: trainer sprite=0x22
+    db 0x22, 0x43, 0x14, 0xFF, 0xD0, 0x44, 0x00, 0x0D  ; slot 5: trainer sprite=0x22
+    db 0x22, 0x4B, 0x09, 0xFF, 0xD3, 0x45, 0x00, 0x0E  ; slot 6: trainer sprite=0x22
+    db 0x22, 0x4B, 0x13, 0xFF, 0xD2, 0x46, 0x00, 0x0F  ; slot 7: trainer sprite=0x22
+    db 0x2F, 0x3C, 0x12, 0xFF, 0xD2, 0x47, 0x00, 0x08  ; slot 8: trainer sprite=0x2F
+    db 0x2F, 0x3D, 0x15, 0xFF, 0xD3, 0x48, 0x00, 0x0A  ; slot 9: trainer sprite=0x2F
 
-OW_MAP_HDR_ROUTE_22 equ 0x5C87
+OW_MAP_HDR_ROUTE_22 equ 0x62BE
 map_header_ROUTE_22:
     db 0x00       ; tileset OVERWORLD
     db 9, 20  ; height, width
@@ -2083,7 +2302,7 @@ map_header_ROUTE_22:
     db 20     ; connected map width
     db 8, 0   ; Y, X align
     dw 0xE840      ; view ptr
-    dw 0x5C9E ; object_data_ptr
+    dw 0x62D5 ; object_data_ptr
 map_object_ROUTE_22:
     db 0x2C ; border block
     db 1 ; warp count
@@ -2091,8 +2310,10 @@ map_object_ROUTE_22:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x02, 0x09, 0x1D, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x02 mapy=9 mapx=29
+    db 0x02, 0x09, 0x1D, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x02 mapy=9 mapx=29
 
-OW_MAP_HDR_ROUTE_23 equ 0x5CA9
+OW_MAP_HDR_ROUTE_23 equ 0x62EC
 map_header_ROUTE_23:
     db 0x17       ; tileset PLATEAU
     db 72, 10  ; height, width
@@ -2100,7 +2321,7 @@ map_header_ROUTE_23:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5CB5 ; object_data_ptr
+    dw 0x62F8 ; object_data_ptr
 map_object_ROUTE_23:
     db 0x0F ; border block
     db 4 ; warp count
@@ -2111,8 +2332,15 @@ map_object_ROUTE_23:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 7 ; sprite count
+    db 0x31, 0x27, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x31 mapy=39 mapx=8
+    db 0x31, 0x3C, 0x0E, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x31 mapy=60 mapx=14
+    db 0x22, 0x59, 0x0C, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x22 mapy=89 mapx=12
+    db 0x22, 0x64, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x22 mapy=100 mapx=15
+    db 0x31, 0x6D, 0x10, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x31 mapy=109 mapx=16
+    db 0x31, 0x7B, 0x0C, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x31 mapy=123 mapx=12
+    db 0x31, 0x8C, 0x0C, 0xFF, 0xD0, 0x06  ; slot 7: npc sprite=0x31 mapy=140 mapx=12
 
-OW_MAP_HDR_ROUTE_24 equ 0x5CCC
+OW_MAP_HDR_ROUTE_24 equ 0x6339
 map_header_ROUTE_24:
     db 0x00       ; tileset OVERWORLD
     db 18, 10  ; height, width
@@ -2136,14 +2364,23 @@ map_header_ROUTE_24:
     db 30     ; connected map width
     db 0, 0   ; Y, X align
     dw 0xE854      ; view ptr
-    dw 0x5CEE ; object_data_ptr
+    dw 0x635B ; object_data_ptr
 map_object_ROUTE_24:
     db 0x2C ; border block
     db 0 ; warp count
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x07, 0x13, 0x0F, 0xFF, 0xD2, 0x40, 0x00, 0x06  ; slot 1: trainer sprite=0x07
+    db 0x07, 0x18, 0x09, 0xFF, 0xD1, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x07
+    db 0x07, 0x17, 0x0F, 0xFF, 0xD2, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x07
+    db 0x06, 0x1A, 0x0E, 0xFF, 0xD3, 0x43, 0x00, 0x07  ; slot 4: trainer sprite=0x06
+    db 0x04, 0x1D, 0x0F, 0xFF, 0xD2, 0x44, 0x00, 0x04  ; slot 5: trainer sprite=0x04
+    db 0x06, 0x20, 0x0E, 0xFF, 0xD3, 0x45, 0x00, 0x08  ; slot 6: trainer sprite=0x06
+    db 0x04, 0x23, 0x0F, 0xFF, 0xD2, 0x46, 0x00, 0x09  ; slot 7: trainer sprite=0x04
+    db 0x47, 0x09, 0x0E, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x07, 0x09, 0x0A, 0xFF, 0xD0, 0x08  ; slot 9: npc sprite=0x07 mapy=9 mapx=10
 
-OW_MAP_HDR_ROUTE_25 equ 0x5CF2
+OW_MAP_HDR_ROUTE_25 equ 0x63A4
 map_header_ROUTE_25:
     db 0x00       ; tileset OVERWORLD
     db 9, 30  ; height, width
@@ -2159,7 +2396,7 @@ map_header_ROUTE_25:
     db 10     ; connected map width
     db 0, 19   ; Y, X align
     dw 0xE835      ; view ptr
-    dw 0x5D09 ; object_data_ptr
+    dw 0x63BB ; object_data_ptr
 map_object_ROUTE_25:
     db 0x2C ; border block
     db 1 ; warp count
@@ -2167,9 +2404,19 @@ map_object_ROUTE_25:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x04, 0x06, 0x12, 0xFF, 0xD0, 0x40, 0x00, 0x05  ; slot 1: trainer sprite=0x04
+    db 0x04, 0x09, 0x16, 0xFF, 0xD1, 0x41, 0x00, 0x06  ; slot 2: trainer sprite=0x04
+    db 0x07, 0x08, 0x1C, 0xFF, 0xD0, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x07
+    db 0x06, 0x0C, 0x16, 0xFF, 0xD3, 0x43, 0x00, 0x09  ; slot 4: trainer sprite=0x06
+    db 0x04, 0x07, 0x24, 0xFF, 0xD2, 0x44, 0x00, 0x07  ; slot 5: trainer sprite=0x04
+    db 0x06, 0x08, 0x29, 0xFF, 0xD0, 0x45, 0x00, 0x0A  ; slot 6: trainer sprite=0x06
+    db 0x0E, 0x08, 0x0C, 0xFF, 0xD3, 0x46, 0x00, 0x02  ; slot 7: trainer sprite=0x0E
+    db 0x0E, 0x0D, 0x1B, 0xFF, 0xD1, 0x47, 0x00, 0x03  ; slot 8: trainer sprite=0x0E
+    db 0x0E, 0x0B, 0x11, 0xFF, 0xD3, 0x48, 0x00, 0x04  ; slot 9: trainer sprite=0x0E
+    db 0x47, 0x06, 0x1A, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
 
 ; --- Indoor map headers (non-OVERWORLD tileset, shared INDOOR_BLK_GBADDR) ---
-OW_MAP_HDR_REDS_HOUSE_1F equ 0x5D14
+OW_MAP_HDR_REDS_HOUSE_1F equ 0x6415
 map_header_REDS_HOUSE_1F:
     db 0x01       ; tileset REDS_HOUSE_1
     db 4, 4  ; height, width
@@ -2177,7 +2424,7 @@ map_header_REDS_HOUSE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D20 ; object_data_ptr
+    dw 0x6421 ; object_data_ptr
 map_object_REDS_HOUSE_1F:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2187,8 +2434,9 @@ map_object_REDS_HOUSE_1F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x33, 0x08, 0x09, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x33 mapy=8 mapx=9
 
-OW_MAP_HDR_REDS_HOUSE_2F equ 0x5D33
+OW_MAP_HDR_REDS_HOUSE_2F equ 0x643A
 map_header_REDS_HOUSE_2F:
     db 0x04       ; tileset REDS_HOUSE_2
     db 4, 4  ; height, width
@@ -2196,7 +2444,7 @@ map_header_REDS_HOUSE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D3F ; object_data_ptr
+    dw 0x6446 ; object_data_ptr
 map_object_REDS_HOUSE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -2204,7 +2452,7 @@ map_object_REDS_HOUSE_2F:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_BLUES_HOUSE equ 0x5D47
+OW_MAP_HDR_BLUES_HOUSE equ 0x644E
 map_header_BLUES_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2212,7 +2460,7 @@ map_header_BLUES_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D53 ; object_data_ptr
+    dw 0x645A ; object_data_ptr
 map_object_BLUES_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2220,8 +2468,11 @@ map_object_BLUES_HOUSE:
     db 7, 3, 1, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x11, 0x07, 0x06, 0xFF, 0xD3, 0x80, 0x00  ; slot 1: item sprite=0x11
+    db 0x11, 0x08, 0x0A, 0xFE, 0x01, 0x81, 0x00  ; slot 2: item sprite=0x11
+    db 0x4B, 0x07, 0x07, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x4B
 
-OW_MAP_HDR_OAKS_LAB equ 0x5D5F
+OW_MAP_HDR_OAKS_LAB equ 0x647B
 map_header_OAKS_LAB:
     db 0x05       ; tileset DOJO
     db 6, 5  ; height, width
@@ -2229,7 +2480,7 @@ map_header_OAKS_LAB:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D6B ; object_data_ptr
+    dw 0x6487 ; object_data_ptr
 map_object_OAKS_LAB:
     db 0x03 ; border block
     db 2 ; warp count
@@ -2237,8 +2488,17 @@ map_object_OAKS_LAB:
     db 11, 5, 2, 0xFF
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x02, 0x07, 0x08, 0xFF, 0xFF, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x02
+    db 0x47, 0x07, 0x0B, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x47 mapy=7 mapx=11
+    db 0x03, 0x06, 0x09, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x03 mapy=6 mapx=9
+    db 0x4B, 0x05, 0x06, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x4B mapy=5 mapx=6
+    db 0x4B, 0x05, 0x07, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x4B mapy=5 mapx=7
+    db 0x03, 0x0E, 0x09, 0xFF, 0xD1, 0x05  ; slot 6: npc sprite=0x03 mapy=14 mapx=9
+    db 0x0D, 0x0D, 0x05, 0xFE, 0x01, 0x06  ; slot 7: npc sprite=0x0D mapy=13 mapx=5
+    db 0x20, 0x0E, 0x06, 0xFF, 0xFF, 0x07  ; slot 8: npc sprite=0x20 mapy=14 mapx=6
+    db 0x20, 0x0E, 0x0C, 0xFF, 0xFF, 0x08  ; slot 9: npc sprite=0x20 mapy=14 mapx=12
 
-OW_MAP_HDR_VIRIDIAN_POKECENTER equ 0x5D77
+OW_MAP_HDR_VIRIDIAN_POKECENTER equ 0x64CB
 map_header_VIRIDIAN_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -2246,7 +2506,7 @@ map_header_VIRIDIAN_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D83 ; object_data_ptr
+    dw 0x64D7 ; object_data_ptr
 map_object_VIRIDIAN_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2254,8 +2514,13 @@ map_object_VIRIDIAN_POKECENTER:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x10, 0x09, 0x0E, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x10 mapy=9 mapx=14
+    db 0x07, 0x07, 0x08, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x07 mapy=7 mapx=8
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_VIRIDIAN_MART equ 0x5D8F
+OW_MAP_HDR_VIRIDIAN_MART equ 0x6501
 map_header_VIRIDIAN_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -2263,7 +2528,7 @@ map_header_VIRIDIAN_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5D9B ; object_data_ptr
+    dw 0x650D ; object_data_ptr
 map_object_VIRIDIAN_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2271,8 +2536,11 @@ map_object_VIRIDIAN_MART:
     db 7, 4, 1, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x04, 0x09, 0x09, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x04 mapy=9 mapx=9
+    db 0x07, 0x07, 0x07, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x07 mapy=7 mapx=7
 
-OW_MAP_HDR_VIRIDIAN_SCHOOL_HOUSE equ 0x5DA7
+OW_MAP_HDR_VIRIDIAN_SCHOOL_HOUSE equ 0x652B
 map_header_VIRIDIAN_SCHOOL_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2280,7 +2548,7 @@ map_header_VIRIDIAN_SCHOOL_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5DB3 ; object_data_ptr
+    dw 0x6537 ; object_data_ptr
 map_object_VIRIDIAN_SCHOOL_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2288,8 +2556,11 @@ map_object_VIRIDIAN_SCHOOL_HOUSE:
     db 7, 3, 2, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x1D, 0x09, 0x07, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x1D mapy=9 mapx=7
+    db 0x06, 0x05, 0x08, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x06 mapy=5 mapx=8
+    db 0x08, 0x09, 0x08, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x08 mapy=9 mapx=8
 
-OW_MAP_HDR_VIRIDIAN_NICKNAME_HOUSE equ 0x5DBF
+OW_MAP_HDR_VIRIDIAN_NICKNAME_HOUSE equ 0x6555
 map_header_VIRIDIAN_NICKNAME_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2297,7 +2568,7 @@ map_header_VIRIDIAN_NICKNAME_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5DCB ; object_data_ptr
+    dw 0x6561 ; object_data_ptr
 map_object_VIRIDIAN_NICKNAME_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2305,8 +2576,12 @@ map_object_VIRIDIAN_NICKNAME_HOUSE:
     db 7, 3, 3, 0xFF
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x34, 0x07, 0x09, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x34 mapy=7 mapx=9
+    db 0x08, 0x08, 0x05, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x08 mapy=8 mapx=5
+    db 0x09, 0x09, 0x09, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x09 mapy=9 mapx=9
+    db 0x4C, 0x04, 0x08, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x4C mapy=4 mapx=8
 
-OW_MAP_HDR_VIRIDIAN_GYM equ 0x5DD7
+OW_MAP_HDR_VIRIDIAN_GYM equ 0x6585
 map_header_VIRIDIAN_GYM:
     db 0x07       ; tileset GYM
     db 9, 10  ; height, width
@@ -2314,7 +2589,7 @@ map_header_VIRIDIAN_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5DE3 ; object_data_ptr
+    dw 0x6591 ; object_data_ptr
 map_object_VIRIDIAN_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -2322,8 +2597,19 @@ map_object_VIRIDIAN_GYM:
     db 17, 17, 4, 0xFF
     db 0 ; sign count
     db 11 ; sprite count
+    db 0x17, 0x05, 0x06, 0xFF, 0xD0, 0x40, 0x00, 0x03  ; slot 1: trainer sprite=0x17
+    db 0x07, 0x0B, 0x10, 0xFF, 0xD0, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x07
+    db 0x0E, 0x0F, 0x0F, 0xFF, 0xD1, 0x42, 0x00, 0x06  ; slot 3: trainer sprite=0x0E
+    db 0x21, 0x0B, 0x0E, 0xFF, 0xD0, 0x43, 0x00, 0x03  ; slot 4: trainer sprite=0x21
+    db 0x0E, 0x0B, 0x07, 0xFF, 0xD2, 0x44, 0x00, 0x07  ; slot 5: trainer sprite=0x0E
+    db 0x07, 0x09, 0x11, 0xFF, 0xD3, 0x45, 0x00, 0x0A  ; slot 6: trainer sprite=0x07
+    db 0x0E, 0x05, 0x0E, 0xFF, 0xD0, 0x46, 0x00, 0x08  ; slot 7: trainer sprite=0x0E
+    db 0x21, 0x14, 0x06, 0xFF, 0xD3, 0x47, 0x00, 0x04  ; slot 8: trainer sprite=0x21
+    db 0x07, 0x09, 0x0A, 0xFF, 0xD0, 0x48, 0x00, 0x01  ; slot 9: trainer sprite=0x07
+    db 0x24, 0x13, 0x14, 0xFF, 0xD0, 0x09  ; slot 10: npc sprite=0x24 mapy=19 mapx=20
+    db 0x47, 0x0D, 0x14, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
 
-OW_MAP_HDR_DIGLETTS_CAVE_ROUTE_2 equ 0x5DEF
+OW_MAP_HDR_DIGLETTS_CAVE_ROUTE_2 equ 0x65F2
 map_header_DIGLETTS_CAVE_ROUTE_2:
     db 0x11       ; tileset CAVERN
     db 4, 4  ; height, width
@@ -2331,7 +2617,7 @@ map_header_DIGLETTS_CAVE_ROUTE_2:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5DFB ; object_data_ptr
+    dw 0x65FE ; object_data_ptr
 map_object_DIGLETTS_CAVE_ROUTE_2:
     db 0x7D ; border block
     db 3 ; warp count
@@ -2340,8 +2626,9 @@ map_object_DIGLETTS_CAVE_ROUTE_2:
     db 4, 4, 0, 0xC5
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x07, 0x07, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=7
 
-OW_MAP_HDR_VIRIDIAN_FOREST_NORTH_GATE equ 0x5E0B
+OW_MAP_HDR_VIRIDIAN_FOREST_NORTH_GATE equ 0x6614
 map_header_VIRIDIAN_FOREST_NORTH_GATE:
     db 0x09       ; tileset FOREST_GATE
     db 4, 5  ; height, width
@@ -2349,7 +2636,7 @@ map_header_VIRIDIAN_FOREST_NORTH_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5E17 ; object_data_ptr
+    dw 0x6620 ; object_data_ptr
 map_object_VIRIDIAN_FOREST_NORTH_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2359,8 +2646,10 @@ map_object_VIRIDIAN_FOREST_NORTH_GATE:
     db 7, 5, 0, 0x33
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0C, 0x06, 0x07, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0C mapy=6 mapx=7
+    db 0x25, 0x09, 0x06, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x25 mapy=9 mapx=6
 
-OW_MAP_HDR_ROUTE_2_TRADE_HOUSE equ 0x5E2B
+OW_MAP_HDR_ROUTE_2_TRADE_HOUSE equ 0x6640
 map_header_ROUTE_2_TRADE_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2368,7 +2657,7 @@ map_header_ROUTE_2_TRADE_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5E37 ; object_data_ptr
+    dw 0x664C ; object_data_ptr
 map_object_ROUTE_2_TRADE_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2376,8 +2665,10 @@ map_object_ROUTE_2_TRADE_HOUSE:
     db 7, 3, 2, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x20, 0x08, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x20 mapy=8 mapx=6
+    db 0x37, 0x05, 0x08, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x37 mapy=5 mapx=8
 
-OW_MAP_HDR_ROUTE_2_GATE equ 0x5E43
+OW_MAP_HDR_ROUTE_2_GATE equ 0x6664
 map_header_ROUTE_2_GATE:
     db 0x0C       ; tileset GATE
     db 4, 5  ; height, width
@@ -2385,7 +2676,7 @@ map_header_ROUTE_2_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5E4F ; object_data_ptr
+    dw 0x6670 ; object_data_ptr
 map_object_ROUTE_2_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2395,8 +2686,10 @@ map_object_ROUTE_2_GATE:
     db 7, 5, 4, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x20, 0x08, 0x05, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x20 mapy=8 mapx=5
+    db 0x04, 0x08, 0x09, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x04 mapy=8 mapx=9
 
-OW_MAP_HDR_VIRIDIAN_FOREST_SOUTH_GATE equ 0x5E63
+OW_MAP_HDR_VIRIDIAN_FOREST_SOUTH_GATE equ 0x6690
 map_header_VIRIDIAN_FOREST_SOUTH_GATE:
     db 0x09       ; tileset FOREST_GATE
     db 4, 5  ; height, width
@@ -2404,7 +2697,7 @@ map_header_VIRIDIAN_FOREST_SOUTH_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5E6F ; object_data_ptr
+    dw 0x669C ; object_data_ptr
 map_object_VIRIDIAN_FOREST_SOUTH_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2414,8 +2707,10 @@ map_object_VIRIDIAN_FOREST_SOUTH_GATE:
     db 7, 5, 5, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0D, 0x08, 0x0C, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x0D mapy=8 mapx=12
+    db 0x08, 0x08, 0x06, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x08 mapy=8 mapx=6
 
-OW_MAP_HDR_VIRIDIAN_FOREST equ 0x5E83
+OW_MAP_HDR_VIRIDIAN_FOREST equ 0x66BC
 map_header_VIRIDIAN_FOREST:
     db 0x03       ; tileset FOREST
     db 24, 17  ; height, width
@@ -2423,7 +2718,7 @@ map_header_VIRIDIAN_FOREST:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5E8F ; object_data_ptr
+    dw 0x66C8 ; object_data_ptr
 map_object_VIRIDIAN_FOREST:
     db 0x03 ; border block
     db 6 ; warp count
@@ -2436,8 +2731,18 @@ map_object_VIRIDIAN_FOREST:
     db 6 ; sign count
     times 18 db 0 ; sign stubs
     db 10 ; sprite count
+    db 0x04, 0x2F, 0x14, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x04 mapy=47 mapx=20
+    db 0x04, 0x25, 0x22, 0xFF, 0xD2, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x04
+    db 0x04, 0x17, 0x22, 0xFF, 0xD2, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x04
+    db 0x04, 0x16, 0x06, 0xFF, 0xD2, 0x43, 0x00, 0x03  ; slot 4: trainer sprite=0x04
+    db 0x06, 0x2D, 0x06, 0xFF, 0xFF, 0x44, 0x00, 0x13  ; slot 5: trainer sprite=0x06
+    db 0x04, 0x15, 0x11, 0xFF, 0xD3, 0x45, 0x00, 0x0F  ; slot 6: trainer sprite=0x04
+    db 0x47, 0x0F, 0x1D, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
+    db 0x47, 0x21, 0x10, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x47, 0x23, 0x05, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x04, 0x2C, 0x1F, 0xFF, 0xFF, 0x09  ; slot 10: npc sprite=0x04 mapy=44 mapx=31
 
-OW_MAP_HDR_MUSEUM_1F equ 0x5EBD
+OW_MAP_HDR_MUSEUM_1F equ 0x673F
 map_header_MUSEUM_1F:
     db 0x0A       ; tileset MUSEUM
     db 4, 10  ; height, width
@@ -2445,7 +2750,7 @@ map_header_MUSEUM_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5EC9 ; object_data_ptr
+    dw 0x674B ; object_data_ptr
 map_object_MUSEUM_1F:
     db 0x0A ; border block
     db 5 ; warp count
@@ -2456,8 +2761,13 @@ map_object_MUSEUM_1F:
     db 7, 7, 0, 0x35
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x20, 0x08, 0x10, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x20 mapy=8 mapx=16
+    db 0x0B, 0x08, 0x05, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0B mapy=8 mapx=5
+    db 0x20, 0x06, 0x13, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x20 mapy=6 mapx=19
+    db 0x20, 0x08, 0x15, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x20 mapy=8 mapx=21
+    db 0x4F, 0x06, 0x14, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x4F mapy=6 mapx=20
 
-OW_MAP_HDR_MUSEUM_2F equ 0x5EE1
+OW_MAP_HDR_MUSEUM_2F equ 0x6781
 map_header_MUSEUM_2F:
     db 0x0A       ; tileset MUSEUM
     db 4, 7  ; height, width
@@ -2465,7 +2775,7 @@ map_header_MUSEUM_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5EED ; object_data_ptr
+    dw 0x678D ; object_data_ptr
 map_object_MUSEUM_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -2473,8 +2783,13 @@ map_object_MUSEUM_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 5 ; sprite count
+    db 0x04, 0x0B, 0x05, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x04 mapy=11 mapx=5
+    db 0x25, 0x09, 0x04, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x25 mapy=9 mapx=4
+    db 0x20, 0x09, 0x0B, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x20 mapy=9 mapx=11
+    db 0x1D, 0x09, 0x0F, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x1D mapy=9 mapx=15
+    db 0x0E, 0x09, 0x10, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x0E mapy=9 mapx=16
 
-OW_MAP_HDR_PEWTER_GYM equ 0x5EFB
+OW_MAP_HDR_PEWTER_GYM equ 0x67B9
 map_header_PEWTER_GYM:
     db 0x07       ; tileset GYM
     db 7, 5  ; height, width
@@ -2482,7 +2797,7 @@ map_header_PEWTER_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F07 ; object_data_ptr
+    dw 0x67C5 ; object_data_ptr
 map_object_PEWTER_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -2490,8 +2805,11 @@ map_object_PEWTER_GYM:
     db 13, 5, 2, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x0C, 0x05, 0x08, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x0C
+    db 0x07, 0x0A, 0x07, 0xFF, 0xD3, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x07
+    db 0x24, 0x0E, 0x0B, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x24 mapy=14 mapx=11
 
-OW_MAP_HDR_PEWTER_NIDORAN_HOUSE equ 0x5F13
+OW_MAP_HDR_PEWTER_NIDORAN_HOUSE equ 0x67E7
 map_header_PEWTER_NIDORAN_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2499,7 +2817,7 @@ map_header_PEWTER_NIDORAN_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F1F ; object_data_ptr
+    dw 0x67F3 ; object_data_ptr
 map_object_PEWTER_NIDORAN_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2507,8 +2825,11 @@ map_object_PEWTER_NIDORAN_HOUSE:
     db 7, 3, 3, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x05, 0x09, 0x08, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x05 mapy=9 mapx=8
+    db 0x35, 0x09, 0x07, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x35 mapy=9 mapx=7
+    db 0x0A, 0x06, 0x05, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x0A mapy=6 mapx=5
 
-OW_MAP_HDR_PEWTER_MART equ 0x5F2B
+OW_MAP_HDR_PEWTER_MART equ 0x6811
 map_header_PEWTER_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -2516,7 +2837,7 @@ map_header_PEWTER_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F37 ; object_data_ptr
+    dw 0x681D ; object_data_ptr
 map_object_PEWTER_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2524,8 +2845,11 @@ map_object_PEWTER_MART:
     db 7, 4, 4, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x04, 0x07, 0x07, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x04 mapy=7 mapx=7
+    db 0x0C, 0x09, 0x09, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x0C mapy=9 mapx=9
 
-OW_MAP_HDR_PEWTER_SPEECH_HOUSE equ 0x5F43
+OW_MAP_HDR_PEWTER_SPEECH_HOUSE equ 0x683B
 map_header_PEWTER_SPEECH_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2533,7 +2857,7 @@ map_header_PEWTER_SPEECH_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F4F ; object_data_ptr
+    dw 0x6847 ; object_data_ptr
 map_object_PEWTER_SPEECH_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2541,8 +2865,10 @@ map_object_PEWTER_SPEECH_HOUSE:
     db 7, 3, 5, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0B, 0x07, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x0B mapy=7 mapx=6
+    db 0x04, 0x09, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x04 mapy=9 mapx=8
 
-OW_MAP_HDR_PEWTER_POKECENTER equ 0x5F5B
+OW_MAP_HDR_PEWTER_POKECENTER equ 0x685F
 map_header_PEWTER_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -2550,7 +2876,7 @@ map_header_PEWTER_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F67 ; object_data_ptr
+    dw 0x686B ; object_data_ptr
 map_object_PEWTER_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2558,8 +2884,14 @@ map_object_PEWTER_POKECENTER:
     db 7, 4, 6, 0xFF
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x10, 0x0B, 0x0F, 0xFF, 0xD2, 0x01  ; slot 2: npc sprite=0x10 mapy=11 mapx=15
+    db 0x42, 0x07, 0x05, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x42 mapy=7 mapx=5
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x06, 0x07, 0x08, 0xFF, 0xD1, 0x04  ; slot 5: npc sprite=0x06 mapy=7 mapx=8
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_MT_MOON_1F equ 0x5F73
+OW_MAP_HDR_MT_MOON_1F equ 0x689B
 map_header_MT_MOON_1F:
     db 0x11       ; tileset CAVERN
     db 18, 20  ; height, width
@@ -2567,7 +2899,7 @@ map_header_MT_MOON_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5F7F ; object_data_ptr
+    dw 0x68A7 ; object_data_ptr
 map_object_MT_MOON_1F:
     db 0x03 ; border block
     db 5 ; warp count
@@ -2579,8 +2911,21 @@ map_object_MT_MOON_1F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 13 ; sprite count
+    db 0x0E, 0x0A, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x0E
+    db 0x04, 0x14, 0x10, 0xFF, 0xD3, 0x41, 0x00, 0x03  ; slot 2: trainer sprite=0x04
+    db 0x06, 0x08, 0x22, 0xFF, 0xD0, 0x42, 0x00, 0x05  ; slot 3: trainer sprite=0x06
+    db 0x0C, 0x23, 0x1C, 0xFF, 0xD1, 0x43, 0x00, 0x01  ; slot 4: trainer sprite=0x0C
+    db 0x06, 0x1B, 0x14, 0xFF, 0xD0, 0x44, 0x00, 0x06  ; slot 5: trainer sprite=0x06
+    db 0x04, 0x1A, 0x0B, 0xFF, 0xD0, 0x45, 0x00, 0x07  ; slot 6: trainer sprite=0x04
+    db 0x04, 0x1F, 0x22, 0xFF, 0xD3, 0x46, 0x00, 0x08  ; slot 7: trainer sprite=0x04
+    db 0x47, 0x18, 0x06, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x47, 0x06, 0x06, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x23, 0x27, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x47, 0x1B, 0x28, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
+    db 0x47, 0x25, 0x18, 0xFF, 0xFF, 0x8B, 0x00  ; slot 12: item sprite=0x47
+    db 0x47, 0x24, 0x09, 0xFF, 0xFF, 0x8C, 0x00  ; slot 13: item sprite=0x47
 
-OW_MAP_HDR_MT_MOON_B1F equ 0x5F9A
+OW_MAP_HDR_MT_MOON_B1F equ 0x6924
 map_header_MT_MOON_B1F:
     db 0x11       ; tileset CAVERN
     db 14, 14  ; height, width
@@ -2588,7 +2933,7 @@ map_header_MT_MOON_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5FA6 ; object_data_ptr
+    dw 0x6930 ; object_data_ptr
 map_object_MT_MOON_B1F:
     db 0x03 ; border block
     db 8 ; warp count
@@ -2603,7 +2948,7 @@ map_object_MT_MOON_B1F:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_MT_MOON_B2F equ 0x5FCA
+OW_MAP_HDR_MT_MOON_B2F equ 0x6954
 map_header_MT_MOON_B2F:
     db 0x11       ; tileset CAVERN
     db 18, 20  ; height, width
@@ -2611,7 +2956,7 @@ map_header_MT_MOON_B2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5FD6 ; object_data_ptr
+    dw 0x6960 ; object_data_ptr
 map_object_MT_MOON_B2F:
     db 0x03 ; border block
     db 4 ; warp count
@@ -2621,8 +2966,18 @@ map_object_MT_MOON_B2F:
     db 7, 5, 6, 0x3C
     db 0 ; sign count
     db 10 ; sprite count
+    db 0x0C, 0x0C, 0x10, 0xFF, 0xD3, 0x40, 0x00, 0x02  ; slot 1: trainer sprite=0x0C
+    db 0x45, 0x07, 0x0D, 0xFF, 0xD2, 0x01  ; slot 2: npc sprite=0x45 mapy=7 mapx=13
+    db 0x18, 0x1A, 0x13, 0xFF, 0xD0, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x18
+    db 0x18, 0x0F, 0x21, 0xFF, 0xD1, 0x43, 0x00, 0x03  ; slot 4: trainer sprite=0x18
+    db 0x18, 0x15, 0x21, 0xFF, 0xD2, 0x44, 0x00, 0x01  ; slot 5: trainer sprite=0x18
+    db 0x46, 0x08, 0x0D, 0xFF, 0xD2, 0x05  ; slot 6: npc sprite=0x46 mapy=8 mapx=13
+    db 0x48, 0x0A, 0x10, 0xFF, 0xFF, 0x06  ; slot 7: npc sprite=0x48 mapy=10 mapx=16
+    db 0x48, 0x0A, 0x11, 0xFF, 0xFF, 0x07  ; slot 8: npc sprite=0x48 mapy=10 mapx=17
+    db 0x47, 0x19, 0x1D, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x09, 0x21, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
 
-OW_MAP_HDR_CERULEAN_TRASHED_HOUSE equ 0x5FEA
+OW_MAP_HDR_CERULEAN_TRASHED_HOUSE equ 0x69BA
 map_header_CERULEAN_TRASHED_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2630,7 +2985,7 @@ map_header_CERULEAN_TRASHED_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x5FF6 ; object_data_ptr
+    dw 0x69C6 ; object_data_ptr
 map_object_CERULEAN_TRASHED_HOUSE:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2640,8 +2995,10 @@ map_object_CERULEAN_TRASHED_HOUSE:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x27, 0x05, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x27 mapy=5 mapx=6
+    db 0x0D, 0x0A, 0x09, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x0D mapy=10 mapx=9
 
-OW_MAP_HDR_CERULEAN_MELANIES_HOUSE equ 0x6009
+OW_MAP_HDR_CERULEAN_MELANIES_HOUSE equ 0x69E5
 map_header_CERULEAN_MELANIES_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2649,7 +3006,7 @@ map_header_CERULEAN_MELANIES_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6015 ; object_data_ptr
+    dw 0x69F1 ; object_data_ptr
 map_object_CERULEAN_MELANIES_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2657,8 +3014,12 @@ map_object_CERULEAN_MELANIES_HOUSE:
     db 7, 3, 1, 0xFF
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x0D, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x0D mapy=5 mapx=7
+    db 0x41, 0x05, 0x08, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x41 mapy=5 mapx=8
+    db 0x40, 0x08, 0x05, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x40 mapy=8 mapx=5
+    db 0x3F, 0x07, 0x09, 0xFF, 0xD2, 0x03  ; slot 4: npc sprite=0x3F mapy=7 mapx=9
 
-OW_MAP_HDR_CERULEAN_POKECENTER equ 0x6021
+OW_MAP_HDR_CERULEAN_POKECENTER equ 0x6A15
 map_header_CERULEAN_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -2666,7 +3027,7 @@ map_header_CERULEAN_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x602D ; object_data_ptr
+    dw 0x6A21 ; object_data_ptr
 map_object_CERULEAN_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2674,8 +3035,13 @@ map_object_CERULEAN_POKECENTER:
     db 7, 4, 2, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x0C, 0x09, 0x0E, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x0C mapy=9 mapx=14
+    db 0x10, 0x07, 0x08, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x10 mapy=7 mapx=8
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_CERULEAN_GYM equ 0x6039
+OW_MAP_HDR_CERULEAN_GYM equ 0x6A4B
 map_header_CERULEAN_GYM:
     db 0x07       ; tileset GYM
     db 7, 5  ; height, width
@@ -2683,7 +3049,7 @@ map_header_CERULEAN_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6045 ; object_data_ptr
+    dw 0x6A57 ; object_data_ptr
 map_object_CERULEAN_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -2691,8 +3057,12 @@ map_object_CERULEAN_GYM:
     db 13, 5, 3, 0xFF
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x1D, 0x06, 0x08, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x1D
+    db 0x06, 0x07, 0x06, 0xFF, 0xD3, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x06
+    db 0x22, 0x0B, 0x0C, 0xFF, 0xD2, 0x42, 0x00, 0x01  ; slot 3: trainer sprite=0x22
+    db 0x24, 0x0E, 0x0B, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x24 mapy=14 mapx=11
 
-OW_MAP_HDR_BIKE_SHOP equ 0x6051
+OW_MAP_HDR_BIKE_SHOP equ 0x6A81
 map_header_BIKE_SHOP:
     db 0x15       ; tileset CLUB
     db 4, 4  ; height, width
@@ -2700,7 +3070,7 @@ map_header_BIKE_SHOP:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x605D ; object_data_ptr
+    dw 0x6A8D ; object_data_ptr
 map_object_BIKE_SHOP:
     db 0x0E ; border block
     db 2 ; warp count
@@ -2708,8 +3078,11 @@ map_object_BIKE_SHOP:
     db 7, 3, 4, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x15, 0x06, 0x0A, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x15 mapy=6 mapx=10
+    db 0x1C, 0x0A, 0x09, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x1C mapy=10 mapx=9
+    db 0x04, 0x07, 0x05, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x04 mapy=7 mapx=5
 
-OW_MAP_HDR_CERULEAN_MART equ 0x6069
+OW_MAP_HDR_CERULEAN_MART equ 0x6AAB
 map_header_CERULEAN_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -2717,7 +3090,7 @@ map_header_CERULEAN_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6075 ; object_data_ptr
+    dw 0x6AB7 ; object_data_ptr
 map_object_CERULEAN_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2725,8 +3098,11 @@ map_object_CERULEAN_MART:
     db 7, 4, 5, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x07, 0x08, 0x07, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x07 mapy=8 mapx=7
+    db 0x06, 0x06, 0x0A, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x06 mapy=6 mapx=10
 
-OW_MAP_HDR_MT_MOON_POKECENTER equ 0x6081
+OW_MAP_HDR_MT_MOON_POKECENTER equ 0x6AD5
 map_header_MT_MOON_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -2734,7 +3110,7 @@ map_header_MT_MOON_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x608D ; object_data_ptr
+    dw 0x6AE1 ; object_data_ptr
 map_object_MT_MOON_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2742,8 +3118,15 @@ map_object_MT_MOON_POKECENTER:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x04, 0x07, 0x08, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x04 mapy=7 mapx=8
+    db 0x10, 0x07, 0x0B, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x10 mapy=7 mapx=11
+    db 0x0A, 0x0A, 0x0E, 0xFE, 0x02, 0x03  ; slot 4: npc sprite=0x0A mapy=10 mapx=14
+    db 0x4C, 0x06, 0x0B, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x4C mapy=6 mapx=11
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x06  ; slot 7: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_ROUTE_5_GATE equ 0x6099
+OW_MAP_HDR_ROUTE_5_GATE equ 0x6B17
 map_header_ROUTE_5_GATE:
     db 0x0C       ; tileset GATE
     db 3, 4  ; height, width
@@ -2751,7 +3134,7 @@ map_header_ROUTE_5_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x60A5 ; object_data_ptr
+    dw 0x6B23 ; object_data_ptr
 map_object_ROUTE_5_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2761,8 +3144,9 @@ map_object_ROUTE_5_GATE:
     db 0, 4, 0, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x07, 0x05, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x31 mapy=7 mapx=5
 
-OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_5 equ 0x60B9
+OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_5 equ 0x6B3D
 map_header_UNDERGROUND_PATH_ROUTE_5:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -2770,7 +3154,7 @@ map_header_UNDERGROUND_PATH_ROUTE_5:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x60C5 ; object_data_ptr
+    dw 0x6B49 ; object_data_ptr
 map_object_UNDERGROUND_PATH_ROUTE_5:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2779,8 +3163,9 @@ map_object_UNDERGROUND_PATH_ROUTE_5:
     db 4, 4, 0, 0x77
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x08, 0x07, 0x06, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x08 mapy=7 mapx=6
 
-OW_MAP_HDR_DAYCARE equ 0x60D5
+OW_MAP_HDR_DAYCARE equ 0x6B5F
 map_header_DAYCARE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -2788,7 +3173,7 @@ map_header_DAYCARE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x60E1 ; object_data_ptr
+    dw 0x6B6B ; object_data_ptr
 map_object_DAYCARE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -2796,8 +3181,9 @@ map_object_DAYCARE:
     db 7, 3, 4, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x10, 0x07, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x10 mapy=7 mapx=6
 
-OW_MAP_HDR_ROUTE_6_GATE equ 0x60ED
+OW_MAP_HDR_ROUTE_6_GATE equ 0x6B7D
 map_header_ROUTE_6_GATE:
     db 0x0C       ; tileset GATE
     db 3, 4  ; height, width
@@ -2805,7 +3191,7 @@ map_header_ROUTE_6_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x60F9 ; object_data_ptr
+    dw 0x6B89 ; object_data_ptr
 map_object_ROUTE_6_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2815,8 +3201,9 @@ map_object_ROUTE_6_GATE:
     db 0, 4, 1, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x06, 0x0A, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x31 mapy=6 mapx=10
 
-OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_6 equ 0x610D
+OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_6 equ 0x6BA3
 map_header_UNDERGROUND_PATH_ROUTE_6:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -2824,7 +3211,7 @@ map_header_UNDERGROUND_PATH_ROUTE_6:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6119 ; object_data_ptr
+    dw 0x6BAF ; object_data_ptr
 map_object_UNDERGROUND_PATH_ROUTE_6:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2833,8 +3220,9 @@ map_object_UNDERGROUND_PATH_ROUTE_6:
     db 4, 4, 1, 0x77
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x0D, 0x07, 0x06, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0D mapy=7 mapx=6
 
-OW_MAP_HDR_ROUTE_7_GATE equ 0x6129
+OW_MAP_HDR_ROUTE_7_GATE equ 0x6BC5
 map_header_ROUTE_7_GATE:
     db 0x0C       ; tileset GATE
     db 4, 3  ; height, width
@@ -2842,7 +3230,7 @@ map_header_ROUTE_7_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6135 ; object_data_ptr
+    dw 0x6BD1 ; object_data_ptr
 map_object_ROUTE_7_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2852,8 +3240,9 @@ map_object_ROUTE_7_GATE:
     db 4, 5, 1, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x31 mapy=5 mapx=7
 
-OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_7 equ 0x6149
+OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_7 equ 0x6BEB
 map_header_UNDERGROUND_PATH_ROUTE_7:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -2861,7 +3250,7 @@ map_header_UNDERGROUND_PATH_ROUTE_7:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6155 ; object_data_ptr
+    dw 0x6BF7 ; object_data_ptr
 map_object_UNDERGROUND_PATH_ROUTE_7:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2870,8 +3259,9 @@ map_object_UNDERGROUND_PATH_ROUTE_7:
     db 4, 4, 0, 0x79
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x0A, 0x08, 0x06, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0A mapy=8 mapx=6
 
-OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_7_COPY equ 0x6165
+OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_7_COPY equ 0x6C0D
 map_header_UNDERGROUND_PATH_ROUTE_7_COPY:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -2879,7 +3269,7 @@ map_header_UNDERGROUND_PATH_ROUTE_7_COPY:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6171 ; object_data_ptr
+    dw 0x6C19 ; object_data_ptr
 map_object_UNDERGROUND_PATH_ROUTE_7_COPY:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2888,8 +3278,10 @@ map_object_UNDERGROUND_PATH_ROUTE_7_COPY:
     db 4, 4, 0, 0x79
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0D, 0x06, 0x07, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0D mapy=6 mapx=7
+    db 0x0A, 0x08, 0x06, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0A mapy=8 mapx=6
 
-OW_MAP_HDR_ROUTE_8_GATE equ 0x6181
+OW_MAP_HDR_ROUTE_8_GATE equ 0x6C35
 map_header_ROUTE_8_GATE:
     db 0x0C       ; tileset GATE
     db 4, 3  ; height, width
@@ -2897,7 +3289,7 @@ map_header_ROUTE_8_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x618D ; object_data_ptr
+    dw 0x6C41 ; object_data_ptr
 map_object_ROUTE_8_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -2907,8 +3299,9 @@ map_object_ROUTE_8_GATE:
     db 4, 5, 3, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x05, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x31 mapy=5 mapx=6
 
-OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_8 equ 0x61A1
+OW_MAP_HDR_UNDERGROUND_PATH_ROUTE_8 equ 0x6C5B
 map_header_UNDERGROUND_PATH_ROUTE_8:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -2916,7 +3309,7 @@ map_header_UNDERGROUND_PATH_ROUTE_8:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x61AD ; object_data_ptr
+    dw 0x6C67 ; object_data_ptr
 map_object_UNDERGROUND_PATH_ROUTE_8:
     db 0x0A ; border block
     db 3 ; warp count
@@ -2925,8 +3318,9 @@ map_object_UNDERGROUND_PATH_ROUTE_8:
     db 4, 4, 1, 0x79
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x0D, 0x08, 0x07, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0D mapy=8 mapx=7
 
-OW_MAP_HDR_ROCK_TUNNEL_POKECENTER equ 0x61BD
+OW_MAP_HDR_ROCK_TUNNEL_POKECENTER equ 0x6C7D
 map_header_ROCK_TUNNEL_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -2934,7 +3328,7 @@ map_header_ROCK_TUNNEL_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x61C9 ; object_data_ptr
+    dw 0x6C89 ; object_data_ptr
 map_object_ROCK_TUNNEL_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -2942,8 +3336,13 @@ map_object_ROCK_TUNNEL_POKECENTER:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x10, 0x07, 0x0B, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x10 mapy=7 mapx=11
+    db 0x2F, 0x09, 0x06, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x2F mapy=9 mapx=6
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_ROCK_TUNNEL_1F equ 0x61D5
+OW_MAP_HDR_ROCK_TUNNEL_1F equ 0x6CB3
 map_header_ROCK_TUNNEL_1F:
     db 0x11       ; tileset CAVERN
     db 18, 20  ; height, width
@@ -2951,7 +3350,7 @@ map_header_ROCK_TUNNEL_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x61E1 ; object_data_ptr
+    dw 0x6CBF ; object_data_ptr
 map_object_ROCK_TUNNEL_1F:
     db 0x03 ; border block
     db 8 ; warp count
@@ -2966,8 +3365,15 @@ map_object_ROCK_TUNNEL_1F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 7 ; sprite count
+    db 0x0E, 0x09, 0x0B, 0xFF, 0xD0, 0x40, 0x00, 0x0C  ; slot 1: trainer sprite=0x0E
+    db 0x0E, 0x14, 0x09, 0xFF, 0xD0, 0x41, 0x00, 0x0D  ; slot 2: trainer sprite=0x0E
+    db 0x0E, 0x13, 0x15, 0xFF, 0xD2, 0x42, 0x00, 0x0E  ; slot 3: trainer sprite=0x0E
+    db 0x0C, 0x0C, 0x1B, 0xFF, 0xD2, 0x43, 0x00, 0x07  ; slot 4: trainer sprite=0x0C
+    db 0x06, 0x19, 0x29, 0xFF, 0xD2, 0x44, 0x00, 0x11  ; slot 5: trainer sprite=0x06
+    db 0x06, 0x1C, 0x1A, 0xFF, 0xD0, 0x45, 0x00, 0x12  ; slot 6: trainer sprite=0x06
+    db 0x06, 0x1C, 0x24, 0xFF, 0xD3, 0x46, 0x00, 0x13  ; slot 7: trainer sprite=0x06
 
-OW_MAP_HDR_POWER_PLANT equ 0x6208
+OW_MAP_HDR_POWER_PLANT equ 0x6D1E
 map_header_POWER_PLANT:
     db 0x16       ; tileset FACILITY
     db 18, 20  ; height, width
@@ -2975,7 +3381,7 @@ map_header_POWER_PLANT:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6214 ; object_data_ptr
+    dw 0x6D2A ; object_data_ptr
 map_object_POWER_PLANT:
     db 0x2E ; border block
     db 3 ; warp count
@@ -2984,8 +3390,22 @@ map_object_POWER_PLANT:
     db 11, 0, 3, 0xFF
     db 0 ; sign count
     db 14 ; sprite count
+    db 0x47, 0x18, 0x0D, 0xFF, 0xFF, 0x40, 0x00, 0x28  ; slot 1: trainer sprite=0x47
+    db 0x47, 0x16, 0x24, 0xFF, 0xFF, 0x41, 0x00, 0x28  ; slot 2: trainer sprite=0x47
+    db 0x47, 0x1D, 0x19, 0xFF, 0xFF, 0x42, 0x00, 0x28  ; slot 3: trainer sprite=0x47
+    db 0x47, 0x16, 0x1D, 0xFF, 0xFF, 0x43, 0x00, 0x2B  ; slot 4: trainer sprite=0x47
+    db 0x47, 0x26, 0x1B, 0xFF, 0xFF, 0x44, 0x00, 0x28  ; slot 5: trainer sprite=0x47
+    db 0x47, 0x20, 0x1E, 0xFF, 0xFF, 0x45, 0x00, 0x28  ; slot 6: trainer sprite=0x47
+    db 0x47, 0x12, 0x19, 0xFF, 0xFF, 0x46, 0x00, 0x2B  ; slot 7: trainer sprite=0x47
+    db 0x47, 0x24, 0x29, 0xFF, 0xFF, 0x47, 0x00, 0x28  ; slot 8: trainer sprite=0x47
+    db 0x09, 0x0D, 0x08, 0xFF, 0xD1, 0x48, 0x00, 0x32  ; slot 9: trainer sprite=0x09
+    db 0x47, 0x1D, 0x0B, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x47, 0x07, 0x20, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
+    db 0x47, 0x07, 0x26, 0xFF, 0xFF, 0x8B, 0x00  ; slot 12: item sprite=0x47
+    db 0x47, 0x24, 0x1E, 0xFF, 0xFF, 0x8C, 0x00  ; slot 13: item sprite=0x47
+    db 0x47, 0x24, 0x18, 0xFF, 0xFF, 0x8D, 0x00  ; slot 14: item sprite=0x47
 
-OW_MAP_HDR_ROUTE_11_GATE_1F equ 0x6224
+OW_MAP_HDR_ROUTE_11_GATE_1F equ 0x6DA5
 map_header_ROUTE_11_GATE_1F:
     db 0x0C       ; tileset GATE
     db 5, 4  ; height, width
@@ -2993,7 +3413,7 @@ map_header_ROUTE_11_GATE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6230 ; object_data_ptr
+    dw 0x6DB1 ; object_data_ptr
 map_object_ROUTE_11_GATE_1F:
     db 0x0A ; border block
     db 5 ; warp count
@@ -3004,8 +3424,9 @@ map_object_ROUTE_11_GATE_1F:
     db 8, 6, 0, 0x56
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x05, 0x08, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x31 mapy=5 mapx=8
 
-OW_MAP_HDR_DIGLETTS_CAVE_ROUTE_11 equ 0x6248
+OW_MAP_HDR_DIGLETTS_CAVE_ROUTE_11 equ 0x6DCF
 map_header_DIGLETTS_CAVE_ROUTE_11:
     db 0x11       ; tileset CAVERN
     db 4, 4  ; height, width
@@ -3013,7 +3434,7 @@ map_header_DIGLETTS_CAVE_ROUTE_11:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6254 ; object_data_ptr
+    dw 0x6DDB ; object_data_ptr
 map_object_DIGLETTS_CAVE_ROUTE_11:
     db 0x7D ; border block
     db 3 ; warp count
@@ -3022,8 +3443,9 @@ map_object_DIGLETTS_CAVE_ROUTE_11:
     db 4, 4, 1, 0xC5
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x0B, 0x07, 0x06, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0B mapy=7 mapx=6
 
-OW_MAP_HDR_ROUTE_11_GATE_2F equ 0x6264
+OW_MAP_HDR_ROUTE_11_GATE_2F equ 0x6DF1
 map_header_ROUTE_11_GATE_2F:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -3031,7 +3453,7 @@ map_header_ROUTE_11_GATE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6270 ; object_data_ptr
+    dw 0x6DFD ; object_data_ptr
 map_object_ROUTE_11_GATE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -3039,8 +3461,10 @@ map_object_ROUTE_11_GATE_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x04, 0x06, 0x08, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x04 mapy=6 mapx=8
+    db 0x20, 0x0A, 0x06, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x20 mapy=10 mapx=6
 
-OW_MAP_HDR_ROUTE_12_GATE_1F equ 0x627E
+OW_MAP_HDR_ROUTE_12_GATE_1F equ 0x6E17
 map_header_ROUTE_12_GATE_1F:
     db 0x0C       ; tileset GATE
     db 4, 5  ; height, width
@@ -3048,7 +3472,7 @@ map_header_ROUTE_12_GATE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x628A ; object_data_ptr
+    dw 0x6E23 ; object_data_ptr
 map_object_ROUTE_12_GATE_1F:
     db 0x0A ; border block
     db 5 ; warp count
@@ -3059,8 +3483,9 @@ map_object_ROUTE_12_GATE_1F:
     db 6, 8, 0, 0xC3
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x07, 0x05, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x31 mapy=7 mapx=5
 
-OW_MAP_HDR_BILLS_HOUSE equ 0x62A2
+OW_MAP_HDR_BILLS_HOUSE equ 0x6E41
 map_header_BILLS_HOUSE:
     db 0x10       ; tileset INTERIOR
     db 4, 4  ; height, width
@@ -3068,7 +3493,7 @@ map_header_BILLS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x62AE ; object_data_ptr
+    dw 0x6E4D ; object_data_ptr
 map_object_BILLS_HOUSE:
     db 0x0D ; border block
     db 2 ; warp count
@@ -3076,8 +3501,11 @@ map_object_BILLS_HOUSE:
     db 7, 3, 0, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x05, 0x09, 0x0A, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x05 mapy=9 mapx=10
+    db 0x0C, 0x08, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0C mapy=8 mapx=8
+    db 0x0C, 0x09, 0x0A, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x0C mapy=9 mapx=10
 
-OW_MAP_HDR_VERMILION_POKECENTER equ 0x62BA
+OW_MAP_HDR_VERMILION_POKECENTER equ 0x6E6B
 map_header_VERMILION_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -3085,7 +3513,7 @@ map_header_VERMILION_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x62C6 ; object_data_ptr
+    dw 0x6E77 ; object_data_ptr
 map_object_VERMILION_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -3093,8 +3521,13 @@ map_object_VERMILION_POKECENTER:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x27, 0x09, 0x0E, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x27 mapy=9 mapx=14
+    db 0x13, 0x08, 0x09, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x13 mapy=8 mapx=9
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_POKEMON_FAN_CLUB equ 0x62D2
+OW_MAP_HDR_POKEMON_FAN_CLUB equ 0x6EA1
 map_header_POKEMON_FAN_CLUB:
     db 0x10       ; tileset INTERIOR
     db 4, 4  ; height, width
@@ -3102,7 +3535,7 @@ map_header_POKEMON_FAN_CLUB:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x62DE ; object_data_ptr
+    dw 0x6EAD ; object_data_ptr
 map_object_POKEMON_FAN_CLUB:
     db 0x0D ; border block
     db 2 ; warp count
@@ -3110,8 +3543,14 @@ map_object_POKEMON_FAN_CLUB:
     db 7, 3, 1, 0xFF
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x2F, 0x07, 0x0A, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x2F mapy=7 mapx=10
+    db 0x0D, 0x07, 0x05, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x0D mapy=7 mapx=5
+    db 0x43, 0x08, 0x0A, 0xFF, 0xD2, 0x02  ; slot 3: npc sprite=0x43 mapy=8 mapx=10
+    db 0x3C, 0x08, 0x05, 0xFF, 0xD3, 0x03  ; slot 4: npc sprite=0x3C mapy=8 mapx=5
+    db 0x10, 0x05, 0x07, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x10 mapy=5 mapx=7
+    db 0x2A, 0x05, 0x09, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x2A mapy=5 mapx=9
 
-OW_MAP_HDR_VERMILION_MART equ 0x62EA
+OW_MAP_HDR_VERMILION_MART equ 0x6EDD
 map_header_VERMILION_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -3119,7 +3558,7 @@ map_header_VERMILION_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x62F6 ; object_data_ptr
+    dw 0x6EE9 ; object_data_ptr
 map_object_VERMILION_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -3127,8 +3566,11 @@ map_object_VERMILION_MART:
     db 7, 4, 2, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x07, 0x0A, 0x09, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x07 mapy=10 mapx=9
+    db 0x06, 0x07, 0x07, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x06 mapy=7 mapx=7
 
-OW_MAP_HDR_VERMILION_GYM equ 0x6302
+OW_MAP_HDR_VERMILION_GYM equ 0x6F07
 map_header_VERMILION_GYM:
     db 0x07       ; tileset GYM
     db 9, 5  ; height, width
@@ -3136,7 +3578,7 @@ map_header_VERMILION_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x630E ; object_data_ptr
+    dw 0x6F13 ; object_data_ptr
 map_object_VERMILION_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -3144,8 +3586,13 @@ map_object_VERMILION_GYM:
     db 17, 5, 3, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x21, 0x05, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x21
+    db 0x10, 0x0A, 0x0D, 0xFF, 0xD2, 0x41, 0x00, 0x03  ; slot 2: trainer sprite=0x10
+    db 0x0C, 0x0C, 0x07, 0xFF, 0xD2, 0x42, 0x00, 0x01  ; slot 3: trainer sprite=0x0C
+    db 0x13, 0x0E, 0x04, 0xFF, 0xD3, 0x43, 0x00, 0x08  ; slot 4: trainer sprite=0x13
+    db 0x24, 0x12, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x24 mapy=18 mapx=8
 
-OW_MAP_HDR_VERMILION_PIDGEY_HOUSE equ 0x631A
+OW_MAP_HDR_VERMILION_PIDGEY_HOUSE equ 0x6F45
 map_header_VERMILION_PIDGEY_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -3153,7 +3600,7 @@ map_header_VERMILION_PIDGEY_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6326 ; object_data_ptr
+    dw 0x6F51 ; object_data_ptr
 map_object_VERMILION_PIDGEY_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -3161,8 +3608,11 @@ map_object_VERMILION_PIDGEY_HOUSE:
     db 7, 3, 4, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x04, 0x07, 0x09, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x04 mapy=7 mapx=9
+    db 0x09, 0x09, 0x07, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x09 mapy=9 mapx=7
+    db 0x4A, 0x07, 0x08, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x4A mapy=7 mapx=8
 
-OW_MAP_HDR_VERMILION_DOCK equ 0x6332
+OW_MAP_HDR_VERMILION_DOCK equ 0x6F6F
 map_header_VERMILION_DOCK:
     db 0x0E       ; tileset SHIP_PORT
     db 6, 14  ; height, width
@@ -3170,7 +3620,7 @@ map_header_VERMILION_DOCK:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x633E ; object_data_ptr
+    dw 0x6F7B ; object_data_ptr
 map_object_VERMILION_DOCK:
     db 0x0F ; border block
     db 2 ; warp count
@@ -3179,7 +3629,7 @@ map_object_VERMILION_DOCK:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_SS_ANNE_1F equ 0x634A
+OW_MAP_HDR_SS_ANNE_1F equ 0x6F87
 map_header_SS_ANNE_1F:
     db 0x0D       ; tileset SHIP
     db 9, 20  ; height, width
@@ -3187,7 +3637,7 @@ map_header_SS_ANNE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6356 ; object_data_ptr
+    dw 0x6F93 ; object_data_ptr
 map_object_SS_ANNE_1F:
     db 0x0C ; border block
     db 11 ; warp count
@@ -3204,8 +3654,10 @@ map_object_SS_ANNE_1F:
     db 16, 3, 0, 0x64
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x1A, 0x0A, 0x10, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x1A mapy=10 mapx=16
+    db 0x13, 0x09, 0x1F, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x13 mapy=9 mapx=31
 
-OW_MAP_HDR_SS_ANNE_2F equ 0x6386
+OW_MAP_HDR_SS_ANNE_2F equ 0x6FCF
 map_header_SS_ANNE_2F:
     db 0x0D       ; tileset SHIP
     db 9, 20  ; height, width
@@ -3213,7 +3665,7 @@ map_header_SS_ANNE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6392 ; object_data_ptr
+    dw 0x6FDB ; object_data_ptr
 map_object_SS_ANNE_2F:
     db 0x0C ; border block
     db 9 ; warp count
@@ -3228,8 +3680,10 @@ map_object_SS_ANNE_2F:
     db 4, 36, 0, 0x65
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x1A, 0x0B, 0x07, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x1A mapy=11 mapx=7
+    db 0x02, 0x08, 0x28, 0xFF, 0xD0, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x02
 
-OW_MAP_HDR_SS_ANNE_3F equ 0x63BA
+OW_MAP_HDR_SS_ANNE_3F equ 0x7011
 map_header_SS_ANNE_3F:
     db 0x0D       ; tileset SHIP
     db 3, 10  ; height, width
@@ -3237,7 +3691,7 @@ map_header_SS_ANNE_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x63C6 ; object_data_ptr
+    dw 0x701D ; object_data_ptr
 map_object_SS_ANNE_3F:
     db 0x0C ; border block
     db 2 ; warp count
@@ -3245,8 +3699,9 @@ map_object_SS_ANNE_3F:
     db 3, 19, 7, 0x60
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x13, 0x07, 0x0D, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x13 mapy=7 mapx=13
 
-OW_MAP_HDR_SS_ANNE_B1F equ 0x63D2
+OW_MAP_HDR_SS_ANNE_B1F equ 0x702F
 map_header_SS_ANNE_B1F:
     db 0x0D       ; tileset SHIP
     db 4, 15  ; height, width
@@ -3254,7 +3709,7 @@ map_header_SS_ANNE_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x63DE ; object_data_ptr
+    dw 0x703B ; object_data_ptr
 map_object_SS_ANNE_B1F:
     db 0x0C ; border block
     db 6 ; warp count
@@ -3267,7 +3722,7 @@ map_object_SS_ANNE_B1F:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_SS_ANNE_BOW equ 0x63FA
+OW_MAP_HDR_SS_ANNE_BOW equ 0x7057
 map_header_SS_ANNE_BOW:
     db 0x0D       ; tileset SHIP
     db 7, 10  ; height, width
@@ -3275,7 +3730,7 @@ map_header_SS_ANNE_BOW:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6406 ; object_data_ptr
+    dw 0x7063 ; object_data_ptr
 map_object_SS_ANNE_BOW:
     db 0x23 ; border block
     db 2 ; warp count
@@ -3283,8 +3738,13 @@ map_object_SS_ANNE_BOW:
     db 7, 13, 0, 0x61
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x0C, 0x06, 0x09, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x0C mapy=6 mapx=9
+    db 0x13, 0x0D, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x13 mapy=13 mapx=8
+    db 0x07, 0x0F, 0x0B, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x07 mapy=15 mapx=11
+    db 0x13, 0x08, 0x08, 0xFF, 0xD0, 0x43, 0x00, 0x01  ; slot 4: trainer sprite=0x13
+    db 0x13, 0x0C, 0x0E, 0xFF, 0xD1, 0x44, 0x00, 0x02  ; slot 5: trainer sprite=0x13
 
-OW_MAP_HDR_SS_ANNE_KITCHEN equ 0x6412
+OW_MAP_HDR_SS_ANNE_KITCHEN equ 0x7091
 map_header_SS_ANNE_KITCHEN:
     db 0x0D       ; tileset SHIP
     db 8, 7  ; height, width
@@ -3292,15 +3752,22 @@ map_header_SS_ANNE_KITCHEN:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x641E ; object_data_ptr
+    dw 0x709D ; object_data_ptr
 map_object_SS_ANNE_KITCHEN:
     db 0x0C ; border block
     db 1 ; warp count
     db 0, 6, 10, 0x5F
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x14, 0x0C, 0x05, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x14 mapy=12 mapx=5
+    db 0x14, 0x0C, 0x09, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x14 mapy=12 mapx=9
+    db 0x14, 0x0B, 0x0D, 0xFE, 0x01, 0x02  ; slot 3: npc sprite=0x14 mapy=11 mapx=13
+    db 0x14, 0x0A, 0x11, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x14 mapy=10 mapx=17
+    db 0x14, 0x0C, 0x11, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x14 mapy=12 mapx=17
+    db 0x14, 0x0E, 0x11, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x14 mapy=14 mapx=17
+    db 0x14, 0x11, 0x0F, 0xFF, 0xD1, 0x06  ; slot 7: npc sprite=0x14 mapy=17 mapx=15
 
-OW_MAP_HDR_SS_ANNE_CAPTAINS_ROOM equ 0x6426
+OW_MAP_HDR_SS_ANNE_CAPTAINS_ROOM equ 0x70CF
 map_header_SS_ANNE_CAPTAINS_ROOM:
     db 0x0D       ; tileset SHIP
     db 4, 3  ; height, width
@@ -3308,7 +3775,7 @@ map_header_SS_ANNE_CAPTAINS_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6432 ; object_data_ptr
+    dw 0x70DB ; object_data_ptr
 map_object_SS_ANNE_CAPTAINS_ROOM:
     db 0x0C ; border block
     db 1 ; warp count
@@ -3316,8 +3783,9 @@ map_object_SS_ANNE_CAPTAINS_ROOM:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x2E, 0x06, 0x08, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x2E mapy=6 mapx=8
 
-OW_MAP_HDR_SS_ANNE_1F_ROOMS equ 0x6440
+OW_MAP_HDR_SS_ANNE_1F_ROOMS equ 0x70EF
 map_header_SS_ANNE_1F_ROOMS:
     db 0x0D       ; tileset SHIP
     db 8, 12  ; height, width
@@ -3325,7 +3793,7 @@ map_header_SS_ANNE_1F_ROOMS:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x644C ; object_data_ptr
+    dw 0x70FB ; object_data_ptr
 map_object_SS_ANNE_1F_ROOMS:
     db 0x0C ; border block
     db 6 ; warp count
@@ -3337,8 +3805,19 @@ map_object_SS_ANNE_1F_ROOMS:
     db 10, 20, 7, 0x5F
     db 0 ; sign count
     db 11 ; sprite count
+    db 0x10, 0x07, 0x06, 0xFF, 0xD2, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x10
+    db 0x10, 0x08, 0x0F, 0xFF, 0xD1, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x10
+    db 0x04, 0x12, 0x0F, 0xFF, 0xD1, 0x42, 0x00, 0x08  ; slot 3: trainer sprite=0x04
+    db 0x06, 0x0F, 0x11, 0xFF, 0xD2, 0x43, 0x00, 0x0B  ; slot 4: trainer sprite=0x06
+    db 0x0D, 0x07, 0x1A, 0xFE, 0x01, 0x04  ; slot 5: npc sprite=0x0D mapy=7 mapx=26
+    db 0x0A, 0x12, 0x04, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x0A mapy=18 mapx=4
+    db 0x08, 0x0F, 0x06, 0xFF, 0xD0, 0x06  ; slot 7: npc sprite=0x08 mapy=15 mapx=6
+    db 0x42, 0x0F, 0x07, 0xFF, 0xD0, 0x07  ; slot 8: npc sprite=0x42 mapy=15 mapx=7
+    db 0x0D, 0x11, 0x0E, 0xFF, 0xD3, 0x08  ; slot 9: npc sprite=0x0D mapy=17 mapx=14
+    db 0x47, 0x13, 0x10, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x10, 0x11, 0x19, 0xFE, 0x02, 0x0A  ; slot 11: npc sprite=0x10 mapy=17 mapx=25
 
-OW_MAP_HDR_SS_ANNE_2F_ROOMS equ 0x6468
+OW_MAP_HDR_SS_ANNE_2F_ROOMS equ 0x7162
 map_header_SS_ANNE_2F_ROOMS:
     db 0x0D       ; tileset SHIP
     db 8, 12  ; height, width
@@ -3346,7 +3825,7 @@ map_header_SS_ANNE_2F_ROOMS:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6474 ; object_data_ptr
+    dw 0x716E ; object_data_ptr
 map_object_SS_ANNE_2F_ROOMS:
     db 0x0C ; border block
     db 12 ; warp count
@@ -3364,8 +3843,21 @@ map_object_SS_ANNE_2F_ROOMS:
     db 15, 23, 5, 0x60
     db 0 ; sign count
     db 13 ; sprite count
+    db 0x10, 0x06, 0x0E, 0xFF, 0xD3, 0x40, 0x00, 0x03  ; slot 1: trainer sprite=0x10
+    db 0x2F, 0x08, 0x11, 0xFF, 0xD2, 0x41, 0x00, 0x01  ; slot 2: trainer sprite=0x2F
+    db 0x10, 0x12, 0x04, 0xFF, 0xD3, 0x42, 0x00, 0x05  ; slot 3: trainer sprite=0x10
+    db 0x06, 0x0F, 0x06, 0xFF, 0xD0, 0x43, 0x00, 0x0C  ; slot 4: trainer sprite=0x06
+    db 0x10, 0x06, 0x05, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x10 mapy=6 mapx=5
+    db 0x47, 0x05, 0x10, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x10, 0x06, 0x19, 0xFF, 0xD0, 0x06  ; slot 7: npc sprite=0x10 mapy=6 mapx=25
+    db 0x25, 0x05, 0x1A, 0xFF, 0xD0, 0x07  ; slot 8: npc sprite=0x25 mapy=5 mapx=26
+    db 0x47, 0x10, 0x04, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x10, 0x10, 0x10, 0xFF, 0xD0, 0x09  ; slot 10: npc sprite=0x10 mapy=16 mapx=16
+    db 0x35, 0x12, 0x0F, 0xFF, 0xFF, 0x0A  ; slot 11: npc sprite=0x35 mapy=18 mapx=15
+    db 0x1D, 0x10, 0x1A, 0xFF, 0xD2, 0x0B  ; slot 12: npc sprite=0x1D mapy=16 mapx=26
+    db 0x0F, 0x10, 0x18, 0xFF, 0xD3, 0x0C  ; slot 13: npc sprite=0x0F mapy=16 mapx=24
 
-OW_MAP_HDR_SS_ANNE_B1F_ROOMS equ 0x64A8
+OW_MAP_HDR_SS_ANNE_B1F_ROOMS equ 0x71FA
 map_header_SS_ANNE_B1F_ROOMS:
     db 0x0D       ; tileset SHIP
     db 8, 12  ; height, width
@@ -3373,7 +3865,7 @@ map_header_SS_ANNE_B1F_ROOMS:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x64B4 ; object_data_ptr
+    dw 0x7206 ; object_data_ptr
 map_object_SS_ANNE_B1F_ROOMS:
     db 0x0C ; border block
     db 10 ; warp count
@@ -3389,8 +3881,19 @@ map_object_SS_ANNE_B1F_ROOMS:
     db 15, 13, 0, 0x62
     db 0 ; sign count
     db 11 ; sprite count
+    db 0x13, 0x11, 0x04, 0xFF, 0xD0, 0x40, 0x00, 0x03  ; slot 1: trainer sprite=0x13
+    db 0x13, 0x0F, 0x06, 0xFF, 0xD0, 0x41, 0x00, 0x04  ; slot 2: trainer sprite=0x13
+    db 0x13, 0x07, 0x10, 0xFF, 0xD2, 0x42, 0x00, 0x05  ; slot 3: trainer sprite=0x13
+    db 0x13, 0x06, 0x1A, 0xFF, 0xD0, 0x43, 0x00, 0x06  ; slot 4: trainer sprite=0x13
+    db 0x13, 0x06, 0x04, 0xFF, 0xD3, 0x44, 0x00, 0x07  ; slot 5: trainer sprite=0x13
+    db 0x2F, 0x08, 0x04, 0xFF, 0xD3, 0x45, 0x00, 0x02  ; slot 6: trainer sprite=0x2F
+    db 0x0C, 0x11, 0x0E, 0xFF, 0xD3, 0x06  ; slot 7: npc sprite=0x0C mapy=17 mapx=14
+    db 0x05, 0x10, 0x0F, 0xFF, 0xFF, 0x07  ; slot 8: npc sprite=0x05 mapy=16 mapx=15
+    db 0x47, 0x06, 0x18, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x06, 0x0E, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x47, 0x0F, 0x10, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
 
-OW_MAP_HDR_VICTORY_ROAD_1F equ 0x64E0
+OW_MAP_HDR_VICTORY_ROAD_1F equ 0x7283
 map_header_VICTORY_ROAD_1F:
     db 0x11       ; tileset CAVERN
     db 9, 10  ; height, width
@@ -3398,7 +3901,7 @@ map_header_VICTORY_ROAD_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x64EC ; object_data_ptr
+    dw 0x728F ; object_data_ptr
 map_object_VICTORY_ROAD_1F:
     db 0x7D ; border block
     db 3 ; warp count
@@ -3407,8 +3910,15 @@ map_object_VICTORY_ROAD_1F:
     db 1, 1, 0, 0xC2
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x06, 0x09, 0x0B, 0xFF, 0xD3, 0x40, 0x00, 0x05  ; slot 1: trainer sprite=0x06
+    db 0x07, 0x06, 0x07, 0xFF, 0xD0, 0x41, 0x00, 0x05  ; slot 2: trainer sprite=0x07
+    db 0x47, 0x04, 0x0F, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x06, 0x0D, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x49, 0x13, 0x09, 0xFF, 0x00, 0x04  ; slot 5: npc sprite=0x49 mapy=19 mapx=9
+    db 0x49, 0x06, 0x12, 0xFF, 0x00, 0x05  ; slot 6: npc sprite=0x49 mapy=6 mapx=18
+    db 0x49, 0x0E, 0x06, 0xFF, 0x00, 0x06  ; slot 7: npc sprite=0x49 mapy=14 mapx=6
 
-OW_MAP_HDR_LANCES_ROOM equ 0x64FC
+OW_MAP_HDR_LANCES_ROOM equ 0x72CF
 map_header_LANCES_ROOM:
     db 0x05       ; tileset DOJO
     db 13, 13  ; height, width
@@ -3416,7 +3926,7 @@ map_header_LANCES_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6508 ; object_data_ptr
+    dw 0x72DB ; object_data_ptr
 map_object_LANCES_ROOM:
     db 0x03 ; border block
     db 3 ; warp count
@@ -3425,8 +3935,9 @@ map_object_LANCES_ROOM:
     db 0, 6, 0, 0x78
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x1E, 0x05, 0x0A, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x1E
 
-OW_MAP_HDR_HALL_OF_FAME equ 0x6518
+OW_MAP_HDR_HALL_OF_FAME equ 0x72F3
 map_header_HALL_OF_FAME:
     db 0x07       ; tileset GYM
     db 4, 5  ; height, width
@@ -3434,7 +3945,7 @@ map_header_HALL_OF_FAME:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6524 ; object_data_ptr
+    dw 0x72FF ; object_data_ptr
 map_object_HALL_OF_FAME:
     db 0x03 ; border block
     db 2 ; warp count
@@ -3442,8 +3953,9 @@ map_object_HALL_OF_FAME:
     db 7, 5, 3, 0x78
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x03, 0x06, 0x09, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x03 mapy=6 mapx=9
 
-OW_MAP_HDR_UNDERGROUND_PATH_NORTH_SOUTH equ 0x6530
+OW_MAP_HDR_UNDERGROUND_PATH_NORTH_SOUTH equ 0x7311
 map_header_UNDERGROUND_PATH_NORTH_SOUTH:
     db 0x0B       ; tileset UNDERGROUND
     db 24, 4  ; height, width
@@ -3451,7 +3963,7 @@ map_header_UNDERGROUND_PATH_NORTH_SOUTH:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x653C ; object_data_ptr
+    dw 0x731D ; object_data_ptr
 map_object_UNDERGROUND_PATH_NORTH_SOUTH:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3460,7 +3972,7 @@ map_object_UNDERGROUND_PATH_NORTH_SOUTH:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_CHAMPIONS_ROOM equ 0x6548
+OW_MAP_HDR_CHAMPIONS_ROOM equ 0x7329
 map_header_CHAMPIONS_ROOM:
     db 0x07       ; tileset GYM
     db 4, 4  ; height, width
@@ -3468,7 +3980,7 @@ map_header_CHAMPIONS_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6554 ; object_data_ptr
+    dw 0x7335 ; object_data_ptr
 map_object_CHAMPIONS_ROOM:
     db 0x03 ; border block
     db 4 ; warp count
@@ -3478,8 +3990,10 @@ map_object_CHAMPIONS_ROOM:
     db 0, 4, 0, 0x76
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x02, 0x06, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x02 mapy=6 mapx=8
+    db 0x03, 0x0B, 0x07, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x03 mapy=11 mapx=7
 
-OW_MAP_HDR_UNDERGROUND_PATH_WEST_EAST equ 0x6568
+OW_MAP_HDR_UNDERGROUND_PATH_WEST_EAST equ 0x7355
 map_header_UNDERGROUND_PATH_WEST_EAST:
     db 0x0B       ; tileset UNDERGROUND
     db 4, 25  ; height, width
@@ -3487,7 +4001,7 @@ map_header_UNDERGROUND_PATH_WEST_EAST:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6574 ; object_data_ptr
+    dw 0x7361 ; object_data_ptr
 map_object_UNDERGROUND_PATH_WEST_EAST:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3496,7 +4010,7 @@ map_object_UNDERGROUND_PATH_WEST_EAST:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_CELADON_MART_1F equ 0x6580
+OW_MAP_HDR_CELADON_MART_1F equ 0x736D
 map_header_CELADON_MART_1F:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3504,7 +4018,7 @@ map_header_CELADON_MART_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x658C ; object_data_ptr
+    dw 0x7379 ; object_data_ptr
 map_object_CELADON_MART_1F:
     db 0x0F ; border block
     db 6 ; warp count
@@ -3517,8 +4031,9 @@ map_object_CELADON_MART_1F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x2A, 0x07, 0x0C, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x2A mapy=7 mapx=12
 
-OW_MAP_HDR_CELADON_MART_2F equ 0x65AE
+OW_MAP_HDR_CELADON_MART_2F equ 0x73A1
 map_header_CELADON_MART_2F:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3526,7 +4041,7 @@ map_header_CELADON_MART_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x65BA ; object_data_ptr
+    dw 0x73AD ; object_data_ptr
 map_object_CELADON_MART_2F:
     db 0x0F ; border block
     db 3 ; warp count
@@ -3536,8 +4051,12 @@ map_object_CELADON_MART_2F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x26, 0x07, 0x09, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x26 mapy=7 mapx=9
+    db 0x26, 0x07, 0x0A, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x26 mapy=7 mapx=10
+    db 0x0A, 0x09, 0x17, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x0A mapy=9 mapx=23
+    db 0x0D, 0x08, 0x12, 0xFE, 0x01, 0x03  ; slot 4: npc sprite=0x0D mapy=8 mapx=18
 
-OW_MAP_HDR_CELADON_MART_3F equ 0x65CD
+OW_MAP_HDR_CELADON_MART_3F equ 0x73D8
 map_header_CELADON_MART_3F:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3545,7 +4064,7 @@ map_header_CELADON_MART_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x65D9 ; object_data_ptr
+    dw 0x73E4 ; object_data_ptr
 map_object_CELADON_MART_3F:
     db 0x0F ; border block
     db 3 ; warp count
@@ -3555,8 +4074,13 @@ map_object_CELADON_MART_3F:
     db 12 ; sign count
     times 36 db 0 ; sign stubs
     db 5 ; sprite count
+    db 0x26, 0x09, 0x14, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=20
+    db 0x37, 0x0A, 0x0F, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x37 mapy=10 mapx=15
+    db 0x37, 0x06, 0x0B, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x37 mapy=6 mapx=11
+    db 0x37, 0x06, 0x0C, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x37 mapy=6 mapx=12
+    db 0x35, 0x09, 0x06, 0xFF, 0xD1, 0x04  ; slot 5: npc sprite=0x35 mapy=9 mapx=6
 
-OW_MAP_HDR_CELADON_MART_4F equ 0x660D
+OW_MAP_HDR_CELADON_MART_4F equ 0x7436
 map_header_CELADON_MART_4F:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3564,7 +4088,7 @@ map_header_CELADON_MART_4F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6619 ; object_data_ptr
+    dw 0x7442 ; object_data_ptr
 map_object_CELADON_MART_4F:
     db 0x0F ; border block
     db 3 ; warp count
@@ -3574,8 +4098,11 @@ map_object_CELADON_MART_4F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x26, 0x0B, 0x09, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x26 mapy=11 mapx=9
+    db 0x0C, 0x09, 0x13, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x0C mapy=9 mapx=19
+    db 0x04, 0x06, 0x09, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x04 mapy=6 mapx=9
 
-OW_MAP_HDR_CELADON_MART_ROOF equ 0x662C
+OW_MAP_HDR_CELADON_MART_ROOF equ 0x7467
 map_header_CELADON_MART_ROOF:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3583,7 +4110,7 @@ map_header_CELADON_MART_ROOF:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6638 ; object_data_ptr
+    dw 0x7473 ; object_data_ptr
 map_object_CELADON_MART_ROOF:
     db 0x42 ; border block
     db 1 ; warp count
@@ -3591,8 +4118,10 @@ map_object_CELADON_MART_ROOF:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x0C, 0x08, 0x0E, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x0C mapy=8 mapx=14
+    db 0x08, 0x09, 0x09, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x08 mapy=9 mapx=9
 
-OW_MAP_HDR_CELADON_MART_ELEVATOR equ 0x664C
+OW_MAP_HDR_CELADON_MART_ELEVATOR equ 0x7493
 map_header_CELADON_MART_ELEVATOR:
     db 0x12       ; tileset LOBBY
     db 2, 2  ; height, width
@@ -3600,7 +4129,7 @@ map_header_CELADON_MART_ELEVATOR:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6658 ; object_data_ptr
+    dw 0x749F ; object_data_ptr
 map_object_CELADON_MART_ELEVATOR:
     db 0x0F ; border block
     db 2 ; warp count
@@ -3610,7 +4139,7 @@ map_object_CELADON_MART_ELEVATOR:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_CELADON_MANSION_1F equ 0x6667
+OW_MAP_HDR_CELADON_MANSION_1F equ 0x74AE
 map_header_CELADON_MANSION_1F:
     db 0x13       ; tileset MANSION
     db 6, 4  ; height, width
@@ -3618,7 +4147,7 @@ map_header_CELADON_MANSION_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6673 ; object_data_ptr
+    dw 0x74BA ; object_data_ptr
 map_object_CELADON_MANSION_1F:
     db 0x0F ; border block
     db 5 ; warp count
@@ -3630,8 +4159,12 @@ map_object_CELADON_MANSION_1F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x05, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x05 mapy=9 mapx=4
+    db 0x28, 0x09, 0x05, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x28 mapy=9 mapx=5
+    db 0x38, 0x0C, 0x05, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x38 mapy=12 mapx=5
+    db 0x05, 0x08, 0x08, 0xFE, 0x01, 0x03  ; slot 4: npc sprite=0x05 mapy=8 mapx=8
 
-OW_MAP_HDR_CELADON_MANSION_2F equ 0x668E
+OW_MAP_HDR_CELADON_MANSION_2F equ 0x74ED
 map_header_CELADON_MANSION_2F:
     db 0x13       ; tileset MANSION
     db 6, 4  ; height, width
@@ -3639,7 +4172,7 @@ map_header_CELADON_MANSION_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x669A ; object_data_ptr
+    dw 0x74F9 ; object_data_ptr
 map_object_CELADON_MANSION_2F:
     db 0x0F ; border block
     db 4 ; warp count
@@ -3651,7 +4184,7 @@ map_object_CELADON_MANSION_2F:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_CELADON_MANSION_3F equ 0x66B1
+OW_MAP_HDR_CELADON_MANSION_3F equ 0x7510
 map_header_CELADON_MANSION_3F:
     db 0x13       ; tileset MANSION
     db 6, 4  ; height, width
@@ -3659,7 +4192,7 @@ map_header_CELADON_MANSION_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x66BD ; object_data_ptr
+    dw 0x751C ; object_data_ptr
 map_object_CELADON_MANSION_3F:
     db 0x0F ; border block
     db 4 ; warp count
@@ -3670,8 +4203,12 @@ map_object_CELADON_MANSION_3F:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x15, 0x08, 0x04, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x15 mapy=8 mapx=4
+    db 0x26, 0x08, 0x07, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x26 mapy=8 mapx=7
+    db 0x0C, 0x0B, 0x04, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x0C mapy=11 mapx=4
+    db 0x2C, 0x07, 0x06, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x2C mapy=7 mapx=6
 
-OW_MAP_HDR_CELADON_MANSION_ROOF equ 0x66DD
+OW_MAP_HDR_CELADON_MANSION_ROOF equ 0x7554
 map_header_CELADON_MANSION_ROOF:
     db 0x13       ; tileset MANSION
     db 6, 4  ; height, width
@@ -3679,7 +4216,7 @@ map_header_CELADON_MANSION_ROOF:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x66E9 ; object_data_ptr
+    dw 0x7560 ; object_data_ptr
 map_object_CELADON_MANSION_ROOF:
     db 0x09 ; border block
     db 3 ; warp count
@@ -3690,7 +4227,7 @@ map_object_CELADON_MANSION_ROOF:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_CELADON_MANSION_ROOF_HOUSE equ 0x66FC
+OW_MAP_HDR_CELADON_MANSION_ROOF_HOUSE equ 0x7573
 map_header_CELADON_MANSION_ROOF_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -3698,7 +4235,7 @@ map_header_CELADON_MANSION_ROOF_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6708 ; object_data_ptr
+    dw 0x757F ; object_data_ptr
 map_object_CELADON_MANSION_ROOF_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -3706,8 +4243,10 @@ map_object_CELADON_MANSION_ROOF_HOUSE:
     db 7, 3, 2, 0x83
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0E, 0x06, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x0E mapy=6 mapx=6
+    db 0x47, 0x07, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x47 mapy=7 mapx=8
 
-OW_MAP_HDR_CELADON_POKECENTER equ 0x6714
+OW_MAP_HDR_CELADON_POKECENTER equ 0x7597
 map_header_CELADON_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -3715,7 +4254,7 @@ map_header_CELADON_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6720 ; object_data_ptr
+    dw 0x75A3 ; object_data_ptr
 map_object_CELADON_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -3723,8 +4262,13 @@ map_object_CELADON_POKECENTER:
     db 7, 4, 5, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x10, 0x07, 0x0B, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x10 mapy=7 mapx=11
+    db 0x0F, 0x09, 0x0E, 0xFE, 0x00, 0x02  ; slot 3: npc sprite=0x0F mapy=9 mapx=14
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_CELADON_GYM equ 0x672C
+OW_MAP_HDR_CELADON_GYM equ 0x75CD
 map_header_CELADON_GYM:
     db 0x07       ; tileset GYM
     db 9, 5  ; height, width
@@ -3732,7 +4276,7 @@ map_header_CELADON_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6738 ; object_data_ptr
+    dw 0x75D9 ; object_data_ptr
 map_object_CELADON_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -3740,8 +4284,16 @@ map_object_CELADON_GYM:
     db 17, 5, 6, 0xFF
     db 0 ; sign count
     db 8 ; sprite count
+    db 0x1B, 0x07, 0x08, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x1B
+    db 0x06, 0x0F, 0x06, 0xFF, 0xD3, 0x41, 0x00, 0x11  ; slot 2: trainer sprite=0x06
+    db 0x0F, 0x0E, 0x0B, 0xFF, 0xD2, 0x42, 0x00, 0x01  ; slot 3: trainer sprite=0x0F
+    db 0x06, 0x09, 0x0D, 0xFF, 0xD0, 0x43, 0x00, 0x0B  ; slot 4: trainer sprite=0x06
+    db 0x0F, 0x09, 0x05, 0xFF, 0xD0, 0x44, 0x00, 0x02  ; slot 5: trainer sprite=0x0F
+    db 0x06, 0x07, 0x0A, 0xFF, 0xD0, 0x45, 0x00, 0x12  ; slot 6: trainer sprite=0x06
+    db 0x0F, 0x07, 0x07, 0xFF, 0xD0, 0x46, 0x00, 0x03  ; slot 7: trainer sprite=0x0F
+    db 0x06, 0x07, 0x09, 0xFF, 0xD0, 0x47, 0x00, 0x01  ; slot 8: trainer sprite=0x06
 
-OW_MAP_HDR_GAME_CORNER equ 0x6744
+OW_MAP_HDR_GAME_CORNER equ 0x7625
 map_header_GAME_CORNER:
     db 0x12       ; tileset LOBBY
     db 9, 10  ; height, width
@@ -3749,7 +4301,7 @@ map_header_GAME_CORNER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6750 ; object_data_ptr
+    dw 0x7631 ; object_data_ptr
 map_object_GAME_CORNER:
     db 0x0F ; border block
     db 3 ; warp count
@@ -3759,8 +4311,19 @@ map_object_GAME_CORNER:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 11 ; sprite count
+    db 0x0F, 0x0A, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x0F mapy=10 mapx=6
+    db 0x26, 0x0A, 0x09, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x26 mapy=10 mapx=9
+    db 0x0A, 0x0E, 0x06, 0xFF, 0xD2, 0x02  ; slot 3: npc sprite=0x0A mapy=14 mapx=6
+    db 0x0F, 0x11, 0x06, 0xFF, 0xD2, 0x03  ; slot 4: npc sprite=0x0F mapy=17 mapx=6
+    db 0x27, 0x0F, 0x09, 0xFF, 0xD3, 0x04  ; slot 5: npc sprite=0x27 mapy=15 mapx=9
+    db 0x1C, 0x0F, 0x0C, 0xFF, 0xD2, 0x05  ; slot 6: npc sprite=0x1C mapy=15 mapx=12
+    db 0x24, 0x12, 0x0C, 0xFF, 0xD2, 0x06  ; slot 7: npc sprite=0x24 mapy=18 mapx=12
+    db 0x0B, 0x13, 0x0F, 0xFF, 0xD3, 0x07  ; slot 8: npc sprite=0x0B mapy=19 mapx=15
+    db 0x0A, 0x0F, 0x12, 0xFF, 0xD2, 0x08  ; slot 9: npc sprite=0x0A mapy=15 mapx=18
+    db 0x27, 0x11, 0x15, 0xFF, 0xD3, 0x09  ; slot 10: npc sprite=0x27 mapy=17 mapx=21
+    db 0x18, 0x09, 0x0D, 0xFF, 0xD1, 0x4A, 0x00, 0x07  ; slot 11: trainer sprite=0x18
 
-OW_MAP_HDR_CELADON_MART_5F equ 0x6763
+OW_MAP_HDR_CELADON_MART_5F equ 0x7688
 map_header_CELADON_MART_5F:
     db 0x12       ; tileset LOBBY
     db 4, 10  ; height, width
@@ -3768,7 +4331,7 @@ map_header_CELADON_MART_5F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x676F ; object_data_ptr
+    dw 0x7694 ; object_data_ptr
 map_object_CELADON_MART_5F:
     db 0x0F ; border block
     db 3 ; warp count
@@ -3778,8 +4341,12 @@ map_object_CELADON_MART_5F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x10, 0x09, 0x12, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x10 mapy=9 mapx=18
+    db 0x13, 0x0A, 0x06, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x13 mapy=10 mapx=6
+    db 0x26, 0x07, 0x09, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x26 mapy=7 mapx=9
+    db 0x26, 0x07, 0x0A, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x26 mapy=7 mapx=10
 
-OW_MAP_HDR_GAME_CORNER_PRIZE_ROOM equ 0x6782
+OW_MAP_HDR_GAME_CORNER_PRIZE_ROOM equ 0x76BF
 map_header_GAME_CORNER_PRIZE_ROOM:
     db 0x12       ; tileset LOBBY
     db 4, 5  ; height, width
@@ -3787,7 +4354,7 @@ map_header_GAME_CORNER_PRIZE_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x678E ; object_data_ptr
+    dw 0x76CB ; object_data_ptr
 map_object_GAME_CORNER_PRIZE_ROOM:
     db 0x0F ; border block
     db 2 ; warp count
@@ -3796,8 +4363,10 @@ map_object_GAME_CORNER_PRIZE_ROOM:
     db 3 ; sign count
     times 9 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x34, 0x08, 0x05, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x34 mapy=8 mapx=5
+    db 0x0B, 0x07, 0x0B, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x0B mapy=7 mapx=11
 
-OW_MAP_HDR_CELADON_DINER equ 0x67A3
+OW_MAP_HDR_CELADON_DINER equ 0x76EC
 map_header_CELADON_DINER:
     db 0x12       ; tileset LOBBY
     db 4, 5  ; height, width
@@ -3805,7 +4374,7 @@ map_header_CELADON_DINER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x67AF ; object_data_ptr
+    dw 0x76F8 ; object_data_ptr
 map_object_CELADON_DINER:
     db 0x0F ; border block
     db 2 ; warp count
@@ -3813,8 +4382,13 @@ map_object_CELADON_DINER:
     db 7, 4, 10, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x14, 0x09, 0x0C, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x14 mapy=9 mapx=12
+    db 0x1C, 0x06, 0x0B, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x1C mapy=6 mapx=11
+    db 0x0A, 0x08, 0x05, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x0A mapy=8 mapx=5
+    db 0x2F, 0x07, 0x09, 0xFF, 0xD3, 0x03  ; slot 4: npc sprite=0x2F mapy=7 mapx=9
+    db 0x24, 0x05, 0x04, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x24 mapy=5 mapx=4
 
-OW_MAP_HDR_CELADON_CHIEF_HOUSE equ 0x67BB
+OW_MAP_HDR_CELADON_CHIEF_HOUSE equ 0x7722
 map_header_CELADON_CHIEF_HOUSE:
     db 0x13       ; tileset MANSION
     db 4, 4  ; height, width
@@ -3822,7 +4396,7 @@ map_header_CELADON_CHIEF_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x67C7 ; object_data_ptr
+    dw 0x772E ; object_data_ptr
 map_object_CELADON_CHIEF_HOUSE:
     db 0x0F ; border block
     db 2 ; warp count
@@ -3830,8 +4404,11 @@ map_object_CELADON_CHIEF_HOUSE:
     db 7, 3, 11, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x25, 0x06, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x25 mapy=6 mapx=8
+    db 0x18, 0x08, 0x05, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x18 mapy=8 mapx=5
+    db 0x13, 0x0A, 0x09, 0xFF, 0xD2, 0x02  ; slot 3: npc sprite=0x13 mapy=10 mapx=9
 
-OW_MAP_HDR_CELADON_HOTEL equ 0x67D3
+OW_MAP_HDR_CELADON_HOTEL equ 0x774C
 map_header_CELADON_HOTEL:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -3839,7 +4416,7 @@ map_header_CELADON_HOTEL:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x67DF ; object_data_ptr
+    dw 0x7758 ; object_data_ptr
 map_object_CELADON_HOTEL:
     db 0x00 ; border block
     db 2 ; warp count
@@ -3847,8 +4424,11 @@ map_object_CELADON_HOTEL:
     db 7, 4, 12, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x28, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x28 mapy=5 mapx=7
+    db 0x0F, 0x08, 0x06, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0F mapy=8 mapx=6
+    db 0x0C, 0x08, 0x0C, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x0C mapy=8 mapx=12
 
-OW_MAP_HDR_LAVENDER_POKECENTER equ 0x67EB
+OW_MAP_HDR_LAVENDER_POKECENTER equ 0x7776
 map_header_LAVENDER_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -3856,7 +4436,7 @@ map_header_LAVENDER_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x67F7 ; object_data_ptr
+    dw 0x7782 ; object_data_ptr
 map_object_LAVENDER_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -3864,8 +4444,13 @@ map_object_LAVENDER_POKECENTER:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x10, 0x07, 0x09, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x10 mapy=7 mapx=9
+    db 0x08, 0x09, 0x0E, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x08 mapy=9 mapx=14
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_POKEMON_TOWER_1F equ 0x6803
+OW_MAP_HDR_POKEMON_TOWER_1F equ 0x77AC
 map_header_POKEMON_TOWER_1F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3873,7 +4458,7 @@ map_header_POKEMON_TOWER_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x680F ; object_data_ptr
+    dw 0x77B8 ; object_data_ptr
 map_object_POKEMON_TOWER_1F:
     db 0x01 ; border block
     db 3 ; warp count
@@ -3882,8 +4467,13 @@ map_object_POKEMON_TOWER_1F:
     db 9, 18, 1, 0x8F
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x2A, 0x11, 0x13, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x2A mapy=17 mapx=19
+    db 0x1C, 0x0C, 0x0A, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x1C mapy=12 mapx=10
+    db 0x34, 0x10, 0x0C, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x34 mapy=16 mapx=12
+    db 0x0D, 0x0B, 0x11, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x0D mapy=11 mapx=17
+    db 0x19, 0x0B, 0x15, 0xFF, 0xD2, 0x04  ; slot 5: npc sprite=0x19 mapy=11 mapx=21
 
-OW_MAP_HDR_POKEMON_TOWER_2F equ 0x681F
+OW_MAP_HDR_POKEMON_TOWER_2F equ 0x77E6
 map_header_POKEMON_TOWER_2F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3891,7 +4481,7 @@ map_header_POKEMON_TOWER_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x682B ; object_data_ptr
+    dw 0x77F2 ; object_data_ptr
 map_object_POKEMON_TOWER_2F:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3899,8 +4489,10 @@ map_object_POKEMON_TOWER_2F:
     db 9, 18, 2, 0x8E
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x02, 0x09, 0x12, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x02 mapy=9 mapx=18
+    db 0x19, 0x0B, 0x07, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x19 mapy=11 mapx=7
 
-OW_MAP_HDR_POKEMON_TOWER_3F equ 0x6837
+OW_MAP_HDR_POKEMON_TOWER_3F equ 0x780A
 map_header_POKEMON_TOWER_3F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3908,7 +4500,7 @@ map_header_POKEMON_TOWER_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6843 ; object_data_ptr
+    dw 0x7816 ; object_data_ptr
 map_object_POKEMON_TOWER_3F:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3916,8 +4508,12 @@ map_object_POKEMON_TOWER_3F:
     db 9, 18, 1, 0x91
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x19, 0x07, 0x10, 0xFF, 0xD2, 0x40, 0x00, 0x05  ; slot 1: trainer sprite=0x19
+    db 0x19, 0x0C, 0x0D, 0xFF, 0xD0, 0x41, 0x00, 0x06  ; slot 2: trainer sprite=0x19
+    db 0x19, 0x11, 0x0E, 0xFF, 0xD0, 0x42, 0x00, 0x08  ; slot 3: trainer sprite=0x19
+    db 0x47, 0x05, 0x10, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_POKEMON_TOWER_4F equ 0x684F
+OW_MAP_HDR_POKEMON_TOWER_4F equ 0x7841
 map_header_POKEMON_TOWER_4F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3925,7 +4521,7 @@ map_header_POKEMON_TOWER_4F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x685B ; object_data_ptr
+    dw 0x784D ; object_data_ptr
 map_object_POKEMON_TOWER_4F:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3933,8 +4529,14 @@ map_object_POKEMON_TOWER_4F:
     db 9, 18, 1, 0x90
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x19, 0x0E, 0x09, 0xFF, 0xD3, 0x40, 0x00, 0x09  ; slot 1: trainer sprite=0x19
+    db 0x19, 0x0B, 0x13, 0xFF, 0xD0, 0x41, 0x00, 0x0A  ; slot 2: trainer sprite=0x19
+    db 0x19, 0x10, 0x12, 0xFF, 0xD2, 0x42, 0x00, 0x0C  ; slot 3: trainer sprite=0x19
+    db 0x47, 0x0E, 0x10, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x0E, 0x0D, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x14, 0x10, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
 
-OW_MAP_HDR_POKEMON_TOWER_5F equ 0x6867
+OW_MAP_HDR_POKEMON_TOWER_5F equ 0x7886
 map_header_POKEMON_TOWER_5F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3942,7 +4544,7 @@ map_header_POKEMON_TOWER_5F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6873 ; object_data_ptr
+    dw 0x7892 ; object_data_ptr
 map_object_POKEMON_TOWER_5F:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3950,8 +4552,14 @@ map_object_POKEMON_TOWER_5F:
     db 9, 18, 0, 0x93
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x19, 0x0C, 0x10, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x19 mapy=12 mapx=16
+    db 0x19, 0x0B, 0x15, 0xFF, 0xD2, 0x41, 0x00, 0x0E  ; slot 2: trainer sprite=0x19
+    db 0x19, 0x07, 0x12, 0xFF, 0xD2, 0x42, 0x00, 0x10  ; slot 3: trainer sprite=0x19
+    db 0x19, 0x0E, 0x0A, 0xFF, 0xD3, 0x43, 0x00, 0x11  ; slot 4: trainer sprite=0x19
+    db 0x19, 0x14, 0x0D, 0xFF, 0xD3, 0x44, 0x00, 0x12  ; slot 5: trainer sprite=0x19
+    db 0x47, 0x12, 0x0A, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
 
-OW_MAP_HDR_POKEMON_TOWER_6F equ 0x687F
+OW_MAP_HDR_POKEMON_TOWER_6F equ 0x78CB
 map_header_POKEMON_TOWER_6F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3959,7 +4567,7 @@ map_header_POKEMON_TOWER_6F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x688B ; object_data_ptr
+    dw 0x78D7 ; object_data_ptr
 map_object_POKEMON_TOWER_6F:
     db 0x01 ; border block
     db 2 ; warp count
@@ -3967,8 +4575,13 @@ map_object_POKEMON_TOWER_6F:
     db 16, 9, 0, 0x94
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x19, 0x0E, 0x10, 0xFF, 0xD3, 0x40, 0x00, 0x13  ; slot 1: trainer sprite=0x19
+    db 0x19, 0x09, 0x0D, 0xFF, 0xD0, 0x41, 0x00, 0x14  ; slot 2: trainer sprite=0x19
+    db 0x19, 0x09, 0x14, 0xFF, 0xD2, 0x42, 0x00, 0x15  ; slot 3: trainer sprite=0x19
+    db 0x47, 0x0C, 0x0A, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x12, 0x12, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
 
-OW_MAP_HDR_POKEMON_TOWER_7F equ 0x6897
+OW_MAP_HDR_POKEMON_TOWER_7F equ 0x7909
 map_header_POKEMON_TOWER_7F:
     db 0x0F       ; tileset CEMETERY
     db 9, 10  ; height, width
@@ -3976,15 +4589,18 @@ map_header_POKEMON_TOWER_7F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x68A3 ; object_data_ptr
+    dw 0x7915 ; object_data_ptr
 map_object_POKEMON_TOWER_7F:
     db 0x01 ; border block
     db 1 ; warp count
     db 16, 9, 1, 0x93
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x45, 0x0C, 0x0E, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x45 mapy=12 mapx=14
+    db 0x46, 0x0C, 0x0F, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x46 mapy=12 mapx=15
+    db 0x16, 0x07, 0x0E, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x16 mapy=7 mapx=14
 
-OW_MAP_HDR_MR_FUJIS_HOUSE equ 0x68AB
+OW_MAP_HDR_MR_FUJIS_HOUSE equ 0x792F
 map_header_MR_FUJIS_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -3992,7 +4608,7 @@ map_header_MR_FUJIS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x68B7 ; object_data_ptr
+    dw 0x793B ; object_data_ptr
 map_object_MR_FUJIS_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4000,8 +4616,14 @@ map_object_MR_FUJIS_HOUSE:
     db 7, 3, 2, 0xFF
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x0C, 0x09, 0x07, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x0C mapy=9 mapx=7
+    db 0x08, 0x07, 0x0A, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x08 mapy=7 mapx=10
+    db 0x05, 0x08, 0x0A, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x05 mapy=8 mapx=10
+    db 0x05, 0x07, 0x05, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x05 mapy=7 mapx=5
+    db 0x16, 0x05, 0x07, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x16 mapy=5 mapx=7
+    db 0x4B, 0x07, 0x07, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x4B mapy=7 mapx=7
 
-OW_MAP_HDR_LAVENDER_MART equ 0x68C3
+OW_MAP_HDR_LAVENDER_MART equ 0x796B
 map_header_LAVENDER_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -4009,7 +4631,7 @@ map_header_LAVENDER_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x68CF ; object_data_ptr
+    dw 0x7977 ; object_data_ptr
 map_object_LAVENDER_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4017,8 +4639,11 @@ map_object_LAVENDER_MART:
     db 7, 4, 3, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x34, 0x08, 0x07, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x34 mapy=8 mapx=7
+    db 0x07, 0x06, 0x0B, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x07 mapy=6 mapx=11
 
-OW_MAP_HDR_LAVENDER_CUBONE_HOUSE equ 0x68DB
+OW_MAP_HDR_LAVENDER_CUBONE_HOUSE equ 0x7995
 map_header_LAVENDER_CUBONE_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4026,7 +4651,7 @@ map_header_LAVENDER_CUBONE_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x68E7 ; object_data_ptr
+    dw 0x79A1 ; object_data_ptr
 map_object_LAVENDER_CUBONE_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4034,8 +4659,10 @@ map_object_LAVENDER_CUBONE_HOUSE:
     db 7, 3, 4, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x05, 0x09, 0x07, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x05 mapy=9 mapx=7
+    db 0x1D, 0x08, 0x06, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x1D mapy=8 mapx=6
 
-OW_MAP_HDR_FUCHSIA_MART equ 0x68F3
+OW_MAP_HDR_FUCHSIA_MART equ 0x79B9
 map_header_FUCHSIA_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -4043,7 +4670,7 @@ map_header_FUCHSIA_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x68FF ; object_data_ptr
+    dw 0x79C5 ; object_data_ptr
 map_object_FUCHSIA_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4051,8 +4678,11 @@ map_object_FUCHSIA_MART:
     db 7, 4, 0, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x0A, 0x06, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0A mapy=6 mapx=8
+    db 0x06, 0x09, 0x0A, 0xFE, 0x01, 0x02  ; slot 3: npc sprite=0x06 mapy=9 mapx=10
 
-OW_MAP_HDR_FUCHSIA_BILLS_GRANDPAS_HOUSE equ 0x690B
+OW_MAP_HDR_FUCHSIA_BILLS_GRANDPAS_HOUSE equ 0x79E3
 map_header_FUCHSIA_BILLS_GRANDPAS_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4060,7 +4690,7 @@ map_header_FUCHSIA_BILLS_GRANDPAS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6917 ; object_data_ptr
+    dw 0x79EF ; object_data_ptr
 map_object_FUCHSIA_BILLS_GRANDPAS_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4068,8 +4698,11 @@ map_object_FUCHSIA_BILLS_GRANDPAS_HOUSE:
     db 7, 3, 1, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x1C, 0x07, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x1C mapy=7 mapx=6
+    db 0x0B, 0x06, 0x0B, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x0B mapy=6 mapx=11
+    db 0x04, 0x09, 0x09, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x04 mapy=9 mapx=9
 
-OW_MAP_HDR_FUCHSIA_POKECENTER equ 0x6923
+OW_MAP_HDR_FUCHSIA_POKECENTER equ 0x7A0D
 map_header_FUCHSIA_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -4077,7 +4710,7 @@ map_header_FUCHSIA_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x692F ; object_data_ptr
+    dw 0x7A19 ; object_data_ptr
 map_object_FUCHSIA_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4085,8 +4718,13 @@ map_object_FUCHSIA_POKECENTER:
     db 7, 4, 2, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x21, 0x07, 0x08, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x21 mapy=7 mapx=8
+    db 0x06, 0x09, 0x0A, 0xFE, 0x02, 0x02  ; slot 3: npc sprite=0x06 mapy=9 mapx=10
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_WARDENS_HOUSE equ 0x693B
+OW_MAP_HDR_WARDENS_HOUSE equ 0x7A43
 map_header_WARDENS_HOUSE:
     db 0x14       ; tileset LAB
     db 4, 5  ; height, width
@@ -4094,7 +4732,7 @@ map_header_WARDENS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6947 ; object_data_ptr
+    dw 0x7A4F ; object_data_ptr
 map_object_WARDENS_HOUSE:
     db 0x17 ; border block
     db 2 ; warp count
@@ -4103,8 +4741,11 @@ map_object_WARDENS_HOUSE:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x2D, 0x07, 0x06, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2D mapy=7 mapx=6
+    db 0x47, 0x07, 0x0C, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x49, 0x08, 0x0C, 0xFF, 0x00, 0x02  ; slot 3: npc sprite=0x49 mapy=8 mapx=12
 
-OW_MAP_HDR_SAFARI_ZONE_GATE equ 0x6959
+OW_MAP_HDR_SAFARI_ZONE_GATE equ 0x7A74
 map_header_SAFARI_ZONE_GATE:
     db 0x0C       ; tileset GATE
     db 3, 4  ; height, width
@@ -4112,7 +4753,7 @@ map_header_SAFARI_ZONE_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6965 ; object_data_ptr
+    dw 0x7A80 ; object_data_ptr
 map_object_SAFARI_ZONE_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -4122,8 +4763,10 @@ map_object_SAFARI_ZONE_GATE:
     db 0, 4, 1, 0xDC
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x23, 0x06, 0x0A, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x23 mapy=6 mapx=10
+    db 0x23, 0x08, 0x05, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x23 mapy=8 mapx=5
 
-OW_MAP_HDR_FUCHSIA_GYM equ 0x6979
+OW_MAP_HDR_FUCHSIA_GYM equ 0x7AA0
 map_header_FUCHSIA_GYM:
     db 0x07       ; tileset GYM
     db 9, 5  ; height, width
@@ -4131,7 +4774,7 @@ map_header_FUCHSIA_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6985 ; object_data_ptr
+    dw 0x7AAC ; object_data_ptr
 map_object_FUCHSIA_GYM:
     db 0x03 ; border block
     db 2 ; warp count
@@ -4139,8 +4782,16 @@ map_object_FUCHSIA_GYM:
     db 17, 5, 5, 0xFF
     db 0 ; sign count
     db 8 ; sprite count
+    db 0x2C, 0x0E, 0x08, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x2C
+    db 0x21, 0x11, 0x0C, 0xFF, 0xD0, 0x41, 0x00, 0x07  ; slot 2: trainer sprite=0x21
+    db 0x21, 0x0C, 0x0B, 0xFF, 0xD3, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x21
+    db 0x21, 0x10, 0x05, 0xFF, 0xD0, 0x43, 0x00, 0x08  ; slot 4: trainer sprite=0x21
+    db 0x21, 0x09, 0x07, 0xFF, 0xD1, 0x44, 0x00, 0x01  ; slot 5: trainer sprite=0x21
+    db 0x21, 0x06, 0x0C, 0xFF, 0xD0, 0x45, 0x00, 0x02  ; slot 6: trainer sprite=0x21
+    db 0x21, 0x0B, 0x06, 0xFF, 0xD2, 0x46, 0x00, 0x04  ; slot 7: trainer sprite=0x21
+    db 0x24, 0x13, 0x0B, 0xFF, 0xD0, 0x07  ; slot 8: npc sprite=0x24 mapy=19 mapx=11
 
-OW_MAP_HDR_FUCHSIA_MEETING_ROOM equ 0x6991
+OW_MAP_HDR_FUCHSIA_MEETING_ROOM equ 0x7AF6
 map_header_FUCHSIA_MEETING_ROOM:
     db 0x14       ; tileset LAB
     db 4, 7  ; height, width
@@ -4148,7 +4799,7 @@ map_header_FUCHSIA_MEETING_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x699D ; object_data_ptr
+    dw 0x7B02 ; object_data_ptr
 map_object_FUCHSIA_MEETING_ROOM:
     db 0x17 ; border block
     db 2 ; warp count
@@ -4156,8 +4807,11 @@ map_object_FUCHSIA_MEETING_ROOM:
     db 7, 5, 6, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x23, 0x05, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x23 mapy=5 mapx=8
+    db 0x23, 0x06, 0x04, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x23 mapy=6 mapx=4
+    db 0x23, 0x05, 0x0E, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x23 mapy=5 mapx=14
 
-OW_MAP_HDR_SEAFOAM_ISLANDS_B1F equ 0x69A9
+OW_MAP_HDR_SEAFOAM_ISLANDS_B1F equ 0x7B20
 map_header_SEAFOAM_ISLANDS_B1F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4165,7 +4819,7 @@ map_header_SEAFOAM_ISLANDS_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x69B5 ; object_data_ptr
+    dw 0x7B2C ; object_data_ptr
 map_object_SEAFOAM_ISLANDS_B1F:
     db 0x7D ; border block
     db 7 ; warp count
@@ -4178,8 +4832,10 @@ map_object_SEAFOAM_ISLANDS_B1F:
     db 3, 25, 5, 0xC0
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x49, 0x0A, 0x15, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x49 mapy=10 mapx=21
+    db 0x49, 0x0A, 0x1A, 0xFF, 0x00, 0x01  ; slot 2: npc sprite=0x49 mapy=10 mapx=26
 
-OW_MAP_HDR_SEAFOAM_ISLANDS_B2F equ 0x69D5
+OW_MAP_HDR_SEAFOAM_ISLANDS_B2F equ 0x7B58
 map_header_SEAFOAM_ISLANDS_B2F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4187,7 +4843,7 @@ map_header_SEAFOAM_ISLANDS_B2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x69E1 ; object_data_ptr
+    dw 0x7B64 ; object_data_ptr
 map_object_SEAFOAM_ISLANDS_B2F:
     db 0x7D ; border block
     db 7 ; warp count
@@ -4200,8 +4856,10 @@ map_object_SEAFOAM_ISLANDS_B2F:
     db 14, 25, 4, 0xA1
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x49, 0x0A, 0x16, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x49 mapy=10 mapx=22
+    db 0x49, 0x0A, 0x1B, 0xFF, 0x00, 0x01  ; slot 2: npc sprite=0x49 mapy=10 mapx=27
 
-OW_MAP_HDR_SEAFOAM_ISLANDS_B3F equ 0x6A01
+OW_MAP_HDR_SEAFOAM_ISLANDS_B3F equ 0x7B90
 map_header_SEAFOAM_ISLANDS_B3F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4209,7 +4867,7 @@ map_header_SEAFOAM_ISLANDS_B3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6A0D ; object_data_ptr
+    dw 0x7B9C ; object_data_ptr
 map_object_SEAFOAM_ISLANDS_B3F:
     db 0x7D ; border block
     db 7 ; warp count
@@ -4222,8 +4880,14 @@ map_object_SEAFOAM_ISLANDS_B3F:
     db 17, 21, 1, 0xA2
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x49, 0x12, 0x09, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x49 mapy=18 mapx=9
+    db 0x49, 0x13, 0x07, 0xFF, 0x00, 0x01  ; slot 2: npc sprite=0x49 mapy=19 mapx=7
+    db 0x49, 0x12, 0x0C, 0xFF, 0x00, 0x02  ; slot 3: npc sprite=0x49 mapy=18 mapx=12
+    db 0x49, 0x12, 0x0D, 0xFF, 0x00, 0x03  ; slot 4: npc sprite=0x49 mapy=18 mapx=13
+    db 0x49, 0x0A, 0x16, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x49 mapy=10 mapx=22
+    db 0x49, 0x0A, 0x17, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x49 mapy=10 mapx=23
 
-OW_MAP_HDR_SEAFOAM_ISLANDS_B4F equ 0x6A2D
+OW_MAP_HDR_SEAFOAM_ISLANDS_B4F equ 0x7BE0
 map_header_SEAFOAM_ISLANDS_B4F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4231,7 +4895,7 @@ map_header_SEAFOAM_ISLANDS_B4F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6A39 ; object_data_ptr
+    dw 0x7BEC ; object_data_ptr
 map_object_SEAFOAM_ISLANDS_B4F:
     db 0x7D ; border block
     db 4 ; warp count
@@ -4242,8 +4906,11 @@ map_object_SEAFOAM_ISLANDS_B4F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 3 ; sprite count
+    db 0x49, 0x13, 0x08, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x49 mapy=19 mapx=8
+    db 0x49, 0x13, 0x09, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x49 mapy=19 mapx=9
+    db 0x09, 0x05, 0x0A, 0xFF, 0xD0, 0x42, 0x00, 0x32  ; slot 3: trainer sprite=0x09
 
-OW_MAP_HDR_VERMILION_OLD_ROD_HOUSE equ 0x6A53
+OW_MAP_HDR_VERMILION_OLD_ROD_HOUSE equ 0x7C1A
 map_header_VERMILION_OLD_ROD_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4251,7 +4918,7 @@ map_header_VERMILION_OLD_ROD_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6A5F ; object_data_ptr
+    dw 0x7C26 ; object_data_ptr
 map_object_VERMILION_OLD_ROD_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4259,8 +4926,9 @@ map_object_VERMILION_OLD_ROD_HOUSE:
     db 7, 3, 8, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x08, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x27 mapy=8 mapx=6
 
-OW_MAP_HDR_FUCHSIA_GOOD_ROD_HOUSE equ 0x6A6B
+OW_MAP_HDR_FUCHSIA_GOOD_ROD_HOUSE equ 0x7C38
 map_header_FUCHSIA_GOOD_ROD_HOUSE:
     db 0x0D       ; tileset SHIP
     db 4, 4  ; height, width
@@ -4268,7 +4936,7 @@ map_header_FUCHSIA_GOOD_ROD_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6A77 ; object_data_ptr
+    dw 0x7C44 ; object_data_ptr
 map_object_FUCHSIA_GOOD_ROD_HOUSE:
     db 0x0C ; border block
     db 3 ; warp count
@@ -4277,8 +4945,9 @@ map_object_FUCHSIA_GOOD_ROD_HOUSE:
     db 7, 3, 7, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x07, 0x09, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=9
 
-OW_MAP_HDR_POKEMON_MANSION_1F equ 0x6A87
+OW_MAP_HDR_POKEMON_MANSION_1F equ 0x7C5A
 map_header_POKEMON_MANSION_1F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -4286,7 +4955,7 @@ map_header_POKEMON_MANSION_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6A93 ; object_data_ptr
+    dw 0x7C66 ; object_data_ptr
 map_object_POKEMON_MANSION_1F:
     db 0x2E ; border block
     db 8 ; warp count
@@ -4300,8 +4969,11 @@ map_object_POKEMON_MANSION_1F:
     db 27, 27, 0, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x20, 0x15, 0x15, 0xFF, 0xD2, 0x40, 0x00, 0x04  ; slot 1: trainer sprite=0x20
+    db 0x47, 0x07, 0x12, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x19, 0x16, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
 
-OW_MAP_HDR_CINNABAR_GYM equ 0x6AB7
+OW_MAP_HDR_CINNABAR_GYM equ 0x7CA0
 map_header_CINNABAR_GYM:
     db 0x16       ; tileset FACILITY
     db 9, 10  ; height, width
@@ -4309,7 +4981,7 @@ map_header_CINNABAR_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6AC3 ; object_data_ptr
+    dw 0x7CAC ; object_data_ptr
 map_object_CINNABAR_GYM:
     db 0x2E ; border block
     db 2 ; warp count
@@ -4317,8 +4989,17 @@ map_object_CINNABAR_GYM:
     db 17, 17, 1, 0xFF
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x2B, 0x07, 0x07, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x2B
+    db 0x0C, 0x06, 0x15, 0xFF, 0xD0, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x0C
+    db 0x0C, 0x0C, 0x15, 0xFF, 0xD0, 0x42, 0x00, 0x04  ; slot 3: trainer sprite=0x0C
+    db 0x0C, 0x08, 0x0F, 0xFF, 0xD0, 0x43, 0x00, 0x0A  ; slot 4: trainer sprite=0x0C
+    db 0x0C, 0x0C, 0x0F, 0xFF, 0xD0, 0x44, 0x00, 0x05  ; slot 5: trainer sprite=0x0C
+    db 0x0C, 0x12, 0x0F, 0xFF, 0xD0, 0x45, 0x00, 0x0B  ; slot 6: trainer sprite=0x0C
+    db 0x0C, 0x12, 0x07, 0xFF, 0xD0, 0x46, 0x00, 0x06  ; slot 7: trainer sprite=0x0C
+    db 0x0C, 0x0C, 0x07, 0xFF, 0xD0, 0x47, 0x00, 0x0C  ; slot 8: trainer sprite=0x0C
+    db 0x24, 0x11, 0x14, 0xFF, 0xD0, 0x08  ; slot 9: npc sprite=0x24 mapy=17 mapx=20
 
-OW_MAP_HDR_CINNABAR_LAB equ 0x6ACF
+OW_MAP_HDR_CINNABAR_LAB equ 0x7CFE
 map_header_CINNABAR_LAB:
     db 0x14       ; tileset LAB
     db 4, 9  ; height, width
@@ -4326,7 +5007,7 @@ map_header_CINNABAR_LAB:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6ADB ; object_data_ptr
+    dw 0x7D0A ; object_data_ptr
 map_object_CINNABAR_LAB:
     db 0x17 ; border block
     db 5 ; warp count
@@ -4338,8 +5019,9 @@ map_object_CINNABAR_LAB:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x27, 0x07, 0x05, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=5
 
-OW_MAP_HDR_CINNABAR_LAB_TRADE_ROOM equ 0x6AFF
+OW_MAP_HDR_CINNABAR_LAB_TRADE_ROOM equ 0x7D34
 map_header_CINNABAR_LAB_TRADE_ROOM:
     db 0x14       ; tileset LAB
     db 4, 4  ; height, width
@@ -4347,7 +5029,7 @@ map_header_CINNABAR_LAB_TRADE_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B0B ; object_data_ptr
+    dw 0x7D40 ; object_data_ptr
 map_object_CINNABAR_LAB_TRADE_ROOM:
     db 0x17 ; border block
     db 2 ; warp count
@@ -4355,8 +5037,11 @@ map_object_CINNABAR_LAB_TRADE_ROOM:
     db 7, 3, 2, 0xA7
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x0C, 0x06, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x0C mapy=6 mapx=7
+    db 0x25, 0x08, 0x05, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x25 mapy=8 mapx=5
+    db 0x0F, 0x09, 0x09, 0xFF, 0xD1, 0x02  ; slot 3: npc sprite=0x0F mapy=9 mapx=9
 
-OW_MAP_HDR_CINNABAR_LAB_METRONOME_ROOM equ 0x6B17
+OW_MAP_HDR_CINNABAR_LAB_METRONOME_ROOM equ 0x7D5E
 map_header_CINNABAR_LAB_METRONOME_ROOM:
     db 0x14       ; tileset LAB
     db 4, 4  ; height, width
@@ -4364,7 +5049,7 @@ map_header_CINNABAR_LAB_METRONOME_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B23 ; object_data_ptr
+    dw 0x7D6A ; object_data_ptr
 map_object_CINNABAR_LAB_METRONOME_ROOM:
     db 0x17 ; border block
     db 2 ; warp count
@@ -4373,8 +5058,10 @@ map_object_CINNABAR_LAB_METRONOME_ROOM:
     db 3 ; sign count
     times 9 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x20, 0x06, 0x0B, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x20 mapy=6 mapx=11
+    db 0x20, 0x07, 0x06, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x20 mapy=7 mapx=6
 
-OW_MAP_HDR_CINNABAR_LAB_FOSSIL_ROOM equ 0x6B38
+OW_MAP_HDR_CINNABAR_LAB_FOSSIL_ROOM equ 0x7D8B
 map_header_CINNABAR_LAB_FOSSIL_ROOM:
     db 0x14       ; tileset LAB
     db 4, 4  ; height, width
@@ -4382,7 +5069,7 @@ map_header_CINNABAR_LAB_FOSSIL_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B44 ; object_data_ptr
+    dw 0x7D97 ; object_data_ptr
 map_object_CINNABAR_LAB_FOSSIL_ROOM:
     db 0x17 ; border block
     db 2 ; warp count
@@ -4390,8 +5077,10 @@ map_object_CINNABAR_LAB_FOSSIL_ROOM:
     db 7, 3, 4, 0xA7
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x20, 0x06, 0x09, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x20 mapy=6 mapx=9
+    db 0x20, 0x0A, 0x0B, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x20 mapy=10 mapx=11
 
-OW_MAP_HDR_CINNABAR_POKECENTER equ 0x6B50
+OW_MAP_HDR_CINNABAR_POKECENTER equ 0x7DAF
 map_header_CINNABAR_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -4399,7 +5088,7 @@ map_header_CINNABAR_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B5C ; object_data_ptr
+    dw 0x7DBB ; object_data_ptr
 map_object_CINNABAR_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4407,8 +5096,13 @@ map_object_CINNABAR_POKECENTER:
     db 7, 4, 3, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x06, 0x08, 0x0D, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x06 mapy=8 mapx=13
+    db 0x10, 0x0A, 0x06, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x10 mapy=10 mapx=6
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_CINNABAR_MART equ 0x6B68
+OW_MAP_HDR_CINNABAR_MART equ 0x7DE5
 map_header_CINNABAR_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -4416,7 +5110,7 @@ map_header_CINNABAR_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B74 ; object_data_ptr
+    dw 0x7DF1 ; object_data_ptr
 map_object_CINNABAR_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4424,8 +5118,11 @@ map_object_CINNABAR_MART:
     db 7, 4, 4, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x1B, 0x06, 0x0A, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x1B mapy=6 mapx=10
+    db 0x20, 0x08, 0x07, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x20 mapy=8 mapx=7
 
-OW_MAP_HDR_INDIGO_PLATEAU_LOBBY equ 0x6B80
+OW_MAP_HDR_INDIGO_PLATEAU_LOBBY equ 0x7E0F
 map_header_INDIGO_PLATEAU_LOBBY:
     db 0x02       ; tileset MART
     db 6, 8  ; height, width
@@ -4433,7 +5130,7 @@ map_header_INDIGO_PLATEAU_LOBBY:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6B8C ; object_data_ptr
+    dw 0x7E1B ; object_data_ptr
 map_object_INDIGO_PLATEAU_LOBBY:
     db 0x00 ; border block
     db 3 ; warp count
@@ -4442,8 +5139,14 @@ map_object_INDIGO_PLATEAU_LOBBY:
     db 0, 8, 0, 0xF5
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x29, 0x09, 0x0B, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=9 mapx=11
+    db 0x24, 0x0D, 0x08, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x24 mapy=13 mapx=8
+    db 0x06, 0x05, 0x09, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x06 mapy=5 mapx=9
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x03  ; slot 4: npc sprite=0x26 mapy=9 mapx=4
+    db 0x2A, 0x0A, 0x11, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x2A mapy=10 mapx=17
+    db 0x44, 0x09, 0x0C, 0xFF, 0xD0, 0x05  ; slot 6: npc sprite=0x44 mapy=9 mapx=12
 
-OW_MAP_HDR_COPYCATS_HOUSE_1F equ 0x6B9C
+OW_MAP_HDR_COPYCATS_HOUSE_1F equ 0x7E4F
 map_header_COPYCATS_HOUSE_1F:
     db 0x01       ; tileset REDS_HOUSE_1
     db 4, 4  ; height, width
@@ -4451,7 +5154,7 @@ map_header_COPYCATS_HOUSE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6BA8 ; object_data_ptr
+    dw 0x7E5B ; object_data_ptr
 map_object_COPYCATS_HOUSE_1F:
     db 0x0A ; border block
     db 3 ; warp count
@@ -4460,8 +5163,11 @@ map_object_COPYCATS_HOUSE_1F:
     db 1, 7, 0, 0xB0
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x1C, 0x06, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x1C mapy=6 mapx=6
+    db 0x0A, 0x08, 0x09, 0xFF, 0xD2, 0x01  ; slot 2: npc sprite=0x0A mapy=8 mapx=9
+    db 0x44, 0x08, 0x05, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x44 mapy=8 mapx=5
 
-OW_MAP_HDR_COPYCATS_HOUSE_2F equ 0x6BB8
+OW_MAP_HDR_COPYCATS_HOUSE_2F equ 0x7E7D
 map_header_COPYCATS_HOUSE_2F:
     db 0x04       ; tileset REDS_HOUSE_2
     db 4, 4  ; height, width
@@ -4469,7 +5175,7 @@ map_header_COPYCATS_HOUSE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6BC4 ; object_data_ptr
+    dw 0x7E89 ; object_data_ptr
 map_object_COPYCATS_HOUSE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -4477,8 +5183,13 @@ map_object_COPYCATS_HOUSE_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 5 ; sprite count
+    db 0x1D, 0x07, 0x08, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x1D mapy=7 mapx=8
+    db 0x09, 0x0A, 0x08, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x09 mapy=10 mapx=8
+    db 0x05, 0x05, 0x09, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x05 mapy=5 mapx=9
+    db 0x09, 0x04, 0x06, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x09 mapy=4 mapx=6
+    db 0x38, 0x0A, 0x05, 0xFF, 0xD3, 0x04  ; slot 5: npc sprite=0x38 mapy=10 mapx=5
 
-OW_MAP_HDR_FIGHTING_DOJO equ 0x6BD2
+OW_MAP_HDR_FIGHTING_DOJO equ 0x7EB5
 map_header_FIGHTING_DOJO:
     db 0x05       ; tileset DOJO
     db 6, 5  ; height, width
@@ -4486,7 +5197,7 @@ map_header_FIGHTING_DOJO:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6BDE ; object_data_ptr
+    dw 0x7EC1 ; object_data_ptr
 map_object_FIGHTING_DOJO:
     db 0x03 ; border block
     db 2 ; warp count
@@ -4494,8 +5205,15 @@ map_object_FIGHTING_DOJO:
     db 11, 5, 1, 0xFF
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x0E, 0x07, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x0E
+    db 0x0E, 0x08, 0x07, 0xFF, 0xD3, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x0E
+    db 0x0E, 0x0A, 0x07, 0xFF, 0xD3, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x0E
+    db 0x0E, 0x09, 0x09, 0xFF, 0xD2, 0x43, 0x00, 0x04  ; slot 4: trainer sprite=0x0E
+    db 0x0E, 0x0B, 0x09, 0xFF, 0xD2, 0x44, 0x00, 0x05  ; slot 5: trainer sprite=0x0E
+    db 0x47, 0x05, 0x08, 0xFF, 0xFF, 0x05  ; slot 6: npc sprite=0x47 mapy=5 mapx=8
+    db 0x47, 0x05, 0x09, 0xFF, 0xFF, 0x06  ; slot 7: npc sprite=0x47 mapy=5 mapx=9
 
-OW_MAP_HDR_SAFFRON_GYM equ 0x6BEA
+OW_MAP_HDR_SAFFRON_GYM equ 0x7F01
 map_header_SAFFRON_GYM:
     db 0x16       ; tileset FACILITY
     db 9, 10  ; height, width
@@ -4503,7 +5221,7 @@ map_header_SAFFRON_GYM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6BF6 ; object_data_ptr
+    dw 0x7F0D ; object_data_ptr
 map_object_SAFFRON_GYM:
     db 0x2E ; border block
     db 32 ; warp count
@@ -4541,8 +5259,17 @@ map_object_SAFFRON_GYM:
     db 17, 19, 19, 0xB2
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x06, 0x0C, 0x0D, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x06
+    db 0x19, 0x05, 0x0E, 0xFF, 0xD0, 0x41, 0x00, 0x16  ; slot 2: trainer sprite=0x19
+    db 0x04, 0x05, 0x15, 0xFF, 0xD0, 0x42, 0x00, 0x01  ; slot 3: trainer sprite=0x04
+    db 0x19, 0x0B, 0x07, 0xFF, 0xD0, 0x43, 0x00, 0x17  ; slot 4: trainer sprite=0x19
+    db 0x04, 0x0B, 0x15, 0xFF, 0xD0, 0x44, 0x00, 0x02  ; slot 5: trainer sprite=0x04
+    db 0x19, 0x11, 0x07, 0xFF, 0xD0, 0x45, 0x00, 0x18  ; slot 6: trainer sprite=0x19
+    db 0x04, 0x11, 0x15, 0xFF, 0xD0, 0x46, 0x00, 0x03  ; slot 7: trainer sprite=0x04
+    db 0x04, 0x05, 0x07, 0xFF, 0xD0, 0x47, 0x00, 0x04  ; slot 8: trainer sprite=0x04
+    db 0x24, 0x13, 0x0E, 0xFF, 0xD0, 0x08  ; slot 9: npc sprite=0x24 mapy=19 mapx=14
 
-OW_MAP_HDR_SAFFRON_PIDGEY_HOUSE equ 0x6C7A
+OW_MAP_HDR_SAFFRON_PIDGEY_HOUSE equ 0x7FD7
 map_header_SAFFRON_PIDGEY_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4550,7 +5277,7 @@ map_header_SAFFRON_PIDGEY_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6C86 ; object_data_ptr
+    dw 0x7FE3 ; object_data_ptr
 map_object_SAFFRON_PIDGEY_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4558,8 +5285,12 @@ map_object_SAFFRON_PIDGEY_HOUSE:
     db 7, 3, 3, 0xFF
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x1D, 0x07, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x1D mapy=7 mapx=6
+    db 0x09, 0x08, 0x04, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x09 mapy=8 mapx=4
+    db 0x04, 0x05, 0x08, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x04 mapy=5 mapx=8
+    db 0x4A, 0x07, 0x07, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x4A mapy=7 mapx=7
 
-OW_MAP_HDR_SAFFRON_MART equ 0x6C92
+OW_MAP_HDR_SAFFRON_MART equ 0x8007
 map_header_SAFFRON_MART:
     db 0x02       ; tileset MART
     db 4, 4  ; height, width
@@ -4567,7 +5298,7 @@ map_header_SAFFRON_MART:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6C9E ; object_data_ptr
+    dw 0x8013 ; object_data_ptr
 map_object_SAFFRON_MART:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4575,8 +5306,11 @@ map_object_SAFFRON_MART:
     db 7, 4, 4, 0xFF
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x26, 0x09, 0x04, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x26 mapy=9 mapx=4
+    db 0x0C, 0x06, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0C mapy=6 mapx=8
+    db 0x06, 0x09, 0x0A, 0xFE, 0x00, 0x02  ; slot 3: npc sprite=0x06 mapy=9 mapx=10
 
-OW_MAP_HDR_SILPH_CO_1F equ 0x6CAA
+OW_MAP_HDR_SILPH_CO_1F equ 0x8031
 map_header_SILPH_CO_1F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -4584,7 +5318,7 @@ map_header_SILPH_CO_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6CB6 ; object_data_ptr
+    dw 0x803D ; object_data_ptr
 map_object_SILPH_CO_1F:
     db 0x2E ; border block
     db 5 ; warp count
@@ -4595,8 +5329,9 @@ map_object_SILPH_CO_1F:
     db 10, 16, 6, 0xD0
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x2A, 0x06, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x2A mapy=6 mapx=8
 
-OW_MAP_HDR_SAFFRON_POKECENTER equ 0x6CCE
+OW_MAP_HDR_SAFFRON_POKECENTER equ 0x805B
 map_header_SAFFRON_POKECENTER:
     db 0x06       ; tileset POKECENTER
     db 4, 7  ; height, width
@@ -4604,7 +5339,7 @@ map_header_SAFFRON_POKECENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6CDA ; object_data_ptr
+    dw 0x8067 ; object_data_ptr
 map_object_SAFFRON_POKECENTER:
     db 0x00 ; border block
     db 2 ; warp count
@@ -4612,8 +5347,13 @@ map_object_SAFFRON_POKECENTER:
     db 7, 4, 6, 0xFF
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x29, 0x05, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=5 mapx=7
+    db 0x0F, 0x09, 0x09, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0F mapy=9 mapx=9
+    db 0x10, 0x07, 0x0C, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x10 mapy=7 mapx=12
+    db 0x2A, 0x06, 0x0F, 0xFF, 0xD0, 0x03  ; slot 4: npc sprite=0x2A mapy=6 mapx=15
+    db 0x44, 0x05, 0x08, 0xFF, 0xD0, 0x04  ; slot 5: npc sprite=0x44 mapy=5 mapx=8
 
-OW_MAP_HDR_MR_PSYCHICS_HOUSE equ 0x6CE6
+OW_MAP_HDR_MR_PSYCHICS_HOUSE equ 0x8091
 map_header_MR_PSYCHICS_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4621,7 +5361,7 @@ map_header_MR_PSYCHICS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6CF2 ; object_data_ptr
+    dw 0x809D ; object_data_ptr
 map_object_MR_PSYCHICS_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4629,8 +5369,9 @@ map_object_MR_PSYCHICS_HOUSE:
     db 7, 3, 7, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x07, 0x09, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=9
 
-OW_MAP_HDR_ROUTE_15_GATE_1F equ 0x6CFE
+OW_MAP_HDR_ROUTE_15_GATE_1F equ 0x80AF
 map_header_ROUTE_15_GATE_1F:
     db 0x0C       ; tileset GATE
     db 5, 4  ; height, width
@@ -4638,7 +5379,7 @@ map_header_ROUTE_15_GATE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6D0A ; object_data_ptr
+    dw 0x80BB ; object_data_ptr
 map_object_ROUTE_15_GATE_1F:
     db 0x0A ; border block
     db 5 ; warp count
@@ -4649,8 +5390,9 @@ map_object_ROUTE_15_GATE_1F:
     db 8, 6, 0, 0xB9
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x05, 0x08, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x31 mapy=5 mapx=8
 
-OW_MAP_HDR_ROUTE_15_GATE_2F equ 0x6D22
+OW_MAP_HDR_ROUTE_15_GATE_2F equ 0x80D9
 map_header_ROUTE_15_GATE_2F:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -4658,7 +5400,7 @@ map_header_ROUTE_15_GATE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6D2E ; object_data_ptr
+    dw 0x80E5 ; object_data_ptr
 map_object_ROUTE_15_GATE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -4666,8 +5408,9 @@ map_object_ROUTE_15_GATE_2F:
     db 1 ; sign count
     times 3 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x20, 0x06, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x20 mapy=6 mapx=8
 
-OW_MAP_HDR_ROUTE_16_GATE_1F equ 0x6D39
+OW_MAP_HDR_ROUTE_16_GATE_1F equ 0x80F6
 map_header_ROUTE_16_GATE_1F:
     db 0x0C       ; tileset GATE
     db 7, 4  ; height, width
@@ -4675,7 +5418,7 @@ map_header_ROUTE_16_GATE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6D45 ; object_data_ptr
+    dw 0x8102 ; object_data_ptr
 map_object_ROUTE_16_GATE_1F:
     db 0x0A ; border block
     db 9 ; warp count
@@ -4690,8 +5433,10 @@ map_object_ROUTE_16_GATE_1F:
     db 12, 6, 0, 0xBB
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x31, 0x09, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x31 mapy=9 mapx=8
+    db 0x0B, 0x07, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x0B mapy=7 mapx=8
 
-OW_MAP_HDR_ROUTE_16_GATE_2F equ 0x6D6D
+OW_MAP_HDR_ROUTE_16_GATE_2F equ 0x8136
 map_header_ROUTE_16_GATE_2F:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -4699,7 +5444,7 @@ map_header_ROUTE_16_GATE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6D79 ; object_data_ptr
+    dw 0x8142 ; object_data_ptr
 map_object_ROUTE_16_GATE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -4707,8 +5452,10 @@ map_object_ROUTE_16_GATE_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x35, 0x06, 0x08, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x35 mapy=6 mapx=8
+    db 0x08, 0x09, 0x06, 0xFE, 0x02, 0x01  ; slot 2: npc sprite=0x08 mapy=9 mapx=6
 
-OW_MAP_HDR_ROUTE_16_FLY_HOUSE equ 0x6D87
+OW_MAP_HDR_ROUTE_16_FLY_HOUSE equ 0x815C
 map_header_ROUTE_16_FLY_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4716,7 +5463,7 @@ map_header_ROUTE_16_FLY_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6D93 ; object_data_ptr
+    dw 0x8168 ; object_data_ptr
 map_object_ROUTE_16_FLY_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4724,8 +5471,10 @@ map_object_ROUTE_16_FLY_HOUSE:
     db 7, 3, 8, 0xFF
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x1D, 0x07, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x1D mapy=7 mapx=6
+    db 0x09, 0x08, 0x0A, 0xFE, 0x00, 0x01  ; slot 2: npc sprite=0x09 mapy=8 mapx=10
 
-OW_MAP_HDR_ROUTE_12_SUPER_ROD_HOUSE equ 0x6D9F
+OW_MAP_HDR_ROUTE_12_SUPER_ROD_HOUSE equ 0x8180
 map_header_ROUTE_12_SUPER_ROD_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4733,7 +5482,7 @@ map_header_ROUTE_12_SUPER_ROD_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6DAB ; object_data_ptr
+    dw 0x818C ; object_data_ptr
 map_object_ROUTE_12_SUPER_ROD_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4741,8 +5490,9 @@ map_object_ROUTE_12_SUPER_ROD_HOUSE:
     db 7, 3, 3, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x08, 0x06, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x27 mapy=8 mapx=6
 
-OW_MAP_HDR_ROUTE_18_GATE_1F equ 0x6DB7
+OW_MAP_HDR_ROUTE_18_GATE_1F equ 0x819E
 map_header_ROUTE_18_GATE_1F:
     db 0x0C       ; tileset GATE
     db 5, 4  ; height, width
@@ -4750,7 +5500,7 @@ map_header_ROUTE_18_GATE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6DC3 ; object_data_ptr
+    dw 0x81AA ; object_data_ptr
 map_object_ROUTE_18_GATE_1F:
     db 0x0A ; border block
     db 5 ; warp count
@@ -4761,8 +5511,9 @@ map_object_ROUTE_18_GATE_1F:
     db 8, 6, 0, 0xBF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x05, 0x08, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x31 mapy=5 mapx=8
 
-OW_MAP_HDR_ROUTE_18_GATE_2F equ 0x6DDB
+OW_MAP_HDR_ROUTE_18_GATE_2F equ 0x81C8
 map_header_ROUTE_18_GATE_2F:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -4770,7 +5521,7 @@ map_header_ROUTE_18_GATE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6DE7 ; object_data_ptr
+    dw 0x81D4 ; object_data_ptr
 map_object_ROUTE_18_GATE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -4778,8 +5529,9 @@ map_object_ROUTE_18_GATE_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x14, 0x06, 0x08, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x14 mapy=6 mapx=8
 
-OW_MAP_HDR_SEAFOAM_ISLANDS_1F equ 0x6DF5
+OW_MAP_HDR_SEAFOAM_ISLANDS_1F equ 0x81E8
 map_header_SEAFOAM_ISLANDS_1F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4787,7 +5539,7 @@ map_header_SEAFOAM_ISLANDS_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6E01 ; object_data_ptr
+    dw 0x81F4 ; object_data_ptr
 map_object_SEAFOAM_ISLANDS_1F:
     db 0x7D ; border block
     db 7 ; warp count
@@ -4800,8 +5552,10 @@ map_object_SEAFOAM_ISLANDS_1F:
     db 15, 23, 4, 0x9F
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x49, 0x0E, 0x16, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x49 mapy=14 mapx=22
+    db 0x49, 0x0B, 0x1E, 0xFF, 0x00, 0x01  ; slot 2: npc sprite=0x49 mapy=11 mapx=30
 
-OW_MAP_HDR_ROUTE_22_GATE equ 0x6E21
+OW_MAP_HDR_ROUTE_22_GATE equ 0x8220
 map_header_ROUTE_22_GATE:
     db 0x0C       ; tileset GATE
     db 4, 5  ; height, width
@@ -4809,7 +5563,7 @@ map_header_ROUTE_22_GATE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6E2D ; object_data_ptr
+    dw 0x822C ; object_data_ptr
 map_object_ROUTE_22_GATE:
     db 0x0A ; border block
     db 4 ; warp count
@@ -4819,8 +5573,9 @@ map_object_ROUTE_22_GATE:
     db 0, 5, 0, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x31, 0x06, 0x0A, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x31 mapy=6 mapx=10
 
-OW_MAP_HDR_VICTORY_ROAD_2F equ 0x6E41
+OW_MAP_HDR_VICTORY_ROAD_2F equ 0x8246
 map_header_VICTORY_ROAD_2F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4828,7 +5583,7 @@ map_header_VICTORY_ROAD_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6E4D ; object_data_ptr
+    dw 0x8252 ; object_data_ptr
 map_object_VICTORY_ROAD_2F:
     db 0x7D ; border block
     db 7 ; warp count
@@ -4841,8 +5596,21 @@ map_object_VICTORY_ROAD_2F:
     db 1, 1, 3, 0xC6
     db 0 ; sign count
     db 13 ; sprite count
+    db 0x0E, 0x0D, 0x10, 0xFF, 0xD2, 0x40, 0x00, 0x09  ; slot 1: trainer sprite=0x0E
+    db 0x0C, 0x11, 0x19, 0xFF, 0xD2, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x0C
+    db 0x07, 0x0C, 0x17, 0xFF, 0xD0, 0x42, 0x00, 0x05  ; slot 3: trainer sprite=0x07
+    db 0x0C, 0x06, 0x08, 0xFF, 0xD0, 0x43, 0x00, 0x06  ; slot 4: trainer sprite=0x0C
+    db 0x0C, 0x07, 0x1E, 0xFF, 0xD2, 0x44, 0x00, 0x05  ; slot 5: trainer sprite=0x0C
+    db 0x09, 0x09, 0x0F, 0xFF, 0xD1, 0x45, 0x00, 0x32  ; slot 6: trainer sprite=0x09
+    db 0x47, 0x09, 0x1F, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
+    db 0x47, 0x0D, 0x16, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x47, 0x0F, 0x0D, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x04, 0x0F, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x49, 0x12, 0x08, 0xFF, 0x00, 0x0A  ; slot 11: npc sprite=0x49 mapy=18 mapx=8
+    db 0x49, 0x09, 0x09, 0xFF, 0x00, 0x0B  ; slot 12: npc sprite=0x49 mapy=9 mapx=9
+    db 0x49, 0x14, 0x1B, 0xFF, 0x00, 0x0C  ; slot 13: npc sprite=0x49 mapy=20 mapx=27
 
-OW_MAP_HDR_ROUTE_12_GATE_2F equ 0x6E6D
+OW_MAP_HDR_ROUTE_12_GATE_2F equ 0x82D0
 map_header_ROUTE_12_GATE_2F:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -4850,7 +5618,7 @@ map_header_ROUTE_12_GATE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6E79 ; object_data_ptr
+    dw 0x82DC ; object_data_ptr
 map_object_ROUTE_12_GATE_2F:
     db 0x0A ; border block
     db 1 ; warp count
@@ -4858,8 +5626,9 @@ map_object_ROUTE_12_GATE_2F:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x1D, 0x08, 0x07, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x1D mapy=8 mapx=7
 
-OW_MAP_HDR_VERMILION_TRADE_HOUSE equ 0x6E87
+OW_MAP_HDR_VERMILION_TRADE_HOUSE equ 0x82F0
 map_header_VERMILION_TRADE_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -4867,7 +5636,7 @@ map_header_VERMILION_TRADE_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6E93 ; object_data_ptr
+    dw 0x82FC ; object_data_ptr
 map_object_VERMILION_TRADE_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -4875,8 +5644,9 @@ map_object_VERMILION_TRADE_HOUSE:
     db 7, 3, 7, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x10, 0x09, 0x07, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x10 mapy=9 mapx=7
 
-OW_MAP_HDR_DIGLETTS_CAVE equ 0x6E9F
+OW_MAP_HDR_DIGLETTS_CAVE equ 0x830E
 map_header_DIGLETTS_CAVE:
     db 0x11       ; tileset CAVERN
     db 18, 20  ; height, width
@@ -4884,7 +5654,7 @@ map_header_DIGLETTS_CAVE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6EAB ; object_data_ptr
+    dw 0x831A ; object_data_ptr
 map_object_DIGLETTS_CAVE:
     db 0x19 ; border block
     db 2 ; warp count
@@ -4893,7 +5663,7 @@ map_object_DIGLETTS_CAVE:
     db 0 ; sign count
     db 0 ; sprite count
 
-OW_MAP_HDR_VICTORY_ROAD_3F equ 0x6EB7
+OW_MAP_HDR_VICTORY_ROAD_3F equ 0x8326
 map_header_VICTORY_ROAD_3F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -4901,7 +5671,7 @@ map_header_VICTORY_ROAD_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6EC3 ; object_data_ptr
+    dw 0x8332 ; object_data_ptr
 map_object_VICTORY_ROAD_3F:
     db 0x7D ; border block
     db 4 ; warp count
@@ -4911,8 +5681,18 @@ map_object_VICTORY_ROAD_3F:
     db 0, 2, 6, 0xC2
     db 0 ; sign count
     db 10 ; sprite count
+    db 0x07, 0x09, 0x20, 0xFF, 0xD2, 0x40, 0x00, 0x02  ; slot 1: trainer sprite=0x07
+    db 0x06, 0x11, 0x0B, 0xFF, 0xD3, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x06
+    db 0x07, 0x12, 0x0A, 0xFF, 0xD2, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x07
+    db 0x06, 0x07, 0x11, 0xFF, 0xD3, 0x43, 0x00, 0x03  ; slot 4: trainer sprite=0x06
+    db 0x47, 0x09, 0x1E, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x0B, 0x0B, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x49, 0x07, 0x1A, 0xFF, 0x00, 0x06  ; slot 7: npc sprite=0x49 mapy=7 mapx=26
+    db 0x49, 0x10, 0x11, 0xFF, 0x00, 0x07  ; slot 8: npc sprite=0x49 mapy=16 mapx=17
+    db 0x49, 0x0E, 0x1C, 0xFF, 0x00, 0x08  ; slot 9: npc sprite=0x49 mapy=14 mapx=28
+    db 0x49, 0x13, 0x1A, 0xFF, 0x00, 0x09  ; slot 10: npc sprite=0x49 mapy=19 mapx=26
 
-OW_MAP_HDR_ROCKET_HIDEOUT_B1F equ 0x6ED7
+OW_MAP_HDR_ROCKET_HIDEOUT_B1F equ 0x838C
 map_header_ROCKET_HIDEOUT_B1F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -4920,7 +5700,7 @@ map_header_ROCKET_HIDEOUT_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6EE3 ; object_data_ptr
+    dw 0x8398 ; object_data_ptr
 map_object_ROCKET_HIDEOUT_B1F:
     db 0x2E ; border block
     db 5 ; warp count
@@ -4931,8 +5711,15 @@ map_object_ROCKET_HIDEOUT_B1F:
     db 19, 25, 1, 0xCB
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x18, 0x0C, 0x1E, 0xFF, 0xD2, 0x40, 0x00, 0x08  ; slot 1: trainer sprite=0x18
+    db 0x18, 0x0A, 0x10, 0xFF, 0xD3, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x18
+    db 0x18, 0x15, 0x16, 0xFF, 0xD0, 0x42, 0x00, 0x0A  ; slot 3: trainer sprite=0x18
+    db 0x18, 0x1D, 0x13, 0xFF, 0xD3, 0x43, 0x00, 0x0B  ; slot 4: trainer sprite=0x18
+    db 0x18, 0x16, 0x20, 0xFF, 0xD2, 0x44, 0x00, 0x0C  ; slot 5: trainer sprite=0x18
+    db 0x47, 0x12, 0x0F, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x47, 0x15, 0x0D, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
 
-OW_MAP_HDR_ROCKET_HIDEOUT_B2F equ 0x6EFB
+OW_MAP_HDR_ROCKET_HIDEOUT_B2F equ 0x83E6
 map_header_ROCKET_HIDEOUT_B2F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -4940,7 +5727,7 @@ map_header_ROCKET_HIDEOUT_B2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6F07 ; object_data_ptr
+    dw 0x83F2 ; object_data_ptr
 map_object_ROCKET_HIDEOUT_B2F:
     db 0x2E ; border block
     db 5 ; warp count
@@ -4951,8 +5738,13 @@ map_object_ROCKET_HIDEOUT_B2F:
     db 19, 25, 1, 0xCB
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x18, 0x10, 0x18, 0xFF, 0xD0, 0x40, 0x00, 0x0D  ; slot 1: trainer sprite=0x18
+    db 0x47, 0x0F, 0x05, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x0C, 0x14, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x10, 0x0A, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x19, 0x07, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
 
-OW_MAP_HDR_ROCKET_HIDEOUT_B3F equ 0x6F1F
+OW_MAP_HDR_ROCKET_HIDEOUT_B3F equ 0x842E
 map_header_ROCKET_HIDEOUT_B3F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -4960,7 +5752,7 @@ map_header_ROCKET_HIDEOUT_B3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6F2B ; object_data_ptr
+    dw 0x843A ; object_data_ptr
 map_object_ROCKET_HIDEOUT_B3F:
     db 0x2E ; border block
     db 2 ; warp count
@@ -4968,8 +5760,12 @@ map_object_ROCKET_HIDEOUT_B3F:
     db 18, 19, 0, 0xCA
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x18, 0x1A, 0x0E, 0xFF, 0xD3, 0x40, 0x00, 0x0E  ; slot 1: trainer sprite=0x18
+    db 0x18, 0x10, 0x1E, 0xFF, 0xD1, 0x41, 0x00, 0x0F  ; slot 2: trainer sprite=0x18
+    db 0x47, 0x15, 0x1E, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x12, 0x18, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_ROCKET_HIDEOUT_B4F equ 0x6F37
+OW_MAP_HDR_ROCKET_HIDEOUT_B4F equ 0x8464
 map_header_ROCKET_HIDEOUT_B4F:
     db 0x16       ; tileset FACILITY
     db 12, 15  ; height, width
@@ -4977,7 +5773,7 @@ map_header_ROCKET_HIDEOUT_B4F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6F43 ; object_data_ptr
+    dw 0x8470 ; object_data_ptr
 map_object_ROCKET_HIDEOUT_B4F:
     db 0x2E ; border block
     db 3 ; warp count
@@ -4986,8 +5782,17 @@ map_object_ROCKET_HIDEOUT_B4F:
     db 15, 25, 1, 0xCB
     db 0 ; sign count
     db 9 ; sprite count
+    db 0x17, 0x07, 0x1D, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x17
+    db 0x46, 0x0E, 0x1D, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x46 mapy=14 mapx=29
+    db 0x45, 0x0E, 0x1C, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x45 mapy=14 mapx=28
+    db 0x18, 0x06, 0x0F, 0xFF, 0xD0, 0x43, 0x00, 0x12  ; slot 4: trainer sprite=0x18
+    db 0x47, 0x10, 0x0E, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x08, 0x0D, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x47, 0x18, 0x10, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
+    db 0x47, 0x06, 0x1D, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x47, 0x06, 0x0E, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
 
-OW_MAP_HDR_ROCKET_HIDEOUT_ELEVATOR equ 0x6F53
+OW_MAP_HDR_ROCKET_HIDEOUT_ELEVATOR equ 0x84BF
 map_header_ROCKET_HIDEOUT_ELEVATOR:
     db 0x12       ; tileset LOBBY
     db 4, 3  ; height, width
@@ -4995,7 +5800,7 @@ map_header_ROCKET_HIDEOUT_ELEVATOR:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6F5F ; object_data_ptr
+    dw 0x84CB ; object_data_ptr
 map_object_ROCKET_HIDEOUT_ELEVATOR:
     db 0x0F ; border block
     db 2 ; warp count
@@ -5005,7 +5810,7 @@ map_object_ROCKET_HIDEOUT_ELEVATOR:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_SILPH_CO_2F equ 0x6F6E
+OW_MAP_HDR_SILPH_CO_2F equ 0x84DA
 map_header_SILPH_CO_2F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -5013,7 +5818,7 @@ map_header_SILPH_CO_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6F7A ; object_data_ptr
+    dw 0x84E6 ; object_data_ptr
 map_object_SILPH_CO_2F:
     db 0x2E ; border block
     db 7 ; warp count
@@ -5026,8 +5831,13 @@ map_object_SILPH_CO_2F:
     db 15, 9, 4, 0xD3
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x1B, 0x05, 0x0E, 0xFF, 0xD1, 0x00  ; slot 1: npc sprite=0x1B mapy=5 mapx=14
+    db 0x20, 0x10, 0x09, 0xFF, 0xD0, 0x41, 0x00, 0x02  ; slot 2: trainer sprite=0x20
+    db 0x20, 0x11, 0x1C, 0xFF, 0xD2, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x20
+    db 0x18, 0x0F, 0x14, 0xFF, 0xD1, 0x43, 0x00, 0x17  ; slot 4: trainer sprite=0x18
+    db 0x18, 0x0B, 0x1C, 0xFF, 0xD1, 0x44, 0x00, 0x18  ; slot 5: trainer sprite=0x18
 
-OW_MAP_HDR_SILPH_CO_3F equ 0x6F9A
+OW_MAP_HDR_SILPH_CO_3F equ 0x852C
 map_header_SILPH_CO_3F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -5035,7 +5845,7 @@ map_header_SILPH_CO_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6FA6 ; object_data_ptr
+    dw 0x8538 ; object_data_ptr
 map_object_SILPH_CO_3F:
     db 0x2E ; border block
     db 10 ; warp count
@@ -5051,8 +5861,12 @@ map_object_SILPH_CO_3F:
     db 15, 27, 3, 0xD0
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x2C, 0x0C, 0x1C, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=12 mapx=28
+    db 0x18, 0x0B, 0x18, 0xFF, 0xD2, 0x41, 0x00, 0x19  ; slot 2: trainer sprite=0x18
+    db 0x20, 0x0D, 0x0B, 0xFF, 0xD0, 0x42, 0x00, 0x04  ; slot 3: trainer sprite=0x20
+    db 0x47, 0x09, 0x0C, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_SILPH_CO_4F equ 0x6FD2
+OW_MAP_HDR_SILPH_CO_4F equ 0x8581
 map_header_SILPH_CO_4F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -5060,7 +5874,7 @@ map_header_SILPH_CO_4F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x6FDE ; object_data_ptr
+    dw 0x858D ; object_data_ptr
 map_object_SILPH_CO_4F:
     db 0x2E ; border block
     db 7 ; warp count
@@ -5073,8 +5887,15 @@ map_object_SILPH_CO_4F:
     db 11, 17, 5, 0xEA
     db 0 ; sign count
     db 7 ; sprite count
+    db 0x2C, 0x06, 0x0A, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=6 mapx=10
+    db 0x18, 0x12, 0x0D, 0xFF, 0xD3, 0x41, 0x00, 0x1A  ; slot 2: trainer sprite=0x18
+    db 0x20, 0x0A, 0x12, 0xFF, 0xD2, 0x42, 0x00, 0x05  ; slot 3: trainer sprite=0x20
+    db 0x18, 0x0E, 0x1E, 0xFF, 0xD1, 0x43, 0x00, 0x1B  ; slot 4: trainer sprite=0x18
+    db 0x47, 0x0D, 0x07, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x0B, 0x08, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x47, 0x0C, 0x09, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
 
-OW_MAP_HDR_SILPH_CO_5F equ 0x6FFE
+OW_MAP_HDR_SILPH_CO_5F equ 0x85E0
 map_header_SILPH_CO_5F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -5082,7 +5903,7 @@ map_header_SILPH_CO_5F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x700A ; object_data_ptr
+    dw 0x85EC ; object_data_ptr
 map_object_SILPH_CO_5F:
     db 0x2E ; border block
     db 7 ; warp count
@@ -5095,8 +5916,19 @@ map_object_SILPH_CO_5F:
     db 15, 3, 5, 0xD0
     db 0 ; sign count
     db 11 ; sprite count
+    db 0x2C, 0x0D, 0x11, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=13 mapx=17
+    db 0x18, 0x14, 0x0C, 0xFF, 0xD3, 0x41, 0x00, 0x1C  ; slot 2: trainer sprite=0x18
+    db 0x20, 0x07, 0x0C, 0xFF, 0xD3, 0x42, 0x00, 0x06  ; slot 3: trainer sprite=0x20
+    db 0x21, 0x0E, 0x16, 0xFF, 0xD1, 0x43, 0x00, 0x01  ; slot 4: trainer sprite=0x21
+    db 0x18, 0x08, 0x20, 0xFF, 0xD1, 0x44, 0x00, 0x1D  ; slot 5: trainer sprite=0x18
+    db 0x47, 0x11, 0x06, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x47, 0x0A, 0x08, 0xFF, 0xFF, 0x86, 0x00  ; slot 7: item sprite=0x47
+    db 0x47, 0x14, 0x19, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
+    db 0x4C, 0x10, 0x1A, 0xFF, 0xFF, 0x08  ; slot 9: npc sprite=0x4C mapy=16 mapx=26
+    db 0x4C, 0x0E, 0x1D, 0xFF, 0xFF, 0x09  ; slot 10: npc sprite=0x4C mapy=14 mapx=29
+    db 0x4C, 0x0A, 0x1C, 0xFF, 0xFF, 0x0A  ; slot 11: npc sprite=0x4C mapy=10 mapx=28
 
-OW_MAP_HDR_SILPH_CO_6F equ 0x702A
+OW_MAP_HDR_SILPH_CO_6F equ 0x8659
 map_header_SILPH_CO_6F:
     db 0x16       ; tileset FACILITY
     db 9, 13  ; height, width
@@ -5104,7 +5936,7 @@ map_header_SILPH_CO_6F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7036 ; object_data_ptr
+    dw 0x8665 ; object_data_ptr
 map_object_SILPH_CO_6F:
     db 0x2E ; border block
     db 5 ; warp count
@@ -5115,8 +5947,18 @@ map_object_SILPH_CO_6F:
     db 3, 23, 6, 0xCF
     db 0 ; sign count
     db 10 ; sprite count
+    db 0x2C, 0x0A, 0x0E, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=10 mapx=14
+    db 0x2C, 0x0A, 0x18, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x2C mapy=10 mapx=24
+    db 0x1B, 0x0A, 0x19, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x1B mapy=10 mapx=25
+    db 0x1B, 0x0E, 0x0F, 0xFF, 0xD3, 0x03  ; slot 4: npc sprite=0x1B mapy=14 mapx=15
+    db 0x2C, 0x11, 0x16, 0xFF, 0xD1, 0x04  ; slot 5: npc sprite=0x2C mapy=17 mapx=22
+    db 0x18, 0x07, 0x15, 0xFF, 0xD3, 0x45, 0x00, 0x1E  ; slot 6: trainer sprite=0x18
+    db 0x20, 0x0C, 0x0B, 0xFF, 0xD0, 0x46, 0x00, 0x07  ; slot 7: trainer sprite=0x20
+    db 0x18, 0x13, 0x12, 0xFF, 0xD2, 0x47, 0x00, 0x1F  ; slot 8: trainer sprite=0x18
+    db 0x47, 0x10, 0x07, 0xFF, 0xFF, 0x88, 0x00  ; slot 9: item sprite=0x47
+    db 0x47, 0x13, 0x06, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
 
-OW_MAP_HDR_SILPH_CO_7F equ 0x704E
+OW_MAP_HDR_SILPH_CO_7F equ 0x86C1
 map_header_SILPH_CO_7F:
     db 0x16       ; tileset FACILITY
     db 9, 13  ; height, width
@@ -5124,7 +5966,7 @@ map_header_SILPH_CO_7F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x705A ; object_data_ptr
+    dw 0x86CD ; object_data_ptr
 map_object_SILPH_CO_7F:
     db 0x2E ; border block
     db 6 ; warp count
@@ -5135,9 +5977,20 @@ map_object_SILPH_CO_7F:
     db 3, 5, 8, 0xD0
     db 15, 21, 3, 0xD2
     db 0 ; sign count
-    db 12 ; sprite count
+    db 11 ; sprite count
+    db 0x2C, 0x09, 0x05, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=9 mapx=5
+    db 0x2C, 0x11, 0x11, 0xFF, 0xD1, 0x01  ; slot 2: npc sprite=0x2C mapy=17 mapx=17
+    db 0x2C, 0x0E, 0x0B, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x2C mapy=14 mapx=11
+    db 0x1B, 0x0C, 0x0E, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x1B mapy=12 mapx=14
+    db 0x18, 0x05, 0x11, 0xFF, 0xD0, 0x44, 0x00, 0x20  ; slot 5: trainer sprite=0x18
+    db 0x20, 0x11, 0x06, 0xFF, 0xD0, 0x45, 0x00, 0x08  ; slot 6: trainer sprite=0x20
+    db 0x18, 0x06, 0x18, 0xFF, 0xD2, 0x46, 0x00, 0x21  ; slot 7: trainer sprite=0x18
+    db 0x18, 0x12, 0x17, 0xFF, 0xD3, 0x47, 0x00, 0x22  ; slot 8: trainer sprite=0x18
+    db 0x02, 0x0B, 0x07, 0xFF, 0xD1, 0x08  ; slot 9: npc sprite=0x02 mapy=11 mapx=7
+    db 0x47, 0x0D, 0x05, 0xFF, 0xFF, 0x89, 0x00  ; slot 10: item sprite=0x47
+    db 0x47, 0x0F, 0x1C, 0xFF, 0xFF, 0x8A, 0x00  ; slot 11: item sprite=0x47
 
-OW_MAP_HDR_SILPH_CO_8F equ 0x7076
+OW_MAP_HDR_SILPH_CO_8F equ 0x8735
 map_header_SILPH_CO_8F:
     db 0x16       ; tileset FACILITY
     db 9, 13  ; height, width
@@ -5145,7 +5998,7 @@ map_header_SILPH_CO_8F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7082 ; object_data_ptr
+    dw 0x8741 ; object_data_ptr
 map_object_SILPH_CO_8F:
     db 0x2E ; border block
     db 7 ; warp count
@@ -5158,8 +6011,12 @@ map_object_SILPH_CO_8F:
     db 9, 11, 3, 0xD5
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x2C, 0x06, 0x08, 0xFF, 0xFF, 0x00  ; slot 1: npc sprite=0x2C mapy=6 mapx=8
+    db 0x18, 0x06, 0x17, 0xFF, 0xD2, 0x41, 0x00, 0x23  ; slot 2: trainer sprite=0x18
+    db 0x20, 0x06, 0x0E, 0xFF, 0xD0, 0x42, 0x00, 0x09  ; slot 3: trainer sprite=0x20
+    db 0x18, 0x13, 0x10, 0xFF, 0xD3, 0x43, 0x00, 0x24  ; slot 4: trainer sprite=0x18
 
-OW_MAP_HDR_POKEMON_MANSION_2F equ 0x70A2
+OW_MAP_HDR_POKEMON_MANSION_2F equ 0x877F
 map_header_POKEMON_MANSION_2F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -5167,7 +6024,7 @@ map_header_POKEMON_MANSION_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x70AE ; object_data_ptr
+    dw 0x878B ; object_data_ptr
 map_object_POKEMON_MANSION_2F:
     db 0x01 ; border block
     db 4 ; warp count
@@ -5177,8 +6034,12 @@ map_object_POKEMON_MANSION_2F:
     db 1, 6, 1, 0xD7
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x0C, 0x15, 0x07, 0xFE, 0x02, 0x40, 0x00, 0x07  ; slot 1: trainer sprite=0x0C
+    db 0x47, 0x0B, 0x20, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x4B, 0x06, 0x16, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x4B mapy=6 mapx=22
+    db 0x4B, 0x1A, 0x07, 0xFF, 0xFF, 0x03  ; slot 4: npc sprite=0x4B mapy=26 mapx=7
 
-OW_MAP_HDR_POKEMON_MANSION_3F equ 0x70C2
+OW_MAP_HDR_POKEMON_MANSION_3F equ 0x87BA
 map_header_POKEMON_MANSION_3F:
     db 0x16       ; tileset FACILITY
     db 9, 15  ; height, width
@@ -5186,7 +6047,7 @@ map_header_POKEMON_MANSION_3F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x70CE ; object_data_ptr
+    dw 0x87C6 ; object_data_ptr
 map_object_POKEMON_MANSION_3F:
     db 0x01 ; border block
     db 3 ; warp count
@@ -5195,8 +6056,13 @@ map_object_POKEMON_MANSION_3F:
     db 14, 25, 2, 0xD6
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x0C, 0x0F, 0x09, 0xFE, 0x02, 0x40, 0x00, 0x08  ; slot 1: trainer sprite=0x0C
+    db 0x20, 0x0F, 0x18, 0xFF, 0xD2, 0x41, 0x00, 0x0C  ; slot 2: trainer sprite=0x20
+    db 0x47, 0x14, 0x05, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x09, 0x1D, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x4B, 0x10, 0x0A, 0xFF, 0xFF, 0x04  ; slot 5: npc sprite=0x4B mapy=16 mapx=10
 
-OW_MAP_HDR_POKEMON_MANSION_B1F equ 0x70DE
+OW_MAP_HDR_POKEMON_MANSION_B1F equ 0x87FA
 map_header_POKEMON_MANSION_B1F:
     db 0x16       ; tileset FACILITY
     db 14, 15  ; height, width
@@ -5204,15 +6070,23 @@ map_header_POKEMON_MANSION_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x70EA ; object_data_ptr
+    dw 0x8806 ; object_data_ptr
 map_object_POKEMON_MANSION_B1F:
     db 0x01 ; border block
     db 1 ; warp count
     db 22, 23, 5, 0xA5
     db 0 ; sign count
     db 8 ; sprite count
+    db 0x0C, 0x1B, 0x14, 0xFF, 0xFF, 0x40, 0x00, 0x09  ; slot 1: trainer sprite=0x0C
+    db 0x20, 0x0F, 0x1F, 0xFF, 0xD0, 0x41, 0x00, 0x0D  ; slot 2: trainer sprite=0x20
+    db 0x47, 0x06, 0x0E, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x1A, 0x05, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x1D, 0x17, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x08, 0x09, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
+    db 0x4B, 0x18, 0x14, 0xFF, 0xFF, 0x06  ; slot 7: npc sprite=0x4B mapy=24 mapx=20
+    db 0x47, 0x11, 0x09, 0xFF, 0xFF, 0x87, 0x00  ; slot 8: item sprite=0x47
 
-OW_MAP_HDR_SAFARI_ZONE_EAST equ 0x70F2
+OW_MAP_HDR_SAFARI_ZONE_EAST equ 0x8847
 map_header_SAFARI_ZONE_EAST:
     db 0x03       ; tileset FOREST
     db 13, 15  ; height, width
@@ -5220,7 +6094,7 @@ map_header_SAFARI_ZONE_EAST:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x70FE ; object_data_ptr
+    dw 0x8853 ; object_data_ptr
 map_object_SAFARI_ZONE_EAST:
     db 0x00 ; border block
     db 5 ; warp count
@@ -5232,8 +6106,12 @@ map_object_SAFARI_ZONE_EAST:
     db 3 ; sign count
     times 9 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x47, 0x0E, 0x19, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x0B, 0x07, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x11, 0x18, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x10, 0x13, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_SAFARI_ZONE_NORTH equ 0x711F
+OW_MAP_HDR_SAFARI_ZONE_NORTH equ 0x8890
 map_header_SAFARI_ZONE_NORTH:
     db 0x03       ; tileset FOREST
     db 18, 20  ; height, width
@@ -5241,7 +6119,7 @@ map_header_SAFARI_ZONE_NORTH:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x712B ; object_data_ptr
+    dw 0x889C ; object_data_ptr
 map_object_SAFARI_ZONE_NORTH:
     db 0x00 ; border block
     db 9 ; warp count
@@ -5257,8 +6135,10 @@ map_object_SAFARI_ZONE_NORTH:
     db 5 ; sign count
     times 15 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x47, 0x05, 0x1D, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x0B, 0x17, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
 
-OW_MAP_HDR_SAFARI_ZONE_WEST equ 0x7162
+OW_MAP_HDR_SAFARI_ZONE_WEST equ 0x88E1
 map_header_SAFARI_ZONE_WEST:
     db 0x03       ; tileset FOREST
     db 13, 15  ; height, width
@@ -5266,7 +6146,7 @@ map_header_SAFARI_ZONE_WEST:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x716E ; object_data_ptr
+    dw 0x88ED ; object_data_ptr
 map_object_SAFARI_ZONE_WEST:
     db 0x00 ; border block
     db 8 ; warp count
@@ -5281,8 +6161,12 @@ map_object_SAFARI_ZONE_WEST:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 4 ; sprite count
+    db 0x47, 0x18, 0x0C, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x0B, 0x0D, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x16, 0x16, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x0B, 0x17, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_SAFARI_ZONE_CENTER equ 0x719E
+OW_MAP_HDR_SAFARI_ZONE_CENTER equ 0x8939
 map_header_SAFARI_ZONE_CENTER:
     db 0x03       ; tileset FOREST
     db 13, 15  ; height, width
@@ -5290,7 +6174,7 @@ map_header_SAFARI_ZONE_CENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x71AA ; object_data_ptr
+    dw 0x8945 ; object_data_ptr
 map_object_SAFARI_ZONE_CENTER:
     db 0x00 ; border block
     db 9 ; warp count
@@ -5306,8 +6190,9 @@ map_object_SAFARI_ZONE_CENTER:
     db 2 ; sign count
     times 6 db 0 ; sign stubs
     db 1 ; sprite count
+    db 0x47, 0x0E, 0x12, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
 
-OW_MAP_HDR_SAFARI_ZONE_CENTER_REST_HOUSE equ 0x71D8
+OW_MAP_HDR_SAFARI_ZONE_CENTER_REST_HOUSE equ 0x897A
 map_header_SAFARI_ZONE_CENTER_REST_HOUSE:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -5315,7 +6200,7 @@ map_header_SAFARI_ZONE_CENTER_REST_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x71E4 ; object_data_ptr
+    dw 0x8986 ; object_data_ptr
 map_object_SAFARI_ZONE_CENTER_REST_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5323,8 +6208,10 @@ map_object_SAFARI_ZONE_CENTER_REST_HOUSE:
     db 7, 3, 8, 0xDC
     db 0 ; sign count
     db 2 ; sprite count
+    db 0x0D, 0x06, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x0D mapy=6 mapx=7
+    db 0x20, 0x08, 0x05, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x20 mapy=8 mapx=5
 
-OW_MAP_HDR_SAFARI_ZONE_SECRET_HOUSE equ 0x71F0
+OW_MAP_HDR_SAFARI_ZONE_SECRET_HOUSE equ 0x899E
 map_header_SAFARI_ZONE_SECRET_HOUSE:
     db 0x14       ; tileset LAB
     db 4, 4  ; height, width
@@ -5332,7 +6219,7 @@ map_header_SAFARI_ZONE_SECRET_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x71FC ; object_data_ptr
+    dw 0x89AA ; object_data_ptr
 map_object_SAFARI_ZONE_SECRET_HOUSE:
     db 0x17 ; border block
     db 2 ; warp count
@@ -5340,8 +6227,9 @@ map_object_SAFARI_ZONE_SECRET_HOUSE:
     db 7, 3, 6, 0xDB
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x27, 0x07, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=7
 
-OW_MAP_HDR_SAFARI_ZONE_WEST_REST_HOUSE equ 0x7208
+OW_MAP_HDR_SAFARI_ZONE_WEST_REST_HOUSE equ 0x89BC
 map_header_SAFARI_ZONE_WEST_REST_HOUSE:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -5349,7 +6237,7 @@ map_header_SAFARI_ZONE_WEST_REST_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7214 ; object_data_ptr
+    dw 0x89C8 ; object_data_ptr
 map_object_SAFARI_ZONE_WEST_REST_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5357,8 +6245,11 @@ map_object_SAFARI_ZONE_WEST_REST_HOUSE:
     db 7, 3, 7, 0xDB
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x20, 0x08, 0x08, 0xFE, 0x00, 0x00  ; slot 1: npc sprite=0x20 mapy=8 mapx=8
+    db 0x07, 0x06, 0x04, 0xFF, 0xD3, 0x01  ; slot 2: npc sprite=0x07 mapy=6 mapx=4
+    db 0x1B, 0x06, 0x0A, 0xFF, 0xD0, 0x02  ; slot 3: npc sprite=0x1B mapy=6 mapx=10
 
-OW_MAP_HDR_SAFARI_ZONE_EAST_REST_HOUSE equ 0x7220
+OW_MAP_HDR_SAFARI_ZONE_EAST_REST_HOUSE equ 0x89E6
 map_header_SAFARI_ZONE_EAST_REST_HOUSE:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -5366,7 +6257,7 @@ map_header_SAFARI_ZONE_EAST_REST_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x722C ; object_data_ptr
+    dw 0x89F2 ; object_data_ptr
 map_object_SAFARI_ZONE_EAST_REST_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5374,8 +6265,11 @@ map_object_SAFARI_ZONE_EAST_REST_HOUSE:
     db 7, 3, 4, 0xD9
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x20, 0x07, 0x05, 0xFE, 0x01, 0x00  ; slot 1: npc sprite=0x20 mapy=7 mapx=5
+    db 0x21, 0x06, 0x08, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x21 mapy=6 mapx=8
+    db 0x2C, 0x06, 0x09, 0xFF, 0xFF, 0x02  ; slot 3: npc sprite=0x2C mapy=6 mapx=9
 
-OW_MAP_HDR_SAFARI_ZONE_NORTH_REST_HOUSE equ 0x7238
+OW_MAP_HDR_SAFARI_ZONE_NORTH_REST_HOUSE equ 0x8A10
 map_header_SAFARI_ZONE_NORTH_REST_HOUSE:
     db 0x0C       ; tileset GATE
     db 4, 4  ; height, width
@@ -5383,7 +6277,7 @@ map_header_SAFARI_ZONE_NORTH_REST_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7244 ; object_data_ptr
+    dw 0x8A1C ; object_data_ptr
 map_object_SAFARI_ZONE_NORTH_REST_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5391,8 +6285,11 @@ map_object_SAFARI_ZONE_NORTH_REST_HOUSE:
     db 7, 3, 8, 0xDA
     db 0 ; sign count
     db 3 ; sprite count
+    db 0x20, 0x07, 0x0A, 0xFE, 0x02, 0x00  ; slot 1: npc sprite=0x20 mapy=7 mapx=10
+    db 0x23, 0x08, 0x07, 0xFF, 0xFF, 0x01  ; slot 2: npc sprite=0x23 mapy=8 mapx=7
+    db 0x10, 0x09, 0x05, 0xFE, 0x01, 0x02  ; slot 3: npc sprite=0x10 mapy=9 mapx=5
 
-OW_MAP_HDR_CERULEAN_CAVE_2F equ 0x7250
+OW_MAP_HDR_CERULEAN_CAVE_2F equ 0x8A3A
 map_header_CERULEAN_CAVE_2F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -5400,7 +6297,7 @@ map_header_CERULEAN_CAVE_2F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x725C ; object_data_ptr
+    dw 0x8A46 ; object_data_ptr
 map_object_CERULEAN_CAVE_2F:
     db 0x7D ; border block
     db 6 ; warp count
@@ -5412,8 +6309,12 @@ map_object_CERULEAN_CAVE_2F:
     db 11, 3, 7, 0xE4
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x47, 0x0F, 0x04, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x0B, 0x14, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x0F, 0x17, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x0D, 0x1F, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_CERULEAN_CAVE_B1F equ 0x7278
+OW_MAP_HDR_CERULEAN_CAVE_B1F equ 0x8A7E
 map_header_CERULEAN_CAVE_B1F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -5421,15 +6322,20 @@ map_header_CERULEAN_CAVE_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7284 ; object_data_ptr
+    dw 0x8A8A ; object_data_ptr
 map_object_CERULEAN_CAVE_B1F:
     db 0x7D ; border block
     db 1 ; warp count
     db 6, 3, 8, 0xE4
     db 0 ; sign count
     db 5 ; sprite count
+    db 0x05, 0x11, 0x1F, 0xFF, 0xD0, 0x40, 0x00, 0x46  ; slot 1: trainer sprite=0x05
+    db 0x47, 0x05, 0x1E, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x11, 0x06, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x11, 0x07, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x07, 0x13, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
 
-OW_MAP_HDR_CERULEAN_CAVE_1F equ 0x728C
+OW_MAP_HDR_CERULEAN_CAVE_1F equ 0x8AB6
 map_header_CERULEAN_CAVE_1F:
     db 0x11       ; tileset CAVERN
     db 9, 15  ; height, width
@@ -5437,7 +6343,7 @@ map_header_CERULEAN_CAVE_1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7298 ; object_data_ptr
+    dw 0x8AC2 ; object_data_ptr
 map_object_CERULEAN_CAVE_1F:
     db 0x7D ; border block
     db 9 ; warp count
@@ -5452,8 +6358,12 @@ map_object_CERULEAN_CAVE_1F:
     db 6, 0, 0, 0xE3
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x47, 0x14, 0x21, 0xFF, 0xFF, 0x80, 0x00  ; slot 1: item sprite=0x47
+    db 0x47, 0x0F, 0x0B, 0xFF, 0xFF, 0x81, 0x00  ; slot 2: item sprite=0x47
+    db 0x47, 0x0D, 0x21, 0xFF, 0xFF, 0x82, 0x00  ; slot 3: item sprite=0x47
+    db 0x47, 0x07, 0x16, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
 
-OW_MAP_HDR_NAME_RATERS_HOUSE equ 0x72C0
+OW_MAP_HDR_NAME_RATERS_HOUSE equ 0x8B06
 map_header_NAME_RATERS_HOUSE:
     db 0x08       ; tileset HOUSE
     db 4, 4  ; height, width
@@ -5461,7 +6371,7 @@ map_header_NAME_RATERS_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x72CC ; object_data_ptr
+    dw 0x8B12 ; object_data_ptr
 map_object_NAME_RATERS_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5469,8 +6379,9 @@ map_object_NAME_RATERS_HOUSE:
     db 7, 3, 5, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x2B, 0x07, 0x09, 0xFF, 0xD2, 0x00  ; slot 1: npc sprite=0x2B mapy=7 mapx=9
 
-OW_MAP_HDR_CERULEAN_BADGE_HOUSE equ 0x72D8
+OW_MAP_HDR_CERULEAN_BADGE_HOUSE equ 0x8B24
 map_header_CERULEAN_BADGE_HOUSE:
     db 0x0D       ; tileset SHIP
     db 4, 4  ; height, width
@@ -5478,7 +6389,7 @@ map_header_CERULEAN_BADGE_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x72E4 ; object_data_ptr
+    dw 0x8B30 ; object_data_ptr
 map_object_CERULEAN_BADGE_HOUSE:
     db 0x0C ; border block
     db 3 ; warp count
@@ -5487,8 +6398,9 @@ map_object_CERULEAN_BADGE_HOUSE:
     db 7, 3, 8, 0xFF
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x0A, 0x07, 0x09, 0xFF, 0xD3, 0x00  ; slot 1: npc sprite=0x0A mapy=7 mapx=9
 
-OW_MAP_HDR_ROCK_TUNNEL_B1F equ 0x72F4
+OW_MAP_HDR_ROCK_TUNNEL_B1F equ 0x8B46
 map_header_ROCK_TUNNEL_B1F:
     db 0x11       ; tileset CAVERN
     db 18, 20  ; height, width
@@ -5496,7 +6408,7 @@ map_header_ROCK_TUNNEL_B1F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7300 ; object_data_ptr
+    dw 0x8B52 ; object_data_ptr
 map_object_ROCK_TUNNEL_B1F:
     db 0x03 ; border block
     db 4 ; warp count
@@ -5506,8 +6418,16 @@ map_object_ROCK_TUNNEL_B1F:
     db 3, 3, 7, 0x52
     db 0 ; sign count
     db 8 ; sprite count
+    db 0x06, 0x11, 0x0F, 0xFF, 0xD0, 0x40, 0x00, 0x09  ; slot 1: trainer sprite=0x06
+    db 0x0E, 0x0E, 0x0A, 0xFF, 0xD0, 0x41, 0x00, 0x09  ; slot 2: trainer sprite=0x0E
+    db 0x0C, 0x09, 0x07, 0xFF, 0xD0, 0x42, 0x00, 0x03  ; slot 3: trainer sprite=0x0C
+    db 0x0C, 0x19, 0x18, 0xFF, 0xD3, 0x43, 0x00, 0x04  ; slot 4: trainer sprite=0x0C
+    db 0x0E, 0x0E, 0x22, 0xFF, 0xD0, 0x44, 0x00, 0x0A  ; slot 5: trainer sprite=0x0E
+    db 0x06, 0x20, 0x12, 0xFF, 0xD3, 0x45, 0x00, 0x0A  ; slot 6: trainer sprite=0x06
+    db 0x0E, 0x09, 0x25, 0xFF, 0xD3, 0x46, 0x00, 0x0B  ; slot 7: trainer sprite=0x0E
+    db 0x0C, 0x22, 0x1E, 0xFF, 0xD0, 0x47, 0x00, 0x05  ; slot 8: trainer sprite=0x0C
 
-OW_MAP_HDR_SILPH_CO_9F equ 0x7314
+OW_MAP_HDR_SILPH_CO_9F equ 0x8BA6
 map_header_SILPH_CO_9F:
     db 0x16       ; tileset FACILITY
     db 9, 13  ; height, width
@@ -5515,7 +6435,7 @@ map_header_SILPH_CO_9F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7320 ; object_data_ptr
+    dw 0x8BB2 ; object_data_ptr
 map_object_SILPH_CO_9F:
     db 0x2E ; border block
     db 5 ; warp count
@@ -5526,8 +6446,12 @@ map_object_SILPH_CO_9F:
     db 15, 17, 4, 0xD2
     db 0 ; sign count
     db 4 ; sprite count
+    db 0x29, 0x12, 0x07, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x29 mapy=18 mapx=7
+    db 0x18, 0x08, 0x06, 0xFF, 0xD1, 0x41, 0x00, 0x25  ; slot 2: trainer sprite=0x18
+    db 0x20, 0x11, 0x19, 0xFF, 0xD0, 0x42, 0x00, 0x0A  ; slot 3: trainer sprite=0x20
+    db 0x18, 0x14, 0x11, 0xFF, 0xD1, 0x43, 0x00, 0x26  ; slot 4: trainer sprite=0x18
 
-OW_MAP_HDR_SILPH_CO_10F equ 0x7338
+OW_MAP_HDR_SILPH_CO_10F equ 0x8BE8
 map_header_SILPH_CO_10F:
     db 0x16       ; tileset FACILITY
     db 9, 8  ; height, width
@@ -5535,7 +6459,7 @@ map_header_SILPH_CO_10F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7344 ; object_data_ptr
+    dw 0x8BF4 ; object_data_ptr
 map_object_SILPH_CO_10F:
     db 0x2E ; border block
     db 6 ; warp count
@@ -5547,8 +6471,14 @@ map_object_SILPH_CO_10F:
     db 7, 13, 6, 0xD1
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x18, 0x0D, 0x05, 0xFF, 0xD3, 0x40, 0x00, 0x27  ; slot 1: trainer sprite=0x18
+    db 0x20, 0x06, 0x0E, 0xFF, 0xD2, 0x41, 0x00, 0x0B  ; slot 2: trainer sprite=0x20
+    db 0x1B, 0x13, 0x0D, 0xFE, 0x00, 0x02  ; slot 3: npc sprite=0x1B mapy=19 mapx=13
+    db 0x47, 0x10, 0x06, 0xFF, 0xFF, 0x83, 0x00  ; slot 4: item sprite=0x47
+    db 0x47, 0x12, 0x08, 0xFF, 0xFF, 0x84, 0x00  ; slot 5: item sprite=0x47
+    db 0x47, 0x0F, 0x09, 0xFF, 0xFF, 0x85, 0x00  ; slot 6: item sprite=0x47
 
-OW_MAP_HDR_SILPH_CO_11F equ 0x7360
+OW_MAP_HDR_SILPH_CO_11F equ 0x8C3B
 map_header_SILPH_CO_11F:
     db 0x10       ; tileset INTERIOR
     db 9, 9  ; height, width
@@ -5556,7 +6486,7 @@ map_header_SILPH_CO_11F:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x736C ; object_data_ptr
+    dw 0x8C47 ; object_data_ptr
 map_object_SILPH_CO_11F:
     db 0x0D ; border block
     db 4 ; warp count
@@ -5566,8 +6496,14 @@ map_object_SILPH_CO_11F:
     db 2, 3, 3, 0xD4
     db 0 ; sign count
     db 6 ; sprite count
+    db 0x2B, 0x09, 0x0B, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x2B mapy=9 mapx=11
+    db 0x0F, 0x09, 0x0E, 0xFF, 0xD0, 0x01  ; slot 2: npc sprite=0x0F mapy=9 mapx=14
+    db 0x17, 0x0D, 0x0A, 0xFF, 0xD0, 0x42, 0x00, 0x02  ; slot 3: trainer sprite=0x17
+    db 0x46, 0x0C, 0x06, 0xFF, 0xD1, 0x03  ; slot 4: npc sprite=0x46 mapy=12 mapx=6
+    db 0x18, 0x0D, 0x13, 0xFF, 0xD1, 0x44, 0x00, 0x28  ; slot 5: trainer sprite=0x18
+    db 0x45, 0x0C, 0x07, 0xFF, 0xD1, 0x05  ; slot 6: npc sprite=0x45 mapy=12 mapx=7
 
-OW_MAP_HDR_SILPH_CO_ELEVATOR equ 0x7380
+OW_MAP_HDR_SILPH_CO_ELEVATOR equ 0x8C83
 map_header_SILPH_CO_ELEVATOR:
     db 0x12       ; tileset LOBBY
     db 2, 2  ; height, width
@@ -5575,7 +6511,7 @@ map_header_SILPH_CO_ELEVATOR:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x738C ; object_data_ptr
+    dw 0x8C8F ; object_data_ptr
 map_object_SILPH_CO_ELEVATOR:
     db 0x0F ; border block
     db 2 ; warp count
@@ -5585,7 +6521,7 @@ map_object_SILPH_CO_ELEVATOR:
     times 3 db 0 ; sign stubs
     db 0 ; sprite count
 
-OW_MAP_HDR_TRADE_CENTER equ 0x739B
+OW_MAP_HDR_TRADE_CENTER equ 0x8C9E
 map_header_TRADE_CENTER:
     db 0x15       ; tileset CLUB
     db 4, 5  ; height, width
@@ -5593,14 +6529,15 @@ map_header_TRADE_CENTER:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x73A7 ; object_data_ptr
+    dw 0x8CAA ; object_data_ptr
 map_object_TRADE_CENTER:
     db 0x0E ; border block
     db 0 ; warp count
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x01, 0x06, 0x06, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x01 mapy=6 mapx=6
 
-OW_MAP_HDR_COLOSSEUM equ 0x73AB
+OW_MAP_HDR_COLOSSEUM equ 0x8CB4
 map_header_COLOSSEUM:
     db 0x15       ; tileset CLUB
     db 4, 5  ; height, width
@@ -5608,14 +6545,15 @@ map_header_COLOSSEUM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x73B7 ; object_data_ptr
+    dw 0x8CC0 ; object_data_ptr
 map_object_COLOSSEUM:
     db 0x0E ; border block
     db 0 ; warp count
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x01, 0x06, 0x06, 0xFF, 0x00, 0x00  ; slot 1: npc sprite=0x01 mapy=6 mapx=6
 
-OW_MAP_HDR_LORELEIS_ROOM equ 0x73BB
+OW_MAP_HDR_LORELEIS_ROOM equ 0x8CCA
 map_header_LORELEIS_ROOM:
     db 0x07       ; tileset GYM
     db 6, 5  ; height, width
@@ -5623,7 +6561,7 @@ map_header_LORELEIS_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x73C7 ; object_data_ptr
+    dw 0x8CD6 ; object_data_ptr
 map_object_LORELEIS_ROOM:
     db 0x03 ; border block
     db 4 ; warp count
@@ -5633,8 +6571,9 @@ map_object_LORELEIS_ROOM:
     db 0, 5, 1, 0xF6
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x3B, 0x06, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x3B
 
-OW_MAP_HDR_BRUNOS_ROOM equ 0x73DB
+OW_MAP_HDR_BRUNOS_ROOM equ 0x8CF2
 map_header_BRUNOS_ROOM:
     db 0x07       ; tileset GYM
     db 6, 5  ; height, width
@@ -5642,7 +6581,7 @@ map_header_BRUNOS_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x73E7 ; object_data_ptr
+    dw 0x8CFE ; object_data_ptr
 map_object_BRUNOS_ROOM:
     db 0x03 ; border block
     db 4 ; warp count
@@ -5652,8 +6591,9 @@ map_object_BRUNOS_ROOM:
     db 0, 5, 1, 0xF7
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x3A, 0x06, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x3A
 
-OW_MAP_HDR_AGATHAS_ROOM equ 0x73FB
+OW_MAP_HDR_AGATHAS_ROOM equ 0x8D1A
 map_header_AGATHAS_ROOM:
     db 0x0F       ; tileset CEMETERY
     db 6, 5  ; height, width
@@ -5661,7 +6601,7 @@ map_header_AGATHAS_ROOM:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7407 ; object_data_ptr
+    dw 0x8D26 ; object_data_ptr
 map_object_AGATHAS_ROOM:
     db 0x00 ; border block
     db 4 ; warp count
@@ -5671,8 +6611,9 @@ map_object_AGATHAS_ROOM:
     db 0, 5, 0, 0x71
     db 0 ; sign count
     db 1 ; sprite count
+    db 0x39, 0x06, 0x09, 0xFF, 0xD0, 0x40, 0x00, 0x01  ; slot 1: trainer sprite=0x39
 
-OW_MAP_HDR_SUMMER_BEACH_HOUSE equ 0x741B
+OW_MAP_HDR_SUMMER_BEACH_HOUSE equ 0x8D42
 map_header_SUMMER_BEACH_HOUSE:
     db 0x18       ; tileset BEACH_HOUSE
     db 4, 7  ; height, width
@@ -5680,7 +6621,7 @@ map_header_SUMMER_BEACH_HOUSE:
     dw 0x0000         ; text_ptr (stub)
     dw 0x0000         ; script_ptr (stub)
     db 0x00   ; connections bitmask
-    dw 0x7427 ; object_data_ptr
+    dw 0x8D4E ; object_data_ptr
 map_object_SUMMER_BEACH_HOUSE:
     db 0x0A ; border block
     db 2 ; warp count
@@ -5689,6 +6630,8 @@ map_object_SUMMER_BEACH_HOUSE:
     db 4 ; sign count
     times 12 db 0 ; sign stubs
     db 2 ; sprite count
+    db 0x27, 0x07, 0x06, 0xFF, 0xD0, 0x00  ; slot 1: npc sprite=0x27 mapy=7 mapx=6
+    db 0x3D, 0x07, 0x09, 0xFE, 0x01, 0x01  ; slot 2: npc sprite=0x3D mapy=7 mapx=9
 
 MAP_HEADERS_DATA_SIZE equ $ - map_headers_data
 

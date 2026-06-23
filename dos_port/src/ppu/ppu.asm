@@ -102,6 +102,11 @@ bg_scy:          resd 1    ; SCY shadow
 bg_scx:          resd 1    ; SCX shadow
 sprite_shift_x:  resd 1    ; Dynamic X shift for sprites to align with DOS camera
 sprite_shift_y:  resd 1    ; Dynamic Y shift for sprites
+; 32-bit DOS position tables for each OAM entry (filled by PrepareOAMData)
+global spr_dos_sy, spr_dos_sx, spr_oam_valid
+spr_dos_sy:    resd OAM_COUNT  ; signed DOS Y for entry 0..OAM_COUNT-1
+spr_dos_sx:    resd OAM_COUNT  ; signed DOS X for entry 0..OAM_COUNT-1
+spr_oam_valid: resd 1          ; count of valid entries written this frame (set by PrepareOAMData)
 
 ; bg_surface: 384×288 raw-color mirror of wSurroundingTiles.
 bg_surface:        resb 384 * 288
@@ -424,18 +429,16 @@ render_sprites:
 
 .spriteLoop:
     mov esi, [spr_oam_ptr]
-    movzx eax, byte [ebp + esi]          ; Y (screen Y + 16)
-    sub eax, OAM_Y_OFS
-    movsx eax, al                        ; sign-extend relative Y coordinate
-    add eax, 36                          ; y' = y + 36 (60 -> 96)
-    add eax, [sprite_shift_y]            ; apply camera clamp shift
+    mov ecx, esi                         ; entry index = (oam_ptr - GB_OAM) >> 2
+    sub ecx, GB_OAM
+    shr ecx, 2
+    cmp ecx, [spr_oam_valid]             ; skip entries PrepareOAMData did not write
+    jae .nextSprite
+    mov eax, [spr_dos_sy + ecx*4]        ; 32-bit DOS Y set by PrepareOAMData
+    add eax, [sprite_shift_y]
     mov [spr_sy], eax
-
-    movzx eax, byte [ebp + esi + 1]      ; X (screen X + 8)
-    sub eax, OAM_X_OFS                   ; eax = screen X
-    movsx eax, al                        ; sign-extend relative X coordinate
-    add eax, 96                          ; x' = x + 96 (64 -> 160)
-    add eax, [sprite_shift_x]            ; apply camera clamp shift
+    mov eax, [spr_dos_sx + ecx*4]        ; 32-bit DOS X set by PrepareOAMData
+    add eax, [sprite_shift_x]
     mov [spr_sx], eax
     movzx eax, byte [ebp + esi + 2]      ; tile id
     shl eax, 4

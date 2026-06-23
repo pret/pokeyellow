@@ -90,8 +90,9 @@ GAME_SRCS := \
     src/gfx/load_font.asm \
     src/text/text.asm \
     src/movie/title.asm \
-    src/overworld/overworld.asm \
-    src/overworld/movement.asm
+    src/engine/overworld/overworld.asm \
+    src/engine/overworld/movement.asm \
+    src/engine/overworld/map_sprites.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
@@ -138,12 +139,18 @@ assets/map_headers.inc assets/extra_includes.inc:
 	python3 tools/gen_map_headers.py $(GEN_MAP_HEADERS_FLAGS)
 
 # Overworld object depends on all generated assets
-src/overworld/overworld.o: \
+src/engine/overworld/overworld.o: \
     assets/overworld_gfx.inc \
     assets/overworld_blocks.inc \
     assets/pallet_town_blk.inc \
     assets/map_headers.inc \
     assets/extra_includes.inc
+
+# map_sprites depends on the NPC tile asset files
+src/engine/overworld/map_sprites.o: \
+    assets/npc_oak_still.inc \
+    assets/npc_girl_still.inc \
+    assets/npc_fisher_still.inc
 
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc

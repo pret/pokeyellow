@@ -30,7 +30,7 @@ supporting home routines (`src/util/copy_data.asm`, `src/video/lcd_control.asm`,
 (`src/gfx/load_font.asm` 1bpp→2bpp expansion from `gfx/font/font.png`,
 `src/text/text.asm` PlaceString/TextBoxBorder). The title screen
 (`src/movie/title.asm`) and the overworld map loader/renderer
-(`src/overworld/overworld.asm`) both render correctly in DOSBox-X: the title
+(`src/engine/overworld/overworld.asm`) both render correctly in DOSBox-X: the title
 shows "Pokémon Yellow Version", and `SKIP_TITLE=1` boots straight into a fully
 drawn Pallet Town (Oak's Lab, tree border, sign) in the DMG-green palette.
 Player movement now works: `OverworldLoop` reads the joypad and walks the
@@ -45,7 +45,7 @@ The `UpdatePlayerOAM` scaffold has been replaced by the **faithful sprite
 engine**: `PrepareOAMData` (`src/gfx/sprite_oam.asm`) builds shadow OAM from the
 16-slot `wSpriteStateData1/2` arrays (facing/animation table, under-grass
 priority, OBP→CGB palette mapping, `$80+` tile path), and `UpdateSprites`
-(`src/overworld/movement.asm`, with `UpdatePlayerSprite`/`Func_4e32`/`Func_5274`)
+(`src/engine/overworld/movement.asm`, with `UpdatePlayerSprite`/`Func_4e32`/`Func_5274`)
 advances the player's facing and walk-frame leg animation each `OverworldLoop`
 iteration. `frame.asm:update_oam` runs `PrepareOAMData` and DMA-copies shadow OAM
 → `$FE00` in the `DelayFrame` pipeline (gated on `wUpdateSpritesEnabled`).
@@ -64,7 +64,7 @@ pixel offset `(Xoff, Yoff)` derived from the coarse block alignment and the fine
 The old 256×256 VRAM torus emulation and related `RedrawRowOrColumn` rings are gone.
 **Any new routine that writes VRAM tile data must set `g_tilecache_dirty`**.
 
-**Temporary scaffold — two out-of-map clamps (`src/overworld/overworld.asm`):**
+**Temporary scaffold — two out-of-map clamps (`src/engine/overworld/overworld.asm`):**
 the extended 40×25-tile viewport draws a larger area than the original 20×18 and
 the player is pinned at screen-center, so a player-centered camera near a map
 edge reaches past the populated `wOverworldMap` data. Two complementary stopgaps

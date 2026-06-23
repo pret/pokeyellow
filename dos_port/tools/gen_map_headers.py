@@ -4,7 +4,7 @@
 Parses:
   constants/map_constants.asm    → map name → (id, w, h)
   data/maps/headers/*.asm        → map label → (map_const, tileset_name)
-  data/maps/objects/*.asm        → map label → (border, warp_list, sign_count, sprite_count)
+  data/maps/objects/*.asm        → map label → (border, warp_list, sign_count, sprites)
 
 Emits:
   - Tileset dispatch tables (TilesetGfxPtrs, TilesetBlocksPtrs, TilesetCollPtrs,
@@ -137,6 +137,70 @@ TILESET_CANONICAL = [
     "plateau",      # 23
     "beach_house",  # 24
 ]
+
+# ---------------------------------------------------------------------------
+# NPC object-event constant resolution tables
+# Source: constants/sprite_constants.asm, constants/map_object_constants.asm
+# ---------------------------------------------------------------------------
+_SPRITE_CONSTS = {
+    'SPRITE_NONE': 0x00, 'SPRITE_RED': 0x01, 'SPRITE_BLUE': 0x02,
+    'SPRITE_OAK': 0x03, 'SPRITE_YOUNGSTER': 0x04, 'SPRITE_MONSTER': 0x05,
+    'SPRITE_COOLTRAINER_F': 0x06, 'SPRITE_COOLTRAINER_M': 0x07,
+    'SPRITE_LITTLE_GIRL': 0x08, 'SPRITE_BIRD': 0x09,
+    'SPRITE_MIDDLE_AGED_MAN': 0x0A, 'SPRITE_GAMBLER': 0x0B,
+    'SPRITE_SUPER_NERD': 0x0C, 'SPRITE_GIRL': 0x0D, 'SPRITE_HIKER': 0x0E,
+    'SPRITE_BEAUTY': 0x0F, 'SPRITE_GENTLEMAN': 0x10, 'SPRITE_DAISY': 0x11,
+    'SPRITE_BIKER': 0x12, 'SPRITE_SAILOR': 0x13, 'SPRITE_COOK': 0x14,
+    'SPRITE_BIKE_SHOP_CLERK': 0x15, 'SPRITE_MR_FUJI': 0x16,
+    'SPRITE_GIOVANNI': 0x17, 'SPRITE_ROCKET': 0x18, 'SPRITE_CHANNELER': 0x19,
+    'SPRITE_WAITER': 0x1A, 'SPRITE_SILPH_WORKER_F': 0x1B,
+    'SPRITE_MIDDLE_AGED_WOMAN': 0x1C, 'SPRITE_BRUNETTE_GIRL': 0x1D,
+    'SPRITE_LANCE': 0x1E, 'SPRITE_UNUSED_RED_1': 0x1F,
+    'SPRITE_SCIENTIST': 0x20, 'SPRITE_ROCKER': 0x21, 'SPRITE_SWIMMER': 0x22,
+    'SPRITE_SAFARI_ZONE_WORKER': 0x23, 'SPRITE_GYM_GUIDE': 0x24,
+    'SPRITE_GRAMPS': 0x25, 'SPRITE_CLERK': 0x26, 'SPRITE_FISHING_GURU': 0x27,
+    'SPRITE_GRANNY': 0x28, 'SPRITE_NURSE': 0x29,
+    'SPRITE_LINK_RECEPTIONIST': 0x2A, 'SPRITE_SILPH_PRESIDENT': 0x2B,
+    'SPRITE_SILPH_WORKER_M': 0x2C, 'SPRITE_WARDEN': 0x2D,
+    'SPRITE_CAPTAIN': 0x2E, 'SPRITE_FISHER': 0x2F,
+    'SPRITE_KOGA': 0x30, 'SPRITE_GUARD': 0x31, 'SPRITE_UNUSED_RED_2': 0x32,
+    'SPRITE_MOM': 0x33, 'SPRITE_BALDING_GUY': 0x34, 'SPRITE_LITTLE_BOY': 0x35,
+    'SPRITE_UNUSED_RED_3': 0x36, 'SPRITE_GAMEBOY_KID': 0x37,
+    'SPRITE_FAIRY': 0x38, 'SPRITE_AGATHA': 0x39, 'SPRITE_BRUNO': 0x3A,
+    'SPRITE_LORELEI': 0x3B, 'SPRITE_SEEL': 0x3C, 'SPRITE_PIKACHU': 0x3D,
+    'SPRITE_OFFICER_JENNY': 0x3E, 'SPRITE_SANDSHREW': 0x3F,
+    'SPRITE_ODDISH': 0x40, 'SPRITE_BULBASAUR': 0x41, 'SPRITE_JIGGLYPUFF': 0x42,
+    'SPRITE_CLEFAIRY': 0x43, 'SPRITE_CHANSEY': 0x44,
+    'SPRITE_JESSIE': 0x45, 'SPRITE_JAMES': 0x46,
+    'SPRITE_POKE_BALL': 0x47, 'SPRITE_FOSSIL': 0x48, 'SPRITE_BOULDER': 0x49,
+    'SPRITE_PAPER': 0x4A, 'SPRITE_POKEDEX': 0x4B, 'SPRITE_CLIPBOARD': 0x4C,
+    'SPRITE_SNORLAX': 0x4D, 'SPRITE_UNUSED_OLD_AMBER': 0x4E,
+    'SPRITE_OLD_AMBER': 0x4F, 'SPRITE_UNUSED_GAMBLER_ASLEEP_1': 0x50,
+    'SPRITE_UNUSED_GAMBLER_ASLEEP_2': 0x51, 'SPRITE_GAMBLER_ASLEEP': 0x52,
+}
+_MOV_CONSTS = {'WALK': 0xFE, 'STAY': 0xFF}
+_DIR_CONSTS = {
+    'NONE': 0xFF, 'ANY_DIR': 0x00, 'UP_DOWN': 0x01, 'LEFT_RIGHT': 0x02,
+    'DOWN': 0xD0, 'UP': 0xD1, 'LEFT': 0xD2, 'RIGHT': 0xD3,
+}
+_TRAINER_FLAG = 0x40   # constants/map_object_constants.asm: TRAINER = 1 << BIT_TRAINER
+_ITEM_FLAG    = 0x80   # constants/map_object_constants.asm: ITEM    = 1 << BIT_ITEM
+
+
+def _resolve_const(name, table, context=''):
+    """Resolve a named constant or hex/decimal literal to an integer."""
+    if name in table:
+        return table[name]
+    if name.startswith('$'):
+        return int(name[1:], 16)
+    if name.lower().startswith('0x'):
+        return int(name, 16)
+    try:
+        return int(name)
+    except ValueError:
+        print(f"  WARNING: unknown constant '{name}' {context}, using 0x00", file=sys.stderr)
+        return 0
+
 
 # Connection data for outdoor maps (preserved exactly from Phase 2)
 # (direction, target_const, offset)
@@ -294,10 +358,13 @@ def strip_debug_blocks(text: str) -> str:
 
 
 def parse_object_file(label: str, debug_warps: bool = False):
-    """Parse objects/<label>.asm → (border_byte, warp_list, sign_count, sprite_count).
+    """Parse objects/<label>.asm → (border_byte, warp_list, sign_count, sprites).
 
-    warp_list = [(y, x, dest_map_byte), ...]  (ready to emit as db y, x, ...)
-    dest_map_byte: LAST_MAP→0xFF; others looked up in MAP_IDS.
+    warp_list = [(y, x, dest_const, warp_id), ...]
+    sprites   = list of dicts:
+                  {sprite_id, mapy, mapx, mov, dir,
+                   is_trainer, trainer_class, trainer_num,
+                   is_item, item_id}
     Returns None if file not found.
     """
     obj_file = MAP_OBJECTS_DIR / f"{label}.asm"
@@ -318,10 +385,52 @@ def parse_object_file(label: str, debug_warps: bool = False):
         x, y, dest_const, warp_id = int(wm.group(1)), int(wm.group(2)), wm.group(3), int(wm.group(4))
         warps.append((y, x, dest_const, warp_id))
 
-    sign_count   = len(re.findall(r"\bbg_event\b", text))
-    sprite_count = len(re.findall(r"\bobject_event\b", text))
+    sign_count = len(re.findall(r"\bbg_event\b", text))
 
-    return border, warps, sign_count, sprite_count
+    # NPC object events: object_event x, y, sprite, mov, dir, text [, arg7 [, arg8]]
+    # Binary layout per macro:  sprite_id, y+4, x+4, mov, dir, text_byte [, extra...]
+    # text_byte: plain text_id (std), ITEM|text_id (item, 7 args), TRAINER|text_id (trainer, 8 args)
+    sprites = []
+    for om in re.finditer(
+            r"\bobject_event\b\s+"
+            r"([^,\n]+),\s*([^,\n]+),\s*([^,\n]+),\s*([^,\n]+),\s*([^,\n]+),\s*([^,\n]+)"
+            r"(?:,\s*([^,\n]+)(?:,\s*([^,\n\s]+))?)?",
+            text):
+        x_s   = om.group(1).strip()
+        y_s   = om.group(2).strip()
+        spr_s = om.group(3).strip()
+        mov_s = om.group(4).strip()
+        dir_s = om.group(5).strip()
+        # group 6 = text_const (name only — text byte = sequential index, not resolved here)
+        arg7  = om.group(7)   # item_id (7-arg) or trainer_class (8-arg) or None
+        arg8  = om.group(8)   # trainer_num (8-arg) or None
+
+        x         = int(x_s)
+        y         = int(y_s)
+        sprite_id = _resolve_const(spr_s, _SPRITE_CONSTS, f"sprite in {label}")
+        mov_byte  = _resolve_const(mov_s, _MOV_CONSTS,    f"mov in {label}")
+        dir_byte  = _resolve_const(dir_s, _DIR_CONSTS,    f"dir in {label}")
+
+        is_trainer = (arg7 is not None and arg8 is not None)
+        is_item    = (arg7 is not None and arg8 is None)
+        trainer_class = _resolve_const(arg7.strip(), {}, f"trainer_class in {label}") if is_trainer else 0
+        trainer_num   = _resolve_const(arg8.strip(), {}, f"trainer_num in {label}")   if is_trainer else 0
+        item_id       = _resolve_const(arg7.strip(), {}, f"item_id in {label}")       if is_item    else 0
+
+        sprites.append({
+            'sprite_id':     sprite_id,
+            'mapy':          y + 4,
+            'mapx':          x + 4,
+            'mov':           mov_byte,
+            'dir':           dir_byte,
+            'is_trainer':    is_trainer,
+            'trainer_class': trainer_class,
+            'trainer_num':   trainer_num,
+            'is_item':       is_item,
+            'item_id':       item_id,
+        })
+
+    return border, warps, sign_count, sprites
 
 
 def get_connection(direction, conn_map_id, offset,
@@ -416,7 +525,7 @@ def main():
     const_to_id["LAST_MAP"] = 0xFF
 
     # Parse all object files keyed by label
-    label_objects = {}   # label → (border, warps, sign_count, sprite_count)
+    label_objects = {}   # label → (border, warps, sign_count, sprites)
     for f in MAP_OBJECTS_DIR.glob("*.asm"):
         label = f.stem
         result = parse_object_file(label, debug_warps=debug_warps)
@@ -468,9 +577,10 @@ def main():
         # Get object data
         obj = label_objects.get(label)
         if obj:
-            border, raw_warps, sign_count, sprite_count = obj
+            border, raw_warps, sign_count, sprites = obj
         else:
-            border, raw_warps, sign_count, sprite_count = 0, [], 0, 0
+            border, raw_warps, sign_count, sprites = 0, [], 0, []
+        sprite_count = len(sprites)
 
         # Resolve warp dest bytes
         warps_bytes = []
@@ -491,6 +601,7 @@ def main():
             "warps":         warps_bytes,
             "sign_count":    sign_count,
             "sprite_count":  sprite_count,
+            "sprites":       sprites,
         }
 
     # ---- Emit output ----
@@ -694,6 +805,34 @@ def main():
 
         hdr_lines.append(f"    db {m['sprite_count']} ; sprite count")
         current_addr += 1
+
+        # Per-NPC binary records (6 bytes standard, 7 bytes item, 8 bytes trainer)
+        for i, npc in enumerate(m.get('sprites', [])):
+            if npc['is_trainer']:
+                text_byte = _TRAINER_FLAG | i
+                hdr_lines.append(
+                    f"    db 0x{npc['sprite_id']:02X}, 0x{npc['mapy']:02X}, 0x{npc['mapx']:02X},"
+                    f" 0x{npc['mov']:02X}, 0x{npc['dir']:02X}, 0x{text_byte:02X},"
+                    f" 0x{npc['trainer_class']:02X}, 0x{npc['trainer_num']:02X}"
+                    f"  ; slot {i+1}: trainer sprite=0x{npc['sprite_id']:02X}"
+                )
+                current_addr += 8
+            elif npc['is_item']:
+                text_byte = _ITEM_FLAG | i
+                hdr_lines.append(
+                    f"    db 0x{npc['sprite_id']:02X}, 0x{npc['mapy']:02X}, 0x{npc['mapx']:02X},"
+                    f" 0x{npc['mov']:02X}, 0x{npc['dir']:02X}, 0x{text_byte:02X},"
+                    f" 0x{npc['item_id']:02X}"
+                    f"  ; slot {i+1}: item sprite=0x{npc['sprite_id']:02X}"
+                )
+                current_addr += 7
+            else:
+                hdr_lines.append(
+                    f"    db 0x{npc['sprite_id']:02X}, 0x{npc['mapy']:02X}, 0x{npc['mapx']:02X},"
+                    f" 0x{npc['mov']:02X}, 0x{npc['dir']:02X}, 0x{i:02X}"
+                    f"  ; slot {i+1}: npc sprite=0x{npc['sprite_id']:02X} mapy={npc['mapy']} mapx={npc['mapx']}"
+                )
+                current_addr += 6
 
         hdr_lines.append("")
         return hdr_lines

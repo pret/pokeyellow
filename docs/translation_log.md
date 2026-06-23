@@ -237,7 +237,7 @@ writes are correct but invisible until Phase 1 OAM pass), MainMenu (→ EnterMap
 - **Sources:** `home/overworld.asm` — ResetMapVariables, CopyMapViewToVRAM, DrawTileBlock,
   LoadCurrentMapView, LoadTilesetTilePatternData, LoadTileBlockMap, LoadScreenRelatedData,
   LoadMapData; Phase 2 scaffold: EnterMap/SetupPalletTown/OverworldLoop
-- **Translated:** `dos_port/src/overworld/overworld.asm`
+- **Translated:** `dos_port/src/engine/overworld/overworld.asm`
 - **Date:** 2026-06-13
 - **H-flag:** Not involved — all pure data movement.
 - **Bug tags:** None.
@@ -270,7 +270,7 @@ unaffected (zeroed wrong WRAM before; correct zeroing now, same visual result).
 
 ---
 
-## Player movement — `src/overworld/overworld.asm` (2026-06-14)
+## Player movement — `src/engine/overworld/overworld.asm` (2026-06-14)
 
 Translated the movement-relevant subset of `home/overworld.asm:OverworldLoop` /
 `OverworldLoopLessDelay` plus the helpers from
@@ -330,7 +330,7 @@ the screen center.
 
 ---
 
-## OAM sprite renderer + player sprite — `src/ppu/ppu.asm`, `src/overworld/overworld.asm` (2026-06-14)
+## OAM sprite renderer + player sprite — `src/ppu/ppu.asm`, `src/engine/overworld/overworld.asm` (2026-06-14)
 
 HAL renderer (not a pret translation) plus an overworld scaffold to drive it.
 
@@ -368,7 +368,7 @@ Pallet Town and faces the direction of movement.
 
 ---
 
-## Sprite engine — `src/gfx/sprite_oam.asm`, `src/overworld/movement.asm` (2026-06-15)
+## Sprite engine — `src/gfx/sprite_oam.asm`, `src/engine/overworld/movement.asm` (2026-06-15)
 
 Replaced the `UpdatePlayerOAM` / `player_oam_table` scaffold with a faithful
 translation of the Yellow sprite engine, so the player renders through the real
@@ -427,7 +427,7 @@ standing tiles present at `$8000`, distinct walking tiles at `$8800`. Default an
 
 ---
 
-## BG scanline rewrite + DrawTileBlock clamp — `src/ppu/ppu.asm`, `src/overworld/overworld.asm` (2026-06-15)
+## BG scanline rewrite + DrawTileBlock clamp — `src/ppu/ppu.asm`, `src/engine/overworld/overworld.asm` (2026-06-15)
 
 - **Sources:** HAL renderer (`render_bg`, not a pret translation); `DrawTileBlock`
   (`home/overworld.asm`).
@@ -595,7 +595,7 @@ map) is a separate follow-on; the DrawTileBlock clamp stays (E/W + past-map-end)
 
 ## Native-width BG renderer (Stage A)
 
-- **Sources:** `dos_port/src/ppu/ppu.asm`, `dos_port/src/overworld/overworld.asm`
+- **Sources:** `dos_port/src/ppu/ppu.asm`, `dos_port/src/engine/overworld/overworld.asm`
 - **Date:** 2026-06-16
 - **H-flag:** Not involved.
 - **Bug tags:** None.
@@ -610,7 +610,7 @@ Removed dead VRAM-ring scroll routines (`CopyMapViewToVRAM`, `FillExtraVRAMRows`
 
 ---
 
-## Movement delay + door-exit logic fixes — `src/overworld/overworld.asm` (2026-06-20)
+## Movement delay + door-exit logic fixes — `src/engine/overworld/overworld.asm` (2026-06-20)
 
 - **Sources:** `home/overworld.asm` (OverworldLoop / WarpFound2.done),
   `engine/overworld/movement.asm` (UpdatePlayerSprite/.handleDirectionButtonPress),
@@ -1595,7 +1595,7 @@ Worker expertly separated the core box transaction operations (Depositing, Withd
 ## OverworldLoop warp bug fixes
 
 - **Source:** `home/overworld.asm` (warp resolution logic)
-- **Translated:** `dos_port/src/overworld/overworld.asm`
+- **Translated:** `dos_port/src/engine/overworld/overworld.asm`
 - **Date:** 2026-06-20
 - **H-flag:** not involved
 - **Bug tags:** none (regression fixes, not known original bugs)
@@ -1896,5 +1896,133 @@ If you need to exclude RGBASM-conditional content, add a filter to the generator
 - **Bug tags:** none
 - **Registers:** HL->ESI, A->AL
 - **Notes:** used test/or with 1<<PROTECTED_BY_MIST for bit/set since it's a bit index
+
+---
+
+## PrepareOAMData — extended viewport + walk-offset NPC tracking
+
+- **Source:** `engine/overworld/movement.asm:PrepareOAMData`
+- **Translated:** `dos_port/src/gfx/sprite_oam.asm:PrepareOAMData`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+
+### Summary
+
+Extended `PrepareOAMData` and `render_sprites` to handle the DOS 320×200 viewport
+(44×32 visible blocks), replacing 8-bit OAM coordinate arithmetic that overflowed for
+NPCs beyond ~8 blocks from the player.
+
+### Changes
+
+**Problem:** The original `render_sprites` derived the screen position of each sprite
+by sign-extending the 8-bit OAM Y/X bytes (`movsx eax, byte [ebp + esi]`), then adding
+a fixed letterbox offset. For NPCs whose `(MAPY - wYCoord) * 16 - 4` overflows 8 bits
+(≥ 8 blocks from the camera), the OAM byte wraps (e.g., MAPY=18, wYCoord=8 → 0xAC),
+producing a wildly wrong screen Y in `render_sprites`. Simultaneously, culling used
+`cmp al, 0xA0; jae .nextSprite` (GB convention for inactive entries), which falsely
+culled any NPC whose OAM Y byte was ≥ 0xA0 even when the computed DOS position was on-screen.
+
+**Fix — 32-bit position tables:**
+- Added BSS globals in `ppu.asm`: `spr_dos_sy[40]`, `spr_dos_sx[40]` (one dword per OAM
+  entry), and `spr_oam_valid` (count of entries PrepareOAMData wrote this frame).
+- `PrepareOAMData` computes a 32-bit `dos_base_y/x` using a hybrid formula:
+  - Slot 0 (player): `movsx(H_SPRITE_SCREEN_Y) + 36` / `movsx(H_SPRITE_SCREEN_X) + 96`
+    (safe; YPIXELS ≤ 127 for the player).
+  - NPC slots 1–15: `(MAPY - wYCoord) * 16 + 32` and `(MAPX - wXCoord) * 16 + 96`
+    (full 32-bit; no overflow regardless of map size).
+- In `tileLoop`, `edx = (edi - W_SHADOW_OAM) >> 2` (OAM entry index 0–39). Each tile's
+  dos_base + tableY/X offset is written to `spr_dos_sy[edx*4]` and `spr_dos_sx[edx*4]`.
+- At `.ret`, `spr_oam_valid = H_OAM_BUFFER_OFFSET / 4`.
+- `render_sprites` now reads from the tables instead of recomputing from 8-bit OAM bytes.
+  The `cmp al, 0xA0` cull is replaced by `cmp ecx, [spr_oam_valid]; jae .nextSprite`.
+
+**Fix — walk-offset NPC smoothing:**
+The 32-bit MAPY-based dos_base is block-aligned (constant across a walk step). The BG
+scrolls 2 px/frame via `bg_scy`/`bg_scx`. Without compensation, NPCs drift 2 px/frame
+against BG tiles and then snap 16 px at the block boundary. Fix: after `.dos_base_done`,
+for NPC slots only, subtract `YSTEP_VECTOR * (8 - walk_counter) * 2` (and same for X)
+from `dos_base_y/x_tmp`. This is an exact reverse of the BG scroll already applied, so
+NPCs track BG tiles smoothly throughout all 8 walk frames.
+
+### Key constants
+
+- `W_SPRITE_PLAYER_Y_STEP_VECTOR = 0xC103` — signed byte; +1 south, -1 north
+- `W_SPRITE_PLAYER_X_STEP_VECTOR = 0xC105` — signed byte; +1 east, -1 west
+- `W_WALK_COUNTER = 0xCFC4` — 8-frame countdown during a walk step (0 = standing)
+- `spr_dos_sy / spr_dos_sx` — BSS arrays declared in `ppu.asm`, externs in `sprite_oam.asm`
+
+---
+
+## render_sprites — extended viewport culling
+
+- **Source:** (DOS-only; no GB equivalent — PPU software renderer)
+- **Translated:** `dos_port/src/ppu/ppu.asm:render_sprites`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+
+### Summary
+
+`render_sprites` was rewritten to use the `spr_dos_sy/sx` position tables filled by
+`PrepareOAMData` (see entry above) instead of recomputing positions from 8-bit OAM
+bytes. Entry validity is now checked via `spr_oam_valid` count rather than the GB-style
+`cmp al, 0xA0` OAM-Y sentinel, which falsely culled on-screen NPCs whose 8-bit OAM Y
+had wrapped past 0xA0 due to the extended viewport distance.
+
+The symptom that surfaced the bug: walking RIGHT kept NPCs visible (only X changed;
+Y-byte stable). Walking UP/DOWN/LEFT triggered premature NPC disappearance because
+those directions changed the Y-byte across the 0xA0 threshold.
+
+---
+
+## InitMapSprites / LoadNPCSpriteTiles
+
+- **Source:** `engine/overworld/map_sprites.asm:InitMapSprites` + `LoadMapSpriteTilePatterns`
+- **Translated:** `dos_port/src/engine/overworld/map_sprites.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+
+### Summary
+
+Implements the data pipeline from map object binary → NPC sprite slots → VRAM:
+
+1. Clears NPC slots 1–15 in `wSpriteStateData1/2`.
+2. Reads `sprite_count` + per-NPC 6-byte records from the GB address pointed to
+   by `W_OBJECT_DATA_PTR_TEMP` (set by `LoadMapHeader`).
+3. Populates `PICTUREID`, `MAPY/MAPX`, `MOVEMENTBYTE1/2`, `MOVEMENTDELAY`,
+   `IMAGEBASEOFFSET`, and `ISTRAINER` for each slot.
+4. Trainer NPCs: reads extra 2 bytes (trainer_class, trainer_num) and sets ISTRAINER=1.
+5. `FindOrAssignVramSlot`: deduplicates sprite types; each unique type gets a
+   `imageBaseOffset` (3, 4, 5, …); slots 1=player, 2=Pikachu are reserved.
+6. `LoadNPCSpriteTiles`: copies 192 bytes (12 still tiles) per unique sprite type to
+   `[EBP + GB_VCHARS0 + (imageBaseOffset-1)*192]`; sets `g_tilecache_dirty=1`.
+
+NPC assets (`npc_oak_still.inc`, `npc_girl_still.inc`, `npc_fisher_still.inc`) are
+embedded in `.data` section of `map_sprites.asm` via `NpcSpriteAssets` lookup table.
+
+---
+
+## CheckSpriteAvailability — DOS viewport culling fix
+
+- **Source:** `engine/overworld/movement.asm:CheckSpriteAvailability`
+- **Translated:** `dos_port/src/engine/overworld/movement.asm:CheckSpriteAvailability`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none (DOS-port adaptation, not a GB bug)
+
+### Summary
+
+The original pret visibility range test used 8-bit unsigned byte arithmetic:
+`cmp wYCoord, MAPY; jae .invisible` (lower bound) + `add wYCoord, SCREEN_HEIGHT/2-1; jb .invisible` (upper). With `SCREEN_HEIGHT=25` (DOS) this gave `MAPY ∈ [wYCoord, wYCoord+11]`. Due to the `origin+4` offset stored in `MAPY/MAPX`, the actual-tile-delta visible range was `[-4, +7]` Y and `[-4, +15]` X — badly asymmetric with the DOS 320×200 viewport needing `[-6, +6]` Y and `[-10, +9]` X.
+
+**Symptom:** NPCs disappeared 5–7 metatile columns too early to the west (X) and ~2 rows too early to the north (Y). One-sided culling was the fingerprint that isolated this to `CheckSpriteAvailability` rather than the symmetric `render_sprites` or `dos_base` formulas.
+
+**Fix:** Two-sided 32-bit signed range comparisons replacing the old `jae`/`jb` pair:
+- Y: `MAPY ∈ [wYCoord−3, wYCoord+11]` → actual delta `[−7, +7]` (1-tile buffer)
+- X: `MAPX ∈ [wXCoord−7, wXCoord+14]` → actual delta `[−11, +10]` (1-tile buffer)
+
+**Critical:** Lower-bound subtraction must use 32-bit signed registers — `sub al, 3` wraps to `0xFC` when `wYCoord=0`, culling every NPC. Fix: `movzx eax; lea ecx,[eax-N]; cmp ecx,edx; jg .invisible`.
 
 ---

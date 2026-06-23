@@ -21,7 +21,7 @@
 ;                           tiles to $8800 (the VRAM layout the sprite engine indexes)
 ;
 ; The player now renders through the real sprite engine: UpdateSprites
-; (src/overworld/movement.asm) drives the per-slot image index, and PrepareOAMData
+; (src/engine/overworld/movement.asm) drives the per-slot image index, and PrepareOAMData
 ; (src/gfx/sprite_oam.asm, run in the DelayFrame pipeline) builds shadow OAM from it.
 ;
 ; Asset layout in ROM window (EBP + $4000–$54FF and $1000+; see gb_memmap.inc):
@@ -32,7 +32,7 @@
 ;   $5000 : Route1.blk, $5200: Route21.blk, $5400: tileset header, $540C: map headers
 ;   $1000+: city/route .blk files (ViridianCity, PewterCity, … — see OW_*_BLK_GBADDR)
 ;
-; Build: nasm -f coff -I include/ -I . -o overworld.o src/overworld/overworld.asm
+; Build: nasm -f coff -I include/ -I . -o overworld.o src/engine/overworld/overworld.asm
 
 bits 32
 
@@ -51,6 +51,7 @@ extern g_player_marker_on
 extern UpdateSprites
 extern ClearSprites
 extern g_tilecache_dirty
+extern InitMapSprites
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -684,7 +685,7 @@ LoadMapData:
     call ResetMapVariables
     call LoadTextBoxTilePatterns
     call LoadMapHeader
-    ; TODO: InitMapSprites — ; TODO: sprite engine (Phase 2)
+    call InitMapSprites
     call LoadScreenRelatedData
     call LoadScreenRelatedData
 

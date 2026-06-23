@@ -17,7 +17,7 @@
 ; NPC scope: static NPCs only (MOVEMENTSTATUS 0→1 init, CheckSpriteAvailability,
 ; InitializeSpriteScreenPosition). Random/scripted NPC movement is deferred.
 ;
-; Build: nasm -f coff -I include/ -I . -o movement.o src/overworld/movement.asm
+; Build: nasm -f coff -I include/ -I . -o movement.o src/engine/overworld/movement.asm
 
 bits 32
 
@@ -170,32 +170,36 @@ Func_5033:
 ;
 ; In: ESI = slot byte offset, hTilePlayerStandingOn = VRAM tile group byte.
 ; Out: CF = 1 → invisible (IMAGEINDEX set to $ff); CF = 0 → visible.
-; Clobbers AL, BL, CL, EBX, ECX.
+; Clobbers AL, CL, EDX, EBX, ECX.
 ; ---------------------------------------------------------------------------
 CheckSpriteAvailability:
     ; IsObjectHidden stub: no toggleable objects yet — always visible.
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
     cmp al, WALK
     jb .skipXYVisibility                 ; scripted movement: always show, skip range test
-    ; Y range test: visible when wYCoord < MAPY <= wYCoord + SCREEN_HEIGHT/2-1 (8)
-    mov bl, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
-    mov al, [ebp + W_Y_COORD]
-    cmp al, bl
-    je  .skipYVisibility                 ; wYCoord == MAPY → same row, visible
-    jae .spriteInvisible                 ; wYCoord >= MAPY → NPC above screen region
-    add al, SCREEN_HEIGHT / 2 - 1       ; 8 (metatile rows to bottom of visible area)
-    cmp al, bl
-    jb  .spriteInvisible                 ; wYCoord+8 < MAPY → NPC below screen region
-.skipYVisibility:
-    ; X range test: visible when wXCoord < MAPX <= wXCoord + SCREEN_WIDTH/2-1 (9)
-    mov bl, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
-    mov al, [ebp + W_X_COORD]
-    cmp al, bl
-    je  .skipXYVisibility
-    jae .spriteInvisible                 ; wXCoord >= MAPX → left of screen region
-    add al, SCREEN_WIDTH / 2 - 1        ; 9 (metatile columns to right of visible area)
-    cmp al, bl
-    jb  .spriteInvisible                 ; wXCoord+9 < MAPX → right of screen region
+    ; Y range test — DOS 320×200 viewport.
+    ; MAPY = actual_tile_y + 4 (origin+4). Player screen y = 96.
+    ; Visible range: actual delta ∈ [−6,+6] + 1-tile buffer → MAPY ∈ [wYCoord−3, wYCoord+11].
+    ; 32-bit signed comparison prevents byte underflow when wYCoord < 3.
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    movzx eax, byte [ebp + W_Y_COORD]
+    lea ecx, [eax - 3]
+    cmp ecx, edx
+    jg  .spriteInvisible                 ; MAPY < wYCoord−3 → off top of screen
+    lea ecx, [eax + 11]
+    cmp ecx, edx
+    jl  .spriteInvisible                 ; MAPY > wYCoord+11 → off bottom of screen
+    ; X range test — DOS 320×200 viewport.
+    ; MAPX = actual_tile_x + 4 (origin+4). Player screen x = 160.
+    ; Visible range: actual delta ∈ [−10,+9] + 1-tile buffer → MAPX ∈ [wXCoord−7, wXCoord+14].
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    movzx eax, byte [ebp + W_X_COORD]
+    lea ecx, [eax - 7]
+    cmp ecx, edx
+    jg  .spriteInvisible                 ; MAPX < wXCoord−7 → off left of screen
+    lea ecx, [eax + 14]
+    cmp ecx, edx
+    jl  .spriteInvisible                 ; MAPX > wXCoord+14 → off right of screen
 .skipXYVisibility:
     ; Text-box tile check: if any of the 4 tiles the sprite stands on is a text-box
     ; tile (ID >= MAP_TILESET_SIZE / $60), the sprite is obscured → invisible.

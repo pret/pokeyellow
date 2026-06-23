@@ -37,7 +37,7 @@ map and transitions place the player correctly.
 ## Stage A — Native-width BG renderer (COMPLETED 2026-06-16)
 
 ### Key insight that makes this clean
-`LoadCurrentMapView` (`src/overworld/overworld.asm`) already maintains
+`LoadCurrentMapView` (`src/engine/overworld/overworld.asm`) already maintains
 **`wSurroundingTiles`** = a **44×32-tile** decoded view (`SURROUNDING_WIDTH=44`,
 `SURROUNDING_HEIGHT=32`) with a 2-tile (16px) margin on each side of the 40×25
 viewport, rebuilt **once per 16px walk-step** (on `wWalkCounter==7`, the first
@@ -118,7 +118,7 @@ These exist only to feed the torus; with the native surface they are dead:
 ### Files touched (Stage A)
 - `dos_port/src/ppu/ppu.asm` — surface size, `render_bg`, decode helper, drop
   torus/diff/base state.
-- `dos_port/src/overworld/overworld.asm` — delete the VRAM-ring scroll routines
+- `dos_port/src/engine/overworld/overworld.asm` — delete the VRAM-ring scroll routines
   and the `wMapViewVRAMPointer` slide; simplify `AdvancePlayerSprite` to: update
   coords/blocks → `LoadCurrentMapView` → accumulate `H_SCX/H_SCY`. Drop
   `CopyMapViewToVRAM`/`FillExtraVRAMRows` calls in `LoadMapData`/`.mapTransition`
@@ -163,7 +163,7 @@ the out-of-map clamp paints border tiles (clean, but not real map).
    - [ ] Delete `W_REDRAW_ROW_OR_COLUMN_SRC_TILES` (80 bytes) entirely, as its corresponding logic was ripped out in Stage A.
    - [ ] Shift `W_TILEMAP_BACKUP2` down to `0xED80` (which is `0xE580` + `0x800`) to safely accommodate the expanded `wOverworldMap` buffer.
 
-2. `dos_port/src/overworld/overworld.asm`:
+2. `dos_port/src/engine/overworld/overworld.asm`:
    - [ ] `SCREEN_BLOCK_WIDTH/HEIGHT` and `SURROUNDING_WIDTH/HEIGHT` are decoupled from `MAP_BORDER` and remain unchanged.
    - [ ] The codebase already leverages `MAP_BORDER * 2` symbolically (e.g., `add al, MAP_BORDER * 2`). Merely audit and update the hardcoded math inside the comments (e.g., change `10 + 6 = 16` to `10 + 12 = 22`). Note: Stage C will programmatically fix the `gen_map_headers.py` math.
    - [ ] Keep the out-of-map clamp in `DrawTileBlock` strictly as a safety net.
