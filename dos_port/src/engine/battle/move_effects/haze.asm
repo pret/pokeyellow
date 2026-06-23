@@ -89,16 +89,33 @@ HazeEffect_:
     jmp PrintText
 
 CureVolatileStatuses:
-    and byte [ebp + esi], (~(1 << CONFUSED)) & 0xFF
-    inc esi ; BATTSTATUS2
-    mov al, byte [ebp + esi]
+    ; res CONFUSED, [hl]
+    and byte [ebp + esi], ~((1 << 7)) & 0xFF ; CONFUSED = 7
+
+    ; inc hl ; BATTSTATUS2
+    inc esi
+
+    ; ld a, [hl]
+    mov al, [ebp + esi]
+
     ; clear USING_X_ACCURACY, PROTECTED_BY_MIST, GETTING_PUMPED, and SEEDED statuses
-    and al, (~((1 << USING_X_ACCURACY) | (1 << PROTECTED_BY_MIST) | (1 << GETTING_PUMPED) | (1 << SEEDED))) & 0xFF
-    mov byte [ebp + esi], al
-    inc esi ; BATTSTATUS3
-    mov al, byte [ebp + esi]
-    and al, 11110000b | (1 << TRANSFORMED) ; clear Bad Poison, Reflect and Light Screen statuses
-    mov byte [ebp + esi], al
+    ; and ~((1 << USING_X_ACCURACY) | (1 << PROTECTED_BY_MIST) | (1 << GETTING_PUMPED) | (1 << SEEDED))
+    and al, ~((1 << 0) | (1 << 1) | (1 << 2) | (1 << 7)) & 0xFF
+
+    ; ld [hli], a ; BATTSTATUS3
+    mov [ebp + esi], al
+    inc esi
+
+    ; ld a, [hl]
+    mov al, [ebp + esi]
+
+    ; and %11110000 | (1 << TRANSFORMED) ; clear Bad Poison, Reflect and Light Screen statuses
+    and al, 11110000b | (1 << 3) ; TRANSFORMED = 3
+
+    ; ld [hl], a
+    mov [ebp + esi], al
+
+    ; ret
     ret
 
 ResetStatMods:

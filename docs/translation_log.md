@@ -1694,3 +1694,27 @@ The pointer tables are computed at generation time and cannot be partially updat
 If you need to exclude RGBASM-conditional content, add a filter to the generator.
 
 ---
+
+## CureVolatileStatuses
+
+- **Source:** `engine/battle/move_effects/haze.asm:CureVolatileStatuses`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI for battle status ptr, A->AL
+- **Notes:** none
+
+---
+
+## ResetStatMods
+
+- **Source:** `engine/battle/move_effects/haze.asm:ResetStatMods`
+- **Translated:** `dos_port/src/engine/battle/move_effects/haze.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL→ESI, B→BH, A→AL
+- **Notes:** straight translation; gb memory access via ebp+esi
+
+---
