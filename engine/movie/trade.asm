@@ -20,7 +20,7 @@ ExternalClockTradeAnim:
 TradeAnimCommon:
 	ld a, [wOptions]
 	push af
-	and %110000 ; preserve speaker options
+	and SOUND_MASK ; preserve speaker options
 	ld [wOptions], a
 	ldh a, [hSCY]
 	push af
