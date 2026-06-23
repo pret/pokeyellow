@@ -60,6 +60,8 @@ extern DebugDumpMemory
 extern DumpBackbuffer
 %elifdef DEBUG_WALK_NORTH
 extern DumpBackbuffer
+%elifdef DEBUG_DIALOG
+extern DumpBackbuffer
 %endif
 %ifdef DEBUG_NOCLIP
 extern pad_noclip
@@ -80,6 +82,7 @@ global CheckWarpTile
 global LoadWarpDestination
 global PlayerStepOutFromDoor
 global IgnoreInputForHalfSecond
+global LoadPlayerSpriteGraphics
 
 ; ---------------------------------------------------------------------------
 ; Map and tileset constants
@@ -212,6 +215,28 @@ EnterMap:
     call DelayFrame
     call DelayFrame
     call DumpBackbuffer        ; writes FRAME.BIN then exits (never returns)
+%endif
+%ifdef DEBUG_DIALOG
+    ; Dialog-box position test: fill GB_TILEMAP1 rows 0-5 with a checkerboard of
+    ; tile IDs 0x50/0x51 (visible non-blank), show the window at the centered-bottom
+    ; position (WY=152, WX=87), render 3 frames, dump FRAME.BIN.
+    ; Tests Bug 2 (window at bottom, centered) and that the window renders at all.
+    lea edi, [ebp + GB_TILEMAP1]
+    mov ecx, 6 * 32                        ; 6 rows × 32 tiles = 192 bytes
+    xor eax, eax
+.dd_fill:
+    mov byte [edi], 0x50
+    inc edi
+    mov byte [edi], 0x51
+    inc edi
+    sub ecx, 2
+    jnz .dd_fill
+    mov byte [ebp + H_WY], 152
+    mov byte [ebp + IO_WX], 87
+    call DelayFrame
+    call DelayFrame
+    call DelayFrame
+    call DumpBackbuffer                    ; writes FRAME.BIN, exits
 %endif
     ; fall through to OverworldLoop
 

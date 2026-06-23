@@ -109,6 +109,11 @@ ifdef DEBUG_WALK_NORTH
 NEED_DEBUG_DUMP := 1
 NASMFLAGS += -D SKIP_TITLE
 endif
+ifdef DEBUG_DIALOG
+NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D DEBUG_DIALOG
+NASMFLAGS += -D SKIP_TITLE
+endif
 ifdef NEED_DEBUG_DUMP
 GAME_SRCS += src/debug/debug_dump.asm
 endif
@@ -147,11 +152,11 @@ src/engine/overworld/overworld.o: \
     assets/map_headers.inc \
     assets/extra_includes.inc
 
-# map_sprites depends on the NPC tile asset files
+# map_sprites depends on the NPC tile asset files (full 384-byte sheets)
 src/engine/overworld/map_sprites.o: \
-    assets/npc_oak_still.inc \
-    assets/npc_girl_still.inc \
-    assets/npc_fisher_still.inc
+    assets/npc_oak.inc \
+    assets/npc_girl.inc \
+    assets/npc_fisher.inc
 
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc

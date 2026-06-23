@@ -671,13 +671,9 @@ render_window:
 
 .next_scanline:
     inc ecx
-    ; Bound at SCREEN_H (144), the GB logical screen height — NOT RENDER_H (200).
-    ; Pokémon parks the window at WY=144 to hide it on the 144-px GB screen; our
-    ; taller 320×200 viewport would otherwise paint the parked (uninitialized)
-    ; window over rows 144–199. Limiting the window to the GB-logical area keeps
-    ; the park semantics. (A textbox for the full 200-px viewport is future
-    ; window-layer work — see TODO.md.)
-    cmp ecx, SCREEN_H
+    ; Loop over all RENDER_H (200) scanlines. Dialog box uses WY=152 to land in
+    ; rows 152-199; window is parked at WY=200 (off-screen) when hidden.
+    cmp ecx, RENDER_H
     jb .scanline_loop
 
 .done:

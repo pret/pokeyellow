@@ -31,6 +31,8 @@ extern PrintText
 extern DelayFrame
 extern LoadCurrentMapView
 extern MakeNPCFacePlayer
+extern LoadFontTilePatterns
+extern LoadPlayerSpriteGraphics
 
 global InitMapSprites
 global CheckNPCInteraction
@@ -366,17 +368,20 @@ LoadNPCSpriteTiles:
     jmp .asset_scan
 .found_asset:
     mov esi, [esi + 1]                  ; load flat asset pointer (the dd value)
-    ; Still tiles [0-11] → GB_VCHARS0 + (imageBaseOffset-1)*192
-    mov ecx, NPC_TILE_BYTES             ; 192 bytes
-    rep movsb                           ; ESI now points at walk tiles [12-23]
-    mov byte [g_tilecache_dirty], 1
-    ; Walk tiles [12-23] → GB_VFONT + (imageBaseOffset-1)*192
+    ; Still tiles [0-11] → GB_VCHARS0 + (imageBaseOffset-1)*NPC_TILE_BYTES
+    mov ecx, NPC_TILE_BYTES
+    rep movsb
+    ; Walk tiles [12-23] → GB_VFONT + (imageBaseOffset-1)*NPC_TILE_BYTES.
+    ; These share GB_VFONT with the text font; LoadFontTilePatterns must be called
+    ; before any PrintText call, and LoadNPCSpriteTiles after, to swap correctly.
+    ; Safe for ≤6 unique NPC types per map (96 font tiles = 6 × 16-tile slots).
     movzx ecx, byte [npc_vram_slots + ebx]
-    dec ecx                             ; (imageBaseOffset - 1)
+    dec ecx
     imul ecx, NPC_TILE_BYTES
     lea edi, [ebp + ecx + GB_VFONT]
     mov ecx, NPC_TILE_BYTES
     rep movsb
+    mov byte [g_tilecache_dirty], 1
 
 .next_sprite:
     inc ebx
@@ -405,12 +410,12 @@ LoadNPCSpriteTiles:
 ; NPC_DIALOG_BUF in WRAM (EBP-relative). PrintText reads the TX stream from there.
 ;
 ; After PrintText (or on CHAR_DONE within PrintText), the window is already shown
-; at H_WY=96 by manual_text_scroll. This function hides the window (H_WY=144),
+; at H_WY=152 by manual_text_scroll. This function hides the window (H_WY=200),
 ; restores the BG, and returns AL=1 (NPC found) or AL=0 (nothing found).
 ;
 ; All registers preserved (pushad/popad). Returns AL in EAX after popad.
 ; ---------------------------------------------------------------------------
-; Dialog-box Y constants (wTileMap rows 12-17 → GB_TILEMAP1 rows 0-5, WY=96).
+; Dialog-box Y constants (wTileMap rows 12-17 → GB_TILEMAP1 rows 0-5, WY=152 in 320×200).
 DIALOG_TILEMAP_ROW      equ 12
 DIALOG_TILEMAP_ROWS     equ 6
 
@@ -472,6 +477,14 @@ CheckNPCInteraction:
 .found_npc:
     ; ── Found: NPC at target block ──────────────────────────────────────────
 
+    ; Set H_TILE_PLAYER_STANDING_ON so UpdateSpriteImage picks this NPC's VRAM slot.
+    ; UpdateSprites leaves H_TILE_PLAYER_STANDING_ON = last-slot value after the loop;
+    ; that would cause the wrong sprite tiles (e.g. Fisher's) for any earlier NPC.
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_IMAGEBASEOFFSET]
+    dec al
+    ror al, 4                           ; (imageBaseOffset-1)*16 → high nibble for UpdateSpriteImage
+    mov [ebp + H_TILE_PLAYER_STANDING_ON], al
+
     ; Make NPC face player (sets facing, clears BIT_FACE_PLAYER, refreshes image).
     call MakeNPCFacePlayer
 
@@ -497,21 +510,25 @@ CheckNPCInteraction:
     ; Set W_FONT_LOADED to freeze UpdateSprites NPC movement during dialog.
     or byte [ebp + W_FONT_LOADED], (1 << BIT_FONT_LOADED)
 
+    ; Restore font glyphs to GB_VFONT before text rendering (walk tiles share it).
+    call LoadFontTilePatterns
+
     ; Call PrintText with ESI = EBP-relative address of NPC_DIALOG_BUF.
     mov esi, NPC_DIALOG_BUF
     call PrintText
     ; PrintText calls manual_text_scroll at CHAR_PARA/CHAR_CONT/CHAR_DONE,
-    ; which shows the dialog (copies tiles to GB_TILEMAP1, H_WY=96) and waits.
+    ; which shows the dialog (copies tiles to GB_TILEMAP1, H_WY=152) and waits.
     ; For text_end format (Oak): no final scroll inside PrintText; show + wait here.
     call .show_dialog_and_wait
 
 .dialog_done:
     ; Hide window and clear font-loaded flag.
-    mov byte [ebp + H_WY], 144
+    mov byte [ebp + H_WY], RENDER_H     ; 200 = off-screen in 320×200 viewport
     and byte [ebp + W_FONT_LOADED], ~(1 << BIT_FONT_LOADED)
 
-    ; Restore slot ESI from H_CURRENT_SPRITE_OFFSET (MakeNPCFacePlayer may have changed ESI).
-    ; (No need — ESI was clobbered by the rep movsb; we don't use it below.)
+    ; Reload NPC and player walk tiles into GB_VFONT (font was loaded for dialog).
+    call LoadNPCSpriteTiles
+    call LoadPlayerSpriteGraphics
 
     ; Restore the BG: rebuild wSurroundingTiles for current player position.
     call LoadCurrentMapView
@@ -550,7 +567,8 @@ CheckNPCInteraction:
     add edi, 32                             ; next GB_TILEMAP1 row (32 wide)
     dec ecx
     jnz .sdw_row
-    mov byte [ebp + H_WY], 96              ; show window
+    mov byte [ebp + H_WY], 152             ; show window at bottom of 320×200 viewport
+    mov byte [ebp + IO_WX], 87            ; WX-7=80 → center 160px dialog in 320px wide buffer
     ; Release: wait until A/B not held.
 .sdw_release:
     call DelayFrame

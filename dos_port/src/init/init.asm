@@ -103,9 +103,9 @@ Init:
 
     mov byte [ebp + GB_IE], IE_DEFAULT_VAL
 
-    ; Move window off-screen
-    mov byte [ebp + H_WY],   144
-    mov byte [ebp + IO_WY],  144
+    ; Move window off-screen (200 = past bottom of 320×200 viewport)
+    mov byte [ebp + H_WY],   200
+    mov byte [ebp + IO_WY],  200
     mov byte [ebp + IO_WX],  7
 
     mov byte [ebp + H_SERIAL_CONN_STATUS], CONNECTION_NONE

@@ -256,7 +256,7 @@ PrintLetterDelay:
 ; manual_text_scroll — copy current dialog box to window layer and wait for A/B.
 ;
 ; Copies wTileMap rows 12-17 (6 rows × 20 tiles) to GB_TILEMAP1 rows 0-5, pads
-; cols 20-31 with TILE_SPC, sets H_WY=96 so commit_shadow_regs enables the window,
+; cols 20-31 with TILE_SPC, sets H_WY=152 / IO_WX=87 so the window renders centered
 ; then polls until A or B is pressed (release-then-press cycle to avoid sticky input).
 ; Called at CHAR_PARA, CHAR_CONT, CHAR_DONE control codes inside PlaceString.
 ; All registers preserved (pushad/popad).
@@ -282,8 +282,9 @@ manual_text_scroll:
     add edi, TILEMAP_W                      ; next GB_TILEMAP1 row
     dec ecx
     jnz .copy_row
-    ; Enable window at screen Y = 96 (covers rows 12-17 at 1:1 scale).
-    mov byte [ebp + H_WY], 96
+    ; Enable window at bottom of 320×200 viewport; center 160px box in 320px width.
+    mov byte [ebp + H_WY], 152
+    mov byte [ebp + IO_WX], 87            ; WX-7=80 → x=80..239 centers 160px in 320px
     ; Release cycle: wait until A/B is no longer held (avoids re-triggering on held button).
 .mts_release:
     call DelayFrame

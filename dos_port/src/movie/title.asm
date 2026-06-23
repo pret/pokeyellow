@@ -198,7 +198,7 @@ DisplayTitleScreen:
     mov byte [ebp + H_TILE_ANIMATIONS],     0
     mov byte [ebp + H_SCX],                 0
     mov byte [ebp + H_SCY],                 0x40   ; start with SCY=64
-    mov byte [ebp + H_WY],                  0x90   ; window off-screen (144)
+    mov byte [ebp + H_WY],                  RENDER_H ; window off-screen (200)
 
     call ClearScreen
     call DisableLCD
@@ -321,7 +321,7 @@ DisplayTitleScreen:
 
     ; Add speech bubble to current wTileMap (logo+pikachu)
     call TitleScreen_PlacePikaSpeechBubble
-    mov byte [ebp + H_WY], SCREEN_HEIGHT_PX   ; window off-screen
+    mov byte [ebp + H_WY], RENDER_H            ; window off-screen (past 320×200 bottom)
     call Delay3
 
     ; TitleScreen_PlayPikachuPCM — ; TODO-HW: audio (Phase 3)
