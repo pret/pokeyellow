@@ -29,6 +29,8 @@ bits 32
 %include "gb_memmap.inc"
 %include "gb_macros.inc"
 
+extern DelayFrame
+
 ; ---------------------------------------------------------------------------
 ; TX_* command bytes (home/macros/scripts/text.asm const_def block)
 ; ---------------------------------------------------------------------------
@@ -251,11 +253,48 @@ PrintLetterDelay:
     ret
 
 ; ---------------------------------------------------------------------------
-; manual_text_scroll — wait for A or B button press, then release.
-; Phase 2 stub: returns immediately without blocking.
-; TODO: implement proper pad polling once game loop is driving text flow.
+; manual_text_scroll — copy current dialog box to window layer and wait for A/B.
+;
+; Copies wTileMap rows 12-17 (6 rows × 20 tiles) to GB_TILEMAP1 rows 0-5, pads
+; cols 20-31 with TILE_SPC, sets H_WY=96 so commit_shadow_regs enables the window,
+; then polls until A or B is pressed (release-then-press cycle to avoid sticky input).
+; Called at CHAR_PARA, CHAR_CONT, CHAR_DONE control codes inside PlaceString.
+; All registers preserved (pushad/popad).
 ; ---------------------------------------------------------------------------
 manual_text_scroll:
+    pushad
+    ; Copy wTileMap rows 12-17 to GB_TILEMAP1 rows 0-5.
+    ; wTileMap rows: 20 tiles wide (SCREEN_W_TILES).
+    ; GB_TILEMAP1 rows: 32 tiles wide (TILEMAP_W) — pad cols 20-31 with TILE_SPC.
+    mov ecx, 6
+    lea esi, [ebp + W_TILEMAP + 12 * SCREEN_W_TILES]
+    lea edi, [ebp + GB_TILEMAP1]
+.copy_row:
+    push ecx
+    push edi
+    mov ecx, SCREEN_W_TILES
+    rep movsb
+    mov al, TILE_SPC
+    mov ecx, TILEMAP_W - SCREEN_W_TILES     ; 12 filler tiles
+    rep stosb
+    pop edi
+    pop ecx
+    add edi, TILEMAP_W                      ; next GB_TILEMAP1 row
+    dec ecx
+    jnz .copy_row
+    ; Enable window at screen Y = 96 (covers rows 12-17 at 1:1 scale).
+    mov byte [ebp + H_WY], 96
+    ; Release cycle: wait until A/B is no longer held (avoids re-triggering on held button).
+.mts_release:
+    call DelayFrame
+    test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
+    jnz .mts_release
+    ; Press cycle: wait for A or B press.
+.mts_press:
+    call DelayFrame
+    test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
+    jz .mts_press
+    popad
     ret
 
 ; ---------------------------------------------------------------------------

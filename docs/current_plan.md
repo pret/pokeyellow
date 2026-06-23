@@ -354,7 +354,7 @@ animation). No garbage tile bleed. Verify in FRAME.BIN capture after a few secon
 
 ---
 
-## Stage 3 — A-Press NPC Interaction ✅ DONE (commit 59d55835)
+## Stage 3 — A-Press NPC Interaction ✅ DONE (stub commit 59d55835; real dialog 2026-06-23)
 
 **Files edited:** `dos_port/src/engine/overworld/map_sprites.asm`,
 `dos_port/src/engine/overworld/overworld.asm`
@@ -486,12 +486,13 @@ flag is set correctly for a trainer-containing map when one is reached.
 - [x] **NPC-NPC tile collision**: `CanWalkOntoTile` calls `DetectCollisionBetweenSprites`
   and gates on `COLLISIONDATA & direction_bit`. Wired as part of commit 59d55835. The
   plan note "not called in the NPC walk path" was written before that commit.
-- [ ] **Real NPC dialog**: All NPCs show "..." — GB text scripts not yet translated.
-  Needs `PrintText` + text-script data per NPC slot (text_id → GB text address table).
-  **Files to edit:** `dos_port/src/engine/overworld/map_sprites.asm` (ShowNPCDialogStub
-  → real PrintText call), `dos_port/src/text/text.asm` (PrintText already exists; wire
-  NPC text_id → GB text pointer lookup), `dos_port/tools/gen_map_headers.py` (may need
-  to embed NPC text strings in map header binary).
+- [x] **Real NPC dialog**: Implemented 2026-06-23. `CheckNPCInteraction` detects NPC in
+  front via MAPY/MAPX block coords, calls `MakeNPCFacePlayer`, copies GB-charset text
+  stream to `NPC_DIALOG_BUF` (0xCB00) in WRAM, runs `PrintText`. `manual_text_scroll`
+  now copies wTileMap rows 12-17 → GB_TILEMAP1 and waits for A/B. Dialog window shown
+  at H_WY=96 via `commit_shadow_regs`. Pallet Town texts for Oak/Girl/Fisher embedded
+  in map_sprites.asm .data section. **Files edited:** `map_sprites.asm`, `text.asm`,
+  `movement.asm`, `overworld.asm`, `gb_memmap.inc`.
 
 - [ ] **Scripted NPC movement** (MOVEMENTBYTE1 < 0xFE): falls through to STAY.
   Needs `DoScriptedNPCMovement` path in `UpdateNonPlayerSprite`.

@@ -155,7 +155,12 @@ SPRITESTATEDATA2_MOVEMENTDELAY        equ 0x8   ; frames until next random walk 
 SPRITESTATEDATA2_MOVEMENTBYTE1        equ 0x6   ; $ff=STAY, $fe=WALK(random), <$fe=scripted
 SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7   ; $80=under grass (set by CheckSpriteAvailability)
 SPRITESTATEDATA2_ISTRAINER            equ 0x9   ; 1 if trainer NPC, 0 otherwise (pret: ORIGFACINGDIR)
+SPRITESTATEDATA2_TEXTID               equ 0xA   ; text_id stored by InitMapSprites (text_byte & 0x3F)
 SPRITESTATEDATA2_IMAGEBASEOFFSET      equ 0xE
+
+BIT_FACE_PLAYER                       equ 7     ; bit 7 of SPRITESTATEDATA1_MOVEMENTSTATUS
+
+NPC_DIALOG_BUF                        equ 0xCB00  ; scratch WRAM for NPC TX command stream (≤256 B)
 
 ; NPC movement-byte sentinel values (constants/map_object_constants.asm)
 WALK                                   equ 0xFE  ; random movement

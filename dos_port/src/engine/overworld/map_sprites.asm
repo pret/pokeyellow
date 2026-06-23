@@ -27,13 +27,19 @@ bits 32
 %include "gb_macros.inc"
 
 extern g_tilecache_dirty
+extern PrintText
+extern DelayFrame
+extern LoadCurrentMapView
+extern MakeNPCFacePlayer
 
 global InitMapSprites
+global CheckNPCInteraction
 
 ; ---------------------------------------------------------------------------
 ; Constants
 ; ---------------------------------------------------------------------------
 NPC_TILE_BYTES  equ 12 * TILE_SIZE      ; 192 bytes = 12 tiles per sprite type
+TILE_SPC        equ 0x7F               ; blank/space tile (shared with text.asm)
 NPC_SLOTS_START equ 1                   ; first NPC slot (slot 0 = player)
 NPC_SLOTS_MAX   equ 15                  ; max NPC slots
 VRAM_SLOT_START equ 3                   ; imageBaseOffset 1=player 2=Pikachu 3+=NPCs
@@ -69,6 +75,87 @@ NpcSpriteAssets:
 %include "assets/npc_oak.inc"
 %include "assets/npc_girl.inc"
 %include "assets/npc_fisher.inc"
+
+; ---------------------------------------------------------------------------
+; Pallet Town NPC text streams (GB charmap encoding, EBP-relative via WRAM copy).
+; Format: TX_START(0x00) + inline GB-charset string ending in CHAR_DONE(0x57)
+;         or CHAR_TERMINATOR(0x50) followed by TX_END(0x50).
+; Pret ref: text/PalletTown.asm
+; ---------------------------------------------------------------------------
+
+; Oak: "OAK: Hey! Wait!\nDon't go out!"
+; _PalletTownOakHeyWaitDontGoOutText (text_end format → CHAR_TERMINATOR + TX_END)
+pallet_oak_text:
+    db 0x00                                               ; TX_START
+    db 0x8E,0x80,0x8A,0x9C,0x7F                          ; "OAK: "
+    db 0x87,0xA4,0xB8,0xE7,0x7F                          ; "Hey! "
+    db 0x96,0xA0,0xA8,0xB3,0xE7                          ; "Wait!"
+    db 0x4F                                               ; CHAR_LINE
+    db 0x83,0xAE,0xAD,0xBE,0x7F                          ; "Don't "
+    db 0xA6,0xAE,0x7F                                    ; "go "
+    db 0xAE,0xB4,0xB3,0xE7                               ; "out!"
+    db 0x50, 0x50                                         ; CHAR_TERMINATOR, TX_END
+pallet_oak_text_end:
+
+; Girl: "I'm raising\n#MON too!\nWhen they get\nstrong, they can\nprotect me!"
+; _PalletTownGirlText (done format → CHAR_DONE)
+pallet_girl_text:
+    db 0x00                                               ; TX_START
+    db 0x88,0xE5,0x7F                                    ; "I'm "
+    db 0xB1,0xA0,0xA8,0xB2,0xA8,0xAD,0xA6               ; "raising"
+    db 0x4F                                               ; CHAR_LINE
+    db 0x54,0x8C,0x8E,0x8D,0x7F                          ; "#MON "
+    db 0xB3,0xAE,0xAE,0xE7                               ; "too!"
+    db 0x51                                               ; CHAR_PARA
+    db 0x96,0xA7,0xA4,0xAD,0x7F                          ; "When "
+    db 0xB3,0xA7,0xA4,0xB8,0x7F                          ; "they "
+    db 0xA6,0xA4,0xB3                                    ; "get"
+    db 0x4F                                               ; CHAR_LINE
+    db 0xB2,0xB3,0xB1,0xAE,0xAD,0xA6,0xF4,0x7F          ; "strong, "
+    db 0xB3,0xA7,0xA4,0xB8,0x7F                          ; "they "
+    db 0xA2,0xA0,0xAD                                    ; "can"
+    db 0x55                                               ; CHAR_CONT
+    db 0xAF,0xB1,0xAE,0xB3,0xA4,0xA2,0xB3,0x7F          ; "protect "
+    db 0xAC,0xA4,0xE7                                    ; "me!"
+    db 0x57, 0x50                                         ; CHAR_DONE, TX_END
+pallet_girl_text_end:
+
+; Fisher: "Technology is\nincredible!\nYou can now store\nand recall items\nand #MON as\ndata via PC!"
+; _PalletTownFisherText (done format → CHAR_DONE)
+pallet_fisher_text:
+    db 0x00                                               ; TX_START
+    db 0x93,0xA4,0xA2,0xA7,0xAD,0xAE,0xAB,0xAE,0xA6,0xB8,0x7F  ; "Technology "
+    db 0xA8,0xB2                                          ; "is"
+    db 0x4F                                               ; CHAR_LINE
+    db 0xA8,0xAD,0xA2,0xB1,0xA4,0xA3,0xA8,0xA1,0xAB,0xA4,0xE7  ; "incredible!"
+    db 0x51                                               ; CHAR_PARA
+    db 0x98,0xAE,0xB4,0x7F                               ; "You "
+    db 0xA2,0xA0,0xAD,0x7F                               ; "can "
+    db 0xAD,0xAE,0xB6,0x7F                               ; "now "
+    db 0xB2,0xB3,0xAE,0xB1,0xA4                          ; "store"
+    db 0x4F                                               ; CHAR_LINE
+    db 0xA0,0xAD,0xA3,0x7F                               ; "and "
+    db 0xB1,0xA4,0xA2,0xA0,0xAB,0xAB,0x7F               ; "recall "
+    db 0xA8,0xB3,0xA4,0xAC,0xB2                          ; "items"
+    db 0x55                                               ; CHAR_CONT
+    db 0xA0,0xAD,0xA3,0x7F                               ; "and "
+    db 0x54,0x8C,0x8E,0x8D,0x7F                          ; "#MON "
+    db 0xA0,0xB2                                          ; "as"
+    db 0x55                                               ; CHAR_CONT
+    db 0xA3,0xA0,0xB3,0xA0,0x7F                          ; "data "
+    db 0xB5,0xA8,0xA0,0x7F                               ; "via "
+    db 0x8F,0x82,0xE7                                    ; "PC!"
+    db 0x57, 0x50                                         ; CHAR_DONE, TX_END
+pallet_fisher_text_end:
+
+; PalletTownTextTable — (flat_ptr, size) pairs indexed by text_id.
+; Terminated by a null entry. CheckNPCInteraction copies the selected entry
+; to NPC_DIALOG_BUF in WRAM before calling PrintText.
+PalletTownTextTable:
+    dd pallet_oak_text,    pallet_oak_text_end    - pallet_oak_text
+    dd pallet_girl_text,   pallet_girl_text_end   - pallet_girl_text
+    dd pallet_fisher_text, pallet_fisher_text_end - pallet_fisher_text
+    dd 0, 0
 
 ; ---------------------------------------------------------------------------
 ; Code
@@ -164,7 +251,12 @@ InitMapSprites:
     jz .not_item
     inc esi                             ; skip item_id byte (items handled by text engine, Phase 3+)
 .not_item:
-    mov [ebp + ebx + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_ISTRAINER], edi  ; EDI=0 or 1; bytes 0xA-0xC are free
+    ; Store text_id = text_byte & 0x3F (lower 6 bits: trainer/item flags are high bits)
+    push eax
+    and al, 0x3F
+    mov [ebp + ebx + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_TEXTID], al
+    pop eax
+    mov [ebp + ebx + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_ISTRAINER], edi  ; EDI=0 or 1
 
     ; Assign or look up a VRAM slot for this sprite type
     pop ecx
@@ -296,4 +388,180 @@ LoadNPCSpriteTiles:
     pop ecx
     pop ebx
     pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; CheckNPCInteraction — check if an NPC is one block in front of the player;
+; if so, make it face the player, copy its dialog to WRAM, and run PrintText.
+;
+; Pret ref: home/overworld.asm:IsSpriteOrSignInFrontOfPlayer (block-coord variant).
+; Called from OverworldLoop when A is pressed and W_WALK_COUNTER == 0.
+;
+; Detection: NPC in front iff (MAPY - 4) == W_Y_COORD + dy
+;                         AND (MAPX - 4) == W_X_COORD + dx
+; where (dy,dx) = (-1,0) SPRITE_FACING_UP, (+1,0) DOWN, (0,-1) LEFT, (0,+1) RIGHT.
+;
+; Text data from PalletTownTextTable (flat .data ptr + size) is copied to
+; NPC_DIALOG_BUF in WRAM (EBP-relative). PrintText reads the TX stream from there.
+;
+; After PrintText (or on CHAR_DONE within PrintText), the window is already shown
+; at H_WY=96 by manual_text_scroll. This function hides the window (H_WY=144),
+; restores the BG, and returns AL=1 (NPC found) or AL=0 (nothing found).
+;
+; All registers preserved (pushad/popad). Returns AL in EAX after popad.
+; ---------------------------------------------------------------------------
+; Dialog-box Y constants (wTileMap rows 12-17 → GB_TILEMAP1 rows 0-5, WY=96).
+DIALOG_TILEMAP_ROW      equ 12
+DIALOG_TILEMAP_ROWS     equ 6
+
+CheckNPCInteraction:
+    pushad
+
+    ; Compute target block coordinates from player facing direction.
+    ; W_Y_COORD and W_X_COORD are raw block coords; MAPY/MAPX are raw+4.
+    ; Target MAPY = W_Y_COORD + 4 + dy; target MAPX = W_X_COORD + 4 + dx.
+    movzx ebx, byte [ebp + W_Y_COORD]
+    add bl, 4                               ; adjust for MAPY offset (+4)
+    movzx ecx, byte [ebp + W_X_COORD]
+    add cl, 4                               ; adjust for MAPX offset (+4)
+
+    movzx eax, byte [ebp + W_SPRITE_PLAYER_FACING_DIR]
+    cmp al, SPRITE_FACING_UP
+    je .face_up
+    cmp al, SPRITE_FACING_DOWN
+    je .face_down
+    cmp al, SPRITE_FACING_LEFT
+    je .face_left
+    ; SPRITE_FACING_RIGHT (0x0C) or default
+    inc cl                                  ; MAPX + 1 (block to the right)
+    jmp .scan
+.face_up:
+    dec bl                                  ; MAPY - 1 (block to the north)
+    jmp .scan
+.face_down:
+    inc bl                                  ; MAPY + 1 (block to the south)
+    jmp .scan
+.face_left:
+    dec cl                                  ; MAPX - 1 (block to the west)
+
+.scan:
+    ; BL = target_mapy, CL = target_mapx
+    ; Scan NPC slots 1-15 (slot 0 = player).
+    mov esi, 0x10                           ; slot byte offset starts at slot 1
+
+.slot_loop:
+    cmp esi, 0x100
+    jge .not_found
+
+    ; Skip inactive slots (IMAGEBASEOFFSET == 0 means slot is unused).
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_IMAGEBASEOFFSET]
+    test al, al
+    jz .next_slot
+
+    ; Compare MAPY and MAPX.
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    cmp al, bl
+    jne .next_slot
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    cmp al, cl
+    je .found_npc
+.next_slot:
+    add esi, 0x10
+    jmp .slot_loop
+
+.found_npc:
+    ; ── Found: NPC at target block ──────────────────────────────────────────
+
+    ; Make NPC face player (sets facing, clears BIT_FACE_PLAYER, refreshes image).
+    call MakeNPCFacePlayer
+
+    ; Freeze NPC movement during dialog.
+    or byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], (1 << BIT_FACE_PLAYER)
+
+    ; Look up text_id → text data pointer and size from PalletTownTextTable.
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_TEXTID]
+    lea edx, [eax * 8]                      ; 8 bytes per entry (dd ptr + dd size)
+    mov edi, [PalletTownTextTable + edx]    ; flat DS ptr to text stream
+    test edi, edi
+    jz .dialog_done                         ; null entry: no text for this id
+
+    mov ecx, [PalletTownTextTable + edx + 4]  ; byte count
+    cmp ecx, 256
+    jge .dialog_done                        ; safety: never copy more than 256 bytes
+
+    ; Copy text stream from flat .data to NPC_DIALOG_BUF in WRAM (EBP-relative).
+    mov esi, edi                            ; flat src ptr
+    lea edi, [ebp + NPC_DIALOG_BUF]
+    rep movsb
+
+    ; Set W_FONT_LOADED to freeze UpdateSprites NPC movement during dialog.
+    or byte [ebp + W_FONT_LOADED], (1 << BIT_FONT_LOADED)
+
+    ; Call PrintText with ESI = EBP-relative address of NPC_DIALOG_BUF.
+    mov esi, NPC_DIALOG_BUF
+    call PrintText
+    ; PrintText calls manual_text_scroll at CHAR_PARA/CHAR_CONT/CHAR_DONE,
+    ; which shows the dialog (copies tiles to GB_TILEMAP1, H_WY=96) and waits.
+    ; For text_end format (Oak): no final scroll inside PrintText; show + wait here.
+    call .show_dialog_and_wait
+
+.dialog_done:
+    ; Hide window and clear font-loaded flag.
+    mov byte [ebp + H_WY], 144
+    and byte [ebp + W_FONT_LOADED], ~(1 << BIT_FONT_LOADED)
+
+    ; Restore slot ESI from H_CURRENT_SPRITE_OFFSET (MakeNPCFacePlayer may have changed ESI).
+    ; (No need — ESI was clobbered by the rep movsb; we don't use it below.)
+
+    ; Restore the BG: rebuild wSurroundingTiles for current player position.
+    call LoadCurrentMapView
+    call DelayFrame
+
+    ; Signal caller that NPC interaction occurred.
+    mov dword [esp + 28], 1                 ; overwrite saved EAX slot in pushad frame
+    popad
+    ret
+
+.not_found:
+    xor eax, eax
+    mov dword [esp + 28], 0
+    popad
+    ret
+
+; ── local helper: copy current wTileMap dialog rows to window layer, wait A/B ──
+.show_dialog_and_wait:
+    ; Copy wTileMap rows 12-17 to GB_TILEMAP1 rows 0-5 (window layer source).
+    push ecx
+    push esi
+    push edi
+    mov ecx, DIALOG_TILEMAP_ROWS
+    lea esi, [ebp + W_TILEMAP + DIALOG_TILEMAP_ROW * 20]
+    lea edi, [ebp + GB_TILEMAP1]
+.sdw_row:
+    push ecx
+    push edi
+    mov ecx, 20                             ; 20 tiles from wTileMap
+    rep movsb
+    mov al, TILE_SPC
+    mov ecx, 12                             ; pad cols 20-31 with space
+    rep stosb
+    pop edi
+    pop ecx
+    add edi, 32                             ; next GB_TILEMAP1 row (32 wide)
+    dec ecx
+    jnz .sdw_row
+    mov byte [ebp + H_WY], 96              ; show window
+    ; Release: wait until A/B not held.
+.sdw_release:
+    call DelayFrame
+    test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
+    jnz .sdw_release
+    ; Press: wait for A or B.
+.sdw_press:
+    call DelayFrame
+    test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
+    jz .sdw_press
+    pop edi
+    pop esi
+    pop ecx
     ret

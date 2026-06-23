@@ -52,6 +52,7 @@ extern UpdateSprites
 extern ClearSprites
 extern g_tilecache_dirty
 extern InitMapSprites
+extern CheckNPCInteraction
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -261,6 +262,14 @@ OverworldLoop:
 .checkJoyDisable:
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_DISABLE_JOYPAD)
     jnz .noDirection                            ; input suppressed during warp-arrival window
+
+    ; A-press: check for NPC or sign in front of player.
+    test al, PAD_A
+    jz .checkPADDown
+    call CheckNPCInteraction
+    test al, al
+    jnz OverworldLoop                          ; interaction handled: restart loop
+    movzx eax, byte [ebp + H_JOY_HELD]        ; reload joypad for D-pad check
 
 .checkPADDown:
     test al, PAD_DOWN

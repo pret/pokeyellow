@@ -29,6 +29,7 @@ bits 32
 %include "gb_macros.inc"
 
 global UpdateSprites
+global MakeNPCFacePlayer
 
 extern IsTilePassable
 extern Random_
@@ -151,9 +152,7 @@ UpdateNonPlayerSprite:
     jmp .ret
 
 .facePlayer:
-    ; Stub: just reset anim and update image (real MakeNPCFacePlayer sets facing dir)
-    ; Sets the BIT_FACE_PLAYER to 0 would go here; for now, just freeze animation.
-    call NotYetMoving
+    call MakeNPCFacePlayer
     jmp .ret
 
 .notYetMoving:
@@ -426,6 +425,25 @@ UpdateSpriteMovementDelay:
 NotYetMoving:
     mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_ANIMFRAMECOUNTER], 0
     call UpdateSpriteImage
+    ret
+
+; ---------------------------------------------------------------------------
+; MakeNPCFacePlayer — turn NPC at slot ESI to face the player.
+; Pret ref: engine/overworld/movement.asm:MakeNPCFacePlayer.
+;
+; Reads W_SPRITE_PLAYER_FACING_DIR and XORs with 0x04 to invert:
+;   DOWN(0x00)↔UP(0x04), LEFT(0x08)↔RIGHT(0x0C).
+; Clears BIT_FACE_PLAYER (bit 7) from MOVEMENTSTATUS.
+; In: ESI = slot byte offset. All registers preserved.
+; ---------------------------------------------------------------------------
+MakeNPCFacePlayer:
+    push eax
+    movzx eax, byte [ebp + W_SPRITE_PLAYER_FACING_DIR]
+    xor al, 0x04                ; invert facing direction
+    mov [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_FACINGDIRECTION], al
+    and byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], ~(1 << BIT_FACE_PLAYER)
+    call NotYetMoving           ; reset anim counter and update image index
+    pop eax
     ret
 
 ; ---------------------------------------------------------------------------
