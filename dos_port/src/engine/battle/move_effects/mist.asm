@@ -13,16 +13,18 @@ section .text
 global MistEffect_
 global ShroudedInMistText
 
+PROTECTED_BY_MIST equ 1
+
 MistEffect_:
     mov esi, wPlayerBattleStatus2
     mov al, byte [ebp + hWhoseTurn]
-    test al, al
+    and al, al
     jz .mistEffect
     mov esi, wEnemyBattleStatus2
 .mistEffect:
-    test byte [ebp + esi], 1 << 0 ; is mon protected by mist?
+    test byte [ebp + esi], (1 << PROTECTED_BY_MIST)
     jnz .mistAlreadyInUse
-    or byte [ebp + esi], 1 << 0 ; mon is now protected by mist
+    or byte [ebp + esi], (1 << PROTECTED_BY_MIST)
     call PlayCurrentMoveAnimation
     mov esi, ShroudedInMistText
     jmp PrintText

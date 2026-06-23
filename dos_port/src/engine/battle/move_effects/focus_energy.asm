@@ -37,7 +37,6 @@ FocusEnergyEffect_:
     jmp PrintButItFailedText_
 
 GettingPumpedText:
-    db 0x0A ; TX_PAUSE
-    db 0x17 ; TX_FAR
-    dd _GettingPumpedText
-    db 0x50 ; TX_END
+	db 0x17 ; text_far
+	dd _GettingPumpedText
+	db 0x50 ; text_end

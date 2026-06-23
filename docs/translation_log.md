@@ -1874,3 +1874,27 @@ If you need to exclude RGBASM-conditional content, add a filter to the generator
 - **Notes:** Translated exactly matching 8-bit operations.
 
 ---
+
+## GettingPumpedText
+
+- **Source:** `engine/battle/move_effects/focus_energy.asm:GettingPumpedText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/focus_energy.asm`
+- **Date:** 2026-06-23
+- **H-flag:** (not recorded)
+- **Bug tags:** none
+- **Registers:** (not recorded)
+- **Notes:** Translated text macro
+
+---
+
+## MistEffect_
+
+- **Source:** `engine/battle/move_effects/mist.asm:MistEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/mist.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** HL->ESI, A->AL
+- **Notes:** used test/or with 1<<PROTECTED_BY_MIST for bit/set since it's a bit index
+
+---
