@@ -33,6 +33,7 @@ extern LoadCurrentMapView
 extern MakeNPCFacePlayer
 extern LoadFontTilePatterns
 extern LoadPlayerSpriteGraphics
+extern HandleDownArrowBlinkTiming
 
 global InitMapSprites
 global CheckNPCInteraction
@@ -569,16 +570,32 @@ CheckNPCInteraction:
     jnz .sdw_row
     mov byte [ebp + H_WY], 152             ; show window at bottom of 320×200 viewport
     mov byte [ebp + IO_WX], 87            ; WX-7=80 → center 160px dialog in 320px wide buffer
+    ; Place ▼ arrow and init blink counters; save existing state to restore after.
+    movzx ecx, byte [ebp + H_DOWN_ARROW_COUNT1]
+    push ecx
+    movzx ecx, byte [ebp + H_DOWN_ARROW_COUNT2]
+    push ecx
+    mov byte [ebp + H_DOWN_ARROW_COUNT1], ARROW_ON_FRAMES
+    mov byte [ebp + H_DOWN_ARROW_COUNT2], 1
+    mov esi, GB_TILEMAP1 + DIALOG_ARROW_TILEMAP_OFFSET
+    mov byte [ebp + esi], CHAR_DOWN_ARROW
     ; Release: wait until A/B not held.
 .sdw_release:
     call DelayFrame
     test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
     jnz .sdw_release
-    ; Press: wait for A or B.
+    ; Press: wait for A or B; blink ▼ each frame.
 .sdw_press:
     call DelayFrame
+    call HandleDownArrowBlinkTiming
     test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
     jz .sdw_press
+    ; Clear arrow, restore blink state.
+    mov byte [ebp + GB_TILEMAP1 + DIALOG_ARROW_TILEMAP_OFFSET], TILE_SPC
+    pop ecx
+    mov [ebp + H_DOWN_ARROW_COUNT2], cl
+    pop ecx
+    mov [ebp + H_DOWN_ARROW_COUNT1], cl
     pop edi
     pop esi
     pop ecx

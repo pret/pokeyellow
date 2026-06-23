@@ -114,6 +114,7 @@ global PrintLetterDelay
 global TextCommandProcessor
 global PrintText
 global PrintText_NoBox
+global HandleDownArrowBlinkTiming
 
 ; ---------------------------------------------------------------------------
 ; External
@@ -288,15 +289,60 @@ PrintLetterDelay:
     ret
 
 ; ---------------------------------------------------------------------------
+; HandleDownArrowBlinkTiming — blink the ▼ advance arrow at [EBP+ESI].
+;
+; Pret ref: home/window.asm:HandleDownArrowBlinkTiming (timing adapted for 60 Hz;
+;           original uses count1=0→255 wrap for a tight busy-wait loop, which at
+;           one call/frame yields ~4 s per phase — replaced with direct frame counts).
+;
+; In:  ESI = EBP-relative tile offset for the arrow (e.g. GB_TILEMAP1 + 146).
+;      H_DOWN_ARROW_COUNT1: frame countdown for current blink phase.
+;      H_DOWN_ARROW_COUNT2: compat byte (kept for future use; set to 1 at init).
+; Out: [EBP+ESI] toggled between CHAR_DOWN_ARROW and TILE_SPC per blink schedule.
+; All registers preserved.
+; ---------------------------------------------------------------------------
+HandleDownArrowBlinkTiming:
+    push eax
+    movzx eax, byte [ebp + esi]
+    cmp al, CHAR_DOWN_ARROW
+    jne .arrow_off
+.arrow_on:
+    ; Arrow visible: count down ON phase; erase when it expires.
+    movzx eax, byte [ebp + H_DOWN_ARROW_COUNT1]
+    dec al
+    mov [ebp + H_DOWN_ARROW_COUNT1], al
+    jnz .done
+    mov byte [ebp + esi], TILE_SPC
+    mov byte [ebp + H_DOWN_ARROW_COUNT1], ARROW_OFF_FRAMES
+    jmp .done
+.arrow_off:
+    ; Arrow hidden: count down OFF phase; show when it expires.
+    movzx eax, byte [ebp + H_DOWN_ARROW_COUNT1]
+    dec al
+    mov [ebp + H_DOWN_ARROW_COUNT1], al
+    jnz .done
+    mov byte [ebp + esi], CHAR_DOWN_ARROW
+    mov byte [ebp + H_DOWN_ARROW_COUNT1], ARROW_ON_FRAMES
+.done:
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
 ; manual_text_scroll — copy current dialog box to window layer and wait for A/B.
 ;
 ; Copies wTileMap rows 12-17 (6 rows × 20 tiles) to GB_TILEMAP1 rows 0-5, pads
-; cols 20-31 with TILE_SPC, sets H_WY=152 / IO_WX=87 so the window renders centered
-; then polls until A or B is pressed (release-then-press cycle to avoid sticky input).
+; cols 20-31 with TILE_SPC, sets H_WY=152 / IO_WX=87 so the window renders centered,
+; places the ▼ advance arrow (tile CHAR_DOWN_ARROW at row 4, col 18 of GB_TILEMAP1),
+; and polls until A or B is pressed (release-then-press cycle to avoid sticky input).
 ; Called at CHAR_PARA, CHAR_CONT, CHAR_DONE control codes inside PlaceString.
-; All registers preserved (pushad/popad).
+; All registers preserved (blink state saved/restored around pushad/popad).
 ; ---------------------------------------------------------------------------
 manual_text_scroll:
+    ; Save existing blink state so nested/sequential dialogs don't clobber each other.
+    movzx eax, byte [ebp + H_DOWN_ARROW_COUNT1]
+    push eax
+    movzx eax, byte [ebp + H_DOWN_ARROW_COUNT2]
+    push eax
     pushad
     ; Copy wTileMap rows 12-17 to GB_TILEMAP1 rows 0-5.
     ; wTileMap rows: 20 tiles wide (SCREEN_W_TILES).
@@ -320,17 +366,31 @@ manual_text_scroll:
     ; Enable window at bottom of 320×200 viewport; center 160px box in 320px width.
     mov byte [ebp + H_WY], 152
     mov byte [ebp + IO_WX], 87            ; WX-7=80 → x=80..239 centers 160px in 320px
+    ; Place ▼ arrow and init blink counters.
+    ; Pret ref: home/joypad2.asm:WaitForTextScrollButtonPress places coord(18,16).
+    mov esi, GB_TILEMAP1 + DIALOG_ARROW_TILEMAP_OFFSET
+    mov byte [ebp + esi], CHAR_DOWN_ARROW
+    mov byte [ebp + H_DOWN_ARROW_COUNT1], ARROW_ON_FRAMES
+    mov byte [ebp + H_DOWN_ARROW_COUNT2], 1
     ; Release cycle: wait until A/B is no longer held (avoids re-triggering on held button).
 .mts_release:
     call DelayFrame
     test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
     jnz .mts_release
-    ; Press cycle: wait for A or B press.
+    ; Press cycle: wait for A or B; blink ▼ each frame.
 .mts_press:
     call DelayFrame
+    call HandleDownArrowBlinkTiming
     test byte [ebp + H_JOY_HELD], PAD_A | PAD_B
     jz .mts_press
+    ; Clear arrow from window tilemap.
+    mov byte [ebp + GB_TILEMAP1 + DIALOG_ARROW_TILEMAP_OFFSET], TILE_SPC
     popad
+    ; Restore blink counters.
+    pop eax
+    mov [ebp + H_DOWN_ARROW_COUNT2], al
+    pop eax
+    mov [ebp + H_DOWN_ARROW_COUNT1], al
     ret
 
 ; ---------------------------------------------------------------------------

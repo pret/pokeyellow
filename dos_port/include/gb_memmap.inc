@@ -229,6 +229,8 @@ GB_HRAM_SIZE    equ 127
 
 ; Named HRAM variables (subset needed by translated routines).
 ; All offsets verified from pokeyellow.sym (bank 00).
+H_DOWN_ARROW_COUNT1      equ 0xFF86     ; hDownArrowBlinkCount1 — frame countdown (ON→OFF phase)
+H_DOWN_ARROW_COUNT2      equ 0xFF87     ; hDownArrowBlinkCount2 — compat; 1 in 60 Hz blink mode
 H_SOFT_RESET             equ 0xFF8A     ; hSoftReset
 ; 0xFF8B is a UNION of hMapStride / hNorthSouthConnectionStripWidth / hPreviousTileset
 H_MAP_STRIDE             equ 0xFF8B     ; hMapStride (= map block row stride = width + 2*MAP_BORDER)
@@ -498,6 +500,12 @@ SPRITE_FACING_DOWN       equ 0x00
 SPRITE_FACING_UP         equ 0x04
 SPRITE_FACING_LEFT       equ 0x08
 SPRITE_FACING_RIGHT      equ 0x0C
+
+; Dialog ▼ advance arrow (home/window.asm:HandleDownArrowBlinkTiming)
+CHAR_DOWN_ARROW          equ 0xEE       ; '▼' charmap code (constants/charmap.asm)
+ARROW_ON_FRAMES          equ 30         ; frames ▼ stays visible  (0.5 s at 60 Hz)
+ARROW_OFF_FRAMES         equ 8          ; frames ▼ stays hidden   (0.13 s at 60 Hz)
+DIALOG_ARROW_TILEMAP_OFFSET equ 4 * 32 + 18  ; GB_TILEMAP1 row 4, col 18 = offset 146
 
 ; hJoyHeld bit positions (constants/hardware.inc B_PAD_*; active-high in hJoyHeld)
 PAD_A                    equ 1 << 0      ; B_BTN_A    = 0 (button byte low nibble)
