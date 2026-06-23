@@ -16,8 +16,8 @@
 ;   4. Calls LoadNPCSpriteTiles to copy 12 still tiles per unique sprite
 ;      type to the appropriate VRAM slot (imageBaseOffset-1)*192 from $8000.
 ;
-; Walking leg animation (tiles 0x80-0x8B in vChars1) is deferred to Phase 3.
-; All WALK NPCs use still tiles only; animFrameCounter is held at 0.
+; LoadNPCSpriteTiles loads both still tiles (→ GB_VCHARS0 slot) and walk tiles
+; (→ GB_VFONT slot) from the full 24-tile sprite sheet for each unique NPC type.
 ;
 ; Build: nasm -f coff -I include/ -I . -o map_sprites.o src/engine/overworld/map_sprites.asm
 
@@ -55,19 +55,20 @@ section .data
 
 ; NpcSpriteAssets — table of (sprite_id byte, asset_ptr dd) pairs, terminated
 ; by sprite_id = 0x00.  LoadNPCSpriteTiles scans this to find each sprite's
-; source data.
+; source data.  Each asset is the full 384-byte sheet: tiles [0-11] = still,
+; tiles [12-23] = walk.
 NpcSpriteAssets:
     db 0x03  ; SPRITE_OAK (0x03)
-    dd npc_oak_still
+    dd npc_oak
     db 0x0D  ; SPRITE_GIRL (0x0D)
-    dd npc_girl_still
+    dd npc_girl
     db 0x2F  ; SPRITE_FISHER (0x2F)
-    dd npc_fisher_still
+    dd npc_fisher
     db 0x00  ; terminator
 
-%include "assets/npc_oak_still.inc"
-%include "assets/npc_girl_still.inc"
-%include "assets/npc_fisher_still.inc"
+%include "assets/npc_oak.inc"
+%include "assets/npc_girl.inc"
+%include "assets/npc_fisher.inc"
 
 ; ---------------------------------------------------------------------------
 ; Code
@@ -273,9 +274,17 @@ LoadNPCSpriteTiles:
     jmp .asset_scan
 .found_asset:
     mov esi, [esi + 1]                  ; load flat asset pointer (the dd value)
+    ; Still tiles [0-11] → GB_VCHARS0 + (imageBaseOffset-1)*192
     mov ecx, NPC_TILE_BYTES             ; 192 bytes
-    rep movsb
+    rep movsb                           ; ESI now points at walk tiles [12-23]
     mov byte [g_tilecache_dirty], 1
+    ; Walk tiles [12-23] → GB_VFONT + (imageBaseOffset-1)*192
+    movzx ecx, byte [npc_vram_slots + ebx]
+    dec ecx                             ; (imageBaseOffset - 1)
+    imul ecx, NPC_TILE_BYTES
+    lea edi, [ebp + ecx + GB_VFONT]
+    mov ecx, NPC_TILE_BYTES
+    rep movsb
 
 .next_sprite:
     inc ebx

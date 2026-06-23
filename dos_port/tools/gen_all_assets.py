@@ -173,9 +173,9 @@ def main():
         )
 
     for label, fname, base_offset in [
-        ("npc_girl_still",   "girl",   3),
-        ("npc_fisher_still", "fisher", 4),
-        ("npc_oak_still",    "oak",    5),
+        ("npc_girl",   "girl",   3),
+        ("npc_fisher", "fisher", 4),
+        ("npc_oak",    "oak",    5),
     ]:
         src = GFX_SPRITES / f"{fname}.2bpp"
         if src.exists():
@@ -183,9 +183,9 @@ def main():
             write_inc(
                 ASSETS / f"{label}.inc",
                 label,
-                src.read_bytes()[:192],
-                f"{fname} NPC still tiles (12 tiles, imageBaseOffset {base_offset}) "
-                f"→ [EBP+GB_VCHARS0+0x{tile_base:02X}*16] (${0x8000 + tile_base*16:04X})",
+                src.read_bytes(),
+                f"{fname} NPC sprite sheet (24 tiles: [0] still→[EBP+GB_VCHARS0+${0x8000 + tile_base*16:04X}], "
+                f"[12] walk→[EBP+GB_VFONT+${0x8800 + tile_base*16:04X}])",
             )
 
     print("done.")
