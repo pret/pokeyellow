@@ -246,10 +246,45 @@ TextBoxBorder:
     ret
 
 ; ---------------------------------------------------------------------------
-; PrintLetterDelay — stub. Original delays per-character for text animation.
-; Phase 2: prints instantly.
+; PrintLetterDelay — wait per-character delay based on the text speed setting.
+; Pret ref: home/print_text.asm:PrintLetterDelay.
+;
+; Reads delay frame count from wOptions bits 3-0 (TEXT_DELAY_FAST/MEDIUM/SLOW = 1/3/5).
+; Exits early if A or B is held. No-op if BIT_TEXT_DELAY is not set in
+; wLetterPrintingDelayFlags (TextCommandProcessor sets it) or if BIT_NO_TEXT_DELAY
+; is set in wStatusFlags5 (cutscenes, auto-scroll).
+; All registers preserved.
 ; ---------------------------------------------------------------------------
 PrintLetterDelay:
+    push eax
+    push ecx
+    movzx eax, byte [ebp + W_STATUS_FLAGS_5]
+    test al, (1 << BIT_NO_TEXT_DELAY)          ; cutscene/auto-scroll: skip delay
+    jnz .done
+    movzx eax, byte [ebp + W_LETTER_PRINTING_DELAY]
+    test al, (1 << BIT_TEXT_DELAY)             ; delay enabled by TextCommandProcessor?
+    jz .done
+    movzx ecx, byte [ebp + H_JOY_HELD]
+    test cl, PAD_A | PAD_B
+    jnz .one_frame                             ; button held: skip to one-frame exit
+    test al, (1 << BIT_FAST_TEXT_DELAY)        ; use wOptions speed or fixed 1-frame?
+    jz .one_frame
+    movzx ecx, byte [ebp + W_OPTIONS]
+    and cl, TEXT_DELAY_MASK                    ; isolate speed bits (1, 3, or 5)
+    jz .done                                   ; speed 0: instant (not used in practice)
+    jmp .count_down
+.one_frame:
+    mov cl, 1
+.count_down:
+    call DelayFrame                            ; renders frame + updates H_JOY_HELD
+    movzx eax, byte [ebp + H_JOY_HELD]
+    test al, PAD_A | PAD_B
+    jnz .done                                  ; button held: abort remaining delay
+    dec cl
+    jnz .count_down
+.done:
+    pop ecx
+    pop eax
     ret
 
 ; ---------------------------------------------------------------------------
@@ -640,6 +675,13 @@ TextCommandProcessor:
     push eax
     push ecx
     push edx
+    ; Pret ref: home/text.asm:TextCommandProcessor — save delay flags, enable delay.
+    ; PrintLetterDelay gates on BIT_TEXT_DELAY; TextCommandProcessor sets it for the
+    ; duration of this text session and restores the original value at TX_END.
+    movzx eax, byte [ebp + W_LETTER_PRINTING_DELAY]
+    push eax                                    ; save original wLetterPrintingDelayFlags
+    or al, (1 << BIT_TEXT_DELAY)
+    mov [ebp + W_LETTER_PRINTING_DELAY], al
 
 .next_cmd:
     movzx eax, byte [ebp + esi]
@@ -687,6 +729,8 @@ TextCommandProcessor:
     jmp .next_cmd                   ; unknown command: skip
 
 .done:
+    pop eax
+    mov [ebp + W_LETTER_PRINTING_DELAY], al    ; restore saved wLetterPrintingDelayFlags
     pop edx
     pop ecx
     pop eax

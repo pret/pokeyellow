@@ -138,6 +138,11 @@ Init:
     call ClearSprites
     mov byte [ebp + IO_LCDC], LCDC_DEFAULT_VAL
 
+    ; Default text options (pret ref: engine/menus/main_menu.asm:InitOptions).
+    ; OPTIONS menu not yet implemented; speed stays at MEDIUM until it is.
+    mov byte [ebp + W_LETTER_PRINTING_DELAY], (1 << BIT_FAST_TEXT_DELAY)
+    mov byte [ebp + W_OPTIONS], TEXT_DELAY_MEDIUM
+
 %ifdef SKIP_TITLE
     jmp EnterMap             ; test build: skip title screen, go straight to overworld
 %else

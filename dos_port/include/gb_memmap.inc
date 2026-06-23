@@ -362,8 +362,23 @@ W_IGNORE_INPUT_COUNTER       equ 0xD139 ; wIgnoreInputCounter — counts down 30
 ; Current-map script flags
 W_CURRENT_MAP_SCRIPT_FLAGS   equ 0xD125 ; wCurrentMapScriptFlags
 
-; Letter-printing delay flags (text engine)
+; Letter-printing delay and text speed options (text engine)
+; Pret ref: constants/ram_constants.asm, engine/menus/main_menu.asm:InitOptions
+W_OPTIONS                    equ 0xD354 ; wOptions — bits 3-0 = text speed
 W_LETTER_PRINTING_DELAY      equ 0xD357 ; wLetterPrintingDelayFlags
+
+; wLetterPrintingDelayFlags bit indices
+BIT_FAST_TEXT_DELAY          equ 0      ; 1=read speed from wOptions; 0=always 1 frame/char
+BIT_TEXT_DELAY               equ 1      ; 1=delay enabled; TextCommandProcessor sets this per session
+
+; wStatusFlags5 bit for text delay suppression
+BIT_NO_TEXT_DELAY            equ 6      ; 1=skip all per-char delay (cutscenes, auto-scroll)
+
+; wOptions text speed values (pret ref: constants/ram_constants.asm TEXT_DELAY_*)
+TEXT_DELAY_FAST              equ 1      ; 1 frame per character
+TEXT_DELAY_MEDIUM            equ 3      ; 3 frames per character (default)
+TEXT_DELAY_SLOW              equ 5      ; 5 frames per character
+TEXT_DELAY_MASK              equ 0x0F   ; bits 3-0 of wOptions hold text speed
 
 ; Current map identity
 W_CUR_MAP                    equ 0xD35D ; wCurMap (1 byte)
