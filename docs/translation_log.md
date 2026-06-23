@@ -1850,3 +1850,27 @@ If you need to exclude RGBASM-conditional content, add a filter to the generator
 - **Notes:** Translated text_far and text_end macros into byte directives.
 
 ---
+
+## ShroudedInMistText
+
+- **Source:** `engine/battle/move_effects/mist.asm:ShroudedInMistText`
+- **Translated:** `dos_port/src/engine/battle/move_effects/mist.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** none
+- **Registers:** none
+- **Notes:** explicit byte directives for text_far and text_end
+
+---
+
+## OneHitKOEffect_
+
+- **Source:** `engine/battle/move_effects/one_hit_ko.asm:OneHitKOEffect_`
+- **Translated:** `dos_port/src/engine/battle/move_effects/one_hit_ko.asm`
+- **Date:** 2026-06-23
+- **H-flag:** computed
+- **Bug tags:** none
+- **Registers:** HL->ESI, DE->EDI, A->AL, B->BH
+- **Notes:** Translated exactly matching 8-bit operations.
+
+---

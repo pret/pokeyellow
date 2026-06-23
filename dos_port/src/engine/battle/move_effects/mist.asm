@@ -30,7 +30,6 @@ MistEffect_:
     jmp PrintButItFailedText_
 
 ShroudedInMistText:
-    db 0x0A ; TX_PAUSE
-    db 0x17 ; TX_FAR
-    dd _ShroudedInMistText
-    db 0x50 ; TX_END
+	db 0x17 ; text_far
+	dd _ShroudedInMistText
+	db 0x50 ; text_end
