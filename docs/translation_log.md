@@ -2026,3 +2026,51 @@ The original pret visibility range test used 8-bit unsigned byte arithmetic:
 **Critical:** Lower-bound subtraction must use 32-bit signed registers — `sub al, 3` wraps to `0xFC` when `wYCoord=0`, culling every NPC. Fix: `movzx eax; lea ecx,[eax-N]; cmp ecx,edx; jg .invisible`.
 
 ---
+
+## UpdateNonPlayerSprite / NPC walk state machine
+
+- **Source:** `engine/overworld/movement.asm:UpdateNPCSprite` and helpers (pret lines 99–370, 556–666, 990–1016)
+- **Translated:** `dos_port/src/engine/overworld/movement.asm`
+- **Date:** 2026-06-23
+- **H-flag:** not involved
+- **Bug tags:** BUG(cosmetic) Yellow south-displacement fix applied (see below)
+
+### Summary
+
+Full NPC random-walk state machine: status dispatch, delay countdown, direction selection with UP_DOWN/LEFT_RIGHT/forced-dir constraints, tile passability + collision + displacement bounds check, walk-pixel interpolation, and animation counter.
+
+### Functions translated
+
+| Pret label | DOS label | Notes |
+|---|---|---|
+| `UpdateNPCSprite` | `UpdateNonPlayerSprite` | Status 0→init, 1→ready, 2→delay, 3→walk; BIT_FACE_PLAYER stub |
+| `Func_5337` | `Func_5337` | Write FACINGDIRECTION/YSTEPVECTOR/XSTEPVECTOR to sprite slot |
+| `Func_5349` | `Func_5349` | Advance MAPY/MAPX to destination at walk START (not end) |
+| `TryWalking` | `TryWalking` | Call Func_5337 → CanWalkOntoTile → Func_5349 → STATUS=3 |
+| `CanWalkOntoTile` | `CanWalkOntoTile` | IsTilePassable + STAY check + displacement bounds + DetectCollision |
+| `UpdateSpriteMovementDelay` | `UpdateSpriteMovementDelay` | Decrement MOVEMENTDELAY; 0 → STATUS=1, fall into NotYetMoving |
+| `NotYetMoving` | `NotYetMoving` | Reset ANIMFRAMECOUNTER, UpdateSpriteImage |
+| `UpdateSpriteInWalkingAnimation` | `UpdateSpriteInWalkingAnimation` | pixel-interpolation (YPIXELS/XPIXELS += YSTEP/XSTEP), WALKANIMCOUNTER |
+| `Random` | `Random` | Thin wrapper: saves/restores EBX, calls `Random_`, returns H_RANDOM_ADD in AL |
+
+### SPRITESTATEDATA2 constants bug fixed
+
+`gb_memmap.inc` had MOVEMENTDELAY at offset 0x1 (unused slot) and MOVEMENTBYTE2 at 0x8 (the real MOVEMENTDELAY slot). This caused map_sprites.asm to write direction constraints to slot 0x8 and delays to slot 0x1. Fix: swap them to match pret (MOVEMENTBYTE2=0x1, MOVEMENTDELAY=0x8). Because map_sprites.asm uses symbolic constants, the write offsets corrected automatically.
+
+### Func_5349 timing — teleport-prevention
+
+Pret advances MAPY/MAPX to the **destination** at walk **start** (inside `TryWalking`, before the first pixel step). PrepareOAMData's `dos_base_npc` formula therefore subtracts `YSTEP × WALKANIMCOUNTER` and `XSTEP × WALKANIMCOUNTER` to interpolate back to the source position, counting down to 0 at walk end. Without this, NPCs would appear to teleport one metatile and slide back.
+
+### wMapSpriteData indirection eliminated
+
+Pret's `UpdateNPCSprite` reads the direction constraint (`wCurSpriteMovement2`) via a separate `wMapSpriteData` pointer array. The DOS port stores the constraint directly in `SPRITESTATEDATA2[MOVEMENTBYTE2]` (offset 0x1), set by `InitMapSprites`. No separate array needed.
+
+### Yellow south-displacement fix
+
+Red/Blue had a bug: the south-displacement upper bound used `cmp a, 5; jnc .blocked` — the same condition as the north lower bound — which meant NPCs could only move 4 tiles south of their starting position. Yellow fixed this by removing the south upper bound check. The DOS port follows Yellow behavior (no south or east upper bound).
+
+### Random_ / IO_DIV
+
+`random.asm`'s LCG reads `IO_DIV` (at `[EBP + 0xFF04]`). Previously always 0 (emulated but not driven). Fixed by incrementing `IO_DIV` once per frame inside `commit_shadow_regs` (`frame.asm`) so the LCG has changing input. Verified live: NPCs walk with varied directions and delays.
+
+---

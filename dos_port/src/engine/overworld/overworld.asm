@@ -74,7 +74,7 @@ global LoadCurrentMapView
 global CopyMapViewToVRAM
 global OverworldLoop
 global AdvancePlayerSprite
-global AdvancePlayerSprite
+global IsTilePassable
 global CheckWarpTile
 global LoadWarpDestination
 global PlayerStepOutFromDoor

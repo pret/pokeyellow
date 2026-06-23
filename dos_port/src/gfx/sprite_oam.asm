@@ -135,6 +135,18 @@ PrepareOAMData:
     imul eax, 16
     add eax, 96
     mov [dos_base_x_tmp], eax
+    ; NPC walk interpolation: if MOVEMENTSTATUS=3 (walking), Func_5349 already advanced
+    ; MAPY/MAPX to the destination at walk start. Subtract YSTEP*WALKANIMCOUNTER
+    ; to interpolate between source and destination over the 16-frame animation.
+    cmp byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 3
+    jne .dos_base_done
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_WALKANIMCOUNTER]
+    movsx ecx, byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR]
+    imul ecx, eax
+    sub [dos_base_y_tmp], ecx
+    movsx ecx, byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XSTEPVECTOR]
+    imul ecx, eax
+    sub [dos_base_x_tmp], ecx
 .dos_base_done:
     ; Sub-block walk tracking: subtract the player's current walk pixel offset from
     ; NPC dos_base so NPCs scroll in lockstep with the BG during a walk step.

@@ -6,16 +6,20 @@
 ;   engine/overworld/movement.asm:UpdatePlayerSprite / UpdateNonPlayerSprite /
 ;     InitializeSpriteStatus / InitializeSpriteScreenPosition / Func_5033 /
 ;     CheckSpriteAvailability / GetTileSpriteStandsOn / UpdateSpriteImage /
+;     UpdateSpriteMovementDelay / UpdateSpriteInWalkingAnimation / NotYetMoving /
+;     TryWalking / CanWalkOntoTile / Func_5337 / Func_5349 /
 ;     Func_4e32 / Func_5274
 ;
 ; UpdateSprites runs once per overworld-loop iteration. It walks all 16 sprite
 ; slots: slot 0 → UpdatePlayerSprite (facing + walk animation); slots 1-15 →
-; UpdateNonPlayerSprite (static NPCs: screen-position + image index from
-; wSpriteStateData1/2, no movement engine yet). PrepareOAMData (sprite_oam.asm)
+; UpdateNonPlayerSprite (full NPC walk state machine: delay countdown, 16-frame
+; pixel-step animation, direction selection with UP_DOWN/LEFT_RIGHT constraints,
+; tile passability + sprite-collision gating). PrepareOAMData (sprite_oam.asm)
 ; then turns the image indices into shadow-OAM entries each DelayFrame.
 ;
-; NPC scope: static NPCs only (MOVEMENTSTATUS 0→1 init, CheckSpriteAvailability,
-; InitializeSpriteScreenPosition). Random/scripted NPC movement is deferred.
+; Direction constraint is read from SPRITESTATEDATA2_MOVEMENTBYTE2 (offset 0x1),
+; replacing pret's wMapSpriteData/wCurSpriteMovement2 indirection.
+; Scripted NPC movement (MOVEMENTBYTE1 < WALK) is a stub — not yet implemented.
 ;
 ; Build: nasm -f coff -I include/ -I . -o movement.o src/engine/overworld/movement.asm
 
@@ -25,6 +29,9 @@ bits 32
 %include "gb_macros.inc"
 
 global UpdateSprites
+
+extern IsTilePassable
+extern Random_
 
 section .text
 
@@ -73,14 +80,22 @@ _UpdateSprites:
     ret
 
 ; ---------------------------------------------------------------------------
-; UpdateNonPlayerSprite — static NPC screen-position + image-index update.
-; Pret ref: engine/overworld/movement.asm:UpdateNonPlayerSprite.
+; UpdateNonPlayerSprite — full NPC walk state machine.
+; Pret ref: engine/overworld/movement.asm:UpdateNPCSprite.
 ;
-; Scope: static NPCs only (MOVEMENTBYTE1 = STAY). Movement engine deferred.
+; Status dispatch:
+;   0 → InitializeSpriteStatus (first-frame init)
+;   1 → CheckSpriteAvailability; if visible and player not walking: direction
+;       selection → TryWalking (WALK/STAY) or stub (scripted <WALK)
+;   2 → UpdateSpriteMovementDelay (countdown to next walk)
+;   3 → UpdateSpriteInWalkingAnimation (pixel-step animation)
+;
+; Direction constraint (wCurSpriteMovement2 in pret) is read directly from
+; SPRITESTATEDATA2_MOVEMENTBYTE2 (offset 0x1). Scripted movement is a stub.
 ;
 ; ESI is reloaded from hCurrentSpriteOffset at entry (clobbers the loop's ESI;
-; the loop re-derives ESI after the call — see .skip above).
-; All other registers: caller is UpdateSprites which pushad/popad, so free.
+; the loop re-derives ESI after the call — see _UpdateSprites above).
+; All other registers: caller pushad/popad, so free.
 ; ---------------------------------------------------------------------------
 UpdateNonPlayerSprite:
     movzx esi, byte [ebp + H_CURRENT_SPRITE_OFFSET]
@@ -90,18 +105,377 @@ UpdateNonPlayerSprite:
     dec al
     ror al, 4                            ; nibble swap: (N-1) → (N-1)*16
     mov [ebp + H_TILE_PLAYER_STANDING_ON], al
+
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS]
     test al, al
     jz .initStatus                       ; status 0 → first-frame init
+
     call CheckSpriteAvailability
-    jc .ret                              ; CF=1 → invisible, done
+    jc .ret                              ; CF=1 → invisible
+
+    ; Re-read status after availability check
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS]
+    test al, 0x80                        ; BIT_FACE_PLAYER (bit 7): NPC must face player
+    jnz .facePlayer                      ; stub: fall through to NotYetMoving
+
+    ; Freeze NPC if text/font is loaded (dialog open)
+    mov bl, [ebp + W_FONT_LOADED]
+    test bl, 1 << BIT_FONT_LOADED
+    jnz .notYetMoving
+
+    cmp al, 2
+    je .updateDelay                      ; status 2 → UpdateSpriteMovementDelay
+    cmp al, 3
+    je .updateWalk                       ; status 3 → UpdateSpriteInWalkingAnimation
+    ; status 1: ready to move
     cmp byte [ebp + W_WALK_COUNTER], 0
-    jne .ret                             ; mid-walk → sprite-shift loop handles pixel motion
-    call InitializeSpriteScreenPosition  ; standing: snap screen position to map coords
+    jne .ret                             ; player is walking: don't start new NPC step
+
+    call InitializeSpriteScreenPosition  ; snap screen position to map coords
+
+    ; Check movement type
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
+    inc al
+    jz .randomMovement                   ; STAY (0xFF+1=0) → random (always blocked)
+    inc al
+    jz .randomMovement                   ; WALK (0xFE+1→0xFF+1=0) → random walk
+    ; Scripted movement (MOVEMENTBYTE1 < WALK): not yet implemented — skip
+    jmp .ret
+
+.updateDelay:
+    call UpdateSpriteMovementDelay
+    jmp .ret
+
+.updateWalk:
+    call UpdateSpriteInWalkingAnimation
+    jmp .ret
+
+.facePlayer:
+    ; Stub: just reset anim and update image (real MakeNPCFacePlayer sets facing dir)
+    ; Sets the BIT_FACE_PLAYER to 0 would go here; for now, just freeze animation.
+    call NotYetMoving
+    jmp .ret
+
+.notYetMoving:
+    call NotYetMoving
+    jmp .ret
+
+.randomMovement:
+    ; GetTileSpriteStandsOn clobbers EBX, ECX, AL.
+    ; Random_ clobbers AL, BL. Push EBX around Random call.
+    call GetTileSpriteStandsOn          ; EBX = wTileMap offset of lower-left tile under NPC
+    push ebx                            ; save tile ptr (BL clobbered by Random_)
+    call Random                         ; H_RANDOM_ADD updated; AL = random byte
+    pop ebx                             ; restore tile ptr
+    ; AL = random value; CL = direction constraint
+    movzx ecx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE2]
+
+.determineDirection:
+    ; Forced single directions: DOWN=0xD0, UP=0xD1, LEFT=0xD2, RIGHT=0xD3
+    cmp cl, NPC_DIR_DOWN
+    je .moveDown
+    cmp cl, NPC_DIR_UP
+    je .moveUp
+    cmp cl, NPC_DIR_LEFT
+    je .moveLeft
+    cmp cl, NPC_DIR_RIGHT
+    je .moveRight
+    ; Random direction from high 2 bits of AL; apply UP_DOWN/LEFT_RIGHT constraints
+    cmp al, NPC_MOVEMENT_UP             ; < 0x40 → try down
+    jnc .notRandDown
+    cmp cl, LEFT_RIGHT
+    je .moveLeft                        ; LEFT_RIGHT constraint → go left instead of down
+    jmp .moveDown
+.notRandDown:
+    cmp al, NPC_MOVEMENT_LEFT           ; 0x40-0x7F → try up
+    jnc .notRandUp
+    cmp cl, LEFT_RIGHT
+    je .moveRight                       ; LEFT_RIGHT → right instead of up
+    jmp .moveUp
+.notRandUp:
+    cmp al, NPC_MOVEMENT_RIGHT          ; 0x80-0xBF → try left
+    jnc .notRandLeft
+    cmp cl, UP_DOWN
+    je .moveUp                          ; UP_DOWN → up instead of left
+    jmp .moveLeft
+.notRandLeft:                           ; 0xC0-0xFF → try right
+    cmp cl, UP_DOWN
+    je .moveDown                        ; UP_DOWN → down instead of right
+    ; fall through to .moveRight
+
+.moveRight:
+    add ebx, 2
+    mov cl, byte [ebp + ebx]            ; tile ID at destination
+    mov bl, 1                           ; direction bit
+    mov ch, SPRITE_FACING_RIGHT         ; = 0x0C
+    xor dh, dh                          ; Y step = 0
+    mov dl, 1                           ; X step = +1
+    call TryWalking
+    jmp .ret
+
+.moveLeft:
+    sub ebx, 2
+    mov cl, byte [ebp + ebx]
+    mov bl, 2
+    mov ch, SPRITE_FACING_LEFT          ; = 0x08
+    xor dh, dh
+    mov dl, 0xFF                        ; X step = -1
+    call TryWalking
+    jmp .ret
+
+.moveDown:
+    add ebx, 2*SCREEN_WIDTH
+    mov cl, byte [ebp + ebx]
+    mov bl, 4
+    mov ch, SPRITE_FACING_DOWN          ; = 0x00
+    mov dh, 1                           ; Y step = +1
+    xor dl, dl
+    call TryWalking
+    jmp .ret
+
+.moveUp:
+    sub ebx, 2*SCREEN_WIDTH
+    mov cl, byte [ebp + ebx]
+    mov bl, 8
+    mov ch, SPRITE_FACING_UP            ; = 0x04
+    mov dh, 0xFF                        ; Y step = -1
+    xor dl, dl
+    call TryWalking
+    ; fall through to .ret
+
 .ret:
     ret
 .initStatus:
     call InitializeSpriteStatus
+    ret
+
+; ---------------------------------------------------------------------------
+; Random — update H_RANDOM_ADD/H_RANDOM_SUB, return result in AL.
+; Pret ref: home/random.asm (calls Random_ from engine/math/random.asm).
+; AL = H_RANDOM_ADD after update. Clobbers AL, BL.
+; ---------------------------------------------------------------------------
+Random:
+    call Random_
+    mov al, [ebp + H_RANDOM_ADD]
+    ret
+
+; ---------------------------------------------------------------------------
+; Func_5337 — set FACINGDIRECTION, YSTEPVECTOR, XSTEPVECTOR for NPC slot ESI.
+; Pret ref: engine/overworld/movement.asm:Func_5337.
+; In: CH = facing direction, DH = Y step (-1/0/+1 as 0xFF/0x00/0x01), DL = X step.
+; ---------------------------------------------------------------------------
+Func_5337:
+    mov [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_FACINGDIRECTION], ch
+    mov [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR], dh
+    mov [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XSTEPVECTOR], dl
+    ret
+
+; ---------------------------------------------------------------------------
+; Func_5349 — advance MAPY and MAPX by the step vectors at walk start.
+; Pret ref: engine/overworld/movement.asm:Func_5349.
+; In: DH = Y step, DL = X step, ESI = slot byte offset.
+; ---------------------------------------------------------------------------
+Func_5349:
+    mov al, dh
+    add [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY], al
+    mov al, dl
+    add [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX], al
+    ret
+
+; ---------------------------------------------------------------------------
+; TryWalking — attempt to walk the NPC one metatile in a chosen direction.
+; Pret ref: engine/overworld/movement.asm:TryWalking.
+;
+; In:  CL = tile ID at destination (from wTileMap), BL = direction bit (1/2/4/8),
+;      CH = facing direction, DH = Y step, DL = X step, ESI = slot byte offset.
+; Out: CF=0 → walk started (WALKANIMCOUNTER=16, MOVEMENTSTATUS=3);
+;      CF=1 → blocked (CanWalkOntoTile already set MOVEMENTSTATUS=2, random delay).
+; Clobbers: EAX, ECX, EDX (stack-saved around CanWalkOntoTile).
+; ---------------------------------------------------------------------------
+TryWalking:
+    call Func_5337                      ; write facing+step vectors to sprite state
+    ; CanWalkOntoTile uses DH/DL (reads but does not modify them).
+    ; ESI (slot offset) is preserved by CanWalkOntoTile.
+    call CanWalkOntoTile                ; CF=1 → blocked
+    jc .ret
+    call Func_5349                      ; update MAPY/MAPX to destination (walk start)
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_WALKANIMCOUNTER], 16
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 3
+    call UpdateSpriteImage
+    clc
+.ret:
+    ret
+
+; ---------------------------------------------------------------------------
+; CanWalkOntoTile — passability + sprite-collision check for NPC movement.
+; Pret ref: engine/overworld/movement.asm:CanWalkOntoTile.
+;
+; In:  CL = tile ID at destination, BL = direction bit (1/2/4/8),
+;      DH = Y step, DL = X step, ESI = slot byte offset.
+; Out: CF=0 → passable; CF=1 → blocked (MOVEMENTSTATUS=2 + random delay set).
+; Clobbers: EAX, ECX.  EBX (BL direction bit) and EDX preserved.
+; ---------------------------------------------------------------------------
+CanWalkOntoTile:
+    ; If scripted movement (MOVEMENTBYTE1 < WALK=0xFE), always allow
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
+    cmp al, WALK
+    jnc .checkTile
+    clc
+    ret
+
+.checkTile:
+    push esi                            ; IsTilePassable clobbers ESI
+    call IsTilePassable                 ; CL = tile ID; CF=1 if blocked
+    pop esi
+    jc .impassable
+
+    ; STAY sentinel (MOVEMENTBYTE1 == 0xFF): never actually walk
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
+    inc al                              ; 0xFF+1=0 (ZF)
+    jz .impassable
+
+    ; Y displacement bounds — prevents unlimited north/west roaming from start position.
+    ; YDISPLACEMENT starts at 8 (set in InitializeSpriteStatus).
+    ; Moving north (DH=0xFF): must have YDISPLACEMENT > 0.
+    ; Moving south (DH=0x01): always allowed (Yellow bug-fix: no upper bound).
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_YDISPLACEMENT]
+    test dh, dh
+    jz .checkXDisp                      ; DH=0: not moving vertically
+    js .moveNorth                       ; DH=0xFF (bit 7 set): moving north
+    ; moving south: increment displacement, no upper bound (Yellow fix)
+    add al, 1
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_YDISPLACEMENT], al
+    jmp .checkXDisp
+.moveNorth:
+    sub al, 1                           ; YDISPLACEMENT - 1; CF=1 if was 0 → blocked
+    jc .impassable
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_YDISPLACEMENT], al
+
+.checkXDisp:
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_XDISPLACEMENT]
+    test dl, dl
+    jz .detectCollision
+    js .moveWest
+    ; moving east: always allowed
+    add al, 1
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_XDISPLACEMENT], al
+    jmp .detectCollision
+.moveWest:
+    sub al, 1
+    jc .impassable
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_XDISPLACEMENT], al
+
+.detectCollision:
+    ; Run collision detection to populate COLLISIONDATA for direction check.
+    ; Must save/restore wUpdateSpritesEnabled (pret pattern).
+    movzx eax, byte [ebp + W_UPDATE_SPRITES_ENABLED]
+    push eax
+    mov byte [ebp + W_UPDATE_SPRITES_ENABLED], 0xFF
+    call DetectCollisionBetweenSprites  ; preserves EBX, ECX, EDX, ESI, EDI
+    pop eax
+    mov [ebp + W_UPDATE_SPRITES_ENABLED], al
+    ; BL = direction bit (preserved through DetectCollisionBetweenSprites)
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_COLLISIONDATA]
+    test al, bl
+    jnz .impassable
+
+    clc
+    ret
+
+.impassable:
+    ; Set status=2 (delayed), zero step vectors, assign random delay.
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 2
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR], 0
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XSTEPVECTOR], 0
+    call Random                         ; AL = H_RANDOM_ADD (clobbers AL, BL)
+    and al, 0x7F                        ; random 0–127 frames
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTDELAY], al
+    stc
+    ret
+
+; ---------------------------------------------------------------------------
+; UpdateSpriteMovementDelay — decrement inter-walk delay, transition to status 1.
+; Pret ref: engine/overworld/movement.asm:UpdateSpriteMovementDelay.
+; In: ESI = slot byte offset. Clobbers AL.
+; Falls through to NotYetMoving when ready.
+; ---------------------------------------------------------------------------
+UpdateSpriteMovementDelay:
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
+    cmp al, WALK
+    jnc .tickCounter                    ; WALK or STAY: decrement counter
+    ; Scripted: clear delay immediately → ready to move
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTDELAY], 0
+    jmp .moving
+
+.tickCounter:
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTDELAY]
+    dec al
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTDELAY], al
+    jnz NotYetMoving                    ; still waiting: freeze animation
+
+.moving:
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 1
+    ; fall through to NotYetMoving
+
+; ---------------------------------------------------------------------------
+; NotYetMoving — reset NPC animation counter and refresh image index.
+; Pret ref: engine/overworld/movement.asm:NotYetMoving.
+; Called whenever the NPC's visual state needs refreshing but position doesn't change.
+; In: ESI = slot byte offset. Clobbers AL.
+; ---------------------------------------------------------------------------
+NotYetMoving:
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_ANIMFRAMECOUNTER], 0
+    call UpdateSpriteImage
+    ret
+
+; ---------------------------------------------------------------------------
+; UpdateSpriteInWalkingAnimation — advance one frame of NPC pixel-step walk.
+; Pret ref: engine/overworld/movement.asm:UpdateSpriteInWalkingAnimation.
+;
+; Per-frame: advance anim counters (Func_5274); YPIXELS+=YSTEP; XPIXELS+=XSTEP;
+; decrement WALKANIMCOUNTER. When counter reaches 0:
+;   WALK/STAY → random delay (0–127) + status=2; clear step vectors.
+;   scripted  → status=1 (ready for next scripted step).
+;
+; In: ESI = slot byte offset (H_CURRENT_SPRITE_OFFSET set by outer loop).
+; Clobbers AL, DL (from Func_5274).
+; ---------------------------------------------------------------------------
+UpdateSpriteInWalkingAnimation:
+    call Func_5274                      ; advance intra-anim and anim-frame counters
+
+    ; YPIXELS += YSTEPVECTOR
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR]
+    add [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YPIXELS], al
+
+    ; XPIXELS += XSTEPVECTOR
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XSTEPVECTOR]
+    add [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XPIXELS], al
+
+    ; Decrement walk animation counter; if still > 0, animation continues
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_WALKANIMCOUNTER]
+    dec al
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_WALKANIMCOUNTER], al
+    jnz .animRunning
+
+    ; Walk finished: check if random (WALK/STAY) or scripted
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
+    cmp al, WALK
+    jnc .initNextCounter                ; WALK or STAY → random inter-walk delay
+
+    ; Scripted: immediately ready for next scripted step
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 1
+    ret
+
+.initNextCounter:
+    call Random                         ; AL = H_RANDOM_ADD
+    and al, 0x7F                        ; random 0–127 frames
+    mov [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTDELAY], al
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 2
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR], 0
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XSTEPVECTOR], 0
+    ret
+
+.animRunning:
     ret
 
 ; ---------------------------------------------------------------------------

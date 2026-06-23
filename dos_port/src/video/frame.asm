@@ -98,6 +98,7 @@ update_oam:
 ; ---------------------------------------------------------------------------
 commit_shadow_regs:
     push eax
+    inc byte [ebp + IO_DIV]     ; advance emulated DIV counter (~16384 Hz on GB; 1/frame is enough for RNG entropy)
     mov al, [ebp + H_SCX]
     mov [ebp + IO_SCX], al
     mov al, [ebp + H_SCY]

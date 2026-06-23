@@ -150,16 +150,37 @@ SPRITESTATEDATA2_XDISPLACEMENT        equ 0x3   ; X displacement (init 8)
 SPRITESTATEDATA2_MAPY                 equ 0x4   ; map Y position (metatile units, origin+4)
 SPRITESTATEDATA2_MAPX                 equ 0x5   ; map X position (metatile units, origin+4)
 SPRITESTATEDATA2_WALKANIMCOUNTER      equ 0x0   ; 8-frame countdown while walking (0=standing)
-SPRITESTATEDATA2_MOVEMENTDELAY        equ 0x1   ; frames until next random walk attempt
+SPRITESTATEDATA2_MOVEMENTBYTE2        equ 0x1   ; dir constraint from map object (pret unnamed 0x01)
+SPRITESTATEDATA2_MOVEMENTDELAY        equ 0x8   ; frames until next random walk attempt (pret 0x08)
 SPRITESTATEDATA2_MOVEMENTBYTE1        equ 0x6   ; $ff=STAY, $fe=WALK(random), <$fe=scripted
 SPRITESTATEDATA2_GRASSPRIORITY        equ 0x7   ; $80=under grass (set by CheckSpriteAvailability)
-SPRITESTATEDATA2_MOVEMENTBYTE2        equ 0x8   ; dir constraint from map object (0x00/0x01/0x02/0xFF)
-SPRITESTATEDATA2_ISTRAINER            equ 0x9   ; 1 if trainer NPC, 0 otherwise
+SPRITESTATEDATA2_ISTRAINER            equ 0x9   ; 1 if trainer NPC, 0 otherwise (pret: ORIGFACINGDIR)
 SPRITESTATEDATA2_IMAGEBASEOFFSET      equ 0xE
 
 ; NPC movement-byte sentinel values (constants/map_object_constants.asm)
 WALK                                   equ 0xFE  ; random movement
 STAY                                   equ 0xFF  ; stationary
+
+; NPC direction constraint values (movement byte 2 / pret wMapSpriteData byte 0)
+; constants/map_object_constants.asm: ANY_DIR=0x00, UP_DOWN=0x01, LEFT_RIGHT=0x02
+; Forced single-direction: DOWN=0xD0, UP=0xD1, LEFT=0xD2, RIGHT=0xD3, NONE=0xFF
+NPC_DIR_ANY     equ 0x00   ; any random direction (pret: ANY_DIR)
+NPC_DIR_UPDOWN  equ 0x01   ; constrained to up/down only (pret: UP_DOWN)
+NPC_DIR_LR      equ 0x02   ; constrained to left/right only (pret: LEFT_RIGHT)
+NPC_DIR_DOWN    equ 0xD0   ; forced down (pret: DOWN)
+NPC_DIR_UP      equ 0xD1   ; forced up
+NPC_DIR_LEFT    equ 0xD2   ; forced left
+NPC_DIR_RIGHT   equ 0xD3   ; forced right
+NPC_DIR_NONE    equ 0xFF   ; STAY NPC (no movement constraint)
+UP_DOWN         equ NPC_DIR_UPDOWN
+LEFT_RIGHT      equ NPC_DIR_LR
+
+; NPC random movement direction thresholds (high 2 bits of hRandomAdd)
+; constants/sprite_data_constants.asm
+NPC_MOVEMENT_DOWN    equ 0x00   ; hRandomAdd in [0x00,0x3F] → go down
+NPC_MOVEMENT_UP      equ 0x40   ; hRandomAdd in [0x40,0x7F] → go up
+NPC_MOVEMENT_LEFT    equ 0x80   ; hRandomAdd in [0x80,0xBF] → go left
+NPC_MOVEMENT_RIGHT   equ 0xC0   ; hRandomAdd in [0xC0,0xFF] → go right
 
 ; Named WRAM symbols (subset needed by translated routines).
 ; Offsets from pokeyellow.sym (bank 00).

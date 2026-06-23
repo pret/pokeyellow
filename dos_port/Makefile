@@ -92,7 +92,8 @@ GAME_SRCS := \
     src/movie/title.asm \
     src/engine/overworld/overworld.asm \
     src/engine/overworld/movement.asm \
-    src/engine/overworld/map_sprites.asm
+    src/engine/overworld/map_sprites.asm \
+    src/engine/math/random.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
