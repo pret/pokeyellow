@@ -663,10 +663,10 @@ UpdateSpriteImage:
 ; UpdatePlayerSprite — set the player's facing/image index and walk animation.
 ; Pret ref: engine/overworld/movement.asm:UpdatePlayerSprite.
 ;
-; Omissions vs pret: DetectCollisionBetweenSprites is a stub (no NPCs yet), and
-; the spinning-tile path is inert (wMovementFlags stays 0). Everything else
-; (text-box detection, facing from wPlayerMovingDirection, the moving vs.
-; standing animation, and grass priority) is faithful.
+; Omissions vs pret: the spinning-tile path is inert (wMovementFlags stays 0).
+; Everything else (text-box detection, DetectCollisionBetweenSprites, facing
+; from wPlayerMovingDirection, moving vs. standing animation, grass priority)
+; is faithful.
 ; ---------------------------------------------------------------------------
 UpdatePlayerSprite:
     ; walk-animation counter (data2+0): nonzero locks the sprite hidden
@@ -690,7 +690,7 @@ UpdatePlayerSprite:
     ret
 
 .lowerLeftIsMapTile:
-    call DetectCollisionBetweenSprites   ; stub (no NPCs)
+    call DetectCollisionBetweenSprites
 
     mov al, [ebp + W_WALK_COUNTER]
     test al, al

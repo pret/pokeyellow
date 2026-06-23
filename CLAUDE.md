@@ -126,6 +126,7 @@ docs/
   translation_log.md       ← per-routine translation notes
   glitch_safety.md         ← glitch sandbox guidance
   386_optimization_strategy.md ← Guide for fast and faithful 386 assembly optimizations
+  current_plan.md          ← active multi-step implementation plan (see below)
   references/
     README.md              ← reference link index
     pandocs/               ← downloaded Pan Docs markdown pages
@@ -388,6 +389,26 @@ All key reference documents are also mirrored locally in `docs/references/pandoc
 5. Emit `; BUG(level):` for any known bug (check `docs/bugs_and_glitches.md`).
 6. Add an entry to `docs/translation_log.md`.
 7. Verify assembly: `nasm -f coff -o /dev/null <file>`.
+
+---
+
+## Active Plan Convention
+
+**`docs/current_plan.md`** holds the active multi-step implementation plan for the
+current Phase 2/3 work item. It sits between TODO.md (big-picture scope for the
+entire port) and individual task lists: use it for anything too large for a single
+commit but too specific to belong in TODO.md.
+
+**Workflow:**
+- At the start of each session, read `docs/current_plan.md` to pick up where we left off.
+- Mark stages `[x]` as they complete (edit the file in-repo).
+- When the plan is fully done, archive it by renaming to `docs/plans/<name>.md` and
+  creating a new `docs/current_plan.md` for the next work item.
+- The `docs/plans/` subdirectory holds completed plans for reference.
+
+**Current plan:** `docs/current_plan.md` — NPC implementation (Stages 1–4 done;
+walk-tile animation done; NPC-NPC collision done via `CanWalkOntoTile`; remaining
+deferred items: real NPC dialog, scripted movement, trainer battle engine).
 
 ---
 
