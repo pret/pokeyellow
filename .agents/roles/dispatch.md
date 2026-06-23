@@ -79,5 +79,8 @@ Each ticket must include:
 - Never assign two workers to the same output file simultaneously.
 - Only dispatch `simple`-category jobs. On hardware I/O, call `work_queue fail`.
 - Maximum 5 Code Workers active at once.
+- **Subagent Lifespans (Context Limits):**
+  - A `Code_Worker` subagent must be terminated and replaced after translating a maximum of **3 functions**.
+  - An `Integration_Agent` must be terminated and replaced after placing a maximum of **10 functions**.
 - Workers use `agy skill` on demand — do not bulk-paste all docs into tickets.
 - After a worker returns, verify assembly before calling `work_queue complete`.

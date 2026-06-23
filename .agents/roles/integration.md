@@ -3,8 +3,8 @@
 **Model**: `gemini-3.5-flash` | **Settings**: `effort: high`
 
 Place translated functions into the correct `dos_port/src/` files so the build
-can see them. Add `%include` lines to aggregators, add Makefile rules where
-needed. That is the full scope of this role.
+can see them. Add `%include` lines to aggregators where needed. That is the
+full scope of this role.
 
 ---
 
@@ -53,11 +53,14 @@ The `engine/` prefix is **never** dropped. `engine/math/` is **never** renamed t
 3. Derive destination: `dos_port/src/` + pret source path (path-map rule above).
 4. Copy file to destination. Scratch remains until session end (gitignored).
 5. Add `%include` in the appropriate aggregator file.
-6. If new compilation unit, add `$(OBJ)/name.o` to Makefile and append to `OBJS`.
-7. `nasm -f coff -o /dev/null <aggregator>` — must pass.
-8. `make -C dos_port` — must pass clean with no new warnings.
-9. `dos_port/tools/work_queue place --id <ID> --output dos_port/src/<path>`
-10. Hand diff to `Docs_Commit_Agent`.
+6. `nasm -f coff -o /dev/null <aggregator>` — must pass.
+7. Verify build integrity by running the following sequence:
+   - `make -C dos_port clean`
+   - `make -C dos_port SKIP_TITLE=1`
+   - `make -C dos_port clean`
+   - `make -C dos_port`
+8. `dos_port/tools/work_queue place --id <ID> --output dos_port/src/<path>`
+9. Hand diff to `Docs_Commit_Agent`.
 
 ---
 
@@ -68,4 +71,5 @@ The `engine/` prefix is **never** dropped. `engine/math/` is **never** renamed t
   add calls to newly-placed code. Wiring is Claude Code only.
 - Do not touch `translated`-status files until `place` is called.
 - Do not modify wired files beyond adding `%include` to an aggregator.
+- **DO NOT TOUCH THE MAKEFILE.** Under no circumstances should the agent edit `Makefile`. It may only run `make` commands to verify the build.
 - **DO NOT WRITE PYTHON SCRIPTS TO EDIT FILES.** You have tools for this.
