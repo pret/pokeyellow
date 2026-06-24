@@ -51,10 +51,15 @@ iteration. `frame.asm:update_oam` runs `PrepareOAMData` and DMA-copies shadow OA
 → `$FE00` in the `DelayFrame` pipeline (gated on `wUpdateSpritesEnabled`).
 `LoadPlayerSpriteGraphics` loads Red's standing tiles to `$8000` and walking
 tiles to `$8800` (the VRAM layout the engine indexes; walking tiles time-share
-vChars1 with the font, as on the GB). NPC slots are wired but inert (picture ID
-0). Next: the NPC half of the sprite engine (`InitMapSprites` / sprite sets /
-VRAM-slot allocation / `DetectCollisionBetweenSprites`), the window layer, then
-the random-encounter trigger.
+vChars1 with the font, as on the GB). NPC implementation is complete: `InitMapSprites`
+(`src/engine/overworld/map_sprites.asm`) populates slots 1–15 from the map object
+binary; WALK/STAY movement and leg animation run via `UpdateNonPlayerSprite`;
+`CheckNPCInteraction` does the MAPY/MAPX block scan, calls `MakeNPCFacePlayer`,
+and runs `PrintText` with per-character reveal and multi-page scroll; player-NPC
+collision is enforced by `IsNPCAtTargetBlock` in `CollisionCheckOnLand`; NPC
+wall-blocking uses MAPY/MAPX-based tile lookup in `GetTileSpriteStandsOn`.
+Open Phase 2 items: scripted NPC movement, trainer battle engine, random encounter
+trigger, battle engine. See TODO.md.
 
 `render_bg` (`src/ppu/ppu.asm`) is a **native-width surface renderer**: it decodes
 `wSurroundingTiles` (44×32 tile IDs) into a 352×256 pixel surface using the existing
@@ -406,9 +411,8 @@ commit but too specific to belong in TODO.md.
   creating a new `docs/current_plan.md` for the next work item.
 - The `docs/plans/` subdirectory holds completed plans for reference.
 
-**Current plan:** `docs/current_plan.md` — NPC implementation (Stages 1–4 done;
-walk-tile animation done; NPC-NPC collision done via `CanWalkOntoTile`; remaining
-deferred items: real NPC dialog, scripted movement, trainer battle engine).
+**Current plan:** `docs/current_plan.md` — no active plan. NPC implementation
+is complete and archived at `docs/plans/npc_implementation.md`.
 
 ---
 

@@ -172,16 +172,10 @@ Prioritized task list. Check off items as they complete; add new items with phas
       `AdvancePlayerSprite`), so calling LCV here always produces the correct
       `wTileMap` regardless of direction.  Cost: ~2700 bytes of memory writes once
       per 8 frames while a direction is held — negligible on a 386.
-- [ ] **BUG — rapid direction change can bypass or falsely trigger collision.**
-      Tapping a new direction during the last frames of a walk step can flip
-      `W_SPRITE_PLAYER_FACING_DIR` before the walk counter reaches 0, so the next
-      collision check fires against the new facing tile rather than the tile in the
-      direction of travel.  Root cause: `UpdateSprites` (called every frame) updates
-      the facing from the step vector, but the GB serializes this via its frame-locked
-      joypad latch.  Fix: latch the direction used for the collision check for the
-      duration of the current step (don't allow mid-step facing updates to influence
-      the next collision sample).  See `OverworldLoop:.handleDirection` TODO comment
-      in `src/engine/overworld/overworld.asm`.  Defer until after Phase 2 NPC work.
+- [x] **BUG — rapid direction change can bypass or falsely trigger collision.**
+      Fixed. `CollisionCheckOnLand` rebuilds `wTileMap` via `LoadCurrentMapView`
+      on every call, ensuring the tile read always reflects the current facing
+      regardless of mid-step direction changes.
 - [x] **PERF — heavily optimize render_bg** (2026-06-15). The per-pixel
       2bpp→8bpp decode is no longer in the hot path: a 24 KB decoded-tile cache
       (`tile_cache`, 384 tiles × 64 B, BGP baked in) pre-decodes $8000-$97FF
@@ -218,7 +212,16 @@ Prioritized task list. Check off items as they complete; add new items with phas
       formulas corrected (−4→−5, −6→−7) for YBC=1/XBC=1 skip. Verified via
       `DEBUG_TRANSITION` FRAME.BIN: player lands on Route 1 path at correct
       screen position (2026-06-19).
-- [ ] Translate NPC movement / collision
+- [x] Translate NPC movement / collision — WALK/STAY NPCs, `DetectCollisionBetweenSprites`,
+      player-NPC tile blocking (`IsNPCAtTargetBlock`), NPC wall-blocking via MAPY/MAPX
+      tile check. Full dialog (`CheckNPCInteraction` → `PrintText`, per-character reveal,
+      multi-page scroll). Walk-tile leg animation. Done; see `docs/plans/npc_implementation.md`.
+- [ ] Scripted NPC movement (MOVEMENTBYTE1 < 0xFE) — currently falls through to STAY.
+      Pret ref: `engine/overworld/auto_movement.asm`, `engine/overworld/sprite_collisions.asm:43`.
+      Add `DoScriptedNPCMovement` dispatch in `UpdateNonPlayerSprite` (movement.asm).
+- [ ] Trainer battle engine — `CheckNPCInteraction` detects `ISTRAINER` but exits without
+      battle. Needs trainer-sight check + battle-intro flow. New `dos_port/src/engine/battle/`.
+      Pret ref: `engine/overworld/trainer_sight.asm`, `engine/battle/`.
 - [ ] Translate random encounter trigger
 - [ ] Translate battle engine (UI rendering pass first)
 
