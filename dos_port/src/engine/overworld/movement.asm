@@ -589,29 +589,45 @@ CheckSpriteAvailability:
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
     cmp al, WALK
     jb .skipXYVisibility                 ; scripted movement: always show, skip range test
-    ; Y visibility bounds — safe for GetTileSpriteStandsOn at the NPC's CURRENT tile.
-    ; row = (MAPY-wYCoord)*2+9; wTileMap rows 0-24; upper-left = row-1.
-    ; row-1 ≥ 0 requires MAPY ≥ wYCoord-4; row ≤ 24 requires MAPY ≤ wYCoord+7.
-    ; 32-bit signed comparison prevents byte underflow when wYCoord < 4.
+    ; --- OUTER: screen-visibility bounds ---
+    ; NPC dos_base_y = (MAPY-wYCoord)*16 + 32 (PrepareOAMData formula).
+    ; Sprite tile Y offsets: 0 (upper body) and 8 (lower body) — see SpriteFacingAndAnimationTable.
+    ; South: lower body top at (Δ)*16+40 ≥ RENDER_H=200 → Δ > 9 → invisible when MAPY > wYCoord+9.
+    ; North: upper body bottom at (Δ)*16+32+7 < 0 → Δ < -2 → invisible when MAPY < wYCoord-2.
+    ; Similarly for X with dos_base_x = (MAPX-wXCoord)*16 + 96, tile X offsets 0 and 8.
+    ; East: MAPX > wXCoord+13 → invisible; West: MAPX < wXCoord-6 → invisible.
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
     movzx eax, byte [ebp + W_Y_COORD]
-    lea ecx, [eax - 4]
+    lea ecx, [eax - 2]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPY < wYCoord-4 → off top of screen
-    lea ecx, [eax + 7]
+    jg  .spriteInvisible                 ; MAPY < wYCoord-2 → above screen
+    lea ecx, [eax + 9]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPY > wYCoord+7 → off bottom of screen
-    ; X visibility bounds — safe for GetTileSpriteStandsOn at the NPC's CURRENT tile.
-    ; col = (MAPX-wXCoord)*2+16; col ≥ 0 requires MAPX ≥ wXCoord-8;
-    ; col+1 ≤ 39 requires MAPX ≤ wXCoord+11.
+    jl  .spriteInvisible                 ; MAPY > wYCoord+9 → below screen
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
     movzx eax, byte [ebp + W_X_COORD]
-    lea ecx, [eax - 8]
+    lea ecx, [eax - 6]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPX < wXCoord-8 → off left of screen
+    jg  .spriteInvisible                 ; MAPX < wXCoord-6 → left of screen
+    lea ecx, [eax + 13]
+    cmp ecx, edx
+    jl  .spriteInvisible                 ; MAPX > wXCoord+13 → right of screen
+    ; --- INNER: GetTileSpriteStandsOn access-safe bounds ---
+    ; row = (MAPY-wYCoord)*2+9; row ∈ [1,23] requires MAPY ∈ [wYCoord-4, wYCoord+7].
+    ; col = (MAPX-wXCoord)*2+16; col ∈ [0,38] requires MAPX ∈ [wXCoord-8, wXCoord+11].
+    ; North/west inner bounds are already stricter than the outer check above, so
+    ; only south and east need to be tested here.  If outside inner but inside outer
+    ; (MAPY ∈ {+8,+9} or MAPX ∈ {+12,+13}), show the sprite without the tile check.
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    movzx eax, byte [ebp + W_Y_COORD]
+    lea ecx, [eax + 7]
+    cmp ecx, edx
+    jl  .spriteVisibleEdge               ; MAPY ∈ {+8,+9} → on-screen but S of safe zone
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    movzx eax, byte [ebp + W_X_COORD]
     lea ecx, [eax + 11]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPX > wXCoord+11 → off right of screen
+    jl  .spriteVisibleEdge               ; MAPX ∈ {+12,+13} → on-screen but E of safe zone
 .skipXYVisibility:
     ; Text-box tile check: if any of the 4 tiles the sprite stands on is a text-box
     ; tile (ID >= MAP_TILESET_SIZE / $60), the sprite is obscured → invisible.
@@ -632,6 +648,14 @@ CheckSpriteAvailability:
     mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_IMAGEINDEX], 0xFF
     stc
     ret
+.spriteVisibleEdge:
+    ; On-screen but outside GetTileSpriteStandsOn safe zone: no tile ID available.
+    ; Update the image index and clear grass priority (edge sprites are never in grass).
+    cmp byte [ebp + W_WALK_COUNTER], 0
+    jne .done
+    call UpdateSpriteImage
+    mov byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_GRASSPRIORITY], 0
+    jmp .done
 .spriteVisible:
     mov cl, al                           ; CL = TR tile (grass comparison below)
     cmp byte [ebp + W_WALK_COUNTER], 0

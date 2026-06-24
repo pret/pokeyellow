@@ -447,6 +447,7 @@ OverworldLoop:
     mov byte [ebp + H_SCX], 0
     mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
     call LoadWarpDestination
+    call InitMapSprites                        ; populate NPC slots for the new map
     ; pret: home/overworld.asm:515 (WarpFound2.indoorMaps) — clear BIT_EXITING_DOOR,
     ; then set BIT_STANDING_ON_DOOR to trigger RunNPCMovementScript→PlayerStepOutFromDoor
     ; on the next idle frame. PlayerStepOutFromDoor re-sets BIT_EXITING_DOOR only if the
@@ -472,6 +473,7 @@ OverworldLoop:
     mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
 
     call LoadMapHeader
+    call InitMapSprites                        ; populate NPC slots for the new map
     ; Update text table dispatch for the new map.
     movzx eax, byte [ebp + W_CUR_MAP]
     lea esi, [MapTextTablePointers]
