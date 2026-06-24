@@ -1752,8 +1752,8 @@ LoadSurfingPlayerSpriteGraphics2::
 	dec a
 	jr z, .asm_0d7c
 .asm_0d75
-	ld a, [wd471]
-	bit 6, a
+	ld a, [wPikachuSpawnStateFlags]
+	bit BIT_PIKACHU_SPAWN_SURFING, a
 	jr z, LoadSurfingPlayerSpriteGraphics
 .asm_0d7c
 	ld b, BANK(SurfingPikachuSprite)

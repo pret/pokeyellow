@@ -85,8 +85,8 @@ SurfingPikachuLoop:
 	ret
 
 SurfingPikachu_CheckPressedSelect:
-	ld hl, wd492
-	bit 1, [hl]
+	ld hl, wPikachuMapScriptFlags
+	bit BIT_PIKACHU_MAP_SURF_SELECT, [hl]
 	ret z
 	ldh a, [hJoyPressed]
 	and PAD_SELECT

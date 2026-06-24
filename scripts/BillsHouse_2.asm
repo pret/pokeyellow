@@ -81,12 +81,12 @@ BillsHousePrintBillCheckOutMyRarePokemonText::
 	text_far _BillsHouseBillCheckOutMyRarePokemonText
 	text_end
 
-Func_f24ae::
+BillsHouse_CheckPikachuEmotion::
 	ld a, [wCurMap]
 	cp BILLS_HOUSE
-	jr nz, .asm_f24d2
+	jr nz, .noEmotion
 	call CheckPikachuFollowingPlayer
-	jr z, .asm_f24d2
+	jr z, .noEmotion
 	ld a, [wBillsHouseCurScript]
 	cp SCRIPT_BILLSHOUSE_SCRIPT5
 	ldpikaemotion e, PikachuEmotion27
@@ -100,18 +100,18 @@ Func_f24ae::
 	ldpikaemotion e, PikachuEmotion31
 	ret
 
-.asm_f24d2
+.noEmotion
 	ld e, $ff
 	ret
 
-Func_f24d5::
+BillsHousePikachuConfused::
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	xor a
 	ld [wPlayerMovingDirection], a
 	call UpdateSprites
 	call UpdateSprites
-	ld hl, Data_f2505
+	ld hl, PikachuMovement_Confused
 	call ApplyPikachuMovementData
 	ld a, $f ; pikachu
 	ld [wEmotionBubbleSpriteIndex], a
@@ -122,35 +122,35 @@ Func_f24d5::
 	callfar InitializePikachuTextID
 	ret
 
-Data_f2505:
-	db $00
-	db $20
-	db $20
-	db $20
-	db $1e
-	db $3f
+PikachuMovement_Confused:
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_UP
+	db PIKAMOVEMENT_END
 
-Func_f250b::
-	ld hl, Data_f251c
+BillsHousePikachuWatchPlayer::
+	ld hl, PikachuMovement_WatchPlayer1
 	ld b, SPRITE_FACING_UP
 	call TryApplyPikachuMovementData
-	ld hl, Data_f2521
+	ld hl, PikachuMovement_WatchPlayer2
 	ld b, SPRITE_FACING_RIGHT
 	call TryApplyPikachuMovementData
 	ret
 
-Data_f251c:
-	db $00
-	db $1f
-	db $1d
-	db $38
-	db $3f
+PikachuMovement_WatchPlayer1:
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_LEFT
+	db PIKAMOVEMENT_STEP_DOWN
+	db PIKAMOVEMENT_LOOK_RIGHT
+	db PIKAMOVEMENT_END
 
-Data_f2521:
-	db $00
-	db $1e
-	db $1f
-	db $1f
-	db $1d
-	db $38
-	db $3f
+PikachuMovement_WatchPlayer2:
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_UP
+	db PIKAMOVEMENT_STEP_LEFT
+	db PIKAMOVEMENT_STEP_LEFT
+	db PIKAMOVEMENT_STEP_DOWN
+	db PIKAMOVEMENT_LOOK_RIGHT
+	db PIKAMOVEMENT_END
