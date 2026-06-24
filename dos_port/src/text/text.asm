@@ -265,6 +265,7 @@ PrintLetterDelay:
     movzx eax, byte [ebp + W_LETTER_PRINTING_DELAY]
     test al, (1 << BIT_TEXT_DELAY)             ; delay enabled by TextCommandProcessor?
     jz .done
+    call sync_dialog_window                    ; mirror latest char to window before first frame
     movzx ecx, byte [ebp + H_JOY_HELD]
     test cl, PAD_A | PAD_B
     jnz .one_frame                             ; button held: skip to one-frame exit
@@ -394,10 +395,85 @@ manual_text_scroll:
     ret
 
 ; ---------------------------------------------------------------------------
-; scroll_text_up — stub for ScrollTextUpOneLine.
-; Phase 2: no-op (no visual scroll).
+; scroll_text_up — scroll tile rows 14-16 up one row and clear row 16 interior.
+;
+; Copies W_TILEMAP rows 14,15,16 → rows 13,14,15 (60 bytes), then clears
+; the 18-column interior of row 16 with TILE_SPC.
+; Called TWICE in succession (by handle_cont and handle_scroll_cont) to move
+; the bottom text line from row 16 to the top text position row 14:
+;   call 1: row16→row15, row15→row14, row14→row13; clear row16
+;   call 2: row16(blank)→row15, row15(old16)→row14, row14(old15)→row13; clear row16
+;   net result: old row16 is now at row14, rows 15-16 are blank.
+; Pret ref: home/text.asm:ScrollTextUpOneLine (called twice per _ContText).
+; Syncs W_TILEMAP to GB_TILEMAP1 and delays 2 frames per call so the
+; scroll is visible in the window layer.
+; All registers preserved.
 ; ---------------------------------------------------------------------------
 scroll_text_up:
+    push eax
+    push ecx
+    push esi
+    push edi
+    ; Copy rows 14,15,16 (60 bytes) up one tile row to rows 13,14,15
+    lea esi, [ebp + W_TILEMAP + 14 * SCREEN_W_TILES]
+    lea edi, [ebp + W_TILEMAP + 13 * SCREEN_W_TILES]
+    mov ecx, SCREEN_W_TILES * 3          ; 60 bytes (3 full rows)
+    rep movsb
+    ; Clear row 16 interior (cols 1-18)
+    lea edi, [ebp + W_TILEMAP + 16 * SCREEN_W_TILES + 1]
+    mov al, TILE_SPC
+    mov ecx, MSG_BOX_WIDTH               ; 18 columns
+    rep stosb
+    ; Sync to window layer then delay so the scroll is visible
+    call sync_dialog_window
+    call DelayFrame
+    call DelayFrame
+    pop edi
+    pop esi
+    pop ecx
+    pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; sync_dialog_window — mirror W_TILEMAP dialog rows to the window tilemap.
+;
+; Copies W_TILEMAP rows 12-17 (6 × 20 tiles) into GB_TILEMAP1 rows 0-5
+; (32-tile stride), padding cols 20-31 with TILE_SPC.
+; Called from PrintText (after TextBoxBorder, before first character) and from
+; PrintLetterDelay (before the delay frames) so each character becomes visible
+; as it is typed rather than all at once at the end.
+; No-op when the dialog window is not open (H_WY == RENDER_H).
+; All registers preserved.
+; ---------------------------------------------------------------------------
+sync_dialog_window:
+    push eax
+    movzx eax, byte [ebp + H_WY]
+    cmp al, RENDER_H
+    je .skip
+    push ecx
+    push esi
+    push edi
+    mov ecx, 6                            ; 6 dialog rows (rows 12-17)
+    lea esi, [ebp + MSG_BOX_ESI]          ; W_TILEMAP + 12*SCREEN_W_TILES
+    lea edi, [ebp + GB_TILEMAP1]
+.sdw_row:
+    push ecx
+    push edi
+    mov ecx, SCREEN_W_TILES               ; 20 visible tiles per row
+    rep movsb
+    mov al, TILE_SPC
+    mov ecx, TILEMAP_W - SCREEN_W_TILES   ; pad cols 20-31
+    rep stosb
+    pop edi
+    pop ecx
+    add edi, TILEMAP_W                    ; advance to next window tilemap row
+    dec ecx
+    jnz .sdw_row
+    pop edi
+    pop esi
+    pop ecx
+.skip:
+    pop eax
     ret
 
 ; ---------------------------------------------------------------------------
@@ -532,10 +608,30 @@ PlaceNextChar:
     jmp .advance
 
 .handle_para:
-    ; <PARA> ($51): paragraph break — clear text area, position at (1,14).
-    ; Full implementation needs ClearScreenArea + DelayFrames + manual scroll.
-    ; Phase 2 stub: just reposition cursor to dialogue line start.
+    ; <PARA> ($51): paragraph break — wait for input, clear text area, reposition at (1,14).
+    ; Pret ref: home/text.asm:Paragraph — ManualTextScroll, ClearScreenArea 4×18 at (1,13).
     call manual_text_scroll
+    ; Clear all 4 interior rows (rows 13-16, cols 1-18) with TILE_SPC.
+    push eax
+    push ecx
+    push edi
+    mov al, TILE_SPC
+    lea edi, [ebp + W_TILEMAP + 13 * SCREEN_W_TILES + 1]
+    mov ecx, MSG_BOX_WIDTH
+    rep stosb
+    lea edi, [ebp + W_TILEMAP + 14 * SCREEN_W_TILES + 1]
+    mov ecx, MSG_BOX_WIDTH
+    rep stosb
+    lea edi, [ebp + W_TILEMAP + 15 * SCREEN_W_TILES + 1]
+    mov ecx, MSG_BOX_WIDTH
+    rep stosb
+    lea edi, [ebp + W_TILEMAP + 16 * SCREEN_W_TILES + 1]
+    mov ecx, MSG_BOX_WIDTH
+    rep stosb
+    pop edi
+    pop ecx
+    pop eax
+    call sync_dialog_window              ; show cleared box immediately
     pop esi
     mov esi, W_TILEMAP + 14 * SCREEN_W_TILES + 1
     push esi
@@ -897,6 +993,13 @@ PrintText:
     call TextBoxBorder  ; preserves ESI and EBX
 
     pop esi             ; SM83: pop hl — restore command stream ptr
+
+    ; Show the empty box now so text characters appear one-by-one as typed.
+    ; The window stays open until CheckNPCInteraction resets H_WY = RENDER_H.
+    mov byte [ebp + H_WY], 152
+    mov byte [ebp + IO_WX], 87
+    call sync_dialog_window
+    call DelayFrame
 
 PrintText_NoBox:
     ; SM83: bccoord 1, 14

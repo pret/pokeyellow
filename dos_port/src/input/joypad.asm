@@ -318,6 +318,11 @@ joypad_update:
     movzx eax, byte [pad_dpad]   ; bits 3=Down,2=Up,1=Left,0=Right
     shl al, 4                    ; → bits 7=Down,6=Up,5=Left,4=Right
     or  al, [pad_buttons]        ; merge A/B/Select/Start in low nibble
+    ; H_JOY_PRESSED = new_held & ~old_held  (buttons just pressed this frame)
+    mov bl, byte [ebp + H_JOY_HELD]
+    not bl
+    and bl, al
+    mov [ebp + H_JOY_PRESSED], bl
     mov [ebp + H_JOY_HELD], al
 
     pop ebx

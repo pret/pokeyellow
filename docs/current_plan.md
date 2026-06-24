@@ -486,13 +486,17 @@ flag is set correctly for a trainer-containing map when one is reached.
 - [x] **NPC-NPC tile collision**: `CanWalkOntoTile` calls `DetectCollisionBetweenSprites`
   and gates on `COLLISIONDATA & direction_bit`. Wired as part of commit 59d55835. The
   plan note "not called in the NPC walk path" was written before that commit.
-- [x] **Real NPC dialog**: Implemented 2026-06-23. `CheckNPCInteraction` detects NPC in
+- [x] **Real NPC dialog**: Implemented 2026-06-23/24. `CheckNPCInteraction` detects NPC in
   front via MAPY/MAPX block coords, calls `MakeNPCFacePlayer`, copies GB-charset text
-  stream to `NPC_DIALOG_BUF` (0xCB00) in WRAM, runs `PrintText`. `manual_text_scroll`
-  now copies wTileMap rows 12-17 → GB_TILEMAP1 and waits for A/B. Dialog window shown
-  at H_WY=96 via `commit_shadow_regs`. Pallet Town texts for Oak/Girl/Fisher embedded
-  in map_sprites.asm .data section. **Files edited:** `map_sprites.asm`, `text.asm`,
-  `movement.asm`, `overworld.asm`, `gb_memmap.inc`.
+  stream to `NPC_DIALOG_BUF` (0xCB00) in WRAM, runs `PrintText`. Per-character delay
+  and left-to-right reveal working via `PrintLetterDelay` + `sync_dialog_window`.
+  `H_JOY_PRESSED` (edge-triggered) used for A-button check to prevent re-trigger.
+  `scroll_text_up` implemented: copies rows 14-16→13-15, clears row 16, syncs+delays.
+  `handle_para` now clears all 4 interior rows after `manual_text_scroll`. Multi-page
+  Fisher dialog tested. NPC texts generated from pret source by `gen_npc_dialogs.py`
+  (byte-verified against hand-encoding); `PalletTownTextTable` lives in generated
+  `assets/npc_dialogs_pallet_town.inc`. **Files edited:** `map_sprites.asm`, `text.asm`,
+  `joypad.asm`, `overworld.asm`, `Makefile`; new: `tools/gen_npc_dialogs.py`.
 
 - [ ] **Scripted NPC movement** (MOVEMENTBYTE1 < 0xFE): falls through to STAY.
   Needs `DoScriptedNPCMovement` path in `UpdateNonPlayerSprite`.

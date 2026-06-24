@@ -79,86 +79,11 @@ NpcSpriteAssets:
 %include "assets/npc_girl.inc"
 %include "assets/npc_fisher.inc"
 
-; ---------------------------------------------------------------------------
-; Pallet Town NPC text streams (GB charmap encoding, EBP-relative via WRAM copy).
-; Format: TX_START(0x00) + inline GB-charset string ending in CHAR_DONE(0x57)
-;         or CHAR_TERMINATOR(0x50) followed by TX_END(0x50).
-; Pret ref: text/PalletTown.asm
-; ---------------------------------------------------------------------------
-
-; Oak: "OAK: Hey! Wait!\nDon't go out!"
-; _PalletTownOakHeyWaitDontGoOutText (text_end format → CHAR_TERMINATOR + TX_END)
-pallet_oak_text:
-    db 0x00                                               ; TX_START
-    db 0x8E,0x80,0x8A,0x9C,0x7F                          ; "OAK: "
-    db 0x87,0xA4,0xB8,0xE7,0x7F                          ; "Hey! "
-    db 0x96,0xA0,0xA8,0xB3,0xE7                          ; "Wait!"
-    db 0x4F                                               ; CHAR_LINE
-    db 0x83,0xAE,0xAD,0xBE,0x7F                          ; "Don't "
-    db 0xA6,0xAE,0x7F                                    ; "go "
-    db 0xAE,0xB4,0xB3,0xE7                               ; "out!"
-    db 0x50, 0x50                                         ; CHAR_TERMINATOR, TX_END
-pallet_oak_text_end:
-
-; Girl: "I'm raising\n#MON too!\nWhen they get\nstrong, they can\nprotect me!"
-; _PalletTownGirlText (done format → CHAR_DONE)
-pallet_girl_text:
-    db 0x00                                               ; TX_START
-    db 0x88,0xE5,0x7F                                    ; "I'm "
-    db 0xB1,0xA0,0xA8,0xB2,0xA8,0xAD,0xA6               ; "raising"
-    db 0x4F                                               ; CHAR_LINE
-    db 0x54,0x8C,0x8E,0x8D,0x7F                          ; "#MON "
-    db 0xB3,0xAE,0xAE,0xE7                               ; "too!"
-    db 0x51                                               ; CHAR_PARA
-    db 0x96,0xA7,0xA4,0xAD,0x7F                          ; "When "
-    db 0xB3,0xA7,0xA4,0xB8,0x7F                          ; "they "
-    db 0xA6,0xA4,0xB3                                    ; "get"
-    db 0x4F                                               ; CHAR_LINE
-    db 0xB2,0xB3,0xB1,0xAE,0xAD,0xA6,0xF4,0x7F          ; "strong, "
-    db 0xB3,0xA7,0xA4,0xB8,0x7F                          ; "they "
-    db 0xA2,0xA0,0xAD                                    ; "can"
-    db 0x55                                               ; CHAR_CONT
-    db 0xAF,0xB1,0xAE,0xB3,0xA4,0xA2,0xB3,0x7F          ; "protect "
-    db 0xAC,0xA4,0xE7                                    ; "me!"
-    db 0x57, 0x50                                         ; CHAR_DONE, TX_END
-pallet_girl_text_end:
-
-; Fisher: "Technology is\nincredible!\nYou can now store\nand recall items\nand #MON as\ndata via PC!"
-; _PalletTownFisherText (done format → CHAR_DONE)
-pallet_fisher_text:
-    db 0x00                                               ; TX_START
-    db 0x93,0xA4,0xA2,0xA7,0xAD,0xAE,0xAB,0xAE,0xA6,0xB8,0x7F  ; "Technology "
-    db 0xA8,0xB2                                          ; "is"
-    db 0x4F                                               ; CHAR_LINE
-    db 0xA8,0xAD,0xA2,0xB1,0xA4,0xA3,0xA8,0xA1,0xAB,0xA4,0xE7  ; "incredible!"
-    db 0x51                                               ; CHAR_PARA
-    db 0x98,0xAE,0xB4,0x7F                               ; "You "
-    db 0xA2,0xA0,0xAD,0x7F                               ; "can "
-    db 0xAD,0xAE,0xB6,0x7F                               ; "now "
-    db 0xB2,0xB3,0xAE,0xB1,0xA4                          ; "store"
-    db 0x4F                                               ; CHAR_LINE
-    db 0xA0,0xAD,0xA3,0x7F                               ; "and "
-    db 0xB1,0xA4,0xA2,0xA0,0xAB,0xAB,0x7F               ; "recall "
-    db 0xA8,0xB3,0xA4,0xAC,0xB2                          ; "items"
-    db 0x55                                               ; CHAR_CONT
-    db 0xA0,0xAD,0xA3,0x7F                               ; "and "
-    db 0x54,0x8C,0x8E,0x8D,0x7F                          ; "#MON "
-    db 0xA0,0xB2                                          ; "as"
-    db 0x55                                               ; CHAR_CONT
-    db 0xA3,0xA0,0xB3,0xA0,0x7F                          ; "data "
-    db 0xB5,0xA8,0xA0,0x7F                               ; "via "
-    db 0x8F,0x82,0xE7                                    ; "PC!"
-    db 0x57, 0x50                                         ; CHAR_DONE, TX_END
-pallet_fisher_text_end:
-
-; PalletTownTextTable — (flat_ptr, size) pairs indexed by text_id.
-; Terminated by a null entry. CheckNPCInteraction copies the selected entry
-; to NPC_DIALOG_BUF in WRAM before calling PrintText.
-PalletTownTextTable:
-    dd pallet_oak_text,    pallet_oak_text_end    - pallet_oak_text
-    dd pallet_girl_text,   pallet_girl_text_end   - pallet_girl_text
-    dd pallet_fisher_text, pallet_fisher_text_end - pallet_fisher_text
-    dd 0, 0
+; NPC dialog streams generated from pret text sources.
+; Defines pallet_town_oak_text, pallet_town_girl_text, pallet_town_fisher_text
+; and PalletTownTextTable — see assets/npc_dialogs_pallet_town.inc.
+; DO NOT EDIT the .inc directly — regenerate with: make assets
+%include "assets/npc_dialogs_pallet_town.inc"
 
 ; ---------------------------------------------------------------------------
 ; Code

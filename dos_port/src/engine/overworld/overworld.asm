@@ -278,7 +278,9 @@ OverworldLoop:
 
     ; Simulated joypad state overrides real input (pret: AreInputsSimulated).
     ; BIT_SCRIPTED_MOVEMENT_STATE is set by PlayerStepOutFromDoor for one idle frame.
-    movzx eax, byte [ebp + H_JOY_HELD]
+    ; Use H_JOY_PRESSED (edge-triggered) for A so a held-A after dialog dismiss doesn't
+    ; immediately re-open the dialog. Pret ref: home/overworld.asm:74 ldh a,[hJoyPressed].
+    movzx eax, byte [ebp + H_JOY_PRESSED]
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
     jz .checkJoyDisable
     movzx eax, byte [ebp + W_SIMULATED_JOYPAD_STATES_END]
