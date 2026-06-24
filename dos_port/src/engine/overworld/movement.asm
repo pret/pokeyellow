@@ -569,29 +569,30 @@ CheckSpriteAvailability:
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
     cmp al, WALK
     jb .skipXYVisibility                 ; scripted movement: always show, skip range test
-    ; Y range test — DOS 320×200 viewport.
-    ; MAPY = actual_tile_y + 4 (origin+4). Player screen y = 96.
-    ; Visible range: actual delta ∈ [−6,+6] + 1-tile buffer → MAPY ∈ [wYCoord−3, wYCoord+11].
+    ; Y range test — movement-safe wTileMap zone.
+    ; GetTileSpriteStandsOn: row = (MAPY-wYCoord)*2+9. wTileMap has 25 rows (0-24).
+    ; Movement adds ±2 rows, so feet row must be in [2,22]: MAPY ∈ [wYCoord-3, wYCoord+6].
+    ; (Player at PLAYER_STANDING_ROW=17; 4 safe blocks south, 8 safe blocks north.)
     ; 32-bit signed comparison prevents byte underflow when wYCoord < 3.
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
     movzx eax, byte [ebp + W_Y_COORD]
     lea ecx, [eax - 3]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPY < wYCoord−3 → off top of screen
-    lea ecx, [eax + 11]
+    jg  .spriteInvisible                 ; MAPY < wYCoord-3 → off top / unsafe north
+    lea ecx, [eax + 6]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPY > wYCoord+11 → off bottom of screen
-    ; X range test — DOS 320×200 viewport.
-    ; MAPX = actual_tile_x + 4 (origin+4). Player screen x = 160.
-    ; Visible range: actual delta ∈ [−10,+9] + 1-tile buffer → MAPX ∈ [wXCoord−7, wXCoord+14].
+    jl  .spriteInvisible                 ; MAPY > wYCoord+6 → unsafe south (out-of-map reads)
+    ; X range test — movement-safe wTileMap zone.
+    ; col = (MAPX-wXCoord)*2+16. Movement adds ±2 cols, so col must be in [2,37]:
+    ; MAPX ∈ [wXCoord-7, wXCoord+10].
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
     movzx eax, byte [ebp + W_X_COORD]
     lea ecx, [eax - 7]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPX < wXCoord−7 → off left of screen
-    lea ecx, [eax + 14]
+    jg  .spriteInvisible                 ; MAPX < wXCoord-7 → off left / unsafe west
+    lea ecx, [eax + 10]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPX > wXCoord+14 → off right of screen
+    jl  .spriteInvisible                 ; MAPX > wXCoord+10 → unsafe east (out-of-map reads)
 .skipXYVisibility:
     ; Text-box tile check: if any of the 4 tiles the sprite stands on is a text-box
     ; tile (ID >= MAP_TILESET_SIZE / $60), the sprite is obscured → invisible.
