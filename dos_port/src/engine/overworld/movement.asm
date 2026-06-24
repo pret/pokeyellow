@@ -632,32 +632,31 @@ CheckSpriteAvailability:
 ; GetTileSpriteStandsOn — wTileMap pointer for the tile under the sprite.
 ; Pret ref: engine/overworld/movement.asm:GetTileSpriteStandsOn.
 ;
-; Returns the lower-left tile of the 2×2-tile block the sprite occupies:
-;   c = ((YPixels+4) & $f8) >> 1   (= screenYtile * 4)
-;   e = (XPixels >> 3) + SCREEN_WIDTH
-;   EBX = W_TILEMAP + 5*c + e      (= wTileMap + 20*(screenYtile+1) + screenXtile)
+; Computes the lower-left wTileMap entry of the 2×2 block the NPC occupies.
+; Uses MAPY/MAPX (block coordinates) instead of YPIXELS/XPIXELS so the result
+; is always correct regardless of when InitializeSpriteScreenPosition last ran.
 ;
-; In: ESI = slot byte offset. Out: EBX = W_TILEMAP-relative offset. Clobbers AL, ECX, EBX.
+; Formula (derived from MAPY/MAPX with +4 offset vs W_Y_COORD/W_X_COORD):
+;   row = (MAPY - W_Y_COORD)*2 + 9    (player foot row=17; MAPY has +4 bias)
+;   col = (MAPX - W_X_COORD)*2 + 16   (player foot col=24; MAPX has +4 bias)
+;   EBX = W_TILEMAP + row*SCREEN_WIDTH + col
+;
+; In: ESI = slot byte offset. Out: EBX = wTileMap offset. Clobbers AL, ECX, EBX.
 ; ---------------------------------------------------------------------------
 GetTileSpriteStandsOn:
-    ; DOS W_TILEMAP is shifted by 4 tiles (X and Y) relative to the screen.
-    ; Player is at screen (20, 12). In W_TILEMAP this is (24, 16).
-    ; Game Boy screen Y=8 maps to W_TILEMAP Y=17 (bottom-left) -> offset = +9
-    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YPIXELS]
-    add al, 4
-    and al, 0xF8
-    movsx ecx, al
-    sar ecx, 3                           ; ECX = Game Boy screenYtile
-    add ecx, 9                           ; ECX = W_TILEMAP Y
-    
-    ; Game Boy screen X=8 maps to W_TILEMAP X=24 -> offset = +16
-    mov al, [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_XPIXELS]
-    movsx ebx, al
-    sar ebx, 3                           ; EBX = Game Boy screenXtile
-    add ebx, 16                          ; EBX = W_TILEMAP X
-    
-    ; EBX = W_TILEMAP + 40 * screenYtile + screenXtile
-    imul ecx, ecx, SCREEN_WIDTH
+    movsx ecx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    movsx eax, byte [ebp + W_Y_COORD]
+    sub ecx, eax                         ; ECX = MAPY - W_Y_COORD (= delta_blocks + 4)
+    add ecx, ecx                         ; ECX = (MAPY - W_Y_COORD) * 2
+    add ecx, 9                           ; ECX = wTileMap row
+
+    movsx ebx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    movsx eax, byte [ebp + W_X_COORD]
+    sub ebx, eax                         ; EBX = MAPX - W_X_COORD (= delta_blocks + 4)
+    add ebx, ebx                         ; EBX = (MAPX - W_X_COORD) * 2
+    add ebx, 16                          ; EBX = wTileMap col
+
+    imul ecx, ecx, SCREEN_WIDTH          ; row * 40
     add ebx, ecx
     add ebx, W_TILEMAP
     ret

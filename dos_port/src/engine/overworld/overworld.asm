@@ -53,6 +53,7 @@ extern ClearSprites
 extern g_tilecache_dirty
 extern InitMapSprites
 extern CheckNPCInteraction
+extern IsNPCAtTargetBlock
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -278,9 +279,11 @@ OverworldLoop:
 
     ; Simulated joypad state overrides real input (pret: AreInputsSimulated).
     ; BIT_SCRIPTED_MOVEMENT_STATE is set by PlayerStepOutFromDoor for one idle frame.
-    ; Use H_JOY_PRESSED (edge-triggered) for A so a held-A after dialog dismiss doesn't
-    ; immediately re-open the dialog. Pret ref: home/overworld.asm:74 ldh a,[hJoyPressed].
-    movzx eax, byte [ebp + H_JOY_PRESSED]
+    ; H_JOY_HELD is used for A (not H_JOY_PRESSED): joypad_update runs twice per
+    ; OverworldLoop idle iteration (one per DelayFrame), so H_JOY_PRESSED is always
+    ; cleared by the second call before we read it. H_JOY_HELD is reliable.
+    ; Re-trigger after dialog dismiss is prevented by .waitAReleased below.
+    movzx eax, byte [ebp + H_JOY_HELD]
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_SCRIPTED_MOVEMENT_STATE)
     jz .checkJoyDisable
     movzx eax, byte [ebp + W_SIMULATED_JOYPAD_STATES_END]
@@ -290,15 +293,22 @@ OverworldLoop:
     test byte [ebp + W_STATUS_FLAGS_5], (1 << BIT_DISABLE_JOYPAD)
     jnz .noDirection                            ; input suppressed during warp-arrival window
 
-    ; A-press: check for NPC or sign in front of player.
+    ; A-press: check for NPC or sign. EAX = H_JOY_HELD (level-triggered, reliable).
     test al, PAD_A
     jz .checkPADDown
     call CheckNPCInteraction
     test al, al
-    jnz OverworldLoop                          ; interaction handled: restart loop
-    movzx eax, byte [ebp + H_JOY_HELD]        ; reload joypad for D-pad check
+    jz .checkPADDown                           ; no NPC/sign found → fall to D-pad
 
-.checkPADDown:
+    ; Interaction handled. Wait for A to be released before restarting to prevent
+    ; the next OverworldLoop iteration from re-triggering while A is still held.
+.waitAReleased:
+    call DelayFrame
+    test byte [ebp + H_JOY_HELD], PAD_A
+    jnz .waitAReleased
+    jmp OverworldLoop
+
+.checkPADDown:                                  ; EAX = H_JOY_HELD from above
     test al, PAD_DOWN
     jz .checkUp
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 1
@@ -1402,11 +1412,11 @@ MoveTileBlockMapPointerNorth:            ; AL = wCurMapWidth
     ret
 
 ; ---------------------------------------------------------------------------
-; CollisionCheckOnLand — simplified translation.
-; Pret ref: home/overworld.asm:CollisionCheckOnLand (tile-passability path only;
-; no sprite collisions, ledges, tile-pair collisions, or simulated input yet).
+; CollisionCheckOnLand — tile passability + sprite collision check.
+; Pret ref: home/overworld.asm:CollisionCheckOnLand.
 ;
-; Out: CF = 1 if the tile the player faces is impassable (movement blocked).
+; Checks both the tile in front of the player (IsTilePassable) and whether any
+; NPC occupies that block (IsNPCAtTargetBlock).  CF=1 if movement is blocked.
 ; ---------------------------------------------------------------------------
 CollisionCheckOnLand:
 %ifdef DEBUG_NOCLIP
@@ -1423,9 +1433,19 @@ CollisionCheckOnLand:
     call LoadCurrentMapView
     call GetTileInFrontOfPlayer                    ; CL = tile in front
     call IsTilePassable                            ; CF = 1 if not passable
+    jc .blocked                                    ; tile impassable → blocked
+    call IsNPCAtTargetBlock                        ; CF = 1 if NPC is in front
+    jc .blocked                                    ; NPC in the way → blocked
     pop esi
     pop ecx
     pop eax
+    clc
+    ret
+.blocked:
+    pop esi
+    pop ecx
+    pop eax
+    stc
     ret
 %ifdef DEBUG_NOCLIP
 .passable:

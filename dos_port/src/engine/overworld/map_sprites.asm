@@ -37,6 +37,7 @@ extern HandleDownArrowBlinkTiming
 
 global InitMapSprites
 global CheckNPCInteraction
+global IsNPCAtTargetBlock
 
 ; ---------------------------------------------------------------------------
 ; Constants
@@ -319,6 +320,79 @@ LoadNPCSpriteTiles:
     pop ecx
     pop ebx
     pop eax
+    ret
+
+; ---------------------------------------------------------------------------
+; IsNPCAtTargetBlock — test if any NPC occupies the block directly in front of the player.
+;
+; Pret ref: home/overworld.asm:IsSpriteOrSignInFrontOfPlayer (scan loop only).
+;
+; Same MAPY/MAPX scan as CheckNPCInteraction.  Used by CollisionCheckOnLand to
+; block the player from walking into an NPC's tile.
+;
+; In:  EBP = GB memory base; reads W_Y_COORD, W_X_COORD, W_SPRITE_PLAYER_FACING_DIR.
+; Out: CF=1 if an NPC was found in the facing tile; CF=0 if the tile is clear.
+; Preserves: all registers (push/pops EAX, EBX, ECX, ESI internally).
+; ---------------------------------------------------------------------------
+IsNPCAtTargetBlock:
+    push eax
+    push ebx
+    push ecx
+    push esi
+
+    movzx ebx, byte [ebp + W_Y_COORD]
+    add bl, 4                               ; BL = target MAPY (player block + MAPY bias)
+    movzx ecx, byte [ebp + W_X_COORD]
+    add cl, 4                               ; CL = target MAPX
+
+    movzx eax, byte [ebp + W_SPRITE_PLAYER_FACING_DIR]
+    cmp al, SPRITE_FACING_UP
+    je .face_up
+    cmp al, SPRITE_FACING_DOWN
+    je .face_down
+    cmp al, SPRITE_FACING_LEFT
+    je .face_left
+    inc cl                                  ; right: MAPX + 1
+    jmp .scan
+.face_up:
+    dec bl                                  ; up:    MAPY - 1
+    jmp .scan
+.face_down:
+    inc bl                                  ; down:  MAPY + 1
+    jmp .scan
+.face_left:
+    dec cl                                  ; left:  MAPX - 1
+
+.scan:
+    mov esi, 0x10                           ; start at NPC slot 1
+.slot_loop:
+    cmp esi, 0x100
+    jge .not_found
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_IMAGEBASEOFFSET]
+    test al, al
+    jz .next_slot                           ; inactive slot
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    cmp al, bl
+    jne .next_slot
+    movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    cmp al, cl
+    je .found
+.next_slot:
+    add esi, 0x10
+    jmp .slot_loop
+.found:
+    pop esi
+    pop ecx
+    pop ebx
+    pop eax
+    stc
+    ret
+.not_found:
+    pop esi
+    pop ecx
+    pop ebx
+    pop eax
+    clc
     ret
 
 ; ---------------------------------------------------------------------------
