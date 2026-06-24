@@ -160,6 +160,26 @@ UpdateNonPlayerSprite:
     jmp .ret
 
 .randomMovement:
+    ; Movement-safe bounds: destination accesses ±2 tile rows/cols from current EBX.
+    ; .moveDown: EBX+2*40 → needs row+2 ≤ 24 → MAPY ≤ wYCoord+6.
+    ; .moveUp:   EBX-2*40 → needs row-2 ≥ 0  → MAPY ≥ wYCoord-3.
+    ; .moveRight/Left: EBX±2 → col ∈ [2,37]  → MAPX ∈ [wXCoord-7, wXCoord+10].
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    movzx eax, byte [ebp + W_Y_COORD]
+    lea ecx, [eax - 3]
+    cmp ecx, edx
+    jg .notYetMoving                     ; MAPY < wYCoord-3 → too far north to move
+    lea ecx, [eax + 6]
+    cmp ecx, edx
+    jl .notYetMoving                     ; MAPY > wYCoord+6 → too far south to move
+    movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    movzx eax, byte [ebp + W_X_COORD]
+    lea ecx, [eax - 7]
+    cmp ecx, edx
+    jg .notYetMoving                     ; MAPX < wXCoord-7 → too far west to move
+    lea ecx, [eax + 10]
+    cmp ecx, edx
+    jl .notYetMoving                     ; MAPX > wXCoord+10 → too far east to move
     ; GetTileSpriteStandsOn clobbers EBX, ECX, AL.
     ; Random_ clobbers AL, BL. Push EBX around Random call.
     call GetTileSpriteStandsOn          ; EBX = wTileMap offset of lower-left tile under NPC
@@ -569,30 +589,29 @@ CheckSpriteAvailability:
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
     cmp al, WALK
     jb .skipXYVisibility                 ; scripted movement: always show, skip range test
-    ; Y range test — movement-safe wTileMap zone.
-    ; GetTileSpriteStandsOn: row = (MAPY-wYCoord)*2+9. wTileMap has 25 rows (0-24).
-    ; Movement adds ±2 rows, so feet row must be in [2,22]: MAPY ∈ [wYCoord-3, wYCoord+6].
-    ; (Player at PLAYER_STANDING_ROW=17; 4 safe blocks south, 8 safe blocks north.)
-    ; 32-bit signed comparison prevents byte underflow when wYCoord < 3.
+    ; Y visibility bounds — safe for GetTileSpriteStandsOn at the NPC's CURRENT tile.
+    ; row = (MAPY-wYCoord)*2+9; wTileMap rows 0-24; upper-left = row-1.
+    ; row-1 ≥ 0 requires MAPY ≥ wYCoord-4; row ≤ 24 requires MAPY ≤ wYCoord+7.
+    ; 32-bit signed comparison prevents byte underflow when wYCoord < 4.
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
     movzx eax, byte [ebp + W_Y_COORD]
-    lea ecx, [eax - 3]
+    lea ecx, [eax - 4]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPY < wYCoord-3 → off top / unsafe north
-    lea ecx, [eax + 6]
+    jg  .spriteInvisible                 ; MAPY < wYCoord-4 → off top of screen
+    lea ecx, [eax + 7]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPY > wYCoord+6 → unsafe south (out-of-map reads)
-    ; X range test — movement-safe wTileMap zone.
-    ; col = (MAPX-wXCoord)*2+16. Movement adds ±2 cols, so col must be in [2,37]:
-    ; MAPX ∈ [wXCoord-7, wXCoord+10].
+    jl  .spriteInvisible                 ; MAPY > wYCoord+7 → off bottom of screen
+    ; X visibility bounds — safe for GetTileSpriteStandsOn at the NPC's CURRENT tile.
+    ; col = (MAPX-wXCoord)*2+16; col ≥ 0 requires MAPX ≥ wXCoord-8;
+    ; col+1 ≤ 39 requires MAPX ≤ wXCoord+11.
     movzx edx, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
     movzx eax, byte [ebp + W_X_COORD]
-    lea ecx, [eax - 7]
+    lea ecx, [eax - 8]
     cmp ecx, edx
-    jg  .spriteInvisible                 ; MAPX < wXCoord-7 → off left / unsafe west
-    lea ecx, [eax + 10]
+    jg  .spriteInvisible                 ; MAPX < wXCoord-8 → off left of screen
+    lea ecx, [eax + 11]
     cmp ecx, edx
-    jl  .spriteInvisible                 ; MAPX > wXCoord+10 → unsafe east (out-of-map reads)
+    jl  .spriteInvisible                 ; MAPX > wXCoord+11 → off right of screen
 .skipXYVisibility:
     ; Text-box tile check: if any of the 4 tiles the sprite stands on is a text-box
     ; tile (ID >= MAP_TILESET_SIZE / $60), the sprite is obscured → invisible.
