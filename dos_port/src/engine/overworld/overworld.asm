@@ -54,6 +54,10 @@ extern g_tilecache_dirty
 extern InitMapSprites
 extern CheckNPCInteraction
 extern IsNPCAtTargetBlock
+extern CheckTrainerSight
+extern TrainerEncounterFlow
+extern w_map_text_table_ptr
+extern MapTextTablePointers
 %ifdef DEBUG_DUMP
 extern DebugDumpMemory
 %endif
@@ -277,6 +281,13 @@ OverworldLoop:
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
     mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
 
+    ; Check trainer sight lines before reading joypad (pret: CheckTrainerSightLine).
+    call CheckTrainerSight
+    jnc .noTrainerSight
+    call TrainerEncounterFlow
+    jmp OverworldLoop
+.noTrainerSight:
+
     ; Simulated joypad state overrides real input (pret: AreInputsSimulated).
     ; BIT_SCRIPTED_MOVEMENT_STATE is set by PlayerStepOutFromDoor for one idle frame.
     ; H_JOY_HELD is used for A (not H_JOY_PRESSED): joypad_update runs twice per
@@ -424,6 +435,11 @@ OverworldLoop:
     mov [ebp + W_LAST_MAP], al
 .skipLastMapUpdate:
     mov [ebp + W_CUR_MAP], bl
+    ; Update text table dispatch for the new map.
+    movzx eax, byte [ebp + W_CUR_MAP]
+    lea esi, [MapTextTablePointers]
+    mov esi, [esi + eax*4]
+    mov [w_map_text_table_ptr], esi
     mov byte [ebp + W_WALK_COUNTER], 0
     mov byte [ebp + W_SPRITE_PLAYER_Y_STEP_VECTOR], 0
     mov byte [ebp + W_SPRITE_PLAYER_X_STEP_VECTOR], 0
@@ -456,6 +472,11 @@ OverworldLoop:
     mov word [ebp + W_MAP_VIEW_VRAM_POINTER], GB_TILEMAP0
 
     call LoadMapHeader
+    ; Update text table dispatch for the new map.
+    movzx eax, byte [ebp + W_CUR_MAP]
+    lea esi, [MapTextTablePointers]
+    mov esi, [esi + eax*4]
+    mov [w_map_text_table_ptr], esi
     call LoadTileBlockMap
     call LoadCurrentMapView
 
@@ -731,6 +752,11 @@ LoadMapData:
     call ResetMapVariables
     call LoadTextBoxTilePatterns
     call LoadMapHeader
+    ; Dispatch per-map text table: MapTextTablePointers[W_CUR_MAP] → w_map_text_table_ptr.
+    movzx eax, byte [ebp + W_CUR_MAP]
+    lea esi, [MapTextTablePointers]
+    mov esi, [esi + eax*4]
+    mov [w_map_text_table_ptr], esi
     call InitMapSprites
     call LoadScreenRelatedData
     call LoadScreenRelatedData
@@ -2188,8 +2214,7 @@ section .rodata
 %include "assets/route25_blk.inc"
 %include "assets/overworld_coll.inc"
 %include "assets/player_sprite.inc"
-%include "assets/npc_girl_still.inc"
-%include "assets/npc_fisher_still.inc"
-%include "assets/npc_oak_still.inc"
+; npc_*_still.inc files removed — LoadNPCSpriteTiles reads both still and walk
+; halves from the full 384-byte sheet in npc_sprite_data_table.inc.
 %include "assets/map_headers.inc"
 %include "assets/extra_includes.inc"

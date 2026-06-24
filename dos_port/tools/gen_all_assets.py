@@ -27,6 +27,9 @@ GFX_BLOCKSETS = ROOT / "gfx" / "blocksets"
 MAPS_DIR = ROOT / "maps"
 GFX_SPRITES = ROOT / "gfx" / "sprites"
 COLL_SRC = ROOT / "data" / "tilesets" / "collision_tile_ids.asm"
+SPRITE_CONSTANTS = ROOT / "constants" / "sprite_constants.asm"
+MAPS_OBJECTS_DIR = ROOT / "data" / "maps" / "objects"
+NPC_SPRITES_DIR = ASSETS / "npc_sprites"
 
 # ---------------------------------------------------------------------------
 # Tileset table: (id, canonical_name, gfx_stem, blocks_stem, coll_label)
@@ -106,6 +109,46 @@ def to_snake(pascal: str) -> str:
     return s.lower()
 
 
+def parse_sprite_constants() -> dict:
+    """Parse constants/sprite_constants.asm → {SPRITE_FOO: id} (sequential const_def)."""
+    result = {}
+    sprite_id = 0
+    for line in SPRITE_CONSTANTS.read_text().splitlines():
+        m = re.match(r'\s*const\s+(SPRITE_\w+)', line)
+        if m:
+            result[m.group(1)] = sprite_id
+            sprite_id += 1
+    return result
+
+
+def enumerate_npc_sprites() -> list:
+    """Scan all data/maps/objects/*.asm for object_event SPRITE_* tokens.
+
+    Returns a sorted list of (sprite_id, stem, const_name) tuples for every
+    unique sprite constant used on any map.  stem is the .2bpp filename stem
+    (SPRITE_COOLTRAINER_F → cooltrainer_f).
+    """
+    sprite_map = parse_sprite_constants()
+    used: set = set()
+    for obj_file in sorted(MAPS_OBJECTS_DIR.glob("*.asm")):
+        for line in obj_file.read_text().splitlines():
+            m = re.search(r'\bobject_event\b[^;]*(SPRITE_\w+)', line)
+            if m:
+                name = m.group(1)
+                if name in sprite_map:
+                    used.add(name)
+                else:
+                    print(f"WARNING: unknown sprite constant {name!r} in {obj_file.name}",
+                          file=sys.stderr)
+    result = []
+    for name in used:
+        sid = sprite_map[name]
+        stem = name[len("SPRITE_"):].lower()
+        result.append((sid, stem, name))
+    result.sort()
+    return result
+
+
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
 
@@ -161,7 +204,7 @@ def main():
         )
 
     # ------------------------------------------------------------------
-    # 3. Sprite assets (kept from gen_overworld_assets.py)
+    # 3. Player sprite
     # ------------------------------------------------------------------
     player_src = GFX_SPRITES / "red.2bpp"
     if player_src.exists():
@@ -172,21 +215,81 @@ def main():
             "Red overworld sprite 2bpp → [EBP+GB_VCHARS0] ($8000)",
         )
 
-    for label, fname, base_offset in [
-        ("npc_girl",   "girl",   3),
-        ("npc_fisher", "fisher", 4),
-        ("npc_oak",    "oak",    5),
-    ]:
-        src = GFX_SPRITES / f"{fname}.2bpp"
-        if src.exists():
-            tile_base = (base_offset - 1) * 12
-            write_inc(
-                ASSETS / f"{label}.inc",
-                label,
-                src.read_bytes(),
-                f"{fname} NPC sprite sheet (24 tiles: [0] still→[EBP+GB_VCHARS0+${0x8000 + tile_base*16:04X}], "
-                f"[12] walk→[EBP+GB_VFONT+${0x8800 + tile_base*16:04X}])",
-            )
+    # ------------------------------------------------------------------
+    # 4. NPC sprite assets — all sprites used in any map's object_event lines.
+    #
+    # Per-sprite:  assets/npc_sprites/<stem>.inc  (full 24-tile sheet)
+    # Master table: assets/npc_sprite_data_table.inc
+    #    — %includes all per-sprite files then defines npc_sprite_data_table:
+    #      a flat dd array indexed by sprite_id (0x00 … max_id).
+    # ------------------------------------------------------------------
+    NPC_SPRITES_DIR.mkdir(parents=True, exist_ok=True)
+    used_sprites = enumerate_npc_sprites()
+
+    if not used_sprites:
+        print("WARNING: no SPRITE_* constants found in map object files", file=sys.stderr)
+
+    max_id = max(sid for sid, _, _ in used_sprites) if used_sprites else 0
+    table_size = max_id + 1
+
+    # Map sprite_id → stem for used sprites
+    by_id: dict = {sid: (stem, name) for sid, stem, name in used_sprites}
+
+    FULL_SHEET = 384  # 24 tiles × 16 bytes; LoadNPCSpriteTiles always copies this much
+
+    # Per-sprite full-sheet inc files
+    missing: set = set()
+    for sid, stem, name in used_sprites:
+        src = GFX_SPRITES / f"{stem}.2bpp"
+        if not src.exists():
+            print(f"WARNING: {src} missing for {name} (id=0x{sid:02X}), "
+                  "emitting dd 0 in table", file=sys.stderr)
+            missing.add(sid)
+            continue
+        data = src.read_bytes()
+        note = ""
+        if len(data) < FULL_SHEET:
+            # Sprites smaller than 24 tiles (items, single-pose NPCs): pad with
+            # zeros so LoadNPCSpriteTiles's two rep movsb calls always find
+            # FULL_SHEET bytes.  Walk tiles will be zeroed (invisible) which is
+            # correct for STAY-only sprites.
+            note = f", padded from {len(data)} bytes"
+            data = data + bytes(FULL_SHEET - len(data))
+        write_inc(
+            NPC_SPRITES_DIR / f"{stem}.inc",
+            f"npc_{stem}",
+            data,
+            f"{name} (0x{sid:02X}) sprite sheet (24 tiles: [0-11]=still, "
+            f"[12-23]=walk{note})",
+        )
+
+    # Master data table: %includes + flat pointer array
+    table_lines = [
+        "; npc_sprite_data_table.inc — generated by tools/gen_all_assets.py. DO NOT EDIT BY HAND.",
+        "; Flat dd array indexed by sprite_id (0 = no asset / not used on any map).",
+        "; Included from map_sprites.asm in section .data.",
+        "",
+    ]
+    for sid, stem, name in used_sprites:
+        if sid not in missing:
+            table_lines.append(f'%include "assets/npc_sprites/{stem}.inc"')
+    table_lines += [
+        "",
+        f"NPC_SPRITE_TABLE_SIZE equ {table_size}",
+        "",
+        "npc_sprite_data_table:",
+    ]
+    for i in range(table_size):
+        if i in by_id and i not in missing:
+            stem, name = by_id[i]
+            table_lines.append(f"    dd npc_{stem}  ; 0x{i:02X} {name}")
+        else:
+            comment = f"; 0x{i:02X} {by_id[i][1]}" if i in by_id else f"; 0x{i:02X} (unused)"
+            table_lines.append(f"    dd 0  {comment}")
+    table_lines.append("")
+    (ASSETS / "npc_sprite_data_table.inc").write_text("\n".join(table_lines) + "\n")
+    print(f"  wrote {ASSETS / 'npc_sprite_data_table.inc'} "
+          f"({table_size} entries, {len(used_sprites) - len(missing)} sprites)")
 
     print("done.")
 
