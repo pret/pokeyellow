@@ -142,6 +142,7 @@ wPartySpecies      equ 0xD163   ; wPartyCount+1; 6 species + $FF sentinel
 wPartyMons         equ 0xD16A
 wPartyMonOT        equ 0xD272
 wPartyMonNicks     equ 0xD2B4
+wPlayerName        equ 0xD157   ; = W_PLAYER_NAME (OT name source)
 
 ; Sprite state data — 16 slots × $10 bytes each, two parallel arrays.
 ; wSpriteStateData1 ($C100) and wSpriteStateData2 ($C200) — sym-verified.

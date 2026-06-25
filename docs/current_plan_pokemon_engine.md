@@ -68,10 +68,15 @@ in UPPERCASE (`W_PARTY_COUNT`).
     1000000/1059860/800000/1250000). The draft had THREE bugs: systematic `hli`
     inversion (read wrong GrowthRateTable bytes), flat-table double-`ebp`
     (segfault), and reliance on the broken `_Divide`/`Multiply` (fixed Stage 3).
-  - [ ] `_AddPartyMon` (the core creation routine — next).
-  - [ ] wire/audit `load_mon_data`, `set_types`, `remove_mon`. `_AddPartyMon`
-    from `engine/pokemon/add_mon.asm:1` (stub `AskName`/Pokédex); verify by adding
-    a known mon and dumping its party_struct.
+  - [x] `_AddPartyMon` — written fresh (`src/engine/pokemon/add_party_mon.asm`,
+    player non-battle gift path) rather than reusing the broken draft. Validated
+    natively: adds L5 Bulbasaur → count 1, species list correct, struct species
+    0x99, level 5, exp 135 (`CalcExperience(5)`), curHP==maxHP, stats `19/9/9/9/11`
+    (exact for DV=0), types Grass/Poison, moves Tackle/Growl. Wired into Makefile
+    (also wired `array.asm`, fixed its `NAME_LENGTH` extern → `gb_constants.inc`).
+    Stubs (TODO): PP=0 (needs Moves table), OT id=0 (needs sym), WriteMonMoves/
+    Pokédex/AskName/enemy+wild paths.
+  - [ ] wire/audit `load_mon_data`, `set_types`, `remove_mon` (Stage 5 tail).
 
 - [ ] **Stage 6 — Evolution / learnset / PC.** Generate `EvosMovesPointerTable` +
   `MonsterNames`; wire `evos_moves.asm` (`WriteMonMoves`/`GetMonLearnset` needed by

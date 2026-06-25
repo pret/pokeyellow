@@ -1,8 +1,9 @@
 ; dos_port/home/array.asm
+bits 32
+%include "gb_constants.inc"     ; NAME_LENGTH
+
 global SkipFixedLengthTextEntries
 global AddNTimes
-
-extern NAME_LENGTH
 
 section .text
 

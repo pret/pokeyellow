@@ -110,9 +110,11 @@ POKEMON_SRCS := \
     src/data/pokemon_data.asm \
     src/home/math.asm \
     src/engine/math/multiply_divide.asm \
+    src/home/array.asm \
     src/home/pokemon.asm \
     src/home/move_mon.asm \
-    src/engine/pokemon/experience.asm
+    src/engine/pokemon/experience.asm \
+    src/engine/pokemon/add_party_mon.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
