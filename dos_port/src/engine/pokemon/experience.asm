@@ -12,6 +12,7 @@ global CalcDSquared
 extern GetMonHeader
 extern Multiply
 extern Divide
+extern GrowthRateTable
 
 ; -----------------------------------------------------------------------------
 ; CalcLevelFromExperience
@@ -58,35 +59,35 @@ CalcLevelFromExperience:
 ;
 ; Calculates the amount of experience needed for level in DH.
 ; -----------------------------------------------------------------------------
+; Faithful rewrite (2026-06-25). The previous swarm-translated body misread the
+; SM83 `hli` (read [hl], THEN increment) as "increment, THEN read" throughout, so
+; the numerator/denominator, the squared-term sign byte, and the linear/const
+; coefficients were all taken from the wrong GrowthRateTable bytes (e.g. Medium
+; Fast divided by 0). Each `ld a,[hli]` below is `mov al,[esi]` then `inc esi`.
+; GrowthRateTable entry: byte0=(num<<4)|den ; byte1=±n^2 coef ; byte2=n ; byte3=const.
 CalcExperience:
     mov al, byte [ebp + W_MON_H_GROWTH_RATE]
-    shl al, 2
-    mov cl, al ; c = wMonHGrowthRate * 4
-    
-    ; hl = GrowthRateTable + c
-    extern GrowthRateTable
+    shl al, 2                          ; index = growthRate * 4
+    movzx ecx, al
     lea esi, [GrowthRateTable]
-    movzx ecx, cl
-    add esi, ecx
+    add esi, ecx                       ; esi -> entry byte0
 
-    call CalcDSquared
-    
+    ; --- cubed term: (num/den) * n^3 ---
+    call CalcDSquared                  ; product = n^2 (low 3 bytes -> next multiplicand)
     mov al, dh
     mov byte [ebp + H_MULTIPLIER], al
-    call Multiply
-    
-    mov al, byte [ebp + esi]
+    call Multiply                      ; product = n^3
+    mov al, byte [esi]           ; byte0
     and al, 0xF0
-    shr al, 4
+    shr al, 4                          ; numerator (high nibble)
     mov byte [ebp + H_MULTIPLIER], al
-    call Multiply
-    
-    inc esi
-    mov al, byte [ebp + esi]
-    and al, 0x0F
+    call Multiply                      ; n^3 * num
+    mov al, byte [esi]           ; byte0 again (ld a,[hli])
+    inc esi                            ;   then advance to byte1
+    and al, 0x0F                       ; denominator (low nibble of byte0)
     mov byte [ebp + H_DIVISOR], al
     mov bh, 4
-    call Divide
+    call Divide                        ; (n^3 * num) / den
     
     ; push hQuotient 1, 2, 3
     mov al, byte [ebp + H_QUOTIENT + 1]
@@ -98,7 +99,7 @@ CalcExperience:
     
     call CalcDSquared
     
-    mov al, byte [ebp + esi]
+    mov al, byte [esi]
     and al, 0x7F
     mov byte [ebp + H_MULTIPLIER], al
     call Multiply
@@ -111,21 +112,21 @@ CalcExperience:
     mov al, byte [ebp + H_PRODUCT + 3]
     push ax
     
-    inc esi
-    mov al, byte [ebp + esi]
+    mov al, byte [esi]           ; byte1 again (ld a,[hli]) — n^2 sign byte
+    inc esi                            ;   then advance to byte2
     push ax
-    
+
     mov byte [ebp + H_MULTIPLICAND], 0
     mov byte [ebp + H_MULTIPLICAND + 1], 0
     mov al, dh
     mov byte [ebp + H_MULTIPLICAND + 2], al
-    
-    inc esi
-    mov al, byte [ebp + esi]
+
+    mov al, byte [esi]           ; byte2 (linear coef, ld a,[hli])
+    inc esi                            ;   then advance to byte3
     mov byte [ebp + H_MULTIPLIER], al
     call Multiply
-    
-    mov bl, byte [ebp + esi]
+
+    mov bl, byte [esi]           ; byte3 (const)
     mov al, byte [ebp + H_PRODUCT + 3]
     sub al, bl
     mov byte [ebp + H_PRODUCT + 3], al

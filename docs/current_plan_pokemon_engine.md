@@ -62,11 +62,16 @@ in UPPERCASE (`W_PARTY_COUNT`).
   canonical Gen-1: L5 `21/11/11/11/13`, L100 `230/133/133/125/165`, and the
   stat-exp/√ path L100-EVmax `293/196/196/188/228` (faithful to the `b`=255 cap).
 
-- [ ] **Stage 5 — Creation / loading (unblocks Oak gift).** Write `_AddPartyMon`
-  (`src/engine/pokemon/add_mon.asm`, from `engine/pokemon/add_mon.asm:1`; stub
-  `AskName`/Pokédex). Fix + wire the drafted `load_mon_data.asm`,
-  `experience.asm`, `set_types.asm`, `remove_mon.asm`. Verify: add a known mon,
-  dump its party_struct.
+- [~] **Stage 5 — Creation / loading (unblocks Oak gift).** IN PROGRESS.
+  - [x] `CalcExperience`/`CalcDSquared` (`experience.asm`) audited + fixed +
+    wired + validated natively (MedFast/MedSlow/Fast/Slow L100 totals exact:
+    1000000/1059860/800000/1250000). The draft had THREE bugs: systematic `hli`
+    inversion (read wrong GrowthRateTable bytes), flat-table double-`ebp`
+    (segfault), and reliance on the broken `_Divide`/`Multiply` (fixed Stage 3).
+  - [ ] `_AddPartyMon` (the core creation routine — next).
+  - [ ] wire/audit `load_mon_data`, `set_types`, `remove_mon`. `_AddPartyMon`
+    from `engine/pokemon/add_mon.asm:1` (stub `AskName`/Pokédex); verify by adding
+    a known mon and dumping its party_struct.
 
 - [ ] **Stage 6 — Evolution / learnset / PC.** Generate `EvosMovesPointerTable` +
   `MonsterNames`; wire `evos_moves.asm` (`WriteMonMoves`/`GetMonLearnset` needed by
