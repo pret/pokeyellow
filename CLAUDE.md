@@ -270,15 +270,16 @@ Full reference: **[docs/assembly.md](docs/assembly.md)** — build flags, asset 
 
 Output EXE is **`dos_port/PKMN.EXE`** — DOS 8.3 name required for DOSBox-X `-c` invocation.
 
-> **Fresh checkout?** A bare `make -C dos_port` fails with `unable to open
-> include file 'assets/..._gfx.inc'` because the generated assets and tileset
-> `.2bpp` graphics aren't committed. Bootstrap order: build **rgbds 1.0.1 from
-> source** (it's not an apt package) → `make` at repo root to render the `.2bpp`
-> (its final `pokeyellow.gbc` link may fail — that's fine, the graphics are made
-> first) → `make -C dos_port assets` → `make -C dos_port`. **Running** the EXE
-> additionally needs a DPMI host (CWSDPMI.EXE / HDPMI32.EXE) the repo doesn't
-> ship. Full step-by-step: [docs/assembly.md](docs/assembly.md) → "Fresh-Clone
-> Bootstrap".
+> **Web-session agents — fresh checkout?** (Local Arch Linux already has the
+> toolchain + assets; this note is only for bare web/cloud session containers.)
+> A bare `make -C dos_port` fails with `unable to open include file
+> 'assets/..._gfx.inc'` because the generated assets and tileset `.2bpp` graphics
+> aren't committed. Bootstrap order: build **rgbds 1.0.1 from source** (not an apt
+> package) → `make` at repo root to render the `.2bpp` (its final `pokeyellow.gbc`
+> link may fail — that's fine, the graphics are made first) → `make -C dos_port
+> assets` → `make -C dos_port`. **Running** the EXE additionally needs a DPMI host
+> (CWSDPMI.EXE / HDPMI32.EXE) the repo doesn't ship. Full step-by-step:
+> [docs/assembly.md](docs/assembly.md) → "Fresh-Clone Bootstrap".
 
 ```sh
 # Reference ROM (requires rgbds 1.0.1)

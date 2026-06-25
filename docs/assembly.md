@@ -16,17 +16,27 @@ with `dos_port/Makefile` and `dos_port/include/gb_memmap.inc`.
 | `dosbox-x` | `dosbox-x` (apt on recent Ubuntu) or AUR / source | Testing (must be DOSBox-X, not DOSBox) |
 | CWSDPMI.EXE / HDPMI32.EXE | external — **not in repo** | DPMI host; required to **run** `PKMN.EXE`, not to build it |
 
-Install the apt-provided tools on Debian/Ubuntu:
+> **Local (Arch Linux) vs. web-session agents:** the maintainer's **local Arch
+> Linux** machine already has the full toolchain installed (nasm, binutils-djgpp,
+> rgbds, dosbox-x, a DPMI host), so local builds just work — skip the bootstrap.
+> The apt / build-from-source / DPMI-host steps in this file are for **web /
+> cloud session agents**, whose containers start bare and must set everything up
+> from scratch.
+
+Install the apt-provided tools on Debian/Ubuntu (web-session containers):
 ```sh
 sudo apt install nasm binutils-djgpp dosbox-x
 ```
+On Arch, these come from the official repos / AUR (`nasm`, `dosbox-x`, `rgbds`)
+and are already present on the maintainer's box.
 
-> **Agent note (read before a clean build):** `rgbds` is **not** an apt package —
-> it must be built from source pinned to **v1.0.1** (see `.rgbds-version` /
-> README). And `PKMN.EXE` is a DJGPP coff-go32 binary that needs a **real-mode
-> DPMI host** (CWSDPMI.EXE or HDPMI32.EXE) present in the run directory — the repo
-> ships neither, so a fresh checkout can *build* but not *run* until you supply
-> one. Full bootstrap below.
+> **Agent note (read before a clean build — web sessions only):** in a bare
+> container, `rgbds` is **not** an apt package — it must be built from source
+> pinned to **v1.0.1** (see `.rgbds-version` / README). And `PKMN.EXE` is a DJGPP
+> coff-go32 binary that needs a **real-mode DPMI host** (CWSDPMI.EXE or
+> HDPMI32.EXE) present in the run directory — the repo ships neither, so a fresh
+> checkout can *build* but not *run* until you supply one. Full bootstrap below.
+> (None of this applies to the local Arch setup.)
 
 NASM flags used: `-f coff -I include/ -I . -O0`  
 Linker script: `dos_port/link.ld`
@@ -39,6 +49,10 @@ works fine. All asset data must go in `.data`, not `.rodata`.
 ---
 
 ## Fresh-Clone Bootstrap (build assets from nothing)
+
+**Scope: web / cloud session agents only.** The local Arch Linux machine already
+has the toolchain and (after a normal repo build) the assets, so skip this. The
+steps below are for a bare container starting from nothing.
 
 A fresh checkout has **no generated assets** and the tileset graphics aren't
 committed, so a bare `make` in `dos_port/` fails with `unable to open include
