@@ -181,6 +181,10 @@ assets/npc_dialogs/all_dialogs.inc:
 assets/toggleable_objects.inc:
 	python3 tools/gen_toggleable_objects.py
 
+# Event-flag bit-index constants (EVENT_*) for include/events.inc (gen_event_constants.py)
+assets/event_constants.inc:
+	python3 tools/gen_event_constants.py
+
 # map_sprites depends on the NPC tile asset table, all-maps dialog table, and the
 # toggleable-object (event) flag tables.
 src/engine/overworld/map_sprites.o: \
@@ -191,7 +195,7 @@ src/engine/overworld/map_sprites.o: \
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc \
         assets/npc_sprite_data_table.inc assets/npc_dialogs/all_dialogs.inc \
-        assets/toggleable_objects.inc
+        assets/toggleable_objects.inc assets/event_constants.inc
 
 all: $(TARGET)
 
