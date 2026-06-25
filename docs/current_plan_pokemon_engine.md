@@ -11,6 +11,43 @@ wired into the Makefile**, the data tables don't exist, and the drafts use
 pret-style lowercase WRAM names (`wPartyCount`) that `gb_memmap.inc` only defines
 in UPPERCASE (`W_PARTY_COUNT`).
 
+## Handoff — resume here (2026-06-25)
+
+**Branch:** `claude/pokemon-data-stats-engine` (pushed through Stage 5b). Commits
+show "Unverified" on GitHub — the container's SSH signing key file is empty
+(0 bytes, mid-session corruption); author/committer + content are correct.
+
+**Done & verified:** Stages 1 (core) – 4, plus Stage 5a (`CalcExperience`) and
+5b (`_AddPartyMon`). `make -C dos_port` and `make -C dos_port DEBUG_CALCSTATS=1`
+both build + link.
+
+**Two lessons that should guide the rest:**
+1. **The flagged Gemini-swarm drafts were ALL broken** where touched — `_Divide`
+   (SM83 `sbc`, never assembled), `Multiply` (dropped `edx`), `CalcExperience`
+   (3 bugs), `W_MON_H_GROWTH_RATE` (off-by-one). **Audit every draft against the
+   pret source before wiring it; do not trust it.** Common pattern: `ld a,[hli]`
+   (read THEN increment) mistranslated as increment-then-read; and data tables
+   (flat program-image labels) read as `[ebp+esi]` (double-EBP → segfault) — flat
+   tables must be read `[esi]`, EBP-relative GB memory as `[ebp+esi]`.
+2. **Validate natively, not just by building.** Running the EXE needs a DPMI host
+   the sandbox lacks. Instead assemble the routines `-f elf32` and link a tiny
+   ELF harness (`ld -m elf_i386`) that sets `ebp` to a 64 KB buffer and calls the
+   routine, comparing output to canonical Gen-1 values. This caught every bug
+   above. (Scratch harnesses lived in the session scratchpad; re-create as needed.)
+
+**Known blocker:** the enemy/box/daycare WRAM aliases (Stage 1 deferred) and the
+OT-id/`wIsInBattle` paths need a real `pokeyellow.sym`. The repo's reference ROM
+link currently OVERFLOWS WRAM with the locally-built rgbds 1.0.1 (and a WRAM-only
+`rgbasm ram.asm`/`rgblink` also fails to place sections). Resolve that to safely
+pin cross-section addresses before the enemy/wild-catch paths.
+
+**Immediate next tasks (Stage 5 tail → 6):** audit+wire `load_mon_data.asm`
+(create the missing `include/gb_constants.inc` include is already done; it also
+needs the data-location species-list addresses), `set_types.asm`, `remove_mon.asm`;
+then Stage 6: write a Moves-table generator (`gen_moves.py`, unblocks real PP in
+`_AddPartyMon` + battle) and audit `WriteMonMoves`/`GetMonLearnset` in
+`evos_moves.asm`.
+
 ## Conventions
 - Track routines via `dos_port/tools/work_queue` (`claim`/`place`/`wire`/`verify`)
   over `translation.db`; defer UI deps via `stub add --kind pokemon|menu|...`.
