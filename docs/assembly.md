@@ -12,12 +12,21 @@ with `dos_port/Makefile` and `dos_port/include/gb_memmap.inc`.
 | `nasm` | `nasm` (apt) | Assembles `.asm` → `.o` (COFF format) |
 | `i386-pc-msdosdjgpp-ld` | `binutils-djgpp` (apt) | Links `.o` → DJGPP coff-go32-exe |
 | `python3` | system | Asset generators (`dos_port/tools/`) |
-| `dosbox-x` | AUR / build from source | Testing (must be DOSBox-X, not DOSBox) |
+| `rgbasm` / `rgbgfx` / `rgblink` | **rgbds 1.0.1 — build from source** (not in apt) | Renders `gfx/tilesets/*.png` → `*.2bpp`; required by `gen_all_assets.py` |
+| `dosbox-x` | `dosbox-x` (apt on recent Ubuntu) or AUR / source | Testing (must be DOSBox-X, not DOSBox) |
+| CWSDPMI.EXE / HDPMI32.EXE | external — **not in repo** | DPMI host; required to **run** `PKMN.EXE`, not to build it |
 
-Install on Debian/Ubuntu:
+Install the apt-provided tools on Debian/Ubuntu:
 ```sh
-sudo apt install nasm binutils-djgpp
+sudo apt install nasm binutils-djgpp dosbox-x
 ```
+
+> **Agent note (read before a clean build):** `rgbds` is **not** an apt package —
+> it must be built from source pinned to **v1.0.1** (see `.rgbds-version` /
+> README). And `PKMN.EXE` is a DJGPP coff-go32 binary that needs a **real-mode
+> DPMI host** (CWSDPMI.EXE or HDPMI32.EXE) present in the run directory — the repo
+> ships neither, so a fresh checkout can *build* but not *run* until you supply
+> one. Full bootstrap below.
 
 NASM flags used: `-f coff -I include/ -I . -O0`  
 Linker script: `dos_port/link.ld`
@@ -26,6 +35,56 @@ Linker script: `dos_port/link.ld`
 section map. An orphan section gets a VMA but its bytes never reach memory at
 runtime — symptoms are a `rep movsb` that copies zeros while `mov [ebp+x], imm`
 works fine. All asset data must go in `.data`, not `.rodata`.
+
+---
+
+## Fresh-Clone Bootstrap (build assets from nothing)
+
+A fresh checkout has **no generated assets** and the tileset graphics aren't
+committed, so a bare `make` in `dos_port/` fails with `unable to open include
+file 'assets/..._gfx.inc'` / `'..._coll.inc'`. Those come from
+`gfx/tilesets/*.2bpp`, which only exist after the repo-root (rgbds) build runs.
+Do this once, in order:
+
+```sh
+# 0. apt tools (see table). rgbds is NOT apt — build v1.0.1 from source:
+#    needs: bison flex pkg-config libpng-dev build-essential
+sudo apt install -y nasm binutils-djgpp bison flex pkg-config libpng-dev build-essential
+# fetch rgbds source v1.0.1 (tarball or git), then:
+( cd /path/to/rgbds-1.0.1 && make -j && sudo make install PREFIX=/usr/local )
+rgbasm --version          # must report v1.0.1
+
+# 1. Repo ROOT: render tileset PNGs → gfx/tilesets/*.2bpp (rgbgfx).
+#    The final ROM link (pokeyellow.gbc) may FAIL on a layout/WRAM-overflow
+#    error with this rgbds — that's fine and expected; the *.2bpp graphics
+#    we need are produced as intermediates *before* that step.
+make                      # ignore the trailing 'Linking failed' for pokeyellow.gbc
+
+# 2. dos_port: generate every assets/*.inc from the .2bpp + map data.
+make -C dos_port assets
+
+# 3. dos_port: assemble + link PKMN.EXE.
+make -C dos_port
+```
+
+After step 3, `PKMN.EXE` exists. To **run** it (e.g. to dump `FRAME.BIN`) you
+still need a DPMI host — see "Running headless" below.
+
+### Running headless (CI / agents, no display)
+
+DOSBox-X defaults to an OpenGL output that needs a display; run it under a
+virtual framebuffer and force a software output:
+
+```sh
+xvfb-run -a dosbox-x -conf dos_port/dosbox-x.conf -defaultdir "$PWD" \
+  -set "sdl output=surface"
+```
+
+This still requires a **DPMI host** (CWSDPMI.EXE / HDPMI32.EXE) in the mounted
+directory next to `PKMN.EXE`; without it the program loads but exits before the
+djgpp runtime starts (no `FRAME.BIN` is written). The repo does not ship one —
+supply it locally. (The agent proxy blocks `delorie.com`, so CWSDPMI can't be
+fetched from its canonical home in a sandboxed session.)
 
 ---
 
