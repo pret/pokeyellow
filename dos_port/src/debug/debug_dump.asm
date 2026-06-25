@@ -25,6 +25,12 @@ extern ds_base
 
 global DebugDumpMemory
 global DumpBackbuffer
+%ifdef DEBUG_NPC_WALK
+global DumpNpcLog
+global npc_log
+global npc_log_n
+global dbg_destTile
+%endif
 
 ; Each window is WIN_SIZE bytes copied from [EBP + window_offset].
 ; The host-side layout is simply these windows concatenated in table order.
@@ -47,6 +53,9 @@ align 4
 
 fname: db "DUMP.BIN", 0
 fbname: db "FRAME.BIN", 0
+%ifdef DEBUG_NPC_WALK
+fnlog: db "NPCLOG.BIN", 0
+%endif
 
 ; GB-address start of each 64-byte dump window. Host hexdump offsets:
 ;   0x000  0x4600  overworld blockset (block 0..3)         — asset copy check
@@ -78,6 +87,12 @@ dos_sel:     resw 1              ; PM selector of DOS buffer (unused; freed via 
 dos_flat:    resd 1              ; DS-relative (flat) offset of DOS buffer
 file_handle: resw 1
 stage:       resb DUMP_TOTAL     ; concatenated window bytes, staged here first
+%ifdef DEBUG_NPC_WALK
+NPC_LOG_CAP  equ 4096            ; 12-byte records → 341 NPC walk-decisions
+npc_log:     resb NPC_LOG_CAP    ; appended by movement.asm:npc_dbg_record
+npc_log_n:   resd 1              ; bytes written so far
+dbg_destTile: resb 1            ; tile CL at CanWalkOntoTile entry (saved before clobber)
+%endif
 
 ; ---------------------------------------------------------------------------
 section .text
@@ -240,6 +255,72 @@ DumpBackbuffer:
 .exit:
     mov ax, 0x4C00
     int 0x21
+
+%ifdef DEBUG_NPC_WALK
+; ---------------------------------------------------------------------------
+; DumpNpcLog — write npc_log[0..npc_log_n) to NPCLOG.BIN, then exit.
+; In: EBP = GB memory base. Never returns.
+; ---------------------------------------------------------------------------
+DumpNpcLog:
+    mov ax, 0x0100
+    mov bx, 0x1001                 ; 64 KB+ buffer (log is <= 4 KB)
+    int 0x31
+    jc .exit
+    mov [dos_seg], ax
+    mov [dos_sel], dx
+    movzx eax, ax
+    shl eax, 4
+    sub eax, [ds_base]
+    mov [dos_flat], eax
+
+    ; filename at offset 0
+    mov esi, fnlog
+    mov edi, [dos_flat]
+    mov ecx, 11                    ; "NPCLOG.BIN" + NUL
+    rep movsb
+
+    ; log bytes at offset 0x10
+    mov esi, npc_log
+    mov edi, [dos_flat]
+    add edi, 0x10
+    mov ecx, [npc_log_n]
+    rep movsb
+
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x3C00
+    mov dword [rmcs + RMCS_EDX], 0
+    mov ax, [dos_seg]
+    mov [rmcs + RMCS_DS], ax
+    call sim_int21
+    test byte [rmcs + RMCS_FLAGS], 1
+    jnz .free
+    mov ax, [rmcs + RMCS_EAX]
+    mov [file_handle], ax
+
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x4000
+    movzx eax, word [file_handle]
+    mov [rmcs + RMCS_EBX], eax
+    mov ecx, [npc_log_n]
+    mov [rmcs + RMCS_ECX], ecx
+    mov dword [rmcs + RMCS_EDX], 0x10
+    mov ax, [dos_seg]
+    mov [rmcs + RMCS_DS], ax
+    call sim_int21
+
+    call zero_rmcs
+    mov word [rmcs + RMCS_EAX], 0x3E00
+    movzx eax, word [file_handle]
+    mov [rmcs + RMCS_EBX], eax
+    call sim_int21
+.free:
+    mov ax, 0x0101
+    mov dx, [dos_sel]
+    int 0x31
+.exit:
+    mov ax, 0x4C00
+    int 0x21
+%endif
 
 ; ---------------------------------------------------------------------------
 ; sim_int21 — reflect INT 21h to real mode using the prepared rmcs.

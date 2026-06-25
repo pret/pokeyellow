@@ -123,6 +123,14 @@ NEED_DEBUG_DUMP := 1
 NASMFLAGS += -D DEBUG_DIALOG
 NASMFLAGS += -D SKIP_TITLE
 endif
+# Diagnostic: log every NPC walk-decision (dest tile, true tile, player view
+# state) to NPCLOG.BIN while a scripted player walk runs in Pallet Town.
+# Used to verify the walking-NPC wall-clipping bug. make DEBUG_NPC_WALK=1
+ifdef DEBUG_NPC_WALK
+NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D DEBUG_NPC_WALK
+NASMFLAGS += -D SKIP_TITLE
+endif
 ifdef NEED_DEBUG_DUMP
 GAME_SRCS += src/debug/debug_dump.asm
 endif

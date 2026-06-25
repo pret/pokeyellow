@@ -1252,39 +1252,9 @@ LoadCurrentMapView:
     dec bh                                         ; dec B (outer row count)
     jnz .row_loop
 
-    ; --- Adjust for sub-block Y coordinate ---
-    mov esi, W_SURROUNDING_TILES                   ; reset HL to base of wSurroundingTiles
-
-    cmp byte [ebp + W_Y_BLOCK_COORD], 0
-    je  .adjust_x_coord
-    add esi, SURROUNDING_WIDTH * 2                 ; skip 2 tile rows (bottom half of block)
-
-.adjust_x_coord:
-    cmp byte [ebp + W_X_BLOCK_COORD], 0
-    je  .copy_to_tilemap
-    add esi, BLOCK_WIDTH / 2                       ; skip 2 tiles (right half of block)
-
-.copy_to_tilemap:
-    ; decoord 0,0 → wTileMap = W_TILEMAP
-    mov edx, W_TILEMAP                             ; EDX = DE = wTileMap dest ptr
-
-    mov bh, SCREEN_HEIGHT                          ; BH = B = 25 (row count)
-
-.copy_row_loop:
-    mov bl, SCREEN_WIDTH                           ; BL = C = 40 (col count)
-
-.copy_col_loop:
-    mov al, byte [ebp + esi]
-    mov byte [ebp + edx], al
-    inc esi
-    inc edx
-    dec bl
-    jnz .copy_col_loop
-
-    ; Skip SURROUNDING_WIDTH - SCREEN_WIDTH = 8 bytes to reach next row in wSurroundingTiles
-    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; = 48 - 40 = 8
-    dec bh
-    jnz .copy_row_loop
+    ; Copy the sub-block window of wSurroundingTiles into wTileMap (the collision
+    ; grid). Factored out so AdvancePlayerSprite can refresh it every step.
+    call RefreshCollisionTileMap
 
     ; ; TODO-HW: BankswitchCommon restore (flat model — no-op)
 
@@ -1292,6 +1262,54 @@ LoadCurrentMapView:
     pop ebx
     pop edi
     pop esi
+    ret
+
+; ---------------------------------------------------------------------------
+; RefreshCollisionTileMap — copy the current sub-block window of wSurroundingTiles
+; into wTileMap (the collision / text tile grid).
+;
+; wTileMap is what NPC collision (GetTileSpriteStandsOn → IsTilePassable) and the
+; player collision read. wSurroundingTiles is the block-decoded render source.
+; The window into it is offset by the player's sub-block coords (xBlock/yBlock):
+; each is 0 or 1, shifting the 40×25 window by 0 or 2 tiles.
+;
+; BUG FIX (walking-NPC wall-clip): the sub-block coords change every step, but the
+; full rebuild (LoadCurrentMapView) only ran on block crossings (every 2 steps),
+; so between crossings wTileMap lagged the player's actual position by up to a
+; tile — NPC collision then tested the wrong cell and walked into rendered walls
+; (verified via the DEBUG_NPC_WALK log: destTile != trueTile). AdvancePlayerSprite
+; now calls this every step so collision always matches the rendered map. Only the
+; collision buffer is touched; wSurroundingTiles and SCX/SCY (render) are untouched.
+;
+; In: EBP = GB base. All registers preserved.
+; ---------------------------------------------------------------------------
+RefreshCollisionTileMap:
+    pushad
+    ; --- Adjust source pointer for sub-block coords ---
+    mov esi, W_SURROUNDING_TILES
+    cmp byte [ebp + W_Y_BLOCK_COORD], 0
+    je  .adjust_x_coord
+    add esi, SURROUNDING_WIDTH * 2                 ; skip 2 tile rows (bottom half of block)
+.adjust_x_coord:
+    cmp byte [ebp + W_X_BLOCK_COORD], 0
+    je  .copy_to_tilemap
+    add esi, BLOCK_WIDTH / 2                       ; skip 2 tiles (right half of block)
+.copy_to_tilemap:
+    mov edx, W_TILEMAP                             ; dest
+    mov bh, SCREEN_HEIGHT                          ; 25 rows
+.copy_row_loop:
+    mov bl, SCREEN_WIDTH                           ; 40 cols
+.copy_col_loop:
+    mov al, byte [ebp + esi]
+    mov byte [ebp + edx], al
+    inc esi
+    inc edx
+    dec bl
+    jnz .copy_col_loop
+    add esi, SURROUNDING_WIDTH - SCREEN_WIDTH      ; next wSurroundingTiles row (+8)
+    dec bh
+    jnz .copy_row_loop
+    popad
     ret
 
 ; ---------------------------------------------------------------------------
@@ -1378,7 +1396,7 @@ AdvancePlayerSprite:
     jmp .updateMapView
 .checkForMoveToNorthBlock:
     cmp al, 0xFF
-    jne .scroll
+    jne .refreshTileMap                  ; no block crossing → only resync collision grid
     ; crossed into the block to the north
     mov byte [ebp + W_Y_BLOCK_COORD], 1
     dec byte [ebp + W_Y_OFFSET_SINCE_LAST_SPECIAL_WARP]
@@ -1386,7 +1404,13 @@ AdvancePlayerSprite:
     call MoveTileBlockMapPointerNorth
 
 .updateMapView:
-    call LoadCurrentMapView
+    call LoadCurrentMapView              ; rebuilds wSurroundingTiles AND refreshes wTileMap
+    jmp .scroll
+.refreshTileMap:
+    ; Non-crossing step: the player's sub-block coords just changed, so re-copy
+    ; wTileMap from the (unchanged) wSurroundingTiles with the new sub-block offset.
+    ; Without this, NPC collision reads a stale grid and walks into rendered walls.
+    call RefreshCollisionTileMap
 
 .scroll:
     ; Sprite-shift loop: slide each NPC's screen position by 2*step pixels to

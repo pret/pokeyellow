@@ -31,6 +31,9 @@ extern joypad_update
 extern pad_quit
 extern cleanup
 extern PrepareOAMData
+%ifdef DEBUG_NPC_WALK
+extern DumpNpcLog       ; dump NPC walk-decision log to NPCLOG.BIN on quit
+%endif
 
 global DelayFrame
 global DelayFrames
@@ -73,6 +76,9 @@ DelayFrame:
     cmp byte [pad_quit], 0
     je .done
     call cleanup
+%ifdef DEBUG_NPC_WALK
+    call DumpNpcLog             ; writes NPCLOG.BIN, then exits (never returns)
+%endif
     mov ax, 0x4C00
     int 0x21
 .done:

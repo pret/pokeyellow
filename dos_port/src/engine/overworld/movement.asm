@@ -30,11 +30,96 @@ bits 32
 
 global UpdateSprites
 global MakeNPCFacePlayer
+; Exported so the MCP debugger (pkmn.map symbol breakpoints) can break exactly at
+; the NPC collision decision while diagnosing the walking-NPC wall-clip bug.
+global UpdateNonPlayerSprite
+global CanWalkOntoTile
+global TryWalking
+global GetTileSpriteStandsOn
+global Func_5349
 
 extern IsTilePassable
 extern Random_
 
+%ifdef DEBUG_NPC_WALK
+extern npc_log
+extern npc_log_n
+extern dbg_destTile
+%endif
+
 section .text
+
+%ifdef DEBUG_NPC_WALK
+; ---------------------------------------------------------------------------
+; npc_dbg_record — append one 12-byte NPC walk-decision record to npc_log.
+; In: AL = passable (0/1); ESI = slot offset; EBX = destination GB tilemap
+;     offset; [dbg_destTile] = tile read from wTileMap (saved at CanWalkOntoTile
+;     entry). Recomputes the "true" tile from wSurroundingTiles using the CURRENT
+;     sub-block coords; a mismatch with dbg_destTile proves wTileMap was copied
+;     with stale block coords (the suspected wall-clip cause). Preserves all
+;     registers and flags.
+; Record: [slot, dir(BL), destTile, trueTile, passable, walkCtr, xBlock, yBlock,
+;          SCX, SCY, MAPY, MAPX]
+; ---------------------------------------------------------------------------
+npc_dbg_record:
+    pushfd
+    pushad
+    movzx eax, al                            ; AL = passable (0/1)
+    push eax                                 ; save across div (which clobbers EDX)
+    mov edi, [npc_log_n]
+    cmp edi, 4096 - 12
+    jae .done
+    ; recompute "true" tile from wSurroundingTiles using CURRENT sub-block coords
+    mov eax, ebx
+    sub eax, W_TILEMAP                       ; EAX = wTileMap offset (0..999)
+    xor edx, edx
+    mov ecx, SCREEN_WIDTH                    ; 40
+    div ecx                                  ; EAX=row, EDX=col
+    mov ecx, eax                             ; ECX = row
+    cmp byte [ebp + W_Y_BLOCK_COORD], 0
+    je .y0
+    add ecx, 2                               ; yoff: skip 2 rows when in bottom half-block
+.y0:
+    imul ecx, ecx, SURROUNDING_WIDTH         ; (yoff+row)*48
+    add ecx, edx                             ; + col
+    cmp byte [ebp + W_X_BLOCK_COORD], 0
+    je .x0
+    add ecx, 2                               ; xoff: skip 2 cols when in right half-block
+.x0:
+    movzx eax, byte [ebp + ecx + W_SURROUNDING_TILES]  ; AL = trueTile
+    mov bh, al                               ; BH = trueTile (BL still = dir bit)
+    ; emit record ------------------------------------------------------------
+    mov eax, esi
+    shr eax, 4
+    mov [npc_log + edi + 0], al              ; slot
+    mov [npc_log + edi + 1], bl              ; dir bit
+    mov al, [dbg_destTile]
+    mov [npc_log + edi + 2], al              ; destTile (what collision read, from wTileMap)
+    mov [npc_log + edi + 3], bh              ; trueTile (render source, from wSurroundingTiles)
+    mov eax, [esp]                           ; passable (saved)
+    mov [npc_log + edi + 4], al
+    mov al, [ebp + W_WALK_COUNTER]
+    mov [npc_log + edi + 5], al
+    mov al, [ebp + W_X_BLOCK_COORD]
+    mov [npc_log + edi + 6], al
+    mov al, [ebp + W_Y_BLOCK_COORD]
+    mov [npc_log + edi + 7], al
+    mov al, [ebp + H_SCX]
+    mov [npc_log + edi + 8], al
+    mov al, [ebp + H_SCY]
+    mov [npc_log + edi + 9], al
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPY]
+    mov [npc_log + edi + 10], al
+    mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MAPX]
+    mov [npc_log + edi + 11], al
+    add edi, 12
+    mov [npc_log_n], edi
+.done:
+    pop eax                                  ; balance the push
+    popad
+    popfd
+    ret
+%endif
 
 ; ---------------------------------------------------------------------------
 ; UpdateSprites — gate on wUpdateSpritesEnabled, then run _UpdateSprites.
@@ -335,6 +420,9 @@ TryWalking:
 ; Clobbers: EAX, ECX.  EBX (BL direction bit) and EDX preserved.
 ; ---------------------------------------------------------------------------
 CanWalkOntoTile:
+%ifdef DEBUG_NPC_WALK
+    mov [dbg_destTile], cl              ; save destination tile before IsTilePassable clobbers CL
+%endif
     ; If scripted movement (MOVEMENTBYTE1 < WALK=0xFE), always allow
     mov al, [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_MOVEMENTBYTE1]
     cmp al, WALK
@@ -398,10 +486,18 @@ CanWalkOntoTile:
     test al, bl
     jnz .impassable
 
+%ifdef DEBUG_NPC_WALK
+    mov al, 1                           ; passable → log a commit record
+    call npc_dbg_record
+%endif
     clc
     ret
 
 .impassable:
+%ifdef DEBUG_NPC_WALK
+    xor al, al                          ; blocked → log a block record (BL/EBX still valid)
+    call npc_dbg_record
+%endif
     ; Set status=2 (delayed), zero step vectors, assign random delay.
     mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], 2
     mov byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_YSTEPVECTOR], 0
