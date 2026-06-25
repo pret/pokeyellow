@@ -410,20 +410,30 @@ All key reference documents are also mirrored locally in `docs/references/pandoc
 
 ## Active Plan Convention
 
-**`docs/current_plan.md`** holds the active multi-step implementation plan for the
-current Phase 2/3 work item. It sits between TODO.md (big-picture scope for the
-entire port) and individual task lists: use it for anything too large for a single
+Active multi-step implementation plans live as a **family** of files named
+**`docs/current_plan_<topic>.md`** — one per work item, suffixed by what it's
+about. **Multiple may be active at once** (e.g. one engine in progress while
+another is paused). They sit between TODO.md (big-picture scope for the entire
+port) and individual task lists: use one for anything too large for a single
 commit but too specific to belong in TODO.md.
 
 **Workflow:**
-- At the start of each session, read `docs/current_plan.md` to pick up where we left off.
+- At the start of each session, scan `docs/current_plan_*.md` to see every open
+  work item and pick up where we left off.
 - Mark stages `[x]` as they complete (edit the file in-repo).
-- When the plan is fully done, archive it by renaming to `docs/plans/<name>.md` and
-  creating a new `docs/current_plan.md` for the next work item.
-- The `docs/plans/` subdirectory holds completed plans for reference.
+- When a plan is fully done, archive it: `git mv docs/current_plan_<topic>.md
+  docs/plans/<topic>.md` (drop the `current_plan_` prefix). The `docs/plans/`
+  subdirectory holds completed plans for reference.
+- Start a new work item by creating a new `docs/current_plan_<topic>.md`.
 
-**Current plan:** `docs/current_plan.md` — no active plan. NPC implementation
-is complete and archived at `docs/plans/npc_implementation.md`.
+**Currently active plans:**
+- `docs/current_plan_script_engine.md` — gen-1 script system (event-gated dialog,
+  per-map `_Script`/`text_asm`). In progress.
+- `docs/current_plan_pokemon_engine.md` — Pokémon data/stats layer (party structs,
+  base stats, `CalcStats`, experience/leveling, `AddPartyMon`). In progress;
+  unblocks items, battle, and the deferred Oak starter gift.
+
+(NPC implementation is complete and archived at `docs/plans/npc_implementation.md`.)
 
 ---
 
