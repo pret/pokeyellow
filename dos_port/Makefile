@@ -105,6 +105,10 @@ GAME_SRCS := \
     src/scripts/pallet_town.asm \
     src/engine/math/random.asm
 
+# Pokémon data/stats engine (current_plan_pokemon_engine.md). Grows per stage.
+POKEMON_SRCS := \
+    src/data/pokemon_data.asm
+
 # Debug-only sources (linked only when the corresponding flag is set).
 # Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
 ifdef DEBUG_DUMP
@@ -142,7 +146,7 @@ ifdef DEBUG_OAK_EVENT
 NASMFLAGS += -D DEBUG_OAK_EVENT
 endif
 
-ALL_SRCS := $(BOOT_SRCS) $(HOME_SRCS) $(HAL_SRCS) $(GAME_SRCS)
+ALL_SRCS := $(BOOT_SRCS) $(HOME_SRCS) $(HAL_SRCS) $(GAME_SRCS) $(POKEMON_SRCS)
 ALL_OBJS := $(ALL_SRCS:.asm=.o)
 
 # ---------------------------------------------------------------------------
@@ -203,10 +207,17 @@ src/engine/overworld/map_sprites.o: \
 # Pallet Town text_asm scripts include events.inc → event_constants.inc.
 src/scripts/pallet_town.o: assets/event_constants.inc
 
+# Pokémon base stats + IndexToPokedex (static data, generated from pret source).
+assets/base_stats.inc:
+	python3 tools/gen_base_stats.py
+
+src/data/pokemon_data.o: assets/base_stats.inc assets/growth_rates.inc
+
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc \
         assets/npc_sprite_data_table.inc assets/npc_dialogs/all_dialogs.inc \
-        assets/toggleable_objects.inc assets/event_constants.inc
+        assets/toggleable_objects.inc assets/event_constants.inc \
+        assets/base_stats.inc
 
 all: $(TARGET)
 

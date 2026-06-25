@@ -87,7 +87,7 @@ W_SLOT_MACHINE_WHEEL2_SLIP_COUNTER equ 0xCD4E
 W_SLOT_MACHINE_ALLOW_MATCHES_COUNTER equ 0xD095
 W_LOADED_MON_EXP         equ 0xCFA5
 W_CUR_SPECIES            equ 0xD0B4
-W_MON_H_GROWTH_RATE      equ 0xD0CA
+W_MON_H_GROWTH_RATE      equ 0xD0CB   ; corrected: wMonHeader($D0B8)+BASE_GROWTH_RATE($13). Was $D0CA (off-by-one → 4th move byte); only the unwired experience.asm draft consumed it.
 W_REMOVE_MON_FROM_BOX  equ 0xCF94
 W_MOVE_MON_TYPE          equ 0xCF94
 W_PARTY_COUNT            equ 0xD162
@@ -103,6 +103,45 @@ W_BOX_MON_NICKS          equ 0xDE05
 W_BOX_MON_NICKS_END      equ 0xDEE1
 W_SAVED_LIST_SCROLL_OFFSET equ 0xD07D
 W_LIST_COUNT             equ 0xD129
+
+; ---------------------------------------------------------------------------
+; Pokémon data engine — lowercase pret-name aliases (Pokémon data/stats plan).
+; CLAUDE.md mandates pret names; the engine drafts (add_mon/load_mon_data/
+; calc_stats/…) reference these lowercase labels. Addresses derived from the
+; verified anchors above (wCurSpecies $D0B4, wPartyCount $D162) + the struct
+; layout in macros/ram.asm. wMonHeader region (no overlaps) added first; the
+; loaded/enemy/box/daycare aliases land in Stage 5 once a pokeyellow.sym confirms
+; their cross-section addresses.
+; ---------------------------------------------------------------------------
+wCurSpecies        equ 0xD0B4
+wMonHeader         equ 0xD0B8
+wMonHIndex         equ 0xD0B8
+wMonHBaseStats     equ 0xD0B9
+wMonHBaseHP        equ 0xD0B9
+wMonHBaseAttack    equ 0xD0BA
+wMonHBaseDefense   equ 0xD0BB
+wMonHBaseSpeed     equ 0xD0BC
+wMonHBaseSpecial   equ 0xD0BD
+wMonHTypes         equ 0xD0BE
+wMonHType1         equ 0xD0BE
+wMonHType2         equ 0xD0BF
+wMonHCatchRate     equ 0xD0C0
+wMonHBaseEXP       equ 0xD0C1
+wMonHSpriteDim     equ 0xD0C2
+wMonHFrontSprite   equ 0xD0C3
+wMonHBackSprite    equ 0xD0C5
+wMonHMoves         equ 0xD0C7
+wMonHGrowthRate    equ 0xD0CB
+wMonHLearnset      equ 0xD0CC
+wCurEnemyLevel     equ 0xD126   ; CalcStat level input
+wCurPartySpecies   equ 0xCF90
+wWhichPokemon      equ 0xCF91
+wMonDataLocation   equ 0xCC49
+wPartyCount        equ 0xD162
+wPartySpecies      equ 0xD163   ; wPartyCount+1; 6 species + $FF sentinel
+wPartyMons         equ 0xD16A
+wPartyMonOT        equ 0xD272
+wPartyMonNicks     equ 0xD2B4
 
 ; Sprite state data — 16 slots × $10 bytes each, two parallel arrays.
 ; wSpriteStateData1 ($C100) and wSpriteStateData2 ($C200) — sym-verified.

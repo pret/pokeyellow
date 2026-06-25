@@ -22,19 +22,25 @@ in UPPERCASE (`W_PARTY_COUNT`).
 
 ## Stages
 
-- [ ] **Stage 1 — Symbol foundations.** Create `dos_port/include/gb_constants.inc`
+- [~] **Stage 1 — Symbol foundations.** (Core done.) Created
+  `dos_port/include/gb_constants.inc`
   (struct field offsets `MON_*`, lengths `PARTYMON_STRUCT_LENGTH=44`/
   `BOXMON_STRUCT_LENGTH=33`/`BASE_DATA_SIZE=28`, data-location + growth-rate
   constants — from `constants/pokemon_data_constants.asm`). Add ~25 lowercase
   Pokémon WRAM aliases to `gb_memmap.inc` (`wParty*`, enemy/box/daycare,
   `wMonHeader`+fields, `wLoadedMon`+fields, `wPokedexNum`, lowercase aliases of
   existing `W_*`). Addresses verified vs. `ram/wram.asm` / `pokeyellow.sym`.
+  DONE: `gb_constants.inc`, the verified-safe `wMonHeader` region + party +
+  `CalcStats` inputs in `gb_memmap.inc`, and corrected `W_MON_H_GROWTH_RATE`
+  ($D0CA→$D0CB off-by-one). DEFERRED to Stage 5 (need a `pokeyellow.sym`): the
+  cross-section loaded/enemy/box/daycare aliases.
 
-- [ ] **Stage 2 — Data tables.** Hand-translate `GrowthRateTable` →
-  `dos_port/assets/growth_rates.inc`. Write `dos_port/tools/gen_base_stats.py`
-  parsing `data/pokemon/base_stats/*.asm` → `dos_port/assets/base_stats.inc`
-  (`BaseStats`, 151×28 bytes, dex order) plus the internal-index→dex table
-  (`IndexToPokedex`). Wire into `make assets`.
+- [x] **Stage 2 — Data tables.** DONE. Hand-translated `GrowthRateTable` →
+  `assets/growth_rates.inc`; wrote `tools/gen_base_stats.py` →
+  `assets/base_stats.inc` (`BaseStats` 151×28 dex-order + `IndexToPokedex` 190B),
+  validated vs. canonical values (Bulbasaur/Pikachu/Mewtwo/Mew); `src/data/
+  pokemon_data.asm` exposes the globals; wired into Makefile (`POKEMON_SRCS` +
+  `assets` target); full project builds + links. (TM/HM bitfield zeroed → Stage 6.)
 
 - [ ] **Stage 3 — Core formula.** Write `GetMonHeader` (new
   `dos_port/src/home/pokemon.asm`, from `home/pokemon.asm:403`) and `CalcStat` +
