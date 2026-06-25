@@ -59,8 +59,8 @@ PewterJigglypuff::
 	ld c, 48
 	call DelayFrames
 	call PlayDefaultMusic
-	ld a, [wd471]
-	bit 7, a
+	ld a, [wPikachuSpawnStateFlags]
+	bit BIT_PIKACHU_SPAWN_STARTER, a
 	ret z
 	callfar CheckPikachuStatusCondition
 	ret c

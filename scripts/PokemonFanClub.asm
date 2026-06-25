@@ -11,19 +11,19 @@ PokemonFanClub_ScriptPointers:
 	dw_const PokemonFanClubScript1, SCRIPT_POKEMONFANCLUB_SCRIPT1
 
 PokemonFanClubScript0:
-	ld hl, wd492
-	bit 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	bit BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	call z, PokemonFanClubScript_59a44
-	ld hl, wd492
-	set 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	set BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	ret
 
 PokemonFanClubScript1:
-	ld hl, wd492
-	bit 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	bit BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	call z, PokemonFanClubScript_59a39
-	ld hl, wd492
-	set 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	set BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	ret
 
 PokemonFanClubScript_59a39:
@@ -34,8 +34,8 @@ PokemonFanClubScript_59a39:
 	ret
 
 PokemonFanClubScript_59a44:
-	ld a, [wd471]
-	bit 7, a
+	ld a, [wPikachuSpawnStateFlags]
+	bit BIT_PIKACHU_SPAWN_STARTER, a
 	ret z
 	callfar CheckPikachuStatusCondition
 	ret c

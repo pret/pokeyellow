@@ -2068,14 +2068,14 @@ ENDU
 
 wPikachuHappiness:: db
 wPikachuMood:: db
-wd471:: db
+wPikachuSpawnStateFlags:: db
 wd472:: db
 	ds 1
 wd474:: db
 	ds 4
 wd479:: db
 	ds 24
-wd492:: db
+wPikachuMapScriptFlags:: db
 	ds 1
 wSurfingMinigameHiScore:: dw ; little-endian BCD
 	ds 1
