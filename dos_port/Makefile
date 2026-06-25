@@ -23,6 +23,15 @@ ifdef SKIP_TITLE
 NASMFLAGS += -D SKIP_TITLE
 endif
 
+# Default player / rival names for debug / SKIP_TITLE builds (title screen is
+# bypassed, so these WRAM fields would otherwise be garbage). The engine's debug
+# defaults are NINTEN / SONY. Letters only, <= 7 chars.
+# Override: make SKIP_TITLE=1 PLAYER_NAME=ASH RIVAL_NAME=GARY
+PLAYER_NAME ?= NINTEN
+RIVAL_NAME  ?= SONY
+NASMFLAGS += -D PLAYER_NAME="'$(PLAYER_NAME)'"
+NASMFLAGS += -D RIVAL_NAME="'$(RIVAL_NAME)'"
+
 # Debug flag: dump GB memory windows to DUMP.BIN then exit. make DEBUG_DUMP=1
 # (implies SKIP_TITLE path reaching the overworld). See src/debug/debug_dump.asm.
 ifdef DEBUG_DUMP
@@ -160,14 +169,21 @@ assets/npc_sprite_data_table.inc:
 assets/npc_dialogs/all_dialogs.inc:
 	python3 tools/gen_npc_dialogs.py
 
-# map_sprites depends on the NPC tile asset table and all-maps dialog table
+# Toggleable-object (event) flag tables — NPC spawn gating (gen_toggleable_objects.py)
+assets/toggleable_objects.inc:
+	python3 tools/gen_toggleable_objects.py
+
+# map_sprites depends on the NPC tile asset table, all-maps dialog table, and the
+# toggleable-object (event) flag tables.
 src/engine/overworld/map_sprites.o: \
     assets/npc_sprite_data_table.inc \
-    assets/npc_dialogs/all_dialogs.inc
+    assets/npc_dialogs/all_dialogs.inc \
+    assets/toggleable_objects.inc
 
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc \
-        assets/npc_sprite_data_table.inc assets/npc_dialogs/all_dialogs.inc
+        assets/npc_sprite_data_table.inc assets/npc_dialogs/all_dialogs.inc \
+        assets/toggleable_objects.inc
 
 all: $(TARGET)
 

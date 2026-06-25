@@ -503,12 +503,15 @@ def get_connection(direction, conn_map_id, offset,
 # Main
 # ---------------------------------------------------------------------------
 
-def main():
-    ap = argparse.ArgumentParser(description="Generate dos_port/assets/map_headers.inc")
-    ap.add_argument("--debug-warps", action="store_true",
-                    help="Include IF DEF(_DEBUG) warp entries (e.g. REDS_HOUSE_2F teleports)")
-    args = ap.parse_args()
-    debug_warps = args.debug_warps
+def main(debug_warps=None):
+    # debug_warps=None → parse argv (CLI use); otherwise use the passed value
+    # (so gen_all_assets.py can chain this generator without argument parsing).
+    if debug_warps is None:
+        ap = argparse.ArgumentParser(description="Generate dos_port/assets/map_headers.inc")
+        ap.add_argument("--debug-warps", action="store_true",
+                        help="Include IF DEF(_DEBUG) warp entries (e.g. REDS_HOUSE_2F teleports)")
+        args = ap.parse_args()
+        debug_warps = args.debug_warps
 
     ASSETS.mkdir(parents=True, exist_ok=True)
     out_path = ASSETS / "map_headers.inc"

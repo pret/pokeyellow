@@ -19,6 +19,14 @@ import re
 import sys
 from pathlib import Path
 
+# Reuse gen_map_headers' map/sprite parsing so the dialog tables stay in lockstep
+# with the map-object binary: same map→label resolution, same _DEBUG stripping,
+# same object_event list (count + order + trainer/item flags).  This guarantees
+# table_entries == header sprite_count for every map, and that table index i
+# matches the text_id (= slot index i) the binary stores.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import gen_map_headers as gmh
+
 ROOT   = Path(__file__).resolve().parent.parent.parent
 ASSETS = ROOT / "dos_port" / "assets"
 DIALOGS_DIR = ASSETS / "npc_dialogs"
@@ -44,9 +52,10 @@ _TRAINER_STUB = bytes(
      CHAR_DONE, TX_END]
 )
 # SCRIPT stub: TX_START + "..." + CHAR_DONE + TX_END
+# NOTE: "." is charmap 0xE8 (0xE3 is "-"); three periods render as "...".
 _SCRIPT_STUB = bytes(
     [TX_START,
-     0xE3,0xE3,0xE3,                              # "..."
+     0xE8,0xE8,0xE8,                              # "..."
      CHAR_DONE, TX_END]
 )
 
@@ -243,30 +252,34 @@ def _bytes_to_nasm(data: bytes, indent: str = '    ') -> str:
 # Per-map generation
 # ---------------------------------------------------------------------------
 
-def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
+def generate_map(map_id: int, const: str, label: str, charmap: list,
                  text_db_cache: dict) -> tuple | None:
     """Generate dialog for one map.
 
+    `label` is the map-header label (e.g. "RedsHouse1F") — correctly cased, so it
+    matches the data/maps/objects, scripts/ and text/ filenames (const_to_pascal
+    mangles floor suffixes like "1F"→"1f", which silently dropped ~87 maps).
+
     Returns (table_label, out_path) if any NPCs exist, else None.
-    Writes the .inc file.  text_db_cache is populated lazily.
+    Emits exactly one table entry per object_event slot (stub where the text can't
+    be resolved) so the table is never shorter than the map-object binary's sprite
+    count — otherwise text_id (= slot index) can index past the table and fault.
     """
     map_snake  = const.lower()
-    table_label = f"{map_pascal}TextTable"
+    table_label = f"{label}TextTable"
 
-    objects_path = ROOT / "data" / "maps" / "objects" / f"{map_pascal}.asm"
-    scripts_path = ROOT / "scripts" / f"{map_pascal}.asm"
-    text_path    = ROOT / "text"    / f"{map_pascal}.asm"
+    scripts_path = ROOT / "scripts" / f"{label}.asm"
+    text_path    = ROOT / "text"    / f"{label}.asm"
 
-    if not objects_path.exists():
+    # Authoritative NPC list: identical parse to gen_map_headers (same _DEBUG
+    # stripping + object_event order + trainer/item flags) → table stays in sync.
+    parsed = gmh.parse_object_file(label)
+    if parsed is None:
         return None
-
-    npc_count = _count_npcs(objects_path)
+    _border, _warps, _sign_count, sprites = parsed
+    npc_count = len(sprites)
     if npc_count == 0:
         return None
-
-    npc_flags = _read_npc_entries(objects_path)
-    if len(npc_flags) < npc_count:
-        npc_flags += [{'is_trainer': False, 'is_item': False}] * (npc_count - len(npc_flags))
 
     # Need text pointers from scripts
     if not scripts_path.exists():
@@ -274,15 +287,11 @@ def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
               file=sys.stderr)
         pointers = []
     else:
-        pointers = _parse_text_pointers(scripts_path, map_pascal)
+        pointers = _parse_text_pointers(scripts_path, label)
 
-    if npc_count > len(pointers):
-        # Clamp: can't resolve beyond available pointers
-        npc_count_eff = len(pointers)
-        if npc_count_eff == 0:
-            npc_count_eff = npc_count  # all stubs
-    else:
-        npc_count_eff = npc_count
+    # Always emit one entry per sprite slot; slots beyond the resolvable text
+    # pointers fall back to a stub (local_label = None below).
+    npc_count_eff = npc_count
 
     # Lazy-load text db for this map
     text_db = {}
@@ -297,9 +306,8 @@ def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
     # Resolve each slot
     npc_entries = []
     for i in range(npc_count_eff):
-        flags = npc_flags[i] if i < len(npc_flags) else {}
-        is_trainer = flags.get('is_trainer', False)
-        is_item    = flags.get('is_item', False)
+        is_trainer = sprites[i].get('is_trainer', False)
+        is_item    = sprites[i].get('is_item', False)
 
         if i < len(pointers):
             local_label = pointers[i]
@@ -310,8 +318,8 @@ def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
         # (two NPCs can share the same text pointer, which would produce duplicate labels).
         if local_label:
             suffix = local_label
-            if suffix.startswith(map_pascal):
-                suffix = suffix[len(map_pascal):]
+            if suffix.startswith(label):
+                suffix = suffix[len(label):]
             if suffix.endswith('Text'):
                 suffix = suffix[:-4]
             snake_suffix = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', suffix).lower()
@@ -334,10 +342,24 @@ def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
             if local_label and scripts_path.exists():
                 far = _resolve_local_label(scripts_path, local_label)
                 if far is None:
-                    # text_asm script NPC
-                    data = _SCRIPT_STUB
-                    print(f"[dialogs] {const}[{i}] {local_label}: "
-                          f"text_asm script NPC — emitting stub", file=sys.stderr)
+                    # text_asm script NPC: the script does `farcall <PrintFunc>`
+                    # instead of `text_far _X`, so there is no direct far label.
+                    # Most single-line NPCs follow the convention that the real
+                    # text label is just the script label with a '_' prefix
+                    # (e.g. ViridianCityYoungster1Text -> _ViridianCityYoungster1Text).
+                    # Resolve that exact match when it exists — it can only help
+                    # (no match => unchanged stub). NPCs whose print function
+                    # branches on game state (e.g. ViridianCityGambler1Text ->
+                    # _ViridianCityGambler1GymAlwaysClosedText / ...ReturnedText)
+                    # have no single static string and correctly stay stubs until
+                    # the script engine lands.
+                    cand = '_' + local_label
+                    if cand in text_db:
+                        data = text_db[cand]
+                    else:
+                        data = _SCRIPT_STUB
+                        print(f"[dialogs] {const}[{i}] {local_label}: "
+                              f"text_asm script NPC — emitting stub", file=sys.stderr)
                 elif far not in text_db:
                     data = _SCRIPT_STUB
                     print(f"[dialogs] {const}[{i}] {local_label}: "
@@ -354,7 +376,7 @@ def generate_map(map_id: int, const: str, map_pascal: str, charmap: list,
     lines = [
         f"; {out_path.name} — generated by tools/gen_npc_dialogs.py. DO NOT EDIT BY HAND.",
         f"; Map: {const} (id=0x{map_id:02X}), {len(npc_entries)} NPC slot(s).",
-        f"; Source: text/{map_pascal}.asm + scripts/{map_pascal}.asm",
+        f"; Source: text/{label}.asm + scripts/{label}.asm",
         f";",
         f"; section .data so labels never land in an orphaned section.",
         f"",
@@ -385,12 +407,19 @@ def generate_all() -> None:
     all_maps = parse_map_constants()
     max_id   = max(mid for mid, _, _ in all_maps)
 
+    # const → map-header label (correctly cased; handles floor suffixes that
+    # const_to_pascal mangles). Source of truth shared with gen_map_headers.
+    const_to_label, _ = gmh.parse_all_headers()
+
     # {map_id: table_label} for maps with NPCs
     map_table: dict = {}
     text_db_cache: dict = {}
 
     for mid, const, pascal in all_maps:
-        result = generate_map(mid, const, pascal, charmap, text_db_cache)
+        label = const_to_label.get(const)
+        if label is None:
+            continue   # map has no header (should not happen for real maps)
+        result = generate_map(mid, const, label, charmap, text_db_cache)
         if result is not None:
             table_label, out_path = result
             map_table[mid] = table_label

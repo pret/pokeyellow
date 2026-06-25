@@ -291,6 +291,27 @@ def main():
     print(f"  wrote {ASSETS / 'npc_sprite_data_table.inc'} "
           f"({table_size} entries, {len(used_sprites) - len(missing)} sprites)")
 
+    # ------------------------------------------------------------------
+    # 5. Chain the dependent generators so a single run of this script
+    #    regenerates EVERYTHING consistently.  These three were previously
+    #    only run by separate Makefile targets, so running this script
+    #    directly left map headers, NPC dialogs, and toggleable-object
+    #    flags stale (the classic "regenerated assets but bug persists").
+    #    map_headers must run first: gen_npc_dialogs / gen_toggleable_objects
+    #    derive slot counts from the same parse it uses.
+    # ------------------------------------------------------------------
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import gen_map_headers
+    import gen_npc_dialogs
+    import gen_toggleable_objects
+
+    print("chaining gen_map_headers ...")
+    gen_map_headers.main(debug_warps=False)
+    print("chaining gen_npc_dialogs ...")
+    gen_npc_dialogs.generate_all()
+    print("chaining gen_toggleable_objects ...")
+    gen_toggleable_objects.generate_all()
+
     print("done.")
 
 

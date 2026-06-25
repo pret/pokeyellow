@@ -52,6 +52,8 @@ extern UpdateSprites
 extern ClearSprites
 extern g_tilecache_dirty
 extern InitMapSprites
+extern InitToggleableObjectFlags
+extern text_engine_init
 extern CheckNPCInteraction
 extern IsNPCAtTargetBlock
 extern CheckTrainerSight
@@ -145,6 +147,43 @@ SOUTH_VIEW_PTR             equ W_OVERWORLD_MAP + 23
 ROUTE1_BLK_GB_SIZE         equ 180        ; 10×18
 ROUTE21_BLK_GB_SIZE        equ 450        ; 10×45
 
+; ---------------------------------------------------------------------------
+; Default player / rival names (debug / SKIP_TITLE builds)
+; ---------------------------------------------------------------------------
+; The title screen's PrepareTitleScreen seeds wPlayerName / wRivalName (the
+; engine's debug defaults NINTEN / SONY); SKIP_TITLE bypasses it entirely, so
+; those fields held uninitialized garbage and <PLAYER>/<RIVAL> ($52/$53)
+; substitutions printed junk. When SKIP_TITLE is set we seed the same defaults.
+; Override at build time: `make SKIP_TITLE=1 PLAYER_NAME=ASH RIVAL_NAME=GARY`
+; (the Makefile passes -D PLAYER_NAME="'<name>'"). Letters only, ≤7 chars.
+PLAYER_NAME_FIELD equ 11                  ; wPlayerName/wRivalName field size (= title.asm NAME_LENGTH)
+%ifndef PLAYER_NAME
+%define PLAYER_NAME 'NINTEN'
+%endif
+%ifndef RIVAL_NAME
+%define RIVAL_NAME 'SONY'
+%endif
+
+; encode_name — emit a name as charmap bytes padded to PLAYER_NAME_FIELD with $50.
+; Each ASCII letter maps to the pret charmap by +0x3F: 'A'(0x41)->0x80, so this
+; covers A-Z (0x80-0x99) and a-z (0xA0-0xB9). $50 is the '@' terminator + padding.
+%macro encode_name 1
+%strlen _en_len %1
+%assign _en_i 1
+%rep _en_len
+    %substr _en_ch %1 _en_i
+    db _en_ch + 0x3F
+    %assign _en_i _en_i + 1
+%endrep
+    times (PLAYER_NAME_FIELD - _en_len) db 0x50
+%endmacro
+
+section .data
+DefaultPlayerName:
+    encode_name PLAYER_NAME
+DefaultRivalName:
+    encode_name RIVAL_NAME
+
 section .text
 
 ; ---------------------------------------------------------------------------
@@ -157,6 +196,23 @@ section .text
 EnterMap:
     call LoadOverworldAssets
     call SetupPlayerSprite
+%ifdef SKIP_TITLE
+    ; Title screen (which normally seeds wPlayerName / wRivalName) was skipped —
+    ; seed the build-time defaults so <PLAYER>/<RIVAL> don't print garbage.
+    lea esi, [DefaultPlayerName]
+    lea edi, [ebp + W_PLAYER_NAME]
+    mov ecx, PLAYER_NAME_FIELD
+    rep movsb
+    lea esi, [DefaultRivalName]
+    lea edi, [ebp + W_RIVAL_NAME]
+    mov ecx, PLAYER_NAME_FIELD
+    rep movsb
+%endif
+    ; Initialize the <DONE> sentinel (DONE_SENTINEL_WRAM = TX_END). Normally done by
+    ; the title screen; SKIP_TITLE bypasses that, leaving the sentinel as garbage so
+    ; any CHAR_DONE-terminated dialog ran off into a bogus TX_BOX → page fault.
+    call text_engine_init
+    call InitToggleableObjectFlags     ; seed global event/visibility flags to defaults
     call LoadMapData
 %ifdef DEBUG_DUMP
     call DebugDumpMemory     ; dump GB memory to DUMP.BIN, then exit (debug only)
