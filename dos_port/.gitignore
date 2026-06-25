@@ -2,5 +2,10 @@ DUMP.BIN
 FRAME.BIN
 *.o
 *.orig
-tools/translation.db
+# translation.db is tracked (synced across machines / web Claude Code).
+# Its SQLite sidecars are not — work_queue uses DELETE journal mode so they
+# normally never exist, but ignore them defensively in case a tool opens WAL.
+tools/translation.db-wal
+tools/translation.db-shm
+tools/translation.db-journal
 scratch/

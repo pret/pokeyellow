@@ -2095,3 +2095,35 @@ Pallet Town event values spot-checked against the source; a harness exercising a
 three macros assembles clean (`nasm -f coff`).
 
 ---
+
+## Script engine — text_asm dispatch + Pallet Town reference (Stages 2–4)
+
+- **Source:** `home/text_script.asm:DisplayTextID` (dispatch concept), `scripts/PalletTown.asm:PalletTownOakText`
+- **Translated:** `dos_port/src/scripts/pallet_town.asm`, `dos_port/src/engine/overworld/map_sprites.asm` (`ShowTextStream` + dispatch), `dos_port/tools/gen_npc_dialogs.py` (`SCRIPT_OVERRIDES`)
+- **Date:** 2026-06-25
+- **H-flag:** Not involved.
+- **Bug tags:** None.
+
+**Design (divergence from pret, documented):** gen-1 marks a `text_asm` entry with a
+`TX_START_ASM` (0x08) byte at the head of the text stream and `jp hl` past it. The DOS
+port's map TextTable already stores `(flat ptr, size)` per slot and copies streams into
+`NPC_DIALOG_BUF` (WRAM) because `PrintText` wants EBP-relative pointers. So instead of an
+in-stream marker, a **SCRIPT entry** is `dd <routine>, 0xFFFFFFFF` — the sentinel size
+tells `CheckNPCInteraction` to CALL the flat `text_asm` routine. A new shared
+`ShowTextStream` (ESI=flat stream, ECX=count → copy to `NPC_DIALOG_BUF`, `PrintText`,
+`npc_dialog_wait_impl`) serves both the plain path and scripts. The font load was moved
+ahead of the dispatch (both paths need it); `LoadFontTilePatterns` preserves EDI and
+leaves EBX untouched, so the flat ptr/size survive it.
+
+`gen_npc_dialogs.py:SCRIPT_OVERRIDES` maps a pret text-pointer label → a hand-written
+NASM script label; matching slots emit the SCRIPT entry + `extern`.
+`PalletTownOakText` (reference) gates on `EVENT_GOT_POKEBALLS_FROM_OAK` via the Stage 1
+`CheckEvent` macro and shows one of two branches. The full intro (wOakWalkedToPlayer
+variants, Oak walk-up cutscene, Pikachu battle) is deferred — recorded as `stubs` on
+queue row 4398 (kinds: battle, misc).
+
+**Status:** builds + links (default and `DEBUG_OAK_EVENT=1`). **Not yet visually
+verified** — Oak does not spawn into Pallet Town until the intro/spawn-gating exists, so
+the dialog is unreachable in-game for now. Verify once Oak is spawned.
+
+---

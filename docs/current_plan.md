@@ -30,13 +30,27 @@ Code via targeted claims and the `wired`/`verified` transitions:
       table + subcommands, `gen_progress_report`). Committed.
 - [x] **Stage 1 — event-flag system**: `gen_event_constants.py` → `assets/event_constants.inc`;
       `include/events.inc` (`CheckEvent`/`SetEvent`/`ResetEvent`). Assembles.
-- [ ] **Stage 2 — `DisplayTextID`** dispatcher (`src/engine/overworld/display_text_id.asm`);
-      flat-pointer text path; refactor `CheckNPCInteraction` onto it.
-- [ ] **Stage 3 — `TX_START_ASM` (0x08) handler** in `TextCommandProcessor` + `TextScriptEnd`.
-- [ ] **Stage 4 — Pallet Town reference** (`PalletTownOakText` event/var-gated `text_asm`).
+- [x] **Stage 2+3 — text_asm dispatch** (collapsed): instead of `DisplayTextID` +
+      `TX_START_ASM`-in-stream, a map TextTable slot can be a **SCRIPT entry**
+      (`dd <routine>, 0xFFFFFFFF`). `CheckNPCInteraction` CALLs the flat `text_asm`
+      routine; new shared `ShowTextStream` (copy flat→`NPC_DIALOG_BUF`, `PrintText`,
+      wait) serves both scripts and plain text. `gen_npc_dialogs.py` gained a
+      `SCRIPT_OVERRIDES` registry. Builds + links; **visual test pending Oak spawn**.
+- [x] **Stage 4 — Pallet Town reference** (`src/scripts/pallet_town.asm`): `PalletTownOakText`
+      gates on `EVENT_GOT_POKEBALLS_FROM_OAK` (`CheckEvent`) → two branches. Test with
+      `DEBUG_OAK_EVENT=1` once Oak is spawn-gated into the map.
 - [ ] **Stage 5 — `RunMapScript`** dispatch skeleton (no-op default; cutscenes deferred to
       the movement + battle milestone).
 - [ ] **Stage 6 — stub conventions** (force-set success flags; record via `stub add`).
+      Started: deferred Oak intro recorded as stubs on `PalletTownOakText` (battle, misc).
+
+## Testing note
+
+Oak does not spawn by default (no intro/spawn-gating yet), so the dialog can't be
+reached until Oak is spawned into Pallet Town. To visually test: spawn Oak (debug
+spawn flag), then talk to him — default build shows "Hey! Wait!", `DEBUG_OAK_EVENT=1`
+(needs `make clean`) shows "That was close!". Plain Girl/Fisher dialog is the
+regression check for the refactored `ShowTextStream` path.
 
 ## Deferred to the next milestone
 

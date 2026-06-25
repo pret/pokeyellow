@@ -25,6 +25,8 @@ bits 32
 
 %include "gb_memmap.inc"
 %include "gb_macros.inc"
+%include "assets/event_constants.inc"
+%include "events.inc"
 
 extern g_tilecache_dirty
 extern PrintText
@@ -37,6 +39,7 @@ extern HandleDownArrowBlinkTiming
 
 global InitMapSprites
 global CheckNPCInteraction
+global ShowTextStream
 global IsNPCAtTargetBlock
 global w_map_text_table_ptr
 global MapTextTablePointers
@@ -318,6 +321,12 @@ InitToggleableObjectFlags:
     xor al, al
     mov ecx, 0x140
     rep stosb
+
+%ifdef DEBUG_OAK_EVENT
+    ; Test harness: force the event that PalletTownOakText gates on so the "set"
+    ; branch ("OAK: That was close!") shows instead of the default "Hey! Wait!".
+    SetEvent EVENT_GOT_POKEBALLS_FROM_OAK
+%endif
 
     pop edi
     pop esi
@@ -623,25 +632,17 @@ CheckNPCInteraction:
     ; Freeze NPC movement during dialog.
     or byte [ebp + esi + W_SPRITE_STATE_DATA_1 + SPRITESTATEDATA1_MOVEMENTSTATUS], (1 << BIT_FACE_PLAYER)
 
-    ; Look up text_id → text data pointer and size via per-map text table.
+    ; Look up text_id → table entry: flat ptr + (byte count | SCRIPT sentinel).
     movzx eax, byte [ebp + esi + W_SPRITE_STATE_DATA_2 + SPRITESTATEDATA2_TEXTID]
     lea edx, [eax * 8]                      ; 8 bytes per entry (dd ptr + dd size)
     mov ecx, [w_map_text_table_ptr]         ; flat ptr to current map's TextTable (0 if none)
     test ecx, ecx
     jz .dialog_done                         ; null table: no text for this map
 
-    mov edi, [ecx + edx]                    ; flat DS ptr to text stream
+    mov edi, [ecx + edx]                    ; flat ptr: TX stream OR text_asm routine
     test edi, edi
     jz .dialog_done                         ; null entry: no text for this id
-
-    mov ecx, [ecx + edx + 4]               ; byte count
-    cmp ecx, 256
-    jge .dialog_done                        ; safety: never copy more than 256 bytes
-
-    ; Copy text stream from flat .data to NPC_DIALOG_BUF in WRAM (EBP-relative).
-    mov esi, edi                            ; flat src ptr
-    lea edi, [ebp + NPC_DIALOG_BUF]
-    rep movsb
+    mov ebx, [ecx + edx + 4]               ; byte count, or 0xFFFFFFFF = SCRIPT entry
 
     ; Force the player into a STANDING pose before the font load. If A was pressed
     ; while the player was walk-animating in place (e.g. pushing into this NPC), its
@@ -663,13 +664,18 @@ CheckNPCInteraction:
     ; Restore font glyphs to GB_VFONT before text rendering (walk tiles share it).
     call LoadFontTilePatterns
 
-    ; Call PrintText with ESI = EBP-relative address of NPC_DIALOG_BUF.
-    mov esi, NPC_DIALOG_BUF
-    call PrintText
-    ; PrintText calls manual_text_scroll at CHAR_PARA/CHAR_CONT/CHAR_DONE,
-    ; which shows the dialog (copies tiles to GB_TILEMAP1, H_WY=152) and waits.
-    ; For text_end format (Oak): no final scroll inside PrintText; show + wait here.
-    call npc_dialog_wait_impl
+    ; Dispatch: SCRIPT entry (sentinel size) → CALL the flat text_asm routine, which
+    ; runs its own logic + ShowTextStream. Plain entry → display the TX stream.
+    cmp ebx, 0xFFFFFFFF
+    je .run_script
+    cmp ebx, 256
+    jge .dialog_done                        ; safety: never copy more than 256 bytes
+    mov esi, edi                            ; flat src ptr
+    mov ecx, ebx                            ; byte count
+    call ShowTextStream
+    jmp .dialog_done
+.run_script:
+    call edi                                ; flat text_asm routine (does its own ShowTextStream)
 
 .dialog_done:
     ; Hide window and clear font-loaded flag.
@@ -693,6 +699,21 @@ CheckNPCInteraction:
     xor eax, eax
     mov dword [esp + 28], 0
     popad
+    ret
+
+; ── ShowTextStream — copy a flat TX stream into NPC_DIALOG_BUF and display it ──
+; In: ESI = flat (program-image) ptr to a TX command stream; ECX = byte count (<256).
+; Copies to NPC_DIALOG_BUF (WRAM), runs PrintText, then waits via npc_dialog_wait_impl.
+; Assumes the font is already loaded and the player is frozen in a standing pose
+; (CheckNPCInteraction does this before dispatch; text_asm scripts rely on it too).
+; Shared by the plain-dialog path and hand-written text_asm scripts (e.g.
+; src/scripts/pallet_town.asm). Clobbers caller-saved regs.
+ShowTextStream:
+    lea edi, [ebp + NPC_DIALOG_BUF]         ; EBP-relative WRAM dest
+    rep movsb                                ; flat src ESI → WRAM (both flat selectors)
+    mov esi, NPC_DIALOG_BUF                  ; EBP-relative ptr for PrintText
+    call PrintText
+    call npc_dialog_wait_impl
     ret
 
 ; ── shared helper: copy current wTileMap dialog rows to window layer, wait A/B ──

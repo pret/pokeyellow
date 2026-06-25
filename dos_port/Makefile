@@ -102,6 +102,7 @@ GAME_SRCS := \
     src/engine/overworld/overworld.asm \
     src/engine/overworld/movement.asm \
     src/engine/overworld/map_sprites.asm \
+    src/scripts/pallet_town.asm \
     src/engine/math/random.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
@@ -133,6 +134,12 @@ NASMFLAGS += -D SKIP_TITLE
 endif
 ifdef NEED_DEBUG_DUMP
 GAME_SRCS += src/debug/debug_dump.asm
+endif
+
+# Test harness for event-gated dialog: force EVENT_GOT_POKEBALLS_FROM_OAK at map
+# load so PalletTownOakText shows its "set" branch. make SKIP_TITLE=1 DEBUG_OAK_EVENT=1
+ifdef DEBUG_OAK_EVENT
+NASMFLAGS += -D DEBUG_OAK_EVENT
 endif
 
 ALL_SRCS := $(BOOT_SRCS) $(HOME_SRCS) $(HAL_SRCS) $(GAME_SRCS)
@@ -185,12 +192,16 @@ assets/toggleable_objects.inc:
 assets/event_constants.inc:
 	python3 tools/gen_event_constants.py
 
-# map_sprites depends on the NPC tile asset table, all-maps dialog table, and the
-# toggleable-object (event) flag tables.
+# map_sprites depends on the NPC tile asset table, all-maps dialog table, the
+# toggleable-object (event) flag tables, and the event-flag constants (events.inc).
 src/engine/overworld/map_sprites.o: \
     assets/npc_sprite_data_table.inc \
     assets/npc_dialogs/all_dialogs.inc \
-    assets/toggleable_objects.inc
+    assets/toggleable_objects.inc \
+    assets/event_constants.inc
+
+# Pallet Town text_asm scripts include events.inc → event_constants.inc.
+src/scripts/pallet_town.o: assets/event_constants.inc
 
 assets: assets/overworld_gfx.inc assets/overworld_blocks.inc assets/pallet_town_blk.inc \
         assets/map_headers.inc assets/extra_includes.inc \

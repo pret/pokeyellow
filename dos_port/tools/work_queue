@@ -100,7 +100,10 @@ def db():
         err({'error': f'Database not found at {DB_PATH}. Run build_index first.'})
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row
-    con.execute("PRAGMA journal_mode=WAL")
+    # DELETE (rollback) journal, not WAL: the DB is git-tracked and synced across
+    # machines, so it must stay a single self-contained file with no -wal/-shm
+    # sidecar state that a commit could miss.
+    con.execute("PRAGMA journal_mode=DELETE")
     _migrate(con)
     return con
 
