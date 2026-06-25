@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
-build_index — Scan the pret/pokeyellow GB source (home/ and engine/) and
+build_index — Scan the pret/pokeyellow GB source (home/, engine/, scripts/) and
 build (or rebuild) the translation work-queue database at dos_port/tools/translation.db.
+
+home/ + engine/ files are categorised simple/complex (swarm jobs); scripts/*.asm
+become 'script' category (per-map scripts hand-translated by Claude Code).
 
 Usage:
     dos_port/tools/build_index [--rebuild]
@@ -202,7 +205,7 @@ CREATE TABLE IF NOT EXISTS functions (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     name           TEXT    NOT NULL,
     source_file    TEXT    NOT NULL,
-    category       TEXT    NOT NULL CHECK(category IN ('simple','complex')),
+    category       TEXT    NOT NULL CHECK(category IN ('simple','complex','script')),
     status         TEXT    NOT NULL DEFAULT 'needs_translation'
                            CHECK(status IN (
                                'needs_translation','in_progress',
@@ -235,6 +238,10 @@ CREATE TABLE IF NOT EXISTS translation_log (
 
 def categorise(rel_path):
     norm = rel_path.replace('\\', '/')
+    # Per-map scripts (scripts/*.asm) are hand-translated by Claude Code, not the
+    # swarm — their own 'script' category, claimed in batches.
+    if norm.startswith('scripts/'):
+        return 'script'
     if norm in SIMPLE_FILES:
         return 'simple'
     for prefix in SIMPLE_PREFIXES:
@@ -263,7 +270,7 @@ def status_and_output(rel_path, label):
     return 'needs_translation', None
 
 def scan_source_files():
-    for top in ('home', 'engine'):
+    for top in ('home', 'engine', 'scripts'):
         top_dir = os.path.join(REPO_ROOT, top)
         if not os.path.isdir(top_dir):
             continue

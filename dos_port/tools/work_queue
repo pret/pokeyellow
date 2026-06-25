@@ -21,6 +21,9 @@ Commands
                                       List matching functions.
   claim  --agent ID [--count N] [--category C]
                                       Atomically claim N jobs (default 1).
+  claim  --agent ID (--id N | --name LABEL)
+                                      Claim one specific function (Claude Code path
+                                      for named infra/script routines).
   manifest --id ID                    Print the manifest header a worker must write.
   complete --id ID --scratch PATH [--agent ID]
                                       Worker marks job translated. Scratch file must
@@ -40,6 +43,14 @@ Commands
   log      --id ID                    Full audit log for one function.
   pending-placement                   List translated jobs waiting for Integration Agent.
   translation-log-entry --id ID       Emit a formatted docs/translation_log.md entry.
+  stub add  --id N --kind K [--notes] Record a deferred stub on a function. kind is a
+                                      standard set (battle/items/pokemon/party/menu/
+                                      music/sfx/save); 'misc' (+ --notes) for the rest.
+  stub list [--kind K] [--id N] [--unresolved]
+                                      List stubs (a separate dimension from status).
+  stub resolve --stub-id M            Mark a stub resolved.
+
+Categories: simple, complex (swarm), script (per-map scripts, Claude Code).
 
 Exit codes: 0 = success, 1 = error (details in JSON 'error' key).
 """
@@ -61,6 +72,25 @@ ALL_STATUSES = [
     'needs_translation', 'in_progress', 'translated', 'wired', 'verified', 'skip',
     # legacy values kept so old rows survive migration
     'complete', 'unverified',
+]
+
+# 'script' is the per-map script-translation category (scripts/*.asm), claimed and
+# hand-translated by Claude Code — distinct from the swarm's simple/complex jobs.
+CATEGORIES = ['simple', 'complex', 'script']
+
+# Standardised stub kinds — a closed set so `stub list --kind X` is reliable when
+# sweeping deferrals (e.g. all 'battle' stubs once the battle engine lands). Anything
+# that doesn't fit is 'misc' with the detail in --notes (free entry).
+STUB_KINDS = [
+    'battle',    # needs the battle engine
+    'items',     # needs the item / bag system
+    'pokemon',   # needs party / species data
+    'party',     # needs party management
+    'menu',      # needs a menu (start menu, shop, PC, ...)
+    'music',     # needs music playback
+    'sfx',       # needs sound effects
+    'save',      # needs the save system
+    'misc',      # anything else — REQUIRES --notes
 ]
 
 # ── DB helpers ───────────────────────────────────────────────────────────────────
@@ -87,7 +117,75 @@ def _migrate(con):
     con.execute("UPDATE functions SET status='translated'        WHERE status='complete'")
     con.execute("UPDATE functions SET status='needs_translation' WHERE status='unverified'")
     con.execute("PRAGMA ignore_check_constraints = OFF")
+
+    # Widen the CHECK constraints: add the 'script' category and the full status
+    # set (the original on-disk schema allowed neither 'script' nor
+    # 'translated'/'wired'/'verified', so wire/verify would hit a CHECK violation).
+    # SQLite can't ALTER a CHECK in place, so rebuild the table if its definition
+    # predates these — detected by the absence of 'script'/'verified'. Idempotent:
+    # after the rebuild the new SQL contains both, so this is a no-op thereafter.
+    fsql = con.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='functions'"
+    ).fetchone()
+    if fsql and ("'script'" not in fsql[0] or "'verified'" not in fsql[0]):
+        _rebuild_functions(con)
+
+    # Stub/revisit tracking — a separate dimension from the status pipeline: a
+    # function can be fully verified yet still hold a battle/items/pokemon stub.
+    con.execute("""
+        CREATE TABLE IF NOT EXISTS stubs (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            function_id INTEGER NOT NULL REFERENCES functions(id),
+            kind        TEXT    NOT NULL,
+            notes       TEXT,
+            resolved    INTEGER NOT NULL DEFAULT 0,
+            created_at  TEXT    DEFAULT (datetime('now','utc')),
+            resolved_at TEXT
+        )
+    """)
+    con.execute("CREATE INDEX IF NOT EXISTS idx_stub_kind ON stubs(kind)")
+    con.execute("CREATE INDEX IF NOT EXISTS idx_stub_fn   ON stubs(function_id)")
     con.commit()
+
+def _rebuild_functions(con):
+    """Recreate `functions` with the widened category/status CHECKs, copying all
+    rows. SQLite has no ALTER-CHECK, so the table is rebuilt in place."""
+    con.executescript("""
+        CREATE TABLE functions_new (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            name           TEXT    NOT NULL,
+            source_file    TEXT    NOT NULL,
+            category       TEXT    NOT NULL
+                                   CHECK(category IN ('simple','complex','script')),
+            status         TEXT    NOT NULL DEFAULT 'needs_translation'
+                                   CHECK(status IN (
+                                       'needs_translation','in_progress',
+                                       'translated','wired','verified','skip',
+                                       'complete','unverified'
+                                   )),
+            output_file    TEXT,
+            assigned_agent TEXT,
+            notes          TEXT,
+            created_at     TEXT    DEFAULT (datetime('now','utc')),
+            updated_at     TEXT    DEFAULT (datetime('now','utc')),
+            scratch_file   TEXT,
+            translation_notes TEXT
+        );
+        INSERT INTO functions_new
+            (id, name, source_file, category, status, output_file,
+             assigned_agent, notes, created_at, updated_at,
+             scratch_file, translation_notes)
+        SELECT
+            id, name, source_file, category, status, output_file,
+            assigned_agent, notes, created_at, updated_at,
+            scratch_file, translation_notes
+        FROM functions;
+        DROP TABLE functions;
+        ALTER TABLE functions_new RENAME TO functions;
+        CREATE INDEX IF NOT EXISTS idx_fn_status   ON functions(status);
+        CREATE INDEX IF NOT EXISTS idx_fn_category ON functions(category);
+        CREATE INDEX IF NOT EXISTS idx_fn_source   ON functions(source_file);
+    """)
 
 def scratch_path(fid, label):
     safe = re.sub(r'[^A-Za-z0-9_]', '_', label)
@@ -198,22 +296,53 @@ def cmd_list(args):
     con.close()
 
 def cmd_claim(args):
-    category = args.category or 'simple'
-    count    = args.count or 1
-    con      = db()
-    cur      = con.cursor()
+    con = db()
+    cur = con.cursor()
     cur.execute("BEGIN EXCLUSIVE")
-    rows = cur.execute("""
-        SELECT id, name, source_file, category, status, notes
-        FROM functions
-        WHERE category = ? AND status = 'needs_translation'
-        ORDER BY source_file, name
-        LIMIT ?
-    """, (category, count)).fetchall()
+
+    targeted = args.id is not None or args.name
+    if targeted:
+        # Claim one specific function by id or exact label name (Claude Code path
+        # for named infra routines like DisplayTextID — not the swarm's bulk claim).
+        if args.id is not None:
+            sel = cur.execute("""
+                SELECT id, name, source_file, category, status, notes
+                FROM functions WHERE id = ?
+            """, (args.id,)).fetchall()
+            ident = f'id={args.id}'
+        else:
+            sel = cur.execute("""
+                SELECT id, name, source_file, category, status, notes
+                FROM functions WHERE name = ?
+            """, (args.name,)).fetchall()
+            ident = f'name={args.name!r}'
+        if not sel:
+            con.rollback(); con.close()
+            err({'error': f'No function with {ident}'})
+        if len(sel) > 1:
+            con.rollback(); con.close()
+            err({'error': f'Ambiguous {ident}: {len(sel)} matches — use --id',
+                 'matches': [{'id': r['id'], 'source_file': r['source_file']} for r in sel]})
+        if sel[0]['status'] != 'needs_translation':
+            con.rollback(); con.close()
+            err({'error': f'{sel[0]["name"]} not claimable (status={sel[0]["status"]})',
+                 'hint': 'Only needs_translation functions can be claimed.'})
+        rows = sel
+    else:
+        category = args.category or 'simple'
+        count    = args.count or 1
+        rows = cur.execute("""
+            SELECT id, name, source_file, category, status, notes
+            FROM functions
+            WHERE category = ? AND status = 'needs_translation'
+            ORDER BY source_file, name
+            LIMIT ?
+        """, (category, count)).fetchall()
 
     if not rows:
         con.rollback(); con.close()
-        out({'claimed': [], 'message': f'No jobs available in category={category}'})
+        cat = args.category or 'simple'
+        out({'claimed': [], 'message': f'No jobs available in category={cat}'})
         return
 
     ts = now_utc()
@@ -529,6 +658,69 @@ def cmd_log(args):
     out({'function': fn_dict, 'log': [dict(r) for r in log]})
     con.close()
 
+# ── stub tracking ──────────────────────────────────────────────────────────────
+
+def cmd_stub(args):
+    {'add': cmd_stub_add, 'list': cmd_stub_list, 'resolve': cmd_stub_resolve}[args.stub_cmd](args)
+
+def cmd_stub_add(args):
+    con = db()
+    cur = con.cursor()
+    fn = cur.execute("SELECT id, name FROM functions WHERE id=?", (args.id,)).fetchone()
+    if not fn:
+        err({'error': f'No function with id={args.id}'})
+    if args.kind == 'misc' and not args.notes:
+        con.close()
+        err({'error': "kind='misc' requires --notes to describe the deferral"})
+    cur.execute("""
+        INSERT INTO stubs (function_id, kind, notes, resolved, created_at)
+        VALUES (?, ?, ?, 0, ?)
+    """, (args.id, args.kind, args.notes, now_utc()))
+    sid = cur.lastrowid
+    con.commit()
+    out({'stub_id': sid, 'function_id': args.id, 'name': fn['name'],
+         'kind': args.kind, 'notes': args.notes, 'resolved': False})
+    con.close()
+
+def cmd_stub_list(args):
+    con = db()
+    clauses, params = [], []
+    if args.kind:
+        clauses.append("s.kind = ?");        params.append(args.kind)
+    if args.id is not None:
+        clauses.append("s.function_id = ?"); params.append(args.id)
+    if args.unresolved:
+        clauses.append("s.resolved = 0")
+    where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+    rows = con.execute(f"""
+        SELECT s.id AS stub_id, s.function_id, f.name, f.source_file, f.output_file,
+               s.kind, s.notes, s.resolved, s.created_at, s.resolved_at
+        FROM stubs s JOIN functions f ON f.id = s.function_id
+        {where}
+        ORDER BY s.resolved, s.kind, f.name
+    """, params).fetchall()
+    out({'count': len(rows), 'stubs': [dict(r) for r in rows]})
+    con.close()
+
+def cmd_stub_resolve(args):
+    con = db()
+    cur = con.cursor()
+    row = cur.execute(
+        "SELECT id, function_id, kind, resolved FROM stubs WHERE id=?",
+        (args.stub_id,)
+    ).fetchone()
+    if not row:
+        err({'error': f'No stub with id={args.stub_id}'})
+    if row['resolved']:
+        out({'stub_id': args.stub_id, 'already_resolved': True})
+        con.close(); return
+    cur.execute("UPDATE stubs SET resolved=1, resolved_at=? WHERE id=?",
+                (now_utc(), args.stub_id))
+    con.commit()
+    out({'stub_id': args.stub_id, 'function_id': row['function_id'],
+         'kind': row['kind'], 'resolved': True})
+    con.close()
+
 # ── CLI wiring ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -539,14 +731,16 @@ def main():
     sub.add_parser('status', help='Queue summary')
 
     p = sub.add_parser('list', help='List functions')
-    p.add_argument('--category', choices=['simple', 'complex'])
+    p.add_argument('--category', choices=CATEGORIES)
     p.add_argument('--status', choices=ALL_STATUSES)
     p.add_argument('--limit', type=int)
 
     p = sub.add_parser('claim', help='Claim jobs for an agent')
     p.add_argument('--agent',    required=True)
+    p.add_argument('--id',       type=int, help='Claim one specific function by id')
+    p.add_argument('--name',     help='Claim one specific function by exact label name')
     p.add_argument('--count',    type=int, default=1)
-    p.add_argument('--category', choices=['simple', 'complex'], default='simple')
+    p.add_argument('--category', choices=CATEGORIES, default='simple')
 
     p = sub.add_parser('manifest', help='Print manifest header for a worker scratch file')
     p.add_argument('--id', type=int, required=True)
@@ -582,9 +776,25 @@ def main():
     p = sub.add_parser('recategorize',
                        help='Move a job to a different category (resets to needs_translation)')
     p.add_argument('--id',       type=int, required=True)
-    p.add_argument('--category', choices=['simple', 'complex'], required=True)
+    p.add_argument('--category', choices=CATEGORIES, required=True)
     p.add_argument('--agent')
     p.add_argument('--notes')
+
+    # stub tracking — a separate dimension from the status pipeline.
+    ps  = sub.add_parser('stub',
+                         help='Track/resolve deferred stubs (battle/items/pokemon/music/...)')
+    pss = ps.add_subparsers(dest='stub_cmd', required=True)
+    a = pss.add_parser('add', help='Record a stub on a function')
+    a.add_argument('--id',    type=int, required=True, help='function id (see list)')
+    a.add_argument('--kind',  required=True, choices=STUB_KINDS,
+                   help="standardised kind; use 'misc' (+ --notes) for anything else")
+    a.add_argument('--notes')
+    l = pss.add_parser('list', help='List stubs (filter by kind / function / unresolved)')
+    l.add_argument('--kind', choices=STUB_KINDS)
+    l.add_argument('--id', type=int, help='filter to one function id')
+    l.add_argument('--unresolved', action='store_true')
+    r = pss.add_parser('resolve', help='Mark a stub resolved')
+    r.add_argument('--stub-id', type=int, required=True)
 
     sub.add_parser('pending-placement',
                    help='List translated jobs waiting for Integration Agent')
@@ -620,6 +830,7 @@ def main():
         'unclaim':               cmd_unclaim,
         'fail':                  cmd_fail,
         'log':                   cmd_log,
+        'stub':                  cmd_stub,
     }[args.cmd](args)
 
 if __name__ == '__main__':
