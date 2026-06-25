@@ -155,20 +155,28 @@ render_bg:
     jmp .got_tile
 
 .decode_vram:
+    ; Non-overworld path (title / menus / text). Read the 40-wide wTileMap WRAM
+    ; buffer DIRECTLY into bg_surface, mirroring the overworld branch's
+    ; native-width read of wSurroundingTiles above. The old code funnelled the
+    ; 40-wide buffer through the 32-wide GB VRAM tilemap (do_bg_transfer) and
+    ; re-read it with `and edx,31`, which wrapped surface cols 32-47 back to
+    ; cols 0-15 — duplicating the left of the screen onto the right (the title
+    ; Pikachu "mirror"). wTileMap is 40 (SCREEN_TILES_W) x 25 (SCREEN_TILES_H);
+    ; the 48x36 surface's extra cols (>=40) and rows (>=25) render as blank $7F.
     mov eax, ebx
     mov ecx, 48
     xor edx, edx
-    div ecx
-    and edx, 31
-    shl eax, 5
-    add eax, edx
-    mov ecx, GB_TILEMAP0
-    test byte [ebp + IO_LCDC], 1 << 3
-    jz .read_vram
-    mov ecx, GB_TILEMAP1
-.read_vram:
-    add eax, ecx
-    mov al, [ebp + eax]
+    div ecx                       ; EAX = surface row, EDX = surface col
+    cmp eax, SCREEN_TILES_H        ; row >= 25 -> off-buffer
+    jae .vram_blank
+    cmp edx, SCREEN_TILES_W        ; col >= 40 -> right padding
+    jae .vram_blank
+    imul eax, eax, SCREEN_TILES_W  ; row * 40
+    add eax, edx                   ; + col
+    mov al, [ebp + W_TILEMAP + eax]
+    jmp .got_tile
+.vram_blank:
+    mov al, 0x7F                   ; blank space tile (matches ClearScreen fill)
 
 .got_tile:
     

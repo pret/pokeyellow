@@ -884,6 +884,14 @@ ResetMapVariables:
     mov byte [ebp + W_UNUSED_CUR_MAP_TILESET_COPY], al
     mov byte [ebp + W_SPRITE_SET_ID],             al
     mov byte [ebp + W_WALK_BIKE_SURF_STATE_COPY], al
+    ; Park the window layer off-screen on map entry. LCDC bit 5 (window enable)
+    ; is permanently set (LCDC default $E3), so render_window runs every frame
+    ; gated only on WY/WX. The title's go_to_main_menu leaves H_WY=0, which would
+    ; otherwise leak in here and paint a stale window block over the overworld.
+    ; RENDER_H = off-screen; dialog code re-shows the box at WY=152/WX=87.
+    mov byte [ebp + H_WY],  RENDER_H
+    mov byte [ebp + IO_WY], RENDER_H
+    mov byte [ebp + IO_WX], 7
     ret
 
 ; ---------------------------------------------------------------------------
