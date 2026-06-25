@@ -30,6 +30,9 @@ extern pit_restore       ; boot/timing.asm
 extern joypad_init       ; src/input/joypad.asm
 extern joypad_restore    ; src/input/joypad.asm
 extern Init              ; src/init/init.asm — power-on init
+%ifdef DEBUG_CALCSTATS
+extern RunCalcStatsTest  ; src/debug/debug_dump.asm — Pokémon CalcStats gate
+%endif
 
 ; ---------------------------------------------------------------------------
 ; Exported symbols
@@ -81,6 +84,10 @@ start:
     call video_init          ; set VGA mode 13h
     call pit_init            ; reprogram PIT to ~60 Hz, install tick ISR
     call joypad_init         ; hook IRQ 1 (keyboard) → GB joypad state
+
+%ifdef DEBUG_CALCSTATS
+    call RunCalcStatsTest    ; compute known stats, dump DUMP.BIN, exit (never returns)
+%endif
 
     call Init                ; power-on init → title screen (runs game loop)
     ; Execution reaches here only if Init returns without exiting via pad_quit.

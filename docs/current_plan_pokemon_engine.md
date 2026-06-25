@@ -42,18 +42,25 @@ in UPPERCASE (`W_PARTY_COUNT`).
   pokemon_data.asm` exposes the globals; wired into Makefile (`POKEMON_SRCS` +
   `assets` target); full project builds + links. (TM/HM bitfield zeroed → Stage 6.)
 
-- [ ] **Stage 3 — Core formula.** Write `GetMonHeader` (new
-  `dos_port/src/home/pokemon.asm`, from `home/pokemon.asm:403`) and `CalcStat` +
-  `CalcStats` (new `dos_port/src/home/move_mon.asm`, from `home/move_mon.asm:34`).
-  Depends only on already-ported `Multiply`/`Divide`/`AddNTimes` + HRAM scratch.
-  Wire `src/home/pokemon.asm`, `src/home/move_mon.asm`, `src/home/math.asm`,
-  `src/engine/math/multiply_divide.asm` + new asset includes into the Makefile
-  `ALL_SRCS`.
+- [x] **Stage 3 — Core formula.** DONE. Wrote `GetMonHeader`
+  (`src/home/pokemon.asm`) and `CalcStat`/`CalcStats` (`src/home/move_mon.asm`).
+  Wired `src/home/pokemon.asm`, `src/home/move_mon.asm`, `src/home/math.asm`,
+  `src/engine/math/multiply_divide.asm` into the Makefile. Builds + links.
+  **Math audit (per the "swarm code may be inaccurate" warning):**
+  - `_Divide` (`multiply_divide.asm`) was broken — used the SM83 mnemonic `sbc`
+    (invalid x86; the file never assembled) and an unverified byte-level loop.
+    Rewrote it with a single hardware `div`, same HRAM memory contract.
+  - `Multiply` wrapper (`src/home/math.asm`) didn't preserve `edx`, but our
+    `_Multiply` clobbers it via `mul ecx` (GB `_Multiply` preserves `de`, which
+    `CalcStat` keeps the base stat in). Added `push/pop edx`.
 
-- [ ] **Stage 4 — Verify CalcStats (milestone gate).** `DEBUG_CALCSTATS` harness
-  seeds a known case (Bulbasaur L5, DVs=15, 0 stat-exp; + a stat-exp case), runs
-  `CalcStats`, dumps the 5 stats to `DUMP.BIN`; compare against canonical Gen-1
-  values on the host. No renderer in the loop.
+- [x] **Stage 4 — Verify CalcStats (milestone gate).** DONE. `DEBUG_CALCSTATS`
+  harness (entry.asm hook → `RunCalcStatsTest` in debug_dump.asm) dumps Bulbasaur
+  L5/L100 stats to `DUMP.BIN`. Because running the EXE needs a DPMI host the
+  sandbox lacks, also **validated the actual assembled x86 natively** via an
+  ELF32 harness (nasm -f elf32 + ld -m elf_i386, scratch). Results EXACT vs.
+  canonical Gen-1: L5 `21/11/11/11/13`, L100 `230/133/133/125/165`, and the
+  stat-exp/√ path L100-EVmax `293/196/196/188/228` (faithful to the `b`=255 cap).
 
 - [ ] **Stage 5 — Creation / loading (unblocks Oak gift).** Write `_AddPartyMon`
   (`src/engine/pokemon/add_mon.asm`, from `engine/pokemon/add_mon.asm:1`; stub

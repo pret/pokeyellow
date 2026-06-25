@@ -22,6 +22,11 @@ bits 32
 %include "gb_macros.inc"
 
 extern ds_base
+%ifdef DEBUG_CALCSTATS
+extern GetMonHeader
+extern CalcStats
+global RunCalcStatsTest
+%endif
 
 global DebugDumpMemory
 global DumpBackbuffer
@@ -67,6 +72,20 @@ fnlog: db "NPCLOG.BIN", 0
 ;   0x180  0xC3A0  wTileMap (final 20x18 view)             — H1: tilemap
 ;   0x1C0  0xD358  map header vars (curmap/dims/dataptr)   — header setup
 ;   0x200  0xD520  tileset pointers (bank/blocks/gfx)      — pointer setup
+%ifdef DEBUG_CALCSTATS
+; CalcStats gate: one 64-byte window over the test scratch at $D1E0 covers the
+; scratch mon (DVs at +$1B) and both stat results (L5 at +$20, L100 at +$30).
+windows:
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+    dd 0xD1E0
+%else
 windows:
     dd 0x4600
     dd 0x4B20
@@ -77,6 +96,7 @@ windows:
     dd 0xC3A0
     dd 0xD358
     dd 0xD520
+%endif
 
 ; ---------------------------------------------------------------------------
 section .bss
@@ -96,6 +116,33 @@ dbg_destTile: resb 1            ; tile CL at CanWalkOntoTile entry (saved before
 
 ; ---------------------------------------------------------------------------
 section .text
+
+%ifdef DEBUG_CALCSTATS
+; ---------------------------------------------------------------------------
+; RunCalcStatsTest — compute Bulbasaur (internal $99) stats at L5 and L100 with
+; DVs=15 / stat-exp=0 into the $D1E0 scratch, then dump to DUMP.BIN. Validates
+; GetMonHeader + CalcStat + _Multiply/_Divide end-to-end against canonical values.
+; Never returns. Expected (big-endian words, host hexdump):
+;   dump +$20 (L5):   HP=0015 Atk=000B Def=000B Spd=000B Spc=000D  (21/11/11/11/13)
+;   dump +$30 (L100): HP=00E6 Atk=0085 Def=0085 Spd=007D Spc=00A5  (230/133/133/125/165)
+; In: EBP = GB memory base.
+; ---------------------------------------------------------------------------
+RunCalcStatsTest:
+    mov byte [ebp + wCurSpecies], 0x99      ; Bulbasaur internal index
+    call GetMonHeader
+    mov word [ebp + 0xD1FB], 0xFFFF         ; scratch DVs (all 15) at monbase+MON_DVS
+    mov byte [ebp + wCurEnemyLevel], 5      ; --- L5 ---
+    xor bh, bh                              ; b=0: ignore stat exp
+    mov esi, 0xD1F0                         ; stat-exp base ptr (= monbase + $10)
+    mov edx, 0xD200                         ; result dest
+    call CalcStats
+    mov byte [ebp + wCurEnemyLevel], 100    ; --- L100 ---
+    xor bh, bh
+    mov esi, 0xD1F0
+    mov edx, 0xD210
+    call CalcStats
+    jmp DebugDumpMemory                     ; writes DUMP.BIN, exits
+%endif
 
 ; ---------------------------------------------------------------------------
 ; DebugDumpMemory — gather windows, write DUMP.BIN, exit. Never returns.

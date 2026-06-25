@@ -107,7 +107,11 @@ GAME_SRCS := \
 
 # Pokémon data/stats engine (current_plan_pokemon_engine.md). Grows per stage.
 POKEMON_SRCS := \
-    src/data/pokemon_data.asm
+    src/data/pokemon_data.asm \
+    src/home/math.asm \
+    src/engine/math/multiply_divide.asm \
+    src/home/pokemon.asm \
+    src/home/move_mon.asm
 
 # Debug-only sources (linked only when the corresponding flag is set).
 # Any debug flag implies SKIP_TITLE — debug harnesses boot straight to the overworld.
@@ -134,6 +138,13 @@ endif
 ifdef DEBUG_NPC_WALK
 NEED_DEBUG_DUMP := 1
 NASMFLAGS += -D DEBUG_NPC_WALK
+NASMFLAGS += -D SKIP_TITLE
+endif
+# CalcStats gate: compute known Bulbasaur stats at boot, dump DUMP.BIN, exit.
+# make DEBUG_CALCSTATS=1
+ifdef DEBUG_CALCSTATS
+NEED_DEBUG_DUMP := 1
+NASMFLAGS += -D DEBUG_CALCSTATS
 NASMFLAGS += -D SKIP_TITLE
 endif
 ifdef NEED_DEBUG_DUMP

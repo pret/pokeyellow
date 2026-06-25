@@ -12,9 +12,11 @@ section .text
 ; FF95-FF98 = product
 Multiply:
     push esi
-    push bx
-    call _Multiply
+    push edx                 ; GB _Multiply preserves de; our _Multiply clobbers
+    push bx                  ; edx via `mul ecx`, so save it (CalcStat keeps the
+    call _Multiply           ; base stat in e/dl across the stat-exp multiply loop).
     pop bx
+    pop edx
     pop esi
     ret
 
