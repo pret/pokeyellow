@@ -560,7 +560,13 @@ render_sprites:
 ;   This prevents visual drift when the window starts mid-frame. The implementation
 ;   stores WLY in win_line_ctr (BSS) and increments it after each active scanline.
 ;
-; Call after render_bg and before render_sprites.
+; Call after render_bg AND render_sprites. NOTE: this inverts the GB hardware
+; layer order — on real DMG/CGB, OBJ sprites draw over the window, so the HW
+; order is BG → window → sprites. We diverge on purpose: the window here is only
+; the bottom dialog/menu box (WY=152), which must occlude NPCs under it. The
+; bug only shows up because this port's extended 40×25 player-centered viewport
+; renders NPCs in the bottom rows that the GB's 20×18 screen never put under the
+; box. See the DIVERGENCE note in src/video/frame.asm:DelayFrame.
 ; In:  EBP = GB memory base. All registers preserved.
 ; ---------------------------------------------------------------------------
 render_window:
@@ -642,10 +648,16 @@ render_window:
     push ecx
     mov ecx, RENDER_W
     sub ecx, edx                       ; pixels to reach the right edge
-    cmp ecx, 256
+    ; Clamp to SCREEN_W (160px = 20 tiles), the dialog/menu box's content width.
+    ; row_buf holds 256 decoded px (32 tiles), but only cols 0-19 carry the box;
+    ; cols 20-31 are TILE_SPC filler added to pad the 32-wide GB tilemap row, and
+    ; must NOT be blitted — otherwise they paint blank tiles over the BG to the
+    ; right of the box (the box is 160px centered in our 320px viewport, so BG is
+    ; visible past its right edge). 160 < 256, so this also stays within row_buf.
+    cmp ecx, SCREEN_W
     jbe .do_right_copy
-    mov ecx, 256                       ; clamp — row_buf holds only 256 decoded px
-.do_right_copy:                        ; (32 tiles); never read past it into BSS
+    mov ecx, SCREEN_W
+.do_right_copy:
     add edi, edx                       ; advance dest to screen_x_start
     rep movsb
     pop ecx
@@ -657,11 +669,11 @@ render_window:
     lea esi, [row_buf + edx]
     push ecx
     mov ecx, RENDER_W
-    mov eax, 256
-    sub eax, edx                       ; bytes remaining in row_buf after the clip
+    mov eax, SCREEN_W                   ; box content width (see right-copy clamp above)
+    sub eax, edx                       ; content px remaining after the clip
     cmp ecx, eax
     jbe .do_left_copy
-    mov ecx, eax                       ; clamp — never read past row_buf end
+    mov ecx, eax                       ; clamp — only blit real box content, not filler
 .do_left_copy:
     rep movsb
     pop ecx

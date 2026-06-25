@@ -57,8 +57,17 @@ DelayFrame:
     call update_oam             ; PrepareOAMData → shadow OAM, then DMA to OAM
     call joypad_update
     call render_bg
-    call render_window          ; composite window layer over BG (before sprites)
-    call render_sprites         ; composite OAM sprites over BG+window
+    call render_sprites         ; composite OAM sprites over BG
+    ; DIVERGENCE FROM GB HARDWARE (intentional): on real DMG/CGB, OBJ sprites
+    ; draw OVER the window layer, so the GB order is BG → window → sprites. We
+    ; deliberately invert that here (window LAST, over sprites) because the
+    ; window layer in this port is only ever the bottom dialog/menu box (WY=152),
+    ; and that box must occlude NPCs standing under it. The artifact this guards
+    ; against is port-specific: our extended 40×25 player-centered viewport shows
+    ; far more of the map than the GB's 20×18 screen, exposing NPCs in the bottom
+    ; rows that the original camera never placed under the textbox. The player
+    ; sprite sits at screen center (well above WY=152), so it is never occluded.
+    call render_window          ; composite window layer (textbox/menu) OVER sprites
     call draw_player_marker     ; legacy placeholder (no-op unless explicitly enabled)
     call present
     cmp byte [pad_quit], 0
