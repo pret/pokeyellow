@@ -97,7 +97,7 @@ PikachuCriesPointerTable::
 ; db bank
 ; dw pointer to cry
 
-	const_def
+	table_width 3
 
 ; bank 21
 	pikacry_def PikachuCry1
@@ -162,4 +162,4 @@ PikachuCriesPointerTable::
 	pikacry_def PikachuCry41
 	pikacry_def PikachuCry42
 
-DEF NUM_PIKA_CRIES EQU const_value
+	assert_table_length NUM_PIKA_CRIES

@@ -541,5 +541,10 @@ IF !DEF(_DEBUG)
 ENDC
 
 
+SECTION "Pikachu PCM", ROMX
+
+INCLUDE "audio/pikachu_pcm.asm"
+
+
 ; Pikachu cries are in different banks
 INCLUDE "audio/pikachu_cries.asm"
