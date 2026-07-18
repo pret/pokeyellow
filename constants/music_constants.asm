@@ -259,5 +259,5 @@ DEF MAX_SFX_ID_4 EQUS "SFX_GET_ITEM2_4_2 + 2"
 
 DEF SFX_STOP_ALL_MUSIC EQU $ff
 
-; Pikachu PCM
+; Pikachu PCM cries (see audio/pikachu_pcm.asm)
 DEF NUM_PIKA_CRIES EQU 42
