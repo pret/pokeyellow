@@ -20391,7 +20391,7 @@
 00:c0f0 wAudioSavedROMBank
 00:c0f1 wFrequencyModifier
 00:c0f2 wTempoModifier
-00:c0f3 wc0f3
+00:c0f3 wUnusedAudioCounter
 00:c100 wSpriteDataStart
 00:c100 wSpritePlayerStateData1
 00:c100 wSpritePlayerStateData1PictureID
@@ -21532,6 +21532,7 @@
 00:cbec wcbec
 00:cbfc wOverworldMapEnd
 00:cbfc wRedrawRowOrColumnSrcTiles
+00:cbfc wSavedAudioWavePattern
 00:cc24 wTopMenuItemY
 00:cc25 wTopMenuItemX
 00:cc26 wCurrentMenuItem

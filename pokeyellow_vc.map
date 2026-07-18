@@ -14932,14 +14932,14 @@ ROMX bank #33:
 	SECTION: $4000-$69e7 ($29e8 bytes) ["Pikachu Cries 1"]
 	         $4000 = PikachuCry1
 	         $4002 = PikachuCry1.Start
-	         $491a = PikachuCry1.End
 	         $491a = PikachuCry2
+	         $491a = PikachuCry1.End
 	         $491c = PikachuCry2.Start
-	         $4fdc = PikachuCry2.End
 	         $4fdc = PikachuCry3
+	         $4fdc = PikachuCry2.End
 	         $4fde = PikachuCry3.Start
-	         $59ee = PikachuCry3.End
 	         $59ee = PikachuCry4
+	         $59ee = PikachuCry3.End
 	         $59f0 = PikachuCry4.Start
 	         $69e8 = PikachuCry4.End
 	EMPTY: $69e8-$7fff ($1618 bytes)
@@ -14949,11 +14949,11 @@ ROMX bank #34:
 	SECTION: $4000-$6ffd ($2ffe bytes) ["Pikachu Cries 2"]
 	         $4000 = PikachuCry5
 	         $4002 = PikachuCry5.Start
-	         $5042 = PikachuCry5.End
 	         $5042 = PikachuCry6
+	         $5042 = PikachuCry5.End
 	         $5044 = PikachuCry6.Start
-	         $6254 = PikachuCry6.End
 	         $6254 = PikachuCry7
+	         $6254 = PikachuCry6.End
 	         $6256 = PikachuCry7.Start
 	         $6ffe = PikachuCry7.End
 	EMPTY: $6ffe-$7fff ($1002 bytes)
@@ -14963,11 +14963,11 @@ ROMX bank #35:
 	SECTION: $4000-$7e0d ($3e0e bytes) ["Pikachu Cries 3"]
 	         $4000 = PikachuCry8
 	         $4002 = PikachuCry8.Start
-	         $50ca = PikachuCry8.End
 	         $50ca = PikachuCry9
+	         $50ca = PikachuCry8.End
 	         $50cc = PikachuCry9.Start
-	         $5e0c = PikachuCry9.End
 	         $5e0c = PikachuCry10
+	         $5e0c = PikachuCry9.End
 	         $5e0e = PikachuCry10.Start
 	         $7e0e = PikachuCry10.End
 	EMPTY: $7e0e-$7fff ($01f2 bytes)
@@ -14977,11 +14977,11 @@ ROMX bank #36:
 	SECTION: $4000-$6825 ($2826 bytes) ["Pikachu Cries 4"]
 	         $4000 = PikachuCry11
 	         $4002 = PikachuCry11.Start
-	         $4722 = PikachuCry11.End
 	         $4722 = PikachuCry12
+	         $4722 = PikachuCry11.End
 	         $4724 = PikachuCry12.Start
-	         $54a4 = PikachuCry12.End
 	         $54a4 = PikachuCry13
+	         $54a4 = PikachuCry12.End
 	         $54a6 = PikachuCry13.Start
 	         $6826 = PikachuCry13.End
 	EMPTY: $6826-$7fff ($17da bytes)
@@ -14991,8 +14991,8 @@ ROMX bank #37:
 	SECTION: $4000-$6d1b ($2d1c bytes) ["Pikachu Cries 5"]
 	         $4000 = PikachuCry14
 	         $4002 = PikachuCry14.Start
-	         $589a = PikachuCry14.End
 	         $589a = PikachuCry15
+	         $589a = PikachuCry14.End
 	         $589c = PikachuCry15.Start
 	         $6d1c = PikachuCry15.End
 	EMPTY: $6d1c-$7fff ($12e4 bytes)
@@ -17799,11 +17799,11 @@ ROMX bank #49:
 	SECTION: $4000-$7cc5 ($3cc6 bytes) ["Pikachu Cries 6"]
 	         $4000 = PikachuCry16
 	         $4002 = PikachuCry16.Start
-	         $549a = PikachuCry16.End
 	         $549a = PikachuCry18
+	         $549a = PikachuCry16.End
 	         $549c = PikachuCry18.Start
-	         $63a4 = PikachuCry18.End
 	         $63a4 = PikachuCry22
+	         $63a4 = PikachuCry18.End
 	         $63a6 = PikachuCry22.Start
 	         $7cc6 = PikachuCry22.End
 	EMPTY: $7cc6-$7fff ($033a bytes)
@@ -17813,8 +17813,8 @@ ROMX bank #50:
 	SECTION: $4000-$7fff ($4000 bytes) ["Pikachu Cries 7"]
 	         $4000 = PikachuCry20
 	         $4002 = PikachuCry20.Start
-	         $6002 = PikachuCry20.End
 	         $6002 = PikachuCry21
+	         $6002 = PikachuCry20.End
 	         $6004 = PikachuCry21.Start
 	         $8000 = PikachuCry21.End
 	TOTAL EMPTY: $0000 bytes
@@ -17823,11 +17823,11 @@ ROMX bank #51:
 	SECTION: $4000-$7ff5 ($3ff6 bytes) ["Pikachu Cries 8"]
 	         $4000 = PikachuCry19
 	         $4002 = PikachuCry19.Start
-	         $5632 = PikachuCry19.End
 	         $5632 = PikachuCry24
+	         $5632 = PikachuCry19.End
 	         $5634 = PikachuCry24.Start
-	         $725c = PikachuCry24.End
 	         $725c = PikachuCry26
+	         $725c = PikachuCry24.End
 	         $725e = PikachuCry26.Start
 	         $7ff6 = PikachuCry26.End
 	EMPTY: $7ff6-$7fff ($000a bytes)
@@ -17837,11 +17837,11 @@ ROMX bank #52:
 	SECTION: $4000-$6575 ($2576 bytes) ["Pikachu Cries 9"]
 	         $4000 = PikachuCry17
 	         $4002 = PikachuCry17.Start
-	         $4862 = PikachuCry17.End
 	         $4862 = PikachuCry23
+	         $4862 = PikachuCry17.End
 	         $4864 = PikachuCry23.Start
-	         $573c = PikachuCry23.End
 	         $573c = PikachuCry25
+	         $573c = PikachuCry23.End
 	         $573e = PikachuCry25.Start
 	         $6576 = PikachuCry25.End
 	EMPTY: $6576-$7fff ($1a8a bytes)
@@ -17851,17 +17851,17 @@ ROMX bank #53:
 	SECTION: $4000-$7601 ($3602 bytes) ["Pikachu Cries 10"]
 	         $4000 = PikachuCry27
 	         $4002 = PikachuCry27.Start
-	         $4b5a = PikachuCry27.End
 	         $4b5a = PikachuCry28
+	         $4b5a = PikachuCry27.End
 	         $4b5c = PikachuCry28.Start
-	         $5da4 = PikachuCry28.End
 	         $5da4 = PikachuCry29
+	         $5da4 = PikachuCry28.End
 	         $5da6 = PikachuCry29.Start
-	         $69ce = PikachuCry29.End
 	         $69ce = PikachuCry30
+	         $69ce = PikachuCry29.End
 	         $69d0 = PikachuCry30.Start
-	         $6e80 = PikachuCry30.End
 	         $6e80 = PikachuCry31
+	         $6e80 = PikachuCry30.End
 	         $6e82 = PikachuCry31.Start
 	         $7602 = PikachuCry31.End
 	EMPTY: $7602-$7fff ($09fe bytes)
@@ -17871,14 +17871,14 @@ ROMX bank #54:
 	SECTION: $4000-$7f5f ($3f60 bytes) ["Pikachu Cries 11"]
 	         $4000 = PikachuCry32
 	         $4002 = PikachuCry32.Start
-	         $458a = PikachuCry32.End
 	         $458a = PikachuCry33
+	         $458a = PikachuCry32.End
 	         $458c = PikachuCry33.Start
-	         $523c = PikachuCry33.End
 	         $523c = PikachuCry34
+	         $523c = PikachuCry33.End
 	         $523e = PikachuCry34.Start
-	         $6746 = PikachuCry34.End
 	         $6746 = PikachuCry41
+	         $6746 = PikachuCry34.End
 	         $6748 = PikachuCry41.Start
 	         $7f60 = PikachuCry41.End
 	EMPTY: $7f60-$7fff ($00a0 bytes)
@@ -17888,11 +17888,11 @@ ROMX bank #55:
 	SECTION: $4000-$7f95 ($3f96 bytes) ["Pikachu Cries 12"]
 	         $4000 = PikachuCry35
 	         $4002 = PikachuCry35.Start
-	         $522a = PikachuCry35.End
 	         $522a = PikachuCry36
+	         $522a = PikachuCry35.End
 	         $522c = PikachuCry36.Start
-	         $6e0c = PikachuCry36.End
 	         $6e0c = PikachuCry39
+	         $6e0c = PikachuCry36.End
 	         $6e0e = PikachuCry39.Start
 	         $7f96 = PikachuCry39.End
 	EMPTY: $7f96-$7fff ($006a bytes)
@@ -17902,14 +17902,14 @@ ROMX bank #56:
 	SECTION: $4000-$7ef7 ($3ef8 bytes) ["Pikachu Cries 13"]
 	         $4000 = PikachuCry37
 	         $4002 = PikachuCry37.Start
-	         $4dfa = PikachuCry37.End
 	         $4dfa = PikachuCry38
+	         $4dfa = PikachuCry37.End
 	         $4dfc = PikachuCry38.Start
-	         $5a64 = PikachuCry38.End
 	         $5a64 = PikachuCry40
+	         $5a64 = PikachuCry38.End
 	         $5a66 = PikachuCry40.Start
-	         $6976 = PikachuCry40.End
 	         $6976 = PikachuCry42
+	         $6976 = PikachuCry40.End
 	         $6978 = PikachuCry42.Start
 	         $7ef8 = PikachuCry42.End
 	EMPTY: $7ef8-$7fff ($0108 bytes)
@@ -18292,17 +18292,17 @@ ROMX bank #59:
 	EMPTY
 
 ROMX bank #60:
-	SECTION: $4000-$4313 ($0314 bytes) ["Pikachu PCM"]
-	         $4000 = PlayPikachuSoundClip
+	SECTION: $4000-$410b ($010c bytes) ["Pikachu PCM"]
 	         $4000 = PlayPikachuSoundClip.VC_Unknown_PlayPikachuSoundClip_start
+	         $4000 = PlayPikachuSoundClip
 	         $4011 = PlayPikachuSoundClip.loop
 	         $4019 = PlayPikachuSoundClip.done_delay
 	         $402d = PlayPikachuSoundClip.saveWaveDataLoop
 	         $4038 = PlayPikachuSoundClip.VC_Unknown_PlayPikachuSoundClip_end
 	         $403a = PlayPikachuSoundClip.VC_Unknown_PlayPikachuSoundClip_end_End
 	         $406b = PlayPikachuSoundClip.reloadWaveDataLoop
-	         $408e = PikachuCry1_id
 	         $408e = PikachuCriesPointerTable
+	         $408e = PikachuCry1_id
 	         $4091 = PikachuCry2_id
 	         $4094 = PikachuCry3_id
 	         $4097 = PikachuCry4_id
@@ -18344,6 +18344,7 @@ ROMX bank #60:
 	         $4103 = PikachuCry40_id
 	         $4106 = PikachuCry41_id
 	         $4109 = PikachuCry42_id
+	SECTION: $410c-$4313 ($0208 bytes) ["bank3C"]
 	         $410c = _AdvancePlayerSprite
 	         $412d = _AdvancePlayerSprite.afterUpdateMapCoords
 	         $414c = _AdvancePlayerSprite.checkIfMovingWest
@@ -20888,7 +20889,7 @@ WRAM0 bank #0:
 	         $c0f0 = wAudioSavedROMBank
 	         $c0f1 = wFrequencyModifier
 	         $c0f2 = wTempoModifier
-	         $c0f3 = wc0f3
+	         $c0f3 = wUnusedAudioCounter
 	SECTION: $c100-$c2ff ($0200 bytes) ["Sprite State Data"]
 	         $c100 = wSpriteStateData1
 	         $c100 = wSpritePlayerStateData1PictureID
@@ -20952,8 +20953,8 @@ WRAM0 bank #0:
 	         $c13b = wSprite03StateData1XAdjusted
 	         $c13c = wSprite03StateData1CollisionData
 	         $c140 = wSprite04StateData1
-	         $c140 = wSprite04StateData1PictureID
 	         $c140 = wSprite03StateData1End
+	         $c140 = wSprite04StateData1PictureID
 	         $c141 = wSprite04StateData1MovementStatus
 	         $c142 = wSprite04StateData1ImageIndex
 	         $c143 = wSprite04StateData1YStepVector
@@ -21553,8 +21554,8 @@ WRAM0 bank #0:
 	         $c508 = wShadowOAMBackupSprite00
 	         $c508 = wShadowOAMBackup
 	         $c508 = wSurroundingTiles
-	         $c508 = wAnimatedObjectsData
 	         $c508 = wTileMapBackup
+	         $c508 = wAnimatedObjectsData
 	         $c509 = wShadowOAMBackupSprite00XCoord
 	         $c50a = wShadowOAMBackupSprite00TileID
 	         $c50b = wShadowOAMBackupSprite00Attributes
@@ -21710,8 +21711,8 @@ WRAM0 bank #0:
 	         $c551 = wAnimatedObject3YCoord
 	         $c552 = wAnimatedObject3XOffset
 	         $c552 = wShadowOAMBackupSprite18TileID
-	         $c553 = wAnimatedObject3YOffset
 	         $c553 = wShadowOAMBackupSprite18Attributes
+	         $c553 = wAnimatedObject3YOffset
 	         $c554 = wAnimatedObject3Duration
 	         $c554 = wShadowOAMBackupSprite19YCoord
 	         $c554 = wShadowOAMBackupSprite19
@@ -22034,6 +22035,7 @@ WRAM0 bank #0:
 	         $cbfc = wOverworldMapEnd
 	SECTION: $cbfc-$d161 ($0566 bytes) ["WRAM"]
 	         $cbfc = wRedrawRowOrColumnSrcTiles
+	         $cbfc = wSavedAudioWavePattern
 	         $cc24 = wTopMenuItemY
 	         $cc25 = wTopMenuItemX
 	         $cc26 = wCurrentMenuItem
@@ -22083,8 +22085,8 @@ WRAM0 bank #0:
 	         $cc5b = wElevatorWarpMaps
 	         $cc5b = wVermilionDockTileMapBuffer
 	         $cc5b = wHallOfFame
-	         $cc5b = wPikaPicUsedGFXCount
 	         $cc5b = wOaksAideRewardItemName
+	         $cc5b = wPikaPicUsedGFXCount
 	         $cc5b = wDexRatingNumMonsSeen
 	         $cc5b = wSlotMachineSevenAndBarModeChance
 	         $cc5b = wUnusedFlag
@@ -22213,17 +22215,17 @@ WRAM0 bank #0:
 	         $cd3d = wPlayerSpinWhileMovingUpOrDownAnimDeltaY
 	         $cd3d = wTempSCX
 	         $cd3d = wUnusedCreditsByte
-	         $cd3d = wChargeMoveNum
 	         $cd3d = wSwappedMenuItem
 	         $cd3d = wDayCareStartLevel
 	         $cd3d = wMoveDownSmallStarsOAMCount
 	         $cd3d = wStoppingWhichSlotMachineWheel
 	         $cd3d = wFieldMoves
-	         $cd3d = wHoFTeamIndex
 	         $cd3d = wCoordIndex
+	         $cd3d = wSavedY
+	         $cd3d = wChargeMoveNum
+	         $cd3d = wHoFTeamIndex
 	         $cd3d = wBoxMonCounts
 	         $cd3d = wFlyAnimUsingCoordList
-	         $cd3d = wSavedY
 	         $cd3d = wPlayerCharacterOAMTile
 	         $cd3d = wWereAnyMonsAsleep
 	         $cd3d = wFallingObjectsMovementData
@@ -22569,10 +22571,10 @@ WRAM0 bank #0:
 	         $d089 = wTradedMonMovingRight
 	         $d089 = wNewSlotMachineBallTile
 	         $d089 = wUnusedWaterDropletsByte
-	         $d08a = wNumFallingObjects
-	         $d08a = wSubAnimTransform
-	         $d08a = wSpiralBallsBaseX
 	         $d08a = wAnimCounter
+	         $d08a = wSubAnimTransform
+	         $d08a = wNumFallingObjects
+	         $d08a = wSpiralBallsBaseX
 	         $d08a = wSlideMonDelay
 	         $d08b = wEndBattleWinTextPointer
 	         $d08d = wEndBattleLoseTextPointer
@@ -22676,8 +22678,8 @@ WRAM0 bank #0:
 	         $d12d = wMenuExitMethod
 	         $d12e = wGymGateTileBlock
 	         $d12e = wWhichPewterGuy
-	         $d12e = wWhichPrizeWindow
 	         $d12e = wDungeonWarpDataEntrySize
+	         $d12e = wWhichPrizeWindow
 	         $d12f = wSavedSpriteScreenY
 	         $d130 = wSavedSpriteScreenX
 	         $d131 = wSavedSpriteMapY
@@ -22757,8 +22759,8 @@ WRAM0 bank #0:
 	         $d1bc = wPartyMon2Defense
 	         $d1be = wPartyMon2Speed
 	         $d1c0 = wPartyMon2Special
-	         $d1c2 = wPartyMon3Species
 	         $d1c2 = wPartyMon3
+	         $d1c2 = wPartyMon3Species
 	         $d1c3 = wPartyMon3HP
 	         $d1c5 = wPartyMon3BoxLevel
 	         $d1c6 = wPartyMon3Status
@@ -22809,8 +22811,8 @@ WRAM0 bank #0:
 	         $d214 = wPartyMon4Defense
 	         $d216 = wPartyMon4Speed
 	         $d218 = wPartyMon4Special
-	         $d21a = wPartyMon5Species
 	         $d21a = wPartyMon5
+	         $d21a = wPartyMon5Species
 	         $d21b = wPartyMon5HP
 	         $d21d = wPartyMon5BoxLevel
 	         $d21e = wPartyMon5Status
