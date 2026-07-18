@@ -73,7 +73,8 @@ wAudioSavedROMBank:: db
 wFrequencyModifier:: db
 wTempoModifier:: db
 
-wc0f3:: dw
+; regularly set to $0, but nothing ever reads it
+wUnusedAudioCounter:: dw
 
 	ds 11
 
@@ -340,8 +341,12 @@ ENDU
 
 SECTION "WRAM", WRAM0
 
+UNION
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn
 wRedrawRowOrColumnSrcTiles:: ds SCREEN_WIDTH * 2
+NEXTU
+wSavedAudioWavePattern:: ds AUD3WAVE_SIZE
+ENDU
 
 ; coordinates of the position of the cursor for the top menu item (id 0)
 wTopMenuItemY:: db
