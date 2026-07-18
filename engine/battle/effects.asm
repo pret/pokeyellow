@@ -41,7 +41,7 @@ SleepEffect:
 	                        ; including the event where the target already has another status
 	ld a, [de]
 	ld b, a
-	and $7
+	and SLP_MASK
 	jr z, .notAlreadySleeping ; can't affect a mon that is already asleep
 	ld hl, AlreadyAsleepText
 	jp PrintText
@@ -58,7 +58,7 @@ SleepEffect:
 .setSleepCounter
 ; set target's sleep counter to a random number between 1 and 7
 	call BattleRandom
-	and $7
+	and SLP_MASK
 	jr z, .setSleepCounter
 	ld b, a
 	ld a, [wUnknownSerialFlag_d499]
@@ -250,7 +250,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn1
 	cp FREEZE_SIDE_EFFECT1
 	jr z, .freeze1
-; .paralyze1
+; paralyze1
 	ld a, 1 << PAR
 	ld [wEnemyMonStatus], a
 	call QuarterSpeedDueToParalysis ; quarter speed of affected mon
@@ -313,7 +313,7 @@ FreezeBurnParalyzeEffect:
 	jr z, .burn2
 	cp FREEZE_SIDE_EFFECT1
 	jr z, .freeze2
-; .paralyze2
+; paralyze2
 	ld a, 1 << PAR
 	ld [wBattleMonStatus], a
 	call QuarterSpeedDueToParalysis
@@ -359,7 +359,7 @@ CheckDefrost:
 	ld [wEnemyMonStatus], a ; set opponent status to 00 ["defrost" a frozen monster]
 	ld hl, wEnemyMon1Status
 	ld a, [wEnemyMonPartyPos]
-	ld bc, wEnemyMon2 - wEnemyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
 	xor a
 	ld [hl], a ; clear status in roster
@@ -372,7 +372,7 @@ CheckDefrost:
 	ld [wBattleMonStatus], a
 	ld hl, wPartyMon1Status
 	ld a, [wPlayerMonNumber]
-	ld bc, wPartyMon2 - wPartyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
 	xor a
 	ld [hl], a
@@ -629,7 +629,7 @@ StatModifierDownEffect:
 	ld a, [de]
 	cp ATTACK_DOWN2_EFFECT - $16 ; $24
 	jr c, .ok
-	cp EVASION_DOWN2_EFFECT + $5 ; $44
+	cp ATTACK_DOWN_SIDE_EFFECT ; move side effects, stat mod decrease is always 1
 	jr nc, .ok
 	dec b ; stat down 2 effects only (dec mod again)
 	jr nz, .ok
@@ -722,7 +722,7 @@ UpdateLoweredStatDone:
 .ApplyBadgeBoostsAndStatusPenalties
 	ldh a, [hWhoseTurn]
 	and a
-	call nz, ApplyBadgeStatBoosts ; whenever the player uses a stat-down move, badge boosts get reapplied again to every stat,
+	call nz, ApplyBadgeStatBoosts ; whenever the opponent uses a stat-down move, badge boosts get reapplied again to every stat,
 	                              ; even to those not affected by the stat-down move (will be boosted further)
 	ld hl, MonsStatsFellText
 	call PrintText
@@ -747,7 +747,7 @@ CantLowerAnymore:
 
 MoveMissed:
 	ld a, [de]
-	cp $44
+	cp ATTACK_DOWN_SIDE_EFFECT
 	ret nc
 	jp ConditionalPrintButItFailed
 
@@ -790,7 +790,7 @@ PrintStatText:
 	jr .findStatName_inner
 .foundStatName
 	ld de, wStringBuffer
-	ld bc, $a
+	ld bc, STAT_NAME_LENGTH
 	jp CopyData
 
 INCLUDE "data/battle/stat_mod_names.asm"
@@ -1377,7 +1377,7 @@ DisableEffect:
 	cp LINK_STATE_BATTLING
 	pop hl ; wEnemyMonMoves
 	jr nz, .playerTurnNotLinkBattle
-; .playerTurnLinkBattle
+; player's turn, Link Battle
 	push hl
 	ld hl, wEnemyMonPP
 .enemyTurn
@@ -1512,6 +1512,7 @@ PlayCurrentMoveAnimation2:
 .notEnemyTurn
 	and a
 	ret z
+; fallthrough
 
 PlayBattleAnimation2:
 ; play animation ID at a and animation type 6 or 3
@@ -1538,6 +1539,7 @@ PlayCurrentMoveAnimation:
 .notEnemyTurn
 	and a
 	ret z
+; fallthrough
 
 PlayBattleAnimation:
 ; play animation ID at a and predefined animation type

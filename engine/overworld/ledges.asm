@@ -59,7 +59,7 @@ INCLUDE "data/tilesets/ledge_tiles.asm"
 LoadHoppingShadowOAM:
 	ld hl, vChars1 tile $7f
 	ld de, LedgeHoppingShadow
-	lb bc, BANK(LedgeHoppingShadow), (LedgeHoppingShadowEnd - LedgeHoppingShadow) / $8
+	lb bc, BANK(LedgeHoppingShadow), (LedgeHoppingShadowEnd - LedgeHoppingShadow) / TILE_1BPP_SIZE
 	call CopyVideoDataDouble
 	ld hl, LedgeHoppingShadowOAM
 	ld de, wShadowOAMSprite36

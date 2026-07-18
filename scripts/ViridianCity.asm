@@ -246,8 +246,8 @@ ViridianCityOldManMovingDownScript:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
 	ret nz
-	ld a, HS_OLD_MAN_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_OLD_MAN_2
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a

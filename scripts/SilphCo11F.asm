@@ -435,9 +435,9 @@ SilphCo11FScript13:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call GBFadeOutToBlack
-	ld a, HS_SILPH_CO_11F_JAMES
+	ld a, TOGGLE_SILPH_CO_11F_JAMES
 	call SilphCo11FScript_HideObject
-	ld a, HS_SILPH_CO_11F_JESSIE
+	ld a, TOGGLE_SILPH_CO_11F_JESSIE
 	call SilphCo11FScript_HideObject
 	call UpdateSprites
 	call Delay3
@@ -458,14 +458,14 @@ SilphCo11FScript14:
 	ret
 
 SilphCo11FScript_ShowObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	call UpdateSprites
 	call Delay3
 	ret
 
 SilphCo11FScript_HideObject:
-	ld [wMissableObjectIndex], a
+	ld [wToggleableObjectIndex], a
 	predef HideObject
 	ret
 

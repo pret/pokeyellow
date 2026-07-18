@@ -4,14 +4,14 @@ MACRO? _redef_current_label
 	IF DEF(\1)
 		PURGE \1
 	ENDC
-	IF _NARG == 3 + (\3)
-		DEF \1 EQUS "\<_NARG>"
+	IF _NARG > 2
+		DEF \1 EQUS "\3"
 	ELIF STRLEN(#__SCOPE__)
 		IF {{__SCOPE__}} - @ == 0
 			DEF \1 EQUS #{__SCOPE__}
 		ENDC
 	ENDC
-	if !DEF(\1)
+	IF !DEF(\1)
 		DEF \1 EQUS \2
 		{\1}:
 	ENDC
@@ -19,7 +19,8 @@ ENDM
 
 MACRO? table_width
 	DEF CURRENT_TABLE_WIDTH = \1
-	_redef_current_label CURRENT_TABLE_START, "._table_width\@", 2, \#
+	SHIFT
+	_redef_current_label CURRENT_TABLE_START, "._table_width\@", \#
 ENDM
 
 MACRO? assert_table_length
@@ -40,11 +41,20 @@ ENDM
 
 MACRO? list_start
 	DEF list_index = 0
-	_redef_current_label CURRENT_LIST_START, "._list_start\@", 1, \#
+	DEF list_item_length = 0
+	IF _NARG > 0
+		DEF list_item_length = \1
+		SHIFT
+	ENDC
+	_redef_current_label CURRENT_LIST_START, "._list_start\@", \#
 ENDM
 
 MACRO? li
 	ASSERT STRFIND(\1, "@") == -1, "String terminator \"@\" in list entry: \1"
+	IF list_item_length
+		ASSERT CHARLEN(\1) <= list_item_length, \
+			"List entry longer than {d:list_item_length} characters: \1"
+	ENDC
 	db \1, "@"
 	DEF list_index += 1
 ENDM
@@ -58,12 +68,7 @@ ENDM
 MACRO? nybble_array
 	DEF CURRENT_NYBBLE_ARRAY_VALUE = 0
 	DEF CURRENT_NYBBLE_ARRAY_LENGTH = 0
-	IF _NARG == 1
-		REDEF CURRENT_NYBBLE_ARRAY_START EQUS "\1"
-	ELSE
-		REDEF CURRENT_NYBBLE_ARRAY_START EQUS "._nybble_array\@"
-	{CURRENT_NYBBLE_ARRAY_START}:
-	ENDC
+	_redef_current_label CURRENT_NYBBLE_ARRAY_START, "._nybble_array\@", \#
 ENDM
 
 MACRO? nybble
@@ -93,12 +98,7 @@ ENDM
 MACRO? bit_array
 	DEF CURRENT_BIT_ARRAY_VALUE = 0
 	DEF CURRENT_BIT_ARRAY_LENGTH = 0
-	IF _NARG == 1
-		REDEF CURRENT_BIT_ARRAY_START EQUS "\1"
-	ELSE
-		REDEF CURRENT_BIT_ARRAY_START EQUS "._bit_array\@"
-	{CURRENT_BIT_ARRAY_START}:
-	ENDC
+	_redef_current_label CURRENT_BIT_ARRAY_START, "._bit_array\@", \#
 ENDM
 
 MACRO? dbit

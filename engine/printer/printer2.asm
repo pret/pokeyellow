@@ -165,7 +165,7 @@ Printer_GetMonStats:
 	db "OT/@"
 
 .IDNo:
-	db $73, "№/@"
+	db "<ID>№/@"
 
 .Stats:
 	db   "ATTACK"

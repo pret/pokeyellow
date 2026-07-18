@@ -118,7 +118,7 @@ ELSE
 	jr z, .chosePrint
 ENDC
 	vc_patch_end
-.choseQuit
+; chose Quit
 	ld b, 1
 .exitSideMenu
 	pop af
@@ -484,8 +484,8 @@ HeightWeightText:
 	db   "HT  ?′??″"
 	next "WT   ???lb@"
 
-; XXX does anything point to this?
-PokeText:
+; leftover from JPN Pokedex, where species have the suffix "Pokemon"
+PokeText: ; unreferenced
 	db "#@"
 
 ; horizontal line that divides the pokedex text description from the rest of the data

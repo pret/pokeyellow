@@ -59,7 +59,7 @@ _AddPartyMon::
 .next3
 	ldh a, [hNewPartyLength]
 	dec a
-	ld bc, wPartyMon2 - wPartyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
 	ld e, l
 	ld d, h
@@ -117,12 +117,12 @@ _AddPartyMon::
 
 .next4
 	push bc
-	ld bc, wPartyMon1DVs - wPartyMon1
+	ld bc, MON_DVS
 	add hl, bc
 	pop bc
 	ld [hli], a
 	ld [hl], b         ; write IVs
-	ld bc, (wPartyMon1HPExp - 1) - (wPartyMon1DVs + 1)
+	ld bc, (MON_HP_EXP - 1) - (MON_DVS + 1)
 	add hl, bc
 	ld a, 1
 	ld c, a
@@ -142,7 +142,7 @@ _AddPartyMon::
 	inc de
 	jr .copyMonTypesAndMoves
 .copyEnemyMonData
-	ld bc, wEnemyMon1DVs - wEnemyMon1
+	ld bc, MON_DVS
 	add hl, bc
 	ld a, [wEnemyMonDVs] ; copy IVs from cur enemy mon
 	ld [hli], a
@@ -237,13 +237,13 @@ _AddPartyMon::
 	dec a
 	jr nz, .calcFreshStats
 	ld hl, wEnemyMonMaxHP
-	ld bc, $a
+	ld bc, NUM_STATS * 2
 	call CopyData          ; copy stats of cur enemy mon
 	pop hl
 	jr .done
 .calcFreshStats
 	pop hl
-	ld bc, wPartyMon1HPExp - 1 - wPartyMon1
+	ld bc, MON_HP_EXP - 1
 	add hl, bc
 	ld b, $0
 	call CalcStats         ; calculate fresh set of stats
@@ -300,7 +300,7 @@ _AddEnemyMonToPlayerParty::
 	ld hl, wPartyMons
 	ld a, [wPartyCount]
 	dec a
-	ld bc, wPartyMon2 - wPartyMon1
+	ld bc, PARTYMON_STRUCT_LENGTH
 	call AddNTimes
 	ld e, l
 	ld d, h
@@ -381,16 +381,16 @@ _MoveMon::
 .copySpecies
 	ld [hli], a          ; write new mon ID
 	ld [hl], $ff         ; write new sentinel
-.findMonDataDest
+; find mon data dest
 	ld a, [wMoveMonType]
 	dec a
 	ld hl, wPartyMons
-	ld bc, wPartyMon2 - wPartyMon1 ; $2c
+	ld bc, PARTYMON_STRUCT_LENGTH
 	ld a, [wPartyCount]
 	jr nz, .addMonOffset
 	; if it's PARTY_TO_BOX
 	ld hl, wBoxMons
-	ld bc, wBoxMon2 - wBoxMon1 ; $21
+	ld bc, BOXMON_STRUCT_LENGTH
 	ld a, [wBoxCount]
 .addMonOffset
 	dec a
@@ -402,20 +402,20 @@ _MoveMon::
 	ld a, [wMoveMonType]
 	and a
 	ld hl, wBoxMons
-	ld bc, wBoxMon2 - wBoxMon1 ; $21
+	ld bc, BOXMON_STRUCT_LENGTH
 	jr z, .addMonOffset2
 	cp DAYCARE_TO_PARTY
 	ld hl, wDayCareMon
 	jr z, .copyMonData
 	ld hl, wPartyMons
-	ld bc, wPartyMon2 - wPartyMon1 ; $2c
+	ld bc, PARTYMON_STRUCT_LENGTH
 .addMonOffset2
 	ld a, [wWhichPokemon]
 	call AddNTimes
 .copyMonData
 	push hl
 	push de
-	ld bc, wBoxMon2 - wBoxMon1
+	ld bc, BOXMON_STRUCT_LENGTH
 	call CopyData
 	pop de
 	pop hl
@@ -424,7 +424,7 @@ _MoveMon::
 	jr z, .findOTdest
 	cp DAYCARE_TO_PARTY
 	jr z, .findOTdest
-	ld bc, wBoxMon2 - wBoxMon1
+	ld bc, BOXMON_STRUCT_LENGTH
 	add hl, bc
 	ld a, [hl] ; hl = Level
 	inc de
@@ -463,7 +463,7 @@ _MoveMon::
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld a, [wMoveMonType]
-.findNickDest
+; find nick dest
 	cp PARTY_TO_DAYCARE
 	ld de, wDayCareMonName
 	jr z, .findNickSrc
@@ -499,6 +499,7 @@ _MoveMon::
 	jr z, .done
 	cp PARTY_TO_DAYCARE
 	jr z, .done
+	; returning mon to party, compute level and stats
 	push hl
 	srl a
 	add $2
@@ -508,13 +509,13 @@ _MoveMon::
 	ld a, d
 	ld [wCurEnemyLevel], a
 	pop hl
-	ld bc, wBoxMon2 - wBoxMon1
-	add hl, bc
+	ld bc, BOXMON_STRUCT_LENGTH
+	add hl, bc ; hl = wPartyMon*Level
 	ld [hli], a
 	ld d, h
 	ld e, l
-	ld bc, -18
-	add hl, bc
+	ld bc, (MON_HP_EXP - 1) - MON_STATS
+	add hl, bc ; hl = wPartyMon*HPExp - 1
 	ld b, $1
 	call CalcStats
 .done

@@ -1,7 +1,7 @@
 VermilionCity_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, wd492
-	res 7, [hl]
+	ld hl, wPikachuMapScriptFlags
+	res BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	ld hl, wCurrentMapScriptFlags
 	bit BIT_CUR_MAP_LOADED_2, [hl]
 	res BIT_CUR_MAP_LOADED_2, [hl]

@@ -2,27 +2,27 @@ UpdateCinnabarGymGateTileBlocks::
 	farcall UpdateCinnabarGymGateTileBlocks_
 	ret
 
-CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
+CheckForHiddenEventOrBookshelfOrCardKeyDoor::
 	ldh a, [hLoadedROMBank]
 	push af
 	ldh a, [hJoyHeld]
 	bit B_PAD_A, a
 	jr z, .nothingFound
 ; A button is pressed
-	ld a, BANK(CheckForHiddenObject)
+	ld a, BANK(CheckForHiddenEvent)
 	call BankswitchCommon
-	call CheckForHiddenObject
-	ldh a, [hDidntFindAnyHiddenObject]
+	call CheckForHiddenEvent
+	ldh a, [hDidntFindAnyHiddenEvent]
 	and a
-	jr nz, .hiddenObjectNotFound
+	jr nz, .hiddenEventNotFound
 	xor a
 	ldh [hItemAlreadyFound], a
-	ld a, [wHiddenObjectFunctionRomBank]
+	ld a, [wHiddenEventFunctionRomBank]
 	call BankswitchCommon
 	call JumpToAddress
 	ldh a, [hItemAlreadyFound]
 	jr .done
-.hiddenObjectNotFound
+.hiddenEventNotFound
 	predef GetTileAndCoordsInFrontOfPlayer
 	farcall PrintBookshelfText
 	ldh a, [hInteractedWithBookshelf]

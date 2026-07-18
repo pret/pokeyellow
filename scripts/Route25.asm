@@ -5,15 +5,15 @@ Route25_Script:
 	ld a, [wRoute25CurScript]
 	call ExecuteCurMapScriptInTable
 	ld [wRoute25CurScript], a
-	call Route25ShowHideBillScript
+	call Route25ToggleBillsScript
 	ret
 
-Route25ShowHideBillScript:
-	ld hl, wd492
-	res 2, [hl]
-	res 3, [hl]
-	res 4, [hl]
-	res 7, [hl]
+Route25ToggleBillsScript:
+	ld hl, wPikachuMapScriptFlags
+	res BIT_PIKACHU_MAP_2, [hl]
+	res BIT_PIKACHU_MAP_3, [hl]
+	res BIT_PIKACHU_MAP_4, [hl]
+	res BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	xor a
 	ld [wBillsHouseCurScript], a
 	ld hl, wCurrentMapScriptFlags
@@ -25,22 +25,22 @@ Route25ShowHideBillScript:
 	CheckEventReuseHL EVENT_MET_BILL_2
 	jr nz, .met_bill
 	ResetEventReuseHL EVENT_BILL_SAID_USE_CELL_SEPARATOR
-	ld a, HS_BILL_POKEMON
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_BILL_POKEMON
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 	jr .done
 .met_bill
 	CheckEventAfterBranchReuseHL EVENT_GOT_SS_TICKET, EVENT_MET_BILL_2
 	jr z, .done
 	SetEventReuseHL EVENT_LEFT_BILLS_HOUSE_AFTER_HELPING
-	ld a, HS_NUGGET_BRIDGE_GUY
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_NUGGET_BRIDGE_GUY
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_BILL_1
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_BILL_1
+	ld [wToggleableObjectIndex], a
 	predef HideObject
-	ld a, HS_BILL_2
-	ld [wMissableObjectIndex], a
+	ld a, TOGGLE_BILL_2
+	ld [wToggleableObjectIndex], a
 	predef ShowObject
 .done
 	ret

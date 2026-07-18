@@ -1,6 +1,6 @@
 MtMoonB2FScript_ApplyPikachuMovementData:
-	ld a, [wd471]
-	bit 7, a
+	ld a, [wPikachuSpawnStateFlags]
+	bit BIT_PIKACHU_SPAWN_STARTER, a
 	ret z
 	ld a, [wWalkBikeSurfState]
 	and a
