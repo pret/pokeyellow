@@ -110,8 +110,6 @@ MACRO ldpikaemotion
 	ld \1, (\2_id - PikachuEmotionTable) / 2
 ENDM
 
-; MACROs for PIKAEMOTION_ commands
-
 MACRO pikaemotion_dummy1
 	db PIKAEMOTION_DUMMY1
 ENDM
