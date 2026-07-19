@@ -224,7 +224,7 @@ wSurfingMinigamePikachuState:: db
 wSurfingMinigameWaveFunctionNumber:: dw
 wSurfingMinigameWaveRandomValue:: db
 wSurfingMinigamePikachuHP:: dw ; little-endian BCD
-wSurfingMinigameUnusedC5D8:: db ; unused
+	ds 1
 wSurfingMinigameRadnessMeter:: db ; number of consecutive tricks
 wSurfingMinigameRadnessScore:: dw ; little-endian BCD
 wSurfingMinigameTotalScore:: dw ; little-endian BCD
