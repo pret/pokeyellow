@@ -2153,7 +2153,7 @@ SurfingMinigame_ChooseNextWaveSequence:
 
 SurfingMinigame_WaveSequenceStarts:
 	; Starting states for the eight randomly selected wave sequences.
-	db $01,$0e,$1a,$29,$32,$40,$4d,$5c
+	db $01, $0e, $1a, $29, $32, $40, $4d, $5c
 
 ; b and c are the left and right wave heights in screen pixels.
 ; de points to the eight metatiles that form the next course slice.
