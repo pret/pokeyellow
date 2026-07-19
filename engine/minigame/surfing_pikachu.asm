@@ -402,12 +402,12 @@ RunSurfingMinigameRoutine:
 	dw SurfingMinigame_GameOver ; c
 
 SurfingMinigame_StartGame:
-	ld a, $2 ; START
+	ld a, $2 ; "START" text
 	lb de, $48, $e0 ; banner OAM Y, X (starts off the right edge)
 	call SpawnAnimatedObject
 	ld hl, wSurfingMinigameRoutineNumber
 	inc [hl]
-	ld a, $1 ; true
+	ld a, TRUE
 	ld [wSurfingMinigameMusicTempoEnabled], a
 	ret
 
@@ -441,13 +441,13 @@ SurfingMinigame_RunGame:
 	ret
 
 .dead
-	ld a, $1 ; true
+	ld a, TRUE
 	ld [wSurfingMinigameGameOver], a
 	ld a, $c
 	ld [wSurfingMinigameRoutineNumber], a
 	ld a, $80 ; frames before accepting A on the game-over screen
 	ld [wSurfingMinigameGameOverDelay], a
-	ld a, $b ; Oh no...
+	ld a, $b ; "Oh no.." text
 	lb de, $88, $58
 	call SpawnAnimatedObject
 	ld hl, ANIM_OBJ_Y_OFFSET
@@ -504,7 +504,7 @@ SurfingMinigame_ScrollToResultsScreen:
 	dec a
 	dec a
 	ldh [hSCX], a
-	ld a, $e0 ; generate tiles 32 pixels behind the viewport
+	ld a, TILEMAP_WIDTH_PX - 32 ; generate tiles 32 pixels behind the viewport
 	ld [wSurfingMinigameXOffset], a
 	call SurfingMinigame_GenerateBGMap
 	ret
@@ -1089,7 +1089,7 @@ SurfingMinigame_ReduceSpeedBy128:
 
 SurfingMinigame_TryStartJump:
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	cp $3
 	jr c, .noJump
 	cp $5
@@ -1111,7 +1111,7 @@ SurfingMinigame_TryStartJump:
 
 SurfingMinigame_UpdateSurfingFrame:
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	cp $3
 	ret c
 	cp $5
@@ -1231,7 +1231,7 @@ SurfingMinigame_SpawnWaterSpray:
 .risingSlope
 .waveCrest
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	ld e, a
 	ld a, [hl]
 	sub e
@@ -1239,7 +1239,7 @@ SurfingMinigame_SpawnWaterSpray:
 
 .fallingSlope
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	add [hl]
 	ret
 
@@ -1368,7 +1368,7 @@ SurfingMinigame_ReadBGMapBuffer:
 	ldh [hVBlankCopySource], a
 	ld a, h
 	ldh [hVBlankCopySource + 1], a
-	ld a, 1 ; copy one TILE_SIZE-byte block during VBlank
+	ld a, 1 ; copy one tile during VBlank
 	ldh [hVBlankCopySize], a
 	ret
 
@@ -1396,7 +1396,7 @@ SurfingMinigame_SetPikachuHeight:
 .risingSlope
 .waveCrest
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	ld e, a
 	ld a, [hl]
 	sub e
@@ -1405,7 +1405,7 @@ SurfingMinigame_SetPikachuHeight:
 
 .fallingSlope
 	ldh a, [hSCX]
-	and TILE_WIDTH - 1 ; horizontal pixel within the current tile
+	and $7 ; horizontal pixel within the current tile
 	add [hl]
 	ld [wSurfingMinigamePikachuObjectHeight], a
 	ret
@@ -1535,7 +1535,7 @@ SurfingMinigame_PrintTextHiScore:
 	ret
 
 .Hi_Score:
-	db $20,$2e,$2f,$30,$31,$2c,$32,$23,$33 ; Hi-Score!!
+	db $20, $2e, $2f, $30, $31, $2c, $32, $23, $33 ; Hi-Score!!
 .Hi_ScoreEnd:
 
 SurfingMinigame_WriteHPLeft:
@@ -1547,7 +1547,7 @@ SurfingMinigame_WriteHPLeft:
 	ret
 
 .HP_Left:
-	db $20,$21,$ff,$22,$23,$24,$25 ; HP Left
+	db $20, $21, $ff, $22, $23, $24, $25 ; HP Left
 .HP_LeftEnd:
 
 SurfingMinigame_AddRemainingHPToTotal:
@@ -1601,7 +1601,7 @@ SurfingMinigame_WriteRadness:
 	ret
 
 .Radness:
-	db $27,$28,$29,$2a,$23,$26,$26 ; Radness
+	db $27, $28, $29, $2a, $23, $26, $26 ; Radness
 .RadnessEnd:
 
 SurfingMinigame_AddRadnessToTotal:
@@ -1695,7 +1695,7 @@ SurfingMinigame_WriteTotal:
 	ret
 
 .Total:
-	db $2b,$2c,$25,$28,$2d ; Total
+	db $2b, $2c, $25, $28, $2d ; Total
 .TotalEnd:
 
 DidPlayerGetAHighScore:
