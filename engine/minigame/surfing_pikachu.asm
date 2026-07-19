@@ -215,7 +215,7 @@ SurfingPikachuMinigame_LoadGFXAndLayout:
 	ld a, $0
 	call FillMemory
 
-	bgcoord hl, 0, 6
+	hlbgcoord 0, 6
 	ld bc, 12 * TILEMAP_WIDTH
 	ld a, $b ; water tile
 	call FillMemory
@@ -344,7 +344,7 @@ SurfingPikachuNarrowCloudTiles:
 	db $ef
 
 SurfingPikachuMinigame_DrawStaticTilemapLayout:
-	bgcoord de, 1, 1, vBGMap1
+	debgcoord 1, 1, vBGMap1
 	ld hl, SurfingPikachuStatusBarTiles
 	ld c, $9
 .copyTileRow
@@ -353,13 +353,13 @@ SurfingPikachuMinigame_DrawStaticTilemapLayout:
 	inc de
 	dec c
 	jr nz, .copyTileRow
-	bgcoord hl, 1, 0, vBGMap1
+	hlbgcoord 1, 0, vBGMap1
 	ld [hl], $15
-	bgcoord hl, 2, 0, vBGMap1
+	hlbgcoord 2, 0, vBGMap1
 	ld [hl], $16
-	bgcoord hl, 12, 1, vBGMap1
+	hlbgcoord 12, 1, vBGMap1
 	ld [hl], $1b
-	bgcoord hl, 13, 1, vBGMap1
+	hlbgcoord 13, 1, vBGMap1
 	ld [hl], $1c
 	ret
 
