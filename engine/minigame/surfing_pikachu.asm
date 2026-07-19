@@ -1,5 +1,14 @@
 DEF SURFING_MINIGAME_FLAT_WATER_Y EQU $74
-DEF SURFING_MINIGAME_CENTER_X EQU SCREEN_WIDTH_PX / 2 + OAM_X_OFS
+DEF SURFING_MINIGAME_CENTER_X     EQU SCREEN_WIDTH_PX / 2 + OAM_X_OFS
+
+	const_def
+	const SURFING_MINIGAME_PIKACHU_STATE_RIDING       ; 0
+	const SURFING_MINIGAME_PIKACHU_STATE_JUMPING      ; 1
+	const SURFING_MINIGAME_PIKACHU_STATE_LANDING      ; 2
+	const SURFING_MINIGAME_PIKACHU_STATE_CRASHED      ; 3
+	const SURFING_MINIGAME_PIKACHU_STATE_GAME_END     ; 4
+	const SURFING_MINIGAME_PIKACHU_STATE_INIT_RESULTS ; 5
+	const SURFING_MINIGAME_PIKACHU_STATE_RESULTS      ; 6
 
 SurfingPikachuMinigame::
 	call SurfingPikachuMinigame_BlankPals
@@ -328,23 +337,13 @@ SurfingPikachuMiniPikachuTile:
 	db $fe
 
 SurfingPikachuHPDigitTiles:
-	db $d0
-	db $d0
-	db $d0
-	db $d0
+	db $d0, $d0, $d0, $d0
 
 SurfingPikachuWideCloudTiles:
-	db $ec
-	db $ed
-	db $ed
-	db $ee
-	db $ef
+	db $ec, $ed, $ed, $ee, $ef
 
 SurfingPikachuNarrowCloudTiles:
-	db $ec
-	db $ed
-	db $ee
-	db $ef
+	db $ec, $ed, $ee, $ef
 
 SurfingPikachuMinigame_DrawStaticTilemapLayout:
 	debgcoord 1, 1, vBGMap1
@@ -367,15 +366,7 @@ SurfingPikachuMinigame_DrawStaticTilemapLayout:
 	ret
 
 SurfingPikachuStatusBarTiles:
-	db $17
-	db $18
-	db $19
-	db $19
-	db $19
-	db $19
-	db $19
-	db $19
-	db $19
+	db $17, $18, $19, $19, $19, $19, $19, $19, $19
 
 RunSurfingMinigameRoutine:
 	ld a, [wSurfingMinigameRoutineNumber]
@@ -485,8 +476,8 @@ SurfingMinigame_WaitToShowResults:
 	ldh [hSCX], a
 	ld a, $72 ; flat water before the beach sequence
 	ld [wSurfingMinigameWaveFunctionNumber], a
-	ld a, $4
-	ld [wSurfingMinigamePikachuState], a ; game over
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_GAME_END
+	ld [wSurfingMinigamePikachuState], a
 	xor a
 	ldh [hLCDCPointer], a
 	ld [wSurfingMinigameSCX], a
@@ -518,8 +509,8 @@ SurfingMinigame_ScrollToResultsScreen:
 	ld [wSurfingMinigamePikachuSpeed + 1], a
 	ld hl, wSurfingMinigameRoutineNumber
 	inc [hl]
-	ld a, $5
-	ld [wSurfingMinigamePikachuState], a ; initialize results pose
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_INIT_RESULTS
+	ld [wSurfingMinigamePikachuState], a
 	ret
 
 SurfingMinigame_DrawResultsScreenAndWait:
@@ -589,8 +580,8 @@ SurfingMinigame_AddRadnessToTotalAndWait:
 	call DidPlayerGetAHighScore
 	ret nc
 	call SurfingMinigame_PrintTextHiScore
-	ld a, $6
-	ld [wSurfingMinigamePikachuState], a ; animate results pose
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_RESULTS
+	ld [wSurfingMinigamePikachuState], a
 	ret
 
 SurfingMinigame_WaitLast:
@@ -682,7 +673,7 @@ SurfingMinigameAnimatedObjectFn_Pikachu:
 	dw SurfingMinigame_UpdateJumpingPikachu  ; 1
 	dw SurfingMinigame_UpdateLandingPikachu  ; 2
 	dw SurfingMinigame_UpdateCrashedPikachu  ; 3
-	dw SurfingMinigame_UpdateGameOverPikachu ; 4
+	dw SurfingMinigame_UpdateGameEndPikachu  ; 4
 	dw SurfingMinigame_InitResultsPikachu    ; 5
 	dw SurfingMinigame_UpdateResultsPikachu  ; 6
 
@@ -703,7 +694,7 @@ SurfingMinigame_UpdateRidingPikachu:
 
 .startedJump
 	call SurfingMinigame_UpdateSurfingFrame
-	ld a, $1 ; jumping
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_JUMPING
 	ld [wSurfingMinigamePikachuState], a
 	xor a
 	ld hl, ANIM_OBJ_FIELD_C
@@ -727,7 +718,7 @@ SurfingMinigame_UpdateRidingPikachu:
 	xor a
 	ld [wSurfingMinigamePikachuSpeed], a
 	ld [wSurfingMinigamePikachuSpeed + 1], a
-	ld a, $4
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_GAME_END
 	ld [wSurfingMinigamePikachuState], a
 	call SurfingMinigame_UpdateSurfingFrame
 	ret
@@ -742,12 +733,12 @@ SurfingMinigame_UpdateJumpingPikachu:
 	ld hl, ANIM_OBJ_FIELD_C
 	add hl, bc
 	ld [hl], $0
-	ld a, $2
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_LANDING
 	ld [wSurfingMinigamePikachuState], a
 	ret
 
 .crash
-	ld a, $3
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_CRASHED
 	ld [wSurfingMinigamePikachuState], a
 	ld a, $60 ; crash animation duration in frames
 	ld [wSurfingMinigameCrashTimer], a
@@ -785,7 +776,7 @@ SurfingMinigame_UpdateLandingPikachu:
 	ld hl, ANIM_OBJ_Y_OFFSET
 	add hl, bc
 	ld [hl], $0
-	ld a, $0
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_RIDING
 	ld [wSurfingMinigamePikachuState], a
 	ret
 
@@ -802,13 +793,13 @@ SurfingMinigame_UpdateCrashedPikachu:
 	ret
 
 .done
-	ld a, $0
+	ld a, SURFING_MINIGAME_PIKACHU_STATE_RIDING
 	ld [wSurfingMinigamePikachuState], a
 	ld a, $4
 	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
 	ret
 
-SurfingMinigame_UpdateGameOverPikachu:
+SurfingMinigame_UpdateGameEndPikachu:
 	ld a, [wSurfingMinigamePikachuObjectHeight]
 	ld hl, ANIM_OBJ_Y_COORD
 	add hl, bc
