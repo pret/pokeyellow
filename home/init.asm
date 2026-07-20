@@ -59,8 +59,8 @@ Init::
 	ldh [hSCX], a
 	ldh [hSCY], a
 	ldh [rIF], a
-	ld [wc0f3], a
-	ld [wc0f3 + 1], a
+	ld [wUnusedAudioCounter], a
+	ld [wUnusedAudioCounter + 1], a
 	ld a, IE_VBLANK | IE_TIMER | IE_SERIAL
 	ldh [rIE], a
 
