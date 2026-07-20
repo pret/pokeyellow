@@ -195,7 +195,7 @@ UpdateCurrentAnimatedObjectFrame:
 	inc de
 	call SetCurrentAnimatedObjectOAMAttributes
 	ld b, a
-	ld a, [wc634]
+	ld a, [wYellowIntroCurrentScene]
 	cp $7
 	ld a, b
 	jr z, .skip_load
