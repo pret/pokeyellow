@@ -248,7 +248,7 @@ SurfingPikachuMinigame_LoadGFXAndLayout:
 	ldh [hWY], a
 	ld a, rSCY - $ff00
 	ldh [hLCDCPointer], a
-	ld a, $40 ; initial speed: $0040 in 8.8 fixed point
+	ld a, 0.25 ; initial speed
 	ld [wSurfingMinigamePikachuSpeed], a
 	xor a
 	ld [wSurfingMinigamePikachuSpeed + 1], a
@@ -1011,7 +1011,7 @@ SurfingMinigame_TileInteraction:
 	ret
 
 .wipeout
-	ld a, $40
+	ld a, 0.25 ; reset speed after a wipeout
 	ld [wSurfingMinigamePikachuSpeed], a
 	xor a
 	ld [wSurfingMinigamePikachuSpeed + 1], a
@@ -1025,7 +1025,7 @@ SurfingMinigame_SpeedUpPikachu:
 	ld h, a
 	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
-	ld de, $2
+	ld de, 0.0078125 ; increase speed by 1/128 per frame
 	add hl, de
 	ld a, h
 	ld [wSurfingMinigamePikachuSpeed + 1], a
@@ -1038,7 +1038,7 @@ SurfingMinigame_ReduceSpeedBy64:
 	and a
 	jr nz, .go
 	ld a, [wSurfingMinigamePikachuSpeed]
-	cp $40
+	cp 0.25 ; avoid underflow when reducing speed
 	jr nc, .go
 	xor a
 	ld [wSurfingMinigamePikachuSpeed], a
@@ -1049,7 +1049,7 @@ SurfingMinigame_ReduceSpeedBy64:
 	ld h, a
 	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
-	ld de, -$40
+	ld de, -0.25 ; reduce speed after a rough landing
 	add hl, de
 	ld a, h
 	ld [wSurfingMinigamePikachuSpeed + 1], a
@@ -1062,7 +1062,7 @@ SurfingMinigame_ReduceSpeedBy128:
 	and a
 	jr nz, .go
 	ld a, [wSurfingMinigamePikachuSpeed]
-	cp $80
+	cp 0.5 ; avoid underflow when reducing speed
 	jr nc, .go
 	xor a
 	ld [wSurfingMinigamePikachuSpeed], a
@@ -1073,7 +1073,7 @@ SurfingMinigame_ReduceSpeedBy128:
 	ld h, a
 	ld a, [wSurfingMinigamePikachuSpeed]
 	ld l, a
-	ld de, -$80
+	ld de, -0.5 ; reduce speed after a hard landing
 	add hl, de
 	ld a, h
 	ld [wSurfingMinigamePikachuSpeed + 1], a
@@ -1859,7 +1859,7 @@ SurfingMinigame_CoastAfterGoal:
 	ld h, a
 	ld a, [wSurfingMinigameSCX]
 	ld l, a
-	ld de, $900 ; 9 pixels per frame in 8.8 fixed point
+	ld de, 9.0 ; pixels per frame
 	add hl, de
 	ld a, l
 	ld [wSurfingMinigameSCX], a
@@ -1874,7 +1874,7 @@ SurfingMinigame_ScrollAndGenerateBGMap:
 	ld h, a
 	ld a, [wSurfingMinigameSCX]
 	ld l, a
-	ld de, $180 ; 1.5 pixels per frame in 8.8 fixed point
+	ld de, 1.5 ; pixels per frame
 	add hl, de
 	ld a, l
 	ld [wSurfingMinigameSCX], a
@@ -2570,7 +2570,7 @@ SurfingMinigame_UpdatePikachuHeight:
 	jr z, .done
 	ld a, [wSurfingMinigameJumpArcFraction]
 	ld e, a
-	ld hl, -$80 ; subtract 0.5 from the 8.8 jump velocity
+	ld hl, -0.5 ; decrease jump velocity
 	add hl, de
 	ld a, l
 	ld [wSurfingMinigameJumpArcFraction], a
@@ -2636,7 +2636,7 @@ SurfingMinigame_UpdatePikachuHeight:
 	ld d, a
 	ld a, [wSurfingMinigameJumpArcFraction]
 	ld e, a
-	ld hl, $80 ; add 0.5 to the 8.8 fall velocity
+	ld hl, 0.5 ; increase fall velocity
 	add hl, de
 	ld a, l
 	ld [wSurfingMinigameJumpArcFraction], a
