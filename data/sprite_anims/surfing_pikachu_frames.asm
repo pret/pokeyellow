@@ -1,134 +1,134 @@
 SurfingPikachuFrames:
-	dw Unkn_f943d ; 00
-	dw Unkn_f9440 ; 01
-	dw Unkn_f9445 ; 02
-	dw Unkn_f944a ; 03
-	dw Unkn_f944f ; 04
-	dw Unkn_f9454 ; 05
-	dw Unkn_f9459 ; 06
-	dw Unkn_f945e ; 07
-	dw Unkn_f9463 ; 08
-	dw Unkn_f9468 ; 09
-	dw Unkn_f946d ; 0a
-	dw Unkn_f9472 ; 0b
-	dw Unkn_f9477 ; 0c
-	dw Unkn_f947c ; 0d
-	dw Unkn_f9481 ; 0e
-	dw Unkn_f9486 ; 0f
-	dw Unkn_f948b ; 10
-	dw Unkn_f9494 ; 11
-	dw Unkn_f9499 ; 12
-	dw Unkn_f949e ; 13
-	dw Unkn_f94fb ; 14
-	dw Unkn_f94a1 ; 15
-	dw Unkn_f94b0 ; 16
-	dw Unkn_f94bf ; 17
-	dw Unkn_f94ce ; 18
-	dw Unkn_f94dd ; 19
-	dw Unkn_f94ec ; 1a
-	dw Unkn_f94fe ; 1b
+	dw .SingleTile ; unused
+	dw .SurfingAngle00
+	dw .SurfingAngle01
+	dw .SurfingAngle02
+	dw .SurfingAngle03
+	dw .SurfingAngle04
+	dw .SurfingAngle05
+	dw .SurfingAngle06
+	dw .SurfingAngle07
+	dw .SurfingAngle08
+	dw .SurfingAngle09
+	dw .SurfingAngle10
+	dw .SurfingAngle11
+	dw .SurfingAngle12
+	dw .SurfingAngle13
+	dw .SmallSplash
+	dw .LargeSplash
+	dw .StartText
+	dw .GoalText ; unused
+	dw .OhNoText
+	dw .WaterSpray
+	dw .Plus50Pts
+	dw .Plus150Pts
+	dw .Plus350Pts
+	dw .Plus750Pts ; unused
+	dw .Plus180Pts
+	dw .Plus500Pts
+	dw .IntroPikachu
 
-Unkn_f943d:
+.SingleTile:
 	frame $00, 32
 	endanim
 
-Unkn_f9440:
+.SurfingAngle00:
 	frame $01, 8
 	frame $02, 8
 	dorestart
 
-Unkn_f9445:
+.SurfingAngle01:
 	frame $03, 8
 	frame $04, 8
 	dorestart
 
-Unkn_f944a:
+.SurfingAngle02:
 	frame $05, 8
 	frame $06, 8
 	dorestart
 
-Unkn_f944f:
+.SurfingAngle03:
 	frame $07, 8
 	frame $08, 8
 	dorestart
 
-Unkn_f9454:
+.SurfingAngle04:
 	frame $09, 8
 	frame $0a, 8
 	dorestart
 
-Unkn_f9459:
+.SurfingAngle05:
 	frame $0b, 8
 	frame $0c, 8
 	dorestart
 
-Unkn_f945e:
+.SurfingAngle06:
 	frame $0d, 8
 	frame $0e, 8
 	dorestart
 
-Unkn_f9463:
+.SurfingAngle07:
 	frame $01, 8, OAM_XFLIP, OAM_YFLIP
 	frame $02, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f9468:
+.SurfingAngle08:
 	frame $03, 8, OAM_XFLIP, OAM_YFLIP
 	frame $04, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f946d:
+.SurfingAngle09:
 	frame $05, 8, OAM_XFLIP, OAM_YFLIP
 	frame $06, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f9472:
+.SurfingAngle10:
 	frame $07, 8, OAM_XFLIP, OAM_YFLIP
 	frame $08, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f9477:
+.SurfingAngle11:
 	frame $09, 8, OAM_XFLIP, OAM_YFLIP
 	frame $0a, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f947c:
+.SurfingAngle12:
 	frame $0b, 8, OAM_XFLIP, OAM_YFLIP
 	frame $0c, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f9481:
+.SurfingAngle13:
 	frame $0d, 8, OAM_XFLIP, OAM_YFLIP
 	frame $0e, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-Unkn_f9486:
+.SmallSplash:
 	frame $11, 7
 	frame $12, 7
 	dorestart
 
-Unkn_f948b:
+.LargeSplash:
 	frame $13, 2
 	frame $14, 2
 	dorepeat 8
 	frame $15, 2
 	endanim
 
-Unkn_f9494:
+.StartText:
 	frame $16, 32
 	frame $16, 32
 	delanim
 
-Unkn_f9499:
+.GoalText:
 	frame $17, 32
 	frame $17, 32
 	delanim
 
-Unkn_f949e:
+.OhNoText:
 	frame $18, 32
 	endanim
 
-Unkn_f94a1:
+.Plus50Pts:
 	frame $1a, 4
 	dorepeat 1
 	frame $1a, 3
@@ -138,7 +138,7 @@ Unkn_f94a1:
 	frame $1a, 1
 	delanim
 
-Unkn_f94b0:
+.Plus150Pts:
 	frame $1b, 4
 	dorepeat 1
 	frame $1b, 3
@@ -148,7 +148,7 @@ Unkn_f94b0:
 	frame $1b, 1
 	delanim
 
-Unkn_f94bf:
+.Plus350Pts:
 	frame $1c, 4
 	dorepeat 1
 	frame $1c, 3
@@ -158,7 +158,7 @@ Unkn_f94bf:
 	frame $1c, 1
 	delanim
 
-Unkn_f94ce:
+.Plus750Pts:
 	frame $1d, 4
 	dorepeat 1
 	frame $1d, 3
@@ -168,7 +168,7 @@ Unkn_f94ce:
 	frame $1d, 1
 	delanim
 
-Unkn_f94dd:
+.Plus180Pts:
 	frame $1e, 4
 	dorepeat 1
 	frame $1e, 3
@@ -178,7 +178,7 @@ Unkn_f94dd:
 	frame $1e, 1
 	delanim
 
-Unkn_f94ec:
+.Plus500Pts:
 	frame $1f, 4
 	dorepeat 1
 	frame $1f, 3
@@ -188,11 +188,11 @@ Unkn_f94ec:
 	frame $1f, 1
 	delanim
 
-Unkn_f94fb:
+.WaterSpray:
 	frame $19, 1
 	delanim
 
-Unkn_f94fe:
+.IntroPikachu:
 	frame $20, 7
 	frame $21, 7
 	frame $22, 7
