@@ -123,7 +123,7 @@ SSAnne2FRivalStartBattleScript:
 
 SSAnne2FRivalAfterBattleScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, SSAnne2FResetScripts
 	call SSAnne2FSetFacingDirectionScript
 	ld a, PAD_CTRL_PAD

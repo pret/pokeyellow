@@ -21,7 +21,7 @@ SeafoamIslandsB4F_ScriptPointers:
 
 SeafoamIslandsB4FObjectMoving3Script:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jr z, SeafoamIslandsB4FResetScript
 	call EndTrainerBattle
 	ld a, SCRIPT_SEAFOAMISLANDSB4F_DEFAULT

@@ -37,6 +37,12 @@ DEF MOVE_ACC    rb
 DEF MOVE_PP     rb
 DEF MOVE_LENGTH EQU _RS
 
+; battle classes (wIsInBattle values)
+	const_def 1
+	const WILD_BATTLE
+	const TRAINER_BATTLE
+DEF LOST_BATTLE EQU $FF
+
 ; battle type constants (wBattleType values)
 	const_def
 	const BATTLE_TYPE_NORMAL  ; 0

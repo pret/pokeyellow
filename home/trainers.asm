@@ -185,7 +185,7 @@ EndTrainerBattle::
 	ld hl, wMiscFlags
 	res BIT_SEEN_BY_TRAINER, [hl]
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, ResetButtonPressedAndMapScript
 	ld a, TRAINER_EVENT_FLAG_POINTER
 	call ReadTrainerHeaderInfo

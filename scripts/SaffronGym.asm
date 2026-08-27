@@ -38,7 +38,7 @@ SaffronGym_ScriptPointers:
 
 SaffronGymSabrinaPostBattle:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, SaffronGymResetScripts
 	ld a, PAD_CTRL_PAD
 	ld [wJoyIgnore], a
