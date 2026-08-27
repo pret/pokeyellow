@@ -132,7 +132,7 @@ CinnabarGymGetOpponentTextScript:
 CinnabarGymOpenGateScript:
 	call CinnabarGymScript_753e9
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, CinnabarGymResetScripts
 	ld a, [wTrainerHeaderFlagBit]
 	sub $2
@@ -198,7 +198,7 @@ CinnabarGymScript_75041:
 CinnabarGymBlainePostBattleScript:
 	call CinnabarGymScript_753e9
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, CinnabarGymResetScripts
 	ld a, PAD_CTRL_PAD
 	ld [wJoyIgnore], a

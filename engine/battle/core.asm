@@ -3732,7 +3732,7 @@ CheckPlayerStatusConditions:
 	ld [wPlayerNumAttacksLeft], a
 	ld hl, GetPlayerAnimationType ; skip damage calculation (deal damage equal to last hit),
 	                              ; DecrementPP and MoveHitTest
-	jp nz, .returnToHL  ; redundant leftover code, the case wEnemyNumAttacksLeft == 0
+	jp nz, .returnToHL  ; redundant leftover code, the case wPlayerNumAttacksLeft == 0
 						; is handled within CheckNumAttacksLeft
 	jp .returnToHL
 
@@ -6186,7 +6186,7 @@ LoadEnemyMonData:
 	ld b, [hl]
 	jr nz, .storeDVs
 	ld a, [wIsInBattle]
-	cp $2 ; is it a trainer battle?
+	cp TRAINER_BATTLE
 ; fixed DVs for trainer mon
 	ld a, ATKDEFDV_TRAINER
 	ld b, SPDSPCDV_TRAINER
@@ -6209,7 +6209,7 @@ LoadEnemyMonData:
 	call CalcStats
 	pop hl
 	ld a, [wIsInBattle]
-	cp $2 ; is it a trainer battle?
+	cp TRAINER_BATTLE
 	jr z, .copyHPAndStatusFromPartyData
 	ld a, [wEnemyBattleStatus3]
 	bit TRANSFORMED, a ; is enemy mon transformed?
@@ -6252,7 +6252,7 @@ LoadEnemyMonData:
 	ld [de], a
 	inc de
 	ld a, [wIsInBattle]
-	cp $2 ; is it a trainer battle?
+	cp TRAINER_BATTLE
 	jr nz, .copyStandardMoves
 ; if it's a trainer battle, copy moves from enemy party data
 	ld hl, wEnemyMon1Moves

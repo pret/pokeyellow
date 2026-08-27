@@ -22,7 +22,7 @@ CeruleanCity_ScriptPointers:
 
 CeruleanCityRocketDefeatedScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, CeruleanCityClearScripts
 	ld a, PAD_CTRL_PAD
 	ld [wJoyIgnore], a
@@ -150,7 +150,7 @@ CeruleanCityRivalBattleScript:
 
 CeruleanCityRivalDefeatedScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, CeruleanCityClearScripts
 	call CeruleanCityFaceRivalScript
 	ld a, PAD_CTRL_PAD

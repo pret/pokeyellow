@@ -43,7 +43,7 @@ RocketHideoutB4F_ScriptPointers:
 
 RocketHideoutB4FBeatGiovanniScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, RocketHideoutB4FResetScripts
 	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a

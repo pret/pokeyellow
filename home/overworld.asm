@@ -314,7 +314,7 @@ StepCountCheck::
 	ret
 
 AllPokemonFainted::
-	ld a, $ff
+	ld a, LOST_BATTLE
 	ld [wIsInBattle], a
 	call RunMapScript
 	jp HandleBlackOut
@@ -864,7 +864,7 @@ LoadTilesetTilePatternData::
 	ld a, [wTilesetGfxPtr + 1]
 	ld h, a
 	ld de, vTileset
-	ld bc, $600
+	ld bc, MAP_TILESET_SIZE tiles
 	ld a, [wTilesetBank]
 	jp FarCopyData
 
@@ -917,7 +917,7 @@ LoadTileBlockMap::
 .noCarry
 	dec b
 	jr nz, .rowLoop
-.northConnection
+; north connection
 	ld a, [wNorthConnectedMap]
 	cp $ff
 	jr z, .southConnection
@@ -1086,7 +1086,7 @@ IsSpriteInFrontOfPlayer::
 IsSpriteInFrontOfPlayer2::
 	lb bc, $3c, $40 ; Y and X position of player sprite
 	ld a, [wSpritePlayerStateData1FacingDirection]
-.checkIfPlayerFacingUp
+; check if player facing up
 	cp SPRITE_FACING_UP
 	jr nz, .checkIfPlayerFacingDown
 ; facing up
@@ -1399,7 +1399,7 @@ LoadCurrentMapView::
 	jr nz, .rowLoop
 	ld hl, wSurroundingTiles
 	ld bc, 0
-.adjustForYCoordWithinTileBlock
+; adjust for Y coord within tile block
 	ld a, [wYBlockCoord]
 	and a
 	jr z, .adjustForXCoordWithinTileBlock
@@ -1689,7 +1689,7 @@ CollisionCheckOnWater::
 	jr .done
 .checkIfVermilionDockTileset
 	ld a, [wCurMapTileset]
-	cp SHIP_PORT ; Vermilion Dock tileset
+	cp SHIP_PORT
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 .stopSurfing ; based game freak
@@ -1708,7 +1708,6 @@ CollisionCheckOnWater::
 .done
 	ret
 
-; function to run the current map's script
 RunMapScript::
 	push hl
 	push de
@@ -1723,15 +1722,15 @@ RunMapScript::
 	pop de
 	pop hl
 	call RunNPCMovementScript
-	ld a, [wCurMap] ; current map number
-	call SwitchToMapRomBank ; change to the ROM bank the map's data is in
+	ld a, [wCurMap]
+	call SwitchToMapRomBank
 	ld hl, wCurMapScriptPtr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	ld de, .return
 	push de
-	jp hl ; jump to script
+	jp hl
 .return
 	ret
 

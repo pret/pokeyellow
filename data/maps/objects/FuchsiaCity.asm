@@ -25,7 +25,7 @@ FuchsiaCity_Object:
 	warp_event 31, 24, FUCHSIA_GOOD_ROD_HOUSE, 1
 
 	def_bg_events
-	bg_event 15, 23, TEXT_FUCHSIACITY_SIGN1
+	bg_event 15, 23, TEXT_FUCHSIACITY_SIGN1 ; inaccessible
 	bg_event 25, 15, TEXT_FUCHSIACITY_SIGN2
 	bg_event 17,  5, TEXT_FUCHSIACITY_SAFARI_GAME_SIGN
 	bg_event  6, 13, TEXT_FUCHSIACITY_MART_SIGN

@@ -167,7 +167,7 @@ RedrawPartyMenu_::
 .placeEvolutionStoneString
 	pop hl
 	push hl
-	ld bc, 20 + 9 ; down 1 row and right 9 columns
+	ld bc, SCREEN_WIDTH + 9 ; down 1 row and right 9 columns
 	add hl, bc
 	call PlaceString
 	pop hl

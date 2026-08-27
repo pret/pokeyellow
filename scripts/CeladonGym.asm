@@ -38,7 +38,7 @@ CeladonGym_ScriptPointers:
 
 CeladonGymErikaPostBattleScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, CeladonGymResetScripts
 	ld a, PAD_CTRL_PAD
 	ld [wJoyIgnore], a

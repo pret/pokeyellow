@@ -146,7 +146,7 @@ Route22Rival1VictoryText:
 
 Route22Rival1AfterBattleScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, Route22SetDefaultScript
 	ld a, [wRivalStarter]
 	cp RIVAL_STARTER_FLAREON
@@ -301,7 +301,7 @@ Route22Rival2VictoryText:
 
 Route22Rival2AfterBattleScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, Route22SetDefaultScript
 	ld a, ROUTE22_RIVAL2
 	ldh [hSpriteIndex], a

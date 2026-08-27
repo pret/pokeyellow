@@ -107,7 +107,7 @@ MtMoonB2FScript_49d28:
 
 MtMoonB2FDefeatedSuperNerdScript:
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, MtMoonB2FResetScripts
 	call UpdateSprites
 	call Delay3

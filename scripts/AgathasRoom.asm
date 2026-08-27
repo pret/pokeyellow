@@ -108,7 +108,7 @@ AgathasRoomPlayerIsMovingScript:
 AgathasRoomAgathaEndBattleScript:
 	call EndTrainerBattle
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, ResetAgathaScript
 	ld a, TEXT_AGATHASROOM_AGATHA
 	ldh [hTextID], a

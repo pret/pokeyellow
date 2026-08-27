@@ -174,7 +174,7 @@ PalletTownAfterPikachuBattleScript:
 	ret
 
 PalletTownOakNotSafeComeWithMeScript:
-	xor a
+	xor a ; SPRITE_FACING_DOWN
 	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, PALLETTOWN_OAK
 	ld [wSpriteIndex], a

@@ -69,6 +69,7 @@ _OaksLabOak1DeliverParcelText::
 
 _OaksLabOak1ParcelThanksText::
 	text_start
+
 	para "Ah! This is the"
 	line "custom # BALL"
 	cont "I ordered!"
@@ -102,6 +103,7 @@ _OaksLabOak1ReceivedPokeballsText::
 
 _OaksLabGivePokeballsExplanationText::
 	text_start
+
 	para "When a wild"
 	line "#MON appears,"
 	cont "it's fair game."

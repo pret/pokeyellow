@@ -148,14 +148,14 @@ struct Symbol *parse_symbols(const char *filename) {
 				}
 				buffer->size = 0;
 			}
-			buffer_append(buffer, &c);
+			buffer_append(buffer, &(char){c});
 		} else if (state == SYM_VALUE) {
 			// The symbol value has ended; wait to see if a name comes after it
 			state = SYM_SPACE;
 		}
 	}
 
-	fclose(file);
+	xfclose(file);
 	buffer_free(buffer);
 	return symbols;
 }
@@ -228,7 +228,8 @@ void interpret_command(char *command, const struct Symbol *current_hook, const s
 	}
 
 	// Get the arguments
-	char *argv[argc]; // VLA
+	char *argv[argc + 1]; // VLA (cannot be zero-length)
+	argv[argc] = NULL;
 	char *arg = command;
 	for (int i = 0; i < argc; i++) {
 		while (*arg && !isspace((unsigned)*arg)) {
@@ -241,10 +242,22 @@ void interpret_command(char *command, const struct Symbol *current_hook, const s
 		argv[i] = arg;
 	}
 
+	size_t command_len = strlen(command);
+	char variant = command[command_len - 1];
+	if (variant == '_' || variant == '/' || variant == '~') {
+		command[command_len - 1] = '\0';
+		command_len--;
+	} else {
+		variant = '\0';
+	}
+
 	// Use the arguments
-	if (vstrfind(command, "patch", "PATCH", "patch_", "PATCH_", "patch/", "PATCH/") >= 0) {
+	if (vstrfind(command, "patch", "PATCH") >= 0) {
+		if (variant && variant != '_' && variant != '/') {
+			error_exit("Error: Invalid variant for command: \"%s\": '%c'\n", command, variant);
+		}
 		if (argc > 2) {
-			error_exit("Error: Invalid arguments for command: \"%s\"\n", command);
+			error_exit("Error: Too many arguments for command: \"%s\": %d\n", command, argc);
 		}
 		if (!current_hook) {
 			error_exit("Error: No current patch for command: \"%s\"\n", command);
@@ -270,8 +283,8 @@ void interpret_command(char *command, const struct Symbol *current_hook, const s
 			modified = c != getc(orig_rom);
 			fprintf(output, isupper((unsigned)command[0]) ? "0x%02X" : "0x%02x", c);
 		} else {
-			if (command[strlen(command) - 1] != '/') {
-				fprintf(output, command[strlen(command) - 1] == '_' ? "a%d: " : "a%d:", length);
+			if (variant != '/') {
+				fprintf(output, variant == '_' ? "a%d: " : "a%d:", length);
 			}
 			for (int i = 0; i < length; i++) {
 				if (i) {
@@ -286,12 +299,15 @@ void interpret_command(char *command, const struct Symbol *current_hook, const s
 			fprintf(stderr, PROGRAM_NAME ": Warning: \"vc_patch %s\" doesn't alter the ROM\n", current_hook->name);
 		}
 
-	} else if (vstrfind(command, "dws", "DWS", "dws_", "DWS_", "dws/", "DWS/") >= 0) {
-		if (argc < 1) {
-			error_exit("Error: Invalid arguments for command: \"%s\"\n", command);
+	} else if (vstrfind(command, "dws", "DWS") >= 0) {
+		if (variant && variant != '_' && variant != '/') {
+			error_exit("Error: Invalid variant for command: \"%s\": '%c'\n", command, variant);
 		}
-		if (command[strlen(command) - 1] != '/') {
-			fprintf(output, command[strlen(command) - 1] == '_' ? "a%d: " : "a%d:", argc * 2);
+		if (argc < 1) {
+			error_exit("Error: No arguments for command: \"%s\"\n", command);
+		}
+		if (variant != '/') {
+			fprintf(output, variant == '_' ? "a%d: " : "a%d:", argc * 2);
 		}
 		for (int i = 0; i < argc; i++) {
 			int value = parse_arg_value(argv[i], false, symbols, current_hook->name);
@@ -304,33 +320,41 @@ void interpret_command(char *command, const struct Symbol *current_hook, const s
 			fprintf(output, isupper((unsigned)command[0]) ? "%02X %02X": "%02x %02x", value & 0xff, value >> 8);
 		}
 
-	} else if (vstrfind(command, "db", "DB", "db_", "DB_", "db/", "DB/") >= 0) {
+	} else if (vstrfind(command, "db", "DB") >= 0) {
+		if (variant && variant != '_' && variant != '/') {
+			error_exit("Error: Invalid variant for command: \"%s\": '%c'\n", command, variant);
+		}
 		if (argc != 1) {
-			error_exit("Error: Invalid arguments for command: \"%s\"\n", command);
+			error_exit("Error: Invalid arguments for command: \"%s\": %d\n", command, argc);
 		}
 		int value = parse_arg_value(argv[0], false, symbols, current_hook->name);
 		if (value > 0xff) {
 			error_exit("Error: Invalid value for \"%s\" argument: 0x%x\n", command, value);
 		}
-		if (command[strlen(command) - 1] != '/') {
-			fputs(command[strlen(command) - 1] == '_' ? "a1: " : "a1:", output);
+		if (variant != '/') {
+			fputs(variant == '_' ? "a1: " : "a1:", output);
 		}
 		fprintf(output, isupper((unsigned)command[0]) ? "%02X" : "%02x", value);
 
-	} else if (vstrfind(command, "hex", "HEX", "HEx", "Hex", "heX", "hEX", "hex~", "HEX~", "HEx~", "Hex~", "heX~", "hEX~") >= 0) {
-		if (argc != 1 && argc != 2) {
-			error_exit("Error: Invalid arguments for command: \"%s\"\n", command);
+	} else if (vstrfind(command, "hex", "HEX", "HEx", "Hex", "heX", "hEX", "HeX") >= 0) {
+		if (variant && variant != '~') {
+			error_exit("Error: Invalid variant for command: \"%s\": '%c'\n", command, variant);
 		}
-		int value = parse_arg_value(argv[0], command[strlen(command) - 1] != '~', symbols, current_hook->name);
+		if (argc != 1 && argc != 2) {
+			error_exit("Error: Invalid arguments for command: \"%s\": %d\n", command, argc);
+		}
+		int value = parse_arg_value(argv[0], variant != '~', symbols, current_hook->name);
 		int padding = argc > 1 ? parse_number(argv[1], 0) : 2;
-		if (vstrfind(command, "HEx", "HEx~") >= 0) {
+		if (!strcmp(command, "HEx")) {
 			fprintf(output, "0x%0*X%02x", padding - 2, value >> 8, value & 0xff);
-		} else if (vstrfind(command, "Hex", "Hex~") >= 0) {
+		} else if (!strcmp(command, "Hex")) {
 			fprintf(output, "0x%0*X%03x", padding - 3, value >> 12, value & 0xfff);
-		} else if (vstrfind(command, "heX", "heX~") >= 0) {
+		} else if (!strcmp(command, "heX")) {
 			fprintf(output, "0x%0*x%02X", padding - 2, value >> 8, value & 0xff);
-		} else if (vstrfind(command, "hEX", "hEX~") >= 0) {
+		} else if (!strcmp(command, "hEX")) {
 			fprintf(output, "0x%0*x%03X", padding - 3, value >> 12, value & 0xfff);
+		} else if (!strcmp(command, "HeX")) {
+			fprintf(output, "0x%0*X%x", padding - 1, value >> 4, value & 0xf);
 		} else {
 			fprintf(output, isupper((unsigned)command[0]) ? "0x%0*X" : "0x%0*x", padding, value);
 		}
@@ -386,7 +410,7 @@ struct Buffer *process_template(
 			// "{...}" is a template command; buffer its contents
 			buffer->size = 0;
 			for (c = getc(input); c != EOF && c != '}'; c = getc(input)) {
-				buffer_append(buffer, &c);
+				buffer_append(buffer, &(char){c});
 			}
 			buffer_append(buffer, &(char){'\0'});
 			// Interpret the command in the context of the current patch
@@ -414,7 +438,7 @@ struct Buffer *process_template(
 							c = '_';
 						}
 					}
-					buffer_append(buffer, &c);
+					buffer_append(buffer, &(char){c});
 				}
 			}
 			buffer_append(buffer, &(char){'\0'});
@@ -431,8 +455,8 @@ struct Buffer *process_template(
 	rewind(orig_rom);
 	rewind(new_rom);
 
-	fclose(input);
-	fclose(output);
+	xfclose(input);
+	xfclose(output);
 	buffer_free(buffer);
 	return patches;
 }
@@ -514,6 +538,9 @@ int main(int argc, char *argv[]) {
 
 	FILE *new_rom = xfopen(argv[1], 'r');
 	FILE *orig_rom = xfopen(argv[2], 'r');
+	if (new_rom == stdin || orig_rom == stdin) {
+		error_exit("Error: Cannot read ROM file from stdin (not rewindable)\n");
+	}
 	struct Buffer *patches = process_template(argv[3], argv[4], new_rom, orig_rom, symbols, ignore_addr, ignore_size);
 
 	if (!verify_completeness(orig_rom, new_rom, patches)) {
@@ -521,8 +548,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	symbol_free(symbols);
-	fclose(new_rom);
-	fclose(orig_rom);
+	xfclose(new_rom);
+	xfclose(orig_rom);
 	buffer_free(patches);
 	return 0;
 }

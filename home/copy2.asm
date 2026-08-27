@@ -69,7 +69,7 @@ CopyVideoData::
 	cp 8
 	jr nc, .keepgoing
 
-.done
+; done
 	ldh [hVBlankCopySize], a
 	call DelayFrame
 	pop af
@@ -116,7 +116,7 @@ CopyVideoDataDouble::
 	cp 8
 	jr nc, .keepgoing
 
-.done
+; done
 	ldh [hVBlankCopyDoubleSize], a
 	call DelayFrame
 	pop af
