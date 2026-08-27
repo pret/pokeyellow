@@ -1462,6 +1462,7 @@ wPlayerStatsToHalve:: db
 wPlayerBattleStatus1:: db
 wPlayerBattleStatus2:: db
 wPlayerBattleStatus3:: db
+wPlayerBattleStatusEnd::
 
 ; always 0
 wEnemyStatsToDouble:: db
@@ -1471,6 +1472,7 @@ wEnemyStatsToHalve:: db
 wEnemyBattleStatus1:: db
 wEnemyBattleStatus2:: db
 wEnemyBattleStatus3:: db
+wEnemyBattleStatusEnd::
 
 ; when the player is attacking multiple times, the number of attacks left
 wPlayerNumAttacksLeft:: db
