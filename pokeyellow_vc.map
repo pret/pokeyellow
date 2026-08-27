@@ -140,7 +140,6 @@ ROM0 bank #0:
 	         $0869 = LoadTileBlockMap.rowLoop
 	         $086d = LoadTileBlockMap.rowInnerLoop
 	         $087b = LoadTileBlockMap.noCarry
-	         $087e = LoadTileBlockMap.northConnection
 	         $08a5 = LoadTileBlockMap.southConnection
 	         $08cc = LoadTileBlockMap.westConnection
 	         $08f2 = LoadTileBlockMap.eastConnection
@@ -159,7 +158,6 @@ ROM0 bank #0:
 	         $097c = IsSpriteOrSignInFrontOfPlayer.counterTilesLoop
 	         $0983 = IsSpriteInFrontOfPlayer
 	         $0985 = IsSpriteInFrontOfPlayer2
-	         $098b = IsSpriteInFrontOfPlayer2.checkIfPlayerFacingUp
 	         $0996 = IsSpriteInFrontOfPlayer2.checkIfPlayerFacingDown
 	         $09a1 = IsSpriteInFrontOfPlayer2.checkIfPlayerFacingRight
 	         $09ac = IsSpriteInFrontOfPlayer2.playerFacingLeft
@@ -195,7 +193,6 @@ ROM0 bank #0:
 	         $0b20 = LoadCurrentMapView.rowInnerLoop
 	         $0b3e = LoadCurrentMapView.noCarry
 	         $0b46 = LoadCurrentMapView.noCarry2
-	         $0b4f = LoadCurrentMapView.adjustForYCoordWithinTileBlock
 	         $0b59 = LoadCurrentMapView.adjustForXCoordWithinTileBlock
 	         $0b63 = LoadCurrentMapView.copyToVisibleAreaBuffer
 	         $0b68 = LoadCurrentMapView.rowLoop2
@@ -311,7 +308,6 @@ ROM0 bank #0:
 	         $128f = HandlePartyMenuInput.asm_128f
 	         $129d = HandlePartyMenuInput.noPokemonChosen
 	         $12a2 = HandlePartyMenuInput.swappingPokemon
-	         $12a6 = HandlePartyMenuInput.cancelSwap
 	         $12bb = HandlePartyMenuInput.handleSwap
 	         $12cc = PartyMenuText_12cc
 	         $12d1 = DrawPartyMenu
@@ -372,11 +368,9 @@ ROM0 bank #0:
 	         $15ef = FarCopyDataDouble.expandloop
 	         $15fe = CopyVideoData
 	         $1617 = CopyVideoData.loop
-	         $161c = CopyVideoData.done
 	         $1629 = CopyVideoData.keepgoing
 	         $1636 = CopyVideoDataDouble
 	         $164f = CopyVideoDataDouble.loop
-	         $1654 = CopyVideoDataDouble.done
 	         $1661 = CopyVideoDataDouble.keepgoing
 	         $166e = FillMemory
 	         $1677 = FillMemory.eightbitcopyamount
@@ -1723,7 +1717,6 @@ ROMX bank #1:
 	         $69b2 = DisplayPokemartDialogue_.loop
 	         $69ed = DisplayPokemartDialogue_.sellMenu
 	         $6a0e = DisplayPokemartDialogue_.sellMenuLoop
-	         $6a36 = DisplayPokemartDialogue_.confirmItemSale
 	         $6a82 = DisplayPokemartDialogue_.skipSettingFlag1
 	         $6a8e = DisplayPokemartDialogue_.unsellableItem
 	         $6a97 = DisplayPokemartDialogue_.bagEmpty
@@ -6004,7 +5997,6 @@ ROMX bank #13:
 	         $74a1 = TitleScroll_In
 	         $74a9 = TitleScroll_Out
 	         $74b2 = TitleScroll
-	         $74c4 = TitleScroll.ok
 	         $74c4 = _TitleScroll
 	         $74d3 = _TitleScroll.loop
 	         $74ec = _TitleScroll.ScrollBetween
@@ -11970,7 +11962,7 @@ ROMX bank #24:
 	         $6519 = SilphCo11FSilphPresidentText.NoRoomText
 	         $651e = SilphCo11FBeautyText
 	         $6523 = SilphCo11FGiovanniText
-	         $6528 = SilphCo10FGiovanniILostAgainText
+	         $6528 = SilphCo11FGiovanniILostAgainText
 	         $652d = SilphCo11FGiovanniYouRuinedOurPlansText
 	         $6532 = SilphCo11FRocketText
 	         $653c = SilphCo11FRocketBattleText
@@ -13324,7 +13316,6 @@ ROMX bank #30:
 	         $40a2 = DrawFrameBlock.storeFlags1
 	         $40ab = DrawFrameBlock.flipHorizontalTranslateDown
 	         $40c8 = DrawFrameBlock.asm_780c8
-	         $40d4 = DrawFrameBlock.enableHorizontalFlip
 	         $40d8 = DrawFrameBlock.disableHorizontalFlip
 	         $40da = DrawFrameBlock.storeFlags2
 	         $40e1 = DrawFrameBlock.nextTile
@@ -15371,7 +15362,7 @@ ROMX bank #39:
 	         $4178 = _SilphCo11FSilphPresidentNoRoomText
 	         $4194 = _SilphCo11FBeautyText
 	         $41da = _SilphCo11FGiovanniText
-	         $427f = _SilphCo10FGiovanniILostAgainText
+	         $427f = _SilphCo11FGiovanniILostAgainText
 	         $4297 = _SilphCo11FGiovanniYouRuinedOurPlansText
 	         $433c = _SilphCo11FRocket2BattleText
 	         $436c = _SilphCo11FRocket2EndBattleText
@@ -22346,8 +22337,8 @@ WRAM0 bank #0:
 	         $cd73 = wPPUpCountAndMaxPP
 	         $cd78 = wNormalMaxPPList
 	         $cd7a = wEvoDataBufferEnd
-	         $cd81 = wTileMapBackup2
 	         $cd81 = wSerialOtherGameboyRandomNumberListBlock
+	         $cd81 = wTileMapBackup2
 	         $cee9 = wLearningMovesFromDayCare
 	         $cee9 = wTownMapCoords
 	         $cee9 = wHPBarMaxHP
@@ -22548,8 +22539,8 @@ WRAM0 bank #0:
 	         $d06f = wEnemyConfusedCounter
 	         $d070 = wEnemyToxicCounter
 	         $d071 = wEnemyDisabledMove
-	         $d073 = wPlayerNumHits
 	         $d073 = wUnknownSerialCounter2
+	         $d073 = wPlayerNumHits
 	         $d073 = wPlayerBideAccumulatedDamage
 	         $d077 = wEscapedFromBattle
 	         $d077 = wBattleStatusDataEnd

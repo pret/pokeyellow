@@ -114,7 +114,6 @@
 00:0869 LoadTileBlockMap.rowLoop
 00:086d LoadTileBlockMap.rowInnerLoop
 00:087b LoadTileBlockMap.noCarry
-00:087e LoadTileBlockMap.northConnection
 00:08a5 LoadTileBlockMap.southConnection
 00:08cc LoadTileBlockMap.westConnection
 00:08f2 LoadTileBlockMap.eastConnection
@@ -133,7 +132,6 @@
 00:097c IsSpriteOrSignInFrontOfPlayer.counterTilesLoop
 00:0983 IsSpriteInFrontOfPlayer
 00:0985 IsSpriteInFrontOfPlayer2
-00:098b IsSpriteInFrontOfPlayer2.checkIfPlayerFacingUp
 00:0996 IsSpriteInFrontOfPlayer2.checkIfPlayerFacingDown
 00:09a1 IsSpriteInFrontOfPlayer2.checkIfPlayerFacingRight
 00:09ac IsSpriteInFrontOfPlayer2.playerFacingLeft
@@ -169,7 +167,6 @@
 00:0b20 LoadCurrentMapView.rowInnerLoop
 00:0b3e LoadCurrentMapView.noCarry
 00:0b46 LoadCurrentMapView.noCarry2
-00:0b4f LoadCurrentMapView.adjustForYCoordWithinTileBlock
 00:0b59 LoadCurrentMapView.adjustForXCoordWithinTileBlock
 00:0b63 LoadCurrentMapView.copyToVisibleAreaBuffer
 00:0b68 LoadCurrentMapView.rowLoop2
@@ -285,7 +282,6 @@
 00:128f HandlePartyMenuInput.asm_128f
 00:129d HandlePartyMenuInput.noPokemonChosen
 00:12a2 HandlePartyMenuInput.swappingPokemon
-00:12a6 HandlePartyMenuInput.cancelSwap
 00:12bb HandlePartyMenuInput.handleSwap
 00:12cc PartyMenuText_12cc
 00:12d1 DrawPartyMenu
@@ -346,11 +342,9 @@
 00:15ef FarCopyDataDouble.expandloop
 00:15fe CopyVideoData
 00:1617 CopyVideoData.loop
-00:161c CopyVideoData.done
 00:1629 CopyVideoData.keepgoing
 00:1636 CopyVideoDataDouble
 00:164f CopyVideoDataDouble.loop
-00:1654 CopyVideoDataDouble.done
 00:1661 CopyVideoDataDouble.keepgoing
 00:166e FillMemory
 00:1677 FillMemory.eightbitcopyamount
@@ -1683,7 +1677,6 @@
 01:69b2 DisplayPokemartDialogue_.loop
 01:69ed DisplayPokemartDialogue_.sellMenu
 01:6a0e DisplayPokemartDialogue_.sellMenuLoop
-01:6a36 DisplayPokemartDialogue_.confirmItemSale
 01:6a82 DisplayPokemartDialogue_.skipSettingFlag1
 01:6a8e DisplayPokemartDialogue_.unsellableItem
 01:6a97 DisplayPokemartDialogue_.bagEmpty
@@ -5878,7 +5871,6 @@
 0d:74a9 TitleScroll_Out
 0d:74b2 TitleScroll
 0d:74c4 _TitleScroll
-0d:74c4 TitleScroll.ok
 0d:74d3 _TitleScroll.loop
 0d:74ec _TitleScroll.ScrollBetween
 0d:74ec _TitleScroll.wait
@@ -11757,7 +11749,7 @@
 18:6519 SilphCo11FSilphPresidentText.NoRoomText
 18:651e SilphCo11FBeautyText
 18:6523 SilphCo11FGiovanniText
-18:6528 SilphCo10FGiovanniILostAgainText
+18:6528 SilphCo11FGiovanniILostAgainText
 18:652d SilphCo11FGiovanniYouRuinedOurPlansText
 18:6532 SilphCo11FRocketText
 18:653c SilphCo11FRocketBattleText
@@ -13074,7 +13066,6 @@
 1e:40a2 DrawFrameBlock.storeFlags1
 1e:40ab DrawFrameBlock.flipHorizontalTranslateDown
 1e:40c8 DrawFrameBlock.asm_780c8
-1e:40d4 DrawFrameBlock.enableHorizontalFlip
 1e:40d8 DrawFrameBlock.disableHorizontalFlip
 1e:40da DrawFrameBlock.storeFlags2
 1e:40e1 DrawFrameBlock.nextTile
@@ -15047,7 +15038,7 @@
 27:4178 _SilphCo11FSilphPresidentNoRoomText
 27:4194 _SilphCo11FBeautyText
 27:41da _SilphCo11FGiovanniText
-27:427f _SilphCo10FGiovanniILostAgainText
+27:427f _SilphCo11FGiovanniILostAgainText
 27:4297 _SilphCo11FGiovanniYouRuinedOurPlansText
 27:433c _SilphCo11FRocket2BattleText
 27:436c _SilphCo11FRocket2EndBattleText
