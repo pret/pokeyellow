@@ -380,7 +380,7 @@ endr
 .EnemySet_2_0
 	inc de
 	dec b
-	jp z, TestBattle
+	jp z, FightDebugMenu
 	ld a, [hli]
 	and a
 	jr z, .EnemySet_2_0

@@ -2690,10 +2690,10 @@ SelectMenuItem:
 	call PlaceString
 	jr .select
 .battleselect
-	; Hide move swap cursor in TestBattle.
+	; Hide move swap cursor in FightDebugMenu.
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
-	; This causes PrintMenuItem to not run in TestBattle.
+	; This causes PrintMenuItem to not run in FightDebugMenu.
 	; MoveSelectionMenu still draws part of its window, an issue
 	; which did not seem to exist in the Japanese versions.
 	jr nz, .select
@@ -6148,7 +6148,7 @@ GetCurrentMove:
 	jr .selected
 .player
 	ld de, wPlayerMoveNum
-	; Apply InitBattleVariables to TestBattle.
+	; Apply InitBattleVariables to FightDebugMenu.
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
 	ld a, [wTestBattlePlayerSelectedMove]

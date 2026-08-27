@@ -595,7 +595,7 @@ wAILayer2Encouragement:: db
 wPlayerSubstituteHP:: db
 wEnemySubstituteHP:: db
 
-; used for TestBattle (unused in non-debug builds)
+; used for FightDebugMenu (unused in non-debug builds)
 wTestBattlePlayerSelectedMove:: db
 
 	ds 1

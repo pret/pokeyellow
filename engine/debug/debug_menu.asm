@@ -2,7 +2,7 @@ DebugMenu:
 IF DEF(_DEBUG)
 	call ClearScreen
 
-	; These debug names are used for TestBattle.
+	; These debug names are used for FightDebugMenu.
 	; StartNewGameDebug uses the debug names from PrepareOakSpeech.
 	ld hl, DebugBattlePlayerName
 	ld de, wPlayerName
@@ -52,7 +52,7 @@ IF DEF(_DEBUG)
 
 	ld a, [wCurrentMenuItem]
 	and a ; FIGHT?
-	jp z, TestBattle
+	jp z, FightDebugMenu
 
 	; DEBUG
 	ld hl, wStatusFlags6
@@ -70,7 +70,6 @@ DebugMenuOptions:
 	db   "FIGHT"
 	next "DEBUG@"
 
-TestBattle: ; unreferenced except in _DEBUG
 INCLUDE "engine/debug/fight_debug_menu.asm"
 INCLUDE "engine/debug/set_box_debug_menu.asm"
 ELSE
