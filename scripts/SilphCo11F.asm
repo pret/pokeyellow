@@ -404,7 +404,7 @@ SilphCo11FScript12:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	ld a, [wIsInBattle]
-	cp $ff
+	cp LOST_BATTLE
 	jp z, SilphCo11FResetCurScript
 	ld a, $2
 	ld [wSprite04StateData1MovementStatus], a

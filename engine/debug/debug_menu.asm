@@ -71,8 +71,6 @@ DebugMenuOptions:
 	next "DEBUG@"
 
 TestBattle: ; unreferenced except in _DEBUG
-            ; Now redirects to an updated version
-			; of the one used in pokegold-spaceworld.
 INCLUDE "engine/debug/fight_debug_menu.asm"
 INCLUDE "engine/debug/set_box_debug_menu.asm"
 ELSE
