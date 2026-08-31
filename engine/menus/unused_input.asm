@@ -91,7 +91,7 @@ PlaceMenuCursorDuplicate:
 	ld a, [wLastMenuItem]
 	and a
 	jr z, .asm_f5ad5
-	ld bc, $28
+	ld bc, 2 * SCREEN_WIDTH
 .loop2
 	add hl, bc
 	dec a
@@ -107,7 +107,7 @@ PlaceMenuCursorDuplicate:
 	ld a, [wCurrentMenuItem]
 	and a
 	jr z, .asm_f5aec
-	ld bc, $28
+	ld bc, 2 * SCREEN_WIDTH
 .loop3
 	add hl, bc
 	dec a

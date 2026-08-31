@@ -153,7 +153,7 @@ StartNewGame:
 	; fallthrough
 StartNewGameDebug:
 	call OakSpeech
-	ld a, $8
+	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
 	ld c, 20
 	call DelayFrames

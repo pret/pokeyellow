@@ -284,7 +284,7 @@ DisplayTwoOptionMenu:
 	pop hl
 	bit B_PAD_B, a
 	jr nz, .choseSecondMenuItem ; automatically choose the second option if B is pressed
-.pressedAButton
+; pressed A button
 	ld a, [wCurrentMenuItem]
 	ld [wChosenMenuItem], a
 	and a

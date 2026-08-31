@@ -410,7 +410,7 @@ CheckWarpsNoCollisionRetry1::
 CheckWarpsNoCollisionRetry2::
 	inc hl
 	inc hl
-ContinueCheckWarpsNoCollisionLoop::
+
 	inc b ; increment warp number
 	dec c ; decrement number of warps
 	jp nz, CheckWarpsNoCollisionLoop
@@ -1687,7 +1687,7 @@ CollisionCheckOnWater::
 .setCarry
 	scf
 	jr .done
-.checkIfVermilionDockTileset
+; check if Vermilion Dock tileset
 	ld a, [wCurMapTileset]
 	cp SHIP_PORT
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile

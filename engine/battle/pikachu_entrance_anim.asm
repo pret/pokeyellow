@@ -33,7 +33,7 @@ StarterPikachuBattleEntranceAnimation:
 	ld a, d
 	cp 7 * 7
 	jr nc, .okay
-	ld a, $7f
+	ld a, ' '
 .okay
 	ld [hl], a
 	ld bc, SCREEN_WIDTH

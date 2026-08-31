@@ -9,7 +9,7 @@ SerialFunction::
 	ld a, [wPrinterOpcode]
 	and a
 	ret nz
-	ld hl, wOverworldMap + 650
+	ld hl, wHandshakeFrameDelay
 	inc [hl]
 	ld a, [hl]
 	cp $6
