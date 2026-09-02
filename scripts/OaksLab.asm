@@ -825,16 +825,14 @@ OaksLabOak1Text:
 	ld b, POKE_BALL
 	call IsItemInBag
 	jr nz, .come_see_me_sometimes
-
-; this part is a useless check, as the same check was performed earlier
-; if we branched here, it's because wNumSetBits < 2
+; This wPokedexOwned check is redundant, since the same check was performed
+; earlier to reach this .check_for_poke_balls block in the first place.
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
 	ld a, [wNumSetBits]
 	cp 2
 	jr nc, .come_see_me_sometimes
-
 	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
 	jr nz, .give_poke_balls
 	CheckEvent EVENT_GOT_POKEDEX
