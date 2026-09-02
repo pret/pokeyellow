@@ -22527,11 +22527,13 @@ WRAM0 bank #0:
 	         $d062 = wPlayerBattleStatus2
 	         $d063 = wPlayerBattleStatus3
 	         $d064 = wEnemyStatsToDouble
+	         $d064 = wPlayerBattleStatusEnd
 	         $d065 = wEnemyStatsToHalve
 	         $d066 = wEnemyBattleStatus1
 	         $d067 = wEnemyBattleStatus2
 	         $d068 = wEnemyBattleStatus3
 	         $d069 = wPlayerNumAttacksLeft
+	         $d069 = wEnemyBattleStatusEnd
 	         $d06a = wPlayerConfusedCounter
 	         $d06b = wPlayerToxicCounter
 	         $d06c = wPlayerDisabledMove

@@ -22024,10 +22024,12 @@
 00:d062 wPlayerBattleStatus2
 00:d063 wPlayerBattleStatus3
 00:d064 wEnemyStatsToDouble
+00:d064 wPlayerBattleStatusEnd
 00:d065 wEnemyStatsToHalve
 00:d066 wEnemyBattleStatus1
 00:d067 wEnemyBattleStatus2
 00:d068 wEnemyBattleStatus3
+00:d069 wEnemyBattleStatusEnd
 00:d069 wPlayerNumAttacksLeft
 00:d06a wPlayerConfusedCounter
 00:d06b wPlayerToxicCounter
