@@ -89,7 +89,6 @@ ROM0 bank #0:
 	         $04d5 = CheckWarpsNoCollisionLoop
 	         $050f = CheckWarpsNoCollisionRetry1
 	         $0510 = CheckWarpsNoCollisionRetry2
-	         $0512 = ContinueCheckWarpsNoCollisionLoop
 	         $051a = CheckWarpsCollision
 	         $0521 = CheckWarpsCollision.loop
 	         $053a = CheckWarpsCollision.retry1
@@ -219,7 +218,6 @@ ROM0 bank #0:
 	         $0cca = CollisionCheckOnWater
 	         $0cfc = CollisionCheckOnWater.collision
 	         $0d08 = CollisionCheckOnWater.setCarry
-	         $0d0b = CollisionCheckOnWater.checkIfVermilionDockTileset
 	         $0d14 = CollisionCheckOnWater.stopSurfing
 	         $0d2a = CollisionCheckOnWater.noCollision
 	         $0d2b = CollisionCheckOnWater.done
@@ -1868,7 +1866,6 @@ ROMX bank #1:
 	         $748d = DisplayTwoOptionMenu.notTradeCancelMenu
 	         $7490 = DisplayTwoOptionMenu.afterTextBoxBorder
 	         $749e = DisplayTwoOptionMenu.noBlankLine
-	         $74b8 = DisplayTwoOptionMenu.pressedAButton
 	         $74d0 = DisplayTwoOptionMenu.choseSecondMenuItem
 	         $74e7 = TwoOptionMenu_SaveScreenTiles
 	         $74ed = TwoOptionMenu_SaveScreenTiles.loop
@@ -22195,7 +22192,7 @@ WRAM0 bank #0:
 	         $cd3d = wChargeMoveNum
 	         $cd3d = wMoveDownSmallStarsOAMCount
 	         $cd3d = wPlayerCharacterOAMTile
-	         $cd3d = wTitleMonSpecies
+	         $cd3d = wUnusedTitleMonSpecies
 	         $cd3d = wWhichBadge
 	         $cd3d = wNumShakes
 	         $cd3d = wWereAnyMonsAsleep
