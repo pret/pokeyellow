@@ -137,7 +137,7 @@ PlaceMenuCursor::
 	ld a, [wLastMenuItem]
 	and a ; was the previous menu id 0?
 	jr z, .checkForArrow1
-	ld bc, 40
+	ld bc, SCREEN_WIDTH * 2
 	push af
 	ldh a, [hUILayoutFlags]
 	bit BIT_DOUBLE_SPACED_MENU, a

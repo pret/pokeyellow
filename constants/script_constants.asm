@@ -37,6 +37,9 @@ DEF SLOTS_SOMEONESKEYS EQU $ff
 	const TRADE_FOR_RICKY
 DEF NUM_NPC_TRADES EQU const_value
 
+; TradeMons table width
+DEF TRADE_DATA_SIZE EQU 3 + NAME_LENGTH
+
 ; in game trade dialog sets
 ; InGameTradeTextPointers indexes (see engine/events/in_game_trades.asm)
 	const_def

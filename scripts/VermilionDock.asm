@@ -38,7 +38,7 @@ VermilionDock_Script:
 
 VermilionDockSSAnneLeavesScript:
 	SetEventForceReuseHL EVENT_SS_ANNE_LEFT
-	ld a, $ff
+	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
 	call StopAllMusic
 	ld c, BANK(Music_Surfing)

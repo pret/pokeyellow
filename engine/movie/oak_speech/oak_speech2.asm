@@ -215,5 +215,5 @@ GetDefaultName:
 
 INCLUDE "data/player/names_list.asm"
 
-LinkMenuEmptyText:
+LinkMenuEmptyText: ; unreferenced
 	text_end

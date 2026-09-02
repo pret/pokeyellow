@@ -12,7 +12,7 @@ DoInGameTradeDialogue:
 	call SaveScreenTilesToBuffer2
 	ld hl, TradeMons
 	ld a, [wWhichTrade]
-	ld bc, $e
+	ld bc, TRADE_DATA_SIZE
 	call AddNTimes
 	ld a, [hli]
 	ld [wInGameTradeGiveMonSpecies], a

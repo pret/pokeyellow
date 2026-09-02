@@ -8,7 +8,7 @@ IF DEF(_YELLOW_VC)
 	text "Please come again!"
 	done
 	text_start
-	text "sed because of"
+	db   "osed because of"
 	cont "inactivity."
 ELSE
 	text "The link has been"

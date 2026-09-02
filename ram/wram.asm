@@ -1013,7 +1013,7 @@ wPPRestoreItem::
 wWereAnyMonsAsleep::
 wNumShakes::
 wWhichBadge::
-wTitleMonSpecies::
+wUnusedTitleMonSpecies::
 wPlayerCharacterOAMTile::
 ; the number of small stars OAM entries to move down
 wMoveDownSmallStarsOAMCount::

@@ -65,7 +65,6 @@ EmotionBubble:
 	call UpdateSprites
 	ret
 
-
 EmotionBubblesOAMBlock:
 ; tile ID, attributes
 	db $f8, 0

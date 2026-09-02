@@ -1,10 +1,3 @@
-	const_def -1
-	const MOVE_NIDORINO_RIGHT
-	const MOVE_GENGAR_RIGHT
-	const MOVE_GENGAR_LEFT
-
-DEF ANIMATION_END EQU 80
-
 PlayIntro:
 	xor a
 	ldh [hJoyHeld], a
@@ -19,7 +12,7 @@ PlayIntro:
 	call DelayFrame
 	ret
 
-InitIntroNidorinoOAM:
+InitIntroNidorinoOAM: ; unreferenced
 	ld hl, wShadowOAM
 	ld d, 0
 .loop
