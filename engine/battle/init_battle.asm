@@ -47,7 +47,7 @@ InitBattleCommon:
 	predef CopyUncompressedPicToTilemap
 	ld a, $ff
 	ld [wEnemyMonPartyPos], a
-	ld a, $2
+	ld a, TRAINER_BATTLE
 	ld [wIsInBattle], a
 
 ; Is this a major story battle?
@@ -58,7 +58,7 @@ InitBattleCommon:
 	jp _InitBattleCommon
 
 InitWildBattle:
-	ld a, $1
+	ld a, WILD_BATTLE
 	ld [wIsInBattle], a
 	callfar LoadEnemyMonData
 	callfar DoBattleTransitionAndInitBattleVariables
