@@ -1,4 +1,4 @@
-; Leftover of Red/Blue. Seemingly unused
+; Leftover of Red/Blue. All unreferenced
 
 TitleScroll_WaitBall:
 ; Wait around for the TitleBall animation to play out.

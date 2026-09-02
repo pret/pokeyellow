@@ -6,7 +6,7 @@ ENDM
 
 TradeMons:
 ; entries correspond to TRADE_FOR_* constants
-	table_width 3 + NAME_LENGTH
+	table_width TRADE_DATA_SIZE
 	; The two instances of TRADE_DIALOGSET_EVOLUTION are a leftover
 	; from the Japanese Blue trades, which used species that evolve.
 	; TRADE_DIALOGSET_EVOLUTION did not refer to evolution in Japanese
