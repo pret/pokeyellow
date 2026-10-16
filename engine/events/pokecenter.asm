@@ -42,10 +42,10 @@ DisplayPokemonCenterDialogue_::
 	jr nz, .playerPikachuNotOnScreen
 	call DisablePikachuOverworldSpriteDrawing
 	callfar IsStarterPikachuAliveInOurParty
-	call c, Func_6eaa
+	call c, PokemonCenterNurseFacesUp
 .playerPikachuNotOnScreen
-	lb bc, 1, 8
-	call Func_6ebb
+	lb bc, 1, SPRITE_FACING_LEFT
+	call PokemonCenterUpdateSpriteImageIndex
 	ld c, 30
 	call DelayFrames
 	farcall AnimateHealingMachine ; do the healing machine animation
@@ -61,19 +61,19 @@ DisplayPokemonCenterDialogue_::
 	call CheckPikachuFollowingPlayer
 	jr nz, .doNotReturnPikachu
 	callfar IsStarterPikachuAliveInOurParty
-	call c, Func_6eaa
+	call c, PokemonCenterNurseFacesUp
 	ld a, $5
 	ld [wPikachuSpawnState], a
 	call EnablePikachuOverworldSpriteDrawing
 .doNotReturnPikachu
-	lb bc, 1, 0
-	call Func_6ebb
+	lb bc, 1, SPRITE_FACING_DOWN
+	call PokemonCenterUpdateSpriteImageIndex
 	ld hl, PokemonFightingFitText
 	call PrintText
 	callfar IsStarterPikachuAliveInOurParty
 	jr nc, .notInParty
-	lb bc, 15, 0
-	call Func_6ebb
+	lb bc, 15, SPRITE_FACING_DOWN
+	call PokemonCenterUpdateSpriteImageIndex
 .notInParty
 	call LoadCurrentMapView
 	call Delay3
@@ -83,7 +83,7 @@ DisplayPokemonCenterDialogue_::
 	ldh [hSpriteIndex], a
 	ld a, $1
 	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
+	call SetSpriteImageIndex
 	ld c, 40
 	call DelayFrames
 	call UpdateSprites
@@ -97,17 +97,17 @@ DisplayPokemonCenterDialogue_::
 	call UpdateSprites
 	ret
 
-Func_6eaa:
+PokemonCenterNurseFacesUp:
 	ld a, $1
 	ldh [hSpriteIndex], a
-	ld a, $4
+	ld a, SPRITE_FACING_UP
 	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
+	call SetSpriteImageIndex
 	ld c, 64
 	call DelayFrames
 	ret
 
-Func_6ebb:
+PokemonCenterUpdateSpriteImageIndex:
 	ld a, b
 	ldh [hSpriteIndex], a
 	ld a, c
@@ -119,7 +119,7 @@ Func_6ebb:
 	ldh [hSpriteIndex], a
 	ld a, c
 	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
+	call SetSpriteImageIndex
 	ret
 
 PokemonCenterWelcomeText:

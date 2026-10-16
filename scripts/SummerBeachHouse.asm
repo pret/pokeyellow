@@ -39,14 +39,14 @@ ENDC
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_f226b
+	jr nz, .refused
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	farcall SurfingPikachuMinigame
 	ld hl, wPikachuMapScriptFlags
 	set BIT_PIKACHU_MAP_SURF_SELECT, [hl]
 	jr .done
-.asm_f226b
+.refused
 	ld hl, .SurfinDudeText2
 	call PrintText
 .done
@@ -144,7 +144,7 @@ ELSE
 	bit BIT_PIKACHU_SPAWN_SURFING, a
 ENDC
 	vc_patch_end
-	jr z, .asm_f2369
+	jr z, .cannotPrint
 
 	ld hl, wPikachuMapScriptFlags
 	bit BIT_PIKACHU_MAP_SURF_SELECT, [hl]
@@ -156,7 +156,7 @@ ENDC
 	call PrintText
 	ld a, [wPikachuMapScriptFlags]
 	bit BIT_PIKACHU_MAP_SURF_SELECT, a
-	jr z, .asm_f236f
+	jr z, .done
 
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -183,11 +183,11 @@ ENDC
 	call GBPalNormal
 	ld a, 1
 	ld [wUpdateSpritesEnabled], a
-	jr .asm_f236f
-.asm_f2369
+	jr .done
+.cannotPrint
 	ld hl, .SummerBeachHousePrinterText1
 	call PrintText
-.asm_f236f
+.done
 	jp TextScriptEnd
 
 .SummerBeachHousePrinterText1

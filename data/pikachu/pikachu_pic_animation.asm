@@ -21,7 +21,7 @@ PikaPicAnimThunderboltPals:
 	db 4, %11100100
 	db -1 ; end
 
-Data_fe26b:
+PikaPicAnimScript_Unused1: ; unreferenced
 	pikapic_loadgfx Pic_e4000
 	pikapic_loadgfx Pic_e49d1
 	pikapic_loadgfx PikachuSprite
@@ -292,7 +292,7 @@ PikaPicAnimScript25:
 	pikapic_thunderbolt
 	pikapic_ret
 
-Data_fe51f:
+PikaPicAnimScript_Unused2: ; unreferenced
 	pikapic_waitbgmap
 PikaPicAnimScript26:
 	pikapic_setduration 100

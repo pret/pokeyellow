@@ -191,7 +191,7 @@ PewterGymGuideText:
 	jr nz, .PewterGymGuideBeginAdviceText
 	ld a, [wPikachuSpawnStateFlags]
 	bit BIT_PIKACHU_SPAWN_STARTER, a
-	jp nz, .asm_5c3fa
+	jp nz, .pikachuIsFollowing
 	ld hl, PewterGymGuideBeginAdviceText
 	call PrintText
 	jr .PewterGymGuideAdviceText
@@ -207,8 +207,8 @@ PewterGymGuideText:
 	call PrintText
 .done
 	jp TextScriptEnd
-.asm_5c3fa
-	ld hl, PewterGymText_5c41c
+.pikachuIsFollowing
+	ld hl, PewterGymGuyPikachuText
 	call PrintText
 	jp TextScriptEnd
 
@@ -232,6 +232,6 @@ PewterGymGuidePostBattleText:
 	text_far _PewterGymGuidePostBattleText
 	text_end
 
-PewterGymText_5c41c:
-	text_far _PewterGymGuyText
+PewterGymGuyPikachuText:
+	text_far _PewterGymGuyPikachuText
 	text_end

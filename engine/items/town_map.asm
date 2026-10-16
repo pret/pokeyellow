@@ -107,7 +107,7 @@ DisplayTownMap:
 	ld [wWhichTownMapLocation], a
 	jp .townMapLoop
 
-Func_70f87: ; unreferenced
+UnusedTownMapPlayPikaCry: ; unreferenced
 	ldh a, [hJoy5]
 	and PAD_DOWN | PAD_UP
 	ret z

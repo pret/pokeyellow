@@ -131,10 +131,9 @@ InitOptions:
 	ld [wPrinterSettings], a
 	ret
 
-Func_5cc1:
-; unused?
-	ld a, $6d
-	cp $80
+CheckEnoughYellowVersionMemory:
+	ld a, wYellowVersionMemoryEnd - wYellowVersionMemory
+	cp 128
 	ret c ; will always be executed
 	ld hl, NotEnoughMemoryText
 	call PrintText
@@ -170,7 +169,7 @@ SpecialEnterMap::
 	call ResetPlayerSpriteData
 	ld c, 20
 	call DelayFrames
-	call Func_5cc1
+	call CheckEnoughYellowVersionMemory
 	ld a, [wEnteringCableClub]
 	and a
 	ret nz

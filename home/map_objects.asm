@@ -146,21 +146,21 @@ SetSpriteImageIndexAfterSettingFacingDirection::
 	ld [hl], a
 	ret
 
-SpriteFunc_34a1::
+SetSpriteImageIndex::
 	ldh a, [hSpriteIndex]
 	swap a
-	add $e
+	add SPRITESTATEDATA2_IMAGEBASEOFFSET
 	ld l, a
-	ld h, $c2
+	ld h, HIGH(wSpriteStateData2)
 	ld c, [hl]
 	dec c
 	swap c
-	ldh a, [hSpriteOffset]
+	ldh a, [hSpriteImageIndex]
 	add c
 	ld c, a
-	ldh a, [hSpriteHeight]
+	ldh a, [hSpriteIndex]
 	swap a
-	add $2
+	add SPRITESTATEDATA1_IMAGEINDEX
 	ld l, a
 	dec h
 	ld [hl], c

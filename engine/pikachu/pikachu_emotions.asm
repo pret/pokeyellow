@@ -206,8 +206,7 @@ StarterPikachuEmotionCommand_turnawayfromplayer:
 	ld [wSpritePikachuStateData1FacingDirection], a
 	ret
 
-DeletedFunction_fcffb:
-; Inexplicably empty.
+DebugCheckPikachuExpression:
 REPT 5
 	nop
 ENDR
@@ -243,14 +242,14 @@ ENDC
 
 PlaySpecificPikachuEmotion:
 	ld a, e
-	jr load_expression
+	jr LoadPikachuExpression
 
 TalkToPikachu::
 	call MapSpecificPikachuExpression
-	jr c, load_expression
+	jr c, LoadPikachuExpression
 	call GetPikaPicAnimationScriptIndex
-	call DeletedFunction_fcffb
-load_expression:
+	call DebugCheckPikachuExpression
+LoadPikachuExpression:
 	ld [wExpressionNumber], a
 	ld hl, PikachuEmotionTable
 	call DoStarterPikachuEmotions

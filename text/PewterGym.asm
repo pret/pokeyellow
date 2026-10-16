@@ -171,7 +171,7 @@ _PewterGymGuidePostBattleText::
 	cont "champ material!"
 	done
 
-_PewterGymGuyText::
+_PewterGymGuyPikachuText::
 	text "All right! Let's"
 	line "get happening!"
 

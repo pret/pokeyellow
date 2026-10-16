@@ -14,10 +14,10 @@ VermilionCity_Script:
 	ld hl, VermilionCity_ScriptPointers
 	ld a, [wVermilionCityCurScript]
 	call CallFunctionInTable
-	call .vermilionCityScript_19869
+	call .checkLeftFanClubAfterBikeVoucher
 	ret
 
-.vermilionCityScript_19869
+.checkLeftFanClubAfterBikeVoucher
 	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
 	ret nz
 	CheckEventReuseHL EVENT_GOT_BIKE_VOUCHER

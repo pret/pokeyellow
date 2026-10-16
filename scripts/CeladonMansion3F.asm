@@ -24,18 +24,18 @@ CeladonMansion3FProgrammerText:
 	text_asm
 	call CeladonMansion3_PokedexCount
 	cp NUM_POKEMON - 1 ; discount Mew
-	ld hl, CeladonMansion3Text_486f5
+	ld hl, CeladonMansion3FProgrammerText2
 	jr nc, .print
-	ld hl, CeladonMansion3Text_486f0
+	ld hl, CeladonMansion3FProgrammerText1
 .print
 	call PrintText
 	jp TextScriptEnd
 
-CeladonMansion3Text_486f0:
+CeladonMansion3FProgrammerText1:
 	text_far _CeladonMansion3FProgrammerText
 	text_end
 
-CeladonMansion3Text_486f5:
+CeladonMansion3FProgrammerText2:
 	text_far _CeladonMansion3FProgrammerText2
 	text_end
 

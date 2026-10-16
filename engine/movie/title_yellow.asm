@@ -90,7 +90,7 @@ Bank3D_CopyBox:
 TitleScreenPokemonLogoTilemap: ; 16x7
 	INCBIN "gfx/title/pokemon_logo.tilemap"
 
-Pointer_f4669: ; unreferenced
+TitleScreenUnusedTilemap: ; unreferenced
 	db $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $5f
 
 TitleScreenPikaBubbleTilemap: ; 7x4

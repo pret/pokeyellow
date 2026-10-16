@@ -1,4 +1,4 @@
-UnknownText_2812:: ; unreferenced
+PokemonText:: ; unreferenced
 	text_far _PokemonText
 	text_end
 

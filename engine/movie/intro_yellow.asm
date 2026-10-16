@@ -173,7 +173,7 @@ YellowIntroScene2:
 	ld a, $4 ; overloaded
 	call LoadYellowIntroFlyingSpeedBars
 	ld a, $1
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor128Frames
 	call YellowIntro_NextScene
 	ret
@@ -309,7 +309,7 @@ YellowIntroScene4:
 	ld a, $2
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor128Frames
 	call YellowIntro_NextScene
 	ret
@@ -350,7 +350,7 @@ YellowIntroScene6:
 	ld a, $5
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor88Frames
 	call YellowIntro_NextScene
 	ret
@@ -393,7 +393,7 @@ YellowIntroScene8:
 	ld a, $3
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor128Frames
 	call YellowIntro_NextScene
 	ret
@@ -435,7 +435,7 @@ YellowIntroScene10:
 	ld a, $6
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor128Frames
 	call YellowIntro_NextScene
 	ret
@@ -544,7 +544,7 @@ YellowIntroScene12:
 	ld a, $9
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
-	call Func_f9e9a
+	call YellowIntro_PrepareNextScenePalette
 	call YellowIntro_SetTimerFor128Frames
 	call YellowIntro_NextScene
 	ret
@@ -758,7 +758,7 @@ YellowIntro_BlankPalsDelay2AndDisableLCD:
 	call DisableLCD
 	ret
 
-Func_f9e9a:
+YellowIntro_PrepareNextScenePalette:
 	ld e, a
 	callfar YellowIntroPaletteAction
 	xor a

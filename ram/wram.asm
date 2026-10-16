@@ -2012,6 +2012,7 @@ wWarpEntries:: ds MAX_WARP_EVENTS * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
+wYellowVersionMemory::
 wPikachuOverworldStateFlags:: db
 wPikachuSpawnState:: db
 wd431:: db
@@ -2088,8 +2089,9 @@ wUnknownSerialFlag_d499:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
 wPikachuEmotionModifier:: db
+wYellowVersionMemoryEnd::
 
-	ds 19
+	ds 128 - (wYellowVersionMemoryEnd - wYellowVersionMemory)
 
 ; number of signs in the current map (up to MAX_BG_EVENTS)
 wNumSigns:: db
