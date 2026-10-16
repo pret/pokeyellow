@@ -580,7 +580,7 @@ ROM0 bank #0:
 	         $2204 = CompareMapMusicBankWithCurrentBank.differentBanks
 	         $220c = CompareMapMusicBankWithCurrentBank.next
 	         $2211 = PlayMusic
-	         $2223 = Func_2223
+	         $2223 = ClearMusic
 	         $2233 = StopAllMusic
 	         $2238 = PlaySound
 	         $224f = PlaySound.next
@@ -685,7 +685,7 @@ ROM0 bank #0:
 	         $27d3 = FadeOutAudio.fadingOut
 	         $27de = FadeOutAudio.counterReachedZero
 	         $27fa = FadeOutAudio.fadeOutComplete
-	         $2812 = UnknownText_2812
+	         $2812 = PokemonText
 	         $2817 = DisplayTextID
 	         $2831 = DisplayTextID.skipSwitchToMapBank
 	         $286a = DisplayTextID.spriteHandling
@@ -809,7 +809,7 @@ ROM0 bank #0:
 	         $3061 = UpdateCGBPal_OBP1
 	         $307d = UpdateCGBPal_OBP1.noChangeInOBP1
 	         $3080 = UpdateCGBPal_OBP1.notCGB
-	         $3082 = Func_3082
+	         $3082 = UpdateAudioDuringLoadBGMapAttributes
 	         $309d = IsPlayerCharacterBeingControlledByGame
 	         $30ae = RunNPCMovementScript
 	         $30dc = RunNPCMovementScript.NPCMovementScriptPointerTables
@@ -880,7 +880,7 @@ ROM0 bank #0:
 	         $3497 = SetSpriteFacingDirectionAndDelay
 	         $349f = SetSpriteFacingDirection
 	         $34aa = SetSpriteImageIndexAfterSettingFacingDirection
-	         $34b0 = SpriteFunc_34a1
+	         $34b0 = SetSpriteImageIndex
 	         $34cb = ArePlayerCoordsInArray
 	         $34d3 = CheckCoords
 	         $34d7 = CheckCoords.loop
@@ -1516,7 +1516,7 @@ ROMX bank #1:
 	         $5c78 = MainMenu.inputLoop
 	         $5c8f = MainMenu.pressedA
 	         $5cbd = InitOptions
-	         $5ccd = Func_5cc1
+	         $5ccd = CheckEnoughYellowVersionMemory
 	         $5cd9 = NotEnoughMemoryText
 	         $5cde = StartNewGame
 	         $5ce3 = StartNewGameDebug
@@ -1762,8 +1762,8 @@ ROMX bank #1:
 	         $6f4f = DisplayPokemonCenterDialogue_.notInParty
 	         $6f78 = DisplayPokemonCenterDialogue_.declinedHealing
 	         $6f7b = DisplayPokemonCenterDialogue_.done
-	         $6f85 = Func_6eaa
-	         $6f96 = Func_6ebb
+	         $6f85 = PokemonCenterNurseFacesUp
+	         $6f96 = PokemonCenterUpdateSpriteImageIndex
 	         $6fab = PokemonCenterWelcomeText
 	         $6fb0 = ShallWeHealYourPokemonText
 	         $6fb6 = NeedYourPokemonText
@@ -1796,7 +1796,7 @@ ROMX bank #1:
 	         $70ff = StartMenuOptionText
 	         $7106 = PrintStartMenuItem
 	         $7110 = CableClubNPC
-	         $7123 = CableClubNPC.asm_7048
+	         $7123 = CableClubNPC.pikachuIsAsleep
 	         $7131 = CableClubNPC.receivedPokedex
 	         $713b = CableClubNPC.establishConnectionLoop
 	         $716a = CableClubNPC.establishedConnection
@@ -3904,11 +3904,11 @@ ROMX bank #6:
 	         $4e06 = PalletTown_Script.next
 	         $4e12 = PalletTown_ScriptPointers
 	         $4e26 = PalletTownDefaultScript
-	         $4e40 = PalletTownDefaultScript.asm_18e40
+	         $4e40 = PalletTownDefaultScript.atLeftExit
 	         $4e63 = PalletTownOakHeyWaitScript
 	         $4e9b = PalletTownOakWalksToPlayerScript
 	         $4ecb = PalletTownOakGreetsPlayerScript
-	         $4f01 = PalletTownOakGreetsPlayerScript.asm_18f01
+	         $4f01 = PalletTownOakGreetsPlayerScript.atLeftExit
 	         $4f0a = PalletTownPikachuBattleScript
 	         $4f28 = PalletTownAfterPikachuBattleScript
 	         $4f50 = PalletTownOakNotSafeComeWithMeScript
@@ -4076,7 +4076,7 @@ ROMX bank #6:
 	         $5853 = CeruleanCityBikeShopSign
 	         $5858 = CeruleanCityGymSign
 	         $585d = VermilionCity_Script
-	         $5885 = VermilionCity_Script.vermilionCityScript_19869
+	         $5885 = VermilionCity_Script.checkLeftFanClubAfterBikeVoucher
 	         $5891 = VermilionCity_Script.setFirstLockTrashCanIndex
 	         $58a0 = VermilionCityLeftSSAnneCallbackScript
 	         $58b1 = VermilionCity_ScriptPointers
@@ -4946,7 +4946,7 @@ ROMX bank #7:
 	         $61dc = PikachuMovement_ExitCellSeparator
 	         $61df = BillsHouseScript6
 	         $61f5 = BillsHouseScript7
-	         $6219 = RLE_1e219
+	         $6219 = RLEList_PlayerWalkToBill
 	         $621c = BillsHouseScript8
 	         $6246 = BillsHouseScript9
 	         $6247 = BillsHouse_TextPointers
@@ -8458,7 +8458,7 @@ ROMX bank #18:
 	         $45a3 = CeladonMansion1F_TextPointers
 	         $45ad = CeladonMansion1FMeowthText
 	         $45ba = CeladonMansion1FGrannyText
-	         $45d9 = CeladonMansion1FGrannyText.asm_485d9
+	         $45d9 = CeladonMansion1FGrannyText.noPikachuCry
 	         $45dc = CeladonMansion1FClefairyText
 	         $45e9 = CeladonMansion1FNidoranFText
 	         $45f6 = CeladonMansion1FManagersSuiteSignText
@@ -8476,8 +8476,8 @@ ROMX bank #18:
 	         $46cc = CeladonMansion3F_TextPointers
 	         $46dc = CeladonMansion3FProgrammerText
 	         $46ea = CeladonMansion3FProgrammerText.print
-	         $46f0 = CeladonMansion3Text_486f0
-	         $46f5 = CeladonMansion3Text_486f5
+	         $46f0 = CeladonMansion3FProgrammerText1
+	         $46f5 = CeladonMansion3FProgrammerText2
 	         $46fa = CeladonMansion3FGraphicArtistText
 	         $4707 = CeladonMansion3FGraphicArtistText.completed
 	         $474e = CeladonMansion3FGraphicArtistText.declined_print
@@ -9177,8 +9177,8 @@ ROMX bank #20:
 	         $4ebe = Route22_ScriptPointers
 	         $4ece = Route22SetDefaultScript
 	         $4ed5 = Route22NoopScript
-	         $4ed6 = Route22Script_50ed6
-	         $4ee1 = Route22Script_50ee1
+	         $4ed6 = Route22GetRival1TrainerNoScript
+	         $4ee1 = Route22GetRival2TrainerNoScript
 	         $4eef = Route22MoveRivalRightScript
 	         $4efa = Route22MoveRivalRightScript.skip_first_right
 	         $4f04 = Route22RivalMovementData
@@ -10138,14 +10138,14 @@ ROMX bank #21:
 	         $6242 = Daycare_TextPointers
 	         $6244 = DaycareGentlemanText
 	         $62d9 = DaycareGentlemanText.depositedPikachuIntoDayCare
-	         $62e3 = DaycareGentlemanText.asm_562e3
+	         $62e3 = DaycareGentlemanText.depositedMonIntoDayCare
 	         $62e9 = DaycareGentlemanText.daycareInUse
 	         $631d = DaycareGentlemanText.skipCalcExp
 	         $633b = DaycareGentlemanText.next
 	         $635f = DaycareGentlemanText.calcPriceLoop
 	         $639e = DaycareGentlemanText.enoughMoney
 	         $6419 = DaycareGentlemanText.withdrewPikachuFromDayCare
-	         $6430 = DaycareGentlemanText.asm_56430
+	         $6430 = DaycareGentlemanText.gotMonBack
 	         $6435 = DaycareGentlemanText.leaveMonInDayCare
 	         $643b = DaycareGentlemanText.done
 	         $6441 = DaycareGentlemanText.IntroText
@@ -10925,13 +10925,13 @@ ROMX bank #23:
 	         $4409 = PewterGymGuideText.PewterGymGuideAdviceText
 	         $4411 = PewterGymGuideText.afterBeat
 	         $4417 = PewterGymGuideText.done
-	         $441a = PewterGymGuideText.asm_5c3fa
+	         $441a = PewterGymGuideText.pikachuIsFollowing
 	         $4423 = PewterGymGuidePreAdviceText
 	         $4428 = PewterGymGuideBeginAdviceText
 	         $442d = PewterGymGuideAdviceText
 	         $4432 = PewterGymGuideFreeServiceText
 	         $4437 = PewterGymGuidePostBattleText
-	         $443c = PewterGymText_5c41c
+	         $443c = PewterGymGuyPikachuText
 	         $4441 = PewterGym_Object
 	         $446b = PewterGym_Blocks
 	         $448e = PewterPokecenter_h
@@ -12270,7 +12270,7 @@ ROMX bank #28:
 	         $4f71 = DisplayTownMap.noOverflow
 	         $4f77 = DisplayTownMap.pressedDown
 	         $4f81 = DisplayTownMap.noUnderflow
-	         $4f87 = Func_70f87
+	         $4f87 = UnusedTownMapPlayPikaCry
 	         $4f95 = TownMapOrder
 	         $4fc4 = TownMapCursor
 	         $4fc4 = TownMapOrderEnd
@@ -12404,7 +12404,7 @@ ROMX bank #28:
 	         $5829 = LoadMonPartySpriteGfxWithLCDDisabled.loop
 	         $584d = MonPartySpritePointers
 	         $5901 = WriteMonPartySpriteOAMByPartyIndex
-	         $591f = WriteMonPartySpriteOAMByPartyIndex.asm_7191f
+	         $591f = WriteMonPartySpriteOAMByPartyIndex.saveSprites
 	         $592f = WriteMonPartySpriteOAMBySpecies
 	         $593d = UnusedPartyMonSpriteFunction
 	         $5959 = UnusedPartyMonSpriteFunction.LoadTilePatterns
@@ -12464,7 +12464,7 @@ ROMX bank #28:
 	         $5ebe = _RunPaletteCommand.not_default
 	         $5ed3 = SetPal_BattleBlack
 	         $5eda = SetPal_Battle
-	         $5ef9 = SetPal_Battle.asm_71ef9
+	         $5ef9 = SetPal_Battle.noBattleMon
 	         $5f26 = SetPal_TownMap
 	         $5f2d = SetPal_StatusScreen
 	         $5f42 = SetPal_StatusScreen.pokemon
@@ -12499,7 +12499,7 @@ ROMX bank #28:
 	         $6094 = DeterminePaletteIDOutOfBattle
 	         $60a4 = DeterminePaletteIDOutOfBattle.skipDexNumConversion
 	         $60ad = YellowIntroPaletteAction
-	         $60bd = YellowIntroPaletteAction.asm_720bd
+	         $60bd = YellowIntroPaletteAction.hasBlueColor
 	         $60e3 = LoadOverworldPikachuFrontpicPalettes
 	         $6109 = LoadOverworldPikachuFrontpicPalettes.cgb_1
 	         $610c = LoadOverworldPikachuFrontpicPalettes.okay_1
@@ -12588,7 +12588,7 @@ ROMX bank #28:
 	         $66c1 = BlkPacket_PartyMenu
 	         $66f1 = BlkPacket_TrainerCard
 	         $6731 = BlkPacket_GameFreakIntro
-	         $6751 = UnknownPacket_72751
+	         $6751 = BlkPacket_PikachusBeachTitle
 	         $6761 = PalPacket_Empty
 	         $6771 = PalPacket_PartyMenu
 	         $6781 = PalPacket_Black
@@ -16652,7 +16652,7 @@ ROMX bank #42:
 	         $6a63 = _PewterGymGuideAdviceText
 	         $6add = _PewterGymGuideFreeServiceText
 	         $6b06 = _PewterGymGuidePostBattleText
-	         $6b35 = _PewterGymGuyText
+	         $6b35 = _PewterGymGuyPikachuText
 	         $6bbf = _PewterNidoranHouseNidoranText
 	         $6bd2 = _PewterNidoranHouseLittleBoyText
 	         $6be0 = _PewterNidoranHouseMiddleAgedManText
@@ -18319,7 +18319,6 @@ ROMX bank #60:
 	         $4314 = BeachHouse_GFX
 	         $4914 = BeachHouse_Block
 	SECTION: $4a54-$4abe ($006b bytes) ["Try Pikachu Movement"]
-	         $4a54 = Func_f0a54
 	         $4a55 = LoadToggleableObjectData
 	         $4a58 = LoadToggleableObjectData.loop
 	         $4a68 = LoadToggleableObjectData.found
@@ -18501,9 +18500,9 @@ ROMX bank #60:
 	         $5a01 = ViridianCityMovePikachu
 	         $5a0a = ViridianCityPikachuMovementData
 	         $5a0f = VermilionCityPrintOfficerJennyText
-	         $5a24 = VermilionCityPrintOfficerJennyText.asm_f1a24
-	         $5a62 = VermilionCityPrintOfficerJennyText.asm_f1a62
-	         $5a69 = VermilionCityPrintOfficerJennyText.asm_f1a69
+	         $5a24 = VermilionCityPrintOfficerJennyText.gotThunderBadge
+	         $5a62 = VermilionCityPrintOfficerJennyText.refused
+	         $5a69 = VermilionCityPrintOfficerJennyText.gotSquirtle
 	         $5a70 = OfficerJennyText1
 	         $5a75 = OfficerJennyText2
 	         $5a7a = OfficerJennyText3
@@ -18617,18 +18616,18 @@ ROMX bank #60:
 	         $5e66 = CeladonMart3FPrintClerkText.TM18ExplanationText
 	         $5e6b = CeladonMart3FPrintClerkText.TM18NoRoomText
 	         $5e70 = CeladonMansion1FPrintGrannyText
-	         $5e96 = CeladonMansion1Text_f1e96
-	         $5e9c = CeladonMansionText_f1e9c
-	         $5ea2 = Func_f1ea2
-	         $5ea5 = Func_f1ea2.asm_f1ea5
-	         $5eb5 = Func_f1ea2.asm_f1eb5
-	         $5eb9 = PikachuHappinessThresholds_f1eb9
-	         $5ed5 = CeladonMansion1Text_f1ed5
-	         $5eda = CeladonMansion1Text_f1eda
-	         $5edf = CeladonMansion1Text_f1edf
-	         $5ee4 = CeladonMansion1Text_f1ee4
-	         $5ee9 = CeladonMansion1Text_f1ee9
-	         $5eee = CeladonMansion1Text_f1eee
+	         $5e96 = CeladonMansion1Text2
+	         $5e9c = CeladonMansion1Text6
+	         $5ea2 = GetPikachuHappinessText
+	         $5ea5 = GetPikachuHappinessText.loop
+	         $5eb5 = GetPikachuHappinessText.got_text
+	         $5eb9 = PikachuHappinessThresholds
+	         $5ed5 = CeladonMansion1Text7
+	         $5eda = CeladonMansion1Text8
+	         $5edf = CeladonMansion1Text9
+	         $5ee4 = CeladonMansion1Text10
+	         $5ee9 = CeladonMansion1Text11
+	         $5eee = CeladonMansion1Text12
 	         $5ef3 = CeladonMansion3FPrintGameProgramPCText
 	         $5efa = CeladonMansion3FPrintGameProgramPCText.text
 	         $5eff = CeladonMansion3FPrintPlayingGamePCText
@@ -18709,7 +18708,7 @@ ROMX bank #60:
 	         $623a = SummerBeachHouseSurfinDudeText.next
 	         $6248 = SummerBeachHouseSurfinDudeText.next2
 	         $624b = SummerBeachHouseSurfinDudeText.next3
-	         $626b = SummerBeachHouseSurfinDudeText.asm_f226b
+	         $626b = SummerBeachHouseSurfinDudeText.refused
 	         $6271 = SummerBeachHouseSurfinDudeText.done
 	         $6274 = SummerBeachHouseSurfinDudeText.SurfinDudeText1
 	         $6279 = SummerBeachHouseSurfinDudeText.SurfinDudeText2
@@ -18731,8 +18730,8 @@ ROMX bank #60:
 	         $62f4 = SummerBeachHousePoster3Text.SummerBeachHousePoster3Text2
 	         $62f9 = SummerBeachHousePrinterText
 	         $6312 = SummerBeachHousePrinterText.next2
-	         $6369 = SummerBeachHousePrinterText.asm_f2369
-	         $636f = SummerBeachHousePrinterText.asm_f236f
+	         $6369 = SummerBeachHousePrinterText.cannotPrint
+	         $636f = SummerBeachHousePrinterText.done
 	         $6372 = SummerBeachHousePrinterText.SummerBeachHousePrinterText1
 	         $6378 = SummerBeachHousePrinterText.SummerBeachHousePrinterText2
 	         $637e = SummerBeachHousePrinterText.SummerBeachHousePrinterText3
@@ -18903,7 +18902,7 @@ ROMX bank #61:
 	SECTION: $4000-$43b0 ($03b1 bytes) ["Battle Engine 8"]
 	         $4000 = PrintBeginningBattleText
 	         $4011 = PrintBeginningBattleText.notPokemonTower
-	         $4026 = PrintBeginningBattleText.asm_f4026
+	         $4026 = PrintBeginningBattleText.gotPikaCry
 	         $4030 = PrintBeginningBattleText.notPikachuBattle
 	         $4036 = PrintBeginningBattleText.continue
 	         $4042 = PrintBeginningBattleText.notFishing
@@ -18984,7 +18983,7 @@ ROMX bank #61:
 	         $45e7 = Bank3D_CopyBox.row
 	         $45e9 = Bank3D_CopyBox.col
 	         $45f9 = TitleScreenPokemonLogoTilemap
-	         $4669 = Pointer_f4669
+	         $4669 = TitleScreenUnusedTilemap
 	         $4673 = TitleScreenPikaBubbleTilemap
 	         $468f = TitleScreenPikachuTilemap
 	         $46fb = PokemonLogoGraphics
@@ -19137,7 +19136,7 @@ ROMX bank #61:
 	         $5eb9 = ReadSuperRodData.found
 	         $5ebd = ReadSuperRodData.notfound
 	         $5ec1 = GenerateRandomFishingEncounter
-	         $5ed6 = GenerateRandomFishingEncounter.asm_f5ed6
+	         $5ed6 = GenerateRandomFishingEncounter.got_encounter
 	         $5eda = SuperRodFishingSlots
 	         $5ff2 = InitBattle
 	         $5ff8 = InitOpponent
@@ -19236,7 +19235,7 @@ ROMX bank #61:
 	         $674e = _GivePokemon.boxFull
 	         $6756 = _GivePokemon.addToParty
 	         $676c = SetPokedexOwnedFlag
-	         $6794 = UnknownTerminator_f6794
+	         $6794 = AddedPartyMonDummyText
 	         $6795 = GotMonText
 	         $679b = SentToBoxText
 	         $67a0 = BoxIsFullText
@@ -19758,7 +19757,7 @@ ROMX bank #62:
 	         $5e5d = YellowIntro_LoadDMGPalAndIncrementCounter.asm_f9e5d
 	         $5e5f = Func_f9e5f
 	         $5e80 = YellowIntro_BlankPalsDelay2AndDisableLCD
-	         $5e9a = Func_f9e9a
+	         $5e9a = YellowIntro_PrepareNextScenePalette
 	         $5ec4 = YellowIntro_Copy8BitSineWave
 	         $5ec9 = YellowIntro_Copy8BitSineWave.loop
 	         $5ed8 = YellowIntro_Copy8BitSineWave.SineWave
@@ -20079,12 +20078,12 @@ ROMX bank #63:
 	         $500c = ExpressionText
 	         $5011 = StarterPikachuEmotionCommand_9
 	         $501a = StarterPikachuEmotionCommand_turnawayfromplayer
-	         $5023 = DeletedFunction_fcffb
-	         $5044 = DeletedFunction_fcffb.valid
+	         $5023 = DebugCheckPikachuExpression
+	         $5044 = DebugCheckPikachuExpression.valid
 	         $5048 = HallOfFamePCForever
 	         $5055 = PlaySpecificPikachuEmotion
 	         $5058 = TalkToPikachu
-	         $5063 = load_expression
+	         $5063 = LoadPikachuExpression
 	         $506d = PikachuEmotionTable
 	         $506d = PikachuEmotion0_id
 	         $506f = PikachuEmotion1_id
@@ -20356,7 +20355,7 @@ ROMX bank #63:
 	         $5b18 = CheckPikaPicAnimTimer
 	         $5b24 = CheckPikaPicAnimTimer.not_done_yet
 	         $5b26 = CheckPikaPicAnimTimer.timer_expired
-	         $5b29 = DummyFunction_fdad5
+	         $5b29 = PikaPicAnimDummyFunction
 	         $5b2a = AnimateCurrentPikaPicAnimFrame
 	         $5b2f = AnimateCurrentPikaPicAnimFrame.loop
 	         $5b7a = AnimateCurrentPikaPicAnimFrame.skip
@@ -20411,7 +20410,7 @@ ROMX bank #63:
 	         $5c63 = PikaPicAnimBGFrames_35_id
 	         $5c65 = PikaPicAnimBGFrames_0
 	         $5c65 = PikaPicAnimBGFrames_1
-	         $5c72 = PikaPicAnimBGFrames_fdc1e
+	         $5c72 = PikaPicAnimBGFrames_Unused
 	         $5c7d = PikaPicAnimBGFrames_2
 	         $5c86 = PikaPicAnimBGFrames_3
 	         $5c8f = PikaPicAnimBGFrames_4
@@ -20505,8 +20504,8 @@ ROMX bank #63:
 	         $5ebb = PikaAnimTilemap_5
 	         $5ebf = PikaAnimTilemap_6
 	         $5ebf = PikaAnimTilemap_8
-	         $5ec5 = PikaAnimTilemap_fde71
-	         $5ecd = PikaAnimTilemap_fde79
+	         $5ec5 = PikaAnimTilemap_Unused1
+	         $5ecd = PikaAnimTilemap_Unused2
 	         $5ed5 = PikaAnimTilemap_14
 	         $5ef0 = PikaAnimTilemap_15
 	         $5f0b = PikaAnimTilemap_16
@@ -20584,8 +20583,8 @@ ROMX bank #63:
 	         $627e = PikaPicAnimCommand_thunderbolt.loop
 	         $628c = PikaPicAnimCommand_thunderbolt.UpdatePal
 	         $6296 = PikaPicAnimThunderboltPals
-	         $62bf = Data_fe26b
-	         $62da = Data_fe26b.loop_u60
+	         $62bf = PikaPicAnimScript_Unused1
+	         $62da = PikaPicAnimScript_Unused1.loop_u60
 	         $62de = PikaPicAnimScript0
 	         $62de = PikaPicAnimScript1
 	         $62de = PikaPicAnimScript29
@@ -20637,7 +20636,7 @@ ROMX bank #63:
 	         $653c = PikaPicAnimScript24
 	         $6552 = PikaPicAnimScript24.loop_u84
 	         $6556 = PikaPicAnimScript25
-	         $6573 = Data_fe51f
+	         $6573 = PikaPicAnimScript_Unused2
 	         $6574 = PikaPicAnimScript26
 	         $658e = PikaPicAnimScript26.loop_u85
 	         $6592 = PikaPicAnimScript27
@@ -23040,6 +23039,7 @@ WRAM0 bank #0:
 	         $d3ae = wWarpEntries
 	         $d42e = wDestinationWarpID
 	         $d42f = wPikachuOverworldStateFlags
+	         $d42f = wYellowVersionMemory
 	         $d430 = wPikachuSpawnState
 	         $d431 = wd431
 	         $d432 = wd432
@@ -23095,6 +23095,7 @@ WRAM0 bank #0:
 	         $d499 = wPrinterConnectionOpen
 	         $d49a = wPrinterOpcode
 	         $d49b = wPikachuEmotionModifier
+	         $d49c = wYellowVersionMemoryEnd
 	         $d4af = wNumSigns
 	         $d4b0 = wSignCoords
 	         $d4d0 = wSignTextIDs
