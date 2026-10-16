@@ -171,7 +171,7 @@ WriteMonPartySpriteOAMByPartyIndex:
 	push bc
 	ldh a, [hPartyMonIndex]
 	cp $ff
-	jr z, .asm_7191f
+	jr z, .saveSprites
 	ld hl, wPartySpecies
 	ld e, a
 	ld d, 0
@@ -185,10 +185,10 @@ WriteMonPartySpriteOAMByPartyIndex:
 	pop hl
 	ret
 
-.asm_7191f
+.saveSprites
 	ld hl, wShadowOAM
 	ld de, wMonPartySpritesSavedOAM
-	ld bc, $60
+	ld bc, OBJ_SIZE * 4 * PARTY_LENGTH
 	call CopyData
 	pop bc
 	pop de

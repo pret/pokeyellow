@@ -2,11 +2,11 @@ CableClubNPC::
 	ld hl, CableClubNPCWelcomeText
 	call PrintText
 	call CheckPikachuFollowingPlayer
-	jr nz, .asm_7048
+	jr nz, .pikachuIsAsleep
 	CheckEvent EVENT_GOT_POKEDEX
 	jp nz, .receivedPokedex
 ; if the player hasn't received the pokedex
-.asm_7048
+.pikachuIsAsleep
 	ld c, 60
 	call DelayFrames
 	ld hl, CableClubNPCMakingPreparationsText

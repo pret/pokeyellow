@@ -138,7 +138,7 @@ PlayMusic::
 	ld a, b
 	jr PlaySound
 
-Func_2223::
+ClearMusic:: ; unreferenced
 	xor a
 	ld [wChannelSoundIDs + CHAN5], a
 	ld [wChannelSoundIDs + CHAN6], a

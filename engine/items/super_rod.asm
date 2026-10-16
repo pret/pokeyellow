@@ -20,19 +20,19 @@ ReadSuperRodData:
 
 GenerateRandomFishingEncounter:
 	call Random
-	cp $66
-	jr c, .asm_f5ed6
+	cp 40 percent
+	jr c, .got_encounter
 	inc hl
 	inc hl
-	cp $b2
-	jr c, .asm_f5ed6
+	cp 70 percent
+	jr c, .got_encounter
 	inc hl
 	inc hl
-	cp $e5
-	jr c, .asm_f5ed6
+	cp 90 percent
+	jr c, .got_encounter
 	inc hl
 	inc hl
-.asm_f5ed6
+.got_encounter
 	ld e, [hl]
 	inc hl
 	ld d, [hl]

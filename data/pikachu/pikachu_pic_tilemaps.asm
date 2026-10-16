@@ -97,13 +97,13 @@ PikaAnimTilemap_8:
 	db $00, $01
 	db $02, $03
 
-PikaAnimTilemap_fde71: ; unused
+PikaAnimTilemap_Unused1: ; unreferenced
 	db 3, 2
 	db $00, $01
 	db $02, $03
 	db $04, $05
 
-PikaAnimTilemap_fde79: ; unused
+PikaAnimTilemap_Unused2: ; unreferenced
 	db 2, 3
 	db $00, $01, $02
 	db $03, $04, $05

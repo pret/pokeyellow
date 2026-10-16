@@ -1,5 +1,5 @@
-Func_f0a54: ; unreferenced
-	ret
+
+	ret ; unused
 
 LoadToggleableObjectData::
 ; farcalled by an unreferenced function

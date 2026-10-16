@@ -215,7 +215,7 @@ BillsHouseScript7:
 	ld [wSpritePlayerStateData1FacingDirection], a
 	ld a, PAD_SELECT | PAD_START | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
-	ld de, RLE_1e219
+	ld de, RLEList_PlayerWalkToBill
 	ld hl, wSimulatedJoypadStatesEnd
 	call DecodeRLEList
 	dec a
@@ -225,9 +225,9 @@ BillsHouseScript7:
 	ld [wBillsHouseCurScript], a
 	ret
 
-RLE_1e219:
-	db PAD_RIGHT, $3
-	db $FF
+RLEList_PlayerWalkToBill:
+	db PAD_RIGHT, 3
+	db -1 ; end
 
 BillsHouseScript8:
 	ld a, [wSimulatedJoypadStatesIndex]

@@ -13,9 +13,9 @@ PrintBeginningBattleText:
 	jr nz, .notPikachuBattle
 	callfar IsPlayerPikachuAsleepInParty
 	ldpikacry e, PikachuCry37
-	jr c, .asm_f4026
+	jr c, .gotPikaCry
 	ldpikacry e, PikachuCry11
-.asm_f4026
+.gotPikaCry
 	callfar PlayPikachuSoundClip
 	jr .continue
 .notPikachuBattle

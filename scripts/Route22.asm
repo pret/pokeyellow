@@ -22,14 +22,14 @@ Route22SetDefaultScript:
 Route22NoopScript:
 	ret
 
-Route22Script_50ed6:
+Route22GetRival1TrainerNoScript:
 	ld a, OPP_RIVAL1
 	ld [wCurOpponent], a
 	ld a, $2
 	ld [wTrainerNo], a
 	ret
 
-Route22Script_50ee1:
+Route22GetRival2TrainerNoScript:
 	ld a, OPP_RIVAL2
 	ld [wCurOpponent], a
 	ld a, [wRivalStarter]
@@ -131,7 +131,7 @@ Route22Rival1StartBattleScript:
 	ld hl, Route22Rival1DefeatedText
 	ld de, Route22Rival1VictoryText
 	call SaveEndBattleTextPointers
-	call Route22Script_50ed6
+	call Route22GetRival1TrainerNoScript
 	ld a, SCRIPT_ROUTE22_RIVAL1_AFTER_BATTLE
 	ld [wRoute22CurScript], a
 	ret
@@ -286,7 +286,7 @@ Route22Rival2StartBattleScript:
 	ld hl, Route22Rival2DefeatedText
 	ld de, Route22Rival2VictoryText
 	call SaveEndBattleTextPointers
-	call Route22Script_50ee1
+	call Route22GetRival2TrainerNoScript
 	ld a, SCRIPT_ROUTE22_RIVAL2_AFTER_BATTLE
 	ld [wRoute22CurScript], a
 	ret

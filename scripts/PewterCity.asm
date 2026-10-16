@@ -58,7 +58,7 @@ PewterCitySuperNerd1ShowsPlayerMuseumScript:
 	call SetSpriteFacingDirectionAndDelay
 	ld a, SPRITE_FACING_UP
 	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
+	call SetSpriteImageIndex
 	call PlayDefaultMusic
 	ld hl, wMiscFlags
 	set BIT_NO_SPRITE_UPDATES, [hl]
@@ -122,8 +122,8 @@ PewterCityYoungsterShowsPlayerGymScript:
 	ld a, PEWTERCITY_YOUNGSTER
 	ldh [hSpriteIndex], a
 	ld a, SPRITE_FACING_LEFT
-	ldh [hSpriteFacingDirection], a
-	call SpriteFunc_34a1
+	ldh [hSpriteImageIndex], a
+	call SetSpriteImageIndex
 	call PlayDefaultMusic
 	ld hl, wMiscFlags
 	set BIT_NO_SPRITE_UPDATES, [hl]

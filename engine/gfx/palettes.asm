@@ -33,12 +33,12 @@ SetPal_Battle:
 	ld hl, wBattleMonSpecies
 	ld a, [hl]
 	and a
-	jr z, .asm_71ef9
+	jr z, .noBattleMon
 	ld hl, wPartyMon1
 	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
-.asm_71ef9
+.noBattleMon
 	call DeterminePaletteID
 	ld b, a
 	ld hl, wEnemyMonSpecies2
@@ -260,7 +260,7 @@ SetPal_PikachusBeach::
 
 SetPal_PikachusBeachTitle::
 	ld hl, PalPacket_PikachusBeachTitle
-	ld de, UnknownPacket_72751
+	ld de, BlkPacket_PikachusBeachTitle
 	ret
 
 SetPalFunctions:
@@ -315,14 +315,14 @@ DeterminePaletteIDOutOfBattle:
 YellowIntroPaletteAction::
 	ld a, e
 	and a
-	jr nz, .asm_720bd
+	jr nz, .hasBlueColor
 	ld hl, PalPacket_Generic
 	ldh a, [hOnCGB]
 	and a
 	jp z, SendSGBPacket
 	jp InitCGBPalettes
 
-.asm_720bd
+.hasBlueColor
 	ld hl, PalPacket_PikachusBeach
 	ldh a, [hOnCGB]
 	and a
@@ -1059,7 +1059,7 @@ palPacketPointers:
 	dw wTrainerCardBlkPacket
 	dw BlkPacket_GameFreakIntro
 	dw wPalPacket
-	dw UnknownPacket_72751
+	dw BlkPacket_PikachusBeachTitle
 palPacketPointersEnd:
 
 CopySGBBorderTiles:
