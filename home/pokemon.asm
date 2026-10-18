@@ -255,14 +255,14 @@ HandlePartyMenuInput::
 	ld [wPartyMenuAnimMonEnabled], a
 	ld a, [wCurrentMenuItem]
 	ld [wPartyAndBillsPCSavedMenuItem], a
-	jr nz, .asm_1258
+	jr nz, .continue
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
 	callfar IsThisPartyMonStarterPikachu
-	jr nc, .asm_1258
+	jr nc, .continue
 	call CheckPikachuFollowingPlayer
-	jr nz, .asm_128f
-.asm_1258
+	jr nz, .pikachuNotFollowing
+.continue
 	pop af
 	call PlaceUnfilledArrowMenuCursor
 	ld b, a
@@ -290,9 +290,10 @@ HandlePartyMenuInput::
 	call BankswitchBack
 	and a
 	ret
-.asm_128f
+
+.pikachuNotFollowing
 	pop af
-	ld hl, PartyMenuText_12cc
+	ld hl, SleepingPikachuText1
 	call PrintText
 	xor a
 	ld [wMenuItemToSwap], a
@@ -318,7 +319,7 @@ HandlePartyMenuInput::
 	farcall SwitchPartyMon
 	jp HandlePartyMenuInput
 
-PartyMenuText_12cc::
+SleepingPikachuText1::
 	text_far _SleepingPikachuText1
 	text_end
 

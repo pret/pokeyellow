@@ -2211,7 +2211,7 @@ AnimationHideEnemyMonPic:
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
 
-Func_79929:
+AnimateSubstituteBreaking:
 	ld hl, wPlayerMonMinimized
 	ldh a, [hWhoseTurn]
 	and a

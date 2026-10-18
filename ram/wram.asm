@@ -1030,6 +1030,8 @@ wOptionsCursorLocation::
 NEXTU
 wTitleScreenScene:: db
 wTitleScreenTimer:: db
+wTitleScreenResetCounter:: dw
+wTitleScreenPikachuCry:: db
 ENDU
 
 ; 0 = neither

@@ -807,7 +807,7 @@ ItemUseEvoStone:
 	jr c, .canceledItemUse
 	ld a, b
 	ld [wCurPartySpecies], a
-	call Func_d85d
+	call CheckEvolveWithUsedStone
 	jr nc, .noEffect
 	callfar IsThisPartyMonStarterPikachu
 	jr nc, .notPlayerPikachu
@@ -846,7 +846,7 @@ ItemUseEvoStone:
 	pop af
 	ret
 
-Func_d85d:
+CheckEvolveWithUsedStone:
 	ld hl, EvosMovesPointerTable
 	ld a, [wLoadedMon]
 	dec a
@@ -855,16 +855,16 @@ Func_d85d:
 	add hl, bc
 	add hl, bc
 	ld de, wEvoDataBuffer
-	ld a, BANK(TryEvolvingMon)
-	ld bc, $2
+	ld a, BANK(EvosMovesPointerTable)
+	ld bc, 2
 	call FarCopyData
 	ld hl, wEvoDataBuffer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	ld de, wEvoDataBuffer
-	ld a, BANK(TryEvolvingMon)
-	ld bc, 13
+	ld a, BANK(EvosMovesPointerTable)
+	ld bc, wEvoDataBufferEnd - wEvoDataBuffer
 	call FarCopyData
 	ld hl, wEvoDataBuffer
 .loop
@@ -903,7 +903,7 @@ ItemUseVitamin:
 ItemUseMedicine:
 	ld a, [wPartyCount]
 	and a
-	jp z, Func_e4bf
+	jp z, ItemUseDontHavePokemon
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wCurItem]
@@ -1921,10 +1921,10 @@ ItemUsePokeFlute:
 	ld [hl], a
 	ld a, c
 	and SLP_MASK
-	jr z, .asm_e063
+	jr z, .noMonsAsleep
 	ld a, $1
 	ld [wWereAnyMonsAsleep], a
-.asm_e063
+.noMonsAsleep
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	ld a, [wWereAnyMonsAsleep]
 	and a ; were any pokemon asleep before playing the flute?
@@ -2560,7 +2560,7 @@ ItemUseNotYoursToUse:
 	ld hl, ItemUseNotYoursToUseText
 	jr ItemUseFailed
 
-Func_e4bf:
+ItemUseDontHavePokemon:
 	ld a, $2
 	ld [wActionResultOrTookBattleTurn], a
 	ld hl, DontHavePokemonText
