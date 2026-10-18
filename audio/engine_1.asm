@@ -158,14 +158,14 @@ Audio1_PlayNextNote:
 	res BIT_PITCH_SLIDE_ON, [hl]
 	res BIT_PITCH_SLIDE_DECREASING, [hl]
 	ld a, c
-	cp $4
-	jr nz, .asm_918c
+	cp NUM_MUSIC_CHANS
+	jr nz, .noiseChannel
 	ld a, [wLowHealthAlarm]
 	bit BIT_LOW_HEALTH_ALARM, a
-	jr z, .asm_918c
+	jr z, .noiseChannel
 	call Audio1_EnableChannelOutput
 	ret
-.asm_918c
+.noiseChannel
 	call Audio1_sound_ret
 	ret
 
@@ -962,14 +962,15 @@ Audio1_ApplyWavePatternAndFrequency:
 	inc hl
 	ld [hl], d ; store frequency high byte
 	ld a, c
-	cp $4
-	jr c, .asm_9642
+	cp NUM_MUSIC_CHANS
+	jr c, .noiseChannel
 	call Audio1_ApplyFrequencyModifier
-.asm_9642
+.noiseChannel
 	ret
-.asm_9643
+
+Audio1_ResetCryModifiers: ; unreferenced
 	ld a, c
-	cp $4
+	cp NUM_MUSIC_CHANS
 	ret nz
 	ld a, [wLowHealthAlarm]
 	bit BIT_LOW_HEALTH_ALARM, a

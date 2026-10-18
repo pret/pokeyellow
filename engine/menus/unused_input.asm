@@ -75,14 +75,14 @@ HandleMenuInputPokemonSelectionDuplicate: ; unreferenced
 PlaceMenuCursorDuplicate:
 	ld a, [wTopMenuItemY]
 	and a
-	jr z, .asm_f5ac0
+	jr z, .gotTopCoord
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH
 .loop
 	add hl, bc
 	dec a
 	jr nz, .loop
-.asm_f5ac0
+.gotTopCoord
 	ld a, [wTopMenuItemX]
 	ld b, $0
 	ld c, a
@@ -90,34 +90,34 @@ PlaceMenuCursorDuplicate:
 	push hl
 	ld a, [wLastMenuItem]
 	and a
-	jr z, .asm_f5ad5
+	jr z, .gotLastCursorCoord
 	ld bc, 2 * SCREEN_WIDTH
 .loop2
 	add hl, bc
 	dec a
 	jr nz, .loop2
-.asm_f5ad5
+.gotLastCursorCoord
 	ld a, [hl]
 	cp '▶'
-	jr nz, .asm_f5ade
+	jr nz, .notCursor
 	ld a, [wTileBehindCursor]
 	ld [hl], a
-.asm_f5ade
+.notCursor
 	pop hl
 	ld a, [wCurrentMenuItem]
 	and a
-	jr z, .asm_f5aec
+	jr z, .gotCurrentCursorCoord
 	ld bc, 2 * SCREEN_WIDTH
 .loop3
 	add hl, bc
 	dec a
 	jr nz, .loop3
-.asm_f5aec
+.gotCurrentCursorCoord
 	ld a, [hl]
 	cp '▶'
-	jr z, .asm_f5af4
+	jr z, .isCursor
 	ld [wTileBehindCursor], a
-.asm_f5af4
+.isCursor
 	ld a, '▶'
 	ld [hl], a
 	ld a, l

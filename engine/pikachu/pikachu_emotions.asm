@@ -1,4 +1,4 @@
-IsPlayerTalkingToPikachu::
+_IsPlayerTalkingToPikachu::
 	ld a, [wd435]
 	and a
 	ret z

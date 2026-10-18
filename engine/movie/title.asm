@@ -154,11 +154,11 @@ DisplayTitleScreen:
 	xor a
 	ld [wUnusedFlag], a
 	ld [wTitleScreenScene], a
-	ld [wTitleScreenScene + 1], a
-	ld [wTitleScreenScene + 2], a
-	ld [wTitleScreenScene + 3], a
-	ld a, $f
-	ld [wTitleScreenScene + 4], a
+	ld [wTitleScreenTimer], a
+	ld [wTitleScreenResetCounter], a
+	ld [wTitleScreenResetCounter + 1], a
+	ldpikacry a, PikachuCry16
+	ld [wTitleScreenPikachuCry], a
 .titleScreenLoop
 	call IncrementResetCounter
 	jp c, .doTitlescreenReset
@@ -207,25 +207,23 @@ ELSE
 	jp MainMenu
 ENDC
 
-.asm_42f0
-; unreferenced
+.printerDebug ; unreferenced
 	callfar PrinterDebug
 	jp .loop
 
-.asm_42fb
-; unreferenced
-	ld a, [wTitleScreenScene + 4]
+.incrementPikachuCry ; unreferenced
+	ld a, [wTitleScreenPikachuCry]
 	inc a
 	cp NUM_PIKA_CRIES
-	jr c, .asm_4305
+	jr c, .validPikachuCry
 	ldpikacry a, PikachuCry16
-.asm_4305
-	ld [wTitleScreenScene + 4], a
+.validPikachuCry
+	ld [wTitleScreenPikachuCry], a
 	ld e, a
 	callfar PlayPikachuSoundClip
 	xor a
-	ld [wTitleScreenScene + 2], a
-	ld [wTitleScreenScene + 3], a
+	ld [wTitleScreenResetCounter], a
+	ld [wTitleScreenResetCounter + 1], a
 	jp .titleScreenLoop
 
 .doTitlescreenReset
@@ -356,7 +354,7 @@ DebugNewGameRivalName:
 	db "SONY@"
 
 IncrementResetCounter:
-	ld hl, wTitleScreenScene + 2
+	ld hl, wTitleScreenResetCounter
 	ld e, [hl]
 	inc hl
 	ld d, [hl]

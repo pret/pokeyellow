@@ -209,16 +209,16 @@ OaksLabChoseStarterScript:
 	ret
 
 .RivalPushesPlayerAwayFromEeveeBall
-	db $00
+	db NPC_MOVEMENT_DOWN
 	db $07
 	db $07
 	db $07
-	db $FF
+	db -1 ; end
 
 OaksLabRivalTakesPokeballScript:
 	ld a, [wStatusFlags5]
 	bit BIT_SCRIPTED_NPC_MOVEMENT, a
-	jr nz, .asm_1c564
+	jr nz, .playerMovesAwayFromRival
 	ld a, TOGGLE_STARTER_BALL_1
 	ld [wToggleableObjectIndex], a
 	predef HideObject
@@ -242,7 +242,7 @@ OaksLabRivalTakesPokeballScript:
 	ld [wOaksLabCurScript], a
 	ret
 
-.asm_1c564
+.playerMovesAwayFromRival
 	ld a, [wYCoord]
 	cp 4
 	ret nz
@@ -262,20 +262,20 @@ OaksLabRivalTakesPokeballScript:
 OaksLabPlayerWalksToOakScript:
 	ld a, [wYCoord]
 	cp 4
-	jr z, .asm_1c599
+	jr z, .playerWalksToOak
 	ld a, $1
 	ld [wSimulatedJoypadStatesIndex], a
 	ld a, PAD_LEFT
 	ld [wSimulatedJoypadStatesEnd], a
-	jr .asm_1c5a6
+	jr .done
 
-.asm_1c599
+.playerWalksToOak
 	ld hl, wSimulatedJoypadStatesEnd
 	ld de, OaksLabRLE_PlayerWalksToOak
 	call DecodeRLEList
 	dec a
 	ld [wSimulatedJoypadStatesIndex], a
-.asm_1c5a6
+.done
 	call StartSimulatingJoypadStates
 	ld a, SCRIPT_OAKSLAB_PLAYER_RECEIVES_PIKACHU
 	ld [wOaksLabCurScript], a
@@ -286,7 +286,7 @@ OaksLabRLE_PlayerWalksToOak:
 	db PAD_LEFT, 3
 	db PAD_DOWN, 1
 	db PAD_LEFT, 1
-	db $FF
+	db -1 ; end
 
 OaksLabPlayerReceivesPikachuScript:
 	ld a, [wSimulatedJoypadStatesIndex]

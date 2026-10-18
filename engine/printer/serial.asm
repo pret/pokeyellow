@@ -198,17 +198,18 @@ Printer_CheckConnectionStatus:
 	ret nz
 	ld a, [wPrinterHandshake]
 	cp $ff
-	jr nz, .asm_e88dc
+	jr nz, .printer_connected
 	ld a, [wPrinterStatusFlags]
 	cp $ff
-	jr z, .asm_e88f8
-.asm_e88dc
+	jr z, .printer_error
+
+.printer_connected
 	ld a, [wPrinterHandshake]
 	cp $81
-	jr nz, .asm_e88f8
+	jr nz, .printer_error
 	ld a, [wPrinterStatusFlags]
 	cp $0
-	jr nz, .asm_e88f8
+	jr nz, .printer_error
 	ld hl, wPrinterConnectionOpen
 	set 1, [hl]
 	ld a, $5
@@ -216,7 +217,7 @@ Printer_CheckConnectionStatus:
 	call Printer_Next
 	ret
 
-.asm_e88f8
+.printer_error
 	ld a, $ff
 	ld [wPrinterHandshake], a
 	ld [wPrinterStatusFlags], a
@@ -230,18 +231,18 @@ Printer_TransmissionLoop:
 	ret nz
 	ld a, [wPrinterStatusFlags]
 	and $f0
-	jr nz, .asm_e8921
+	jr nz, .enter_wait_loop
 	ld a, [wPrinterStatusFlags]
 	and $1
-	jr nz, .asm_e891d
+	jr nz, .cycle_back
 	call Printer_Next
 	ret
 
-.asm_e891d
+.cycle_back
 	call Printer_Back
 	ret
 
-.asm_e8921
+.enter_wait_loop
 	ld a, $12
 	ld [wPrinterSendState], a
 	ret
