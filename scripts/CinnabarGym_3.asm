@@ -17,8 +17,8 @@ CinnabarGymPrintGymGuideText::
 	text_far _CinnabarGymGymGuideBeatBlaineText
 	text_end
 
-Func_f2150::
-	ld hl, TextPointers_f215d
+PrintCinnabarGymTrainerText::
+	ld hl, CinnabarGymTrainerTextPointers
 	ld d, 0
 	add hl, de
 	add hl, de
@@ -27,38 +27,38 @@ Func_f2150::
 	ld l, a
 	jp PrintText
 
-TextPointers_f215d:
-	dw CinnabarGymText_f2169
-	dw CinnabarGymText_f216e
-	dw CinnabarGymText_f2173
-	dw CinnabarGymText_f2178
-	dw CinnabarGymText_f217d
-	dw CinnabarGymText_f2182
+CinnabarGymTrainerTextPointers:
+	dw CinnabarGymText_1
+	dw CinnabarGymText_2
+	dw CinnabarGymText_3
+	dw CinnabarGymText_4
+	dw CinnabarGymText_5
+	dw CinnabarGymText_6
 
-CinnabarGymText_f2169:
+CinnabarGymText_1:
 	text_far _CinnabarGymText_1
 	text_end
 
-CinnabarGymText_f216e:
+CinnabarGymText_2:
 	text_far _CinnabarGymText_2
 	text_end
 
-CinnabarGymText_f2173:
+CinnabarGymText_3:
 	text_far _CinnabarGymText_3
 	text_end
 
-CinnabarGymText_f2178:
+CinnabarGymText_4:
 	text_far _CinnabarGymText_4
 	text_end
 
-CinnabarGymText_f217d:
+CinnabarGymText_5:
 	text_far _CinnabarGymText_5
 	text_end
 
-CinnabarGymText_f2182:
+CinnabarGymText_6:
 	text_far _CinnabarGymText_6
 	text_end
 
-CinnabarGymText_f2187:
-	text_far _CinnabarGymText_7 ; unused
+CinnabarGymText_7: ; unreferenced
+	text_far _CinnabarGymText_7
 	text_end
