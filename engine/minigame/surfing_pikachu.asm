@@ -2711,9 +2711,9 @@ SurfingPikachu_PlaceBCDNumber:
 	dec de
 	ret
 
-SurfingPikachu_Cosine: ; cosine
+SurfingPikachu_Cosine:
 	add $10
-SurfingPikachu_Sine: ; sine
+SurfingPikachu_Sine:
 	and $3f ; wrap the 64-step full sine cycle
 	cp $20 ; the second half-cycle is negative
 	jr nc, .positive

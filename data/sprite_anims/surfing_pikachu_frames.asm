@@ -1,200 +1,203 @@
 SurfingPikachuFrames:
-	dw .SingleTile ; unused
-	dw .SurfingAngle00
-	dw .SurfingAngle01
-	dw .SurfingAngle02
-	dw .SurfingAngle03
-	dw .SurfingAngle04
-	dw .SurfingAngle05
-	dw .SurfingAngle06
-	dw .SurfingAngle07
-	dw .SurfingAngle08
-	dw .SurfingAngle09
-	dw .SurfingAngle10
-	dw .SurfingAngle11
-	dw .SurfingAngle12
-	dw .SurfingAngle13
-	dw .SmallSplash
-	dw .LargeSplash
-	dw .StartText
-	dw .GoalText ; unused
-	dw .OhNoText
-	dw .WaterSpray
-	dw .Plus50Pts
-	dw .Plus150Pts
-	dw .Plus350Pts
-	dw .Plus750Pts ; unused
-	dw .Plus180Pts
-	dw .Plus500Pts
-	dw .IntroPikachu
+; entries correspond to SURFPIKA_FRAMESET_* constants (see constants/sprite_anim_constants.asm)
+	table_width 2
+	dw .Frameset_00 ; unused
+	dw .Frameset_SurfingAngle1
+	dw .Frameset_SurfingAngle2
+	dw .Frameset_SurfingAngle3
+	dw .Frameset_SurfingAngle4
+	dw .Frameset_SurfingAngle5
+	dw .Frameset_SurfingAngle6
+	dw .Frameset_SurfingAngle7
+	dw .Frameset_SurfingAngle8
+	dw .Frameset_SurfingAngle9
+	dw .Frameset_SurfingAngle10
+	dw .Frameset_SurfingAngle11
+	dw .Frameset_SurfingAngle12
+	dw .Frameset_SurfingAngle13
+	dw .Frameset_SurfingAngle14
+	dw .Frameset_SmallSplash
+	dw .Frameset_LargeSplash
+	dw .Frameset_StartText
+	dw .Frameset_GoalText ; unused
+	dw .Frameset_OhNoText
+	dw .Frameset_WaterSpray
+	dw .Frameset_Plus50Pts
+	dw .Frameset_Plus150Pts
+	dw .Frameset_Plus350Pts
+	dw .Frameset_Plus750Pts ; unused
+	dw .Frameset_Plus180Pts
+	dw .Frameset_Plus500Pts
+	dw .Frameset_IntroPikachu
+	assert_table_length NUM_SURFPIKA_FRAMESETS
 
-.SingleTile:
-	frame $00, 32
+.Frameset_00:
+	frame SURFPIKA_OAMSET_00, 32
 	endanim
 
-.SurfingAngle00:
-	frame $01, 8
-	frame $02, 8
+.Frameset_SurfingAngle1:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_1_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_1_2, 8
 	dorestart
 
-.SurfingAngle01:
-	frame $03, 8
-	frame $04, 8
+.Frameset_SurfingAngle2:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_2_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_2_2, 8
 	dorestart
 
-.SurfingAngle02:
-	frame $05, 8
-	frame $06, 8
+.Frameset_SurfingAngle3:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_3_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_3_2, 8
 	dorestart
 
-.SurfingAngle03:
-	frame $07, 8
-	frame $08, 8
+.Frameset_SurfingAngle4:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_4_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_4_2, 8
 	dorestart
 
-.SurfingAngle04:
-	frame $09, 8
-	frame $0a, 8
+.Frameset_SurfingAngle5:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_5_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_5_2, 8
 	dorestart
 
-.SurfingAngle05:
-	frame $0b, 8
-	frame $0c, 8
+.Frameset_SurfingAngle6:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_6_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_6_2, 8
 	dorestart
 
-.SurfingAngle06:
-	frame $0d, 8
-	frame $0e, 8
+.Frameset_SurfingAngle7:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_7_1, 8
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_7_2, 8
 	dorestart
 
-.SurfingAngle07:
-	frame $01, 8, OAM_XFLIP, OAM_YFLIP
-	frame $02, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle8:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_1_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_1_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle08:
-	frame $03, 8, OAM_XFLIP, OAM_YFLIP
-	frame $04, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle9:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_2_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_2_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle09:
-	frame $05, 8, OAM_XFLIP, OAM_YFLIP
-	frame $06, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle10:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_3_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_3_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle10:
-	frame $07, 8, OAM_XFLIP, OAM_YFLIP
-	frame $08, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle11:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_4_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_4_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle11:
-	frame $09, 8, OAM_XFLIP, OAM_YFLIP
-	frame $0a, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle12:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_5_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_5_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle12:
-	frame $0b, 8, OAM_XFLIP, OAM_YFLIP
-	frame $0c, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle13:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_6_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_6_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SurfingAngle13:
-	frame $0d, 8, OAM_XFLIP, OAM_YFLIP
-	frame $0e, 8, OAM_XFLIP, OAM_YFLIP
+.Frameset_SurfingAngle14:
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_7_1, 8, OAM_XFLIP, OAM_YFLIP
+	frame SURFPIKA_OAMSET_SURFING_ANGLE_7_2, 8, OAM_XFLIP, OAM_YFLIP
 	dorestart
 
-.SmallSplash:
-	frame $11, 7
-	frame $12, 7
+.Frameset_SmallSplash:
+	frame SURFPIKA_OAMSET_SMALL_SPLASH_1, 7
+	frame SURFPIKA_OAMSET_SMALL_SPLASH_2, 7
 	dorestart
 
-.LargeSplash:
-	frame $13, 2
-	frame $14, 2
+.Frameset_LargeSplash:
+	frame SURFPIKA_OAMSET_BIG_SPLASH_1, 2
+	frame SURFPIKA_OAMSET_BIG_SPLASH_2, 2
 	dorepeat 8
-	frame $15, 2
+	frame SURFPIKA_OAMSET_BIG_SPLASH_3, 2
 	endanim
 
-.StartText:
-	frame $16, 32
-	frame $16, 32
+.Frameset_StartText:
+	frame SURFPIKA_OAMSET_START_TEXT, 32
+	frame SURFPIKA_OAMSET_START_TEXT, 32
 	delanim
 
-.GoalText:
-	frame $17, 32
-	frame $17, 32
+.Frameset_GoalText:
+	frame SURFPIKA_OAMSET_GOAL_TEXT, 32
+	frame SURFPIKA_OAMSET_GOAL_TEXT, 32
 	delanim
 
-.OhNoText:
-	frame $18, 32
+.Frameset_OhNoText:
+	frame SURFPIKA_OAMSET_OH_NO_TEXT, 32
 	endanim
 
-.Plus50Pts:
-	frame $1a, 4
+.Frameset_Plus50Pts:
+	frame SURFPIKA_OAMSET_PLUS_50_POINTS, 4
 	dorepeat 1
-	frame $1a, 3
+	frame SURFPIKA_OAMSET_PLUS_50_POINTS, 3
 	dorepeat 1
-	frame $1a, 2
+	frame SURFPIKA_OAMSET_PLUS_50_POINTS, 2
 	dorepeat 1
-	frame $1a, 1
+	frame SURFPIKA_OAMSET_PLUS_50_POINTS, 1
 	delanim
 
-.Plus150Pts:
-	frame $1b, 4
+.Frameset_Plus150Pts:
+	frame SURFPIKA_OAMSET_PLUS_150_POINTS, 4
 	dorepeat 1
-	frame $1b, 3
+	frame SURFPIKA_OAMSET_PLUS_150_POINTS, 3
 	dorepeat 1
-	frame $1b, 2
+	frame SURFPIKA_OAMSET_PLUS_150_POINTS, 2
 	dorepeat 1
-	frame $1b, 1
+	frame SURFPIKA_OAMSET_PLUS_150_POINTS, 1
 	delanim
 
-.Plus350Pts:
-	frame $1c, 4
+.Frameset_Plus350Pts:
+	frame SURFPIKA_OAMSET_PLUS_350_POINTS, 4
 	dorepeat 1
-	frame $1c, 3
+	frame SURFPIKA_OAMSET_PLUS_350_POINTS, 3
 	dorepeat 1
-	frame $1c, 2
+	frame SURFPIKA_OAMSET_PLUS_350_POINTS, 2
 	dorepeat 1
-	frame $1c, 1
+	frame SURFPIKA_OAMSET_PLUS_350_POINTS, 1
 	delanim
 
-.Plus750Pts:
-	frame $1d, 4
+.Frameset_Plus750Pts:
+	frame SURFPIKA_OAMSET_PLUS_750_POINTS, 4
 	dorepeat 1
-	frame $1d, 3
+	frame SURFPIKA_OAMSET_PLUS_750_POINTS, 3
 	dorepeat 1
-	frame $1d, 2
+	frame SURFPIKA_OAMSET_PLUS_750_POINTS, 2
 	dorepeat 1
-	frame $1d, 1
+	frame SURFPIKA_OAMSET_PLUS_750_POINTS, 1
 	delanim
 
-.Plus180Pts:
-	frame $1e, 4
+.Frameset_Plus180Pts:
+	frame SURFPIKA_OAMSET_PLUS_180_POINTS, 4
 	dorepeat 1
-	frame $1e, 3
+	frame SURFPIKA_OAMSET_PLUS_180_POINTS, 3
 	dorepeat 1
-	frame $1e, 2
+	frame SURFPIKA_OAMSET_PLUS_180_POINTS, 2
 	dorepeat 1
-	frame $1e, 1
+	frame SURFPIKA_OAMSET_PLUS_180_POINTS, 1
 	delanim
 
-.Plus500Pts:
-	frame $1f, 4
+.Frameset_Plus500Pts:
+	frame SURFPIKA_OAMSET_PLUS_500_POINTS, 4
 	dorepeat 1
-	frame $1f, 3
+	frame SURFPIKA_OAMSET_PLUS_500_POINTS, 3
 	dorepeat 1
-	frame $1f, 2
+	frame SURFPIKA_OAMSET_PLUS_500_POINTS, 2
 	dorepeat 1
-	frame $1f, 1
+	frame SURFPIKA_OAMSET_PLUS_500_POINTS, 1
 	delanim
 
-.WaterSpray:
-	frame $19, 1
+.Frameset_WaterSpray:
+	frame SURFPIKA_OAMSET_WATER_SPRAY, 1
 	delanim
 
-.IntroPikachu:
-	frame $20, 7
-	frame $21, 7
-	frame $22, 7
-	frame $23, 7
+.Frameset_IntroPikachu:
+	frame SURFPIKA_OAMSET_INTRO_PIKACHU_1, 7
+	frame SURFPIKA_OAMSET_INTRO_PIKACHU_2, 7
+	frame SURFPIKA_OAMSET_INTRO_PIKACHU_3, 7
+	frame SURFPIKA_OAMSET_INTRO_PIKACHU_4, 7
 	dorestart

@@ -999,50 +999,50 @@ Pikachu_LoadCurrentMapViewUpdateSpritesAndDelay3:
 	call Delay3
 	ret
 
-Cosine_e: ; cosine?
+Cosine_e: 
 	ld a, e
 	add $10
-	jr asm_fd908
+	jr Wave_e
 
-Sine_e: ; sine?
+Sine_e:
 	ld a, e
-asm_fd908:
-	and $3f
-	cp $20
-	jr nc, .asm_fd913
-	call GetSine
+Wave_e:
+	and $3f ; wrap the 64-step full sine cycle
+	cp $20 ; the second half-cycle is negative
+	jr nc, .positive
+	call .GetSine
 	ld a, h
 	ret
 
-.asm_fd913
-	and $1f
-	call GetSine
+.positive
+	and $1f ; index the 32-entry half-wave table
+	call .GetSine
 	ld a, h
 	cpl
 	inc a
 	ret
 
-GetSine:
+.GetSine:
 	ld e, a
 	ld a, d
 	ld d, 0
-	ld hl, SineWave_3f
+	ld hl, .SineWave
 	add hl, de
 	add hl, de
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
 	ld hl, 0
-.asm_fd92b
+.loop
 	srl a
-	jr nc, .asm_fd930
+	jr nc, .noAdd
 	add hl, de
-.asm_fd930
+.noAdd
 	sla e
 	rl d
 	and a
-	jr nz, .asm_fd92b
+	jr nz, .loop
 	ret
 
-SineWave_3f:
+.SineWave:
 	sine_table 32
