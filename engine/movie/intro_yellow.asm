@@ -131,7 +131,7 @@ YellowIntroScene0:
 	xor a
 	ldh [hLCDCPointer], a
 	lb de, $58, $58
-	ld a, $1
+	ld a, INTRO_FRAMESET_PIKACHU_FAR
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	ldh [hSCX], a
@@ -170,7 +170,7 @@ YellowIntroScene2:
 	call Bank3E_FillMemory
 	call YellowIntroScene2_PlaceGraphic
 	lb de, $58, $b8 ; overloaded
-	ld a, $4 ; overloaded
+	ld a, INTRO_FRAMESET_PIKACHU_UNUSED ; overloaded
 	call LoadYellowIntroFlyingSpeedBars
 	ld a, $1
 	call YellowIntro_PrepareNextScenePalette
@@ -227,7 +227,7 @@ LoadYellowIntroFlyingSpeedBars:
 	ld hl, YellowIntroFlyingSpeedBarData
 	ld a, $8
 .loop
-; Spawn object $8 at indicated coordinates with indicated speeds
+; Spawn speed bar object at indicated coordinates with indicated speeds
 	push af
 	ld e, [hl]
 	inc hl
@@ -236,7 +236,7 @@ LoadYellowIntroFlyingSpeedBars:
 	ld a, [hli]
 	push hl
 	push af
-	ld a, $8
+	ld a, INTRO_FRAMESET_SPEED_BAR
 	call SpawnAnimatedObject
 	pop af
 	ld hl, $b
@@ -306,7 +306,7 @@ YellowIntroScene4:
 	ldh [hLCDCPointer], a
 	call Func_f9e5f
 	lb de, $58, $58
-	ld a, $2
+	ld a, INTRO_FRAMESET_PIKACHU_MID
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call YellowIntro_PrepareNextScenePalette
@@ -335,19 +335,19 @@ YellowIntroScene6:
 	ld hl, $9860
 	ld c, $10
 	ld a, $20
-.asm_f9a8b
+.loop
 	ld [hli], a
 	inc a
 	ld [hli], a
 	dec a
 	dec c
-	jr nz, .asm_f9a8b
+	jr nz, .loop
 	ld hl, $9880
 	ld bc, $300
 	ld a, $10
 	call Bank3E_FillMemory
 	lb de, $40, $f8
-	ld a, $5
+	ld a, INTRO_FRAMESET_PIKACHU_SURFING
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
 	call YellowIntro_PrepareNextScenePalette
@@ -390,7 +390,7 @@ YellowIntroScene8:
 	ldh [hLCDCPointer], a
 	call Func_f9e5f
 	lb de, $58, $58
-	ld a, $3
+	ld a, INTRO_FRAMESET_PIKACHU_NEAR
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call YellowIntro_PrepareNextScenePalette
@@ -432,7 +432,7 @@ YellowIntroScene10:
 	lb bc, 2, 2
 	call .FillBGMapBox
 	lb de, $98, $58
-	ld a, $6
+	ld a, INTRO_FRAMESET_PIKACHU_FLYING
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	ld a, $1
 	call YellowIntro_PrepareNextScenePalette
@@ -541,7 +541,7 @@ YellowIntroScene12:
 	ld hl, $99a5 ; (5, 5)
 	ld [hl], $0
 	lb de, $60, $58
-	ld a, $9
+	ld a, INTRO_FRAMESET_PIKACHU_EYES
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	xor a
 	call YellowIntro_PrepareNextScenePalette
@@ -553,7 +553,7 @@ YellowIntroScene13:
 	call YellowIntro_CheckFrameTimerDecrement
 	ret nc
 	lb de, $68, $58
-	ld a, $a
+	ld a, INTRO_FRAMESET_CHEEK_SPARKS
 	call SpawnAnimatedObject
 	call YellowIntro_NextScene
 	ret
@@ -599,7 +599,7 @@ YellowIntroScene14:
 	call UpdateCGBPal_BGP
 	call UpdateCGBPal_OBP0
 	lb de, $58, $58
-	ld a, $7
+	ld a, INTRO_FRAMESET_PIKACHU_THUNDER
 	call YellowIntro_SpawnAnimatedObjectAndSavePointer
 	call YellowIntro_NextScene
 	ld a, $28
@@ -702,12 +702,12 @@ YellowIntro_CheckFrameTimerDecrement:
 	ld hl, wYellowIntroSceneTimer
 	ld a, [hl]
 	and a
-	jr z, .asm_f9e4b
+	jr z, .expired
 	dec [hl]
 	and a
 	ret
 
-.asm_f9e4b
+.expired
 	vc_hook Stop_reducing_intro_scene_flashing_0F
 	scf
 	ret
@@ -722,11 +722,11 @@ YellowIntro_LoadDMGPalAndIncrementCounter:
 	add hl, de
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_f9e5d
+	jr z, .expired
 	and a
 	ret
 
-.asm_f9e5d
+.expired
 	scf
 	ret
 
@@ -1015,7 +1015,7 @@ Func_fa051:
 	ld a, [hl]
 	inc [hl]
 	ld d, $8
-	call Func_fa079
+	call Intro_Sine
 	ld hl, $7
 	add hl, bc
 	ld [hl], a
@@ -1041,47 +1041,47 @@ Func_fa06e:
 	ld l, a
 	ret
 
-Func_fa077: ; cosine
+Intro_Cosine:
 	add $10
-Func_fa079:
-	and $3f
-	cp $20
-	jr nc, .asm_fa084
-	call Func_fa08e
+Intro_Sine:
+	and $3f ; wrap the 64-step full sine cycle
+	cp $20 ; the second half-cycle is negative
+	jr nc, .positive
+	call .GetSine
 	ld a, h
 	ret
 
-.asm_fa084
-	and $1f
-	call Func_fa08e
+.positive
+	and $1f ; index the 32-entry half-wave table
+	call .GetSine
 	ld a, h
 	xor $ff
 	inc a
 	ret
 
-Func_fa08e:
+.GetSine:
 	ld e, a
 	ld a, d
 	ld d, $0
-	ld hl, Unkn_fa0aa
+	ld hl, .SineWave
 	add hl, de
 	add hl, de
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
 	ld hl, $0
-.asm_fa09d
+.loop
 	srl a
-	jr nc, .asm_fa0a2
+	jr nc, .noAdd
 	add hl, de
-.asm_fa0a2
+.noAdd
 	sla e
 	rl d
 	and a
-	jr nz, .asm_fa09d
+	jr nz, .loop
 	ret
 
-Unkn_fa0aa:
+.SineWave:
 	sine_table 32
 
 INCLUDE "data/sprite_anims/intro_frames.asm"

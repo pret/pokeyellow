@@ -1,165 +1,169 @@
 YellowIntro_AnimatedObjectOAMData:
-	dbw $00, Unkn_fa179
-	dbw $96, Unkn_fa17e
-	dbw $98, Unkn_fa17e
-	dbw $9a, Unkn_fa17e
-	dbw $0c, Unkn_fa18f
-	dbw $0e, Unkn_fa18f
-	dbw $3c, Unkn_fa18f
-	dbw $60, Unkn_fa1b0
-	dbw $70, Unkn_fa1b0
-	dbw $80, Unkn_fa1b0
-	dbw $90, Unkn_fa201
-	dbw $00, Unkn_fa201
-	dbw $06, Unkn_fa201
-	dbw $c6, Unkn_fa292
-	dbw $6d, Unkn_fa2f7
-	dbw $f0, Unkn_fa308
-	dbw $f4, Unkn_fa308
-	dbw $f8, Unkn_fa308
-	dbw $9c, Unkn_fa329
-	dbw $ec, Unkn_fa329
+; entries correspond to INTRO_OAMSET_* constants (see constants/sprite_anim_constants.asm)
+	table_width 3
+	dbw $00, .OAMData_1x1            ; INTRO_OAMSET_00
+	dbw $96, .OAMData_PikachuFar     ; INTRO_OAMSET_PIKACHU_FAR_1
+	dbw $98, .OAMData_PikachuFar     ; INTRO_OAMSET_PIKACHU_FAR_2
+	dbw $9a, .OAMData_PikachuFar     ; INTRO_OAMSET_PIKACHU_FAR_3
+	dbw $0c, .OAMData_PikachuMid     ; INTRO_OAMSET_PIKACHU_MID_1
+	dbw $0e, .OAMData_PikachuMid     ; INTRO_OAMSET_PIKACHU_MID_2
+	dbw $3c, .OAMData_PikachuMid     ; INTRO_OAMSET_PIKACHU_MID_3
+	dbw $60, .OAMData_PikachuNear    ; INTRO_OAMSET_PIKACHU_NEAR_1
+	dbw $70, .OAMData_PikachuNear    ; INTRO_OAMSET_PIKACHU_NEAR_2
+	dbw $80, .OAMData_PikachuNear    ; INTRO_OAMSET_PIKACHU_NEAR_3
+	dbw $90, .OAMData_PikachuSurfFly ; INTRO_OAMSET_PIKACHU_UNUSED
+	dbw $00, .OAMData_PikachuSurfFly ; INTRO_OAMSET_PIKACHU_SURFING
+	dbw $06, .OAMData_PikachuSurfFly ; INTRO_OAMSET_PIKACHU_FLYING
+	dbw $c6, .OAMData_PikachuThunder ; INTRO_OAMSET_PIKACHU_THUNDER
+	dbw $6d, .OAMData_SpeedBar       ; INTRO_OAMSET_SPEED_BAR
+	dbw $f0, .OAMData_PikachuEyes    ; INTRO_OAMSET_PIKACHU_EYES_1
+	dbw $f4, .OAMData_PikachuEyes    ; INTRO_OAMSET_PIKACHU_EYES_2
+	dbw $f8, .OAMData_PikachuEyes    ; INTRO_OAMSET_PIKACHU_EYES_3
+	dbw $9c, .OAMData_CheekSparks    ; INTRO_OAMSET_CHEEK_SPARKS_1
+	dbw $ec, .OAMData_CheekSparks    ; INTRO_OAMSET_CHEEK_SPARKS_2
+	assert_table_length NUM_INTRO_OAMSETS
 
-Unkn_fa179:
+.OAMData_1x1:
 	db 1
-	db $fc, $fc, $00, $00
-Unkn_fa17e:
+	db  -4,  -4, $00, 0
+
+.OAMData_PikachuFar:
 	db 4
-	db $f8, $f8, $00, $00
-	db $f8, $00, $01, $00
-	db $00, $f8, $10, $00
-	db $00, $00, $11, $00
+	db  -8,  -8, $00, 0
+	db  -8,   0, $01, 0
+	db   0,  -8, $10, 0
+	db   0,   0, $11, 0
 
-Unkn_fa18f:
+.OAMData_PikachuMid:
 	db 8
-	db $f0, $f8, $00, $00
-	db $f0, $00, $01, $00
-	db $f8, $f8, $10, $00
-	db $f8, $00, $11, $00
-	db $00, $f8, $20, $00
-	db $00, $00, $20, $20
-	db $08, $f8, $21, $00
-	db $08, $00, $21, $20
+	db -16,  -8, $00, 0
+	db -16,   0, $01, 0
+	db  -8,  -8, $10, 0
+	db  -8,   0, $11, 0
+	db   0,  -8, $20, 0
+	db   0,   0, $20, OAM_XFLIP
+	db   8,  -8, $21, 0
+	db   8,   0, $21, OAM_XFLIP
 
-Unkn_fa1b0:
+.OAMData_PikachuNear:
 	db 20
-	db $e8, $f8, $00, $00
-	db $e8, $00, $01, $00
-	db $f0, $f8, $02, $00
-	db $f0, $00, $03, $00
-	db $f8, $f0, $04, $00
-	db $f8, $f8, $05, $00
-	db $f8, $00, $06, $00
-	db $f8, $08, $04, $20
-	db $00, $f0, $07, $00
-	db $00, $f8, $08, $00
-	db $00, $00, $08, $20
-	db $00, $08, $07, $20
-	db $08, $f0, $09, $00
-	db $08, $f8, $0a, $00
-	db $08, $00, $0a, $20
-	db $08, $08, $09, $20
-	db $10, $f0, $0b, $00
-	db $10, $f8, $0c, $00
-	db $10, $00, $0c, $20
-	db $10, $08, $0b, $20
+	db -24,  -8, $00, 0
+	db -24,   0, $01, 0
+	db -16,  -8, $02, 0
+	db -16,   0, $03, 0
+	db  -8, -16, $04, 0
+	db  -8,  -8, $05, 0
+	db  -8,   0, $06, 0
+	db  -8,   8, $04, OAM_XFLIP
+	db   0, -16, $07, 0
+	db   0,  -8, $08, 0
+	db   0,   0, $08, OAM_XFLIP
+	db   0,   8, $07, OAM_XFLIP
+	db   8, -16, $09, 0
+	db   8,  -8, $0a, 0
+	db   8,   0, $0a, OAM_XFLIP
+	db   8,   8, $09, OAM_XFLIP
+	db  16, -16, $0b, 0
+	db  16,  -8, $0c, 0
+	db  16,   0, $0c, OAM_XFLIP
+	db  16,   8, $0b, OAM_XFLIP
 
-Unkn_fa201:
+.OAMData_PikachuSurfFly:
 	db 36
-	db $e8, $e8, $00, $00
-	db $e8, $f0, $01, $00
-	db $e8, $f8, $02, $00
-	db $e8, $00, $03, $00
-	db $e8, $08, $04, $00
-	db $e8, $10, $05, $00
-	db $f0, $e8, $10, $00
-	db $f0, $f0, $11, $00
-	db $f0, $f8, $12, $00
-	db $f0, $00, $13, $00
-	db $f0, $08, $14, $00
-	db $f0, $10, $15, $00
-	db $f8, $e8, $20, $00
-	db $f8, $f0, $21, $00
-	db $f8, $f8, $22, $00
-	db $f8, $00, $23, $00
-	db $f8, $08, $24, $00
-	db $f8, $10, $25, $00
-	db $00, $e8, $30, $00
-	db $00, $f0, $31, $00
-	db $00, $f8, $32, $00
-	db $00, $00, $33, $00
-	db $00, $08, $34, $00
-	db $00, $10, $35, $00
-	db $08, $e8, $40, $00
-	db $08, $f0, $41, $00
-	db $08, $f8, $42, $00
-	db $08, $00, $43, $00
-	db $08, $08, $44, $00
-	db $08, $10, $45, $00
-	db $10, $e8, $50, $00
-	db $10, $f0, $51, $00
-	db $10, $f8, $52, $00
-	db $10, $00, $53, $00
-	db $10, $08, $54, $00
-	db $10, $10, $55, $00
+	db -24, -24, $00, 0
+	db -24, -16, $01, 0
+	db -24,  -8, $02, 0
+	db -24,   0, $03, 0
+	db -24,   8, $04, 0
+	db -24,  16, $05, 0
+	db -16, -24, $10, 0
+	db -16, -16, $11, 0
+	db -16,  -8, $12, 0
+	db -16,   0, $13, 0
+	db -16,   8, $14, 0
+	db -16,  16, $15, 0
+	db  -8, -24, $20, 0
+	db  -8, -16, $21, 0
+	db  -8,  -8, $22, 0
+	db  -8,   0, $23, 0
+	db  -8,   8, $24, 0
+	db  -8,  16, $25, 0
+	db   0, -24, $30, 0
+	db   0, -16, $31, 0
+	db   0,  -8, $32, 0
+	db   0,   0, $33, 0
+	db   0,   8, $34, 0
+	db   0,  16, $35, 0
+	db   8, -24, $40, 0
+	db   8, -16, $41, 0
+	db   8,  -8, $42, 0
+	db   8,   0, $43, 0
+	db   8,   8, $44, 0
+	db   8,  16, $45, 0
+	db  16, -24, $50, 0
+	db  16, -16, $51, 0
+	db  16,  -8, $52, 0
+	db  16,   0, $53, 0
+	db  16,   8, $54, 0
+	db  16,  16, $55, 0
 
-Unkn_fa292:
+.OAMData_PikachuThunder:
 	db 25
-	db $ec, $f0, $00, $00
-	db $ec, $f8, $01, $00
-	db $ec, $00, $02, $00
-	db $ec, $08, $03, $00
-	db $ec, $10, $04, $00
-	db $f4, $f0, $05, $00
-	db $f4, $f8, $06, $00
-	db $f4, $00, $07, $00
-	db $f4, $08, $08, $00
-	db $f4, $10, $09, $00
-	db $fc, $f0, $10, $00
-	db $fc, $f8, $11, $00
-	db $fc, $00, $12, $00
-	db $fc, $08, $13, $00
-	db $fc, $10, $14, $00
-	db $04, $f0, $15, $00
-	db $04, $f8, $16, $00
-	db $04, $00, $17, $00
-	db $04, $08, $18, $00
-	db $04, $10, $19, $00
-	db $0c, $f0, $20, $00
-	db $0c, $f8, $21, $00
-	db $0c, $00, $22, $00
-	db $0c, $08, $23, $00
-	db $0c, $10, $24, $00
+	db -20, -16, $00, 0
+	db -20,  -8, $01, 0
+	db -20,   0, $02, 0
+	db -20,   8, $03, 0
+	db -20,  16, $04, 0
+	db -12, -16, $05, 0
+	db -12,  -8, $06, 0
+	db -12,   0, $07, 0
+	db -12,   8, $08, 0
+	db -12,  16, $09, 0
+	db  -4, -16, $10, 0
+	db  -4,  -8, $11, 0
+	db  -4,   0, $12, 0
+	db  -4,   8, $13, 0
+	db  -4,  16, $14, 0
+	db   4, -16, $15, 0
+	db   4,  -8, $16, 0
+	db   4,   0, $17, 0
+	db   4,   8, $18, 0
+	db   4,  16, $19, 0
+	db  12, -16, $20, 0
+	db  12,  -8, $21, 0
+	db  12,   0, $22, 0
+	db  12,   8, $23, 0
+	db  12,  16, $24, 0
 
-Unkn_fa2f7:
+.OAMData_SpeedBar:
 	db 4
-	db $fc, $f0, $00, $00
-	db $fc, $f8, $01, $00
-	db $fc, $00, $01, $20
-	db $fc, $08, $00, $20
+	db  -4, -16, $00, 0
+	db  -4,  -8, $01, 0
+	db  -4,   0, $01, OAM_XFLIP
+	db  -4,   8, $00, OAM_XFLIP
 
-Unkn_fa308:
+.OAMData_PikachuEyes:
 	db 8
-	db $f8, $e8, $00, $10
-	db $f8, $f0, $01, $10
-	db $00, $e8, $02, $10
-	db $00, $f0, $03, $10
-	db $f8, $08, $01, $30
-	db $f8, $10, $00, $30
-	db $00, $08, $03, $30
-	db $00, $10, $02, $30
+	db  -8, -24, $00, OAM_PAL1
+	db  -8, -16, $01, OAM_PAL1
+	db   0, -24, $02, OAM_PAL1
+	db   0, -16, $03, OAM_PAL1
+	db  -8,   8, $01, OAM_PAL1 | OAM_XFLIP
+	db  -8,  16, $00, OAM_PAL1 | OAM_XFLIP
+	db   0,   8, $03, OAM_PAL1 | OAM_XFLIP
+	db   0,  16, $02, OAM_PAL1 | OAM_XFLIP
 
-Unkn_fa329:
+.OAMData_CheekSparks:
 	db 12
-	db $f8, $d8, $00, $10
-	db $f8, $e0, $01, $10
-	db $f8, $e8, $02, $10
-	db $00, $d8, $10, $10
-	db $00, $e0, $11, $10
-	db $00, $e8, $12, $10
-	db $f8, $10, $02, $30
-	db $f8, $18, $01, $30
-	db $f8, $20, $00, $30
-	db $00, $10, $12, $30
-	db $00, $18, $11, $30
-	db $00, $20, $10, $30
+	db  -8, -40, $00, OAM_PAL1
+	db  -8, -32, $01, OAM_PAL1
+	db  -8, -24, $02, OAM_PAL1
+	db   0, -40, $10, OAM_PAL1
+	db   0, -32, $11, OAM_PAL1
+	db   0, -24, $12, OAM_PAL1
+	db  -8,  16, $02, OAM_PAL1 | OAM_XFLIP
+	db  -8,  24, $01, OAM_PAL1 | OAM_XFLIP
+	db  -8,  32, $00, OAM_PAL1 | OAM_XFLIP
+	db   0,  16, $12, OAM_PAL1 | OAM_XFLIP
+	db   0,  24, $11, OAM_PAL1 | OAM_XFLIP
+	db   0,  32, $10, OAM_PAL1 | OAM_XFLIP

@@ -1,70 +1,73 @@
 YellowIntro_AnimatedObjectFramesData:
-	dw Unkn_fa100
-	dw Unkn_fa103
-	dw Unkn_fa10a
-	dw Unkn_fa111
-	dw Unkn_fa118
-	dw Unkn_fa11b
-	dw Unkn_fa11e
-	dw Unkn_fa121
-	dw Unkn_fa124
-	dw Unkn_fa127
-	dw Unkn_fa138
+; entries correspond to INTRO_FRAMESET_* constants (see constants/sprite_anim_constants.asm)
+	table_width 2
+	dw .Frameset_00
+	dw .Frameset_PikachuFar
+	dw .Frameset_PikachuMid
+	dw .Frameset_PikachuNear
+	dw .Frameset_PikachuUnused
+	dw .Frameset_PikachuSurfing
+	dw .Frameset_PikachuFlying
+	dw .Frameset_PikachuThunder
+	dw .Frameset_SpeedBar
+	dw .Frameset_PikachuEyes
+	dw .Frameset_CheekSparks
+	assert_table_length NUM_INTRO_FRAMESETS
 
-Unkn_fa100:
-	frame $00, 32
+.Frameset_00:
+	frame INTRO_OAMSET_00, 32
 	endanim
 
-Unkn_fa103:
-	frame $01, 4
-	frame $02, 4
-	frame $03, 4
+.Frameset_PikachuFar:
+	frame INTRO_OAMSET_PIKACHU_FAR_1, 4
+	frame INTRO_OAMSET_PIKACHU_FAR_2, 4
+	frame INTRO_OAMSET_PIKACHU_FAR_3, 4
 	dorestart
 
-Unkn_fa10a:
-	frame $04, 4
-	frame $05, 4
-	frame $06, 4
+.Frameset_PikachuMid:
+	frame INTRO_OAMSET_PIKACHU_MID_1, 4
+	frame INTRO_OAMSET_PIKACHU_MID_2, 4
+	frame INTRO_OAMSET_PIKACHU_MID_3, 4
 	dorestart
 
-Unkn_fa111:
-	frame $07, 4
-	frame $08, 4
-	frame $09, 4
+.Frameset_PikachuNear:
+	frame INTRO_OAMSET_PIKACHU_NEAR_1, 4
+	frame INTRO_OAMSET_PIKACHU_NEAR_2, 4
+	frame INTRO_OAMSET_PIKACHU_NEAR_3, 4
 	dorestart
 
-Unkn_fa118:
-	frame $0a, 32
+.Frameset_PikachuUnused:
+	frame INTRO_OAMSET_PIKACHU_UNUSED, 32
 	endanim
 
-Unkn_fa11b:
-	frame $0b, 32
+.Frameset_PikachuSurfing:
+	frame INTRO_OAMSET_PIKACHU_SURFING, 32
 	endanim
 
-Unkn_fa11e:
-	frame $0c, 32
+.Frameset_PikachuFlying:
+	frame INTRO_OAMSET_PIKACHU_FLYING, 32
 	endanim
 
-Unkn_fa121:
-	frame $0d, 32
+.Frameset_PikachuThunder:
+	frame INTRO_OAMSET_PIKACHU_THUNDER, 32
 	endanim
 
-Unkn_fa124:
-	frame $0e, 32
+.Frameset_SpeedBar:
+	frame INTRO_OAMSET_SPEED_BAR, 32
 	endanim
 
-Unkn_fa127:
-	frame $0f, 31
-	frame $11, 2
-	frame $0f, 2
-	frame $11, 2
-	frame $0f, 31
-	frame $11, 2
-	frame $0f, 23
-	frame $10, 32
+.Frameset_PikachuEyes:
+	frame INTRO_OAMSET_PIKACHU_EYES_1, 31
+	frame INTRO_OAMSET_PIKACHU_EYES_3, 2
+	frame INTRO_OAMSET_PIKACHU_EYES_1, 2
+	frame INTRO_OAMSET_PIKACHU_EYES_3, 2
+	frame INTRO_OAMSET_PIKACHU_EYES_1, 31
+	frame INTRO_OAMSET_PIKACHU_EYES_3, 2
+	frame INTRO_OAMSET_PIKACHU_EYES_1, 23
+	frame INTRO_OAMSET_PIKACHU_EYES_2, 32
 	endanim
 
-Unkn_fa138:
-	frame $12, 4
-	frame $13, 4
+.Frameset_CheekSparks:
+	frame INTRO_OAMSET_CHEEK_SPARKS_1, 4
+	frame INTRO_OAMSET_CHEEK_SPARKS_2, 4
 	dorestart
