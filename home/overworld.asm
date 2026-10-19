@@ -825,7 +825,7 @@ LoadPlayerSpriteGraphics::
 	dec a
 	jp z, LoadBikePlayerSpriteGraphics
 	dec a
-	jp z, LoadSurfingPlayerSpriteGraphics2
+	jp z, LoadSurfingPlayerSpriteGraphicsByState
 	jp LoadWalkingPlayerSpriteGraphics
 
 IsBikeRidingAllowed::
@@ -1737,24 +1737,28 @@ RunMapScript::
 LoadWalkingPlayerSpriteGraphics::
 ; new sprite copy stuff
 	xor a
-	ld [wd472], a
+	ld [wPlayerState], a
 	ld b, BANK(RedSprite)
 	ld de, RedSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
-LoadSurfingPlayerSpriteGraphics2::
-	ld a, [wd472]
-	and a
-	jr z, .asm_0d75
-	dec a
+LoadSurfingPlayerSpriteGraphicsByState::
+	ld a, [wPlayerState]
+	ASSERT PLAYER_NORMAL == 0
+	and a ; PLAYER_NORMAL?
+	jr z, .normal
+	ASSERT PLAYER_SURF == 1
+	dec a ; PLAYER_SURF?
 	jr z, LoadSurfingPlayerSpriteGraphics
-	dec a
-	jr z, .asm_0d7c
-.asm_0d75
+	ASSERT PLAYER_SURF_PIKA == 2
+	dec a ; PLAYER_SURF_PIKA?
+	jr z, LoadSurfingPikachuSpriteGraphics
+.normal
 	ld a, [wPikachuSpawnStateFlags]
 	bit BIT_PIKACHU_SPAWN_SURFING, a
 	jr z, LoadSurfingPlayerSpriteGraphics
-.asm_0d7c
+	; fallthrough
+LoadSurfingPikachuSpriteGraphics::
 	ld b, BANK(SurfingPikachuSprite)
 	ld de, SurfingPikachuSprite
 	jr LoadPlayerSpriteGraphicsCommon
@@ -1767,7 +1771,7 @@ LoadSurfingPlayerSpriteGraphics::
 LoadBikePlayerSpriteGraphics::
 	ld b, BANK(RedBikeSprite)
 	ld de, RedBikeSprite
-
+	; fallthrough
 LoadPlayerSpriteGraphicsCommon::
 	ld hl, vNPCSprites
 	push de

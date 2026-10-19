@@ -2076,7 +2076,7 @@ ENDU
 wPikachuHappiness:: db
 wPikachuMood:: db
 wPikachuSpawnStateFlags:: db
-wd472:: db
+wPlayerState:: db
 	ds 1
 wd474:: db
 	ds 4

@@ -171,12 +171,12 @@ StartMenu_Pokemon::
 	ld a, [wCurPartySpecies]
 	cp STARTER_PIKACHU
 	jr z, .surfingPikachu
-	ld a, $1
+	ld a, PLAYER_SURF
 	jr .continue
 .surfingPikachu
-	ld a, $2
+	ld a, PLAYER_SURF_PIKA
 .continue
-	ld [wd472], a
+	ld [wPlayerState], a
 	ld a, SURFBOARD
 	ld [wCurItem], a
 	ld [wPseudoItemID], a
@@ -187,8 +187,8 @@ StartMenu_Pokemon::
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .reloadNormalSprite
-	xor a
-	ld [wd472], a
+	xor a ; PLAYER_NORMAL
+	ld [wPlayerState], a
 	jp .loop
 .strength
 	bit BIT_RAINBOWBADGE, a
