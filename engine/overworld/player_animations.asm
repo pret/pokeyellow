@@ -38,7 +38,7 @@ EnterMapAnim::
 .restoreDefaultMusic
 	call PlayDefaultMusic
 .done
-	call Func_151d
+	call DisableHidePikachuWhileLeavingMap
 	jp RestoreFacingDirectionAndYScreenPos
 .dungeonWarpAnimation
 	ld c, 50
@@ -92,9 +92,8 @@ PlayerSpinWhileMovingDown:
 	ld [hl], a ; wPlayerSpinWhileMovingUpOrDownAnimFrameDelay
 	jp PlayerSpinWhileMovingUpOrDown
 
-
 _LeaveMapAnim::
-	call Func_1510
+	call EnableHidePikachuWhileLeavingMap
 	call InitFacingDirectionList
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b

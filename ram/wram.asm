@@ -2522,7 +2522,7 @@ wCGBPal:: ds PAL_SIZE
 wLastBGP:: db
 wLastOBP0:: db
 wLastOBP1:: db
-wdef4:: db
+wBattleObjPalID:: db
 wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PAL_SIZE
 
 
