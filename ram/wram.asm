@@ -2078,7 +2078,7 @@ wPikachuMood:: db
 wPikachuSpawnStateFlags:: db
 wPlayerState:: db
 	ds 1
-wd474:: db
+wCinnabarGymQuizWrongAnswer:: db
 	ds 4
 wd479:: db
 	ds 24

@@ -1,18 +1,18 @@
-CinnabarGymScript_753de:
-	callfar Func_f2150
+CinnabarGymPrintTrainerTextE:
+	callfar PrintCinnabarGymTrainerText
 	jp TextScriptEnd
 
-CinnabarGymScript_753e9:
+CinnabarGymClearWrongAnswer:
 	push hl
-	ld hl, wd474
+	ld hl, wCinnabarGymQuizWrongAnswer
 	bit 7, [hl]
 	res 7, [hl]
 	pop hl
 	ret
 
-CinnabarGymScript_753f3:
+CinnabarGymCheckWrongAnswer:
 	push hl
-	ld hl, wd474
+	ld hl, wCinnabarGymQuizWrongAnswer
 	bit 7, [hl]
 	pop hl
 	ret
