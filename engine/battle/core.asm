@@ -2720,7 +2720,7 @@ SelectMenuItem:
 	jp nz, SwapMovesInMenu
 IF DEF(_DEBUG)
 	bit B_PAD_START, a
-	jp nz, Func_3d4f5
+	jp nz, TestBattle_PressedStart
 	bit B_PAD_RIGHT, a
 	jp nz, TestBattle_IncrementSelectedMove
 	bit B_PAD_LEFT, a
@@ -2821,7 +2821,7 @@ SelectMenuItem_CursorDown:
 	ld [wCurrentMenuItem], a
 	jp SelectMenuItem
 
-Func_3d4f5:
+TestBattle_PressedStart:
 IF DEF(_DEBUG)
 	ASSERT B_PAD_START == BIT_TRAINER_BATTLE
 ENDC
@@ -2832,7 +2832,7 @@ ENDC
 .gotWhoseTurn
 	ldh [hWhoseTurn], a
 	call LoadScreenTilesFromBuffer1
-	call Func_3d536
+	call ShowTestBattlePlayerSelectedMove
 	ld a, [wTestBattlePlayerSelectedMove]
 	and a
 	jp z, MoveSelectionMenu
@@ -2840,7 +2840,7 @@ ENDC
 	xor a
 	ld [wAnimationType], a
 	predef MoveAnimation
-	callfar Func_78e98
+	callfar SaveScreenTilesAndTransferBGMap
 	jp MoveSelectionMenu
 
 TestBattle_DecrementSelectedMove:
@@ -2852,10 +2852,10 @@ TestBattle_IncrementSelectedMove:
 	inc a
 _TestBattle_SetSelectedMove:
 	ld [wTestBattlePlayerSelectedMove], a
-	call Func_3d536
+	call ShowTestBattlePlayerSelectedMove
 	jp MoveSelectionMenu
 
-Func_3d536:
+ShowTestBattlePlayerSelectedMove:
 	hlcoord 10, 16
 	lb bc, 2, 10
 	call ClearScreenArea
@@ -2927,7 +2927,7 @@ SwapMovesInMenu:
 IF DEF(_DEBUG)
 	ld a, [wStatusFlags7]
 	bit BIT_TEST_BATTLE, a
-	jp nz, Func_3d4f5
+	jp nz, TestBattle_PressedStart
 ENDC
 	ld a, [wPlayerBattleStatus3]
 	bit TRANSFORMED, a
@@ -6821,5 +6821,5 @@ PlayMoveAnimation:
 	ld [wAnimationID], a
 	call Delay3
 	predef MoveAnimation
-	callfar Func_78e98
+	callfar SaveScreenTilesAndTransferBGMap
 	ret

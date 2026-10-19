@@ -1551,7 +1551,7 @@ PlayBattleAnimationGotID:
 	push de
 	push bc
 	predef MoveAnimation
-	callfar Func_78e98
+	callfar SaveScreenTilesAndTransferBGMap
 	pop bc
 	pop de
 	pop hl

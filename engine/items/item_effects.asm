@@ -1650,7 +1650,7 @@ ItemUseEscapeRope:
 	ld hl, wStatusFlags6
 	set BIT_FLY_WARP, [hl]
 	set BIT_ESCAPE_WARP, [hl]
-	call Func_1510
+	call EnableHidePikachuWhileLeavingMap
 	ld hl, wStatusFlags4
 	res BIT_NO_BATTLES, [hl]
 	ResetEvent EVENT_IN_SAFARI_ZONE

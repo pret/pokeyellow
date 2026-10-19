@@ -16,7 +16,7 @@ DrawFrameBlock:
 	inc a
 	ld [wFBTileCounter], a
 	ld a, $2
-	ld [wdef4], a
+	ld [wBattleObjPalID], a
 	ld a, [wSubAnimTransform]
 	dec a
 	jr z, .flipHorizontalAndVertical   ; SUBANIMTYPE_HVFLIP
@@ -49,11 +49,11 @@ DrawFrameBlock:
 	add [hl] ; X offset
 	ld [de], a ; store X
 	cp 88
-	jr c, .asm_78056
-	ld a, [wdef4]
+	jr c, .keepPalette1
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_78056
+	ld [wBattleObjPalID], a
+.keepPalette1
 	inc hl
 	inc de
 	ld a, [hli]
@@ -62,7 +62,7 @@ DrawFrameBlock:
 	inc de
 	ld a, [hli]
 	ld b, a
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	or b
 	ld [de], a ; store flags
 	inc de
@@ -83,11 +83,11 @@ DrawFrameBlock:
 	sub b ; flip X coordinate
 	ld [de], a ; store X
 	cp 88
-	jr c, .asm_78087
-	ld a, [wdef4]
+	jr c, .keepPalette2
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_78087
+	ld [wBattleObjPalID], a
+.keepPalette2
 	inc hl
 	inc de
 	ld a, [hli]
@@ -107,7 +107,7 @@ DrawFrameBlock:
 	jr z, .storeFlags1
 	ld b, 0
 .storeFlags1
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	or b
 	ld [de], a
 	inc de
@@ -126,11 +126,11 @@ DrawFrameBlock:
 	sub b ; flip X coordinate
 	ld [de], a ; store X
 	cp 88
-	jr c, .asm_780c8
-	ld a, [wdef4]
+	jr c, .keepPalette3
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_780c8
+	ld [wBattleObjPalID], a
+.keepPalette3
 	inc hl
 	inc de
 	ld a, [hli]
@@ -147,7 +147,7 @@ DrawFrameBlock:
 	res B_OAM_XFLIP, a
 .storeFlags2
 	ld b, a
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	or b
 	ld [de], a
 	inc de
@@ -596,20 +596,20 @@ SetAnimationPalette:
 	call UpdateCGBPal_OBP1
 	ret
 
-Func_78e98:
+SaveScreenTilesAndTransferBGMap:
 	call SaveScreenTilesToBuffer2
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	ld h, HIGH(vBGMap0)
-	call WriteLowerByteOfBGMapAndEnableBGTransfer
+	call .CopyToVRAM
 	call Delay3
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call LoadScreenTilesFromBuffer2
 	ld h, HIGH(vBGMap1)
-
-WriteLowerByteOfBGMapAndEnableBGTransfer:
+.CopyToVRAM:
+	ASSERT LOW(vBGMap0) == LOW(vBGMap1)
 	ld l, LOW(vBGMap0)
 	call BattleAnimCopyTileMapToVRAM
 	ld a, $1
@@ -1186,29 +1186,29 @@ _AnimationWaterDroplets:
 	ld hl, wShadowOAM
 .loop
 	ld a, $1
-	ld [wdef4], a
+	ld [wBattleObjPalID], a
 	ld a, [wBaseCoordY]
 	ld [hli], a ; Y
 	cp 40
-	jr c, .asm_792d7
-	ld a, [wdef4]
+	jr c, .keepPalette1
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_792d7
+	ld [wBattleObjPalID], a
+.keepPalette1
 	ld a, [wBaseCoordX]
 	add 27
 	ld [wBaseCoordX], a
 	ld [hli], a ; X
 	cp 88
-	jr c, .asm_792ee
-	ld a, [wdef4]
+	jr c, .keepPalette2
+	ld a, [wBattleObjPalID]
 	add $2
 	and $3
-	ld [wdef4], a
-.asm_792ee
+	ld [wBattleObjPalID], a
+.keepPalette2
 	ld a, [wDropletTile]
 	ld [hli], a ; tile
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	ld [hli], a ; attribute
 	ld a, [wBaseCoordX]
 	cp 144
@@ -1353,28 +1353,28 @@ BattleAnimWriteOAMEntry:
 ; tile = d
 ; attributes = variable (depending on coords)
 	ld a, $1
-	ld [wdef4], a
+	ld [wBattleObjPalID], a
 	ld a, e
 	add 8
 	ld e, a
 	ld [hli], a
 	cp 40
-	jr c, .asm_793d8
-	ld a, [wdef4]
+	jr c, .keepPalette1
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_793d8
+	ld [wBattleObjPalID], a
+.keepPalette1
 	ld a, [wBaseCoordX]
 	ld [hli], a
 	cp 88
-	jr c, .asm_793e8
-	ld a, [wdef4]
+	jr c, .keepPalette2
+	ld a, [wBattleObjPalID]
 	add $2
-	ld [wdef4], a
-.asm_793e8
+	ld [wBattleObjPalID], a
+.keepPalette2
 	ld a, d
 	ld [hli], a
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	ld [hli], a
 	ret
 
@@ -1580,7 +1580,7 @@ AnimationSpiralBallsInward:
 	cp $ff
 	jr z, .done
 	ld a, $2
-	ld [wdef4], a
+	ld [wBattleObjPalID], a
 	ld a, [wSpiralBallsBaseY]
 	add [hl]
 	ld [de], a ; Y
@@ -1590,17 +1590,17 @@ AnimationSpiralBallsInward:
 	add [hl]
 	ld [de], a ; X
 	cp 88
-	jr c, .asm_79524
+	jr c, .keepPalette
 	ld a, $3
-	ld [wdef4], a
-.asm_79524
+	ld [wBattleObjPalID], a
+.keepPalette
 	inc hl
 	inc de
 	inc de
 	ld a, [de]
 	and $f0
 	ld b, a
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	or b
 	ld [de], a
 	inc de
@@ -2534,7 +2534,7 @@ FallingObjects_UpdateOAMEntry:
 	ld hl, wShadowOAM
 	add hl, de
 	ld a, $1
-	ld [wdef4], a
+	ld [wBattleObjPalID], a
 	ld a, [hl]
 	inc a
 	inc a
@@ -2544,11 +2544,11 @@ FallingObjects_UpdateOAMEntry:
 .next
 	ld [hli], a ; Y
 	cp 40
-	jr c, .asm_79e51
-	ld a, [wdef4]
+	jr c, .keepPalette1
+	ld a, [wBattleObjPalID]
 	inc a
-	ld [wdef4], a
-.asm_79e51
+	ld [wBattleObjPalID], a
+.keepPalette1
 	ld a, [wFallingObjectMovementByte]
 	ld b, a
 	ld de, FallingObjects_DeltaXs
@@ -2566,12 +2566,12 @@ FallingObjects_UpdateOAMEntry:
 	add [hl]
 	ld [hli], a ; X
 	cp 88
-	jr c, .asm_79e75
-	ld a, [wdef4]
+	jr c, .keepPalette2
+	ld a, [wBattleObjPalID]
 	add $2
 	and $3
-	ld [wdef4], a
-.asm_79e75
+	ld [wBattleObjPalID], a
+.keepPalette2
 	inc hl
 	xor a ; no horizontal flip
 	jr .next2
@@ -2582,17 +2582,17 @@ FallingObjects_UpdateOAMEntry:
 	sub b
 	ld [hli], a ; X
 	cp 88
-	jr c, .asm_79e5c
-	ld a, [wdef4]
+	jr c, .keepPalette3
+	ld a, [wBattleObjPalID]
 	add $2
 	and $3
-	ld [wdef4], a
-.asm_79e5c
+	ld [wBattleObjPalID], a
+.keepPalette3
 	inc hl
 	ld a, OAM_XFLIP
 .next2
 	ld b, a
-	ld a, [wdef4]
+	ld a, [wBattleObjPalID]
 	or b
 	ld [hl], a ; attribute
 	ret

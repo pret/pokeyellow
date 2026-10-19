@@ -16,6 +16,7 @@ StartMenu_Pokemon::
 	ld [wUpdateSpritesEnabled], a
 	call DisplayPartyMenu
 	jr .checkIfPokemonChosen
+
 .loop
 	xor a
 	ld [wMenuItemToSwap], a
@@ -28,6 +29,7 @@ StartMenu_Pokemon::
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	jp RedisplayStartMenu
+
 .chosePokemon
 	call SaveScreenTilesToBuffer1
 	ld a, FIELD_MOVE_MON_MENU
@@ -46,6 +48,7 @@ StartMenu_Pokemon::
 	dec c
 	dec c
 	jr .adjustMenuVariablesLoop
+
 .storeMenuVariables
 	ld hl, wTopMenuItemY
 	ld a, c
@@ -84,6 +87,7 @@ StartMenu_Pokemon::
 	ld hl, wFieldMoves
 	add hl, bc
 	jp .choseOutOfBattleMove
+
 .choseSwitch
 	ld a, [wPartyCount]
 	cp 2 ; is there more than one pokemon in the party?
@@ -93,6 +97,7 @@ StartMenu_Pokemon::
 	ld [wPartyMenuTypeOrMessageID], a
 	call GoBackToPartyMenu
 	jp .checkIfPokemonChosen
+
 .choseStats
 	call ClearSprites
 	xor a ; PLAYER_PARTY_DATA
@@ -101,6 +106,7 @@ StartMenu_Pokemon::
 	predef StatusScreen2
 	call ReloadMapData
 	jp StartMenu_Pokemon
+
 .choseOutOfBattleMove
 	push hl
 	ld a, [wWhichPokemon]
@@ -119,6 +125,7 @@ StartMenu_Pokemon::
 	ld l, a
 	ld a, [wObtainedBadges]
 	jp hl
+
 .outOfBattleMovePointers
 	dw .cut
 	dw .fly
@@ -129,6 +136,7 @@ StartMenu_Pokemon::
 	dw .dig
 	dw .teleport
 	dw .softboiled
+
 .fly
 	bit BIT_THUNDERBADGE, a
 	jp z, .newBadgeRequired
@@ -144,14 +152,15 @@ StartMenu_Pokemon::
 	call ChooseFlyDestination
 	ld a, [wStatusFlags6]
 	bit BIT_FLY_WARP, a
-	jr nz, .asm_5d4c
+	jr nz, .continueFly
 	call LoadFontTilePatterns
 	ld hl, wStatusFlags4
 	set BIT_UNKNOWN_4_1, [hl]
 	jp StartMenu_Pokemon
-.asm_5d4c
-	call Func_1510
+.continueFly
+	call EnableHidePikachuWhileLeavingMap
 	jp .goBackToMap
+
 .cut
 	bit BIT_CASCADEBADGE, a
 	jp z, .newBadgeRequired
@@ -160,6 +169,7 @@ StartMenu_Pokemon::
 	and a
 	jp z, .loop
 	jp CloseTextDisplay
+
 .surf
 	bit BIT_SOULBADGE, a
 	jp z, .newBadgeRequired
@@ -172,10 +182,10 @@ StartMenu_Pokemon::
 	cp STARTER_PIKACHU
 	jr z, .surfingPikachu
 	ld a, PLAYER_SURF
-	jr .continue
+	jr .continueSurf
 .surfingPikachu
 	ld a, PLAYER_SURF_PIKA
-.continue
+.continueSurf
 	ld [wPlayerState], a
 	ld a, SURFBOARD
 	ld [wCurItem], a
@@ -190,12 +200,14 @@ StartMenu_Pokemon::
 	xor a ; PLAYER_NORMAL
 	ld [wPlayerState], a
 	jp .loop
+
 .strength
 	bit BIT_RAINBOWBADGE, a
 	jp z, .newBadgeRequired
 	predef PrintStrengthText
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
+
 .flash
 	bit BIT_BOULDERBADGE, a
 	jp z, .newBadgeRequired
@@ -205,9 +217,11 @@ StartMenu_Pokemon::
 	call PrintText
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
+
 .flashLightsAreaText
 	text_far _FlashLightsAreaText
 	text_end
+
 .dig
 	ld a, ESCAPE_ROPE
 	ld [wCurItem], a
@@ -218,6 +232,7 @@ StartMenu_Pokemon::
 	jp z, .loop
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
+
 .teleport
 	call CheckIfInOutsideMap
 	jr z, .canTeleport
@@ -233,7 +248,7 @@ StartMenu_Pokemon::
 	ld hl, wStatusFlags6
 	set BIT_FLY_WARP, [hl]
 	set BIT_ESCAPE_WARP, [hl]
-	call Func_1510
+	call EnableHidePikachuWhileLeavingMap
 	ld hl, wStatusFlags4
 	set BIT_UNKNOWN_4_1, [hl]
 	res BIT_NO_BATTLES, [hl]
@@ -241,15 +256,19 @@ StartMenu_Pokemon::
 	call DelayFrames
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
+
 .warpToLastPokemonCenterText
 	text_far _WarpToLastPokemonCenterText
 	text_end
+
 .cannotUseTeleportNowText
 	text_far _CannotUseTeleportNowText
 	text_end
+
 .cannotFlyHereText
 	text_far _CannotFlyHereText
 	text_end
+
 .softboiled
 	ld hl, wPartyMon1MaxHP
 	ld a, [wWhichPokemon]
@@ -286,16 +305,20 @@ StartMenu_Pokemon::
 	ld hl, .notHealthyEnoughText
 	call PrintText
 	jp .loop
+
 .notHealthyEnoughText
 	text_far _NotHealthyEnoughText
 	text_end
+
 .goBackToMap
 	call RestoreScreenTilesAndReloadTilePatterns
 	jp CloseTextDisplay
+
 .newBadgeRequired
 	ld hl, .newBadgeRequiredText
 	call PrintText
 	jp .loop
+
 .newBadgeRequiredText
 	text_far _NewBadgeRequiredText
 	text_end
