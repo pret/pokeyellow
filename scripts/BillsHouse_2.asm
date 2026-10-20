@@ -89,15 +89,15 @@ BillsHouse_CheckPikachuEmotion::
 	jr z, .noEmotion
 	ld a, [wBillsHouseCurScript]
 	cp SCRIPT_BILLSHOUSE_SCRIPT5
-	ldpikaemotion e, PikachuEmotion27
+	ldpikaemotion e, PikachuEmotionSurprised
 	ret z
 	cp SCRIPT_BILLSHOUSE_SCRIPT0
-	ldpikaemotion e, PikachuEmotion23
+	ldpikaemotion e, PikachuEmotionConfused
 	ret z
 	CheckEventHL EVENT_MET_BILL_2
-	ldpikaemotion e, PikachuEmotion32
+	ldpikaemotion e, PikachuEmotionConfused3
 	ret z
-	ldpikaemotion e, PikachuEmotion31
+	ldpikaemotion e, PikachuEmotionConfused2
 	ret
 
 .noEmotion

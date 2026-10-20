@@ -1889,7 +1889,7 @@ ItemUsePokeFlute:
 	ld hl, PlayedFluteHadEffectText
 	call PrintText
 	call ItemUseReloadOverworldData
-	ldpikaemotion e, PikachuEmotion26
+	ldpikaemotion e, PikachuEmotionWakeUp
 	callfar PlaySpecificPikachuEmotion
 	ret
 
