@@ -158,14 +158,14 @@ Audio1_PlayNextNote:
 	res BIT_PITCH_SLIDE_ON, [hl]
 	res BIT_PITCH_SLIDE_DECREASING, [hl]
 	ld a, c
-	cp NUM_MUSIC_CHANS
-	jr nz, .noiseChannel
+	cp CHAN5
+	jr nz, .skipLowHealthAlarm
 	ld a, [wLowHealthAlarm]
 	bit BIT_LOW_HEALTH_ALARM, a
-	jr z, .noiseChannel
+	jr z, .skipLowHealthAlarm
 	call Audio1_EnableChannelOutput
 	ret
-.noiseChannel
+.skipLowHealthAlarm
 	call Audio1_sound_ret
 	ret
 
@@ -963,14 +963,14 @@ Audio1_ApplyWavePatternAndFrequency:
 	ld [hl], d ; store frequency high byte
 	ld a, c
 	cp NUM_MUSIC_CHANS
-	jr c, .noiseChannel
+	jr c, .musicChannel
 	call Audio1_ApplyFrequencyModifier
-.noiseChannel
+.musicChannel
 	ret
 
 Audio1_ResetCryModifiers: ; unreferenced
 	ld a, c
-	cp NUM_MUSIC_CHANS
+	cp CHAN5
 	ret nz
 	ld a, [wLowHealthAlarm]
 	bit BIT_LOW_HEALTH_ALARM, a
