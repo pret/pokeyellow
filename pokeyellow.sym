@@ -2221,7 +2221,7 @@
 02:5156 Audio1_ApplyMusicAffects.unset
 02:5162 Audio1_ApplyMusicAffects.done
 02:516a Audio1_PlayNextNote
-02:518c Audio1_PlayNextNote.noiseChannel
+02:518c Audio1_PlayNextNote.skipLowHealthAlarm
 02:5190 Audio1_sound_ret
 02:51aa Audio1_sound_ret.noiseOrSfxChannel
 02:51be Audio1_sound_ret.skipSfxChannel3
@@ -2286,7 +2286,7 @@
 02:560a Audio1_ApplyWavePatternAndFrequency.next
 02:561f Audio1_ApplyWavePatternAndFrequency.loop
 02:562c Audio1_ApplyWavePatternAndFrequency.notChannel3
-02:5642 Audio1_ApplyWavePatternAndFrequency.noiseChannel
+02:5642 Audio1_ApplyWavePatternAndFrequency.musicChannel
 02:5643 Audio1_ResetCryModifiers
 02:5657 Audio1_SetSfxTempo
 02:5661 Audio1_SetSfxTempo.isCry

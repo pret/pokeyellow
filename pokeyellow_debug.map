@@ -2266,7 +2266,7 @@ ROMX bank #2:
 	         $5156 = Audio1_ApplyMusicAffects.unset
 	         $5162 = Audio1_ApplyMusicAffects.done
 	         $516a = Audio1_PlayNextNote
-	         $518c = Audio1_PlayNextNote.noiseChannel
+	         $518c = Audio1_PlayNextNote.skipLowHealthAlarm
 	         $5190 = Audio1_sound_ret
 	         $51aa = Audio1_sound_ret.noiseOrSfxChannel
 	         $51be = Audio1_sound_ret.skipSfxChannel3
@@ -2331,7 +2331,7 @@ ROMX bank #2:
 	         $560a = Audio1_ApplyWavePatternAndFrequency.next
 	         $561f = Audio1_ApplyWavePatternAndFrequency.loop
 	         $562c = Audio1_ApplyWavePatternAndFrequency.notChannel3
-	         $5642 = Audio1_ApplyWavePatternAndFrequency.noiseChannel
+	         $5642 = Audio1_ApplyWavePatternAndFrequency.musicChannel
 	         $5643 = Audio1_ResetCryModifiers
 	         $5657 = Audio1_SetSfxTempo
 	         $5661 = Audio1_SetSfxTempo.isCry
