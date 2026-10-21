@@ -187,7 +187,7 @@ CinnabarGymScript_TestTrainerFlag: ; unreferenced
 
 CinnabarGymScript_SetGateFlag:
 	ld a, [wTrainerHeaderFlagBit]
-	sub (EVENT_BEAT_CINNABAR_GYM_TRAINER_0 - EVENT_CINNABAR_GYM_GATE0_UNLOCKED) & %111
+	sub EVENT_BEAT_CINNABAR_GYM_TRAINER_0 % 8 - EVENT_CINNABAR_GYM_GATE0_UNLOCKED % 8
 	ld c, a
 	ld b, FLAG_SET
 	EventFlagAddress hl, EVENT_CINNABAR_GYM_GATE0_UNLOCKED
