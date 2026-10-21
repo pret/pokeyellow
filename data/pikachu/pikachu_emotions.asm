@@ -222,35 +222,35 @@ PikachuEmotionConfused3:
 	db $ff
 
 PikachuMovementData_TurnAwayFromPlayer:
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $39,  2 - 1
 	db $3e, 31 - 1
-	db $3f
+	db PIKAMOVEMENT_END
 
 PikachuMovementData_TurnToSide:
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $39,  1 - 1
 	db $3e, 31 - 1
-	db $3f
+	db PIKAMOVEMENT_END
 
 PikachuMovementData_FastJump:
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $3c, 8 - 1, (2 << 4) | (16 - 1)
 	db $3c, 8 - 1, (2 << 4) | (16 - 1)
-	db $3f
+	db PIKAMOVEMENT_END
 
 PikachuMovementData_Spin:
 	db $3b, 32 - 1, 4 - 1
-	db $3f
+	db PIKAMOVEMENT_END
 
 PikachuMovementData_Jump:
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $3c, 16 - 1, (1 << 4) | (16 - 1)
 	db $3c, 16 - 1, (1 << 4) | (16 - 1)
-	db $3f
+	db PIKAMOVEMENT_END
 
 PikachuMovementData_fd238: ; unused
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $05, 8 - 1
 	db $39, 1 - 1
 	db $05, 8 - 1
@@ -263,4 +263,4 @@ PikachuMovementData_fd238: ; unused
 	db $07, 8 - 1
 	db $39, 1 - 1
 	db $07, 8 - 1
-	db $3f
+	db PIKAMOVEMENT_END
