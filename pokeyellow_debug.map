@@ -20166,7 +20166,7 @@ ROMX bank #63:
 	         $5278 = PikachuMovementData_FastJump
 	         $5280 = PikachuMovementData_Spin
 	         $5284 = PikachuMovementData_Jump
-	         $528c = PikachuMovementData_fd238
+	         $528c = PikachuMovementData_WalkDiamond
 	         $52a6 = PikachuWalksToNurseJoy
 	         $52b6 = PikachuWalksToNurseJoy.skip
 	         $52ba = PikachuWalksToNurseJoy.GetMovementData

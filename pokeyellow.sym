@@ -19752,7 +19752,7 @@
 3f:5224 PikachuMovementData_FastJump
 3f:522c PikachuMovementData_Spin
 3f:5230 PikachuMovementData_Jump
-3f:5238 PikachuMovementData_fd238
+3f:5238 PikachuMovementData_WalkDiamond
 3f:5252 PikachuWalksToNurseJoy
 3f:5262 PikachuWalksToNurseJoy.skip
 3f:5266 PikachuWalksToNurseJoy.GetMovementData
