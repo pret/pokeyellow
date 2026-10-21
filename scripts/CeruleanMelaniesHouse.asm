@@ -4,28 +4,28 @@ CeruleanMelaniesHouse_Script:
 
 CeruleanMelaniesHouse_TextPointers:
 	def_text_pointers
-	dw_const CeruleanMelanieHouseMelanieText, TEXT_CERULEANMELANIESHOUSE_MELANIE
-	dw_const CeruleanMelanieHouseBulbasaurText, TEXT_CERULEANMELANIESHOUSE_BULBASAUR
-	dw_const CeruleanMelanieHouseOddishText, TEXT_CERULEANMELANIESHOUSE_ODDISH
-	dw_const CeruleanMelanieHouseSandshrewText, TEXT_CERULEANMELANIESHOUSE_SANDSHREW
+	dw_const CeruleanMelaniesHouseMelanieText,   TEXT_CERULEANMELANIESHOUSE_MELANIE
+	dw_const CeruleanMelaniesHouseBulbasaurText, TEXT_CERULEANMELANIESHOUSE_BULBASAUR
+	dw_const CeruleanMelaniesHouseOddishText,    TEXT_CERULEANMELANIESHOUSE_ODDISH
+	dw_const CeruleanMelaniesHouseSandshrewText, TEXT_CERULEANMELANIESHOUSE_SANDSHREW
 
-CeruleanMelanieHouseMelanieText:
+CeruleanMelaniesHouseMelanieText:
 	text_asm
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	CheckEvent EVENT_GOT_BULBASAUR_IN_CERULEAN
-	jr nz, .asm_1cfbf
-	ld hl, CeruleanHouse1Text_1cfc8
+	jr nz, .got_bulbasaur
+	ld hl, MelanieText1
 	call PrintText
 	ld a, [wPikachuHappiness]
 	cp 147
-	jr c, .asm_1cfb3
-	ld hl, CeruleanHouse1Text_1cfce
+	jr c, .no_bulbasaur
+	ld hl, MelanieText2
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_1cfb6
+	jr nz, .refused
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld a, BULBASAUR
@@ -36,71 +36,71 @@ CeruleanMelanieHouseMelanieText:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	lb bc, BULBASAUR, 10
 	call GivePokemon
-	jr nc, .asm_1cfb3
+	jr nc, .no_bulbasaur
 	ld a, [wAddedToParty]
 	and a
 	call z, WaitForTextScrollButtonPress
 	ld a, $1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
-	ld hl, CeruleanHouse1Text_1cfd3
+	ld hl, MelanieText3
 	call PrintText
 	ld a, TOGGLE_CERULEAN_BULBASAUR
 	ld [wToggleableObjectIndex], a
 	predef HideObject
 	SetEvent EVENT_GOT_BULBASAUR_IN_CERULEAN
-.asm_1cfb3
+.no_bulbasaur
 	jp TextScriptEnd
 
-.asm_1cfb6
-	ld hl, CeruleanHouse1Text_1cfdf
+.refused
+	ld hl, MelanieText5
 	call PrintText
 	jp TextScriptEnd
 
-.asm_1cfbf
-	ld hl, CeruleanHouse1Text_1cfd9
+.got_bulbasaur
+	ld hl, MelanieText4
 	call PrintText
 	jp TextScriptEnd
 
-CeruleanHouse1Text_1cfc8:
-	text_far MelanieText1
+MelanieText1:
+	text_far _MelanieText1
 	text_waitbutton
 	text_end
 
-CeruleanHouse1Text_1cfce:
-	text_far MelanieText2
+MelanieText2:
+	text_far _MelanieText2
 	text_end
 
-CeruleanHouse1Text_1cfd3:
-	text_far MelanieText3
+MelanieText3:
+	text_far _MelanieText3
 	text_waitbutton
 	text_end
 
-CeruleanHouse1Text_1cfd9:
-	text_far MelanieText4
+MelanieText4:
+	text_far _MelanieText4
 	text_waitbutton
 	text_end
 
-CeruleanHouse1Text_1cfdf:
-	text_far MelanieText5
+MelanieText5:
+	text_far _MelanieText5
 	text_waitbutton
 	text_end
 
-CeruleanMelanieHouseBulbasaurText:
-	text_far MelanieBulbasaurText
+CeruleanMelaniesHouseBulbasaurText:
+	text_far _CeruleanMelaniesHouseBulbasaurText
 	text_asm
 	ld a, BULBASAUR
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanMelanieHouseOddishText:
-	text_far MelanieOddishText
+CeruleanMelaniesHouseOddishText:
+	text_far _CeruleanMelaniesHouseOddishText
 	text_asm
 	ld a, ODDISH
 	call PlayCry
 	jp TextScriptEnd
 
-CeruleanMelanieHouseSandshrewText:
-	text_far MelanieSandshrewText
+CeruleanMelaniesHouseSandshrewText:
+	text_far _CeruleanMelaniesHouseSandshrewText
 	text_asm
 	ld a, SANDSHREW
 	call PlayCry

@@ -28,19 +28,19 @@ _Museum2FBrunetteGirlText::
 	line "to catch me one!"
 	done
 
-_Museum2FHikerText::
+_Museum2FHikerText1::
 	text "Yeah, a PIKACHU"
 	line "soon, I promise!"
 	done
 
-_Museum2FPikachuText1::
+_Museum2FHikerText2::
 	text "Your PIKACHU looks"
 	line "untamed."
 	cont "May I have it for"
 	cont "my daughter?"
 	done
 
-_Museum2FPikachuText2::
+_Museum2FHikerText3::
 	text "I'd like to get"
 	line "that PIKACHU off"
 	cont "you, but it's too"

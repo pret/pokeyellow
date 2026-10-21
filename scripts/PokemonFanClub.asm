@@ -13,7 +13,7 @@ PokemonFanClub_ScriptPointers:
 PokemonFanClubScript0:
 	ld hl, wPikachuMapScriptFlags
 	bit BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
-	call z, PokemonFanClubScript_59a44
+	call z, PokemonFanClubPikachuRunsToClefairyScript
 	ld hl, wPikachuMapScriptFlags
 	set BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	ret
@@ -21,19 +21,19 @@ PokemonFanClubScript0:
 PokemonFanClubScript1:
 	ld hl, wPikachuMapScriptFlags
 	bit BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
-	call z, PokemonFanClubScript_59a39
+	call z, .maybe_run_to_clefairy
 	ld hl, wPikachuMapScriptFlags
 	set BIT_PIKACHU_MAP_SCRIPT_ACTIVE, [hl]
 	ret
 
-PokemonFanClubScript_59a39:
+.maybe_run_to_clefairy:
 	call Random
 	ldh a, [hRandomAdd]
-	cp 25
-	call c, PokemonFanClubScript_59a44
+	cp 10 percent
+	call c, PokemonFanClubPikachuRunsToClefairyScript
 	ret
 
-PokemonFanClubScript_59a44:
+PokemonFanClubPikachuRunsToClefairyScript:
 	ld a, [wPikachuSpawnStateFlags]
 	bit BIT_PIKACHU_SPAWN_STARTER, a
 	ret z
@@ -52,7 +52,8 @@ PokemonFanClubScript_59a44:
 	predef EmotionBubble
 	ld hl, PokemonFanClubPikachuMovementData
 	call ApplyPikachuMovementData
-	ld a, $2 ; Seel
+	ASSERT POKEMONFANCLUB_CLEFAIRY == 3
+	ld a, $2
 	ld [wSprite03StateData1MovementStatus], a
 	xor a ; SPRITE_FACING_DOWN
 	ld [wSprite03StateData1FacingDirection], a
@@ -61,13 +62,13 @@ PokemonFanClubScript_59a44:
 	ret
 
 PokemonFanClubPikachuMovementData:
-	db $00
+	db PIKAMOVEMENT_DELAY
 	db $26
-	db $20
-	db $20
-	db $20
-	db $1e
-	db $3f
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_UP
+	db PIKAMOVEMENT_END
 
 PokemonFanClub_TextPointers:
 	def_text_pointers
@@ -81,12 +82,12 @@ PokemonFanClub_TextPointers:
 PokemonFanClubClefairyFanText:
 	text_asm
 	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
-	jr z, .asm_59aaf
+	jr z, .no_bike_voucher
 	ld hl, .yellowtext
 	call PrintText
 	jr .done
 
-.asm_59aaf
+.no_bike_voucher
 	CheckEventReuseHL EVENT_PIKACHU_FAN_BOAST
 	jr nz, .mineisbetter
 	SetEventReuseHL EVENT_SEEL_FAN_BOAST
@@ -115,12 +116,12 @@ PokemonFanClubClefairyFanText:
 PokemonFanClubSeelFanText:
 	text_asm
 	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
-	jr z, .asm_59ae7
+	jr z, .no_bike_voucher
 	ld hl, .yellowtext
 	call PrintText
 	jr .done
 
-.asm_59ae7
+.no_bike_voucher
 	CheckEventReuseHL EVENT_SEEL_FAN_BOAST
 	jr nz, .mineisbetter
 	SetEventReuseHL EVENT_PIKACHU_FAN_BOAST
@@ -176,13 +177,13 @@ PokemonFanClubChairmanText:
 	text_asm
 	CheckEventHL EVENT_LEFT_FANCLUB_AFTER_BIKE_VOUCHER
 	jr z, .check_bike_voucher
-	ld hl, Text_59c1f
+	ld hl, .PrintText1
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
 	jr z, .select_mon_to_print
-	ld hl, Text_59c24
+	ld hl, .PrintText2
 	jr .gbpals_print_text
 
 .check_bike_voucher
@@ -232,7 +233,7 @@ PokemonFanClubChairmanText:
 	jp nc, .print
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
-	ld hl, Text_59c24
+	ld hl, .PrintText2
 	jr .gbpals_print_text
 
 .print
@@ -249,11 +250,11 @@ PokemonFanClubChairmanText:
 	call LoadScreenTilesFromBuffer2
 	call Delay3
 	call GBPalNormal
-	ld hl, Text_59c2e
+	ld hl, .PrintText4
 	ldh a, [hOaksAideResult]
 	and a
 	jr nz, .gbpals_print_text
-	ld hl, Text_59c29
+	ld hl, .PrintText3
 	jr .gbpals_print_text
 
 .IntroText:
@@ -282,19 +283,19 @@ PokemonFanClubChairmanText:
 	text_far _PokemonFanClubBagFullText
 	text_end
 
-Text_59c1f:
+.PrintText1:
 	text_far FanClubChairPrintText1
 	text_end
 
-Text_59c24:
+.PrintText2:
 	text_far FanClubChairPrintText2
 	text_end
 
-Text_59c29:
+.PrintText3:
 	text_far FanClubChairPrintText3
 	text_end
 
-Text_59c2e:
+.PrintText4:
 	text_far FanClubChairPrintText4
 	text_end
 

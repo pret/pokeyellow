@@ -79,20 +79,20 @@ IF DEF(_DEBUG)
 	ret nz
 ENDC
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
-	call z, MtMoonB2FScript_49d28
+	call z, MtMoonB2FCheckDefeatedSuperNerd
 	CheckEvent EVENT_BEAT_MT_MOON_3_JESSIE_JAMES
-	call z, MtMoonB2FScript_49e15
+	call z, MtMoonB2FEncounterJessieJamesScript
 	ret
 
-MtMoonB2FScript_49d28:
+MtMoonB2FCheckDefeatedSuperNerd:
 	CheckEvent EVENT_BEAT_MT_MOON_EXIT_SUPER_NERD
-	jp nz, .asm_49d4b
+	jp nz, MtMoonB2FCheckGotAFossil
 	ld a, [wYCoord]
 	cp 8
-	jp nz, .asm_49d4b
+	jp nz, MtMoonB2FCheckGotAFossil
 	ld a, [wXCoord]
 	cp 13
-	jp nz, .asm_49d4b
+	jp nz, MtMoonB2FCheckGotAFossil
 	xor a
 	ldh [hJoyHeld], a
 	ld a, TEXT_MTMOONB2F_SUPER_NERD
@@ -100,7 +100,7 @@ MtMoonB2FScript_49d28:
 	call DisplayTextID
 	ret
 
-.asm_49d4b
+MtMoonB2FCheckGotAFossil:
 	CheckEitherEventSet EVENT_GOT_DOME_FOSSIL, EVENT_GOT_HELIX_FOSSIL
 	jp z, CheckFightingMapTrainers
 	ret
@@ -122,35 +122,35 @@ MtMoonB2FMoveSuperNerdScript:
 	ld a, MTMOONB2F_SUPER_NERD
 	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
-	ld hl, CoordsData_49dc7
+	ld hl, MtMoonB2FPikachuBelowDomeFossilCoords
 	call ArePlayerCoordsInArray
-	jr c, .asm_49da8
-	ld hl, CoordsData_49dc0
+	jr c, .pikachu_below_dome_fossil
+	ld hl, MtMoonB2FPlayerNearDomeFossilCoords
 	call ArePlayerCoordsInArray
-	jr c, .asm_49db0
-	ld hl, CoordsData_49dd5
+	jr c, .player_near_dome_fossil
+	ld hl, MtMoonB2FPikachuBelowHelixFossilCoords
 	call ArePlayerCoordsInArray
-	jr c, .asm_49d9b
-	ld hl, CoordsData_49dce
+	jr c, .pikachu_below_helix_fossil
+	ld hl, MtMoonB2FPlayerNearHelixFossilCoords
 	call ArePlayerCoordsInArray
-	jr c, .asm_49da3
+	jr c, .player_near_helix_fossil
 	jp CheckFightingMapTrainers
 
-.asm_49d9b
+.pikachu_below_helix_fossil
 	ld b, SPRITE_FACING_LEFT
-	ld hl, PikachuMovementData_49dd8
+	ld hl, PikachuMovementData_AvoidHelixFossil
 	call MtMoonB2FScript_ApplyPikachuMovementData
-.asm_49da3
-	ld de, MovementData_49ddd
-	jr .asm_49db3
+.player_near_helix_fossil
+	ld de, MtMoonB2FSuperNerdMoveUpMovementData
+	jr .continue
 
-.asm_49da8
+.pikachu_below_dome_fossil
 	ld b, SPRITE_FACING_RIGHT
-	ld hl, PikachuMovementData_49dca
+	ld hl, PikachuMovementData_AvoidDomeFossil
 	call MtMoonB2FScript_ApplyPikachuMovementData
-.asm_49db0
-	ld de, MovementData_49ddc
-.asm_49db3
+.player_near_dome_fossil
+	ld de, MtMoonB2FSuperNerdMoveRightMovementData
+.continue
 	ld a, MTMOONB2F_SUPER_NERD
 	ldh [hSpriteIndex], a
 	call MoveSprite
@@ -158,41 +158,41 @@ MtMoonB2FMoveSuperNerdScript:
 	call MtMoonB2FSetScript
 	ret
 
-CoordsData_49dc0:
+MtMoonB2FPlayerNearDomeFossilCoords:
 	dbmapcoord 12,  7
 	dbmapcoord 11,  6
 	dbmapcoord 12,  5
 	db -1 ; end
 
-CoordsData_49dc7:
+MtMoonB2FPikachuBelowDomeFossilCoords:
 	dbmapcoord 12,  7
 	db -1 ; end
 
-PikachuMovementData_49dca:
-	db $00
-	db $35
+PikachuMovementData_AvoidDomeFossil:
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_LOOK_DOWN
 	db $33
-	db $3f
+	db PIKAMOVEMENT_END
 
-CoordsData_49dce:
+MtMoonB2FPlayerNearHelixFossilCoords:
 	dbmapcoord 13,  7
 	dbmapcoord 14,  6
 	dbmapcoord 14,  5
 	db -1 ; end
 
-CoordsData_49dd5:
+MtMoonB2FPikachuBelowHelixFossilCoords:
 	dbmapcoord 13,  7
 	db -1 ; end
 
-PikachuMovementData_49dd8:
-	db $00
-	db $35
+PikachuMovementData_AvoidHelixFossil:
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_LOOK_DOWN
 	db $34
-	db $3f
+	db PIKAMOVEMENT_END
 
-MovementData_49ddc:
+MtMoonB2FSuperNerdMoveRightMovementData:
 	db NPC_MOVEMENT_RIGHT
-MovementData_49ddd:
+MtMoonB2FSuperNerdMoveUpMovementData:
 	db NPC_MOVEMENT_UP
 	db -1 ; end
 
@@ -222,7 +222,7 @@ MtMoonB2FSuperNerdTakesOtherFossilScript:
 	call MtMoonB2FSetScript
 	ret
 
-MtMoonB2FScript_49e15:
+MtMoonB2FEncounterJessieJamesScript:
 	ld a, [wXCoord]
 	cp $3
 	ret nz
@@ -259,15 +259,15 @@ MtMoonB2FScript_49e15:
 	call MtMoonB2FSetScript
 	ret
 
-MovementData_f9e65:
+MtMoonB2FJessieEncounterMovementData:
 	db $06
-MovementData_f9e66:
-	db $06
-	db $06
+MtMoonB2FJamesEncounterMovementData:
 	db $06
 	db $06
 	db $06
-	db $FF
+	db $06
+	db $06
+	db -1 ; end
 
 MtMoonB2FScript6:
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
@@ -278,7 +278,7 @@ MtMoonB2FScript6:
 	call Delay3
 	ld a, MTMOONB2F_JESSIE
 	ldh [hSpriteIndex], a
-	ld de, MovementData_f9e65
+	ld de, MtMoonB2FJessieEncounterMovementData
 	call MoveSprite
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a
@@ -300,7 +300,7 @@ MtMoonB2FScript8:
 MtMoonB2FScript9:
 	ld a, MTMOONB2F_JAMES
 	ldh [hSpriteIndex], a
-	ld de, MovementData_f9e66
+	ld de, MtMoonB2FJamesEncounterMovementData
 	call MoveSprite
 	ld a, PAD_BUTTONS | PAD_CTRL_PAD
 	ld [wJoyIgnore], a

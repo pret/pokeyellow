@@ -165,7 +165,7 @@ ENDC
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jp z, Func_f23d0
+	jp z, SummerBeachHousePrintHighScoreScript
 	call SaveScreenTilesToBuffer2
 	ld hl, wStatusFlags5
 	set BIT_NO_TEXT_DELAY, [hl]
