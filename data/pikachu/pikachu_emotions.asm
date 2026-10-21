@@ -249,7 +249,7 @@ PikachuMovementData_Jump:
 	db $3c, 16 - 1, (1 << 4) | (16 - 1)
 	db PIKAMOVEMENT_END
 
-PikachuMovementData_fd238: ; unused
+PikachuMovementData_WalkDiamond: ; unused
 	db PIKAMOVEMENT_DELAY
 	db $05, 8 - 1
 	db $39, 1 - 1
