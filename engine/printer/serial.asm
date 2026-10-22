@@ -42,28 +42,28 @@ PrinterTransmissionJumptable:
 	jp hl
 
 .Jumptable:
-	dw Printer_InitSerial ; 00
-	dw Printer_CheckConnectionStatus ; 01
-	dw Printer_WaitSerial ; 02
+	dw Printer_InitSerial               ; 00
+	dw Printer_CheckConnectionStatus    ; 01
+	dw Printer_WaitSerial               ; 02
 	dw Printer_StartTransmittingTilemap ; 03
-	dw Printer_TransmissionLoop ; 04
-	dw Printer_WaitSerialAndLoopBack2 ; 05
-	dw Printer_EndTilemapTransmission ; 06
-	dw Printer_TransmissionLoop ; 07
-	dw Printer_WaitSerial ; 08
+	dw Printer_TransmissionLoop         ; 04
+	dw Printer_WaitSerialAndLoopBack2   ; 05
+	dw Printer_EndTilemapTransmission   ; 06
+	dw Printer_TransmissionLoop         ; 07
+	dw Printer_WaitSerial               ; 08
 
-	dw Printer_SignalSendHeader ; 09
-	dw Printer_TransmissionLoop ; 0a
-	dw Printer_WaitSerial ; 0b
-	dw Printer_WaitUntilFinished ; 0c
-	dw Printer_Quit ; 0d
+	dw Printer_SignalSendHeader         ; 09
+	dw Printer_TransmissionLoop         ; 0a
+	dw Printer_WaitSerial               ; 0b
+	dw Printer_WaitUntilFinished        ; 0c
+	dw Printer_Quit                     ; 0d
 
-	dw Printer_Next_ ; 0e
-	dw Printer_WaitSerial ; 0f
-	dw Printer_SignalLoopBack ; 10
-	dw Printer_LoopBack ; 11
-	dw Printer_WaitLoopBack ; 12
-	dw Printer_WaitLoopBack_ ; 13
+	dw Printer_Next_                    ; 0e
+	dw Printer_WaitSerial               ; 0f
+	dw Printer_SignalLoopBack           ; 10
+	dw Printer_LoopBack                 ; 11
+	dw Printer_WaitLoopBack             ; 12
+	dw Printer_WaitLoopBack_            ; 13
 
 Printer_Next:
 	ld hl, wPrinterSendState

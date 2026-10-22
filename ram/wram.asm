@@ -305,8 +305,10 @@ wLYOverridesBuffer:: ds $100
 wLYOverridesBufferEnd::
 
 NEXTU
+wPrinterSendDataSources::
 wPrinterSendDataSource1:: ds 20 tiles
 wPrinterSendDataSource2:: ds 20 tiles
+wPrinterSendDataSourcesEnd::
 ENDU
 
 wPrinterSendDataSource1End::
