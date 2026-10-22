@@ -152,12 +152,12 @@ SafariZoneEntranceCalculateLowCostAdmission:
 	xor a
 	ld bc, $3
 	call FillMemory
-	ld hl, SafariZoneEntranceText_f20c4
+	ld hl, SafariZoneLowCostText1
 	call PrintText_NoCreatingTextBox
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld hl, SafariZoneEntranceText_f20c9
+	ld hl, SafariZoneLowCostText2
 	call PrintText
 	pop af
 	inc a
@@ -171,11 +171,11 @@ SafariZoneEntranceCalculateLowCostAdmission:
 	and a
 	ret
 
-SafariZoneEntranceText_f20c4:
+SafariZoneLowCostText1:
 	text_far _SafariZoneLowCostText1
 	text_end
 
-SafariZoneEntranceText_f20c9:
+SafariZoneLowCostText2:
 	text_far _SafariZoneLowCostText2
 	text_end
 
@@ -186,7 +186,7 @@ SafariZoneEntranceGetLowCostAdmissionText:
 	inc [hl]
 	ld e, a
 	ld d, $0
-	ld hl, Pointers_f2100
+	ld hl, SafariZoneLowCostTextPointers
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -200,39 +200,39 @@ SafariZoneEntranceGetLowCostAdmissionText:
 	ret
 
 .give_one_ball
-	ld hl, SafariZoneEntranceText_f20f6
+	ld hl, SafariZoneEntranceGiveOneBallText
 	call PrintText_NoCreatingTextBox
 	ld a, $1
 	ld hl, 502
 	and a
 	ret
 
-SafariZoneEntranceText_f20f6:
+SafariZoneEntranceGiveOneBallText:
 	text_far _SafariZoneLowCostText3
 	sound_get_item_1
 	text_far _SafariZoneLowCostText4
 	text_end
 
-Pointers_f2100:
-	dw SafariZoneEntranceText_f210a
-	dw SafariZoneEntranceText_f210f
-	dw SafariZoneEntranceText_f2114
-	dw SafariZoneEntranceText_f2119
-	dw SafariZoneEntranceText_f2119
+SafariZoneLowCostTextPointers:
+	dw SafariZoneLowCostText5
+	dw SafariZoneLowCostText6
+	dw SafariZoneLowCostText7
+	dw SafariZoneLowCostText8
+	dw SafariZoneLowCostText8
 
-SafariZoneEntranceText_f210a:
+SafariZoneLowCostText5:
 	text_far _SafariZoneLowCostText5
 	text_end
 
-SafariZoneEntranceText_f210f:
+SafariZoneLowCostText6:
 	text_far _SafariZoneLowCostText6
 	text_end
 
-SafariZoneEntranceText_f2114:
+SafariZoneLowCostText7:
 	text_far _SafariZoneLowCostText7
 	text_end
 
-SafariZoneEntranceText_f2119:
+SafariZoneLowCostText8:
 	text_far _SafariZoneLowCostText8
 	text_end
 

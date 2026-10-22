@@ -1,4 +1,4 @@
-Func_f23d0:
+SummerBeachHousePrintHighScoreScript:
 	call SaveScreenTilesToBuffer2
 	xor a
 	ld [wUpdateSpritesEnabled], a
@@ -13,21 +13,21 @@ Func_f23d0:
 	call LoadScreenTilesFromBuffer2
 	call Delay3
 	call GBPalNormal
-	ld hl, Text_f2412
-	ldh a, [hOaksAideResult]
+	ld hl, SummerBeachHousePrinterText6
+	ldh a, [hCanceledPrinting]
 	and a
-	jr nz, .asm_f2406
-	ld hl, Text_f240c
-.asm_f2406
+	jr nz, .print_canceled
+	ld hl, SummerBeachHousePrinterText5
+.print_canceled
 	call PrintText
 	jp TextScriptEnd
 
-Text_f240c:
+SummerBeachHousePrinterText5:
 	text_far _SummerBeachHousePrinterText5
 	text_waitbutton
 	text_end
 
-Text_f2412:
+SummerBeachHousePrinterText6:
 	text_far _SummerBeachHousePrinterText6
 	text_waitbutton
 	text_end

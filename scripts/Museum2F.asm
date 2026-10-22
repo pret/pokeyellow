@@ -32,35 +32,35 @@ Museum2FHikerText:
 	text_asm
 	ld a, [wPikachuSpawnStateFlags]
 	bit BIT_PIKACHU_SPAWN_STARTER, a
-	jr nz, .asm_5c1f6
-	ld hl, Museum2FText_5c20e
+	jr nz, .pikachuIsFollowing
+	ld hl, Museum2FHikerText1
 	call PrintText
-	jr .asm_5c20b
+	jr .done
 
-.asm_5c1f6
+.pikachuIsFollowing
 	ld a, [wPikachuHappiness]
 	cp 101
-	jr c, .asm_5c205
-	ld hl, Museum2FText_5c218
+	jr c, .pikachuIsUnhappy
+	ld hl, Museum2FHikerText3
 	call PrintText
-	jr .asm_5c20b
+	jr .done
 
-.asm_5c205
-	ld hl, Museum2FText_5c213
+.pikachuIsUnhappy
+	ld hl, Museum2FHikerText2
 	call PrintText
-.asm_5c20b
+.done
 	jp TextScriptEnd
 
-Museum2FText_5c20e:
-	text_far _Museum2FHikerText
+Museum2FHikerText1:
+	text_far _Museum2FHikerText1
 	text_end
 
-Museum2FText_5c213:
-	text_far _Museum2FPikachuText1
+Museum2FHikerText2:
+	text_far _Museum2FHikerText2
 	text_end
 
-Museum2FText_5c218:
-	text_far _Museum2FPikachuText2
+Museum2FHikerText3:
+	text_far _Museum2FHikerText3
 	text_end
 
 Museum2FSpaceShuttleSignText:

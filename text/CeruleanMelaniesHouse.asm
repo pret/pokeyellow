@@ -1,4 +1,4 @@
-MelanieText1::
+_MelanieText1::
 	text "I take care of"
 	line "injured #MON."
 
@@ -11,36 +11,36 @@ MelanieText1::
 	cont "care of it now.@"
 	text_end
 
-MelanieText2::
+_MelanieText2::
 	text "I know! Would you"
 	line "take care of this"
 	cont "BULBASAUR?"
 	done
 
-MelanieText3::
+_MelanieText3::
 	text "Please take care"
 	line "of BULBASAUR!@"
 	text_end
 
-MelanieText4::
+_MelanieText4::
 	text "Is BULBASAUR"
 	line "doing well?@"
 	text_end
 
-MelanieText5::
+_MelanieText5::
 	text "Oh..."
 	line "That's too bad...@"
 	text_end
 
-MelanieBulbasaurText::
+_CeruleanMelaniesHouseBulbasaurText::
 	text "BULBASAUR: Bubba!"
 	line "Zoar!@"
 	text_end
 
-MelanieOddishText::
+_CeruleanMelaniesHouseOddishText::
 	text "ODDISH: Orddissh!@"
 	text_end
 
-MelanieSandshrewText::
+_CeruleanMelaniesHouseSandshrewText::
 	text "SANDSHREW: Pikii!@"
 	text_end
