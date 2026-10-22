@@ -8,14 +8,14 @@ Func_f531b::
 	hlcoord 0, 0
 	lb bc, 4, 5
 	call TextBoxBorder
-	ld de, Text_f5791
+	ld de, ColosseumMenuText
 	hlcoord 1, 2
 	call PlaceString
 	hlcoord 8, 0
 	lb bc, 8, 10
 	call TextBoxBorder
 	hlcoord 10, 2
-	ld de, Text_f579c
+	ld de, ColosseumCupsMenuText
 	call PlaceString
 	hlcoord 0, 10
 	lb bc, 6, 18
@@ -519,7 +519,7 @@ Func_f56bd::
 	ld a, [wCurrentMenuItem]
 	cp $3
 	jr nc, .asm_f56e6
-	ld hl, PointerTable_f56ee
+	ld hl, ColosseumCupRulesTextPointers
 	ld a, [wCurrentMenuItem]
 	ld c, a
 	ld b, $0
@@ -538,32 +538,32 @@ Func_f56bd::
 	ldh [hAutoBGTransferEnabled], a
 	ret
 
-PointerTable_f56ee::
-	dw Text_f56f4
-	dw Text_f5728
-	dw Text_f575b
+ColosseumCupRulesTextPointers::
+	dw PokeCupRulesText
+	dw PikaCupRulesText
+	dw PetitCupRulesText
 
-Text_f56f4::
-	db "LVs of 3<PKMN>:50-55"
+PokeCupRulesText::
+	db   "LVs of 3<PKMN>:50-55"
 	next "Sum of LVs:155 MAX"
 	next "MEW can't attend.@"
 
-Text_f5728::
-	db "LVs of 3<PKMN>:15-20"
+PikaCupRulesText::
+	db   "LVs of 3<PKMN>:15-20"
 	next "Sum of LVs:50 MAX"
 	next "MEW can't attend.@"
 
-Text_f575b::
-	db "3 Basic <PKMN>.LV25-30"
+PetitCupRulesText::
+	db   "3 Basic <PKMN>.LV25-30"
 	next "Sum of LVs:80 MAX"
 	next "6’8” and 44lb MAX@"
 
-Text_f5791::
-	db "View"
+ColosseumMenuText::
+	db   "View"
 	next "Rules@"
 
-Text_f579c::
-	db "# Cup"
+ColosseumCupsMenuText::
+	db   "# Cup"
 	next "Pika Cup"
 	next "Petit Cup"
 	next "CANCEL@"
@@ -637,7 +637,7 @@ LinkMenu:
 	ld [wLetterPrintingDelayFlags], a
 	ld hl, wStatusFlags4
 	set BIT_LINK_CONNECTED, [hl]
-	ld hl, TextTerminator_f5a16
+	ld hl, ColosseumClearText
 	call PrintText
 	call SaveScreenTilesToBuffer1
 	ld hl, ColosseumWhereToText
@@ -908,7 +908,7 @@ ColosseumVersionText:
 	text_far _ColosseumVersionText
 	text_end
 
-TextTerminator_f5a16:
+ColosseumClearText:
 	text_end
 
 TradeCenterText:
