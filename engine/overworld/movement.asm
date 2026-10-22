@@ -62,14 +62,14 @@ UpdatePlayerSprite:
 	xor a
 	ld [wSpritePlayerStateData1IntraAnimFrameCounter], a
 	ld [wSpritePlayerStateData1AnimFrameCounter], a
-	call Func_4e32
+	call .setImageIndex
 	jr .skipSpriteAnim
 .moving
 	ld a, [wMovementFlags]
 	bit BIT_SPINNING, a
 	jr nz, .skipSpriteAnim
-	call Func_5274
-	call Func_4e32
+	call AdvanceScriptedNPCIntraAnimFrameCounter
+	call .setImageIndex
 .skipSpriteAnim
 ; If the player is standing on a grass tile, make the player's sprite have
 ; lower priority than the background so that it's partially obscured by the
@@ -86,7 +86,7 @@ UpdatePlayerSprite:
 	ld [wSpritePlayerStateData2GrassPriority], a
 	ret
 
-Func_4e32:
+.setImageIndex:
 	ld a, [wSpritePlayerStateData1AnimFrameCounter]
 	ld b, a
 	ld a, [wSpritePlayerStateData1FacingDirection]
@@ -272,7 +272,7 @@ TryWalking:
 
 ; update the walking animation parameters for a sprite that is currently walking
 UpdateSpriteInWalkingAnimation:
-	call Func_5274
+	call AdvanceScriptedNPCIntraAnimFrameCounter
 	ldh a, [hCurrentSpriteOffset]
 	add $3
 	ld l, a
@@ -839,7 +839,7 @@ AnimScriptedNPCMovement:
 	ret
 
 AdvanceScriptedNPCAnimFrameCounter:
-	call Func_5274
+	call AdvanceScriptedNPCIntraAnimFrameCounter
 	ld h, HIGH(wSpriteStateData1)
 	ldh a, [hCurrentSpriteOffset]
 	add $8
@@ -849,9 +849,9 @@ AdvanceScriptedNPCAnimFrameCounter:
 	ldh [hSpriteAnimFrameCounter], a
 	ret
 
-Func_5274:
+AdvanceScriptedNPCIntraAnimFrameCounter:
 	ldh a, [hCurrentSpriteOffset]
-	add $7
+	add SPRITESTATEDATA1_INTRAANIMFRAMECOUNTER
 	ld l, a
 	ld h, HIGH(wSpriteStateData1)
 	ld a, [hl]                       ; x#SPRITESTATEDATA1_INTRAANIMFRAMECOUNTER
@@ -1014,7 +1014,7 @@ Func_5349:
 	ret
 
 Func_5357:
-	call Func_5274
+	call AdvanceScriptedNPCIntraAnimFrameCounter
 	ldh a, [hCurrentSpriteOffset]
 	add $3
 	ld l, a
