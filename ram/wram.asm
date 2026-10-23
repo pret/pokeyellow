@@ -326,13 +326,7 @@ wPrinterPokedexEntryTextPointer:: dw
 	ds 2
 wPrinterPokedexMonIsOwned:: db
 	ds 226
-UNION
-wcbdc:: ds 1 tiles
-NEXTU
-	ds 14
-wcbea:: dw
-ENDU
-wcbec:: ds 1 tiles
+wPrinterObjectBuffer:: ds 2 tiles
 ENDU
 
 
