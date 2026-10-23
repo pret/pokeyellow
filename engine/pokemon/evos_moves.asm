@@ -414,7 +414,7 @@ CheckCanLearnMove:
 	and a
 	jr nz, .canLearnMove
 
-	ld hl, Pointer_3b0ee
+	ld hl, IgnoreLevel1LearnsetMons
 	ld a, [wCurPartySpecies]
 	ld de, 1
 	call IsInArray
@@ -455,7 +455,7 @@ CheckCanLearnMove:
 	scf
 	ret
 
-INCLUDE "data/pokemon/unknown_list.asm"
+INCLUDE "data/pokemon/debug_ignore_lv1.asm"
 
 FindPreEvolution:
 	ld c, 0
