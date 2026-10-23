@@ -609,12 +609,12 @@ PrinterDebug_PrepOAMForPrinting:
 	ret
 
 .UnnecessaryCall:
-	ld hl, wcbdc
-	ld bc, $20
+	ld hl, wPrinterObjectBuffer
+	ld bc, 2 tiles
 	xor a
 	call FillMemory
 	ld hl, wShadowOAM
-	ld c, $28
+	ld c, OAM_COUNT
 .master_loop
 	push bc
 	push hl
@@ -682,7 +682,7 @@ PrinterDebug_PrepOAMForPrinting:
 	and $f
 	or $80
 	ld d, a
-	ld hl, wcbdc
+	ld hl, wPrinterObjectBuffer
 	lb bc, BANK(.GetVRAMAddress), $1
 	call CopyVideoData
 	pop hl
@@ -733,8 +733,8 @@ PrinterDebug_PrepOAMForPrinting:
 	ret
 
 .XFlip:
-	ld hl, wcbdc
-	ld c, 16
+	ld hl, wPrinterObjectBuffer
+	ld c, TILE_SIZE
 .byte_loop
 	ld d, [hl]
 	ld a, 0
@@ -750,9 +750,9 @@ PrinterDebug_PrepOAMForPrinting:
 	ret
 
 .YFlip:
-	ld hl, wcbdc
-	ld de, wcbea
-	ld c, $4
+	ld hl, wPrinterObjectBuffer
+	ld de, wPrinterObjectBuffer + TILE_SIZE - 2
+	ld c, TILE_HEIGHT / 2
 .swap_loop
 	ld b, [hl]
 	ld a, [de]
@@ -774,13 +774,13 @@ PrinterDebug_PrepOAMForPrinting:
 
 .ApplyObjectPalettes:
 	push hl
-	ld hl, wcbdc
-	ld de, wcbec
-	ld a, 8
+	ld hl, wPrinterObjectBuffer
+	ld de, wPrinterObjectBuffer + TILE_SIZE
+	ld a, TILE_HEIGHT
 .loop1
 	push af
-	ld bc, $0
-	ld a, 8
+	ld bc, 0
+	ld a, TILE_WIDTH
 .loop2
 	push af
 	xor a
@@ -836,25 +836,25 @@ PrinterDebug_PrepOAMForPrinting:
 
 .Pal0:
 	ldh a, [rOBP0]
-	and $3
+	and %11
 	ret
 
 .Pal2:
 	ldh a, [rOBP0]
-	and $c
+	and %11 << 2
 	srl a
 	srl a
 	ret
 
 .Pal1:
 	ldh a, [rOBP0]
-	and $30
+	and %11 << 4
 	swap a
 	ret
 
 .Pal3:
 	ldh a, [rOBP0]
-	and $c0
+	and %11 << 6
 	rlca
 	rlca
 	ret
@@ -922,22 +922,18 @@ PrinterDebug_PrepOAMForPrinting:
 	add hl, bc
 	ld e, l
 	ld d, h
-	ld hl, wcbec
-	ld c, $8
+	ld hl, wPrinterObjectBuffer + TILE_SIZE
+	ld c, TILE_SIZE / 2
 .coord_copy_loop
 	call .GetBitMask
+rept 2
 	ld a, [de]
 	and b
 	or [hl]
 	ld [de], a
 	inc hl
 	inc de
-	ld a, [de]
-	and b
-	or [hl]
-	ld [de], a
-	inc hl
-	inc de
+endr
 	dec c
 	jr nz, .coord_copy_loop
 	pop hl
@@ -946,7 +942,7 @@ PrinterDebug_PrepOAMForPrinting:
 .GetBitMask:
 	push hl
 	push de
-	ld de, -$10
+	ld de, -TILE_SIZE
 	add hl, de
 	ld a, [hli]
 	or [hl]
