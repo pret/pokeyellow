@@ -281,11 +281,7 @@ wPrinterSendState:: db
 wPrinterRowIndex:: db
 
 ; Printer data header
-wPrinterDataHeader::
-wc6ea:: db
-wc6eb:: db
-wc6ec:: db
-wc6ed:: db
+wPrinterDataHeader:: ds 4
 wPrinterChecksum:: dw
 
 UNION
@@ -296,9 +292,8 @@ wPrinterSerialReceived:: db
 ; if this and the previous byte are both $ff: error 2 (connection error)
 wPrinterStatusReceived:: db
 
-wc6f2:: db
-wc6f3:: db
-	ds 12
+	ds 14
+
 wLYOverrides:: ds $100
 wLYOverridesEnd::
 wLYOverridesBuffer:: ds $100
@@ -321,7 +316,7 @@ wPrinterSendByteOffset:: dw
 wPrinterDataSize:: dw
 wPrinterTileBuffer:: ds SCREEN_AREA
 wPrinterStatusIndicator:: dw
-wcae2:: db
+wPrinterMargins:: db
 wPrinterSettingsTempCopy:: db
 	ds 16
 wPrinterQueueLength:: db
