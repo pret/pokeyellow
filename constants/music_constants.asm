@@ -252,7 +252,7 @@ DEF MAX_SFX_ID_3 EQUS "SFX_SHOOTING_STAR"
 	music_const SFX_SURFING_JUMP,       SFX_Surfing_Jump
 	music_const SFX_SURFING_FLIP,       SFX_Surfing_Flip
 	music_const SFX_SURFING_CRASH,      SFX_Surfing_Crash
-	music_const SFX_UNKNOWN_802CC_4,    SFX_802cc_4
+	music_const SFX_SURFING_UNUSED,     SFX_Surfing_Unused
 	music_const SFX_SURFING_LAND,       SFX_Surfing_Land
 	music_const SFX_GET_ITEM2_4_2,      SFX_Get_Item2_4_2
 DEF MAX_SFX_ID_4 EQUS "SFX_GET_ITEM2_4_2 + 2"
