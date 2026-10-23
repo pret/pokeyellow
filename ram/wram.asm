@@ -2008,11 +2008,11 @@ wDestinationWarpID:: db
 wYellowVersionMemory::
 wPikachuOverworldStateFlags:: db
 wPikachuSpawnState:: db
-wd431:: db
-wd432:: db
-wd433:: db
+wPikachuSpriteStateYPixelOffset:: db
+wPikachuSpriteStateXPixelOffset:: db
+wPikachuCollisionUnusedDelta:: db ; this variable is written to, but is never read from
 wPikachuCollisionCounter:: db
-wd435:: db
+wPlayerIsTalkingToPikachu:: db
 wPikachuFollowCommandBufferSize:: db
 wPikachuFollowCommandBuffer:: ds 16
 
@@ -2031,7 +2031,7 @@ wCurPikaMovementParam1:: db
 wCurPikaMovementFunc1:: db
 wCurPikaMovementParam2:: db
 wCurPikaMovementFunc2:: db
-wd451:: db
+wCurPikaMovementUnusedByte:: db
 wCurPikaMovementSpriteImageIdx:: db
 wPikaSpriteX:: db
 wPikaSpriteY:: db
@@ -2071,7 +2071,7 @@ wPlayerState:: db
 	ds 1
 wCinnabarGymQuizWrongAnswer:: db
 	ds 4
-wd479:: db
+wReachedMaxInGameTime:: db
 	ds 24
 wPikachuMapScriptFlags:: db
 	ds 1

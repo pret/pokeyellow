@@ -454,7 +454,7 @@ Func_fc76a:
 	ld [hli], a
 	ld [hl], a
 	call UpdatePikachuWalkingSprite
-	call Func_fc82e
+	call CheckWalkAnimationDone
 	jr c, .skip
 	push bc
 	callfar InitializeSpriteScreenPosition
@@ -563,7 +563,7 @@ Func_fc803:
 	call UpdatePikachuWalkingSprite
 	ret
 
-Func_fc82e:
+CheckWalkAnimationDone:
 	ld a, [wWalkCounter]
 	and a
 	ret z
@@ -614,18 +614,18 @@ Func_fc862:
 	add hl, bc
 	ld [hl], $6
 	xor a
-	ld [wd431], a
-	ld [wd432], a
+	ld [wPikachuSpriteStateYPixelOffset], a
+	ld [wPikachuSpriteStateXPixelOffset], a
 	ld hl, wSpritePikachuStateData2WalkAnimationCounter - wSpritePikachuStateData1
 	add hl, bc
 	ld [hl], $11
 asm_fc87f:
-	ld a, [wd431]
+	ld a, [wPikachuSpriteStateYPixelOffset]
 	ld e, a
-	ld a, [wd432]
+	ld a, [wPikachuSpriteStateXPixelOffset]
 	ld d, a
-	call Func_fc82e
-	jr c, Func_fc8c7
+	call CheckWalkAnimationDone
+	jr c, AdjustPikachuSpriteStatePixelOffsets
 	call SetPikachuOverworldStateFlag2
 	ld hl, wSpritePikachuStateData1YPixels - wSpritePikachuStateData1
 	add hl, bc
@@ -642,17 +642,17 @@ asm_fc87f:
 	ld a, [hl]
 	dec a
 	add a
-	add LOW(Pointer_fc8d6)
+	add LOW(PikachuSpriteStatePixelOffsets)
 	ld l, a
-	ld a, HIGH(Pointer_fc8d6)
+	ld a, HIGH(PikachuSpriteStatePixelOffsets)
 	adc 0
 	ld h, a
 	ld a, [hli]
-	ld [wd431], a
+	ld [wPikachuSpriteStateYPixelOffset], a
 	add e
 	ld e, a
 	ld a, [hl]
-	ld [wd432], a
+	ld [wPikachuSpriteStateXPixelOffset], a
 	add d
 	ld d, a
 	ld hl, wSpritePikachuStateData1YPixels - wSpritePikachuStateData1
@@ -667,12 +667,13 @@ asm_fc87f:
 	ret nz
 	jp Func_fc835
 
-Func_fc8c7:
-	ld hl, wSpritePikachuStateData1YPixels - wSpritePikachuStateData1
+AdjustPikachuSpriteStatePixelOffsets:
+	ld hl, SPRITESTATEDATA1_YPIXELS
 	add hl, bc
 	ld a, [hl]
 	sub e
 	ld [hl], a
+	ASSERT SPRITESTATEDATA1_YPIXELS + 2 == SPRITESTATEDATA1_XPIXELS
 	inc hl
 	inc hl
 	ld a, [hl]
@@ -680,7 +681,8 @@ Func_fc8c7:
 	ld [hl], a
 	jp Func_fc835
 
-Pointer_fc8d6:
+PikachuSpriteStatePixelOffsets:
+	;  dy, dx
 	db  0,  0
 	db -2,  1
 	db -4,  2
@@ -707,7 +709,7 @@ Func_fc8f8:
 	add hl, bc
 	ld [hl], $30
 asm_fc904:
-	call Func_fc82e
+	call CheckWalkAnimationDone
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
 	ld hl, wSpritePikachuStateData1IntraAnimFrameCounter - wSpritePikachuStateData1
@@ -739,7 +741,7 @@ Func_fc92b:
 	add hl, bc
 	ld [hl], $8
 asm_fc937:
-	call Func_fc82e
+	call CheckWalkAnimationDone
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
 	ld hl, wSpritePikachuStateData1IntraAnimFrameCounter - wSpritePikachuStateData1
@@ -770,7 +772,7 @@ Func_fc95d:
 	add hl, bc
 	ld [hl], $9
 asm_fc969:
-	call Func_fc82e
+	call CheckWalkAnimationDone
 	jp c, Func_fc835
 	call SetPikachuOverworldStateFlag2
 	ld hl, wSpritePikachuStateData1IntraAnimFrameCounter - wSpritePikachuStateData1

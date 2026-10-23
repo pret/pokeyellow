@@ -93,7 +93,7 @@ OverworldLoopLessDelay::
 	and a
 	jp z, OverworldLoop ; jump if a hidden event or bookshelf was found, but not if a card key door was found
 	xor a
-	ld [wd435], a ; new yellow address
+	ld [wPlayerIsTalkingToPikachu], a
 	call IsSpriteOrSignInFrontOfPlayer
 	call IsPlayerTalkingToPikachu
 	ldh a, [hTextID]
@@ -1168,8 +1168,8 @@ IsSpriteInFrontOfPlayer2::
 	ldh a, [hSpriteIndex] ; possible useless read because a already has the value of the read address
 	cp PIKACHU_SPRITE_INDEX
 	jr nz, .dontwritetowd436
-	ld a, $FF
-	ld [wd435], a
+	ld a, $FF ; true
+	ld [wPlayerIsTalkingToPikachu], a
 .dontwritetowd436
 	scf
 	ret
