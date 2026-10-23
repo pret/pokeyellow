@@ -1,5 +1,5 @@
 _IsPlayerTalkingToPikachu::
-	ld a, [wd435]
+	ld a, [wPlayerIsTalkingToPikachu]
 	and a
 	ret z
 	ldh a, [hSpriteIndex]
@@ -8,7 +8,7 @@ _IsPlayerTalkingToPikachu::
 	call InitializePikachuTextID
 	xor a
 	ldh [hSpriteIndex], a
-	ld [wd435], a
+	ld [wPlayerIsTalkingToPikachu], a
 	ret
 
 InitializePikachuTextID::

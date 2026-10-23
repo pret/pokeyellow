@@ -82,7 +82,7 @@ LoadPikachuMovementCommandData:
 .no_param2
 	ld [wCurPikaMovementParam2], a
 	xor a
-	ld [wd451], a
+	ld [wCurPikaMovementUnusedByte], a
 	scf
 	ret
 

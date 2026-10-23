@@ -1,6 +1,6 @@
 TrackPlayTime::
 	call CountDownIgnoreInputBitReset
-	ld hl, wd479
+	ld hl, wReachedMaxInGameTime
 	bit 0, [hl]
 	jr nz, .maxIGT
 	ld a, [wStatusFlags6]
@@ -35,7 +35,7 @@ TrackPlayTime::
 	ld [wPlayTimeHours], a
 	cp $ff
 	ret nz
-	ld hl, wd479
+	ld hl, wReachedMaxInGameTime
 	set 0, [hl]
 .maxIGT
 	ld a, 59

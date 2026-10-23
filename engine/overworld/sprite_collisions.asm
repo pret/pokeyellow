@@ -277,7 +277,7 @@ DetectCollisionBetweenSprites:
 	and $f0 ; collision with pikachu?
 	jr nz, .asm_4cd9
 	xor a
-	ld [wd433], a
+	ld [wPikachuCollisionUnusedDelta], a
 	ldh a, [hCollidingSpriteOffset]
 	cp $f
 	jr nz, .asm_4cd9
@@ -333,26 +333,25 @@ DetectCollisionBetweenSprites:
 	jp nz, .loop
 	ret
 
-; takes delta X or delta Y in a
-; b = delta X/Y
-; c = 0 if delta X/Y is 0
-; c = 7 if delta X/Y is 1
-; c = 9 if delta X/Y is -1
+; Takes combined delta Y/X in c (%yyxx).
+; If [hCollidingSpriteTempYValue] < [hCollidingSpriteTempXValue], this
+; sets [wPikachuCollisionUnusedDelta] to %00xx; otherwise, to %yy00.
+; The written value of [wPikachuCollisionUnusedDelta] is never read.
 Func_4d0a:
 	ldh a, [hCollidingSpriteTempXValue]
 	ld b, a
 	ldh a, [hCollidingSpriteTempYValue]
 	inc l
 	cp b
-	jr c, .asm_4d17
+	jr c, .smallerY
 	ld b, %1100
-	jr .asm_4d19
-.asm_4d17
+	jr .gotMask
+.smallerY
 	ld b, %11
-.asm_4d19
+.gotMask
 	ld a, c
 	and b
-	ld [wd433], a
+	ld [wPikachuCollisionUnusedDelta], a
 	ld a, c
 	inc l
 	inc l
