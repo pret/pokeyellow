@@ -1,6 +1,10 @@
-; This list is used by a unreferenced function.
+; This list is used by unreferenced debug code which '×'es out moves that are
+; not learnable by a particular Pokémon species.
+; Species in this list do not consider their base data's level 1 learnsets as
+; "learnable" for marking purposes.
+; It's unclear why these specific Pokémon were listed.
 
-Pointer_3b0ee:
+IgnoreLevel1LearnsetMons:
 	db NIDOKING
 	db IVYSAUR
 	db EXEGGUTOR
