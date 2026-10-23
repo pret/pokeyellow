@@ -153,8 +153,8 @@ Func_feeef:
 	push de
 	push bc
 	push hl
-	ld [wTempByteValue], a
-	ld de, wTempByteValue
+	ld [wNamedObjectIndex], a
+	ld de, wNamedObjectIndex
 	lb bc, LEADING_ZEROES | 1, 3
 	call PrintNumber
 	inc hl
@@ -178,7 +178,7 @@ Func_fef60:
 	ld b, 1
 	; fallthrough
 Func_fef68:
-	call Func_fefc5
+	call PrintMoveNameAndLearnability
 .asm_fef6b
 	call DelayFrame
 	push de
@@ -240,7 +240,7 @@ Func_fefb5:
 	pop bc
 	jr Func_fef68
 
-Func_fefc5:
+PrintMoveNameAndLearnability:
 	push hl
 	push de
 	push bc
@@ -263,27 +263,27 @@ Func_fefc5:
 	pop hl
 	inc hl
 	ld a, [de]
-	ld de, wTempByteValue
+	ld de, wNamedObjectIndex
 	ld [de], a
 	lb bc, LEADING_ZEROES | 1, 3
 	call PrintNumber
-	ld a, [wTempByteValue]
+	ld a, [wNamedObjectIndex]
 	and a
-	jr z, .asm_ff002
-	call Func_ff006
+	jr z, .noMove
+	call MarkMoveIfNotLearnable
 	inc hl
 	call GetMoveName
 	call PlaceString
-.asm_ff002
+.noMove
 	pop bc
 	pop de
 	pop hl
 	ret
 
-Func_ff006:
+MarkMoveIfNotLearnable:
 	ld a, [wCurPartySpecies]
 	push af
-	ld a, [wPokedexNum]
+	ld a, [wNamedObjectIndex]
 	push af
 	push hl
 	ld a, [wCurPartySpecies]
@@ -293,13 +293,13 @@ Func_ff006:
 	ld [wCurPartySpecies], a
 	pop hl
 	pop af
-	ld [wPokedexNum], a
+	ld [wNamedObjectIndex], a
 	push hl
-	callfar Func_3b079
+	callfar CheckAnyStageCanLearnMove
 	pop hl
-	jr c, .asm_ff036
+	jr c, .canLearnMove
 	ld [hl], '×'
-.asm_ff036
+.canLearnMove
 	pop af
 	ld [wCurPartySpecies], a
 	ret
@@ -386,7 +386,7 @@ Func_ff09e:
 	pop hl
 	inc hl
 	ld a, [de]
-	ld de, wTempByteValue
+	ld de, wNamedObjectIndex
 	ld [de], a
 	lb bc, LEADING_ZEROES | 1, 3
 	call PrintNumber

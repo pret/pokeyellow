@@ -312,21 +312,21 @@ PetitCup::
 	ld a, [hl]
 	ld [wCurPartySpecies], a
 	push hl
-	callfar Func_3b10f
+	callfar FindPreEvolution
 	pop hl
 	jp c, asm_f56ad
 	inc hl
 	ld a, [hl]
 	ld [wCurPartySpecies], a
 	push hl
-	callfar Func_3b10f
+	callfar FindPreEvolution
 	pop hl
 	jp c, asm_f56ad
 	inc hl
 	ld a, [hl]
 	ld [wCurPartySpecies], a
 	push hl
-	callfar Func_3b10f
+	callfar FindPreEvolution
 	pop hl
 	jp c, asm_f56ad
 	dec hl

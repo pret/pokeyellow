@@ -381,112 +381,116 @@ LearnMoveFromLevelUp:
 	ld [wPokedexNum], a
 	ret
 
-Func_3b079:
+CheckAnyStageCanLearnMove:
+; check if the move is in the TM/HM learnset
 	ld a, [wCurPartySpecies]
 	push af
-	call Func_3b0a2
-	jr c, .asm_3b09c
-
-	call Func_3b10f
-	jr nc, .asm_3b096
-
-	call Func_3b0a2
-	jr c, .asm_3b09c
-
-	call Func_3b10f
-	jr nc, .asm_3b096
-
-	call Func_3b0a2
-	jr c, .asm_3b09c
-.asm_3b096
+	call CheckCanLearnMove
+	jr c, .canLearnMove
+rept 2 ; A final-stage Pokémon has at most 2 previous stages
+	call FindPreEvolution
+	jr nc, .noPreEvolution
+	call CheckCanLearnMove
+	jr c, .canLearnMove
+endr
+.noPreEvolution
 	pop af
 	ld [wCurPartySpecies], a
 	and a
 	ret
-.asm_3b09c
+
+.canLearnMove
 	pop af
 	ld [wCurPartySpecies], a
 	scf
 	ret
 
-Func_3b0a2:
-	ld a, [wTempTMHM]
+CheckCanLearnMove:
+; check if the move is in the TM/HM learnset
+	ld a, [wNamedObjectIndex]
 	ld [wMoveNum], a
 	predef CanLearnTM
 	ld a, c
 	and a
-	jr nz, .asm_3b0ec
+	jr nz, .canLearnMove
+
 	ld hl, Pointer_3b0ee
 	ld a, [wCurPartySpecies]
-	ld de, $1
+	ld de, 1
 	call IsInArray
-	jr c, .asm_3b0d2
-	ld a, $ff
+	jr c, .skipLevel1LearnsetCheck
+
+; check if the move is in the level 1 learnset
+	ld a, -1 ; end of wMonHMoves array
 	ld [wMonHGrowthRate], a
-	ld a, [wTempTMHM]
+	ld a, [wNamedObjectIndex]
 	ld hl, wMonHMoves
-	ld de, $1
+	ld de, 1
 	call IsInArray
-	jr c, .asm_3b0ec
-.asm_3b0d2
-	ld a, [wTempTMHM]
+	jr c, .canLearnMove
+
+.skipLevel1LearnsetCheck
+; check if the move is in the level-up learnset
+	ld a, [wNamedObjectIndex]
 	ld d, a
 	call GetMonLearnset
 .loop
 	ld a, [hli]
 	and a
-	jr z, .asm_3b0ea
+	jr z, .cannotLearnMove
 	ld b, a
 	ld a, [wCurEnemyLevel]
 	cp b
-	jr c, .asm_3b0ea
+	jr c, .cannotLearnMove
 	ld a, [hli]
 	cp d
-	jr z, .asm_3b0ec
+	jr z, .canLearnMove
 	jr .loop
-.asm_3b0ea
+
+.cannotLearnMove
 	and a
 	ret
-.asm_3b0ec
+
+.canLearnMove
 	scf
 	ret
 
 INCLUDE "data/pokemon/unknown_list.asm"
 
-Func_3b10f:
-	ld c, $0
-.asm_3b111
+FindPreEvolution:
+	ld c, 0
+.loop
 	ld hl, EvosMovesPointerTable
-	ld b, $0
+	ld b, 0
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-.asm_3b11b
+.nextEvolution
 	ld a, [hli]
 	and a
-	jr z, .asm_3b130
-	cp $2
-	jr nz, .asm_3b124
+	jr z, .noMoreEvolutions
+	cp EVOLVE_ITEM
+	jr nz, .noFourthEvoByte
 	inc hl
-.asm_3b124
+.noFourthEvoByte
 	inc hl
 	ld a, [wCurPartySpecies]
 	cp [hl]
-	jr z, .asm_3b138
+	jr z, .foundPreEvolution
 	inc hl
 	ld a, [hl]
 	and a
-	jr nz, .asm_3b11b
-.asm_3b130
+	jr nz, .nextEvolution
+.noMoreEvolutions
 	inc c
 	ld a, c
-	cp VICTREEBEL
-	jr c, .asm_3b111
+	cp NUM_POKEMON_INDEXES
+	jr c, .loop
 	and a
 	ret
-.asm_3b138
+.foundPreEvolution
 	inc c
 	ld a, c
 	ld [wCurPartySpecies], a
