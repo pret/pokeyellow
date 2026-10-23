@@ -18,13 +18,13 @@ PrintPokedexEntry:
 	ld a, [wPrinterPokedexMonIsOwned]
 	and a
 	jr z, .not_caught
-	ld a, 16
+	ln a, 1, 0
 	jr .got_size
 
 .not_caught
-	ld a, 19
+	ln a, 1, 3
 .got_size
-	ld [wcae2], a
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call ClearScreen
 	callfar Pokedex_DrawInterface
@@ -47,8 +47,8 @@ PrintPokedexEntry:
 	call Printer_PrepareDexEntryForPrinting
 	ld a, $7
 	call Printer_StartTransmission
-	ld a, $3
-	ld [wcae2], a
+	ln a, 0, 3
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	ld a, $1
@@ -127,8 +127,8 @@ PrintSurfingMinigameHighScore::
 	ld a, $9
 	ldh [rIE], a
 	call StartTransmission_Send9Rows
-	ld a, $13
-	ld [wcae2], a
+	ln a, 1, 3
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call Printer_ResetJoypadHRAM
 .loop
@@ -169,8 +169,8 @@ PrintDiploma::
 	ld a, $9
 	ldh [rIE], a
 	call StartTransmission_Send9Rows
-	ld a, $10
-	ld [wcae2], a
+	ln a, 1, 0
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call PrintDiplomaPage
 	jr c, .quit
@@ -184,8 +184,8 @@ PrintDiploma::
 	ldh [hAutoBGTransferEnabled], a
 	call DisplayDiplomaBottom
 	call StartTransmission_Send9Rows
-	ld a, $3
-	ld [wcae2], a
+	ln a, 0, 3
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call PrintDiplomaPage
@@ -246,8 +246,8 @@ PrintPCBox::
 	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage1
 	call StartTransmission_Send9Rows
-	ld a, $10
-	ld [wcae2], a
+	ln a, 1, 0
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call PrintPCBoxPage
@@ -261,8 +261,8 @@ PrintPCBox::
 	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage2
 	call StartTransmission_Send9Rows
-	ld a, $0
-	ld [wcae2], a
+	ln a, 0, 0
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call PrintPCBoxPage
@@ -276,8 +276,8 @@ PrintPCBox::
 	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage3
 	call StartTransmission_Send9Rows
-	ld a, $0
-	ld [wcae2], a
+	ln a, 0, 0
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call PrintPCBoxPage
@@ -291,8 +291,8 @@ PrintPCBox::
 	ldh [hAutoBGTransferEnabled], a
 	call PrintPCBox_DrawPage4
 	call StartTransmission_Send9Rows
-	ld a, $3
-	ld [wcae2], a
+	ln a, 0, 3
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call LoadScreenTilesFromBuffer1
 	call PrintPCBoxPage
@@ -354,8 +354,8 @@ PrintFanClubPortrait::
 	ld a, $9
 	ldh [rIE], a
 	call StartTransmission_Send9Rows
-	ld a, $13
-	ld [wcae2], a
+	ln a, 1, 3
+	ld [wPrinterMargins], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call Printer_ResetJoypadHRAM
 .print_loop
@@ -397,8 +397,8 @@ PrinterDebug:
 	ld a, $9
 	ldh [rIE], a
 	call StartTransmission_Send9Rows
-	ld a, $13
-	ld [wcae2], a
+	ln a, 1, 3
+	ld [wPrinterMargins], a
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	call Printer_CopyTileMapToPrinterTileBuffer

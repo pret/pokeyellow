@@ -343,9 +343,9 @@ Printer2_SignalSendHeader:
 	ld hl, Printer2DataPacket2
 	call CopyPrinter2DataHeader
 	call Printer2_StageHeaderForSend
-	ld a, $4
+	ld a, LOW(4)
 	ld [wPrinterDataSize], a
-	ld a, $0
+	ld a, HIGH(4)
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinter2Checksum
 	call Printer2_Next
@@ -488,9 +488,9 @@ CopyPrinter2DataHeader:
 	ld a, [hli]
 	ld [wPrinterDataHeader + 3], a
 	ld a, [hli]
-	ld [wPrinterDataHeader + 4], a
+	ld [wPrinterChecksum], a
 	ld a, [hl]
-	ld [wPrinterDataHeader + 5], a
+	ld [wPrinterChecksum + 1], a
 	ret
 
 ResetPrinter2Data:
@@ -500,7 +500,7 @@ ResetPrinter2Data:
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wPrinterDataHeader + 4
+	ld hl, wPrinterChecksum
 	ld [hli], a
 	ld [hl], a
 	xor a
@@ -512,8 +512,8 @@ ResetPrinter2Data:
 	ret
 
 ComputePrinter2Checksum:
-	ld hl, $0
-	ld bc, $4
+	ld hl, 0
+	ld bc, 4
 	ld de, wPrinterDataHeader
 	call .AddToChecksum
 	ld a, [wPrinterDataSize]
@@ -523,9 +523,9 @@ ComputePrinter2Checksum:
 	ld de, wPrinterSendDataSource1
 	call .AddToChecksum
 	ld a, l
-	ld [wPrinterDataHeader + 4], a
+	ld [wPrinterChecksum], a
 	ld a, h
-	ld [wPrinterDataHeader + 5], a
+	ld [wPrinterChecksum + 1], a
 	ret
 
 .AddToChecksum:
@@ -546,12 +546,12 @@ ComputePrinter2Checksum:
 Printer2_StageHeaderForSend:
 	ld a, $1
 	ld [wPrinterSendDataSource1], a
-	ld a, [wcae2]
-	ld [wPrinterStatusReceived], a
-	ld a, $e4
-	ld [wc6f2], a
+	ld a, [wPrinterMargins]
+	ld [wPrinterSendDataSource1 + 1], a
+	ld a, %11100100 ; 3,2,1,0
+	ld [wPrinterSendDataSource1 + 2], a
 	ld a, [wPrinterSettingsTempCopy]
-	ld [wc6f3], a
+	ld [wPrinterSendDataSource1 + 3], a
 	ret
 
 PrinterDebug_PrepOAMForPrinting:

@@ -143,9 +143,9 @@ Printer_SignalSendHeader:
 	ld hl, PrinterDataPacket2
 	call CopyPrinterDataHeader
 	call Printer_StageHeaderForSend
-	ld a, $4
+	ld a, LOW(4)
 	ld [wPrinterDataSize], a
-	ld a, $0
+	ld a, HIGH(4)
 	ld [wPrinterDataSize + 1], a
 	call ComputePrinterChecksum
 	call Printer_Next
@@ -356,9 +356,9 @@ ComputePrinterChecksum:
 Printer_StageHeaderForSend:
 	ld a, $1
 	ld [wPrinterSendDataSource1], a
-	ld a, [wcae2]
+	ld a, [wPrinterMargins]
 	ld [wPrinterSendDataSource1 + 1], a
-	ld a, %11100100
+	ld a, %11100100 ; 3,2,1,0
 	ld [wPrinterSendDataSource1 + 2], a
 	ld a, [wPrinterSettingsTempCopy]
 	ld [wPrinterSendDataSource1 + 3], a
