@@ -86,7 +86,7 @@ Func_f531b::
 	and $c
 	jr z, .asm_f53d1
 	ldh a, [hSerialConnectionStatus]
-	cp $2
+	cp USING_INTERNAL_CLOCK
 	jr z, .asm_f53df
 .asm_f53d1
 	ld a, $1
@@ -680,12 +680,12 @@ LinkMenu:
 	ld b, a
 	ld a, [wCurrentMenuItem]
 	cp $3
-	jr nz, .asm_f586b
-	bit 2, b
-	jr z, .asm_f586b
-	dec a
-	ld b, $8
-.asm_f586b
+	jr nz, .notYellowCancel
+	bit B_PAD_A + 2, b
+	jr z, .notYellowCancel
+	dec a ; match Red/Blue value for Cancel
+	ld b, PAD_B << 2
+.notYellowCancel
 	add b
 	add $d0
 	ld [wLinkMenuSelectionSendBuffer], a
@@ -746,7 +746,7 @@ LinkMenu:
 ; A button was pressed
 	ld a, [wCurrentMenuItem]
 	cp $2
-	jp z, .asm_f5963
+	jp z, .choseYellowColosseum2
 	ld b, e
 	ld e, c
 	ld a, [wCurrentMenuItem]
@@ -807,16 +807,16 @@ LinkMenu:
 	vc_hook Wireless_net_end
 	ret
 
-.asm_f5963
+.choseYellowColosseum2
 	ld a, [wNamedObjectIndex]
 	and a
-	jr nz, .asm_f5974
+	jr nz, .usingEnemySelection
 	ld b, ' '
 	ld c, ' '
 	ld d, '▷'
 	ld e, ' '
 	call Func_f59ec
-.asm_f5974
+.usingEnemySelection
 	xor a
 	ld [wBuffer], a
 	ld a, $ff
@@ -826,7 +826,7 @@ LinkMenu:
 	ld b, $78
 .loop
 	ldh a, [hSerialConnectionStatus]
-	cp $2
+	cp USING_INTERNAL_CLOCK
 	call z, DelayFrame
 	dec b
 	jr z, .asm_f59b2
