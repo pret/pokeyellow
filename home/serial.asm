@@ -146,7 +146,7 @@ Serial_ExchangeByte::
 	sub IE_SERIAL
 	jr nz, .nonSerialInterruptsEnabled
 	; a == 0
-	assert LOW(SERIAL_LINK_BYTE_TIMEOUT) == 0
+	ASSERT LOW(SERIAL_LINK_BYTE_TIMEOUT) == 0
 	ld [wLinkByteTimeout], a
 	ld a, HIGH(SERIAL_LINK_BYTE_TIMEOUT)
 	ld [wLinkByteTimeout + 1], a
