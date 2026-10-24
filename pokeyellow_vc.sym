@@ -1347,8 +1347,8 @@
 01:4ff7 MakeNPCFacePlayer.facingDirectionDetermined
 01:4fff InitializeSpriteStatus
 01:5012 InitializeSpriteScreenPosition
-01:5033 Func_5033
-01:503c Func_5033.asm_503c
+01:5033 InitializeSpriteScreenPosition.CalculateScreenPixelCoordinate
+01:503c InitializeSpriteScreenPosition.positive
 01:503f CheckSpriteAvailability
 01:5069 CheckSpriteAvailability.skipYVisibilityTest
 01:5078 CheckSpriteAvailability.skipXVisibilityTest

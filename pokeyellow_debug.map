@@ -1371,8 +1371,8 @@ ROMX bank #1:
 	         $5003 = MakeNPCFacePlayer.facingDirectionDetermined
 	         $500b = InitializeSpriteStatus
 	         $501e = InitializeSpriteScreenPosition
-	         $503f = Func_5033
-	         $5048 = Func_5033.asm_503c
+	         $503f = InitializeSpriteScreenPosition.CalculateScreenPixelCoordinate
+	         $5048 = InitializeSpriteScreenPosition.positive
 	         $504b = CheckSpriteAvailability
 	         $5075 = CheckSpriteAvailability.skipYVisibilityTest
 	         $5084 = CheckSpriteAvailability.skipXVisibilityTest
