@@ -4,7 +4,7 @@ Func_f531b::
 	ld a, $1
 	ld [wBuffer], a
 	xor a
-	ld [wUnknownSerialFlag_d499], a
+	ld [wUnknownSerialFlag_d498], a
 	hlcoord 0, 0
 	lb bc, 4, 5
 	call TextBoxBorder
@@ -145,7 +145,7 @@ Func_f531b::
 	cp $3
 	jr z, asm_f547f
 	inc a
-	ld [wUnknownSerialFlag_d499], a
+	ld [wUnknownSerialFlag_d498], a
 	ld a, [wCurrentMenuItem]
 	ld hl, PointerTable_f5488
 	ld c, a
@@ -161,8 +161,8 @@ Func_f531b::
 .returnaddress
 	ld [wLinkMenuSelectionSendBuffer], a
 	xor a
-	ld [wUnknownSerialCounter], a
-	ld [wUnknownSerialCounter+1], a
+	ld [wUnknownSerialCounter_cc47], a
+	ld [wUnknownSerialCounter_cc47+1], a
 	call Serial_SyncAndExchangeNybble
 	ld a, [wLinkMenuSelectionSendBuffer]
 	and a
@@ -171,8 +171,8 @@ Func_f531b::
 	and a
 	jr nz, Func_f5476
 	xor a
-	ld [wUnknownSerialCounter], a
-	ld [wUnknownSerialCounter+1], a
+	ld [wUnknownSerialCounter_cc47], a
+	ld [wUnknownSerialCounter_cc47+1], a
 	and a
 	ret
 
@@ -184,8 +184,8 @@ asm_f547c::
 
 asm_f547f::
 	xor a
-	ld [wUnknownSerialCounter], a
-	ld [wUnknownSerialCounter+1], a
+	ld [wUnknownSerialCounter_cc47], a
+	ld [wUnknownSerialCounter_cc47+1], a
 	scf
 	ret
 
@@ -851,8 +851,8 @@ LinkMenu:
 
 .asm_f59b2
 	xor a
-	ld [wUnknownSerialCounter], a
-	ld [wUnknownSerialCounter+1], a
+	ld [wUnknownSerialCounter_cc47], a
+	ld [wUnknownSerialCounter_cc47+1], a
 	ld a, [wNamedObjectIndex]
 	and a
 	jr z, .asm_f59cd

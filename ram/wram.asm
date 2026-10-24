@@ -438,7 +438,7 @@ wSerialExchangeNybbleReceiveData:: db
 ; this nybble is sent when using Serial_SyncAndExchangeNybble or Serial_ExchangeNybble
 wSerialExchangeNybbleSendData:: db
 	ds 4
-wUnknownSerialCounter:: dw
+wUnknownSerialCounter_cc47:: dw
 ENDU
 
 ; $00 = player mons
@@ -2078,7 +2078,7 @@ wPikachuMapScriptFlags:: db
 wSurfingMinigameHiScore:: dw ; little-endian BCD
 	ds 1
 wPrinterSettings:: db
-wUnknownSerialFlag_d499:: db
+wUnknownSerialFlag_d498:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
 wPikachuEmotionModifier:: db

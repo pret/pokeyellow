@@ -108,7 +108,7 @@ Serial_ExchangeByte::
 	jr z, .doNotIncrementUnknownCounter
 	call WaitLoop_15Iterations
 	push hl
-	ld hl, wUnknownSerialCounter + 1
+	ld hl, wUnknownSerialCounter_cc47 + 1
 	inc [hl]
 	jr nz, .noCarry
 	dec hl
@@ -157,7 +157,7 @@ Serial_ExchangeByte::
 	call IsUnknownCounterZero
 	jr z, .done
 	push hl
-	ld hl, wUnknownSerialCounter + 1
+	ld hl, wUnknownSerialCounter_cc47 + 1
 	ld a, [hl]
 	dec a
 	ld [hld], a
@@ -188,7 +188,7 @@ WaitLoop_15Iterations::
 
 IsUnknownCounterZero::
 	push hl
-	ld hl, wUnknownSerialCounter
+	ld hl, wUnknownSerialCounter_cc47
 	ld a, [hli]
 	or [hl]
 	pop hl
@@ -197,8 +197,8 @@ IsUnknownCounterZero::
 ; a is always 0 when this is called
 SetUnknownCounterToFFFF::
 	dec a
-	ld [wUnknownSerialCounter], a
-	ld [wUnknownSerialCounter + 1], a
+	ld [wUnknownSerialCounter_cc47], a
+	ld [wUnknownSerialCounter_cc47 + 1], a
 	ret
 
 ; This is used to exchange the button press and selected menu item on the link menu.
@@ -244,7 +244,7 @@ Serial_SyncAndExchangeNybble::
 	call IsUnknownCounterZero
 	jr z, .next1
 	push hl
-	ld hl, wUnknownSerialCounter + 1
+	ld hl, wUnknownSerialCounter_cc47 + 1
 	dec [hl]
 	jr nz, .next2
 	dec hl

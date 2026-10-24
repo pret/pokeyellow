@@ -61,7 +61,7 @@ SleepEffect:
 	and SLP_MASK
 	jr z, .setSleepCounter
 	ld b, a
-	ld a, [wUnknownSerialFlag_d499]
+	ld a, [wUnknownSerialFlag_d498]
 	and a
 	jr z, .asm_3f1ba ; XXX stadium stuff?
 	ld a, b
@@ -223,7 +223,7 @@ FreezeBurnParalyzeEffect:
 	ld a, [wPlayerMoveEffect]
 	cp FREEZE_SIDE_EFFECT2 ; more stadium stuff
 	jr nz, .asm_3f2c7
-	ld a, [wUnknownSerialFlag_d499]
+	ld a, [wUnknownSerialFlag_d498]
 	and a
 	ld a, FREEZE_SIDE_EFFECT1
 	ld b, 30 percent + 1
@@ -288,7 +288,7 @@ FreezeBurnParalyzeEffect:
 	ld a, [wEnemyMoveEffect]
 	cp FREEZE_SIDE_EFFECT2 ; more stadium stuff
 	jr nz, .asm_3f341
-	ld a, [wUnknownSerialFlag_d499]
+	ld a, [wUnknownSerialFlag_d498]
 	and a
 	ld a, FREEZE_SIDE_EFFECT1
 	ld b, 30 percent + 1
