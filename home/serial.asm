@@ -123,13 +123,13 @@ Serial_ExchangeByte::
 	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
 	cp IE_SERIAL
 	jr nz, .loop
-	ld a, [wUnknownSerialCounter2]
+	ld a, [wLinkByteTimeout]
 	dec a
-	ld [wUnknownSerialCounter2], a
+	ld [wLinkByteTimeout], a
 	jr nz, .loop
-	ld a, [wUnknownSerialCounter2 + 1]
+	ld a, [wLinkByteTimeout + 1]
 	dec a
-	ld [wUnknownSerialCounter2 + 1], a
+	ld [wLinkByteTimeout + 1], a
 	jr nz, .loop
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
@@ -144,11 +144,13 @@ Serial_ExchangeByte::
 	ldh a, [rIE]
 	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
 	sub IE_SERIAL
-	jr nz, .skipReloadingUnknownCounter2
-	ld [wUnknownSerialCounter2], a
-	ld a, $50
-	ld [wUnknownSerialCounter2 + 1], a
-.skipReloadingUnknownCounter2
+	jr nz, .nonSerialInterruptsEnabled
+	; a == 0
+	assert LOW(SERIAL_LINK_BYTE_TIMEOUT) == 0
+	ld [wLinkByteTimeout], a
+	ld a, HIGH(SERIAL_LINK_BYTE_TIMEOUT)
+	ld [wLinkByteTimeout + 1], a
+.nonSerialInterruptsEnabled
 	ldh a, [hSerialReceiveData]
 	cp SERIAL_NO_DATA_BYTE
 	ret nz

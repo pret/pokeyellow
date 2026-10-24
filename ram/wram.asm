@@ -1500,7 +1500,7 @@ NEXTU
 ; number of hits by player in attacks like Double Slap, etc.
 wPlayerNumHits:: db
 NEXTU
-wUnknownSerialCounter2:: dw
+wLinkByteTimeout:: dw
 ENDU
 
 	ds 2
