@@ -540,7 +540,7 @@ ROM0 bank #0:
 	         $2028 = Serial_ExchangeByte.doNotIncrementUnknownCounter
 	         $204a = Serial_ExchangeByte.waitLoop
 	         $204d = Serial_ExchangeByte.ok
-	         $2060 = Serial_ExchangeByte.skipReloadingUnknownCounter2
+	         $2060 = Serial_ExchangeByte.nonSerialInterruptsEnabled
 	         $2075 = Serial_ExchangeByte.noBorrow
 	         $207b = Serial_ExchangeByte.done
 	         $208d = WaitLoop_15Iterations
@@ -22130,7 +22130,7 @@ WRAM0 bank #0:
 	         $cc3e = wSerialExchangeNybbleReceiveData
 	         $cc42 = wSerialExchangeNybbleSendData
 	         $cc42 = wLinkMenuSelectionSendBuffer
-	         $cc47 = wUnknownSerialCounter
+	         $cc47 = wUnknownSerialCounter_cc47
 	         $cc47 = wLinkTimeoutCounter
 	         $cc47 = wEnteringCableClub
 	         $cc49 = wMonDataLocation
@@ -22610,7 +22610,7 @@ WRAM0 bank #0:
 	         $d06f = wEnemyConfusedCounter
 	         $d070 = wEnemyToxicCounter
 	         $d071 = wEnemyDisabledMove
-	         $d073 = wUnknownSerialCounter2
+	         $d073 = wLinkByteTimeout
 	         $d073 = wPlayerNumHits
 	         $d073 = wPlayerBideAccumulatedDamage
 	         $d077 = wEscapedFromBattle
@@ -23082,7 +23082,7 @@ WRAM0 bank #0:
 	         $d492 = wPikachuMapScriptFlags
 	         $d494 = wSurfingMinigameHiScore
 	         $d497 = wPrinterSettings
-	         $d498 = wUnknownSerialFlag_d499
+	         $d498 = wUnknownSerialFlag_d498
 	         $d499 = wPrinterConnectionOpen
 	         $d49a = wPrinterOpcode
 	         $d49b = wPikachuEmotionModifier

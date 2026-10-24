@@ -515,7 +515,7 @@
 00:2028 Serial_ExchangeByte.doNotIncrementUnknownCounter
 00:204a Serial_ExchangeByte.waitLoop
 00:204d Serial_ExchangeByte.ok
-00:2060 Serial_ExchangeByte.skipReloadingUnknownCounter2
+00:2060 Serial_ExchangeByte.nonSerialInterruptsEnabled
 00:2075 Serial_ExchangeByte.noBorrow
 00:207b Serial_ExchangeByte.done
 00:208d WaitLoop_15Iterations
@@ -21547,7 +21547,7 @@
 00:cc42 wSerialExchangeNybbleSendData
 00:cc47 wEnteringCableClub
 00:cc47 wLinkTimeoutCounter
-00:cc47 wUnknownSerialCounter
+00:cc47 wUnknownSerialCounter_cc47
 00:cc49 wMonDataLocation
 00:cc49 wWhichTradeMonSelectionMenu
 00:cc4a wMenuWrappingEnabled
@@ -22025,9 +22025,9 @@
 00:d06f wEnemyConfusedCounter
 00:d070 wEnemyToxicCounter
 00:d071 wEnemyDisabledMove
+00:d073 wLinkByteTimeout
 00:d073 wPlayerBideAccumulatedDamage
 00:d073 wPlayerNumHits
-00:d073 wUnknownSerialCounter2
 00:d077 wBattleStatusDataEnd
 00:d077 wEscapedFromBattle
 00:d078 wAmountMoneyWon
@@ -22495,7 +22495,7 @@
 00:d492 wPikachuMapScriptFlags
 00:d494 wSurfingMinigameHiScore
 00:d497 wPrinterSettings
-00:d498 wUnknownSerialFlag_d499
+00:d498 wUnknownSerialFlag_d498
 00:d499 wPrinterConnectionOpen
 00:d49a wPrinterOpcode
 00:d49b wPikachuEmotionModifier
