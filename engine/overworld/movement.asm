@@ -418,8 +418,8 @@ InitializeSpriteScreenPosition:
 	ld b, a
 	ld a, [hl]      ; x#SPRITESTATEDATA2_MAPY
 	sub b           ; relative to player position
-	call Func_5033
-	sub $4          ; - 4
+	call .CalculateScreenPixelCoordinate
+	sub 4           ; - 4
 	dec h
 	ld [hli], a     ; [x#SPRITESTATEDATA1_YPIXELS]
 	inc h
@@ -427,20 +427,20 @@ InitializeSpriteScreenPosition:
 	ld b, a
 	ld a, [hli]     ; x#SPRITESTATEDATA2_MAPX
 	sub b           ; relative to player position
-	call Func_5033
+	call .CalculateScreenPixelCoordinate
 	dec h
 	ld [hl], a      ; [x#SPRITESTATEDATA1_XPIXELS]
 	ret
 
-Func_5033:
-	jr nc, .asm_503c
+.CalculateScreenPixelCoordinate:
+	jr nc, .positive
 	cpl
 	inc a
 	swap a
 	cpl
 	inc a
 	ret
-.asm_503c
+.positive
 	swap a
 	ret
 
