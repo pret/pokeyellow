@@ -61,14 +61,15 @@ SleepEffect:
 	and SLP_MASK
 	jr z, .setSleepCounter
 	ld b, a
-	ld a, [wUnknownSerialFlag_d498]
+	ld a, [wChosenColosseum2Cup]
 	and a
-	jr z, .asm_3f1ba ; XXX stadium stuff?
+	jr z, .notColosseum2
+	; In Yellow's Colosseum 2 (and Stadium), sleep lasts 1-3 turns, not 1-7
 	ld a, b
-	and $3
+	and %11
 	jr z, .setSleepCounter
 	ld b, a
-.asm_3f1ba
+.notColosseum2
 	ld a, b
 	ld [de], a
 	call PlayCurrentMoveAnimation2
@@ -221,16 +222,17 @@ FreezeBurnParalyzeEffect:
 	cp b ; do target type 2 and move type match?
 	ret z  ; return if they match
 	ld a, [wPlayerMoveEffect]
-	cp FREEZE_SIDE_EFFECT2 ; more stadium stuff
-	jr nz, .asm_3f2c7
-	ld a, [wUnknownSerialFlag_d498]
+	cp FREEZE_SIDE_EFFECT2
+	jr nz, .notBlizzard1
+	; In Yellow's Colosseum 2 (and Stadium), Blizzard has a 10% freeze chance, not 30%
+	ld a, [wChosenColosseum2Cup]
 	and a
 	ld a, FREEZE_SIDE_EFFECT1
 	ld b, 30 percent + 1
 	jr z, .regular_effectiveness
 	ld b, 10 percent + 1
 	jr .regular_effectiveness
-.asm_3f2c7
+.notBlizzard1
 	cp PARALYZE_SIDE_EFFECT1 + 1
 	ld b, 10 percent + 1
 	jr c, .regular_effectiveness
@@ -286,16 +288,17 @@ FreezeBurnParalyzeEffect:
 	cp b
 	ret z
 	ld a, [wEnemyMoveEffect]
-	cp FREEZE_SIDE_EFFECT2 ; more stadium stuff
-	jr nz, .asm_3f341
-	ld a, [wUnknownSerialFlag_d498]
+	cp FREEZE_SIDE_EFFECT2
+	jr nz, .notBlizzard2
+	; In Yellow's Colosseum 2 (and Stadium), Blizzard has a 10% freeze chance, not 30%
+	ld a, [wChosenColosseum2Cup]
 	and a
 	ld a, FREEZE_SIDE_EFFECT1
 	ld b, 30 percent + 1
 	jr z, .regular_effectiveness2
 	ld b, 10 percent + 1
 	jr .regular_effectiveness2
-.asm_3f341
+.notBlizzard2
 	cp PARALYZE_SIDE_EFFECT1 + 1
 	ld b, 10 percent + 1
 	jr c, .regular_effectiveness2

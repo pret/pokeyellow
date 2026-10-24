@@ -2078,7 +2078,7 @@ wPikachuMapScriptFlags:: db
 wSurfingMinigameHiScore:: dw ; little-endian BCD
 	ds 1
 wPrinterSettings:: db
-wUnknownSerialFlag_d498:: db
+wChosenColosseum2Cup:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
 wPikachuEmotionModifier:: db

@@ -4,7 +4,7 @@ Func_f531b::
 	ld a, $1
 	ld [wBuffer], a
 	xor a
-	ld [wUnknownSerialFlag_d498], a
+	ld [wChosenColosseum2Cup], a
 	hlcoord 0, 0
 	lb bc, 4, 5
 	call TextBoxBorder
@@ -145,7 +145,7 @@ Func_f531b::
 	cp $3
 	jr z, asm_f547f
 	inc a
-	ld [wUnknownSerialFlag_d498], a
+	ld [wChosenColosseum2Cup], a
 	ld a, [wCurrentMenuItem]
 	ld hl, PointerTable_f5488
 	ld c, a
