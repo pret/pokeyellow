@@ -73,7 +73,7 @@ CableClubNPC::
 	call PlaySoundWaitForCurrent
 	ld hl, CableClubNPCPleaseWaitText
 	call PrintText
-	ld hl, wUnknownSerialCounter_cc47
+	ld hl, wLinkTimeoutFrames
 	ld a, $3
 	ld [hli], a
 	xor a
@@ -83,7 +83,7 @@ CableClubNPC::
 	vc_hook Wireless_prompt
 	call Serial_SyncAndExchangeNybble
 	vc_hook Wireless_net_recheck
-	ld hl, wUnknownSerialCounter_cc47
+	ld hl, wLinkTimeoutFrames
 	ld a, [hli]
 	inc a
 	jr nz, .connected
@@ -110,7 +110,7 @@ CableClubNPC::
 	call PrintText
 .didNotConnect
 	xor a
-	ld hl, wUnknownSerialCounter_cc47
+	ld hl, wLinkTimeoutFrames
 	ld [hli], a
 	ld [hl], a
 	ld hl, wStatusFlags4
@@ -137,14 +137,14 @@ Serial_SyncAndExchangeNybbleDouble:
 	call Serial_ExchangeNybble
 	call DelayFrame
 	push hl
-	ld hl, wUnknownSerialCounter_cc47 + 1
+	ld hl, wLinkTimeoutFrames + 1
 	dec [hl]
 	jr nz, .next
 	dec hl
 	dec [hl]
 	jr nz, .next
 	pop hl
-	jr .setUnknownSerialCounterToFFFF
+	jr .serialDisconnected
 .next
 	pop hl
 	ld a, [wSerialExchangeNybbleReceiveData]
@@ -172,10 +172,10 @@ Serial_SyncAndExchangeNybbleDouble:
 	ld a, [wSerialExchangeNybbleReceiveData]
 	ld [wSerialSyncAndExchangeNybbleReceiveData], a
 	ret
-.setUnknownSerialCounterToFFFF
+.serialDisconnected
 	ld a, $ff
-	ld [wUnknownSerialCounter_cc47], a
-	ld [wUnknownSerialCounter_cc47 + 1], a
+	ld [wLinkTimeoutFrames], a
+	ld [wLinkTimeoutFrames + 1], a
 	ret
 
 CableClubNPCAreaReservedFor2FriendsLinkedByCableText:

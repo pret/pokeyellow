@@ -438,7 +438,7 @@ wSerialExchangeNybbleReceiveData:: db
 ; this nybble is sent when using Serial_SyncAndExchangeNybble or Serial_ExchangeNybble
 wSerialExchangeNybbleSendData:: db
 	ds 4
-wUnknownSerialCounter_cc47:: dw
+wLinkTimeoutFrames:: dw
 ENDU
 
 ; $00 = player mons

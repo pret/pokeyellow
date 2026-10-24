@@ -103,22 +103,22 @@ Serial_ExchangeByte::
 	jr nz, .ok
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
-	jr nz, .doNotIncrementUnknownCounter
-	call IsUnknownCounterZero
-	jr z, .doNotIncrementUnknownCounter
+	jr nz, .notPlayer1OrTimedOut
+	call CheckLinkTimeoutFramesNonzero
+	jr z, .notPlayer1OrTimedOut
 	call WaitLoop_15Iterations
 	push hl
-	ld hl, wUnknownSerialCounter_cc47 + 1
+	ld hl, wLinkTimeoutFrames + 1
 	inc [hl]
 	jr nz, .noCarry
 	dec hl
 	inc [hl]
 .noCarry
 	pop hl
-	call IsUnknownCounterZero
+	call CheckLinkTimeoutFramesNonzero
 	jr nz, .loop
-	jp SetUnknownCounterToFFFF
-.doNotIncrementUnknownCounter
+	jp SerialDisconnected
+.notPlayer1OrTimedOut
 	ldh a, [rIE]
 	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
 	cp IE_SERIAL
@@ -154,10 +154,10 @@ Serial_ExchangeByte::
 	ldh a, [hSerialReceiveData]
 	cp SERIAL_NO_DATA_BYTE
 	ret nz
-	call IsUnknownCounterZero
+	call CheckLinkTimeoutFramesNonzero
 	jr z, .done
 	push hl
-	ld hl, wUnknownSerialCounter_cc47 + 1
+	ld hl, wLinkTimeoutFrames + 1
 	ld a, [hl]
 	dec a
 	ld [hld], a
@@ -166,8 +166,8 @@ Serial_ExchangeByte::
 	dec [hl]
 .noBorrow
 	pop hl
-	call IsUnknownCounterZero
-	jr z, SetUnknownCounterToFFFF
+	call CheckLinkTimeoutFramesNonzero
+	jr z, SerialDisconnected
 .done
 	ldh a, [rIE]
 	and IE_SERIAL | IE_TIMER | IE_STAT | IE_VBLANK
@@ -186,19 +186,20 @@ WaitLoop_15Iterations::
 	jr nz, .waitLoop
 	ret
 
-IsUnknownCounterZero::
+CheckLinkTimeoutFramesNonzero::
 	push hl
-	ld hl, wUnknownSerialCounter_cc47
+	ld hl, wLinkTimeoutFrames
 	ld a, [hli]
 	or [hl]
 	pop hl
 	ret
 
-; a is always 0 when this is called
-SetUnknownCounterToFFFF::
+; This sets wLinkTimeoutFrames to $ffff, since
+; a is always 0 when it is called.
+SerialDisconnected::
 	dec a
-	ld [wUnknownSerialCounter_cc47], a
-	ld [wUnknownSerialCounter_cc47 + 1], a
+	ld [wLinkTimeoutFrames], a
+	ld [wLinkTimeoutFrames + 1], a
 	ret
 
 ; This is used to exchange the button press and selected menu item on the link menu.
@@ -241,10 +242,10 @@ Serial_SyncAndExchangeNybble::
 .loop1
 	call Serial_ExchangeNybble
 	call DelayFrame
-	call IsUnknownCounterZero
+	call CheckLinkTimeoutFramesNonzero
 	jr z, .next1
 	push hl
-	ld hl, wUnknownSerialCounter_cc47 + 1
+	ld hl, wLinkTimeoutFrames + 1
 	dec [hl]
 	jr nz, .next2
 	dec hl
@@ -252,7 +253,7 @@ Serial_SyncAndExchangeNybble::
 	jr nz, .next2
 	pop hl
 	xor a
-	jp SetUnknownCounterToFFFF
+	jp SerialDisconnected
 .next2
 	pop hl
 .next1
