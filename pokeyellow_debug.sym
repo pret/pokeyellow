@@ -512,7 +512,7 @@
 00:1ff6 Serial_ExchangeByte
 00:2003 Serial_ExchangeByte.loop
 00:201f Serial_ExchangeByte.noCarry
-00:2028 Serial_ExchangeByte.doNotIncrementUnknownCounter
+00:2028 Serial_ExchangeByte.notPlayer1OrTimedOut
 00:204a Serial_ExchangeByte.waitLoop
 00:204d Serial_ExchangeByte.ok
 00:2060 Serial_ExchangeByte.nonSerialInterruptsEnabled
@@ -520,8 +520,8 @@
 00:207b Serial_ExchangeByte.done
 00:208d WaitLoop_15Iterations
 00:208f WaitLoop_15Iterations.waitLoop
-00:2093 IsUnknownCounterZero
-00:209b SetUnknownCounterToFFFF
+00:2093 CheckLinkTimeoutFramesNonzero
+00:209b SerialDisconnected
 00:20a3 Serial_ExchangeLinkMenuSelection
 00:20af Serial_ExchangeLinkMenuSelection.loop
 00:20ca Serial_PrintWaitingTextAndSyncAndExchangeNybble
@@ -1780,7 +1780,7 @@
 01:7225 Serial_SyncAndExchangeNybbleDouble.next
 01:723f Serial_SyncAndExchangeNybbleDouble.syncLoop1
 01:724a Serial_SyncAndExchangeNybbleDouble.syncLoop2
-01:725a Serial_SyncAndExchangeNybbleDouble.setUnknownSerialCounterToFFFF
+01:725a Serial_SyncAndExchangeNybbleDouble.serialDisconnected
 01:7263 CableClubNPCAreaReservedFor2FriendsLinkedByCableText
 01:7268 CableClubNPCWelcomeText
 01:726d CableClubNPCPleaseApplyHereHaveToSaveText
@@ -7056,7 +7056,7 @@
 0f:719a SleepEffect.sleepEffect
 0f:71ae SleepEffect.notAlreadySleeping
 0f:71bd SleepEffect.setSleepCounter
-0f:71d1 SleepEffect.asm_3f1ba
+0f:71d1 SleepEffect.notColosseum2
 0f:71dc SleepEffect.didntAffect
 0f:71df FellAsleepText
 0f:71e4 AlreadyAsleepText
@@ -7076,12 +7076,12 @@
 0f:728b ExplodeEffect
 0f:729c ExplodeEffect.faintUser
 0f:72a6 FreezeBurnParalyzeEffect
-0f:72de FreezeBurnParalyzeEffect.asm_3f2c7
+0f:72de FreezeBurnParalyzeEffect.notBlizzard1
 0f:72e8 FreezeBurnParalyzeEffect.regular_effectiveness
 0f:7308 FreezeBurnParalyzeEffect.burn1
 0f:731b FreezeBurnParalyzeEffect.freeze1
 0f:732e FreezeBurnParalyzeEffect.opponentAttacker
-0f:7358 FreezeBurnParalyzeEffect.asm_3f341
+0f:7358 FreezeBurnParalyzeEffect.notBlizzard2
 0f:7362 FreezeBurnParalyzeEffect.regular_effectiveness2
 0f:7382 FreezeBurnParalyzeEffect.burn2
 0f:7395 FreezeBurnParalyzeEffect.freeze2
@@ -21694,7 +21694,7 @@
 00:cc42 wSerialExchangeNybbleSendData
 00:cc47 wEnteringCableClub
 00:cc47 wLinkTimeoutCounter
-00:cc47 wUnknownSerialCounter_cc47
+00:cc47 wLinkTimeoutFrames
 00:cc49 wMonDataLocation
 00:cc49 wWhichTradeMonSelectionMenu
 00:cc4a wMenuWrappingEnabled
@@ -22642,7 +22642,7 @@
 00:d492 wPikachuMapScriptFlags
 00:d494 wSurfingMinigameHiScore
 00:d497 wPrinterSettings
-00:d498 wUnknownSerialFlag_d498
+00:d498 wChosenColosseum2Cup
 00:d499 wPrinterConnectionOpen
 00:d49a wPrinterOpcode
 00:d49b wPikachuEmotionModifier

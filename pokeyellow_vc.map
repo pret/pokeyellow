@@ -538,7 +538,7 @@ ROM0 bank #0:
 	         $1ff6 = Serial_ExchangeByte
 	         $2003 = Serial_ExchangeByte.loop
 	         $201f = Serial_ExchangeByte.noCarry
-	         $2028 = Serial_ExchangeByte.doNotIncrementUnknownCounter
+	         $2028 = Serial_ExchangeByte.notPlayer1OrTimedOut
 	         $204a = Serial_ExchangeByte.waitLoop
 	         $204d = Serial_ExchangeByte.ok
 	         $2060 = Serial_ExchangeByte.nonSerialInterruptsEnabled
@@ -546,8 +546,8 @@ ROM0 bank #0:
 	         $207b = Serial_ExchangeByte.done
 	         $208d = WaitLoop_15Iterations
 	         $208f = WaitLoop_15Iterations.waitLoop
-	         $2093 = IsUnknownCounterZero
-	         $209b = SetUnknownCounterToFFFF
+	         $2093 = CheckLinkTimeoutFramesNonzero
+	         $209b = SerialDisconnected
 	         $20a3 = Serial_ExchangeLinkMenuSelection
 	         $20af = Serial_ExchangeLinkMenuSelection.loop
 	         $20ca = Serial_PrintWaitingTextAndSyncAndExchangeNybble
@@ -1817,7 +1817,7 @@ ROMX bank #1:
 	         $714a = Serial_SyncAndExchangeNybbleDouble.next
 	         $7164 = Serial_SyncAndExchangeNybbleDouble.syncLoop1
 	         $716f = Serial_SyncAndExchangeNybbleDouble.syncLoop2
-	         $717f = Serial_SyncAndExchangeNybbleDouble.setUnknownSerialCounterToFFFF
+	         $717f = Serial_SyncAndExchangeNybbleDouble.serialDisconnected
 	         $7188 = CableClubNPCAreaReservedFor2FriendsLinkedByCableText
 	         $718d = CableClubNPCWelcomeText
 	         $7192 = CableClubNPCPleaseApplyHereHaveToSaveText
@@ -7196,7 +7196,7 @@ ROMX bank #15:
 	         $7183 = SleepEffect.sleepEffect
 	         $7197 = SleepEffect.notAlreadySleeping
 	         $71a6 = SleepEffect.setSleepCounter
-	         $71ba = SleepEffect.asm_3f1ba
+	         $71ba = SleepEffect.notColosseum2
 	         $71c5 = SleepEffect.didntAffect
 	         $71c8 = FellAsleepText
 	         $71cd = AlreadyAsleepText
@@ -7216,12 +7216,12 @@ ROMX bank #15:
 	         $7274 = ExplodeEffect
 	         $7285 = ExplodeEffect.faintUser
 	         $728f = FreezeBurnParalyzeEffect
-	         $72c7 = FreezeBurnParalyzeEffect.asm_3f2c7
+	         $72c7 = FreezeBurnParalyzeEffect.notBlizzard1
 	         $72d1 = FreezeBurnParalyzeEffect.regular_effectiveness
 	         $72f1 = FreezeBurnParalyzeEffect.burn1
 	         $7304 = FreezeBurnParalyzeEffect.freeze1
 	         $7317 = FreezeBurnParalyzeEffect.opponentAttacker
-	         $7341 = FreezeBurnParalyzeEffect.asm_3f341
+	         $7341 = FreezeBurnParalyzeEffect.notBlizzard2
 	         $734b = FreezeBurnParalyzeEffect.regular_effectiveness2
 	         $736b = FreezeBurnParalyzeEffect.burn2
 	         $737e = FreezeBurnParalyzeEffect.freeze2
@@ -22048,7 +22048,7 @@ WRAM0 bank #0:
 	         $cc3e = wSerialExchangeNybbleReceiveData
 	         $cc42 = wSerialExchangeNybbleSendData
 	         $cc42 = wLinkMenuSelectionSendBuffer
-	         $cc47 = wUnknownSerialCounter_cc47
+	         $cc47 = wLinkTimeoutFrames
 	         $cc47 = wLinkTimeoutCounter
 	         $cc47 = wEnteringCableClub
 	         $cc49 = wMonDataLocation
@@ -23000,7 +23000,7 @@ WRAM0 bank #0:
 	         $d492 = wPikachuMapScriptFlags
 	         $d494 = wSurfingMinigameHiScore
 	         $d497 = wPrinterSettings
-	         $d498 = wUnknownSerialFlag_d498
+	         $d498 = wChosenColosseum2Cup
 	         $d499 = wPrinterConnectionOpen
 	         $d49a = wPrinterOpcode
 	         $d49b = wPikachuEmotionModifier
