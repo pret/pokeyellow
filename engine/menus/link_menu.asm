@@ -75,23 +75,23 @@ Colosseum2Menu:
 	cp $c0
 	jr nz, .exchangeMenuSelectionLoop
 	ld a, b
+	and (PAD_A | PAD_B) << 2 ; did the enemy press A or B?
+	jr nz, .enemyPressedAOrB
+; the enemy didn't press A or B
+	ld a, [wLinkMenuSelectionSendBuffer]
 	and (PAD_A | PAD_B) << 2 ; did the player press A or B?
-	jr nz, .playerPressedAOrB
-; the player didn't press A or B
-	ld a, [wLinkMenuSelectionSendBuffer]
-	and (PAD_A | PAD_B) << 2 ; did the enemy press A or B?
 	jr z, .waitForInputLoop ; if neither the player nor the enemy pressed A or B, try again
-	jr .doneChoosingMenuSelection ; if the enemy pressed A or B but the player didn't, use the enemy's selection
-.playerPressedAOrB
+	jr .doneChoosingMenuSelection ; if the player pressed A or B but the enemy didn't, use the player's selection
+.enemyPressedAOrB
 	ld a, [wLinkMenuSelectionSendBuffer]
-	and (PAD_A | PAD_B) << 2 ; did the enemy press A or B?
-	jr z, .usePlayerMenuSelection ; if the player pressed A or B but the enemy didn't, use the player's selection
-; the player and the enemy both pressed A or B
+	and (PAD_A | PAD_B) << 2 ; did the player press A or B?
+	jr z, .useEnemyMenuSelection ; if the enemy pressed A or B but the player didn't, use the enemy's selection
+; the enemy and the player both pressed A or B
 ; The gameboy that is clocking the connection wins.
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	jr z, .doneChoosingMenuSelection
-.usePlayerMenuSelection
+.useEnemyMenuSelection
 	ld a, $1
 	ld [wNamedObjectIndex], a
 	ld a, b
