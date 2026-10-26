@@ -1326,11 +1326,11 @@ GetPlayerDirection:
 PikachuLedgeOrFishingDirection:
 	ld hl, wPikachuOverworldStateFlags
 	bit 6, [hl]
-	jr z, .toggle_flag
+	jr z, .check_direction
 	res 6, [hl]
 	ret
 
-.toggle_flag
+.check_direction
 	set 6, [hl]
 	xor a
 	ld a, [wPlayerDirection]
