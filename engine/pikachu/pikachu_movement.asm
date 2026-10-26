@@ -673,7 +673,7 @@ PikaMovementFunc2_TurnClockwise:
 	ld d, a
 	call CheckPikachuStepTimer2
 	jr nz, .skip
-	ld hl, Data_fd731
+	ld hl, PikaMovement_FacingDirections
 .loop
 	ld a, [hli]
 	cp d
@@ -690,7 +690,7 @@ PikaMovementFunc2_TurnCounterClockwise:
 	ld d, a
 	call CheckPikachuStepTimer2
 	jr nz, .skip
-	ld hl, Data_fd731End
+	ld hl, PikaMovement_FacingDirectionsEnd
 .loop
 	ld a, [hld]
 	cp d
@@ -702,13 +702,13 @@ PikaMovementFunc2_TurnCounterClockwise:
 	ld [wCurPikaMovementSpriteImageIdx], a
 	ret
 
-Data_fd731:
+PikaMovement_FacingDirections:
 	db SPRITE_FACING_DOWN
 	db SPRITE_FACING_LEFT
 	db SPRITE_FACING_UP
 	db SPRITE_FACING_RIGHT
 	db SPRITE_FACING_DOWN
-Data_fd731End:
+PikaMovement_FacingDirectionsEnd:
 
 PikaMovementFunc2_Timer:
 	push hl
@@ -930,7 +930,7 @@ LoadPikachuBallIconIntoVRAM:
 	lb bc, BANK(OverworldPikachuBallGFX), 1
 	jp CopyVideoDataDoubleAlternate
 
-Func_fd851:
+LoadOverworldPikachuBallGFX:
 	ld hl, vNPCSprites + $c * $10
 	ld a, 3
 .loop
