@@ -228,7 +228,7 @@ OverworldLoopLessDelay::
 .noCollision
 	ld a, $08
 	ld [wWalkCounter], a
-	callfar Func_fcc08
+	callfar QueuePikachuFollowCommand
 	jr .moveAhead2
 
 .moveAhead
