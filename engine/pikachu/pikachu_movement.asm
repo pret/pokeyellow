@@ -930,7 +930,7 @@ LoadPikachuBallIconIntoVRAM:
 	lb bc, BANK(OverworldPikachuBallGFX), 1
 	jp CopyVideoDataDoubleAlternate
 
-LoadOverworldPikachuBallGFX:
+LoadOverworldPikachuBallGFX: ; unreferenced
 	ld hl, vNPCSprites + $c * $10
 	ld a, 3
 .loop
