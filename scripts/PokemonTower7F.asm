@@ -38,14 +38,14 @@ ENDC
 
 PokemonTower7FEncounterJessieJamesScript:
 	ld a, [wYCoord]
-	cp $c
+	cp 12
 	ret nz
 	ResetEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 	ld a, [wXCoord]
-	cp $a
+	cp 10
 	jr z, .got_side
-	ld a, [wXCoord] ; why?
-	cp $b
+	ld a, [wXCoord] ; redundant
+	cp 11
 	ret nz
 	SetEvent EVENT_POKEMONTOWER_7_JESSIE_JAMES_ON_LEFT
 .got_side
@@ -73,11 +73,11 @@ PokemonTower7FEncounterJessieJamesScript:
 	ret
 
 PokemonTower7FJessieJamesEncounterLeftMovementData:
-	db $4
+	db NPC_MOVEMENT_DOWN_FAST
 PokemonTower7FJessieJamesEncounterRightMovementData:
-	db $4
-	db $4
-	db $4
+	db NPC_MOVEMENT_DOWN_FAST
+	db NPC_MOVEMENT_DOWN_FAST
+	db NPC_MOVEMENT_DOWN_FAST
 	db -1 ; end
 
 PokemonTower7FScript1:
