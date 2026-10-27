@@ -62,7 +62,7 @@ DisplayPokemonCenterDialogue_::
 	jr nz, .doNotReturnPikachu
 	callfar IsStarterPikachuAliveInOurParty
 	call c, PokemonCenterNurseFacesUp
-	ld a, $5
+	ld a, PIKACHU_SPAWN_ABOVE
 	ld [wPikachuSpawnState], a
 	call EnablePikachuOverworldSpriteDrawing
 .doNotReturnPikachu

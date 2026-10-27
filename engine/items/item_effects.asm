@@ -673,7 +673,7 @@ ItemUseBicycle:
 	call ItemUseReloadOverworldData
 	xor a
 	ld [wWalkBikeSurfState], a ; change player state to walking
-	ld a, $00
+	ld a, PIKACHU_SPAWN_DEFAULT
 	ld [wPikachuSpawnState], a
 	call PlayDefaultMusic ; play walking music
 	ld hl, GotOffBicycleText
@@ -740,7 +740,7 @@ ItemUseSurfboard:
 
 .stopSurfing
 	call .makePlayerMoveForward
-	ld a, $3
+	ld a, PIKACHU_SPAWN_DELAYED
 	ld [wPikachuSpawnState], a
 	ld hl, wPikachuOverworldStateFlags
 	set 5, [hl]

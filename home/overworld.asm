@@ -647,7 +647,7 @@ CheckMapConnections::
 .loadNewMap ; load the connected map that was entered
 	ld hl, wPikachuOverworldStateFlags
 	set 4, [hl]
-	ld a, $2
+	ld a, PIKACHU_SPAWN_OFFSET_FACING
 	ld [wPikachuSpawnState], a
 	call LoadMapHeader
 	call PlayDefaultMusicFadeOutCurrent
@@ -1693,7 +1693,7 @@ CollisionCheckOnWater::
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 .stopSurfing ; based game freak
-	ld a, $3
+	ld a, PIKACHU_SPAWN_DELAYED
 	ld [wPikachuSpawnState], a
 	ld hl, wPikachuOverworldStateFlags
 	set 5, [hl]

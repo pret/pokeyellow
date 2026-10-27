@@ -67,19 +67,19 @@ CalculatePikachuPlacementCoords::
 	ld a, [wPikachuSpawnState]
 	and a
 	jr z, .load_coords
-	cp $1
+	cp PIKACHU_SPAWN_RIGHT
 	jr z, .right_of_player
-	cp $2
+	cp PIKACHU_SPAWN_OFFSET_FACING
 	jr z, .check_player_facing2
-	cp $3
+	cp PIKACHU_SPAWN_DELAYED
 	jr z, .load_coords
-	cp $4
+	cp PIKACHU_SPAWN_BELOW
 	jr z, .below_player
-	cp $5
+	cp PIKACHU_SPAWN_ABOVE
 	jr z, .above_player
-	cp $6
+	cp PIKACHU_SPAWN_LEFT
 	jr z, .left_of_player
-	cp $7
+	cp PIKACHU_SPAWN_FACING_VARIANT
 	jr z, .check_player_facing
 	jr .right_of_player
 
@@ -153,15 +153,15 @@ CalculatePikachuFacingDirection::
 	ld a, [wPikachuSpawnState]
 	and a
 	jr z, .copy_player_facing
-	cp $1
+	cp PIKACHU_SPAWN_RIGHT
 	jr z, .copy_player_facing
-	cp $3
+	cp PIKACHU_SPAWN_DELAYED
 	jr z, .force_facing_down
-	cp $4
+	cp PIKACHU_SPAWN_BELOW
 	jr z, .copy_player_facing
-	cp $6
+	cp PIKACHU_SPAWN_LEFT
 	jr z, .copy_player_facing
-	cp $7
+	cp PIKACHU_SPAWN_FACING_VARIANT
 	jr z, .face_the_other_way
 	call ComputePikachuFacingDirection
 	ret
@@ -193,48 +193,48 @@ SetPikachuSpawnOutside::
 	cp ROCK_TUNNEL_1F
 	jr z, .rock_tunnel_1
 	ld a, [wCurMap]
-	ld hl, PikachuSpawnMapList1
+	ld hl, PikachuSpawnBelowPlayerMapList
 	call Pikachu_IsInArray ; similar to IsInArray, but not the same
-	jr c, .map_list_1
+	jr c, .map_list_spawn_below
 	ld a, [wCurMap]
-	ld hl, PikachuSpawnMapList2
+	ld hl, PikachuSpawnDelayedMapList
 	call Pikachu_IsInArray
-	jr nc, .not_map_list_2
+	jr nc, .default
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
-	jr nz, .not_map_list_2
-	ld a, $3
+	jr nz, .default
+	ld a, PIKACHU_SPAWN_DELAYED
 	jr .load
 
 .route_22_gate
 	ld a, [wSpritePlayerStateData1FacingDirection]
 	and a
 	jr z, .rock_tunnel_1
-	jr .not_map_list_2
+	jr .default
 
 .mt_moon_2
-	ld a, $3
+	ld a, PIKACHU_SPAWN_DELAYED
 	jr .load
 
-.map_list_1
-	ld a, $4
+.map_list_spawn_below
+	ld a, PIKACHU_SPAWN_BELOW
 	jr .load
 
 .oaks_lab
-	ld a, $6
+	ld a, PIKACHU_SPAWN_LEFT
 	jr .load
 
-.not_map_list_2
-	ld a, $1
+.default
+	ld a, PIKACHU_SPAWN_RIGHT
 	jr .load
 
 .rock_tunnel_1
-	ld a, $3
+	ld a, PIKACHU_SPAWN_DELAYED
 .load
 	ld [wPikachuSpawnState], a
 	ret
 
-PikachuSpawnMapList1::
+PikachuSpawnBelowPlayerMapList::
 	db VICTORY_ROAD_2F
 	db ROUTE_7_GATE
 	db ROUTE_8_GATE
@@ -244,7 +244,7 @@ PikachuSpawnMapList1::
 	db ROUTE_11_GATE_1F
 	db $ff
 
-PikachuSpawnMapList2::
+PikachuSpawnDelayedMapList::
 	db VIRIDIAN_FOREST_NORTH_GATE
 	db CERULEAN_BADGE_HOUSE
 	db CERULEAN_TRASHED_HOUSE
@@ -279,11 +279,11 @@ SetPikachuSpawnWarpPad::
 	jr .in_array
 
 .not_in_array
-	ld a, $0
+	ld a, PIKACHU_SPAWN_DEFAULT
 	jr .load_spawn_state
 
 .in_array
-	ld a, $1
+	ld a, PIKACHU_SPAWN_RIGHT
 .load_spawn_state
 	ld [wPikachuSpawnState], a
 	ret
@@ -323,11 +323,11 @@ SetPikachuSpawnBackOutside::
 	jr .not_facing_up
 
 .facing_up
-	ld a, $1
+	ld a, PIKACHU_SPAWN_RIGHT
 	jr .load_spawn_state
 
 .not_facing_up
-	ld a, $3
+	ld a, PIKACHU_SPAWN_DELAYED
 	jr .load_spawn_state
 
 .load_spawn_state

@@ -218,7 +218,7 @@ DaycareGentlemanText:
 	jr .gotMonBack
 
 .withdrewPikachuFromDayCare
-	ld a, $6
+	ld a, PIKACHU_SPAWN_LEFT
 	ld [wPikachuSpawnState], a
 
 	; GameFreak... TriHard

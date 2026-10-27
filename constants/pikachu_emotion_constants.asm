@@ -46,6 +46,17 @@
 	const PIKASTEPDIR_UP_LEFT
 	const PIKASTEPDIR_UP_RIGHT
 
+; wPikachuSpawnState constants
+    const_def
+    const PIKACHU_SPAWN_DEFAULT
+    const PIKACHU_SPAWN_RIGHT
+    const PIKACHU_SPAWN_OFFSET_FACING
+    const PIKACHU_SPAWN_DELAYED
+    const PIKACHU_SPAWN_BELOW
+    const PIKACHU_SPAWN_ABOVE
+    const PIKACHU_SPAWN_LEFT
+    const PIKACHU_SPAWN_FACING_VARIANT
+
 ; wPikachuSpawnStateFlags bits
 	const_def
 	const BIT_PIKACHU_SPAWN_0
