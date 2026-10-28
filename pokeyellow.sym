@@ -17380,8 +17380,8 @@
 2e:78eb _MewtwoDexEntry
 2e:794a _MewDexEntry
 2f:4000 MoveNames
-2f:5000 BGMapAttributes_Unknown1
-2f:5250 BGMapAttributes_Unknown2
+2f:5000 BGMapAttributes_PikachusBeachTitle
+2f:5250 BGMapAttributes_PikachusPortrait
 2f:54a0 BGMapAttributes_GameFreakIntro
 2f:56f0 BGMapAttributes_TrainerCard
 2f:5940 BGMapAttributes_PartyMenu
@@ -17392,7 +17392,7 @@
 2f:6710 BGMapAttributes_StatusScreen
 2f:6960 BGMapAttributes_Battle
 2f:6bb0 BGMapAttributes_WholeScreen
-2f:6fc0 BGMapAttributes_Unknown13
+2f:6fc0 BGMapAttributes_ShakeEnemyHUD
 2f:7450 LoadBGMapAttributes
 2f:7482 LoadBGMapAttributes.waitForVBlankLoop1
 2f:7488 LoadBGMapAttributes.waitForAccessibleVRAMLoop1

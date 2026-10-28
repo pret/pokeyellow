@@ -17720,8 +17720,8 @@ ROMX bank #47:
 	         $4724 = HandlePartyHPBarAttributes.loop
 	EMPTY: $4744-$4fff ($08bc bytes)
 	SECTION: $5000-$744f ($2450 bytes) ["BG Map Attributes"]
-	         $5000 = BGMapAttributes_Unknown1
-	         $5250 = BGMapAttributes_Unknown2
+	         $5000 = BGMapAttributes_PikachusBeachTitle
+	         $5250 = BGMapAttributes_PikachusPortrait
 	         $54a0 = BGMapAttributes_GameFreakIntro
 	         $56f0 = BGMapAttributes_TrainerCard
 	         $5940 = BGMapAttributes_PartyMenu
@@ -17732,7 +17732,7 @@ ROMX bank #47:
 	         $6710 = BGMapAttributes_StatusScreen
 	         $6960 = BGMapAttributes_Battle
 	         $6bb0 = BGMapAttributes_WholeScreen
-	         $6fc0 = BGMapAttributes_Unknown13
+	         $6fc0 = BGMapAttributes_ShakeEnemyHUD
 	EMPTY: $7450-$7fff ($0bb0 bytes)
 	TOTAL EMPTY: $146c bytes
 
