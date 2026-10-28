@@ -208,8 +208,8 @@ ViridianCityMovePikachu::
 	ret
 
 ViridianCityPikachuMovementData:
-	db $00
-	db $1d
-	db $1f
-	db $38
-	db $3f
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_DOWN
+	db PIKAMOVEMENT_STEP_LEFT
+	db PIKAMOVEMENT_LOOK_RIGHT
+	db PIKAMOVEMENT_END

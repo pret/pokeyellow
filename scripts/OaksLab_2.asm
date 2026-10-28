@@ -14,15 +14,15 @@ OaksLabPikachuMovementScript::
 	ret
 
 OaksLabPikachuMovementData1:
-	db $00
-	db $1f
-	db $1e
-	db $38
-	db $3f
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_LEFT
+	db PIKAMOVEMENT_STEP_UP
+	db PIKAMOVEMENT_LOOK_RIGHT
+	db PIKAMOVEMENT_END
 
 OaksLabPikachuMovementData2:
-	db $00
-	db $1d
-	db $20
-	db $36
-	db $3f
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_DOWN
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_LOOK_UP
+	db PIKAMOVEMENT_END

@@ -5,8 +5,8 @@ GameCornerPikachuMovementScript::
 	ret
 
 GameCornerPikachuMovementData:
-	db $00
-	db $20
-	db $1e
-	db $35
-	db $3f
+	db PIKAMOVEMENT_DELAY
+	db PIKAMOVEMENT_STEP_RIGHT
+	db PIKAMOVEMENT_STEP_UP
+	db PIKAMOVEMENT_LOOK_DOWN
+	db PIKAMOVEMENT_END
