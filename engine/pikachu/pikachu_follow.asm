@@ -1431,8 +1431,8 @@ ComputePikachuFacingDirection::
 GetPikachuFollowCommand:
 	ld hl, wPikachuFollowCommandBufferSize
 	ld a, [hl]
-	cp $ff
-	jr z, .asm_fccff
+	cp -1
+	jr z, .done
 	ld e, a
 	ld d, 0
 	ld hl, wPikachuFollowCommandBuffer
@@ -1440,7 +1440,7 @@ GetPikachuFollowCommand:
 	ld a, [hl]
 	ret
 
-.asm_fccff
+.done
 	xor a
 	ret
 
