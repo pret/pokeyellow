@@ -104,8 +104,8 @@ LoadBGMapAttributes::
 	ret
 
 BGMapAttributesPointers:
-	dw BGMapAttributes_Unknown1
-	dw BGMapAttributes_Unknown2
+	dw BGMapAttributes_PikachusBeachTitle
+	dw BGMapAttributes_PikachusPortrait
 	dw BGMapAttributes_GameFreakIntro
 	dw BGMapAttributes_TrainerCard
 	dw BGMapAttributes_PartyMenu
@@ -116,7 +116,7 @@ BGMapAttributesPointers:
 	dw BGMapAttributes_StatusScreen
 	dw BGMapAttributes_Battle
 	dw BGMapAttributes_WholeScreen
-	dw BGMapAttributes_Unknown13
+	dw BGMapAttributes_ShakeEnemyHUD
 
 HandleBadgeFaceAttributes:
 ; zero out the attributes if the player doesn't have the respective badge
