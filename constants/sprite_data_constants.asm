@@ -11,6 +11,12 @@
 	const NPC_MOVEMENT_LEFT  ; $80
 	const NPC_MOVEMENT_RIGHT ; $C0
 
+	const_def $04
+	const NPC_MOVEMENT_DOWN_FAST  ; $04
+	const NPC_MOVEMENT_UP_FAST    ; $05
+	const NPC_MOVEMENT_LEFT_FAST  ; $06
+	const NPC_MOVEMENT_RIGHT_FAST ; $07
+
 DEF NPC_CHANGE_FACING EQU $E0
 
 ; player direction constants

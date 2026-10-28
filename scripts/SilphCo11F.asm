@@ -40,7 +40,7 @@ SilphCo11F_SetCardKeyDoorYScript:
 	pop hl
 .loop_check_doors
 	ld a, [hli]
-	cp $ff
+	cp -1
 	jr z, .exit_loop
 	push hl
 	ld hl, hUnlockedSilphCoDoors
@@ -257,50 +257,50 @@ SilphCo11FEncounterJessieJamesScript:
 	ret
 
 SilphCo11FJamesEncounterRightMovementData:
-	db $5
-	db $5
-	db $5
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FJessieEncounterRightMovementData:
-	db $5
-	db $5
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FJamesEncounterMiddleMovementData:
-	db $5
-	db $5
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FJessieEncounterMiddleMovementData:
-	db $5
-	db $5
-	db $5
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FJamesEncounterLeftMovementData:
-	db $5
-	db $5
-	db $6
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FJessieEncounterLeftMovementData:
-	db $5
-	db $5
-	db $5
-	db $6
-	db $5
-	db $5
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_UP_FAST
+	db NPC_MOVEMENT_UP_FAST
 	db -1 ; end
 
 SilphCo11FScript5:
@@ -493,7 +493,7 @@ SilphCo11FJessieJamesText:
 	text_asm
 	ld c, 10
 	call DelayFrames
-	ld a, $4
+	ld a, PLAYER_DIR_DOWN
 	ld [wPlayerMovingDirection], a
 	ld a, $0
 	ld [wEmotionBubbleSpriteIndex], a

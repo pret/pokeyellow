@@ -224,10 +224,10 @@ MtMoonB2FSuperNerdTakesOtherFossilScript:
 
 MtMoonB2FEncounterJessieJamesScript:
 	ld a, [wXCoord]
-	cp $3
+	cp 3
 	ret nz
 	ld a, [wYCoord]
-	cp $5
+	cp 5
 	ret nz
 	call StopAllMusic
 	ld c, BANK(Music_MeetJessieJames)
@@ -260,13 +260,13 @@ MtMoonB2FEncounterJessieJamesScript:
 	ret
 
 MtMoonB2FJessieEncounterMovementData:
-	db $06
+	db NPC_MOVEMENT_LEFT_FAST
 MtMoonB2FJamesEncounterMovementData:
-	db $06
-	db $06
-	db $06
-	db $06
-	db $06
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_LEFT_FAST
+	db NPC_MOVEMENT_LEFT_FAST
 	db -1 ; end
 
 MtMoonB2FScript6:

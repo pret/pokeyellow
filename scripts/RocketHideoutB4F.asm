@@ -82,14 +82,14 @@ ENDC
 
 RocketHideoutB4FEncounterJessieJamesScript:
 	ld a, [wYCoord]
-	cp $e
+	cp 14
 	ret nz
 	ResetEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 	ld a, [wXCoord]
-	cp $18
+	cp 24
 	jr z, .got_side
 	ld a, [wXCoord]
-	cp $19
+	cp 25
 	ret nz
 	SetEvent EVENT_ROCKET_HIDEOUT_4_JESSIE_JAMES_ON_LEFT
 .got_side
@@ -123,11 +123,11 @@ RocketHideoutB4FEncounterJessieJamesScript:
 	ret
 
 RocketHideoutB4FJessieJamesEncounterRightMovementData:
-	db $4
+	db NPC_MOVEMENT_DOWN_FAST
 RocketHideoutB4FJessieJamesEncounterLeftMovementData:
-	db $4
-	db $4
-	db $4
+	db NPC_MOVEMENT_DOWN_FAST
+	db NPC_MOVEMENT_DOWN_FAST
+	db NPC_MOVEMENT_DOWN_FAST
 	db -1 ; end
 
 RocketHideoutB4FScript4:
@@ -318,7 +318,7 @@ RocketHideoutB4FText11:
 	text_asm
 	ld c, 10
 	call DelayFrames
-	ld a, $8
+	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
 	ld a, $0
 	ld [wEmotionBubbleSpriteIndex], a
