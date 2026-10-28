@@ -473,7 +473,7 @@ OaksLabPikachuEscapesPokeballScript:
 ; Pikachu comes out
 	ld a, SPRITE_FACING_UP
 	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, $2
+	ld a, PIKACHU_SPAWN_OFFSET_FACING
 	ld [wPikachuSpawnState], a
 	farcall SchedulePikachuSpawnForAfterText
 	call EnablePikachuOverworldSpriteDrawing

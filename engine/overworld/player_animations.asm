@@ -33,7 +33,7 @@ EnterMapAnim::
 	ld [hl], $ff ; wPlayerSpinInPlaceAnimSoundID
 	ld hl, wFacingDirectionList
 	call PlayerSpinInPlace
-	ld a, $1
+	ld a, PIKACHU_SPAWN_RIGHT
 	ld [wPikachuSpawnState], a
 .restoreDefaultMusic
 	call PlayDefaultMusic
@@ -44,7 +44,7 @@ EnterMapAnim::
 	ld c, 50
 	call DelayFrames
 	call PlayerSpinWhileMovingDown
-	ld a, $0
+	ld a, PIKACHU_SPAWN_DEFAULT
 	ld [wPikachuSpawnState], a
 	jr .done
 .flyAnimation
@@ -61,7 +61,7 @@ EnterMapAnim::
 	ld de, FlyAnimationEnterScreenCoords
 	call DoFlyAnimation
 	call LoadPlayerSpriteGraphics
-	ld a, $1
+	ld a, PIKACHU_SPAWN_RIGHT
 	ld [wPikachuSpawnState], a
 	jr .restoreDefaultMusic
 
