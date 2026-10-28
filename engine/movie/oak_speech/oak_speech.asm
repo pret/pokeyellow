@@ -80,7 +80,7 @@ OakSpeech:
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld a, STARTER_PIKACHU
+	ld a, STARTER
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
 	call GetMonHeader

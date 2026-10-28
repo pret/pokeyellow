@@ -80,7 +80,7 @@ IsSurfingPikachuInParty::
 	ld b, SURF
 .loop
 	ld a, [hl]
-	cp STARTER_PIKACHU
+	cp STARTER
 	jr nz, .notPikachu
 	push hl
 	ld de, $8

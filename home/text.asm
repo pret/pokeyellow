@@ -557,7 +557,7 @@ TextCommandSounds::
 	db TX_SOUND_GET_ITEM_2,           SFX_GET_ITEM_2
 	db TX_SOUND_GET_KEY_ITEM,         SFX_GET_KEY_ITEM
 	db TX_SOUND_DEX_PAGE_ADDED,       SFX_DEX_PAGE_ADDED
-	db TX_SOUND_CRY_PIKACHU,          STARTER_PIKACHU ; used in OakSpeech
+	db TX_SOUND_CRY_PIKACHU,          STARTER ; used in OakSpeech
 	db TX_SOUND_CRY_PIDGEOT,          PIDGEOT ; used in SaffronCityPidgeotText
 	db TX_SOUND_CRY_DEWGONG,          DEWGONG ; unused
 
