@@ -44,14 +44,14 @@ parser.add_argument('-l', '--list', type=int, default=0,
 args = parser.parse_args()
 
 # Get list of object files
-objects = None
+objects = []
 if args.rootdir:
 	for line in subprocess.Popen(['make', '-C', args.rootdir, '-s', '-p', 'DEBUG=1'],
 			stdout=subprocess.PIPE).stdout.read().decode().split('\n'):
-		if line.startswith('pokeyellow_obj :='):
-			objects = line[len('pokeyellow_obj :='):].strip().split()
-			break
-	else:
+		for name in ['pokeyellow_obj', 'pokeyellow_debug_obj', 'pokeyellow_vc_obj']:
+			if line.startswith(f'{name} :='):
+				objects.extend(line[len(f'{name} :='):].strip().split())
+	if not objects:
 		print('Error: Object files not found!', file=sys.stderr)
 		sys.exit(1)
 
