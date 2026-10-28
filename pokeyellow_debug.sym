@@ -19856,9 +19856,9 @@
 3f:576c PikaMovementFunc2_TurnCounterClockwise
 3f:5778 PikaMovementFunc2_TurnCounterClockwise.loop
 3f:577d PikaMovementFunc2_TurnCounterClockwise.skip
-3f:5785 Data_fd731
-3f:578a Data_fd731End
+3f:5785 PikaMovement_FacingDirections
 3f:578a PikaMovementFunc2_Timer
+3f:578a PikaMovement_FacingDirectionsEnd
 3f:579b PikaMovementFunc2_Timer.load_pop
 3f:579e PikaMovementFunc2_GetImageBaseOffset
 3f:57a9 PikaMovementFunc2_GetSpriteImageIdxDirection
@@ -19881,8 +19881,8 @@
 3f:5891 LedgeHoppingShadowGFX_3F
 3f:5899 LedgeHoppingShadowGFX_3FEnd
 3f:5899 LoadPikachuBallIconIntoVRAM
-3f:58a5 Func_fd851
-3f:58aa Func_fd851.loop
+3f:58a5 LoadOverworldPikachuBallGFX
+3f:58aa LoadOverworldPikachuBallGFX.loop
 3f:58bf OverworldPikachuBallGFX
 3f:58ff LoadPikachuSpriteIntoVRAM
 3f:591d LoadPikachuSpriteIntoVRAM.load

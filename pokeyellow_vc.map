@@ -20313,9 +20313,9 @@ ROMX bank #63:
 	         $5718 = PikaMovementFunc2_TurnCounterClockwise
 	         $5724 = PikaMovementFunc2_TurnCounterClockwise.loop
 	         $5729 = PikaMovementFunc2_TurnCounterClockwise.skip
-	         $5731 = Data_fd731
+	         $5731 = PikaMovement_FacingDirections
 	         $5736 = PikaMovementFunc2_Timer
-	         $5736 = Data_fd731End
+	         $5736 = PikaMovement_FacingDirectionsEnd
 	         $5747 = PikaMovementFunc2_Timer.load_pop
 	         $574a = PikaMovementFunc2_GetImageBaseOffset
 	         $5755 = PikaMovementFunc2_GetSpriteImageIdxDirection
@@ -20338,8 +20338,8 @@ ROMX bank #63:
 	         $583d = LedgeHoppingShadowGFX_3F
 	         $5845 = LedgeHoppingShadowGFX_3FEnd
 	         $5845 = LoadPikachuBallIconIntoVRAM
-	         $5851 = Func_fd851
-	         $5856 = Func_fd851.loop
+	         $5851 = LoadOverworldPikachuBallGFX
+	         $5856 = LoadOverworldPikachuBallGFX.loop
 	         $586b = OverworldPikachuBallGFX
 	         $58ab = LoadPikachuSpriteIntoVRAM
 	         $58c9 = LoadPikachuSpriteIntoVRAM.load
