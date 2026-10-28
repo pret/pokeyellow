@@ -275,15 +275,15 @@ DetectCollisionBetweenSprites:
 .collision
 	ld a, l
 	and $f0 ; collision with pikachu?
-	jr nz, .asm_4cd9
+	jr nz, .standard_collision
 	xor a
 	ld [wPikachuCollisionUnusedDelta], a
 	ldh a, [hCollidingSpriteOffset]
 	cp $f
-	jr nz, .asm_4cd9
-	call Func_4d0a
-	jr .asm_4cef
-.asm_4cd9
+	jr nz, .standard_collision
+	call StorePikachuCollisionDelta
+	jr .store_collision_bits
+.standard_collision
 	ldh a, [hCollidingSpriteTempXValue] ; a = 7 or 9 depending on sprite i's delta X
 	ld b, a
 	ldh a, [hCollidingSpriteTempYValue] ; a = 7 or 9 depending on sprite i's delta Y
@@ -309,7 +309,7 @@ DetectCollisionBetweenSprites:
 ; to indicate which sprite the collision occurred with
 	inc l
 	inc l
-.asm_4cef
+.store_collision_bits
 	ldh a, [hCollidingSpriteOffset]
 	ld de, SpriteCollisionBitTable
 	add a
@@ -337,7 +337,7 @@ DetectCollisionBetweenSprites:
 ; If [hCollidingSpriteTempYValue] < [hCollidingSpriteTempXValue], this
 ; sets [wPikachuCollisionUnusedDelta] to %00xx; otherwise, to %yy00.
 ; The written value of [wPikachuCollisionUnusedDelta] is never read.
-Func_4d0a:
+StorePikachuCollisionDelta:
 	ldh a, [hCollidingSpriteTempXValue]
 	ld b, a
 	ldh a, [hCollidingSpriteTempYValue]
