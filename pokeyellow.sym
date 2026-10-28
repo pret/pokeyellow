@@ -19599,7 +19599,7 @@
 3f:4ce7 ComputePikachuFacingDirection.copy_from_player
 3f:4cea ComputePikachuFacingDirection.load
 3f:4cee GetPikachuFollowCommand
-3f:4cff GetPikachuFollowCommand.asm_fccff
+3f:4cff GetPikachuFollowCommand.done
 3f:4d01 GetPikachuFollowCommandIfBufferSizeNonzero
 3f:4d15 GetPikachuFollowCommandIfBufferSizeNonzero.default
 3f:4d17 AreThereAtLeastTwoStepsInPikachuFollowCommandBuffer
