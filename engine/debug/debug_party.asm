@@ -16,7 +16,7 @@ DebugNewGameParty: ; unreferenced except in _DEBUG
 	db SNORLAX, 80
 	db PERSIAN, 80
 	db JIGGLYPUFF, 15
-	db STARTER_PIKACHU, 5
+	db STARTER, 5
 	db -1 ; end
 
 PrepareNewGameDebug: ; dummy except in _DEBUG
@@ -81,7 +81,7 @@ IF DEF(_DEBUG)
 	ld [hli], a
 	ld a, NUM_POKEMON
 	ld [hli], a ; hl = wUnknownDebugByte
-	ld a, STARTER_PIKACHU
+	ld a, STARTER
 	ld [hl], a
 
 	; Give max money.

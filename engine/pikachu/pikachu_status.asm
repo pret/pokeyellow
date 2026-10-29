@@ -9,7 +9,7 @@ IsStarterPikachuAliveInOurParty::
 	push hl
 	inc a
 	jr z, .noPlayerPikachu
-	cp STARTER_PIKACHU + 1
+	cp STARTER + 1
 	jr nz, .curMonNotPlayerPikachu
 	ld h, d
 	ld l, e
@@ -80,7 +80,7 @@ IsThisMonStarterPikachu:
 	ld a, [wWhichPokemon]
 	call AddNTimes
 	ld a, [hl]
-	cp STARTER_PIKACHU
+	cp STARTER
 	jr nz, .notPlayerPikachu
 	ld bc, wPartyMon1OTID - wPartyMon1
 	add hl, bc
@@ -191,7 +191,7 @@ IsSurfingStarterPikachuInParty::
 	push hl
 	inc a
 	jr z, .noSurfingPlayerPikachu
-	cp STARTER_PIKACHU + 1
+	cp STARTER + 1
 	jr nz, .curMonNotSurfingPlayerPikachu
 	ld h, d
 	ld l, e
