@@ -179,9 +179,9 @@ MACRO stereo_panning
 	dn \1, \2
 ENDM
 
-	const unknownmusic0xef_cmd ; $ef
-MACRO unknownmusic0xef
-	db unknownmusic0xef_cmd
+	const trigger_sound_cmd ; $ef
+MACRO trigger_sound
+	db trigger_sound_cmd
 	db \1
 ENDM
 

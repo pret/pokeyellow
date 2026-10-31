@@ -513,14 +513,14 @@ Audio1_tempo:
 
 Audio1_stereo_panning:
 	cp stereo_panning_cmd
-	jr nz, Audio1_unknownmusic0xef
+	jr nz, Audio1_TriggerSound
 	call Audio1_GetNextMusicByte
 	ld [wStereoPanning], a ; store panning
 	jp Audio1_sound_ret
 
 ; this appears to never be used
-Audio1_unknownmusic0xef:
-	cp unknownmusic0xef_cmd
+Audio1_TriggerSound:
+	cp trigger_sound_cmd
 	jr nz, Audio1_duty_cycle_pattern
 	call Audio1_GetNextMusicByte
 	push bc
@@ -1375,7 +1375,7 @@ Audio1_PlaySound::
 	cp MAX_SFX_ID_1
 	jp z, .playSfx
 	jp c, .playSfx
-	cp $fe
+	cp MAX_SONG_ID_1
 	jr z, .playMusic
 	jp nc, .playSfx
 
