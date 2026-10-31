@@ -45,13 +45,6 @@ jobs:
           make -j$(nproc)
           .github/checkdiff.sh
 
-      - name: Discord webhook
-        if: ${{ github.event_name == 'push' && github.repository_owner == 'pret' }}
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          .github/webhook.sh
-
       - name: Checkout symbols
         if: ${{ github.repository_owner == 'pret' && github.event_name == 'push' }}
         uses: actions/checkout@v7
